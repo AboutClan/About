@@ -12,16 +12,24 @@ import { IUser } from "../../../../types/user";
 import { useRecoilValue } from "recoil";
 import { studyDateState, voteDateState } from "../../../../recoil/studyAtoms";
 import { useAbsentDataQuery } from "../../../../hooks/vote/queries";
-import { useToast } from "@chakra-ui/react";
+import { Button, Portal, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/dist/client/router";
 import dayjs from "dayjs";
 
+import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { faPizzaSlice } from "@fortawesome/free-solid-svg-icons";
+import PickUserMealPopup from "../../../../components/utils/PickUserMealPopup";
+
 function ArrivedComment({ attendances }: { attendances: IAttendence[] }) {
   const router = useRouter();
+  const { data: session } = useSession();
 
   const voteDate = dayjs(router.query.date as string);
   const studyDate = useRecoilValue(studyDateState);
   const { data: absentData } = useAbsentDataQuery(voteDate);
+
+  const [meal, setMeal] = useState();
 
   return (
     <Layout>
@@ -39,13 +47,24 @@ function ArrivedComment({ attendances }: { attendances: IAttendence[] }) {
           minute: "2-digit",
           hour12: false,
         });
-
+        const userInfo = user.user as IUser;
         return (
           <Block key={idx}>
-            <ProfileIconMd user={user.user as IUser} />
+            <ProfileIconMd user={userInfo} />
             <BlockInfo>
               <Info>
-                <span>{(user.user as IUser).name}</span>
+                <div>
+                  <span>{userInfo.name}</span>
+                  {!meal && session?.uid === userInfo.uid && (
+                    <PickUserMealPopup />
+                  )}
+                  {userInfo.name === "이갑철" && (
+                    <FontAwesomeIcon
+                      icon={faPizzaSlice}
+                      color="var(--color-orange)"
+                    />
+                  )}
+                </div>
                 <div>{user.memo}</div>
               </Info>
               {user.arrived || studyDate === "passed" ? (
@@ -54,9 +73,7 @@ function ArrivedComment({ attendances }: { attendances: IAttendence[] }) {
                   <span>{arrivedHM}</span>
                 </Check>
               ) : studyDate !== "not passed" &&
-                absentData?.find(
-                  (who) => who.uid === (user?.user as IUser)?.uid
-                ) ? (
+                absentData?.find((who) => who.uid === userInfo?.uid) ? (
                 <Check isCheck={false}>
                   <FontAwesomeIcon icon={faCircleXmark} size="xl" />
                   <span>불참</span>
@@ -111,11 +128,16 @@ const Info = styled.div`
   display: flex;
   justify-content: center;
   padding: 4px 0;
-  > span {
-    font-weight: 600;
-    font-size: 15px;
+  > div:first-child {
+    display: flex;
+    align-items: center;
+    > span {
+      font-weight: 600;
+      font-size: 15px;
+      margin-right: 8px;
+    }
   }
-  > div {
+  > div:last-child {
     font-size: 13px;
     margin-top: 2px;
     color: var(--font-h3);
