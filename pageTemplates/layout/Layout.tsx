@@ -1,12 +1,13 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
 import { config } from "@fortawesome/fontawesome-svg-core";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
 import { signOut, useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
-import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
 import BottomNav from "../../components/BottomNav";
+import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { slideDirectionState } from "../../recoils/navigationRecoils";
@@ -66,6 +67,7 @@ function Layout({ children }: ILayout) {
   return (
     <>
       <Seo title="ABOUT" />
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
 
       {token && (
         <>
