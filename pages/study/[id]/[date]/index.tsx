@@ -1,5 +1,5 @@
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -78,7 +78,7 @@ export default function Page() {
                 <Divider />
               </>
             )}
-            <StudyDateBar isPrivateStudy={isPrivateStudy} />
+            <StudyDateBar isPrivateStudy={isPrivateStudy} place={place} />
             {!isPrivateStudy && (
               <StudyTimeBoard participants={attendances} studyStatus={study.status} />
             )}
