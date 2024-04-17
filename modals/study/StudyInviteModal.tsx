@@ -1,10 +1,9 @@
-import { Button, ModalFooter } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { SQUARE_RANDOM_IMAGE } from "../../assets/images/imageUrl";
 import { WEB_URL } from "../../constants/system";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
@@ -43,7 +42,7 @@ function StudyInviteModal({ setIsModal, place }: IStudyInviteModal) {
         content: {
           title: "같이 스터디 할래?",
           description: place?.fullname,
-          imageUrl: SQUARE_RANDOM_IMAGE[randomNum],
+          imageUrl: place.image,
           link: {
             mobileWebUrl: url,
             webUrl: url,
@@ -68,30 +67,28 @@ function StudyInviteModal({ setIsModal, place }: IStudyInviteModal) {
 
   const footerOptions: IFooterOptions = {
     children: (
-      <ModalFooter p="20px" display="flex" justifyContent="space-between">
-        <ButtonLayout>
-          <Button
-            bg="white"
-            h="100%"
-            border="1.2px solid var(--color-mint)"
-            color="var(--color-mint)"
-            fontSize="16px"
-            onClick={() => setIsModal(false)}
-          >
-            닫기
-          </Button>
-          <Button
-            bg="var(--color-mint)"
-            h="100%"
-            color="white"
-            fontSize="16px"
-            disabled={false}
-            id="kakao-share-button-invite"
-          >
-            친구초대
-          </Button>
-        </ButtonLayout>
-      </ModalFooter>
+      <ButtonLayout>
+        <Button
+          bg="white"
+          h="100%"
+          border="1.2px solid var(--color-mint)"
+          color="var(--color-mint)"
+          fontSize="16px"
+          onClick={() => setIsModal(false)}
+        >
+          닫기
+        </Button>
+        <Button
+          bg="var(--color-mint)"
+          h="100%"
+          color="white"
+          fontSize="16px"
+          disabled={false}
+          id="kakao-share-button-invite"
+        >
+          친구초대
+        </Button>
+      </ButtonLayout>
     ),
   };
 

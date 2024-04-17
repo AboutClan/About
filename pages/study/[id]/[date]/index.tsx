@@ -78,7 +78,7 @@ export default function Page() {
                 <Divider />
               </>
             )}
-            <StudyDateBar isPrivateStudy={isPrivateStudy} />
+            <StudyDateBar isPrivateStudy={isPrivateStudy} place={place} />
             {!isPrivateStudy && (
               <StudyTimeBoard participants={attendances} studyStatus={study.status} />
             )}
