@@ -39,13 +39,13 @@ function StudyFreeOpenModal({ setIsModal }: IStudyFreeOpenModal) {
     onSuccess() {
       queryClient.invalidateQueries([STUDY_VOTE, date, location]);
       completeToast("free", "스터디가 Free로 오픈되었습니다.");
+      setIsModal(false);
     },
     onError: errorToast,
   });
   const { mutate: patchAttend } = useStudyParticipationMutation(dayjs(date), "post", {
     onSuccess: () => {
       queryClient.invalidateQueries([STUDY_VOTE, date, location]);
-      setIsModal(false);
     },
     onError: errorToast,
   });
