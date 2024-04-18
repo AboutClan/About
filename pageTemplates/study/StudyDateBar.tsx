@@ -8,6 +8,8 @@ import styled from "styled-components";
 import StudyInviteModal from "../../modals/study/StudyInviteModal";
 import { IPlace } from "../../types/models/studyTypes/studyDetails";
 
+import StudyInviteModal from "../../modals/study/StudyInviteModal";
+import { IPlace } from "../../types/models/studyTypes/studyDetails";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 interface IStudyDateBar {
