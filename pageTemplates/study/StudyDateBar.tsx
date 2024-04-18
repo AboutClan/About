@@ -5,6 +5,8 @@ import dayjs from "dayjs";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import styled from "styled-components";
+import StudyInviteModal from "../../modals/study/StudyInviteModal";
+import { IPlace } from "../../types/models/studyTypes/studyDetails";
 
 import StudyInviteModal from "../../modals/study/StudyInviteModal";
 import { IPlace } from "../../types/models/studyTypes/studyDetails";

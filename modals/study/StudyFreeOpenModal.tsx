@@ -35,17 +35,17 @@ function StudyFreeOpenModal({ setIsModal }: IStudyFreeOpenModal) {
     end: { hours: 18, minutes: 0 },
   });
 
-  const { mutateAsync: openFree } = useStudyOpenFreeMutation(date, {
+  const { mutateAsync: openFree, isLoading } = useStudyOpenFreeMutation(date, {
     onSuccess() {
       queryClient.invalidateQueries([STUDY_VOTE, date, location]);
       completeToast("free", "스터디가 Free로 오픈되었습니다.");
+      setIsModal(false);
     },
     onError: errorToast,
   });
   const { mutate: patchAttend } = useStudyParticipationMutation(dayjs(date), "post", {
     onSuccess: () => {
       queryClient.invalidateQueries([STUDY_VOTE, date, location]);
-      setIsModal(false);
     },
     onError: errorToast,
   });
@@ -73,6 +73,7 @@ function StudyFreeOpenModal({ setIsModal }: IStudyFreeOpenModal) {
     main: {
       text: "오픈",
       func: onSubmit,
+      isLoading,
     },
   };
 

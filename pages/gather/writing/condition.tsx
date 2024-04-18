@@ -8,6 +8,7 @@ import {
   faVenusMars,
 } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSession } from "next-auth/react";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
@@ -17,7 +18,6 @@ import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
 import GatherWritingConfirmModal from "../../../modals/gather/GatherWritingConfirmModal";
 import GatherWritingConditionAgeRange from "../../../pageTemplates/gather/writing/condition/GatherWritingConditionAgeRange";
 import GatherWritingConditionCnt from "../../../pageTemplates/gather/writing/condition/GatherWritingConditionCnt";
@@ -26,7 +26,7 @@ import GatherWritingConditionPre from "../../../pageTemplates/gather/writing/con
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
-import { IGatherMemberCnt, IGatherWriting } from "../../../types/models/gatherTypes/gather";
+import { IGatherMemberCnt, IGatherWriting } from "../../../types/models/gatherTypes/gatherTypes";
 import { Location } from "../../../types/services/locationTypes";
 import { randomPassword } from "../../../utils/validationUtils";
 
@@ -36,28 +36,31 @@ export type CombinedLocation = "전체" | "수원/안양" | "양천/강남";
 
 function WritingCondition() {
   const [gatherContent, setGatherContent] = useRecoilState(sharedGatherWritingState);
-
-  const { data: userInfo } = useUserInfoQuery();
+  const { data: session } = useSession();
 
   const [condition, setCondition] = useState({
     gender: gatherContent?.genderCondition || false,
     age: gatherContent?.age ? true : false,
     pre: gatherContent?.preCnt ? true : false,
-    location: true,
+    location: gatherContent?.place ? gatherContent.place === session?.user.location : true,
     manager: true,
   });
 
-  const [memberCnt, setMemberCnt] = useState<IGatherMemberCnt>({
-    min: 4,
-    max: 0,
-  });
+  const [memberCnt, setMemberCnt] = useState<IGatherMemberCnt>(
+    gatherContent?.memberCnt || {
+      min: 4,
+      max: 0,
+    },
+  );
   const [preCnt, setPreCnt] = useState(gatherContent?.preCnt || 1);
   const [age, setAge] = useState(gatherContent?.age || [19, 28]);
   const [password, setPassword] = useState(gatherContent?.password);
-  const [location, setLocation] = useState<Location | CombinedLocation>(userInfo?.location);
+  const [location, setLocation] = useState<Location | CombinedLocation>(
+    gatherContent?.place || session?.user.location,
+  );
   const [isConfirmModal, setIsConfirmModal] = useState(false);
 
-  const isManager = ["manager", "previliged"].includes(userInfo?.role);
+  const isManager = ["manager", "previliged"].includes(session?.user.role);
 
   const onClickNext = async () => {
     const gatherData: IGatherWriting = {
@@ -67,8 +70,8 @@ function WritingCondition() {
       memberCnt,
       genderCondition: condition.gender,
       password,
-      user: userInfo,
-      place: location || userInfo?.location,
+      user: session?.user.id,
+      place: location || session?.user.location,
       isAdminOpen: !condition.manager,
     };
     setGatherContent(gatherData);
@@ -82,7 +85,7 @@ function WritingCondition() {
   const toggleSwitch = (e: ChangeEvent<HTMLInputElement>, type: ButtonType) => {
     const isChecked = e.target.checked;
     if (type === "location" && isChecked) {
-      setLocation(userInfo.location);
+      setLocation(session?.user.location);
     }
     setCondition((old) => {
       return { ...old, [type]: isChecked };
@@ -118,7 +121,7 @@ function WritingCondition() {
                 <span>최대 인원</span>
               </Name>
               <GatherWritingConditionCnt
-                isMin={false}
+                isMin={memberCnt.max !== 0}
                 value={memberCnt.max}
                 setMemberCnt={setMemberCnt}
               />

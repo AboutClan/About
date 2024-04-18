@@ -29,7 +29,6 @@ import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
 import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
-import { now } from "../../utils/dateTimeUtils";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 const LOCATE_GAP = 0.00008;
@@ -69,7 +68,7 @@ function StudyAttendCheckModal({ setIsModal }: IStudyAttendCheckModal) {
   const { mutate: getAlphabet } = useAlphabetMutation("get");
   const { mutate: getDeposit } = usePointSystemMutation("deposit");
 
-  const { mutate: handleArrived } = useStudyAttendCheckMutation(now().startOf("day"), {
+  const { mutate: handleArrived } = useStudyAttendCheckMutation(date, {
     onSuccess() {
       queryClient.invalidateQueries([STUDY_VOTE, date, location]);
       const alphabet = getRandomAlphabet(20);

@@ -20,13 +20,13 @@ function TimeSelectorUnit({ time, setTime, timeArr, disabled }: ITimeSelectorUni
     const minutes = Number(value.slice(3));
     setTime({ hours, minutes });
   };
+  
 
   return (
     <Layout>
       <Select
         name="hour"
         value={`${hourStr}:${minuteStr}`}
-        // placeholder="시간"
         onChange={onChangeTime}
         disabled={disabled}
       >

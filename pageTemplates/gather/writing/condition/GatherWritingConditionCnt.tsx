@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import CountNum from "../../../../components/atoms/CountNum";
 import { DispatchType } from "../../../../types/hooks/reactTypes";
-import { IGatherMemberCnt } from "../../../../types/models/gatherTypes/gather";
+import { IGatherMemberCnt } from "../../../../types/models/gatherTypes/gatherTypes";
 
 interface IGatherWritingConditionCnt {
   isMin: boolean;

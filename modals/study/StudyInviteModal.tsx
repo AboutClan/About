@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -49,7 +49,7 @@ function StudyInviteModal({ setIsModal, place }: IStudyInviteModal) {
           },
         },
         address: location,
-        // addressTitle: "카카오 본사",
+
         buttons: [
           {
             title: "웹으로 이동",
