@@ -7,6 +7,7 @@ import styled from "styled-components";
 
 import { CopyBtn } from "../../../components/atoms/Icons/CopyIcon";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
+import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 dayjs.locale("ko");
 
@@ -18,7 +19,7 @@ function GatherDetailInfo({
   data: { location, date, age, memberCnt, user, password, genderCondition },
 }: IGatherDetailInfo) {
   const { data: session } = useSession();
-  const isOrganizer = user?.uid === session?.user?.uid;
+  const isOrganizer = (user as IUserSummary)?.uid === session?.user?.uid;
   const [isSubLocation, setIsSubLocation] = useState(false);
 
   return (

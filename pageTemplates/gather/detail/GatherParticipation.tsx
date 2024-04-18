@@ -24,7 +24,7 @@ function GatherParticipation({ data }: IGatherParticipation) {
   const setTransferUserSummary = useSetRecoilState(transferUserSummaryState);
   const setPrevPageUrl = useSetRecoilState(prevPageUrlState);
 
-  const organizer = data.user;
+  const organizer = data.user as IUserSummary;
   const status = data.status;
   const participantsCnt = data.participants.length;
 
@@ -38,6 +38,7 @@ function GatherParticipation({ data }: IGatherParticipation) {
     router.push(`/profile/${user.uid}`);
   };
 
+  
   return (
     <>
       <Layout>
@@ -55,7 +56,7 @@ function GatherParticipation({ data }: IGatherParticipation) {
               </>
             )}
           </Box>
-          {session?.user.uid === organizer.uid && (
+          {session?.user.uid === (organizer as IUserSummary).uid && (
             <Button size="sm" ml="auto" colorScheme="mintTheme" onClick={() => setIsModal(true)}>
               인원초대
             </Button>

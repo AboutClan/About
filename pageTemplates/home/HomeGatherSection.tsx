@@ -15,6 +15,7 @@ import { useGatherQuery } from "../../hooks/gather/queries";
 import { prevPageUrlState, slideDirectionState } from "../../recoils/navigationRecoils";
 import { ITextAndColorSchemes } from "../../types/components/propTypes";
 import { GatherStatus, IGather } from "../../types/models/gatherTypes/gatherTypes";
+import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import { getRandomImage } from "../../utils/imageUtils";
 
 export default function HomeGatherSection() {
@@ -74,7 +75,7 @@ export const setGatherDataToCardCol = (
     title: gather.title,
     subtitle:
       gather.place + " · " + gather.type.title + " · " + dayjs(gather.date).format("M월 D일(ddd)"),
-    participants: [gather.user, ...gather.participants.map((par) => par.user)],
+    participants: [gather.user, ...gather.participants.map((par) => par.user)] as IUserSummary[],
     url: `/gather/${gather.id}`,
     func,
     image: {

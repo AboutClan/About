@@ -14,6 +14,7 @@ import { isGatherEditState } from "../../../recoils/checkAtoms";
 import { prevPageUrlState } from "../../../recoils/previousAtoms";
 import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
+import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 
 interface IGatherHeader {
   gatherData: IGather;
@@ -44,7 +45,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
     <>
       <Header title="" url={prevPageUrl || "/gather"}>
         <Flex>
-          {session?.user.uid === organizer?.uid && (
+          {session?.user.uid === (organizer as IUserSummary)?.uid && (
             <IconWrapper onClick={onClick}>
               <FontAwesomeIcon icon={faPenCircle} size="xl" />
             </IconWrapper>

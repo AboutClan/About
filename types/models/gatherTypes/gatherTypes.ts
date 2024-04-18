@@ -48,8 +48,8 @@ export type IGatherMemberCnt = {
 export interface IGatherListItem {
   text: string;
   time: {
-    hours: number;
-    minutes: number;
+    hours?: number;
+    minutes?: number;
   };
 }
 export interface IGatherParticipants {
