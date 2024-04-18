@@ -24,6 +24,7 @@ export interface IFooterOptions {
     text?: string;
     func?: () => void;
     isRedTheme?: boolean;
+    isLoading?: boolean;
   };
   sub?: {
     text?: string;
@@ -125,6 +126,7 @@ export function ModalLayout({
                   colorScheme={main?.isRedTheme ? "redTheme" : "mintTheme"}
                   w="100%"
                   onClick={func}
+                  isLoading={main?.isLoading}
                 >
                   {text}
                 </Button>
