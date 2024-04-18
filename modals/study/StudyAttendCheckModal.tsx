@@ -76,7 +76,9 @@ function StudyAttendCheckModal({ setIsModal }: IStudyAttendCheckModal) {
         getAlphabet({ alphabet });
         setTransferAlphabet(alphabet);
       }
-      const pointObj = POINT_SYSTEM_PLUS.STUDY_ATTEND_CHECK;
+      const pointObj = isPrivate
+        ? POINT_SYSTEM_PLUS.STUDY_PRIVATE_ATTEND
+        : POINT_SYSTEM_PLUS.STUDY_ATTEND_CHECK;
       getAboutPoint(pointObj);
       const studyVoteInfo = getMyStudyVoteInfo(myStudy, session?.user.uid);
 
