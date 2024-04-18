@@ -6,7 +6,7 @@ import { KeyboardEvent, useState } from "react";
 import styled from "styled-components";
 
 import { DispatchType } from "../../../types/hooks/reactTypes";
-import { IGatherLocation } from "../../../types/models/gatherTypes/gather";
+import { IGatherLocation } from "../../../types/models/gatherTypes/gatherTypes";
 
 interface ISearchLocation {
   location?: string;

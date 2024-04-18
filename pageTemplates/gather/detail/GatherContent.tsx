@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { IGatherListItem } from "../../../types/models/gatherTypes/gather";
+import { IGatherListItem } from "../../../types/models/gatherTypes/gatherTypes";
 
 interface IGather {
   content: string;

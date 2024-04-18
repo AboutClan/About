@@ -17,6 +17,7 @@ import GatherOrganizer from "../../../pageTemplates/gather/detail/GatherOrganize
 import GatherParticipation from "../../../pageTemplates/gather/detail/GatherParticipation";
 import GatherTitle from "../../../pageTemplates/gather/detail/GatherTitle";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
+import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 
 function GatherDetail() {
   const { data: session } = useSession();
@@ -42,7 +43,7 @@ function GatherDetail() {
               <Layout>
                 <GatherOrganizer
                   createdAt={gatherData.createdAt}
-                  organizer={gatherData.user}
+                  organizer={gatherData.user as IUserSummary}
                   isAdminOpen={gatherData.isAdminOpen}
                   category={gatherData.type.title}
                 />
