@@ -1,6 +1,7 @@
 import { Input } from "@chakra-ui/react";
 import { faCameraViewfinder } from "@fortawesome/pro-light-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { captureException } from "@sentry/nextjs";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import styled from "styled-components";
@@ -45,6 +46,7 @@ export default function ImageUploadInput({ setImageUrl: changeImage }: IImageUpl
             setImageUrl(image);
             changeImage(file);
           } else {
+            captureException(error);
             console.error("Error converting HEIC to JPEG", error);
           }
         }
