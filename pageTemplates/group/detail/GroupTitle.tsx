@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 import { Badge } from "../../../components/atoms/badges/Badges";
 import { NewAlertIcon } from "../../../components/atoms/Icons/AlertIcon";
-import { GatherStatus } from "../../../types/models/gatherTypes/gather";
+import { GatherStatus } from "../../../types/models/gatherTypes/gatherTypes";
 
 interface IGroupTitle {
   title: string;

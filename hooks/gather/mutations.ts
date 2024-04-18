@@ -3,7 +3,7 @@ import { useMutation } from "react-query";
 
 import { requestServer } from "../../libs/methodHelpers";
 import { MutationOptions } from "../../types/hooks/reactTypes";
-import { IGather, IGatherWriting } from "../../types/models/gatherTypes/gather";
+import { IGather, IGatherWriting } from "../../types/models/gatherTypes/gatherTypes";
 
 type GatherWritingParam<T> = T extends "post"
   ? { gather: IGatherWriting }

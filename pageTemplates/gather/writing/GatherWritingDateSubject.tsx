@@ -7,7 +7,7 @@ import Input from "../../../components/atoms/Input";
 import TimeSelectorUnit from "../../../components/atoms/TimeSelectorUnit";
 import { TIME_SELECTOR_UNIT } from "../../../constants/util/util";
 import { DispatchType } from "../../../types/hooks/reactTypes";
-import { IGatherListItem, IGatherWriting } from "../../../types/models/gatherTypes/gather";
+import { IGatherListItem, IGatherWriting } from "../../../types/models/gatherTypes/gatherTypes";
 import { ITime } from "../../../types/utils/timeAndDate";
 
 interface IGatherWritingDateSubject {
@@ -35,14 +35,29 @@ function GatherWritingDateSubject({
   });
 
   useEffect(() => {
-    if (date)
+    const [{ time: firstTime }, { time: secondTime }] = gatherWriting?.gatherList || [
+      { time: null },
+      { time: null },
+    ];
+
+    if (firstTime || date) {
       setFirstGather((old) => ({
         ...old,
         time: {
-          hours: dayjs(date).hour(),
-          minutes: dayjs(date).minute(),
+          hours: firstTime ? firstTime.hours : dayjs(date).hour(),
+          minutes: firstTime ? firstTime.minutes : dayjs(date).minute(),
         },
       }));
+    }
+    if (secondTime) {
+      setSecondGather((old) => ({
+        ...old,
+        time: {
+          hours: secondTime.hours,
+          minutes: secondTime.minutes,
+        },
+      }));
+    }
   }, [date]);
 
   useEffect(() => {
@@ -73,7 +88,7 @@ function GatherWritingDateSubject({
         </Box>
         <Box h="40px" />
         <TimeSelectorUnit
-          time={firstGather?.time}
+          time={firstGather.time}
           setTime={(time) => setFirstGather((old) => ({ ...old, time }))}
           timeArr={TIME_SELECTOR_UNIT}
         />

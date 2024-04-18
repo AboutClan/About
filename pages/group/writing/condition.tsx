@@ -27,7 +27,7 @@ import QuestionBottomDrawer from "../../../pageTemplates/group/writing/QuestionB
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { sharedGroupWritingState } from "../../../recoils/sharedDataAtoms";
-import { IGatherMemberCnt } from "../../../types/models/gatherTypes/gather";
+import { IGatherMemberCnt } from "../../../types/models/gatherTypes/gatherTypes";
 import { IGroupWriting } from "../../../types/models/groupTypes/group";
 import { Location, LocationFilterType } from "../../../types/services/locationTypes";
 

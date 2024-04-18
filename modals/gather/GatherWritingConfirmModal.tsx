@@ -16,7 +16,7 @@ import { isGatherEditState } from "../../recoils/checkAtoms";
 import { sharedGatherWritingState } from "../../recoils/sharedDataAtoms";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
-import { IGather, IGatherWriting } from "../../types/models/gatherTypes/gather";
+import { IGather, IGatherWriting } from "../../types/models/gatherTypes/gatherTypes";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface IGatherWritingConfirmModal extends IModal {

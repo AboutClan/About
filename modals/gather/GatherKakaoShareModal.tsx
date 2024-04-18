@@ -12,10 +12,14 @@ import KakaoShareBtn from "../../components/atoms/Icons/KakaoShareBtn";
 import { WEB_URL } from "../../constants/system";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
-import { IGatherHeader } from "../../types/models/gatherTypes/gather";
+
 import { ModalLayout } from "../Modals";
 
-interface IGatherKakaoShareModal extends IModal, IGatherHeader {}
+interface IGatherKakaoShareModal extends IModal {
+  title: string;
+  date: string;
+  locationMain: string;
+}
 
 function GatherKakaoShareModal({ title, date, locationMain, setIsModal }: IGatherKakaoShareModal) {
   const router = useRouter();

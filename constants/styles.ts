@@ -1,4 +1,4 @@
-import { GatherStatus } from "../types/models/gatherTypes/gather";
+import { GatherStatus } from "../types/models/gatherTypes/gatherTypes";
 
 export const TABLE_COLORS = [
   "#FF8896",

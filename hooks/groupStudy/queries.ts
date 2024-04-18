@@ -5,7 +5,7 @@ import { GATHER_CONTENT, GROUP_STUDY, GROUP_STUDY_ALL } from "../../constants/ke
 import { SERVER_URI } from "../../constants/system";
 import { IGatherSummary } from "../../pages/review";
 import { QueryOptions } from "../../types/hooks/reactTypes";
-import { IGather } from "../../types/models/gatherTypes/gather";
+import { IGather } from "../../types/models/gatherTypes/gatherTypes";
 import { IGroup, IGroupAttendance } from "../../types/models/groupTypes/group";
 
 export const useGroupQuery = (options?: QueryOptions<IGroup[]>) =>

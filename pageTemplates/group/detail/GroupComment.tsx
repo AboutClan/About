@@ -14,7 +14,7 @@ import { useResetQueryData } from "../../../hooks/custom/CustomHooks";
 import { useGroupCommentMutation } from "../../../hooks/groupStudy/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import GatherCommentEditModal from "../../../modals/gather/GatherCommentEditModal";
-import { IGatherComment } from "../../../types/models/gatherTypes/gather";
+import { IGatherComment } from "../../../types/models/gatherTypes/gatherTypes";
 import { getDateDiff } from "../../../utils/dateTimeUtils";
 // import GroupCommentEditModal from "../../../modals/group/GroupCommentEditModal";
 
