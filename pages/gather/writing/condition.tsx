@@ -60,6 +60,7 @@ function WritingCondition() {
   );
   const [isConfirmModal, setIsConfirmModal] = useState(false);
 
+ 
   const isManager = ["manager", "previliged"].includes(session?.user.role);
 
   const onClickNext = async () => {
@@ -121,7 +122,7 @@ function WritingCondition() {
                 <span>최대 인원</span>
               </Name>
               <GatherWritingConditionCnt
-                isMin={memberCnt.max !== 0}
+                isMin={false}
                 value={memberCnt.max}
                 setMemberCnt={setMemberCnt}
               />

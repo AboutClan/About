@@ -21,10 +21,10 @@ function GatherWritingConditionCnt({
 }: IGatherWritingConditionCnt) {
   const [isMaxLimit, setIsMaxLimit] = useState(defaultBoolean ?? !isMin);
   const [number, setNumber] = useState(value);
-
   useEffect(() => {
     if (isMin) setMemberCnt((old) => ({ ...old, min: number }));
     else setMemberCnt((old) => ({ ...old, max: number }));
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [number]);
 
