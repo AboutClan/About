@@ -3,7 +3,6 @@ import { faHeart as faSolidHeart } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
 import styled from "styled-components";
 
 import Avatar from "../../../components/atoms/Avatar";
@@ -15,7 +14,6 @@ import { USER_ROLE } from "../../../constants/settingValue/role";
 import { useAdminPointMutation } from "../../../hooks/admin/mutation";
 import { useResetQueryData } from "../../../hooks/custom/CustomHooks";
 import { useCompleteToast, useErrorToast, useFailToast } from "../../../hooks/custom/CustomToast";
-import { useStudyAttendRecordQuery } from "../../../hooks/study/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { useInteractionMutation } from "../../../hooks/user/sub/interaction/mutations";
 import { IInteractionLikeStorage, IInteractionSendLike } from "../../../types/globals/interaction";
@@ -34,8 +32,8 @@ function ProfileInfo({ user }: IProfileInfo) {
 
   const { data: userInfo } = useUserInfoQuery();
 
-  const [isConditionOk, setIsConditionOk] = useState(false);
-  const [isHeartLoading, setIsHeartLoading] = useState(true);
+  // const [isConditionOk, setIsConditionOk] = useState(false);
+  // const [isHeartLoading, setIsHeartLoading] = useState(true);
 
   const status = USER_ROLE[user?.role];
   const storedLikeArr: IInteractionLikeStorage[] = JSON.parse(localStorage.getItem(LIKE_HEART));
@@ -58,45 +56,44 @@ function ProfileInfo({ user }: IProfileInfo) {
 
   const { mutate: sendAboutPoint } = useAdminPointMutation(user?.uid);
 
-  useStudyAttendRecordQuery(dayjs().subtract(4, "day"), dayjs().add(1, "day"), {
-    enabled: !isGuest,
-    onSuccess(data) {
-      data.forEach((study) => {
-        study.arrivedInfoList.forEach((arrivedInfoList) => {
-          const bothAttend = arrivedInfoList.arrivedInfo.filter(
-            (item) => item.uid === user.uid || item.uid === session.user.uid,
-          );
-          if (bothAttend.length >= 2) {
-            setIsConditionOk(true);
-          }
-        });
-      });
-      setIsHeartLoading(false);
-    },
-  });
+  // useStudyAttendRecordQuery(dayjs().subtract(4, "day"), dayjs().add(1, "day"), {
+  //   enabled: !isGuest,
+  //   onSuccess(data) {
+  //     data.forEach((study) => {
+  //       study.arrivedInfoList.forEach((arrivedInfoList) => {
+  //         const bothAttend = arrivedInfoList.arrivedInfo.filter(
+  //           (item) => item.uid === user.uid || item.uid === session.user.uid,
+  //         );
+  //         if (bothAttend.length >= 2) {
+  //           setIsConditionOk(true);
+  //         }
+  //       });
+  //     });
+  //     setIsHeartLoading(false);
+  //   },
+  // });
 
   const onClickHeart = () => {
     if (isGuest) {
       failToast("free", "게스트에게는 불가능합니다.");
       return;
     }
+    if (isHeart) return;
     // eslint-disable-next-line prefer-const
-    let interval;
-    const checkCondition = () => {
-      if (isHeartLoading) return;
-      clearInterval(interval);
-      handleHeart();
-    };
+    handleHeart();
 
-    interval = setInterval(checkCondition, 100);
+    // let interval;
+    // const checkCondition = () => {
+    //   if (isHeartLoading) return;
+    //   clearInterval(interval);
+    //   handleHeart();
+    // };
+
+    // interval = setInterval(checkCondition, 100);
   };
 
   const handleHeart = () => {
-    if (
-      !userInfo?.friend.includes(user?.uid) &&
-      !isConditionOk &&
-      user.birth.slice(2) !== dayjs().format("MMDD")
-    ) {
+    if (!userInfo?.friend.includes(user?.uid) && user.birth.slice(2) !== dayjs().format("MMDD")) {
       failToast(
         "free",
         "최근 같은 스터디에 참여한 멤버 또는 친구로 등록된 인원, 생일인 인원에게만 보낼 수 있어요!",
