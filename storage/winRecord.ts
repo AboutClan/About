@@ -888,6 +888,30 @@ export const WIN_RECORD: {
     detail: "알파벳 수집 보상",
     present: "스타벅스 기프티콘",
   },
+  {
+    name: "이아",
+    date: "4/29",
+    detail: "스토어 당첨 보상",
+    present: "불닭 + 바나나 우유",
+  },
+  {
+    name: "이아",
+    date: "4/29",
+    detail: "스토어 당첨 보상",
+    present: "불닭 + 바나나 우유",
+  },
+  {
+    name: "김석",
+    date: "4/29",
+    detail: "스토어 당첨 보상",
+    present: "롯데시네마 영화관람권",
+  },
+  {
+    name: "김사",
+    date: "4/29",
+    detail: "스토어 당첨 보상",
+    present: "롯데시네마 영화관람권",
+  },
 ];
 
 export const PROMOTION_WIN = [
