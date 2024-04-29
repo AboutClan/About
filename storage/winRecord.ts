@@ -828,6 +828,66 @@ export const WIN_RECORD: {
     detail: "홍보 이벤트 당첨",
     present: "황금올리브 치킨 세트",
   },
+  {
+    name: "방원",
+    date: "4/29",
+    detail: "열품타 이벤트",
+    present: "메가커피 깊티",
+  },
+  {
+    name: "이채",
+    date: "4/29",
+    detail: "열품타 이벤트",
+    present: "메가커피 깊티",
+  },
+  {
+    name: "김석",
+    date: "4/29",
+    detail: "열품타 이벤트",
+    present: "메가커피 깊티",
+  },
+  {
+    name: "이서",
+    date: "4/29",
+    detail: "열품타 이벤트",
+    present: "메가커피 깊티",
+  },
+  {
+    name: "정성",
+    date: "4/29",
+    detail: "열품타 이벤트",
+    present: "메가커피 깊티",
+  },
+  {
+    name: "안석",
+    date: "4/29",
+    detail: "열품타 이벤트",
+    present: "메가커피 깊티",
+  },
+  {
+    name: "김석",
+    date: "4/29",
+    detail: "알파벳 수집 보상",
+    present: "공차 5000원권",
+  },
+  {
+    name: "권혜",
+    date: "4/29",
+    detail: "알파벳 수집 보상",
+    present: "스타벅스 기프티콘",
+  },
+  {
+    name: "조수",
+    date: "4/29",
+    detail: "알파벳 수집 보상",
+    present: "스타벅스 기프티콘",
+  },
+  {
+    name: "이채",
+    date: "4/29",
+    detail: "알파벳 수집 보상",
+    present: "스타벅스 기프티콘",
+  },
 ];
 
 export const PROMOTION_WIN = [
