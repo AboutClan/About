@@ -113,7 +113,7 @@ const ItemsContainer = styled(motion.div)`
   z-index: 10;
 `;
 
-const Item = styled.div`
+const Item = styled.div<{ isActive: boolean }>`
   position: relative;
   z-index: 10;
   display: flex;

@@ -19,7 +19,7 @@ export default function ShadowCircleButton({ buttonProps, onClick }: IShadowCirc
   );
 }
 
-const OuterCircle = styled.div`
+const OuterCircle = styled.div<{ shadow: string }>`
   position: relative;
   z-index: 10;
   padding: 8px;

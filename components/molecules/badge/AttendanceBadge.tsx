@@ -19,11 +19,11 @@ export default function AttendanceBadge({ type, time }: IAttendanceBadge) {
   );
 }
 
-const BadgeContainer = styled.div`
+const BadgeContainer = styled.div<{ time?: string }>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: ${(props) => (props.time ? "8px" : "0")};
+  padding-top: ${({ time }) => (time ? "8px" : "0")};
 `;
 
 const TimeText = styled.span`
