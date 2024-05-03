@@ -11,7 +11,7 @@ import { useAdminStudyRecordQuery } from "../hooks/admin/quries";
 import { useImageUploadMutation } from "../hooks/image/mutations";
 import { studyDateStatusState } from "../recoils/studyRecoils";
 function Test() {
-  const { data } = useAdminStudyRecordQuery(dayjs("2024-04-01"), dayjs("2024-04-07"), null, "인천");
+  const { data } = useAdminStudyRecordQuery(dayjs("2024-04-16"), dayjs("2024-04-30"), null, "인천");
   console.log(data);
 
   const a = useRecoilValue(studyDateStatusState);

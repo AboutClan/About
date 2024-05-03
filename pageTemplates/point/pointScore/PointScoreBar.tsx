@@ -1,9 +1,10 @@
-import { Badge, Progress } from "@chakra-ui/react";
+import { Badge } from "@chakra-ui/react";
 import { faQuestionCircle } from "@fortawesome/pro-light-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import ProgressBar from "../../../components/atoms/ProgressBar";
 
 import {
   BADGE_COLOR_MAPPINGS,
@@ -80,11 +81,10 @@ function PointScoreBar({ myScore, hasQuestion = true }: IPointScoreBar) {
             </div>
           )}
         </Grade>
-        <Progress
+        <ProgressBar
           value={(1 - (nextBadgePoint - myScore) / badgeGap) * 100}
-          height="12px"
           colorScheme="mintTheme"
-          hasStripe
+          hasStripe={true}
         />
       </Layout>
 
