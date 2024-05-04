@@ -12,7 +12,7 @@ import {
   faUsersRectangle,
 } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Link from "next/link";
+import Link, { LinkProps } from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
@@ -90,7 +90,7 @@ function NavButton({ text, url, activeIcon, defaultIcon, active, idx }: INavButt
     <NavLink
       onClick={() => handleMove()}
       href={url}
-      active={active.toString()}
+      active={active.toString() as "true" | "false"}
       replace={!text}
       className={`bottom_nav${idx}`}
     >
@@ -146,7 +146,7 @@ const Nav = styled.nav`
   margin: 0 auto;
 `;
 
-const NavLink = styled<{ active: "true" | "false" }>(Link)`
+const NavLink = styled(Link)<{ active: "true" | "false" } & LinkProps>`
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -154,8 +154,7 @@ const NavLink = styled<{ active: "true" | "false" }>(Link)`
   align-items: center;
   padding: 16px;
   margin-top: 4px;
-  color: ${({ active }: { active: "true" | "false" }) =>
-    active === "true" ? "var(--gray-2)" : "var(--gray-3)"};
+  color: ${({ active }) => (active === "true" ? "var(--gray-2)" : "var(--gray-3)")};
 `;
 
 const NavText = styled.div`

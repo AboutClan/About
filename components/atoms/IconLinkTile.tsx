@@ -2,6 +2,7 @@ import Link from "next/link";
 import styled from "styled-components";
 
 import { Size } from "../../types/components/assetTypes";
+
 export interface IIconLinkTile {
   text: string;
   icon: React.ReactNode;
@@ -47,9 +48,9 @@ const IconContainer = styled.div`
   margin-bottom: 8px; /* mb-3에 해당하는 마진 값 */
 `;
 
-const Text = styled.span`
+const Text = styled.span<{ size: Size }>`
   white-space: nowrap;
-  font-size: ${(props) =>
-    props.size === "lg" ? "14px" : "10px"}; /* text-xs와 text-sm에 해당하는 폰트 크기 */
+  font-size: ${({ size }) =>
+    size === "lg" ? "14px" : "10px"}; /* text-xs와 text-sm에 해당하는 폰트 크기 */
   font-weight: normal;
 `;
