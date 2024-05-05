@@ -19,7 +19,6 @@ import { getStudyVoteIcon } from "../libs/study/getStudyVoteIcon";
 import { getVoteLocationCenterDot, getVoteLocationMaxBound } from "../libs/study/getStudyVoteMap";
 import StudyPresetModal from "../modals/userRequest/StudyPresetModal";
 import { myStudyState, studyDateStatusState } from "../recoils/studyRecoils";
-
 import { IMapOptions, IMarkerOptions } from "../types/externals/naverMapTypes";
 import { IParticipation, IPlace } from "../types/models/studyTypes/studyDetails";
 import { IStudyVote, IStudyVotePlaces } from "../types/models/studyTypes/studyInterActions";
@@ -165,16 +164,7 @@ export default function StudyVoteMap() {
 
       setMyVote((old) => ({
         ...old,
-<<<<<<< HEAD
-        subPlace:
-          precision === 0
-            ? []
-            : precision === 2
-              ? [...sub1, ...sub2]
-              : [...sub1],
-=======
         subPlace: precision === 0 ? [] : precision === 2 ? [...sub1, ...sub2] : [...sub1],
->>>>>>> main
       }));
       setVoteScore((old) => old + getPlaceVoteRankScore(place, studyVoteData, data.user.uid));
     } else {
@@ -315,15 +305,7 @@ export const getMarkersOptions = (
     const placeId = par.place._id;
 
     const iconType =
-<<<<<<< HEAD
-      placeId === myVote?.place
-        ? "main"
-        : myVote?.subPlace?.includes(placeId)
-          ? "sub"
-          : "default";
-=======
       placeId === myVote?.place ? "main" : myVote?.subPlace?.includes(placeId) ? "sub" : "default";
->>>>>>> main
     const infoWindow = placeId === myVote?.place ? getInfoWindow(par) : null;
     const polyline =
       mainPlace && myVote?.subPlace?.includes(placeId)

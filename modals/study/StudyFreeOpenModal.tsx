@@ -5,24 +5,13 @@ import { useQueryClient } from "react-query";
 
 import TimeSelector from "../../components/molecules/picker/TimeSelector";
 import { STUDY_VOTE } from "../../constants/keys/queryKeys";
+import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { useCompleteToast, useErrorToast, useFailToast } from "../../hooks/custom/CustomToast";
 import {
   useStudyOpenFreeMutation,
   useStudyParticipationMutation,
 } from "../../hooks/study/mutations";
-<<<<<<< HEAD
-import { IFooterOptions, ModalLayout } from "../Modals";
-
-import TimeSelector from "../../components/molecules/picker/TimeSelector";
-
 import { IModal } from "../../types/components/modalTypes";
-
-import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
-import { IPlace } from "../../types/models/studyTypes/studyDetails";
-=======
-import { PLACE_TO_LOCATION } from "../../storage/study";
-import { IModal } from "../../types/components/modalTypes";
->>>>>>> main
 import { ITimeStartToEnd } from "../../types/utils/timeAndDate";
 import { IFooterOptions, ModalLayout } from "../Modals";
 

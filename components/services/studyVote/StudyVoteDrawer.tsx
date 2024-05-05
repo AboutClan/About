@@ -13,17 +13,11 @@ import { useStudyParticipationMutation } from "../../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../../hooks/user/mutations";
 import { usePointSystemLogQuery } from "../../../hooks/user/queries";
 import StudyVoteSubModalPrivate from "../../../modals/study/studyVoteSubModal/StudyVoteSubModalPrivate";
-<<<<<<< HEAD
-
 import {
   myStudyState,
   studyDateStatusState,
 } from "../../../recoils/studyRecoils";
 import { PLACE_TO_NAME } from "../../../storage/study";
-=======
-import { myStudyState, studyDateStatusState } from "../../../recoils/studyRecoils";
-import { PLACE_TO_LOCATION, PLACE_TO_NAME } from "../../../storage/study";
->>>>>>> main
 import { IModal } from "../../../types/components/modalTypes";
 import {
   IStudyVote,
