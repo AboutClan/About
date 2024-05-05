@@ -1,5 +1,3 @@
-import styled from "styled-components";
-
 import { IModal } from "../../types/components/modalTypes";
 import RuleModal, { IRuleModalContent } from "../RuleModal";
 
@@ -12,9 +10,7 @@ function PromotionRuleModal({ setIsModal }: IModal) {
     mainContent: [
       {
         title: "포인트는 어떻게 얻나요?",
-        texts: [
-          "스터디에 참여하거나, 이벤트, 건의, 홍보 등을 통해 포인트를 흭득할 수 있어요!",
-        ],
+        texts: ["스터디에 참여하거나, 이벤트, 건의, 홍보 등을 통해 포인트를 흭득할 수 있어요!"],
       },
       {
         title: "응모는 어떤 걸 하는 게 좋나요?",
@@ -32,7 +28,5 @@ function PromotionRuleModal({ setIsModal }: IModal) {
   };
   return <RuleModal content={content} setIsModal={setIsModal} />;
 }
-
-const Layout = styled.div``;
 
 export default PromotionRuleModal;

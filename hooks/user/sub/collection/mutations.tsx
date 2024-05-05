@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { useMutation, useQueryClient } from "react-query";
+
 import { COLLECTION_ALPHABET } from "../../../../constants/keys/queryKeys";
 import { SERVER_URI } from "../../../../constants/system";
 import { requestServer } from "../../../../libs/methodHelpers";
@@ -13,7 +14,7 @@ type CollectionAlphabetParam<T> = T extends "get"
 
 export const useAlphabetMutation = <T extends "get" | "change">(
   type: T,
-  options?: MutationOptions<CollectionAlphabetParam<T>>
+  options?: MutationOptions<CollectionAlphabetParam<T>>,
 ) => {
   const resetQueryData = useResetQueryData();
   return useMutation<void, AxiosError, CollectionAlphabetParam<T>>(
@@ -28,7 +29,7 @@ export const useAlphabetMutation = <T extends "get" | "change">(
       onSuccess() {
         resetQueryData(COLLECTION_ALPHABET);
       },
-    }
+    },
   );
 };
 export const useA = (options?: MutationOptions<void>) => {
@@ -39,13 +40,11 @@ export const useA = (options?: MutationOptions<void>) => {
         url: `user/deposit/reset`,
         body: null,
       }),
-    options
+    options,
   );
 };
 
-export const useAlphabetCompletedMutation = (
-  options?: MutationOptions<void>
-) => {
+export const useAlphabetCompletedMutation = (options?: MutationOptions<void>) => {
   const queryClient = useQueryClient();
   return useMutation<void, AxiosError, void>(async () => {
     const res = await axios.post(`${SERVER_URI}/collection/alphabet/completed`);

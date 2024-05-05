@@ -1,11 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { useQuery } from "react-query";
 
-import {
-  UID_TO_USER,
-  USER_INFO,
-  USER_POINT_SYSTEM,
-} from "../../constants/keys/queryKeys";
+import { UID_TO_USER, USER_INFO, USER_POINT_SYSTEM } from "../../constants/keys/queryKeys";
 import { SERVER_URI } from "../../constants/system";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
@@ -19,7 +15,7 @@ export const useUserInfoQuery = (options?: QueryOptions<IUser>) =>
 
       return res.data;
     },
-    options
+    options,
   );
 
 interface PointSystemResponse {
@@ -31,14 +27,14 @@ interface PointSystemResponse {
 export const usePointSystemQuery = (
   category: "score" | "point" | "deposit",
   isUserScope: boolean = true,
-  options?: QueryOptions<number>
+  options?: QueryOptions<number>,
 ) =>
   useQuery<number, AxiosError, number>(
     [USER_POINT_SYSTEM, category, isUserScope],
     async () => {
       const scopeQuery = isUserScope ? "" : "all";
       const res = await axios.get<PointSystemResponse>(
-        `${SERVER_URI}/user/${category}/${scopeQuery}`
+        `${SERVER_URI}/user/${category}/${scopeQuery}`,
       );
       switch (category) {
         case "score":
@@ -49,31 +45,26 @@ export const usePointSystemQuery = (
           return res.data?.deposit;
       }
     },
-    { ...options, staleTime: 0, cacheTime: 0 }
+    { ...options, staleTime: 0, cacheTime: 0 },
   );
 
 export const usePointSystemLogQuery = (
   category: "score" | "point" | "deposit",
   isUserScope: boolean = true,
-  options?: QueryOptions<IPointLog[]>
+  options?: QueryOptions<IPointLog[]>,
 ) =>
   useQuery<IPointLog[], AxiosError, IPointLog[]>(
     [USER_POINT_SYSTEM, category, isUserScope, "log"],
     async () => {
       const scopeQuery = isUserScope ? "" : "all";
-      console.log(5, category, scopeQuery);
-      const res = await axios.get<IPointLog[]>(
-        `${SERVER_URI}/log/${category}/${scopeQuery}`
-      );
+     
+      const res = await axios.get<IPointLog[]>(`${SERVER_URI}/log/${category}/${scopeQuery}`);
       return res.data;
     },
-    { ...options, staleTime: 0, cacheTime: 0 }
+    { ...options, staleTime: 0, cacheTime: 0 },
   );
 
-export const useUidToUserInfoQuery = (
-  uid: string,
-  options?: QueryOptions<IUser>
-) =>
+export const useUidToUserInfoQuery = (uid: string, options?: QueryOptions<IUser>) =>
   useQuery<IUser, AxiosError, IUser>(
     [UID_TO_USER, uid],
     async () => {
@@ -81,20 +72,15 @@ export const useUidToUserInfoQuery = (
 
       return res.data;
     },
-    options
+    options,
   );
-export const useUidsToUsersInfoQuery = (
-  uids: string[],
-  options?: QueryOptions<IUser[]>
-) =>
+export const useUidsToUsersInfoQuery = (uids: string[], options?: QueryOptions<IUser[]>) =>
   useQuery<IUser[], AxiosError, IUser[]>(
     [UID_TO_USER, uids],
     async () => {
       const queryString = uids.map((uid) => `uids=${uid}`).join("&");
-      const res = await axios.get<IUser[]>(
-        `${SERVER_URI}/user/profiles?${queryString}`
-      );
+      const res = await axios.get<IUser[]>(`${SERVER_URI}/user/profiles?${queryString}`);
       return res.data;
     },
-    options
+    options,
   );

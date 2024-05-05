@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 import PointScoreBar from "./pointScore/PointScoreBar";
 import PointScoreNavigation from "./pointScore/PointScoreNavigation";
 

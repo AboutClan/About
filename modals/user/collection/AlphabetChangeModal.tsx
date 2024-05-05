@@ -1,16 +1,13 @@
 import { useState } from "react";
 import styled from "styled-components";
+
 import { AlphabetIcon } from "../../../components/atoms/Icons/AlphabetIcon";
-import {
-  useCompleteToast,
-  useFailToast,
-} from "../../../hooks/custom/CustomToast";
+import { useCompleteToast, useFailToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { useInteractionMutation } from "../../../hooks/user/sub/interaction/mutations";
-import { IFooterOptions, ModalLayout } from "../../Modals";
-
 import { IModal } from "../../../types/components/modalTypes";
 import { Alphabet } from "../../../types/models/collections";
+import { IFooterOptions, ModalLayout } from "../../Modals";
 
 interface IAlphabetChangeModal extends IModal {
   myAlphabets: Alphabet[];
@@ -29,16 +26,12 @@ function AlphabetChangeModal({
 
   const { data: userInfo } = useUserInfoQuery();
 
-  const { mutate: requestAlphabet } = useInteractionMutation(
-    "alphabet",
-    "post",
-    {
-      onSuccess() {
-        completeToast("free", "요청을 전송했습니다.");
-        setIsModal(false);
-      },
-    }
-  );
+  const { mutate: requestAlphabet } = useInteractionMutation("alphabet", "post", {
+    onSuccess() {
+      completeToast("free", "요청을 전송했습니다.");
+      setIsModal(false);
+    },
+  });
 
   const [selectedAlphabet, setSelectedAlphabet] = useState<{
     mine: Alphabet;
@@ -84,11 +77,7 @@ function AlphabetChangeModal({
   };
 
   return (
-    <ModalLayout
-      title="알파벳 교환 신청"
-      footerOptions={footerOptions}
-      setIsModal={setIsModal}
-    >
+    <ModalLayout title="알파벳 교환 신청" footerOptions={footerOptions} setIsModal={setIsModal}>
       <SectionTitle>상대 보유</SectionTitle>
       <AlphabetContainer>
         {ABOUT.map((alphabet) => (
@@ -97,10 +86,7 @@ function AlphabetChangeModal({
             key={alphabet}
             onClick={() => onClickAlphabet("opponent", alphabet)}
           >
-            <AlphabetIcon
-              alphabet={alphabet}
-              isDuotone={!opponentAlpabets?.includes(alphabet)}
-            />
+            <AlphabetIcon alphabet={alphabet} isDuotone={!opponentAlpabets?.includes(alphabet)} />
           </AlphabetBtn>
         ))}
       </AlphabetContainer>
@@ -112,10 +98,7 @@ function AlphabetChangeModal({
             key={alphabet}
             onClick={() => onClickAlphabet("mine", alphabet)}
           >
-            <AlphabetIcon
-              alphabet={alphabet}
-              isDuotone={!myAlphabets?.includes(alphabet)}
-            />
+            <AlphabetIcon alphabet={alphabet} isDuotone={!myAlphabets?.includes(alphabet)} />
           </AlphabetBtn>
         ))}
       </AlphabetContainer>
@@ -147,9 +130,7 @@ const AlphabetBtn = styled.button<{ isSelected: boolean }>`
   justify-content: center;
   align-items: center;
   border: ${(props) =>
-    props.isSelected
-      ? "2px solid var(--color-mint)"
-      : "2px solid var(--gray-5)"};
+    props.isSelected ? "2px solid var(--color-mint)" : "2px solid var(--gray-5)"};
 `;
 
 export default AlphabetChangeModal;

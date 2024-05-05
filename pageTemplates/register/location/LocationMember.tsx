@@ -1,6 +1,7 @@
 import { faCaretUp, faUsers } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
+
 import { LOCATION_MEMBER_CNT } from "../../../constants/location";
 import { Location } from "../../../types/services/locationTypes";
 

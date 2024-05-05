@@ -11,7 +11,6 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
-import styled from "styled-components";
 
 function ForceLogoutDialog() {
   const router = useRouter();
@@ -38,9 +37,7 @@ function ForceLogoutDialog() {
             강제 로그아웃
           </AlertDialogHeader>
           <AlertDialogBody>
-            <Text>
-              관리자가 당신의 권한을 변경하여 강제 로그아웃되었습니다.
-            </Text>
+            <Text>관리자가 당신의 권한을 변경하여 강제 로그아웃되었습니다.</Text>
           </AlertDialogBody>
           <AlertDialogFooter>
             <Button colorScheme="red" onClick={onClose} width="100%">
@@ -52,7 +49,5 @@ function ForceLogoutDialog() {
     </AlertDialog>
   );
 }
-
-const Layout = styled.div``;
 
 export default ForceLogoutDialog;

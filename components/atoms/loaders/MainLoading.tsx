@@ -1,15 +1,14 @@
 import styled from "styled-components";
+
 import Spinner from "../Spinner";
 
-interface IMainLoading {
-  top?: number;
+export function MainLoading() {
+  return (
+    <MainLoadingLayout>
+      <Spinner />
+    </MainLoadingLayout>
+  );
 }
-
-export const MainLoading = () => (
-  <MainLoadingLayout>
-    <Spinner />
-  </MainLoadingLayout>
-);
 
 const MainLoadingLayout = styled.div<{ top?: number }>`
   position: fixed;
@@ -18,11 +17,13 @@ const MainLoadingLayout = styled.div<{ top?: number }>`
   transform: translate(-50%, -50%);
 `;
 
-export const MainLoadingAbsolute = () => (
-  <MainLoadingAbsoluteLayout>
-    <Spinner />
-  </MainLoadingAbsoluteLayout>
-);
+export function MainLoadingAbsolute() {
+  return (
+    <MainLoadingAbsoluteLayout>
+      <Spinner />
+    </MainLoadingAbsoluteLayout>
+  );
+}
 
 const MainLoadingAbsoluteLayout = styled.div`
   background-color: blue;

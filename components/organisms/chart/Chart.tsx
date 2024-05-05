@@ -1,16 +1,14 @@
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { MONTH_LIST } from "../../../constants/util/util";
 
+import { MONTH_LIST } from "../../../constants/util/util";
 import { useErrorToast } from "../../../hooks/custom/CustomToast";
 import { useUserAttendRateQueries } from "../../../hooks/user/sub/studyRecord/queries";
-
 import { IVoteRate } from "../../../types/models/studyTypes/studyRecords";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
-
 import { getMonth } from "../../../utils/dateTimeUtils";
 import { ChartStudyOptions } from "./ChartOptions";
 
@@ -80,18 +78,14 @@ function Chart({ type, user }: IChart) {
     };
   };
 
-  const { data: userAttendRateAll } = useUserAttendRateQueries(
-    monthArr,
-    false,
-    {
-      onError: errorToast,
-    }
-  );
+  const { data: userAttendRateAll } = useUserAttendRateQueries(monthArr, false, {
+    onError: errorToast,
+  });
 
   useEffect(() => {
     if (!userAttendRateAll) return;
-    let rateTemp = [];
-    let averageTemp = [];
+    const rateTemp = [];
+    const averageTemp = [];
     let max = 5;
     userAttendRateAll.forEach((element) => {
       const { userCnt, average, maxCnt } = setAttendRate(element);

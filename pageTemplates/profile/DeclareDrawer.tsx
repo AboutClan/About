@@ -13,20 +13,14 @@ import { faX } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { DECLARE_LIST } from "../../constants/contentsText/requestContents";
-import {
-  useCompleteToast,
-  useErrorToast,
-} from "../../hooks/custom/CustomToast";
 
+import { DECLARE_LIST } from "../../constants/contentsText/requestContents";
+import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
 import { DispatchString, DispatchType } from "../../types/hooks/reactTypes";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
-import {
-  DeclareRequest,
-  IUserRequest,
-} from "../../types/models/userTypes/userRequestTypes";
+import { DeclareRequest, IUserRequest } from "../../types/models/userTypes/userRequestTypes";
 
 interface IDeclareDrawer {
   userData: IUser;
@@ -40,11 +34,7 @@ interface IDeclareContent {
   setDeclareIdx: DispatchString;
 }
 
-function DeclareDrawer({
-  userData,
-  declareModal,
-  setDeclareModal,
-}: IDeclareDrawer) {
+function DeclareDrawer({ userData, declareModal, setDeclareModal }: IDeclareDrawer) {
   const completeToast = useCompleteToast();
   const errorToast = useErrorToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -82,8 +72,7 @@ function DeclareDrawer({
       writer: `${userInfo?.name}-${userInfo?.uid}`,
       location: userInfo?.location,
       title: `${userData?.name}-${userData?.uid}`,
-      content:
-        declareModal === "declare" ? DECLARE_LIST[declareIdx] : "거리두기",
+      content: declareModal === "declare" ? DECLARE_LIST[declareIdx] : "거리두기",
     };
 
     sendDeclaration(data);
@@ -129,12 +118,10 @@ function DeclareDrawer({
   );
 }
 
-const DistanceContent = ({ name }: { name: string }) => {
+function DistanceContent({ name }: { name: string }) {
   return (
     <>
-      <DistanceHeader>
-        &apos;{`${name}`}&apos;님과 거리두기를 요청하시겠어요?
-      </DistanceHeader>
+      <DistanceHeader>&apos;{`${name}`}&apos;님과 거리두기를 요청하시겠어요?</DistanceHeader>
       <DistanceText>
         <div>
           <li>스터디에 투표하거나 참여한 내용을 상대는 볼 수 없어요.</li>
@@ -145,8 +132,7 @@ const DistanceContent = ({ name }: { name: string }) => {
         <div>
           <li>해당 내용은 비공개로 운영진을 제외하고는 알 수 없습니다.</li>
           <li>
-            여러 인원에게 거리두기가 되고 있는 인원은 원인을 확인하고 조치가
-            이루어 질 수 있습니다.
+            여러 인원에게 거리두기가 되고 있는 인원은 원인을 확인하고 조치가 이루어 질 수 있습니다.
           </li>
           <li>신고 사유에 해당하는 경우에는 신고 기능을 이용해주세요.</li>
           <li>거리두기 해제는 마이페이지에서 가능합니다.</li>
@@ -154,21 +140,15 @@ const DistanceContent = ({ name }: { name: string }) => {
       </DistanceText>
     </>
   );
-};
+}
 
-const DeclareContent = ({
-  name,
-  declareIdx,
-  setDeclareIdx,
-}: IDeclareContent) => {
+function DeclareContent({ name, declareIdx, setDeclareIdx }: IDeclareContent) {
   return (
     <>
-      <DistanceHeader>
-        &apos;{`${name}`}&apos;님을 신고하시겠어요?
-      </DistanceHeader>
+      <DistanceHeader>&apos;{`${name}`}&apos;님을 신고하시겠어요?</DistanceHeader>
       <DeclareOverview>
-        다른 인원에게 피해를 주는 행위를 엄격히 금지하고 있습니다. 불편한 상황이
-        있는 경우 주저하지 말고 신고해주세요!
+        다른 인원에게 피해를 주는 행위를 엄격히 금지하고 있습니다. 불편한 상황이 있는 경우 주저하지
+        말고 신고해주세요!
       </DeclareOverview>
       <RadioGroup onChange={setDeclareIdx} value={declareIdx}>
         <DeclareText>
@@ -187,7 +167,7 @@ const DeclareContent = ({
       </RadioGroup>
     </>
   );
-};
+}
 
 const Title = styled.span``;
 

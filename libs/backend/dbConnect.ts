@@ -3,9 +3,7 @@ import mongoose from "mongoose";
 const MONGODB_URI: string = process.env.MONGODB_URI || "";
 
 if (!MONGODB_URI) {
-  throw new Error(
-    "Please define the MONGODB_URI environment variable inside .env.local"
-  );
+  throw new Error("Please define the MONGODB_URI environment variable inside .env.local");
 }
 
 /**
@@ -32,8 +30,6 @@ async function dbConnect() {
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
       return mongoose;
     });
-
-    require("../../models/place");
   }
   cached.conn = await cached.promise;
   return cached.conn;

@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import Slide from "../../components/layouts/PageSlide";
 
+import Slide from "../../components/layouts/PageSlide";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import UserCollection from "../../pageTemplates/user/userCollection";
 import UserHeader from "../../pageTemplates/user/userHeader";

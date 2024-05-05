@@ -1,12 +1,13 @@
+import "react-datepicker/dist/react-datepicker.css";
+
 import dayjs from "dayjs";
 import { useRouter } from "next/dist/client/router";
 import { useState } from "react";
-import "react-datepicker/dist/react-datepicker.css";
 import { useRecoilState } from "recoil";
-import BottomNav from "../../../components/layouts/BottomNav";
-import Slide from "../../../components/layouts/PageSlide";
 
+import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
+import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import GatherWritingDateDate from "../../../pageTemplates/gather/writing/GatherWritingDateDate";
@@ -14,15 +15,13 @@ import GatherWritingDateSubject from "../../../pageTemplates/gather/writing/Gath
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
-import { IGatherListItem } from "../../../types/models/gatherTypes/gather";
+import { IGatherListItem } from "../../../types/models/gatherTypes/gatherTypes";
 
 function WritingDate() {
   const failToast = useFailToast();
   const router = useRouter();
 
-  const [gatherWriting, setGatherWriting] = useRecoilState(
-    sharedGatherWritingState
-  );
+  const [gatherWriting, setGatherWriting] = useRecoilState(sharedGatherWritingState);
 
   const [date, setDate] = useState<Date>();
   const [gatherList, setGatherList] = useState<IGatherListItem[]>();
@@ -55,11 +54,7 @@ function WritingDate() {
         <RegisterOverview>
           <span>날짜와 주제를 선택해 주세요.</span>
         </RegisterOverview>
-        <GatherWritingDateDate
-          date={date}
-          setDate={setDate}
-          gatherWriting={gatherWriting}
-        />
+        <GatherWritingDateDate date={date} setDate={setDate} gatherWriting={gatherWriting} />
         <GatherWritingDateSubject
           gatherWriting={gatherWriting}
           setGatherList={setGatherList}

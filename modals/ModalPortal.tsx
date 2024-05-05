@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+
 import { FullScreen } from "../styles/layout/modal";
 import { DispatchBoolean } from "../types/hooks/reactTypes";
 
@@ -31,7 +32,7 @@ function ModalPortal({ children, setIsModal, opacity = 0.4 }: IModalPortal) {
         <FullScreen onClick={closeModal} opacity={opacity} />
         {children}
       </div>,
-      ref.current
+      ref.current,
     );
   }
   return null;

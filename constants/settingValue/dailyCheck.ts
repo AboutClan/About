@@ -1,9 +1,7 @@
-
 export interface IAttendCheckPresent {
   item: string;
   percent: number;
 }
-
 
 export const DAILY_CHECK_WIN_ITEM: IAttendCheckPresent[] = [
   { item: "10 Point", percent: 3 },

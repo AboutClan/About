@@ -8,16 +8,9 @@ import {
   USER_REQUEST,
 } from "../../constants/keys/queryKeys";
 import { SERVER_URI } from "../../constants/system";
-
 import { QueryOptions } from "../../types/hooks/reactTypes";
-import {
-  IUser,
-  IUserRegisterForm,
-} from "../../types/models/userTypes/userInfoTypes";
-import {
-  IUserRequest,
-  UserRequestCategory,
-} from "../../types/models/userTypes/userRequestTypes";
+import { IUser, IUserRegisterForm } from "../../types/models/userTypes/userInfoTypes";
+import { IUserRequest, UserRequestCategory } from "../../types/models/userTypes/userRequestTypes";
 import { Location } from "../../types/services/locationTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
@@ -28,12 +21,12 @@ export const useAdminUsersControlQuery = (options?: QueryOptions<IUser[]>) =>
       const res = await axios.get<IUser[]>(`${SERVER_URI}/admin/user`);
       return res.data;
     },
-    options
+    options,
   );
 
 export const useAdminUsersLocationControlQuery = (
   location: Location,
-  options?: QueryOptions<IUser[]>
+  options?: QueryOptions<IUser[]>,
 ) =>
   useQuery<IUser[], AxiosError, IUser[]>(
     ["adminUserControl", location],
@@ -45,12 +38,12 @@ export const useAdminUsersLocationControlQuery = (
       });
       return res.data;
     },
-    options
+    options,
   );
 
 export const useUserRequestQuery = (
   category: UserRequestCategory,
-  options?: QueryOptions<IUserRequest[]>
+  options?: QueryOptions<IUserRequest[]>,
 ) =>
   useQuery<IUserRequest[], AxiosError, IUserRequest[]>(
     [USER_REQUEST, category],
@@ -59,21 +52,17 @@ export const useUserRequestQuery = (
       const filterData = res.data.filter((item) => item.category === category);
       return filterData;
     },
-    options
+    options,
   );
 
-export const useUserRegisterFormsQuery = (
-  options?: QueryOptions<IUserRegisterForm[]>
-) =>
+export const useUserRegisterFormsQuery = (options?: QueryOptions<IUserRegisterForm[]>) =>
   useQuery<IUserRegisterForm[], AxiosError, IUserRegisterForm[]>(
     [USER_REGISTER_FORM],
     async () => {
-      const res = await axios.get<IUserRegisterForm[]>(
-        `${SERVER_URI}/register`
-      );
+      const res = await axios.get<IUserRegisterForm[]>(`${SERVER_URI}/register`);
       return res.data;
     },
-    options
+    options,
   );
 
 interface IAdminStudyRecordReturn {
@@ -89,27 +78,24 @@ export interface IStudyRecord {
 export const useAdminStudyRecordQuery = (
   startDay: Dayjs,
   endDay: Dayjs,
-  isAttend: Boolean,
+  isAttend: boolean,
   location: Location,
   uid?: string,
-  options?: QueryOptions<IAdminStudyRecordReturn>
+  options?: QueryOptions<IAdminStudyRecordReturn>,
 ) =>
   useQuery(
     [ADMIN_STUDY_RECORD, startDay, endDay, isAttend, location, uid],
     async () => {
-      const res = await axios.get<IAdminStudyRecordReturn>(
-        `${SERVER_URI}/admin/vote/studyRecord`,
-        {
-          params: {
-            startDay: dayjsToStr(startDay),
-            endDay: dayjsToStr(endDay),
-            isAttend,
-            location,
-            uid,
-          },
-        }
-      );
+      const res = await axios.get<IAdminStudyRecordReturn>(`${SERVER_URI}/admin/vote/studyRecord`, {
+        params: {
+          startDay: dayjsToStr(startDay),
+          endDay: dayjsToStr(endDay),
+          isAttend,
+          location,
+          uid,
+        },
+      });
       return res.data;
     },
-    options
+    options,
   );

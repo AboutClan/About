@@ -1,5 +1,5 @@
 import { useSession } from "next-auth/react";
-import styled from "styled-components";
+
 import { useCompleteToast, useFailToast } from "../../hooks/custom/CustomToast";
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
 import { ModalSubtitle } from "../../styles/layout/modal";
@@ -44,19 +44,12 @@ function RequestBirthModal({ setIsModal }: IModal) {
   };
 
   return (
-    <ModalLayout
-      footerOptions={footerOptions}
-      title="생일 공개 설정"
-      setIsModal={setIsModal}
-    >
+    <ModalLayout footerOptions={footerOptions} title="생일 공개 설정" setIsModal={setIsModal}>
       <ModalSubtitle>
-        기본 설정으로 동아리원 생일에는 축하를 위해 멤버게시판에 프로필이
-        표시됩니다.
+        기본 설정으로 동아리원 생일에는 축하를 위해 멤버게시판에 프로필이 표시됩니다.
       </ModalSubtitle>
     </ModalLayout>
   );
 }
-
-const Layout = styled.div``;
 
 export default RequestBirthModal;

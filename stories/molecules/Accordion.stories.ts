@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+
 import Accordion from "../../components/molecules/Accordion";
 import { ACCORDION_CONTENT_FEE } from "../../constants/contentsText/accordionContents";
 

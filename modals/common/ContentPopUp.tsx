@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import styled from "styled-components";
 
 import { IModal } from "../../types/components/modalTypes";

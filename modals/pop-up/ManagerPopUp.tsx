@@ -11,15 +11,12 @@ import {
 import { useSession } from "next-auth/react";
 import { useRef } from "react";
 import styled from "styled-components";
-import {
-  useCompleteToast,
-  useErrorToast,
-} from "../../hooks/custom/CustomToast";
-import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
-import { IFooterOptions, ModalLayout } from "../Modals";
 
+import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";
+import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
 import { IModal } from "../../types/components/modalTypes";
 import { IUserRequest } from "../../types/models/userTypes/userRequestTypes";
+import { IFooterOptions, ModalLayout } from "../Modals";
 
 function ManagerPopUp({ setIsModal }: IModal) {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -34,11 +31,7 @@ function ManagerPopUp({ setIsModal }: IModal) {
 
   return (
     <>
-      <ModalLayout
-        title="운영진 공고"
-        footerOptions={footerOptions}
-        setIsModal={setIsModal}
-      >
+      <ModalLayout title="운영진 공고" footerOptions={footerOptions} setIsModal={setIsModal}>
         <Subtitile>모집 조건</Subtitile>
         <Ol>
           <li>22 ~ 24세</li>
@@ -63,7 +56,7 @@ interface IDialog extends IModal {
   onClose: () => void;
 }
 
-const Dialog = ({ isOpen, onClose, setIsModal }: IDialog) => {
+function Dialog({ isOpen, onClose, setIsModal }: IDialog) {
   const { data: session } = useSession();
   const completeToast = useCompleteToast();
   const errorToast = useErrorToast();
@@ -86,11 +79,7 @@ const Dialog = ({ isOpen, onClose, setIsModal }: IDialog) => {
 
   const completeRef = useRef();
   return (
-    <AlertDialog
-      isOpen={isOpen}
-      leastDestructiveRef={completeRef}
-      onClose={onClose}
-    >
+    <AlertDialog isOpen={isOpen} leastDestructiveRef={completeRef} onClose={onClose}>
       <AlertDialogOverlay>
         <AlertDialogContent m="auto var(--gap-4)">
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
@@ -101,11 +90,7 @@ const Dialog = ({ isOpen, onClose, setIsModal }: IDialog) => {
             <Button ref={completeRef} onClick={onClose}>
               취소
             </Button>
-            <Button
-              colorScheme="mintTheme"
-              onClick={handleSubmit}
-              ml="var(--gap-1)"
-            >
+            <Button colorScheme="mintTheme" onClick={handleSubmit} ml="var(--gap-1)">
               신청
             </Button>
           </AlertDialogFooter>
@@ -113,7 +98,7 @@ const Dialog = ({ isOpen, onClose, setIsModal }: IDialog) => {
       </AlertDialogOverlay>
     </AlertDialog>
   );
-};
+}
 
 const Subtitile = styled.div`
   color: var(--gray-2);

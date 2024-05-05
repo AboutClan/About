@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+
 import ImageTileGridLayout, {
   IImageTileData,
 } from "../../components/molecules/layouts/ImageTitleGridLayout";
@@ -18,24 +19,15 @@ interface IStudySubVoteModal extends IModal {
   setTimeModal: () => void;
 }
 
-function StudySubVoteModal({
-  subPlaces,
-  setMyVote,
-  setTimeModal,
-  setIsModal,
-}: IStudySubVoteModal) {
+function StudySubVoteModal({ subPlaces, setMyVote, setTimeModal, setIsModal }: IStudySubVoteModal) {
   const searchParams = useSearchParams();
 
   const date = searchParams.get("date");
-  const location = convertLocationLangTo(
-    searchParams.get("location") as ActiveLocation,
-    "kr"
-  );
+  const location = convertLocationLangTo(searchParams.get("location") as ActiveLocation, "kr");
 
   const [choices, setChoices] = useState<string[]>([]);
 
-  const size =
-    subPlaces?.length > 8 ? "xxl" : subPlaces?.length > 4 ? "xl" : "md";
+  const size = subPlaces?.length > 8 ? "xxl" : subPlaces?.length > 4 ? "xl" : "md";
 
   const onSubmit = async () => {
     setTimeModal();

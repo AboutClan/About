@@ -3,32 +3,24 @@ import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
+import SuccessScreen from "../../components/layouts/SuccessScreen";
 import { GROUP_STUDY_ALL } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
-import {
-  useCompleteToast,
-  useErrorToast,
-} from "../../hooks/custom/CustomToast";
+import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";
 import { useGroupWritingMutation } from "../../hooks/groupStudy/mutations";
-import { IFooterOptions, ModalLayout } from "../Modals";
-
-import SuccessScreen from "../../components/layouts/SuccessScreen";
 import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { IGroup, IGroupWriting } from "../../types/models/groupTypes/group";
+import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface IGroupConfirmModal extends IModal {
   groupWriting: IGroupWriting;
   setGroupWriting: DispatchType<IGroupWriting>;
 }
 
-function GroupConfirmModal({
-  setIsModal,
-  setGroupWriting,
-  groupWriting,
-}: IGroupConfirmModal) {
+function GroupConfirmModal({ setIsModal, setGroupWriting, groupWriting }: IGroupConfirmModal) {
   const router = useRouter();
   const errorToast = useErrorToast();
   const completeToast = useCompleteToast();
@@ -97,7 +89,7 @@ function GroupConfirmModal({
         </ModalLayout>
       )}
       {isSuccessScreen && (
-        <SuccessScreen url={`/group`}>
+        <SuccessScreen url="/group">
           <>
             <span>소모임 개설 성공</span>
             <div>소모임 오픈 소식을 단톡방에 공유해 주세요!</div>

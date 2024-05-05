@@ -1,11 +1,8 @@
 import dayjs from "dayjs";
 import styled from "styled-components";
+
 import Skeleton from "../../components/atoms/skeleton/Skeleton";
-import {
-  LOCATION_CONVERT,
-  LOCATION_OPEN,
-  LOCATION_TABLE_COLOR,
-} from "../../constants/location";
+import { LOCATION_CONVERT, LOCATION_OPEN, LOCATION_TABLE_COLOR } from "../../constants/location";
 import { Location } from "../../types/services/locationTypes";
 
 interface IRecordSkeleton {
@@ -17,14 +14,14 @@ function RecordSkeleton({ isCalendar }: IRecordSkeleton) {
     {
       length: dayjs().date(1).day(),
     },
-    (_, i) => i + 1
+    (_, i) => i + 1,
   );
 
   const totalDate = Array.from(
     {
       length: dayjs().daysInMonth(),
     },
-    (_, i) => i + 1
+    (_, i) => i + 1,
   );
   return (
     <Layout>
@@ -73,15 +70,11 @@ function RecordSkeleton({ isCalendar }: IRecordSkeleton) {
         <Calendar>
           <DayOfWeek />
           <CallenderDays>
-            {blankDate?.map((item) => (
-              <DayItem key={item + "temp"} />
-            ))}
+            {blankDate?.map((item) => <DayItem key={item + "temp"} />)}
 
             {totalDate?.map((item, idx) => (
               <DayItem key={idx}>
-                <DayItemDate isToday={item === dayjs().date()}>
-                  {item}
-                </DayItemDate>
+                <DayItemDate isToday={item === dayjs().date()}>{item}</DayItemDate>
                 <Open key={idx}>
                   <Skeleton>Open</Skeleton>
                 </Open>
@@ -124,17 +117,19 @@ function RecordSkeleton({ isCalendar }: IRecordSkeleton) {
     </Layout>
   );
 }
-const DayOfWeek = () => (
-  <DayLine>
-    <span>일</span>
-    <span>월</span>
-    <span>화</span>
-    <span>수</span>
-    <span>목</span>
-    <span>금</span>
-    <span>토</span>
-  </DayLine>
-);
+function DayOfWeek() {
+  return (
+    <DayLine>
+      <span>일</span>
+      <span>월</span>
+      <span>화</span>
+      <span>수</span>
+      <span>목</span>
+      <span>금</span>
+      <span>토</span>
+    </DayLine>
+  );
+}
 
 const Layout = styled.div``;
 

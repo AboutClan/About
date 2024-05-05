@@ -1,12 +1,12 @@
-import { Dayjs } from "dayjs";
 import "dayjs/locale/ko";
+
+import { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import TimeRullet from "../../../components/molecules/picker/TimeRullet";
 
+import TimeRullet from "../../../components/molecules/picker/TimeRullet";
 import { STUDY_START_VOTETIME_HOUR } from "../../../constants/settingValue/study/study";
 import { DispatchType } from "../../../types/hooks/reactTypes";
-
 import { IStudyVote } from "../../../types/models/studyTypes/studyInterActions";
 import { IDayjsStartToEnd } from "../../../types/utils/timeAndDate";
 
@@ -36,15 +36,8 @@ function StudyVoteSubModalTime({ setMyVote }: IStudyVoteSubModalTime) {
     return timeArr;
   };
 
-  const startTimeArr = createTimeArr(
-    STUDY_START_VOTETIME_HOUR,
-    STUDY_START_VOTETIME_HOUR + 10
-  );
-  const endTimeArr = createTimeArr(
-    STUDY_START_VOTETIME_HOUR,
-    STUDY_START_VOTETIME_HOUR + 10,
-    2
-  );
+  const startTimeArr = createTimeArr(STUDY_START_VOTETIME_HOUR, STUDY_START_VOTETIME_HOUR + 10);
+  const endTimeArr = createTimeArr(STUDY_START_VOTETIME_HOUR, STUDY_START_VOTETIME_HOUR + 10, 2);
 
   return (
     <Layout>
@@ -53,9 +46,7 @@ function StudyVoteSubModalTime({ setMyVote }: IStudyVoteSubModalTime) {
           <span>시작 시간</span>
           <TimeRullet
             timeArr={startTimeArr}
-            setTime={(time: Dayjs) =>
-              setSelectTime((old) => ({ ...old, start: time }))
-            }
+            setTime={(time: Dayjs) => setSelectTime((old) => ({ ...old, start: time }))}
           />
         </TimeWrapper>
         <Spacer />

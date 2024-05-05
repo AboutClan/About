@@ -5,11 +5,7 @@ interface ISectionBar {
   rightComponent?: React.ReactNode;
   size?: "md" | "lg";
 }
-export default function SectionBar({
-  title,
-  rightComponent,
-  size = "lg",
-}: ISectionBar) {
+export default function SectionBar({ title, rightComponent, size = "lg" }: ISectionBar) {
   return (
     <SectionBarContainer size={size}>
       <TitleContainer size={size}>{title}</TitleContainer>
@@ -34,8 +30,7 @@ const SectionBarContainer = styled.div<{ size: "md" | "lg" }>`
 `;
 
 const TitleContainer = styled.div<{ size: "md" | "lg" }>`
-  font-size: ${(props) =>
-    props.size === "lg" ? "18px" : "16px"}; /* text-lg */
+  font-size: ${(props) => (props.size === "lg" ? "18px" : "16px")}; /* text-lg */
   font-weight: ${(props) => (props.size === "lg" ? 700 : 600)};
 
   display: flex;

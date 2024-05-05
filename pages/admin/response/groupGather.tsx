@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import dayjs from "dayjs";
 import { useState } from "react";
 import styled from "styled-components";
@@ -6,9 +8,8 @@ import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Header from "../../../components/layouts/Header";
 import AdminLocationSelector from "../../../components/molecules/picker/AdminLocationSelector";
 import { useUserRequestQuery } from "../../../hooks/admin/quries";
-import { birthToAge } from "../../../utils/convertUtils/convertTypes";
-
 import { IUserRequest } from "../../../types/models/userTypes/userRequestTypes";
+import { birthToAge } from "../../../utils/convertUtils/convertTypes";
 
 function AdminGroupGather() {
   const [initialData, setInitialData] = useState<IUserRequest[]>();

@@ -19,8 +19,7 @@ export const checkIsKorean = (str: string) => {
 
 export const randomPassword = () => {
   let newPassword = "";
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
   for (let i = 0; i < 4; i++) {
     const randomIndex = Math.floor(Math.random() * characters.length);
@@ -32,7 +31,7 @@ export const randomPassword = () => {
 export const selectRandomWinners = (
   total: number,
   winner: number,
-  uniqueNumber: number
+  uniqueNumber: number,
 ): number[] => {
   function hashStringToInt(s, max) {
     let hash = 0;

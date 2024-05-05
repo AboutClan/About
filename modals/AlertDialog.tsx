@@ -8,7 +8,6 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { useRef } from "react";
-import styled from "styled-components";
 
 interface IAlertDialog {
   isOpen: boolean;
@@ -19,11 +18,7 @@ interface IAlertDialog {
 function AlertDialog({ isOpen, onClose, onSubmit }: IAlertDialog) {
   const cancelRef = useRef();
   return (
-    <ChakraAlertDialog
-      isOpen={isOpen}
-      leastDestructiveRef={cancelRef}
-      onClose={onClose}
-    >
+    <ChakraAlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
       <AlertDialogOverlay>
         <AlertDialogContent w="336px" m="auto var(--gap-4)">
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
@@ -34,11 +29,7 @@ function AlertDialog({ isOpen, onClose, onSubmit }: IAlertDialog) {
             <Button ref={cancelRef} onClick={onClose}>
               취소
             </Button>
-            <Button
-              colorScheme="mintTheme"
-              onClick={onSubmit}
-              ml="var(--gap-2)"
-            >
+            <Button colorScheme="mintTheme" onClick={onSubmit} ml="var(--gap-2)">
               거절
             </Button>
           </AlertDialogFooter>
@@ -47,7 +38,5 @@ function AlertDialog({ isOpen, onClose, onSubmit }: IAlertDialog) {
     </ChakraAlertDialog>
   );
 }
-
-const Layout = styled.div``;
 
 export default AlertDialog;

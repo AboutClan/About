@@ -1,15 +1,13 @@
 import dayjs, { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
-import styled from "styled-components";
+
 import RecordMonthNav from "../../components/atoms/MonthNav";
 import Header from "../../components/layouts/Header";
-
 import Slide from "../../components/layouts/PageSlide";
 import RecordDetail from "../../pageTemplates/record/detail/RecordDetail";
 import RecordCalendar from "../../pageTemplates/record/RecordCalendar";
 import RecordCalendarSetting from "../../pageTemplates/record/RecordCalendarSetting";
 import RecordLocationCategory from "../../pageTemplates/record/RecordLocationCategory";
-
 import RecordNavigation from "../../pageTemplates/record/RecordNavigation";
 import RecordOverview from "../../pageTemplates/record/RecordOverview";
 import RecordSkeleton from "../../pageTemplates/record/RecordSkeleton";
@@ -53,10 +51,7 @@ function Record() {
         {!isLoading ? (
           <>
             <RecordOverview arrivedCalendar={arrivedCalendar} />
-            <RecordLocationCategory
-              initialData={arrivedCalendar}
-              setFilterData={setFilterData}
-            />
+            <RecordLocationCategory initialData={arrivedCalendar} setFilterData={setFilterData} />
             {isCalendar ? (
               <RecordCalendar filterData={filterData} navMonth={navMonth} />
             ) : (
@@ -71,12 +66,5 @@ function Record() {
     </>
   );
 }
-
-const Layout = styled.div`
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-`;
 
 export default Record;

@@ -1,9 +1,8 @@
 import { Box } from "@chakra-ui/react";
 import { useState } from "react";
+
 import CheckList from "../../../components/atoms/CheckList";
-import TabNav, {
-  ITabNavOptions,
-} from "../../../components/molecules/navs/TabNav";
+import TabNav, { ITabNavOptions } from "../../../components/molecules/navs/TabNav";
 import { IModal } from "../../../types/components/modalTypes";
 import { IFooterOptions, IHeaderOptions, ModalLayout } from "../../Modals";
 
@@ -56,10 +55,7 @@ function StudyRuleModal({ setIsModal }: IModal) {
       headerOptions={headerOptions}
       footerOptions={footerOptions}
     >
-      <TabNav
-        tabOptionsArr={tabNavOptions}
-        selected={isTip ? "스터디 설명서" : "활동 설명서"}
-      />
+      <TabNav tabOptionsArr={tabNavOptions} selected={isTip ? "스터디 설명서" : "활동 설명서"} />
       <Box h="274px" pt="16px" px="4px">
         <CheckList contents={isTip ? STUDY_CONTENTS : ACTIVE_CONTENTS} />
       </Box>

@@ -3,10 +3,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+
 import Avatar from "../../../components/atoms/Avatar";
 import { GROUP_STUDY_ROLE } from "../../../constants/settingValue/groupStudy";
 import { useToast } from "../../../hooks/custom/CustomToast";
-
 import { prevPageUrlState } from "../../../recoils/previousAtoms";
 import { IGroup } from "../../../types/models/groupTypes/group";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
@@ -20,7 +20,6 @@ function GroupParticipation({ data }: IGroupParticipation) {
   const toast = useToast();
   const setBeforePage = useSetRecoilState(prevPageUrlState);
 
-  const organizer = data.organizer;
   const status = data.status;
   const participantsCnt = data.participants.length + (data.id === 33 ? 3 : 0);
 
@@ -54,10 +53,7 @@ function GroupParticipation({ data }: IGroupParticipation) {
         {data?.participants.map(
           (who) =>
             who && (
-              <MemberItem
-                key={who?.user?.uid}
-                onClick={() => onClickProfile(who?.user)}
-              >
+              <MemberItem key={who?.user?.uid} onClick={() => onClickProfile(who?.user)}>
                 <ProfileWrapper>
                   <Avatar
                     image={who.user.profileImage}
@@ -67,10 +63,7 @@ function GroupParticipation({ data }: IGroupParticipation) {
                   />
                   {who?.role === "admin" && (
                     <Crown>
-                      <FontAwesomeIcon
-                        icon={faCrown}
-                        color="var(--color-orange)"
-                      />
+                      <FontAwesomeIcon icon={faCrown} color="var(--color-orange)" />
                     </Crown>
                   )}
                 </ProfileWrapper>
@@ -78,21 +71,14 @@ function GroupParticipation({ data }: IGroupParticipation) {
                   <span>{who?.user?.name}</span>
                   <div>{who?.user?.comment}</div>
                 </UserOverview>
-                <ParticipateTime isFirst={true}>
-                  {GROUP_STUDY_ROLE[who.role]}
-                </ParticipateTime>
+                <ParticipateTime isFirst={true}>{GROUP_STUDY_ROLE[who.role]}</ParticipateTime>
               </MemberItem>
-            )
+            ),
         )}
         {array?.map((_, idx) => (
           <MemberItem key={idx}>
             <ProfileWrapper onClick={onClickOutMember}>
-              <Avatar
-                image={""}
-                avatar={{ type: 0, bg: 0 }}
-                size="md"
-                isLink={false}
-              />
+              <Avatar image="" avatar={{ type: 0, bg: 0 }} size="md" isLink={false} />
             </ProfileWrapper>
             <UserOverview>
               <span>외부 참여자</span>
@@ -171,43 +157,23 @@ const UserOverview = styled.div`
     color: var(--gray-2);
   }
 `;
-const Organizer = styled.div`
-  position: relative;
-`;
 
 const ParticipateTime = styled.div<{ isFirst: boolean }>`
   font-size: 16px;
   margin-left: auto;
   margin-right: var(--gap-2);
-  color: ${(props) =>
-    props.isFirst ? "var(--color-mint)" : "var(--color-orange)"};
+  color: ${(props) => (props.isFirst ? "var(--color-mint)" : "var(--color-orange)")};
   > span:last-child {
     margin-left: 2px;
   }
 `;
 
-const CrownWrapper = styled.div`
-  position: absolute;
-  right: -1px;
-  bottom: -1px;
-`;
 const Layout = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
   background-color: white;
   padding-bottom: var(--gap-4);
-`;
-
-const Empty = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100px;
-  > span {
-    font-size: 18px;
-    color: var(--gray-4);
-  }
 `;
 
 export default GroupParticipation;

@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+
 import { prevPageUrlState } from "../../../recoils/previousAtoms";
 
 interface ISectionHeader {
@@ -9,7 +10,7 @@ interface ISectionHeader {
   url: string;
 }
 
-function SectionHeader({ title, subTitle, url }: ISectionHeader) {
+function SectionHeader({ title, url }: ISectionHeader) {
   const router = useRouter();
   const setPrevPageUrl = useSetRecoilState(prevPageUrlState);
 

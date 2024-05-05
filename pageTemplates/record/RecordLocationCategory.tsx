@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+<<<<<<< HEAD
 import {
   LOCATION_CONVERT,
   LOCATION_OPEN,
@@ -7,23 +8,21 @@ import {
 } from "../../constants/location";
 import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
 
+=======
+
+import { LOCATION_CONVERT, LOCATION_OPEN, LOCATION_TABLE_COLOR } from "../../constants/location";
+import { PLACE_TO_LOCATION } from "../../storage/study";
+>>>>>>> main
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { IArrivedData } from "../../types/models/studyTypes/studyRecords";
-
-import {
-  Location,
-  LocationFilterType,
-} from "../../types/services/locationTypes";
+import { Location, LocationFilterType } from "../../types/services/locationTypes";
 
 interface IRecordLocationCategory {
   initialData: IArrivedData[];
   setFilterData: DispatchType<IArrivedData[]>;
 }
 
-function RecordLocationCategory({
-  initialData,
-  setFilterData,
-}: IRecordLocationCategory) {
+function RecordLocationCategory({ initialData, setFilterData }: IRecordLocationCategory) {
   const [category, setCategory] = useState<LocationFilterType>("전체");
 
   const onClickBadge = (value: Location) => {
@@ -37,7 +36,7 @@ function RecordLocationCategory({
     else {
       const filtered = initialData.map((item) => {
         const filteredArrived = item?.arrivedInfoList.filter(
-          (place) => PLACE_TO_LOCATION[place?.placeId] === category
+          (place) => PLACE_TO_LOCATION[place?.placeId] === category,
         );
         if (!filteredArrived) return;
         return { ...item, arrivedInfoList: filteredArrived };
@@ -95,12 +94,9 @@ const Button = styled.button<{
   margin-right: var(--gap-3);
   font-weight: 600;
   color: ${(props) => LOCATION_TABLE_COLOR[props.location]};
-  font-size: ${(props) =>
-    props.category === props.location ? "14px" : "12px"};
+  font-size: ${(props) => (props.category === props.location ? "14px" : "12px")};
   opacity: ${(props) =>
-    props.category !== "전체" && props.category !== props.location
-      ? "0.7"
-      : "1"};
+    props.category !== "전체" && props.category !== props.location ? "0.7" : "1"};
 `;
 
 export default RecordLocationCategory;

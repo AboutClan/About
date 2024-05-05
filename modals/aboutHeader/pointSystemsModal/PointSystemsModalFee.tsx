@@ -9,7 +9,8 @@ import {
 } from "@fortawesome/pro-light-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
-import { POINT_SYSTEM_Deposit } from "../../../constants/settingValue/pointSystem";
+
+import { POINT_SYSTEM_DEPOSIT } from "../../../constants/settingValue/pointSystem";
 
 function PointSystemsModalFee() {
   return (
@@ -18,22 +19,22 @@ function PointSystemsModalFee() {
         <Item>
           <Name>스터디 지각</Name>
           <FontAwesomeIcon size="2x" icon={faAlarmClock} />
-          <Point>{POINT_SYSTEM_Deposit.STUDY_ATTEND_LATE.value}원</Point>
+          <Point>{POINT_SYSTEM_DEPOSIT.STUDY_ATTEND_LATE.value}원</Point>
         </Item>
         <Item>
           <Name>당일 불참 1</Name>
           <FontAwesomeIcon size="2x" icon={faDoNotEnter} />
-          <Point>{POINT_SYSTEM_Deposit.STUDY_ABSENT_BEFORE.value}원</Point>
+          <Point>{POINT_SYSTEM_DEPOSIT.STUDY_ABSENT_BEFORE.value}원</Point>
         </Item>
         <Item>
           <Name>당일 불참 2</Name>
           <FontAwesomeIcon size="2x" icon={faCircleXmark} />
-          <Point>{POINT_SYSTEM_Deposit.STUDY_ABSENT_AFTER.value}원</Point>
+          <Point>{POINT_SYSTEM_DEPOSIT.STUDY_ABSENT_AFTER.value}원</Point>
         </Item>
         <Item>
           <Name>한달 정산</Name>
           <FontAwesomeIcon size="2x" icon={faCalendarXmark} />
-          <Point>{POINT_SYSTEM_Deposit.STUDY_MONTH_CALCULATE.value}원</Point>
+          <Point>{POINT_SYSTEM_DEPOSIT.STUDY_MONTH_CALCULATE.value}원</Point>
         </Item>
         <Item>
           <Name>규칙</Name>

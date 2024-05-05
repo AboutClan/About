@@ -1,13 +1,19 @@
 import { Dayjs } from "dayjs";
 import { Fragment } from "react";
 import styled from "styled-components";
+
 import { LOCATION_OPEN } from "../../../constants/location";
+<<<<<<< HEAD
 import { PLACE_TO_LOCATION } from "../../../constants/serviceConstants/studyConstants/studyLocationConstants";
 
 import {
   IArrivedData,
   IArrivedInfoList,
 } from "../../../types/models/studyTypes/studyRecords";
+=======
+import { PLACE_TO_LOCATION } from "../../../storage/study";
+import { IArrivedData, IArrivedInfoList } from "../../../types/models/studyTypes/studyRecords";
+>>>>>>> main
 import { Location } from "../../../types/services/locationTypes";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 import RecordDetailStudyBlock from "./RecordDetailStudyBlock";
@@ -27,8 +33,7 @@ function RecordDetail({ filterData, navMonth }: IRecordDetail) {
     ?.reverse()
     .filter((item) => item && item.arrivedInfoList.length);
 
-  const initializeLocations = () =>
-    LOCATION_OPEN.map((location) => ({ location, places: [] }));
+  const initializeLocations = () => LOCATION_OPEN.map((location) => ({ location, places: [] }));
 
   const setSortedStudies = (arrivedData): ISortedLocationStudies[] => {
     return arrivedData.arrivedInfoList.reduce((acc, curr) => {
@@ -48,17 +53,9 @@ function RecordDetail({ filterData, navMonth }: IRecordDetail) {
         const sortedLocationStudies = setSortedStudies(arrivedData);
         return (
           <Fragment key={idx}>
-            <Date>
-              {dayjsToFormat(
-                navMonth.date(arrivedData?.date).add(1, "day"),
-                "M/D"
-              )}
-            </Date>
+            <Date>{dayjsToFormat(navMonth.date(arrivedData?.date).add(1, "day"), "M/D")}</Date>
             {sortedLocationStudies.map((locationStudies, idx2) => (
-              <RecordDetailStudyBlock
-                locationStudies={locationStudies}
-                key={idx2}
-              />
+              <RecordDetailStudyBlock locationStudies={locationStudies} key={idx2} />
             ))}
           </Fragment>
         );

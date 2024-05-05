@@ -1,7 +1,4 @@
-import {
-  enToKrMapping,
-  krToEnMapping,
-} from "../../constants/locationConstants";
+import { enToKrMapping, krToEnMapping } from "../../constants/locationConstants";
 import {
   BADGE_SCORE_MAPPINGS,
   USER_SCORE_BADGE_ARR,
@@ -12,10 +9,7 @@ import {
   EVENT_BADGE_민트초코,
   MANAGER_BADGE,
 } from "../../constants/storage/eventBadgeUser";
-import {
-  UserBadge,
-  UserRole,
-} from "../../types/models/userTypes/userInfoTypes";
+import { UserBadge, UserRole } from "../../types/models/userTypes/userInfoTypes";
 import { ActiveLocation, LocationEn } from "../../types/services/locationTypes";
 
 export const getUserBadge = (score: number, uid: string): UserBadge => {
@@ -37,9 +31,7 @@ export const getUserBadge = (score: number, uid: string): UserBadge => {
 };
 
 export const getNextBadge = (currentBadge: UserBadge): UserBadge => {
-  const idx = USER_SCORE_BADGE_ARR.indexOf(
-    currentBadge as typeof USER_SCORE_BADGE_ARR[number]
-  );
+  const idx = USER_SCORE_BADGE_ARR.indexOf(currentBadge as (typeof USER_SCORE_BADGE_ARR)[number]);
   if (idx === -1 || idx === USER_SCORE_BADGE_ARR.length - 1) {
     return null;
   } else if (idx < USER_SCORE_BADGE_ARR.length - 1) {
@@ -51,7 +43,7 @@ type ReturnLocationLang<T> = T extends "kr" ? ActiveLocation : LocationEn;
 
 export const convertLocationLangTo = <T extends "kr" | "en">(
   location: ActiveLocation | LocationEn,
-  to: T
+  to: T,
 ): ReturnLocationLang<T> => {
   if (to === "kr") {
     return enToKrMapping[location as LocationEn] as ReturnLocationLang<T>;
@@ -89,6 +81,7 @@ export const getRestInfo = (restData: string) => {
   };
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const shuffleArray = (array: any[]) => {
   if (!array) return;
   return array.sort(() => Math.random() - 0.5);

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+
 import { NewAlertIcon } from "../../components/atoms/Icons/AlertIcon";
 import { NOTICE_ACTIVE_CNT } from "../../constants/keys/localStorage";
 import { DispatchBoolean } from "../../types/hooks/reactTypes";
@@ -19,8 +20,7 @@ function NoticeNav({ isNotice, setIsNotice, activeAlertCnt }: INoticeNav) {
       localStorage.setItem(NOTICE_ACTIVE_CNT, `${activeAlertCnt}`);
       setIsActiveAlert(false);
     }
-    if (+localStorage.getItem(NOTICE_ACTIVE_CNT) < activeAlertCnt)
-      setIsActiveAlert(true);
+    if (+localStorage.getItem(NOTICE_ACTIVE_CNT) < activeAlertCnt) setIsActiveAlert(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeAlertCnt, isNotice]);
 
@@ -55,10 +55,8 @@ const Button = styled.button<{ isSelected: boolean }>`
   font-size: 16px;
   padding: var(--gap-3) 0;
   font-weight: ${(props) => (props.isSelected ? "700" : "500")};
-  border-bottom: ${(props) =>
-    props.isSelected && "3px solid var(--color-mint)"};
-  background-color: ${(props) =>
-    props.isSelected ? "white" : "var(--gray-8)"};
+  border-bottom: ${(props) => props.isSelected && "3px solid var(--color-mint)"};
+  background-color: ${(props) => (props.isSelected ? "white" : "var(--gray-8)")};
 `;
 const IconWrapper = styled.div`
   position: absolute;

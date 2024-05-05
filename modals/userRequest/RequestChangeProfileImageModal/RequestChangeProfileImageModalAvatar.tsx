@@ -1,31 +1,25 @@
-import {
-  faChevronLeft,
-  faChevronRight,
-} from "@fortawesome/pro-solid-svg-icons";
+import { faChevronLeft, faChevronRight } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AxiosError } from "axios";
 import { AnimatePresence, motion } from "framer-motion";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { UseMutateFunction } from "react-query";
 import styled from "styled-components";
+
 import ImageSlider from "../../../components/organisms/imageSlider/ImageSlider";
 import { COLOR_TABLE_LIGHT } from "../../../constants/colorConstants";
-import {
-  AVATAR_COST,
-  AVATAR_ICON,
-} from "../../../constants/settingValue/avatar";
+import { AVATAR_COST, AVATAR_ICON } from "../../../constants/settingValue/avatar";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import { usePointSystemQuery } from "../../../hooks/user/queries";
-import { IFooterOptions, ModalLayout } from "../../Modals";
-
 import { IModal } from "../../../types/components/modalTypes";
 import { IAvatar } from "../../../types/models/userTypes/userInfoTypes";
-
+import { IFooterOptions, ModalLayout } from "../../Modals";
 interface IRequestChangeProfileImageModalAvatar extends IModal {
   setUserAvatar: UseMutateFunction<
     void,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     AxiosError<unknown, any>,
     IAvatar,
     unknown
@@ -86,11 +80,7 @@ function RequestChangeProfileImageModalAvatar({
   };
 
   return (
-    <ModalLayout
-      title="아바타 프로필"
-      footerOptions={footerOptions}
-      setIsModal={setIsModal}
-    >
+    <ModalLayout title="아바타 프로필" footerOptions={footerOptions} setIsModal={setIsModal}>
       <UpPart>
         <ArrowIcon isLeft={true} onClick={() => handleMove("prev")}>
           {iconIdx !== 0 && <FontAwesomeIcon icon={faChevronLeft} />}
@@ -105,20 +95,13 @@ function RequestChangeProfileImageModalAvatar({
             key={iconIdx}
           >
             <Icon bg={COLOR_TABLE_LIGHT[BG]}>
-              <Image
-                width={80}
-                height={80}
-                src={AVATAR_ICON[iconIdx]}
-                alt="avatar"
-              />
+              <Image width={80} height={80} src={AVATAR_ICON[iconIdx]} alt="avatar" />
             </Icon>
             <IconPoint>{AVATAR_COST[iconIdx]}점 달성</IconPoint>
           </IconWrapper>
         </AnimatePresence>
         <ArrowIcon isLeft={false} onClick={() => handleMove("next")}>
-          {iconIdx !== AVATAR_ICON.length - 1 && (
-            <FontAwesomeIcon icon={faChevronRight} />
-          )}
+          {iconIdx !== AVATAR_ICON.length - 1 && <FontAwesomeIcon icon={faChevronRight} />}
         </ArrowIcon>
       </UpPart>
       <DownPart>

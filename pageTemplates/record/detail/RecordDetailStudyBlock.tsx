@@ -2,6 +2,7 @@ import { faEllipsis } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Fragment } from "react";
 import styled from "styled-components";
+
 import { LOCATION_TABLE_COLOR } from "../../../constants/location";
 import { PLACE_TO_LOCATION } from "../../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { PLACE_TO_NAME } from "../../../storage/study";
@@ -12,40 +13,36 @@ interface IRecordDetailStudyBlock {
   locationStudies: ISortedLocationStudies;
 }
 
-const RecordDetailStudyBlock = ({
-  locationStudies,
-}: IRecordDetailStudyBlock) => (
-  <Container>
-    {locationStudies.places.map((arrivedInfoList, idx) => {
-      const placeId = arrivedInfoList.placeId;
-      const location = PLACE_TO_LOCATION[placeId];
-      return (
-        <PlaceInfo key={idx} location={location}>
-          <PlaceName>
-            <span>{PLACE_TO_NAME[placeId]}</span>
-            <OpenLocation location={location}>{location}</OpenLocation>
-          </PlaceName>
-          {arrivedInfoList?.arrivedInfo.length > 0 && (
-            <MemberWrapper>
-              {arrivedInfoList.arrivedInfo.map((user, idx2) => (
-                <Fragment key={idx2}>
-                  {idx2 < 4 && <Member>{user.name.slice(-2)}</Member>}
-                  {idx2 === 4 && (
-                    <FontAwesomeIcon
-                      icon={faEllipsis}
-                      size="sm"
-                      color="var(--gray-3)"
-                    />
-                  )}
-                </Fragment>
-              ))}
-            </MemberWrapper>
-          )}
-        </PlaceInfo>
-      );
-    })}
-  </Container>
-);
+function RecordDetailStudyBlock({ locationStudies }: IRecordDetailStudyBlock) {
+  return (
+    <Container>
+      {locationStudies.places.map((arrivedInfoList, idx) => {
+        const placeId = arrivedInfoList.placeId;
+        const location = PLACE_TO_LOCATION[placeId];
+        return (
+          <PlaceInfo key={idx} location={location}>
+            <PlaceName>
+              <span>{PLACE_TO_NAME[placeId]}</span>
+              <OpenLocation location={location}>{location}</OpenLocation>
+            </PlaceName>
+            {arrivedInfoList?.arrivedInfo.length > 0 && (
+              <MemberWrapper>
+                {arrivedInfoList.arrivedInfo.map((user, idx2) => (
+                  <Fragment key={idx2}>
+                    {idx2 < 4 && <Member>{user.name.slice(-2)}</Member>}
+                    {idx2 === 4 && (
+                      <FontAwesomeIcon icon={faEllipsis} size="sm" color="var(--gray-3)" />
+                    )}
+                  </Fragment>
+                ))}
+              </MemberWrapper>
+            )}
+          </PlaceInfo>
+        );
+      })}
+    </Container>
+  );
+}
 
 const Container = styled.div`
   width: 100%;

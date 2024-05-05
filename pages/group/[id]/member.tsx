@@ -1,8 +1,9 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
+
 import AlertModal, { IAlertModalOptions } from "../../../components/AlertModal";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
@@ -72,9 +73,7 @@ export default function Member() {
               <Box key={who.user.uid}>
                 <ProfileCommentCard
                   user={who.user}
-                  comment={`구성:${GROUP_STUDY_ROLE[who.role]} / 출석 횟수:${
-                    who.attendCnt
-                  }회`}
+                  comment={`구성:${GROUP_STUDY_ROLE[who.role]} / 출석 횟수:${who.attendCnt}회`}
                   rightComponent={
                     who.user.uid !== session?.user.uid ? (
                       <Button
@@ -92,12 +91,7 @@ export default function Member() {
           </Flex>
         </Box>
       </Slide>
-      {deleteUser && (
-        <AlertModal
-          options={alertOptions}
-          setIsModal={() => setDeleteUser(null)}
-        />
-      )}
+      {deleteUser && <AlertModal options={alertOptions} setIsModal={() => setDeleteUser(null)} />}
     </>
   );
 }

@@ -1,23 +1,18 @@
 import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import styled from "styled-components";
-import BottomNav from "../../components/layouts/BottomNav";
 
+import BottomNav from "../../components/layouts/BottomNav";
 import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
+import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
 import { setLocalStorageObj } from "../../utils/storageUtils";
 
-import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
-
 function Gender() {
-  const router = useRouter();
   const searchParams = useSearchParams();
-  const info: IUserRegisterFormWriting = JSON.parse(
-    localStorage.getItem(REGISTER_INFO)
-  );
+  const info: IUserRegisterFormWriting = JSON.parse(localStorage.getItem(REGISTER_INFO));
 
   const isProfileEdit = !!searchParams.get("edit");
 
@@ -35,10 +30,7 @@ function Gender() {
 
   return (
     <>
-      <ProgressHeader
-        value={30}
-        title={!isProfileEdit ? "회원가입" : "프로필 수정"}
-      />
+      <ProgressHeader value={30} title={!isProfileEdit ? "회원가입" : "프로필 수정"} />
 
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
@@ -46,16 +38,10 @@ function Gender() {
           <span></span>
         </RegisterOverview>
         <ButtonNav>
-          <Button
-            $isSelected={gender === "남성"}
-            onClick={() => setGender("남성")}
-          >
+          <Button $isSelected={gender === "남성"} onClick={() => setGender("남성")}>
             남성
           </Button>
-          <Button
-            $isSelected={gender === "여성"}
-            onClick={() => setGender("여성")}
-          >
+          <Button $isSelected={gender === "여성"} onClick={() => setGender("여성")}>
             여성
           </Button>
         </ButtonNav>
@@ -78,8 +64,7 @@ const Button = styled.button<{ $isSelected: boolean }>`
   height: 48px;
   font-size: 14px;
   font-weight: ${(props) => props.$isSelected && "600"};
-  border: ${(props) =>
-    props.$isSelected ? "var(--border-thick)" : "var(--border)"};
+  border: ${(props) => (props.$isSelected ? "var(--border-thick)" : "var(--border)")};
 `;
 
 export default Gender;

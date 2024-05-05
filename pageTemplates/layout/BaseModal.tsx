@@ -1,15 +1,13 @@
-import { signOut } from "next-auth/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { signOut } from "next-auth/react";
 import { useRecoilState, useRecoilValue } from "recoil";
+
 import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
 import DailyCheckWinModal from "../../modals/aboutHeader/dailyCheckModal/DailyCheckWinModal";
 import AlphabetModal from "../../modals/common/AlphabetModal";
 import WriteDrawer from "../../modals/home/writeDrawer";
 import ErrorUserInfoPopUp from "../../modals/pop-up/ErrorUserInfoPopUp";
-import {
-  transferAlphabetState,
-  transferDailyCheckWinState,
-} from "../../recoils/transferRecoils";
+import { transferAlphabetState, transferDailyCheckWinState } from "../../recoils/transferRecoils";
 import { DispatchBoolean } from "../../types/hooks/reactTypes";
 interface IBaseModal {
   isGuest: boolean;
@@ -24,7 +22,7 @@ export const LOGOUT_ALERT_OPTIONS: IAlertModalOptions = {
   text: "로그아웃",
 };
 
-function BaseModal({ isGuest, isError, setIsError }: IBaseModal) {
+function BaseModal({ isError, setIsError }: IBaseModal) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -32,9 +30,7 @@ function BaseModal({ isGuest, isError, setIsError }: IBaseModal) {
   const isWriteModal = !!searchParams.get("write");
   const isLogoutModal = !!searchParams.get("logout");
 
-  const [transferAlphabet, setTransferAlphabet] = useRecoilState(
-    transferAlphabetState
-  );
+  const [transferAlphabet, setTransferAlphabet] = useRecoilState(transferAlphabetState);
 
   const dailyCheckWin = useRecoilValue(transferDailyCheckWinState);
 
@@ -47,16 +43,11 @@ function BaseModal({ isGuest, isError, setIsError }: IBaseModal) {
   return (
     <>
       {!!dailyCheckWin && <DailyCheckWinModal />}
-      {isLogoutModal && (
-        <AlertModal options={LOGOUT_ALERT_OPTIONS} setIsModal={cancelLogout} />
-      )}
+      {isLogoutModal && <AlertModal options={LOGOUT_ALERT_OPTIONS} setIsModal={cancelLogout} />}
       {isError && <ErrorUserInfoPopUp setIsModal={setIsError} />}
       {isWriteModal && <WriteDrawer />}
       {transferAlphabet && (
-        <AlphabetModal
-          setIsModal={() => setTransferAlphabet(null)}
-          alphabet={transferAlphabet}
-        />
+        <AlphabetModal setIsModal={() => setTransferAlphabet(null)} alphabet={transferAlphabet} />
       )}
     </>
   );

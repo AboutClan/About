@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { useState } from "react";
 import styled from "styled-components";
+
 import { CopyBtn } from "../../components/atoms/Icons/CopyIcon";
 import { PROMOTION_TEXT } from "../../constants/contentsText/Private";
 
@@ -117,12 +118,6 @@ const Content = styled.div`
   margin-top: var(--gap-4);
   display: flex;
   flex-direction: column;
-`;
-
-const Message = styled.span`
-  margin-left: auto;
-  color: var(--gray-2);
-  font-size: 12px;
 `;
 
 const Pre = styled.pre`

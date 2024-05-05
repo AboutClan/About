@@ -4,16 +4,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-function ApplySuccess({}) {
+function ApplySuccess() {
   const router = useRouter();
   return (
     <Layout>
       <Content2>
-        <FontAwesomeIcon
-          icon={faCircleCheck}
-          size="5x"
-          color="var(--color-mint)"
-        />
+        <FontAwesomeIcon icon={faCircleCheck} size="5x" color="var(--color-mint)" />
 
         <Content>
           <span>신청이 완료됐어요!</span>
@@ -28,7 +24,7 @@ function ApplySuccess({}) {
         left="50%"
         bottom="0"
         transform="translate(-50%,0)"
-        width={`calc(100% - 2*var(--gap-4))`}
+        width="calc(100% - 2*var(--gap-4))"
         maxWidth={358}
         height="44px"
         mb="var(--gap-4)"

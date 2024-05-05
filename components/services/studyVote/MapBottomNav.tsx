@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
+
 import { STUDY_VOTE } from "../../../constants/keys/queryKeys";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../../hooks/study/mutations";
@@ -13,12 +14,8 @@ import { usePointSystemMutation } from "../../../hooks/user/mutations";
 import { usePointSystemLogQuery } from "../../../hooks/user/queries";
 import StudySubVoteModal from "../../../modals/study/StudySubVoteModal";
 import { slideDirectionState } from "../../../recoils/navigationRecoils";
-import {
-  myStudyState,
-  studyDateStatusState,
-} from "../../../recoils/studyRecoils";
+import { myStudyState, studyDateStatusState } from "../../../recoils/studyRecoils";
 import { DispatchType } from "../../../types/hooks/reactTypes";
-
 import { IStudyVote } from "../../../types/models/studyTypes/studyInterActions";
 import { LocationEn } from "../../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
@@ -34,12 +31,7 @@ interface IMapBottomNav {
   morePlaces: string[];
 }
 
-function MapBottomNav({
-  morePlaces,
-  myVote,
-  voteScore,
-  setMyVote,
-}: IMapBottomNav) {
+function MapBottomNav({ morePlaces, myVote, voteScore, setMyVote }: IMapBottomNav) {
   const router = useRouter();
   const toast = useToast();
   const typeToast = useTypeToast();
@@ -83,50 +75,32 @@ function MapBottomNav({
 
   //오늘 날짜 투표 포인트 받은거 찾기
   const myPrevVotePoint = pointLog?.find(
-    (item) =>
-      item.message === "스터디 투표" &&
-      item.meta.sub === dayjsToStr(dayjs(date))
+    (item) => item.message === "스터디 투표" && item.meta.sub === dayjsToStr(dayjs(date)),
   )?.meta.value;
 
   const { mutate: getPoint } = usePointSystemMutation("point");
-  const { mutate: studyVote, isLoading } = useStudyParticipationMutation(
-    dayjs(date),
-    "post",
-    {
-      onSuccess() {
-        handleSuccess();
-      },
-    }
-  );
-  const { mutate: handleAbsent } = useStudyParticipationMutation(
-    dayjs(date),
-    "delete",
-    {
-      onSuccess() {
-        queryClient.refetchQueries([
-          STUDY_VOTE,
-          date,
-          convertLocationLangTo(location, "kr"),
-        ]);
-        if (myPrevVotePoint) {
-          getPoint({
-            message: "스터디 투표 취소",
-            value: -myPrevVotePoint,
-          });
-        }
-        moveToLink();
-        toast("success", "취소되었습니다.");
-      },
-      onError: () => typeToast("error"),
-    }
-  );
+  const { mutate: studyVote, isLoading } = useStudyParticipationMutation(dayjs(date), "post", {
+    onSuccess() {
+      handleSuccess();
+    },
+  });
+  const { mutate: handleAbsent } = useStudyParticipationMutation(dayjs(date), "delete", {
+    onSuccess() {
+      queryClient.refetchQueries([STUDY_VOTE, date, convertLocationLangTo(location, "kr")]);
+      if (myPrevVotePoint) {
+        getPoint({
+          message: "스터디 투표 취소",
+          value: -myPrevVotePoint,
+        });
+      }
+      moveToLink();
+      toast("success", "취소되었습니다.");
+    },
+    onError: () => typeToast("error"),
+  });
 
   const handleSuccess = () => {
-    queryClient.refetchQueries([
-      STUDY_VOTE,
-      date,
-      convertLocationLangTo(location, "kr"),
-    ]);
+    queryClient.refetchQueries([STUDY_VOTE, date, convertLocationLangTo(location, "kr")]);
 
     if (myPrevVotePoint) {
       getPoint({
@@ -140,10 +114,7 @@ function MapBottomNav({
         message: "스터디 투표",
         sub: date,
       });
-      toast(
-        "success",
-        `투표 완료! ${!myStudy ? "포인트가 적립되었습니다." : ""}`
-      );
+      toast("success", `투표 완료! ${!myStudy ? "포인트가 적립되었습니다." : ""}`);
     } else toast("success", "투표 완료!");
 
     moveToLink();

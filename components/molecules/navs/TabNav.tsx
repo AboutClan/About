@@ -16,11 +16,7 @@ export default function TabNav({ selected, tabOptionsArr }: ITabNav) {
 
   return (
     <>
-      <Tabs
-        index={selected ? idx : undefined}
-        colorScheme="mintTheme"
-        bgColor="white"
-      >
+      <Tabs index={selected ? idx : undefined} colorScheme="mintTheme" bgColor="white">
         <CustomTabList>
           {tabOptionsArr.map((tab) => (
             <CustomTab flex={tab?.flex} key={tab.text} onClick={tab.func}>

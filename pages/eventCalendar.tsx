@@ -1,24 +1,15 @@
 import dayjs from "dayjs";
 import { Fragment, useState } from "react";
-
-import Slide from "../components/layouts/PageSlide";
-
 import styled from "styled-components";
+
 import MonthNav from "../components/atoms/MonthNav";
 import Header from "../components/layouts/Header";
+import Slide from "../components/layouts/PageSlide";
 import Accordion from "../components/molecules/Accordion";
 import { ACCORDION_CONTENT_EVENT } from "../constants/contentsText/accordionContents";
 import { EVENT_CONTENT_2023 } from "../constants/settingValue/eventContents";
 import { DAYS_OF_WEEK } from "../constants/util/util";
-const DAYS_TITLE = [
-  "포인트 X 2",
-  null,
-  null,
-  null,
-  "출석 X 2",
-  null,
-  "점수 X 2",
-];
+const DAYS_TITLE = ["포인트 X 2", null, null, null, "출석 X 2", null, "점수 X 2"];
 
 interface IEventContent {
   content: string;
@@ -27,8 +18,6 @@ interface IEventContent {
   isLast: boolean;
   blockIdx?: number;
 }
-
-const BLOCK_WIDTH = 52;
 
 function EventCalendar() {
   const [navMonth, setNavMonth] = useState(dayjs().startOf("month"));
@@ -39,7 +28,7 @@ function EventCalendar() {
     const totalDate = daysInMonth + frontBlankDate;
     const rowsInMonth = totalDate <= 35 ? 5 : 6;
     return Array.from({ length: 7 * rowsInMonth }, (_, idx) =>
-      idx < frontBlankDate || idx >= totalDate ? null : idx - frontBlankDate + 1
+      idx < frontBlankDate || idx >= totalDate ? null : idx - frontBlankDate + 1,
     );
   };
 
@@ -54,10 +43,7 @@ function EventCalendar() {
   let endBlocks = [];
 
   const filledContents = (date: number) => {
-    const eventArr =
-      navMonth.year() === 2023
-        ? EVENT_CONTENT_2023[navMonth.month() + 1]
-        : null;
+    const eventArr = navMonth.year() === 2023 ? EVENT_CONTENT_2023[navMonth.month() + 1] : null;
     if (!eventArr) return;
     return eventArr.reduce((acc: IEventContent[], event) => {
       const isFirstDay = date === event.start;
@@ -78,14 +64,12 @@ function EventCalendar() {
   };
 
   const fillEventDate = (content: string) => {
-    const availableKey = Object.keys(eventBlocks).find(
-      (key) => !eventBlocks[key]
-    );
+    const availableKey = Object.keys(eventBlocks).find((key) => !eventBlocks[key]);
     if (availableKey) eventBlocks[availableKey] = content;
   };
 
   const deleteEventDate = (content: string) => {
-    for (let key in eventBlocks) {
+    for (const key in eventBlocks) {
       if (eventBlocks[key] === content) eventBlocks[key] = null;
     }
   };
@@ -115,7 +99,7 @@ function EventCalendar() {
 
               const contentArr = filledContents(item);
               const dateInfo = Object.values(eventBlocks).map((title) =>
-                contentArr?.find((c) => c.content === title)
+                contentArr?.find((c) => c.content === title),
               );
 
               endBlocks.forEach((item) => deleteEventDate(item));
@@ -131,11 +115,7 @@ function EventCalendar() {
                       return (
                         <Fragment key={idx2}>
                           {item?.blockIdx !== undefined && (
-                            <EventBlock
-                              isFirst={item?.isFirst}
-                              isLast={item?.isLast}
-                              color={null}
-                            >
+                            <EventBlock isFirst={item?.isFirst} isLast={item?.isLast} color={null}>
                               &nbsp;
                             </EventBlock>
                           )}
@@ -237,10 +217,10 @@ const Date = styled.div<{ day: "sun" | "sat"; isToday: boolean }>`
     props.isToday
       ? "white"
       : props.day === "sun"
-      ? "var(--color-red)"
-      : props.day === "sat"
-      ? "var(--color-blue)"
-      : null};
+        ? "var(--color-red)"
+        : props.day === "sat"
+          ? "var(--color-blue)"
+          : null};
 `;
 
 const DateContent = styled.div``;

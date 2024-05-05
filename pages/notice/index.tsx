@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import { useNoticeActiveLogQuery } from "../../hooks/user/sub/interaction/queries";
@@ -32,11 +33,7 @@ function Notice() {
       <Slide>
         <Layout>
           <Container>
-            {isNotice ? (
-              <NoticeItem />
-            ) : (
-              <NoticeActive activeLogs={activeLogs} />
-            )}
+            {isNotice ? <NoticeItem /> : <NoticeActive activeLogs={activeLogs} />}
           </Container>
         </Layout>
       </Slide>

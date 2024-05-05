@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 import OutlineBadge from "../../atoms/badges/OutlineBadge";
 interface IAttendanceBadge {
   type: "attend" | "dismissed";

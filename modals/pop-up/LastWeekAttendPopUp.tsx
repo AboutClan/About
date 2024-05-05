@@ -1,24 +1,17 @@
 import dayjs from "dayjs";
 import styled from "styled-components";
+
 import { PopOverIcon } from "../../components/atoms/Icons/PopOverIcon";
 import ProfileIcon from "../../components/atoms/Profile/ProfileIcon";
 import Skeleton from "../../components/atoms/skeleton/Skeleton";
-
+import { BADGE_SCORE_MAPPINGS } from "../../constants/serviceConstants/badgeConstants";
 import { USER_ROLE } from "../../constants/settingValue/role";
-import {
-  IStudyRecord,
-  useAdminStudyRecordQuery,
-} from "../../hooks/admin/quries";
+import { IStudyRecord, useAdminStudyRecordQuery } from "../../hooks/admin/quries";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import PointScoreBar from "../../pageTemplates/point/pointScore/PointScoreBar";
-import { IFooterOptions, ModalLayout } from "../Modals";
-
-import { BADGE_SCORE_MAPPINGS } from "../../constants/serviceConstants/badgeConstants";
 import { IModal } from "../../types/components/modalTypes";
-import {
-  getNextBadge,
-  getUserBadge,
-} from "../../utils/convertUtils/convertDatas";
+import { getNextBadge, getUserBadge } from "../../utils/convertUtils/convertDatas";
+import { IFooterOptions, ModalLayout } from "../Modals";
 
 function LastWeekAttendPopUp({ setIsModal }: IModal) {
   const lastWeekFirstDay = dayjs().day(1).subtract(1, "week").startOf("date");
@@ -36,7 +29,7 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
     userInfo?.uid,
     {
       enabled: !!userInfo,
-    }
+    },
   );
 
   const recordValue: IStudyRecord =
@@ -80,41 +73,43 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
     230: "샤크",
   };
 
-  const LayoutSkeleton = () => (
-    <Info>
-      <Item>
-        <span>{weekNumber}주차 스터디 투표</span>
+  function LayoutSkeleton() {
+    return (
+      <Info>
+        <Item>
+          <span>{weekNumber}주차 스터디 투표</span>
 
-        <SkeletonText>
-          <Skeleton>temp</Skeleton>
-        </SkeletonText>
-      </Item>
-      <Item>
-        <span>{weekNumber}주차 스터디 출석</span>
-        <SkeletonText>
-          <Skeleton>temp</Skeleton>
-        </SkeletonText>
-      </Item>
-      <Item>
-        <span>이번 달 누적 스터디 참여 </span>
-        <SkeletonText>
-          <Skeleton>temp</Skeleton>
-        </SkeletonText>
-      </Item>
-      <Item>
-        <span>다음 참여 정산일</span>
-        <SkeletonText>
-          <Skeleton>temp</Skeleton>
-        </SkeletonText>
-      </Item>
-      <Item>
-        <span>보유 보증금</span>
-        <SkeletonText>
-          <Skeleton>temp</Skeleton>
-        </SkeletonText>
-      </Item>
-    </Info>
-  );
+          <SkeletonText>
+            <Skeleton>temp</Skeleton>
+          </SkeletonText>
+        </Item>
+        <Item>
+          <span>{weekNumber}주차 스터디 출석</span>
+          <SkeletonText>
+            <Skeleton>temp</Skeleton>
+          </SkeletonText>
+        </Item>
+        <Item>
+          <span>이번 달 누적 스터디 참여 </span>
+          <SkeletonText>
+            <Skeleton>temp</Skeleton>
+          </SkeletonText>
+        </Item>
+        <Item>
+          <span>다음 참여 정산일</span>
+          <SkeletonText>
+            <Skeleton>temp</Skeleton>
+          </SkeletonText>
+        </Item>
+        <Item>
+          <span>보유 보증금</span>
+          <SkeletonText>
+            <Skeleton>temp</Skeleton>
+          </SkeletonText>
+        </Item>
+      </Info>
+    );
+  }
 
   const footerOptions: IFooterOptions = {
     main: {},
@@ -132,8 +127,7 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
         <PointScoreBar myScore={userInfo.score} hasQuestion={false} />
         {nextBadge ? (
           <span>
-            {nextBadge} 달성시 +10 포인트, {nextAvatar[String(nextBadgePoint)]}{" "}
-            아바타 해금!
+            {nextBadge} 달성시 +10 포인트, {nextAvatar[String(nextBadgePoint)]} 아바타 해금!
           </span>
         ) : (
           <span>킹왕짱</span>
@@ -191,8 +185,7 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
         ) : recordValue?.monthAcc < 1 ? (
           <div>
             이번 달에 아직 스터디에 참여하지 않았어요.
-            <br /> {-dayjs().add(1, "month").date(1).diff(dayjs(), "day")}일
-            뒤에 경고를 받습니다.
+            <br /> {-dayjs().add(1, "month").date(1).diff(dayjs(), "day")}일 뒤에 경고를 받습니다.
           </div>
         ) : (
           <div>

@@ -1,10 +1,12 @@
+/* eslint-disable */
+
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import SuccessScreen from "../../components/layouts/SuccessScreen";
 
+import SuccessScreen from "../../components/layouts/SuccessScreen";
 import ImageUploadInput from "../../components/molecules/ImageUploadInput";
 import { GATHER_CONTENT } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
@@ -14,17 +16,14 @@ import { isGatherEditState } from "../../recoils/checkAtoms";
 import { sharedGatherWritingState } from "../../recoils/sharedDataAtoms";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
-import { IGather, IGatherWriting } from "../../types/models/gatherTypes/gather";
+import { IGather, IGatherWriting } from "../../types/models/gatherTypes/gatherTypes";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface IGatherWritingConfirmModal extends IModal {
   gatherData: IGatherWriting | IGather;
 }
 
-function GatherWritingConfirmModal({
-  setIsModal,
-  gatherData,
-}: IGatherWritingConfirmModal) {
+function GatherWritingConfirmModal({ setIsModal, gatherData }: IGatherWritingConfirmModal) {
   const router = useRouter();
   const errorToast = useErrorToast();
 
@@ -81,9 +80,7 @@ function GatherWritingConfirmModal({
         >
           <>
             <ModalSubtitle>
-              {isFirst
-                ? "개설 내용을 확인해 주세요!"
-                : "선택사항. 기본 랜덤 이미지로 설정됩니다."}
+              {isFirst ? "개설 내용을 확인해 주세요!" : "선택사항. 기본 랜덤 이미지로 설정됩니다."}
             </ModalSubtitle>
             {isFirst ? (
               <Container>
@@ -93,9 +90,7 @@ function GatherWritingConfirmModal({
                 </Item>
                 <Item>
                   <span>날짜:</span>
-                  <span>
-                    {dayjs(gatherData.date).format("M월 D일, H시 m분")}
-                  </span>
+                  <span>{dayjs(gatherData.date).format("M월 D일, H시 m분")}</span>
                 </Item>
                 <Item>
                   <span>주제:</span>
@@ -111,7 +106,7 @@ function GatherWritingConfirmModal({
         </ModalLayout>
       )}
       {isSuccessScreen && (
-        <SuccessScreen url={`/gather`}>
+        <SuccessScreen url="/gather">
           <>
             <span>모임 개최 성공</span>
             <div>모임 게시글을 단톡방에 공유해 주세요!</div>

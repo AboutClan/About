@@ -1,4 +1,5 @@
 import { atom } from "recoil";
+
 import { IPostThumbnailCard } from "../components/molecules/cards/PostThumbnailCard";
 import { IParticipation } from "../types/models/studyTypes/studyDetails";
 import { StudyDateStatus } from "../types/models/studyTypes/studyInterActions";

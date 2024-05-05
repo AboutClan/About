@@ -2,6 +2,7 @@ import { Button } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import styled from "styled-components";
+
 import { PopOverIcon } from "../../components/atoms/Icons/PopOverIcon";
 import { GROUP_STUDY_ALL } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
@@ -10,15 +11,9 @@ import {
   useGroupParticipationMutation,
   useGroupWaitingMutation,
 } from "../../hooks/groupStudy/mutations";
-
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
-import {
-  IFooterOptions,
-  ModalFooterTwo,
-  ModalLayout,
-} from "../../modals/Modals";
-
+import { IFooterOptions, ModalFooterTwo, ModalLayout } from "../../modals/Modals";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
 
@@ -30,14 +25,7 @@ interface IParticipateModal extends IModal {
   answer: string;
 }
 
-function ParticipateModal({
-  isFree,
-  fee,
-  id,
-  feeText,
-  setIsModal,
-  answer,
-}: IParticipateModal) {
+function ParticipateModal({ isFree, fee, id, feeText, setIsModal, answer }: IParticipateModal) {
   const router = useRouter();
   const failToast = useFailToast();
   const completeToast = useCompleteToast();
@@ -89,10 +77,7 @@ function ParticipateModal({
         return;
       }
       if (userInfo?.deposit - 1000 < feeValue) {
-        failToast(
-          "free",
-          "보증금을 사용한 뒤에도 1000원 이상 보유해야 합니다."
-        );
+        failToast("free", "보증금을 사용한 뒤에도 1000원 이상 보유해야 합니다.");
         return;
       }
     }
@@ -117,17 +102,13 @@ function ParticipateModal({
   };
 
   return (
-    <ModalLayout
-      setIsModal={setIsModal}
-      title="가입 신청"
-      footerOptions={footerOptions}
-    >
+    <ModalLayout setIsModal={setIsModal} title="가입 신청" footerOptions={footerOptions}>
       <ModalSubtitle>
         {fee
           ? `소모임 가입을 위해서는 가입비 ${fee}원이 필요합니다. 사용처는 "${feeText}" 입니다.`
           : fee === 1000
-          ? "소모임 가입에는 150 포인트 또는 1000원이 소모됩니다. 이는 그룹장에게 전달되어 활동 지원금으로 사용됩니다."
-          : "소모임 가입에는 기본 참여비로 30 포인트 또는 200원이 소모됩니다."}
+            ? "소모임 가입에는 150 포인트 또는 1000원이 소모됩니다. 이는 그룹장에게 전달되어 활동 지원금으로 사용됩니다."
+            : "소모임 가입에는 기본 참여비로 30 포인트 또는 200원이 소모됩니다."}
       </ModalSubtitle>
       <PointContainer>
         <Point>
@@ -178,8 +159,6 @@ function ParticipateModal({
   );
 }
 
-const Layout = styled.div``;
-
 const PointContainer = styled.div`
   line-height: 2;
   width: 206px;
@@ -200,11 +179,6 @@ const Point = styled.div`
     width: 80px;
     color: var(--color-mint);
   }
-`;
-
-const HrDiv = styled.div`
-  height: 4px;
-  background-color: var(--gray-7);
 `;
 
 const Text = styled.div`

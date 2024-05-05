@@ -1,10 +1,10 @@
 import { signOut, useSession } from "next-auth/react";
+
 import { useCompleteToast } from "../../hooks/custom/CustomToast";
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
-import { IFooterOptions, ModalLayout } from "../Modals";
-
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
+import { IFooterOptions, ModalLayout } from "../Modals";
 
 function ErrorUserInfoPopUp({ setIsModal }: IModal) {
   const { data: session } = useSession();
@@ -43,15 +43,10 @@ function ErrorUserInfoPopUp({ setIsModal }: IModal) {
   };
 
   return (
-    <ModalLayout
-      setIsModal={setIsModal}
-      title="유저 정보 오류"
-      footerOptions={footerOptions}
-    >
+    <ModalLayout setIsModal={setIsModal} title="유저 정보 오류" footerOptions={footerOptions}>
       <ModalSubtitle>
-        유저 정보에 오류가 있어 이용이 불가능합니다. 재접속을 한 뒤에도 같은
-        오류가 발생하면 오류 전송을 눌러주세요! 관리자에게 별도로 말씀해주시면
-        더 빠른 처리가 가능합니다.
+        유저 정보에 오류가 있어 이용이 불가능합니다. 재접속을 한 뒤에도 같은 오류가 발생하면 오류
+        전송을 눌러주세요! 관리자에게 별도로 말씀해주시면 더 빠른 처리가 가능합니다.
       </ModalSubtitle>
     </ModalLayout>
   );

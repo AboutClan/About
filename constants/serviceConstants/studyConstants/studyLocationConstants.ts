@@ -117,13 +117,7 @@ export const LOCATION_TO_PLACE: LocationToPlace = {
     YANG_목동점,
     YANG_발산역,
   ],
-  안양: [
-    ANYANG_숨맑은집,
-    ANYANG_인뎃커피,
-    ANYANG_커피인더스트리,
-    ANYANG_파스쿠찌,
-    ANYANG_자유신청,
-  ],
+  안양: [ANYANG_숨맑은집, ANYANG_인뎃커피, ANYANG_커피인더스트리, ANYANG_파스쿠찌, ANYANG_자유신청],
   강남: [
     GANGNAM_강남,
     GANGNAM_강남구청,

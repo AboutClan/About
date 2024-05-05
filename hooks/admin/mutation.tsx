@@ -1,14 +1,16 @@
 import axios, { AxiosError } from "axios";
 import { Dayjs } from "dayjs";
 import { useMutation } from "react-query";
+
 import { SERVER_URI } from "../../constants/system";
 import { requestServer } from "../../libs/methodHelpers";
-
 import { MutationOptions } from "../../types/hooks/reactTypes";
 import { IPointSystem } from "../../types/services/pointSystem";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useUpdateProfileMutation = (options?: MutationOptions<any>) =>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useMutation<void, AxiosError, any>(async (profile) => {
     await axios.post(`${SERVER_URI}/admin/user`, {
       profile,
@@ -25,9 +27,7 @@ interface IAdminPointSystemRequest {
   message: string;
 }
 
-export const useAdminPointSystemMutation = (
-  options?: MutationOptions<IAdminPointSystemParam>
-) =>
+export const useAdminPointSystemMutation = (options?: MutationOptions<IAdminPointSystemParam>) =>
   useMutation<void, AxiosError, IAdminPointSystemParam>(
     async (param) =>
       requestServer<IAdminPointSystemRequest>({
@@ -35,38 +35,26 @@ export const useAdminPointSystemMutation = (
         url: `admin/user/${param.uid}/${param.type}`,
         body: { value: param.value, message: param.message },
       }),
-    options
+    options,
   );
 
-export const useAdminAboutPointMutation = (
-  uid: string,
-  options?: MutationOptions<IPointSystem>
-) =>
+export const useAdminAboutPointMutation = (uid: string, options?: MutationOptions<IPointSystem>) =>
   useMutation<void, AxiosError, IPointSystem>(async (data) => {
     await axios.post(`${SERVER_URI}/admin/user/${uid}/point`, data);
     await axios.post(`${SERVER_URI}/admin/user/${uid}/score`, data);
   }, options);
 
-export const useAdminPointMutation = (
-  uid: string,
-  options?: MutationOptions<IPointSystem>
-) =>
+export const useAdminPointMutation = (uid: string, options?: MutationOptions<IPointSystem>) =>
   useMutation<void, AxiosError, IPointSystem>(async (data) => {
     await axios.post(`${SERVER_URI}/admin/user/${uid}/point`, data);
   }, options);
 
-export const useAdminScoreMutation = (
-  uid: string,
-  options?: MutationOptions<IPointSystem>
-) =>
+export const useAdminScoreMutation = (uid: string, options?: MutationOptions<IPointSystem>) =>
   useMutation<void, AxiosError, IPointSystem>(async (data) => {
     await axios.post(`${SERVER_URI}/admin/user/${uid}/score`, data);
   }, options);
 
-export const useAdminDepositMutation = (
-  uid: string,
-  options?: MutationOptions<IPointSystem>
-) =>
+export const useAdminDepositMutation = (uid: string, options?: MutationOptions<IPointSystem>) =>
   useMutation<void, AxiosError, IPointSystem>(async (data) => {
     await axios.post(`${SERVER_URI}/admin/user/${uid}/deposit`, data);
   }, options);
@@ -78,7 +66,7 @@ export const useVoteStatusResetMutation = (options?: MutationOptions<Dayjs>) =>
         method: "patch",
         url: `admin/vote/${dayjsToStr(date)}/reset`,
       }),
-    options
+    options,
   );
 
 export const useMonthCalcMutation = (options?: MutationOptions) =>
@@ -88,7 +76,7 @@ export const useMonthCalcMutation = (options?: MutationOptions) =>
         method: "patch",
         url: "admin/manage/monthCalc",
       }),
-    options
+    options,
   );
 export const useGroupBelongMatchMutation = (options?: MutationOptions) =>
   useMutation<void, AxiosError, void>(
@@ -97,5 +85,5 @@ export const useGroupBelongMatchMutation = (options?: MutationOptions) =>
         method: "patch",
         url: "groupStudy/belong/match",
       }),
-    options
+    options,
   );

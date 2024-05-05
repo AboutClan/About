@@ -5,9 +5,7 @@ import { transferDailyCheckWinState } from "../../../recoils/transferRecoils";
 import { IFooterOptions, IHeaderOptions, ModalLayout } from "../../Modals";
 
 function DailyCheckWinModal() {
-  const [dailyCheckWin, setDailyCheckWin] = useRecoilState(
-    transferDailyCheckWinState
-  );
+  const [dailyCheckWin, setDailyCheckWin] = useRecoilState(transferDailyCheckWinState);
 
   const onClick = () => {
     setDailyCheckWin(null);

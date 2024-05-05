@@ -1,17 +1,17 @@
-import styled from "styled-components";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
 
 import { AspectRatio, Box } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
-import SwiperCore from "swiper";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-
+import styled from "styled-components";
 import css from "styled-jsx/css";
-import "swiper/css/scrollbar";
+import SwiperCore from "swiper";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+
 import { SingleLineText } from "../../../styles/layout/components";
 
 SwiperCore.use([Navigation, Pagination]);
@@ -32,20 +32,7 @@ interface IImageTileSlider {
   aspect?: number;
 }
 
-function ImageTileSlider({
-  imageTileArr,
-  size,
-  aspect = 1,
-  slidesPerView,
-}: IImageTileSlider) {
-  const imageSizeObj: { [key in Size]: number } = {
-    sm: 60,
-    md: 80,
-    lg: 120,
-  };
-
-  const imageSize = imageSizeObj[size];
-
+function ImageTileSlider({ imageTileArr, size, aspect = 1, slidesPerView }: IImageTileSlider) {
   return (
     <Swiper slidesPerView={slidesPerView} spaceBetween={12}>
       {imageTileArr.map((imageTile, index) => (

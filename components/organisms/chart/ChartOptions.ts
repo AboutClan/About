@@ -1,7 +1,7 @@
 export const ChartStudyOptions = (
   xaxis: string[],
   attendMax: number,
-  text?: string
+  text?: string,
 ): ApexCharts.ApexOptions => ({
   chart: {
     type: "line",

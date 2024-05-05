@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 import AlertNotCompletedModal from "../../../components/AlertNotCompletedModal";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
@@ -12,10 +13,7 @@ export default function Activity() {
       <Header title="동아리 활동" />
       <Slide>
         {POINT_GET_ACTIBITY_LIST.map((item, idx) => (
-          <ButtonCard
-            key={idx}
-            props={{ ...item, func: () => setIsModal(true) }}
-          />
+          <ButtonCard key={idx} props={{ ...item, func: () => setIsModal(true) }} />
         ))}
       </Slide>
       {isModal && <AlertNotCompletedModal setIsModal={setIsModal} />}

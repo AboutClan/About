@@ -18,7 +18,7 @@ function AdminSuggest() {
   useEffect(() => {
     if (isLoading || !data1) return;
     const sortedData = [...data1, ...data2].sort((a, b) =>
-      dayjs(a.createdAt) > dayjs(b.createdAt) ? 1 : -1
+      dayjs(a.createdAt) > dayjs(b.createdAt) ? 1 : -1,
     );
 
     setInitialData(sortedData);

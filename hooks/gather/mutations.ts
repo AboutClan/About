@@ -1,8 +1,9 @@
 import { AxiosError } from "axios";
 import { useMutation } from "react-query";
+
 import { requestServer } from "../../libs/methodHelpers";
 import { MutationOptions } from "../../types/hooks/reactTypes";
-import { IGather, IGatherWriting } from "../../types/models/gatherTypes/gather";
+import { IGather, IGatherWriting } from "../../types/models/gatherTypes/gatherTypes";
 
 type GatherWritingParam<T> = T extends "post"
   ? { gather: IGatherWriting }
@@ -13,7 +14,7 @@ type GatherWritingParam<T> = T extends "post"
 /** gather info */
 export const useGatherWritingMutation = <T extends "post" | "patch" | "delete">(
   method: T,
-  options?: MutationOptions<GatherWritingParam<T>>
+  options?: MutationOptions<GatherWritingParam<T>>,
 ) =>
   useMutation<void, AxiosError, GatherWritingParam<T>>(
     (param) =>
@@ -22,14 +23,14 @@ export const useGatherWritingMutation = <T extends "post" | "patch" | "delete">(
         url: "gather",
         body: param,
       }),
-    options
+    options,
   );
 
 type GatherParticipationParam<T> = T extends "post"
   ? { phase: "first" | "second"; userId?: string }
   : void;
 
-interface IGatherParticipationRequest<T> {
+interface IGatherParticipationRequest {
   gatherId: number;
   phase?: "first" | "second";
   userId?: string;
@@ -38,16 +39,16 @@ interface IGatherParticipationRequest<T> {
 export const useGatherParticipationMutation = <T extends "post" | "delete">(
   method: T,
   gatherId: number,
-  options?: MutationOptions<GatherParticipationParam<T>>
+  options?: MutationOptions<GatherParticipationParam<T>>,
 ) =>
   useMutation<void, AxiosError, GatherParticipationParam<T>>(
     (param) =>
-      requestServer<IGatherParticipationRequest<T>>({
+      requestServer<IGatherParticipationRequest>({
         method,
         url: "gather/participate",
         body: { gatherId, ...param },
       }),
-    options
+    options,
   );
 
 type GatherCommentParam<T> = T extends "post"
@@ -64,7 +65,7 @@ type GatherCommentParam<T> = T extends "post"
         comment?: never;
         commentId: string;
       };
-interface IGatherCommentRequest<T> {
+interface IGatherCommentRequest {
   gatherId: number;
   comment?: string;
   commentId?: string;
@@ -72,11 +73,11 @@ interface IGatherCommentRequest<T> {
 export const useGatherCommentMutation = <T extends "post" | "patch" | "delete">(
   method: T,
   gatherId: number,
-  options?: MutationOptions<GatherCommentParam<T>>
+  options?: MutationOptions<GatherCommentParam<T>>,
 ) =>
   useMutation<void, AxiosError, GatherCommentParam<T>>(
     (param) =>
-      requestServer<IGatherCommentRequest<T>>({
+      requestServer<IGatherCommentRequest>({
         method,
         url: "gather/comment",
         body: {
@@ -85,7 +86,7 @@ export const useGatherCommentMutation = <T extends "post" | "patch" | "delete">(
           commentId: param?.commentId,
         },
       }),
-    options
+    options,
   );
 
 type Status = "pending" | "open" | "close" | "end";
@@ -95,10 +96,7 @@ interface IGatherStatusRequest {
   status: Status;
 }
 
-export const useGatherStatusMutation = (
-  gatherId: number,
-  options?: MutationOptions<Status>
-) =>
+export const useGatherStatusMutation = (gatherId: number, options?: MutationOptions<Status>) =>
   useMutation<void, AxiosError, Status>(
     (status) =>
       requestServer<IGatherStatusRequest>({
@@ -109,5 +107,5 @@ export const useGatherStatusMutation = (
           status,
         },
       }),
-    options
+    options,
   );

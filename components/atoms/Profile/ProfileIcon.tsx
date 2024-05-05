@@ -3,17 +3,12 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { ICON_SIZE } from "../../../constants/styles";
 
 import { DEFAULT_IMAGE_URL } from "../../../assets/images/imageUrl";
-import {
-  ABOUT_ICON,
-  AVATAR_COLOR,
-  AVATAR_ICON,
-} from "../../../constants/settingValue/avatar";
+import { ABOUT_ICON, AVATAR_COLOR, AVATAR_ICON } from "../../../constants/settingValue/avatar";
+import { ICON_SIZE } from "../../../constants/styles";
 import { prevPageUrlState } from "../../../recoils/previousAtoms";
 import { transferUserSummaryState } from "../../../recoils/transferRecoils";
-
 import {
   IUser,
   IUserRegisterForm,
@@ -22,6 +17,7 @@ import {
 
 interface IProfileIcon {
   user: IUser | IUserRegisterForm | "guest" | "ABOUT";
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   size: any;
   isMember?: boolean;
   isImagePriority?: boolean;
@@ -42,7 +38,7 @@ function ProfileIcon({ user, size, isMember, isImagePriority }: IProfileIcon) {
       avatarBg !== null &&
       avatarType >= 0 &&
       avatarBg >= 0) ||
-      user === "guest"
+      user === "guest",
   );
 
   const iconSize = ICON_SIZE[size];
@@ -53,8 +49,8 @@ function ProfileIcon({ user, size, isMember, isImagePriority }: IProfileIcon) {
     user === "ABOUT"
       ? ABOUT_ICON
       : isAvatar
-      ? `${AVATAR_ICON[avatarType]}`
-      : `${(user as IUser)?.profileImage || DEFAULT_IMAGE_URL}`;
+        ? `${AVATAR_ICON[avatarType]}`
+        : `${(user as IUser)?.profileImage || DEFAULT_IMAGE_URL}`;
 
   const onClick = () => {
     if (!isMember) return;

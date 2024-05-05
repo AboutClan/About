@@ -24,22 +24,13 @@ function FreestudyPopUp({ setIsModal }: IModal) {
   };
   return (
     <>
-      <ModalLayout
-        title="스터디 장소 추천"
-        setIsModal={setIsModal}
-        footerOptions={footerOptions}
-      >
+      <ModalLayout title="스터디 장소 추천" setIsModal={setIsModal} footerOptions={footerOptions}>
         <ModalSubtitle>
-          같이 카공하기 좋은 스터디 장소 추천을 받습니다! 혼자 알고 있는 카페가
-          있다면 공유해주세요!{" "}
+          같이 카공하기 좋은 스터디 장소 추천을 받습니다! 혼자 알고 있는 카페가 있다면 공유해주세요!{" "}
           <span style={{ color: "var(--color-mint)" }}>(+10 point)</span>
         </ModalSubtitle>
         <Wrapper>
-          <FontAwesomeIcon
-            icon={faLightbulbOn}
-            size="3x"
-            color="var(--color-red)"
-          />
+          <FontAwesomeIcon icon={faLightbulbOn} size="3x" color="var(--color-red)" />
         </Wrapper>
       </ModalLayout>
       {isSuggestModal && (

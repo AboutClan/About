@@ -2,9 +2,10 @@ import { faGear, faUserGroup } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import styled from "styled-components";
+
 import { Badge } from "../../../components/atoms/badges/Badges";
 import { NewAlertIcon } from "../../../components/atoms/Icons/AlertIcon";
-import { GatherStatus } from "../../../types/models/gatherTypes/gather";
+import { GatherStatus } from "../../../types/models/gatherTypes/gatherTypes";
 
 interface IGroupTitle {
   title: string;
@@ -30,19 +31,19 @@ function GroupTitle({
     status === "gathering"
       ? "mintTheme"
       : status === "open"
-      ? maxCnt === 0 || maxCnt > memberCnt
-        ? "mintTheme"
-        : "redTheme"
-      : "redTheme";
+        ? maxCnt === 0 || maxCnt > memberCnt
+          ? "mintTheme"
+          : "redTheme"
+        : "redTheme";
 
   const statusText =
     status === "gathering"
       ? "소그룹"
       : status === "open"
-      ? maxCnt === 0 || maxCnt > memberCnt
-        ? "모집중"
-        : "마감"
-      : "마감";
+        ? maxCnt === 0 || maxCnt > memberCnt
+          ? "모집중"
+          : "마감"
+        : "마감";
 
   const onClick = () => {
     router.push(`${router.asPath}/admin`);

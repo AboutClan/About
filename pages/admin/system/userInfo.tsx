@@ -1,14 +1,13 @@
 import { useToast } from "@chakra-ui/react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import Header from "../../../components/layouts/Header";
 
+import Header from "../../../components/layouts/Header";
 import { useUpdateProfileMutation } from "../../../hooks/admin/mutation";
 import { useAdminUsersControlQuery } from "../../../hooks/admin/quries";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
 
 function AdminUserInfo() {
-  const [users, setUsers] = useState<IUser[]>([]);
   const [admins, setAdmins] = useState<IUser[]>([]);
   const [members, setMembers] = useState<IUser[]>([]);
   const [filtered, setFiltered] = useState<IUser[]>([]);
@@ -59,11 +58,7 @@ function AdminUserInfo() {
         <Section>
           <SectionHeader>멤버</SectionHeader>
           <Search>
-            <SearchInput
-              placeholder="유저 검색"
-              value={value}
-              onChange={onChange}
-            />
+            <SearchInput placeholder="유저 검색" value={value} onChange={onChange} />
             <button onClick={onClickBtn}>검색</button>
           </Search>
           {members.map((user, idx) => (
@@ -110,7 +105,7 @@ const Section = styled.section`
   flex-direction: column;
 `;
 
-const UserSection = ({ user }: { user: IUser }) => {
+function UserSection({ user }: { user: IUser }) {
   const toast = useToast();
   const { mutate: updateProfile } = useUpdateProfileMutation({
     onSuccess() {
@@ -171,10 +166,7 @@ const UserSection = ({ user }: { user: IUser }) => {
   return (
     <SectionItem>
       <Item>{user.name}</Item>
-      <Select
-        defaultValue={user.role}
-        onChange={(e) => onRoleChanged(e.target.value, user)}
-      >
+      <Select defaultValue={user.role} onChange={(e) => onRoleChanged(e.target.value, user)}>
         <option value="member">M</option>
         <option value="previliged">P</option>
       </Select>
@@ -200,7 +192,7 @@ const UserSection = ({ user }: { user: IUser }) => {
       />
     </SectionItem>
   );
-};
+}
 
 const SectionItem = styled.div`
   width: 100%;

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 export interface IMapOptions {
   background?: string;
   baseTileOpacity?: number;

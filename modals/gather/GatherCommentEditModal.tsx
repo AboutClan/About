@@ -1,17 +1,13 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useQueryClient } from "react-query";
 import styled from "styled-components";
-import {
-  GATHER_CONTENT,
-  GROUP_STUDY_ALL,
-} from "../../constants/keys/queryKeys";
+
+import { GATHER_CONTENT, GROUP_STUDY_ALL } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
 import { useGatherCommentMutation } from "../../hooks/gather/mutations";
 import { useGroupCommentMutation } from "../../hooks/groupStudy/mutations";
-import { IFooterOptions, ModalLayout } from "../Modals";
-
 import { IModal } from "../../types/components/modalTypes";
+import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface IGatherCommentEditModal extends IModal {
   commentText: string;
@@ -27,40 +23,27 @@ function GatherCommentEditModal({
 }: IGatherCommentEditModal) {
   const router = useRouter();
   const gatherId = +router.query.id;
-  const queryClient = useQueryClient();
 
   const [isFirst, setIsFirst] = useState(true);
   const [value, setValue] = useState(commentText);
 
   const resetQueryData = useResetQueryData();
 
-  const { mutate: deleteCommentGroup } = useGroupCommentMutation(
-    "delete",
-    gatherId,
-    {
-      onSuccess() {
-        resetQueryData([GROUP_STUDY_ALL]);
-      },
-    }
-  );
-  const { mutate: editCommentGroup } = useGroupCommentMutation(
-    "patch",
-    gatherId,
-    {
-      onSuccess() {
-        resetQueryData([GROUP_STUDY_ALL]);
-      },
-    }
-  );
-  const { mutate: deleteComment } = useGatherCommentMutation(
-    "delete",
-    gatherId,
-    {
-      onSuccess() {
-        resetQueryData([GATHER_CONTENT]);
-      },
-    }
-  );
+  const { mutate: deleteCommentGroup } = useGroupCommentMutation("delete", gatherId, {
+    onSuccess() {
+      resetQueryData([GROUP_STUDY_ALL]);
+    },
+  });
+  const { mutate: editCommentGroup } = useGroupCommentMutation("patch", gatherId, {
+    onSuccess() {
+      resetQueryData([GROUP_STUDY_ALL]);
+    },
+  });
+  const { mutate: deleteComment } = useGatherCommentMutation("delete", gatherId, {
+    onSuccess() {
+      resetQueryData([GATHER_CONTENT]);
+    },
+  });
   const { mutate: editComment } = useGatherCommentMutation("patch", gatherId, {
     onSuccess() {
       resetQueryData([GATHER_CONTENT]);
@@ -94,11 +77,7 @@ function GatherCommentEditModal({
   };
 
   return (
-    <ModalLayout
-      title=""
-      footerOptions={isFirst ? null : footerOptions}
-      setIsModal={setIsModal}
-    >
+    <ModalLayout title="" footerOptions={isFirst ? null : footerOptions} setIsModal={setIsModal}>
       <Container>
         {isFirst ? (
           <>

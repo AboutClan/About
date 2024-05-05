@@ -1,16 +1,13 @@
-import {
-  faMinusCircle,
-  faPlusCircle,
-} from "@fortawesome/pro-regular-svg-icons";
+import { faMinusCircle, faPlusCircle } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
+
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
-
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
@@ -26,9 +23,7 @@ function GroupWritingContent() {
   //초기 input 세팅
 
   const [content, setContent] = useState(group?.content || "");
-  const [rules, setRules] = useState<string[]>(
-    group?.rules?.length ? group?.rules : [""]
-  );
+  const [rules, setRules] = useState<string[]>(group?.rules?.length ? group?.rules : [""]);
 
   const onClickNext = () => {
     if (!content) {
@@ -85,9 +80,7 @@ function GroupWritingContent() {
               <RuleItem key={idx}>
                 <input value={item} onChange={(e) => onChange(e, idx)} />
                 <MinusWrapper
-                  onClick={() =>
-                    setRules((old) => old.filter((rule) => rule !== item))
-                  }
+                  onClick={() => setRules((old) => old.filter((rule) => rule !== item))}
                 >
                   <FontAwesomeIcon icon={faMinusCircle} />
                 </MinusWrapper>

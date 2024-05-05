@@ -9,20 +9,16 @@ import {
   Flex,
   useDisclosure,
 } from "@chakra-ui/react";
-import {
-  faBooks,
-  faCampfire,
-  faCloudBolt,
-} from "@fortawesome/pro-regular-svg-icons";
+import { faBooks, faCampfire, faCloudBolt } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect } from "react";
+
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 
 export default function WriteDrawer() {
-  const { data: session } = useSession();
   const router = useRouter();
 
   const pathname = usePathname();
@@ -38,11 +34,7 @@ export default function WriteDrawer() {
   const onClose = () => {
     closeDrawer();
     newSearchParams.delete("write");
-    router.replace(
-      pathname + newSearchParams.toString()
-        ? `?${newSearchParams.toString()}`
-        : ""
-    );
+    router.replace(pathname + newSearchParams.toString() ? `?${newSearchParams.toString()}` : "");
   };
 
   return (
@@ -50,13 +42,7 @@ export default function WriteDrawer() {
       <DrawerOverlay />
       <DrawerContent bg="transparent">
         <DrawerBody display="flex" justifyContent="center" alignItems="center">
-          <Flex
-            direction="column"
-            h="100dvh"
-            justify="center"
-            align="center"
-            onClick={onClose}
-          >
+          <Flex direction="column" h="100dvh" justify="center" align="center" onClick={onClose}>
             <SocialButton
               url="/gather/writing/category"
               title="모임"
@@ -93,12 +79,12 @@ interface ISocialButton {
   color: string;
 }
 
-const SocialButton = ({ title, subTitle, icon, color, url }: ISocialButton) => {
-  const router = useRouter();
+function SocialButton({ title, subTitle, icon, color, url }: ISocialButton) {
   const toast = useToast();
   const typeToast = useTypeToast();
   const { data: session } = useSession();
   const isGuest = session?.user.name === "guest";
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onClick = (e: any) => {
     e.stopPropagation();
     if (isGuest) {
@@ -136,4 +122,4 @@ const SocialButton = ({ title, subTitle, icon, color, url }: ISocialButton) => {
       </Button>
     </Link>
   );
-};
+}

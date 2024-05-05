@@ -6,6 +6,7 @@ import {
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import styled from "styled-components";
+
 import { DispatchType } from "../../../../types/hooks/reactTypes";
 
 interface IGatherWritingConditionAgeRange {
@@ -15,10 +16,7 @@ interface IGatherWritingConditionAgeRange {
 
 const AGE_BAR = [19, 20, 21, 22, 23, 24, 25, 26, 27, 28];
 
-function GatherWritingConditionAgeRange({
-  age,
-  setAge,
-}: IGatherWritingConditionAgeRange) {
+function GatherWritingConditionAgeRange({ age, setAge }: IGatherWritingConditionAgeRange) {
   return (
     <Layout initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }}>
       <RangeSlider

@@ -2,10 +2,9 @@ import { Box, Flex } from "@chakra-ui/react";
 import { faChevronRight } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
+
 import SectionBar from "../../components/molecules/bars/SectionBar";
-import ImageTileSlider, {
-  IImageTile,
-} from "../../components/organisms/sliders/ImageTileSlider";
+import ImageTileSlider, { IImageTile } from "../../components/organisms/sliders/ImageTileSlider";
 import { STORE_GIFT } from "../../storage/Store";
 
 export default function EventStore() {
@@ -17,12 +16,7 @@ export default function EventStore() {
 
   return (
     <>
-      <Flex
-        justify="space-between"
-        align="center"
-        bgColor="white"
-        borderBottom="var(--border)"
-      >
+      <Flex justify="space-between" align="center" bgColor="white" borderBottom="var(--border)">
         <SectionBar
           title="포인트 스토어"
           size="md"
@@ -34,11 +28,7 @@ export default function EventStore() {
         />
       </Flex>
       <Box p="12px 16px" borderBottom="var(--border)">
-        <ImageTileSlider
-          imageTileArr={imageArr}
-          size="sm"
-          slidesPerView={3.4}
-        />
+        <ImageTileSlider imageTileArr={imageArr} size="sm" slidesPerView={3.4} />
       </Box>
     </>
   );

@@ -2,10 +2,10 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
+
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
-
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
@@ -49,11 +49,7 @@ function GroupWritingGuide() {
           <span>스터디 소개에 가장 먼저 노출됩니다.</span>
         </RegisterOverview>
         <Container>
-          <TitleInput
-            placeholder="제목"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
+          <TitleInput placeholder="제목" value={title} onChange={(e) => setTitle(e.target.value)} />
           <Guide
             placeholder="간단하게 작성해주세요."
             value={guide}

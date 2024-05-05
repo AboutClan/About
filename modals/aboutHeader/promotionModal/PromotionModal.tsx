@@ -1,8 +1,8 @@
 import { faCoins, faGift } from "@fortawesome/pro-duotone-svg-icons";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import styled from "styled-components";
+
 import { IModal } from "../../../types/components/modalTypes";
 import { IFooterOptions, IHeaderOptions, ModalLayout } from "../../Modals";
 import PromotionModalOverview from "./PromotionModalOverview";
@@ -49,11 +49,7 @@ function PromotionModal({ setIsModal }: IModal) {
             />
           </div>
           <div>
-            <FontAwesomeIcon
-              icon={faCoins}
-              size="3x"
-              color="var(--color-red)"
-            />
+            <FontAwesomeIcon icon={faCoins} size="3x" color="var(--color-red)" />
           </div>
         </IconWrapper>
         <Info>

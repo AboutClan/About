@@ -18,11 +18,7 @@ function ConfirmModal2({ content, setIsModal }: IConfirmModal) {
   };
 
   return (
-    <ModalLayout
-      footerOptions={footerOptions}
-      title={content.title}
-      setIsModal={setIsModal}
-    >
+    <ModalLayout footerOptions={footerOptions} title={content.title} setIsModal={setIsModal}>
       {content.text}
     </ModalLayout>
   );

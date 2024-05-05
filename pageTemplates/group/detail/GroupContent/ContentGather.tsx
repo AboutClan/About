@@ -3,6 +3,7 @@ import { faPlus } from "@fortawesome/pro-light-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import styled from "styled-components";
+
 import NotCompletedModal from "../../../../modals/system/NotCompletedModal";
 
 function ContentGather() {

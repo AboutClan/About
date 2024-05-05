@@ -1,10 +1,9 @@
 import dayjs from "dayjs";
-import { ITimeBoardParticipant } from "../UserTimeBoard";
-import { IUserTimeBlock } from "../_component/BoardUserBlocks";
 
-export const transformToUserBlocks = (
-  participants: ITimeBoardParticipant[]
-): IUserTimeBlock[] => {
+import { IUserTimeBlock } from "../_component/BoardUserBlocks";
+import { ITimeBoardParticipant } from "../UserTimeBoard";
+
+export const transformToUserBlocks = (participants: ITimeBoardParticipant[]): IUserTimeBlock[] => {
   return participants.map((par) => {
     const start = dayjs(par.time.start);
     const end = dayjs(par.time.end);

@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
+
 import Skeleton from "../../../components/atoms/skeleton/Skeleton";
 import { Location } from "../../../types/services/locationTypes";
 function MemberOverviewSkeleton() {
@@ -78,11 +79,7 @@ const Info = styled.div`
 
 const ActiveLocation = styled.li<{ location: Location }>`
   height: ${(props) =>
-    props.location === "수원"
-      ? "74px"
-      : props.location !== "안양"
-      ? "48px"
-      : "24px"};
+    props.location === "수원" ? "74px" : props.location !== "안양" ? "48px" : "24px"};
 `;
 
 const Studys = styled.div<{ location: Location }>`
@@ -91,11 +88,7 @@ const Studys = styled.div<{ location: Location }>`
   color: var(--gray-2);
   margin-top: 4px;
   height: ${(props) =>
-    props.location === "수원"
-      ? "72px"
-      : props.location !== "안양"
-      ? "40px"
-      : "20px"};
+    props.location === "수원" ? "72px" : props.location !== "안양" ? "40px" : "20px"};
 
   > span {
     margin-right: var(--gap-1);

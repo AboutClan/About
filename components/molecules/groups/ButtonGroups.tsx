@@ -1,5 +1,6 @@
 import { Button, Flex } from "@chakra-ui/react";
 import styled from "styled-components";
+
 import { ButtonSize } from "../../../types/components/assetTypes";
 export interface IButtonOpions {
   text: string;
@@ -11,11 +12,7 @@ interface IButtonGroups {
   currentValue: string;
   size?: ButtonSize;
 }
-export default function ButtonGroups({
-  buttonDataArr,
-  currentValue,
-  size = "md",
-}: IButtonGroups) {
+export default function ButtonGroups({ buttonDataArr, currentValue }: IButtonGroups) {
   return (
     <Layout>
       {buttonDataArr.map((buttonData, idx) => (

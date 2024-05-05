@@ -11,10 +11,8 @@ import {
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
-import {
-  useCompleteToast,
-  useErrorToast,
-} from "../../../hooks/custom/CustomToast";
+
+import { useCompleteToast, useErrorToast } from "../../../hooks/custom/CustomToast";
 import { useGatherStatusMutation } from "../../../hooks/gather/mutations";
 import { DispatchBoolean } from "../../../types/hooks/reactTypes";
 import { GatherExpireModalDialogType } from "./GatherExpireModal";
@@ -24,10 +22,7 @@ interface IGatherExpireModalExpireDialog {
   setIsComplete: DispatchBoolean;
 }
 
-function GatherExpireModalExpireDialog({
-  modal,
-  setIsComplete,
-}: IGatherExpireModalExpireDialog) {
+function GatherExpireModalExpireDialog({ modal, setIsComplete }: IGatherExpireModalExpireDialog) {
   const completeToast = useCompleteToast();
   const errorToast = useErrorToast();
 
@@ -56,28 +51,18 @@ function GatherExpireModalExpireDialog({
 
   return (
     <Layout>
-      <AlertDialog
-        isOpen={isOpen}
-        leastDestructiveRef={completeRef}
-        onClose={onClose}
-      >
+      <AlertDialog isOpen={isOpen} leastDestructiveRef={completeRef} onClose={onClose}>
         <AlertDialogOverlay>
           <AlertDialogContent m="auto var(--gap-4)">
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
               모집을 완료하겠습니까?
             </AlertDialogHeader>
-            <AlertDialogBody>
-              완료를 하면 해당 인원으로 모임이 확정됩니다.
-            </AlertDialogBody>
+            <AlertDialogBody>완료를 하면 해당 인원으로 모임이 확정됩니다.</AlertDialogBody>
             <AlertDialogFooter>
               <Button ref={completeRef} onClick={onClose}>
                 취소
               </Button>
-              <Button
-                colorScheme="mintTheme"
-                onClick={onComplete}
-                ml="var(--gap-1)"
-              >
+              <Button colorScheme="mintTheme" onClick={onComplete} ml="var(--gap-1)">
                 모집완료
               </Button>
             </AlertDialogFooter>

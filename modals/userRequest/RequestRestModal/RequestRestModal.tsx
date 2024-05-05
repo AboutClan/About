@@ -4,11 +4,9 @@ import { useForm } from "react-hook-form";
 // import "react-date-range/dist/styles.css"; // main css file
 // import "react-date-range/dist/theme/default.css"; // theme css file
 import styled from "styled-components";
+
 import { PopOverIcon } from "../../../components/atoms/Icons/PopOverIcon";
-import {
-  useCompleteToast,
-  useFailToast,
-} from "../../../hooks/custom/CustomToast";
+import { useCompleteToast, useFailToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
 import { useUserRequestMutation } from "../../../hooks/user/sub/request/mutations";
 import { IModal } from "../../../types/components/modalTypes";
@@ -57,14 +55,7 @@ function RequestRestModal({ setIsModal }: IModal) {
     const requestData: IUserRequest = {
       category: "휴식",
       writer: session.user.name,
-      content:
-        data.type +
-        " / " +
-        data.startDate +
-        " ~ " +
-        data.endDate +
-        " / " +
-        data.content,
+      content: data.type + " / " + data.startDate + " ~ " + data.endDate + " / " + data.content,
     };
     setRole({ role: "resting" });
     sendRestRequest(requestData);
@@ -111,11 +102,7 @@ function RequestRestModal({ setIsModal }: IModal) {
   };
 
   return (
-    <ModalLayout
-      title="휴식 신청"
-      footerOptions={footerOptions}
-      setIsModal={setIsModal}
-    >
+    <ModalLayout title="휴식 신청" footerOptions={footerOptions} setIsModal={setIsModal}>
       <Form onSubmit={handleSubmit(onSubmit)} id="rest">
         <Item>
           <span>이름:</span>

@@ -1,8 +1,6 @@
 import { useDisclosure } from "@chakra-ui/react";
-import {
-  useCompleteToast,
-  useErrorToast,
-} from "../../../hooks/custom/CustomToast";
+
+import { useCompleteToast, useErrorToast } from "../../../hooks/custom/CustomToast";
 import { useUserRegisterControlMutation } from "../../../hooks/user/mutations";
 import { IModal } from "../../../types/components/modalTypes";
 import { IRefetch } from "../../../types/hooks/reactTypes";
@@ -13,11 +11,7 @@ interface ICheckRegisterModalFooter extends IModal, IRefetch {
   uid: string;
 }
 
-function CheckRegisterModalFooter({
-  setIsModal,
-  setIsRefetch,
-  uid,
-}: ICheckRegisterModalFooter) {
+function CheckRegisterModalFooter({ setIsModal, setIsRefetch, uid }: ICheckRegisterModalFooter) {
   const completeToast = useCompleteToast();
   const errorToast = useErrorToast();
 

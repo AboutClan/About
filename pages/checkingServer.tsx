@@ -12,18 +12,10 @@ function CheckingServer() {
         <br /> 그래도 안되는 경우 관리자에게 말씀해주세요!
       </Title>
       <Nav>
-        <Button
-          w="50%"
-          colorScheme="blackAlpha"
-          onClick={() => router.push(`/home`)}
-        >
+        <Button w="50%" colorScheme="blackAlpha" onClick={() => router.push(`/home`)}>
           재접속
         </Button>
-        <Button
-          w="50%"
-          colorScheme="mintTheme"
-          onClick={() => router.push(`/login`)}
-        >
+        <Button w="50%" colorScheme="mintTheme" onClick={() => router.push(`/login`)}>
           로그인 창으로
         </Button>
       </Nav>

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import styled from "styled-components";
+
 import Skeleton from "../../../components/atoms/skeleton/Skeleton";
 
 interface IStudyCoverSkeleton {
@@ -9,9 +10,7 @@ interface IStudyCoverSkeleton {
 function StudyCoverSkeleton({ coverImageUrl }: IStudyCoverSkeleton) {
   return (
     <Layout>
-      {coverImageUrl && (
-        <Image src={coverImageUrl} width={343} height={165} alt="study" />
-      )}
+      {coverImageUrl && <Image src={coverImageUrl} width={343} height={165} alt="study" />}
       <SpaceIcon>
         <Skeleton>temp</Skeleton>
       </SpaceIcon>

@@ -1,10 +1,12 @@
-import dayjs from "dayjs";
 import "dayjs/locale/ko";
+
+import dayjs from "dayjs";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+
 import TextCircle from "../../../components/atoms/TextCircle";
 import { studyDateStatusState } from "../../../recoils/studyRecoils";
 import { getDateArr, handleChangeDate } from "./StudyController";
@@ -29,7 +31,7 @@ function StudyControllerDates({ selectedDate }: IStudyControllerDates) {
   const dateArr = getDateArr(selectedDateDayjs);
 
   useEffect(() => {
-    setVariants(variants_options);
+    setVariants(variantsOptions);
   }, []);
 
   const onClick = (date: number) => {
@@ -69,7 +71,7 @@ function StudyControllerDates({ selectedDate }: IStudyControllerDates) {
   );
 }
 
-const variants_options = {
+const variantsOptions = {
   initial: (idx: number) => ({
     opacity: 1,
     x: idx === 6 ? 40 : idx === 0 ? -40 : 0,
@@ -93,10 +95,8 @@ const MotionDiv = styled(motion.div)`
   justify-content: center;
   /* idx 값을 기반으로 조건부 스타일 적용 */
   flex: ${({ idx }) => (idx !== 3 ? "1" : "initial")};
-  width: ${({ idx }) =>
-    idx === 3 ? "96px" : "auto"}; /* w-24에 해당하는 너비 */
-  margin: ${({ idx }) =>
-    idx === 3 ? "8px 2px" : "0"}; /* mx-0.5에 해당하는 마진 */
+  width: ${({ idx }) => (idx === 3 ? "96px" : "auto")}; /* w-24에 해당하는 너비 */
+  margin: ${({ idx }) => (idx === 3 ? "8px 2px" : "0")}; /* mx-0.5에 해당하는 마진 */
 `;
 const AbsoluteDiv = styled.div`
   position: absolute;

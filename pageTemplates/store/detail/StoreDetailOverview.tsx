@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 import { IStoreGift } from "../../../types/models/store";
 
 interface IStoreDetailOverview {
@@ -7,11 +8,7 @@ interface IStoreDetailOverview {
   isActive: boolean;
 }
 
-function StoreDetailOverview({
-  info,
-  totalApplyCnt,
-  isActive,
-}: IStoreDetailOverview) {
+function StoreDetailOverview({ info, totalApplyCnt, isActive }: IStoreDetailOverview) {
   return (
     <Layout>
       <Overview>

@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
+
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
@@ -11,17 +12,15 @@ import { useFailToast } from "../../../hooks/custom/CustomToast";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
-import { IGatherLocation } from "../../../types/models/gatherTypes/gather";
+import { IGatherLocation } from "../../../types/models/gatherTypes/gatherTypes";
 
 function WritingGahterLocation() {
   const router = useRouter();
   const failToast = useFailToast();
 
-  const [gatherWriting, setGatherWriting] = useRecoilState(
-    sharedGatherWritingState
-  );
+  const [gatherWriting, setGatherWriting] = useRecoilState(sharedGatherWritingState);
   const [location, setLocation] = useState<IGatherLocation>(
-    gatherWriting?.location || { main: "", sub: "" }
+    gatherWriting?.location || { main: "", sub: "" },
   );
 
   const onClickNext = () => {
@@ -51,9 +50,7 @@ function WritingGahterLocation() {
           <LocationDetailInput
             placeholder="상세 주소"
             value={location.sub}
-            onChange={(e) =>
-              setLocation((old) => ({ ...old, sub: e.target.value }))
-            }
+            onChange={(e) => setLocation((old) => ({ ...old, sub: e.target.value }))}
           />
         </Location>
       </RegisterLayout>

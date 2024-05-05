@@ -4,10 +4,7 @@ interface ICircleLogImage {
   logoName: string;
   imageUrl: string;
 }
-export default function CircleLogoImage({
-  logoName,
-  imageUrl,
-}: ICircleLogImage) {
+export default function CircleLogoImage({ logoName, imageUrl }: ICircleLogImage) {
   return (
     <CircleLogoWrapper logoName={logoName}>
       <Image src={imageUrl} width={72} height={72} alt={logoName} />

@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import { SERVER_URI } from "../constants/system";
 
 interface IRequestParams<T, M> {
@@ -15,9 +16,10 @@ export const requestServer = async <T, M = void>({
 }: IRequestParams<T, M>): Promise<M> => {
   console.log(method, url, body);
   switch (method) {
-    case "post":
+    case "post": {
       const res = await axios.post<M>(`${SERVER_URI}/${url}`, body);
       return res.data;
+    }
     case "patch":
       return axios.patch(`${SERVER_URI}/${url}`, body);
     case "delete":

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 async function getData() {
   const res = await fetch("https://api.example.com/...");
   // The return value is *not* serialized
@@ -13,14 +15,12 @@ async function getData() {
 const secret = process.env.NEXTAUTH_SECRET;
 export async function middleware() {
   // const session = await getSession();
-
   // const session=await getServerSession(context.req,context.res,auth)
   // const token2 = await getToken({ req });
   // const token3 = await encode({
   //   token: token2 as JWT,
   //   secret: secret as string,
   // });
-  
   // const e = cookies().get("next-auth.session-token");
   // const f = `Bearer ${token3}`;
   // // axios.defaults.headers.common["Authorization"] = f;
@@ -35,7 +35,6 @@ export async function middleware() {
   //   }
   // );
   // const C = await authResponse.json();
- 
   // const A = async () => {
   //   try {
   //     const response = await axios.get(
@@ -79,12 +78,12 @@ export async function middleware() {
   //   return NextResponse.redirect("/login");
   // }
   // if (request.nextUrl.pathname === "/")
-  //  
+  //
   // if (
   //   request.nextUrl.pathname === "/" &&
   //   ["undefined", null].includes(request.nextUrl.searchParams.get("location"))
   // ) {
-  //   
+  //
   //   return NextResponse.redirect(new URL("/?location=suw", request.url));
   // }
 }

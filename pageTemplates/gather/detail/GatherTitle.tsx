@@ -1,8 +1,8 @@
 import styled from "styled-components";
+
 import { Badge } from "../../../components/atoms/badges/Badges";
 import { STATUS_TO_TEXT } from "../../../constants/util/convert";
-
-import { GatherStatus } from "../../../types/models/gatherTypes/gather";
+import { GatherStatus } from "../../../types/models/gatherTypes/gatherTypes";
 
 interface IGatherTitle {
   title: string;
@@ -10,8 +10,7 @@ interface IGatherTitle {
 }
 
 function GatherTitle({ status, title }: IGatherTitle) {
-  const color =
-    status === "pending" ? "mintTheme" : status === "open" ? "redTheme" : null;
+  const color = status === "pending" ? "mintTheme" : status === "open" ? "redTheme" : null;
 
   return (
     <Layout status={status}>

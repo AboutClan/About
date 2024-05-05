@@ -8,9 +8,7 @@ export const STUDY_VOTE_END_HOUR = 23;
 export const TODAY_START_HOUR = 9;
 
 export const STUDY_START_VOTETIME_HOUR = 10;
-export const STUDY_TIME_TABLE = [
-  10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-];
+export const STUDY_TIME_TABLE = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
 
 export const STUDY_VOTE_ICON = {
   default: `<button style="width: 34px; height: 34px; padding: 6px; border-radius: 50%; background-color: rgba(0, 194, 179, 0.1);">

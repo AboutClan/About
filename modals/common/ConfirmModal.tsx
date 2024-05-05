@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { IModal } from "../../types/components/modalTypes";
 import { IFooterOptions } from "../Modals";
 
@@ -11,7 +12,7 @@ export interface IConfirmContent {
   onClickRight: () => void;
 }
 
-function ConfirmModal({ content, setIsModal }: IConfirmModal) {
+function ConfirmModal({ content }: IConfirmModal) {
   const footerOptions: IFooterOptions = {
     main: {
       text: "확인",

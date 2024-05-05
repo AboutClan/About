@@ -1,5 +1,6 @@
 import { ChangeEvent } from "react";
 import styled from "styled-components";
+
 import { ITime } from "../../types/utils/timeAndDate";
 
 interface ITimeSelectorUnit {
@@ -9,16 +10,9 @@ interface ITimeSelectorUnit {
   disabled?: boolean;
 }
 
-function TimeSelectorUnit({
-  time,
-  setTime,
-  timeArr,
-  disabled,
-}: ITimeSelectorUnit) {
+function TimeSelectorUnit({ time, setTime, timeArr, disabled }: ITimeSelectorUnit) {
   const hourStr = String(time.hours);
-  const minuteStr = time.minutes
-    ? String(time.minutes)
-    : String(time.minutes) + "0";
+  const minuteStr = time.minutes ? String(time.minutes) : String(time.minutes) + "0";
 
   const onChangeTime = (event: ChangeEvent<HTMLSelectElement>) => {
     const value = event.currentTarget.value;
@@ -26,13 +20,13 @@ function TimeSelectorUnit({
     const minutes = Number(value.slice(3));
     setTime({ hours, minutes });
   };
+  
 
   return (
     <Layout>
       <Select
         name="hour"
         value={`${hourStr}:${minuteStr}`}
-        // placeholder="시간"
         onChange={onChangeTime}
         disabled={disabled}
       >

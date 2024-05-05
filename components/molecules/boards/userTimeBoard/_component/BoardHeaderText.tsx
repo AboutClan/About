@@ -1,10 +1,8 @@
-import styled from "styled-components";
-
 import { faUserGroup } from "@fortawesome/pro-light-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import HighlightedText, {
-  IHighlightedText,
-} from "../../../../atoms/HighlightedText";
+import styled from "styled-components";
+
+import HighlightedText, { IHighlightedText } from "../../../../atoms/HighlightedText";
 
 interface IBoardHeaderText {
   headerText: IHighlightedText;
@@ -13,10 +11,7 @@ export default function BoardHeaderText({ headerText }: IBoardHeaderText) {
   return (
     <HeaderContainer>
       <Icon icon={faUserGroup} size="sm" />
-      <HighlightedText
-        text={headerText.text}
-        hightlightedText={headerText.hightlightedText}
-      />
+      <HighlightedText text={headerText.text} hightlightedText={headerText.hightlightedText} />
     </HeaderContainer>
   );
 }

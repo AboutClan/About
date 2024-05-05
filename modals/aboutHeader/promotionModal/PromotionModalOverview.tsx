@@ -1,5 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import styled from "styled-components";
+
 import EveryTimeLogo from "../../../components/atoms/Icons/CustomIcons";
 
 function PromotionModalOverview() {
@@ -20,22 +21,6 @@ const Layout = styled.div`
   text-align: center;
   display: flex;
   flex-direction: column;
-`;
-
-const EveryTime = styled.div`
-  position: relative;
-  z-index: 2;
-  background-color: white;
-  border-radius: var(--rounded-lg);
-`;
-
-const Title = styled.div`
-  font-size: 28px;
-  font-weight: 800;
-  line-height: 1.3;
-  > span:first-child {
-    color: #c62917;
-  }
 `;
 
 const Detail = styled.div`

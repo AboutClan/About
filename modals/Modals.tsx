@@ -11,6 +11,7 @@ import {
   ModalOverlay,
 } from "@chakra-ui/react";
 import styled from "styled-components";
+
 import TwoButtonNav from "../components/layouts/TwoButtonNav";
 import { IModal } from "../types/components/modalTypes";
 
@@ -23,6 +24,7 @@ export interface IFooterOptions {
     text?: string;
     func?: () => void;
     isRedTheme?: boolean;
+    isLoading?: boolean;
   };
   sub?: {
     text?: string;
@@ -36,6 +38,7 @@ interface IModalLayout extends IModal {
   title?: string;
   footerOptions?: IFooterOptions;
   children: React.ReactNode;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   initialRef?: any;
   headerOptions?: IHeaderOptions;
   paddingOptions?: IPaddingOptions;
@@ -50,7 +53,7 @@ export interface IPaddingOptions {
   footer?: number;
 }
 
-export const ModalLayout = ({
+export function ModalLayout({
   title,
   setIsModal,
   footerOptions,
@@ -58,7 +61,7 @@ export const ModalLayout = ({
   initialRef,
   children,
   paddingOptions,
-}: IModalLayout) => {
+}: IModalLayout) {
   const onClose = () => setIsModal(false);
 
   const { main, sub, isFull = true } = footerOptions || {};
@@ -77,11 +80,7 @@ export const ModalLayout = ({
       >
         {!headerOptions ? (
           <>
-            <ChakraModalHeader
-              p="var(--gap-4)"
-              fontSize="18px"
-              borderBottom="var(--border)"
-            >
+            <ChakraModalHeader p="var(--gap-4)" fontSize="18px" borderBottom="var(--border)">
               {title}
             </ChakraModalHeader>
             <ModalCloseButton size="lg" />
@@ -106,14 +105,8 @@ export const ModalLayout = ({
           </>
         )}
         <ChakraModalBody
-          pt={
-            paddingOptions?.body?.top ? `${paddingOptions.body.top}px` : "16px"
-          }
-          pb={
-            paddingOptions?.body?.bottom
-              ? `${paddingOptions.body.bottom}px`
-              : "4px"
-          }
+          pt={paddingOptions?.body?.top ? `${paddingOptions.body.top}px` : "16px"}
+          pb={paddingOptions?.body?.bottom ? `${paddingOptions.body.bottom}px` : "4px"}
           px="20px"
         >
           {children}
@@ -133,6 +126,7 @@ export const ModalLayout = ({
                   colorScheme={main?.isRedTheme ? "redTheme" : "mintTheme"}
                   w="100%"
                   onClick={func}
+                  isLoading={main?.isLoading}
                 >
                   {text}
                 </Button>
@@ -140,9 +134,7 @@ export const ModalLayout = ({
                 <Button
                   onClick={func}
                   variant="ghost"
-                  color={
-                    main?.isRedTheme ? "var(--color-red)" : "var(--color-mint)"
-                  }
+                  color={main?.isRedTheme ? "var(--color-red)" : "var(--color-mint)"}
                 >
                   {text}
                 </Button>
@@ -156,11 +148,7 @@ export const ModalLayout = ({
               />
             ) : (
               <>
-                <Button
-                  onClick={subFunc}
-                  variant="ghost"
-                  color="var(--color-mint)"
-                >
+                <Button onClick={subFunc} variant="ghost" color="var(--color-mint)">
                   {subText}
                 </Button>
                 <Button onClick={func} variant="ghost">
@@ -200,7 +188,7 @@ export const ModalLayout = ({
       </ModalContent>
     </Modal>
   );
-};
+}
 
 interface IModalHeader {
   text: string;
@@ -208,54 +196,54 @@ interface IModalHeader {
   isLine?: boolean;
 }
 
-export const ModalHeader = ({
-  text,
-  isCloseBtn = true,
-  isLine = true,
-}: IModalHeader) => (
-  <>
+export function ModalHeader({ text, isCloseBtn = true, isLine = true }: IModalHeader) {
+  return (
+    <>
+      <ChakraModalHeader
+        display="flex"
+        alignItems="center"
+        p="var(--gap-4) var(--gap-4)"
+        fontWeight="700"
+        fontSize="18px"
+        color="var(--gray-1)"
+        borderBottom={isLine && "var(--border)"}
+      >
+        {text}
+      </ChakraModalHeader>
+      {isCloseBtn && <ModalCloseButton size="lg" pb="2px" _focus={{ outline: "none" }} />}
+    </>
+  );
+}
+
+export function ModalHeaderCenter({ text }) {
+  return (
     <ChakraModalHeader
       display="flex"
       alignItems="center"
-      p="var(--gap-4) var(--gap-4)"
-      fontWeight="700"
-      fontSize="18px"
-      color="var(--gray-1)"
-      borderBottom={isLine && "var(--border)"}
+      px="var(--gap-5)"
+      pt="var(--gap-4)"
+      pb="0"
+      justifyContent="center"
     >
       {text}
     </ChakraModalHeader>
-    {isCloseBtn && (
-      <ModalCloseButton size="lg" pb="2px" _focus={{ outline: "none" }} />
-    )}
-  </>
-);
+  );
+}
 
-export const ModalHeaderCenter = ({ text }) => (
-  <ChakraModalHeader
-    display="flex"
-    alignItems="center"
-    px="var(--gap-5)"
-    pt="var(--gap-4)"
-    pb="0"
-    justifyContent="center"
-  >
-    {text}
-  </ChakraModalHeader>
-);
-
-export const ModalBody = ({ children }) => (
-  <ChakraModalBody
-    px=" var(--gap-5)"
-    pt="var(--gap-4)"
-    pb="0"
-    display="flex"
-    flexDir="column"
-    position="relative"
-  >
-    {children}
-  </ChakraModalBody>
-);
+export function ModalBody({ children }) {
+  return (
+    <ChakraModalBody
+      px=" var(--gap-5)"
+      pt="var(--gap-4)"
+      pb="0"
+      display="flex"
+      flexDir="column"
+      position="relative"
+    >
+      {children}
+    </ChakraModalBody>
+  );
+}
 
 interface IModalFooterTwo {
   onClickLeft: () => void;
@@ -267,71 +255,28 @@ interface IModalFooterTwo {
   isLoading?: boolean;
 }
 
-export const ModalFooterTwo3 = ({
+export function ModalFooterTwo({
   onClickLeft,
   onClickRight,
   leftText = "닫기",
   rightText = "확인",
-  isFull = true,
-  isLoading,
-  isSmall,
-}: IModalFooterTwo) => (
-  <ModalFooterLayout p="var(--gap-4) var(--gap-5)">
-    <>
-      <TwoButtonNav
-        leftText={leftText}
-        rightText={rightText}
-        onClickLeft={onClickLeft}
-        onClickRight={onClickRight}
-        isLoading={isLoading}
-      />
-    </>
-  </ModalFooterLayout>
-);
 
-export const ModalFooterTwo = ({
-  onClickLeft,
-  onClickRight,
-  leftText = "닫기",
-  rightText = "확인",
-  isFull = true,
   isLoading,
-  isSmall,
-}: IModalFooterTwo) => (
-  // <ChakraModalFooter mt="auto" p="var(--gap-3) var(--gap-5)">
-  <ModalFooterLayout p="var(--gap-4) var(--gap-5)">
-    <>
-      <TwoButtonNav
-        leftText={leftText}
-        rightText={rightText}
-        onClickLeft={onClickLeft}
-        onClickRight={onClickRight}
-        isLoading={isLoading}
-      />
-    </>
-
-    {/* <Button
-      w={isFull && "100%"}
-      variant={isFull ? "solid" : "ghost"}
-      mr={!isFull ? "var(--gap-2)" : "var(--gap-3)"}
-      onClick={onClickLeft}
-      size={isFull && !isSmall ? "lg" : "md"}
-    >
-      {leftText || "이전"}
-    </Button> */}
-    {/* <Button
-      w={isFull && "100%"}
-      variant={isFull ? "solid" : "ghost"}
-      color={isFull ? "white" : "var(--color-mint)"}
-      onClick={onClickRight}
-      colorScheme={isFull && "mintTheme"}
-      size={isFull && !isSmall ? "lg" : "md"}
-    >
-      {rightText || "다음"}
-    </Button> */}
-  </ModalFooterLayout>
-  // </ChakraModalFooter>
-);
+}: IModalFooterTwo) {
+  return (
+    <ModalFooterLayout p="var(--gap-4) var(--gap-5)">
+      <>
+        <TwoButtonNav
+          leftText={leftText}
+          rightText={rightText}
+          onClickLeft={onClickLeft}
+          onClickRight={onClickRight}
+          isLoading={isLoading}
+        />
+      </>
+    </ModalFooterLayout>
+  );
+}
 
 const ModalFooterLayout = styled(ChakraModalFooter)`
   margin-top: auto;
@@ -348,36 +293,32 @@ interface IModalFooterOne {
   isOutline?: boolean;
 }
 
-export const ModalFooterOne = ({
+export function ModalFooterOne({
   onClick,
   text,
   isFull,
   isRed,
   isLoading,
   isOutline,
-}: IModalFooterOne) => (
-  <ChakraModalFooter p="var(--gap-4) var(--gap-5)">
-    <Button
-      size={isFull ? "lg" : "md"}
-      variant={isFull ? "solid" : isOutline ? "outline" : "ghost"}
-      color={!isFull || isOutline ? "var(--color-mint)" : "white"}
-      w={isFull && "100%"}
-      bg={isOutline ? "white" : null}
-      border={isOutline ? "1.5px solid var(--color-mint)" : null}
-      colorScheme={
-        isFull && !isRed && !isOutline
-          ? "mintTheme"
-          : isOutline
-          ? null
-          : "redTheme"
-      }
-      isLoading={isLoading}
-      onClick={onClick}
-    >
-      {text || "확인"}
-    </Button>
-  </ChakraModalFooter>
-);
+}: IModalFooterOne) {
+  return (
+    <ChakraModalFooter p="var(--gap-4) var(--gap-5)">
+      <Button
+        size={isFull ? "lg" : "md"}
+        variant={isFull ? "solid" : isOutline ? "outline" : "ghost"}
+        color={!isFull || isOutline ? "var(--color-mint)" : "white"}
+        w={isFull && "100%"}
+        bg={isOutline ? "white" : null}
+        border={isOutline ? "1.5px solid var(--color-mint)" : null}
+        colorScheme={isFull && !isRed && !isOutline ? "mintTheme" : isOutline ? null : "redTheme"}
+        isLoading={isLoading}
+        onClick={onClick}
+      >
+        {text || "확인"}
+      </Button>
+    </ChakraModalFooter>
+  );
+}
 
 interface IModalBodyNavTwo {
   topText: string;
@@ -386,48 +327,32 @@ interface IModalBodyNavTwo {
   onClickBottom: () => void;
 }
 
-export const ModalBodyNavTwo = ({
+export function ModalBodyNavTwo({
   topText,
   bottomText,
   onClickBottom,
   onClickTop,
-}: IModalBodyNavTwo) => (
-  <Flex
-    direction="column"
-    h="100%"
-    mb="var(--gap-4)"
-    py="var(--gap-3)"
-    justifyContent="space-around"
-  >
-    <Button
-      colorScheme="mintTheme"
-      marginBottom="var(--gap-3)"
-      size="lg"
-      h="46px"
-      onClick={onClickTop}
+}: IModalBodyNavTwo) {
+  return (
+    <Flex
+      direction="column"
+      h="100%"
+      mb="var(--gap-4)"
+      py="var(--gap-3)"
+      justifyContent="space-around"
     >
-      {topText}
-    </Button>
-    <Button size="lg" h="46px" onClick={onClickBottom}>
-      {bottomText}
-    </Button>
-  </Flex>
-);
-
-const SIZE_HEIGHT_MAP = {
-  xxl: "530px",
-  xl: "370px",
-  lg: "310px",
-  md: "240px",
-  sm: "180px",
-  xs: "120px",
-};
-
-const IS_WIDTH_VIEW_MAIN = {
-  xxl: true,
-  xl: true,
-  lg: true,
-  md: false,
-  sm: false,
-  xs: false,
-};
+      <Button
+        colorScheme="mintTheme"
+        marginBottom="var(--gap-3)"
+        size="lg"
+        h="46px"
+        onClick={onClickTop}
+      >
+        {topText}
+      </Button>
+      <Button size="lg" h="46px" onClick={onClickBottom}>
+        {bottomText}
+      </Button>
+    </Flex>
+  );
+}

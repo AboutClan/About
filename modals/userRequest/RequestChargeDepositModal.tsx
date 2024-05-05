@@ -1,14 +1,12 @@
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
+
 import { CopyBtn } from "../../components/atoms/Icons/CopyIcon";
 import { ACCOUNT_SHORT } from "../../constants/contentsText/Private";
 import { USER_INFO } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
-import {
-  useCompleteToast,
-  useErrorToast,
-} from "../../hooks/custom/CustomToast";
+import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { usePointSystemQuery } from "../../hooks/user/queries";
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
@@ -27,7 +25,7 @@ function RequestChargeDepositModal({ setIsModal }: IModal) {
 
   const { data: deposit } = usePointSystemQuery("deposit");
   const { mutate: sendRequest } = useUserRequestMutation();
-  const { mutate: getDeposit, isLoading } = usePointSystemMutation("deposit", {
+  const { mutate: getDeposit } = usePointSystemMutation("deposit", {
     onSuccess() {
       completeToast("success");
       resetQueryData([USER_INFO], () => setIsModal(false));
@@ -54,11 +52,7 @@ function RequestChargeDepositModal({ setIsModal }: IModal) {
   };
 
   return (
-    <ModalLayout
-      footerOptions={footerOptions}
-      title="보증금 충전"
-      setIsModal={setIsModal}
-    >
+    <ModalLayout footerOptions={footerOptions} title="보증금 충전" setIsModal={setIsModal}>
       {myDeposit &&
         (isFirst ? (
           <>
@@ -136,7 +130,5 @@ const Message = styled.div`
   align-items: center;
   font-weight: 600;
 `;
-
-const Footer = styled.footer``;
 
 export default RequestChargeDepositModal;

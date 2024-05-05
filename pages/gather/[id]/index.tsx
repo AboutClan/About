@@ -1,8 +1,10 @@
 import "dayjs/locale/ko"; // 로케일 플러그인 로드
-import { useSession } from "next-auth/react";
+
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../components/layouts/PageSlide";
 import { useGatherQuery } from "../../../hooks/gather/queries";
@@ -15,6 +17,7 @@ import GatherOrganizer from "../../../pageTemplates/gather/detail/GatherOrganize
 import GatherParticipation from "../../../pageTemplates/gather/detail/GatherParticipation";
 import GatherTitle from "../../../pageTemplates/gather/detail/GatherTitle";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
+import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 
 function GatherDetail() {
   const { data: session } = useSession();
@@ -40,19 +43,13 @@ function GatherDetail() {
               <Layout>
                 <GatherOrganizer
                   createdAt={gatherData.createdAt}
-                  organizer={gatherData.user}
+                  organizer={gatherData.user as IUserSummary}
                   isAdminOpen={gatherData.isAdminOpen}
                   category={gatherData.type.title}
                 />
                 <GatherDetailInfo data={gatherData} />
-                <GatherTitle
-                  title={gatherData.title}
-                  status={gatherData.status}
-                />
-                <GatherContent
-                  content={gatherData.content}
-                  gatherList={gatherData.gatherList}
-                />
+                <GatherTitle title={gatherData.title} status={gatherData.status} />
+                <GatherContent content={gatherData.content} gatherList={gatherData.gatherList} />
                 <GatherParticipation data={gatherData} />
                 <GatherComments comment={gatherData.comment} />
               </Layout>

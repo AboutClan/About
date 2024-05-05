@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import {
   ALPHABET_POP_UP,
   ATTEND_POP_UP,
@@ -12,14 +13,12 @@ import {
 import EnthusiasticModal from "../../../modals/aboutHeader/EnthusiasticModal/EnthusiasticModal";
 import PointSystemsModal from "../../../modals/aboutHeader/pointSystemsModal/PointSystemsModal";
 import PromotionModal from "../../../modals/aboutHeader/promotionModal/PromotionModal";
-import { checkAndSetLocalStorage } from "../../../utils/storageUtils";
-
 import AlphabetPopUp from "../../../modals/pop-up/AlphabetPopUp";
 import FAQPopUp from "../../../modals/pop-up/FAQPopUp";
-
 import LastWeekAttendPopUp from "../../../modals/pop-up/LastWeekAttendPopUp";
 import ManagerPopUp from "../../../modals/pop-up/ManagerPopUp";
 import SuggestPopUp from "../../../modals/pop-up/SuggestPopUp";
+import { checkAndSetLocalStorage } from "../../../utils/storageUtils";
 
 export type UserPopUp =
   | "lastWeekAttend"

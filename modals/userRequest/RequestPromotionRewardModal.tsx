@@ -1,24 +1,17 @@
 import { Button } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
-import { CopyBtn } from "../../components/atoms/Icons/CopyIcon";
 
-import {
-  PromotionComponent,
-  PROMOTION_TEXT,
-} from "../../constants/contentsText/Private";
+import { CopyBtn } from "../../components/atoms/Icons/CopyIcon";
+import { PROMOTION_TEXT, PromotionComponent } from "../../constants/contentsText/Private";
 import { POINT_SYSTEM_PLUS } from "../../constants/settingValue/pointSystem";
-import {
-  useCompleteToast,
-  useErrorToast,
-} from "../../hooks/custom/CustomToast";
+import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
-import { IFooterOptions, ModalLayout } from "../Modals";
-
 import { IModal } from "../../types/components/modalTypes";
+import { IFooterOptions, ModalLayout } from "../Modals";
 
 function RequestPromotionRewardModal({ setIsModal }: IModal) {
   const { data: session } = useSession();
@@ -54,15 +47,10 @@ function RequestPromotionRewardModal({ setIsModal }: IModal) {
   };
 
   return (
-    <ModalLayout
-      setIsModal={setIsModal}
-      footerOptions={footerOptions}
-      title="홍보 리워드 신청"
-    >
+    <ModalLayout setIsModal={setIsModal} footerOptions={footerOptions} title="홍보 리워드 신청">
       <Overview>
-        에브리타임 홍보 게시판에 아래 홍보글을 올려주시면 ABOUT 포인트와 추첨을
-        통해 꽤 높은 확률로 상품을 보내드립니다! 도와주시는 모든 분들
-        감사합니다!
+        에브리타임 홍보 게시판에 아래 홍보글을 올려주시면 ABOUT 포인트와 추첨을 통해 꽤 높은 확률로
+        상품을 보내드립니다! 도와주시는 모든 분들 감사합니다!
       </Overview>
       {isFirst ? (
         <Container>
@@ -86,9 +74,8 @@ function RequestPromotionRewardModal({ setIsModal }: IModal) {
         {isFirst ? "이미지 다운로드" : "돌아가기"}
       </Button>
       <Message>
-        제목은 &quot;카공 및 친목 동아리 ABOUT&quot; 로 적어주시면 되고,
-        이미지는 굳이 안넣어주셔도 돼요! 여러번 지원해도 너무 환영하니 자주
-        신청해주세요 🙂
+        제목은 &quot;카공 및 친목 동아리 ABOUT&quot; 로 적어주시면 되고, 이미지는 굳이 안넣어주셔도
+        돼요! 여러번 지원해도 너무 환영하니 자주 신청해주세요 🙂
       </Message>
     </ModalLayout>
   );

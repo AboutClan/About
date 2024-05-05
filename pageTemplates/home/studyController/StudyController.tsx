@@ -3,11 +3,10 @@ import dayjs, { Dayjs } from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+
 import Slide from "../../../components/layouts/PageSlide";
 import BetweenTextSwitcher from "../../../components/molecules/navs/BetweenTextSwitcher";
 import StudyAttendCheckModal from "../../../modals/study/StudyAttendCheckModal";
-import { LocationEn } from "../../../types/services/locationTypes";
-import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
 import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
 import StudyControllerDate from "./StudyControllerDates";
 import StudyControllerDays from "./StudyControllerDays";
@@ -28,10 +27,6 @@ function StudyController() {
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
   const date = searchParams.get("date");
-  const location = convertLocationLangTo(
-    searchParams.get("location") as LocationEn,
-    "kr"
-  );
 
   const [selectedDate, setSelectedDate] = useState<string>();
   const [modalType, setModalType] = useState<VoteType>(null);
@@ -103,7 +98,7 @@ function StudyController() {
 
 export const getTextSwitcherProps = (
   selectedDateDayjs: Dayjs,
-  onClick: (month: number) => void
+  onClick: (month: number) => void,
 ) => {
   const leftMonth = selectedDateDayjs.subtract(1, "month").month() + 1;
   const rightMonth = selectedDateDayjs.add(1, "month").month() + 1;
@@ -124,7 +119,7 @@ export const getTextSwitcherProps = (
 export const handleChangeDate = (
   selectedDateDayjs: Dayjs,
   type: "month" | "date",
-  num: number
+  num: number,
 ): string => {
   let year = selectedDateDayjs.year();
   let month = selectedDateDayjs.month() + 1;
@@ -143,7 +138,7 @@ export const handleChangeDate = (
     dayjs()
       .year(year)
       .month(month - 1)
-      .date(date)
+      .date(date),
   );
   return newDate;
 };

@@ -2,6 +2,7 @@ import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSearchParams } from "next/navigation";
 import { useRecoilValue } from "recoil";
+
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import { PostThumbnailCard } from "../../components/molecules/cards/PostThumbnailCard";

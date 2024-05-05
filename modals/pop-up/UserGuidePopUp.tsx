@@ -1,6 +1,7 @@
 import { faThumbTack } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
+
 import { USER_GUIDE_POP_UP } from "../../constants/keys/localStorage";
 import { IModal } from "../../types/components/modalTypes";
 import { IFooterOptions, IHeaderOptions, ModalLayout } from "../Modals";
@@ -30,11 +31,7 @@ function UserGuidePopUp({ setIsModal }: IModal) {
     >
       <Item>
         <Category>
-          <FontAwesomeIcon
-            icon={faThumbTack}
-            color="var(--color-red)"
-            size="sm"
-          />
+          <FontAwesomeIcon icon={faThumbTack} color="var(--color-red)" size="sm" />
           &nbsp;
           <span>스터디</span>
         </Category>
@@ -55,11 +52,7 @@ function UserGuidePopUp({ setIsModal }: IModal) {
       </Item>
       <Item>
         <Category>
-          <FontAwesomeIcon
-            icon={faThumbTack}
-            color="var(--color-red)"
-            size="sm"
-          />
+          <FontAwesomeIcon icon={faThumbTack} color="var(--color-red)" size="sm" />
           &nbsp;
           <span>참여 규칙</span>
         </Category>
@@ -70,11 +63,7 @@ function UserGuidePopUp({ setIsModal }: IModal) {
       </Item>{" "}
       <Item>
         <Category>
-          <FontAwesomeIcon
-            icon={faThumbTack}
-            color="var(--color-red)"
-            size="sm"
-          />
+          <FontAwesomeIcon icon={faThumbTack} color="var(--color-red)" size="sm" />
           &nbsp;
           <span>서비스 이용</span>
         </Category>

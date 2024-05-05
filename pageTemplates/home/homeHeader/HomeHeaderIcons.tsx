@@ -1,13 +1,9 @@
-import {
-  faBadgeCheck,
-  faBell,
-  faCircleP,
-  faCircleUser,
-} from "@fortawesome/pro-light-svg-icons";
+import { faBadgeCheck, faBell, faCircleP, faCircleUser } from "@fortawesome/pro-light-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+
 import {
   DAILY_CHECK_POP_UP,
   NOTICE_ACTIVE_CNT,
@@ -19,11 +15,12 @@ import { AlertIcon } from "../../../styles/icons";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 
 interface IHomeHeaderIcons {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setIconType: React.Dispatch<any>;
   isRabbitRun: boolean;
 }
 
-function HomeHeaderIcons({ setIconType, isRabbitRun }: IHomeHeaderIcons) {
+function HomeHeaderIcons({ setIconType }: IHomeHeaderIcons) {
   const [isNoticeAlert, setIsNoticeAlert] = useState(false);
 
   useNoticeActiveLogQuery({
@@ -39,8 +36,7 @@ function HomeHeaderIcons({ setIconType, isRabbitRun }: IHomeHeaderIcons) {
     }
   }, []);
 
-  const isAttendCheck =
-    localStorage.getItem(DAILY_CHECK_POP_UP) === dayjsToStr(dayjs());
+  const isAttendCheck = localStorage.getItem(DAILY_CHECK_POP_UP) === dayjsToStr(dayjs());
 
   return (
     <Layout className="about_header">
@@ -76,10 +72,7 @@ function HomeHeaderIcons({ setIconType, isRabbitRun }: IHomeHeaderIcons) {
         {isNoticeAlert && <Alert />}
       </NoticeWrapper>
       <IconWrapper>
-        <FontAwesomeIcon
-          icon={faCircleUser}
-          onClick={() => setIconType("user")}
-        />
+        <FontAwesomeIcon icon={faCircleUser} onClick={() => setIconType("user")} />
       </IconWrapper>
     </Layout>
   );

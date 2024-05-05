@@ -1,10 +1,11 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../components/layouts/PageSlide";
 import SectionBar from "../../../components/molecules/bars/SectionBar";
@@ -19,16 +20,9 @@ import { transferMemberDataState } from "../../../recoils/transferRecoils";
 import { IGroupedMembers, MemberGroup } from "../../../types/models/member";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
 import { Location } from "../../../types/services/locationTypes";
-
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
-const MEMBER_SECTIONS: MemberGroup[] = [
-  "birth",
-  "member",
-  "human",
-  "enthusiastic",
-  "resting",
-];
+const MEMBER_SECTIONS: MemberGroup[] = ["birth", "member", "human", "enthusiastic", "resting"];
 
 export const SECTION_NAME: Record<MemberGroup, string> = {
   member: "활동 멤버",
@@ -49,20 +43,15 @@ function Member() {
   const [groupedMembers, setgroupedMembers] = useState<IGroupedMembers>();
   const [locationMembers, setLocationMembers] = useState<IUser[]>();
 
-  const { data: usersAll, isLoading } = useAdminUsersLocationControlQuery(
-    location as Location,
-    {
-      enabled: !!location,
-    }
-  );
+  const { data: usersAll, isLoading } = useAdminUsersLocationControlQuery(location as Location, {
+    enabled: !!location,
+  });
 
   //멤버 분류
   useEffect(() => {
     if (!location || isLoading || !usersAll) return;
 
-    const locationMembers = usersAll.sort((a, b) =>
-      a.score > b.score ? -1 : 1
-    );
+    const locationMembers = usersAll.sort((a, b) => (a.score > b.score ? -1 : 1));
     setLocationMembers(locationMembers);
 
     const classified = {
@@ -110,9 +99,7 @@ function Member() {
 
   const sortGroup = (members: IUser[]) => {
     const temp = [...members];
-    const idx = temp.findIndex(
-      (who) => who.role === "manager" || who.role === "previliged"
-    );
+    const idx = temp.findIndex((who) => who.role === "manager" || who.role === "previliged");
     if (idx > -1) {
       const item = temp[idx];
       temp.splice(idx, 1);
@@ -130,14 +117,10 @@ function Member() {
           <SectionBar title="멤버 소개" size="md" />
           <Box mx="16px">
             {MEMBER_SECTIONS.map((section) => {
-              if (section === "birth" && groupedMembers.birth.length === 0)
-                return;
+              if (section === "birth" && groupedMembers.birth.length === 0) return;
               return (
                 <Section key={section}>
-                  <MemberSectionTitle
-                    section={section}
-                    onClickSection={onClickSection}
-                  />
+                  <MemberSectionTitle section={section} onClickSection={onClickSection} />
                   <BlurredPart isBlur={isGuest}>
                     <MemberSectionList members={groupedMembers[section]} />
                   </BlurredPart>

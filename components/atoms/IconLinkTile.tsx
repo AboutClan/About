@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styled from "styled-components";
+
 import { Size } from "../../types/components/assetTypes";
 export interface IIconLinkTile {
   text: string;
@@ -9,13 +10,7 @@ export interface IIconLinkTile {
   func?: () => void;
 }
 
-export default function IconLinkTile({
-  url,
-  text,
-  icon,
-  func,
-  size = "md",
-}: IIconLinkTile) {
+export default function IconLinkTile({ url, text, icon, func, size = "md" }: IIconLinkTile) {
   const renderContent = () => (
     <>
       <IconContainer>{icon}</IconContainer>
@@ -55,8 +50,6 @@ const IconContainer = styled.div`
 const Text = styled.span`
   white-space: nowrap;
   font-size: ${(props) =>
-    props.size === "lg"
-      ? "14px"
-      : "10px"}; /* text-xs와 text-sm에 해당하는 폰트 크기 */
+    props.size === "lg" ? "14px" : "10px"}; /* text-xs와 text-sm에 해당하는 폰트 크기 */
   font-weight: normal;
 `;

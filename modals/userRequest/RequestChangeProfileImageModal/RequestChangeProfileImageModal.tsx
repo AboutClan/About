@@ -3,12 +3,9 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
+
 import { USER_INFO } from "../../../constants/keys/queryKeys";
-import {
-  useCompleteToast,
-  useErrorToast,
-  useFailToast,
-} from "../../../hooks/custom/CustomToast";
+import { useCompleteToast, useErrorToast, useFailToast } from "../../../hooks/custom/CustomToast";
 import {
   useUserInfoFieldMutation,
   useUserUpdateProfileImageMutation,
@@ -55,11 +52,7 @@ function RequestChangeProfileImageModal({ setIsModal }: IModal) {
       {pageNum === 0 ? (
         <ModalLayout title="프로필 변경" setIsModal={setIsModal}>
           <Container>
-            <Button
-              colorScheme="mintTheme"
-              size="lg"
-              onClick={() => setPageNum(1)}
-            >
+            <Button colorScheme="mintTheme" size="lg" onClick={() => setPageNum(1)}>
               아바타 선택
             </Button>
             <Button mt="12px" size="lg" onClick={onClickKakao}>

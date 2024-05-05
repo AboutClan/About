@@ -1,22 +1,17 @@
 import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import styled from "styled-components";
-import BottomNav from "../../components/layouts/BottomNav";
 
+import BottomNav from "../../components/layouts/BottomNav";
 import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
 import { MBTI } from "../../constants/contentsText/ProfileData";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
-import {
-  getLocalStorageObj,
-  setLocalStorageObj,
-} from "../../utils/storageUtils";
+import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
 function Mbti() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const info: IUserRegisterFormWriting = getLocalStorageObj(REGISTER_INFO);
 
@@ -36,10 +31,7 @@ function Mbti() {
 
   return (
     <>
-      <ProgressHeader
-        title={!isProfileEdit ? "회원가입" : "프로필 수정"}
-        value={50}
-      />
+      <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={50} />
 
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
@@ -48,11 +40,7 @@ function Mbti() {
         </RegisterOverview>
         <ButtonNav>
           {MBTI?.map((item, idx) => (
-            <Button
-              key={idx}
-              $isSelected={mbti === item}
-              onClick={() => setMbti(item)}
-            >
+            <Button key={idx} $isSelected={mbti === item} onClick={() => setMbti(item)}>
               {item}
             </Button>
           ))}
@@ -78,8 +66,7 @@ const Button = styled.button<{ $isSelected: boolean }>`
   height: 48px;
   font-size: 14px;
   font-weight: ${(props) => props.$isSelected && "600"};
-  border: ${(props) =>
-    props.$isSelected ? "var(--border-thick)" : "var(--border)"};
+  border: ${(props) => (props.$isSelected ? "var(--border-thick)" : "var(--border)")};
 `;
 
 export default Mbti;

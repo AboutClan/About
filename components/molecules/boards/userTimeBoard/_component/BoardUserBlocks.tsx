@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+
 import { COLOR_TABLE } from "../../../../../constants/colorConstants";
-import { ITimeBoardParticipant } from "../UserTimeBoard";
 import { transformToUserBlocks } from "../_lib/transformToUserBlocks";
+import { ITimeBoardParticipant } from "../UserTimeBoard";
 
 const BLOCK_WIDTH = 24;
 export interface IUserTimeBlock {
@@ -57,7 +58,7 @@ const UserBlock = styled.div`
   flex-direction: column;
   color: white;
   margin-bottom: 4px; /* mb-1 */
-  min-width: ${(props) => `${BLOCK_WIDTH * 3 + 2}px`};
+  min-width: ${() => `${BLOCK_WIDTH * 3 + 2}px`};
   width: ${(props) => `${props.userBlock.startToEndInterval * BLOCK_WIDTH}px`};
   margin-left: ${(props) =>
     `${props.userBlock.startInterval * BLOCK_WIDTH + BLOCK_WIDTH / 2 + 4}px`};

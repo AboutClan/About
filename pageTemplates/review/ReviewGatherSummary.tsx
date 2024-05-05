@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import styled from "styled-components";
+
 import { IGatherSummary } from "../../pages/review";
 import { SingleLineText } from "../../styles/layout/components";
 
@@ -21,11 +22,7 @@ function ReviewGatherSummary({ summary }: IReviewGatherSummary) {
   return (
     <Layout onClick={onClick}>
       <IconWrapper>
-        <FontAwesomeIcon
-          icon={faMagnifyingGlass}
-          size="lg"
-          color="var(--gray-2)"
-        />
+        <FontAwesomeIcon icon={faMagnifyingGlass} size="lg" color="var(--gray-2)" />
       </IconWrapper>
       <Content>
         <span>{summary.title}</span>
@@ -33,8 +30,7 @@ function ReviewGatherSummary({ summary }: IReviewGatherSummary) {
           <span>
             {summary.place} {summary.place === "전체" && "지역"}
           </span>
-          ·<span>{summary.type.title}</span>·
-          <span>{date.format("M월 D일")}</span> ·
+          ·<span>{summary.type.title}</span>·<span>{date.format("M월 D일")}</span> ·
           <LocationText>{summary.location.main}</LocationText>
         </ContentDetail>
       </Content>

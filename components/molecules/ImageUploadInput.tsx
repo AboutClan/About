@@ -1,19 +1,19 @@
 import { Input } from "@chakra-ui/react";
 import { faCameraViewfinder } from "@fortawesome/pro-light-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import { captureException } from "@sentry/nextjs";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import styled from "styled-components";
+
 import { DispatchType } from "../../types/hooks/reactTypes";
 
 interface IImageUploadInput {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setImageUrl: DispatchType<any>;
 }
 
-export default function ImageUploadInput({
-  setImageUrl: changeImage,
-}: IImageUploadInput) {
+export default function ImageUploadInput({ setImageUrl: changeImage }: IImageUploadInput) {
   const [imageUrl, setImageUrl] = useState(null);
 
   const handleImageChange = async (e) => {
@@ -46,6 +46,7 @@ export default function ImageUploadInput({
             setImageUrl(image);
             changeImage(file);
           } else {
+            captureException(error);
             console.error("Error converting HEIC to JPEG", error);
           }
         }
@@ -77,21 +78,12 @@ export default function ImageUploadInput({
       <Container onClick={handleBtnClick}>
         {!imageUrl ? (
           <>
-            <FontAwesomeIcon
-              icon={faCameraViewfinder}
-              size="4x"
-              color="var(--gray-4)"
-            />
+            <FontAwesomeIcon icon={faCameraViewfinder} size="4x" color="var(--gray-4)" />
             <CameraText>사진 올리기</CameraText>
           </>
         ) : (
           <ImageContainer>
-            <Image
-              src={imageUrl}
-              alt="Image Preview"
-              width={140}
-              height={140}
-            />
+            <Image src={imageUrl} alt="Image Preview" width={140} height={140} />
           </ImageContainer>
         )}
       </Container>

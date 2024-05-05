@@ -1,8 +1,10 @@
+import "swiper/css/scrollbar";
+
 import Image from "next/image";
 import { useState } from "react";
 import styled from "styled-components";
-import "swiper/css/scrollbar";
 import { Swiper, SwiperSlide } from "swiper/react";
+
 import { ImageContainer } from "../ImageSlider";
 
 interface IImageSliderEventBanner {

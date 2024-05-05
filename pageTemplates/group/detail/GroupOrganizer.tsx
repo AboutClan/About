@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import styled from "styled-components";
+
 import { Badge } from "../../../components/atoms/badges/Badges";
 import ProfileIcon from "../../../components/atoms/Profile/ProfileIcon";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
@@ -45,8 +46,6 @@ const Layout = styled.div`
     display: flex;
   }
 `;
-
-const Category = styled.div``;
 
 const Writer = styled.span``;
 

@@ -2,9 +2,9 @@
 
 import { Select } from "@chakra-ui/react";
 import { ChangeEvent, useEffect, useState } from "react";
+
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { ActiveLocation } from "../../types/services/locationTypes";
-
 import { isLocationType } from "../../utils/validationUtils";
 
 interface ISelector {
@@ -28,8 +28,7 @@ export default function Selector({
 
   const onChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const targetValue = e.currentTarget.value;
-    if (isLocationType(targetValue))
-      setParentValue(targetValue as ActiveLocation);
+    if (isLocationType(targetValue)) setParentValue(targetValue as ActiveLocation);
     else (setParentValue as DispatchType<string>)(targetValue);
   };
 

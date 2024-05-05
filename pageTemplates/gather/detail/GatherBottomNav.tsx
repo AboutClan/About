@@ -1,22 +1,18 @@
 import { Button } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
+
 import Slide from "../../../components/layouts/PageSlide";
 import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../../hooks/custom/CustomHooks";
-import {
-  useCompleteToast,
-  useErrorToast,
-} from "../../../hooks/custom/CustomToast";
+import { useCompleteToast, useErrorToast } from "../../../hooks/custom/CustomToast";
 import { useGatherParticipationMutation } from "../../../hooks/gather/mutations";
 import GatherExpireModal from "../../../modals/gather/gatherExpireModal/GatherExpireModal";
 import GatherParticipateModal from "../../../modals/gather/gatherParticipateModal/GatherParticipateModal";
-import {
-  GatherStatus,
-  IGather,
-} from "../../../types/models/gatherTypes/gatherTypes";
+import { GatherStatus, IGather } from "../../../types/models/gatherTypes/gatherTypes";
+import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 interface IGatherBottomNav {
   data: IGather;
 }
@@ -30,26 +26,20 @@ function GatherBottomNav({ data }: IGatherBottomNav) {
   const errorToast = useErrorToast();
   const { data: session } = useSession();
   const myUid = session?.user.uid;
-  const myGather = data.user.uid === myUid;
-  const isParticipant = data?.participants.some(
-    (who) => who?.user && who.user.uid === myUid
-  );
+  const myGather = (data.user as IUserSummary).uid === myUid;
+  const isParticipant = data?.participants.some((who) => who?.user && who.user.uid === myUid);
   const [isExpirationModal, setIsExpirationModal] = useState(false);
   const [isParticipationModal, setIsParticipationModal] = useState(false);
   const gatherId = +router.query.id;
 
   const resetQueryData = useResetQueryData();
-  const { mutate: cancel } = useGatherParticipationMutation(
-    "delete",
-    gatherId,
-    {
-      onSuccess() {
-        completeToast("free", "참여 신청이 취소되었습니다.", true);
-        resetQueryData([GATHER_CONTENT]);
-      },
-      onError: errorToast,
-    }
-  );
+  const { mutate: cancel } = useGatherParticipationMutation("delete", gatherId, {
+    onSuccess() {
+      completeToast("free", "참여 신청이 취소되었습니다.", true);
+      resetQueryData([GATHER_CONTENT]);
+    },
+    onError: errorToast,
+  });
 
   const onClick = (type: ButtonType) => {
     if (type === "cancel") cancel();
@@ -73,8 +63,7 @@ function GatherBottomNav({ data }: IGatherBottomNav) {
           text: "취소된 모임입니다.",
         };
     }
-    if (myGather)
-      return { text: "모집 종료", handleFunction: () => onClick("expire") };
+    if (myGather) return { text: "모집 종료", handleFunction: () => onClick("expire") };
     if (isParticipant) {
       return { text: "참여 취소", handleFunction: () => onClick("cancel") };
     }
@@ -103,12 +92,8 @@ function GatherBottomNav({ data }: IGatherBottomNav) {
           </Button>
         </Layout>
       </Slide>
-      {isParticipationModal && (
-        <GatherParticipateModal setIsModal={setIsParticipationModal} />
-      )}
-      {isExpirationModal && (
-        <GatherExpireModal setIsModal={setIsExpirationModal} />
-      )}
+      {isParticipationModal && <GatherParticipateModal setIsModal={setIsParticipationModal} />}
+      {isExpirationModal && <GatherExpireModal setIsModal={setIsExpirationModal} />}
     </>
   );
 }

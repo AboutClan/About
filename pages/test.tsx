@@ -1,35 +1,29 @@
-import dayjs from "dayjs";
-import styled from "styled-components";
-import { useAdminStudyRecordQuery } from "../hooks/admin/quries";
+/* eslint-disable */
 
 import { Box } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
-import {
-  useGroupBelongMatchMutation,
-  useMonthCalcMutation,
-} from "../hooks/admin/mutation";
+import styled from "styled-components";
+
+import { useGroupBelongMatchMutation, useMonthCalcMutation } from "../hooks/admin/mutation";
+import { useAdminStudyRecordQuery } from "../hooks/admin/quries";
 import { useImageUploadMutation } from "../hooks/image/mutations";
 import { studyDateStatusState } from "../recoils/studyRecoils";
 function Test() {
-  const { data } = useAdminStudyRecordQuery(
-    dayjs("2024-04-01"),
-    dayjs("2024-04-07"),
-    null,
-    "인천"
-  );
+  const { data } = useAdminStudyRecordQuery(dayjs("2024-04-01"), dayjs("2024-04-07"), null, "인천");
   console.log(data);
 
   const a = useRecoilValue(studyDateStatusState);
 
-  let AA = "te";
-  let BB = "te ";
+  const AA = "te";
+  const BB = "te ";
 
   const { data: data2 } = useAdminStudyRecordQuery(
     dayjs("2023-12-04"),
     dayjs("2023-12-10"),
     null,
-    "수원"
+    "수원",
   );
   // const decodeByAES256 = (encodedTel: string) => {
   //   const bytes = CryptoJS.AES.decrypt(encodedTel, key);

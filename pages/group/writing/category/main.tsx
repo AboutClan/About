@@ -1,9 +1,9 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import BottomNav from "../../../../components/layouts/BottomNav";
 
+import BottomNav from "../../../../components/layouts/BottomNav";
 import Header from "../../../../components/layouts/Header";
 import Slide from "../../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../../components/molecules/ProgressStatus";
@@ -11,24 +11,17 @@ import {
   GROUP_STUDY_CATEGORY_ARR,
   GROUP_STUDY_CATEGORY_ARR_ICONS,
 } from "../../../../constants/contentsText/GroupStudyContents";
-
 import { useFailToast } from "../../../../hooks/custom/CustomToast";
 import RegisterLayout from "../../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../../pageTemplates/register/RegisterOverview";
-import { prevPageUrlState } from "../../../../recoils/previousAtoms";
 import { sharedGroupWritingState } from "../../../../recoils/sharedDataAtoms";
 function WritingStudyCategoryMain() {
   const router = useRouter();
   const failToast = useFailToast();
 
-  const prevPageUrl = useRecoilValue(prevPageUrlState);
-  const [groupWriting, setgroupWriting] = useRecoilState(
-    sharedGroupWritingState
-  );
+  const [groupWriting, setgroupWriting] = useRecoilState(sharedGroupWritingState);
 
-  const [category, setCategory] = useState<string>(
-    groupWriting?.category?.main
-  );
+  const [category, setCategory] = useState<string>(groupWriting?.category?.main);
 
   const onClickNext = () => {
     if (!category) {
@@ -56,17 +49,11 @@ function WritingStudyCategoryMain() {
         <ItemContainer>
           {GROUP_STUDY_CATEGORY_ARR.map((type, idx) =>
             type !== "전체" ? (
-              <Item
-                key={idx}
-                isSelected={type === category}
-                onClick={() => setCategory(type)}
-              >
-                <IconWrapper>
-                  {GROUP_STUDY_CATEGORY_ARR_ICONS[type]}
-                </IconWrapper>
+              <Item key={idx} isSelected={type === category} onClick={() => setCategory(type)}>
+                <IconWrapper>{GROUP_STUDY_CATEGORY_ARR_ICONS[type]}</IconWrapper>
                 <Info>{type}</Info>
               </Item>
-            ) : null
+            ) : null,
           )}
         </ItemContainer>
       </RegisterLayout>
@@ -90,8 +77,7 @@ const Item = styled.div<{ isSelected: boolean }>`
   background-color: white;
   border-radius: var(--rounded-lg);
   box-shadow: var(--shadow);
-  border: ${(props) =>
-    props.isSelected ? "2px solid var(--color-mint)" : "var(--border)"};
+  border: ${(props) => (props.isSelected ? "2px solid var(--color-mint)" : "var(--border)")};
 `;
 
 const IconWrapper = styled.div`

@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
+
 import { useCompleteToast } from "../../hooks/custom/CustomToast";
 import { useStudyArrivedCntQuery } from "../../hooks/study/queries";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
@@ -42,11 +43,7 @@ function RequestRestCancelModal({ setIsModal, rest }: IRequestRestCancelModal) {
   };
 
   return (
-    <ModalLayout
-      title="휴식 해제"
-      footerOptions={footerOptions}
-      setIsModal={setIsModal}
-    >
+    <ModalLayout title="휴식 해제" footerOptions={footerOptions} setIsModal={setIsModal}>
       <ModalSubtitle>휴식 상태를 해제하시겠어요?</ModalSubtitle>
       <Container>
         <Item>

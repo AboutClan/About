@@ -1,6 +1,11 @@
+import "dayjs/locale/ko";
+
+import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import StoreApplyGiftModal from "../../../modals/store/StoreApplyGiftModal";
@@ -11,9 +16,6 @@ import StoreDetailNav from "../../../pageTemplates/store/detail/StoreDetailNav";
 import StoreDetailOverview from "../../../pageTemplates/store/detail/StoreDetailOverview";
 import { transferStoreGiftDataState } from "../../../recoils/transferRecoils";
 
-const dayjs = require("dayjs");
-require("dayjs/locale/ko");
-const localizedFormat = require("dayjs/plugin/localizedFormat");
 dayjs.extend(localizedFormat);
 dayjs.locale("ko");
 
@@ -43,16 +45,11 @@ function StoreItem() {
               setIsApplyModal={setIsApplyModal}
               setIsWinModal={setIsWinModal}
             />
-            <StoreDetailDetails
-              winnerCnt={giftInfo.winner}
-              max={giftInfo.max}
-            />
+            <StoreDetailDetails winnerCnt={giftInfo.winner} max={giftInfo.max} />
           </Layout>
         )}
       </Slide>
-      {isApplyModal && (
-        <StoreApplyGiftModal setIsModal={setIsApplyModal} giftInfo={giftInfo} />
-      )}
+      {isApplyModal && <StoreApplyGiftModal setIsModal={setIsApplyModal} giftInfo={giftInfo} />}
       {isWinModal && (
         <StoreGiftWinModal
           setIsModal={setIsWinModal}

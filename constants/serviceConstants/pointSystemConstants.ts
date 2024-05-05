@@ -14,7 +14,7 @@ export const POINT_SYSTEM_PLUS = {
   LIKE: { value: 2, message: "좋아요" },
 };
 
-export const POINT_SYSTEM_Deposit = {
+export const POINT_SYSTEM_DEPOSIT = {
   STUDY_TIME_CHANGE: {
     value: -100,
     message: "스터디 시작 이후 시간 변경",

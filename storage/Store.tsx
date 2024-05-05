@@ -153,7 +153,7 @@ export const STORE_GIFT_ACTIVE: IStoreGift[] = [
   },
 ];
 
-export const STORE_GIFT_inActive: IStoreGift[] = [
+export const STORE_GIFT_INACTIVE: IStoreGift[] = [
   {
     image:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%ED%97%88%EC%89%AC+%EC%B4%88%EC%BD%9C%EB%A6%BF+%EB%93%9C%EB%A7%81%ED%81%AC.webp",
@@ -369,6 +369,6 @@ export const STORE_GIFT_inActive: IStoreGift[] = [
   },
 ];
 
-export const STORE_GIFT = [...STORE_GIFT_ACTIVE, ...STORE_GIFT_inActive];
+export const STORE_GIFT = [...STORE_GIFT_ACTIVE, ...STORE_GIFT_INACTIVE];
 
 export const STORE_GIFT_LAST: IStoreGift[] = [];

@@ -8,15 +8,14 @@ import {
 } from "@fortawesome/pro-light-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
+
 import Slide from "../../../components/layouts/PageSlide";
-import IconButtonNav, {
-  IIconButtonNavBtn,
-} from "../../../components/molecules/navs/IconButtonNav";
+import IconButtonNav, { IIconButtonNavBtn } from "../../../components/molecules/navs/IconButtonNav";
 import {
   DAILY_CHECK_POP_UP,
   NOTICE_ACTIVE_CNT,
@@ -54,8 +53,7 @@ function HomeHeader() {
   const renderHomeHeader = useRecoilValue(renderHomeHeaderState);
   const setSlideDirection = useSetRecoilState(slideDirectionState);
 
-  const todayDailyCheck =
-    localStorage.getItem(DAILY_CHECK_POP_UP) === dayjsToStr(dayjs());
+  const todayDailyCheck = localStorage.getItem(DAILY_CHECK_POP_UP) === dayjsToStr(dayjs());
 
   const [isNoticeAlert, setIsNoticeAlert] = useState(false);
 
@@ -71,7 +69,7 @@ function HomeHeader() {
   }, [data]);
 
   const generateIconBtnArr = () => {
-    let arr = [
+    const arr = [
       {
         icon: <FontAwesomeIcon icon={faBooks} />,
         func: () => setModalType("rule"),
@@ -94,8 +92,7 @@ function HomeHeader() {
         icon: <FontAwesomeIcon icon={faCircleUser} />,
         link: !isGuest ? "/user" : null,
         func: isGuest
-          ? () =>
-              router.replace(`/home?${newSearchparams.toString()}&logout=on`)
+          ? () => router.replace(`/home?${newSearchparams.toString()}&logout=on`)
           : () => setSlideDirection("right"),
       },
     ];
@@ -110,8 +107,7 @@ function HomeHeader() {
     return arr;
   };
 
-  const [iconBtnArr, setIconBtnArr] =
-    useState<IIconButtonNavBtn[]>(generateIconBtnArr);
+  const [iconBtnArr, setIconBtnArr] = useState<IIconButtonNavBtn[]>(generateIconBtnArr);
 
   useEffect(() => {
     setIconBtnArr(generateIconBtnArr());
@@ -129,15 +125,9 @@ function HomeHeader() {
           </Layout>
         </Slide>
       )}
-      {modalType === "pointGuide" && (
-        <PointSystemsModal setIsModal={() => setModalType(null)} />
-      )}
-      {modalType === "dailyCheck" && (
-        <DailyCheckModal setIsModal={() => setModalType(null)} />
-      )}
-      {modalType === "rule" && (
-        <StudyRuleModal setIsModal={() => setModalType(null)} />
-      )}
+      {modalType === "pointGuide" && <PointSystemsModal setIsModal={() => setModalType(null)} />}
+      {modalType === "dailyCheck" && <DailyCheckModal setIsModal={() => setModalType(null)} />}
+      {modalType === "rule" && <StudyRuleModal setIsModal={() => setModalType(null)} />}
     </>
   );
 }

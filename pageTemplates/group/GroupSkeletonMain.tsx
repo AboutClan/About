@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 import Skeleton from "../../components/atoms/skeleton/Skeleton";
 
 function GroupSkeletonMain() {
@@ -12,31 +13,33 @@ function GroupSkeletonMain() {
   );
 }
 
-const ItemBlock = () => (
-  <ItemBlockLayout>
-    <Header>
-      <div>
-        <Skeleton>temp</Skeleton>
-      </div>
-      <Badge>
-        <Skeleton>temp</Skeleton>
-      </Badge>
-    </Header>
-    <Title>
-      <Skeleton>temp</Skeleton>
-    </Title>
-    <Info>
-      {[1, 2, 3, 4].map((item) => (
-        <InfoItem key={item}>
+function ItemBlock() {
+  return (
+    <ItemBlockLayout>
+      <Header>
+        <div>
           <Skeleton>temp</Skeleton>
-        </InfoItem>
-      ))}
-    </Info>
-    <Content>
-      <Skeleton>temp</Skeleton>
-    </Content>
-  </ItemBlockLayout>
-);
+        </div>
+        <Badge>
+          <Skeleton>temp</Skeleton>
+        </Badge>
+      </Header>
+      <Title>
+        <Skeleton>temp</Skeleton>
+      </Title>
+      <Info>
+        {[1, 2, 3, 4].map((item) => (
+          <InfoItem key={item}>
+            <Skeleton>temp</Skeleton>
+          </InfoItem>
+        ))}
+      </Info>
+      <Content>
+        <Skeleton>temp</Skeleton>
+      </Content>
+    </ItemBlockLayout>
+  );
+}
 
 const Layout = styled.div`
   margin: var(--gap-4);

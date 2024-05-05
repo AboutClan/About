@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import styled from "styled-components";
+
 import TwoButtonNav from "../../../components/layouts/TwoButtonNav";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import { useGatherQuery } from "../../../hooks/gather/queries";
@@ -13,9 +14,7 @@ interface IGatherParticipateModalPassword {
   setPageNum: DispatchNumber;
 }
 
-function GatherParticipateModalPassword({
-  setPageNum,
-}: IGatherParticipateModalPassword) {
+function GatherParticipateModalPassword({ setPageNum }: IGatherParticipateModalPassword) {
   const failToast = useFailToast();
   const { id } = useParams<{ id: string }>() || {};
 

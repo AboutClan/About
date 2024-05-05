@@ -1,5 +1,6 @@
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
+
 import BlurredPart from "../../components/molecules/BlurredPart";
 import Chart from "../../components/organisms/chart/Chart";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
@@ -30,11 +31,7 @@ function DetailInfo({ user }: { user: IUser }) {
           </ProfileItem>
           <ProfileItem>
             <span>전공</span>
-            {user?.majors?.length ? (
-              <span>{user?.majors[0]?.detail}</span>
-            ) : (
-              <span>--</span>
-            )}
+            {user?.majors?.length ? <span>{user?.majors[0]?.detail}</span> : <span>--</span>}
           </ProfileItem>
           <ProfileItem>
             <span>관심사</span>

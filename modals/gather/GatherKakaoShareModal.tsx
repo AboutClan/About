@@ -1,44 +1,34 @@
+/* eslint-disable */
+
 import { ModalFooter } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import styled from "styled-components";
+
 import { GATHER_SHARE_IMAGES } from "../../assets/images/imageUrl";
 import KakaoShareBtn from "../../components/atoms/Icons/KakaoShareBtn";
 import { WEB_URL } from "../../constants/system";
-import { ModalLayout } from "../Modals";
-
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
-import { IGatherHeader } from "../../types/models/gatherTypes/gather";
 
-interface IGatherKakaoShareModal extends IModal, IGatherHeader {}
+import { ModalLayout } from "../Modals";
 
-function GatherKakaoShareModal({
-  title,
-  date,
-  locationMain,
-  setIsModal,
-}: IGatherKakaoShareModal) {
+interface IGatherKakaoShareModal extends IModal {
+  title: string;
+  date: string;
+  locationMain: string;
+}
+
+function GatherKakaoShareModal({ title, date, locationMain, setIsModal }: IGatherKakaoShareModal) {
   const router = useRouter();
   const [selectedItem, setSelectedItem] = useState<number>();
   const [adminImageUrl, setAdminImageUrl] = useState<string>();
 
-  const { data: session } = useSession();
-
   const onClickItem = (idx) => {
     if (idx === selectedItem) setSelectedItem(null);
     else setSelectedItem(idx);
-  };
-
-  const onClickAdminBtn = () => {
-    if (adminImageUrl) setAdminImageUrl(null);
-    else
-      setAdminImageUrl(
-        "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EA%B3%B5%EC%9C%A0+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EC%A0%95%EA%B8%B0+%EC%8A%A4%ED%84%B0%EB%94%94.jpg"
-      );
   };
 
   return (
@@ -46,17 +36,8 @@ function GatherKakaoShareModal({
       <ModalSubtitle>단톡방에 공유 할 이미지를 선택해 주세요!</ModalSubtitle>
       <Container>
         {GATHER_SHARE_IMAGES.map((item, idx) => (
-          <Item
-            key={idx}
-            onClick={() => onClickItem(idx)}
-            isSelected={idx === selectedItem}
-          >
-            <Image
-              src={item}
-              fill={true}
-              sizes="150px"
-              alt="gatherShareImage"
-            />
+          <Item key={idx} onClick={() => onClickItem(idx)} isSelected={idx === selectedItem}>
+            <Image src={item} fill={true} sizes="150px" alt="gatherShareImage" />
           </Item>
         ))}
       </Container>
@@ -71,9 +52,7 @@ function GatherKakaoShareModal({
           isBig={true}
           img={
             adminImageUrl ||
-            (selectedItem !== null
-              ? GATHER_SHARE_IMAGES[selectedItem]
-              : GATHER_SHARE_IMAGES[1])
+            (selectedItem !== null ? GATHER_SHARE_IMAGES[selectedItem] : GATHER_SHARE_IMAGES[1])
           }
         />
       </ModalFooter>
@@ -92,8 +71,7 @@ const Container = styled.div`
 
 const Item = styled.div<{ isSelected: boolean }>`
   position: relative;
-  border: ${(props) =>
-    props.isSelected ? "4px solid var(--color-mint)" : null};
+  border: ${(props) => (props.isSelected ? "4px solid var(--color-mint)" : null)};
 
   border-radius: var(--rounded-lg);
   overflow: hidden;
@@ -102,10 +80,6 @@ const Item = styled.div<{ isSelected: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-
-const ShareBtnWrapper = styled.div`
-  margin-top: auto;
 `;
 
 export default GatherKakaoShareModal;

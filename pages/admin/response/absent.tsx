@@ -1,9 +1,9 @@
 import { Button } from "@chakra-ui/react";
 import { useState } from "react";
 import styled from "styled-components";
+
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Header from "../../../components/layouts/Header";
-
 import { useUserRequestQuery } from "../../../hooks/admin/quries";
 import CheckAbsentModal from "../../../modals/admin/CheckAbsentModal";
 import ModalPortal from "../../../modals/ModalPortal";
@@ -59,11 +59,7 @@ function AdminAbsent() {
       )}
       {isModal && (
         <ModalPortal setIsModal={setIsModal}>
-          <CheckAbsentModal
-            uid={userFee.uid}
-            fee={userFee.fee}
-            setIsModal={setIsModal}
-          />
+          <CheckAbsentModal uid={userFee.uid} fee={userFee.fee} setIsModal={setIsModal} />
         </ModalPortal>
       )}
     </>

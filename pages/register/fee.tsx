@@ -1,28 +1,20 @@
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import BottomNav from "../../components/layouts/BottomNav";
 
+import BottomNav from "../../components/layouts/BottomNav";
 import Accordion from "../../components/molecules/Accordion";
 import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
 import { ACCORDION_CONTENT_FEE } from "../../constants/contentsText/accordionContents";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
 import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
-import {
-  useUserInfoFieldMutation,
-  useUserRegisterMutation,
-} from "../../hooks/user/mutations";
+import { useUserInfoFieldMutation, useUserRegisterMutation } from "../../hooks/user/mutations";
 import RegisterCost from "../../pageTemplates/register/fee/RegisterCost";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
-import {
-  getLocalStorageObj,
-  setLocalStorageObj,
-} from "../../utils/storageUtils";
+import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
 function Fee() {
-  const { data: session, update } = useSession();
   const errorToast = useErrorToast();
   const toast = useToast();
   const router = useRouter();

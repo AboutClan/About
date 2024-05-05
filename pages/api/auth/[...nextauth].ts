@@ -1,8 +1,11 @@
+/* eslint-disable */
+
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import { encode, JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import KakaoProvider from "next-auth/providers/kakao";
+
 import dbConnect from "../../../libs/backend/dbConnect";
 import clientPromise from "../../../libs/backend/mongodb";
 import { refreshAccessToken } from "../../../libs/backend/oauthUtils";
@@ -47,9 +50,7 @@ export const authOptions: NextAuthOptions = {
         uid: profile.id.toString(),
         name: profile.properties.nickname,
         role: "newUser",
-        profileImage:
-          profile.properties.thumbnail_image ||
-          profile.properties.profile_image,
+        profileImage: profile.properties.thumbnail_image || profile.properties.profile_image,
         isActive: false,
         email: profile.id.toString(),
       }),
@@ -84,8 +85,7 @@ export const authOptions: NextAuthOptions = {
         account.role = user.role;
       }
 
-      const profileImage =
-        profile.properties.thumbnail_image || profile.properties.profile_image;
+      const profileImage = profile.properties.thumbnail_image || profile.properties.profile_image;
       const endcodedToken = await encode({ token: account, secret });
       await dbConnect();
       await User.updateOne(
@@ -94,7 +94,7 @@ export const authOptions: NextAuthOptions = {
           $set: {
             profileImage,
           },
-        }
+        },
       );
 
       return true;
@@ -144,7 +144,7 @@ export const authOptions: NextAuthOptions = {
               expires_at: account.expires_at,
               refresh_token_expires_in: account.refresh_token_expires_in,
             },
-          }
+          },
         );
         const newToken: JWT = {
           accessToken: account.access_token,

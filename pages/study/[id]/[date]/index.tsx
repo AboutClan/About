@@ -1,8 +1,9 @@
-import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
+
 import Divider from "../../../../components/atoms/Divider";
 import Slide from "../../../../components/layouts/PageSlide";
 import { PLACE_TO_LOCATION } from "../../../../constants/serviceConstants/studyConstants/studyLocationConstants";
@@ -16,10 +17,7 @@ import StudyNavigation from "../../../../pageTemplates/study/StudyNavigation";
 import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
 import StudyParticipants from "../../../../pageTemplates/study/StudyParticipants";
 import StudyTimeBoard from "../../../../pageTemplates/study/StudyTimeBoard";
-import {
-  myStudyState,
-  studyDateStatusState,
-} from "../../../../recoils/studyRecoils";
+import { myStudyState, studyDateStatusState } from "../../../../recoils/studyRecoils";
 
 export default function Page() {
   const { data } = useSession();
@@ -33,8 +31,7 @@ export default function Page() {
     enabled: !!location && !!date,
   });
 
-  const [studyDateStatus, setStudyDateStatus] =
-    useRecoilState(studyDateStatusState);
+  const [studyDateStatus, setStudyDateStatus] = useRecoilState(studyDateStatusState);
 
   useEffect(() => {
     setStudyDateStatus(getStudyDateStatus(date));
@@ -81,22 +78,13 @@ export default function Page() {
                 <Divider />
               </>
             )}
-            <StudyDateBar isPrivateStudy={isPrivateStudy} />
+            <StudyDateBar isPrivateStudy={isPrivateStudy} place={place} />
             {!isPrivateStudy && (
-              <StudyTimeBoard
-                participants={attendances}
-                studyStatus={study.status}
-              />
+              <StudyTimeBoard participants={attendances} studyStatus={study.status} />
             )}
           </Slide>
-            <StudyParticipants
-              participants={attendances}
-              absences={study.absences}
-            />
-          <StudyNavigation
-            voteCnt={attendances?.length}
-            studyStatus={study.status}
-          />
+          <StudyParticipants participants={attendances} absences={study.absences} />
+          <StudyNavigation voteCnt={attendances?.length} studyStatus={study.status} />
         </>
       )}
     </Layout>

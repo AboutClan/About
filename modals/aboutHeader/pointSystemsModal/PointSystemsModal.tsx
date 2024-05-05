@@ -1,8 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
-import TabNav, {
-  ITabNavOptions,
-} from "../../../components/molecules/navs/TabNav";
+
+import TabNav, { ITabNavOptions } from "../../../components/molecules/navs/TabNav";
 import { IModal } from "../../../types/components/modalTypes";
 import { IFooterOptions, ModalLayout } from "../../Modals";
 import PointSystemsModalFee from "./PointSystemsModalFee";
@@ -37,13 +36,8 @@ function PointSystemsModal({ setIsModal }: IModal) {
       }}
       setIsModal={setIsModal}
     >
-      <TabNav
-        tabOptionsArr={tabNavOptions}
-        selected={isFirst ? "ABOUT 포인트" : "스터디 벌금"}
-      />
-      <Wrapper>
-        {isFirst ? <PointSystemsModalPoint /> : <PointSystemsModalFee />}
-      </Wrapper>
+      <TabNav tabOptionsArr={tabNavOptions} selected={isFirst ? "ABOUT 포인트" : "스터디 벌금"} />
+      <Wrapper>{isFirst ? <PointSystemsModalPoint /> : <PointSystemsModalFee />}</Wrapper>
     </ModalLayout>
   );
 }

@@ -7,13 +7,7 @@ interface IInput {
   placeholder?: string;
   disabled?: boolean;
 }
-export default function Input({
-  value,
-  inputRef,
-  onChange,
-  placeholder,
-  disabled,
-}: IInput) {
+export default function Input({ value, inputRef, onChange, placeholder, disabled }: IInput) {
   return (
     <ChakraInput
       value={value}

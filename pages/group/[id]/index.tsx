@@ -1,10 +1,12 @@
-import dayjs from "dayjs";
 import "dayjs/locale/ko"; // 로케일 플러그인 로드
-import { useSession } from "next-auth/react";
+
+import dayjs from "dayjs";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
+
 import { GROUP_GATHERING_IMAGE } from "../../../assets/images/randomImages";
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../components/layouts/PageSlide";
@@ -46,10 +48,7 @@ function GroupDetail() {
     if (!group) return;
     const firstDate = group.attendance.firstDate;
     if (!firstDate) return;
-    if (
-      firstDate !==
-      dayjsToStr(dayjs().subtract(1, "day").startOf("week").add(1, "day"))
-    )
+    if (firstDate !== dayjsToStr(dayjs().subtract(1, "day").startOf("week").add(1, "day")))
       patchAttendance();
   }, [group?.attendance?.firstDate]);
 
@@ -80,7 +79,7 @@ function GroupDetail() {
       {!group && <MainLoading />}
       {group &&
       ![group.organizer, ...group.participants.map((who) => who.user)].some(
-        (who) => who.uid === session?.user.uid
+        (who) => who.uid === session?.user.uid,
       ) ? (
         <GroupBottomNav data={group} />
       ) : null}

@@ -5,9 +5,7 @@ import {
 import { USER_ROLE } from "../../../constants/serviceConstants/userConstants";
 import { ActiveLocation, Location } from "../../services/locationTypes";
 
-export interface IUser
-  extends Omit<IUserRegisterForm, "location">,
-    IUserSummary {
+export interface IUser extends Omit<IUserRegisterForm, "location">, IUserSummary {
   id: string;
   point: number;
   role: UserRole;
@@ -62,6 +60,6 @@ export interface IRest {
   restCnt: number;
 }
 
-export type UserRole = typeof USER_ROLE[number];
-export type UserBadge = typeof USER_BADGE_ARR[number];
-export type EventBadge = typeof USER_EVENT_BADGE_ARR[number];
+export type UserRole = (typeof USER_ROLE)[number];
+export type UserBadge = (typeof USER_BADGE_ARR)[number];
+export type EventBadge = (typeof USER_EVENT_BADGE_ARR)[number];

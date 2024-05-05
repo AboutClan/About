@@ -2,16 +2,14 @@ import { Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useState } from "react";
 import styled from "styled-components";
-import { GROUP_STUDY_ALL } from "../../constants/keys/queryKeys";
-import { GROUP_STUDY_ATTEND_SUB_LIST } from "../../constants/settingValue/groupStudy";
-import { IFooterOptions, ModalLayout } from "../Modals";
 
+import { GROUP_STUDY_ALL } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
 import { useCompleteToast } from "../../hooks/custom/CustomToast";
 import { useGroupAttendMutation } from "../../hooks/groupStudy/mutations";
-import { dayjsToFormat, getDateWeek } from "../../utils/dateTimeUtils";
-
 import { IModal } from "../../types/components/modalTypes";
+import { dayjsToFormat, getDateWeek } from "../../utils/dateTimeUtils";
+import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface IAttendCheckModal extends IModal {
   id: number;
@@ -36,9 +34,7 @@ function AttendCheckModal({
 
   const resetQueryData = useResetQueryData();
 
-  const isSubRecord = GROUP_STUDY_ATTEND_SUB_LIST.includes(+id);
-
-  const { mutate, isLoading } = useGroupAttendMutation(id, {
+  const { mutate } = useGroupAttendMutation(id, {
     onSuccess() {
       completeToast("free", "저장되었습니다.");
       resetQueryData([GROUP_STUDY_ALL]);
@@ -54,9 +50,7 @@ function AttendCheckModal({
 
   const onClickBtn = (day: string | "all") => {
     if (day === "all") {
-      setMyAttend((old) =>
-        old.length === 7 ? [] : ["월", "화", "수", "목", "금", "토", "일"]
-      );
+      setMyAttend((old) => (old.length === 7 ? [] : ["월", "화", "수", "목", "금", "토", "일"]));
       setMySubAttend([]);
       return;
     }
@@ -96,8 +90,8 @@ function AttendCheckModal({
                 myAttend?.includes(day)
                   ? "mintTheme"
                   : mySubAttend?.includes(day)
-                  ? "yellowTheme"
-                  : "gray"
+                    ? "yellowTheme"
+                    : "gray"
               }
             >
               {dayjsToFormat(item, "ddd요일")}
@@ -152,8 +146,6 @@ const Color = styled.div<{ color: string }>`
   border-radius: 50%;
   margin-right: var(--gap-2);
 `;
-
-const Layout = styled.div``;
 
 const CheckContainer = styled.div`
   display: flex;

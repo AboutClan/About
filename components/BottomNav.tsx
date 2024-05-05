@@ -12,11 +12,12 @@ import {
   faUsersRectangle,
 } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+
 import { HAS_STUDY_TODAY } from "../constants/keys/localStorage";
 import { getStudyStandardDate } from "../libs/study/date/getStudyStandardDate";
 import { slideDirectionState } from "../recoils/navigationRecoils";
@@ -51,7 +52,7 @@ export default function BottomNav() {
           switch (category) {
             case "홈":
               return `/?location=${locationEn}&date=${getStudyStandardDate(
-                hasStudyToday === "true"
+                hasStudyToday === "true",
               )}`;
             case "모임":
               return `/?location=${locationEn}`;
@@ -78,14 +79,7 @@ export default function BottomNav() {
   );
 }
 
-const NavButton = ({
-  text,
-  url,
-  activeIcon,
-  defaultIcon,
-  active,
-  idx,
-}: INavButton) => {
+function NavButton({ text, url, activeIcon, defaultIcon, active, idx }: INavButton) {
   const setSlideDirection = useSetRecoilState(slideDirectionState);
 
   const handleMove = () => {
@@ -104,7 +98,7 @@ const NavButton = ({
       <NavText>{text}</NavText>
     </NavLink>
   );
-};
+}
 
 const navItems: INavButtonProps[] = [
   {

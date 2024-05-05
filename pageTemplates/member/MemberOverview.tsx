@@ -1,12 +1,10 @@
-import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import { LOCATION_OPEN_DATE } from "../../constants/location";
+
 import { MemberGroup } from "../../types/models/member";
+import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { Location } from "../../types/services/locationTypes";
 import { birthToAge } from "../../utils/convertUtils/convertTypes";
-
-import { IUser } from "../../types/models/userTypes/userInfoTypes";
 interface IMemberOverview {
   onClickSection: (section: MemberGroup) => void;
   groups: IUser[][];
@@ -16,14 +14,12 @@ function MemberOverview({ groups, onClickSection }: IMemberOverview) {
   const router = useRouter();
   const location = router.query.location;
 
-  const openDate = dayjs(LOCATION_OPEN_DATE[location as string]);
-
   const locationName =
     (location as Location) === "동대문"
       ? "동대문구/성북구"
       : (location as Location) === "양천"
-      ? "양천구/영등포구"
-      : location;
+        ? "양천구/영등포구"
+        : location;
 
   const type = ["A", "B", "C", "D", "E", "F"];
 
@@ -53,12 +49,7 @@ function MemberOverview({ groups, onClickSection }: IMemberOverview) {
                 <InfoItem>
                   <span>그룹장</span>
                   <span>
-                    {
-                      item?.find(
-                        (who) =>
-                          who.role === "manager" || who.role === "previliged"
-                      )?.name
-                    }
+                    {item?.find((who) => who.role === "manager" || who.role === "previliged")?.name}
                   </span>
                 </InfoItem>
                 <InfoItem>
@@ -77,13 +68,9 @@ function MemberOverview({ groups, onClickSection }: IMemberOverview) {
                 {item?.map((user, idx2) =>
                   idx2 < 13 ? (
                     <ProfileContainer key={user.uid} zIndex={idx2}>
-                      {/* <ProfileIconXsOverwrap
-                        user={user}
-                        isOverlap={idx2 > 11}
-                      /> */}
                       temp
                     </ProfileContainer>
-                  ) : null
+                  ) : null,
                 )}
               </GroupMembers>
             </GroupLayout>
@@ -162,38 +149,6 @@ const Title = styled.div`
   padding: 16px 0;
   font-size: 18px;
   font-weight: 600;
-`;
-
-const Info = styled.div`
-  font-size: 12px;
-  line-height: 2;
-  margin-top: var(--gap-2);
-  > li {
-    display: flex;
-    margin-left: -2px;
-    list-style-type: none;
-    > span:first-child {
-      margin-right: var(--gap-2);
-      font-weight: 600;
-      color: var(--gray-1);
-    }
-  }
-  > li::before {
-    content: "•";
-    font-size: 10px;
-    padding-right: var(--gap-1);
-  }
-`;
-
-const studys = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  flex: 1;
-  color: var(--gray-1);
-
-  > span {
-    margin-right: var(--gap-1);
-  }
 `;
 
 export default MemberOverview;

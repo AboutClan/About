@@ -1,37 +1,33 @@
 import { AxiosError } from "axios";
 import { Dayjs } from "dayjs";
 import { useMutation } from "react-query";
+
 import { requestServer } from "../../libs/methodHelpers";
 import { MutationOptions } from "../../types/hooks/reactTypes";
-import { IStudyVote } from "../../types/models/studyTypes/studyInterActions";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
-
 import {
+  IStudyVote,
   IStudyVotePlaces,
   IStudyVoteTime,
 } from "../../types/models/studyTypes/studyInterActions";
+import { dayjsToStr } from "../../utils/dateTimeUtils";
 
 type StudyParticipationParam<T> = T extends "post"
   ? IStudyVote
   : T extends "patch"
-  ? IStudyVoteTime
-  : void;
+    ? IStudyVoteTime
+    : void;
 
-export const useStudyParticipationMutation = <
-  T extends "post" | "patch" | "delete"
->(
+export const useStudyParticipationMutation = <T extends "post" | "patch" | "delete">(
   voteDate: Dayjs,
   method: T,
-  options?: MutationOptions<StudyParticipationParam<T>>
+  options?: MutationOptions<StudyParticipationParam<T>>,
 ) =>
   useMutation<void, AxiosError, StudyParticipationParam<T>>((param) => {
     const voteInfo = param;
     if (method !== "delete") {
       const updatedVoteInfo = voteInfo as IStudyVote | IStudyVoteTime;
       const { start, end } = updatedVoteInfo;
-      updatedVoteInfo.start = voteDate
-        .hour(start.hour())
-        .minute(start.minute());
+      updatedVoteInfo.start = voteDate.hour(start.hour()).minute(start.minute());
       updatedVoteInfo.end = voteDate.hour(end.hour()).minute(end.minute());
     }
     return requestServer<StudyParticipationParam<T>>({
@@ -48,7 +44,7 @@ interface IStudyQuickVoteParam {
 
 export const useStudyQuickVoteMutation = (
   date: Dayjs,
-  options?: MutationOptions<IStudyQuickVoteParam>
+  options?: MutationOptions<IStudyQuickVoteParam>,
 ) =>
   useMutation<void, AxiosError, IStudyQuickVoteParam>(
     ({ start, end }) =>
@@ -57,13 +53,10 @@ export const useStudyQuickVoteMutation = (
         url: `vote/${dayjsToStr(date)}/quick`,
         body: { start, end },
       }),
-    options
+    options,
   );
 
-export const useStudyOpenFreeMutation = (
-  date: string,
-  options?: MutationOptions<string>
-) =>
+export const useStudyOpenFreeMutation = (date: string, options?: MutationOptions<string>) =>
   useMutation<void, AxiosError, string>(
     (placeId) =>
       requestServer<{ placeId: string }>({
@@ -71,27 +64,21 @@ export const useStudyOpenFreeMutation = (
         url: `vote/${date}/free`,
         body: { placeId },
       }),
-    options
+    options,
   );
 
-export const useStudyAttendCheckMutation = (
-  date: Dayjs,
-  options?: MutationOptions<string>
-) =>
+export const useStudyAttendCheckMutation = (date: string, options?: MutationOptions<string>) =>
   useMutation<void, AxiosError, string>(
     (memo) =>
       requestServer<{ memo: string }>({
         method: "patch",
-        url: `vote/${dayjsToStr(date)}/arrived`,
+        url: `vote/${date}/arrived`,
         body: { memo },
       }),
-    options
+    options,
   );
 
-export const useStudyAbsentMutation = (
-  date: Dayjs,
-  options?: MutationOptions<string>
-) =>
+export const useStudyAbsentMutation = (date: Dayjs, options?: MutationOptions<string>) =>
   useMutation<void, AxiosError, string>(
     (message) =>
       requestServer<{ message: string }>({
@@ -99,25 +86,21 @@ export const useStudyAbsentMutation = (
         url: `vote/${dayjsToStr(date)}/absence`,
         body: { message },
       }),
-    options
+    options,
   );
 
-export const useStudyResultDecideMutation = (
-  date: string,
-  options?: MutationOptions<void>
-) =>
+export const useStudyResultDecideMutation = (date: string, options?: MutationOptions<void>) =>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useMutation<any, AxiosError, void>(
     () =>
       requestServer<void>({
         method: "patch",
         url: `admin/vote/${date}/status/confirm`,
       }),
-    options
+    options,
   );
 
-export const useStudyPreferenceMutation = (
-  options?: MutationOptions<IStudyVotePlaces>
-) =>
+export const useStudyPreferenceMutation = (options?: MutationOptions<IStudyVotePlaces>) =>
   useMutation<void, AxiosError, IStudyVotePlaces>(
     (votePlaces) =>
       requestServer<IStudyVotePlaces>({
@@ -125,5 +108,5 @@ export const useStudyPreferenceMutation = (
         url: `user/preference`,
         body: votePlaces,
       }),
-    options
+    options,
   );

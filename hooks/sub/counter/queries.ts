@@ -1,15 +1,13 @@
 import axios, { AxiosError } from "axios";
 import { useQuery, UseQueryOptions } from "react-query";
+
 import { SERVER_URI } from "../../../constants/system";
 import { Location } from "../../../types/services/locationTypes";
 
 export const useCounterQuery = (
   key: "enthusiasticMember",
   location: Location,
-  options?: Omit<
-    UseQueryOptions<number, AxiosError, number>,
-    "queryKey" | "queryFn"
-  >
+  options?: Omit<UseQueryOptions<number, AxiosError, number>, "queryKey" | "queryFn">,
 ) =>
   useQuery<number, AxiosError, number>(
     ["counter", key, location],
@@ -19,5 +17,5 @@ export const useCounterQuery = (
       });
       return res.data;
     },
-    options
+    options,
   );

@@ -1,8 +1,6 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-const SHORT_TEXT_MAX = 61;
-
 function ReviewContent({ text }: { text: string }) {
   const [isShort, setIsShort] = useState(true);
 

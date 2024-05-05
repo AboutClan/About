@@ -1,12 +1,15 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
+
 import Slide from "../../components/layouts/PageSlide";
 import AttendanceBadge from "../../components/molecules/badge/AttendanceBadge";
 import { IProfileCommentCard } from "../../components/molecules/cards/ProfileCommentCard";
 import ProfileCardColumn from "../../components/organisms/ProfileCardColumn";
 import ImageZoomModal from "../../modals/ImageZoomModal";
+import StudyChangeMemoModal from "../../modals/study/StudyChangeMemoModal";
 import { IAttendance } from "../../types/models/studyTypes/studyDetails";
 import { IAbsence } from "../../types/models/studyTypes/studyInterActions";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
@@ -15,17 +18,21 @@ interface IStudyParticipants {
   participants: IAttendance[];
   absences: IAbsence[];
 }
-export default function StudyParticipants({
-  participants,
-  absences,
-}: IStudyParticipants) {
+export default function StudyParticipants({ participants, absences }: IStudyParticipants) {
+  const { data: session } = useSession();
+
+  const [hasModalMemo, setHasModalMemo] = useState<string>();
   const [hasImageProps, setHasImageProps] = useState<{
     image: string;
     toUid: string;
   }>();
 
   const userCardArr: IProfileCommentCard[] = participants.map((par) => {
-    const obj = composeUserCardArr(par, absences);
+    const togglehasModalMemo =
+      par.user.uid === session?.user.uid && par.memo
+        ? (memo: string) => setHasModalMemo(memo)
+        : null;
+    const obj = composeUserCardArr(par, absences, togglehasModalMemo);
 
     const rightComponentProps = obj.rightComponentProps;
 
@@ -39,9 +46,7 @@ export default function StudyParticipants({
                 mr="12px"
                 rounded="md"
                 overflow="hidden"
-                onClick={() =>
-                  setHasImageProps({ image: par.imageUrl, toUid: par.user.uid })
-                }
+                onClick={() => setHasImageProps({ image: par.imageUrl, toUid: par.user.uid })}
                 w="50px"
                 h="50px"
               >
@@ -54,10 +59,7 @@ export default function StudyParticipants({
                 />
               </Box>
             )}
-            <AttendanceBadge
-              type={rightComponentProps.type}
-              time={rightComponentProps.time}
-            />
+            <AttendanceBadge type={rightComponentProps.type} time={rightComponentProps.time} />
           </Flex>
         </>
       ) : null,
@@ -97,6 +99,12 @@ export default function StudyParticipants({
           setIsModal={() => setHasImageProps(null)}
         />
       )}
+      {hasModalMemo && (
+        <StudyChangeMemoModal
+          hasModalMemo={hasModalMemo}
+          setIsModal={() => setHasModalMemo(null)}
+        />
+      )}
     </>
   );
 }
@@ -110,18 +118,20 @@ interface IReturnProps extends Omit<IProfileCommentCard, "rightComponent"> {
 
 const composeUserCardArr = (
   participant: IAttendance,
-  absences: IAbsence[]
+  absences: IAbsence[],
+  setHasModalMemo: (memo: string) => void,
 ): IReturnProps => {
   const arrived = participant?.arrived
     ? dayjsToFormat(dayjs(participant.arrived).subtract(9, "hour"), "HH:mm")
     : null;
-  const absent = absences.find(
-    (absence) => absence.user.uid === participant.user.uid
-  );
+  const absent = absences.find((absence) => absence.user.uid === participant.user.uid);
+  const memo = participant.memo;
+  const user = participant.user;
 
   return {
-    user: participant.user,
-    comment: participant.memo || absent?.message || "",
+    user: user,
+    comment: memo || absent?.message || "",
+    setMemo: setHasModalMemo ? () => setHasModalMemo(memo) : null,
     rightComponentProps:
       arrived || absent
         ? {

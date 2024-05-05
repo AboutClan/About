@@ -6,9 +6,9 @@ interface IScreenOverlay {
   darken?: boolean;
 }
 
-const ScreenOverlay = ({ onClick, zIndex, darken = false }: IScreenOverlay) => {
+function ScreenOverlay({ onClick, zIndex, darken = false }: IScreenOverlay) {
   return <StyledOverlay darken={darken} onClick={onClick} zIndex={zIndex} />;
-};
+}
 
 const StyledOverlay = styled.div<{ zIndex: number; darken: boolean }>`
   position: fixed;
@@ -22,7 +22,6 @@ const StyledOverlay = styled.div<{ zIndex: number; darken: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${(props) =>
-    props.darken ? "rgba(0,0,0,0.7)" : "rgba(0, 0, 0, 0.5)"};
+  background-color: ${(props) => (props.darken ? "rgba(0,0,0,0.7)" : "rgba(0, 0, 0, 0.5)")};
 `;
 export default ScreenOverlay;

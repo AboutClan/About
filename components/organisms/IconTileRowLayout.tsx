@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 import { Size } from "../../types/components/assetTypes";
 import IconLinkTile, { IIconLinkTile } from "../atoms/IconLinkTile";
 
@@ -6,10 +7,7 @@ interface IIconTileRowLayout {
   tileDataArr: IIconLinkTile[];
   size?: Size;
 }
-export default function IconTileRowLayout({
-  tileDataArr,
-  size,
-}: IIconTileRowLayout) {
+export default function IconTileRowLayout({ tileDataArr, size }: IIconTileRowLayout) {
   return (
     <Layout>
       {tileDataArr.map((tile, idx) => (

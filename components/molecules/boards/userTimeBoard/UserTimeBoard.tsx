@@ -1,5 +1,6 @@
 import { Dayjs } from "dayjs";
 import styled from "styled-components";
+
 import { IHighlightedText } from "../../../atoms/HighlightedText";
 import BoardHeaderText from "./_component/BoardHeaderText";
 import BoardUserBlocks from "./_component/BoardUserBlocks";
@@ -18,10 +19,7 @@ interface ITimeBoard {
   participants: ITimeBoardParticipant[];
 }
 
-export default function UserTimeBoard({
-  participants,
-  headerText,
-}: ITimeBoard) {
+export default function UserTimeBoard({ participants, headerText }: ITimeBoard) {
   return (
     <UserTimeBoardContainer>
       <BoardHeaderText headerText={headerText} />

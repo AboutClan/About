@@ -2,19 +2,17 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
+
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
-import ProgressStatus from "../../../components/molecules/ProgressStatus";
-
 import ButtonCheckNav from "../../../components/molecules/ButtonCheckNav";
-import { useFailToast } from "../../../hooks/custom/CustomToast";
+import ProgressStatus from "../../../components/molecules/ProgressStatus";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { sharedGroupWritingState } from "../../../recoils/sharedDataAtoms";
 function GroupWritingContent() {
   const router = useRouter();
-  const failToast = useFailToast();
 
   const [group, setGroup] = useRecoilState(sharedGroupWritingState);
 
@@ -73,20 +71,6 @@ function GroupWritingContent() {
 
 const Container = styled.div`
   margin-top: var(--gap-4);
-`;
-
-const Content = styled.textarea`
-  margin-top: 40px;
-  border: var(--border);
-  border-radius: var(--rounded-lg);
-  height: 200px;
-  width: 100%;
-  padding: var(--gap-3);
-  font-size: 12px;
-  :focus {
-    outline: none;
-    border: var(--border-thick);
-  }
 `;
 
 export default GroupWritingContent;

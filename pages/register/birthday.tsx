@@ -1,28 +1,24 @@
+import "react-datepicker/dist/react-datepicker.css";
+
 import { Button } from "@chakra-ui/react";
 import ko from "date-fns/locale/ko";
 import dayjs from "dayjs";
 import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import styled from "styled-components";
-import BottomNav from "../../components/layouts/BottomNav";
 
+import BottomNav from "../../components/layouts/BottomNav";
 import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
 import { birthToAge } from "../../utils/convertUtils/convertTypes";
-import {
-  getLocalStorageObj,
-  setLocalStorageObj,
-} from "../../utils/storageUtils";
+import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
 dayjs.locale("ko");
 function Birthday() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const info: IUserRegisterFormWriting = getLocalStorageObj(REGISTER_INFO);
 
@@ -33,19 +29,11 @@ function Birthday() {
   const birth = info?.birth;
 
   const defaultBirth =
-    birth && Number(birth?.slice(0, 2)) < 50
-      ? "20" + birth
-      : birth
-      ? "19" + birth
-      : null;
+    birth && Number(birth?.slice(0, 2)) < 50 ? "20" + birth : birth ? "19" + birth : null;
 
   const defaultBirthDate =
     defaultBirth &&
-    new Date(
-      +defaultBirth?.slice(0, 4),
-      +defaultBirth?.slice(4, 6) - 1,
-      +defaultBirth?.slice(6)
-    );
+    new Date(+defaultBirth?.slice(0, 4), +defaultBirth?.slice(4, 6) - 1, +defaultBirth?.slice(6));
   const isProfileEdit = !!searchParams.get("edit");
   const [startDate, setStartDate] = useState(defaultBirthDate || initialDate);
 
@@ -70,10 +58,7 @@ function Birthday() {
 
   return (
     <>
-      <ProgressHeader
-        title={!isProfileEdit ? "회원가입" : "프로필 수정"}
-        value={40}
-      />
+      <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={40} />
 
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>

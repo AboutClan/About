@@ -1,10 +1,10 @@
 import { Select, Switch } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
-import { getMonth } from "../../utils/dateTimeUtils";
 
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { RankingCategory } from "../../types/models/ranking";
+import { getMonth } from "../../utils/dateTimeUtils";
 
 interface IRankingCategoryBar {
   category: RankingCategory;

@@ -1,30 +1,25 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+
 import BottomNav from "../../../../components/layouts/BottomNav";
 import Header from "../../../../components/layouts/Header";
 import Slide from "../../../../components/layouts/PageSlide";
-
 import ProgressStatus from "../../../../components/molecules/ProgressStatus";
 import {
   GROUP_STUDY_CATEGORY_ARR_ICONS,
   GROUP_STUDY_SUB_CATEGORY,
 } from "../../../../constants/contentsText/GroupStudyContents";
-
 import { useFailToast } from "../../../../hooks/custom/CustomToast";
 import RegisterLayout from "../../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../../pageTemplates/register/RegisterOverview";
-import { prevPageUrlState } from "../../../../recoils/previousAtoms";
 import { sharedGroupWritingState } from "../../../../recoils/sharedDataAtoms";
 function WritingStudyCategorySub() {
   const router = useRouter();
   const failToast = useFailToast();
 
-  const prevPageUrl = useRecoilValue(prevPageUrlState);
-  const [GroupWriting, setGroupWriting] = useRecoilState(
-    sharedGroupWritingState
-  );
+  const [GroupWriting, setGroupWriting] = useRecoilState(sharedGroupWritingState);
 
   const mainCategory = GroupWriting?.category?.main;
 
@@ -51,7 +46,7 @@ function WritingStudyCategorySub() {
     <>
       <Slide isFixed={true}>
         <ProgressStatus value={28} />
-        <Header isSlide={false} title="" url={"/group/writing/category/main"} />
+        <Header isSlide={false} title="" url="/group/writing/category/main" />
       </Slide>
 
       <RegisterLayout>
@@ -60,14 +55,8 @@ function WritingStudyCategorySub() {
         </RegisterOverview>
         <ItemContainer>
           {GROUP_STUDY_SUB_CATEGORY[mainCategory].map((type, idx) => (
-            <Item
-              key={idx}
-              isSelected={type === category}
-              onClick={() => setCategory(type)}
-            >
-              <IconWrapper>
-                {GROUP_STUDY_CATEGORY_ARR_ICONS[mainCategory]}
-              </IconWrapper>
+            <Item key={idx} isSelected={type === category} onClick={() => setCategory(type)}>
+              <IconWrapper>{GROUP_STUDY_CATEGORY_ARR_ICONS[mainCategory]}</IconWrapper>
               <Info>{type}</Info>
             </Item>
           ))}
@@ -92,8 +81,7 @@ const Item = styled.div<{ isSelected: boolean }>`
   margin-bottom: var(--gap-2);
   height: 60px;
   border-radius: var(--rounded-lg);
-  border: ${(props) =>
-    props.isSelected ? "2px solid var(--color-mint)" : "var(--border)"};
+  border: ${(props) => (props.isSelected ? "2px solid var(--color-mint)" : "var(--border)")};
 `;
 
 const IconWrapper = styled.div`

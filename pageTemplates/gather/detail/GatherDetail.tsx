@@ -4,8 +4,10 @@ import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
+
 import { CopyBtn } from "../../../components/atoms/Icons/CopyIcon";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
+import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 dayjs.locale("ko");
 
@@ -17,7 +19,7 @@ function GatherDetailInfo({
   data: { location, date, age, memberCnt, user, password, genderCondition },
 }: IGatherDetailInfo) {
   const { data: session } = useSession();
-  const isOrganizer = user?.uid === session?.user?.uid;
+  const isOrganizer = (user as IUserSummary)?.uid === session?.user?.uid;
   const [isSubLocation, setIsSubLocation] = useState(false);
 
   return (
@@ -30,20 +32,14 @@ function GatherDetailInfo({
       {isSubLocation && <LocationSub>{location.sub}</LocationSub>}
       <Item>
         <ItemText>날짜</ItemText>
-        <span>
-          {date === "미정"
-            ? date
-            : dayjsToFormat(dayjs(date), "M.D(ddd) 오후 h:mm")}
-        </span>
+        <span>{date === "미정" ? date : dayjsToFormat(dayjs(date), "M.D(ddd) hh:mm")}</span>
       </Item>
       <Item>
         <ItemText>나이</ItemText>
         <span>
           {age[0]} ~ {age[1]}세
         </span>
-        {genderCondition && (
-          <FontAwesomeIcon icon={faVenusMars} color="#9E7CFF" />
-        )}
+        {genderCondition && <FontAwesomeIcon icon={faVenusMars} color="#9E7CFF" />}
       </Item>
       <Item>
         <ItemText>오픈</ItemText>

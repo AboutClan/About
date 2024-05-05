@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { useSetRecoilState } from "recoil";
+
 import SectionBar from "../../components/molecules/bars/SectionBar";
 import ImageTileGridLayout, {
   IImageTileData,

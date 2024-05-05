@@ -1,10 +1,10 @@
 import { faBellOn } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import styled from "styled-components";
-import BlurredPart from "../../../../components/molecules/BlurredPart";
 
+import BlurredPart from "../../../../components/molecules/BlurredPart";
 import { IGroup } from "../../../../types/models/groupTypes/group";
 import GroupDetailInfo from "../GroupDetail";
 
@@ -17,9 +17,7 @@ function ContentInfo({ group }: IContentInfo) {
   const hashTagText = group.hashTag;
   const hashTagArr = hashTagText?.split("#");
 
-  const isMember = group?.participants?.some(
-    (who) => who.user.uid === session?.user.uid
-  );
+  const isMember = group?.participants?.some((who) => who.user.uid === session?.user.uid);
 
   return (
     <Layout>
@@ -33,11 +31,7 @@ function ContentInfo({ group }: IContentInfo) {
       {!!group?.rules?.length && (
         <ContentWrapper>
           <span>규칙</span>
-          <Rules>
-            {group?.rules.map((rule, idx) => (
-              <Rule key={idx}>{rule}</Rule>
-            ))}
-          </Rules>
+          <Rules>{group?.rules.map((rule, idx) => <Rule key={idx}>{rule}</Rule>)}</Rules>
         </ContentWrapper>
       )}
       {group?.link && (
@@ -63,11 +57,7 @@ function ContentInfo({ group }: IContentInfo) {
           {group?.challenge}
         </Challenge>
       )}
-      <Tag>
-        {hashTagArr?.map((tag, idx) =>
-          tag ? <div key={idx}>#{tag}</div> : null
-        )}
-      </Tag>
+      <Tag>{hashTagArr?.map((tag, idx) => (tag ? <div key={idx}>#{tag}</div> : null))}</Tag>
     </Layout>
   );
 }

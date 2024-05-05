@@ -244,7 +244,6 @@ export const REVIEW_DATA: IReviewData[] = [
       "https://user-images.githubusercontent.com/84257439/271972604-d45bc71c-ad56-4b0c-8bda-21cfb7fb788d.jpg",
       "https://user-images.githubusercontent.com/84257439/271972631-f696057b-f482-428a-9f51-5147e89134da.jpg",
       "https://user-images.githubusercontent.com/84257439/271972579-f46cb13b-b9c3-4726-b3f3-2347f4cea353.jpg",
-      ,
     ],
     title: "수원 조모임 A,E",
     text: "수원 조모임 A,E",

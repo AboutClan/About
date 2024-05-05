@@ -1,10 +1,11 @@
 import { faLockKeyhole } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+
 import { Badge } from "../../components/atoms/badges/Badges";
 import { useFailToast } from "../../hooks/custom/CustomToast";
 import { transferGroupDataState } from "../../recoils/transferRecoils";
@@ -58,8 +59,7 @@ function GroupBlock({ group }: IGroupBlock) {
     const status = group.status;
     const min = group.memberCnt.min;
     const max = group.memberCnt.max;
-    const participantCnt =
-      group.participants.length + (group.id === 33 ? 3 : 0);
+    const participantCnt = group.participants.length + (group.id === 33 ? 3 : 0);
 
     if (status === "gathering") {
       return {

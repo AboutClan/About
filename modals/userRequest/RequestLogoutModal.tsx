@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { signOut } from "next-auth/react";
 import { useEffect, useRef } from "react";
-import styled from "styled-components";
+
 import { IModal } from "../../types/components/modalTypes";
 
 interface IRequestLogoutModal extends IModal {
@@ -32,11 +32,7 @@ function RequestLogoutModal({ isModal, setIsModal }: IRequestLogoutModal) {
   };
 
   return (
-    <AlertDialog
-      isOpen={isOpen}
-      leastDestructiveRef={cancelRef}
-      onClose={onClose}
-    >
+    <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
       <AlertDialogOverlay>
         <AlertDialogContent margin="auto 14px">
           <AlertDialogHeader fontSize="lg" fontWeight="bold">
@@ -47,12 +43,7 @@ function RequestLogoutModal({ isModal, setIsModal }: IRequestLogoutModal) {
             <Button ref={cancelRef} onClick={() => setIsModal(false)}>
               취소
             </Button>
-            <Button
-              color="white"
-              backgroundColor="var(--color-mint)"
-              onClick={logout}
-              ml={3}
-            >
+            <Button color="white" backgroundColor="var(--color-mint)" onClick={logout} ml={3}>
               로그아웃
             </Button>
           </AlertDialogFooter>
@@ -61,7 +52,5 @@ function RequestLogoutModal({ isModal, setIsModal }: IRequestLogoutModal) {
     </AlertDialog>
   );
 }
-
-const Layout = styled.div``;
 
 export default RequestLogoutModal;

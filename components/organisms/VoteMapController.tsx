@@ -9,14 +9,11 @@ import {
   PopoverHeader,
   PopoverTrigger,
 } from "@chakra-ui/react";
-import {
-  faBullseyeArrow,
-  faGear,
-  faRotateRight,
-} from "@fortawesome/pro-regular-svg-icons";
+import { faBullseyeArrow, faGear, faRotateRight } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import styled from "styled-components";
+
 import { useFailToast } from "../../hooks/custom/CustomToast";
 import { DispatchNumber, DispatchType } from "../../types/hooks/reactTypes";
 import { IStudyVote } from "../../types/models/studyTypes/studyInterActions";
@@ -43,10 +40,7 @@ function VoteMapController({
   const failToast = useFailToast();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const location = convertLocationLangTo(
-    searchParams.get("location") as LocationEn,
-    "kr"
-  );
+  const location = convertLocationLangTo(searchParams.get("location") as LocationEn, "kr");
 
   const newSearchParams = new URLSearchParams(searchParams);
   const router = useRouter();
@@ -149,9 +143,7 @@ function VoteMapController({
               w="34px"
               h="34px"
               border={preset !== "first" && "1px solid var(--gray-4)"}
-              bgColor={
-                preset === "first" ? "var(--color-mint) !important" : "white"
-              }
+              bgColor={preset === "first" ? "var(--color-mint) !important" : "white"}
               color={preset === "first" ? "white !important" : "var(--gray-2)"}
               mr="var(--gap-2)"
               onClick={() => onClickPreset("first")}
@@ -182,12 +174,7 @@ function VoteMapController({
               <FontAwesomeIcon icon={faGear} />
             </Button>
           </Box>
-          <Box
-            as="span"
-            fontSize="16px"
-            color="var(--color-mint)"
-            fontWeight={600}
-          >
+          <Box as="span" fontSize="16px" color="var(--color-mint)" fontWeight={600}>
             스터디 희망 장소를 터치해 주세요!
           </Box>
         </BottomNav>
@@ -201,62 +188,59 @@ interface IPrecisionPopOver {
   setPrecision: DispatchNumber;
 }
 
-export const PrecisionPopOver = ({ precision, setPrecision }) => (
-  <Popover>
-    <PopoverTrigger>
-      <TargetIcon>
-        <Button
-          as="div"
-          borderRadius="4px"
-          w="34px"
-          h="34px"
-          border="1px solid var(--gray-5)"
-          bg="white"
-        >
-          <FontAwesomeIcon icon={faBullseyeArrow} size="xl" />
-        </Button>
-      </TargetIcon>
-    </PopoverTrigger>
-    <PopoverContent
-      w="120px"
-      mr="var(--gap-2)"
-      fontSize="12px"
-      _focus={{ outline: "none" }}
-    >
-      <PopoverArrow />
-      <PopoverCloseButton />
-      <PopoverHeader fontWeight="600">정밀도 단계</PopoverHeader>
-      <PopoverBody display="flex" p="var(--gap-2)">
-        <Button
-          as="div"
-          colorScheme={precision === 0 ? "mintTheme" : "gray"}
-          size="xs"
-          mr="var(--gap-2)"
-          onClick={() => setPrecision(0)}
-        >
-          0
-        </Button>
-        <Button
-          colorScheme={precision === 1 ? "mintTheme" : "gray"}
-          size="xs"
-          as="div"
-          mr="var(--gap-2)"
-          onClick={() => setPrecision(1)}
-        >
-          1
-        </Button>
-        <Button
-          onClick={() => setPrecision(2)}
-          as="div"
-          colorScheme={precision === 2 ? "mintTheme" : "gray"}
-          size="xs"
-        >
-          2
-        </Button>
-      </PopoverBody>
-    </PopoverContent>
-  </Popover>
-);
+export function PrecisionPopOver({ precision, setPrecision }) {
+  return (
+    <Popover>
+      <PopoverTrigger>
+        <TargetIcon>
+          <Button
+            as="div"
+            borderRadius="4px"
+            w="34px"
+            h="34px"
+            border="1px solid var(--gray-5)"
+            bg="white"
+          >
+            <FontAwesomeIcon icon={faBullseyeArrow} size="xl" />
+          </Button>
+        </TargetIcon>
+      </PopoverTrigger>
+      <PopoverContent w="120px" mr="var(--gap-2)" fontSize="12px" _focus={{ outline: "none" }}>
+        <PopoverArrow />
+        <PopoverCloseButton />
+        <PopoverHeader fontWeight="600">정밀도 단계</PopoverHeader>
+        <PopoverBody display="flex" p="var(--gap-2)">
+          <Button
+            as="div"
+            colorScheme={precision === 0 ? "mintTheme" : "gray"}
+            size="xs"
+            mr="var(--gap-2)"
+            onClick={() => setPrecision(0)}
+          >
+            0
+          </Button>
+          <Button
+            colorScheme={precision === 1 ? "mintTheme" : "gray"}
+            size="xs"
+            as="div"
+            mr="var(--gap-2)"
+            onClick={() => setPrecision(1)}
+          >
+            1
+          </Button>
+          <Button
+            onClick={() => setPrecision(2)}
+            as="div"
+            colorScheme={precision === 2 ? "mintTheme" : "gray"}
+            size="xs"
+          >
+            2
+          </Button>
+        </PopoverBody>
+      </PopoverContent>
+    </Popover>
+  );
+}
 
 const Layout = styled.div``;
 

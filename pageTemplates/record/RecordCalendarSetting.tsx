@@ -1,5 +1,6 @@
 import dayjs, { Dayjs } from "dayjs";
 import { useEffect } from "react";
+
 import { useErrorToast } from "../../hooks/custom/CustomToast";
 import { useStudyAttendRecordQuery } from "../../hooks/study/queries";
 import { DispatchBoolean, DispatchType } from "../../types/hooks/reactTypes";
@@ -23,7 +24,7 @@ function RecordCalendarSetting({
     navMonth.endOf("month"),
     {
       onError: errorToast,
-    }
+    },
   );
 
   useEffect(() => {
@@ -34,12 +35,10 @@ function RecordCalendarSetting({
     const totalDate = daysInMonth + frontBlankDate;
     const rowsInMonth = totalDate <= 35 ? 5 : 6;
 
-    const filledDates: IArrivedData[] = Array.from(
-      { length: 7 * rowsInMonth },
-      (_, idx) =>
-        idx < frontBlankDate || idx >= totalDate
-          ? null
-          : { date: idx - frontBlankDate + 1, arrivedInfoList: [] }
+    const filledDates: IArrivedData[] = Array.from({ length: 7 * rowsInMonth }, (_, idx) =>
+      idx < frontBlankDate || idx >= totalDate
+        ? null
+        : { date: idx - frontBlankDate + 1, arrivedInfoList: [] },
     );
     studyRecords.forEach((item) => {
       const filledIdx = dayjs(item.date).date() + frontBlankDate - 1;

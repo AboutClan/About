@@ -9,11 +9,7 @@ function NotCompletedModal({ setIsModal }: IModal) {
 
   return (
     <>
-      <ModalLayout
-        title="준비중인 컨텐츠"
-        footerOptions={footerOptions}
-        setIsModal={setIsModal}
-      >
+      <ModalLayout title="준비중인 컨텐츠" footerOptions={footerOptions} setIsModal={setIsModal}>
         <ModalSubtitle>개발 진행중인 컨텐츠입니다.</ModalSubtitle>
       </ModalLayout>
     </>

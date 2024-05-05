@@ -11,10 +11,7 @@ interface IShadowCircleButton {
   onClick: () => void;
 }
 
-export default function ShadowCircleButton({
-  buttonProps,
-  onClick,
-}: IShadowCircleButton) {
+export default function ShadowCircleButton({ buttonProps, onClick }: IShadowCircleButton) {
   return (
     <OuterCircle shadow={buttonProps.shadow} onClick={onClick}>
       <InnerButton color={buttonProps.color}>{buttonProps.text}</InnerButton>

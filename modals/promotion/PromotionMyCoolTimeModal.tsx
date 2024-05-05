@@ -2,14 +2,10 @@ import { Flex } from "@chakra-ui/react";
 import { faCircle } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
+
 import { PROMOTION_WIN } from "../../storage/winRecord";
 import { IModal } from "../../types/components/modalTypes";
-import { IPromotionApply } from "../../types/models/promotion";
 import { IFooterOptions, ModalLayout } from "../Modals";
-
-interface IPromotionMyCoolTimeModal extends IModal {
-  myApply: IPromotionApply;
-}
 
 function PromotionMyCoolTimeModal({ setIsModal }: IModal) {
   const footerOptions: IFooterOptions = {
@@ -17,11 +13,7 @@ function PromotionMyCoolTimeModal({ setIsModal }: IModal) {
   };
 
   return (
-    <ModalLayout
-      footerOptions={footerOptions}
-      setIsModal={setIsModal}
-      title="지난 당첨 기록"
-    >
+    <ModalLayout footerOptions={footerOptions} setIsModal={setIsModal} title="지난 당첨 기록">
       <Flex direction="column" position="relative" overflowY="auto">
         <Container>
           {PROMOTION_WIN.map((item, idx) => (
@@ -43,8 +35,7 @@ function PromotionMyCoolTimeModal({ setIsModal }: IModal) {
                 {item.winner.map((who, idx) => (
                   <WinnerItem key={idx}>
                     {who.name}
-                    <FontAwesomeIcon icon={faCircle} size="sm" />({who.location}
-                    )
+                    <FontAwesomeIcon icon={faCircle} size="sm" />({who.location})
                   </WinnerItem>
                 ))}
               </Winner>
@@ -111,15 +102,6 @@ const Gift = styled.div`
   > span:last-child {
     font-weight: 600;
   }
-`;
-
-const Info = styled.div``;
-
-const Uni = styled.span`
-  font-weight: 600;
-  color: var(--gray-2);
-  font-size: 14px;
-  flex: 0.4;
 `;
 
 export default PromotionMyCoolTimeModal;

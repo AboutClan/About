@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import {
   Accordion,
   AccordionButton,
@@ -16,22 +18,15 @@ import {
   PopoverTrigger,
   Portal,
 } from "@chakra-ui/react";
-import {
-  faChevronLeft,
-  faChevronRight,
-} from "@fortawesome/pro-solid-svg-icons";
+import { faChevronLeft, faChevronRight } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { useState } from "react";
 import styled from "styled-components";
+
 import Header from "../../../components/layouts/Header";
-
 import { useStudyVoteQuery } from "../../../hooks/study/queries";
-import {
-  IAttendance,
-  StudyStatus,
-} from "../../../types/models/studyTypes/studyDetails";
-
+import { StudyStatus } from "../../../types/models/studyTypes/studyDetails";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 
@@ -43,8 +38,6 @@ function AdminStudyStatus() {
   const { data: YANG } = useStudyVoteQuery(dayjsToStr(date), "양천");
 
   const handleStatus = (type: StudyStatus) => {};
-
-  const handleDeleteUser = (who: IAttendance) => {};
 
   return (
     <>
@@ -71,18 +64,9 @@ function AdminStudyStatus() {
                 {(place === "SUWAN" ? SUWAN : YANG).map((place) => (
                   <AccordionItem key={place.place._id}>
                     <h2>
-                      <AccordionButton
-                        background="gray.200"
-                        borderBottom="1px solid lightGray"
-                      >
-                        <Box
-                          as="span"
-                          flex="1"
-                          textAlign="left"
-                          fontWeight="600"
-                        >
-                          {place.place.brand} / {place.attendences.length}명 /
-                          {place.status}
+                      <AccordionButton background="gray.200" borderBottom="1px solid lightGray">
+                        <Box as="span" flex="1" textAlign="left" fontWeight="600">
+                          {place.place.brand} / {place.attendences.length}명 /{place.status}
                         </Box>
                         <AccordionIcon />
                       </AccordionButton>
@@ -90,9 +74,7 @@ function AdminStudyStatus() {
                     <AccordionPanel pb={4}>
                       <SpaceItem>
                         <div>
-                          <span style={{ fontSize: "15px" }}>
-                            상태: {place.status}
-                          </span>
+                          <span style={{ fontSize: "15px" }}>상태: {place.status}</span>
                           <Popover>
                             <PopoverTrigger>
                               <Button>Trigger</Button>
@@ -103,11 +85,7 @@ function AdminStudyStatus() {
                                 <PopoverHeader>Header</PopoverHeader>
                                 <PopoverCloseButton />
                                 <PopoverBody>
-                                  <Button
-                                    size="sm"
-                                    ml="2"
-                                    onClick={() => handleStatus("open")}
-                                  >
+                                  <Button size="sm" ml="2" onClick={() => handleStatus("open")}>
                                     open
                                   </Button>
                                   <Button
@@ -117,17 +95,11 @@ function AdminStudyStatus() {
                                   >
                                     dismissed
                                   </Button>
-                                  <Button
-                                    size="sm"
-                                    ml="2"
-                                    onClick={() => handleStatus("pending")}
-                                  >
+                                  <Button size="sm" ml="2" onClick={() => handleStatus("pending")}>
                                     pending
                                   </Button>
                                 </PopoverBody>
-                                <PopoverFooter>
-                                  This is the footer
-                                </PopoverFooter>
+                                <PopoverFooter>This is the footer</PopoverFooter>
                               </PopoverContent>
                             </Portal>
                           </Popover>

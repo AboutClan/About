@@ -4,10 +4,12 @@ interface ISeo {
   title: string;
 }
 
-const Seo = ({ title }: ISeo) => (
-  <Head>
-    <title>{title}</title>
-  </Head>
-);
+function Seo({ title }: ISeo) {
+  return (
+    <Head>
+      <title>{title}</title>
+    </Head>
+  );
+}
 
 export default Seo;

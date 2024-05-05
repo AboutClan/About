@@ -1,36 +1,26 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import BottomNav from "../../../components/layouts/BottomNav";
-import Slide from "../../../components/layouts/PageSlide";
 
+import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
+import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
-import {
-  GatherCategoryIcons,
-  GATHER_TYPES,
-} from "../../../constants/contentsText/GatherContents";
+import { GATHER_TYPES,GatherCategoryIcons } from "../../../constants/contentsText/GatherContents";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-import { prevPageUrlState } from "../../../recoils/previousAtoms";
 import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
-
-import { IGatherType } from "../../../types/models/gatherTypes/gather";
+import { IGatherType } from "../../../types/models/gatherTypes/gatherTypes";
 
 function WritingGatherCategory() {
   const router = useRouter();
   const failToast = useFailToast();
 
-  const prevPageUrl = useRecoilValue(prevPageUrlState);
-  const [gatherWriting, setGatherWriting] = useRecoilState(
-    sharedGatherWritingState
-  );
+  const [gatherWriting, setGatherWriting] = useRecoilState(sharedGatherWritingState);
 
-  const [IGatherType, setIGatherType] = useState<IGatherType>(
-    gatherWriting?.type
-  );
+  const [IGatherType, setIGatherType] = useState<IGatherType>(gatherWriting?.type);
 
   const onClickNext = () => {
     if (!IGatherType) {
@@ -85,8 +75,7 @@ const Item = styled.div<{ isSelected: boolean }>`
   margin-bottom: var(--gap-2);
   height: 60px;
   border-radius: var(--rounded-lg);
-  border: ${(props) =>
-    props.isSelected ? "2px solid var(--color-mint)" : "var(--border)"};
+  border: ${(props) => (props.isSelected ? "2px solid var(--color-mint)" : "var(--border)")};
 `;
 
 const IconWrapper = styled.div`

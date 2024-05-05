@@ -16,10 +16,7 @@ export const ACTIVE_LOCATIONS: ActiveLocation[] = [
 
 export const INACTIVE_LOCATIONS: InactiveLocation[] = ["마포"];
 
-export const LOCATIONS: Location[] = [
-  ...ACTIVE_LOCATIONS,
-  ...INACTIVE_LOCATIONS,
-];
+export const LOCATIONS: Location[] = [...ACTIVE_LOCATIONS, ...INACTIVE_LOCATIONS];
 
 export const krToEnMapping: Record<ActiveLocation, LocationEn> = {
   수원: "suw",

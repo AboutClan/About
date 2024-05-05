@@ -14,9 +14,7 @@ function GuestBottomNav() {
         backgroundColor="var(--color-red)"
         color="white"
         size="xs"
-        onClick={() =>
-          router.replace(`/home?${newSearchparams.toString()}&logout=on`)
-        }
+        onClick={() => router.replace(`/home?${newSearchparams.toString()}&logout=on`)}
       >
         로그아웃
       </Button>

@@ -2,15 +2,12 @@ import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+
 import Input from "../../../components/atoms/Input";
 import TimeSelectorUnit from "../../../components/atoms/TimeSelectorUnit";
-
 import { TIME_SELECTOR_UNIT } from "../../../constants/util/util";
 import { DispatchType } from "../../../types/hooks/reactTypes";
-import {
-  IGatherListItem,
-  IGatherWriting,
-} from "../../../types/models/gatherTypes/gather";
+import { IGatherListItem, IGatherWriting } from "../../../types/models/gatherTypes/gatherTypes";
 import { ITime } from "../../../types/utils/timeAndDate";
 
 interface IGatherWritingDateSubject {
@@ -38,14 +35,29 @@ function GatherWritingDateSubject({
   });
 
   useEffect(() => {
-    if (date)
+    const [{ time: firstTime }, { time: secondTime }] = gatherWriting?.gatherList || [
+      { time: null },
+      { time: null },
+    ];
+
+    if (firstTime || date) {
       setFirstGather((old) => ({
         ...old,
         time: {
-          hours: dayjs(date).hour(),
-          minutes: dayjs(date).minute(),
+          hours: firstTime ? firstTime.hours : dayjs(date).hour(),
+          minutes: firstTime ? firstTime.minutes : dayjs(date).minute(),
         },
       }));
+    }
+    if (secondTime) {
+      setSecondGather((old) => ({
+        ...old,
+        time: {
+          hours: secondTime.hours,
+          minutes: secondTime.minutes,
+        },
+      }));
+    }
   }, [date]);
 
   useEffect(() => {
@@ -54,17 +66,9 @@ function GatherWritingDateSubject({
       gatherList.push({ text: secondGather.text, time: secondGather.time });
     setGatherList(gatherList);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    firstGather.text,
-    firstGather.time,
-    secondGather.text,
-    secondGather.time,
-  ]);
+  }, [firstGather.text, firstGather.time, secondGather.text, secondGather.time]);
 
-  const onChangeInput = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    type: "first" | "second"
-  ) => {
+  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>, type: "first" | "second") => {
     const value = e.target.value;
     if (type === "first") setFirstGather((old) => ({ ...old, text: value }));
     if (type === "second") setSecondGather((old) => ({ ...old, text: value }));
@@ -84,7 +88,7 @@ function GatherWritingDateSubject({
         </Box>
         <Box h="40px" />
         <TimeSelectorUnit
-          time={firstGather?.time}
+          time={firstGather.time}
           setTime={(time) => setFirstGather((old) => ({ ...old, time }))}
           timeArr={TIME_SELECTOR_UNIT}
         />
@@ -106,9 +110,7 @@ function GatherWritingDateSubject({
           disabled={secondGather?.text === ""}
         />
       </TimeContent>
-      <Message>
-        2차 모임이 없는 경우 &lsquo;늦참&rsquo;으로 설정해주세요!
-      </Message>
+      <Message>2차 모임이 없는 경우 &lsquo;늦참&rsquo;으로 설정해주세요!</Message>
     </Layout>
   );
 }
@@ -134,16 +136,4 @@ const TimeContent = styled.div`
   }
 `;
 
-const TimeContentInput = styled.input`
-  flex: 1;
-  border: var(--border);
-  border-radius: var(--rounded-lg);
-  height: 36px;
-  padding: var(--gap-2);
-  font-size: 12px;
-  :focus {
-    outline: none;
-    border: var(--border-thick);
-  }
-`;
 export default GatherWritingDateSubject;

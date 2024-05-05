@@ -1,6 +1,7 @@
 import axios, { AxiosError } from "axios";
 import dayjs, { Dayjs } from "dayjs";
 import { useQuery } from "react-query";
+
 import {
   STUDY_ARRIVED_CNT,
   STUDY_ATTEND_RECORD,
@@ -10,41 +11,31 @@ import {
   STUDY_VOTE,
 } from "../../constants/keys/queryKeys";
 import { SERVER_URI } from "../../constants/system";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
-
 import { QueryOptions } from "../../types/hooks/reactTypes";
-
-import {
-  IParticipation,
-  IPlace,
-  IStudy,
-} from "../../types/models/studyTypes/studyDetails";
+import { IParticipation, IPlace, IStudy } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
 import { IArrivedData } from "../../types/models/studyTypes/studyRecords";
 import { Location } from "../../types/services/locationTypes";
+import { dayjsToStr } from "../../utils/dateTimeUtils";
 
-export const useStudyPlacesQuery = (
-  location: Location | "all",
-  options?: QueryOptions<IPlace[]>
-) =>
+export const useStudyPlacesQuery = (location: Location | "all", options?: QueryOptions<IPlace[]>) =>
   useQuery<IPlace[], AxiosError, IPlace[]>(
     [STUDY_PLACE, location],
     async () => {
       const res = await axios.get<IPlace[]>(`${SERVER_URI}/place`);
       const places = res.data.filter(
         (place) =>
-          place.brand !== "자유 신청" &&
-          (location === "all" || place.location === location)
+          place.brand !== "자유 신청" && (location === "all" || place.location === location),
       );
       return places;
     },
-    options
+    options,
   );
 
 export const useStudyVoteQuery = (
   date: string,
   location: Location,
-  options?: QueryOptions<IParticipation[]>
+  options?: QueryOptions<IParticipation[]>,
 ) =>
   useQuery<IParticipation[], AxiosError, IParticipation[]>(
     [STUDY_VOTE, date, location],
@@ -52,11 +43,9 @@ export const useStudyVoteQuery = (
       const res = await axios.get<IStudy>(`${SERVER_URI}/vote/${date}`, {
         params: { location },
       });
-      return res.data.participations.filter(
-        (par) => par.place.status === "active"
-      );
+      return res.data.participations.filter((par) => par.place.status === "active");
     },
-    options
+    options,
   );
 
 interface IStudyStartTimeData {
@@ -66,13 +55,14 @@ interface IStudyStartTimeData {
 
 export const useStudyStartTimeQuery = (
   date: Dayjs,
-  options?: QueryOptions<any>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  options?: QueryOptions<any>,
 ) =>
   useQuery(
     [STUDY_START_TIME, dayjsToStr(date)],
     async () => {
       const res = await axios.get<IStudyStartTimeData[]>(
-        `${SERVER_URI}/vote/${dayjsToStr(date)}/start`
+        `${SERVER_URI}/vote/${dayjsToStr(date)}/start`,
       );
 
       return res.data.map((item) => ({
@@ -80,60 +70,50 @@ export const useStudyStartTimeQuery = (
         startTime: dayjs(item.startTime),
       }));
     },
-    options
+    options,
   );
 
 export const useStudyAttendRecordQuery = (
   startDay: Dayjs,
   endDay: Dayjs,
-  options?: QueryOptions<IArrivedData[]>
+  options?: QueryOptions<IArrivedData[]>,
 ) =>
   useQuery(
     [STUDY_ATTEND_RECORD, dayjsToStr(startDay), dayjsToStr(endDay)],
     async () => {
-      const res = await axios.get<IArrivedData[]>(
-        `${SERVER_URI}/vote/arrived`,
-        {
-          params: {
-            startDay: dayjsToStr(startDay),
-            endDay: dayjsToStr(endDay),
-          },
-        }
-      );
+      const res = await axios.get<IArrivedData[]>(`${SERVER_URI}/vote/arrived`, {
+        params: {
+          startDay: dayjsToStr(startDay),
+          endDay: dayjsToStr(endDay),
+        },
+      });
       return res.data;
     },
-    options
+    options,
   );
 
 interface IArrivedTotal {
   [key: string]: number;
 }
-export const useStudyArrivedCntQuery = (
-  uid: string,
-  options?: QueryOptions<number>
-) =>
+export const useStudyArrivedCntQuery = (uid: string, options?: QueryOptions<number>) =>
   useQuery(
     [STUDY_ARRIVED_CNT, uid],
     async () => {
       if (!uid) return;
-      const res = await axios.get<IArrivedTotal>(
-        `${SERVER_URI}/vote/arriveCnt`
-      );
+      const res = await axios.get<IArrivedTotal>(`${SERVER_URI}/vote/arriveCnt`);
       return res.data?.[uid];
     },
-    options
+    options,
   );
 
-export const useStudyPreferenceQuery = (
-  options?: QueryOptions<IStudyVotePlaces>
-) =>
+export const useStudyPreferenceQuery = (options?: QueryOptions<IStudyVotePlaces>) =>
   useQuery(
     [STUDY_PREFERENCE],
     async () => {
       const res = await axios.get<{ studyPreference: IStudyVotePlaces }>(
-        `${SERVER_URI}/user/preference`
+        `${SERVER_URI}/user/preference`,
       );
       return res.data?.studyPreference;
     },
-    options
+    options,
   );

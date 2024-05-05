@@ -8,13 +8,7 @@ export default function RoundedCoverImage({ imageUrl }: IRoundedCoverImage) {
   return (
     <RoundedImageWrapper>
       <div>
-        <Image
-          src={imageUrl}
-          fill={true}
-          sizes="400px"
-          alt="study"
-          priority={true}
-        />
+        <Image src={imageUrl} fill={true} sizes="400px" alt="study" priority={true} />
       </div>
     </RoundedImageWrapper>
   );

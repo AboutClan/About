@@ -1,24 +1,22 @@
+import { Button } from "@chakra-ui/react";
 import { faTrophy } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import styled from "styled-components";
-import RuleIcon from "../../components/atoms/Icons/RuleIcon";
-import { useStoreGiftEntryQuery } from "../../hooks/sub/store/queries";
-import StoreRuleModal from "../../modals/store/StoreRuleModal";
-import { STORE_GIFT_ACTIVE, STORE_GIFT_inActive } from "../../storage/Store";
-import { IStoreApplicant } from "../../types/models/store";
-
-import { Button } from "@chakra-ui/react";
 import { useRecoilState, useSetRecoilState } from "recoil";
+import styled from "styled-components";
+
+import RuleIcon from "../../components/atoms/Icons/RuleIcon";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
-
-import Image from "next/image";
 import { useErrorToast } from "../../hooks/custom/CustomToast";
+import { useStoreGiftEntryQuery } from "../../hooks/sub/store/queries";
+import StoreRuleModal from "../../modals/store/StoreRuleModal";
 import { isPrevBooleanState } from "../../recoils/previousAtoms";
 import { transferStoreGiftDataState } from "../../recoils/transferRecoils";
-import { IStoreGift } from "../../types/models/store";
+import { STORE_GIFT_ACTIVE, STORE_GIFT_INACTIVE } from "../../storage/Store";
+import { IStoreApplicant, IStoreGift } from "../../types/models/store";
 
 export interface IGiftEntry extends IStoreGift {
   users: IStoreApplicant[];
@@ -39,9 +37,7 @@ function Event() {
   const [isShowActive, setIsShowActive] = useState(isPrevBoolean);
   const [isModal, setIsModal] = useState(false);
 
-  const setTransferStoreGiftData = useSetRecoilState(
-    transferStoreGiftDataState
-  );
+  const setTransferStoreGiftData = useSetRecoilState(transferStoreGiftDataState);
 
   const { data: storeGiftEntries } = useStoreGiftEntryQuery({
     onError: errorToast,
@@ -60,7 +56,7 @@ function Event() {
         users: [],
         totalCnt: 0,
       })),
-      inactive: STORE_GIFT_inActive.slice()
+      inactive: STORE_GIFT_INACTIVE.slice()
         .reverse()
         .map((gift) => ({
           ...gift,
@@ -126,10 +122,7 @@ function Event() {
                     <Trophy>
                       {new Array(item.winner).fill(0).map((_, idx) => (
                         <div key={idx}>
-                          <FontAwesomeIcon
-                            icon={faTrophy}
-                            color="var(--color-mint)"
-                          />
+                          <FontAwesomeIcon icon={faTrophy} color="var(--color-mint)" />
                         </div>
                       ))}
                     </Trophy>
@@ -144,17 +137,13 @@ function Event() {
                       style={{ borderRadius: "var(--rounded)" }}
                     />
 
-                    {(!isShowActive || item.max <= item.totalCnt) && (
-                      <Circle>추첨 완료</Circle>
-                    )}
+                    {(!isShowActive || item.max <= item.totalCnt) && <Circle>추첨 완료</Circle>}
                   </ImageWrapper>
                   <Info>
                     <Name>{item.name}</Name>
                     <Point>{item.point} point</Point>
                   </Info>
-                  {(!isShowActive || item.max <= item.totalCnt) && (
-                    <CompletedRapple />
-                  )}
+                  {(!isShowActive || item.max <= item.totalCnt) && <CompletedRapple />}
                 </Item>
               ))}
             </Container>

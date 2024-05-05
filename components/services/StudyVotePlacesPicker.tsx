@@ -11,14 +11,10 @@ import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterAction
 import PlaceSelectorSub from "../molecules/picker/PlaceSelectorSub";
 
 interface IStudyVotePlacesPicker {
-  onClick: () => void;
   setVotePlaces: DispatchType<IStudyVotePlaces>;
 }
 
-function StudyVotePlacesPicker({
-  onClick,
-  setVotePlaces,
-}: IStudyVotePlacesPicker) {
+function StudyVotePlacesPicker({ setVotePlaces }: IStudyVotePlacesPicker) {
   const { id, date } = useParams<{ id: string; date: string }>();
 
   const location = PLACE_TO_LOCATION[id];
@@ -28,7 +24,7 @@ function StudyVotePlacesPicker({
   });
 
   const filteredStudy = studyVote?.filter(
-    (par) => par.place._id !== id && par.place.brand !== "자유 신청"
+    (par) => par.place._id !== id && par.place.brand !== "자유 신청",
   );
 
   const [subPlace, setSubPlace] = useState<IPlace[]>([]);

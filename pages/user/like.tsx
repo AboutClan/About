@@ -2,10 +2,10 @@ import { faCircleHeart } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import styled from "styled-components";
+
 import { MainLoading } from "../../components/atoms/loaders/MainLoading";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
-
 import { useInteractionLikeQuery } from "../../hooks/user/sub/interaction/queries";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
@@ -26,16 +26,10 @@ function Like() {
 
                 return (
                   <ItemContainer key={idx}>
-                    <span>
-                      {dayjsToFormat(dayjs(item.createdAt), "YYYY년 M월 D일")}
-                    </span>
+                    <span>{dayjsToFormat(dayjs(item.createdAt), "YYYY년 M월 D일")}</span>
                     <Item>
                       <IconWrapper>
-                        <FontAwesomeIcon
-                          color="var(--color-red)"
-                          icon={faCircleHeart}
-                          size="xl"
-                        />
+                        <FontAwesomeIcon color="var(--color-red)" icon={faCircleHeart} size="xl" />
                       </IconWrapper>
                       <Name>{name}</Name>
                       <Content>
@@ -54,11 +48,7 @@ function Like() {
   );
 }
 
-const Layout = styled.div``;
 const Container = styled.div``;
-const AlphabetWrapper = styled.div`
-  font-size: 10px;
-`;
 
 const ItemContainer = styled.div`
   display: flex;
@@ -98,21 +88,6 @@ const Content = styled.span`
 const Point = styled.span`
   color: var(--color-mint);
   font-size: 10px;
-`;
-
-const Date = styled.span`
-  white-space: nowrap;
-  color: var(--gray-3);
-  font-size: 11px;
-`;
-
-const FriendButtons = styled.div`
-  display: flex;
-`;
-
-const FriendComplete = styled.span`
-  color: var(--gray-3);
-  font-size: 11px;
 `;
 
 export default Like;

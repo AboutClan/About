@@ -1,16 +1,9 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-function GatherWritingConditionMax(){
-
-  return(
-    <Layout>
-
-    </Layout>
-  );
+function GatherWritingConditionMax() {
+  return <Layout></Layout>;
 }
 
-const Layout=styled.div``;
-
-
+const Layout = styled.div``;
 
 export default GatherWritingConditionMax;

@@ -18,7 +18,7 @@ export const MBTI = [
   "생략",
 ];
 
-export const majors_DATA = [
+export const MAJORS_DATA = [
   {
     department: "인문계열",
     details: ["국어/국문학", "영어/영문학", "기타 외국어/문학", "인문과학"],
@@ -49,13 +49,7 @@ export const majors_DATA = [
   },
   {
     department: "자연계열",
-    details: [
-      "농림/수산",
-      "생물/화학/환경",
-      "생활과학",
-      "수학/물리",
-      "천문/지리",
-    ],
+    details: ["농림/수산", "생물/화학/환경", "생활과학", "수학/물리", "천문/지리"],
   },
   {
     department: "의약계열",
@@ -63,15 +57,7 @@ export const majors_DATA = [
   },
   {
     department: "예체능계열",
-    details: [
-      "디자인",
-      "응용예술",
-      "무용/체육",
-      "미술/조형",
-      "연극/영화",
-      "음악",
-      "기타",
-    ],
+    details: ["디자인", "응용예술", "무용/체육", "미술/조형", "연극/영화", "음악", "기타"],
   },
 ];
 

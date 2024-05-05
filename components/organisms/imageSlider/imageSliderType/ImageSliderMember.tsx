@@ -3,12 +3,10 @@ import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
+
 import { prevPageUrlState } from "../../../../recoils/previousAtoms";
 import { transferUserSummaryState } from "../../../../recoils/transferRecoils";
-import {
-  IUser,
-  IUserSummary,
-} from "../../../../types/models/userTypes/userInfoTypes";
+import { IUser, IUserSummary } from "../../../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../../../utils/dateTimeUtils";
 import Avatar from "../../../atoms/Avatar";
 import HeartLikeIcon from "../../../atoms/Icons/HeartLikeIcon";
@@ -30,9 +28,7 @@ function ImageSliderMember({ imageContainer }: IImageSliderMember) {
   };
 
   const today = dayjsToFormat(dayjs(), "MMDD");
-  const isBirth =
-    imageContainer.length &&
-    (imageContainer[0] as IUser).birth.slice(2) === today;
+  const isBirth = imageContainer.length && (imageContainer[0] as IUser).birth.slice(2) === today;
 
   return (
     <Swiper
@@ -48,12 +44,7 @@ function ImageSliderMember({ imageContainer }: IImageSliderMember) {
           <SwiperSlide key={index}>
             <MemberItem>
               <ProfileWrapper onClick={() => onClickUser(user)}>
-                <Avatar
-                  image={user.profileImage}
-                  avatar={user.avatar}
-                  uid={user.uid}
-                  size="sm"
-                />
+                <Avatar image={user.profileImage} avatar={user.avatar} uid={user.uid} size="sm" />
               </ProfileWrapper>
               <span>{user?.name}</span>
               {isBirth && (

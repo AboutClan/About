@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import ProfileCommentCard, {
-  IProfileCommentCard,
-} from "../molecules/cards/ProfileCommentCard";
+
+import ProfileCommentCard, { IProfileCommentCard } from "../molecules/cards/ProfileCommentCard";
 interface IProfileCardColumn {
   userCardArr: IProfileCommentCard[];
 }
@@ -13,6 +12,7 @@ export default function ProfileCardColumn({ userCardArr }: IProfileCardColumn) {
           key={idx}
           user={userCard.user}
           comment={userCard?.comment}
+          setMemo={userCard?.setMemo}
           rightComponent={userCard?.rightComponent}
         />
       ))}

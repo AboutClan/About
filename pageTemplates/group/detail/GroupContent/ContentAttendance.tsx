@@ -4,15 +4,15 @@ import { faCheckCircle as checkCircle } from "@fortawesome/pro-regular-svg-icons
 import { faCaretLeft, faCaretRight } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+
 import { useFailToast } from "../../../../hooks/custom/CustomToast";
 import AttendCheckModal from "../../../../modals/groupStudy/AttendCheckModal";
-import { dayjsToFormat } from "../../../../utils/dateTimeUtils";
-
 import { IWeekRecord } from "../../../../types/models/groupTypes/group";
+import { dayjsToFormat } from "../../../../utils/dateTimeUtils";
 
 function ContentAttend({ group }) {
   const { data: session } = useSession();
@@ -20,7 +20,7 @@ function ContentAttend({ group }) {
   const [isModal, setIsModal] = useState(false);
   const failToast = useFailToast();
   const [isThisWeek, setIsThisWeek] = useState(true);
-  const isGuest = session?.user.name === "guest";
+
   const id = router.query.id;
   const uid = session?.user.uid;
 
@@ -30,8 +30,7 @@ function ContentAttend({ group }) {
   const topLineArr = ["이름", ...weekDay];
 
   const isNotMember =
-    group.organizer.uid !== uid &&
-    !group.participants.some((who) => who.user.uid === uid);
+    group.organizer.uid !== uid && !group.participants.some((who) => who.user.uid === uid);
 
   const sortArr = (arr: IWeekRecord[]): IWeekRecord[] => {
     const temp: IWeekRecord[] = [];
@@ -52,9 +51,7 @@ function ContentAttend({ group }) {
 
   useEffect(() => {
     const attendance = group.attendance;
-    const weekArr = isThisWeek
-      ? sortArr(attendance.thisWeek)
-      : sortArr(attendance.lastWeek);
+    const weekArr = isThisWeek ? sortArr(attendance.thisWeek) : sortArr(attendance.lastWeek);
 
     for (let i = 0; i < group.participants.length; i++) {
       const who = group.participants[i];
@@ -87,13 +84,7 @@ function ContentAttend({ group }) {
       <Layout>
         <Month>
           <IconWrapper onClick={() => setIsThisWeek(false)}>
-            {isThisWeek && (
-              <FontAwesomeIcon
-                icon={faCaretLeft}
-                size="sm"
-                color="var(--gray-2)"
-              />
-            )}
+            {isThisWeek && <FontAwesomeIcon icon={faCaretLeft} size="sm" color="var(--gray-2)" />}
           </IconWrapper>
           <div>
             {dayjsToFormat(
@@ -101,7 +92,7 @@ function ContentAttend({ group }) {
                 .subtract(1, "day")
                 .startOf("week")
                 .add(1 + weekNum, "day"),
-              "M월 D일"
+              "M월 D일",
             )}{" "}
             ~{" "}
             {dayjsToFormat(
@@ -109,17 +100,11 @@ function ContentAttend({ group }) {
                 .subtract(1, "day")
                 .endOf("week")
                 .add(1 + weekNum, "day"),
-              "M월 D일"
+              "M월 D일",
             )}
           </div>
           <IconWrapper onClick={() => setIsThisWeek(true)}>
-            {!isThisWeek && (
-              <FontAwesomeIcon
-                icon={faCaretRight}
-                size="sm"
-                color="var(--gray-2)"
-              />
-            )}
+            {!isThisWeek && <FontAwesomeIcon icon={faCaretRight} size="sm" color="var(--gray-2)" />}
           </IconWrapper>
         </Month>
         <ButtonNav>
@@ -157,10 +142,7 @@ function ContentAttend({ group }) {
                   {days.map((isAttend, idx) => (
                     <Item key={idx}>
                       {isAttend.main ? (
-                        <FontAwesomeIcon
-                          icon={faCheckCircle}
-                          color="var(--color-mint)"
-                        />
+                        <FontAwesomeIcon icon={faCheckCircle} color="var(--color-mint)" />
                       ) : isAttend.sub ? (
                         <FontAwesomeIcon icon={faTriangle} color="#FEBC5A" />
                       ) : null}
@@ -183,12 +165,8 @@ function ContentAttend({ group }) {
       </Layout>
       {isModal && (
         <AttendCheckModal
-          attendRecordSub={
-            attendRecord.find((who) => who.uid === uid)?.attendRecordSub || []
-          }
-          attendRecord={
-            attendRecord.find((who) => who.uid === uid)?.attendRecord || []
-          }
+          attendRecordSub={attendRecord.find((who) => who.uid === uid)?.attendRecordSub || []}
+          attendRecord={attendRecord.find((who) => who.uid === uid)?.attendRecord || []}
           type={isThisWeek ? "this" : "last"}
           setIsModal={setIsModal}
           id={+id}
@@ -285,8 +263,5 @@ const Item = styled.div`
 const Name = styled.div`
   flex: 1.5;
 `;
-const CheckGrid = styled.div``;
-
-interface IContentAttend {}
 
 export default ContentAttend;

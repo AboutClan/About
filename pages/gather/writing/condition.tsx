@@ -1,48 +1,32 @@
-import {
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverHeader,
-  PopoverTrigger,
-  Switch,
-} from "@chakra-ui/react";
-import { faQuestionCircle } from "@fortawesome/pro-light-svg-icons";
+import { Switch } from "@chakra-ui/react";
 import {
   faLocationCrosshairs,
   faUser,
   faUserGroup,
+  faUserPolice,
   faUserSecret,
   faVenusMars,
 } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSession } from "next-auth/react";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import BottomNav from "../../../components/layouts/BottomNav";
 
-import { useErrorToast } from "../../../hooks/custom/CustomToast";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
-import GatherWritingConditionAgeRange from "../../../pageTemplates/gather/writing/condition/GatherWritingConditionAgeRange";
-import GatherWritingConditionCnt from "../../../pageTemplates/gather/writing/condition/GatherWritingConditionCnt";
-import GatherWritingConditionPre from "../../../pageTemplates/gather/writing/condition/GatherWritingConditionPre";
-import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
-import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-
-import { faUserPolice } from "@fortawesome/pro-solid-svg-icons";
 import { PopOverIcon } from "../../../components/atoms/Icons/PopOverIcon";
-import GatherWritingConfirmModal from "../../../modals/gather/GatherWritingConfirmModal";
-
+import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
+import GatherWritingConfirmModal from "../../../modals/gather/GatherWritingConfirmModal";
+import GatherWritingConditionAgeRange from "../../../pageTemplates/gather/writing/condition/GatherWritingConditionAgeRange";
+import GatherWritingConditionCnt from "../../../pageTemplates/gather/writing/condition/GatherWritingConditionCnt";
 import GatherWritingConditionLocation from "../../../pageTemplates/gather/writing/condition/GatherWritingConditionLocation";
+import GatherWritingConditionPre from "../../../pageTemplates/gather/writing/condition/GatherWritingConditionPre";
+import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
+import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
-import {
-  IGatherMemberCnt,
-  IGatherWriting,
-} from "../../../types/models/gatherTypes/gather";
+import { IGatherMemberCnt, IGatherWriting } from "../../../types/models/gatherTypes/gatherTypes";
 import { Location } from "../../../types/services/locationTypes";
 import { randomPassword } from "../../../utils/validationUtils";
 
@@ -51,35 +35,33 @@ type ButtonType = "gender" | "age" | "pre" | "location" | "manager";
 export type CombinedLocation = "전체" | "수원/안양" | "양천/강남";
 
 function WritingCondition() {
-  const errorToast = useErrorToast();
-
-  const [gatherContent, setGatherContent] = useRecoilState(
-    sharedGatherWritingState
-  );
-
-  const { data: userInfo } = useUserInfoQuery();
+  const [gatherContent, setGatherContent] = useRecoilState(sharedGatherWritingState);
+  const { data: session } = useSession();
 
   const [condition, setCondition] = useState({
     gender: gatherContent?.genderCondition || false,
     age: gatherContent?.age ? true : false,
     pre: gatherContent?.preCnt ? true : false,
-    location: true,
+    location: gatherContent?.place ? gatherContent.place === session?.user.location : true,
     manager: true,
   });
 
-  const [memberCnt, setMemberCnt] = useState<IGatherMemberCnt>({
-    min: 4,
-    max: 0,
-  });
+  const [memberCnt, setMemberCnt] = useState<IGatherMemberCnt>(
+    gatherContent?.memberCnt || {
+      min: 4,
+      max: 0,
+    },
+  );
   const [preCnt, setPreCnt] = useState(gatherContent?.preCnt || 1);
   const [age, setAge] = useState(gatherContent?.age || [19, 28]);
   const [password, setPassword] = useState(gatherContent?.password);
   const [location, setLocation] = useState<Location | CombinedLocation>(
-    userInfo?.location
+    gatherContent?.place || session?.user.location,
   );
   const [isConfirmModal, setIsConfirmModal] = useState(false);
 
-  const isManager = ["manager", "previliged"].includes(userInfo?.role);
+ 
+  const isManager = ["manager", "previliged"].includes(session?.user.role);
 
   const onClickNext = async () => {
     const gatherData: IGatherWriting = {
@@ -89,8 +71,8 @@ function WritingCondition() {
       memberCnt,
       genderCondition: condition.gender,
       password,
-      user: userInfo,
-      place: location || userInfo?.location,
+      user: session?.user.id,
+      place: location || session?.user.location,
       isAdminOpen: !condition.manager,
     };
     setGatherContent(gatherData);
@@ -104,7 +86,7 @@ function WritingCondition() {
   const toggleSwitch = (e: ChangeEvent<HTMLInputElement>, type: ButtonType) => {
     const isChecked = e.target.checked;
     if (type === "location" && isChecked) {
-      setLocation(userInfo.location);
+      setLocation(session?.user.location);
     }
     setCondition((old) => {
       return { ...old, [type]: isChecked };
@@ -149,10 +131,7 @@ function WritingCondition() {
               <Name>
                 <FontAwesomeIcon icon={faVenusMars} />
                 <span>성별 고려</span>
-                <PopOverIcon
-                  title="성별 고려"
-                  text="성별 비율을 최대 2대1까지 제한합니다."
-                />
+                <PopOverIcon title="성별 고려" text="성별 비율을 최대 2대1까지 제한합니다." />
               </Name>
               <Switch
                 mr="var(--gap-1)"
@@ -173,17 +152,12 @@ function WritingCondition() {
                 onChange={(e) => toggleSwitch(e, "age")}
               />
             </Item>
-            {condition.age && (
-              <GatherWritingConditionAgeRange age={age} setAge={setAge} />
-            )}
+            {condition.age && <GatherWritingConditionAgeRange age={age} setAge={setAge} />}
             <Item>
               <Name>
                 <FontAwesomeIcon icon={faLocationCrosshairs} />
                 <span>지역 필터</span>
-                <PopOverIcon
-                  title="지역 필터"
-                  text="기본으로는 본인이 속한 지역으로 한정합니다."
-                />
+                <PopOverIcon title="지역 필터" text="기본으로는 본인이 속한 지역으로 한정합니다." />
               </Name>
               <Switch
                 mr="var(--gap-1)"
@@ -192,9 +166,7 @@ function WritingCondition() {
                 onChange={(e) => toggleSwitch(e, "location")}
               />
             </Item>
-            {!condition.location && (
-              <GatherWritingConditionLocation setLocation={setLocation} />
-            )}
+            {!condition.location && <GatherWritingConditionLocation setLocation={setLocation} />}
             <Item>
               <Name>
                 <FontAwesomeIcon icon={faUserSecret} />
@@ -241,10 +213,7 @@ function WritingCondition() {
         <BottomNav onClick={() => onClickNext()} text="완료" />
       </>
       {isConfirmModal && (
-        <GatherWritingConfirmModal
-          setIsModal={setIsConfirmModal}
-          gatherData={gatherContent}
-        />
+        <GatherWritingConfirmModal setIsModal={setIsConfirmModal} gatherData={gatherContent} />
       )}
     </>
   );
@@ -269,49 +238,6 @@ const Item = styled.div`
   padding: var(--gap-4) 0;
   align-items: center;
   border-bottom: var(--border);
-`;
-
-const GenderPopOver = () => (
-  <Popover>
-    <PopoverTrigger>
-      <PopOverWrapper>
-        <FontAwesomeIcon icon={faQuestionCircle} color="var(--font-h2)" />
-      </PopOverWrapper>
-    </PopoverTrigger>
-    <PopoverContent ml="var(--margin-md)">
-      <PopoverArrow />
-      <PopoverCloseButton />
-      <PopoverHeader fontSize="11px" fontWeight="600">
-        네비게이션 기능
-      </PopoverHeader>
-      <PopoverBody fontSize="11px">
-        성별 비율을 최대 2대1까지 제한합니다.
-      </PopoverBody>
-    </PopoverContent>
-  </Popover>
-);
-
-// const PopOverIcon = () => (
-//   <Popover>
-//     <PopoverTrigger>
-//       <PopOverWrapper>
-//         <FontAwesomeIcon icon={faQuestionCircle} color="var(--font-h3)" />
-//       </PopOverWrapper>
-//     </PopoverTrigger>
-//     <PopoverContent>
-//       <PopoverArrow />
-//       <PopoverCloseButton />
-//       <PopoverHeader fontSize="11px">사전 섭외</PopoverHeader>
-//       <PopoverBody fontSize="11px">
-//         모집 인원에서 사전 섭외 인원 자리가 먼저 고정됩니다. 필요하다면 암호키를
-//         복사해서 전달해주세요!
-//       </PopoverBody>
-//     </PopoverContent>
-//   </Popover>
-// );
-
-const PopOverWrapper = styled.span`
-  padding: 2px;
 `;
 
 export default WritingCondition;

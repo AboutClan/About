@@ -1,6 +1,8 @@
-import styled from "styled-components";
 import "swiper/css/scrollbar";
+
+import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
+
 import { ImageContainer } from "../ImageSlider";
 
 interface IImageSliderAvatarColor {
@@ -8,10 +10,7 @@ interface IImageSliderAvatarColor {
   onClick: (idx: number) => void;
 }
 
-function ImageSliderAvatarColor({
-  imageContainer,
-  onClick,
-}: IImageSliderAvatarColor) {
+function ImageSliderAvatarColor({ imageContainer, onClick }: IImageSliderAvatarColor) {
   return (
     <Swiper
       navigation

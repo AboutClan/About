@@ -1,12 +1,10 @@
 import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+
 import { prevPageUrlState } from "../../recoils/previousAtoms";
 import { transferUserSummaryState } from "../../recoils/transferRecoils";
-import {
-  IUser,
-  IUserSummary,
-} from "../../types/models/userTypes/userInfoTypes";
+import { IUser, IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import Avatar from "../atoms/Avatar";
 
 interface IUserItem {
@@ -15,7 +13,7 @@ interface IUserItem {
   children: React.ReactNode;
 }
 
-export const UserItem = ({ user, children }: IUserItem) => {
+export function UserItem({ user, children }: IUserItem) {
   const router = useRouter();
   const setUserData = useSetRecoilState(transferUserSummaryState);
   const setBeforePage = useSetRecoilState(prevPageUrlState);
@@ -26,12 +24,7 @@ export const UserItem = ({ user, children }: IUserItem) => {
   };
   return (
     <MemberItem key={user.uid} onClick={() => onClickProfile(user)}>
-      <Avatar
-        image={user.profileImage}
-        avatar={user.avatar}
-        uid={user.uid}
-        size="sm"
-      />
+      <Avatar image={user.profileImage} avatar={user.avatar} uid={user.uid} size="sm" />
       <UserOverview>
         <span>{user?.name}</span>
         <div>{user.comment}</div>
@@ -39,7 +32,7 @@ export const UserItem = ({ user, children }: IUserItem) => {
       <ChildrenWrapper>{children}</ChildrenWrapper>
     </MemberItem>
   );
-};
+}
 
 const MemberItem = styled.div`
   padding: var(--gap-2) 0;

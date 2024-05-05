@@ -3,18 +3,16 @@ import { faArrowRight } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import styled from "styled-components";
+
 import { MainLoading } from "../../components/atoms/loaders/MainLoading";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import SummaryTable from "../../components/organisms/tables/SummaryTable";
-import {
-  usePointSystemLogQuery,
-  usePointSystemQuery,
-} from "../../hooks/user/queries";
+import { usePointSystemLogQuery, usePointSystemQuery } from "../../hooks/user/queries";
 
 function PointLog() {
   const { data: point } = usePointSystemQuery("point");
-  const { data: pointLog, isLoading } = usePointSystemLogQuery("point");
+  const { data: pointLog } = usePointSystemLogQuery("point");
 
   const filterLog = pointLog?.filter((item) => item.meta.value);
 
@@ -24,7 +22,7 @@ function PointLog() {
     log.message,
     log.meta.value + "",
   ]);
-  console.log(pointLog);
+
   return (
     <>
       <Header title="포인트 기록" />
@@ -36,17 +34,9 @@ function PointLog() {
               <FontAwesomeIcon icon={faArrowRight} />
               <span>{point} 점</span>
             </MyPoint>
-            <Box
-              border="var(--border)"
-              rounded="md"
-              minHeight="calc(100vh - 176px)"
-            >
+            <Box border="var(--border)" rounded="md" minHeight="calc(100vh - 176px)">
               {pointLog && (
-                <SummaryTable
-                  headerInfos={headerInfos}
-                  tableInfosArr={tableInfosArr}
-                  size="lg"
-                />
+                <SummaryTable headerInfos={headerInfos} tableInfosArr={tableInfosArr} size="lg" />
               )}
             </Box>
           </Layout>
@@ -88,36 +78,4 @@ const MyPoint = styled.div`
   }
 `;
 
-const Container = styled.div`
-  margin-top: var(--gap-5);
-  display: flex;
-  flex-direction: column;
-`;
-
-const Item = styled.div`
-  color: var(--gray-1);
-  height: 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: var(--border);
-  font-size: 12px;
-`;
-
-const Date = styled.span`
-  color: var(--gray-3);
-  margin-right: var(--gap-4);
-  width: 54px;
-  text-align: center;
-`;
-
-const Content = styled.span`
-  flex: 1;
-`;
-
-const Point = styled.span<{ isMinus?: boolean }>`
-  width: 64px;
-  text-align: center;
-  color: ${(props) => (props.isMinus ? "var(--color-red)" : "var(--gray-1)")};
-`;
 export default PointLog;

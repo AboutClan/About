@@ -1,8 +1,9 @@
 import { Box } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
+
 import { MainLoadingAbsolute } from "../components/atoms/loaders/MainLoading";
 import ButtonGroups from "../components/molecules/groups/ButtonGroups";
 import InviteUserGroups from "../components/molecules/groups/InviteUserGroups";
@@ -22,9 +23,7 @@ export default function InviteUserModal({ setIsModal }: IInviteUserModal) {
   const { data: session } = useSession();
   const { id } = useParams<{ id: string }>() || {};
 
-  const [location, setLocation] = useState<ActiveLocation>(
-    session?.user.location || "수원"
-  );
+  const [location, setLocation] = useState<ActiveLocation>(session?.user.location || "수원");
   const [inviteUser, setInviteUser] = useState<IUserSummary>(null);
   const [users, setUsers] = useState<IUserSummary[]>(null);
 
@@ -88,11 +87,7 @@ export default function InviteUserModal({ setIsModal }: IInviteUserModal) {
   ];
 
   return (
-    <ModalLayout
-      setIsModal={setIsModal}
-      title="인원 초대"
-      footerOptions={footerOptions}
-    >
+    <ModalLayout setIsModal={setIsModal} title="인원 초대" footerOptions={footerOptions}>
       <ButtonGroups buttonDataArr={buttonDataArr} currentValue={location} />
 
       <Box
@@ -104,10 +99,7 @@ export default function InviteUserModal({ setIsModal }: IInviteUserModal) {
         }}
       >
         {!isLoading ? (
-          <InviteUserGroups
-            users={users}
-            inviteUser={(who) => setInviteUser(who)}
-          />
+          <InviteUserGroups users={users} inviteUser={(who) => setInviteUser(who)} />
         ) : (
           <MainLoadingAbsolute />
         )}

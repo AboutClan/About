@@ -1,25 +1,14 @@
 import { Location } from "../types/services/locationTypes";
 import { TABLE_COLORS } from "./styles";
 
-export const LOCATION_OPEN: Location[] = [
-  "수원",
-  "양천",
-  "안양",
-  "강남",
-  "동대문",
-  "인천",
-];
+export const LOCATION_OPEN: Location[] = ["수원", "양천", "안양", "강남", "동대문", "인천"];
 export const LOCATION_RECRUITING: Location[] = ["마포", "성남"];
 export const LOCATION_NOT_OPEN: Location[] = [];
 
 //모집중을 포함한 지역
 export const LOCATION_USE_ALL = [...LOCATION_OPEN];
 //전체 지역
-export const LOCATION_ALL = [
-  ...LOCATION_OPEN,
-  ...LOCATION_RECRUITING,
-  ...LOCATION_NOT_OPEN,
-];
+export const LOCATION_ALL = [...LOCATION_OPEN, ...LOCATION_RECRUITING, ...LOCATION_NOT_OPEN];
 
 export const LOCATION_CONVERT = {
   수원: "수원",

@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styled from "styled-components";
+
 import RulletPicker from "../../atoms/RulletPicker";
 interface IRulletPickerTwo {
   leftDefaultIdx: number;
@@ -39,9 +40,7 @@ export default function RulletPickerTwo({
           text="시작 시간"
           rulletItemArr={leftRulletArr}
           rulletIndex={rulletIndex.start}
-          setRulletIndex={(idx: number) =>
-            setRulletIndex((old) => ({ ...old, start: idx }))
-          }
+          setRulletIndex={(idx: number) => setRulletIndex((old) => ({ ...old, start: idx }))}
         />
       </Wrapper>
       <Wrapper>
@@ -49,9 +48,7 @@ export default function RulletPickerTwo({
           text="종료 시간"
           rulletItemArr={rightRulletArr}
           rulletIndex={rulletIndex.end}
-          setRulletIndex={(idx: number) =>
-            setRulletIndex((old) => ({ ...old, end: idx }))
-          }
+          setRulletIndex={(idx: number) => setRulletIndex((old) => ({ ...old, end: idx }))}
         />
       </Wrapper>
     </Layout>

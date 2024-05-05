@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 import { IModal } from "../../types/components/modalTypes";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
@@ -8,11 +9,7 @@ function GatherIntroModal({ setIsModal }: IModal) {
   };
 
   return (
-    <ModalLayout
-      footerOptions={footerOptions}
-      title="모임 관련"
-      setIsModal={setIsModal}
-    >
+    <ModalLayout footerOptions={footerOptions} title="모임 관련" setIsModal={setIsModal}>
       <Ol>
         <li>매주 금,토,일 중에 주모임이 개설됩니다.</li>
         <Ul>

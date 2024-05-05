@@ -3,9 +3,9 @@ import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+
 import Avatar from "../../components/atoms/Avatar";
 import { BADGE_COLOR_MAPPINGS } from "../../constants/serviceConstants/badgeConstants";
-
 import { USER_ROLE } from "../../constants/settingValue/role";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { IMyRank } from "../../types/models/ranking";
@@ -49,9 +49,7 @@ function RankingOverview({ myRankInfo, isScore = false }: IRankingOverview) {
           </Box>
           <Box color="var(--gray-2)">
             {isScore ? "내 점수" : `${dayjs().month() + 1}월 참여`}:{" "}
-            {myRankInfo.value
-              ? `${myRankInfo.value}${isScore ? "점" : "회"}`
-              : "기록없음"}
+            {myRankInfo.value ? `${myRankInfo.value}${isScore ? "점" : "회"}` : "기록없음"}
           </Box>
         </Flex>
         <ProfileContainer isGuest={isGuest}>
@@ -68,13 +66,7 @@ function RankingOverview({ myRankInfo, isScore = false }: IRankingOverview) {
             </ProfileWrapper>
           ) : isGuest ? (
             <ProfileWrapper>
-              <Avatar
-                image=""
-                avatar={{ type: 0, bg: 1 }}
-                uid=""
-                size="lg"
-                isPriority={true}
-              />
+              <Avatar image="" avatar={{ type: 0, bg: 1 }} uid="" size="lg" isPriority={true} />
               <ProfileUserName>게스트</ProfileUserName>
             </ProfileWrapper>
           ) : null}

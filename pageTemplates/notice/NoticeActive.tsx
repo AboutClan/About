@@ -3,23 +3,19 @@ import { faArrowRight } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import styled from "styled-components";
+
 import { AlphabetIcon } from "../../components/atoms/Icons/AlphabetIcon";
 import { ActiveIcon } from "../../components/atoms/Icons/NoticeIcons";
 import { NOTICE_ACTIVE_LOG } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
-import {
-  useCompleteToast,
-  useErrorToast,
-  useFailToast,
-} from "../../hooks/custom/CustomToast";
+import { useCompleteToast, useErrorToast, useFailToast } from "../../hooks/custom/CustomToast";
 import { useUserFriendMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { useAlphabetMutation } from "../../hooks/user/sub/collection/mutations";
 import { useInteractionMutation } from "../../hooks/user/sub/interaction/mutations";
-import { getDateDiff } from "../../utils/dateTimeUtils";
-
 import { INoticeActiveLog } from "../../types/globals/interaction";
 import { Alphabet } from "../../types/models/collections";
+import { getDateDiff } from "../../utils/dateTimeUtils";
 
 interface INoticeActive {
   activeLogs: INoticeActiveLog[];
@@ -37,38 +33,30 @@ function NoticeActive({ activeLogs }: INoticeActive) {
   const { mutate: registerFriend } = useUserFriendMutation("patch", {
     onError: errorToast,
   });
-  const { mutate: changeAlphabet, data } = useAlphabetMutation("change");
+  const { mutate: changeAlphabet } = useAlphabetMutation("change");
 
-  const { mutate: interactionFriend } = useInteractionMutation(
-    "friend",
-    "patch",
-    {
-      onSuccess() {
-        if (statusType === "approval") completeToast("free", "수락 완료 !");
-        if (statusType === "refusal") completeToast("free", "거절하였습니다.");
-        statusType = null;
-        resetQueryData([NOTICE_ACTIVE_LOG]);
-      },
-    }
-  );
-  const { mutate: interactionAlphabet } = useInteractionMutation(
-    "alphabet",
-    "patch",
-    {
-      onSuccess() {
-        if (statusType === "approval") completeToast("free", "수락 완료 !");
-        if (statusType === "refusal") failToast("free", "거절하였습니다.");
-        statusType = null;
-        resetQueryData([NOTICE_ACTIVE_LOG]);
-      },
-    }
-  );
+  const { mutate: interactionFriend } = useInteractionMutation("friend", "patch", {
+    onSuccess() {
+      if (statusType === "approval") completeToast("free", "수락 완료 !");
+      if (statusType === "refusal") completeToast("free", "거절하였습니다.");
+      statusType = null;
+      resetQueryData([NOTICE_ACTIVE_LOG]);
+    },
+  });
+  const { mutate: interactionAlphabet } = useInteractionMutation("alphabet", "patch", {
+    onSuccess() {
+      if (statusType === "approval") completeToast("free", "수락 완료 !");
+      if (statusType === "refusal") failToast("free", "거절하였습니다.");
+      statusType = null;
+      resetQueryData([NOTICE_ACTIVE_LOG]);
+    },
+  });
 
   const onClickFriendRequest = async (
     type: "friend" | "alphabet",
     status: "approval" | "refusal",
     from: string,
-    alphabet?: Alphabet[]
+    alphabet?: Alphabet[],
   ) => {
     statusType = status;
     if (type === "friend") {
@@ -112,17 +100,11 @@ function NoticeActive({ activeLogs }: INoticeActive) {
               </Content>
               {type === "alphabet" && (
                 <AlphabetWrapper style={{ marginRight: "var(--gap-2)" }}>
-                  <AlphabetIcon
-                    alphabet={alphabet[0] as Alphabet}
-                    isCircle={true}
-                  />
+                  <AlphabetIcon alphabet={alphabet[0] as Alphabet} isCircle={true} />
                   <span>
                     <FontAwesomeIcon icon={faArrowRight} />
                   </span>
-                  <AlphabetIcon
-                    alphabet={alphabet[1] as Alphabet}
-                    isCircle={true}
-                  />
+                  <AlphabetIcon alphabet={alphabet[1] as Alphabet} isCircle={true} />
                 </AlphabetWrapper>
               )}
               {type === "friend" || type === "alphabet" ? (
@@ -143,7 +125,7 @@ function NoticeActive({ activeLogs }: INoticeActive) {
                           type,
                           "approval",
                           item.from,
-                          type === "alphabet" && (alphabet as Alphabet[])
+                          type === "alphabet" && (alphabet as Alphabet[]),
                         )
                       }
                     >
@@ -161,7 +143,7 @@ function NoticeActive({ activeLogs }: INoticeActive) {
                           type,
                           "refusal",
                           item.from,
-                          type === "alphabet" && (alphabet as Alphabet[])
+                          type === "alphabet" && (alphabet as Alphabet[]),
                         )
                       }
                     >
@@ -169,18 +151,14 @@ function NoticeActive({ activeLogs }: INoticeActive) {
                     </Button>
                   </FriendButtons>
                 ) : item.status === "response" ? (
-                  <Date>
-                    {item?.createdAt && getDateDiff(dayjs(item.createdAt))}
-                  </Date>
+                  <Date>{item?.createdAt && getDateDiff(dayjs(item.createdAt))}</Date>
                 ) : (
                   <FriendComplete>
                     {item.status === "approval" ? "수락 완료" : "거절 완료"}
                   </FriendComplete>
                 )
               ) : (
-                <Date>
-                  {item?.createdAt && getDateDiff(dayjs(item.createdAt))}
-                </Date>
+                <Date>{item?.createdAt && getDateDiff(dayjs(item.createdAt))}</Date>
               )}
             </Item>
           );

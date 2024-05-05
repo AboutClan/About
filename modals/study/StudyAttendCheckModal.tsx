@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Box, Textarea } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
@@ -6,25 +8,20 @@ import { useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 // import { RotatingLines } from "react-loader-spinner";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+
 import ScreenOverlay from "../../components/atoms/ScreenOverlay";
 import Spinner from "../../components/atoms/Spinner";
 import ImageUploadInput from "../../components/molecules/ImageUploadInput";
 import { STUDY_VOTE } from "../../constants/keys/queryKeys";
 import { POINT_SYSTEM_PLUS } from "../../constants/serviceConstants/pointSystemConstants";
-import { POINT_SYSTEM_Deposit } from "../../constants/settingValue/pointSystem";
+import { POINT_SYSTEM_DEPOSIT } from "../../constants/settingValue/pointSystem";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useImageUploadMutation } from "../../hooks/image/mutations";
 import { useStudyAttendCheckMutation } from "../../hooks/study/mutations";
-import {
-  useAboutPointMutation,
-  usePointSystemMutation,
-} from "../../hooks/user/mutations";
+import { useAboutPointMutation, usePointSystemMutation } from "../../hooks/user/mutations";
 import { useAlphabetMutation } from "../../hooks/user/sub/collection/mutations";
 import { getMyStudyVoteInfo } from "../../libs/study/getMyStudy";
 import { getRandomAlphabet } from "../../libs/userEventLibs/collection";
-import { now } from "../../utils/dateTimeUtils";
-import { IFooterOptions, ModalLayout } from "../Modals";
-
 import { myStudyState } from "../../recoils/studyRecoils";
 import { transferAlphabetState } from "../../recoils/transferRecoils";
 
@@ -33,6 +30,7 @@ import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
 import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
+import { IFooterOptions, ModalLayout } from "../Modals";
 
 const LOCATE_GAP = 0.00008;
 
@@ -44,8 +42,7 @@ function StudyAttendCheckModal({ setIsModal }: IStudyAttendCheckModal) {
   const typeToast = useTypeToast();
   const searchParams = useSearchParams();
 
-  const { date: dateParam2, id } =
-    useParams<{ date: string; id: string }>() || {};
+  const { date: dateParam2, id } = useParams<{ date: string; id: string }>() || {};
   const dateParam1 = searchParams.get("date");
   const locationParam1 = searchParams.get("location");
 
@@ -72,33 +69,29 @@ function StudyAttendCheckModal({ setIsModal }: IStudyAttendCheckModal) {
   const { mutate: getAlphabet } = useAlphabetMutation("get");
   const { mutate: getDeposit } = usePointSystemMutation("deposit");
 
-  const { mutate: handleArrived } = useStudyAttendCheckMutation(
-    now().startOf("day"),
-    {
-      onSuccess() {
-        queryClient.invalidateQueries([STUDY_VOTE, date, location]);
-        const alphabet = getRandomAlphabet(20);
-        if (alphabet) {
-          getAlphabet({ alphabet });
-          setTransferAlphabet(alphabet);
-        }
-        const pointObj = POINT_SYSTEM_PLUS.STUDY_ATTEND_CHECK;
-        getAboutPoint(pointObj);
-        const studyVoteInfo = getMyStudyVoteInfo(myStudy, session?.user.uid);
+  const { mutate: handleArrived } = useStudyAttendCheckMutation(date, {
+    onSuccess() {
+      queryClient.invalidateQueries([STUDY_VOTE, date, location]);
+      const alphabet = getRandomAlphabet(20);
+      if (alphabet) {
+        getAlphabet({ alphabet });
+        setTransferAlphabet(alphabet);
+      }
+      const pointObj = isPrivate
+        ? POINT_SYSTEM_PLUS.STUDY_PRIVATE_ATTEND
+        : POINT_SYSTEM_PLUS.STUDY_ATTEND_CHECK;
+      getAboutPoint(pointObj);
+      const studyVoteInfo = getMyStudyVoteInfo(myStudy, session?.user.uid);
 
-        const isLate =
-          !isFree && dayjs().isAfter(dayjs(studyVoteInfo.start).add(1, "hour"));
-        if (isLate) getDeposit(POINT_SYSTEM_Deposit.STUDY_ATTEND_LATE);
-        toast(
-          "success",
-          `출석 완료! ${pointObj.value} 포인트가 적립되었습니다. ${
-            isLate ? "하지만 지각..." : ""
-          }`
-        );
-      },
-      onError: () => typeToast("error"),
-    }
-  );
+      const isLate = !isFree && dayjs().isAfter(dayjs(studyVoteInfo.start).add(1, "hour"));
+      if (isLate) getDeposit(POINT_SYSTEM_DEPOSIT.STUDY_ATTEND_LATE);
+      toast(
+        "success",
+        `출석 완료! ${pointObj.value} 포인트가 적립되었습니다. ${isLate ? "하지만 지각..." : ""}`,
+      );
+    },
+    onError: () => typeToast("error"),
+  });
 
   const handleAttendCheck = () => {
     setIsChecking(true);

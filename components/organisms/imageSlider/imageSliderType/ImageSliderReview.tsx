@@ -2,6 +2,7 @@ import Image from "next/image";
 import SwiperCore from "swiper";
 import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+
 import { ImageContainer } from "../ImageSlider";
 
 SwiperCore.use([Navigation, Pagination]);

@@ -1,12 +1,10 @@
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useFailToast } from "../../hooks/custom/CustomToast";
+
 import NotCompletedModal from "../../modals/system/NotCompletedModal";
 import { IArrivedData } from "../../types/models/studyTypes/studyRecords";
-
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 interface IRecordOverview {
   arrivedCalendar: IArrivedData[];
@@ -20,8 +18,6 @@ interface IStudySummary {
 }
 
 function RecordOverview({ arrivedCalendar }: IRecordOverview) {
-  const failToast = useFailToast();
-  const router = useRouter();
   const { data: session } = useSession();
   const isGuest = session?.user.name === "guest";
 
@@ -50,14 +46,6 @@ function RecordOverview({ arrivedCalendar }: IRecordOverview) {
     const summary = { myCnt, myRecent, openCnt, memberCnt };
     setStudySummary(summary);
   }, [arrivedCalendar, session?.user?.uid]);
-
-  const onClickDetail = () => {
-    if (isGuest) {
-      failToast("guest");
-      return;
-    }
-    router.push(`/record/detail`);
-  };
 
   return (
     <>

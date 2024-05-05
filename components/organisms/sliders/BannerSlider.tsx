@@ -1,14 +1,14 @@
 "use client";
 
-import Image from "next/image";
-import { useState } from "react";
-import SwiperCore from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Navigation, Pagination } from "swiper/modules";
-
 import "swiper/css/scrollbar";
+
+import Image from "next/image";
+import { useState } from "react";
+import SwiperCore from "swiper";
+import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 SwiperCore.use([Navigation, Pagination]);
@@ -20,6 +20,7 @@ interface IBannerSlider {
 function BannerSlider({ imageArr }: IBannerSlider) {
   const [pageNum, setPageNum] = useState(0);
 
+  /* eslint-disable @typescript-eslint/no-explicit-any */
   const handleSliderChange = (swiper: any) => {
     setPageNum(swiper.realIndex);
   };

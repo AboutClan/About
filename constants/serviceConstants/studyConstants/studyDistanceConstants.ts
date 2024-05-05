@@ -66,13 +66,13 @@ import {
   YANG_화곡역,
 } from "./studyPlaceConstants";
 
-interface locationPairs {
+interface ILocationPair {
   [key: number]: [string, string][];
 }
 
 //15 //25
 export const STUDY_DISTANCE: {
-  [key in ActiveLocation]: locationPairs;
+  [key in ActiveLocation]: ILocationPair;
 } = {
   수원: {
     1: [

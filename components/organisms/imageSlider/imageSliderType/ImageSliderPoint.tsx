@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
+
 import { ImageContainer } from "../ImageSlider";
 
 interface IImageSliderPoint {

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
+
 import { slideDirectionState } from "../../recoils/navigationRecoils";
 interface IPageLayout {
   isFixed?: boolean;
@@ -9,12 +10,10 @@ interface IPageLayout {
 }
 
 function Slide({ children, isFixed, posZero }: IPageLayout) {
-  const [slideDirection, setSlideDirection] =
-    useRecoilState(slideDirectionState);
+  const [slideDirection, setSlideDirection] = useRecoilState(slideDirectionState);
 
   useEffect(() => {
     return () => {
-    
       setSlideDirection("right");
     };
   }, []);

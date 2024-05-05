@@ -1,10 +1,11 @@
 import { Flex, ListItem, UnorderedList } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+
 import ScreenOverlay from "../components/atoms/ScreenOverlay";
 import VoteMap from "../components/organisms/VoteMap";
 import VoteMapController from "../components/organisms/VoteMapController";
@@ -13,27 +14,15 @@ import { STUDY_PREFERENCE_LOCAL } from "../constants/keys/queryKeys";
 import { STUDY_DISTANCE } from "../constants/serviceConstants/studyConstants/studyDistanceConstants";
 import { PLACE_TO_LOCATION } from "../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { useToast } from "../hooks/custom/CustomToast";
-import {
-  useStudyPreferenceQuery,
-  useStudyVoteQuery,
-} from "../hooks/study/queries";
+import { useStudyPreferenceQuery, useStudyVoteQuery } from "../hooks/study/queries";
 import { getStudyVoteIcon } from "../libs/study/getStudyVoteIcon";
-import {
-  getVoteLocationCenterDot,
-  getVoteLocationMaxBound,
-} from "../libs/study/getStudyVoteMap";
+import { getVoteLocationCenterDot, getVoteLocationMaxBound } from "../libs/study/getStudyVoteMap";
 import StudyPresetModal from "../modals/userRequest/StudyPresetModal";
 import { myStudyState, studyDateStatusState } from "../recoils/studyRecoils";
 
 import { IMapOptions, IMarkerOptions } from "../types/externals/naverMapTypes";
-import {
-  IParticipation,
-  IPlace,
-} from "../types/models/studyTypes/studyDetails";
-import {
-  IStudyVote,
-  IStudyVotePlaces,
-} from "../types/models/studyTypes/studyInterActions";
+import { IParticipation, IPlace } from "../types/models/studyTypes/studyDetails";
+import { IStudyVote, IStudyVotePlaces } from "../types/models/studyTypes/studyInterActions";
 import { ActiveLocation } from "../types/services/locationTypes";
 import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
 
@@ -49,10 +38,7 @@ export default function StudyVoteMap() {
   const date = searchParams.get("date");
   const isPreset = !!searchParams.get("preset");
 
-  const location = convertLocationLangTo(
-    searchParams.get("location") as ActiveLocation,
-    "kr"
-  );
+  const location = convertLocationLangTo(searchParams.get("location") as ActiveLocation, "kr");
 
   const moveToLink = () => {
     router.push(`/home?${newSearchParams.toString()}`);
@@ -70,9 +56,7 @@ export default function StudyVoteMap() {
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>();
   const [subSecond, setSubSecond] = useState<string[]>();
   const [morePlaces, setMorePlaces] = useState<string[]>();
-  const [centerValue, setCenterValue] = useState<{ lat: number; lng: number }>(
-    null
-  );
+  const [centerValue, setCenterValue] = useState<{ lat: number; lng: number }>(null);
 
   const [isAlert, setIsAlert] = useState(false);
 
@@ -104,7 +88,7 @@ export default function StudyVoteMap() {
       if (!isAlert) {
         toast(
           "info",
-          "최초 1회 프리셋 등록이 필요합니다. 앞으로는 더 빠르게 투표할 수 있고, 이후 마이페이지에서도 변경이 가능합니다."
+          "최초 1회 프리셋 등록이 필요합니다. 앞으로는 더 빠르게 투표할 수 있고, 이후 마이페이지에서도 변경이 가능합니다.",
         );
         setIsAlert(true);
         newSearchParams.append("preset", "on");
@@ -115,10 +99,7 @@ export default function StudyVoteMap() {
       !savedPrefer?.date
     ) {
       if (!isAlert) {
-        toast(
-          "info",
-          "설정한 프리셋 기간이 만료되었습니다. 다시 등록해주세요!"
-        );
+        toast("info", "설정한 프리셋 기간이 만료되었습니다. 다시 등록해주세요!");
         newSearchParams.append("preset", "on");
         router.replace(pathname + "?" + newSearchParams.toString());
         setIsAlert(true);
@@ -150,13 +131,11 @@ export default function StudyVoteMap() {
         ? prefer.place
         : null;
       const subPlace = prefer?.subPlace.filter((sub) =>
-        studyVoteData.some((par) => par.place._id === sub)
+        studyVoteData.some((par) => par.place._id === sub),
       );
       setMyVote((old) => (place ? { ...old, place, subPlace } : { ...old }));
 
-      if (
-        !studyVoteData.map((data) => data.place._id).some((id) => id === place)
-      ) {
+      if (!studyVoteData.map((data) => data.place._id).some((id) => id === place)) {
         toast("info", "해당 지역에 설정된 프리셋이 없습니다.");
       }
     } else if (preferInfo?.preset === null) setMyVote(null);
@@ -186,17 +165,18 @@ export default function StudyVoteMap() {
 
       setMyVote((old) => ({
         ...old,
+<<<<<<< HEAD
         subPlace:
           precision === 0
             ? []
             : precision === 2
               ? [...sub1, ...sub2]
               : [...sub1],
+=======
+        subPlace: precision === 0 ? [] : precision === 2 ? [...sub1, ...sub2] : [...sub1],
+>>>>>>> main
       }));
-      setVoteScore(
-        (old) =>
-          old + getPlaceVoteRankScore(place, studyVoteData, data.user.uid)
-      );
+      setVoteScore((old) => old + getPlaceVoteRankScore(place, studyVoteData, data.user.uid));
     } else {
       setMyVote((old) => ({ ...old, subPlace: [] }));
       setVoteScore(2);
@@ -222,12 +202,7 @@ export default function StudyVoteMap() {
               <ListItem>인원이 적을 때 신청하면 추가 포인트!</ListItem>
               <ListItem>신청 장소 수에 비례해 추가 포인트!</ListItem>
             </UnorderedList>
-            <Flex
-              direction="column"
-              alignItems="flex-end"
-              color="red.400"
-              fontWeight={600}
-            >
+            <Flex direction="column" alignItems="flex-end" color="red.400" fontWeight={600}>
               <div>현재 획득 포인트</div>
               <div>+ {voteScore + subPlacePoint} POINT</div>
             </Flex>
@@ -241,9 +216,7 @@ export default function StudyVoteMap() {
             />
             <VoteMapController
               preset={preferInfo?.preset}
-              setPreset={(preset) =>
-                setPreferInfo((old) => ({ ...old, preset }))
-              }
+              setPreset={(preset) => setPreferInfo((old) => ({ ...old, preset }))}
               precision={precision}
               setPrecision={setPrecision}
               setCenterValue={setCenterValue}
@@ -265,7 +238,7 @@ export default function StudyVoteMap() {
 
 export const getSecondRecommendations = (
   voteData: IParticipation[],
-  placeId: string
+  placeId: string,
 ): { sub1: string[]; sub2: string[] } => {
   let temp1: string[] = [];
   let temp2: string[] = [];
@@ -287,11 +260,8 @@ export const getSecondRecommendations = (
   return { sub1: newSubPlaces1, sub2: newSubPlaces2 };
 };
 
-const getRecommendations = (
-  placeId: string,
-  targetDistance: number
-): string[] => {
-  let placesAtDistance = new Set<string>();
+const getRecommendations = (placeId: string, targetDistance: number): string[] => {
+  const placesAtDistance = new Set<string>();
   const location = PLACE_TO_LOCATION[placeId];
   const targets = STUDY_DISTANCE[location][targetDistance];
   if (targets) {
@@ -303,11 +273,7 @@ const getRecommendations = (
   return Array.from(placesAtDistance);
 };
 
-export const getPlaceVoteRankScore = (
-  placeId: string,
-  voteData: IParticipation[],
-  uid: string
-) => {
+export const getPlaceVoteRankScore = (placeId: string, voteData: IParticipation[], uid: string) => {
   const mainVoteAttCnt = voteData
     .find((par) => par.place._id === placeId)
     ?.attendences.filter((att) => att.user.uid !== uid).length;
@@ -322,9 +288,7 @@ export const getPlaceVoteRankScore = (
   return 0;
 };
 
-export const getMapOptions = (
-  location: ActiveLocation
-): IMapOptions | undefined => {
+export const getMapOptions = (location: ActiveLocation): IMapOptions | undefined => {
   if (typeof naver === "undefined") return undefined;
   return {
     center: getVoteLocationCenterDot()[location],
@@ -341,23 +305,25 @@ export const getMapOptions = (
 export const getMarkersOptions = (
   studyVoteData?: IParticipation[],
   myVote?: IStudyVote,
-  secondLine?: string[]
+  secondLine?: string[],
 ): IMarkerOptions[] | undefined => {
   if (typeof naver === "undefined" || !studyVoteData) return;
 
-  const mainPlace = studyVoteData?.find(
-    (par) => par.place._id === myVote?.place
-  )?.place;
+  const mainPlace = studyVoteData?.find((par) => par.place._id === myVote?.place)?.place;
 
   return studyVoteData.map((par) => {
     const placeId = par.place._id;
 
     const iconType =
+<<<<<<< HEAD
       placeId === myVote?.place
         ? "main"
         : myVote?.subPlace?.includes(placeId)
           ? "sub"
           : "default";
+=======
+      placeId === myVote?.place ? "main" : myVote?.subPlace?.includes(placeId) ? "sub" : "default";
+>>>>>>> main
     const infoWindow = placeId === myVote?.place ? getInfoWindow(par) : null;
     const polyline =
       mainPlace && myVote?.subPlace?.includes(placeId)
@@ -392,28 +358,18 @@ const getInfoWindow = (par: IParticipation) => {
   };
 };
 
-const getPolyline = (
-  mainPlace: IPlace,
-  subPlace: IPlace,
-  isSecondSub?: boolean
-) => {
+const getPolyline = (mainPlace: IPlace, subPlace: IPlace, isSecondSub?: boolean) => {
   const { latitude, longitude } = mainPlace;
   const { latitude: subLat, longitude: subLon } = subPlace;
   return {
-    path: [
-      new naver.maps.LatLng(latitude, longitude),
-      new naver.maps.LatLng(subLat, subLon),
-    ],
+    path: [new naver.maps.LatLng(latitude, longitude), new naver.maps.LatLng(subLat, subLon)],
     strokeColor: isSecondSub ? "#f87171" : "var(--color-mint)",
     strokeOpacity: 0.5,
     strokeWeight: 3,
   };
 };
 
-export const setVotePlaceInfo = (
-  id: string,
-  voteInfo?: IStudyVote
-): IStudyVote => {
+export const setVotePlaceInfo = (id: string, voteInfo?: IStudyVote): IStudyVote => {
   if (!voteInfo?.place) return { ...voteInfo, place: id };
   else if (voteInfo.place === id) {
     return { ...voteInfo, place: undefined, subPlace: undefined };

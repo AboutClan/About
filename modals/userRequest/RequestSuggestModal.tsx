@@ -16,6 +16,7 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
+
 import { useCompleteToast, useFailToast } from "../../hooks/custom/CustomToast";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
@@ -72,11 +73,7 @@ function RequestSuggestModal({ type, setIsModal }: IRequestSuggestModal) {
   };
 
   const title =
-    type === "suggest"
-      ? "건의하기"
-      : type === "declare"
-      ? "불편사항 신고"
-      : "스터디 장소 추천";
+    type === "suggest" ? "건의하기" : type === "declare" ? "불편사항 신고" : "스터디 장소 추천";
 
   const footerOptions: IFooterOptions = {
     main: {
@@ -90,11 +87,7 @@ function RequestSuggestModal({ type, setIsModal }: IRequestSuggestModal) {
   };
 
   return (
-    <ModalLayout
-      title={title}
-      setIsModal={setIsModal}
-      footerOptions={footerOptions}
-    >
+    <ModalLayout title={title} setIsModal={setIsModal} footerOptions={footerOptions}>
       <Form onSubmit={handleSubmit(onValid)} id="declaration">
         <Item>
           <span>제목: </span>
@@ -108,11 +101,7 @@ function RequestSuggestModal({ type, setIsModal }: IRequestSuggestModal) {
           <Item>
             <span>작성자: </span>
             <Writer>
-              <WriterBtn
-                type="button"
-                isSelected={isRealName}
-                onClick={() => setIsRealName(true)}
-              >
+              <WriterBtn type="button" isSelected={isRealName} onClick={() => setIsRealName(true)}>
                 실명
               </WriterBtn>
               <WriterBtn
@@ -125,19 +114,15 @@ function RequestSuggestModal({ type, setIsModal }: IRequestSuggestModal) {
               <div />
               <Popover>
                 <PopoverTrigger>
-                  <FontAwesomeIcon
-                    icon={faCircleExclamation}
-                    color="var(--gray-2)"
-                    size="sm"
-                  />
+                  <FontAwesomeIcon icon={faCircleExclamation} color="var(--gray-2)" size="sm" />
                 </PopoverTrigger>
                 <PopoverContent>
                   <PopoverArrow />
                   <PopoverCloseButton />
                   <PopoverHeader fontSize="11px">익명 제출</PopoverHeader>
                   <PopoverBody fontSize="11px">
-                    익명으로 제출한 건의/문의/불만 등에 대해서는 철저하게 익명을
-                    보장합니다. 단, 채택되어도 상품을 받을 수 없습니다.
+                    익명으로 제출한 건의/문의/불만 등에 대해서는 철저하게 익명을 보장합니다. 단,
+                    채택되어도 상품을 받을 수 없습니다.
                   </PopoverBody>
                 </PopoverContent>
               </Popover>
@@ -164,8 +149,6 @@ function RequestSuggestModal({ type, setIsModal }: IRequestSuggestModal) {
   );
 }
 
-const StudyPlaceNotice = styled.div``;
-
 const Form = styled.form`
   display: flex;
   flex-direction: column;
@@ -187,12 +170,6 @@ const Item = styled.div`
   }
 `;
 
-const TitleInput = styled.input`
-  padding: 0 var(--gap-1);
-  background-color: var(--input-bg);
-  border-radius: var(--rounded-lg);
-`;
-
 const Writer = styled.div`
   height: 100%;
   display: flex;
@@ -209,23 +186,12 @@ const WriterBtn = styled.button<{ isSelected: boolean }>`
   width: 36px;
 
   height: 80%;
-  background-color: ${(props) =>
-    props.isSelected ? "var(--color-mint)" : "var(--gray-6)"};
+  background-color: ${(props) => (props.isSelected ? "var(--color-mint)" : "var(--gray-6)")};
   color: ${(props) => (props.isSelected ? "white" : "var(--gray-1)")};
 `;
 
 const Content = styled.span`
   margin-bottom: auto;
-`;
-
-const ContentInput = styled.textarea`
-  margin-top: var(--gap-3);
-  border-radius: var(--rounded-lg);
-  display: block;
-  width: 100%;
-  height: 100%;
-  padding: var(--gap-1);
-  background-color: var(--input-bg);
 `;
 
 export default RequestSuggestModal;

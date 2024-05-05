@@ -1,27 +1,20 @@
 import { Flex } from "@chakra-ui/react";
 import { faGear, faPenCircle } from "@fortawesome/pro-light-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+
 import KakaoShareBtn from "../../../components/atoms/Icons/KakaoShareBtn";
 import Header from "../../../components/layouts/Header";
 import { GROUP_STUDY_ALL } from "../../../constants/keys/queryKeys";
 import { WEB_URL } from "../../../constants/system";
 import { useResetQueryData } from "../../../hooks/custom/CustomHooks";
-import {
-  useCompleteToast,
-  useFailToast,
-} from "../../../hooks/custom/CustomToast";
+import { useCompleteToast } from "../../../hooks/custom/CustomToast";
 import { useGroupParticipationMutation } from "../../../hooks/groupStudy/mutations";
-
-import { isGroupEditState } from "../../../recoils/checkAtoms";
-
-import { prevPageUrlState } from "../../../recoils/previousAtoms";
 import { sharedGroupWritingState } from "../../../recoils/sharedDataAtoms";
-
 import { IGroup } from "../../../types/models/groupTypes/group";
 import BottomDrawer from "../../profile/BottomDrawer";
 
@@ -30,21 +23,12 @@ interface IGroupHeader {
 }
 
 function GroupHeader({ group }: IGroupHeader) {
-  const failToast = useFailToast();
   const completeToast = useCompleteToast();
   const router = useRouter();
 
-  const title = group?.title;
-  // const date = group?.date;
-  // const locationMain = group?.location.main;
   const organizer = group?.organizer;
 
   const { data: session } = useSession();
-  // const setGroupWriting = useSetRecoilState(sharedGroupWritingState);
-  const setIsGroupEdit = useSetRecoilState(isGroupEditState);
-  const [prevPageUrl, setPrevPageUrl] = useRecoilState(prevPageUrlState);
-
-  const [isModal, setIsModal] = useState(false);
 
   const [isSettigModal, setIsSettingModal] = useState(false);
 
@@ -54,7 +38,6 @@ function GroupHeader({ group }: IGroupHeader) {
 
   const onClick = () => {
     setGroupWriting(group);
-    setPrevPageUrl(`${router.asPath}`);
 
     router.push("/group/writing/category/main");
   };
@@ -76,7 +59,7 @@ function GroupHeader({ group }: IGroupHeader) {
 
   return (
     <>
-      <Header title="소모임" url={true ? null : "/group"}>
+      <Header title="소모임" url="/group">
         <Flex>
           {session?.user.uid === organizer?.uid && (
             <IconWrapper onClick={onClick}>
@@ -95,11 +78,7 @@ function GroupHeader({ group }: IGroupHeader) {
             )}
           </Wrapper>
           <IconWrapper onClick={() => setIsSettingModal(true)}>
-            <FontAwesomeIcon
-              icon={faGear}
-              size="lg"
-              onClick={() => setIsModal(true)}
-            />
+            <FontAwesomeIcon icon={faGear} size="lg" />
           </IconWrapper>
         </Flex>
       </Header>

@@ -1,10 +1,9 @@
-import { extendTheme } from "@chakra-ui/react";
-
 import { inputAnatomy } from "@chakra-ui/anatomy";
-import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
+import { createMultiStyleConfigHelpers, extendTheme } from "@chakra-ui/react";
 
-const { definePartsStyle, defineMultiStyleConfig } =
-  createMultiStyleConfigHelpers(inputAnatomy.keys);
+const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpers(
+  inputAnatomy.keys,
+);
 
 const baseStyle = definePartsStyle({
   // define the part you're going to style

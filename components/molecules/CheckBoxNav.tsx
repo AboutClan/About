@@ -9,11 +9,7 @@ interface ICheckBoxNav {
   setSelectedButton: (value: string) => void;
 }
 
-function CheckBoxNav({
-  buttonList,
-  selectedButton,
-  setSelectedButton,
-}: ICheckBoxNav) {
+function CheckBoxNav({ buttonList, selectedButton, setSelectedButton }: ICheckBoxNav) {
   const handleCheckBoxChange = (value: string) => {
     setSelectedButton(selectedButton === value ? "" : value);
   };
@@ -35,9 +31,7 @@ function CheckBoxNav({
               justifyContent="center"
               alignItems="center"
             >
-              {selectedButton === item && (
-                <FontAwesomeIcon icon={faCheck} color="white" />
-              )}
+              {selectedButton === item && <FontAwesomeIcon icon={faCheck} color="white" />}
             </Flex>
             <Text ml="var(--gap-2)">{item}</Text>
           </Box>

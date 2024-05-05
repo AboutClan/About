@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 import ArrowBackButton from "../../components/atoms/buttons/ArrowBackButton";
 import Slide from "./PageSlide";
 interface IHeader {
@@ -8,21 +9,18 @@ interface IHeader {
   children?: React.ReactNode;
 }
 
-export default function Header({
-  title,
-  isSlide = true,
-  url,
-  children,
-}: IHeader) {
-  const HeaderLayout = () => (
-    <HeaderContainer>
-      <LeftSection>
-        <ArrowBackButton url={url} />
-        <Title>{title}</Title>
-      </LeftSection>
-      <div>{children}</div>
-    </HeaderContainer>
-  );
+export default function Header({ title, isSlide = true, url, children }: IHeader) {
+  function HeaderLayout() {
+    return (
+      <HeaderContainer>
+        <LeftSection>
+          <ArrowBackButton url={url} />
+          <Title>{title}</Title>
+        </LeftSection>
+        <div>{children}</div>
+      </HeaderContainer>
+    );
+  }
 
   return (
     <>

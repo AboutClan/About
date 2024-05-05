@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+
 import { InputLg } from "../../../styles/layout/input";
 import { DispatchType } from "../../../types/hooks/reactTypes";
 import { IStudyVote } from "../../../types/models/studyTypes/studyInterActions";

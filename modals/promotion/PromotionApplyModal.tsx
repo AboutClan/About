@@ -5,19 +5,14 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
+
 import { useCompleteToast } from "../../hooks/custom/CustomToast";
 import { usePromotionMutation } from "../../hooks/sub/promotion/mutations";
 import { usePromotionQuery } from "../../hooks/sub/promotion/queries";
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
-import {
-  IFooterOptions,
-  ModalFooterOne,
-  ModalFooterTwo,
-  ModalLayout,
-} from "../Modals";
-
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
+import { IFooterOptions, ModalFooterOne, ModalFooterTwo, ModalLayout } from "../Modals";
 
 interface IPromotionApplyModal extends IModal {
   uniName: string;
@@ -47,10 +42,7 @@ function PromotionApplyModal({ setIsModal, uniName }: IPromotionApplyModal) {
     const findUni = data?.find((item) => item.name === uniName);
     if (!findUni) setContentType("none");
     else {
-      const diff = dayjs(findUni.lastDate)
-        .add(3, "day")
-        .subtract(9, "hours")
-        .diff(dayjs(), "hour");
+      const diff = dayjs(findUni.lastDate).add(3, "day").subtract(9, "hours").diff(dayjs(), "hour");
 
       if (diff <= 0) mutate(uniName);
       else {
@@ -92,13 +84,13 @@ function PromotionApplyModal({ setIsModal, uniName }: IPromotionApplyModal) {
         contentType === "none" || !contentType
           ? "게시완료"
           : contentType === "cool"
-          ? "확인"
-          : "다음에",
+            ? "확인"
+            : "다음에",
       func: !contentType
         ? onSubmit
         : contentType === "cool"
-        ? () => setIsModal(false)
-        : handleApply,
+          ? () => setIsModal(false)
+          : handleApply,
     },
 
     ...(!contentType
@@ -108,25 +100,20 @@ function PromotionApplyModal({ setIsModal, uniName }: IPromotionApplyModal) {
           },
         }
       : contentType === "cool"
-      ? undefined
-      : {
-          sub: {
-            text: "다음에",
-          },
-        }),
+        ? undefined
+        : {
+            sub: {
+              text: "다음에",
+            },
+          }),
   };
 
   return (
-    <ModalLayout
-      footerOptions={footerOptions}
-      setIsModal={setIsModal}
-      title="이벤트 보상 신청"
-    >
+    <ModalLayout footerOptions={footerOptions} setIsModal={setIsModal} title="이벤트 보상 신청">
       <ModalSubtitle>
         {!contentType ? (
           <>
-            홍보글을 작성해 주셨나요? <b> +100 Point</b>와 추첨을 통해 치킨
-            기프티콘을 드려요!
+            홍보글을 작성해 주셨나요? <b> +100 Point</b>와 추첨을 통해 치킨 기프티콘을 드려요!
           </>
         ) : contentType === "cool" ? (
           <>
@@ -136,8 +123,8 @@ function PromotionApplyModal({ setIsModal, uniName }: IPromotionApplyModal) {
           </>
         ) : (
           <>
-            처음 홍보를 진행하는 대학교예요! 대학교 목록에 {uniName}를 추가 후
-            진행할게요! 최초 등록시 +300 point가 지급됩니다.
+            처음 홍보를 진행하는 대학교예요! 대학교 목록에 {uniName}를 추가 후 진행할게요! 최초
+            등록시 +300 point가 지급됩니다.
           </>
         )}
       </ModalSubtitle>
@@ -160,8 +147,6 @@ function PromotionApplyModal({ setIsModal, uniName }: IPromotionApplyModal) {
     </ModalLayout>
   );
 }
-
-const Footer = styled.footer``;
 
 const Uni = styled.div`
   flex: 1;
@@ -187,11 +172,6 @@ const CoolTime = styled.div`
   > span {
     margin-left: var(--gap-2);
   }
-`;
-
-const SubMessage = styled.span`
-  color: var(--gray-3);
-  font-size: 12px;
 `;
 
 export default PromotionApplyModal;

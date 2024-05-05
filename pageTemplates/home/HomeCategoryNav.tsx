@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+
 import { NewAlertIcon } from "../../components/atoms/Icons/AlertIcon";
 import {
   CalendarIcon,
@@ -11,29 +12,16 @@ import {
   MemberIcon,
   StoreIcon,
 } from "../../components/atoms/Icons/CategoryIcons";
-
 import NotCompletedModal from "../../modals/system/NotCompletedModal";
-
 import { slideDirectionState } from "../../recoils/navigationRecoils";
-import { isGatherAlertState } from "../../recoils/renderRecoils";
 import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
-type HomeCategory =
-  | "record"
-  | "point"
-  | "member"
-  | "gather"
-  | "plaza"
-  | "review"
-  | "group";
 
 function HomeCategoryNav() {
   const searchParams = useSearchParams();
 
   const location = searchParams.get("location");
 
-  const isGatherAlert = useRecoilValue(isGatherAlertState);
-  const [isPointAlert, setIsPointAlert] = useState(false);
   const [isNotCompletedModal, setIsNotCompletedModal] = useState(false);
 
   const setSlideDirection = useSetRecoilState(slideDirectionState);
@@ -72,10 +60,7 @@ function HomeCategoryNav() {
         <Item className="about_navigation3">
           <CustomLink
             onClick={onClick}
-            href={`/member/${convertLocationLangTo(
-              location as LocationEn,
-              "kr"
-            )}`}
+            href={`/member/${convertLocationLangTo(location as LocationEn, "kr")}`}
           >
             <MemberIcon />{" "}
             {/* <IconWrapper>
@@ -100,9 +85,7 @@ function HomeCategoryNav() {
           <span>? ? ?</span>
         </Item>
       </Layout>
-      {isNotCompletedModal && (
-        <NotCompletedModal setIsModal={setIsNotCompletedModal} />
-      )}
+      {isNotCompletedModal && <NotCompletedModal setIsModal={setIsNotCompletedModal} />}
     </>
   );
 }

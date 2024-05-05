@@ -76,8 +76,7 @@ export const NOTICE_ARR: INoticeArr[] = [
     id: "9",
     title: "수원 장소 추가",
     category: "sub",
-    content:
-      "망포역 - 할리스, 송죽동 - 커피빈 장소 추가. 5월 중 서수원 지역도 추가 예정",
+    content: "망포역 - 할리스, 송죽동 - 커피빈 장소 추가. 5월 중 서수원 지역도 추가 예정",
     date: "2023-05-02",
   },
   {
@@ -235,8 +234,7 @@ export const NOTICE_ARR: INoticeArr[] = [
     id: "29",
     title: "스토어 상품 입고",
     category: "sub",
-    content:
-      "포인트 스토어에 새 상품이 입고되었어요~! 이번에는 상품권 종류로만 들어왔습니다 😘",
+    content: "포인트 스토어에 새 상품이 입고되었어요~! 이번에는 상품권 종류로만 들어왔습니다 😘",
     date: "2023-08-13",
   },
   {
@@ -362,8 +360,7 @@ export const NOTICE_ARR: INoticeArr[] = [
     id: "45",
     title: "이벤트 캘린더 업데이트",
     category: "update",
-    content:
-      "이벤트 캘린더가 업데이트 되었습니다. 메인 페이지에서 확인이 가능합니다.",
+    content: "이벤트 캘린더가 업데이트 되었습니다. 메인 페이지에서 확인이 가능합니다.",
     date: "2023-10-06",
   },
   {
@@ -393,8 +390,7 @@ export const NOTICE_ARR: INoticeArr[] = [
     id: "49",
     title: "이벤트 배지 획득 종료 예정 안내",
     category: "sub",
-    content:
-      "일일 출석을 통한 라벤더 배지와 딸기 스무디 획득은 10월까지만 진행됩니다.",
+    content: "일일 출석을 통한 라벤더 배지와 딸기 스무디 획득은 10월까지만 진행됩니다.",
     date: "2023-10-10",
   },
   {
@@ -416,8 +412,7 @@ export const NOTICE_ARR: INoticeArr[] = [
     id: "52",
     title: "스토어 상품 입고 및 업데이트",
     category: "sub",
-    content:
-      "스토어를 본격적으로 규모를 키워보려고 합니다. 새 상품이 들어왔으니 보고 가세요~",
+    content: "스토어를 본격적으로 규모를 키워보려고 합니다. 새 상품이 들어왔으니 보고 가세요~",
     date: "2023-10-20",
   },
   {

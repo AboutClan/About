@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+
 import { isVoteCompletedState } from "../../recoils/renderRecoils";
 
 interface ISuccessScreen {
@@ -33,7 +34,7 @@ function SuccessScreen({ children, url }: ISuccessScreen) {
         bottom="0"
         maxW="var(--view-max-width)"
         transform="translate(-50%,0)"
-        width={`calc(100% - 2*var(--gap-4))`}
+        width="calc(100% - 2*var(--gap-4))"
         size="lg"
         mb="var(--gap-4)"
         borderRadius="var(--rounded)"

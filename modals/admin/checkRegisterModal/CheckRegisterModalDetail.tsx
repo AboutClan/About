@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 import { CopyBtn } from "../../../components/atoms/Icons/CopyIcon";
 import { IUserRegisterForm } from "../../../types/models/userTypes/userInfoTypes";
 import { ModalBody } from "../../Modals";

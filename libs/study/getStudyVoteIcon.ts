@@ -1,7 +1,4 @@
-export const getStudyVoteIcon = (
-  type: "default" | "main" | "sub",
-  text: string
-) => {
+export const getStudyVoteIcon = (type: "default" | "main" | "sub", text: string) => {
   const getBasicIcon = () => {
     switch (type) {
       case "default":

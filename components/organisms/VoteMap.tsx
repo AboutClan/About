@@ -1,10 +1,8 @@
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
-import {
-  IMapOptions,
-  IMarkerOptions,
-} from "../../types/externals/naverMapTypes";
-const NEXT_PUBLIC_NAVER_CLIENT_ID = process.env.NEXT_PUBLIC_NAVER_CLIENT_ID;
+
+import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
+
 interface IVoteMap {
   mapOptions?: IMapOptions;
   markersOptions?: IMarkerOptions[];
@@ -41,9 +39,7 @@ export default function VoteMap({
 
     //새로운 옵션 적용 전 초기화
     mapElementsRef.current.markers.forEach((marker) => marker.setMap(null));
-    mapElementsRef.current.polylines.forEach((polyline) =>
-      polyline.setMap(null)
-    );
+    mapElementsRef.current.polylines.forEach((polyline) => polyline.setMap(null));
     mapElementsRef.current.infoWindow.forEach((info) => info.close());
     mapElementsRef.current = { markers: [], polylines: [], infoWindow: [] };
 

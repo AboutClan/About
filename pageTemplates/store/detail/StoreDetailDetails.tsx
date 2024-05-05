@@ -20,9 +20,7 @@ function StoreDetailDetails({ winnerCnt, max }: IStoreDetailDetails) {
         <span>안내사항</span>
         <div>
           <span>당첨자는 중복되지 않습니다.</span>
-          <span>
-            당첨자가 연락이 안되는 경우, 예비 당첨자로 순번이 넘어갑니다.
-          </span>
+          <span>당첨자가 연락이 안되는 경우, 예비 당첨자로 순번이 넘어갑니다.</span>
           <span></span>
         </div>
       </DetailItem>

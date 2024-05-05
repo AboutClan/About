@@ -6,11 +6,11 @@ import DatePicker from "react-datepicker";
 import styled from "styled-components";
 
 import {
-  PickerDateAndTimeHeader,
   PICKER_DATE_AND_TIME,
+  PickerDateAndTimeHeader,
 } from "../../../components/molecules/picker/DatePickerOptions";
 import { DispatchType } from "../../../types/hooks/reactTypes";
-import { IGatherWriting } from "../../../types/models/gatherTypes/gather";
+import { IGatherWriting } from "../../../types/models/gatherTypes/gatherTypes";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
 const TIME_RANGE_MIN = new Date();
@@ -28,36 +28,24 @@ interface IGatherWritingDateDate {
   gatherWriting: IGatherWriting;
 }
 
-function GatherWritingDateDate({
-  date,
-  setDate,
-  gatherWriting,
-}: IGatherWritingDateDate) {
+function GatherWritingDateDate({ date, setDate, gatherWriting }: IGatherWritingDateDate) {
   /* eslint-disable react/display-name */
   //props를 직접 전달하지 않아서 그런지 optional로 안하면 타입 오류가 남
   type CustomInputProps = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     value?: any;
     onClick?: () => void;
   };
 
-  const CustomInput = forwardRef<HTMLButtonElement, CustomInputProps>(
-    ({ value, onClick }, ref) => {
-      const isDefault =
-        value === dayjsToFormat(dayjs().hour(14).minute(0), "M월 D일 HH:mm");
+  const CustomInput = forwardRef<HTMLButtonElement, CustomInputProps>(({ value, onClick }, ref) => {
+    const isDefault = value === dayjsToFormat(dayjs().hour(14).minute(0), "M월 D일 HH:mm");
 
-      return (
-        <Button
-          size="lg"
-          colorScheme="gray"
-          onClick={onClick}
-          ref={ref}
-          _focus={{ outline: "none" }}
-        >
-          {!isDefault ? value : "날짜/시간 선택"}
-        </Button>
-      );
-    }
-  );
+    return (
+      <Button size="lg" colorScheme="gray" onClick={onClick} ref={ref} _focus={{ outline: "none" }}>
+        {!isDefault ? value : "날짜/시간 선택"}
+      </Button>
+    );
+  });
 
   //초기 날짜 설정
   useEffect(() => {

@@ -1,8 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
-import TabNav, {
-  ITabNavOptions,
-} from "../../../../components/molecules/navs/TabNav";
+
+import TabNav, { ITabNavOptions } from "../../../../components/molecules/navs/TabNav";
 import { IGroup } from "../../../../types/models/groupTypes/group";
 import ContentAttend from "./ContentAttendance";
 import ContentChat from "./ContentChat";
@@ -54,19 +53,6 @@ function GroupContent({ group }: IGroupContent) {
     </Layout>
   );
 }
-
-const ContentNav = styled.nav`
-  display: flex;
-  background-color: white;
-`;
-
-const ContentBtn = styled.button<{ isSelected: boolean }>`
-  flex: 1;
-  padding: var(--gap-2) 0;
-  font-weight: 600;
-  color: ${(props) => (props.isSelected ? "var(--gray-1)" : "var(--gray-3)")};
-  border-bottom: ${(props) => props.isSelected && "2px solid var(--gray-1)"};
-`;
 
 const Layout = styled.div`
   display: flex;

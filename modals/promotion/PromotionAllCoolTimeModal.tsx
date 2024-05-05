@@ -1,38 +1,27 @@
 import { Button, Flex, ModalHeader } from "@chakra-ui/react";
-import {
-  faClock,
-  faThumbsUp,
-  faXmark,
-} from "@fortawesome/pro-regular-svg-icons";
+import { faClock, faThumbsUp, faXmark } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import styled from "styled-components";
+
 import { PROMOTION_WIN_DATE } from "../../constants/settingValue/dateSettingValue";
 import { usePromotionQuery } from "../../hooks/sub/promotion/queries";
 import { IModal } from "../../types/components/modalTypes";
 import { IPromotionApply } from "../../types/models/promotion";
-import {
-  IFooterOptions,
-  IHeaderOptions,
-  IPaddingOptions,
-  ModalLayout,
-} from "../Modals";
+import { IFooterOptions, IHeaderOptions, IPaddingOptions, ModalLayout } from "../Modals";
 
 interface IPromotionAllCoolTimeModal extends IModal {
   promotionData: IPromotionApply[];
 }
 
-function PromotionAllCoolTimeModal({
-  promotionData,
-  setIsModal,
-}: IPromotionAllCoolTimeModal) {
+function PromotionAllCoolTimeModal({ promotionData, setIsModal }: IPromotionAllCoolTimeModal) {
   const { data, isLoading } = usePromotionQuery();
   const applyCnt = data?.filter(
     (item) =>
       dayjs(item.lastDate) > dayjs(PROMOTION_WIN_DATE) &&
       item.uid !== "2259633694" &&
       item.uid !== "2636066822" &&
-      item.uid !== "3224546232"
+      item.uid !== "3224546232",
   ).length;
 
   const footerOptions: IFooterOptions = {
@@ -49,11 +38,7 @@ function PromotionAllCoolTimeModal({
             </span>
           </Sum>
         )}
-        <Button
-          variant="ghost"
-          color="var(--color-mint)"
-          onClick={() => setIsModal(false)}
-        >
+        <Button variant="ghost" color="var(--color-mint)" onClick={() => setIsModal(false)}>
           확인
         </Button>
       </Flex>
@@ -101,26 +86,18 @@ function PromotionAllCoolTimeModal({
       <Flex h="300px" direction="column" position="relative" overflowY="auto">
         <Container>
           {promotionData?.map((item) => {
-            const cool = dayjs(item.lastDate)
-              .add(3, "day")
-              .diff(dayjs(), "hours");
+            const cool = dayjs(item.lastDate).add(3, "day").diff(dayjs(), "hours");
 
             return (
               <Item key={item.name}>
                 <UniName>
-                  {item.name.length <= 6
-                    ? item.name
-                    : item.name.slice(0, 5) + "..."}
+                  {item.name.length <= 6 ? item.name : item.name.slice(0, 5) + "..."}
                 </UniName>
                 <CoolTime>
                   {cool >= 1 ? (
                     <Cool>
                       <FontAwesomeIcon icon={faClock} />
-                      {cool >= 24 ? (
-                        <span>{Math.ceil(cool / 24)}일</span>
-                      ) : (
-                        <span>{cool}H</span>
-                      )}
+                      {cool >= 24 ? <span>{Math.ceil(cool / 24)}일</span> : <span>{cool}H</span>}
                     </Cool>
                   ) : (
                     <Ok>

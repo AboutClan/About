@@ -1,9 +1,10 @@
 import { Switch } from "@chakra-ui/react";
 import { ChangeEvent, useEffect, useState } from "react";
 import styled from "styled-components";
+
 import CountNum from "../../../../components/atoms/CountNum";
 import { DispatchType } from "../../../../types/hooks/reactTypes";
-import { IGatherMemberCnt } from "../../../../types/models/gatherTypes/gather";
+import { IGatherMemberCnt } from "../../../../types/models/gatherTypes/gatherTypes";
 
 interface IGatherWritingConditionCnt {
   isMin: boolean;
@@ -20,10 +21,10 @@ function GatherWritingConditionCnt({
 }: IGatherWritingConditionCnt) {
   const [isMaxLimit, setIsMaxLimit] = useState(defaultBoolean ?? !isMin);
   const [number, setNumber] = useState(value);
-
   useEffect(() => {
     if (isMin) setMemberCnt((old) => ({ ...old, min: number }));
     else setMemberCnt((old) => ({ ...old, max: number }));
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [number]);
 
@@ -65,13 +66,6 @@ function GatherWritingConditionCnt({
 }
 
 const Layout = styled.div``;
-
-const CounterWrapper = styled.div<{ isMinus: boolean }>`
-  padding: 0 var(--gap-1);
-  margin-right: ${(props) => (props.isMinus ? "var(--gap-1)" : 0)};
-  margin-left: ${(props) => (!props.isMinus ? "var(--gap-1)" : 0)};
-  cursor: pointer;
-`;
 
 const MemberCnt = styled.div`
   display: flex;

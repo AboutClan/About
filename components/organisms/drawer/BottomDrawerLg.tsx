@@ -1,6 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import styled from "styled-components";
+
 import { IModal } from "../../../types/components/modalTypes";
 import ScreenOverlay from "../../atoms/ScreenOverlay";
 

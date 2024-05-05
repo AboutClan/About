@@ -1,9 +1,6 @@
 import { useParams } from "next/navigation";
 
-import {
-  useFailToast,
-  useTypeErrorToast,
-} from "../../../hooks/custom/CustomToast";
+import { useFailToast, useTypeErrorToast } from "../../../hooks/custom/CustomToast";
 import { useGatherQuery } from "../../../hooks/gather/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { DispatchNumber } from "../../../types/hooks/reactTypes";
@@ -15,9 +12,7 @@ interface IGatherParticipateModalApply {
   setPageNum: DispatchNumber;
 }
 
-function GatherParticipateModalApply({
-  setPageNum,
-}: IGatherParticipateModalApply) {
+function GatherParticipateModalApply({ setPageNum }: IGatherParticipateModalApply) {
   const failToast = useFailToast();
   const userErrorToast = useTypeErrorToast();
   const { id } = useParams<{ id: string }>() || {};
@@ -40,17 +35,12 @@ function GatherParticipateModalApply({
       return;
     }
 
-    if (
-      (gatherData.age[0] !== 19 && myOld < gatherData.age[0]) ||
-      myOld > gatherData.age[1]
-    ) {
+    if ((gatherData.age[0] !== 19 && myOld < gatherData.age[0]) || myOld > gatherData.age[1]) {
       failToast("free", "나이 조건이 맞지 않습니다.");
       return;
     }
 
-    const maxCnt = gatherData.isAdminOpen
-      ? participantsCnt
-      : participantsCnt + 1;
+    const maxCnt = gatherData.isAdminOpen ? participantsCnt : participantsCnt + 1;
     if (gatherData.memberCnt.max !== 0 && gatherData.memberCnt.max <= maxCnt) {
       failToast("free", "모집 인원이 마감되었습니다.");
       return;
@@ -60,9 +50,7 @@ function GatherParticipateModalApply({
       const organizerGender = (gatherData.user as IUser).gender;
 
       const participants = gatherData.participants;
-      let manCnt = participants.filter(
-        (who) => (who.user as IUser).gender === "남성"
-      ).length;
+      let manCnt = participants.filter((who) => (who.user as IUser).gender === "남성").length;
       let womanCnt = participants.length - manCnt;
       if (organizerGender === "남성") manCnt++;
       else womanCnt++;
@@ -73,10 +61,7 @@ function GatherParticipateModalApply({
           (womanCnt === 1 && manCnt >= 4) ||
           (womanCnt >= 2 && manCnt >= womanCnt * 2)
         ) {
-          failToast(
-            "free",
-            "현재 성별 조건이 맞지 않습니다. 나중에 다시 신청해주세요!"
-          );
+          failToast("free", "현재 성별 조건이 맞지 않습니다. 나중에 다시 신청해주세요!");
           return;
         }
       }
@@ -86,10 +71,7 @@ function GatherParticipateModalApply({
           (manCnt === 1 && womanCnt >= 4) ||
           (manCnt >= 2 && womanCnt >= manCnt * 2)
         ) {
-          failToast(
-            "free",
-            "현재 성별 조건이 맞지 않습니다. 나중에 다시 신청해주세요!"
-          );
+          failToast("free", "현재 성별 조건이 맞지 않습니다. 나중에 다시 신청해주세요!");
           return;
         }
       }

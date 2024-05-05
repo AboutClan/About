@@ -2,15 +2,13 @@ import { faLeft, faRight } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styled from "styled-components";
+
 import ImageTileGridLayout, {
   IImageTileData,
 } from "../../../components/molecules/layouts/ImageTitleGridLayout";
 import { MAX_USER_PER_PLACE } from "../../../constants/settingValue/study/study";
 import { useToast } from "../../../hooks/custom/CustomToast";
-import {
-  IParticipation,
-  IPlace,
-} from "../../../types/models/studyTypes/studyDetails";
+import { IParticipation, IPlace } from "../../../types/models/studyTypes/studyDetails";
 
 interface IPlaceSelectorSub {
   places: IParticipation[];
@@ -18,11 +16,7 @@ interface IPlaceSelectorSub {
   setSelectPlaces: Dispatch<SetStateAction<IPlace[]>>;
 }
 
-function PlaceSelectorSub({
-  places,
-  selectPlaces,
-  setSelectPlaces,
-}: IPlaceSelectorSub) {
+function PlaceSelectorSub({ places, selectPlaces, setSelectPlaces }: IPlaceSelectorSub) {
   const toast = useToast();
   const isTwoPage = places?.length > 8;
 
@@ -58,14 +52,14 @@ function PlaceSelectorSub({
     if (type === "right") setIsFirst(false);
   };
 
-  const imageDataArr: IImageTileData[] = (
-    isFirst ? pagePlaces?.first : pagePlaces?.second
-  )?.map((par) => ({
-    imageUrl: par.place.image,
-    text: par.place.brand,
-    func: () => onClick(par),
-    id: par.place._id,
-  }));
+  const imageDataArr: IImageTileData[] = (isFirst ? pagePlaces?.first : pagePlaces?.second)?.map(
+    (par) => ({
+      imageUrl: par.place.image,
+      text: par.place.brand,
+      func: () => onClick(par),
+      id: par.place._id,
+    }),
+  );
 
   return (
     <Layout isTwoPage={isTwoPage}>
@@ -95,32 +89,6 @@ const Layout = styled.div<{ isTwoPage: boolean }>`
   position: relative;
   height: 100%;
   padding: 12px 20px;
-`;
-
-const Item = styled.div<{ isSelected: boolean }>`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-radius: var(--rounded-lg);
-  border: ${(props) =>
-    props.isSelected ? "2px solid var(--color-mint)" : "var(--border)"};
-`;
-
-const Place = styled.div`
-  border-radius: var(--rounded-lg);
-  overflow: hidden;
-  width: 64px;
-  height: 64px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: var(--gap-1);
-`;
-
-const Name = styled.span`
-  font-size: 13px;
-  white-space: nowrap;
 `;
 
 const LeftArrow = styled.div`

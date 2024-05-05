@@ -1,6 +1,5 @@
 import { IScore } from "../services/pointSystem";
 import { IVoteRate } from "./studyTypes/studyRecords";
-
 import { IUser, IUserSummary } from "./userTypes/userInfoTypes";
 
 export interface IRankScore {

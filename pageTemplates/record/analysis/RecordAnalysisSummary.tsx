@@ -2,6 +2,7 @@ import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+
 import { useUserAttendRateQueries } from "../../../hooks/user/sub/studyRecord/queries";
 import { DispatchBoolean } from "../../../types/hooks/reactTypes";
 import { IDayjsStartToEnd } from "../../../types/utils/timeAndDate";
@@ -29,7 +30,7 @@ function RecordAnalysisSummary({ setIsLoading }: IRecordAnalysisSummary) {
     if (weeksArr?.length === WEEKS_CNT) setWeeksDate(weeksArr);
   }, []);
 
-  const { data, isLoading } = useUserAttendRateQueries(weeksDate, true, {
+  const { data } = useUserAttendRateQueries(weeksDate, true, {
     enabled: weeksDate.length !== 0,
   });
 
@@ -42,14 +43,7 @@ function RecordAnalysisSummary({ setIsLoading }: IRecordAnalysisSummary) {
   }, [data, weeksDate]);
 
   return (
-    <Box
-      bgColor="white"
-      m="16px"
-      mb="8px"
-      rounded="lg"
-      p="8px 16px"
-      border="var(--border-mint)"
-    >
+    <Box bgColor="white" m="16px" mb="8px" rounded="lg" p="8px 16px" border="var(--border-mint)">
       {myAttend?.map((item, idx) => {
         const date = weeksDate[idx];
         return (

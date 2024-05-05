@@ -1,8 +1,9 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
+
 import AlertModal, { IAlertModalOptions } from "../../../components/AlertModal";
 import { MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
 import Selector from "../../../components/atoms/Selector";
@@ -20,16 +21,13 @@ type UserType = "신규 가입자" | "전체";
 interface IGroupAdminInvitation {
   belong: string;
 }
-export default function GroupAdminInvitation({
-  belong,
-}: IGroupAdminInvitation) {
+export default function GroupAdminInvitation({ belong }: IGroupAdminInvitation) {
   const completeToast = useCompleteToast();
   const { data: session } = useSession();
   const location = session?.user.location;
   const { id } = useParams<{ id: string }>() || {};
   const [value, setValue] = useState(location);
-  const [userFilterValue, setUserFilterValue] =
-    useState<UserType>("신규 가입자");
+  const [userFilterValue, setUserFilterValue] = useState<UserType>("신규 가입자");
   const [filterUsers, setFilterUsers] = useState<IUserSummary[]>();
   const [inviteUser, setInviteUser] = useState<IUserSummary>(null);
 
@@ -62,8 +60,8 @@ export default function GroupAdminInvitation({
     if (isLoading || !usersAll) return;
     setFilterUsers(
       usersAll.filter((user) =>
-        user.isActive && userFilterValue === "전체" ? true : !user?.belong
-      )
+        user.isActive && userFilterValue === "전체" ? true : !user?.belong,
+      ),
     );
   }, [usersAll]);
 
@@ -88,11 +86,7 @@ export default function GroupAdminInvitation({
             defaultValue={userFilterValue}
             setValue={setUserFilterValue}
           />
-          <Selector
-            options={LOCATION_USE_ALL}
-            defaultValue={value}
-            setValue={setValue}
-          />
+          <Selector options={LOCATION_USE_ALL} defaultValue={value} setValue={setValue} />
         </Flex>
         <Box position="relative">
           {isLoading ? (
@@ -104,12 +98,7 @@ export default function GroupAdminInvitation({
           )}
         </Box>
       </Box>
-      {inviteUser && (
-        <AlertModal
-          options={alertOptions}
-          setIsModal={() => setInviteUser(null)}
-        />
-      )}
+      {inviteUser && <AlertModal options={alertOptions} setIsModal={() => setInviteUser(null)} />}
     </>
   );
 }

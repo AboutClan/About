@@ -1,7 +1,7 @@
 import { Dayjs } from "dayjs";
-import { ActiveLocation, CombinedLocation } from "../../services/locationTypes";
-import { ITimeStamps } from "../../utils/timeAndDate";
 
+import { CombinedLocation, Location } from "../../services/locationTypes";
+import { ITimeStamps } from "../../utils/timeAndDate";
 import { IUserSummary } from "../userTypes/userInfoTypes";
 
 export interface IGather extends Omit<IGatherWriting, "date">, ITimeStamps {
@@ -14,7 +14,7 @@ export interface IGather extends Omit<IGatherWriting, "date">, ITimeStamps {
 
 export interface IGatherWriting {
   type: IGatherType;
-  place: ActiveLocation | CombinedLocation;
+  place: Location | CombinedLocation;
   genderCondition: boolean;
   title: string;
   content: string;
@@ -25,7 +25,7 @@ export interface IGatherWriting {
   password?: string;
   age: number[];
   preCnt?: number;
-  user: IUserSummary;
+  user: IUserSummary | string;
   isAdminOpen?: boolean;
   image?: string;
 }
@@ -48,8 +48,8 @@ export type IGatherMemberCnt = {
 export interface IGatherListItem {
   text: string;
   time: {
-    hours: number;
-    minutes: number;
+    hours?: number;
+    minutes?: number;
   };
 }
 export interface IGatherParticipants {

@@ -1,10 +1,8 @@
 import { useDisclosure } from "@chakra-ui/react";
 import styled from "styled-components";
+
 import { CopyBtn } from "../../../components/atoms/Icons/CopyIcon";
-import {
-  useCompleteToast,
-  useErrorToast,
-} from "../../../hooks/custom/CustomToast";
+import { useCompleteToast, useErrorToast } from "../../../hooks/custom/CustomToast";
 import { useUserRegisterControlMutation } from "../../../hooks/user/mutations";
 import { IModal } from "../../../types/components/modalTypes";
 import { IRefetch } from "../../../types/hooks/reactTypes";
@@ -16,17 +14,13 @@ interface ICheckRegisterModal extends IModal, IRefetch {
   applicant: IUserRegisterForm;
 }
 
-function CheckRegisterModal({
-  setIsModal,
-  applicant,
-  setIsRefetch,
-}: ICheckRegisterModal) {
-  if (!applicant) return null;
+function CheckRegisterModal({ setIsModal, applicant, setIsRefetch }: ICheckRegisterModal) {
   const completeToast = useCompleteToast();
   const errorToast = useErrorToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const uid = applicant?.uid;
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const { mutate: approve } = useUserRegisterControlMutation("post", {
     onSuccess() {
       completeToast("free", "가입이 승인되었습니다.");

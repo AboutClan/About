@@ -2,10 +2,11 @@
 import { config } from "@fortawesome/fontawesome-svg-core";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
-import { signOut, useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
+import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
+
 import BottomNav from "../../components/BottomNav";
 import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
 import { useToken } from "../../hooks/custom/CustomHooks";
@@ -16,7 +17,6 @@ import BaseScript from "./BaseScript";
 import Seo from "./Seo";
 
 config.autoAddCss = false;
-const PUBLIC_ROUTES = ["/login", "/register", "/checkingServer"];
 
 interface ILayout {
   children: React.ReactNode;
@@ -58,7 +58,7 @@ function Layout({ children }: ILayout) {
     if (!session?.user?.location) {
       toast(
         "warning",
-        "업데이트가 필요합니다. 다시 로그인 해주세요! 반복되는 경우 관리자에게 문의 부탁드립니다!!"
+        "업데이트가 필요합니다. 다시 로그인 해주세요! 반복되는 경우 관리자에게 문의 부탁드립니다!!",
       );
       signOut({ callbackUrl: `/login/?status=logout` });
     }
@@ -73,14 +73,8 @@ function Layout({ children }: ILayout) {
         <>
           <div id="root-modal">{children}</div>
           {BASE_BOTTOM_NAV_URL.includes(pathname) && <BottomNav />}
-          {isGuest && BASE_BOTTOM_NAV_URL.includes(pathname) && (
-            <GuestBottomNav />
-          )}
-          <BaseModal
-            isGuest={isGuest}
-            isError={isErrorModal}
-            setIsError={setIsErrorModal}
-          />
+          {isGuest && BASE_BOTTOM_NAV_URL.includes(pathname) && <GuestBottomNav />}
+          <BaseModal isGuest={isGuest} isError={isErrorModal} setIsError={setIsErrorModal} />
         </>
       )}
       <BaseScript />

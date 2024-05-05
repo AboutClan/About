@@ -1,5 +1,6 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+
 import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../../hooks/custom/CustomHooks";
 import { useGatherQuery } from "../../../hooks/gather/queries";
@@ -37,10 +38,7 @@ function GatherExpireModal({ setIsModal }: IModal) {
           onClickBottom={() => setModal("cancel")}
         />
       </ModalLayout>
-      <GatherExpireModalExpireDialog
-        setIsComplete={setIsComplete}
-        modal={modal}
-      />
+      <GatherExpireModalExpireDialog setIsComplete={setIsComplete} modal={modal} />
       <GatherExpireModalCancelDialog
         setIsComplete={setIsComplete}
         modal={modal}

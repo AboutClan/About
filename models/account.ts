@@ -1,4 +1,7 @@
-import mongoose, { model, Model, Schema } from "mongoose";
+/* eslint-disable */
+
+import mongoose, { Model, model, Schema } from "mongoose";
+
 import { IUser } from "../types/models/userTypes/userInfoTypes";
 
 interface IAccount extends Document {

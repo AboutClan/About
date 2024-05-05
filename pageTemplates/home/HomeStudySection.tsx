@@ -1,10 +1,11 @@
 import dayjs from "dayjs";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
+
 import BlurredPart from "../../components/molecules/BlurredPart";
 import { IPostThumbnailCard } from "../../components/molecules/cards/PostThumbnailCard";
 import {
@@ -22,13 +23,8 @@ import {
   sortedStudyCardListState,
   studyDateStatusState,
 } from "../../recoils/studyRecoils";
-
 import { ITextAndColorSchemes } from "../../types/components/propTypes";
-import {
-  IParticipation,
-  StudyStatus,
-} from "../../types/models/studyTypes/studyDetails";
-
+import { IParticipation, StudyStatus } from "../../types/models/studyTypes/studyDetails";
 import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
@@ -39,42 +35,27 @@ export default function HomeStudySection() {
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
   const date = searchParams.get("date");
-  const location = convertLocationLangTo(
-    searchParams.get("location") as LocationEn,
-    "kr"
-  );
+  const location = convertLocationLangTo(searchParams.get("location") as LocationEn, "kr");
 
   const myUid = session?.user.uid;
 
   const setSortedStudyCardList = useSetRecoilState(sortedStudyCardListState);
   const setMyStudy = useSetRecoilState(myStudyState);
   const studyDateStatus = useRecoilValue(studyDateStatusState);
-  const [studyCardColData, setStudyCardColData] =
-    useState<IPostThumbnailCard[]>();
+  const [studyCardColData, setStudyCardColData] = useState<IPostThumbnailCard[]>();
 
-  const { data: studyVoteData, isLoading } = useStudyVoteQuery(
-    date as string,
-    location,
-    {
-      enabled: !!date && !!location,
-    }
-  );
+  const { data: studyVoteData, isLoading } = useStudyVoteQuery(date as string, location, {
+    enabled: !!date && !!location,
+  });
 
   const { mutate: decideStudyResult } = useStudyResultDecideMutation(date);
 
   useEffect(() => {
     if (!studyVoteData || !studyVoteData.length || !session?.user) return;
 
-    const sortedData = sortStudyVoteData(
-      studyVoteData,
-      studyDateStatus !== "not passed"
-    );
+    const sortedData = sortStudyVoteData(studyVoteData, studyDateStatus !== "not passed");
 
-    const cardList = setStudyDataToCardCol(
-      sortedData,
-      date as string,
-      session?.user.uid
-    );
+    const cardList = setStudyDataToCardCol(sortedData, date as string, session?.user.uid);
     setStudyCardColData(cardList.slice(0, 3));
     setSortedStudyCardList(cardList);
 
@@ -91,7 +72,6 @@ export default function HomeStudySection() {
         }
       }
     }
-
     if (getStudyConfimCondition(studyDateStatus, studyVoteData[1].status)) {
       decideStudyResult();
     }
@@ -122,8 +102,8 @@ export default function HomeStudySection() {
               location === "안양"
                 ? "안양 지역은 톡방에서 별도 운영중입니다!"
                 : location === null
-                ? "스터디 장소 확정중입니다."
-                : null
+                  ? "스터디 장소 확정중입니다."
+                  : null
             }
           >
             {!isLoading && studyCardColData ? (
@@ -132,7 +112,7 @@ export default function HomeStudySection() {
                 url={`/studyList/?${newSearchParams.toString()}`}
               />
             ) : (
-              <CardColumnLayoutSkeleton type="study" />
+              <CardColumnLayoutSkeleton />
             )}
           </BlurredPart>
         </>
@@ -144,12 +124,10 @@ export default function HomeStudySection() {
 export const setStudyDataToCardCol = (
   studyData: IParticipation[],
   urlDateParam: string,
-  uid: string
+  uid: string,
 ): IPostThumbnailCard[] => {
   const privateStudy = studyData.find((par) => par.place.brand === "자유 신청");
-  const filteredData = studyData.filter(
-    (par) => par.place.brand !== "자유 신청"
-  );
+  const filteredData = studyData.filter((par) => par.place.brand !== "자유 신청");
 
   if (privateStudy) filteredData.splice(2, 0, privateStudy);
 
@@ -165,20 +143,14 @@ export const setStudyDataToCardCol = (
     },
     badge: getBadgeText(data.status, getVotePoint(data.attendences.length)),
     statusText:
-      data.status === "pending" &&
-      data.attendences.some((who) => who.user.uid === uid) &&
-      "GOOD",
+      data.status === "pending" && data.attendences.some((who) => who.user.uid === uid) && "GOOD",
   }));
   return cardColData;
 };
 
-const getVotePoint = (attCnt: number) =>
-  attCnt === 0 ? 10 : attCnt === 5 ? 2 : 2;
+const getVotePoint = (attCnt: number) => (attCnt === 0 ? 10 : attCnt === 5 ? 2 : 2);
 
-const getBadgeText = (
-  status: StudyStatus,
-  point: number
-): ITextAndColorSchemes => {
+const getBadgeText = (status: StudyStatus, point: number): ITextAndColorSchemes => {
   switch (status) {
     case "open":
       return { text: "open", colorScheme: "green" };

@@ -4,15 +4,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
-import { UserIcon } from "../../atoms/Icons/icons";
 
 import { SingleLineText } from "../../../styles/layout/components";
 import { IImageProps } from "../../../types/components/assetTypes";
 import { ITextAndColorSchemes } from "../../../types/components/propTypes";
-import Skeleton from "../../atoms/skeleton/Skeleton";
-
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import OutlineBadge from "../../atoms/badges/OutlineBadge";
+import { UserIcon } from "../../atoms/Icons/icons";
+import Skeleton from "../../atoms/skeleton/Skeleton";
 import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
 export interface IPostThumbnailCard {
   participants: IUserSummary[];
@@ -42,7 +41,7 @@ export function PostThumbnailCard({
     func = undefined,
   },
 }: IPostThumbnailCardObj) {
-  const userAvatarArr = participants.map((par, idx) => {
+  const userAvatarArr = participants.map((par) => {
     return {
       image: par.profileImage,
       ...(par.avatar?.type !== null ? { avatar: par.avatar } : {}),
@@ -62,11 +61,7 @@ export function PostThumbnailCard({
       <ContentContainer>
         <TitleHeader>
           <Title>{title}</Title>
-          <OutlineBadge
-            size="sm"
-            text={badge.text}
-            colorScheme={badge.colorScheme}
-          />
+          <OutlineBadge size="sm" text={badge.text} colorScheme={badge.colorScheme} />
         </TitleHeader>
         <Subtitle>{subtitle}</Subtitle>
         <StatusContainer>
@@ -78,12 +73,7 @@ export function PostThumbnailCard({
             <div className="userIconContainer">
               <UserIcon />
               <span>
-                <Box
-                  as="span"
-                  color={
-                    maxCnt && participants.length > maxCnt && "var(--color-red)"
-                  }
-                >
+                <Box as="span" color={maxCnt && participants.length > maxCnt && "var(--color-red)"}>
                   {participants.length}
                 </Box>
                 /{maxCnt || <FontAwesomeIcon icon={faInfinity} />}
@@ -96,11 +86,7 @@ export function PostThumbnailCard({
   );
 }
 
-export function PostThumbnailCardSkeleton({
-  type,
-}: {
-  type: "study" | "gather";
-}) {
+export function PostThumbnailCardSkeleton() {
   return (
     <SkeletonContainer>
       <SkeletonBlock style={{ width: "86.5px", height: "86.5px" }}>

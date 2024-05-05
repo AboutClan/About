@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 import ArrowTextButton from "../../atoms/buttons/ArrowTextButton";
 interface IBetweenTextSwitcher {
   left: {
@@ -10,24 +11,11 @@ interface IBetweenTextSwitcher {
     func: () => void;
   };
 }
-export default function BetweenTextSwitcher({
-  left,
-  right,
-}: IBetweenTextSwitcher) {
+export default function BetweenTextSwitcher({ left, right }: IBetweenTextSwitcher) {
   return (
     <Layout>
-      <ArrowTextButton
-        text={left.text}
-        dir="left"
-        onClick={left.func}
-        size="sm"
-      />
-      <ArrowTextButton
-        text={right.text}
-        dir="right"
-        onClick={right.func}
-        size="sm"
-      />
+      <ArrowTextButton text={left.text} dir="left" onClick={left.func} size="sm" />
+      <ArrowTextButton text={right.text} dir="right" onClick={right.func} size="sm" />
     </Layout>
   );
 }

@@ -2,6 +2,7 @@ import { Box, Flex, Switch } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+
 import Selector from "../../components/atoms/Selector";
 import { DispatchType } from "../../types/hooks/reactTypes";
 
@@ -17,9 +18,7 @@ const categoryArr = [
   "점수 랭킹",
 ];
 
-export default function StatisticsFilterBar({
-  setFilterOptions,
-}: IStatisticsFilterBar) {
+export default function StatisticsFilterBar({ setFilterOptions }: IStatisticsFilterBar) {
   const { data: session } = useSession();
 
   const [category, setCategory] = useState(categoryArr[1]);
@@ -41,9 +40,7 @@ export default function StatisticsFilterBar({
         isBorder={false}
       />
       <Flex fontSize="12px" align="center">
-        <Box color={isSwitchOn ? "var(--gray-4)" : "var(--gray-1)"}>
-          {session?.user.location}
-        </Box>
+        <Box color={isSwitchOn ? "var(--gray-4)" : "var(--gray-1)"}>{session?.user.location}</Box>
         <Switch
           onChange={() => setIsSwitchOn((old) => !old)}
           isChecked={isSwitchOn}

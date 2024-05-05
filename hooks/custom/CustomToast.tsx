@@ -2,24 +2,13 @@ import { useToast as useChakraToast } from "@chakra-ui/react";
 import { AxiosError } from "axios";
 import { useCallback } from "react";
 
-export type FailToast =
-  | "free"
-  | "guest"
-  | "loadStudy"
-  | "studyVote"
-  | "apply"
-  | "error"
-  | "time";
+export type FailToast = "free" | "guest" | "loadStudy" | "studyVote" | "apply" | "error" | "time";
 
 export const useToast = () => {
   const toast = useChakraToast();
 
   const showToast = useCallback(
-    (
-      status: "success" | "error" | "warning" | "info",
-      title: string,
-      subTitle?: string
-    ) => {
+    (status: "success" | "error" | "warning" | "info", title: string, subTitle?: string) => {
       toast({
         title: title,
         description: subTitle,
@@ -28,7 +17,7 @@ export const useToast = () => {
         variant: "subtle",
       });
     },
-    [toast]
+    [toast],
   );
 
   return showToast;
@@ -43,14 +32,14 @@ export const useTypeToast = () => {
     (type: ToastType) => {
       toast({ ...getTypeToToast(type), duration: 3000, variant: "subtle" });
     },
-    [toast]
+    [toast],
   );
 
   return showToast;
 };
 
 const getTypeToToast = (
-  type: ToastType
+  type: ToastType,
 ): {
   status: "success" | "error" | "warning" | "info";
   title: string;
@@ -97,8 +86,7 @@ export const useFailToast = () => {
     (type: FailToast, sub?: string, isTop: boolean = false) => {
       let text = "";
       if (type === "free") text = sub;
-      if (type === "error")
-        text = "오류가 발생했어요! 관리자에게 문의해주세요!";
+      if (type === "error") text = "오류가 발생했어요! 관리자에게 문의해주세요!";
       if (type === "guest") text = "게스트는 사용할 수 없는 기능입니다.";
       if (type === "loadStudy") text = "스터디 정보를 불러오지 못 했어요.";
       if (type === "apply") text = "신청에 실패했어요. 조건을 확인해 주세요!";
@@ -113,7 +101,7 @@ export const useFailToast = () => {
         position: isTop ? "top" : "bottom",
       });
     },
-    [toast]
+    [toast],
   );
   return showFailToast;
 };
@@ -160,7 +148,7 @@ export const useCompleteToast = () => {
           variant: "subtle",
         });
     },
-    [toast]
+    [toast],
   );
 
   return showCompleteToast;
@@ -180,16 +168,10 @@ export const useTypeErrorToast = () => {
   const handleError = (err: AxiosError, type: "user" | "study") => {
     console.error(err);
     if (type === "user")
-      failToast(
-        "free",
-        "유저 정보를 확인할 수 없습니다. 관리자에게 문의해주세요!"
-      );
+      failToast("free", "유저 정보를 확인할 수 없습니다. 관리자에게 문의해주세요!");
 
     if (type === "study")
-      failToast(
-        "free",
-        "스터디 정보를 가져올 수 없습니다. 관리자에게 문의해주세요!"
-      );
+      failToast("free", "스터디 정보를 가져올 수 없습니다. 관리자에게 문의해주세요!");
   };
   return handleError;
 };
@@ -211,7 +193,7 @@ export const useInfoToast = () => {
         position: isTop ? "top" : "bottom",
       });
     },
-    [toast]
+    [toast],
   );
   return showFailToast;
 };

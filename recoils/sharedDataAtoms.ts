@@ -1,5 +1,6 @@
 import { atom } from "recoil";
-import { IGatherWriting } from "../types/models/gatherTypes/gather";
+
+import { IGatherWriting } from "../types/models/gatherTypes/gatherTypes";
 import { IGroupWriting } from "../types/models/groupTypes/group";
 
 export const sharedGatherWritingState = atom<IGatherWriting>({

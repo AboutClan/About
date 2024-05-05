@@ -2,6 +2,7 @@ import { faCaretLeft, faCaretRight } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dayjs } from "dayjs";
 import styled from "styled-components";
+
 import { DispatchType } from "../../types/hooks/reactTypes";
 
 interface IMonthNav {

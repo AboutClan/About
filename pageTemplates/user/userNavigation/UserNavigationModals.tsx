@@ -1,8 +1,8 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
 
+import { useUserInfoQuery } from "../../../hooks/user/queries";
 import RequestBirthModal from "../../../modals/userRequest/RequestBirthModal";
 import RequestChargeDepositModal from "../../../modals/userRequest/RequestChargeDepositModal";
 import RequestLevelUpModal from "../../../modals/userRequest/RequestLevelUpModal";
@@ -12,7 +12,6 @@ import RequestRestModal from "../../../modals/userRequest/RequestRestModal/Reque
 import RequestSecedeModal from "../../../modals/userRequest/RequestSecedeModal";
 import RequestSuggestModal from "../../../modals/userRequest/RequestSuggestModal";
 import StudyPresetModal from "../../../modals/userRequest/StudyPresetModal";
-
 import { UserOverviewModal } from "./UserNavigation";
 
 interface IUserNavigationModals {
@@ -20,10 +19,7 @@ interface IUserNavigationModals {
   setModalOpen: React.Dispatch<UserOverviewModal>;
 }
 
-function UserNavigationModals({
-  modalOpen,
-  setModalOpen,
-}: IUserNavigationModals) {
+function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const isPresetModal = !!searchParams.get("preset");
@@ -42,40 +38,24 @@ function UserNavigationModals({
 
   return (
     <Layout>
-      {modalOpen === "suggest" && (
-        <RequestSuggestModal type="suggest" setIsModal={setIsModal} />
-      )}
-      {modalOpen === "studyPlace" && (
-        <RequestSuggestModal type="study" setIsModal={setIsModal} />
-      )}
+      {modalOpen === "suggest" && <RequestSuggestModal type="suggest" setIsModal={setIsModal} />}
+      {modalOpen === "studyPlace" && <RequestSuggestModal type="study" setIsModal={setIsModal} />}
       {modalOpen === "rest" &&
         (userInfo?.role !== "resting" ? (
           <RequestRestModal setIsModal={setIsModal} />
         ) : (
-          <RequestRestCancelModal
-            setIsModal={setIsModal}
-            rest={userInfo?.rest}
-          />
+          <RequestRestCancelModal setIsModal={setIsModal} rest={userInfo?.rest} />
         ))}
-      {modalOpen === "levelUp" && (
-        <RequestLevelUpModal setIsModal={setIsModal} />
-      )}
+      {modalOpen === "levelUp" && <RequestLevelUpModal setIsModal={setIsModal} />}
       {modalOpen === "declaration" && (
         <RequestSuggestModal type="declare" setIsModal={setIsModal} />
       )}
-      {modalOpen === "deposit" && (
-        <RequestChargeDepositModal setIsModal={setIsModal} />
-      )}
+      {modalOpen === "deposit" && <RequestChargeDepositModal setIsModal={setIsModal} />}
 
       {modalOpen === "secede" && <RequestSecedeModal setIsModal={setIsModal} />}
       {isPresetModal && <StudyPresetModal />}
-      {modalOpen === "birthday" && (
-        <RequestBirthModal setIsModal={setIsModal} />
-      )}
-      <RequestLogoutModal
-        isModal={modalOpen === "logout"}
-        setIsModal={setIsModal}
-      />
+      {modalOpen === "birthday" && <RequestBirthModal setIsModal={setIsModal} />}
+      <RequestLogoutModal isModal={modalOpen === "logout"} setIsModal={setIsModal} />
     </Layout>
   );
 }

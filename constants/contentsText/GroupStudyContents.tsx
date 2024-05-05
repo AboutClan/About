@@ -10,9 +10,9 @@ import {
   faUserGraduate,
 } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { IRuleModalContent } from "../../modals/RuleModal";
 
 import { TABLE_COLORS } from "../../constants/styles";
+import { IRuleModalContent } from "../../modals/RuleModal";
 import { GroupCategory } from "../../types/models/groupTypes/group";
 
 export const GROUP_STUDY_CATEGORY_ARR = [
@@ -36,14 +36,7 @@ export const GROUP_STUDY_SUB_CATEGORY: { [key in GroupCategory]: string[] } = {
   자격증: ["컴활", "한국사", "정보처리기사"],
   프로그래밍: ["코딩테스트", "프로젝트", "언어 공부"],
   취업준비: ["공기업 면접", "사기업 면접", "인적성(NCS)"],
-  자기계발: [
-    "투두메이트",
-    "다이어리",
-    "시사/경제",
-    "공부인증/열품타",
-    "습관",
-    "독서",
-  ],
+  자기계발: ["투두메이트", "다이어리", "시사/경제", "공부인증/열품타", "습관", "독서"],
   게임: ["리그오브레전드", "오버워치", "롤토체스"],
   친목: ["소그룹", "방탈출", "보드게임"],
   운동: ["러닝", "운동 인증"],

@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import Slide from "../../components/layouts/PageSlide";
 
 import Header from "../../components/layouts/Header";
+import Slide from "../../components/layouts/PageSlide";
 import Accordion from "../../components/molecules/Accordion";
 import SectionBar from "../../components/molecules/bars/SectionBar";
 import { ACCORDION_CONTENT_FAQ } from "../../constants/contentsText/accordionContents";

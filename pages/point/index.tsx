@@ -1,5 +1,6 @@
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
+
 import Header from "../../components/layouts/Header";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import PointIntro from "../../pageTemplates/point/PointIntro";

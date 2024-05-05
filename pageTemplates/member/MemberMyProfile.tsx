@@ -1,5 +1,6 @@
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
+
 import UserBadge from "../../components/atoms/badges/UserBadge";
 import ProfileIcon from "../../components/atoms/Profile/ProfileIcon";
 import { USER_ROLE } from "../../constants/settingValue/role";
@@ -34,9 +35,7 @@ function MemberMyProfile() {
               </InfoItem>
               <InfoItem>
                 <span>전공</span>
-                <span>
-                  {userInfo?.majors?.length && userInfo?.majors[0].detail}
-                </span>
+                <span>{userInfo?.majors?.length && userInfo?.majors[0].detail}</span>
               </InfoItem>
               <InfoItem>
                 <span>MBTI</span>

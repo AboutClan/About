@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "chromatic": "npx chromatic --project-token=chpt_1eb5fea11274ebd"
   },
   "author": "",
   "license": "ISC",
@@ -57,10 +58,21 @@
     "@storybook/nextjs": "^8.0.6",
     "@storybook/react": "^8.0.6",
     "@storybook/test": "^8.0.6",
+    "@tanstack/eslint-plugin-query": "^5.28.11",
     "@types/node": "20.11.17",
     "@types/react": "18.2.55",
-    "eslint": "^8.56.0",
+    "@typescript-eslint/eslint-plugin": "^7.7.0",
+    "@typescript-eslint/parser": "^7.7.0",
+    "chromatic": "^11.3.0",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^14.2.1",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-react": "^7.34.1",
+    "eslint-plugin-simple-import-sort": "^12.1.0",
     "eslint-plugin-storybook": "^0.8.0",
+    "prettier": "^3.2.5",
     "storybook": "^8.0.6",
     "typescript": "5.3.3"
   }

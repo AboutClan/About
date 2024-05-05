@@ -2,20 +2,13 @@ import { Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import { faPenCircle } from "@fortawesome/pro-duotone-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+
 import { USER_INFO } from "../../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../../hooks/custom/CustomHooks";
-import {
-  useCompleteToast,
-  useFailToast,
-} from "../../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 
 function UserOverviewComment() {
-  const completeToast = useCompleteToast();
-  const failToast = useFailToast();
-
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [value, setValue] = useState("");
@@ -72,9 +65,7 @@ function UserOverviewComment() {
   } = {
     "--fa-secondary-color": "white",
     "--fa-secondary-opacity": 1,
-    border: isFocused
-      ? "1px solid var(--color-mint)"
-      : "1px solid var(--gray-6)",
+    border: isFocused ? "1px solid var(--color-mint)" : "1px solid var(--gray-6)",
     borderRadius: "50%",
   };
 
@@ -100,23 +91,5 @@ function UserOverviewComment() {
     </InputGroup>
   );
 }
-
-const Layout = styled.div`
-  padding: var(--gap-1) var(--gap-2);
-  border: var(--border);
-  border-radius: var(--rounded);
-  display: flex;
-  align-items: center;
-`;
-
-const Message = styled.input`
-  flex: 1;
-  color: var(--gray-1);
-  background-color: inherit;
-  margin-right: auto;
-  :focus {
-    outline: none;
-  }
-`;
 
 export default UserOverviewComment;

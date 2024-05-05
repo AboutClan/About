@@ -1,9 +1,9 @@
 import dayjs from "dayjs";
 import styled from "styled-components";
-import { Badge } from "../../../components/atoms/badges/Badges";
-import { AboutIcon } from "../../../components/atoms/Icons/AboutIcon";
 
 import Avatar from "../../../components/atoms/Avatar";
+import { Badge } from "../../../components/atoms/badges/Badges";
+import { AboutIcon } from "../../../components/atoms/Icons/AboutIcon";
 import { ABOUT_UID } from "../../../constants/system";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { getDateDiff } from "../../../utils/dateTimeUtils";
@@ -15,12 +15,7 @@ interface IGatherOrganizer {
   category: string;
 }
 
-function GatherOrganizer({
-  createdAt,
-  organizer,
-  isAdminOpen,
-  category,
-}: IGatherOrganizer) {
+function GatherOrganizer({ createdAt, organizer, isAdminOpen, category }: IGatherOrganizer) {
   const writingDate = getDateDiff(dayjs(createdAt));
   const isABOUT = organizer.uid === ABOUT_UID || isAdminOpen;
   return (
@@ -57,8 +52,6 @@ const Layout = styled.div`
     display: flex;
   }
 `;
-
-const Category = styled.div``;
 
 const Writer = styled.span``;
 

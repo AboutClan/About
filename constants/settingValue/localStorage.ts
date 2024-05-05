@@ -1,1 +1,1 @@
-export const LIKE_HEART_PERIOD=3;
+export const LIKE_HEART_PERIOD = 3;

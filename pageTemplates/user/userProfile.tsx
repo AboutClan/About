@@ -2,7 +2,6 @@ import { Box, ListItem, UnorderedList } from "@chakra-ui/react";
 import { faChevronRight } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import styled from "styled-components";
 
@@ -12,8 +11,6 @@ import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import PointScoreBar from "../point/pointScore/PointScoreBar";
 
 function UserProfile() {
-  const { data: session } = useSession();
-
   // const { data: myArrivedCnt, isLoading } = useStudyArrivedCntQuery(
   //   userInfo?.uid as string
   // );
@@ -43,9 +40,7 @@ function UserProfile() {
             <Box display="inline-block" w="60px">
               내 가입일:
             </Box>
-            <b>
-              {dayjsToFormat(dayjs(userInfo?.registerDate), "YY년 M월 D일")}
-            </b>
+            <b>{dayjsToFormat(dayjs(userInfo?.registerDate), "YY년 M월 D일")}</b>
           </ListItem>
         </UnorderedList>
       </Detail>

@@ -1,4 +1,7 @@
-import mongoose, { model, Model, Schema } from "mongoose";
+/* eslint-disable */
+
+import mongoose, { Model, model, Schema } from "mongoose";
+
 import { IAvatar, IRest, IUser } from "../types/models/userTypes/userInfoTypes";
 
 export const restSchema: Schema<IRest> = new Schema({
@@ -81,5 +84,4 @@ export const UserSchema: Schema<IUser> = new Schema({
 });
 
 export const User =
-  (mongoose.models.User as Model<IUser, {}, {}, {}>) ||
-  model<IUser>("User", UserSchema);
+  (mongoose.models.User as Model<IUser, {}, {}, {}>) || model<IUser>("User", UserSchema);

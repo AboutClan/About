@@ -2,13 +2,12 @@ import { Badge, Box } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import styled from "styled-components";
+
 import Avatar from "../../components/atoms/Avatar";
 import { BADGE_COLOR_MAPPINGS } from "../../constants/serviceConstants/badgeConstants";
-
 import { RANKING_ANONYMOUS_USERS } from "../../constants/storage/anonymous";
 import { IRankingUser } from "../../types/models/ranking";
 import { IVoteRate } from "../../types/models/studyTypes/studyRecords";
-
 import { getUserBadge } from "../../utils/convertUtils/convertDatas";
 
 interface IRankingMembers {
@@ -57,9 +56,7 @@ function RankingMembers({ rankingUsers, isScore }: IRankingMembers) {
               />
 
               <RankingMine isMine={who.uid === session?.user?.uid}>
-                {!RANKING_ANONYMOUS_USERS.includes(who?.uid)
-                  ? user.name
-                  : "비공개"}
+                {!RANKING_ANONYMOUS_USERS.includes(who?.uid) ? user.name : "비공개"}
               </RankingMine>
               <Badge colorScheme={BADGE_COLOR_MAPPINGS[badge]}>{badge}</Badge>
             </Name>
@@ -99,10 +96,6 @@ const RankingMine = styled.div<{ isMine?: boolean }>`
   color: ${(props) => props.isMine && "var(--color-mint)"};
   font-weight: ${(props) => props.isMine && "600"};
   font-size: 14px;
-`;
-
-const InitialBadge = styled.div`
-  width: 59px;
 `;
 
 export default RankingMembers;

@@ -1,14 +1,15 @@
 import { Textarea } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
+
 import { STUDY_VOTE } from "../../constants/keys/queryKeys";
 import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
-import { POINT_SYSTEM_Deposit } from "../../constants/settingValue/pointSystem";
+import { POINT_SYSTEM_DEPOSIT } from "../../constants/settingValue/pointSystem";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyAbsentMutation } from "../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
@@ -42,8 +43,8 @@ function StudyAbsentModal({ setIsModal }: IModal) {
       typeToast("success");
       let fee: { value: number; message: string };
       if (isFree) return;
-      if (dayjs() > startTime) fee = POINT_SYSTEM_Deposit.STUDY_ABSENT_AFTER;
-      else fee = POINT_SYSTEM_Deposit.STUDY_ABSENT_BEFORE;
+      if (dayjs() > startTime) fee = POINT_SYSTEM_DEPOSIT.STUDY_ABSENT_AFTER;
+      else fee = POINT_SYSTEM_DEPOSIT.STUDY_ABSENT_BEFORE;
       getDeposit(fee);
       queryClient.invalidateQueries([STUDY_VOTE, date, location]);
       sendRequest({
@@ -74,22 +75,17 @@ function StudyAbsentModal({ setIsModal }: IModal) {
 
   return (
     <>
-      <ModalLayout
-        title="당일 불참"
-        footerOptions={footerOptions}
-        setIsModal={setIsModal}
-      >
+      <ModalLayout title="당일 불참" footerOptions={footerOptions} setIsModal={setIsModal}>
         <Body>
           <ModalSubtitle>
             {dayjs() < startTime ? (
               <P>
-                스터디 시작 시간이 지났기 때문에 벌금 <b>500원</b>이 부여됩니다.
-                참여 시간을 변경해 보는 것은 어떨까요?{" "}
+                스터디 시작 시간이 지났기 때문에 벌금 <b>500원</b>이 부여됩니다. 참여 시간을 변경해
+                보는 것은 어떨까요?{" "}
               </P>
             ) : (
               <P>
-                당일 불참으로 벌금{" "}
-                <b>{-POINT_SYSTEM_Deposit.STUDY_ABSENT_BEFORE.value}원</b>이
+                당일 불참으로 벌금 <b>{-POINT_SYSTEM_DEPOSIT.STUDY_ABSENT_BEFORE.value}원</b>이
                 부과됩니다. 참여 시간을 변경해 보는 건 어떨까요?
               </P>
             )}

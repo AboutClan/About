@@ -1,11 +1,10 @@
 import { Box, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
-import { COLOR_TABLE_LIGHT } from "../../constants/colorConstants";
 
+import { COLOR_TABLE_LIGHT } from "../../constants/colorConstants";
 import { AVATAR_IMAGE_ARR } from "../../storage/avatarStorage";
 import { IAvatar as IAvatarProp } from "../../types/models/userTypes/userInfoTypes";
 
@@ -30,13 +29,9 @@ export default function Avatar({
   shadowAvatar,
   isLink = true,
 }: IAvatar) {
-  const router = useRouter();
-  const hasAvatar =
-    avatar !== undefined && avatar?.type !== null && avatar?.bg !== null;
+  const hasAvatar = avatar !== undefined && avatar?.type !== null && avatar?.bg !== null;
 
-  const [imageUrl, setImageUrl] = useState(
-    !hasAvatar ? image : AVATAR_IMAGE_ARR[avatar.type]
-  );
+  const [imageUrl, setImageUrl] = useState(!hasAvatar ? image : AVATAR_IMAGE_ARR[avatar.type]);
 
   useEffect(() => {
     setImageUrl(!hasAvatar ? image : AVATAR_IMAGE_ARR[avatar.type]);
@@ -46,54 +41,50 @@ export default function Avatar({
     setImageUrl(AVATAR_IMAGE_ARR[0]);
   };
 
-  const AvatarComponent = () => (
-    <AvatarContainer size={size}>
-      <ImageContainer
-        bg={
-          shadowAvatar
-            ? "var(--gray-3)"
-            : hasAvatar && avatar.bg !== null && COLOR_TABLE_LIGHT[avatar.bg]
-        }
-        hasType={hasAvatar}
-        size={size}
-      >
-        <Box w="100%" h="100%" pos="relative">
-          {!shadowAvatar ? (
-            <Image
-              src={imageUrl}
-              fill={true}
-              sizes={
-                size === "sm"
-                  ? "28px"
-                  : size === "smd"
-                  ? "32px"
-                  : size === "md"
-                  ? "44px"
-                  : size === "lg"
-                  ? "64px"
-                  : size === "xl"
-                  ? "80px"
-                  : ""
-              }
-              priority={isPriority}
-              alt="avatar"
-              onError={onError}
-            />
-          ) : (
-            <Flex
-              fontSize="12px"
-              h="100%"
-              justify="center"
-              alignItems="center"
-              color="white"
-            >
-              +{shadowAvatar}
-            </Flex>
-          )}
-        </Box>
-      </ImageContainer>
-    </AvatarContainer>
-  );
+  function AvatarComponent() {
+    return (
+      <AvatarContainer size={size}>
+        <ImageContainer
+          bg={
+            shadowAvatar
+              ? "var(--gray-3)"
+              : hasAvatar && avatar.bg !== null && COLOR_TABLE_LIGHT[avatar.bg]
+          }
+          hasType={hasAvatar}
+          size={size}
+        >
+          <Box w="100%" h="100%" pos="relative">
+            {!shadowAvatar ? (
+              <Image
+                src={imageUrl}
+                fill={true}
+                sizes={
+                  size === "sm"
+                    ? "28px"
+                    : size === "smd"
+                      ? "32px"
+                      : size === "md"
+                        ? "44px"
+                        : size === "lg"
+                          ? "64px"
+                          : size === "xl"
+                            ? "80px"
+                            : ""
+                }
+                priority={isPriority}
+                alt="avatar"
+                onError={onError}
+              />
+            ) : (
+              <Flex fontSize="12px" h="100%" justify="center" alignItems="center" color="white">
+                +{shadowAvatar}
+              </Flex>
+            )}
+          </Box>
+        </ImageContainer>
+      </AvatarContainer>
+    );
+  }
 
   return (
     <>
@@ -162,10 +153,10 @@ const ImageContainer = styled.div<{
     (props.size === "sm"
       ? "2px"
       : props.size === "md"
-      ? "4px"
-      : props.size === "lg"
-      ? "6px"
-      : "8px")};
+        ? "4px"
+        : props.size === "lg"
+          ? "6px"
+          : "8px")};
 
   background-color: ${(props) =>
     props.bg ? props.bg : "var(--gray-3)"}; // bg-gray-200 as fallback

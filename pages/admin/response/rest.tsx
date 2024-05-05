@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -5,7 +7,6 @@ import styled from "styled-components";
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Header from "../../../components/layouts/Header";
 import AdminLocationSelector from "../../../components/molecules/picker/AdminLocationSelector";
-
 import { useUserRequestQuery } from "../../../hooks/admin/quries";
 import { IUserRequest } from "../../../types/models/userTypes/userRequestTypes";
 import { getRestInfo } from "../../../utils/convertUtils/convertDatas";

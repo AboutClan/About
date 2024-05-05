@@ -1,11 +1,5 @@
 export const IconKakao = () => (
-  <svg
-    width="18"
-    height="16"
-    viewBox="0 0 348 317"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
+  <svg width="18" height="16" viewBox="0 0 348 317" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
       d="M348 135.5C348 210.335 270.098 271 174 271C77.9025 271 0 210.335 0 135.5C0 60.6654 77.9025 0 174 0C270.098 0 348 60.6654 348 135.5Z"
       fill="#000000"
@@ -18,13 +12,7 @@ export const IconKakao = () => (
 );
 
 export const IconUserTwo = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="12"
-    viewBox="0 0 16 12"
-    fill="none"
-  >
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="12" viewBox="0 0 16 12" fill="none">
     <path
       fillRule="evenodd"
       clipRule="evenodd"

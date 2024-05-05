@@ -20,7 +20,7 @@ function PromotionApply() {
   const [value, setValue] = useState("");
   const [filterData, setFilterData] = useState<IPromotionApply[]>([]);
   const [isModal, setIsModal] = useState(false);
-  const [uniName, setUniName] = useState<any>();
+  const [uniName, setUniName] = useState<string>();
 
   const { data: promotionArr } = usePromotionQuery();
 
@@ -61,9 +61,7 @@ function PromotionApply() {
   useEffect(() => {
     if (value.length > 0 && !isOpen) onToggle();
     if (value.length === 0 && isOpen) onToggle();
-    const filtered = promotionArr?.filter(
-      (item) => item.name.slice(0, value.length) === value
-    );
+    const filtered = promotionArr?.filter((item) => item.name.slice(0, value.length) === value);
     if (value.slice(-3) !== "대학교") setFilterData(filtered);
     else setFilterData([]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -91,8 +89,7 @@ function PromotionApply() {
               onChange={(e) => setValue(e.target.value)}
               _focus={{
                 borderColor: "var(--gray-1)",
-                borderBottomRadius:
-                  value !== "" && filterData?.length > 0 && "none",
+                borderBottomRadius: value !== "" && filterData?.length > 0 && "none",
               }}
               _placeholder={{
                 fontWeight: "600",
@@ -111,11 +108,7 @@ function PromotionApply() {
               </Collapse>
             )}
           </div>
-          <Button
-            type="submit"
-            colorScheme="mintTheme"
-            borderRadius="var(--rounded-lg)"
-          >
+          <Button type="submit" colorScheme="mintTheme" borderRadius="var(--rounded-lg)">
             입력
           </Button>
         </Form>

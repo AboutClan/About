@@ -7,6 +7,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect } from "react";
+
 import { DispatchBoolean, DispatchType } from "../../types/hooks/reactTypes";
 import { DeclareRequest } from "../../types/models/userTypes/userRequestTypes";
 
@@ -18,13 +19,7 @@ interface IBottomDrawer {
   onSubmit?: () => void;
 }
 
-function BottomDrawer({
-  type,
-  isModal,
-  setIsModal,
-  setDeclareModal,
-  onSubmit,
-}: IBottomDrawer) {
+function BottomDrawer({ type, isModal, setIsModal, setDeclareModal, onSubmit }: IBottomDrawer) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {

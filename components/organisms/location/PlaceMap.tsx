@@ -71,9 +71,7 @@ function PlaceMap({ lat, lon }: ISpaceMap) {
     additionalMarker && additionalMarker.setMap(map);
   }, [lat, lon, myLat, myLon]);
 
-  return (
-    <div id="map" ref={mapRef} style={{ width: "100%", height: "360px" }} />
-  );
+  return <div id="map" ref={mapRef} style={{ width: "100%", height: "360px" }} />;
 }
 
 export default PlaceMap;

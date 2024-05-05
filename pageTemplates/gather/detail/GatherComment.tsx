@@ -1,10 +1,11 @@
 import { faEllipsis } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
+import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+
 import Avatar from "../../../components/atoms/Avatar";
 import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../../hooks/custom/CustomHooks";
@@ -101,16 +102,13 @@ function GatherComments({ comment }: IGatherComments) {
                   <Name>
                     <span>{item.user.name}</span>
                     <CommentDetail>
-                      {item.user.location} ·{" "}
-                      {getDateDiff(dayjs(item.updatedAt))}
+                      {item.user.location} · {getDateDiff(dayjs(item.updatedAt))}
                     </CommentDetail>
                   </Name>
                   <p>
                     {item.comment}
                     {item.user.uid === session?.user?.uid && (
-                      <IconWrapper
-                        onClick={() => onClickEdit(item._id, item.comment)}
-                      >
+                      <IconWrapper onClick={() => onClickEdit(item._id, item.comment)}>
                         <FontAwesomeIcon icon={faEllipsis} />
                       </IconWrapper>
                     )}

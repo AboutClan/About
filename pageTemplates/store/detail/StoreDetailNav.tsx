@@ -2,6 +2,7 @@ import { Box, Button, Collapse, useDisclosure } from "@chakra-ui/react";
 import { faX } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
+
 import { DispatchBoolean } from "../../../types/hooks/reactTypes";
 import { IStoreApplicant } from "../../../types/models/store";
 
@@ -36,12 +37,7 @@ function StoreDetailNav({
         )}
       </ButtonNav>
       <Collapse in={isOpen} animateOpacity>
-        <Box
-          fontSize="12px"
-          p="var(--gap-2)"
-          bg="var(--gray-7)"
-          color="var(--gray-2)"
-        >
+        <Box fontSize="12px" p="var(--gap-2)" bg="var(--gray-7)" color="var(--gray-2)">
           {applyUsers?.length === 0 ? (
             "참여 인원 없음"
           ) : (

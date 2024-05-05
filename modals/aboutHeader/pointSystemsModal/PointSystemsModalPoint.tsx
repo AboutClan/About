@@ -9,6 +9,7 @@ import {
 } from "@fortawesome/pro-light-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
+
 import { POINT_SYSTEM_PLUS } from "../../../constants/settingValue/pointSystem";
 
 function PointSystemsModalPoint() {

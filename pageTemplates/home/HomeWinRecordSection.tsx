@@ -1,17 +1,17 @@
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+
 import HighlightedTextButton from "../../components/atoms/buttons/HighlightedTextButton";
 import SectionBar from "../../components/molecules/bars/SectionBar";
 import SummaryTable from "../../components/organisms/tables/SummaryTable";
 import { slideDirectionState } from "../../recoils/navigationRecoils";
 import { WIN_RECORD } from "../../storage/winRecord";
-interface IHomeWinRecordSection {}
-export default function HomeWinRecordSection({}: IHomeWinRecordSection) {
+
+export default function HomeWinRecordSection() {
   const router = useRouter();
   const contentArr = WIN_RECORD.slice().reverse().slice(0, 12);
-  const [isModal, setIsModal] = useState();
+
   const setSlideDirection = useSetRecoilState(slideDirectionState);
   const tableInfosArr = contentArr.map((content) => [
     content.date,
@@ -29,9 +29,7 @@ export default function HomeWinRecordSection({}: IHomeWinRecordSection) {
     <>
       <SectionBar
         title="이벤트 당첨 현황"
-        rightComponent={
-          <HighlightedTextButton text="더보기" onClick={handleNavigate} />
-        }
+        rightComponent={<HighlightedTextButton text="더보기" onClick={handleNavigate} />}
       />
       <Layout>
         <SummaryTable

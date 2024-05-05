@@ -1,31 +1,26 @@
 import { useToast } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import styled from "styled-components";
-import BottomNav from "../../components/layouts/BottomNav";
 
+import BottomNav from "../../components/layouts/BottomNav";
 import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
-import { majors_DATA } from "../../constants/contentsText/ProfileData";
+import { MAJORS_DATA } from "../../constants/contentsText/ProfileData";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
-import {
-  getLocalStorageObj,
-  setLocalStorageObj,
-} from "../../utils/storageUtils";
+import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
 function Major() {
-  const router = useRouter();
   const toast = useToast();
   const searchParams = useSearchParams();
   const isProfileEdit = !!searchParams.get("edit");
 
   const info = getLocalStorageObj(REGISTER_INFO);
 
-  const [majors, setmajors] = useState<
-    { department: string; detail: string }[]
-  >(info?.majors || []);
+  const [majors, setmajors] = useState<{ department: string; detail: string }[]>(
+    info?.majors || [],
+  );
 
   const onClickNext = (e) => {
     if (!majors.length) {
@@ -65,10 +60,7 @@ function Major() {
 
   return (
     <>
-      <ProgressHeader
-        title={!isProfileEdit ? "회원가입" : "프로필 수정"}
-        value={60}
-      />
+      <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={60} />
 
       <RegisterLayout>
         <RegisterOverview>
@@ -76,7 +68,7 @@ function Major() {
           <span>다중 선택도 가능해요.</span>
         </RegisterOverview>
 
-        {majors_DATA?.map((item, idx) => (
+        {MAJORS_DATA?.map((item, idx) => (
           <Section key={idx}>
             <SectionTitle>{item.department}</SectionTitle>
             <SectionContent>
@@ -85,10 +77,8 @@ function Major() {
                   key={idx}
                   $isSelected={Boolean(
                     majors?.find(
-                      (majors) =>
-                        majors.detail === detail &&
-                        majors.department === item.department
-                    )
+                      (majors) => majors.detail === detail && majors.department === item.department,
+                    ),
                   )}
                   onClick={() => onClickBtn(item.department, detail)}
                 >

@@ -7,10 +7,11 @@ import {
   faShrimp,
 } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+
 import SectionBar from "../../components/molecules/bars/SectionBar";
 import { FRIEND_RECOMMEND_CATEGORY } from "../../constants/contentsText/friend";
 import { useFailToast } from "../../hooks/custom/CustomToast";
@@ -71,15 +72,6 @@ function MemberRecommend({ members }: IMemberRecommend) {
     </>
   );
 }
-
-const Layout = styled.div``;
-
-const Title = styled.span`
-  font-weight: 600;
-  font-size: 16px;
-  display: inline-block;
-  margin-bottom: var(--gap-3);
-`;
 
 const Nav = styled.nav`
   padding: 16px;

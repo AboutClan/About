@@ -1,4 +1,5 @@
 import { Badge } from "@chakra-ui/react";
+
 import { BADGE_COLOR_MAPPINGS } from "../../../constants/serviceConstants/badgeConstants";
 import { getUserBadge } from "../../../utils/convertUtils/convertDatas";
 interface IUserBadge {

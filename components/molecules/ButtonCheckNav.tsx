@@ -16,19 +16,14 @@ function ButtonCheckNav({
   isLineBtn,
   isWrap,
 }: IButtonCheckNav) {
-  const filtered = buttonList.filter((item) => true);
+  const filtered = buttonList.filter(() => true);
   return (
     <Layout>
-      <ButtonGroup
-        flexWrap={isWrap ? "wrap" : null}
-        gap={!isLineBtn ? "var(--gap-2)" : "0"}
-      >
+      <ButtonGroup flexWrap={isWrap ? "wrap" : null} gap={!isLineBtn ? "var(--gap-2)" : "0"}>
         {!isLineBtn
           ? filtered.map((item) => (
               <Button
-                bgColor={
-                  item === selectedButton ? "var(--color-mint)" : "white"
-                }
+                bgColor={item === selectedButton ? "var(--color-mint)" : "white"}
                 color={item === selectedButton ? "white" : "var(--gray-2)"}
                 key={item}
                 onClick={() => setSelectedButton(item)}
@@ -43,17 +38,13 @@ function ButtonCheckNav({
               <Button
                 p="0 var(--gap-3)"
                 variant="ghost"
-                color={
-                  item === selectedButton ? "var(--gray-1)" : "var(--gray-3)"
-                }
+                color={item === selectedButton ? "var(--gray-1)" : "var(--gray-3)"}
                 key={item}
                 onClick={() => setSelectedButton(item)}
                 ml="0px !important"
                 fontWeight={item === selectedButton ? 600 : 400}
                 borderBottom={
-                  item === selectedButton
-                    ? "2px solid var(--gray-1)"
-                    : "2px solid var(--gray-7)"
+                  item === selectedButton ? "2px solid var(--gray-1)" : "2px solid var(--gray-7)"
                 }
                 borderRadius="0"
                 _focus={{ outline: "none", bgColor: "transparent" }}

@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { useQuery } from "react-query";
-import { SERVER_URI } from "../../../../constants/system";
 
+import { SERVER_URI } from "../../../../constants/system";
 import { QueryOptions } from "../../../../types/hooks/reactTypes";
 import { ITimeStamps } from "../../../../types/utils/timeAndDate";
 
@@ -17,5 +17,5 @@ export const useDailyCheckQuery = (options?: QueryOptions<IDailyCheck[]>) =>
       const res = await axios.get<IDailyCheck[]>(`${SERVER_URI}/dailyCheck`);
       return res.data;
     },
-    { ...options, staleTime: 0, cacheTime: 0 }
+    { ...options, staleTime: 0, cacheTime: 0 },
   );

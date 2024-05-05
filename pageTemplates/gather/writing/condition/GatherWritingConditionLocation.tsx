@@ -1,6 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+
 import { CombinedLocation } from "../../../../pages/gather/writing/condition";
 import { DispatchType } from "../../../../types/hooks/reactTypes";
 import { Location } from "../../../../types/services/locationTypes";
@@ -9,9 +10,7 @@ interface IGatherWritingConditionLocation {
   setLocation: DispatchType<Location | CombinedLocation>;
 }
 
-function GatherWritingConditionLocation({
-  setLocation,
-}: IGatherWritingConditionLocation) {
+function GatherWritingConditionLocation({ setLocation }: IGatherWritingConditionLocation) {
   const [buttonType, setButtonType] = useState<CombinedLocation>("전체");
 
   const arr: CombinedLocation[] = ["전체", "수원/안양", "양천/강남"];

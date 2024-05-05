@@ -1,5 +1,6 @@
 import { Button } from "@chakra-ui/react";
 import styled from "styled-components";
+
 import { ModalSubtitle } from "../../../styles/layout/modal";
 import { IModal } from "../../../types/components/modalTypes";
 import { IHeaderOptions, ModalLayout } from "../../Modals";
@@ -7,14 +8,8 @@ import { IHeaderOptions, ModalLayout } from "../../Modals";
 function UserCollectionAlphabetModal({ setIsModal }: IModal) {
   const headerOptions: IHeaderOptions = {};
   return (
-    <ModalLayout
-      title="수집 보상"
-      headerOptions={headerOptions}
-      setIsModal={setIsModal}
-    >
-      <ModalSubtitle isCenter={true}>
-        알파벳을 수집하고 상품을 획득해 봐요!
-      </ModalSubtitle>
+    <ModalLayout title="수집 보상" headerOptions={headerOptions} setIsModal={setIsModal}>
+      <ModalSubtitle isCenter={true}>알파벳을 수집하고 상품을 획득해 봐요!</ModalSubtitle>
       <Container>
         <Item>
           <div>스타벅스 아메리카노</div>

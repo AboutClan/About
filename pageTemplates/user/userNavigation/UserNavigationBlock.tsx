@@ -1,6 +1,7 @@
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import styled from "styled-components";
+
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import { DispatchString } from "../../../types/hooks/reactTypes";
 import { UserOverviewModal } from "./UserNavigation";
@@ -9,9 +10,7 @@ interface IUserNavigationBlock {
   setModalOpen: DispatchString;
 }
 
-type ContentByType<T extends "page" | "modal"> = T extends "page"
-  ? string
-  : UserOverviewModal;
+type ContentByType<T extends "page" | "modal"> = T extends "page" ? string : UserOverviewModal;
 
 function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
   const { data: session } = useSession();
@@ -23,10 +22,7 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
   const isAdmin = role === "previliged" || role === "manager";
 
   //네비게이션 함수
-  const onClickBlock = <T extends "page" | "modal">(
-    type: T,
-    content: ContentByType<T>
-  ): void => {
+  const onClickBlock = <T extends "page" | "modal">(type: T, content: ContentByType<T>): void => {
     if (isGuest && (content as UserOverviewModal) !== "logout") {
       failToast("guest");
       return;
@@ -52,55 +48,33 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
         <div>
           <BlockName>관리자</BlockName>
           <NavBlock>
-            <button onClick={() => onClickBlock("page", "/admin")}>
-              관리자 페이지
-            </button>
+            <button onClick={() => onClickBlock("page", "/admin")}>관리자 페이지</button>
           </NavBlock>
         </div>
       )}
       <div>
         <BlockName>신청</BlockName>
         <NavBlock>
-          <button onClick={() => onClickBlock("modal", "suggest")}>
-            건의하기
-          </button>
-          <button onClick={() => onClickBlock("modal", "declaration")}>
-            불편사항 신고
-          </button>
-          <button onClick={() => onClickBlock("modal", "studyPlace")}>
-            스터디 장소 추가 요청
-          </button>
-          <button onClick={() => onClickBlock("modal", "rest")}>
-            휴식 신청 / 취소
-          </button>
-          <button onClick={() => onClickBlock("modal", "levelUp")}>
-            등업 신청
-          </button>
+          <button onClick={() => onClickBlock("modal", "suggest")}>건의하기</button>
+          <button onClick={() => onClickBlock("modal", "declaration")}>불편사항 신고</button>
+          <button onClick={() => onClickBlock("modal", "studyPlace")}>스터디 장소 추가 요청</button>
+          <button onClick={() => onClickBlock("modal", "rest")}>휴식 신청 / 취소</button>
+          <button onClick={() => onClickBlock("modal", "levelUp")}>등업 신청</button>
         </NavBlock>
       </div>
       <div>
         <BlockName>기타 세팅</BlockName>
         <NavBlock>
-          <button onClick={() => onClickBlock("modal", "deposit")}>
-            보증금 충전
-          </button>
-          <button onClick={() => onClickBlock("modal", "spaceSetting")}>
-            스터디 프리셋 설정
-          </button>
-          <button onClick={() => onClickBlock("modal", "birthday")}>
-            생일 공개 설정
-          </button>
-          <button onClick={() => onClickBlock("modal", "logout")}>
-            로그아웃
-          </button>
+          <button onClick={() => onClickBlock("modal", "deposit")}>보증금 충전</button>
+          <button onClick={() => onClickBlock("modal", "spaceSetting")}>스터디 프리셋 설정</button>
+          <button onClick={() => onClickBlock("modal", "birthday")}>생일 공개 설정</button>
+          <button onClick={() => onClickBlock("modal", "logout")}>로그아웃</button>
         </NavBlock>
       </div>
       <div>
         <BlockName>안내</BlockName>
         <NavBlock>
-          <button onClick={() => onClickBlock("page", `/faq`)}>
-            자주 묻는 질문
-          </button>
+          <button onClick={() => onClickBlock("page", `/faq`)}>자주 묻는 질문</button>
           <button onClick={() => onClickBlock("page", `/user/info/policy`)}>
             서비스 이용 약관
           </button>
@@ -110,9 +84,7 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
           <button onClick={() => onClickBlock("page", `/user/info/avatar`)}>
             아바타 아이콘 저작권
           </button>
-          <button onClick={() => onClickBlock("modal", "secede")}>
-            회원 탈퇴
-          </button>
+          <button onClick={() => onClickBlock("modal", "secede")}>회원 탈퇴</button>
         </NavBlock>
       </div>
       <div>

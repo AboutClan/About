@@ -9,9 +9,9 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useEffect } from "react";
+
 import { NoticeIcon } from "../../components/atoms/Icons/NoticeIcons";
 import { NOTICE_ALERT } from "../../constants/keys/localStorage";
-
 import { NOTICE_ARR } from "../../storage/notice";
 
 function NoticeItem() {
@@ -23,15 +23,8 @@ function NoticeItem() {
     <>
       <Accordion allowToggle>
         {[...NOTICE_ARR].reverse().map((item) => (
-          <AccordionItem
-            borderTop="none"
-            key={item.id}
-            borderBottom="1px solid var(--gray-7)"
-          >
-            <AccordionButton
-              _focus={{ outline: "none" }}
-              p="var(--gap-3) var(--gap-5)"
-            >
+          <AccordionItem borderTop="none" key={item.id} borderBottom="1px solid var(--gray-7)">
+            <AccordionButton _focus={{ outline: "none" }} p="var(--gap-3) var(--gap-5)">
               <Box as="span" flex="1" textAlign="left" display="flex">
                 <Flex width="48px" align="center">
                   <NoticeIcon type={item.category} />

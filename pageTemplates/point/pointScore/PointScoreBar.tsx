@@ -4,19 +4,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+
 import {
   BADGE_COLOR_MAPPINGS,
   BADGE_INFO,
 } from "../../../constants/serviceConstants/badgeConstants";
-
 import { SCHEME_TO_COLOR } from "../../../constants/styles";
-
 import BadgeInfoModal from "../../../modals/store/badgeInfoModal/BadgeInfoModal";
 import { UserBadge } from "../../../types/models/userTypes/userInfoTypes";
-import {
-  getNextBadge,
-  getUserBadge,
-} from "../../../utils/convertUtils/convertDatas";
+import { getNextBadge, getUserBadge } from "../../../utils/convertUtils/convertDatas";
 
 interface IPointScoreBar {
   myScore: number;
@@ -65,16 +61,10 @@ function PointScoreBar({ myScore, hasQuestion = true }: IPointScoreBar) {
       <Layout>
         <Grade>
           <div>
-            <Badge
-              fontSize="14px"
-              marginRight="var(--gap-2)"
-              colorScheme={badgeColor}
-            >
+            <Badge fontSize="14px" marginRight="var(--gap-2)" colorScheme={badgeColor}>
               {badge}
             </Badge>
-            <BadgeName color={SCHEME_TO_COLOR[badgeColor] || badgeColor}>
-              {myScore}점
-            </BadgeName>
+            <BadgeName color={SCHEME_TO_COLOR[badgeColor] || badgeColor}>{myScore}점</BadgeName>
             {hasQuestion && (
               <IconWrapper onClick={() => setIsBadgeModal(true)}>
                 <FontAwesomeIcon icon={faQuestionCircle} size="sm" />
@@ -83,14 +73,8 @@ function PointScoreBar({ myScore, hasQuestion = true }: IPointScoreBar) {
           </div>
           {nextBadge && (
             <div>
-              <BadgeName color={BADGE_COLOR_MAPPINGS[nextBadge]}>
-                {nextBadgePoint}점
-              </BadgeName>
-              <Badge
-                fontSize="14px"
-                colorScheme={BADGE_COLOR_MAPPINGS[nextBadge]}
-                marginLeft="6px"
-              >
+              <BadgeName color={BADGE_COLOR_MAPPINGS[nextBadge]}>{nextBadgePoint}점</BadgeName>
+              <Badge fontSize="14px" colorScheme={BADGE_COLOR_MAPPINGS[nextBadge]} marginLeft="6px">
                 {nextBadge}
               </Badge>
             </div>

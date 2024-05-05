@@ -4,9 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { KeyboardEvent, useState } from "react";
 import styled from "styled-components";
-import { DispatchType } from "../../../types/hooks/reactTypes";
 
-import { IGatherLocation } from "../../../types/models/gatherTypes/gather";
+import { DispatchType } from "../../../types/hooks/reactTypes";
+import { IGatherLocation } from "../../../types/models/gatherTypes/gatherTypes";
 
 interface ISearchLocation {
   location?: string;
@@ -33,7 +33,7 @@ function LocationSearch({ location, setLocation }: ISearchLocation) {
     }
   };
 
-  const onClickItem = (info: any) => {
+  const onClickItem = (info: { place_name: string; address_name: string }) => {
     const placeName = info.place_name;
     setValue(placeName);
     setLocation({ main: placeName, sub: info.address_name });
@@ -66,12 +66,7 @@ function LocationSearch({ location, setLocation }: ISearchLocation) {
           />
         </Wrapper>
         <SearchWrapper>
-          <Button
-            h="28px"
-            size="sm"
-            onClick={handleSearch}
-            colorScheme={SearchColor}
-          >
+          <Button h="28px" size="sm" onClick={handleSearch} colorScheme={SearchColor}>
             검색
           </Button>
         </SearchWrapper>
@@ -138,12 +133,6 @@ const SearchContent = styled.div<{ isContent: boolean }>`
 const Item = styled.div`
   color: var(--gray-2);
   padding: var(--gap-1) 0;
-`;
-
-const ItemPlace = styled.span``;
-
-const ItemDetail = styled.span`
-  color: var(--gray-3);
 `;
 
 const SearchWrapper = styled.div`

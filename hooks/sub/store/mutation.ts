@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { useMutation } from "react-query";
+
 import { MutationOptions } from "../../../types/hooks/reactTypes";
 import { IStoreApplicant } from "../../../types/models/store";
 

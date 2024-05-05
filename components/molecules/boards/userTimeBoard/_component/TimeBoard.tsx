@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 import { STUDY_VOTE_HOUR_ARR } from "../../../../../constants/serviceConstants/studyConstants/studyTimeConstant";
 export default function TimeBoard() {
   return (
@@ -10,14 +11,14 @@ export default function TimeBoard() {
   );
 }
 
-const TimeBlock = ({ hour }: { hour?: number }) => {
+function TimeBlock({ hour }: { hour?: number }) {
   return (
     <TimeBlockContainer>
       <HourText>{hour}</HourText>
       <Divider />
     </TimeBlockContainer>
   );
-};
+}
 
 const TimeBoardContainer = styled.div`
   padding: 0 4px; /* px-2 */

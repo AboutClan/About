@@ -9,6 +9,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import React from "react";
+
 import { IModal } from "../types/components/modalTypes";
 export interface IAlertSimpleModalOptions {
   title: string;
@@ -24,15 +25,9 @@ interface IAlertSimpleModal extends IModal {
 
 export default function AlertSimpleModal({
   setIsModal,
-  options: { title, subTitle, func, text = "취소합니다" },
-  colorType = "mintTheme",
+  options: { title, subTitle },
 }: IAlertSimpleModal) {
   const cancelRef = React.useRef();
-
-  const handleProcess = () => {
-    func();
-    setIsModal(false);
-  };
 
   return (
     <>

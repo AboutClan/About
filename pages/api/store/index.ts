@@ -1,13 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { GiftModel } from "../../../models/gift";
 
 import { BadRequestError } from "../../../libs/backend/custom-error";
 import dbConnect from "../../../libs/backend/dbConnect";
+import { GiftModel } from "../../../models/gift";
 
-export default async function giftController(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function giftController(req: NextApiRequest, res: NextApiResponse) {
   await dbConnect();
 
   if (req.method === "POST") {
@@ -17,9 +14,9 @@ export default async function giftController(
 
     if (existingUser) {
       const user = await GiftModel.findOneAndUpdate(
-        { uid, giftId },
+        { uid },
         { name, uid, cnt: existingUser.cnt + cnt, giftId },
-        { new: true, runValidators: true }
+        { new: true, runValidators: true },
       );
       if (!user) {
         throw new BadRequestError("정보에 해당하는 유저가 존재하지 않습니다.");
@@ -35,7 +32,6 @@ export default async function giftController(
       return res.status(200).json({ user: resUser });
     }
     const newUser = await GiftModel.create({ name, uid, cnt, giftId });
-  
     const user = {
       name: newUser.name,
       uid: newUser.uid,

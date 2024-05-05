@@ -1,6 +1,7 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
+
 import Divider from "../../components/atoms/Divider";
 import WritingIcon from "../../components/atoms/Icons/WritingIcon";
 import Slide from "../../components/layouts/PageSlide";
@@ -11,7 +12,6 @@ import GatherLocationFilter from "../../pageTemplates/gather/GatherLocationFilte
 import GatherMain from "../../pageTemplates/gather/GatherMain";
 import GatherReviewSlider from "../../pageTemplates/gather/GatherReviewSlider";
 import { isGatherAlertState } from "../../recoils/renderRecoils";
-
 import { checkAndSetLocalStorage } from "../../utils/storageUtils";
 
 function Gather() {

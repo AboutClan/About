@@ -1,3 +1,6 @@
+import { Flex } from "@chakra-ui/react";
+import { faPenToSquare } from "@fortawesome/pro-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
@@ -8,32 +11,43 @@ export interface IProfileCommentCard {
   user: IUserSummary;
   comment?: string;
   rightComponent?: React.ReactNode;
+  setMemo?: () => void;
 }
 
 export default function ProfileCommentCard({
   user,
   comment,
   rightComponent,
+  setMemo,
 }: IProfileCommentCard) {
   return (
     <CardContainer>
-      <Avatar
-        image={user.profileImage}
-        size="md"
-        avatar={user.avatar}
-        uid={user.uid}
-      />
+      <Avatar image={user.profileImage} size="md" avatar={user.avatar} uid={user.uid} />
       <UserInfoContainer>
         <UserNameBadgeContainer>
           <span>{user.name}</span>
           <UserBadge score={user.score} uid={user.uid} />
         </UserNameBadgeContainer>
-        <CommentText>{comment !== null ? comment : user.comment}</CommentText>
+        <Flex alignItems="center">
+          <CommentText>{comment !== null ? comment : user.comment}</CommentText>
+          {setMemo && (
+            <Button onClick={setMemo}>
+              <FontAwesomeIcon icon={faPenToSquare} size="sm" />
+            </Button>
+          )}
+        </Flex>
       </UserInfoContainer>
       <RightComponentContainer>{rightComponent}</RightComponentContainer>
     </CardContainer>
   );
 }
+
+const Button = styled.button`
+  display: inline-block;
+  margin-left: 4px;
+  padding: 0 4px;
+  color: var(--gray-3);
+`;
 
 const CardContainer = styled.div`
   display: flex;

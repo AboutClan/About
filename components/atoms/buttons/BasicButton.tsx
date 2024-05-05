@@ -1,3 +1,4 @@
+/* eslint-disable */
 // import './button.css';
 
 import { Button as ChakraButton } from "@chakra-ui/react";
@@ -13,7 +14,7 @@ export interface BasicButtonProps {
   /**
    * How large should the button be?
    */
-  size?: 'small' | 'medium' | 'large';
+  size?: "small" | "medium" | "large";
   /**
    * Button contents
    */
@@ -27,29 +28,27 @@ export interface BasicButtonProps {
 /**
  * Primary UI component for user interaction
  */
-export const BasicButton = ({
+export function BasicButton({
   primary = true,
-  size = 'medium',
+  size = "medium",
   backgroundColor,
   label,
   ...props
-}: BasicButtonProps) => {
+}: BasicButtonProps) {
+  const secondaryOptions = {
+    color: "mint",
+    backgroundColor: "white",
+    border: "1.2px solid #00c2b3",
+  };
 
-    const secondaryOptions = {
-        color: "mint",
-        backgroundColor: "white",
-        border:"1.2px solid #00c2b3"
-    }
- 
   return (
     <ChakraButton
       type="button"
-          colorScheme={primary ? "mintTheme" : null}
-          {...(!primary ? secondaryOptions : {})}
+      colorScheme={primary ? "mintTheme" : null}
+      {...(!primary ? secondaryOptions : {})}
       {...props}
     >
       {label}
-   
     </ChakraButton>
   );
-};
+}

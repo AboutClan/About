@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
+
 import { Badge } from "../../../components/atoms/badges/Badges";
 
 const meta = {
@@ -24,6 +25,12 @@ export const Primary: Story = {
 export const Secondary: Story = {
   args: {
     colorScheme: "yellow",
+    text: "Button",
+  },
+};
+export const Test: Story = {
+  args: {
+    colorScheme: "red",
     text: "Button",
   },
 };

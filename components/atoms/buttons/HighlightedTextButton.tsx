@@ -5,10 +5,7 @@ interface IHighlightedTextButton {
   text: string;
   onClick: () => void;
 }
-export default function HighlightedTextButton({
-  text,
-  onClick,
-}: IHighlightedTextButton) {
+export default function HighlightedTextButton({ text, onClick }: IHighlightedTextButton) {
   return (
     <Button variant="ghost" size="xs" onClick={onClick}>
       <Text> {text}</Text>
