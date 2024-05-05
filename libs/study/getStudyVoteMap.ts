@@ -26,7 +26,7 @@ export const getVoteLocationMaxBound = () => ({
   ),
   동대문: new naver.maps.LatLngBounds(
     new naver.maps.LatLng(37.557579, 126.989614),
-    new naver.maps.LatLng(37.638954, 127.106856),
+    new naver.maps.LatLng(37.648954, 127.106856),
   ),
   인천: new naver.maps.LatLngBounds(
     new naver.maps.LatLng(37.584965, 126.580845),

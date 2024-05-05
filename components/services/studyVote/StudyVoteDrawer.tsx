@@ -7,17 +7,14 @@ import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
 
 import { STUDY_VOTE } from "../../../constants/keys/queryKeys";
+import { PLACE_TO_NAME } from "../../../constants/serviceConstants/studyConstants/studyCafeNameConstants";
 import { PLACE_TO_LOCATION } from "../../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../../hooks/user/mutations";
 import { usePointSystemLogQuery } from "../../../hooks/user/queries";
 import StudyVoteSubModalPrivate from "../../../modals/study/studyVoteSubModal/StudyVoteSubModalPrivate";
-import {
-  myStudyState,
-  studyDateStatusState,
-} from "../../../recoils/studyRecoils";
-import { PLACE_TO_NAME } from "../../../storage/study";
+import { myStudyState, studyDateStatusState } from "../../../recoils/studyRecoils";
 import { IModal } from "../../../types/components/modalTypes";
 import {
   IStudyVote,
@@ -28,6 +25,7 @@ import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import BottomDrawerLg, { IBottomDrawerLgOptions } from "../../organisms/drawer/BottomDrawerLg";
 import StudyVotePlacesPicker from "../StudyVotePlacesPicker";
 import StudyVoteTimeRulletDrawer from "./StudyVoteTimeRulletDrawer";
+
 dayjs.locale("ko");
 
 interface IStudyVoteDrawer extends IModal {}

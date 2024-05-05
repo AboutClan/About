@@ -13,6 +13,7 @@ interface IStudyCover {
 function StudyCover({ brand, imageUrl, isPrivateStudy }: IStudyCover) {
   const brandName = brand === "행궁 81.2" ? "행궁" : isPrivateStudy ? "개인스터디" : brand;
   const logo = STUDY_CAFE_LOGO[brandName];
+  console.log(brandName);
 
   return (
     <StudyCoverWrapper>

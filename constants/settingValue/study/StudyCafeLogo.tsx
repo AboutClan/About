@@ -77,4 +77,6 @@ export const STUDY_CAFE_LOGO = {
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%8E%98+%EB%A1%9C%EA%B3%A0/%EC%B9%B8%EB%82%98.webp",
   마르티:
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%8E%98+%EB%A1%9C%EA%B3%A0/%EB%A7%88%EB%A5%B4%ED%8B%B0+%EB%A1%9C%EA%B3%A0.png",
+  엔제리너스:
+    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%8E%98+%EB%A1%9C%EA%B3%A0/%EC%97%94%EC%A0%9C%EB%A6%AC%EB%84%88%EC%8A%A4+%EB%A1%9C%EA%B3%A0.jpg",
 };

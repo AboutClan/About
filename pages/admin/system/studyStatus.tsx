@@ -37,6 +37,8 @@ function AdminStudyStatus() {
   const { data: SUWAN } = useStudyVoteQuery(dayjsToStr(date), "수원");
   const { data: YANG } = useStudyVoteQuery(dayjsToStr(date), "양천");
 
+  console.log(date, SUWAN);
+
   const handleStatus = (type: StudyStatus) => {};
 
   return (

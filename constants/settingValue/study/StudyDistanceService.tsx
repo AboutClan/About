@@ -53,7 +53,7 @@ import {
   YANG_파스쿠찌,
   YANG_할리스,
   YANG_화곡역,
-} from "../../../storage/study";
+} from "../../serviceConstants/studyConstants/studyPlaceConstants";
 
 //15 //25
 export const STUDY_DISTANCE = {
