@@ -18,9 +18,10 @@ import {
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 import TimeSelector from "../../components/molecules/picker/TimeSelector";
-import { PLACE_TO_LOCATION } from "../../storage/study";
+
 import { IModal } from "../../types/components/modalTypes";
 
+import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { IPlace } from "../../types/models/studyTypes/studyDetails";
 import { ITimeStartToEnd } from "../../types/utils/timeAndDate";
 

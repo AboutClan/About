@@ -6,7 +6,8 @@ import {
   LOCATION_OPEN_DATE,
   LOCATION_TABLE_COLOR,
 } from "../../constants/location";
-import { PLACE_TO_LOCATION } from "../../storage/study";
+import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
+
 import { IArrivedData } from "../../types/models/studyTypes/studyRecords";
 
 import { Location } from "../../types/services/locationTypes";

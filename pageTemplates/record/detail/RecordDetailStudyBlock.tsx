@@ -3,7 +3,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Fragment } from "react";
 import styled from "styled-components";
 import { LOCATION_TABLE_COLOR } from "../../../constants/location";
-import { PLACE_TO_LOCATION, PLACE_TO_NAME } from "../../../storage/study";
+import { PLACE_TO_LOCATION } from "../../../constants/serviceConstants/studyConstants/studyLocationConstants";
+import { PLACE_TO_NAME } from "../../../storage/study";
 import { Location } from "../../../types/services/locationTypes";
 import { ISortedLocationStudies } from "./RecordDetail";
 

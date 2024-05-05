@@ -1,9 +1,10 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
 
 import { useStudyVoteQuery } from "../../hooks/study/queries";
-import { PLACE_TO_LOCATION } from "../../storage/study";
+
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { IPlace } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";

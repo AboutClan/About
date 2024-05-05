@@ -24,7 +24,8 @@ import { useStudyParticipationMutation } from "../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { usePointSystemLogQuery } from "../../hooks/user/queries";
 import { myStudyState, studyDateStatusState } from "../../recoils/studyRecoils";
-import { PLACE_TO_LOCATION } from "../../storage/study";
+
+import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import {
   IParticipation,
   StudyStatus,
@@ -255,7 +256,9 @@ const Layout = styled.nav`
   padding: 16px;
   background-color: white;
   z-index: 50;
-  box-shadow: 0 -1px 3px 0 rgba(0, 0, 0, 0.1), 0 -1px 2px 0 rgba(0, 0, 0, 0.06);
+  box-shadow:
+    0 -1px 3px 0 rgba(0, 0, 0, 0.1),
+    0 -1px 2px 0 rgba(0, 0, 0, 0.06);
   max-width: var(--max-width);
   margin: 0 auto;
 `;

@@ -11,6 +11,7 @@ import VoteMapController from "../components/organisms/VoteMapController";
 import MapBottomNav from "../components/services/studyVote/MapBottomNav";
 import { STUDY_PREFERENCE_LOCAL } from "../constants/keys/queryKeys";
 import { STUDY_DISTANCE } from "../constants/serviceConstants/studyConstants/studyDistanceConstants";
+import { PLACE_TO_LOCATION } from "../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { useToast } from "../hooks/custom/CustomToast";
 import {
   useStudyPreferenceQuery,
@@ -23,7 +24,7 @@ import {
 } from "../libs/study/getStudyVoteMap";
 import StudyPresetModal from "../modals/userRequest/StudyPresetModal";
 import { myStudyState, studyDateStatusState } from "../recoils/studyRecoils";
-import { PLACE_TO_LOCATION } from "../storage/study";
+
 import { IMapOptions, IMarkerOptions } from "../types/externals/naverMapTypes";
 import {
   IParticipation,
@@ -189,8 +190,8 @@ export default function StudyVoteMap() {
           precision === 0
             ? []
             : precision === 2
-            ? [...sub1, ...sub2]
-            : [...sub1],
+              ? [...sub1, ...sub2]
+              : [...sub1],
       }));
       setVoteScore(
         (old) =>
@@ -355,8 +356,8 @@ export const getMarkersOptions = (
       placeId === myVote?.place
         ? "main"
         : myVote?.subPlace?.includes(placeId)
-        ? "sub"
-        : "default";
+          ? "sub"
+          : "default";
     const infoWindow = placeId === myVote?.place ? getInfoWindow(par) : null;
     const polyline =
       mainPlace && myVote?.subPlace?.includes(placeId)

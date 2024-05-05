@@ -3,7 +3,7 @@ export const ALL_스터디인증 = "65263917e90698c18a3b1e99";
 
 //수원
 export const SUWAN_수원시청 = "64395f1e8d1edf4e056e993d";
-export const SUWAN_수원역 = "640c271121863deff358f459";
+export const SUWAN_수원역 = "6637352830c7250eac355cc6";
 export const SUWAN_아주대 = "62e5d6e0e098c232c05c3d3f";
 export const SUWAN_상현역 = "64b15fb72704a3af110733ba";
 export const SUWAN_송죽 = "644f6ffe9edb56992ccda5e9";
@@ -76,6 +76,8 @@ export const DONG_혜화역 = "6597be44a11634850ed506d3";
 export const DONG_혜화역2 = "6597be67a11634850ed506d4";
 export const DONG_화랑대역 = "65bfac8f7d1dd938049ed19f";
 export const DONG_중화역 = "6604c1ee4920fb76c1a64e62";
+export const DONG_노원역 = "663739e230c7250eac355cc8";
+export const DONG_수유역 = "66373a7d30c7250eac355cc9";
 
 //인천
 export const INC_인하대 = "65fbc711ba2597c46415a027";
@@ -83,6 +85,7 @@ export const INC_송도DT = "65fbc8eeba2597c46415a028";
 export const INC_송도 = "65fbcba6ba2597c46415a029";
 export const INC_구월동 = "65fbd787ba2597c46415a02a";
 export const INC_부평 = "65fbd888ba2597c46415a02b";
+export const INC_인천대 = "6637373030c7250eac355cc7";
 
 export const PLACE_TO_NAME = {
   //전체
@@ -157,95 +160,15 @@ export const PLACE_TO_NAME = {
   [DONG_혜화역2]: "커피빈",
   [DONG_화랑대역]: "마르티",
   [DONG_중화역]: "스타벅스",
+  [DONG_수유역]: "엔제리너스",
+  [DONG_노원역]: "투썸플레이스",
 
   [INC_구월동]: "파스쿠찌",
   [INC_부평]: "하이테이블",
   [INC_송도]: "카페꼼마",
   [INC_송도DT]: "스타벅스",
   [INC_인하대]: "더스토리",
-};
-
-export const PLACE_TO_LOCATION = {
-  //전체
-  [ALL_스터디인증]: "전체",
-  //수원
-  [SUWAN_상현역]: "수원",
-  [SUWAN_아주대]: "수원",
-  [SUWAN_수원역]: "수원",
-  [SUWAN_수원시청]: "수원",
-  [SUWAN_경희대]: "수원",
-  [SUWAN_송죽]: "수원",
-  [SUWAN_구운동]: "수원",
-  [SUWAN_스타벅스]: "수원",
-  [SUWAN_경기대]: "수원",
-  [SUWAN_자유신청]: "수원",
-  [SUWAN_고색역]: "수원",
-  [SUWAN_워터쿨러]: "수원",
-  [SUWAN_광교]: "수원",
-
-  [SUWAN_성균관대역]: "수원",
-  [SUWAN_광교엘리웨이]: "수원",
-  [SUWAN_행궁동]: "수원",
-  [SUWAN_광교중앙역]: "수원",
-  [SUWAN_망포역]: "수원",
-  //양천
-  [YANG_이디야]: "양천",
-  [YANG_위카페]: "양천",
-  [YANG_파스쿠찌]: "양천",
-  [YANG_할리스]: "양천",
-  [YANG_카페베네]: "양천",
-  [YANG_스타벅스]: "양천",
-  [YANG_몽글]: "양천",
-  [YANG_카페꼼마]: "양천",
-  [YANG_화곡역]: "양천",
-  [YANG_발산역]: "양천",
-  [YANG_목동점]: "양천",
-  [YANG_자유신청]: "양천",
-
-  [YANG_신풍역]: "양천",
-  [YANG_신길역]: "양천",
-  [YANG_신월동]: "양천",
-  [YANG_양천구청역]: "양천",
-
-  //안양
-  [ANYANG_숨맑은집]: "안양",
-  [ANYANG_인뎃커피]: "안양",
-  [ANYANG_커피인더스트리]: "안양",
-  [ANYANG_파스쿠찌]: "안양",
-  [ANYANG_자유신청]: "안양",
-  //강남
-  [GANGNAM_강남]: "강남",
-  [GANGNAM_강남구청]: "강남",
-  [GANGNAM_신논현]: "강남",
-  [GANGNAM_논현]: "강남",
-  [GANGNAM_교대]: "강남",
-  [GANGNAM_양재]: "강남",
-  [GANGNAM_선릉]: "강남",
-  [GANGNAM_도곡]: "강남",
-  [GANGNAM_자유신청]: "강남",
-
-  [DONG_장안동]: "동대문",
-  [DONG_석계역]: "동대문",
-  [DONG_딥십리역]: "동대문",
-  [DONG_서울시립대]: "동대문",
-  [DONG_경희대]: "동대문",
-  [DONG_월곡역]: "동대문",
-  [DONG_왕십리역]: "동대문",
-  [DONG_안암역]: "동대문",
-  [DONG_신설동역]: "동대문",
-  [DONG_길음역]: "동대문",
-  [DONG_성신여대]: "동대문",
-  [DONG_동대문역]: "동대문",
-  [DONG_혜화역]: "동대문",
-  [DONG_화랑대역]: "동대문",
-  [DONG_혜화역2]: "동대문",
-  [DONG_중화역]: "동대문",
-
-  [INC_구월동]: "인천",
-  [INC_부평]: "인천",
-  [INC_송도]: "인천",
-  [INC_송도DT]: "인천",
-  [INC_인하대]: "인천",
+  [INC_인천대]: "스타벅스",
 };
 
 export interface IstudyInfo {

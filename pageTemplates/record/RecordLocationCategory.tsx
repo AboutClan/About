@@ -5,7 +5,8 @@ import {
   LOCATION_OPEN,
   LOCATION_TABLE_COLOR,
 } from "../../constants/location";
-import { PLACE_TO_LOCATION } from "../../storage/study";
+import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
+
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { IArrivedData } from "../../types/models/studyTypes/studyRecords";
 

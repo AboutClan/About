@@ -15,7 +15,8 @@ import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { usePointSystemLogQuery } from "../../hooks/user/queries";
 import { getMyStudyVoteInfo } from "../../libs/study/getMyStudy";
 import { myStudyState } from "../../recoils/studyRecoils";
-import { PLACE_TO_LOCATION } from "../../storage/study";
+
+import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { IModal } from "../../types/components/modalTypes";
 import { IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
 import { createTimeArr, parseTimeToDayjs } from "../../utils/dateTimeUtils";

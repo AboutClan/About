@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
 import { STUDY_VOTE } from "../../../constants/keys/queryKeys";
+import { PLACE_TO_LOCATION } from "../../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../../hooks/user/mutations";
@@ -15,7 +16,7 @@ import {
   myStudyState,
   studyDateStatusState,
 } from "../../../recoils/studyRecoils";
-import { PLACE_TO_LOCATION, PLACE_TO_NAME } from "../../../storage/study";
+import { PLACE_TO_NAME } from "../../../storage/study";
 import { IModal } from "../../../types/components/modalTypes";
 import {
   IStudyVote,
