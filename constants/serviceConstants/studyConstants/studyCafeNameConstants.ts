@@ -1,9 +1,11 @@
 import {
   ALL_스터디인증,
+  ANYANG_범계학원가,
   ANYANG_숨맑은집,
   ANYANG_인뎃커피,
   ANYANG_커피인더스트리,
   ANYANG_파스쿠찌,
+  ANYANG_호계,
   DONG_경희대,
   DONG_길음역,
   DONG_노원역,
@@ -22,6 +24,7 @@ import {
   DONG_혜화역,
   DONG_혜화역2,
   DONG_화랑대역,
+  DONG_회기역,
   GANGNAM_강남,
   GANGNAM_강남구청,
   GANGNAM_교대,
@@ -72,6 +75,7 @@ import {
 export const PLACE_TO_NAME = {
   //전체
   [ALL_스터디인증]: "스터디인증",
+
   //수원
   [SUWAN_수원시청]: "투썸플레이스",
   [SUWAN_수원역]: "탐앤탐스",
@@ -82,7 +86,6 @@ export const PLACE_TO_NAME = {
   [SUWAN_구운동]: "이디야",
   [SUWAN_스타벅스]: "스타벅스",
   [SUWAN_경기대]: "탐앤탐스",
-
   [SUWAN_고색역]: "에이티씨",
   [SUWAN_성균관대역]: "스타벅스",
   [SUWAN_광교엘리웨이]: "책발전소",
@@ -90,6 +93,7 @@ export const PLACE_TO_NAME = {
   [SUWAN_망포역]: "스타벅스",
   [SUWAN_행궁동]: "행궁동",
   [SUWAN_광교]: "디어커피",
+
   //양천
   [YANG_위카페]: "위카페",
   [YANG_할리스]: "할리스",
@@ -97,33 +101,35 @@ export const PLACE_TO_NAME = {
   [YANG_이디야]: "이디야",
   [YANG_카페베네]: "카페베네",
   [YANG_스타벅스]: "스타벅스",
-  [YANG_몽글]: "몽글",
   [YANG_카페꼼마]: "카페꼼마",
-
+  [YANG_몽글]: "몽글",
   [YANG_신풍역]: "이디야",
   [YANG_신길역]: "레어 그루브",
   [YANG_신월동]: "코나빈스",
   [YANG_양천구청역]: "시나본",
   [YANG_화곡역]: "투썸플레이스",
-  [YANG_목동점]: "스타벅스",
   [YANG_발산역]: "스타벅스",
+  [YANG_목동점]: "스타벅스",
 
   //안양
   [ANYANG_커피인더스트리]: "커피인더스트리",
   [ANYANG_숨맑은집]: "숨맑은집",
   [ANYANG_파스쿠찌]: "파스쿠찌",
   [ANYANG_인뎃커피]: "인뎃커피",
+  [ANYANG_범계학원가]: "숨맑은집",
+  [ANYANG_호계]: "숨맑은집",
 
   //강남
   [GANGNAM_강남]: "커피빈",
-  [GANGNAM_강남구청]: "파스쿠찌",
   [GANGNAM_신논현]: "커피빈",
   [GANGNAM_논현]: "커피빈",
   [GANGNAM_교대]: "아펜즈커피",
   [GANGNAM_양재]: "미오커피",
   [GANGNAM_선릉]: "커피빈",
+  [GANGNAM_강남구청]: "파스쿠찌",
   [GANGNAM_도곡]: "카페올로",
 
+  //동대문
   [DONG_장안동]: "투썸플레이스",
   [DONG_석계역]: "카페디졸브",
   [DONG_딥십리역]: "아띠커피",
@@ -140,13 +146,14 @@ export const PLACE_TO_NAME = {
   [DONG_혜화역2]: "커피빈",
   [DONG_화랑대역]: "마르티",
   [DONG_중화역]: "스타벅스",
-  [DONG_수유역]: "엔제리너스",
   [DONG_노원역]: "투썸플레이스",
+  [DONG_수유역]: "엔제리너스",
+  [DONG_회기역]: "READSTREET",
 
-  [INC_구월동]: "파스쿠찌",
-  [INC_부평]: "하이테이블",
-  [INC_송도]: "카페꼼마",
-  [INC_송도DT]: "스타벅스",
   [INC_인하대]: "더스토리",
+  [INC_송도DT]: "스타벅스",
+  [INC_구월동]: "파스쿠찌",
+  [INC_송도]: "카페꼼마",
+  [INC_부평]: "하이테이블",
   [INC_인천대]: "스타벅스",
 };

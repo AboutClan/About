@@ -1,5 +1,5 @@
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -26,7 +26,7 @@ export default function Page() {
   const setMyStudy = useSetRecoilState(myStudyState);
 
   const location = PLACE_TO_LOCATION[id];
-
+  console.log(location);
   const { data: studyAll } = useStudyVoteQuery(date, location, {
     enabled: !!location && !!date,
   });
