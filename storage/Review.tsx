@@ -495,7 +495,7 @@ export const REVIEW_DATA: IReviewData[] = [
     title: "전시회 번개",
   },
   {
-    id: 123,
+    id: 162,
     dateCreated: "5월 5일",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/5.04_%ED%95%9C%EA%B0%95+%EB%B2%88%EA%B0%9C/KakaoTalk_20240505_145027199_01.jpg",
