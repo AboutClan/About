@@ -124,7 +124,7 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
       setIsModal={setIsModal}
     >
       <ScoreBarWrapper>
-        <PointScoreBar myScore={userInfo.score} hasQuestion={false} />
+        <PointScoreBar myScore={userInfo?.score} hasQuestion={false} />
         {nextBadge ? (
           <span>
             {nextBadge} 달성시 +10 포인트, {nextAvatar[String(nextBadgePoint)]} 아바타 해금!
