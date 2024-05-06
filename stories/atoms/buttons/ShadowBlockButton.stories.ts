@@ -5,14 +5,11 @@ import ShadowBlockButton from "../../../components/atoms/buttons/ShadowBlockButt
 const meta = {
   title: "ATOMS/Button/ShadowBlockButton",
   component: ShadowBlockButton,
-  parameters: {},
   tags: ["autodocs"],
-  argTypes: {},
-
-  args: {},
 } satisfies Meta<typeof ShadowBlockButton>;
 
 export default meta;
+
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {

@@ -7,14 +7,11 @@ import IconButtonColBlock from "../../../components/atoms/blocks/IconButtonColBl
 const meta = {
   title: "Atoms/Blocks/IconButtonColBlock",
   component: IconButtonColBlock,
-  parameters: {},
   tags: ["autodocs"],
-  argTypes: {},
-
-  args: {},
 } satisfies Meta<typeof IconButtonColBlock>;
 
 export default meta;
+
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {

@@ -5,14 +5,11 @@ import HighlightedTextButton from "../../../components/atoms/buttons/Highlighted
 const meta = {
   title: "ATOMS/Button/HighlightedTextButton",
   component: HighlightedTextButton,
-  parameters: {},
   tags: ["autodocs"],
-  argTypes: {},
-
-  args: {},
 } satisfies Meta<typeof HighlightedTextButton>;
 
 export default meta;
+
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {

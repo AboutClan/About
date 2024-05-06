@@ -5,14 +5,11 @@ import { ArrowBackButtonUI } from "../../../components/atoms/buttons/ArrowBackBu
 const meta = {
   title: "ATOMS/Button/ArrowBackButton",
   component: ArrowBackButtonUI,
-  parameters: {},
   tags: ["autodocs"],
-  argTypes: {},
-
-  args: {},
 } satisfies Meta<typeof ArrowBackButtonUI>;
 
 export default meta;
+
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
