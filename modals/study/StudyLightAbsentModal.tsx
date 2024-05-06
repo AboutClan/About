@@ -1,11 +1,11 @@
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 
+import { PLACE_TO_NAME } from "../../constants/serviceConstants/studyConstants/studyCafeNameConstants";
 import { POINT_SYSTEM_DEPOSIT } from "../../constants/settingValue/pointSystem";
 import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";
 import { useStudyAbsentMutation } from "../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
-import { PLACE_TO_NAME } from "../../storage/study";
 import { IModal } from "../../types/components/modalTypes";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
