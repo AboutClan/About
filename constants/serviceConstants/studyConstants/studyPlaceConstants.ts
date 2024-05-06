@@ -1,5 +1,5 @@
 //전체
-export const ALL_스터디인증 = "65263917e90698c18a3b1e99";
+export const ALL_스터디인증 = "6479f39e907daf3e8a5cda6e";
 
 //수원
 export const SUWAN_수원시청 = "64395f1e8d1edf4e056e993d";
