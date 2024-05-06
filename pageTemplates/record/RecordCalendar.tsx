@@ -3,8 +3,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs, { Dayjs } from "dayjs";
 import styled from "styled-components";
 
-import { LOCATION_OPEN_DATE, LOCATION_TABLE_COLOR } from "../../constants/location";
-import { PLACE_TO_LOCATION } from "../../storage/study";
+import {
+  LOCATION_OPEN_DATE,
+  LOCATION_TABLE_COLOR,
+} from "../../constants/location";
+import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { IArrivedData } from "../../types/models/studyTypes/studyRecords";
 import { Location } from "../../types/services/locationTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";

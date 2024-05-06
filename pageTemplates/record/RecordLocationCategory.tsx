@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { LOCATION_CONVERT, LOCATION_OPEN, LOCATION_TABLE_COLOR } from "../../constants/location";
-import { PLACE_TO_LOCATION } from "../../storage/study";
+import {
+  LOCATION_CONVERT,
+  LOCATION_OPEN,
+  LOCATION_TABLE_COLOR,
+} from "../../constants/location";
+import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { IArrivedData } from "../../types/models/studyTypes/studyRecords";
 import { Location, LocationFilterType } from "../../types/services/locationTypes";

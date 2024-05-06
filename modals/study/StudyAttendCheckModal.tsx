@@ -24,7 +24,8 @@ import { getMyStudyVoteInfo } from "../../libs/study/getMyStudy";
 import { getRandomAlphabet } from "../../libs/userEventLibs/collection";
 import { myStudyState } from "../../recoils/studyRecoils";
 import { transferAlphabetState } from "../../recoils/transferRecoils";
-import { PLACE_TO_LOCATION } from "../../storage/study";
+
+import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
 import { LocationEn } from "../../types/services/locationTypes";

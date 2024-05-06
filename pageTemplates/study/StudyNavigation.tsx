@@ -14,14 +14,17 @@ import { IIconLinkTile } from "../../components/atoms/IconLinkTile";
 import Slide from "../../components/layouts/PageSlide";
 import IconTileRowLayout from "../../components/organisms/IconTileRowLayout";
 import { STUDY_VOTE } from "../../constants/keys/queryKeys";
+import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { MAX_USER_PER_PLACE } from "../../constants/settingValue/study/study";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { usePointSystemLogQuery } from "../../hooks/user/queries";
 import { myStudyState, studyDateStatusState } from "../../recoils/studyRecoils";
-import { PLACE_TO_LOCATION } from "../../storage/study";
-import { IParticipation, StudyStatus } from "../../types/models/studyTypes/studyDetails";
+import {
+  IParticipation,
+  StudyStatus,
+} from "../../types/models/studyTypes/studyDetails";
 import { StudyDateStatus } from "../../types/models/studyTypes/studyInterActions";
 import { IPointLog } from "../../types/services/pointSystem";
 import StudyNavModal from "./studyNavModal";
