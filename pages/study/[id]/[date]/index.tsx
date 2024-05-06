@@ -1,5 +1,5 @@
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -7,6 +7,7 @@ import styled from "styled-components";
 import Divider from "../../../../components/atoms/Divider";
 import Slide from "../../../../components/layouts/PageSlide";
 import { PLACE_TO_LOCATION } from "../../../../constants/serviceConstants/studyConstants/studyLocationConstants";
+import { ALL_스터디인증 } from "../../../../constants/serviceConstants/studyConstants/studyPlaceConstants";
 import { useStudyVoteQuery } from "../../../../hooks/study/queries";
 import { getStudyDateStatus } from "../../../../libs/study/date/getStudyDateStatus";
 import { getMyStudy } from "../../../../libs/study/getMyStudy";
@@ -26,9 +27,10 @@ export default function Page() {
   const setMyStudy = useSetRecoilState(myStudyState);
 
   const location = PLACE_TO_LOCATION[id];
-  console.log(location);
+  const isPrivateStudy = id === ALL_스터디인증;
+
   const { data: studyAll } = useStudyVoteQuery(date, location, {
-    enabled: !!location && !!date,
+    enabled: (!!location || isPrivateStudy) && !!date,
   });
 
   const [studyDateStatus, setStudyDateStatus] = useRecoilState(studyDateStatusState);
@@ -50,7 +52,6 @@ export default function Page() {
     studyDateStatus !== "not passed"
       ? study?.attendences.filter((att) => att.firstChoice)
       : study?.attendences;
-  const isPrivateStudy = place?.brand === "자유 신청";
 
   return (
     <Layout>
