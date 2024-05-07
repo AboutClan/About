@@ -87,7 +87,7 @@ const IconWrapper = styled.div`
   bottom: -2px;
 `;
 
-const Layout = styled.div<{ status: GatherStatus }>`
+const Layout = styled.div<{ status: GatherStatus | "gathering" }>`
   padding: Var(--gap-4);
   padding-bottom: var(--gap-2);
   background-color: white;
