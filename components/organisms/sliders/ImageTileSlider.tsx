@@ -5,7 +5,7 @@ import "swiper/css/scrollbar";
 
 import { AspectRatio, Box } from "@chakra-ui/react";
 import Image from "next/image";
-import Link from "next/link";
+import Link, { LinkProps } from "next/link";
 import styled from "styled-components";
 import css from "styled-jsx/css";
 import SwiperCore from "swiper";
@@ -64,7 +64,7 @@ function ImageTileSlider({ imageTileArr, size, aspect = 1, slidesPerView }: IIma
   );
 }
 
-const CustomLink = styled(Link)<{ size: Size }>`
+const CustomLink = styled(Link)<{ size: Size } & LinkProps>`
   display: flex;
   flex-direction: column;
   background-color: white;
