@@ -30,7 +30,7 @@ export default function BoardUserBlocks({ participants }: IBoardUserBlocks) {
     <BlocksContainer>
       {userBlocks?.map((userBlock, idx) => (
         <UserBlock key={idx} index={idx} userBlock={userBlock}>
-          <div className="font-semibold">{userBlock.name}</div>
+          <div>{userBlock.name}</div>
           <div>
             {userBlock.start}~{userBlock.end}
           </div>
@@ -47,7 +47,7 @@ const BlocksContainer = styled.div`
   padding-top: 28px; /* pt-7 */
 `;
 
-const UserBlock = styled.div`
+const UserBlock = styled.div<{ index: number; userBlock: IUserTimeBlock }>`
   background-color: ${(props) => COLOR_TABLE[props.index % COLOR_TABLE.length]};
   height: 36px; /* h-9 */
   position: relative;
