@@ -1,7 +1,9 @@
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
+import RowButtonBlock from "../../../components/atoms/blocks/RowButtonBlock";
 
+import { DESIGN_PAGE_USER_PERMISSION } from "../../../constants/storage/userPermissions";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import { DispatchString } from "../../../types/hooks/reactTypes";
 import { UserOverviewModal } from "./UserNavigation";
@@ -20,6 +22,7 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
   const isGuest = session?.user.name === "guest";
   const role = session?.user.role;
   const isAdmin = role === "previliged" || role === "manager";
+  const hasDesignAccess = DESIGN_PAGE_USER_PERMISSION.includes(session?.user.uid);
 
   //네비게이션 함수
   const onClickBlock = <T extends "page" | "modal">(type: T, content: ContentByType<T>): void => {
@@ -44,12 +47,15 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
 
   return (
     <Layout>
-      {isAdmin && (
+      {(isAdmin || hasDesignAccess) && (
         <div>
           <BlockName>관리자</BlockName>
-          <NavBlock>
-            <button onClick={() => onClickBlock("page", "/admin")}>관리자 페이지</button>
-          </NavBlock>
+          {isAdmin && (
+            <NavBlock>
+              <button onClick={() => onClickBlock("page", "/admin")}>관리자 페이지</button>
+            </NavBlock>
+          )}
+          {hasDesignAccess && <RowButtonBlock url="/designs" text="디자인 페이지" />}
         </div>
       )}
       <div>
