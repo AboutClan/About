@@ -4,11 +4,12 @@ import styled from "styled-components";
 import Avatar from "../../components/atoms/Avatar";
 import { PopOverIcon } from "../../components/atoms/Icons/PopOverIcon";
 import { IFooterOptions, ModalLayout } from "../../modals/Modals";
-import { IModal } from "../../types/components/modalTypes";
+import { DispatchBoolean } from "../../types/hooks/reactTypes";
 import AttendanceBar from "./AttendanceBar";
 
-interface AttendanceModalProps extends IModal {
+interface AttendanceModalProps {
   type: 1 | 2;
+  setIsModal?: DispatchBoolean;
 }
 
 function AttendanceModal({ type, setIsModal }: AttendanceModalProps) {
