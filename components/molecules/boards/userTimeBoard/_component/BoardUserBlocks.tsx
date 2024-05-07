@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { COLOR_TABLE } from "../../../../../constants/colorConstants";
-import { transformToUserBlocks } from "../_lib/transformToUserBlocks";
 import { ITimeBoardParticipant } from "../UserTimeBoard";
+import { transformToUserBlocks } from "../_lib/transformToUserBlocks";
 
 const BLOCK_WIDTH = 24;
 export interface IUserTimeBlock {
@@ -30,7 +30,7 @@ export default function BoardUserBlocks({ participants }: IBoardUserBlocks) {
     <BlocksContainer>
       {userBlocks?.map((userBlock, idx) => (
         <UserBlock key={idx} index={idx} userBlock={userBlock}>
-          <div className="font-semibold">{userBlock.name}</div>
+          <div>{userBlock.name}</div>
           <div>
             {userBlock.start}~{userBlock.end}
           </div>
