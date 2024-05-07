@@ -47,7 +47,7 @@ const BlocksContainer = styled.div`
   padding-top: 28px; /* pt-7 */
 `;
 
-const UserBlock = styled.div`
+const UserBlock = styled.div<{ index: number; userBlock: IUserTimeBlock }>`
   background-color: ${(props) => COLOR_TABLE[props.index % COLOR_TABLE.length]};
   height: 36px; /* h-9 */
   position: relative;
