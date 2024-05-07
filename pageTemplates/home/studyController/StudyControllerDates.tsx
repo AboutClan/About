@@ -89,7 +89,7 @@ const FlexContainer = styled.div`
   position: relative;
 `;
 
-const MotionDiv = styled(motion.div)`
+const MotionDiv = styled(motion.div)<{ idx: number }>`
   display: flex;
   position: relative;
   justify-content: center;
