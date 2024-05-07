@@ -4,9 +4,15 @@ import styled from "styled-components";
 import Avatar from "../../components/atoms/Avatar";
 import { PopOverIcon } from "../../components/atoms/Icons/PopOverIcon";
 import { IFooterOptions, ModalLayout } from "../../modals/Modals";
+import { DispatchBoolean } from "../../types/hooks/reactTypes";
 import AttendanceBar from "./AttendanceBar";
 
-function AttendanceModal({ type }: { type: 1 | 2 | 3 }) {
+interface AttendanceModalProps {
+  type: 1 | 2;
+  setIsModal?: DispatchBoolean;
+}
+
+function AttendanceModal({ type, setIsModal }: AttendanceModalProps) {
   const today = dayjs();
   const firstDayOfMonth = today.startOf("month");
   const differenceInDays = today.diff(firstDayOfMonth, "day");
@@ -23,7 +29,7 @@ function AttendanceModal({ type }: { type: 1 | 2 | 3 }) {
         title={`${dayjs().month() + 1}월 2주차 주간 체크`}
         headerOptions={{}}
         footerOptions={footerOptions}
-        setIsModal={() => {}}
+        setIsModal={setIsModal}
       >
         <ScoreBarWrapper>
           <AttendanceBar myScore={17} />
