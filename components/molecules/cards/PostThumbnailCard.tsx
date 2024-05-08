@@ -41,12 +41,12 @@ export function PostThumbnailCard({
     func = undefined,
   },
 }: IPostThumbnailCardObj) {
-  const userAvatarArr = participants.map((par) => {
-    return {
+  const userAvatarArr = participants
+    .filter((par) => par)
+    .map((par) => ({
       image: par.profileImage,
       ...(par.avatar?.type !== null ? { avatar: par.avatar } : {}),
-    };
-  });
+    }));
 
   return (
     <CardLink href={url} onClick={func}>
