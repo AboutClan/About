@@ -1,7 +1,7 @@
 import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
-import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
