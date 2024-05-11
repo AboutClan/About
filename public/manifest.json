@@ -1,0 +1,26 @@
+{
+  "background_color": "#ffffff",
+  "description": "카공 및 친목 동아리",
+  "dir": "ltr",
+  "display": "standalone",
+  "name": "ABOUT",
+  "orientation": "any",
+
+  "scope": "/",
+  "short_name": "ABOUT",
+  "start_url": "http://localhost:3000",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/ogImage.png",
+      "type": "image/png",
+      "sizes": "977x498"
+    },
+    {
+      "src": "/favicon.ico",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "lang": "ko"
+}
