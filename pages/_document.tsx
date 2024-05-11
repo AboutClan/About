@@ -37,6 +37,7 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <link rel="manifest" href="/manifest.json" />
           <meta property="og:type" content="website" />
           <meta property="og:title" content="About" />
           <meta property="og:url" content="https://studyabout.herokuapp.com" />

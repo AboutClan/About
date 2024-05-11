@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
-
+const withPWA = require("next-pwa");
+const runtimeCaching = require("next-pwa/cache");
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -42,6 +43,17 @@ const nextConfig = {
     styledComponents: true,
   },
 };
+
+module.exports = withPWA({
+  ...nextConfig,
+  pwa: {
+    dest: "public",
+    register: true,
+    skipWaiting: true,
+    runtimeCaching,
+    // disable: process.env.NODE_ENV !== "production",
+  },
+});
 
 // Injected content via Sentry wizard below
 // eslint-disable-next-line @typescript-eslint/no-var-requires
