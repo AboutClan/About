@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useState } from "react";
 
 import Slide from "../../components/layouts/PageSlide";
@@ -76,7 +76,7 @@ export default function StudyParticipants({ participants, absences }: IStudyPart
             align="center"
             justify="center"
             h="200"
-            color="var(--gray-3)"
+            color="var(--gray-700)"
             fontSize="16px"
             textAlign="center"
           >

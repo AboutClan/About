@@ -79,7 +79,7 @@ export function ActiveIcon({ type }: IActiveIcon) {
             justifyContent: "center",
             alignItems: "center",
             width: "22px",
-            border: "1px solid var(--gray-1)",
+            border: "1px solid var(--gray-900)",
             borderRadius: "50%",
             height: "22px",
             backgroundColor: "rgba(255, 204, 34, 0.10)",

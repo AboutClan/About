@@ -1,8 +1,8 @@
 import { faLockKeyhole } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
@@ -187,7 +187,7 @@ const InfoItem = styled.div`
     color: var(--gray-2);
   }
   > span:last-child {
-    color: var(--gray-3);
+    color: var(--gray-700);
   }
 `;
 

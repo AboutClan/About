@@ -43,7 +43,7 @@ const GatherReviewNavIcon = styled.div`
     width: 52px;
     height: 52px;
     overflow: hidden;
-    background-color: var(--gray-6);
+    background-color: var(--gray-300);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -65,7 +65,7 @@ const GatherReviewNavItem = styled.div`
     width: 52px;
     height: 52px;
     overflow: hidden;
-    background-color: var(--gray-6);
+    background-color: var(--gray-300);
     display: flex;
     justify-content: center;
     align-items: center;

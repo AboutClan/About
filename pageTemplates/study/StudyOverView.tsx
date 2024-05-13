@@ -46,10 +46,10 @@ function StudyOverview({
         content: `<div style=" font-size:12px; padding:4px 6px"><span style="font-weight:600; color:#565B67;">${title}</span><br/><span>현재 신청 인원:<span style="color:#00c2b3; font-weight:500;"> ${participantsNum}명</span></span></div>`,
         borderWidth: 1,
         disableAnchor: false,
-        backgroundColor: "var(--gray-8)",
-        borderColor: "var(--gray-3)",
+        backgroundColor: "var(--gray-100)",
+        borderColor: "var(--gray-700)",
         anchorSize: new naver.maps.Size(10, 10),
-        anchorColor: "var(--gray-8)",
+        anchorColor: "var(--gray-100)",
       },
     },
   ];
@@ -129,7 +129,7 @@ const InfoIconText = styled.div`
   svg {
     width: 14px; /* Adjusted from w-3.5 to actual px */
     margin-right: 8px;
-    color: var(--gray-3); /* text-gray-3 */
+    color: var(--gray-700); /* text-gray-3 */
   }
 `;
 

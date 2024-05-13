@@ -2,8 +2,8 @@ import { Badge, Button } from "@chakra-ui/react";
 import { faX } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AxiosError } from "axios";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -274,7 +274,7 @@ const UserAlphabets = styled.div`
 
 const AlphabetCnt = styled.span<{ hasAlphabet: boolean }>`
   font-size: 12px;
-  color: ${(props) => (props.hasAlphabet ? "var(--gray-2)" : "var(--gray-3)")};
+  color: ${(props) => (props.hasAlphabet ? "var(--gray-800)" : "var(--gray-700)")};
 `;
 
 export default CollectionAlphabet;

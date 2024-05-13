@@ -28,10 +28,10 @@ function StudyDateBar({ isPrivateStudy, place }: IStudyDateBar) {
           <Button
             size="sm"
             variant="outline"
-            color="var(--gray-3)"
+            color="var(--gray-700)"
             rightIcon={<FontAwesomeIcon icon={faPlus} size="xs" />}
             padding="0 var(--gap-2)"
-            borderColor="var(--gray-5)"
+            borderColor="var(--gray-400)"
             onClick={() => setIsInviteModal(true)}
           >
             친구초대

@@ -1,8 +1,8 @@
 import { faEllipsis } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
-import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/dist/client/router";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
@@ -188,7 +188,7 @@ const CommentContent = styled.div`
 
 const CommentDetail = styled.span`
   font-size: 11px;
-  color: var(--gray-3);
+  color: var(--gray-700);
 `;
 
 const MyText = styled.textarea`
@@ -206,7 +206,7 @@ const MyText = styled.textarea`
 
 const SubmitBtn = styled.button<{ focus: boolean }>`
   font-size: 12px;
-  color: ${(props) => (props.focus ? "var(--color-mint)" : "var(--gray-4)")};
+  color: ${(props) => (props.focus ? "var(--color-mint)" : "var(--gray-500)")};
 `;
 
 export default GatherComments;

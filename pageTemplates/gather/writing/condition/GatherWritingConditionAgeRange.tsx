@@ -28,7 +28,7 @@ function GatherWritingConditionAgeRange({ age, setAge }: IGatherWritingCondition
         alignSelf="center"
         onChange={(value) => setAge(value)}
       >
-        <RangeSliderTrack bg="var(--gray-5)">
+        <RangeSliderTrack bg="var(--gray-400)">
           <RangeSliderFilledTrack bg="var(--color-mint)" />
         </RangeSliderTrack>
         <RangeSliderThumb boxSize={6} index={0} />

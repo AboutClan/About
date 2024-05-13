@@ -205,7 +205,7 @@ export function ModalHeader({ text, isCloseBtn = true, isLine = true }: IModalHe
         p="var(--gap-4) var(--gap-4)"
         fontWeight="700"
         fontSize="18px"
-        color="var(--gray-1)"
+        color="var(--gray-900)"
         borderBottom={isLine && "var(--border)"}
       >
         {text}

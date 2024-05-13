@@ -35,7 +35,7 @@ const Overview = styled.div`
     font-weight: 800;
   }
   > span:last-child {
-    color: var(--gray-3);
+    color: var(--gray-700);
   }
 `;
 const Price = styled.div`
@@ -46,9 +46,9 @@ const Price = styled.div`
 `;
 
 const ApplyCnt = styled.div`
-  color: var(--gray-3);
+  color: var(--gray-700);
   > b {
-    color: var(--gray-1);
+    color: var(--gray-900);
   }
 `;
 

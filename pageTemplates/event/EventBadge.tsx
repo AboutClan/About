@@ -25,9 +25,9 @@ export default function EventBadge() {
     const hasBadge = score >= badge.minScore;
     return {
       icon: hasBadge ? (
-        <FontAwesomeIcon icon={faLockOpen} color="var(--color-orange)" />
+        <FontAwesomeIcon icon={faLockOpen} color="var(--color-yellow)" />
       ) : (
-        <FontAwesomeIcon icon={faLock} color="var(--gray-3)" />
+        <FontAwesomeIcon icon={faLock} color="var(--gray-700)" />
       ),
       title: badge.badge,
       buttonProp: {
@@ -50,9 +50,9 @@ export default function EventBadge() {
 
     return {
       icon: !hasBadge ? (
-        <FontAwesomeIcon icon={faLock} color="var(--gray-3)" />
+        <FontAwesomeIcon icon={faLock} color="var(--gray-700)" />
       ) : (
-        <FontAwesomeIcon icon={faLockOpen} color="var(--color-orange)" />
+        <FontAwesomeIcon icon={faLockOpen} color="var(--color-yellow)" />
       ),
       title: badge,
       buttonProp: {

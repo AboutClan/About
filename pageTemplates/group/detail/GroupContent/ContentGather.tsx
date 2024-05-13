@@ -13,7 +13,7 @@ function ContentGather() {
       <Layout>
         <Button
           onClick={() => setIsModal(true)}
-          bgColor="var(--gray-7)"
+          bgColor="var(--gray-200)"
           size="lg"
           w="100%"
           leftIcon={<FontAwesomeIcon icon={faPlus} />}
@@ -37,7 +37,7 @@ const Message = styled.div`
   margin-top: 40px;
   font-size: 16px;
 
-  color: var(--gray-3);
+  color: var(--gray-700);
 `;
 
 export default ContentGather;

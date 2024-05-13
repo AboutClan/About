@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Textarea = styled.textarea`
   flex: 1;
-  background-color: var(--gray-7);
+  background-color: var(--gray-200);
   border-radius: var(--rounded-lg);
   padding: var(--gap-3);
   &:focus {
@@ -13,7 +13,7 @@ export const Textarea = styled.textarea`
 export const InputSm = styled.input`
   flex: 1;
   width: 100%;
-  background-color: var(--gray-7);
+  background-color: var(--gray-200);
   border-radius: var(--rounded-lg);
   padding: var(--gap-3);
   text-align: start;
@@ -29,9 +29,9 @@ export const InputLg = styled.input`
   border-radius: var(--rounded-lg);
   padding: var(--gap-3);
   &:focus {
-    outline-color: var(--gray-1);
+    outline-color: var(--gray-900);
   }
   ::placeholder {
-    color: var(--gray-4);
+    color: var(--gray-500);
   }
 `;

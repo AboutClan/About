@@ -78,7 +78,7 @@ const Content = styled.div`
   align-items: center;
 
   > span:first-child {
-    color: var(--gray-1);
+    color: var(--gray-900);
     font-weight: 600;
     font-size: 22px;
   }
@@ -86,7 +86,7 @@ const Content = styled.div`
     margin-top: 12px;
     text-align: center;
     font-size: 17px;
-    color: var(--gray-3);
+    color: var(--gray-700);
   }
 `;
 

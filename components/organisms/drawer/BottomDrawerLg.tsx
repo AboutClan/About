@@ -94,7 +94,7 @@ const TopNav = styled.nav`
   width: 56px;
   height: 4px;
   border-radius: 4px;
-  background-color: var(--gray-5);
+  background-color: var(--gray-400);
   margin-bottom: var(--gap-5);
 `;
 
@@ -112,6 +112,6 @@ const Header = styled.header`
   > span:last-child {
     font-size: 20px;
     font-weight: 600;
-    color: var(--gray-1);
+    color: var(--gray-900);
   }
 `;

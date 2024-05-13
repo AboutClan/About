@@ -17,22 +17,18 @@ export default function SectionBar({ title, rightComponent, size = "lg" }: ISect
 
 const SectionBarContainer = styled.div<{ size: "md" | "lg" }>`
   width: 100%;
-  height: ${(props) => (props.size === "md" ? "51px " : "59px")};
-  padding: 0 16px;
+  height: ${(props) => (props.size === "md" ? "51px " : "64px")};
+
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 16px; /* text-lg */
   font-weight: 600; /* font-semibold */
-  background-color: white;
-  border-top: var(--border);
-  border-bottom: var(--border);
 `;
 
 const TitleContainer = styled.div<{ size: "md" | "lg" }>`
-  font-size: ${(props) => (props.size === "lg" ? "18px" : "16px")}; /* text-lg */
-  font-weight: ${(props) => (props.size === "lg" ? 700 : 600)};
-
+  font-size: ${(props) => (props.size === "lg" ? "20px" : "16px")}; /* text-lg */
+  font-weight: 600;
   display: flex;
   align-items: center;
 `;

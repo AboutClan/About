@@ -1,7 +1,7 @@
 import { Flex, ListItem, UnorderedList } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -333,10 +333,10 @@ const getInfoWindow = (par: IParticipation) => {
     content: `<div style=" font-size:12px; padding:4px 6px"><span style="font-weight:600; color:#565B67;">${par.place.brand}</span><br/><span>현재 신청 인원:<span style="color:#00c2b3; font-weight:500;"> ${par.attendences.length}명</span></span></div>`,
     borderWidth: 1,
     disableAnchor: false,
-    backgroundColor: "var(--gray-8)",
-    borderColor: "var(--gray-3)",
+    backgroundColor: "var(--gray-100)",
+    borderColor: "var(--gray-700)",
     anchorSize: new naver.maps.Size(10, 10),
-    anchorColor: "var(--gray-8)",
+    anchorColor: "var(--gray-100)",
   };
 };
 

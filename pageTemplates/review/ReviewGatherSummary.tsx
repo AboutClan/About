@@ -83,7 +83,7 @@ const ContentDetail = styled.div`
   display: flex;
   align-items: center;
   font-size: 12px;
-  color: var(--gray-3);
+  color: var(--gray-700);
   > span:first-child {
     margin-right: var(--gap-1);
   }

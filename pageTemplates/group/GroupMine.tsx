@@ -27,8 +27,8 @@ function GroupMine({ myGroups }: IGroupMine) {
 }
 
 const Layout = styled.div`
-  background-color: var(--gray-8);
-  border-bottom: 6px solid var(--gray-7);
+  background-color: var(--gray-100);
+  border-bottom: 6px solid var(--gray-200);
   padding: 16px;
 `;
 
@@ -48,7 +48,7 @@ const BlockLayout = styled.div`
   margin-left: var(--gap-4);
   margin-bottom: var(--gap-4);
   font-size: 18px;
-  color: var(--gray-3);
+  color: var(--gray-700);
 `;
 
 export default GroupMine;

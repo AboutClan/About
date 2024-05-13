@@ -31,7 +31,7 @@ function RecordDetailStudyBlock({ locationStudies }: IRecordDetailStudyBlock) {
                   <Fragment key={idx2}>
                     {idx2 < 4 && <Member>{user.name.slice(-2)}</Member>}
                     {idx2 === 4 && (
-                      <FontAwesomeIcon icon={faEllipsis} size="sm" color="var(--gray-3)" />
+                      <FontAwesomeIcon icon={faEllipsis} size="sm" color="var(--gray-700)" />
                     )}
                   </Fragment>
                 ))}
@@ -89,7 +89,7 @@ const MemberWrapper = styled.div`
 
 const Member = styled.span`
   margin-right: var(--gap-1);
-  color: var(--gray-3);
+  color: var(--gray-700);
   font-size: 13px;
 `;
 

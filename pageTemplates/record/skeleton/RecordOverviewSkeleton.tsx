@@ -75,7 +75,7 @@ const MyRecordItem = styled.div`
 `;
 const ContentName = styled.span`
   margin-right: 6px;
-  color: var(--gray-3);
+  color: var(--gray-700);
   font-size: 13px;
 `;
 

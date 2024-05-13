@@ -121,7 +121,7 @@ const Login: NextPage<{
             fontSize="16px"
             width="100%"
             rounded="md"
-            background="var(--gray-7)"
+            background="var(--gray-200)"
             onClick={() => setIsModal(true)}
             mb="16px"
             justifyContent="space-between"

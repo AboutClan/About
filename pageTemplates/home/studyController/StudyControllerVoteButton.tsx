@@ -1,16 +1,17 @@
-import { useRouter, useSearchParams } from "next/navigation";
+import { Box, Button, Flex } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
-import ShadowCircleButton, {
-  IShadowCircleProps,
-} from "../../../components/atoms/buttons/ShadowCircleButton";
+import { IShadowCircleProps } from "../../../components/atoms/buttons/ShadowCircleButton";
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import { myStudyState, studyDateStatusState } from "../../../recoils/studyRecoils";
 import { DispatchType } from "../../../types/hooks/reactTypes";
 import { IParticipation } from "../../../types/models/studyTypes/studyDetails";
 import { StudyDateStatus } from "../../../types/models/studyTypes/studyInterActions";
+import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 import { VoteType } from "./StudyController";
 
 export type StudyVoteActionType =
@@ -63,11 +64,22 @@ function StudyControllerVoteButton({ setModalType }: IStudyControllerVoteButton)
   };
 
   return (
-    <>
-      <ButtonWrapper className="main_vote_btn">
-        <ShadowCircleButton buttonProps={buttonProps} onClick={handleModalOpen} />
-      </ButtonWrapper>
-    </>
+    <Flex px="20px" className="main_vote_btn" h="69px" justify="space-between" align="center">
+      <Box fontSize="16px" fontWeight={500}>
+        <Box as="span" mr="4px">
+          오늘
+        </Box>
+        <Box as="span" color="var(--color-mint)">
+          {dayjsToFormat(dayjs(), "D일")}
+        </Box>
+      </Box>
+      <Button
+        bgColor={buttonProps.color}
+        color={buttonProps.color === "var(--gray-400)" ? "black" : "white"}
+      >
+        {buttonProps.text}
+      </Button>
+    </Flex>
   );
 }
 
@@ -128,8 +140,8 @@ export const getStudyVoteButtonProps = (
         };
       return {
         text: "기간 만료",
-        color: "var(--gray-5)",
-        shadow: "var(--gray-7)",
+        color: "var(--gray-400)",
+        shadow: "var(--gray-200)",
       };
     default:
       return {
@@ -140,20 +152,6 @@ export const getStudyVoteButtonProps = (
   }
 };
 
-const ButtonWrapper = styled.div`
-  background-color: white;
-  border-radius: 50%; /* rounded-full */
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 6px;
-
-  /* Custom after pseudo-element */
-  &::after {
-    content: "";
-    /* Define your custom styles for the after pseudo-element here */
-  }
-`;
+const ButtonWrapper = styled.div``;
 
 export default StudyControllerVoteButton;

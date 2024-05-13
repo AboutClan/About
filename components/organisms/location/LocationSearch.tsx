@@ -125,7 +125,7 @@ const SearchContent = styled.div<{ isContent: boolean }>`
   height: ${(props) => props.isContent && "220px"};
   padding-left: var(--gap-3);
   overflow: auto;
-  border: ${(props) => (props.isContent ? "1px solid var(--gray-5)" : null)};
+  border: ${(props) => (props.isContent ? "1px solid var(--gray-400)" : null)};
   border-radius: var(--rounded-lg);
   padding: var(--gap-1);
 `;

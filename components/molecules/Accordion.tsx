@@ -63,7 +63,7 @@ const Container = styled.div<{ isFull: boolean }>`
   margin: ${(props) => (props.isFull ? "0 var(--gap-2)" : 0)};
   display: flex;
   width: 100%;
-  color: var(--gray-1);
+  color: var(--gray-900);
 `;
 
 const QIcon = styled.span`

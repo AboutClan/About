@@ -16,7 +16,7 @@ const theme = extendTheme({
   styles: {
     global: {
       body: {
-        color: "var(--gray-1)",
+        color: "var(--gray-900)",
       },
 
       // "*:focus": {
@@ -54,8 +54,8 @@ const theme = extendTheme({
       800: "#ffffff",
     },
     redTheme: {
-      100: "#F56565",
-      500: "#F56565",
+      100: "#f26363",
+      500: "#f26363",
       800: "#ffffff",
     },
     yellowTheme: {
@@ -89,7 +89,7 @@ const theme = extendTheme({
     },
     Button: {
       baseStyle: {
-        borderRadius: "4px",
+        borderRadius: "6px",
         _focus: {
           outline: "none",
           boxShadow: "none",
@@ -101,7 +101,10 @@ const theme = extendTheme({
         },
 
         md: {
-          h: "42px",
+          fontWeight: 500,
+          fontSize: "16px",
+          w: "92px",
+          h: "37px",
         },
         lg: {
           h: "46px",

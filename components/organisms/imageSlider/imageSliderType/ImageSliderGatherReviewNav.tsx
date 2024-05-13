@@ -64,7 +64,7 @@ const GatherReviewNavItem = styled.button`
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: var(--gray-1);
+  color: var(--gray-900);
 `;
 
 const ReviewItem = styled(GatherReviewNavItem)`
@@ -95,6 +95,6 @@ const Text = styled.div`
 
 const ReviewIcon = styled(ImageWrapper)`
   box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.16);
-  background-color: var(--gray-7);
+  background-color: var(--gray-200);
 `;
 export default ImageSliderGatherReviewNav;

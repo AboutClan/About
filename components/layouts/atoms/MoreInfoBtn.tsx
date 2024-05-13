@@ -31,7 +31,7 @@ const Layout = styled.div`
   margin-top: var(--gap-4);
   margin-bottom: var(--gap-5);
   border-radius: var(--rounded-lg);
-  color: var(--gray-3);
+  color: var(--gray-700);
   font-weight: 600;
   > span:first-child {
     margin-right: var(--gap-2);

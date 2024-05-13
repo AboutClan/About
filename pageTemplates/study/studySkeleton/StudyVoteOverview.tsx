@@ -51,7 +51,7 @@ const Container = styled.div`
   margin: var(--gap-1) 0;
   display: flex;
   align-items: center;
-  color: var(--gray-2);
+  color: var(--gray-800);
   > div {
     margin-left: var(--gap-1);
     display: flex;

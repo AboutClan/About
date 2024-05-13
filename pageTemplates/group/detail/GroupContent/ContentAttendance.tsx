@@ -4,8 +4,8 @@ import { faCheckCircle as checkCircle } from "@fortawesome/pro-regular-svg-icons
 import { faCaretLeft, faCaretRight } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -212,7 +212,7 @@ const Month = styled.div`
   border-radius: var(--rounded);
   margin: var(--gap-4) var(--gap-3);
   padding: var(--gap-2) var(--gap-5);
-  background-color: var(--gray-8);
+  background-color: var(--gray-100);
   display: flex;
   align-items: center;
 
@@ -227,10 +227,10 @@ const Container = styled.div`
 
 const TopLine = styled.div`
   display: flex;
-  background-color: var(--gray-8);
+  background-color: var(--gray-100);
   border: var(--border);
   font-size: 13px;
-  color: var(--gray-3);
+  color: var(--gray-700);
   > div {
     padding: var(--gap-1) 0;
     flex: 1;

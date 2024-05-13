@@ -34,7 +34,7 @@ function Point() {
 }
 
 const Layout = styled.div`
-  background-color: var(--gray-8);
+  background-color: var(--gray-100);
   margin: 0 var(--gap-4);
   margin-top: var(--gap-3);
 `;

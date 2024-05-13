@@ -88,7 +88,7 @@ const FirstItem = styled(Item)<{ isOpen: boolean }>`
 `;
 
 const LocationSub = styled.div`
-  color: var(--gray-3);
+  color: var(--gray-700);
   font-size: 12px;
   margin: 2px 0;
   margin-left: 44px;

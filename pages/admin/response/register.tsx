@@ -89,7 +89,7 @@ const Main = styled.main`
   flex-direction: column;
   margin-top: 14px;
   > div:first-child {
-    border-top: 1px solid var(--gray-5);
+    border-top: 1px solid var(--gray-400);
   }
 `;
 
@@ -100,7 +100,7 @@ const Item = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  border-bottom: 1px solid var(--gray-5);
+  border-bottom: 1px solid var(--gray-400);
 `;
 
 const Summary = styled.div`
@@ -118,14 +118,14 @@ const Summary = styled.div`
     }
     > span:last-child {
       font-size: 11px;
-      color: var(--gray-3);
+      color: var(--gray-700);
     }
   }
   > span {
     margin-right: 12px;
     font-size: 12px;
     font-weight: 600;
-    color: var(--gray-2);
+    color: var(--gray-800);
   }
 `;
 

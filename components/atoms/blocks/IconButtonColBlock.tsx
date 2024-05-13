@@ -23,7 +23,7 @@ export default function IconButtonColBlock({
   },
 }: IIconButtonColBlock) {
   return (
-    <Flex p="12px" rounded="lg" bgColor="var(--gray-7)" direction="column" align="center">
+    <Flex p="12px" rounded="lg" bgColor="var(--gray-200)" direction="column" align="center">
       <Box fontSize="36px">{icon}</Box>
       <Badge fontSize="14px" mb="16px" colorScheme={BADGE_COLOR_MAPPINGS[title]}>
         {title}

@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -7,7 +7,7 @@ import styled from "styled-components";
 import Slide from "../../../components/layouts/PageSlide";
 import BetweenTextSwitcher from "../../../components/molecules/navs/BetweenTextSwitcher";
 import StudyAttendCheckModal from "../../../modals/study/StudyAttendCheckModal";
-import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
+import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import StudyControllerDate from "./StudyControllerDates";
 import StudyControllerDays from "./StudyControllerDays";
 import StudyControllerVoteButton from "./StudyControllerVoteButton";
@@ -49,40 +49,21 @@ function StudyController() {
     <>
       <Slide>
         <OuterContainer className="about_calendar">
+          <ControllerHeader month={selectedDateDayjs.month() + 1} />
           <InnerContainer>
             {selectedDate && (
               <>
-                <BetweenTextSwitcher
-                  left={textSwitcherProps.left}
-                  right={textSwitcherProps.right}
-                />
-                <ContentContainer>
-                  <StudyControllerDays selectedDate={selectedDate} />
-                  <StudyControllerDate selectedDate={selectedDate} />
-                </ContentContainer>
-                <Box
-                  borderRadius="50%"
-                  pos="absolute"
-                  zIndex="5"
-                  bottom="0"
-                  left="50%"
-                  transform="translate(-50%,50%)"
-                  _after={{
-                    content: `""`,
-                    position: "absolute",
-                    zIndex: "3",
-                    backgroundColor: "white",
-                    border: "var(--border)",
-                    borderBottom: "none",
-                    top: "0px",
-                    left: "0",
-                    width: "100%",
-                    height: "50%",
-                    borderRadius: "100px 100px 0 0",
-                  }}
-                >
-                  <StudyControllerVoteButton setModalType={setModalType} />
+                <Box px="20px">
+                  <BetweenTextSwitcher
+                    left={textSwitcherProps.left}
+                    right={textSwitcherProps.right}
+                  />
+                  <Box borderBottom="var(--border)">
+                    <StudyControllerDays />
+                    <StudyControllerDate selectedDateDayjs={selectedDateDayjs} />
+                  </Box>
                 </Box>
+                <StudyControllerVoteButton setModalType={setModalType} />
               </>
             )}
           </InnerContainer>
@@ -95,6 +76,21 @@ function StudyController() {
     </>
   );
 }
+
+interface ControllerHeaderProps {
+  month: number;
+}
+
+export const ControllerHeader = ({ month }: ControllerHeaderProps) => {
+  return (
+    <Flex p="0 20px" justify="space-between" h="58px" alignItems="center">
+      <Box fontSize="20px" fontWeight={600}>
+        {month}월
+      </Box>
+      <Box>버튼</Box>
+    </Flex>
+  );
+};
 
 export const getTextSwitcherProps = (
   selectedDateDayjs: Dayjs,
@@ -157,37 +153,24 @@ const handleMonthMoveByDate = (date: number, currentDate: number) => {
 };
 
 export const getDateArr = (selectedDateDayjs: Dayjs) => {
-  const temp = [];
-  for (let i = -3; i <= 3; i++) {
-    const dateDayjs = selectedDateDayjs.add(i, "day");
-    temp.push({ day: dayjsToFormat(dateDayjs, "ddd"), date: dateDayjs.date() });
+  const startDate = selectedDateDayjs.startOf("week");
+  const dateArr = [];
+  for (let i = 0; i < 7; i++) {
+    dateArr.push(startDate.add(i, "day").date());
   }
-
-  return temp;
+  return dateArr;
 };
 
-// Styled component for the outer container
 const OuterContainer = styled.div`
-  margin: 0 16px; /* mx-4 */
-  margin-top: 16px; /* mt-4 */
   background-color: white;
-  height: 192px; /* h-48 */
-  border-radius: var(--rounded-lg); /* rounded-lg */
-  box-shadow: var(--shadow); /* shadow */
-  border-bottom: var(--border); /* border-b-1.5 border-gray-7 */
+  height: 267px;
+  border-radius: 12px;
+
   position: relative;
-  border: 1px solid var(--gray-6);
 `;
 
-// Styled component for the inner container with the border
 const InnerContainer = styled.div`
-  border-bottom: var(--border); /* border-b-1.5 border-gray-7 */
   position: relative;
-  height: 134px;
 `;
 
-// You might need to adjust the margin-top value or make it dynamic/adjustable via props
-const ContentContainer = styled.div`
-  margin-top: 32px; /* mt-9 */
-`;
 export default StudyController;

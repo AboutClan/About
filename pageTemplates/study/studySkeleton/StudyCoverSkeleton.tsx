@@ -32,7 +32,7 @@ const SpaceIcon = styled.div`
   height: 70px;
   border-radius: 18px;
   position: absolute;
-  border: 1px solid var(--gray-5);
+  border: 1px solid var(--gray-400);
   overflow: hidden;
   bottom: -24px;
   left: 12px;

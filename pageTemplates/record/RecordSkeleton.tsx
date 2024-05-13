@@ -166,14 +166,14 @@ const MyRecordItem = styled.div`
 `;
 const ContentName = styled.span`
   margin-right: var(--gap-2);
-  color: var(--gray-3);
+  color: var(--gray-700);
   font-size: 13px;
 `;
 
 const ContentValue = styled.span`
   font-weight: 700;
   font-size: 14px;
-  color: var(--gray-2);
+  color: var(--gray-800);
 `;
 const SpaceBadge = styled.section`
   display: flex;
@@ -196,16 +196,16 @@ const Category = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: var(--gray-7);
-  border-top: 1px solid var(--gray-6);
-  border-bottom: 1px solid var(--gray-6);
+  background-color: var(--gray-200);
+  border-top: 1px solid var(--gray-300);
+  border-bottom: 1px solid var(--gray-300);
   > div {
     display: flex;
     align-items: center;
   }
   > span:last-child {
     font-size: 10px;
-    color: var(--gray-3);
+    color: var(--gray-700);
   }
 `;
 
@@ -225,7 +225,7 @@ const DayItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid var(--gray-7);
+  border: 1px solid var(--gray-200);
 `;
 
 const DayItemDate = styled.span<{ isToday: boolean }>`
@@ -242,7 +242,7 @@ const DayLine = styled.div`
   margin: var(--gap-2) 24px;
   display: flex;
   justify-content: space-between;
-  color: var(--gray-3);
+  color: var(--gray-700);
   font-size: 12px;
 `;
 
@@ -253,18 +253,18 @@ export const Detail = styled.div`
   flex-direction: column;
 `;
 const Block = styled.div`
-  border-top: 4px solid var(--gray-7);
+  border-top: 4px solid var(--gray-200);
   padding: var(--gap-3) var(--gap-4);
   padding-bottom: 0;
 `;
 const Date = styled.div`
   margin-bottom: var(--gap-3);
   font-size: 13px;
-  color: var(--gray-2);
+  color: var(--gray-800);
 `;
 const StudyInfo = styled.div`
   font-size: 12px;
-  color: var(--gray-2);
+  color: var(--gray-800);
 `;
 const PlaceInfo = styled.div`
   margin-bottom: var(--gap-3);
@@ -273,7 +273,7 @@ const PlaceInfo = styled.div`
 const PlaceName = styled.div`
   display: flex;
   align-items: center;
-  color: var(--gray-2);
+  color: var(--gray-800);
   font-size: 14px;
   > span:first-child {
     font-weight: 600;
@@ -295,6 +295,6 @@ const MemberWrapper = styled.div`
 
 const Member = styled.span`
   margin-right: var(--gap-1);
-  color: var(--gray-3);
+  color: var(--gray-700);
 `;
 export default RecordSkeleton;

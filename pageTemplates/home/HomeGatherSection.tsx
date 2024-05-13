@@ -1,11 +1,10 @@
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import HighlightedTextButton from "../../components/atoms/buttons/HighlightedTextButton";
-import SectionBar from "../../components/molecules/bars/SectionBar";
 import { IPostThumbnailCard } from "../../components/molecules/cards/PostThumbnailCard";
 import {
   CardColumnLayout,
@@ -42,17 +41,11 @@ export default function HomeGatherSection() {
   }, [gathers]);
 
   return (
-    <>
-      <SectionBar
-        title="ABOUT 모임"
-        rightComponent={
-          <HighlightedTextButton
-            text="더보기"
-            onClick={() => router.push(`/gather?location=${location}`)}
-          />
-        }
-      />
-      <Layout>
+    <Box mb="24px">
+      <Flex align="center" h="58px" fontWeight={600} fontSize="20px">
+        🔥 ABOUT 모임
+      </Flex>
+      <>
         {cardDataArr.length ? (
           <CardColumnLayout
             cardDataArr={cardDataArr}
@@ -62,8 +55,8 @@ export default function HomeGatherSection() {
         ) : (
           <CardColumnLayoutSkeleton />
         )}
-      </Layout>
-    </>
+      </>
+    </Box>
   );
 }
 
@@ -92,13 +85,13 @@ export const setGatherDataToCardCol = (
 const getGatherBadge = (gatherStatus: GatherStatus): ITextAndColorSchemes => {
   switch (gatherStatus) {
     case "open":
-      return { text: "오픈", colorScheme: "green" };
+      return { text: "오픈", color: "var(--color-mint)" };
     case "close":
-      return { text: "취소", colorScheme: "gray" };
+      return { text: "취소", color: "var(--gray-500)" };
     case "pending":
-      return { text: "모집중", colorScheme: "red" };
+      return { text: "모집중", color: "var(--color-red)" };
     case "end":
-      return { text: "open", colorScheme: "mint" };
+      return { text: "open", color: "mint" };
   }
 };
 

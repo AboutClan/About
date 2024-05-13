@@ -40,7 +40,7 @@ const DetailItem = styled.div`
   color: var(--gray-2);
   margin-bottom: var(--gap-1);
   > span:first-child {
-    color: var(--gray-1);
+    color: var(--gray-900);
     display: inline-block;
     font-weight: 600;
     width: 100px;

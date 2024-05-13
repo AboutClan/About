@@ -74,7 +74,7 @@ const Input = styled.input`
   border-radius: var(--rounded);
   margin-bottom: var(--gap-4);
   :focus {
-    outline-color: var(--gray-1);
+    outline-color: var(--gray-900);
   }
 `;
 

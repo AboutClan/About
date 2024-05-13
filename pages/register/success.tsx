@@ -43,7 +43,7 @@ function ApplySuccess() {
 
 const Layout = styled.div`
   min-height: 100vh;
-  background-color: var(--gray-8);
+  background-color: var(--gray-100);
   display: flex;
   flex-direction: column;
 `;
@@ -66,14 +66,14 @@ const Content = styled.div`
   align-items: center;
   margin-top: var(--gap-4);
   > span:first-child {
-    color: var(--gray-1);
+    color: var(--gray-900);
     font-weight: 600;
     font-size: 22px;
   }
   > span:last-child {
     margin-top: var(--gap-3);
     font-size: 17px;
-    color: var(--gray-2);
+    color: var(--gray-800);
   }
 `;
 

@@ -68,7 +68,7 @@ const Input = styled.input`
   border: var(--border);
   border-radius: var(--rounded);
   :focus {
-    outline-color: var(--gray-1);
+    outline-color: var(--gray-900);
   }
 `;
 

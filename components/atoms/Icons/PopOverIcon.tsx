@@ -21,7 +21,7 @@ export function PopOverIcon({ title, text }: IPopoverIcon) {
     <Popover>
       <PopoverTrigger>
         <IconWrapper>
-          <FontAwesomeIcon icon={faQuestionCircle} color="var(--gray-3)" />
+          <FontAwesomeIcon icon={faQuestionCircle} color="var(--gray-700)" />
         </IconWrapper>
       </PopoverTrigger>
       <PopoverContent ml="var(--gap-2)" fontSize="12px" _focus={{ outline: "none" }}>

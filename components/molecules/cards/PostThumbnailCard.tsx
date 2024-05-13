@@ -1,16 +1,17 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { faInfinity } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
+import LocationDotIcon from "../../../assets/icons/LocationDotIcon";
+import UserIcon from "../../../assets/icons/UserIcon";
 
 import { SingleLineText } from "../../../styles/layout/components";
 import { IImageProps } from "../../../types/components/assetTypes";
 import { ITextAndColorSchemes } from "../../../types/components/propTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import OutlineBadge from "../../atoms/badges/OutlineBadge";
-import { UserIcon } from "../../atoms/Icons/icons";
 import Skeleton from "../../atoms/skeleton/Skeleton";
 import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
 export interface IPostThumbnailCard {
@@ -50,38 +51,48 @@ export function PostThumbnailCard({
 
   return (
     <CardLink href={url} onClick={func}>
-      <Image
-        src={image.url}
-        alt="thumbnailImage"
-        priority={image.priority}
-        width={86.5}
-        height={86.5}
-        style={{ borderRadius: "var(--rounded)" }}
-      />
-      <ContentContainer>
-        <TitleHeader>
-          <Title>{title}</Title>
-          <OutlineBadge size="sm" text={badge.text} colorScheme={badge.colorScheme} />
-        </TitleHeader>
-        <Subtitle>{subtitle}</Subtitle>
-        <StatusContainer>
-          <AvatarGroupsOverwrap userAvatarArr={userAvatarArr} size="sm" />
-          <div className="statusText">
-            <Box color="var(--color-mint)" fontWeight={600} mr="8px" mt="4px">
-              {statusText}
-            </Box>
-            <div className="userIconContainer">
-              <UserIcon />
-              <span>
-                <Box as="span" color={maxCnt && participants.length > maxCnt && "var(--color-red)"}>
-                  {participants.length}
-                </Box>
-                /{maxCnt || <FontAwesomeIcon icon={faInfinity} />}
-              </span>
+      <Flex my="2px" flex={1}>
+        <Image
+          src={image.url}
+          alt="thumbnailImage"
+          priority={image.priority}
+          width={80}
+          height={80}
+          style={{ borderRadius: "8px" }}
+        />
+        <Flex direction="column" ml="12px" flex={1}>
+          <Flex align="center">
+            <Flex mr="4px">{title !== "개인 스터디" && <LocationDotIcon />}</Flex>
+            <Title>{title}</Title>
+          </Flex>
+          <Subtitle>{subtitle}</Subtitle>
+          <StatusContainer>
+            <AvatarGroupsOverwrap userAvatarArr={userAvatarArr} size="sm" />
+            <div className="statusText">
+              <Box color="var(--color-mint)" fontWeight={600} mr="8px" mt="4px">
+                {statusText}
+              </Box>
             </div>
-          </div>
-        </StatusContainer>
-      </ContentContainer>
+          </StatusContainer>
+        </Flex>
+      </Flex>
+      <Flex direction="column" justifyContent="space-between" align="flex-end">
+        <OutlineBadge size="sm" text={badge.text} color={badge.color} />
+        <Flex className="userIconContainer" align="center">
+          <UserIcon />
+          <Flex ml="3px" align="center" fontSize="16px" fontWeight={500}>
+            <Box as="span" color={maxCnt && participants.length >= maxCnt && "var(--color-red)"}>
+              {participants.length}
+            </Box>
+            <Box color="var(--gray-400)">
+              <Box as="span" mx="2px">
+                /
+              </Box>
+              {maxCnt || <FontAwesomeIcon icon={faInfinity} />}
+            </Box>
+          </Flex>
+        </Flex>
+      </Flex>
     </CardLink>
   );
 }
@@ -110,15 +121,17 @@ export function PostThumbnailCardSkeleton() {
 }
 
 const CardLink = styled(Link)`
-  height: 110px;
+  height: 116px;
   display: flex;
-  padding: 12px;
+  padding: 16px;
   background-color: white;
   border: var(--border);
-  border-radius: var(--rounded-lg);
+  border-radius: 8px;
   box-shadow: var(--shadow);
+  justify-content: space-between;
+
   &:hover {
-    background-color: var(--gray-7); // gray-100
+    background-color: var(--gray-200); // gray-100
   }
 `;
 
@@ -135,26 +148,29 @@ const TitleHeader = styled.div`
 `;
 
 const Title = styled(SingleLineText)`
-  flex: 0.9;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
 `;
 
 const Subtitle = styled(SingleLineText)`
-  color: var(--gray-3); // text-gray-500
-  font-size: 13px;
-  width: 78%;
+  color: var(--gray-600);
+  font-size: 12px;
+  width: 90%;
+  font-weight: 500;
+
+  margin-top: 4px;
 `;
 
 const StatusContainer = styled.div`
   flex: 1;
   display: flex;
   align-items: flex-end;
+
   .statusText {
     display: flex;
     margin-left: auto;
     align-items: center;
-    color: var(--gray-3); // text-gray-500
+    color: var(--gray-700); // text-gray-500
     .userIconContainer {
       display: flex;
       align-items: center;
@@ -178,7 +194,7 @@ const SkeletonContainer = styled.div`
   border-radius: var(--rounded-lg);
   box-shadow: var(--shadow);
   &:hover {
-    background-color: var(--gray-7); // gray-100
+    background-color: var(--gray-200); // gray-100
   }
 `;
 

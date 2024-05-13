@@ -52,7 +52,7 @@ const IconWrapper = styled.div`
   justify-content: center;
   align-items: center;
   > * {
-    color: var(--gray-5);
+    color: var(--gray-400);
     margin-right: var(--gap-1);
   }
 `;

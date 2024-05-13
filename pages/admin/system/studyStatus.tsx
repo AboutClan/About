@@ -37,8 +37,6 @@ function AdminStudyStatus() {
   const { data: SUWAN } = useStudyVoteQuery(dayjsToStr(date), "수원");
   const { data: YANG } = useStudyVoteQuery(dayjsToStr(date), "양천");
 
-
-
   const handleStatus = (type: StudyStatus) => {};
 
   return (
@@ -48,13 +46,13 @@ function AdminStudyStatus() {
         <Date>
           <FontAwesomeIcon
             icon={faChevronLeft}
-            color="var(--gray-2)"
+            color="var(--gray-800)"
             onClick={() => setDate((old) => old.subtract(1, "day"))}
           />
           <span>{date.format("M월 DD일")}</span>
           <FontAwesomeIcon
             icon={faChevronRight}
-            color="var(--gray-2)"
+            color="var(--gray-800)"
             onClick={() => setDate((old) => old.add(1, "day"))}
           />
         </Date>

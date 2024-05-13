@@ -1,5 +1,5 @@
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
@@ -189,7 +189,7 @@ function Index() {
 
 const Layout = styled.div`
   min-height: 100vh;
-  background-color: var(--gray-8);
+  background-color: var(--gray-100);
   padding-bottom: 20px;
 `;
 

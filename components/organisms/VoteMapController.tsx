@@ -142,7 +142,7 @@ function VoteMapController({
               size="sm"
               w="34px"
               h="34px"
-              border={preset !== "first" && "1px solid var(--gray-4)"}
+              border={preset !== "first" && "1px solid var(--gray-500)"}
               bgColor={preset === "first" ? "var(--color-mint) !important" : "white"}
               color={preset === "first" ? "white !important" : "var(--gray-2)"}
               mr="var(--gap-2)"
@@ -157,7 +157,7 @@ function VoteMapController({
               color={preset === "second" ? "white !important" : "var(--gray-2)"}
               size="sm"
               mr="var(--gap-2)"
-              border="1px solid var(--gray-4)"
+              border="1px solid var(--gray-500)"
               onClick={() => onClickSecond()}
             >
               2
@@ -168,7 +168,7 @@ function VoteMapController({
               bgColor={preset === "second" ? "var(--color-mint)" : "white"}
               color={preset === "second" ? "white !important" : "var(--gray-2)"}
               size="sm"
-              border="1px solid var(--gray-4)"
+              border="1px solid var(--gray-500)"
               onClick={onClickGear}
             >
               <FontAwesomeIcon icon={faGear} />
@@ -198,7 +198,7 @@ export function PrecisionPopOver({ precision, setPrecision }) {
             borderRadius="4px"
             w="34px"
             h="34px"
-            border="1px solid var(--gray-5)"
+            border="1px solid var(--gray-400)"
             bg="white"
           >
             <FontAwesomeIcon icon={faBullseyeArrow} size="xl" />
@@ -285,7 +285,7 @@ const ReturnBtn = styled.button`
   color: white;
   padding: 4px;
   border-radius: var(--rounded);
-  border: 1px solid var(--gray-5);
+  border: 1px solid var(--gray-400);
 `;
 
 const TargetIcon = styled.button``;

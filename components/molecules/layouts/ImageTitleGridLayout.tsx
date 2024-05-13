@@ -71,18 +71,18 @@ const GridContainer = styled.div<{ row: number; col: number }>`
   display: grid;
   grid-template-columns: ${(props) => `repeat(${props.col}, 1fr)`};
   grid-template-rows: ${(props) => `repeat(${props.row}, 1fr)`};
-  gap: 16px;
+  gap: 12px;
 `;
 
 const ImageContainer = styled.div`
   position: relative;
   aspect-ratio: 1;
-  border-radius: var(--rounded-lg);
+  border-radius: 8px;
   overflow: hidden;
 `;
 
 const TextContainer = styled(SingleLineText)`
-  margin-top: 8px;
+  margin-top: 12px;
 `;
 
 const Button = styled.button<{ $isSelected: "main" | "sub" | null }>`
@@ -90,7 +90,7 @@ const Button = styled.button<{ $isSelected: "main" | "sub" | null }>`
     props.$isSelected === "main"
       ? "var(--color-mint)"
       : props.$isSelected === "sub"
-        ? "var(--color-orange)"
+        ? "var(--color-yellow)"
         : null};
   color: ${(props) => (props.$isSelected ? "white" : "inherit")};
   border-radius: var(--rounded);

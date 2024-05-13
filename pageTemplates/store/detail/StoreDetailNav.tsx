@@ -23,7 +23,7 @@ function StoreDetailNav({
   return (
     <Layout>
       <ButtonNav>
-        <Button bg="var(--gray-7)" size="lg" width="50%" onClick={onToggle}>
+        <Button bg="var(--gray-200)" size="lg" width="50%" onClick={onToggle}>
           참여현황
         </Button>
         {isCompleted ? (
@@ -37,7 +37,7 @@ function StoreDetailNav({
         )}
       </ButtonNav>
       <Collapse in={isOpen} animateOpacity>
-        <Box fontSize="12px" p="var(--gap-2)" bg="var(--gray-7)" color="var(--gray-2)">
+        <Box fontSize="12px" p="var(--gap-2)" bg="var(--gray-200)" color="var(--gray-2)">
           {applyUsers?.length === 0 ? (
             "참여 인원 없음"
           ) : (

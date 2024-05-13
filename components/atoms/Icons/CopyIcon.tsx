@@ -45,7 +45,7 @@ export function CopyBtn({ size, text }: ICopyBtn) {
 
   return (
     <button onClick={handleCopy}>
-      <FontAwesomeIcon icon={faCopy} color="var(--gray-1)" />
+      <FontAwesomeIcon icon={faCopy} color="var(--gray-900)" />
     </button>
   );
 }

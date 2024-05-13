@@ -1,5 +1,5 @@
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import RowButtonBlock from "../../../components/atoms/blocks/RowButtonBlock";
@@ -109,10 +109,10 @@ const Layout = styled.div`
 const BlockName = styled.div`
   padding: var(--gap-2) var(--gap-4);
   font-size: 14px;
-  background-color: var(--gray-7);
+  background-color: var(--gray-200);
   font-weight: 600;
   display: flex;
-  color: var(--gray-3);
+  color: var(--gray-700);
 `;
 
 const NavBlock = styled.div`

@@ -71,7 +71,7 @@ const Layout = styled.div``;
 const Item = styled.div`
   display: flex;
   justify-content: space-between;
-  border-bottom: 6px solid var(--gray-6);
+  border-bottom: 6px solid var(--gray-300);
   padding: var(--gap-4);
 `;
 
@@ -84,11 +84,11 @@ const ItemHeader = styled.header`
   > div {
     span {
       margin-right: var(--gap-2);
-      color: var(--gray-1);
+      color: var(--gray-900);
     }
     > span:last-child {
       font-size: 12px;
-      color: var(--gray-3);
+      color: var(--gray-700);
     }
   }
 `;
@@ -107,7 +107,7 @@ const ButtonNav = styled.div`
 
 const Content = styled.div`
   padding-top: 8px;
-  color: var(--gray-2);
+  color: var(--gray-800);
   font-size: 13px;
   min-height: 20px;
 `;

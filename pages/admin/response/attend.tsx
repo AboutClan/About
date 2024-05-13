@@ -41,7 +41,7 @@ const Item = styled.div`
   display: flex;
   flex-direction: column;
 
-  border-bottom: 6px solid var(--gray-6);
+  border-bottom: 6px solid var(--gray-300);
   padding: 16px 0;
 `;
 const Wrapper = styled.div`
@@ -54,18 +54,18 @@ const ItemHeader = styled.header`
   flex: 1;
   margin-top: var(--gap-2);
 
-  color: var(--gray-2);
+  color: var(--gray-800);
 
   span {
     font-size: 12px;
-    color: var(--gray-3);
+    color: var(--gray-700);
     margin-right: 8px;
   }
 `;
 
 const Content = styled.div`
   padding: var(--gap-2) 0;
-  color: var(--gray-2);
+  color: var(--gray-800);
   font-size: 13px;
   display: flex;
   align-items: center;

@@ -12,12 +12,12 @@ const Layout = styled.div`
   margin-bottom: 16px;
   > span:last-child {
     font-size: 14px;
-    color: var(--gray-3);
+    color: var(--gray-700);
   }
   > span:first-child {
     font-size: 16px;
     font-weight: 600;
-    color: var(--gray-1);
+    color: var(--gray-900);
   }
 `;
 

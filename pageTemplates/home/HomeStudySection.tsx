@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -153,13 +153,13 @@ const getVotePoint = (attCnt: number) => (attCnt === 0 ? 10 : attCnt === 5 ? 2 :
 const getBadgeText = (status: StudyStatus, point: number): ITextAndColorSchemes => {
   switch (status) {
     case "open":
-      return { text: "open", colorScheme: "green" };
+      return { text: "오픈", color: "var(--color-mint)" };
     case "dismissed":
-      return { text: "closed", colorScheme: "gray" };
+      return { text: "취소", color: "var(--color-red)" };
     case "free":
-      return { text: "free", colorScheme: "purple" };
+      return { text: "자유", color: "var(--color-green)" };
     case "pending":
-      return { text: `+${point} POINT`, colorScheme: "redTheme" };
+      return { text: `+${point} POINT`, color: "redTheme" };
   }
 };
 
@@ -182,5 +182,6 @@ const swipePower = (offset: number, velocity: number) => {
 };
 
 const MotionDiv = styled(motion.div)`
-  padding: 16px;
+  margin-top: 16px;
+  margin-bottom: 24px;
 `;

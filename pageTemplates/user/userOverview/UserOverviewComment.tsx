@@ -65,7 +65,7 @@ function UserOverviewComment() {
   } = {
     "--fa-secondary-color": "white",
     "--fa-secondary-opacity": 1,
-    border: isFocused ? "1px solid var(--color-mint)" : "1px solid var(--gray-6)",
+    border: isFocused ? "1px solid var(--color-mint)" : "1px solid var(--gray-300)",
     borderRadius: "50%",
   };
 
@@ -84,7 +84,7 @@ function UserOverviewComment() {
         <FontAwesomeIcon
           icon={faPenCircle}
           size="lg"
-          color={isFocused ? "var(--color-mint)" : "var(--gray-4)"}
+          color={isFocused ? "var(--color-mint)" : "var(--gray-500)"}
           style={iconStyle}
         />
       </InputRightElement>

@@ -197,7 +197,7 @@ const Textarea = styled.textarea`
   padding: var(--gap-2);
   flex: 1;
   height: 100%;
-  background-color: var(--gray-7);
+  background-color: var(--gray-200);
   border-radius: var(--rounded-lg);
 `;
 export default RequestRestModal;

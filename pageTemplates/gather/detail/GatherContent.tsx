@@ -30,7 +30,7 @@ const Layout = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 140px;
-  border-bottom: 6px solid var(--gray-7);
+  border-bottom: 6px solid var(--gray-200);
 `;
 const Content = styled.pre`
   min-height: 100px;
@@ -44,7 +44,7 @@ const Content = styled.pre`
 const ListContainer = styled.div`
   padding: var(--gap-3) 16px;
 
-  background-color: var(--gray-8);
+  background-color: var(--gray-100);
   border: var(--border);
 `;
 

@@ -1,19 +1,13 @@
 import { Box } from "@chakra-ui/react";
-import {
-  faBadgeCheck,
-  faBell,
-  faBooks,
-  faCircleP,
-  faCircleUser,
-} from "@fortawesome/pro-light-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-
+import BellIcon from "../../../assets/icons/BellIcon";
+import UserCircleIcon from "../../../assets/icons/UserCircleIcon";
+import MainLogo from "../../../assets/MainLogo";
 import Slide from "../../../components/layouts/PageSlide";
 import IconButtonNav, { IIconButtonNavBtn } from "../../../components/molecules/navs/IconButtonNav";
 import {
@@ -70,26 +64,26 @@ function HomeHeader() {
 
   const generateIconBtnArr = () => {
     const arr = [
-      {
-        icon: <FontAwesomeIcon icon={faBooks} />,
-        func: () => setModalType("rule"),
-      },
-      {
-        icon: <FontAwesomeIcon icon={faCircleP} />,
-        func: () => setModalType("pointGuide"),
-      },
+      // {
+      //   icon: <FontAwesomeIcon icon={faBooks} />,
+      //   func: () => setModalType("rule"),
+      // },
+      // {
+      //   icon: <FontAwesomeIcon icon={faCircleP} />,
+      //   func: () => setModalType("pointGuide"),
+      // },
       {
         icon: (
           <>
-            <FontAwesomeIcon icon={faBell} />
-            {isNoticeAlert && <Alert />}
+            <BellIcon />
+            {/* {isNoticeAlert && <Alert />} */}
           </>
         ),
         link: "/notice",
         func: () => setSlideDirection("right"),
       },
       {
-        icon: <FontAwesomeIcon icon={faCircleUser} />,
+        icon: <UserCircleIcon />,
         link: !isGuest ? "/user" : null,
         func: isGuest
           ? () => router.replace(`/home?${newSearchparams.toString()}&logout=on`)
@@ -98,10 +92,10 @@ function HomeHeader() {
     ];
 
     if (todayDailyCheck === false && showDailyCheck) {
-      arr.unshift({
-        icon: <FontAwesomeIcon icon={faBadgeCheck} color="var(--color-mint)" />,
-        func: () => setModalType("dailyCheck"),
-      });
+      // arr.unshift({
+      //   icon: <FontAwesomeIcon icon={faBadgeCheck} color="var(--color-mint)" />,
+      //   func: () => setModalType("dailyCheck"),
+      // });
     }
 
     return arr;
@@ -118,7 +112,7 @@ function HomeHeader() {
       {renderHomeHeader && (
         <Slide isFixed={true}>
           <Layout>
-            <Title>ABOUT</Title>
+            <MainLogo />
             <Box className="about_header" fontSize="20px">
               <IconButtonNav iconList={iconBtnArr} />
             </Box>
@@ -137,11 +131,11 @@ const Layout = styled.header`
 
   font-size: 20px;
   background-color: white;
-  padding: 0 var(--gap-4);
+  padding: 0 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: var(--gray-2);
+  color: var(--gray-800);
   border-bottom: var(--border);
   max-width: var(--max-width);
   margin: 0 auto;
@@ -154,7 +148,7 @@ const Layout = styled.header`
 
 const Title = styled.span`
   font-weight: 800;
-  color: var(--gray-1);
+  color: var(--gray-900);
 `;
 
 const Alert = styled(AlertIcon)`

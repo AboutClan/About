@@ -86,7 +86,7 @@ const Item = styled.div`
 
 const Category = styled.span`
   > span:last-child {
-    color: var(--gray-1);
+    color: var(--gray-900);
     font-weight: 600;
     font-size: 14px;
   }

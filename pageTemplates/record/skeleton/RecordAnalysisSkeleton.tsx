@@ -43,7 +43,7 @@ const Date = styled.div`
   padding: var(--gap-1) var(--gap-4);
   font-weight: 600;
   font-size: 12px;
-  background-color: var(--gray-7);
+  background-color: var(--gray-200);
   > span {
     display: inline-block;
     width: 64px;

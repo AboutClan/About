@@ -137,7 +137,7 @@ function PresentListPopOver() {
           선물 목록
         </Button>
       </PopoverTrigger>
-      <PopoverContent bg="var(--gray-8)">
+      <PopoverContent bg="var(--gray-100)">
         <PopoverHeader fontWeight="semibold">
           선물 목록 <SubTitle>(16 종류)</SubTitle>
         </PopoverHeader>
@@ -164,7 +164,7 @@ function PresentPercentPopOver() {
           당첨 확률
         </Button>
       </PopoverTrigger>
-      <PopoverContent bg="var(--gray-8)">
+      <PopoverContent bg="var(--gray-100)">
         <PopoverHeader fontWeight="semibold">
           당첨 확률<SubTitle>(총 7.06%)</SubTitle>
         </PopoverHeader>
@@ -219,7 +219,7 @@ const Detail = styled.div`
 `;
 
 const SubTitle = styled.span`
-  color: var(--gray-3);
+  color: var(--gray-700);
   font-weight: 400;
   font-size: 12px;
 `;

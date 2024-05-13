@@ -61,6 +61,6 @@ const HrDiv = styled.div`
   margin: 0 !important;
   padding: 0 !important;
   height: 1px;
-  background-color: var(--gray-5);
+  background-color: var(--gray-400);
 `;
 export default MemberSkeleton;

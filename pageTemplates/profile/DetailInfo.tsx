@@ -73,7 +73,7 @@ const Profile = styled.div`
 const Interests = styled.div`
   display: flex;
   flex-direction: column;
-  color: var(--gray-1);
+  color: var(--gray-900);
   font-weight: 600;
 
   > span {
@@ -86,10 +86,10 @@ const ProfileItem = styled.div`
   > span:first-child {
     display: inline-block;
     width: 64px;
-    color: var(--gray-3);
+    color: var(--gray-700);
   }
   > span:last-child {
-    color: var(--gray-1);
+    color: var(--gray-900);
     font-weight: 600;
   }
 `;

@@ -6,8 +6,8 @@ import DatePicker from "react-datepicker";
 import styled from "styled-components";
 
 import {
-  PICKER_DATE_AND_TIME,
   PickerDateAndTimeHeader,
+  PICKER_DATE_AND_TIME,
 } from "../../../components/molecules/picker/DatePickerOptions";
 import { DispatchType } from "../../../types/hooks/reactTypes";
 import { IGatherWriting } from "../../../types/models/gatherTypes/gatherTypes";
@@ -136,6 +136,6 @@ const StyledDatePicker = styled(DatePicker)`
 const Message = styled.div`
   margin-top: var(--gap-5);
   font-size: 13px;
-  color: var(--gray-4);
+  color: var(--gray-500);
 `;
 export default GatherWritingDateDate;

@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -153,6 +153,6 @@ const HrDiv = styled.div`
   margin: 0 !important;
   padding: 0 !important;
   height: 1px;
-  background-color: var(--gray-6);
+  background-color: var(--gray-300);
 `;
 export default Member;

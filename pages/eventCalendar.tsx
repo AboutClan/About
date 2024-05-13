@@ -175,7 +175,7 @@ const WeekTitleHeader = styled.div`
 const DayOfWeek = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: var(--gray-7);
+  background-color: var(--gray-200);
   padding: var(--gap-1) 0;
   font-size: 12px;
   > div {
@@ -206,7 +206,7 @@ const DateBlock = styled.div<{ isToday: boolean }>`
   text-align: center;
   flex: 1;
   border-top: var(--border);
-  background-color: ${(props) => (props.isToday ? "var(--gray-7)" : null)};
+  background-color: ${(props) => (props.isToday ? "var(--gray-200)" : null)};
 `;
 
 const Date = styled.div<{ day: "sun" | "sat"; isToday: boolean }>`
@@ -251,7 +251,7 @@ const TodayCircle = styled.div`
   height: 18px;
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  background-color: var(--gray-1);
+  background-color: var(--gray-900);
   color: white;
 `;
 

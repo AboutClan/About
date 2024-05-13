@@ -92,7 +92,7 @@ const WinnerItem = styled.div`
 `;
 
 const Gift = styled.div`
-  color: var(--gray-1);
+  color: var(--gray-900);
   font-size: 13px;
   margin-bottom: var(--gap-2);
 

@@ -125,7 +125,7 @@ const RuleItem = styled.li`
     padding: 4px 8px;
 
     :focus {
-      outline-color: var(--gray-1);
+      outline-color: var(--gray-900);
     }
   }
 `;

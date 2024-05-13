@@ -57,5 +57,5 @@ const LeftSection = styled.div`
 // Title 스타일
 const Title = styled.div`
   font-weight: 800; /* font-extrabold */
-  color: var(--gray-1); /* text-gray-1 - 색상은 예시입니다 */
+  color: var(--gray-900); /* text-gray-1 - 색상은 예시입니다 */
 `;
