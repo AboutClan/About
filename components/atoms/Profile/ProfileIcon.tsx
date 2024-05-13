@@ -17,8 +17,7 @@ import {
 
 interface IProfileIcon {
   user: IUser | IUserRegisterForm | "guest" | "ABOUT";
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  size: any;
+  size: keyof typeof ICON_SIZE;
   isMember?: boolean;
   isImagePriority?: boolean;
 }

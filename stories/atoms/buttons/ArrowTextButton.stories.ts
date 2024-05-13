@@ -5,14 +5,11 @@ import ArrowTextButton from "../../../components/atoms/buttons/ArrowTextButton";
 const meta = {
   title: "ATOMS/Button/ArrowTextButton",
   component: ArrowTextButton,
-  parameters: {},
   tags: ["autodocs"],
-  argTypes: {},
-
-  args: {},
 } satisfies Meta<typeof ArrowTextButton>;
 
 export default meta;
+
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
