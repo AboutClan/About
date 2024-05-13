@@ -4,7 +4,7 @@ import Accordion from "../../components/molecules/Accordion";
 import { ACCORDION_CONTENT_FEE } from "../../constants/contentsText/accordionContents";
 
 const meta = {
-  title: "Molecules/Accordion",
+  title: "ATOMS/molecules/Accordion",
   component: Accordion,
   parameters: {},
   tags: ["autodocs"],
