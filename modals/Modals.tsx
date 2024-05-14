@@ -80,7 +80,7 @@ export function ModalLayout({
       >
         {!headerOptions ? (
           <>
-            <ChakraModalHeader p="var(--gap-4)" fontSize="18px" borderBottom="var(--border)">
+            <ChakraModalHeader p="var(--gap-4) 20px" fontSize="20px" borderBottom="var(--border)">
               {title}
             </ChakraModalHeader>
             <ModalCloseButton size="lg" />

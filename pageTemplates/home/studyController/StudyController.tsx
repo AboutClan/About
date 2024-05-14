@@ -2,14 +2,15 @@ import { Box, Flex } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import Slide from "../../../components/layouts/PageSlide";
-import BetweenTextSwitcher from "../../../components/molecules/navs/BetweenTextSwitcher";
+import Calendar from "../../../components/molecules/Calendar";
+import DateCalendarModal from "../../../modals/aboutHeader/DateCalendarModal";
 import StudyAttendCheckModal from "../../../modals/study/StudyAttendCheckModal";
+import { studyDateStatusState } from "../../../recoils/studyRecoils";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
-import StudyControllerDate from "./StudyControllerDates";
-import StudyControllerDays from "./StudyControllerDays";
 import StudyControllerVoteButton from "./StudyControllerVoteButton";
 
 export type VoteType =
@@ -22,6 +23,8 @@ export type VoteType =
   | "attendPrivate"
   | "todayVote";
 
+dayjs.locale("ko");
+
 function StudyController() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -31,36 +34,32 @@ function StudyController() {
   const [selectedDate, setSelectedDate] = useState<string>();
   const [modalType, setModalType] = useState<VoteType>(null);
 
+  const setStudyDateStatus = useSetRecoilState(studyDateStatusState);
+
   useEffect(() => {
     setSelectedDate(date);
   }, [date]);
 
   const selectedDateDayjs = dayjs(selectedDate);
 
-  const onClick = (month: number) => {
-    const newDate = handleChangeDate(selectedDateDayjs, "month", month);
+  const onClick = (date: number) => {
+    setStudyDateStatus(undefined);
+    const newDate = handleChangeDate(selectedDateDayjs, "date", date);
     newSearchParams.set("date", newDate);
     router.replace(`/home?${newSearchParams.toString()}`, { scroll: false });
   };
-
-  const textSwitcherProps = getTextSwitcherProps(selectedDateDayjs, onClick);
 
   return (
     <>
       <Slide>
         <OuterContainer className="about_calendar">
-          <ControllerHeader month={selectedDateDayjs.month() + 1} />
+          <ControllerHeader selectedDateDayjs={selectedDateDayjs} />
           <InnerContainer>
             {selectedDate && (
               <>
                 <Box px="20px">
-                  <BetweenTextSwitcher
-                    left={textSwitcherProps.left}
-                    right={textSwitcherProps.right}
-                  />
                   <Box borderBottom="var(--border)">
-                    <StudyControllerDays />
-                    <StudyControllerDate selectedDateDayjs={selectedDateDayjs} />
+                    <Calendar type="week" selectedDate={selectedDateDayjs} func={onClick} />
                   </Box>
                 </Box>
                 <StudyControllerVoteButton setModalType={setModalType} />
@@ -69,7 +68,6 @@ function StudyController() {
           </InnerContainer>
         </OuterContainer>
       </Slide>
-
       {modalType === "attendCheck" && (
         <StudyAttendCheckModal setIsModal={() => setModalType(null)} />
       )}
@@ -78,17 +76,22 @@ function StudyController() {
 }
 
 interface ControllerHeaderProps {
-  month: number;
+  selectedDateDayjs: Dayjs;
 }
 
-export const ControllerHeader = ({ month }: ControllerHeaderProps) => {
+const ControllerHeader = ({ selectedDateDayjs }: ControllerHeaderProps) => {
+  const [isModal, setIsModal] = useState(false);
+
   return (
-    <Flex p="0 20px" justify="space-between" h="58px" alignItems="center">
-      <Box fontSize="20px" fontWeight={600}>
-        {month}월
-      </Box>
-      <Box>버튼</Box>
-    </Flex>
+    <>
+      <Flex p="0 20px" justify="space-between" h="58px" alignItems="center">
+        <Box fontSize="20px" fontWeight={600}>
+          {selectedDateDayjs.month() + 1}월
+        </Box>
+        <Box onClick={() => setIsModal(true)}>버튼</Box>
+      </Flex>
+      {isModal && <DateCalendarModal setIsModal={setIsModal} selectedDate={selectedDateDayjs} />}
+    </>
   );
 };
 
@@ -150,15 +153,6 @@ const handleMonthMoveByDate = (date: number, currentDate: number) => {
   if (currentDate < 10 && date > 20) return -1;
   else if (currentDate > 20 && date < 10) return 1;
   return 0;
-};
-
-export const getDateArr = (selectedDateDayjs: Dayjs) => {
-  const startDate = selectedDateDayjs.startOf("week");
-  const dateArr = [];
-  for (let i = 0; i < 7; i++) {
-    dateArr.push(startDate.add(i, "day").date());
-  }
-  return dateArr;
 };
 
 const OuterContainer = styled.div`

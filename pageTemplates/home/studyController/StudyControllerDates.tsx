@@ -7,7 +7,8 @@ import { useSetRecoilState } from "recoil";
 import { Flex } from "@chakra-ui/react";
 import DatePointButton from "../../../components/molecules/DatePointButton";
 import { studyDateStatusState } from "../../../recoils/studyRecoils";
-import { getDateArr, handleChangeDate } from "./StudyController";
+import { getCalendarDates } from "../../../utils/dateTimeUtils";
+import { handleChangeDate } from "./StudyController";
 
 dayjs.locale("ko");
 
@@ -22,7 +23,7 @@ function StudyControllerDates({ selectedDateDayjs }: IStudyControllerDates) {
 
   const setStudyDateStatus = useSetRecoilState(studyDateStatusState);
 
-  const dateArr = getDateArr(selectedDateDayjs);
+  const dateArr = getCalendarDates("week", selectedDateDayjs);
 
   const onClick = (date: number) => {
     setStudyDateStatus(undefined);

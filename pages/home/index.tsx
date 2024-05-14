@@ -10,7 +10,6 @@ import HomeGatherSection from "../../pageTemplates/home/HomeGatherSection";
 import HomeHeader from "../../pageTemplates/home/homeHeader/HomeHeader";
 import HomeInitialSetting from "../../pageTemplates/home/HomeInitialSetting";
 import HomeLocationBar from "../../pageTemplates/home/HomeLocationBar";
-import HomeMainBanner from "../../pageTemplates/home/HomeMainBanner";
 import HomeReviewSection from "../../pageTemplates/home/HomeReviewSection";
 import HomeStudySection from "../../pageTemplates/home/HomeStudySection";
 import HomeWinRecordSection from "../../pageTemplates/home/HomeWinRecordSection";
@@ -43,7 +42,7 @@ function Home() {
     <>
       <HomeInitialSetting />
       <HomeHeader />
-      <HomeMainBanner />
+      {/* <HomeMainBanner /> */}
 
       <Slide>
         <HomeCategoryNav />
