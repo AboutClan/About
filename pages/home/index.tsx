@@ -43,7 +43,6 @@ function Home() {
       <HomeInitialSetting />
       <HomeHeader />
       {/* <HomeMainBanner /> */}
-
       <Slide>
         <HomeCategoryNav />
         <Box p="0 20px">

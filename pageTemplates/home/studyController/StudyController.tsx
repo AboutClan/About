@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Dispatch, useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
@@ -53,14 +53,12 @@ function StudyController() {
     <>
       <Slide>
         <OuterContainer className="about_calendar">
-          <ControllerHeader selectedDateDayjs={selectedDateDayjs} />
+          <ControllerHeader selectedDateDayjs={selectedDateDayjs} setModalType={setModalType} />
           <InnerContainer>
             {selectedDate && (
               <>
-                <Box px="20px">
-                  <Box borderBottom="var(--border)">
-                    <Calendar type="week" selectedDate={selectedDateDayjs} func={onClick} />
-                  </Box>
+                <Box px="20px" borderBottom="var(--border)">
+                  <Calendar type="week" selectedDate={selectedDateDayjs} func={onClick} />
                 </Box>
                 <StudyControllerVoteButton setModalType={setModalType} />
               </>
@@ -77,9 +75,10 @@ function StudyController() {
 
 interface ControllerHeaderProps {
   selectedDateDayjs: Dayjs;
+  setModalType: Dispatch<VoteType>;
 }
 
-const ControllerHeader = ({ selectedDateDayjs }: ControllerHeaderProps) => {
+const ControllerHeader = ({ selectedDateDayjs, setModalType }: ControllerHeaderProps) => {
   const [isModal, setIsModal] = useState(false);
 
   return (
@@ -90,7 +89,13 @@ const ControllerHeader = ({ selectedDateDayjs }: ControllerHeaderProps) => {
         </Box>
         <Box onClick={() => setIsModal(true)}>버튼</Box>
       </Flex>
-      {isModal && <DateCalendarModal setIsModal={setIsModal} selectedDate={selectedDateDayjs} />}
+      {isModal && (
+        <DateCalendarModal
+          setIsModal={setIsModal}
+          setModalType={setModalType}
+          selectedDate={selectedDateDayjs}
+        />
+      )}
     </>
   );
 };
@@ -157,7 +162,7 @@ const handleMonthMoveByDate = (date: number, currentDate: number) => {
 
 const OuterContainer = styled.div`
   background-color: white;
-  height: 267px;
+
   border-radius: 12px;
 
   position: relative;

@@ -22,40 +22,35 @@ function Calendar({ type, selectedDate, func }: CalendarProps) {
   return (
     <>
       <BetweenTextSwitcher left={textSwitcherProps.left} right={textSwitcherProps.right} />
-      <Flex
-        justify="space-between"
-        h="42px"
-        align="center"
-        color="var(--gray-500)"
-        fontWeight={500}
-      >
+      <Flex h="42px" align="center" color="var(--gray-500)" fontWeight={500}>
         {DAYS.map((day, idx) => (
-          <Flex justify="center" align="center" w="30px" h="30px" key={idx}>
+          <Flex justify="center" align="center" flex={1} h="30px" key={idx}>
             {day}
           </Flex>
         ))}
       </Flex>
       <>
         {type === "week" ? (
-          <Flex h="60px" justify="space-between">
+          <Flex h="58px" justify="space-between">
             {calendarArr.map((dateStr) => {
               const date = dayjs(dateStr).date();
               return (
-                <DatePointButton
-                  date={date}
-                  func={() => func(date)}
-                  isSelected={date === selectedDate.date()}
-                />
+                <Flex flex={1} w="100%" justify="center" align="center">
+                  <DatePointButton
+                    date={date}
+                    func={() => func(date)}
+                    isSelected={date === selectedDate.date()}
+                  />
+                </Flex>
               );
             })}
           </Flex>
         ) : (
           <Grid templateColumns="repeat(7,1fr)" rowGap="12px">
             {calendarArr.map((dateStr) => {
-              if (!dateStr) return null;
               const date = dayjs(dateStr).date();
               return (
-                <Flex w="inherit">
+                <Flex w="100%" justify="center" align="center">
                   <DatePointButton
                     date={date}
                     func={() => func(date)}

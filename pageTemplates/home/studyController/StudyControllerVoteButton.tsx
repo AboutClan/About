@@ -1,17 +1,16 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
-import dayjs from "dayjs";
+import { Box } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 import { IShadowCircleProps } from "../../../components/atoms/buttons/ShadowCircleButton";
+import DateVoteBlock from "../../../components/molecules/DateVoteBlock";
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import { myStudyState, studyDateStatusState } from "../../../recoils/studyRecoils";
 import { DispatchType } from "../../../types/hooks/reactTypes";
 import { IParticipation } from "../../../types/models/studyTypes/studyDetails";
 import { StudyDateStatus } from "../../../types/models/studyTypes/studyInterActions";
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 import { VoteType } from "./StudyController";
 
 export type StudyVoteActionType =
@@ -23,7 +22,7 @@ export type StudyVoteActionType =
   | "기간 만료"
   | "당일 참여";
 
-const ACTION_TO_VOTE_TYPE: Record<StudyVoteActionType, VoteType> = {
+export const ACTION_TO_VOTE_TYPE: Record<StudyVoteActionType, VoteType> = {
   "참여 신청": "vote",
   "투표 변경": "voteChange",
   "출석 체크": "attendCheck",
@@ -64,26 +63,13 @@ function StudyControllerVoteButton({ setModalType }: IStudyControllerVoteButton)
   };
 
   return (
-    <Flex px="20px" className="main_vote_btn" h="69px" justify="space-between" align="center">
-      <Box fontSize="16px" fontWeight={500}>
-        <Box as="span" mr="4px">
-          오늘
-        </Box>
-        <Box as="span" color="var(--color-mint)">
-          {dayjsToFormat(dayjs(), "D일")}
-        </Box>
-      </Box>
-      <Button
-        bgColor={buttonProps.color}
-        color={buttonProps.color === "var(--gray-400)" ? "black" : "white"}
-      >
-        {buttonProps.text}
-      </Button>
-    </Flex>
+    <Box px="20px">
+      <DateVoteBlock buttonProps={buttonProps} func={handleModalOpen} />
+    </Box>
   );
 }
 
-interface IReturn extends IShadowCircleProps {
+export interface DateVoteButtonProps extends IShadowCircleProps {
   text: StudyVoteActionType;
 }
 
@@ -91,7 +77,7 @@ export const getStudyVoteButtonProps = (
   studyDateStatus: StudyDateStatus,
   myStudy: IParticipation | null,
   myUid?: string,
-): IReturn => {
+): DateVoteButtonProps => {
   const isAttend = myStudy?.attendences.find((who) => who.user.uid === myUid)?.arrived;
 
   switch (studyDateStatus) {

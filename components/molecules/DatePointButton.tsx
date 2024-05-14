@@ -32,11 +32,11 @@ function DatePointButton({ date, func, isSelected }: DatePointButtonProps) {
       {date}
     </Flex>
   );
-  console.log(isSelected);
+
   return (
     <Button onClick={func}>
-      <Box w="30px" h="30px" mb="2px" position="relative" zIndex={2}>
-        {!isSelected ? date : <TodayCircle date={date} />}
+      <Box w="30px" h="30px" position="relative" zIndex={2}>
+        {!date ? null : !isSelected ? date : <TodayCircle date={date} />}
       </Box>
       <PointDot />
     </Button>
@@ -48,7 +48,6 @@ const Button = styled.button`
   flex-direction: column;
   align-items: center;
   width: 30px;
-  height: 48px;
   font-weight: 500;
   font-size: 15px;
   color: var(--gray-700);
