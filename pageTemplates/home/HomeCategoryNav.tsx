@@ -3,12 +3,12 @@ import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+
 import CalendarIcon from "../../assets/icons/CalendarIcon";
 import ChatIcon from "../../assets/icons/ChatIcon";
 import GiftIcon from "../../assets/icons/GiftIcon";
 import LoaderIcon from "../../assets/icons/LoaderIcon";
 import UserTwoIcon from "../../assets/icons/UserTwoIcon";
-
 import { NewAlertIcon } from "../../components/atoms/Icons/AlertIcon";
 import NotCompletedModal from "../../modals/system/NotCompletedModal";
 import { slideDirectionState } from "../../recoils/navigationRecoils";
@@ -112,11 +112,6 @@ const CustomLink = styled(Link)`
   position: relative;
   background-color: var(--gray-100);
   border-radius: 6px;
-`;
-
-const Button = styled.button`
-  margin-bottom: 9px;
-  position: relative;
 `;
 
 export default HomeCategoryNav;

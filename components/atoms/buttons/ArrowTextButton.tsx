@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import styled from "styled-components";
+
 import LeftArrowIcon from "../../../assets/icons/arrows/LeftArrowIcon";
 import RightArrowIcon from "../../../assets/icons/arrows/RightArrowIcon";
 

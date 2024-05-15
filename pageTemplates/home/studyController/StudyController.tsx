@@ -78,7 +78,7 @@ interface ControllerHeaderProps {
   setModalType: Dispatch<VoteType>;
 }
 
-const ControllerHeader = ({ selectedDateDayjs, setModalType }: ControllerHeaderProps) => {
+function ControllerHeader({ selectedDateDayjs, setModalType }: ControllerHeaderProps) {
   const [isModal, setIsModal] = useState(false);
 
   return (
@@ -98,7 +98,7 @@ const ControllerHeader = ({ selectedDateDayjs, setModalType }: ControllerHeaderP
       )}
     </>
   );
-};
+}
 
 export const getTextSwitcherProps = (
   selectedDateDayjs: Dayjs,

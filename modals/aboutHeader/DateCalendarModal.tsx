@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Dispatch } from "react";
 import { useRecoilValue } from "recoil";
+
 import Calendar from "../../components/molecules/Calendar";
 import DateVoteBlock from "../../components/molecules/DateVoteBlock";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
@@ -16,10 +17,9 @@ import {
   getStudyVoteButtonProps,
 } from "../../pageTemplates/home/studyController/StudyControllerVoteButton";
 import { myStudyState, studyDateStatusState } from "../../recoils/studyRecoils";
-
 import { IModal } from "../../types/components/modalTypes";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
-import { IHeaderOptions, ModalLayout } from "../Modals";
+import { ModalLayout } from "../Modals";
 interface DateCalendarModalProps extends IModal {
   selectedDate: Dayjs;
   setModalType: Dispatch<VoteType>;
@@ -55,8 +55,6 @@ function DateCalendarModal({ selectedDate, setIsModal, setModalType }: DateCalen
     }
     setModalType(ACTION_TO_VOTE_TYPE[type]);
   };
-
-  const headerOptions: IHeaderOptions = {};
 
   return (
     <ModalLayout title={dayjsToFormat(selectedDate, "YYYY년 M월")} setIsModal={setIsModal}>

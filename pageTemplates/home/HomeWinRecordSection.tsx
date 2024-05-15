@@ -1,8 +1,8 @@
 import { useRouter } from "next/navigation";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import ArrowTextButton from "../../components/atoms/buttons/ArrowTextButton";
 
+import ArrowTextButton from "../../components/atoms/buttons/ArrowTextButton";
 import SectionBar from "../../components/molecules/bars/SectionBar";
 import SummaryTable from "../../components/organisms/tables/SummaryTable";
 import { slideDirectionState } from "../../recoils/navigationRecoils";

@@ -6,8 +6,8 @@ import DatePicker from "react-datepicker";
 import styled from "styled-components";
 
 import {
-  PickerDateAndTimeHeader,
   PICKER_DATE_AND_TIME,
+  PickerDateAndTimeHeader,
 } from "../../../components/molecules/picker/DatePickerOptions";
 import { DispatchType } from "../../../types/hooks/reactTypes";
 import { IGatherWriting } from "../../../types/models/gatherTypes/gatherTypes";

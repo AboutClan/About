@@ -1,8 +1,8 @@
 import { Box, Button } from "@chakra-ui/react";
 import { fa1, fa2, faCrown, faInfinity } from "@fortawesome/pro-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";

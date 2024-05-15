@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
+
 import BellIcon from "../../../assets/icons/BellIcon";
 import UserCircleIcon from "../../../assets/icons/UserCircleIcon";
 import MainLogo from "../../../assets/MainLogo";
@@ -23,7 +24,6 @@ import { slideDirectionState } from "../../../recoils/navigationRecoils";
 import { renderHomeHeaderState } from "../../../recoils/renderRecoils";
 import { transferShowDailyCheckState } from "../../../recoils/transferRecoils";
 import { NOTICE_ARR } from "../../../storage/notice";
-import { AlertIcon } from "../../../styles/icons";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 // export type HomeHeaderModalType =
 //   | "promotion"
@@ -144,17 +144,6 @@ const Layout = styled.header`
     display: flex;
     align-items: center;
   }
-`;
-
-const Title = styled.span`
-  font-weight: 800;
-  color: var(--gray-900);
-`;
-
-const Alert = styled(AlertIcon)`
-  position: absolute;
-  right: 14px;
-  bottom: 24px;
 `;
 
 export default HomeHeader;

@@ -2,8 +2,8 @@
 
 import { Select } from "@chakra-ui/react";
 import { ChangeEvent, useEffect, useState } from "react";
-import BottomArrowIcon from "../../assets/icons/BottomArrowIcon";
 
+import BottomArrowIcon from "../../assets/icons/BottomArrowIcon";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { isLocationType } from "../../utils/validationUtils";

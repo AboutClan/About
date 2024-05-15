@@ -4,9 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
+
 import LocationDotIcon from "../../../assets/icons/LocationDotIcon";
 import UserIcon from "../../../assets/icons/UserIcon";
-
 import { SingleLineText } from "../../../styles/layout/components";
 import { IImageProps } from "../../../types/components/assetTypes";
 import { ITextAndColorSchemes } from "../../../types/components/propTypes";

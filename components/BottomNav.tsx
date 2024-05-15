@@ -1,14 +1,14 @@
 import { Box } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import Link, { LinkProps } from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+
 import CirclePlusIcon from "../assets/icons/CirclePlusIcon";
 import HomeIcon from "../assets/icons/HomeIcon";
 import PeopleIcon from "../assets/icons/PeopleIcon";
 import StatisticsIcon from "../assets/icons/StatisticsIcon";
-
 import { HAS_STUDY_TODAY } from "../constants/keys/localStorage";
 import { getStudyStandardDate } from "../libs/study/date/getStudyStandardDate";
 import { slideDirectionState } from "../recoils/navigationRecoils";

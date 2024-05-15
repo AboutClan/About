@@ -1,7 +1,7 @@
 import { faBellOn } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
 import BlurredPart from "../../../../components/molecules/BlurredPart";

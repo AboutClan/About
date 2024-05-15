@@ -11,9 +11,9 @@ import {
 } from "@chakra-ui/react";
 import { faBooks, faCampfire, faCloudBolt } from "@fortawesome/pro-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";

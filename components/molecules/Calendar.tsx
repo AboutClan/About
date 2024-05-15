@@ -1,5 +1,6 @@
 import { Flex, Grid } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
+
 import { getTextSwitcherProps } from "../../pageTemplates/home/studyController/StudyController";
 import { getCalendarDates } from "../../utils/dateTimeUtils";
 import DatePointButton from "./DatePointButton";
@@ -32,10 +33,10 @@ function Calendar({ type, selectedDate, func }: CalendarProps) {
       <>
         {type === "week" ? (
           <Flex h="58px" justify="space-between">
-            {calendarArr.map((dateStr) => {
+            {calendarArr.map((dateStr, idx) => {
               const date = dayjs(dateStr).date();
               return (
-                <Flex flex={1} w="100%" justify="center" align="center">
+                <Flex key={idx} flex={1} w="100%" justify="center" align="center">
                   <DatePointButton
                     date={date}
                     func={() => func(date)}
@@ -47,10 +48,10 @@ function Calendar({ type, selectedDate, func }: CalendarProps) {
           </Flex>
         ) : (
           <Grid templateColumns="repeat(7,1fr)" rowGap="12px">
-            {calendarArr.map((dateStr) => {
+            {calendarArr.map((dateStr, idx) => {
               const date = dayjs(dateStr).date();
               return (
-                <Flex w="100%" justify="center" align="center">
+                <Flex key={idx} w="100%" justify="center" align="center">
                   <DatePointButton
                     date={date}
                     func={() => func(date)}

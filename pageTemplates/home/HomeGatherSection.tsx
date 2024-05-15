@@ -1,9 +1,8 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
-import styled from "styled-components";
 
 import { IPostThumbnailCard } from "../../components/molecules/cards/PostThumbnailCard";
 import {
@@ -18,7 +17,6 @@ import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import { getRandomImage } from "../../utils/imageUtils";
 
 export default function HomeGatherSection() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const location = searchParams.get("location");
 
@@ -94,7 +92,3 @@ const getGatherBadge = (gatherStatus: GatherStatus): ITextAndColorSchemes => {
       return { text: "open", color: "mint" };
   }
 };
-
-const Layout = styled.div`
-  padding: 16px;
-`;

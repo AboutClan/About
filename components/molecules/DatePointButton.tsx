@@ -9,14 +9,14 @@ interface DatePointButtonProps {
 }
 
 function DatePointButton({ date, func, isSelected }: DatePointButtonProps) {
-  const PointDot = () => (
-    <Flex w="16px" h="16px" justify="center" align="center">
+  function PointDot() {
+  return <Flex w="16px" h="16px" justify="center" align="center">
       <Box w="4px" h="4px" borderRadius="50%" bgColor="var(--color-mint)" />
     </Flex>
-  );
+}
 
-  const TodayCircle = ({ date }: { date: number }) => (
-    <Flex
+  function TodayCircle({ date }: { date: number }) {
+  return <Flex
       justify="center"
       align="center"
       w="100%"
@@ -31,7 +31,7 @@ function DatePointButton({ date, func, isSelected }: DatePointButtonProps) {
     >
       {date}
     </Flex>
-  );
+}
 
   return (
     <Button onClick={func}>

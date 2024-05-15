@@ -2,7 +2,6 @@ import { Box } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useRecoilValue } from "recoil";
-import styled from "styled-components";
 
 import { IShadowCircleProps } from "../../../components/atoms/buttons/ShadowCircleButton";
 import DateVoteBlock from "../../../components/molecules/DateVoteBlock";
@@ -137,7 +136,5 @@ export const getStudyVoteButtonProps = (
       };
   }
 };
-
-const ButtonWrapper = styled.div``;
 
 export default StudyControllerVoteButton;
