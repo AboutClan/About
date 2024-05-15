@@ -52,14 +52,15 @@ export function PostThumbnailCard({
   return (
     <CardLink href={url} onClick={func}>
       <Flex my="2px" flex={1}>
-        <Image
-          src={image.url}
-          alt="thumbnailImage"
-          priority={image.priority}
-          width={80}
-          height={80}
-          style={{ borderRadius: "8px" }}
-        />
+        <Box w="80px" h="80px" borderRadius="8px" position="relative" overflow="hidden">
+          <Image
+            src={image.url}
+            alt="thumbnailImage"
+            priority={image.priority}
+            sizes="80px"
+            fill={true}
+          />
+        </Box>
         <Flex direction="column" ml="12px" flex={1}>
           <Flex align="center">
             <Flex mr="4px">{title !== "개인 스터디" && <LocationDotIcon />}</Flex>

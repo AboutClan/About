@@ -4,9 +4,9 @@ import "../styles/variable.css";
 
 import { ChakraProvider } from "@chakra-ui/react";
 import { config } from "@fortawesome/fontawesome-svg-core";
+import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import { SessionProvider } from "next-auth/react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { RecoilRoot } from "recoil";
 

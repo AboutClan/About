@@ -4,9 +4,9 @@ function BottomArrowIcon() {
       <path
         d="M1 1L7 7L13 1"
         stroke="#222222"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   );
