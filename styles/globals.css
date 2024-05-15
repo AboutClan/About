@@ -41,7 +41,7 @@ a {
 
 #__next {
   min-width: 340px;
-  max-width: 390px;
+  max-width: 400px;
   padding-top: 56px !important;
   padding-bottom: 40px;
   min-height: calc(100dvh - 96px);
@@ -52,7 +52,7 @@ a {
 }
 
 .CircularProgressbar-trail {
-  strokewidth: 1;
+  stroke-width: 1;
 }
 .swiper-button-prev:after {
   display: none;

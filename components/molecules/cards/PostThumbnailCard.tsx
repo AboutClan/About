@@ -53,13 +53,7 @@ export function PostThumbnailCard({
     <CardLink href={url} onClick={func}>
       <Flex my="2px" flex={1}>
         <Box w="80px" h="80px" borderRadius="8px" position="relative" overflow="hidden">
-          <Image
-            src={image.url}
-            alt="thumbnailImage"
-            priority={image.priority}
-            sizes="80px"
-            fill={true}
-          />
+          <Image src={image.url} alt="thumbnailImage" sizes="80px" fill={true} loading="lazy" />
         </Box>
         <Flex direction="column" ml="12px" flex={1}>
           <Flex align="center">
