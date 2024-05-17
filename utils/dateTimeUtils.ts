@@ -1,4 +1,5 @@
 import dayjs, { Dayjs } from "dayjs";
+import "dayjs/locale/ko";
 import weekday from "dayjs/plugin/weekday";
 dayjs.extend(weekday);
 
@@ -70,9 +71,10 @@ export const getCalendarDates = (type: "week" | "month", selectedDate: Dayjs) =>
   const calendar: string[] = [];
 
   if (type === "week") {
-    const startDate = selectedDate.startOf(type);
-    for (let i = 0; i < 7; i++) {
-      calendar.push(dayjsToStr(startDate.add(i, "day")));
+    const startDate = selectedDate.startOf("month");
+    for (let i = 0; i < selectedDate.endOf("month").date(); i++) {
+      const date = startDate.add(i, "day");
+      calendar.push(dayjsToStr(date));
     }
   } else {
     const startOfMonth = selectedDate.startOf("month");
