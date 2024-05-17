@@ -5,14 +5,11 @@ import ShadowCircleButton from "../../../components/atoms/buttons/ShadowCircleBu
 const meta = {
   title: "ATOMS/Button/ShadowCircleButton",
   component: ShadowCircleButton,
-  parameters: {},
   tags: ["autodocs"],
-  argTypes: {},
-
-  args: {},
 } satisfies Meta<typeof ShadowCircleButton>;
 
 export default meta;
+
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
