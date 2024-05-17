@@ -6,7 +6,6 @@ import { BasicButton } from "../../../components/atoms/buttons/BasicButton";
 const meta = {
   title: "ATOMS/Button/BasicButton",
   component: BasicButton,
-  parameters: {},
   tags: ["autodocs"],
   argTypes: {
     backgroundColor: { control: "color" },
@@ -16,6 +15,7 @@ const meta = {
 } satisfies Meta<typeof BasicButton>;
 
 export default meta;
+
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {

@@ -23,7 +23,7 @@ function PromotionModalDetail() {
       <div>
         <span>현재 참여 수</span>
         <VoteNum>
-          <Skeleton isLoad={!isLoading}>
+          <Skeleton isLoaded={!isLoading}>
             {applyCnt || ""}명<Temp>(중복 포함)</Temp>
           </Skeleton>
         </VoteNum>
