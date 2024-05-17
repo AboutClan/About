@@ -13,7 +13,6 @@ import { useStudyDailyVoteCntQuery } from "../hooks/study/queries";
 import { studyDateStatusState } from "../recoils/studyRecoils";
 function Test() {
   const { data } = useAdminStudyRecordQuery(dayjs("2024-04-01"), dayjs("2024-04-07"), null, "인천");
-  console.log(data);
 
   const a = useRecoilValue(studyDateStatusState);
 
@@ -24,7 +23,7 @@ function Test() {
     dayjs("2023-12-04"),
     dayjs("2023-12-10"),
     null,
-    "수원",
+    "동대문",
   );
   // const decodeByAES256 = (encodedTel: string) => {
   //   const bytes = CryptoJS.AES.decrypt(encodedTel, key);
@@ -34,8 +33,8 @@ function Test() {
 
   const { data: data3 } = useStudyDailyVoteCntQuery(
     "수원",
-    dayjs().subtract(0, "day"),
-    dayjs().add(0, "day"),
+    dayjs().subtract(1, "day"),
+    dayjs().add(2, "day"),
   );
   console.log(data3);
   const { mutate: match } = useGroupBelongMatchMutation({

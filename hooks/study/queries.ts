@@ -128,6 +128,7 @@ export const useStudyDailyVoteCntQuery = (
   useQuery(
     [STUDY_VOTE_CNT, location, dayjsToStr(startDay), dayjsToStr(endDay)],
     async () => {
+      console.log(dayjsToStr(startDay), dayjsToStr(endDay));
       const res = await axios.get<any>(`${SERVER_URI}/vote/participationCnt`, {
         params: {
           location,
