@@ -29,7 +29,7 @@ function Gather() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  console.log(444);
   return (
     <>
       <GatherHeader />

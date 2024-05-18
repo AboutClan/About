@@ -2,8 +2,9 @@
 import { config } from "@fortawesome/fontawesome-svg-core";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
-import { usePathname, useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -33,17 +34,23 @@ function Layout({ children }: ILayout) {
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   const { data: session } = useSession();
   const isGuest = session?.user.name === "guest";
-
-  const [isErrorModal, setIsErrorModal] = useState(false);
   const setSlideDirection = useSetRecoilState(slideDirectionState);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setSlideDirection(null);
-    }, 600);
-  }, []);
+  const [isErrorModal, setIsErrorModal] = useState(false);
+
+  function parseUrlToSegments(url) {
+    const queryStartIndex = url.indexOf("?");
+
+    const basePath = queryStartIndex >= 0 ? url.substring(0, queryStartIndex) : url;
+
+    const segments = basePath.split("/").filter(Boolean);
+
+    return segments;
+  }
 
   useEffect(() => {
+    console.log(3, pathname);
+    if (!pathname) return;
     if (PUBLIC_SEGMENT.includes(segment)) return;
     if (session === undefined) return;
     const role = session?.user.role;
@@ -62,7 +69,32 @@ function Layout({ children }: ILayout) {
       );
       signOut({ callbackUrl: `/login/?status=logout` });
     }
-  }, [session]);
+
+    const handleRouterStart = (url) => {
+      if (!url) return;
+      const segments = parseUrlToSegments(url);
+      const prevSegemnts = parseUrlToSegments(pathname);
+      console.log(4, prevSegemnts);
+      if (segments[0] === "home") setSlideDirection("left");
+      if (prevSegemnts[0] === "profile") setSlideDirection("left");
+      console.log(222, pathname, url);
+    };
+
+    const handleRouterCompleted = (url) => {
+      console.log(111);
+      if (!url) return;
+      const segments = parseUrlToSegments(url);
+      setSlideDirection("right");
+    };
+
+    router.events.on("routeChangeStart", handleRouterStart);
+    router.events.on("routeChangeComplete", handleRouterCompleted);
+
+    return () => {
+      router.events.off("routeChangeStart", handleRouterStart);
+      router.events.off("routeChangeComplete", handleRouterCompleted);
+    };
+  }, [session, router.events, pathname]);
 
   return (
     <>
