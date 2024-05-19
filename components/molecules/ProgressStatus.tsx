@@ -1,5 +1,5 @@
-import { Progress } from "@chakra-ui/react";
 import styled from "styled-components";
+import ProgressBar from "../atoms/ProgressBar";
 
 interface IProgressStatus {
   value: number;
@@ -8,7 +8,7 @@ interface IProgressStatus {
 function ProgressStatus({ value }: IProgressStatus) {
   return (
     <Layout>
-      <Progress value={value} size="sm" />
+      <ProgressBar value={value} />
     </Layout>
   );
 }
