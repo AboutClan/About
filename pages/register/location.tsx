@@ -131,7 +131,7 @@ const Message = styled.div`
   bottom: -20px;
   font-size: 10px;
   left: 50%;
-  color: var(--gray-3);
+  color: var(--gray-700);
   transform: translate(-50%, 0);
 `;
 

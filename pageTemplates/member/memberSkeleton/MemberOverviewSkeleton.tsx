@@ -63,7 +63,7 @@ const Info = styled.div`
     > span:first-child {
       margin-right: var(--gap-2);
       font-weight: 600;
-      color: var(--gray-1);
+      color: var(--gray-900);
     }
     > span:last-child {
       display: inline-block;

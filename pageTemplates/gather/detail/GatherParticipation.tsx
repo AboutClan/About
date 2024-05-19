@@ -38,7 +38,6 @@ function GatherParticipation({ data }: IGatherParticipation) {
     router.push(`/profile/${user.uid}`);
   };
 
-  
   return (
     <>
       <Layout>
@@ -73,7 +72,7 @@ function GatherParticipation({ data }: IGatherParticipation) {
                   size="md"
                 />
                 <CrownWrapper>
-                  <FontAwesomeIcon icon={faCrown} color="var(--color-orange)" />
+                  <FontAwesomeIcon icon={faCrown} color="var(--color-yellow)" />
                 </CrownWrapper>
               </Organizer>
               <UserOverview>
@@ -185,7 +184,7 @@ const ParticipateTime = styled.div<{ isFirst: boolean }>`
   font-size: 16px;
   margin-left: auto;
   margin-right: var(--gap-2);
-  color: ${(props) => (props.isFirst ? "var(--color-mint)" : "var(--color-orange)")};
+  color: ${(props) => (props.isFirst ? "var(--color-mint)" : "var(--color-yellow)")};
   > span:last-child {
     margin-left: 2px;
   }
@@ -212,7 +211,7 @@ const Empty = styled.div`
   height: 100px;
   > span {
     font-size: 18px;
-    color: var(--gray-4);
+    color: var(--gray-500);
   }
 `;
 

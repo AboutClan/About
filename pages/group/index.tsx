@@ -189,7 +189,7 @@ function Index() {
 
 const Layout = styled.div`
   min-height: 100vh;
-  background-color: var(--gray-8);
+  background-color: var(--gray-100);
   padding-bottom: 20px;
 `;
 

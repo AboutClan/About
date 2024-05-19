@@ -30,7 +30,7 @@ const Detail = styled.div`
   margin-top: var(--gap-5);
   font-weight: 600;
   font-size: 13px;
-  color: var(--gray-2);
+  color: var(--gray-800);
   > div:first-child {
     margin-bottom: var(--gap-2);
     > b {
@@ -39,7 +39,7 @@ const Detail = styled.div`
     }
   }
   > div:last-child {
-    color: var(--gray-1);
+    color: var(--gray-900);
   }
 `;
 

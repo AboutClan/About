@@ -47,7 +47,7 @@ function RankingOverview({ myRankInfo, isScore = false }: IRankingOverview) {
               </RankPercent>
             )}
           </Box>
-          <Box color="var(--gray-2)">
+          <Box color="var(--gray-800)">
             {isScore ? "내 점수" : `${dayjs().month() + 1}월 참여`}:{" "}
             {myRankInfo.value ? `${myRankInfo.value}${isScore ? "점" : "회"}` : "기록없음"}
           </Box>
@@ -78,7 +78,7 @@ function RankingOverview({ myRankInfo, isScore = false }: IRankingOverview) {
               <Badge
                 colorScheme={BADGE_COLOR_MAPPINGS[userBadge]}
                 fontSize="14px"
-                border="1px solid var(--gray-5)"
+                border="1px solid var(--gray-400)"
               >
                 {userBadge}
               </Badge>
@@ -158,7 +158,7 @@ const RankBadge = styled.div`
 `;
 
 const ScoreText = styled.span`
-  color: var(--gray-1);
+  color: var(--gray-900);
   font-weight: 600;
 
   margin-right: var(--gap-1);

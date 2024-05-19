@@ -3,10 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs, { Dayjs } from "dayjs";
 import styled from "styled-components";
 
-import {
-  LOCATION_OPEN_DATE,
-  LOCATION_TABLE_COLOR,
-} from "../../constants/location";
+import { LOCATION_OPEN_DATE, LOCATION_TABLE_COLOR } from "../../constants/location";
 import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { IArrivedData } from "../../types/models/studyTypes/studyRecords";
 import { Location } from "../../types/services/locationTypes";
@@ -96,7 +93,7 @@ const DayItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid var(--gray-7);
+  border: 1px solid var(--gray-200);
 `;
 
 const DayItemDate = styled.span<{ isToday: boolean }>`
@@ -124,7 +121,7 @@ const DayLine = styled.div`
   margin: var(--gap-2) 24px;
   display: flex;
   justify-content: space-between;
-  color: var(--gray-3);
+  color: var(--gray-700);
   font-size: 12px;
 `;
 

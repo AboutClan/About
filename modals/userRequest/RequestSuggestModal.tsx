@@ -137,7 +137,7 @@ function RequestSuggestModal({ type, setIsModal }: IRequestSuggestModal) {
       {type === "study" && (
         <Item
           style={{
-            color: "var(--gray-3)",
+            color: "var(--gray-700)",
             marginTop: "var(--gap-1)",
             marginBottom: "0",
           }}
@@ -186,8 +186,8 @@ const WriterBtn = styled.button<{ isSelected: boolean }>`
   width: 36px;
 
   height: 80%;
-  background-color: ${(props) => (props.isSelected ? "var(--color-mint)" : "var(--gray-6)")};
-  color: ${(props) => (props.isSelected ? "white" : "var(--gray-1)")};
+  background-color: ${(props) => (props.isSelected ? "var(--color-mint)" : "var(--gray-300)")};
+  color: ${(props) => (props.isSelected ? "white" : "var(--gray-900)")};
 `;
 
 const Content = styled.span`

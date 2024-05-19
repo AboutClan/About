@@ -67,7 +67,7 @@ const KakaoLink = styled.div`
   flex-direction: column;
   padding: var(--gap-2) var(--gap-3);
   padding-bottom: var(--gap-1);
-  background-color: var(--gray-8);
+  background-color: var(--gray-100);
 
   > div {
     padding: var(--gap-1) 0;
@@ -76,7 +76,7 @@ const KakaoLink = styled.div`
 
 const Challenge = styled.div`
   padding: var(--gap-2) var(--gap-3);
-  background-color: var(--gray-8);
+  background-color: var(--gray-100);
   > svg {
     margin-right: var(--gap-2);
   }
@@ -91,7 +91,7 @@ const Rule = styled.li`
 
 const Wrapper = styled.div`
   padding: var(--gap-4);
-  background-color: var(--gray-8);
+  background-color: var(--gray-100);
 `;
 
 const Layout = styled.div`

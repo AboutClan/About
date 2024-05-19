@@ -30,7 +30,7 @@ const Layout = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
-  background-color: var(--gray-6);
+  background-color: var(--gray-300);
 `;
 
 const Title = styled.div`

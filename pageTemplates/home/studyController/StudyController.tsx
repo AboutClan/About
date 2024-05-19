@@ -1,15 +1,16 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Dispatch, useEffect, useState } from "react";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import Slide from "../../../components/layouts/PageSlide";
-import BetweenTextSwitcher from "../../../components/molecules/navs/BetweenTextSwitcher";
+import Calendar from "../../../components/molecules/Calendar";
+import DateCalendarModal from "../../../modals/aboutHeader/DateCalendarModal";
 import StudyAttendCheckModal from "../../../modals/study/StudyAttendCheckModal";
-import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
-import StudyControllerDate from "./StudyControllerDates";
-import StudyControllerDays from "./StudyControllerDays";
+import { studyDateStatusState } from "../../../recoils/studyRecoils";
+import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import StudyControllerVoteButton from "./StudyControllerVoteButton";
 
 export type VoteType =
@@ -22,6 +23,8 @@ export type VoteType =
   | "attendPrivate"
   | "todayVote";
 
+dayjs.locale("ko");
+
 function StudyController() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -31,66 +34,67 @@ function StudyController() {
   const [selectedDate, setSelectedDate] = useState<string>();
   const [modalType, setModalType] = useState<VoteType>(null);
 
+  const setStudyDateStatus = useSetRecoilState(studyDateStatusState);
+
   useEffect(() => {
     setSelectedDate(date);
   }, [date]);
 
   const selectedDateDayjs = dayjs(selectedDate);
 
-  const onClick = (month: number) => {
-    const newDate = handleChangeDate(selectedDateDayjs, "month", month);
+  const onClick = (date: number) => {
+    setStudyDateStatus(undefined);
+    const newDate = handleChangeDate(selectedDateDayjs, "date", date);
     newSearchParams.set("date", newDate);
     router.replace(`/home?${newSearchParams.toString()}`, { scroll: false });
   };
-
-  const textSwitcherProps = getTextSwitcherProps(selectedDateDayjs, onClick);
 
   return (
     <>
       <Slide>
         <OuterContainer className="about_calendar">
+          <ControllerHeader selectedDateDayjs={selectedDateDayjs} setModalType={setModalType} />
           <InnerContainer>
             {selectedDate && (
               <>
-                <BetweenTextSwitcher
-                  left={textSwitcherProps.left}
-                  right={textSwitcherProps.right}
-                />
-                <ContentContainer>
-                  <StudyControllerDays selectedDate={selectedDate} />
-                  <StudyControllerDate selectedDate={selectedDate} />
-                </ContentContainer>
-                <Box
-                  borderRadius="50%"
-                  pos="absolute"
-                  zIndex="5"
-                  bottom="0"
-                  left="50%"
-                  transform="translate(-50%,50%)"
-                  _after={{
-                    content: `""`,
-                    position: "absolute",
-                    zIndex: "3",
-                    backgroundColor: "white",
-                    border: "var(--border)",
-                    borderBottom: "none",
-                    top: "0px",
-                    left: "0",
-                    width: "100%",
-                    height: "50%",
-                    borderRadius: "100px 100px 0 0",
-                  }}
-                >
-                  <StudyControllerVoteButton setModalType={setModalType} />
+                <Box px="20px" borderBottom="var(--border)">
+                  <Calendar type="week" selectedDate={selectedDateDayjs} func={onClick} />
                 </Box>
+                <StudyControllerVoteButton setModalType={setModalType} />
               </>
             )}
           </InnerContainer>
         </OuterContainer>
       </Slide>
-
       {modalType === "attendCheck" && (
         <StudyAttendCheckModal setIsModal={() => setModalType(null)} />
+      )}
+    </>
+  );
+}
+
+interface ControllerHeaderProps {
+  selectedDateDayjs: Dayjs;
+  setModalType: Dispatch<VoteType>;
+}
+
+function ControllerHeader({ selectedDateDayjs, setModalType }: ControllerHeaderProps) {
+  const [isModal, setIsModal] = useState(false);
+
+  return (
+    <>
+      <Flex p="0 20px" justify="space-between" h="58px" alignItems="center">
+        <Box fontSize="20px" fontWeight={600}>
+          {selectedDateDayjs.month() + 1}월
+        </Box>
+        <Box onClick={() => setIsModal(true)}>버튼</Box>
+      </Flex>
+      {isModal && (
+        <DateCalendarModal
+          setIsModal={setIsModal}
+          setModalType={setModalType}
+          selectedDate={selectedDateDayjs}
+        />
       )}
     </>
   );
@@ -156,38 +160,16 @@ const handleMonthMoveByDate = (date: number, currentDate: number) => {
   return 0;
 };
 
-export const getDateArr = (selectedDateDayjs: Dayjs) => {
-  const temp = [];
-  for (let i = -3; i <= 3; i++) {
-    const dateDayjs = selectedDateDayjs.add(i, "day");
-    temp.push({ day: dayjsToFormat(dateDayjs, "ddd"), date: dateDayjs.date() });
-  }
-
-  return temp;
-};
-
-// Styled component for the outer container
 const OuterContainer = styled.div`
-  margin: 0 16px; /* mx-4 */
-  margin-top: 16px; /* mt-4 */
   background-color: white;
-  height: 192px; /* h-48 */
-  border-radius: var(--rounded-lg); /* rounded-lg */
-  box-shadow: var(--shadow); /* shadow */
-  border-bottom: var(--border); /* border-b-1.5 border-gray-7 */
+
+  border-radius: 12px;
+
   position: relative;
-  border: 1px solid var(--gray-6);
 `;
 
-// Styled component for the inner container with the border
 const InnerContainer = styled.div`
-  border-bottom: var(--border); /* border-b-1.5 border-gray-7 */
   position: relative;
-  height: 134px;
 `;
 
-// You might need to adjust the margin-top value or make it dynamic/adjustable via props
-const ContentContainer = styled.div`
-  margin-top: 32px; /* mt-9 */
-`;
 export default StudyController;

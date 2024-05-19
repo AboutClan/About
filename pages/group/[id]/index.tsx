@@ -91,7 +91,7 @@ const Layout = styled.div`
   display: flex;
   flex-direction: column;
   padding-bottom: 100px;
-  background-color: var(--gray-8);
+  background-color: var(--gray-100);
 `;
 
 export default GroupDetail;

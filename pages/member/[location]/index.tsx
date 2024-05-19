@@ -154,6 +154,6 @@ const HrDiv = styled.div`
   margin: 0 !important;
   padding: 0 !important;
   height: 1px;
-  background-color: var(--gray-6);
+  background-color: var(--gray-300);
 `;
 export default Member;

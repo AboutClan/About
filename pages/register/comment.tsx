@@ -99,13 +99,13 @@ function Comment() {
             onChange={(e) => setValue(e.target?.value)}
             value={value}
             h="48px"
-            color="var(--gray-4)"
+            color="var(--gray-500)"
             focusBorderColor="#00c2b3"
             textAlign="center"
             fontSize="14px"
             borderWidth="1.5px"
             _placeholder={{
-              color: "var(--gray-4)",
+              color: "var(--gray-500)",
             }}
           />
         </div>
@@ -134,8 +134,8 @@ const Item = styled.div<{ $isSelected: boolean }>`
   align-items: center;
   height: 48px;
   margin-bottom: var(--gap-3);
-  color: ${(props) => (props.$isSelected ? "var(--gray-1)" : "var(--gray-4)")};
-  border: ${(props) => (props.$isSelected ? "var(--border-thick)" : "1.5px solid var(--gray-6)")};
+  color: ${(props) => (props.$isSelected ? "var(--gray-900)" : "var(--gray-500)")};
+  border: ${(props) => (props.$isSelected ? "var(--border-thick)" : "1.5px solid var(--gray-300)")};
 `;
 
 export default Comment;

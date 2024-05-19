@@ -89,7 +89,7 @@ const Score = styled.div`
 
 const Detail = styled.ul`
   padding: var(--gap-4);
-  background-color: var(--gray-7);
+  background-color: var(--gray-200);
   font-size: 13px;
 `;
 

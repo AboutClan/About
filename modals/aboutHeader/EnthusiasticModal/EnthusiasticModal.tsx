@@ -136,7 +136,7 @@ const Condition = styled.ol`
   }
   > span {
     font-size: 12px;
-    color: var(--gray-3);
+    color: var(--gray-700);
   }
 `;
 

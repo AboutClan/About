@@ -58,7 +58,7 @@ const ButtonNav = styled.nav`
 `;
 
 const Button = styled.button<{ $isSelected: boolean }>`
-  color: ${(props) => (props.$isSelected ? "var(--gray-1)" : "var(--gray-4)")};
+  color: ${(props) => (props.$isSelected ? "var(--gray-900)" : "var(--gray-500)")};
   border-radius: var(--rounded-lg);
   flex: 0.49;
   height: 48px;

@@ -274,7 +274,7 @@ const UserAlphabets = styled.div`
 
 const AlphabetCnt = styled.span<{ hasAlphabet: boolean }>`
   font-size: 12px;
-  color: ${(props) => (props.hasAlphabet ? "var(--gray-2)" : "var(--gray-3)")};
+  color: ${(props) => (props.hasAlphabet ? "var(--gray-800)" : "var(--gray-700)")};
 `;
 
 export default CollectionAlphabet;

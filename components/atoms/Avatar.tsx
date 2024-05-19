@@ -47,7 +47,7 @@ export default function Avatar({
         <ImageContainer
           bg={
             shadowAvatar
-              ? "var(--gray-3)"
+              ? "var(--gray-300)"
               : hasAvatar && avatar.bg !== null && COLOR_TABLE_LIGHT[avatar.bg]
           }
           hasType={hasAvatar}
@@ -76,7 +76,7 @@ export default function Avatar({
                 onError={onError}
               />
             ) : (
-              <Flex fontSize="12px" h="100%" justify="center" alignItems="center" color="white">
+              <Flex fontSize="12px" h="100%" justify="center" alignItems="center">
                 +{shadowAvatar}
               </Flex>
             )}
@@ -104,7 +104,7 @@ const AvatarContainer = styled.div<{
   overflow: hidden;
   position: relative;
   border-radius: 50%; // rounded-full
-  background-color: var(--gray-8);
+  background-color: var(--gray-100);
 
   ${(props) => {
     switch (props.size) {
@@ -158,6 +158,5 @@ const ImageContainer = styled.div<{
           ? "6px"
           : "8px")};
 
-  background-color: ${(props) =>
-    props.bg ? props.bg : "var(--gray-3)"}; // bg-gray-200 as fallback
+  background-color: ${(props) => (props.bg ? props.bg : "var(--gray-700)")};
 `;

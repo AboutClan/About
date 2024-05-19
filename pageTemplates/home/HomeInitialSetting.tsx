@@ -8,9 +8,7 @@ import { createGlobalStyle } from "styled-components";
 
 import { STEPS_CONTENTS } from "../../constants/contentsText/GuideContents";
 import { USER_GUIDE } from "../../constants/keys/localStorage";
-import { useGroupQuery } from "../../hooks/groupStudy/queries";
 import { useUserInfoQuery } from "../../hooks/user/queries";
-import { useUserAttendRateQuery } from "../../hooks/user/sub/studyRecord/queries";
 import { getStudyDateStatus } from "../../libs/study/date/getStudyDateStatus";
 import FAQPopUp from "../../modals/pop-up/FAQPopUp";
 import UserSettingPopUp from "../../pageTemplates/setting/userSetting/userSettingPopUp";
@@ -90,9 +88,6 @@ function HomeInitialSetting() {
       setState({ run: false });
     }
   };
-
-  useUserAttendRateQuery(dayjs().subtract(1, "month").date(0), dayjs(), false, true, null);
-  useGroupQuery();
 
   return (
     <>

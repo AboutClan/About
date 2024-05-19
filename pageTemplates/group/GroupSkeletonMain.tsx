@@ -99,10 +99,10 @@ const InfoItem = styled.div`
     display: inline-block;
     margin-right: var(--gap-2);
     font-weight: 600;
-    color: var(--gray-3);
+    color: var(--gray-700);
   }
   > span:last-child {
-    color: var(--gray-3);
+    color: var(--gray-700);
   }
 `;
 

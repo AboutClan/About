@@ -101,7 +101,7 @@ function SocialButton({ title, subTitle, icon, color, url }: ISocialButton) {
       <Button
         bgColor="white"
         w="90vw"
-        border="2px solid var(--gray-3)"
+        border="2px solid var(--gray-700)"
         p="16px"
         h="min-content"
         rounded="lg"

@@ -51,7 +51,7 @@ const IconWrapper = styled.button<{
   isVisible: boolean;
   isSmall: boolean;
 }>`
-  color: ${(props) => (props.isVisible ? "var(--gray-1)" : "var(--gray-6)")};
+  color: ${(props) => (props.isVisible ? "var(--gray-900)" : "var(--gray-300)")};
   padding: 0 var(--gap-1);
   margin-right: ${(props) =>
     props.isMinus ? (props.isSmall ? "var(--gap-2)" : "var(--gap-4)") : 0};

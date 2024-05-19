@@ -32,7 +32,7 @@ function GatherParticipateModalPassword({ setPageNum }: IGatherParticipateModalP
     <>
       <CodeText>전달 받은 암호 네자리를 입력해 주세요.</CodeText>
       <Container>
-        <FontAwesomeIcon icon={faUnlock} color="var(--gray-4)" />
+        <FontAwesomeIcon icon={faUnlock} color="var(--gray-500)" />
         <Input
           placeholder="암호 입력"
           value={password}
@@ -65,7 +65,7 @@ const CodeText = styled.div`
 
 const Input = styled.input`
   margin-left: var(--gap-2);
-  background-color: var(--gray-7);
+  background-color: var(--gray-200);
   padding: var(--gap-1) var(--gap-2);
   border-radius: var(--rounded-lg);
 `;

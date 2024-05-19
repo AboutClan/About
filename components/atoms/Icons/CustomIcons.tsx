@@ -10,7 +10,7 @@ export default function EveryTimeLogo() {
           position="relative"
           as="span"
           rounded="lg"
-          bgColor="var(--gray-8)"
+          bgColor="var(--gray-100)"
           zIndex={3}
           color="#C62917"
         >
@@ -20,7 +20,7 @@ export default function EveryTimeLogo() {
           <EveryTimeIcon isSmall={false} />
         </Box>
         <br />
-        <Box color="var(--gray-1)">홍보 이벤트</Box>
+        <Box color="var(--gray-900)">홍보 이벤트</Box>
       </Box>
     </Box>
   );

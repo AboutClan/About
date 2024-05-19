@@ -210,7 +210,7 @@ function Review() {
                     m="var(--gap-4)"
                     colorScheme="gray"
                     boxShadow="var(--shadow)"
-                    color="var(--gray-3)"
+                    color="var(--gray-700)"
                   >
                     <Box mr="var(--gap-2)">더 보기</Box>
                     <FontAwesomeIcon icon={faEllipsis} />

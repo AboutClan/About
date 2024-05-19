@@ -56,7 +56,7 @@ const Button = styled.button<{ isSelected: boolean }>`
   padding: var(--gap-3) 0;
   font-weight: ${(props) => (props.isSelected ? "700" : "500")};
   border-bottom: ${(props) => props.isSelected && "3px solid var(--color-mint)"};
-  background-color: ${(props) => (props.isSelected ? "white" : "var(--gray-8)")};
+  background-color: ${(props) => (props.isSelected ? "white" : "var(--gray-100)")};
 `;
 const IconWrapper = styled.div`
   position: absolute;

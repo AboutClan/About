@@ -12,7 +12,7 @@ function PromotionOverview() {
 const Layout = styled.div`
   margin-top: var(--gap-4);
   font-size: 12px;
-  color: var(--gray-2);
+  color: var(--gray-800);
 `;
 
 export default PromotionOverview;

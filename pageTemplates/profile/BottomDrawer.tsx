@@ -56,7 +56,7 @@ function BottomDrawer({ type, isModal, setIsModal, setDeclareModal, onSubmit }: 
                 size="lg"
                 borderBottomRadius={0}
                 borderBottom="var(--border)"
-                borderColor="var(--gray-4)"
+                borderColor="var(--gray-500)"
               >
                 거리두기
               </Button>

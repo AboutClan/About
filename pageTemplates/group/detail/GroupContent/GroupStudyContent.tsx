@@ -58,7 +58,7 @@ const Layout = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 140px;
-  border-bottom: 6px solid var(--gray-7);
+  border-bottom: 6px solid var(--gray-200);
 `;
 
 const ContentContainer = styled.div`

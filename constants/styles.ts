@@ -50,8 +50,8 @@ export const ICON_SIZE = {
 export const STATUS_TP_COLOR: Record<GatherStatus, string> = {
   open: "var(--color-mint)",
   pending: "var(--color-red)",
-  close: "var(--gray-4)",
-  end: "var(--gray-4)",
+  close: "var(--gray-500)",
+  end: "var(--gray-500)",
 };
 
 export const COLOR_SCHEME_BG = {

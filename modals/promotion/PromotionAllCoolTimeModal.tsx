@@ -123,7 +123,7 @@ const Detail = styled.div`
   align-items: center;
   font-size: 16px;
   font-weight: 700;
-  color: var(--gray-1);
+  color: var(--gray-900);
 `;
 
 const Explanation = styled.div`
@@ -136,7 +136,7 @@ const Explanation = styled.div`
     margin-left: var(--gap-2);
     > span {
       margin-left: var(--gap-1);
-      color: var(--gray-3);
+      color: var(--gray-700);
     }
   }
 `;

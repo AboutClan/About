@@ -117,7 +117,7 @@ const GuestMessage = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 16px;
-  color: var(--gray-3);
+  color: var(--gray-700);
   min-height: 181px;
 `;
 

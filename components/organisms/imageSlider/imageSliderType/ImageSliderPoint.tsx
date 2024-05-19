@@ -37,13 +37,13 @@ function ImageSliderPoint({ imageContainer }: IImageSliderPoint) {
 }
 
 const PointItem = styled.div`
-  background-color: var(--gray-8);
+  background-color: var(--gray-100);
   display: flex;
   justify-content: center;
   align-items: center;
   width: ${ITEM_WIDTH}px;
   height: ${ITEM_WIDTH}px;
-  border: 1px solid var(--gray-5);
+  border: 1px solid var(--gray-400);
   overflow: hidden;
   border-radius: var(--rounded-lg);
 `;

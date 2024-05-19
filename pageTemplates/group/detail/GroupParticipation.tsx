@@ -63,7 +63,7 @@ function GroupParticipation({ data }: IGroupParticipation) {
                   />
                   {who?.role === "admin" && (
                     <Crown>
-                      <FontAwesomeIcon icon={faCrown} color="var(--color-orange)" />
+                      <FontAwesomeIcon icon={faCrown} color="var(--color-yellow)" />
                     </Crown>
                   )}
                 </ProfileWrapper>
@@ -162,7 +162,7 @@ const ParticipateTime = styled.div<{ isFirst: boolean }>`
   font-size: 16px;
   margin-left: auto;
   margin-right: var(--gap-2);
-  color: ${(props) => (props.isFirst ? "var(--color-mint)" : "var(--color-orange)")};
+  color: ${(props) => (props.isFirst ? "var(--color-mint)" : "var(--color-yellow)")};
   > span:last-child {
     margin-left: 2px;
   }

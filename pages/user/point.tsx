@@ -63,7 +63,7 @@ const MyPoint = styled.div`
   height: 40px;
   border-radius: var(--rounded-lg);
   border: var(--border-mint);
-  color: var(--gray-2);
+  color: var(--gray-800);
   font-size: 14px;
   margin-bottom: 20px;
   > span:first-child {
@@ -73,7 +73,7 @@ const MyPoint = styled.div`
     flex: 1;
     text-align: end;
     font-size: 15px;
-    color: var(--gray-1);
+    color: var(--gray-900);
     font-weight: 700;
   }
 `;

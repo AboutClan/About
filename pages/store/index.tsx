@@ -201,7 +201,7 @@ const Trophy = styled.div`
 `;
 
 const ApplyCnt = styled.div`
-  color: var(--gray-2);
+  color: var(--gray-800);
   font-size: 16px;
 `;
 
@@ -238,7 +238,7 @@ const Circle = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 10;
-  border: 2px solid var(--gray-1);
+  border: 2px solid var(--gray-900);
   display: flex;
   font-size: 14px;
   justify-content: center;
@@ -254,7 +254,7 @@ const CompletedRapple = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--gray-7);
+  background-color: var(--gray-200);
   opacity: 0.5;
 `;
 

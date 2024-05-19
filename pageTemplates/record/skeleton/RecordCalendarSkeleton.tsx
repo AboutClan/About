@@ -59,7 +59,7 @@ const DayLine = styled.div`
   margin: 8px 22px;
   display: flex;
   justify-content: space-between;
-  color: var(--gray-3);
+  color: var(--gray-700);
   font-size: 12px;
   padding: 2px;
   padding-top: var(--gap-3);

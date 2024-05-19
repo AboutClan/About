@@ -130,7 +130,7 @@ const AlphabetBtn = styled.button<{ isSelected: boolean }>`
   justify-content: center;
   align-items: center;
   border: ${(props) =>
-    props.isSelected ? "2px solid var(--color-mint)" : "2px solid var(--gray-5)"};
+    props.isSelected ? "2px solid var(--color-mint)" : "2px solid var(--gray-400)"};
 `;
 
 export default AlphabetChangeModal;

@@ -103,7 +103,7 @@ const SettingBtnNav = styled.nav`
   > button {
     margin-left: var(--gap-2);
     border-radius: 50%;
-    background-color: var(--gray-7);
+    background-color: var(--gray-200);
     width: 32px;
     height: 32px;
     display: flex;
@@ -119,7 +119,7 @@ const Title = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: var(--gap-1);
-  color: var(--gray-1);
+  color: var(--gray-900);
   font-size: 18px;
 
   font-weight: 800;
@@ -134,7 +134,7 @@ const SubInfo = styled.div`
   height: 32px;
   font-size: 13px;
   display: flex;
-  color: var(--gray-3);
+  color: var(--gray-700);
 `;
 
 export default GroupTitle;

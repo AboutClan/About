@@ -114,7 +114,7 @@ function Ranking() {
 const Layout = styled.div`
   height: calc(100vh - 96px);
   overflow-y: auto;
-  background-color: var(--gray-7);
+  background-color: var(--gray-200);
   display: flex;
   flex-direction: column;
 `;

@@ -136,6 +136,6 @@ const StyledDatePicker = styled(DatePicker)`
 const Message = styled.div`
   margin-top: var(--gap-5);
   font-size: 13px;
-  color: var(--gray-4);
+  color: var(--gray-500);
 `;
 export default GatherWritingDateDate;

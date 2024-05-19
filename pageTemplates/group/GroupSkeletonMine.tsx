@@ -14,7 +14,7 @@ function GroupSkeletonMine() {
 
 const Layout = styled.div`
   height: 148px;
-  border-bottom: 6px solid var(--gray-7);
+  border-bottom: 6px solid var(--gray-200);
 `;
 
 const Wrapper = styled.div`

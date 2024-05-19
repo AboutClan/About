@@ -1,27 +1,19 @@
-import {
-  faCirclePlus,
-  faHandshake as faDefaultHandShake,
-  faHouse as faDefaultHouse,
-  faRankingStar as faDefaultRankingStar,
-  faUsersRectangle as faDefaultUsersRectangle,
-} from "@fortawesome/pro-light-svg-icons";
-import {
-  faHandshake,
-  faHouse,
-  faRankingStar,
-  faUsersRectangle,
-} from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Box } from "@chakra-ui/react";
 import Link, { LinkProps } from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
+import CirclePlusIcon from "../assets/icons/CirclePlusIcon";
+import HomeIcon from "../assets/icons/HomeIcon";
+import PeopleIcon from "../assets/icons/PeopleIcon";
+import StatisticsIcon from "../assets/icons/StatisticsIcon";
 import { HAS_STUDY_TODAY } from "../constants/keys/localStorage";
 import { getStudyStandardDate } from "../libs/study/date/getStudyStandardDate";
 import { slideDirectionState } from "../recoils/navigationRecoils";
 import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
+import { detectDevice } from "../utils/validationUtils";
 
 interface INavButtonProps {
   url: string;
@@ -45,8 +37,10 @@ export default function BottomNav() {
 
   const locationEn = convertLocationLangTo(session?.user.location, "en");
   const hasStudyToday = localStorage.getItem(HAS_STUDY_TODAY);
+  const deviceType = detectDevice();
+
   return (
-    <Nav>
+    <Nav isIPhone={deviceType === "iPhone"}>
       {navItems.map((item, idx) => {
         const getParams = (category: Category) => {
           switch (category) {
@@ -94,7 +88,7 @@ function NavButton({ text, url, activeIcon, defaultIcon, active, idx }: INavButt
       replace={!text}
       className={`bottom_nav${idx}`}
     >
-      {active ? activeIcon || defaultIcon : defaultIcon}
+      <Box>{active ? activeIcon || defaultIcon : defaultIcon}</Box>
       <NavText>{text}</NavText>
     </NavLink>
   );
@@ -102,42 +96,45 @@ function NavButton({ text, url, activeIcon, defaultIcon, active, idx }: INavButt
 
 const navItems: INavButtonProps[] = [
   {
-    activeIcon: <FontAwesomeIcon icon={faHouse} size="xl" />,
-    defaultIcon: <FontAwesomeIcon icon={faDefaultHouse} size="xl" />,
+    activeIcon: <HomeIcon />,
+    defaultIcon: <HomeIcon isDark={false} />,
     text: "홈",
     url: "/home",
   },
   {
-    activeIcon: <FontAwesomeIcon icon={faRankingStar} size="xl" />,
-    defaultIcon: <FontAwesomeIcon icon={faDefaultRankingStar} size="xl" />,
+    activeIcon: <StatisticsIcon />,
+    defaultIcon: <StatisticsIcon isDark={false} />,
     text: "통계",
     url: "/statistics",
   },
   {
-    defaultIcon: <FontAwesomeIcon icon={faCirclePlus} fontSize="36px" />,
+    defaultIcon: <CirclePlusIcon />,
     url: "",
   },
   {
-    activeIcon: <FontAwesomeIcon icon={faHandshake} size="xl" />,
-    defaultIcon: <FontAwesomeIcon icon={faDefaultHandShake} size="xl" />,
+    activeIcon: <StatisticsIcon />,
+    defaultIcon: <StatisticsIcon isDark={false} />,
     text: "모임",
     url: "/gather",
   },
   {
-    activeIcon: <FontAwesomeIcon icon={faUsersRectangle} size="xl" />,
-    defaultIcon: <FontAwesomeIcon icon={faDefaultUsersRectangle} size="xl" />,
+    activeIcon: <PeopleIcon />,
+    defaultIcon: <PeopleIcon isDark={false} />,
     text: "소그룹",
     url: "/group",
   },
 ];
 
-const Nav = styled.nav`
+const Nav = styled.nav<{ isIPhone: boolean }>`
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 24px 0 24px;
+  padding-bottom: ${(props) => (props.isIPhone ? "34px" : "24px")};
   width: 100%;
   display: flex;
-  justify-content: even;
   position: fixed;
   bottom: 0;
-  height: 64px; /* Adjusted from the inline style */
+  height: ${(props) => (props.isIPhone ? "87px" : "77px")};
   background-color: white;
   z-index: 10;
   box-shadow: var(--shadow);
@@ -147,17 +144,16 @@ const Nav = styled.nav`
 `;
 
 const NavLink = styled(Link)<{ active: "true" | "false" } & LinkProps>`
-  flex: 1;
+  width: 36px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 16px;
-  margin-top: 4px;
-  color: ${({ active }) => (active === "true" ? "var(--gray-2)" : "var(--gray-3)")};
+  color: ${({ active }) => (active === "true" ? "var(--gray-900)" : "var(--gray-500)")};
 `;
 
 const NavText = styled.div`
-  margin-top: 6px; /* 2rem if you're using rem */
-  font-size: 12px; /* Adjusted for text-xs */
+  margin-top: 4px;
+  font-size: 10px;
+  font-weight: 600;
 `;

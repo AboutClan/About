@@ -40,14 +40,16 @@ export default function StatisticsFilterBar({ setFilterOptions }: IStatisticsFil
         isBorder={false}
       />
       <Flex fontSize="12px" align="center">
-        <Box color={isSwitchOn ? "var(--gray-4)" : "var(--gray-1)"}>{session?.user.location}</Box>
+        <Box color={isSwitchOn ? "var(--gray-500)" : "var(--gray-900)"}>
+          {session?.user.location}
+        </Box>
         <Switch
           onChange={() => setIsSwitchOn((old) => !old)}
           isChecked={isSwitchOn}
           m="0 8px"
           colorScheme="mintTheme"
         />
-        <Box color={!isSwitchOn ? "var(--gray-3)" : "var(--gray-1)"}>전체</Box>
+        <Box color={!isSwitchOn ? "var(--gray-700)" : "var(--gray-900)"}>전체</Box>
       </Flex>
     </Flex>
   );

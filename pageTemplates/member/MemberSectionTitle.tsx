@@ -61,7 +61,7 @@ const TitleWrapper = styled.div`
 
 const Button = styled.button`
   align-self: flex-end;
-  color: var(--gray-3);
+  color: var(--gray-700);
   font-size: 12px;
   > span {
     margin-right: var(--gap-1);

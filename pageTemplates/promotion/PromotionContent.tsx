@@ -77,7 +77,7 @@ const Guide = styled.div`
 
 const Container = styled.div`
   padding-top: var(--gap-5);
-  background-color: var(--gray-7);
+  background-color: var(--gray-200);
   padding: var(--gap-5) var(--gap-4);
 `;
 
@@ -102,7 +102,7 @@ const ImageWrapper = styled.div`
     margin-top: var(--gap-3);
     font-size: 12px;
     font-weight: 600;
-    color: var(--gray-1);
+    color: var(--gray-900);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -110,7 +110,7 @@ const ImageWrapper = styled.div`
 `;
 
 const Nav = styled.nav`
-  border: 1px solid var(--gray-5);
+  border: 1px solid var(--gray-400);
   border-radius: var(--rounded-lg);
 `;
 

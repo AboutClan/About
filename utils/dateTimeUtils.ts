@@ -1,4 +1,6 @@
 import dayjs, { Dayjs } from "dayjs";
+import weekday from "dayjs/plugin/weekday";
+dayjs.extend(weekday);
 
 export const dayjsToStr = (date: Dayjs) => date?.format("YYYY-MM-DD");
 
@@ -62,4 +64,37 @@ export const getDateWeek = (date: Dayjs) => {
   const firstDayOfMonth = date.startOf("month");
   const differenceInDays = date.diff(firstDayOfMonth, "day");
   return Math.floor(differenceInDays / 7) + 1;
+};
+
+export const getCalendarDates = (type: "week" | "month", selectedDate: Dayjs) => {
+  const calendar: string[] = [];
+
+  if (type === "week") {
+    const startDate = selectedDate.startOf(type);
+    for (let i = 0; i < 7; i++) {
+      calendar.push(dayjsToStr(startDate.add(i, "day")));
+    }
+  } else {
+    const startOfMonth = selectedDate.startOf("month");
+    const endOfMonth = selectedDate.endOf("month");
+    const startCalendar = startOfMonth.weekday(0);
+    const endCalendar = endOfMonth.weekday(6);
+
+    let current = startCalendar;
+
+    while (current.isBefore(endCalendar) || current.isSame(endCalendar)) {
+      if (current.isBefore(startOfMonth) || current.isAfter(endOfMonth)) {
+        calendar.push(null);
+      } else {
+        calendar.push(dayjsToStr(current));
+      }
+      current = current.add(1, "day");
+    }
+    const maxDays = calendar.length <= 35 ? 35 : 42;
+    while (calendar.length < maxDays) {
+      calendar.push(null);
+    }
+  }
+
+  return calendar;
 };

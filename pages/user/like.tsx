@@ -55,11 +55,11 @@ const ItemContainer = styled.div`
   flex-direction: column;
   padding: var(--gap-3) var(--gap-4);
   padding-bottom: var(--gap-2);
-  border-bottom: 1px solid var(--gray-7);
+  border-bottom: 1px solid var(--gray-200);
   font-size: 13px;
   > span:first-child {
     font-size: 12px;
-    color: var(--gray-2);
+    color: var(--gray-800);
     margin-bottom: var(--gap-2);
   }
 `;

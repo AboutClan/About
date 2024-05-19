@@ -69,7 +69,7 @@ const PageView = styled.div`
     color: white;
   }
   > span:last-child {
-    color: var(--gray-6);
+    color: var(--gray-300);
   }
 `;
 

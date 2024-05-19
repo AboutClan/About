@@ -55,7 +55,7 @@ const Content = styled.div`
   justify-content: space-between;
 
   > span:first-child {
-    color: var(--gray-1);
+    color: var(--gray-900);
     font-weight: 600;
     font-size: 22px;
   }
@@ -63,7 +63,7 @@ const Content = styled.div`
     display: inline-block;
     margin-top: 14px;
     font-size: 17px;
-    color: var(--gray-2);
+    color: var(--gray-800);
     font-weight: 500;
   }
 `;

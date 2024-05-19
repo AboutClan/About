@@ -76,7 +76,7 @@ const TitleInput = styled.input`
   font-size: 15px;
   font-weight: 600;
   ::placeholder {
-    color: var(--gray-4);
+    color: var(--gray-500);
   }
 `;
 

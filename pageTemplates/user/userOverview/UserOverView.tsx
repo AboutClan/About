@@ -102,7 +102,7 @@ const IconWrapper = styled.button`
   right: 0px;
   bottom: 0px;
   background-color: white;
-  border: 1px solid var(--gray-5);
+  border: 1px solid var(--gray-400);
   border-radius: 50%;
 `;
 

@@ -21,7 +21,8 @@ export default function BetweenTextSwitcher({ left, right }: IBetweenTextSwitche
 }
 const Layout = styled.div`
   display: flex;
+  height: 42px;
   justify-content: space-between;
-  padding: 1rem 1rem 0; /* px-4 pt-4 */
-  color: #4a5568; /* Assuming text-gray-2 maps to a specific gray, adjust as necessary */
+  color: var(--gray-600);
+  font-size: 14px;
 `;

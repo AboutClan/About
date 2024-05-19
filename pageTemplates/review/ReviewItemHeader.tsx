@@ -54,7 +54,7 @@ const Profile = styled.div`
     flex-direction: column;
 
     > span:last-child {
-      color: var(--gray-3);
+      color: var(--gray-700);
       font-size: 10px;
     }
   }

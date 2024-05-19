@@ -25,7 +25,7 @@ function CheckBoxNav({ buttonList, selectedButton, setSelectedButton }: ICheckBo
               w="20px"
               borderWidth={selectedButton === item ? "0" : "1.5px"}
               borderRadius="var(--rounded)"
-              borderColor="var(--gray-5)"
+              borderColor="var(--gray-400)"
               bg={selectedButton === item ? "var(--color-mint)" : "white"}
               onClick={() => handleCheckBoxChange(item)}
               justifyContent="center"

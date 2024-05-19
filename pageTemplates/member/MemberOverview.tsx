@@ -129,7 +129,7 @@ const InfoItem = styled.div`
     color: var(--gray-2);
   }
   > span:last-child {
-    color: var(--gray-3);
+    color: var(--gray-700);
   }
 `;
 

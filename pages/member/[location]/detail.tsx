@@ -117,7 +117,7 @@ const Info = styled.div`
   justify-content: space-between;
   > div:last-child {
     font-size: 12px;
-    color: var(--gray-3);
+    color: var(--gray-700);
     display: flex;
     flex-direction: column;
   }

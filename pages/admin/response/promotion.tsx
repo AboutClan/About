@@ -35,7 +35,7 @@ const Layout = styled.div``;
 const Item = styled.div`
   display: flex;
   padding: 12px;
-  border-bottom: 1px solid var(--gray-5);
+  border-bottom: 1px solid var(--gray-400);
   > span {
     margin-right: 12px;
   }

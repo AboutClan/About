@@ -8,12 +8,12 @@ interface ISummaryTable {
 
 export default function SummaryTable({ headerInfos, tableInfosArr, size = "md" }: ISummaryTable) {
   return (
-    <TableContainer overflow="hidden">
-      <Table variant="striped" size={size} colorScheme="gray">
-        <Thead>
+    <TableContainer color="var(--gray-800)" overflow="hidden" p="0 10px" fontSize="12px">
+      <Table size={size}>
+        <Thead h="44px">
           <Tr>
             {headerInfos.map((info, idx) => (
-              <Th color="var(--gray-1)" key={idx} textAlign="center" p="4px 12px">
+              <Th key={idx} textAlign="center" p="0px 12px" fontSize="12px">
                 {info}
               </Th>
             ))}
@@ -21,7 +21,7 @@ export default function SummaryTable({ headerInfos, tableInfosArr, size = "md" }
         </Thead>
         <Tbody>
           {tableInfosArr.map((info, idx) => (
-            <Tr key={idx}>
+            <Tr key={idx} h="44px">
               {info.map((content, idx) => (
                 <Td key={idx} fontWeight={400} textAlign="center" p="4px 12px">
                   {idx === 1 && headerInfos.length === 4

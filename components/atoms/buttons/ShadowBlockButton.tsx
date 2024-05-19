@@ -27,12 +27,12 @@ const Button = styled.button`
   width: 100%;
   background-color: white;
   color: var(--color-mint);
-  box-shadow: var(--shadow);
-  border: var(--border);
+  font-size: 16px;
+  border: var(--border-mint-light);
   font-weight: 600;
-  height: 44px;
-  border-radius: var(--rounded-lg);
+  height: 54px;
+  border-radius: 8px;
   :hover {
-    background-color: var(--gray-7);
+    background-color: var(--gray-200);
   }
 `;

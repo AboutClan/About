@@ -83,7 +83,7 @@ const AlphabetQNABtn = styled.button`
 
   display: flex;
   align-items: center;
-  background-color: var(--gray-7);
+  background-color: var(--gray-200);
 
   padding: var(--gap-3) var(--gap-4);
   border-radius: var(--rounded-lg);
@@ -100,11 +100,11 @@ const AlphabetQNABtnContents = styled.div`
   align-items: flex-start;
   > span:first-child {
     font-size: 12px;
-    color: var(--gray-3);
+    color: var(--gray-700);
   }
   > span:last-child {
     font-weight: 600;
-    color: var(--gray-2);
+    color: var(--gray-800);
     font-size: 14px;
   }
 `;
