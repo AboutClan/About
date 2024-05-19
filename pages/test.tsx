@@ -9,6 +9,7 @@ import styled from "styled-components";
 import { useGroupBelongMatchMutation, useMonthCalcMutation } from "../hooks/admin/mutation";
 import { useAdminStudyRecordQuery } from "../hooks/admin/quries";
 import { useImageUploadMutation } from "../hooks/image/mutations";
+import { useStudyDailyVoteCntQuery } from "../hooks/study/queries";
 import { studyDateStatusState } from "../recoils/studyRecoils";
 function Test() {
   const { data } = useAdminStudyRecordQuery(dayjs("2024-04-16"), dayjs("2024-04-30"), null, "인천");
@@ -23,7 +24,7 @@ function Test() {
     dayjs("2023-12-04"),
     dayjs("2023-12-10"),
     null,
-    "수원",
+    "동대문",
   );
   // const decodeByAES256 = (encodedTel: string) => {
   //   const bytes = CryptoJS.AES.decrypt(encodedTel, key);
@@ -31,6 +32,12 @@ function Test() {
   //   return originalText;
   // };
 
+  const { data: data3 } = useStudyDailyVoteCntQuery(
+    "수원",
+    dayjs().subtract(1, "day"),
+    dayjs().add(2, "day"),
+  );
+  console.log(data3);
   const { mutate: match } = useGroupBelongMatchMutation({
     onSuccess(data) {},
   });

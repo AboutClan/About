@@ -9,6 +9,7 @@ import {
   STUDY_PREFERENCE,
   STUDY_START_TIME,
   STUDY_VOTE,
+  STUDY_VOTE_CNT,
 } from "../../constants/keys/queryKeys";
 import { SERVER_URI } from "../../constants/system";
 import { QueryOptions } from "../../types/hooks/reactTypes";
@@ -114,6 +115,28 @@ export const useStudyPreferenceQuery = (options?: QueryOptions<IStudyVotePlaces>
         `${SERVER_URI}/user/preference`,
       );
       return res.data?.studyPreference;
+    },
+    options,
+  );
+
+export const useStudyDailyVoteCntQuery = (
+  location,
+  startDay,
+  endDay,
+  options?: QueryOptions<any>,
+) =>
+  useQuery(
+    [STUDY_VOTE_CNT, location, dayjsToStr(startDay), dayjsToStr(endDay)],
+    async () => {
+      console.log(dayjsToStr(startDay), dayjsToStr(endDay));
+      const res = await axios.get<any>(`${SERVER_URI}/vote/participationCnt`, {
+        params: {
+          location,
+          startDay: dayjsToStr(startDay),
+          endDay: dayjsToStr(endDay),
+        },
+      });
+      return res.data;
     },
     options,
   );
