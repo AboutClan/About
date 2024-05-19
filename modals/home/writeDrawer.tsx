@@ -51,7 +51,7 @@ export default function WriteDrawer() {
               color="red.400"
             />
             <SocialButton
-              url="/group/writing/category/main"
+              url="/group/writing/main"
               title="소그룹"
               subTitle="비슷한 관심사의 인원들을 모아봐요"
               icon={<FontAwesomeIcon icon={faCampfire} color="white" />}

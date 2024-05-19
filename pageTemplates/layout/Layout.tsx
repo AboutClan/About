@@ -2,22 +2,24 @@
 import { config } from "@fortawesome/fontawesome-svg-core";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useSetRecoilState } from "recoil";
 
 import BottomNav from "../../components/BottomNav";
 import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
+import PageTracker from "../../components/layouts/PageTracker";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
-import { slideDirectionState } from "../../recoils/navigationRecoils";
+import { parseUrlToSegments } from "../../utils/stringUtils";
 import BaseModal from "./BaseModal";
 import BaseScript from "./BaseScript";
 import Seo from "./Seo";
 
 config.autoAddCss = false;
 
+export const BASE_BOTTOM_NAV_SEGMENT = ["home", "statistics", "gather", "group"];
 interface ILayout {
   children: React.ReactNode;
 }
@@ -35,13 +37,8 @@ function Layout({ children }: ILayout) {
   const isGuest = session?.user.name === "guest";
 
   const [isErrorModal, setIsErrorModal] = useState(false);
-  const setSlideDirection = useSetRecoilState(slideDirectionState);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setSlideDirection(null);
-    }, 600);
-  }, []);
+  const currentSegment = parseUrlToSegments(pathname)?.[0];
 
   useEffect(() => {
     if (PUBLIC_SEGMENT.includes(segment)) return;
@@ -72,8 +69,9 @@ function Layout({ children }: ILayout) {
       {token && (
         <>
           <div id="root-modal">{children}</div>
-          {BASE_BOTTOM_NAV_URL.includes(pathname) && <BottomNav />}
-          {isGuest && BASE_BOTTOM_NAV_URL.includes(pathname) && <GuestBottomNav />}
+          <PageTracker />
+          {BASE_BOTTOM_NAV_SEGMENT.includes(currentSegment) && <BottomNav />}
+          {isGuest && BASE_BOTTOM_NAV_SEGMENT.includes(currentSegment) && <GuestBottomNav />}
           <BaseModal isGuest={isGuest} isError={isErrorModal} setIsError={setIsErrorModal} />
         </>
       )}
@@ -81,7 +79,5 @@ function Layout({ children }: ILayout) {
     </>
   );
 }
-
-const BASE_BOTTOM_NAV_URL = ["/home", "/statistics", "/gather", "/group"];
 
 export default Layout;

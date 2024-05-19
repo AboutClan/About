@@ -39,7 +39,7 @@ function GroupHeader({ group }: IGroupHeader) {
   const onClick = () => {
     setGroupWriting(group);
 
-    router.push("/group/writing/category/main");
+    router.push("/group/writing/main");
   };
 
   const movePage = async () => {

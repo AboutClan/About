@@ -34,32 +34,29 @@ function GatherDetail() {
 
   return (
     <>
-      <GatherHeader gatherData={gatherData} />
-
-      <>
-        {gatherData ? (
-          <>
-            <Slide>
-              <Layout>
-                <GatherOrganizer
-                  createdAt={gatherData.createdAt}
-                  organizer={gatherData.user as IUserSummary}
-                  isAdminOpen={gatherData.isAdminOpen}
-                  category={gatherData.type.title}
-                />
-                <GatherDetailInfo data={gatherData} />
-                <GatherTitle title={gatherData.title} status={gatherData.status} />
-                <GatherContent content={gatherData.content} gatherList={gatherData.gatherList} />
-                <GatherParticipation data={gatherData} />
-                <GatherComments comment={gatherData.comment} />
-              </Layout>
-            </Slide>
-            {!isGuest && <GatherBottomNav data={gatherData} />}
-          </>
-        ) : (
-          <MainLoading />
-        )}
-      </>
+      {gatherData ? (
+        <>
+          <GatherHeader gatherData={gatherData} />
+          <Slide>
+            <Layout>
+              <GatherOrganizer
+                createdAt={gatherData.createdAt}
+                organizer={gatherData.user as IUserSummary}
+                isAdminOpen={gatherData.isAdminOpen}
+                category={gatherData.type.title}
+              />
+              <GatherDetailInfo data={gatherData} />
+              <GatherTitle title={gatherData.title} status={gatherData.status} />
+              <GatherContent content={gatherData.content} gatherList={gatherData.gatherList} />
+              <GatherParticipation data={gatherData} />
+              <GatherComments comment={gatherData.comment} />
+            </Layout>
+          </Slide>
+          {!isGuest && <GatherBottomNav data={gatherData} />}
+        </>
+      ) : (
+        <MainLoading />
+      )}
     </>
   );
 }

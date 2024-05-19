@@ -40,7 +40,7 @@ function GroupWritingGuide() {
     <>
       <Slide isFixed={true}>
         <ProgressStatus value={42} />
-        <Header isSlide={false} title="" url="/group/writing/category/sub" />
+        <Header isSlide={false} title="" url="/group/writing/sub" />
       </Slide>
 
       <RegisterLayout>
