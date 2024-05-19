@@ -111,31 +111,32 @@ function Member() {
   return (
     <>
       <MemberHeader />
+      <Slide>
+        {groupedMembers ? (
+          <>
+            <SectionBar title="멤버 소개" size="md" />
+            <Box mx="16px">
+              {MEMBER_SECTIONS.map((section) => {
+                if (section === "birth" && groupedMembers.birth.length === 0) return;
+                return (
+                  <Section key={section}>
+                    <MemberSectionTitle section={section} onClickSection={onClickSection} />
+                    <BlurredPart isBlur={isGuest}>
+                      <MemberSectionList members={groupedMembers[section]} />
+                    </BlurredPart>
+                  </Section>
+                );
+              })}
 
-      {groupedMembers ? (
-        <Slide>
-          <SectionBar title="멤버 소개" size="md" />
-          <Box mx="16px">
-            {MEMBER_SECTIONS.map((section) => {
-              if (section === "birth" && groupedMembers.birth.length === 0) return;
-              return (
-                <Section key={section}>
-                  <MemberSectionTitle section={section} onClickSection={onClickSection} />
-                  <BlurredPart isBlur={isGuest}>
-                    <MemberSectionList members={groupedMembers[section]} />
-                  </BlurredPart>
-                </Section>
-              );
-            })}
-
-            <HrDiv />
-          </Box>
-          <MemberRecommend members={locationMembers} />
-        </Slide>
-      ) : (
-        <MainLoading />
-        // <MemberSkeleton />
-      )}
+              <HrDiv />
+            </Box>
+            <MemberRecommend members={locationMembers} />
+          </>
+        ) : (
+          <MainLoading />
+          // <MemberSkeleton />
+        )}
+      </Slide>
     </>
   );
 }

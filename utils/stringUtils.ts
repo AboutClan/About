@@ -8,3 +8,11 @@ export const findParentheses = (text: string) => {
     return null; // 일치하는 결과가 없을 경우의 메시지
   }
 };
+
+export const parseUrlToSegments = (url) => {
+  if (!url) return null;
+  const queryStartIndex = url.indexOf("?");
+  const basePath = queryStartIndex >= 0 ? url.substring(0, queryStartIndex) : url;
+  const segments = basePath.split("/").filter(Boolean);
+  return segments;
+};

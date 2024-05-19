@@ -11,11 +11,9 @@ interface IPageLayout {
 
 function Slide({ children, isFixed, posZero }: IPageLayout) {
   const [slideDirection, setSlideDirection] = useRecoilState(slideDirectionState);
-  console.log(slideDirection, 4);
+
   useEffect(() => {
-    return () => {
-      setSlideDirection("right");
-    };
+    setSlideDirection("right");
   }, []);
 
   const variants = {
@@ -28,6 +26,7 @@ function Slide({ children, isFixed, posZero }: IPageLayout) {
       opacity: 1,
     },
   };
+
   const animationProps = slideDirection
     ? {
         initial: "hidden",
@@ -37,6 +36,7 @@ function Slide({ children, isFixed, posZero }: IPageLayout) {
         transition: { duration: 0.5 },
       }
     : {};
+ 
   return (
     <>
       <motion.div

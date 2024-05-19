@@ -180,7 +180,7 @@ function Index() {
           </>
         </Layout>
       </Slide>
-      {!isGuest && <WritingIcon url="/group/writing/category/main" />}
+      {!isGuest && <WritingIcon url="/group/writing/main" />}
 
       {isRuleModal && <RuleModal content={GROUP_STUDY_RULE_CONTENT} setIsModal={setIsRuleModal} />}
     </>

@@ -2,23 +2,24 @@
 import { config } from "@fortawesome/fontawesome-svg-core";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
-import { signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
+import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useSetRecoilState } from "recoil";
 
 import BottomNav from "../../components/BottomNav";
 import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
+import PageTracker from "../../components/layouts/PageTracker";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
-import { slideDirectionState } from "../../recoils/navigationRecoils";
+import { parseUrlToSegments } from "../../utils/stringUtils";
 import BaseModal from "./BaseModal";
 import BaseScript from "./BaseScript";
 import Seo from "./Seo";
 
 config.autoAddCss = false;
 
+export const BASE_BOTTOM_NAV_SEGMENT = ["home", "statistics", "gather", "group"];
 interface ILayout {
   children: React.ReactNode;
 }
@@ -34,23 +35,12 @@ function Layout({ children }: ILayout) {
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   const { data: session } = useSession();
   const isGuest = session?.user.name === "guest";
-  const setSlideDirection = useSetRecoilState(slideDirectionState);
 
   const [isErrorModal, setIsErrorModal] = useState(false);
 
-  function parseUrlToSegments(url) {
-    const queryStartIndex = url.indexOf("?");
-
-    const basePath = queryStartIndex >= 0 ? url.substring(0, queryStartIndex) : url;
-
-    const segments = basePath.split("/").filter(Boolean);
-
-    return segments;
-  }
+  const currentSegment = parseUrlToSegments(pathname)?.[0];
 
   useEffect(() => {
-    console.log(3, pathname);
-    if (!pathname) return;
     if (PUBLIC_SEGMENT.includes(segment)) return;
     if (session === undefined) return;
     const role = session?.user.role;
@@ -69,32 +59,7 @@ function Layout({ children }: ILayout) {
       );
       signOut({ callbackUrl: `/login/?status=logout` });
     }
-
-    const handleRouterStart = (url) => {
-      if (!url) return;
-      const segments = parseUrlToSegments(url);
-      const prevSegemnts = parseUrlToSegments(pathname);
-      console.log(4, prevSegemnts);
-      if (segments[0] === "home") setSlideDirection("left");
-      if (prevSegemnts[0] === "profile") setSlideDirection("left");
-      console.log(222, pathname, url);
-    };
-
-    const handleRouterCompleted = (url) => {
-      console.log(111);
-      if (!url) return;
-      const segments = parseUrlToSegments(url);
-      setSlideDirection("right");
-    };
-
-    router.events.on("routeChangeStart", handleRouterStart);
-    router.events.on("routeChangeComplete", handleRouterCompleted);
-
-    return () => {
-      router.events.off("routeChangeStart", handleRouterStart);
-      router.events.off("routeChangeComplete", handleRouterCompleted);
-    };
-  }, [session, router.events, pathname]);
+  }, [session]);
 
   return (
     <>
@@ -104,8 +69,9 @@ function Layout({ children }: ILayout) {
       {token && (
         <>
           <div id="root-modal">{children}</div>
-          {BASE_BOTTOM_NAV_URL.includes(pathname) && <BottomNav />}
-          {isGuest && BASE_BOTTOM_NAV_URL.includes(pathname) && <GuestBottomNav />}
+          <PageTracker />
+          {BASE_BOTTOM_NAV_SEGMENT.includes(currentSegment) && <BottomNav />}
+          {isGuest && BASE_BOTTOM_NAV_SEGMENT.includes(currentSegment) && <GuestBottomNav />}
           <BaseModal isGuest={isGuest} isError={isErrorModal} setIsError={setIsErrorModal} />
         </>
       )}
@@ -113,7 +79,5 @@ function Layout({ children }: ILayout) {
     </>
   );
 }
-
-const BASE_BOTTOM_NAV_URL = ["/home", "/statistics", "/gather", "/group"];
 
 export default Layout;
