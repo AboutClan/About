@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+import type { Meta } from "@storybook/react";
 
 import OutlineBadge from "../../../components/atoms/badges/OutlineBadge";
 
@@ -10,16 +10,11 @@ const meta = {
 
 export default meta;
 
-type Story = StoryObj<typeof meta>;
-
-export const Primary: Story = {
-  args: {
-    colorScheme: "mintTheme",
-    text: "OutlineBadge",
-  },
+export const Primary = {
+  args: {},
 };
 
-export const PrimarySizeSmall: Story = {
+export const PrimarySizeSmall = {
   args: {
     ...Primary.args,
     size: "sm",
