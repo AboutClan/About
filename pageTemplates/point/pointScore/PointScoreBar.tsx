@@ -4,8 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import ProgressBar from "../../../components/atoms/ProgressBar";
 
+import ProgressBar from "../../../components/atoms/ProgressBar";
 import {
   BADGE_COLOR_MAPPINGS,
   BADGE_INFO,

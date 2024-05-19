@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 import ProgressBar from "../atoms/ProgressBar";
 
 interface IProgressStatus {
