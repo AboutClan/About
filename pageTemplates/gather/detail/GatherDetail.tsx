@@ -32,7 +32,7 @@ function GatherDetailInfo({
       {isSubLocation && <LocationSub>{location.sub}</LocationSub>}
       <Item>
         <ItemText>날짜</ItemText>
-        <span>{date === "미정" ? date : dayjsToFormat(dayjs(date), "M.D(ddd) hh:mm")}</span>
+        <span>{date === "미정" ? date : dayjsToFormat(dayjs(date), "M.D(ddd) HH:mm")}</span>
       </Item>
       <Item>
         <ItemText>나이</ItemText>
