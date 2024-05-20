@@ -1,6 +1,4 @@
 import { Button } from "@chakra-ui/react";
-import { faBan, faCircleXmark, faClock } from "@fortawesome/pro-light-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -23,7 +21,7 @@ import { usePointSystemLogQuery } from "../../hooks/user/queries";
 import { myStudyState, studyDateStatusState } from "../../recoils/studyRecoils";
 import {
   IParticipation,
-  StudyStatus,
+  StudyStatus
 } from "../../types/models/studyTypes/studyDetails";
 import { StudyDateStatus } from "../../types/models/studyTypes/studyInterActions";
 import { IPointLog } from "../../types/services/pointSystem";
@@ -126,17 +124,17 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
 
   const subNavOptions: IIconLinkTile[] = [
     {
-      icon: <FontAwesomeIcon icon={faCircleXmark} size="xl" />,
+      icon: <i className="fa-light fa-circle-x-mark fa-xl"  />,
       text: "참여 취소",
       func: () => handleSubNav("cancelVote"),
     },
     {
-      icon: <FontAwesomeIcon icon={faClock} size="xl" />,
+      icon: <i className="fa-light fa-clock fa-xl"  />,
       text: "시간 변경",
       func: () => handleSubNav("changeTime"),
     },
     {
-      icon: <FontAwesomeIcon icon={faBan} size="xl" />,
+      icon: <i className="fa-light fa-ban fa-xl"  />,
       text: "당일 불참",
       func: () => handleSubNav("absent"),
     },

@@ -1,5 +1,3 @@
-import { faChevronLeft } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/navigation";
 import styled from "styled-components";
 
@@ -20,7 +18,7 @@ export default function ArrowBackButton({ url }: IArrowBackButton) {
 export function ArrowBackButtonUI({ onClick }: { onClick: () => void }) {
   return (
     <Button onClick={onClick}>
-      <FontAwesomeIcon icon={faChevronLeft} />
+      <i className="fa-solid fa-chevron-left" />
     </Button>
   );
 }

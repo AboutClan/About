@@ -1,6 +1,4 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { faCircleP } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 
 import Header from "../../components/layouts/Header";
@@ -14,7 +12,7 @@ export default function EventHeader() {
       <Link href="/user/point">
         <Flex fontWeight={600}>
           <Box mr="6px">
-            <FontAwesomeIcon icon={faCircleP} color="var(--color-mint)" size="lg" />
+            <i className="fa-solid fa-circle-p fa-lg" style={{ color: "var(--color-mint)" }} />
           </Box>
           {userInfo?.point || 0} P
         </Flex>

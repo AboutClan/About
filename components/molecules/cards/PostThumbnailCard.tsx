@@ -1,6 +1,4 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { faInfinity } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
@@ -83,7 +81,7 @@ export function PostThumbnailCard({
               <Box as="span" mx="2px">
                 /
               </Box>
-              {maxCnt || <FontAwesomeIcon icon={faInfinity} />}
+              {maxCnt || <i className="fa-regular fa-infinity" />}
             </Box>
           </Flex>
         </Flex>

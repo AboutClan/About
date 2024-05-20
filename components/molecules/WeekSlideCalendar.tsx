@@ -1,7 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { Dayjs } from "dayjs";
 
-import { getTextSwitcherProps } from "../../pageTemplates/home/studyController/StudyController";
 import { dayjsToStr, getCalendarDates } from "../../utils/dateTimeUtils";
 import CalendarDayBox from "../atoms/CalendarDayBox";
 
@@ -10,10 +9,10 @@ interface CalendarProps {
   func: (date: number) => void;
 }
 
-const DAYS = ["일", "월", "화", "수", "목", "금", "토"];
+// const DAYS = ["일", "월", "화", "수", "목", "금", "토"];
 
 function WeekSlideCalendar({ selectedDate, func }: CalendarProps) {
-  const textSwitcherProps = getTextSwitcherProps(selectedDate, func);
+  // const textSwitcherProps = getTextSwitcherProps(selectedDate, func);
 
   const calendarArr = getCalendarDates("week", selectedDate);
 

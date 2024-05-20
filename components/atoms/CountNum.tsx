@@ -1,5 +1,3 @@
-import { faMinus, faPlus } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
 import { DispatchNumber } from "../../types/hooks/reactTypes";
@@ -22,7 +20,7 @@ function CountNum({ value, setValue, unit, min = 1, isSmall }: ICountNum) {
         isSmall={isSmall}
         onClick={() => setValue((old) => old - 1)}
       >
-        <FontAwesomeIcon icon={faMinus} size="sm" />
+        <i className="fa-regular fa-minus fa-sm"  />
       </IconWrapper>
       <Count>
         {value}
@@ -34,7 +32,7 @@ function CountNum({ value, setValue, unit, min = 1, isSmall }: ICountNum) {
         isSmall={isSmall}
         onClick={() => setValue((old) => old + 1)}
       >
-        <FontAwesomeIcon icon={faPlus} size="sm" />
+        <i className="fa-regular fa-plus fa-sm" />
       </IconWrapper>
     </Layout>
   );

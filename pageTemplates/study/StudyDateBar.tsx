@@ -1,6 +1,4 @@
 import { Button } from "@chakra-ui/react";
-import { faPlus } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { useParams } from "next/navigation";
 import { useState } from "react";
@@ -29,7 +27,7 @@ function StudyDateBar({ isPrivateStudy, place }: IStudyDateBar) {
             size="sm"
             variant="outline"
             color="var(--gray-700)"
-            rightIcon={<FontAwesomeIcon icon={faPlus} size="xs" />}
+            rightIcon={<i className="fa-solid fa-plus fa-xs" />}
             padding="0 var(--gap-2)"
             borderColor="var(--gray-400)"
             onClick={() => setIsInviteModal(true)}

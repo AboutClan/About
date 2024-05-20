@@ -19,7 +19,7 @@ function ReviewItemHeader({ writer, date }: IReviewItemHeader) {
           <span>{date}</span>
         </div>
       </Profile>
-      {/* <FontAwesomeIcon icon={faEllipsis} size="lg" /> */}
+      {/* <i className="fa- fa-ellipsis" size="lg" /> */}
     </Layout>
   );
 }

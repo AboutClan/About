@@ -1,5 +1,3 @@
-import { faImage } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
 import Skeleton from "../../components/atoms/skeleton/Skeleton";
@@ -9,7 +7,7 @@ function GatherImageSliderSkeleton() {
     <Layout>
       <GatherReviewNavIcon>
         <div>
-          <FontAwesomeIcon icon={faImage} size="2x" color="var(--color-mint)" />
+          <i className="fa-solid fa-2x fa-image" style={{ color: "var(--color-mint)" }} />
         </div>
         <span>리뷰</span>
       </GatherReviewNavIcon>

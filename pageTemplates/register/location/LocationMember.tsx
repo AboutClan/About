@@ -1,5 +1,3 @@
-import { faCaretUp, faUsers } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
 import { LOCATION_MEMBER_CNT } from "../../../constants/location";
@@ -9,11 +7,11 @@ function LocationMember({ location }: { location: Location }) {
   return (
     <Layout>
       <MemberCnt>
-        <FontAwesomeIcon icon={faUsers} size="xs" />
+        <i className="fa-solid fa-users fa-xs"  />
         <span>{LOCATION_MEMBER_CNT[location].member}</span>
       </MemberCnt>
       <NewMember>
-        <FontAwesomeIcon icon={faCaretUp} />
+        <i className="fa-solid fa-caret-up" />
         <span>{LOCATION_MEMBER_CNT[location].new}</span>
       </NewMember>
     </Layout>

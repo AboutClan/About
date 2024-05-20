@@ -1,6 +1,4 @@
 import { AspectRatio, Box, Flex } from "@chakra-ui/react";
-import { faMeteor, faStarShooting } from "@fortawesome/pro-duotone-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -22,7 +20,10 @@ export default function EventPoint() {
           <Flex p="16px" justifyContent="space-between" borderBottom="var(--border)">
             <Flex>
               <Box mr="12px">
-                <FontAwesomeIcon icon={faStarShooting} size="lg" color="var(--color-red)" />
+                <i
+                  className="fa-duotone fa-star-shooting fa-lg"
+                  style={{ color: "var(--color-red)" }}
+                />
               </Box>
               동아리 활동에 참여하고
             </Flex>
@@ -33,7 +34,11 @@ export default function EventPoint() {
           <Flex p="16px" justifyContent="space-between">
             <Flex>
               <Box mr="12px">
-                <FontAwesomeIcon icon={faMeteor} size="lg" color="var(--color-red)" />
+                <i
+                  className="fa-duotone fa-meteor fa-lg"
+              
+                  style={{ color: "var(--color-red)" }}
+                />
               </Box>
               이벤트에 참여하고
             </Flex>

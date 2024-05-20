@@ -1,9 +1,7 @@
-import "@fortawesome/fontawesome-svg-core/styles.css";
 import "../styles/globals.css";
 import "../styles/variable.css";
 
 import { ChakraProvider } from "@chakra-ui/react";
-import { config } from "@fortawesome/fontawesome-svg-core";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { SessionProvider } from "next-auth/react";
@@ -12,8 +10,6 @@ import { RecoilRoot } from "recoil";
 
 import Layout from "../pageTemplates/layout/Layout";
 import theme from "../theme";
-
-config.autoAddCss = false;
 
 const queryClient = new QueryClient({
   defaultOptions: {

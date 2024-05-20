@@ -1,5 +1,3 @@
-import { faMinusCircle, faPlusCircle } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
@@ -82,13 +80,13 @@ function GroupWritingContent() {
                 <MinusWrapper
                   onClick={() => setRules((old) => old.filter((rule) => rule !== item))}
                 >
-                  <FontAwesomeIcon icon={faMinusCircle} />
+                  <i className="fa- fa-minuscircle" />
                 </MinusWrapper>
               </RuleItem>
             ))}
 
             <PlusWrapper onClick={() => handleAdd()}>
-              <FontAwesomeIcon icon={faPlusCircle} />
+              <i className="fa- fa-pluscircle" />
             </PlusWrapper>
           </RuleContainer>
         </Container>

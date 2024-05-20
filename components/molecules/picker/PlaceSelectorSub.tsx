@@ -1,10 +1,8 @@
-import { faLeft, faRight } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styled from "styled-components";
 
 import ImageTileGridLayout, {
-  IImageTileData,
+  IImageTileData
 } from "../../../components/molecules/layouts/ImageTitleGridLayout";
 import { MAX_USER_PER_PLACE } from "../../../constants/settingValue/study/study";
 import { useToast } from "../../../hooks/custom/CustomToast";
@@ -73,12 +71,12 @@ function PlaceSelectorSub({ places, selectPlaces, setSelectPlaces }: IPlaceSelec
 
       {!isFirst && (
         <LeftArrow onClick={() => onClickArrow("left")}>
-          <FontAwesomeIcon icon={faLeft} />
+          <i className="fa-solid fa-left" />
         </LeftArrow>
       )}
       {isTwoPage && isFirst && (
         <RightArrow onClick={() => onClickArrow("right")}>
-          <FontAwesomeIcon icon={faRight} />
+          <i className="fa-solid fa-right" />
         </RightArrow>
       )}
     </Layout>

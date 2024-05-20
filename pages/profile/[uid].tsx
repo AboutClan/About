@@ -1,6 +1,4 @@
 import { Button } from "@chakra-ui/react";
-import { faEllipsisVertical } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
@@ -36,7 +34,7 @@ function ProfilePage() {
     <>
       <Header title="" url={beforePage}>
         <Button pr="4px" variant="ghost">
-          <FontAwesomeIcon icon={faEllipsisVertical} size="lg" onClick={() => setIsModal(true)} />
+          <i className="fa-solid fa-ellipsis-vertical fa-lg"  onClick={() => setIsModal(true)} />
         </Button>
       </Header>
       <Slide>

@@ -14,7 +14,7 @@ import IconButtonNav, { IIconButtonNavBtn } from "../../../components/molecules/
 import {
   DAILY_CHECK_POP_UP,
   NOTICE_ACTIVE_CNT,
-  NOTICE_ALERT,
+  NOTICE_ALERT
 } from "../../../constants/keys/localStorage";
 import { useNoticeActiveLogQuery } from "../../../hooks/user/sub/interaction/queries";
 import DailyCheckModal from "../../../modals/aboutHeader/dailyCheckModal/DailyCheckModal";
@@ -65,11 +65,11 @@ function HomeHeader() {
   const generateIconBtnArr = () => {
     const arr = [
       // {
-      //   icon: <FontAwesomeIcon icon={faBooks} />,
+      //   icon: <i className="fa- fa-books" />,
       //   func: () => setModalType("rule"),
       // },
       // {
-      //   icon: <FontAwesomeIcon icon={faCircleP} />,
+      //   icon: <i className="fa- fa-circlep" />,
       //   func: () => setModalType("pointGuide"),
       // },
       {
@@ -93,7 +93,7 @@ function HomeHeader() {
 
     if (todayDailyCheck === false && showDailyCheck) {
       // arr.unshift({
-      //   icon: <FontAwesomeIcon icon={faBadgeCheck} color="var(--color-mint)" />,
+      //   icon: <i className="fa- fa-badgecheck" color="var(--color-mint)" />,
       //   func: () => setModalType("dailyCheck"),
       // });
     }

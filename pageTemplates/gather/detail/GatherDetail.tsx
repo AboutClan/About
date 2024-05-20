@@ -1,5 +1,3 @@
-import { faChevronDown, faVenusMars } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
@@ -27,7 +25,7 @@ function GatherDetailInfo({
       <FirstItem isOpen={isSubLocation} onClick={() => setIsSubLocation(true)}>
         <ItemText>장소</ItemText>
         <span>{location.main}</span>
-        <FontAwesomeIcon icon={faChevronDown} size="2xs" />
+        <i className="fa-solid fa-chevron-down fa-2xs"  />
       </FirstItem>
       {isSubLocation && <LocationSub>{location.sub}</LocationSub>}
       <Item>
@@ -39,7 +37,7 @@ function GatherDetailInfo({
         <span>
           {age[0]} ~ {age[1]}세
         </span>
-        {genderCondition && <FontAwesomeIcon icon={faVenusMars} color="#9E7CFF" />}
+        {genderCondition && <i className="fa-solid fa-venus-mars" style={{ color: "#9E7CFF" }} />}
       </Item>
       <Item>
         <ItemText>오픈</ItemText>

@@ -1,13 +1,4 @@
 import { Switch } from "@chakra-ui/react";
-import {
-  faLocationCrosshairs,
-  faUser,
-  faUserGroup,
-  faUserPolice,
-  faUserSecret,
-  faVenusMars,
-} from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSession } from "next-auth/react";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
@@ -107,7 +98,7 @@ function WritingCondition() {
           <Container>
             <Item>
               <Name>
-                <FontAwesomeIcon icon={faUserGroup} />
+                <i className="fa- fa-usergroup" />
                 <span>최소 인원</span>
               </Name>
               <GatherWritingConditionCnt
@@ -118,7 +109,7 @@ function WritingCondition() {
             </Item>
             <Item>
               <Name>
-                <FontAwesomeIcon icon={faUserGroup} />
+                <i className="fa- fa-usergroup" />
                 <span>최대 인원</span>
               </Name>
               <GatherWritingConditionCnt
@@ -129,7 +120,7 @@ function WritingCondition() {
             </Item>
             <Item>
               <Name>
-                <FontAwesomeIcon icon={faVenusMars} />
+                <i className="fa- fa-venusmars" />
                 <span>성별 고려</span>
                 <PopOverIcon title="성별 고려" text="성별 비율을 최대 2대1까지 제한합니다." />
               </Name>
@@ -142,7 +133,7 @@ function WritingCondition() {
             </Item>
             <Item>
               <Name>
-                <FontAwesomeIcon icon={faUser} />
+                <i className="fa- fa-user" />
                 <span>나이(만)</span>
               </Name>
               <Switch
@@ -155,7 +146,7 @@ function WritingCondition() {
             {condition.age && <GatherWritingConditionAgeRange age={age} setAge={setAge} />}
             <Item>
               <Name>
-                <FontAwesomeIcon icon={faLocationCrosshairs} />
+                <i className="fa- fa-locationcrosshairs" />
                 <span>지역 필터</span>
                 <PopOverIcon title="지역 필터" text="기본으로는 본인이 속한 지역으로 한정합니다." />
               </Name>
@@ -169,7 +160,7 @@ function WritingCondition() {
             {!condition.location && <GatherWritingConditionLocation setLocation={setLocation} />}
             <Item>
               <Name>
-                <FontAwesomeIcon icon={faUserSecret} />
+                <i className="fa- fa-usersecret" />
                 <span>사전 섭외</span>
                 <PopOverIcon
                   title="사전 섭외"
@@ -193,7 +184,7 @@ function WritingCondition() {
             {isManager && (
               <Item>
                 <Name>
-                  <FontAwesomeIcon icon={faUserPolice} />
+                  <i className="fa- fa-userpolice" />
                   <span>운영진 참여</span>
                   <PopOverIcon
                     title="운영진 기능"

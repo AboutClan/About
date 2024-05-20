@@ -5,10 +5,8 @@ import {
   PopoverCloseButton,
   PopoverContent,
   PopoverHeader,
-  PopoverTrigger,
+  PopoverTrigger
 } from "@chakra-ui/react";
-import { faQuestionCircle } from "@fortawesome/pro-light-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
 interface IPopoverIcon {
@@ -21,7 +19,7 @@ export function PopOverIcon({ title, text }: IPopoverIcon) {
     <Popover>
       <PopoverTrigger>
         <IconWrapper>
-          <FontAwesomeIcon icon={faQuestionCircle} color="var(--gray-700)" />
+          <i className="fa-light fa-question-circle" style={{ color: "var(--gray-700)" }} />
         </IconWrapper>
       </PopoverTrigger>
       <PopoverContent ml="var(--gap-2)" fontSize="12px" _focus={{ outline: "none" }}>

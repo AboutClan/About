@@ -1,6 +1,4 @@
 import { Box, Button, Collapse, useDisclosure } from "@chakra-ui/react";
-import { faX } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
 import { DispatchBoolean } from "../../../types/hooks/reactTypes";
@@ -46,7 +44,7 @@ function StoreDetailNav({
                 <ApplicantBlock key={idx}>
                   <span>{who.name}</span>
                   <div>
-                    <FontAwesomeIcon icon={faX} size="2xs" />
+                    <i className="fa-regular fa-x fa-2xs" />
                   </div>
                   <span>{who.cnt} 회</span>
                 </ApplicantBlock>

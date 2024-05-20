@@ -1,6 +1,4 @@
 import { Button } from "@chakra-ui/react";
-import { faArrowRight } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import styled from "styled-components";
 
@@ -102,7 +100,7 @@ function NoticeActive({ activeLogs }: INoticeActive) {
                 <AlphabetWrapper style={{ marginRight: "var(--gap-2)" }}>
                   <AlphabetIcon alphabet={alphabet[0] as Alphabet} isCircle={true} />
                   <span>
-                    <FontAwesomeIcon icon={faArrowRight} />
+                    <i className="fa-solid fa-arrow-right" />
                   </span>
                   <AlphabetIcon alphabet={alphabet[1] as Alphabet} isCircle={true} />
                 </AlphabetWrapper>

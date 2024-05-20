@@ -1,6 +1,4 @@
 import { Input } from "@chakra-ui/react";
-import { faCameraViewfinder } from "@fortawesome/pro-light-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { captureException } from "@sentry/nextjs";
 import Image from "next/image";
 import { useRef, useState } from "react";
@@ -78,7 +76,7 @@ export default function ImageUploadInput({ setImageUrl: changeImage }: IImageUpl
       <Container onClick={handleBtnClick}>
         {!imageUrl ? (
           <>
-            <FontAwesomeIcon icon={faCameraViewfinder} size="4x" color="var(--gray-500)" />
+            <i className="fa-light fa-camera-view-finder fa-4x " style={{ color: "var(--gray-500)" }} />
             <CameraText>사진 올리기</CameraText>
           </>
         ) : (

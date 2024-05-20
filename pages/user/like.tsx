@@ -1,5 +1,3 @@
-import { faCircleHeart } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import styled from "styled-components";
 
@@ -29,7 +27,10 @@ function Like() {
                     <span>{dayjsToFormat(dayjs(item.createdAt), "YYYY년 M월 D일")}</span>
                     <Item>
                       <IconWrapper>
-                        <FontAwesomeIcon color="var(--color-red)" icon={faCircleHeart} size="xl" />
+                        <i
+                          className="fa-regular fa-circle-heart fa-xl"
+                          style={{ color: "var(--color-red)" }}
+                        />
                       </IconWrapper>
                       <Name>{name}</Name>
                       <Content>

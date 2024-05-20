@@ -1,6 +1,4 @@
 import { Button } from "@chakra-ui/react";
-import { faChevronDown } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { useState } from "react";
 import styled from "styled-components";
@@ -15,7 +13,7 @@ function PromotionContent() {
     <Layout>
       <Guide>
         <span>아래 글을 복사하여 홍보글을 게시해주세요!</span>
-        <FontAwesomeIcon icon={faChevronDown} />
+        <i className="fa-solid fa-chevron-down" />
       </Guide>
       <Container>
         <Wrapper>

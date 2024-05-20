@@ -1,11 +1,9 @@
 import { Box } from "@chakra-ui/react";
-import { faLock, faLockOpen } from "@fortawesome/pro-duotone-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
 import AlertNotCompletedModal from "../../components/AlertNotCompletedModal";
 import IconButtonColBlock, {
-  IIconButtonColBlockProps,
+  IIconButtonColBlockProps
 } from "../../components/atoms/blocks/IconButtonColBlock";
 import SectionBar from "../../components/molecules/bars/SectionBar";
 import BlockSlider from "../../components/organisms/sliders/BlockSlider";
@@ -13,7 +11,7 @@ import { BADGE_INFO, USER_EVENT_BADGE_ARR } from "../../constants/serviceConstan
 import {
   EVENT_BADGE_딸기스무디,
   EVENT_BADGE_라벤더,
-  EVENT_BADGE_민트초코,
+  EVENT_BADGE_민트초코
 } from "../../constants/storage/eventBadgeUser";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 
@@ -25,9 +23,9 @@ export default function EventBadge() {
     const hasBadge = score >= badge.minScore;
     return {
       icon: hasBadge ? (
-        <FontAwesomeIcon icon={faLockOpen} color="var(--color-yellow)" />
+        <i className="fa-duotone fa-lock-open" style={{ color: "var(--color-yellow)" }} />
       ) : (
-        <FontAwesomeIcon icon={faLock} color="var(--gray-700)" />
+          <i className="fa-duotone fa-lock" style={{ color: "var(--gray-700)" }} />
       ),
       title: badge.badge,
       buttonProp: {
@@ -50,9 +48,9 @@ export default function EventBadge() {
 
     return {
       icon: !hasBadge ? (
-        <FontAwesomeIcon icon={faLock} color="var(--gray-700)" />
+        <i className="fa-duotone fa-lock" style={{ color: "var(--gray-700)" }} />
       ) : (
-        <FontAwesomeIcon icon={faLockOpen} color="var(--color-yellow)" />
+        <i className="fa-duotone fa-lock-open" style={{ color: "var(--color-yellow)" }} />
       ),
       title: badge,
       buttonProp: {

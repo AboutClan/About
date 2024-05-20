@@ -42,7 +42,7 @@ function HomeCategoryNav() {
             <GiftIcon />
 
             <IconWrapper>
-              <NewAlertIcon size="lg" />
+              <NewAlertIcon />
             </IconWrapper>
           </CustomLink>
           <span>스토어</span>

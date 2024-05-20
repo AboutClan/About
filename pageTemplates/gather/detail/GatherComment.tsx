@@ -1,5 +1,3 @@
-import { faEllipsis } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
@@ -109,7 +107,7 @@ function GatherComments({ comment }: IGatherComments) {
                     {item.comment}
                     {item.user.uid === session?.user?.uid && (
                       <IconWrapper onClick={() => onClickEdit(item._id, item.comment)}>
-                        <FontAwesomeIcon icon={faEllipsis} />
+                        <i className="fa-solid fa-ellipsis" />
                       </IconWrapper>
                     )}
                   </p>

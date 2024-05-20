@@ -1,6 +1,3 @@
-import { faHeart } from "@fortawesome/pro-regular-svg-icons";
-import { faHeart as faSolidHeart } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
@@ -132,11 +129,11 @@ function ProfileInfo({ user }: IProfileInfo) {
             <>
               {isHeart ? (
                 <HeartWrapper onClick={onClickHeart}>
-                  <FontAwesomeIcon icon={faSolidHeart} size="xl" color="var(--color-red)" />
+                  <i className="fa-solid fa-heart fa-xl" style={{ color: "var(--color-red)" }} />
                 </HeartWrapper>
               ) : (
                 <HeartWrapper onClick={onClickHeart}>
-                  <FontAwesomeIcon icon={faHeart} size="xl" />
+                  <i className="fa-regular fa-heart fa-xl" />
                 </HeartWrapper>
               )}
             </>

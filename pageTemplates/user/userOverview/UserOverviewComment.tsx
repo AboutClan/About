@@ -1,6 +1,4 @@
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/react";
-import { faPenCircle } from "@fortawesome/pro-duotone-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
 
 import { USER_INFO } from "../../../constants/keys/queryKeys";
@@ -81,11 +79,12 @@ function UserOverviewComment() {
         focusBorderColor="gray.300"
       />
       <InputRightElement>
-        <FontAwesomeIcon
-          icon={faPenCircle}
-          size="lg"
-          color={isFocused ? "var(--color-mint)" : "var(--gray-500)"}
-          style={iconStyle}
+        <i
+          className="fa-duotone fa-pen-circle fa-lg"
+          style={{
+            color: isFocused ? "var(--color-mint)" : "var(--gray-500)",
+            ...iconStyle,
+          }}
         />
       </InputRightElement>
     </InputGroup>

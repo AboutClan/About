@@ -7,10 +7,8 @@ import {
   PopoverContent,
   PopoverHeader,
   PopoverTrigger,
-  Textarea,
+  Textarea
 } from "@chakra-ui/react";
-import { faCircleExclamation } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
@@ -114,7 +112,7 @@ function RequestSuggestModal({ type, setIsModal }: IRequestSuggestModal) {
               <div />
               <Popover>
                 <PopoverTrigger>
-                  <FontAwesomeIcon icon={faCircleExclamation} color="var(--gray-2)" size="sm" />
+                  <i className="fa-solid fa-circle-exclamation fa-sm" style={{ color: "var(--gray-2)" }} />
                 </PopoverTrigger>
                 <PopoverContent>
                   <PopoverArrow />

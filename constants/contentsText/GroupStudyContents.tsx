@@ -1,15 +1,3 @@
-import {
-  faAtom,
-  faBinary,
-  faBookUser,
-  faChampagneGlasses,
-  faFileCertificate,
-  faGamepad,
-  faGlobe,
-  faPersonRunning,
-  faUserGraduate,
-} from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { TABLE_COLORS } from "../../constants/styles";
 import { IRuleModalContent } from "../../modals/RuleModal";
@@ -44,15 +32,15 @@ export const GROUP_STUDY_SUB_CATEGORY: { [key in GroupCategory]: string[] } = {
 };
 
 export const GROUP_STUDY_CATEGORY_ARR_ICONS = {
-  어학: <FontAwesomeIcon icon={faGlobe} color={TABLE_COLORS[0]} />,
-  자격증: <FontAwesomeIcon icon={faFileCertificate} color={TABLE_COLORS[1]} />,
-  프로그래밍: <FontAwesomeIcon icon={faBinary} color={TABLE_COLORS[2]} />,
-  취업준비: <FontAwesomeIcon icon={faUserGraduate} color={TABLE_COLORS[3]} />,
-  자기계발: <FontAwesomeIcon icon={faBookUser} color={TABLE_COLORS[4]} />,
-  게임: <FontAwesomeIcon icon={faGamepad} color={TABLE_COLORS[5]} />,
-  친목: <FontAwesomeIcon icon={faChampagneGlasses} color={TABLE_COLORS[7]} />,
-  운동: <FontAwesomeIcon icon={faPersonRunning} color={TABLE_COLORS[8]} />,
-  기타: <FontAwesomeIcon icon={faAtom} color={TABLE_COLORS[6]} />,
+  어학: <i className="fa-regular fa-globe" style={{color:`${TABLE_COLORS[0]}`}} />,
+  자격증: <i className="fa-regular fa-file-certificate" style={{color:`${TABLE_COLORS[1]}`}} />,
+  프로그래밍: <i className="fa-regular fa-binary" style={{color:`${TABLE_COLORS[2]}`}} />,
+  취업준비: <i className="fa-regular fa-user-graduate" style={{color:`${TABLE_COLORS[3]}`}} />,
+  자기계발: <i className="faregular- fa-book-user" style={{color:`${TABLE_COLORS[4]}`}} />,
+  게임: <i className="fa-regular fa-gamepad" style={{color:`${TABLE_COLORS[5]}`}} />,
+  친목: <i className="fa-regular fa-champagne-glasses" style={{color:`${TABLE_COLORS[7]}`}} />,
+  운동: <i className="fa-regular fa-person-running" style={{color:`${TABLE_COLORS[8]}`}} />,
+  기타: <i className="fa-regular fa-atom" style={{color:`${TABLE_COLORS[6]}`}} />,
 };
 
 export const GROUP_STUDY_RULE_CONTENT: IRuleModalContent = {

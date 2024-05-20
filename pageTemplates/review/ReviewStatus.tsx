@@ -1,5 +1,3 @@
-import { faHeart, faMessage } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -13,11 +11,11 @@ function ReviewStatus() {
     <>
       <Layout onClick={() => setIsModal(true)}>
         <Item>
-          <FontAwesomeIcon icon={faHeart} size="xl" />
+          <i className="fa-regular fa-heart fa-xl"  />
           <span>100</span>
         </Item>
         <Item>
-          <FontAwesomeIcon icon={faMessage} size="xl" />
+          <i className="fa-regular fa-message fa-xl"  />
           <span>10</span>
         </Item>
       </Layout>

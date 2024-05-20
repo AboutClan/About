@@ -1,13 +1,4 @@
 import { ListItem, UnorderedList } from "@chakra-ui/react";
-import {
-  faBadgeCheck,
-  faCheckCircle,
-  faCheckToSlot,
-  faGift,
-  faHeartCircle,
-  faPartyHorn,
-} from "@fortawesome/pro-light-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
 import { POINT_SYSTEM_PLUS } from "../../../constants/settingValue/pointSystem";
@@ -16,34 +7,38 @@ function PointSystemsModalPoint() {
   return (
     <>
       <Layout>
+        ``
         <Item>
           <Name>스터디 투표</Name>
-          <FontAwesomeIcon size="2x" icon={faCheckToSlot} />
+
+          <i className="fa-light fa-2x fa-check-to-slot" />
           <Point>0~20 POINT</Point>
         </Item>
         <Item>
           <Name>스터디 출석</Name>
-          <FontAwesomeIcon size="2x" icon={faCheckCircle} />
+
+          <i className="fa-light fa-2x fa-check-circle" />
           <Point>5 POINT</Point>
         </Item>
         <Item>
           <Name>에타 홍보</Name>
-          <FontAwesomeIcon size="2x" icon={faGift} />
+          <i className="fa-light fa-2x fa-gift" />
           <Point>{POINT_SYSTEM_PLUS.PROMOTION.value} POINT</Point>
         </Item>
         <Item>
           <Name>일일 출석</Name>
-          <FontAwesomeIcon size="2x" icon={faBadgeCheck} />
+
+          <i className="fa-light fa-2x fa-badge-check" />
           <Point>{POINT_SYSTEM_PLUS.DAILY_ATTEND.value} POINT</Point>
         </Item>
         <Item>
           <Name>좋아요</Name>
-          <FontAwesomeIcon size="2x" icon={faHeartCircle} />
+
+          <i className="fa-light fa-2x fa-heart-circle" />
           <Point>{POINT_SYSTEM_PLUS.LIKE.value} POINT</Point>
         </Item>
         <Item>
-          <Name>이벤트</Name>
-          <FontAwesomeIcon size="2x" icon={faPartyHorn} />
+          <Name>이벤트</Name> <i className="fa-light fa-2x fa-party-horn" />
           <Point>10 POINT</Point>
         </Item>
       </Layout>

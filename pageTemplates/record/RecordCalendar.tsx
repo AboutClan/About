@@ -1,5 +1,3 @@
-import { faEllipsisStroke } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs, { Dayjs } from "dayjs";
 import styled from "styled-components";
 
@@ -53,7 +51,7 @@ function RecordCalendar({ filterData, navMonth }: IRecordCalendar) {
                     {tempCnt < 4 || openStudyLocation.size <= 3 ? (
                       "Open"
                     ) : (
-                      <FontAwesomeIcon icon={faEllipsisStroke} size="xl" />
+                      <i className="fa-regular fa-ellipsis-stroke fa-xl" />
                     )}
                   </Open>
                 );

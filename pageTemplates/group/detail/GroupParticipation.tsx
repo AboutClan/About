@@ -1,5 +1,3 @@
-import { faCrown, faInfinity } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -45,7 +43,7 @@ function GroupParticipation({ data }: IGroupParticipation) {
         ) : (
           <>
             <span style={{ marginLeft: "4px" }} />
-            <FontAwesomeIcon icon={faInfinity} color="var(--gray-2)" />
+              <i className="fa-solid fa-infinity" style={{ color: "var(--gray-2)" }} />
           </>
         )}
       </Header>
@@ -63,7 +61,7 @@ function GroupParticipation({ data }: IGroupParticipation) {
                   />
                   {who?.role === "admin" && (
                     <Crown>
-                      <FontAwesomeIcon icon={faCrown} color="var(--color-yellow)" />
+                      <i className="fa-solid fa-crown" style={{ color: "var(--color-yellow)" }} />
                     </Crown>
                   )}
                 </ProfileWrapper>

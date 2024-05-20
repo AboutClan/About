@@ -1,6 +1,4 @@
 import { Flex } from "@chakra-ui/react";
-import { faPenCircle, faShareNodes } from "@fortawesome/pro-light-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
@@ -44,11 +42,11 @@ function GatherHeader({ gatherData }: IGatherHeader) {
         <Flex>
           {session?.user.uid === (organizer as IUserSummary)?.uid && (
             <IconWrapper onClick={onClick}>
-              <FontAwesomeIcon icon={faPenCircle} size="xl" />
+              <i className="fa-light fa-pen-circle fa-xl" />
             </IconWrapper>
           )}
           <IconWrapper>
-            <FontAwesomeIcon icon={faShareNodes} size="lg" onClick={() => setIsModal(true)} />
+            <i className="fa-light fa-share-nodes fa-lg"  onClick={() => setIsModal(true)} />
           </IconWrapper>
         </Flex>
       </Header>

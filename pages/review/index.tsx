@@ -1,8 +1,6 @@
 /* eslint-disable */
 
 import { Box, Button } from "@chakra-ui/react";
-import { faEllipsis } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -28,7 +26,7 @@ import {
   ActiveLocation,
   ActiveLocationAll,
   LocationEn,
-  LocationFilterType,
+  LocationFilterType
 } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 
@@ -213,7 +211,7 @@ function Review() {
                     color="var(--gray-700)"
                   >
                     <Box mr="var(--gap-2)">더 보기</Box>
-                    <FontAwesomeIcon icon={faEllipsis} />
+                    <i className="fa-solid fa-ellipsis" />
                   </Button>
                 )}
               </Main>

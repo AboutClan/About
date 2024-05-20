@@ -1,5 +1,3 @@
-import { faChevronRight } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
@@ -16,7 +14,7 @@ function MoreInfoBtn({ url }: IMoreInfoBtn) {
       }}
     >
       <span>더보기</span>
-      <FontAwesomeIcon icon={faChevronRight} size="sm" />
+      <i className="fa-solid fa-chevron-right fa-sm"  />
     </Layout>
   );
 }

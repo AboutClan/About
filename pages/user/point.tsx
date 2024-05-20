@@ -1,6 +1,4 @@
 import { Box } from "@chakra-ui/react";
-import { faArrowRight } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import styled from "styled-components";
 
@@ -31,7 +29,7 @@ function PointLog() {
           <Layout>
             <MyPoint>
               <span>내 포인트</span>
-              <FontAwesomeIcon icon={faArrowRight} />
+              <i className="fa-solid fa-arrow-right" />
               <span>{point} 점</span>
             </MyPoint>
             <Box border="var(--border)" rounded="md" minHeight="calc(100vh - 176px)">

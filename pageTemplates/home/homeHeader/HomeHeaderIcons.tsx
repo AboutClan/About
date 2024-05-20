@@ -1,5 +1,3 @@
-import { faBadgeCheck, faBell, faCircleP, faCircleUser } from "@fortawesome/pro-light-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -41,12 +39,8 @@ function HomeHeaderIcons({ setIconType }: IHomeHeaderIcons) {
   return (
     <Layout className="about_header">
       {!isAttendCheck && (
-        <IconWrapper>
-          <FontAwesomeIcon
-            icon={faBadgeCheck}
-            color="var(--color-mint)"
-            onClick={() => setIconType("attendCheck")}
-          />
+        <IconWrapper onClick={() => setIconType("attendCheck")}>
+          <i className="fa-light fa-badge-check" style={{ color: "var(--color-mint)" }} />
         </IconWrapper>
       )}
 
@@ -59,7 +53,7 @@ function HomeHeaderIcons({ setIconType }: IHomeHeaderIcons) {
         />
       </IconWrapper> */}
       <IconWrapper>
-        <FontAwesomeIcon icon={faCircleP} onClick={() => setIconType("rule")} />
+        <i className="fa-light fa-circle-p" onClick={() => setIconType("rule")} />
       </IconWrapper>
       {/* <IconWrapper>
         <FontAwesomeIcon
@@ -68,11 +62,11 @@ function HomeHeaderIcons({ setIconType }: IHomeHeaderIcons) {
         />
       </IconWrapper> */}
       <NoticeWrapper>
-        <FontAwesomeIcon icon={faBell} onClick={() => setIconType("notice")} />
+        <i className="fa-light fa-bell" onClick={() => setIconType("notice")} />
         {isNoticeAlert && <Alert />}
       </NoticeWrapper>
       <IconWrapper>
-        <FontAwesomeIcon icon={faCircleUser} onClick={() => setIconType("user")} />
+        <i className="fa-light fa-circle-user" onClick={() => setIconType("user")} />
       </IconWrapper>
     </Layout>
   );
