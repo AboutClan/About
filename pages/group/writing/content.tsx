@@ -80,13 +80,13 @@ function GroupWritingContent() {
                 <MinusWrapper
                   onClick={() => setRules((old) => old.filter((rule) => rule !== item))}
                 >
-                  <i className="fa- fa-minuscircle" />
+                  <i className="fa-regular fa-minus-circle" />
                 </MinusWrapper>
               </RuleItem>
             ))}
 
             <PlusWrapper onClick={() => handleAdd()}>
-              <i className="fa- fa-pluscircle" />
+              <i className="fa-regular fa-plus-circle" />
             </PlusWrapper>
           </RuleContainer>
         </Container>

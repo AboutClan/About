@@ -51,7 +51,6 @@ function WritingCondition() {
   );
   const [isConfirmModal, setIsConfirmModal] = useState(false);
 
- 
   const isManager = ["manager", "previliged"].includes(session?.user.role);
 
   const onClickNext = async () => {
@@ -98,7 +97,7 @@ function WritingCondition() {
           <Container>
             <Item>
               <Name>
-                <i className="fa- fa-usergroup" />
+                <i className="fa-solid fa-user-group" />
                 <span>최소 인원</span>
               </Name>
               <GatherWritingConditionCnt
@@ -109,7 +108,7 @@ function WritingCondition() {
             </Item>
             <Item>
               <Name>
-                <i className="fa- fa-usergroup" />
+                <i className="fa-solid fa-user-group" />
                 <span>최대 인원</span>
               </Name>
               <GatherWritingConditionCnt
@@ -120,7 +119,7 @@ function WritingCondition() {
             </Item>
             <Item>
               <Name>
-                <i className="fa- fa-venusmars" />
+                <i className="fa-solid fa-venus-mars" />
                 <span>성별 고려</span>
                 <PopOverIcon title="성별 고려" text="성별 비율을 최대 2대1까지 제한합니다." />
               </Name>
@@ -133,7 +132,7 @@ function WritingCondition() {
             </Item>
             <Item>
               <Name>
-                <i className="fa- fa-user" />
+                <i className="fa-solid fa-user" />
                 <span>나이(만)</span>
               </Name>
               <Switch
@@ -146,7 +145,7 @@ function WritingCondition() {
             {condition.age && <GatherWritingConditionAgeRange age={age} setAge={setAge} />}
             <Item>
               <Name>
-                <i className="fa- fa-locationcrosshairs" />
+                <i className="fa-solid fa-location-crosshairs" />
                 <span>지역 필터</span>
                 <PopOverIcon title="지역 필터" text="기본으로는 본인이 속한 지역으로 한정합니다." />
               </Name>
@@ -160,7 +159,7 @@ function WritingCondition() {
             {!condition.location && <GatherWritingConditionLocation setLocation={setLocation} />}
             <Item>
               <Name>
-                <i className="fa- fa-usersecret" />
+                <i className="fa-solid fa-user-secret" />
                 <span>사전 섭외</span>
                 <PopOverIcon
                   title="사전 섭외"
