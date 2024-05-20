@@ -1,4 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
+import { faChevronDown } from "@fortawesome/pro-regular-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs, { Dayjs } from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Dispatch, useEffect, useState } from "react";
@@ -6,7 +8,7 @@ import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import Slide from "../../../components/layouts/PageSlide";
-import Calendar from "../../../components/molecules/Calendar";
+import WeekSlideCalendar from "../../../components/molecules/WeekSlideCalendar";
 import DateCalendarModal from "../../../modals/aboutHeader/DateCalendarModal";
 import StudyAttendCheckModal from "../../../modals/study/StudyAttendCheckModal";
 import { studyDateStatusState } from "../../../recoils/studyRecoils";
@@ -53,13 +55,16 @@ function StudyController() {
     <>
       <Slide>
         <OuterContainer className="about_calendar">
-          <ControllerHeader selectedDateDayjs={selectedDateDayjs} setModalType={setModalType} />
           <InnerContainer>
             {selectedDate && (
               <>
-                <Box px="20px" borderBottom="var(--border)">
-                  <Calendar type="week" selectedDate={selectedDateDayjs} func={onClick} />
-                </Box>
+                <Flex align="center" borderBottom="var(--border)">
+                  <MonthButton>
+                    <span>5월</span>
+                    <FontAwesomeIcon icon={faChevronDown} />
+                  </MonthButton>
+                  <WeekSlideCalendar selectedDate={selectedDateDayjs} func={onClick} />
+                </Flex>
                 <StudyControllerVoteButton setModalType={setModalType} />
               </>
             )}
@@ -72,6 +77,11 @@ function StudyController() {
     </>
   );
 }
+
+const MonthButton = styled.button`
+  width: 60px;
+  background-color: pink;
+`;
 
 interface ControllerHeaderProps {
   selectedDateDayjs: Dayjs;
@@ -162,9 +172,7 @@ const handleMonthMoveByDate = (date: number, currentDate: number) => {
 
 const OuterContainer = styled.div`
   background-color: white;
-
   border-radius: 12px;
-
   position: relative;
 `;
 

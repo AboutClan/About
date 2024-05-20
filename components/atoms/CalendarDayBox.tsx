@@ -1,6 +1,8 @@
+import "dayjs/locale/ko";
+
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import "dayjs/locale/ko";
+
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import DatePointButton from "../molecules/DatePointButton";
 
