@@ -83,6 +83,7 @@ export const setGatherDataToCardCol = (
     },
     badge: getGatherBadge(gather.status),
     maxCnt: gather.memberCnt.max,
+    type: "gather",
   }));
 
   return cardCol;
@@ -91,12 +92,12 @@ export const setGatherDataToCardCol = (
 const getGatherBadge = (gatherStatus: GatherStatus): ITextAndColorSchemes => {
   switch (gatherStatus) {
     case "open":
-      return { text: "오픈", colorScheme: "mint" };
+      return { text: "모집 마감", colorScheme: "grayTheme" };
     case "close":
-      return { text: "취소", colorScheme: "gray" };
+      return { text: "취소", colorScheme: "grayTheme" };
     case "pending":
-      return { text: "모집중", colorScheme: "mint" };
+      return { text: "모집중", colorScheme: "mintTheme" };
     case "end":
-      return { text: "open", colorScheme: "mint" };
+      return { text: "종료", colorScheme: "grayTheme" };
   }
 };

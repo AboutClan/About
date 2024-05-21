@@ -1,68 +1,52 @@
 import { Box, Flex, Grid } from "@chakra-ui/react";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
+import { VoteCntProps } from "../../types/models/studyTypes/studyRecords";
 
-import { getCalendarDates } from "../../utils/dateTimeUtils";
+import { dayjsToStr, getCalendarDates } from "../../utils/dateTimeUtils";
+import DatePointButton from "./DatePointButton";
 
 interface CalendarProps {
-  type: "week" | "month";
+  voteCntArr: VoteCntProps[];
   selectedDate: Dayjs;
   func: (date: number) => void;
 }
 
-function Calendar({ type, selectedDate, func }: CalendarProps) {
-  const calendarArr = getCalendarDates(type, selectedDate);
+const DAY = ["일", "월", "화", "수", "목", "금", "토"];
+
+function Calendar({ voteCntArr, selectedDate, func }: CalendarProps) {
+  const calendarArr = getCalendarDates("month", selectedDate, voteCntArr);
 
   return (
     <>
-      {/* <BetweenTextSwitcher left={textSwitcherProps.left} right={textSwitcherProps.right} /> */}
-
-      <>
-        {type === "week" ? (
-          <Flex overflow="auto">
-            {calendarArr.map((date, idx) => (
-              <Box key={idx} mr="2px">
-                {/* <CalendarDayBox date={date} selectedDate={dayjsToStr(selectedDate)} func={func} /> */}
-              </Box>
-            ))}
-            {/* <Flex h="42px" align="center" color="var(--gray-500)" fontWeight={500}>
-              {DAYS.map((day, idx) => (
-                <Flex justify="center" align="center" flex={1} h="30px" key={idx}>
-                  {day}
-                </Flex>
-              ))}
-            </Flex>
-            <Flex h="58px">
-              {calendarArr.map((dateStr, idx) => {
-                const date = dayjs(dateStr).date();
-                return (
-                  <Flex mr="14px" key={idx} justify="center" align="center">
-                    <DatePointButton
-                      date={date}
-                      func={func}
-                      isSelected={date === selectedDate.date()}
-                    />
-                  </Flex>
-                );
-              })}
-            </Flex> */}
-          </Flex>
-        ) : (
-          <Grid templateColumns="repeat(7,1fr)" rowGap="12px">
-            {calendarArr.map((dateStr, idx) => {
-              // const date = dayjs(dateStr).date();
-              return (
-                <Flex key={idx} w="100%" justify="center" align="center">
-                  {/* <DatePointButton
-                    date={date}
-                    func={() => func(date)}
-                    isSelected={date === selectedDate.date()}
-                  /> */}
-                </Flex>
-              );
-            })}
-          </Grid>
-        )}
-      </>
+      <Flex mb="16px">
+        {DAY.map((day) => (
+          <Box
+            flex={1}
+            textAlign="center"
+            key={day}
+            color={
+              day === "일" ? "var(--color-red)" : day === "토" ? "var(--color-blue)" : "inherit"
+            }
+          >
+            {day}
+          </Box>
+        ))}
+      </Flex>
+      <Grid templateColumns="repeat(7,1fr)" rowGap="12px">
+        {calendarArr.map((item, idx) => {
+          return (
+            <Box key={idx}>
+              <DatePointButton
+                date={item ? dayjs(item.date).date() : null}
+                value={item ? item.value : null}
+                func={item ? () => func(dayjs(item.date).date()) : null}
+                isSelected={item && dayjsToStr(dayjs(item.date)) === dayjsToStr(selectedDate)}
+                pointType="mint"
+              />
+            </Box>
+          );
+        })}
+      </Grid>
     </>
   );
 }

@@ -17,6 +17,7 @@ export interface IPostThumbnailCard {
   image: IImageProps;
   url: string;
   badge: ITextAndColorSchemes;
+  type: "study" | "gather";
   statusText?: string;
   maxCnt?: number;
   func?: () => void;
@@ -36,6 +37,7 @@ export function PostThumbnailCard({
     statusText = undefined,
     maxCnt = undefined,
     func = undefined,
+    type,
   },
 }: IPostThumbnailCardObj) {
   const userAvatarArr = participants
@@ -44,6 +46,8 @@ export function PostThumbnailCard({
       image: par.profileImage,
       ...(par.avatar?.type !== null ? { avatar: par.avatar } : {}),
     }));
+
+  const CLOSED_TEXT_ARR = ["모집 마감", "닫힘"];
 
   return (
     <CardLink href={url} onClick={func}>
@@ -65,9 +69,13 @@ export function PostThumbnailCard({
         </Box>
         <Flex direction="column" ml="12px" flex={1}>
           <Flex align="center" fontSize="16px">
-            <Flex mr="4px" w="12px" justify="center" align="center">
-              {title !== "개인 스터디" && <i className="fa-regular fa-location-dot fa-sm" />}
-            </Flex>
+            {title !== "개인 스터디" && type === "study" && (
+              <Flex mr="4px" w="12px" justify="center" align="center">
+                <Box>
+                  <i className="fa-regular fa-location-dot fa-sm" />
+                </Box>
+              </Flex>
+            )}
             <Title>{title}</Title>
           </Flex>
           <Subtitle>{subtitle}</Subtitle>
@@ -97,7 +105,11 @@ export function PostThumbnailCard({
             <Box
               as="span"
               color={
-                maxCnt && participants.length >= maxCnt ? "var(--color-red)" : "var(--gray-800)"
+                CLOSED_TEXT_ARR.includes(badge.text)
+                  ? "inherit"
+                  : maxCnt && participants.length >= maxCnt
+                    ? "var(--color-red)"
+                    : "var(--gray-800)"
               }
             >
               {participants.length}

@@ -9,6 +9,7 @@ import PointCircleText from "../../../components/atoms/PointCircleText";
 import Slide from "../../../components/layouts/PageSlide";
 import WeekSlideCalendar from "../../../components/molecules/WeekSlideCalendar";
 import { useStudyDailyVoteCntQuery } from "../../../hooks/study/queries";
+import DateCalendarModal from "../../../modals/aboutHeader/DateCalendarModal";
 import StudyAttendCheckModal from "../../../modals/study/StudyAttendCheckModal";
 import { studyDateStatusState } from "../../../recoils/studyRecoils";
 import { ActiveLocation } from "../../../types/services/locationTypes";
@@ -24,7 +25,8 @@ export type VoteType =
   | "absent"
   | "expired"
   | "attendPrivate"
-  | "todayVote";
+  | "todayVote"
+  | "monthCalendar";
 
 dayjs.locale("ko");
 
@@ -80,12 +82,12 @@ function StudyController() {
               <PointCircleText text="오픈 예정" color="gray" />
             </Flex>
           </Flex>
-          <Box h="138px">
+          <Box minH="138px">
             {selectedDate && (
               <>
                 <Flex align="center" borderBottom="var(--border)">
                   <Flex pr="6px" flex={1} minW="48px" justify="center">
-                    <MonthButton>
+                    <MonthButton onClick={() => setModalType("monthCalendar")}>
                       <span>12월</span>
                       <i className="fa-regular fa-chevron-down fa-xs" />
                     </MonthButton>
@@ -107,6 +109,13 @@ function StudyController() {
       </Slide>
       {modalType === "attendCheck" && (
         <StudyAttendCheckModal setIsModal={() => setModalType(null)} />
+      )}
+      {modalType === "monthCalendar" && (
+        <DateCalendarModal
+          voteCntArr={voteCntArr}
+          selectedDate={selectedDateDayjs}
+          setIsModal={() => setModalType(null)}
+        />
       )}
     </>
   );

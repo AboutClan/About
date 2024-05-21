@@ -1,8 +1,8 @@
 import { ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -144,6 +144,7 @@ export const setStudyDataToCardCol = (
       priority: true,
     },
     badge: getBadgeText(data.status, getVotePoint(data.attendences.length)),
+    type: "study",
     statusText:
       data.status === "pending" && data.attendences.some((who) => who.user.uid === uid) && "GOOD",
   }));
@@ -158,11 +159,11 @@ const getBadgeText = (
 ): { text: string; colorScheme: ThemeTypings["colorSchemes"] } => {
   switch (status) {
     case "open":
-      return { text: "open", colorScheme: "green" };
+      return { text: "스터디 오픈", colorScheme: "mintTheme" };
     case "dismissed":
-      return { text: "closed", colorScheme: "gray" };
+      return { text: "닫힘", colorScheme: "grayTheme" };
     case "free":
-      return { text: "free", colorScheme: "purple" };
+      return { text: "자유 참여", colorScheme: "purple" };
     case "pending":
       return { text: `+${point} POINT`, colorScheme: "redTheme" };
   }

@@ -90,13 +90,15 @@ export const getCalendarDates = (
     const endCalendar = endOfMonth.weekday(6);
 
     let current = startCalendar;
-
     while (current.isBefore(endCalendar) || current.isSame(endCalendar)) {
+      const idx = current.diff(startOfMonth, "day");
       if (current.isBefore(startOfMonth) || current.isAfter(endOfMonth)) {
         calendar.push(null);
       } else {
-        // calendar.push(dayjsToStr(current));
+        console.log(24, idx);
+        calendar.push({ date: dayjsToStr(current), value: pointArr ? pointArr?.[idx]?.value : 0 });
       }
+
       current = current.add(1, "day");
     }
     const maxDays = calendar.length <= 35 ? 35 : 42;
