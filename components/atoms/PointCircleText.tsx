@@ -1,4 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
+
 import { CustomColor } from "../../types/globals/interaction";
 import PointCircle from "./PointCircle";
 

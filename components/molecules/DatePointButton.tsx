@@ -1,5 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import styled from "styled-components";
+
 import { getToday } from "../../utils/dateTimeUtils";
 import PointCircle from "../atoms/PointCircle";
 
@@ -15,7 +16,7 @@ function DatePointButton({ date, value, func, isSelected }: DatePointButtonProps
   const today = getToday();
  
 
-  const TodayCircle = ({ date }: { date: number }) => {
+  function TodayCircle({ date }: { date: number }) {
     return (
       <Flex
         justify="center"
@@ -34,7 +35,7 @@ function DatePointButton({ date, value, func, isSelected }: DatePointButtonProps
         {date}
       </Flex>
     );
-  };
+  }
 
   return (
     <Button onClick={func}>

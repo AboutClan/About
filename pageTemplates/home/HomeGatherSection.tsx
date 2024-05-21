@@ -91,12 +91,12 @@ export const setGatherDataToCardCol = (
 const getGatherBadge = (gatherStatus: GatherStatus): ITextAndColorSchemes => {
   switch (gatherStatus) {
     case "open":
-      return { text: "오픈", color: "var(--color-mint)" };
+      return { text: "오픈", colorScheme: "mint" };
     case "close":
-      return { text: "취소", color: "var(--gray-500)" };
+      return { text: "취소", colorScheme: "gray" };
     case "pending":
-      return { text: "모집중", color: "var(--color-red)" };
+      return { text: "모집중", colorScheme: "mint" };
     case "end":
-      return { text: "open", color: "mint" };
+      return { text: "open", colorScheme: "mint" };
   }
 };

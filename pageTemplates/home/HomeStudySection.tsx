@@ -1,7 +1,8 @@
+import { ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -23,7 +24,6 @@ import {
   sortedStudyCardListState,
   studyDateStatusState,
 } from "../../recoils/studyRecoils";
-import { ITextAndColorSchemes } from "../../types/components/propTypes";
 import { IParticipation, StudyStatus } from "../../types/models/studyTypes/studyDetails";
 import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
@@ -152,16 +152,19 @@ export const setStudyDataToCardCol = (
 
 const getVotePoint = (attCnt: number) => (attCnt === 0 ? 10 : attCnt === 5 ? 2 : 2);
 
-const getBadgeText = (status: StudyStatus, point: number): ITextAndColorSchemes => {
+const getBadgeText = (
+  status: StudyStatus,
+  point: number,
+): { text: string; colorScheme: ThemeTypings["colorSchemes"] } => {
   switch (status) {
     case "open":
-      return { text: "오픈", color: "var(--color-mint)" };
+      return { text: "open", colorScheme: "green" };
     case "dismissed":
-      return { text: "취소", color: "var(--color-red)" };
+      return { text: "closed", colorScheme: "gray" };
     case "free":
-      return { text: "자유", color: "var(--color-red)" };
+      return { text: "free", colorScheme: "purple" };
     case "pending":
-      return { text: `+${point} POINT`, color: "redTheme" };
+      return { text: `+${point} POINT`, colorScheme: "redTheme" };
   }
 };
 

@@ -82,7 +82,7 @@ export function PostThumbnailCard({
         </Flex>
       </Flex>
       <Flex direction="column" justifyContent="space-between" align="flex-end">
-        <OutlineBadge size="sm" text={badge.text} color={badge.color} />
+        <OutlineBadge size="sm" text={badge.text} colorScheme={badge.colorScheme} />
         <Flex
           mb="-2px"
           className="userIconContainer"

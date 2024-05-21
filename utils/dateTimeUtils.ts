@@ -2,6 +2,7 @@ import "dayjs/locale/ko";
 
 import dayjs, { Dayjs } from "dayjs";
 import weekday from "dayjs/plugin/weekday";
+
 import { VoteCntProps } from "../types/models/studyTypes/studyRecords";
 dayjs.extend(weekday);
 

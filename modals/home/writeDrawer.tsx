@@ -9,9 +9,9 @@ import {
   Flex,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";

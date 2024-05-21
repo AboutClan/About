@@ -4,8 +4,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import PointCircleText from "../../../components/atoms/PointCircleText";
 
+import PointCircleText from "../../../components/atoms/PointCircleText";
 import Slide from "../../../components/layouts/PageSlide";
 import WeekSlideCalendar from "../../../components/molecules/WeekSlideCalendar";
 import { useStudyDailyVoteCntQuery } from "../../../hooks/study/queries";

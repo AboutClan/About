@@ -2,7 +2,7 @@ import { useRouter } from "next/navigation";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import ArrowTextButton from "../../components/atoms/buttons/ArrowTextButton";
+import HighlightedTextButton from "../../components/atoms/buttons/HighlightedTextButton";
 import SectionBar from "../../components/molecules/bars/SectionBar";
 import SummaryTable from "../../components/organisms/tables/SummaryTable";
 import { slideDirectionState } from "../../recoils/navigationRecoils";
@@ -10,7 +10,7 @@ import { WIN_RECORD } from "../../storage/winRecord";
 
 export default function HomeWinRecordSection() {
   const router = useRouter();
-  const contentArr = WIN_RECORD.slice().reverse().slice(0, 8);
+  const contentArr = WIN_RECORD.slice().reverse().slice(0, 12);
 
   const setSlideDirection = useSetRecoilState(slideDirectionState);
   const tableInfosArr = contentArr.map((content) => [
@@ -29,9 +29,7 @@ export default function HomeWinRecordSection() {
     <>
       <SectionBar
         title="이벤트 당첨 현황"
-        rightComponent={
-          <ArrowTextButton dir="right" text="더보기" size="md" onClick={handleNavigate} />
-        }
+        rightComponent={<HighlightedTextButton text="더보기" onClick={handleNavigate} />}
       />
       <Layout>
         <SummaryTable
@@ -45,6 +43,7 @@ export default function HomeWinRecordSection() {
 }
 
 const Layout = styled.div`
+  margin: 16px 20px;
   margin-bottom: 80px;
   border-radius: 8px;
   background-color: white;

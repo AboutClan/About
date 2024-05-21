@@ -1,3 +1,5 @@
+import { ThemeTypings } from "@chakra-ui/react";
+
 import { LocationEn } from "../services/locationTypes";
 
 export interface ILocationParam {
@@ -11,5 +13,5 @@ export interface LinkButtonProp {
 
 export interface ITextAndColorSchemes {
   text: string;
-  color: string;
+  colorScheme: ThemeTypings["colorSchemes"];
 }

@@ -11,7 +11,7 @@ export default function AttendanceBadge({ type, time }: IAttendanceBadge) {
     <BadgeContainer time={time}>
       <OutlineBadge
         text={type === "attend" ? "출석" : "불참"}
-        color={type === "attend" ? "var(--color-mint)" : "var(--color-red)"}
+        colorScheme={type === "attend" ? "var(--color-mint)" : "var(--color-red)"}
       />
 
       {time && <TimeText>{time}</TimeText>}

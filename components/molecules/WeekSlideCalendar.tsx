@@ -1,8 +1,8 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { Dayjs } from "dayjs";
 import { RefObject, useEffect, useRef } from "react";
-import { VoteCntProps } from "../../types/models/studyTypes/studyRecords";
 
+import { VoteCntProps } from "../../types/models/studyTypes/studyRecords";
 import { dayjsToStr, getCalendarDates } from "../../utils/dateTimeUtils";
 import CalendarDayBox from "../atoms/CalendarDayBox";
 
