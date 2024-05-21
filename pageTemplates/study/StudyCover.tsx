@@ -34,7 +34,7 @@ const LogoWrapper = styled.div`
   position: absolute;
   right: 24px;
   bottom: -32px;
-  box-shadow: var(--shadow);
+
   z-index: 10;
 `;
 export default StudyCover;

@@ -73,7 +73,7 @@ const SummaryItem = styled.div`
 const WeekText = styled.span`
   > span:last-child {
     margin-left: var(--gap-1);
-    color: var(--gray-700);
+    color: var(--gray-600);
   }
 `;
 

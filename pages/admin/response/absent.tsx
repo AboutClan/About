@@ -84,11 +84,11 @@ const ItemHeader = styled.header`
   > div {
     span {
       margin-right: var(--gap-2);
-      color: var(--gray-900);
+      color: var(--gray-800);
     }
     > span:last-child {
       font-size: 12px;
-      color: var(--gray-700);
+      color: var(--gray-600);
     }
   }
 `;
@@ -107,7 +107,7 @@ const ButtonNav = styled.div`
 
 const Content = styled.div`
   padding-top: 8px;
-  color: var(--gray-800);
+  color: var(--gray-700);
   font-size: 13px;
   min-height: 20px;
 `;

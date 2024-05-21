@@ -96,7 +96,7 @@ const Info = styled.div`
   height: 100%;
   padding: var(--gap-1) 0;
   font-size: 12px;
-  color: var(--gray-2);
+  color: var(--gray-200);
   margin-left: var(--gap-4);
   display: grid;
   grid-template-columns: 1fr 1.5fr;
@@ -117,7 +117,7 @@ const GuestMessage = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 16px;
-  color: var(--gray-700);
+  color: var(--gray-600);
   min-height: 181px;
 `;
 

@@ -7,11 +7,11 @@ import {
   DrawerContent,
   DrawerOverlay,
   Flex,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
@@ -45,21 +45,21 @@ export default function WriteDrawer() {
               url="/gather/writing/category"
               title="모임"
               subTitle="재밌는 모임으로 친해져요"
-              icon={<i className="fa-regular fa-cloud-bolt" style={{color:"white"}} />}
+              icon={<i className="fa-regular fa-cloud-bolt" style={{ color: "white" }} />}
               color="red.400"
             />
             <SocialButton
               url="/group/writing/main"
               title="소그룹"
               subTitle="비슷한 관심사의 인원들을 모아봐요"
-              icon={<i className="fa-regular fa-campfire" style={{color:"white"}} />}
+              icon={<i className="fa-regular fa-campfire" style={{ color: "white" }} />}
               color="blue.400"
             />
             <SocialButton
               url="*"
               title="스터디"
               subTitle="직접 스터디를 만들어봐요"
-              icon={<i className="fa-regular fa-books"style={{ color:"white"}} />}
+              icon={<i className="fa-regular fa-books" style={{ color: "white" }} />}
               color="green.400"
             />
           </Flex>
@@ -99,7 +99,7 @@ function SocialButton({ title, subTitle, icon, color, url }: ISocialButton) {
       <Button
         bgColor="white"
         w="90vw"
-        border="2px solid var(--gray-700)"
+        border="2px solid var(--gray-600)"
         p="16px"
         h="min-content"
         rounded="lg"

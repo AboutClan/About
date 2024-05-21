@@ -7,7 +7,7 @@ import {
   PopoverContent,
   PopoverHeader,
   PopoverTrigger,
-  Textarea
+  Textarea,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
@@ -112,7 +112,10 @@ function RequestSuggestModal({ type, setIsModal }: IRequestSuggestModal) {
               <div />
               <Popover>
                 <PopoverTrigger>
-                  <i className="fa-solid fa-circle-exclamation fa-sm" style={{ color: "var(--gray-2)" }} />
+                  <i
+                    className="fa-solid fa-circle-exclamation fa-sm"
+                    style={{ color: "var(--gray-200)" }}
+                  />
                 </PopoverTrigger>
                 <PopoverContent>
                   <PopoverArrow />
@@ -135,7 +138,7 @@ function RequestSuggestModal({ type, setIsModal }: IRequestSuggestModal) {
       {type === "study" && (
         <Item
           style={{
-            color: "var(--gray-700)",
+            color: "var(--gray-600)",
             marginTop: "var(--gap-1)",
             marginBottom: "0",
           }}
@@ -185,7 +188,7 @@ const WriterBtn = styled.button<{ isSelected: boolean }>`
 
   height: 80%;
   background-color: ${(props) => (props.isSelected ? "var(--color-mint)" : "var(--gray-300)")};
-  color: ${(props) => (props.isSelected ? "white" : "var(--gray-900)")};
+  color: ${(props) => (props.isSelected ? "white" : "var(--gray-800)")};
 `;
 
 const Content = styled.span`

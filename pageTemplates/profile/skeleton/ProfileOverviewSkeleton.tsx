@@ -135,14 +135,14 @@ const ProfileInfo = styled.div`
   }
   > span:last-child {
     font-size: 12px;
-    color: var(--gray-700);
+    color: var(--gray-600);
   }
 `;
 
 const Comment = styled.div`
   margin-left: var(--gap-1);
   margin-top: var(--gap-3);
-  color: var(--gray-900);
+  color: var(--gray-800);
   font-size: 12px;
   font-weight: 600;
   width: 140px;

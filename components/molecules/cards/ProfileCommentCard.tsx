@@ -44,7 +44,7 @@ const Button = styled.button`
   display: inline-block;
   margin-left: 4px;
   padding: 0 4px;
-  color: var(--gray-700);
+  color: var(--gray-600);
 `;
 
 const CardContainer = styled.div`
@@ -75,7 +75,7 @@ const CommentText = styled.span`
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
   overflow: hidden;
-  color: var(--gray-700); /* text-gray-4 */
+  color: var(--gray-600); /* text-gray-4 */
   font-size: 13px;
 `;
 

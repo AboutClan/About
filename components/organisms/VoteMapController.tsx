@@ -7,7 +7,7 @@ import {
   PopoverCloseButton,
   PopoverContent,
   PopoverHeader,
-  PopoverTrigger
+  PopoverTrigger,
 } from "@chakra-ui/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import styled from "styled-components";
@@ -123,7 +123,7 @@ function VoteMapController({
                 size="sm"
                 onClick={() => onClickRetrun(item)}
                 fontSize="14px"
-                color="var(--gray-2)"
+                color="var(--gray-200)"
                 p="var(--gap-2) var(--gap-3)"
                 h="34px"
                 w="50px"
@@ -142,7 +142,7 @@ function VoteMapController({
               h="34px"
               border={preset !== "first" && "1px solid var(--gray-500)"}
               bgColor={preset === "first" ? "var(--color-mint) !important" : "white"}
-              color={preset === "first" ? "white !important" : "var(--gray-2)"}
+              color={preset === "first" ? "white !important" : "var(--gray-200)"}
               mr="var(--gap-2)"
               onClick={() => onClickPreset("first")}
             >
@@ -152,7 +152,7 @@ function VoteMapController({
               w="34px"
               h="34px"
               bgColor={preset === "second" ? "var(--color-mint)" : "white"}
-              color={preset === "second" ? "white !important" : "var(--gray-2)"}
+              color={preset === "second" ? "white !important" : "var(--gray-200)"}
               size="sm"
               mr="var(--gap-2)"
               border="1px solid var(--gray-500)"
@@ -164,7 +164,7 @@ function VoteMapController({
               w="34px"
               h="34px"
               bgColor={preset === "second" ? "var(--color-mint)" : "white"}
-              color={preset === "second" ? "white !important" : "var(--gray-2)"}
+              color={preset === "second" ? "white !important" : "var(--gray-200)"}
               size="sm"
               border="1px solid var(--gray-500)"
               onClick={onClickGear}
@@ -199,7 +199,7 @@ export function PrecisionPopOver({ precision, setPrecision }) {
             border="1px solid var(--gray-400)"
             bg="white"
           >
-            <i className="fa-regular fa-bulls-eye-arrow fa-xl"  />
+            <i className="fa-regular fa-bulls-eye-arrow fa-xl" />
           </Button>
         </TargetIcon>
       </PopoverTrigger>

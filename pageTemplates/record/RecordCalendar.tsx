@@ -119,7 +119,7 @@ const DayLine = styled.div`
   margin: var(--gap-2) 24px;
   display: flex;
   justify-content: space-between;
-  color: var(--gray-700);
+  color: var(--gray-600);
   font-size: 12px;
 `;
 

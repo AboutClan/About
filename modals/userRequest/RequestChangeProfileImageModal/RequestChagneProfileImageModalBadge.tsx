@@ -73,10 +73,10 @@ const Message = styled.div`
   margin-bottom: 16px;
 
   font-size: 12px;
-  color: var(--gray-700);
+  color: var(--gray-600);
   > b,
   u {
-    color: var(--gray-900);
+    color: var(--gray-800);
   }
 `;
 

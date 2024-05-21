@@ -6,7 +6,7 @@ import styled from "styled-components";
 import ProgressBar from "../../../components/atoms/ProgressBar";
 import {
   BADGE_COLOR_MAPPINGS,
-  BADGE_INFO
+  BADGE_INFO,
 } from "../../../constants/serviceConstants/badgeConstants";
 import { SCHEME_TO_COLOR } from "../../../constants/styles";
 import BadgeInfoModal from "../../../modals/store/badgeInfoModal/BadgeInfoModal";
@@ -66,7 +66,7 @@ function PointScoreBar({ myScore, hasQuestion = true }: IPointScoreBar) {
             <BadgeName color={SCHEME_TO_COLOR[badgeColor] || badgeColor}>{myScore}점</BadgeName>
             {hasQuestion && (
               <IconWrapper onClick={() => setIsBadgeModal(true)}>
-                <i className="fa-light fa-question-circle fa-sm"  />
+                <i className="fa-light fa-question-circle fa-sm" />
               </IconWrapper>
             )}
           </div>
@@ -111,7 +111,7 @@ const BadgeName = styled.span<{ color: string }>`
 `;
 
 const IconWrapper = styled.button`
-  color: var(--gray-2);
+  color: var(--gray-200);
   font-size: 14px;
   margin-left: var(--gap-2);
 `;

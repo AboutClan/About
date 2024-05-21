@@ -103,7 +103,7 @@ function GroupConfirmModal({ setIsModal, setGroupWriting, groupWriting }: IGroup
 const Container = styled.div`
   line-height: 2;
   font-size: 13px;
-  color: var(--gray-2);
+  color: var(--gray-200);
 `;
 
 const Item = styled.div`

@@ -70,7 +70,7 @@ function ProfileCardModal({ setIsModal }: IModal) {
 }
 
 const FriendTitle = styled.span`
-  color: var(--gray-700);
+  color: var(--gray-600);
 `;
 
 const ProfileUpPart = styled.div`
@@ -80,7 +80,7 @@ const ProfileUpPart = styled.div`
   > div {
     display: flex;
     > span:first-child {
-      color: var(--gray-700);
+      color: var(--gray-600);
       width: 64px;
     }
     > span:last-child {
@@ -101,14 +101,14 @@ const ProfileItem = styled.div`
   > span:first-child {
     display: inline-block;
     width: 64px;
-    color: var(--gray-700);
+    color: var(--gray-600);
   }
   > span:last-child {
-    color: var(--gray-900);
+    color: var(--gray-800);
     font-weight: 600;
   }
   > div {
-    color: var(--gray-900);
+    color: var(--gray-800);
     font-weight: 600;
     > span {
       display: inline-block;

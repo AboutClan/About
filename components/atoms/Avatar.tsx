@@ -158,5 +158,5 @@ const ImageContainer = styled.div<{
           ? "6px"
           : "8px")};
 
-  background-color: ${(props) => (props.bg ? props.bg : "var(--gray-700)")};
+  background-color: ${(props) => (props.bg ? props.bg : "var(--gray-600)")};
 `;

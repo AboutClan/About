@@ -59,7 +59,7 @@ const UserOverview = styled.div`
     -webkit-box-orient: vertical;
     overflow: hidden;
     font-size: 13px;
-    color: var(--gray-2);
+    color: var(--gray-200);
   }
 `;
 

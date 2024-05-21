@@ -35,7 +35,7 @@ function StoreDetailNav({
         )}
       </ButtonNav>
       <Collapse in={isOpen} animateOpacity>
-        <Box fontSize="12px" p="var(--gap-2)" bg="var(--gray-200)" color="var(--gray-2)">
+        <Box fontSize="12px" p="var(--gap-2)" bg="var(--gray-200)" color="var(--gray-200)">
           {applyUsers?.length === 0 ? (
             "참여 인원 없음"
           ) : (

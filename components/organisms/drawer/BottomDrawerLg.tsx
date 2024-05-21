@@ -106,12 +106,12 @@ const Header = styled.header`
   > span:first-child {
     font-weight: 600;
     font-size: 15px;
-    color: var(--gray-2);
+    color: var(--gray-200);
     margin-bottom: var(--gap-1);
   }
   > span:last-child {
     font-size: 20px;
     font-weight: 600;
-    color: var(--gray-900);
+    color: var(--gray-800);
   }
 `;

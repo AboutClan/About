@@ -23,7 +23,7 @@ body {
   font-family: apple;
   font-size: 14px;
   background-color: var(--gray-100);
-  color: var(--gray-900);
+  color: var(--gray-800);
 }
 
 a {

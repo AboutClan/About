@@ -67,7 +67,7 @@ const Date = styled.div`
   margin-left: 2px;
   font-size: 16px;
   font-weight: 600;
-  color: var(--gray-2);
+  color: var(--gray-200);
 `;
 
 export default RecordDetail;

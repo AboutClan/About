@@ -7,7 +7,7 @@ const Title = styled.span`
 `;
 
 const Content = styled.div`
-  color: var(--gray-2);
+  color: var(--gray-200);
 `;
 
 export const STEPS_CONTENTS: Step[] = [

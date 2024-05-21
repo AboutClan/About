@@ -22,7 +22,7 @@ interface IAccordion {
 
 function Accordion({ contentArr, isFull, isQ = true }: IAccordion) {
   return (
-    <ChakraAccordion allowToggle fontSize="13px" color="var(--gray-2)">
+    <ChakraAccordion allowToggle fontSize="13px" color="var(--gray-200)">
       {contentArr?.map((item, idx) => {
         const content = item.content;
         return (
@@ -63,7 +63,7 @@ const Container = styled.div<{ isFull: boolean }>`
   margin: ${(props) => (props.isFull ? "0 var(--gap-2)" : 0)};
   display: flex;
   width: 100%;
-  color: var(--gray-900);
+  color: var(--gray-800);
 `;
 
 const QIcon = styled.span`

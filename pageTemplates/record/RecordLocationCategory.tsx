@@ -68,7 +68,7 @@ const Layout = styled.div`
   }
   > span:last-child {
     font-size: 10px;
-    color: var(--gray-700);
+    color: var(--gray-600);
   }
 `;
 

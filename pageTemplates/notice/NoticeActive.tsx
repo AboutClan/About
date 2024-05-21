@@ -131,10 +131,10 @@ function NoticeActive({ activeLogs }: INoticeActive) {
                     </Button>
                     <Button
                       fontSize="12px"
-                      border="1px solid var(--gray-800)"
+                      border="1px solid var(--gray-700)"
                       borderRadius="11px"
                       size="xs"
-                      color="var(--gray-800)"
+                      color="var(--gray-700)"
                       variant="ghost"
                       onClick={() =>
                         onClickFriendRequest(
@@ -210,7 +210,7 @@ const Point = styled.span`
 const Date = styled.span`
   margin-left: auto;
   white-space: nowrap;
-  color: var(--gray-700);
+  color: var(--gray-600);
   font-size: 11px;
 `;
 
@@ -221,7 +221,7 @@ const FriendButtons = styled.div`
 
 const FriendComplete = styled.span`
   margin-left: auto;
-  color: var(--gray-700);
+  color: var(--gray-600);
   font-weight: 500;
   font-size: 12px;
 `;

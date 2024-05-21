@@ -42,7 +42,6 @@ const Layout = styled.div`
 
   background-color: white;
   border-radius: var(--rounded);
-  box-shadow: var(--shadow);
 `;
 
 const ItemText = styled.span`

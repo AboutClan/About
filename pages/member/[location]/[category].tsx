@@ -140,10 +140,10 @@ const Detail = styled.div`
     width: 50px;
     font-size: 12px;
     font-weight: 600;
-    color: var(--gray-700);
+    color: var(--gray-600);
   }
   > span:last-child {
-    color: var(--gray-900);
+    color: var(--gray-800);
     font-size: 13px;
   }
 `;
@@ -151,7 +151,7 @@ const Detail = styled.div`
 const Birthday = styled.span`
   margin-left: var(--gap-1);
   font-weight: 600;
-  color: var(--gray-900);
+  color: var(--gray-800);
 `;
 
 export default FriendCategory;

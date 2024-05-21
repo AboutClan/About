@@ -25,7 +25,7 @@ function GatherDetailInfo({
       <FirstItem isOpen={isSubLocation} onClick={() => setIsSubLocation(true)}>
         <ItemText>장소</ItemText>
         <span>{location.main}</span>
-        <i className="fa-solid fa-chevron-down fa-2xs"  />
+        <i className="fa-solid fa-chevron-down fa-2xs" />
       </FirstItem>
       {isSubLocation && <LocationSub>{location.sub}</LocationSub>}
       <Item>
@@ -63,7 +63,7 @@ const Layout = styled.div`
   padding: var(--gap-2) var(--gap-3);
   background-color: white;
   border-radius: var(--rounded);
-  box-shadow: var(--shadow);
+
   border: var(--border);
 `;
 
@@ -86,7 +86,7 @@ const FirstItem = styled(Item)<{ isOpen: boolean }>`
 `;
 
 const LocationSub = styled.div`
-  color: var(--gray-700);
+  color: var(--gray-600);
   font-size: 12px;
   margin: 2px 0;
   margin-left: 44px;

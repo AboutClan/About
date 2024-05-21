@@ -33,7 +33,7 @@ function PromotionMyCoolTimeModal({ setIsModal }: IModal) {
                 {item.winner.map((who, idx) => (
                   <WinnerItem key={idx}>
                     {who.name}
-                    <i className="fa-regular fa-sm fa-circle"  />({who.location})
+                    <i className="fa-regular fa-sm fa-circle" />({who.location})
                   </WinnerItem>
                 ))}
               </Winner>
@@ -82,7 +82,7 @@ const Winner = styled.div`
   display: flex;
   font-size: 12px;
   font-weight: 600;
-  color: var(--gray-2);
+  color: var(--gray-200);
 `;
 
 const WinnerItem = styled.div`
@@ -90,7 +90,7 @@ const WinnerItem = styled.div`
 `;
 
 const Gift = styled.div`
-  color: var(--gray-900);
+  color: var(--gray-800);
   font-size: 13px;
   margin-bottom: var(--gap-2);
 

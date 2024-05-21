@@ -48,7 +48,7 @@ const BlockLayout = styled.div`
   margin-left: var(--gap-4);
   margin-bottom: var(--gap-4);
   font-size: 18px;
-  color: var(--gray-700);
+  color: var(--gray-600);
 `;
 
 export default GroupMine;

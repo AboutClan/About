@@ -11,7 +11,7 @@ function VoteSuccessScreen() {
   return (
     <Layout>
       <Icon>
-        <i className="fa-solid fa-check-circle fa-5x"  />
+        <i className="fa-solid fa-check-circle fa-5x" />
       </Icon>
       <Content>
         <span>투표를 완료했어요</span>
@@ -48,13 +48,13 @@ const Content = styled.div`
   align-items: center;
 
   > span:first-child {
-    color: var(--gray-900);
+    color: var(--gray-800);
     font-weight: 600;
     font-size: 22px;
   }
   > span:last-child {
     font-size: 17px;
-    color: var(--gray-700);
+    color: var(--gray-600);
   }
 `;
 const Button = styled.button`

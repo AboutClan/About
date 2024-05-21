@@ -20,7 +20,7 @@ function ReviewGatherSummary({ summary }: IReviewGatherSummary) {
   return (
     <Layout onClick={onClick}>
       <IconWrapper>
-        <i className="fa-solid fa-magnifying-glass fa-lg" style={{ color: "var(--gray-2)" }} />
+        <i className="fa-solid fa-magnifying-glass fa-lg" style={{ color: "var(--gray-200)" }} />
       </IconWrapper>
       <Content>
         <span>{summary.title}</span>
@@ -43,7 +43,6 @@ const Layout = styled.button`
   margin-bottom: var(--gap-5);
   border: var(--border);
   background-color: white;
-  box-shadow: var(--shadow);
 
   border-radius: var(--rounded-lg);
   display: flex;
@@ -81,7 +80,7 @@ const ContentDetail = styled.div`
   display: flex;
   align-items: center;
   font-size: 12px;
-  color: var(--gray-700);
+  color: var(--gray-600);
   > span:first-child {
     margin-right: var(--gap-1);
   }

@@ -23,7 +23,7 @@ function SuccessScreen({ children, url }: ISuccessScreen) {
   return (
     <Layout>
       <Icon>
-        <i className="fa-solid fa-check-circle fa-5x"  />
+        <i className="fa-solid fa-check-circle fa-5x" />
       </Icon>
       <Content>{children}</Content>
       <Button
@@ -76,7 +76,7 @@ const Content = styled.div`
   align-items: center;
 
   > span:first-child {
-    color: var(--gray-900);
+    color: var(--gray-800);
     font-weight: 600;
     font-size: 22px;
   }
@@ -84,7 +84,7 @@ const Content = styled.div`
     margin-top: 12px;
     text-align: center;
     font-size: 17px;
-    color: var(--gray-700);
+    color: var(--gray-600);
   }
 `;
 

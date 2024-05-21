@@ -18,3 +18,5 @@ export interface IInteractionLikeStorage {
   uid: string;
   date: string;
 }
+
+export type CustomColor = "mint" | "orange" | "blue" | "gray";

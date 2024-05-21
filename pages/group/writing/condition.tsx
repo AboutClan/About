@@ -268,7 +268,7 @@ const ChallengeText = styled.textarea`
   width: 100%;
   padding: 4px 8px;
   :focus {
-    outline-color: var(--gray-900);
+    outline-color: var(--gray-800);
   }
 `;
 
@@ -282,7 +282,7 @@ const Fee = styled.div`
       border-radius: var(--rounded);
       border: var(--border);
       :focus {
-        outline-color: var(--gray-900);
+        outline-color: var(--gray-800);
       }
     }
   }

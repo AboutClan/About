@@ -20,7 +20,7 @@ export default function EveryTimeLogo() {
           <EveryTimeIcon isSmall={false} />
         </Box>
         <br />
-        <Box color="var(--gray-900)">홍보 이벤트</Box>
+        <Box color="var(--gray-800)">홍보 이벤트</Box>
       </Box>
     </Box>
   );

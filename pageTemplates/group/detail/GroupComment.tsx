@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/dist/client/router";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
@@ -179,13 +179,13 @@ const CommentContent = styled.div`
   font-size: 12px;
 
   > span:last-child {
-    color: var(--gray-2);
+    color: var(--gray-200);
   }
 `;
 
 const CommentDetail = styled.span`
   font-size: 11px;
-  color: var(--gray-700);
+  color: var(--gray-600);
 `;
 
 const MyText = styled.textarea`

@@ -1,20 +1,17 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import BellIcon from "../../../assets/icons/BellIcon";
-import UserCircleIcon from "../../../assets/icons/UserCircleIcon";
-import MainLogo from "../../../assets/MainLogo";
 import Slide from "../../../components/layouts/PageSlide";
 import IconButtonNav, { IIconButtonNavBtn } from "../../../components/molecules/navs/IconButtonNav";
 import {
   DAILY_CHECK_POP_UP,
   NOTICE_ACTIVE_CNT,
-  NOTICE_ALERT
+  NOTICE_ALERT,
 } from "../../../constants/keys/localStorage";
 import { useNoticeActiveLogQuery } from "../../../hooks/user/sub/interaction/queries";
 import DailyCheckModal from "../../../modals/aboutHeader/dailyCheckModal/DailyCheckModal";
@@ -64,26 +61,26 @@ function HomeHeader() {
 
   const generateIconBtnArr = () => {
     const arr = [
-      // {
-      //   icon: <i className="fa- fa-books" />,
-      //   func: () => setModalType("rule"),
-      // },
-      // {
-      //   icon: <i className="fa- fa-circlep" />,
-      //   func: () => setModalType("pointGuide"),
-      // },
+      {
+        icon: <i className="fa-light fa-books" />,
+        func: () => setModalType("rule"),
+      },
+      {
+        icon: <i className="fa-light fa-circle-p" />,
+        func: () => setModalType("pointGuide"),
+      },
       {
         icon: (
           <>
-            <BellIcon />
-            {/* {isNoticeAlert && <Alert />} */}
+            <i className="fa-light fa-bell" />
+            {isNoticeAlert && <Alert />}
           </>
         ),
         link: "/notice",
         func: () => setSlideDirection("right"),
       },
       {
-        icon: <UserCircleIcon />,
+        icon: <i className="fa-light fa-user-circle" />,
         link: !isGuest ? "/user" : null,
         func: isGuest
           ? () => router.replace(`/home?${newSearchparams.toString()}&logout=on`)
@@ -92,10 +89,10 @@ function HomeHeader() {
     ];
 
     if (todayDailyCheck === false && showDailyCheck) {
-      // arr.unshift({
-      //   icon: <i className="fa- fa-badgecheck" color="var(--color-mint)" />,
-      //   func: () => setModalType("dailyCheck"),
-      // });
+      arr.unshift({
+        icon: <i className="fa-light fa-badge-check" style={{ color: "var(--color-mint)" }} />,
+        func: () => setModalType("dailyCheck"),
+      });
     }
 
     return arr;
@@ -112,7 +109,7 @@ function HomeHeader() {
       {renderHomeHeader && (
         <Slide isFixed={true}>
           <Layout>
-            <MainLogo />
+            ABOUT
             <Box className="about_header" fontSize="20px">
               <IconButtonNav iconList={iconBtnArr} />
             </Box>
@@ -128,14 +125,12 @@ function HomeHeader() {
 
 const Layout = styled.header`
   height: var(--header-h);
-
   font-size: 20px;
   background-color: white;
   padding: 0 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: var(--gray-800);
   border-bottom: var(--border);
   max-width: var(--max-width);
   margin: 0 auto;
@@ -144,6 +139,16 @@ const Layout = styled.header`
     display: flex;
     align-items: center;
   }
+`;
+
+const Alert = styled.div`
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--color-red);
+  position: absolute;
+  right: 14px;
+  bottom: 24px;
 `;
 
 export default HomeHeader;

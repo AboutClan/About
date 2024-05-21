@@ -60,7 +60,7 @@ const ItemContainer = styled.div`
   font-size: 13px;
   > span:first-child {
     font-size: 12px;
-    color: var(--gray-800);
+    color: var(--gray-700);
     margin-bottom: var(--gap-2);
   }
 `;

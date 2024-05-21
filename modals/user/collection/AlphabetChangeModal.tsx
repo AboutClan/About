@@ -109,7 +109,7 @@ function AlphabetChangeModal({
 const SectionTitle = styled.div`
   font-size: 13px;
   font-weight: 600;
-  color: var(--gray-2);
+  color: var(--gray-200);
 `;
 
 const AlphabetContainer = styled.div`

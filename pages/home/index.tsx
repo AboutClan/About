@@ -1,16 +1,16 @@
 import { Box } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 import Slide from "../../components/layouts/PageSlide";
 import { HAS_STUDY_TODAY } from "../../constants/keys/localStorage";
+import EventBanner from "../../pageTemplates/home/EventBanner";
 import HomeCategoryNav from "../../pageTemplates/home/HomeCategoryNav";
 import HomeGatherSection from "../../pageTemplates/home/HomeGatherSection";
 import HomeHeader from "../../pageTemplates/home/homeHeader/HomeHeader";
 import HomeInitialSetting from "../../pageTemplates/home/HomeInitialSetting";
 import HomeLocationBar from "../../pageTemplates/home/HomeLocationBar";
-import HomeMainBanner from "../../pageTemplates/home/HomeMainBanner";
 import HomeReviewSection from "../../pageTemplates/home/HomeReviewSection";
 import HomeStudySection from "../../pageTemplates/home/HomeStudySection";
 import HomeWinRecordSection from "../../pageTemplates/home/HomeWinRecordSection";
@@ -43,17 +43,21 @@ function Home() {
     <>
       <HomeInitialSetting />
       <HomeHeader />
-      <HomeMainBanner />
       <Slide>
         <HomeCategoryNav />
-        <Box p="0 20px">
-          <HomeLocationBar />
-          <StudyController />
+        <HomeLocationBar />
+      </Slide>
+      <Box px="20px">
+        <StudyController />
+        <Slide>
           <HomeStudySection />
-          <HomeGatherSection />
-          <HomeReviewSection />
-          <HomeWinRecordSection />
-        </Box>
+        </Slide>
+      </Box>
+      <Slide>
+        <EventBanner />
+        <HomeGatherSection />
+        <HomeReviewSection />
+        <HomeWinRecordSection />
       </Slide>
     </>
   );

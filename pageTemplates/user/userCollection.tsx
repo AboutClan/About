@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -97,11 +97,11 @@ const AlphabetQNABtnContents = styled.div`
   align-items: flex-start;
   > span:first-child {
     font-size: 12px;
-    color: var(--gray-700);
+    color: var(--gray-600);
   }
   > span:last-child {
     font-weight: 600;
-    color: var(--gray-800);
+    color: var(--gray-700);
     font-size: 14px;
   }
 `;

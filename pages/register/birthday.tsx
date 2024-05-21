@@ -112,7 +112,7 @@ const StyledDatePicker = styled(DatePicker)`
   text-align: center;
   font-size: 13px;
   font-weight: 600;
-  color: var(--gray-800);
+  color: var(--gray-700);
   outline: none;
 `;
 

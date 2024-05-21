@@ -134,7 +134,7 @@ const Item = styled.div<{ $isSelected: boolean }>`
   align-items: center;
   height: 48px;
   margin-bottom: var(--gap-3);
-  color: ${(props) => (props.$isSelected ? "var(--gray-900)" : "var(--gray-500)")};
+  color: ${(props) => (props.$isSelected ? "var(--gray-800)" : "var(--gray-500)")};
   border: ${(props) => (props.$isSelected ? "var(--border-thick)" : "1.5px solid var(--gray-300)")};
 `;
 

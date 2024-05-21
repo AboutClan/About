@@ -7,7 +7,7 @@ import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
-import { GATHER_TYPES,GatherCategoryIcons } from "../../../constants/contentsText/GatherContents";
+import { GatherCategoryIcons, GATHER_TYPES } from "../../../constants/contentsText/GatherContents";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
@@ -92,7 +92,7 @@ const Info = styled.div`
     font-weight: 600;
   }
   > span:last-child {
-    color: var(--gray-700);
+    color: var(--gray-600);
     font-size: 12px;
   }
 `;

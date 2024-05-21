@@ -1,9 +1,8 @@
 import { Box } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useRecoilValue } from "recoil";
 
-import { IShadowCircleProps } from "../../../components/atoms/buttons/ShadowCircleButton";
 import DateVoteBlock from "../../../components/molecules/DateVoteBlock";
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import { myStudyState, studyDateStatusState } from "../../../recoils/studyRecoils";
@@ -33,9 +32,10 @@ export const ACTION_TO_VOTE_TYPE: Record<StudyVoteActionType, VoteType> = {
 
 interface IStudyControllerVoteButton {
   setModalType: DispatchType<VoteType>;
+  memberCnt: number;
 }
 
-function StudyControllerVoteButton({ setModalType }: IStudyControllerVoteButton) {
+function StudyControllerVoteButton({ setModalType, memberCnt }: IStudyControllerVoteButton) {
   const typeToast = useTypeToast();
   const router = useRouter();
   const { data: session } = useSession();
@@ -62,14 +62,16 @@ function StudyControllerVoteButton({ setModalType }: IStudyControllerVoteButton)
   };
 
   return (
-    <Box px="20px">
-      <DateVoteBlock buttonProps={buttonProps} func={handleModalOpen} />
+    <Box mt="16px" pr="8px">
+      <DateVoteBlock cnt={memberCnt} buttonProps={buttonProps} func={handleModalOpen} />
     </Box>
   );
 }
 
-export interface DateVoteButtonProps extends IShadowCircleProps {
+export interface DateVoteButtonProps {
   text: StudyVoteActionType;
+  color: string;
+  type: "active" | "inactive";
 }
 
 export const getStudyVoteButtonProps = (
@@ -84,55 +86,55 @@ export const getStudyVoteButtonProps = (
       if (myStudy)
         return {
           text: "투표 변경",
-          color: "#F6AD55",
-          shadow: "#FEEBC8",
+          color: "var(--color-mint)",
+          type: "active",
         };
       return {
         text: "참여 신청",
         color: "var(--color-mint)",
-        shadow: "var(--color-mint-light)",
+        type: "active",
       };
     case "today":
       if (isAttend)
         return {
           text: "출석 완료",
-          color: "#F6AD55",
-          shadow: "#FEEBC8",
+          color: "var(--color-orange)",
+          type: "inactive",
         };
       else if (false || myStudy)
         return {
           text: "출석 체크",
-          color: "#00c2b3",
-          shadow: "rgba(0, 194, 179, 0.1)",
+          color: "var(--color-orange)",
+          type: "active",
         };
       return {
         text: "당일 참여",
         color: "var(--color-mint)",
-        shadow: "var(--color-mint-light)",
+        type: "active",
       };
     case "passed":
       if (myStudy && isAttend)
         return {
           text: "출석 완료",
           color: "#F6AD55",
-          shadow: "#FEEBC8",
+          type: "inactive",
         };
       else if (myStudy && myStudy.status !== "free")
         return {
           text: "당일 불참",
           color: "#FC8181",
-          shadow: "#FED7D7",
+          type: "inactive",
         };
       return {
         text: "기간 만료",
         color: "var(--gray-400)",
-        shadow: "var(--gray-200)",
+        type: "inactive",
       };
     default:
       return {
         text: "참여 신청",
         color: "var(--color-mint)",
-        shadow: "var(--color-mint-light)",
+        type: "active",
       };
   }
 };

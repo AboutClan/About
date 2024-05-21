@@ -1,14 +1,10 @@
 import { Box } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Link, { LinkProps } from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import CirclePlusIcon from "../assets/icons/CirclePlusIcon";
-import HomeIcon from "../assets/icons/HomeIcon";
-import PeopleIcon from "../assets/icons/PeopleIcon";
-import StatisticsIcon from "../assets/icons/StatisticsIcon";
 import { HAS_STUDY_TODAY } from "../constants/keys/localStorage";
 import { getStudyStandardDate } from "../libs/study/date/getStudyStandardDate";
 import { slideDirectionState } from "../recoils/navigationRecoils";
@@ -96,64 +92,62 @@ function NavButton({ text, url, activeIcon, defaultIcon, active, idx }: INavButt
 
 const navItems: INavButtonProps[] = [
   {
-    activeIcon: <HomeIcon />,
-    defaultIcon: <HomeIcon isDark={false} />,
+    activeIcon: <i className="fa-solid fa-house fa-xl" />,
+    defaultIcon: <i className="fa-light fa-house fa-xl" />,
     text: "홈",
     url: "/home",
   },
   {
-    activeIcon: <StatisticsIcon />,
-    defaultIcon: <StatisticsIcon isDark={false} />,
+    activeIcon: <i className="fa-solid fa-ranking-star fa-xl" />,
+    defaultIcon: <i className="fa-light fa-ranking-star fa-xl" />,
     text: "통계",
     url: "/statistics",
   },
   {
-    defaultIcon: <CirclePlusIcon />,
+    defaultIcon: <i className="fa-light fa-circle-plus" style={{ fontSize: "36px" }} />,
     url: "",
   },
   {
-    activeIcon: <StatisticsIcon />,
-    defaultIcon: <StatisticsIcon isDark={false} />,
+    activeIcon: <i className="fa-solid fa-hand-shake fa-xl" />,
+    defaultIcon: <i className="fa-light fa-hand-shake fa-xl" />,
     text: "모임",
     url: "/gather",
   },
   {
-    activeIcon: <PeopleIcon />,
-    defaultIcon: <PeopleIcon isDark={false} />,
+    activeIcon: <i className="fa-solid fa-users-rectangle fa-xl" />,
+    defaultIcon: <i className="fa-light fa-users-rectangle fa-xl" />,
     text: "소그룹",
     url: "/group",
   },
 ];
 
 const Nav = styled.nav<{ isIPhone: boolean }>`
-  display: flex;
-  justify-content: space-between;
-  padding: 12px 24px 0 24px;
-  padding-bottom: ${(props) => (props.isIPhone ? "34px" : "24px")};
   width: 100%;
   display: flex;
+  justify-content: even;
   position: fixed;
   bottom: 0;
   height: ${(props) => (props.isIPhone ? "87px" : "77px")};
   background-color: white;
   z-index: 10;
-  box-shadow: var(--shadow);
+
   border-top: var(--border);
   max-width: var(--max-width);
   margin: 0 auto;
 `;
 
 const NavLink = styled(Link)<{ active: "true" | "false" } & LinkProps>`
-  width: 36px;
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  color: ${({ active }) => (active === "true" ? "var(--gray-900)" : "var(--gray-500)")};
+  padding: 16px;
+  margin-top: 4px;
+  color: ${({ active }) => (active === "true" ? "var(--gray-800)" : "var(--gray-500)")};
 `;
 
 const NavText = styled.div`
-  margin-top: 4px;
-  font-size: 10px;
-  font-weight: 600;
+  margin-top: 6px; /* 2rem if you're using rem */
+  font-size: 12px; /* Adjusted for text-xs */
 `;

@@ -1,9 +1,7 @@
 import { Box, Flex, Grid } from "@chakra-ui/react";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 
-import { dayjsToStr, getCalendarDates } from "../../utils/dateTimeUtils";
-import CalendarDayBox from "../atoms/CalendarDayBox";
-import DatePointButton from "./DatePointButton";
+import { getCalendarDates } from "../../utils/dateTimeUtils";
 
 interface CalendarProps {
   type: "week" | "month";
@@ -13,7 +11,7 @@ interface CalendarProps {
 
 function Calendar({ type, selectedDate, func }: CalendarProps) {
   const calendarArr = getCalendarDates(type, selectedDate);
-  console.log(calendarArr);
+
   return (
     <>
       {/* <BetweenTextSwitcher left={textSwitcherProps.left} right={textSwitcherProps.right} /> */}
@@ -23,7 +21,7 @@ function Calendar({ type, selectedDate, func }: CalendarProps) {
           <Flex overflow="auto">
             {calendarArr.map((date, idx) => (
               <Box key={idx} mr="2px">
-                <CalendarDayBox date={date} selectedDate={dayjsToStr(selectedDate)} func={func} />
+                {/* <CalendarDayBox date={date} selectedDate={dayjsToStr(selectedDate)} func={func} /> */}
               </Box>
             ))}
             {/* <Flex h="42px" align="center" color="var(--gray-500)" fontWeight={500}>
@@ -51,14 +49,14 @@ function Calendar({ type, selectedDate, func }: CalendarProps) {
         ) : (
           <Grid templateColumns="repeat(7,1fr)" rowGap="12px">
             {calendarArr.map((dateStr, idx) => {
-              const date = dayjs(dateStr).date();
+              // const date = dayjs(dateStr).date();
               return (
                 <Flex key={idx} w="100%" justify="center" align="center">
-                  <DatePointButton
+                  {/* <DatePointButton
                     date={date}
                     func={() => func(date)}
                     isSelected={date === selectedDate.date()}
-                  />
+                  /> */}
                 </Flex>
               );
             })}

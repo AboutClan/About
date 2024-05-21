@@ -1,12 +1,11 @@
 import { Box } from "@chakra-ui/react";
 import { Dayjs } from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Dispatch } from "react";
 import { useRecoilValue } from "recoil";
 
 import Calendar from "../../components/molecules/Calendar";
-import DateVoteBlock from "../../components/molecules/DateVoteBlock";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import {
   handleChangeDate,
@@ -60,7 +59,7 @@ function DateCalendarModal({ selectedDate, setIsModal, setModalType }: DateCalen
     <ModalLayout title={dayjsToFormat(selectedDate, "YYYY년 M월")} setIsModal={setIsModal}>
       <Calendar selectedDate={selectedDate} type="month" func={onClick} />
       <Box mt="12px" borderTop="var(--border)">
-        <DateVoteBlock buttonProps={buttonProps} func={handleModalOpen} />
+        {/* <DateVoteBlock buttonProps={buttonProps} func={handleModalOpen} /> */}
       </Box>
     </ModalLayout>
   );

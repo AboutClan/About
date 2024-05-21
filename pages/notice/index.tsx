@@ -47,7 +47,7 @@ const Layout = styled.div`
 `;
 
 const Container = styled.div`
-  color: var(--gray-900);
+  color: var(--gray-800);
   display: flex;
   flex-direction: column;
   margin-top: var(--gap-2);

@@ -44,6 +44,6 @@ const BoardContainer = styled.div<{ participants: ITimeBoardParticipant[] }>`
   position: relative;
   border-radius: var(--rounded-lg); /* rounded-lg */
   background-color: white;
-  box-shadow: var(--shadow); /* shadow-md */
+
   height: ${({ participants }) => `${participants.length * 38 + 52}px`};
 `;

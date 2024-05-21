@@ -55,7 +55,7 @@ function PointSystemsModalFee() {
 const Layout = styled.div`
   margin-top: var(--gap-1);
   display: grid;
-  color: var(--gray-2);
+  color: var(--gray-200);
   grid-template-columns: repeat(3, 1fr);
   > div:nth-child(-n + 3) {
     border-bottom: var(--border);

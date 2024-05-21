@@ -7,7 +7,6 @@ function PointSystemsModalPoint() {
   return (
     <>
       <Layout>
-        ``
         <Item>
           <Name>스터디 투표</Name>
 
@@ -52,7 +51,7 @@ function PointSystemsModalPoint() {
 
 const Layout = styled.div`
   margin-top: var(--gap-1);
-  color: var(--gray-2);
+  color: var(--gray-200);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   > div:nth-child(-n + 3) {

@@ -3,7 +3,6 @@
 import { Select } from "@chakra-ui/react";
 import { ChangeEvent, useEffect, useState } from "react";
 
-import BottomArrowIcon from "../../assets/icons/BottomArrowIcon";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { isLocationType } from "../../utils/validationUtils";
@@ -36,15 +35,9 @@ export default function Selector({
   return (
     <div className="max-w-md">
       <Select
-        icon={<BottomArrowIcon />}
-        w="95px"
-        h="40px"
-        borderRadius="6px"
-        backgroundColor="white"
         focusBorderColor="#00c2b3"
         size="sm"
-        fontSize="16px"
-        fontWeight={500}
+        color="primary"
         value={value}
         onChange={onChange}
         border={!isBorder ? "none" : undefined}

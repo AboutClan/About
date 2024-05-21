@@ -68,7 +68,7 @@ const LogHeader = styled.header`
     text-align: center;
   }
   > span:first-child {
-    color: var(--gray-900);
+    color: var(--gray-800);
   }
   > span:last-child {
     padding-left: var(--gap-1);
@@ -85,7 +85,7 @@ const MyPoint = styled.div`
   height: 40px;
   border-radius: var(--rounded-lg);
   border: var(--border-mint);
-  color: var(--gray-800);
+  color: var(--gray-700);
   font-size: 14px;
   > span:first-child {
     flex: 1;
@@ -94,7 +94,7 @@ const MyPoint = styled.div`
     flex: 1;
     text-align: end;
     font-size: 15px;
-    color: var(--gray-900);
+    color: var(--gray-800);
     font-weight: 700;
   }
 `;
@@ -105,7 +105,7 @@ const Container = styled.div`
   flex-direction: column;
 `;
 const Item = styled.div`
-  color: var(--gray-900);
+  color: var(--gray-800);
   height: 40px;
   display: flex;
   justify-content: space-between;
@@ -115,7 +115,7 @@ const Item = styled.div`
 `;
 
 const Date = styled.span`
-  color: var(--gray-700);
+  color: var(--gray-600);
   margin-right: var(--gap-4);
   width: 54px;
   text-align: center;
@@ -128,6 +128,6 @@ const Content = styled.span`
 const Point = styled.span<{ isMinus?: boolean }>`
   width: 64px;
   text-align: center;
-  color: ${(props) => (props.isMinus ? "var(--color-red)" : "var(--gray-900)")};
+  color: ${(props) => (props.isMinus ? "var(--color-red)" : "var(--gray-800)")};
 `;
 export default ScoreLog;

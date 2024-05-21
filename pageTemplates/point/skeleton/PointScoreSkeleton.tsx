@@ -37,7 +37,7 @@ const Layout = styled.div`
   padding: 14px;
   border-radius: var(--rounded-lg);
   background-color: white;
-  box-shadow: var(--shadow);
+
   height: 166.5px;
 `;
 

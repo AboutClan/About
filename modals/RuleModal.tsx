@@ -61,7 +61,7 @@ const ItemContent = styled.ul`
 `;
 
 const RuleTitle = styled.span`
-  color: var(--gray-900);
+  color: var(--gray-800);
   font-size: 13px;
   font-weight: 600;
 `;

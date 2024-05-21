@@ -46,7 +46,7 @@ const Layout = styled.div`
   padding: 14px;
   border-radius: var(--rounded-lg);
   background-color: white;
-  box-shadow: var(--shadow);
+
   height: 218px;
 `;
 const ScoreNav = styled.div`

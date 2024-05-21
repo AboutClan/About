@@ -51,7 +51,7 @@ const Layout = styled.div`
 `;
 const Temp = styled.span`
   font-size: 11px;
-  color: var(--gray-700);
+  color: var(--gray-600);
 `;
 const VoteNum = styled.span``;
 

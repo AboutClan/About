@@ -154,7 +154,7 @@ const Item = styled.div`
   > span:first-child {
     width: 15%;
     font-weight: 600;
-    color: var(--gray-2);
+    color: var(--gray-200);
   }
   > input,
   select {

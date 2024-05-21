@@ -25,7 +25,7 @@ interface INewAlertIcon {
 export function NewAlertIcon({ size = "lg" }: INewAlertIcon) {
   return (
     <>
-      <i className={`fa-${size} fa-lg fa-circle-n`} style={{ color: "var(--color-red)" }} />
+      <i className={`fa-${size} fa-solid fa-circle-n`} style={{ color: "var(--color-red)" }} />
     </>
   );
 }

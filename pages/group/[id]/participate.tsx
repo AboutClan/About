@@ -83,7 +83,7 @@ const AnswerText = styled.textarea`
   padding: var(--gap-2);
 
   :focus {
-    outline-color: var(--gray-900);
+    outline-color: var(--gray-800);
   }
 `;
 

@@ -30,7 +30,7 @@ const Ol = styled.ol`
   margin-left: var(--gap-4);
   font-size: 13px;
   font-weight: 600;
-  color: var(--gray-2);
+  color: var(--gray-200);
   line-height: 2;
   > ul:last-child {
     margin-bottom: 0;

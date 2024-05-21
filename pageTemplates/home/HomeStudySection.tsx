@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -52,16 +52,15 @@ export default function HomeStudySection() {
 
   useEffect(() => {
     if (!studyVoteData || !studyVoteData.length || !session?.user || !studyDateStatus) {
+      setMyStudy(undefined);
       setStudyCardColData(null);
       return;
     }
-    console.log(1, studyVoteData, studyDateStatus);
     const sortedData = sortStudyVoteData(studyVoteData, studyDateStatus !== "not passed");
 
     const cardList = setStudyDataToCardCol(sortedData, date as string, session?.user.uid);
     setStudyCardColData(cardList.slice(0, 3));
     setSortedStudyCardList(cardList);
-
     const myStudy = getMyStudy(studyVoteData, myUid);
     setMyStudy(myStudy);
 
@@ -160,7 +159,7 @@ const getBadgeText = (status: StudyStatus, point: number): ITextAndColorSchemes 
     case "dismissed":
       return { text: "취소", color: "var(--color-red)" };
     case "free":
-      return { text: "자유", color: "var(--color-green)" };
+      return { text: "자유", color: "var(--color-red)" };
     case "pending":
       return { text: `+${point} POINT`, color: "redTheme" };
   }

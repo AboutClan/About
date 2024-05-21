@@ -26,7 +26,7 @@ import {
   ActiveLocation,
   ActiveLocationAll,
   LocationEn,
-  LocationFilterType
+  LocationFilterType,
 } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 
@@ -207,8 +207,7 @@ function Review() {
                     onClick={handleLoadMore}
                     m="var(--gap-4)"
                     colorScheme="gray"
-                    boxShadow="var(--shadow)"
-                    color="var(--gray-700)"
+                    color="var(--gray-600)"
                   >
                     <Box mr="var(--gap-2)">더 보기</Box>
                     <i className="fa-solid fa-ellipsis" />
@@ -243,7 +242,6 @@ const Item = styled.div`
   display: flex;
   flex-direction: column;
   border: var(--border);
-  box-shadow: var(--shadow);
 `;
 
 const Spacing = styled.div`

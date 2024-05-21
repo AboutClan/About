@@ -45,7 +45,7 @@ function StudyOverview({
         borderWidth: 1,
         disableAnchor: false,
         backgroundColor: "var(--gray-100)",
-        borderColor: "var(--gray-700)",
+        borderColor: "var(--gray-600)",
         anchorSize: new naver.maps.Size(10, 10),
         anchorColor: "var(--gray-100)",
       },
@@ -127,7 +127,7 @@ const InfoIconText = styled.div`
   svg {
     width: 14px; /* Adjusted from w-3.5 to actual px */
     margin-right: 8px;
-    color: var(--gray-700); /* text-gray-3 */
+    color: var(--gray-600); /* text-gray-3 */
   }
 `;
 

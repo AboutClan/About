@@ -98,7 +98,7 @@ export function ModalLayout({
               {title}
             </ChakraModalHeader>
             {headerOptions?.subTitle && (
-              <Box textAlign="center" color="var(--gray-2)" fontSize="16px">
+              <Box textAlign="center" color="var(--gray-200)" fontSize="16px">
                 {headerOptions.subTitle}
               </Box>
             )}
@@ -205,7 +205,7 @@ export function ModalHeader({ text, isCloseBtn = true, isLine = true }: IModalHe
         p="var(--gap-4) var(--gap-4)"
         fontWeight="700"
         fontSize="18px"
-        color="var(--gray-900)"
+        color="var(--gray-800)"
         borderBottom={isLine && "var(--border)"}
       >
         {text}

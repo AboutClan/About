@@ -47,7 +47,7 @@ function ContentPopUp({ content, setIsModal }: IContentPopUp) {
 }
 
 const Subtitile = styled.div`
-  color: var(--gray-2);
+  color: var(--gray-200);
   font-size: 13px;
   font-weight: 600;
   margin-bottom: var(--gap-1);
@@ -55,7 +55,7 @@ const Subtitile = styled.div`
 
 const Ul = styled.ul`
   font-size: 12px;
-  color: var(--gray-2);
+  color: var(--gray-200);
   margin-left: var(--gap-4);
 `;
 const Wrapper = styled.div`

@@ -3,8 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
 
-import LocationDotIcon from "../../../assets/icons/LocationDotIcon";
-import UserIcon from "../../../assets/icons/UserIcon";
 import { SingleLineText } from "../../../styles/layout/components";
 import { IImageProps } from "../../../types/components/assetTypes";
 import { ITextAndColorSchemes } from "../../../types/components/propTypes";
@@ -49,13 +47,27 @@ export function PostThumbnailCard({
 
   return (
     <CardLink href={url} onClick={func}>
-      <Flex my="2px" flex={1}>
-        <Box w="80px" h="80px" borderRadius="8px" position="relative" overflow="hidden">
-          <Image src={image.url} alt="thumbnailImage" sizes="80px" fill={true} loading="lazy" />
+      <Flex flex={1}>
+        <Box
+          w="80px"
+          h="80px"
+          borderRadius="var(--rounded-lg)"
+          position="relative"
+          overflow="hidden"
+        >
+          <Image
+            src={image.url}
+            alt="thumbnailImage"
+            width={80}
+            height={80}
+            priority={image.priority}
+          />
         </Box>
         <Flex direction="column" ml="12px" flex={1}>
-          <Flex align="center">
-            <Flex mr="4px">{title !== "개인 스터디" && <LocationDotIcon />}</Flex>
+          <Flex align="center" fontSize="16px">
+            <Flex mr="4px" w="12px" justify="center" align="center">
+              {title !== "개인 스터디" && <i className="fa-regular fa-location-dot fa-sm" />}
+            </Flex>
             <Title>{title}</Title>
           </Flex>
           <Subtitle>{subtitle}</Subtitle>
@@ -71,14 +83,27 @@ export function PostThumbnailCard({
       </Flex>
       <Flex direction="column" justifyContent="space-between" align="flex-end">
         <OutlineBadge size="sm" text={badge.text} color={badge.color} />
-        <Flex className="userIconContainer" align="center">
-          <UserIcon />
-          <Flex ml="3px" align="center" fontSize="16px" fontWeight={500}>
-            <Box as="span" color={maxCnt && participants.length >= maxCnt && "var(--color-red)"}>
+        <Flex
+          mb="-2px"
+          className="userIconContainer"
+          fontSize="15px"
+          align="center"
+          color="var(--gray-500)"
+        >
+          <Box>
+            <i className="fa-regular fa-user fa-xs" />
+          </Box>
+          <Flex ml="8px" align="center" fontWeight={500}>
+            <Box
+              as="span"
+              color={
+                maxCnt && participants.length >= maxCnt ? "var(--color-red)" : "var(--gray-800)"
+              }
+            >
               {participants.length}
             </Box>
-            <Box color="var(--gray-400)">
-              <Box as="span" mx="2px">
+            <Box>
+              <Box as="span" mr="2px" ml="4px">
                 /
               </Box>
               {maxCnt || <i className="fa-regular fa-infinity" />}
@@ -93,7 +118,7 @@ export function PostThumbnailCard({
 export function PostThumbnailCardSkeleton() {
   return (
     <SkeletonContainer>
-      <SkeletonBlock style={{ width: "86.5px", height: "86.5px" }}>
+      <SkeletonBlock style={{ width: "80px", height: "80px" }}>
         <Skeleton>t</Skeleton>
       </SkeletonBlock>
       <ContentContainer>
@@ -114,17 +139,16 @@ export function PostThumbnailCardSkeleton() {
 }
 
 const CardLink = styled(Link)`
-  height: 116px;
+  height: 112px;
   display: flex;
   padding: 16px;
   background-color: white;
   border: var(--border);
-  border-radius: 8px;
-  box-shadow: var(--shadow);
+  border-radius: var(--rounded-lg);
   justify-content: space-between;
 
   &:hover {
-    background-color: var(--gray-200); // gray-100
+    background-color: var(--gray-200);
   }
 `;
 
@@ -132,7 +156,7 @@ const ContentContainer = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  margin-left: 12px; // ml-3 수정
+  margin-left: 12px;
 `;
 
 const TitleHeader = styled.div`
@@ -141,29 +165,26 @@ const TitleHeader = styled.div`
 `;
 
 const Title = styled(SingleLineText)`
-  font-size: 14px;
   font-weight: 600;
 `;
 
 const Subtitle = styled(SingleLineText)`
-  color: var(--gray-600);
+  color: var(--gray-500);
   font-size: 12px;
   width: 90%;
   font-weight: 500;
-
-  margin-top: 4px;
 `;
 
 const StatusContainer = styled.div`
   flex: 1;
   display: flex;
   align-items: flex-end;
-
+  margin-bottom: -2px;
   .statusText {
     display: flex;
     margin-left: auto;
     align-items: center;
-    color: var(--gray-700); // text-gray-500
+    color: var(--gray-600); // text-gray-500
     .userIconContainer {
       display: flex;
       align-items: center;
@@ -179,13 +200,13 @@ const StatusContainer = styled.div`
 `;
 
 const SkeletonContainer = styled.div`
-  height: 110px;
+  height: 116px;
   display: flex;
-  padding: 12px;
+  padding: 1px;
   background-color: white;
 
   border-radius: var(--rounded-lg);
-  box-shadow: var(--shadow);
+
   &:hover {
     background-color: var(--gray-200); // gray-100
   }
@@ -193,5 +214,5 @@ const SkeletonContainer = styled.div`
 
 const SkeletonBlock = styled.div`
   background-color: var(--gray-200); // gray-200 대응
-  border-radius: 0.5rem;
+  border-radius: var(--rounded-lg);
 `;

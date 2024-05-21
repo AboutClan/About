@@ -5,7 +5,7 @@ import { IModal } from "../../../types/components/modalTypes";
 function RuleIcon({ setIsModal }: IModal) {
   return (
     <Layout onClick={() => setIsModal(true)}>
-      <i className="fa-light fa-infocircle fa-xl" style={{ color: "var(--gray-2)" }} />
+      <i className="fa-light fa-infocircle fa-xl" style={{ color: "var(--gray-200)" }} />
     </Layout>
   );
 }

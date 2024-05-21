@@ -118,14 +118,14 @@ const Summary = styled.div`
     }
     > span:last-child {
       font-size: 11px;
-      color: var(--gray-700);
+      color: var(--gray-600);
     }
   }
   > span {
     margin-right: 12px;
     font-size: 12px;
     font-weight: 600;
-    color: var(--gray-800);
+    color: var(--gray-700);
   }
 `;
 

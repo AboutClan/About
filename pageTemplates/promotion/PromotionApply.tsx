@@ -88,7 +88,7 @@ function PromotionApply() {
               border="var(--border)"
               onChange={(e) => setValue(e.target.value)}
               _focus={{
-                borderColor: "var(--gray-900)",
+                borderColor: "var(--gray-800)",
                 borderBottomRadius: value !== "" && filterData?.length > 0 && "none",
               }}
               _placeholder={{
@@ -149,7 +149,7 @@ const AutoItem = styled.div`
   padding-left: 14px;
   border-bottom: var(--border);
   border-color: black;
-  color: var(--gray-800);
+  color: var(--gray-700);
   font-size: 13px;
 `;
 

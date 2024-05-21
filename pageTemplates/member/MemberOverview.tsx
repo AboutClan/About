@@ -81,7 +81,7 @@ function MemberOverview({ groups, onClickSection }: IMemberOverview) {
   );
 }
 const MemberTitle = styled.div`
-  color: var(--gray-2);
+  color: var(--gray-200);
   margin-bottom: 12px;
   font-size: 13px;
 `;
@@ -100,10 +100,9 @@ const GroupLayout = styled.button`
   flex-direction: column;
   background-color: white;
   border-radius: var(--rounded);
-  box-shadow: var(--shadow);
+
   padding: var(--gap-3);
   margin-bottom: var(--gap-4);
-  box-shadow: var(--shadow);
 `;
 const GroupTitle = styled.div`
   font-weight: 600;
@@ -126,10 +125,10 @@ const InfoItem = styled.div`
     display: inline-block;
     margin-right: var(--gap-2);
     font-weight: 600;
-    color: var(--gray-2);
+    color: var(--gray-200);
   }
   > span:last-child {
-    color: var(--gray-700);
+    color: var(--gray-600);
   }
 `;
 

@@ -9,7 +9,7 @@ interface IBoardHeaderText {
 export default function BoardHeaderText({ headerText }: IBoardHeaderText) {
   return (
     <HeaderContainer>
-      <i className="fa-light fa-user-group fa-sm" style={{ color: "var(--gray-700)" }} />
+      <i className="fa-light fa-user-group fa-sm" style={{ color: "var(--gray-600)" }} />
       <Box w="4px" />
       <HighlightedText text={headerText.text} hightlightedText={headerText.hightlightedText} />
     </HeaderContainer>

@@ -62,7 +62,7 @@ const GatherReviewNavItem = styled.button`
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: var(--gray-900);
+  color: var(--gray-800);
 `;
 
 const ReviewItem = styled(GatherReviewNavItem)`

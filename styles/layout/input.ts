@@ -29,7 +29,7 @@ export const InputLg = styled.input`
   border-radius: var(--rounded-lg);
   padding: var(--gap-3);
   &:focus {
-    outline-color: var(--gray-900);
+    outline-color: var(--gray-800);
   }
   ::placeholder {
     color: var(--gray-500);

@@ -28,7 +28,7 @@ const Detail = styled.div`
   margin-top: var(--gap-5);
   font-weight: 600;
   font-size: 14px;
-  color: var(--gray-2);
+  color: var(--gray-200);
   > b {
     color: #c62917;
     font-weight: 800;

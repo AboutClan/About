@@ -6,7 +6,7 @@ import {
   PopoverCloseButton,
   PopoverContent,
   PopoverHeader,
-  PopoverTrigger
+  PopoverTrigger,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
@@ -27,7 +27,7 @@ import { getRandomAlphabet } from "../../../libs/userEventLibs/collection";
 import {
   transferAlphabetState,
   transferDailyCheckWinState,
-  transferShowDailyCheckState
+  transferShowDailyCheckState,
 } from "../../../recoils/transferRecoils";
 import { IModal } from "../../../types/components/modalTypes";
 import { IUserRequest } from "../../../types/models/userTypes/userRequestTypes";
@@ -116,7 +116,7 @@ function DailyCheckModal({ setIsModal }: IModal) {
           <Badge text="+랜덤 선물" colorScheme="redTheme" />
         </Detail>
         <CheckWrapper>
-          <i className="fa-regular fa-check-circle fa-4x" style={{ color: "var(--color-mint)" }}  />
+          <i className="fa-regular fa-check-circle fa-4x" style={{ color: "var(--color-mint)" }} />
         </CheckWrapper>
         <Detail>
           <PresentListPopOver />
@@ -208,7 +208,7 @@ const Detail = styled.div`
   /* > span {
     width: 65px;
     text-align: end;
-    color: var(--gray-2);
+    color: var(--gray-200);
     display: block;
     padding: 2px 0;
     font-weight: 600;
@@ -217,7 +217,7 @@ const Detail = styled.div`
 `;
 
 const SubTitle = styled.span`
-  color: var(--gray-700);
+  color: var(--gray-600);
   font-weight: 400;
   font-size: 12px;
 `;

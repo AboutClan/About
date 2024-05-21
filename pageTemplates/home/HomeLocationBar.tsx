@@ -29,7 +29,7 @@ export default function HomeLocationBar() {
 
   return (
     <SectionBar
-      title="스터디"
+      title="카공 스터디"
       rightComponent={
         <Selector defaultValue={location} options={ACTIVE_LOCATIONS} setValue={setLocation} />
       }

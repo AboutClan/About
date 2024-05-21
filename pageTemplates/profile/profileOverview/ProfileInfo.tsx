@@ -169,7 +169,7 @@ const ProfileName = styled.div`
   }
   > span:last-child {
     font-size: 12px;
-    color: var(--gray-700);
+    color: var(--gray-600);
   }
 `;
 const HeartWrapper = styled.button`
@@ -179,7 +179,7 @@ const HeartWrapper = styled.button`
 const Comment = styled.div`
   margin-left: var(--gap-1);
   margin-top: var(--gap-3);
-  color: var(--gray-900);
+  color: var(--gray-800);
   font-size: 12px;
   font-weight: 600;
 `;

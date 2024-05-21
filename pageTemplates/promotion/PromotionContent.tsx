@@ -100,7 +100,7 @@ const ImageWrapper = styled.div`
     margin-top: var(--gap-3);
     font-size: 12px;
     font-weight: 600;
-    color: var(--gray-900);
+    color: var(--gray-800);
     display: flex;
     flex-direction: column;
     align-items: center;

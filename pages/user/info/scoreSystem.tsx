@@ -124,7 +124,7 @@ const Title = styled.div`
 const Ul = styled.ul`
   padding-left: 18px;
   line-height: 1.8;
-  color: var(--gray-800);
+  color: var(--gray-700);
 `;
 
 const Li = styled.li`

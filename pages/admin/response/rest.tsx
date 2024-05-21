@@ -83,7 +83,7 @@ const Item = styled.div`
   border-bottom: 8px solid var(--gray-200);
   padding: var(--gap-3) var(--gap-4);
   font-size: 13px;
-  color: var(--gray-800);
+  color: var(--gray-700);
   > div {
     > span:first-child {
       font-weight: 600;
@@ -102,7 +102,7 @@ const Title = styled.div`
   }
   > span:last-child {
     font-size: 11px;
-    color: var(--gray-800);
+    color: var(--gray-700);
   }
 `;
 

@@ -23,6 +23,6 @@ const Layout = styled.div`
   display: flex;
   height: 42px;
   justify-content: space-between;
-  color: var(--gray-600);
+  color: var(--gray-500);
   font-size: 14px;
 `;

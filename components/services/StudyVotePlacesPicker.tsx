@@ -62,7 +62,7 @@ const Comment = styled.div`
   align-items: flex-start;
   font-size: 20px;
   font-weight: 600;
-  color: var(--gray-2);
+  color: var(--gray-200);
 `;
 
 export default StudyVotePlacesPicker;

@@ -14,14 +14,14 @@ function MoreInfoBtn({ url }: IMoreInfoBtn) {
       }}
     >
       <span>더보기</span>
-      <i className="fa-solid fa-chevron-right fa-sm"  />
+      <i className="fa-solid fa-chevron-right fa-sm" />
     </Layout>
   );
 }
 
 const Layout = styled.div`
   height: 44px;
-  box-shadow: var(--shadow);
+
   display: flex;
   justify-content: center;
   background-color: white;
@@ -29,7 +29,7 @@ const Layout = styled.div`
   margin-top: var(--gap-4);
   margin-bottom: var(--gap-5);
   border-radius: var(--rounded-lg);
-  color: var(--gray-700);
+  color: var(--gray-600);
   font-weight: 600;
   > span:first-child {
     margin-right: var(--gap-2);

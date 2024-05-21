@@ -48,13 +48,13 @@ const Item = styled.div`
       margin-right: var(--gap-2);
     }
     > span:last-child {
-      color: var(--gray-700);
+      color: var(--gray-600);
       font-size: 12px;
     }
   }
   > span:nth-child(2) {
     font-size: 13px;
-    color: var(--gray-800);
+    color: var(--gray-700);
     margin-bottom: var(--gap-2);
   }
 `;

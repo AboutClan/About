@@ -1,15 +1,18 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Dispatch, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import PointCircleText from "../../../components/atoms/PointCircleText";
 
 import Slide from "../../../components/layouts/PageSlide";
 import WeekSlideCalendar from "../../../components/molecules/WeekSlideCalendar";
-import DateCalendarModal from "../../../modals/aboutHeader/DateCalendarModal";
+import { useStudyDailyVoteCntQuery } from "../../../hooks/study/queries";
 import StudyAttendCheckModal from "../../../modals/study/StudyAttendCheckModal";
 import { studyDateStatusState } from "../../../recoils/studyRecoils";
+import { ActiveLocation } from "../../../types/services/locationTypes";
+import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import StudyControllerVoteButton from "./StudyControllerVoteButton";
 
@@ -30,17 +33,31 @@ function StudyController() {
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
   const date = searchParams.get("date");
+  const location = searchParams.get("location");
 
   const [selectedDate, setSelectedDate] = useState<string>();
   const [modalType, setModalType] = useState<VoteType>(null);
 
   const setStudyDateStatus = useSetRecoilState(studyDateStatusState);
 
+  const selectedDateDayjs = dayjs(selectedDate);
+
+  const { data: voteCntArr } = useStudyDailyVoteCntQuery(
+    convertLocationLangTo(location as ActiveLocation, "kr"),
+    selectedDateDayjs.startOf("month"),
+    selectedDateDayjs.endOf("month"),
+    {
+      enabled: !!location,
+    },
+  );
+
+  const todayVoterCnt = voteCntArr?.find(
+    (item) => dayjsToStr(dayjs(item.date)) === selectedDate,
+  )?.value;
+
   useEffect(() => {
     setSelectedDate(date);
   }, [date]);
-
-  const selectedDateDayjs = dayjs(selectedDate);
 
   const onClick = (date: number) => {
     setStudyDateStatus(undefined);
@@ -53,20 +70,39 @@ function StudyController() {
     <>
       <Slide>
         <OuterContainer className="about_calendar">
-          <InnerContainer>
+          <Flex justify="space-between" align="center" mb="16px" mr="12px">
+            <Box fontSize="16px" fontWeight={600}>
+              날짜 선택
+            </Box>
+            <Flex>
+              <PointCircleText text="오픈 확정" color="mint" />
+              <Box w="8px" />
+              <PointCircleText text="오픈 예정" color="gray" />
+            </Flex>
+          </Flex>
+          <Box h="138px">
             {selectedDate && (
               <>
                 <Flex align="center" borderBottom="var(--border)">
-                  <MonthButton>
-                    <span>5월</span>
-                    <i className="fa-regular fa-chevron-down" />
-                  </MonthButton>
-                  <WeekSlideCalendar selectedDate={selectedDateDayjs} func={onClick} />
+                  <Flex pr="6px" flex={1} minW="48px" justify="center">
+                    <MonthButton>
+                      <span>12월</span>
+                      <i className="fa-regular fa-chevron-down fa-xs" />
+                    </MonthButton>
+                  </Flex>
+                  <Flex flex={1} h="32px" justify="center">
+                    <Box h="100%" bg="var(--gray-300)" w="1px" />
+                  </Flex>
+                  <WeekSlideCalendar
+                    voteCntArr={voteCntArr}
+                    selectedDate={selectedDateDayjs}
+                    func={onClick}
+                  />
                 </Flex>
-                <StudyControllerVoteButton setModalType={setModalType} />
+                <StudyControllerVoteButton memberCnt={todayVoterCnt} setModalType={setModalType} />
               </>
             )}
-          </InnerContainer>
+          </Box>
         </OuterContainer>
       </Slide>
       {modalType === "attendCheck" && (
@@ -77,36 +113,14 @@ function StudyController() {
 }
 
 const MonthButton = styled.button`
-  width: 60px;
-  background-color: pink;
+  width: 40px;
+  text-align: start;
+  padding: 8px 0px;
+  font-size: 14px;
+  > span {
+    margin-right: 4px;
+  }
 `;
-
-interface ControllerHeaderProps {
-  selectedDateDayjs: Dayjs;
-  setModalType: Dispatch<VoteType>;
-}
-
-function ControllerHeader({ selectedDateDayjs, setModalType }: ControllerHeaderProps) {
-  const [isModal, setIsModal] = useState(false);
-
-  return (
-    <>
-      <Flex p="0 20px" justify="space-between" h="58px" alignItems="center">
-        <Box fontSize="20px" fontWeight={600}>
-          {selectedDateDayjs.month() + 1}월
-        </Box>
-        <Box onClick={() => setIsModal(true)}>버튼</Box>
-      </Flex>
-      {isModal && (
-        <DateCalendarModal
-          setIsModal={setIsModal}
-          setModalType={setModalType}
-          selectedDate={selectedDateDayjs}
-        />
-      )}
-    </>
-  );
-}
 
 export const getTextSwitcherProps = (
   selectedDateDayjs: Dayjs,
@@ -170,11 +184,11 @@ const handleMonthMoveByDate = (date: number, currentDate: number) => {
 
 const OuterContainer = styled.div`
   background-color: white;
-  border-radius: 12px;
-  position: relative;
-`;
-
-const InnerContainer = styled.div`
+  border-radius: var(--rounded-lg);
+  border: var(--border);
+  margin-top: 16px;
+  padding: 16px;
+  padding-right: 8px;
   position: relative;
 `;
 

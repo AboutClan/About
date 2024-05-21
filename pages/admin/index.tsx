@@ -1,6 +1,6 @@
 import axios from "axios";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import Header from "../../components/layouts/Header";
@@ -122,7 +122,7 @@ const BlockName = styled.div`
   height: 24px;
   display: flex;
   align-items: end;
-  color: var(--gray-800);
+  color: var(--gray-700);
   padding-left: 6px;
 `;
 

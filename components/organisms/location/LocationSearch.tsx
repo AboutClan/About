@@ -129,7 +129,7 @@ const SearchContent = styled.div<{ isContent: boolean }>`
 `;
 
 const Item = styled.div`
-  color: var(--gray-2);
+  color: var(--gray-200);
   padding: var(--gap-1) 0;
 `;
 

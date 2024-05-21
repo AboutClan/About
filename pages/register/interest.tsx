@@ -80,7 +80,7 @@ const Container = styled.div`
     margin-bottom: var(--gap-5);
     > span {
       display: inline-block;
-      color: var(--gray-900);
+      color: var(--gray-800);
 
       font-size: 14px;
       margin-bottom: var(--gap-2);
@@ -92,7 +92,7 @@ const Example = styled.div`
   margin-top: var(--gap-4);
 
   > div {
-    color: var(--gray-700);
+    color: var(--gray-600);
     padding: var(--gap-1);
     background-color: var(--gray-200);
     border: 1px solid var(--gray-300);
@@ -121,7 +121,7 @@ const Item = styled.div`
 //     color: var(--gray-500);
 //   }
 //   :focus {
-//     outline-color: var(--gray-900);
+//     outline-color: var(--gray-800);
 //   }
 // `;
 

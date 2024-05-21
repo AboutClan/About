@@ -20,3 +20,8 @@ export interface IVoteRate {
   cnt: number;
   userSummary?: IUserSummary;
 }
+
+export interface VoteCntProps {
+  date: string;
+  value: number;
+}

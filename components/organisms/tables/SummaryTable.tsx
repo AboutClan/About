@@ -8,7 +8,7 @@ interface ISummaryTable {
 
 export default function SummaryTable({ headerInfos, tableInfosArr, size = "md" }: ISummaryTable) {
   return (
-    <TableContainer color="var(--gray-800)" overflow="hidden" p="0 10px" fontSize="12px">
+    <TableContainer color="var(--gray-700)" overflow="hidden" p="0 10px" fontSize="12px">
       <Table size={size}>
         <Thead h="44px">
           <Tr>

@@ -100,7 +100,7 @@ const MainItem = styled.div`
   justify-content: space-between;
   > span:first-child {
     font-weight: 600;
-    color: var(--gray-900);
+    color: var(--gray-800);
   }
   > div {
     span:first-child {

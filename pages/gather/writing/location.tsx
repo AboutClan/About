@@ -68,7 +68,7 @@ const LocationDetailInput = styled.input`
   padding-left: var(--gap-1);
   outline: none;
   font-size: 13px;
-  color: var(--gray-800);
+  color: var(--gray-700);
 `;
 
 const Location = styled.div`

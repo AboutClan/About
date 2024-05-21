@@ -30,21 +30,21 @@ function NoticeItem() {
                   <NoticeIcon type={item.category} />
                 </Flex>
                 <Flex direction="column" flex="1" ml="var(--gap-3)">
-                  <Text fontSize="16px" fontWeight="500" color="var(--gray-900)">
+                  <Text fontSize="16px" fontWeight="500" color="var(--gray-800)">
                     {item.title}
                   </Text>
-                  <Text fontSize="13px" color="var(--gray-700)">
+                  <Text fontSize="13px" color="var(--gray-600)">
                     {item.date}
                   </Text>
                 </Flex>
               </Box>
-              <AccordionIcon fontSize="24px" color="var(--gray-800)" />
+              <AccordionIcon fontSize="24px" color="var(--gray-700)" />
             </AccordionButton>
             <AccordionPanel
               mt="var(--gap-3)"
               p="0 var(--gap-5)"
               pb="var(--gap-3)"
-              color="var(--gray-800)"
+              color="var(--gray-700)"
               lineHeight="22px"
             >
               {item.content}

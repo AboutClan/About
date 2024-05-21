@@ -70,7 +70,6 @@ const CustomLink = styled(Link)<{ size: Size }>`
   border-radius: var(--rounded-lg);
   border: var(--border);
   padding: 4px;
-  box-shadow: var(--shadow);
 
   ${(props) => {
     switch (props.size) {
@@ -83,7 +82,6 @@ const CustomLink = styled(Link)<{ size: Size }>`
           padding: 12px;
           padding-bottom: 4px;
           border: var(--border);
-          box-shadow: var(--shadow);
         `;
       default:
         return css``;

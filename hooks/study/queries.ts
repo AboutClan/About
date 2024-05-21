@@ -15,7 +15,7 @@ import { SERVER_URI } from "../../constants/system";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import { IParticipation, IPlace, IStudy } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
-import { IArrivedData } from "../../types/models/studyTypes/studyRecords";
+import { IArrivedData, VoteCntProps } from "../../types/models/studyTypes/studyRecords";
 import { Location } from "../../types/services/locationTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
@@ -123,13 +123,13 @@ export const useStudyDailyVoteCntQuery = (
   location,
   startDay,
   endDay,
-  options?: QueryOptions<any>,
+  options?: QueryOptions<VoteCntProps[]>,
 ) =>
   useQuery(
     [STUDY_VOTE_CNT, location, dayjsToStr(startDay), dayjsToStr(endDay)],
     async () => {
-      console.log(dayjsToStr(startDay), dayjsToStr(endDay));
-      const res = await axios.get<any>(`${SERVER_URI}/vote/participationCnt`, {
+     
+      const res = await axios.get<VoteCntProps[]>(`${SERVER_URI}/vote/participationCnt`, {
         params: {
           location,
           startDay: dayjsToStr(startDay),
