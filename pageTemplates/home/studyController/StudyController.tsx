@@ -111,11 +111,7 @@ function StudyController() {
         <StudyAttendCheckModal setIsModal={() => setModalType(null)} />
       )}
       {modalType === "monthCalendar" && (
-        <DateCalendarModal
-          voteCntArr={voteCntArr}
-          selectedDate={selectedDateDayjs}
-          setIsModal={() => setModalType(null)}
-        />
+        <DateCalendarModal selectedDate={selectedDateDayjs} setIsModal={() => setModalType(null)} />
       )}
     </>
   );

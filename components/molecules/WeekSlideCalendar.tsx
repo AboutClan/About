@@ -27,8 +27,6 @@ function WeekSlideCalendar({ voteCntArr, selectedDate, func }: CalendarProps) {
 
   return (
     <>
-      {/* <BetweenTextSwitcher left={textSwitcherProps.left} right={textSwitcherProps.right} /> */}
-
       <>
         <Flex
           overflow="auto"

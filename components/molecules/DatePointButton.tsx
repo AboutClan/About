@@ -14,7 +14,6 @@ export interface DatePointButtonProps {
 
 function DatePointButton({ date, value, func, isSelected }: DatePointButtonProps) {
   const today = getToday();
- 
 
   function TodayCircle({ date }: { date: number }) {
     return (

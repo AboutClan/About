@@ -95,7 +95,6 @@ export const getCalendarDates = (
       if (current.isBefore(startOfMonth) || current.isAfter(endOfMonth)) {
         calendar.push(null);
       } else {
-        console.log(24, idx);
         calendar.push({ date: dayjsToStr(current), value: pointArr ? pointArr?.[idx]?.value : 0 });
       }
 

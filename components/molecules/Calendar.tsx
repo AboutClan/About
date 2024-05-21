@@ -34,6 +34,14 @@ function Calendar({ voteCntArr, selectedDate, func }: CalendarProps) {
       </Flex>
       <Grid templateColumns="repeat(7,1fr)" rowGap="12px">
         {calendarArr.map((item, idx) => {
+          if (dayjsToStr(dayjs(item?.date)) === dayjsToStr(selectedDate)) {
+            console.log(
+              item,
+              selectedDate,
+              dayjsToStr(dayjs(item?.date)),
+              dayjsToStr(selectedDate),
+            );
+          }
           return (
             <Box key={idx}>
               <DatePointButton
