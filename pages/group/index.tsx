@@ -1,10 +1,9 @@
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import RuleIcon from "../../components/atoms/Icons/RuleIcon";
-import WritingIcon from "../../components/atoms/Icons/WritingIcon";
 import Selector from "../../components/atoms/Selector";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
@@ -180,7 +179,6 @@ function Index() {
           </>
         </Layout>
       </Slide>
-      {!isGuest && <WritingIcon url="/group/writing/main" />}
 
       {isRuleModal && <RuleModal content={GROUP_STUDY_RULE_CONTENT} setIsModal={setIsRuleModal} />}
     </>

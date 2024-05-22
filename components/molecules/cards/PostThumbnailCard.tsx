@@ -212,11 +212,11 @@ const StatusContainer = styled.div`
 `;
 
 const SkeletonContainer = styled.div`
-  height: 116px;
+  height: 112px;
   display: flex;
-  padding: 1px;
+  padding: 16px;
   background-color: white;
-
+  border: var(--border);
   border-radius: var(--rounded-lg);
 
   &:hover {

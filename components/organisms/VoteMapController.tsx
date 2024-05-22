@@ -117,6 +117,7 @@ function VoteMapController({
             </ReturnBtn>
             {filterArr.map((item) => (
               <Button
+                color="inherit"
                 key={item}
                 bg="white"
                 borderRadius="var(--rounded)"
@@ -139,9 +140,9 @@ function VoteMapController({
               size="sm"
               w="34px"
               h="34px"
-              border={preset !== "first" && "1px solid var(--gray-500)"}
+              border={preset !== "first" && "var(--border-main)"}
               bgColor={preset === "first" ? "var(--color-mint) !important" : "white"}
-              color={preset === "first" ? "white !important" : "var(--gray-200)"}
+              color={preset === "first" ? "white !important" : "inherit"}
               mr="var(--gap-2)"
               onClick={() => onClickPreset("first")}
             >
@@ -151,7 +152,7 @@ function VoteMapController({
               w="34px"
               h="34px"
               bgColor={preset === "second" ? "var(--color-mint)" : "white"}
-              color={preset === "second" ? "white !important" : "var(--gray-200)"}
+              color={preset === "second" ? "white !important" : "inherit"}
               size="sm"
               mr="var(--gap-2)"
               border="1px solid var(--gray-500)"
@@ -163,7 +164,7 @@ function VoteMapController({
               w="34px"
               h="34px"
               bgColor={preset === "second" ? "var(--color-mint)" : "white"}
-              color={preset === "second" ? "white !important" : "var(--gray-200)"}
+              color={preset === "second" ? "white !important" : "inherit"}
               size="sm"
               border="1px solid var(--gray-500)"
               onClick={onClickGear}
@@ -195,10 +196,10 @@ export function PrecisionPopOver({ precision, setPrecision }) {
             borderRadius="4px"
             w="34px"
             h="34px"
-            border="1px solid var(--gray-400)"
+            border="var(--border-main)"
             bg="white"
           >
-            <i className="fa-regular fa-bulls-eye-arrow fa-xl" />
+            <i className="fa-regular fa-bullseye-arrow fa-lg" />
           </Button>
         </TargetIcon>
       </PopoverTrigger>
@@ -239,7 +240,9 @@ export function PrecisionPopOver({ precision, setPrecision }) {
   );
 }
 
-const Layout = styled.div``;
+const Layout = styled.div`
+  color: var(--gray-800);
+`;
 
 const TopNav = styled.nav`
   padding: var(--gap-3) var(--gap-4);
@@ -282,7 +285,7 @@ const ReturnBtn = styled.button`
   color: white;
   padding: 4px;
   border-radius: var(--rounded);
-  border: 1px solid var(--gray-400);
+  border: var(--border-main);
 `;
 
 const TargetIcon = styled.button``;
