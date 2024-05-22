@@ -13,7 +13,7 @@ interface DateVoteBlockProps {
 function DateVoteBlock({ buttonProps, func, cnt }: DateVoteBlockProps) {
   const myStudy = useRecoilValue(myStudyState);
   return (
-    <Flex w="100%" className="main_vote_btn" justify="space-between" align="center">
+    <Flex w="100%" justify="space-between" align="center">
       <Box fontSize="16px" fontWeight={500}>
         <Box as="span" mr="4px">
           현재 참여 인원:
@@ -27,6 +27,7 @@ function DateVoteBlock({ buttonProps, func, cnt }: DateVoteBlockProps) {
       </Box>
 
       <Button
+        className="main_vote_btn"
         isLoading={myStudy === undefined}
         bgColor={myStudy === undefined ? "var(--color-mint)" : buttonProps.color}
         opacity={buttonProps.type === "active" ? 1 : 0.4}

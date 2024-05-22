@@ -71,7 +71,7 @@ function StudyController() {
   return (
     <>
       <Slide>
-        <OuterContainer className="about_calendar">
+        <OuterContainer>
           <Flex justify="space-between" align="center" mb="16px" mr="12px">
             <Box fontSize="16px" fontWeight={600}>
               날짜 선택
@@ -87,7 +87,10 @@ function StudyController() {
               <>
                 <Flex align="center" borderBottom="var(--border)">
                   <Flex pr="6px" flex={1} minW="48px" justify="center">
-                    <MonthButton onClick={() => setModalType("monthCalendar")}>
+                    <MonthButton
+                      onClick={() => setModalType("monthCalendar")}
+                      className="about_calendar_month"
+                    >
                       <span>{selectedDateDayjs.month() + 1}월</span>
                       <i className="fa-regular fa-chevron-down fa-xs" />
                     </MonthButton>

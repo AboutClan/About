@@ -4,15 +4,14 @@ import dayjs, { Dayjs } from "dayjs";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import Calendar from "../../components/molecules/MonthCalendar";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyDailyVoteCntQuery } from "../../hooks/study/queries";
 import { handleChangeDate } from "../../pageTemplates/home/studyController/StudyController";
-import { getStudyVoteButtonProps } from "../../pageTemplates/home/studyController/StudyControllerVoteButton";
-import { myStudyState, studyDateStatusState } from "../../recoils/studyRecoils";
+import { studyDateStatusState } from "../../recoils/studyRecoils";
 import { IModal } from "../../types/components/modalTypes";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
@@ -32,9 +31,6 @@ function DateCalendarModal({ selectedDate, setIsModal }: DateCalendarModalProps)
   const isGuest = session?.user.name === "guest";
   const location = searchParams.get("location");
 
-  const studyDateStatus = useRecoilValue(studyDateStatusState);
-  const myStudy = useRecoilValue(myStudyState);
-  const buttonProps = getStudyVoteButtonProps(studyDateStatus, myStudy, session?.user.uid);
   const setStudyDateStatus = useSetRecoilState(studyDateStatusState);
 
   const [date, setDate] = useState(selectedDate);
@@ -60,7 +56,6 @@ function DateCalendarModal({ selectedDate, setIsModal }: DateCalendarModalProps)
   );
 
   const onClick = (dateStr: string) => {
-    console.log(dateStr);
     setDate(dayjs(dateStr));
   };
 
@@ -92,6 +87,10 @@ function DateCalendarModal({ selectedDate, setIsModal }: DateCalendarModalProps)
   };
 
   const voteStudy = () => {
+    if (isGuest) {
+      typeToast("guest");
+      return;
+    }
     const newDate = handleChangeDate(date, "date", date.date());
     newSearchParams.set("date", newDate);
     router.push(`/vote?${newSearchParams.toString()}`);

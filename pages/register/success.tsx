@@ -1,5 +1,6 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
+
 import BottomNav from "../../components/layouts/BottomNav";
 
 function ApplySuccess() {

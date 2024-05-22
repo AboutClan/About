@@ -27,40 +27,39 @@ function WeekSlideCalendar({ voteCntArr, selectedDate, func }: CalendarProps) {
 
   return (
     <>
-      <>
-        <Flex
-          overflow="auto"
-          pb="12px"
-          w="240px"
-          ref={containerRef}
-          css={css`
-            @media (max-width: 400px) {
-              &::-webkit-scrollbar {
-                display: none;
-              }
+      <Flex
+        className="about_calendar"
+        overflow="auto"
+        pb="12px"
+        w="240px"
+        ref={containerRef}
+        css={css`
+          @media (max-width: 400px) {
+            &::-webkit-scrollbar {
+              display: none;
             }
-            @media (min-width: 400px) {
-              &::-webkit-scrollbar {
-                height: 8px; /* for horizontal scrollbar */
-              }
-              &::-webkit-scrollbar-thumb {
-                background: var(--gray-400);
-              }
+          }
+          @media (min-width: 400px) {
+            &::-webkit-scrollbar {
+              height: 8px; /* for horizontal scrollbar */
             }
-          `}
-        >
-          {calendarArr.map((item, idx) => (
-            <Box key={idx} ref={(el) => (dateRefs.current[idx] = el)}>
-              <CalendarDayBox
-                date={item.date}
-                value={item.value}
-                selectedDate={dayjsToStr(selectedDate)}
-                func={func}
-              />
-            </Box>
-          ))}
-        </Flex>
-      </>
+            &::-webkit-scrollbar-thumb {
+              background: var(--gray-400);
+            }
+          }
+        `}
+      >
+        {calendarArr.map((item, idx) => (
+          <Box key={idx} ref={(el) => (dateRefs.current[idx] = el)}>
+            <CalendarDayBox
+              date={item.date}
+              value={item.value}
+              selectedDate={dayjsToStr(selectedDate)}
+              func={func}
+            />
+          </Box>
+        ))}
+      </Flex>
     </>
   );
 }
