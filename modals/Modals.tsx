@@ -114,7 +114,8 @@ export function ModalLayout({
 
         {footerOptions && (
           <ChakraModalFooter
-            py={paddingOptions?.footer ? `${paddingOptions.footer}px` : "20px"}
+            pb="20px"
+            pt={paddingOptions?.footer !== undefined ? `${paddingOptions.footer}px` : "20px"}
             px="20px"
           >
             {footerOptions?.children ? (

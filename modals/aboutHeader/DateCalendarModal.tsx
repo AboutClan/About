@@ -1,17 +1,13 @@
 import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
 
 import dayjs, { Dayjs } from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
-import SwiperCore from "swiper";
-import { Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import Calendar from "../../components/molecules/Calendar";
+import Calendar from "../../components/molecules/MonthCalendar";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyDailyVoteCntQuery } from "../../hooks/study/queries";
 import { getStudyVoteButtonProps } from "../../pageTemplates/home/studyController/StudyControllerVoteButton";
@@ -19,10 +15,9 @@ import { myStudyState, studyDateStatusState } from "../../recoils/studyRecoils";
 import { IModal } from "../../types/components/modalTypes";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
-import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
-import { ModalLayout } from "../Modals";
+import { dayjsToFormat } from "../../utils/dateTimeUtils";
+import { IFooterOptions, IPaddingOptions, ModalLayout } from "../Modals";
 
-SwiperCore.use([Navigation, Pagination]);
 interface DateCalendarModalProps extends IModal {
   selectedDate: Dayjs;
 }
@@ -42,7 +37,6 @@ function DateCalendarModal({ selectedDate, setIsModal }: DateCalendarModalProps)
 
   const [date, setDate] = useState(selectedDate);
   const [calendarArr, setCalendarArr] = useState([
-    date.subtract(4, "month"),
     date.subtract(3, "month"),
     date.subtract(2, "month"),
     date.subtract(1, "month"),
@@ -52,55 +46,69 @@ function DateCalendarModal({ selectedDate, setIsModal }: DateCalendarModalProps)
     date.add(3, "month"),
   ]);
   const [initialLoad, setInitialLoad] = useState(true);
-  console.log(444, date);
+  const [pageIdx, setPageIdx] = useState(3);
+
   const { data: voteCntArr } = useStudyDailyVoteCntQuery(
     convertLocationLangTo(location as ActiveLocation, "kr"),
-    date.startOf("month"),
-    date.endOf("month"),
+    calendarArr[pageIdx].startOf("month"),
+    calendarArr[pageIdx].endOf("month"),
     {
       enabled: !!location,
     },
   );
 
   const onClick = (dateStr: string) => {
+    console.log(dateStr);
     setDate(dayjs(dateStr));
-    // const newDate = handleChangeDate(selectedDate, "month", month);
-    // newSearchParams.set("date", newDate);
   };
 
   const handleSliderChange = (swiper) => {
-    console.log(2, swiper);
+    setPageIdx(swiper.realIndex);
     if (initialLoad) {
       setInitialLoad(false);
       return;
     }
+
     if (swiper.activeIndex < swiper.previousIndex) {
-      setDate((old) => old.subtract(1, "month"));
-      if (
-        !calendarArr.map((day) => dayjsToStr(day)).includes(dayjsToStr(date.subtract(2, "month")))
-      ) {
+      if (!calendarArr.map((day) => day.month()).includes(date.subtract(2, "month").month())) {
         setCalendarArr((old) => [date.subtract(2, "month"), ...old]);
       }
     }
     if (swiper.activeIndex > swiper.previousIndex) {
-      setDate((old) => old.add(1, "month"));
-      if (!calendarArr.map((day) => dayjsToStr(day)).includes(dayjsToStr(date.add(1, "month")))) {
-        setCalendarArr((old) => [...old, date.add(1, "month")]);
+      if (!calendarArr.map((day) => day.month()).includes(date.add(2, "month").month())) {
+        setCalendarArr((old) => [...old, date.add(2, "month")]);
       }
     }
   };
-  console.log(43, calendarArr);
+
+  const footerOptions: IFooterOptions = {
+    main: {
+      text: "참여 신청",
+    },
+    sub: {
+      text: "날짜 이동",
+    },
+  };
+
+  const paddingOptions: IPaddingOptions = {
+    footer: 0,
+  };
+
   return (
-    <ModalLayout title={dayjsToFormat(date, "YYYY년 M월")} setIsModal={setIsModal}>
+    <ModalLayout
+      footerOptions={footerOptions}
+      paddingOptions={paddingOptions}
+      title={dayjsToFormat(calendarArr[pageIdx], "YYYY년 M월")}
+      setIsModal={setIsModal}
+    >
       <Swiper
-        navigation
         style={{
           width: "100%",
           height: "auto",
         }}
         slidesPerView={1}
         spaceBetween="40px"
-        initialSlide={3}
+        initialSlide={pageIdx}
         onSlideChange={handleSliderChange}
       >
         {calendarArr.map((cal, idx) => (

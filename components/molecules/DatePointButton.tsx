@@ -9,15 +9,23 @@ export interface DatePointButtonProps {
   date: string;
   value: number;
   func: () => void;
+  size?: "sm" | "md";
   isSelected?: boolean;
   pointType?: "mint";
+  weekend?: "sat" | "sun";
 }
 
-function DatePointButton({ date, value, func, isSelected }: DatePointButtonProps) {
+function DatePointButton({
+  date,
+  value,
+  func,
+  size = "md",
+  isSelected,
+  weekend,
+}: DatePointButtonProps) {
   const today = getToday();
 
   function TodayCircle({ date }: { date: number }) {
-    console.log("SUC", date);
     return (
       <Flex
         justify="center"
@@ -39,23 +47,21 @@ function DatePointButton({ date, value, func, isSelected }: DatePointButtonProps
   }
 
   const dateNum = dayjs(date).date();
-  if (dayjsToStr(today) === date) {
-    console.log(date, isSelected, "DD");
-  }
+
   return (
     <Button onClick={func}>
       <Flex
         justify="center"
-        color={dayjsToStr(today) === date && "var(--color-mint)"}
+        color={isSelected ? "white" : dayjsToStr(today) === date && "var(--color-mint)"}
         align="center"
-        w="30px"
-        h="30px"
+        w={size === "md" ? "30px" : "26px"}
+        h={size === "md" ? "30px" : "26px"}
         position="relative"
         zIndex={2}
       >
         {!date ? null : !isSelected ? dateNum : <TodayCircle date={dateNum} />}
       </Flex>
-      <Flex justify="center" w="16px" h="16px" whiteSpace="nowrap" textAlign="center">
+      <Flex justify="center" w="16px" h="16px">
         {date === dayjsToStr(today) ? (
           <Box fontSize="10px" mt="4px" color="var(--color-mint)"></Box>
         ) : (

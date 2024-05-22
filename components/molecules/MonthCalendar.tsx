@@ -14,12 +14,12 @@ interface CalendarProps {
 
 const DAY = ["일", "월", "화", "수", "목", "금", "토"];
 
-function Calendar({ voteCntArr, standardDate, selectedDate, func }: CalendarProps) {
+function MonthCalendar({ voteCntArr, standardDate, selectedDate, func }: CalendarProps) {
   const calendarArr = getCalendarDates("month", standardDate, voteCntArr);
-  console.log(44, selectedDate, calendarArr);
+
   return (
     <>
-      <Flex mb="16px">
+      <Flex mb="12px">
         {DAY.map((day) => (
           <Box
             flex={1}
@@ -33,11 +33,8 @@ function Calendar({ voteCntArr, standardDate, selectedDate, func }: CalendarProp
           </Box>
         ))}
       </Flex>
-      <Grid templateColumns="repeat(7,1fr)" rowGap="12px">
+      <Grid templateColumns="repeat(7,1fr)" rowGap="6px">
         {calendarArr.map((item, idx) => {
-          if (dayjsToStr(dayjs(item?.date)) === dayjsToStr(selectedDate)) {
-            // console.log("Item", item);
-          }
           return (
             <Box key={idx}>
               <DatePointButton
@@ -55,4 +52,4 @@ function Calendar({ voteCntArr, standardDate, selectedDate, func }: CalendarProp
   );
 }
 
-export default Calendar;
+export default MonthCalendar;
