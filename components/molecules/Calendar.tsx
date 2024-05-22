@@ -1,21 +1,22 @@
 import { Box, Flex, Grid } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
-import { VoteCntProps } from "../../types/models/studyTypes/studyRecords";
 
+import { VoteCntProps } from "../../types/models/studyTypes/studyRecords";
 import { dayjsToStr, getCalendarDates } from "../../utils/dateTimeUtils";
 import DatePointButton from "./DatePointButton";
 
 interface CalendarProps {
   voteCntArr: VoteCntProps[];
   selectedDate: Dayjs;
-  func: (date: number) => void;
+  standardDate: Dayjs;
+  func: (date: string) => void;
 }
 
 const DAY = ["일", "월", "화", "수", "목", "금", "토"];
 
-function Calendar({ voteCntArr, selectedDate, func }: CalendarProps) {
-  const calendarArr = getCalendarDates("month", selectedDate, voteCntArr);
-
+function Calendar({ voteCntArr, standardDate, selectedDate, func }: CalendarProps) {
+  const calendarArr = getCalendarDates("month", standardDate, voteCntArr);
+  console.log(44, selectedDate, calendarArr);
   return (
     <>
       <Flex mb="16px">
@@ -35,19 +36,14 @@ function Calendar({ voteCntArr, selectedDate, func }: CalendarProps) {
       <Grid templateColumns="repeat(7,1fr)" rowGap="12px">
         {calendarArr.map((item, idx) => {
           if (dayjsToStr(dayjs(item?.date)) === dayjsToStr(selectedDate)) {
-            console.log(
-              item,
-              selectedDate,
-              dayjsToStr(dayjs(item?.date)),
-              dayjsToStr(selectedDate),
-            );
+            // console.log("Item", item);
           }
           return (
             <Box key={idx}>
               <DatePointButton
-                date={item ? dayjs(item.date).date() : null}
+                date={item ? dayjsToStr(dayjs(item.date)) : null}
                 value={item ? item.value : null}
-                func={item ? () => func(dayjs(item.date).date()) : null}
+                func={item ? () => func(dayjsToStr(dayjs(item.date))) : null}
                 isSelected={item && dayjsToStr(dayjs(item.date)) === dayjsToStr(selectedDate)}
                 pointType="mint"
               />

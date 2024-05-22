@@ -3,7 +3,7 @@ import "dayjs/locale/ko";
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
+import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 import DatePointButton from "../molecules/DatePointButton";
 
 interface CalendarDayBoxProps {
@@ -34,7 +34,7 @@ function CalendarDayBox({ date, value, func, selectedDate, pointType }: Calendar
         {dayjsToFormat(dayjsDate, "ddd")}
       </Box>
       <DatePointButton
-        date={dayjsDate.date()}
+        date={dayjsToStr(dayjsDate)}
         value={value}
         func={() => func(dayjsDate.date())}
         isSelected={date === selectedDate}
