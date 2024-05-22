@@ -1,11 +1,12 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
+import MainLogo from "../../../assets/MainLogo";
 import Slide from "../../../components/layouts/PageSlide";
 import IconButtonNav, { IIconButtonNavBtn } from "../../../components/molecules/navs/IconButtonNav";
 import {
@@ -109,7 +110,7 @@ function HomeHeader() {
       {renderHomeHeader && (
         <Slide isFixed={true}>
           <Layout>
-            ABOUT
+            <MainLogo />
             <Box className="about_header" fontSize="20px">
               <IconButtonNav iconList={iconBtnArr} />
             </Box>
