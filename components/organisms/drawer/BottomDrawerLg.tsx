@@ -106,7 +106,7 @@ const Header = styled.header`
   > span:first-child {
     font-weight: 600;
     font-size: 15px;
-    color: var(--gray-200);
+
     margin-bottom: var(--gap-1);
   }
   > span:last-child {

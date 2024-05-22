@@ -208,7 +208,7 @@ const Detail = styled.div`
   /* > span {
     width: 65px;
     text-align: end;
-    color: var(--gray-200);
+    
     display: block;
     padding: 2px 0;
     font-weight: 600;

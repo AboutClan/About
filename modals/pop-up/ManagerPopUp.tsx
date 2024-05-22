@@ -101,14 +101,12 @@ function Dialog({ isOpen, onClose, setIsModal }: IDialog) {
 }
 
 const Subtitile = styled.div`
-  color: var(--gray-200);
   font-size: 13px;
   font-weight: 600;
   margin-bottom: var(--gap-1);
 `;
 
 const Ol = styled.ol`
-  color: var(--gray-200);
   font-size: 12px;
   margin-left: var(--gap-4);
   margin-bottom: var(--gap-2);
@@ -116,7 +114,7 @@ const Ol = styled.ol`
 
 const Ul = styled.ul`
   font-size: 12px;
-  color: var(--gray-200);
+
   margin-left: var(--gap-4);
 `;
 

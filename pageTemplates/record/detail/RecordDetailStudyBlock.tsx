@@ -69,7 +69,7 @@ const PlaceInfo = styled.div<{ location: Location }>`
 const PlaceName = styled.div`
   display: flex;
   align-items: center;
-  color: var(--gray-200);
+
   > span:first-child {
     font-size: 13px;
     font-weight: 600;

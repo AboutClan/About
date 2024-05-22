@@ -84,6 +84,5 @@ const ContentValue = styled.span`
   width: 40px;
   font-weight: 700;
   font-size: 14px;
-  color: var(--gray-200);
 `;
 export default RecordOverviewSkeleton;

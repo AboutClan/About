@@ -1,7 +1,7 @@
 import { Badge, Button } from "@chakra-ui/react";
 import { AxiosError } from "axios";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -233,8 +233,7 @@ const Item = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: var(--border);
-  border-bottom: var(--border);
+  border-bottom: var(--border-main);
 `;
 const ProfileWrapper = styled.div``;
 

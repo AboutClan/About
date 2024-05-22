@@ -106,7 +106,7 @@ const Info = styled.div`
   height: 100%;
   padding: var(--gap-1) 0;
   font-size: 12px;
-  color: var(--gray-200);
+
   margin-left: var(--gap-4);
   display: grid;
   grid-template-columns: 1fr 1.5fr;

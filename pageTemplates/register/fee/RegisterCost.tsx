@@ -23,10 +23,10 @@ function RegisterCost({ isSecond }: { isSecond?: boolean }) {
 const Layout = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: var(--gray-200);
+  background-color: white;
 
   border-radius: var(--rounded-lg);
-  border: 1.5px solid var(--gray-300);
+  border: var(--border-main);
   width: 160px;
   height: 140px;
   justify-content: space-around;

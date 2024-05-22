@@ -1,16 +1,4 @@
-import { inputAnatomy } from "@chakra-ui/anatomy";
-import { createMultiStyleConfigHelpers, extendTheme } from "@chakra-ui/react";
-
-const { definePartsStyle, defineMultiStyleConfig } = createMultiStyleConfigHelpers(
-  inputAnatomy.keys,
-);
-
-const baseStyle = definePartsStyle({
-  // define the part you're going to style
-  field: {},
-});
-
-export const inputTheme = defineMultiStyleConfig({ baseStyle });
+import { extendTheme } from "@chakra-ui/react";
 
 const theme = extendTheme({
   styles: {
@@ -18,21 +6,21 @@ const theme = extendTheme({
       body: {
         color: "var(--gray-800)",
       },
-
-      // "*:focus": {
-      //   outlineColor: "black",
-
-      //   borderColor: "red !important",
-      // },
-      // "*:active": {
-      //   outline: "none",
-
-      //   borderColor: "red",
-      // },
     },
   },
 
   colors: {
+    gray: {
+      50: "#f5f5f5",
+      100: "#eeeeee",
+      200: "#e0e0e0",
+      300: "#bdbdbd",
+      400: "#9e9e9e",
+      500: "#757575",
+      600: "#616161",
+      700: "#424242",
+      800: "#424242",
+    },
     badgePink: {
       100: "#FEE7E7",
       800: "#FF69B4",
@@ -75,16 +63,6 @@ const theme = extendTheme({
     Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif`,
   },
   components: {
-    Input: inputTheme,
-    Textarea: {
-      baseStyle: {
-        // 포커스 됐을 때의 스타일
-        _focus: {
-          borderColor: "blue.500", // 원하는 색상으로 변경
-          boxShadow: `0 0 0 1px var(--chakra-colors-blue-500)`, // 해당 색상의 박스 쉐도우 추가 (선택적)
-        },
-      },
-    },
     Badge: {
       baseStyle: {
         fontSize: "12px",

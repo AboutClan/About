@@ -39,7 +39,8 @@ const HeaderContainer = styled.header`
   background-color: white;
   height: var(--header-h);
   font-size: 16px;
-  padding-right: 12px;
+  padding-right: 20px;
+  padding-left: 4px;
   display: flex;
   justify-content: space-between;
   align-items: center;

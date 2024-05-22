@@ -123,7 +123,6 @@ function VoteMapController({
                 size="sm"
                 onClick={() => onClickRetrun(item)}
                 fontSize="14px"
-                color="var(--gray-200)"
                 p="var(--gap-2) var(--gap-3)"
                 h="34px"
                 w="50px"

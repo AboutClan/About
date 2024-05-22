@@ -85,7 +85,6 @@ const ActiveLocation = styled.li<{ location: Location }>`
 const Studys = styled.div<{ location: Location }>`
   flex: 1;
 
-  color: var(--gray-200);
   margin-top: 4px;
   height: ${(props) =>
     props.location === "수원" ? "72px" : props.location !== "안양" ? "40px" : "20px"};

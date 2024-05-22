@@ -129,7 +129,6 @@ const TimeContent = styled.div`
   align-items: center;
   margin-top: var(--gap-4);
   > span:first-child {
-    color: var(--gray-200);
     font-size: 14px;
     font-weight: 600;
     margin-right: var(--gap-3);

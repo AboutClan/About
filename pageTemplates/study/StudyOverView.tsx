@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -59,8 +59,12 @@ function StudyOverview({
         <InfoContainer>
           <InfoRow>
             <InfoIconText className="flex-1">
-              <i className="fa-solid fa-location-dot fa-lg" />
-              <span>{locationDetail}</span>
+              <Box w="16px" textAlign="center" color="var(--gray-600)">
+                <i className="fa-solid fa-location-dot " />
+              </Box>
+              <Box as="span" ml="4px">
+                {locationDetail}
+              </Box>
             </InfoIconText>
             <Button
               size="xs"
@@ -80,8 +84,12 @@ function StudyOverview({
           </InfoRow>
           <InfoRow>
             <InfoIconText>
-              <i className="fa- fa-clock" />
-              <span>{time}</span>
+              <Box w="16px" textAlign="center" color="var(--gray-600)">
+                <i className="fa-solid fa-clock" />
+              </Box>
+              <Box as="span" ml="4px">
+                {time}
+              </Box>
             </InfoIconText>
           </InfoRow>
         </InfoContainer>

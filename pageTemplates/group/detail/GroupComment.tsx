@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/dist/client/router";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
@@ -179,7 +179,6 @@ const CommentContent = styled.div`
   font-size: 12px;
 
   > span:last-child {
-    color: var(--gray-200);
   }
 `;
 

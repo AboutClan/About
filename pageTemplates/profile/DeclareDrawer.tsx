@@ -181,7 +181,7 @@ const DistanceHeader = styled.div`
 const DistanceText = styled.div`
   > div {
     font-size: 12px;
-    color: var(--gray-200);
+
     margin-bottom: var(--gap-3);
   }
 `;
@@ -189,7 +189,6 @@ const DistanceText = styled.div`
 const DeclareOverview = styled.p`
   font-size: 13px;
   margin-bottom: var(--gap-5);
-  color: var(--gray-200);
 `;
 
 const DeclareText = styled.div`

@@ -19,7 +19,6 @@ function LocationMember({ location }: { location: Location }) {
 }
 
 const Layout = styled.div`
-  color: var(--gray-200);
   display: flex;
   flex-direction: column;
   justify-content: space-around;

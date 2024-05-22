@@ -201,7 +201,7 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
 
 const Message = styled.div`
   padding: var(--gap-2) var(--gap-3);
-  color: var(--gray-200);
+
   border-radius: var(--rounded);
   background-color: var(--gray-100);
 `;

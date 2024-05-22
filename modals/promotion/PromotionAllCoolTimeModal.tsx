@@ -186,7 +186,6 @@ const Ok = styled.div`
 const Sum = styled.div`
   font-size: 13px;
   margin-left: var(--gap-1);
-  color: var(--gray-200);
 
   > span:first-child {
     margin-right: var(--gap-1);

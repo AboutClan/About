@@ -98,7 +98,7 @@ export function ModalLayout({
               {title}
             </ChakraModalHeader>
             {headerOptions?.subTitle && (
-              <Box textAlign="center" color="var(--gray-200)" fontSize="16px">
+              <Box textAlign="center" fontSize="16px">
                 {headerOptions.subTitle}
               </Box>
             )}
@@ -115,7 +115,7 @@ export function ModalLayout({
         {footerOptions && (
           <ChakraModalFooter
             pb="20px"
-            pt={paddingOptions?.footer !== undefined ? `${paddingOptions.footer}px` : "20px"}
+            pt={paddingOptions?.footer !== undefined ? `${paddingOptions.footer}px` : "16px"}
             px="20px"
           >
             {footerOptions?.children ? (

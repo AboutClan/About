@@ -82,7 +82,6 @@ const Winner = styled.div`
   display: flex;
   font-size: 12px;
   font-weight: 600;
-  color: var(--gray-200);
 `;
 
 const WinnerItem = styled.div`

@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 import Slide from "../../components/layouts/PageSlide";
@@ -47,7 +47,7 @@ function Home() {
         <HomeCategoryNav />
         <HomeLocationBar />
       </Slide>
-      <Box px="20px">
+      <Box px="16px">
         <StudyController />
         <Slide>
           <HomeStudySection />

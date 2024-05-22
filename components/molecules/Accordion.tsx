@@ -22,7 +22,7 @@ interface IAccordion {
 
 function Accordion({ contentArr, isFull, isQ = true }: IAccordion) {
   return (
-    <ChakraAccordion allowToggle fontSize="13px" color="var(--gray-200)">
+    <ChakraAccordion allowToggle fontSize="13px">
       {contentArr?.map((item, idx) => {
         const content = item.content;
         return (

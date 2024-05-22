@@ -13,13 +13,13 @@ function ArrowTextButton({ dir, text, onClick, size }: IArrowTextButton) {
   return (
     <StyledButton onClick={onClick} size={size}>
       {dir === "left" && (
-        <Box px="3.5px" h="14px">
+        <Box>
           <i className="fa-regular fa-arrow-left" />
         </Box>
       )}
       {text}
       {dir === "right" && (
-        <Box px="3.5px" h="14px">
+        <Box>
           <i className="fa-regular fa-arrow-right" />
         </Box>
       )}
@@ -33,7 +33,7 @@ const StyledButton = styled.button<{ size: Size }>`
   font-weight: inherit;
   font-weight: 500;
   font-size: ${(props) => (props.size === "md" ? "16px" : "14px")};
-  color: var(--gray-500);
+  color: var(--gray-600);
 `;
 
 export default ArrowTextButton;

@@ -17,6 +17,7 @@ export default function Input({ value, inputRef, onChange, placeholder, disabled
       focusBorderColor="#00c2b3"
       backgroundColor="white"
       disabled={disabled}
+      borderColor="var(--gray-300)"
     />
   );
 }

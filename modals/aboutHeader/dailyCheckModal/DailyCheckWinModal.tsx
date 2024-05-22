@@ -75,7 +75,6 @@ const Gift = styled.div`
 
 const SubMessage = styled.span`
   font-size: 13px;
-  color: var(--gray-200);
 `;
 
 export default DailyCheckWinModal;

@@ -99,7 +99,7 @@ const Container = styled.div`
   width: 100%;
   border-radius: var(--rounded-lg); /* rounded-lg */
   background-color: var(--gray-200); /* bg-gray-8 */
-  color: var(--gray-200); /* text-bg-2 */
+  /* text-bg-2 */
   overflow-y: hidden;
   padding-top: 8px; /* py-2 */
   padding-bottom: 8px; /* py-2 */

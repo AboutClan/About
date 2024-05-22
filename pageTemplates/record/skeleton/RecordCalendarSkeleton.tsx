@@ -67,7 +67,6 @@ const DayLine = styled.div`
 `;
 
 const CallenderDays = styled.div`
-  color: var(--gray-200);
   margin: 0px var(--gap-1);
   font-size: 14px;
   padding: 0;

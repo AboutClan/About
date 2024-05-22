@@ -112,7 +112,7 @@ const Layout = styled.div`
   width: 100%;
   border-radius: var(--rounded);
   background-color: var(--gray-100);
-  color: var(--gray-200);
+
   overflow: hidden;
 `;
 

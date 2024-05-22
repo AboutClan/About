@@ -42,7 +42,7 @@ export default function HomeGatherSection() {
     <Box mb="24px">
       <Flex
         mb="16px"
-        px="20px"
+        px="16px"
         bgColor="white"
         align="center"
         h="58px"
@@ -51,7 +51,7 @@ export default function HomeGatherSection() {
       >
         ABOUT 모임
       </Flex>
-      <Box px="20px">
+      <Box px="16px">
         {cardDataArr.length ? (
           <CardColumnLayout
             cardDataArr={cardDataArr}

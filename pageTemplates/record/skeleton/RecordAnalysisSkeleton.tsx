@@ -54,13 +54,12 @@ const SpaceWrapper = styled.div`
   padding: var(--gap-4);
 
   font-size: 12px;
-  color: var(--gray-200);
 `;
 
 const Info = styled.div`
   display: flex;
   align-items: flex-end;
-  color: var(--gray-200);
+
   font-size: 14px;
   > span:first-child {
     height: 21px;

@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
@@ -182,7 +182,6 @@ const InfoItem = styled.div`
     display: inline-block;
     margin-right: var(--gap-2);
     font-weight: 600;
-    color: var(--gray-200);
   }
   > span:last-child {
     color: var(--gray-600);
@@ -192,7 +191,7 @@ const InfoItem = styled.div`
 const Content = styled.pre`
   text-align: start;
   font-size: 13px;
-  color: var(--gray-200);
+
   padding-top: var(--gap-3);
   font-family: apple;
   white-space: pre-wrap;

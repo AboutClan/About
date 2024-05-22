@@ -88,7 +88,7 @@ function StudyController() {
                 <Flex align="center" borderBottom="var(--border)">
                   <Flex pr="6px" flex={1} minW="48px" justify="center">
                     <MonthButton onClick={() => setModalType("monthCalendar")}>
-                      <span>12월</span>
+                      <span>{selectedDateDayjs.month() + 1}월</span>
                       <i className="fa-regular fa-chevron-down fa-xs" />
                     </MonthButton>
                   </Flex>

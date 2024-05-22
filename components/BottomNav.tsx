@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Link, { LinkProps } from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
@@ -108,8 +108,8 @@ const navItems: INavButtonProps[] = [
     url: "",
   },
   {
-    activeIcon: <i className="fa-solid fa-hand-shake fa-xl" />,
-    defaultIcon: <i className="fa-light fa-hand-shake fa-xl" />,
+    activeIcon: <i className="fa-solid fa-handshake fa-xl" />,
+    defaultIcon: <i className="fa-light fa-handshake fa-xl" />,
     text: "모임",
     url: "/gather",
   },

@@ -80,7 +80,7 @@ const TimeWrapper = styled.div`
 
   > span {
     font-weight: 600;
-    color: var(--gray-200);
+
     font-size: 13px;
   }
 `;

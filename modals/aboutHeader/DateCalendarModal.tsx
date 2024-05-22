@@ -4,12 +4,13 @@ import dayjs, { Dayjs } from "dayjs";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import Calendar from "../../components/molecules/MonthCalendar";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyDailyVoteCntQuery } from "../../hooks/study/queries";
+import { handleChangeDate } from "../../pageTemplates/home/studyController/StudyController";
 import { getStudyVoteButtonProps } from "../../pageTemplates/home/studyController/StudyControllerVoteButton";
 import { myStudyState, studyDateStatusState } from "../../recoils/studyRecoils";
 import { IModal } from "../../types/components/modalTypes";
@@ -34,6 +35,7 @@ function DateCalendarModal({ selectedDate, setIsModal }: DateCalendarModalProps)
   const studyDateStatus = useRecoilValue(studyDateStatusState);
   const myStudy = useRecoilValue(myStudyState);
   const buttonProps = getStudyVoteButtonProps(studyDateStatus, myStudy, session?.user.uid);
+  const setStudyDateStatus = useSetRecoilState(studyDateStatusState);
 
   const [date, setDate] = useState(selectedDate);
   const [calendarArr, setCalendarArr] = useState([
@@ -81,12 +83,28 @@ function DateCalendarModal({ selectedDate, setIsModal }: DateCalendarModalProps)
     }
   };
 
+  const moveDate = () => {
+    setStudyDateStatus(undefined);
+    const newDate = handleChangeDate(date, "date", date.date());
+    newSearchParams.set("date", newDate);
+    router.replace(`/home?${newSearchParams.toString()}`, { scroll: false });
+    setIsModal(false);
+  };
+
+  const voteStudy = () => {
+    const newDate = handleChangeDate(date, "date", date.date());
+    newSearchParams.set("date", newDate);
+    router.push(`/vote?${newSearchParams.toString()}`);
+  };
+
   const footerOptions: IFooterOptions = {
     main: {
       text: "참여 신청",
+      func: voteStudy,
     },
     sub: {
       text: "날짜 이동",
+      func: moveDate,
     },
   };
 

@@ -17,7 +17,7 @@ export default function SectionBar({ title, rightComponent, size = "lg" }: ISect
 const SectionBarContainer = styled.div<{ size: "md" | "lg" }>`
   width: 100%;
   height: ${(props) => (props.size === "md" ? "51px " : "59px")};
-  padding: 0 20px;
+  padding: 0 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;

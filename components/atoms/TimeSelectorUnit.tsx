@@ -49,7 +49,6 @@ const Layout = styled.div`
   align-items: center;
 
   > select {
-    color: var(--gray-200);
     width: 68px;
     height: 36px;
     padding-left: 6px;

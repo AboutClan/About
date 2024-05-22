@@ -109,7 +109,7 @@ const Content = styled.pre`
   height: 36px;
   text-align: start;
   font-size: 12px;
-  color: var(--gray-200);
+
   margin-top: var(--gap-3);
   white-space: pre-wrap;
   /* display: -webkit-box;

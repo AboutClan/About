@@ -8,8 +8,8 @@ const Layout = styled.div`
   display: flex;
   flex-direction: column;
   line-height: 1.8;
-  margin-top: 20px;
-  margin-bottom: 16px;
+  margin-top: 28px;
+  margin-bottom: 20px;
   > span:last-child {
     font-size: 14px;
     color: var(--gray-600);

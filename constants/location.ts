@@ -53,4 +53,5 @@ export const LOCATION_TABLE_COLOR = {
   안양: TABLE_COLORS[2],
   강남: TABLE_COLORS[1],
   인천: TABLE_COLORS[4],
+  동대문: TABLE_COLORS[5],
 };

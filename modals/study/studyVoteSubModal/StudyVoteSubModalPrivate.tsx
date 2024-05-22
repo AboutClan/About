@@ -42,13 +42,11 @@ const Layout = styled.div`
 `;
 
 const Overview = styled.div`
-  color: var(--gray-200);
   font-size: 16px;
   margin-bottom: var(--gap-3);
 `;
 
 const Rule = styled.div`
-  color: var(--gray-200);
   margin-top: 32px;
   font-size: 14px;
 `;

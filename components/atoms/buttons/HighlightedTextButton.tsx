@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 interface IHighlightedTextButton {
   text: string;
+
   onClick: () => void;
 }
 export default function HighlightedTextButton({ text, onClick }: IHighlightedTextButton) {

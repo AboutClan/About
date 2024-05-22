@@ -37,7 +37,7 @@ const Layout = styled.div`
 const DetailItem = styled.div`
   display: flex;
   font-size: 13px;
-  color: var(--gray-200);
+
   margin-bottom: var(--gap-1);
   > span:first-child {
     color: var(--gray-800);

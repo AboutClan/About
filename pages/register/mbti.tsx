@@ -66,7 +66,8 @@ const Button = styled.button<{ $isSelected: boolean }>`
   height: 48px;
   font-size: 14px;
   font-weight: ${(props) => props.$isSelected && "600"};
-  border: ${(props) => (props.$isSelected ? "var(--border-thick)" : "var(--border)")};
+  border: ${(props) => (props.$isSelected ? "var(--border-thick)" : "var(--border-main)")};
+  background-color: white;
 `;
 
 export default Mbti;

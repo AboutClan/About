@@ -109,9 +109,10 @@ const Layout = styled.div`
 `;
 
 const Item = styled.div`
-  border: var(--border);
+  border: var(--border-main);
   border-radius: var(--rounded-lg);
   padding: var(--gap-2);
+  background-color: white;
 `;
 
 const ProfileHeader = styled.div`

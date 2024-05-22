@@ -37,7 +37,6 @@ const Layout = styled.div`
   }
 
   > span {
-    color: var(--gray-200);
     font-size: 11px;
   }
 `;

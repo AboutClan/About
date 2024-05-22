@@ -26,19 +26,19 @@ function UserProfile() {
             <Box display="inline-block" w="60px">
               역할 구성:
             </Box>
-            <b>{getUserRole(userInfo.role)}</b>
+            {getUserRole(userInfo.role)}
           </ListItem>
           <ListItem>
             <Box display="inline-block" w="60px">
               활동 지역:
             </Box>
-            <b>{userInfo.location}</b>
+            {userInfo.location}
           </ListItem>
           <ListItem>
             <Box display="inline-block" w="60px">
               내 가입일:
             </Box>
-            <b>{dayjsToFormat(dayjs(userInfo?.registerDate), "YY년 M월 D일")}</b>
+            {dayjsToFormat(dayjs(userInfo?.registerDate), "YY년 M월 D일")}
           </ListItem>
         </UnorderedList>
       </Detail>
@@ -89,6 +89,7 @@ const Detail = styled.ul`
   padding: var(--gap-4);
   background-color: var(--gray-200);
   font-size: 13px;
+  line-height: 1.8;
 `;
 
 const Info = styled.div`

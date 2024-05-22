@@ -68,7 +68,7 @@ const CustomLink = styled(Link)<{ size: Size }>`
   flex-direction: column;
   background-color: white;
   border-radius: var(--rounded-lg);
-  border: var(--border);
+  border: var(--border-main);
   padding: 4px;
 
   ${(props) => {
@@ -81,7 +81,7 @@ const CustomLink = styled(Link)<{ size: Size }>`
         return css`
           padding: 12px;
           padding-bottom: 4px;
-          border: var(--border);
+          border: var(--border-main);
         `;
       default:
         return css``;

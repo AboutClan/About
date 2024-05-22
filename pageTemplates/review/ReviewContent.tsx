@@ -24,7 +24,6 @@ const P = styled.p<{ isShort: boolean }>`
 
   > span {
     font-size: 12px;
-    color: var(--gray-200);
   }
 `;
 

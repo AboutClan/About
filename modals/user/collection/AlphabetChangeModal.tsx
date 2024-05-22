@@ -90,7 +90,7 @@ function AlphabetChangeModal({
           </AlphabetBtn>
         ))}
       </AlphabetContainer>
-      <SectionTitle style={{ marginTop: "auto" }}>내 보유</SectionTitle>
+      <SectionTitle style={{ marginTop: "16px" }}>내 보유</SectionTitle>
       <AlphabetContainer>
         {ABOUT.map((alphabet) => (
           <AlphabetBtn
@@ -109,7 +109,6 @@ function AlphabetChangeModal({
 const SectionTitle = styled.div`
   font-size: 13px;
   font-weight: 600;
-  color: var(--gray-200);
 `;
 
 const AlphabetContainer = styled.div`
@@ -117,7 +116,6 @@ const AlphabetContainer = styled.div`
   display: flex;
   justify-content: space-around;
   font-size: 14px;
-
   align-items: center;
 `;
 
@@ -129,8 +127,7 @@ const AlphabetBtn = styled.button<{ isSelected: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: ${(props) =>
-    props.isSelected ? "2px solid var(--color-mint)" : "2px solid var(--gray-400)"};
+  border: ${(props) => (props.isSelected ? "var(--border-mint)" : "var(--border-main)")};
 `;
 
 export default AlphabetChangeModal;

@@ -44,6 +44,7 @@ function StudyDateBar({ isPrivateStudy, place }: IStudyDateBar) {
 const StudyDateBarContainer = styled.div`
   padding: 16px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   background-color: white;
 `;

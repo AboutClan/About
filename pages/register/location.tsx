@@ -78,6 +78,7 @@ function RegisterLocation() {
             <span>활동 지역 변경은 운영진을 통해서만 가능합니다.</span>
           )}
         </RegisterOverview>
+
         <ButtonNav>
           {LOCATION_ALL?.map((place, idx) => (
             <Button
@@ -122,7 +123,8 @@ const Button = styled.button<{ $picked: string }>`
   position: relative;
   height: 68px;
   border-radius: var(--rounded-lg);
-  border: ${(props) => (props.$picked === "true" ? "var(--border-thick)" : "var(--border)")};
+  border: ${(props) => (props.$picked === "true" ? "var(--border-thick)" : "var(--border-main)")};
+  background-color: white;
 `;
 
 const Message = styled.div`
@@ -131,7 +133,7 @@ const Message = styled.div`
   bottom: -20px;
   font-size: 10px;
   left: 50%;
-  color: var(--gray-600);
+
   transform: translate(-50%, 0);
 `;
 

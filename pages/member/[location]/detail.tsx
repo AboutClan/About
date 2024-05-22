@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
+import { SECTION_NAME } from ".";
 import ProfileIcon from "../../../components/atoms/Profile/ProfileIcon";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
@@ -16,7 +17,6 @@ import {
 import { IUser, IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { getUserBadge } from "../../../utils/convertUtils/convertDatas";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
-import { SECTION_NAME } from ".";
 
 function MemberDetail() {
   const router = useRouter();
