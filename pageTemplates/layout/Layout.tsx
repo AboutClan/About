@@ -2,9 +2,9 @@
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
+import { signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -61,12 +61,11 @@ function Layout({ children }: ILayout) {
 
   const isBottomNavCondition =
     BASE_BOTTOM_NAV_SEGMENT.includes(currentSegment?.[0]) && !currentSegment?.[1];
-  console.log(4, isBottomNavCondition, currentSegment);
+
   return (
     <>
       <Seo title="ABOUT" />
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
-
       {token && (
         <>
           <div id="root-modal">{children}</div>

@@ -1,4 +1,3 @@
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -14,8 +13,6 @@ import { isGatherAlertState } from "../../recoils/renderRecoils";
 import { checkAndSetLocalStorage } from "../../utils/storageUtils";
 
 function Gather() {
-  const { data: session } = useSession();
-
   const [isModal, setIsModal] = useState(false);
   const setIsGatherAlert = useSetRecoilState(isGatherAlertState);
 
