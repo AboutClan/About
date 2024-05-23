@@ -1,19 +1,20 @@
+import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import styled from "styled-components";
 
-import Textarea from "../../../components/atoms/Textarea";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
+import ImageTileSlider, { IImageTile } from "../../../components/organisms/sliders/ImageTileSlider";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { sharedStudyWritingState } from "../../../recoils/sharedDataAtoms";
+import { STORE_GIFT } from "../../../storage/Store";
 
-function WritingGatherContent() {
+function WritingStudyImage() {
   const router = useRouter();
   const failToast = useFailToast();
 
@@ -31,8 +32,12 @@ function WritingGatherContent() {
 
       content,
     }));
-    router.push(`/study/writing/image`);
+    router.push(`/study/writing/writingStudyImage`);
   };
+
+  const imageArr: IImageTile[] = STORE_GIFT.map((item) => ({
+    imageUrl: item.image,
+  }));
 
   return (
     <>
@@ -42,22 +47,25 @@ function WritingGatherContent() {
       </Slide>
       <RegisterLayout>
         <RegisterOverview>
-          <span>추가하고 싶은 이유나 장점이 있다면 적어주세요!</span>
+          <span>메인 이미지로 등록할 사진을 선택해 주세요!</span>
         </RegisterOverview>
-       
-          <Textarea
-            placeholder="분위기가 쾌적해서 카공하기 좋아요!"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            minHeight={200}
-          />
-     
+
+        <Box p="12px 16px" borderBottom="var(--border)">
+          <ImageTileSlider imageTileArr={imageArr} size="sm" slidesPerView={3.4} />
+        </Box>
+      </RegisterLayout>
+      <RegisterLayout>
+        <RegisterOverview>
+          <span>커버 이미지로 등록할 사진을 선택해 주세요!</span>
+        </RegisterOverview>
+
+        <Box p="12px 16px" borderBottom="var(--border)">
+          <ImageTileSlider imageTileArr={imageArr} size="sm" slidesPerView={3.4} />
+        </Box>
       </RegisterLayout>
       <BottomNav onClick={() => onClickNext()} />
     </>
   );
 }
 
-
-
-export default WritingGatherContent;
+export default WritingStudyImage;

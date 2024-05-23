@@ -21,15 +21,15 @@ function ImageSliderPoint({ imageContainer }: IImageSliderPoint) {
     >
       {imageContainer.map((image, index) => (
         <SwiperSlide key={index}>
-          <PointItem>
-            {/* <Image
+          {/* <PointItem>
+            <Image
               src={image}
               alt={`Slide ${index}`}
               width="80%"
               height="80%"
               priority={index < 4}
-            /> */}
-          </PointItem>
+            />
+          </PointItem> */}
         </SwiperSlide>
       ))}
     </Swiper>
