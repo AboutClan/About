@@ -14,6 +14,16 @@ self.addEventListener("message", (event) => {
   }
 });
 
+console.log("Service Worker Loaded...");
+
+self.addEventListener("push", (e) => {
+  const data = e.data.json();
+  console.log("Push Recieved...");
+  self.registration.showNotification(data.title, {
+    body: "Knock Knock",
+  });
+});
+
 self.addEventListener("install", async (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.add(offlineFallbackPage)));
 });

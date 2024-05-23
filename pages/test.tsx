@@ -1,87 +1,81 @@
-/* eslint-disable */
+// pages/test.js
+import { useEffect } from "react";
 
-import dayjs from "dayjs";
-import { useState } from "react";
-import { useRecoilValue } from "recoil";
-import styled from "styled-components";
+const publicVapidKey = process.env.NEXT_PUBLIC_PWA_KEY; // REPLACE_WITH_YOUR_KEY
 
-import { useGroupBelongMatchMutation, useMonthCalcMutation } from "../hooks/admin/mutation";
-import { useAdminStudyRecordQuery } from "../hooks/admin/quries";
-import { useImageUploadMutation } from "../hooks/image/mutations";
-import { useStudyDailyVoteCntQuery } from "../hooks/study/queries";
-import { studyDateStatusState } from "../recoils/studyRecoils";
-function Test() {
-  const { data } = useAdminStudyRecordQuery(dayjs("2024-04-16"), dayjs("2024-04-30"), null, "인천");
-  console.log(data);
+const urlBase64ToUint8Array = (base64String) => {
+  // 문자열의 길이와 내용 출력
+  console.log("Original base64String:", base64String);
+  console.log("Length:", base64String.length);
 
-  const a = useRecoilValue(studyDateStatusState);
+  // 패딩 추가
+  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/\-/g, "+").replace(/_/g, "/");
 
-  const AA = "te";
-  const BB = "te ";
+  // 패딩 후 문자열과 길이 출력
+  console.log("Padded base64String:", base64);
+  console.log("Padded Length:", base64.length);
 
-  const { data: data2 } = useAdminStudyRecordQuery(
-    dayjs("2023-12-04"),
-    dayjs("2023-12-10"),
-    null,
-    "동대문",
-  );
-  // const decodeByAES256 = (encodedTel: string) => {
-  //   const bytes = CryptoJS.AES.decrypt(encodedTel, key);
-  //   const originalText = bytes.toString(CryptoJS.enc.Utf8);
-  //   return originalText;
-  // };
+  let rawData;
+  try {
+    rawData = window.atob(base64);
+  } catch (e) {
+    console.error("Failed to decode base64 string:", e);
+    throw new Error("The string to be decoded is not correctly encoded.");
+  }
 
-  const { data: data3 } = useStudyDailyVoteCntQuery(
-    "수원",
-    dayjs().subtract(1, "day"),
-    dayjs().add(2, "day"),
-  );
-  console.log(data3);
-  const { mutate: match } = useGroupBelongMatchMutation({
-    onSuccess(data) {},
+  const outputArray = new Uint8Array(rawData.length);
+
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+};
+
+const send = async () => {
+  // Register Service Worker
+  console.log("Registering service worker...");
+  const register = await navigator.serviceWorker.register("/pwabuilder-sw.js", {
+    scope: "/",
   });
+  console.log("Service Worker Registered...");
 
-  const { mutate } = useMonthCalcMutation({
-    onSuccess(data) {},
-    onError(err) {
-      console.error(err);
+  // Register Push
+  console.log("Registering Push...");
+  const subscription = await register.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
+  });
+  console.log("Push Registered...");
+
+  // Send Push Notification
+  console.log("Sending Push...");
+  await fetch("/api/subscribe", {
+    method: "POST",
+    body: JSON.stringify(subscription),
+    headers: {
+      "content-type": "application/json",
     },
   });
+  console.log("Push Sent...");
+};
 
-  const handleForm = (e) => {
-    e.preventDefault();
-  };
-
-  const { mutate: A } = useImageUploadMutation({
-    onSuccess(data) {},
-  });
-
-  const [image, setImage] = useState(null);
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-
-    setImage(file);
-  };
-  const submitForm = () => {
-    const formData = new FormData();
-    formData.append("image", image);
-    formData.append("path", "hello");
-
-    A(formData);
-  };
+const Test = () => {
+  useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      send().catch((err) => console.error(err));
+    }
+  }, []);
 
   return (
-    <>
-      <Layout></Layout>
-    </>
+    <div>
+      <h1>Web Push Notification Test</h1>
+      <p>
+        If you see this, the service worker is being registered and push notifications are being set
+        up.
+      </p>
+    </div>
   );
-}
-
-const Layout = styled.div`
-  margin-top: 200px;
-  margin-left: 50px;
-  display: flex;
-`;
+};
 
 export default Test;
