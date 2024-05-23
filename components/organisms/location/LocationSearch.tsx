@@ -20,10 +20,15 @@ function LocationSearch({ location, setLocation }: ISearchLocation) {
 
   const handleSearch = async () => {
     try {
-      const response = await axios.get(API_URL, {
-        headers: { Authorization: `KakaoAK ${API_KEY}` },
-        params: { query: value },
-      });
+      const response = await axios
+        .get(API_URL, {
+          headers: { Authorization: `KakaoAK ${API_KEY}` },
+          params: { query: value },
+        })
+        .then((res) => {
+          console.log(res);
+          return res;
+        });
 
       setResults(response.data.documents);
     } catch (error) {
