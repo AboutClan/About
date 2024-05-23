@@ -42,6 +42,13 @@ export default function WriteDrawer() {
         <DrawerBody display="flex" justifyContent="center" alignItems="center">
           <Flex direction="column" h="100dvh" justify="center" align="center" onClick={onClose}>
             <SocialButton
+              url="/study/writing/place"
+              title="스터디"
+              subTitle="직접 스터디를 만들어봐요"
+              icon={<i className="fa-regular fa-books" style={{ color: "white" }} />}
+              color="green.400"
+            />
+            <SocialButton
               url="/gather/writing/category"
               title="모임"
               subTitle="재밌는 모임으로 친해져요"
@@ -54,13 +61,6 @@ export default function WriteDrawer() {
               subTitle="비슷한 관심사의 인원들을 모아봐요"
               icon={<i className="fa-regular fa-campfire" style={{ color: "white" }} />}
               color="blue.400"
-            />
-            <SocialButton
-              url="*"
-              title="스터디"
-              subTitle="직접 스터디를 만들어봐요"
-              icon={<i className="fa-regular fa-books" style={{ color: "white" }} />}
-              color="green.400"
             />
           </Flex>
         </DrawerBody>

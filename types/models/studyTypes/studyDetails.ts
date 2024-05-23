@@ -30,6 +30,8 @@ export interface IAttendance {
   memo: string;
 }
 
+
+
 export interface IPlace {
   status: string;
   brand: string;

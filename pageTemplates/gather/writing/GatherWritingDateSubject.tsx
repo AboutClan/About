@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import Input from "../../../components/atoms/Input";
+import { Input } from "../../../components/atoms/Input";
 import TimeSelectorUnit from "../../../components/atoms/TimeSelectorUnit";
 import { TIME_SELECTOR_UNIT } from "../../../constants/util/util";
 import { DispatchType } from "../../../types/hooks/reactTypes";
