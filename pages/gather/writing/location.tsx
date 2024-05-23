@@ -1,15 +1,13 @@
-import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
-import { Input } from "../../../components/atoms/Input";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
-import LocationSearch from "../../../components/organisms/location/LocationSearch";
+import SearchLocation from "../../../components/organisms/SearchLocation";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
@@ -28,7 +26,7 @@ function WritingGahterLocation() {
   });
 
   const onClickNext = () => {
-    if (!location) {
+    if (!placeInfo?.place_name) {
       failToast("free", "장소를 선택해 주세요!", true);
       return;
     }
@@ -41,7 +39,7 @@ function WritingGahterLocation() {
     }));
     router.push(`/gather/writing/condition`);
   };
-  console.log("place", placeInfo);
+
   return (
     <>
       <Slide isFixed={true}>
@@ -53,17 +51,7 @@ function WritingGahterLocation() {
           <span>날짜와 장소를 선택해 주세요.</span>
         </RegisterOverview>
         <Location>
-          <LocationSearch info={placeInfo} setInfo={setPlaceInfo} />
-          <Box mt="20px">
-            <Input
-              placeholder="상세 주소"
-              value={placeInfo.road_address_name}
-              onChange={(e) =>
-                setPlaceInfo((old) => ({ ...old, road_address_name: e.target.value }))
-              }
-              size="sm"
-            />
-          </Box>
+          <SearchLocation placeInfo={placeInfo} setPlaceInfo={setPlaceInfo} />
         </Location>
       </RegisterLayout>
       <BottomNav onClick={() => onClickNext()} />

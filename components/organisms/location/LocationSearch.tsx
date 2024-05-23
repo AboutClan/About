@@ -49,7 +49,6 @@ function LocationSearch({ info, setInfo }: ISearchLocation) {
         {results.length > 0 && (
           <>
             {results.map((result, idx) => {
-              console.log(result);
               return (
                 <Item key={idx} onClick={() => onClickItem(result)}>
                   <Box>{result.place_name}</Box>
