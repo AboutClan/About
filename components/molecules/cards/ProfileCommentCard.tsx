@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import styled from "styled-components";
 
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
@@ -8,6 +8,7 @@ import UserBadge from "../../atoms/badges/UserBadge";
 export interface IProfileCommentCard {
   user: IUserSummary;
   comment?: string;
+  leftComponent?: React.ReactNode;
   rightComponent?: React.ReactNode;
   setMemo?: () => void;
 }
@@ -15,11 +16,14 @@ export interface IProfileCommentCard {
 export default function ProfileCommentCard({
   user,
   comment,
+  leftComponent,
   rightComponent,
   setMemo,
 }: IProfileCommentCard) {
+  console.log(23, leftComponent, rightComponent);
   return (
     <CardContainer>
+      {leftComponent && <Box mr="16px">{leftComponent}</Box>}
       <Avatar image={user.profileImage} size="md" avatar={user.avatar} uid={user.uid} />
       <UserInfoContainer>
         <UserNameBadgeContainer>

@@ -29,3 +29,11 @@ export type StudyDateStatus = "passed" | "today" | "not passed";
 export interface StudyWritingProps extends IPlace {
   content: string;
 }
+
+export interface StudyWaitingUser extends IStudyVotePlaces {
+  user: IUserSummary;
+}
+
+export interface StudyWaitingPlaceProps {
+  upcomingLocation: {};
+}

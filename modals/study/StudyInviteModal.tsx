@@ -1,18 +1,21 @@
 import { Button } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { WEB_URL } from "../../constants/system";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
-import { IPlace } from "../../types/models/studyTypes/studyDetails";
 import { IFooterOptions, ModalLayout } from "../Modals";
 const kakaoAppKey = process.env.NEXT_PUBLIC_KAKAO_JS;
 
 interface IStudyInviteModal extends IModal {
-  place: IPlace;
+  place: {
+    locationDetail: string;
+    fullname: string;
+    image: string;
+  };
 }
 
 function StudyInviteModal({ setIsModal, place }: IStudyInviteModal) {

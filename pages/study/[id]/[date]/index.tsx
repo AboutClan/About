@@ -1,5 +1,5 @@
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -57,7 +57,12 @@ export default function Page() {
     <Layout>
       {study && (
         <>
-          <StudyHeader place={place} />
+          <StudyHeader
+            brand={place.brand}
+            fullname={place.fullname}
+            locationDetail={place.location}
+            coverImage={place.coverImage}
+          />
           <Slide>
             <StudyCover
               isPrivateStudy={isPrivateStudy}

@@ -8,7 +8,7 @@
 
   "scope": "/",
   "short_name": "ABOUT",
-  "start_url": "localhost:3000",
+  "start_url": "https://studyabout.herokuapp.com/",
   "theme_color": "#ffffff",
   "icons": [
     {

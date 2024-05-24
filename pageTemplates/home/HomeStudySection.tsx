@@ -1,8 +1,8 @@
 import { ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -25,6 +25,8 @@ import {
   studyDateStatusState,
 } from "../../recoils/studyRecoils";
 import { IParticipation, StudyStatus } from "../../types/models/studyTypes/studyDetails";
+import { StudyWaitingUser } from "../../types/models/studyTypes/studyInterActions";
+import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
@@ -35,7 +37,8 @@ export default function HomeStudySection() {
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
   const date = searchParams.get("date");
-  const location = convertLocationLangTo(searchParams.get("location") as LocationEn, "kr");
+  const locationEn = searchParams.get("location") as LocationEn;
+  const location = convertLocationLangTo(locationEn, "kr");
 
   const myUid = session?.user.uid;
 
@@ -56,14 +59,23 @@ export default function HomeStudySection() {
       setStudyCardColData(null);
       return;
     }
+    console.log("initial", studyVoteData, studyDateStatus);
     const sortedData = sortStudyVoteData(studyVoteData, studyDateStatus !== "not passed");
-
-    const cardList = setStudyDataToCardCol(sortedData, date as string, session?.user.uid);
+    console.log("sortedData", sortedData);
+    const waiting = getWaitingSpaceProps(studyVoteData);
+    const cardList = setStudyDataToCardCol(
+      sortedData,
+      date as string,
+      session?.user.uid,
+      waiting.map((obj) => obj.user),
+      `${locationEn}/${date}`,
+    );
+    console.log("cardList", cardList);
     setStudyCardColData(cardList.slice(0, 3));
     setSortedStudyCardList(cardList);
     const myStudy = getMyStudy(studyVoteData, myUid);
     setMyStudy(myStudy);
-
+    console.log("whw");
     if (date === dayjsToStr(dayjs())) {
       const myInfo = myStudy?.attendences.find((who) => who.user.uid === myUid);
       if (myInfo) {
@@ -123,10 +135,37 @@ export default function HomeStudySection() {
   );
 }
 
+export const getWaitingSpaceProps = (studyData: IParticipation[]) => {
+  const userArr: StudyWaitingUser[] = [];
+
+  studyData.forEach((par) => {
+    par.attendences.forEach((who) => {
+      const user = who.user;
+      const place = par.place._id;
+      const findUser = userArr.find((obj) => obj.user.uid === user.uid);
+      if (!findUser) {
+        if (who.firstChoice) userArr.push({ user, place, subPlace: [] });
+        else userArr.push({ user, place: null, subPlace: [place] });
+      } else {
+        if (who.firstChoice) {
+          findUser.place = place; // 첫 선택인 경우 place를 업데이트
+        } else {
+          if (!findUser.subPlace.includes(place)) {
+            findUser.subPlace.push(place); // subPlace 배열에 place를 추가
+          }
+        }
+      }
+    });
+  });
+  return userArr;
+};
+
 export const setStudyDataToCardCol = (
   studyData: IParticipation[],
   urlDateParam: string,
   uid: string,
+  waitingUser?: IUserSummary[],
+  param?: string,
 ): IPostThumbnailCard[] => {
   const privateStudy = studyData.find((par) => par.place.brand === "자유 신청");
   const filteredData = studyData.filter((par) => par.place.brand !== "자유 신청");
@@ -148,6 +187,24 @@ export const setStudyDataToCardCol = (
     statusText:
       data.status === "pending" && data.attendences.some((who) => who.user.uid === uid) && "GOOD",
   }));
+
+  if (!privateStudy) {
+    cardColData.unshift({
+      title: "스터디 대기소",
+      subtitle: "스터디",
+      participants: waitingUser,
+      url: `/study/waiting/${param}`,
+      maxCnt: 8,
+      image: {
+        url: "/",
+        priority: true,
+      },
+      badge: { text: "", colorScheme: "mintTheme" },
+      type: "study",
+      statusText: "good",
+    });
+  }
+
   return cardColData;
 };
 
