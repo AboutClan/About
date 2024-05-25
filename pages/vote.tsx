@@ -1,7 +1,7 @@
 import { Flex, ListItem, UnorderedList } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -81,7 +81,12 @@ export default function StudyVoteMap() {
     if (!preferenceStorage && isLoading) return;
     if (myVote?.subPlace.length) return;
 
-    const savedPrefer = JSON.parse(preferenceStorage);
+    let savedPrefer;
+    try {
+      savedPrefer = JSON.parse(preferenceStorage);
+    } catch (error) {
+      savedPrefer = null;
+    }
 
     if (!savedPrefer && !studyPreference) {
       if (!isAlert) {
