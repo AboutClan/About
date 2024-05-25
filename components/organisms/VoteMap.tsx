@@ -2,11 +2,12 @@ import { useEffect, useRef } from "react";
 import styled from "styled-components";
 
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
+import { IPlace } from "../../types/models/studyTypes/studyDetails";
 
 interface IVoteMap {
   mapOptions?: IMapOptions;
   markersOptions?: IMarkerOptions[];
-  handleMarker?: (id: string) => void;
+  handleMarker?: (id: IPlace) => void;
   centerValue?: {
     lat: number;
     lng: number;

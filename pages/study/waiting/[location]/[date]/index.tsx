@@ -1,8 +1,10 @@
+import { Box, Flex } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import HighlightedTextButton from "../../../../../components/atoms/buttons/HighlightedTextButton";
 
 import Divider from "../../../../../components/atoms/Divider";
 import Slide from "../../../../../components/layouts/PageSlide";
@@ -36,6 +38,8 @@ export default function Page() {
     },
   );
 
+  const [isHidden, setIsHidden] = useState(true);
+
   const [studyDateStatus, setStudyDateStatus] = useRecoilState(studyDateStatusState);
 
   useEffect(() => {
@@ -49,7 +53,6 @@ export default function Page() {
 
   const studyWaitingUsers = studyAll && getWaitingSpaceProps(studyAll);
   const sortedStudyPlaces = studyAll && sortStudyVoteData(studyAll, false);
-  console.log("wait", studyAll, studyWaitingUsers, sortedStudyPlaces);
 
   const [category, setCategory] = useState("참여 멤버");
 
@@ -92,10 +95,18 @@ export default function Page() {
               }}
             />
             <TabNav tabOptionsArr={tabArr} selected={category} />
+            <Box h="4px" />
             {category === "참여 멤버" ? (
               <StudyWaitingUsers studyWaitingUsers={studyWaitingUsers} />
             ) : (
-              <StudyWaitingPlaces studyWaitingPlaces={sortedStudyPlaces} />
+              <StudyWaitingPlaces
+                studyWaitingPlaces={isHidden ? sortedStudyPlaces.slice(0, 8) : sortedStudyPlaces}
+              />
+            )}
+            {category === "스터디" && sortedStudyPlaces.length >= 8 && (
+              <Flex bgColor="white" justify="center" align="center" py="8px">
+                <HighlightedTextButton text="더 보기" onClick={() => setIsHidden(false)} />
+              </Flex>
             )}
           </Slide>
         </>

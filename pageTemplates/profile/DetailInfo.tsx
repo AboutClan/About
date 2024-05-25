@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import BlurredPart from "../../components/molecules/BlurredPart";
 import Chart from "../../components/organisms/chart/Chart";
+import { PLACE_TO_NAME } from "../../constants/serviceConstants/studyConstants/studyCafeNameConstants";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { birthToAge } from "../../utils/convertUtils/convertTypes";
 
@@ -47,6 +48,10 @@ function DetailInfo({ user }: { user: IUser }) {
                 <span>--</span>
               )}
             </div>
+          </ProfileItem>
+          <ProfileItem>
+            <span>즐겨찾기</span>
+            <span>{PLACE_TO_NAME[user?.studyPreference?.place] || "없음"}</span>
           </ProfileItem>
         </Profile>
       </BlurredPart>

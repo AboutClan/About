@@ -30,7 +30,7 @@ export default function ProfileCommentCard({
           <span>{user.name}</span>
           <UserBadge score={user.score} uid={user.uid} />
         </UserNameBadgeContainer>
-        <Flex alignItems="center">
+        <Flex alignItems="center" flex={1}>
           <CommentText>{comment !== null ? comment : user.comment}</CommentText>
           {setMemo && (
             <Button onClick={setMemo}>
@@ -61,7 +61,8 @@ const CardContainer = styled.div`
 `;
 
 const UserInfoContainer = styled.div`
-  margin-left: 12px; /* ml-3 */
+  margin-left: 12px;
+  flex: 0.9;
 `;
 
 const UserNameBadgeContainer = styled.div`
@@ -79,10 +80,11 @@ const CommentText = styled.span`
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
   overflow: hidden;
-  color: var(--gray-600); /* text-gray-4 */
+  color: var(--gray-600);
   font-size: 13px;
 `;
 
 const RightComponentContainer = styled.div`
+  margin-right: 4px;
   margin-left: auto;
 `;

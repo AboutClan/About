@@ -2,17 +2,20 @@ import { Box, Flex } from "@chakra-ui/react";
 
 import { IProfileCommentCard } from "../../components/molecules/cards/ProfileCommentCard";
 import ProfileCardColumn from "../../components/organisms/ProfileCardColumn";
+import { POINT_SYSTEM_PLUS } from "../../constants/serviceConstants/pointSystemConstants";
 import { StudyWaitingUser } from "../../types/models/studyTypes/studyInterActions";
-
 interface StudyWaitingUsersProps {
   studyWaitingUsers: StudyWaitingUser[];
 }
 
 function StudyWaitingUsers({ studyWaitingUsers }: StudyWaitingUsersProps) {
+  console.log(1, studyWaitingUsers);
   const userCardArr: IProfileCommentCard[] = studyWaitingUsers.map((par, idx) => {
+    const text = par.place.branch + " " + par.subPlace.map((place) => place.branch).join(" ");
+    console.log(2, text);
     return {
       user: par.user,
-      comment: par.user.comment,
+      comment: text,
       leftComponent:
         idx < 8 ? (
           <i
@@ -24,7 +27,7 @@ function StudyWaitingUsers({ studyWaitingUsers }: StudyWaitingUsersProps) {
         ),
       rightComponent: (
         <Box fontSize="16px" color="var(--color-mint)">
-          + 10
+          + {getPoint(idx, par.subPlace.length)} POINT
         </Box>
       ),
     };
@@ -57,5 +60,16 @@ function StudyWaitingUsers({ studyWaitingUsers }: StudyWaitingUsersProps) {
     </>
   );
 }
+
+const getPoint = (idx: number, subPlaceCnt: number) => {
+  let value = POINT_SYSTEM_PLUS.STUDY_VOTE.basic.value;
+  let subCntValue = subPlaceCnt >= 5 ? 5 : subPlaceCnt;
+
+  if (idx === 0) value += POINT_SYSTEM_PLUS.STUDY_VOTE.first.value;
+  if (idx === 1) value += POINT_SYSTEM_PLUS.STUDY_VOTE.second.value;
+  if (idx === 2) value += POINT_SYSTEM_PLUS.STUDY_VOTE.third.value;
+
+  return value + subCntValue;
+};
 
 export default StudyWaitingUsers;

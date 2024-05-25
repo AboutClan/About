@@ -39,13 +39,6 @@ export default function InfoCard({
   );
 }
 
-const Button = styled.button`
-  display: inline-block;
-  margin-left: 4px;
-  padding: 0 4px;
-  color: var(--gray-600);
-`;
-
 const CardContainer = styled.div`
   display: flex;
   align-items: center;
@@ -80,4 +73,5 @@ const CommentText = styled.span`
 
 const RightComponentContainer = styled.div`
   margin-left: auto;
+  margin-right: 4px;
 `;

@@ -1,8 +1,8 @@
 import { ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -144,11 +144,12 @@ export const getWaitingSpaceProps = (studyData: IParticipation[]) => {
   studyData.forEach((par) => {
     par.attendences.forEach((who) => {
       const user = who.user;
-      const place = par.place._id;
+      const place = { id: par.place._id, branch: par.place.branch };
       const findUser = userArr.find((obj) => obj.user.uid === user.uid);
       if (!findUser) {
-        if (who.firstChoice) userArr.push({ user, place, subPlace: [] });
-        else userArr.push({ user, place: null, subPlace: [place] });
+        if (who.firstChoice) {
+          userArr.push({ user, place, subPlace: [], createdAt: who.createdAt });
+        } else userArr.push({ user, place: null, subPlace: [place], createdAt: who.createdAt });
       } else {
         if (who.firstChoice) {
           findUser.place = place; // 첫 선택인 경우 place를 업데이트
@@ -160,7 +161,7 @@ export const getWaitingSpaceProps = (studyData: IParticipation[]) => {
       }
     });
   });
-  return userArr;
+  return userArr.sort((a, b) => (dayjs(a.createdAt).isAfter(dayjs(b.createdAt)) ? 1 : -1));
 };
 
 export const setStudyDataToCardCol = (
@@ -186,12 +187,12 @@ export const setStudyDataToCardCol = (
       url: data.place.image,
       priority: true,
     },
-    badge: getBadgeText(data.status, getVotePoint(data.attendences.length)),
+    badge: getBadgeText(data.status),
     type: "study",
     statusText:
       data.status === "pending" && data.attendences.some((who) => who.user.uid === uid) && "GOOD",
   }));
-
+  console.log(2, cardColData);
   if (isNotPassed) {
     cardColData.unshift({
       title: "스터디 대기소",
@@ -203,7 +204,7 @@ export const setStudyDataToCardCol = (
         url: "/",
         priority: true,
       },
-      badge: { text: "", colorScheme: "mintTheme" },
+      badge: null,
       type: "study",
     });
   }
@@ -215,8 +216,8 @@ const getVotePoint = (attCnt: number) => (attCnt === 0 ? 10 : attCnt === 5 ? 2 :
 
 const getBadgeText = (
   status: StudyStatus,
-  point: number,
 ): { text: string; colorScheme: ThemeTypings["colorSchemes"] } => {
+  console.log(234, status);
   switch (status) {
     case "open":
       return { text: "스터디 오픈", colorScheme: "mintTheme" };
@@ -225,7 +226,9 @@ const getBadgeText = (
     case "free":
       return { text: "자유 참여", colorScheme: "purple" };
     case "pending":
-      return { text: `+${point} POINT`, colorScheme: "redTheme" };
+      return null;
+    default:
+      return null;
   }
 };
 

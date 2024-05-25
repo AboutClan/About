@@ -7,6 +7,11 @@ import { IPlace } from "./studyDetails";
 export interface IStudyVote extends IStudyVotePlaces, IStudyVoteTime {
   memo?: string;
 }
+export interface IStudyVoteWithPlace extends IStudyVoteTime {
+  memo?: string;
+  place: IPlace;
+  subPlace: IPlace[];
+}
 
 export interface IStudyVotePlaces {
   place: string;
@@ -30,10 +35,13 @@ export interface StudyWritingProps extends IPlace {
   content: string;
 }
 
-export interface StudyWaitingUser extends IStudyVotePlaces {
-  user: IUserSummary;
+interface StudyWaitingPlaceProps {
+  id: string;
+  branch: string;
 }
-
-export interface StudyWaitingPlaceProps {
-  upcomingLocation: {};
+export interface StudyWaitingUser {
+  user: IUserSummary;
+  place: StudyWaitingPlaceProps;
+  subPlace: StudyWaitingPlaceProps[];
+  createdAt?: string;
 }
