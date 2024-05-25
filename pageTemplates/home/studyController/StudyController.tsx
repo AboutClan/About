@@ -8,11 +8,12 @@ import styled from "styled-components";
 import PointCircleText from "../../../components/atoms/PointCircleText";
 import Slide from "../../../components/layouts/PageSlide";
 import WeekSlideCalendar from "../../../components/molecules/WeekSlideCalendar";
-import { useStudyDailyVoteCntQuery } from "../../../hooks/study/queries";
+import { useStudyDailyVoteCntQuery, useStudyVoteQuery } from "../../../hooks/study/queries";
+import { getStudyVoteCnt } from "../../../libs/study/getStudyVoteCnt";
 import DateCalendarModal from "../../../modals/aboutHeader/DateCalendarModal";
 import StudyAttendCheckModal from "../../../modals/study/StudyAttendCheckModal";
 import { studyDateStatusState } from "../../../recoils/studyRecoils";
-import { ActiveLocation } from "../../../types/services/locationTypes";
+import { ActiveLocation, LocationEn } from "../../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import StudyControllerVoteButton from "./StudyControllerVoteButton";
@@ -36,6 +37,7 @@ function StudyController() {
   const newSearchParams = new URLSearchParams(searchParams);
   const date = searchParams.get("date");
   const location = searchParams.get("location");
+  const locationKr = convertLocationLangTo(location as LocationEn, "kr");
 
   const [selectedDate, setSelectedDate] = useState<string>();
   const [modalType, setModalType] = useState<VoteType>(null);
@@ -43,6 +45,10 @@ function StudyController() {
   const setStudyDateStatus = useSetRecoilState(studyDateStatusState);
 
   const selectedDateDayjs = dayjs(selectedDate);
+
+  const { data: studyVoteData } = useStudyVoteQuery(date as string, locationKr, {
+    enabled: !!date && !!location,
+  });
 
   const { data: voteCntArr } = useStudyDailyVoteCntQuery(
     convertLocationLangTo(location as ActiveLocation, "kr"),
@@ -52,10 +58,6 @@ function StudyController() {
       enabled: !!location,
     },
   );
-
-  const todayVoterCnt = voteCntArr?.find(
-    (item) => dayjsToStr(dayjs(item.date)) === selectedDate,
-  )?.value;
 
   useEffect(() => {
     setSelectedDate(date);
@@ -109,7 +111,10 @@ function StudyController() {
                     func={onClick}
                   />
                 </Flex>
-                <StudyControllerVoteButton memberCnt={todayVoterCnt} setModalType={setModalType} />
+                <StudyControllerVoteButton
+                  memberCnt={getStudyVoteCnt(studyVoteData)}
+                  setModalType={setModalType}
+                />
               </>
             )}
           </Box>

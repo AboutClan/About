@@ -1,13 +1,14 @@
 import { Box, Flex } from "@chakra-ui/react";
+
 import { IProfileCommentCard } from "../../components/molecules/cards/ProfileCommentCard";
 import ProfileCardColumn from "../../components/organisms/ProfileCardColumn";
 import { StudyWaitingUser } from "../../types/models/studyTypes/studyInterActions";
 
-interface StudyWaiterProps {
+interface StudyWaitingUsersProps {
   studyWaitingUsers: StudyWaitingUser[];
 }
 
-function StudyWaiter({ studyWaitingUsers }: StudyWaiterProps) {
+function StudyWaitingUsers({ studyWaitingUsers }: StudyWaitingUsersProps) {
   const userCardArr: IProfileCommentCard[] = studyWaitingUsers.map((par, idx) => {
     return {
       user: par.user,
@@ -28,7 +29,7 @@ function StudyWaiter({ studyWaitingUsers }: StudyWaiterProps) {
       ),
     };
   });
-
+  console.log(studyWaitingUsers);
   return (
     <>
       {userCardArr.length ? (
@@ -57,4 +58,4 @@ function StudyWaiter({ studyWaitingUsers }: StudyWaiterProps) {
   );
 }
 
-export default StudyWaiter;
+export default StudyWaitingUsers;

@@ -11,10 +11,15 @@ import VoteMap from "../components/organisms/VoteMap";
 import VoteMapController from "../components/organisms/VoteMapController";
 import MapBottomNav from "../components/services/studyVote/MapBottomNav";
 import { STUDY_PREFERENCE_LOCAL } from "../constants/keys/queryKeys";
+import {
+  POINT_SYSTEM_PLUS,
+  PointSystemProp,
+} from "../constants/serviceConstants/pointSystemConstants";
 import { STUDY_DISTANCE } from "../constants/serviceConstants/studyConstants/studyDistanceConstants";
 import { PLACE_TO_LOCATION } from "../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { useToast } from "../hooks/custom/CustomToast";
 import { useStudyPreferenceQuery, useStudyVoteQuery } from "../hooks/study/queries";
+import { getStudyVoteCnt } from "../libs/study/getStudyVoteCnt";
 import { getStudyVoteIcon } from "../libs/study/getStudyVoteIcon";
 import { getVoteLocationCenterDot, getVoteLocationMaxBound } from "../libs/study/getStudyVoteMap";
 import StudyPresetModal from "../modals/userRequest/StudyPresetModal";
@@ -51,7 +56,7 @@ export default function StudyVoteMap() {
   }>();
   const [myVote, setMyVote] = useState<IStudyVote>();
   const [precision, setPrecision] = useState<0 | 1 | 2>(1);
-  const [voteScore, setVoteScore] = useState(2);
+  const [voteScore, setVoteScore] = useState<PointSystemProp>();
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>();
   const [subSecond, setSubSecond] = useState<string[]>();
   const [morePlaces, setMorePlaces] = useState<string[]>();
@@ -61,7 +66,7 @@ export default function StudyVoteMap() {
 
   const studyDateStatus = useRecoilValue(studyDateStatusState);
 
-  const subPlacePoint = myVote?.subPlace?.length || 0;
+  const subPlacePoint = myVote?.subPlace?.length > 5 ? 5 : myVote?.subPlace?.length || 0;
 
   const { data: studyVoteData } = useStudyVoteQuery(date, location, {
     enabled: !!location && !!date,
@@ -166,10 +171,10 @@ export default function StudyVoteMap() {
         ...old,
         subPlace: precision === 0 ? [] : precision === 2 ? [...sub1, ...sub2] : [...sub1],
       }));
-      setVoteScore((old) => old + getPlaceVoteRankScore(place, studyVoteData, data.user.uid));
+      setVoteScore(getPlaceVoteRankScore(studyVoteData, data.user.uid));
     } else {
       setMyVote((old) => ({ ...old, subPlace: [] }));
-      setVoteScore(2);
+      setVoteScore(null);
     }
   }, [myVote?.place, precision]);
 
@@ -194,7 +199,7 @@ export default function StudyVoteMap() {
             </UnorderedList>
             <Flex direction="column" alignItems="flex-end" color="red.400" fontWeight={600}>
               <div>현재 획득 포인트</div>
-              <div>+ {voteScore + subPlacePoint} POINT</div>
+              <div>+ {voteScore.value + subPlacePoint} POINT</div>
             </Flex>
           </Flex>
           <MapLayout>
@@ -216,7 +221,7 @@ export default function StudyVoteMap() {
           <MapBottomNav
             myVote={myVote}
             setMyVote={setMyVote}
-            voteScore={voteScore + subPlacePoint}
+            voteScore={{ ...voteScore, value: voteScore.value + subPlacePoint }}
             morePlaces={morePlaces}
           />
         </Layout>
@@ -263,19 +268,19 @@ const getRecommendations = (placeId: string, targetDistance: number): string[] =
   return Array.from(placesAtDistance);
 };
 
-export const getPlaceVoteRankScore = (placeId: string, voteData: IParticipation[], uid: string) => {
-  const mainVoteAttCnt = voteData
-    .find((par) => par.place._id === placeId)
-    ?.attendences.filter((att) => att.user.uid !== uid).length;
-  switch (mainVoteAttCnt) {
+export const getPlaceVoteRankScore = (voteData: IParticipation[], uid: string): PointSystemProp => {
+  const voteCnt = getStudyVoteCnt(voteData, uid);
+
+  switch (voteCnt) {
     case 0:
-      return 10;
+      return POINT_SYSTEM_PLUS.STUDY_VOTE.first;
     case 1:
-      return 5;
+      return POINT_SYSTEM_PLUS.STUDY_VOTE.second;
     case 2:
-      return 2;
+      return POINT_SYSTEM_PLUS.STUDY_VOTE.third;
+    default:
+      return POINT_SYSTEM_PLUS.STUDY_VOTE.basic;
   }
-  return 0;
 };
 
 export const getMapOptions = (location: ActiveLocation): IMapOptions | undefined => {

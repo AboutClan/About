@@ -1,8 +1,8 @@
 import { ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -59,23 +59,25 @@ export default function HomeStudySection() {
       setStudyCardColData(null);
       return;
     }
-    console.log("initial", studyVoteData, studyDateStatus);
+
     const sortedData = sortStudyVoteData(studyVoteData, studyDateStatus !== "not passed");
-    console.log("sortedData", sortedData);
-    const waiting = getWaitingSpaceProps(studyVoteData);
+
+    const waiting = studyDateStatus === "not passed" && getWaitingSpaceProps(studyVoteData);
+
     const cardList = setStudyDataToCardCol(
       sortedData,
       date as string,
       session?.user.uid,
-      waiting.map((obj) => obj.user),
+      studyDateStatus === "not passed" ? waiting.map((obj) => obj.user) : null,
       `${locationEn}/${date}`,
     );
-    console.log("cardList", cardList);
+
     setStudyCardColData(cardList.slice(0, 3));
     setSortedStudyCardList(cardList);
     const myStudy = getMyStudy(studyVoteData, myUid);
+
     setMyStudy(myStudy);
-    console.log("whw");
+
     if (date === dayjsToStr(dayjs())) {
       const myInfo = myStudy?.attendences.find((who) => who.user.uid === myUid);
       if (myInfo) {
@@ -86,6 +88,7 @@ export default function HomeStudySection() {
         }
       }
     }
+
     if (getStudyConfimCondition(studyDateStatus, studyVoteData[1].status)) {
       decideStudyResult();
     }
@@ -169,6 +172,7 @@ export const setStudyDataToCardCol = (
 ): IPostThumbnailCard[] => {
   const privateStudy = studyData.find((par) => par.place.brand === "자유 신청");
   const filteredData = studyData.filter((par) => par.place.brand !== "자유 신청");
+  const isNotPassed = !privateStudy;
 
   if (privateStudy) filteredData.splice(2, 0, privateStudy);
 
@@ -188,7 +192,7 @@ export const setStudyDataToCardCol = (
       data.status === "pending" && data.attendences.some((who) => who.user.uid === uid) && "GOOD",
   }));
 
-  if (!privateStudy) {
+  if (isNotPassed) {
     cardColData.unshift({
       title: "스터디 대기소",
       subtitle: "스터디",
@@ -201,7 +205,6 @@ export const setStudyDataToCardCol = (
       },
       badge: { text: "", colorScheme: "mintTheme" },
       type: "study",
-      statusText: "good",
     });
   }
 

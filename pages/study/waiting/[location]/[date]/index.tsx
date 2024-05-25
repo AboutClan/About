@@ -10,12 +10,14 @@ import TabNav, { ITabNavOptions } from "../../../../../components/molecules/navs
 import { useStudyVoteQuery } from "../../../../../hooks/study/queries";
 import { getStudyDateStatus } from "../../../../../libs/study/date/getStudyDateStatus";
 import { getMyStudy } from "../../../../../libs/study/getMyStudy";
+import { sortStudyVoteData } from "../../../../../libs/study/sortStudyVoteData";
 import { getWaitingSpaceProps } from "../../../../../pageTemplates/home/HomeStudySection";
 import StudyCover from "../../../../../pageTemplates/study/StudyCover";
 import StudyDateBar from "../../../../../pageTemplates/study/StudyDateBar";
 import StudyHeader from "../../../../../pageTemplates/study/StudyHeader";
-import StudyWaiter from "../../../../../pageTemplates/study/StudyWaiter";
 import StudyWaitingOverview from "../../../../../pageTemplates/study/StudyWaitingOverview";
+import StudyWaitingPlaces from "../../../../../pageTemplates/study/StudyWaitingPlaces";
+import StudyWaitingUsers from "../../../../../pageTemplates/study/StudyWaitingUsers";
 import { myStudyState, studyDateStatusState } from "../../../../../recoils/studyRecoils";
 import { ActiveLocation } from "../../../../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../../../../utils/convertUtils/convertDatas";
@@ -46,8 +48,8 @@ export default function Page() {
   }, [studyAll]);
 
   const studyWaitingUsers = studyAll && getWaitingSpaceProps(studyAll);
-
-  console.log("wait", studyWaitingUsers);
+  const sortedStudyPlaces = studyAll && sortStudyVoteData(studyAll, false);
+  console.log("wait", studyAll, studyWaitingUsers, sortedStudyPlaces);
 
   const [category, setCategory] = useState("참여 멤버");
 
@@ -71,10 +73,8 @@ export default function Page() {
           />
           <Slide>
             <StudyCover
-              imageUrl={
-                "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/CU_3000%EC%9B%90%EA%B6%8C.webp"
-              }
-              brand={""}
+              imageUrl="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/CU_3000%EC%9B%90%EA%B6%8C.webp"
+              brand=""
               isPrivateStudy={false}
             />
 
@@ -92,9 +92,12 @@ export default function Page() {
               }}
             />
             <TabNav tabOptionsArr={tabArr} selected={category} />
+            {category === "참여 멤버" ? (
+              <StudyWaitingUsers studyWaitingUsers={studyWaitingUsers} />
+            ) : (
+              <StudyWaitingPlaces studyWaitingPlaces={sortedStudyPlaces} />
+            )}
           </Slide>
-          <StudyWaiter studyWaitingUsers={studyWaitingUsers} />
-          {/* <StudyNavigation voteCnt={attendances?.length} studyStatus={study.status} /> */}
         </>
       )}
     </Layout>

@@ -1,8 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import styled from "styled-components";
-import InfoBox, { InfoBoxProp } from "../../components/molecules/InfoBox";
 
+import InfoBox, { InfoBoxProp } from "../../components/molecules/InfoBox";
 import VoteMap from "../../components/organisms/VoteMap";
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
 

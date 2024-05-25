@@ -51,7 +51,7 @@ function ImageTileSlider({ imageTileArr, size, aspect = 1, slidesPerView }: IIma
   );
 }
 
-const SlideItem = ({
+function SlideItem({
   imageTile,
   size,
   aspect,
@@ -59,8 +59,8 @@ const SlideItem = ({
   imageTile: IImageTile;
   size: Size;
   aspect: number;
-}) => (
-  <>
+}) {
+  return <>
     <Box p={size === "sm" && "4px"} bgColor="white">
       <AspectRatio
         ratio={aspect / 1}
@@ -81,7 +81,7 @@ const SlideItem = ({
     </Box>
     {imageTile?.text && <Text size={size}>{imageTile.text}</Text>}
   </>
-);
+}
 
 const Wrapper = styled.div<{ size: Size }>`
   display: flex;
