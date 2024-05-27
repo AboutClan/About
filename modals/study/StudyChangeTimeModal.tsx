@@ -7,9 +7,9 @@ import { useRecoilValue } from "recoil";
 
 import RulletPickerTwo from "../../components/molecules/picker/RulletPickerTwo";
 import { STUDY_VOTE } from "../../constants/keys/queryKeys";
+import { POINT_SYSTEM_DEPOSIT } from "../../constants/serviceConstants/pointSystemConstants";
 import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { STUDY_VOTE_HOUR_ARR } from "../../constants/serviceConstants/studyConstants/studyTimeConstant";
-import { POINT_SYSTEM_DEPOSIT } from "../../constants/settingValue/pointSystem";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../hooks/user/mutations";

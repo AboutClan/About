@@ -90,7 +90,9 @@ export function PostThumbnailCard({
         </Flex>
       </Flex>
       <Flex direction="column" justifyContent="space-between" align="flex-end">
-        <OutlineBadge size="sm" text={badge.text} colorScheme={badge.colorScheme} />
+        <Box>
+          {badge && <OutlineBadge size="sm" text={badge.text} colorScheme={badge.colorScheme} />}
+        </Box>
         <Flex
           mb="-2px"
           className="userIconContainer"
@@ -105,7 +107,7 @@ export function PostThumbnailCard({
             <Box
               as="span"
               color={
-                CLOSED_TEXT_ARR.includes(badge.text)
+                CLOSED_TEXT_ARR.includes(badge?.text)
                   ? "inherit"
                   : maxCnt && participants.length >= maxCnt
                     ? "var(--color-red)"

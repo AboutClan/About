@@ -5,12 +5,11 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import StudyInviteModal from "../../modals/study/StudyInviteModal";
-import { IPlace } from "../../types/models/studyTypes/studyDetails";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 interface IStudyDateBar {
   isPrivateStudy: boolean;
-  place: IPlace;
+  place: { locationDetail: string; fullname: string; image: string };
 }
 function StudyDateBar({ isPrivateStudy, place }: IStudyDateBar) {
   const { date } = useParams<{ date: string }>();

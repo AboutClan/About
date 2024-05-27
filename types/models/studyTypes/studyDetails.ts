@@ -24,6 +24,7 @@ export interface IAttendance {
     start: Dayjs;
     end: Dayjs;
   };
+  createdAt: string;
   imageUrl?: string;
   arrived?: Date;
   firstChoice: boolean;

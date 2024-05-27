@@ -15,7 +15,7 @@ import { studyDateStatusState } from "../../recoils/studyRecoils";
 import { IModal } from "../../types/components/modalTypes";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
+import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 import { IFooterOptions, IPaddingOptions, ModalLayout } from "../Modals";
 
 interface DateCalendarModalProps extends IModal {
@@ -79,8 +79,13 @@ function DateCalendarModal({ selectedDate, setIsModal }: DateCalendarModalProps)
   };
 
   const moveDate = () => {
+    if (dayjsToStr(selectedDate) === dayjsToStr(date)) {
+      setIsModal(false);
+      return;
+    }
     setStudyDateStatus(undefined);
     const newDate = handleChangeDate(date, "date", date.date());
+
     newSearchParams.set("date", newDate);
     router.replace(`/home?${newSearchParams.toString()}`, { scroll: false });
     setIsModal(false);

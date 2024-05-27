@@ -2,25 +2,15 @@ export const getStudyVoteIcon = (type: "default" | "main" | "sub", text: string)
   const getBasicIcon = () => {
     switch (type) {
       case "default":
-        return `<button style="width: 48px; height: 48px; padding: 8px; border-radius: 50%; background-color: rgba(0, 194, 179, 0.1);">
-        <div style="width: 100%; height: 100%; background-color: #00c2b3; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-weight: 700; padding: 4px;">
-            <div style="width: 100%; height: 100%; border-radius: 50%; background-color: white;"></div>
-        </div></button>`;
+        return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="28px" height="28px"><path class="fa-secondary" opacity="1" fill="#bdbdbd" d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM256 104c-6.1 0-11.7 3.5-14.3 8.9l-36.2 73.4-81 11.8c-6 .9-11 5.1-12.9 10.9s-.3 12.2 4 16.4l58.6 57.2-13.8 80.7c-1 6 1.4 12.1 6.4 15.6s11.5 4.1 16.8 1.2L256 342.1l72.5 38.1c5.4 2.8 11.9 2.4 16.9-1.2s7.4-9.6 6.4-15.6l-13.8-80.7 58.6-57.2c4.4-4.3 5.9-10.6 4-16.4s-6.9-10-12.9-10.9l-81.1-11.8-36.2-73.4c-2.7-5.5-8.3-8.9-14.3-8.9z"/><path class="fa-primary" fill="#ffffff" d="M270.3 112.9c-2.7-5.5-8.3-8.9-14.3-8.9s-11.7 3.5-14.3 8.9l-36.2 73.4-81.1 11.8c-6 .9-11 5.1-12.9 10.9s-.3 12.2 4 16.4l58.6 57.2-13.8 80.7c-1 6 1.4 12.1 6.4 15.6s11.5 4.1 16.9 1.2L256 342.1l72.5 38.1c5.4 2.8 11.9 2.4 16.9-1.2s7.4-9.6 6.4-15.6l-13.8-80.7 58.6-57.2c4.4-4.3 5.9-10.6 4-16.4s-6.9-10-12.9-10.9l-81-11.8-36.2-73.4z"/></svg>
+`;
       case "main":
-        return ` <button style="width: 48px; height: 48px; padding: 8px; border-radius: 50%; background-color: rgba(0, 194, 179, 0.1);">
-        <div style="width: 100%; height: 100%; background-color: #00c2b3; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-weight: 700;">
-            A
-        </div>
-    </button>`;
+        return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="28px" height="28px"><path class="fa-secondary" opacity="1" fill="#00c2b3" d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM256 104c-6.1 0-11.7 3.5-14.3 8.9l-36.2 73.4-81 11.8c-6 .9-11 5.1-12.9 10.9s-.3 12.2 4 16.4l58.6 57.2-13.8 80.7c-1 6 1.4 12.1 6.4 15.6s11.5 4.1 16.8 1.2L256 342.1l72.5 38.1c5.4 2.8 11.9 2.4 16.9-1.2s7.4-9.6 6.4-15.6l-13.8-80.7 58.6-57.2c4.4-4.3 5.9-10.6 4-16.4s-6.9-10-12.9-10.9l-81.1-11.8-36.2-73.4c-2.7-5.5-8.3-8.9-14.3-8.9z"/><path class="fa-primary" fill="#ffffff" d="M270.3 112.9c-2.7-5.5-8.3-8.9-14.3-8.9s-11.7 3.5-14.3 8.9l-36.2 73.4-81.1 11.8c-6 .9-11 5.1-12.9 10.9s-.3 12.2 4 16.4l58.6 57.2-13.8 80.7c-1 6 1.4 12.1 6.4 15.6s11.5 4.1 16.9 1.2L256 342.1l72.5 38.1c5.4 2.8 11.9 2.4 16.9-1.2s7.4-9.6 6.4-15.6l-13.8-80.7 58.6-57.2c4.4-4.3 5.9-10.6 4-16.4s-6.9-10-12.9-10.9l-81-11.8-36.2-73.4z"/></svg>`;
       case "sub":
-        return `<button style="width: 48px; height: 48px; padding: 8px; border-radius: 50%; background-color: rgba(255, 107, 107, 0.1);">
-  <div style="width: 100%; height: 100%; background-color: rgb(255,107,107); border-radius: 50%; display: flex; justify-content: center; align-items: center; color: white; font-weight: 700;">
-      B
-  </div>
-</button>`;
+        return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="28px" height="28px"><path class="fa-secondary" opacity="1" fill="#ffa500" d="M0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zM256 104c-6.1 0-11.7 3.5-14.3 8.9l-36.2 73.4-81 11.8c-6 .9-11 5.1-12.9 10.9s-.3 12.2 4 16.4l58.6 57.2-13.8 80.7c-1 6 1.4 12.1 6.4 15.6s11.5 4.1 16.8 1.2L256 342.1l72.5 38.1c5.4 2.8 11.9 2.4 16.9-1.2s7.4-9.6 6.4-15.6l-13.8-80.7 58.6-57.2c4.4-4.3 5.9-10.6 4-16.4s-6.9-10-12.9-10.9l-81.1-11.8-36.2-73.4c-2.7-5.5-8.3-8.9-14.3-8.9z"/><path class="fa-primary" fill="#ffffff" d="M270.3 112.9c-2.7-5.5-8.3-8.9-14.3-8.9s-11.7 3.5-14.3 8.9l-36.2 73.4-81.1 11.8c-6 .9-11 5.1-12.9 10.9s-.3 12.2 4 16.4l58.6 57.2-13.8 80.7c-1 6 1.4 12.1 6.4 15.6s11.5 4.1 16.9 1.2L256 342.1l72.5 38.1c5.4 2.8 11.9 2.4 16.9-1.2s7.4-9.6 6.4-15.6l-13.8-80.7 58.6-57.2c4.4-4.3 5.9-10.6 4-16.4s-6.9-10-12.9-10.9l-81-11.8-36.2-73.4z"/></svg>`;
     }
   };
   return `<div style=" width:72px; height:72px; justify-content:center; display: flex; flex-direction: column; align-items:center;">
-  <div style="padding:0px 4px; text-align:center; border:1px solid #cbd5e0;  background-color:#f7fafc; font-weight:600; font-size:12px; white-space: nowrap;">${text}</div>
+  <div style="padding:0px 4px; text-align:center; border:1px solid #9e9e9e; margin-bottom:8px;  background-color:#f5f5f5; font-weight:600; font-size:12px; white-space: nowrap;">${text}</div>
     ${getBasicIcon()}</div>`;
 };

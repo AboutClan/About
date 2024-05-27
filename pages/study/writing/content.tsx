@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import styled from "styled-components";
 
 import Textarea from "../../../components/atoms/Textarea";
 import BottomNav from "../../../components/layouts/BottomNav";
@@ -44,20 +43,17 @@ function WritingGatherContent() {
         <RegisterOverview>
           <span>추가하고 싶은 이유나 장점이 있다면 적어주세요!</span>
         </RegisterOverview>
-       
-          <Textarea
-            placeholder="분위기가 쾌적해서 카공하기 좋아요!"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            minHeight={200}
-          />
-     
+
+        <Textarea
+          placeholder="분위기가 쾌적해서 카공하기 좋아요!"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          minHeight={200}
+        />
       </RegisterLayout>
       <BottomNav onClick={() => onClickNext()} />
     </>
   );
 }
-
-
 
 export default WritingGatherContent;

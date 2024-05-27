@@ -1,0 +1,40 @@
+import { Box, Button } from "@chakra-ui/react";
+import styled from "styled-components";
+
+import InfoBox, { InfoBoxProp } from "../../components/molecules/InfoBox";
+interface StudyWaitingOverviewProps {
+  title: string;
+}
+
+function StudyWaitingOverview({ title }: StudyWaitingOverviewProps) {
+  const infos: InfoBoxProp[] = [
+    {
+      text: "오후 11시에 스터디 결과가 발표됩니다.",
+      icon: <i className="fa-solid fa-circle-info" />,
+    },
+    {
+      text: "설명입니다",
+      icon: <i className="fa-solid fa-circle-info" />,
+    },
+  ];
+
+  return (
+    <OverviewWrapper>
+      <Box mt="12px" flex={1}>
+        <InfoBox infos={infos} />
+      </Box>
+      <Button alignSelf="flex-end" colorScheme="mintTheme" size="xs">
+        포인트 설명서
+      </Button>
+    </OverviewWrapper>
+  );
+}
+
+const OverviewWrapper = styled.div`
+  display: flex;
+  padding: 16px 16px;
+  padding-bottom: 12px;
+  background-color: white;
+`;
+
+export default StudyWaitingOverview;

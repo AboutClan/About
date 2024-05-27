@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 import { CopyBtn } from "../../components/atoms/Icons/CopyIcon";
 import { PROMOTION_TEXT,PromotionComponent } from "../../constants/contentsText/Private";
-import { POINT_SYSTEM_PLUS } from "../../constants/settingValue/pointSystem";
+import { POINT_SYSTEM_PLUS } from "../../constants/serviceConstants/pointSystemConstants";
 import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";

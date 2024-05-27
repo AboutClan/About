@@ -1,7 +1,8 @@
 import { ListItem, UnorderedList } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import { POINT_SYSTEM_DEPOSIT } from "../../../constants/settingValue/pointSystem";
+import { POINT_SYSTEM_DEPOSIT } from "../../../constants/serviceConstants/pointSystemConstants";
+
 
 function PointSystemsModalFee() {
   return (

@@ -1,5 +1,3 @@
-import "dayjs/locale/ko";
-
 import dayjs from "dayjs";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
