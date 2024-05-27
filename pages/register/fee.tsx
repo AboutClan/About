@@ -69,7 +69,7 @@ function Fee() {
 const Cost = styled.div`
   margin: var(--gap-5) 0;
   > div:first-child {
-    color: var(--gray-800);
+    color: var(--gray-700);
     font-size: 13px;
     margin-bottom: var(--gap-3);
   }
@@ -84,12 +84,12 @@ const Account = styled.div`
   margin-bottom: var(--gap-1);
   font-size: 14px;
   font-weight: 600;
-  color: var(--gray-900);
+  color: var(--gray-800);
 `;
 
 const Message = styled.div`
   font-size: 13px;
-  color: var(--gray-700);
+  color: var(--gray-600);
   margin-bottom: 40px;
 `;
 
@@ -98,7 +98,7 @@ const Telephone = styled.div`
     font-size: 14px;
     display: inline-block;
     font-weight: 600;
-    color: var(--gray-900);
+    color: var(--gray-800);
     margin-bottom: var(--gap-1);
   }
 `;

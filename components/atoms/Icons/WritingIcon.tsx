@@ -9,7 +9,7 @@ function WritingIcon({ url }: IWritingIcon) {
   const router = useRouter();
   return (
     <Layout onClick={() => router.push(url)}>
-      <i className="fa-light fa-pen-line fa-xl" style={{ color: "white" }}  />
+      <i className="fa-light fa-pen-line fa-xl" style={{ color: "white" }} />
     </Layout>
   );
 }
@@ -17,7 +17,7 @@ function WritingIcon({ url }: IWritingIcon) {
 const Layout = styled.button`
   font-size: 16px;
   position: fixed;
-  bottom: 80px;
+  bottom: 92px;
   right: 16px;
   background-color: var(--color-mint);
   width: 58px;

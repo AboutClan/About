@@ -30,7 +30,7 @@ const Button = styled.button`
   font-size: 16px;
   border: var(--border-mint-light);
   font-weight: 600;
-  height: 54px;
+  height: 48px;
   border-radius: 8px;
   :hover {
     background-color: var(--gray-200);

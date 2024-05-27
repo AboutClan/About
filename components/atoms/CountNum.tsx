@@ -20,7 +20,7 @@ function CountNum({ value, setValue, unit, min = 1, isSmall }: ICountNum) {
         isSmall={isSmall}
         onClick={() => setValue((old) => old - 1)}
       >
-        <i className="fa-regular fa-minus fa-sm"  />
+        <i className="fa-regular fa-minus fa-sm" />
       </IconWrapper>
       <Count>
         {value}
@@ -49,7 +49,7 @@ const IconWrapper = styled.button<{
   isVisible: boolean;
   isSmall: boolean;
 }>`
-  color: ${(props) => (props.isVisible ? "var(--gray-900)" : "var(--gray-300)")};
+  color: ${(props) => (props.isVisible ? "var(--gray-800)" : "var(--gray-300)")};
   padding: 0 var(--gap-1);
   margin-right: ${(props) =>
     props.isMinus ? (props.isSmall ? "var(--gap-2)" : "var(--gap-4)") : 0};

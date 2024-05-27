@@ -7,7 +7,7 @@ function LocationMember({ location }: { location: Location }) {
   return (
     <Layout>
       <MemberCnt>
-        <i className="fa-solid fa-users fa-xs"  />
+        <i className="fa-solid fa-users fa-xs" />
         <span>{LOCATION_MEMBER_CNT[location].member}</span>
       </MemberCnt>
       <NewMember>
@@ -19,7 +19,6 @@ function LocationMember({ location }: { location: Location }) {
 }
 
 const Layout = styled.div`
-  color: var(--gray-2);
   display: flex;
   flex-direction: column;
   justify-content: space-around;

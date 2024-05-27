@@ -61,7 +61,7 @@ const Info = styled.div`
   }
   > span:last-child {
     font-size: 12px;
-    color: var(--gray-700);
+    color: var(--gray-600);
   }
 `;
 

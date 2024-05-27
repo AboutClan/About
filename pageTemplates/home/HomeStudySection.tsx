@@ -1,3 +1,4 @@
+import { ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -23,7 +24,6 @@ import {
   sortedStudyCardListState,
   studyDateStatusState,
 } from "../../recoils/studyRecoils";
-import { ITextAndColorSchemes } from "../../types/components/propTypes";
 import { IParticipation, StudyStatus } from "../../types/models/studyTypes/studyDetails";
 import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
@@ -52,16 +52,15 @@ export default function HomeStudySection() {
 
   useEffect(() => {
     if (!studyVoteData || !studyVoteData.length || !session?.user || !studyDateStatus) {
+      setMyStudy(undefined);
       setStudyCardColData(null);
       return;
     }
-    console.log(1, studyVoteData, studyDateStatus);
     const sortedData = sortStudyVoteData(studyVoteData, studyDateStatus !== "not passed");
 
     const cardList = setStudyDataToCardCol(sortedData, date as string, session?.user.uid);
     setStudyCardColData(cardList.slice(0, 3));
     setSortedStudyCardList(cardList);
-
     const myStudy = getMyStudy(studyVoteData, myUid);
     setMyStudy(myStudy);
 
@@ -145,6 +144,7 @@ export const setStudyDataToCardCol = (
       priority: true,
     },
     badge: getBadgeText(data.status, getVotePoint(data.attendences.length)),
+    type: "study",
     statusText:
       data.status === "pending" && data.attendences.some((who) => who.user.uid === uid) && "GOOD",
   }));
@@ -153,16 +153,19 @@ export const setStudyDataToCardCol = (
 
 const getVotePoint = (attCnt: number) => (attCnt === 0 ? 10 : attCnt === 5 ? 2 : 2);
 
-const getBadgeText = (status: StudyStatus, point: number): ITextAndColorSchemes => {
+const getBadgeText = (
+  status: StudyStatus,
+  point: number,
+): { text: string; colorScheme: ThemeTypings["colorSchemes"] } => {
   switch (status) {
     case "open":
-      return { text: "오픈", color: "var(--color-mint)" };
+      return { text: "스터디 오픈", colorScheme: "mintTheme" };
     case "dismissed":
-      return { text: "취소", color: "var(--color-red)" };
+      return { text: "닫힘", colorScheme: "grayTheme" };
     case "free":
-      return { text: "자유", color: "var(--color-green)" };
+      return { text: "자유 참여", colorScheme: "purple" };
     case "pending":
-      return { text: `+${point} POINT`, color: "redTheme" };
+      return { text: `+${point} POINT`, colorScheme: "redTheme" };
   }
 };
 

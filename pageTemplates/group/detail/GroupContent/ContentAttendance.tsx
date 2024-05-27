@@ -81,7 +81,7 @@ function ContentAttend({ group }) {
         <Month>
           <IconWrapper onClick={() => setIsThisWeek(false)}>
             {isThisWeek && (
-              <i className="fa-solid fa-caret-left fa-sm" style={{ color: "var(--gray-2)" }} />
+              <i className="fa-solid fa-caret-left fa-sm" style={{ color: "var(--gray-200)" }} />
             )}
           </IconWrapper>
           <div>
@@ -103,7 +103,7 @@ function ContentAttend({ group }) {
           </div>
           <IconWrapper onClick={() => setIsThisWeek(true)}>
             {!isThisWeek && (
-              <i className="fa-solid fa-caret-right fa-sm" style={{ color: "var(--gray-2)" }} />
+              <i className="fa-solid fa-caret-right fa-sm" style={{ color: "var(--gray-200)" }} />
             )}
           </IconWrapper>
         </Month>
@@ -233,7 +233,7 @@ const TopLine = styled.div`
   background-color: var(--gray-100);
   border: var(--border);
   font-size: 13px;
-  color: var(--gray-700);
+  color: var(--gray-600);
   > div {
     padding: var(--gap-1) 0;
     flex: 1;

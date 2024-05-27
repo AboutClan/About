@@ -90,7 +90,7 @@ const Button = styled.button<{ $isSelected: "main" | "sub" | null }>`
     props.$isSelected === "main"
       ? "var(--color-mint)"
       : props.$isSelected === "sub"
-        ? "var(--color-yellow)"
+        ? "var(--color-orange)"
         : null};
   color: ${(props) => (props.$isSelected ? "white" : "inherit")};
   border-radius: var(--rounded);

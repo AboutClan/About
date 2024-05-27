@@ -44,15 +44,15 @@ const Button = styled.button`
   display: inline-block;
   margin-left: 4px;
   padding: 0 4px;
-  color: var(--gray-700);
+  color: var(--gray-600);
 `;
 
 const CardContainer = styled.div`
   display: flex;
   align-items: center;
-  padding: 12px 16px; /* py-3 px-4 */
-  border-bottom: var(--border); /* border-b */
-  line-height: 24px; /* leading-6 */
+  padding: 12px 16px;
+  border-bottom: var(--border-main);
+  line-height: 24px;
   height: 72px;
 `;
 
@@ -75,7 +75,7 @@ const CommentText = styled.span`
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
   overflow: hidden;
-  color: var(--gray-700); /* text-gray-4 */
+  color: var(--gray-600); /* text-gray-4 */
   font-size: 13px;
 `;
 

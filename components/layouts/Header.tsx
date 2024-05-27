@@ -39,7 +39,8 @@ const HeaderContainer = styled.header`
   background-color: white;
   height: var(--header-h);
   font-size: 16px;
-  padding-right: 12px;
+  padding-right: 20px;
+  padding-left: 4px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -57,5 +58,5 @@ const LeftSection = styled.div`
 // Title 스타일
 const Title = styled.div`
   font-weight: 800; /* font-extrabold */
-  color: var(--gray-900); /* text-gray-1 - 색상은 예시입니다 */
+  color: var(--gray-800); /* text-gray-1 - 색상은 예시입니다 */
 `;

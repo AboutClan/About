@@ -56,11 +56,11 @@ const ItemContainer = styled.div`
   flex-direction: column;
   padding: var(--gap-3) var(--gap-4);
   padding-bottom: var(--gap-2);
-  border-bottom: 1px solid var(--gray-200);
+  border-bottom: var(--border-main);
   font-size: 13px;
   > span:first-child {
     font-size: 12px;
-    color: var(--gray-800);
+    color: var(--gray-700);
     margin-bottom: var(--gap-2);
   }
 `;
@@ -88,7 +88,7 @@ const Content = styled.span`
 
 const Point = styled.span`
   color: var(--color-mint);
-  font-size: 10px;
+  font-size: 12px;
 `;
 
 export default Like;

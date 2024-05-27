@@ -45,7 +45,6 @@ const Message = styled.div`
   transform: translate(-50%, -50%);
   font-size: 16px;
   font-weight: 600;
-  color: var(--gray-2);
 `;
 
 export default BlurredPart;

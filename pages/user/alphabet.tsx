@@ -233,8 +233,7 @@ const Item = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: var(--border);
-  border-bottom: var(--border);
+  border-bottom: var(--border-main);
 `;
 const ProfileWrapper = styled.div``;
 
@@ -273,7 +272,7 @@ const UserAlphabets = styled.div`
 
 const AlphabetCnt = styled.span<{ hasAlphabet: boolean }>`
   font-size: 12px;
-  color: ${(props) => (props.hasAlphabet ? "var(--gray-800)" : "var(--gray-700)")};
+  color: ${(props) => (props.hasAlphabet ? "var(--gray-700)" : "var(--gray-600)")};
 `;
 
 export default CollectionAlphabet;

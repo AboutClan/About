@@ -23,7 +23,7 @@ function Notice() {
   return (
     <>
       <Slide isFixed={true}>
-        <Header title="공지" isSlide={false} />
+        <Header title="알림" isSlide={false} />
         <NoticeNav
           isNotice={isNotice}
           setIsNotice={setIsNotice}
@@ -31,26 +31,19 @@ function Notice() {
         />
       </Slide>
       <Slide>
-        <Layout>
-          <Container>
-            {isNotice ? <NoticeItem /> : <NoticeActive activeLogs={activeLogs} />}
-          </Container>
-        </Layout>
+        <Container>
+          {isNotice ? <NoticeItem /> : <NoticeActive activeLogs={activeLogs} />}
+        </Container>
       </Slide>
     </>
   );
 }
 
-const Layout = styled.div`
-  margin-top: 58px;
-  background-color: white;
-`;
-
 const Container = styled.div`
-  color: var(--gray-900);
   display: flex;
   flex-direction: column;
-  margin-top: var(--gap-2);
+  margin-top: 56px;
+  background-color: white;
 `;
 
 export default Notice;

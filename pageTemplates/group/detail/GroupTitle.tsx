@@ -62,10 +62,10 @@ function GroupTitle({
         {isAdmin && (
           <SettingBtnNav>
             <button onClick={() => router.push(`${router.asPath}/member`)}>
-              <i className="fa-regular fa-user-group fa-sm"  />
+              <i className="fa-regular fa-user-group fa-sm" />
             </button>
             <button onClick={onClick}>
-              <i className="fa-regular fa-gear fa-sm"  />
+              <i className="fa-regular fa-gear fa-sm" />
               {isWaiting && (
                 <IconWrapper>
                   <NewAlertIcon />
@@ -117,7 +117,7 @@ const Title = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: var(--gap-1);
-  color: var(--gray-900);
+  color: var(--gray-800);
   font-size: 18px;
 
   font-weight: 800;
@@ -132,7 +132,7 @@ const SubInfo = styled.div`
   height: 32px;
   font-size: 13px;
   display: flex;
-  color: var(--gray-700);
+  color: var(--gray-600);
 `;
 
 export default GroupTitle;

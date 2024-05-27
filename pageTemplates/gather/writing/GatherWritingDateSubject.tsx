@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import Input from "../../../components/atoms/Input";
+import { Input } from "../../../components/atoms/Input";
 import TimeSelectorUnit from "../../../components/atoms/TimeSelectorUnit";
 import { TIME_SELECTOR_UNIT } from "../../../constants/util/util";
 import { DispatchType } from "../../../types/hooks/reactTypes";
@@ -129,7 +129,6 @@ const TimeContent = styled.div`
   align-items: center;
   margin-top: var(--gap-4);
   > span:first-child {
-    color: var(--gray-2);
     font-size: 14px;
     font-weight: 600;
     margin-right: var(--gap-3);

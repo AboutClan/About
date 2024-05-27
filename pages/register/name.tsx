@@ -2,7 +2,7 @@ import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { ChangeEvent, useRef, useState } from "react";
 
-import Input from "../../components/atoms/Input";
+import { Input } from "../../components/atoms/Input";
 import BottomNav from "../../components/layouts/BottomNav";
 import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";

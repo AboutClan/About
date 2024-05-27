@@ -43,7 +43,7 @@ export function CopyBtn({ size, text }: ICopyBtn) {
 
   return (
     <button onClick={handleCopy}>
-      <i className="fa-solid fa-copy" style={{ color: "var(--gray-900)" }} />
+      <i className="fa-solid fa-copy" style={{ color: "var(--gray-800)" }} />
     </button>
   );
 }

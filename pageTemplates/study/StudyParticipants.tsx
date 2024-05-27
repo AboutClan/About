@@ -76,7 +76,7 @@ export default function StudyParticipants({ participants, absences }: IStudyPart
             align="center"
             justify="center"
             h="200"
-            color="var(--gray-700)"
+            color="var(--gray-600)"
             fontSize="16px"
             textAlign="center"
           >

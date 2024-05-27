@@ -19,7 +19,6 @@ export type ImageContainer = any;
 
 export interface IImageSliderItem {
   image: string;
-
   title: string;
   id: number;
 }

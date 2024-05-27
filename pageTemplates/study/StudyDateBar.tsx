@@ -26,7 +26,7 @@ function StudyDateBar({ isPrivateStudy, place }: IStudyDateBar) {
           <Button
             size="sm"
             variant="outline"
-            color="var(--gray-700)"
+            color="var(--gray-600)"
             rightIcon={<i className="fa-solid fa-plus fa-xs" />}
             padding="0 var(--gap-2)"
             borderColor="var(--gray-400)"
@@ -44,6 +44,7 @@ function StudyDateBar({ isPrivateStudy, place }: IStudyDateBar) {
 const StudyDateBarContainer = styled.div`
   padding: 16px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   background-color: white;
 `;

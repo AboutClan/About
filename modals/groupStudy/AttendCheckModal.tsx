@@ -135,7 +135,7 @@ const ColorItem = styled.div`
   margin-right: var(--gap-3);
   > span {
     font-size: 13px;
-    color: var(--gray-700);
+    color: var(--gray-600);
   }
 `;
 

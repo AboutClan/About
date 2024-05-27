@@ -23,7 +23,7 @@ function PromotionDetail() {
           w="50%"
           mr="var(--gap-2)"
           onClick={() => setIsAllModal(true)}
-          color="var(--gray-800)"
+          color="var(--gray-700)"
           borderRadius="var(--rounded-lg)"
           border="1px solid var(--gray-300)"
         >
@@ -33,7 +33,7 @@ function PromotionDetail() {
           w="50%"
           onClick={onClick}
           borderRadius="var(--rounded-lg)"
-          color="var(--gray-800)"
+          color="var(--gray-700)"
           border="1px solid var(--gray-300)"
         >
           지난 당첨 기록

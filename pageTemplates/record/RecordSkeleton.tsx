@@ -166,14 +166,14 @@ const MyRecordItem = styled.div`
 `;
 const ContentName = styled.span`
   margin-right: var(--gap-2);
-  color: var(--gray-700);
+  color: var(--gray-600);
   font-size: 13px;
 `;
 
 const ContentValue = styled.span`
   font-weight: 700;
   font-size: 14px;
-  color: var(--gray-800);
+  color: var(--gray-700);
 `;
 const SpaceBadge = styled.section`
   display: flex;
@@ -205,7 +205,7 @@ const Category = styled.div`
   }
   > span:last-child {
     font-size: 10px;
-    color: var(--gray-700);
+    color: var(--gray-600);
   }
 `;
 
@@ -242,7 +242,7 @@ const DayLine = styled.div`
   margin: var(--gap-2) 24px;
   display: flex;
   justify-content: space-between;
-  color: var(--gray-700);
+  color: var(--gray-600);
   font-size: 12px;
 `;
 
@@ -260,11 +260,11 @@ const Block = styled.div`
 const Date = styled.div`
   margin-bottom: var(--gap-3);
   font-size: 13px;
-  color: var(--gray-800);
+  color: var(--gray-700);
 `;
 const StudyInfo = styled.div`
   font-size: 12px;
-  color: var(--gray-800);
+  color: var(--gray-700);
 `;
 const PlaceInfo = styled.div`
   margin-bottom: var(--gap-3);
@@ -273,7 +273,7 @@ const PlaceInfo = styled.div`
 const PlaceName = styled.div`
   display: flex;
   align-items: center;
-  color: var(--gray-800);
+  color: var(--gray-700);
   font-size: 14px;
   > span:first-child {
     font-weight: 600;
@@ -295,6 +295,6 @@ const MemberWrapper = styled.div`
 
 const Member = styled.span`
   margin-right: var(--gap-1);
-  color: var(--gray-700);
+  color: var(--gray-600);
 `;
 export default RecordSkeleton;

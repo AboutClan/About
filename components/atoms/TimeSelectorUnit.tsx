@@ -41,7 +41,7 @@ function TimeSelectorUnit({ time, setTime, timeArr, disabled }: ITimeSelectorUni
 
 const Select = styled.select`
   font-weight: 600;
-  color: var(--gray-900);
+  color: var(--gray-800);
 `;
 
 const Layout = styled.div`
@@ -49,7 +49,6 @@ const Layout = styled.div`
   align-items: center;
 
   > select {
-    color: var(--gray-2);
     width: 68px;
     height: 36px;
     padding-left: 6px;
@@ -61,7 +60,7 @@ const Layout = styled.div`
 
     :focus {
       outline: none;
-      border: 1 5px solid var(--gray-2);
+      border: 1 5px solid var(--gray-200);
     }
   }
 `;

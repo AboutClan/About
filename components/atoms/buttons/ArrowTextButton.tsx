@@ -1,9 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import LeftArrowIcon from "../../../assets/icons/arrows/LeftArrowIcon";
-import RightArrowIcon from "../../../assets/icons/arrows/RightArrowIcon";
-
 type Size = "sm" | "md";
 export interface IArrowTextButton {
   dir: "right" | "left";
@@ -16,14 +13,14 @@ function ArrowTextButton({ dir, text, onClick, size }: IArrowTextButton) {
   return (
     <StyledButton onClick={onClick} size={size}>
       {dir === "left" && (
-        <Box px="3.5px" h="14px">
-          <LeftArrowIcon />
+        <Box>
+          <i className="fa-regular fa-arrow-left" />
         </Box>
       )}
       {text}
       {dir === "right" && (
-        <Box px="3.5px" h="14px">
-          <RightArrowIcon />
+        <Box>
+          <i className="fa-regular fa-arrow-right" />
         </Box>
       )}
     </StyledButton>

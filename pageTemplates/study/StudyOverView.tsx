@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -45,7 +45,7 @@ function StudyOverview({
         borderWidth: 1,
         disableAnchor: false,
         backgroundColor: "var(--gray-100)",
-        borderColor: "var(--gray-700)",
+        borderColor: "var(--gray-600)",
         anchorSize: new naver.maps.Size(10, 10),
         anchorColor: "var(--gray-100)",
       },
@@ -59,8 +59,12 @@ function StudyOverview({
         <InfoContainer>
           <InfoRow>
             <InfoIconText className="flex-1">
-              <i className="fa-solid fa-location-dot fa-lg" />
-              <span>{locationDetail}</span>
+              <Box w="16px" textAlign="center" color="var(--gray-600)">
+                <i className="fa-solid fa-location-dot " />
+              </Box>
+              <Box as="span" ml="4px">
+                {locationDetail}
+              </Box>
             </InfoIconText>
             <Button
               size="xs"
@@ -80,8 +84,12 @@ function StudyOverview({
           </InfoRow>
           <InfoRow>
             <InfoIconText>
-              <i className="fa- fa-clock" />
-              <span>{time}</span>
+              <Box w="16px" textAlign="center" color="var(--gray-600)">
+                <i className="fa-solid fa-clock" />
+              </Box>
+              <Box as="span" ml="4px">
+                {time}
+              </Box>
             </InfoIconText>
           </InfoRow>
         </InfoContainer>
@@ -127,7 +135,7 @@ const InfoIconText = styled.div`
   svg {
     width: 14px; /* Adjusted from w-3.5 to actual px */
     margin-right: 8px;
-    color: var(--gray-700); /* text-gray-3 */
+    color: var(--gray-600); /* text-gray-3 */
   }
 `;
 

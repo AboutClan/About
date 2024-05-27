@@ -60,7 +60,6 @@ const Message = styled.div`
   font-size: 14px;
   text-align: center;
   font-weight: 600;
-  color: var(--gray-2);
 `;
 
 export default RequestSecedeModal;

@@ -54,7 +54,7 @@ const LogHeader = styled.header`
     text-align: center;
   }
   > span:first-child {
-    color: var(--gray-900);
+    color: var(--gray-800);
   }
   > span:last-child {
     padding-left: var(--gap-1);
@@ -68,7 +68,7 @@ const Container = styled.div`
 `;
 
 const Item = styled.div`
-  color: var(--gray-900);
+  color: var(--gray-800);
   height: 40px;
   display: flex;
   justify-content: space-between;

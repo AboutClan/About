@@ -44,13 +44,13 @@ function AdminStudyStatus() {
       <Layout>
         <Date>
           <button onClick={() => setDate((old) => old.subtract(1, "day"))}>
-            <i className="fa-solid fa-chevron-left" style={{ color: "var(--gray-800)" }} />
+            <i className="fa-solid fa-chevron-left" style={{ color: "var(--gray-700)" }} />
           </button>
 
           <span>{date.format("M월 DD일")}</span>
 
           <button onClick={() => setDate((old) => old.add(1, "day"))}>
-            <i className="fa-solid fa-chevron-right" style={{ color: "var(--gray-800)" }} />
+            <i className="fa-solid fa-chevron-right" style={{ color: "var(--gray-700)" }} />
           </button>
         </Date>
         <Main>

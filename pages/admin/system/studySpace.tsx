@@ -233,7 +233,7 @@ const ImageContainer = styled.div`
 `;
 
 const SpaceInfo = styled.div`
-  color: var(--gray-800);
+  color: var(--gray-700);
   margin-left: 12px;
   display: flex;
   flex-direction: column;
@@ -252,11 +252,11 @@ const Status = styled.div`
 const Branch = styled.input`
   font-weight: 800;
   font-size: 16px;
-  color: var(--gray-900);
+  color: var(--gray-800);
 `;
 
 const Info = styled.input`
-  color: var(--gray-700);
+  color: var(--gray-600);
   font-size: 12px;
 `;
 

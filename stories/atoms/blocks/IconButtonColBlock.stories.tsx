@@ -15,7 +15,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {
     props: {
-      icon: <i className="fa-light fa-lock" style={{ color: "var(--gray-3)" }} />,
+      icon: <i className="fa-light fa-lock" style={{ color: "var(--gray-300)" }} />,
       title: "I'm title prop",
       buttonProp: {
         text: "I'm Button's text prop",

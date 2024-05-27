@@ -179,13 +179,12 @@ const CommentContent = styled.div`
   font-size: 12px;
 
   > span:last-child {
-    color: var(--gray-2);
   }
 `;
 
 const CommentDetail = styled.span`
   font-size: 11px;
-  color: var(--gray-700);
+  color: var(--gray-600);
 `;
 
 const MyText = styled.textarea`

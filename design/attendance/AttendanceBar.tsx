@@ -90,7 +90,6 @@ const BadgeName = styled.span<{ color: string }>`
 `;
 
 const IconWrapper = styled.button`
-  color: var(--gray-2);
   font-size: 14px;
   margin-left: var(--gap-2);
 `;

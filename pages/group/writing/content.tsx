@@ -123,7 +123,7 @@ const RuleItem = styled.li`
     padding: 4px 8px;
 
     :focus {
-      outline-color: var(--gray-900);
+      outline-color: var(--gray-800);
     }
   }
 `;

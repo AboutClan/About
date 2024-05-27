@@ -98,7 +98,7 @@ function AttendanceModal({ type, setIsModal }: AttendanceModalProps) {
 
 const Message = styled.div`
   padding: var(--gap-2) var(--gap-3);
-  color: var(--gray-2);
+
   border-radius: var(--rounded);
   background-color: var(--gray-100);
 `;
@@ -122,7 +122,7 @@ const ScoreBarWrapper = styled.div`
   flex-direction: column;
   > span {
     font-size: 12px;
-    color: var(--gray-700);
+    color: var(--gray-600);
     margin-left: auto;
   }
 `;

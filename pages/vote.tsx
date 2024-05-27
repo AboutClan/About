@@ -334,7 +334,7 @@ const getInfoWindow = (par: IParticipation) => {
     borderWidth: 1,
     disableAnchor: false,
     backgroundColor: "var(--gray-100)",
-    borderColor: "var(--gray-700)",
+    borderColor: "var(--gray-600)",
     anchorSize: new naver.maps.Size(10, 10),
     anchorColor: "var(--gray-100)",
   };

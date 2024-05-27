@@ -24,7 +24,7 @@ function ButtonCheckNav({
           ? filtered.map((item) => (
               <Button
                 bgColor={item === selectedButton ? "var(--color-mint)" : "white"}
-                color={item === selectedButton ? "white" : "var(--gray-2)"}
+                color={item === selectedButton ? "white" : "var(--gray-200)"}
                 key={item}
                 onClick={() => setSelectedButton(item)}
                 ml="0px !important"
@@ -38,14 +38,14 @@ function ButtonCheckNav({
               <Button
                 p="0 var(--gap-3)"
                 variant="ghost"
-                color={item === selectedButton ? "var(--gray-900)" : "var(--gray-700)"}
+                color={item === selectedButton ? "var(--gray-800)" : "var(--gray-600)"}
                 key={item}
                 onClick={() => setSelectedButton(item)}
                 ml="0px !important"
                 fontWeight={item === selectedButton ? 600 : 400}
                 borderBottom={
                   item === selectedButton
-                    ? "2px solid var(--gray-900)"
+                    ? "2px solid var(--gray-800)"
                     : "2px solid var(--gray-200)"
                 }
                 borderRadius="0"

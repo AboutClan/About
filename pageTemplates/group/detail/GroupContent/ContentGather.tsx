@@ -35,7 +35,7 @@ const Message = styled.div`
   margin-top: 40px;
   font-size: 16px;
 
-  color: var(--gray-700);
+  color: var(--gray-600);
 `;
 
 export default ContentGather;

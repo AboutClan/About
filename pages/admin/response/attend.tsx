@@ -54,18 +54,18 @@ const ItemHeader = styled.header`
   flex: 1;
   margin-top: var(--gap-2);
 
-  color: var(--gray-800);
+  color: var(--gray-700);
 
   span {
     font-size: 12px;
-    color: var(--gray-700);
+    color: var(--gray-600);
     margin-right: 8px;
   }
 `;
 
 const Content = styled.div`
   padding: var(--gap-2) 0;
-  color: var(--gray-800);
+  color: var(--gray-700);
   font-size: 13px;
   display: flex;
   align-items: center;

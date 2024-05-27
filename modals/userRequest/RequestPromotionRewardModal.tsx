@@ -88,7 +88,7 @@ const Overview = styled.div`
 
 const ImageText = styled.span`
   font-size: 12px;
-  color: var(--gray-900);
+  color: var(--gray-800);
   margin-bottom: auto;
 `;
 const Container = styled.div``;

@@ -49,7 +49,7 @@ function GatherParticipation({ data }: IGatherParticipation) {
             ) : (
               <>
                 <span style={{ marginLeft: "4px" }} />
-                <i className="fa-solid fa-infinity" style={{ color: "var(--gray-2)" }} />
+                <i className="fa-solid fa-infinity" style={{ color: "var(--gray-200)" }} />
               </>
             )}
           </Box>
@@ -70,7 +70,7 @@ function GatherParticipation({ data }: IGatherParticipation) {
                   size="md"
                 />
                 <CrownWrapper>
-                  <i className="fa-solid fa-crown" style={{ color: "var(--color-yellow)" }} />
+                  <i className="fa-solid fa-crown" style={{ color: "var(--color-orange)" }} />
                 </CrownWrapper>
               </Organizer>
               <UserOverview>
@@ -171,7 +171,6 @@ const UserOverview = styled.div`
     -webkit-box-orient: vertical;
     overflow: hidden;
     font-size: 13px;
-    color: var(--gray-2);
   }
 `;
 const Organizer = styled.div`
@@ -182,7 +181,7 @@ const ParticipateTime = styled.div<{ isFirst: boolean }>`
   font-size: 16px;
   margin-left: auto;
   margin-right: var(--gap-2);
-  color: ${(props) => (props.isFirst ? "var(--color-mint)" : "var(--color-yellow)")};
+  color: ${(props) => (props.isFirst ? "var(--color-mint)" : "var(--color-orange)")};
   > span:last-child {
     margin-left: 2px;
   }

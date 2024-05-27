@@ -19,8 +19,8 @@ type Size = "sm" | "md" | "lg";
 
 export interface IImageTile {
   imageUrl: string;
-  text: string;
-  url: string;
+  text?: string;
+  url?: string;
   priority?: boolean;
 }
 
@@ -36,41 +36,60 @@ function ImageTileSlider({ imageTileArr, size, aspect = 1, slidesPerView }: IIma
     <Swiper slidesPerView={slidesPerView} spaceBetween={12}>
       {imageTileArr.map((imageTile, index) => (
         <SwiperSlide key={index}>
-          <CustomLink size={size} href={imageTile.url}>
-            <Box p={size === "sm" && "4px"} bgColor="white">
-              <AspectRatio
-                ratio={aspect / 1}
-                pos="relative"
-                rounded="md"
-                overflow="hidden"
-                border="var(--border)"
-                bgColor="white"
-              >
-                <Image
-                  src={imageTile.imageUrl}
-                  priority={imageTile?.priority}
-                  fill={true}
-                  alt="slideImage"
-                  sizes="60px"
-                />
-              </AspectRatio>
-            </Box>
-            <Text size={size}>{imageTile.text}</Text>
-          </CustomLink>
+          <Wrapper size={size}>
+            {imageTile?.url ? (
+              <CustomLink href={imageTile.url}>
+                <SlideItem imageTile={imageTile} size={size} aspect={aspect} />
+              </CustomLink>
+            ) : (
+              <SlideItem imageTile={imageTile} size={size} aspect={aspect} />
+            )}
+          </Wrapper>
         </SwiperSlide>
       ))}
     </Swiper>
   );
 }
 
-const CustomLink = styled(Link)<{ size: Size }>`
+const SlideItem = ({
+  imageTile,
+  size,
+  aspect,
+}: {
+  imageTile: IImageTile;
+  size: Size;
+  aspect: number;
+}) => (
+  <>
+    <Box p={size === "sm" && "4px"} bgColor="white">
+      <AspectRatio
+        ratio={aspect / 1}
+        pos="relative"
+        rounded="md"
+        overflow="hidden"
+        border="var(--border)"
+        bgColor="white"
+      >
+        <Image
+          src={imageTile.imageUrl}
+          priority={imageTile?.priority}
+          fill={true}
+          alt="slideImage"
+          sizes="60px"
+        />
+      </AspectRatio>
+    </Box>
+    {imageTile?.text && <Text size={size}>{imageTile.text}</Text>}
+  </>
+);
+
+const Wrapper = styled.div<{ size: Size }>`
   display: flex;
   flex-direction: column;
   background-color: white;
   border-radius: var(--rounded-lg);
-  border: var(--border);
+  border: var(--border-main);
   padding: 4px;
-  box-shadow: var(--shadow);
 
   ${(props) => {
     switch (props.size) {
@@ -82,14 +101,15 @@ const CustomLink = styled(Link)<{ size: Size }>`
         return css`
           padding: 12px;
           padding-bottom: 4px;
-          border: var(--border);
-          box-shadow: var(--shadow);
+          border: var(--border-main);
         `;
       default:
         return css``;
     }
   }}
 `;
+
+const CustomLink = styled(Link)``;
 
 const Text = styled(SingleLineText)<{ size: Size }>`
   text-align: center;

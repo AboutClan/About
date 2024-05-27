@@ -41,7 +41,7 @@ function PageTracker() {
 
       switch (curFirstSegment) {
         case "home":
-          setLeftSlide();
+          if (prevSegments[0] !== "vote") setLeftSlide();
           break;
 
         case "study":

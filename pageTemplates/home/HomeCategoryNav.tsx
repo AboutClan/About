@@ -4,12 +4,14 @@ import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import CalendarIcon from "../../assets/icons/CalendarIcon";
-import ChatIcon from "../../assets/icons/ChatIcon";
-import GiftIcon from "../../assets/icons/GiftIcon";
-import LoaderIcon from "../../assets/icons/LoaderIcon";
-import UserTwoIcon from "../../assets/icons/UserTwoIcon";
 import { NewAlertIcon } from "../../components/atoms/Icons/AlertIcon";
+import {
+  CalendarIcon,
+  CampfireIcon,
+  GroupIcon,
+  MemberIcon,
+  StoreIcon,
+} from "../../components/atoms/Icons/CategoryIcons";
 import NotCompletedModal from "../../modals/system/NotCompletedModal";
 import { slideDirectionState } from "../../recoils/navigationRecoils";
 import { LocationEn } from "../../types/services/locationTypes";
@@ -39,33 +41,47 @@ function HomeCategoryNav() {
         </Item>
         <Item className="about_navigation2">
           <CustomLink href="event" onClick={onClick}>
-            <GiftIcon />
-
+            <StoreIcon />
+            {/* {isPointAlert && (
+              <IconWrapper>
+                <FontAwesomeIcon
+                  icon={faStar}
+                  color="var(--color-red)"
+                  size="sm"
+                />
+              </IconWrapper>
+            )} */}
             <IconWrapper>
-              <NewAlertIcon />
+              <NewAlertIcon size="lg" />
             </IconWrapper>
           </CustomLink>
-          <span>스토어</span>
+          <span>이벤트</span>
         </Item>
         <Item className="about_navigation3">
           <CustomLink
             onClick={onClick}
             href={`/member/${convertLocationLangTo(location as LocationEn, "kr")}`}
           >
-            <UserTwoIcon />
+            <MemberIcon />{" "}
+            {/* <IconWrapper>
+              <NewAlertIcon size="lg" />
+            </IconWrapper> */}
           </CustomLink>
           <span>동아리원</span>
         </Item>
         <Item className="about_navigation4">
           <CustomLink href="review" onClick={onClick}>
-            <ChatIcon />
+            <GroupIcon />{" "}
+            {/* <IconWrapper>
+              <NewAlertIcon size="lg" />
+            </IconWrapper> */}
           </CustomLink>
           <span>리뷰</span>
         </Item>
         <Item>
-          <CustomLink href="review" onClick={onClick}>
-            <LoaderIcon />
-          </CustomLink>
+          <Button onClick={() => setIsNotCompletedModal(true)}>
+            <CampfireIcon />
+          </Button>
           <span>커뮤니티</span>
         </Item>
       </Layout>
@@ -77,9 +93,8 @@ function HomeCategoryNav() {
 const Layout = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 24px 20px;
+  padding: 16px 24px;
   padding-bottom: 8px;
-  background-color: white;
 `;
 
 const IconWrapper = styled.div`
@@ -97,21 +112,18 @@ const Item = styled.div`
   > span {
     white-space: nowrap;
     font-size: 12px;
-    font-weight: 500;
-    color: black;
+    font-weight: 400;
   }
 `;
 
 const CustomLink = styled(Link)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 42px;
-  height: 42px;
   margin-bottom: 8px;
   position: relative;
-  background-color: var(--gray-100);
-  border-radius: 6px;
+`;
+
+const Button = styled.button`
+  margin-bottom: 9px;
+  position: relative;
 `;
 
 export default HomeCategoryNav;

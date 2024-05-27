@@ -43,7 +43,7 @@ const Button = styled.button<{ isSelected: boolean }>`
   border: 1.5px solid var(--gray-300);
   border-radius: 12px;
   margin-right: 12px;
-  color: ${(props) => (props.isSelected ? "white" : "var(--gray-800)")};
+  color: ${(props) => (props.isSelected ? "white" : "var(--gray-700)")};
   font-size: 13px;
   background-color: ${(props) => (props.isSelected ? "var(--color-mint)" : null)};
 `;

@@ -122,7 +122,7 @@ const BlockName = styled.div`
   height: 24px;
   display: flex;
   align-items: end;
-  color: var(--gray-800);
+  color: var(--gray-700);
   padding-left: 6px;
 `;
 

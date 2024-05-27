@@ -112,14 +112,14 @@ const LocationOpen = styled.div<{ location: Location }>`
 
 const Open = styled.div<{ location: Location }>`
   font-size: 10px;
-  color: ${(props) => LOCATION_TABLE_COLOR[props.location]};
+  color: ${(props) => LOCATION_TABLE_COLOR[props.location] || "var(--gray-500)"};
 `;
 
 const DayLine = styled.div`
   margin: var(--gap-2) 24px;
   display: flex;
   justify-content: space-between;
-  color: var(--gray-700);
+  color: var(--gray-600);
   font-size: 12px;
 `;
 

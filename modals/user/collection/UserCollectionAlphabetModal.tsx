@@ -54,7 +54,7 @@ const Item = styled.div`
   display: flex;
   font-size: 13px;
   border-bottom: var(--border);
-  color: var(--gray-2);
+
   > div {
     flex: 1;
     text-align: center;

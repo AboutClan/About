@@ -86,7 +86,7 @@ const ItemHeader = styled.header`
   > div {
     span {
       font-size: 10px;
-      color: var(--gray-700);
+      color: var(--gray-600);
       margin-left: 8px;
     }
   }
@@ -100,7 +100,7 @@ const Title = styled.div`
 
 const Content = styled.div`
   padding: 8px 0;
-  color: var(--gray-800);
+  color: var(--gray-700);
   font-size: 13px;
   min-height: 48px;
   display: flex;

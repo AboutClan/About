@@ -9,7 +9,6 @@ function PointSystemsModalFee() {
       <Layout>
         <Item>
           <Name>스터디 지각</Name>
-
           <i className="fa-light fa-2x fa-alarm-clock" />
           <Point>{POINT_SYSTEM_DEPOSIT.STUDY_ATTEND_LATE.value}원</Point>
         </Item>
@@ -21,14 +20,12 @@ function PointSystemsModalFee() {
         </Item>
         <Item>
           <Name>당일 불참 2</Name>
-
-          <i className="fa-light fa-2x fa-circle-x-mark" />
+          <i className="fa-light fa-2x fa-circle-xmark" />
           <Point>{POINT_SYSTEM_DEPOSIT.STUDY_ABSENT_AFTER.value}원</Point>
         </Item>
         <Item>
           <Name>한달 정산</Name>
-
-          <i className="fa-light fa-2x fa-calendar-x-mark" />
+          <i className="fa-light fa-2x fa-calendar-xmark" />
           <Point>{POINT_SYSTEM_DEPOSIT.STUDY_MONTH_CALCULATE.value}원</Point>
         </Item>
         <Item>
@@ -55,7 +52,7 @@ function PointSystemsModalFee() {
 const Layout = styled.div`
   margin-top: var(--gap-1);
   display: grid;
-  color: var(--gray-2);
+
   grid-template-columns: repeat(3, 1fr);
   > div:nth-child(-n + 3) {
     border-bottom: var(--border);

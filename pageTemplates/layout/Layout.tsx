@@ -36,7 +36,7 @@ function Layout({ children }: ILayout) {
 
   const [isErrorModal, setIsErrorModal] = useState(false);
 
-  const currentSegment = parseUrlToSegments(pathname)?.[0];
+  const currentSegment = parseUrlToSegments(pathname);
 
   useEffect(() => {
     if (PUBLIC_SEGMENT.includes(segment)) return;
@@ -59,17 +59,19 @@ function Layout({ children }: ILayout) {
     }
   }, [session]);
 
+  const isBottomNavCondition =
+    BASE_BOTTOM_NAV_SEGMENT.includes(currentSegment?.[0]) && !currentSegment?.[1];
+
   return (
     <>
       <Seo title="ABOUT" />
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
-
       {token && (
         <>
           <div id="root-modal">{children}</div>
           <PageTracker />
-          {BASE_BOTTOM_NAV_SEGMENT.includes(currentSegment) && <BottomNav />}
-          {isGuest && BASE_BOTTOM_NAV_SEGMENT.includes(currentSegment) && <GuestBottomNav />}
+          {isBottomNavCondition && <BottomNav />}
+          {isGuest && isBottomNavCondition && <GuestBottomNav />}
           <BaseModal isGuest={isGuest} isError={isErrorModal} setIsError={setIsErrorModal} />
         </>
       )}

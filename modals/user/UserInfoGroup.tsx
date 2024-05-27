@@ -28,7 +28,6 @@ const Contatiner = styled.div`
   justify-content: center;
 `;
 const Text = styled.span`
-  color: var(--gray-2);
   font-size: 13px;
 `;
 

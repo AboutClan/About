@@ -23,7 +23,8 @@ body {
   font-family: apple;
   font-size: 14px;
   background-color: var(--gray-100);
-  color: var(--gray-900);
+  color: var(--gray-800);
+  padding-bottom: 40px;
 }
 
 a {
@@ -43,7 +44,6 @@ a {
   min-width: 340px;
   max-width: 400px;
   padding-top: 56px !important;
-  padding-bottom: 40px;
   min-height: calc(100dvh - 96px);
   margin: 0 auto;
   background-color: var(--gray-100);

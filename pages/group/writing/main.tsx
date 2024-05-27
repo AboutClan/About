@@ -76,7 +76,7 @@ const Item = styled.div<{ isSelected: boolean }>`
   height: 60px;
   background-color: white;
   border-radius: var(--rounded-lg);
-  box-shadow: var(--shadow);
+
   border: ${(props) => (props.isSelected ? "2px solid var(--color-mint)" : "var(--border)")};
 `;
 
@@ -95,7 +95,7 @@ const Info = styled.div`
     font-weight: 600;
   }
   > span:last-child {
-    color: var(--gray-700);
+    color: var(--gray-600);
     font-size: 12px;
   }
 `;

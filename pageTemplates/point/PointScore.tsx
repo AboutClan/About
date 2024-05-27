@@ -22,7 +22,6 @@ const Layout = styled.div`
   padding: var(--gap-4);
   border-radius: var(--rounded-lg);
   background-color: white;
-  box-shadow: var(--shadow);
 `;
 
 export default PointScore;

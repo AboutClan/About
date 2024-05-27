@@ -130,10 +130,10 @@ const Layout = styled.button`
   flex-direction: column;
   background-color: white;
   border-radius: var(--rounded);
-  box-shadow: var(--shadow);
+
   padding: var(--gap-3);
   margin-bottom: var(--gap-4);
-  box-shadow: var(--shadow);
+
   border: var(--border);
 `;
 
@@ -182,17 +182,16 @@ const InfoItem = styled.div`
     display: inline-block;
     margin-right: var(--gap-2);
     font-weight: 600;
-    color: var(--gray-2);
   }
   > span:last-child {
-    color: var(--gray-700);
+    color: var(--gray-600);
   }
 `;
 
 const Content = styled.pre`
   text-align: start;
   font-size: 13px;
-  color: var(--gray-2);
+
   padding-top: var(--gap-3);
   font-family: apple;
   white-space: pre-wrap;

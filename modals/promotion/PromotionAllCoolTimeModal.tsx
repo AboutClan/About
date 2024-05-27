@@ -50,17 +50,17 @@ function PromotionAllCoolTimeModal({ promotionData, setIsModal }: IPromotionAllC
           <span>전체 홍보 현황</span>
           <Explanation>
             <div>
-              <i className="fa-regular fa-thumbs-up" style={{color:"var(--color-mint)"}} />
+              <i className="fa-regular fa-thumbs-up" style={{ color: "var(--color-mint)" }} />
               <span>신청 가능</span>
             </div>
             <div>
-              <i className="fa-regular fa-clock" style={{color:"var(--color-red)"}} />
+              <i className="fa-regular fa-clock" style={{ color: "var(--color-red)" }} />
               <span>쿨타임</span>
             </div>
           </Explanation>
         </Detail>
         <div onClick={() => setIsModal(false)}>
-          <i className="fa-regular fa-xmark fa-lg"  style={{color:"var(--gray-2)"}} />
+          <i className="fa-regular fa-xmark fa-lg" style={{ color: "var(--gray-200)" }} />
         </div>
       </ModalHeader>
     ),
@@ -121,7 +121,7 @@ const Detail = styled.div`
   align-items: center;
   font-size: 16px;
   font-weight: 700;
-  color: var(--gray-900);
+  color: var(--gray-800);
 `;
 
 const Explanation = styled.div`
@@ -134,7 +134,7 @@ const Explanation = styled.div`
     margin-left: var(--gap-2);
     > span {
       margin-left: var(--gap-1);
-      color: var(--gray-700);
+      color: var(--gray-600);
     }
   }
 `;
@@ -186,7 +186,6 @@ const Ok = styled.div`
 const Sum = styled.div`
   font-size: 13px;
   margin-left: var(--gap-1);
-  color: var(--gray-2);
 
   > span:first-child {
     margin-right: var(--gap-1);

@@ -116,14 +116,14 @@ const MyRecordItem = styled.div`
 
 const ContentName = styled.span`
   margin-right: var(--gap-2);
-  color: var(--gray-700);
+  color: var(--gray-600);
   font-size: 13px;
 `;
 
 const ContentValue = styled.span`
   font-weight: 700;
   font-size: 14px;
-  color: var(--gray-800);
+  color: var(--gray-700);
 `;
 
 export default RecordOverview;

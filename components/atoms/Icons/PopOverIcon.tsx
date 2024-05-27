@@ -5,7 +5,7 @@ import {
   PopoverCloseButton,
   PopoverContent,
   PopoverHeader,
-  PopoverTrigger
+  PopoverTrigger,
 } from "@chakra-ui/react";
 import styled from "styled-components";
 
@@ -19,7 +19,7 @@ export function PopOverIcon({ title, text }: IPopoverIcon) {
     <Popover>
       <PopoverTrigger>
         <IconWrapper>
-          <i className="fa-light fa-question-circle" style={{ color: "var(--gray-700)" }} />
+          <i className="fa-light fa-question-circle" style={{ color: "var(--gray-600)" }} />
         </IconWrapper>
       </PopoverTrigger>
       <PopoverContent ml="var(--gap-2)" fontSize="12px" _focus={{ outline: "none" }}>

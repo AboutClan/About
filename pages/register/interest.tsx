@@ -2,7 +2,7 @@ import { useSearchParams } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 
-import Input from "../../components/atoms/Input";
+import { Input } from "../../components/atoms/Input";
 import BottomNav from "../../components/layouts/BottomNav";
 import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
 import { INTEREST_DATA } from "../../constants/contentsText/ProfileData";
@@ -80,7 +80,7 @@ const Container = styled.div`
     margin-bottom: var(--gap-5);
     > span {
       display: inline-block;
-      color: var(--gray-900);
+      color: var(--gray-800);
 
       font-size: 14px;
       margin-bottom: var(--gap-2);
@@ -92,10 +92,10 @@ const Example = styled.div`
   margin-top: var(--gap-4);
 
   > div {
-    color: var(--gray-700);
-    padding: var(--gap-1);
-    background-color: var(--gray-200);
-    border: 1px solid var(--gray-300);
+    color: var(--gray-600);
+    padding: 4px 8px;
+    background-color: var(--gray-100);
+    border: var(--border-main);
     border-radius: var(--rounded-lg);
     display: flex;
     flex-wrap: wrap;
@@ -121,7 +121,7 @@ const Item = styled.div`
 //     color: var(--gray-500);
 //   }
 //   :focus {
-//     outline-color: var(--gray-900);
+//     outline-color: var(--gray-800);
 //   }
 // `;
 

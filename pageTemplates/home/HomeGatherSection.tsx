@@ -40,10 +40,18 @@ export default function HomeGatherSection() {
 
   return (
     <Box mb="24px">
-      <Flex align="center" h="58px" fontWeight={600} fontSize="20px">
-        🔥 ABOUT 모임
+      <Flex
+        mb="16px"
+        px="16px"
+        bgColor="white"
+        align="center"
+        h="58px"
+        fontWeight={600}
+        fontSize="18px"
+      >
+        ABOUT 모임
       </Flex>
-      <>
+      <Box px="16px">
         {cardDataArr.length ? (
           <CardColumnLayout
             cardDataArr={cardDataArr}
@@ -53,7 +61,7 @@ export default function HomeGatherSection() {
         ) : (
           <CardColumnLayoutSkeleton />
         )}
-      </>
+      </Box>
     </Box>
   );
 }
@@ -75,6 +83,7 @@ export const setGatherDataToCardCol = (
     },
     badge: getGatherBadge(gather.status),
     maxCnt: gather.memberCnt.max,
+    type: "gather",
   }));
 
   return cardCol;
@@ -83,12 +92,12 @@ export const setGatherDataToCardCol = (
 const getGatherBadge = (gatherStatus: GatherStatus): ITextAndColorSchemes => {
   switch (gatherStatus) {
     case "open":
-      return { text: "오픈", color: "var(--color-mint)" };
+      return { text: "모집 마감", colorScheme: "grayTheme" };
     case "close":
-      return { text: "취소", color: "var(--gray-500)" };
+      return { text: "취소", colorScheme: "grayTheme" };
     case "pending":
-      return { text: "모집중", color: "var(--color-red)" };
+      return { text: "모집중", colorScheme: "mintTheme" };
     case "end":
-      return { text: "open", color: "mint" };
+      return { text: "종료", colorScheme: "grayTheme" };
   }
 };

@@ -251,7 +251,7 @@ const TodayCircle = styled.div`
   height: 18px;
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  background-color: var(--gray-900);
+  background-color: var(--gray-800);
   color: white;
 `;
 

@@ -112,7 +112,7 @@ const BlockName = styled.div`
   background-color: var(--gray-200);
   font-weight: 600;
   display: flex;
-  color: var(--gray-700);
+  color: var(--gray-600);
 `;
 
 const NavBlock = styled.div`

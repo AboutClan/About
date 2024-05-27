@@ -9,12 +9,12 @@ import SectionBar from "../../components/molecules/bars/SectionBar";
 export default function EventPoint() {
   return (
     <>
-      <SectionBar title="다양한 포인트 획득처" size="md" />
       <Link href="/promotion">
         <AspectRatio position="relative" ratio={4 / 1}>
           <Image src={EVENT_BANNER_PROMOTION} fill={true} sizes="400px" alt="eventBanner" />
         </AspectRatio>
       </Link>
+      <SectionBar title="다양한 포인트 획득처" size="md" />
       <Box fontWeight={600}>
         <Link href="/event/point/activity">
           <Flex p="16px" justifyContent="space-between" borderBottom="var(--border)">
@@ -34,11 +34,7 @@ export default function EventPoint() {
           <Flex p="16px" justifyContent="space-between">
             <Flex>
               <Box mr="12px">
-                <i
-                  className="fa-duotone fa-meteor fa-lg"
-              
-                  style={{ color: "var(--color-red)" }}
-                />
+                <i className="fa-duotone fa-meteor fa-lg" style={{ color: "var(--color-red)" }} />
               </Box>
               이벤트에 참여하고
             </Flex>

@@ -12,7 +12,7 @@ export const FullScreen = styled.div<{ opacity?: number }>`
 `;
 
 export const ModalHeaderLine = styled.header`
-  color: var(--gray-900);
+  color: var(--gray-800);
   font-weight: 600;
   font-size: 16px;
   border-bottom: var(--border);
@@ -41,7 +41,7 @@ export const ModalFooterNav = styled.footer`
   }
   > button:first-child {
     font-weight: 600;
-    color: var(--gray-800);
+    color: var(--gray-700);
     padding-right: var(--gap-2);
   }
   > button:nth-child(2) {
@@ -61,11 +61,11 @@ export const ModalHeaderCenter = styled.header`
   > span:first-child {
     font-size: 18px;
     font-weight: 600;
-    color: var(--gray-900);
+    color: var(--gray-800);
   }
   > div {
     margin-top: var(--gap-3);
     font-size: 13px;
-    color: var(--gray-800);
+    color: var(--gray-700);
   }
 `;

@@ -43,6 +43,7 @@ export interface IPlace {
   location: Location;
   locationDetail: string;
   time: string;
+  mapUrl: string;
 }
 
 export type StudyStatus = "pending" | "open" | "dismissed" | "free";

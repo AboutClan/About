@@ -55,10 +55,9 @@ const ItemBlockLayout = styled.div`
   flex-direction: column;
   background-color: white;
   border-radius: var(--rounded);
-  box-shadow: var(--shadow);
+
   padding: var(--gap-3);
   margin-bottom: var(--gap-4);
-  box-shadow: var(--shadow);
 `;
 
 const Header = styled.header`
@@ -99,10 +98,10 @@ const InfoItem = styled.div`
     display: inline-block;
     margin-right: var(--gap-2);
     font-weight: 600;
-    color: var(--gray-700);
+    color: var(--gray-600);
   }
   > span:last-child {
-    color: var(--gray-700);
+    color: var(--gray-600);
   }
 `;
 
@@ -110,7 +109,7 @@ const Content = styled.pre`
   height: 36px;
   text-align: start;
   font-size: 12px;
-  color: var(--gray-2);
+
   margin-top: var(--gap-3);
   white-space: pre-wrap;
   /* display: -webkit-box;

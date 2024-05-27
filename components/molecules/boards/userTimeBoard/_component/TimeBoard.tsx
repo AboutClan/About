@@ -28,7 +28,7 @@ const TimeBoardContainer = styled.div`
   padding-bottom: 16px; /* pb-4 */
   display: flex;
   justify-content: space-around;
-  color: var(--gray-700); /* text-gray-3, assuming a specific gray color */
+  color: var(--gray-600); /* text-gray-3, assuming a specific gray color */
 `;
 
 const TimeBlockContainer = styled.div`
