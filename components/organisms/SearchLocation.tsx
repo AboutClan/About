@@ -1,4 +1,5 @@
 import { Box } from "@chakra-ui/react";
+
 import { KakaoLocationProps } from "../../types/externals/kakaoLocationSearch";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { Input } from "../atoms/Input";

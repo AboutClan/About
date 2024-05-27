@@ -6,8 +6,6 @@ interface IImageSliderPoint {
   imageContainer: ImageContainer;
 }
 
-const ITEM_WIDTH = 74;
-
 function ImageSliderPoint({ imageContainer }: IImageSliderPoint) {
   return (
     <Swiper

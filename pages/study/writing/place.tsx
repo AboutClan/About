@@ -1,6 +1,5 @@
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
@@ -12,7 +11,6 @@ import ButtonGroups, { IButtonOpions } from "../../../components/molecules/group
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
 import SearchLocation from "../../../components/organisms/SearchLocation";
 import { ACTIVE_LOCATIONS, LOCATION_TO_FULLNAME } from "../../../constants/locationConstants";
-
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";

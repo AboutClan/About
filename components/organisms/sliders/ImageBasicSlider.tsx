@@ -11,8 +11,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 SwiperCore.use([Navigation, Pagination]);
 
-type Size = "sm" | "md" | "lg";
-
 interface IImageTile {
   imageUrl: string;
   func: () => void;

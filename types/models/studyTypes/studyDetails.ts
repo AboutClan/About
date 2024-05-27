@@ -1,6 +1,6 @@
 import { Dayjs } from "dayjs";
-import { ActiveLocation } from "../../services/locationTypes";
 
+import { ActiveLocation } from "../../services/locationTypes";
 import { IUserSummary } from "../userTypes/userInfoTypes";
 import { IAbsence } from "./studyInterActions";
 

@@ -80,14 +80,21 @@ function VoteDrawerItem({
     if (heartType === "first") {
       newPrefer.place = null;
     }
+
     if (heartType === "second") {
-      newPrefer.subPlace = preferSub.filter((item) => item !== placeId);
+      if (Array.isArray(preferSub)) {
+        newPrefer.subPlace = preferSub.filter((item) => item !== placeId);
+      }
     }
     if (!heartType) {
       newPrefer.place = savedPrefer?.place || placeId;
-      newPrefer.subPlace = savedPrefer?.place
-        ? [placeId, ...savedPrefer?.subPlace]
-        : savedPrefer?.subPlace;
+      if (savedPrefer?.place) {
+        if (Array.isArray(savedPrefer.subPlace)) {
+          newPrefer.subPlace = [placeId, ...savedPrefer.subPlace];
+        }
+      } else {
+        newPrefer.subPlace = savedPrefer?.subPlace;
+      }
     }
 
     localStorage.setItem(
