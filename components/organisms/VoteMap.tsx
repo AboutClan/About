@@ -32,7 +32,7 @@ export default function VoteMap({
     if (!mapRef?.current || typeof naver === "undefined") return;
     const map = new naver.maps.Map(mapRef.current, mapOptions);
     mapInstanceRef.current = map;
-  }, []);
+  }, [mapOptions]);
 
   useEffect(() => {
     const map = mapInstanceRef.current;

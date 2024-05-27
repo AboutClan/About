@@ -14,3 +14,19 @@ export const getDistributionArr = (winList: IDailyCheckWinList[], size: number) 
 export const getPerformanceTime = () => {
   return performance.now() / 1000;
 };
+
+export const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
+  const R = 6371; // 지구 반경 (킬로미터)
+  const dLat = deg2rad(lat2 - lat1); // 위도 차이를 라디안으로 변환
+  const dLon = deg2rad(lon2 - lon1); // 경도 차이를 라디안으로 변환
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c; // 거리 계산
+  return distance;
+};
+
+const deg2rad = (deg) => {
+  return deg * (Math.PI / 180);
+};

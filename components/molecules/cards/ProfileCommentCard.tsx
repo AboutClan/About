@@ -20,7 +20,7 @@ export default function ProfileCommentCard({
   rightComponent,
   setMemo,
 }: IProfileCommentCard) {
-  console.log(23, leftComponent, rightComponent);
+ 
   return (
     <CardContainer>
       {leftComponent && <Box mr="16px">{leftComponent}</Box>}

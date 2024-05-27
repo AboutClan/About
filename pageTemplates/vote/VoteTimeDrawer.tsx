@@ -4,11 +4,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+
 import { IBottomDrawerLgOptions } from "../../components/organisms/drawer/BottomDrawerLg";
 import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
-
 import { STUDY_VOTE, STUDY_VOTE_CNT } from "../../constants/keys/queryKeys";
-import { PointSystemProp } from "../../constants/serviceConstants/pointSystemConstants";
+import {
+  POINT_SYSTEM_PLUS,
+  PointSystemProp,
+} from "../../constants/serviceConstants/pointSystemConstants";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
@@ -22,14 +25,15 @@ import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
+dayjs.locale("ko");
 interface IVoteTimeDrawer {
   myVote: IStudyVote;
-  voteScore: PointSystemProp;
+  voterCnt: number;
   actionType: StudyVoteMapActionType;
   setActionType: DispatchType<StudyVoteMapActionType>;
 }
 
-function VoteTimeDrawer({ myVote, voteScore, actionType, setActionType }: IVoteTimeDrawer) {
+function VoteTimeDrawer({ myVote, voterCnt, actionType, setActionType }: IVoteTimeDrawer) {
   const router = useRouter();
   const toast = useToast();
   const searchParams = useSearchParams();
@@ -67,6 +71,19 @@ function VoteTimeDrawer({ myVote, voteScore, actionType, setActionType }: IVoteT
     },
   });
 
+  const getVoteScoreObj = (voteCnt: number): PointSystemProp => {
+    switch (voteCnt) {
+      case 0:
+        return POINT_SYSTEM_PLUS.STUDY_VOTE.first;
+      case 1:
+        return POINT_SYSTEM_PLUS.STUDY_VOTE.second;
+      case 2:
+        return POINT_SYSTEM_PLUS.STUDY_VOTE.third;
+      default:
+        return POINT_SYSTEM_PLUS.STUDY_VOTE.basic;
+    }
+  };
+
   const handleSuccess = () => {
     queryClient.refetchQueries([STUDY_VOTE, date, convertLocationLangTo(location, "kr")]);
     queryClient.refetchQueries([
@@ -78,9 +95,9 @@ function VoteTimeDrawer({ myVote, voteScore, actionType, setActionType }: IVoteT
         value: -myPrevVotePoint,
       });
     }
-    if (studyDateStatus === "not passed" && voteScore) {
+    if (studyDateStatus === "not passed") {
       getPoint({
-        ...voteScore,
+        ...getVoteScoreObj(voterCnt),
         sub: date,
       });
       toast("success", `투표 완료! ${!myStudy ? "포인트가 적립되었습니다." : ""}`);
@@ -98,7 +115,7 @@ function VoteTimeDrawer({ myVote, voteScore, actionType, setActionType }: IVoteT
       moveToLink();
     }, 1000);
   };
-  console.log(1233, actionType);
+ 
   const drawerOptions: IBottomDrawerLgOptions = {
     header: {
       title: dayjs().format("M월 DD일 ddd요일"),

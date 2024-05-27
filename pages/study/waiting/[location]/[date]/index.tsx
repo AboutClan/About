@@ -1,11 +1,11 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import HighlightedTextButton from "../../../../../components/atoms/buttons/HighlightedTextButton";
 
+import HighlightedTextButton from "../../../../../components/atoms/buttons/HighlightedTextButton";
 import Divider from "../../../../../components/atoms/Divider";
 import Slide from "../../../../../components/layouts/PageSlide";
 import TabNav, { ITabNavOptions } from "../../../../../components/molecules/navs/TabNav";

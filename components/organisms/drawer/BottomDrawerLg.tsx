@@ -22,7 +22,7 @@ interface IBottomDrawerLg extends IModal {
   children: React.ReactNode;
   isAnimation?: boolean;
   height?: number;
-  isXPadding?: boolean;
+  isxpadding?: boolean;
   isOverlay?: boolean;
 }
 
@@ -30,9 +30,9 @@ export default function BottomDrawerLg({
   setIsModal,
   options,
   isAnimation = true,
-  height = 421.5,
+  height = 397.5,
   children,
-  isXPadding = true,
+  isxpadding = true,
   isOverlay = true,
 }: IBottomDrawerLg) {
   const header = options?.header;
@@ -49,7 +49,7 @@ export default function BottomDrawerLg({
       {isOverlay && <ScreenOverlay onClick={() => setIsModal(false)} />}
       <Layout
         height={height}
-        isXPadding={isXPadding}
+        isxpadding={isxpadding.toString()}
         drag="y"
         dragConstraints={{ top: 0, bottom: 0 }}
         onDragEnd={handleDragEnd}
@@ -84,7 +84,7 @@ export default function BottomDrawerLg({
   );
 }
 
-const Layout = styled(motion.div)<{ height: number; isXPadding: boolean }>`
+const Layout = styled(motion.div)<{ height: number; isxpadding: string }>`
   height: ${(props) => props.height}px;
   position: fixed;
   bottom: 0;
@@ -94,7 +94,7 @@ const Layout = styled(motion.div)<{ height: number; isXPadding: boolean }>`
   border-top-right-radius: var(--rounded-lg);
   background-color: white;
   z-index: 5000;
-  padding: ${(props) => (props.isXPadding ? "12px 20px" : "12px 0")};
+  padding: ${(props) => (props.isxpadding === "true" ? "12px 20px" : "12px 0")};
 
   display: flex;
   flex-direction: column;

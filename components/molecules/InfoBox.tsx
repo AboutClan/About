@@ -13,8 +13,8 @@ interface InfoBoxProps {
 function InfoBox({ infos }: InfoBoxProps) {
   return (
     <InfoContainer>
-      {infos.map((info) => (
-        <InfoRow>
+      {infos.map((info, idx) => (
+        <InfoRow key={idx}>
           <InfoIconText className="flex-1">
             <Box w="16px" textAlign="center" color="var(--gray-600)">
               {info.icon}

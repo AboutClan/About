@@ -1,8 +1,8 @@
 import { ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -192,7 +192,7 @@ export const setStudyDataToCardCol = (
     statusText:
       data.status === "pending" && data.attendences.some((who) => who.user.uid === uid) && "GOOD",
   }));
-  console.log(2, cardColData);
+
   if (isNotPassed) {
     cardColData.unshift({
       title: "스터디 대기소",
@@ -212,12 +212,11 @@ export const setStudyDataToCardCol = (
   return cardColData;
 };
 
-const getVotePoint = (attCnt: number) => (attCnt === 0 ? 10 : attCnt === 5 ? 2 : 2);
 
 const getBadgeText = (
   status: StudyStatus,
 ): { text: string; colorScheme: ThemeTypings["colorSchemes"] } => {
-  console.log(234, status);
+
   switch (status) {
     case "open":
       return { text: "스터디 오픈", colorScheme: "mintTheme" };

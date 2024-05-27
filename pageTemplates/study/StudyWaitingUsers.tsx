@@ -9,10 +9,10 @@ interface StudyWaitingUsersProps {
 }
 
 function StudyWaitingUsers({ studyWaitingUsers }: StudyWaitingUsersProps) {
-  console.log(1, studyWaitingUsers);
+
   const userCardArr: IProfileCommentCard[] = studyWaitingUsers.map((par, idx) => {
     const text = par.place.branch + " " + par.subPlace.map((place) => place.branch).join(" ");
-    console.log(2, text);
+    
     return {
       user: par.user,
       comment: text,
@@ -32,7 +32,7 @@ function StudyWaitingUsers({ studyWaitingUsers }: StudyWaitingUsersProps) {
       ),
     };
   });
-  console.log(studyWaitingUsers);
+  c
   return (
     <>
       {userCardArr.length ? (
@@ -63,7 +63,7 @@ function StudyWaitingUsers({ studyWaitingUsers }: StudyWaitingUsersProps) {
 
 const getPoint = (idx: number, subPlaceCnt: number) => {
   let value = POINT_SYSTEM_PLUS.STUDY_VOTE.basic.value;
-  let subCntValue = subPlaceCnt >= 5 ? 5 : subPlaceCnt;
+  const subCntValue = subPlaceCnt >= 5 ? 5 : subPlaceCnt;
 
   if (idx === 0) value += POINT_SYSTEM_PLUS.STUDY_VOTE.first.value;
   if (idx === 1) value += POINT_SYSTEM_PLUS.STUDY_VOTE.second.value;

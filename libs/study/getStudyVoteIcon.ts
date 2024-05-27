@@ -11,6 +11,6 @@ export const getStudyVoteIcon = (type: "default" | "main" | "sub", text: string)
     }
   };
   return `<div style=" width:72px; height:72px; justify-content:center; display: flex; flex-direction: column; align-items:center;">
-  <div style="padding:0px 4px; text-align:center; border:1px solid #cbd5e0;  background-color:#f7fafc; font-weight:600; font-size:12px; white-space: nowrap;">${text}</div>
+  <div style="padding:0px 4px; text-align:center; border:1px solid #9e9e9e; margin-bottom:8px;  background-color:#f5f5f5; font-weight:600; font-size:12px; white-space: nowrap;">${text}</div>
     ${getBasicIcon()}</div>`;
 };

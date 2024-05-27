@@ -20,7 +20,7 @@ export default function InfoCard({
   rightComponent,
   badge,
 }: IInfoCard) {
-  console.log(23, leftComponent, rightComponent);
+
   return (
     <CardContainer>
       {leftComponent && <Box mr="16px">{leftComponent}</Box>}
