@@ -99,7 +99,6 @@ const Container = styled.div`
   width: 100%;
   border-radius: var(--rounded-lg); /* rounded-lg */
   background-color: var(--gray-200); /* bg-gray-8 */
-  /* text-bg-2 */
   overflow-y: hidden;
   padding-top: 8px; /* py-2 */
   padding-bottom: 8px; /* py-2 */
@@ -122,7 +121,7 @@ const Item = styled.div<{ isActive: boolean }>`
   font-weight: 600; /* font-semibold */
   font-size: 16px; /* text-base */
   height: ${ITEM_HEIGHT}px;
-  color: ${({ isActive }) => (isActive ? "#FFFFFF" : "var(--gray-200)")}; /* Conditional color */
+  color: ${({ isActive }) => (isActive ? "#FFFFFF" : "var(--gray-600)")}; /* Conditional color */
 `;
 
 const Highlight = styled.div`

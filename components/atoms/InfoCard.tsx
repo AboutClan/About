@@ -1,55 +1,43 @@
 import { Box, Flex } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
-import Avatar from "../../atoms/Avatar";
-import UserBadge from "../../atoms/badges/UserBadge";
+import Avatar from "./Avatar";
 
-export interface IProfileCommentCard {
-  user: IUserSummary;
-  comment?: string;
+export interface IInfoCard {
+  name: string;
+  image: string;
+  text: string;
   leftComponent?: React.ReactNode;
   rightComponent?: React.ReactNode;
-  setMemo?: () => void;
+  badge?: React.ReactNode;
 }
 
-export default function ProfileCommentCard({
-  user,
-  comment,
+export default function InfoCard({
+  image,
+  text,
+  name,
   leftComponent,
   rightComponent,
-  setMemo,
-}: IProfileCommentCard) {
- 
+  badge,
+}: IInfoCard) {
+
   return (
     <CardContainer>
       {leftComponent && <Box mr="16px">{leftComponent}</Box>}
-      <Avatar image={user.profileImage} size="md" avatar={user.avatar} uid={user.uid} />
+      <Avatar image={image} size="md" />
       <UserInfoContainer>
         <UserNameBadgeContainer>
-          <span>{user.name}</span>
-          <UserBadge score={user.score} uid={user.uid} />
+          <span>{name}</span>
+          {badge}
         </UserNameBadgeContainer>
-        <Flex alignItems="center" flex={1}>
-          <CommentText>{comment !== null ? comment : user.comment}</CommentText>
-          {setMemo && (
-            <Button onClick={setMemo}>
-              <i className="fa-regular fa-pen-to-square fa-sm" />
-            </Button>
-          )}
+        <Flex alignItems="center">
+          <CommentText>{text}</CommentText>
         </Flex>
       </UserInfoContainer>
       <RightComponentContainer>{rightComponent}</RightComponentContainer>
     </CardContainer>
   );
 }
-
-const Button = styled.button`
-  display: inline-block;
-  margin-left: 4px;
-  padding: 0 4px;
-  color: var(--gray-600);
-`;
 
 const CardContainer = styled.div`
   display: flex;
@@ -61,8 +49,7 @@ const CardContainer = styled.div`
 `;
 
 const UserInfoContainer = styled.div`
-  margin-left: 12px;
-  flex: 0.9;
+  margin-left: 12px; /* ml-3 */
 `;
 
 const UserNameBadgeContainer = styled.div`
@@ -80,11 +67,11 @@ const CommentText = styled.span`
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;
   overflow: hidden;
-  color: var(--gray-600);
+  color: var(--gray-600); /* text-gray-4 */
   font-size: 13px;
 `;
 
 const RightComponentContainer = styled.div`
-  margin-right: 4px;
   margin-left: auto;
+  margin-right: 4px;
 `;

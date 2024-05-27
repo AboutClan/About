@@ -1,7 +1,7 @@
 import { ListItem, UnorderedList } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import { POINT_SYSTEM_PLUS } from "../../../constants/settingValue/pointSystem";
+import { POINT_SYSTEM_PLUS } from "../../../constants/serviceConstants/pointSystemConstants";
 
 function PointSystemsModalPoint() {
   return (

@@ -13,8 +13,10 @@ import ScreenOverlay from "../../components/atoms/ScreenOverlay";
 import Spinner from "../../components/atoms/Spinner";
 import ImageUploadInput from "../../components/molecules/ImageUploadInput";
 import { STUDY_VOTE } from "../../constants/keys/queryKeys";
-import { POINT_SYSTEM_PLUS } from "../../constants/serviceConstants/pointSystemConstants";
-import { POINT_SYSTEM_DEPOSIT } from "../../constants/settingValue/pointSystem";
+import {
+  POINT_SYSTEM_DEPOSIT,
+  POINT_SYSTEM_PLUS,
+} from "../../constants/serviceConstants/pointSystemConstants";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useImageUploadMutation } from "../../hooks/image/mutations";
 import { useStudyAttendCheckMutation } from "../../hooks/study/mutations";

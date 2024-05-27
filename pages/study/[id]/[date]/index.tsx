@@ -57,7 +57,12 @@ export default function Page() {
     <Layout>
       {study && (
         <>
-          <StudyHeader place={place} />
+          <StudyHeader
+            brand={place.brand}
+            fullname={place.fullname}
+            locationDetail={place.location}
+            coverImage={place.coverImage}
+          />
           <Slide>
             <StudyCover
               isPrivateStudy={isPrivateStudy}

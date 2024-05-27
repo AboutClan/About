@@ -1,7 +1,8 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import styled from "styled-components";
 
+import InfoBox, { InfoBoxProp } from "../../components/molecules/InfoBox";
 import VoteMap from "../../components/organisms/VoteMap";
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
 
@@ -52,47 +53,42 @@ function StudyOverview({
     },
   ];
 
+  const infos: InfoBoxProp[] = [
+    {
+      text: locationDetail,
+      icon: <i className="fa-solid fa-location-dot " />,
+    },
+    {
+      text: time,
+      icon: <i className="fa-solid fa-clock" />,
+    },
+  ];
+
   return (
     <>
       <OverviewWrapper>
         <Title>{title}</Title>
-        <InfoContainer>
-          <InfoRow>
-            <InfoIconText className="flex-1">
-              <Box w="16px" textAlign="center" color="var(--gray-600)">
-                <i className="fa-solid fa-location-dot " />
-              </Box>
-              <Box as="span" ml="4px">
-                {locationDetail}
-              </Box>
-            </InfoIconText>
-            <Button
-              size="xs"
-              backgroundColor="mint"
-              color="white"
-              leftIcon={<i className="fa-solid fa-location-dot fa-sm" />}
-              onClick={() => setIsModal((old) => !old)}
-              _focus={{
-                backgroundColor: "var(--color-mint)",
-              }}
-              _active={{
-                backgroundColor: "var(--color-mint)",
-              }}
-            >
-              {isModal ? "지도 닫기" : "지도 보기"}
-            </Button>
-          </InfoRow>
-          <InfoRow>
-            <InfoIconText>
-              <Box w="16px" textAlign="center" color="var(--gray-600)">
-                <i className="fa-solid fa-clock" />
-              </Box>
-              <Box as="span" ml="4px">
-                {time}
-              </Box>
-            </InfoIconText>
-          </InfoRow>
-        </InfoContainer>
+        <Flex mt="12px">
+          <Box flex={1}>
+            <InfoBox infos={infos} />
+          </Box>
+          <Button
+            mt="2px"
+            size="xs"
+            backgroundColor="mint"
+            color="white"
+            leftIcon={<i className="fa-solid fa-location-dot fa-sm" />}
+            onClick={() => setIsModal((old) => !old)}
+            _focus={{
+              backgroundColor: "var(--color-mint)",
+            }}
+            _active={{
+              backgroundColor: "var(--color-mint)",
+            }}
+          >
+            {isModal ? "지도 닫기" : "지도 보기"}
+          </Button>
+        </Flex>
       </OverviewWrapper>
       {isModal && (
         <MapWrapper>

@@ -60,7 +60,7 @@ const send = async () => {
   console.log("Push Sent...");
 };
 
-const Test = () => {
+function Test() {
   useEffect(() => {
     if ("serviceWorker" in navigator) {
       send().catch((err) => console.error(err));
@@ -76,6 +76,6 @@ const Test = () => {
       </p>
     </div>
   );
-};
+}
 
 export default Test;

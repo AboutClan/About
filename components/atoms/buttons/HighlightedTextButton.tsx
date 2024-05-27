@@ -16,7 +16,7 @@ export default function HighlightedTextButton({ text, onClick }: IHighlightedTex
 
 const Text = styled.span`
   background-color: var(--color-mint-light);
-  font-size: 13px;
+  font-size: 14px;
   color: var(--color-mint);
   font-weight: 400;
 `;

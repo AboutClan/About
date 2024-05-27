@@ -7,6 +7,11 @@ import { IPlace } from "./studyDetails";
 export interface IStudyVote extends IStudyVotePlaces, IStudyVoteTime {
   memo?: string;
 }
+export interface IStudyVoteWithPlace extends IStudyVoteTime {
+  memo?: string;
+  place: IPlace;
+  subPlace: IPlace[];
+}
 
 export interface IStudyVotePlaces {
   place: string;
@@ -28,4 +33,15 @@ export type StudyDateStatus = "passed" | "today" | "not passed";
 
 export interface StudyWritingProps extends IPlace {
   content: string;
+}
+
+interface StudyWaitingPlaceProps {
+  id: string;
+  branch: string;
+}
+export interface StudyWaitingUser {
+  user: IUserSummary;
+  place: StudyWaitingPlaceProps;
+  subPlace: StudyWaitingPlaceProps[];
+  createdAt?: string;
 }
