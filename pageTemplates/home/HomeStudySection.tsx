@@ -1,8 +1,8 @@
 import { ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -59,7 +59,6 @@ export default function HomeStudySection() {
       setStudyCardColData(null);
       return;
     }
-
     const sortedData = sortStudyVoteData(studyVoteData, studyDateStatus !== "not passed");
 
     const waiting = studyDateStatus === "not passed" && getWaitingSpaceProps(studyVoteData);
@@ -212,11 +211,9 @@ export const setStudyDataToCardCol = (
   return cardColData;
 };
 
-
 const getBadgeText = (
   status: StudyStatus,
 ): { text: string; colorScheme: ThemeTypings["colorSchemes"] } => {
-
   switch (status) {
     case "open":
       return { text: "스터디 오픈", colorScheme: "mintTheme" };

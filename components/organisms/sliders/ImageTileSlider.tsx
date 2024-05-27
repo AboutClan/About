@@ -60,27 +60,29 @@ function SlideItem({
   size: Size;
   aspect: number;
 }) {
-  return <>
-    <Box p={size === "sm" && "4px"} bgColor="white">
-      <AspectRatio
-        ratio={aspect / 1}
-        pos="relative"
-        rounded="md"
-        overflow="hidden"
-        border="var(--border)"
-        bgColor="white"
-      >
-        <Image
-          src={imageTile.imageUrl}
-          priority={imageTile?.priority}
-          fill={true}
-          alt="slideImage"
-          sizes="60px"
-        />
-      </AspectRatio>
-    </Box>
-    {imageTile?.text && <Text size={size}>{imageTile.text}</Text>}
-  </>
+  return (
+    <>
+      <Box p={size === "sm" && "4px"} bgColor="white">
+        <AspectRatio
+          ratio={aspect / 1}
+          pos="relative"
+          rounded="md"
+          overflow="hidden"
+          border="var(--border)"
+          bgColor="white"
+        >
+          <Image
+            src={imageTile.imageUrl}
+            priority={imageTile?.priority}
+            fill={true}
+            alt="slideImage"
+            sizes="60px"
+          />
+        </AspectRatio>
+      </Box>
+      {imageTile?.text && <Text size={size}>{imageTile.text}</Text>}
+    </>
+  );
 }
 
 const Wrapper = styled.div<{ size: Size }>`

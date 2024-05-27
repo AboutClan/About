@@ -7,7 +7,6 @@ interface IOutlineBadge extends ITextAndColorSchemes {
 }
 
 export default function OutlineBadge({ text, colorScheme, size = "md" }: IOutlineBadge) {
-
   return (
     <Badge
       p={size === "md" ? "3px 6px" : "2px 4px"}
