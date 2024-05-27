@@ -1,5 +1,3 @@
-import { faPenLine } from "@fortawesome/pro-light-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
@@ -11,7 +9,7 @@ function WritingIcon({ url }: IWritingIcon) {
   const router = useRouter();
   return (
     <Layout onClick={() => router.push(url)}>
-      <FontAwesomeIcon icon={faPenLine} color="white" size="xl" />
+      <i className="fa-light fa-pen-line fa-xl" style={{ color: "white" }}  />
     </Layout>
   );
 }

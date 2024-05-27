@@ -1,5 +1,3 @@
-import { faMagnifyingGlass } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import styled from "styled-components";
@@ -22,7 +20,7 @@ function ReviewGatherSummary({ summary }: IReviewGatherSummary) {
   return (
     <Layout onClick={onClick}>
       <IconWrapper>
-        <FontAwesomeIcon icon={faMagnifyingGlass} size="lg" color="var(--gray-2)" />
+        <i className="fa-solid fa-magnifying-glass fa-lg" style={{ color: "var(--gray-2)" }} />
       </IconWrapper>
       <Content>
         <span>{summary.title}</span>

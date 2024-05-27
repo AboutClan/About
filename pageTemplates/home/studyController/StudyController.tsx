@@ -1,6 +1,4 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { faChevronDown } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs, { Dayjs } from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Dispatch, useEffect, useState } from "react";
@@ -61,7 +59,7 @@ function StudyController() {
                 <Flex align="center" borderBottom="var(--border)">
                   <MonthButton>
                     <span>5월</span>
-                    <FontAwesomeIcon icon={faChevronDown} />
+                    <i className="fa-regular fa-chevron-down" />
                   </MonthButton>
                   <WeekSlideCalendar selectedDate={selectedDateDayjs} func={onClick} />
                 </Flex>

@@ -34,9 +34,9 @@ function DailyCheckWinModal() {
         p="var(--gap-3) var(--gap-4)"
         justifyContent="space-between"
       >
-        <FontAwesomeIcon icon={faLollipop} color="var(--color-mint)" />
+        <i className="fa- fa-lollipop" color="var(--color-mint)" />
         <span>랜덤 선물 당첨</span>
-        <FontAwesomeIcon icon={faLollipop} color="var(--color-mint)" />
+        <i className="fa- fa-lollipop" color="var(--color-mint)" />
       </ModalHeader> */}
 
       <GiftWrapper>

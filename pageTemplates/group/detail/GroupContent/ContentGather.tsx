@@ -1,6 +1,4 @@
 import { Button } from "@chakra-ui/react";
-import { faPlus } from "@fortawesome/pro-light-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -16,7 +14,7 @@ function ContentGather() {
           bgColor="var(--gray-200)"
           size="lg"
           w="100%"
-          leftIcon={<FontAwesomeIcon icon={faPlus} />}
+          leftIcon={<i className="fa-light fa-plus" />}
         >
           모임 만들기
         </Button>

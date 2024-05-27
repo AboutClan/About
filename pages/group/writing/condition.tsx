@@ -1,14 +1,4 @@
 import { Switch } from "@chakra-ui/react";
-import {
-  faBellOn,
-  faDollarSign,
-  faLocationCrosshairs,
-  faPersonToDoor,
-  faUser,
-  faUserGroup,
-  faVenusMars,
-} from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
@@ -122,7 +112,7 @@ function WritingCondition() {
           <Container>
             <Item>
               <Name>
-                <FontAwesomeIcon icon={faUserGroup} />
+                <i className="fa-regular fa-user-group" />
                 <span>최소 인원</span>
               </Name>
               <GatherWritingConditionCnt
@@ -133,7 +123,7 @@ function WritingCondition() {
             </Item>
             <Item>
               <Name>
-                <FontAwesomeIcon icon={faUserGroup} />
+                <i className="fa-regular fa-user-group" />
                 <span>최대 인원</span>
               </Name>
               <GatherWritingConditionCnt
@@ -145,7 +135,7 @@ function WritingCondition() {
             </Item>
             <Item>
               <Name>
-                <FontAwesomeIcon icon={faVenusMars} />
+                <i className="fa-regular fa-venus-mars" />
                 <span>성별 고려</span>
                 <PopOverIcon title="성별 고려" text="성별 비율을 최대 2대1까지 제한합니다." />
               </Name>
@@ -158,7 +148,7 @@ function WritingCondition() {
             </Item>
             <Item>
               <Name>
-                <FontAwesomeIcon icon={faUser} />
+                <i className="fa-regular fa-user" />
                 <span>나이(만)</span>
               </Name>
               <Switch
@@ -171,7 +161,7 @@ function WritingCondition() {
             {condition.age && <GatherWritingConditionAgeRange age={age} setAge={setAge} />}
             <Item>
               <Name>
-                <FontAwesomeIcon icon={faLocationCrosshairs} />
+                <i className="fa-regular fa-location-crosshairs" />
                 <span>지역 필터</span>
                 <PopOverIcon title="지역 필터" text="기본으로는 본인이 속한 지역으로 한정합니다." />
               </Name>
@@ -185,7 +175,7 @@ function WritingCondition() {
             {!condition.location && <GatherWritingConditionLocation setLocation={setLocation} />}
             <Item>
               <Name>
-                <FontAwesomeIcon icon={faPersonToDoor} />
+                <i className="fa-regular fa-person-to-door" />
                 <span>자유 가입</span>
                 <PopOverIcon title="자유 가입" text="조건에 맞는다면 자유롭게 가입이 가능합니다." />
               </Name>
@@ -198,7 +188,7 @@ function WritingCondition() {
             </Item>
             <Item>
               <Name>
-                <FontAwesomeIcon icon={faBellOn} />
+                <i className="fa-regular fa-bellon" />
                 <span>챌린지</span>
                 <PopOverIcon title="챌린지" text="달성 챌린지를 진행하는 경우만 체크해주세요." />
               </Name>
@@ -218,7 +208,7 @@ function WritingCondition() {
             )}
             <Item>
               <Name>
-                <FontAwesomeIcon icon={faDollarSign} />
+                <i className="fa-regular fa-dollar-sign" />
                 <span>참여비</span>
                 <PopOverIcon
                   title="참여비"

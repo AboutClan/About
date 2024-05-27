@@ -1,5 +1,3 @@
-import { faBellOn } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
@@ -53,7 +51,7 @@ function ContentInfo({ group }: IContentInfo) {
       )}
       {group?.challenge && (
         <Challenge>
-          <FontAwesomeIcon icon={faBellOn} color="var(--color-red)" />
+          <i className="fa-regular fa-bellon" style={{ color: "var(--color-red)" }} />
           {group?.challenge}
         </Challenge>
       )}

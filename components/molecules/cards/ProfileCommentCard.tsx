@@ -1,6 +1,4 @@
 import { Flex } from "@chakra-ui/react";
-import { faPenToSquare } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
@@ -32,7 +30,7 @@ export default function ProfileCommentCard({
           <CommentText>{comment !== null ? comment : user.comment}</CommentText>
           {setMemo && (
             <Button onClick={setMemo}>
-              <FontAwesomeIcon icon={faPenToSquare} size="sm" />
+              <i className="fa-regular fa-pen-to-square fa-sm" />
             </Button>
           )}
         </Flex>

@@ -1,6 +1,4 @@
 import { Button } from "@chakra-ui/react";
-import { faClock, faLocationDot } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -61,14 +59,14 @@ function StudyOverview({
         <InfoContainer>
           <InfoRow>
             <InfoIconText className="flex-1">
-              <FontAwesomeIcon icon={faLocationDot} size="lg" />
+              <i className="fa-solid fa-location-dot fa-lg" />
               <span>{locationDetail}</span>
             </InfoIconText>
             <Button
               size="xs"
               backgroundColor="mint"
               color="white"
-              leftIcon={<FontAwesomeIcon icon={faLocationDot} size="sm" />}
+              leftIcon={<i className="fa-solid fa-location-dot fa-sm" />}
               onClick={() => setIsModal((old) => !old)}
               _focus={{
                 backgroundColor: "var(--color-mint)",
@@ -82,7 +80,7 @@ function StudyOverview({
           </InfoRow>
           <InfoRow>
             <InfoIconText>
-              <FontAwesomeIcon icon={faClock} />
+              <i className="fa- fa-clock" />
               <span>{time}</span>
             </InfoIconText>
           </InfoRow>

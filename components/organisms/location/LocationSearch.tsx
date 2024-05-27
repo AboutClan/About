@@ -1,6 +1,4 @@
 import { Button } from "@chakra-ui/react";
-import { faLocationDot } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { KeyboardEvent, useState } from "react";
 import styled from "styled-components";
@@ -56,7 +54,7 @@ function LocationSearch({ location, setLocation }: ISearchLocation) {
     <Layout>
       <div>
         <Wrapper>
-          <FontAwesomeIcon icon={faLocationDot} />
+          <i className="fa-solid fa-location-dot" />
           <Input
             onKeyDown={handleKeyPress}
             type="search"

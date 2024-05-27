@@ -1,5 +1,3 @@
-import { faCircle } from "@fortawesome/pro-light-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import styled from "styled-components";
 
@@ -27,7 +25,7 @@ function WinRecord() {
                     <Date>{dayjs(item.date).format("M.DD")}</Date>
                     <Content>{item.present}</Content>
                     <Point>
-                      {item.name} <FontAwesomeIcon icon={faCircle} size="sm" />
+                      {item.name} <i className="fa-light fa-sm fa-circle" />
                     </Point>
                   </Item>
                 ))}

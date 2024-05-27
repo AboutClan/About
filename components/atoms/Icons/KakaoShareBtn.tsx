@@ -1,6 +1,4 @@
 import { Button } from "@chakra-ui/react";
-import { faShareNodes } from "@fortawesome/pro-light-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect } from "react";
 import styled from "styled-components";
 
@@ -92,7 +90,7 @@ function KakaoShareBtn({ type, title, subtitle, img, location, url, isBig }: IKa
   return (
     <Layout id="kakao-share-button">
       {!isBig ? (
-        <FontAwesomeIcon icon={faShareNodes} size="lg" />
+        <i className="fa-light fa-share-nodes fa-lg"  />
       ) : (
         <Button as="div" colorScheme="mintTheme" width="100%" size="lg">
           공유하기

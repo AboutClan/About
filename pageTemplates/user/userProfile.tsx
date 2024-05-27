@@ -1,6 +1,4 @@
 import { Box, ListItem, UnorderedList } from "@chakra-ui/react";
-import { faChevronRight } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import Link from "next/link";
 import styled from "styled-components";
@@ -50,7 +48,7 @@ function UserProfile() {
             <span>
               내 친구 <b>{userInfo?.friend.length}</b>명
             </span>
-            <FontAwesomeIcon icon={faChevronRight} />
+            <i className="fa-solid fa-chevron-right" />
           </BlockItem>
         </Link>
         <Link href="/user/like">
@@ -58,7 +56,7 @@ function UserProfile() {
             <span>
               받은 좋아요 <b>7</b>개
             </span>
-            <FontAwesomeIcon icon={faChevronRight} />
+            <i className="fa-solid fa-chevron-right" />
           </BlockItem>
         </Link>
         <Link href="/user/point">
@@ -66,7 +64,7 @@ function UserProfile() {
             <span>
               내 포인트 <b>{userInfo?.point}</b> P
             </span>
-            <FontAwesomeIcon icon={faChevronRight} />
+            <i className="fa-solid fa-chevron-right" />
           </BlockItem>
         </Link>
         <Link href="/user/deposit">
@@ -74,7 +72,7 @@ function UserProfile() {
             <span>
               내 보증금 <b>{userInfo?.deposit}</b> M
             </span>
-            <FontAwesomeIcon icon={faChevronRight} />
+            <i className="fa-solid fa-chevron-right" />
           </BlockItem>
         </Link>
       </Info>

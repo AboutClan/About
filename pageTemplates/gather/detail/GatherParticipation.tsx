@@ -1,6 +1,4 @@
 import { Box, Button } from "@chakra-ui/react";
-import { fa1, fa2, faCrown, faInfinity } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
@@ -51,7 +49,7 @@ function GatherParticipation({ data }: IGatherParticipation) {
             ) : (
               <>
                 <span style={{ marginLeft: "4px" }} />
-                <FontAwesomeIcon icon={faInfinity} color="var(--gray-2)" />
+                <i className="fa-solid fa-infinity" style={{ color: "var(--gray-2)" }} />
               </>
             )}
           </Box>
@@ -72,7 +70,7 @@ function GatherParticipation({ data }: IGatherParticipation) {
                   size="md"
                 />
                 <CrownWrapper>
-                  <FontAwesomeIcon icon={faCrown} color="var(--color-yellow)" />
+                  <i className="fa-solid fa-crown" style={{ color: "var(--color-yellow)" }} />
                 </CrownWrapper>
               </Organizer>
               <UserOverview>
@@ -101,9 +99,9 @@ function GatherParticipation({ data }: IGatherParticipation) {
                   </UserOverview>
                   <ParticipateTime isFirst={who?.phase === "first"}>
                     {who?.phase === "first" ? (
-                      <FontAwesomeIcon icon={fa1} size="sm" />
+                      <i className="fa-solid fa-1 fa-sm" />
                     ) : (
-                      <FontAwesomeIcon icon={fa2} size="sm" />
+                      <i className="fa-solid fa-2 fa-sm" />
                     )}
                     <span>차</span>
                   </ParticipateTime>

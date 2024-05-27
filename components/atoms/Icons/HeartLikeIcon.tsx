@@ -1,5 +1,3 @@
-import { faCircleHeart } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -55,10 +53,9 @@ function HeartLikeIcon({ toUid, size = "sm" }: IHeartLikeIcon) {
       transition={spinTransition}
       isshow={isShow ? "true" : "false"}
     >
-      <FontAwesomeIcon
-        icon={faCircleHeart}
-        size={size === "sm" ? "sm" : "2x"}
-        color="var(--color-red)"
+      <i
+        className={`fa-regular fa-circle-heart fa-${size === "sm" ? "sm" : "2x"} `}
+        style={{ color: "var(--color-red)" }}
       />
     </Layout>
   );

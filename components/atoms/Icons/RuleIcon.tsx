@@ -1,5 +1,3 @@
-import { faInfoCircle } from "@fortawesome/pro-light-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
 import { IModal } from "../../../types/components/modalTypes";
@@ -7,7 +5,7 @@ import { IModal } from "../../../types/components/modalTypes";
 function RuleIcon({ setIsModal }: IModal) {
   return (
     <Layout onClick={() => setIsModal(true)}>
-      <FontAwesomeIcon icon={faInfoCircle} size="xl" color="var(--gray-2)" />
+      <i className="fa-light fa-infocircle fa-xl" style={{ color: "var(--gray-2)" }} />
     </Layout>
   );
 }

@@ -1,5 +1,3 @@
-import { faEllipsis } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Fragment } from "react";
 import styled from "styled-components";
 
@@ -31,7 +29,7 @@ function RecordDetailStudyBlock({ locationStudies }: IRecordDetailStudyBlock) {
                   <Fragment key={idx2}>
                     {idx2 < 4 && <Member>{user.name.slice(-2)}</Member>}
                     {idx2 === 4 && (
-                      <FontAwesomeIcon icon={faEllipsis} size="sm" color="var(--gray-700)" />
+                      <i className="fa-regular fa-ellipsis fa-sm" style={{ color: "var(--gray-700)" }} />
                     )}
                   </Fragment>
                 ))}

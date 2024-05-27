@@ -1,5 +1,3 @@
-import { faCaretLeft, faCaretRight } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Dayjs } from "dayjs";
 import styled from "styled-components";
 
@@ -19,11 +17,11 @@ function MonthNav({ month, setNavMonth }: IMonthNav) {
   return (
     <Layout>
       <IconWrapper onClick={() => onClick("left")}>
-        <FontAwesomeIcon icon={faCaretLeft} size="xs" />
+        <i className="fa-solid fa-caret-left fa-xs"  />
       </IconWrapper>
       <span>{month + 1}월</span>
       <IconWrapper onClick={() => onClick("right")}>
-        <FontAwesomeIcon icon={faCaretRight} size="xs" />
+        <i className="fa-solid fa-caret-right fa-xs" />
       </IconWrapper>
     </Layout>
   );

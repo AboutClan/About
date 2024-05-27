@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
-import { config } from "@fortawesome/fontawesome-svg-core";
+
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
 import { usePathname } from "next/navigation";
@@ -16,8 +16,6 @@ import { parseUrlToSegments } from "../../utils/stringUtils";
 import BaseModal from "./BaseModal";
 import BaseScript from "./BaseScript";
 import Seo from "./Seo";
-
-config.autoAddCss = false;
 
 export const BASE_BOTTOM_NAV_SEGMENT = ["home", "statistics", "gather", "group"];
 interface ILayout {

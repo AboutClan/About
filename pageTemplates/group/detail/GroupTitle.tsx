@@ -1,5 +1,3 @@
-import { faGear, faUserGroup } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
@@ -64,10 +62,10 @@ function GroupTitle({
         {isAdmin && (
           <SettingBtnNav>
             <button onClick={() => router.push(`${router.asPath}/member`)}>
-              <FontAwesomeIcon icon={faUserGroup} size="sm" />
+              <i className="fa-regular fa-user-group fa-sm"  />
             </button>
             <button onClick={onClick}>
-              <FontAwesomeIcon icon={faGear} size="sm" />
+              <i className="fa-regular fa-gear fa-sm"  />
               {isWaiting && (
                 <IconWrapper>
                   <NewAlertIcon />

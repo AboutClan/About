@@ -1,11 +1,9 @@
-import { faChevronLeft } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
 function RecordAnalysisHeaderSkeleton() {
   return (
     <Layout>
-      <FontAwesomeIcon icon={faChevronLeft} size="lg" />
+      <i className="fa-solid fa-chevron-left fa-lg"  />
       <Title>내 스터디 분석</Title>
     </Layout>
   );

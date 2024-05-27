@@ -1,5 +1,3 @@
-import { faChevronLeft, faChevronRight } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import styled from "styled-components";
 
@@ -18,11 +16,11 @@ export function PickerDateAndTimeHeader({ date, decreaseMonth, increaseMonth }) 
   return (
     <CalendarCustomHeader>
       <button onClick={decreaseMonth}>
-        <FontAwesomeIcon icon={faChevronLeft} />
+        <i className="fa-solid fa-chevron-left" />
       </button>
       <span>{dayjsToFormat(dayjs(date), "M월 D일")}</span>
       <button onClick={increaseMonth}>
-        <FontAwesomeIcon icon={faChevronRight} />
+        <i className="fa-solid fa-chevron-right" />
       </button>
     </CalendarCustomHeader>
   );

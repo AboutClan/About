@@ -1,6 +1,4 @@
 import { Flex } from "@chakra-ui/react";
-import { faCircle } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
 import { PROMOTION_WIN } from "../../storage/winRecord";
@@ -35,7 +33,7 @@ function PromotionMyCoolTimeModal({ setIsModal }: IModal) {
                 {item.winner.map((who, idx) => (
                   <WinnerItem key={idx}>
                     {who.name}
-                    <FontAwesomeIcon icon={faCircle} size="sm" />({who.location})
+                    <i className="fa-regular fa-sm fa-circle"  />({who.location})
                   </WinnerItem>
                 ))}
               </Winner>

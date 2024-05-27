@@ -1,5 +1,3 @@
-import { faClock } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
@@ -136,7 +134,7 @@ function PromotionApplyModal({ setIsModal, uniName }: IPromotionApplyModal) {
       ) : (
         contentType === "cool" && (
           <CoolTime>
-            <FontAwesomeIcon icon={faClock} />
+            <i className="fa-regular fa-clock" />
             <span>
               {coolTime >= 24 ? Math.ceil(coolTime / 24) : coolTime}{" "}
               {coolTime >= 24 ? "일" : "시간"}

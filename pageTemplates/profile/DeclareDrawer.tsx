@@ -9,8 +9,6 @@ import {
   RadioGroup,
   useDisclosure,
 } from "@chakra-ui/react";
-import { faX } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -90,7 +88,10 @@ function DeclareDrawer({ userData, declareModal, setDeclareModal }: IDeclareDraw
         >
           <div />
           <Title>{title}</Title>
-          <FontAwesomeIcon icon={faX} size="sm" onClick={onClose} />
+
+          <button onClick={onClose}>
+            <i className="fa-solid fa-x fa-sm" />
+          </button>
         </DrawerHeader>
         <DrawerBody p="var(--gap-4) " display="flex" flexDirection="column">
           {declareModal === "declare" ? (

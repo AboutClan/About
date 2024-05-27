@@ -6,10 +6,8 @@ import {
   PopoverCloseButton,
   PopoverContent,
   PopoverHeader,
-  PopoverTrigger,
+  PopoverTrigger
 } from "@chakra-ui/react";
-import { faCheckCircle } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
@@ -29,7 +27,7 @@ import { getRandomAlphabet } from "../../../libs/userEventLibs/collection";
 import {
   transferAlphabetState,
   transferDailyCheckWinState,
-  transferShowDailyCheckState,
+  transferShowDailyCheckState
 } from "../../../recoils/transferRecoils";
 import { IModal } from "../../../types/components/modalTypes";
 import { IUserRequest } from "../../../types/models/userTypes/userRequestTypes";
@@ -118,7 +116,7 @@ function DailyCheckModal({ setIsModal }: IModal) {
           <Badge text="+랜덤 선물" colorScheme="redTheme" />
         </Detail>
         <CheckWrapper>
-          <FontAwesomeIcon icon={faCheckCircle} color="var(--color-mint)" size="4x" />
+          <i className="fa-regular fa-check-circle fa-4x" style={{ color: "var(--color-mint)" }}  />
         </CheckWrapper>
         <Detail>
           <PresentListPopOver />

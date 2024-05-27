@@ -7,10 +7,8 @@ import {
   PopoverCloseButton,
   PopoverContent,
   PopoverHeader,
-  PopoverTrigger,
+  PopoverTrigger
 } from "@chakra-ui/react";
-import { faBullseyeArrow, faGear, faRotateRight } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import styled from "styled-components";
 
@@ -115,7 +113,7 @@ function VoteMapController({
         <TopNav>
           <div>
             <ReturnBtn onClick={onClickRetunBtn}>
-              <FontAwesomeIcon icon={faRotateRight} size="lg" />
+              <i className="fa-regular fa-rotate-right fa-lg" />
             </ReturnBtn>
             {filterArr.map((item) => (
               <Button
@@ -171,7 +169,7 @@ function VoteMapController({
               border="1px solid var(--gray-500)"
               onClick={onClickGear}
             >
-              <FontAwesomeIcon icon={faGear} />
+              <i className="fa-regular fa-gear" />
             </Button>
           </Box>
           <Box as="span" fontSize="16px" color="var(--color-mint)" fontWeight={600}>
@@ -201,7 +199,7 @@ export function PrecisionPopOver({ precision, setPrecision }) {
             border="1px solid var(--gray-400)"
             bg="white"
           >
-            <FontAwesomeIcon icon={faBullseyeArrow} size="xl" />
+            <i className="fa-regular fa-bulls-eye-arrow fa-xl"  />
           </Button>
         </TargetIcon>
       </PopoverTrigger>

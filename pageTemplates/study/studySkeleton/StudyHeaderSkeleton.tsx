@@ -1,5 +1,3 @@
-import { faArrowUpFromBracket, faChevronLeft } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
 import Skeleton from "../../../components/atoms/skeleton/Skeleton";
@@ -8,12 +6,12 @@ function StudyHeaderSkeleton() {
   return (
     <Layout>
       <div>
-        <FontAwesomeIcon icon={faChevronLeft} />
+        <i className="fa-solid fa-chevron-left" />
         <Title>
           <Skeleton>temp</Skeleton>
         </Title>
       </div>
-      <div>{location && <FontAwesomeIcon icon={faArrowUpFromBracket} size="lg" />}</div>
+      <div>{location && <i className="fa-solid fa-arrow-up-from-bracket fa-lg"  />}</div>
     </Layout>
   );
 }

@@ -1,8 +1,6 @@
 /* eslint-disable */
 
 import { AspectRatio, Button, Link } from "@chakra-ui/react";
-import { faUser } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion } from "framer-motion";
 import { GetServerSideProps, NextPage } from "next";
 import { BuiltInProviderType } from "next-auth/providers";
@@ -11,7 +9,7 @@ import {
   getProviders,
   LiteralUnion,
   signIn,
-  useSession,
+  useSession
 } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -125,7 +123,7 @@ const Login: NextPage<{
             onClick={() => setIsModal(true)}
             mb="16px"
             justifyContent="space-between"
-            leftIcon={<FontAwesomeIcon icon={faUser} />}
+            leftIcon={<i className="fa-solid fa-user" />}
             pr="32px"
           >
             <span>게스트 로그인</span>

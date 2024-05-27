@@ -1,12 +1,3 @@
-import {
-  faCakeCandles,
-  faCat,
-  faDog,
-  faDragon,
-  faPaw,
-  faShrimp,
-} from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
@@ -45,27 +36,27 @@ function MemberRecommend({ members }: IMemberRecommend) {
       <SectionBar title="친구 추천" size="md" />
       <Nav>
         <Button onClick={() => onClickBtn(0)}>
-          <FontAwesomeIcon icon={faDragon} color="#FF8896" />
+          <i className="fa-solid fa-dragon" style={{ color: "#FF8896" }} />
           <span>{FRIEND_RECOMMEND_CATEGORY[0]}</span>
         </Button>
         <Button onClick={() => onClickBtn(1)}>
-          <FontAwesomeIcon icon={faPaw} color="#71C3FF" />
+          <i className="fa-solid fa-paw" style={{ color: "#71C3FF" }} />
           <span>{FRIEND_RECOMMEND_CATEGORY[1]}</span>
         </Button>
         <Button onClick={() => onClickBtn(2)}>
-          <FontAwesomeIcon icon={faCakeCandles} color="#FEBC5A" />
+          <i className="fa-solid fa-cake-candles" style={{ color: "#FEBC5A" }} />
           <span>{FRIEND_RECOMMEND_CATEGORY[2]}</span>
         </Button>
         <Button onClick={() => onClickBtn(3)}>
-          <FontAwesomeIcon icon={faDog} color="#9E7CFF" />
+          <i className="fa-solid fa-dog" style={{ color: "#9E7CFF" }} />
           <span>{FRIEND_RECOMMEND_CATEGORY[3]}</span>
         </Button>
         <Button onClick={() => onClickBtn(4)}>
-          <FontAwesomeIcon icon={faShrimp} color="var(--color-mint)" />
+          <i className="fa-solid fa-shrimp" style={{ color: "var(--color-mint)" }} />
           <span>{FRIEND_RECOMMEND_CATEGORY[4]}</span>
         </Button>
         <Button onClick={() => onClickBtn(5)}>
-          <FontAwesomeIcon icon={faCat} />
+          <i className="fa-solid fa-cat" />
           <span>{FRIEND_RECOMMEND_CATEGORY[5]}</span>
         </Button>
       </Nav>

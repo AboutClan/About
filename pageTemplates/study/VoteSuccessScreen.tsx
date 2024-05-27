@@ -1,5 +1,3 @@
-import { faCheckCircle } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
@@ -13,7 +11,7 @@ function VoteSuccessScreen() {
   return (
     <Layout>
       <Icon>
-        <FontAwesomeIcon icon={faCheckCircle} size="5x" />
+        <i className="fa-solid fa-check-circle fa-5x"  />
       </Icon>
       <Content>
         <span>투표를 완료했어요</span>

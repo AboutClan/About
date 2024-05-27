@@ -1,6 +1,4 @@
 import { Badge, Progress } from "@chakra-ui/react";
-import { faQuestionCircle } from "@fortawesome/pro-light-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -46,7 +44,7 @@ function AttendanceBar({ myScore, hasQuestion = true }: IAttendanceBar) {
             <BadgeName color={SCHEME_TO_COLOR[badgeColor] || badgeColor}>{myScore}점</BadgeName>
             {hasQuestion && (
               <IconWrapper onClick={() => setIsBadgeModal(true)}>
-                <FontAwesomeIcon icon={faQuestionCircle} size="sm" />
+                <i className="fa-light fa-question-circle fa-sm" />
               </IconWrapper>
             )}
           </div>

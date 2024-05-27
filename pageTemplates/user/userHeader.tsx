@@ -1,5 +1,3 @@
-import { faGear } from "@fortawesome/pro-light-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Header from "../../components/layouts/Header";
 import IconButtonNav, { IIconButtonNavBtn } from "../../components/molecules/navs/IconButtonNav";
@@ -7,7 +5,7 @@ import IconButtonNav, { IIconButtonNavBtn } from "../../components/molecules/nav
 export default function UserHeader() {
   const iconBtnArr: IIconButtonNavBtn[] = [
     {
-      icon: <FontAwesomeIcon icon={faGear} size="lg" />,
+      icon: <i className="fa-light fa-gear fa-lg"  />,
       link: "/user/setting",
     },
   ];

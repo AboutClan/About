@@ -1,5 +1,3 @@
-import { faCoins, faGift } from "@fortawesome/pro-duotone-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
@@ -36,12 +34,11 @@ function PromotionModal({ setIsModal }: IModal) {
       <ImageContainer>
         <IconWrapper>
           <div>
-            <FontAwesomeIcon
-              icon={faGift}
-              size="6x"
-              color="var(--color-red)"
+            <i
+              className="fa-duotone fa-gift fa-6x"
               style={
                 {
+                  color: "var(--color-red)",
                   "--fa-primary-opacity": "1",
                   "--fa-secondary-opacity": "0.4",
                 } as React.CSSProperties
@@ -49,7 +46,7 @@ function PromotionModal({ setIsModal }: IModal) {
             />
           </div>
           <div>
-            <FontAwesomeIcon icon={faCoins} size="3x" color="var(--color-red)" />
+            <i className="fa-duotone fa-coins fa-3x" style={{ color: "var(--color-red)" }} />
           </div>
         </IconWrapper>
         <Info>

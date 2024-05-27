@@ -1,6 +1,3 @@
-import { faStars } from "@fortawesome/pro-duotone-svg-icons";
-import { faChevronRight } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
@@ -27,7 +24,7 @@ export default function UserCollection() {
       <Link href="/user/alphabet">
         <BlockItem>
           <span>알파벳 컬렉션</span>
-          <FontAwesomeIcon icon={faChevronRight} />
+          <i className="fa-solid fa-chevron-right" />
         </BlockItem>
       </Link>
       <AlphabetContainer>
@@ -39,7 +36,7 @@ export default function UserCollection() {
       </AlphabetContainer>
       <AlphabetQNABtn onClick={() => setIsAlphabetModal(true)}>
         <IconWrapper>
-          <FontAwesomeIcon icon={faStars} size="2x" color="var(--color-mint)" />
+          <i className="fa-duotone fa-stars fa-2x" style={{ color: "var(--color-mint)" }} />
         </IconWrapper>
         <AlphabetQNABtnContents>
           <span>여러번 수집하면 보상이 더 올라가요!</span>

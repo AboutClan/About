@@ -1,6 +1,4 @@
 import { Button } from "@chakra-ui/react";
-import { faCheckCircle } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -25,7 +23,7 @@ function SuccessScreen({ children, url }: ISuccessScreen) {
   return (
     <Layout>
       <Icon>
-        <FontAwesomeIcon icon={faCheckCircle} size="5x" />
+        <i className="fa-solid fa-check-circle fa-5x"  />
       </Icon>
       <Content>{children}</Content>
       <Button

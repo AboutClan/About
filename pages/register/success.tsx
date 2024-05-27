@@ -1,6 +1,4 @@
 import { Button } from "@chakra-ui/react";
-import { faCircleCheck } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
@@ -9,7 +7,7 @@ function ApplySuccess() {
   return (
     <Layout>
       <Content2>
-        <FontAwesomeIcon icon={faCircleCheck} size="5x" color="var(--color-mint)" />
+        <i className="fa- fa-circle-check fa-5x" style={{ color: "var(--color-mint)" }} />
 
         <Content>
           <span>신청이 완료됐어요!</span>

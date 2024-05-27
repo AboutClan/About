@@ -1,5 +1,3 @@
-import { faLockKeyhole } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
@@ -103,7 +101,7 @@ function GroupBlock({ group }: IGroupBlock) {
       <Header>
         <div>
           <span>{group.category.main}</span>·<span>{group.category.sub}</span>
-          {!group?.isFree && <FontAwesomeIcon icon={faLockKeyhole} />}
+          {!group?.isFree && <i className="fa-regular fa-lock-key-hole" />}
         </div>
         <Badge
           text={getBadgeText().text}

@@ -1,5 +1,3 @@
-import { faArrowRight } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import styled from "styled-components";
 
@@ -19,7 +17,7 @@ function ScoreLog() {
       <Layout>
         <MyPoint>
           <span>내 점수</span>
-          <FontAwesomeIcon icon={faArrowRight} />
+          <i className="fa-solid fa-arrow-right" />
           <span>{score}점</span>
         </MyPoint>
         <Container>

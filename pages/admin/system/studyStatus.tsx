@@ -18,8 +18,7 @@ import {
   PopoverTrigger,
   Portal,
 } from "@chakra-ui/react";
-import { faChevronLeft, faChevronRight } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import dayjs from "dayjs";
 import { useState } from "react";
 import styled from "styled-components";
@@ -44,17 +43,15 @@ function AdminStudyStatus() {
       <Header title="스터디 상태 관리" />
       <Layout>
         <Date>
-          <FontAwesomeIcon
-            icon={faChevronLeft}
-            color="var(--gray-800)"
-            onClick={() => setDate((old) => old.subtract(1, "day"))}
-          />
+          <button onClick={() => setDate((old) => old.subtract(1, "day"))}>
+            <i className="fa-solid fa-chevron-left" style={{ color: "var(--gray-800)" }} />
+          </button>
+
           <span>{date.format("M월 DD일")}</span>
-          <FontAwesomeIcon
-            icon={faChevronRight}
-            color="var(--gray-800)"
-            onClick={() => setDate((old) => old.add(1, "day"))}
-          />
+
+          <button onClick={() => setDate((old) => old.add(1, "day"))}>
+            <i className="fa-solid fa-chevron-right" style={{ color: "var(--gray-800)" }} />
+          </button>
         </Date>
         <Main>
           {LOCATION.map((place) => (
@@ -109,7 +106,7 @@ function AdminStudyStatus() {
                             <Att key={idx}>
                               <span> {(who.user as IUser).name}</span>
                               {/* <Delete onClick={() => handleDeleteUser(who)}>
-                                <FontAwesomeIcon icon={faDeleteLeft} />
+                                <i className="fa- fa-deleteleft" />
                               </Delete> */}
                               temp
                             </Att>

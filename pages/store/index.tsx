@@ -1,6 +1,4 @@
 import { Button } from "@chakra-ui/react";
-import { faTrophy } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -122,7 +120,10 @@ function Event() {
                     <Trophy>
                       {new Array(item.winner).fill(0).map((_, idx) => (
                         <div key={idx}>
-                          <FontAwesomeIcon icon={faTrophy} color="var(--color-mint)" />
+                          <i
+                            className="fa-solid fa-trophy"
+                            style={{ color: "var(--color-mint)" }}
+                          />
                         </div>
                       ))}
                     </Trophy>

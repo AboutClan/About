@@ -7,10 +7,8 @@ import {
   DrawerContent,
   DrawerOverlay,
   Flex,
-  useDisclosure,
+  useDisclosure
 } from "@chakra-ui/react";
-import { faBooks, faCampfire, faCloudBolt } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -47,21 +45,21 @@ export default function WriteDrawer() {
               url="/gather/writing/category"
               title="모임"
               subTitle="재밌는 모임으로 친해져요"
-              icon={<FontAwesomeIcon icon={faCloudBolt} color="white" />}
+              icon={<i className="fa-regular fa-cloud-bolt" style={{color:"white"}} />}
               color="red.400"
             />
             <SocialButton
               url="/group/writing/main"
               title="소그룹"
               subTitle="비슷한 관심사의 인원들을 모아봐요"
-              icon={<FontAwesomeIcon icon={faCampfire} color="white" />}
+              icon={<i className="fa-regular fa-campfire" style={{color:"white"}} />}
               color="blue.400"
             />
             <SocialButton
               url="*"
               title="스터디"
               subTitle="직접 스터디를 만들어봐요"
-              icon={<FontAwesomeIcon icon={faBooks} color="white" />}
+              icon={<i className="fa-regular fa-books"style={{ color:"white"}} />}
               color="green.400"
             />
           </Flex>

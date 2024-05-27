@@ -1,8 +1,4 @@
 import { Button } from "@chakra-ui/react";
-import { faCheckCircle, faTriangle } from "@fortawesome/pro-light-svg-icons";
-import { faCheckCircle as checkCircle } from "@fortawesome/pro-regular-svg-icons";
-import { faCaretLeft, faCaretRight } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
@@ -84,7 +80,9 @@ function ContentAttend({ group }) {
       <Layout>
         <Month>
           <IconWrapper onClick={() => setIsThisWeek(false)}>
-            {isThisWeek && <FontAwesomeIcon icon={faCaretLeft} size="sm" color="var(--gray-2)" />}
+            {isThisWeek && (
+              <i className="fa-solid fa-caret-left fa-sm" style={{ color: "var(--gray-2)" }} />
+            )}
           </IconWrapper>
           <div>
             {dayjsToFormat(
@@ -104,7 +102,9 @@ function ContentAttend({ group }) {
             )}
           </div>
           <IconWrapper onClick={() => setIsThisWeek(true)}>
-            {!isThisWeek && <FontAwesomeIcon icon={faCaretRight} size="sm" color="var(--gray-2)" />}
+            {!isThisWeek && (
+              <i className="fa-solid fa-caret-right fa-sm" style={{ color: "var(--gray-2)" }} />
+            )}
           </IconWrapper>
         </Month>
         <ButtonNav>
@@ -112,7 +112,7 @@ function ContentAttend({ group }) {
             fontSize="15px"
             onClick={onClickAttend}
             colorScheme="mintTheme"
-            rightIcon={<FontAwesomeIcon icon={checkCircle} />}
+            rightIcon={<i className="fa-regular fa-check-circle" />}
             disabled={isNotMember}
           >
             출석체크
@@ -142,9 +142,12 @@ function ContentAttend({ group }) {
                   {days.map((isAttend, idx) => (
                     <Item key={idx}>
                       {isAttend.main ? (
-                        <FontAwesomeIcon icon={faCheckCircle} color="var(--color-mint)" />
+                        <i
+                          className="fa-light fa-check-circle"
+                          style={{ color: "var(--color-mint)" }}
+                        />
                       ) : isAttend.sub ? (
-                        <FontAwesomeIcon icon={faTriangle} color="#FEBC5A" />
+                        <i className="fa-light fa-triangle" style={{ color: "#FEBC5A" }} />
                       ) : null}
                     </Item>
                   ))}
