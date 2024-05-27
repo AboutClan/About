@@ -14,6 +14,15 @@ export const ACTIVE_LOCATIONS: ActiveLocation[] = [
   "인천",
 ];
 
+export const ACTIVE_LOCATIONS_FULLNAME = [
+  "수원",
+  "양천/영등포",
+  "강남",
+  "동대문/성북",
+  "인천",
+  "안양",
+];
+
 export const INACTIVE_LOCATIONS: InactiveLocation[] = ["마포"];
 
 export const LOCATIONS: Location[] = [...ACTIVE_LOCATIONS, ...INACTIVE_LOCATIONS];

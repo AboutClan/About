@@ -1,5 +1,6 @@
 /* eslint-disable */
 
+import { Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
@@ -8,6 +9,7 @@ import styled from "styled-components";
 import { useGroupBelongMatchMutation, useMonthCalcMutation } from "../hooks/admin/mutation";
 import { useAdminStudyRecordQuery } from "../hooks/admin/quries";
 import { useImageUploadMutation } from "../hooks/image/mutations";
+import { useStudyAdditionMutation } from "../hooks/study/mutations";
 import { useStudyDailyVoteCntQuery } from "../hooks/study/queries";
 import { studyDateStatusState } from "../recoils/studyRecoils";
 function Test() {
@@ -58,22 +60,27 @@ function Test() {
 
   const [image, setImage] = useState(null);
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
+  const { mutate: go } = useStudyAdditionMutation();
 
-    setImage(file);
+  const aa = () => {
+    go({
+      fullname: "test",
+      brand: "test",
+      branch: "test",
+      image: "test",
+      longitude: 100,
+      latitude: 100,
+      location: "수원",
+      coverImage: "test",
+      locationDetail: "test",
+      mapURL: "test",
+    });
   };
-  const submitForm = () => {
-    const formData = new FormData();
-    formData.append("image", image);
-    formData.append("path", "hello");
-
-    A(formData);
-  };
-
   return (
     <>
-      <Layout></Layout>
+      <Layout>
+        <Button onClick={aa}>test</Button>
+      </Layout>
     </>
   );
 }

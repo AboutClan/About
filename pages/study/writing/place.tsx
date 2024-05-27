@@ -1,4 +1,3 @@
-import { Box } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -11,7 +10,7 @@ import Slide from "../../../components/layouts/PageSlide";
 import ButtonGroups, { IButtonOpions } from "../../../components/molecules/groups/ButtonGroups";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
 import SearchLocation from "../../../components/organisms/SearchLocation";
-import { ACTIVE_LOCATIONS } from "../../../constants/locationConstants";
+import { ACTIVE_LOCATIONS_FULLNAME } from "../../../constants/locationConstants";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
@@ -53,7 +52,7 @@ function WritingStudyPlace() {
     router.push(`/study/writing/content`);
   };
 
-  const buttonDataArr: IButtonOpions[] = ACTIVE_LOCATIONS.map((locationInfo) => ({
+  const buttonDataArr: IButtonOpions[] = ACTIVE_LOCATIONS_FULLNAME.map((locationInfo) => ({
     text: locationInfo,
     func: () => setLocation(locationInfo),
   }));
@@ -68,8 +67,8 @@ function WritingStudyPlace() {
         <RegisterOverview>
           <span>스터디 장소를 포함하는 지역을 선택해 주세요!</span>
         </RegisterOverview>
-        <ButtonGroups currentValue={location} buttonDataArr={buttonDataArr} />
-        <Box h="20px" />
+        <ButtonGroups isWrap={true} currentValue={location} buttonDataArr={buttonDataArr} />
+
         <RegisterOverview>
           <span>추가하고 싶은 스터디 장소를 검색해 주세요!</span>
         </RegisterOverview>
