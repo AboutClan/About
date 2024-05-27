@@ -24,6 +24,12 @@ const GROUP_WRITING_SEQUENCE = {
   hasgTag: 6,
   condition: 7,
 };
+const STUDY_WRITING_SEQUENCE = {
+  place: 1,
+  content: 2,
+  image: 3,
+  complete: 4,
+};
 
 function PageTracker() {
   const router = useRouter();
@@ -45,6 +51,17 @@ function PageTracker() {
           break;
 
         case "study":
+          if (currentSegments?.[1] === "writing") {
+            handleWritingPage(
+              STUDY_WRITING_SEQUENCE,
+              currentSegments,
+              prevSegments,
+              setLeftSlide,
+              setRightSlide,
+            );
+            break;
+          }
+
           if (prevSegments[0] !== "home" && prevSegments[0] !== "studyList") {
             setLeftSlide();
           }

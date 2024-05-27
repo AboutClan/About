@@ -110,31 +110,6 @@ const Title = styled.span`
   font-size: 18px; /* 18px */
 `;
 
-const InfoContainer = styled.div`
-  margin-top: 12px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const InfoRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  line-height: 2;
-  font-size: 14px; /* 14px */
-`;
-
-const InfoIconText = styled.div`
-  display: flex;
-  align-items: center;
-
-  svg {
-    width: 14px; /* Adjusted from w-3.5 to actual px */
-    margin-right: 8px;
-    color: var(--gray-600); /* text-gray-3 */
-  }
-`;
-
 const MapWrapper = styled.div`
   aspect-ratio: 1/1;
 `;
