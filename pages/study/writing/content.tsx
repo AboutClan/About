@@ -12,7 +12,7 @@ import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { sharedStudyWritingState } from "../../../recoils/sharedDataAtoms";
 
-function WritingGatherContent() {
+function WritingStudyContent() {
   const router = useRouter();
   const failToast = useFailToast();
 
@@ -36,7 +36,7 @@ function WritingGatherContent() {
   return (
     <>
       <Slide isFixed={true}>
-        <ProgressStatus value={40} />
+        <ProgressStatus value={50} />
         <Header isSlide={false} title="" url="/study/writing/place" />
       </Slide>
       <RegisterLayout>
@@ -56,4 +56,4 @@ function WritingGatherContent() {
   );
 }
 
-export default WritingGatherContent;
+export default WritingStudyContent;

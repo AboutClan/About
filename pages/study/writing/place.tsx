@@ -11,12 +11,14 @@ import Slide from "../../../components/layouts/PageSlide";
 import ButtonGroups, { IButtonOpions } from "../../../components/molecules/groups/ButtonGroups";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
 import SearchLocation from "../../../components/organisms/SearchLocation";
-import { ACTIVE_LOCATIONS_FULLNAME } from "../../../constants/locationConstants";
+import { ACTIVE_LOCATIONS, LOCATION_TO_FULLNAME } from "../../../constants/locationConstants";
+
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { sharedStudyWritingState } from "../../../recoils/sharedDataAtoms";
 import { KakaoLocationProps } from "../../../types/externals/kakaoLocationSearch";
+import { StudyWritingProps } from "../../../types/models/studyTypes/studyInterActions";
 
 function WritingStudyPlace() {
   const { data: session } = useSession();
@@ -33,42 +35,53 @@ function WritingStudyPlace() {
   const [location, setLocation] = useState(session?.user.location);
 
   const onClickNext = () => {
-    if (!placeInfo?.place_name) {
+    if (
+      [placeInfo?.place_name, location, placeInfo?.place_url, placeInfo?.x, placeInfo?.y].some(
+        (field) => !field,
+      )
+    ) {
       failToast("free", "장소를 선택해 주세요!", true);
       return;
     }
 
     const { fullname, brand, branch } = parsePlaceToStudyPlace(placeInfo.place_name);
-    setStudyWriting((old) => ({
-      ...old,
-      fullname,
-      brand,
-      branch,
-      mapUrl: placeInfo.place_url,
-      locationDetail: placeInfo.road_address_name,
-      x: +placeInfo.x,
-      y: +placeInfo.y,
-      location,
-    }));
+    setStudyWriting(
+      (old) =>
+        ({
+          ...old,
+          fullname,
+          brand,
+          branch,
+          mapURL: placeInfo.place_url,
+          locationDetail: placeInfo.road_address_name,
+          latitude: +placeInfo.x,
+          longitude: +placeInfo.y,
+          location,
+        }) as StudyWritingProps,
+    );
     router.push(`/study/writing/content`);
   };
 
-  const buttonDataArr: IButtonOpions[] = ACTIVE_LOCATIONS_FULLNAME.map((locationInfo) => ({
-    text: locationInfo,
+  const buttonDataArr: IButtonOpions[] = ACTIVE_LOCATIONS.map((locationInfo) => ({
+    text: LOCATION_TO_FULLNAME[locationInfo],
     func: () => setLocation(locationInfo),
   }));
 
   return (
     <>
       <Slide isFixed={true}>
-        <ProgressStatus value={20} />
+        <ProgressStatus value={25} />
         <Header isSlide={false} title="" url="/home" />
       </Slide>
       <RegisterLayout>
         <RegisterOverview>
           <span>스터디 장소를 포함하는 지역을 선택해 주세요!</span>
         </RegisterOverview>
-        <ButtonGroups isWrap={true} currentValue={location} buttonDataArr={buttonDataArr} />
+        <ButtonGroups
+          isWrap={true}
+          currentValue={LOCATION_TO_FULLNAME[location]}
+          buttonDataArr={buttonDataArr}
+        />
 
         <RegisterOverview>
           <span>추가하고 싶은 스터디 장소를 검색해 주세요!</span>

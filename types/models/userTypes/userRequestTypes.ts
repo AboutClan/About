@@ -13,7 +13,8 @@ export type UserRequestCategory =
   | "불참"
   | "출석"
   | "배지"
-  | "조모임";
+  | "조모임"
+  | "장소 추가";
 
 export interface IUserRequest extends ITimeStamps {
   category: UserRequestCategory;
