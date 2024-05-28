@@ -135,6 +135,3 @@ export const useStudyStatusMutation = (options?: MutationOptions<StudyStatusPara
         method: "post",
         url: `place/status`,
         body: params,
-      }),
-    options,
-  );
