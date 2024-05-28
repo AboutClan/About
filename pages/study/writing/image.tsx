@@ -20,7 +20,10 @@ function WritingStudyImage() {
 
   const [studyWriting, setStudyWriting] = useRecoilState(sharedStudyWritingState);
 
-  const [imageProps, setImageProps] = useState<{ mainImage: string; coverImage: string }>(null);
+  const [imageProps, setImageProps] = useState<{ mainImage: string; coverImage: string }>({
+    mainImage: studyWriting?.image,
+    coverImage: studyWriting?.coverImage,
+  });
 
   const onClickNext = () => {
     if (!imageProps?.mainImage || !imageProps?.coverImage) {

@@ -54,7 +54,7 @@ function StudyControllerVoteButton({ setModalType, memberCnt }: IStudyController
       return;
     }
     const type = buttonProps.text;
-    if (type === "참여 신청" || type === "투표 변경" || type === "당일 참여") {
+    if (type === "참여 신청" || type === "투표 변경") {
       router.push(`/vote?${newSearchParams.toString()}`);
       return;
     }

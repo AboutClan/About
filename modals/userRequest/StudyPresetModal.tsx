@@ -39,7 +39,7 @@ function StudyPresetModal() {
 
   const { data: studyPreference } = useStudyPreferenceQuery();
 
-  const { data: studyPlaces } = useStudyPlacesQuery(location, {
+  const { data: studyPlaces } = useStudyPlacesQuery(location, "active", {
     enabled: !!location,
     onSuccess(data) {
       if (data.length === 0) {

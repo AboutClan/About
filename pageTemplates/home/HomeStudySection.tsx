@@ -25,8 +25,6 @@ import {
   studyDateStatusState,
 } from "../../recoils/studyRecoils";
 import { IParticipation, StudyStatus } from "../../types/models/studyTypes/studyDetails";
-import { StudyWaitingUser } from "../../types/models/studyTypes/studyInterActions";
-import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
@@ -50,7 +48,7 @@ export default function HomeStudySection() {
   const { data: studyVoteData, isLoading } = useStudyVoteQuery(date as string, location, {
     enabled: !!date && !!location,
   });
-
+  console.log(11, studyVoteData);
   const { mutate: decideStudyResult } = useStudyResultDecideMutation(date);
 
   useEffect(() => {
@@ -61,20 +59,19 @@ export default function HomeStudySection() {
     }
     const sortedData = sortStudyVoteData(studyVoteData, studyDateStatus !== "not passed");
 
-    const waiting = studyDateStatus === "not passed" && getWaitingSpaceProps(studyVoteData);
+    // const waiting = studyDateStatus === "not passed" && getWaitingSpaceProps(studyVoteData);
 
     const cardList = setStudyDataToCardCol(
       sortedData,
       date as string,
       session?.user.uid,
-      studyDateStatus === "not passed" ? waiting.map((obj) => obj.user) : null,
-      `${locationEn}/${date}`,
+      // studyDateStatus === "not passed" ? waiting.map((obj) => obj.user) : null,
     );
 
     setStudyCardColData(cardList.slice(0, 3));
     setSortedStudyCardList(cardList);
     const myStudy = getMyStudy(studyVoteData, myUid);
-
+    console.log(5, myStudy);
     setMyStudy(myStudy);
 
     if (date === dayjsToStr(dayjs())) {
@@ -137,42 +134,15 @@ export default function HomeStudySection() {
   );
 }
 
-export const getWaitingSpaceProps = (studyData: IParticipation[]) => {
-  const userArr: StudyWaitingUser[] = [];
 
-  studyData.forEach((par) => {
-    par.attendences.forEach((who) => {
-      const user = who.user;
-      const place = { id: par.place._id, branch: par.place.branch };
-      const findUser = userArr.find((obj) => obj.user.uid === user.uid);
-      if (!findUser) {
-        if (who.firstChoice) {
-          userArr.push({ user, place, subPlace: [], createdAt: who.createdAt });
-        } else userArr.push({ user, place: null, subPlace: [place], createdAt: who.createdAt });
-      } else {
-        if (who.firstChoice) {
-          findUser.place = place; // 첫 선택인 경우 place를 업데이트
-        } else {
-          if (!findUser.subPlace.includes(place)) {
-            findUser.subPlace.push(place); // subPlace 배열에 place를 추가
-          }
-        }
-      }
-    });
-  });
-  return userArr.sort((a, b) => (dayjs(a.createdAt).isAfter(dayjs(b.createdAt)) ? 1 : -1));
-};
 
 export const setStudyDataToCardCol = (
   studyData: IParticipation[],
   urlDateParam: string,
   uid: string,
-  waitingUser?: IUserSummary[],
-  param?: string,
 ): IPostThumbnailCard[] => {
   const privateStudy = studyData.find((par) => par.place.brand === "자유 신청");
   const filteredData = studyData.filter((par) => par.place.brand !== "자유 신청");
-  const isNotPassed = !privateStudy;
 
   if (privateStudy) filteredData.splice(2, 0, privateStudy);
 
@@ -191,22 +161,6 @@ export const setStudyDataToCardCol = (
     statusText:
       data.status === "pending" && data.attendences.some((who) => who.user.uid === uid) && "GOOD",
   }));
-
-  if (isNotPassed) {
-    cardColData.unshift({
-      title: "스터디 대기소",
-      subtitle: "스터디",
-      participants: waitingUser,
-      url: `/study/waiting/${param}`,
-      maxCnt: 8,
-      image: {
-        url: "/",
-        priority: true,
-      },
-      badge: null,
-      type: "study",
-    });
-  }
 
   return cardColData;
 };

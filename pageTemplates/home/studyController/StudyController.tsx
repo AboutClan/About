@@ -12,6 +12,7 @@ import { useStudyDailyVoteCntQuery, useStudyVoteQuery } from "../../../hooks/stu
 import { getStudyVoteCnt } from "../../../libs/study/getStudyVoteCnt";
 import DateCalendarModal from "../../../modals/aboutHeader/DateCalendarModal";
 import StudyAttendCheckModal from "../../../modals/study/StudyAttendCheckModal";
+import StudySimpleVoteModal from "../../../modals/study/StudySimpleVoteModal";
 import { studyDateStatusState } from "../../../recoils/studyRecoils";
 import { ActiveLocation, LocationEn } from "../../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
@@ -125,6 +126,12 @@ function StudyController() {
       )}
       {modalType === "monthCalendar" && (
         <DateCalendarModal selectedDate={selectedDateDayjs} setIsModal={() => setModalType(null)} />
+      )}
+      {modalType === "todayVote" && (
+        <StudySimpleVoteModal
+          studyVoteData={studyVoteData}
+          setIsModal={() => setModalType(null)}
+        />
       )}
     </>
   );

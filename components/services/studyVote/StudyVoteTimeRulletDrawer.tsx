@@ -17,6 +17,20 @@ export default function StudyVoteTimeRulletDrawer({
   drawerOptions,
   setIsModal,
 }: IStudyVoteTimeRulletDrawer) {
+  return (
+    <>
+      <BottomDrawerLg options={drawerOptions} setIsModal={setIsModal}>
+        <StudyVoteTimeRullets setVoteTime={setVoteTime} />
+      </BottomDrawerLg>
+    </>
+  );
+}
+
+interface StudyVoteTimeRulletsProps {
+  setVoteTime: Dispatch<{ start: Dayjs; end: Dayjs }>;
+}
+
+export function StudyVoteTimeRullets({ setVoteTime }: StudyVoteTimeRulletsProps) {
   const leftDefaultIdx = 8;
   const rightDefaultIdx = 10;
 
@@ -43,16 +57,12 @@ export default function StudyVoteTimeRulletDrawer({
   }, [rulletValue]);
 
   return (
-    <>
-      <BottomDrawerLg options={drawerOptions} setIsModal={setIsModal}>
-        <RulletPickerTwo
-          leftDefaultIdx={leftDefaultIdx}
-          rightDefaultIdx={rightDefaultIdx}
-          leftRulletArr={startItemArr}
-          rightRulletArr={endTimeArr}
-          setRulletValue={setRulletValue}
-        />
-      </BottomDrawerLg>
-    </>
+    <RulletPickerTwo
+      leftDefaultIdx={leftDefaultIdx}
+      rightDefaultIdx={rightDefaultIdx}
+      leftRulletArr={startItemArr}
+      rightRulletArr={endTimeArr}
+      setRulletValue={setRulletValue}
+    />
   );
 }

@@ -44,4 +44,5 @@ export interface StudyWaitingUser {
   place: StudyWaitingPlaceProps;
   subPlace: StudyWaitingPlaceProps[];
   createdAt?: string;
+  point?: number;
 }
