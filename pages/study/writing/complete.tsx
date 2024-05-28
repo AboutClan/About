@@ -9,7 +9,7 @@ import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
-import { useFailToast, useToast } from "../../../hooks/custom/CustomToast";
+import { useToast } from "../../../hooks/custom/CustomToast";
 import { useStudyAdditionMutation } from "../../../hooks/study/mutations";
 import { useUserRequestMutation } from "../../../hooks/user/sub/request/mutations";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
@@ -19,7 +19,7 @@ import { sharedStudyWritingState } from "../../../recoils/sharedDataAtoms";
 function WritingStudyComplete() {
   const { data: session } = useSession();
   const router = useRouter();
-  const failToast = useFailToast();
+
   const toast = useToast();
   const studyWriting = useRecoilValue(sharedStudyWritingState);
 

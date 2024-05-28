@@ -1,8 +1,9 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useParams } from "next/navigation";
+import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import HighlightedTextButton from "../../../../../components/atoms/buttons/HighlightedTextButton";
@@ -13,7 +14,7 @@ import { useStudyVoteQuery } from "../../../../../hooks/study/queries";
 import { getStudyDateStatus } from "../../../../../libs/study/date/getStudyDateStatus";
 import { getMyStudy } from "../../../../../libs/study/getMyStudy";
 import { sortStudyVoteData } from "../../../../../libs/study/sortStudyVoteData";
-import { getWaitingSpaceProps } from "../../../../../pageTemplates/home/HomeStudySection";
+import StudyPointGuideModal from "../../../../../modals/study/StudyPointGuideModal";
 import StudyCover from "../../../../../pageTemplates/study/StudyCover";
 import StudyDateBar from "../../../../../pageTemplates/study/StudyDateBar";
 import StudyHeader from "../../../../../pageTemplates/study/StudyHeader";
@@ -21,6 +22,8 @@ import StudyWaitingOverview from "../../../../../pageTemplates/study/StudyWaitin
 import StudyWaitingPlaces from "../../../../../pageTemplates/study/StudyWaitingPlaces";
 import StudyWaitingUsers from "../../../../../pageTemplates/study/StudyWaitingUsers";
 import { myStudyState, studyDateStatusState } from "../../../../../recoils/studyRecoils";
+import { IParticipation } from "../../../../../types/models/studyTypes/studyDetails";
+import { StudyWaitingUser } from "../../../../../types/models/studyTypes/studyInterActions";
 import { ActiveLocation } from "../../../../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../../../../utils/convertUtils/convertDatas";
 
@@ -40,7 +43,7 @@ export default function Page() {
 
   const [isHidden, setIsHidden] = useState(true);
 
-  const [studyDateStatus, setStudyDateStatus] = useRecoilState(studyDateStatusState);
+  const setStudyDateStatus = useSetRecoilState(studyDateStatusState);
 
   useEffect(() => {
     setStudyDateStatus(getStudyDateStatus(date));
@@ -55,6 +58,7 @@ export default function Page() {
   const sortedStudyPlaces = studyAll && sortStudyVoteData(studyAll, false);
 
   const [category, setCategory] = useState("참여 멤버");
+  const [isPointModal, setIsPointModal] = useState(false);
 
   const categoryArr = ["참여 멤버", "스터디"];
 
@@ -65,55 +69,92 @@ export default function Page() {
   }));
 
   return (
-    <Layout>
-      {studyWaitingUsers && (
-        <>
-          <StudyHeader
-            brand="스터디 대기소"
-            fullname="스터디 대기소"
-            locationDetail="세부"
-            coverImage="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/CU_3000%EC%9B%90%EA%B6%8C.webp"
-          />
-          <Slide>
-            <StudyCover
-              imageUrl="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/CU_3000%EC%9B%90%EA%B6%8C.webp"
-              brand=""
-              isPrivateStudy={false}
+    <>
+      <Layout>
+        {studyWaitingUsers && (
+          <>
+            <StudyHeader
+              brand="스터디 대기소"
+              fullname="스터디 대기소"
+              locationDetail="세부"
+              coverImage="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/CU_3000%EC%9B%90%EA%B6%8C.webp"
             />
-
-            <StudyWaitingOverview title="" />
-
-            <Divider />
-
-            <StudyDateBar
-              isPrivateStudy={false}
-              place={{
-                locationDetail: "",
-                fullname: "",
-                image:
-                  "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/CU_3000%EC%9B%90%EA%B6%8C.webp",
-              }}
-            />
-            <TabNav tabOptionsArr={tabArr} selected={category} />
-            <Box h="4px" />
-            {category === "참여 멤버" ? (
-              <StudyWaitingUsers studyWaitingUsers={studyWaitingUsers} />
-            ) : (
-              <StudyWaitingPlaces
-                studyWaitingPlaces={isHidden ? sortedStudyPlaces.slice(0, 8) : sortedStudyPlaces}
+            <Slide>
+              <StudyCover
+                imageUrl="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/CU_3000%EC%9B%90%EA%B6%8C.webp"
+                brand=""
+                isPrivateStudy={false}
               />
-            )}
-            {category === "스터디" && sortedStudyPlaces.length >= 8 && (
-              <Flex bgColor="white" justify="center" align="center" py="8px">
-                <HighlightedTextButton text="더 보기" onClick={() => setIsHidden(false)} />
-              </Flex>
-            )}
-          </Slide>
-        </>
-      )}
-    </Layout>
+
+              <StudyWaitingOverview setIsModal={setIsPointModal} />
+
+              <Divider />
+
+              <StudyDateBar
+                isPrivateStudy={false}
+                place={{
+                  locationDetail: "",
+                  fullname: "",
+                  image:
+                    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/CU_3000%EC%9B%90%EA%B6%8C.webp",
+                }}
+              />
+              <TabNav tabOptionsArr={tabArr} selected={category} />
+              <Box h="4px" />
+              {category === "참여 멤버" ? (
+                <StudyWaitingUsers
+                  studyWaitingUsers={studyWaitingUsers.filter(
+                    (who) =>
+                      who.place.branch !== "개인 스터디" ||
+                      (who.place.branch === "개인 스터디" &&
+                        who.user.location ===
+                          convertLocationLangTo(location as ActiveLocation, "kr")),
+                  )}
+                />
+              ) : (
+                <StudyWaitingPlaces
+                  studyWaitingPlaces={isHidden ? sortedStudyPlaces.slice(0, 8) : sortedStudyPlaces}
+                />
+              )}
+              {category === "스터디" && sortedStudyPlaces.length >= 8 && isHidden && (
+                <Flex bgColor="white" justify="center" align="center" py="8px">
+                  <HighlightedTextButton text="더 보기" onClick={() => setIsHidden(false)} />
+                </Flex>
+              )}
+            </Slide>
+          </>
+        )}
+      </Layout>
+      {isPointModal && <StudyPointGuideModal setIsModal={setIsPointModal} />}
+    </>
   );
 }
+
+const getWaitingSpaceProps = (studyData: IParticipation[]) => {
+  const userArr: StudyWaitingUser[] = [];
+
+  studyData.forEach((par) => {
+    par.attendences.forEach((who) => {
+      const user = who.user;
+      const place = { id: par.place._id, branch: par.place.branch };
+      const findUser = userArr.find((obj) => obj.user.uid === user.uid);
+      if (!findUser) {
+        if (who.firstChoice) {
+          userArr.push({ user, place, subPlace: [], createdAt: who.createdAt });
+        } else userArr.push({ user, place: null, subPlace: [place], createdAt: who.createdAt });
+      } else {
+        if (who.firstChoice) {
+          findUser.place = place;
+        } else {
+          if (!findUser.subPlace.includes(place)) {
+            findUser.subPlace.push(place);
+          }
+        }
+      }
+    });
+  });
+  return userArr.sort((a, b) => (dayjs(a.createdAt).isAfter(dayjs(b.createdAt)) ? 1 : -1));
+};
 
 const Layout = styled.div`
   padding-bottom: 161px;

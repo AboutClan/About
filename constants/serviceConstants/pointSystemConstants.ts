@@ -14,6 +14,7 @@ export const POINT_SYSTEM_PLUS = {
     second: { value: 5, message: "스터디 두번째 투표" },
     third: { value: 2, message: "스터디 세번째 투표" },
   },
+  STUDY_VOTE_DAILY: { value: 2, message: "당일 스터디 참여" },
   STUDY_INVITE: { value: 2, message: "친구 초대 보너스" },
   DAILY_ATTEND: { value: 3, message: "일일 출석" },
   PROMOTION: { value: 100, message: "홍보 리워드" },

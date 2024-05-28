@@ -1,4 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
 
 import { DateVoteButtonProps } from "../../pageTemplates/home/studyController/StudyControllerVoteButton";
@@ -11,18 +13,30 @@ interface DateVoteBlockProps {
 }
 
 function DateVoteBlock({ buttonProps, func, cnt }: DateVoteBlockProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const date = searchParams.get("date");
+  const locationEn = searchParams.get("location");
+
   const myStudy = useRecoilValue(myStudyState);
+
   return (
     <Flex w="100%" justify="space-between" align="center">
       <Box fontSize="16px" fontWeight={500}>
         <Box as="span" mr="4px">
           현재 참여 인원:
         </Box>
+
         <Box display="inline-block" color="var(--color-mint)">
-          <Box display="inline-block" w="16px" textAlign="center">
-            {cnt === undefined ? "- " : cnt}
-          </Box>
-          명
+          {cnt !== undefined ? (
+            <button onClick={() => router.push(`/study/waiting/${locationEn}/${date}`)}>
+              <u>{cnt}명</u>
+            </button>
+          ) : (
+            <Box w="22px" textAlign="center">
+              -
+            </Box>
+          )}
         </Box>
       </Box>
 

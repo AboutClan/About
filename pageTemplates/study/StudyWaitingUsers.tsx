@@ -1,38 +1,48 @@
 import { Box, Flex } from "@chakra-ui/react";
+import dayjs from "dayjs";
+import { useParams } from "next/navigation";
+import { useRecoilValue } from "recoil";
 
 import { IProfileCommentCard } from "../../components/molecules/cards/ProfileCommentCard";
 import ProfileCardColumn from "../../components/organisms/ProfileCardColumn";
 import { POINT_SYSTEM_PLUS } from "../../constants/serviceConstants/pointSystemConstants";
+import { studyDateStatusState } from "../../recoils/studyRecoils";
 import { StudyWaitingUser } from "../../types/models/studyTypes/studyInterActions";
 interface StudyWaitingUsersProps {
   studyWaitingUsers: StudyWaitingUser[];
 }
 
 function StudyWaitingUsers({ studyWaitingUsers }: StudyWaitingUsersProps) {
+  const { date } = useParams<{ location: string; date: string }>() || {};
+  const studyDateStatus = useRecoilValue(studyDateStatusState);
 
+  let index = 0;
   const userCardArr: IProfileCommentCard[] = studyWaitingUsers.map((par, idx) => {
     const text = par.place.branch + " " + par.subPlace.map((place) => place.branch).join(" ");
-    
+
+    const isLate = dayjs(par.createdAt).isAfter(dayjs(date).subtract(1, "day").hour(23));
+    if (!isLate) index++;
+
     return {
       user: par.user,
       comment: text,
-      leftComponent:
-        idx < 8 ? (
-          <i
-            className={`fa-light fa-circle-${idx + 1} fa-2xl`}
-            style={{ color: "var(--color-mint)" }}
-          />
-        ) : (
-          <i className="fa-solid fa-circle-minus" />
-        ),
-      rightComponent: (
+      leftComponent: (
+        <Box w="28px" h="28px" color="var(--color-mint)">
+          {idx < 8 ? (
+            <i className={`fa-light fa-circle-${idx + 1} fa-2xl`} />
+          ) : (
+            <i className="fa-light fa-circle-minus fa-2xl" />
+          )}
+        </Box>
+      ),
+      rightComponent: studyDateStatus === "not passed" && (
         <Box fontSize="16px" color="var(--color-mint)">
-          + {getPoint(idx, par.subPlace.length)} POINT
+          + {getPoint(index - 1, isLate, par)} POINT
         </Box>
       ),
     };
   });
-  c
+
   return (
     <>
       {userCardArr.length ? (
@@ -61,13 +71,17 @@ function StudyWaitingUsers({ studyWaitingUsers }: StudyWaitingUsersProps) {
   );
 }
 
-const getPoint = (idx: number, subPlaceCnt: number) => {
-  let value = POINT_SYSTEM_PLUS.STUDY_VOTE.basic.value;
+const getPoint = (idx: number, isLate: boolean, par: StudyWaitingUser) => {
+  let value = isLate ? 2 : POINT_SYSTEM_PLUS.STUDY_VOTE.basic.value;
+
+  const subPlaceCnt = par.subPlace.length;
   const subCntValue = subPlaceCnt >= 5 ? 5 : subPlaceCnt;
 
-  if (idx === 0) value += POINT_SYSTEM_PLUS.STUDY_VOTE.first.value;
-  if (idx === 1) value += POINT_SYSTEM_PLUS.STUDY_VOTE.second.value;
-  if (idx === 2) value += POINT_SYSTEM_PLUS.STUDY_VOTE.third.value;
+  if (!isLate) {
+    if (idx === 0) value += POINT_SYSTEM_PLUS.STUDY_VOTE.first.value;
+    if (idx === 1) value += POINT_SYSTEM_PLUS.STUDY_VOTE.second.value;
+    if (idx === 2) value += POINT_SYSTEM_PLUS.STUDY_VOTE.third.value;
+  }
 
   return value + subCntValue;
 };

@@ -1,6 +1,7 @@
 import { IParticipation } from "../../types/models/studyTypes/studyDetails";
 
 export const getStudyVoteCnt = (studyVoteData: IParticipation[], filterUid?: string) => {
+  if (!studyVoteData) return undefined;
   const temp = new Set();
 
   studyVoteData?.forEach((par) => {
@@ -10,5 +11,6 @@ export const getStudyVoteCnt = (studyVoteData: IParticipation[], filterUid?: str
       temp.add(who.user.uid);
     });
   });
+
   return temp.size;
 };

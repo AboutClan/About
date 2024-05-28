@@ -16,15 +16,15 @@ function StudyWaitingPlaces({ studyWaitingPlaces }: StudyWaitingPlacesProps) {
       image: place.image,
       name: place.brand,
       text: place.branch,
-      leftComponent:
-        idx < 8 ? (
-          <i
-            className={`fa-light fa-circle-${idx + 1} fa-2xl`}
-            style={{ color: "var(--color-mint)" }}
-          />
-        ) : (
-          <i className="fa-solid fa-circle-minus" />
-        ),
+      leftComponent: (
+        <Box w="28px" h="28px" color="var(--color-mint)">
+          {idx < 8 ? (
+            <i className={`fa-light fa-circle-${idx + 1} fa-2xl`} />
+          ) : (
+            <i className="fa-light fa-circle-minus fa-2xl" />
+          )}
+        </Box>
+      ),
       rightComponent: (
         <Box fontSize="16px" color="var(--color-mint)">
           {par.attendences.length}명 신청중

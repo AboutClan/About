@@ -14,7 +14,7 @@ export const getMyStudy = (
       }
     }),
   );
-
+  console.log(34, participations, myStudy);
   return myStudy;
 };
 
