@@ -123,13 +123,18 @@ export const useStudyAdditionMutation = (options?: MutationOptions<PlaceRegister
     options,
   );
 
-export const useStudyStatusMutation = (options?: MutationOptions<IStudyVotePlaces>) =>
-  useMutation<void, AxiosError, IStudyVotePlaces>(
-    (votePlaces) =>
-      requestServer<IStudyVotePlaces>({
+interface StudyStatusParamProps {
+  placeId: string;
+  status: "active" | "inactive";
+}
+
+export const useStudyStatusMutation = (options?: MutationOptions<StudyStatusParamProps>) =>
+  useMutation<void, AxiosError, StudyStatusParamProps>(
+    (params) =>
+      requestServer<StudyStatusParamProps>({
         method: "post",
         url: `place/status`,
-        body: { votePlaces },
+        body: params,
       }),
     options,
   );

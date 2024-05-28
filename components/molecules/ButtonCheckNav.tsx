@@ -24,7 +24,7 @@ function ButtonCheckNav({
           ? filtered.map((item) => (
               <Button
                 bgColor={item === selectedButton ? "var(--color-mint)" : "white"}
-                color={item === selectedButton ? "white" : "var(--gray-200)"}
+                color={item === selectedButton ? "white" : "var(--gray-600)"}
                 key={item}
                 onClick={() => setSelectedButton(item)}
                 ml="0px !important"

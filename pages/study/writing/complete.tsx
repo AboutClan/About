@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
 
 import TextBlock from "../../../components/atoms/TextBlock";
@@ -37,6 +37,7 @@ function WritingStudyComplete() {
       category: "장소 추가",
       writer: session?.user.name,
       date: dayjs(),
+      title: studyWriting?.fullname,
       content: studyWriting.content,
     });
   };

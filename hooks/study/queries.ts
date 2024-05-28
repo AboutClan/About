@@ -19,11 +19,20 @@ import { IArrivedData, VoteCntProps } from "../../types/models/studyTypes/studyR
 import { Location } from "../../types/services/locationTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
-export const useStudyPlacesQuery = (location: Location | "all", options?: QueryOptions<IPlace[]>) =>
+export const useStudyPlacesQuery = (
+  location: Location | "all",
+  active?: "active" | "inactive",
+  options?: QueryOptions<IPlace[]>,
+) =>
   useQuery<IPlace[], AxiosError, IPlace[]>(
-    [STUDY_PLACE, location],
+    [STUDY_PLACE, location, active],
     async () => {
-      const res = await axios.get<IPlace[]>(`${SERVER_URI}/place`);
+      const res = await axios.get<IPlace[]>(`${SERVER_URI}/place`, {
+        params: {
+          status: active,
+        },
+      });
+      console.log(4, active);
       const places = res.data.filter(
         (place) =>
           place.brand !== "자유 신청" && (location === "all" || place.location === location),
@@ -128,7 +137,6 @@ export const useStudyDailyVoteCntQuery = (
   useQuery(
     [STUDY_VOTE_CNT, location, dayjsToStr(startDay), dayjsToStr(endDay)],
     async () => {
-     
       const res = await axios.get<VoteCntProps[]>(`${SERVER_URI}/vote/participationCnt`, {
         params: {
           location,
