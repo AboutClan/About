@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useRecoilValue } from "recoil";
@@ -37,6 +38,7 @@ function WritingStudyComplete() {
       category: "장소 추가",
       writer: session?.user.name,
       date: dayjs(),
+      title: studyWriting?.fullname,
       content: studyWriting.content,
     });
   };
