@@ -17,7 +17,7 @@ export default function IconButtonNav({ iconList }: IIconButtonNav) {
   return (
     <Flex h="100%" alignItems="center" as="nav">
       {iconList.map((icon, idx) => (
-        <Flex w="28px" h="28px" justify="center" align="center" ml="8px" key={idx}>
+        <Flex w="28px" h="28px" justify="center" align="center" ml="12px" key={idx}>
           {icon?.link ? (
             <Link
               style={{ position: "relative", padding: "16px" }}

@@ -17,7 +17,7 @@ import {
 import { useNoticeActiveLogQuery } from "../../../hooks/user/sub/interaction/queries";
 import DailyCheckModal from "../../../modals/aboutHeader/dailyCheckModal/DailyCheckModal";
 import PointSystemsModal from "../../../modals/aboutHeader/pointSystemsModal/PointSystemsModal";
-import StudyRuleModal from "../../../modals/aboutHeader/studyRuleModal/StudyRuleModal";
+import LastWeekAttendPopUp from "../../../modals/pop-up/LastWeekAttendPopUp";
 import { slideDirectionState } from "../../../recoils/navigationRecoils";
 import { renderHomeHeaderState } from "../../../recoils/renderRecoils";
 import { transferShowDailyCheckState } from "../../../recoils/transferRecoils";
@@ -63,12 +63,12 @@ function HomeHeader() {
   const generateIconBtnArr = () => {
     const arr = [
       {
-        icon: <i className="fa-light fa-books" />,
-        func: () => setModalType("rule"),
+        icon: <i className="fa-light fa-calendar-star" />,
+        func: () => setModalType("pointGuide"),
       },
       {
-        icon: <i className="fa-light fa-circle-p" />,
-        func: () => setModalType("pointGuide"),
+        icon: <i className="fa-light fa-circle-book-open" />,
+        func: () => setModalType("rule"),
       },
       {
         icon: (
@@ -111,15 +111,15 @@ function HomeHeader() {
         <Slide isFixed={true}>
           <Layout>
             <MainLogo />
-            <Box className="about_header" fontSize="20px">
+            <Box className="about_header" fontSize="21px" color="var(--gray-700)">
               <IconButtonNav iconList={iconBtnArr} />
             </Box>
           </Layout>
         </Slide>
       )}
-      {modalType === "pointGuide" && <PointSystemsModal setIsModal={() => setModalType(null)} />}
+      {modalType === "pointGuide" && <LastWeekAttendPopUp setIsModal={() => setModalType(null)} />}
       {modalType === "dailyCheck" && <DailyCheckModal setIsModal={() => setModalType(null)} />}
-      {modalType === "rule" && <StudyRuleModal setIsModal={() => setModalType(null)} />}
+      {modalType === "rule" && <PointSystemsModal setIsModal={() => setModalType(null)} />}
     </>
   );
 }
