@@ -57,6 +57,7 @@ function DailyCheckModal({ setIsModal }: IModal) {
     },
   });
   const { mutate: getPoint } = usePointSystemMutation("point");
+  const { mutate: getScore } = usePointSystemMutation("score");
   const { mutate: sendRequest } = useUserRequestMutation();
 
   const winDistribution = getDistributionArr(DAILY_CHECK_WIN_LIST, DISTRIBUTION_SIZE);
@@ -92,7 +93,7 @@ function DailyCheckModal({ setIsModal }: IModal) {
       };
       sendRequest(data);
     }
-    getPoint(POINT_SYSTEM_PLUS.DAILY_ATTEND);
+    getScore(POINT_SYSTEM_PLUS.DAILY_ATTEND);
     toast("success", "출석체크 완료 !");
   };
 
@@ -107,7 +108,7 @@ function DailyCheckModal({ setIsModal }: IModal) {
   return (
     <ModalLayout title="매일매일 출석체크!" footerOptions={footerOptions} setIsModal={setIsModal}>
       <PresentMessage>
-        매일 출석체크로 <b>5 point</b>를 얻을 수 있고, 운이 좋으면
+        매일 출석체크로 <b>2 SCORE</b>을 얻을 수 있고, 확률적으로
         <b> 랜덤 이벤트 선물</b>도 받을 수 있어요!
       </PresentMessage>
       <Container>

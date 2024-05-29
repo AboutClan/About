@@ -105,8 +105,10 @@ export function ModalLayout({
           </>
         )}
         <ChakraModalBody
-          pt={paddingOptions?.body?.top ? `${paddingOptions.body.top}px` : "16px"}
-          pb={paddingOptions?.body?.bottom ? `${paddingOptions.body.bottom}px` : "4px"}
+          pt={paddingOptions?.body?.top !== undefined ? `${paddingOptions.body.top}px` : "16px"}
+          pb={
+            paddingOptions?.body?.bottom !== undefined ? `${paddingOptions.body.bottom}px` : "4px"
+          }
           px="20px"
         >
           {children}

@@ -1,199 +1,165 @@
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
 import styled from "styled-components";
 
-import { PopOverIcon } from "../../components/atoms/Icons/PopOverIcon";
-import ProfileIcon from "../../components/atoms/Profile/ProfileIcon";
+import Avatar from "../../components/atoms/Avatar";
+import UserBadge from "../../components/atoms/badges/UserBadge";
 import Skeleton from "../../components/atoms/skeleton/Skeleton";
-import { BADGE_SCORE_MAPPINGS } from "../../constants/serviceConstants/badgeConstants";
+import ProgressMark from "../../components/molecules/ProgressMark";
 import { USER_ROLE } from "../../constants/settingValue/role";
-import { IStudyRecord, useAdminStudyRecordQuery } from "../../hooks/admin/quries";
-import { useUserInfoQuery } from "../../hooks/user/queries";
-import PointScoreBar from "../../pageTemplates/point/pointScore/PointScoreBar";
+import { usePointSystemLogQuery, useUserInfoQuery } from "../../hooks/user/queries";
 import { IModal } from "../../types/components/modalTypes";
-import { getNextBadge, getUserBadge } from "../../utils/convertUtils/convertDatas";
+import { dayjsToStr } from "../../utils/dateTimeUtils";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 function LastWeekAttendPopUp({ setIsModal }: IModal) {
-  const lastWeekFirstDay = dayjs().day(1).subtract(1, "week").startOf("date");
-  const lastWeekLastDay = dayjs().day(0).startOf("date");
-
+  const router = useRouter();
   const { data: userInfo } = useUserInfoQuery();
 
-  const { data: attendRecord, isLoading } = useAdminStudyRecordQuery(
-    dayjs().month() !== lastWeekFirstDay.month()
-      ? dayjs().date(1).startOf("date")
-      : lastWeekFirstDay,
-    lastWeekLastDay,
-    undefined,
-    userInfo?.location,
-    userInfo?.uid,
-    {
-      enabled: !!userInfo,
-    },
+  const { data } = usePointSystemLogQuery("score");
+
+  const filteredData = data?.filter(
+    (obj) =>
+      dayjsToStr(dayjs(obj.timestamp).startOf("month")) === dayjsToStr(dayjs().startOf("month")),
   );
 
-  const recordValue: IStudyRecord =
-    attendRecord && Object.keys(attendRecord).length !== 0
-      ? Object.values(attendRecord)[0]
-      : { vote: 0, attend: 0, monthAcc: 0 };
-
-  const today = dayjs();
-  const firstDayOfMonth = today.startOf("month");
-  const differenceInDays = today.diff(firstDayOfMonth, "day");
-  const weekNumber = Math.floor(differenceInDays / 7) + 1;
-
-  const badge = getUserBadge(userInfo?.score, userInfo?.uid);
-  const nextBadge = getNextBadge(badge);
-
-  const getBadgePoint = () => {
-    for (const [badgeName, minScore] of Object.entries(BADGE_SCORE_MAPPINGS)) {
-      if (badgeName === nextBadge) {
-        return {
-          nextBadgePoint: minScore,
-          badgeGap: 20,
-        };
+  const scoreObj = filteredData?.reduce(
+    (acc, cur) => {
+      const value = cur.meta.value;
+      if (cur.message.includes("모임")) {
+        return { ...acc, gather: acc.gather + value };
       }
-    }
-  };
+      if (cur.message.includes("스터디")) {
+        return { ...acc, study: acc.study + value };
+      }
+      return acc;
+    },
+    { study: 0, gather: 0 },
+  );
 
-  const nextBadgePoint = getBadgePoint();
-
-  const nextAvatar = {
-    10: "병아리",
-    30: "고양이",
-    50: "토끼",
-    70: "호돌",
-    90: "거북",
-    110: "피그",
-    130: "개굴",
-    150: "찍찍",
-    170: "햄스터",
-    190: "냥이",
-    210: "햄찌",
-    230: "샤크",
-  };
-
-  function LayoutSkeleton() {
-    return (
-      <Info>
-        <Item>
-          <span>{weekNumber}주차 스터디 투표</span>
-
-          <SkeletonText>
-            <Skeleton>temp</Skeleton>
-          </SkeletonText>
-        </Item>
-        <Item>
-          <span>{weekNumber}주차 스터디 출석</span>
-          <SkeletonText>
-            <Skeleton>temp</Skeleton>
-          </SkeletonText>
-        </Item>
-        <Item>
-          <span>이번 달 누적 스터디 참여 </span>
-          <SkeletonText>
-            <Skeleton>temp</Skeleton>
-          </SkeletonText>
-        </Item>
-        <Item>
-          <span>다음 참여 정산일</span>
-          <SkeletonText>
-            <Skeleton>temp</Skeleton>
-          </SkeletonText>
-        </Item>
-        <Item>
-          <span>보유 보증금</span>
-          <SkeletonText>
-            <Skeleton>temp</Skeleton>
-          </SkeletonText>
-        </Item>
-      </Info>
-    );
-  }
+  const totalScore = scoreObj?.study + scoreObj?.gather;
 
   const footerOptions: IFooterOptions = {
     main: {},
+    sub: {
+      text: "기록 보러 가기",
+      func: () => router.push("/user/score"),
+    },
     isFull: true,
   };
 
   return (
     <ModalLayout
-      title={`${dayjs().month() + 1}월 ${weekNumber}주차 주간 체크`}
+      title={`${dayjs().month() + 1}월 활동 점수표`}
       headerOptions={{}}
       footerOptions={footerOptions}
       setIsModal={setIsModal}
+      paddingOptions={{ body: { top: 4 } }}
     >
-      <ScoreBarWrapper>
-        <PointScoreBar myScore={userInfo?.score} hasQuestion={false} />
-        {nextBadge ? (
-          <span>
-            {nextBadge} 달성시 +10 포인트, {nextAvatar[String(nextBadgePoint)]} 아바타 해금!
-          </span>
-        ) : (
-          <span>킹왕짱</span>
-        )}
-      </ScoreBarWrapper>
-      <ProfileWrapper>
-        <span>
+      <Flex
+        align="center"
+        mt="12px"
+        borderTop="var(--border)"
+        borderBottom="var(--border)"
+        py="12px"
+      >
+        <Box>
+          <Avatar
+            image={userInfo?.profileImage}
+            uid={userInfo?.uid}
+            avatar={userInfo?.avatar}
+            size="md"
+          />
+        </Box>
+        <Box ml="12px" fontSize="15px" color="var(--gray-800)">
           {userInfo?.name} ({USER_ROLE?.[userInfo?.role]})
-        </span>
-        <ImageWrapper>
-          <ProfileIcon user={userInfo} size="sm" />
-        </ImageWrapper>
-      </ProfileWrapper>
+        </Box>
+        <Box ml="auto">
+          <UserBadge uid={userInfo?.uid} score={userInfo?.score} />
+        </Box>
+      </Flex>
+      <Box mt="12px">
+        <ProgressMark value={totalScore} />
+      </Box>
       <Container>
-        {!isLoading ? (
+        {scoreObj ? (
           <Info>
             <Item>
-              <span>{weekNumber}주차 스터디 투표</span>
-              <span>{recordValue.vote || 0} 회</span>
+              <span>이번 달 동아리 점수</span>
+              <span>{totalScore} 점</span>
             </Item>
             <Item>
-              <span>{weekNumber}주차 스터디 출석</span>
-              <span>{recordValue.attend} 회</span>
+              <span>이번 달 스터디 점수</span>
+              <span>{scoreObj.study} 점</span>
+            </Item>
+            <Item>
+              <span>이번 달 모임 점수</span>
+              <span>{scoreObj.gather} 점</span>
             </Item>
             <Item>
               <div style={{ display: "flex" }}>
-                <span>이번 달 스터디 점수</span>
-                <PopOverIcon
-                  title="월간 스터디 점수"
-                  text="최소 1점을 넘어야합니다. 출석을 기준으로 정규 스터디는 1회당 1점, 개인, FREE 스터디는 2회당 1점입니다."
-                />
+                <span>이번 달에 받은 좋아요</span>
               </div>
-              <span>{Math.floor(recordValue.monthAcc) || 0} 점</span>
-            </Item>
-            <Item>
-              <span>다음 참여 정산일</span>
-              <span> {dayjs().add(1, "month").month() + 1}월 1일</span>
-            </Item>
-            <Item>
-              <span>보유 보증금</span>
-              <span>{userInfo?.deposit}원</span>
+              <span>2 개</span>
             </Item>
           </Info>
         ) : (
-          <LayoutSkeleton />
+          <Info>
+            <Item>
+              <span>이번 달 동아리 점수</span>
+              <Box w="36px" h="20px">
+                <Skeleton>2</Skeleton>
+              </Box>
+            </Item>
+            <Item>
+              <span>이번 달 스터디 점수</span>
+              <Box w="36px" h="20px">
+                <Skeleton>2</Skeleton>
+              </Box>
+            </Item>
+            <Item>
+              <span>이번 달 모임 점수</span>
+              <Box w="36px" h="20px">
+                <Skeleton>2</Skeleton>
+              </Box>
+            </Item>
+            <Item>
+              <span>이번 달에 받은 좋아요</span>
+
+              <Box w="36px" h="20px">
+                <Skeleton>2</Skeleton>
+              </Box>
+            </Item>
+          </Info>
         )}
       </Container>
+
       <Message>
-        {dayjs(userInfo?.registerDate).diff(dayjs(), "month") === 0 ? (
-          <div>
-            🎉신규 가입을 환영해요🎉
-            <br />
-            앞으로 열심히 활동해봐요~!
-          </div>
-        ) : recordValue?.monthAcc < 1 ? (
-          <div>
-            이번 달에 아직 스터디에 참여하지 않았어요.
-            <br /> {-dayjs().add(1, "month").date(1).diff(dayjs(), "day")}일 뒤에 경고를 받습니다.
-          </div>
-        ) : (
-          <div>
-            🎉잘 하고 있어요🎉
-            <br />
-            이번주도 열심히 파이팅~!
-          </div>
-        )}
+        {totalScore >= 0 &&
+          (dayjs(userInfo?.registerDate).diff(dayjs(), "month") === 0 ? (
+            <div>
+              🎉신규 가입을 환영해요🎉
+              <br />
+              앞으로 열심히 활동해봐요~!
+            </div>
+          ) : totalScore >= 30 ? (
+            <Box>
+              🏆당신은 열활멤버이시군요!!🏆 <br />
+              다음 정산때 추가 포인트를 획득합니다 !!
+            </Box>
+          ) : true ? (
+            <div>
+              이번 달에 아직 스터디에 참여하지 않았어요.
+              <br /> {-dayjs().add(1, "month").date(1).diff(dayjs(), "day")}일 뒤에 경고를 받습니다.
+            </div>
+          ) : (
+            <div>
+              🎉잘 하고 있어요🎉
+              <br />
+              이번주도 열심히 파이팅~!
+            </div>
+          ))}
       </Message>
     </ModalLayout>
   );
@@ -201,33 +167,9 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
 
 const Message = styled.div`
   padding: var(--gap-2) var(--gap-3);
-
+  min-height: 58px;
   border-radius: var(--rounded);
   background-color: var(--gray-100);
-`;
-
-const ProfileWrapper = styled.div`
-  padding: 8px 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: var(--border);
-  > span:first-child {
-    font-weight: 500;
-    font-size: 16px;
-  }
-`;
-
-const ScoreBarWrapper = styled.div`
-  padding: var(--gap-2) 0;
-  border-bottom: var(--border);
-  display: flex;
-  flex-direction: column;
-  > span {
-    font-size: 12px;
-    color: var(--gray-600);
-    margin-left: auto;
-  }
 `;
 
 const Container = styled.div`
@@ -241,22 +183,6 @@ const Info = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-`;
-
-const SkeletonText = styled.div`
-  width: 60px;
-`;
-
-const ImageWrapper = styled.div`
-  margin-left: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  > span {
-    display: inline-block;
-    margin-top: var(--gap-1);
-  }
 `;
 
 const Item = styled.div`
