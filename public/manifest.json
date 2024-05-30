@@ -1,11 +1,10 @@
 {
   "background_color": "#ffffff",
-  "form_factor": "wide",
   "description": "카공 및 친목 동아리",
   "dir": "ltr",
   "display": "standalone",
   "name": "ABOUT",
-  "orientation": "any",
+  "orientation": "portrait",
 
   "scope": "/",
   "short_name": "ABOUT",
