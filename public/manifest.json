@@ -1,6 +1,5 @@
 {
   "background_color": "#ffffff",
-
   "description": "카공 및 친목 동아리",
   "dir": "ltr",
   "display": "standalone",
@@ -9,14 +8,13 @@
 
   "scope": "/",
   "short_name": "ABOUT",
-  "start_url": "https://studyabout.herokuapp.com",
+  "start_url": "https://studyabout.herokuapp.com/",
   "theme_color": "#ffffff",
   "icons": [
     {
       "src": "/ogImage.png",
       "type": "image/png",
-      "sizes": "977x498",
-      "form_factor": "wide"
+      "sizes": "977x498"
     },
     {
       "src": "/144.png",
@@ -26,32 +24,32 @@
     {
       "src": "/152.png",
       "type": "image/png",
-      "sizes": "152x152"
+      "sizes": "144x144"
     },
     {
       "src": "/167.png",
       "type": "image/png",
-      "sizes": "167x167"
+      "sizes": "144x144"
     },
     {
       "src": "/180.png",
       "type": "image/png",
-      "sizes": "180x180"
+      "sizes": "144x144"
     },
     {
       "src": "/192.png",
       "type": "image/png",
-      "sizes": "192x192"
+      "sizes": "144x144"
     },
     {
       "src": "/256.png",
       "type": "image/png",
-      "sizes": "256x256"
+      "sizes": "144x144"
     },
     {
       "src": "/512.png",
       "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "144x144"
     }
   ],
   "screenshots": [
