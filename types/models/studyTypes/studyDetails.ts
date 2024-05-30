@@ -48,6 +48,7 @@ export interface PlaceRegisterProps {
 export interface IPlace extends PlaceRegisterProps {
   status: string;
   _id: string;
+  prefCnt: number;
 }
 
 export type StudyStatus = "pending" | "open" | "dismissed" | "free";

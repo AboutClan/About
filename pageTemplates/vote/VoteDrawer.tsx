@@ -73,7 +73,7 @@ function VoteDrawer({ studyVoteData, myVote, setMyVote, setActionType }: VoteDra
   }, [myVote?.place, myVote?.subPlace]);
 
   const mainPlace = items?.find((item) => item.place._id === myVote?.place?._id);
- 
+
   return (
     <BottomDrawerLg setIsModal={() => {}} height={300} isxpadding={false} isOverlay={false}>
       {mainPlace ? (
@@ -131,7 +131,7 @@ const getSortedMainPlace = (
   const results = sortedArr.map((par) => ({
     fullname: par.place.fullname,
     voteCnt: par.attendences.length,
-    favoritesCnt: 0,
+    favoritesCnt: par.place?.prefCnt || 0,
     locationDetail: par.place.locationDetail,
     place: par.place,
     myFavorite: (par.place._id === mainPlace

@@ -5,7 +5,6 @@ import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import { HAS_STUDY_TODAY } from "../constants/keys/localStorage";
 import { getStudyStandardDate } from "../libs/study/date/getStudyStandardDate";
 import { slideDirectionState } from "../recoils/navigationRecoils";
 import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
@@ -32,7 +31,7 @@ export default function BottomNav() {
   const newSearchParams = new URLSearchParams(searchParams);
 
   const locationEn = convertLocationLangTo(session?.user.location, "en");
-  const hasStudyToday = localStorage.getItem(HAS_STUDY_TODAY);
+
   const deviceType = detectDevice();
 
   return (
@@ -41,9 +40,7 @@ export default function BottomNav() {
         const getParams = (category: Category) => {
           switch (category) {
             case "홈":
-              return `/?location=${locationEn}&date=${getStudyStandardDate(
-                hasStudyToday === "true",
-              )}`;
+              return `/?location=${locationEn}&date=${getStudyStandardDate()}`;
             case "모임":
               return `/?location=${locationEn}`;
             case undefined:

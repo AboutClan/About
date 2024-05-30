@@ -57,7 +57,7 @@ export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
     enabled: !!myStudy,
   });
 
-  const isPrivateStudy = PLACE_TO_NAME[id] === "자유신청";
+  const isPrivateStudy = PLACE_TO_NAME[id] === "개인 스터디";
 
   //오늘 날짜 투표 포인트 받은거 찾기
   const myPrevVotePoint = pointLog?.find(

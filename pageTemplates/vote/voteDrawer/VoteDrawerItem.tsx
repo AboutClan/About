@@ -145,7 +145,7 @@ function VoteDrawerItem({
         <Box color="var(--gray-600)" fontSize="14px">
           <Box as="span">{item.voteCnt}명 참여중</Box>
           {" / "}
-          <Box as="span">즐겨찾기: {item.favoritesCnt}</Box>
+          <Box as="span">즐겨찾기: {item.favoritesCnt}명</Box>
         </Box>
       </Flex>
       <Box ml="auto" mr="12px">

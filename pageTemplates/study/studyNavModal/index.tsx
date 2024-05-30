@@ -32,8 +32,8 @@ function StudyNavModal({ type, setType, modalOptions }: IStudyNavModal) {
       {type === "changeTime" && <StudyChangeTimeModal setIsModal={closeModal} />}
       {type === "freeOpen" && <StudyFreeOpenModal setIsModal={closeModal} />}
       {type === "attendCheck" && <StudyAttendCheckModal setIsModal={closeModal} />}
-
       {type === "absent" && <StudyAbsentModal setIsModal={closeModal} />}
+
       {/* {type === "lightAbsent" && (
         <StudyLightAbsentModal setIsModal={closeModal} />
       )} */}

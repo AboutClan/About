@@ -56,7 +56,7 @@ function DailyCheckModal({ setIsModal }: IModal) {
       toast("error", "이미 오늘의 출석체크를 완료했습니다.");
     },
   });
-  const { mutate: getPoint } = usePointSystemMutation("point");
+
   const { mutate: getScore } = usePointSystemMutation("score");
   const { mutate: sendRequest } = useUserRequestMutation();
 

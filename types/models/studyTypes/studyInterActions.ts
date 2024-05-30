@@ -46,3 +46,8 @@ export interface StudyWaitingUser {
   createdAt?: string;
   point?: number;
 }
+
+export interface StudyVotingSave {
+  date: string;
+  isVoting: boolean;
+}
