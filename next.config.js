@@ -5,6 +5,7 @@ const withPWA = require("next-pwa");
 const runtimeCaching = require("next-pwa/cache");
 const nextConfig = {
   images: {
+    loaderFile: "/utils/imageLoader.ts",
     remotePatterns: [
       {
         protocol: "https",
