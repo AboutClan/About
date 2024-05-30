@@ -38,15 +38,15 @@ function WritingStudyComplete() {
       writer: session?.user.name,
       date: dayjs(),
       title: studyWriting?.fullname,
-      content: studyWriting.content,
+      content,
     });
   };
 
   const LIST_CONTENTS = [
-    "관리자가 승인하는 즉시 신규 등록됩니다.",
-    "등록된 장소는 한 달 동안만 임시로 유지됩니다.",
-    "정규 장소로 확정을 위해서는 한 달 이내에 해당 장소에서 스터디가 2회 진행되어야 합니다.",
-    "정규 장소 확정에 성공한다면 등록자에게는 300 POINT의 상품이 지급됩니다.",
+    "관리자가 승인하는 즉시 신규 장소로 추가됩니다.",
+    "추가된 장소는 한 달 동안만 임시로 유지됩니다.",
+    "고정 장소로 전환을 위해서는 한 달 이내에 스터디가 2회 이상 진행되어야 합니다.",
+    "전환에 성공한다면 등록자에게는 300 POINT의 상품이 지급됩니다.",
   ];
 
   return (

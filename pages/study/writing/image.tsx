@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 
+import { STUDY_COVER_IMAGES } from "../../../assets/images/studyCover";
+import { STUDY_MAIN_IMAGES } from "../../../assets/images/studyMain";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
@@ -12,7 +14,6 @@ import { useFailToast } from "../../../hooks/custom/CustomToast";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { sharedStudyWritingState } from "../../../recoils/sharedDataAtoms";
-import { STORE_GIFT } from "../../../storage/Store";
 
 function WritingStudyImage() {
   const router = useRouter();
@@ -38,16 +39,16 @@ function WritingStudyImage() {
     router.push(`/study/writing/complete`);
   };
 
-  const mainImageArr = STORE_GIFT.map((item) => ({
-    imageUrl: item.image,
+  const mainImageArr = STUDY_MAIN_IMAGES.map((item) => ({
+    imageUrl: item,
     func: () => {
-      setImageProps((old) => ({ ...old, mainImage: item.image }));
+      setImageProps((old) => ({ ...old, mainImage: item }));
     },
   }));
-  const coverImageArr = STORE_GIFT.map((item) => ({
-    imageUrl: item.image,
+  const coverImageArr = STUDY_COVER_IMAGES.map((item) => ({
+    imageUrl: item,
     func: () => {
-      setImageProps((old) => ({ ...old, coverImage: item.image }));
+      setImageProps((old) => ({ ...old, coverImage: item }));
     },
   }));
 

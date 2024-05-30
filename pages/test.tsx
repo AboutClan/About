@@ -10,7 +10,7 @@ const urlBase64ToUint8Array = (base64String) => {
 
   // 패딩 추가
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding).replace(/\-/g, "+").replace(/_/g, "/");
+  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
 
   // 패딩 후 문자열과 길이 출력
   console.log("Padded base64String:", base64);

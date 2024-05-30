@@ -1,5 +1,3 @@
-"use client";
-
 import { Select } from "@chakra-ui/react";
 import { ChangeEvent, useEffect, useState } from "react";
 

@@ -58,12 +58,13 @@ export function PostThumbnailCard({
           borderRadius="var(--rounded-lg)"
           position="relative"
           overflow="hidden"
+          pos="relative"
         >
           <Image
             src={image.url}
             alt="thumbnailImage"
-            width={80}
-            height={80}
+            fill={true}
+            sizes="100px"
             priority={image.priority}
           />
         </Box>

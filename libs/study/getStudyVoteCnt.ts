@@ -8,7 +8,7 @@ export const getStudyVoteCnt = (studyVoteData: IParticipation[], filterUid?: str
     if (par.place.brand === "자유 신청") return;
     par?.attendences.forEach((who) => {
       if (who?.user.uid === filterUid) return;
-      temp.add(who.user.uid);
+      if (who.firstChoice) temp.add(who.user.uid);
     });
   });
 

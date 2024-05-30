@@ -32,7 +32,7 @@ function StudyWaitingPlaces({ studyWaitingPlaces }: StudyWaitingPlacesProps) {
       ),
     };
   });
-  console.log(studyWaitingPlaces);
+
   return (
     <>
       {placeCardArr.length ? (

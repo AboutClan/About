@@ -153,6 +153,7 @@ const getWaitingSpaceProps = (studyData: IParticipation[]) => {
       }
     });
   });
+
   return userArr.sort((a, b) => (dayjs(a.createdAt).isAfter(dayjs(b.createdAt)) ? 1 : -1));
 };
 
