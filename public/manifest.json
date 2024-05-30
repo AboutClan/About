@@ -9,7 +9,7 @@
 
   "scope": "/",
   "short_name": "ABOUT",
-  "start_url": "http://localhost:3000/home?location=suw&date=2024-05-29",
+  "start_url": "https://study-about.club",
   "theme_color": "#ffffff",
   "icons": [
     {
