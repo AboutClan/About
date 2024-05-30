@@ -14,7 +14,7 @@ export const getStudyStandardDate = () => {
   const studyVotingTable =
     (JSON.parse(localStorage.getItem(STUDY_VOTING_TABLE)) as StudyVotingSave[]) || [];
 
-  const hasTodayStudy = studyVotingTable.find((obj) => obj.date === dayjsToStr(dayjs())).isVoting;
+  const hasTodayStudy = studyVotingTable.find((obj) => obj.date === dayjsToStr(dayjs()))?.isVoting;
 
   if (currentHour <= STUDY_DATE_START_HOUR) {
     return dayjsToStr(dayjs());
