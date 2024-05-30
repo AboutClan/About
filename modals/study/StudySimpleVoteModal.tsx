@@ -4,11 +4,12 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
+import PlaceSelector from "../../components/atoms/PlaceSelector";
 
-import Selector from "../../components/atoms/Selector";
 import ImageTileFlexLayout from "../../components/molecules/layouts/ImageTileFlexLayout";
 import { IImageTileData } from "../../components/molecules/layouts/ImageTitleGridLayout";
 import { StudyVoteTimeRullets } from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
+import { STUDY_CHECK_POP_UP } from "../../constants/keys/localStorage";
 import { STUDY_VOTE } from "../../constants/keys/queryKeys";
 import { POINT_SYSTEM_PLUS } from "../../constants/serviceConstants/pointSystemConstants";
 import { useToast } from "../../hooks/custom/CustomToast";
@@ -107,19 +108,27 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
     } else patchAttend(myVote);
   };
 
+  const hasDismissedStudy = localStorage.getItem(STUDY_CHECK_POP_UP) === dayjsToStr(dayjs());
+
   const imageDataArr: IImageTileData[] = studyVoteData
-    ?.filter((par) => par.status === "dismissed")
+    ?.filter((par) => par.status !== "dismissed")
     .map((par) => ({
       imageUrl: par.place.image,
       text: par.place.branch,
       id: par.place._id,
-      func: () => setSelectedPlace(par.place._id),
+      func: () => {
+        if (par.place.branch === "개인 스터디" && !hasDismissedStudy) {
+          toast("warning", "사전 투표 인원만 참여가 가능합니다.");
+          return;
+        }
+        setSelectedPlace(par.place._id);
+      },
     }))
     .sort((a) => (a.text === "개인 스터디" ? 1 : -1));
 
   const dismissedPlaces = studyVoteData
     ?.filter((par) => par.status === "dismissed")
-    .map((par) => par.place.branch);
+    .map((par) => par.place._id);
 
   const footerOptions: IFooterOptions = {
     main: {
@@ -139,7 +148,7 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
             </ModalSubtitle>
             <ImageTileFlexLayout imageDataArr={imageDataArr} selectedId={[selectedPlace]} />
             <Box mt="20px">
-              <Selector
+              <PlaceSelector
                 options={["선택 없음", ...dismissedPlaces]}
                 defaultValue={selectedPlace}
                 setValue={setSelectedPlace}

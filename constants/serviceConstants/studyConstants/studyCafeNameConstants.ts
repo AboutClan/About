@@ -150,6 +150,7 @@ export const PLACE_TO_NAME = {
   [DONG_수유역]: "엔제리너스",
   [DONG_회기역]: "READSTREET",
 
+  //인천
   [INC_인하대]: "더스토리",
   [INC_송도DT]: "스타벅스",
   [INC_구월동]: "파스쿠찌",
@@ -157,3 +158,4 @@ export const PLACE_TO_NAME = {
   [INC_부평]: "하이테이블",
   [INC_인천대]: "스타벅스",
 };
+
