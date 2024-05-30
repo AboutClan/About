@@ -19,7 +19,7 @@ function DateVoteBlock({ buttonProps, func, cnt }: DateVoteBlockProps) {
   const locationEn = searchParams.get("location");
 
   const myStudy = useRecoilValue(myStudyState);
-
+  console.log(5, myStudy);
   return (
     <Flex w="100%" justify="space-between" align="center">
       <Box fontSize="16px" fontWeight={500}>

@@ -1,8 +1,8 @@
 import { Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -11,7 +11,9 @@ import { IAlertModalOptions } from "../../components/AlertModal";
 import { IIconLinkTile } from "../../components/atoms/IconLinkTile";
 import Slide from "../../components/layouts/PageSlide";
 import IconTileRowLayout from "../../components/organisms/IconTileRowLayout";
+import { STUDY_CHECK_POP_UP } from "../../constants/keys/localStorage";
 import { STUDY_VOTE } from "../../constants/keys/queryKeys";
+import { PLACE_TO_NAME } from "../../constants/serviceConstants/studyConstants/studyCafeNameConstants";
 import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { MAX_USER_PER_PLACE } from "../../constants/settingValue/study/study";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
@@ -19,12 +21,10 @@ import { useStudyParticipationMutation } from "../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { usePointSystemLogQuery } from "../../hooks/user/queries";
 import { myStudyState, studyDateStatusState } from "../../recoils/studyRecoils";
-import {
-  IParticipation,
-  StudyStatus
-} from "../../types/models/studyTypes/studyDetails";
+import { IParticipation, StudyStatus } from "../../types/models/studyTypes/studyDetails";
 import { StudyDateStatus } from "../../types/models/studyTypes/studyInterActions";
 import { IPointLog } from "../../types/services/pointSystem";
+import { dayjsToStr } from "../../utils/dateTimeUtils";
 import StudyNavModal from "./studyNavModal";
 
 interface IStudyNavigation {
@@ -41,6 +41,9 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
   const typeToast = useTypeToast();
   const { data: session } = useSession();
   const { id, date } = useParams<{ id: string; date: string }>() || {};
+  const searchParams = useSearchParams();
+  const isPrivate = searchParams.get("isPrivate");
+  const isFree = searchParams.get("isFree");
 
   const queryClient = useQueryClient();
 
@@ -61,7 +64,6 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
 
   const { mutate: getPoint } = usePointSystemMutation("point");
 
-  /** cancel */
   const { data: pointLog } = usePointSystemLogQuery("point", true, {
     enabled: !!isSubNav,
   });
@@ -80,12 +82,21 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
     onError: () => typeToast("error"),
   });
 
+  useEffect(() => {
+    if (isPrivate === "on") setModalType("vote");
+    if (isFree === "on") setModalType("freeOpen");
+  }, [isPrivate, isFree]);
+
+  const hasDismissedStudy = localStorage.getItem(STUDY_CHECK_POP_UP) === dayjsToStr(dayjs());
+
   const { text: mainText, funcType: mainFuncType } = getMainButtonStatus(
     voteCnt >= MAX_USER_PER_PLACE,
     studyDateStatus,
     votingType,
     isAttend,
     studyStatus,
+    PLACE_TO_NAME[id] === "개인 스터디",
+    hasDismissedStudy,
   );
 
   const handleSubNav = (type: SubNavBtn) => {
@@ -124,17 +135,17 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
 
   const subNavOptions: IIconLinkTile[] = [
     {
-      icon: <i className="fa-light fa-circle-x-mark fa-xl"  />,
+      icon: <i className="fa-light fa-circle-x-mark fa-xl" />,
       text: "참여 취소",
       func: () => handleSubNav("cancelVote"),
     },
     {
-      icon: <i className="fa-light fa-clock fa-xl"  />,
+      icon: <i className="fa-light fa-clock fa-xl" />,
       text: "시간 변경",
       func: () => handleSubNav("changeTime"),
     },
     {
-      icon: <i className="fa-light fa-ban fa-xl"  />,
+      icon: <i className="fa-light fa-ban fa-xl" />,
       text: "당일 불참",
       func: () => handleSubNav("absent"),
     },
@@ -204,11 +215,17 @@ const getMainButtonStatus = (
   votingType: "same" | "other" | null,
   isAttend: boolean,
   studyStatus: StudyStatus,
+  isFree: boolean,
+  hasDismissed: boolean,
 ): {
   text: string;
   funcType?: MainBtnType;
 } => {
   if (isAttend) return { text: "출석 완료" };
+  if (isFree) {
+    if (hasDismissed) return { text: "스터디 투표", funcType: "vote" };
+    return { text: "사전 투표 인원만 참여가 가능합니다." };
+  }
   switch (studyDateStatus) {
     case "passed":
       return { text: "기간 만료" };

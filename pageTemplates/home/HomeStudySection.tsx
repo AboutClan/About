@@ -7,24 +7,27 @@ import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
+import Slide from "../../components/layouts/PageSlide";
 import BlurredPart from "../../components/molecules/BlurredPart";
 import { IPostThumbnailCard } from "../../components/molecules/cards/PostThumbnailCard";
 import {
   CardColumnLayout,
   CardColumnLayoutSkeleton,
 } from "../../components/organisms/CardColumnLayout";
-import { HAS_STUDY_TODAY } from "../../constants/keys/localStorage";
+import { STUDY_CHECK_POP_UP, STUDY_VOTING_TABLE } from "../../constants/keys/localStorage";
+import { STUDY_DATE_START_HOUR } from "../../constants/serviceConstants/studyConstants/studyTimeConstant";
 import { useStudyResultDecideMutation } from "../../hooks/study/mutations";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
-import { getMyStudy } from "../../libs/study/getMyStudy";
 import { getStudyConfimCondition } from "../../libs/study/getStudyConfimCondition";
 import { sortStudyVoteData } from "../../libs/study/sortStudyVoteData";
+import StudyOpenCheckModal from "../../modals/study/StudyOpenCheckModal";
 import {
   myStudyState,
   sortedStudyCardListState,
   studyDateStatusState,
 } from "../../recoils/studyRecoils";
 import { IParticipation, StudyStatus } from "../../types/models/studyTypes/studyDetails";
+import { StudyVotingSave } from "../../types/models/studyTypes/studyInterActions";
 import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
@@ -44,11 +47,12 @@ export default function HomeStudySection() {
   const setMyStudy = useSetRecoilState(myStudyState);
   const studyDateStatus = useRecoilValue(studyDateStatusState);
   const [studyCardColData, setStudyCardColData] = useState<IPostThumbnailCard[]>();
+  const [dismissedStudy, setDismissedStudy] = useState<IParticipation>();
 
   const { data: studyVoteData, isLoading } = useStudyVoteQuery(date as string, location, {
     enabled: !!date && !!location,
   });
-  console.log(11, studyVoteData);
+
   const { mutate: decideStudyResult } = useStudyResultDecideMutation(date);
 
   useEffect(() => {
@@ -59,30 +63,49 @@ export default function HomeStudySection() {
     }
     const sortedData = sortStudyVoteData(studyVoteData, studyDateStatus !== "not passed");
 
-    // const waiting = studyDateStatus === "not passed" && getWaitingSpaceProps(studyVoteData);
-
-    const cardList = setStudyDataToCardCol(
-      sortedData,
-      date as string,
-      session?.user.uid,
-      // studyDateStatus === "not passed" ? waiting.map((obj) => obj.user) : null,
-    );
+    const cardList = setStudyDataToCardCol(sortedData, date as string, session?.user.uid);
 
     setStudyCardColData(cardList.slice(0, 3));
     setSortedStudyCardList(cardList);
-    const myStudy = getMyStudy(studyVoteData, myUid);
-    console.log(5, myStudy);
-    setMyStudy(myStudy);
+    let myStudy: IParticipation = null;
 
-    if (date === dayjsToStr(dayjs())) {
-      const myInfo = myStudy?.attendences.find((who) => who.user.uid === myUid);
-      if (myInfo) {
-        if (myInfo?.arrived && dayjs().hour() >= 20) {
-          localStorage.setItem(HAS_STUDY_TODAY, undefined);
-        } else {
-          localStorage.setItem(HAS_STUDY_TODAY, "true");
-        }
+    const studyOpenCheck = localStorage.getItem(STUDY_CHECK_POP_UP);
+
+    studyVoteData.forEach((par) =>
+      par.attendences.forEach((who) => {
+        if (who.user.uid === myUid && who.firstChoice) myStudy = par;
+      }),
+    );
+
+    if (myStudy?.status !== "dismissed") setMyStudy(myStudy);
+    else {
+      if (studyOpenCheck !== dayjsToStr(dayjs()) && dayjs().hour() > STUDY_DATE_START_HOUR) {
+        setDismissedStudy(myStudy);
+        localStorage.setItem(STUDY_CHECK_POP_UP, dayjsToStr(dayjs()));
       }
+      setMyStudy(null);
+    }
+
+    if (dayjs(date).isAfter(dayjs().subtract(1, "day"))) {
+      let isVoting = false;
+      studyVoteData.forEach((par) =>
+        par.attendences.forEach((who) => {
+          if (who.user.uid === myUid && who.firstChoice) {
+            isVoting = true;
+          }
+        }),
+      );
+
+      const studyVotingTable =
+        (JSON.parse(localStorage.getItem(STUDY_VOTING_TABLE)) as StudyVotingSave[]) || [];
+      const newEntry = { date, isVoting };
+
+      // 같은 날짜가 있는지 확인하고 업데이트, 없으면 추가
+      const updatedTable = studyVotingTable.some((entry) => entry.date === newEntry.date)
+        ? studyVotingTable.map((entry) => (entry.date === newEntry.date ? newEntry : entry))
+        : [...studyVotingTable, newEntry];
+
+      localStorage.setItem(STUDY_VOTING_TABLE, JSON.stringify(updatedTable));
     }
 
     if (getStudyConfimCondition(studyDateStatus, studyVoteData[1].status)) {
@@ -100,41 +123,46 @@ export default function HomeStudySection() {
   };
 
   return (
-    <AnimatePresence initial={false}>
-      <MotionDiv
-        drag="x"
-        dragConstraints={{ left: 0, right: 0 }}
-        dragElastic={1}
-        onDragEnd={(_, panInfo) => onDragEnd(panInfo)}
-        className="study_space"
-      >
-        <>
-          <BlurredPart
-            isBlur={location === "안양"}
-            text={
-              location === "안양"
-                ? "안양 지역은 톡방에서 별도 운영중입니다!"
-                : location === null
-                  ? "스터디 장소 확정중입니다."
-                  : null
-            }
+    <>
+      <Slide>
+        <AnimatePresence initial={false}>
+          <MotionDiv
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={1}
+            onDragEnd={(_, panInfo) => onDragEnd(panInfo)}
+            className="study_space"
           >
-            {!isLoading && studyCardColData ? (
-              <CardColumnLayout
-                cardDataArr={studyCardColData}
-                url={`/studyList/?${newSearchParams.toString()}`}
-              />
-            ) : (
-              <CardColumnLayoutSkeleton />
-            )}
-          </BlurredPart>
-        </>
-      </MotionDiv>
-    </AnimatePresence>
+            <>
+              <BlurredPart
+                isBlur={location === "안양"}
+                text={
+                  location === "안양"
+                    ? "안양 지역은 톡방에서 별도 운영중입니다!"
+                    : location === null
+                      ? "스터디 장소 확정중입니다."
+                      : null
+                }
+              >
+                {!isLoading && studyCardColData ? (
+                  <CardColumnLayout
+                    cardDataArr={studyCardColData}
+                    url={`/studyList/?${newSearchParams.toString()}`}
+                  />
+                ) : (
+                  <CardColumnLayoutSkeleton />
+                )}
+              </BlurredPart>
+            </>
+          </MotionDiv>
+        </AnimatePresence>
+      </Slide>
+      {dismissedStudy && (
+        <StudyOpenCheckModal setIsModal={() => setDismissedStudy(null)} par={dismissedStudy} />
+      )}
+    </>
   );
 }
-
-
 
 export const setStudyDataToCardCol = (
   studyData: IParticipation[],

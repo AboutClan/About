@@ -1,4 +1,3 @@
-import { Button } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -97,17 +96,7 @@ export default function StudyVoteMap() {
           handleMarker={(place) => setMyVote((old) => setVotePlaceInfo(place, old))}
         />
       </MapLayout>
-      <Button
-        position="absolute"
-        bottom="356px"
-        w="54px"
-        h="54px"
-        bgColor="var(--color-mint)"
-        left="16px"
-        borderRadius="50%"
-      >
-        <i className="fa-solid fa-location-pen fa-2x" style={{ color: "white" }} />
-      </Button>
+
       {studyVoteData && (
         <VoteDrawer
           myVote={myVote}

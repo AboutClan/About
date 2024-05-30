@@ -4,7 +4,6 @@ import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 
 import Slide from "../../components/layouts/PageSlide";
-import { HAS_STUDY_TODAY } from "../../constants/keys/localStorage";
 import EventBanner from "../../pageTemplates/home/EventBanner";
 import HomeCategoryNav from "../../pageTemplates/home/HomeCategoryNav";
 import HomeGatherSection from "../../pageTemplates/home/HomeGatherSection";
@@ -25,16 +24,9 @@ function Home() {
   const locationParam = searchParams.get("location") as LocationEn;
   const dateParam = searchParams.get("date");
 
-  const hasStudyToday = localStorage.getItem(HAS_STUDY_TODAY);
-
   useEffect(() => {
     if (session?.user && (!locationParam || !dateParam)) {
-      const initialUrl = getUrlWithLocationAndDate(
-        locationParam,
-        dateParam,
-        session.user.location,
-        hasStudyToday === "true",
-      );
+      const initialUrl = getUrlWithLocationAndDate(locationParam, dateParam, session.user.location);
       router.replace(initialUrl);
     }
   }, [session?.user, locationParam, dateParam]);
@@ -49,9 +41,7 @@ function Home() {
       </Slide>
       <Box px="16px">
         <StudyController />
-        <Slide>
-          <HomeStudySection />
-        </Slide>
+        <HomeStudySection />
       </Box>
       <Slide>
         <EventBanner />

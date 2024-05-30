@@ -74,7 +74,7 @@ import {
 
 export const PLACE_TO_NAME = {
   //전체
-  [ALL_스터디인증]: "스터디인증",
+  [ALL_스터디인증]: "개인 스터디",
 
   //수원
   [SUWAN_수원시청]: "투썸플레이스",
