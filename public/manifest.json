@@ -5,11 +5,11 @@
   "dir": "ltr",
   "display": "standalone",
   "name": "ABOUT",
-  "orientation": "any",
+  "orientation": "portrait",
 
   "scope": "/",
   "short_name": "ABOUT",
-  "start_url": "https://study-about.club",
+  "start_url": "https://studyabout.herokuapp.com",
   "theme_color": "#ffffff",
   "icons": [
     {
