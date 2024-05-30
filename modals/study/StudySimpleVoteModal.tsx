@@ -4,8 +4,8 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
-import PlaceSelector from "../../components/atoms/PlaceSelector";
 
+import PlaceSelector from "../../components/atoms/PlaceSelector";
 import ImageTileFlexLayout from "../../components/molecules/layouts/ImageTileFlexLayout";
 import { IImageTileData } from "../../components/molecules/layouts/ImageTitleGridLayout";
 import { StudyVoteTimeRullets } from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";

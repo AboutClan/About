@@ -32,7 +32,7 @@ export const useStudyPlacesQuery = (
           status: active,
         },
       });
-      console.log(4, active);
+     
       const places = res.data.filter(
         (place) =>
           place.brand !== "자유 신청" && (location === "all" || place.location === location),

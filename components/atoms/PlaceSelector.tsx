@@ -1,7 +1,7 @@
 import { Select } from "@chakra-ui/react";
 import { ChangeEvent } from "react";
-import { PLACE_TO_NAME } from "../../constants/serviceConstants/studyConstants/studyCafeNameConstants";
 
+import { PLACE_TO_NAME } from "../../constants/serviceConstants/studyConstants/studyCafeNameConstants";
 import { DispatchType } from "../../types/hooks/reactTypes";
 
 interface IPlaceSelector {

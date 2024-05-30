@@ -19,12 +19,12 @@ function DateVoteBlock({ buttonProps, func, cnt }: DateVoteBlockProps) {
   const locationEn = searchParams.get("location");
 
   const myStudy = useRecoilValue(myStudyState);
-  console.log(5, myStudy);
+  
   return (
     <Flex w="100%" justify="space-between" align="center">
       <Box fontSize="16px" fontWeight={500}>
         <Box as="span" mr="4px">
-          현재 참여 인원:
+          현재 신청 인원:
         </Box>
 
         <Box display="inline-block" color="var(--color-mint)">

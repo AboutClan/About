@@ -128,10 +128,7 @@ function StudyController() {
         <DateCalendarModal selectedDate={selectedDateDayjs} setIsModal={() => setModalType(null)} />
       )}
       {modalType === "todayVote" && (
-        <StudySimpleVoteModal
-          studyVoteData={studyVoteData}
-          setIsModal={() => setModalType(null)}
-        />
+        <StudySimpleVoteModal studyVoteData={studyVoteData} setIsModal={() => setModalType(null)} />
       )}
     </>
   );
