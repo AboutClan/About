@@ -14,7 +14,7 @@ function StudyWaitingOverview({ setIsModal }: StudyWaitingOverviewProps) {
       icon: <i className="fa-solid fa-circle-info" />,
     },
     {
-      text: "설명입니다",
+      text: "조건에 따라 포인트를 획득할 수 있습니다.",
       icon: <i className="fa-solid fa-circle-info" />,
     },
   ];

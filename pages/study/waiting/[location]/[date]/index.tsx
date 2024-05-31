@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -74,16 +74,16 @@ export default function Page() {
         {studyWaitingUsers && (
           <>
             <StudyHeader
-              brand="스터디 대기소"
-              fullname="스터디 대기소"
+              brand="스터디 참여 현황"
+              fullname="스터디 참여 현황"
               locationDetail="세부"
-              coverImage="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/CU_3000%EC%9B%90%EA%B6%8C.webp"
+              coverImage="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%8E%98+%EB%B0%B0%EA%B2%BD/%EB%9E%9C%EB%8D%A4/%EA%B7%B8%EB%A6%BC11.png"
             />
             <Slide>
               <StudyCover
-                imageUrl="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/CU_3000%EC%9B%90%EA%B6%8C.webp"
+                imageUrl="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%8E%98+%EB%B0%B0%EA%B2%BD/%EB%9E%9C%EB%8D%A4/%EA%B7%B8%EB%A6%BC11.png"
                 brand=""
-                isPrivateStudy={false}
+                isPrivateStudy={true}
               />
 
               <StudyWaitingOverview setIsModal={setIsPointModal} />
@@ -96,7 +96,7 @@ export default function Page() {
                   locationDetail: "",
                   fullname: "",
                   image:
-                    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/CU_3000%EC%9B%90%EA%B6%8C.webp",
+                    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%8E%98+%EB%A1%9C%EA%B3%A0/%EA%B0%9C%EC%9D%B8%EC%8A%A4%ED%84%B0%EB%94%94.webp",
                 }}
               />
               <TabNav tabOptionsArr={tabArr} selected={category} />
