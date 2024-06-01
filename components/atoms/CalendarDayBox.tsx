@@ -9,7 +9,7 @@ import DatePointButton from "../molecules/DatePointButton";
 interface CalendarDayBoxProps {
   date: string;
   value: number;
-  func: (date: number) => void;
+  func: (date: string) => void;
   selectedDate: string;
   pointType?: "mint";
 }
@@ -36,7 +36,7 @@ function CalendarDayBox({ date, value, func, selectedDate, pointType }: Calendar
       <DatePointButton
         date={dayjsToStr(dayjsDate)}
         value={value}
-        func={() => func(dayjsDate.date())}
+        func={() => func(dayjsToStr(dayjsDate))}
         isSelected={date === selectedDate}
         pointType={pointType}
       />

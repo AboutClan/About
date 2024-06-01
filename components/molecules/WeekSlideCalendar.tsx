@@ -9,7 +9,7 @@ import CalendarDayBox from "../atoms/CalendarDayBox";
 interface CalendarProps {
   selectedDate: Dayjs;
   voteCntArr: VoteCntProps[];
-  func: (date: number) => void;
+  func: (date: string) => void;
 }
 
 function WeekSlideCalendar({ voteCntArr, selectedDate, func }: CalendarProps) {
