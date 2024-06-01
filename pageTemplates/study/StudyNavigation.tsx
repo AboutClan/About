@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
@@ -135,7 +135,7 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
 
   const subNavOptions: IIconLinkTile[] = [
     {
-      icon: <i className="fa-light fa-circle-x-mark fa-xl" />,
+      icon: <i className="fa-light fa-circle-xmark fa-xl" />,
       text: "참여 취소",
       func: () => handleSubNav("cancelVote"),
     },
