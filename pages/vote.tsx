@@ -1,5 +1,5 @@
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -101,7 +101,7 @@ export default function StudyVoteMap() {
         <VoteDrawer
           myVote={myVote}
           setMyVote={setMyVote}
-          studyVoteData={studyVoteData}
+          studyVoteData={studyVoteData?.filter((par) => par.place.branch !== "개인 스터디")}
           setActionType={setActionType}
         />
       )}

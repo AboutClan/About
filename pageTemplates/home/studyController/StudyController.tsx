@@ -86,7 +86,7 @@ function StudyController() {
             </Box>
             <Flex>
               <PointCircleText text="오픈 확정" color="mint" />
-              <Box w="8px" />
+              <Box w="12px" />
               <PointCircleText text="오픈 예정" color="gray" />
             </Flex>
           </Flex>

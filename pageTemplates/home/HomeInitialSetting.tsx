@@ -1,13 +1,16 @@
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
 import { useSetRecoilState } from "recoil";
 import { createGlobalStyle } from "styled-components";
+import PCBottomNav from "../../components/layouts/PCBottomNav";
 
 import { STEPS_CONTENTS } from "../../constants/contentsText/GuideContents";
 import { USER_GUIDE } from "../../constants/keys/localStorage";
+import { useToast } from "../../hooks/custom/CustomToast";
+import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { getStudyDateStatus } from "../../libs/study/date/getStudyDateStatus";
 import FAQPopUp from "../../modals/pop-up/FAQPopUp";
@@ -16,6 +19,7 @@ import { renderHomeHeaderState } from "../../recoils/renderRecoils";
 import { studyDateStatusState } from "../../recoils/studyRecoils";
 import { checkAndSetLocalStorage } from "../../utils/storageUtils";
 function HomeInitialSetting() {
+  const toast = useToast();
   const { data: session } = useSession();
   const searchParams = useSearchParams();
   const dateParam = searchParams.get("date");
@@ -28,6 +32,24 @@ function HomeInitialSetting() {
 
   const setStudyDateStatus = useSetRecoilState(studyDateStatusState);
   const setRenderHomeHeaderState = useSetRecoilState(renderHomeHeaderState);
+
+  const { mutate: setRole } = useUserInfoFieldMutation("role", {
+    onSuccess() {
+      toast("success", "동아리원이 되었습니다.");
+    },
+  });
+
+  useEffect(() => {
+    if (userInfo?.role === "human") {
+      const isPWA = () => {
+        const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
+        return isStandalone;
+      };
+      if (isPWA()) {
+        setRole({ role: "member" });
+      }
+    }
+  }, [userInfo?.role]);
 
   useEffect(() => {
     setStudyDateStatus(getStudyDateStatus(dateParam));
@@ -94,6 +116,7 @@ function HomeInitialSetting() {
       {userInfo && <UserSettingPopUp cnt={isGuide ? 1 : 0} />}
       {isGuestModal && <FAQPopUp setIsModal={setIsGuestModal} />}
       <GlobalStyle />
+      {false && <PCBottomNav />}
       <Joyride
         hideCloseButton={true}
         callback={handleJoyrideCallback}
