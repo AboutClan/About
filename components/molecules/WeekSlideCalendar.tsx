@@ -1,6 +1,6 @@
 import { Box, css, Flex } from "@chakra-ui/react";
 import { Dayjs } from "dayjs";
-import { RefObject, useEffect, useRef } from "react";
+import { useRef } from "react";
 
 import { VoteCntProps } from "../../types/models/studyTypes/studyRecords";
 import { dayjsToStr, getCalendarDates } from "../../utils/dateTimeUtils";
@@ -13,17 +13,8 @@ interface CalendarProps {
 }
 
 function WeekSlideCalendar({ voteCntArr, selectedDate, func }: CalendarProps) {
-  const containerRef: RefObject<HTMLDivElement> = useRef(null);
   const dateRefs: React.MutableRefObject<(HTMLDivElement | null)[]> = useRef([]);
   const calendarArr = getCalendarDates("week", selectedDate, voteCntArr);
-
-  useEffect(() => {
-    const dateIndex = calendarArr.findIndex((item) => item.date === dayjsToStr(selectedDate));
-    if (dateIndex !== -1 && containerRef.current && dateRefs.current[dateIndex]) {
-      const scrollLeft = dateRefs.current[dateIndex].clientWidth * (dateIndex - 2);
-      containerRef.current.scrollLeft = scrollLeft;
-    }
-  }, [calendarArr]);
 
   return (
     <>
@@ -32,7 +23,6 @@ function WeekSlideCalendar({ voteCntArr, selectedDate, func }: CalendarProps) {
         overflow="auto"
         pb="12px"
         w="240px"
-        ref={containerRef}
         css={css`
           @media (max-width: 400px) {
             &::-webkit-scrollbar {
