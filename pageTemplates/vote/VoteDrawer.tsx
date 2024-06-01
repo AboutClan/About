@@ -57,6 +57,7 @@ function VoteDrawer({ studyVoteData, myVote, setMyVote, setActionType }: VoteDra
   useEffect(() => {
     if (!myVote?.place) {
       const items = getSortedMainPlace(studyVoteData, savedPrefer);
+      console.log(4, items);
       setPlaceItems(items);
       return;
     }
@@ -73,9 +74,16 @@ function VoteDrawer({ studyVoteData, myVote, setMyVote, setActionType }: VoteDra
   }, [myVote?.place, myVote?.subPlace]);
 
   const mainPlace = items?.find((item) => item.place._id === myVote?.place?._id);
+  const bodyWidth = document.body.clientWidth;
+  const bodyHeight = document.body.clientHeight;
 
   return (
-    <BottomDrawerLg setIsModal={() => {}} height={300} isxpadding={false} isOverlay={false}>
+    <BottomDrawerLg
+      height={bodyHeight - bodyWidth - 74}
+      setIsModal={() => {}}
+      isxpadding={false}
+      isOverlay={false}
+    >
       {mainPlace ? (
         <VoteDrawerMainItem
           voteCnt={mainPlace?.voteCnt}

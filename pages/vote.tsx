@@ -89,6 +89,7 @@ export default function StudyVoteMap() {
   return (
     <>
       <Header title="스터디 투표" />
+
       <MapLayout>
         <VoteMap
           mapOptions={mapOptions}
@@ -105,6 +106,7 @@ export default function StudyVoteMap() {
           setActionType={setActionType}
         />
       )}
+
       <VoteTimeDrawer
         myVote={
           myVote && {
