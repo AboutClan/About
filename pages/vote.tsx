@@ -1,5 +1,5 @@
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -67,7 +67,11 @@ export default function StudyVoteMap() {
     setMarkersOptions(getMarkersOptions(studyVoteData, myVote));
   }, [studyVoteData, myVote]);
 
-  const mapOptions = getMapOptions(location);
+  const [mapOptions, setMapOptions] = useState<IMapOptions>(getMapOptions(location));
+
+  useEffect(() => {
+    setMapOptions(getMapOptions(location));
+  }, [location]);
 
   //지도에서 마커를 통한 핸들링
   const setVotePlaceInfo = (id: IPlace, voteInfo?: IStudyVoteWithPlace): IStudyVoteWithPlace => {

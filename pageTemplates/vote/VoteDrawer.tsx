@@ -74,7 +74,7 @@ function VoteDrawer({ studyVoteData, myVote, setMyVote, setActionType }: VoteDra
   }, [myVote?.place, myVote?.subPlace]);
 
   const mainPlace = items?.find((item) => item.place._id === myVote?.place?._id);
-  const bodyWidth = document.body.clientWidth;
+  const bodyWidth = document.body.clientWidth > 400 ? 400 : document.body.clientWidth;
   const bodyHeight = document.body.clientHeight;
 
   return (
