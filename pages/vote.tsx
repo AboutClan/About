@@ -1,5 +1,5 @@
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -130,10 +130,10 @@ export default function StudyVoteMap() {
 const getMapOptions = (location: ActiveLocation): IMapOptions | undefined => {
   if (typeof naver === "undefined") return undefined;
   return {
-    center: getVoteLocationCenterDot()[location],
+    center: getVoteLocationCenterDot()[location || "수원"],
     zoom: 13,
     minZoom: 11,
-    maxBounds: getVoteLocationMaxBound()[location],
+    maxBounds: getVoteLocationMaxBound()[location || "수원"],
     mapTypeControl: false,
     scaleControl: false,
     logoControl: false,
