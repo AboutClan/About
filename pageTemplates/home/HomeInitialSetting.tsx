@@ -1,12 +1,12 @@
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
 import { useSetRecoilState } from "recoil";
 import { createGlobalStyle } from "styled-components";
-import PCBottomNav from "../../components/layouts/PCBottomNav";
 
+import PCBottomNav from "../../components/layouts/PCBottomNav";
 import { STEPS_CONTENTS } from "../../constants/contentsText/GuideContents";
 import { USER_GUIDE } from "../../constants/keys/localStorage";
 import { useToast } from "../../hooks/custom/CustomToast";
