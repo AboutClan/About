@@ -53,6 +53,8 @@ export default function Page() {
       ? study?.attendences.filter((att) => att.firstChoice)
       : study?.attendences;
 
+  
+  
   return (
     <Layout>
       {study && (

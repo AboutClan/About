@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 
 import KakaoShareBtn from "../../components/atoms/Icons/KakaoShareBtn";
 import Header from "../../components/layouts/Header";
+import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { WEB_URL } from "../../constants/system";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 interface IStudyHeader {
@@ -14,13 +15,14 @@ interface IStudyHeader {
 }
 
 function StudyHeader({ brand, fullname, locationDetail, coverImage }: IStudyHeader) {
-  const { date } = useParams<{ date: string }>();
+  const { id, date } = useParams<{ id: string; date: string }>();
+  const location = PLACE_TO_LOCATION?.[id];
   const router = useRouter();
 
   const url = WEB_URL + router?.asPath;
 
   return (
-    <Header title={brand} url="/home">
+    <Header title={brand} url={`/home/?location=${location}&date=${date}`}>
       {brand !== "자유 신청" && (
         <KakaoShareBtn
           type="study"
