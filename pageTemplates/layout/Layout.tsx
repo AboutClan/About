@@ -2,9 +2,9 @@
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
+import { signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -12,6 +12,7 @@ import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
 import PageTracker from "../../components/layouts/PageTracker";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
+import { useUserInfoQuery } from "../../hooks/user/queries";
 import { parseUrlToSegments } from "../../utils/stringUtils";
 import BaseModal from "./BaseModal";
 import BaseScript from "./BaseScript";
@@ -38,6 +39,10 @@ function Layout({ children }: ILayout) {
 
   const currentSegment = parseUrlToSegments(pathname);
 
+  const { data: userData } = useUserInfoQuery({
+    enabled: session && !session?.user?.location,
+  });
+
   useEffect(() => {
     if (PUBLIC_SEGMENT.includes(segment)) return;
     if (session === undefined) return;
@@ -50,14 +55,14 @@ function Layout({ children }: ILayout) {
       router.push("/login?status=waiting");
       return;
     }
-    if (!session?.user?.location) {
+    if (!session?.user?.location && !userData?.location) {
       toast(
         "warning",
         "업데이트가 필요합니다. 다시 로그인 해주세요! 반복되는 경우 관리자에게 문의 부탁드립니다!!",
       );
       signOut({ callbackUrl: `/login/?status=logout` });
     }
-  }, [session]);
+  }, [session, userData?.location]);
 
   const isBottomNavCondition =
     BASE_BOTTOM_NAV_SEGMENT.includes(currentSegment?.[0]) && !currentSegment?.[1];
@@ -72,7 +77,7 @@ function Layout({ children }: ILayout) {
           <PageTracker />
           {isBottomNavCondition && <BottomNav />}
           {isGuest && isBottomNavCondition && <GuestBottomNav />}
-      
+
           <BaseModal isGuest={isGuest} isError={isErrorModal} setIsError={setIsErrorModal} />
         </>
       )}
