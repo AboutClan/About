@@ -45,7 +45,7 @@ export default function StudyVoteMap() {
 
   //메인 스터디 장소가 선택되면 3km 거리 이하의 장소들이 2지망으로 자동 선택
   useEffect(() => {
-    if (!studyVoteData || !myVote?.place) return;
+    if (!studyVoteData || !myVote?.place || myVote?.subPlace) return;
     const subPlace = [];
 
     studyVoteData?.forEach((item) => {

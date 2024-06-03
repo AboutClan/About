@@ -39,6 +39,7 @@ function VoteDrawerItem({
 
   //장소 선택
   const onClickItem = (item: ItemProps) => {
+  
     //메인 장소 선택
     if (!myVote?.place) setMyVote({ place: item.place, subPlace: [], start: null, end: null });
     //서브 장소 선택

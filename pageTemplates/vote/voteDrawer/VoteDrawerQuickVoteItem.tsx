@@ -14,6 +14,7 @@ interface VoteDrawerQuickVoteItemProps {
 function VoteDrawerQuickVoteItem({ savedPreferPlace, setMyVote }: VoteDrawerQuickVoteItemProps) {
   const toast = useToast();
   const favoritesCnt = (savedPreferPlace?.place ? 1 : 0) + savedPreferPlace?.subPlace?.length || 0;
+
   return (
     <Flex
       py="8px"

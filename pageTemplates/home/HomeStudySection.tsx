@@ -79,7 +79,7 @@ export default function HomeStudySection() {
 
     if (myStudy?.status !== "dismissed") setMyStudy(myStudy);
     else {
-      if (studyOpenCheck !== dayjsToStr(dayjs()) && dayjs().hour() > STUDY_DATE_START_HOUR) {
+      if (studyOpenCheck !== dayjsToStr(dayjs()) && dayjs().hour() <= STUDY_DATE_START_HOUR) {
         setDismissedStudy(myStudy);
         localStorage.setItem(STUDY_CHECK_POP_UP, dayjsToStr(dayjs()));
       }

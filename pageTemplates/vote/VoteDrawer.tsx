@@ -57,10 +57,10 @@ function VoteDrawer({ studyVoteData, myVote, setMyVote, setActionType }: VoteDra
   useEffect(() => {
     if (!myVote?.place) {
       const items = getSortedMainPlace(studyVoteData, savedPrefer);
-      console.log(4, items);
       setPlaceItems(items);
       return;
     }
+
     const placeId = myVote.place._id;
     const subPlaceIds = new Set(myVote.subPlace?.map((obj) => obj._id));
 
