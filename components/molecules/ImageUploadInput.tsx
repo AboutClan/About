@@ -1,5 +1,4 @@
 import { Input } from "@chakra-ui/react";
-import { captureException } from "@sentry/nextjs";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import styled from "styled-components";
@@ -44,7 +43,6 @@ export default function ImageUploadInput({ setImageUrl: changeImage }: IImageUpl
             setImageUrl(image);
             changeImage(file);
           } else {
-            captureException(error);
             console.error("Error converting HEIC to JPEG", error);
           }
         }
@@ -76,7 +74,10 @@ export default function ImageUploadInput({ setImageUrl: changeImage }: IImageUpl
       <Container onClick={handleBtnClick}>
         {!imageUrl ? (
           <>
-            <i className="fa-light fa-camera-view-finder fa-4x " style={{ color: "var(--gray-500)" }} />
+            <i
+              className="fa-light fa-camera-view-finder fa-4x "
+              style={{ color: "var(--gray-500)" }}
+            />
             <CameraText>사진 올리기</CameraText>
           </>
         ) : (
