@@ -51,7 +51,7 @@ function WritingCondition() {
   const [location, setLocation] = useState<Location | CombinedLocation>(
     gatherContent?.place || session?.user.location,
   );
-  const [kakaoUrl, setKakaoUrl] = useState<string>();
+  const [kakaoUrl, setKakaoUrl] = useState<string>("");
   const [isConfirmModal, setIsConfirmModal] = useState(false);
 
   const isManager = ["manager", "previliged"].includes(session?.user.role);
