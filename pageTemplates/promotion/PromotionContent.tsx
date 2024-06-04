@@ -39,7 +39,7 @@ function PromotionContent() {
         <Content>
           {isText ? (
             <>
-              <Title>카공 및 그룹 스터디 동아리 ABOUT</Title>
+              <Title>스터디 & 친목 동아리 ABOUT</Title>
               <Pre>{PROMOTION_TEXT}</Pre>
             </>
           ) : (
