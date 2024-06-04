@@ -2,7 +2,7 @@
 
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import NextAuth, { NextAuthOptions } from "next-auth";
-import { encode, JWT } from "next-auth/jwt";
+import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import KakaoProvider from "next-auth/providers/kakao";
 
@@ -45,15 +45,17 @@ export const authOptions: NextAuthOptions = {
     KakaoProvider({
       clientId: process.env.KAKAO_CLIENT_ID as string,
       clientSecret: process.env.KAKAO_CLIENT_SECRET as string,
-      profile: (profile) => ({
-        id: profile.id.toString(),
-        uid: profile.id.toString(),
-        name: profile.properties.nickname,
-        role: "newUser",
-        profileImage: profile.properties.thumbnail_image || profile.properties.profile_image,
-        isActive: false,
-        email: profile.id.toString(),
-      }),
+      profile: (profile) => {
+        return {
+          id: profile.id.toString(),
+          uid: profile.id.toString(),
+          name: profile.properties.nickname,
+          role: "newUser",
+          profileImage: profile.properties.thumbnail_image || profile.properties.profile_image,
+          isActive: false,
+          email: profile.id.toString(),
+        };
+      },
     }),
   ],
   //DB랑 연결하고 유저 정보를 조회한다. 기본적으로 accounts와 users에서.
@@ -80,13 +82,13 @@ export const authOptions: NextAuthOptions = {
       if (!account.access_token) return false;
 
       // if (user.role === "newUser") return false;
-
       if (user) {
         account.role = user.role;
+        account.location = user.location;
       }
 
       const profileImage = profile.properties.thumbnail_image || profile.properties.profile_image;
-      const endcodedToken = await encode({ token: account, secret });
+
       await dbConnect();
       await User.updateOne(
         { uid: user.uid },
@@ -124,7 +126,7 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
 
-    async jwt({ token, account, user, trigger, session }) {
+    async jwt({ token, account, user, trigger }) {
       if (trigger === "update" && token?.role) {
         token.role = "waiting";
         return token;
@@ -156,7 +158,7 @@ export const authOptions: NextAuthOptions = {
           profileImage: user.profileImage,
           role: user.role,
           isActive: user.isActive,
-          location: user.location as unknown as ActiveLocation,
+          location: account.location as ActiveLocation,
         };
         return newToken;
       }

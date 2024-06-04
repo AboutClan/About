@@ -20,6 +20,7 @@ import { getUrlWithLocationAndDate } from "../../utils/convertUtils/convertTypes
 function Home() {
   const router = useRouter();
   const { data: session } = useSession();
+
   const searchParams = useSearchParams();
   const locationParam = searchParams.get("location") as LocationEn;
   const dateParam = searchParams.get("date");
