@@ -1,5 +1,6 @@
 // pages/test.js
 import { useEffect } from "react";
+import { SERVER_URI } from "../constants/apiConstants";
 
 const publicVapidKey = process.env.NEXT_PUBLIC_PWA_KEY; // REPLACE_WITH_YOUR_KEY
 
@@ -50,7 +51,7 @@ const send = async () => {
 
   // Send Push Notification
   console.log("Sending Push...");
-  await fetch("/api/subscribe", {
+  await fetch(`${SERVER_URI}/webpush/subscribe`, {
     method: "POST",
     body: JSON.stringify(subscription),
     headers: {
