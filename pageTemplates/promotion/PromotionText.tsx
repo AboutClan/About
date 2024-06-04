@@ -3,7 +3,7 @@ import styled from "styled-components";
 function PromotionText() {
   return (
     <Layout>
-      안녕하세요! 카공 및 친목 동아리 ABOUT입니다!
+      안녕하세요! 스터디 & 친목 동아리 ABOUT입니다!
       <br />
       공부를 목적으로 하시는 분도, 카공과 함께 동네 친구를 만들고 싶은 분들도 모두 환영해요!😊{" "}
       <br />

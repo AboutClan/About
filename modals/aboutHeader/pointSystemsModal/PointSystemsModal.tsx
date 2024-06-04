@@ -41,7 +41,7 @@ function PointSystemsModal({ setIsModal }: IModal) {
       title="동아리 가이드"
       footerOptions={footerOptions}
       headerOptions={{
-        subTitle: "대학색들의 카공 및 친목 동아리 ABOUT",
+        subTitle: "대학색들의 스터디 & 친목 동아리 ABOUT",
       }}
       setIsModal={setIsModal}
     >
