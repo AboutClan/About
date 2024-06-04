@@ -134,16 +134,7 @@ export default function HomeStudySection() {
             className="study_space"
           >
             <>
-              <BlurredPart
-                isBlur={location === "안양"}
-                text={
-                  location === "안양"
-                    ? "안양 지역은 톡방에서 별도 운영중입니다!"
-                    : location === null
-                      ? "스터디 장소 확정중입니다."
-                      : null
-                }
-              >
+              <BlurredPart text={location === null ? "스터디 장소 확정중입니다." : null}>
                 {!isLoading && studyCardColData ? (
                   <CardColumnLayout
                     cardDataArr={studyCardColData}

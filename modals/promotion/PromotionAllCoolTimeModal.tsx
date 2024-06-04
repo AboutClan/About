@@ -94,16 +94,16 @@ function PromotionAllCoolTimeModal({ promotionData, setIsModal }: IPromotionAllC
                 <CoolTime>
                   {cool >= 1 ? (
                     <Cool>
-                      <i className="fa- fa-clock" />
+                      <i className="fa-light fa-clock" />
                       {cool >= 24 ? <span>{Math.ceil(cool / 24)}일</span> : <span>{cool}H</span>}
                     </Cool>
                   ) : (
                     <Ok>
-                      <i className="fa- fa-thumbsup" />
+                      <i className="fa-light fa-thumbs-up" />
                       <span />
-                      <i className="fa- fa-thumbsup" />
+                      <i className="fa-light fa-thumbs-up" />
                       <span />
-                      <i className="fa- fa-thumbsup" />
+                      <i className="fa-light fa-thumbs-up" />
                     </Ok>
                   )}
                 </CoolTime>
