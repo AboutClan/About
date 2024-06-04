@@ -1,5 +1,6 @@
 // pages/test.js
 import { useEffect } from "react";
+
 import { SERVER_URI } from "../constants/apiConstants";
 
 const publicVapidKey = process.env.NEXT_PUBLIC_PWA_KEY; // REPLACE_WITH_YOUR_KEY
