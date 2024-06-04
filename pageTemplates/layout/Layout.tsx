@@ -40,7 +40,7 @@ function Layout({ children }: ILayout) {
   const currentSegment = parseUrlToSegments(pathname);
 
   const { data: userData } = useUserInfoQuery({
-    enabled: session && !session?.user?.location,
+    enabled: !!(session && !session?.user?.location),
   });
 
   useEffect(() => {
