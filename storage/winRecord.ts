@@ -912,6 +912,30 @@ export const WIN_RECORD: {
     detail: "스토어 당첨 보상",
     present: "롯데시네마 영화관람권",
   },
+  {
+    name: "김웅",
+    date: "6/5",
+    detail: "스토어 당첨 보상",
+    present: "데리버거 세트",
+  },
+  {
+    name: "이아",
+    date: "6/5",
+    detail: "스토어 당첨 보상",
+    present: "데리버거 세트",
+  },
+  {
+    name: "박유",
+    date: "6/5",
+    detail: "스토어 당첨 보상",
+    present: "초코칩 쿠키",
+  },
+  {
+    name: "김동",
+    date: "6/5",
+    detail: "스토어 당첨 보상",
+    present: "수상한 탐정 안경",
+  },
 ];
 
 export const PROMOTION_WIN = [

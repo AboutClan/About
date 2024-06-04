@@ -1,9 +1,10 @@
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
+import { Box } from "@chakra-ui/react";
 import CountNum from "../../components/atoms/CountNum";
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import { STORE_GIFT } from "../../constants/keys/queryKeys";
@@ -75,27 +76,29 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
 
   return (
     <ModalLayout title="상품 응모" footerOptions={footerOptions} setIsModal={setIsModal}>
-      {!isLoading ? (
-        <>
-          <Item>
-            <span>상품</span>
-            <span>{giftInfo?.name}</span>
-          </Item>
-          <Item>
-            <span>보유 포인트</span>
-            <span>{myPoint} point</span>
-          </Item>
-          <Item>
-            <span>필요 포인트</span>
-            <NeedPoint overMax={totalCost > myPoint}>{totalCost} point</NeedPoint>
-          </Item>
-          <CountNav>
-            <CountNum value={value} setValue={setValue} />
-          </CountNav>
-        </>
-      ) : (
-        <MainLoadingAbsolute />
-      )}
+      <Box h="105px">
+        {!isLoading ? (
+          <>
+            <Item>
+              <span>상품</span>
+              <span>{giftInfo?.name}</span>
+            </Item>
+            <Item>
+              <span>보유 포인트</span>
+              <span>{myPoint} point</span>
+            </Item>
+            <Item>
+              <span>필요 포인트</span>
+              <NeedPoint overMax={totalCost > myPoint}>{totalCost} point</NeedPoint>
+            </Item>
+            <CountNav>
+              <CountNum value={value} setValue={setValue} />
+            </CountNav>
+          </>
+        ) : (
+          <MainLoadingAbsolute />
+        )}
+      </Box>
     </ModalLayout>
   );
 }

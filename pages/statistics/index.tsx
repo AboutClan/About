@@ -35,7 +35,7 @@ function Ranking() {
     category: string;
     isSwitchOn: boolean;
   }>({
-    category: `${dayjs().add(1, "month").month()}월 랭킹`,
+    category: `점수 랭킹`,
     isSwitchOn: true,
   });
 
@@ -62,17 +62,17 @@ function Ranking() {
   );
 
   useEffect(() => {
-    if (!attendRecords) return;
     if (categoryIdx !== 2) {
       setUsersRanking(sortUserRanking(attendRecords, session?.user.uid));
     } else {
-      setUsersRanking(sortUserScoreRanking(usersAll, userInfo.score));
+      if (usersAll) setUsersRanking(sortUserScoreRanking(usersAll, userInfo.score));
     }
-  }, [attendRecords, filterOptions]);
+  }, [attendRecords, filterOptions, categoryIdx, usersAll]);
 
   return (
     <>
       <Header title="About 랭킹" />
+
       <Slide>
         <Layout>
           {usersRanking && (
@@ -81,6 +81,7 @@ function Ranking() {
               <StatisticsTabNav setTabValue={setTabValue} />
               {tabValue === "전체 랭킹" ? (
                 <>
+                  
                   <StatisticsFilterBar setFilterOptions={setFilterOptions} />
                   <Box
                     h="calc(100vh - 338px)"

@@ -21,7 +21,7 @@ const categoryArr = [
 export default function StatisticsFilterBar({ setFilterOptions }: IStatisticsFilterBar) {
   const { data: session } = useSession();
 
-  const [category, setCategory] = useState(categoryArr[1]);
+  const [category, setCategory] = useState(categoryArr[2]);
   const [isSwitchOn, setIsSwitchOn] = useState(true);
 
   useEffect(() => {

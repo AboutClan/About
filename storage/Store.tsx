@@ -3,94 +3,136 @@ import { IStoreGift } from "../types/models/store";
 export const STORE_GIFT_ACTIVE: IStoreGift[] = [
   {
     image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/CU_3000%EC%9B%90%EA%B6%8C.webp",
-    name: "3000원 상품권",
-    brand: "CU",
-    point: 40,
-    winner: 2,
-    max: 20,
-    giftId: 23,
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EB%A9%94%EA%B0%80_%EC%95%84%EB%A9%94%EB%A6%AC%EC%B9%B4%EB%85%B8.webp",
+    name: "메가 아메리카노",
+    brand: "메가커피",
+    point: 20,
+    winner: 3,
+    max: 30,
+    giftId: 38,
   },
   {
     image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EC%98%AC%EB%A6%AC%EB%B8%8C%EC%98%81_10000%EC%9B%90%EA%B6%8C.webp",
-    name: "올리브영 10000원",
-    brand: "올리브영",
-    point: 120,
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/CU_3000%EC%9B%90%EA%B6%8C.webp",
+    name: "3000원 상품권",
+    brand: "CU",
+    point: 20,
     winner: 2,
-    giftId: 24,
-    max: 20,
+    max: 30,
+    giftId: 39,
   },
+
   {
     image:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EB%B2%A0%EC%8A%A4%ED%82%A8%EB%9D%BC%EB%B9%88%EC%8A%A4_%EC%8B%B1%EA%B8%80.webp",
     name: "베스킨라빈스 싱글",
     brand: "베스킨라빈스",
-    point: 50,
+    point: 20,
     winner: 2,
-    max: 20,
-    giftId: 25,
+    max: 40,
+    giftId: 40,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EC%8A%A4%ED%83%80%EB%B2%85%EC%8A%A4_%EC%95%84%EB%A9%94%EB%A6%AC%EC%B9%B4%EB%85%B8.webp",
+    name: "아메리카노",
+    brand: "스타벅스",
+    point: 30,
+    winner: 2,
+    max: 30,
+    giftId: 41,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/KakaoTalk_20240605_010554846.jpg",
+    name: "5000원 상품권",
+    brand: "GS",
+    point: 50,
+    winner: 3,
+    max: 30,
+    giftId: 50,
   },
   {
     image:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EB%8B%A4%EC%9D%B4%EC%86%8C_5000%EC%9B%90%EA%B6%8C.webp",
     name: "다이소 5000원",
     brand: "다이소",
-    point: 60,
-    winner: 1,
-    giftId: 26,
-    max: 11,
+    point: 50,
+    winner: 2,
+    giftId: 42,
+    max: 20,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%ED%88%AC%EC%8D%B8_%EC%95%84%EC%9D%B4%EC%8A%A4%EB%B0%95%EC%8A%A4+%EC%84%B8%ED%8A%B8.webp",
+    name: "아이스박스 세트",
+    brand: "투썸",
+    point: 65,
+    winner: 3,
+    giftId: 43,
+    max: 30,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EB%B9%85%EB%A7%A5.jpg",
+    name: "빅맥 세트",
+    brand: "맥도날드",
+    point: 72,
+    winner: 2,
+    giftId: 49,
+    max: 20,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EC%98%AC%EB%A6%AC%EB%B8%8C%EC%98%81_10000%EC%9B%90%EA%B6%8C.webp",
+    name: "올리브영 10000원",
+    brand: "올리브영",
+    point: 100,
+    winner: 3,
+    giftId: 44,
+    max: 30,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EC%98%AC%EB%A6%AC%EB%B8%8C%EC%98%81_10000%EC%9B%90%EA%B6%8C.webp",
+    name: "올리브영 20000원",
+    brand: "올리브영",
+    point: 200,
+    winner: 2,
+    giftId: 45,
+    max: 20,
   },
   {
     image:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EB%B0%B0%EB%AF%BC_10000.webp",
     name: "배달의민족 10000원",
     brand: "배달의 민족",
-    point: 130,
+    point: 100,
     winner: 2,
     max: 20,
-    giftId: 27,
+    giftId: 46,
   },
   {
     image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/KakaoTalk_20240228_195332095_01.jpg",
-    name: "맘스터치 5000원권",
-    brand: "맘스터치",
-    point: 60,
-    winner: 1,
-    max: 11,
-    giftId: 28,
-  },
-  {
-    image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/KakaoTalk_20240228_195332095.jpg",
-    name: "불닭 + 바나나우유",
-    brand: "CU",
-    point: 40,
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EB%B0%B0%EB%AF%BC_10000.webp",
+    name: "배달의민족 20000원",
+    brand: "배달의 민족",
+    point: 200,
     winner: 2,
     max: 20,
-    giftId: 29,
+    giftId: 47,
   },
   {
     image:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/KakaoTalk_20240228_195332095_02.jpg",
     name: "굽네치킨 세트",
     brand: "굽네치킨",
-    point: 80,
+    point: 125,
     winner: 1,
-    max: 20,
-    giftId: 30,
+    max: 16,
+    giftId: 48,
   },
-  {
-    image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/KakaoTalk_20240228_195332095_08.jpg",
-    name: "데리버거 세트",
-    brand: "롯데리아",
-    point: 70,
-    winner: 2,
-    max: 20,
-    giftId: 31,
-  },
+
   {
     image:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/KakaoTalk_20240228_195332095_09.jpg",
@@ -111,16 +153,7 @@ export const STORE_GIFT_ACTIVE: IStoreGift[] = [
     max: 20,
     giftId: 33,
   },
-  {
-    image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/KakaoTalk_20240228_195332095_11.jpg",
-    name: "롯데시네마 관람권",
-    brand: "롯데시네마",
-    point: 80,
-    winner: 2,
-    max: 20,
-    giftId: 34,
-  },
+
   {
     image:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/KakaoTalk_20240228_195332095_03.jpg",
@@ -130,26 +163,6 @@ export const STORE_GIFT_ACTIVE: IStoreGift[] = [
     winner: 2,
     max: 30,
     giftId: 35,
-  },
-  {
-    image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/KakaoTalk_20240228_195332095_04.jpg",
-    name: "초코칩 쿠키",
-    brand: "CU",
-    point: 10,
-    winner: 1,
-    max: 20,
-    giftId: 36,
-  },
-  {
-    image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/KakaoTalk_20240228_195332095_05.jpg",
-    name: "수상한 탐정 안경",
-    brand: "쓸모없는",
-    point: 80,
-    winner: 1,
-    max: 20,
-    giftId: 37,
   },
 ];
 
@@ -203,7 +216,6 @@ export const STORE_GIFT_INACTIVE: IStoreGift[] = [
     brand: "BBQ",
     point: 100,
     winner: 1,
-
     giftId: 6,
     max: 10,
   },
@@ -366,6 +378,116 @@ export const STORE_GIFT_INACTIVE: IStoreGift[] = [
     winner: 3,
     max: 20,
     giftId: 22,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/KakaoTalk_20240228_195332095_04.jpg",
+    name: "초코칩 쿠키",
+    brand: "CU",
+    point: 10,
+    winner: 1,
+    max: 20,
+    giftId: 36,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/KakaoTalk_20240228_195332095_05.jpg",
+    name: "수상한 탐정 안경",
+    brand: "쓸모없는",
+    point: 80,
+    winner: 1,
+    max: 20,
+    giftId: 37,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/KakaoTalk_20240228_195332095_11.jpg",
+    name: "롯데시네마 관람권",
+    brand: "롯데시네마",
+    point: 80,
+    winner: 2,
+    max: 20,
+    giftId: 34,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EC%98%AC%EB%A6%AC%EB%B8%8C%EC%98%81_10000%EC%9B%90%EA%B6%8C.webp",
+    name: "올리브영 10000원",
+    brand: "올리브영",
+    point: 120,
+    winner: 2,
+    giftId: 24,
+    max: 20,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EB%B2%A0%EC%8A%A4%ED%82%A8%EB%9D%BC%EB%B9%88%EC%8A%A4_%EC%8B%B1%EA%B8%80.webp",
+    name: "베스킨라빈스 싱글",
+    brand: "베스킨라빈스",
+    point: 50,
+    winner: 2,
+    max: 20,
+    giftId: 25,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EB%8B%A4%EC%9D%B4%EC%86%8C_5000%EC%9B%90%EA%B6%8C.webp",
+    name: "다이소 5000원",
+    brand: "다이소",
+    point: 60,
+    winner: 1,
+    giftId: 26,
+    max: 11,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EB%B0%B0%EB%AF%BC_10000.webp",
+    name: "배달의민족 10000원",
+    brand: "배달의 민족",
+    point: 130,
+    winner: 2,
+    max: 20,
+    giftId: 27,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/KakaoTalk_20240228_195332095_01.jpg",
+    name: "맘스터치 5000원권",
+    brand: "맘스터치",
+    point: 60,
+    winner: 1,
+    max: 11,
+    giftId: 28,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/KakaoTalk_20240228_195332095.jpg",
+    name: "불닭 + 바나나우유",
+    brand: "CU",
+    point: 40,
+    winner: 2,
+    max: 20,
+    giftId: 29,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/KakaoTalk_20240228_195332095_02.jpg",
+    name: "굽네치킨 세트",
+    brand: "굽네치킨",
+    point: 80,
+    winner: 1,
+    max: 20,
+    giftId: 30,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/KakaoTalk_20240228_195332095_08.jpg",
+    name: "데리버거 세트",
+    brand: "롯데리아",
+    point: 70,
+    winner: 2,
+    max: 20,
+    giftId: 31,
   },
 ];
 
