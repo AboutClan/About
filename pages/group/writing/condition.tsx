@@ -130,7 +130,6 @@ function WritingCondition() {
                 isMin={false}
                 value={memberCnt.max}
                 setMemberCnt={setMemberCnt}
-                defaultBoolean={memberCnt.max === 0 ? true : false}
               />
             </Item>
             <Item>

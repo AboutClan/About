@@ -1,8 +1,7 @@
-import Link from "next/link";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
-import BlurredPart from "../../../../components/molecules/BlurredPart";
+import BlurredLink from "../../../../components/molecules/BlurredLink";
 import { IGroup } from "../../../../types/models/groupTypes/group";
 import GroupDetailInfo from "../GroupDetail";
 
@@ -36,16 +35,7 @@ function ContentInfo({ group }: IContentInfo) {
         <KakaoLink>
           <span>오픈채팅방 주소(참여 인원 전용)</span>
           <div>
-            <BlurredPart isBlur={!isMember} isCenter={false}>
-              <Link
-                href={group.link}
-                onClick={(e) => {
-                  if (!isMember) e.preventDefault();
-                }}
-              >
-                {group?.link}
-              </Link>
-            </BlurredPart>
+            <BlurredLink url={group.link} isBlur={!isMember} />
           </div>
         </KakaoLink>
       )}

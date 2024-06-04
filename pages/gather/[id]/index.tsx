@@ -32,6 +32,10 @@ function GatherDetail() {
     if (gathers) setGatherData(gathers.find((item) => item.id + "" === id));
   }, [gathers]);
 
+  const isMember =
+    (gatherData?.user as IUserSummary)?.uid === session?.user.uid ||
+    gatherData?.participants.some((who) => who?.user.uid === session?.user.uid);
+
   return (
     <>
       {gatherData ? (
@@ -47,7 +51,12 @@ function GatherDetail() {
               />
               <GatherDetailInfo data={gatherData} />
               <GatherTitle title={gatherData.title} status={gatherData.status} />
-              <GatherContent content={gatherData.content} gatherList={gatherData.gatherList} />
+              <GatherContent
+                kakaoUrl={gatherData?.kakaoUrl}
+                content={gatherData.content}
+                gatherList={gatherData.gatherList}
+                isMember={isMember}
+              />
               <GatherParticipation data={gatherData} />
               <GatherComments comment={gatherData.comment} />
             </Layout>

@@ -1,16 +1,20 @@
 import styled from "styled-components";
 
+import BlurredLink from "../../../components/molecules/BlurredLink";
 import { IGatherListItem } from "../../../types/models/gatherTypes/gatherTypes";
 
 interface IGather {
+  isMember: boolean;
+  kakaoUrl: string;
   content: string;
   gatherList: IGatherListItem[];
 }
 
-function GatherContent({ content, gatherList }: IGather) {
+function GatherContent({ isMember, kakaoUrl, content, gatherList }: IGather) {
   return (
     <Layout>
       <Content>{content}</Content>
+      {kakaoUrl && <BlurredLink url={kakaoUrl} isBlur={!isMember} />}
       <ListContainer>
         {gatherList?.map((item, idx) => (
           <ListBlock key={idx}>

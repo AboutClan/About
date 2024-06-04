@@ -28,6 +28,7 @@ export interface IGatherWriting {
   user: IUserSummary | string;
   isAdminOpen?: boolean;
   image?: string;
+  kakaoUrl?: string;
 }
 
 export type GatherCategory = "전체" | "모집중" | "완료";
