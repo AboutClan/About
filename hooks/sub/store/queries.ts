@@ -17,7 +17,7 @@ export const useStoreGiftQuery = (giftId: number, options?: QueryOptions<IStoreQ
 
 export const useStoreGiftEntryQuery = (options?: QueryOptions<IStoreQuery>) =>
   useQuery<IStoreQuery, AxiosError, IStoreQuery>(
-    STORE_GIFT,
+    [STORE_GIFT],
     async () => {
       const res = await axios.get<IStoreQuery>(`/api/store`);
       return res.data;

@@ -11,10 +11,10 @@ export default async function giftController(req: NextApiRequest, res: NextApiRe
     const { name, uid, cnt, giftId } = req.body;
 
     const existingUser = await GiftModel.findOne({ uid, giftId });
-
+    console.log(uid, giftId, existingUser);
     if (existingUser) {
       const user = await GiftModel.findOneAndUpdate(
-        { uid },
+        { uid, giftId },
         { name, uid, cnt: existingUser.cnt + cnt, giftId },
         { new: true, runValidators: true },
       );
@@ -41,12 +41,15 @@ export default async function giftController(req: NextApiRequest, res: NextApiRe
     res.status(200).json({ user });
   }
   if (req.method === "GET") {
-    const giftUsers = await GiftModel.find({})
-      .sort("createdAt")
-      .select("-_id -createdAt -updatedAt -__v");
+    try {
+      const giftUsers = await GiftModel.find({})
+        .sort("createdAt")
+        .select("-_id -createdAt -updatedAt -__v");
 
-    res.status(200).json({
-      users: giftUsers,
-    });
+      return res.status(200).json({ users: giftUsers });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: "서버 오류가 발생했습니다." });
+    }
   }
 }

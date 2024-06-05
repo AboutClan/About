@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
@@ -40,16 +40,26 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
     onSuccess() {
       getPoint({ value: -totalCost, message: `${giftInfo.name}응모` });
       completeToast("free", "응모에 성공했어요! 당첨 발표일을 기다려주세요!");
-      setTimeout(() => {
-        queryClient.invalidateQueries(STORE_GIFT);
-        router.push("/store");
-      }, 500);
+      queryClient.invalidateQueries([STORE_GIFT]);
+      router.push("/store");
     },
     onError: errorToast,
   });
   const { mutate: getPoint } = usePointSystemMutation("point");
 
   const totalCost = giftInfo.point * value;
+
+  const maxCnt = Math.min(
+    getStoreMaxCnt(userInfo?.score) -
+      giftInfo.users.reduce((acc, cur) => {
+        if (cur.uid === session?.user.uid) {
+          return acc + cur.cnt;
+        }
+        return acc;
+      }, 0),
+    Math.floor(myPoint / totalCost),
+    giftInfo.max - giftInfo.users.length,
+  );
 
   const onApply = () => {
     if (isGuest) {
@@ -60,6 +70,12 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
       failToast("free", "보유중인 포인트가 부족해요!");
       return;
     }
+
+    if (maxCnt < 1) {
+      failToast("free", "최대 구매 개수를 초과할 수 없습니다.");
+      return;
+    }
+
     const info: IStoreApplicant = {
       name: session.user.name,
       uid: session.user.uid,
@@ -77,18 +93,7 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
     },
   };
 
-  const maxCnt = Math.min(
-    getStoreMaxCnt(userInfo?.score) -
-      giftInfo.users.reduce((acc, cur) => {
-        if (cur.uid === session?.user.uid) {
-          return acc + cur.cnt;
-        }
-        return acc;
-      }, 0),
-    Math.floor(myPoint / totalCost),
-    giftInfo.max - giftInfo.users.length,
-  );
-
+  console.log(34, value);
   return (
     <ModalLayout title="상품 응모" footerOptions={footerOptions} setIsModal={setIsModal}>
       <Box h="130px">
