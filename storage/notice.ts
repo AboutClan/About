@@ -733,10 +733,24 @@ export const NOTICE_ARR: INoticeArr[] = [
   },
   {
     id: "93",
-    title: "동아리 여름 MT",
+    title: "동아리 점수 소프트 리셋",
     category: "sub",
+    content: "체계 변경으로 기존 점수에서 20%로 리셋되었습니다.",
+    date: "2023-06-04",
+  },
+  {
+    id: "94",
+    title: "동아리 여름 MT",
+    category: "main",
     content:
       "1차 - 6월 25일(1박), 용인 무릉도원펜션. 2차 - 7월 3일(1박), 대성리 모꼬지펜펜션. 관련 상세 내용은 단톡방 공지사항 확인",
     date: "2023-06-04",
+  },
+  {
+    id: "95",
+    title: "스토어 상품 입고",
+    category: "sub",
+    content: "스토어에 새로운 상품이 입고되었습니다!",
+    date: "2023-06-05",
   },
 ];

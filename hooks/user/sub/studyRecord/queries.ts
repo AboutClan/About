@@ -23,6 +23,7 @@ export const useUserAttendRateQuery = <T extends boolean>(
   useQuery<UserAttendRateReturn<T>, AxiosError, UserAttendRateReturn<T>>(
     [USER_ATTEND_RATE, dayjsToStr(startDay), dayjsToStr(endDay), isUserScope, summary, location],
     async () => {
+      console.log(startDay, endDay);
       const scopeQuery = isUserScope ? "" : "all";
       const res = await axios.get<UserAttendRateReturn<T>>(
         `${SERVER_URI}/user/participationrate/${scopeQuery}`,

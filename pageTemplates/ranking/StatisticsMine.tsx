@@ -1,7 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import RecordAnalysisGraph from "../record/analysis/RecordAnalysisGraph";
 import RecordAnalysisSummary from "../record/analysis/RecordAnalysisSummary";
 
@@ -10,8 +9,6 @@ export default function StatisticsMine() {
 
   return (
     <Box position="relative" flex={1}>
-      {isLoading && <MainLoadingAbsolute />}
-
       <Box display={isLoading ? "none" : "block"}>
         <RecordAnalysisSummary setIsLoading={setIsLoading} />
         <RecordAnalysisGraph />

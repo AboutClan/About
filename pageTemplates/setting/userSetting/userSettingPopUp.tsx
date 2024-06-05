@@ -5,7 +5,6 @@ import {
   ATTEND_POP_UP,
   ENTHUSIASTIC_POP_UP,
   FAQ_POP_UP,
-  MANAGER_POP_UP,
   PROMOTION_POP_UP,
   SUGGEST_POP_UP,
   USER_GUIDE_POP_UP,
@@ -26,7 +25,7 @@ export type UserPopUp =
   | "promotion"
   | "userGuide"
   | "faq"
-  | "manager"
+  // | "manager"
   | "alphabet"
   | "enthusiastic";
 
@@ -62,10 +61,10 @@ export default function UserSettingPopUp({ cnt }) {
       setModalTypes((old) => [...old, "faq"]);
       if (++popUpCnt === 2) return;
     }
-    if (!checkAndSetLocalStorage(MANAGER_POP_UP, 30)) {
-      setModalTypes((old) => [...old, "manager"]);
-      if (++popUpCnt === 2) return;
-    }
+    // if (!checkAndSetLocalStorage(MANAGER_POP_UP, 30)) {
+    //   setModalTypes((old) => [...old, "manager"]);
+    //   if (++popUpCnt === 2) return;
+    // }
     if (!checkAndSetLocalStorage(PROMOTION_POP_UP, 8)) {
       setModalTypes((old) => [...old, "promotion"]);
       if (++popUpCnt === 2) return;

@@ -87,7 +87,7 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
           <Info>
             <Item>
               <span>이번 달 동아리 점수</span>
-              <span>{totalScore} 점</span>
+              <span>{userInfo?.monthScore} 점</span>
             </Item>
             <Item>
               <span>이번 달 스터디 점수</span>
@@ -101,7 +101,7 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
               <div style={{ display: "flex" }}>
                 <span>이번 달에 받은 좋아요</span>
               </div>
-              <span>2 개</span>
+              <span>0 개</span>
             </Item>
           </Info>
         ) : (

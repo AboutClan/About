@@ -45,9 +45,11 @@ function Ranking() {
 
   const { data: attendRecords, isLoading } = useUserAttendRateQuery(
     dayjs()
-      .date(0)
+      .startOf("month")
       .subtract(categoryIdx === 0 ? 1 : 0, "month"),
-    dayjs().subtract(categoryIdx === 0 ? 1 : 0, "month"),
+    dayjs()
+      .endOf("month")
+      .subtract(categoryIdx === 0 ? 1 : 0, "month"),
     false,
     true,
     filterOptions?.isSwitchOn ? null : session.user.location,
@@ -57,13 +59,15 @@ function Ranking() {
     },
   );
 
+  console.log(categoryIdx, attendRecords);
+
   const { data: usersAll } = useAdminUsersLocationControlQuery(
     filterOptions.isSwitchOn ? null : session.user.location,
   );
 
   useEffect(() => {
     if (categoryIdx !== 2) {
-      setUsersRanking(sortUserRanking(attendRecords, session?.user.uid));
+      if (attendRecords) setUsersRanking(sortUserRanking(attendRecords, session?.user.uid));
     } else {
       if (usersAll) setUsersRanking(sortUserScoreRanking(usersAll, userInfo.score));
     }
@@ -72,7 +76,6 @@ function Ranking() {
   return (
     <>
       <Header title="About 랭킹" />
-
       <Slide>
         <Layout>
           {usersRanking && (
@@ -81,10 +84,9 @@ function Ranking() {
               <StatisticsTabNav setTabValue={setTabValue} />
               {tabValue === "전체 랭킹" ? (
                 <>
-                  
                   <StatisticsFilterBar setFilterOptions={setFilterOptions} />
                   <Box
-                    h="calc(100vh - 338px)"
+                    h="calc(100vh - 358px)"
                     position="relative"
                     m="0 16px"
                     rounded="lg"
@@ -113,9 +115,8 @@ function Ranking() {
 }
 
 const Layout = styled.div`
-  height: calc(100vh - 96px);
   overflow-y: auto;
-  background-color: var(--gray-200);
+  background-color: var(--gray-100);
   display: flex;
   flex-direction: column;
 `;

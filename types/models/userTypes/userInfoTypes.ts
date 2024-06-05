@@ -16,7 +16,7 @@ export interface IUser extends Omit<IUserRegisterForm, "location">, IUserSummary
   like: number;
   studyPreference?: IStudyVotePlaces;
   belong?: string;
-
+  monthScore: number;
   _id: string;
 }
 

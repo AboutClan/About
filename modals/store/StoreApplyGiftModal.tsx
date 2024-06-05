@@ -1,23 +1,25 @@
-import { useSession } from "next-auth/react";
+import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
-import { Box } from "@chakra-ui/react";
 import CountNum from "../../components/atoms/CountNum";
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import { STORE_GIFT } from "../../constants/keys/queryKeys";
 import { useCompleteToast, useErrorToast, useFailToast } from "../../hooks/custom/CustomToast";
 import { useStoreMutation } from "../../hooks/sub/store/mutation";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
-import { usePointSystemQuery } from "../../hooks/user/queries";
+import { usePointSystemQuery, useUserInfoQuery } from "../../hooks/user/queries";
+import { getStoreMaxCnt } from "../../libs/getStoreMaxCnt";
+import { IGiftEntry } from "../../pages/store";
 import { IModal } from "../../types/components/modalTypes";
-import { IStoreApplicant, IStoreGift } from "../../types/models/store";
+import { IStoreApplicant } from "../../types/models/store";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface IStoreApplyGiftModal extends IModal {
-  giftInfo: IStoreGift;
+  giftInfo: IGiftEntry;
 }
 
 function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
@@ -32,6 +34,7 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
 
   const [value, setValue] = useState(1);
 
+  const { data: userInfo } = useUserInfoQuery();
   const { data: myPoint, isLoading } = usePointSystemQuery("point");
   const { mutate: applyGift } = useStoreMutation({
     onSuccess() {
@@ -74,9 +77,21 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
     },
   };
 
+  const maxCnt = Math.min(
+    getStoreMaxCnt(userInfo?.score) -
+      giftInfo.users.reduce((acc, cur) => {
+        if (cur.uid === session?.user.uid) {
+          return acc + cur.cnt;
+        }
+        return acc;
+      }, 0),
+    Math.floor(myPoint / totalCost),
+    giftInfo.max - giftInfo.users.length,
+  );
+
   return (
     <ModalLayout title="상품 응모" footerOptions={footerOptions} setIsModal={setIsModal}>
-      <Box h="105px">
+      <Box h="130px">
         {!isLoading ? (
           <>
             <Item>
@@ -91,8 +106,12 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
               <span>필요 포인트</span>
               <NeedPoint overMax={totalCost > myPoint}>{totalCost} point</NeedPoint>
             </Item>
+            <Item>
+              <span>최대 구매 개수</span>
+              <NeedPoint overMax={totalCost > myPoint}>{maxCnt} 개</NeedPoint>
+            </Item>
             <CountNav>
-              <CountNum value={value} setValue={setValue} />
+              <CountNum value={value} setValue={setValue} maxValue={maxCnt} />
             </CountNav>
           </>
         ) : (
