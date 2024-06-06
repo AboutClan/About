@@ -51,3 +51,8 @@ export interface StudyVotingSave {
   date: string;
   isVoting: boolean;
 }
+
+export interface StudyAttendMembersProp {
+  date: string;
+  members: IUserSummary[];
+}

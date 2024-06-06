@@ -21,7 +21,7 @@ interface IHomeHeaderIcons {
 function HomeHeaderIcons({ setIconType }: IHomeHeaderIcons) {
   const [isNoticeAlert, setIsNoticeAlert] = useState(false);
 
-  useNoticeActiveLogQuery({
+  useNoticeActiveLogQuery(null, {
     onSuccess(data) {
       const activeCnt = localStorage.getItem(NOTICE_ACTIVE_CNT);
       if (+activeCnt !== data?.length) setIsNoticeAlert(true);

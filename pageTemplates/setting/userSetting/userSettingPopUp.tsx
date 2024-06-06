@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -6,12 +8,13 @@ import {
   ATTEND_POP_UP,
   ENTHUSIASTIC_POP_UP,
   FAQ_POP_UP,
+  GATHER_JOIN_MEMBERS,
   PROMOTION_POP_UP,
+  STUDY_ATTEND_MEMBERS,
   SUGGEST_POP_UP,
   USER_GUIDE_POP_UP,
 } from "../../../constants/keys/localStorage";
-import { useGroupQuery } from "../../../hooks/groupStudy/queries";
-import { useStudyVoteQuery } from "../../../hooks/study/queries";
+import { useGatherQuery } from "../../../hooks/gather/queries";
 import EnthusiasticModal from "../../../modals/aboutHeader/EnthusiasticModal/EnthusiasticModal";
 import PointSystemsModal from "../../../modals/aboutHeader/pointSystemsModal/PointSystemsModal";
 import PromotionModal from "../../../modals/aboutHeader/promotionModal/PromotionModal";
@@ -20,6 +23,8 @@ import FAQPopUp from "../../../modals/pop-up/FAQPopUp";
 import LastWeekAttendPopUp from "../../../modals/pop-up/LastWeekAttendPopUp";
 import ManagerPopUp from "../../../modals/pop-up/ManagerPopUp";
 import SuggestPopUp from "../../../modals/pop-up/SuggestPopUp";
+import RecentJoinUserPopUp from "../../../modals/RecentJoinUserPopUp";
+import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { LocationEn } from "../../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
 import { checkAndSetLocalStorage } from "../../../utils/storageUtils";
@@ -46,20 +51,68 @@ const MODAL_COMPONENTS = {
 };
 
 export default function UserSettingPopUp({ cnt }) {
+  const { data: session } = useSession();
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
 
   const location = convertLocationLangTo(searchParams.get("location") as LocationEn, "kr");
 
   const [modalTypes, setModalTypes] = useState<UserPopUp[]>([]);
+  const [recentMembers, setRecentMembers] = useState<IUserSummary[]>();
 
-  const { data: studyVoteData } = useStudyVoteQuery(date as string, location, {
-    enabled: !!date && !!location,
-  });
+  const { data: gatherData } = useGatherQuery();
 
-  const { data: groupData } = useGroupQuery();
+  useEffect(() => {
+    if (!gatherData) return;
 
-  console.log(4, studyVoteData, groupData);
+    const gatherJoin = JSON.parse(localStorage.getItem(GATHER_JOIN_MEMBERS)) || [];
+
+    const filteredGather = gatherData.filter((obj) => {
+      const isJoined = gatherJoin.includes(obj.id);
+      const isWithinDateRange =
+        dayjs(obj.date).isAfter(dayjs().subtract(7, "day")) &&
+        dayjs(obj.date).isBefore(dayjs(), "dates");
+      const isParticipant = obj.participants.some((who) => who.user.uid === session?.user.uid);
+      const isUser = (obj.user as IUserSummary).uid === session?.user.uid;
+
+      return !isJoined && isWithinDateRange && (isParticipant || isUser);
+    });
+
+    let temp = gatherJoin;
+    filteredGather.forEach((obj) => {
+      temp.push(obj.id);
+    });
+    temp.push(48);
+    temp.sort((a, b) => a - b);
+    if (temp.length >= 5) {
+      temp.shift();
+    }
+    // localStorage.setItem(GATHER_JOIN_MEMBERS, JSON.stringify(temp));
+
+    const sortedStudyMembers = JSON.parse(localStorage.getItem(STUDY_ATTEND_MEMBERS)) || [];
+
+    let firstData;
+    sortedStudyMembers.forEach((obj) => {
+      if (dayjs(obj.date).isBefore(dayjs(), "dates")) {
+        if (!firstData) {
+          firstData = obj;
+        } else if (dayjs(obj.date).isAfter(firstData.date)) {
+          firstData = obj;
+        }
+      }
+    });
+
+    const filtered = sortedStudyMembers.filter(
+      (obj) => !dayjs(obj.date).isBefore(dayjs(), "dates"),
+    );
+
+    const gatherMembers = filteredGather.flatMap((obj) => obj.participants.map((who) => who.user));
+
+    setRecentMembers([...gatherMembers, ...(firstData ? firstData.members : [])]);
+    console.log(23, firstData, filtered);
+  }, [gatherData]);
+
+  console.log(14, recentMembers);
 
   useEffect(() => {
     let popUpCnt = cnt;
@@ -79,10 +132,7 @@ export default function UserSettingPopUp({ cnt }) {
       setModalTypes((old) => [...old, "faq"]);
       if (++popUpCnt === 2) return;
     }
-    // if (!checkAndSetLocalStorage(MANAGER_POP_UP, 30)) {
-    //   setModalTypes((old) => [...old, "manager"]);
-    //   if (++popUpCnt === 2) return;
-    // }
+
     if (!checkAndSetLocalStorage(PROMOTION_POP_UP, 8)) {
       setModalTypes((old) => [...old, "promotion"]);
       if (++popUpCnt === 2) return;
@@ -104,6 +154,9 @@ export default function UserSettingPopUp({ cnt }) {
 
   return (
     <>
+      {recentMembers && (
+        <RecentJoinUserPopUp users={recentMembers} setIsModal={() => setRecentMembers(null)} />
+      )}
       {Object.entries(MODAL_COMPONENTS).map(([key, Component]) => {
         const type = key as UserPopUp;
         return (
