@@ -223,6 +223,7 @@ const getMainButtonStatus = (
 } => {
   if (isAttend) return { text: "출석 완료" };
   if (isFree) {
+    if (votingType === "same") return { text: "출석 체크", funcType: "attendCheck" };
     if (hasDismissed) return { text: "스터디 투표", funcType: "vote" };
     return { text: "사전 투표 인원만 참여가 가능합니다." };
   }

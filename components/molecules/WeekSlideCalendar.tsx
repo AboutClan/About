@@ -24,11 +24,7 @@ function WeekSlideCalendar({ voteCntArr, selectedDate, func }: CalendarProps) {
     if (selectedIdx !== -1 && containerRef.current) {
       const selectedElement = dateRefs.current[selectedIdx];
       if (selectedElement) {
-        containerRef.current.scrollLeft =
-          selectedElement.offsetLeft -
-          containerRef.current.clientWidth +
-          selectedElement.clientWidth / 2 +
-          10;
+        containerRef.current.scrollLeft = selectedElement.clientWidth * (selectedIdx - 2);
       }
     }
   }, [calendarArr, selectedDate]);

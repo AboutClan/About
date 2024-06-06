@@ -53,7 +53,7 @@ function UserProfile() {
           <BlockItem>
             <span>
               받은 좋아요{" "}
-              <b style={{ display: "inline-block", width: "14px" }}>{likeLogs?.length || 0}</b>개
+              <b style={{ display: "inline-block", width: "16px" }}>{likeLogs?.length || 0}</b>개
             </span>
             <i className="fa-solid fa-chevron-right" />
           </BlockItem>

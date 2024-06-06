@@ -11,7 +11,7 @@ export const useNoticeActiveLogQuery = (
   options?: QueryOptions<INoticeActiveLog[]>,
 ) =>
   useQuery<INoticeActiveLog[], AxiosError, INoticeActiveLog[]>(
-    [NOTICE_ACTIVE_LOG],
+    [NOTICE_ACTIVE_LOG, type],
     async () => {
       const res = await axios.get<INoticeActiveLog[]>(`${SERVER_URI}/notice`);
       if (type) return res.data.filter((item) => item.type === type);

@@ -79,7 +79,7 @@ function VoteDrawer({ studyVoteData, myVote, setMyVote, setActionType }: VoteDra
 
   return (
     <BottomDrawerLg
-      height={bodyHeight - bodyWidth - 74}
+      height={bodyHeight - bodyWidth * 0.8 - 74}
       setIsModal={() => {}}
       isxpadding={false}
       isOverlay={false}
