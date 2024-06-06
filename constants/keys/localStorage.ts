@@ -36,3 +36,7 @@ export const VOTE_GUIDE = "voteGuide";
 export const STUDY_VOTING_TABLE = "studyVotingTable";
 
 export const STUDY_CHECK_POP_UP = "studyCheckPopUp";
+
+export const STUDY_ATTEND_MEMBERS = "studyAttendMembers";
+
+export const GATHER_JOIN_MEMBERS = "gatherJoinMembers";

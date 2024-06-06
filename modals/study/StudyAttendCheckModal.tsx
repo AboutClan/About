@@ -27,6 +27,7 @@ import { getRandomAlphabet } from "../../libs/userEventLibs/collection";
 import { myStudyState } from "../../recoils/studyRecoils";
 import { transferAlphabetState } from "../../recoils/transferRecoils";
 
+import { STUDY_ATTEND_MEMBERS } from "../../constants/keys/localStorage";
 import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
@@ -73,6 +74,16 @@ function StudyAttendCheckModal({ setIsModal }: IStudyAttendCheckModal) {
 
   const { mutate: handleArrived } = useStudyAttendCheckMutation(date, {
     onSuccess() {
+      if (!isFree) {
+        const studyVotingTable = JSON.parse(localStorage.getItem(STUDY_ATTEND_MEMBERS)) || [];
+        const newEntry = {
+          date,
+          members: myStudy?.attendences
+            .map((who) => who.user)
+            .filter((who) => who.uid !== session?.user.uid),
+        };
+        localStorage.setItem(STUDY_ATTEND_MEMBERS, JSON.stringify([...studyVotingTable, newEntry]));
+      }
       queryClient.invalidateQueries([STUDY_VOTE, date, location]);
       const alphabet = getRandomAlphabet(20);
       if (alphabet) {
