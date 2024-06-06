@@ -147,7 +147,10 @@ export default function UserSettingPopUp({ cnt }) {
   return (
     <>
       {recentMembers?.length ? (
-        <RecentJoinUserPopUp users={recentMembers} setIsModal={() => setRecentMembers(null)} />
+        <RecentJoinUserPopUp
+          users={recentMembers.filter((who) => who.uid !== session?.user.uid)}
+          setIsModal={() => setRecentMembers(null)}
+        />
       ) : null}
 
       {Object.entries(MODAL_COMPONENTS).map(([key, Component]) => {
