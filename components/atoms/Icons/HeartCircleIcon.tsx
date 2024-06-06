@@ -10,12 +10,13 @@ import { useCompleteToast, useErrorToast } from "../../../hooks/custom/CustomToa
 import { useInteractionMutation } from "../../../hooks/user/sub/interaction/mutations";
 import { isHeartCheckLocalStorage, pushArrToLocalStorage } from "../../../utils/storageUtils";
 
-interface IHeartLikeIcon {
+interface IHeartCircleIcon {
   toUid: string;
-  size?: "sm" | "lg";
+  size?: "sm" | "md" | "lg";
+  isSpin?: boolean;
 }
 
-function HeartLikeIcon({ toUid, size = "sm" }: IHeartLikeIcon) {
+function HeartCircleIcon({ toUid, size = "sm", isSpin = true }: IHeartCircleIcon) {
   const { data: session } = useSession();
   const completeToast = useCompleteToast();
   const errorToast = useErrorToast();
@@ -48,13 +49,13 @@ function HeartLikeIcon({ toUid, size = "sm" }: IHeartLikeIcon) {
   return (
     <Layout
       onClick={onClick}
-      animate="spin"
+      animate={isSpin ? "spin" : null}
       variants={spinVariants}
       transition={spinTransition}
       isshow={isShow ? "true" : "false"}
     >
       <i
-        className={`fa-regular fa-circle-heart fa-${size === "sm" ? "sm" : "2x"} `}
+        className={`fa-regular fa-circle-heart fa-${size === "sm" ? "sm" : size === "md" ? "xl" : "2x"} `}
         style={{ color: "var(--color-red)" }}
       />
     </Layout>
@@ -79,4 +80,4 @@ const spinVariants = {
   },
 };
 
-export default HeartLikeIcon;
+export default HeartCircleIcon;

@@ -1,6 +1,5 @@
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import {
@@ -25,8 +24,6 @@ import ManagerPopUp from "../../../modals/pop-up/ManagerPopUp";
 import SuggestPopUp from "../../../modals/pop-up/SuggestPopUp";
 import RecentJoinUserPopUp from "../../../modals/RecentJoinUserPopUp";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
-import { LocationEn } from "../../../types/services/locationTypes";
-import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
 import { checkAndSetLocalStorage } from "../../../utils/storageUtils";
 
 export type UserPopUp =
@@ -52,10 +49,6 @@ const MODAL_COMPONENTS = {
 
 export default function UserSettingPopUp({ cnt }) {
   const { data: session } = useSession();
-  const searchParams = useSearchParams();
-  const date = searchParams.get("date");
-
-  const location = convertLocationLangTo(searchParams.get("location") as LocationEn, "kr");
 
   const [modalTypes, setModalTypes] = useState<UserPopUp[]>([]);
   const [recentMembers, setRecentMembers] = useState<IUserSummary[]>();
@@ -78,7 +71,7 @@ export default function UserSettingPopUp({ cnt }) {
       return !isJoined && isWithinDateRange && (isParticipant || isUser);
     });
 
-    let temp = gatherJoin;
+    const temp = gatherJoin;
     filteredGather.forEach((obj) => {
       temp.push(obj.id);
     });
@@ -87,7 +80,6 @@ export default function UserSettingPopUp({ cnt }) {
     if (temp.length >= 5) {
       temp.shift();
     }
-    // localStorage.setItem(GATHER_JOIN_MEMBERS, JSON.stringify(temp));
 
     const sortedStudyMembers = JSON.parse(localStorage.getItem(STUDY_ATTEND_MEMBERS)) || [];
 
@@ -106,13 +98,13 @@ export default function UserSettingPopUp({ cnt }) {
       (obj) => !dayjs(obj.date).isBefore(dayjs(), "dates"),
     );
 
+    localStorage.setItem(GATHER_JOIN_MEMBERS, JSON.stringify(temp));
+    localStorage.setItem(STUDY_ATTEND_MEMBERS, JSON.stringify(filtered));
+
     const gatherMembers = filteredGather.flatMap((obj) => obj.participants.map((who) => who.user));
 
     setRecentMembers([...gatherMembers, ...(firstData ? firstData.members : [])]);
-    console.log(23, firstData, filtered);
   }, [gatherData]);
-
-  console.log(14, recentMembers);
 
   useEffect(() => {
     let popUpCnt = cnt;
@@ -154,7 +146,7 @@ export default function UserSettingPopUp({ cnt }) {
 
   return (
     <>
-      {recentMembers && (
+      {recentMembers?.length && (
         <RecentJoinUserPopUp users={recentMembers} setIsModal={() => setRecentMembers(null)} />
       )}
       {Object.entries(MODAL_COMPONENTS).map(([key, Component]) => {

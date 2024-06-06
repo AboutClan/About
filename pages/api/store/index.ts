@@ -11,7 +11,7 @@ export default async function giftController(req: NextApiRequest, res: NextApiRe
     const { name, uid, cnt, giftId } = req.body;
 
     const existingUser = await GiftModel.findOne({ uid, giftId });
-    console.log(uid, giftId, existingUser);
+
     if (existingUser) {
       const user = await GiftModel.findOneAndUpdate(
         { uid, giftId },

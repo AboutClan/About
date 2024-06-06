@@ -2,7 +2,7 @@ import { Box, Button } from "@chakra-ui/react";
 import Image from "next/image";
 import { useState } from "react";
 
-import HeartLikeIcon from "../components/atoms/Icons/HeartLikeIcon";
+import HeartCircleIcon from "../components/atoms/Icons/HeartCircleIcon";
 import ScreenOverlay from "../components/atoms/ScreenOverlay";
 import { IModal } from "../types/components/modalTypes";
 
@@ -39,7 +39,7 @@ export default function ImageZoomModal({ toUid, imageUrl, setIsModal }: IImageZo
               right="4px"
               onClick={() => setIsHeart(false)}
             >
-              <HeartLikeIcon toUid={toUid} size="lg" />
+              <HeartCircleIcon toUid={toUid} size="lg" />
             </Button>
           )}
         </Box>
