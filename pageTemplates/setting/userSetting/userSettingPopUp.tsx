@@ -146,9 +146,10 @@ export default function UserSettingPopUp({ cnt }) {
 
   return (
     <>
-      {recentMembers?.length && (
+      {recentMembers?.length ? (
         <RecentJoinUserPopUp users={recentMembers} setIsModal={() => setRecentMembers(null)} />
-      )}
+      ) : null}
+
       {Object.entries(MODAL_COMPONENTS).map(([key, Component]) => {
         const type = key as UserPopUp;
         return (

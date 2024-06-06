@@ -59,8 +59,6 @@ function Ranking() {
     },
   );
 
-  console.log(categoryIdx, attendRecords);
-
   const { data: usersAll } = useAdminUsersLocationControlQuery(
     filterOptions.isSwitchOn ? null : session.user.location,
   );
