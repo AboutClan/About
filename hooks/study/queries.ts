@@ -32,7 +32,7 @@ export const useStudyPlacesQuery = (
           status: active,
         },
       });
-     
+
       const places = res.data.filter(
         (place) =>
           place.brand !== "자유 신청" && (location === "all" || place.location === location),
@@ -50,6 +50,7 @@ export const useStudyVoteQuery = (
   useQuery<IParticipation[], AxiosError, IParticipation[]>(
     [STUDY_VOTE, date, location],
     async () => {
+     
       const res = await axios.get<IStudy>(`${SERVER_URI}/vote/${date}`, {
         params: { location },
       });

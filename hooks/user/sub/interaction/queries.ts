@@ -6,11 +6,15 @@ import { SERVER_URI } from "../../../../constants/system";
 import { INoticeActiveLog } from "../../../../types/globals/interaction";
 import { QueryOptions } from "../../../../types/hooks/reactTypes";
 
-export const useNoticeActiveLogQuery = (options?: QueryOptions<INoticeActiveLog[]>) =>
+export const useNoticeActiveLogQuery = (
+  type?: "like" | "friend" | "alphabet",
+  options?: QueryOptions<INoticeActiveLog[]>,
+) =>
   useQuery<INoticeActiveLog[], AxiosError, INoticeActiveLog[]>(
     [NOTICE_ACTIVE_LOG],
     async () => {
       const res = await axios.get<INoticeActiveLog[]>(`${SERVER_URI}/notice`);
+      if (type) return res.data.filter((item) => item.type === type);
       return res.data;
     },
     options,

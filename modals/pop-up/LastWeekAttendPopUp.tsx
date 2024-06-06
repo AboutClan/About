@@ -9,6 +9,7 @@ import Skeleton from "../../components/atoms/skeleton/Skeleton";
 import ProgressMark from "../../components/molecules/ProgressMark";
 import { USER_ROLE } from "../../constants/settingValue/role";
 import { usePointSystemLogQuery, useUserInfoQuery } from "../../hooks/user/queries";
+import { useNoticeActiveLogQuery } from "../../hooks/user/sub/interaction/queries";
 import { IModal } from "../../types/components/modalTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 import { IFooterOptions, ModalLayout } from "../Modals";
@@ -23,6 +24,7 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
     (obj) =>
       dayjsToStr(dayjs(obj.timestamp).startOf("month")) === dayjsToStr(dayjs().startOf("month")),
   );
+  const { data: noticeLogs } = useNoticeActiveLogQuery("like");
 
   const scoreObj = filteredData?.reduce(
     (acc, cur) => {
@@ -49,6 +51,10 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
     isFull: true,
   };
 
+  const likeCnt = noticeLogs?.filter((item) =>
+    dayjs(item.createdAt).isAfter(dayjs().startOf("month")),
+  ).length;
+  console.log(likeCnt);
   return (
     <ModalLayout
       title={`${dayjs().month() + 1}월 활동 점수표`}
@@ -101,7 +107,7 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
               <div style={{ display: "flex" }}>
                 <span>이번 달에 받은 좋아요</span>
               </div>
-              <span>0 개</span>
+              <span>{likeCnt || 0} 개</span>
             </Item>
           </Info>
         ) : (

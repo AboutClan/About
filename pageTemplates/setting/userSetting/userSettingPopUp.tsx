@@ -1,3 +1,4 @@
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import {
@@ -9,6 +10,8 @@ import {
   SUGGEST_POP_UP,
   USER_GUIDE_POP_UP,
 } from "../../../constants/keys/localStorage";
+import { useGroupQuery } from "../../../hooks/groupStudy/queries";
+import { useStudyVoteQuery } from "../../../hooks/study/queries";
 import EnthusiasticModal from "../../../modals/aboutHeader/EnthusiasticModal/EnthusiasticModal";
 import PointSystemsModal from "../../../modals/aboutHeader/pointSystemsModal/PointSystemsModal";
 import PromotionModal from "../../../modals/aboutHeader/promotionModal/PromotionModal";
@@ -17,6 +20,8 @@ import FAQPopUp from "../../../modals/pop-up/FAQPopUp";
 import LastWeekAttendPopUp from "../../../modals/pop-up/LastWeekAttendPopUp";
 import ManagerPopUp from "../../../modals/pop-up/ManagerPopUp";
 import SuggestPopUp from "../../../modals/pop-up/SuggestPopUp";
+import { LocationEn } from "../../../types/services/locationTypes";
+import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
 import { checkAndSetLocalStorage } from "../../../utils/storageUtils";
 
 export type UserPopUp =
@@ -41,7 +46,20 @@ const MODAL_COMPONENTS = {
 };
 
 export default function UserSettingPopUp({ cnt }) {
+  const searchParams = useSearchParams();
+  const date = searchParams.get("date");
+
+  const location = convertLocationLangTo(searchParams.get("location") as LocationEn, "kr");
+
   const [modalTypes, setModalTypes] = useState<UserPopUp[]>([]);
+
+  const { data: studyVoteData } = useStudyVoteQuery(date as string, location, {
+    enabled: !!date && !!location,
+  });
+
+  const { data: groupData } = useGroupQuery();
+
+  console.log(4, studyVoteData, groupData);
 
   useEffect(() => {
     let popUpCnt = cnt;

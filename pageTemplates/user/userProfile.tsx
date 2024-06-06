@@ -4,15 +4,13 @@ import Link from "next/link";
 import styled from "styled-components";
 
 import { useUserInfoQuery } from "../../hooks/user/queries";
+import { useNoticeActiveLogQuery } from "../../hooks/user/sub/interaction/queries";
 import { getUserRole } from "../../utils/convertUtils/convertDatas";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import PointScoreBar from "../point/pointScore/PointScoreBar";
 
 function UserProfile() {
-  // const { data: myArrivedCnt, isLoading } = useStudyArrivedCntQuery(
-  //   userInfo?.uid as string
-  // );
-
+  const { data: likeLogs } = useNoticeActiveLogQuery("like");
   const { data: userInfo } = useUserInfoQuery();
 
   return (
@@ -54,7 +52,8 @@ function UserProfile() {
         <Link href="/user/like">
           <BlockItem>
             <span>
-              받은 좋아요 <b>7</b>개
+              받은 좋아요{" "}
+              <b style={{ display: "inline-block", width: "14px" }}>{likeLogs?.length || 0}</b>개
             </span>
             <i className="fa-solid fa-chevron-right" />
           </BlockItem>
