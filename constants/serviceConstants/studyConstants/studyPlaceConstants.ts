@@ -7,7 +7,7 @@ export const SUWAN_수원역 = "6637352830c7250eac355cc6";
 export const SUWAN_아주대 = "62e5d6e0e098c232c05c3d3f";
 export const SUWAN_상현역 = "64b15fb72704a3af110733ba";
 export const SUWAN_송죽 = "644f6ffe9edb56992ccda5e9";
-export const SUWAN_경희대 = "644f70529edb56992ccda5eb";
+export const SUWAN_경희대 = "661cdae4aaae875d410236d2";
 export const SUWAN_구운동 = "6527c32774e4622ec48d12dd";
 export const SUWAN_스타벅스 = "64ba45feefd3711264521a87";
 export const SUWAN_경기대 = "65211465032de083c092353c";
@@ -35,6 +35,7 @@ export const YANG_양천구청역 = "6551d2b3d01680084c5c6a8f";
 export const YANG_화곡역 = "658fbbc2113d3959183e36c2";
 export const YANG_발산역 = "65bfac0a7d1dd938049ed19e";
 export const YANG_목동점 = "65bfab8b7d1dd938049ed19d";
+export const YANG_당산역 = "661cdb45aaae875d410236d3";
 
 //안양
 export const ANYANG_커피인더스트리 = "6456ef2820352b2d87582959";

@@ -55,6 +55,7 @@ import {
   SUWAN_아주대,
   SUWAN_워터쿨러,
   SUWAN_행궁동,
+  YANG_당산역,
   YANG_목동점,
   YANG_몽글,
   YANG_발산역,
@@ -112,6 +113,7 @@ export const LOCATION_TO_PLACE: LocationToPlace = {
     YANG_화곡역,
     YANG_목동점,
     YANG_발산역,
+    YANG_당산역,
   ],
   안양: [
     ANYANG_숨맑은집,
