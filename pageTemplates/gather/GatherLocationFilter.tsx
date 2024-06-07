@@ -56,7 +56,16 @@ export default function GatherLocationFilter() {
 
   return (
     <Box p="12px 16px">
-      <ButtonGroups buttonDataArr={buttonDataArr} currentValue={location} />
+      <ButtonGroups
+        buttonDataArr={buttonDataArr.sort((x, y) => {
+          if (x.text === "전체") return -1;
+          if (y.text === "전체") return 1;
+          if (x.text === defaultLocation) return -1;
+          if (y.text === defaultLocation) return 1;
+          return x.text.localeCompare(y.text);
+        })}
+        currentValue={location}
+      />
     </Box>
   );
 }
