@@ -22,21 +22,17 @@ import {
   DONG_장안동사거리점,
   DONG_중화역,
   DONG_혜화역,
-  DONG_혜화역2,
   DONG_화랑대역,
   DONG_회기역,
   GANGNAM_강남역,
-  GANGNAM_강남역구청역,
   GANGNAM_교대역,
   GANGNAM_논현역,
   GANGNAM_도곡동점,
   GANGNAM_선릉역,
   GANGNAM_신논현역,
-  GANGNAM_양재,
   INC_구월동점,
   INC_부평점,
   INC_송도점,
-  INC_송도점DT점,
   INC_인천대점,
   INC_인하대점,
   SUWAN_경기대,
@@ -52,7 +48,6 @@ import {
   SUWAN_송죽,
   SUWAN_수원시청,
   SUWAN_수원역,
-  SUWAN_스타벅스,
   SUWAN_아주대,
   SUWAN_행궁동,
   YANG_까치산역,
@@ -84,7 +79,7 @@ export const PLACE_TO_NAME = {
   [SUWAN_송죽]: "커피빈",
   [SUWAN_경희대]: "칸나",
   [SUWAN_구운동]: "이디야",
-  [SUWAN_스타벅스]: "스타벅스",
+
   [SUWAN_광교역]: "탐앤탐스",
   [SUWAN_고색역]: "에이티씨",
   [SUWAN_성균관대역]: "스타벅스",
@@ -124,9 +119,9 @@ export const PLACE_TO_NAME = {
   [GANGNAM_신논현역]: "커피빈",
   [GANGNAM_논현역]: "커피빈",
   [GANGNAM_교대역]: "아펜즈커피",
-  [GANGNAM_양재]: "미오커피",
+
   [GANGNAM_선릉역]: "커피빈",
-  [GANGNAM_강남역구청역]: "파스쿠찌",
+
   [GANGNAM_도곡동점]: "카페올로",
 
   //동대문
@@ -143,7 +138,7 @@ export const PLACE_TO_NAME = {
   [DONG_성신여대점]: "카페 뮬",
   [DONG_동대문역]: "D CAFE",
   [DONG_혜화역]: "캐치카페",
-  [DONG_혜화역2]: "커피빈",
+
   [DONG_화랑대역]: "마르티",
   [DONG_중화역]: "스타벅스",
   [DONG_노원역]: "투썸플레이스",
@@ -152,7 +147,7 @@ export const PLACE_TO_NAME = {
 
   //인천
   [INC_인하대점]: "더스토리",
-  [INC_송도점DT점]: "스타벅스",
+
   [INC_구월동점]: "파스쿠찌",
   [INC_송도점]: "카페꼼마",
   [INC_부평점]: "하이테이블",

@@ -126,9 +126,7 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
     }))
     .sort((a) => (a.text === "개인 스터디" ? 1 : -1));
 
-  const dismissedPlaces = studyVoteData
-    ?.filter((par) => par.status === "dismissed")
-    .map((par) => par.place._id);
+  const dismissedPlaces = studyVoteData?.filter((par) => par.status === "dismissed");
 
   const footerOptions: IFooterOptions = {
     main: {
@@ -149,7 +147,7 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
             <ImageTileFlexLayout imageDataArr={imageDataArr} selectedId={[selectedPlace]} />
             <Box mt="20px">
               <PlaceSelector
-                options={["선택 없음", ...dismissedPlaces]}
+                options={dismissedPlaces}
                 defaultValue={selectedPlace}
                 setValue={setSelectedPlace}
               />
