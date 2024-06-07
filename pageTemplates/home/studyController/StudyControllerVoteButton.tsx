@@ -101,7 +101,7 @@ export const getStudyVoteButtonProps = (
           color: "var(--color-orange)",
           type: "inactive",
         };
-      else if (false || myStudy)
+      else if (myStudy)
         return {
           text: "출석 체크",
           color: "var(--color-orange)",

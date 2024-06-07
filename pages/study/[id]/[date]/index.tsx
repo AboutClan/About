@@ -27,7 +27,7 @@ export default function Page() {
   const setMyStudy = useSetRecoilState(myStudyState);
 
   const location = PLACE_TO_LOCATION[id];
-  console.log(location);
+
   const isPrivateStudy = id === ALL_스터디인증;
 
   const { data: studyAll } = useStudyVoteQuery(date, location, {
