@@ -67,6 +67,7 @@ function RankingMembers({ categorySource, rankingUsers, isScore }: IRankingMembe
                 sizeLength={40}
                 size="md"
                 isPriority={idx < 6}
+                isLink={!RANKING_ANONYMOUS_USERS.includes(who?.uid)}
               />
 
               <RankingMine isMine={who.uid === session?.user.uid}>
