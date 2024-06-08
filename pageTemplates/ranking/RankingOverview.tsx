@@ -77,24 +77,6 @@ const Layout = styled.div`
   min-height: 121px;
 `;
 
-/** RANK CONTAINER */
-const RankContainer = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  line-height: 2;
-`;
-
-const RankPercent = styled.span`
-  font-size: 16px;
-  font-weight: 800;
-  > span {
-    font-size: 18px;
-  }
-`;
-
-/** PROFILE CONTAINER */
 const ProfileContainer = styled.div<{ isGuest: boolean }>`
   text-align: center;
 
@@ -112,29 +94,6 @@ const ProfileUserName = styled.span`
   margin-top: 8px;
   font-size: 14px;
   font-weight: 600;
-`;
-
-const BadgeWrapper = styled.div`
-  white-space: nowrap;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const RankBadge = styled.div`
-  margin-left: 12px;
-  display: flex;
-
-  justify-content: center;
-
-  align-items: center;
-`;
-
-const ScoreText = styled.span`
-  color: var(--gray-800);
-  font-weight: 600;
-
-  margin-right: var(--gap-1);
 `;
 
 export default RankingOverview;
