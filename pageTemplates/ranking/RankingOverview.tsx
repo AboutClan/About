@@ -1,12 +1,10 @@
-import { Badge, Box, Flex } from "@chakra-ui/react";
-import dayjs from "dayjs";
+import { Box, Flex } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import Avatar from "../../components/atoms/Avatar";
-import { BADGE_COLOR_MAPPINGS } from "../../constants/serviceConstants/badgeConstants";
-import { USER_ROLE } from "../../constants/settingValue/role";
+import Skeleton from "../../components/atoms/skeleton/Skeleton";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { IMyRank } from "../../types/models/ranking";
 import { UserBadge } from "../../types/models/userTypes/userInfoTypes";
@@ -15,9 +13,10 @@ import { getUserBadge } from "../../utils/convertUtils/convertDatas";
 interface IRankingOverview {
   myRankInfo: IMyRank;
   isScore: boolean;
+  totalCnt: number;
 }
 
-function RankingOverview({ myRankInfo, isScore = false }: IRankingOverview) {
+function RankingOverview({ totalCnt, myRankInfo, isScore = false }: IRankingOverview) {
   const { data: session } = useSession();
   const isGuest = session?.user.name === "guest";
   const [userBadge, setUserBadge] = useState<UserBadge>();
@@ -30,27 +29,19 @@ function RankingOverview({ myRankInfo, isScore = false }: IRankingOverview) {
     const badge = getUserBadge(userInfo.score, userInfo.uid);
     setUserBadge(badge);
   }, [isGuest, userInfo]);
-
+  console.log(myRankInfo);
   return (
     <>
       <Layout>
         <Flex flex={1} direction="column" align="center">
-          <Box fontSize="20px" fontWeight={800}>
-            {myRankInfo?.isRank ? (
-              <Box>
-                {isScore ? "누적" : "월간"}:{" "}
-                {!myRankInfo?.value ? "NEW" : `${myRankInfo?.rankNum + 1}위`}
-              </Box>
-            ) : (
-              <RankPercent>
-                상위 <span>{myRankInfo?.percent}%</span>
-              </RankPercent>
-            )}
-          </Box>
-          <Box color="var(--gray-700)">
-            {isScore ? "내 점수" : `${dayjs().month() + 1}월 참여`}:{" "}
-            {myRankInfo.value ? `${myRankInfo.value}${isScore ? "점" : "회"}` : "기록없음"}
-          </Box>
+          <Flex fontSize="18px" fontWeight={800}>
+            <Box mr="4px">{isScore ? "누적" : "월간"}: </Box>
+            <Box w="48px">
+              <Skeleton isLoaded={!!myRankInfo}>
+                {!myRankInfo?.value ? "NEW" : `${myRankInfo?.rankNum + 1}42위`}
+              </Skeleton>
+            </Box>
+          </Flex>
         </Flex>
         <ProfileContainer isGuest={isGuest}>
           {userInfo ? (
@@ -71,26 +62,8 @@ function RankingOverview({ myRankInfo, isScore = false }: IRankingOverview) {
             </ProfileWrapper>
           ) : null}
         </ProfileContainer>{" "}
-        <RankContainer>
-          <RankBadge>
-            <BadgeWrapper>
-              <ScoreText>배지:</ScoreText>
-              <Badge
-                colorScheme={BADGE_COLOR_MAPPINGS[userBadge]}
-                fontSize="14px"
-                border="1px solid var(--gray-400)"
-              >
-                {userBadge}
-              </Badge>
-            </BadgeWrapper>
-          </RankBadge>
-          <RankBadge>
-            <BadgeWrapper>
-              <ScoreText>구성:</ScoreText>
-              {USER_ROLE[session?.user.role]}
-            </BadgeWrapper>
-          </RankBadge>
-        </RankContainer>
+        <Box>전체 20%</Box>
+        <Box>전체 {Math.round((myRankInfo?.rankNum + 1 / totalCnt) * 100)}%</Box>
       </Layout>
     </>
   );

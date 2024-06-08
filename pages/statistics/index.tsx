@@ -58,10 +58,14 @@ function Ranking() {
       enabled: categoryIdx !== 2,
     },
   );
+  console.log(attendRecords);
 
   const { data: usersAll } = useAdminUsersLocationControlQuery(
     filterOptions.isSwitchOn ? null : session.user.location,
+    true,
   );
+
+  console.log(usersAll);
 
   useEffect(() => {
     if (categoryIdx !== 2) {
@@ -76,9 +80,13 @@ function Ranking() {
       <Header title="About 랭킹" />
       <Slide>
         <Layout>
+          <RankingOverview
+            totalCnt={usersRanking?.users.length}
+            myRankInfo={usersRanking?.mine}
+            isScore={categoryIdx === 2}
+          />
           {usersRanking && (
             <>
-              <RankingOverview myRankInfo={usersRanking.mine} isScore={categoryIdx === 2} />
               <StatisticsTabNav setTabValue={setTabValue} />
               {tabValue === "전체 랭킹" ? (
                 <>
@@ -114,7 +122,7 @@ function Ranking() {
 
 const Layout = styled.div`
   overflow-y: auto;
-  background-color: var(--gray-100);
+
   display: flex;
   flex-direction: column;
 `;
