@@ -55,7 +55,7 @@ export default function GatherLocationFilter() {
   ];
 
   return (
-    <Box p="12px 16px">
+    <Box p="12px 16px" pr="0">
       <ButtonGroups
         buttonDataArr={buttonDataArr.sort((x, y) => {
           if (x.text === "전체") return -1;

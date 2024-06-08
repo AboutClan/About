@@ -39,6 +39,7 @@ export default function Selector({
         value={value}
         onChange={onChange}
         border={!isBorder ? "none" : undefined}
+        bgColor={!isBorder ? "inherit" : "white"}
       >
         {options.map((option, idx) => (
           <option key={idx}>{option}</option>

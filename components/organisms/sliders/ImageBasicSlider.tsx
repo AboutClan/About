@@ -20,13 +20,61 @@ export interface ImageTileProps {
 interface IImageTileSlider {
   imageTileArr: ImageTileProps[];
   size: "sm" | "md" | "full";
+  firstItem?: {
+    icon: React.ReactNode;
+    func: () => void;
+    text: string;
+  };
   selectedImageUrl?: string;
   aspect?: number;
 }
 
-function ImageBasicSlider({ imageTileArr, size, selectedImageUrl, aspect = 1 }: IImageTileSlider) {
+function ImageBasicSlider({
+  imageTileArr,
+  size,
+  selectedImageUrl,
+  firstItem,
+  aspect = 1,
+}: IImageTileSlider) {
   return (
-    <Swiper slidesPerView={size === "sm" ? 4.4 : size === "md" ? 3.6 : 1} spaceBetween={20}>
+    <Swiper slidesPerView={size === "sm" ? 4.5 : size === "md" ? 3.6 : 1} spaceBetween={20}>
+      {firstItem && (
+        <SwiperSlide>
+          <Flex ml="4px" direction="column" align="center">
+            <Box
+              w={size === "sm" ? "64px" : size === "md" ? "80px" : "100%"}
+              aspectRatio={aspect}
+              borderRadius="var(--rounded-lg)"
+              position="relative"
+              rounded="md"
+              border="var(--border-main)"
+              bgColor="white"
+              onClick={firstItem.func}
+              as="button"
+              borderWidth="2px"
+            >
+              {firstItem.icon}
+            </Box>
+            {firstItem?.text && (
+              <Flex justify="center" w="72px">
+                <Box
+                  textAlign="center"
+                  fontSize="12px"
+                  mt="8px"
+                  sx={{
+                    display: "-webkit-box",
+                    WebkitBoxOrient: "vertical",
+                    WebkitLineClamp: "1",
+                    overflow: "hidden",
+                  }}
+                >
+                  {firstItem.text}
+                </Box>
+              </Flex>
+            )}
+          </Flex>
+        </SwiperSlide>
+      )}
       {imageTileArr.map((imageTile, index) => (
         <SwiperSlide key={index}>
           <Flex direction="column" align="center">
@@ -36,7 +84,6 @@ function ImageBasicSlider({ imageTileArr, size, selectedImageUrl, aspect = 1 }: 
               borderRadius="var(--rounded-lg)"
               position="relative"
               overflow="hidden"
-              pos="relative"
               rounded="md"
               border={
                 imageTile.imageUrl === selectedImageUrl ? "var(--border-mint)" : "var(--border)"

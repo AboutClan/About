@@ -8,33 +8,36 @@ import {
   USER_REQUEST,
 } from "../../constants/keys/queryKeys";
 import { SERVER_URI } from "../../constants/system";
+import { RankingCategorySource } from "../../pages/statistics";
 import { QueryOptions } from "../../types/hooks/reactTypes";
-import { IUser, IUserRegisterForm } from "../../types/models/userTypes/userInfoTypes";
+import { IUser, IUserRegisterForm, IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import { IUserRequest, UserRequestCategory } from "../../types/models/userTypes/userRequestTypes";
 import { Location } from "../../types/services/locationTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
-export const useAdminUsersLocationControlQuery = (
+export const useAdminUsersLocationControlQuery = <T extends boolean>(
   location: Location,
-  filterType?: "score" | "monthScore",
-  isSummary?: boolean,
-  options?: QueryOptions<IUser[]>,
+  filterType?: RankingCategorySource,
+  isSummary?: T,
+  options?: QueryOptions<T extends true ? IUserSummary[] : IUser[]>,
 ) =>
-  useQuery<IUser[], AxiosError, IUser[]>(
+  useQuery<T extends true ? IUserSummary[] : IUser[], AxiosError>(
     ["adminUserControl", location, isSummary, filterType],
     async () => {
-      const res = await axios.get<IUser[]>(`${SERVER_URI}/admin/user`, {
-        params: {
-          location,
-          isSummary,
-          filterType,
+      const res = await axios.get<T extends true ? IUserSummary[] : IUser[]>(
+        `${SERVER_URI}/admin/user`,
+        {
+          params: {
+            location,
+            isSummary,
+            filterType,
+          },
         },
-      });
+      );
       return res.data;
     },
     options,
   );
-
 export const useUserRequestQuery = (
   category: UserRequestCategory,
   options?: QueryOptions<IUserRequest[]>,

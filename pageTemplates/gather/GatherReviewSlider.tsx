@@ -1,27 +1,17 @@
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
+
 import ImageBasicSlider, {
   ImageTileProps,
 } from "../../components/organisms/sliders/ImageBasicSlider";
-
-import { IReviewData, REVIEW_DATA } from "../../storage/Review";
+import { REVIEW_DATA } from "../../storage/Review";
 
 const IMAGE_VISIBLE = 10;
 
 export default function GatherReviewSlider() {
   const router = useRouter();
 
-  const imageArr: ImageTileProps[] = [
-    ...REVIEW_DATA,
-    {
-      id: null,
-      dateCreated: null,
-      images: [
-        "https://user-images.githubusercontent.com/84257439/242179172-dc4938a6-7902-4ea5-b3a9-1c44f15f1d77.jpg",
-      ],
-      title: "모임 리뷰",
-    } as IReviewData,
-  ]
+  const imageArr: ImageTileProps[] = [...REVIEW_DATA]
     .slice(-IMAGE_VISIBLE)
     .reverse()
     .map((item) => ({
@@ -31,8 +21,16 @@ export default function GatherReviewSlider() {
     }));
 
   return (
-    <Box p="12px 20px">
-      <ImageBasicSlider imageTileArr={imageArr} size="sm" />
+    <Box p="12px 16px" pr="0">
+      <ImageBasicSlider
+        imageTileArr={imageArr}
+        size="sm"
+        firstItem={{
+          icon: <i className="fa-solid fa-image fa-3x" style={{ color: "var(--color-gray)" }} />,
+          func: () => router.push("/review"),
+          text: "모임 리뷰",
+        }}
+      />
     </Box>
   );
 }

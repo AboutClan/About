@@ -26,9 +26,9 @@ function AdminResetstudy() {
     }
   };
 
-  const myCommand = async () => {
-    await axios.get("http://localhost:3000/api/user/score/all");
-  };
+  // const myCommand = async () => {
+  //   await axios.get("http://localhost:3000/api/user/score/all");
+  // };
 
   return (
     <Flex flexDir="column">
@@ -41,9 +41,7 @@ function AdminResetstudy() {
       <Button onClick={onDeleteVote} m="5px 0">
         현재날짜 + 3일 이후 투표 모두 삭제
       </Button>
-      <Button onClick={myCommand} m="5px 0">
-        커맨드
-      </Button>
+      <Button m="5px 0">커맨드</Button>
       <Button></Button>
     </Flex>
   );

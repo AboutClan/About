@@ -23,14 +23,6 @@ import { renderHomeHeaderState } from "../../../recoils/renderRecoils";
 import { transferShowDailyCheckState } from "../../../recoils/transferRecoils";
 import { NOTICE_ARR } from "../../../storage/notice";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
-// export type HomeHeaderModalType =
-//   | "promotion"
-//   | "rabbit"
-//   | "rule"
-//   | "notice"
-//   | "user"
-//   | "attendCheck"
-//   | "attendCheckWin";
 
 export type HomeHeaderModalType = "rule" | "dailyCheck" | "pointGuide" | null;
 
@@ -55,11 +47,11 @@ function HomeHeader() {
     if (!data) return;
     const activeCnt = localStorage.getItem(NOTICE_ACTIVE_CNT);
     const noticeCnt = localStorage.getItem(NOTICE_ALERT);
+
     if (+activeCnt !== data?.length || NOTICE_ARR.length !== +noticeCnt) {
       setIsNoticeAlert(true);
     }
   }, [data]);
-
   const generateIconBtnArr = () => {
     const arr = [
       {

@@ -1,5 +1,6 @@
-import { IUserRankings } from "../../types/models/ranking";
-import { IUser, IUserSummary } from "../../types/models/userTypes/userInfoTypes";
+import { RankingCategorySource } from "../../pages/statistics";
+import { IMyRank } from "../../types/models/ranking";
+import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import { IScore } from "../../types/services/pointSystem";
 
 export const myScoreRank = (scoreArr: IScore[], myScore: number) => {
@@ -15,72 +16,48 @@ export const myScoreRank = (scoreArr: IScore[], myScore: number) => {
   else return Math.ceil(rate / 10) * 10;
 };
 
-interface RankingUserProp extends IUserSummary {
+export interface RankingUserProp extends IUserSummary {
   cnt: number;
+}
+export interface IUserRankings {
+  mine: IMyRank;
+  users: RankingUserProp[] | IUserSummary[];
 }
 
 export const sortUserRanking = (
-  users: RankingUserProp[],
-  type: "score" | "monthScore" | "cnt",
+  users: RankingUserProp[] | IUserSummary[],
+  type: RankingCategorySource,
   uid: string,
 ): IUserRankings => {
   let myValue = null;
-  const compareRanking = (a: RankingUserProp, b: RankingUserProp) => {
-    const firstValue = type === "score" ? a.score : type === "monthScore";
 
-    if (!myValue && (a.uid === uid || b.uid === uid)) {
-      myValue = a.cnt;
+  const compareRanking = (a: RankingUserProp, b: RankingUserProp) => {
+    const firstValue = a[type];
+    const secondValue = b[type];
+
+    if (myValue === null) {
+      if (a.uid === uid) myValue = firstValue;
+      if (b.uid === uid) myValue = secondValue;
     }
-    if (a.cnt > b.cnt) return -1;
-    else if (a.cnt < b.cnt) return 1;
+    if (firstValue > secondValue) return -1;
+    else if (firstValue < secondValue) return 1;
     return 0;
   };
 
-  let myRankNum = 0;
+  let myRankNum = 1;
 
   users.sort(compareRanking);
 
-  if (myValue !== 0)
+  if (myValue)
     users.forEach((user) => {
-      if (user.cnt > myValue) myRankNum++;
+      if (user[type] > myValue) myRankNum++;
     });
 
   return {
     users: users,
     mine: {
-      rankNum: myValue === 0 ? -1 : myRankNum,
-      isRank: true,
+      rankNum: !myValue ? -1 : myRankNum,
       value: myValue,
-    },
-  };
-};
-
-export const sortUserScoreRanking = (users: IUser[], myScore: number): IUserRankings => {
-  const compareRanking = (a: IUser, b: IUser) => {
-    if (a.score > b.score) return -1;
-    else if (a.score < b.score) return 1;
-    return 0;
-  };
-
-  let myRankNum = 0;
-
-  users.sort(compareRanking);
-
-  if (myScore !== 0)
-    users.forEach((user) => {
-      if (user.score > myScore) myRankNum++;
-    });
-
-  return {
-    users: users.map((user) => ({
-      uid: user.uid,
-      cnt: user.score,
-      userSummary: user,
-    })),
-    mine: {
-      rankNum: myScore === 0 ? -1 : myRankNum,
-      isRank: true,
-      value: myScore,
     },
   };
 };
