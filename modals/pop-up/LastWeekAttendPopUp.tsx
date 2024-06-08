@@ -54,7 +54,6 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
   const likeCnt = noticeLogs?.filter((item) =>
     dayjs(item.createdAt).isAfter(dayjs().startOf("month")),
   ).length;
-
   return (
     <ModalLayout
       title={`${dayjs().month() + 1}월 활동 점수표`}

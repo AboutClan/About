@@ -1,12 +1,12 @@
 import { Select } from "@chakra-ui/react";
 import { ChangeEvent } from "react";
 
-import { PLACE_TO_NAME } from "../../constants/serviceConstants/studyConstants/studyCafeNameConstants";
 import { DispatchType } from "../../types/hooks/reactTypes";
+import { IParticipation } from "../../types/models/studyTypes/studyDetails";
 
 interface IPlaceSelector {
   defaultValue: string;
-  options: string[];
+  options: IParticipation[];
   setValue: DispatchType<string>;
   isBorder?: boolean;
 }
@@ -32,11 +32,15 @@ export default function PlaceSelector({
         onChange={onChange}
         border={!isBorder ? "none" : undefined}
       >
-        {options.map((option, idx) => (
-          <option value={option} key={idx}>
-            {PLACE_TO_NAME[option] || "선택 없음"}
-          </option>
-        ))}
+        {options.map((option, idx) =>
+          idx === 0 ? (
+            <option key={idx}>선택 없음</option>
+          ) : (
+            <option value={option.place._id} key={idx}>
+              {option.place.branch}({option.place.brand})
+            </option>
+          ),
+        )}
       </Select>
     </div>
   );

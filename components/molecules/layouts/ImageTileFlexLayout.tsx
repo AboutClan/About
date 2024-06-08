@@ -27,7 +27,9 @@ export default function ImageTileFlexLayout({
         <Box w="64px" h="64px" borderRadius="8px" overflow="hidden">
           <Image width={64} height={64} src={url} alt="studyPlaceImage" />
         </Box>
-        <Box mt="12px">{text}</Box>
+        <Box textAlign="center" mt="12px" whiteSpace="nowrap">
+          {text}
+        </Box>
       </Flex>
     );
   }
