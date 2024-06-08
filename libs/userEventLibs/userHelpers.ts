@@ -1,6 +1,5 @@
 import { IUserRankings } from "../../types/models/ranking";
-import { IVoteRate } from "../../types/models/studyTypes/studyRecords";
-import { IUser } from "../../types/models/userTypes/userInfoTypes";
+import { IUser, IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import { IScore } from "../../types/services/pointSystem";
 
 export const myScoreRank = (scoreArr: IScore[], myScore: number) => {
@@ -16,9 +15,19 @@ export const myScoreRank = (scoreArr: IScore[], myScore: number) => {
   else return Math.ceil(rate / 10) * 10;
 };
 
-export const sortUserRanking = (users: IVoteRate[], uid: string): IUserRankings => {
+interface RankingUserProp extends IUserSummary {
+  cnt: number;
+}
+
+export const sortUserRanking = (
+  users: RankingUserProp[],
+  type: "score" | "monthScore" | "cnt",
+  uid: string,
+): IUserRankings => {
   let myValue = null;
-  const compareRanking = (a: IVoteRate, b: IVoteRate) => {
+  const compareRanking = (a: RankingUserProp, b: RankingUserProp) => {
+    const firstValue = type === "score" ? a.score : type === "monthScore";
+
     if (!myValue && (a.uid === uid || b.uid === uid)) {
       myValue = a.cnt;
     }

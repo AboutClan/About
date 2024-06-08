@@ -12,13 +12,10 @@ export interface IRankScore {
 
 export interface IUserRankings {
   mine: IMyRank;
-
   users: IVoteRate[];
 }
 export interface IMyRank {
-  rankNum?: number;
-
-  isRank: boolean;
+  rankNum: number;
   value: number;
 }
 export interface ISortedUserScores extends IMyRank {

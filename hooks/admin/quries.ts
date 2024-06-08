@@ -16,16 +16,18 @@ import { dayjsToStr } from "../../utils/dateTimeUtils";
 
 export const useAdminUsersLocationControlQuery = (
   location: Location,
+  filterType?: "score" | "monthScore",
   isSummary?: boolean,
   options?: QueryOptions<IUser[]>,
 ) =>
   useQuery<IUser[], AxiosError, IUser[]>(
-    ["adminUserControl", location],
+    ["adminUserControl", location, isSummary, filterType],
     async () => {
       const res = await axios.get<IUser[]>(`${SERVER_URI}/admin/user`, {
         params: {
           location,
           isSummary,
+          filterType,
         },
       });
       return res.data;

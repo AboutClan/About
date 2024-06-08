@@ -1,85 +1,77 @@
-import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import { useAdminUsersLocationControlQuery } from "../../hooks/admin/quries";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { useUserAttendRateQuery } from "../../hooks/user/sub/studyRecord/queries";
-import { sortUserRanking, sortUserScoreRanking } from "../../libs/userEventLibs/userHelpers";
-import RankingMembers from "../../pageTemplates/ranking/RankingMembers";
-import RankingOverview from "../../pageTemplates/ranking/RankingOverview";
-import StatisticsFilterBar from "../../pageTemplates/ranking/StatisticsFilterBar";
-import StatisticsMine from "../../pageTemplates/ranking/StatisticsMine";
-import StatisticsTabNav from "../../pageTemplates/ranking/StatisticsTabNav";
 import { IUserRankings } from "../../types/models/ranking";
 
-const categoryArr = [
-  `${dayjs().month()}월 랭킹`,
-  `${dayjs().add(1, "month").month()}월 랭킹`,
-  "점수 랭킹",
-];
+const categoryArr = ["활동 랭킹", `스터디 랭킹`, "누적 랭킹"] as const;
 
 function Ranking() {
   const typeToast = useTypeToast();
   const { data: session } = useSession();
 
-  const [usersRanking, setUsersRanking] = useState<IUserRankings>();
+  const [usersRanking, setUsersRanking] = useState<IUserRankings>({ users: [], mine: null });
   const [tabValue, setTabValue] = useState<"전체 랭킹" | "내 통계">("전체 랭킹");
   const [filterOptions, setFilterOptions] = useState<{
-    category: string;
-    isSwitchOn: boolean;
+    category: (typeof categoryArr)[number];
+    isLocationFilter: boolean;
   }>({
-    category: `점수 랭킹`,
-    isSwitchOn: true,
+    category: "활동 랭킹",
+    isLocationFilter: false,
   });
-
-  const categoryIdx = categoryArr.findIndex((item) => item === filterOptions.category);
 
   const { data: userInfo } = useUserInfoQuery();
 
   const { data: attendRecords, isLoading } = useUserAttendRateQuery(
-    dayjs()
-      .startOf("month")
-      .subtract(categoryIdx === 0 ? 1 : 0, "month"),
-    dayjs()
-      .endOf("month")
-      .subtract(categoryIdx === 0 ? 1 : 0, "month"),
+    dayjs().startOf("month"),
+    dayjs(),
     false,
     true,
-    filterOptions?.isSwitchOn ? null : session.user.location,
+    filterOptions.isLocationFilter ? null : session?.user.location,
     {
       onError: () => typeToast("error"),
-      enabled: categoryIdx !== 2,
+      enabled: true && !!session,
     },
   );
-  console.log(attendRecords);
 
   const { data: usersAll } = useAdminUsersLocationControlQuery(
-    filterOptions.isSwitchOn ? null : session.user.location,
+    filterOptions.isLocationFilter ? null : session?.user.location,
+    "score",
     true,
+    {
+      enabled: !!session,
+    },
   );
 
-  console.log(usersAll);
-
   useEffect(() => {
-    if (categoryIdx !== 2) {
-      if (attendRecords) setUsersRanking(sortUserRanking(attendRecords, session?.user.uid));
-    } else {
-      if (usersAll) setUsersRanking(sortUserScoreRanking(usersAll, userInfo.score));
+    if (filterOptions.category !== "스터디 랭킹") {
+      const rankingUsers = attendRecords.map((record) => ({
+        ...record.userSummary,
+        cnt: record.cnt,
+      }));
+      // sortUserRanking(rankingUsers, session?.user.uid);
     }
-  }, [attendRecords, filterOptions, categoryIdx, usersAll]);
+
+    // if (categoryIdx !== 2) {
+    //   if (attendRecords) setUsersRanking(sortUserRanking(attendRecords, session?.user.uid));
+    // } else {
+    //   if (usersAll) setUsersRanking(sortUserScoreRanking(usersAll, userInfo.score));
+    // }
+  }, [attendRecords, filterOptions, usersAll]);
+  console.log(usersAll);
 
   return (
     <>
-      <Header title="About 랭킹" />
+      <Header title="ABOUT 랭킹" />
       <Slide>
-        <Layout>
+        {/* <Layout>
           <RankingOverview
             totalCnt={usersRanking?.users.length}
             myRankInfo={usersRanking?.mine}
@@ -114,7 +106,7 @@ function Ranking() {
               )}
             </>
           )}
-        </Layout>
+        </Layout> */}
       </Slide>
     </>
   );

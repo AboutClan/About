@@ -29,7 +29,7 @@ function RankingOverview({ totalCnt, myRankInfo, isScore = false }: IRankingOver
     const badge = getUserBadge(userInfo.score, userInfo.uid);
     setUserBadge(badge);
   }, [isGuest, userInfo]);
-  console.log(myRankInfo);
+
   return (
     <>
       <Layout>
