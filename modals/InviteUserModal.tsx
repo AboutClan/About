@@ -31,7 +31,7 @@ export default function InviteUserModal({ setIsModal }: IInviteUserModal) {
     data: usersAll,
 
     isLoading,
-  } = useAdminUsersLocationControlQuery(location, { enabled: true });
+  } = useAdminUsersLocationControlQuery(location, null, true, { enabled: true });
 
   const queryClient = useQueryClient();
 

@@ -39,7 +39,7 @@ export default function GroupAdminInvitation({ belong }: IGroupAdminInvitation) 
     data: usersAll,
     refetch,
     isLoading,
-  } = useAdminUsersLocationControlQuery(value, { enabled: !!location });
+  } = useAdminUsersLocationControlQuery(value,null,false, { enabled: !!location });
 
   const queryClient = useQueryClient();
 
