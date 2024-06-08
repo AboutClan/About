@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import Header from "../../../components/layouts/Header";
 import { useUpdateProfileMutation } from "../../../hooks/admin/mutation";
-import { useAdminUsersControlQuery } from "../../../hooks/admin/quries";
+import { useAdminUsersLocationControlQuery } from "../../../hooks/admin/quries";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
 
 function AdminUserInfo() {
@@ -12,7 +12,7 @@ function AdminUserInfo() {
   const [members, setMembers] = useState<IUser[]>([]);
   const [filtered, setFiltered] = useState<IUser[]>([]);
 
-  useAdminUsersControlQuery({
+  useAdminUsersLocationControlQuery({
     onSuccess(data) {
       const tempAdmins = [];
       const tempMembers = [];

@@ -63,11 +63,11 @@ function WritingStudyImage() {
           <span>메인 이미지로 등록할 사진을 선택해 주세요!</span>
         </RegisterOverview>
 
-        <Box p="12px 16px" borderBottom="var(--border)">
+        <Box p="12px 0" borderBottom="var(--border)">
           <ImageBasicSlider
             selectedImageUrl={imageProps?.mainImage}
             imageTileArr={mainImageArr}
-            size="sm"
+            size="md"
           />
         </Box>
         <RegisterOverview>

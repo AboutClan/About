@@ -15,11 +15,12 @@ function NoticeNav({ isNotice, setIsNotice, activeAlertCnt }: INoticeNav) {
   const [isActiveAlert, setIsActiveAlert] = useState(false);
 
   useEffect(() => {
-    if (!activeAlertCnt) return;
+    if (activeAlertCnt === undefined) return;
     if (!isNotice) {
       localStorage.setItem(NOTICE_ACTIVE_CNT, `${activeAlertCnt}`);
       setIsActiveAlert(false);
     }
+
     if (+localStorage.getItem(NOTICE_ACTIVE_CNT) < activeAlertCnt) setIsActiveAlert(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeAlertCnt, isNotice]);

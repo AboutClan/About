@@ -28,6 +28,7 @@ export interface IUserSummary {
   location: ActiveLocation;
   name: string;
   profileImage: string;
+  monthScore: number;
   score: number;
   uid: string;
   _id?: string;

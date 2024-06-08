@@ -64,9 +64,10 @@ function StudyController() {
     setSelectedDate(date);
   }, [date]);
 
-  const onClick = (date: string) => {
+  const onClick = (moveDate: string) => {
+    if (date === moveDate) return;
     setStudyDateStatus(undefined);
-    newSearchParams.set("date", date);
+    newSearchParams.set("date", moveDate);
     router.replace(`/home?${newSearchParams.toString()}`, { scroll: false });
   };
 

@@ -20,7 +20,6 @@ export const ModalHeaderLine = styled.header`
 `;
 
 interface IModalSubTitle {
-  isLight?: boolean;
   isCenter?: boolean;
 }
 

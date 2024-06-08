@@ -1,6 +1,4 @@
 // pages/test.js
-import { Button } from "@chakra-ui/react";
-import axios from "axios";
 import { useEffect } from "react";
 
 import { SERVER_URI } from "../constants/apiConstants";
@@ -71,17 +69,7 @@ function Test() {
     }
   }, []);
 
-  const onClick = async () => {
-    console.log(24);
-    try {
-      await axios.patch(`${SERVER_URI}/user/score/all`);
-      console.log("SUC");
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  return <Button onClick={onClick}>버튼</Button>;
+  return <>버튼</>;
 }
 
 export default Test;

@@ -22,7 +22,7 @@ interface INavButton extends INavButtonProps {
   idx: number;
 }
 
-type Category = "홈" | "통계" | "모임" | "소그룹";
+type Category = "홈" | "랭킹" | "모임" | "소그룹";
 
 export default function BottomNav() {
   const { data: session } = useSession();
@@ -97,7 +97,7 @@ const navItems: INavButtonProps[] = [
   {
     activeIcon: <i className="fa-solid fa-ranking-star fa-xl" />,
     defaultIcon: <i className="fa-light fa-ranking-star fa-xl" />,
-    text: "통계",
+    text: "랭킹",
     url: "/statistics",
   },
   {
