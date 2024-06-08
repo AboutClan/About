@@ -12,7 +12,7 @@ function AdminUserInfo() {
   const [members, setMembers] = useState<IUser[]>([]);
   const [filtered, setFiltered] = useState<IUser[]>([]);
 
-  useAdminUsersLocationControlQuery({
+  useAdminUsersLocationControlQuery(null, null, false, {
     onSuccess(data) {
       const tempAdmins = [];
       const tempMembers = [];

@@ -43,9 +43,14 @@ function Member() {
   const [groupedMembers, setgroupedMembers] = useState<IGroupedMembers>();
   const [locationMembers, setLocationMembers] = useState<IUser[]>();
 
-  const { data: usersAll, isLoading } = useAdminUsersLocationControlQuery(location as Location, {
-    enabled: !!location,
-  });
+  const { data: usersAll, isLoading } = useAdminUsersLocationControlQuery(
+    location as Location,
+    null,
+    false,
+    {
+      enabled: !!location,
+    },
+  );
 
   //멤버 분류
   useEffect(() => {
