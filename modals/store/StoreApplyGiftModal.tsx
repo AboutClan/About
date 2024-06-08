@@ -93,7 +93,7 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
     },
   };
 
-  console.log(34, value);
+
   return (
     <ModalLayout title="상품 응모" footerOptions={footerOptions} setIsModal={setIsModal}>
       <Box h="130px">

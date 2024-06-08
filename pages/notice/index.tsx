@@ -11,7 +11,7 @@ import NoticeNav from "../../pageTemplates/notice/NoticeNav";
 function Notice() {
   const [isNotice, setIsNotice] = useState(true);
   const { data: activeLogs } = useNoticeActiveLogQuery();
-  console.log(activeLogs);
+
   useEffect(() => {
     window.scrollTo({
       top: 0,
