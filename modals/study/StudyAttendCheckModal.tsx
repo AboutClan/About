@@ -1,6 +1,5 @@
 /* eslint-disable */
 
-import { Textarea } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useParams, useSearchParams } from "next/navigation";
@@ -27,6 +26,7 @@ import { getRandomAlphabet } from "../../libs/userEventLibs/collection";
 import { myStudyState } from "../../recoils/studyRecoils";
 import { transferAlphabetState } from "../../recoils/transferRecoils";
 
+import Textarea from "../../components/atoms/Textarea";
 import { STUDY_ATTEND_MEMBERS } from "../../constants/keys/localStorage";
 import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { ModalSubtitle } from "../../styles/layout/modal";
@@ -156,8 +156,8 @@ function StudyAttendCheckModal({ setIsModal }: IStudyAttendCheckModal) {
     isFull: true,
   };
 
-  
-  
+  const [isFocus, setIsFocus] = useState(false);
+
   return (
     <>
       <ModalLayout
@@ -165,6 +165,7 @@ function StudyAttendCheckModal({ setIsModal }: IStudyAttendCheckModal) {
         footerOptions={footerOptions}
         setIsModal={setIsModal}
         initialRef={initialRef}
+        isInputFocus={isFocus}
       >
         <ModalSubtitle>
           도착하셨나요? <br />
@@ -176,7 +177,7 @@ function StudyAttendCheckModal({ setIsModal }: IStudyAttendCheckModal) {
             placeholder="ex. 입구 오른쪽 계단 아래 초록색 후드티"
             onChange={(e) => setValue(e.target.value)}
             value={value}
-            ref={initialRef}
+            setIsFocus={setIsFocus}
           />
         ) : (
           <ImageUploadInput setImageUrl={setImageUrl} />
