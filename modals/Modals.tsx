@@ -10,6 +10,7 @@ import {
   ModalHeader as ChakraModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import TwoButtonNav from "../components/layouts/TwoButtonNav";
@@ -67,11 +68,27 @@ export function ModalLayout({
   const { main, sub, isFull = true } = footerOptions || {};
   const { text = "확인", func = onClose } = main || {};
   const { text: subText = "닫기", func: subFunc = onClose } = sub || {};
+  const [modalTop, setModalTop] = useState("0%");
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerHeight < 500) {
+        // 모바일 키보드가 올라왔을 때의 높이 기준 조정
+        setModalTop("-10%"); // 모달을 조금 더 위로 이동
+      } else {
+        setModalTop("0%"); // 기본 위치
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <Modal isOpen={true} onClose={onClose} initialFocusRef={initialRef}>
       <ModalOverlay />
       <ModalContent
+        top={modalTop}
         mx="var(--gap-4)"
         // h={height || SIZE_HEIGHT_MAP[size]}
         maxWidth="358px"
