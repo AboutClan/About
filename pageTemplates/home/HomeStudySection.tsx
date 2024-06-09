@@ -1,8 +1,8 @@
 import { ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -15,7 +15,10 @@ import {
   CardColumnLayoutSkeleton,
 } from "../../components/organisms/CardColumnLayout";
 import { STUDY_CHECK_POP_UP, STUDY_VOTING_TABLE } from "../../constants/keys/localStorage";
-import { STUDY_DATE_START_HOUR } from "../../constants/serviceConstants/studyConstants/studyTimeConstant";
+import {
+  STUDY_DATE_START_HOUR,
+  STUDY_RESULT_HOUR,
+} from "../../constants/serviceConstants/studyConstants/studyTimeConstant";
 import { useStudyResultDecideMutation } from "../../hooks/study/mutations";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { getStudyConfimCondition } from "../../libs/study/getStudyConfimCondition";
@@ -78,7 +81,10 @@ export default function HomeStudySection() {
 
     if (myStudy?.status !== "dismissed") setMyStudy(myStudy);
     else {
-      if (studyOpenCheck !== dayjsToStr(dayjs()) && dayjs().hour() <= STUDY_DATE_START_HOUR) {
+      if (
+        (studyOpenCheck !== dayjsToStr(dayjs()) && dayjs().hour() <= STUDY_DATE_START_HOUR) ||
+        dayjs().hour() >= STUDY_RESULT_HOUR
+      ) {
         setDismissedStudy(myStudy);
         localStorage.setItem(STUDY_CHECK_POP_UP, dayjsToStr(dayjs()));
       }
