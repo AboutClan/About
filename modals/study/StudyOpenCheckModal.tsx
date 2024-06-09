@@ -29,9 +29,7 @@ function StudyOpenCheckModal({ setIsModal, par }: StudyOpenCheckModalProps) {
     sub: {
       text: isFirstPage ? "닫기" : "자유 오픈",
       func: () =>
-        !isFirstPage
-          ? router.push(`/study/${par.place._id}/${date}?isFree=on`)
-          : () => setIsModal(false),
+        !isFirstPage ? router.push(`/study/${par.place._id}/${date}?isFree=on`) : setIsModal(false),
     },
   };
 
