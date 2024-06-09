@@ -43,6 +43,7 @@ interface IModalLayout extends IModal {
   initialRef?: any;
   headerOptions?: IHeaderOptions;
   paddingOptions?: IPaddingOptions;
+  isInputFocus?: boolean;
 }
 
 export interface IPaddingOptions {
@@ -62,6 +63,7 @@ export function ModalLayout({
   initialRef,
   children,
   paddingOptions,
+  isInputFocus,
 }: IModalLayout) {
   const onClose = () => setIsModal(false);
 
@@ -72,7 +74,10 @@ export function ModalLayout({
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerHeight < 500) {
+      const viewportHeight = window.visualViewport
+        ? window.visualViewport.height
+        : window.innerHeight;
+      if (viewportHeight < 500) {
         // 모바일 키보드가 올라왔을 때의 높이 기준 조정
         setModalTop("-10%"); // 모달을 조금 더 위로 이동
       } else {
@@ -82,7 +87,7 @@ export function ModalLayout({
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []);
+  }, [isInputFocus]);
 
   return (
     <Modal isOpen={true} onClose={onClose} initialFocusRef={initialRef}>

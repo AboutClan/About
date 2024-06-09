@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import { Box, Textarea } from "@chakra-ui/react";
+import { Textarea } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useParams, useSearchParams } from "next/navigation";
@@ -156,6 +156,8 @@ function StudyAttendCheckModal({ setIsModal }: IStudyAttendCheckModal) {
     isFull: true,
   };
 
+  
+  
   return (
     <>
       <ModalLayout
@@ -168,10 +170,6 @@ function StudyAttendCheckModal({ setIsModal }: IStudyAttendCheckModal) {
           도착하셨나요? <br />
           자리나 인상착의를 간단하게 적어주세요!
           <br />
-          <Box as="span" fontSize="12px" color="var(--gray-600)">
-            {isPrivate &&
-              "+ 현재 아이폰에서 가끔 출석 인증 오류가 나는 경우가 있습니다. 만약 그런 경우 마이페이지 건의하기에서 -> 출석오류라고 하나만 보내주시면 바꿔드릴게요!"}
-          </Box>
         </ModalSubtitle>
         {!isPrivate ? (
           <Textarea
