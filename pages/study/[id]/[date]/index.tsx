@@ -26,14 +26,14 @@ export default function Page() {
 
   const setMyStudy = useSetRecoilState(myStudyState);
 
-  const location = PLACE_TO_LOCATION[id];
+  const location = PLACE_TO_LOCATION[id] || data?.user.location;
 
   const isPrivateStudy = id === ALL_스터디인증;
 
-  const { data: studyAll } = useStudyVoteQuery(date, location, {
+  const { data: studyAll, isLoading } = useStudyVoteQuery(date, location, {
     enabled: (!!location || isPrivateStudy) && !!date,
   });
-
+  console.log(isLoading, date, location);
   const [studyDateStatus, setStudyDateStatus] = useRecoilState(studyDateStatusState);
 
   useEffect(() => {

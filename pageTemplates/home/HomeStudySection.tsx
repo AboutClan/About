@@ -40,7 +40,6 @@ export default function HomeStudySection() {
   const date = searchParams.get("date");
   const locationEn = searchParams.get("location") as LocationEn;
   const location = convertLocationLangTo(locationEn, "kr");
-
   const myUid = session?.user.uid;
 
   const setSortedStudyCardList = useSetRecoilState(sortedStudyCardListState);
