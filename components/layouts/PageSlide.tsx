@@ -36,7 +36,7 @@ function Slide({ children, isFixed, posZero }: IPageLayout) {
         transition: { duration: 0.5 },
       }
     : {};
- 
+
   return (
     <>
       <motion.div
@@ -45,8 +45,7 @@ function Slide({ children, isFixed, posZero }: IPageLayout) {
           position: isFixed ? "fixed" : "static",
           zIndex: isFixed ? 100 : 0,
           width: "100%",
-          maxWidth: "390px",
-
+          maxWidth: "var(--max-width)",
           height: isFixed ? "min-content" : "max-content",
           top: posZero !== "top" ? 0 : "auto",
 
