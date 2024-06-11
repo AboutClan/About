@@ -99,6 +99,7 @@ function SocialButton({ title, subTitle, icon, color, url }: ISocialButton) {
       <Button
         bgColor="white"
         w="90vw"
+        maxW="var(--view-max-width)"
         border="2px solid var(--gray-600)"
         p="16px"
         h="min-content"

@@ -17,6 +17,7 @@ interface IPopoverIcon {
 }
 
 export function PopOverIcon({ title, text, size = "md", marginDir = "left" }: IPopoverIcon) {
+  console.log(size);
   return (
     <Popover>
       <PopoverTrigger>
@@ -32,7 +33,7 @@ export function PopOverIcon({ title, text, size = "md", marginDir = "left" }: IP
         mr={marginDir === "right" && "var(--gap-2)"}
         fontSize="12px"
         _focus={{ outline: "none", boxShadow: "none" }}
-        width={size === "xs" && "120px"}
+        width={size === "xs" ? "120px" : undefined}
       >
         <PopoverArrow />
         <PopoverCloseButton />
