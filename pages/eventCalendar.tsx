@@ -1,15 +1,18 @@
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { Fragment, useState } from "react";
 import styled from "styled-components";
 
 import MonthNav from "../components/atoms/MonthNav";
+import { PointCircleTextProps } from "../components/atoms/PointCircleText";
 import Header from "../components/layouts/Header";
 import Slide from "../components/layouts/PageSlide";
 import Accordion from "../components/molecules/Accordion";
+import PointCircleTextRow from "../components/molecules/PointCircleTextRow";
 import { ACCORDION_CONTENT_EVENT } from "../constants/contentsText/accordionContents";
-import { EVENT_CONTENT_2023 } from "../constants/settingValue/eventContents";
+import { EVENT_CONTENT_2024 } from "../constants/settingValue/eventContents";
 import { DAYS_OF_WEEK } from "../constants/util/util";
-const DAYS_TITLE = ["포인트 X 2", null, null, null, "출석 X 2", null, "점수 X 2"];
+const DAYS_TITLE = ["포인트 2배", null, null, null, null, null, "점수 2배"];
 
 interface IEventContent {
   content: string;
@@ -43,7 +46,8 @@ function EventCalendar() {
   let endBlocks = [];
 
   const filledContents = (date: number) => {
-    const eventArr = navMonth.year() === 2023 ? EVENT_CONTENT_2023[navMonth.month() + 1] : null;
+    const eventArr = navMonth.year() === 2024 ? EVENT_CONTENT_2024[navMonth.month() + 1] : null;
+
     if (!eventArr) return;
     return eventArr.reduce((acc: IEventContent[], event) => {
       const isFirstDay = date === event.start;
@@ -74,13 +78,29 @@ function EventCalendar() {
     }
   };
 
+  const textRowObj: PointCircleTextProps[] = [
+    {
+      text: "공식 행사",
+      color: "mint",
+    },
+    {
+      text: "이벤트",
+      color: "blue",
+    },
+    {
+      text: "일정",
+      color: "orange",
+    },
+  ];
+
   return (
     <>
       <Header title="이벤트 캘린더" url="/home" />
       <Slide>
-        <Title>
+        <Flex align="center" justify="space-between" m="16px 16px">
           <MonthNav month={navMonth.month()} setNavMonth={setNavMonth} />
-        </Title>
+          <PointCircleTextRow props={textRowObj} />
+        </Flex>
         <Calendar>
           <WeekTitleHeader>
             {DAYS_TITLE.map((day, idx) => (
@@ -135,8 +155,9 @@ function EventCalendar() {
             })}
           </CalendarDates>
         </Calendar>
-        <DetailTitle>이벤트 상세정보</DetailTitle>
-
+        <Box p="16px" mt="8px" fontSize="18px" fontWeight={800}>
+          이벤트 상세정보
+        </Box>
         <Accordion
           contentArr={ACCORDION_CONTENT_EVENT(navMonth.month() + 1)}
           isQ={false}
@@ -146,10 +167,6 @@ function EventCalendar() {
     </>
   );
 }
-
-const Title = styled.div`
-  margin: var(--gap-5) 0;
-`;
 
 const Calendar = styled.div`
   width: 364px;
@@ -192,7 +209,10 @@ const DayOfWeek = styled.div`
 
 const CalendarDates = styled.div`
   display: grid;
+  background-color: white;
   grid-template-columns: repeat(7, 1fr);
+  border: var(--border);
+  border-radius: var(--rounded);
   > div:first-child {
     color: var(--color-red);
   }
@@ -253,12 +273,6 @@ const TodayCircle = styled.div`
   transform: translate(-50%, -50%);
   background-color: var(--gray-800);
   color: white;
-`;
-
-const DetailTitle = styled.div`
-  font-weight: 600;
-  margin-top: var(--gap-3);
-  margin-left: var(--gap-4);
 `;
 
 export default EventCalendar;

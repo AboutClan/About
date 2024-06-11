@@ -1,17 +1,21 @@
 import "swiper/css/scrollbar";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { ImageContainer } from "../ImageSlider";
-
-interface IImageSliderEventBanner {
-  imageContainer: ImageContainer;
+export interface ImageBannerProp {
+  url: string;
+  imageUrl: string;
 }
 
-function ImageSliderEventBanner({ imageContainer }: IImageSliderEventBanner) {
+interface IImageSliderEventBanner {
+  imageArr: ImageBannerProp[];
+}
+
+function ImageSliderBanner({ imageArr }: IImageSliderEventBanner) {
   const [pageNum, setPageNum] = useState(0);
 
   const handleSliderChange = (swiper) => {
@@ -30,13 +34,15 @@ function ImageSliderEventBanner({ imageContainer }: IImageSliderEventBanner) {
       slidesPerView={1}
       onSlideChange={handleSliderChange}
     >
-      {(imageContainer as string[]).map((item, index) => (
+      {imageArr.map((item, index) => (
         <SwiperSlide key={index}>
-          <Container>
-            <AvatarColorItem>
-              <Image src={item} fill={true} sizes="400px" alt="eventImg" />
-            </AvatarColorItem>
-          </Container>
+          <Link href={item.url}>
+            <Container>
+              <AvatarColorItem>
+                <Image src={item.imageUrl} fill={true} sizes="400px" alt="eventImg" />
+              </AvatarColorItem>
+            </Container>
+          </Link>
         </SwiperSlide>
       ))}
       <PageView>
@@ -73,4 +79,4 @@ const PageView = styled.div`
   }
 `;
 
-export default ImageSliderEventBanner;
+export default ImageSliderBanner;

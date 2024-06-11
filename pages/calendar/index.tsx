@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
 
@@ -46,8 +47,9 @@ function Record() {
           setArrivedCalendar={setArrivedCalendar}
           setIsRecordLoading={setIsLoading}
         />
-
-        <RecordMonthNav month={navMonth.month()} setNavMonth={setNavMonth} />
+        <Box mx="16px" mt="12px">
+          <RecordMonthNav month={navMonth.month()} setNavMonth={setNavMonth} />
+        </Box>
         {!isLoading ? (
           <>
             <RecordOverview arrivedCalendar={arrivedCalendar} />

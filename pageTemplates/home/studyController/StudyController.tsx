@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import PointCircleText from "../../../components/atoms/PointCircleText";
 import Slide from "../../../components/layouts/PageSlide";
+import PointCircleTextRow from "../../../components/molecules/PointCircleTextRow";
 import WeekSlideCalendar from "../../../components/molecules/WeekSlideCalendar";
 import { useStudyDailyVoteCntQuery, useStudyVoteQuery } from "../../../hooks/study/queries";
 import { getStudyVoteCnt } from "../../../libs/study/getStudyVoteCnt";
@@ -79,11 +79,13 @@ function StudyController() {
             <Box fontSize="16px" fontWeight={600}>
               날짜 선택
             </Box>
-            <Flex>
-              <PointCircleText text="오픈 확정" color="mint" />
-              <Box w="12px" />
-              <PointCircleText text="오픈 예정" color="gray" />
-            </Flex>
+
+            <PointCircleTextRow
+              props={[
+                { text: "오픈 확정", color: "mint" },
+                { text: "오픈 예정", color: "gray" },
+              ]}
+            />
           </Flex>
           <Box minH="138px">
             {selectedDate && (

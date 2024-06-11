@@ -188,7 +188,7 @@ function WritingCondition() {
               <Item>
                 <Name>
                   <div>
-                    <i className="fa- fa-userpolice" />
+                    <i className="fa-solid fa-user-police" />
                   </div>
                   <span>운영진 참여</span>
                   <PopOverIcon

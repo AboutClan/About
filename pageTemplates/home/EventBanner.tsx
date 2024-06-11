@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import {
@@ -6,21 +5,23 @@ import {
   EVENT_BANNER_PASSION,
   EVENT_BANNER_PROMOTION,
 } from "../../assets/images/imageUrl";
-import ImageSlider from "../../components/organisms/imageSlider/ImageSlider";
+import ImageSliderBanner, {
+  ImageBannerProp,
+} from "../../components/organisms/imageSlider/imageSliderType/ImageSliderBanner";
 
 function EventBanner() {
-  const router = useRouter();
-
-  const imageArr = [EVENT_BANNER_CALENDAR, EVENT_BANNER_PASSION, EVENT_BANNER_PROMOTION];
+  const imageArr: ImageBannerProp[] = [
+    { url: "/eventCalendar", imageUrl: EVENT_BANNER_CALENDAR },
+    { url: "/statistics", imageUrl: EVENT_BANNER_PASSION },
+    { url: "/promotion", imageUrl: EVENT_BANNER_PROMOTION },
+  ];
 
   return (
-    <Layout onClick={() => router.push(`/eventCalendar`)}>
-      <ImageSlider type="eventBanner" imageContainer={imageArr} />
+    <Layout>
+      <ImageSliderBanner imageArr={imageArr} />
     </Layout>
   );
 }
-
-// 16 더블
 
 const Layout = styled.div`
   width: 100%;
