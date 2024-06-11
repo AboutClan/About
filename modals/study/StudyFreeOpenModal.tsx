@@ -43,12 +43,16 @@ function StudyFreeOpenModal({ setIsModal }: IStudyFreeOpenModal) {
     },
     onError: errorToast,
   });
-  const { mutate: patchAttend } = useStudyParticipationMutation(dayjs(date), "post", {
-    onSuccess: () => {
-      queryClient.invalidateQueries([STUDY_VOTE, date, location]);
+  const { mutate: patchAttend, isLoading: isLoading2 } = useStudyParticipationMutation(
+    dayjs(date),
+    "post",
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([STUDY_VOTE, date, location]);
+      },
+      onError: errorToast,
     },
-    onError: errorToast,
-  });
+  );
 
   const onSubmit = async () => {
     const start = dayjs(date).hour(time.start.hours).minute(time.start.minutes);
@@ -73,7 +77,7 @@ function StudyFreeOpenModal({ setIsModal }: IStudyFreeOpenModal) {
     main: {
       text: "오픈",
       func: onSubmit,
-      isLoading,
+      isLoading: isLoading || isLoading2,
     },
   };
 
