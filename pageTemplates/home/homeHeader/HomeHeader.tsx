@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -14,6 +14,7 @@ import {
   NOTICE_ACTIVE_CNT,
   NOTICE_ALERT,
 } from "../../../constants/keys/localStorage";
+import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import { useNoticeActiveLogQuery } from "../../../hooks/user/sub/interaction/queries";
 import DailyCheckModal from "../../../modals/aboutHeader/dailyCheckModal/DailyCheckModal";
 import PointSystemsModal from "../../../modals/aboutHeader/pointSystemsModal/PointSystemsModal";
@@ -30,6 +31,7 @@ function HomeHeader() {
   const searchParams = useSearchParams();
   const newSearchparams = new URLSearchParams(searchParams);
   const router = useRouter();
+  const typeToast = useTypeToast();
   const { data: session } = useSession();
   const isGuest = session?.user.name === "guest";
   const [modalType, setModalType] = useState<HomeHeaderModalType>(null);
@@ -52,11 +54,12 @@ function HomeHeader() {
       setIsNoticeAlert(true);
     }
   }, [data]);
+
   const generateIconBtnArr = () => {
     const arr = [
       {
         icon: <i className="fa-light fa-calendar-star" />,
-        func: () => setModalType("pointGuide"),
+        func: isGuest ? () => typeToast("guest") : () => setModalType("pointGuide"),
       },
       {
         icon: <i className="fa-light fa-circle-book-open" />,
@@ -95,7 +98,7 @@ function HomeHeader() {
 
   useEffect(() => {
     setIconBtnArr(generateIconBtnArr());
-  }, [showDailyCheck, isNoticeAlert]);
+  }, [showDailyCheck, isGuest, isNoticeAlert]);
 
   return (
     <>

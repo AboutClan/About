@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
 import { useSetRecoilState } from "recoil";
@@ -113,7 +113,7 @@ function HomeInitialSetting() {
 
   return (
     <>
-      {userInfo && <UserSettingPopUp cnt={isGuide ? 1 : 0} />}
+      {userInfo && !isGuest && <UserSettingPopUp cnt={isGuide ? 1 : 0} />}
       {isGuestModal && <FAQPopUp setIsModal={setIsGuestModal} />}
       <GlobalStyle />
       {false && <PCBottomNav />}
