@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
@@ -18,6 +19,7 @@ import { IFooterOptions, ModalLayout } from "../Modals";
 interface IStudyFreeOpenModal extends IModal {}
 
 function StudyFreeOpenModal({ setIsModal }: IStudyFreeOpenModal) {
+  const { data: session } = useSession();
   const { id, date } = useParams<{ id: string; date: string }>() || {};
 
   const completeToast = useCompleteToast();
@@ -28,7 +30,7 @@ function StudyFreeOpenModal({ setIsModal }: IStudyFreeOpenModal) {
 
   const placeId = id;
 
-  const location = PLACE_TO_LOCATION[id];
+  const location = PLACE_TO_LOCATION[id] || session?.user.location;
 
   const [time, setTime] = useState<ITimeStartToEnd>({
     start: { hours: 14, minutes: 0 },
