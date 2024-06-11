@@ -9,9 +9,9 @@ import {
   Flex,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
@@ -106,7 +106,7 @@ function SocialButton({ title, subTitle, icon, color, url }: ISocialButton) {
       >
         <Flex w="full" align="center" lineHeight={1.5}>
           <Box mr="16px">
-            <Circle bg={color} p="6px" aspectRatio={1}>
+            <Circle minW="28px" minH="28px" bg={color} p="6px" aspectRatio={1}>
               {icon}
             </Circle>
           </Box>
