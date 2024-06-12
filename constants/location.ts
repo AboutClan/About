@@ -44,7 +44,7 @@ export const LOCATION_MEMBER_CNT: {
   동대문: { member: 56, new: 2 },
   마포: { member: 38, new: 2 },
   인천: { member: 45, new: 3 },
-  성남: { member: 3, new: 3 },
+  성남: { member: 9, new: 3 },
 };
 
 export const LOCATION_TABLE_COLOR = {
