@@ -102,7 +102,7 @@ export function ModalLayout({
       >
         {!headerOptions ? (
           <>
-            <ChakraModalHeader p="var(--gap-4) 20px" fontSize="20px" borderBottom="var(--border)">
+            <ChakraModalHeader p="16px 20px" fontSize="20px" borderBottom="var(--border)">
               {title}
             </ChakraModalHeader>
             <ModalCloseButton size="lg" />
@@ -112,8 +112,10 @@ export function ModalLayout({
         ) : (
           <>
             <ChakraModalHeader
-              pt="var(--gap-5)"
-              pb="var(--gap-2)"
+              pt={
+                paddingOptions?.header !== undefined ? `${paddingOptions.header}px` : "var(--gap-5)"
+              }
+              pb={paddingOptions?.header !== undefined ? `${paddingOptions.header}px` : "8px"}
               fontSize="20px"
               textAlign="center"
             >
