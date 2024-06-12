@@ -61,7 +61,7 @@ export interface IGatherParticipants {
 export interface IGatherComment extends ITimeStamps {
   user: IUserSummary;
   comment: string;
-  _id: string;
+  _id?: string;
 }
 
 // export interface IGatherHeader {

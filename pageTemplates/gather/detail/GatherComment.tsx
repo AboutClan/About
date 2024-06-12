@@ -11,7 +11,8 @@ import { useGatherCommentMutation } from "../../../hooks/gather/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import GatherCommentEditModal from "../../../modals/gather/GatherCommentEditModal";
 import { IGatherComment } from "../../../types/models/gatherTypes/gatherTypes";
-import { getDateDiff } from "../../../utils/dateTimeUtils";
+import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import { dayjsToStr, getDateDiff } from "../../../utils/dateTimeUtils";
 export interface IGatherCommentUnit {
   gatherId: number;
   comment: string;
@@ -31,6 +32,12 @@ function GatherComments({ comment }: IGatherComments) {
 
   const [isEditModal, setIsEditModal] = useState(false);
 
+  const [commentArr, setCommentArr] = useState<IGatherComment[]>(comment);
+
+  useEffect(() => {
+    setCommentArr(comment);
+  }, [comment]);
+
   const [commentText, setCommentText] = useState("");
   const [commentId, setCommentId] = useState("");
 
@@ -46,12 +53,22 @@ function GatherComments({ comment }: IGatherComments) {
 
   const { mutate: writeComment } = useGatherCommentMutation("post", gatherId, {
     onSuccess() {
+      setCommentArr((old) => [...old, addNewComment(userInfo, value)]);
+      setValue("");
       resetQueryData([GATHER_CONTENT]);
     },
   });
+
+  const addNewComment = (user: IUserSummary, comment: string): IGatherComment => {
+    return {
+      user,
+      comment,
+      createdAt: dayjsToStr(dayjs()),
+    };
+  };
+
   const onSubmit = () => {
     writeComment({ comment: value });
-    setValue("");
   };
 
   const onClickEdit = (commentId, text) => {
@@ -86,7 +103,7 @@ function GatherComments({ comment }: IGatherComments) {
           )}
 
           <section>
-            {comment?.map((item, idx) => (
+            {commentArr?.map((item, idx) => (
               <CommentBlock key={idx}>
                 <div>
                   <Avatar
@@ -122,6 +139,7 @@ function GatherComments({ comment }: IGatherComments) {
           commentText={commentText}
           commentId={commentId}
           setIsModal={setIsEditModal}
+          setCommentArr={setCommentArr}
         />
       )}
     </>

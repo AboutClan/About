@@ -13,14 +13,7 @@ interface IInput {
   type?: HTMLInputTypeAttribute | undefined;
   size?: "sm" | "md";
 }
-export function Input({
-  size = "md",
-  value,
-  inputRef,
-  onChange,
-  placeholder,
-  disabled,
-}: IInput) {
+export function Input({ size = "md", value, inputRef, onChange, placeholder, disabled }: IInput) {
   return (
     <ChakraInput
       value={value}
@@ -36,8 +29,8 @@ export function Input({
       borderBottom={size === "sm" && "var(--border-main)"}
       borderRadius={size === "sm" && "none"}
       _focus={{
-        outline: size === "sm" && "none",
-        boxShadow: "none",
+        outline: size === "sm" ? "none" : undefined,
+        boxShadow: size === "sm" ? "none" : undefined,
       }}
     />
   );
