@@ -1,4 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
@@ -7,11 +8,12 @@ import { SingleLineText } from "../../../styles/layout/components";
 import { IImageProps } from "../../../types/components/assetTypes";
 import { ITextAndColorSchemes } from "../../../types/components/propTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 import OutlineBadge from "../../atoms/badges/OutlineBadge";
 import Skeleton from "../../atoms/skeleton/Skeleton";
 import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
 export interface IPostThumbnailCard {
-  participants: IUserSummary[];
+  participants?: IUserSummary[];
   title: string;
   subtitle: string;
   image: IImageProps;
@@ -21,6 +23,8 @@ export interface IPostThumbnailCard {
   statusText?: string;
   maxCnt?: number;
   func?: () => void;
+
+  registerDate?: string;
 }
 
 interface IPostThumbnailCardObj {
@@ -38,10 +42,11 @@ export function PostThumbnailCard({
     maxCnt = undefined,
     func = undefined,
     type,
+    registerDate,
   },
 }: IPostThumbnailCardObj) {
   const userAvatarArr = participants
-    .filter((par) => par)
+    ?.filter((par) => par)
     .map((par) => ({
       image: par.profileImage,
       ...(par.avatar?.type !== null ? { avatar: par.avatar } : {}),
@@ -80,51 +85,60 @@ export function PostThumbnailCard({
             <Title>{title}</Title>
           </Flex>
           <Subtitle>{subtitle}</Subtitle>
-          <StatusContainer>
-            <AvatarGroupsOverwrap userAvatarArr={userAvatarArr} size="sm" />
-            <div className="statusText">
-              <Box color="var(--color-mint)" fontWeight={600} mr="8px" mt="4px">
-                {statusText}
-              </Box>
-            </div>
-          </StatusContainer>
+          {participants ? (
+            <StatusContainer>
+              <AvatarGroupsOverwrap userAvatarArr={userAvatarArr} size="sm" />
+              <div className="statusText">
+                <Box color="var(--color-mint)" fontWeight={600} mr="8px" mt="4px">
+                  {statusText}
+                </Box>
+              </div>
+            </StatusContainer>
+          ) : (
+            <Flex mt="auto" color="var(--gray-500)">
+              <Box>등록일: </Box>
+              <Box>{dayjsToFormat(dayjs(registerDate), "YYYY년 M월 D일")}</Box>
+            </Flex>
+          )}
         </Flex>
       </Flex>
       <Flex direction="column" justifyContent="space-between" align="flex-end">
         <Box>
           {badge && <OutlineBadge size="sm" text={badge.text} colorScheme={badge.colorScheme} />}
         </Box>
-        <Flex
-          mb="-2px"
-          className="userIconContainer"
-          fontSize="15px"
-          align="center"
-          color="var(--gray-500)"
-        >
-          <Box>
-            <i className="fa-regular fa-user fa-xs" />
-          </Box>
-          <Flex ml="8px" align="center" fontWeight={500}>
-            <Box
-              as="span"
-              color={
-                CLOSED_TEXT_ARR.includes(badge?.text)
-                  ? "inherit"
-                  : maxCnt && participants.length >= maxCnt
-                    ? "var(--color-red)"
-                    : "var(--gray-800)"
-              }
-            >
-              {participants.length}
-            </Box>
+        {participants && (
+          <Flex
+            mb="-2px"
+            className="userIconContainer"
+            fontSize="15px"
+            align="center"
+            color="var(--gray-500)"
+          >
             <Box>
-              <Box as="span" mr="2px" ml="4px">
-                /
-              </Box>
-              {maxCnt || <i className="fa-regular fa-infinity" />}
+              <i className="fa-regular fa-user fa-xs" />
             </Box>
+            <Flex ml="8px" align="center" fontWeight={500}>
+              <Box
+                as="span"
+                color={
+                  CLOSED_TEXT_ARR.includes(badge?.text)
+                    ? "inherit"
+                    : maxCnt && participants.length >= maxCnt
+                      ? "var(--color-red)"
+                      : "var(--gray-800)"
+                }
+              >
+                {participants.length}
+              </Box>
+              <Box>
+                <Box as="span" mr="2px" ml="4px">
+                  /
+                </Box>
+                {maxCnt || <i className="fa-regular fa-infinity" />}
+              </Box>
+            </Flex>
           </Flex>
-        </Flex>
+        )}
       </Flex>
     </CardLink>
   );

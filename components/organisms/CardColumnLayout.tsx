@@ -21,7 +21,7 @@ export function CardColumnLayout({ cardDataArr, url, func }: ICardColumnLayout) 
           <PostThumbnailCard postThumbnailCardProps={cardData} />
         </Item>
       ))}
-      <ShadowBlockButton text="더보기" url={url} func={func} />
+      {cardDataArr?.length >= 3 && <ShadowBlockButton text="더보기" url={url} func={func} />}
     </Layout>
   );
 }

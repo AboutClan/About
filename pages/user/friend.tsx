@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -32,19 +33,21 @@ function ProfileFriend() {
   return (
     <>
       <Header title="내 친구 목록" url="/user" />
-      {friends ? (
-        <Slide>
-          {friends?.map((who) => {
-            return (
-              <Item key={who.uid} onClick={() => onClickUser(who)}>
-                <ProfileCommentCard user={who} comment={who.comment} />
-              </Item>
-            );
-          })}
-        </Slide>
-      ) : (
-        <MainLoading />
-      )}
+      <Slide>
+        <Box minH="100dvh">
+          {friends ? (
+            friends?.map((who) => {
+              return (
+                <Item key={who.uid} onClick={() => onClickUser(who)}>
+                  <ProfileCommentCard user={who} comment={who.comment} />
+                </Item>
+              );
+            })
+          ) : (
+            <MainLoading />
+          )}
+        </Box>
+      </Slide>
     </>
   );
 }

@@ -75,7 +75,6 @@ function UserOverviewComment() {
         type="text"
         onBlur={handleSubmit}
         onChange={onWrite}
-        border="var(--border)"
         focusBorderColor="#00c2b3"
       />
       <InputRightElement>

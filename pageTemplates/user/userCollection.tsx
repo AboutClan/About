@@ -1,3 +1,4 @@
+import { Flex } from "@chakra-ui/react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
@@ -20,20 +21,20 @@ export default function UserCollection() {
   const alphabetArr = alphabets?.collects;
 
   return (
-    <>
+    <Flex direction="column">
       <Link href="/user/alphabet">
         <BlockItem>
           <span>알파벳 컬렉션</span>
           <i className="fa-solid fa-chevron-right" />
         </BlockItem>
+        <AlphabetContainer>
+          <AlphabetIcon alphabet="A" isDuotone={!alphabetArr?.includes("A")} />
+          <AlphabetIcon alphabet="B" isDuotone={!alphabetArr?.includes("B")} />
+          <AlphabetIcon alphabet="O" isDuotone={!alphabetArr?.includes("O")} />
+          <AlphabetIcon alphabet="U" isDuotone={!alphabetArr?.includes("U")} />
+          <AlphabetIcon alphabet="T" isDuotone={!alphabetArr?.includes("T")} />
+        </AlphabetContainer>
       </Link>
-      <AlphabetContainer>
-        <AlphabetIcon alphabet="A" isDuotone={!alphabetArr?.includes("A")} />
-        <AlphabetIcon alphabet="B" isDuotone={!alphabetArr?.includes("B")} />
-        <AlphabetIcon alphabet="O" isDuotone={!alphabetArr?.includes("O")} />
-        <AlphabetIcon alphabet="U" isDuotone={!alphabetArr?.includes("U")} />
-        <AlphabetIcon alphabet="T" isDuotone={!alphabetArr?.includes("T")} />
-      </AlphabetContainer>
       <AlphabetQNABtn onClick={() => setIsAlphabetModal(true)}>
         <IconWrapper>
           <i className="fa-duotone fa-stars fa-2x" style={{ color: "var(--color-mint)" }} />
@@ -44,7 +45,7 @@ export default function UserCollection() {
         </AlphabetQNABtnContents>
       </AlphabetQNABtn>
       {isAlphabetModal && <UserCollectionAlphabetModal setIsModal={setIsAlphabetModal} />}
-    </>
+    </Flex>
   );
 }
 
@@ -77,7 +78,7 @@ const AlphabetContainer = styled.div`
 
 const AlphabetQNABtn = styled.button`
   margin: 0 16px;
-
+  width: inherit;
   display: flex;
   align-items: center;
   background-color: var(--gray-200);

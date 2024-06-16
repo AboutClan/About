@@ -1,7 +1,8 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import styled from "styled-components";
 
+import DiffTwoBlockCol from "../../components/atoms/blocks/DiffTwoBlockCol";
 import { MainLoading } from "../../components/atoms/loaders/MainLoading";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
@@ -24,56 +25,34 @@ function PointLog() {
   return (
     <>
       <Header title="포인트 기록" />
-      {point ? (
-        <Slide>
-          <Layout>
-            <MyPoint>
-              <span>내 포인트</span>
-              <i className="fa-solid fa-arrow-right" />
-              <span>{point} 점</span>
-            </MyPoint>
-            <Box border="var(--border)" rounded="md" minHeight="calc(100vh - 176px)">
-              {pointLog && (
+      <Slide>
+        <Layout>
+          {point && pointLog ? (
+            <>
+              <Flex justify="space-between" mb="16px">
+                <DiffTwoBlockCol subText="내 포인트" text={`${point} POINT`} />
+                <Button colorScheme="mintTheme">스토어로 이동</Button>
+              </Flex>
+              <Box border="var(--border)" rounded="md" minHeight="calc(100vh - 176px)">
                 <SummaryTable headerInfos={headerInfos} tableInfosArr={tableInfosArr} size="lg" />
-              )}
-            </Box>
-          </Layout>
-        </Slide>
-      ) : (
-        <MainLoading />
-      )}
+              </Box>
+            </>
+          ) : (
+            <MainLoading />
+          )}
+        </Layout>
+      </Slide>
     </>
   );
 }
 
 const Layout = styled.div`
+  display: flex;
+  flex-direction: column;
   margin: 0 var(--gap-4);
   margin-top: var(--gap-5);
   font-weight: 600;
-`;
-
-const MyPoint = styled.div`
-  padding: 0 var(--gap-2);
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  width: 160px;
-  height: 40px;
-  border-radius: var(--rounded-lg);
-  border: var(--border-mint);
-  color: var(--gray-700);
-  font-size: 14px;
-  margin-bottom: 20px;
-  > span:first-child {
-    flex: 1;
-  }
-  > span:last-child {
-    flex: 1;
-    text-align: end;
-    font-size: 15px;
-    color: var(--gray-800);
-    font-weight: 700;
-  }
+  min-height: 100dvh;
 `;
 
 export default PointLog;

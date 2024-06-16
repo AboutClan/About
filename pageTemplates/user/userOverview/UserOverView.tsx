@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -23,7 +23,14 @@ export default function UserOverview() {
 
   return (
     <>
-      <Layout>
+      <Box
+        m="16px"
+        bgColor="white"
+        p="16px"
+        pt="12px"
+        rounded="var(--rounded-lg)"
+        border="var(--border-main)"
+      >
         <UserInfoContainer>
           <UserInfo>
             <UserProfile>
@@ -54,19 +61,14 @@ export default function UserOverview() {
             프로필 수정
           </Button>
         </Link>
-      </Layout>
+      </Box>
       {isProfileModal && <RequestChangeProfileImageModal setIsModal={setIsProfileModal} />}
     </>
   );
 }
 
-const Layout = styled.div`
-  padding: 0 var(--gap-5);
-  padding-bottom: var(--gap-5);
-`;
-
 const UserInfoContainer = styled.div`
-  margin: var(--gap-4) 0;
+  margin-bottom: var(--gap-4);
 
   display: flex;
   align-items: center;

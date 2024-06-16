@@ -1,15 +1,14 @@
+import Slide from "../../components/layouts/PageSlide";
+import HomeGatherCol from "./HomeGatherCol";
+import HomeReviewSection from "./HomeReviewSection";
 
-interface HomeGatherSectionProps{
-    
-}
-
-function HomeGatherSection({}:HomeGatherSectionProps){
-
-  return(
-    <>
-
-    </>
+function HomeGatherSection() {
+  return (
+    <Slide>
+      <HomeGatherCol />
+      <HomeReviewSection />
+    </Slide>
   );
 }
 
-export default HomeGatherSection
+export default HomeGatherSection;

@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-import { EVENT_BANNER_CALENDAR } from "../../../assets/images/imageUrl";
+import {
+  EVENT_BANNER_CALENDAR,
+  EVENT_BANNER_PASSION,
+  EVENT_BANNER_PROMOTION,
+} from "../../../assets/images/imageUrl";
 import ImageSliderBanner, {
   ImageBannerProp,
 } from "../../../components/organisms/imageSlider/imageSliderType/ImageSliderBanner";
@@ -8,8 +12,8 @@ import ImageSliderBanner, {
 function EventBanner() {
   const imageArr: ImageBannerProp[] = [
     { url: "/eventCalendar", imageUrl: EVENT_BANNER_CALENDAR },
-    // { url: "/statistics", imageUrl: EVENT_BANNER_PASSION },
-    // { url: "/promotion", imageUrl: EVENT_BANNER_PROMOTION },
+    { url: "/statistics", imageUrl: EVENT_BANNER_PASSION },
+    { url: "/promotion", imageUrl: EVENT_BANNER_PROMOTION },
   ];
 
   return (

@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import styled from "styled-components";
 
@@ -12,39 +13,41 @@ function Like() {
   return (
     <>
       <Header title="좋아요 기록" />
-      {activeLogs ? (
-        <Slide>
-          <Container>
-            {activeLogs
-              ?.slice()
-              ?.reverse()
-              ?.map((item, idx) => {
-                const type = item.type;
-                const [name, message] = item.message.split("님");
+      <Slide>
+        <Box minH="100dvh">
+          {activeLogs ? (
+            <Container>
+              {activeLogs
+                ?.slice()
+                ?.reverse()
+                ?.map((item, idx) => {
+                  const type = item.type;
+                  const [name, message] = item.message.split("님");
 
-                return (
-                  <ItemContainer key={idx}>
-                    <span>{dayjsToFormat(dayjs(item.createdAt), "YYYY년 M월 D일")}</span>
-                    <Item>
-                      <IconWrapper>
-                        <i
-                          className="fa-regular fa-circle-heart fa-xl"
-                          style={{ color: "var(--color-red)" }}
-                        />
-                      </IconWrapper>
-                      <Name>{name}</Name>
-                      <Content>
-                        님{message} {type === "like" && <Point>+2 point</Point>}
-                      </Content>
-                    </Item>
-                  </ItemContainer>
-                );
-              })}
-          </Container>
-        </Slide>
-      ) : (
-        <MainLoading />
-      )}
+                  return (
+                    <ItemContainer key={idx}>
+                      <span>{dayjsToFormat(dayjs(item.createdAt), "YYYY년 M월 D일")}</span>
+                      <Item>
+                        <IconWrapper>
+                          <i
+                            className="fa-regular fa-circle-heart fa-xl"
+                            style={{ color: "var(--color-red)" }}
+                          />
+                        </IconWrapper>
+                        <Name>{name}</Name>
+                        <Content>
+                          님{message} {type === "like" && <Point>+2 point</Point>}
+                        </Content>
+                      </Item>
+                    </ItemContainer>
+                  );
+                })}
+            </Container>
+          ) : (
+            <MainLoading />
+          )}
+        </Box>
+      </Slide>
     </>
   );
 }

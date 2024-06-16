@@ -1,9 +1,10 @@
 import { Box } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 
+import Slide from "../../components/layouts/PageSlide";
+import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import NotCompletedModal from "../../modals/system/NotCompletedModal";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { LocationEn } from "../../types/services/locationTypes";
@@ -29,6 +30,9 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
     if ((tab === "study" || !tab) && session?.user && (!locationParam || !dateParam)) {
       const initialUrl = getUrlWithLocationAndDate(locationParam, dateParam, session.user.location);
       router.replace(initialUrl);
+    }
+    if (tab === "gather" && category !== "모임") {
+      setCategory("모임");
     }
   }, [session?.user, locationParam, dateParam]);
 
@@ -59,9 +63,11 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
 
   return (
     <>
-      <Box fontSize="16px" bgColor="white" pt="8px">
-        <TabNav tabOptionsArr={tabNavOptions} selected={category} hasBorder={false} />
-      </Box>
+      <Slide>
+        <Box fontSize="16px" bgColor="white" pt="8px">
+          <TabNav tabOptionsArr={tabNavOptions} selected={category} hasBorder={false} />
+        </Box>
+      </Slide>
       {isNotCompletedModal && <NotCompletedModal setIsModal={setIsNotCompletedModal} />}
     </>
   );

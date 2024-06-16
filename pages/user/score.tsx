@@ -7,12 +7,14 @@ import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import SummaryTable from "../../components/organisms/tables/SummaryTable";
 import { usePointSystemLogQuery, usePointSystemQuery } from "../../hooks/user/queries";
+import EventBadge from "../../pageTemplates/event/EventBadge";
+import PointScoreBar from "../../pageTemplates/point/pointScore/PointScoreBar";
 
 function ScoreLog() {
-  const { data: point } = usePointSystemQuery("score");
-  const { data: pointLog } = usePointSystemLogQuery("score");
+  const { data: score } = usePointSystemQuery("score");
+  const { data: scoreLog } = usePointSystemLogQuery("score");
 
-  const filterLog = pointLog?.filter((item) => item.meta.value);
+  const filterLog = scoreLog?.filter((item) => item.meta.value);
 
   const headerInfos = ["날짜", "내용", "점수"];
   const tableInfosArr = filterLog?.map((log) => [
@@ -24,56 +26,40 @@ function ScoreLog() {
   return (
     <>
       <Header title="동아리 점수 기록" />
-      {point ? (
-        <Slide>
-          <Layout>
-            <MyPoint>
-              <span>내 점수</span>
-              <i className="fa-solid fa-arrow-right" />
-              <span>{point} 점</span>
-            </MyPoint>
-            <Box border="var(--border)" rounded="md" minHeight="calc(100vh - 176px)">
-              {pointLog && (
+      <Slide>
+        <Layout>
+          {score && scoreLog ? (
+            <>
+              <Box mx="16px">
+                <PointScoreBar myScore={score} />
+              </Box>
+              <EventBadge />
+              <Box
+                mt="4px"
+                mx="16px"
+                border="var(--border)"
+                rounded="md"
+                minHeight="calc(100vh - 176px)"
+              >
                 <SummaryTable headerInfos={headerInfos} tableInfosArr={tableInfosArr} size="lg" />
-              )}
-            </Box>
-          </Layout>
-        </Slide>
-      ) : (
-        <MainLoading />
-      )}
+              </Box>
+            </>
+          ) : (
+            <MainLoading />
+          )}
+        </Layout>
+      </Slide>
     </>
   );
 }
 
 const Layout = styled.div`
-  margin: 0 var(--gap-4);
+  display: flex;
+  flex-direction: column;
+
   margin-top: var(--gap-5);
   font-weight: 600;
-`;
-
-const MyPoint = styled.div`
-  padding: 0 var(--gap-2);
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  width: 160px;
-  height: 40px;
-  border-radius: var(--rounded-lg);
-  border: var(--border-mint);
-  color: var(--gray-700);
-  font-size: 14px;
-  margin-bottom: 20px;
-  > span:first-child {
-    flex: 1;
-  }
-  > span:last-child {
-    flex: 1;
-    text-align: end;
-    font-size: 15px;
-    color: var(--gray-800);
-    font-weight: 700;
-  }
+  min-height: 100dvh;
 `;
 
 export default ScoreLog;

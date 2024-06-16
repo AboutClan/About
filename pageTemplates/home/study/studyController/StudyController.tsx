@@ -8,13 +8,14 @@ import styled from "styled-components";
 import Slide from "../../../../components/layouts/PageSlide";
 import PointCircleTextRow from "../../../../components/molecules/PointCircleTextRow";
 import WeekSlideCalendar from "../../../../components/molecules/WeekSlideCalendar";
-import { useStudyDailyVoteCntQuery, useStudyVoteQuery } from "../../../../hooks/study/queries";
+import { useStudyDailyVoteCntQuery } from "../../../../hooks/study/queries";
 import { getStudyVoteCnt } from "../../../../libs/study/getStudyVoteCnt";
 import DateCalendarModal from "../../../../modals/aboutHeader/DateCalendarModal";
 import StudyAttendCheckModal from "../../../../modals/study/StudyAttendCheckModal";
 import StudySimpleVoteModal from "../../../../modals/study/StudySimpleVoteModal";
 import { studyDateStatusState } from "../../../../recoils/studyRecoils";
-import { ActiveLocation, LocationEn } from "../../../../types/services/locationTypes";
+import { IParticipation } from "../../../../types/models/studyTypes/studyDetails";
+import { ActiveLocation } from "../../../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../../../utils/convertUtils/convertDatas";
 import { dayjsToStr } from "../../../../utils/dateTimeUtils";
 import StudyControllerVoteButton from "./StudyControllerVoteButton";
@@ -32,13 +33,16 @@ export type VoteType =
 
 dayjs.locale("ko");
 
-function StudyController() {
+interface StudyControllerProps {
+  studyVoteData: IParticipation[];
+}
+
+function StudyController({ studyVoteData }: StudyControllerProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
   const date = searchParams.get("date");
   const location = searchParams.get("location");
-  const locationKr = convertLocationLangTo(location as LocationEn, "kr");
 
   const [selectedDate, setSelectedDate] = useState<string>();
   const [modalType, setModalType] = useState<VoteType>(null);
@@ -46,10 +50,6 @@ function StudyController() {
   const setStudyDateStatus = useSetRecoilState(studyDateStatusState);
 
   const selectedDateDayjs = dayjs(selectedDate);
-
-  const { data: studyVoteData } = useStudyVoteQuery(date as string, locationKr, {
-    enabled: !!date && !!location,
-  });
 
   const { data: voteCntArr } = useStudyDailyVoteCntQuery(
     convertLocationLangTo(location as ActiveLocation, "kr"),
@@ -59,6 +59,7 @@ function StudyController() {
       enabled: !!location,
     },
   );
+  console.log(voteCntArr);
 
   useEffect(() => {
     setSelectedDate(date);

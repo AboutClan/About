@@ -52,7 +52,7 @@ const theme = extendTheme({
       800: "#ffffff",
     },
     yellowTheme: {
-      500: "#FEBC5A",
+      500: "#ffa500",
     },
     puppleTheme: {
       500: "#9E7CFF",
