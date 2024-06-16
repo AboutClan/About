@@ -16,7 +16,7 @@ export const getUrlWithLocationAndDate = (
 ) => {
   const location = locationParam || convertLocationLangTo(userLocation || "suw", "en");
 
-  const locationBaseUrl = `/home?location=${location}`;
+  const locationBaseUrl = `/home?tab=study&location=${location}`;
   const dateQuery = !dateParam ? `&date=${getStudyStandardDate()}` : "";
 
   return locationBaseUrl + dateQuery;

@@ -3,7 +3,7 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
 
-import { DateVoteButtonProps } from "../../pageTemplates/home/studyController/StudyControllerVoteButton";
+import { DateVoteButtonProps } from "../../pageTemplates/home/study/studyController/StudyControllerVoteButton";
 import { myStudyState } from "../../recoils/studyRecoils";
 
 interface DateVoteBlockProps {
@@ -19,7 +19,7 @@ function DateVoteBlock({ buttonProps, func, cnt }: DateVoteBlockProps) {
   const locationEn = searchParams.get("location");
 
   const myStudy = useRecoilValue(myStudyState);
-  
+
   return (
     <Flex w="100%" justify="space-between" align="center">
       <Box fontSize="16px" fontWeight={500}>

@@ -1,11 +1,11 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import Selector from "../../components/atoms/Selector";
-import SectionBar from "../../components/molecules/bars/SectionBar";
-import { ACTIVE_LOCATIONS } from "../../constants/locationConstants";
-import { ActiveLocation } from "../../types/services/locationTypes";
-import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
+import Selector from "../../../components/atoms/Selector";
+import SectionBar from "../../../components/molecules/bars/SectionBar";
+import { ACTIVE_LOCATIONS } from "../../../constants/locationConstants";
+import { ActiveLocation } from "../../../types/services/locationTypes";
+import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
 
 export default function HomeLocationBar() {
   const router = useRouter();

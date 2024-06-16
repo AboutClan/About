@@ -1,55 +1,42 @@
-import { Box } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useState } from "react";
 
 import Slide from "../../components/layouts/PageSlide";
-import EventBanner from "../../pageTemplates/home/EventBanner";
-import HomeCategoryNav from "../../pageTemplates/home/HomeCategoryNav";
-import HomeGatherSection from "../../pageTemplates/home/HomeGatherSection";
+import { useGatherQuery } from "../../hooks/gather/queries";
+import HomeGatherSection from "../../pageTemplates/home/HomeGatherCol";
 import HomeHeader from "../../pageTemplates/home/homeHeader/HomeHeader";
 import HomeInitialSetting from "../../pageTemplates/home/HomeInitialSetting";
-import HomeLocationBar from "../../pageTemplates/home/HomeLocationBar";
-import HomeReviewSection from "../../pageTemplates/home/HomeReviewSection";
 import HomeStudySection from "../../pageTemplates/home/HomeStudySection";
-import HomeWinRecordSection from "../../pageTemplates/home/HomeWinRecordSection";
-import StudyController from "../../pageTemplates/home/studyController/StudyController";
-import { LocationEn } from "../../types/services/locationTypes";
-import { getUrlWithLocationAndDate } from "../../utils/convertUtils/convertTypes";
+import HomeCategoryNav from "../../pageTemplates/home/HomeTab";
+import EventBanner from "../../pageTemplates/home/study/EventBanner";
+import HomeLocationBar from "../../pageTemplates/home/study/HomeLocationBar";
 
 function Home() {
-  const router = useRouter();
-  const { data: session } = useSession();
+  const [tab, setTab] = useState<"스터디" | "모임">("스터디");
 
-  const searchParams = useSearchParams();
-  const locationParam = searchParams.get("location") as LocationEn;
-  const dateParam = searchParams.get("date");
-
-  useEffect(() => {
-    if (session?.user && (!locationParam || !dateParam)) {
-      const initialUrl = getUrlWithLocationAndDate(locationParam, dateParam, session.user.location);
-      router.replace(initialUrl);
-    }
-  }, [session?.user, locationParam, dateParam]);
+  useGatherQuery();
 
   return (
     <>
       <HomeInitialSetting />
       <HomeHeader />
       <Slide>
-        <HomeCategoryNav />
-        <HomeLocationBar />
+        <HomeCategoryNav tab={tab} setTab={setTab} />
       </Slide>
-      <Box px="16px">
-        <StudyController />
-        <HomeStudySection />
-      </Box>
-      <Slide>
+      <>
         <EventBanner />
-        <HomeGatherSection />
-        <HomeReviewSection />
-        <HomeWinRecordSection />
-      </Slide>
+        {tab === "스터디" ? (
+          <>
+            <Slide>
+              <HomeLocationBar />
+            </Slide>
+            <HomeStudySection />
+          </>
+        ) : (
+          <Slide>
+            <HomeGatherSection />
+          </Slide>
+        )}
+      </>
     </>
   );
 }

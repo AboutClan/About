@@ -5,18 +5,18 @@ import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import Slide from "../../../components/layouts/PageSlide";
-import PointCircleTextRow from "../../../components/molecules/PointCircleTextRow";
-import WeekSlideCalendar from "../../../components/molecules/WeekSlideCalendar";
-import { useStudyDailyVoteCntQuery, useStudyVoteQuery } from "../../../hooks/study/queries";
-import { getStudyVoteCnt } from "../../../libs/study/getStudyVoteCnt";
-import DateCalendarModal from "../../../modals/aboutHeader/DateCalendarModal";
-import StudyAttendCheckModal from "../../../modals/study/StudyAttendCheckModal";
-import StudySimpleVoteModal from "../../../modals/study/StudySimpleVoteModal";
-import { studyDateStatusState } from "../../../recoils/studyRecoils";
-import { ActiveLocation, LocationEn } from "../../../types/services/locationTypes";
-import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
-import { dayjsToStr } from "../../../utils/dateTimeUtils";
+import Slide from "../../../../components/layouts/PageSlide";
+import PointCircleTextRow from "../../../../components/molecules/PointCircleTextRow";
+import WeekSlideCalendar from "../../../../components/molecules/WeekSlideCalendar";
+import { useStudyDailyVoteCntQuery, useStudyVoteQuery } from "../../../../hooks/study/queries";
+import { getStudyVoteCnt } from "../../../../libs/study/getStudyVoteCnt";
+import DateCalendarModal from "../../../../modals/aboutHeader/DateCalendarModal";
+import StudyAttendCheckModal from "../../../../modals/study/StudyAttendCheckModal";
+import StudySimpleVoteModal from "../../../../modals/study/StudySimpleVoteModal";
+import { studyDateStatusState } from "../../../../recoils/studyRecoils";
+import { ActiveLocation, LocationEn } from "../../../../types/services/locationTypes";
+import { convertLocationLangTo } from "../../../../utils/convertUtils/convertDatas";
+import { dayjsToStr } from "../../../../utils/dateTimeUtils";
 import StudyControllerVoteButton from "./StudyControllerVoteButton";
 
 export type VoteType =

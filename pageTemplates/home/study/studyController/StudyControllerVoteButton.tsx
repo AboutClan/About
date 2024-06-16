@@ -1,14 +1,14 @@
 import { Box } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useRecoilValue } from "recoil";
 
-import DateVoteBlock from "../../../components/molecules/DateVoteBlock";
-import { useTypeToast } from "../../../hooks/custom/CustomToast";
-import { myStudyState, studyDateStatusState } from "../../../recoils/studyRecoils";
-import { DispatchType } from "../../../types/hooks/reactTypes";
-import { IParticipation } from "../../../types/models/studyTypes/studyDetails";
-import { StudyDateStatus } from "../../../types/models/studyTypes/studyInterActions";
+import DateVoteBlock from "../../../../components/molecules/DateVoteBlock";
+import { useTypeToast } from "../../../../hooks/custom/CustomToast";
+import { myStudyState, studyDateStatusState } from "../../../../recoils/studyRecoils";
+import { DispatchType } from "../../../../types/hooks/reactTypes";
+import { IParticipation } from "../../../../types/models/studyTypes/studyDetails";
+import { StudyDateStatus } from "../../../../types/models/studyTypes/studyInterActions";
 import { VoteType } from "./StudyController";
 
 export type StudyVoteActionType =

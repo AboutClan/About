@@ -1,8 +1,8 @@
 import "swiper/css";
 
 import dayjs, { Dayjs } from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -10,7 +10,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import Calendar from "../../components/molecules/MonthCalendar";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyDailyVoteCntQuery } from "../../hooks/study/queries";
-import { handleChangeDate } from "../../pageTemplates/home/studyController/StudyController";
+import { handleChangeDate } from "../../pageTemplates/home/study/studyController/StudyController";
 import { studyDateStatusState } from "../../recoils/studyRecoils";
 import { IModal } from "../../types/components/modalTypes";
 import { ActiveLocation } from "../../types/services/locationTypes";

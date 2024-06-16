@@ -9,7 +9,7 @@ import {
 import { useGatherQuery } from "../../hooks/gather/queries";
 import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
-import { setGatherDataToCardCol } from "../home/HomeGatherSection";
+import { setGatherDataToCardCol } from "../home/HomeGatherCol";
 
 export default function GatherMain() {
   const searchParams = useSearchParams();

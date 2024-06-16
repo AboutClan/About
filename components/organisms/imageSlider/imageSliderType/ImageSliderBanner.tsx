@@ -56,7 +56,7 @@ const Container = styled.div``;
 
 const AvatarColorItem = styled.div`
   position: relative;
-  height: 90px;
+  height: 180px;
 `;
 
 const PageView = styled.div`

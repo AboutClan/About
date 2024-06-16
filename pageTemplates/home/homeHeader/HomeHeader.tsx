@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -127,7 +127,7 @@ const Layout = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: var(--border);
+
   max-width: var(--max-width);
   margin: 0 auto;
 
