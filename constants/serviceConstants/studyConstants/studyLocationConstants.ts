@@ -35,10 +35,12 @@ import {
   GANGNAM_신논현역,
   INC_구월동점,
   INC_부평점,
+  INC_서구청점,
   INC_송도DT점,
   INC_송도점,
   INC_인천대점,
   INC_인하대점,
+  INC_청라점,
   SUWAN_경기대,
   SUWAN_경희대,
   SUWAN_고색역,
@@ -53,6 +55,7 @@ import {
   SUWAN_수원시청,
   SUWAN_수원역,
   SUWAN_아주대,
+  SUWAN_청년바람지대,
   SUWAN_행궁동,
   YANG_까치산역,
   YANG_당산역,
@@ -69,6 +72,7 @@ import {
   YANG_여의도역,
   YANG_영등포구청역,
   YANG_오목교역,
+  YANG_홍대입구역점,
   YANG_화곡DT점,
   YANG_화곡역,
 } from "./studyPlaceConstants";
@@ -95,6 +99,7 @@ export const LOCATION_TO_PLACE: LocationToPlace = {
     SUWAN_광교,
     SUWAN_경희대,
     SUWAN_수원역,
+    SUWAN_청년바람지대,
   ],
   양천: [
     YANG_등촌역,
@@ -114,6 +119,7 @@ export const LOCATION_TO_PLACE: LocationToPlace = {
     YANG_발산역,
     YANG_선유도점,
     YANG_목동10단지점,
+    YANG_홍대입구역점,
   ],
   안양: [
     ANYANG_범계역,
@@ -154,7 +160,16 @@ export const LOCATION_TO_PLACE: LocationToPlace = {
     DONG_수유역,
     DONG_한성대입구역점,
   ],
-  인천: [INC_구월동점, INC_부평점, INC_인하대점, INC_송도점, INC_송도DT점, INC_인천대점],
+  인천: [
+    INC_구월동점,
+    INC_부평점,
+    INC_인하대점,
+    INC_송도점,
+    INC_송도DT점,
+    INC_인천대점,
+    INC_청라점,
+    INC_서구청점,
+  ],
 };
 
 export const PLACE_TO_LOCATION = createPlaceToLocationMap(LOCATION_TO_PLACE);
