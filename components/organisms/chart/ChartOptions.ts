@@ -10,7 +10,7 @@ export const ChartStudyOptions = (
     },
 
     toolbar: {
-      show: true,
+      show: false,
     },
   },
   stroke: {

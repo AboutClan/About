@@ -23,7 +23,6 @@ function EventBanner() {
 }
 
 const Layout = styled.div`
-  width: 380px;
   height: 180px;
   display: flex;
   flex-direction: column;

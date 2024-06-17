@@ -23,7 +23,7 @@ function UserPointBlock() {
             <i className="fa-solid fa-star fa-xl" />
           </Box>
           <Box fontSize="15px" fontWeight={600}>
-            {userInfo?.score}원
+            {userInfo?.score}점
           </Box>
           <Box fontSize="13px" color="var(--gray-600)">
             동아리 점수
@@ -36,7 +36,7 @@ function UserPointBlock() {
             <i className="fa-solid fa-coins fa-xl" />
           </Box>
           <Box fontSize="15px" fontWeight={600}>
-            {userInfo?.point}원
+            {userInfo?.point} 코인
           </Box>
           <Box fontSize="13px" color="var(--gray-600)">
             포인트

@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
@@ -29,6 +30,7 @@ dayjs.locale("ko");
 interface IStudyVoteDrawer extends IModal {}
 
 export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
+  const { data: session } = useSession();
   const { date, id } = useParams<{ date: string; id: string }>();
   const location = PLACE_TO_LOCATION[id];
 
@@ -72,7 +74,7 @@ export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
   });
 
   const handleSuccess = async () => {
-    queryClient.invalidateQueries([STUDY_VOTE, date, location]);
+    queryClient.invalidateQueries([STUDY_VOTE, date, location || session?.user.location]);
 
     if (myPrevVotePoint) {
       await getPoint({

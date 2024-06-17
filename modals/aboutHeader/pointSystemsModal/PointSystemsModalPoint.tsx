@@ -45,7 +45,7 @@ function PointSystemsModalPoint() {
           은 포인트와 동아리 점수 모두 획득 !!
         </ListItem>
         <ListItem>포인트는 스토어에서 사용이 가능합니다.</ListItem>
-        <ListItem>그 외에도 다양한 곳에서 포인트 획득이 가능합니다.</ListItem>
+        <ListItem>그 외 다양한 곳에서 포인트 획득이 가능합니다.</ListItem>
       </UnorderedList>
     </>
   );

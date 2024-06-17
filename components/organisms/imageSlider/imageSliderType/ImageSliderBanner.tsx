@@ -1,5 +1,6 @@
 import "swiper/css/scrollbar";
 
+import { Box } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -45,10 +46,19 @@ function ImageSliderBanner({ imageArr }: IImageSliderEventBanner) {
           </Link>
         </SwiperSlide>
       ))}
-      <PageView>
-        <span>{pageNum + 1}</span>
-        <span>/3</span>
-      </PageView>
+      <Box
+        p="2px 4px"
+        color="white"
+        opacity={0.8}
+        pos="absolute"
+        bgColor="var(--gray-800)"
+        zIndex={10}
+        bottom="0"
+        right="0"
+        fontSize="12px"
+      >
+        {pageNum + 1} / {imageArr.length} 전체보기
+      </Box>
     </Swiper>
   );
 }
@@ -57,26 +67,6 @@ const Container = styled.div``;
 const AvatarColorItem = styled.div`
   position: relative;
   height: 180px;
-`;
-
-const PageView = styled.div`
-  width: 32px;
-  position: absolute;
-  bottom: 4px;
-  right: 4px;
-  background-color: rgba(0, 0, 0, 0.3);
-  font-size: 12px;
-  padding: 1px 6px;
-  border-radius: 8px;
-  z-index: 10;
-
-  font-weight: 500;
-  > span:first-child {
-    color: white;
-  }
-  > span:last-child {
-    color: var(--gray-300);
-  }
 `;
 
 export default ImageSliderBanner;

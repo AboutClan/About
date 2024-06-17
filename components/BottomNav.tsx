@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Link, { LinkProps } from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
@@ -22,7 +22,7 @@ interface INavButton extends INavButtonProps {
   idx: number;
 }
 
-type Category = "홈" | "랭킹" | "모임" | "소그룹";
+type Category = "홈" | "랭킹" | "마이페이지" | "소그룹";
 
 export default function BottomNav() {
   const { data: session } = useSession();
@@ -41,8 +41,6 @@ export default function BottomNav() {
           switch (category) {
             case "홈":
               return `/?location=${locationEn}&date=${getStudyStandardDate()}`;
-            case "모임":
-              return `/?location=${locationEn}`;
             case undefined:
               newSearchParams.append("write", "on");
               return pathname + "?" + newSearchParams.toString();
@@ -105,16 +103,16 @@ const navItems: INavButtonProps[] = [
     url: "",
   },
   {
-    activeIcon: <i className="fa-solid fa-handshake fa-xl" />,
-    defaultIcon: <i className="fa-light fa-handshake fa-xl" />,
-    text: "모임",
-    url: "/gather",
-  },
-  {
     activeIcon: <i className="fa-solid fa-users-rectangle fa-xl" />,
     defaultIcon: <i className="fa-light fa-users-rectangle fa-xl" />,
     text: "소그룹",
     url: "/group",
+  },
+  {
+    activeIcon: <i className="fa-solid fa-user fa-xl" />,
+    defaultIcon: <i className="fa-light fa-user fa-xl" />,
+    text: "마이페이지",
+    url: "/user",
   },
 ];
 
@@ -139,12 +137,12 @@ const NavLink = styled(Link)<{ active: "true" | "false" } & LinkProps>`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 16px;
+
   margin-top: 4px;
   color: ${({ active }) => (active === "true" ? "var(--gray-800)" : "var(--gray-500)")};
 `;
 
 const NavText = styled.div`
-  margin-top: 6px; /* 2rem if you're using rem */
-  font-size: 12px; /* Adjusted for text-xs */
+  margin-top: 6px;
+  font-size: 12px;
 `;

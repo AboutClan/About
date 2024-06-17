@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -29,8 +29,7 @@ export type HomeHeaderModalType = "rule" | "dailyCheck" | "pointGuide" | null;
 
 function HomeHeader() {
   const searchParams = useSearchParams();
-  const newSearchparams = new URLSearchParams(searchParams);
-  const router = useRouter();
+
   const typeToast = useTypeToast();
   const { data: session } = useSession();
   const isGuest = session?.user.name === "guest";
@@ -74,13 +73,6 @@ function HomeHeader() {
         ),
         link: "/notice",
         func: () => setSlideDirection("right"),
-      },
-      {
-        icon: <i className="fa-light fa-user-circle" />,
-        link: !isGuest ? "/user" : null,
-        func: isGuest
-          ? () => router.replace(`/home?${newSearchparams.toString()}&logout=on`)
-          : () => setSlideDirection("right"),
       },
     ];
 

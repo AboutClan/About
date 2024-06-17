@@ -1,10 +1,11 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 import Slide from "../../components/layouts/PageSlide";
-import { useStudyVoteQuery } from "../../hooks/study/queries";
-import { LocationEn } from "../../types/services/locationTypes";
+import { useStudyDailyVoteCntQuery, useStudyVoteQuery } from "../../hooks/study/queries";
+import { ActiveLocation, LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import HomeLocationBar from "./study/HomeLocationBar";
 import HomeNewStudySpace from "./study/HomeNewStudySpace";
@@ -18,9 +19,22 @@ function HomeStudySection() {
   const location = searchParams.get("location");
   const locationKr = convertLocationLangTo(location as LocationEn, "kr");
 
+  const [selectedDate, setSelectedDate] = useState<string>();
+
   const { data: studyVoteData } = useStudyVoteQuery(date as string, locationKr, {
     enabled: !!date && !!location,
   });
+
+  const selectedDateDayjs = dayjs(selectedDate);
+
+  const { data: voteCntArr } = useStudyDailyVoteCntQuery(
+    convertLocationLangTo(location as ActiveLocation, "kr"),
+    selectedDateDayjs.startOf("month"),
+    selectedDateDayjs.endOf("month"),
+    {
+      enabled: !!location,
+    },
+  );
 
   const newStudyPlaces = studyVoteData
     ?.filter(
@@ -36,12 +50,17 @@ function HomeStudySection() {
         <HomeLocationBar />
       </Slide>
       <Box px="16px">
-        <StudyController studyVoteData={studyVoteData} />
+        <StudyController
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+          studyVoteData={studyVoteData}
+          voteCntArr={voteCntArr}
+        />
         <HomeStudyCol />
       </Box>
       <Slide>
         <HomeNewStudySpace places={newStudyPlaces} />
-        <HomeStudyChart />
+        <HomeStudyChart voteCntArr={voteCntArr} />
       </Slide>
     </>
   );

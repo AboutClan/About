@@ -45,13 +45,13 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
   const [isFirstPage, setIsFirstPage] = useState(true);
   const [myVote, setMyVote] = useState<IStudyVote>();
   const [voteTime, setVoteTime] = useState<{ start: Dayjs; end: Dayjs }>();
-
+  console.log(selectedPlace, myVote, voteTime);
   const { data: pointLog } = usePointSystemLogQuery("point", true, {
     enabled: !!myStudy,
   });
   const { mutate: getPoint } = usePointSystemMutation("point");
 
-  const { mutateAsync: openFree } = useStudyOpenFreeMutation(date, {});
+  const { mutateAsync: openFree, isLoading: isLoading2 } = useStudyOpenFreeMutation(date, {});
 
   const { mutate: patchAttend, isLoading } = useStudyParticipationMutation(dayjs(date), "post", {
     onSuccess() {
@@ -128,11 +128,23 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
 
   const dismissedPlaces = studyVoteData?.filter((par) => par.status === "dismissed");
 
+  const handleFirstPage = () => {
+    if (!selectedPlace) {
+      toast("warning", "선택된 장소가 없습니다.");
+      return;
+    }
+    setIsFirstPage(false);
+  };
+
   const footerOptions: IFooterOptions = {
     main: {
-      text: isFirstPage ? "선택 완료" : "참여 신청",
-      func: isFirstPage ? () => setIsFirstPage(false) : handleVote,
-      isLoading,
+      text: isFirstPage ? "다음" : "참여 신청",
+      func: isFirstPage ? handleFirstPage : handleVote,
+      isLoading: isLoading || isLoading2,
+    },
+    sub: {
+      text: isFirstPage ? "닫기" : "이전",
+      func: isFirstPage ? () => setIsModal(false) : () => setIsFirstPage(true),
     },
   };
 

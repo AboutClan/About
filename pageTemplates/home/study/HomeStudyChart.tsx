@@ -1,14 +1,43 @@
 import { Box } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 
 import HighlightedTextButton from "../../../components/atoms/buttons/HighlightedTextButton";
 import SectionBar from "../../../components/molecules/bars/SectionBar";
 import { ChartStudyOptions } from "../../../components/organisms/chart/ChartOptions";
+import { VoteCntProps } from "../../../types/models/studyTypes/studyRecords";
 
-function HomeStudyChart() {
+interface HomeStudyChartProps {
+  voteCntArr: VoteCntProps[];
+}
+
+function HomeStudyChart({ voteCntArr }: HomeStudyChartProps) {
   const router = useRouter();
   const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
+
+  console.log(voteCntArr);
+
+  const filtered: VoteCntProps[] = voteCntArr?.reduce((acc, cur) => {
+    if (
+      dayjs(cur.date).isAfter(dayjs().subtract(4, "days")) &&
+      dayjs(cur.date).isBefore(dayjs().add(1, "days"))
+    ) {
+      return [...acc, cur];
+    }
+    return acc;
+  }, []);
+
+  const totalArr = [];
+  const locationArr = [];
+  const xArr = [];
+
+  filtered?.forEach((obj) => {
+    totalArr.push(obj.totalValue);
+    locationArr.push(obj.value);
+    xArr.push(dayjs(obj.date).date() + "");
+  });
+
   return (
     <>
       <SectionBar
@@ -20,10 +49,10 @@ function HomeStudyChart() {
       <Box pt="16px" pr="16px">
         <ApexCharts
           series={[
-            { name: "전체 지역", data: [1, 2, 3, 4] },
-            { name: "우리 지역", data: [5, 6, 7, 8] },
+            { name: "전체 지역 참여자", data: totalArr },
+            { name: "우리 지역 참여자", data: locationArr },
           ]}
-          options={ChartStudyOptions(["10", "11", "12", "13"], 14)}
+          options={ChartStudyOptions(xArr, 25)}
         />
       </Box>
     </>
