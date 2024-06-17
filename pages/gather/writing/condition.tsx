@@ -89,7 +89,7 @@ function WritingCondition() {
     }
     return String(temp) + " " + "제한";
   };
-  console.log(43, getMemberConditionText());
+ 
 
   return (
     <>

@@ -11,7 +11,7 @@ import HomeCategoryNav from "../../pageTemplates/home/HomeTab";
 import EventBanner from "../../pageTemplates/home/study/EventBanner";
 
 function Home() {
-  const [tab, setTab] = useState<"스터디" | "모임">("스터디");
+  const [tab, setTab] = useState<"스터디" | "모임">();
 
   useGatherQuery();
 
@@ -23,7 +23,7 @@ function Home() {
       <Slide>
         <EventBanner />
       </Slide>
-      {tab === "스터디" ? <HomeStudySection /> : <HomeGatherSection />}
+      {tab !== "모임" ? <HomeStudySection /> : <HomeGatherSection />}
       <Box w="100%" h="40px" />
     </>
   );

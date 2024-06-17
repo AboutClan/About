@@ -45,7 +45,7 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
   const [isFirstPage, setIsFirstPage] = useState(true);
   const [myVote, setMyVote] = useState<IStudyVote>();
   const [voteTime, setVoteTime] = useState<{ start: Dayjs; end: Dayjs }>();
-  console.log(selectedPlace, myVote, voteTime);
+
   const { data: pointLog } = usePointSystemLogQuery("point", true, {
     enabled: !!myStudy,
   });

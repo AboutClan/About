@@ -52,7 +52,7 @@ export default function TabNav({
               p={!isMain ? "8px 20px" : "8px 16px"}
               flex={tab?.flex}
               key={tab.text}
-              onClick={tab.func}
+              onClick={tab.text !== selected ? tab.func : undefined}
             >
               {tab.text}
             </Tab>

@@ -33,7 +33,7 @@ export default function Page() {
   const { data: studyAll, isLoading } = useStudyVoteQuery(date, location, {
     enabled: (!!location || isPrivateStudy) && !!date,
   });
-  console.log(isLoading, date, location);
+
   const [studyDateStatus, setStudyDateStatus] = useRecoilState(studyDateStatusState);
 
   useEffect(() => {

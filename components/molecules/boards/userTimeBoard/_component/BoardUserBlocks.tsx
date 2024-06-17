@@ -25,7 +25,7 @@ export default function BoardUserBlocks({ participants }: IBoardUserBlocks) {
     const newUserBlocks = transformToUserBlocks(participants);
     setUserBlocks(newUserBlocks);
   }, [participants]);
-  console.log(userBlocks);
+  
   return (
     <BlocksContainer>
       {userBlocks?.map((userBlock, idx) => (

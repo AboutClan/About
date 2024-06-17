@@ -89,7 +89,7 @@ export default function StudyVoteMap() {
         subPlace: [...(voteInfo?.subPlace || []), id],
       };
   };
-  console.log(mapOptions, markersOptions);
+
   return (
     <>
       <Header title="스터디 투표" />

@@ -108,7 +108,7 @@ function Ranking() {
 
   return (
     <>
-      <Header title="ABOUT 랭킹">
+      <Header title="ABOUT 랭킹" isBack={false}>
         <RuleIcon setIsModal={setIsModal} />
       </Header>
       <Slide>

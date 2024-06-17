@@ -1,20 +1,22 @@
+import { Box } from "@chakra-ui/react";
 import styled from "styled-components";
 
 import ArrowBackButton from "../../components/atoms/buttons/ArrowBackButton";
 import Slide from "./PageSlide";
 interface IHeader {
   title: string;
+  isBack?: boolean;
   url?: string;
   isSlide?: boolean;
   children?: React.ReactNode;
 }
 
-export default function Header({ title, isSlide = true, url, children }: IHeader) {
+export default function Header({ isBack = true, title, isSlide = true, url, children }: IHeader) {
   function HeaderLayout() {
     return (
       <HeaderContainer>
         <LeftSection>
-          <ArrowBackButton url={url} />
+          {isBack ? <ArrowBackButton url={url} /> : <Box w="16px" />}
           <Title>{title}</Title>
         </LeftSection>
         <div>{children}</div>
@@ -38,7 +40,7 @@ export default function Header({ title, isSlide = true, url, children }: IHeader
 const HeaderContainer = styled.header`
   background-color: white;
   height: var(--header-h);
-  font-size: 16px;
+  font-size: 18px;
   padding-right: 16px;
 
   display: flex;

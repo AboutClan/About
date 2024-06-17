@@ -17,7 +17,7 @@ interface IPopoverIcon {
 }
 
 export function PopOverIcon({ title, text, size = "md", marginDir = "left" }: IPopoverIcon) {
-  console.log(size);
+  
   return (
     <Popover>
       <PopoverTrigger>

@@ -44,7 +44,7 @@ function PageTracker() {
 
       const setLeftSlide = () => setSlideDirection("left");
       const setRightSlide = () => setSlideDirection("right");
-
+      console.log(currentSegments, prevSegments);
       switch (curFirstSegment) {
         case "home":
           if (prevSegments[0] !== "vote") setLeftSlide();
@@ -92,13 +92,15 @@ function PageTracker() {
           break;
 
         case "gather":
-          handleWritingPage(
-            GATHER_WRITING_SEQUENCE,
-            currentSegments,
-            prevSegments,
-            setLeftSlide,
-            setRightSlide,
-          );
+          if (currentSegments?.[1] === "writing") {
+            handleWritingPage(
+              GATHER_WRITING_SEQUENCE,
+              currentSegments,
+              prevSegments,
+              setLeftSlide,
+              setRightSlide,
+            );
+          }
           break;
 
         case "group":

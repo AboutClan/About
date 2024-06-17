@@ -8,7 +8,7 @@ function GatherHeader() {
   const [isModal, setIsModal] = useState(false);
   return (
     <>
-      <Header title="모임" url="/home">
+      <Header title="모임" url="/home?tab=gather">
         <RuleIcon setIsModal={setIsModal} />
       </Header>
       {isModal && <GatherRuleModal setIsModal={setIsModal} />}

@@ -26,22 +26,20 @@ function HomeNewStudySpace({ places }: HomeNewStudySpaceProps) {
     type: "study",
     registerDate: place.registerDate,
   }));
-  console.log(studyCardCol);
+
   return (
     <>
-     
-        <SectionBar title="신규 추가 스터디 장소" />
-        <Box m="16px">
-          {studyCardCol?.length ? (
-            <CardColumnLayout
-              cardDataArr={studyCardCol}
-              url={`/studyList/?${searchParams.toString()}`}
-            />
-          ) : (
-            <Box>없음</Box>
-          )}
-        </Box>
-      
+      <SectionBar title="신규 추가 스터디 장소" />
+      <Box m="16px">
+        {studyCardCol?.length ? (
+          <CardColumnLayout
+            cardDataArr={studyCardCol}
+            url={`/studyList/?${searchParams.toString()}`}
+          />
+        ) : (
+          <Box>없음</Box>
+        )}
+      </Box>
     </>
   );
 }

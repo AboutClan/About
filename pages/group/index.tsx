@@ -1,5 +1,5 @@
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
@@ -146,7 +146,7 @@ function Index() {
 
   return (
     <>
-      <Header title="소모임 그룹" url="/home">
+      <Header title="소모임 그룹" url="/home" isBack={false}>
         <RuleIcon setIsModal={setIsRuleModal} />
       </Header>
 
@@ -188,7 +188,7 @@ function Index() {
 const Layout = styled.div`
   min-height: 100vh;
   background-color: var(--gray-100);
-  padding-bottom: 20px;
+  padding-bottom: 40px;
 `;
 
 const NavWrapper = styled.div`

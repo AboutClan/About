@@ -6,6 +6,7 @@ import GatherMain from "../../pageTemplates/gather/GatherMain";
 import GatherReviewSlider from "../../pageTemplates/gather/GatherReviewSlider";
 
 function Gather() {
+
   return (
     <>
       <GatherHeader />

@@ -16,7 +16,7 @@ function HomeStudyChart({ voteCntArr }: HomeStudyChartProps) {
   const router = useRouter();
   const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-  console.log(voteCntArr);
+
 
   const filtered: VoteCntProps[] = voteCntArr?.reduce((acc, cur) => {
     if (
