@@ -1,5 +1,5 @@
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
@@ -52,8 +52,8 @@ function WritingStudyPlace() {
           branch,
           mapURL: placeInfo.place_url,
           locationDetail: placeInfo.road_address_name,
-          latitude: +placeInfo.x,
-          longitude: +placeInfo.y,
+          latitude: +placeInfo.y,
+          longitude: +placeInfo.x,
           location,
         }) as StudyWritingProps,
     );
