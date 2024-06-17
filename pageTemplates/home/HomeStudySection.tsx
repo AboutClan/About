@@ -11,7 +11,7 @@ import HomeNewStudySpace from "./study/HomeNewStudySpace";
 import HomeStudyChart from "./study/HomeStudyChart";
 import HomeStudyCol from "./study/HomeStudyCol";
 import StudyController from "./study/studyController/StudyController";
-//2
+
 function HomeStudySection() {
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
