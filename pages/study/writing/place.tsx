@@ -52,8 +52,8 @@ function WritingStudyPlace() {
           branch,
           mapURL: placeInfo.place_url,
           locationDetail: placeInfo.road_address_name,
-          latitude: +placeInfo.x,
-          longitude: +placeInfo.y,
+          latitude: +placeInfo.y,
+          longitude: +placeInfo.x,
           location,
         }) as StudyWritingProps,
     );

@@ -17,6 +17,7 @@ export const SUWAN_경기대 = "65bfc9347d1dd938049ed1a2";
 export const SUWAN_광교 = "65fbdd5eba2597c46415a02c";
 export const SUWAN_경희대 = "661cdae4aaae875d410236d2";
 export const SUWAN_수원역 = "6637352830c7250eac355cc6";
+export const SUWAN_청년바람지대 = "66678e4ef592be9aae20e5ad";
 
 //양천
 export const YANG_등촌역 = "6437e9d7ab537b843c6143ac";
@@ -36,6 +37,7 @@ export const YANG_목동점 = "65bfab8b7d1dd938049ed19d";
 export const YANG_발산역 = "65bfac0a7d1dd938049ed19e";
 export const YANG_선유도점 = "661cdb45aaae875d410236d3";
 export const YANG_목동10단지점 = "665b92d98582d7bab14810c8";
+export const YANG_홍대입구역점 = "666d91490cfe48b2ae710e2d";
 
 //안양
 export const ANYANG_범계역 = "6456ede120352b2d87582955";
@@ -83,3 +85,5 @@ export const INC_송도점 = "65fbcba6ba2597c46415a029";
 export const INC_구월동점 = "65fbd787ba2597c46415a02a";
 export const INC_부평점 = "65fbd888ba2597c46415a02b";
 export const INC_인천대점 = "6637373030c7250eac355cc7";
+export const INC_청라점 = "6669d0ebe7d56ca0ebf7b547";
+export const INC_서구청점 = "666c80000cfe48b2ae6fbf7a";
