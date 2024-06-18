@@ -16,8 +16,6 @@ function HomeStudyChart({ voteCntArr }: HomeStudyChartProps) {
   const router = useRouter();
   const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-
-
   const filtered: VoteCntProps[] = voteCntArr?.reduce((acc, cur) => {
     if (
       dayjs(cur.date).isAfter(dayjs().subtract(4, "days")) &&
@@ -52,7 +50,7 @@ function HomeStudyChart({ voteCntArr }: HomeStudyChartProps) {
             { name: "전체 지역 참여자", data: totalArr },
             { name: "우리 지역 참여자", data: locationArr },
           ]}
-          options={ChartStudyOptions(xArr, 25)}
+          options={ChartStudyOptions(xArr, Math.max(...totalArr))}
         />
       </Box>
     </>

@@ -14,7 +14,8 @@ function UserProfile() {
         <Link href="/user/friend">
           <BlockItem>
             <span>
-              내 친구 <b>{userInfo?.friend.length}</b>명
+              내 친구{" "}
+              <b style={{ display: "inline-block", width: "20px" }}>{userInfo?.friend.length}</b>명
             </span>
             <i className="fa-solid fa-chevron-right" />
           </BlockItem>
@@ -23,7 +24,7 @@ function UserProfile() {
           <BlockItem>
             <span>
               받은 좋아요{" "}
-              <b style={{ display: "inline-block", width: "16px" }}>{likeLogs?.length || 0}</b>개
+              <b style={{ display: "inline-block", width: "20px" }}>{likeLogs?.length || 0}</b>개
             </span>
             <i className="fa-solid fa-chevron-right" />
           </BlockItem>

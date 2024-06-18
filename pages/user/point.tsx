@@ -1,5 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import Link from "next/link";
 import styled from "styled-components";
 
 import DiffTwoBlockCol from "../../components/atoms/blocks/DiffTwoBlockCol";
@@ -31,7 +32,9 @@ function PointLog() {
             <>
               <Flex justify="space-between" mb="16px">
                 <DiffTwoBlockCol subText="내 포인트" text={`${point} POINT`} />
-                <Button colorScheme="mintTheme">스토어로 이동</Button>
+                <Link href="/store">
+                  <Button colorScheme="mintTheme">스토어로 이동</Button>
+                </Link>
               </Flex>
               <Box border="var(--border)" rounded="md" minHeight="calc(100vh - 176px)">
                 <SummaryTable headerInfos={headerInfos} tableInfosArr={tableInfosArr} size="lg" />

@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import dynamic from "next/dynamic";
 import { useSession } from "next-auth/react";
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -28,6 +28,11 @@ function Chart({ type, user }: IChart) {
   const [isLoading, setIsLoading] = useState(true);
 
   const Uid = user?.uid || session?.user?.uid;
+
+  console.log(user?.uid);
+
+  const myProfile = user?.uid === session?.user.uid;
+  console.log(myProfile);
 
   const monthXaxis: string[] = [];
   for (let i = getMonth() - 2; i <= getMonth() + 1; i++) {
@@ -108,7 +113,7 @@ function Chart({ type, user }: IChart) {
           <ApexCharts
             series={[
               { name: "평균 참여 횟수", data: attendAverageArr },
-              { name: "유저 참여 횟수", data: attendRateArr },
+              { name: myProfile ? "나의 참여 횟수" : "유저 참여 횟수", data: attendRateArr },
             ]}
             options={ChartStudyOptions(monthXaxis, attendMax)}
           />
