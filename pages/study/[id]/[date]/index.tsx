@@ -30,7 +30,7 @@ export default function Page() {
 
   const isPrivateStudy = id === ALL_스터디인증;
 
-  const { data: studyAll, isLoading } = useStudyVoteQuery(date, location, {
+  const { data: studyAll } = useStudyVoteQuery(date, location, {
     enabled: (!!location || isPrivateStudy) && !!date,
   });
 

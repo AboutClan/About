@@ -1,7 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -28,8 +27,6 @@ import { dayjsToStr } from "../../../utils/dateTimeUtils";
 export type HomeHeaderModalType = "rule" | "dailyCheck" | "pointGuide" | null;
 
 function HomeHeader() {
-  const searchParams = useSearchParams();
-
   const typeToast = useTypeToast();
   const { data: session } = useSession();
   const isGuest = session?.user.name === "guest";

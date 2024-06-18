@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -31,26 +31,19 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
 
   const setSlideDirection = useSetRecoilState(slideDirectionState);
 
-  console.log("tab", tabParam);
   useEffect(() => {
     if (!session?.user) return;
-    console.log("tt");
+
     if ((tabParam === "study" || !tabParam) && (!locationParam || !dateParam)) {
-      console.log("52", tabParam, locationParam, dateParam);
       setCategory("스터디");
       const initialUrl = getUrlWithLocationAndDate(locationParam, dateParam, session.user.location);
-      console.log("53", initialUrl);
+
       router.replace(initialUrl);
     }
     if (tabParam === "gather") {
       setCategory("모임");
-      console.log(42, locationParam);
+
       if (!locationParam) {
-        console.log(
-          53,
-          locationParam || convertLocationLangTo(session?.user.location || "suw", "en"),
-          session?.user,
-        );
         router.replace(
           `/home?tab=gather&location=${locationParam || convertLocationLangTo(session.user.location || "suw", "en")}`,
         );
@@ -66,7 +59,6 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
       router.replace(initialUrl);
     }
     if (tab === "모임") {
-      console.log(24);
       router.replace(
         `/home?tab=gather&location=${locationParam || convertLocationLangTo(session?.user.location || "suw", "en")}`,
       );

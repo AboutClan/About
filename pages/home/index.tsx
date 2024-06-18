@@ -19,7 +19,7 @@ function Home() {
       <HomeInitialSetting />
       <HomeHeader />
       <HomeCategoryNav tab={tab} setTab={setTab} />
-      <EventBanner tab={tab} />
+      {tab === "스터디" && <EventBanner tab={tab} />}
       {tab !== "모임" ? <HomeStudySection /> : <HomeGatherSection />}
       <Box w="100%" h="40px" />
     </>

@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { MAIN_BANNER_IMAGE } from "../../../assets/images/BannerImages";
 
+import { MAIN_BANNER_IMAGE } from "../../../assets/images/BannerImages";
 import Slide from "../../../components/layouts/PageSlide";
 import ImageSliderBanner, {
   ImageBannerProp,
@@ -11,6 +11,7 @@ interface EventBannerProps {
 }
 
 function EventBanner({ tab }: EventBannerProps) {
+  console.log(tab);
   const imageArr: ImageBannerProp[] = MAIN_BANNER_IMAGE.map((banner) => ({
     url: `/banner/${banner.category}`,
     imageUrl: banner.image,

@@ -1,15 +1,14 @@
+import "swiper/css/autoplay";
+
 import { Box } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import styled from "styled-components";
-import "swiper/css/autoplay";
-
-import { Swiper, SwiperSlide } from "swiper/react";
-
-import { useRouter } from "next/navigation";
 import SwiperCore from "swiper";
 import { Autoplay, Scrollbar } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 SwiperCore.use([Autoplay, Scrollbar]);
 
