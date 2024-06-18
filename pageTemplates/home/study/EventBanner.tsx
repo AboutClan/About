@@ -1,29 +1,32 @@
 import styled from "styled-components";
+import { MAIN_BANNER_IMAGE } from "../../../assets/images/BannerImages";
 
-import { EVENT_BANNER_PASSION, EVENT_BANNER_PROMOTION } from "../../../assets/images/imageUrl";
+import Slide from "../../../components/layouts/PageSlide";
 import ImageSliderBanner, {
   ImageBannerProp,
 } from "../../../components/organisms/imageSlider/imageSliderType/ImageSliderBanner";
 
-function EventBanner() {
-  const imageArr: ImageBannerProp[] = [
-    {
-      url: "/eventCalendar",
-      imageUrl: "/main.png",
-    },
-    { url: "/statistics", imageUrl: EVENT_BANNER_PASSION },
-    { url: "/promotion", imageUrl: EVENT_BANNER_PROMOTION },
-  ];
+interface EventBannerProps {
+  tab: "스터디" | "모임";
+}
+
+function EventBanner({ tab }: EventBannerProps) {
+  const imageArr: ImageBannerProp[] = MAIN_BANNER_IMAGE.map((banner) => ({
+    url: `/banner/${banner.category}`,
+    imageUrl: banner.image,
+  }));
 
   return (
-    <Layout>
-      <ImageSliderBanner imageArr={imageArr} />
-    </Layout>
+    <Slide>
+      <Layout>
+        <ImageSliderBanner imageArr={imageArr} />
+      </Layout>
+    </Slide>
   );
 }
 
 const Layout = styled.div`
-  height: 180px;
+  aspect-ratio: 2.1 / 1;
   display: flex;
   flex-direction: column;
   background-color: RGB(235, 236, 240);

@@ -86,7 +86,7 @@ const IconWrapper = styled.div`
 `;
 
 const Layout = styled.div<{ status: GatherStatus | "gathering" }>`
-  padding: Var(--gap-4);
+  padding: var(--gap-4);
   padding-bottom: var(--gap-2);
   background-color: white;
   border-bottom: var(--border);

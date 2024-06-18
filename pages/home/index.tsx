@@ -1,7 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 
-import Slide from "../../components/layouts/PageSlide";
 import { useGatherQuery } from "../../hooks/gather/queries";
 import HomeGatherSection from "../../pageTemplates/home/HomeGatherSection";
 import HomeHeader from "../../pageTemplates/home/homeHeader/HomeHeader";
@@ -20,9 +19,7 @@ function Home() {
       <HomeInitialSetting />
       <HomeHeader />
       <HomeCategoryNav tab={tab} setTab={setTab} />
-      <Slide>
-        <EventBanner />
-      </Slide>
+      <EventBanner tab={tab} />
       {tab !== "모임" ? <HomeStudySection /> : <HomeGatherSection />}
       <Box w="100%" h="40px" />
     </>

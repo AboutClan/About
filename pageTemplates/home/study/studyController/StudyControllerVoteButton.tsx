@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useRecoilValue } from "recoil";
 
 import DateVoteBlock from "../../../../components/molecules/DateVoteBlock";
@@ -55,6 +55,7 @@ function StudyControllerVoteButton({ setModalType, memberCnt }: IStudyController
     }
     const type = buttonProps.text;
     if (type === "참여 신청" || type === "투표 변경") {
+      newSearchParams.delete("tab");
       router.push(`/vote?${newSearchParams.toString()}`);
       return;
     }
