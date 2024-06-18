@@ -24,5 +24,5 @@ export interface IVoteRate {
 export interface VoteCntProps {
   date: string;
   value: number;
-  totalValue: number;
+  totalValue?: number;
 }
