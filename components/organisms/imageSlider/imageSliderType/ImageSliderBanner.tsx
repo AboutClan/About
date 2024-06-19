@@ -19,9 +19,10 @@ export interface ImageBannerProp {
 
 interface IImageSliderEventBanner {
   imageArr: ImageBannerProp[];
+  isLightBanner?: boolean;
 }
 
-function ImageSliderBanner({ imageArr }: IImageSliderEventBanner) {
+function ImageSliderBanner({ imageArr, isLightBanner }: IImageSliderEventBanner) {
   const router = useRouter();
   const [pageNum, setPageNum] = useState(0);
 
@@ -49,7 +50,7 @@ function ImageSliderBanner({ imageArr }: IImageSliderEventBanner) {
         <SwiperSlide key={index}>
           <Link href={item.url}>
             <Container>
-              <AvatarColorItem>
+              <Box position="relative" aspectRatio={isLightBanner ? "4/1" : "2.1/1"}>
                 <Image
                   src={item.imageUrl}
                   fill={true}
@@ -57,33 +58,30 @@ function ImageSliderBanner({ imageArr }: IImageSliderEventBanner) {
                   alt="eventImg"
                   priority={index === 0}
                 />
-              </AvatarColorItem>
+              </Box>
             </Container>
           </Link>
         </SwiperSlide>
       ))}
-      <Box
-        p="2px 4px"
-        color="white"
-        opacity={0.8}
-        pos="absolute"
-        bgColor="var(--gray-800)"
-        zIndex={10}
-        bottom="0"
-        right="0"
-        fontSize="12px"
-        onClick={() => router.push("/banner")}
-      >
-        {pageNum + 1} / {imageArr.length} 전체보기
-      </Box>
+      {!isLightBanner && (
+        <Box
+          p="2px 4px"
+          color="white"
+          opacity={0.8}
+          pos="absolute"
+          bgColor="var(--gray-800)"
+          zIndex={10}
+          bottom="0"
+          right="0"
+          fontSize="12px"
+          onClick={() => router.push("/banner")}
+        >
+          {pageNum + 1} / {imageArr.length} 전체보기
+        </Box>
+      )}
     </Swiper>
   );
 }
 const Container = styled.div``;
-
-const AvatarColorItem = styled.div`
-  position: relative;
-  aspect-ratio: 2.1/1;
-`;
 
 export default ImageSliderBanner;

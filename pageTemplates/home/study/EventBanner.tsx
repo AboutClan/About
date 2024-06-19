@@ -1,36 +1,33 @@
-import styled from "styled-components";
+import { Flex } from "@chakra-ui/react";
 
-import { MAIN_BANNER_IMAGE } from "../../../assets/images/BannerImages";
+import { CLUB_BANNER_IMAGE, MAIN_BANNER_IMAGE } from "../../../assets/images/BannerImages";
 import Slide from "../../../components/layouts/PageSlide";
 import ImageSliderBanner, {
   ImageBannerProp,
 } from "../../../components/organisms/imageSlider/imageSliderType/ImageSliderBanner";
+import { HomeTab } from "../HomeTab";
 
 interface EventBannerProps {
-  tab: "스터디" | "모임";
+  tab: HomeTab;
 }
 
 function EventBanner({ tab }: EventBannerProps) {
-  console.log(tab);
-  const imageArr: ImageBannerProp[] = MAIN_BANNER_IMAGE.map((banner) => ({
-    url: `/banner/${banner.category}`,
+  const imageArr: ImageBannerProp[] = (
+    tab === "스터디" ? MAIN_BANNER_IMAGE : CLUB_BANNER_IMAGE
+  ).map((banner) => ({
+    url: banner.url,
     imageUrl: banner.image,
   }));
 
+  const isLightBanner = tab === "동아리";
+  console.log(isLightBanner);
   return (
     <Slide>
-      <Layout>
-        <ImageSliderBanner imageArr={imageArr} />
-      </Layout>
+      <Flex aspectRatio={!isLightBanner ? "2.1/1" : "4/1"} flexDir="column">
+        <ImageSliderBanner imageArr={imageArr} isLightBanner={isLightBanner} />
+      </Flex>
     </Slide>
   );
 }
-
-const Layout = styled.div`
-  aspect-ratio: 2.1 / 1;
-  display: flex;
-  flex-direction: column;
-  background-color: RGB(235, 236, 240);
-`;
 
 export default EventBanner;
