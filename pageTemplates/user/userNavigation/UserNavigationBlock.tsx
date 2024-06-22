@@ -1,5 +1,5 @@
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import RowButtonBlock from "../../../components/atoms/blocks/RowButtonBlock";
@@ -51,9 +51,14 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
         <div>
           <BlockName>관리자</BlockName>
           {isAdmin && (
-            <NavBlock>
-              <button onClick={() => onClickBlock("page", "/admin")}>관리자 페이지</button>
-            </NavBlock>
+            <>
+              <NavBlock>
+                <button onClick={() => onClickBlock("page", "/admin")}>관리자 페이지</button>
+              </NavBlock>
+              <NavBlock>
+                <button onClick={() => onClickBlock("page", "/test")}>테스트</button>
+              </NavBlock>
+            </>
           )}
           {hasDesignAccess && <RowButtonBlock url="/designs" text="디자인 페이지" />}
         </div>
