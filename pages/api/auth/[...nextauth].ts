@@ -145,9 +145,11 @@ export const authOptions: NextAuthOptions = {
               refresh_token: account.refresh_token,
               expires_at: account.expires_at,
               refresh_token_expires_in: account.refresh_token_expires_in,
+              location: account.location,
             },
           },
         );
+        console.log(account);
         const newToken: JWT = {
           accessToken: account.access_token,
           refreshToken: account.refresh_token,

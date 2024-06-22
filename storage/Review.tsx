@@ -504,4 +504,24 @@ export const REVIEW_DATA: IReviewData[] = [
     text: "한강 공원에 나들이를 왔어요 :) 누가 날 잡은건지 주말인데 사람도 별로 없고 날씨도 너무 좋더라고요 ㅎㅎ 12시에 만나서 배달 음식 먹고, 얘기 좀 하다가, 게임도 하고, 4명은 텐트에서 휴식, 4명은 한강 자전거를 타러 갔습니다! 근데 자전거 타러 간 인원 중 절반은 처음에는 자전거를 탈 줄 몰라서 어려워했는데, 나중에는 도로주행도 가능해짐 ㅋㅋㅋ 갈 사람은 가고, 몇명은 저녁까지 있었어요. 야시장 기간이라 밤에 오히려 사람이 더 많더라고요! 닭꼬치 먹고 밤까지 있다가 종료! 성공적인 나들이었다.",
     title: "한강공원 나들이",
   },
+  {
+    id: 123,
+    dateCreated: "6월 21일",
+    images: [
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%9D%B8%EC%B2%9C+%EC%A2%85%EC%B4%9D/KakaoTalk_20240622_123446533.jpg",
+    ],
+    text: "인천 지역 종총을 진행했습니다!",
+    title: "인천 종강총회",
+  },
+  {
+    id: 124,
+    dateCreated: "6월 20일",
+    images: [
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/1%EC%B0%A8+MT+%EC%A1%B0%EB%AA%A8%EC%9E%84/KakaoTalk_20240622_123422162_03.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/1%EC%B0%A8+MT+%EC%A1%B0%EB%AA%A8%EC%9E%84/KakaoTalk_20240622_123422162_02.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/1%EC%B0%A8+MT+%EC%A1%B0%EB%AA%A8%EC%9E%84/KakaoTalk_20240622_123422162_01.jpg",
+    ],
+    text: "용인 MT - B조 사전 조모임 진행! 보드게임 -> 1차 -> 2차까지 했구 재밌었어요 ㅎ 아니 근데 얼마나 먹은건지 1인당 술값이 MT 비용만큼 나왔어... 주루마블이랑 술게임 MT 가기 전에 연습함 ㅋㅋ",
+    title: "MT 사전 조모임",
+  },
 ];
