@@ -514,7 +514,7 @@ export const REVIEW_DATA: IReviewData[] = [
     title: "인천 종강총회",
   },
   {
-    id: 124,
+    id: 241314,
     dateCreated: "6월 20일",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/1%EC%B0%A8+MT+%EC%A1%B0%EB%AA%A8%EC%9E%84/KakaoTalk_20240622_123422162_03.jpg",
