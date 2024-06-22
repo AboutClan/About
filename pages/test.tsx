@@ -55,7 +55,7 @@ const send = async () => {
   console.log("Sending Push...");
   await axios.post(`${SERVER_URI}/webpush/subscribe`, {
     method: "POST",
-    body: JSON.stringify(subscription),
+    body: subscription,
     headers: {
       "content-type": "application/json",
     },
