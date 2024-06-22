@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -38,28 +38,23 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
   };
 
   useEffect(() => {
-    if (!session?.user) return;
-    if (!category && tabParam) setCategory(matchParam[tabParam]);
-    if ((tabParam === "study" || !tabParam) && (!locationParam || !tabParam || !dateParam)) {
-      setCategory("스터디");
+    if (!session?.user || !tabParam) return;
+    if (!category) setCategory(matchParam[tabParam]);
+    if (tabParam === "study" && (!locationParam || !dateParam)) {
       const initialUrl = getUrlWithLocationAndDate(locationParam, dateParam, session.user.location);
-
       router.replace(initialUrl);
     }
-    if (tabParam === "gather") {
-      setCategory("모임");
-
-      if (!locationParam) {
-        router.replace(
-          `/home?tab=gather&location=${locationParam || convertLocationLangTo(session.user.location || "suw", "en")}`,
-        );
-      }
+    if (tabParam === "gather" && !locationParam) {
+      router.replace(
+        `/home?tab=gather&location=${locationParam || convertLocationLangTo(session.user.location || "suw", "en")}`,
+      );
     }
   }, [session?.user, locationParam, dateParam, tabParam]);
 
   const [isNotCompletedModal, setIsNotCompletedModal] = useState(false);
 
   const handleTabMove = (tab: HomeTab) => {
+    console.log(25, tab);
     if (tab === "스터디") {
       const initialUrl = getUrlWithLocationAndDate(locationParam, dateParam, session.user.location);
       router.replace(initialUrl);

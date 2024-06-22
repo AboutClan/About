@@ -26,7 +26,7 @@ export default function HomeGatherCol() {
   const setPrevPageUrl = useSetRecoilState(prevPageUrlState);
 
   const { data: gathers } = useGatherQuery();
- 
+
   useEffect(() => {
     if (!gathers) return;
 
