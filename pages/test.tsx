@@ -1,4 +1,5 @@
 // pages/test.js
+import { Button } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect } from "react";
 
@@ -53,13 +54,7 @@ const send = async () => {
 
   // Send Push Notification
   console.log("Sending Push...");
-  await axios.post(`${SERVER_URI}/webpush/subscribe`, {
-    method: "POST",
-    body: subscription,
-    headers: {
-      "content-type": "application/json",
-    },
-  });
+  await axios.post(`${SERVER_URI}/webpush/subscribe`, subscription);
   console.log("Push Sent...");
 };
 
@@ -70,7 +65,11 @@ function Test() {
     }
   }, []);
 
-  return <>버튼</>;
+  const onClick = () => {
+    send().catch((err) => console.error(err));
+  };
+
+  return <Button onClick={onClick}>버튼</Button>;
 }
 
 export default Test;
