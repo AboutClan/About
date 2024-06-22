@@ -1,4 +1,5 @@
 // pages/test.js
+import axios from "axios";
 import { useEffect } from "react";
 
 import { SERVER_URI } from "../constants/apiConstants";
@@ -52,7 +53,7 @@ const send = async () => {
 
   // Send Push Notification
   console.log("Sending Push...");
-  await fetch(`${SERVER_URI}/webpush/subscribe`, {
+  await axios.post(`${SERVER_URI}/webpush/subscribe`, {
     method: "POST",
     body: JSON.stringify(subscription),
     headers: {

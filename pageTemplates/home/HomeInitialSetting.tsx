@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
 import { useSetRecoilState } from "recoil";
@@ -44,13 +44,15 @@ function HomeInitialSetting() {
     return isStandalone;
   };
 
+  const isPWALogin = isPWA();
+
   useEffect(() => {
     if (userInfo?.role === "human") {
-      if (isPWA()) {
+      if (isPWALogin) {
         setRole({ role: "member" });
       }
     }
-  }, [userInfo?.role, isPWA]);
+  }, [userInfo?.role, isPWALogin]);
 
   useEffect(() => {
     setStudyDateStatus(getStudyDateStatus(dateParam));
@@ -117,7 +119,7 @@ function HomeInitialSetting() {
       {userInfo && !isGuest && <UserSettingPopUp cnt={isGuide ? 1 : 0} />}
       {isGuestModal && <FAQPopUp setIsModal={setIsGuestModal} />}
       <GlobalStyle />
-      {!isPWA() && detectDevice() !== "PC" && <PCBottomNav />}
+      {!isPWALogin && detectDevice() !== "PC" && <PCBottomNav />}
       <Joyride
         hideCloseButton={true}
         callback={handleJoyrideCallback}
