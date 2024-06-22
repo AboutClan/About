@@ -11,7 +11,6 @@ import clientPromise from "../../../libs/backend/mongodb";
 import { refreshAccessToken } from "../../../libs/backend/oauthUtils";
 import { Account } from "../../../models/account";
 import { User } from "../../../models/user";
-import { ActiveLocation } from "../../../types/services/locationTypes";
 
 const secret = process.env.NEXTAUTH_SECRET;
 
@@ -149,7 +148,7 @@ export const authOptions: NextAuthOptions = {
             },
           },
         );
-        console.log(account);
+
         const newToken: JWT = {
           accessToken: account.access_token,
           refreshToken: account.refresh_token,
@@ -160,7 +159,7 @@ export const authOptions: NextAuthOptions = {
           profileImage: user.profileImage,
           role: user.role,
           isActive: user.isActive,
-          location: account.location as ActiveLocation,
+          location: account.location || user.location,
         };
         return newToken;
       }
