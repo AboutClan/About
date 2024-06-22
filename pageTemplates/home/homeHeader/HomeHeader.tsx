@@ -91,16 +91,16 @@ function HomeHeader() {
 
   return (
     <>
-      {renderHomeHeader && (
-        <Slide isFixed={true}>
+      <Slide isFixed={true}>
+        {renderHomeHeader && (
           <Layout>
             <MainLogo />
             <Box className="about_header" fontSize="21px" color="var(--gray-700)">
               <IconButtonNav iconList={iconBtnArr} />
             </Box>
           </Layout>
-        </Slide>
-      )}
+        )}
+      </Slide>
       {modalType === "pointGuide" && <LastWeekAttendPopUp setIsModal={() => setModalType(null)} />}
       {modalType === "dailyCheck" && <DailyCheckModal setIsModal={() => setModalType(null)} />}
       {modalType === "rule" && <PointSystemsModal setIsModal={() => setModalType(null)} />}

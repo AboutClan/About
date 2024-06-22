@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import Slide from "../../../components/layouts/PageSlide";
 import BlurredPart from "../../../components/molecules/BlurredPart";
 import { IPostThumbnailCard } from "../../../components/molecules/cards/PostThumbnailCard";
 import {
@@ -129,7 +128,7 @@ export default function HomeStudyCol() {
 
   return (
     <>
-      <Slide>
+      <>
         <AnimatePresence initial={false}>
           <MotionDiv
             drag="x"
@@ -152,7 +151,7 @@ export default function HomeStudyCol() {
             </>
           </MotionDiv>
         </AnimatePresence>
-      </Slide>
+      </>
       {dismissedStudy && (
         <StudyOpenCheckModal setIsModal={() => setDismissedStudy(null)} par={dismissedStudy} />
       )}

@@ -18,6 +18,7 @@ import UserSettingPopUp from "../../pageTemplates/setting/userSetting/userSettin
 import { renderHomeHeaderState } from "../../recoils/renderRecoils";
 import { studyDateStatusState } from "../../recoils/studyRecoils";
 import { checkAndSetLocalStorage } from "../../utils/storageUtils";
+import { detectDevice } from "../../utils/validationUtils";
 function HomeInitialSetting() {
   const toast = useToast();
   const { data: session } = useSession();
@@ -38,18 +39,18 @@ function HomeInitialSetting() {
       toast("success", "동아리원이 되었습니다.");
     },
   });
+  const isPWA = () => {
+    const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
+    return isStandalone;
+  };
 
   useEffect(() => {
     if (userInfo?.role === "human") {
-      const isPWA = () => {
-        const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
-        return isStandalone;
-      };
       if (isPWA()) {
         setRole({ role: "member" });
       }
     }
-  }, [userInfo?.role]);
+  }, [userInfo?.role, isPWA]);
 
   useEffect(() => {
     setStudyDateStatus(getStudyDateStatus(dateParam));
@@ -116,7 +117,7 @@ function HomeInitialSetting() {
       {userInfo && !isGuest && <UserSettingPopUp cnt={isGuide ? 1 : 0} />}
       {isGuestModal && <FAQPopUp setIsModal={setIsGuestModal} />}
       <GlobalStyle />
-      {false && <PCBottomNav />}
+      {!isPWA() && detectDevice() !== "PC" && <PCBottomNav />}
       <Joyride
         hideCloseButton={true}
         callback={handleJoyrideCallback}

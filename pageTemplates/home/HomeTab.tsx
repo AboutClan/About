@@ -4,7 +4,6 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
-import Slide from "../../components/layouts/PageSlide";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import NotCompletedModal from "../../modals/system/NotCompletedModal";
 import { slideDirectionState } from "../../recoils/navigationRecoils";
@@ -110,11 +109,11 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
 
   return (
     <>
-      <Slide>
+      <>
         <Box fontSize="16px" bgColor="white" pt="8px">
           <TabNav tabOptionsArr={tabNavOptions} selected={category} hasBorder={false} />
         </Box>
-      </Slide>
+      </>
       {isNotCompletedModal && <NotCompletedModal setIsModal={setIsNotCompletedModal} />}
     </>
   );

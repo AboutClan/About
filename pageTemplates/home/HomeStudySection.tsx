@@ -3,7 +3,6 @@ import dayjs from "dayjs";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-import Slide from "../../components/layouts/PageSlide";
 import { useStudyDailyVoteCntQuery, useStudyVoteQuery } from "../../hooks/study/queries";
 import { ActiveLocation, LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
@@ -46,9 +45,8 @@ function HomeStudySection() {
 
   return (
     <>
-      <Slide>
-        <HomeLocationBar />
-      </Slide>
+      <HomeLocationBar />
+
       <Box px="16px">
         <StudyController
           selectedDate={selectedDate}
@@ -58,10 +56,9 @@ function HomeStudySection() {
         />
         <HomeStudyCol />
       </Box>
-      <Slide>
-        <HomeNewStudySpace places={newStudyPlaces} />
-        <HomeStudyChart voteCntArr={voteCntArr} />
-      </Slide>
+
+      <HomeNewStudySpace places={newStudyPlaces} />
+      <HomeStudyChart voteCntArr={voteCntArr} />
     </>
   );
 }

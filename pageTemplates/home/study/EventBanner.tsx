@@ -1,7 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 
 import { CLUB_BANNER_IMAGE, MAIN_BANNER_IMAGE } from "../../../assets/images/BannerImages";
-import Slide from "../../../components/layouts/PageSlide";
 import ImageSliderBanner, {
   ImageBannerProp,
 } from "../../../components/organisms/imageSlider/imageSliderType/ImageSliderBanner";
@@ -22,11 +21,11 @@ function EventBanner({ tab }: EventBannerProps) {
   const isLightBanner = tab === "동아리";
   console.log(isLightBanner);
   return (
-    <Slide>
+    <>
       <Flex aspectRatio={!isLightBanner ? "2.1/1" : "4/1"} flexDir="column">
         <ImageSliderBanner imageArr={imageArr} isLightBanner={isLightBanner} />
       </Flex>
-    </Slide>
+    </>
   );
 }
 
