@@ -38,9 +38,9 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
   };
 
   useEffect(() => {
-    if (!session?.user || !tabParam) return;
+    if (!session?.user) return;
     if (!category) setCategory(matchParam[tabParam]);
-    if (tabParam === "study" && (!locationParam || !dateParam)) {
+    if ((tabParam === "study" || !tabParam) && (!locationParam || !dateParam)) {
       const initialUrl = getUrlWithLocationAndDate(locationParam, dateParam, session.user.location);
       router.replace(initialUrl);
     }
