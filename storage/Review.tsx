@@ -505,7 +505,7 @@ export const REVIEW_DATA: IReviewData[] = [
     title: "한강공원 나들이",
   },
   {
-    id: 123,
+    id: 24152525,
     dateCreated: "6월 21일",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%9D%B8%EC%B2%9C+%EC%A2%85%EC%B4%9D/KakaoTalk_20240622_123446533.jpg",
