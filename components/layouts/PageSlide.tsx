@@ -11,7 +11,7 @@ interface IPageLayout {
 
 function Slide({ children, isFixed, posZero }: IPageLayout) {
   const [slideDirection, setSlideDirection] = useRecoilState(slideDirectionState);
-  console.log(isFixed, slideDirection);
+ 
   useEffect(() => {
     setSlideDirection("right");
   }, []);

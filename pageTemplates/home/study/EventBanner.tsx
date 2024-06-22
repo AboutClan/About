@@ -19,7 +19,7 @@ function EventBanner({ tab }: EventBannerProps) {
   }));
 
   const isLightBanner = tab === "동아리";
-  console.log(isLightBanner);
+
   return (
     <>
       <Flex aspectRatio={!isLightBanner ? "2.1/1" : "4/1"} flexDir="column">

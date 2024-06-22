@@ -50,6 +50,7 @@ function UserOverviewComment() {
   };
 
   const handleSubmit = () => {
+    if (!userInfo) return;
     if (userInfo.comment === value) {
       return;
     }
@@ -76,6 +77,7 @@ function UserOverviewComment() {
         onBlur={handleSubmit}
         onChange={onWrite}
         focusBorderColor="#00c2b3"
+        fontSize="13px"
       />
       <InputRightElement>
         <i

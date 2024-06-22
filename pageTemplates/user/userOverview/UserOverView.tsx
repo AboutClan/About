@@ -6,18 +6,27 @@ import styled from "styled-components";
 
 import Avatar from "../../../components/atoms/Avatar";
 import UserBadge from "../../../components/atoms/badges/UserBadge";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
+import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import RequestChangeProfileImageModal from "../../../modals/userRequest/RequestChangeProfileImageModal/RequestChangeProfileImageModal";
+import { IUser } from "../../../types/models/userTypes/userInfoTypes";
 import UserOverviewComment from "./UserOverviewComment";
 
-export default function UserOverview() {
-  const router = useRouter();
+interface UserOverviewProps {
+  userInfo: IUser;
+}
 
-  const { data: userInfo } = useUserInfoQuery();
+export default function UserOverview({ userInfo }: UserOverviewProps) {
+  const typeToast = useTypeToast();
+  const router = useRouter();
+  const isGuest = userInfo?.role === "guest";
 
   const [isProfileModal, setIsProfileModal] = useState(false);
 
   const onClickProfileChange = () => {
+    if (isGuest) {
+      typeToast("guest");
+      return;
+    }
     router.push("/register/location?edit=on");
   };
 
@@ -41,7 +50,7 @@ export default function UserOverview() {
           </UserInfo>
           <UserImg>
             <Avatar
-              avatar={userInfo.avatar}
+              avatar={userInfo?.avatar}
               image={userInfo.profileImage}
               uid={userInfo.uid}
               size="xl"

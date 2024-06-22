@@ -10,7 +10,7 @@ import PointSkeleton from "../../pageTemplates/point/skeleton/PointSkeleton";
 
 function Point() {
   const { data: session } = useSession();
-  const isGuest = session?.user.name === "guest";
+  const isGuest = session?.user.role === "guest";
   const { data: userInfo } = useUserInfoQuery({
     enabled: !isGuest,
   });
