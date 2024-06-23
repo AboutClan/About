@@ -14,9 +14,11 @@ import { User } from "../../../models/user";
 
 const secret = process.env.NEXTAUTH_SECRET;
 
-if (!secret) {
-  throw new Error("NEXTAUTH_SECRET 환경 변수가 설정되지 않았습니다.");
-}
+// if (!secret) {
+//   throw new Error("NEXTAUTH_SECRET 환경 변수가 설정되지 않았습니다.");
+// }
+
+console.log(42, secret);
 
 export const authOptions: NextAuthOptions = {
   secret,
@@ -101,6 +103,7 @@ export const authOptions: NextAuthOptions = {
     },
 
     async session({ session, token, user, trigger }) {
+      console.log(24);
       try {
         console.log("session 호출됨", { session, token, user, trigger });
         if (trigger === "update") {
@@ -118,6 +121,9 @@ export const authOptions: NextAuthOptions = {
             profileImage: "",
           };
         } else {
+          if (!token) {
+            throw new Error("Token is missing");
+          }
           session.user = {
             id: token.id.toString(),
             uid: token.uid.toString(),
@@ -136,6 +142,7 @@ export const authOptions: NextAuthOptions = {
     },
 
     async jwt({ token, account, user, trigger }) {
+      console.log(53);
       try {
         console.log("jwt 호출됨", { token, account, user, trigger });
         if (trigger === "update" && token?.role) {

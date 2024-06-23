@@ -39,7 +39,7 @@ const Login: NextPage<{
   const { data: userInfo } = useUserInfoQuery({
     enabled: !!session,
   });
-  console.log(session);
+  console.log(22, session);
   useEffect(() => {
     switch (status) {
       case "logout":

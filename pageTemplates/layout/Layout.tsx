@@ -31,7 +31,7 @@ function Layout({ children }: ILayout) {
   const segment = pathname?.split("/")?.[1];
   const PUBLIC_SEGMENT = ["register", "login"];
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const isGuest = session?.user.name === "guest";
 
   const [isErrorModal, setIsErrorModal] = useState(false);
@@ -40,7 +40,7 @@ function Layout({ children }: ILayout) {
 
   useEffect(() => {
     if (PUBLIC_SEGMENT.includes(segment)) return;
-    if (session === undefined) return;
+    if (status === "loading") return;
     const role = session?.user.role;
     if (role === "newUser") {
       router.push("/register/location");
@@ -51,7 +51,7 @@ function Layout({ children }: ILayout) {
       return;
     }
     if (!session?.user?.location) {
-      console.log(session);
+      console.log(2, session);
       toast(
         "warning",
         "업데이트가 필요합니다. 다시 로그인 해주세요! 반복되는 경우 관리자에게 문의 부탁드립니다!!",
