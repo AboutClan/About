@@ -37,7 +37,7 @@ function Layout({ children }: ILayout) {
   const [isErrorModal, setIsErrorModal] = useState(false);
 
   const currentSegment = parseUrlToSegments(pathname);
-
+  console.log(session, status);
   useEffect(() => {
     if (PUBLIC_SEGMENT.includes(segment)) return;
     if (status === "loading" || !session) return;
