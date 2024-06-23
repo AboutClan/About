@@ -7,17 +7,8 @@ import { SERVER_URI } from "../constants/apiConstants";
 const publicVapidKey = process.env.NEXT_PUBLIC_PWA_KEY; // REPLACE_WITH_YOUR_KEY
 
 const urlBase64ToUint8Array = (base64String) => {
-  // 문자열의 길이와 내용 출력
-  console.log("Original base64String:", base64String);
-  console.log("Length:", base64String.length);
-
-  // 패딩 추가
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
   const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
-
-  // 패딩 후 문자열과 길이 출력
-  console.log("Padded base64String:", base64);
-  console.log("Padded Length:", base64.length);
 
   let rawData;
   try {
@@ -28,11 +19,24 @@ const urlBase64ToUint8Array = (base64String) => {
   }
 
   const outputArray = new Uint8Array(rawData.length);
-
   for (let i = 0; i < rawData.length; ++i) {
     outputArray[i] = rawData.charCodeAt(i);
   }
+
   return outputArray;
+};
+
+const requestNotificationPermission = async () => {
+  if (Notification.permission === "granted") {
+    return true;
+  }
+
+  if (Notification.permission !== "denied") {
+    const permission = await Notification.requestPermission();
+    return permission === "granted";
+  }
+
+  return false;
 };
 
 const send = async (onSuccess) => {
@@ -65,7 +69,15 @@ const send = async (onSuccess) => {
 };
 
 function Test() {
-  const onClick = () => {
+  const onClick = async () => {
+    const hasPermission = await requestNotificationPermission();
+    if (!hasPermission) {
+      alert(
+        "Notification permission denied or not granted. Please enable notifications in your browser settings.",
+      );
+      return;
+    }
+
     send(() => {
       console.log("Push registration successful and additional function executed.");
     }).catch((err) => console.error(err));
