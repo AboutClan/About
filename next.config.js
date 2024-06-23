@@ -52,8 +52,8 @@ module.exports = withPWA({
   ...nextConfig,
   pwa: {
     dest: "public",
-    register: true,
-    skipWaiting: true,
+    register: isProduction,
+    skipWaiting: isProduction,
     runtimeCaching,
     disable: !isProduction,
   },
