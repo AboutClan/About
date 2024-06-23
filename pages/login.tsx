@@ -9,7 +9,7 @@ import {
   getProviders,
   LiteralUnion,
   signIn,
-  useSession
+  useSession,
 } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -39,7 +39,7 @@ const Login: NextPage<{
   const { data: userInfo } = useUserInfoQuery({
     enabled: !!session,
   });
-
+  console.log(session);
   useEffect(() => {
     switch (status) {
       case "logout":

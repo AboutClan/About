@@ -47,7 +47,7 @@ const nextConfig = {
     styledComponents: true,
   },
 };
-
+const isProduction = process.env.NODE_ENV === "production";
 module.exports = withPWA({
   ...nextConfig,
   pwa: {
@@ -55,7 +55,8 @@ module.exports = withPWA({
     register: true,
     skipWaiting: true,
     runtimeCaching,
-    // disable: process.env.NODE_ENV !== "production",
+    // disable: !isProduction,
+    disable: false,
   },
 });
 
