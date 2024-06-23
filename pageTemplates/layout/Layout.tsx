@@ -2,9 +2,9 @@
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
+import { signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -40,7 +40,7 @@ function Layout({ children }: ILayout) {
 
   useEffect(() => {
     if (PUBLIC_SEGMENT.includes(segment)) return;
-    if (status === "loading") return;
+    if (status === "loading" || !session) return;
     const role = session?.user.role;
     if (role === "newUser") {
       router.push("/register/location");
