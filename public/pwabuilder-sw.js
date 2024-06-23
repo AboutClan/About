@@ -18,7 +18,17 @@ self.addEventListener("push", (e) => {
   const data = e.data.json();
 
   self.registration.showNotification(data.title, {
-    body: "Knock Knock",
+    body: data.body,
+    icon: data.icon,
+    badge: data.badge,
+    image: data.image,
+    data: data.data,
+    tag: data.tag,
+    requireInteraction: data.requireInteraction,
+    silent: data.silent,
+    renotify: data.renotify,
+    timestamp: data.timestamp,
+    vibrate: data.vibrate,
   });
 });
 
