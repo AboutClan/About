@@ -103,42 +103,32 @@ export const authOptions: NextAuthOptions = {
     },
 
     async session({ session, token, user, trigger }) {
-      console.log(24);
-      try {
-        console.log("session 호출됨", { session, token, user, trigger });
-        if (trigger === "update") {
-          return session;
-        }
-
-        if (session.user.name === "guest") {
-          session.user = {
-            id: "0",
-            uid: "0",
-            name: "guest",
-            role: "guest",
-            location: "수원",
-            isActive: false,
-            profileImage: "",
-          };
-        } else {
-          if (!token) {
-            throw new Error("Token is missing");
-          }
-          session.user = {
-            id: token.id.toString(),
-            uid: token.uid.toString(),
-            name: token.name,
-            role: token.role,
-            isActive: token.isActive,
-            location: token.location,
-            profileImage: token.profileImage,
-          };
-        }
-        return session;
-      } catch (error) {
-        console.error("session 콜백 에러:", error);
+      if (trigger === "update") {
         return session;
       }
+
+      if (session.user.name === "guest") {
+        session.user = {
+          id: "0",
+          uid: "0",
+          name: "guest",
+          role: "guest",
+          location: "수원",
+          isActive: false,
+          profileImage: "",
+        };
+      } else {
+        session.user = {
+          id: token.id.toString(),
+          uid: token.uid.toString(),
+          name: token.name,
+          role: token.role,
+          isActive: token.isActive,
+          location: token.location,
+          profileImage: token.profileImage,
+        };
+      }
+      return session;
     },
 
     async jwt({ token, account, user, trigger }) {

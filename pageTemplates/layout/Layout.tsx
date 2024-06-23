@@ -40,7 +40,7 @@ function Layout({ children }: ILayout) {
   console.log(session, status);
   useEffect(() => {
     if (PUBLIC_SEGMENT.includes(segment)) return;
-    if (status === "loading" || !session) return;
+    if (status === "loading" || session === undefined) return;
     const role = session?.user.role;
     if (role === "newUser") {
       router.push("/register/location");
