@@ -2,9 +2,9 @@
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
+import { signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -51,6 +51,7 @@ function Layout({ children }: ILayout) {
       return;
     }
     if (!session?.user?.location) {
+      console.log(session);
       toast(
         "warning",
         "업데이트가 필요합니다. 다시 로그인 해주세요! 반복되는 경우 관리자에게 문의 부탁드립니다!!",
