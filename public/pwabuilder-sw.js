@@ -19,9 +19,7 @@ self.addEventListener("push", (e) => {
   console.log(data);
   self.registration.showNotification(data.title, {
     body: data?.body,
-    icon: data?.icon,
     badge: data?.badge,
-    image: data?.image,
     data: data?.data,
     tag: data?.tag,
     requireInteraction: data?.requireInteraction,
