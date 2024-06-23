@@ -1,5 +1,5 @@
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
@@ -24,6 +24,7 @@ import GroupSkeletonMain from "../../pageTemplates/group/GroupSkeletonMain";
 import GroupSkeletonMine from "../../pageTemplates/group/GroupSkeletonMine";
 import { GroupCategory, IGroup } from "../../types/models/groupTypes/group";
 import { shuffleArray } from "../../utils/convertUtils/convertDatas";
+import { getPerformanceTime } from "../../utils/mathUtils";
 
 interface ICategory {
   main: GroupCategory;
@@ -52,6 +53,11 @@ function Index() {
   const [isRuleModal, setIsRuleModal] = useState(false);
 
   const { data: groups, isLoading } = useGroupQuery();
+
+  useEffect(() => {
+    if (!groups) console.log(getPerformanceTime());
+    else console.log(getPerformanceTime());
+  }, [groups]);
 
   useEffect(() => {
     setCategory({

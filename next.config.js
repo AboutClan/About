@@ -55,8 +55,7 @@ module.exports = withPWA({
     register: true,
     skipWaiting: true,
     runtimeCaching,
-    // disable: !isProduction,
-    disable: false,
+    disable: !isProduction,
   },
 });
 
