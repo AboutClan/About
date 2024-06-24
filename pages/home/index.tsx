@@ -22,7 +22,7 @@ function Home() {
       <Slide>
         <HomeCategoryNav tab={tab} setTab={setTab} />
         <>
-          {(tab === "스터디" || tab === "동아리") && <EventBanner tab={tab} />}
+          {tab !== "기타" && <EventBanner tab={tab} />}
           {tab === "스터디" ? (
             <HomeStudySection />
           ) : tab === "모임" ? (
