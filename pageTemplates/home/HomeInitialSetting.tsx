@@ -1,7 +1,7 @@
 import axios from "axios";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
 import { useSetRecoilState } from "recoil";
@@ -134,6 +134,7 @@ function HomeInitialSetting() {
 
   const registerPWA = async () => {
     const hasPermission = await requestNotificationPermission();
+    console.log(244, hasPermission);
     if (!hasPermission) {
       return;
     }
