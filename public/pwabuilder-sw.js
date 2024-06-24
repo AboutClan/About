@@ -20,21 +20,14 @@ self.addEventListener("push", (e) => {
   self.registration.showNotification(data.title, {
     body: data?.body,
     badge: data?.badge,
-    data: data?.data || { url: "/", notificationType: "default" },
-    icon: data?.icon,
+    data: data?.data,
     tag: data?.tag,
-    requireInteraction: data?.requireInteraction || true,
+    requireInteraction: data?.requireInteraction,
     silent: data?.silent,
-    renotify: data?.renotify || true,
-    timestamp: data?.timestamp || Date.now(),
+    renotify: data?.renotify,
+    timestamp: data?.timestamp,
     vibrate: data?.vibrate,
-    actions: data?.actions || [
-      {
-        action: "https://studyabout.herokuapp.com/home",
-        title: "ABOUT",
-        icon: data.icon,
-      },
-    ],
+    actions: data?.actions,
     dir: data?.dir,
   });
 });
