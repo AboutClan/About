@@ -1,7 +1,7 @@
 import axios from "axios";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
 import { useSetRecoilState } from "recoil";
@@ -135,9 +135,9 @@ function HomeInitialSetting() {
   const registerPWA = async () => {
     const hasPermission = await requestNotificationPermission();
     if (!hasPermission) {
-      alert(
-        "Notification permission denied or not granted. Please enable notifications in your browser settings.",
-      );
+      // alert(
+      //   "Notification permission denied or not granted. Please enable notifications in your browser settings.",
+      // );
       return;
     }
 
