@@ -1,7 +1,6 @@
 // pages/test.js
 import { Button } from "@chakra-ui/react";
 import axios from "axios";
-import { useEffect } from "react";
 
 import { SERVER_URI } from "../constants/apiConstants";
 
@@ -42,16 +41,26 @@ const requestNotificationPermission = async () => {
 
 const send = async (onSuccess) => {
   try {
+    // Register Service Worker
+    console.log("Registering service worker...");
     const register = await navigator.serviceWorker.register("/pwabuilder-sw.js", {
       scope: "/",
     });
+    console.log("Service Worker Registered...");
 
+    // Register Push
+    console.log("Registering Push...");
     const subscription = await register.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
     });
+    console.log("Push Registered...");
+
+    // Send Push Notification
+    console.log("Sending Push...");
 
     await axios.post(`${SERVER_URI}/webpush/subscribe`, subscription);
+    console.log("Push Sent...");
 
     if (onSuccess) onSuccess(); // onSuccess 함수 호출
   } catch (err) {
@@ -73,10 +82,6 @@ function Test() {
       console.log("Push registration successful and additional function executed.");
     }).catch((err) => console.error(err));
   };
-
-  useEffect(() => {
-    onClick();
-  }, []);
 
   return <Button onClick={onClick}>버튼</Button>;
 }
