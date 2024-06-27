@@ -26,7 +26,7 @@ function StudyHeader({ brand, fullname, locationDetail, coverImage }: IStudyHead
   const url = WEB_URL + router?.asPath;
 
   return (
-    <Header title={brand} url={`/home/?location=${locationEn}&date=${date}`}>
+    <Header title={brand} url={`/home/?tab=study&location=${locationEn}&date=${date}`}>
       {brand !== "자유 신청" && (
         <KakaoShareBtn
           type="study"

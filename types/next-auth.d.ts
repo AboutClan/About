@@ -44,7 +44,7 @@ declare module "next-auth" {
     isActive: boolean;
     uid: string;
     profileImage: string;
-    location?: Location;
+    location?: ActiveLocation;
   }
   /**
    * Usually contains information about the provider being used
@@ -54,6 +54,7 @@ declare module "next-auth" {
     accessToken: string;
     refreshToken: string;
     accessTokenExpires: number;
+    location: ActiveLocation;
   }
   /** The OAuth profile returned from your provider */
   interface Profile {}

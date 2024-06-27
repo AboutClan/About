@@ -1,10 +1,8 @@
 import { Button } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import styled from "styled-components";
 
 function PCBottomNav() {
-  const searchParams = useSearchParams();
-  const newSearchparams = new URLSearchParams(searchParams);
   const router = useRouter();
 
   return (
@@ -14,7 +12,7 @@ function PCBottomNav() {
         backgroundColor="var(--color-red)"
         color="white"
         size="xs"
-        onClick={() => router.replace(`/home?${newSearchparams.toString()}&logout=on`)}
+        onClick={() => router.push(`https://www.youtube.com/watch?v=hElR9AZpyo4`)}
       >
         방법 보러가기
       </Button>

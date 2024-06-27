@@ -1,6 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
 import DiffTwoBlockCol from "../../components/atoms/blocks/DiffTwoBlockCol";
@@ -11,6 +12,7 @@ import SummaryTable from "../../components/organisms/tables/SummaryTable";
 import { usePointSystemLogQuery, usePointSystemQuery } from "../../hooks/user/queries";
 
 function PointLog() {
+  const { data: session } = useSession();
   const { data: point } = usePointSystemQuery("point");
   const { data: pointLog } = usePointSystemLogQuery("point");
 
@@ -22,22 +24,24 @@ function PointLog() {
     log.message,
     log.meta.value + "",
   ]);
-
+  const isGuest = session?.user.role === "guest";
   return (
     <>
       <Header title="포인트 기록" />
       <Slide>
         <Layout>
-          {point && pointLog ? (
+          {(point && pointLog) || isGuest ? (
             <>
               <Flex justify="space-between" mb="16px">
-                <DiffTwoBlockCol subText="내 포인트" text={`${point} POINT`} />
+                <DiffTwoBlockCol subText="내 포인트" text={`${point || 0} POINT`} />
                 <Link href="/store">
                   <Button colorScheme="mintTheme">스토어로 이동</Button>
                 </Link>
               </Flex>
               <Box border="var(--border)" rounded="md" minHeight="calc(100vh - 176px)">
-                <SummaryTable headerInfos={headerInfos} tableInfosArr={tableInfosArr} size="lg" />
+                {tableInfosArr?.length ? (
+                  <SummaryTable headerInfos={headerInfos} tableInfosArr={tableInfosArr} size="lg" />
+                ) : null}
               </Box>
             </>
           ) : (

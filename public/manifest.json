@@ -3,8 +3,29 @@
   "description": "스터디 & 친목 동아리",
   "dir": "ltr",
   "display": "standalone",
+
   "name": "ABOUT",
   "orientation": "portrait",
+  "shortcuts": [
+    {
+      "name": "어바웃",
+      "url": "/home",
+      "description": "어바웃 테스트",
+      "icons": [
+        {
+          "src": "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/ALogo.png",
+          "type": "image/png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "protocol_handlers": [
+    {
+      "protocol": "web+coffee",
+      "url": "/?coffee=%s"
+    }
+  ],
 
   "scope": "/",
   "short_name": "ABOUT",

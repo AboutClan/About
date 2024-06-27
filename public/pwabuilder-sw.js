@@ -18,7 +18,24 @@ self.addEventListener("push", (e) => {
   const data = e.data.json();
 
   self.registration.showNotification(data.title, {
-    body: "Knock Knock",
+    body: data?.body,
+    badge: data?.badge,
+    data: data?.data || { url: "/", notificationType: "default" },
+    icon: data?.icon,
+    tag: data?.tag,
+    requireInteraction: data?.requireInteraction || true,
+    silent: data?.silent,
+    renotify: data?.renotify || true,
+    timestamp: data?.timestamp || Date.now(),
+    vibrate: data?.vibrate,
+    actions: data?.actions || [
+      {
+        action: "https://studyabout.herokuapp.com/home",
+        title: "ABOUT",
+        icon: data.icon,
+      },
+    ],
+    dir: data?.dir,
   });
 });
 
@@ -58,4 +75,26 @@ self.addEventListener("fetch", (event) => {
       })(),
     );
   }
+});
+
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close(); // Close the notification
+
+  const url = event.notification.data.url; // Get the URL from the notification data
+  event.waitUntil(
+    clients.matchAll({ type: "window" }).then((windowClients) => {
+      // Check if there is already a window/tab open with the target URL
+      for (let i = 0; i < windowClients.length; i++) {
+        const client = windowClients[i];
+        // If so, just focus it.
+        if (client.url === url && "focus" in client) {
+          return client.focus();
+        }
+      }
+      // If not, then open the target URL in a new window/tab.
+      if (clients.openWindow) {
+        return clients.openWindow(url);
+      }
+    }),
+  );
 });

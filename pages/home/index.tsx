@@ -1,7 +1,9 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 
+import Slide from "../../components/layouts/PageSlide";
 import { useGatherQuery } from "../../hooks/gather/queries";
+import HomeClubSection from "../../pageTemplates/home/HomeClubSection";
 import HomeGatherSection from "../../pageTemplates/home/HomeGatherSection";
 import HomeHeader from "../../pageTemplates/home/homeHeader/HomeHeader";
 import HomeInitialSetting from "../../pageTemplates/home/HomeInitialSetting";
@@ -18,18 +20,24 @@ function Home() {
     <>
       <HomeInitialSetting />
       <HomeHeader />
-      <HomeCategoryNav tab={tab} setTab={setTab} />
-      {(tab === "스터디" || tab === "동아리") && <EventBanner tab={tab} />}
-      {tab === "스터디" ? (
-        <HomeStudySection />
-      ) : tab === "모임" ? (
-        <HomeGatherSection />
-      ) : tab === "기타" || tab === "동아리" ? (
-        <Flex fontSize="20px" justify="center" align="center" h="200px">
-          COMMING SOON
-        </Flex>
-      ) : null}
-      <Box w="100%" h="40px" />
+      <Slide>
+        <HomeCategoryNav tab={tab} setTab={setTab} />
+        <>
+          {tab !== "기타" && <EventBanner tab={tab} />}
+          {tab === "스터디" ? (
+            <HomeStudySection />
+          ) : tab === "모임" ? (
+            <HomeGatherSection />
+          ) : tab === "동아리" ? (
+            <HomeClubSection />
+          ) : tab === "기타" ? (
+            <Flex fontSize="20px" justify="center" align="center" h="200px">
+              COMMING SOON
+            </Flex>
+          ) : null}
+          <Box w="100%" h="40px" />
+        </>
+      </Slide>
     </>
   );
 }

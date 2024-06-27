@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import Slide from "../../../../components/layouts/PageSlide";
 import PointCircleTextRow from "../../../../components/molecules/PointCircleTextRow";
 import WeekSlideCalendar from "../../../../components/molecules/WeekSlideCalendar";
 import { getStudyVoteCnt } from "../../../../libs/study/getStudyVoteCnt";
@@ -69,7 +68,7 @@ function StudyController({
 
   return (
     <>
-      <Slide>
+      <>
         <OuterContainer>
           <Flex justify="space-between" align="center" mb="16px" mr="12px">
             <Box fontSize="16px" fontWeight={600}>
@@ -113,7 +112,7 @@ function StudyController({
             )}
           </Box>
         </OuterContainer>
-      </Slide>
+      </>
       {modalType === "attendCheck" && (
         <StudyAttendCheckModal setIsModal={() => setModalType(null)} />
       )}

@@ -46,16 +46,29 @@ const nextConfig = {
   compiler: {
     styledComponents: true,
   },
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "Set-Cookie",
+            value: "cookieName=cookieValue; Path=/; HttpOnly; Secure; SameSite=Lax",
+          },
+        ],
+      },
+    ];
+  },
 };
-
+const isProduction = process.env.NODE_ENV === "production";
 module.exports = withPWA({
   ...nextConfig,
   pwa: {
     dest: "public",
-    register: true,
-    skipWaiting: true,
+    register: isProduction,
+    skipWaiting: isProduction,
     runtimeCaching,
-    // disable: process.env.NODE_ENV !== "production",
+    disable: !isProduction,
   },
 });
 

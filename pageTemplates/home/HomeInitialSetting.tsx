@@ -1,3 +1,4 @@
+import axios from "axios";
 import dayjs from "dayjs";
 import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -7,6 +8,7 @@ import { useSetRecoilState } from "recoil";
 import { createGlobalStyle } from "styled-components";
 
 import PCBottomNav from "../../components/layouts/PCBottomNav";
+import { SERVER_URI } from "../../constants/apiConstants";
 import { STEPS_CONTENTS } from "../../constants/contentsText/GuideContents";
 import { USER_GUIDE } from "../../constants/keys/localStorage";
 import { useToast } from "../../hooks/custom/CustomToast";
@@ -18,6 +20,66 @@ import UserSettingPopUp from "../../pageTemplates/setting/userSetting/userSettin
 import { renderHomeHeaderState } from "../../recoils/renderRecoils";
 import { studyDateStatusState } from "../../recoils/studyRecoils";
 import { checkAndSetLocalStorage } from "../../utils/storageUtils";
+import { detectDevice } from "../../utils/validationUtils";
+
+const publicVapidKey = process.env.NEXT_PUBLIC_PWA_KEY; // REPLACE_WITH_YOUR_KEY
+
+const urlBase64ToUint8Array = (base64String) => {
+  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
+
+  let rawData;
+  try {
+    rawData = window.atob(base64);
+  } catch (e) {
+    console.error("Failed to decode base64 string:", e);
+    throw new Error("The string to be decoded is not correctly encoded.");
+  }
+
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+
+  return outputArray;
+};
+
+const requestNotificationPermission = async () => {
+  if (Notification.permission === "granted") {
+    return true;
+  }
+
+  if (Notification.permission !== "denied") {
+    const permission = await Notification.requestPermission();
+    return permission === "granted";
+  }
+
+  return false;
+};
+
+const send = async (onSuccess) => {
+  try {
+    const register = await navigator.serviceWorker.register("/pwabuilder-sw.js", {
+      scope: "/",
+    });
+
+    const isSubscription = await register.pushManager.getSubscription();
+
+    if (isSubscription) return;
+
+    const subscription = await register.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
+    });
+
+    await axios.post(`${SERVER_URI}/webpush/subscribe`, subscription);
+
+    if (onSuccess) onSuccess(); // onSuccess 함수 호출
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 function HomeInitialSetting() {
   const toast = useToast();
   const { data: session } = useSession();
@@ -38,18 +100,20 @@ function HomeInitialSetting() {
       toast("success", "동아리원이 되었습니다.");
     },
   });
+  const isPWA = () => {
+    const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
+    return isStandalone;
+  };
+
+  const isPWALogin = isPWA();
 
   useEffect(() => {
     if (userInfo?.role === "human") {
-      const isPWA = () => {
-        const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
-        return isStandalone;
-      };
-      if (isPWA()) {
+      if (isPWALogin) {
         setRole({ role: "member" });
       }
     }
-  }, [userInfo?.role]);
+  }, [userInfo?.role, isPWALogin]);
 
   useEffect(() => {
     setStudyDateStatus(getStudyDateStatus(dateParam));
@@ -68,7 +132,20 @@ function HomeInitialSetting() {
     }
   }, [isGuest, userInfo]);
 
+  const registerPWA = async () => {
+    const hasPermission = await requestNotificationPermission();
+    console.log(244, hasPermission);
+    if (!hasPermission) {
+      return;
+    }
+
+    send(() => {
+      console.log("Push registration successful and additional function executed.");
+    }).catch((err) => console.error(err));
+  };
+
   useEffect(() => {
+    registerPWA();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const inappdenyExecVanillajs = (callback: any) => {
       if (document.readyState !== "loading") callback();
@@ -116,7 +193,7 @@ function HomeInitialSetting() {
       {userInfo && !isGuest && <UserSettingPopUp cnt={isGuide ? 1 : 0} />}
       {isGuestModal && <FAQPopUp setIsModal={setIsGuestModal} />}
       <GlobalStyle />
-      {false && <PCBottomNav />}
+      {!isPWALogin && detectDevice() !== "PC" && <PCBottomNav />}
       <Joyride
         hideCloseButton={true}
         callback={handleJoyrideCallback}

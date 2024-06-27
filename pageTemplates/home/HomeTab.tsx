@@ -4,7 +4,6 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
-import Slide from "../../components/layouts/PageSlide";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import NotCompletedModal from "../../modals/system/NotCompletedModal";
 import { slideDirectionState } from "../../recoils/navigationRecoils";
@@ -40,27 +39,22 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
 
   useEffect(() => {
     if (!session?.user) return;
-    if (!category && tabParam) setCategory(matchParam[tabParam]);
-    if ((tabParam === "study" || !tabParam) && (!locationParam || !tabParam || !dateParam)) {
-      setCategory("스터디");
+    if (!category) setCategory(matchParam[tabParam]);
+    if ((tabParam === "study" || !tabParam) && (!locationParam || !dateParam)) {
       const initialUrl = getUrlWithLocationAndDate(locationParam, dateParam, session.user.location);
-
       router.replace(initialUrl);
     }
-    if (tabParam === "gather") {
-      setCategory("모임");
-
-      if (!locationParam) {
-        router.replace(
-          `/home?tab=gather&location=${locationParam || convertLocationLangTo(session.user.location || "suw", "en")}`,
-        );
-      }
+    if (tabParam === "gather" && !locationParam) {
+      router.replace(
+        `/home?tab=gather&location=${locationParam || convertLocationLangTo(session.user.location || "suw", "en")}`,
+      );
     }
   }, [session?.user, locationParam, dateParam, tabParam]);
 
   const [isNotCompletedModal, setIsNotCompletedModal] = useState(false);
 
   const handleTabMove = (tab: HomeTab) => {
+    console.log(25, tab);
     if (tab === "스터디") {
       const initialUrl = getUrlWithLocationAndDate(locationParam, dateParam, session.user.location);
       router.replace(initialUrl);
@@ -110,11 +104,11 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
 
   return (
     <>
-      <Slide>
+      <>
         <Box fontSize="16px" bgColor="white" pt="8px">
           <TabNav tabOptionsArr={tabNavOptions} selected={category} hasBorder={false} />
         </Box>
-      </Slide>
+      </>
       {isNotCompletedModal && <NotCompletedModal setIsModal={setIsNotCompletedModal} />}
     </>
   );
