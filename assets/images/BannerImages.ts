@@ -5,6 +5,18 @@ export const MAIN_BANNER_IMAGE = [
     category: "study",
     url: "/banner/study",
   },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/0627-%EC%86%8C%EB%AA%A8%EC%9E%84-%EB%B0%B0%EB%84%88-%EC%B5%9C%EC%A2%85.png",
+    category: "study",
+    url: "/banner/study",
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/0627-%EC%97%90%ED%83%80-%ED%99%8D%EB%B3%B4-%EB%B0%B0%EB%84%88-%EC%B5%9C%EC%A2%85.png",
+    category: "study",
+    url: "/banner/study",
+  },
 ];
 
 export const SUB_BANNER_IMAGE = [];
@@ -12,7 +24,7 @@ export const SUB_BANNER_IMAGE = [];
 export const GATHER_BANNER_IMAGE = [
   {
     image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/0624-%EB%AA%A8%EC%9E%84-%EB%B0%B0%EB%84%88-%EC%B5%9C%EC%A2%85.png",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/0627-%EB%AA%A8%EC%9E%84-%EB%B0%B0%EB%84%88-%EC%B5%9C%EC%A2%85.png",
     category: "gather",
     url: "/banner/gather",
   },

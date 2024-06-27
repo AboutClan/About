@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import Slide from "../../components/layouts/PageSlide";
 import { useGatherQuery } from "../../hooks/gather/queries";
+import HomeClubSection from "../../pageTemplates/home/HomeClubSection";
 import HomeGatherSection from "../../pageTemplates/home/HomeGatherSection";
 import HomeHeader from "../../pageTemplates/home/homeHeader/HomeHeader";
 import HomeInitialSetting from "../../pageTemplates/home/HomeInitialSetting";
@@ -27,7 +28,9 @@ function Home() {
             <HomeStudySection />
           ) : tab === "모임" ? (
             <HomeGatherSection />
-          ) : tab === "기타" || tab === "동아리" ? (
+          ) : tab === "동아리" ? (
+            <HomeClubSection />
+          ) : tab === "기타" ? (
             <Flex fontSize="20px" justify="center" align="center" h="200px">
               COMMING SOON
             </Flex>

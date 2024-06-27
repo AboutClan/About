@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
@@ -33,7 +33,7 @@ export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
   const { data: session } = useSession();
   const { date, id } = useParams<{ date: string; id: string }>();
   const location = PLACE_TO_LOCATION[id];
-
+  console.log(34, location);
   const toast = useToast();
   const studyDateStatus = useRecoilValue(studyDateStatusState);
   const myStudy = useRecoilValue(myStudyState);
@@ -72,10 +72,10 @@ export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
       handleSuccess();
     },
   });
-
+  console.log(123);
   const handleSuccess = async () => {
     queryClient.invalidateQueries([STUDY_VOTE, date, location || session?.user.location]);
-
+    console.log(24, date, location);
     if (myPrevVotePoint) {
       await getPoint({
         message: "스터디 투표 취소",

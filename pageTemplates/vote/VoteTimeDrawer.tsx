@@ -1,5 +1,6 @@
 import dayjs, { Dayjs } from "dayjs";
 import { AnimatePresence } from "framer-motion";
+import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
@@ -9,8 +10,8 @@ import { IBottomDrawerLgOptions } from "../../components/organisms/drawer/Bottom
 import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { STUDY_VOTE, STUDY_VOTE_CNT } from "../../constants/keys/queryKeys";
 import {
-  POINT_SYSTEM_PLUS,
   PointSystemProp,
+  POINT_SYSTEM_PLUS,
 } from "../../constants/serviceConstants/pointSystemConstants";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";
@@ -36,6 +37,7 @@ interface IVoteTimeDrawer {
 function VoteTimeDrawer({ myVote, voterCnt, actionType, setActionType }: IVoteTimeDrawer) {
   const router = useRouter();
   const toast = useToast();
+  const { data: session } = useSession();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
 
@@ -50,7 +52,7 @@ function VoteTimeDrawer({ myVote, voterCnt, actionType, setActionType }: IVoteTi
 
   const moveToLink = () => {
     setSlideDirection(null);
-    router.push(`/home?${newSearchParams.toString()}`);
+    router.push(`/home?tab=study&${newSearchParams.toString()}`);
   };
 
   const queryClient = useQueryClient();
@@ -85,6 +87,7 @@ function VoteTimeDrawer({ myVote, voterCnt, actionType, setActionType }: IVoteTi
   };
 
   const handleSuccess = () => {
+    console.log(2, date, convertLocationLangTo(location || session?.user.location, "kr"));
     queryClient.refetchQueries([STUDY_VOTE, date, convertLocationLangTo(location, "kr")]);
     queryClient.refetchQueries([
       [STUDY_VOTE_CNT, location, dayjs(date).startOf("month"), dayjs(date).endOf("month")],
@@ -115,7 +118,7 @@ function VoteTimeDrawer({ myVote, voterCnt, actionType, setActionType }: IVoteTi
       moveToLink();
     }, 1000);
   };
- 
+
   const drawerOptions: IBottomDrawerLgOptions = {
     header: {
       title: dayjs().format("M월 DD일 ddd요일"),

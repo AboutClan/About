@@ -2,13 +2,13 @@ import "swiper/css/autoplay";
 
 import { Box } from "@chakra-ui/react";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import styled from "styled-components";
 import SwiperCore from "swiper";
 import { Autoplay, Scrollbar } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { useTypeToast } from "../../../../hooks/custom/CustomToast";
 
 SwiperCore.use([Autoplay, Scrollbar]);
 
@@ -23,6 +23,7 @@ interface IImageSliderEventBanner {
 }
 
 function ImageSliderBanner({ imageArr, isLightBanner }: IImageSliderEventBanner) {
+  const typeToast = useTypeToast();
   const router = useRouter();
   const [pageNum, setPageNum] = useState(0);
 
@@ -48,7 +49,7 @@ function ImageSliderBanner({ imageArr, isLightBanner }: IImageSliderEventBanner)
     >
       {imageArr.map((item, index) => (
         <SwiperSlide key={index}>
-          <Link href={item.url}>
+          <Box onClick={() => typeToast("not-yet")}>
             <Container>
               <Box position="relative" aspectRatio={isLightBanner ? "4/1" : "2.1/1"}>
                 <Image
@@ -60,14 +61,15 @@ function ImageSliderBanner({ imageArr, isLightBanner }: IImageSliderEventBanner)
                 />
               </Box>
             </Container>
-          </Link>
+          </Box>
         </SwiperSlide>
       ))}
       {!isLightBanner && (
         <Box
+          w="76px"
           p="2px 4px"
           color="white"
-          opacity={0.8}
+          opacity={0.75}
           pos="absolute"
           bgColor="var(--gray-800)"
           zIndex={10}
