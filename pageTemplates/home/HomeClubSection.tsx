@@ -2,8 +2,8 @@ import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { Fragment, useState } from "react";
 import styled from "styled-components";
-import MonthNav from "../../components/atoms/MonthNav";
 
+import MonthNav from "../../components/atoms/MonthNav";
 import { PointCircleTextProps } from "../../components/atoms/PointCircleText";
 import Accordion from "../../components/molecules/Accordion";
 import PointCircleTextRow from "../../components/molecules/PointCircleTextRow";
