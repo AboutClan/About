@@ -1,6 +1,5 @@
 import dayjs, { Dayjs } from "dayjs";
 import { AnimatePresence } from "framer-motion";
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
@@ -37,7 +36,7 @@ interface IVoteTimeDrawer {
 function VoteTimeDrawer({ myVote, voterCnt, actionType, setActionType }: IVoteTimeDrawer) {
   const router = useRouter();
   const toast = useToast();
-  const { data: session } = useSession();
+
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
 

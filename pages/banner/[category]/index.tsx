@@ -23,9 +23,7 @@ function BannerDetailPage() {
         <Layout>
           <Title>
             <div>
-              <span>
-                {banner === "study" ? "같이 카공하고 상품 받자!" : "번개 모임에서 같이 만나요!"}
-              </span>
+              <span>같이 카공하고 상품 받자!</span>
               <Badge text="이벤트" colorScheme="mintTheme" size="lg" />
             </div>
           </Title>

@@ -7,15 +7,13 @@ import { IGatherSummary } from "../../pages/review";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
 import { IGroup, IGroupAttendance } from "../../types/models/groupTypes/group";
-import { getPerformanceTime } from "../../utils/mathUtils";
 
 export const useGroupQuery = (options?: QueryOptions<IGroup[]>) =>
   useQuery<IGroup[], AxiosError, IGroup[]>(
     [GROUP_STUDY_ALL],
     async () => {
-   
       const res = await axios.get<IGroup[]>(`${SERVER_URI}/groupStudy`);
-    
+
       return res.data;
     },
     options,
