@@ -18,7 +18,7 @@ const secret = process.env.NEXTAUTH_SECRET;
 //   throw new Error("NEXTAUTH_SECRET 환경 변수가 설정되지 않았습니다.");
 // }
 
-console.log(42, secret);
+
 
 export const authOptions: NextAuthOptions = {
   secret,
@@ -28,7 +28,7 @@ export const authOptions: NextAuthOptions = {
       name: "guest",
       credentials: {},
       async authorize(credentials, req) {
-        console.log("authorize 호출됨");
+        
         const profile = {
           id: "0",
           uid: "0",
@@ -45,7 +45,7 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.KAKAO_CLIENT_ID as string,
       clientSecret: process.env.KAKAO_CLIENT_SECRET as string,
       profile: (profile) => {
-        console.log("Kakao profile 호출됨");
+     
         return {
           id: profile.id.toString(),
           uid: profile.id.toString(),
@@ -132,7 +132,7 @@ export const authOptions: NextAuthOptions = {
     },
 
     async jwt({ token, account, user, trigger }) {
-      console.log(53);
+    
       try {
         console.log("jwt 호출됨", { token, account, user, trigger });
         if (trigger === "update" && token?.role) {

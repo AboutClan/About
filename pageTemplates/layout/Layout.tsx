@@ -37,7 +37,7 @@ function Layout({ children }: ILayout) {
   const [isErrorModal, setIsErrorModal] = useState(false);
 
   const currentSegment = parseUrlToSegments(pathname);
-  console.log(session, status);
+
   useEffect(() => {
     if (PUBLIC_SEGMENT.includes(segment)) return;
     if (status === "loading" || session === undefined) return;
@@ -51,7 +51,7 @@ function Layout({ children }: ILayout) {
       return;
     }
     if (!session?.user?.location) {
-      console.log(2, session);
+    
       toast(
         "warning",
         "업데이트가 필요합니다. 다시 로그인 해주세요! 반복되는 경우 관리자에게 문의 부탁드립니다!!",

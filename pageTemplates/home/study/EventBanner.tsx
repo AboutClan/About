@@ -22,9 +22,10 @@ function EventBanner({ tab }: EventBannerProps) {
         ? GATHER_BANNER_IMAGE
         : CLUB_BANNER_IMAGE
   ).map((banner) => ({
-    url: banner.url,
+    url: banner?.url,
     imageUrl: banner.image,
   }));
+
 
   const isLightBanner = tab === "동아리";
 

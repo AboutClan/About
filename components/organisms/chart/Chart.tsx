@@ -29,10 +29,10 @@ function Chart({ type, user }: IChart) {
 
   const Uid = user?.uid || session?.user?.uid;
 
-  console.log(user?.uid);
+ 
 
   const myProfile = user?.uid === session?.user.uid;
-  console.log(myProfile);
+
 
   const monthXaxis: string[] = [];
   for (let i = getMonth() - 2; i <= getMonth() + 1; i++) {

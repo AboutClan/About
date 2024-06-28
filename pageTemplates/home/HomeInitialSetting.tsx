@@ -134,7 +134,7 @@ function HomeInitialSetting() {
 
   const registerPWA = async () => {
     const hasPermission = await requestNotificationPermission();
-    console.log(244, hasPermission);
+
     if (!hasPermission) {
       return;
     }

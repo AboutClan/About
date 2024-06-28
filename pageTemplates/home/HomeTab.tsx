@@ -54,7 +54,7 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
   const [isNotCompletedModal, setIsNotCompletedModal] = useState(false);
 
   const handleTabMove = (tab: HomeTab) => {
-    console.log(25, tab);
+   
     if (tab === "스터디") {
       const initialUrl = getUrlWithLocationAndDate(locationParam, dateParam, session.user.location);
       router.replace(initialUrl);

@@ -1,7 +1,7 @@
 import dayjs, { Dayjs } from "dayjs";
 import { AnimatePresence } from "framer-motion";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -10,8 +10,8 @@ import { IBottomDrawerLgOptions } from "../../components/organisms/drawer/Bottom
 import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { STUDY_VOTE, STUDY_VOTE_CNT } from "../../constants/keys/queryKeys";
 import {
-  POINT_SYSTEM_PLUS,
   PointSystemProp,
+  POINT_SYSTEM_PLUS,
 } from "../../constants/serviceConstants/pointSystemConstants";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";
@@ -87,7 +87,6 @@ function VoteTimeDrawer({ myVote, voterCnt, actionType, setActionType }: IVoteTi
   };
 
   const handleSuccess = () => {
-    console.log(2, date, convertLocationLangTo(location || session?.user.location, "kr"));
     queryClient.refetchQueries([STUDY_VOTE, date, convertLocationLangTo(location, "kr")]);
     queryClient.refetchQueries([
       [STUDY_VOTE_CNT, location, dayjs(date).startOf("month"), dayjs(date).endOf("month")],

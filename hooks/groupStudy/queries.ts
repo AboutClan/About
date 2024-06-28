@@ -13,9 +13,9 @@ export const useGroupQuery = (options?: QueryOptions<IGroup[]>) =>
   useQuery<IGroup[], AxiosError, IGroup[]>(
     [GROUP_STUDY_ALL],
     async () => {
-      console.log(1, getPerformanceTime());
+   
       const res = await axios.get<IGroup[]>(`${SERVER_URI}/groupStudy`);
-      console.log(2, getPerformanceTime(), res.data);
+    
       return res.data;
     },
     options,

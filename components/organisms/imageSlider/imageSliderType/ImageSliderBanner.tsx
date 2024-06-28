@@ -32,6 +32,14 @@ function ImageSliderBanner({ imageArr, isLightBanner }: IImageSliderEventBanner)
     setPageNum(swiper.realIndex);
   };
 
+  const onClick = (url: string) => {
+    if (url) {
+      router.push(url);
+    } else {
+      typeToast("not-yet");
+    }
+  };
+
   return (
     <Swiper
       navigation
@@ -50,7 +58,7 @@ function ImageSliderBanner({ imageArr, isLightBanner }: IImageSliderEventBanner)
     >
       {imageArr.map((item, index) => (
         <SwiperSlide key={index}>
-          <Box onClick={() => typeToast("not-yet")}>
+          <Box onClick={() => onClick(item?.url)}>
             <Container>
               <Box position="relative" aspectRatio={isLightBanner ? "4/1" : "2.1/1"}>
                 <Image
