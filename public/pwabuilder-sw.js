@@ -3,17 +3,52 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js");
 // This is the service worker with the combined offline experience (Offline page + Offline copy of pages)
 
+workbox.setConfig({
+  debug: false,
+});
+
 const CACHE = "pwabuilder-offline-page";
+const API_CACHE = "api-cache";
+const STATIC_RESOURCES = "static-resources";
+const IMAGES_CACHE = "images";
 
 // TODO: replace the following with the correct offline fallback page i.e.: const offlineFallbackPage = "offline.html";
 const offlineFallbackPage = "/offline";
+
+self.addEventListener("install", (event) => {
+  event.waitUntil(
+    caches
+      .open(CACHE)
+      .then((cache) => cache.add(offlineFallbackPage))
+      .then(() => {
+        return self.skipWaiting();
+      }),
+  );
+});
+
+self.addEventListener("activate", (event) => {
+  const cacheWhitelist = [CACHE, API_CACHE, STATIC_RESOURCES, IMAGES_CACHE];
+  event.waitUntil(
+    caches
+      .keys()
+      .then((cacheNames) => {
+        return Promise.all(
+          cacheNames.map((cacheName) => {
+            if (!cacheWhitelist.includes(cacheName)) {
+              return caches.delete(cacheName);
+            }
+          }),
+        );
+      })
+      .then(() => self.clients.claim()),
+  );
+});
 
 self.addEventListener("message", (event) => {
   if (event.data && event.data.type === "SKIP_WAITING") {
     self.skipWaiting();
   }
 });
-
 self.addEventListener("push", (e) => {
   const data = e.data.json();
 
@@ -38,7 +73,24 @@ self.addEventListener("push", (e) => {
     dir: data?.dir,
   });
 });
-
+if (workbox.navigationPreload.isSupported()) {
+  workbox.navigationPreload.enable();
+} // Adjust caching strategy for API requests
+workbox.routing.registerRoute(
+  new RegExp(`${SERVER_URI}/.*`), // Adjust the regex to match your API requests
+  new workbox.strategies.NetworkFirst({
+    cacheName: API_CACHE,
+    plugins: [
+      new workbox.expiration.ExpirationPlugin({
+        maxEntries: 50,
+        maxAgeSeconds: 24 * 60 * 60, // 1 day
+      }),
+    ],
+    fetchOptions: {
+      cache: "no-store",
+    },
+  }),
+);
 self.addEventListener("install", async (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.add(offlineFallbackPage)));
 });
@@ -48,19 +100,25 @@ if (workbox.navigationPreload.isSupported()) {
 }
 
 workbox.routing.registerRoute(
-  new RegExp("/*"),
+  new RegExp("/_next/static/.*"),
   new workbox.strategies.StaleWhileRevalidate({
-    cacheName: CACHE,
+    cacheName: STATIC_RESOURCES,
+  }),
+); // Adjust caching strategy for images
+workbox.routing.registerRoute(
+  new RegExp("/_next/image.*"),
+  new workbox.strategies.StaleWhileRevalidate({
+    cacheName: IMAGES_CACHE,
   }),
 );
 
+// Fallback for navigation requests
 self.addEventListener("fetch", (event) => {
   if (event.request.mode === "navigate") {
     event.respondWith(
       (async () => {
         try {
           const preloadResp = await event.preloadResponse;
-
           if (preloadResp) {
             return preloadResp;
           }
@@ -77,6 +135,7 @@ self.addEventListener("fetch", (event) => {
   }
 });
 
+// Notification click event
 self.addEventListener("notificationclick", (event) => {
   event.notification.close(); // Close the notification
 
