@@ -14,7 +14,6 @@ export interface IGroup extends IGroupWriting {
     attendCnt?: number;
   }[];
   comment: IGatherComment[];
-  link?: string;
 }
 
 export interface IGroupWriting extends ITimeStamps {
@@ -35,7 +34,8 @@ export interface IGroupWriting extends ITimeStamps {
   period: string;
   organizer: IUser;
   location: LocationFilterType;
-
+  isSecret?: boolean;
+  link?: string;
   questionText?: string;
   hashTag?: string;
   attendance: IGroupAttendance;

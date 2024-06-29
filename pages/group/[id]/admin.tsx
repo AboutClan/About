@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -11,6 +11,7 @@ import { useCompleteToast } from "../../../hooks/custom/CustomToast";
 import { useGroupWaitingStatusMutation } from "../../../hooks/groupStudy/mutations";
 import { useGroupQuery } from "../../../hooks/groupStudy/queries";
 import { checkGroupGathering } from "../../../libs/group/checkGroupGathering";
+import InviteOuterModal from "../../../modals/groupStudy/InviteOuterModal";
 import GroupAdminInvitation from "../../../pageTemplates/group/admin/GroupAdminInvitation";
 import { IGroup } from "../../../types/models/groupTypes/group";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
@@ -21,6 +22,7 @@ function Admin() {
 
   const [deletedUsers, setDeletedUser] = useState([]);
   const [group, setGroup] = useState<IGroup>();
+  const [isOuterModal, setIsOuterModal] = useState(false);
 
   const { data: groups } = useGroupQuery();
 
@@ -92,10 +94,16 @@ function Admin() {
               ),
             )}
           </Container>
-          <Title>유저 초대</Title>
+          <Title>
+            <Box>유저 초대</Box>
+            <Button onClick={() => setIsOuterModal(true)} size="xs" colorScheme="mintTheme">
+              외부 인원 초대
+            </Button>
+          </Title>
           <GroupAdminInvitation belong={belong} />
         </Layout>
       </Slide>
+      {isOuterModal && <InviteOuterModal setIsModal={setIsOuterModal} />}
     </>
   );
 }
@@ -105,6 +113,8 @@ const Layout = styled.div`
 `;
 
 const Title = styled.div`
+  display: flex;
+  justify-content: space-between;
   font-weight: 700;
   font-size: 18px;
   border-bottom: var(--border);

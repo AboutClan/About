@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -54,7 +54,6 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
   const [isNotCompletedModal, setIsNotCompletedModal] = useState(false);
 
   const handleTabMove = (tab: HomeTab) => {
-   
     if (tab === "스터디") {
       const initialUrl = getUrlWithLocationAndDate(locationParam, dateParam, session.user.location);
       router.replace(initialUrl);
@@ -106,7 +105,7 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
     <>
       <>
         <Box fontSize="16px" bgColor="white" pt="8px">
-          <TabNav tabOptionsArr={tabNavOptions} selected={category} hasBorder={false} />
+          <TabNav tabOptionsArr={tabNavOptions} selected={category} hasBorder={false} isThick />
         </Box>
       </>
       {isNotCompletedModal && <NotCompletedModal setIsModal={setIsNotCompletedModal} />}

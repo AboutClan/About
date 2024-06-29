@@ -25,6 +25,8 @@ function GroupContent({ group }: IGroupContent) {
     flex: 1,
   }));
 
+  const isSecret = group?.isSecret;
+
   return (
     <Layout>
       <TabNav tabOptionsArr={tabArr} selected={category} />

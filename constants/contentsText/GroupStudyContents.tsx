@@ -1,11 +1,9 @@
-
 import { TABLE_COLORS } from "../../constants/styles";
 import { IRuleModalContent } from "../../modals/RuleModal";
 import { GroupCategory } from "../../types/models/groupTypes/group";
 
 export const GROUP_STUDY_CATEGORY_ARR = [
   "전체",
-  "소그룹",
   "자기계발",
   "운동",
   "프로그래밍",
@@ -19,12 +17,11 @@ export const GROUP_STUDY_CATEGORY_ARR = [
 
 export const GROUP_STUDY_SUB_CATEGORY: { [key in GroupCategory]: string[] } = {
   전체: [],
-  소그룹: [],
   어학: ["토익", "오픽", "토플", "회화", "일본어"],
   자격증: ["컴활", "한국사", "정보처리기사"],
   프로그래밍: ["코딩테스트", "프로젝트", "언어 공부"],
   취업준비: ["공기업 면접", "사기업 면접", "인적성(NCS)"],
-  자기계발: ["투두메이트", "다이어리", "시사/경제", "공부인증/열품타", "습관", "독서"],
+  자기계발: ["투두메이트", "다이어리", "시사/경제", "공부인증/열품타", "습관", "독서", "일기"],
   게임: ["리그오브레전드", "오버워치", "롤토체스"],
   친목: ["소그룹", "방탈출", "보드게임"],
   운동: ["러닝", "운동 인증"],
@@ -32,15 +29,15 @@ export const GROUP_STUDY_SUB_CATEGORY: { [key in GroupCategory]: string[] } = {
 };
 
 export const GROUP_STUDY_CATEGORY_ARR_ICONS = {
-  어학: <i className="fa-regular fa-globe" style={{color:`${TABLE_COLORS[0]}`}} />,
-  자격증: <i className="fa-regular fa-file-certificate" style={{color:`${TABLE_COLORS[1]}`}} />,
-  프로그래밍: <i className="fa-regular fa-binary" style={{color:`${TABLE_COLORS[2]}`}} />,
-  취업준비: <i className="fa-regular fa-user-graduate" style={{color:`${TABLE_COLORS[3]}`}} />,
-  자기계발: <i className="faregular- fa-book-user" style={{color:`${TABLE_COLORS[4]}`}} />,
-  게임: <i className="fa-regular fa-gamepad" style={{color:`${TABLE_COLORS[5]}`}} />,
-  친목: <i className="fa-regular fa-champagne-glasses" style={{color:`${TABLE_COLORS[7]}`}} />,
-  운동: <i className="fa-regular fa-person-running" style={{color:`${TABLE_COLORS[8]}`}} />,
-  기타: <i className="fa-regular fa-atom" style={{color:`${TABLE_COLORS[6]}`}} />,
+  어학: <i className="fa-regular fa-globe" style={{ color: `${TABLE_COLORS[0]}` }} />,
+  자격증: <i className="fa-regular fa-file-certificate" style={{ color: `${TABLE_COLORS[1]}` }} />,
+  프로그래밍: <i className="fa-regular fa-binary" style={{ color: `${TABLE_COLORS[2]}` }} />,
+  취업준비: <i className="fa-regular fa-user-graduate" style={{ color: `${TABLE_COLORS[3]}` }} />,
+  자기계발: <i className="fa-regular fa-book-user" style={{ color: `${TABLE_COLORS[4]}` }} />,
+  게임: <i className="fa-regular fa-gamepad" style={{ color: `${TABLE_COLORS[5]}` }} />,
+  친목: <i className="fa-regular fa-champagne-glasses" style={{ color: `${TABLE_COLORS[7]}` }} />,
+  운동: <i className="fa-regular fa-person-running" style={{ color: `${TABLE_COLORS[8]}` }} />,
+  기타: <i className="fa-regular fa-atom" style={{ color: `${TABLE_COLORS[6]}` }} />,
 };
 
 export const GROUP_STUDY_RULE_CONTENT: IRuleModalContent = {

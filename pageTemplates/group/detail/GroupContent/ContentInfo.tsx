@@ -33,10 +33,7 @@ function ContentInfo({ group }: IContentInfo) {
       )}
       {group?.link && (
         <KakaoLink>
-          <span>오픈채팅방 주소(참여 인원 전용)</span>
-          <div>
-            <BlurredLink url={group.link} isBlur={!isMember} />
-          </div>
+          <BlurredLink url={group.link} isBlur={!isMember} />
         </KakaoLink>
       )}
       {group?.challenge && (

@@ -1,8 +1,8 @@
 import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
@@ -31,10 +31,10 @@ function GroupDetail() {
   const [group, setGroup] = useState<IGroup>();
 
   const { data: groups } = useGroupQuery();
-
+ 
   useEffect(() => {
     if (groups) setGroup(groups.find((item) => item.id + "" === id));
-  }, [groups]);
+  }, [groups, id]);
 
   const queryClient = useQueryClient();
 

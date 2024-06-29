@@ -1,16 +1,20 @@
 import { Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { useFailToast } from "../../../../hooks/custom/CustomToast";
 import AttendCheckModal from "../../../../modals/groupStudy/AttendCheckModal";
-import { IWeekRecord } from "../../../../types/models/groupTypes/group";
+import { IGroup, IWeekRecord } from "../../../../types/models/groupTypes/group";
 import { dayjsToFormat } from "../../../../utils/dateTimeUtils";
 
-function ContentAttend({ group }) {
+interface ContentAttendProps {
+  group: IGroup;
+}
+
+function ContentAttend({ group }: ContentAttendProps) {
   const { data: session } = useSession();
   const router = useRouter();
   const [isModal, setIsModal] = useState(false);
@@ -51,10 +55,10 @@ function ContentAttend({ group }) {
 
     for (let i = 0; i < group.participants.length; i++) {
       const who = group.participants[i];
-      if (!weekArr.find((item) => item.uid === who.user.uid)) {
+      if (!weekArr.find((item) => item.uid === who.user?.uid)) {
         weekArr.push({
-          uid: who.user.uid,
-          name: who.user.name,
+          uid: who.user?.uid,
+          name: who.user?.name,
           attendRecord: [],
           attendRecordSub: [],
         });
@@ -125,7 +129,7 @@ function ContentAttend({ group }) {
             ))}
           </TopLine>
           <Main>
-            {attendRecord.map((who) => {
+            {attendRecord.map((who, idx) => {
               const attendDays = who.attendRecord;
               const attendDaySub = who?.attendRecordSub;
               const days = weekDay.map((day) => {
@@ -137,8 +141,8 @@ function ContentAttend({ group }) {
               });
 
               return (
-                <MainLine key={who.uid}>
-                  <Name>{who.name}</Name>
+                <MainLine key={idx}>
+                  <Name>{group?.isSecret ? "비공개" : who.name}</Name>
                   {days.map((isAttend, idx) => (
                     <Item key={idx}>
                       {isAttend.main ? (

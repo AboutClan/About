@@ -9,9 +9,9 @@ import {
   Flex,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
@@ -57,8 +57,8 @@ export default function WriteDrawer() {
             />
             <SocialButton
               url="/group/writing/main"
-              title="소그룹"
-              subTitle="비슷한 관심사의 인원들을 모아봐요"
+              title="소모임"
+              subTitle="비슷한 관심사의 인원들과 함께해요!"
               icon={<i className="fa-regular fa-campfire" style={{ color: "white" }} />}
               color="blue.400"
             />

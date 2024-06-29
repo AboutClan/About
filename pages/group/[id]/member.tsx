@@ -1,6 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 
@@ -59,7 +59,7 @@ export default function Member() {
     },
     text: "추방",
   };
-
+  console.log(deleteUser);
   return (
     <>
       <Header title="멤버 관리" />
@@ -69,13 +69,13 @@ export default function Member() {
             참여중인 멤버
           </Box>
           <Flex direction="column">
-            {group?.participants.map((who) => (
-              <Box key={who.user.uid}>
+            {group?.participants.map((who, idx) => (
+              <Box key={idx}>
                 <ProfileCommentCard
                   user={who.user}
                   comment={`구성:${GROUP_STUDY_ROLE[who.role]} / 출석 횟수:${who.attendCnt}회`}
                   rightComponent={
-                    who.user.uid !== session?.user.uid ? (
+                    who.user?.uid !== session?.user.uid ? (
                       <Button
                         onClick={() => setDeleteUser(who.user)}
                         colorScheme="redTheme"

@@ -172,44 +172,18 @@ export function ModalLayout({
                 rightText={text}
                 onClickLeft={subFunc}
                 onClickRight={func}
+                isLoading={main?.isLoading}
               />
             ) : (
               <>
                 <Button onClick={subFunc} variant="ghost" color="var(--color-mint)">
                   {subText}
                 </Button>
-                <Button onClick={func} variant="ghost">
+                <Button onClick={func} variant="ghost" isLoading={main?.isLoading}>
                   {text}
                 </Button>
               </>
             )}
-            {/* {isFull ? (
-            <>
-              {sub && (
-                <Button
-                  size="lg"
-                  className="enabled:hover:bg-gray-100 bg-white border-1.5 border-mint text-mint text-base flex-1 font-semibold"
-                  onClick={subFunc}
-                >
-                  {subText}
-                </Button>
-              )}
-              <Button
-                size="lg"
-                className="font-semibold flex-1 ml-auto bg-mint text-white enabled:hover:mintShadow"
-                onClick={func}
-              >
-                {text}
-              </Button>
-            </>
-          ) : (
-            <>
-              {sub && <button></button>}
-              <button className="ml-auto text-mint" onClick={func}>
-                {text}
-              </button>
-            </>
-          )} */}
           </ChakraModalFooter>
         )}
       </ModalContent>

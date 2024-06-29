@@ -28,7 +28,7 @@ function GroupTitle({
   const color =
     status === "gathering"
       ? "mintTheme"
-      : status === "open"
+      : status === "open" || status === "pending"
         ? maxCnt === 0 || maxCnt > memberCnt
           ? "mintTheme"
           : "redTheme"
@@ -37,7 +37,7 @@ function GroupTitle({
   const statusText =
     status === "gathering"
       ? "소그룹"
-      : status === "open"
+      : status === "open" || status === "pending"
         ? maxCnt === 0 || maxCnt > memberCnt
           ? "모집중"
           : "마감"
