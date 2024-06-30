@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 
 import AlertModal, { IAlertModalOptions } from "../../../components/AlertModal";
+import { Input } from "../../../components/atoms/Input";
 import { MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
 import Selector from "../../../components/atoms/Selector";
 import InviteUserGroups from "../../../components/molecules/groups/InviteUserGroups";
@@ -26,6 +27,7 @@ export default function GroupAdminInvitation() {
   const [userFilterValue, setUserFilterValue] = useState<UserType>("신규 가입자");
   const [filterUsers, setFilterUsers] = useState<IUserSummary[]>();
   const [inviteUser, setInviteUser] = useState<IUserSummary>(null);
+  const [nameValue, setNameValue] = useState("");
 
   useEffect(() => {
     setValue(location);
@@ -50,12 +52,20 @@ export default function GroupAdminInvitation() {
   useEffect(() => {
     setFilterUsers(null);
     if (isLoading || !usersAll) return;
-    setFilterUsers(
-      usersAll.filter((user) =>
-        user.isActive && userFilterValue === "전체" ? true : !user?.belong,
-      ),
-    );
-  }, [usersAll]);
+    if (nameValue) {
+      setFilterUsers(
+        usersAll.filter(
+          (user) => (user.isActive && user.name === nameValue) || user.name.slice(1) === nameValue,
+        ),
+      );
+    } else {
+      setFilterUsers(
+        usersAll.filter((user) =>
+          user.isActive && userFilterValue === "전체" ? true : !user?.belong,
+        ),
+      );
+    }
+  }, [usersAll, nameValue]);
 
   const USER_TYPE_ARR: UserType[] = ["신규 가입자", "전체"];
 
@@ -71,12 +81,20 @@ export default function GroupAdminInvitation() {
   return (
     <>
       <Box mt="16px">
-        <Flex justify="space-between">
+        <Flex justify="space-between" align="flex-end">
           <Selector
             options={USER_TYPE_ARR}
             defaultValue={userFilterValue}
             setValue={setUserFilterValue}
           />
+          <Box>
+            <Input
+              placeholder="이름 검색"
+              size="xs"
+              value={nameValue}
+              onChange={(e) => setNameValue(e.target.value)}
+            />
+          </Box>
           <Selector options={LOCATION_USE_ALL} defaultValue={value} setValue={setValue} />
         </Flex>
         <Box position="relative">
