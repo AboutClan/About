@@ -29,8 +29,8 @@ function HomeStudyChart({ voteCntArr }: HomeStudyChartProps) {
   const totalArr = [];
   const locationArr = [];
   const xArr = [];
-
   filtered?.forEach((obj) => {
+    console.log(obj);
     totalArr.push(obj.totalValue);
     locationArr.push(obj.value);
     xArr.push(dayjs(obj.date).date() + "");
