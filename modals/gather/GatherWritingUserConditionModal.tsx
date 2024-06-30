@@ -5,18 +5,24 @@ import styled from "styled-components";
 
 import { PopOverIcon } from "../../components/atoms/Icons/PopOverIcon";
 import { GatherConditionType } from "../../pages/gather/writing/condition";
+import { GroupConditionType } from "../../pages/group/writing/condition";
 import GatherWritingConditionAgeRange from "../../pageTemplates/gather/writing/condition/GatherWritingConditionAgeRange";
 import GatherWritingConditionCnt from "../../pageTemplates/gather/writing/condition/GatherWritingConditionCnt";
-import { sharedGatherWritingState } from "../../recoils/sharedDataAtoms";
+import { sharedGatherWritingState, sharedGroupWritingState } from "../../recoils/sharedDataAtoms";
 import { IModal } from "../../types/components/modalTypes";
 import { IGatherMemberCnt, IGatherWriting } from "../../types/models/gatherTypes/gatherTypes";
+import { IGroupWriting } from "../../types/models/groupTypes/group";
 import { ModalLayout } from "../Modals";
 
 interface GatherWritingUserConditionModalProps extends IModal {
-  gatherContent: IGatherWriting;
+  gatherContent: IGatherWriting | IGroupWriting;
   isGenderCondition: boolean;
   isAgeCondition: boolean;
-  toggleSwitch: (e: ChangeEvent<HTMLInputElement>, type: GatherConditionType) => void;
+  type: "gather" | "group";
+  toggleSwitch: (
+    e: ChangeEvent<HTMLInputElement>,
+    type: GatherConditionType | GroupConditionType,
+  ) => void;
 }
 
 function GatherWritingUserConditionModal({
@@ -24,8 +30,10 @@ function GatherWritingUserConditionModal({
   isAgeCondition,
   setIsModal,
   toggleSwitch,
+  type,
 }: GatherWritingUserConditionModalProps) {
   const [gatherContent, setGatherContent] = useRecoilState(sharedGatherWritingState);
+  const [groupContent, setGroupContent] = useRecoilState(sharedGroupWritingState);
 
   const [memberCnt, setMemberCnt] = useState<IGatherMemberCnt>(
     gatherContent?.memberCnt || {
@@ -36,7 +44,8 @@ function GatherWritingUserConditionModal({
   const [age, setAge] = useState(gatherContent?.age || [19, 28]);
 
   useEffect(() => {
-    setGatherContent({ ...gatherContent, age, memberCnt });
+    if (type === "gather") setGatherContent({ ...gatherContent, age, memberCnt });
+    if (type === "group") setGroupContent({ ...groupContent, age, memberCnt });
   }, [age, memberCnt]);
 
   return (

@@ -21,7 +21,7 @@ const GROUP_WRITING_SEQUENCE = {
   guide: 3,
   content: 4,
   period: 5,
-  hasgTag: 6,
+  hashTag: 6,
   condition: 7,
 };
 const STUDY_WRITING_SEQUENCE = {
@@ -44,7 +44,7 @@ function PageTracker() {
 
       const setLeftSlide = () => setSlideDirection("left");
       const setRightSlide = () => setSlideDirection("right");
-   
+
       switch (curFirstSegment) {
         case "home":
           if (prevSegments[0] !== "vote") setLeftSlide();

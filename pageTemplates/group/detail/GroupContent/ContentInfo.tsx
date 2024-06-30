@@ -33,15 +33,15 @@ function ContentInfo({ group }: IContentInfo) {
       )}
       {group?.link && (
         <KakaoLink>
-          <span>오픈채팅방 주소(참여 인원 전용)</span>
-          <div>
-            <BlurredLink url={group.link} isBlur={!isMember} />
-          </div>
+          <BlurredLink url={group.link} isBlur={!isMember} />
         </KakaoLink>
       )}
       {group?.challenge && (
         <Challenge>
-          <i className="fa-regular fa-bellon" style={{ color: "var(--color-red)" }} />
+          <i
+            className="fa-regular fa-bell-on"
+            style={{ color: "var(--color-red)", marginRight: "2px" }}
+          />
           {group?.challenge}
         </Challenge>
       )}

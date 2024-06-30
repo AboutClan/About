@@ -10,6 +10,7 @@ interface ITabNav {
   tabOptionsArr: ITabNavOptions[];
   hasBorder?: boolean;
   isMain?: boolean;
+  isThick?: boolean;
 }
 
 export default function TabNav({
@@ -17,14 +18,15 @@ export default function TabNav({
   tabOptionsArr,
   hasBorder = true,
   isMain = false,
+  isThick,
 }: ITabNav) {
   const idx = tabOptionsArr.findIndex((tab) => tab.text === selected);
-
+ 
   return (
     <>
       <Tabs
         index={selected ? idx : undefined}
-        color="var(--gray-500)"
+        color={isThick ? "var(--gray-600)" : "var(--gray-500)"}
         colorScheme="mintTheme"
         bgColor="white"
       >
@@ -43,12 +45,12 @@ export default function TabNav({
             }),
           }}
         >
-          {tabOptionsArr.map((tab) => (
+          {tabOptionsArr.map((tab, index) => (
             <Tab
               display="flex"
               flexShrink="0 !important"
               fontSize="inherit"
-              fontWeight={600}
+              fontWeight={isThick ? 600 : index === idx || idx === -1 ? 600 : 400}
               p={!isMain ? "8px 20px" : "8px 16px"}
               flex={tab?.flex}
               key={tab.text}

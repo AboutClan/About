@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import Avatar from "../../atoms/Avatar";
 import UserBadge from "../../atoms/badges/UserBadge";
+import SecretAvatar from "../../atoms/SecretAvatar";
 
 export interface IProfileCommentCard {
   user: IUserSummary;
@@ -20,15 +21,18 @@ export default function ProfileCommentCard({
   rightComponent,
   setMemo,
 }: IProfileCommentCard) {
- 
   return (
     <CardContainer>
       {leftComponent && <Box mr="16px">{leftComponent}</Box>}
-      <Avatar image={user.profileImage} size="md" avatar={user.avatar} uid={user.uid} />
+      {user ? (
+        <Avatar image={user.profileImage} size="md" avatar={user.avatar} uid={user.uid} />
+      ) : (
+        <SecretAvatar />
+      )}
       <UserInfoContainer>
         <UserNameBadgeContainer>
-          <span>{user.name}</span>
-          <UserBadge score={user.score} uid={user.uid} />
+          <span>{user?.name || "비공개"}</span>
+          <UserBadge score={user?.score || 0} uid={user?.uid} />
         </UserNameBadgeContainer>
         <Flex alignItems="center" flex={1}>
           <CommentText>{comment !== null ? comment : user.comment}</CommentText>

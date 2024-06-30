@@ -24,13 +24,14 @@ function GroupBlock({ group }: IGroupBlock) {
   const setGroup = useSetRecoilState(transferGroupDataState);
 
   const groupInfo = {
-    그룹장:
-      group.organizer.name === "이승주"
+    그룹장: group.isSecret
+      ? "비공개"
+      : group.organizer.name === "이승주"
         ? group.id === 72
           ? "이승주"
           : "어바웃"
         : group.organizer.name,
-    인원: `${group.participants.length + (group.id === 33 ? 3 : 0)}/${
+    인원: `${group.participants.length}/${
       group.memberCnt.max === 0 ? "자유" : group.memberCnt.max + "명"
     }`,
     조건: `${
@@ -54,6 +55,7 @@ function GroupBlock({ group }: IGroupBlock) {
   };
 
   const getBadgeText = () => {
+ 
     const status = group.status;
     const min = group.memberCnt.min;
     const max = group.memberCnt.max;
@@ -65,7 +67,7 @@ function GroupBlock({ group }: IGroupBlock) {
         color: "mintTheme",
       };
     }
-    if (status === "open") {
+    if (status === "open" || status === "pending") {
       if (participantCnt < min) {
         return {
           text: `개설까지 ${min - participantCnt}명 남음`,
