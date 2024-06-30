@@ -11,7 +11,7 @@ interface IInput {
   placeholder?: string;
   disabled?: boolean;
   type?: HTMLInputTypeAttribute | undefined;
-  size?: "sm" | "md";
+  size?: "xs" | "sm" | "md";
 }
 export function Input({ size = "md", value, inputRef, onChange, placeholder, disabled }: IInput) {
   return (
