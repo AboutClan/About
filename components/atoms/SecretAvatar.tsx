@@ -1,10 +1,9 @@
 import { Box } from "@chakra-ui/react";
+
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import Avatar from "./Avatar";
 
-interface SecretAvatarProps {}
-
-function SecretAvatar({}: SecretAvatarProps) {
+function SecretAvatar() {
   const typeToast = useTypeToast();
 
   const onClick = () => {

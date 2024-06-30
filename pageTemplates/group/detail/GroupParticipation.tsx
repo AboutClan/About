@@ -1,8 +1,8 @@
 import styled from "styled-components";
+
 import { IProfileCommentCard } from "../../../components/molecules/cards/ProfileCommentCard";
 import ProfileCardColumn from "../../../components/organisms/ProfileCardColumn";
 import { GROUP_STUDY_ROLE } from "../../../constants/settingValue/groupStudy";
-
 import { IGroup } from "../../../types/models/groupTypes/group";
 
 interface IGroupParticipation {

@@ -10,7 +10,6 @@ import { useAdminPointSystemMutation } from "../../../hooks/admin/mutation";
 import { useCompleteToast } from "../../../hooks/custom/CustomToast";
 import { useGroupWaitingStatusMutation } from "../../../hooks/groupStudy/mutations";
 import { useGroupQuery } from "../../../hooks/groupStudy/queries";
-import { checkGroupGathering } from "../../../libs/group/checkGroupGathering";
 import InviteOuterModal from "../../../modals/groupStudy/InviteOuterModal";
 import GroupAdminInvitation from "../../../pageTemplates/group/admin/GroupAdminInvitation";
 import { IGroup } from "../../../types/models/groupTypes/group";
@@ -37,8 +36,6 @@ function Admin() {
   });
 
   const { mutate: getPoint } = useAdminPointSystemMutation();
-
-  const belong = group && checkGroupGathering(group.hashTag);
 
   const onClick = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -100,7 +97,7 @@ function Admin() {
               외부 인원 초대
             </Button>
           </Title>
-          <GroupAdminInvitation belong={belong} />
+          <GroupAdminInvitation />
         </Layout>
       </Slide>
       {isOuterModal && <InviteOuterModal setIsModal={setIsOuterModal} />}

@@ -38,7 +38,10 @@ function ContentInfo({ group }: IContentInfo) {
       )}
       {group?.challenge && (
         <Challenge>
-          <i className="fa-regular fa-bellon" style={{ color: "var(--color-red)" }} />
+          <i
+            className="fa-regular fa-bell-on"
+            style={{ color: "var(--color-red)", marginRight: "2px" }}
+          />
           {group?.challenge}
         </Challenge>
       )}

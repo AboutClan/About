@@ -17,10 +17,7 @@ import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 
 type UserType = "신규 가입자" | "전체";
 
-interface IGroupAdminInvitation {
-  belong: string;
-}
-export default function GroupAdminInvitation({ belong }: IGroupAdminInvitation) {
+export default function GroupAdminInvitation() {
   const completeToast = useCompleteToast();
   const { data: session } = useSession();
   const location = session?.user.location;

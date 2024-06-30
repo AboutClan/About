@@ -18,7 +18,7 @@ function TwoButtonNav({
   onClickRight,
   size = "lg",
 }: ITwoButtonNav) {
-  console.log(53);
+
   return (
     <Layout size={size}>
       <Button

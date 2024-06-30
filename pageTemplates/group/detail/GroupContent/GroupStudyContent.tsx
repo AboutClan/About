@@ -25,22 +25,12 @@ function GroupContent({ group }: IGroupContent) {
     flex: 1,
   }));
 
-  const isSecret = group?.isSecret;
+
 
   return (
     <Layout>
       <TabNav tabOptionsArr={tabArr} selected={category} />
-      {/* <ContentNav>
-        {categoryArr.map((item) => (
-          <ContentBtn
-            onClick={() => setCategory(item)}
-            isSelected={item === category}
-            key={item}
-          >
-            {item}
-          </ContentBtn>
-        ))}
-      </ContentNav> */}
+ 
       <ContentContainer>
         {category === "정보" ? (
           <ContentInfo group={group} />

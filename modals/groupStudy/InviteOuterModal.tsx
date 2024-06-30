@@ -1,6 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import { useQueryClient } from "react-query";
+
 import { GROUP_STUDY_ALL } from "../../constants/keys/queryKeys";
 import { useCompleteToast } from "../../hooks/custom/CustomToast";
 import { useGroupWaitingStatusMutation } from "../../hooks/groupStudy/mutations";
