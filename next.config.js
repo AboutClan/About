@@ -2,7 +2,6 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const withPWA = require("next-pwa");
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const runtimeCaching = require("next-pwa/cache");
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -65,10 +64,9 @@ module.exports = withPWA({
   ...nextConfig,
   pwa: {
     dest: "public",
-    register: isProduction,
-    skipWaiting: isProduction,
-    runtimeCaching,
     disable: !isProduction,
+    runtimeCaching: [],
+    buildExcludes: [/middleware-manifest.json$/],
   },
 });
 
