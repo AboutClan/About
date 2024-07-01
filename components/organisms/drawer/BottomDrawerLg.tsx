@@ -6,11 +6,11 @@ import { IModal } from "../../../types/components/modalTypes";
 import ScreenOverlay from "../../atoms/ScreenOverlay";
 
 export interface IBottomDrawerLgOptions {
-  header: {
+  header?: {
     title: string;
     subTitle: string;
   };
-  footer: {
+  footer?: {
     buttonText: string;
     onClick: () => void;
     buttonLoading?: boolean;
@@ -18,22 +18,26 @@ export interface IBottomDrawerLgOptions {
 }
 
 interface IBottomDrawerLg extends IModal {
-  options: IBottomDrawerLgOptions;
+  options?: IBottomDrawerLgOptions;
   children: React.ReactNode;
   isAnimation?: boolean;
+  height?: number;
+  isxpadding?: boolean;
+  isOverlay?: boolean;
 }
-
-const HEIGHT = 421.5;
 
 export default function BottomDrawerLg({
   setIsModal,
-  options: {
-    header: { title, subTitle },
-    footer: { buttonText, onClick, buttonLoading = false },
-  },
+  options,
   isAnimation = true,
+  height = 397.5,
   children,
+  isxpadding = true,
+  isOverlay = true,
 }: IBottomDrawerLg) {
+  const header = options?.header;
+  const footer = options?.footer;
+
   const handleDragEnd = (_, info) => {
     if (info.offset.y > 40) {
       setIsModal(false);
@@ -42,40 +46,46 @@ export default function BottomDrawerLg({
 
   return (
     <>
-      <ScreenOverlay onClick={() => setIsModal(false)} />
+      {isOverlay && <ScreenOverlay onClick={() => setIsModal(false)} />}
       <Layout
+        height={height}
+        isxpadding={isxpadding.toString()}
         drag="y"
         dragConstraints={{ top: 0, bottom: 0 }}
         onDragEnd={handleDragEnd}
-        initial={{ y: isAnimation ? HEIGHT : 0 }}
+        initial={{ y: isAnimation ? height : 0 }}
         animate={{ y: 0 }}
-        exit={{ y: HEIGHT, transition: { duration: 0.2 } }}
+        exit={{ y: height, transition: { duration: 0.2 } }}
         transition={{ duration: 0.4 }}
       >
         <TopNav />
-        <Header>
-          <span>{subTitle}</span>
-          <span>{title}</span>
-        </Header>
+        {header && (
+          <Header>
+            <span>{header.subTitle}</span>
+            <span>{header.title}</span>
+          </Header>
+        )}
         {children}
-        <Button
-          w="100%"
-          mt="auto"
-          colorScheme="mintTheme"
-          size="lg"
-          isLoading={buttonLoading}
-          borderRadius="var(--rounded-lg)"
-          onClick={onClick}
-        >
-          {buttonText}
-        </Button>
+        {footer && (
+          <Button
+            w="100%"
+            mt="auto"
+            colorScheme="mintTheme"
+            size="lg"
+            isLoading={footer.buttonLoading}
+            borderRadius="var(--rounded-lg)"
+            onClick={footer.onClick}
+          >
+            {footer.buttonText}
+          </Button>
+        )}
       </Layout>
     </>
   );
 }
 
-const Layout = styled(motion.div)`
-  height: ${HEIGHT}px;
+const Layout = styled(motion.div)<{ height: number; isxpadding: string }>`
+  height: ${(props) => props.height}px;
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -84,7 +94,8 @@ const Layout = styled(motion.div)`
   border-top-right-radius: var(--rounded-lg);
   background-color: white;
   z-index: 5000;
-  padding: 20px;
+  padding: ${(props) => (props.isxpadding === "true" ? "12px 20px" : "12px 0")};
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -94,8 +105,8 @@ const TopNav = styled.nav`
   width: 56px;
   height: 4px;
   border-radius: 4px;
-  background-color: var(--gray-5);
-  margin-bottom: var(--gap-5);
+  background-color: var(--gray-400);
+  margin-bottom: 12px;
 `;
 
 const Header = styled.header`
@@ -106,12 +117,12 @@ const Header = styled.header`
   > span:first-child {
     font-weight: 600;
     font-size: 15px;
-    color: var(--gray-2);
+
     margin-bottom: var(--gap-1);
   }
   > span:last-child {
     font-size: 20px;
     font-weight: 600;
-    color: var(--gray-1);
+    color: var(--gray-800);
   }
 `;

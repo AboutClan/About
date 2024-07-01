@@ -10,6 +10,7 @@ import {
   ModalHeader as ChakraModalHeader,
   ModalOverlay,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import TwoButtonNav from "../components/layouts/TwoButtonNav";
@@ -42,6 +43,7 @@ interface IModalLayout extends IModal {
   initialRef?: any;
   headerOptions?: IHeaderOptions;
   paddingOptions?: IPaddingOptions;
+  isInputFocus?: boolean;
 }
 
 export interface IPaddingOptions {
@@ -61,17 +63,37 @@ export function ModalLayout({
   initialRef,
   children,
   paddingOptions,
+  isInputFocus,
 }: IModalLayout) {
   const onClose = () => setIsModal(false);
 
   const { main, sub, isFull = true } = footerOptions || {};
   const { text = "확인", func = onClose } = main || {};
   const { text: subText = "닫기", func: subFunc = onClose } = sub || {};
+  const [modalTop, setModalTop] = useState("0%");
+
+  useEffect(() => {
+    const handleResize = () => {
+      const viewportHeight = window.visualViewport
+        ? window.visualViewport.height
+        : window.innerHeight;
+      if (viewportHeight < 500) {
+        // 모바일 키보드가 올라왔을 때의 높이 기준 조정
+        setModalTop("-10%"); // 모달을 조금 더 위로 이동
+      } else {
+        setModalTop("0%"); // 기본 위치
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [isInputFocus]);
 
   return (
     <Modal isOpen={true} onClose={onClose} initialFocusRef={initialRef}>
       <ModalOverlay />
       <ModalContent
+        top={modalTop}
         mx="var(--gap-4)"
         // h={height || SIZE_HEIGHT_MAP[size]}
         maxWidth="358px"
@@ -80,7 +102,7 @@ export function ModalLayout({
       >
         {!headerOptions ? (
           <>
-            <ChakraModalHeader p="var(--gap-4)" fontSize="18px" borderBottom="var(--border)">
+            <ChakraModalHeader p="16px 20px" fontSize="20px" borderBottom="var(--border)">
               {title}
             </ChakraModalHeader>
             <ModalCloseButton size="lg" />
@@ -90,23 +112,27 @@ export function ModalLayout({
         ) : (
           <>
             <ChakraModalHeader
-              pt="var(--gap-5)"
-              pb="var(--gap-2)"
+              pt={
+                paddingOptions?.header !== undefined ? `${paddingOptions.header}px` : "var(--gap-5)"
+              }
+              pb={paddingOptions?.header !== undefined ? `${paddingOptions.header}px` : "8px"}
               fontSize="20px"
               textAlign="center"
             >
               {title}
             </ChakraModalHeader>
             {headerOptions?.subTitle && (
-              <Box textAlign="center" color="var(--gray-2)" fontSize="16px">
+              <Box textAlign="center" fontSize="16px">
                 {headerOptions.subTitle}
               </Box>
             )}
           </>
         )}
         <ChakraModalBody
-          pt={paddingOptions?.body?.top ? `${paddingOptions.body.top}px` : "16px"}
-          pb={paddingOptions?.body?.bottom ? `${paddingOptions.body.bottom}px` : "4px"}
+          pt={paddingOptions?.body?.top !== undefined ? `${paddingOptions.body.top}px` : "16px"}
+          pb={
+            paddingOptions?.body?.bottom !== undefined ? `${paddingOptions.body.bottom}px` : "4px"
+          }
           px="20px"
         >
           {children}
@@ -114,7 +140,8 @@ export function ModalLayout({
 
         {footerOptions && (
           <ChakraModalFooter
-            py={paddingOptions?.footer ? `${paddingOptions.footer}px` : "20px"}
+            pb="20px"
+            pt={paddingOptions?.footer !== undefined ? `${paddingOptions.footer}px` : "16px"}
             px="20px"
           >
             {footerOptions?.children ? (
@@ -145,44 +172,18 @@ export function ModalLayout({
                 rightText={text}
                 onClickLeft={subFunc}
                 onClickRight={func}
+                isLoading={main?.isLoading}
               />
             ) : (
               <>
                 <Button onClick={subFunc} variant="ghost" color="var(--color-mint)">
                   {subText}
                 </Button>
-                <Button onClick={func} variant="ghost">
+                <Button onClick={func} variant="ghost" isLoading={main?.isLoading}>
                   {text}
                 </Button>
               </>
             )}
-            {/* {isFull ? (
-            <>
-              {sub && (
-                <Button
-                  size="lg"
-                  className="enabled:hover:bg-gray-100 bg-white border-1.5 border-mint text-mint text-base flex-1 font-semibold"
-                  onClick={subFunc}
-                >
-                  {subText}
-                </Button>
-              )}
-              <Button
-                size="lg"
-                className="font-semibold flex-1 ml-auto bg-mint text-white enabled:hover:mintShadow"
-                onClick={func}
-              >
-                {text}
-              </Button>
-            </>
-          ) : (
-            <>
-              {sub && <button></button>}
-              <button className="ml-auto text-mint" onClick={func}>
-                {text}
-              </button>
-            </>
-          )} */}
           </ChakraModalFooter>
         )}
       </ModalContent>
@@ -205,7 +206,7 @@ export function ModalHeader({ text, isCloseBtn = true, isLine = true }: IModalHe
         p="var(--gap-4) var(--gap-4)"
         fontWeight="700"
         fontSize="18px"
-        color="var(--gray-1)"
+        color="var(--gray-800)"
         borderBottom={isLine && "var(--border)"}
       >
         {text}

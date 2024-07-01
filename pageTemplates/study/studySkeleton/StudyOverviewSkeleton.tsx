@@ -39,7 +39,7 @@ const Layout = styled.div`
 `;
 
 const SpaceDetail = styled.div`
-  color: var(--gray-2);
+  color: var(--gray-700);
   font-size: 12px;
   font-weight: 600;
   margin-top: var(--gap-3);
@@ -56,7 +56,7 @@ const Location = styled.span`
 
   > div:first-child {
     width: 240px;
-    color: var(--gray-1);
+    color: var(--gray-800);
     margin-left: var(--gap-1);
   }
 `;

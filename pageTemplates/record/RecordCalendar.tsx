@@ -1,12 +1,7 @@
-import { faEllipsisStroke } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs, { Dayjs } from "dayjs";
 import styled from "styled-components";
 
-import {
-  LOCATION_OPEN_DATE,
-  LOCATION_TABLE_COLOR,
-} from "../../constants/location";
+import { LOCATION_OPEN_DATE, LOCATION_TABLE_COLOR } from "../../constants/location";
 import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { IArrivedData } from "../../types/models/studyTypes/studyRecords";
 import { Location } from "../../types/services/locationTypes";
@@ -56,7 +51,7 @@ function RecordCalendar({ filterData, navMonth }: IRecordCalendar) {
                     {tempCnt < 4 || openStudyLocation.size <= 3 ? (
                       "Open"
                     ) : (
-                      <FontAwesomeIcon icon={faEllipsisStroke} size="xl" />
+                      <i className="fa-regular fa-ellipsis-stroke fa-xl" />
                     )}
                   </Open>
                 );
@@ -96,7 +91,7 @@ const DayItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  border: 1px solid var(--gray-7);
+  border: 1px solid var(--gray-200);
 `;
 
 const DayItemDate = styled.span<{ isToday: boolean }>`
@@ -117,14 +112,14 @@ const LocationOpen = styled.div<{ location: Location }>`
 
 const Open = styled.div<{ location: Location }>`
   font-size: 10px;
-  color: ${(props) => LOCATION_TABLE_COLOR[props.location]};
+  color: ${(props) => LOCATION_TABLE_COLOR[props.location] || "var(--gray-500)"};
 `;
 
 const DayLine = styled.div`
   margin: var(--gap-2) 24px;
   display: flex;
   justify-content: space-between;
-  color: var(--gray-3);
+  color: var(--gray-600);
   font-size: 12px;
 `;
 

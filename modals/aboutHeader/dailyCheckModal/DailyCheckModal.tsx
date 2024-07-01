@@ -8,8 +8,6 @@ import {
   PopoverHeader,
   PopoverTrigger,
 } from "@chakra-ui/react";
-import { faCheckCircle } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
@@ -58,7 +56,8 @@ function DailyCheckModal({ setIsModal }: IModal) {
       toast("error", "이미 오늘의 출석체크를 완료했습니다.");
     },
   });
-  const { mutate: getPoint } = usePointSystemMutation("point");
+
+  const { mutate: getScore } = usePointSystemMutation("score");
   const { mutate: sendRequest } = useUserRequestMutation();
 
   const winDistribution = getDistributionArr(DAILY_CHECK_WIN_LIST, DISTRIBUTION_SIZE);
@@ -94,7 +93,7 @@ function DailyCheckModal({ setIsModal }: IModal) {
       };
       sendRequest(data);
     }
-    getPoint(POINT_SYSTEM_PLUS.DAILY_ATTEND);
+    getScore(POINT_SYSTEM_PLUS.DAILY_ATTEND);
     toast("success", "출석체크 완료 !");
   };
 
@@ -109,7 +108,7 @@ function DailyCheckModal({ setIsModal }: IModal) {
   return (
     <ModalLayout title="매일매일 출석체크!" footerOptions={footerOptions} setIsModal={setIsModal}>
       <PresentMessage>
-        매일 출석체크로 <b>5 point</b>를 얻을 수 있고, 운이 좋으면
+        매일 출석체크로 <b>2 SCORE</b>을 얻을 수 있고, 확률적으로
         <b> 랜덤 이벤트 선물</b>도 받을 수 있어요!
       </PresentMessage>
       <Container>
@@ -118,7 +117,7 @@ function DailyCheckModal({ setIsModal }: IModal) {
           <Badge text="+랜덤 선물" colorScheme="redTheme" />
         </Detail>
         <CheckWrapper>
-          <FontAwesomeIcon icon={faCheckCircle} color="var(--color-mint)" size="4x" />
+          <i className="fa-regular fa-check-circle fa-4x" style={{ color: "var(--color-mint)" }} />
         </CheckWrapper>
         <Detail>
           <PresentListPopOver />
@@ -137,7 +136,7 @@ function PresentListPopOver() {
           선물 목록
         </Button>
       </PopoverTrigger>
-      <PopoverContent bg="var(--gray-8)">
+      <PopoverContent bg="var(--gray-100)">
         <PopoverHeader fontWeight="semibold">
           선물 목록 <SubTitle>(16 종류)</SubTitle>
         </PopoverHeader>
@@ -164,7 +163,7 @@ function PresentPercentPopOver() {
           당첨 확률
         </Button>
       </PopoverTrigger>
-      <PopoverContent bg="var(--gray-8)">
+      <PopoverContent bg="var(--gray-100)">
         <PopoverHeader fontWeight="semibold">
           당첨 확률<SubTitle>(총 7.06%)</SubTitle>
         </PopoverHeader>
@@ -210,7 +209,7 @@ const Detail = styled.div`
   /* > span {
     width: 65px;
     text-align: end;
-    color: var(--gray-2);
+    
     display: block;
     padding: 2px 0;
     font-weight: 600;
@@ -219,7 +218,7 @@ const Detail = styled.div`
 `;
 
 const SubTitle = styled.span`
-  color: var(--gray-3);
+  color: var(--gray-600);
   font-weight: 400;
   font-size: 12px;
 `;

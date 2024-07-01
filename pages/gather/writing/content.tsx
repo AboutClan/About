@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
-import Input from "../../../components/atoms/Input";
+import { Input } from "../../../components/atoms/Input";
 import Textarea from "../../../components/atoms/Textarea";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";

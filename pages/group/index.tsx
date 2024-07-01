@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import RuleIcon from "../../components/atoms/Icons/RuleIcon";
-import WritingIcon from "../../components/atoms/Icons/WritingIcon";
 import Selector from "../../components/atoms/Selector";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
@@ -104,28 +103,27 @@ function Index() {
       );
     }
 
+
+ 
+
     const filtered =
       category.main === "전체"
         ? groups
-        : category.main === "소그룹"
-          ? groups.filter((item) => item.status === "gathering")
-          : groups.filter(
-              (item) =>
-                (item.category.main === category.main && !category.sub) ||
-                item.category.sub === category.sub,
-            );
+        : groups.filter(
+            (item) =>
+              (item.category.main === category.main && !category.sub) ||
+              item.category.sub === category.sub,
+          );
 
     const filtered2 =
-      status === "모집중" && category.main !== "소그룹"
-        ? filtered.filter((item) => item.status === "open")
+      status === "모집중"
+        ? filtered.filter((item) => item.status === "open" || item.status === "pending")
         : status === "종료"
           ? filtered.filter((item) => item.status === "end")
-          : category.main === "소그룹"
-            ? filtered.filter((item) => item.status === "gathering")
-            : filtered;
+          : filtered;
 
     setGroupStudies(shuffleArray(filtered2));
-  }, [category, groups, isGuest, status]);
+  }, [category, groups, isGuest, status, session?.user]);
 
   const mainTabOptionsArr: ITabNavOptions[] = GROUP_STUDY_CATEGORY_ARR.map((category, idx) => ({
     text: category,
@@ -147,17 +145,16 @@ function Index() {
 
   return (
     <>
-      <Header title="소모임 그룹" url="/home">
+      <Header title="소모임" url="/home" isBack={false}>
         <RuleIcon setIsModal={setIsRuleModal} />
       </Header>
 
       <Slide>
         <Layout>
-          <SectionBar title="내 소모임" />
           {!groupStudies ? <GroupSkeletonMine /> : <GroupMine myGroups={myGroups} />}
           <SectionBar title="전체 소모임" rightComponent={<StatusSelector />} />
           <NavWrapper>
-            <TabNav selected={category.main} tabOptionsArr={mainTabOptionsArr} />
+            <TabNav selected={category.main} tabOptionsArr={mainTabOptionsArr} isMain />
           </NavWrapper>
           <SubNavWrapper>
             <CheckBoxNav
@@ -180,7 +177,6 @@ function Index() {
           </>
         </Layout>
       </Slide>
-      {!isGuest && <WritingIcon url="/group/writing/category/main" />}
 
       {isRuleModal && <RuleModal content={GROUP_STUDY_RULE_CONTENT} setIsModal={setIsRuleModal} />}
     </>
@@ -189,8 +185,8 @@ function Index() {
 
 const Layout = styled.div`
   min-height: 100vh;
-  background-color: var(--gray-8);
-  padding-bottom: 20px;
+  background-color: var(--gray-100);
+  padding-bottom: 40px;
 `;
 
 const NavWrapper = styled.div`

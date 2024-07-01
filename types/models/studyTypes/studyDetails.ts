@@ -1,6 +1,6 @@
 import { Dayjs } from "dayjs";
 
-import { Location } from "../../services/locationTypes";
+import { ActiveLocation } from "../../services/locationTypes";
 import { IUserSummary } from "../userTypes/userInfoTypes";
 import { IAbsence } from "./studyInterActions";
 
@@ -24,25 +24,32 @@ export interface IAttendance {
     start: Dayjs;
     end: Dayjs;
   };
+  createdAt: string;
   imageUrl?: string;
   arrived?: Date;
   firstChoice: boolean;
   memo: string;
 }
 
-export interface IPlace {
-  status: string;
+export interface PlaceRegisterProps {
+  fullname: string;
   brand: string;
   branch: string;
-  fullname: string;
-  coverImage: string;
   image: string;
-  latitude: number;
   longitude: number;
-  _id: string;
-  location: Location;
+  latitude: number;
+  location: ActiveLocation;
+  coverImage: string;
   locationDetail: string;
-  time: string;
+  mapURL: string;
+  time?: string;
+}
+
+export interface IPlace extends PlaceRegisterProps {
+  status: string;
+  _id: string;
+  prefCnt: number;
+  registerDate: string;
 }
 
 export type StudyStatus = "pending" | "open" | "dismissed" | "free";

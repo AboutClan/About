@@ -1,6 +1,4 @@
 import { Button } from "@chakra-ui/react";
-import { faUserGroup } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { useRouter } from "next/dist/client/router";
 import styled from "styled-components";
@@ -16,7 +14,7 @@ function StudyDateBarSkeleton() {
         <span>{date.format("M월 D일 참여 멤버")}</span>
         <div />
         <Container>
-          <FontAwesomeIcon icon={faUserGroup} size="sm" />
+          <i className="fa-solid fa-user-group fa-sm" />
           <div>
             현재
             <span>
@@ -51,7 +49,7 @@ const Container = styled.div`
   margin: var(--gap-1) 0;
   display: flex;
   align-items: center;
-  color: var(--gray-2);
+  color: var(--gray-700);
   > div {
     margin-left: var(--gap-1);
     display: flex;

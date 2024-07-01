@@ -48,7 +48,7 @@ const WeekText = styled.div`
   width: 140px;
   > span:last-child {
     margin-left: var(--gap-1);
-    color: var(--gray-4);
+    color: var(--gray-500);
   }
 `;
 

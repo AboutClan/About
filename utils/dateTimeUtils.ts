@@ -1,4 +1,10 @@
+import "dayjs/locale/ko";
+
 import dayjs, { Dayjs } from "dayjs";
+import weekday from "dayjs/plugin/weekday";
+
+import { VoteCntProps } from "../types/models/studyTypes/studyRecords";
+dayjs.extend(weekday);
 
 export const dayjsToStr = (date: Dayjs) => date?.format("YYYY-MM-DD");
 
@@ -62,4 +68,43 @@ export const getDateWeek = (date: Dayjs) => {
   const firstDayOfMonth = date.startOf("month");
   const differenceInDays = date.diff(firstDayOfMonth, "day");
   return Math.floor(differenceInDays / 7) + 1;
+};
+
+export const getCalendarDates = (
+  type: "week" | "month",
+  selectedDate: Dayjs,
+  pointArr?: VoteCntProps[],
+) => {
+  const calendar: VoteCntProps[] = [];
+
+  if (type === "week") {
+    const startDate = selectedDate.startOf("month");
+    for (let i = 0; i < selectedDate.endOf("month").date(); i++) {
+      const date = startDate.add(i, "day");
+      calendar.push({ date: dayjsToStr(date), value: pointArr ? pointArr?.[i].value : 0 });
+    }
+  } else {
+    const startOfMonth = selectedDate.startOf("month");
+    const endOfMonth = selectedDate.endOf("month");
+    const startCalendar = startOfMonth.weekday(0);
+    const endCalendar = endOfMonth.weekday(6);
+
+    let current = startCalendar;
+    while (current.isBefore(endCalendar) || current.isSame(endCalendar)) {
+      const idx = current.diff(startOfMonth, "day");
+      if (current.isBefore(startOfMonth) || current.isAfter(endOfMonth)) {
+        calendar.push(null);
+      } else {
+        calendar.push({ date: dayjsToStr(current), value: pointArr ? pointArr?.[idx]?.value : 0 });
+      }
+
+      current = current.add(1, "day");
+    }
+    const maxDays = calendar.length <= 35 ? 35 : 42;
+    while (calendar.length < maxDays) {
+      calendar.push(null);
+    }
+  }
+
+  return calendar;
 };

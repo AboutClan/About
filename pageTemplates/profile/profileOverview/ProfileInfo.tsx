@@ -1,6 +1,3 @@
-import { faHeart } from "@fortawesome/pro-regular-svg-icons";
-import { faHeart as faSolidHeart } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
@@ -9,7 +6,7 @@ import Avatar from "../../../components/atoms/Avatar";
 import UserBadge from "../../../components/atoms/badges/UserBadge";
 import { LIKE_HEART } from "../../../constants/keys/localStorage";
 import { NOTICE_HEART_LOG } from "../../../constants/keys/queryKeys";
-import { POINT_SYSTEM_PLUS } from "../../../constants/settingValue/pointSystem";
+import { POINT_SYSTEM_PLUS } from "../../../constants/serviceConstants/pointSystemConstants";
 import { USER_ROLE } from "../../../constants/settingValue/role";
 import { useAdminPointMutation } from "../../../hooks/admin/mutation";
 import { useResetQueryData } from "../../../hooks/custom/CustomHooks";
@@ -132,11 +129,11 @@ function ProfileInfo({ user }: IProfileInfo) {
             <>
               {isHeart ? (
                 <HeartWrapper onClick={onClickHeart}>
-                  <FontAwesomeIcon icon={faSolidHeart} size="xl" color="var(--color-red)" />
+                  <i className="fa-solid fa-heart fa-xl" style={{ color: "var(--color-red)" }} />
                 </HeartWrapper>
               ) : (
                 <HeartWrapper onClick={onClickHeart}>
-                  <FontAwesomeIcon icon={faHeart} size="xl" />
+                  <i className="fa-regular fa-heart fa-xl" />
                 </HeartWrapper>
               )}
             </>
@@ -172,7 +169,7 @@ const ProfileName = styled.div`
   }
   > span:last-child {
     font-size: 12px;
-    color: var(--gray-3);
+    color: var(--gray-600);
   }
 `;
 const HeartWrapper = styled.button`
@@ -182,7 +179,7 @@ const HeartWrapper = styled.button`
 const Comment = styled.div`
   margin-left: var(--gap-1);
   margin-top: var(--gap-3);
-  color: var(--gray-1);
+  color: var(--gray-800);
   font-size: 12px;
   font-weight: 600;
 `;

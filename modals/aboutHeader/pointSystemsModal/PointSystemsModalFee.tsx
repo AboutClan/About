@@ -1,16 +1,8 @@
 import { ListItem, UnorderedList } from "@chakra-ui/react";
-import {
-  faAlarmClock,
-  faCalendarXmark,
-  faCircleXmark,
-  faDoNotEnter,
-  faScaleBalanced,
-  faUserPilot,
-} from "@fortawesome/pro-light-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
-import { POINT_SYSTEM_DEPOSIT } from "../../../constants/settingValue/pointSystem";
+import { POINT_SYSTEM_DEPOSIT } from "../../../constants/serviceConstants/pointSystemConstants";
+
 
 function PointSystemsModalFee() {
   return (
@@ -18,32 +10,35 @@ function PointSystemsModalFee() {
       <Layout>
         <Item>
           <Name>스터디 지각</Name>
-          <FontAwesomeIcon size="2x" icon={faAlarmClock} />
+          <i className="fa-light fa-2x fa-alarm-clock" />
           <Point>{POINT_SYSTEM_DEPOSIT.STUDY_ATTEND_LATE.value}원</Point>
         </Item>
         <Item>
           <Name>당일 불참 1</Name>
-          <FontAwesomeIcon size="2x" icon={faDoNotEnter} />
+
+          <i className="fa-light fa-2x fa-do-not-enter" />
           <Point>{POINT_SYSTEM_DEPOSIT.STUDY_ABSENT_BEFORE.value}원</Point>
         </Item>
         <Item>
           <Name>당일 불참 2</Name>
-          <FontAwesomeIcon size="2x" icon={faCircleXmark} />
+          <i className="fa-light fa-2x fa-circle-xmark" />
           <Point>{POINT_SYSTEM_DEPOSIT.STUDY_ABSENT_AFTER.value}원</Point>
         </Item>
         <Item>
           <Name>한달 정산</Name>
-          <FontAwesomeIcon size="2x" icon={faCalendarXmark} />
+          <i className="fa-light fa-2x fa-calendar-xmark" />
           <Point>{POINT_SYSTEM_DEPOSIT.STUDY_MONTH_CALCULATE.value}원</Point>
         </Item>
         <Item>
           <Name>규칙</Name>
-          <FontAwesomeIcon size="2x" icon={faScaleBalanced} />
+
+          <i className="fa-light fa-2x fa-scale-balanced" />
           <Point>OUT</Point>
         </Item>
         <Item>
           <Name>운영진 경고</Name>
-          <FontAwesomeIcon size="2x" icon={faUserPilot} />
+
+          <i className="fa-light fa-2x fa-user-pilot" />
           <Point>OUT</Point>
         </Item>
       </Layout>
@@ -58,7 +53,7 @@ function PointSystemsModalFee() {
 const Layout = styled.div`
   margin-top: var(--gap-1);
   display: grid;
-  color: var(--gray-2);
+
   grid-template-columns: repeat(3, 1fr);
   > div:nth-child(-n + 3) {
     border-bottom: var(--border);

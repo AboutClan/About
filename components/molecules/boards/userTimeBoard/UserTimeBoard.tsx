@@ -36,7 +36,7 @@ const UserTimeBoardContainer = styled.div`
   width: 344px;
 `;
 
-const BoardContainer = styled.div`
+const BoardContainer = styled.div<{ participants: ITimeBoardParticipant[] }>`
   min-height: 160px;
   display: flex;
   flex-direction: column;
@@ -44,6 +44,6 @@ const BoardContainer = styled.div`
   position: relative;
   border-radius: var(--rounded-lg); /* rounded-lg */
   background-color: white;
-  box-shadow: var(--shadow); /* shadow-md */
+
   height: ${({ participants }) => `${participants.length * 38 + 52}px`};
 `;

@@ -11,10 +11,15 @@ interface IButtonGroups {
   buttonDataArr: IButtonOpions[];
   currentValue: string;
   size?: ButtonSize;
+  isWrap?: boolean;
 }
-export default function ButtonGroups({ buttonDataArr, currentValue }: IButtonGroups) {
+export default function ButtonGroups({
+  buttonDataArr,
+  currentValue,
+  isWrap = false,
+}: IButtonGroups) {
   return (
-    <Layout>
+    <Layout isWrap={isWrap}>
       {buttonDataArr.map((buttonData, idx) => (
         <Flex flexShrink={0} key={idx} onClick={buttonData.func}>
           {buttonData.text === currentValue ? (
@@ -32,12 +37,12 @@ export default function ButtonGroups({ buttonDataArr, currentValue }: IButtonGro
   );
 }
 
-const Layout = styled.div`
+const Layout = styled.div<{ isWrap: boolean }>`
   ::-webkit-scrollbar {
     display: none;
   }
   display: flex;
-  /* padding: 12px 16px; */
-  flex-wrap: nowrap;
+  row-gap: ${(props) => (props.isWrap ? "8px" : 0)};
+  flex-wrap: ${(props) => (props.isWrap ? "wrap" : "nowrap")};
   overflow-x: auto;
 `;

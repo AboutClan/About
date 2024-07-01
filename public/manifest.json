@@ -1,0 +1,90 @@
+{
+  "background_color": "#ffffff",
+  "description": "스터디 & 친목 동아리",
+  "dir": "ltr",
+  "display": "standalone",
+
+  "name": "ABOUT",
+  "orientation": "portrait",
+  "shortcuts": [
+    {
+      "name": "어바웃",
+      "url": "/home",
+      "description": "어바웃 테스트",
+      "icons": [
+        {
+          "src": "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/ALogo.png",
+          "type": "image/png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "protocol_handlers": [
+    {
+      "protocol": "web+coffee",
+      "url": "/?coffee=%s"
+    }
+  ],
+
+  "scope": "/",
+  "short_name": "ABOUT",
+  "start_url": "https://studyabout.herokuapp.com/",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/ogImage.png",
+      "type": "image/png",
+      "sizes": "977x498"
+    },
+
+    {
+      "src": "/144.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "/152.png",
+      "type": "image/png",
+      "sizes": "101x101"
+    },
+    {
+      "src": "/167.png",
+      "type": "image/png",
+      "sizes": "111x111"
+    },
+    {
+      "src": "/180.png",
+      "type": "image/png",
+      "sizes": "120x120"
+    },
+    {
+      "src": "/192.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "/256.png",
+      "type": "image/png",
+      "sizes": "171x171"
+    },
+    {
+      "src": "/512.png",
+      "type": "image/png",
+      "sizes": "341x341"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/그림1.png",
+      "sizes": "951x584",
+      "type": "image/png"
+    },
+    {
+      "src": "/그림1.png",
+      "sizes": "951x584",
+      "type": "image/png"
+    }
+  ],
+  "lang": "ko"
+}

@@ -1,5 +1,3 @@
-import { faThumbTack } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
 import { USER_GUIDE_POP_UP } from "../../constants/keys/localStorage";
@@ -31,7 +29,7 @@ function UserGuidePopUp({ setIsModal }: IModal) {
     >
       <Item>
         <Category>
-          <FontAwesomeIcon icon={faThumbTack} color="var(--color-red)" size="sm" />
+          <i className="fa-regular fa-thumb-tack fa-sm" style={{ color: "var(--color-red)" }} />
           &nbsp;
           <span>스터디</span>
         </Category>
@@ -52,7 +50,7 @@ function UserGuidePopUp({ setIsModal }: IModal) {
       </Item>
       <Item>
         <Category>
-          <FontAwesomeIcon icon={faThumbTack} color="var(--color-red)" size="sm" />
+          <i className="fa-regular fa-sm fa-thumbtack" style={{ color: "var(--color-red)" }} />
           &nbsp;
           <span>참여 규칙</span>
         </Category>
@@ -63,7 +61,7 @@ function UserGuidePopUp({ setIsModal }: IModal) {
       </Item>{" "}
       <Item>
         <Category>
-          <FontAwesomeIcon icon={faThumbTack} color="var(--color-red)" size="sm" />
+          <i className="fa-regular fa-sm fa-thumbtack" style={{ color: "var(--color-red)" }} />
           &nbsp;
           <span>서비스 이용</span>
         </Category>
@@ -86,7 +84,7 @@ const Item = styled.div`
 
 const Category = styled.span`
   > span:last-child {
-    color: var(--gray-1);
+    color: var(--gray-800);
     font-weight: 600;
     font-size: 14px;
   }

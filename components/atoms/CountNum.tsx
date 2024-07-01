@@ -1,7 +1,6 @@
-import { faMinus, faPlus } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
+import { useToast } from "../../hooks/custom/CustomToast";
 import { DispatchNumber } from "../../types/hooks/reactTypes";
 
 interface ICountNum {
@@ -10,9 +9,20 @@ interface ICountNum {
   unit?: "명";
   min?: number;
   isSmall?: boolean;
+  maxValue?: number;
 }
 
-function CountNum({ value, setValue, unit, min = 1, isSmall }: ICountNum) {
+function CountNum({ value, setValue, unit, min = 1, isSmall, maxValue }: ICountNum) {
+  const toast = useToast();
+
+  const onClickUpValue = () => {
+    if (value >= maxValue) {
+      toast("warning", "최대 개수입니다.");
+      return;
+    }
+    setValue((old) => old + 1);
+  };
+
   return (
     <Layout isSmall={isSmall}>
       <IconWrapper
@@ -22,19 +32,14 @@ function CountNum({ value, setValue, unit, min = 1, isSmall }: ICountNum) {
         isSmall={isSmall}
         onClick={() => setValue((old) => old - 1)}
       >
-        <FontAwesomeIcon icon={faMinus} size="sm" />
+        <i className="fa-regular fa-minus fa-sm" />
       </IconWrapper>
       <Count>
         {value}
         {unit}
       </Count>
-      <IconWrapper
-        isMinus={false}
-        isVisible={true}
-        isSmall={isSmall}
-        onClick={() => setValue((old) => old + 1)}
-      >
-        <FontAwesomeIcon icon={faPlus} size="sm" />
+      <IconWrapper isMinus={false} isVisible={true} isSmall={isSmall} onClick={onClickUpValue}>
+        <i className="fa-regular fa-plus fa-sm" />
       </IconWrapper>
     </Layout>
   );
@@ -51,7 +56,7 @@ const IconWrapper = styled.button<{
   isVisible: boolean;
   isSmall: boolean;
 }>`
-  color: ${(props) => (props.isVisible ? "var(--gray-1)" : "var(--gray-6)")};
+  color: ${(props) => (props.isVisible ? "var(--gray-800)" : "var(--gray-300)")};
   padding: 0 var(--gap-1);
   margin-right: ${(props) =>
     props.isMinus ? (props.isSmall ? "var(--gap-2)" : "var(--gap-4)") : 0};

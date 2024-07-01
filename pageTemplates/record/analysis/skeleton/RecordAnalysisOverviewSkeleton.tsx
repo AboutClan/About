@@ -1,5 +1,3 @@
-import { faRightLeft } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
 function RecordAnalysisOverviewSkeleton() {
@@ -9,7 +7,7 @@ function RecordAnalysisOverviewSkeleton() {
       <Value></Value>
       <ChangeBtn>
         <span>전환</span>
-        <FontAwesomeIcon icon={faRightLeft} size="xs" />
+        <i className="fa-solid fa-right-left fa-xs"  />
       </ChangeBtn>
     </Layout>
   );

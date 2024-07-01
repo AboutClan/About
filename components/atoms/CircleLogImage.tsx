@@ -1,19 +1,22 @@
 import Image from "next/image";
 import styled from "styled-components";
+
 interface ICircleLogImage {
   logoName: string;
   imageUrl: string;
 }
+
 export default function CircleLogoImage({ logoName, imageUrl }: ICircleLogImage) {
   return (
-    <CircleLogoWrapper logoName={logoName}>
+    <CircleLogoWrapper>
       <Image src={imageUrl} width={72} height={72} alt={logoName} />
     </CircleLogoWrapper>
   );
 }
 
 const CircleLogoWrapper = styled.div`
-  background-color: var(--gray-6);
+  border: var(--border-main);
+  background-color: var(--gray-200);
   border-radius: 50%;
   overflow: hidden;
   position: relative;

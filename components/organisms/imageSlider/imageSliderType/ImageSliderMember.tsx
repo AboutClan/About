@@ -9,7 +9,7 @@ import { transferUserSummaryState } from "../../../../recoils/transferRecoils";
 import { IUser, IUserSummary } from "../../../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../../../utils/dateTimeUtils";
 import Avatar from "../../../atoms/Avatar";
-import HeartLikeIcon from "../../../atoms/Icons/HeartLikeIcon";
+import HeartCircleIcon from "../../../atoms/Icons/HeartCircleIcon";
 import { ImageContainer } from "../ImageSlider";
 
 interface IImageSliderMember {
@@ -49,7 +49,7 @@ function ImageSliderMember({ imageContainer }: IImageSliderMember) {
               <span>{user?.name}</span>
               {isBirth && (
                 <HeartWrapper>
-                  <HeartLikeIcon toUid={user.uid} />
+                  <HeartCircleIcon toUid={user.uid} />
                 </HeartWrapper>
               )}
             </MemberItem>

@@ -1,5 +1,3 @@
-import { faChevronRight } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
@@ -17,13 +15,13 @@ function PointScoreNavigation({ myScore }: IPointScoreNavigation) {
           <div>About 점수</div>
           <div>
             <span>{myScore || 0}점</span>
-            <FontAwesomeIcon icon={faChevronRight} size="xs" />
+            <i className="fa-solid fa-chevron-right fa-xs" />
           </div>
         </Button>
         <Button onClick={() => router.push("/ranking")}>
           <div>About 랭킹</div>
           <div>
-            <FontAwesomeIcon icon={faChevronRight} size="xs" />
+            <i className="fa-solid fa-chevron-right fa-xs" />
           </div>
         </Button>
       </Layout>

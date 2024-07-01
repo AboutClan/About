@@ -24,8 +24,8 @@ function GuestBottomNav() {
 
 const Layout = styled.div`
   position: fixed;
-  bottom: 60px;
-  max-width: 390px;
+  bottom: 77px;
+  max-width: var(--max-width);
   background-color: white;
   height: 50px;
   width: 100dvw;
@@ -33,12 +33,10 @@ const Layout = styled.div`
   z-index: 100;
   display: flex;
   align-items: center;
-  justify-content: center;
-  > span:first-child {
-    color: var(--color-red);
-    font-weight: 600;
-    margin-right: 8px;
-  }
+  justify-content: space-between;
+  padding: 0 20px;
+  color: var(--color-red);
+  font-weight: 600;
 `;
 
 export default GuestBottomNav;

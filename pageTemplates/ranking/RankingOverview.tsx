@@ -1,55 +1,33 @@
-import { Badge, Box, Flex } from "@chakra-ui/react";
-import dayjs from "dayjs";
+import { Box, Flex } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import Avatar from "../../components/atoms/Avatar";
-import { BADGE_COLOR_MAPPINGS } from "../../constants/serviceConstants/badgeConstants";
-import { USER_ROLE } from "../../constants/settingValue/role";
+import Skeleton from "../../components/atoms/skeleton/Skeleton";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { IMyRank } from "../../types/models/ranking";
-import { UserBadge } from "../../types/models/userTypes/userInfoTypes";
-import { getUserBadge } from "../../utils/convertUtils/convertDatas";
 
 interface IRankingOverview {
   myRankInfo: IMyRank;
-  isScore: boolean;
 }
 
-function RankingOverview({ myRankInfo, isScore = false }: IRankingOverview) {
+function RankingOverview({ myRankInfo }: IRankingOverview) {
   const { data: session } = useSession();
   const isGuest = session?.user.name === "guest";
-  const [userBadge, setUserBadge] = useState<UserBadge>();
 
   const { data: userInfo } = useUserInfoQuery();
-
-  useEffect(() => {
-    if (isGuest) setUserBadge("아메리카노");
-    if (!userInfo) return;
-    const badge = getUserBadge(userInfo.score, userInfo.uid);
-    setUserBadge(badge);
-  }, [isGuest, userInfo]);
 
   return (
     <>
       <Layout>
-        <Flex flex={1} direction="column" align="center">
-          <Box fontSize="20px" fontWeight={800}>
-            {myRankInfo?.isRank ? (
-              <Box>
-                {isScore ? "누적" : "월간"}:{" "}
-                {!myRankInfo?.value ? "NEW" : `${myRankInfo?.rankNum + 1}위`}
-              </Box>
-            ) : (
-              <RankPercent>
-                상위 <span>{myRankInfo?.percent}%</span>
-              </RankPercent>
-            )}
+        <Flex flex={1} justify="center">
+          <Box mr="4px" fontSize="16px" alignSelf="flex-end">
+            랭킹:
           </Box>
-          <Box color="var(--gray-2)">
-            {isScore ? "내 점수" : `${dayjs().month() + 1}월 참여`}:{" "}
-            {myRankInfo.value ? `${myRankInfo.value}${isScore ? "점" : "회"}` : "기록없음"}
+          <Box w="48px" fontSize="18px" fontWeight={800}>
+            <Skeleton isLoaded={!!myRankInfo}>
+              {!myRankInfo?.value ? "NEW" : `${myRankInfo?.rankNum} 위`}
+            </Skeleton>
           </Box>
         </Flex>
         <ProfileContainer isGuest={isGuest}>
@@ -71,26 +49,20 @@ function RankingOverview({ myRankInfo, isScore = false }: IRankingOverview) {
             </ProfileWrapper>
           ) : null}
         </ProfileContainer>{" "}
-        <RankContainer>
-          <RankBadge>
-            <BadgeWrapper>
-              <ScoreText>배지:</ScoreText>
-              <Badge
-                colorScheme={BADGE_COLOR_MAPPINGS[userBadge]}
-                fontSize="14px"
-                border="1px solid var(--gray-5)"
-              >
-                {userBadge}
-              </Badge>
-            </BadgeWrapper>
-          </RankBadge>
-          <RankBadge>
-            <BadgeWrapper>
-              <ScoreText>구성:</ScoreText>
-              {USER_ROLE[session?.user.role]}
-            </BadgeWrapper>
-          </RankBadge>
-        </RankContainer>
+        <Flex flex={1} fontSize="18px" justify="center">
+          <Box ml="4px" mr="12px" fontSize="16px" alignSelf="flex-end">
+            메달:
+          </Box>
+          <Box w="48px" fontWeight={800}>
+            <Skeleton isLoaded={!!myRankInfo}>
+              <Flex>
+                <Box>
+                  <i className="fa-solid fa-medal fa-xl" style={{ color: "var(--color-gray)" }} />
+                </Box>
+              </Flex>
+            </Skeleton>
+          </Box>
+        </Flex>
       </Layout>
     </>
   );
@@ -100,32 +72,15 @@ const Layout = styled.div`
   justify-content: space-around;
   align-items: center;
   padding: 12px;
-  padding-top: 12px;
-  padding-bottom: 8px;
+  padding-top: 16px;
+
+  min-height: 121px;
 `;
 
-/** RANK CONTAINER */
-const RankContainer = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  line-height: 2;
-`;
-
-const RankPercent = styled.span`
-  font-size: 16px;
-  font-weight: 800;
-  > span {
-    font-size: 18px;
-  }
-`;
-
-/** PROFILE CONTAINER */
 const ProfileContainer = styled.div<{ isGuest: boolean }>`
   text-align: center;
 
-  flex: 1;
+  flex: 0.65;
 `;
 
 const ProfileWrapper = styled.div`
@@ -139,29 +94,6 @@ const ProfileUserName = styled.span`
   margin-top: 8px;
   font-size: 14px;
   font-weight: 600;
-`;
-
-const BadgeWrapper = styled.div`
-  white-space: nowrap;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const RankBadge = styled.div`
-  margin-left: 12px;
-  display: flex;
-
-  justify-content: center;
-
-  align-items: center;
-`;
-
-const ScoreText = styled.span`
-  color: var(--gray-1);
-  font-weight: 600;
-
-  margin-right: var(--gap-1);
 `;
 
 export default RankingOverview;

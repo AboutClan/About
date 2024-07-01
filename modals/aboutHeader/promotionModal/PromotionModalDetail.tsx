@@ -23,7 +23,7 @@ function PromotionModalDetail() {
       <div>
         <span>현재 참여 수</span>
         <VoteNum>
-          <Skeleton isLoad={!isLoading}>
+          <Skeleton isLoaded={!isLoading}>
             {applyCnt || ""}명<Temp>(중복 포함)</Temp>
           </Skeleton>
         </VoteNum>
@@ -51,7 +51,7 @@ const Layout = styled.div`
 `;
 const Temp = styled.span`
   font-size: 11px;
-  color: var(--gray-3);
+  color: var(--gray-600);
 `;
 const VoteNum = styled.span``;
 

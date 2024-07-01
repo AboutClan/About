@@ -9,8 +9,6 @@ import {
   PopoverHeader,
   PopoverTrigger,
 } from "@chakra-ui/react";
-import { faBullseyeArrow, faGear, faRotateRight } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import styled from "styled-components";
 
@@ -115,17 +113,17 @@ function VoteMapController({
         <TopNav>
           <div>
             <ReturnBtn onClick={onClickRetunBtn}>
-              <FontAwesomeIcon icon={faRotateRight} size="lg" />
+              <i className="fa-regular fa-rotate-right fa-lg" />
             </ReturnBtn>
             {filterArr.map((item) => (
               <Button
+                color="inherit"
                 key={item}
                 bg="white"
                 borderRadius="var(--rounded)"
                 size="sm"
                 onClick={() => onClickRetrun(item)}
                 fontSize="14px"
-                color="var(--gray-2)"
                 p="var(--gap-2) var(--gap-3)"
                 h="34px"
                 w="50px"
@@ -142,9 +140,9 @@ function VoteMapController({
               size="sm"
               w="34px"
               h="34px"
-              border={preset !== "first" && "1px solid var(--gray-4)"}
+              border={preset !== "first" && "var(--border-main)"}
               bgColor={preset === "first" ? "var(--color-mint) !important" : "white"}
-              color={preset === "first" ? "white !important" : "var(--gray-2)"}
+              color={preset === "first" ? "white !important" : "inherit"}
               mr="var(--gap-2)"
               onClick={() => onClickPreset("first")}
             >
@@ -154,10 +152,10 @@ function VoteMapController({
               w="34px"
               h="34px"
               bgColor={preset === "second" ? "var(--color-mint)" : "white"}
-              color={preset === "second" ? "white !important" : "var(--gray-2)"}
+              color={preset === "second" ? "white !important" : "inherit"}
               size="sm"
               mr="var(--gap-2)"
-              border="1px solid var(--gray-4)"
+              border="1px solid var(--gray-500)"
               onClick={() => onClickSecond()}
             >
               2
@@ -166,12 +164,12 @@ function VoteMapController({
               w="34px"
               h="34px"
               bgColor={preset === "second" ? "var(--color-mint)" : "white"}
-              color={preset === "second" ? "white !important" : "var(--gray-2)"}
+              color={preset === "second" ? "white !important" : "inherit"}
               size="sm"
-              border="1px solid var(--gray-4)"
+              border="1px solid var(--gray-500)"
               onClick={onClickGear}
             >
-              <FontAwesomeIcon icon={faGear} />
+              <i className="fa-regular fa-gear" />
             </Button>
           </Box>
           <Box as="span" fontSize="16px" color="var(--color-mint)" fontWeight={600}>
@@ -198,10 +196,10 @@ export function PrecisionPopOver({ precision, setPrecision }) {
             borderRadius="4px"
             w="34px"
             h="34px"
-            border="1px solid var(--gray-5)"
+            border="var(--border-main)"
             bg="white"
           >
-            <FontAwesomeIcon icon={faBullseyeArrow} size="xl" />
+            <i className="fa-regular fa-bullseye-arrow fa-lg" />
           </Button>
         </TargetIcon>
       </PopoverTrigger>
@@ -242,7 +240,9 @@ export function PrecisionPopOver({ precision, setPrecision }) {
   );
 }
 
-const Layout = styled.div``;
+const Layout = styled.div`
+  color: var(--gray-800);
+`;
 
 const TopNav = styled.nav`
   padding: var(--gap-3) var(--gap-4);
@@ -285,7 +285,7 @@ const ReturnBtn = styled.button`
   color: white;
   padding: 4px;
   border-radius: var(--rounded);
-  border: 1px solid var(--gray-5);
+  border: var(--border-main);
 `;
 
 const TargetIcon = styled.button``;

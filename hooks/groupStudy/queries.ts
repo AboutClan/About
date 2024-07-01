@@ -13,6 +13,7 @@ export const useGroupQuery = (options?: QueryOptions<IGroup[]>) =>
     [GROUP_STUDY_ALL],
     async () => {
       const res = await axios.get<IGroup[]>(`${SERVER_URI}/groupStudy`);
+
       return res.data;
     },
     options,

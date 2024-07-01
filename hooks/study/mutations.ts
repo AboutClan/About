@@ -4,6 +4,7 @@ import { useMutation } from "react-query";
 
 import { requestServer } from "../../libs/methodHelpers";
 import { MutationOptions } from "../../types/hooks/reactTypes";
+import { PlaceRegisterProps } from "../../types/models/studyTypes/studyDetails";
 import {
   IStudyVote,
   IStudyVotePlaces,
@@ -107,6 +108,33 @@ export const useStudyPreferenceMutation = (options?: MutationOptions<IStudyVoteP
         method: "post",
         url: `user/preference`,
         body: votePlaces,
+      }),
+    options,
+  );
+
+export const useStudyAdditionMutation = (options?: MutationOptions<PlaceRegisterProps>) =>
+  useMutation<void, AxiosError, PlaceRegisterProps>(
+    (placeInfo) =>
+      requestServer<PlaceRegisterProps>({
+        method: "post",
+        url: `place`,
+        body: placeInfo,
+      }),
+    options,
+  );
+
+interface StudyStatusParamProps {
+  placeId: string;
+  status: "active" | "inactive";
+}
+
+export const useStudyStatusMutation = (options?: MutationOptions<StudyStatusParamProps>) =>
+  useMutation<void, AxiosError, StudyStatusParamProps>(
+    (params) =>
+      requestServer<StudyStatusParamProps>({
+        method: "post",
+        url: `place/status`,
+        body: params,
       }),
     options,
   );

@@ -18,6 +18,7 @@ export const STUDY_START_TIME = "studyStartTime";
 export const STUDY_ATTEND_RECORD = "studyAttendRecord";
 export const STUDY_ARRIVED_CNT = "studyArrivedCnt";
 export const STUDY_PREFERENCE = "studyPreference";
+export const STUDY_VOTE_CNT = "studyVoteCnt";
 
 export const PLACE_FINDALL = "place_findall";
 export const USER_INFO = "user_info";
@@ -31,6 +32,8 @@ export const USER_REQUEST = "user_request";
 export const GATHER_CONTENT = "GATHER";
 export const GROUP_STUDY_ALL = "GroupAll";
 export const GROUP_STUDY = "group";
+
+export const KAKAO_SEARCH = "kakaoSearch";
 
 export const STORE_GIFT = "storeGift";
 

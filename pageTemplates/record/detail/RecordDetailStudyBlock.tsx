@@ -1,5 +1,3 @@
-import { faEllipsis } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Fragment } from "react";
 import styled from "styled-components";
 
@@ -31,7 +29,10 @@ function RecordDetailStudyBlock({ locationStudies }: IRecordDetailStudyBlock) {
                   <Fragment key={idx2}>
                     {idx2 < 4 && <Member>{user.name.slice(-2)}</Member>}
                     {idx2 === 4 && (
-                      <FontAwesomeIcon icon={faEllipsis} size="sm" color="var(--gray-3)" />
+                      <i
+                        className="fa-regular fa-ellipsis fa-sm"
+                        style={{ color: "var(--gray-600)" }}
+                      />
                     )}
                   </Fragment>
                 ))}
@@ -59,7 +60,7 @@ const PlaceInfo = styled.div<{ location: Location }>`
   flex-shrink: 0;
   margin-bottom: var(--gap-4);
   border: ${(props) => `1px solid ${LOCATION_TABLE_COLOR[props.location]}`};
-  box-shadow: var(--shadow);
+
   border-radius: var(--rounded-lg);
   padding: var(--gap-2);
   margin-right: var(--gap-2);
@@ -68,7 +69,7 @@ const PlaceInfo = styled.div<{ location: Location }>`
 const PlaceName = styled.div`
   display: flex;
   align-items: center;
-  color: var(--gray-2);
+
   > span:first-child {
     font-size: 13px;
     font-weight: 600;
@@ -89,7 +90,7 @@ const MemberWrapper = styled.div`
 
 const Member = styled.span`
   margin-right: var(--gap-1);
-  color: var(--gray-3);
+  color: var(--gray-600);
   font-size: 13px;
 `;
 

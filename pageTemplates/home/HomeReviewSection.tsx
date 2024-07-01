@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { useSetRecoilState } from "recoil";
 
+import HighlightedTextButton from "../../components/atoms/buttons/HighlightedTextButton";
 import SectionBar from "../../components/molecules/bars/SectionBar";
 import ImageTileGridLayout, {
   IImageTileData,
@@ -20,12 +21,17 @@ export default function HomeReviewSection() {
       func: () => setSlideDirection("right"),
     }));
 
+  const handleNavigate = () => {};
+
   return (
-    <>
-      <SectionBar title="ABOUT 모임 후기" />
+    <Box mb="24px">
+      <SectionBar
+        title="ABOUT 모임 후기"
+        rightComponent={<HighlightedTextButton text="더보기" onClick={handleNavigate} />}
+      />
       <Box p="16px">
         <ImageTileGridLayout imageDataArr={imageData} />
       </Box>
-    </>
+    </Box>
   );
 }

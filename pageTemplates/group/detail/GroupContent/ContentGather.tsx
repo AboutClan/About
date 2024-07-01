@@ -1,6 +1,4 @@
 import { Button } from "@chakra-ui/react";
-import { faPlus } from "@fortawesome/pro-light-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -13,10 +11,10 @@ function ContentGather() {
       <Layout>
         <Button
           onClick={() => setIsModal(true)}
-          bgColor="var(--gray-7)"
+          bgColor="var(--gray-200)"
           size="lg"
           w="100%"
-          leftIcon={<FontAwesomeIcon icon={faPlus} />}
+          leftIcon={<i className="fa-light fa-plus" />}
         >
           모임 만들기
         </Button>
@@ -37,7 +35,7 @@ const Message = styled.div`
   margin-top: 40px;
   font-size: 16px;
 
-  color: var(--gray-3);
+  color: var(--gray-600);
 `;
 
 export default ContentGather;

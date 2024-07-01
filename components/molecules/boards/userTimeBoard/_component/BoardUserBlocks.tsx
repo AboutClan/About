@@ -18,21 +18,21 @@ interface IBoardUserBlocks {
   participants: ITimeBoardParticipant[];
 }
 export default function BoardUserBlocks({ participants }: IBoardUserBlocks) {
-  const [userBlocks, setUserBlocks] = useState([]);
+  const [userBlocks, setUserBlocks] = useState<IUserTimeBlock[]>([]);
 
   useEffect(() => {
     // Assuming transformToUserBlocks is a function that transforms participants into userBlocks
     const newUserBlocks = transformToUserBlocks(participants);
     setUserBlocks(newUserBlocks);
   }, [participants]);
-
+  
   return (
     <BlocksContainer>
       {userBlocks?.map((userBlock, idx) => (
         <UserBlock key={idx} index={idx} userBlock={userBlock}>
-          <div className="font-semibold">{userBlock.name}</div>
+          <div>{userBlock.name}</div>
           <div>
-            {userBlock.start}~{userBlock.end}
+            {userBlock.start} ~ {userBlock.startToEndInterval >= 3 && userBlock.end}
           </div>
         </UserBlock>
       ))}
@@ -47,7 +47,7 @@ const BlocksContainer = styled.div`
   padding-top: 28px; /* pt-7 */
 `;
 
-const UserBlock = styled.div`
+const UserBlock = styled.div<{ index: number; userBlock: IUserTimeBlock }>`
   background-color: ${(props) => COLOR_TABLE[props.index % COLOR_TABLE.length]};
   height: 36px; /* h-9 */
   position: relative;
@@ -58,7 +58,7 @@ const UserBlock = styled.div`
   flex-direction: column;
   color: white;
   margin-bottom: 4px; /* mb-1 */
-  min-width: ${() => `${BLOCK_WIDTH * 3 + 2}px`};
+  overflow: hidden;
   width: ${(props) => `${props.userBlock.startToEndInterval * BLOCK_WIDTH}px`};
   margin-left: ${(props) =>
     `${props.userBlock.startInterval * BLOCK_WIDTH + BLOCK_WIDTH / 2 + 4}px`};

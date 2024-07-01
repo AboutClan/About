@@ -1,6 +1,4 @@
 import { Button } from "@chakra-ui/react";
-import { faCopy } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
 import { useCompleteToast, useToast } from "../../../hooks/custom/CustomToast";
@@ -34,7 +32,7 @@ export function CopyBtn({ size, text }: ICopyBtn) {
   if (size === "md")
     return (
       <Button
-        leftIcon={<FontAwesomeIcon icon={faCopy} />}
+        leftIcon={<i className="fa-solid fa-copy" />}
         size="xs"
         colorScheme="twitter"
         onClick={handleCopy}
@@ -45,7 +43,7 @@ export function CopyBtn({ size, text }: ICopyBtn) {
 
   return (
     <button onClick={handleCopy}>
-      <FontAwesomeIcon icon={faCopy} color="var(--gray-1)" />
+      <i className="fa-solid fa-copy" style={{ color: "var(--gray-800)" }} />
     </button>
   );
 }

@@ -1,6 +1,4 @@
 import { Badge, Button } from "@chakra-ui/react";
-import { faX } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
@@ -150,35 +148,36 @@ function CollectionAlphabet() {
                     <UserAlphabets>
                       <div>
                         <AlphabetIcon alphabet="A" isDuotone={!alphabets?.includes("A")} />
-                        <FontAwesomeIcon icon={faX} />
+                        <i className="fa-solid fa-x" />
+
                         <AlphabetCnt hasAlphabet={alphabetsCnt.A !== 0}>
                           {alphabetsCnt.A}
                         </AlphabetCnt>
                       </div>
                       <div>
                         <AlphabetIcon alphabet="B" isDuotone={!alphabets?.includes("B")} />{" "}
-                        <FontAwesomeIcon icon={faX} />
+                        <i className="fa-solid fa-x" />
                         <AlphabetCnt hasAlphabet={alphabetsCnt.B !== 0}>
                           {alphabetsCnt.B}
                         </AlphabetCnt>
                       </div>
                       <div>
                         <AlphabetIcon alphabet="O" isDuotone={!alphabets?.includes("O")} />{" "}
-                        <FontAwesomeIcon icon={faX} />
+                        <i className="fa-solid fa-x" />
                         <AlphabetCnt hasAlphabet={alphabetsCnt.O !== 0}>
                           {alphabetsCnt.O}
                         </AlphabetCnt>
                       </div>
                       <div>
                         <AlphabetIcon alphabet="U" isDuotone={!alphabets?.includes("U")} />{" "}
-                        <FontAwesomeIcon icon={faX} />
+                        <i className="fa-solid fa-x" />
                         <AlphabetCnt hasAlphabet={alphabetsCnt.U !== 0}>
                           {alphabetsCnt.U}
                         </AlphabetCnt>
                       </div>
                       <div>
                         <AlphabetIcon alphabet="T" isDuotone={!alphabets?.includes("T")} />{" "}
-                        <FontAwesomeIcon icon={faX} />
+                        <i className="fa-solid fa-x" />
                         <AlphabetCnt hasAlphabet={alphabetsCnt.T !== 0}>
                           {alphabetsCnt.T}
                         </AlphabetCnt>
@@ -234,8 +233,7 @@ const Item = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: var(--border);
-  border-bottom: var(--border);
+  border-bottom: var(--border-main);
 `;
 const ProfileWrapper = styled.div``;
 
@@ -274,7 +272,7 @@ const UserAlphabets = styled.div`
 
 const AlphabetCnt = styled.span<{ hasAlphabet: boolean }>`
   font-size: 12px;
-  color: ${(props) => (props.hasAlphabet ? "var(--gray-2)" : "var(--gray-3)")};
+  color: ${(props) => (props.hasAlphabet ? "var(--gray-700)" : "var(--gray-600)")};
 `;
 
 export default CollectionAlphabet;

@@ -1,8 +1,4 @@
 import { Button } from "@chakra-ui/react";
-import { faCheckCircle, faTriangle } from "@fortawesome/pro-light-svg-icons";
-import { faCheckCircle as checkCircle } from "@fortawesome/pro-regular-svg-icons";
-import { faCaretLeft, faCaretRight } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
@@ -11,10 +7,14 @@ import styled from "styled-components";
 
 import { useFailToast } from "../../../../hooks/custom/CustomToast";
 import AttendCheckModal from "../../../../modals/groupStudy/AttendCheckModal";
-import { IWeekRecord } from "../../../../types/models/groupTypes/group";
+import { IGroup, IWeekRecord } from "../../../../types/models/groupTypes/group";
 import { dayjsToFormat } from "../../../../utils/dateTimeUtils";
 
-function ContentAttend({ group }) {
+interface ContentAttendProps {
+  group: IGroup;
+}
+
+function ContentAttend({ group }: ContentAttendProps) {
   const { data: session } = useSession();
   const router = useRouter();
   const [isModal, setIsModal] = useState(false);
@@ -55,10 +55,10 @@ function ContentAttend({ group }) {
 
     for (let i = 0; i < group.participants.length; i++) {
       const who = group.participants[i];
-      if (!weekArr.find((item) => item.uid === who.user.uid)) {
+      if (!weekArr.find((item) => item.uid === who.user?.uid)) {
         weekArr.push({
-          uid: who.user.uid,
-          name: who.user.name,
+          uid: who.user?.uid,
+          name: who.user?.name,
           attendRecord: [],
           attendRecordSub: [],
         });
@@ -84,7 +84,9 @@ function ContentAttend({ group }) {
       <Layout>
         <Month>
           <IconWrapper onClick={() => setIsThisWeek(false)}>
-            {isThisWeek && <FontAwesomeIcon icon={faCaretLeft} size="sm" color="var(--gray-2)" />}
+            {isThisWeek && (
+              <i className="fa-solid fa-caret-left fa-sm" style={{ color: "var(--gray-200)" }} />
+            )}
           </IconWrapper>
           <div>
             {dayjsToFormat(
@@ -104,7 +106,9 @@ function ContentAttend({ group }) {
             )}
           </div>
           <IconWrapper onClick={() => setIsThisWeek(true)}>
-            {!isThisWeek && <FontAwesomeIcon icon={faCaretRight} size="sm" color="var(--gray-2)" />}
+            {!isThisWeek && (
+              <i className="fa-solid fa-caret-right fa-sm" style={{ color: "var(--gray-200)" }} />
+            )}
           </IconWrapper>
         </Month>
         <ButtonNav>
@@ -112,7 +116,7 @@ function ContentAttend({ group }) {
             fontSize="15px"
             onClick={onClickAttend}
             colorScheme="mintTheme"
-            rightIcon={<FontAwesomeIcon icon={checkCircle} />}
+            rightIcon={<i className="fa-regular fa-check-circle" />}
             disabled={isNotMember}
           >
             출석체크
@@ -125,7 +129,7 @@ function ContentAttend({ group }) {
             ))}
           </TopLine>
           <Main>
-            {attendRecord.map((who) => {
+            {attendRecord.map((who, idx) => {
               const attendDays = who.attendRecord;
               const attendDaySub = who?.attendRecordSub;
               const days = weekDay.map((day) => {
@@ -137,14 +141,17 @@ function ContentAttend({ group }) {
               });
 
               return (
-                <MainLine key={who.uid}>
-                  <Name>{who.name}</Name>
+                <MainLine key={idx}>
+                  <Name>{group?.isSecret ? "비공개" : who.name}</Name>
                   {days.map((isAttend, idx) => (
                     <Item key={idx}>
                       {isAttend.main ? (
-                        <FontAwesomeIcon icon={faCheckCircle} color="var(--color-mint)" />
+                        <i
+                          className="fa-light fa-check-circle"
+                          style={{ color: "var(--color-mint)" }}
+                        />
                       ) : isAttend.sub ? (
-                        <FontAwesomeIcon icon={faTriangle} color="#FEBC5A" />
+                        <i className="fa-light fa-triangle" style={{ color: "#FEBC5A" }} />
                       ) : null}
                     </Item>
                   ))}
@@ -212,7 +219,7 @@ const Month = styled.div`
   border-radius: var(--rounded);
   margin: var(--gap-4) var(--gap-3);
   padding: var(--gap-2) var(--gap-5);
-  background-color: var(--gray-8);
+  background-color: var(--gray-100);
   display: flex;
   align-items: center;
 
@@ -227,10 +234,10 @@ const Container = styled.div`
 
 const TopLine = styled.div`
   display: flex;
-  background-color: var(--gray-8);
+  background-color: var(--gray-100);
   border: var(--border);
   font-size: 13px;
-  color: var(--gray-3);
+  color: var(--gray-600);
   > div {
     padding: var(--gap-1) 0;
     flex: 1;

@@ -1,5 +1,3 @@
-import { faChevronLeft, faChevronRight } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AxiosError } from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
@@ -83,7 +81,7 @@ function RequestChangeProfileImageModalAvatar({
     <ModalLayout title="아바타 프로필" footerOptions={footerOptions} setIsModal={setIsModal}>
       <UpPart>
         <ArrowIcon isLeft={true} onClick={() => handleMove("prev")}>
-          {iconIdx !== 0 && <FontAwesomeIcon icon={faChevronLeft} />}
+          {iconIdx !== 0 && <i className="fa-solid fa-chevron-left" />}
         </ArrowIcon>
         <AnimatePresence>
           <IconWrapper
@@ -101,7 +99,7 @@ function RequestChangeProfileImageModalAvatar({
           </IconWrapper>
         </AnimatePresence>
         <ArrowIcon isLeft={false} onClick={() => handleMove("next")}>
-          {iconIdx !== AVATAR_ICON.length - 1 && <FontAwesomeIcon icon={faChevronRight} />}
+          {iconIdx !== AVATAR_ICON.length - 1 && <i className="fa-solid fa-chevron-right" />}
         </ArrowIcon>
       </UpPart>
       <DownPart>

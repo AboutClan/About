@@ -1,6 +1,4 @@
 import { Box, Button } from "@chakra-ui/react";
-import { fa1, fa2, faCrown, faInfinity } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
@@ -38,7 +36,6 @@ function GatherParticipation({ data }: IGatherParticipation) {
     router.push(`/profile/${user.uid}`);
   };
 
-  
   return (
     <>
       <Layout>
@@ -52,7 +49,7 @@ function GatherParticipation({ data }: IGatherParticipation) {
             ) : (
               <>
                 <span style={{ marginLeft: "4px" }} />
-                <FontAwesomeIcon icon={faInfinity} color="var(--gray-2)" />
+                <i className="fa-solid fa-infinity" style={{ color: "var(--gray-600)" }} />
               </>
             )}
           </Box>
@@ -73,7 +70,7 @@ function GatherParticipation({ data }: IGatherParticipation) {
                   size="md"
                 />
                 <CrownWrapper>
-                  <FontAwesomeIcon icon={faCrown} color="var(--color-orange)" />
+                  <i className="fa-solid fa-crown" style={{ color: "var(--color-orange)" }} />
                 </CrownWrapper>
               </Organizer>
               <UserOverview>
@@ -102,9 +99,9 @@ function GatherParticipation({ data }: IGatherParticipation) {
                   </UserOverview>
                   <ParticipateTime isFirst={who?.phase === "first"}>
                     {who?.phase === "first" ? (
-                      <FontAwesomeIcon icon={fa1} size="sm" />
+                      <i className="fa-solid fa-1 fa-sm" />
                     ) : (
-                      <FontAwesomeIcon icon={fa2} size="sm" />
+                      <i className="fa-solid fa-2 fa-sm" />
                     )}
                     <span>차</span>
                   </ParticipateTime>
@@ -174,7 +171,6 @@ const UserOverview = styled.div`
     -webkit-box-orient: vertical;
     overflow: hidden;
     font-size: 13px;
-    color: var(--gray-2);
   }
 `;
 const Organizer = styled.div`
@@ -212,7 +208,7 @@ const Empty = styled.div`
   height: 100px;
   > span {
     font-size: 18px;
-    color: var(--gray-4);
+    color: var(--gray-500);
   }
 `;
 

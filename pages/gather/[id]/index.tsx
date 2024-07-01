@@ -32,34 +32,40 @@ function GatherDetail() {
     if (gathers) setGatherData(gathers.find((item) => item.id + "" === id));
   }, [gathers]);
 
+  const isMember =
+    (gatherData?.user as IUserSummary)?.uid === session?.user.uid ||
+    gatherData?.participants.some((who) => who?.user.uid === session?.user.uid);
+
   return (
     <>
-      <GatherHeader gatherData={gatherData} />
-
-      <>
-        {gatherData ? (
-          <>
-            <Slide>
-              <Layout>
-                <GatherOrganizer
-                  createdAt={gatherData.createdAt}
-                  organizer={gatherData.user as IUserSummary}
-                  isAdminOpen={gatherData.isAdminOpen}
-                  category={gatherData.type.title}
-                />
-                <GatherDetailInfo data={gatherData} />
-                <GatherTitle title={gatherData.title} status={gatherData.status} />
-                <GatherContent content={gatherData.content} gatherList={gatherData.gatherList} />
-                <GatherParticipation data={gatherData} />
-                <GatherComments comment={gatherData.comment} />
-              </Layout>
-            </Slide>
-            {!isGuest && <GatherBottomNav data={gatherData} />}
-          </>
-        ) : (
-          <MainLoading />
-        )}
-      </>
+      {gatherData ? (
+        <>
+          <GatherHeader gatherData={gatherData} />
+          <Slide>
+            <Layout>
+              <GatherOrganizer
+                createdAt={gatherData.createdAt}
+                organizer={gatherData.user as IUserSummary}
+                isAdminOpen={gatherData.isAdminOpen}
+                category={gatherData.type.title}
+              />
+              <GatherDetailInfo data={gatherData} />
+              <GatherTitle title={gatherData.title} status={gatherData.status} />
+              <GatherContent
+                kakaoUrl={gatherData?.kakaoUrl}
+                content={gatherData.content}
+                gatherList={gatherData.gatherList}
+                isMember={isMember}
+              />
+              <GatherParticipation data={gatherData} />
+              <GatherComments comment={gatherData.comment} />
+            </Layout>
+          </Slide>
+          {!isGuest && <GatherBottomNav data={gatherData} />}
+        </>
+      ) : (
+        <MainLoading />
+      )}
     </>
   );
 }
@@ -67,7 +73,7 @@ function GatherDetail() {
 const Layout = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: var(--gray-8);
+  background-color: var(--gray-100);
   padding-bottom: 100px;
 `;
 

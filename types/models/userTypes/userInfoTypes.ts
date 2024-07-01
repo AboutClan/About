@@ -4,6 +4,7 @@ import {
 } from "../../../constants/serviceConstants/badgeConstants";
 import { USER_ROLE } from "../../../constants/serviceConstants/userConstants";
 import { ActiveLocation, Location } from "../../services/locationTypes";
+import { IStudyVotePlaces } from "../studyTypes/studyInterActions";
 
 export interface IUser extends Omit<IUserRegisterForm, "location">, IUserSummary {
   id: string;
@@ -13,7 +14,9 @@ export interface IUser extends Omit<IUserRegisterForm, "location">, IUserSummary
   deposit: number;
   friend: string[];
   like: number;
+  studyPreference?: IStudyVotePlaces;
   belong?: string;
+  monthScore: number;
   _id: string;
 }
 
@@ -25,6 +28,7 @@ export interface IUserSummary {
   location: ActiveLocation;
   name: string;
   profileImage: string;
+  monthScore: number;
   score: number;
   uid: string;
   _id?: string;

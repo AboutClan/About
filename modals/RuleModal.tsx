@@ -43,7 +43,7 @@ function RuleModal({ setIsModal, content }: IRuleModal) {
 
   return (
     <ModalLayout title={header.title} footerOptions={footerOptions} setIsModal={setIsModal}>
-      <ModalSubtitle isLight={true}>{header.text}</ModalSubtitle>
+      <ModalSubtitle>{header.text}</ModalSubtitle>
       {main.map((item, idx) => (
         <ContentItem title={item.title} texts={item.texts} key={idx} />
       ))}
@@ -54,15 +54,14 @@ function RuleModal({ setIsModal, content }: IRuleModal) {
 const Item = styled.div``;
 
 const ItemContent = styled.ul`
-  font-size: 12px;
+  font-size: 14px;
   margin-left: var(--gap-4);
   margin-top: var(--gap-1);
   margin-bottom: var(--gap-3);
 `;
 
 const RuleTitle = styled.span`
-  color: var(--gray-1);
-  font-size: 13px;
+  color: var(--gray-800);
   font-weight: 600;
 `;
 

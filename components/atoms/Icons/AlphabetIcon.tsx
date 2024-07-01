@@ -1,19 +1,3 @@
-import {
-  faA as A,
-  faB as B,
-  faO as O,
-  faT as T,
-  faU as U,
-} from "@fortawesome/pro-duotone-svg-icons";
-import {
-  faCircleA,
-  faCircleB,
-  faCircleO,
-  faCircleT,
-  faCircleU,
-} from "@fortawesome/pro-regular-svg-icons";
-import { faA, faB, faO, faT, faU } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
 import { TABLE_STRING_COLORS_BG, TABLE_STRONG_COLORS } from "../../../constants/styles";
@@ -37,11 +21,11 @@ export function AlphabetIcon({
   isBg = false,
 }: IAlphabetIcon) {
   const icons = {
-    A: { duotone: A, solid: faA, circle: faCircleA },
-    B: { duotone: B, solid: faB, circle: faCircleB },
-    O: { duotone: O, solid: faO, circle: faCircleO },
-    U: { duotone: U, solid: faU, circle: faCircleU },
-    T: { duotone: T, solid: faT, circle: faCircleT },
+    A: { duotone: "a", solid: "a", circle: "circle-a" },
+    B: { duotone: "b", solid: "b", circle: "circle-b" },
+    O: { duotone: "o", solid: "o", circle: "circle-o" },
+    U: { duotone: "u", solid: "u", circle: "circle-u" },
+    T: { duotone: "t", solid: "t", circle: "circle-t" },
   };
   const selectedIcon = isCircle
     ? icons[alphabet].circle
@@ -54,12 +38,9 @@ export function AlphabetIcon({
 
   return (
     <IconWrapper size={size} bg={isBg ? TABLE_STRING_COLORS_BG[color] : null}>
-      <FontAwesomeIcon
-        icon={selectedIcon}
-        size="2x"
-        color={color}
-        beat={isBeat}
-        style={{ opacity: isDuotone ? 0.5 : 1 }}
+      <i
+        className={`fa-${isCircle ? "regular" : isDuotone ? "duotone" : "solid"} fa-${selectedIcon} fa-2x ${isBeat && `fa-beat`}`}
+        style={{ color, opacity: isDuotone ? 0.5 : 1 }}
       />
     </IconWrapper>
   );

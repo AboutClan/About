@@ -1,5 +1,3 @@
-import { faEllipsis } from "@fortawesome/pro-light-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
@@ -107,7 +105,7 @@ function GroupComments({ comment }: IGroupComments) {
                     {item.comment}
                     {item.user.uid === session?.user?.uid && (
                       <IconWrapper onClick={() => onClickEdit(item._id, item.comment)}>
-                        <FontAwesomeIcon icon={faEllipsis} />
+                        <i className="fa-light fa-ellipsis" />
                       </IconWrapper>
                     )}
                   </p>
@@ -181,13 +179,12 @@ const CommentContent = styled.div`
   font-size: 12px;
 
   > span:last-child {
-    color: var(--gray-2);
   }
 `;
 
 const CommentDetail = styled.span`
   font-size: 11px;
-  color: var(--gray-3);
+  color: var(--gray-600);
 `;
 
 const MyText = styled.textarea`
@@ -205,7 +202,7 @@ const MyText = styled.textarea`
 
 const SubmitBtn = styled.button<{ focus: boolean }>`
   font-size: 12px;
-  color: ${(props) => (props.focus ? "var(--color-mint)" : "var(--gray-4)")};
+  color: ${(props) => (props.focus ? "var(--color-mint)" : "var(--gray-500)")};
 `;
 
 export default GroupComments;

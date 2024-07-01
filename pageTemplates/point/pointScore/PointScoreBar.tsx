@@ -1,10 +1,9 @@
-import { Badge, Progress } from "@chakra-ui/react";
-import { faQuestionCircle } from "@fortawesome/pro-light-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Badge } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
+import ProgressBar from "../../../components/atoms/ProgressBar";
 import {
   BADGE_COLOR_MAPPINGS,
   BADGE_INFO,
@@ -67,7 +66,7 @@ function PointScoreBar({ myScore, hasQuestion = true }: IPointScoreBar) {
             <BadgeName color={SCHEME_TO_COLOR[badgeColor] || badgeColor}>{myScore}점</BadgeName>
             {hasQuestion && (
               <IconWrapper onClick={() => setIsBadgeModal(true)}>
-                <FontAwesomeIcon icon={faQuestionCircle} size="sm" />
+                <i className="fa-light fa-question-circle fa-sm" />
               </IconWrapper>
             )}
           </div>
@@ -80,11 +79,10 @@ function PointScoreBar({ myScore, hasQuestion = true }: IPointScoreBar) {
             </div>
           )}
         </Grade>
-        <Progress
+        <ProgressBar
           value={(1 - (nextBadgePoint - myScore) / badgeGap) * 100}
-          height="12px"
           colorScheme="mintTheme"
-          hasStripe
+          hasStripe={true}
         />
       </Layout>
 
@@ -113,7 +111,6 @@ const BadgeName = styled.span<{ color: string }>`
 `;
 
 const IconWrapper = styled.button`
-  color: var(--gray-2);
   font-size: 14px;
   margin-left: var(--gap-2);
 `;

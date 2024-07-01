@@ -1,58 +1,42 @@
-import { useRouter, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { Box, Flex } from "@chakra-ui/react";
+import { useState } from "react";
 
 import Slide from "../../components/layouts/PageSlide";
-import { HAS_STUDY_TODAY } from "../../constants/keys/localStorage";
-import EventBanner from "../../pageTemplates/home/EventBanner";
-import HomeCategoryNav from "../../pageTemplates/home/HomeCategoryNav";
+import { useGatherQuery } from "../../hooks/gather/queries";
+import HomeClubSection from "../../pageTemplates/home/HomeClubSection";
 import HomeGatherSection from "../../pageTemplates/home/HomeGatherSection";
 import HomeHeader from "../../pageTemplates/home/homeHeader/HomeHeader";
 import HomeInitialSetting from "../../pageTemplates/home/HomeInitialSetting";
-import HomeLocationBar from "../../pageTemplates/home/HomeLocationBar";
-import HomeReviewSection from "../../pageTemplates/home/HomeReviewSection";
 import HomeStudySection from "../../pageTemplates/home/HomeStudySection";
-import HomeWinRecordSection from "../../pageTemplates/home/HomeWinRecordSection";
-import StudyController from "../../pageTemplates/home/studyController/StudyController";
-import { LocationEn } from "../../types/services/locationTypes";
-import { getUrlWithLocationAndDate } from "../../utils/convertUtils/convertTypes";
+import HomeCategoryNav, { HomeTab } from "../../pageTemplates/home/HomeTab";
+import EventBanner from "../../pageTemplates/home/study/EventBanner";
 
 function Home() {
-  const router = useRouter();
-  const { data: session } = useSession();
-  const searchParams = useSearchParams();
-  const locationParam = searchParams.get("location") as LocationEn;
-  const dateParam = searchParams.get("date");
+  const [tab, setTab] = useState<HomeTab>();
 
-  const hasStudyToday = localStorage.getItem(HAS_STUDY_TODAY);
-
-  useEffect(() => {
-    if (session?.user && (!locationParam || !dateParam)) {
-      const initialUrl = getUrlWithLocationAndDate(
-        locationParam,
-        dateParam,
-        session.user.location,
-        hasStudyToday === "true",
-      );
-      router.replace(initialUrl);
-    }
-  }, [session?.user, locationParam, dateParam]);
+  useGatherQuery();
 
   return (
     <>
       <HomeInitialSetting />
       <HomeHeader />
       <Slide>
-        <HomeCategoryNav />
-        <HomeLocationBar />
-      </Slide>
-      <StudyController />
-      <Slide>
-        <HomeStudySection />
-        <EventBanner />
-        <HomeGatherSection />
-        <HomeReviewSection />
-        <HomeWinRecordSection />
+        <HomeCategoryNav tab={tab} setTab={setTab} />
+        <>
+          {tab !== "기타" && <EventBanner tab={tab} />}
+          {tab === "스터디" ? (
+            <HomeStudySection />
+          ) : tab === "모임" ? (
+            <HomeGatherSection />
+          ) : tab === "동아리" ? (
+            <HomeClubSection />
+          ) : tab === "기타" ? (
+            <Flex fontSize="20px" justify="center" align="center" h="200px">
+              COMMING SOON
+            </Flex>
+          ) : null}
+          <Box w="100%" h="40px" />
+        </>
       </Slide>
     </>
   );

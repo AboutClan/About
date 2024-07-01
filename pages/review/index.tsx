@@ -1,8 +1,6 @@
 /* eslint-disable */
 
 import { Box, Button } from "@chakra-ui/react";
-import { faEllipsis } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -209,11 +207,10 @@ function Review() {
                     onClick={handleLoadMore}
                     m="var(--gap-4)"
                     colorScheme="gray"
-                    boxShadow="var(--shadow)"
-                    color="var(--gray-3)"
+                    color="var(--gray-600)"
                   >
                     <Box mr="var(--gap-2)">더 보기</Box>
-                    <FontAwesomeIcon icon={faEllipsis} />
+                    <i className="fa-solid fa-ellipsis" />
                   </Button>
                 )}
               </Main>
@@ -245,7 +242,6 @@ const Item = styled.div`
   display: flex;
   flex-direction: column;
   border: var(--border);
-  box-shadow: var(--shadow);
 `;
 
 const Spacing = styled.div`

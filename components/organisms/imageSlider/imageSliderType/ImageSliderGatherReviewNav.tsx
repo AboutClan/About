@@ -1,5 +1,3 @@
-import { faEyes } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
@@ -34,7 +32,7 @@ function ImageSliderGatherReviewNav({ imageContainer }: IImageSliderGatherReview
       <SwiperSlide onClick={() => onClickReviewItem(0)}>
         <ReviewItem>
           <ReviewIcon>
-            <FontAwesomeIcon icon={faEyes} size="2x" color="var(--color-mint)" />
+            <i className="fa-regular fa-eyes fa-2x" style={{ color: "var(--color-mint)" }} />
           </ReviewIcon>
           <Text>리뷰 둘러보기</Text>
         </ReviewItem>
@@ -64,7 +62,7 @@ const GatherReviewNavItem = styled.button`
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: var(--gray-1);
+  color: var(--gray-800);
 `;
 
 const ReviewItem = styled(GatherReviewNavItem)`
@@ -95,6 +93,6 @@ const Text = styled.div`
 
 const ReviewIcon = styled(ImageWrapper)`
   box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.16);
-  background-color: var(--gray-7);
+  background-color: var(--gray-200);
 `;
 export default ImageSliderGatherReviewNav;

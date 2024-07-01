@@ -1,17 +1,15 @@
-import { Skeleton as ChakraSkeleton } from "@chakra-ui/react";
+import { Skeleton as ChakraSkeleton, SkeletonProps } from "@chakra-ui/react";
+import { PropsWithChildren } from "react";
 
-interface ISkeleton {
-  children: React.ReactNode;
-  isLoad?: boolean;
-}
+interface ISkeleton extends Pick<SkeletonProps, "isLoaded"> {}
 
-function Skeleton({ children, isLoad }: ISkeleton) {
+function Skeleton({ children, isLoaded = false }: PropsWithChildren<ISkeleton>) {
   return (
     <ChakraSkeleton
       borderRadius="8px"
       startColor="RGB(227, 230, 235)"
       endColor="rgb(246,247,249)"
-      isLoaded={isLoad}
+      isLoaded={isLoaded}
       height="100%"
       width="100%"
     >

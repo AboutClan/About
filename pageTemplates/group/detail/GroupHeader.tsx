@@ -1,6 +1,4 @@
 import { Flex } from "@chakra-ui/react";
-import { faGear, faPenCircle } from "@fortawesome/pro-light-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
@@ -39,7 +37,7 @@ function GroupHeader({ group }: IGroupHeader) {
   const onClick = () => {
     setGroupWriting(group);
 
-    router.push("/group/writing/category/main");
+    router.push("/group/writing/main");
   };
 
   const movePage = async () => {
@@ -63,7 +61,7 @@ function GroupHeader({ group }: IGroupHeader) {
         <Flex>
           {session?.user.uid === organizer?.uid && (
             <IconWrapper onClick={onClick}>
-              <FontAwesomeIcon icon={faPenCircle} size="xl" />
+              <i className="fa-light fa-pen-circle fa-xl"  />
             </IconWrapper>
           )}
           <Wrapper>
@@ -78,7 +76,7 @@ function GroupHeader({ group }: IGroupHeader) {
             )}
           </Wrapper>
           <IconWrapper onClick={() => setIsSettingModal(true)}>
-            <FontAwesomeIcon icon={faGear} size="lg" />
+            <i className="fa-light fa-gear fa-lg" />
           </IconWrapper>
         </Flex>
       </Header>

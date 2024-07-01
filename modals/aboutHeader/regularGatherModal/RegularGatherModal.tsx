@@ -118,11 +118,11 @@ function RegularGatherModal({ setIsModal, setIsRabbitRun }: IRegularGatherModal)
 }
 
 const Overview = styled.div`
-  color: var(--gray-1);
+  color: var(--gray-800);
 `;
 
 const Count = styled.div`
-  color: var(--gray-1);
+  color: var(--gray-800);
   width: max-content;
   padding: var(--gap-1) var(--gap-2);
   border-radius: var(--rounded-lg);
@@ -137,7 +137,7 @@ const Count = styled.div`
 `;
 
 const Rule = styled.div`
-  color: var(--gray-3);
+  color: var(--gray-600);
   margin-top: var(--gap-2);
 
   font-size: 11px;
@@ -184,7 +184,7 @@ const Content = styled.div`
   }
   > span:last-child {
     font-size: 11px;
-    color: var(--gray-3);
+    color: var(--gray-600);
   }
 `;
 

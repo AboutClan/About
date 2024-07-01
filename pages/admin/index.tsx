@@ -46,6 +46,9 @@ function Admin() {
                 <BlockName>유저 응답</BlockName>
                 <NavBlock>
                   <button onClick={() => onClick(`register`)}>가입신청 확인</button>
+                  <button onClick={() => onClick(`studyAddition`)}>
+                    신규 스터디 장소 추가 요청
+                  </button>
                   <button onClick={() => onClick(`attend`)}>출석 당첨자 확인</button>
                   <button onClick={() => onClick(`groupGather`)}>조모임 신청 확인</button>
                   <button onClick={() => onClick(`suggest`)}>건의사항 확인</button>
@@ -108,7 +111,7 @@ const UserLayout = styled.div`
 const Navigation = styled.nav`
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--gray-5);
+  border: 1px solid var(--gray-400);
   border-radius: 6px;
   overflow: hidden;
   padding: 0px 0;
@@ -116,26 +119,26 @@ const Navigation = styled.nav`
 
 const BlockName = styled.div`
   padding-bottom: 3px;
-  background-color: var(--gray-6);
+  background-color: var(--gray-300);
   font-weight: 600;
   font-size: 12px;
   height: 24px;
   display: flex;
   align-items: end;
-  color: var(--gray-2);
+  color: var(--gray-700);
   padding-left: 6px;
 `;
 
 const NavBlock = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: var(--gray-8);
+  background-color: var(--gray-100);
   padding-left: 6px;
   > button {
     text-align: start;
     height: 42px;
     font-size: 13px;
-    border-bottom: 1.5px solid var(--gray-6);
+    border-bottom: 1.5px solid var(--gray-300);
   }
 `;
 

@@ -1,5 +1,3 @@
-import { faChevronRight } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
@@ -21,14 +19,14 @@ function PointPoint({ mypoint }: IPointPoint) {
         <div>About 포인트</div>
         <div>
           <span>{mypoint}점</span>
-          <FontAwesomeIcon icon={faChevronRight} />
+          <i className="fa-solid fa-chevron-right" />
         </div>
       </Button>
       <Store onClick={() => router.push("/store")}>
         <Button>
           <div>포인트 스토어</div>
           <div>
-            <FontAwesomeIcon icon={faChevronRight} />
+            <i className="fa-solid fa-chevron-right" />
           </div>
         </Button>
         <Wrapper>
@@ -46,7 +44,6 @@ const Layout = styled.div`
   padding: var(--gap-4);
   border-radius: var(--rounded-lg);
   background-color: white;
-  box-shadow: var(--shadow);
 `;
 const Button = styled.button`
   width: 100%;

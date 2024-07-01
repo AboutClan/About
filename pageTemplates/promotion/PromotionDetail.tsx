@@ -23,9 +23,9 @@ function PromotionDetail() {
           w="50%"
           mr="var(--gap-2)"
           onClick={() => setIsAllModal(true)}
-          color="var(--gray-2)"
+          color="var(--gray-700)"
           borderRadius="var(--rounded-lg)"
-          border="1px solid var(--gray-6)"
+          border="1px solid var(--gray-300)"
         >
           전체 현황
         </Button>
@@ -33,8 +33,8 @@ function PromotionDetail() {
           w="50%"
           onClick={onClick}
           borderRadius="var(--rounded-lg)"
-          color="var(--gray-2)"
-          border="1px solid var(--gray-6)"
+          color="var(--gray-700)"
+          border="1px solid var(--gray-300)"
         >
           지난 당첨 기록
         </Button>

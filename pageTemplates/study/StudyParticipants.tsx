@@ -49,13 +49,15 @@ export default function StudyParticipants({ participants, absences }: IStudyPart
                 onClick={() => setHasImageProps({ image: par.imageUrl, toUid: par.user.uid })}
                 w="50px"
                 h="50px"
+                position="relative"
               >
                 <Image
                   src={par.imageUrl}
-                  width={50}
-                  height={50}
+                  fill={true}
+                  sizes="50px"
                   alt="studyAttend"
                   priority={true}
+                  style={{ objectFit: "cover" }}
                 />
               </Box>
             )}
@@ -76,7 +78,7 @@ export default function StudyParticipants({ participants, absences }: IStudyPart
             align="center"
             justify="center"
             h="200"
-            color="var(--gray-3)"
+            color="var(--gray-600)"
             fontSize="16px"
             textAlign="center"
           >

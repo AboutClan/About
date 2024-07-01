@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import Header from "../../../components/layouts/Header";
 import { useUpdateProfileMutation } from "../../../hooks/admin/mutation";
-import { useAdminUsersControlQuery } from "../../../hooks/admin/quries";
+import { useAdminUsersLocationControlQuery } from "../../../hooks/admin/quries";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
 
 function AdminUserInfo() {
@@ -12,7 +12,7 @@ function AdminUserInfo() {
   const [members, setMembers] = useState<IUser[]>([]);
   const [filtered, setFiltered] = useState<IUser[]>([]);
 
-  useAdminUsersControlQuery({
+  useAdminUsersLocationControlQuery(null, null, false, {
     onSuccess(data) {
       const tempAdmins = [];
       const tempMembers = [];
@@ -80,7 +80,7 @@ const Search = styled.div`
   }
 `;
 const SearchInput = styled.input`
-  background-color: var(--gray-6);
+  background-color: var(--gray-300);
   margin-right: 6px;
 `;
 const Layout = styled.div`
@@ -95,7 +95,7 @@ const SectionHeader = styled.header`
   justify-content: center;
   font-size: 16px;
   font-weight: 600;
-  background-color: var(--gray-6);
+  background-color: var(--gray-300);
 `;
 
 const Section = styled.section`

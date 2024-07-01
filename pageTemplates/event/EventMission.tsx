@@ -11,9 +11,8 @@ export default function EventMission() {
 
   const accordionOptions: IAccordionContent[] = [
     {
-      title: "(3/4) 개강 시즌 이벤트",
-      content:
-        "1학기가 시작되었습니다! 시험기간이 아니더라도 미리미리 같이 카공하고 하자고요~ 4월 1일, 3월 동안 스터디에 2회 이상 참여한 기록이 있는 분들 중 지역별로 추첨을 통해 커피 기프티콘을 드립니다!",
+      title: "(6월 중순) 방학 기념 이벤트",
+      content: "모임을 개설하고 진행시 10000원을 지원해드려요! 단! 사진 및 리뷰 필수!",
     },
     {
       title: "(완료) 최애 햄버거 이벤트",
@@ -34,7 +33,7 @@ export default function EventMission() {
         size="md"
         rightComponent={<HighlightedTextButton text="더보기" onClick={() => setIsModal(true)} />}
       />
-      <Box p="16px" border="var(--border)">
+      <Box p="12px 16px" border="var(--border)">
         <Accordion contentArr={accordionOptions} />
       </Box>
       {isModal && <AlertNotCompletedModal setIsModal={setIsModal} />}

@@ -1,17 +1,14 @@
 import { Flex } from "@chakra-ui/react";
-import { faPenCircle, faShareNodes } from "@fortawesome/pro-light-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import Header from "../../../components/layouts/Header";
 import GatherKakaoShareModal from "../../../modals/gather/GatherKakaoShareModal";
 import { isGatherEditState } from "../../../recoils/checkAtoms";
-import { prevPageUrlState } from "../../../recoils/previousAtoms";
 import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
@@ -30,28 +27,26 @@ function GatherHeader({ gatherData }: IGatherHeader) {
   const { data: session } = useSession();
   const setGatherWriting = useSetRecoilState(sharedGatherWritingState);
   const setIsGatherEdit = useSetRecoilState(isGatherEditState);
-  const [prevPageUrl, setPrevPageUrl] = useRecoilState(prevPageUrlState);
 
   const [isModal, setIsModal] = useState(false);
 
   const onClick = () => {
     setGatherWriting({ ...gatherData, date: dayjs(gatherData.date) });
     setIsGatherEdit(true);
-    setPrevPageUrl(`/gather/${router.query.id}`);
     router.push("/gather/writing/category");
   };
 
   return (
     <>
-      <Header title="" url={prevPageUrl || "/gather"}>
+      <Header title="">
         <Flex>
           {session?.user.uid === (organizer as IUserSummary)?.uid && (
             <IconWrapper onClick={onClick}>
-              <FontAwesomeIcon icon={faPenCircle} size="xl" />
+              <i className="fa-light fa-pen-circle fa-xl" />
             </IconWrapper>
           )}
           <IconWrapper>
-            <FontAwesomeIcon icon={faShareNodes} size="lg" onClick={() => setIsModal(true)} />
+            <i className="fa-light fa-share-nodes fa-lg"  onClick={() => setIsModal(true)} />
           </IconWrapper>
         </Flex>
       </Header>

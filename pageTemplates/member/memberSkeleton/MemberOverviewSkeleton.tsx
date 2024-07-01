@@ -63,7 +63,7 @@ const Info = styled.div`
     > span:first-child {
       margin-right: var(--gap-2);
       font-weight: 600;
-      color: var(--gray-1);
+      color: var(--gray-800);
     }
     > span:last-child {
       display: inline-block;
@@ -85,7 +85,6 @@ const ActiveLocation = styled.li<{ location: Location }>`
 const Studys = styled.div<{ location: Location }>`
   flex: 1;
 
-  color: var(--gray-2);
   margin-top: 4px;
   height: ${(props) =>
     props.location === "수원" ? "72px" : props.location !== "안양" ? "40px" : "20px"};

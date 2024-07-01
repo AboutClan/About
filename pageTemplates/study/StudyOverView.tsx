@@ -1,9 +1,8 @@
-import { Button } from "@chakra-ui/react";
-import { faClock, faLocationDot } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import styled from "styled-components";
 
+import InfoBox, { InfoBoxProp } from "../../components/molecules/InfoBox";
 import VoteMap from "../../components/organisms/VoteMap";
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
 
@@ -46,11 +45,22 @@ function StudyOverview({
         content: `<div style=" font-size:12px; padding:4px 6px"><span style="font-weight:600; color:#565B67;">${title}</span><br/><span>현재 신청 인원:<span style="color:#00c2b3; font-weight:500;"> ${participantsNum}명</span></span></div>`,
         borderWidth: 1,
         disableAnchor: false,
-        backgroundColor: "var(--gray-8)",
-        borderColor: "var(--gray-3)",
+        backgroundColor: "var(--gray-100)",
+        borderColor: "var(--gray-600)",
         anchorSize: new naver.maps.Size(10, 10),
-        anchorColor: "var(--gray-8)",
+        anchorColor: "var(--gray-100)",
       },
+    },
+  ];
+
+  const infos: InfoBoxProp[] = [
+    {
+      text: locationDetail,
+      icon: <i className="fa-solid fa-location-dot " />,
+    },
+    {
+      text: time,
+      icon: <i className="fa-solid fa-clock" />,
     },
   ];
 
@@ -58,35 +68,27 @@ function StudyOverview({
     <>
       <OverviewWrapper>
         <Title>{title}</Title>
-        <InfoContainer>
-          <InfoRow>
-            <InfoIconText className="flex-1">
-              <FontAwesomeIcon icon={faLocationDot} size="lg" />
-              <span>{locationDetail}</span>
-            </InfoIconText>
-            <Button
-              size="xs"
-              backgroundColor="mint"
-              color="white"
-              leftIcon={<FontAwesomeIcon icon={faLocationDot} size="sm" />}
-              onClick={() => setIsModal((old) => !old)}
-              _focus={{
-                backgroundColor: "var(--color-mint)",
-              }}
-              _active={{
-                backgroundColor: "var(--color-mint)",
-              }}
-            >
-              {isModal ? "지도 닫기" : "지도 보기"}
-            </Button>
-          </InfoRow>
-          <InfoRow>
-            <InfoIconText>
-              <FontAwesomeIcon icon={faClock} />
-              <span>{time}</span>
-            </InfoIconText>
-          </InfoRow>
-        </InfoContainer>
+        <Flex mt="12px">
+          <Box flex={1}>
+            <InfoBox infos={infos} />
+          </Box>
+          <Button
+            mt="2px"
+            size="xs"
+            backgroundColor="mint"
+            color="white"
+            leftIcon={<i className="fa-solid fa-location-dot fa-sm" />}
+            onClick={() => setIsModal((old) => !old)}
+            _focus={{
+              backgroundColor: "var(--color-mint)",
+            }}
+            _active={{
+              backgroundColor: "var(--color-mint)",
+            }}
+          >
+            {isModal ? "지도 닫기" : "지도 보기"}
+          </Button>
+        </Flex>
       </OverviewWrapper>
       {isModal && (
         <MapWrapper>
@@ -106,31 +108,6 @@ const OverviewWrapper = styled.div`
 const Title = styled.span`
   font-weight: bold;
   font-size: 18px; /* 18px */
-`;
-
-const InfoContainer = styled.div`
-  margin-top: 12px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const InfoRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  line-height: 2;
-  font-size: 14px; /* 14px */
-`;
-
-const InfoIconText = styled.div`
-  display: flex;
-  align-items: center;
-
-  svg {
-    width: 14px; /* Adjusted from w-3.5 to actual px */
-    margin-right: 8px;
-    color: var(--gray-3); /* text-gray-3 */
-  }
 `;
 
 const MapWrapper = styled.div`

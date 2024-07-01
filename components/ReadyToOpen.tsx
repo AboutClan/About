@@ -23,7 +23,7 @@ const Layout = styled.div`
   font-size: 26px;
   font-weight: 700;
   border-radius: var(--rounded-lg);
-  color: var(--gray-1);
+  color: var(--gray-800);
   > span {
     opacity: 1;
   }

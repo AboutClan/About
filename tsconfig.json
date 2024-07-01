@@ -21,7 +21,9 @@
     "global.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "pages/admin/system/study.tsx"
-  ],
+    "pages/admin/system/study.tsx",
+
+    "next.config.js"
+, "pages/banner/[category]"  ],
   "exclude": ["node_modules"]
 }

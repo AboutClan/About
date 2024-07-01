@@ -37,7 +37,7 @@ const Layout = styled.div`
     display: flex;
     align-items: center;
     > span {
-      color: var(--gray-4);
+      color: var(--gray-500);
       margin-right: var(--gap-2);
     }
   }

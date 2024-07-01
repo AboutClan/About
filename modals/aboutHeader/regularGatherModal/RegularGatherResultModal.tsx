@@ -30,9 +30,9 @@ function RegularGatherResultModal({ setIsModal, setIsRabbitRun }: IRegularGather
   //     <b>조모임 신청 결과가 나왔어요!</b> 너무 슬프지만 조건에 맞는 조편성이
   //     불가능하여 어쩔 수 없이 매칭에 실패한 인원도 있습니다... 😂
   //     <IconWrapper>
-  //       <FontAwesomeIcon icon={faFaceSurprise} size="2x" />
-  //       <FontAwesomeIcon icon={faFaceSurprise} size="2x" />
-  //       <FontAwesomeIcon icon={faFaceSurprise} size="2x" />
+  //       <i className="fa- fa-facesurprise" size="2x" />
+  //       <i className="fa- fa-facesurprise" size="2x" />
+  //       <i className="fa- fa-facesurprise" size="2x" />
   //     </IconWrapper>
   //   </ModalBody>
   //   <ModalFooterTwo
@@ -52,7 +52,7 @@ const IconWrapper = styled.div`
   justify-content: center;
   align-items: center;
   > * {
-    color: var(--gray-5);
+    color: var(--gray-400);
     margin-right: var(--gap-1);
   }
 `;

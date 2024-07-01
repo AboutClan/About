@@ -1,5 +1,3 @@
-import { faLightbulbOn } from "@fortawesome/pro-duotone-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -30,7 +28,7 @@ function FreestudyPopUp({ setIsModal }: IModal) {
           <span style={{ color: "var(--color-mint)" }}>(+10 point)</span>
         </ModalSubtitle>
         <Wrapper>
-          <FontAwesomeIcon icon={faLightbulbOn} size="3x" color="var(--color-red)" />
+          <i className="fa-duotone fa-lightbulb-on fa-3x" style={{ color: "var(--color-red)" }} />
         </Wrapper>
       </ModalLayout>
       {isSuggestModal && (

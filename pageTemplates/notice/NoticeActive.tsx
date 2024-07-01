@@ -1,6 +1,4 @@
 import { Button } from "@chakra-ui/react";
-import { faArrowRight } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import styled from "styled-components";
 
@@ -102,7 +100,7 @@ function NoticeActive({ activeLogs }: INoticeActive) {
                 <AlphabetWrapper style={{ marginRight: "var(--gap-2)" }}>
                   <AlphabetIcon alphabet={alphabet[0] as Alphabet} isCircle={true} />
                   <span>
-                    <FontAwesomeIcon icon={faArrowRight} />
+                    <i className="fa-solid fa-arrow-right" />
                   </span>
                   <AlphabetIcon alphabet={alphabet[1] as Alphabet} isCircle={true} />
                 </AlphabetWrapper>
@@ -133,10 +131,10 @@ function NoticeActive({ activeLogs }: INoticeActive) {
                     </Button>
                     <Button
                       fontSize="12px"
-                      border="1px solid var(--gray-2)"
+                      border="1px solid var(--gray-700)"
                       borderRadius="11px"
                       size="xs"
-                      color="var(--gray-2)"
+                      color="var(--gray-700)"
                       variant="ghost"
                       onClick={() =>
                         onClickFriendRequest(
@@ -182,7 +180,7 @@ const Item = styled.div`
   align-items: center;
   padding: var(--gap-3) var(--gap-5);
   font-size: 13px;
-  border-bottom: 1px solid var(--gray-7);
+  border-bottom: 1px solid var(--gray-200);
 `;
 
 const IconWrapper = styled.div`
@@ -212,7 +210,7 @@ const Point = styled.span`
 const Date = styled.span`
   margin-left: auto;
   white-space: nowrap;
-  color: var(--gray-3);
+  color: var(--gray-600);
   font-size: 11px;
 `;
 
@@ -223,7 +221,7 @@ const FriendButtons = styled.div`
 
 const FriendComplete = styled.span`
   margin-left: auto;
-  color: var(--gray-3);
+  color: var(--gray-600);
   font-weight: 500;
   font-size: 12px;
 `;

@@ -34,7 +34,7 @@ function RankingCategoryBar({
         _focus={{ border: "none" }}
         value={category}
         onChange={onChange}
-        color="var(--gray-1)"
+        color="var(--gray-800)"
       >
         <Option value="월간">{getMonth() + 1}월 랭킹</Option>
         <Option value="지난">{getMonth()}월 랭킹</Option>
@@ -79,7 +79,7 @@ const SwitchWrapper = styled.div`
 
 const SwitchLabel = styled.span<{ isSelected: boolean }>`
   font-size: 11px;
-  color: ${(props) => (props.isSelected ? "var(--gray-1)" : "var(--gray-3)")};
+  color: ${(props) => (props.isSelected ? "var(--gray-800)" : "var(--gray-600)")};
 `;
 
 export default RankingCategoryBar;

@@ -23,7 +23,7 @@ function GatherTitle({ status, title }: IGatherTitle) {
 const Layout = styled.div<{ status: GatherStatus }>`
   padding: Var(--gap-4);
   background-color: white;
-  color: var(--gray-1);
+  color: var(--gray-800);
   font-size: 16px;
   font-weight: 700;
   border: var(--border);

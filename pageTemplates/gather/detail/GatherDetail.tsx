@@ -1,5 +1,3 @@
-import { faChevronDown, faVenusMars } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
@@ -27,19 +25,19 @@ function GatherDetailInfo({
       <FirstItem isOpen={isSubLocation} onClick={() => setIsSubLocation(true)}>
         <ItemText>장소</ItemText>
         <span>{location.main}</span>
-        <FontAwesomeIcon icon={faChevronDown} size="2xs" />
+        <i className="fa-solid fa-chevron-down fa-2xs" />
       </FirstItem>
       {isSubLocation && <LocationSub>{location.sub}</LocationSub>}
       <Item>
         <ItemText>날짜</ItemText>
-        <span>{date === "미정" ? date : dayjsToFormat(dayjs(date), "M.D(ddd) hh:mm")}</span>
+        <span>{date === "미정" ? date : dayjsToFormat(dayjs(date), "M.D(ddd) HH:mm")}</span>
       </Item>
       <Item>
         <ItemText>나이</ItemText>
         <span>
           {age[0]} ~ {age[1]}세
         </span>
-        {genderCondition && <FontAwesomeIcon icon={faVenusMars} color="#9E7CFF" />}
+        {genderCondition && <i className="fa-solid fa-venus-mars" style={{ color: "#9E7CFF" }} />}
       </Item>
       <Item>
         <ItemText>오픈</ItemText>
@@ -65,7 +63,7 @@ const Layout = styled.div`
   padding: var(--gap-2) var(--gap-3);
   background-color: white;
   border-radius: var(--rounded);
-  box-shadow: var(--shadow);
+
   border: var(--border);
 `;
 
@@ -88,7 +86,7 @@ const FirstItem = styled(Item)<{ isOpen: boolean }>`
 `;
 
 const LocationSub = styled.div`
-  color: var(--gray-3);
+  color: var(--gray-600);
   font-size: 12px;
   margin: 2px 0;
   margin-left: 44px;

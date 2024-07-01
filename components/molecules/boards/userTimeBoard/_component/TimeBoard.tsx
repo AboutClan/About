@@ -28,7 +28,7 @@ const TimeBoardContainer = styled.div`
   padding-bottom: 16px; /* pb-4 */
   display: flex;
   justify-content: space-around;
-  color: var(--gray-3); /* text-gray-3, assuming a specific gray color */
+  color: var(--gray-600); /* text-gray-3, assuming a specific gray color */
 `;
 
 const TimeBlockContainer = styled.div`
@@ -44,5 +44,5 @@ const HourText = styled.div`
 
 const Divider = styled.div`
   flex: 1;
-  border-left: 1px solid var(--gray-6); /* border-l border-gray-200 */
+  border-left: 1px solid var(--gray-300); /* border-l border-gray-200 */
 `;

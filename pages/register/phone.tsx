@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-import Input from "../../components/atoms/Input";
+import { Input } from "../../components/atoms/Input";
 import BottomNav from "../../components/layouts/BottomNav";
 import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
@@ -14,14 +14,16 @@ function Phone() {
   const [errorMessage, setErrorMessage] = useState("");
   const [value, setValue] = useState(info?.telephone || "");
 
+  const phoneRegex = /^010\d{8}$/;
+
   const onClickNext = (e) => {
     if (value === "") {
       setErrorMessage("핸드폰 번호를 입력해 주세요.");
       e.preventDefault();
       return;
     }
-    if (value.length < 11) {
-      setErrorMessage("핸드폰 번호를 확인해 주세요.");
+    if (!phoneRegex.test(value)) {
+      setErrorMessage("핸드폰 번호를 확인해 주세요. 형식: 01012345678");
       e.preventDefault();
       return;
     }

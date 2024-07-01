@@ -1,42 +1,42 @@
-import { Switch } from "@chakra-ui/react";
-import {
-  faBellOn,
-  faDollarSign,
-  faLocationCrosshairs,
-  faPersonToDoor,
-  faUser,
-  faUserGroup,
-  faVenusMars,
-} from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Box, Button, Flex, Switch } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { PopOverIcon } from "../../../components/atoms/Icons/PopOverIcon";
+import { Input } from "../../../components/atoms/Input";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
+import GatherWritingUserConditionModal from "../../../modals/gather/GatherWritingUserConditionModal";
 import GroupConfirmModal from "../../../modals/groupStudy/WritingConfirmModal";
-import GatherWritingConditionAgeRange from "../../../pageTemplates/gather/writing/condition/GatherWritingConditionAgeRange";
-import GatherWritingConditionCnt from "../../../pageTemplates/gather/writing/condition/GatherWritingConditionCnt";
 import GatherWritingConditionLocation from "../../../pageTemplates/gather/writing/condition/GatherWritingConditionLocation";
 import QuestionBottomDrawer from "../../../pageTemplates/group/writing/QuestionBottomDrawer";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { sharedGroupWritingState } from "../../../recoils/sharedDataAtoms";
-import { IGatherMemberCnt } from "../../../types/models/gatherTypes/gatherTypes";
 import { IGroupWriting } from "../../../types/models/groupTypes/group";
 import { Location, LocationFilterType } from "../../../types/services/locationTypes";
 
-type ButtonType = "gender" | "age" | "pre" | "location" | "isFree" | "fee" | "challenge";
+export type GroupConditionType =
+  | "gender"
+  | "age"
+  | "pre"
+  | "location"
+  | "isFree"
+  | "fee"
+  | "challenge"
+  | "kakaoUrl"
+  | "isSecret";
 
 export type CombinedLocation = "전체" | "수원/안양" | "양천/강남";
 
 function WritingCondition() {
   const [groupWriting, setGroupWriting] = useRecoilState(sharedGroupWritingState);
+  const { data: session } = useSession();
 
   const { data: userInfo } = useUserInfoQuery();
 
@@ -51,17 +51,12 @@ function WritingCondition() {
       groupWriting?.fee !== undefined
         ? groupWriting?.fee !== 200 && groupWriting?.fee !== 0
         : false,
+    kakaoUrl: false,
+    isSecret: false,
   });
-
-  const [memberCnt, setMemberCnt] = useState<IGatherMemberCnt>({
-    min: groupWriting?.memberCnt?.min || 4,
-    max: groupWriting?.memberCnt?.max === undefined ? 8 : groupWriting?.memberCnt?.max,
-  });
-
-  const [age, setAge] = useState(groupWriting?.age || [19, 28]);
 
   const [challenge, setChallenge] = useState("");
-
+  const [kakaoUrl, setKakaoUrl] = useState<string>("");
   const [fee, setFee] = useState(groupWriting?.fee || "1000");
   const [feeText, setFeeText] = useState(groupWriting?.feeText || "기본 참여비");
 
@@ -70,7 +65,7 @@ function WritingCondition() {
     groupWriting?.location || userInfo?.location,
   );
   const [isConfirmModal, setIsConfirmModal] = useState(false);
-
+  const [isMemberConditionModal, setIsMemberConditionModal] = useState(false);
   const [isQuestionModal, setIsQuestionModal] = useState(false);
 
   useEffect(() => {
@@ -79,33 +74,52 @@ function WritingCondition() {
   }, [condition.isFree]);
 
   const onClickNext = async () => {
-    const GroupData: IGroupWriting = {
+    const groupData: IGroupWriting = {
       ...groupWriting,
       fee: condition.fee ? +fee : 0,
       feeText,
       isFree: condition.isFree,
       location: location || userInfo?.location,
-      age,
-      memberCnt,
+      link: kakaoUrl,
       gender: condition.gender,
       organizer: userInfo,
       questionText: question,
+      isSecret: condition.isSecret,
       challenge,
     };
-    setGroupWriting(GroupData);
+    setGroupWriting(groupData);
     setIsConfirmModal(true);
   };
 
-  const toggleSwitch = (e: ChangeEvent<HTMLInputElement>, type: ButtonType) => {
+  const toggleSwitch = (e: ChangeEvent<HTMLInputElement>, type: GroupConditionType) => {
     const isChecked = e.target.checked;
 
-    if (type === "location" && isChecked) {
-      setLocation(userInfo.location);
+    if (type === "isSecret") {
+      setCondition((old) => {
+        return { ...old, [type]: isChecked, kakaoUrl: true };
+      });
     }
 
+    if (type === "location" && isChecked) {
+      setLocation(session?.user.location);
+    }
     setCondition((old) => {
       return { ...old, [type]: isChecked };
     });
+  };
+
+  const getMemberConditionText = () => {
+    const temp = [];
+    if (condition.age) {
+      temp.push("나이");
+    }
+    if (condition.gender) {
+      temp.push("성별");
+    }
+    if (groupWriting?.memberCnt) {
+      temp.push("인원");
+    }
+    return String(temp) + " " + "제한";
   };
 
   return (
@@ -122,56 +136,25 @@ function WritingCondition() {
           <Container>
             <Item>
               <Name>
-                <FontAwesomeIcon icon={faUserGroup} />
-                <span>최소 인원</span>
+                <div>
+                  <i className="fa-solid fa-user-lock" />
+                </div>
+                <span>참여 가능 조건</span>
               </Name>
-              <GatherWritingConditionCnt
-                isMin={true}
-                value={memberCnt.min}
-                setMemberCnt={setMemberCnt}
-              />
-            </Item>
-            <Item>
-              <Name>
-                <FontAwesomeIcon icon={faUserGroup} />
-                <span>최대 인원</span>
-              </Name>
-              <GatherWritingConditionCnt
-                isMin={false}
-                value={memberCnt.max}
-                setMemberCnt={setMemberCnt}
-                defaultBoolean={memberCnt.max === 0 ? true : false}
-              />
-            </Item>
-            <Item>
-              <Name>
-                <FontAwesomeIcon icon={faVenusMars} />
-                <span>성별 고려</span>
-                <PopOverIcon title="성별 고려" text="성별 비율을 최대 2대1까지 제한합니다." />
-              </Name>
-              <Switch
-                mr="var(--gap-1)"
+              <Box ml="auto" mr="20px" fontSize="12px" color="var(--color-mint)">
+                {getMemberConditionText() || "기본값"}
+              </Box>
+              <Button
                 colorScheme="mintTheme"
-                isChecked={condition.gender}
-                onChange={(e) => toggleSwitch(e, "gender")}
-              />
+                size="sm"
+                onClick={() => setIsMemberConditionModal(true)}
+              >
+                설정
+              </Button>
             </Item>
             <Item>
               <Name>
-                <FontAwesomeIcon icon={faUser} />
-                <span>나이(만)</span>
-              </Name>
-              <Switch
-                mr="var(--gap-1)"
-                colorScheme="mintTheme"
-                isChecked={condition.age}
-                onChange={(e) => toggleSwitch(e, "age")}
-              />
-            </Item>
-            {condition.age && <GatherWritingConditionAgeRange age={age} setAge={setAge} />}
-            <Item>
-              <Name>
-                <FontAwesomeIcon icon={faLocationCrosshairs} />
+                <i className="fa-regular fa-location-crosshairs" />
                 <span>지역 필터</span>
                 <PopOverIcon title="지역 필터" text="기본으로는 본인이 속한 지역으로 한정합니다." />
               </Name>
@@ -185,7 +168,7 @@ function WritingCondition() {
             {!condition.location && <GatherWritingConditionLocation setLocation={setLocation} />}
             <Item>
               <Name>
-                <FontAwesomeIcon icon={faPersonToDoor} />
+                <i className="fa-regular fa-person-to-door" />
                 <span>자유 가입</span>
                 <PopOverIcon title="자유 가입" text="조건에 맞는다면 자유롭게 가입이 가능합니다." />
               </Name>
@@ -198,9 +181,8 @@ function WritingCondition() {
             </Item>
             <Item>
               <Name>
-                <FontAwesomeIcon icon={faBellOn} />
+                <i className="fa-regular fa-bell-on" />
                 <span>챌린지</span>
-                <PopOverIcon title="챌린지" text="달성 챌린지를 진행하는 경우만 체크해주세요." />
               </Name>
               <Switch
                 mr="var(--gap-1)"
@@ -218,12 +200,8 @@ function WritingCondition() {
             )}
             <Item>
               <Name>
-                <FontAwesomeIcon icon={faDollarSign} />
+                <i className="fa-regular fa-dollar-sign" />
                 <span>참여비</span>
-                <PopOverIcon
-                  title="참여비"
-                  text="기본 참여비는 1000원이고, 특별한 사용처가 없더라도 운영을 위해 그룹장에게 지급됩니다. 그 외 추가적인 활동비가 필요한 경우에도 변경할 수 있고, 아예 참여비를 원하지 않는 경우 설정하지 않아도 됩니다."
-                />
               </Name>
               <Switch
                 mr="var(--gap-1)"
@@ -249,24 +227,74 @@ function WritingCondition() {
                 </div>
               </Fee>
             )}
+            <Item>
+              <Name>
+                <div>
+                  <i className="fa-regular fa-user-secret" />
+                </div>
+                <span>익명으로 진행</span>
+              </Name>
+              <Switch
+                mr="var(--gap-1)"
+                colorScheme="mintTheme"
+                isChecked={condition.isSecret}
+                onChange={(e) => toggleSwitch(e, "isSecret")}
+              />
+            </Item>{" "}
+            <Item>
+              <Name>
+                <div>
+                  <i className="fa-regular fa-comments" />
+                </div>
+                <span>오픈채팅방</span>
+              </Name>
+              <Switch
+                mr="var(--gap-1)"
+                colorScheme="mintTheme"
+                isChecked={condition.kakaoUrl}
+                onChange={(e) => toggleSwitch(e, "kakaoUrl")}
+              />
+            </Item>{" "}
+            {condition.kakaoUrl && (
+              <Flex align="center" mr="4px">
+                <Box
+                  fontSize="12px"
+                  bgColor="var(--gray-500)"
+                  color="white"
+                  p="2px 6px"
+                  borderRadius="4px"
+                  mr="8px"
+                >
+                  URL
+                </Box>
+                <Input size="sm" value={kakaoUrl} onChange={(e) => setKakaoUrl(e.target.value)} />
+              </Flex>
+            )}
           </Container>
         </RegisterLayout>
       </Slide>
-
       <BottomNav onClick={() => onClickNext()} text="완료" />
-
       <QuestionBottomDrawer
         isModal={isQuestionModal}
         setIsModal={setIsQuestionModal}
         question={question}
         setQuestion={setQuestion}
       />
-
       {isConfirmModal && (
         <GroupConfirmModal
           setIsModal={setIsConfirmModal}
           groupWriting={groupWriting}
           setGroupWriting={setGroupWriting}
+        />
+      )}{" "}
+      {isMemberConditionModal && (
+        <GatherWritingUserConditionModal
+          type="group"
+          setIsModal={setIsMemberConditionModal}
+          gatherContent={groupWriting}
+          isGenderCondition={condition.gender}
+          isAgeCondition={condition.age}
+          toggleSwitch={toggleSwitch}
         />
       )}
     </>
@@ -278,7 +306,7 @@ const ChallengeText = styled.textarea`
   width: 100%;
   padding: 4px 8px;
   :focus {
-    outline-color: var(--gray-1);
+    outline-color: var(--gray-800);
   }
 `;
 
@@ -292,7 +320,7 @@ const Fee = styled.div`
       border-radius: var(--rounded);
       border: var(--border);
       :focus {
-        outline-color: var(--gray-1);
+        outline-color: var(--gray-800);
       }
     }
   }

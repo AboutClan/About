@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import {
-  LOCATION_CONVERT,
-  LOCATION_OPEN,
-  LOCATION_TABLE_COLOR,
-} from "../../constants/location";
+import { LOCATION_CONVERT, LOCATION_OPEN, LOCATION_TABLE_COLOR } from "../../constants/location";
 import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { IArrivedData } from "../../types/models/studyTypes/studyRecords";
@@ -63,16 +59,16 @@ const Layout = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: var(--gray-7);
-  border-top: 1px solid var(--gray-6);
-  border-bottom: 1px solid var(--gray-6);
+  background-color: var(--gray-200);
+  border-top: 1px solid var(--gray-300);
+  border-bottom: 1px solid var(--gray-300);
   > div {
     display: flex;
     align-items: center;
   }
   > span:last-child {
     font-size: 10px;
-    color: var(--gray-3);
+    color: var(--gray-600);
   }
 `;
 

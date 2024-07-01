@@ -7,7 +7,8 @@ import { useQueryClient } from "react-query";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import { STUDY_VOTE } from "../../../constants/keys/queryKeys";
+import { STUDY_VOTE, STUDY_VOTE_CNT } from "../../../constants/keys/queryKeys";
+import { PointSystemProp } from "../../../constants/serviceConstants/pointSystemConstants";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../../hooks/user/mutations";
@@ -26,7 +27,7 @@ import StudyVoteTimeRulletDrawer from "./StudyVoteTimeRulletDrawer";
 
 interface IMapBottomNav {
   myVote: IStudyVote;
-  voteScore: number;
+  voteScore: PointSystemProp;
   setMyVote: DispatchType<IStudyVote>;
   morePlaces: string[];
 }
@@ -101,7 +102,9 @@ function MapBottomNav({ morePlaces, myVote, voteScore, setMyVote }: IMapBottomNa
 
   const handleSuccess = () => {
     queryClient.refetchQueries([STUDY_VOTE, date, convertLocationLangTo(location, "kr")]);
-
+    queryClient.refetchQueries([
+      [STUDY_VOTE_CNT, location, dayjs(date).startOf("month"), dayjs(date).endOf("month")],
+    ]);
     if (myPrevVotePoint) {
       getPoint({
         message: "스터디 투표 취소",
@@ -110,8 +113,7 @@ function MapBottomNav({ morePlaces, myVote, voteScore, setMyVote }: IMapBottomNa
     }
     if (studyDateStatus === "not passed" && voteScore) {
       getPoint({
-        value: voteScore,
-        message: "스터디 투표",
+        ...voteScore,
         sub: date,
       });
       toast("success", `투표 완료! ${!myStudy ? "포인트가 적립되었습니다." : ""}`);

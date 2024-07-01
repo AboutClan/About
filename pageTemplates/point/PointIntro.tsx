@@ -16,9 +16,9 @@ const Layout = styled.div`
   margin-bottom: var(--gap-5);
   margin-left: var(--gap-1);
   font-size: 16px;
-  color: var(--gray-3);
+  color: var(--gray-600);
   > span {
-    color: var(--gray-1);
+    color: var(--gray-800);
     font-size: 18px;
     font-weight: 600;
   }

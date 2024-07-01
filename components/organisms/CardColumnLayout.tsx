@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import styled from "styled-components";
 
 import ShadowBlockButton from "../atoms/buttons/ShadowBlockButton";
@@ -20,7 +21,7 @@ export function CardColumnLayout({ cardDataArr, url, func }: ICardColumnLayout) 
           <PostThumbnailCard postThumbnailCardProps={cardData} />
         </Item>
       ))}
-      <ShadowBlockButton text="더보기" url={url} func={func} />
+      {cardDataArr?.length >= 3 && <ShadowBlockButton text="더보기" url={url} func={func} />}
     </Layout>
   );
 }
@@ -29,9 +30,9 @@ export function CardColumnLayoutSkeleton() {
   return (
     <Layout>
       {[1, 2, 3].map((item) => (
-        <Item key={item}>
+        <Box mb="16px" key={item}>
           <PostThumbnailCardSkeleton />
-        </Item>
+        </Box>
       ))}
       <ShadowBlockButton text="더보기" />
     </Layout>
@@ -44,5 +45,5 @@ const Layout = styled.div`
 `;
 
 const Item = styled.div`
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 `;

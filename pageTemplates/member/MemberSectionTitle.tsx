@@ -1,5 +1,3 @@
-import { faChevronRight } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
@@ -32,7 +30,7 @@ function MemberSectionTitle({ section, onClickSection }: IMemberSectionTitle) {
       {section !== "birth" && section !== "enthusiastic" && (
         <Button disabled={isGuest} onClick={() => onClickSection(section)}>
           <span>더보기</span>
-          <FontAwesomeIcon icon={faChevronRight} size="xs" />
+          <i className="fa-solid fa-chevron-right fa-xs" />
         </Button>
       )}
     </Layout>
@@ -61,7 +59,7 @@ const TitleWrapper = styled.div`
 
 const Button = styled.button`
   align-self: flex-end;
-  color: var(--gray-3);
+  color: var(--gray-600);
   font-size: 12px;
   > span {
     margin-right: var(--gap-1);

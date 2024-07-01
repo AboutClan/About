@@ -23,10 +23,10 @@ function RegisterCost({ isSecond }: { isSecond?: boolean }) {
 const Layout = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: var(--gray-7);
+  background-color: white;
 
   border-radius: var(--rounded-lg);
-  border: 1.5px solid var(--gray-6);
+  border: var(--border-main);
   width: 160px;
   height: 140px;
   justify-content: space-around;
@@ -42,7 +42,7 @@ const Layout = styled.div`
   }
   > div:last-child {
     padding-top: 14px;
-    border-top: 1px solid var(--gray-5);
+    border-top: 1px solid var(--gray-400);
   }
 `;
 

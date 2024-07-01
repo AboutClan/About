@@ -1,6 +1,4 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
-import { faCheck } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
 interface ICheckBoxNav {
@@ -25,13 +23,13 @@ function CheckBoxNav({ buttonList, selectedButton, setSelectedButton }: ICheckBo
               w="20px"
               borderWidth={selectedButton === item ? "0" : "1.5px"}
               borderRadius="var(--rounded)"
-              borderColor="var(--gray-5)"
+              borderColor="var(--gray-400)"
               bg={selectedButton === item ? "var(--color-mint)" : "white"}
               onClick={() => handleCheckBoxChange(item)}
               justifyContent="center"
               alignItems="center"
             >
-              {selectedButton === item && <FontAwesomeIcon icon={faCheck} color="white" />}
+              {selectedButton === item && <i className="fa-solid fa-check" style={{ color: "white" }} />}
             </Flex>
             <Text ml="var(--gap-2)">{item}</Text>
           </Box>

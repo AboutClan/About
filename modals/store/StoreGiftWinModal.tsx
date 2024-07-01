@@ -59,7 +59,6 @@ const Winner = styled.div`
 const Win = styled.span`
   font-size: 15px;
   font-weight: 600;
-  color: var(--gray-2);
 `;
 
 export default StoreGiftWinModal;

@@ -1,16 +1,20 @@
 import styled from "styled-components";
 
+import BlurredLink from "../../../components/molecules/BlurredLink";
 import { IGatherListItem } from "../../../types/models/gatherTypes/gatherTypes";
 
 interface IGather {
+  isMember: boolean;
+  kakaoUrl: string;
   content: string;
   gatherList: IGatherListItem[];
 }
 
-function GatherContent({ content, gatherList }: IGather) {
+function GatherContent({ isMember, kakaoUrl, content, gatherList }: IGather) {
   return (
     <Layout>
       <Content>{content}</Content>
+      {kakaoUrl && <BlurredLink url={kakaoUrl} isBlur={!isMember} />}
       <ListContainer>
         {gatherList?.map((item, idx) => (
           <ListBlock key={idx}>
@@ -30,7 +34,7 @@ const Layout = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 140px;
-  border-bottom: 6px solid var(--gray-7);
+  border-bottom: 6px solid var(--gray-200);
 `;
 const Content = styled.pre`
   min-height: 100px;
@@ -44,7 +48,7 @@ const Content = styled.pre`
 const ListContainer = styled.div`
   padding: var(--gap-3) 16px;
 
-  background-color: var(--gray-8);
+  background-color: var(--gray-100);
   border: var(--border);
 `;
 

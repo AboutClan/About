@@ -94,18 +94,18 @@ function Comment() {
 
         <div onClick={() => setIndex(InputIdx)}>
           <Input
+            bgColor="white"
             placeholder="직접 입력"
             ref={inputRef}
             onChange={(e) => setValue(e.target?.value)}
             value={value}
             h="48px"
-            color="var(--gray-4)"
             focusBorderColor="#00c2b3"
             textAlign="center"
             fontSize="14px"
-            borderWidth="1.5px"
+            border="var(--border-main)"
             _placeholder={{
-              color: "var(--gray-4)",
+              color: "var(--gray-500)",
             }}
           />
         </div>
@@ -127,6 +127,7 @@ const Container = styled.div`
 `;
 
 const Item = styled.div<{ $isSelected: boolean }>`
+  background-color: white;
   width: 100%;
   border-radius: var(--rounded-lg);
   display: flex;
@@ -134,8 +135,8 @@ const Item = styled.div<{ $isSelected: boolean }>`
   align-items: center;
   height: 48px;
   margin-bottom: var(--gap-3);
-  color: ${(props) => (props.$isSelected ? "var(--gray-1)" : "var(--gray-4)")};
-  border: ${(props) => (props.$isSelected ? "var(--border-thick)" : "1.5px solid var(--gray-6)")};
+  color: ${(props) => (props.$isSelected ? "var(--gray-800)" : "var(--gray-500)")};
+  border: ${(props) => (props.$isSelected ? "var(--border-thick)" : "var(--border-main)")};
 `;
 
 export default Comment;

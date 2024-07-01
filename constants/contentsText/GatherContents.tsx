@@ -1,16 +1,3 @@
-import {
-  faAtom,
-  faBuildingColumns,
-  faChampagneGlasses,
-  faCoffee,
-  faExplosion,
-  faGamepad,
-  faPaperPlane,
-  faPersonRunning,
-  faShuttleSpace,
-  faUserAstronaut,
-} from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { TABLE_COLORS } from "../../constants/styles";
 
@@ -29,14 +16,14 @@ export const GATHER_TYPES = [
 ];
 
 export const GatherCategoryIcons = [
-  <FontAwesomeIcon icon={faUserAstronaut} key="1" color={TABLE_COLORS[0]} />,
-  <FontAwesomeIcon icon={faCoffee} key="2" color={TABLE_COLORS[1]} />,
-  <FontAwesomeIcon icon={faChampagneGlasses} key="drink" color={TABLE_COLORS[2]} />,
-  <FontAwesomeIcon icon={faPersonRunning} key="3" color={TABLE_COLORS[3]} />,
-  <FontAwesomeIcon icon={faGamepad} key="7" color={TABLE_COLORS[8]} />,
-  <FontAwesomeIcon icon={faShuttleSpace} key="4" color={TABLE_COLORS[4]} />,
-  <FontAwesomeIcon icon={faBuildingColumns} key="6" color={TABLE_COLORS[9]} />,
-  <FontAwesomeIcon icon={faPaperPlane} key="5" color={TABLE_COLORS[5]} />,
-  <FontAwesomeIcon icon={faExplosion} key="7" color={TABLE_COLORS[6]} />,
-  <FontAwesomeIcon icon={faAtom} key="8" color={TABLE_COLORS[7]} />,
+  <i className="fa-solid fa-user-astronaut" key="1" style={{color:`${TABLE_COLORS[0]}`}} />,
+  <i className="fa-solid fa-coffee" key="2" style={{color:`${TABLE_COLORS[1]}`}} />,
+  <i className="fa-solid fa-champagne-glasses" key="drink" style={{color:`${TABLE_COLORS[2]}`}} />,
+  <i className="fa-solid fa-person-running" key="3" style={{color:`${TABLE_COLORS[3]}`}} />,
+  <i className="fa-solid fa-gamepad" key="7" style={{color:`${TABLE_COLORS[8]}`}} />,
+  <i className="fa-solid fa-shuttle-space" key="4" style={{color:`${TABLE_COLORS[4]}`}} />,
+  <i className="fa-solid fa-building-columns" key="6" style={{color:`${TABLE_COLORS[9]}`}} />,
+  <i className="fa-solid fa-paper-plane" key="5" style={{color:`${TABLE_COLORS[5]}`}} />,
+  <i className="fa-solid fa-explosion" key="7" style={{color:`${TABLE_COLORS[6]}`}} />,
+  <i className="fa-solid fa-atom" key="8" style={{color:`${TABLE_COLORS[7]}`}} />,
 ];

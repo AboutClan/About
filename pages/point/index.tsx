@@ -10,7 +10,7 @@ import PointSkeleton from "../../pageTemplates/point/skeleton/PointSkeleton";
 
 function Point() {
   const { data: session } = useSession();
-  const isGuest = session?.user.name === "guest";
+  const isGuest = session?.user.role === "guest";
   const { data: userInfo } = useUserInfoQuery({
     enabled: !isGuest,
   });
@@ -34,7 +34,7 @@ function Point() {
 }
 
 const Layout = styled.div`
-  background-color: var(--gray-8);
+  background-color: var(--gray-100);
   margin: 0 var(--gap-4);
   margin-top: var(--gap-3);
 `;

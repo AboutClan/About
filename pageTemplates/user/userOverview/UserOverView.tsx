@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -6,24 +6,40 @@ import styled from "styled-components";
 
 import Avatar from "../../../components/atoms/Avatar";
 import UserBadge from "../../../components/atoms/badges/UserBadge";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
+import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import RequestChangeProfileImageModal from "../../../modals/userRequest/RequestChangeProfileImageModal/RequestChangeProfileImageModal";
+import { IUser } from "../../../types/models/userTypes/userInfoTypes";
 import UserOverviewComment from "./UserOverviewComment";
 
-export default function UserOverview() {
-  const router = useRouter();
+interface UserOverviewProps {
+  userInfo: IUser;
+}
 
-  const { data: userInfo } = useUserInfoQuery();
+export default function UserOverview({ userInfo }: UserOverviewProps) {
+  const typeToast = useTypeToast();
+  const router = useRouter();
+  const isGuest = userInfo?.role === "guest";
 
   const [isProfileModal, setIsProfileModal] = useState(false);
 
   const onClickProfileChange = () => {
+    if (isGuest) {
+      typeToast("guest");
+      return;
+    }
     router.push("/register/location?edit=on");
   };
 
   return (
     <>
-      <Layout>
+      <Box
+        m="16px"
+        bgColor="white"
+        p="16px"
+        pt="12px"
+        rounded="var(--rounded-lg)"
+        border="var(--border-main)"
+      >
         <UserInfoContainer>
           <UserInfo>
             <UserProfile>
@@ -34,7 +50,7 @@ export default function UserOverview() {
           </UserInfo>
           <UserImg>
             <Avatar
-              avatar={userInfo.avatar}
+              avatar={userInfo?.avatar}
               image={userInfo.profileImage}
               uid={userInfo.uid}
               size="xl"
@@ -54,19 +70,14 @@ export default function UserOverview() {
             프로필 수정
           </Button>
         </Link>
-      </Layout>
+      </Box>
       {isProfileModal && <RequestChangeProfileImageModal setIsModal={setIsProfileModal} />}
     </>
   );
 }
 
-const Layout = styled.div`
-  padding: 0 var(--gap-5);
-  padding-bottom: var(--gap-5);
-`;
-
 const UserInfoContainer = styled.div`
-  margin: var(--gap-4) 0;
+  margin-bottom: var(--gap-4);
 
   display: flex;
   align-items: center;
@@ -102,7 +113,7 @@ const IconWrapper = styled.button`
   right: 0px;
   bottom: 0px;
   background-color: white;
-  border: 1px solid var(--gray-5);
+  border: 1px solid var(--gray-400);
   border-radius: 50%;
 `;
 

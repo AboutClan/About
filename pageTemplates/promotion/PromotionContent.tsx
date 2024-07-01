@@ -1,6 +1,4 @@
 import { Button } from "@chakra-ui/react";
-import { faChevronDown } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { useState } from "react";
 import styled from "styled-components";
@@ -15,7 +13,7 @@ function PromotionContent() {
     <Layout>
       <Guide>
         <span>아래 글을 복사하여 홍보글을 게시해주세요!</span>
-        <FontAwesomeIcon icon={faChevronDown} />
+        <i className="fa-solid fa-chevron-down" />
       </Guide>
       <Container>
         <Wrapper>
@@ -41,7 +39,7 @@ function PromotionContent() {
         <Content>
           {isText ? (
             <>
-              <Title>카공 및 그룹 스터디 동아리 ABOUT</Title>
+              <Title>스터디 & 친목 동아리 ABOUT</Title>
               <Pre>{PROMOTION_TEXT}</Pre>
             </>
           ) : (
@@ -77,7 +75,7 @@ const Guide = styled.div`
 
 const Container = styled.div`
   padding-top: var(--gap-5);
-  background-color: var(--gray-7);
+  background-color: var(--gray-200);
   padding: var(--gap-5) var(--gap-4);
 `;
 
@@ -102,7 +100,7 @@ const ImageWrapper = styled.div`
     margin-top: var(--gap-3);
     font-size: 12px;
     font-weight: 600;
-    color: var(--gray-1);
+    color: var(--gray-800);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -110,7 +108,7 @@ const ImageWrapper = styled.div`
 `;
 
 const Nav = styled.nav`
-  border: 1px solid var(--gray-5);
+  border: 1px solid var(--gray-400);
   border-radius: var(--rounded-lg);
 `;
 

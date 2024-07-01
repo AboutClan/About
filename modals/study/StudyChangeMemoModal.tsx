@@ -35,9 +35,16 @@ export default function StudyChangeMemoModal({ hasModalMemo, setIsModal }: IStud
     },
   };
 
+  const [isFocus, setIsFocus] = useState();
+
   return (
-    <ModalLayout title="출석 메모 변경" footerOptions={footerOptions} setIsModal={setIsModal}>
-      <Textarea value={value} onChange={(e) => setValue(e.target.value)} />
+    <ModalLayout
+      title="출석 메모 변경"
+      footerOptions={footerOptions}
+      setIsModal={setIsModal}
+      isInputFocus={isFocus}
+    >
+      <Textarea value={value} onChange={(e) => setValue(e.target.value)} setIsFocus={setIsFocus} />
     </ModalLayout>
   );
 }

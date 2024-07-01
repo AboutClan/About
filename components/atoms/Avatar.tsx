@@ -13,6 +13,7 @@ type Size = "sm" | "smd" | "md" | "lg" | "xl";
 interface IAvatar {
   image: string;
   size: Size;
+  sizeLength?: number;
   avatar?: IAvatarProp;
   uid?: string;
   isPriority?: boolean;
@@ -23,6 +24,7 @@ interface IAvatar {
 export default function Avatar({
   image,
   size,
+  sizeLength,
   avatar,
   uid,
   isPriority,
@@ -43,11 +45,11 @@ export default function Avatar({
 
   function AvatarComponent() {
     return (
-      <AvatarContainer size={size}>
+      <AvatarContainer size={size} sizeLength={sizeLength}>
         <ImageContainer
           bg={
             shadowAvatar
-              ? "var(--gray-3)"
+              ? "var(--gray-500)"
               : hasAvatar && avatar.bg !== null && COLOR_TABLE_LIGHT[avatar.bg]
           }
           hasType={hasAvatar}
@@ -59,7 +61,8 @@ export default function Avatar({
                 src={imageUrl}
                 fill={true}
                 sizes={
-                  size === "sm"
+                  `${sizeLength}px` ||
+                  (size === "sm"
                     ? "28px"
                     : size === "smd"
                       ? "32px"
@@ -69,7 +72,7 @@ export default function Avatar({
                           ? "64px"
                           : size === "xl"
                             ? "80px"
-                            : ""
+                            : "")
                 }
                 priority={isPriority}
                 alt="avatar"
@@ -100,41 +103,58 @@ export default function Avatar({
 }
 const AvatarContainer = styled.div<{
   size: Size;
+  sizeLength?: number; // make sizeLength optional
 }>`
   overflow: hidden;
   position: relative;
   border-radius: 50%; // rounded-full
-  background-color: var(--gray-8);
+  background-color: var(--gray-100);
 
   ${(props) => {
-    switch (props.size) {
-      case "sm":
-        return css`
-          width: 28px; // w-7
-          height: 28px; // h-7
-          padding: 2px;
-        `;
-      case "smd":
-        return css`
-          width: 32px; // w-7
-          height: 32px; // h-7
-        `;
-      case "md":
-        return css`
-          width: 44px; // w-11
-          height: 44px; // h-11
-        `;
-      case "lg":
-        return css`
-          width: 64px;
-          height: 64px;
-        `;
-      case "xl":
-        return css`
-          width: 80px; // w-20
-          height: 80px; // h-20
-        `;
-    }
+    const sizeStyles = (() => {
+      switch (props.size) {
+        case "sm":
+          return css`
+            width: 28px; // w-7
+            height: 28px; // h-7
+            padding: 2px;
+          `;
+        case "smd":
+          return css`
+            width: 32px; // w-8
+            height: 32px; // h-8
+          `;
+        case "md":
+          return css`
+            width: 44px; // w-11
+            height: 44px; // h-11
+          `;
+        case "lg":
+          return css`
+            width: 64px;
+            height: 64px;
+          `;
+        case "xl":
+          return css`
+            width: 80px; // w-20
+            height: 80px; // h-20
+          `;
+        default:
+          return css``;
+      }
+    })();
+
+    const sizeLengthStyles = props.sizeLength
+      ? css`
+          width: ${props.sizeLength}px;
+          height: ${props.sizeLength}px;
+        `
+      : css``;
+
+    return css`
+      ${sizeStyles}
+      ${sizeLengthStyles}
+    `;
   }}
 `;
 
@@ -158,6 +178,5 @@ const ImageContainer = styled.div<{
           ? "6px"
           : "8px")};
 
-  background-color: ${(props) =>
-    props.bg ? props.bg : "var(--gray-3)"}; // bg-gray-200 as fallback
+  background-color: ${(props) => (props.bg ? props.bg : "var(--gray-500)")};
 `;

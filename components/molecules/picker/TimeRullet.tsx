@@ -111,8 +111,8 @@ const Layout = styled.div`
   margin-top: var(--gap-2);
   width: 100%;
   border-radius: var(--rounded);
-  background-color: var(--gray-8);
-  color: var(--gray-2);
+  background-color: var(--gray-100);
+
   overflow: hidden;
 `;
 
@@ -126,7 +126,7 @@ const TimeLayout = styled(motion.div)`
 `;
 
 const BlockIcon = styled.div`
-  background-color: var(--gray-1);
+  background-color: var(--gray-800);
   color: white;
   margin: 0 var(--gap-3);
   width: 100%;
@@ -145,9 +145,9 @@ const ChoiceBlock = styled.div<{ isDisabled?: boolean }>`
   align-items: center;
   font-size: 16px;
   font-weight: 600;
-  background-color: var(--gray-8);
+  background-color: var(--gray-100);
 
-  color: ${(props) => (props.isDisabled ? "var(--gray-4)" : "var(--gray-2)")};
+  color: ${(props) => (props.isDisabled ? "var(--gray-500)" : "var(--gray-200)")};
 `;
 
 export default TimeRullet;

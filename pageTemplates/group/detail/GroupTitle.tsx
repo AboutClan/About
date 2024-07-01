@@ -1,5 +1,3 @@
-import { faGear, faUserGroup } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
@@ -30,7 +28,7 @@ function GroupTitle({
   const color =
     status === "gathering"
       ? "mintTheme"
-      : status === "open"
+      : status === "open" || status === "pending"
         ? maxCnt === 0 || maxCnt > memberCnt
           ? "mintTheme"
           : "redTheme"
@@ -39,7 +37,7 @@ function GroupTitle({
   const statusText =
     status === "gathering"
       ? "소그룹"
-      : status === "open"
+      : status === "open" || status === "pending"
         ? maxCnt === 0 || maxCnt > memberCnt
           ? "모집중"
           : "마감"
@@ -64,10 +62,10 @@ function GroupTitle({
         {isAdmin && (
           <SettingBtnNav>
             <button onClick={() => router.push(`${router.asPath}/member`)}>
-              <FontAwesomeIcon icon={faUserGroup} size="sm" />
+              <i className="fa-regular fa-user-group fa-sm" />
             </button>
             <button onClick={onClick}>
-              <FontAwesomeIcon icon={faGear} size="sm" />
+              <i className="fa-regular fa-gear fa-sm" />
               {isWaiting && (
                 <IconWrapper>
                   <NewAlertIcon />
@@ -87,8 +85,8 @@ const IconWrapper = styled.div`
   bottom: -2px;
 `;
 
-const Layout = styled.div<{ status: GatherStatus }>`
-  padding: Var(--gap-4);
+const Layout = styled.div<{ status: GatherStatus | "gathering" }>`
+  padding: var(--gap-4);
   padding-bottom: var(--gap-2);
   background-color: white;
   border-bottom: var(--border);
@@ -103,7 +101,7 @@ const SettingBtnNav = styled.nav`
   > button {
     margin-left: var(--gap-2);
     border-radius: 50%;
-    background-color: var(--gray-7);
+    background-color: var(--gray-200);
     width: 32px;
     height: 32px;
     display: flex;
@@ -119,7 +117,7 @@ const Title = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: var(--gap-1);
-  color: var(--gray-1);
+  color: var(--gray-800);
   font-size: 18px;
 
   font-weight: 800;
@@ -134,7 +132,7 @@ const SubInfo = styled.div`
   height: 32px;
   font-size: 13px;
   display: flex;
-  color: var(--gray-3);
+  color: var(--gray-600);
 `;
 
 export default GroupTitle;

@@ -1,22 +1,24 @@
-import { Box } from "@chakra-ui/react";
-import { faArrowRight } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
+import DiffTwoBlockCol from "../../components/atoms/blocks/DiffTwoBlockCol";
 import { MainLoading } from "../../components/atoms/loaders/MainLoading";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import SummaryTable from "../../components/organisms/tables/SummaryTable";
 import { usePointSystemLogQuery, usePointSystemQuery } from "../../hooks/user/queries";
 
-export default function DepositLog() {
-  const { data: point } = usePointSystemQuery("deposit");
-  const { data: pointLog } = usePointSystemLogQuery("deposit");
+function DepositLog() {
+  const { data: session } = useSession();
+  const { data: deposit } = usePointSystemQuery("deposit");
+  const { data: depositLog } = usePointSystemLogQuery("deposit");
 
-  const filterLog = pointLog?.filter((item) => item.meta.value);
+  const filterLog = depositLog?.filter((item) => item.meta.value);
 
-  const headerInfos = ["날짜", "내용", "금액"];
+  const isGuest = session?.user.role === "guest";
+  const headerInfos = ["날짜", "내용", "점수"];
   const tableInfosArr = filterLog?.map((log) => [
     dayjs(log.timestamp).format("M.DD"),
     log.message,
@@ -26,54 +28,34 @@ export default function DepositLog() {
   return (
     <>
       <Header title="보증금 기록" />
-      {pointLog ? (
-        <Slide>
-          <Layout>
-            <MyPoint>
-              <span>내 보증금</span>
-              <FontAwesomeIcon icon={faArrowRight} />
-              <span>{point} 원</span>
-            </MyPoint>
-            <Box border="var(--border)" rounded="md">
-              {pointLog && (
-                <SummaryTable headerInfos={headerInfos} tableInfosArr={tableInfosArr} size="lg" />
-              )}
-            </Box>
-          </Layout>
-        </Slide>
-      ) : (
-        <MainLoading />
-      )}
+      <Slide>
+        <Layout>
+          {!isGuest &&
+            (deposit && depositLog ? (
+              <>
+                <Flex justify="space-between" mb="16px">
+                  <DiffTwoBlockCol subText="내 보증금" text={`${deposit}원`} />
+                </Flex>
+                <Box border="var(--border)" rounded="md" minHeight="calc(100vh - 176px)">
+                  <SummaryTable headerInfos={headerInfos} tableInfosArr={tableInfosArr} size="lg" />
+                </Box>
+              </>
+            ) : (
+              <MainLoading />
+            ))}
+        </Layout>
+      </Slide>
     </>
   );
 }
 
 const Layout = styled.div`
+  display: flex;
+  flex-direction: column;
   margin: 0 var(--gap-4);
   margin-top: var(--gap-5);
   font-weight: 600;
+  min-height: 100dvh;
 `;
 
-const MyPoint = styled.div`
-  padding: 0 var(--gap-2);
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  width: 160px;
-  height: 40px;
-  border-radius: var(--rounded-lg);
-  border: var(--border-mint);
-  color: var(--gray-2);
-  font-size: 14px;
-  margin-bottom: 20px;
-  > span:first-child {
-    flex: 1;
-  }
-  > span:last-child {
-    flex: 1;
-    text-align: end;
-    font-size: 15px;
-    color: var(--gray-1);
-    font-weight: 700;
-  }
-`;
+export default DepositLog;

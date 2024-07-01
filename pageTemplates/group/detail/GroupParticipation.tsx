@@ -1,38 +1,38 @@
-import { faCrown, faInfinity } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRouter } from "next/router";
-import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import Avatar from "../../../components/atoms/Avatar";
+import { IProfileCommentCard } from "../../../components/molecules/cards/ProfileCommentCard";
+import ProfileCardColumn from "../../../components/organisms/ProfileCardColumn";
 import { GROUP_STUDY_ROLE } from "../../../constants/settingValue/groupStudy";
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { prevPageUrlState } from "../../../recoils/previousAtoms";
 import { IGroup } from "../../../types/models/groupTypes/group";
-import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 
 interface IGroupParticipation {
   data: IGroup;
 }
 
 function GroupParticipation({ data }: IGroupParticipation) {
-  const router = useRouter();
-  const toast = useToast();
-  const setBeforePage = useSetRecoilState(prevPageUrlState);
-
   const status = data.status;
   const participantsCnt = data.participants.length + (data.id === 33 ? 3 : 0);
 
-  const onClickProfile = (user: IUserSummary) => {
-    setBeforePage(router?.asPath);
-    router.push(`/profile/${user.uid}`);
-  };
+  const isSecret = data?.isSecret;
 
-  const outMemberCnt = data?.id === 33 ? 3 : 0;
-  const array = new Array(outMemberCnt).fill(0);
-  const onClickOutMember = () => {
-    toast("error", "외부 게스트의 프로필은 확인할 수 없습니다.");
-  };
+  const userCardArr: IProfileCommentCard[] = data.participants.map((par) => {
+    if (isSecret) {
+      return {
+        user: null,
+        comment: "익명으로 진행되는 소모임입니다.",
+        rightComponent: <ParticipateTime isFirst={true}>비공개</ParticipateTime>,
+      };
+    }
+    return {
+      user: par.user,
+      comment: par.user?.comment || "비공개 계정입니다.",
+      rightComponent: (
+        <>
+          <ParticipateTime isFirst={true}>{GROUP_STUDY_ROLE[par.role]}</ParticipateTime>
+        </>
+      ),
+    };
+  });
 
   return (
     <Layout>
@@ -45,70 +45,14 @@ function GroupParticipation({ data }: IGroupParticipation) {
         ) : (
           <>
             <span style={{ marginLeft: "4px" }} />
-            <FontAwesomeIcon icon={faInfinity} color="var(--gray-2)" />
+            <i className="fa-solid fa-infinity" style={{ color: "var(--gray-200)" }} />
           </>
         )}
       </Header>
-      <Members>
-        {data?.participants.map(
-          (who) =>
-            who && (
-              <MemberItem key={who?.user?.uid} onClick={() => onClickProfile(who?.user)}>
-                <ProfileWrapper>
-                  <Avatar
-                    image={who.user.profileImage}
-                    avatar={who.user?.avatar}
-                    size="md"
-                    uid={who.user.uid}
-                  />
-                  {who?.role === "admin" && (
-                    <Crown>
-                      <FontAwesomeIcon icon={faCrown} color="var(--color-orange)" />
-                    </Crown>
-                  )}
-                </ProfileWrapper>
-                <UserOverview>
-                  <span>{who?.user?.name}</span>
-                  <div>{who?.user?.comment}</div>
-                </UserOverview>
-                <ParticipateTime isFirst={true}>{GROUP_STUDY_ROLE[who.role]}</ParticipateTime>
-              </MemberItem>
-            ),
-        )}
-        {array?.map((_, idx) => (
-          <MemberItem key={idx}>
-            <ProfileWrapper onClick={onClickOutMember}>
-              <Avatar image="" avatar={{ type: 0, bg: 0 }} size="md" isLink={false} />
-            </ProfileWrapper>
-            <UserOverview>
-              <span>외부 참여자</span>
-              <div>코멘트가 없습니다.</div>
-            </UserOverview>
-            <ParticipateTime isFirst={true}>멤버</ParticipateTime>
-          </MemberItem>
-        ))}
-      </Members>
+      <ProfileCardColumn userCardArr={userCardArr} />
     </Layout>
   );
 }
-
-const ProfileWrapper = styled.div`
-  position: relative;
-`;
-
-const Crown = styled.div`
-  position: absolute;
-  right: -2px;
-  bottom: -2px;
-`;
-
-const MemberItem = styled.div`
-  padding: var(--gap-2) 0;
-  display: flex;
-  align-items: center;
-
-  border-bottom: var(--border);
-`;
 
 const Header = styled.header`
   font-size: 16px;
@@ -124,37 +68,6 @@ const Header = styled.header`
   }
   > span:nth-child(3) {
     margin: 0 var(--gap-1);
-  }
-`;
-
-const Members = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  padding: 0 var(--gap-4);
-  > div:last-child {
-    border: none;
-  }
-`;
-
-const UserOverview = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-
-  margin-left: var(--gap-3);
-  > span:first-child {
-    font-size: 14px;
-    font-weight: 600;
-  }
-  > div:last-child {
-    width: 95%;
-    display: -webkit-box;
-    -webkit-line-clamp: 1;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    font-size: 13px;
-    color: var(--gray-2);
   }
 `;
 

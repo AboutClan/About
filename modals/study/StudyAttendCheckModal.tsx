@@ -1,6 +1,5 @@
 /* eslint-disable */
 
-import { Box, Textarea } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useParams, useSearchParams } from "next/navigation";
@@ -13,8 +12,10 @@ import ScreenOverlay from "../../components/atoms/ScreenOverlay";
 import Spinner from "../../components/atoms/Spinner";
 import ImageUploadInput from "../../components/molecules/ImageUploadInput";
 import { STUDY_VOTE } from "../../constants/keys/queryKeys";
-import { POINT_SYSTEM_PLUS } from "../../constants/serviceConstants/pointSystemConstants";
-import { POINT_SYSTEM_DEPOSIT } from "../../constants/settingValue/pointSystem";
+import {
+  POINT_SYSTEM_DEPOSIT,
+  POINT_SYSTEM_PLUS,
+} from "../../constants/serviceConstants/pointSystemConstants";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useImageUploadMutation } from "../../hooks/image/mutations";
 import { useStudyAttendCheckMutation } from "../../hooks/study/mutations";
@@ -25,6 +26,8 @@ import { getRandomAlphabet } from "../../libs/userEventLibs/collection";
 import { myStudyState } from "../../recoils/studyRecoils";
 import { transferAlphabetState } from "../../recoils/transferRecoils";
 
+import Textarea from "../../components/atoms/Textarea";
+import { STUDY_ATTEND_MEMBERS } from "../../constants/keys/localStorage";
 import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
@@ -71,6 +74,16 @@ function StudyAttendCheckModal({ setIsModal }: IStudyAttendCheckModal) {
 
   const { mutate: handleArrived } = useStudyAttendCheckMutation(date, {
     onSuccess() {
+      if (!isFree) {
+        const studyVotingTable = JSON.parse(localStorage.getItem(STUDY_ATTEND_MEMBERS)) || [];
+        const newEntry = {
+          date,
+          members: myStudy?.attendences
+            .map((who) => who.user)
+            .filter((who) => who.uid !== session?.user.uid),
+        };
+        localStorage.setItem(STUDY_ATTEND_MEMBERS, JSON.stringify([...studyVotingTable, newEntry]));
+      }
       queryClient.invalidateQueries([STUDY_VOTE, date, location]);
       const alphabet = getRandomAlphabet(20);
       if (alphabet) {
@@ -143,6 +156,8 @@ function StudyAttendCheckModal({ setIsModal }: IStudyAttendCheckModal) {
     isFull: true,
   };
 
+  const [isFocus, setIsFocus] = useState(false);
+
   return (
     <>
       <ModalLayout
@@ -150,22 +165,19 @@ function StudyAttendCheckModal({ setIsModal }: IStudyAttendCheckModal) {
         footerOptions={footerOptions}
         setIsModal={setIsModal}
         initialRef={initialRef}
+        isInputFocus={isFocus}
       >
         <ModalSubtitle>
           도착하셨나요? <br />
           자리나 인상착의를 간단하게 적어주세요!
           <br />
-          <Box as="span" fontSize="12px" color="var(--gray-3)">
-            {isPrivate &&
-              "+ 현재 아이폰에서 가끔 출석 인증 오류가 나는 경우가 있습니다. 만약 그런 경우 마이페이지 건의하기에서 -> 출석오류라고 하나만 보내주시면 바꿔드릴게요!"}
-          </Box>
         </ModalSubtitle>
         {!isPrivate ? (
           <Textarea
             placeholder="ex. 입구 오른쪽 계단 아래 초록색 후드티"
             onChange={(e) => setValue(e.target.value)}
             value={value}
-            ref={initialRef}
+            setIsFocus={setIsFocus}
           />
         ) : (
           <ImageUploadInput setImageUrl={setImageUrl} />

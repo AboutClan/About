@@ -1,5 +1,4 @@
-import { faCircleHeart } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import styled from "styled-components";
 
@@ -14,36 +13,41 @@ function Like() {
   return (
     <>
       <Header title="좋아요 기록" />
-      {activeLogs ? (
-        <Slide>
-          <Container>
-            {activeLogs
-              ?.slice()
-              ?.reverse()
-              ?.map((item, idx) => {
-                const type = item.type;
-                const [name, message] = item.message.split("님");
+      <Slide>
+        <Box minH="100dvh">
+          {activeLogs ? (
+            <Container>
+              {activeLogs
+                ?.slice()
+                ?.reverse()
+                ?.map((item, idx) => {
+                  const type = item.type;
+                  const [name, message] = item.message.split("님");
 
-                return (
-                  <ItemContainer key={idx}>
-                    <span>{dayjsToFormat(dayjs(item.createdAt), "YYYY년 M월 D일")}</span>
-                    <Item>
-                      <IconWrapper>
-                        <FontAwesomeIcon color="var(--color-red)" icon={faCircleHeart} size="xl" />
-                      </IconWrapper>
-                      <Name>{name}</Name>
-                      <Content>
-                        님{message} {type === "like" && <Point>+2 point</Point>}
-                      </Content>
-                    </Item>
-                  </ItemContainer>
-                );
-              })}
-          </Container>
-        </Slide>
-      ) : (
-        <MainLoading />
-      )}
+                  return (
+                    <ItemContainer key={idx}>
+                      <span>{dayjsToFormat(dayjs(item.createdAt), "YYYY년 M월 D일")}</span>
+                      <Item>
+                        <IconWrapper>
+                          <i
+                            className="fa-regular fa-circle-heart fa-xl"
+                            style={{ color: "var(--color-red)" }}
+                          />
+                        </IconWrapper>
+                        <Name>{name}</Name>
+                        <Content>
+                          님{message} {type === "like" && <Point>+2 point</Point>}
+                        </Content>
+                      </Item>
+                    </ItemContainer>
+                  );
+                })}
+            </Container>
+          ) : (
+            <MainLoading />
+          )}
+        </Box>
+      </Slide>
     </>
   );
 }
@@ -55,11 +59,11 @@ const ItemContainer = styled.div`
   flex-direction: column;
   padding: var(--gap-3) var(--gap-4);
   padding-bottom: var(--gap-2);
-  border-bottom: 1px solid var(--gray-7);
+  border-bottom: var(--border-main);
   font-size: 13px;
   > span:first-child {
     font-size: 12px;
-    color: var(--gray-2);
+    color: var(--gray-700);
     margin-bottom: var(--gap-2);
   }
 `;
@@ -87,7 +91,7 @@ const Content = styled.span`
 
 const Point = styled.span`
   color: var(--color-mint);
-  font-size: 10px;
+  font-size: 12px;
 `;
 
 export default Like;

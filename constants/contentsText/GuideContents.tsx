@@ -183,6 +183,76 @@ export const STEPS_CONTENTS: Step[] = [
     spotlightPadding: 8,
     target: ".about_navigation4",
   },
+
+  {
+    content: (
+      <Content>원하는 날짜로 이동할 수 있습니다. 버튼을 누르면 월간 달력 팝업이 나와요!</Content>
+    ),
+
+    styles: {
+      options: {
+        width: 320,
+      },
+    },
+    locale: {
+      back: (
+        <Button
+          as="div"
+          color="var(--color-mint)"
+          borderColor="var(--color-mint)"
+          variant="outline"
+        >
+          뒤로
+        </Button>
+      ),
+
+      close: "닫기",
+      skip: null,
+      next: (
+        <Button as="div" colorScheme="mintTheme">
+          다음
+        </Button>
+      ),
+    },
+    spotlightPadding: 8,
+    target: ".about_calendar_month",
+  },
+  {
+    content: (
+      <Content>
+        스와이핑을 통해 원하는 날짜로 이동할 수 있습니다. 색상 표시를 통해 현재 참여 인원 정도를 알
+        수 있어요!
+      </Content>
+    ),
+
+    styles: {
+      options: {
+        width: 320,
+      },
+    },
+    locale: {
+      back: (
+        <Button
+          as="div"
+          color="var(--color-mint)"
+          borderColor="var(--color-mint)"
+          variant="outline"
+        >
+          뒤로
+        </Button>
+      ),
+
+      close: "닫기",
+      skip: null,
+      next: (
+        <Button as="div" colorScheme="mintTheme">
+          다음
+        </Button>
+      ),
+    },
+    spotlightPadding: 8,
+    target: ".about_calendar",
+  },
   {
     content: (
       <Content>
@@ -217,41 +287,6 @@ export const STEPS_CONTENTS: Step[] = [
     },
     spotlightPadding: 8,
     target: ".main_vote_btn",
-  },
-  {
-    content: (
-      <Content>
-        원하는 날짜로 이동할 수 있습니다. 스터디 투표를 미리 해놓으면 더 많은 포인트 획득!
-      </Content>
-    ),
-
-    styles: {
-      options: {
-        width: 320,
-      },
-    },
-    locale: {
-      back: (
-        <Button
-          as="div"
-          color="var(--color-mint)"
-          borderColor="var(--color-mint)"
-          variant="outline"
-        >
-          뒤로
-        </Button>
-      ),
-
-      close: "닫기",
-      skip: null,
-      next: (
-        <Button as="div" colorScheme="mintTheme">
-          다음
-        </Button>
-      ),
-    },
-    spotlightPadding: 8,
-    target: ".about_calendar",
   },
   {
     content: (

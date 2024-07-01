@@ -25,20 +25,12 @@ function GroupContent({ group }: IGroupContent) {
     flex: 1,
   }));
 
+
+
   return (
     <Layout>
       <TabNav tabOptionsArr={tabArr} selected={category} />
-      {/* <ContentNav>
-        {categoryArr.map((item) => (
-          <ContentBtn
-            onClick={() => setCategory(item)}
-            isSelected={item === category}
-            key={item}
-          >
-            {item}
-          </ContentBtn>
-        ))}
-      </ContentNav> */}
+ 
       <ContentContainer>
         {category === "정보" ? (
           <ContentInfo group={group} />
@@ -58,7 +50,7 @@ const Layout = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 140px;
-  border-bottom: 6px solid var(--gray-7);
+  border-bottom: 6px solid var(--gray-200);
 `;
 
 const ContentContainer = styled.div`

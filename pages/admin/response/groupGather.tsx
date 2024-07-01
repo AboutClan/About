@@ -71,7 +71,7 @@ const Item = styled.div`
   display: flex;
   flex-direction: column;
 
-  border-bottom: 6px solid var(--gray-6);
+  border-bottom: 6px solid var(--gray-300);
   padding: 16px 0;
 `;
 const Wrapper = styled.div`
@@ -86,7 +86,7 @@ const ItemHeader = styled.header`
   > div {
     span {
       font-size: 10px;
-      color: var(--gray-3);
+      color: var(--gray-600);
       margin-left: 8px;
     }
   }
@@ -100,7 +100,7 @@ const Title = styled.div`
 
 const Content = styled.div`
   padding: 8px 0;
-  color: var(--gray-2);
+  color: var(--gray-700);
   font-size: 13px;
   min-height: 48px;
   display: flex;

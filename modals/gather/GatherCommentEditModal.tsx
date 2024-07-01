@@ -2,17 +2,21 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import styled from "styled-components";
 
+import { Input } from "../../components/atoms/Input";
 import { GATHER_CONTENT, GROUP_STUDY_ALL } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
 import { useGatherCommentMutation } from "../../hooks/gather/mutations";
 import { useGroupCommentMutation } from "../../hooks/groupStudy/mutations";
 import { IModal } from "../../types/components/modalTypes";
+import { DispatchType } from "../../types/hooks/reactTypes";
+import { IGatherComment } from "../../types/models/gatherTypes/gatherTypes";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface IGatherCommentEditModal extends IModal {
   commentText: string;
   commentId: string;
   type?: "group";
+  setCommentArr?: DispatchType<IGatherComment[]>;
 }
 
 function GatherCommentEditModal({
@@ -20,6 +24,7 @@ function GatherCommentEditModal({
   setIsModal,
   commentId,
   type,
+  setCommentArr,
 }: IGatherCommentEditModal) {
   const router = useRouter();
   const gatherId = +router.query.id;
@@ -29,24 +34,38 @@ function GatherCommentEditModal({
 
   const resetQueryData = useResetQueryData();
 
+  const editCommentNow = (value: string, commentId: string) => {
+    setCommentArr((old) =>
+      old.map((obj) => (obj._id === commentId ? { ...obj, comment: value } : obj)),
+    );
+  };
+
+  const deleteCommentNow = (commentId: string) => {
+    setCommentArr((old) => old.filter((obj) => obj._id !== commentId));
+  };
+
   const { mutate: deleteCommentGroup } = useGroupCommentMutation("delete", gatherId, {
     onSuccess() {
       resetQueryData([GROUP_STUDY_ALL]);
+      deleteCommentNow(commentId);
     },
   });
   const { mutate: editCommentGroup } = useGroupCommentMutation("patch", gatherId, {
     onSuccess() {
       resetQueryData([GROUP_STUDY_ALL]);
+      editCommentNow(value, commentId);
     },
   });
   const { mutate: deleteComment } = useGatherCommentMutation("delete", gatherId, {
     onSuccess() {
       resetQueryData([GATHER_CONTENT]);
+      deleteCommentNow(commentId);
     },
   });
   const { mutate: editComment } = useGatherCommentMutation("patch", gatherId, {
     onSuccess() {
       resetQueryData([GATHER_CONTENT]);
+      editCommentNow(value, commentId);
     },
   });
 
@@ -54,7 +73,7 @@ function GatherCommentEditModal({
     setIsModal(false);
   };
 
-  const onDelete = () => {
+  const onDelete = async () => {
     if (type === "group") deleteCommentGroup({ commentId });
     else deleteComment({ commentId });
     onComplete();
@@ -77,7 +96,16 @@ function GatherCommentEditModal({
   };
 
   return (
-    <ModalLayout title="" footerOptions={isFirst ? null : footerOptions} setIsModal={setIsModal}>
+    <ModalLayout
+      title=""
+      headerOptions={{}}
+      footerOptions={isFirst ? null : footerOptions}
+      setIsModal={setIsModal}
+      paddingOptions={{
+        header: 0,
+        footer: 0,
+      }}
+    >
       <Container>
         {isFirst ? (
           <>
@@ -103,22 +131,10 @@ const Container = styled.div`
 
   align-items: flex-start;
   > button {
+    padding: 12px;
     :focus {
       outline: none;
     }
-  }
-`;
-
-const Input = styled.input`
-  margin-top: var(--gap-2);
-  padding: var(--gap-2);
-  width: 100%;
-  border: var(--border);
-  border-radius: var(--rounded-lg);
-  font-size: 12px;
-  :focus {
-    outline: none;
-    border: 2px solid var(--color-mint);
   }
 `;
 

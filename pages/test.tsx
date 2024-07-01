@@ -1,141 +1,89 @@
-/* eslint-disable */
+// pages/test.js
+import { Button } from "@chakra-ui/react";
+import axios from "axios";
 
-import { Box } from "@chakra-ui/react";
-import dayjs from "dayjs";
-import { useState } from "react";
-import { useRecoilValue } from "recoil";
-import styled from "styled-components";
+import { SERVER_URI } from "../constants/apiConstants";
 
-import { useGroupBelongMatchMutation, useMonthCalcMutation } from "../hooks/admin/mutation";
-import { useAdminStudyRecordQuery } from "../hooks/admin/quries";
-import { useImageUploadMutation } from "../hooks/image/mutations";
-import { studyDateStatusState } from "../recoils/studyRecoils";
+const publicVapidKey = process.env.NEXT_PUBLIC_PWA_KEY; // REPLACE_WITH_YOUR_KEY
+
+const urlBase64ToUint8Array = (base64String) => {
+  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
+
+  let rawData;
+  try {
+    rawData = window.atob(base64);
+  } catch (e) {
+    console.error("Failed to decode base64 string:", e);
+    throw new Error("The string to be decoded is not correctly encoded.");
+  }
+
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+
+  return outputArray;
+};
+
+const requestNotificationPermission = async () => {
+  if (Notification.permission === "granted") {
+    return true;
+  }
+
+  if (Notification.permission !== "denied") {
+    const permission = await Notification.requestPermission();
+    return permission === "granted";
+  }
+
+  return false;
+};
+
+const send = async (onSuccess) => {
+  try {
+    // Register Service Worker
+    console.log("Registering service worker...");
+    const register = await navigator.serviceWorker.register("/pwabuilder-sw.js", {
+      scope: "/",
+    });
+    console.log("Service Worker Registered...");
+
+    // Register Push
+    console.log("Registering Push...");
+    const subscription = await register.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
+    });
+    console.log("Push Registered...");
+
+    // Send Push Notification
+    console.log("Sending Push...");
+
+    await axios.post(`${SERVER_URI}/webpush/subscribe`, subscription);
+    console.log("Push Sent...");
+
+    if (onSuccess) onSuccess(); // onSuccess 함수 호출
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 function Test() {
-  const { data } = useAdminStudyRecordQuery(dayjs("2024-04-01"), dayjs("2024-04-07"), null, "인천");
-  console.log(data);
+  const onClick = async () => {
+    const hasPermission = await requestNotificationPermission();
+    if (!hasPermission) {
+      alert(
+        "Notification permission denied or not granted. Please enable notifications in your browser settings.",
+      );
+      return;
+    }
 
-  const a = useRecoilValue(studyDateStatusState);
-
-  const AA = "te";
-  const BB = "te ";
-
-  const { data: data2 } = useAdminStudyRecordQuery(
-    dayjs("2023-12-04"),
-    dayjs("2023-12-10"),
-    null,
-    "수원",
-  );
-  // const decodeByAES256 = (encodedTel: string) => {
-  //   const bytes = CryptoJS.AES.decrypt(encodedTel, key);
-  //   const originalText = bytes.toString(CryptoJS.enc.Utf8);
-  //   return originalText;
-  // };
-
-  const { mutate: match } = useGroupBelongMatchMutation({
-    onSuccess(data) {},
-  });
-
-  const { mutate } = useMonthCalcMutation({
-    onSuccess(data) {},
-    onError(err) {
-      console.error(err);
-    },
-  });
-
-  const handleForm = (e) => {
-    e.preventDefault();
+    send(() => {
+      console.log("Push registration successful and additional function executed.");
+    }).catch((err) => console.error(err));
   };
 
-  const { mutate: A } = useImageUploadMutation({
-    onSuccess(data) {},
-  });
-
-  const [image, setImage] = useState(null);
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-
-    setImage(file);
-  };
-  const submitForm = () => {
-    const formData = new FormData();
-    formData.append("image", image);
-    formData.append("path", "hello");
-
-    A(formData);
-  };
-
-  return (
-    <>
-      <Layout>
-        <Box w="72px" h="72px">
-          <div
-            style={{
-              width: "100%",
-              height: "100%",
-              justifyContent: "center",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <div
-              style={{
-                padding: "0 4px",
-                borderRadius: "8px",
-                textAlign: "center",
-                backgroundColor: "white",
-                fontWeight: "600",
-                fontSize: "12px",
-                whiteSpace: "nowrap",
-              }}
-            >
-              테스트테스트테스트
-            </div>
-            <button
-              style={{
-                width: "48px",
-                height: "48px",
-                padding: "8px",
-                borderRadius: "50%",
-                backgroundColor: "rgba(0, 194, 179, 0.1)",
-              }}
-            >
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  backgroundColor: "#00c2b3",
-                  borderRadius: "50%",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  color: "white",
-                  fontWeight: "700",
-                  padding: "4px",
-                }}
-              >
-                <div
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    borderRadius: "50%",
-                    backgroundColor: "white",
-                  }}
-                ></div>
-              </div>
-            </button>
-          </div>
-        </Box>
-      </Layout>
-    </>
-  );
+  return <Button onClick={onClick}>버튼</Button>;
 }
-
-const Layout = styled.div`
-  margin-top: 200px;
-  margin-left: 50px;
-  display: flex;
-`;
 
 export default Test;

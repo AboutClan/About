@@ -2,11 +2,12 @@ import { useEffect, useRef } from "react";
 import styled from "styled-components";
 
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
+import { IPlace } from "../../types/models/studyTypes/studyDetails";
 
 interface IVoteMap {
   mapOptions?: IMapOptions;
   markersOptions?: IMarkerOptions[];
-  handleMarker?: (id: string) => void;
+  handleMarker?: (id: IPlace) => void;
   centerValue?: {
     lat: number;
     lng: number;
@@ -31,7 +32,7 @@ export default function VoteMap({
     if (!mapRef?.current || typeof naver === "undefined") return;
     const map = new naver.maps.Map(mapRef.current, mapOptions);
     mapInstanceRef.current = map;
-  }, []);
+  }, [mapOptions]);
 
   useEffect(() => {
     const map = mapInstanceRef.current;

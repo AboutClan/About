@@ -17,7 +17,7 @@ const Message = styled.div`
   justify-content: center;
   margin-top: 40px;
   font-size: 16px;
-  color: var(--gray-3);
+  color: var(--gray-600);
 `;
 
 export default ContentChat;

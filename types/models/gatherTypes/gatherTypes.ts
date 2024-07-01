@@ -28,6 +28,7 @@ export interface IGatherWriting {
   user: IUserSummary | string;
   isAdminOpen?: boolean;
   image?: string;
+  kakaoUrl?: string;
 }
 
 export type GatherCategory = "전체" | "모집중" | "완료";
@@ -60,7 +61,7 @@ export interface IGatherParticipants {
 export interface IGatherComment extends ITimeStamps {
   user: IUserSummary;
   comment: string;
-  _id: string;
+  _id?: string;
 }
 
 // export interface IGatherHeader {

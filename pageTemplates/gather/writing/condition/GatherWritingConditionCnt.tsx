@@ -10,17 +10,11 @@ interface IGatherWritingConditionCnt {
   isMin: boolean;
   value: number;
   setMemberCnt: DispatchType<IGatherMemberCnt>;
-  defaultBoolean?: boolean;
 }
 
-function GatherWritingConditionCnt({
-  isMin,
-  value,
-  setMemberCnt,
-  defaultBoolean,
-}: IGatherWritingConditionCnt) {
-  const [isMaxLimit, setIsMaxLimit] = useState(defaultBoolean ?? !isMin);
+function GatherWritingConditionCnt({ isMin, value, setMemberCnt }: IGatherWritingConditionCnt) {
   const [number, setNumber] = useState(value);
+
   useEffect(() => {
     if (isMin) setMemberCnt((old) => ({ ...old, min: number }));
     else setMemberCnt((old) => ({ ...old, max: number }));
@@ -31,11 +25,10 @@ function GatherWritingConditionCnt({
   const toggleSwitch = (e: ChangeEvent<HTMLInputElement>) => {
     const isChecked = e.target.checked;
 
-    if (!isChecked) {
+    if (isChecked) {
       setMemberCnt((old) => ({ ...old, max: 4 }));
       setNumber(4);
     } else setMemberCnt((old) => ({ ...old, max: 0 }));
-    setIsMaxLimit(isChecked);
   };
 
   return (
@@ -44,12 +37,12 @@ function GatherWritingConditionCnt({
         {!isMin && (
           <Switch
             colorScheme="mintTheme"
-            isChecked={isMaxLimit}
+            isChecked={value !== 0}
             onChange={toggleSwitch}
             mr="16px"
           />
         )}
-        {!isMaxLimit ? (
+        {value !== 0 ? (
           <CountNum
             value={number}
             setValue={setNumber}

@@ -7,7 +7,6 @@ import SwiperCore from "swiper";
 import { Navigation, Pagination } from "swiper/modules";
 
 import ImageSliderAvatarColor from "./imageSliderType/ImageSliderAvatarColor";
-import ImageSliderEventBanner from "./imageSliderType/ImageSliderEventBanner";
 import ImageSliderGatherReviewNav from "./imageSliderType/ImageSliderGatherReviewNav";
 import ImageSliderMember from "./imageSliderType/ImageSliderMember";
 import ImageSliderPoint from "./imageSliderType/ImageSliderPoint";
@@ -19,7 +18,6 @@ export type ImageContainer = any;
 
 export interface IImageSliderItem {
   image: string;
-
   title: string;
   id: number;
 }
@@ -45,8 +43,6 @@ function ImageSlider({ type, imageContainer, onClick }: IImageSlider) {
             <ImageSliderMember imageContainer={imageContainer} />
           ) : type === "avatarColor" ? (
             <ImageSliderAvatarColor imageContainer={imageContainer} onClick={onClick} />
-          ) : type === "eventBanner" ? (
-            <ImageSliderEventBanner imageContainer={imageContainer} />
           ) : null}
         </Layout>
       )}

@@ -43,7 +43,15 @@ function RecordAnalysisSummary({ setIsLoading }: IRecordAnalysisSummary) {
   }, [data, weeksDate]);
 
   return (
-    <Box bgColor="white" m="16px" mb="8px" rounded="lg" p="8px 16px" border="var(--border-mint)">
+    <Box
+      bgColor="white"
+      mx="20px"
+      mt="12px"
+      mb="8px"
+      rounded="lg"
+      p="8px 16px"
+      border="var(--border-main)"
+    >
       {myAttend?.map((item, idx) => {
         const date = weeksDate[idx];
         return (
@@ -73,7 +81,7 @@ const SummaryItem = styled.div`
 const WeekText = styled.span`
   > span:last-child {
     margin-left: var(--gap-1);
-    color: var(--gray-3);
+    color: var(--gray-600);
   }
 `;
 

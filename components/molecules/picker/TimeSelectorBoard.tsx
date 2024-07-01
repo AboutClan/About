@@ -89,7 +89,7 @@ const Layout = styled.div`
 
 const Item = styled.div`
   font-size: 14px;
-  color: var(--gray-1);
+  color: var(--gray-800);
   height: 42px;
   display: flex;
   justify-content: center;

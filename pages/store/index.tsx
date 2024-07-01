@@ -1,6 +1,4 @@
 import { Button } from "@chakra-ui/react";
-import { faTrophy } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -12,7 +10,7 @@ import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import { useErrorToast } from "../../hooks/custom/CustomToast";
 import { useStoreGiftEntryQuery } from "../../hooks/sub/store/queries";
-import StoreRuleModal from "../../modals/store/StoreRuleModal";
+import RuleModal, { IRuleModalContent } from "../../modals/RuleModal";
 import { isPrevBooleanState } from "../../recoils/previousAtoms";
 import { transferStoreGiftDataState } from "../../recoils/transferRecoils";
 import { STORE_GIFT_ACTIVE, STORE_GIFT_INACTIVE } from "../../storage/Store";
@@ -26,6 +24,32 @@ interface IGiftEntries {
   active: IGiftEntry[];
   inactive: IGiftEntry[];
 }
+
+const content: IRuleModalContent = {
+  headerContent: {
+    title: "포인트 스토어",
+    text: "동아리 활동을 통해 포인트를 모으고 추첨에 응모해보세요! 다양한 상품이 있습니다 ~!",
+  },
+  mainContent: [
+    {
+      title: "포인트는 어떻게 얻나요?",
+      texts: [
+        "스터디 참여, 출석체크, 이벤트, 건의, 홍보 등 여러 컨텐츠에서 포인트를 흭득할 수 있어요!",
+      ],
+    },
+
+    {
+      title: "상품 당첨과 인원 관련해서 궁금해요.",
+      texts: ["트로피의 숫자는 당첨 개수, 왼쪽 숫자는 현재 인원과 최대 응모 가능한 인원이에요!"],
+    },
+    {
+      title: "응모 최대 개수에 제한이 있나요?",
+      texts: [
+        "네. 상품 당 중복해서 투표할 수 있는 숫자는 유저 개인 등급에 따라 달라집니다. 기본 아메리카노는 1개, 이후 등급이 오를때마다 하나씩 더 추가돼요.",
+      ],
+    },
+  ],
+};
 
 function Event() {
   const router = useRouter();
@@ -122,7 +146,10 @@ function Event() {
                     <Trophy>
                       {new Array(item.winner).fill(0).map((_, idx) => (
                         <div key={idx}>
-                          <FontAwesomeIcon icon={faTrophy} color="var(--color-mint)" />
+                          <i
+                            className="fa-solid fa-trophy"
+                            style={{ color: "var(--color-mint)" }}
+                          />
                         </div>
                       ))}
                     </Trophy>
@@ -150,7 +177,7 @@ function Event() {
           )}
         </Layout>
       </Slide>
-      {isModal && <StoreRuleModal setIsModal={setIsModal} />}
+      {isModal && <RuleModal content={content} setIsModal={setIsModal} />}
     </>
   );
 }
@@ -178,7 +205,7 @@ const Item = styled.button`
   padding: var(--gap-2);
   background-color: white;
   border: var(--border);
-  box-shadow: var(--shadow-lg);
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -201,7 +228,7 @@ const Trophy = styled.div`
 `;
 
 const ApplyCnt = styled.div`
-  color: var(--gray-2);
+  color: var(--gray-700);
   font-size: 16px;
 `;
 
@@ -238,7 +265,7 @@ const Circle = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 10;
-  border: 2px solid var(--gray-1);
+  border: 2px solid var(--gray-800);
   display: flex;
   font-size: 14px;
   justify-content: center;
@@ -254,7 +281,7 @@ const CompletedRapple = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--gray-7);
+  background-color: var(--gray-300);
   opacity: 0.5;
 `;
 

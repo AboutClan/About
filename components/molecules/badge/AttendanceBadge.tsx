@@ -19,14 +19,14 @@ export default function AttendanceBadge({ type, time }: IAttendanceBadge) {
   );
 }
 
-const BadgeContainer = styled.div`
+const BadgeContainer = styled.div<{ time?: string }>`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: ${(props) => (props.time ? "8px" : "0")};
+  padding-top: ${({ time }) => (time ? "8px" : "0")};
 `;
 
 const TimeText = styled.span`
   font-size: 10px; /* Equivalent to text-xxs */
-  color: var(--gray-3); /* Assuming text-gray-4 maps to this color */
+  color: var(--gray-600); /* Assuming text-gray-4 maps to this color */
 `;

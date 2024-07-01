@@ -18,7 +18,7 @@ export default function ButtonCard({ props: { title, subTitle, buttonText, func 
     <Flex onClick={func} p="12px 20px" justifyContent="space-between" align="center">
       <NoticeIcon type="main" />
       <Box ml="12px" flex={1}>
-        <Box fontWeight={600} fontSize="14px" color="var(--gray-2)">
+        <Box fontWeight={600} fontSize="14px">
           {title}
         </Box>
         <Box fontSize="14px">{subTitle}</Box>

@@ -55,7 +55,7 @@ const Layout = styled.div`
 const Name = styled.span`
   font-size: 14px;
   font-weight: 600;
-  color: var(--gray-2);
+
   display: inline-block;
   margin-right: var(--gap-3);
 `;

@@ -1,27 +1,14 @@
-import {
-  faCirclePlus,
-  faHandshake as faDefaultHandShake,
-  faHouse as faDefaultHouse,
-  faRankingStar as faDefaultRankingStar,
-  faUsersRectangle as faDefaultUsersRectangle,
-} from "@fortawesome/pro-light-svg-icons";
-import {
-  faHandshake,
-  faHouse,
-  faRankingStar,
-  faUsersRectangle,
-} from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Link from "next/link";
+import { Box } from "@chakra-ui/react";
+import Link, { LinkProps } from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import { HAS_STUDY_TODAY } from "../constants/keys/localStorage";
 import { getStudyStandardDate } from "../libs/study/date/getStudyStandardDate";
 import { slideDirectionState } from "../recoils/navigationRecoils";
 import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
+import { detectDevice } from "../utils/validationUtils";
 
 interface INavButtonProps {
   url: string;
@@ -35,7 +22,7 @@ interface INavButton extends INavButtonProps {
   idx: number;
 }
 
-type Category = "홈" | "통계" | "모임" | "소그룹";
+type Category = "홈" | "랭킹" | "마이페이지" | "소모임";
 
 export default function BottomNav() {
   const { data: session } = useSession();
@@ -44,18 +31,16 @@ export default function BottomNav() {
   const newSearchParams = new URLSearchParams(searchParams);
 
   const locationEn = convertLocationLangTo(session?.user.location, "en");
-  const hasStudyToday = localStorage.getItem(HAS_STUDY_TODAY);
+
+  const deviceType = detectDevice();
+
   return (
-    <Nav>
+    <Nav isIPhone={deviceType === "iPhone"}>
       {navItems.map((item, idx) => {
         const getParams = (category: Category) => {
           switch (category) {
             case "홈":
-              return `/?location=${locationEn}&date=${getStudyStandardDate(
-                hasStudyToday === "true",
-              )}`;
-            case "모임":
-              return `/?location=${locationEn}`;
+              return `?tab=study&location=${locationEn}&date=${getStudyStandardDate()}`;
             case undefined:
               newSearchParams.append("write", "on");
               return pathname + "?" + newSearchParams.toString();
@@ -90,11 +75,11 @@ function NavButton({ text, url, activeIcon, defaultIcon, active, idx }: INavButt
     <NavLink
       onClick={() => handleMove()}
       href={url}
-      active={active.toString()}
+      active={active.toString() as "true" | "false"}
       replace={!text}
       className={`bottom_nav${idx}`}
     >
-      {active ? activeIcon || defaultIcon : defaultIcon}
+      <Box>{active ? activeIcon || defaultIcon : defaultIcon}</Box>
       <NavText>{text}</NavText>
     </NavLink>
   );
@@ -102,63 +87,62 @@ function NavButton({ text, url, activeIcon, defaultIcon, active, idx }: INavButt
 
 const navItems: INavButtonProps[] = [
   {
-    activeIcon: <FontAwesomeIcon icon={faHouse} size="xl" />,
-    defaultIcon: <FontAwesomeIcon icon={faDefaultHouse} size="xl" />,
+    activeIcon: <i className="fa-solid fa-house fa-xl" />,
+    defaultIcon: <i className="fa-light fa-house fa-xl" />,
     text: "홈",
     url: "/home",
   },
   {
-    activeIcon: <FontAwesomeIcon icon={faRankingStar} size="xl" />,
-    defaultIcon: <FontAwesomeIcon icon={faDefaultRankingStar} size="xl" />,
-    text: "통계",
+    activeIcon: <i className="fa-solid fa-ranking-star fa-xl" />,
+    defaultIcon: <i className="fa-light fa-ranking-star fa-xl" />,
+    text: "랭킹",
     url: "/statistics",
   },
   {
-    defaultIcon: <FontAwesomeIcon icon={faCirclePlus} fontSize="36px" />,
+    defaultIcon: <i className="fa-light fa-circle-plus" style={{ fontSize: "36px" }} />,
     url: "",
   },
   {
-    activeIcon: <FontAwesomeIcon icon={faHandshake} size="xl" />,
-    defaultIcon: <FontAwesomeIcon icon={faDefaultHandShake} size="xl" />,
-    text: "모임",
-    url: "/gather",
+    activeIcon: <i className="fa-solid fa-users-rectangle fa-xl" />,
+    defaultIcon: <i className="fa-light fa-users-rectangle fa-xl" />,
+    text: "소모임",
+    url: "/group",
   },
   {
-    activeIcon: <FontAwesomeIcon icon={faUsersRectangle} size="xl" />,
-    defaultIcon: <FontAwesomeIcon icon={faDefaultUsersRectangle} size="xl" />,
-    text: "소그룹",
-    url: "/group",
+    activeIcon: <i className="fa-solid fa-user fa-xl" />,
+    defaultIcon: <i className="fa-light fa-user fa-xl" />,
+    text: "마이페이지",
+    url: "/user",
   },
 ];
 
-const Nav = styled.nav`
+const Nav = styled.nav<{ isIPhone: boolean }>`
   width: 100%;
   display: flex;
   justify-content: even;
   position: fixed;
   bottom: 0;
-  height: 64px; /* Adjusted from the inline style */
+  height: ${(props) => (props.isIPhone ? "87px" : "77px")};
   background-color: white;
   z-index: 10;
-  box-shadow: var(--shadow);
+
   border-top: var(--border);
   max-width: var(--max-width);
   margin: 0 auto;
 `;
 
-const NavLink = styled<{ active: "true" | "false" }>(Link)`
+const NavLink = styled(Link)<{ active: "true" | "false" } & LinkProps>`
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 16px;
+
   margin-top: 4px;
-  color: ${({ active }: { active: "true" | "false" }) =>
-    active === "true" ? "var(--gray-2)" : "var(--gray-3)"};
+  color: ${({ active }) => (active === "true" ? "var(--gray-800)" : "var(--gray-500)")};
 `;
 
 const NavText = styled.div`
-  margin-top: 6px; /* 2rem if you're using rem */
-  font-size: 12px; /* Adjusted for text-xs */
+  margin-top: 6px;
+  font-size: 12px;
 `;

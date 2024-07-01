@@ -41,7 +41,7 @@ const Circle = styled.div`
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 2;
-  border: 2px solid var(--gray-1);
+  border: 2px solid var(--gray-800);
   display: flex;
   font-size: 14px;
   justify-content: center;

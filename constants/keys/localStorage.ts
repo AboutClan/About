@@ -33,4 +33,10 @@ export const REGISTER_INFO = "registerInfo";
 export const USER_GUIDE = "useGuide";
 export const VOTE_GUIDE = "voteGuide";
 
-export const HAS_STUDY_TODAY = "hasStudyToday";
+export const STUDY_VOTING_TABLE = "studyVotingTable";
+
+export const STUDY_CHECK_POP_UP = "studyCheckPopUp";
+
+export const STUDY_ATTEND_MEMBERS = "studyAttendMembers";
+
+export const GATHER_JOIN_MEMBERS = "gatherJoinMembers";

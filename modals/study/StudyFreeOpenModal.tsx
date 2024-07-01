@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 
@@ -18,6 +19,7 @@ import { IFooterOptions, ModalLayout } from "../Modals";
 interface IStudyFreeOpenModal extends IModal {}
 
 function StudyFreeOpenModal({ setIsModal }: IStudyFreeOpenModal) {
+  const { data: session } = useSession();
   const { id, date } = useParams<{ id: string; date: string }>() || {};
 
   const completeToast = useCompleteToast();
@@ -28,7 +30,7 @@ function StudyFreeOpenModal({ setIsModal }: IStudyFreeOpenModal) {
 
   const placeId = id;
 
-  const location = PLACE_TO_LOCATION[id];
+  const location = PLACE_TO_LOCATION[id] || session?.user.location;
 
   const [time, setTime] = useState<ITimeStartToEnd>({
     start: { hours: 14, minutes: 0 },
@@ -43,12 +45,16 @@ function StudyFreeOpenModal({ setIsModal }: IStudyFreeOpenModal) {
     },
     onError: errorToast,
   });
-  const { mutate: patchAttend } = useStudyParticipationMutation(dayjs(date), "post", {
-    onSuccess: () => {
-      queryClient.invalidateQueries([STUDY_VOTE, date, location]);
+  const { mutate: patchAttend, isLoading: isLoading2 } = useStudyParticipationMutation(
+    dayjs(date),
+    "post",
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries([STUDY_VOTE, date, location]);
+      },
+      onError: errorToast,
     },
-    onError: errorToast,
-  });
+  );
 
   const onSubmit = async () => {
     const start = dayjs(date).hour(time.start.hours).minute(time.start.minutes);
@@ -73,7 +79,7 @@ function StudyFreeOpenModal({ setIsModal }: IStudyFreeOpenModal) {
     main: {
       text: "오픈",
       func: onSubmit,
-      isLoading,
+      isLoading: isLoading || isLoading2,
     },
   };
 

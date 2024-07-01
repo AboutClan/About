@@ -9,8 +9,6 @@ import {
   PopoverTrigger,
   Textarea,
 } from "@chakra-ui/react";
-import { faCircleExclamation } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
@@ -114,7 +112,10 @@ function RequestSuggestModal({ type, setIsModal }: IRequestSuggestModal) {
               <div />
               <Popover>
                 <PopoverTrigger>
-                  <FontAwesomeIcon icon={faCircleExclamation} color="var(--gray-2)" size="sm" />
+                  <i
+                    className="fa-solid fa-circle-exclamation fa-sm"
+                    style={{ color: "var(--gray-200)" }}
+                  />
                 </PopoverTrigger>
                 <PopoverContent>
                   <PopoverArrow />
@@ -137,7 +138,7 @@ function RequestSuggestModal({ type, setIsModal }: IRequestSuggestModal) {
       {type === "study" && (
         <Item
           style={{
-            color: "var(--gray-3)",
+            color: "var(--gray-600)",
             marginTop: "var(--gap-1)",
             marginBottom: "0",
           }}
@@ -186,8 +187,8 @@ const WriterBtn = styled.button<{ isSelected: boolean }>`
   width: 36px;
 
   height: 80%;
-  background-color: ${(props) => (props.isSelected ? "var(--color-mint)" : "var(--gray-6)")};
-  color: ${(props) => (props.isSelected ? "white" : "var(--gray-1)")};
+  background-color: ${(props) => (props.isSelected ? "var(--color-mint)" : "var(--gray-300)")};
+  color: ${(props) => (props.isSelected ? "white" : "var(--gray-800)")};
 `;
 
 const Content = styled.span`

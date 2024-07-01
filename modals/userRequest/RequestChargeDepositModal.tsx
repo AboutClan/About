@@ -100,7 +100,7 @@ const MainItem = styled.div`
   justify-content: space-between;
   > span:first-child {
     font-weight: 600;
-    color: var(--gray-1);
+    color: var(--gray-800);
   }
   > div {
     span:first-child {
@@ -111,7 +111,7 @@ const MainItem = styled.div`
 
 const Hr = styled.div`
   height: 1.5px;
-  background-color: var(--gray-7);
+  background-color: var(--gray-200);
   margin: var(--gap-1) 0;
 `;
 

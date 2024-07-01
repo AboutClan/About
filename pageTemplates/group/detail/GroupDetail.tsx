@@ -1,5 +1,3 @@
-import { faVenusMars } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import styled from "styled-components";
 
@@ -23,7 +21,7 @@ function GroupDetailInfo({ group }: IGroupDetailInfo) {
         <span>
           {group.category.main} - {group.category.sub}
         </span>
-        {group.gender && <FontAwesomeIcon icon={faVenusMars} color="#9E7CFF" />}
+        {group.gender && <i className="fa-solid fa-venusmars" style={{ color: "#9E7CFF" }} />}
       </Item>
       <Item>
         <ItemText>활동</ItemText>
@@ -44,7 +42,6 @@ const Layout = styled.div`
 
   background-color: white;
   border-radius: var(--rounded);
-  box-shadow: var(--shadow);
 `;
 
 const ItemText = styled.span`

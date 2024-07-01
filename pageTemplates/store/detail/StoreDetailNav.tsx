@@ -1,6 +1,4 @@
 import { Box, Button, Collapse, useDisclosure } from "@chakra-ui/react";
-import { faX } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
 import { DispatchBoolean } from "../../../types/hooks/reactTypes";
@@ -23,7 +21,7 @@ function StoreDetailNav({
   return (
     <Layout>
       <ButtonNav>
-        <Button bg="var(--gray-7)" size="lg" width="50%" onClick={onToggle}>
+        <Button bg="var(--gray-200)" size="lg" width="50%" onClick={onToggle}>
           참여현황
         </Button>
         {isCompleted ? (
@@ -37,7 +35,7 @@ function StoreDetailNav({
         )}
       </ButtonNav>
       <Collapse in={isOpen} animateOpacity>
-        <Box fontSize="12px" p="var(--gap-2)" bg="var(--gray-7)" color="var(--gray-2)">
+        <Box fontSize="12px" p="var(--gap-2)" bg="var(--gray-200)">
           {applyUsers?.length === 0 ? (
             "참여 인원 없음"
           ) : (
@@ -46,7 +44,7 @@ function StoreDetailNav({
                 <ApplicantBlock key={idx}>
                   <span>{who.name}</span>
                   <div>
-                    <FontAwesomeIcon icon={faX} size="2xs" />
+                    <i className="fa-regular fa-x fa-2xs" />
                   </div>
                   <span>{who.cnt} 회</span>
                 </ApplicantBlock>

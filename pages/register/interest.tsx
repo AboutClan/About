@@ -2,7 +2,7 @@ import { useSearchParams } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import styled from "styled-components";
 
-import Input from "../../components/atoms/Input";
+import { Input } from "../../components/atoms/Input";
 import BottomNav from "../../components/layouts/BottomNav";
 import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
 import { INTEREST_DATA } from "../../constants/contentsText/ProfileData";
@@ -80,7 +80,7 @@ const Container = styled.div`
     margin-bottom: var(--gap-5);
     > span {
       display: inline-block;
-      color: var(--gray-1);
+      color: var(--gray-800);
 
       font-size: 14px;
       margin-bottom: var(--gap-2);
@@ -92,10 +92,10 @@ const Example = styled.div`
   margin-top: var(--gap-4);
 
   > div {
-    color: var(--gray-3);
-    padding: var(--gap-1);
-    background-color: var(--gray-7);
-    border: 1px solid var(--gray-6);
+    color: var(--gray-600);
+    padding: 4px 8px;
+    background-color: var(--gray-100);
+    border: var(--border-main);
     border-radius: var(--rounded-lg);
     display: flex;
     flex-wrap: wrap;
@@ -114,14 +114,14 @@ const Item = styled.div`
 
 // const Input = styled.input`
 //   padding: var(--gap-3) var(--gap-2);
-//   border: 1px solid var(--gray-6);
-//   background-color: var(--gray-7);
+//   border: 1px solid var(--gray-300);
+//   background-color: var(--gray-200);
 //   border-radius: var(--rounded-lg);
 //   ::placeholder {
-//     color: var(--gray-4);
+//     color: var(--gray-500);
 //   }
 //   :focus {
-//     outline-color: var(--gray-1);
+//     outline-color: var(--gray-800);
 //   }
 // `;
 

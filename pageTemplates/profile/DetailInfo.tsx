@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import BlurredPart from "../../components/molecules/BlurredPart";
 import Chart from "../../components/organisms/chart/Chart";
+import { PLACE_TO_NAME } from "../../constants/serviceConstants/studyConstants/studyCafeNameConstants";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { birthToAge } from "../../utils/convertUtils/convertTypes";
 
@@ -48,6 +49,10 @@ function DetailInfo({ user }: { user: IUser }) {
               )}
             </div>
           </ProfileItem>
+          <ProfileItem>
+            <span>즐겨찾기</span>
+            <span>{PLACE_TO_NAME[user?.studyPreference?.place] || "없음"}</span>
+          </ProfileItem>
         </Profile>
       </BlurredPart>
       <Chart type="study" user={user} />
@@ -73,7 +78,7 @@ const Profile = styled.div`
 const Interests = styled.div`
   display: flex;
   flex-direction: column;
-  color: var(--gray-1);
+  color: var(--gray-800);
   font-weight: 600;
 
   > span {
@@ -86,10 +91,10 @@ const ProfileItem = styled.div`
   > span:first-child {
     display: inline-block;
     width: 64px;
-    color: var(--gray-3);
+    color: var(--gray-600);
   }
   > span:last-child {
-    color: var(--gray-1);
+    color: var(--gray-800);
     font-weight: 600;
   }
 `;

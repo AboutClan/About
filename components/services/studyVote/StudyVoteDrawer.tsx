@@ -1,7 +1,6 @@
-import "dayjs/locale/ko";
-
 import dayjs from "dayjs";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
@@ -31,9 +30,10 @@ dayjs.locale("ko");
 interface IStudyVoteDrawer extends IModal {}
 
 export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
+  const { data: session } = useSession();
   const { date, id } = useParams<{ date: string; id: string }>();
   const location = PLACE_TO_LOCATION[id];
-
+ 
   const toast = useToast();
   const studyDateStatus = useRecoilValue(studyDateStatusState);
   const myStudy = useRecoilValue(myStudyState);
@@ -59,7 +59,7 @@ export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
     enabled: !!myStudy,
   });
 
-  const isPrivateStudy = PLACE_TO_NAME[id] === "자유신청";
+  const isPrivateStudy = PLACE_TO_NAME[id] === "개인 스터디";
 
   //오늘 날짜 투표 포인트 받은거 찾기
   const myPrevVotePoint = pointLog?.find(
@@ -74,8 +74,8 @@ export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
   });
 
   const handleSuccess = async () => {
-    queryClient.invalidateQueries([STUDY_VOTE, date, location]);
-
+    queryClient.invalidateQueries([STUDY_VOTE, date, location || session?.user.location]);
+  
     if (myPrevVotePoint) {
       await getPoint({
         message: "스터디 투표 취소",

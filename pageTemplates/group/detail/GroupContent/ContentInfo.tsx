@@ -1,10 +1,7 @@
-import { faBellOn } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
-import BlurredPart from "../../../../components/molecules/BlurredPart";
+import BlurredLink from "../../../../components/molecules/BlurredLink";
 import { IGroup } from "../../../../types/models/groupTypes/group";
 import GroupDetailInfo from "../GroupDetail";
 
@@ -36,24 +33,15 @@ function ContentInfo({ group }: IContentInfo) {
       )}
       {group?.link && (
         <KakaoLink>
-          <span>오픈채팅방 주소(참여 인원 전용)</span>
-          <div>
-            <BlurredPart isBlur={!isMember} isCenter={false}>
-              <Link
-                href={group.link}
-                onClick={(e) => {
-                  if (!isMember) e.preventDefault();
-                }}
-              >
-                {group?.link}
-              </Link>
-            </BlurredPart>
-          </div>
+          <BlurredLink url={group.link} isBlur={!isMember} />
         </KakaoLink>
       )}
       {group?.challenge && (
         <Challenge>
-          <FontAwesomeIcon icon={faBellOn} color="var(--color-red)" />
+          <i
+            className="fa-regular fa-bell-on"
+            style={{ color: "var(--color-red)", marginRight: "2px" }}
+          />
           {group?.challenge}
         </Challenge>
       )}
@@ -67,7 +55,7 @@ const KakaoLink = styled.div`
   flex-direction: column;
   padding: var(--gap-2) var(--gap-3);
   padding-bottom: var(--gap-1);
-  background-color: var(--gray-8);
+  background-color: var(--gray-100);
 
   > div {
     padding: var(--gap-1) 0;
@@ -76,7 +64,7 @@ const KakaoLink = styled.div`
 
 const Challenge = styled.div`
   padding: var(--gap-2) var(--gap-3);
-  background-color: var(--gray-8);
+  background-color: var(--gray-100);
   > svg {
     margin-right: var(--gap-2);
   }
@@ -91,7 +79,7 @@ const Rule = styled.li`
 
 const Wrapper = styled.div`
   padding: var(--gap-4);
-  background-color: var(--gray-8);
+  background-color: var(--gray-100);
 `;
 
 const Layout = styled.div`

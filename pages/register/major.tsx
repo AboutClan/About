@@ -65,7 +65,7 @@ function Major() {
       <RegisterLayout>
         <RegisterOverview>
           <span>전공을 선택해 주세요</span>
-          <span>다중 선택도 가능해요.</span>
+          <span>다중 선택도 가능해요!</span>
         </RegisterOverview>
 
         {MAJORS_DATA?.map((item, idx) => (
@@ -113,7 +113,7 @@ const Content = styled.button<{ $isSelected: boolean }>`
   padding: var(--gap-1) var(--gap-2);
   font-size: 12px;
   border-radius: 100px;
-  border: 1px solid var(--gray-5);
+  border: var(--border-main);
   margin-right: var(--gap-2);
   margin-bottom: var(--gap-2);
   background-color: ${(props) => props.$isSelected && "var(--color-mint)"};

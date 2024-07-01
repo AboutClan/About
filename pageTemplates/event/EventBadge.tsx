@@ -1,6 +1,4 @@
 import { Box } from "@chakra-ui/react";
-import { faLock, faLockOpen } from "@fortawesome/pro-duotone-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
 import AlertNotCompletedModal from "../../components/AlertNotCompletedModal";
@@ -25,9 +23,9 @@ export default function EventBadge() {
     const hasBadge = score >= badge.minScore;
     return {
       icon: hasBadge ? (
-        <FontAwesomeIcon icon={faLockOpen} color="var(--color-orange)" />
+        <i className="fa-duotone fa-lock-open" style={{ color: "var(--color-orange)" }} />
       ) : (
-        <FontAwesomeIcon icon={faLock} color="var(--gray-3)" />
+        <i className="fa-duotone fa-lock" style={{ color: "var(--gray-600)" }} />
       ),
       title: badge.badge,
       buttonProp: {
@@ -50,9 +48,9 @@ export default function EventBadge() {
 
     return {
       icon: !hasBadge ? (
-        <FontAwesomeIcon icon={faLock} color="var(--gray-3)" />
+        <i className="fa-duotone fa-lock" style={{ color: "var(--gray-600)" }} />
       ) : (
-        <FontAwesomeIcon icon={faLockOpen} color="var(--color-orange)" />
+        <i className="fa-duotone fa-lock-open" style={{ color: "var(--color-orange)" }} />
       ),
       title: badge,
       buttonProp: {

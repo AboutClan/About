@@ -1,5 +1,5 @@
-import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -26,7 +26,8 @@ export default function Page() {
 
   const setMyStudy = useSetRecoilState(myStudyState);
 
-  const location = PLACE_TO_LOCATION[id];
+  const location = PLACE_TO_LOCATION[id] || data?.user.location;
+
   const isPrivateStudy = id === ALL_스터디인증;
 
   const { data: studyAll } = useStudyVoteQuery(date, location, {
@@ -57,7 +58,12 @@ export default function Page() {
     <Layout>
       {study && (
         <>
-          <StudyHeader place={place} />
+          <StudyHeader
+            brand={place.brand}
+            fullname={place.fullname}
+            locationDetail={place.location}
+            coverImage={place.coverImage}
+          />
           <Slide>
             <StudyCover
               isPrivateStudy={isPrivateStudy}

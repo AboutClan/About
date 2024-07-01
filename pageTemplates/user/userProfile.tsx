@@ -1,80 +1,48 @@
-import { Box, ListItem, UnorderedList } from "@chakra-ui/react";
-import { faChevronRight } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import dayjs from "dayjs";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
+import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
-import { getUserRole } from "../../utils/convertUtils/convertDatas";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
-import PointScoreBar from "../point/pointScore/PointScoreBar";
+import { useNoticeActiveLogQuery } from "../../hooks/user/sub/interaction/queries";
 
 function UserProfile() {
-  // const { data: myArrivedCnt, isLoading } = useStudyArrivedCntQuery(
-  //   userInfo?.uid as string
-  // );
-
+  const typeToast = useTypeToast();
+  const { data: session } = useSession();
+  const { data: likeLogs } = useNoticeActiveLogQuery("like");
   const { data: userInfo } = useUserInfoQuery();
+
+  const isGuest = session?.user.role === "guest";
+
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    if (isGuest) {
+      e.preventDefault();
+      typeToast("guest");
+    }
+  };
 
   return (
     <>
-      <Score>
-        <PointScoreBar myScore={userInfo?.score} />
-      </Score>
-      <Detail>
-        <UnorderedList>
-          <ListItem>
-            <Box display="inline-block" w="60px">
-              역할 구성:
-            </Box>
-            <b>{getUserRole(userInfo.role)}</b>
-          </ListItem>
-          <ListItem>
-            <Box display="inline-block" w="60px">
-              활동 지역:
-            </Box>
-            <b>{userInfo.location}</b>
-          </ListItem>
-          <ListItem>
-            <Box display="inline-block" w="60px">
-              내 가입일:
-            </Box>
-            <b>{dayjsToFormat(dayjs(userInfo?.registerDate), "YY년 M월 D일")}</b>
-          </ListItem>
-        </UnorderedList>
-      </Detail>
       <Info>
-        <Link href="/user/friend">
-          <BlockItem>
+        <Link href="/user/friend" passHref>
+          <BlockItem onClick={handleClick}>
             <span>
-              내 친구 <b>{userInfo?.friend.length}</b>명
+              내 친구{" "}
+              <b style={{ display: "inline-block", width: "20px" }}>
+                {userInfo?.friend.length || 0}
+              </b>
+              명
             </span>
-            <FontAwesomeIcon icon={faChevronRight} />
+            <i className="fa-solid fa-chevron-right" />
           </BlockItem>
         </Link>
-        <Link href="/user/like">
-          <BlockItem>
+        <Link href="/user/like" passHref>
+          <BlockItem onClick={handleClick}>
             <span>
-              받은 좋아요 <b>7</b>개
+              받은 좋아요{" "}
+              <b style={{ display: "inline-block", width: "20px" }}>{likeLogs?.length || 0}</b>개
             </span>
-            <FontAwesomeIcon icon={faChevronRight} />
-          </BlockItem>
-        </Link>
-        <Link href="/user/point">
-          <BlockItem>
-            <span>
-              내 포인트 <b>{userInfo?.point}</b> P
-            </span>
-            <FontAwesomeIcon icon={faChevronRight} />
-          </BlockItem>
-        </Link>
-        <Link href="/user/deposit">
-          <BlockItem>
-            <span>
-              내 보증금 <b>{userInfo?.deposit}</b> M
-            </span>
-            <FontAwesomeIcon icon={faChevronRight} />
+            <i className="fa-solid fa-chevron-right" />
           </BlockItem>
         </Link>
       </Info>
@@ -82,23 +50,12 @@ function UserProfile() {
   );
 }
 
-const Score = styled.div`
-  margin: 0px 16px;
-  margin-bottom: 12px;
-`;
-
-const Detail = styled.ul`
-  padding: var(--gap-4);
-  background-color: var(--gray-7);
-  font-size: 13px;
-`;
-
 const Info = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const BlockItem = styled.button`
+const BlockItem = styled.a`
   width: 100%;
   display: flex;
   align-items: center;
@@ -106,6 +63,8 @@ const BlockItem = styled.button`
   padding: var(--gap-4);
   border-bottom: var(--border);
   font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
   > span:first-child {
     > b {
       color: var(--color-mint);

@@ -1,12 +1,9 @@
-import { SizeProp } from "@fortawesome/fontawesome-svg-core";
-import { faCircleN, faXmark } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
 export function XAlertIcon() {
   return (
     <XAlertIconLayout>
-      <FontAwesomeIcon icon={faXmark} color="white" size="3x" />
+      <i className="fa-solid fa-xmark fa-3x" style={{ color: "white" }} />
     </XAlertIconLayout>
   );
 }
@@ -22,13 +19,13 @@ const XAlertIconLayout = styled.div`
 `;
 
 interface INewAlertIcon {
-  size?: SizeProp;
+  size?: "sm" | "lg";
 }
 
-export function NewAlertIcon({ size }: INewAlertIcon) {
+export function NewAlertIcon({ size = "lg" }: INewAlertIcon) {
   return (
     <>
-      <FontAwesomeIcon icon={faCircleN} color="var(--color-red)" size={size} />
+      <i className={`fa-${size} fa-solid fa-circle-n`} style={{ color: "var(--color-red)" }} />
     </>
   );
 }

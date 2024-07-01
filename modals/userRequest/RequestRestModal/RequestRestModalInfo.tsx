@@ -97,7 +97,6 @@ const Item = styled.div`
   > span:first-child {
     width: 15%;
     font-weight: 600;
-    color: var(--gray-2);
   }
   > input,
   select {
@@ -140,7 +139,7 @@ const Textarea = styled.textarea`
   padding: var(--gap-2);
   flex: 1;
   height: 100%;
-  background-color: var(--gray-7);
+  background-color: var(--gray-200);
   border-radius: var(--rounded-lg);
 `;
 

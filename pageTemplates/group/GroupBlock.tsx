@@ -1,5 +1,3 @@
-import { faLockKeyhole } from "@fortawesome/pro-regular-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
@@ -26,13 +24,14 @@ function GroupBlock({ group }: IGroupBlock) {
   const setGroup = useSetRecoilState(transferGroupDataState);
 
   const groupInfo = {
-    그룹장:
-      group.organizer.name === "이승주"
+    그룹장: group.isSecret
+      ? "비공개"
+      : group.organizer.name === "이승주"
         ? group.id === 72
           ? "이승주"
           : "어바웃"
         : group.organizer.name,
-    인원: `${group.participants.length + (group.id === 33 ? 3 : 0)}/${
+    인원: `${group.participants.length}/${
       group.memberCnt.max === 0 ? "자유" : group.memberCnt.max + "명"
     }`,
     조건: `${
@@ -56,6 +55,7 @@ function GroupBlock({ group }: IGroupBlock) {
   };
 
   const getBadgeText = () => {
+ 
     const status = group.status;
     const min = group.memberCnt.min;
     const max = group.memberCnt.max;
@@ -67,7 +67,7 @@ function GroupBlock({ group }: IGroupBlock) {
         color: "mintTheme",
       };
     }
-    if (status === "open") {
+    if (status === "open" || status === "pending") {
       if (participantCnt < min) {
         return {
           text: `개설까지 ${min - participantCnt}명 남음`,
@@ -103,7 +103,7 @@ function GroupBlock({ group }: IGroupBlock) {
       <Header>
         <div>
           <span>{group.category.main}</span>·<span>{group.category.sub}</span>
-          {!group?.isFree && <FontAwesomeIcon icon={faLockKeyhole} />}
+          {!group?.isFree && <i className="fa-regular fa-lock-key-hole" />}
         </div>
         <Badge
           text={getBadgeText().text}
@@ -132,10 +132,10 @@ const Layout = styled.button`
   flex-direction: column;
   background-color: white;
   border-radius: var(--rounded);
-  box-shadow: var(--shadow);
+
   padding: var(--gap-3);
   margin-bottom: var(--gap-4);
-  box-shadow: var(--shadow);
+
   border: var(--border);
 `;
 
@@ -184,17 +184,16 @@ const InfoItem = styled.div`
     display: inline-block;
     margin-right: var(--gap-2);
     font-weight: 600;
-    color: var(--gray-2);
   }
   > span:last-child {
-    color: var(--gray-3);
+    color: var(--gray-600);
   }
 `;
 
 const Content = styled.pre`
   text-align: start;
   font-size: 13px;
-  color: var(--gray-2);
+
   padding-top: var(--gap-3);
   font-family: apple;
   white-space: pre-wrap;

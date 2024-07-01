@@ -43,8 +43,8 @@ export default function HomeWinRecordSection() {
 }
 
 const Layout = styled.div`
-  margin: 16px;
-  margin-bottom: 36px;
-  border: var(--border);
-  border-radius: var(--rounded-lg);
+  margin: 16px 16px;
+  margin-bottom: 80px;
+  border-radius: 8px;
+  background-color: white;
 `;

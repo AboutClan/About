@@ -30,11 +30,25 @@ export default function ImageTileGridLayout({
 }: IImageTileGridLayout) {
   const { row = 2, col = 2 } = grid || {};
 
-  function ImageTileLayout({ url, text }: { url: string; text: string }) {
+  function ImageTileLayout({
+    url,
+    text,
+    isPriority,
+  }: {
+    url: string;
+    text: string;
+    isPriority: boolean;
+  }) {
     return (
       <Flex direction="column" textAlign="center">
         <ImageContainer>
-          <Image src={url} sizes="180px" fill={true} alt="reviewThumbnailImage" />
+          <Image
+            src={url}
+            sizes="180px"
+            fill={true}
+            alt="reviewThumbnailImage"
+            priority={isPriority}
+          />
         </ImageContainer>
         <TextContainer>{text}</TextContainer>
       </Flex>
@@ -46,7 +60,11 @@ export default function ImageTileGridLayout({
       {imageDataArr.map((imageData, idx) =>
         imageData?.url ? (
           <Link key={idx} href={imageData.url} passHref>
-            <ImageTileLayout url={imageData.imageUrl} text={imageData.text} />
+            <ImageTileLayout
+              url={imageData.imageUrl}
+              text={imageData.text}
+              isPriority={idx === 0}
+            />
           </Link>
         ) : (
           <Button
@@ -60,7 +78,11 @@ export default function ImageTileGridLayout({
             }
             onClick={imageData.func}
           >
-            <ImageTileLayout url={imageData.imageUrl} text={imageData.text} />
+            <ImageTileLayout
+              url={imageData.imageUrl}
+              text={imageData.text}
+              isPriority={idx === 0}
+            />
           </Button>
         ),
       )}
@@ -71,18 +93,18 @@ const GridContainer = styled.div<{ row: number; col: number }>`
   display: grid;
   grid-template-columns: ${(props) => `repeat(${props.col}, 1fr)`};
   grid-template-rows: ${(props) => `repeat(${props.row}, 1fr)`};
-  gap: 16px;
+  gap: 12px;
 `;
 
 const ImageContainer = styled.div`
   position: relative;
   aspect-ratio: 1;
-  border-radius: var(--rounded-lg);
+  border-radius: 8px;
   overflow: hidden;
 `;
 
 const TextContainer = styled(SingleLineText)`
-  margin-top: 8px;
+  margin-top: 12px;
 `;
 
 const Button = styled.button<{ $isSelected: "main" | "sub" | null }>`

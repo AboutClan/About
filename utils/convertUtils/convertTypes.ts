@@ -13,11 +13,11 @@ export const getUrlWithLocationAndDate = (
   locationParam: LocationEn,
   dateParam: string,
   userLocation: ActiveLocation = "수원",
-  isPrevView: boolean,
 ) => {
   const location = locationParam || convertLocationLangTo(userLocation || "suw", "en");
-  const locationBaseUrl = `/home?location=${location}`;
-  const dateQuery = !dateParam ? `&date=${getStudyStandardDate(isPrevView)}` : "";
+
+  const locationBaseUrl = `/home?tab=study&location=${location}`;
+  const dateQuery = !dateParam ? `&date=${getStudyStandardDate()}` : "";
 
   return locationBaseUrl + dateQuery;
 };

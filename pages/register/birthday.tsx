@@ -67,7 +67,7 @@ function Birthday() {
         </RegisterOverview>
         <DateContainer>
           <DateStr>{myBirth}</DateStr>
-          <Button size="md" as="div">
+          <Button size="md" as="div" bgColor="white" border="var(--border-main)">
             <StyledDatePicker
               locale={ko}
               selected={startDate}
@@ -77,7 +77,7 @@ function Birthday() {
               onFocus={(e) => e.target.blur()}
             />
           </Button>
-          <Button size="md" mt="10px" as="div">
+          <Button size="md" mt="10px" as="div" bgColor="white" border="var(--border-main)">
             <StyledDatePicker
               locale={ko}
               selected={startDate}
@@ -112,12 +112,12 @@ const StyledDatePicker = styled(DatePicker)`
   text-align: center;
   font-size: 13px;
   font-weight: 600;
-  color: var(--gray-2);
+  color: var(--gray-700);
   outline: none;
 `;
 
 const DateStr = styled.div`
-  font-size: 22px;
+  font-size: 24px;
   margin: var(--gap-5) 0;
 `;
 

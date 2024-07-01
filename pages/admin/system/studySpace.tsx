@@ -216,7 +216,7 @@ const AddForm = styled.form`
       width: 80px;
     }
     input {
-      background-color: var(--gray-7);
+      background-color: var(--gray-200);
     }
   }
 `;
@@ -224,7 +224,7 @@ const AddForm = styled.form`
 const ImageContainer = styled.div`
   width: 77px;
   height: 77px;
-  border: 1px solid var(--gray-5);
+  border: 1px solid var(--gray-400);
   border-radius: 8px;
   display: flex;
   justify-content: center;
@@ -233,7 +233,7 @@ const ImageContainer = styled.div`
 `;
 
 const SpaceInfo = styled.div`
-  color: var(--gray-2);
+  color: var(--gray-700);
   margin-left: 12px;
   display: flex;
   flex-direction: column;
@@ -252,11 +252,11 @@ const Status = styled.div`
 const Branch = styled.input`
   font-weight: 800;
   font-size: 16px;
-  color: var(--gray-1);
+  color: var(--gray-800);
 `;
 
 const Info = styled.input`
-  color: var(--gray-3);
+  color: var(--gray-600);
   font-size: 12px;
 `;
 

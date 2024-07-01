@@ -92,7 +92,7 @@ const Info = styled.div`
     font-weight: 600;
   }
   > span:last-child {
-    color: var(--gray-3);
+    color: var(--gray-600);
     font-size: 12px;
   }
 `;

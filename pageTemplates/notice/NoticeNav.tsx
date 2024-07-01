@@ -15,11 +15,12 @@ function NoticeNav({ isNotice, setIsNotice, activeAlertCnt }: INoticeNav) {
   const [isActiveAlert, setIsActiveAlert] = useState(false);
 
   useEffect(() => {
-    if (!activeAlertCnt) return;
+    if (activeAlertCnt === undefined) return;
     if (!isNotice) {
       localStorage.setItem(NOTICE_ACTIVE_CNT, `${activeAlertCnt}`);
       setIsActiveAlert(false);
     }
+
     if (+localStorage.getItem(NOTICE_ACTIVE_CNT) < activeAlertCnt) setIsActiveAlert(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeAlertCnt, isNotice]);
@@ -56,7 +57,7 @@ const Button = styled.button<{ isSelected: boolean }>`
   padding: var(--gap-3) 0;
   font-weight: ${(props) => (props.isSelected ? "700" : "500")};
   border-bottom: ${(props) => props.isSelected && "3px solid var(--color-mint)"};
-  background-color: ${(props) => (props.isSelected ? "white" : "var(--gray-8)")};
+  background-color: ${(props) => (props.isSelected ? "white" : "var(--gray-100)")};
 `;
 const IconWrapper = styled.div`
   position: absolute;

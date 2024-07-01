@@ -9,20 +9,30 @@ import {
   STUDY_PREFERENCE,
   STUDY_START_TIME,
   STUDY_VOTE,
+  STUDY_VOTE_CNT,
 } from "../../constants/keys/queryKeys";
 import { SERVER_URI } from "../../constants/system";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import { IParticipation, IPlace, IStudy } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
-import { IArrivedData } from "../../types/models/studyTypes/studyRecords";
+import { IArrivedData, VoteCntProps } from "../../types/models/studyTypes/studyRecords";
 import { Location } from "../../types/services/locationTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
-export const useStudyPlacesQuery = (location: Location | "all", options?: QueryOptions<IPlace[]>) =>
+export const useStudyPlacesQuery = (
+  location: Location | "all",
+  active?: "active" | "inactive",
+  options?: QueryOptions<IPlace[]>,
+) =>
   useQuery<IPlace[], AxiosError, IPlace[]>(
-    [STUDY_PLACE, location],
+    [STUDY_PLACE, location, active],
     async () => {
-      const res = await axios.get<IPlace[]>(`${SERVER_URI}/place`);
+      const res = await axios.get<IPlace[]>(`${SERVER_URI}/place`, {
+        params: {
+          status: active,
+        },
+      });
+
       const places = res.data.filter(
         (place) =>
           place.brand !== "자유 신청" && (location === "all" || place.location === location),
@@ -40,6 +50,7 @@ export const useStudyVoteQuery = (
   useQuery<IParticipation[], AxiosError, IParticipation[]>(
     [STUDY_VOTE, date, location],
     async () => {
+     
       const res = await axios.get<IStudy>(`${SERVER_URI}/vote/${date}`, {
         params: { location },
       });
@@ -114,6 +125,27 @@ export const useStudyPreferenceQuery = (options?: QueryOptions<IStudyVotePlaces>
         `${SERVER_URI}/user/preference`,
       );
       return res.data?.studyPreference;
+    },
+    options,
+  );
+
+export const useStudyDailyVoteCntQuery = (
+  location,
+  startDay,
+  endDay,
+  options?: QueryOptions<VoteCntProps[]>,
+) =>
+  useQuery(
+    [STUDY_VOTE_CNT, location, dayjsToStr(startDay), dayjsToStr(endDay)],
+    async () => {
+      const res = await axios.get<VoteCntProps[]>(`${SERVER_URI}/vote/participationCnt`, {
+        params: {
+          location,
+          startDay: dayjsToStr(startDay),
+          endDay: dayjsToStr(endDay),
+        },
+      });
+      return res.data;
     },
     options,
   );

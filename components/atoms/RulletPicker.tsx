@@ -89,7 +89,7 @@ export default function RulletPicker({
 }
 
 const Text = styled.div`
-  color: var(--gray-3); /* text-gray-3 */
+  color: var(--gray-600); /* text-gray-3 */
   margin-bottom: 8px; /* mb-2 */
   font-weight: 600; /* font-semibold */
 `;
@@ -98,8 +98,7 @@ const Container = styled.div`
   position: relative;
   width: 100%;
   border-radius: var(--rounded-lg); /* rounded-lg */
-  background-color: var(--gray-7); /* bg-gray-8 */
-  color: var(--gray-2); /* text-bg-2 */
+  background-color: var(--gray-200); /* bg-gray-8 */
   overflow-y: hidden;
   padding-top: 8px; /* py-2 */
   padding-bottom: 8px; /* py-2 */
@@ -113,7 +112,7 @@ const ItemsContainer = styled(motion.div)`
   z-index: 10;
 `;
 
-const Item = styled.div`
+const Item = styled.div<{ isActive: boolean }>`
   position: relative;
   z-index: 10;
   display: flex;
@@ -122,13 +121,13 @@ const Item = styled.div`
   font-weight: 600; /* font-semibold */
   font-size: 16px; /* text-base */
   height: ${ITEM_HEIGHT}px;
-  color: ${({ isActive }) => (isActive ? "#FFFFFF" : "var(--gray-2)")}; /* Conditional color */
+  color: ${({ isActive }) => (isActive ? "#FFFFFF" : "var(--gray-600)")}; /* Conditional color */
 `;
 
 const Highlight = styled.div`
   border-radius: var(--rounded-lg); /* rounded-lg */
   width: 100%;
-  background-color: var(--gray-1); /* bg-gray-2 */
+  background-color: var(--gray-800); /* bg-gray-2 */
   position: absolute;
   top: 50%;
   transform: translateY(-50%);

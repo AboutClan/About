@@ -26,7 +26,7 @@ interface IGatherWritingConfirmModal extends IModal {
 function GatherWritingConfirmModal({ setIsModal, gatherData }: IGatherWritingConfirmModal) {
   const router = useRouter();
   const errorToast = useErrorToast();
-
+  console.log(23, gatherData);
   const [isFirst, setIsFirst] = useState(true);
   const [imageUrl, setImageUrl] = useState();
   const [isSuccessScreen, setIsSuccessScreen] = useState(false);
@@ -120,7 +120,6 @@ function GatherWritingConfirmModal({ setIsModal, gatherData }: IGatherWritingCon
 const Container = styled.div`
   line-height: 2;
   font-size: 13px;
-  color: var(--gray-2);
 `;
 
 const Item = styled.div`

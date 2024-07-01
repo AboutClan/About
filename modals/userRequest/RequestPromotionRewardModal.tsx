@@ -5,8 +5,8 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import { CopyBtn } from "../../components/atoms/Icons/CopyIcon";
-import { PROMOTION_TEXT, PromotionComponent } from "../../constants/contentsText/Private";
-import { POINT_SYSTEM_PLUS } from "../../constants/settingValue/pointSystem";
+import { PROMOTION_TEXT,PromotionComponent } from "../../constants/contentsText/Private";
+import { POINT_SYSTEM_PLUS } from "../../constants/serviceConstants/pointSystemConstants";
 import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
@@ -74,7 +74,7 @@ function RequestPromotionRewardModal({ setIsModal }: IModal) {
         {isFirst ? "이미지 다운로드" : "돌아가기"}
       </Button>
       <Message>
-        제목은 &quot;카공 및 친목 동아리 ABOUT&quot; 로 적어주시면 되고, 이미지는 굳이 안넣어주셔도
+        제목은 &quot;스터디 & 친목 동아리 ABOUT&quot; 로 적어주시면 되고, 이미지는 굳이 안넣어주셔도
         돼요! 여러번 지원해도 너무 환영하니 자주 신청해주세요 🙂
       </Message>
     </ModalLayout>
@@ -88,7 +88,7 @@ const Overview = styled.div`
 
 const ImageText = styled.span`
   font-size: 12px;
-  color: var(--gray-1);
+  color: var(--gray-800);
   margin-bottom: auto;
 `;
 const Container = styled.div``;
