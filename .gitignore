@@ -45,7 +45,3 @@ yarn-error.log*
 # Storybook
 *storybook.log
 storybook-static
-
-# pwa
-public/sw.js
-public/workbox-*.js
