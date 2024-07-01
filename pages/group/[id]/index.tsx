@@ -31,10 +31,10 @@ function GroupDetail() {
   const [group, setGroup] = useState<IGroup>();
 
   const { data: groups } = useGroupQuery();
-
+ 
   useEffect(() => {
     if (groups) setGroup(groups.find((item) => item.id + "" === id));
-  }, [groups]);
+  }, [groups, id]);
 
   const queryClient = useQueryClient();
 
