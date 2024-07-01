@@ -75,6 +75,11 @@ function WritingCondition() {
 
   const onClickNext = async () => {
     const groupData: IGroupWriting = {
+      age: [19, 28],
+      memberCnt: {
+        min: 4,
+        max: 0,
+      },
       ...groupWriting,
       fee: condition.fee ? +fee : 0,
       feeText,
