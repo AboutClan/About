@@ -1,8 +1,17 @@
 /** @type {import('next').NextConfig} */
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const withPWA = require("next-pwa");
+const { withSentryConfig } = require("@sentry/nextjs");
+
+const isProduction = process.env.NODE_ENV === "production";
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const nextConfig = {
+const withPWA = require("next-pwa")({
+  dest: "public",
+  register: isProduction,
+  disable: !isProduction,
+});
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const baseNextConfig = {
   images: {
     remotePatterns: [
       {
@@ -59,19 +68,8 @@ const nextConfig = {
     ];
   },
 };
-const isProduction = process.env.NODE_ENV === "production";
-module.exports = withPWA({
-  ...nextConfig,
-  pwa: {
-    dest: "public",
-    disable: !isProduction,
-    runtimeCaching: [],
-  },
-});
 
-// Injected content via Sentry wizard below
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { withSentryConfig } = require("@sentry/nextjs");
+const nextConfig = withPWA(baseNextConfig);
 
 module.exports = withSentryConfig(
   nextConfig,
