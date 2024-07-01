@@ -49,6 +49,11 @@ function WritingCondition() {
 
   const onClickNext = async () => {
     const gatherData: IGatherWriting = {
+      age: [19, 28],
+      memberCnt: {
+        min: 4,
+        max: 0,
+      },
       ...gatherContent,
       preCnt: condition.pre ? 1 : 0,
       genderCondition: condition.gender,
