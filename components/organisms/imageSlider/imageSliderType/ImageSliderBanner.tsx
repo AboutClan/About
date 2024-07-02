@@ -75,7 +75,7 @@ function ImageSliderBanner({ imageArr, isLightBanner }: IImageSliderEventBanner)
       ))}
       {!isLightBanner && (
         <Box
-          w="76px"
+          w="80px"
           p="2px 4px"
           color="white"
           opacity={0.75}
