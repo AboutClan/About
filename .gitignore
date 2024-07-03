@@ -45,3 +45,7 @@ yarn-error.log*
 # Storybook
 *storybook.log
 storybook-static
+
+# Service worker
+**/public/workbox-*.js
+**/public/sw.js
