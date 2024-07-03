@@ -51,11 +51,9 @@ export const useStudyVoteQuery = (
   useQuery<IParticipation[], AxiosError, IParticipation[]>(
     [STUDY_VOTE, date, location],
     async () => {
-      console.log("start", getPerformanceTime());
       const res = await axios.get<IStudy>(`${SERVER_URI}/vote/${date}`, {
         params: { location },
       });
-      console.log("end", getPerformanceTime());
       return res.data.participations.filter((par) => par.place.status === "active");
     },
     options,
