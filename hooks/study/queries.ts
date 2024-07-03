@@ -18,7 +18,6 @@ import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterAction
 import { IArrivedData, VoteCntProps } from "../../types/models/studyTypes/studyRecords";
 import { Location } from "../../types/services/locationTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
-import { getPerformanceTime } from "../../utils/mathUtils";
 
 export const useStudyPlacesQuery = (
   location: Location | "all",
