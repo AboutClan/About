@@ -59,7 +59,7 @@ const requestNotificationPermission = async () => {
 
 const send = async (onSuccess) => {
   try {
-    const register = await navigator.serviceWorker.register("/pwabuilder-sw.js", {
+    const register = await navigator.serviceWorker.register("/worker.js", {
       scope: "/",
     });
 

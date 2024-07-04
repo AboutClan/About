@@ -43,7 +43,7 @@ const send = async (onSuccess) => {
   try {
     // Register Service Worker
     console.log("Registering service worker...");
-    const register = await navigator.serviceWorker.register("/pwabuilder-sw.js", {
+    const register = await navigator.serviceWorker.register("/worker.js", {
       scope: "/",
     });
     console.log("Service Worker Registered...");
