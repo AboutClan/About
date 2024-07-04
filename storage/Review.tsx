@@ -576,4 +576,19 @@ export const REVIEW_DATA: IReviewData[] = [
 
     title: "강남 술번개",
   },
+
+  {
+    id: 212,
+    dateCreated: "7월 4일",
+    images: [
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%97%AC%EB%A6%84+2%EC%B0%A8+MT/KakaoTalk_20240704_171706137_03.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%97%AC%EB%A6%84+2%EC%B0%A8+MT/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+2024-07-04+185102.png",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%97%AC%EB%A6%84+2%EC%B0%A8+MT/KakaoTalk_20240704_175717644_01.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%97%AC%EB%A6%84+2%EC%B0%A8+MT/KakaoTalk_20240704_175717644_02.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%97%AC%EB%A6%84+2%EC%B0%A8+MT/KakaoTalk_20240704_175924199_01.jpg",
+    ],
+    text: "밤샘 MT로 많이 피곤하기에 짤막한 리뷰를 써보겠습니다,,, 이번엔 사진을 정말 거의 못 찍었어요,,, 용인 MT때는 장소도 넓고 사람도 많아서 이곳 저곳 모여서 놀았다면, 이번에는 다 같이 거실에서 내내 술게임을 했습니다,,, 그 중에서도 이중모션만 몇시간을 한건지 모르겠어요,,, 술자리 초반부터 템포가 많이 빨랐어서 다들 새벽 4시쯤 되니까 많이 피곤해보이더라구요,,, (나도,,,) 첫차때쯤에 정리를 하고 총총총 집으로 떠났습니다,,, 계획대로 진행하진 못했지만 밤새 시끌벅적 재밌었어요 :) 당분간 금주해야지,,,",
+
+    title: "어바웃 여름 2차 MT",
+  },
 ];
