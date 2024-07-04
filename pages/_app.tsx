@@ -21,7 +21,6 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
             retry: 2,
             staleTime: 1 * 60 * 1000,
             cacheTime: 10 * 60 * 1000,
-            refetchOnWindowFocus: true,
           },
         },
       }),
