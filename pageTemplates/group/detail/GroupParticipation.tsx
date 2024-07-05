@@ -45,7 +45,7 @@ function GroupParticipation({ data }: IGroupParticipation) {
         ) : (
           <>
             <span style={{ marginLeft: "4px" }} />
-            <i className="fa-solid fa-infinity" style={{ color: "var(--gray-200)" }} />
+            <i className="fa-solid fa-infinity" style={{ color: "var(--gray-400)" }} />
           </>
         )}
       </Header>

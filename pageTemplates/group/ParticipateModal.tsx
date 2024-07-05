@@ -130,11 +130,11 @@ function ParticipateModal({ isFree, id, feeText, setIsModal, answer }: IParticip
       <PointContainer>
         <Fee>
           <span>필요 포인트:</span>
-          <span>{feePoint || 20} 포인트</span>{" "}
+          <span>20 포인트</span>{" "}
         </Fee>
         <Fee>
           <span>필요 활동비:</span>
-          <span>{200}원</span>
+          <span>200원</span>
         </Fee>
       </PointContainer>
       <SelectContainer>
