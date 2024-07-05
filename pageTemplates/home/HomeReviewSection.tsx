@@ -21,13 +21,11 @@ export default function HomeReviewSection() {
       func: () => setSlideDirection("right"),
     }));
 
-  const handleNavigate = () => {};
-
   return (
     <Box mb="24px">
       <SectionBar
         title="ABOUT 모임 후기"
-        rightComponent={<HighlightedTextButton text="더보기" onClick={handleNavigate} />}
+        rightComponent={<HighlightedTextButton text="더보기" url="/review" />}
       />
       <Box p="16px">
         <ImageTileGridLayout imageDataArr={imageData} />

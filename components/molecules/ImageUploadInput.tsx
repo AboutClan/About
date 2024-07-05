@@ -76,7 +76,10 @@ export default function ImageUploadInput({ setImageUrl: changeImage }: IImageUpl
       <Container onClick={handleBtnClick}>
         {!imageUrl ? (
           <>
-            <i className="fa-light fa-camera-view-finder fa-4x " style={{ color: "var(--gray-500)" }} />
+            <i
+              className="fa-light fa-camera-viewfinder fa-4x "
+              style={{ color: "var(--gray-500)" }}
+            />
             <CameraText>사진 올리기</CameraText>
           </>
         ) : (

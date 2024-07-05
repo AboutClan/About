@@ -19,6 +19,7 @@ export const MAIN_BANNER_IMAGE: BannerProps[] = [
     image:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/0702-%ED%8F%AC%EC%9D%B8%ED%8A%B8-%EC%8A%A4%ED%86%A0%EC%96%B4-%EB%B0%B0%EB%84%88-%EC%B5%9C%EC%A2%85.png",
     category: "store",
+    url: "/store",
   },
   {
     image:
@@ -33,6 +34,7 @@ export const GATHER_BANNER_IMAGE: BannerProps[] = [
     image:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/0627-%EB%AA%A8%EC%9E%84-%EB%B0%B0%EB%84%88-%EC%B5%9C%EC%A2%85.png",
     category: "gather",
+    url: "/gather",
   },
 ];
 export const CLUB_BANNER_IMAGE: BannerProps[] = [

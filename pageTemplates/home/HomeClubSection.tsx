@@ -122,7 +122,7 @@ function HomeClubSection() {
             endBlocks = [];
 
             return (
-              <DateBlock key={idx} isToday={isToday}>
+              <DateBlock key={idx}>
                 <Date day={day} isToday={isToday}>
                   {!isToday ? item : <TodayCircle>{item}</TodayCircle>}
                 </Date>
@@ -213,7 +213,7 @@ const CalendarDates = styled.div`
   }
 `;
 
-const DateBlock = styled.div<{ isToday: boolean }>`
+const DateBlock = styled.div`
   width: 52px;
   padding-top: var(--gap-1);
   font-size: 12px;
@@ -221,7 +221,6 @@ const DateBlock = styled.div<{ isToday: boolean }>`
   text-align: center;
   flex: 1;
   border-top: var(--border);
-  background-color: ${(props) => (props.isToday ? "var(--gray-200)" : null)};
 `;
 
 const Date = styled.div<{ day: "sun" | "sat"; isToday: boolean }>`
