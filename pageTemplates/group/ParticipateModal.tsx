@@ -103,11 +103,7 @@ function ParticipateModal({ isFree, id, feeText, setIsModal, answer }: IParticip
   return (
     <ModalLayout setIsModal={setIsModal} title="가입 신청" footerOptions={footerOptions}>
       <ModalSubtitle>
-        {false
-          ? `소모임 가입을 위해서는 가입비 200원이 필요합니다. 사용처는 "${feeText}" 입니다.`
-          : false
-            ? "소모임 가입에는 150 포인트 또는 1000원이 소모됩니다. 이는 그룹장에게 전달되어 활동 지원금으로 사용됩니다."
-            : "소모임 가입에는 기본 참여비로 20 포인트 또는 200원이 소모됩니다."}
+        소모임 가입에는 기본 참여비로 20 포인트 또는 200원이 소모됩니다.
       </ModalSubtitle>
       <PointContainer>
         <Point>
