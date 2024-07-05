@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/dist/client/router";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
@@ -63,7 +63,7 @@ function GroupComments({ comment }: IGroupComments) {
     setCommentText(text);
     setIsEditModal(true);
   };
-
+  console.log(comment);
   return (
     <>
       <Layout>
@@ -98,7 +98,7 @@ function GroupComments({ comment }: IGroupComments) {
                   <Name>
                     <span>{item.user.name}</span>
                     <CommentDetail>
-                      {item.user.location} · {getDateDiff(dayjs(item.updatedAt))}
+                      {item.user.location} · {getDateDiff(dayjs(item.createdAt))}
                     </CommentDetail>
                   </Name>
                   <p>
