@@ -18,14 +18,13 @@ import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
 
 interface IParticipateModal extends IModal {
-  fee: number;
   id: number;
   isFree: boolean;
   feeText: string;
   answer: string;
 }
 
-function ParticipateModal({ isFree, fee, id, feeText, setIsModal, answer }: IParticipateModal) {
+function ParticipateModal({ isFree, id, feeText, setIsModal, answer }: IParticipateModal) {
   const router = useRouter();
   const failToast = useFailToast();
   const completeToast = useCompleteToast();
@@ -39,10 +38,10 @@ function ParticipateModal({ isFree, fee, id, feeText, setIsModal, answer }: IPar
 
   const chargePoint = () => {
     if (selectBtn === "point") {
-      getPoint({ value: -fee * 0.15 || 30, message: "소모임 가입" });
+      getPoint({ value: 30, message: "소모임 가입" });
     }
     if (selectBtn === "deposit") {
-      getDeposit({ value: -fee || -200, message: "소모임 가입" });
+      getDeposit({ value: -200, message: "소모임 가입" });
     }
   };
 
@@ -63,8 +62,8 @@ function ParticipateModal({ isFree, fee, id, feeText, setIsModal, answer }: IPar
     },
   });
 
-  const feeValue = fee === 0 ? 200 : fee;
-  const feePoint = fee === 0 ? 20 : fee * 0.15;
+  const feeValue = 200;
+  const feePoint = 20;
 
   const onSubmit = () => {
     if (selectBtn === "point" && userInfo?.point < feePoint) {
@@ -104,11 +103,11 @@ function ParticipateModal({ isFree, fee, id, feeText, setIsModal, answer }: IPar
   return (
     <ModalLayout setIsModal={setIsModal} title="가입 신청" footerOptions={footerOptions}>
       <ModalSubtitle>
-        {fee
-          ? `소모임 가입을 위해서는 가입비 ${fee}원이 필요합니다. 사용처는 "${feeText}" 입니다.`
-          : fee === 1000
+        {false
+          ? `소모임 가입을 위해서는 가입비 200원이 필요합니다. 사용처는 "${feeText}" 입니다.`
+          : false
             ? "소모임 가입에는 150 포인트 또는 1000원이 소모됩니다. 이는 그룹장에게 전달되어 활동 지원금으로 사용됩니다."
-            : "소모임 가입에는 기본 참여비로 30 포인트 또는 200원이 소모됩니다."}
+            : "소모임 가입에는 기본 참여비로 20 포인트 또는 200원이 소모됩니다."}
       </ModalSubtitle>
       <PointContainer>
         <Point>
@@ -131,11 +130,11 @@ function ParticipateModal({ isFree, fee, id, feeText, setIsModal, answer }: IPar
       <PointContainer>
         <Fee>
           <span>필요 포인트:</span>
-          <span>{feePoint || 30} 포인트</span>{" "}
+          <span>{feePoint || 20} 포인트</span>{" "}
         </Fee>
         <Fee>
           <span>필요 활동비:</span>
-          <span>{fee || 200}원</span>
+          <span>{200}원</span>
         </Fee>
       </PointContainer>
       <SelectContainer>

@@ -1,12 +1,13 @@
 import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
+import { useSetRecoilState } from "recoil";
 import { GROUP_GATHERING_IMAGE } from "../../../assets/images/randomImages";
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../components/layouts/PageSlide";
@@ -21,6 +22,7 @@ import GroupCover from "../../../pageTemplates/group/detail/GroupCover";
 import GroupHeader from "../../../pageTemplates/group/detail/GroupHeader";
 import GroupParticipation from "../../../pageTemplates/group/detail/GroupParticipation";
 import GroupTitle from "../../../pageTemplates/group/detail/GroupTitle";
+import { transferGroupDataState } from "../../../recoils/transferRecoils";
 import { IGroup } from "../../../types/models/groupTypes/group";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 
@@ -30,10 +32,16 @@ function GroupDetail() {
 
   const [group, setGroup] = useState<IGroup>();
 
+  const setTransferGroup = useSetRecoilState(transferGroupDataState);
+
   const { data: groups } = useGroupQuery();
- 
+
   useEffect(() => {
-    if (groups) setGroup(groups.find((item) => item.id + "" === id));
+    if (groups) {
+      const findGroup = groups.find((item) => item.id + "" === id);
+      setGroup(findGroup);
+      setTransferGroup(findGroup);
+    }
   }, [groups, id]);
 
   const queryClient = useQueryClient();
