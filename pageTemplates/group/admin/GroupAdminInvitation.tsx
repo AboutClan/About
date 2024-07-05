@@ -1,10 +1,11 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 
 import AlertModal, { IAlertModalOptions } from "../../../components/AlertModal";
+import { Input } from "../../../components/atoms/Input";
 import { MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
 import Selector from "../../../components/atoms/Selector";
 import InviteUserGroups from "../../../components/molecules/groups/InviteUserGroups";
@@ -13,15 +14,11 @@ import { LOCATION_USE_ALL } from "../../../constants/location";
 import { useAdminUsersLocationControlQuery } from "../../../hooks/admin/quries";
 import { useCompleteToast } from "../../../hooks/custom/CustomToast";
 import { useGroupWaitingStatusMutation } from "../../../hooks/groupStudy/mutations";
-import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 
 type UserType = "신규 가입자" | "전체";
 
-interface IGroupAdminInvitation {
-  belong: string;
-}
-export default function GroupAdminInvitation({ belong }: IGroupAdminInvitation) {
+export default function GroupAdminInvitation() {
   const completeToast = useCompleteToast();
   const { data: session } = useSession();
   const location = session?.user.location;
@@ -30,6 +27,7 @@ export default function GroupAdminInvitation({ belong }: IGroupAdminInvitation) 
   const [userFilterValue, setUserFilterValue] = useState<UserType>("신규 가입자");
   const [filterUsers, setFilterUsers] = useState<IUserSummary[]>();
   const [inviteUser, setInviteUser] = useState<IUserSummary>(null);
+  const [nameValue, setNameValue] = useState("");
 
   useEffect(() => {
     setValue(location);
@@ -39,13 +37,9 @@ export default function GroupAdminInvitation({ belong }: IGroupAdminInvitation) 
     data: usersAll,
     refetch,
     isLoading,
-  } = useAdminUsersLocationControlQuery(value,null,false, { enabled: !!location });
+  } = useAdminUsersLocationControlQuery(value, null, false, { enabled: !!location });
 
   const queryClient = useQueryClient();
-
-  const { mutate } = useUserInfoFieldMutation("belong", {
-    onSuccess() {},
-  });
 
   const { mutate: mutate2 } = useGroupWaitingStatusMutation(+id, {
     onSuccess() {
@@ -58,12 +52,20 @@ export default function GroupAdminInvitation({ belong }: IGroupAdminInvitation) 
   useEffect(() => {
     setFilterUsers(null);
     if (isLoading || !usersAll) return;
-    setFilterUsers(
-      usersAll.filter((user) =>
-        user.isActive && userFilterValue === "전체" ? true : !user?.belong,
-      ),
-    );
-  }, [usersAll]);
+    if (nameValue) {
+      setFilterUsers(
+        usersAll.filter(
+          (user) => (user.isActive && user.name === nameValue) || user.name.slice(1) === nameValue,
+        ),
+      );
+    } else {
+      setFilterUsers(
+        usersAll.filter((user) =>
+          user.isActive && userFilterValue === "전체" ? true : !user?.belong,
+        ),
+      );
+    }
+  }, [usersAll, nameValue]);
 
   const USER_TYPE_ARR: UserType[] = ["신규 가입자", "전체"];
 
@@ -71,7 +73,6 @@ export default function GroupAdminInvitation({ belong }: IGroupAdminInvitation) 
     title: "유저 초대",
     subTitle: `${inviteUser?.name}님을 초대합니다. 즉시 가입이 되기 때문에 해당 멤버와 사전 이야기가 된 경우에 이용해주세요!`,
     func: () => {
-      mutate({ uid: inviteUser.uid, belong });
       mutate2({ status: "agree", userId: inviteUser._id });
     },
     text: "초대",
@@ -80,12 +81,20 @@ export default function GroupAdminInvitation({ belong }: IGroupAdminInvitation) 
   return (
     <>
       <Box mt="16px">
-        <Flex justify="space-between">
+        <Flex justify="space-between" align="flex-end">
           <Selector
             options={USER_TYPE_ARR}
             defaultValue={userFilterValue}
             setValue={setUserFilterValue}
           />
+          <Box>
+            <Input
+              placeholder="이름 검색"
+              size="xs"
+              value={nameValue}
+              onChange={(e) => setNameValue(e.target.value)}
+            />
+          </Box>
           <Selector options={LOCATION_USE_ALL} defaultValue={value} setValue={setValue} />
         </Flex>
         <Box position="relative">

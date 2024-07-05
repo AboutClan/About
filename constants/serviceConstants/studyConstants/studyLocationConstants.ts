@@ -39,7 +39,9 @@ import {
   INC_송도DT점,
   INC_송도점,
   INC_인천대점,
+  INC_인하대역점,
   INC_인하대점,
+  INC_인하대점2,
   INC_청라점,
   SUWAN_경기대,
   SUWAN_경희대,
@@ -59,6 +61,7 @@ import {
   SUWAN_행궁동,
   YANG_까치산역,
   YANG_당산역,
+  YANG_대방역점,
   YANG_등촌역,
   YANG_목동10단지점,
   YANG_목동점,
@@ -120,6 +123,7 @@ export const LOCATION_TO_PLACE: LocationToPlace = {
     YANG_선유도점,
     YANG_목동10단지점,
     YANG_홍대입구역점,
+    YANG_대방역점,
   ],
   안양: [
     ANYANG_범계역,
@@ -169,6 +173,8 @@ export const LOCATION_TO_PLACE: LocationToPlace = {
     INC_인천대점,
     INC_청라점,
     INC_서구청점,
+    INC_인하대역점,
+    INC_인하대점2,
   ],
 };
 

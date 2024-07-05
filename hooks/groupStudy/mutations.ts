@@ -45,18 +45,21 @@ export const useGroupParticipationMutation = <T extends "post" | "delete">(
     options,
   );
 
-interface IExileUserParam {
+interface IExileUserParam extends ParamProps {
   id: number;
+}
+interface ParamProps {
   toUid: string;
+  randomId?: number;
 }
 
-export const useGroupExileUserMutation = (id: number, options?: MutationOptions<string>) =>
-  useMutation<void, AxiosError, string>(
-    (toUid) =>
+export const useGroupExileUserMutation = (id: number, options?: MutationOptions<ParamProps>) =>
+  useMutation<void, AxiosError, ParamProps>(
+    ({ toUid, randomId }) =>
       requestServer<IExileUserParam>({
         method: "delete",
         url: "groupStudy/participate/exile",
-        body: { id, toUid },
+        body: { id, toUid, randomId },
       }),
     options,
   );

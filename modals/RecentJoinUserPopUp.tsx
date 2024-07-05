@@ -9,6 +9,7 @@ import { useInteractionMutation } from "../hooks/user/sub/interaction/mutations"
 import { IModal } from "../types/components/modalTypes";
 import { IUserSummary } from "../types/models/userTypes/userInfoTypes";
 import { ModalLayout } from "./Modals";
+
 interface RecentJoinUserPopUpProps extends IModal {
   users: IUserSummary[];
 }
@@ -47,7 +48,7 @@ function RecentJoinUserPopUp({ users, setIsModal }: RecentJoinUserPopUpProps) {
       <Flex
         direction="column"
         h="215px"
-        overflow="auto"
+        overflowY="auto" // 변경된 부분
         sx={{
           "&::-webkit-scrollbar": {
             display: "none",

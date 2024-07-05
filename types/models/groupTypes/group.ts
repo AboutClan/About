@@ -8,13 +8,15 @@ export type GroupCategory = (typeof GROUP_STUDY_CATEGORY_ARR)[number];
 
 export interface IGroup extends IGroupWriting {
   createdAt: string;
-  participants: {
-    user: IUserSummary;
-    role: "member" | "manager" | "admin";
-    attendCnt?: number;
-  }[];
+  participants: GroupParicipantProps[];
   comment: IGatherComment[];
-  link?: string;
+}
+
+export interface GroupParicipantProps {
+  user: IUserSummary;
+  role: "member" | "manager" | "admin";
+  attendCnt?: number;
+  randomId?: number;
 }
 
 export interface IGroupWriting extends ITimeStamps {
@@ -35,7 +37,8 @@ export interface IGroupWriting extends ITimeStamps {
   period: string;
   organizer: IUser;
   location: LocationFilterType;
-
+  isSecret?: boolean;
+  link?: string;
   questionText?: string;
   hashTag?: string;
   attendance: IGroupAttendance;

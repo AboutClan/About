@@ -14,7 +14,7 @@ function GroupMine({ myGroups }: IGroupMine) {
     text: group.title,
     url: `/group/${group.id}`,
   }));
-
+ 
   return (
     <Layout>
       {myGroups?.length ? (

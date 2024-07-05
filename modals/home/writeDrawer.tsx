@@ -57,8 +57,8 @@ export default function WriteDrawer() {
             />
             <SocialButton
               url="/group/writing/main"
-              title="소그룹"
-              subTitle="비슷한 관심사의 인원들을 모아봐요"
+              title="소모임"
+              subTitle="비슷한 관심사의 인원들과 함께해요!"
               icon={<i className="fa-regular fa-campfire" style={{ color: "white" }} />}
               color="blue.400"
             />

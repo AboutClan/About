@@ -73,7 +73,7 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ account, user, profile, credentials }) {
       try {
-        console.log("signIn 호출됨", { account, user, profile, credentials });
+       
         if (account.provider === "guest") return true;
 
         if (!account.access_token) return false;
@@ -134,7 +134,7 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, account, user, trigger }) {
     
       try {
-        console.log("jwt 호출됨", { token, account, user, trigger });
+       
         if (trigger === "update" && token?.role) {
           token.role = "waiting";
           return token;

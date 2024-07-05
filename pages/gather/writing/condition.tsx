@@ -49,6 +49,11 @@ function WritingCondition() {
 
   const onClickNext = async () => {
     const gatherData: IGatherWriting = {
+      age: [19, 28],
+      memberCnt: {
+        min: 4,
+        max: 0,
+      },
       ...gatherContent,
       preCnt: condition.pre ? 1 : 0,
       genderCondition: condition.gender,
@@ -89,7 +94,6 @@ function WritingCondition() {
     }
     return String(temp) + " " + "제한";
   };
- 
 
   return (
     <>
@@ -140,7 +144,7 @@ function WritingCondition() {
               />
             </Item>
             {!condition.location && <GatherWritingConditionLocation setLocation={setLocation} />}
-            <Item>
+            {/* <Item>
               <Name>
                 <div>
                   <i className="fa-solid fa-key" />
@@ -153,7 +157,7 @@ function WritingCondition() {
                 isChecked={condition.pre}
                 onChange={(e) => toggleSwitch(e, "pre")}
               />
-            </Item>
+            </Item> */}
 
             <Item>
               <Name>
@@ -213,6 +217,7 @@ function WritingCondition() {
       )}
       {isMemberConditionModal && (
         <GatherWritingUserConditionModal
+          type="gather"
           setIsModal={setIsMemberConditionModal}
           gatherContent={gatherContent}
           isGenderCondition={condition.gender}

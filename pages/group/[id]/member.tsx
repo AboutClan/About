@@ -15,15 +15,14 @@ import { useGroupExileUserMutation } from "../../../hooks/groupStudy/mutations";
 import { useGroupQuery } from "../../../hooks/groupStudy/queries";
 import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
 import { checkGroupGathering } from "../../../libs/group/checkGroupGathering";
-import { IGroup } from "../../../types/models/groupTypes/group";
-import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import { GroupParicipantProps, IGroup } from "../../../types/models/groupTypes/group";
 
 export default function Member() {
   const { data: session } = useSession();
   const completeToast = useCompleteToast();
   const { id } = useParams<{ id: string }>() || {};
 
-  const [deleteUser, setDeleteUser] = useState<IUserSummary>(null);
+  const [deleteUser, setDeleteUser] = useState<GroupParicipantProps>(null);
   const [group, setGroup] = useState<IGroup>();
 
   const { data: groups } = useGroupQuery();
@@ -50,11 +49,11 @@ export default function Member() {
 
   const alertOptions: IAlertModalOptions = {
     title: "유저 추방",
-    subTitle: `${deleteUser?.name}님을 해당 모임에서 추방합니다.`,
+    subTitle: `${deleteUser?.user?.name || "외부인"}님을 해당 모임에서 추방합니다.`,
     func: async () => {
-      await mutate(deleteUser._id);
+      await mutate({ toUid: deleteUser?.user?._id, randomId: deleteUser?.randomId });
       if (belong) {
-        await handleBelong({ uid: deleteUser.uid, belong: null });
+        await handleBelong({ uid: deleteUser?.user?.uid, belong: null });
       }
     },
     text: "추방",
@@ -69,18 +68,14 @@ export default function Member() {
             참여중인 멤버
           </Box>
           <Flex direction="column">
-            {group?.participants.map((who) => (
-              <Box key={who.user.uid}>
+            {group?.participants.map((who, idx) => (
+              <Box key={idx}>
                 <ProfileCommentCard
                   user={who.user}
                   comment={`구성:${GROUP_STUDY_ROLE[who.role]} / 출석 횟수:${who.attendCnt}회`}
                   rightComponent={
-                    who.user.uid !== session?.user.uid ? (
-                      <Button
-                        onClick={() => setDeleteUser(who.user)}
-                        colorScheme="redTheme"
-                        size="sm"
-                      >
+                    who.user?.uid !== session?.user.uid ? (
+                      <Button onClick={() => setDeleteUser(who)} colorScheme="redTheme" size="sm">
                         추방
                       </Button>
                     ) : null
