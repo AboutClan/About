@@ -60,7 +60,7 @@ const Header = styled.header`
   font-weight: 600;
 
   > span:first-child {
-    margin-right: var(--gap-3);
+    margin-right: var(--gap-4);
   }
   > span:nth-child(2) {
     font-weight: 700;

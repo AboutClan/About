@@ -64,7 +64,7 @@ function ParticipateModal({ isFree, fee, id, feeText, setIsModal, answer }: IPar
   });
 
   const feeValue = fee === 0 ? 200 : fee;
-  const feePoint = fee === 0 ? 30 : fee * 0.15;
+  const feePoint = fee === 0 ? 20 : fee * 0.15;
 
   const onSubmit = () => {
     if (selectBtn === "point" && userInfo?.point < feePoint) {

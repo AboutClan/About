@@ -11,7 +11,8 @@ export const GROUP_STUDY_CATEGORY_ARR = [
   "자격증",
   "취업준비",
   "게임",
-  "친목",
+  "문화탐방",
+  "피크닉",
   "기타",
 ] as const;
 
@@ -32,9 +33,10 @@ export const GROUP_STUDY_SUB_CATEGORY: { [key in GroupCategory]: string[] } = {
     "자기계발",
   ],
   게임: ["리그오브레전드", "오버워치", "롤토체스"],
-  친목: ["소그룹", "방탈출", "보드게임"],
-  운동: ["러닝", "운동 인증"],
-  기타: ["편입준비", "공사"],
+  문화탐방: ["방탈출", "보드게임", "소그룹", "전시회/미술관"],
+  운동: ["러닝", "운동 인증", "다이어트"],
+  피크닉: ["출사"],
+  기타: ["편입준비", "공사", "수리 통계"],
 };
 
 export const GROUP_STUDY_CATEGORY_ARR_ICONS = {
@@ -44,8 +46,11 @@ export const GROUP_STUDY_CATEGORY_ARR_ICONS = {
   취업준비: <i className="fa-regular fa-user-graduate" style={{ color: `${TABLE_COLORS[3]}` }} />,
   자기계발: <i className="fa-regular fa-book-user" style={{ color: `${TABLE_COLORS[4]}` }} />,
   게임: <i className="fa-regular fa-gamepad" style={{ color: `${TABLE_COLORS[5]}` }} />,
-  친목: <i className="fa-regular fa-champagne-glasses" style={{ color: `${TABLE_COLORS[7]}` }} />,
+  문화탐방: (
+    <i className="fa-regular fa-champagne-glasses" style={{ color: `${TABLE_COLORS[7]}` }} />
+  ),
   운동: <i className="fa-regular fa-person-running" style={{ color: `${TABLE_COLORS[8]}` }} />,
+  피크닉: <i className="fa-regular fa-umbrella-beach" style={{ color: `${TABLE_COLORS[9]}` }} />,
   기타: <i className="fa-regular fa-atom" style={{ color: `${TABLE_COLORS[6]}` }} />,
 };
 
