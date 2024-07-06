@@ -149,6 +149,13 @@ export const EVENT_CONTENT_2024: Record<string, Content[]> = {
       color: "var(--color-orange)",
       text: "",
     },
+    {
+      content: "모임 활성화 이벤트",
+      start: 8,
+      end: 9,
+      color: "var(--color-blue)",
+      text: "",
+    },
   ],
 };
 

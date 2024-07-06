@@ -13,7 +13,8 @@ export const MAIN_BANNER_IMAGE: BannerProps[] = [
   {
     image:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/0627-%EC%86%8C%EB%AA%A8%EC%9E%84-%EB%B0%B0%EB%84%88-%EC%B5%9C%EC%A2%85.png",
-    category: "study",
+    category: "group",
+    url: "/group",
   },
   {
     image:
