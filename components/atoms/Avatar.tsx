@@ -8,7 +8,7 @@ import { COLOR_TABLE_LIGHT } from "../../constants/colorConstants";
 import { AVATAR_IMAGE_ARR } from "../../storage/avatarStorage";
 import { IAvatar as IAvatarProp } from "../../types/models/userTypes/userInfoTypes";
 
-type Size = "sm" | "smd" | "md" | "lg" | "xl";
+type Size = "xs" | "sm" | "smd" | "md" | "lg" | "xl";
 
 interface IAvatar {
   image: string;
@@ -53,7 +53,7 @@ export default function Avatar({
               : hasAvatar && avatar.bg !== null && COLOR_TABLE_LIGHT[avatar.bg]
           }
           hasType={hasAvatar}
-          size={size}
+          size={avatar?.type === 13 ? "xs" : size}
         >
           <Box w="100%" h="100%" pos="relative">
             {!shadowAvatar ? (
@@ -170,13 +170,15 @@ const ImageContainer = styled.div<{
   overflow: hidden;
   padding: ${(props) =>
     props.hasType &&
-    (props.size === "sm"
-      ? "2px"
-      : props.size === "md"
-        ? "4px"
-        : props.size === "lg"
-          ? "6px"
-          : "8px")};
+    (props.size === "xs"
+      ? "0"
+      : props.size === "sm"
+        ? "2px"
+        : props.size === "md"
+          ? "4px"
+          : props.size === "lg"
+            ? "6px"
+            : "8px")};
 
   background-color: ${(props) => (props.bg ? props.bg : "var(--gray-500)")};
 `;
