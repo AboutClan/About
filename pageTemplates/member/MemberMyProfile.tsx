@@ -1,8 +1,8 @@
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
+import Avatar from "../../components/atoms/Avatar";
 import UserBadge from "../../components/atoms/badges/UserBadge";
-import ProfileIcon from "../../components/atoms/Profile/ProfileIcon";
 import { USER_ROLE } from "../../constants/settingValue/role";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { birthToAge } from "../../utils/convertUtils/convertTypes";
@@ -17,7 +17,12 @@ function MemberMyProfile() {
           <Title>내 프로필 카드</Title>
           <Wrapper>
             <Profile>
-              <ProfileIcon user={userInfo} size="lg" />
+              <Avatar
+                image={userInfo.profileImage}
+                avatar={userInfo.avatar}
+                uid={userInfo.uid}
+                size="lg"
+              />
               <Name>{userInfo?.name}</Name>
             </Profile>
             <Info>

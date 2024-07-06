@@ -174,11 +174,13 @@ const ImageContainer = styled.div<{
       ? "0"
       : props.size === "sm"
         ? "2px"
-        : props.size === "md"
+        : props.size === "smd"
           ? "4px"
-          : props.size === "lg"
-            ? "6px"
-            : "8px")};
+          : props.size === "md"
+            ? "4px"
+            : props.size === "lg"
+              ? "6px"
+              : "8px")};
 
   background-color: ${(props) => (props.bg ? props.bg : "var(--gray-500)")};
 `;

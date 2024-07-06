@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-import ProfileIcon from "../../components/atoms/Profile/ProfileIcon";
+import Avatar from "../../components/atoms/Avatar";
 import { useUidsToUsersInfoQuery, useUserInfoQuery } from "../../hooks/user/queries";
 import { IModal } from "../../types/components/modalTypes";
 import { birthToAge } from "../../utils/convertUtils/convertTypes";
@@ -62,7 +62,15 @@ function ProfileCardModal({ setIsModal }: IModal) {
         </Profile>
         <FriendTitle>친구</FriendTitle>
         <FriendList>
-          {friends?.map((who) => <ProfileIcon user={who} key={who.uid} size="sm" />)}
+          {friends?.map((who) => (
+            <Avatar
+              image={who.profileImage}
+              uid={who.uid}
+              avatar={who.avatar}
+              key={who.uid}
+              size="sm"
+            />
+          ))}
         </FriendList>
       </ModalLayout>
     </>

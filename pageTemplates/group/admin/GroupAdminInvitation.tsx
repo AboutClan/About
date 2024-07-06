@@ -10,7 +10,7 @@ import { MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoadi
 import Selector from "../../../components/atoms/Selector";
 import InviteUserGroups from "../../../components/molecules/groups/InviteUserGroups";
 import { GROUP_STUDY_ALL } from "../../../constants/keys/queryKeys";
-import { LOCATION_USE_ALL } from "../../../constants/location";
+import { LOCATION_ALL } from "../../../constants/location";
 import { useAdminUsersLocationControlQuery } from "../../../hooks/admin/quries";
 import { useCompleteToast } from "../../../hooks/custom/CustomToast";
 import { useGroupWaitingStatusMutation } from "../../../hooks/groupStudy/mutations";
@@ -95,7 +95,7 @@ export default function GroupAdminInvitation() {
               onChange={(e) => setNameValue(e.target.value)}
             />
           </Box>
-          <Selector options={LOCATION_USE_ALL} defaultValue={value} setValue={setValue} />
+          <Selector options={LOCATION_ALL} defaultValue={value} setValue={setValue} />
         </Flex>
         <Box position="relative">
           {isLoading ? (

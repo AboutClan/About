@@ -46,7 +46,6 @@ function HomeStudySection() {
   return (
     <>
       <HomeLocationBar />
-
       <Box px="16px">
         <StudyController
           selectedDate={selectedDate}
@@ -56,7 +55,6 @@ function HomeStudySection() {
         />
         <HomeStudyCol />
       </Box>
-
       <HomeNewStudySpace places={newStudyPlaces} />
       <HomeStudyChart voteCntArr={voteCntArr} />
     </>

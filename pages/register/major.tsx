@@ -67,7 +67,6 @@ function Major() {
           <span>전공을 선택해 주세요</span>
           <span>다중 선택도 가능해요!</span>
         </RegisterOverview>
-
         {MAJORS_DATA?.map((item, idx) => (
           <Section key={idx}>
             <SectionTitle>{item.department}</SectionTitle>
@@ -116,7 +115,7 @@ const Content = styled.button<{ $isSelected: boolean }>`
   border: var(--border-main);
   margin-right: var(--gap-2);
   margin-bottom: var(--gap-2);
-  background-color: ${(props) => props.$isSelected && "var(--color-mint)"};
+  background-color: ${(props) => (props.$isSelected ? "var(--color-mint)" : "white")};
   color: ${(props) => props.$isSelected && "white"};
 `;
 

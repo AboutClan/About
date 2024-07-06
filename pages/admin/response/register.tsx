@@ -3,8 +3,7 @@
 import { Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-
-import ProfileIcon from "../../../components/atoms/Profile/ProfileIcon";
+import Avatar from "../../../components/atoms/Avatar";
 import Header from "../../../components/layouts/Header";
 import AdminLocationSelector from "../../../components/molecules/picker/AdminLocationSelector";
 import { useUserRegisterFormsQuery } from "../../../hooks/admin/quries";
@@ -44,7 +43,7 @@ function AdminRegister() {
         <Main>
           {registerData?.map((who, idx) => (
             <Item key={idx}>
-              <ProfileIcon user={who} size="md" />
+              <Avatar uid={who.uid} image={who.profileImage} size="md" />
               <Summary>
                 <div>
                   <span>{who?.name}</span>

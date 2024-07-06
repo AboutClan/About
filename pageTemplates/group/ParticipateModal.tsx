@@ -24,7 +24,7 @@ interface IParticipateModal extends IModal {
   answer: string;
 }
 
-function ParticipateModal({ isFree, id, feeText, setIsModal, answer }: IParticipateModal) {
+function ParticipateModal({ isFree, id, setIsModal, answer }: IParticipateModal) {
   const router = useRouter();
   const failToast = useFailToast();
   const completeToast = useCompleteToast();
