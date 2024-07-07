@@ -1,12 +1,11 @@
 import { Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
+
 import { Input } from "../../../components/atoms/Input";
 import Header from "../../../components/layouts/Header";
 import { usePushQuery } from "../../../hooks/admin/quries";
-import { useTypeToast } from "../../../hooks/custom/CustomToast";
 
 function PushPage() {
-  const typeToast = useTypeToast();
   const [value, setValue] = useState("");
   const [uid, setUid] = useState<string>();
 
