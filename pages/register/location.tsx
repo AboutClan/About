@@ -72,7 +72,7 @@ function RegisterLocation() {
         <RegisterOverview>
           <span>지역을 선택해 주세요</span>
           {!isProfileEdit ? (
-            <span>오픈 또는 예약중인 지역만 선택할 수 있습니다.</span>
+            <span>모집중은 지역은 대기 인원 40명이 되면 오픈합니다!</span>
           ) : (
             <span>활동 지역 변경은 운영진을 통해서만 가능합니다.</span>
           )}
@@ -91,7 +91,7 @@ function RegisterLocation() {
                   <LocationMember location={place} />
                   {LOCATION_RECRUITING.includes(place as InactiveLocation) &&
                     (idx === LOCATION_ALL.length - 1 || idx === LOCATION_ALL.length - 2) && (
-                      <Message>예약 인원 40명이 되면 열려요!</Message>
+                      <Message>대기 인원 40명이 되면 열려요!</Message>
                     )}
                 </>
               ) : (

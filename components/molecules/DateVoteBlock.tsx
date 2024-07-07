@@ -3,8 +3,11 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useRecoilValue } from "recoil";
 
+import { LOCATION_OPEN } from "../../constants/location";
 import { DateVoteButtonProps } from "../../pageTemplates/home/study/studyController/StudyControllerVoteButton";
 import { myStudyState } from "../../recoils/studyRecoils";
+import { ActiveLocation, LocationEn } from "../../types/services/locationTypes";
+import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 
 interface DateVoteBlockProps {
   buttonProps: DateVoteButtonProps;
@@ -17,8 +20,11 @@ function DateVoteBlock({ buttonProps, func, cnt }: DateVoteBlockProps) {
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
   const locationEn = searchParams.get("location");
+  const location = convertLocationLangTo(locationEn as LocationEn, "kr");
 
   const myStudy = useRecoilValue(myStudyState);
+
+  const isOpen = LOCATION_OPEN.includes(location as ActiveLocation);
 
   return (
     <Flex w="100%" justify="space-between" align="center">
@@ -42,8 +48,14 @@ function DateVoteBlock({ buttonProps, func, cnt }: DateVoteBlockProps) {
 
       <Button
         className="main_vote_btn"
-        isLoading={myStudy === undefined}
-        bgColor={myStudy === undefined ? "var(--color-mint)" : buttonProps.color}
+        isLoading={myStudy === undefined && isOpen}
+        bgColor={
+          !isOpen
+            ? "var(--gray-300)"
+            : myStudy === undefined
+              ? "var(--color-mint)"
+              : buttonProps.color
+        }
         opacity={buttonProps.type === "active" ? 1 : 0.4}
         color={
           myStudy === undefined
@@ -52,9 +64,9 @@ function DateVoteBlock({ buttonProps, func, cnt }: DateVoteBlockProps) {
               ? "black"
               : "white"
         }
-        onClick={func}
+        onClick={isOpen ? func : undefined}
       >
-        {buttonProps.text}
+        {isOpen ? buttonProps.text : "준비중 ..."}
       </Button>
     </Flex>
   );

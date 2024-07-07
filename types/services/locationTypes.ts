@@ -15,7 +15,24 @@ export type InactiveLocation =
   | "부천"
   | "시흥";
 
-export type LocationEn = "suw" | "yan" | "any" | "gan" | "don" | "inc";
+export type LocationEn =
+  | "suw"
+  | "yan"
+  | "any"
+  | "gan"
+  | "don"
+  | "inc"
+  | "map"
+  | "seongnam"
+  | "seongdong"
+  | "goy"
+  | "jun"
+  | "son"
+  | "gur"
+  | "dongjak"
+  | "gangbuk"
+  | "buc"
+  | "sih";
 
 export type CombinedLocation = "전체" | "수원/안양" | "양천/강남" | ActiveLocation;
 

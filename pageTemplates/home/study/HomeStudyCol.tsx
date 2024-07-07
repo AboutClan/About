@@ -14,6 +14,7 @@ import {
   CardColumnLayoutSkeleton,
 } from "../../../components/organisms/CardColumnLayout";
 import { STUDY_CHECK_POP_UP, STUDY_VOTING_TABLE } from "../../../constants/keys/localStorage";
+import { LOCATION_CONVERT, LOCATION_OPEN, LOCATION_RECRUITING } from "../../../constants/location";
 import {
   STUDY_DATE_START_HOUR,
   STUDY_RESULT_HOUR,
@@ -30,7 +31,11 @@ import {
 } from "../../../recoils/studyRecoils";
 import { IParticipation, StudyStatus } from "../../../types/models/studyTypes/studyDetails";
 import { StudyVotingSave } from "../../../types/models/studyTypes/studyInterActions";
-import { LocationEn } from "../../../types/services/locationTypes";
+import {
+  ActiveLocation,
+  InactiveLocation,
+  LocationEn,
+} from "../../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 
@@ -51,7 +56,7 @@ export default function HomeStudyCol() {
   const [dismissedStudy, setDismissedStudy] = useState<IParticipation>();
 
   const { data: studyVoteData, isLoading } = useStudyVoteQuery(date as string, location, {
-    enabled: !!date && !!location,
+    enabled: !!date && !!location && LOCATION_OPEN.includes(location as ActiveLocation),
   });
 
   const { mutate: decideStudyResult } = useStudyResultDecideMutation(date);
@@ -138,7 +143,15 @@ export default function HomeStudyCol() {
             className="study_space"
           >
             <>
-              <BlurredPart text={location === null ? "스터디 장소 확정중입니다." : null}>
+              <BlurredPart
+                text={
+                  LOCATION_RECRUITING.includes(location as InactiveLocation)
+                    ? `${LOCATION_CONVERT[location]} 오픈 준비중`
+                    : ""
+                }
+                isBlur={LOCATION_RECRUITING.includes(location as InactiveLocation)}
+                size="lg"
+              >
                 {!isLoading && studyCardColData ? (
                   <CardColumnLayout
                     cardDataArr={studyCardColData}
