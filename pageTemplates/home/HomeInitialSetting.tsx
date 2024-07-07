@@ -22,8 +22,6 @@ import { studyDateStatusState } from "../../recoils/studyRecoils";
 import { checkAndSetLocalStorage } from "../../utils/storageUtils";
 import { detectDevice } from "../../utils/validationUtils";
 
-const publicVapidKey = process.env.NEXT_PUBLIC_PWA_KEY; // REPLACE_WITH_YOUR_KEY
-
 const urlBase64ToUint8Array = (base64String) => {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
   const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
@@ -44,11 +42,23 @@ const urlBase64ToUint8Array = (base64String) => {
   return outputArray;
 };
 
+const requestAndSubscribePushService = async () => {
+  const hasPermission = await requestNotificationPermission();
+  if (!hasPermission) {
+    return;
+  }
+
+  await subscribePushService({
+    onSuccess: () => {
+      console.log("Subscribe push service successfully");
+    },
+  });
+};
+
 const requestNotificationPermission = async () => {
   if (Notification.permission === "granted") {
     return true;
   }
-
   if (Notification.permission !== "denied") {
     const permission = await Notification.requestPermission();
     return permission === "granted";
@@ -57,27 +67,32 @@ const requestNotificationPermission = async () => {
   return false;
 };
 
-const send = async (onSuccess) => {
+const subscribePushService = async (options: { onSuccess?: () => void } = {}) => {
   try {
-    const register = await navigator.serviceWorker.register("/pwabuilder-sw.js", {
-      scope: "/",
-    });
+    const registration = await navigator.serviceWorker.getRegistration();
+    const hasSubscription = await registration.pushManager.getSubscription();
 
-    const isSubscription = await register.pushManager.getSubscription();
+    if (hasSubscription) {
+      return;
+    }
 
-    if (isSubscription) return;
-
-    const subscription = await register.pushManager.subscribe({
+    const publicVapidKey = process.env.NEXT_PUBLIC_PWA_KEY;
+    const subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
     });
 
     await axios.post(`${SERVER_URI}/webpush/subscribe`, subscription);
 
-    if (onSuccess) onSuccess(); // onSuccess 함수 호출
+    options.onSuccess?.();
   } catch (err) {
     console.error(err);
   }
+};
+
+const isPWA = () => {
+  const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
+  return isStandalone;
 };
 
 function HomeInitialSetting() {
@@ -100,10 +115,6 @@ function HomeInitialSetting() {
       toast("success", "동아리원이 되었습니다.");
     },
   });
-  const isPWA = () => {
-    const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
-    return isStandalone;
-  };
 
   const isPWALogin = isPWA();
 
@@ -113,7 +124,7 @@ function HomeInitialSetting() {
         setRole({ role: "member" });
       }
     }
-  }, [userInfo?.role, isPWALogin]);
+  }, [userInfo?.role]);
 
   useEffect(() => {
     setStudyDateStatus(getStudyDateStatus(dateParam));
@@ -132,20 +143,7 @@ function HomeInitialSetting() {
     }
   }, [isGuest, userInfo]);
 
-  const registerPWA = async () => {
-    const hasPermission = await requestNotificationPermission();
-
-    if (!hasPermission) {
-      return;
-    }
-
-    send(() => {
-      console.log("Push registration successful and additional function executed.");
-    }).catch((err) => console.error(err));
-  };
-
   useEffect(() => {
-    registerPWA();
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const inappdenyExecVanillajs = (callback: any) => {
       if (document.readyState !== "loading") callback();
@@ -158,6 +156,10 @@ function HomeInitialSetting() {
         location.href = "kakaotalk://web/openExternal?url=" + encodeURIComponent(targetUrl);
       }
     });
+  }, []);
+
+  useEffect(() => {
+    requestAndSubscribePushService();
   }, []);
 
   const [{ steps }, setState] = useState<{
