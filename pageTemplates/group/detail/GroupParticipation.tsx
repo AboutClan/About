@@ -45,7 +45,7 @@ function GroupParticipation({ data }: IGroupParticipation) {
         ) : (
           <>
             <span style={{ marginLeft: "4px" }} />
-            <i className="fa-solid fa-infinity" style={{ color: "var(--gray-200)" }} />
+            <i className="fa-solid fa-infinity" style={{ color: "var(--gray-400)" }} />
           </>
         )}
       </Header>
@@ -60,7 +60,7 @@ const Header = styled.header`
   font-weight: 600;
 
   > span:first-child {
-    margin-right: var(--gap-3);
+    margin-right: var(--gap-4);
   }
   > span:nth-child(2) {
     font-weight: 700;

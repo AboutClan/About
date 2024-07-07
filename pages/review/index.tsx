@@ -62,7 +62,7 @@ function Review() {
     이승주: {
       name: "이승주",
       profileImage: null,
-      avatar: { bg: 0, type: 11 },
+      avatar: { bg: 6, type: 13 },
     },
     서유진: { name: "서유진", profileImage: null, avatar: { bg: 3, type: 7 } },
     찬민: {

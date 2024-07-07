@@ -1,43 +1,47 @@
-import { Badge } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import {
-  LOCATION_CONVERT,
-  LOCATION_NOT_OPEN,
-  LOCATION_RECRUITING,
-} from "../../../constants/location";
-import { Location } from "../../../types/services/locationTypes";
+import OutlineBadge from "../../../components/atoms/badges/OutlineBadge";
+import { LOCATION_MEMBER_CNT, LOCATION_RECRUITING } from "../../../constants/location";
+import { ActiveLocation, InactiveLocation } from "../../../types/services/locationTypes";
 
-function LocationTitle({ location }: { location: Location }) {
+function LocationTitle({ location }: { location: ActiveLocation | InactiveLocation }) {
   return (
     <Layout>
-      {LOCATION_NOT_OPEN.includes(location) ? (
-        <Badge variant="outline">준비중</Badge>
-      ) : LOCATION_RECRUITING.includes(location) ? (
-        <Badge colorScheme="yellow" variant="outline">
-          모집중
-        </Badge>
+      {LOCATION_RECRUITING.includes(location as InactiveLocation) ? (
+        <OutlineBadge text="모집중" size="sm" colorScheme="orange" />
       ) : (
-        <Badge colorScheme="teal" variant="outline">
-          오픈
-        </Badge>
+        <OutlineBadge text="진행중" size="sm" colorScheme="mintTheme" />
       )}
-      <Title>{LOCATION_CONVERT[location]}</Title>
+      <MemberCnt>
+        <Box>
+          {!LOCATION_RECRUITING.includes(location as InactiveLocation) ? (
+            <i className="fa-regular fa-user fa-xs" />
+          ) : (
+            <i className="fa-regular fa-user-clock fa-xs" />
+          )}
+        </Box>
+        <span>{LOCATION_MEMBER_CNT[location].member}</span>
+      </MemberCnt>
     </Layout>
   );
 }
 
 const Layout = styled.div`
-  height: 100%;
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: flex-start;
+  justify-content: space-between;
+  align-items: center;
 `;
-
-const Title = styled.span`
-  font-size: 16px;
-  font-weight: 600;
+const MemberCnt = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 15px;
+  color: var(--gray-600);
+  > span:last-child {
+    margin-left: 4px;
+  }
 `;
 
 export default LocationTitle;

@@ -14,7 +14,7 @@ function ContentInfo({ group }: IContentInfo) {
   const hashTagText = group.hashTag;
   const hashTagArr = hashTagText?.split("#");
 
-  const isMember = group?.participants?.some((who) => who.user.uid === session?.user.uid);
+  const isMember = group?.participants?.some((who) => who?.user?.uid === session?.user.uid);
 
   return (
     <Layout>

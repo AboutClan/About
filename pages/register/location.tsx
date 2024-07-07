@@ -5,7 +5,7 @@ import styled from "styled-components";
 import BottomNav from "../../components/layouts/BottomNav";
 import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
-import { LOCATION_ALL, LOCATION_NOT_OPEN, LOCATION_RECRUITING } from "../../constants/location";
+import { LOCATION_ALL, LOCATION_RECRUITING } from "../../constants/location";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import LocationBlockProfileEdit from "../../pageTemplates/register/location/LocationBlockProfileEdit";
 import LocationMember from "../../pageTemplates/register/location/LocationMember";
@@ -13,7 +13,7 @@ import LocationTitle from "../../pageTemplates/register/location/LocationTitle";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
-import { Location } from "../../types/services/locationTypes";
+import { InactiveLocation, Location } from "../../types/services/locationTypes";
 import { setLocalStorageObj } from "../../utils/storageUtils";
 
 function RegisterLocation() {
@@ -68,7 +68,6 @@ function RegisterLocation() {
   return (
     <>
       <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={10} />
-
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>지역을 선택해 주세요</span>
@@ -78,20 +77,19 @@ function RegisterLocation() {
             <span>활동 지역 변경은 운영진을 통해서만 가능합니다.</span>
           )}
         </RegisterOverview>
-
         <ButtonNav>
           {LOCATION_ALL?.map((place, idx) => (
             <Button
               $picked={(location === place).toString()}
               onClick={() => setLocation(place)}
               key={place}
-              disabled={isProfileEdit || LOCATION_NOT_OPEN.includes(place)}
+              disabled={isProfileEdit}
             >
               {!isProfileEdit ? (
                 <>
                   <LocationTitle location={place} />
-                  {!LOCATION_NOT_OPEN.includes(place) && <LocationMember location={place} />}
-                  {LOCATION_RECRUITING.includes(place) &&
+                  <LocationMember location={place} />
+                  {LOCATION_RECRUITING.includes(place as InactiveLocation) &&
                     (idx === LOCATION_ALL.length - 1 || idx === LOCATION_ALL.length - 2) && (
                       <Message>예약 인원 40명이 되면 열려요!</Message>
                     )}
@@ -118,11 +116,11 @@ const ButtonNav = styled.nav`
 const Button = styled.button<{ $picked: string }>`
   padding: var(--gap-2) var(--gap-3);
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: center;
+  height: 72px;
   position: relative;
-  height: 68px;
-  border-radius: var(--rounded-lg);
+  border-radius: var(--rounded);
   border: ${(props) => (props.$picked === "true" ? "var(--border-thick)" : "var(--border-main)")};
   background-color: white;
 `;

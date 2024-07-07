@@ -145,7 +145,7 @@ function Index() {
 
   return (
     <>
-      <Header title="소모임" url="/home" isBack={false}>
+    <Header title="소모임" url="/home" isBack={false}>
         <RuleIcon setIsModal={setIsRuleModal} />
       </Header>
 

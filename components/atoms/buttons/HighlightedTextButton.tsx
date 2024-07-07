@@ -1,16 +1,27 @@
 import { Button } from "@chakra-ui/react";
+import Link from "next/link";
 import styled from "styled-components";
 
 interface IHighlightedTextButton {
   text: string;
-
-  onClick: () => void;
+  url?: string;
+  onClick?: () => void;
 }
-export default function HighlightedTextButton({ text, onClick }: IHighlightedTextButton) {
+export default function HighlightedTextButton({ text, url, onClick }: IHighlightedTextButton) {
   return (
-    <Button variant="ghost" size="xs" onClick={onClick}>
-      <Text> {text}</Text>
-    </Button>
+    <>
+      {url ? (
+        <Link href={url}>
+          <Button variant="ghost" size="xs">
+            <Text> {text}</Text>
+          </Button>
+        </Link>
+      ) : (
+        <Button variant="ghost" size="xs" onClick={onClick}>
+          <Text> {text}</Text>
+        </Button>
+      )}
+    </>
   );
 }
 

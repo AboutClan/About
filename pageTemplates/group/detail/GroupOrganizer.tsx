@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
 import styled from "styled-components";
 
+import Avatar from "../../../components/atoms/Avatar";
 import { Badge } from "../../../components/atoms/badges/Badges";
-import ProfileIcon from "../../../components/atoms/Profile/ProfileIcon";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
 import { getDateDiff } from "../../../utils/dateTimeUtils";
 
@@ -24,7 +24,7 @@ function GroupOrganizer({
   return (
     <Layout>
       <div>
-        <ProfileIcon user={organizer} size="sm" />
+        <Avatar uid={organizer.uid} image={organizer.profileImage} size="sm" />
         <Info>
           <Writer>{organizer.name}</Writer>
           <span>{writingDate}</span>

@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import ProfileIcon from "../../../components/atoms/Profile/ProfileIcon";
+import Avatar from "../../../components/atoms/Avatar";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import { BADGE_COLOR_MAPPINGS } from "../../../constants/serviceConstants/badgeConstants";
@@ -45,7 +45,7 @@ function MemberDetail() {
             return (
               <Item key={who.uid} onClick={() => onClickUser(who)}>
                 <ProfileWrapper>
-                  <ProfileIcon user={who} size="sm" />
+                  <Avatar image={who.profileImage} avatar={who.avatar} uid={who.uid} size="sm" />
                 </ProfileWrapper>
                 <Info>
                   <Name>

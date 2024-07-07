@@ -9,12 +9,14 @@ interface IGroupMine {
 }
 
 function GroupMine({ myGroups }: IGroupMine) {
-  const imageTileArr: IImageTile[] = myGroups?.map((group) => ({
-    imageUrl: group.image || getRandomImage(),
-    text: group.title,
-    url: `/group/${group.id}`,
-  }));
- 
+  const imageTileArr: IImageTile[] = myGroups
+    ?.filter((group) => group.status !== "end")
+    .map((group) => ({
+      imageUrl: group.image || getRandomImage(),
+      text: group.title,
+      url: `/group/${group.id}`,
+    }));
+
   return (
     <Layout>
       {myGroups?.length ? (
