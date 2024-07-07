@@ -89,7 +89,7 @@ export function PostThumbnailCard({
             <StatusContainer>
               <AvatarGroupsOverwrap userAvatarArr={userAvatarArr} size="sm" />
               <div className="statusText">
-                <Box color="var(--color-mint)" fontWeight={600} mr="8px" mt="4px">
+                <Box fontSize="14px" color="var(--color-mint)" fontWeight={600} mr="8px" mt="4px">
                   {statusText}
                 </Box>
               </div>
