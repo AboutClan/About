@@ -1,6 +1,6 @@
 import axios from "axios";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import Header from "../../components/layouts/Header";
@@ -84,6 +84,12 @@ function Admin() {
                 <BlockName>로그 관리</BlockName>
                 <NavBlock>
                   <button onClick={() => onRemoveLog()}>오래된 로그 삭제</button>
+                </NavBlock>
+              </div>
+              <div>
+                <BlockName>개발자 기능 테스트</BlockName>
+                <NavBlock>
+                  <button onClick={() => onClick("push", false)}>테스트 푸쉬</button>
                 </NavBlock>
               </div>
 
