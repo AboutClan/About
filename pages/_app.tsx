@@ -18,6 +18,7 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
       new QueryClient({
         defaultOptions: {
           queries: {
+            refetchOnWindowFocus: false,
             retry: 2,
             staleTime: 1 * 60 * 1000,
             cacheTime: 10 * 60 * 1000,
