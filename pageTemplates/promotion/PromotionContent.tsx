@@ -52,7 +52,7 @@ function PromotionContent() {
               />
               <div>
                 <span>사진을 꾹 눌러서 저장 !</span>
-                <span>(이미지는 선택이에요! 굳이 안올리셔도 됩니다.)</span>
+                <span>(이미지는 선택사항!)</span>
               </div>
             </ImageWrapper>
           )}
