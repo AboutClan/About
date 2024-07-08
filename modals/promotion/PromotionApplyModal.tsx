@@ -111,7 +111,8 @@ function PromotionApplyModal({ setIsModal, uniName }: IPromotionApplyModal) {
       <ModalSubtitle>
         {!contentType ? (
           <>
-            홍보글을 작성해 주셨나요? <b> +200 Point</b>와 매주 추첨을 통해 치킨 기프티콘을 드려요!
+            홍보글을 작성해 주셨나요? <b> +200 Point</b>와 매주 추첨을 통해 BBQ 황금올리브
+            기프티콘을 드려요!
           </>
         ) : contentType === "cool" ? (
           <>
