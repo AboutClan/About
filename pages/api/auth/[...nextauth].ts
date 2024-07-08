@@ -18,8 +18,6 @@ const secret = process.env.NEXTAUTH_SECRET;
 //   throw new Error("NEXTAUTH_SECRET 환경 변수가 설정되지 않았습니다.");
 // }
 
-
-
 export const authOptions: NextAuthOptions = {
   secret,
   providers: [
@@ -28,7 +26,6 @@ export const authOptions: NextAuthOptions = {
       name: "guest",
       credentials: {},
       async authorize(credentials, req) {
-        
         const profile = {
           id: "0",
           uid: "0",
@@ -37,6 +34,7 @@ export const authOptions: NextAuthOptions = {
           profileImage: "",
           isActive: true,
         };
+
         if (profile) return profile;
         return null;
       },
@@ -45,7 +43,6 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.KAKAO_CLIENT_ID as string,
       clientSecret: process.env.KAKAO_CLIENT_SECRET as string,
       profile: (profile) => {
-     
         return {
           id: profile.id.toString(),
           uid: profile.id.toString(),
@@ -73,7 +70,6 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ account, user, profile, credentials }) {
       try {
-       
         if (account.provider === "guest") return true;
 
         if (!account.access_token) return false;
@@ -132,15 +128,23 @@ export const authOptions: NextAuthOptions = {
     },
 
     async jwt({ token, account, user, trigger }) {
-    
       try {
-       
         if (trigger === "update" && token?.role) {
           token.role = "waiting";
           return token;
         }
 
         if (account && account.provider === "guest") {
+          token = {
+            ...token,
+            id: "0",
+            uid: "0",
+            name: "guest",
+            role: "guest",
+            isActive: false,
+            profileImage: "",
+          };
+          console.log(25, account, token);
           return token;
         }
 
@@ -170,6 +174,7 @@ export const authOptions: NextAuthOptions = {
             isActive: user.isActive,
             location: account.location || user.location,
           };
+          console.log(13, newToken);
           return newToken;
         }
 

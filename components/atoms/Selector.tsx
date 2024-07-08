@@ -19,7 +19,7 @@ export default function Selector({
   isBorder = true,
 }: ISelector) {
   const [value, setValue] = useState(defaultValue);
-  console.log(4, defaultValue);
+  
   useEffect(() => {
     setValue(defaultValue);
   }, [defaultValue]);

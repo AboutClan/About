@@ -16,7 +16,6 @@ function Participate() {
   const [questionText, setQuestionText] = useState("");
   const [isModal, setIsModal] = useState(false);
 
-  console.log(2, group);
 
   const onClick = () => {
     setIsModal(true);
