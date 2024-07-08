@@ -59,7 +59,7 @@ function StudyController({
     setSelectedDate(date);
   }, [date]);
 
-  const onClick = (moveDate: string) => {
+  const handleSelectDate = (moveDate: string) => {
     if (date === moveDate) return;
     setStudyDateStatus(undefined);
     newSearchParams.set("date", moveDate);
@@ -101,7 +101,7 @@ function StudyController({
                   <WeekSlideCalendar
                     voteCntArr={voteCntArr}
                     selectedDate={selectedDateDayjs}
-                    func={onClick}
+                    func={handleSelectDate}
                   />
                 </Flex>
                 <StudyControllerVoteButton
