@@ -44,10 +44,11 @@ function PageTracker() {
 
       const setLeftSlide = () => setSlideDirection("left");
       const setRightSlide = () => setSlideDirection("right");
-
+      console.log(currentSegments, prevSegments, curFirstSegment);
       switch (curFirstSegment) {
         case "home":
           if (prevSegments[0] !== "vote") setLeftSlide();
+
           break;
 
         case "study":
@@ -80,6 +81,10 @@ function PageTracker() {
           break;
 
         case "store":
+          if (prevSegments[0] === "home") {
+            setRightSlide();
+            break;
+          }
           if (!currentSegments[1] && prevSegments[0] !== "event") {
             setLeftSlide();
           }
