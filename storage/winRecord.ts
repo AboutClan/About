@@ -952,6 +952,15 @@ export const WIN_RECORD: {
 
 export const PROMOTION_WIN = [
   {
+    month: 7,
+    gift: "황금 올리브 치킨 세트",
+    winner: [
+      { name: "오태", location: "동대문" },
+      { name: "신동", location: "양천" },
+    ],
+    rate: "20%",
+  },
+  {
     month: 4,
     gift: "황금 올리브 치킨 세트",
     winner: [{ name: "신효", location: "수원" }],
