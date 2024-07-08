@@ -27,7 +27,7 @@ function PromotionApplyModal({ setIsModal, uniName }: IPromotionApplyModal) {
 
   const queryClient = useQueryClient();
 
-  const { mutate } = usePromotionMutation({
+  const { mutate, isLoading } = usePromotionMutation({
     onSuccess() {
       queryClient.invalidateQueries("promotion");
       completeToast("free", "포인트 지급 완료! 감사합니다!");
@@ -89,6 +89,7 @@ function PromotionApplyModal({ setIsModal, uniName }: IPromotionApplyModal) {
         : contentType === "cool"
           ? () => setIsModal(false)
           : handleApply,
+      isLoading,
     },
 
     ...(!contentType
