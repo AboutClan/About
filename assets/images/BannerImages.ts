@@ -25,6 +25,12 @@ export const MAIN_BANNER_IMAGE: BannerProps[] = [
   },
   {
     image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/KakaoTalk_20240708_164733650.png",
+    category: "mt",
+    url: "https://mewing-sombrero-e36.notion.site/MT-8a80cd27947c4d16a4dc04afca11693d",
+  },
+  {
+    image:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/%EC%8A%A4%ED%84%B0%EB%94%94.png",
     category: "study",
   },

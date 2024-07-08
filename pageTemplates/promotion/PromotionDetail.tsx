@@ -25,7 +25,7 @@ function PromotionDetail() {
           onClick={() => setIsAllModal(true)}
           color="var(--gray-700)"
           borderRadius="var(--rounded-lg)"
-          border="1px solid var(--gray-300)"
+          border="var(--border-main)"
         >
           전체 현황
         </Button>
