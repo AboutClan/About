@@ -126,7 +126,7 @@ export default function HomeStudyCol() {
     const newDate = getNewDateBySwipe(panInfo, date as string);
     if (newDate !== date) {
       newSearchParams.set("date", newDate);
-      router.replace(`/home?${newSearchParams.toString()}`);
+      router.replace(`/home?${newSearchParams.toString()}`, { scroll: false });
     }
     return;
   };
