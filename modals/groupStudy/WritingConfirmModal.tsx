@@ -20,6 +20,17 @@ interface IGroupConfirmModal extends IModal {
   setGroupWriting: DispatchType<IGroupWriting>;
 }
 
+const REQUIRED_FIELDS = [
+  "category",
+  "title",
+  "content",
+  "guide",
+  "gender",
+  "location",
+  "memberCnt",
+  "age",
+];
+
 function GroupConfirmModal({ setIsModal, setGroupWriting, groupWriting }: IGroupConfirmModal) {
   const router = useRouter();
   const errorToast = useErrorToast();
@@ -49,7 +60,7 @@ function GroupConfirmModal({ setIsModal, setGroupWriting, groupWriting }: IGroup
     },
     onError: errorToast,
   });
-
+  console.log(25, groupWriting);
   const onSubmit = () => {
     if (groupWriting?.id) {
       updateGroup({ groupStudy: groupWriting as IGroup });

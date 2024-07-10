@@ -42,7 +42,11 @@ function WritingCondition() {
 
   const [condition, setCondition] = useState({
     gender: groupWriting?.gender || false,
-    age: groupWriting?.age ? true : false,
+    age: !groupWriting?.age
+      ? false
+      : groupWriting.age[0] === 19 && groupWriting.age[1] === 28
+        ? false
+        : true,
     isFree: groupWriting?.isFree !== undefined ? groupWriting?.isFree : true,
     location:
       groupWriting?.location !== undefined ? groupWriting?.location === userInfo?.location : true,
@@ -121,10 +125,11 @@ function WritingCondition() {
     if (condition.gender) {
       temp.push("성별");
     }
-    if (groupWriting?.memberCnt) {
+    if (groupWriting?.memberCnt.max) {
       temp.push("인원");
     }
-    return String(temp) + " " + "제한";
+    if (temp.length) return String(temp) + " " + "제한";
+    return null;
   };
 
   return (

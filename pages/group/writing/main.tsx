@@ -58,7 +58,7 @@ function WritingStudyCategoryMain() {
         </ItemContainer>
       </RegisterLayout>
 
-      <BottomNav onClick={onClickNext} />
+      <BottomNav onClick={onClickNext} url={`/group/writing/sub/$`} />
     </>
   );
 }
