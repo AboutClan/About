@@ -95,8 +95,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: var(--gap-3);
-  background-color: pink;
+  margin-left: 16px;
 `;
 
 const IconWrapper = styled.button`

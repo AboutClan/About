@@ -112,7 +112,7 @@ function KakaoShareBtn({
 
 const Layout = styled.button<{ isFull: boolean }>`
   padding: ${(props) => (props.isFull ? 0 : "8px")};
-  width: ${(props) => (props.isFull ? "100%" : "inherit")};
+  width: ${(props) => (props.isFull ? "100%" : "undefined")};
 `;
 
 export default KakaoShareBtn;
