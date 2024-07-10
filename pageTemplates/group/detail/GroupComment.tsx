@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/dist/client/router";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
@@ -62,7 +62,7 @@ function GroupComments({ comment }: IGroupComments) {
     setCommentText(text);
     setIsEditModal(true);
   };
- 
+  console.log(25, userInfo);
   return (
     <>
       <Layout>
@@ -74,7 +74,7 @@ function GroupComments({ comment }: IGroupComments) {
                 image={userInfo?.profileImage}
                 uid={userInfo?.uid}
                 avatar={userInfo?.avatar}
-                size="xs"
+                size="sm"
               />
               <MyText
                 ref={textareaRef}
