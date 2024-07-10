@@ -25,7 +25,7 @@ function BlurredPart({
 
 const Container = styled.div<{ isBlur?: boolean; size: "md" | "lg" }>`
   position: ${(props) => props.isBlur && "relative"};
-  font-size: ${(props) => (props.size === "md" ? "16px" : "20px")};
+  font-size: ${(props) => (props.size === "md" ? "inherit" : "20px")};
 `;
 
 const Layout = styled.div<{ isBlur?: boolean }>`

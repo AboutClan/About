@@ -58,7 +58,8 @@ const Login: NextPage<{
     const provider = type === "member" ? kakaoProvider.id : "guest";
     if (provider === "guest") {
       setIsModal(false);
-      signIn(provider, { callbackUrl: `${window.location.origin}/home` });
+      await signIn(provider, { callbackUrl: `${window.location.origin}/home` });
+
       return;
     }
     setIsLoading(true);
@@ -68,10 +69,11 @@ const Login: NextPage<{
       setIsLoading(false);
       return;
     }
-    signIn(provider, {
+    await signIn(provider, {
       callbackUrl: `${window.location.origin}/home`,
     });
-    await new Promise(() => setTimeout(() => setIsLoading(false), 3000));
+
+    setIsLoading(false);
   };
 
   const waitingFooterOptions: IFooterOptions = {

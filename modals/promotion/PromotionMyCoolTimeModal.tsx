@@ -56,7 +56,7 @@ const Container = styled.div`
 `;
 
 const Rank = styled.div`
-  font-size: 11px;
+  font-size: 12px;
   color: var(--color-mint);
 `;
 

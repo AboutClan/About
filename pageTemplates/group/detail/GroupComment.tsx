@@ -62,7 +62,7 @@ function GroupComments({ comment }: IGroupComments) {
     setCommentText(text);
     setIsEditModal(true);
   };
-  console.log(comment);
+ 
   return (
     <>
       <Layout>
