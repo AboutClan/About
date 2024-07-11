@@ -30,7 +30,7 @@ function GatherWritingConditionCnt({ isMin, value, setMemberCnt }: IGatherWritin
       setNumber(4);
     } else setMemberCnt((old) => ({ ...old, max: 0 }));
   };
-
+ 
   return (
     <Layout>
       <MemberCnt>

@@ -4,6 +4,7 @@ import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import SuccessScreen from "../../components/layouts/SuccessScreen";
+import { GROUP_WRITING_STORE } from "../../constants/keys/localStorage";
 import { GROUP_STUDY_ALL } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
 import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";
@@ -11,16 +12,14 @@ import { useGroupWritingMutation } from "../../hooks/groupStudy/mutations";
 import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
-import { DispatchType } from "../../types/hooks/reactTypes";
 import { IGroup, IGroupWriting } from "../../types/models/groupTypes/group";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface IGroupConfirmModal extends IModal {
   groupWriting: IGroupWriting;
-  setGroupWriting: DispatchType<IGroupWriting>;
 }
 
-function GroupConfirmModal({ setIsModal, setGroupWriting, groupWriting }: IGroupConfirmModal) {
+function GroupConfirmModal({ setIsModal, groupWriting }: IGroupConfirmModal) {
   const router = useRouter();
   const errorToast = useErrorToast();
   const completeToast = useCompleteToast();
@@ -29,18 +28,22 @@ function GroupConfirmModal({ setIsModal, setGroupWriting, groupWriting }: IGroup
   const setGroup = useSetRecoilState(transferGroupDataState);
   const resetQueryData = useResetQueryData();
 
+  const resetLocalStorage = () => {
+    localStorage.setItem(GROUP_WRITING_STORE, null);
+  };
+
   const { mutate } = useGroupWritingMutation("post", {
     onSuccess() {
       resetQueryData([GROUP_STUDY_ALL]);
       setGroup(null);
-      setGroupWriting(null);
+      resetLocalStorage();
       setIsSuccessScreen(true);
     },
     onError: errorToast,
   });
   const { mutate: updateGroup } = useGroupWritingMutation("patch", {
     onSuccess() {
-      setGroupWriting(null);
+      resetLocalStorage();
       setGroup(null);
       completeToast("free", "수정되었습니다.");
       resetQueryData([GROUP_STUDY_ALL], () => {

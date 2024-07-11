@@ -1,36 +1,33 @@
-import { useRouter } from "next/router";
 import { useState } from "react";
-import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
+import { GROUP_WRITING_STORE } from "../../../constants/keys/localStorage";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-import { sharedGroupWritingState } from "../../../recoils/sharedDataAtoms";
+import { IGroupWriting } from "../../../types/models/groupTypes/group";
+import { setLocalStorageObj } from "../../../utils/storageUtils";
 
 function GroupWritingHashTag() {
-  const router = useRouter();
   const failToast = useFailToast();
 
-  const [group, setGroup] = useRecoilState(sharedGroupWritingState);
+  const groupWriting: IGroupWriting = JSON.parse(localStorage.getItem(GROUP_WRITING_STORE));
 
-  const [text, setText] = useState(group?.hashTag || "");
+  const [text, setText] = useState(groupWriting?.hashTag || "");
 
   const onClickNext = () => {
     if (!text) {
       failToast("free", "내용을 작성해 주세요!", true);
       return;
     }
-
-    setGroup((old) => ({
-      ...old,
+    setLocalStorageObj(GROUP_WRITING_STORE, {
+      ...groupWriting,
       hashTag: text,
-    }));
-    router.push(`/group/writing/condition`);
+    });
   };
 
   return (
@@ -54,7 +51,7 @@ function GroupWritingHashTag() {
         </Container>
       </RegisterLayout>
 
-      <BottomNav onClick={() => onClickNext()} />
+      <BottomNav onClick={() => onClickNext()} url="/group/writing/condition" />
     </>
   );
 }

@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 import BottomNav from "../../../components/layouts/BottomNav";
@@ -11,35 +10,35 @@ import {
   GROUP_STUDY_CATEGORY_ARR_ICONS,
   GROUP_STUDY_SUB_CATEGORY,
 } from "../../../constants/contentsText/GroupStudyContents";
+import { GROUP_WRITING_STORE } from "../../../constants/keys/localStorage";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-import { sharedGroupWritingState } from "../../../recoils/sharedDataAtoms";
+import { IGroupWriting } from "../../../types/models/groupTypes/group";
+import { setLocalStorageObj } from "../../../utils/storageUtils";
 function WritingStudyCategorySub() {
   const router = useRouter();
   const failToast = useFailToast();
 
-  const [GroupWriting, setGroupWriting] = useRecoilState(sharedGroupWritingState);
+  const groupWriting: IGroupWriting = JSON.parse(localStorage.getItem(GROUP_WRITING_STORE));
 
-  const mainCategory = GroupWriting?.category?.main;
+  const mainCategory = groupWriting?.category?.main;
 
-  const [category, setCategory] = useState<string>(GroupWriting?.category?.sub);
+  const [category, setCategory] = useState<string>(groupWriting?.category?.sub);
 
   const onClickNext = () => {
     if (!category) {
       failToast("free", "주제를 선택해 주세요!", true);
       return;
     }
-    setGroupWriting((old) => ({
-      ...old,
-      category: { ...old.category, sub: category },
-    }));
-    router.push(`/group/writing/guide`);
+    setLocalStorageObj(GROUP_WRITING_STORE, {
+      ...groupWriting,
+      category: { ...groupWriting?.category, sub: category },
+    });
   };
 
   useEffect(() => {
     if (!mainCategory) router.push("/group/writing/main");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mainCategory]);
 
   return (
@@ -48,13 +47,12 @@ function WritingStudyCategorySub() {
         <ProgressStatus value={28} />
         <Header isSlide={false} title="" url="/group/writing/main" />
       </Slide>
-
       <RegisterLayout>
         <RegisterOverview>
           <span>주제를 선택해 주세요.</span>
         </RegisterOverview>
         <ItemContainer>
-          {GROUP_STUDY_SUB_CATEGORY[mainCategory].map((type, idx) => (
+          {GROUP_STUDY_SUB_CATEGORY?.[mainCategory]?.map((type, idx) => (
             <Item key={idx} isSelected={type === category} onClick={() => setCategory(type)}>
               <IconWrapper>{GROUP_STUDY_CATEGORY_ARR_ICONS[mainCategory]}</IconWrapper>
               <Info>{type}</Info>
@@ -63,7 +61,7 @@ function WritingStudyCategorySub() {
         </ItemContainer>
       </RegisterLayout>
 
-      <BottomNav onClick={onClickNext} />
+      <BottomNav onClick={onClickNext} url="/group/writing/guide" />
     </>
   );
 }

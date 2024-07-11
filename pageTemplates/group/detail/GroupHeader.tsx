@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -34,9 +34,9 @@ function GroupHeader({ group }: IGroupHeader) {
 
   const onClick = () => {
     setLocalStorageObj(GROUP_WRITING_STORE, {
-      group,
+      ...group,
     });
-    router.push(`/group/writing/main?id=${group.id}`);
+    router.push(`/group/writing/main`);
   };
 
   const movePage = async () => {

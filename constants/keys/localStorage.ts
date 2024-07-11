@@ -29,6 +29,7 @@ export const ENTHUSIASTIC_POP_UP = "enthusiasticPopUp";
 export const RABBIT_RUN = "rabbitRun";
 
 export const REGISTER_INFO = "registerInfo";
+export const GROUP_WRITING_STORE = "groupWritingStore";
 
 export const USER_GUIDE = "useGuide";
 export const VOTE_GUIDE = "voteGuide";

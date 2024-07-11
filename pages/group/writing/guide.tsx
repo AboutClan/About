@@ -1,39 +1,35 @@
-import { useRouter } from "next/router";
 import { useState } from "react";
-import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
+import { GROUP_WRITING_STORE } from "../../../constants/keys/localStorage";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-import { sharedGroupWritingState } from "../../../recoils/sharedDataAtoms";
+import { IGroupWriting } from "../../../types/models/groupTypes/group";
+import { setLocalStorageObj } from "../../../utils/storageUtils";
 
 function GroupWritingGuide() {
-  const router = useRouter();
   const failToast = useFailToast();
 
-  const [group, setGroup] = useRecoilState(sharedGroupWritingState);
+  const groupWriting: IGroupWriting = JSON.parse(localStorage.getItem(GROUP_WRITING_STORE));
 
-  //초기 input 세팅
-  const [title, setTitle] = useState(group?.title || "");
-  const [guide, setGuide] = useState(group?.guide || "");
+  const [title, setTitle] = useState(groupWriting?.title || "");
+  const [guide, setGuide] = useState(groupWriting?.guide || "");
 
   const onClickNext = () => {
     if (!title || !guide) {
       failToast("free", "내용을 작성해 주세요!", true);
       return;
     }
-
-    setGroup((old) => ({
-      ...old,
+    setLocalStorageObj(GROUP_WRITING_STORE, {
+      ...groupWriting,
       title,
       guide,
-    }));
-    router.push(`/group/writing/content`);
+    });
   };
 
   return (
@@ -58,7 +54,7 @@ function GroupWritingGuide() {
         </Container>
       </RegisterLayout>
 
-      <BottomNav onClick={() => onClickNext()} />
+      <BottomNav onClick={() => onClickNext()} url="/group/writing/content" />
     </>
   );
 }
