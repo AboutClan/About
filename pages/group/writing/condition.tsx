@@ -1,7 +1,6 @@
 import { Box, Button, Flex, Switch } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { ChangeEvent, useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { PopOverIcon } from "../../../components/atoms/Icons/PopOverIcon";
@@ -10,6 +9,7 @@ import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
+import { GROUP_WRITING_STORE } from "../../../constants/keys/localStorage";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import GatherWritingUserConditionModal from "../../../modals/gather/GatherWritingUserConditionModal";
 import GroupConfirmModal from "../../../modals/groupStudy/WritingConfirmModal";
@@ -17,9 +17,9 @@ import GatherWritingConditionLocation from "../../../pageTemplates/gather/writin
 import QuestionBottomDrawer from "../../../pageTemplates/group/writing/QuestionBottomDrawer";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-import { sharedGroupWritingState } from "../../../recoils/sharedDataAtoms";
 import { IGroupWriting } from "../../../types/models/groupTypes/group";
 import { Location, LocationFilterType } from "../../../types/services/locationTypes";
+import { setLocalStorageObj } from "../../../utils/storageUtils";
 
 export type GroupConditionType =
   | "gender"
@@ -35,7 +35,8 @@ export type GroupConditionType =
 export type CombinedLocation = "전체" | "수원/안양" | "양천/강남";
 
 function WritingCondition() {
-  const [groupWriting, setGroupWriting] = useRecoilState(sharedGroupWritingState);
+  const groupWriting: IGroupWriting = JSON.parse(localStorage.getItem(GROUP_WRITING_STORE));
+
   const { data: session } = useSession();
 
   const { data: userInfo } = useUserInfoQuery();
@@ -55,12 +56,12 @@ function WritingCondition() {
       groupWriting?.fee !== undefined
         ? groupWriting?.fee !== 200 && groupWriting?.fee !== 0
         : false,
-    kakaoUrl: false,
-    isSecret: false,
+
+    isSecret: groupWriting?.isSecret || false,
   });
 
   const [challenge, setChallenge] = useState("");
-  const [kakaoUrl, setKakaoUrl] = useState<string>("");
+
   const [fee, setFee] = useState(groupWriting?.fee || "1000");
   const [feeText, setFeeText] = useState(groupWriting?.feeText || "기본 참여비");
 
@@ -71,6 +72,7 @@ function WritingCondition() {
   const [isConfirmModal, setIsConfirmModal] = useState(false);
   const [isMemberConditionModal, setIsMemberConditionModal] = useState(false);
   const [isQuestionModal, setIsQuestionModal] = useState(false);
+  const [link, setLink] = useState(groupWriting?.link || "");
 
   useEffect(() => {
     if (!condition.isFree) setIsQuestionModal(true);
@@ -89,14 +91,17 @@ function WritingCondition() {
       feeText,
       isFree: condition.isFree,
       location: location || userInfo?.location,
-      link: kakaoUrl,
+      link,
       gender: condition.gender,
       organizer: userInfo,
       questionText: question,
       isSecret: condition.isSecret,
       challenge,
     };
-    setGroupWriting(groupData);
+
+    setLocalStorageObj(GROUP_WRITING_STORE, {
+      ...groupData,
+    });
     setIsConfirmModal(true);
   };
 
@@ -125,13 +130,13 @@ function WritingCondition() {
     if (condition.gender) {
       temp.push("성별");
     }
-    if (groupWriting?.memberCnt.max) {
+    if (groupWriting?.memberCnt?.max) {
       temp.push("인원");
     }
     if (temp.length) return String(temp) + " " + "제한";
     return null;
   };
-
+ 
   return (
     <>
       <Slide isFixed={true}>
@@ -261,11 +266,11 @@ function WritingCondition() {
               <Switch
                 mr="var(--gap-1)"
                 colorScheme="mintTheme"
-                isChecked={condition.kakaoUrl}
+                isChecked={!!link}
                 onChange={(e) => toggleSwitch(e, "kakaoUrl")}
               />
             </Item>{" "}
-            {condition.kakaoUrl && (
+            {link && (
               <Flex align="center" mr="4px">
                 <Box
                   fontSize="12px"
@@ -277,7 +282,7 @@ function WritingCondition() {
                 >
                   URL
                 </Box>
-                <Input size="sm" value={kakaoUrl} onChange={(e) => setKakaoUrl(e.target.value)} />
+                <Input size="sm" value={link} onChange={(e) => setLink(e.target.value)} />
               </Flex>
             )}
           </Container>
@@ -291,11 +296,7 @@ function WritingCondition() {
         setQuestion={setQuestion}
       />
       {isConfirmModal && (
-        <GroupConfirmModal
-          setIsModal={setIsConfirmModal}
-          groupWriting={groupWriting}
-          setGroupWriting={setGroupWriting}
-        />
+        <GroupConfirmModal setIsModal={setIsConfirmModal} groupWriting={groupWriting} />
       )}{" "}
       {isMemberConditionModal && (
         <GatherWritingUserConditionModal
