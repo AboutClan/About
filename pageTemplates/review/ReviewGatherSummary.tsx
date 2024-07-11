@@ -20,7 +20,7 @@ function ReviewGatherSummary({ summary }: IReviewGatherSummary) {
   return (
     <Layout onClick={onClick}>
       <IconWrapper>
-        <i className="fa-solid fa-magnifying-glass fa-lg" style={{ color: "var(--gray-200)" }} />
+        <i className="fa-solid fa-magnifying-glass fa-lg" style={{ color: "var(--gray-500)" }} />
       </IconWrapper>
       <Content>
         <span>{summary.title}</span>

@@ -23,7 +23,7 @@ function PromotionContent() {
               onClick={() => setIsText(true)}
               _focus={{ outline: "none" }}
             >
-              본문 내용
+              텍스트
             </Button>
             <Button
               colorScheme={!isText ? "mintTheme" : "gray"}
@@ -39,20 +39,20 @@ function PromotionContent() {
         <Content>
           {isText ? (
             <>
-              <Title>스터디 & 친목 동아리 ABOUT</Title>
+              <Title>✨대학생들의 소모임 플랫폼 ABOUT✨</Title>
               <Pre>{PROMOTION_TEXT}</Pre>
             </>
           ) : (
             <ImageWrapper>
               <Image
-                src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%A1%9C%EA%B3%A0.webp"
+                src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EC%97%AC%EB%A6%84+%ED%95%9C%EC%A0%95+%ED%8F%AC%EC%8A%A4%ED%8A%B8.jpg"
                 alt="promotionImage"
                 width={220}
                 height={220}
               />
               <div>
                 <span>사진을 꾹 눌러서 저장 !</span>
-                <span>(이미지는 선택이에요! 굳이 안올리셔도 됩니다.)</span>
+                <span>(이미지는 선택사항!)</span>
               </div>
             </ImageWrapper>
           )}
@@ -109,6 +109,7 @@ const ImageWrapper = styled.div`
 
 const Nav = styled.nav`
   border: 1px solid var(--gray-400);
+  overflow: hidden;
   border-radius: var(--rounded-lg);
 `;
 

@@ -86,6 +86,12 @@ function Admin() {
                   <button onClick={() => onRemoveLog()}>오래된 로그 삭제</button>
                 </NavBlock>
               </div>
+              <div>
+                <BlockName>개발자 기능 테스트</BlockName>
+                <NavBlock>
+                  <button onClick={() => onClick("push", false)}>테스트 푸쉬</button>
+                </NavBlock>
+              </div>
 
               <div>
                 <BlockName />

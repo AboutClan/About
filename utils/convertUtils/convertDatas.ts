@@ -1,4 +1,4 @@
-import { enToKrMapping, krToEnMapping } from "../../constants/locationConstants";
+import { enToKrMapping, krToEnMapping } from "../../constants/location";
 import {
   BADGE_SCORE_MAPPINGS,
   USER_SCORE_BADGE_ARR,
@@ -10,7 +10,7 @@ import {
   MANAGER_BADGE,
 } from "../../constants/storage/eventBadgeUser";
 import { UserBadge, UserRole } from "../../types/models/userTypes/userInfoTypes";
-import { ActiveLocation, LocationEn } from "../../types/services/locationTypes";
+import { ActiveLocation, Location, LocationEn } from "../../types/services/locationTypes";
 
 export const getUserBadge = (score: number, uid: string): UserBadge => {
   let badge: UserBadge = "아메리카노";
@@ -39,10 +39,10 @@ export const getNextBadge = (currentBadge: UserBadge): UserBadge => {
   }
 };
 
-type ReturnLocationLang<T> = T extends "kr" ? ActiveLocation : LocationEn;
+type ReturnLocationLang<T> = T extends "kr" ? Location : LocationEn;
 
 export const convertLocationLangTo = <T extends "kr" | "en">(
-  location: ActiveLocation | LocationEn,
+  location: Location | LocationEn,
   to: T,
 ): ReturnLocationLang<T> => {
   if (to === "kr") {

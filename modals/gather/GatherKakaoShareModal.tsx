@@ -1,6 +1,5 @@
 /* eslint-disable */
 
-import { ModalFooter } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -13,7 +12,7 @@ import { WEB_URL } from "../../constants/system";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
 
-import { ModalLayout } from "../Modals";
+import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface IGatherKakaoShareModal extends IModal {
   title: string;
@@ -31,8 +30,26 @@ function GatherKakaoShareModal({ title, date, locationMain, setIsModal }: IGathe
     else setSelectedItem(idx);
   };
 
+  const footerOptions: IFooterOptions = {
+    children: (
+      <KakaoShareBtn
+        isFull
+        title={title}
+        subtitle={date === "미정" ? date : dayjs(date).format("M월 D일(dd)")}
+        type="gather"
+        url={WEB_URL + router.asPath}
+        location={locationMain}
+        isBig={true}
+        img={
+          adminImageUrl ||
+          (selectedItem !== null ? GATHER_SHARE_IMAGES[selectedItem] : GATHER_SHARE_IMAGES[1])
+        }
+      />
+    ),
+  };
+
   return (
-    <ModalLayout title="공유 이미지 선택" setIsModal={setIsModal}>
+    <ModalLayout footerOptions={footerOptions} title="공유 이미지 선택" setIsModal={setIsModal}>
       <ModalSubtitle>단톡방에 공유 할 이미지를 선택해 주세요!</ModalSubtitle>
       <Container>
         {GATHER_SHARE_IMAGES.map((item, idx) => (
@@ -41,21 +58,6 @@ function GatherKakaoShareModal({ title, date, locationMain, setIsModal }: IGathe
           </Item>
         ))}
       </Container>
-
-      <ModalFooter p="var(--gap-3) var(--gap-4)">
-        <KakaoShareBtn
-          title={title}
-          subtitle={date === "미정" ? date : dayjs(date).format("M월 D일(dd)")}
-          type="gather"
-          url={WEB_URL + router.asPath}
-          location={locationMain}
-          isBig={true}
-          img={
-            adminImageUrl ||
-            (selectedItem !== null ? GATHER_SHARE_IMAGES[selectedItem] : GATHER_SHARE_IMAGES[1])
-          }
-        />
-      </ModalFooter>
     </ModalLayout>
   );
 }

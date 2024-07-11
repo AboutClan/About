@@ -89,7 +89,7 @@ export function PostThumbnailCard({
             <StatusContainer>
               <AvatarGroupsOverwrap userAvatarArr={userAvatarArr} size="sm" />
               <div className="statusText">
-                <Box color="var(--color-mint)" fontWeight={600} mr="8px" mt="4px">
+                <Box fontSize="14px" color="var(--color-mint)" fontWeight={600} mr="8px" mt="4px">
                   {statusText}
                 </Box>
               </div>
@@ -159,8 +159,8 @@ export function PostThumbnailCardSkeleton() {
             <Skeleton>temp</Skeleton>
           </Box>
         </TitleHeader>
-        <Box w="40px">
-          <Skeleton> temp</Skeleton>
+        <Box w="50px" h="16px">
+          <Skeleton>temp</Skeleton>
         </Box>
       </ContentContainer>
     </SkeletonContainer>
@@ -185,10 +185,12 @@ const ContentContainer = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+
   margin-left: 12px;
 `;
 
 const TitleHeader = styled.div`
+  height: 20px;
   display: flex;
   justify-content: space-between;
 `;

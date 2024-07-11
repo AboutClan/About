@@ -38,6 +38,7 @@ export const YANG_발산역 = "65bfac0a7d1dd938049ed19e";
 export const YANG_선유도점 = "661cdb45aaae875d410236d3";
 export const YANG_목동10단지점 = "665b92d98582d7bab14810c8";
 export const YANG_홍대입구역점 = "666d91490cfe48b2ae710e2d";
+export const YANG_대방역점 = "6671407d8fc22736d823aa4b";
 
 //안양
 export const ANYANG_범계역 = "6456ede120352b2d87582955";
@@ -87,3 +88,5 @@ export const INC_부평점 = "65fbd888ba2597c46415a02b";
 export const INC_인천대점 = "6637373030c7250eac355cc7";
 export const INC_청라점 = "6669d0ebe7d56ca0ebf7b547";
 export const INC_서구청점 = "666c80000cfe48b2ae6fbf7a";
+export const INC_인하대역점 = "667d174aede956c155749a4e";
+export const INC_인하대점2 = "667d1771ede956c155749a5a";

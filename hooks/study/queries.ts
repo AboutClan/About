@@ -50,7 +50,6 @@ export const useStudyVoteQuery = (
   useQuery<IParticipation[], AxiosError, IParticipation[]>(
     [STUDY_VOTE, date, location],
     async () => {
-     
       const res = await axios.get<IStudy>(`${SERVER_URI}/vote/${date}`, {
         params: { location },
       });

@@ -12,7 +12,7 @@ import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import ButtonGroups, { IButtonOpions } from "../../components/molecules/groups/ButtonGroups";
 import ImageSlider from "../../components/organisms/imageSlider/ImageSlider";
-import { ACTIVE_LOCATIONS } from "../../constants/locationConstants";
+import { LOCATION_OPEN } from "../../constants/location";
 import { WEB_URL } from "../../constants/system";
 import { useErrorToast } from "../../hooks/custom/CustomToast";
 import { useGatherAllSummaryQuery } from "../../hooks/gather/queries";
@@ -62,7 +62,7 @@ function Review() {
     이승주: {
       name: "이승주",
       profileImage: null,
-      avatar: { bg: 0, type: 11 },
+      avatar: { bg: 6, type: 13 },
     },
     서유진: { name: "서유진", profileImage: null, avatar: { bg: 3, type: 7 } },
     찬민: {
@@ -155,7 +155,7 @@ function Review() {
     setVisibleCnt((old) => old + 8);
   };
 
-  const buttonArr: IButtonOpions[] = ["전체", ...ACTIVE_LOCATIONS].map((location) => ({
+  const buttonArr: IButtonOpions[] = ["전체", ...LOCATION_OPEN].map((location) => ({
     text: location,
     func: () =>
       location === "전체"

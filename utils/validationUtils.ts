@@ -1,8 +1,8 @@
-import { ACTIVE_LOCATIONS } from "../constants/locationConstants";
+import { LOCATION_OPEN } from "../constants/location";
 import { ActiveLocation } from "../types/services/locationTypes";
 
 export function isLocationType(value: string): value is ActiveLocation {
-  return ACTIVE_LOCATIONS.includes(value as ActiveLocation);
+  return LOCATION_OPEN.includes(value as ActiveLocation);
 }
 
 export const checkIsKorean = (str: string) => {

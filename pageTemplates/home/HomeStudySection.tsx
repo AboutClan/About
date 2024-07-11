@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
+import { LOCATION_OPEN } from "../../constants/location";
 import { useStudyDailyVoteCntQuery, useStudyVoteQuery } from "../../hooks/study/queries";
 import { ActiveLocation, LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
@@ -21,7 +22,7 @@ function HomeStudySection() {
   const [selectedDate, setSelectedDate] = useState<string>();
 
   const { data: studyVoteData } = useStudyVoteQuery(date as string, locationKr, {
-    enabled: !!date && !!location,
+    enabled: !!date && !!location && LOCATION_OPEN.includes(location as ActiveLocation),
   });
 
   const selectedDateDayjs = dayjs(selectedDate);
@@ -46,7 +47,6 @@ function HomeStudySection() {
   return (
     <>
       <HomeLocationBar />
-
       <Box px="16px">
         <StudyController
           selectedDate={selectedDate}
@@ -56,7 +56,6 @@ function HomeStudySection() {
         />
         <HomeStudyCol />
       </Box>
-
       <HomeNewStudySpace places={newStudyPlaces} />
       <HomeStudyChart voteCntArr={voteCntArr} />
     </>

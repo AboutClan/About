@@ -16,6 +16,7 @@ function Participate() {
   const [questionText, setQuestionText] = useState("");
   const [isModal, setIsModal] = useState(false);
 
+
   const onClick = () => {
     setIsModal(true);
   };
@@ -60,7 +61,7 @@ function Participate() {
           isFree={!questionText}
           answer={questionText}
           id={group.id}
-          fee={group.fee}
+          
           feeText={group.feeText}
           setIsModal={setIsModal}
         />

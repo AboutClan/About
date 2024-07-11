@@ -10,7 +10,10 @@ import { createUrlWithLocation } from "../../utils/convertUtils/convertTypes";
 export default function GatherLocationFilter() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const defaultLocation = convertLocationLangTo(searchParams.get("location") as LocationEn, "kr");
+  const defaultLocation = convertLocationLangTo(
+    searchParams.get("location") as LocationEn,
+    "kr",
+  ) as ActiveLocation;
 
   const [location, setLocation] = useState<ActiveLocation | "전체">(defaultLocation || "전체");
 

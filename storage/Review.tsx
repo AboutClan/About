@@ -524,4 +524,71 @@ export const REVIEW_DATA: IReviewData[] = [
     text: "용인 MT - B조 사전 조모임 진행! 보드게임 -> 1차 -> 2차까지 했구 재밌었어요 ㅎ 아니 근데 얼마나 먹은건지 1인당 술값이 MT 비용만큼 나왔어... 주루마블이랑 술게임 MT 가기 전에 연습함 ㅋㅋ",
     title: "MT 사전 조모임",
   },
+  {
+    id: 241315,
+    dateCreated: "6월 25일",
+    images: [
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%97%AC%EB%A6%84+MT+1%EC%B0%A8/KakaoTalk_20240702_174821152.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%97%AC%EB%A6%84+MT+1%EC%B0%A8/KakaoTalk_20240702_174821152_02.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%97%AC%EB%A6%84+MT+1%EC%B0%A8/KakaoTalk_20240702_174821152_04.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%97%AC%EB%A6%84+MT+1%EC%B0%A8/KakaoTalk_20240702_174821152_03.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%97%AC%EB%A6%84+MT+1%EC%B0%A8/KakaoTalk_20240702_174821152_04.jpg",
+    ],
+    text: "별 다섯 개 드리고 싶을 만큼 너무너무 재미있는 엠티였습니다! 조끼리도 너무 친해졌고 모든 일정이 다 재미있었어요! 다들 참여도 열심히 해 주셔서 오랜만에 엠티 온 기분 제대로 낸 것 같습니다 ㅎㅎ 운영진 분들 열심히 준비하신 게 티가 나고 하루종일 고기 굽고 정리하고 일하시느라 정말 수고하셨어요! 덕분에 너무 편안하고 재미있게 즐길 수 있었던 것 같아요 ㅎㅎ 내년 어바웃 엠티는 또 얼마나 재미있을까 기대가 되네요 .. 😉",
+    title: "어바웃 1차 여름 MT",
+  },
+  {
+    id: 198,
+    dateCreated: "6월 29일",
+    images: [
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%ED%95%98%EC%9D%B4%EB%94%94%EB%9D%BC%EC%98%A4/KakaoTalk_20240702_181154762.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%ED%95%98%EC%9D%B4%EB%94%94%EB%9D%BC%EC%98%A4/KakaoTalk_20240702_181154762_02.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%ED%95%98%EC%9D%B4%EB%94%94%EB%9D%BC%EC%98%A4/KakaoTalk_20240702_181154762_01.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%ED%95%98%EC%9D%B4%EB%94%94%EB%9D%BC%EC%98%A4/KakaoTalk_20240702_181154762_03.jpg",
+    ],
+    text: "점심부터 카공하다가 끝나고는 하이디라오에 갔어요!!! 살면서 처음 가봤는데 예약해주신 분께 너무 감사 ♨ 인원이 많아서 5명씩 나눠서 먹고, 맥주도 한잔 하고, 쇼핑하러 갔다가, 2차를 가는 중에 정준하님을 실제로 봤어요!! 가게 오픈하셨다더니 여기였구나...",
+
+    title: "하이디라오",
+  },
+  {
+    id: 436362,
+    dateCreated: "6월 30일",
+    images: [
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EB%B9%84%EC%98%A4%EB%8A%94+%EC%A0%84%EB%A7%89%EA%B1%B8%EB%A6%AC/KakaoTalk_20240702_175212634_01.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EB%B9%84%EC%98%A4%EB%8A%94+%EC%A0%84%EB%A7%89%EA%B1%B8%EB%A6%AC/KakaoTalk_20240702_175212634_02.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EB%B9%84%EC%98%A4%EB%8A%94+%EC%A0%84%EB%A7%89%EA%B1%B8%EB%A6%AC/KakaoTalk_20240702_175212634_03.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EB%B9%84%EC%98%A4%EB%8A%94+%EC%A0%84%EB%A7%89%EA%B1%B8%EB%A6%AC/KakaoTalk_20240702_175212634.jpg",
+    ],
+    text: "비 온다길래 전에 막걸리를 먹으러 갔어요. 웨이팅이 너무 길어서 우연히 다른곳에 가게 됐는데 막걸리를 특이하게 글라스에 주시더라고요? 종류별로 여러 막걸리를 먹었지만 특히 리코타 막걸리가 너무 인상깊게 맛있었습니다 ㅎㅎ 두세시간 있다가 다 매운거를 좋아해서 2차로는 닭발에 소주를 먹으러 갔어요! 비가 진짜 엄청 쏟아져서 겨우겨우 뚫고 갔습니다. 몇시쯤이지 하고 중간에 시간을 봤더니 막차 시간이라 호다닥 헤어졌지만 이미 막차를 놓쳐버려서 결국 택시 엔딩...",
+
+    title: "내일 비온대요 전막걸리",
+  },
+
+  {
+    id: 199,
+    dateCreated: "7월 1일",
+    images: [
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%9B%94%EC%9A%94%EC%9D%BC+%EA%B0%95%EB%82%A8/KakaoTalk_20240702_175357967_02.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%9B%94%EC%9A%94%EC%9D%BC+%EA%B0%95%EB%82%A8/KakaoTalk_20240702_175357967_02.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%9B%94%EC%9A%94%EC%9D%BC+%EA%B0%95%EB%82%A8/KakaoTalk_20240702_175357967_01.jpg",
+    ],
+    text: "룸 술집에 갔습니당! 어짜다보니 당일 참여로 온다는 인원들이 계속 생겨서 계획보다 많았던 13명이나 됐어요! 믿고 보는 갓동훈... 모임장님이랑 다른 분들 모두 재밌었구 오늘도 역시나 새벽 4시에 택시 엔딩... 새로 오신 분들도 반가웠어요 :) 얼마 나왔는지는 비밀;;",
+
+    title: "강남 술번개",
+  },
+
+  {
+    id: 212,
+    dateCreated: "7월 4일",
+    images: [
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%97%AC%EB%A6%84+2%EC%B0%A8+MT/KakaoTalk_20240704_171706137_03.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%97%AC%EB%A6%84+2%EC%B0%A8+MT/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+2024-07-04+185102.png",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%97%AC%EB%A6%84+2%EC%B0%A8+MT/KakaoTalk_20240704_175717644_01.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%97%AC%EB%A6%84+2%EC%B0%A8+MT/KakaoTalk_20240704_175717644_02.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%97%AC%EB%A6%84+2%EC%B0%A8+MT/KakaoTalk_20240704_175924199_01.jpg",
+    ],
+    text: "밤샘 MT로 많이 피곤하기에 짤막한 리뷰를 써보겠습니다,,, 이번엔 사진을 정말 거의 못 찍었어요,,, 용인 MT때는 장소도 넓고 사람도 많아서 이곳 저곳 모여서 놀았다면, 이번에는 다 같이 거실에서 내내 술게임을 했습니다,,, 그 중에서도 이중모션만 몇시간을 한건지 모르겠어요,,, 술자리 초반부터 템포가 많이 빨랐어서 다들 새벽 4시쯤 되니까 많이 피곤해보이더라구요,,, (나도,,,) 첫차때쯤에 정리를 하고 총총총 집으로 떠났습니다,,, 계획대로 진행하진 못했지만 밤새 시끌벅적 재밌었어요 :) 당분간 금주해야지,,,",
+
+    title: "어바웃 여름 2차 MT",
+  },
 ];

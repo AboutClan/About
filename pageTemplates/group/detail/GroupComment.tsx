@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import Avatar from "../../../components/atoms/Avatar";
-import ProfileIcon from "../../../components/atoms/Profile/ProfileIcon";
 import { GROUP_STUDY_ALL } from "../../../constants/keys/queryKeys";
 // import { Group_CONTENT } from "../../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../../hooks/custom/CustomHooks";
@@ -63,7 +62,7 @@ function GroupComments({ comment }: IGroupComments) {
     setCommentText(text);
     setIsEditModal(true);
   };
-
+  console.log(25, userInfo);
   return (
     <>
       <Layout>
@@ -71,7 +70,12 @@ function GroupComments({ comment }: IGroupComments) {
         <Comment>
           {!isGuest && (
             <MyCommnet>
-              <ProfileIcon user={userInfo && userInfo} size="xs" />
+              <Avatar
+                image={userInfo?.profileImage}
+                uid={userInfo?.uid}
+                avatar={userInfo?.avatar}
+                size="sm"
+              />
               <MyText
                 ref={textareaRef}
                 value={value}
@@ -98,7 +102,7 @@ function GroupComments({ comment }: IGroupComments) {
                   <Name>
                     <span>{item.user.name}</span>
                     <CommentDetail>
-                      {item.user.location} · {getDateDiff(dayjs(item.updatedAt))}
+                      {item.user.location} · {getDateDiff(dayjs(item.createdAt))}
                     </CommentDetail>
                   </Name>
                   <p>

@@ -5,6 +5,7 @@ import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { GROUP_GATHERING_IMAGE } from "../../../assets/images/randomImages";
@@ -21,6 +22,7 @@ import GroupCover from "../../../pageTemplates/group/detail/GroupCover";
 import GroupHeader from "../../../pageTemplates/group/detail/GroupHeader";
 import GroupParticipation from "../../../pageTemplates/group/detail/GroupParticipation";
 import GroupTitle from "../../../pageTemplates/group/detail/GroupTitle";
+import { transferGroupDataState } from "../../../recoils/transferRecoils";
 import { IGroup } from "../../../types/models/groupTypes/group";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 
@@ -30,10 +32,16 @@ function GroupDetail() {
 
   const [group, setGroup] = useState<IGroup>();
 
+  const setTransferGroup = useSetRecoilState(transferGroupDataState);
+
   const { data: groups } = useGroupQuery();
- 
+
   useEffect(() => {
-    if (groups) setGroup(groups.find((item) => item.id + "" === id));
+    if (groups) {
+      const findGroup = groups.find((item) => item.id + "" === id);
+      setGroup(findGroup);
+      setTransferGroup(findGroup);
+    }
   }, [groups, id]);
 
   const queryClient = useQueryClient();
@@ -79,7 +87,7 @@ function GroupDetail() {
       {!group && <MainLoading />}
       {group &&
       ![group.organizer, ...group.participants.map((who) => who.user)].some(
-        (who) => who.uid === session?.user.uid,
+        (who) => who?.uid === session?.user.uid,
       ) ? (
         <GroupBottomNav data={group} />
       ) : null}

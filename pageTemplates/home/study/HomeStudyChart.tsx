@@ -29,7 +29,6 @@ function HomeStudyChart({ voteCntArr }: HomeStudyChartProps) {
   const totalArr = [];
   const locationArr = [];
   const xArr = [];
-
   filtered?.forEach((obj) => {
     totalArr.push(obj.totalValue);
     locationArr.push(obj.value);

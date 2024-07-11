@@ -48,13 +48,11 @@ function RecentJoinUserPopUp({ users, setIsModal }: RecentJoinUserPopUpProps) {
       <Flex
         direction="column"
         h="215px"
-        overflowY="auto" // 변경된 부분
+        overflowY="auto"
         sx={{
           "&::-webkit-scrollbar": {
             display: "none",
           },
-          scrollbarWidth: "none",
-          msOverflowStyle: "none",
         }}
       >
         {users.map((user, idx) => (
@@ -62,7 +60,7 @@ function RecentJoinUserPopUp({ users, setIsModal }: RecentJoinUserPopUpProps) {
             key={idx}
             justify="space-between"
             align="center"
-            borderTop={idx === 0 ? "var(--border-main)" : null}
+            borderTop={idx === 0 ? "var(--border-main)" : "none"}
             borderBottom="var(--border-main)"
             py="8px"
             pr="12px"

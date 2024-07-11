@@ -1,10 +1,10 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import Selector from "../../../components/atoms/Selector";
+import LocationSelector from "../../../components/atoms/LocationSelector";
 import SectionBar from "../../../components/molecules/bars/SectionBar";
-import { ACTIVE_LOCATIONS } from "../../../constants/locationConstants";
-import { ActiveLocation } from "../../../types/services/locationTypes";
+import { LOCATION_ALL } from "../../../constants/location";
+import { ActiveLocation, Location } from "../../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
 
 export default function HomeLocationBar() {
@@ -13,7 +13,7 @@ export default function HomeLocationBar() {
   const newSearchParams = new URLSearchParams(searchParams);
 
   const locationKr = convertLocationLangTo(searchParams.get("location") as ActiveLocation, "kr");
-  const [location, setLocation] = useState<ActiveLocation>(locationKr);
+  const [location, setLocation] = useState<Location>(locationKr);
 
   useEffect(() => {
     setLocation(locationKr);
@@ -31,7 +31,7 @@ export default function HomeLocationBar() {
     <SectionBar
       title="카공 스터디"
       rightComponent={
-        <Selector defaultValue={location} options={ACTIVE_LOCATIONS} setValue={setLocation} />
+        <LocationSelector defaultValue={location} options={LOCATION_ALL} setValue={setLocation} />
       }
     />
   );

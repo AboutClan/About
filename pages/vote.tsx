@@ -17,7 +17,7 @@ import {
   IStudyVotePlaces,
   IStudyVoteWithPlace,
 } from "../types/models/studyTypes/studyInterActions";
-import { ActiveLocation } from "../types/services/locationTypes";
+import { ActiveLocation, LocationEn } from "../types/services/locationTypes";
 import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
 import { getDistanceFromLatLonInKm } from "../utils/mathUtils";
 
@@ -33,7 +33,7 @@ export default function StudyVoteMap() {
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
 
-  const location = convertLocationLangTo(searchParams.get("location") as ActiveLocation, "kr");
+  const location = convertLocationLangTo(searchParams.get("location") as LocationEn, "kr");
 
   const [myVote, setMyVote] = useState<IStudyVoteWithPlace>();
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>();
@@ -67,10 +67,12 @@ export default function StudyVoteMap() {
     setMarkersOptions(getMarkersOptions(studyVoteData, myVote));
   }, [studyVoteData, myVote]);
 
-  const [mapOptions, setMapOptions] = useState<IMapOptions>(getMapOptions(location));
+  const [mapOptions, setMapOptions] = useState<IMapOptions>(
+    getMapOptions(location as ActiveLocation),
+  );
 
   useEffect(() => {
-    setMapOptions(getMapOptions(location));
+    setMapOptions(getMapOptions(location as ActiveLocation));
   }, [location]);
 
   //지도에서 마커를 통한 핸들링

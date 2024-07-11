@@ -94,7 +94,7 @@ const Example = styled.div`
   > div {
     color: var(--gray-600);
     padding: 4px 8px;
-    background-color: var(--gray-100);
+    background-color: white;
     border: var(--border-main);
     border-radius: var(--rounded-lg);
     display: flex;

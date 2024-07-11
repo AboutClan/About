@@ -14,9 +14,19 @@ interface IKakaoShareBtn {
   location?: string;
   url: string;
   isBig?: boolean;
+  isFull?: boolean;
 }
 
-function KakaoShareBtn({ type, title, subtitle, img, location, url, isBig }: IKakaoShareBtn) {
+function KakaoShareBtn({
+  type,
+  title,
+  subtitle,
+  img,
+  location,
+  url,
+  isBig,
+  isFull,
+}: IKakaoShareBtn) {
   useEffect(() => {
     if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
       window.Kakao.init(kakaoAppKey);
@@ -88,9 +98,9 @@ function KakaoShareBtn({ type, title, subtitle, img, location, url, isBig }: IKa
   }, [img]);
 
   return (
-    <Layout id="kakao-share-button">
+    <Layout id="kakao-share-button" isFull={isFull}>
       {!isBig ? (
-        <i className="fa-light fa-share-nodes fa-lg"  />
+        <i className="fa-light fa-share-nodes fa-lg" />
       ) : (
         <Button as="div" colorScheme="mintTheme" width="100%" size="lg">
           공유하기
@@ -100,9 +110,9 @@ function KakaoShareBtn({ type, title, subtitle, img, location, url, isBig }: IKa
   );
 }
 
-const Layout = styled.button`
-  padding: 8px;
-  width: 100%;
+const Layout = styled.button<{ isFull: boolean }>`
+  padding: ${(props) => (props.isFull ? 0 : "8px")};
+  width: ${(props) => (props.isFull ? "100%" : "undefined")};
 `;
 
 export default KakaoShareBtn;

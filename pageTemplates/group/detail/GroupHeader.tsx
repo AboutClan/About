@@ -1,19 +1,19 @@
 import { Flex } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
-import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import KakaoShareBtn from "../../../components/atoms/Icons/KakaoShareBtn";
 import Header from "../../../components/layouts/Header";
+import { GROUP_WRITING_STORE } from "../../../constants/keys/localStorage";
 import { GROUP_STUDY_ALL } from "../../../constants/keys/queryKeys";
 import { WEB_URL } from "../../../constants/system";
 import { useResetQueryData } from "../../../hooks/custom/CustomHooks";
 import { useCompleteToast } from "../../../hooks/custom/CustomToast";
 import { useGroupParticipationMutation } from "../../../hooks/groupStudy/mutations";
-import { sharedGroupWritingState } from "../../../recoils/sharedDataAtoms";
 import { IGroup } from "../../../types/models/groupTypes/group";
+import { setLocalStorageObj } from "../../../utils/storageUtils";
 import BottomDrawer from "../../profile/BottomDrawer";
 
 interface IGroupHeader {
@@ -30,14 +30,13 @@ function GroupHeader({ group }: IGroupHeader) {
 
   const [isSettigModal, setIsSettingModal] = useState(false);
 
-  const setGroupWriting = useSetRecoilState(sharedGroupWritingState);
-
   const resetQueryData = useResetQueryData();
 
   const onClick = () => {
-    setGroupWriting(group);
-
-    router.push("/group/writing/main");
+    setLocalStorageObj(GROUP_WRITING_STORE, {
+      group,
+    });
+    router.push(`/group/writing/main?id=${group.id}`);
   };
 
   const movePage = async () => {
@@ -61,7 +60,7 @@ function GroupHeader({ group }: IGroupHeader) {
         <Flex>
           {session?.user.uid === organizer?.uid && (
             <IconWrapper onClick={onClick}>
-              <i className="fa-light fa-pen-circle fa-xl"  />
+              <i className="fa-light fa-pen-circle fa-xl" />
             </IconWrapper>
           )}
           <Wrapper>
@@ -80,22 +79,12 @@ function GroupHeader({ group }: IGroupHeader) {
           </IconWrapper>
         </Flex>
       </Header>
-
       <BottomDrawer
         type="group"
         isModal={isSettigModal}
         setIsModal={setIsSettingModal}
         onSubmit={handleQuit}
       />
-
-      {/* {isModal && (
-        <GroupKakaoShareModal
-          setIsModal={setIsModal}
-          title={title}
-          date={date}
-          locationMain={locationMain}
-        />
-      )} */}
     </>
   );
 }
@@ -106,7 +95,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: var(--gap-3);
+  margin-left: 16px;
 `;
 
 const IconWrapper = styled.button`

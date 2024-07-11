@@ -142,6 +142,34 @@ export const EVENT_CONTENT_2024: Record<string, Content[]> = {
       color: "var(--color-mint)",
       text: "",
     },
+    {
+      content: "소모임 편성",
+      start: 6,
+      end: 7,
+      color: "var(--color-orange)",
+      text: "",
+    },
+    {
+      content: "모임 활성화 이벤트",
+      start: 8,
+      end: 9,
+      color: "var(--color-blue)",
+      text: "",
+    },
+    {
+      content: "알고리즘 공모전",
+      start: 11,
+      end: 12,
+      color: "var(--color-blue)",
+      text: "",
+    },
+    {
+      content: "조모임 진행 기간",
+      start: 25,
+      end: 28,
+      color: "var(--color-mint)",
+      text: "",
+    },
   ],
 };
 

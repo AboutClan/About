@@ -85,8 +85,9 @@ function PromotionApply() {
               borderRadius="var(--rounded-lg)"
               mr="var(--gap-3)"
               value={value}
-              border="var(--border)"
+              border="var(--border-main)"
               onChange={(e) => setValue(e.target.value)}
+              bgColor="white"
               _focus={{
                 borderColor: "var(--gray-800)",
                 borderBottomRadius: value !== "" && filterData?.length > 0 && "none",

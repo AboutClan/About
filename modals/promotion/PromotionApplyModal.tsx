@@ -27,7 +27,7 @@ function PromotionApplyModal({ setIsModal, uniName }: IPromotionApplyModal) {
 
   const queryClient = useQueryClient();
 
-  const { mutate } = usePromotionMutation({
+  const { mutate, isLoading } = usePromotionMutation({
     onSuccess() {
       queryClient.invalidateQueries("promotion");
       completeToast("free", "포인트 지급 완료! 감사합니다!");
@@ -89,6 +89,7 @@ function PromotionApplyModal({ setIsModal, uniName }: IPromotionApplyModal) {
         : contentType === "cool"
           ? () => setIsModal(false)
           : handleApply,
+      isLoading,
     },
 
     ...(!contentType
@@ -111,7 +112,8 @@ function PromotionApplyModal({ setIsModal, uniName }: IPromotionApplyModal) {
       <ModalSubtitle>
         {!contentType ? (
           <>
-            홍보글을 작성해 주셨나요? <b> +100 Point</b>와 추첨을 통해 치킨 기프티콘을 드려요!
+            홍보글을 작성해 주셨나요? <b> +200 Point</b>와 매주 추첨을 통해 BBQ 황금올리브
+            기프티콘을 드려요!
           </>
         ) : contentType === "cool" ? (
           <>

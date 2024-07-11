@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import ProfileIcon from "../../components/atoms/Profile/ProfileIcon";
+import Avatar from "../../components/atoms/Avatar";
 
 interface IReviewItemHeader {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -13,7 +13,7 @@ function ReviewItemHeader({ writer, date }: IReviewItemHeader) {
   return (
     <Layout>
       <Profile>
-        <ProfileIcon user={isABOUT ? "ABOUT" : writer} size="sm" />
+        <Avatar image={writer?.profileImage} avatar={writer?.avatar} uid={writer?.uid} size="smd" />
         <div>
           <Writer isABOUT={isABOUT}>{isABOUT ? "어바웃" : writer.name}</Writer>
           <span>{date}</span>

@@ -1,27 +1,47 @@
-import { Location } from "../types/services/locationTypes";
+import {
+  ActiveLocation,
+  InactiveLocation,
+  Location,
+  LocationEn,
+} from "../types/services/locationTypes";
 import { TABLE_COLORS } from "./styles";
 
-export const LOCATION_OPEN: Location[] = ["수원", "양천", "안양", "강남", "동대문", "인천"];
-export const LOCATION_RECRUITING: Location[] = ["마포", "성남"];
-export const LOCATION_NOT_OPEN: Location[] = [];
+export const LOCATION_OPEN: ActiveLocation[] = ["수원", "양천", "안양", "강남", "동대문", "인천"];
+export const LOCATION_RECRUITING: InactiveLocation[] = [
+  "마포",
+  "성남",
+  "성동",
+  "고양",
+  "중구",
+  "송파",
+  "구로",
+  "동작",
+  "강북",
+  "부천",
+  "시흥",
+];
 
-//모집중을 포함한 지역
-export const LOCATION_USE_ALL = [...LOCATION_OPEN];
-//전체 지역
-export const LOCATION_ALL = [...LOCATION_OPEN, ...LOCATION_RECRUITING, ...LOCATION_NOT_OPEN];
+export const LOCATION_ALL = [...LOCATION_OPEN, ...LOCATION_RECRUITING];
 
-export const LOCATION_CONVERT = {
-  수원: "수원",
-  양천: "양천/영등포",
-  안양: "안양/과천/군포",
-  강남: "강남",
-  동대문: "동대문/성북",
-  마포: "마포/서대문",
-  인천: "인천",
-  성남: "성남",
+export const LOCATION_CONVERT: Record<Location, string> = {
+  수원: "수원시",
+  양천: "양천구 · 영등포구",
+  안양: "안양 인근 지역",
+  강남: "강남구 · 서초구",
+  동대문: "동대문구 · 성북구",
+  성동: "성동구 · 광진구",
+  마포: "마포구 · 서대문구",
+  인천: "인천시",
+  성남: "성남시",
+  고양: "고양시",
+  중구: "중구 · 용산구",
+  송파: "송파구 · 강동구",
+  구로: "구로구 · 금천구",
+  동작: "동작구 · 관악구",
+  강북: "강북구 · 노원구",
+  부천: "부천시",
+  시흥: "시흥시 · 안산시",
 };
-
-export const LOCATION_PLACE_SMALL: Location[] = ["안양"];
 
 export const LOCATION_OPEN_DATE = {
   수원: "2023-04-07",
@@ -44,14 +64,63 @@ export const LOCATION_MEMBER_CNT: {
   동대문: { member: 56, new: 2 },
   마포: { member: 38, new: 2 },
   인천: { member: 45, new: 3 },
-  성남: { member: 9, new: 3 },
+  성남: { member: 7, new: 3 },
+  성동: { member: 4, new: 1 },
+  고양: { member: 7, new: 3 },
+  중구: { member: 13, new: 2 },
+  송파: { member: 9, new: 4 },
+  구로: { member: 5, new: 1 },
+  동작: { member: 7, new: 4 },
+  강북: { member: 5, new: 3 },
+  부천: { member: 4, new: 2 },
+  시흥: { member: 7, new: 2 },
 };
 
-export const LOCATION_TABLE_COLOR = {
+export const LOCATION_TABLE_COLOR: Record<ActiveLocation, string> = {
   수원: TABLE_COLORS[0],
   양천: TABLE_COLORS[3],
   안양: TABLE_COLORS[2],
   강남: TABLE_COLORS[1],
   인천: TABLE_COLORS[4],
   동대문: TABLE_COLORS[5],
+};
+
+export const krToEnMapping: Record<Location, LocationEn> = {
+  수원: "suw",
+  강남: "gan",
+  동대문: "don",
+  안양: "any",
+  양천: "yan",
+  인천: "inc",
+  마포: "map",
+  성남: "seongnam",
+  성동: "seongdong",
+  고양: "goy",
+  중구: "jun",
+  송파: "son",
+  구로: "gur",
+  동작: "dongjak",
+  강북: "gangbuk",
+  부천: "buc",
+  시흥: "sih",
+};
+
+export const enToKrMapping: Record<LocationEn, Location> = {
+  suw: "수원",
+  gan: "강남",
+  don: "동대문",
+  any: "안양",
+  yan: "양천",
+  inc: "인천",
+  map: "마포",
+  seongnam: "성남",
+  seongdong: "성동",
+  goy: "고양",
+  jun: "중구",
+  son: "송파",
+  gur: "구로",
+  dongjak: "동작",
+  gangbuk: "강북",
+  buc: "부천",
+  sih: "시흥",
 };

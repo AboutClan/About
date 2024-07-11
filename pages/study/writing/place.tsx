@@ -10,7 +10,7 @@ import Slide from "../../../components/layouts/PageSlide";
 import ButtonGroups, { IButtonOpions } from "../../../components/molecules/groups/ButtonGroups";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
 import SearchLocation from "../../../components/organisms/SearchLocation";
-import { ACTIVE_LOCATIONS, LOCATION_TO_FULLNAME } from "../../../constants/locationConstants";
+import { LOCATION_CONVERT, LOCATION_OPEN } from "../../../constants/location";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
@@ -60,8 +60,8 @@ function WritingStudyPlace() {
     router.push(`/study/writing/content`);
   };
 
-  const buttonDataArr: IButtonOpions[] = ACTIVE_LOCATIONS.map((locationInfo) => ({
-    text: LOCATION_TO_FULLNAME[locationInfo],
+  const buttonDataArr: IButtonOpions[] = LOCATION_OPEN.map((locationInfo) => ({
+    text: LOCATION_CONVERT[locationInfo],
     func: () => setLocation(locationInfo),
   }));
 
@@ -77,7 +77,7 @@ function WritingStudyPlace() {
         </RegisterOverview>
         <ButtonGroups
           isWrap={true}
-          currentValue={LOCATION_TO_FULLNAME[location]}
+          currentValue={LOCATION_CONVERT[location]}
           buttonDataArr={buttonDataArr}
         />
 
