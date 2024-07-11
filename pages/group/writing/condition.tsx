@@ -58,6 +58,7 @@ function WritingCondition() {
         : false,
 
     isSecret: groupWriting?.isSecret || false,
+    link: !!groupWriting?.link || false,
   });
 
   const [challenge, setChallenge] = useState("");
@@ -266,11 +267,11 @@ function WritingCondition() {
               <Switch
                 mr="var(--gap-1)"
                 colorScheme="mintTheme"
-                isChecked={!!link}
+                isChecked={condition.link}
                 onChange={(e) => toggleSwitch(e, "link")}
               />
             </Item>{" "}
-            {link && (
+            {condition.link && (
               <Flex align="center" mr="4px">
                 <Box
                   fontSize="12px"
