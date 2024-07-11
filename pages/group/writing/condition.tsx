@@ -29,7 +29,7 @@ export type GroupConditionType =
   | "isFree"
   | "fee"
   | "challenge"
-  | "kakaoUrl"
+  | "link"
   | "isSecret";
 
 export type CombinedLocation = "전체" | "수원/안양" | "양천/강남";
@@ -136,7 +136,7 @@ function WritingCondition() {
     if (temp.length) return String(temp) + " " + "제한";
     return null;
   };
- 
+
   return (
     <>
       <Slide isFixed={true}>
@@ -267,7 +267,7 @@ function WritingCondition() {
                 mr="var(--gap-1)"
                 colorScheme="mintTheme"
                 isChecked={!!link}
-                onChange={(e) => toggleSwitch(e, "kakaoUrl")}
+                onChange={(e) => toggleSwitch(e, "link")}
               />
             </Item>{" "}
             {link && (
