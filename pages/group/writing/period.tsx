@@ -1,6 +1,4 @@
-import { useRouter } from "next/router";
 import { useState } from "react";
-import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 import BottomNav from "../../../components/layouts/BottomNav";
@@ -8,24 +6,21 @@ import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import ButtonCheckNav from "../../../components/molecules/ButtonCheckNav";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
+import { GROUP_WRITING_STORE } from "../../../constants/keys/localStorage";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-import { sharedGroupWritingState } from "../../../recoils/sharedDataAtoms";
+import { IGroupWriting } from "../../../types/models/groupTypes/group";
+import { setLocalStorageObj } from "../../../utils/storageUtils";
 function GroupWritingContent() {
-  const router = useRouter();
+  const groupWriting: IGroupWriting = JSON.parse(localStorage.getItem(GROUP_WRITING_STORE));
 
-  const [group, setGroup] = useRecoilState(sharedGroupWritingState);
-
-  const [period, setPeriod] = useState(group?.period || "주 1회");
-
-  //초기 input 세팅
+  const [period, setPeriod] = useState(groupWriting?.period || "주 1회");
 
   const onClickNext = () => {
-    setGroup((old) => ({
-      ...old,
+    setLocalStorageObj(GROUP_WRITING_STORE, {
+      ...groupWriting,
       period,
-    }));
-    router.push(`/group/writing/hashTag`);
+    });
   };
 
   const periodArr = [
@@ -48,7 +43,6 @@ function GroupWritingContent() {
         <ProgressStatus value={72} />
         <Header isSlide={false} title="" url="/group/writing/content" />
       </Slide>
-
       <RegisterLayout>
         <RegisterOverview>
           <span>진행 주기를 체크해주세요!</span>
@@ -63,8 +57,7 @@ function GroupWritingContent() {
           />
         </Container>
       </RegisterLayout>
-
-      <BottomNav onClick={() => onClickNext()} />
+      <BottomNav onClick={() => onClickNext()} url="/group/writing/hashTag" />
     </>
   );
 }

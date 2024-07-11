@@ -4,14 +4,16 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { PopOverIcon } from "../../components/atoms/Icons/PopOverIcon";
+import { GROUP_WRITING_STORE } from "../../constants/keys/localStorage";
 import { GatherConditionType } from "../../pages/gather/writing/condition";
 import { GroupConditionType } from "../../pages/group/writing/condition";
 import GatherWritingConditionAgeRange from "../../pageTemplates/gather/writing/condition/GatherWritingConditionAgeRange";
 import GatherWritingConditionCnt from "../../pageTemplates/gather/writing/condition/GatherWritingConditionCnt";
-import { sharedGatherWritingState, sharedGroupWritingState } from "../../recoils/sharedDataAtoms";
+import { sharedGatherWritingState } from "../../recoils/sharedDataAtoms";
 import { IModal } from "../../types/components/modalTypes";
 import { IGatherMemberCnt, IGatherWriting } from "../../types/models/gatherTypes/gatherTypes";
 import { IGroupWriting } from "../../types/models/groupTypes/group";
+import { setLocalStorageObj } from "../../utils/storageUtils";
 import { ModalLayout } from "../Modals";
 
 interface GatherWritingUserConditionModalProps extends IModal {
@@ -33,19 +35,26 @@ function GatherWritingUserConditionModal({
   type,
 }: GatherWritingUserConditionModalProps) {
   const [gatherContent, setGatherContent] = useRecoilState(sharedGatherWritingState);
-  const [groupContent, setGroupContent] = useRecoilState(sharedGroupWritingState);
-
+  const groupWriting: IGroupWriting = JSON.parse(localStorage.getItem(GROUP_WRITING_STORE));
+  
   const [memberCnt, setMemberCnt] = useState<IGatherMemberCnt>(
-    gatherContent?.memberCnt || {
-      min: 4,
-      max: 0,
-    },
+    gatherContent?.memberCnt ||
+      groupWriting?.memberCnt || {
+        min: 4,
+        max: 0,
+      },
   );
   const [age, setAge] = useState(gatherContent?.age || [19, 28]);
 
   useEffect(() => {
     if (type === "gather") setGatherContent({ ...gatherContent, age, memberCnt });
-    if (type === "group") setGroupContent({ ...groupContent, age, memberCnt });
+    if (type === "group") {
+      setLocalStorageObj(GROUP_WRITING_STORE, {
+        ...groupWriting,
+        age,
+        memberCnt,
+      });
+    }
   }, [age, memberCnt]);
 
   return (

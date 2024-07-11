@@ -144,7 +144,7 @@ export const authOptions: NextAuthOptions = {
             isActive: false,
             profileImage: "",
           };
-          console.log(25, account, token);
+        
           return token;
         }
 
@@ -174,7 +174,7 @@ export const authOptions: NextAuthOptions = {
             isActive: user.isActive,
             location: account.location || user.location,
           };
-          console.log(13, newToken);
+         
           return newToken;
         }
 

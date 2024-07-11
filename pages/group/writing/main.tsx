@@ -1,6 +1,4 @@
-import { useRouter } from "next/router";
 import { useState } from "react";
-import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 import BottomNav from "../../../components/layouts/BottomNav";
@@ -11,15 +9,16 @@ import {
   GROUP_STUDY_CATEGORY_ARR,
   GROUP_STUDY_CATEGORY_ARR_ICONS,
 } from "../../../constants/contentsText/GroupStudyContents";
+import { GROUP_WRITING_STORE } from "../../../constants/keys/localStorage";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-import { sharedGroupWritingState } from "../../../recoils/sharedDataAtoms";
+import { IGroupWriting } from "../../../types/models/groupTypes/group";
+import { setLocalStorageObj } from "../../../utils/storageUtils";
 function WritingStudyCategoryMain() {
-  const router = useRouter();
   const failToast = useFailToast();
 
-  const [groupWriting, setgroupWriting] = useRecoilState(sharedGroupWritingState);
+  const groupWriting: IGroupWriting = JSON.parse(localStorage.getItem(GROUP_WRITING_STORE));
 
   const [category, setCategory] = useState<string>(groupWriting?.category?.main);
 
@@ -28,11 +27,10 @@ function WritingStudyCategoryMain() {
       failToast("free", "주제를 선택해 주세요!", true);
       return;
     }
-    setgroupWriting((old) => ({
-      ...old,
-      category: { ...old?.category, main: category },
-    }));
-    router.push(`/group/writing/sub`);
+    setLocalStorageObj(GROUP_WRITING_STORE, {
+      ...groupWriting,
+      category: { ...groupWriting?.category, main: category },
+    });
   };
 
   return (
@@ -58,7 +56,7 @@ function WritingStudyCategoryMain() {
         </ItemContainer>
       </RegisterLayout>
 
-      <BottomNav onClick={onClickNext} />
+      <BottomNav onClick={onClickNext} url="/group/writing/sub" />
     </>
   );
 }

@@ -16,6 +16,7 @@ import {
   GROUP_STUDY_RULE_CONTENT,
   GROUP_STUDY_SUB_CATEGORY,
 } from "../../constants/contentsText/GroupStudyContents";
+import { GROUP_WRITING_STORE } from "../../constants/keys/localStorage";
 import { useGroupQuery } from "../../hooks/groupStudy/queries";
 import RuleModal from "../../modals/RuleModal";
 import GroupBlock from "../../pageTemplates/group/GroupBlock";
@@ -54,6 +55,7 @@ function Index() {
   const { data: groups, isLoading } = useGroupQuery();
 
   useEffect(() => {
+    localStorage.setItem(GROUP_WRITING_STORE, null);
     setCategory({
       main: categoryIdx !== null ? GROUP_STUDY_CATEGORY_ARR[categoryIdx] : "전체",
       sub: null,
@@ -103,9 +105,6 @@ function Index() {
       );
     }
 
-
- 
-
     const filtered =
       category.main === "전체"
         ? groups
@@ -145,7 +144,7 @@ function Index() {
 
   return (
     <>
-    <Header title="소모임" url="/home" isBack={false}>
+      <Header title="소모임" url="/home" isBack={false}>
         <RuleIcon setIsModal={setIsRuleModal} />
       </Header>
 
