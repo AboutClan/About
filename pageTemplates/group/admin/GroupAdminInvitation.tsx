@@ -15,6 +15,7 @@ import { useAdminUsersLocationControlQuery } from "../../../hooks/admin/quries";
 import { useCompleteToast } from "../../../hooks/custom/CustomToast";
 import { useGroupWaitingStatusMutation } from "../../../hooks/groupStudy/mutations";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import { searchName } from "../../../utils/stringUtils";
 
 type UserType = "신규 가입자" | "전체";
 
@@ -53,11 +54,7 @@ export default function GroupAdminInvitation() {
     setFilterUsers(null);
     if (isLoading || !usersAll) return;
     if (nameValue) {
-      setFilterUsers(
-        usersAll.filter(
-          (user) => (user.isActive && user.name === nameValue) || user.name.slice(1) === nameValue,
-        ),
-      );
+      setFilterUsers(searchName(usersAll, nameValue));
     } else {
       setFilterUsers(
         usersAll.filter((user) =>

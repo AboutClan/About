@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 
+import { Input } from "../components/atoms/Input";
 import { MainLoadingAbsolute } from "../components/atoms/loaders/MainLoading";
 import ButtonGroups from "../components/molecules/groups/ButtonGroups";
 import InviteUserGroups from "../components/molecules/groups/InviteUserGroups";
@@ -14,6 +15,7 @@ import { useGatherParticipationMutation } from "../hooks/gather/mutations";
 import { IModal } from "../types/components/modalTypes";
 import { IUserSummary } from "../types/models/userTypes/userInfoTypes";
 import { ActiveLocation } from "../types/services/locationTypes";
+import { searchName } from "../utils/stringUtils";
 import { IFooterOptions, ModalLayout } from "./Modals";
 
 interface IInviteUserModal extends IModal {}
@@ -26,12 +28,11 @@ export default function InviteUserModal({ setIsModal }: IInviteUserModal) {
   const [location, setLocation] = useState<ActiveLocation>(session?.user.location || "수원");
   const [inviteUser, setInviteUser] = useState<IUserSummary>(null);
   const [users, setUsers] = useState<IUserSummary[]>(null);
+  const [nameValue, setNameValue] = useState("");
 
-  const {
-    data: usersAll,
-
-    isLoading,
-  } = useAdminUsersLocationControlQuery(location, null, true, { enabled: true });
+  const { data: usersAll, isLoading } = useAdminUsersLocationControlQuery(location, null, true, {
+    enabled: true,
+  });
 
   const queryClient = useQueryClient();
 
@@ -43,8 +44,9 @@ export default function InviteUserModal({ setIsModal }: IInviteUserModal) {
   });
 
   useEffect(() => {
-    setUsers(usersAll);
-  }, [usersAll]);
+    if (nameValue) setUsers(searchName(usersAll, nameValue));
+    else setUsers(usersAll);
+  }, [nameValue, usersAll]);
 
   useEffect(() => {
     if (!inviteUser) return;
@@ -89,7 +91,14 @@ export default function InviteUserModal({ setIsModal }: IInviteUserModal) {
   return (
     <ModalLayout setIsModal={setIsModal} title="인원 초대" footerOptions={footerOptions}>
       <ButtonGroups buttonDataArr={buttonDataArr} currentValue={location} />
-
+      <Box mt="16px">
+        <Input
+          placeholder="이름 검색"
+          size="xs"
+          value={nameValue}
+          onChange={(e) => setNameValue(e.target.value)}
+        />
+      </Box>
       <Box
         h="300px"
         overflowY="auto"
