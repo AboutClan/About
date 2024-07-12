@@ -591,4 +591,33 @@ export const REVIEW_DATA: IReviewData[] = [
 
     title: "어바웃 여름 2차 MT",
   },
+  {
+    id: 211,
+    dateCreated: "7월 6일",
+    images: [
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EA%B0%81%EC%9E%A1%EA%B3%A0+%EC%B9%B4%EA%B3%B5+1%EC%B0%A8/KakaoTalk_20240713_032438474_06.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EA%B0%81%EC%9E%A1%EA%B3%A0+%EC%B9%B4%EA%B3%B5+1%EC%B0%A8/KakaoTalk_20240713_032438474.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EA%B0%81%EC%9E%A1%EA%B3%A0+%EC%B9%B4%EA%B3%B5+1%EC%B0%A8/KakaoTalk_20240713_032438474_01.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EA%B0%81%EC%9E%A1%EA%B3%A0+%EC%B9%B4%EA%B3%B5+1%EC%B0%A8/KakaoTalk_20240713_032438474_02.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EA%B0%81%EC%9E%A1%EA%B3%A0+%EC%B9%B4%EA%B3%B5+1%EC%B0%A8/KakaoTalk_20240713_032438474_03.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EA%B0%81%EC%9E%A1%EA%B3%A0+%EC%B9%B4%EA%B3%B5+1%EC%B0%A8/KakaoTalk_20240713_032438474_04.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EA%B0%81%EC%9E%A1%EA%B3%A0+%EC%B9%B4%EA%B3%B5+1%EC%B0%A8/KakaoTalk_20240713_032438474_05.jpg",
+    ],
+    text: "오후 1시부터 아침 6시까지 카공 스터디를 진행했습니다~! 와 진짜 고생했다... 카페는 주기적으로 옮겼구 나중에는 스터디 카페 단체석으로 이동했어요! 중간에 코노도 가고, 마라샹궈도 먹고 편의점도 가고 재밌었습니다 ㅎㅎ 사실 그 뒤로도 한번 더 모여서 또 밤샘 공부했음",
+    title: "각잡고 하는 카공 스터디",
+  },
+  {
+    id: 214,
+    dateCreated: "7월 11일",
+    images: [
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EB%9D%BC%EC%9D%B4%ED%81%AC%EC%96%B4%EC%8B%9C%EB%84%A4%EB%A7%88/KakaoTalk_20240713_032654762_04.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EB%9D%BC%EC%9D%B4%ED%81%AC%EC%96%B4%EC%8B%9C%EB%84%A4%EB%A7%88/KakaoTalk_20240713_032654762_03.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EB%9D%BC%EC%9D%B4%ED%81%AC%EC%96%B4%EC%8B%9C%EB%84%A4%EB%A7%88/KakaoTalk_20240713_032654762_05.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EB%9D%BC%EC%9D%B4%ED%81%AC%EC%96%B4%EC%8B%9C%EB%84%A4%EB%A7%88/KakaoTalk_20240713_032654762_06.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EB%9D%BC%EC%9D%B4%ED%81%AC%EC%96%B4%EC%8B%9C%EB%84%A4%EB%A7%88/KakaoTalk_20240713_032654762.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EB%9D%BC%EC%9D%B4%ED%81%AC%EC%96%B4%EC%8B%9C%EB%84%A4%EB%A7%88/KakaoTalk_20240713_032654762_01.jpg",
+    ],
+    text: "라이크 어 시네마 영화관 대관! 1인당 대관비 4000원 정도?? 내고 저희끼리 전세내고 봤어요! 팝콘도 종류별로 시켰는데 진짜 영화관 온 거 같았음. 영화는 댓글부대 보고 나와서 2차로 한잔하고, 3차로 한잔 했습니다 ㅎ-ㅎ 마지막 사진은 막차 시간 다 됐는데 사장님이 안계셔서 포스기로 알아서 찍고 메세지 남기고 나왔거든요. 그런데 저렇게 문자오심 ㅋㅋㅋㅋㅋㅋㅋ",
+    title: "라이크 어 시네마 영화관 대관",
+  },
 ];
