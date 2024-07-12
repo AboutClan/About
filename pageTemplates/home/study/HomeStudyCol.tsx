@@ -1,8 +1,8 @@
 import { ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -14,13 +14,12 @@ import {
   CardColumnLayoutSkeleton,
 } from "../../../components/organisms/CardColumnLayout";
 import { STUDY_CHECK_POP_UP, STUDY_VOTING_TABLE } from "../../../constants/keys/localStorage";
-import { LOCATION_CONVERT, LOCATION_OPEN, LOCATION_RECRUITING } from "../../../constants/location";
+import { LOCATION_CONVERT, LOCATION_RECRUITING } from "../../../constants/location";
 import {
   STUDY_DATE_START_HOUR,
   STUDY_RESULT_HOUR,
 } from "../../../constants/serviceConstants/studyConstants/studyTimeConstant";
 import { useStudyResultDecideMutation } from "../../../hooks/study/mutations";
-import { useStudyVoteQuery } from "../../../hooks/study/queries";
 import { getStudyConfimCondition } from "../../../libs/study/getStudyConfimCondition";
 import { sortStudyVoteData } from "../../../libs/study/sortStudyVoteData";
 import StudyOpenCheckModal from "../../../modals/study/StudyOpenCheckModal";
@@ -31,15 +30,16 @@ import {
 } from "../../../recoils/studyRecoils";
 import { IParticipation, StudyStatus } from "../../../types/models/studyTypes/studyDetails";
 import { StudyVotingSave } from "../../../types/models/studyTypes/studyInterActions";
-import {
-  ActiveLocation,
-  InactiveLocation,
-  LocationEn,
-} from "../../../types/services/locationTypes";
+import { InactiveLocation, LocationEn } from "../../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 
-export default function HomeStudyCol() {
+interface HomeStudyColProps {
+  studyVoteData: IParticipation[];
+  isLoading: boolean;
+}
+
+function HomeStudyCol({ studyVoteData, isLoading }: HomeStudyColProps) {
   const { data: session } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -54,10 +54,6 @@ export default function HomeStudyCol() {
   const studyDateStatus = useRecoilValue(studyDateStatusState);
   const [studyCardColData, setStudyCardColData] = useState<IPostThumbnailCard[]>();
   const [dismissedStudy, setDismissedStudy] = useState<IParticipation>();
-
-  const { data: studyVoteData, isLoading } = useStudyVoteQuery(date as string, location, {
-    enabled: !!date && !!location && LOCATION_OPEN.includes(location as ActiveLocation),
-  });
 
   const { mutate: decideStudyResult } = useStudyResultDecideMutation(date);
 
@@ -240,3 +236,5 @@ const MotionDiv = styled(motion.div)`
   margin-top: 16px;
   margin-bottom: 24px;
 `;
+
+export default HomeStudyCol;

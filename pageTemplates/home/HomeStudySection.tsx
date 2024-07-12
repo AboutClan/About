@@ -21,8 +21,8 @@ function HomeStudySection() {
 
   const [selectedDate, setSelectedDate] = useState<string>();
 
-  const { data: studyVoteData } = useStudyVoteQuery(date as string, locationKr, {
-    enabled: !!date && !!location && LOCATION_OPEN.includes(location as ActiveLocation),
+  const { data: studyVoteData, isLoading } = useStudyVoteQuery(date as string, locationKr, {
+    enabled: !!date && !!location && LOCATION_OPEN.includes(locationKr as ActiveLocation),
   });
 
   const selectedDateDayjs = dayjs(selectedDate);
@@ -54,7 +54,7 @@ function HomeStudySection() {
           studyVoteData={studyVoteData}
           voteCntArr={voteCntArr}
         />
-        <HomeStudyCol />
+        <HomeStudyCol studyVoteData={studyVoteData} isLoading={isLoading} />
       </Box>
       <HomeNewStudySpace places={newStudyPlaces} />
       <HomeStudyChart voteCntArr={voteCntArr} />
