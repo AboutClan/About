@@ -6,11 +6,9 @@ import styled from "styled-components";
 
 import Slide from "../../../components/layouts/PageSlide";
 import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
-import { POINT_SYSTEM_PLUS } from "../../../constants/serviceConstants/pointSystemConstants";
 import { useResetQueryData } from "../../../hooks/custom/CustomHooks";
 import { useCompleteToast, useErrorToast } from "../../../hooks/custom/CustomToast";
 import { useGatherParticipationMutation } from "../../../hooks/gather/mutations";
-import { usePointSystemMutation } from "../../../hooks/user/mutations";
 import GatherExpireModal from "../../../modals/gather/gatherExpireModal/GatherExpireModal";
 import GatherParticipateModal from "../../../modals/gather/gatherParticipateModal/GatherParticipateModal";
 import { GatherStatus, IGather } from "../../../types/models/gatherTypes/gatherTypes";
@@ -36,12 +34,8 @@ function GatherBottomNav({ data }: IGatherBottomNav) {
 
   const resetQueryData = useResetQueryData();
 
-  const { mutate: getScore } = usePointSystemMutation("score");
-
   const { mutate: cancel } = useGatherParticipationMutation("delete", gatherId, {
     onSuccess() {
-      const score = POINT_SYSTEM_PLUS.GATHER_ATTEND;
-      getScore({ ...score, value: -score.value, message: "모임 참여 취소" });
       completeToast("free", "참여 신청이 취소되었습니다.", true);
       resetQueryData([GATHER_CONTENT]);
     },

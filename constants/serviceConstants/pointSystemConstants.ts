@@ -19,7 +19,6 @@ export const POINT_SYSTEM_PLUS = {
   DAILY_ATTEND: { value: 2, message: "일일 출석" },
   PROMOTION: { value: 100, message: "홍보 리워드" },
   LIKE: { value: 2, message: "좋아요" },
-  GATHER_ATTEND: { value: 5, message: "모임 참여" },
 };
 
 export const POINT_SYSTEM_DEPOSIT = {
