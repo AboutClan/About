@@ -39,6 +39,7 @@ export const YANG_선유도점 = "661cdb45aaae875d410236d3";
 export const YANG_목동10단지점 = "665b92d98582d7bab14810c8";
 export const YANG_홍대입구역점 = "666d91490cfe48b2ae710e2d";
 export const YANG_대방역점 = "6671407d8fc22736d823aa4b";
+export const YANG_여의도브라이튼점 = "668ffd326f0575e13e45ba3d";
 
 //안양
 export const ANYANG_범계역 = "6456ede120352b2d87582955";
