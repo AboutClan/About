@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import dynamic from "next/dynamic";
 import { useSession } from "next-auth/react";
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -29,10 +29,7 @@ function Chart({ type, user }: IChart) {
 
   const Uid = user?.uid || session?.user?.uid;
 
- 
-
   const myProfile = user?.uid === session?.user.uid;
-
 
   const monthXaxis: string[] = [];
   for (let i = getMonth() - 2; i <= getMonth() + 1; i++) {
@@ -54,6 +51,14 @@ function Chart({ type, user }: IChart) {
       end: dayjs().endOf("month").startOf("date"),
     },
   ];
+
+  const { data: userAttendRateAll, isLoading: isLoading2 } = useUserAttendRateQueries(
+    monthArr,
+    false,
+    {
+      onError: errorToast,
+    },
+  );
 
   const setAttendRate = (data: IVoteRate[]) => {
     let userCnt: number;
@@ -83,12 +88,12 @@ function Chart({ type, user }: IChart) {
     };
   };
 
-  const { data: userAttendRateAll } = useUserAttendRateQueries(monthArr, false, {
-    onError: errorToast,
-  });
-
   useEffect(() => {
-    if (!userAttendRateAll) return;
+    if (!userAttendRateAll || !Uid || isLoading2) {
+      setIsLoading(true);
+      return;
+    }
+
     const rateTemp = [];
     const averageTemp = [];
     let max = 5;
@@ -104,7 +109,7 @@ function Chart({ type, user }: IChart) {
     setAttendMax(max);
     setIsLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userAttendRateAll]);
+  }, [userAttendRateAll, Uid, isLoading2]);
 
   return (
     <>

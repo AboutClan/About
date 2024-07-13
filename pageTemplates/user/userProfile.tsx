@@ -1,5 +1,5 @@
-import Link from "next/link";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import styled from "styled-components";
 
 import { useTypeToast } from "../../hooks/custom/CustomToast";
@@ -28,7 +28,7 @@ function UserProfile() {
           <BlockItem onClick={handleClick}>
             <span>
               내 친구{" "}
-              <b style={{ display: "inline-block", width: "20px" }}>
+              <b style={{ display: "inline-block", width: "20px", textAlign: "center" }}>
                 {userInfo?.friend.length || 0}
               </b>
               명
@@ -40,7 +40,10 @@ function UserProfile() {
           <BlockItem onClick={handleClick}>
             <span>
               받은 좋아요{" "}
-              <b style={{ display: "inline-block", width: "20px" }}>{likeLogs?.length || 0}</b>개
+              <b style={{ display: "inline-block", width: "20px", textAlign: "center" }}>
+                {likeLogs?.length || 0}
+              </b>
+              개
             </span>
             <i className="fa-solid fa-chevron-right" />
           </BlockItem>

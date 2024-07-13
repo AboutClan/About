@@ -44,7 +44,7 @@ function NoticeActive({ activeLogs }: INoticeActive) {
   const { mutate: interactionAlphabet } = useInteractionMutation("alphabet", "patch", {
     onSuccess() {
       if (statusType === "approval") completeToast("free", "수락 완료 !");
-      if (statusType === "refusal") failToast("free", "거절하였습니다.");
+      if (statusType === "refusal") completeToast("free", "거절하였습니다.");
       statusType = null;
       resetQueryData([NOTICE_ACTIVE_LOG]);
     },

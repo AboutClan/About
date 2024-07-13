@@ -164,6 +164,56 @@ export const STORE_GIFT_ACTIVE: IStoreGift[] = [
     max: 30,
     giftId: 35,
   },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EA%B8%B0%EB%B3%B8_100px_%ED%88%AC%EB%AA%85.png",
+    name: "삐약이 아바타",
+    brand: "메가커피",
+    point: 150,
+    winner: 5,
+    max: 5,
+    giftId: 49,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%ED%8E%AD%EA%B7%84+1.png",
+    name: "삐약이 아바타",
+    brand: "메가커피",
+    point: 150,
+    winner: 5,
+    max: 5,
+    giftId: 50,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%B0%B0%EA%B2%BD1.png",
+    name: "배경 프로필 1",
+    brand: "메가커피",
+    point: 100,
+    winner: 5,
+    max: 5,
+    giftId: 51,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%B0%B0%EA%B2%BD2.png",
+    name: "배경 프로필 2",
+    brand: "메가커피",
+    point: 100,
+    winner: 5,
+    max: 5,
+    giftId: 52,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%B0%B0%EA%B2%BD3.png",
+    name: "배경 프로필 3",
+    brand: "메가커피",
+    point: 100,
+    winner: 5,
+    max: 5,
+    giftId: 53,
+  },
 ];
 
 export const STORE_GIFT_INACTIVE: IStoreGift[] = [
