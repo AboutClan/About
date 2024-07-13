@@ -1,5 +1,6 @@
-import { Button } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { signIn } from "next-auth/react";
 import styled from "styled-components";
 
 function GuestBottomNav() {
@@ -7,17 +8,35 @@ function GuestBottomNav() {
   const newSearchparams = new URLSearchParams(searchParams);
   const router = useRouter();
 
+  const customSignin = () => {
+    signIn("kakao", {
+      callbackUrl: `${window.location.origin}/home`,
+    });
+  };
+
   return (
     <Layout>
-      <span>현재 게스트 로그인을 이용중입니다.</span>
-      <Button
-        backgroundColor="var(--color-red)"
-        color="white"
-        size="xs"
-        onClick={() => router.replace(`/home?${newSearchparams.toString()}&logout=on`)}
-      >
-        로그아웃
-      </Button>
+      <span>게스트 로그인을 이용중입니다.</span>
+      <Box>
+        <Button
+          color="var(--color-red)"
+          bgColor="white"
+          border="1px solid var(--color-red)"
+          size="xs"
+          mr="8px"
+          onClick={() => customSignin()}
+        >
+          회원가입
+        </Button>
+        <Button
+          backgroundColor="var(--color-red)"
+          color="white"
+          size="xs"
+          onClick={() => router.replace(`/home?${newSearchparams.toString()}&logout=on`)}
+        >
+          로그아웃
+        </Button>
+      </Box>
     </Layout>
   );
 }
@@ -34,7 +53,7 @@ const Layout = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 16px;
   color: var(--color-red);
   font-weight: 600;
 `;
