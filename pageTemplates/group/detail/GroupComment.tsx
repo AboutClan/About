@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/dist/client/router";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
@@ -11,7 +11,7 @@ import { useResetQueryData } from "../../../hooks/custom/CustomHooks";
 import { useGroupCommentMutation } from "../../../hooks/groupStudy/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import GatherCommentEditModal from "../../../modals/gather/GatherCommentEditModal";
-import { IGatherComment } from "../../../types/models/gatherTypes/gatherTypes";
+import { UserCommentProps } from "../../../types/models/gatherTypes/gatherTypes";
 import { getDateDiff } from "../../../utils/dateTimeUtils";
 // import GroupCommentEditModal from "../../../modals/group/GroupCommentEditModal";
 
@@ -21,7 +21,7 @@ export interface IGroupCommentUnit {
 }
 
 interface IGroupComments {
-  comment: IGatherComment[];
+  comment: UserCommentProps[];
 }
 
 function GroupComments({ comment }: IGroupComments) {

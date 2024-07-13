@@ -1,7 +1,7 @@
 import { GROUP_STUDY_CATEGORY_ARR } from "../../../constants/contentsText/GroupStudyContents";
 import { LocationFilterType } from "../../services/locationTypes";
 import { ITimeStamps } from "../../utils/timeAndDate";
-import { GatherStatus, IGatherComment } from "../gatherTypes/gatherTypes";
+import { GatherStatus, UserCommentProps } from "../gatherTypes/gatherTypes";
 import { IUser, IUserSummary } from "../userTypes/userInfoTypes";
 
 export type GroupCategory = (typeof GROUP_STUDY_CATEGORY_ARR)[number];
@@ -9,7 +9,7 @@ export type GroupCategory = (typeof GROUP_STUDY_CATEGORY_ARR)[number];
 export interface IGroup extends IGroupWriting {
   createdAt: string;
   participants: GroupParicipantProps[];
-  comment: IGatherComment[];
+  comment: UserCommentProps[];
 }
 
 export interface GroupParicipantProps {

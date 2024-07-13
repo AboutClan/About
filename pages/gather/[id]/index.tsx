@@ -1,7 +1,7 @@
 import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -10,7 +10,8 @@ import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../components/layouts/PageSlide";
 import { useGatherIDQuery } from "../../../hooks/gather/queries";
 import GatherBottomNav from "../../../pageTemplates/gather/detail/GatherBottomNav";
-import GatherComments from "../../../pageTemplates/gather/detail/GatherComment";
+
+import CommentsLayout from "../../../components/organisms/CommentsLayout";
 import GatherContent from "../../../pageTemplates/gather/detail/GatherContent";
 import GatherDetailInfo from "../../../pageTemplates/gather/detail/GatherDetail";
 import GatherHeader from "../../../pageTemplates/gather/detail/GatherHeader";
@@ -62,7 +63,7 @@ function GatherDetail() {
                 isMember={isMember}
               />
               <GatherParticipation data={gather} />
-              <GatherComments comment={gather.comment} />
+              <CommentsLayout comments={gather.comment} />
             </Layout>
           </Slide>
           {!isGuest && <GatherBottomNav data={gather} />}

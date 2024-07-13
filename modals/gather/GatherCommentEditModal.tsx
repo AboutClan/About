@@ -3,20 +3,21 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import { Input } from "../../components/atoms/Input";
+import { UserCommentProps } from "../../components/molecules/UserComment";
 import { GATHER_CONTENT, GROUP_STUDY_ALL } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
 import { useGatherCommentMutation } from "../../hooks/gather/mutations";
 import { useGroupCommentMutation } from "../../hooks/groupStudy/mutations";
 import { IModal } from "../../types/components/modalTypes";
 import { DispatchType } from "../../types/hooks/reactTypes";
-import { IGatherComment } from "../../types/models/gatherTypes/gatherTypes";
+
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface IGatherCommentEditModal extends IModal {
   commentText: string;
   commentId: string;
   type?: "group";
-  setCommentArr?: DispatchType<IGatherComment[]>;
+  setCommentArr?: DispatchType<UserCommentProps[]>;
 }
 
 function GatherCommentEditModal({
