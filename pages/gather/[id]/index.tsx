@@ -1,8 +1,8 @@
 import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import { useState } from "react";
 import styled from "styled-components";
 
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
@@ -26,11 +26,8 @@ function GatherDetail() {
 
   const [gatherData, setGatherData] = useState<IGather>();
 
-  const { data: gathers } = useGatherQuery();
-
-  useEffect(() => {
-    if (gathers) setGatherData(gathers.find((item) => item.id + "" === id));
-  }, [gathers]);
+  const { data: gather} = useGatherQuery(+id, undefined, { enabled: !!id });
+  console.log(24, gathers);
 
   const isMember =
     (gatherData?.user as IUserSummary)?.uid === session?.user.uid ||

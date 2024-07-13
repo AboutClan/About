@@ -7,11 +7,19 @@ import { IGatherSummary } from "../../pages/review";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
 
-export const useGatherQuery = (options?: QueryOptions<IGather[]>) =>
-  useQuery<IGather[], AxiosError, IGather[]>(
-    [GATHER_CONTENT],
+type GatherResponse<T> = T extends number ? IGather : IGather[];
+
+export const useGatherQuery = <T extends number | undefined>(
+  gatherId?: T,
+  cursor?: number,
+  options?: QueryOptions<GatherResponse<T>>,
+) =>
+  useQuery<GatherResponse<T>, AxiosError>(
+    [GATHER_CONTENT, gatherId, cursor],
     async () => {
-      const res = await axios.get<IGather[]>(`${SERVER_URI}/gather`);
+      const res = await axios.get<GatherResponse<T>>(`${SERVER_URI}/gather`, {
+        params: { gatherId, cursor },
+      });
       return res.data;
     },
     options,
