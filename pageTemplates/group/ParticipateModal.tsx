@@ -38,7 +38,7 @@ function ParticipateModal({ isFree, id, setIsModal, answer }: IParticipateModal)
 
   const chargePoint = () => {
     if (selectBtn === "point") {
-      getPoint({ value: 30, message: "소모임 가입" });
+      getPoint({ value: -20, message: "소모임 가입" });
     }
     if (selectBtn === "deposit") {
       getDeposit({ value: -200, message: "소모임 가입" });
