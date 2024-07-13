@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
+import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
 import { useCompleteToast, useErrorToast } from "../../../hooks/custom/CustomToast";
@@ -57,7 +57,7 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
       handleFunction: () => onClick("participate"),
     };
   };
-  console.log(data);
+
   const { text, handleFunction } = getButtonSettings();
 
   return (

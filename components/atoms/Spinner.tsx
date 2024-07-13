@@ -3,18 +3,19 @@ import styled from "styled-components";
 
 interface ISpinner {
   text?: string;
+  size?: "sm" | "md";
 }
 
-export default function Spinner({ text }: ISpinner) {
+export default function Spinner({ text, size = "md" }: ISpinner) {
   return (
     <>
       <Layout>
         <ChakraSpinner
-          thickness="4px"
-          speed="0.65s"
+          thickness={size === "md" ? "4px" : "2px"}
+          speed={size === "md" ? "0.65s" : "0.55s"}
           emptyColor="gray.200"
           color="var(--color-mint)"
-          size="xl"
+          size={size === "md" ? "xl" : "md"}
         />
         {text && <Message>위치를 확인중입니다...</Message>}
       </Layout>

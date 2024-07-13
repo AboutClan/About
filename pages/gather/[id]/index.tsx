@@ -1,13 +1,14 @@
 import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
-import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
-import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../components/layouts/PageSlide";
-import { useGatherQuery } from "../../../hooks/gather/queries";
+import { useGatherIDQuery } from "../../../hooks/gather/queries";
 import GatherBottomNav from "../../../pageTemplates/gather/detail/GatherBottomNav";
 import GatherComments from "../../../pageTemplates/gather/detail/GatherComment";
 import GatherContent from "../../../pageTemplates/gather/detail/GatherContent";
@@ -16,6 +17,7 @@ import GatherHeader from "../../../pageTemplates/gather/detail/GatherHeader";
 import GatherOrganizer from "../../../pageTemplates/gather/detail/GatherOrganizer";
 import GatherParticipation from "../../../pageTemplates/gather/detail/GatherParticipation";
 import GatherTitle from "../../../pageTemplates/gather/detail/GatherTitle";
+import { transferGatherDataState } from "../../../recoils/transferRecoils";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 
@@ -24,41 +26,46 @@ function GatherDetail() {
   const { id } = useParams<{ id: string }>() || {};
   const isGuest = session?.user.name === "guest";
 
-  const [gatherData, setGatherData] = useState<IGather>();
+  const [gather, setGather] = useState<IGather>();
 
-  const { data: gather} = useGatherQuery(+id, undefined, { enabled: !!id });
-  console.log(24, gathers);
+  const transferGather = useRecoilValue(transferGatherDataState);
+  const { data: gatherData } = useGatherIDQuery(+id, { enabled: !!id && !transferGather });
+
+  useEffect(() => {
+    if (transferGather) setGather(transferGather);
+    else if (gatherData) setGather(gatherData);
+  }, [transferGather, gatherData]);
 
   const isMember =
-    (gatherData?.user as IUserSummary)?.uid === session?.user.uid ||
-    gatherData?.participants.some((who) => who?.user.uid === session?.user.uid);
+    (gather?.user as IUserSummary)?.uid === session?.user.uid ||
+    gather?.participants.some((who) => who?.user.uid === session?.user.uid);
 
   return (
     <>
-      {gatherData ? (
+      {gather ? (
         <>
-          <GatherHeader gatherData={gatherData} />
+          <GatherHeader gatherData={gather} />
           <Slide>
             <Layout>
               <GatherOrganizer
-                createdAt={gatherData.createdAt}
-                organizer={gatherData.user as IUserSummary}
-                isAdminOpen={gatherData.isAdminOpen}
-                category={gatherData.type.title}
+                createdAt={gather.createdAt}
+                organizer={gather.user as IUserSummary}
+                isAdminOpen={gather.isAdminOpen}
+                category={gather.type.title}
               />
-              <GatherDetailInfo data={gatherData} />
-              <GatherTitle title={gatherData.title} status={gatherData.status} />
+              <GatherDetailInfo data={gather} />
+              <GatherTitle title={gather.title} status={gather.status} />
               <GatherContent
-                kakaoUrl={gatherData?.kakaoUrl}
-                content={gatherData.content}
-                gatherList={gatherData.gatherList}
+                kakaoUrl={gather?.kakaoUrl}
+                content={gather.content}
+                gatherList={gather.gatherList}
                 isMember={isMember}
               />
-              <GatherParticipation data={gatherData} />
-              <GatherComments comment={gatherData.comment} />
+              <GatherParticipation data={gather} />
+              <GatherComments comment={gather.comment} />
             </Layout>
           </Slide>
-          {!isGuest && <GatherBottomNav data={gatherData} />}
+          {!isGuest && <GatherBottomNav data={gather} />}
         </>
       ) : (
         <MainLoading />

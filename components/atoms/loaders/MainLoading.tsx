@@ -17,16 +17,19 @@ const MainLoadingLayout = styled.div<{ top?: number }>`
   transform: translate(-50%, -50%);
 `;
 
-export function MainLoadingAbsolute() {
+interface MainLoadingAbsoluteProps {
+  size?: "sm" | "md";
+}
+
+export function MainLoadingAbsolute({ size = "md" }: MainLoadingAbsoluteProps) {
   return (
     <MainLoadingAbsoluteLayout>
-      <Spinner />
+      <Spinner size={size} />
     </MainLoadingAbsoluteLayout>
   );
 }
 
 const MainLoadingAbsoluteLayout = styled.div`
-  background-color: blue;
   position: absolute;
   top: 50%;
   left: 50%;

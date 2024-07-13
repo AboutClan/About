@@ -10,7 +10,8 @@ import {
   CardColumnLayoutSkeleton,
 } from "../../components/organisms/CardColumnLayout";
 import { useGatherQuery } from "../../hooks/gather/queries";
-import { prevPageUrlState, slideDirectionState } from "../../recoils/navigationRecoils";
+import { slideDirectionState } from "../../recoils/navigationRecoils";
+import { transferGatherDataState } from "../../recoils/transferRecoils";
 import { ITextAndColorSchemes } from "../../types/components/propTypes";
 import { GatherStatus, IGather } from "../../types/models/gatherTypes/gatherTypes";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
@@ -23,18 +24,15 @@ export default function HomeGatherCol() {
   const [cardDataArr, setCardDataArr] = useState<IPostThumbnailCard[]>([]);
 
   const setSlideDirection = useSetRecoilState(slideDirectionState);
-  const setPrevPageUrl = useSetRecoilState(prevPageUrlState);
+  const setTransferGather = useSetRecoilState(transferGatherDataState);
 
-  const { data: gathers } = useGatherQuery();
+  const { data: gathers } = useGatherQuery(-1);
 
   useEffect(() => {
     if (!gathers) return;
-
-    const handleNavigate = () => {
-      setSlideDirection("right");
-      setPrevPageUrl("/home");
+    const handleNavigate = (gather: IGather) => {
+      setTransferGather(gather);
     };
-
     setCardDataArr(setGatherDataToCardCol(gathers, handleNavigate).slice(0, 3));
   }, [gathers]);
 
@@ -68,7 +66,7 @@ export default function HomeGatherCol() {
 
 export const setGatherDataToCardCol = (
   gathers: IGather[],
-  func?: () => void,
+  func?: (gather: IGather) => void,
 ): IPostThumbnailCard[] => {
   const cardCol: IPostThumbnailCard[] = gathers.map((gather, idx) => ({
     title: gather.title,
@@ -76,7 +74,7 @@ export const setGatherDataToCardCol = (
       gather.place + " · " + gather.type.title + " · " + dayjs(gather.date).format("M월 D일(ddd)"),
     participants: [gather.user, ...gather.participants.map((par) => par.user)] as IUserSummary[],
     url: `/gather/${gather.id}`,
-    func,
+    func: () => func(gather),
     image: {
       url: gather.image || getRandomImage(),
       priority: idx < 4,
