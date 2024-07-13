@@ -164,10 +164,17 @@ export const EVENT_CONTENT_2024: Record<string, Content[]> = {
       text: "",
     },
     {
+      content: "정기모임 진행 주간",
+      start: 19,
+      end: 21,
+      color: "var(--color-mint)",
+      text: "",
+    },
+    {
       content: "조모임 진행 기간",
       start: 25,
       end: 28,
-      color: "var(--color-mint)",
+      color: "var(--color-orange)",
       text: "",
     },
   ],
