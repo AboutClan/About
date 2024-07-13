@@ -23,12 +23,7 @@ export const MAIN_BANNER_IMAGE: BannerProps[] = [
     category: "group",
     url: "/group",
   },
-  {
-    image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/KakaoTalk_20240708_164733650.png",
-    category: "mt",
-    url: "https://mewing-sombrero-e36.notion.site/MT-8a80cd27947c4d16a4dc04afca11693d",
-  },
+
   {
     image:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/%EC%8A%A4%ED%84%B0%EB%94%94.png",
@@ -42,6 +37,12 @@ export const GATHER_BANNER_IMAGE: BannerProps[] = [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/0627-%EB%AA%A8%EC%9E%84-%EB%B0%B0%EB%84%88-%EC%B5%9C%EC%A2%85.png",
     category: "gather",
     url: "/gather",
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/KakaoTalk_20240708_164733650.png",
+    category: "mt",
+    url: "https://mewing-sombrero-e36.notion.site/MT-8a80cd27947c4d16a4dc04afca11693d",
   },
 ];
 export const CLUB_BANNER_IMAGE: BannerProps[] = [
