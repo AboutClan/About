@@ -6,7 +6,7 @@ import { AlphabetIcon } from "../../components/atoms/Icons/AlphabetIcon";
 import { ActiveIcon } from "../../components/atoms/Icons/NoticeIcons";
 import { NOTICE_ACTIVE_LOG } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
-import { useCompleteToast, useErrorToast, useFailToast } from "../../hooks/custom/CustomToast";
+import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";
 import { useUserFriendMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { useAlphabetMutation } from "../../hooks/user/sub/collection/mutations";
@@ -22,7 +22,7 @@ interface INoticeActive {
 function NoticeActive({ activeLogs }: INoticeActive) {
   const completeToast = useCompleteToast();
   const errorToast = useErrorToast();
-  const failToast = useFailToast();
+
   let statusType: "approval" | "refusal" | "response";
 
   const resetQueryData = useResetQueryData();
