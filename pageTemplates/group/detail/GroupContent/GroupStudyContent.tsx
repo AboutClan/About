@@ -1,23 +1,23 @@
-import { useState } from "react";
 import styled from "styled-components";
 
 import TabNav, { ITabNavOptions } from "../../../../components/molecules/navs/TabNav";
+import { GroupContentCategory } from "../../../../pages/group/[id]";
+import { DispatchType } from "../../../../types/hooks/reactTypes";
 import { IGroup } from "../../../../types/models/groupTypes/group";
 import ContentAttend from "./ContentAttendance";
 import ContentChat from "./ContentChat";
+import ContentFeed from "./ContentFeed";
 import ContentGather from "./ContentGather";
 import ContentInfo from "./ContentInfo";
 
 interface IGroupContent {
   group: IGroup;
+  category: GroupContentCategory;
+  setCategory: DispatchType<GroupContentCategory>;
 }
 
-type Category = "정보" | "모임" | "출석부" | "채팅";
-
-function GroupContent({ group }: IGroupContent) {
-  const [category, setCategory] = useState<Category>("정보");
-
-  const categoryArr: Category[] = ["정보", "출석부", "모임", "채팅"];
+function GroupContent({ group, category, setCategory }: IGroupContent) {
+  const categoryArr: GroupContentCategory[] = ["정보", "출석부", "피드", "모임"];
 
   const tabArr: ITabNavOptions[] = categoryArr.map((category) => ({
     text: category,
@@ -25,17 +25,16 @@ function GroupContent({ group }: IGroupContent) {
     flex: 1,
   }));
 
-
-
   return (
     <Layout>
       <TabNav tabOptionsArr={tabArr} selected={category} />
- 
       <ContentContainer>
         {category === "정보" ? (
           <ContentInfo group={group} />
         ) : category === "모임" ? (
           <ContentGather />
+        ) : category === "피드" ? (
+          <ContentFeed />
         ) : category === "출석부" ? (
           <ContentAttend group={group} />
         ) : (

@@ -22,6 +22,7 @@ export default function Textarea({
 }: ITextarea) {
   return (
     <ChakraTextarea
+      py="16px"
       value={value}
       ref={textareaRef}
       onChange={onChange}

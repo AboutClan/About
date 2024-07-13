@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/react";
-import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/dist/client/router";
 import styled from "styled-components";
 
 import { useCompleteToast, useErrorToast } from "../../../hooks/custom/CustomToast";
@@ -27,7 +27,7 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
 
   const GroupId = +router.query.id;
 
-  const isFull = data?.participants.length >= data?.memberCnt.max;
+  const isFull = data?.memberCnt.max !== 0 && data?.participants.length >= data?.memberCnt.max;
 
   const { mutate: cancel } = useGroupParticipationMutation("delete", GroupId, {
     onSuccess() {
