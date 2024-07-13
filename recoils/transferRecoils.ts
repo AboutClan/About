@@ -2,6 +2,7 @@ import { atom } from "recoil";
 
 import { IDailyCheckWinList } from "../constants/serviceConstants/dailyCheckConstatns";
 import { IGiftEntry } from "../pages/store";
+import { IGather } from "../types/models/gatherTypes/gatherTypes";
 import { IGroup } from "../types/models/groupTypes/group";
 import { MemberGroup } from "../types/models/member";
 import { IUser, IUserSummary } from "../types/models/userTypes/userInfoTypes";
@@ -23,6 +24,11 @@ export const transferShowDailyCheckState = atom<boolean>({
 
 export const transferUserSummaryState = atom<IUserSummary | IUser>({
   key: "TransferUserSummary",
+  default: null,
+});
+
+export const transferGatherDataState = atom<IGather>({
+  key: "transferGatherDataState",
   default: null,
 });
 

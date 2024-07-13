@@ -7,11 +7,25 @@ import { IGatherSummary } from "../../pages/review";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
 
-export const useGatherQuery = (options?: QueryOptions<IGather[]>) =>
-  useQuery<IGather[], AxiosError, IGather[]>(
-    [GATHER_CONTENT],
+export const useGatherQuery = (cursor?: number, options?: QueryOptions<IGather[]>) =>
+  useQuery<IGather[], AxiosError>(
+    [GATHER_CONTENT, cursor],
     async () => {
-      const res = await axios.get<IGather[]>(`${SERVER_URI}/gather`);
+      const res = await axios.get<IGather[]>(`${SERVER_URI}/gather`, {
+        params: { cursor },
+      });
+      return res.data;
+    },
+    options,
+  );
+
+export const useGatherIDQuery = (gatherId: number, options?: QueryOptions<IGather>) =>
+  useQuery<IGather, AxiosError, IGather>(
+    [GATHER_CONTENT, gatherId],
+    async () => {
+      const res = await axios.get<IGather>(`${SERVER_URI}/gather`, {
+        params: { gatherId },
+      });
       return res.data;
     },
     options,

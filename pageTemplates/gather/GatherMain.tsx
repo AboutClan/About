@@ -1,12 +1,14 @@
 import { Box } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
+import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import {
   IPostThumbnailCard,
   PostThumbnailCard,
 } from "../../components/molecules/cards/PostThumbnailCard";
 import { useGatherQuery } from "../../hooks/gather/queries";
+import { IGather } from "../../types/models/gatherTypes/gatherTypes";
 import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { setGatherDataToCardCol } from "../home/HomeGatherCol";
@@ -17,7 +19,17 @@ export default function GatherMain() {
   const location = convertLocationLangTo(searchParams.get("location") as LocationEn, "kr");
   const [cardDataArr, setCardDataArr] = useState<IPostThumbnailCard[]>();
 
-  const { data: gathers } = useGatherQuery();
+  const [gathers, setGathers] = useState<IGather[]>([]);
+  const [cursor, setCursor] = useState(0);
+  const loader = useRef<HTMLDivElement | null>(null);
+
+  const { data: gatherData, isLoading } = useGatherQuery(cursor);
+
+  useEffect(() => {
+    if (gatherData) {
+      setGathers((old) => [...old, ...gatherData]);
+    }
+  }, [gatherData]);
 
   useEffect(() => {
     if (!gathers) return;
@@ -30,6 +42,27 @@ export default function GatherMain() {
     );
   }, [gathers, location]);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setCursor((prevCursor) => prevCursor + 1);
+        }
+      },
+      { threshold: 1.0 },
+    );
+
+    if (loader.current) {
+      observer.observe(loader.current);
+    }
+
+    return () => {
+      if (loader.current) {
+        observer.unobserve(loader.current);
+      }
+    };
+  }, []);
+
   return (
     <Box m="0 16px">
       {cardDataArr && (
@@ -41,67 +74,12 @@ export default function GatherMain() {
           ))}
         </>
       )}
+      <div ref={loader} />
+      {isLoading && cardDataArr?.length && (
+        <Box position="relative" mt="32px">
+          <MainLoadingAbsolute size="sm" />
+        </Box>
+      )}
     </Box>
   );
 }
-
-// interface IGatherMain {
-//   category: LocationFilterType;
-// }
-
-// function GatherMain({ category }: IGatherMain) {
-//   const errorToast = useErrorToast();
-
-//   const setIsGatherLoading = useSetRecoilState(isGatherLoadingState);
-
-//   const [gatherData, setGatherData] = useState<IGather[]>();
-
-//   const { data: gatherAll, isLoading } = useGatherQuery({
-//     onError: errorToast,
-//   });
-
-//   useEffect(() => {
-//     if (isLoading) return;
-//     const lastGather = gatherAll.slice(-1)[0];
-//     localStorage.setItem(GATHER_ALERT, String(lastGather.id));
-//     let filtered = gatherAll;
-//     if (category !== "전체")
-//       filtered = gatherAll.filter((item) => {
-//         const [main, sub] = item.place.split("/");
-//         return main === category || sub === category || main === "전체";
-//       });
-//     setGatherData(filtered);
-//     setIsGatherLoading(false);
-//     // eslint-disable-next-line react-hooks/exhaustive-deps
-//   }, [category, gatherAll, isLoading]);
-
-//   const gathers = gatherData && [...gatherData];
-
-//   return (
-//     <Layout>
-//       {gathers ? (
-//         <>
-//           {gathers.map((gather, idx) => (
-//             <AboutGatherBlock
-//               key={idx}
-//               gather={gather}
-//               isImagePriority={idx < 4}
-//             />
-//           ))}
-//         </>
-//       ) : (
-//         <>
-//           {new Array(6).fill(0).map((_, idx) => (
-//             <GatherBlockSkeleton key={idx} />
-//           ))}
-//         </>
-//       )}
-//     </Layout>
-//   );
-// }
-
-// const Layout = styled.div`
-//   padding: var(--gap-4);
-// `;
-
-// export default GatherMain;
