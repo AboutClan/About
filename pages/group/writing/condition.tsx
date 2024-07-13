@@ -50,7 +50,7 @@ function WritingCondition() {
         : true,
     isFree: groupWriting?.isFree !== undefined ? groupWriting?.isFree : true,
     location:
-      groupWriting?.location !== undefined ? groupWriting?.location === userInfo?.location : true,
+      groupWriting?.location !== undefined ? groupWriting?.location === userInfo?.location : false,
     challenge: groupWriting?.challenge ? true : false,
     fee:
       groupWriting?.fee !== undefined

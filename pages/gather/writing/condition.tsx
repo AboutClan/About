@@ -32,7 +32,7 @@ function WritingCondition() {
     gender: gatherContent?.genderCondition || false,
     age: gatherContent?.age ? true : false,
     pre: gatherContent?.preCnt ? true : false,
-    location: gatherContent?.place ? gatherContent.place === session?.user.location : true,
+    location: gatherContent?.place ? gatherContent.place === session?.user.location : false,
     manager: true,
     kakaoUrl: false,
   });
