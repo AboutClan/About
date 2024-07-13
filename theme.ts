@@ -25,10 +25,24 @@ const theme = extendTheme({
       100: "#FEE7E7",
       800: "#FF69B4",
     },
+    badgeBrown: {
+      100: "#D2B48C",
+      800: "#6B4226",
+    },
+    badgeMojito: {
+      100: "#E0F2F1",
+      800: "#006400",
+    },
+
     badgeMint: {
       100: "#E6FFFA",
       800: "#00c2b3",
     },
+    badgeOcean: {
+      100: "#F0F8FF",
+      800: "#1E90FF",
+    },
+
     redMy: "#ff6b6b",
     mint: "#00c2b3",
     my: {

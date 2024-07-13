@@ -75,11 +75,11 @@ export default function GatherMain() {
         </>
       )}
       <div ref={loader} />
-      {isLoading && cardDataArr?.length && (
+      {isLoading && cardDataArr?.length ? (
         <Box position="relative" mt="32px">
           <MainLoadingAbsolute size="sm" />
         </Box>
-      )}
+      ) : undefined}
     </Box>
   );
 }

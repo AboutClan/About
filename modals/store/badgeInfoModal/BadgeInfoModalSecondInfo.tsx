@@ -10,7 +10,7 @@ function BadgeInfoModalSecondInfo() {
             딸기스무디
           </Badge>
         </div>
-        <Info>출석보상 획득 가능</Info>
+        <Info>23년도 이벤트 한정</Info>
       </Item>
       <Item>
         <div>
@@ -18,7 +18,7 @@ function BadgeInfoModalSecondInfo() {
             라벤더
           </Badge>
         </div>
-        <Info>출석보상 획득 가능</Info>
+        <Info>23년도 이벤트 한정</Info>
       </Item>
       <Item>
         <div>
@@ -26,7 +26,39 @@ function BadgeInfoModalSecondInfo() {
             민트초코
           </Badge>
         </div>
-        <Info>비공개</Info>
+        <Info>알파벳 수집 보상</Info>
+      </Item>
+      <Item>
+        <div>
+          <Badge fontSize={12} colorScheme="yellow">
+            바닐라
+          </Badge>
+        </div>
+        <Info>운영진 한정</Info>
+      </Item>
+      <Item>
+        <div>
+          <Badge fontSize={12} colorScheme="badgeBrown">
+            코코아
+          </Badge>
+        </div>
+        <Info>운영진 한정</Info>
+      </Item>
+      <Item>
+        <div>
+          <Badge fontSize={12} colorScheme="badgeMojito">
+            모히또
+          </Badge>
+        </div>
+        <Info>가을 한정 배지</Info>
+      </Item>
+      <Item>
+        <div>
+          <Badge fontSize={12} colorScheme="badgeOcean">
+            슈팅스타
+          </Badge>
+        </div>
+        <Info>가을 한정 배지</Info>
       </Item>
     </Layout>
   );
