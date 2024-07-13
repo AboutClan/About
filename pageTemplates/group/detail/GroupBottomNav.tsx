@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/react";
-import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/dist/client/router";
 import styled from "styled-components";
 
 import { useCompleteToast, useErrorToast } from "../../../hooks/custom/CustomToast";
@@ -27,6 +27,8 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
 
   const GroupId = +router.query.id;
 
+  const isFull = data?.participants.length >= data?.memberCnt.max;
+
   const { mutate: cancel } = useGroupParticipationMutation("delete", GroupId, {
     onSuccess() {
       completeToast("free", "참여 신청이 취소되었습니다.", true);
@@ -41,6 +43,11 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
   };
 
   const getButtonSettings = () => {
+    if (isFull) {
+      return {
+        text: "모집 인원 마감",
+      };
+    }
     if (isPending)
       return {
         text: "가입 대기중",
@@ -50,7 +57,7 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
       handleFunction: () => onClick("participate"),
     };
   };
-
+  console.log(data);
   const { text, handleFunction } = getButtonSettings();
 
   return (
@@ -62,7 +69,7 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
           maxW="var(--view-max-width)"
           borderRadius="var(--rounded)"
           disabled={!handleFunction}
-          colorScheme={handleFunction ? "mintTheme" : "redTheme"}
+          colorScheme={handleFunction ? "mintTheme" : "blackAlpha"}
           onClick={handleFunction}
         >
           {text}
