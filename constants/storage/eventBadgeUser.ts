@@ -21,10 +21,9 @@ export const EVENT_BADGE_딸기스무디 = [
   "3100505440",
 ];
 
-export const EVENT_BADGE_민트초코 = ["2259633694", "2542567004"];
+export const EVENT_BADGE_민트초코 = ["2259633694", "2542567004", "2757990240"];
 
 export const MANAGER_BADGE = [
-  "2757990240",
   "2542567004",
   "2639485003",
   "2436930499",
