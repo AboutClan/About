@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import SuccessScreen from "../../components/layouts/SuccessScreen";
@@ -9,7 +8,6 @@ import { GROUP_STUDY_ALL } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
 import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";
 import { useGroupWritingMutation } from "../../hooks/groupStudy/mutations";
-import { transferGroupWritingDataState } from "../../recoils/transferRecoils";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
 import { IGroup, IGroupWriting } from "../../types/models/groupTypes/group";
@@ -25,7 +23,7 @@ function GroupConfirmModal({ setIsModal, groupWriting }: IGroupConfirmModal) {
   const completeToast = useCompleteToast();
 
   const [isSuccessScreen, setIsSuccessScreen] = useState(false);
-  const setGroup = useSetRecoilState(transferGroupWritingDataState);
+
   const resetQueryData = useResetQueryData();
 
   const resetLocalStorage = () => {
@@ -35,7 +33,7 @@ function GroupConfirmModal({ setIsModal, groupWriting }: IGroupConfirmModal) {
   const { mutate } = useGroupWritingMutation("post", {
     onSuccess() {
       resetQueryData([GROUP_STUDY_ALL]);
-      setGroup(null);
+
       resetLocalStorage();
       setIsSuccessScreen(true);
     },
@@ -44,7 +42,7 @@ function GroupConfirmModal({ setIsModal, groupWriting }: IGroupConfirmModal) {
   const { mutate: updateGroup } = useGroupWritingMutation("patch", {
     onSuccess() {
       resetLocalStorage();
-      setGroup(null);
+
       completeToast("free", "수정되었습니다.");
       resetQueryData([GROUP_STUDY_ALL], () => {
         router.push(`/group/${groupWriting.id}`);

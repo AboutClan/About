@@ -8,10 +8,10 @@ import Slide from "../../../components/layouts/PageSlide";
 import ParticipateModal from "../../../pageTemplates/group/ParticipateModal";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-import { transferGroupWritingDataState } from "../../../recoils/transferRecoils";
+import { transferGroupDataState } from "../../../recoils/transferRecoils";
 
 function Participate() {
-  const group = useRecoilValue(transferGroupWritingDataState);
+  const group = useRecoilValue(transferGroupDataState);
 
   const [questionText, setQuestionText] = useState("");
   const [isModal, setIsModal] = useState(false);
