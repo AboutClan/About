@@ -39,4 +39,18 @@ export const NATIVE_METHODS = {
       }),
     );
   },
+  KAKAO_LOGIN: () => {
+    window.ReactNativeWebView?.postMessage(
+      JSON.stringify({
+        type: NATIVE_CUSTOM_EVENTS.KAKAO_LOGIN,
+      }),
+    );
+  },
+  APPLE_LOGIN: () => {
+    window.ReactNativeWebView?.postMessage(
+      JSON.stringify({
+        type: NATIVE_CUSTOM_EVENTS.APPLE_LOGIN,
+      }),
+    );
+  },
 };

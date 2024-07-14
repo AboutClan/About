@@ -1,12 +1,40 @@
 import { Mongoose } from "mongoose";
 
+interface KakaoAuthParams {
+  redirectUri?: string;
+  nonce?: string;
+  throughTalk: boolean;
+  state?: string;
+}
+
 export declare global {
   interface Window {
     ReactNativeWebView: {
       postMessage: (message: string) => void;
     };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    Kakao: any;
+    Kakao: {
+      init: (keyValue: string) => void;
+      isInitialized: () => boolean;
+      Auth: {
+        authorize: (params: KakaoAuthParams) => void;
+      };
+      Link: {
+        createDefaultButton: (options: unknown) => void;
+      };
+    };
+    AppleID: {
+      auth: {
+        init: ({
+          clientId: string,
+          scope: string,
+          redirectURI: string,
+          state: string,
+          usePopup: boolean,
+          nonce: string,
+        }) => void;
+        signIn: () => void;
+      };
+    };
   }
   /* eslint-disable no-var */
   var mongoose: {
