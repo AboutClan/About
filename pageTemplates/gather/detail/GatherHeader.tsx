@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -38,7 +38,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
 
   return (
     <>
-      <Header title="" url="/gather">
+      <Header title="">
         <Flex>
           {session?.user.uid === (organizer as IUserSummary)?.uid && (
             <IconWrapper onClick={onClick}>
