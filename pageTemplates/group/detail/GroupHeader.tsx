@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -56,7 +56,7 @@ function GroupHeader({ group }: IGroupHeader) {
 
   return (
     <>
-      <Header title="소모임" url="/group">
+      <Header title={group?.title} url="/group">
         <Flex>
           {session?.user.uid === organizer?.uid && (
             <IconWrapper onClick={onClick}>

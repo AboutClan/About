@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -12,7 +12,7 @@ import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { getUrlWithLocationAndDate } from "../../utils/convertUtils/convertTypes";
 
-export type HomeTab = "스터디" | "모임" | "동아리" | "기타";
+export type HomeTab = "스터디" | "모임" | "캘린더" | "추천";
 
 interface HomeTabProps {
   tab: HomeTab;
@@ -34,7 +34,7 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
     study: "스터디",
     gather: "모임",
     club: "동아리",
-    temp: "기타",
+    temp: "추천",
   };
 
   useEffect(() => {
@@ -63,10 +63,10 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
         `/home?tab=gather&location=${locationParam || convertLocationLangTo(session?.user.location || "suw", "en")}`,
       );
     }
-    if (tab === "기타") {
+    if (tab === "추천") {
       router.replace(`/home?tab=temp`);
     }
-    if (tab === "동아리") {
+    if (tab === "캘린더") {
       router.replace(`/home?tab=club`);
     }
 
@@ -90,13 +90,13 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
       flex: 1,
     },
     {
-      text: "동아리",
-      func: () => handleTabMove("동아리"),
+      text: "캘린더",
+      func: () => handleTabMove("캘린더"),
       flex: 1,
     },
     {
-      text: "기타",
-      func: () => handleTabMove("기타"),
+      text: "추천",
+      func: () => handleTabMove("추천"),
       flex: 1,
     },
   ];

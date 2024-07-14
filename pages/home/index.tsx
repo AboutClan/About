@@ -23,14 +23,14 @@ function Home() {
       <Slide>
         <HomeCategoryNav tab={tab} setTab={setTab} />
         <>
-          {tab !== "기타" && <EventBanner tab={tab} />}
+          {tab !== "추천" && <EventBanner tab={tab} />}
           {tab === "스터디" ? (
             <HomeStudySection />
           ) : tab === "모임" ? (
             <HomeGatherSection />
-          ) : tab === "동아리" ? (
+          ) : tab === "캘린더" ? (
             <HomeClubSection />
-          ) : tab === "기타" ? (
+          ) : tab === "추천" ? (
             <Flex fontSize="20px" justify="center" align="center" h="200px">
               COMMING SOON
             </Flex>

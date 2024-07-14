@@ -26,8 +26,7 @@ function EventBanner({ tab }: EventBannerProps) {
     imageUrl: banner.image,
   }));
 
-
-  const isLightBanner = tab === "동아리";
+  const isLightBanner = tab === "캘린더";
 
   return (
     <>
