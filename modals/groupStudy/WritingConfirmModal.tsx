@@ -9,7 +9,7 @@ import { GROUP_STUDY_ALL } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
 import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";
 import { useGroupWritingMutation } from "../../hooks/groupStudy/mutations";
-import { transferGroupDataState } from "../../recoils/transferRecoils";
+import { transferGroupWritingDataState } from "../../recoils/transferRecoils";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
 import { IGroup, IGroupWriting } from "../../types/models/groupTypes/group";
@@ -25,7 +25,7 @@ function GroupConfirmModal({ setIsModal, groupWriting }: IGroupConfirmModal) {
   const completeToast = useCompleteToast();
 
   const [isSuccessScreen, setIsSuccessScreen] = useState(false);
-  const setGroup = useSetRecoilState(transferGroupDataState);
+  const setGroup = useSetRecoilState(transferGroupWritingDataState);
   const resetQueryData = useResetQueryData();
 
   const resetLocalStorage = () => {
