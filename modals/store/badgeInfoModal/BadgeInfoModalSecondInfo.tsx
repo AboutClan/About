@@ -58,7 +58,7 @@ function BadgeInfoModalSecondInfo() {
             슈팅스타
           </Badge>
         </div>
-        <Info>가을 한정 배지</Info>
+        <Info>여름 한정 배지</Info>
       </Item>
     </Layout>
   );
