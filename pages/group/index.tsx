@@ -31,11 +31,11 @@ interface ICategory {
   sub: string | null;
 }
 
-function Index() {
+function GroupPage() {
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
   const categoryIdx = searchParams.get("category");
-  const filterType = searchParams.get("filter");
+  const filterType = searchParams.get("filter") as "pending" | "end";
   const router = useRouter();
   const { data: session } = useSession();
   const isGuest = session?.user.name === "guest";
@@ -51,9 +51,10 @@ function Index() {
   const [groupStudies, setGroupStudies] = useState<IGroup[]>();
   const [myGroups, setMyGroups] = useState<IGroup[]>([]);
   const [isRuleModal, setIsRuleModal] = useState(false);
-
-  const { data: groups, isLoading } = useGroupQuery();
-
+  const { data: groups, isLoading } = useGroupQuery(filterType, {
+    enabled: !!filterType,
+  });
+ 
   useEffect(() => {
     localStorage.setItem(GROUP_WRITING_STORE, null);
     setCategory({
@@ -61,15 +62,14 @@ function Index() {
       sub: null,
     });
 
-    const filterToStatus = {
-      open: "모집중",
-      gathering: "소그룹",
+    const filterToStatus: Record<string, "모집중" | "종료"> = {
+      pending: "모집중",
       end: "종료",
     };
 
     setStatus(filterType ? filterToStatus[filterType] : "모집중");
     if (!searchParams.get("filter")) {
-      newSearchParams.append("filter", "open");
+      newSearchParams.append("filter", "pending");
       newSearchParams.append("category", "0");
       router.replace(`/group?${newSearchParams.toString()}`);
     }
@@ -81,8 +81,7 @@ function Index() {
       return; // 첫 렌더링 시에는 여기서 종료
     }
     const statusToEn = {
-      모집중: "open",
-      소그룹: "gathering",
+      모집중: "pending",
       종료: "end",
     };
 
@@ -116,7 +115,7 @@ function Index() {
 
     const filtered2 =
       status === "모집중"
-        ? filtered.filter((item) => item.status === "open" || item.status === "pending")
+        ? filtered.filter((item) => item.status === "pending")
         : status === "종료"
           ? filtered.filter((item) => item.status === "end")
           : filtered;
@@ -198,4 +197,4 @@ const Main = styled.main`
   margin: 8px var(--gap-4);
 `;
 
-export default Index;
+export default GroupPage;

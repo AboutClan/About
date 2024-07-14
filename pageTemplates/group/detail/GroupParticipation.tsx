@@ -37,7 +37,7 @@ function GroupParticipation({ data }: IGroupParticipation) {
   return (
     <Layout>
       <Header>
-        <span>{status === "open" ? "확정 인원" : "참여중인 인원"}</span>
+        <span>참여중인 인원</span>
         <span>{participantsCnt}</span>
         <span>/</span>
         {data?.memberCnt.max ? (

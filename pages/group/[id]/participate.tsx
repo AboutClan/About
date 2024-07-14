@@ -8,14 +8,13 @@ import Slide from "../../../components/layouts/PageSlide";
 import ParticipateModal from "../../../pageTemplates/group/ParticipateModal";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-import { transferGroupDataState } from "../../../recoils/transferRecoils";
+import { transferGroupWritingDataState } from "../../../recoils/transferRecoils";
 
 function Participate() {
-  const group = useRecoilValue(transferGroupDataState);
+  const group = useRecoilValue(transferGroupWritingDataState);
 
   const [questionText, setQuestionText] = useState("");
   const [isModal, setIsModal] = useState(false);
-
 
   const onClick = () => {
     setIsModal(true);
@@ -61,7 +60,6 @@ function Participate() {
           isFree={!questionText}
           answer={questionText}
           id={group.id}
-          
           feeText={group.feeText}
           setIsModal={setIsModal}
         />

@@ -3,7 +3,7 @@ import { atom } from "recoil";
 import { IDailyCheckWinList } from "../constants/serviceConstants/dailyCheckConstatns";
 import { IGiftEntry } from "../pages/store";
 import { IGather } from "../types/models/gatherTypes/gatherTypes";
-import { IGroup } from "../types/models/groupTypes/group";
+import { IGroup, IGroupWriting } from "../types/models/groupTypes/group";
 import { MemberGroup } from "../types/models/member";
 import { IUser, IUserSummary } from "../types/models/userTypes/userInfoTypes";
 import { Alphabet } from "../types/services/alphabetTypes";
@@ -34,6 +34,11 @@ export const transferGatherDataState = atom<IGather>({
 
 export const transferGroupDataState = atom<IGroup>({
   key: "transferGroupDataState",
+  default: null,
+});
+
+export const transferGroupWritingDataState = atom<IGroupWriting>({
+  key: "transferGroupWritingDataState",
   default: null,
 });
 

@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 import { GROUP_GATHERING_IMAGE } from "../../../assets/images/randomImages";
@@ -13,7 +13,7 @@ import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../components/layouts/PageSlide";
 import { GROUP_STUDY_ALL } from "../../../constants/keys/queryKeys";
 import { useGroupAttendancePatchMutation } from "../../../hooks/groupStudy/mutations";
-import { useGroupQuery } from "../../../hooks/groupStudy/queries";
+import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
 import { checkGroupGathering } from "../../../libs/group/checkGroupGathering";
 import GroupBottomNav from "../../../pageTemplates/group/detail/GroupBottomNav";
 import GroupComments from "../../../pageTemplates/group/detail/GroupComment";
@@ -32,17 +32,14 @@ function GroupDetail() {
 
   const [group, setGroup] = useState<IGroup>();
 
-  const setTransferGroup = useSetRecoilState(transferGroupDataState);
+  const transferGroup = useRecoilValue(transferGroupDataState);
 
-  const { data: groups } = useGroupQuery();
+  const { data: groupData } = useGroupIdQuery(id, { enabled: !!id && !transferGroup });
 
   useEffect(() => {
-    if (groups) {
-      const findGroup = groups.find((item) => item.id + "" === id);
-      setGroup(findGroup);
-      setTransferGroup(findGroup);
-    }
-  }, [groups, id]);
+    if (transferGroup) setGroup(transferGroup);
+    else if (groupData) setGroup(groupData);
+  }, [transferGroup, groupData]);
 
   const queryClient = useQueryClient();
 

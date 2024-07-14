@@ -42,7 +42,7 @@ function BadgeInfoModalSecondInfo() {
             코코아
           </Badge>
         </div>
-        <Info>운영진 한정</Info>
+        <Info>출석체크 랜덤 보상</Info>
       </Item>
       <Item>
         <div>
@@ -50,7 +50,7 @@ function BadgeInfoModalSecondInfo() {
             모히또
           </Badge>
         </div>
-        <Info>가을 한정 배지</Info>
+        <Info>소모임장 or 서포터즈</Info>
       </Item>
       <Item>
         <div>
