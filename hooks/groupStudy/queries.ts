@@ -10,7 +10,6 @@ import { GroupStatus, IGroup, IGroupAttendance } from "../../types/models/groupT
 
 export const useGroupQuery = (
   filter: GroupStatus,
-
   options?: QueryOptions<IGroup[]>,
 ) =>
   useQuery<IGroup[], AxiosError, IGroup[]>(
