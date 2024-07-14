@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { useRouter } from "next/router";
+import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -15,7 +15,6 @@ interface IGroupBlock {
 }
 
 function GroupBlock({ group }: IGroupBlock) {
-  const router = useRouter();
   const { data: session } = useSession();
   const failToast = useFailToast();
   const infoArrText = ["그룹장", "인원", "조건", "참여금", "진행", "개설"];
@@ -51,23 +50,15 @@ function GroupBlock({ group }: IGroupBlock) {
     }
 
     setGroup(group);
-    router.push(`/group/${group.id}`);
   };
 
   const getBadgeText = () => {
- 
     const status = group.status;
     const min = group.memberCnt.min;
     const max = group.memberCnt.max;
     const participantCnt = group.participants.length + (group.id === 33 ? 3 : 0);
 
-    if (status === "gathering") {
-      return {
-        text: "모집중",
-        color: "mintTheme",
-      };
-    }
-    if (status === "open" || status === "pending") {
+    if (status === "pending") {
       if (participantCnt < min) {
         return {
           text: `개설까지 ${min - participantCnt}명 남음`,
@@ -99,30 +90,32 @@ function GroupBlock({ group }: IGroupBlock) {
   };
 
   return (
-    <Layout onClick={onClick}>
-      <Header>
-        <div>
-          <span>{group.category.main}</span>·<span>{group.category.sub}</span>
-          {!group?.isFree && <i className="fa-regular fa-lock-key-hole" />}
-        </div>
-        <Badge
-          text={getBadgeText().text}
-          colorScheme={getBadgeText().color}
-          type="outline"
-          size="md"
-        />
-      </Header>
-      <Title>{group.title}</Title>
-      <Info>
-        {infoArrText.map((item) => (
-          <InfoItem key={item}>
-            <span>{item}</span>
-            <span>{groupInfo[item]}</span>
-          </InfoItem>
-        ))}
-      </Info>
-      <Content>{group.guide}</Content>
-    </Layout>
+    <Link href={`/group/${group.id}`}>
+      <Layout onClick={onClick}>
+        <Header>
+          <div>
+            <span>{group.category.main}</span>·<span>{group.category.sub}</span>
+            {!group?.isFree && <i className="fa-regular fa-lock-key-hole" />}
+          </div>
+          <Badge
+            text={getBadgeText().text}
+            colorScheme={getBadgeText().color}
+            type="outline"
+            size="md"
+          />
+        </Header>
+        <Title>{group.title}</Title>
+        <Info>
+          {infoArrText.map((item) => (
+            <InfoItem key={item}>
+              <span>{item}</span>
+              <span>{groupInfo[item]}</span>
+            </InfoItem>
+          ))}
+        </Info>
+        <Content>{group.guide}</Content>
+      </Layout>
+    </Link>
   );
 }
 
