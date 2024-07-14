@@ -66,15 +66,16 @@ export default function HomeGatherCol() {
 
 export const setGatherDataToCardCol = (
   gathers: IGather[],
-  func?: (gather: IGather) => void,
+  func: (gather: IGather) => void,
 ): IPostThumbnailCard[] => {
+
   const cardCol: IPostThumbnailCard[] = gathers.map((gather, idx) => ({
     title: gather.title,
     subtitle:
       gather.place + " · " + gather.type.title + " · " + dayjs(gather.date).format("M월 D일(ddd)"),
     participants: [gather.user, ...gather.participants.map((par) => par.user)] as IUserSummary[],
     url: `/gather/${gather.id}`,
-    func: () => func(gather),
+    func: func ? () => func(gather) : undefined,
     image: {
       url: gather.image || getRandomImage(),
       priority: idx < 4,

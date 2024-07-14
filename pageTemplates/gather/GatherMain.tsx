@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { useSetRecoilState } from "recoil";
 
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import {
@@ -8,6 +9,7 @@ import {
   PostThumbnailCard,
 } from "../../components/molecules/cards/PostThumbnailCard";
 import { useGatherQuery } from "../../hooks/gather/queries";
+import { transferGatherDataState } from "../../recoils/transferRecoils";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
 import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
@@ -19,15 +21,18 @@ export default function GatherMain() {
   const location = convertLocationLangTo(searchParams.get("location") as LocationEn, "kr");
   const [cardDataArr, setCardDataArr] = useState<IPostThumbnailCard[]>();
 
+  const setTransferGatherData = useSetRecoilState(transferGatherDataState);
   const [gathers, setGathers] = useState<IGather[]>([]);
   const [cursor, setCursor] = useState(0);
   const loader = useRef<HTMLDivElement | null>(null);
+  const firstLoad = useRef(true);
 
   const { data: gatherData, isLoading } = useGatherQuery(cursor);
 
   useEffect(() => {
     if (gatherData) {
       setGathers((old) => [...old, ...gatherData]);
+      firstLoad.current = false;
     }
   }, [gatherData]);
 
@@ -38,6 +43,7 @@ export default function GatherMain() {
         location
           ? gathers.filter((gather) => gather.place === "전체" || gather.place.includes(location))
           : gathers,
+        (gather: IGather) => setTransferGatherData(gather),
       ),
     );
   }, [gathers, location]);
@@ -45,7 +51,7 @@ export default function GatherMain() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) {
+        if (entries[0].isIntersecting && !firstLoad.current) {
           setCursor((prevCursor) => prevCursor + 1);
         }
       },
