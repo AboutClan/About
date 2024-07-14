@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { GROUP_GATHERING_IMAGE } from "../../../assets/images/randomImages";
@@ -32,13 +32,18 @@ function GroupDetail() {
 
   const [group, setGroup] = useState<IGroup>();
 
-  const transferGroup = useRecoilValue(transferGroupDataState);
+  const [transferGroup, setTransferGroup] = useRecoilState(transferGroupDataState);
 
   const { data: groupData } = useGroupIdQuery(id, { enabled: !!id && !transferGroup });
 
   useEffect(() => {
-    if (transferGroup) setGroup(transferGroup);
-    else if (groupData) setGroup(groupData);
+    if (transferGroup) {
+      setGroup(transferGroup);
+      setTransferGroup(transferGroup);
+    } else if (groupData) {
+      setGroup(groupData);
+      setTransferGroup(groupData);
+    }
   }, [transferGroup, groupData]);
 
   const queryClient = useQueryClient();
