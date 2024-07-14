@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Link, { LinkProps } from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
@@ -93,20 +93,20 @@ const navItems: INavButtonProps[] = [
     url: "/home",
   },
   {
-    activeIcon: <i className="fa-solid fa-ranking-star fa-xl" />,
-    defaultIcon: <i className="fa-light fa-ranking-star fa-xl" />,
-    text: "랭킹",
-    url: "/statistics",
+    activeIcon: <i className="fa-solid fa-users-rectangle fa-xl" />,
+    defaultIcon: <i className="fa-light fa-users-rectangle fa-xl" />,
+    text: "소모임",
+    url: "/group",
   },
   {
     defaultIcon: <i className="fa-light fa-circle-plus" style={{ fontSize: "36px" }} />,
     url: "",
   },
   {
-    activeIcon: <i className="fa-solid fa-users-rectangle fa-xl" />,
-    defaultIcon: <i className="fa-light fa-users-rectangle fa-xl" />,
-    text: "소모임",
-    url: "/group",
+    activeIcon: <i className="fa-solid fa-ranking-star fa-xl" />,
+    defaultIcon: <i className="fa-light fa-ranking-star fa-xl" />,
+    text: "랭킹",
+    url: "/statistics",
   },
   {
     activeIcon: <i className="fa-solid fa-user fa-xl" />,
