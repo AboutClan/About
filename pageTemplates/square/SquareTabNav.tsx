@@ -1,4 +1,5 @@
 import { Box } from "@chakra-ui/react";
+
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import { DispatchType } from "../../types/hooks/reactTypes";
 
