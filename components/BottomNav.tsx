@@ -7,6 +7,7 @@ import styled from "styled-components";
 
 import { getStudyStandardDate } from "../libs/study/date/getStudyStandardDate";
 import { slideDirectionState } from "../recoils/navigationRecoils";
+import { isWebView } from "../utils/convertUtils/appEnvUtils";
 import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
 import { NATIVE_METHODS } from "../utils/nativeMethodUtils";
 import { detectDevice } from "../utils/validationUtils";
@@ -69,7 +70,9 @@ function NavButton({ text, url, activeIcon, defaultIcon, active, idx }: INavButt
   const setSlideDirection = useSetRecoilState(slideDirectionState);
 
   const handleMove = () => {
-    NATIVE_METHODS.HAPTIC();
+    if (isWebView()) {
+      NATIVE_METHODS.HAPTIC();
+    }
     setSlideDirection(null);
   };
 
