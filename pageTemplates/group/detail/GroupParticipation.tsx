@@ -10,7 +10,6 @@ interface IGroupParticipation {
 }
 
 function GroupParticipation({ data }: IGroupParticipation) {
-  const status = data.status;
   const participantsCnt = data.participants.length;
 
   const isSecret = data?.isSecret;
