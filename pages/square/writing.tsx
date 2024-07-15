@@ -12,8 +12,6 @@ import Slide from "../../components/layouts/PageSlide";
 
 import WritingCategory from "../../pageTemplates/square/writing/WritingCategory";
 
-import WritingType from "../../pageTemplates/square/writing/WritingType";
-
 function SquareWritingPage() {
   const router = useRouter();
   const { register, handleSubmit, watch } = useForm();
@@ -41,7 +39,7 @@ function SquareWritingPage() {
       <Slide>
         <LayoutForm onSubmit={handleSubmit(onSubmit)} id="plazaWrite">
           <WritingCategory register={register} />
-          <WritingType setIsVote={setIsVote} register={register} />
+
           <Input placeholder="테스트" />
           <Textarea placeholder="테스트2" />
         </LayoutForm>
