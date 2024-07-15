@@ -2,9 +2,9 @@
 
 import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
+import { signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -17,7 +17,7 @@ import BaseModal from "./BaseModal";
 import BaseScript from "./BaseScript";
 import Seo from "./Seo";
 
-export const BASE_BOTTOM_NAV_SEGMENT = ["home", "statistics", "user", "group"];
+export const BASE_BOTTOM_NAV_SEGMENT = ["home", "statistics", "user", "group", "square"];
 interface ILayout {
   children: React.ReactNode;
 }
@@ -72,7 +72,6 @@ function Layout({ children }: ILayout) {
           <PageTracker />
           {isBottomNavCondition && <BottomNav />}
           {isGuest && isBottomNavCondition && <GuestBottomNav />}
-
           <BaseModal isGuest={isGuest} isError={isErrorModal} setIsError={setIsErrorModal} />
         </>
       )}
