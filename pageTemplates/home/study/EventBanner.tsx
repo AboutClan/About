@@ -18,7 +18,7 @@ function EventBanner({ tab }: EventBannerProps) {
   const imageArr: ImageBannerProp[] = (
     tab === "스터디" || !tab
       ? MAIN_BANNER_IMAGE
-      : tab === "모임"
+      : tab === "번개"
         ? GATHER_BANNER_IMAGE
         : CLUB_BANNER_IMAGE
   ).map((banner) => ({

@@ -12,7 +12,7 @@ import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { getUrlWithLocationAndDate } from "../../utils/convertUtils/convertTypes";
 
-export type HomeTab = "스터디" | "모임" | "캘린더" | "추천";
+export type HomeTab = "스터디" | "번개" | "캘린더" | "추천";
 
 interface HomeTabProps {
   tab: HomeTab;
@@ -58,7 +58,7 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
       const initialUrl = getUrlWithLocationAndDate(locationParam, dateParam, session.user.location);
       router.replace(initialUrl);
     }
-    if (tab === "모임") {
+    if (tab === "번개") {
       router.replace(
         `/home?tab=gather&location=${locationParam || convertLocationLangTo(session?.user.location || "suw", "en")}`,
       );
@@ -85,8 +85,8 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
       flex: 1,
     },
     {
-      text: "모임",
-      func: () => handleTabMove("모임"),
+      text: "번개",
+      func: () => handleTabMove("번개"),
       flex: 1,
     },
     {

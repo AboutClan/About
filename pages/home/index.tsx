@@ -26,7 +26,7 @@ function Home() {
           {tab !== "추천" && <EventBanner tab={tab} />}
           {tab === "스터디" ? (
             <HomeStudySection />
-          ) : tab === "모임" ? (
+          ) : tab === "번개" ? (
             <HomeGatherSection />
           ) : tab === "캘린더" ? (
             <HomeClubSection />

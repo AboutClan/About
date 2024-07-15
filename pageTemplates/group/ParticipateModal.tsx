@@ -1,11 +1,12 @@
 import { Button } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useQueryClient } from "react-query";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { PopOverIcon } from "../../components/atoms/Icons/PopOverIcon";
-import { GROUP_STUDY_ALL } from "../../constants/keys/queryKeys";
-import { useResetQueryData } from "../../hooks/custom/CustomHooks";
+import { GROUP_STUDY } from "../../constants/keys/queryKeys";
 import { useCompleteToast, useFailToast } from "../../hooks/custom/CustomToast";
 import {
   useGroupParticipationMutation,
@@ -14,6 +15,7 @@ import {
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { IFooterOptions, ModalFooterTwo, ModalLayout } from "../../modals/Modals";
+import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
 
@@ -34,7 +36,7 @@ function ParticipateModal({ isFree, id, setIsModal, answer }: IParticipateModal)
   const { mutate: getPoint } = usePointSystemMutation("point");
   const { mutate: getDeposit } = usePointSystemMutation("deposit");
 
-  const resetQueryData = useResetQueryData();
+  const setTransferGroup = useSetRecoilState(transferGroupDataState);
 
   const chargePoint = () => {
     if (selectBtn === "point") {
@@ -45,20 +47,26 @@ function ParticipateModal({ isFree, id, setIsModal, answer }: IParticipateModal)
     }
   };
 
+  const queryClient = useQueryClient();
+
+  const resetCache = () => {
+    setTransferGroup(null);
+    queryClient.invalidateQueries([GROUP_STUDY, id]);
+    router.push(`/group/${id}`);
+  };
+
   const { mutate: participate } = useGroupParticipationMutation("post", id, {
     onSuccess() {
       if (isFree) chargePoint();
       completeToast("free", "가입이 완료되었습니다.");
-      resetQueryData([GROUP_STUDY_ALL]);
-      router.push("/group");
+      resetCache();
     },
   });
-
+ 
   const { mutate: sendRegisterForm } = useGroupWaitingMutation(id, {
     onSuccess() {
       completeToast("free", "가입 신청이 완료되었습니다.");
-      resetQueryData([GROUP_STUDY_ALL]);
-      router.push("/group");
+      resetCache();
     },
   });
 
