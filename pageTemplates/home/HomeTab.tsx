@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -32,7 +32,7 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
 
   const matchParam = {
     study: "스터디",
-    gather: "모임",
+    gather: "번개",
     club: "동아리",
     temp: "추천",
   };
