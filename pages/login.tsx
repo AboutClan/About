@@ -130,7 +130,7 @@ const Login: NextPage<{
           활동 및 신규 가입은 <u style={{ textUnderlineOffset: "4px" }}> 카카오 로그인</u>을
           이용해주세요!
         </Box>
-        <Link mt="12px" href="https://open.kakao.com/o/sjDgVzmf" isExternal fontSize="13px">
+        <Link mt="8px" href="https://open.kakao.com/o/sjDgVzmf" isExternal fontSize="13px">
           <u style={{ textUnderlineOffset: "4px", color: "var(--gray-700)" }}>
             로그인이 안되시나요?
           </u>
