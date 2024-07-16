@@ -22,7 +22,7 @@ const ExternalLink = React.forwardRef<HTMLElement, PropsWithChildren<IExternalLi
           ...props,
           ref,
           className,
-          onClick: NATIVE_METHODS.OPEN_EXTERNAL_LINK(href),
+          onClick: () => NATIVE_METHODS.OPEN_EXTERNAL_LINK(href),
         },
         children,
       );
