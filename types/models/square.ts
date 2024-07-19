@@ -8,6 +8,7 @@ interface BaseSecretSquareItem extends ITimeStamps {
   author: string;
   title: string;
   content: string;
+  viewCount: number;
 }
 
 interface GeneralSecretSquareItem extends BaseSecretSquareItem {
@@ -17,7 +18,7 @@ interface GeneralSecretSquareItem extends BaseSecretSquareItem {
 interface PollItem {
   id: string;
   value: string;
-  count: string;
+  count: number;
 }
 
 interface PollSecretSquareItem extends BaseSecretSquareItem {
