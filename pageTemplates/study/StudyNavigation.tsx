@@ -24,7 +24,6 @@ import { myStudyState, studyDateStatusState } from "../../recoils/studyRecoils";
 import { IParticipation, StudyStatus } from "../../types/models/studyTypes/studyDetails";
 import { StudyDateStatus } from "../../types/models/studyTypes/studyInterActions";
 import { IPointLog } from "../../types/services/pointSystem";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
 import StudyNavModal from "./studyNavModal";
 
 interface IStudyNavigation {
@@ -87,7 +86,9 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
     if (isFree === "on") setModalType("freeOpen");
   }, [isPrivate, isFree]);
 
-  const hasDismissedStudy = localStorage.getItem(STUDY_CHECK_POP_UP) === dayjsToStr(dayjs());
+  const hasDismissedStudy = localStorage.getItem(STUDY_CHECK_POP_UP) === date;
+
+  console.log(24, votingType);
 
   const { text: mainText, funcType: mainFuncType } = getMainButtonStatus(
     voteCnt >= MAX_USER_PER_PLACE,
@@ -225,7 +226,7 @@ const getMainButtonStatus = (
   if (isFree) {
     if (votingType === "same") return { text: "출석 체크", funcType: "attendCheck" };
     if (hasDismissed) return { text: "스터디 투표", funcType: "vote" };
-    return { text: "사전 투표 인원만 참여가 가능합니다." };
+    return { text: "사전 스터디 신청 인원만 참여가 가능합니다." };
   }
   switch (studyDateStatus) {
     case "passed":
