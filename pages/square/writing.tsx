@@ -32,7 +32,9 @@ function SquareWritingPage() {
     //   date: dayjs().format("YYYY-MM-DD"),
     // };
 
+    // TODO
     // 유효성 검사
+    // post 요청
   };
 
   const selectCategory = (value: string) => {
