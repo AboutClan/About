@@ -9,6 +9,7 @@ export const DAILY_CHECK_WIN_LIST: IDailyCheckWinList[] = [
   { item: "100 Point", percent: 0.2 },
   { item: "츄파춥스", percent: 0.2 },
   { item: "비타 500", percent: 0.2 },
+  { item: "코코아 배지", percent: 0.3 },
   { item: "초코에몽", percent: 0.15 },
   { item: "MEGA 커피", percent: 0.1 },
   { item: "CU 3000원권", percent: 0.07 },

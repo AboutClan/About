@@ -11,7 +11,7 @@ export const USER_SCORE_BADGE_ARR = [
 
 export const MANAGER_BADGE = "바닐라";
 
-export const USER_EVENT_BADGE_ARR = ["라벤더", "딸기스무디", "민트초코"] as const;
+export const USER_EVENT_BADGE_ARR = ["라벤더", "딸기스무디", "민트초코", "코코아"] as const;
 
 export const USER_BADGE_ARR = [
   ...USER_SCORE_BADGE_ARR,
@@ -35,6 +35,7 @@ export const BADGE_COLOR_MAPPINGS: {
   [key in (typeof USER_BADGE_ARR)[number]]: string;
 } = {
   아메리카노: "gray",
+  코코아: "badgeBrown",
   망고: "orange",
   그린티: "green",
   블루레몬: "blue",
