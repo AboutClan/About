@@ -1,9 +1,7 @@
-import dayjs from "dayjs";
+import { Button } from "@chakra-ui/react";
 import { motion } from "framer-motion";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { FormEventHandler, useRef, useState } from "react";
 import styled from "styled-components";
 
 import { Input } from "../../components/atoms/Input";
@@ -11,37 +9,53 @@ import Textarea from "../../components/atoms/Textarea";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import WritingCategory from "../../pageTemplates/square/SecretSquare/writing/WritingCategory";
+import { SquareType } from "../../types/models/square";
 
 function SquareWritingPage() {
-  const router = useRouter();
-  const { register, handleSubmit, watch } = useForm();
-  const [isVote, setIsVote] = useState(true);
+  const titleRef = useRef(null);
+  const contentRef = useRef(null);
+  const categoryRef = useRef("일상");
+  const [squareType, setSquareType] = useState<SquareType>("general");
 
-  const [voteList, setVoteList] = useState([]);
   const { data: session } = useSession();
 
-  const onSubmit = (data) => {
-    const writingData = {
-      category: data.category,
-      title: data.title,
-      content: data.content,
-      id: dayjs().format("hhmmss"),
-      voteList,
-      writer: session?.user.name,
-      date: dayjs().format("YYYY-MM-DD"),
-    };
+  const onSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
 
-    // handlePlaza(writingData);
+    // const writingData = {
+    //   category: data.category,
+    //   title: data.title,
+    //   content: data.content,
+    //   id: dayjs().format("hhmmss"),
+    //   voteList: [],
+    //   writer: session?.user.name,
+    //   date: dayjs().format("YYYY-MM-DD"),
+    // };
+
+    // 유효성 검사
   };
+
+  const selectCategory = (value: string) => {
+    categoryRef.current = value;
+  };
+
   return (
     <>
-      <Header title="테스트" />
+      <Header title="글 작성하기" />
       <Slide>
-        <LayoutForm onSubmit={handleSubmit(onSubmit)} id="plazaWrite">
-          <WritingCategory register={register} />
+        <LayoutForm onSubmit={onSubmit} id="plazaWrite">
+          <WritingCategory selectCategory={selectCategory} />
 
-          <Input placeholder="테스트" />
-          <Textarea placeholder="테스트2" />
+          <Input name="title" minLength={3} placeholder="제목을 입력해주세요" ref={titleRef} />
+          <Textarea
+            name="content"
+            minLength={10}
+            placeholder="본문을 입력해주세요"
+            ref={contentRef}
+          />
+          {/* TODO 사진, 투표 creator modal */}
+          {/* TODO design submit button */}
+          <Button type="submit">완료</Button>
         </LayoutForm>
       </Slide>
     </>

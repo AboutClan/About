@@ -60,7 +60,7 @@ function Name() {
           <span>실명으로 작성해주세요!</span>
         </RegisterOverview>
         <Input
-          inputRef={inputRef}
+          ref={inputRef}
           value={value}
           onChange={onChange}
           placeholder="이름을 입력해주세요."

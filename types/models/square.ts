@@ -26,4 +26,6 @@ interface PollSecretSquareItem extends BaseSecretSquareItem {
   pollList: PollItem[];
 }
 
+export type SquareType = "general" | "poll";
+
 export type SecretSquareItem = GeneralSecretSquareItem | PollSecretSquareItem;

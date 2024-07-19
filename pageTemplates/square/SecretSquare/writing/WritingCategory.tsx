@@ -1,49 +1,37 @@
-import { FieldValues, UseFormRegister } from "react-hook-form";
+import { Fragment } from "react";
 import styled from "styled-components";
 
-function WritingCategory({
-  register,
-}: {
-  register: UseFormRegister<FieldValues>;
-}) {
+const categories = ["일상", "고민", "정보", "같이해요"] as const;
+
+interface WritingCategoryProps {
+  selectCategory: (value: string) => void;
+}
+
+function WritingCategory({ selectCategory }: WritingCategoryProps) {
   return (
     <>
       <Layout>
         <Header>분야</Header>
         <Nav>
-          <CategoryInput
-            type="radio"
-            name="category"
-            value="일상"
-            defaultChecked
-            id="일상"
-            {...register("category")}
-          />
-          <Label htmlFor="일상">일상</Label>
-          <CategoryInput
-            type="radio"
-            name="category"
-            value="고민"
-            id="고민"
-            {...register("category")}
-          />
-          <Label htmlFor="고민">고민</Label>
-          <CategoryInput
-            type="radio"
-            name="category"
-            value="정보"
-            id="정보"
-            {...register("category")}
-          />
-          <Label htmlFor="정보">정보</Label>
-          <CategoryInput
-            type="radio"
-            name="category"
-            value="같이해요"
-            id="같이해요"
-            {...register("category")}
-          />
-          <Label htmlFor="같이해요">같이해요</Label>
+          {categories.map((category) => {
+            return (
+              <Fragment key={category}>
+                <CategoryInput
+                  type="radio"
+                  name="category"
+                  value={category}
+                  defaultChecked={category === "일상"}
+                  id={category}
+                  ref={(el) => {
+                    if (el) {
+                      selectCategory(el.value);
+                    }
+                  }}
+                />
+                <Label htmlFor={category}>{category}</Label>
+              </Fragment>
+            );
+          })}
         </Nav>
       </Layout>
     </>
@@ -60,9 +48,10 @@ const Header = styled.header`
   color: var(--font-h2);
 `;
 
-const Nav = styled.nav`
+const Nav = styled.ul`
   display: flex;
   align-items: center;
+  padding: 16px 0;
 `;
 
 const Label = styled.label`
