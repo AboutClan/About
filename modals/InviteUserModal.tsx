@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 
@@ -61,7 +61,7 @@ export default function InviteUserModal({ setIsModal }: IInviteUserModal) {
     },
   };
 
-  const buttonDataArr = [
+  const buttonItems = [
     {
       text: "수원",
       func: () => setLocation("수원"),
@@ -90,7 +90,7 @@ export default function InviteUserModal({ setIsModal }: IInviteUserModal) {
 
   return (
     <ModalLayout setIsModal={setIsModal} title="인원 초대" footerOptions={footerOptions}>
-      <ButtonGroups buttonDataArr={buttonDataArr} currentValue={location} />
+      <ButtonGroups buttonItems={buttonItems} currentValue={location} />
       <Box mt="16px">
         <Input
           placeholder="이름 검색"
