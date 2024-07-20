@@ -64,6 +64,11 @@ function RequestChagneProfileImageModalBadge({ setIsModal }) {
             라벤더
           </Badge>
         </Item>
+        <Item isSelected={selectBadge === "코코아"} onClick={() => onClick("코코아")}>
+          <Badge fontSize={12} colorScheme="badgeBrown">
+            코코아
+          </Badge>
+        </Item>
       </Container>
     </ModalLayout>
   );
@@ -91,7 +96,7 @@ const Item = styled.div<{ isSelected: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex: 0.45;
+  flex: 0.3;
   padding: var(--gap-5) 0;
 
   border: ${(props) => (props.isSelected ? "var(--border-mint)" : "var(--border)")};

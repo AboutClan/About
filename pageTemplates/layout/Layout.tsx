@@ -17,7 +17,8 @@ import BaseModal from "./BaseModal";
 import BaseScript from "./BaseScript";
 import Seo from "./Seo";
 
-export const BASE_BOTTOM_NAV_SEGMENT = ["home", "statistics", "user", "group", "square"];
+export const BASE_BOTTOM_NAV_SEGMENT = ["home", "statistics", "user", "group"];
+export const NOT_PADDING_NAV_SEGMENT = ["login"];
 interface ILayout {
   children: React.ReactNode;
 }
@@ -68,7 +69,19 @@ function Layout({ children }: ILayout) {
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
       {token && (
         <>
-          <div id="root-modal">{children}</div>
+          <div
+            id="root-modal"
+            style={
+              !NOT_PADDING_NAV_SEGMENT.includes(currentSegment?.[0])
+                ? {
+                    paddingTop: "56px",
+                    paddingBottom: "40px",
+                  }
+                : undefined
+            }
+          >
+            {children}
+          </div>
           <PageTracker />
           {isBottomNavCondition && <BottomNav />}
           {isGuest && isBottomNavCondition && <GuestBottomNav />}

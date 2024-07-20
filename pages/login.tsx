@@ -1,7 +1,6 @@
 /* eslint-disable */
 
-import { AspectRatio, Button, Link } from "@chakra-ui/react";
-import { motion } from "framer-motion";
+import { Box, Button, Flex, Link } from "@chakra-ui/react";
 import { GetServerSideProps, NextPage } from "next";
 import { BuiltInProviderType } from "next-auth/providers";
 import {
@@ -82,62 +81,63 @@ const Login: NextPage<{
 
   return (
     <>
-      <Layout>
-        <ImageWrapper
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1.5, delay: 0.5 }}
+      <Box position="relative">
+        <Image src="/loginBackground.jpg" alt="loginBackground" width={750} height={1624} />
+      </Box>
+
+      <Flex
+        width="300px"
+        direction="column"
+        align="center"
+        position="fixed"
+        bottom="10%"
+        left="50%"
+        transform="translate(-50%,0)"
+      >
+        <Button
+          size="lg"
+          fontSize="16px"
+          width="100%"
+          backgroundColor="#FEE500"
+          rounded="md"
+          isLoading={isLoading}
+          onClick={() => customSignin("member")}
+          mb="8px"
+          display="flex"
+          justifyContent="space-between"
+          leftIcon={<IconKakao />}
+          pr="32px"
         >
-          <AspectRatio pos="relative" ratio={2 / 1}>
-            <Image
-              alt="aboutPoster"
-              fill={true}
-              sizes="400px"
-              src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%A1%9C%EA%B3%A0+short.webp"
-              priority
-            />
-          </AspectRatio>
-        </ImageWrapper>
-        <MainWrapper key={kakaoProvider.id}>
-          <Button
-            size="lg"
-            fontSize="16px"
-            width="100%"
-            backgroundColor="#FEE500"
-            rounded="md"
-            isLoading={isLoading}
-            onClick={() => customSignin("member")}
-            mb="8px"
-            display="flex"
-            justifyContent="space-between"
-            leftIcon={<IconKakao />}
-            pr="32px"
-          >
-            <span>카카오 로그인</span>
-            <div />
-          </Button>
-          <Button
-            size="lg"
-            fontSize="16px"
-            width="100%"
-            rounded="md"
-            background="var(--gray-200)"
-            onClick={() => setIsModal(true)}
-            mb="16px"
-            justifyContent="space-between"
-            leftIcon={<i className="fa-solid fa-user" />}
-            pr="32px"
-          >
-            <span>게스트 로그인</span>
-            <div />
-          </Button>
-          <Message>활동 및 가입신청은 카카오 로그인을 이용해주세요!</Message>
-          <Link mt="4px" href="https://open.kakao.com/o/sjDgVzmf" isExternal fontSize="12px">
+          <span>카카오 로그인</span>
+          <div />
+        </Button>
+        <Button
+          size="lg"
+          fontSize="16px"
+          width="100%"
+          rounded="md"
+          background="var(--gray-200)"
+          onClick={() => setIsModal(true)}
+          mb="16px"
+          justifyContent="space-between"
+          leftIcon={<i className="fa-solid fa-user" />}
+          pr="32px"
+        >
+          <span>게스트 로그인</span>
+          <div />
+        </Button>
+        <Box fontSize="13px" color="var(--gray-700)">
+          활동 및 신규 가입은 <u style={{ textUnderlineOffset: "4px" }}> 카카오 로그인</u>을
+          이용해주세요!
+        </Box>
+        <Link mt="8px" href="https://open.kakao.com/o/sjDgVzmf" isExternal fontSize="13px">
+          <u style={{ textUnderlineOffset: "4px", color: "var(--gray-700)" }}>
             로그인이 안되시나요?
-          </Link>
-        </MainWrapper>
-        <ForceLogoutDialog />
-      </Layout>
+          </u>
+        </Link>
+      </Flex>
+      <ForceLogoutDialog />
+
       {isModal && <GuestLoginModal setIsModal={setIsModal} customSignin={customSignin} />}
       {isWaitingModal && (
         <ModalLayout
@@ -160,37 +160,9 @@ export const getServerSideProps: GetServerSideProps = async () => {
   };
 };
 
-const Layout = styled.div`
-  width: 100vw;
-  max-width: var(--max-width);
-
-  position: fixed;
-  top: 55%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const ImageWrapper = styled(motion.div)`
-  width: 100%;
-`;
-
-const MainWrapper = styled.div`
-  width: 100%;
-  padding: 28px;
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
 const Message = styled.span`
   font-size: 12px;
   text-align: center;
-  color: var(--color-red);
 `;
 
 export default Login;

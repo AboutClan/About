@@ -68,10 +68,10 @@ export default function GatherMain() {
       }
     };
   }, []);
-
+  console.log(cardDataArr);
   return (
-    <Box m="0 16px">
-      {cardDataArr && (
+    <Box m="0 16px" position="relative" minH="320px">
+      {cardDataArr?.length ? (
         <>
           {cardDataArr.map((cardData, idx) => (
             <Box mb="12px" key={idx}>
@@ -79,6 +79,8 @@ export default function GatherMain() {
             </Box>
           ))}
         </>
+      ) : (
+        <MainLoadingAbsolute />
       )}
       <div ref={loader} />
       {isLoading && cardDataArr?.length ? (
