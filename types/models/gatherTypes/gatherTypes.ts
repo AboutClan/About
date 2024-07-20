@@ -1,4 +1,5 @@
 import { Dayjs } from "dayjs";
+import { UserCommentProps } from "../../components/propTypes";
 
 import { CombinedLocation, Location } from "../../services/locationTypes";
 import { ITimeStamps } from "../../utils/timeAndDate";
@@ -9,7 +10,7 @@ export interface IGather extends Omit<IGatherWriting, "date">, ITimeStamps {
   participants: IGatherParticipants[];
   id: number;
   status: GatherStatus;
-  comment: IGatherComment[];
+  comment: UserCommentProps[];
 }
 
 export interface IGatherWriting {
@@ -56,12 +57,6 @@ export interface IGatherListItem {
 export interface IGatherParticipants {
   user: IUserSummary;
   phase: "first" | "second";
-}
-
-export interface IGatherComment extends ITimeStamps {
-  user: IUserSummary;
-  comment: string;
-  _id?: string;
 }
 
 // export interface IGatherHeader {

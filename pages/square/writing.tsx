@@ -1,16 +1,16 @@
 import dayjs from "dayjs";
 import { motion } from "framer-motion";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
+
 import { Input } from "../../components/atoms/Input";
 import Textarea from "../../components/atoms/Textarea";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
-
-import WritingCategory from "../../pageTemplates/square/writing/WritingCategory";
+import WritingCategory from "../../pageTemplates/square/SecretSquare/writing/WritingCategory";
 
 function SquareWritingPage() {
   const router = useRouter();

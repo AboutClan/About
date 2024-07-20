@@ -88,45 +88,6 @@ export const useGroupAttendMutation = (
     options,
   );
 
-type GroupCommentParam<T> = T extends "post"
-  ? {
-      comment: string;
-      commentId?: string;
-    }
-  : T extends "patch"
-    ? {
-        comment: string;
-        commentId: string;
-      }
-    : {
-        comment?: never;
-        commentId: string;
-      };
-
-interface IGroupCommentRequest {
-  id: number;
-  comment?: string;
-  commentId?: string;
-}
-export const useGroupCommentMutation = <T extends "post" | "patch" | "delete">(
-  method: T,
-  GroupId: number,
-  options?: MutationOptions<GroupCommentParam<T>>,
-) =>
-  useMutation<void, AxiosError, GroupCommentParam<T>>(
-    (param) =>
-      requestServer<IGroupCommentRequest>({
-        method,
-        url: "groupStudy/comment",
-        body: {
-          id: GroupId,
-          comment: param?.comment,
-          commentId: param?.commentId,
-        },
-      }),
-    options,
-  );
-
 type Status = "pending" | "open" | "close" | "end";
 
 interface IGroupStatusRequest {

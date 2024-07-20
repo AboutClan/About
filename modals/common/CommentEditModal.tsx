@@ -8,29 +8,32 @@ import { useResetQueryData } from "../../hooks/custom/CustomHooks";
 import { useGatherCommentMutation } from "../../hooks/gather/mutations";
 import { useGroupCommentMutation } from "../../hooks/groupStudy/mutations";
 import { IModal } from "../../types/components/modalTypes";
+import { UserCommentProps } from "../../types/components/propTypes";
 import { DispatchType } from "../../types/hooks/reactTypes";
-import { IGatherComment } from "../../types/models/gatherTypes/gatherTypes";
+
 import { IFooterOptions, ModalLayout } from "../Modals";
 
-interface IGatherCommentEditModal extends IModal {
-  commentText: string;
+export type CommentEditModalType = "gather" | "group";
+
+interface CommentEditModalProps extends IModal {
+  comment: string;
   commentId: string;
-  type?: "group";
-  setCommentArr?: DispatchType<IGatherComment[]>;
+  type: "gather" | "group";
+  setCommentArr?: DispatchType<UserCommentProps[]>;
 }
 
-function GatherCommentEditModal({
-  commentText,
+function CommetEditModal({
+  comment,
   setIsModal,
   commentId,
   type,
   setCommentArr,
-}: IGatherCommentEditModal) {
+}: CommentEditModalProps) {
   const router = useRouter();
   const gatherId = +router.query.id;
 
   const [isFirst, setIsFirst] = useState(true);
-  const [value, setValue] = useState(commentText);
+  const [value, setValue] = useState(comment);
 
   const resetQueryData = useResetQueryData();
 
@@ -93,6 +96,7 @@ function GatherCommentEditModal({
     sub: {
       text: "취소",
     },
+    isFull: false,
   };
 
   return (
@@ -114,7 +118,7 @@ function GatherCommentEditModal({
           </>
         ) : (
           <>
-            <Input value={value} onChange={(e) => setValue(e.target.value)} />
+            <Input size="sm" value={value} onChange={(e) => setValue(e.target.value)} />
           </>
         )}
       </Container>
@@ -132,10 +136,12 @@ const Container = styled.div`
   align-items: flex-start;
   > button {
     padding: 12px;
+
+    width: 100%;
     :focus {
       outline: none;
     }
   }
 `;
 
-export default GatherCommentEditModal;
+export default CommetEditModal;

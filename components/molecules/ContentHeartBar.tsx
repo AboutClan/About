@@ -3,20 +3,21 @@ import styled from "styled-components";
 
 import ModalPortal from "../../modals/ModalPortal";
 import NotCompletedModal from "../../modals/system/NotCompletedModal";
+import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 
-function ReviewStatus() {
+interface ContentHeartBarProps {
+  likeUsers: IUserSummary[];
+}
+
+function ContentHeartBar({ likeUsers }: ContentHeartBarProps) {
   const [isModal, setIsModal] = useState(false);
 
   return (
     <>
       <Layout onClick={() => setIsModal(true)}>
         <Item>
-          <i className="fa-regular fa-heart fa-xl"  />
-          <span>100</span>
-        </Item>
-        <Item>
-          <i className="fa-regular fa-message fa-xl"  />
-          <span>10</span>
+          <i className="fa-regular fa-heart fa-xl" />
+          <span>0</span>
         </Item>
       </Layout>
       {isModal && (
@@ -45,4 +46,4 @@ const Item = styled.div`
   }
 `;
 
-export default ReviewStatus;
+export default ContentHeartBar;

@@ -24,9 +24,9 @@ export default function PlazaBlock({ data, category }) {
   );
 }
 
-const IconCategory = ({ category }: { category: any }) => {
+function IconCategory({ category }: { category: any }) {
   return <IconLayout>{category}</IconLayout>;
-};
+}
 
 const Layout = styled.div`
   display: flex;

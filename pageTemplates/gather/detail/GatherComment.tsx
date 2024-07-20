@@ -1,25 +1,26 @@
 import dayjs from "dayjs";
-import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/dist/client/router";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import Avatar from "../../../components/atoms/Avatar";
+import UserComment from "../../../components/molecules/UserComment";
 import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../../hooks/custom/CustomHooks";
 import { useGatherCommentMutation } from "../../../hooks/gather/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
-import GatherCommentEditModal from "../../../modals/gather/GatherCommentEditModal";
-import { IGatherComment } from "../../../types/models/gatherTypes/gatherTypes";
+import { UserCommentProps } from "../../../types/components/propTypes";
+
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
-import { dayjsToStr, getDateDiff } from "../../../utils/dateTimeUtils";
+import { dayjsToStr } from "../../../utils/dateTimeUtils";
 export interface IGatherCommentUnit {
   gatherId: number;
   comment: string;
 }
 
 interface IGatherComments {
-  comment: IGatherComment[];
+  comment: UserCommentProps[];
 }
 
 function GatherComments({ comment }: IGatherComments) {
@@ -30,16 +31,11 @@ function GatherComments({ comment }: IGatherComments) {
   const { data: userInfo } = useUserInfoQuery();
   const [value, setValue] = useState("");
 
-  const [isEditModal, setIsEditModal] = useState(false);
-
-  const [commentArr, setCommentArr] = useState<IGatherComment[]>(comment);
+  const [commentArr, setCommentArr] = useState<UserCommentProps[]>(comment);
 
   useEffect(() => {
     setCommentArr(comment);
   }, [comment]);
-
-  const [commentText, setCommentText] = useState("");
-  const [commentId, setCommentId] = useState("");
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -59,7 +55,7 @@ function GatherComments({ comment }: IGatherComments) {
     },
   });
 
-  const addNewComment = (user: IUserSummary, comment: string): IGatherComment => {
+  const addNewComment = (user: IUserSummary, comment: string): UserCommentProps => {
     return {
       user,
       comment,
@@ -69,12 +65,6 @@ function GatherComments({ comment }: IGatherComments) {
 
   const onSubmit = () => {
     writeComment({ comment: value });
-  };
-
-  const onClickEdit = (commentId, text) => {
-    setCommentId(commentId);
-    setCommentText(text);
-    setIsEditModal(true);
   };
 
   return (
@@ -104,44 +94,19 @@ function GatherComments({ comment }: IGatherComments) {
 
           <section>
             {commentArr?.map((item, idx) => (
-              <CommentBlock key={idx}>
-                <div>
-                  <Avatar
-                    size="sm"
-                    avatar={item.user.avatar}
-                    image={item.user.profileImage}
-                    uid={item.user.uid}
-                  />
-                </div>
-                <CommentContent>
-                  <Name>
-                    <span>{item.user.name}</span>
-                    <CommentDetail>
-                      {item.user.location} · {getDateDiff(dayjs(item.updatedAt))}
-                    </CommentDetail>
-                  </Name>
-                  <p>
-                    {item.comment}
-                    {item.user.uid === session?.user?.uid && (
-                      <IconWrapper onClick={() => onClickEdit(item._id, item.comment)}>
-                        <i className="fa-solid fa-ellipsis" />
-                      </IconWrapper>
-                    )}
-                  </p>
-                </CommentContent>
-              </CommentBlock>
+              <UserComment
+                type="gather"
+                key={idx}
+                user={item.user}
+                updatedAt={item.updatedAt}
+                comment={item.comment}
+                _id={item._id}
+                setCommentArr={setCommentArr}
+              />
             ))}
           </section>
         </Comment>
       </Layout>
-      {isEditModal && (
-        <GatherCommentEditModal
-          commentText={commentText}
-          commentId={commentId}
-          setIsModal={setIsEditModal}
-          setCommentArr={setCommentArr}
-        />
-      )}
     </>
   );
 }
@@ -180,12 +145,6 @@ const MyCommnet = styled.div`
   align-items: center;
   flex: 1;
   margin-top: 12px;
-`;
-
-const CommentBlock = styled.div`
-  display: flex;
-  align-items: center;
-  height: 60px;
 `;
 
 const CommentContent = styled.div`

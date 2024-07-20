@@ -1,8 +1,9 @@
 import { Box } from "@chakra-ui/react";
 import { Dispatch, SetStateAction } from "react";
+
 import ButtonGroups, { IButtonOptions } from "../../../components/molecules/groups/ButtonGroups";
-import { SECRET_SQUARE_CATEGORY } from "../../../pages/square";
 import { SecretSquareCategory } from "../../../types/models/square";
+import { SECRET_SQUARE_CATEGORY } from "../SquareSecretSection";
 
 interface SecretSquareCategoryProps {
   category: SecretSquareCategory;

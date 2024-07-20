@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/dist/client/router";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
@@ -10,10 +10,10 @@ import { GROUP_STUDY_ALL } from "../../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../../hooks/custom/CustomHooks";
 import { useGroupCommentMutation } from "../../../hooks/groupStudy/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
-import GatherCommentEditModal from "../../../modals/gather/GatherCommentEditModal";
-import { IGatherComment } from "../../../types/models/gatherTypes/gatherTypes";
+import GatherCommentEditModal from "../../../modals/common/CommentEditModal";
+import { UserCommentProps } from "../../../types/components/propTypes";
+
 import { getDateDiff } from "../../../utils/dateTimeUtils";
-// import GroupCommentEditModal from "../../../modals/group/GroupCommentEditModal";
 
 export interface IGroupCommentUnit {
   GroupId: number;
@@ -21,7 +21,7 @@ export interface IGroupCommentUnit {
 }
 
 interface IGroupComments {
-  comment: IGatherComment[];
+  comment: UserCommentProps[];
 }
 
 function GroupComments({ comment }: IGroupComments) {
@@ -121,7 +121,7 @@ function GroupComments({ comment }: IGroupComments) {
       </Layout>
       {isEditModal && (
         <GatherCommentEditModal
-          commentText={commentText}
+          comment={commentText}
           commentId={commentId}
           setIsModal={setIsEditModal}
           type="group"
