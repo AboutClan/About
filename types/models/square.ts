@@ -30,3 +30,11 @@ interface PollSecretSquareItem extends BaseSecretSquareItem {
 export type SquareType = "general" | "poll";
 
 export type SecretSquareItem = GeneralSecretSquareItem | PollSecretSquareItem;
+
+export type SecretSquareFormData = {
+  category: "일상" | "고민" | "정보" | "같이해요";
+  title: string;
+  content: string;
+  pollList: { value: string }[];
+  canMultiple: boolean;
+};

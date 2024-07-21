@@ -50,14 +50,6 @@ const Nav = styled.ul`
   padding: 16px 0;
 `;
 
-const Label = styled.label`
-  color: var(--font-h3);
-  margin-right: 12px;
-  display: inline-block;
-  vertical-align: middle;
-  font-size: 14px;
-`;
-
 const CategoryRadio = styled(Radio)`
   margin-right: 3px;
   accent-color: #fb5d5d;
