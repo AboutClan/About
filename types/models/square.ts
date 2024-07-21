@@ -24,6 +24,7 @@ interface PollItem {
 interface PollSecretSquareItem extends BaseSecretSquareItem {
   type: "poll";
   pollList: PollItem[];
+  canMultiple: boolean;
 }
 
 export type SquareType = "general" | "poll";

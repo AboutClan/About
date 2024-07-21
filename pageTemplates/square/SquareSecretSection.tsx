@@ -4,8 +4,8 @@ import { useState } from "react";
 import WritingIcon from "../../components/atoms/Icons/WritingIcon";
 import { usePlazaQuery } from "../../hooks/sub/plaza/queries";
 import { SecretSquareCategory as Category, type SecretSquareItem } from "../../types/models/square";
-import PlazaBlock from "./SecretSquare/PlazaBlock";
 import SecretSquareCategory from "./SecretSquare/SecretSquareCategory";
+import SquareItem from "./SecretSquare/SquareItem";
 
 export const SECRET_SQUARE_CATEGORY: Category[] = ["전체", "일상", "고민", "정보", "같이해요"];
 
@@ -40,6 +40,7 @@ function SquareSecretSection() {
         { id: "2", value: "연어", count: 3 },
         { id: "3", value: "대창", count: 3 },
       ],
+      canMultiple: false,
     },
   ];
   const { data: squareList } = usePlazaQuery();
@@ -47,8 +48,8 @@ function SquareSecretSection() {
     <>
       <SecretSquareCategory category={category} setCategory={setCategory} />
       <Box>
-        {temp.map((data, idx) => (
-          <PlazaBlock key={idx} data={data} category={category} />
+        {temp.map((item) => (
+          <SquareItem key={item.id} item={item} />
         ))}
       </Box>
       <WritingIcon url="/square/writing" />
