@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
@@ -10,13 +10,10 @@ import styled from "styled-components";
 import UserComment from "../../../components/molecules/UserComment";
 import UserCommentInput from "../../../components/molecules/UserCommentInput";
 import { GROUP_STUDY } from "../../../constants/keys/queryKeys";
-
 import { useCommentMutation } from "../../../hooks/common/mutations";
-
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { transferGroupDataState } from "../../../recoils/transferRecoils";
 import { UserCommentProps } from "../../../types/components/propTypes";
-
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 

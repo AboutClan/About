@@ -3,11 +3,9 @@ import styled from "styled-components";
 
 import { Input } from "../../components/atoms/Input";
 import { CommentParamProps } from "../../hooks/common/mutations";
-
 import { IModal } from "../../types/components/modalTypes";
 import { UserCommentProps } from "../../types/components/propTypes";
 import { DispatchString, DispatchType } from "../../types/hooks/reactTypes";
-
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface CommentEditModalProps extends IModal {

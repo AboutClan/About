@@ -1,8 +1,8 @@
 import { Flex } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
-import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 
+import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import Avatar from "../atoms/Avatar";
 
 interface UserCommentInputProps {

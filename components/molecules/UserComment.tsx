@@ -2,8 +2,8 @@ import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { useCommentMutation } from "../../hooks/common/mutations";
 
+import { useCommentMutation } from "../../hooks/common/mutations";
 import CommentEditModal from "../../modals/common/CommentEditModal";
 import { UserCommentProps as CommentProps } from "../../types/components/propTypes";
 import { DispatchType } from "../../types/hooks/reactTypes";

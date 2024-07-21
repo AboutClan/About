@@ -1,6 +1,6 @@
 import { Dayjs } from "dayjs";
-import { UserCommentProps } from "../../components/propTypes";
 
+import { UserCommentProps } from "../../components/propTypes";
 import { CombinedLocation, Location } from "../../services/locationTypes";
 import { ITimeStamps } from "../../utils/timeAndDate";
 import { IUserSummary } from "../userTypes/userInfoTypes";
