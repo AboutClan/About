@@ -1,8 +1,8 @@
 import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useRecoilState } from "recoil";
@@ -82,7 +82,7 @@ function GroupDetail() {
             />
             <GroupContent group={group} />
             <GroupParticipation data={group} />
-            <GroupComments comment={group.comment} />
+            <GroupComments comments={group.comment} />
           </Layout>
         )}
       </Slide>

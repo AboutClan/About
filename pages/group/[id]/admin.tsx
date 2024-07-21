@@ -50,7 +50,7 @@ function Admin() {
     const chargeFee = {
       uid: user.uid,
       type: pointType,
-      message: "동아리 가입",
+      message: "소모임 가입",
       value: pointType === "deposit" ? -group.fee || -200 : -group.fee * 0.15 || -30,
     };
 

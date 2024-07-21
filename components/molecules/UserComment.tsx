@@ -2,21 +2,64 @@ import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import { useCommentMutation } from "../../hooks/common/mutations";
 
-import CommentEditModal, { CommentEditModalType } from "../../modals/common/CommentEditModal";
+import CommentEditModal from "../../modals/common/CommentEditModal";
 import { UserCommentProps as CommentProps } from "../../types/components/propTypes";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { getDateDiff } from "../../utils/dateTimeUtils";
 import Avatar from "../atoms/Avatar";
 
-interface UserCommentProps extends CommentProps {
+interface UserCommentProps extends Omit<CommentProps, "_id"> {
   setCommentArr: DispatchType<CommentProps[]>;
-  type: CommentEditModalType;
+  type: "gather" | "group";
+  pageId: string;
+  commentId?: string;
+  resetCache: () => void;
 }
 
-function UserComment({ user, updatedAt, comment, _id, setCommentArr,type }: UserCommentProps) {
+function UserComment({
+  user,
+  updatedAt,
+  comment,
+  commentId,
+  setCommentArr,
+  type,
+  pageId,
+  resetCache,
+}: UserCommentProps) {
   const { data: session } = useSession();
+
+  const [text, setText] = useState(comment);
   const [isEditModal, setIsEditModal] = useState(false);
+
+  const { mutate: handleEdit } = useCommentMutation("patch", type, pageId, {
+    onSuccess() {
+      editCommentNow(text, commentId);
+      onCompleted();
+    },
+  });
+  const { mutate: handleDelete } = useCommentMutation("delete", type, pageId, {
+    onSuccess() {
+      deleteCommentNow(commentId);
+      onCompleted();
+    },
+  });
+
+  const editCommentNow = (value: string, commentId: string) => {
+    setCommentArr((old) =>
+      old.map((obj) => (obj._id === commentId ? { ...obj, comment: value } : obj)),
+    );
+  };
+
+  const deleteCommentNow = (commentId: string) => {
+    setCommentArr((old) => old.filter((obj) => obj._id !== commentId));
+  };
+
+  const onCompleted = () => {
+    resetCache();
+    setIsEditModal(false);
+  };
 
   return (
     <>
@@ -45,12 +88,13 @@ function UserComment({ user, updatedAt, comment, _id, setCommentArr,type }: User
       </Flex>
       {isEditModal && (
         <CommentEditModal
-          comment={comment}
-          commentId={_id}
-          type={type}
+          text={text}
+          setText={setText}
+          commentId={commentId}
           setIsModal={setIsEditModal}
           setCommentArr={setCommentArr}
-          
+          handleEdit={handleEdit}
+          handleDelete={handleDelete}
         />
       )}
     </>

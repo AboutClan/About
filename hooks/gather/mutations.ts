@@ -51,44 +51,6 @@ export const useGatherParticipationMutation = <T extends "post" | "delete">(
     options,
   );
 
-type GatherCommentParam<T> = T extends "post"
-  ? {
-      comment: string;
-      commentId?: string;
-    }
-  : T extends "patch"
-    ? {
-        comment: string;
-        commentId: string;
-      }
-    : {
-        comment?: never;
-        commentId: string;
-      };
-interface IGatherCommentRequest {
-  gatherId: number;
-  comment?: string;
-  commentId?: string;
-}
-export const useGatherCommentMutation = <T extends "post" | "patch" | "delete">(
-  method: T,
-  gatherId: number,
-  options?: MutationOptions<GatherCommentParam<T>>,
-) =>
-  useMutation<void, AxiosError, GatherCommentParam<T>>(
-    (param) =>
-      requestServer<IGatherCommentRequest>({
-        method,
-        url: "gather/comment",
-        body: {
-          gatherId,
-          comment: param?.comment,
-          commentId: param?.commentId,
-        },
-      }),
-    options,
-  );
-
 type Status = "pending" | "open" | "close" | "end";
 
 interface IGatherStatusRequest {
