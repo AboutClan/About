@@ -17,7 +17,7 @@ interface CommentEditModalProps extends IModal {
   handleDelete: (param: CommentParamProps<"delete">) => void;
 }
 
-function CommetEditModal({
+function CommentEditModal({
   text,
   setText,
   setIsModal,
@@ -26,31 +26,6 @@ function CommetEditModal({
   handleEdit,
 }: CommentEditModalProps) {
   const [isFirst, setIsFirst] = useState(true);
-
-  // const { mutate: deleteCommentGroup } = useCommentMutation("delete", "group", id, {
-  //   onSuccess() {
-  //     resetQueryData([GROUP_STUDY_ALL]);
-  //     deleteCommentNow(commentId);
-  //   },
-  // });
-  // const { mutate: editCommentGroup } = useCommentMutation("patch", "group", id, {
-  //   onSuccess() {
-  //     resetQueryData([GROUP_STUDY_ALL]);
-  //     editCommentNow(value, commentId);
-  //   },
-  // });
-
-  // const onDelete = async () => {
-  //   if (type === "group") deleteCommentGroup({ commentId });
-  //   else deleteComment({ commentId });
-  //   onComplete();
-  // };
-
-  // const onEdit = () => {
-  //   if (type === "group") editCommentGroup({ comment: value, commentId });
-  //   else editComment({ comment: value, commentId });
-  //   onComplete();
-  // };
 
   const footerOptions: IFooterOptions = {
     main: {
@@ -108,4 +83,4 @@ const Container = styled.div`
   }
 `;
 
-export default CommetEditModal;
+export default CommentEditModal;
