@@ -1,10 +1,6 @@
 import { Button } from "@chakra-ui/react";
 
-interface TestProps {}
-
-function Test({}: TestProps) {
-
-    
+function Test() {
   return (
     <>
       <Button>제출</Button>

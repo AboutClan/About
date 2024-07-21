@@ -16,6 +16,37 @@ export const AVATAR_IMAGE_ARR = [
   "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EB%B0%94%ED%83%80+%EC%95%84%EC%9D%B4%EC%BD%98/%EA%B3%A0%EC%96%91%EC%9D%B4+2.webp",
   "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EB%B0%94%ED%83%80+%EC%95%84%EC%9D%B4%EC%BD%98/%ED%96%84%EC%8A%A4%ED%84%B0+2.webp",
   "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EB%B0%94%ED%83%80+%EC%95%84%EC%9D%B4%EC%BD%98/%EC%83%81%EC%96%B4.webp",
-  "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EB%B0%94%ED%83%80+%EC%95%84%EC%9D%B4%EC%BD%98/%EC%83%81%EC%96%B4.webp",
   "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%85%B8%ED%8A%B8%EB%B6%81_100px_%ED%88%AC%EB%AA%85.png",
+];
+
+
+
+export const SPECIAL_AVATAR = [
+  {
+    name: "삐약이",
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EA%B8%B0%EB%B3%B8_100px_%ED%88%AC%EB%AA%85.png",
+  },
+  {
+    name: "펭귄 아바타(한정)",
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%ED%8E%AD%EA%B7%84+1.png",
+  },
+];
+export const SPECIAL_BG = [
+  {
+    name: "배경 프로필 1(한정)",
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%B0%B0%EA%B2%BD1.png",
+  },
+  {
+    name: "배경 프로필 2(한정)",
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%B0%B0%EA%B2%BD2.png",
+  },
+  {
+    name: "배경 프로필 3(한정)",
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%B0%B0%EA%B2%BD3.png",
+  },
 ];

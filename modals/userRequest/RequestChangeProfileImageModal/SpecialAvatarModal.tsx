@@ -1,21 +1,22 @@
 import { AxiosError } from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { UseMutateFunction } from "react-query";
 import styled from "styled-components";
+import Avatar from "../../../components/atoms/Avatar";
 
 import ImageSlider from "../../../components/organisms/imageSlider/ImageSlider";
 import { COLOR_TABLE_LIGHT } from "../../../constants/colorConstants";
 
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import { usePointSystemQuery } from "../../../hooks/user/queries";
-import { AVATAR_COST, AVATAR_IMAGE_ARR } from "../../../storage/avatarStorage";
+import { AVATAR_COST, SPECIAL_AVATAR, SPECIAL_BG } from "../../../storage/avatarStorage";
 import { IModal } from "../../../types/components/modalTypes";
 import { IAvatar } from "../../../types/models/userTypes/userInfoTypes";
 import { IFooterOptions, ModalLayout } from "../../Modals";
-interface IRequestChangeProfileImageModalAvatar extends IModal {
+
+interface ISpecialAvatarModal extends IModal {
   setUserAvatar: UseMutateFunction<
     void,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -25,10 +26,7 @@ interface IRequestChangeProfileImageModalAvatar extends IModal {
   >;
 }
 
-function RequestChangeProfileImageModalAvatar({
-  setIsModal,
-  setUserAvatar,
-}: IRequestChangeProfileImageModalAvatar) {
+function SpecialAvatarModal({ setIsModal, setUserAvatar }: ISpecialAvatarModal) {
   const { data: session } = useSession();
   const failToast = useFailToast();
 
@@ -38,11 +36,13 @@ function RequestChangeProfileImageModalAvatar({
   const [back, setBack] = useState(false);
   const [BG, setBG] = useState(0);
 
+  const BGArr = [...SPECIAL_BG, ...COLOR_TABLE_LIGHT];
+
   const { data: score } = usePointSystemQuery("score");
 
   useEffect(() => {
     if (iconIdx === 0) setBack(false);
-    if (iconIdx === AVATAR_IMAGE_ARR.length - 1) setBack(true);
+    if (iconIdx === SPECIAL_AVATAR.length - 1) setBack(true);
   }, [iconIdx]);
 
   const handleMove = (type: "prev" | "next") => {
@@ -52,7 +52,7 @@ function RequestChangeProfileImageModalAvatar({
       setIconIdx(iconIdx - 1);
     }
     if (type === "next") {
-      if (iconIdx === AVATAR_IMAGE_ARR.length) return;
+      if (iconIdx === SPECIAL_AVATAR.length) return;
       setBack(false);
       setIconIdx(iconIdx + 1);
     }
@@ -77,6 +77,7 @@ function RequestChangeProfileImageModalAvatar({
       func: onSubmit,
     },
   };
+  console.log(34, BG);
 
   return (
     <ModalLayout title="아바타 프로필" footerOptions={footerOptions} setIsModal={setIsModal}>
@@ -93,22 +94,16 @@ function RequestChangeProfileImageModalAvatar({
             exit="exit"
             key={iconIdx}
           >
-            <Icon bg={COLOR_TABLE_LIGHT[BG]}>
-              <Image width={80} height={80} src={AVATAR_IMAGE_ARR[iconIdx]} alt="avatar" />
-            </Icon>
+            <Avatar avatar={{ bg: BG + 100, type: 2 }} size="xl" />
             <IconPoint>{AVATAR_COST[iconIdx]}점 달성</IconPoint>
           </IconWrapper>
         </AnimatePresence>
         <ArrowIcon isLeft={false} onClick={() => handleMove("next")}>
-          {iconIdx !== AVATAR_IMAGE_ARR.length - 1 && <i className="fa-solid fa-chevron-right" />}
+          {iconIdx !== SPECIAL_AVATAR.length - 1 && <i className="fa-solid fa-chevron-right" />}
         </ArrowIcon>
       </UpPart>
       <DownPart>
-        <ImageSlider
-          type="avatarColor"
-          imageContainer={COLOR_TABLE_LIGHT}
-          onClick={(idx) => setBG(idx)}
-        />
+        <ImageSlider type="specialBg" imageContainer={SPECIAL_BG} onClick={(idx) => setBG(idx)} />
       </DownPart>
     </ModalLayout>
   );
@@ -182,4 +177,4 @@ const variants = {
     transition: { duration: 0.4 },
   }),
 };
-export default RequestChangeProfileImageModalAvatar;
+export default SpecialAvatarModal;

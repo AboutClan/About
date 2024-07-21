@@ -14,6 +14,7 @@ import { IModal } from "../../../types/components/modalTypes";
 import { ModalLayout } from "../../Modals";
 import RequestChagneProfileImageModalBadge from "./RequestChagneProfileImageModalBadge";
 import RequestChangeProfileImageModalAvatar from "./RequestChangeProfileImageModalAvatar";
+import SpecialAvatarModal from "./SpecialAvatarModal";
 
 function RequestChangeProfileImageModal({ setIsModal }: IModal) {
   const { data: session } = useSession();
@@ -55,10 +56,13 @@ function RequestChangeProfileImageModal({ setIsModal }: IModal) {
             <Button colorScheme="mintTheme" size="lg" onClick={() => setPageNum(1)}>
               아바타 선택
             </Button>
+            <Button mt="12px" size="lg" onClick={() => setPageNum(2)}>
+              스페셜 아바타 / 배경 선택
+            </Button>
             <Button mt="12px" size="lg" onClick={onClickKakao}>
               카카오 프로필로 변경 / 업데이트
             </Button>
-            <Button mt="12px" size="lg" onClick={() => setPageNum(2)}>
+            <Button mt="12px" size="lg" onClick={() => setPageNum(3)}>
               이벤트 배지로 변경
             </Button>
           </Container>
@@ -68,6 +72,8 @@ function RequestChangeProfileImageModal({ setIsModal }: IModal) {
           setIsModal={setIsModal}
           setUserAvatar={setUserAvatar}
         />
+      ) : pageNum === 2 ? (
+        <SpecialAvatarModal setIsModal={setIsModal} setUserAvatar={setUserAvatar} />
       ) : (
         <RequestChagneProfileImageModalBadge setIsModal={setIsModal} />
       )}
