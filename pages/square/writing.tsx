@@ -1,4 +1,4 @@
-import { Button, Flex, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, Flex, useDisclosure, VStack } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import styled from "styled-components";
@@ -23,17 +23,13 @@ function SquareWritingPage() {
   const methods = useForm<SecretSquareFormData>({
     defaultValues: defaultFormData,
   });
-  const {
-    register,
-    handleSubmit,
-    formState: { dirtyFields },
-  } = methods;
+  const { register, handleSubmit, getValues, resetField } = methods;
 
   const { data: session } = useSession();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const isPollType =
-    dirtyFields["pollList"] && dirtyFields["pollList"].every(({ value: isDirty }) => isDirty);
+  const pollList = getValues("pollList");
+  const isPollType = pollList.every(({ value }) => !!value);
 
   const onSubmit: SubmitHandler<SecretSquareFormData> = (data) => {
     console.log(data);
@@ -96,6 +92,29 @@ function SquareWritingPage() {
             />
             <PollCreatorDrawer isOpen={isOpen} onClose={onClose} />
           </LayoutForm>
+          {isPollType && (
+            <Box>
+              <Flex>
+                <Button type="button" onClick={onOpen}>
+                  수정
+                </Button>
+                <Button
+                  type="button"
+                  onClick={() => {
+                    resetField("pollList", { defaultValue: defaultFormData["pollList"] });
+                    resetField("canMultiple", { defaultValue: defaultFormData["canMultiple"] });
+                  }}
+                >
+                  삭제
+                </Button>
+              </Flex>
+              <VStack as="ul">
+                {pollList.map(({ value }, index) => {
+                  return <li key={index}>{value}</li>;
+                })}
+              </VStack>
+            </Box>
+          )}
           <Button
             type="button"
             onClick={() => {

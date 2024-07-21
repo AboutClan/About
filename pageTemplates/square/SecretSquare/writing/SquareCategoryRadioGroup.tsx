@@ -1,4 +1,4 @@
-import { Radio, RadioGroup } from "@chakra-ui/react";
+import { Flex, Radio, RadioGroup } from "@chakra-ui/react";
 import { Fragment } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import styled from "styled-components";
@@ -9,7 +9,7 @@ function SquareCategoryRadioGroup() {
   const { control } = useFormContext();
   return (
     <Layout>
-      <Header>분야</Header>
+      <Header>주제</Header>
       <Nav>
         <Controller
           name="category"
@@ -18,7 +18,7 @@ function SquareCategoryRadioGroup() {
             required: true,
           }}
           render={({ field }) => (
-            <RadioGroup {...field}>
+            <RadioGroup {...field} as={Flex} justifyContent="space-between" w="100%">
               {categories.map((category) => {
                 return (
                   <Fragment key={category}>

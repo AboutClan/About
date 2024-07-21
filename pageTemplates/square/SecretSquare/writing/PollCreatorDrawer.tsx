@@ -23,7 +23,8 @@ interface PollCreatorDrawerProps {
 }
 
 export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawerProps) {
-  const { control, register, trigger, resetField } = useFormContext<SecretSquareFormData>();
+  const { control, register, trigger, resetField, getValues } =
+    useFormContext<SecretSquareFormData>();
   const {
     fields: pollList,
     append,
@@ -95,7 +96,11 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
             w="100%"
             onClick={async () => {
               const isValid = await trigger("pollList");
-              if (isValid) onClose();
+              if (isValid) {
+                resetField("pollList", { defaultValue: getValues("pollList") });
+                resetField("canMultiple", { defaultValue: getValues("canMultiple") });
+                onClose();
+              }
             }}
           >
             완료
