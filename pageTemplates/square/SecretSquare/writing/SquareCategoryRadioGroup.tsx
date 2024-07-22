@@ -10,7 +10,7 @@ function SquareCategoryRadioGroup() {
   return (
     <Layout>
       <Header>주제</Header>
-      <Nav>
+      <Flex as="ul" align="center" pb={4}>
         <Controller
           name="category"
           control={control}
@@ -22,14 +22,16 @@ function SquareCategoryRadioGroup() {
               {categories.map((category) => {
                 return (
                   <Fragment key={category}>
-                    <CategoryRadio value={category}>{category}</CategoryRadio>
+                    <Radio colorScheme="mintTheme" value={category}>
+                      {category}
+                    </Radio>
                   </Fragment>
                 );
               })}
             </RadioGroup>
           )}
         />
-      </Nav>
+      </Flex>
     </Layout>
   );
 }
@@ -42,17 +44,6 @@ const Header = styled.header`
   font-weight: 600;
   margin-bottom: 6px;
   color: var(--font-h2);
-`;
-
-const Nav = styled.ul`
-  display: flex;
-  align-items: center;
-  padding: 16px 0;
-`;
-
-const CategoryRadio = styled(Radio)`
-  margin-right: 3px;
-  accent-color: #fb5d5d;
 `;
 
 export default SquareCategoryRadioGroup;

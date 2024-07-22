@@ -1,7 +1,6 @@
 import { Box, Button, Flex, useDisclosure, VStack } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import styled from "styled-components";
 
 import { Input } from "../../components/atoms/Input";
 import Textarea from "../../components/atoms/Textarea";
@@ -72,69 +71,90 @@ function SquareWritingPage() {
         </Flex>
       </Header>
       <Slide>
-        <FormProvider {...methods}>
-          <LayoutForm onSubmit={handleSubmit(onSubmit)} id="secret-square-form">
-            <SquareCategoryRadioGroup />
+        <VStack h="100%" px={4}>
+          <FormProvider {...methods}>
+            <form onSubmit={handleSubmit(onSubmit)} id="secret-square-form">
+              <SquareCategoryRadioGroup />
 
-            <Input
-              placeholder="제목을 입력해주세요"
-              {...register("title", {
-                required: true,
-                minLength: 3,
-              })}
-            />
-            <Textarea
-              placeholder="본문을 입력해주세요"
-              {...register("content", {
-                required: true,
-                minLength: 10,
-              })}
-            />
-            <PollCreatorDrawer isOpen={isOpen} onClose={onClose} />
-          </LayoutForm>
-          {isPollType && (
-            <Box>
-              <Flex>
-                <Button type="button" onClick={onOpen}>
-                  수정
-                </Button>
-                <Button
-                  type="button"
-                  onClick={() => {
-                    resetField("pollList", { defaultValue: defaultFormData["pollList"] });
-                    resetField("canMultiple", { defaultValue: defaultFormData["canMultiple"] });
-                  }}
-                >
-                  삭제
-                </Button>
-              </Flex>
-              <VStack as="ul">
-                {pollList.map(({ value }, index) => {
-                  return <li key={index}>{value}</li>;
+              <Input
+                placeholder="제목을 입력해주세요"
+                {...register("title", {
+                  required: true,
+                  minLength: 3,
                 })}
-              </VStack>
-            </Box>
-          )}
-          <Button
-            type="button"
-            onClick={() => {
-              if (isPollType) {
-                // TODO toast
-                return;
-              }
-              onOpen();
-            }}
-          >
-            투표
-          </Button>
-        </FormProvider>
+              />
+              <Textarea
+                placeholder="본문을 입력해주세요"
+                {...register("content", {
+                  required: true,
+                  minLength: 10,
+                })}
+              />
+              <PollCreatorDrawer isOpen={isOpen} onClose={onClose} />
+            </form>
+            {isPollType && (
+              <Box
+                p={4}
+                sx={{
+                  margin: "1rem",
+                  width: "100%",
+                  borderRadius: "var(--rounded)",
+                  border: "var(--border-main)",
+                  background: "white",
+                }}
+              >
+                <Flex justifyContent="flex-end" gap={2}>
+                  <Button type="button" onClick={onOpen}>
+                    수정
+                  </Button>
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      resetField("pollList", { defaultValue: defaultFormData["pollList"] });
+                      resetField("canMultiple", { defaultValue: defaultFormData["canMultiple"] });
+                    }}
+                  >
+                    삭제
+                  </Button>
+                </Flex>
+                <VStack as="ul" mt={2}>
+                  {pollList.map(({ value }, index) => {
+                    return (
+                      <Box
+                        as="li"
+                        p={2}
+                        sx={{
+                          borderRadius: "var(--rounded)",
+                          border: "var(--border-main)",
+                          listStyle: "none",
+                          width: "100%",
+                        }}
+                        key={index}
+                      >
+                        {value}
+                      </Box>
+                    );
+                  })}
+                </VStack>
+              </Box>
+            )}
+            <Button
+              type="button"
+              onClick={() => {
+                if (isPollType) {
+                  // TODO toast
+                  return;
+                }
+                onOpen();
+              }}
+            >
+              투표
+            </Button>
+          </FormProvider>
+        </VStack>
       </Slide>
     </>
   );
 }
-
-const LayoutForm = styled.form`
-  padding: 0 16px;
-`;
 
 export default SquareWritingPage;

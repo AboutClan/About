@@ -85,7 +85,7 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
               <FormLabel htmlFor="can-multiple" mb="0">
                 복수 선택 가능
               </FormLabel>
-              <Switch id="can-multiple" {...register("canMultiple")} />
+              <Switch id="can-multiple" colorScheme="mintTheme" {...register("canMultiple")} />
             </Flex>
           </VStack>
         </DrawerBody>
@@ -94,6 +94,7 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
           <Button
             type="button"
             w="100%"
+            colorScheme="mintTheme"
             onClick={async () => {
               const isValid = await trigger("pollList");
               if (isValid) {
