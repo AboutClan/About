@@ -649,6 +649,8 @@ export const REVIEW_DATA: IReviewData[] = [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%88%98%EC%9B%90+%EC%A0%95%EA%B8%B0%EB%AA%A8%EC%9E%84(24.7.22)/KakaoTalk_20240722_024634451_06.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%88%98%EC%9B%90+%EC%A0%95%EA%B8%B0%EB%AA%A8%EC%9E%84(24.7.22)/KakaoTalk_20240722_025258961_04.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%88%98%EC%9B%90+%EC%A0%95%EA%B8%B0%EB%AA%A8%EC%9E%84(24.7.22)/KakaoTalk_20240722_025040182.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%88%98%EC%9B%90+%EC%A0%95%EA%B8%B0%EB%AA%A8%EC%9E%84(24.7.22)/KakaoTalk_20240722_234717507.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%88%98%EC%9B%90+%EC%A0%95%EA%B8%B0%EB%AA%A8%EC%9E%84(24.7.22)/KakaoTalk_20240722_234717507_01.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%88%98%EC%9B%90+%EC%A0%95%EA%B8%B0%EB%AA%A8%EC%9E%84(24.7.22)/KakaoTalk_20240722_025258961_03.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%88%98%EC%9B%90+%EC%A0%95%EA%B8%B0%EB%AA%A8%EC%9E%84(24.7.22)/KakaoTalk_20240722_025258961_05.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%88%98%EC%9B%90+%EC%A0%95%EA%B8%B0%EB%AA%A8%EC%9E%84(24.7.22)/KakaoTalk_20240722_025258961_02.jpg",
