@@ -16,7 +16,7 @@ interface FeedLayoutProps {
   likeUsers: IUserSummary[];
 }
 
-function FeedLayout({ user, date, images, content, summary, likeUsers }: FeedLayoutProps) {
+function FeedLayout({ user, date, images, content, summary }: FeedLayoutProps) {
   return (
     <Flex direction="column" border="var(--border)">
       <FeedHeader writer={user} date={date} />
@@ -31,7 +31,7 @@ function FeedLayout({ user, date, images, content, summary, likeUsers }: FeedLay
         <Box h="20px" />
       )}
       {content && <ContentSummary text={content} />}
-      <ContentHeartBar likeUsers={likeUsers} />
+      <ContentHeartBar />
     </Flex>
   );
 }

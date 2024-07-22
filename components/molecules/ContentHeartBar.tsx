@@ -3,13 +3,8 @@ import styled from "styled-components";
 
 import ModalPortal from "../../modals/ModalPortal";
 import NotCompletedModal from "../../modals/system/NotCompletedModal";
-import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 
-interface ContentHeartBarProps {
-  likeUsers: IUserSummary[];
-}
-
-function ContentHeartBar({ likeUsers }: ContentHeartBarProps) {
+function ContentHeartBar() {
   const [isModal, setIsModal] = useState(false);
 
   return (
