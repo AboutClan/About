@@ -9,31 +9,31 @@ import styled from "styled-components";
 
 import UserComment from "../../../components/molecules/UserComment";
 import UserCommentInput from "../../../components/molecules/UserCommentInput";
-import { GROUP_STUDY } from "../../../constants/keys/queryKeys";
+import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
 import { useCommentMutation } from "../../../hooks/common/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
-import { transferGroupDataState } from "../../../recoils/transferRecoils";
+import { transferGatherDataState } from "../../../recoils/transferRecoils";
 import { UserCommentProps } from "../../../types/components/propTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 
-interface IGroupComments {
+interface IGatherComments {
   comments: UserCommentProps[];
 }
 
-function GroupComments({ comments }: IGroupComments) {
+function GatherComments({ comments }: IGatherComments) {
   const queryClient = useQueryClient();
   const router = useRouter();
   const { data: session } = useSession();
   const isGuest = session?.user.name === "guest";
-  const groupId = router.query.id as string;
+  const gatherId = router.query.id as string;
 
-  const setTransferGroup = useSetRecoilState(transferGroupDataState);
+  const setTransferGather = useSetRecoilState(transferGatherDataState);
   const [commentArr, setCommentArr] = useState<UserCommentProps[]>(comments);
 
   const { data: userInfo } = useUserInfoQuery();
 
-  const { mutate: writeComment } = useCommentMutation("post", "group", groupId, {
+  const { mutate: writeComment } = useCommentMutation("post", "gather", gatherId, {
     onSuccess() {
       resetCache();
     },
@@ -57,8 +57,8 @@ function GroupComments({ comments }: IGroupComments) {
   };
 
   const resetCache = () => {
-    setTransferGroup(null);
-    queryClient.invalidateQueries([GROUP_STUDY, groupId]);
+    setTransferGather(null);
+    queryClient.invalidateQueries([GATHER_CONTENT, gatherId]);
   };
 
   return (
@@ -75,11 +75,11 @@ function GroupComments({ comments }: IGroupComments) {
             {commentArr?.map((item, idx) => (
               <UserComment
                 key={idx}
-                type="group"
+                type="gather"
                 user={item.user}
                 updatedAt={item.updatedAt}
                 comment={item.comment}
-                pageId={groupId}
+                pageId={gatherId}
                 commentId={item._id}
                 setCommentArr={setCommentArr}
                 resetCache={resetCache}
@@ -107,4 +107,4 @@ const Comment = styled.div`
   font-size: 13px;
 `;
 
-export default GroupComments;
+export default GatherComments;

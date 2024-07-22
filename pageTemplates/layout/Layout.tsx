@@ -85,7 +85,6 @@ function Layout({ children }: ILayout) {
           <PageTracker />
           {isBottomNavCondition && <BottomNav />}
           {isGuest && isBottomNavCondition && <GuestBottomNav />}
-
           <BaseModal isGuest={isGuest} isError={isErrorModal} setIsError={setIsErrorModal} />
         </>
       )}
