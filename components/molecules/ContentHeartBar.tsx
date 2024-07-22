@@ -4,7 +4,7 @@ import styled from "styled-components";
 import ModalPortal from "../../modals/ModalPortal";
 import NotCompletedModal from "../../modals/system/NotCompletedModal";
 
-function ReviewStatus() {
+function ContentHeartBar() {
   const [isModal, setIsModal] = useState(false);
 
   return (
@@ -12,11 +12,7 @@ function ReviewStatus() {
       <Layout onClick={() => setIsModal(true)}>
         <Item>
           <i className="fa-regular fa-heart fa-xl" />
-          <span>100</span>
-        </Item>
-        <Item>
-          <i className="fa-regular fa-message fa-xl" />
-          <span>10</span>
+          <span>0</span>
         </Item>
       </Layout>
       {isModal && (
@@ -45,4 +41,4 @@ const Item = styled.div`
   }
 `;
 
-export default ReviewStatus;
+export default ContentHeartBar;

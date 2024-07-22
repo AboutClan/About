@@ -1,5 +1,4 @@
 import { ThemeTypings } from "@chakra-ui/react";
-import { IUserSummary } from "../models/userTypes/userInfoTypes";
 
 import { IUserSummary } from "../models/userTypes/userInfoTypes";
 import { LocationEn } from "../services/locationTypes";

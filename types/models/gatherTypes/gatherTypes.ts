@@ -1,5 +1,4 @@
 import { Dayjs } from "dayjs";
-import { UserCommentProps } from "../../components/propTypes";
 
 import { UserCommentProps } from "../../components/propTypes";
 import { CombinedLocation, Location } from "../../services/locationTypes";
