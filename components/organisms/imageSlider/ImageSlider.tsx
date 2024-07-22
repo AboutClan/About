@@ -11,6 +11,7 @@ import ImageSliderGatherReviewNav from "./imageSliderType/ImageSliderGatherRevie
 import ImageSliderMember from "./imageSliderType/ImageSliderMember";
 import ImageSliderPoint from "./imageSliderType/ImageSliderPoint";
 import ImageSliderReview from "./imageSliderType/ImageSliderReview";
+import ImageSliderSpecialBg from "./imageSliderType/ImageSliderSpecialBg";
 
 SwiperCore.use([Navigation, Pagination]); // apply the Pagination module
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -43,6 +44,8 @@ function ImageSlider({ type, imageContainer, onClick }: IImageSlider) {
             <ImageSliderMember imageContainer={imageContainer} />
           ) : type === "avatarColor" ? (
             <ImageSliderAvatarColor imageContainer={imageContainer} onClick={onClick} />
+          ) : type === "specialBg" ? (
+            <ImageSliderSpecialBg imageContainer={imageContainer} onClick={onClick} />
           ) : null}
         </Layout>
       )}

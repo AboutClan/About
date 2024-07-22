@@ -88,7 +88,7 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
 
   const hasDismissedStudy = localStorage.getItem(STUDY_CHECK_POP_UP) === date;
 
-  console.log(24, votingType);
+ 
 
   const { text: mainText, funcType: mainFuncType } = getMainButtonStatus(
     voteCnt >= MAX_USER_PER_PLACE,

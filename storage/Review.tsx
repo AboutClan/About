@@ -525,7 +525,7 @@ export const REVIEW_DATA: IReviewData[] = [
     title: "MT 사전 조모임",
   },
   {
-    id: 241315,
+    id: 193,
     dateCreated: "6월 25일",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%97%AC%EB%A6%84+MT+1%EC%B0%A8/KakaoTalk_20240702_174821152.jpg",
@@ -551,7 +551,7 @@ export const REVIEW_DATA: IReviewData[] = [
     title: "하이디라오",
   },
   {
-    id: 436362,
+    id: 198,
     dateCreated: "6월 30일",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EB%B9%84%EC%98%A4%EB%8A%94+%EC%A0%84%EB%A7%89%EA%B1%B8%EB%A6%AC/KakaoTalk_20240702_175212634_01.jpg",
@@ -619,5 +619,41 @@ export const REVIEW_DATA: IReviewData[] = [
     ],
     text: "라이크 어 시네마 영화관 대관! 1인당 대관비 4000원 정도?? 내고 저희끼리 전세내고 봤어요! 팝콘도 종류별로 시켰는데 진짜 영화관 온 거 같았음. 영화는 댓글부대 보고 나와서 2차로 한잔하고, 3차로 한잔 했습니다 ㅎ-ㅎ 마지막 사진은 막차 시간 다 됐는데 사장님이 안계셔서 포스기로 알아서 찍고 메세지 남기고 나왔거든요. 그런데 저렇게 문자오심 ㅋㅋㅋㅋㅋㅋㅋ",
     title: "라이크 어 시네마 영화관 대관",
+  },
+  {
+    id: 215,
+    dateCreated: "7월 14일",
+    images: [
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%B6%9C%EC%82%AC/%EC%B6%9C%EC%82%AC.jpg",
+    ],
+    text: "사진 출사 소모임에서 진행한 번개 모임입니다! 장마철이지만 운이 좋게도 날이 잠깐 풀려서 서울숲 출사를 다녀왔습니다. 저는 사실 일이 생겨서 못갔지만... 카톡방에 사진이 몇백장 올라와서 렉이 걸릴 정도로 다들 사진을 정말 많이 찍어 오셨더라구요! 출사를 마치고는 공모전을 진행해서 1등하신 분께 상품을 드렸어요!",
+    title: "서울숲 출사",
+  },
+  {
+    id: 218,
+    dateCreated: "7월 18일",
+    images: [
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%9D%B4%EC%9E%90%EC%B9%B4%EC%95%BC+%EB%A5%98/KakaoTalk_20240722_024634451_01.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%9D%B4%EC%9E%90%EC%B9%B4%EC%95%BC+%EB%A5%98/KakaoTalk_20240722_024634451_04.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%9D%B4%EC%9E%90%EC%B9%B4%EC%95%BC+%EB%A5%98/KakaoTalk_20240722_024634451.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%9D%B4%EC%9E%90%EC%B9%B4%EC%95%BC+%EB%A5%98/KakaoTalk_20240722_024634451_04.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%9D%B4%EC%9E%90%EC%B9%B4%EC%95%BC+%EB%A5%98/KakaoTalk_20240722_024634451_02.jpg",
+    ],
+    text: "연어를 정말 좋아했기에 연어만 매끼 먹어도 행복할 거라는 착각을 했어요. 하지만 당분간은 쳐다도 안볼거 같아... 연어 무한리필에 오뎅탕, 일본 사케까지!! 질리도록 먹고 왔습니다 ㅎㅎ 끝난 뒤에는 2차 갔다가 3차까지 갔는데요! 정말 재밌었지만 6만원이 넘게 나왔다는 사실... 당분간 파산... ㅋ",
+    title: "연어 무한리필",
+  },
+  {
+    id: 216,
+    dateCreated: "7월 18일",
+    images: [
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%88%98%EC%9B%90+%EC%A0%95%EA%B8%B0%EB%AA%A8%EC%9E%84(24.7.22)/KakaoTalk_20240722_024634451_06.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%88%98%EC%9B%90+%EC%A0%95%EA%B8%B0%EB%AA%A8%EC%9E%84(24.7.22)/KakaoTalk_20240722_025258961_04.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%88%98%EC%9B%90+%EC%A0%95%EA%B8%B0%EB%AA%A8%EC%9E%84(24.7.22)/KakaoTalk_20240722_025040182.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%88%98%EC%9B%90+%EC%A0%95%EA%B8%B0%EB%AA%A8%EC%9E%84(24.7.22)/KakaoTalk_20240722_025258961_03.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%88%98%EC%9B%90+%EC%A0%95%EA%B8%B0%EB%AA%A8%EC%9E%84(24.7.22)/KakaoTalk_20240722_025258961_05.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%88%98%EC%9B%90+%EC%A0%95%EA%B8%B0%EB%AA%A8%EC%9E%84(24.7.22)/KakaoTalk_20240722_025258961_02.jpg",
+    ],
+    text: "한번도 밤샘을 안한적이 없어요! 오늘도 역시 올나잇~ 생일인 멤버들이 있어서 생일파티도 같이했는데, 다들 행복했으면 좋겠따- 18시부터 6시까지 놀고나서 집 가서 쓰러짐",
+    title: "수원 정기모임",
   },
 ];
