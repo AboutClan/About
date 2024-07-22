@@ -10,7 +10,7 @@ import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../components/layouts/PageSlide";
 import { useGatherIDQuery } from "../../../hooks/gather/queries";
 import GatherBottomNav from "../../../pageTemplates/gather/detail/GatherBottomNav";
-import GatherComments from "../../../pageTemplates/gather/detail/GatherComment";
+import GatherComments from "../../../pageTemplates/gather/detail/GatherComments";
 import GatherContent from "../../../pageTemplates/gather/detail/GatherContent";
 import GatherDetailInfo from "../../../pageTemplates/gather/detail/GatherDetail";
 import GatherHeader from "../../../pageTemplates/gather/detail/GatherHeader";
@@ -62,7 +62,7 @@ function GatherDetail() {
                 isMember={isMember}
               />
               <GatherParticipation data={gather} />
-              <GatherComments comment={gather.comment} />
+              <GatherComments comments={gather.comment} />
             </Layout>
           </Slide>
           {!isGuest && <GatherBottomNav data={gather} />}

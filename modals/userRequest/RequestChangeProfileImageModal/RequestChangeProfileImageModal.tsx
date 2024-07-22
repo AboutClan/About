@@ -5,7 +5,7 @@ import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
 import { USER_INFO } from "../../../constants/keys/queryKeys";
-import { useCompleteToast, useErrorToast, useFailToast } from "../../../hooks/custom/CustomToast";
+import { useErrorToast, useFailToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import {
   useUserInfoFieldMutation,
   useUserUpdateProfileImageMutation,
@@ -14,12 +14,13 @@ import { IModal } from "../../../types/components/modalTypes";
 import { ModalLayout } from "../../Modals";
 import RequestChagneProfileImageModalBadge from "./RequestChagneProfileImageModalBadge";
 import RequestChangeProfileImageModalAvatar from "./RequestChangeProfileImageModalAvatar";
+import SpecialAvatarModal from "./SpecialAvatarModal";
 
 function RequestChangeProfileImageModal({ setIsModal }: IModal) {
   const { data: session } = useSession();
   const failToast = useFailToast();
   const errorToast = useErrorToast();
-  const completeToast = useCompleteToast();
+  const typeToast = useTypeToast();
 
   const isGuest = session?.user.name === "guest";
 
@@ -31,7 +32,7 @@ function RequestChangeProfileImageModal({ setIsModal }: IModal) {
 
   const { mutate: setUserAvatar } = useUserInfoFieldMutation("avatar", {
     onSuccess() {
-      completeToast("success");
+      typeToast("change");
       queryClient.invalidateQueries([USER_INFO]);
       setIsModal(false);
     },
@@ -55,10 +56,13 @@ function RequestChangeProfileImageModal({ setIsModal }: IModal) {
             <Button colorScheme="mintTheme" size="lg" onClick={() => setPageNum(1)}>
               아바타 선택
             </Button>
+            <Button mt="12px" size="lg" onClick={() => setPageNum(2)}>
+              스페셜 아바타 / 배경 선택
+            </Button>
             <Button mt="12px" size="lg" onClick={onClickKakao}>
               카카오 프로필로 변경 / 업데이트
             </Button>
-            <Button mt="12px" size="lg" onClick={() => setPageNum(2)}>
+            <Button mt="12px" size="lg" onClick={() => setPageNum(3)}>
               이벤트 배지로 변경
             </Button>
           </Container>
@@ -68,6 +72,8 @@ function RequestChangeProfileImageModal({ setIsModal }: IModal) {
           setIsModal={setIsModal}
           setUserAvatar={setUserAvatar}
         />
+      ) : pageNum === 2 ? (
+        <SpecialAvatarModal setIsModal={setIsModal} setUserAvatar={setUserAvatar} />
       ) : (
         <RequestChagneProfileImageModalBadge setIsModal={setIsModal} />
       )}

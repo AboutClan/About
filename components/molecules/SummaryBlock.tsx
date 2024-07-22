@@ -1,8 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
 import Link from "next/link";
-import styled from "styled-components";
-
-import { SingleLineText } from "../../styles/layout/components";
 
 export interface SummaryBlockProps {
   url: string;
@@ -38,30 +35,5 @@ function SummaryBlock({ url, title, text }: SummaryBlockProps) {
     </Link>
   );
 }
-
-const LocationText = styled(SingleLineText)`
-  margin-left: 4px;
-
-  width: 100px;
-`;
-const IconWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 44px;
-  width: 44px;
-  margin-right: var(--gap-2);
-`;
-
-const Content = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  > span:first-child {
-    font-weight: 600;
-    font-size: 13px;
-  }
-`;
 
 export default SummaryBlock;

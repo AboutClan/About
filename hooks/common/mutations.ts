@@ -1,9 +1,10 @@
 import { AxiosError } from "axios";
 import { useMutation } from "react-query";
+
 import { requestServer } from "../../libs/methodHelpers";
 import { MutationOptions } from "../../types/hooks/reactTypes";
 
-type CommentParamProps<T> = T extends "post"
+export type CommentParamProps<T> = T extends "post"
   ? {
       comment: string;
       commentId?: string;
@@ -19,19 +20,19 @@ type CommentParamProps<T> = T extends "post"
       };
 
 interface CommentRequestProps {
-  id: number;
+  id: string;
   comment?: string;
   commentId?: string;
 }
-export const useGroupCommentMutation = <T extends "post" | "patch" | "delete">(
+
+export const useCommentMutation = <T extends "post" | "patch" | "delete">(
   method: T,
   type: "gather" | "group",
-  id: number,
+  id: string,
   options?: MutationOptions<CommentParamProps<T>>,
 ) =>
   useMutation<void, AxiosError, CommentParamProps<T>>((param) => {
-    const url = type === "group" ? "groupStudy" : type + "/comment";
-
+    const url = (type === "group" ? "groupStudy" : type) + "/comment";
     return requestServer<CommentRequestProps>({
       method,
       url,

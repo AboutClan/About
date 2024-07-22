@@ -22,7 +22,7 @@ function SquarePage() {
     <>
       <Header title="어바웃 스퀘어" isBack={false} />
       <Slide>
-        <SquareTabNav tab={tab} setTab={setTab} />
+        <SquareTabNav tab={tab} />
         {tab === "시크릿 스퀘어" ? <SquareSecretSection /> : <SquareLoungeSection />}
       </Slide>
     </>
