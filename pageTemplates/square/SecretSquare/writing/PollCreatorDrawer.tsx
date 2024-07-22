@@ -35,8 +35,9 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
     rules: {
       validate: (pollList) => {
         // pollist is default value
-        const isDefaultValue = pollList.length === 3 && pollList.every(({ value }) => !value);
-        const isValid = pollList.length >= 2 && pollList.every(({ value }) => !!value);
+        const isDefaultValue = pollList.length === 3 && pollList.every(({ value }) => value === "");
+        const isValid =
+          pollList.length >= 2 && pollList.every(({ value }) => !!value && !!value.trim());
         return isDefaultValue || isValid || "2개 이상의 항목을 입력해주세요.";
       },
     },
@@ -67,7 +68,9 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
                   <Input
                     autoFocus={index === 0}
                     placeholder="항목 입력"
-                    {...register(`pollList.${index}.value`)}
+                    {...register(`pollList.${index}.value`, {
+                      setValueAs: (value) => value.trim(),
+                    })}
                   />
                   <Button
                     type="button"

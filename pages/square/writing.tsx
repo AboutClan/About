@@ -73,7 +73,7 @@ function SquareWritingPage() {
       <Slide>
         <VStack h="100%" px={4}>
           <FormProvider {...methods}>
-            <form onSubmit={handleSubmit(onSubmit)} id="secret-square-form">
+            <Box as="form" w="100%" onSubmit={handleSubmit(onSubmit)} id="secret-square-form">
               <SquareCategoryRadioGroup />
 
               <Input
@@ -81,6 +81,7 @@ function SquareWritingPage() {
                 {...register("title", {
                   required: true,
                   minLength: 3,
+                  setValueAs: (value) => value.trim(),
                 })}
               />
               <Textarea
@@ -88,10 +89,11 @@ function SquareWritingPage() {
                 {...register("content", {
                   required: true,
                   minLength: 10,
+                  setValueAs: (value) => value.trim(),
                 })}
               />
               <PollCreatorDrawer isOpen={isOpen} onClose={onClose} />
-            </form>
+            </Box>
             {isPollType && (
               <Box
                 p={4}
