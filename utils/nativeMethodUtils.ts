@@ -23,6 +23,14 @@ export const NATIVE_METHODS = {
       }),
     );
   },
+  SHARE: (link: string) => {
+    window.ReactNativeWebView?.postMessage(
+      JSON.stringify({
+        link,
+        type: NATIVE_CUSTOM_EVENTS.SHARE,
+      }),
+    );
+  },
   SEND_TEXT_MESSAGE: (number: number) => {
     window.ReactNativeWebView?.postMessage(
       JSON.stringify({

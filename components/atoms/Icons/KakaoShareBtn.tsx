@@ -3,6 +3,8 @@ import { useEffect } from "react";
 import styled from "styled-components";
 
 import { REVIEW_DATA } from "../../../storage/Review";
+import { isWebView } from "../../../utils/appEnvUtils";
+import { NATIVE_METHODS } from "../../../utils/nativeMethodUtils";
 
 const kakaoAppKey = process.env.NEXT_PUBLIC_KAKAO_JS;
 
@@ -27,15 +29,27 @@ function KakaoShareBtn({
   isBig,
   isFull,
 }: IKakaoShareBtn) {
+  const handleShareOnApp = () => {
+    if (!isWebView()) return;
+
+    NATIVE_METHODS.SHARE(url);
+  };
+
   useEffect(() => {
-    if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
+    if (
+      typeof window !== "undefined" &&
+      window.Kakao &&
+      !window.Kakao.isInitialized() &&
+      !isWebView()
+    ) {
       window.Kakao.init(kakaoAppKey);
     }
   }, []);
 
   useEffect(() => {
     if (type === "gather" && !img) return;
-    if (window.Kakao) {
+
+    if (window.Kakao && !isWebView()) {
       const options =
         type === "gather" || type === "study"
           ? {
@@ -98,7 +112,7 @@ function KakaoShareBtn({
   }, [img]);
 
   return (
-    <Layout id="kakao-share-button" isFull={isFull}>
+    <Layout id="kakao-share-button" isFull={isFull} onClick={handleShareOnApp}>
       {!isBig ? (
         <i className="fa-light fa-share-nodes fa-lg" />
       ) : (

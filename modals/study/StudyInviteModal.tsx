@@ -7,6 +7,8 @@ import styled from "styled-components";
 import { WEB_URL } from "../../constants/system";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
+import { isWebView } from "../../utils/appEnvUtils";
+import { NATIVE_METHODS } from "../../utils/nativeMethodUtils";
 import { IFooterOptions, ModalLayout } from "../Modals";
 const kakaoAppKey = process.env.NEXT_PUBLIC_KAKAO_JS;
 
@@ -29,8 +31,19 @@ function StudyInviteModal({ setIsModal, place }: IStudyInviteModal) {
 
   const location = place.locationDetail;
 
+  const handleShareOnApp = () => {
+    if (!isWebView()) return;
+
+    NATIVE_METHODS.SHARE(url);
+  };
+
   useEffect(() => {
-    if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
+    if (
+      typeof window !== "undefined" &&
+      window.Kakao &&
+      !window.Kakao.isInitialized() &&
+      !isWebView()
+    ) {
       window.Kakao.init(kakaoAppKey);
     }
     setIsRenderingCheck(true);
@@ -38,7 +51,8 @@ function StudyInviteModal({ setIsModal, place }: IStudyInviteModal) {
 
   useEffect(() => {
     if (!isRenderingCheck) return;
-    if (window.Kakao) {
+
+    if (window.Kakao && !isWebView()) {
       const options = {
         container: "#kakao-share-button-invite",
         objectType: "location",
@@ -88,6 +102,7 @@ function StudyInviteModal({ setIsModal, place }: IStudyInviteModal) {
           fontSize="16px"
           disabled={false}
           id="kakao-share-button-invite"
+          onClick={handleShareOnApp}
         >
           친구초대
         </Button>

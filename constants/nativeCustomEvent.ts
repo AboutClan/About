@@ -4,6 +4,7 @@ export const NATIVE_CUSTOM_EVENTS = {
   OPEN_EXTERNAL_LINK: "openExternalLink",
   SEND_TEXT_MESSAGE: "sendTextMessage",
   CALL_PHONE: "callPhone",
+  SHARE: "share",
   FOREGROUND_FCM: "foregroundFcm",
   KAKAO_LOGIN: "kakaoLogin",
   APPLE_LOGIN: "appleLogin",
