@@ -7,7 +7,7 @@ import styled from "styled-components";
 
 import { getStudyStandardDate } from "../libs/study/date/getStudyStandardDate";
 import { slideDirectionState } from "../recoils/navigationRecoils";
-import { isWebView } from "../utils/convertUtils/appEnvUtils";
+import { isWebView } from "../utils/appEnvUtils";
 import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
 import { NATIVE_METHODS } from "../utils/nativeMethodUtils";
 import { detectDevice } from "../utils/validationUtils";

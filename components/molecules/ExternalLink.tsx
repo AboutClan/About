@@ -2,7 +2,7 @@ import { Link } from "@chakra-ui/react";
 import NextLink from "next/link";
 import React, { type PropsWithChildren, type ReactHTML } from "react";
 
-import { isWebView } from "../../utils/convertUtils/appEnvUtils";
+import { isWebView } from "../../utils/appEnvUtils";
 import { NATIVE_METHODS } from "../../utils/nativeMethodUtils";
 
 interface IExternalLink {

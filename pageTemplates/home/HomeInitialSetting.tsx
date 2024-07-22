@@ -1,4 +1,3 @@
-import axios from "axios";
 import dayjs from "dayjs";
 import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -8,10 +7,10 @@ import { useSetRecoilState } from "recoil";
 import { createGlobalStyle } from "styled-components";
 
 import PCBottomNav from "../../components/layouts/PCBottomNav";
-import { SERVER_URI } from "../../constants/apiConstants";
 import { STEPS_CONTENTS } from "../../constants/contentsText/GuideContents";
 import { USER_GUIDE } from "../../constants/keys/localStorage";
 import { useToast } from "../../hooks/custom/CustomToast";
+import { usePushServiceInitialize } from "../../hooks/fcm/mutaion";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { getStudyDateStatus } from "../../libs/study/date/getStudyDateStatus";
@@ -19,83 +18,13 @@ import FAQPopUp from "../../modals/pop-up/FAQPopUp";
 import UserSettingPopUp from "../../pageTemplates/setting/userSetting/userSettingPopUp";
 import { renderHomeHeaderState } from "../../recoils/renderRecoils";
 import { studyDateStatusState } from "../../recoils/studyRecoils";
+import { isPWA } from "../../utils/appEnvUtils";
 import { checkAndSetLocalStorage } from "../../utils/storageUtils";
 import { detectDevice } from "../../utils/validationUtils";
 
-const urlBase64ToUint8Array = (base64String) => {
-  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
-
-  let rawData;
-  try {
-    rawData = window.atob(base64);
-  } catch (e) {
-    console.error("Failed to decode base64 string:", e);
-    throw new Error("The string to be decoded is not correctly encoded.");
-  }
-
-  const outputArray = new Uint8Array(rawData.length);
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
-  }
-
-  return outputArray;
-};
-
-const requestAndSubscribePushService = async () => {
-  const hasPermission = await requestNotificationPermission();
-  if (!hasPermission) {
-    return;
-  }
-
-  await subscribePushService({
-    onSuccess: () => {
-      console.log("Subscribe push service successfully");
-    },
-  });
-};
-
-const requestNotificationPermission = async () => {
-  if (Notification.permission === "granted") {
-    return true;
-  }
-  if (Notification.permission !== "denied") {
-    const permission = await Notification.requestPermission();
-    return permission === "granted";
-  }
-
-  return false;
-};
-
-const subscribePushService = async (options: { onSuccess?: () => void } = {}) => {
-  try {
-    const registration = await navigator.serviceWorker.getRegistration();
-    const hasSubscription = await registration.pushManager.getSubscription();
-
-    if (hasSubscription) {
-      return;
-    }
-
-    const publicVapidKey = process.env.NEXT_PUBLIC_PWA_KEY;
-    const subscription = await registration.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
-    });
-
-    await axios.post(`${SERVER_URI}/webpush/subscribe`, subscription);
-
-    options.onSuccess?.();
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-const isPWA = () => {
-  const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
-  return isStandalone;
-};
-
 function HomeInitialSetting() {
+  usePushServiceInitialize();
+
   const toast = useToast();
   const { data: session } = useSession();
   const searchParams = useSearchParams();
@@ -156,10 +85,6 @@ function HomeInitialSetting() {
         location.href = "kakaotalk://web/openExternal?url=" + encodeURIComponent(targetUrl);
       }
     });
-  }, []);
-
-  useEffect(() => {
-    requestAndSubscribePushService();
   }, []);
 
   const [{ steps }, setState] = useState<{
