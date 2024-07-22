@@ -1,14 +1,13 @@
 import { AxiosError } from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { UseMutateFunction } from "react-query";
 import styled from "styled-components";
 
+import Avatar from "../../../components/atoms/Avatar";
 import ImageSlider from "../../../components/organisms/imageSlider/ImageSlider";
 import { COLOR_TABLE_LIGHT } from "../../../constants/colorConstants";
-
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import { usePointSystemQuery } from "../../../hooks/user/queries";
 import { AVATAR_COST, AVATAR_IMAGE_ARR } from "../../../storage/avatarStorage";
@@ -93,9 +92,8 @@ function RequestChangeProfileImageModalAvatar({
             exit="exit"
             key={iconIdx}
           >
-            <Icon bg={COLOR_TABLE_LIGHT[BG]}>
-              <Image width={80} height={80} src={AVATAR_IMAGE_ARR[iconIdx]} alt="avatar" />
-            </Icon>
+            <Avatar avatar={{ type: iconIdx, bg: BG }} size="xl" />
+
             <IconPoint>{AVATAR_COST[iconIdx]}점 달성</IconPoint>
           </IconWrapper>
         </AnimatePresence>
@@ -144,17 +142,6 @@ const DownPart = styled.div`
   margin-top: var(--gap-3);
   border-top: var(--border);
   border-bottom: var(--border);
-`;
-
-const Icon = styled.div<{ bg: string }>`
-  width: 100px;
-  height: 100px;
-  margin-bottom: var(--gap-3);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  background-color: ${(props) => props.bg};
 `;
 
 const IconPoint = styled.div`

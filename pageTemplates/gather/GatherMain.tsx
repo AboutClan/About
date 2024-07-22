@@ -68,7 +68,7 @@ export default function GatherMain() {
       }
     };
   }, []);
-  console.log(cardDataArr);
+
   return (
     <Box m="0 16px" position="relative" minH="320px">
       {cardDataArr?.length ? (

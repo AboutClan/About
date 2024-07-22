@@ -1,9 +1,9 @@
 import "swiper/css/scrollbar";
 
+import Image from "next/image";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import Image from "next/image";
 import { ImageContainer } from "../ImageSlider";
 
 interface IImageSliderSpecialBg {
@@ -12,7 +12,7 @@ interface IImageSliderSpecialBg {
 }
 
 function ImageSliderSpecialBg({ imageContainer, onClick }: IImageSliderSpecialBg) {
-  console.log(11, imageContainer);
+  
   return (
     <Swiper
       navigation

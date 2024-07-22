@@ -4,14 +4,16 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { UseMutateFunction } from "react-query";
 import styled from "styled-components";
+
 import Avatar from "../../../components/atoms/Avatar";
-
 import ImageSlider from "../../../components/organisms/imageSlider/ImageSlider";
-import { COLOR_TABLE_LIGHT } from "../../../constants/colorConstants";
-
+import {
+  SPECIAL_AVATAR_PERMISSION,
+  SPECIAL_BG_PERMISSION,
+} from "../../../constants/serviceConstants/AvatarConstants";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
-import { usePointSystemQuery } from "../../../hooks/user/queries";
-import { AVATAR_COST, SPECIAL_AVATAR, SPECIAL_BG } from "../../../storage/avatarStorage";
+import { useUserInfoQuery } from "../../../hooks/user/queries";
+import { SPECIAL_AVATAR, SPECIAL_BG } from "../../../storage/avatarStorage";
 import { IModal } from "../../../types/components/modalTypes";
 import { IAvatar } from "../../../types/models/userTypes/userInfoTypes";
 import { IFooterOptions, ModalLayout } from "../../Modals";
@@ -30,19 +32,31 @@ function SpecialAvatarModal({ setIsModal, setUserAvatar }: ISpecialAvatarModal) 
   const { data: session } = useSession();
   const failToast = useFailToast();
 
+  const uid = session?.user.uid;
+
   const isGuest = session?.user.name === "guest";
 
   const [iconIdx, setIconIdx] = useState(0);
   const [back, setBack] = useState(false);
   const [BG, setBG] = useState(0);
 
-  const BGArr = [...SPECIAL_BG, ...COLOR_TABLE_LIGHT];
+  const { data: userInfo } = useUserInfoQuery();
 
-  const { data: score } = usePointSystemQuery("score");
+  const myAvatar = userInfo?.avatar;
 
   useEffect(() => {
-    if (iconIdx === 0) setBack(false);
-    if (iconIdx === SPECIAL_AVATAR.length - 1) setBack(true);
+    if (myAvatar) {
+      setIconIdx(myAvatar.type);
+      setBG(myAvatar.bg);
+    } else {
+      setIconIdx(100);
+      setBG(100);
+    }
+  }, [myAvatar]);
+
+  useEffect(() => {
+    if (iconIdx < 100) setBack(false);
+    if (iconIdx === SPECIAL_AVATAR.length + 100) setBack(true);
   }, [iconIdx]);
 
   const handleMove = (type: "prev" | "next") => {
@@ -52,9 +66,9 @@ function SpecialAvatarModal({ setIsModal, setUserAvatar }: ISpecialAvatarModal) 
       setIconIdx(iconIdx - 1);
     }
     if (type === "next") {
-      if (iconIdx === SPECIAL_AVATAR.length) return;
+      if (iconIdx === SPECIAL_AVATAR.length + 1) return;
       setBack(false);
-      setIconIdx(iconIdx + 1);
+      setIconIdx(iconIdx < 100 ? 100 : iconIdx + 1);
     }
   };
 
@@ -63,11 +77,25 @@ function SpecialAvatarModal({ setIsModal, setUserAvatar }: ISpecialAvatarModal) 
       failToast("guest");
       return;
     }
-    if (AVATAR_COST[iconIdx] > score) {
-      failToast("free", "프로필 변경을 위한 점수가 부족해요!");
+    if (iconIdx === 0 && BG === 0) {
+      setIsModal(false);
       return;
     }
-    setUserAvatar({ type: iconIdx, bg: BG });
+    if (iconIdx >= 100) {
+      if (!SPECIAL_AVATAR_PERMISSION[iconIdx - 100].includes(uid)) {
+        failToast("free", "해당 아바타를 소유하고 있지 않습니다.");
+        return;
+      }
+    }
+    if (BG >= 100) {
+      if (!SPECIAL_BG_PERMISSION[iconIdx - 100].includes(uid)) {
+        failToast("free", "해당 배경을 소유하고 있지 않습니다.");
+        return;
+      }
+    }
+    if (iconIdx >= 100 || BG >= 100) {
+      setUserAvatar({ type: iconIdx, bg: BG });
+    }
     setIsModal(false);
   };
 
@@ -77,13 +105,12 @@ function SpecialAvatarModal({ setIsModal, setUserAvatar }: ISpecialAvatarModal) 
       func: onSubmit,
     },
   };
-  console.log(34, BG);
 
   return (
-    <ModalLayout title="아바타 프로필" footerOptions={footerOptions} setIsModal={setIsModal}>
+    <ModalLayout title="스페셜 아바타 / 배경" footerOptions={footerOptions} setIsModal={setIsModal}>
       <UpPart>
         <ArrowIcon isLeft={true} onClick={() => handleMove("prev")}>
-          {iconIdx !== 0 && <i className="fa-solid fa-chevron-left" />}
+          {iconIdx >= 100 && <i className="fa-solid fa-chevron-left" />}
         </ArrowIcon>
         <AnimatePresence>
           <IconWrapper
@@ -94,16 +121,34 @@ function SpecialAvatarModal({ setIsModal, setUserAvatar }: ISpecialAvatarModal) 
             exit="exit"
             key={iconIdx}
           >
-            <Avatar avatar={{ bg: BG + 100, type: 2 }} size="xl" />
-            <IconPoint>{AVATAR_COST[iconIdx]}점 달성</IconPoint>
+            <Avatar
+              avatar={{
+                bg: BG,
+                type: iconIdx,
+              }}
+              size="xl"
+            />
+            <IconPoint>
+              `
+              {iconIdx < 100
+                ? "현재 프로필"
+                : iconIdx < 102
+                  ? "스토어 한정 구매"
+                  : "이벤트 한정 획득"}
+              `
+            </IconPoint>
           </IconWrapper>
         </AnimatePresence>
         <ArrowIcon isLeft={false} onClick={() => handleMove("next")}>
-          {iconIdx !== SPECIAL_AVATAR.length - 1 && <i className="fa-solid fa-chevron-right" />}
+          {iconIdx !== SPECIAL_AVATAR.length + 99 && <i className="fa-solid fa-chevron-right" />}
         </ArrowIcon>
       </UpPart>
       <DownPart>
-        <ImageSlider type="specialBg" imageContainer={SPECIAL_BG} onClick={(idx) => setBG(idx)} />
+        <ImageSlider
+          type="specialBg"
+          imageContainer={SPECIAL_BG}
+          onClick={(idx) => setBG(idx + 100)}
+        />
       </DownPart>
     </ModalLayout>
   );
@@ -141,18 +186,8 @@ const DownPart = styled.div`
   border-bottom: var(--border);
 `;
 
-const Icon = styled.div<{ bg: string }>`
-  width: 100px;
-  height: 100px;
-  margin-bottom: var(--gap-3);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  background-color: ${(props) => props.bg};
-`;
-
 const IconPoint = styled.div`
+  margin-top: 12px;
   color: var(--color-mint);
 `;
 

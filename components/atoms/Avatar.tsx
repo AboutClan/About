@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 
 import { COLOR_TABLE_LIGHT } from "../../constants/colorConstants";
-import { AVATAR_IMAGE_ARR, SPECIAL_BG } from "../../storage/avatarStorage";
+import { AVATAR_IMAGE_ARR, SPECIAL_AVATAR, SPECIAL_BG } from "../../storage/avatarStorage";
 import { IAvatar as IAvatarProp } from "../../types/models/userTypes/userInfoTypes";
 
 type Size = "xs" | "sm" | "smd" | "md" | "lg" | "xl";
@@ -33,13 +33,25 @@ export default function Avatar({
 }: IAvatar) {
   const hasAvatar = avatar !== undefined && avatar?.type !== null && avatar?.bg !== null;
 
-  const [imageUrl, setImageUrl] = useState(!hasAvatar ? image : AVATAR_IMAGE_ARR[avatar.type]);
+  const [imageUrl, setImageUrl] = useState(
+    !hasAvatar
+      ? image
+      : avatar.type >= 100
+        ? SPECIAL_AVATAR[avatar.type - 100].image
+        : AVATAR_IMAGE_ARR[avatar.type],
+  );
   const [bgImage, setBgImage] = useState<string | null>(null);
 
   useEffect(() => {
-    setImageUrl(!hasAvatar ? image : AVATAR_IMAGE_ARR[avatar.type]);
-    if (true) {
-      setBgImage(`url(${SPECIAL_BG[1].image})`);
+    setImageUrl(
+      !hasAvatar
+        ? image
+        : avatar.type >= 100
+          ? SPECIAL_AVATAR[avatar.type - 100].image
+          : AVATAR_IMAGE_ARR[avatar.type],
+    );
+    if (avatar?.bg >= 100) {
+      setBgImage(`url(${SPECIAL_BG[avatar?.bg - 100].image})`);
     } else {
       setBgImage(null);
     }
@@ -59,7 +71,7 @@ export default function Avatar({
               ? "var(--gray-500)"
               : hasAvatar && avatar.bg !== null && COLOR_TABLE_LIGHT[avatar.bg])
           }
-          hasType={hasAvatar}
+          hasType={hasAvatar && avatar.type < 100}
           size={avatar?.type === 13 ? "xs" : size}
           isBgImage={!!bgImage}
         >

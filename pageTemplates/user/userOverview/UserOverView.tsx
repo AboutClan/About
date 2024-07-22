@@ -30,8 +30,6 @@ export default function UserOverview({ userInfo }: UserOverviewProps) {
     router.push("/register/location?edit=on");
   };
 
-  console.log(4, userInfo);
-
   return (
     <>
       <Box

@@ -5,7 +5,7 @@ import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
 import { USER_INFO } from "../../../constants/keys/queryKeys";
-import { useCompleteToast, useErrorToast, useFailToast } from "../../../hooks/custom/CustomToast";
+import { useErrorToast, useFailToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import {
   useUserInfoFieldMutation,
   useUserUpdateProfileImageMutation,
@@ -20,7 +20,7 @@ function RequestChangeProfileImageModal({ setIsModal }: IModal) {
   const { data: session } = useSession();
   const failToast = useFailToast();
   const errorToast = useErrorToast();
-  const completeToast = useCompleteToast();
+  const typeToast = useTypeToast();
 
   const isGuest = session?.user.name === "guest";
 
@@ -32,7 +32,7 @@ function RequestChangeProfileImageModal({ setIsModal }: IModal) {
 
   const { mutate: setUserAvatar } = useUserInfoFieldMutation("avatar", {
     onSuccess() {
-      completeToast("success");
+      typeToast("change");
       queryClient.invalidateQueries([USER_INFO]);
       setIsModal(false);
     },
