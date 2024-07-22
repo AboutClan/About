@@ -1,7 +1,7 @@
-import Link from "next/link";
 import styled from "styled-components";
 
 import BlurredPart from "./BlurredPart";
+import ExternalLink from "./ExternalLink";
 
 interface BlurredLinkProps {
   isBlur: boolean;
@@ -14,14 +14,9 @@ function BlurredLink({ isBlur, url }: BlurredLinkProps) {
       <span>오픈채팅방 주소(참여 인원 전용)</span>
       <div>
         <BlurredPart isBlur={isBlur} isCenter={false}>
-          <Link
-            href={url}
-            onClick={(e) => {
-              if (isBlur) e.preventDefault();
-            }}
-          >
+          <CustomExternalLink href={url} isBlur={isBlur}>
             {url}
-          </Link>
+          </CustomExternalLink>
         </BlurredPart>
       </div>
     </KakaoLink>
@@ -38,6 +33,10 @@ const KakaoLink = styled.div`
   > div {
     padding: var(--gap-1) 0;
   }
+`;
+
+const CustomExternalLink = styled(ExternalLink)<{ isBlur: boolean }>`
+  pointer-events: ${({ isBlur }) => (isBlur ? "none" : "unset")};
 `;
 
 export default BlurredLink;
