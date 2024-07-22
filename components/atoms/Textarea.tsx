@@ -6,14 +6,14 @@ import { ForwardedRef, forwardRef } from "react";
 
 import { DispatchBoolean } from "../../types/hooks/reactTypes";
 
-type ITextarea = ChakraTextareaProps & {
+type TextareaProps = ChakraTextareaProps & {
   minHeight?: number;
   isFocus?: boolean;
   setIsFocus?: DispatchBoolean;
 };
 
 const Textarea = forwardRef(function Textarea(
-  { minHeight, setIsFocus, ...textareaProps }: ITextarea,
+  { minHeight, setIsFocus, ...textareaProps }: TextareaProps,
   ref: ForwardedRef<HTMLTextAreaElement>,
 ) {
   return (
