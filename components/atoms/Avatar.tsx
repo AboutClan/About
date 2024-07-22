@@ -130,8 +130,8 @@ const AvatarContainer = styled.div<{
   overflow: hidden;
   position: relative;
   border-radius: 50%; // rounded-full
-  background-color: var(--gray-100);
-  border: ${(props) => (props.isBorder ? "var(--border)" : undefined)};
+  background-color: white;
+  border: ${(props) => (props.isBorder ? "var(--border-main)" : undefined)};
 
   ${(props) => {
     const sizeStyles = (() => {
@@ -140,7 +140,7 @@ const AvatarContainer = styled.div<{
           return css`
             width: 28px; // w-7
             height: 28px; // h-7
-            padding: 2px;
+            padding: ${props.isBorder ? "1px" : "2px"};
           `;
         case "smd":
           return css`
