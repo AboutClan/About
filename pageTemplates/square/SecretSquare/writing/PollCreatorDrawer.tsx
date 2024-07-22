@@ -34,8 +34,10 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
     name: "pollList",
     rules: {
       validate: (pollList) => {
+        // pollist is default value
+        const isDefaultValue = pollList.length === 3 && pollList.every(({ value }) => !value);
         const isValid = pollList.length >= 2 && pollList.every(({ value }) => !!value);
-        return isValid || "2개 이상의 항목을 입력해주세요.";
+        return isDefaultValue || isValid || "2개 이상의 항목을 입력해주세요.";
       },
     },
   });
