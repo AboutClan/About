@@ -3,14 +3,15 @@ import { Dispatch, SetStateAction } from "react";
 
 import ButtonGroups, { IButtonOptions } from "../../../components/molecules/groups/ButtonGroups";
 import { SecretSquareCategory } from "../../../types/models/square";
-import { SECRET_SQUARE_CATEGORY } from "../SquareSecretSection";
+
+const SECRET_SQUARE_CATEGORY: SecretSquareCategory[] = ["전체", "일상", "고민", "정보", "같이해요"];
 
 interface SecretSquareCategoryProps {
   category: SecretSquareCategory;
   setCategory: Dispatch<SetStateAction<SecretSquareCategory>>;
 }
 
-function SecretSquareCategory({
+function SecretSquareCategories({
   category: selectedCategory,
   setCategory,
 }: SecretSquareCategoryProps) {
@@ -31,4 +32,4 @@ function SecretSquareCategory({
   );
 }
 
-export default SecretSquareCategory;
+export default SecretSquareCategories;

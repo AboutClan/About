@@ -1,14 +1,14 @@
 import styled from "styled-components";
 
-import Avatar from "../../components/atoms/Avatar";
+import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import Avatar from "../../atoms/Avatar";
 
-interface IReviewItemHeader {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  writer: any;
+interface IFeedHeader {
+  writer: IUserSummary;
   date: string;
 }
 
-function ReviewItemHeader({ writer, date }: IReviewItemHeader) {
+function FeedHeader({ writer, date }: IFeedHeader) {
   const isABOUT = writer.name === "이승주";
   return (
     <Layout>
@@ -19,7 +19,7 @@ function ReviewItemHeader({ writer, date }: IReviewItemHeader) {
           <span>{date}</span>
         </div>
       </Profile>
-      {/* <i className="fa- fa-ellipsis" size="lg" /> */}
+      <i className="fa-solid fa-ellipsis" />
     </Layout>
   );
 }
@@ -60,4 +60,4 @@ const Profile = styled.div`
   }
 `;
 
-export default ReviewItemHeader;
+export default FeedHeader;

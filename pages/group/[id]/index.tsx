@@ -82,7 +82,7 @@ function GroupDetail() {
             />
             <GroupContent group={group} />
             <GroupParticipation data={group} />
-            <GroupComments comment={group.comment} />
+            <GroupComments comments={group.comment} />
           </Layout>
         )}
       </Slide>

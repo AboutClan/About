@@ -5,13 +5,13 @@ import { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 
 import { COLOR_TABLE_LIGHT } from "../../constants/colorConstants";
-import { AVATAR_IMAGE_ARR } from "../../storage/avatarStorage";
+import { AVATAR_IMAGE_ARR, SPECIAL_AVATAR, SPECIAL_BG } from "../../storage/avatarStorage";
 import { IAvatar as IAvatarProp } from "../../types/models/userTypes/userInfoTypes";
 
 type Size = "xs" | "sm" | "smd" | "md" | "lg" | "xl";
 
 interface IAvatar {
-  image: string;
+  image?: string;
   size: Size;
   sizeLength?: number;
   avatar?: IAvatarProp;
@@ -33,11 +33,29 @@ export default function Avatar({
 }: IAvatar) {
   const hasAvatar = avatar !== undefined && avatar?.type !== null && avatar?.bg !== null;
 
-  const [imageUrl, setImageUrl] = useState(!hasAvatar ? image : AVATAR_IMAGE_ARR[avatar.type]);
+  const [imageUrl, setImageUrl] = useState(
+    !hasAvatar
+      ? image
+      : avatar.type >= 100
+        ? SPECIAL_AVATAR[avatar.type - 100].image
+        : AVATAR_IMAGE_ARR[avatar.type],
+  );
+  const [bgImage, setBgImage] = useState<string | null>(null);
 
   useEffect(() => {
-    setImageUrl(!hasAvatar ? image : AVATAR_IMAGE_ARR[avatar.type]);
-  }, [image, avatar]);
+    setImageUrl(
+      !hasAvatar
+        ? image
+        : avatar.type >= 100
+          ? SPECIAL_AVATAR[avatar.type - 100].image
+          : AVATAR_IMAGE_ARR[avatar.type],
+    );
+    if (avatar?.bg >= 100) {
+      setBgImage(`url(${SPECIAL_BG[avatar?.bg - 100].image})`);
+    } else {
+      setBgImage(null);
+    }
+  }, [image, avatar, uid]);
 
   const onError = () => {
     setImageUrl(AVATAR_IMAGE_ARR[0]);
@@ -45,15 +63,17 @@ export default function Avatar({
 
   function AvatarComponent() {
     return (
-      <AvatarContainer size={size} sizeLength={sizeLength}>
+      <AvatarContainer size={size} sizeLength={sizeLength} isBorder={avatar?.bg >= 100}>
         <ImageContainer
           bg={
-            shadowAvatar
+            bgImage ||
+            (shadowAvatar
               ? "var(--gray-500)"
-              : hasAvatar && avatar.bg !== null && COLOR_TABLE_LIGHT[avatar.bg]
+              : hasAvatar && avatar.bg !== null && COLOR_TABLE_LIGHT[avatar.bg])
           }
-          hasType={hasAvatar}
+          hasType={hasAvatar && avatar.type < 100}
           size={avatar?.type === 13 ? "xs" : size}
+          isBgImage={!!bgImage}
         >
           <Box w="100%" h="100%" pos="relative">
             {!shadowAvatar ? (
@@ -101,14 +121,17 @@ export default function Avatar({
     </>
   );
 }
+
 const AvatarContainer = styled.div<{
   size: Size;
   sizeLength?: number; // make sizeLength optional
+  isBorder: boolean;
 }>`
   overflow: hidden;
   position: relative;
   border-radius: 50%; // rounded-full
-  background-color: var(--gray-100);
+  background-color: white;
+  border: ${(props) => (props.isBorder ? "var(--border-main)" : undefined)};
 
   ${(props) => {
     const sizeStyles = (() => {
@@ -117,7 +140,7 @@ const AvatarContainer = styled.div<{
           return css`
             width: 28px; // w-7
             height: 28px; // h-7
-            padding: 2px;
+            padding: ${props.isBorder ? "1px" : "2px"};
           `;
         case "smd":
           return css`
@@ -162,6 +185,7 @@ const ImageContainer = styled.div<{
   bg: string | null;
   hasType: boolean;
   size: Size;
+  isBgImage: boolean;
 }>`
   position: relative;
   width: 100%;
@@ -182,5 +206,5 @@ const ImageContainer = styled.div<{
               ? "6px"
               : "8px")};
 
-  background-color: ${(props) => (props.bg ? props.bg : "var(--gray-500)")};
+  background: ${(props) => (props.isBgImage ? `center/cover no-repeat ${props.bg}` : props.bg)};
 `;
