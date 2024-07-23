@@ -8,7 +8,7 @@ import { COLOR_TABLE_LIGHT } from "../../constants/colorConstants";
 import { AVATAR_IMAGE_ARR, SPECIAL_AVATAR, SPECIAL_BG } from "../../storage/avatarStorage";
 import { IAvatar as IAvatarProp } from "../../types/models/userTypes/userInfoTypes";
 
-type Size = "xs" | "sm" | "smd" | "md" | "lg" | "xl";
+type Size = "sm" | "smd" | "md" | "lg" | "xl";
 
 interface IAvatar {
   image?: string;
@@ -63,7 +63,7 @@ export default function Avatar({
 
   function AvatarComponent() {
     return (
-      <AvatarContainer size={size} sizeLength={sizeLength} isBorder={avatar?.bg >= 100}>
+      <AvatarContainer size={size} sizeLength={sizeLength}>
         <ImageContainer
           bg={
             bgImage ||
@@ -72,7 +72,7 @@ export default function Avatar({
               : hasAvatar && avatar.bg !== null && COLOR_TABLE_LIGHT[avatar.bg])
           }
           hasType={hasAvatar && avatar.type < 100}
-          size={avatar?.type === 13 ? "xs" : size}
+          size={size}
           isBgImage={!!bgImage}
         >
           <Box w="100%" h="100%" pos="relative">
@@ -125,13 +125,11 @@ export default function Avatar({
 const AvatarContainer = styled.div<{
   size: Size;
   sizeLength?: number; // make sizeLength optional
-  isBorder: boolean;
 }>`
   overflow: hidden;
   position: relative;
   border-radius: 50%; // rounded-full
   background-color: white;
-  border: ${(props) => (props.isBorder ? "var(--border-main)" : undefined)};
 
   ${(props) => {
     const sizeStyles = (() => {
@@ -140,7 +138,7 @@ const AvatarContainer = styled.div<{
           return css`
             width: 28px; // w-7
             height: 28px; // h-7
-            padding: ${props.isBorder ? "1px" : "2px"};
+            padding: 1.5px;
           `;
         case "smd":
           return css`
@@ -192,19 +190,18 @@ const ImageContainer = styled.div<{
   height: 100%;
   border-radius: 50%;
   overflow: hidden;
+  border: var(--border-main);
   padding: ${(props) =>
     props.hasType &&
-    (props.size === "xs"
-      ? "0"
-      : props.size === "sm"
-        ? "2px"
-        : props.size === "smd"
-          ? "4px"
-          : props.size === "md"
-            ? "4px"
-            : props.size === "lg"
-              ? "6px"
-              : "8px")};
+    (props.size === "sm"
+      ? "3px"
+      : props.size === "smd"
+        ? "6px"
+        : props.size === "md"
+          ? "6px"
+          : props.size === "lg"
+            ? "6px"
+            : "8px")};
 
   background: ${(props) => (props.isBgImage ? `center/cover no-repeat ${props.bg}` : props.bg)};
 `;
