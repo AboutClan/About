@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import { useState } from "react";
-import Textarea from "../../components/atoms/Textarea";
 
+import Textarea from "../../components/atoms/Textarea";
 import WritingNavigation from "../../components/atoms/WritingNavigation";
 
 function Test() {
