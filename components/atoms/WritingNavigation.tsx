@@ -28,6 +28,8 @@ function WritingNavigation({ children }: WritingNavigationProps) {
 
   return (
     <Box
+      mx="auto"
+      maxW="var(--max-width)"
       position="fixed"
       bottom={modalBottom}
       left={0}

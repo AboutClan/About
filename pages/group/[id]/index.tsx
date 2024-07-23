@@ -9,6 +9,7 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { GROUP_GATHERING_IMAGE } from "../../../assets/images/randomImages";
+import WritingIcon from "../../../components/atoms/Icons/WritingIcon";
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../components/layouts/PageSlide";
 import { GROUP_STUDY_ALL } from "../../../constants/keys/queryKeys";
@@ -16,11 +17,9 @@ import { useGroupAttendancePatchMutation } from "../../../hooks/groupStudy/mutat
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
 import { checkGroupGathering } from "../../../libs/group/checkGroupGathering";
 import GroupBottomNav from "../../../pageTemplates/group/detail/GroupBottomNav";
-import GroupComments from "../../../pageTemplates/group/detail/GroupComment";
 import GroupContent from "../../../pageTemplates/group/detail/GroupContent/GroupStudyContent";
 import GroupCover from "../../../pageTemplates/group/detail/GroupCover";
 import GroupHeader from "../../../pageTemplates/group/detail/GroupHeader";
-import GroupParticipation from "../../../pageTemplates/group/detail/GroupParticipation";
 import GroupTitle from "../../../pageTemplates/group/detail/GroupTitle";
 import { transferGroupDataState } from "../../../recoils/transferRecoils";
 import { IGroup } from "../../../types/models/groupTypes/group";
@@ -67,6 +66,12 @@ function GroupDetail() {
 
   const belong = group && checkGroupGathering(group.hashTag);
 
+  const isMember =
+    group &&
+    [group.organizer, ...group.participants.map((who) => who.user)].some(
+      (who) => who?.uid === session?.user.uid,
+    );
+
   return (
     <>
       <GroupHeader group={group} />
@@ -84,18 +89,14 @@ function GroupDetail() {
               isWaiting={group.waiting.length !== 0}
             />
             <GroupContent group={group} category={category} setCategory={setCategory} />
-            <GroupParticipation data={group} />
-            <GroupComments comments={group.comment} />
           </Layout>
         )}
       </Slide>
       {!group && <MainLoading />}
-      {group &&
-      category === "정보" &&
-      ![group.organizer, ...group.participants.map((who) => who.user)].some(
-        (who) => who?.uid === session?.user.uid,
-      ) ? (
+      {group && category === "정보" && !isMember ? (
         <GroupBottomNav data={group} />
+      ) : category === "피드" && isMember ? (
+        <WritingIcon url={`/feed/writing/group?id=${id}`} />
       ) : null}
     </>
   );
