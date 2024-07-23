@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import ImageUploadInput from "../../components/molecules/ImageUploadInput";
 import { useFeedMutation } from "../../hooks/feed/mutations";
-import { FeedProps } from "../../types/models/feed";
+import { appendFormData } from "../../utils/formDataUtils";
 function Test() {
   const [imageUrl, setImageUrl] = useState();
   const { mutate } = useFeedMutation({
@@ -13,14 +13,6 @@ function Test() {
   });
   console.log(2, imageUrl);
 
-  const appendFormData = <T extends keyof FeedProps>(
-    formData: FormData,
-    key: T,
-    value: FeedProps[T],
-  ) => {
-    formData.append(key, value);
-  };
-
   const formData = new FormData();
 
   const onClick = () => {
@@ -29,7 +21,6 @@ function Test() {
     appendFormData(formData, "title", "studyAttend");
     appendFormData(formData, "text", "studyAttend");
     appendFormData(formData, "writer", "studyAttend");
-
     mutate(formData);
   };
 

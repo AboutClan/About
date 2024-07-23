@@ -1,8 +1,8 @@
 import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useRecoilState } from "recoil";
@@ -26,11 +26,14 @@ import { transferGroupDataState } from "../../../recoils/transferRecoils";
 import { IGroup } from "../../../types/models/groupTypes/group";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 
+export type GroupSectionCategory = "정보" | "피드" | "출석부" | "채팅";
+
 function GroupDetail() {
   const { data: session } = useSession();
   const { id } = useParams<{ id: string }>() || {};
 
   const [group, setGroup] = useState<IGroup>();
+  const [category, setCategory] = useState<GroupSectionCategory>("정보");
 
   const [transferGroup, setTransferGroup] = useRecoilState(transferGroupDataState);
 
@@ -80,7 +83,7 @@ function GroupDetail() {
               maxCnt={group.memberCnt.max}
               isWaiting={group.waiting.length !== 0}
             />
-            <GroupContent group={group} />
+            <GroupContent group={group} category={category} setCategory={setCategory} />
             <GroupParticipation data={group} />
             <GroupComments comments={group.comment} />
           </Layout>
@@ -88,6 +91,7 @@ function GroupDetail() {
       </Slide>
       {!group && <MainLoading />}
       {group &&
+      category === "정보" &&
       ![group.organizer, ...group.participants.map((who) => who.user)].some(
         (who) => who?.uid === session?.user.uid,
       ) ? (

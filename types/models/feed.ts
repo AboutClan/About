@@ -1,7 +1,3 @@
-export interface FeedProps {
-  title: string;
-  text: string;
-  image: string;
-  writer: string;
-  type: string;
-}
+import { WritingFormProps } from "../services/writingTypes";
+
+export interface FeedProps extends WritingFormProps {}
