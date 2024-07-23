@@ -2,21 +2,32 @@ import { Box } from "@chakra-ui/react";
 import styled from "styled-components";
 
 import ArrowBackButton from "../../components/atoms/buttons/ArrowBackButton";
+import XButton from "../atoms/buttons/XButton";
 import Slide from "./PageSlide";
 interface IHeader {
   title: string;
   isBack?: boolean;
+  isX?: boolean;
   url?: string;
   isSlide?: boolean;
+  rightPadding?: number;
   children?: React.ReactNode;
 }
 
-export default function Header({ isBack = true, title, isSlide = true, url, children }: IHeader) {
+export default function Header({
+  isBack = true,
+  isX,
+  title,
+  isSlide = true,
+  url,
+  rightPadding,
+  children,
+}: IHeader) {
   function HeaderLayout() {
     return (
-      <HeaderContainer>
+      <HeaderContainer rightPadding={rightPadding}>
         <LeftSection>
-          {isBack ? <ArrowBackButton url={url} /> : <Box w="16px" />}
+          {isX ? <XButton /> : isBack ? <ArrowBackButton url={url} /> : <Box w="16px" />}
           <Title>{title}</Title>
         </LeftSection>
         <div>{children}</div>
@@ -37,11 +48,11 @@ export default function Header({ isBack = true, title, isSlide = true, url, chil
   );
 }
 
-const HeaderContainer = styled.header`
+const HeaderContainer = styled.header<{ rightPadding: number }>`
   background-color: white;
   height: var(--header-h);
   font-size: 18px;
-  padding-right: 16px;
+  padding-right: ${(props) => props.rightPadding || 16}px;
 
   display: flex;
   justify-content: space-between;
