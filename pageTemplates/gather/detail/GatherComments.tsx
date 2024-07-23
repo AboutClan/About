@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/dist/client/router";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
@@ -51,7 +51,7 @@ function GatherComments({ comments }: IGatherComments) {
     };
   };
 
-  const onSubmit = () => async (value: string) => {
+  const onSubmit = async (value: string) => {
     await writeComment({ comment: value });
     await setCommentArr((old) => [...old, addNewComment(userInfo, value)]);
   };
