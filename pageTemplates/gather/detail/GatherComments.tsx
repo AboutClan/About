@@ -53,7 +53,7 @@ function GatherComments({ comments }: IGatherComments) {
 
   const onSubmit = async (value: string) => {
     await writeComment({ comment: value });
-    await setCommentArr((old) => [...old, addNewComment(userInfo, value)]);
+    setCommentArr((old) => [...old, addNewComment(userInfo, value)]);
   };
 
   const resetCache = () => {
