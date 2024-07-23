@@ -11,7 +11,14 @@ export const USER_SCORE_BADGE_ARR = [
 
 export const MANAGER_BADGE = "바닐라";
 
-export const USER_EVENT_BADGE_ARR = ["라벤더", "딸기스무디", "민트초코", "코코아"] as const;
+export const USER_EVENT_BADGE_ARR = [
+  "라벤더",
+  "딸기스무디",
+  "민트초코",
+  "코코아",
+  "슈팅스타",
+  "모히또",
+] as const;
 
 export const USER_BADGE_ARR = [
   ...USER_SCORE_BADGE_ARR,
@@ -47,6 +54,8 @@ export const BADGE_COLOR_MAPPINGS: {
   라벤더: "facebook",
   딸기스무디: "badgePink",
   민트초코: "badgeMint",
+  슈팅스타: "badgeOcean",
+  모히또: "badgeMojito",
 };
 
 export const BADGE_INFO = Object.entries(BADGE_SCORE_MAPPINGS).map(([badge, minScore]) => ({
