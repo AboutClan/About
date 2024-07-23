@@ -17,7 +17,6 @@ import { Badge } from "../../../components/atoms/badges/Badges";
 import { DAILY_CHECK_POP_UP } from "../../../constants/keys/localStorage";
 import { DAILY_CHECK_WIN_LIST } from "../../../constants/serviceConstants/dailyCheckConstatns";
 import { POINT_SYSTEM_PLUS } from "../../../constants/serviceConstants/pointSystemConstants";
-
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import { usePointSystemMutation } from "../../../hooks/user/mutations";
 import { useAlphabetMutation } from "../../../hooks/user/sub/collection/mutations";
