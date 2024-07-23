@@ -52,7 +52,7 @@ function Phone() {
           value={value}
           onChange={(e) => setValue(e.target.value)}
           placeholder="전화번호를 입력해 주세요."
-          inputRef={inputRef}
+          ref={inputRef}
         />
       </RegisterLayout>
       <BottomNav onClick={onClickNext} url="/register/fee" />
