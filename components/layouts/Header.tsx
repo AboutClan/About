@@ -2,12 +2,11 @@ import { Box } from "@chakra-ui/react";
 import styled from "styled-components";
 
 import ArrowBackButton from "../../components/atoms/buttons/ArrowBackButton";
-import XButton from "../atoms/buttons/XButton";
 import Slide from "./PageSlide";
 interface IHeader {
   title: string;
   isBack?: boolean;
-  isX?: boolean;
+
   url?: string;
   isSlide?: boolean;
   rightPadding?: number;
@@ -16,7 +15,6 @@ interface IHeader {
 
 export default function Header({
   isBack = true,
-  isX,
   title,
   isSlide = true,
   url,
@@ -27,7 +25,7 @@ export default function Header({
     return (
       <HeaderContainer rightPadding={rightPadding}>
         <LeftSection>
-          {isX ? <XButton /> : isBack ? <ArrowBackButton url={url} /> : <Box w="16px" />}
+          {isBack ? <ArrowBackButton url={url} /> : <Box w="16px" />}
           <Title>{title}</Title>
         </LeftSection>
         <div>{children}</div>

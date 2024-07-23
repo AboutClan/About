@@ -2,7 +2,7 @@ import { Flex, Radio, RadioGroup } from "@chakra-ui/react";
 import { Controller, useFormContext } from "react-hook-form";
 import styled from "styled-components";
 
-const categories = ["일상", "취미", "정보", "같이해요"] as const;
+import { SECRET_SQUARE_CATEGORY } from "../SecretSquareCategories";
 
 function SquareCategoryRadioGroup() {
   const { control } = useFormContext();
@@ -17,7 +17,7 @@ function SquareCategoryRadioGroup() {
           }}
           render={({ field }) => (
             <RadioGroup {...field} as={Flex} ml="4px">
-              {categories.map((category) => (
+              {SECRET_SQUARE_CATEGORY.map((category) => (
                 <Radio mr="16px" key={category} colorScheme="mintTheme" value={category} size="sm">
                   {category}
                 </Radio>

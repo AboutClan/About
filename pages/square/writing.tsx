@@ -63,7 +63,7 @@ function SquareWritingPage() {
 
   return (
     <>
-      <Header title="글 쓰기" isX rightPadding={8}>
+      <Header title="글 쓰기" rightPadding={8}>
         <Button
           isDisabled={!watch().title || !watch().content}
           variant="ghost"
@@ -146,22 +146,36 @@ function SquareWritingPage() {
                 </VStack>
               </Box>
             )}
-            <Button
-              type="button"
-              onClick={() => {
-                if (isPollType) {
-                  // TODO toast
-                  return;
-                }
-                onOpen();
-              }}
-            >
-              투표
-            </Button>
           </FormProvider>
         </VStack>
       </Slide>
-      <WritingNavigation isInputFocus={false} />
+      <WritingNavigation>
+        <Button
+          color="var(--gray-600)"
+          type="button"
+          leftIcon={<i className="fa-regular fa-image fa-lg" />}
+          variant="ghost"
+          size="sm"
+        >
+          사진
+        </Button>
+        <Button
+          color="var(--gray-600)"
+          type="button"
+          onClick={() => {
+            if (isPollType) {
+              // TODO toast
+              return;
+            }
+            onOpen();
+          }}
+          leftIcon={<i className="fa-regular fa-check-to-slot fa-lg" />}
+          variant="ghost"
+          size="sm"
+        >
+          투표
+        </Button>
+      </WritingNavigation>
     </>
   );
 }

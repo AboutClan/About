@@ -19,7 +19,7 @@ function SquareSecretSection() {
       id: "34",
       type: "general",
       author: "이승주", // TODO 익명
-      createdAt: "2023-05-29",
+      createdAt: "2024-07-24",
       viewCount: 10,
     },
     {
@@ -30,7 +30,7 @@ function SquareSecretSection() {
       id: "35",
       type: "poll",
       author: "이승주", // TODO 익명
-      createdAt: "2023-05-30",
+      createdAt: "2024-07-22",
       viewCount: 124,
       pollList: [
         { id: "0", value: "떡볶이", count: 3 },

@@ -4,7 +4,7 @@ import {
   InputLeftElement,
   type InputProps as ChakraInputProps,
 } from "@chakra-ui/react";
-import { forwardRef, type ForwardedRef } from "react";
+import { type ForwardedRef,forwardRef } from "react";
 
 type InputProps = ChakraInputProps & {
   size?: "xs" | "sm" | "md";
