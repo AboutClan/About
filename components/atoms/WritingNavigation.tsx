@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import Slide from "../layouts/PageSlide";
 
 interface WritingNavigationProps extends React.PropsWithChildren {}
 
@@ -27,19 +28,21 @@ function WritingNavigation({ children }: WritingNavigationProps) {
   }, []);
 
   return (
-    <Box
-      mx="auto"
-      maxW="var(--max-width)"
-      position="fixed"
-      bottom={modalBottom}
-      left={0}
-      right={0}
-      bgColor="white"
-      borderTop="var(--border-main)"
-      p="8px"
-    >
-      {children}
-    </Box>
+    <Slide isFixed={true}>
+      <Box
+        mx="auto"
+        maxW="var(--max-width)"
+        position="fixed"
+        bottom={modalBottom}
+        left={0}
+        right={0}
+        bgColor="white"
+        borderTop="var(--border-main)"
+        p="8px"
+      >
+        {children}
+      </Box>
+    </Slide>
   );
 }
 

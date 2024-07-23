@@ -1,4 +1,5 @@
 import { atom } from "recoil";
+import { SummaryBlockProps } from "../components/molecules/SummaryBlock";
 
 import { IDailyCheckWinList } from "../constants/serviceConstants/dailyCheckConstatns";
 import { IGiftEntry } from "../pages/store";
@@ -34,6 +35,11 @@ export const transferGatherDataState = atom<IGather>({
 
 export const transferGroupDataState = atom<IGroup>({
   key: "transferGroupDataState",
+  default: null,
+});
+
+export const transferFeedSummaryState = atom<SummaryBlockProps>({
+  key: "transferFeedSummary",
   default: null,
 });
 

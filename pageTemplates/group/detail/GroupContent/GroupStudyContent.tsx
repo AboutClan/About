@@ -6,7 +6,7 @@ import { DispatchType } from "../../../../types/hooks/reactTypes";
 import { IGroup } from "../../../../types/models/groupTypes/group";
 import ContentAttend from "./ContentAttendance";
 import ContentChat from "./ContentChat";
-import ContentGather from "./ContentGather";
+import ContentGather from "./ContentFeed";
 import ContentInfo from "./ContentInfo";
 
 interface IGroupContent {
@@ -32,7 +32,7 @@ function GroupContent({ group, category, setCategory }: IGroupContent) {
         {category === "정보" ? (
           <ContentInfo group={group} />
         ) : category === "피드" ? (
-          <ContentGather />
+          <ContentGather group={group} />
         ) : category === "출석부" ? (
           <ContentAttend group={group} />
         ) : (
