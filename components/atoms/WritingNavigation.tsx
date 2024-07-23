@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const WritingNavigation = () => {
+function WritingNavigation() {
   const [modalBottom, setModalBottom] = useState("0px");
 
   useEffect(() => {
@@ -38,6 +38,6 @@ const WritingNavigation = () => {
       <p>This is AComponent</p>
     </div>
   );
-};
+}
 
 export default WritingNavigation;
