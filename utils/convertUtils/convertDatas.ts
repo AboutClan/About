@@ -6,7 +6,10 @@ import {
 import {
   EVENT_BADGE_딸기스무디,
   EVENT_BADGE_라벤더,
+  EVENT_BADGE_모히또,
   EVENT_BADGE_민트초코,
+  EVENT_BADGE_슈팅스타,
+  EVENT_BADGE_코코아,
   MANAGER_BADGE,
 } from "../../constants/storage/eventBadgeUser";
 import { UserBadge, UserRole } from "../../types/models/userTypes/userInfoTypes";
@@ -19,6 +22,9 @@ export const getUserBadge = (score: number, uid: string): UserBadge => {
   if (EVENT_BADGE_라벤더.includes(uid)) return "라벤더";
   else if (EVENT_BADGE_딸기스무디.includes(uid)) return "딸기스무디";
   else if (EVENT_BADGE_민트초코.includes(uid)) return "민트초코";
+  else if (EVENT_BADGE_슈팅스타.includes(uid)) return "슈팅스타";
+  else if (EVENT_BADGE_모히또.includes(uid)) return "모히또";
+  else if (EVENT_BADGE_코코아.includes(uid)) return "코코아";
 
   for (const [badgeName, minScore] of Object.entries(BADGE_SCORE_MAPPINGS)) {
     if (score < minScore) {
