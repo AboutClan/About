@@ -10,4 +10,5 @@ export const NATIVE_CUSTOM_EVENTS = {
   APPLE_LOGIN: "appleLogin",
   KAKAO_LOGIN_CALLBACK: "kakaoLoginCallback",
   APPLE_LOGIN_CALLBACK: "appleLoginCallback",
+  GET_DEVICE_INFO: "getDeviceInfo",
 } as const;

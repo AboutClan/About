@@ -61,4 +61,11 @@ export const NATIVE_METHODS = {
       }),
     );
   },
+  GET_DEVICE_INFO: () => {
+    window.ReactNativeWebView?.postMessage(
+      JSON.stringify({
+        type: NATIVE_CUSTOM_EVENTS.GET_DEVICE_INFO,
+      }),
+    );
+  },
 };

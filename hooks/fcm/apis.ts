@@ -5,7 +5,7 @@ import { DeviceInfo } from "./types";
 
 export const registerPushServiceWithApp = async (deviceInfo: DeviceInfo) => {
   try {
-    return await axios.post<null>(`${SERVER_URI}/fcm/register-token`, deviceInfo);
+    return await axios.post(`${SERVER_URI}/fcm/register-token`, deviceInfo);
   } catch (error) {
     console.error("Failed to subscribe push service on app:", error);
   }
@@ -13,7 +13,7 @@ export const registerPushServiceWithApp = async (deviceInfo: DeviceInfo) => {
 
 export const registerPushServiceWithPWA = async (subscription: PushSubscription) => {
   try {
-    await axios.post<null>(`${SERVER_URI}/webpush/subscribe`, subscription);
+    await axios.post(`${SERVER_URI}/webpush/subscribe`, subscription);
   } catch (error) {
     console.error("Failed to subscribe push service on PWA:", error);
   }

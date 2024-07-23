@@ -1,4 +1,4 @@
-export const APP_USER_AGENT = "study_club_app";
+export const APP_USER_AGENT = "about_club_app";
 export const ANDROID = "android|Android";
 export const IOS = "iPhone|iPad|iPod";
 

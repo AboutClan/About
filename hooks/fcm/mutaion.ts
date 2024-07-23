@@ -3,6 +3,7 @@ import { useEffect } from "react";
 
 import { isPWA, isWebView } from "../../utils/appEnvUtils";
 import { urlBase64ToUint8Array } from "../../utils/convertUtils/convertBase64";
+import { NATIVE_METHODS } from "../../utils/nativeMethodUtils";
 import { registerPushServiceWithApp, registerPushServiceWithPWA } from "./apis";
 import { DeviceInfo } from "./types";
 import { requestNotificationPermission } from "./utils";
@@ -22,9 +23,7 @@ export const usePushServiceInitialize = () => {
 
       window.addEventListener("message", deviceInfoMessageListener);
 
-      if (window.ReactNativeWebView) {
-        window.ReactNativeWebView.postMessage("getDeviceInfo");
-      }
+      NATIVE_METHODS.GET_DEVICE_INFO();
 
       return () => {
         window.removeEventListener("message", deviceInfoMessageListener);
