@@ -7,7 +7,7 @@ import Avatar from "../atoms/Avatar";
 
 interface UserCommentInputProps {
   user: IUserSummary;
-  onSubmit: () => (value: string) => void;
+  onSubmit: (value: string) => void;
 }
 
 function UserCommentInput({ user, onSubmit }: UserCommentInputProps) {
@@ -22,7 +22,7 @@ function UserCommentInput({ user, onSubmit }: UserCommentInputProps) {
   }, [text]);
 
   const onClick = () => {
-    onSubmit()(text);
+    onSubmit(text);
     setText("");
   };
 
