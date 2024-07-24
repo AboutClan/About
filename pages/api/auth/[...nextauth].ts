@@ -81,6 +81,10 @@ export const authOptions: NextAuthOptions = {
 
         const profileImage = profile.properties.thumbnail_image || profile.properties.profile_image;
 
+        if (user.role === "waiting") {
+          return "/login?status=waiting";
+        }
+
         await dbConnect();
         await User.updateOne(
           { uid: user.uid },
@@ -144,7 +148,7 @@ export const authOptions: NextAuthOptions = {
             isActive: false,
             profileImage: "",
           };
-        
+
           return token;
         }
 
@@ -174,7 +178,7 @@ export const authOptions: NextAuthOptions = {
             isActive: user.isActive,
             location: account.location || user.location,
           };
-         
+
           return newToken;
         }
 

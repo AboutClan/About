@@ -1,6 +1,6 @@
 import axios from "axios";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
@@ -96,6 +96,7 @@ const isPWA = () => {
 };
 
 function HomeInitialSetting() {
+  const router = useRouter();
   const toast = useToast();
   const { data: session } = useSession();
   const searchParams = useSearchParams();
@@ -105,7 +106,19 @@ function HomeInitialSetting() {
   const [isGuide, setIsGuide] = useState(false);
   const [isGuestModal, setIsGuestModal] = useState(false);
 
-  const { data: userInfo } = useUserInfoQuery({ enabled: !isGuest });
+  const { data: userInfo } = useUserInfoQuery({
+    enabled: !isGuest,
+    onSuccess(data) {
+      if (data.role === "newUser") {
+        router.push("/register/location");
+        return;
+      }
+      if (data.role === "waiting") {
+        router.push("/login?status=waiting");
+        return;
+      }
+    },
+  });
 
   const setStudyDateStatus = useSetRecoilState(studyDateStatusState);
   const setRenderHomeHeaderState = useSetRecoilState(renderHomeHeaderState);
