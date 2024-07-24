@@ -1,18 +1,16 @@
 import { Box, Button, Flex, Text, VStack } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useState } from "react";
 
 import Avatar from "../../components/atoms/Avatar";
 import Divider from "../../components/atoms/Divider";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
-import { AVATAR_ICON } from "../../constants/settingValue/avatar";
+
 import PollItem from "../../pageTemplates/square/SecretSquare/PollItem";
+import { AVATAR_IMAGE_ARR } from "../../storage/avatarStorage";
 import { SecretSquareItem } from "../../types/models/square";
 
 function SecretSquareDetailPage() {
-  const router = useRouter();
-
   // TODO API
   // POST poll
   // PATCH poll
@@ -50,7 +48,7 @@ function SecretSquareDetailPage() {
             # {detail.category}
           </Box>
           <Flex as="section" align="center" gap={4}>
-            <Avatar isLink={false} image={AVATAR_ICON[0]} size="md" />
+            <Avatar isLink={false} image={AVATAR_IMAGE_ARR[0]} size="md" />
             <Flex direction="column">
               <Text fontWeight={500}>익명</Text>
               <Text color="GrayText">{detail.createdAt}</Text>

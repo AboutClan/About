@@ -2,10 +2,17 @@ import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 
 import WritingIcon from "../../components/atoms/Icons/WritingIcon";
-import { usePlazaQuery } from "../../hooks/sub/plaza/queries";
 import { type SecretSquareCategory, type SecretSquareItem } from "../../types/models/square";
 import SecretSquareCategories from "./SecretSquare/SecretSquareCategories";
 import SquareItem from "./SecretSquare/SquareItem";
+
+export const SECRET_SQUARE_CATEGORY: SecretSquareCategory[] = [
+  "전체",
+  "일상",
+  "고민",
+  "정보",
+  "같이해요",
+];
 
 function SquareSecretSection() {
   const [category, setCategory] = useState<SecretSquareCategory>("전체");
@@ -41,7 +48,7 @@ function SquareSecretSection() {
       canMultiple: false,
     },
   ];
-  const { data: squareList } = usePlazaQuery();
+
   return (
     <>
       <SecretSquareCategories category={category} setCategory={setCategory} />

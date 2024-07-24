@@ -1,5 +1,4 @@
 import { Box, Button, Flex, useDisclosure, VStack } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 
 import { Input } from "../../components/atoms/Input";
@@ -24,7 +23,6 @@ function SquareWritingPage() {
   });
   const { register, handleSubmit, getValues, resetField } = methods;
 
-  const { data: session } = useSession();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const pollList = getValues("pollList");
