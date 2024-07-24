@@ -1,8 +1,8 @@
 import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useRecoilState } from "recoil";
@@ -96,7 +96,7 @@ function GroupDetail() {
       {group && category === "정보" && !isMember ? (
         <GroupBottomNav data={group} />
       ) : category === "피드" && isMember ? (
-        <WritingIcon url={`/feed/writing/group?id=${id}`} />
+        <WritingIcon url={`/feed/writing/group?id=${id}`} isBottomNav={false} />
       ) : null}
     </>
   );

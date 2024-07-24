@@ -4,11 +4,13 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 
 import { Input } from "../../components/atoms/Input";
 import Textarea from "../../components/atoms/Textarea";
-import UploadImage from "../../components/atoms/UploadImage";
 import WritingNavigation from "../../components/atoms/WritingNavigation";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import ImageUploadButton from "../../components/molecules/ImageUploadButton";
+import ImageUploadSlider, {
+  ImageUploadTileProps,
+} from "../../components/organisms/sliders/ImageUploadSlider";
 import PollCreatorDrawer from "../../pageTemplates/square/SecretSquare/writing/PollCreatorDrawer";
 import SquareCategoryRadioGroup from "../../pageTemplates/square/SecretSquare/writing/SquareCategoryRadioGroup";
 import { SecretSquareFormData } from "../../types/models/square";
@@ -29,14 +31,14 @@ function SquareWritingPage() {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [image, setImage] = useState("");
-  const [imageForm, setImageForm] = useState();
+  const [imageArr, setImageArr] = useState<string[]>([]);
+  const [imageFormArr, setImageFormArr] = useState<Blob[]>([]);
 
   const pollList = getValues("pollList");
   const isPollType = pollList.every(({ value }) => !!value);
 
   const onSubmit: SubmitHandler<SecretSquareFormData> = (data) => {
-    console.log(data);
+  
 
     const type = isPollType ? "poll" : "general";
 
@@ -64,6 +66,12 @@ function SquareWritingPage() {
       // };
     }
   };
+  const imageTileArr: ImageUploadTileProps[] = imageArr.map((image) => ({
+    imageUrl: image,
+    func: (url: string) => {
+      setImageArr(imageArr.filter((old) => old !== url));
+    },
+  }));
 
   return (
     <>
@@ -102,11 +110,11 @@ function SquareWritingPage() {
                 })}
                 minH={180}
               />
-              {image && (
+              {imageArr.length ? (
                 <Box mt="20px">
-                  <UploadImage url={image} onClose={() => setImage("")} />
+                  <ImageUploadSlider imageTileArr={imageTileArr} size="sm" />
                 </Box>
-              )}
+              ) : null}
               <PollCreatorDrawer isOpen={isOpen} onClose={onClose} />
             </Box>
             {isPollType && (
@@ -159,16 +167,7 @@ function SquareWritingPage() {
         </VStack>
       </Slide>
       <WritingNavigation>
-        <Button
-          color="var(--gray-600)"
-          type="button"
-          leftIcon={<i className="fa-regular fa-image fa-lg" />}
-          variant="ghost"
-          size="sm"
-        >
-          사진
-        </Button>
-        <ImageUploadButton setImageUrl={setImage} setImageForm={setImageForm} />
+        <ImageUploadButton setImageUrls={setImageArr} setImageForms={setImageFormArr} />
         <Button
           color="var(--gray-600)"
           type="button"
