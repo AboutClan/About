@@ -25,7 +25,6 @@ function SquareWritingPage() {
   });
   const { register, handleSubmit, watch, getValues, resetField } = methods;
 
-  const { data: session } = useSession();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const pollList = getValues("pollList");
