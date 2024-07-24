@@ -1,6 +1,6 @@
 import { atom } from "recoil";
-import { SummaryBlockProps } from "../components/molecules/SummaryBlock";
 
+import { SummaryBlockProps } from "../components/molecules/SummaryBlock";
 import { IDailyCheckWinList } from "../constants/serviceConstants/dailyCheckConstatns";
 import { IGiftEntry } from "../pages/store";
 import { IGather } from "../types/models/gatherTypes/gatherTypes";

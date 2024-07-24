@@ -5,7 +5,6 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 
 import { Input } from "../../components/atoms/Input";
 import Textarea from "../../components/atoms/Textarea";
-
 import UploadImage from "../../components/atoms/UploadImage";
 import WritingNavigation from "../../components/atoms/WritingNavigation";
 import Header from "../../components/layouts/Header";

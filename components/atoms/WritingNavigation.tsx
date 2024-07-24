@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+
 import Slide from "../layouts/PageSlide";
 
 interface WritingNavigationProps extends React.PropsWithChildren {}
