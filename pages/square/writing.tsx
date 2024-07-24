@@ -1,12 +1,16 @@
 import { Box, Button, Flex, Spacer, useDisclosure, VStack } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
+import { useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 
 import { Input } from "../../components/atoms/Input";
 import Textarea from "../../components/atoms/Textarea";
+
+import UploadImage from "../../components/atoms/UploadImage";
 import WritingNavigation from "../../components/atoms/WritingNavigation";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
+import ImageUploadButton from "../../components/molecules/ImageUploadButton";
 import PollCreatorDrawer from "../../pageTemplates/square/SecretSquare/writing/PollCreatorDrawer";
 import SquareCategoryRadioGroup from "../../pageTemplates/square/SecretSquare/writing/SquareCategoryRadioGroup";
 import { SecretSquareFormData } from "../../types/models/square";
@@ -26,6 +30,9 @@ function SquareWritingPage() {
   const { register, handleSubmit, watch, getValues, resetField } = methods;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const [image, setImage] = useState("");
+  const [imageForm, setImageForm] = useState();
 
   const pollList = getValues("pollList");
   const isPollType = pollList.every(({ value }) => !!value);
@@ -97,6 +104,11 @@ function SquareWritingPage() {
                 })}
                 minH={180}
               />
+              {image && (
+                <Box mt="20px">
+                  <UploadImage url={image} onClose={() => setImage("")} />
+                </Box>
+              )}
               <PollCreatorDrawer isOpen={isOpen} onClose={onClose} />
             </Box>
             {isPollType && (
@@ -149,15 +161,7 @@ function SquareWritingPage() {
         </VStack>
       </Slide>
       <WritingNavigation>
-        <Button
-          color="var(--gray-600)"
-          type="button"
-          leftIcon={<i className="fa-regular fa-image fa-lg" />}
-          variant="ghost"
-          size="sm"
-        >
-          사진
-        </Button>
+        <ImageUploadButton setImageUrl={setImage} setImageForm={setImageForm} />
         <Button
           color="var(--gray-600)"
           type="button"
