@@ -4,7 +4,7 @@ import {
   InputLeftElement,
   type InputProps as ChakraInputProps,
 } from "@chakra-ui/react";
-import { type ForwardedRef, forwardRef } from "react";
+import { type ForwardedRef,forwardRef } from "react";
 
 type InputProps = ChakraInputProps & {
   size?: "xs" | "sm" | "md";
@@ -22,7 +22,7 @@ export const Input = forwardRef(function Input(
       backgroundColor={size === "sm" ? "inherit" : "white"}
       borderColor="var(--gray-300)"
       size={size}
-      border={size === "sm" && "none"}
+      border={size === "sm" ? "none" : undefined}
       borderBottom={size === "sm" && "var(--border-main)"}
       borderRadius={size === "sm" && "none"}
       _focus={{

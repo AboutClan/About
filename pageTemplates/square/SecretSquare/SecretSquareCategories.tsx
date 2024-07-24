@@ -4,7 +4,13 @@ import { Dispatch, SetStateAction } from "react";
 import ButtonGroups, { IButtonOptions } from "../../../components/molecules/groups/ButtonGroups";
 import { SecretSquareCategory } from "../../../types/models/square";
 
-const SECRET_SQUARE_CATEGORY: SecretSquareCategory[] = ["전체", "일상", "고민", "정보", "같이해요"];
+export const SECRET_SQUARE_CATEGORY: SecretSquareCategory[] = [
+  "전체",
+  "일상",
+  "고민",
+  "정보",
+  "같이해요",
+];
 
 interface SecretSquareCategoryProps {
   category: SecretSquareCategory;

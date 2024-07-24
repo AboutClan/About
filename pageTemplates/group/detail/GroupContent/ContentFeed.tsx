@@ -1,11 +1,31 @@
 import { Button } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import NotCompletedModal from "../../../../modals/system/NotCompletedModal";
+import { transferFeedSummaryState } from "../../../../recoils/transferRecoils";
+import { IGroup } from "../../../../types/models/groupTypes/group";
 
-function ContentGather() {
+interface ContentFeedProps {
+  group: IGroup;
+}
+
+function ContentFeed({ group }: ContentFeedProps) {
   const [isModal, setIsModal] = useState(false);
+
+  const setTransferFeedSummary = useSetRecoilState(transferFeedSummaryState);
+
+  useEffect(() => {
+    if (group) {
+      setTransferFeedSummary({
+        url: `/group/${group.id}`,
+        title: group.title,
+        text: group.guide,
+      });
+    }
+  }, [group]);
+
   return (
     <>
       <Layout>
@@ -38,4 +58,4 @@ const Message = styled.div`
   color: var(--gray-600);
 `;
 
-export default ContentGather;
+export default ContentFeed;

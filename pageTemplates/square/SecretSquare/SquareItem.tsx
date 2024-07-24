@@ -1,7 +1,9 @@
+import dayjs from "dayjs";
 import Link from "next/link";
 import styled from "styled-components";
 
 import { SecretSquareItem } from "../../../types/models/square";
+import { getDateDiff } from "../../../utils/dateTimeUtils";
 
 interface SquareItemProps {
   item: SecretSquareItem;
@@ -13,33 +15,33 @@ export default function SquareItem({ item }: SquareItemProps) {
   return (
     <Layout href={`/square/${id}`}>
       <IconCategory category={item.category} />
+
       <Title>{item.title}</Title>
       <Content>{item.content}</Content>
       <Bottom>
-        <span>{item.createdAt}</span>
-        <span>조회수 {item.viewCount}</span>
+        <span>{getDateDiff(dayjs(item.createdAt))}</span>
+        <span>조회 {item.viewCount}</span>
       </Bottom>
     </Layout>
   );
 }
 
 function IconCategory({ category }: { category: string }) {
-  return <IconLayout>{category}</IconLayout>;
+  return <IconLayout>#{category}</IconLayout>;
 }
 
 const Layout = styled(Link)`
   display: flex;
   flex-direction: column;
   background-color: white;
-  border-bottom: 1px solid var(--gray-200);
-  padding: 16px;
+  border-bottom: var(--border-main);
+  padding: 12px 16px;
 `;
 
 const Title = styled.div`
   font-size: 16px;
   font-weight: 600;
   width: 240px;
-
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
@@ -47,8 +49,9 @@ const Title = styled.div`
 `;
 
 const Content = styled.div`
-  color: var(--font-h2);
+  color: var(--font-h7);
   font-size: 13px;
+  margin-top: 4px;
   margin-bottom: 6px;
 
   display: -webkit-box;
@@ -59,23 +62,21 @@ const Content = styled.div`
 
 const IconLayout = styled.span`
   background-color: var(--font-h6);
-  color: var(--font-h1);
-  font-size: 10px;
+  color: var(--gray-600);
+  font-size: 12px;
   width: max-content;
-
   text-align: center;
-  padding: 1px 6px;
-  border-radius: 3px;
+  margin-bottom: 2px;
 `;
 
 const Bottom = styled.div`
   display: flex;
   font-size: 12px;
-  color: var(--font-h3);
+  color: var(--gray-600);
 
   & :after {
-    content: " • ";
-    margin: 0 5px;
+    content: "•";
+    margin: 0 4px;
   }
 
   & :last-child:after {

@@ -1,8 +1,10 @@
-import { Box, Button, Flex, useDisclosure, VStack } from "@chakra-ui/react";
+import { Box, Button, Flex, Spacer, useDisclosure, VStack } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 
 import { Input } from "../../components/atoms/Input";
 import Textarea from "../../components/atoms/Textarea";
+import WritingNavigation from "../../components/atoms/WritingNavigation";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import PollCreatorDrawer from "../../pageTemplates/square/SecretSquare/writing/PollCreatorDrawer";
@@ -21,7 +23,7 @@ function SquareWritingPage() {
   const methods = useForm<SecretSquareFormData>({
     defaultValues: defaultFormData,
   });
-  const { register, handleSubmit, getValues, resetField } = methods;
+  const { register, handleSubmit, watch, getValues, resetField } = methods;
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -60,13 +62,16 @@ function SquareWritingPage() {
 
   return (
     <>
-      <Header title="글 작성하기">
-        <Flex justify="flex-end">
-          {/* TODO design submit button */}
-          <Button type="submit" form="secret-square-form">
-            완료
-          </Button>
-        </Flex>
+      <Header title="글 쓰기" rightPadding={8}>
+        <Button
+          isDisabled={!watch().title || !watch().content}
+          variant="ghost"
+          size="sm"
+          type="submit"
+          form="secret-square-form"
+        >
+          완료
+        </Button>
       </Header>
       <Slide>
         <VStack h="100%" px={4}>
@@ -82,6 +87,7 @@ function SquareWritingPage() {
                   setValueAs: (value) => value.trim(),
                 })}
               />
+              <Spacer h="12px" />
               <Textarea
                 placeholder="본문을 입력해주세요"
                 {...register("content", {
@@ -89,6 +95,7 @@ function SquareWritingPage() {
                   minLength: 10,
                   setValueAs: (value) => value.trim(),
                 })}
+                minH={180}
               />
               <PollCreatorDrawer isOpen={isOpen} onClose={onClose} />
             </Box>
@@ -138,21 +145,36 @@ function SquareWritingPage() {
                 </VStack>
               </Box>
             )}
-            <Button
-              type="button"
-              onClick={() => {
-                if (isPollType) {
-                  // TODO toast
-                  return;
-                }
-                onOpen();
-              }}
-            >
-              투표
-            </Button>
           </FormProvider>
         </VStack>
       </Slide>
+      <WritingNavigation>
+        <Button
+          color="var(--gray-600)"
+          type="button"
+          leftIcon={<i className="fa-regular fa-image fa-lg" />}
+          variant="ghost"
+          size="sm"
+        >
+          사진
+        </Button>
+        <Button
+          color="var(--gray-600)"
+          type="button"
+          onClick={() => {
+            if (isPollType) {
+              // TODO toast
+              return;
+            }
+            onOpen();
+          }}
+          leftIcon={<i className="fa-regular fa-check-to-slot fa-lg" />}
+          variant="ghost"
+          size="sm"
+        >
+          투표
+        </Button>
+      </WritingNavigation>
     </>
   );
 }
