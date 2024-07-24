@@ -17,7 +17,6 @@ import { Badge } from "../../../components/atoms/badges/Badges";
 import { DAILY_CHECK_POP_UP } from "../../../constants/keys/localStorage";
 import { DAILY_CHECK_WIN_LIST } from "../../../constants/serviceConstants/dailyCheckConstatns";
 import { POINT_SYSTEM_PLUS } from "../../../constants/serviceConstants/pointSystemConstants";
-import { DAILY_CHECK_WIN_ITEM } from "../../../constants/settingValue/dailyCheck";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import { usePointSystemMutation } from "../../../hooks/user/mutations";
 import { useAlphabetMutation } from "../../../hooks/user/sub/collection/mutations";
@@ -34,7 +33,6 @@ import { IUserRequest } from "../../../types/models/userTypes/userRequestTypes";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import { getDistributionArr } from "../../../utils/mathUtils";
 import { IFooterOptions, ModalLayout } from "../../Modals";
-
 const DISTRIBUTION_SIZE = 10000;
 
 function DailyCheckModal({ setIsModal }: IModal) {
@@ -143,10 +141,10 @@ function PresentListPopOver() {
         <PopoverArrow />
         <PopoverCloseButton />
         <PopoverBody fontSize="12px">
-          {DAILY_CHECK_WIN_ITEM.map((item, idx) => (
+          {DAILY_CHECK_WIN_LIST.map((item, idx) => (
             <span key={idx}>
               {item.item}
-              {idx !== DAILY_CHECK_WIN_ITEM.length - 1 && ", "}
+              {idx !== DAILY_CHECK_WIN_LIST.length - 1 && ", "}
             </span>
           ))}
         </PopoverBody>
@@ -170,11 +168,11 @@ function PresentPercentPopOver() {
         <PopoverArrow />
         <PopoverCloseButton />
         <PopoverBody fontSize="12px">
-          {DAILY_CHECK_WIN_ITEM.map((item, idx) => (
+          {DAILY_CHECK_WIN_LIST.map((item, idx) => (
             <PercentItem key={idx}>
               <span>{item.item}</span>
               <span>({item.percent}%)</span>
-              {idx !== DAILY_CHECK_WIN_ITEM.length - 1 && ", "}
+              {idx !== DAILY_CHECK_WIN_LIST.length - 1 && ", "}
             </PercentItem>
           ))}
         </PopoverBody>

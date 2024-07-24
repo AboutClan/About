@@ -1,6 +1,6 @@
 export const EVENT_BADGE_라벤더 = [
   "2941876134",
-  "2948913118",
+
   "2867069006",
   "2753686016",
   "2777663514",
@@ -9,7 +9,6 @@ export const EVENT_BADGE_라벤더 = [
   "2821335782",
 ];
 export const EVENT_BADGE_딸기스무디 = [
-  "2948913118",
   "2828384538",
   "2948912376",
   "2894619536",
@@ -22,6 +21,11 @@ export const EVENT_BADGE_딸기스무디 = [
 ];
 
 export const EVENT_BADGE_민트초코 = ["2259633694", "2542567004", "2757990240"];
+
+export const EVENT_BADGE_코코아 = [];
+export const EVENT_BADGE_모히또 = [];
+
+export const EVENT_BADGE_슈팅스타 = ["2948913118"];
 
 export const MANAGER_BADGE = [
   "2542567004",
