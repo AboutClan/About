@@ -17,7 +17,7 @@ import BaseModal from "./BaseModal";
 import BaseScript from "./BaseScript";
 import Seo from "./Seo";
 
-export const BASE_BOTTOM_NAV_SEGMENT = ["home", "statistics", "user", "group"];
+export const BASE_BOTTOM_NAV_SEGMENT = ["home", "square", "user", "group"];
 export const NOT_PADDING_NAV_SEGMENT = ["login"];
 interface ILayout {
   children: React.ReactNode;

@@ -5,6 +5,7 @@ import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 
 import { Input } from "../../components/atoms/Input";
 import Textarea from "../../components/atoms/Textarea";
+
 import UploadImage from "../../components/atoms/UploadImage";
 import WritingNavigation from "../../components/atoms/WritingNavigation";
 import Header from "../../components/layouts/Header";
@@ -28,7 +29,6 @@ function SquareWritingPage() {
   });
   const { register, handleSubmit, watch, getValues, resetField } = methods;
 
-  const { data: session } = useSession();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [image, setImage] = useState("");

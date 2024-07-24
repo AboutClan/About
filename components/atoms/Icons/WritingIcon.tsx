@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import Link from "next/link";
 import styled from "styled-components";
 
 interface IWritingIcon {
@@ -6,11 +6,12 @@ interface IWritingIcon {
 }
 
 function WritingIcon({ url }: IWritingIcon) {
-  const router = useRouter();
   return (
-    <Layout onClick={() => router.push(url)}>
-      <i className="fa-light fa-pen-line fa-xl" style={{ color: "white" }} />
-    </Layout>
+    <Link href={url}>
+      <Layout>
+        <i className="fa-light fa-pen-line fa-xl" style={{ color: "white" }} />
+      </Layout>
+    </Link>
   );
 }
 

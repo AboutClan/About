@@ -22,7 +22,7 @@ interface INavButton extends INavButtonProps {
   idx: number;
 }
 
-type Category = "홈" | "랭킹" | "마이페이지" | "소모임";
+type Category = "홈" | "커뮤니티" | "마이페이지" | "소모임";
 
 export default function BottomNav() {
   const { data: session } = useSession();
@@ -93,20 +93,20 @@ const navItems: INavButtonProps[] = [
     url: "/home",
   },
   {
-    activeIcon: <i className="fa-solid fa-users-rectangle fa-xl" />,
-    defaultIcon: <i className="fa-light fa-users-rectangle fa-xl" />,
-    text: "소모임",
-    url: "/group",
+    activeIcon: <i className="fa-solid fa-comments fa-xl" />,
+    defaultIcon: <i className="fa-light fa-comments fa-xl" />,
+    text: "커뮤니티",
+    url: "/square",
   },
   {
     defaultIcon: <i className="fa-light fa-circle-plus" style={{ fontSize: "36px" }} />,
     url: "",
   },
   {
-    activeIcon: <i className="fa-solid fa-ranking-star fa-xl" />,
-    defaultIcon: <i className="fa-light fa-ranking-star fa-xl" />,
-    text: "랭킹",
-    url: "/statistics",
+    activeIcon: <i className="fa-solid fa-users-rectangle fa-xl" />,
+    defaultIcon: <i className="fa-light fa-users-rectangle fa-xl" />,
+    text: "소모임",
+    url: "/group",
   },
   {
     activeIcon: <i className="fa-solid fa-user fa-xl" />,
