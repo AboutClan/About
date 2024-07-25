@@ -13,12 +13,10 @@ function GroupSkeletonMine() {
 }
 
 const Layout = styled.div`
-  height: 148px;
+  height: 143.4px;
   border-bottom: 6px solid var(--gray-200);
 `;
 
-const Wrapper = styled.div`
-  padding-bottom: var(--gap-4);
-`;
+const Wrapper = styled.div``;
 
 export default GroupSkeletonMine;
