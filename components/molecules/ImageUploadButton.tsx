@@ -3,6 +3,7 @@ import { captureException } from "@sentry/nextjs";
 import { useRef } from "react";
 
 import { DispatchType } from "../../types/hooks/reactTypes";
+import { optimizeImage } from "../../utils/imageUtils";
 
 interface IImageUploadButton {
   setImageUrls: DispatchType<string[]>;
@@ -22,9 +23,10 @@ export default function ImageUploadButton({
       const fileExtension = file.name.split(".").pop()?.toLowerCase();
 
       if (file.type !== "image/heic" && fileExtension !== "heic") {
-        const image = URL.createObjectURL(file);
+        const optimizedImage = await optimizeImage(file);
+        const image = URL.createObjectURL(optimizedImage);
         newImageUrls.push(image);
-        newImageForms.push(file);
+        newImageForms.push(optimizedImage);
       } else {
         const heic2any = (await import("heic2any")).default;
         try {

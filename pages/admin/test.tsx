@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import ImageUploadInput from "../../components/molecules/ImageUploadInput";
 import { useFeedMutation } from "../../hooks/feed/mutations";
+import { useFeedQuery } from "../../hooks/feed/queries";
 import { appendFormData } from "../../utils/formDataUtils";
 function Test() {
   const [imageUrl, setImageUrl] = useState();
@@ -12,6 +13,8 @@ function Test() {
     },
   });
 
+  const { data } = useFeedQuery("669fa81aa44f22392f4e487b");
+  console.log(2, data);
   const formData = new FormData();
 
   const onClick = () => {

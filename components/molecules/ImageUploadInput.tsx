@@ -5,25 +5,26 @@ import { useRef, useState } from "react";
 import styled from "styled-components";
 
 import { DispatchType } from "../../types/hooks/reactTypes";
+import { optimizeImage } from "../../utils/imageUtils";
 
 interface IImageUploadInput {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setImageUrl: DispatchType<any>;
+  setImageUrl: DispatchType<Blob>;
 }
 
 export default function ImageUploadInput({ setImageUrl: changeImage }: IImageUploadInput) {
   const [imageUrl, setImageUrl] = useState(null);
 
   const handleImageChange = async (e) => {
-    const file = e.target.files[0];
+    const file: File = e.target.files[0];
     if (file) {
       const fileExtension = file.name.split(".").pop().toLowerCase();
 
       // 이미 브라우저에서 읽을 수 있는 이미지 형식이거나, 확장자가 HEIC인 경우에만 변환 시도
       if (file.type !== "image/heic" && fileExtension !== "heic") {
-        const image = URL.createObjectURL(file);
+        const optimizedImage = await optimizeImage(file);
+        const image = URL.createObjectURL(optimizedImage);
         setImageUrl(image);
-        changeImage(file);
+        changeImage(optimizedImage);
       } else {
         // 동적 임포트를 사용하여 heic2any를 클라이언트 사이드에서만 로드
         const heic2any = (await import("heic2any")).default;
