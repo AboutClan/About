@@ -32,8 +32,8 @@ function SquareWritingPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [imageArr, setImageArr] = useState<string[]>([]);
+  /* eslint-disable @typescript-eslint/no-unused-vars */
   const [imageFormArr, setImageFormArr] = useState<Blob[]>([]);
-
   const pollList = getValues("pollList");
   const isPollType = pollList.every(({ value }) => !!value);
 
