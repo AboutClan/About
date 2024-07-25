@@ -1,9 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import Image from "next/image";
-import { useState } from "react";
 
 function Test() {
-  const [value, setValue] = useState("");
   return (
     <>
       <Image
