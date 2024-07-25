@@ -36,19 +36,14 @@ const Layout = styled.div`
 
 const BlockLayout = styled.div`
   height: 110px;
-
-  margin-right: var(--gap-4);
-  padding: var(--gap-3) var(--gap-3);
-  padding-bottom: var(--gap-2);
   background-color: inherit;
-
+  padding-top: 2px;
   border-radius: var(--rounded);
   flex-direction: column;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: var(--gap-4);
-  margin-bottom: var(--gap-4);
+
   font-size: 18px;
   color: var(--gray-600);
 `;

@@ -6,17 +6,24 @@ import { SERVER_URI } from "../../constants/system";
 import { IGatherSummary } from "../../pages/review";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
-import { GroupStatus, IGroup, IGroupAttendance } from "../../types/models/groupTypes/group";
+import {
+  GroupCategory,
+  GroupStatus,
+  IGroup,
+  IGroupAttendance,
+} from "../../types/models/groupTypes/group";
 
 export const useGroupQuery = (
   filter: GroupStatus,
+  category: GroupCategory,
+  cursor: number,
   options?: QueryOptions<IGroup[]>,
 ) =>
   useQuery<IGroup[], AxiosError, IGroup[]>(
-    [GROUP_STUDY_ALL, filter],
+    [GROUP_STUDY_ALL, filter, category, cursor],
     async () => {
       const res = await axios.get<IGroup[]>(`${SERVER_URI}/groupStudy`, {
-        params: { filter },
+        params: { filter, category, cursor },
       });
 
       return res.data;
