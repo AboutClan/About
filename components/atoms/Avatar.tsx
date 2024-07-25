@@ -114,7 +114,7 @@ export default function Avatar({
       {size === "sm" || !isLink ? (
         <AvatarComponent />
       ) : (
-        <Link href={`/profile/${uid}`}>
+        <Link href={`/profile/${uid}`} style={{ outline: "none" }}>
           <AvatarComponent />
         </Link>
       )}
