@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
@@ -106,14 +106,15 @@ function GroupPage() {
   }, [status]);
 
   useEffect(() => {
-    if (!groups || category.main !== "전체") return;
+    if (!groups) return;
+    firstLoad.current = false;
+    if (category.main !== "전체") return;
+    console.log(24);
     setGroupStudies((old) => [...shuffleArray(groups), ...old]);
   }, [groups, category.main]);
 
   useEffect(() => {
-    if (!groups) return;
-    firstLoad.current = false;
-
+    if (!groups || category.main === "전체") return;
     setGroupStudies(groups.filter((item) => !category.sub || item.category.sub === category.sub));
   }, [category.sub, groups]);
 
