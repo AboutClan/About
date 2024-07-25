@@ -51,3 +51,33 @@ export const optimizeImage = (file: File): Promise<Blob> => {
     };
   });
 };
+
+export const processFile = async (file: File): Promise<{ url: string; blob: Blob }> => {
+  const fileExtension = file.name.split(".").pop()?.toLowerCase();
+  let optimizedImage: Blob;
+
+  if (file.type !== "image/heic" && fileExtension !== "heic") {
+    optimizedImage = await optimizeImage(file);
+  } else {
+    optimizedImage = await convertHeicToJpeg(file);
+  }
+
+  const imageUrl = URL.createObjectURL(optimizedImage);
+  return { url: imageUrl, blob: optimizedImage };
+};
+
+const convertHeicToJpeg = async (file: File): Promise<Blob> => {
+  const heic2any = (await import("heic2any")).default;
+  try {
+    return (await heic2any({
+      blob: file,
+      toType: "image/jpeg",
+      quality: 0.8,
+    })) as Blob;
+  } catch (error) {
+    if (error.code === 1) {
+      return file;
+    }
+    throw error;
+  }
+};
