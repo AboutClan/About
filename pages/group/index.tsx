@@ -1,5 +1,5 @@
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
@@ -14,7 +14,7 @@ import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import {
   GROUP_STUDY_CATEGORY_ARR,
   GROUP_STUDY_RULE_CONTENT,
-  GROUP_STUDY_SUB_CATEGORY,
+  GROUP_STUDY_SUB_CATEGORY
 } from "../../constants/contentsText/GroupStudyContents";
 import { GROUP_WRITING_STORE } from "../../constants/keys/localStorage";
 import { useGroupQuery } from "../../hooks/groupStudy/queries";
@@ -51,10 +51,12 @@ function GroupPage() {
   const [groupStudies, setGroupStudies] = useState<IGroup[]>();
   const [myGroups, setMyGroups] = useState<IGroup[]>([]);
   const [isRuleModal, setIsRuleModal] = useState(false);
-  const { data: groups, isLoading } = useGroupQuery(filterType, {
+  const [cursor, setCursor] = useState(0);
+  const { data: groups, isLoading } = useGroupQuery(filterType, "전체", 0, {
     enabled: !!filterType,
   });
- 
+  console.log(2, groups);
+
   useEffect(() => {
     localStorage.setItem(GROUP_WRITING_STORE, null);
     setCategory({
@@ -88,7 +90,7 @@ function GroupPage() {
     newSearchParams.set("filter", statusToEn[status]);
     router.replace(`/group?${newSearchParams.toString()}`);
   }, [status]);
-
+  console.log(22, myGroups);
   useEffect(() => {
     if (!groups) return;
     if (!isGuest) {
@@ -98,6 +100,7 @@ function GroupPage() {
             if (!who?.user?.uid) {
               return;
             }
+            console.log(who.user.uid===session?.user.uid);
             return who.user.uid === session?.user.uid;
           }),
         ),
