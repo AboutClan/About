@@ -1,6 +1,6 @@
 import { Box, Button, VStack } from "@chakra-ui/react";
-import { useParams, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useRecoilValue } from "recoil";
@@ -77,7 +77,7 @@ function FeedWritingPage() {
             <Box as="form" w="100%" onSubmit={handleSubmit(onSubmit)} id="secret-square-form">
               <Textarea
                 placeholder="본문을 입력해주세요"
-                {...register("content", { 
+                {...register("content", {
                   required: true,
                   minLength: 10,
                   setValueAs: (value) => value.trim(),

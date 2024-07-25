@@ -1,7 +1,7 @@
-import { Button } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
+import Image from "next/image";
 import { useState } from "react";
 
-import ImageUploadInput from "../../components/molecules/ImageUploadInput";
 import { useFeedMutation } from "../../hooks/feed/mutations";
 import { appendFormData } from "../../utils/formDataUtils";
 function Test() {
@@ -25,8 +25,19 @@ function Test() {
 
   return (
     <>
-      <ImageUploadInput setImageUrl={setImageUrl} />
-      <Button onClick={onClick}>제출</Button>
+      <Image
+        src="https://studyabout.s3.ap-northeast-2.amazonaws.com/studyAttend/KakaoTalk_20240725_172337382.jpg"
+        alt="test1"
+        width={100}
+        height={100}
+      />
+      <Box h="20px"></Box>
+      <Image
+        src="https://studyabout.s3.ap-northeast-2.amazonaws.com/studyAttend/1721895800.jpg"
+        alt="test2"
+        width={100}
+        height={100}
+      />
     </>
   );
 }
