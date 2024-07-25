@@ -16,8 +16,8 @@ export const optimizeImage = (file: File): Promise<Blob> => {
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
 
-        const maxWidth = 400; // 최대 너비를 설정합니다.
-        const maxHeight = 400; // 최대 높이를 설정합니다.
+        const maxWidth = 600; // 최대 너비를 설정합니다.
+        const maxHeight = 600; // 최대 높이를 설정합니다.
         let width = img.width;
         let height = img.height;
 
