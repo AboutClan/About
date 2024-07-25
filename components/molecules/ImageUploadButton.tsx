@@ -1,32 +1,31 @@
 import { Button, Input } from "@chakra-ui/react";
 import { captureException } from "@sentry/nextjs";
 import { useRef } from "react";
-import styled from "styled-components";
 
 import { DispatchType } from "../../types/hooks/reactTypes";
 
 interface IImageUploadButton {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setImageUrl: DispatchType<string>;
-  setImageForm: DispatchType<any>;
+  setImageUrls: DispatchType<string[]>;
+  setImageForms: DispatchType<Blob[]>;
 }
 
 export default function ImageUploadButton({
-  setImageUrl,
-  setImageForm: changeImage,
+  setImageUrls,
+  setImageForms: changeImages,
 }: IImageUploadButton) {
-  const handleImageChange = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const fileExtension = file.name.split(".").pop().toLowerCase();
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files as FileList);
+    const newImageUrls: string[] = [];
+    const newImageForms: Blob[] = [];
 
-      // 이미 브라우저에서 읽을 수 있는 이미지 형식이거나, 확장자가 HEIC인 경우에만 변환 시도
+    for (const file of files) {
+      const fileExtension = file.name.split(".").pop()?.toLowerCase();
+
       if (file.type !== "image/heic" && fileExtension !== "heic") {
         const image = URL.createObjectURL(file);
-        setImageUrl(image);
-        changeImage(file);
+        newImageUrls.push(image);
+        newImageForms.push(file);
       } else {
-        // 동적 임포트를 사용하여 heic2any를 클라이언트 사이드에서만 로드
         const heic2any = (await import("heic2any")).default;
         try {
           const convertedBlob = (await heic2any({
@@ -36,14 +35,13 @@ export default function ImageUploadButton({
           })) as Blob;
 
           const image = URL.createObjectURL(convertedBlob);
-          setImageUrl(image);
-          changeImage(convertedBlob);
-        } catch (error) {
-          // 이미 브라우저에서 읽을 수 있는 형식의 이미지인 경우 변환 과정 생략
+          newImageUrls.push(image);
+          newImageForms.push(convertedBlob);
+        } catch (error: any) {
           if (error.code === 1) {
             const image = URL.createObjectURL(file);
-            setImageUrl(image);
-            changeImage(file);
+            newImageUrls.push(image);
+            newImageForms.push(file);
           } else {
             captureException(error);
             console.error("Error converting HEIC to JPEG", error);
@@ -51,17 +49,16 @@ export default function ImageUploadButton({
         }
       }
     }
+
+    setImageUrls((prev) => [...prev, ...newImageUrls]);
+    changeImages((prev) => [...prev, ...newImageForms]);
   };
 
-  const fileInputRef = useRef(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleBtnClick = () => {
-    fileInputRef.current.click();
+    fileInputRef.current?.click();
   };
-
-  // useEffect(() => {
-  //   changeImage(imageUrl);
-  // }, [imageUrl]);
 
   return (
     <>
@@ -71,6 +68,7 @@ export default function ImageUploadButton({
         id="studyAttendImage"
         type="file"
         accept="image/*"
+        multiple
         name="image"
         onChange={handleImageChange}
       />
@@ -87,31 +85,3 @@ export default function ImageUploadButton({
     </>
   );
 }
-
-const CameraText = styled.span`
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--gray-500);
-  margin-top: var(--gap-3);
-`;
-
-const Container = styled.div`
-  margin: var(--gap-1) 0;
-  padding: 16px;
-  padding-bottom: 12px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border: 1.5px dashed var(--gray-400);
-  border-radius: var(--rounded-lg);
-  background-color: var(--gray-100);
-`;
-
-const ImageContainer = styled.div`
-  width: 150px;
-  height: 150px;
-  display: flex;
-  justify-content: center;
-`;

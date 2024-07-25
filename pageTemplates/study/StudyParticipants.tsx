@@ -95,11 +95,7 @@ export default function StudyParticipants({ participants, absences }: IStudyPart
         )}
       </Slide>
       {hasImageProps?.image && hasImageProps?.toUid && (
-        <ImageZoomModal
-          imageUrl={hasImageProps.image}
-          toUid={hasImageProps.toUid}
-          setIsModal={() => setHasImageProps(null)}
-        />
+        <ImageZoomModal imageUrl={hasImageProps.image} setIsModal={() => setHasImageProps(null)} />
       )}
       {hasModalMemo && (
         <StudyChangeMemoModal

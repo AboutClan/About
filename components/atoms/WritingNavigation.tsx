@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 import Slide from "../layouts/PageSlide";
@@ -30,7 +30,7 @@ function WritingNavigation({ children }: WritingNavigationProps) {
 
   return (
     <Slide isFixed={true}>
-      <Box
+      <Flex
         mx="auto"
         maxW="var(--max-width)"
         position="fixed"
@@ -42,7 +42,7 @@ function WritingNavigation({ children }: WritingNavigationProps) {
         p="8px"
       >
         {children}
-      </Box>
+      </Flex>
     </Slide>
   );
 }

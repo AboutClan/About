@@ -11,7 +11,6 @@ function Test() {
       console.log("SUC");
     },
   });
-  console.log(2, imageUrl);
 
   const formData = new FormData();
 

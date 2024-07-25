@@ -1,19 +1,14 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import Image from "next/image";
-import { useState } from "react";
 
-import HeartCircleIcon from "../components/atoms/Icons/HeartCircleIcon";
 import ScreenOverlay from "../components/atoms/ScreenOverlay";
 import { IModal } from "../types/components/modalTypes";
 
 interface IImageZoommodal extends IModal {
-  toUid: string;
   imageUrl: string;
 }
 
-export default function ImageZoomModal({ toUid, imageUrl, setIsModal }: IImageZoommodal) {
-  const [isHeart, setIsHeart] = useState(true);
-
+export default function ImageZoomModal({ imageUrl, setIsModal }: IImageZoommodal) {
   return (
     <>
       <ScreenOverlay onClick={() => setIsModal(null)} zIndex={190} />
@@ -31,17 +26,6 @@ export default function ImageZoomModal({ toUid, imageUrl, setIsModal }: IImageZo
       >
         <Box position="relative" width="320px" maxHeight="400px">
           <Image src={imageUrl} width={320} height={400} alt="studyPrivateImage" priority={true} />
-          {isHeart && (
-            <Button
-              position="absolute"
-              variant="ghost"
-              bottom="12px"
-              right="4px"
-              onClick={() => setIsHeart(false)}
-            >
-              <HeartCircleIcon toUid={toUid} size="lg" />
-            </Button>
-          )}
         </Box>
       </Box>
     </>

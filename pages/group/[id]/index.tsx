@@ -96,7 +96,7 @@ function GroupDetail() {
       {group && category === "정보" && !isMember ? (
         <GroupBottomNav data={group} />
       ) : category === "피드" && isMember ? (
-        <WritingIcon url={`/feed/writing/group?id=${id}`} />
+        <WritingIcon url={`/feed/writing/group?id=${id}`} isBottomNav={false} />
       ) : null}
     </>
   );
