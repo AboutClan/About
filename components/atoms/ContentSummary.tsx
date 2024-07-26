@@ -21,7 +21,7 @@ const P = styled.p<{ isShort: boolean }>`
     `-webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;   `}
-  padding: 0 var(--gap-4);
+
   font-size: 13px;
   display: -webkit-box;
 

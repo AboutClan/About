@@ -4,11 +4,12 @@ import styled from "styled-components";
 interface IWritingIcon {
   url: string;
   isBottomNav?: boolean;
+  onClick?: () => void;
 }
 
-function WritingIcon({ url, isBottomNav = true }: IWritingIcon) {
+function WritingIcon({ url, isBottomNav = true, onClick }: IWritingIcon) {
   return (
-    <Link href={url}>
+    <Link href={url} onClick={onClick}>
       <Layout isBottomNav={isBottomNav}>
         <i className="fa-light fa-pen-line fa-xl" style={{ color: "white" }} />
       </Layout>

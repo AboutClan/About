@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import { SERVER_URI } from "../../constants/apiConstants";
 import { Feed } from "../../constants/keys/queryKeys";
 import { QueryOptions } from "../../types/hooks/reactTypes";
-import { FeedProps } from "../../types/models/feed";
+import { FeedProps, FeedType } from "../../types/models/feed";
 
 export const useFeedQuery = (id: string, options?: QueryOptions<FeedProps>) =>
   useQuery<FeedProps, AxiosError>(
@@ -17,11 +17,18 @@ export const useFeedQuery = (id: string, options?: QueryOptions<FeedProps>) =>
     },
     options,
   );
-export const useFeedsQuery = (cursor?: number, options?: QueryOptions<FeedProps[]>) =>
+export const useFeedsQuery = (
+  type?: FeedType,
+  typeId?: number,
+  cursor?: number,
+  options?: QueryOptions<FeedProps[]>,
+) =>
   useQuery<FeedProps[], AxiosError>(
-    [Feed + "s", cursor],
+    [Feed + "s", type, typeId, cursor],
     async () => {
-      const res = await axios.get<FeedProps[]>(`${SERVER_URI}/feed`);
+      const res = await axios.get<FeedProps[]>(`${SERVER_URI}/feed`, {
+        params: { type, typeId, cursor },
+      });
       return res.data;
     },
     options,

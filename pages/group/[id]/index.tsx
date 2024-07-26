@@ -4,7 +4,6 @@ import dayjs from "dayjs";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useQueryClient } from "react-query";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
@@ -12,7 +11,6 @@ import { GROUP_GATHERING_IMAGE } from "../../../assets/images/randomImages";
 import WritingIcon from "../../../components/atoms/Icons/WritingIcon";
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../components/layouts/PageSlide";
-import { GROUP_STUDY_ALL } from "../../../constants/keys/queryKeys";
 import { useGroupAttendancePatchMutation } from "../../../hooks/groupStudy/mutations";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
 import { checkGroupGathering } from "../../../libs/group/checkGroupGathering";
@@ -36,7 +34,7 @@ function GroupDetail() {
 
   const [transferGroup, setTransferGroup] = useRecoilState(transferGroupDataState);
 
-  const { data: groupData } = useGroupIdQuery(id, { enabled: !!id && !transferGroup });
+  const { data: groupData, refetch } = useGroupIdQuery(id, { enabled: !!id && !transferGroup });
 
   useEffect(() => {
     if (transferGroup) {
@@ -48,11 +46,9 @@ function GroupDetail() {
     }
   }, [transferGroup, groupData]);
 
-  const queryClient = useQueryClient();
-
   const { mutate: patchAttendance } = useGroupAttendancePatchMutation(+id, {
     onSuccess() {
-      queryClient.invalidateQueries([GROUP_STUDY_ALL]);
+      resetCache();
     },
   });
 
@@ -71,6 +67,11 @@ function GroupDetail() {
     [group.organizer, ...group.participants.map((who) => who.user)].some(
       (who) => who?.uid === session?.user.uid,
     );
+
+  const resetCache = () => {
+    setTransferGroup(null);
+    refetch();
+  };
 
   return (
     <>
@@ -96,7 +97,11 @@ function GroupDetail() {
       {group && category === "정보" && !isMember ? (
         <GroupBottomNav data={group} />
       ) : category === "피드" && isMember ? (
-        <WritingIcon url={`/feed/writing/group?id=${id}`} isBottomNav={false} />
+        <WritingIcon
+          url={`/feed/writing/group?id=${id}`}
+          isBottomNav={false}
+          onClick={resetCache}
+        />
       ) : null}
     </>
   );

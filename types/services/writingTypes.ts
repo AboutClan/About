@@ -1,7 +1,7 @@
 export interface WritingFormProps {
   title: string;
   text: string;
-  image: string;
-  writer: string;
+  images: Blob;
   type: string;
+  typeId: string;
 }

@@ -57,8 +57,7 @@ export default function StudyParticipants({ participants, absences }: IStudyPart
                   sizes="50px"
                   alt="studyAttend"
                   priority={true}
-                  objectFit="cover"
-                  objectPosition="center"
+                  style={{ objectPosition: "center", objectFit: "cover" }}
                 />
               </Box>
             )}

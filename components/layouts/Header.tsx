@@ -6,7 +6,7 @@ import Slide from "./PageSlide";
 interface IHeader {
   title: string;
   isBack?: boolean;
-
+  func?: () => void;
   url?: string;
   isSlide?: boolean;
   rightPadding?: number;
@@ -19,13 +19,15 @@ export default function Header({
   isSlide = true,
   url,
   rightPadding,
+  func,
+
   children,
 }: IHeader) {
   function HeaderLayout() {
     return (
       <HeaderContainer rightPadding={rightPadding}>
         <LeftSection>
-          {isBack ? <ArrowBackButton url={url} /> : <Box w="16px" />}
+          {isBack ? <ArrowBackButton url={url} func={func} /> : <Box w="16px" />}
           <Title>{title}</Title>
         </LeftSection>
         <div>{children}</div>

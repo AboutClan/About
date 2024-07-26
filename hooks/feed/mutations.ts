@@ -14,3 +14,14 @@ export const useFeedMutation = (options?: MutationOptions<FormData>) =>
       }),
     options,
   );
+
+export const useFeedLikeMutation = (options?: MutationOptions<string>) =>
+  useMutation<void, AxiosError, string>(
+    (id) =>
+      requestServer<{ id: string }>({
+        method: "post",
+        url: "feed/like",
+        body: { id },
+      }),
+    options,
+  );

@@ -2,7 +2,6 @@ import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 
 import Slide from "../../components/layouts/PageSlide";
-import { useGatherQuery } from "../../hooks/gather/queries";
 import HomeClubSection from "../../pageTemplates/home/HomeClubSection";
 import HomeGatherSection from "../../pageTemplates/home/HomeGatherSection";
 import HomeHeader from "../../pageTemplates/home/homeHeader/HomeHeader";
@@ -14,8 +13,6 @@ import EventBanner from "../../pageTemplates/home/study/EventBanner";
 
 function Home() {
   const [tab, setTab] = useState<HomeTab>();
-
-  useGatherQuery();
 
   return (
     <>

@@ -3,11 +3,16 @@ import styled from "styled-components";
 
 interface IArrowBackButton {
   url?: string;
+  func?: () => void;
 }
-export default function ArrowBackButton({ url }: IArrowBackButton) {
+export default function ArrowBackButton({ url, func }: IArrowBackButton) {
   const router = useRouter();
 
   const handleGoBack = () => {
+    if (func) {
+      func();
+      return;
+    }
     if (url) router.push(url);
     else router.back();
   };

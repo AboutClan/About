@@ -97,6 +97,7 @@ export default function Avatar({
                 priority={isPriority}
                 alt="avatar"
                 onError={onError}
+                style={{ objectPosition: "center", objectFit: "cover" }}
               />
             ) : (
               <Flex fontSize="12px" h="100%" justify="center" alignItems="center" color="white">

@@ -7,31 +7,44 @@ import FeedHeader from "../molecules/headers/FeedHeader";
 import SummaryBlock, { SummaryBlockProps } from "../molecules/SummaryBlock";
 import ImageSlider from "./imageSlider/ImageSlider";
 
-interface FeedLayoutProps {
+export interface FeedLayoutProps {
   user: IUserSummary;
   date: string;
   images: string[];
   content: string;
   summary?: SummaryBlockProps;
   likeUsers: IUserSummary[];
+  likeCnt: number;
+  id: string;
 }
 
-function FeedLayout({ user, date, images, content, summary }: FeedLayoutProps) {
+function FeedLayout({
+  user,
+  date,
+  images,
+  content,
+  likeUsers,
+  summary,
+  likeCnt,
+  id,
+}: FeedLayoutProps) {
   return (
     <Flex direction="column" border="var(--border)">
       <FeedHeader writer={user} date={date} />
       <AspectRatio ratio={1}>
         <ImageSlider imageContainer={images} type="review" />
       </AspectRatio>
-      {summary ? (
-        <Box p="16px">
-          <SummaryBlock url={summary.url} title={summary.title} text={summary.text} />
+      <Box px="16px">
+        {summary ? (
+          <Box pt="16px" pb="0">
+            <SummaryBlock url={summary.url} title={summary.title} text={summary.text} />
+          </Box>
+        ) : null}
+        <Box pt="16px" pb="12px">
+          {content && <ContentSummary text={content} />}
         </Box>
-      ) : (
-        <Box h="20px" />
-      )}
-      {content && <ContentSummary text={content} />}
-      <ContentHeartBar />
+      </Box>
+      <ContentHeartBar feedId={id} likeUsers={likeUsers} likeCnt={likeCnt} />
     </Flex>
   );
 }

@@ -29,7 +29,7 @@ function GatherDetail() {
   const [gather, setGather] = useState<IGather>();
 
   const transferGather = useRecoilValue(transferGatherDataState);
-  const { data: gatherData } = useGatherIDQuery(+id, { enabled: !!id && !transferGather });
+  const { data: gatherData } = useGatherIDQuery(id, { enabled: !!id && !transferGather });
 
   useEffect(() => {
     if (transferGather) setGather(transferGather);

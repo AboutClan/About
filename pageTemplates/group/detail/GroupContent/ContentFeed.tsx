@@ -1,20 +1,23 @@
-import { Button } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { Box, Flex } from "@chakra-ui/react";
+import dayjs from "dayjs";
+import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
-import styled from "styled-components";
 
-import NotCompletedModal from "../../../../modals/system/NotCompletedModal";
+import { MainLoadingAbsolute } from "../../../../components/atoms/loaders/MainLoading";
+import FeedLayout, { FeedLayoutProps } from "../../../../components/organisms/FeedLayout";
+import { useFeedsQuery } from "../../../../hooks/feed/queries";
 import { transferFeedSummaryState } from "../../../../recoils/transferRecoils";
 import { IGroup } from "../../../../types/models/groupTypes/group";
+import { getDateDiff } from "../../../../utils/dateTimeUtils";
 
 interface ContentFeedProps {
   group: IGroup;
 }
 
 function ContentFeed({ group }: ContentFeedProps) {
-  const [isModal, setIsModal] = useState(false);
-
   const setTransferFeedSummary = useSetRecoilState(transferFeedSummaryState);
+
+  const { data: feeds } = useFeedsQuery("group", group.id);
 
   useEffect(() => {
     if (group) {
@@ -28,34 +31,34 @@ function ContentFeed({ group }: ContentFeedProps) {
 
   return (
     <>
-      <Layout>
-        <Button
-          onClick={() => setIsModal(true)}
-          bgColor="var(--gray-200)"
-          size="lg"
-          w="100%"
-          leftIcon={<i className="fa-light fa-plus" />}
-        >
-          모임 만들기
-        </Button>
-        <Message>진행한 모임이 없습니다.</Message>
-      </Layout>
-      {isModal && <NotCompletedModal setIsModal={setIsModal} />}
+      {feeds ? (
+        feeds?.length ? (
+          feeds.map((feed, idx) => {
+            const feedProps: FeedLayoutProps = {
+              user: feed.writer,
+              date: getDateDiff(dayjs(feed.createdAt)),
+              images: feed.images,
+              content: feed.text,
+              likeUsers: feed.like,
+              likeCnt: feed?.likeCnt,
+              id: feed._id,
+            };
+            return (
+              <Box key={idx}>
+                <FeedLayout {...feedProps} />
+              </Box>
+            );
+          })
+        ) : (
+          <Flex fontSize="18px" height="200px" justify="center" align="center">
+            게시된 피드가 없습니다.
+          </Flex>
+        )
+      ) : (
+        <MainLoadingAbsolute size="sm" />
+      )}
     </>
   );
 }
-
-const Layout = styled.div`
-  padding: var(--gap-4);
-`;
-
-const Message = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 40px;
-  font-size: 16px;
-
-  color: var(--gray-600);
-`;
 
 export default ContentFeed;
