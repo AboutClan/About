@@ -34,7 +34,7 @@ function ProfilePage() {
     <>
       <Header title="" url={beforePage}>
         <Button pr="4px" variant="ghost">
-          <i className="fa-solid fa-ellipsis-vertical fa-lg"  onClick={() => setIsModal(true)} />
+          <i className="fa-solid fa-ellipsis-vertical fa-lg" onClick={() => setIsModal(true)} />
         </Button>
       </Header>
       <Slide>

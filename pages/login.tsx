@@ -20,7 +20,7 @@ import { useUserInfoQuery } from "../hooks/user/queries";
 import ForceLogoutDialog from "../modals/login/ForceLogoutDialog";
 import GuestLoginModal from "../modals/login/GuestLoginModal";
 import { IFooterOptions, ModalLayout } from "../modals/Modals";
-import { IconKakao } from "../public/icons/Icons";
+import { IconKakao, IconUser } from "../public/icons/Icons";
 
 const Login: NextPage<{
   providers: Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider>;
@@ -120,7 +120,7 @@ const Login: NextPage<{
           onClick={() => setIsModal(true)}
           mb="16px"
           justifyContent="space-between"
-          leftIcon={<i className="fa-solid fa-user" />}
+          leftIcon={<IconUser />}
           pr="32px"
         >
           <span>게스트 로그인</span>

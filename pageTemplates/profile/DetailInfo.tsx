@@ -10,9 +10,16 @@ import { birthToAge } from "../../utils/convertUtils/convertTypes";
 function DetailInfo({ user }: { user: IUser }) {
   const { data: session } = useSession();
   const isGuest = session?.user.name === "guest";
+
+  const isPrivate =
+    user?.isPrivate && !user?.friend.includes(session?.user.uid) && user?.uid !== session?.user.uid;
+
   return (
     <Layout>
-      <BlurredPart isBlur={isGuest}>
+      <BlurredPart
+        isBlur={isGuest || isPrivate}
+        text={isPrivate ? "프로필 비공개 (친구에게만 공개)" : undefined}
+      >
         <Profile>
           <ProfileItem>
             <span>나이</span>

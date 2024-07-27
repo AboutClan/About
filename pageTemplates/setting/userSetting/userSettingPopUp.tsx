@@ -8,6 +8,7 @@ import {
   ENTHUSIASTIC_POP_UP,
   FAQ_POP_UP,
   GATHER_JOIN_MEMBERS,
+  INSTAGRAM_POP_UP,
   PROMOTION_POP_UP,
   STUDY_ATTEND_MEMBERS,
   SUGGEST_POP_UP,
@@ -19,11 +20,12 @@ import PointSystemsModal from "../../../modals/aboutHeader/pointSystemsModal/Poi
 import PromotionModal from "../../../modals/aboutHeader/promotionModal/PromotionModal";
 import AlphabetPopUp from "../../../modals/pop-up/AlphabetPopUp";
 import FAQPopUp from "../../../modals/pop-up/FAQPopUp";
+import InstaPopUp from "../../../modals/pop-up/InstaPopUp";
 import LastWeekAttendPopUp from "../../../modals/pop-up/LastWeekAttendPopUp";
 import ManagerPopUp from "../../../modals/pop-up/ManagerPopUp";
 import SuggestPopUp from "../../../modals/pop-up/SuggestPopUp";
 import RecentJoinUserPopUp from "../../../modals/RecentJoinUserPopUp";
-import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import { IUser, IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { checkAndSetLocalStorage } from "../../../utils/storageUtils";
 
 export type UserPopUp =
@@ -34,7 +36,8 @@ export type UserPopUp =
   | "faq"
   // | "manager"
   | "alphabet"
-  | "enthusiastic";
+  | "enthusiastic"
+  | "instagram";
 
 const MODAL_COMPONENTS = {
   faq: FAQPopUp,
@@ -45,9 +48,15 @@ const MODAL_COMPONENTS = {
   alphabet: AlphabetPopUp,
   enthusiastic: EnthusiasticModal,
   manager: ManagerPopUp,
+  instagram: InstaPopUp,
 };
 
-export default function UserSettingPopUp({ cnt }) {
+interface UserSettingPopUpProps {
+  cnt: number;
+  userInfo: IUser;
+}
+
+export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProps) {
   const { data: session } = useSession();
 
   const [modalTypes, setModalTypes] = useState<UserPopUp[]>([]);
@@ -57,9 +66,7 @@ export default function UserSettingPopUp({ cnt }) {
 
   useEffect(() => {
     if (!gatherData) return;
-
     const gatherJoin = JSON.parse(localStorage.getItem(GATHER_JOIN_MEMBERS)) || [];
-
     const filteredGather = gatherData.filter((obj) => {
       const isJoined = gatherJoin.includes(obj.id);
       const isWithinDateRange =
@@ -76,7 +83,7 @@ export default function UserSettingPopUp({ cnt }) {
     filteredGather.forEach((obj) => {
       temp.push(obj.id);
     });
-    temp.push(48);
+
     temp.sort((a, b) => a - b);
     if (temp.length >= 5) {
       temp.shift();
@@ -117,25 +124,29 @@ export default function UserSettingPopUp({ cnt }) {
       setModalTypes((old) => [...old, "lastWeekAttend"]);
       if (++popUpCnt === 2) return;
     }
-    if (!checkAndSetLocalStorage(ENTHUSIASTIC_POP_UP, 16)) {
+    if (!checkAndSetLocalStorage(ENTHUSIASTIC_POP_UP, 27)) {
       setModalTypes((old) => [...old, "enthusiastic"]);
       if (++popUpCnt === 2) return;
     }
-    if (!checkAndSetLocalStorage(FAQ_POP_UP, 14)) {
+    if (!checkAndSetLocalStorage(FAQ_POP_UP, 21)) {
       setModalTypes((old) => [...old, "faq"]);
       if (++popUpCnt === 2) return;
     }
 
-    if (!checkAndSetLocalStorage(PROMOTION_POP_UP, 8)) {
+    if (!checkAndSetLocalStorage(PROMOTION_POP_UP, 14)) {
       setModalTypes((old) => [...old, "promotion"]);
       if (++popUpCnt === 2) return;
     }
-    if (!checkAndSetLocalStorage(SUGGEST_POP_UP, 21)) {
+    if (!checkAndSetLocalStorage(SUGGEST_POP_UP, 29)) {
       setModalTypes((old) => [...old, "suggest"]);
       if (++popUpCnt === 2) return;
     }
-    if (!checkAndSetLocalStorage(USER_GUIDE_POP_UP, 22)) {
+    if (!checkAndSetLocalStorage(USER_GUIDE_POP_UP, 30)) {
       setModalTypes((old) => [...old, "userGuide"]);
+      if (++popUpCnt === 2) return;
+    }
+    if (!checkAndSetLocalStorage(INSTAGRAM_POP_UP, 26) && !userInfo?.instagram) {
+      setModalTypes((old) => [...old, "instagram"]);
       if (++popUpCnt === 2) return;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -144,7 +155,7 @@ export default function UserSettingPopUp({ cnt }) {
   const filterModalTypes = (type: UserPopUp) => {
     setModalTypes((popUps) => popUps.filter((popUp) => popUp !== type));
   };
-
+  console.log(51, modalTypes);
   return (
     <>
       {recentMembers?.length ? (

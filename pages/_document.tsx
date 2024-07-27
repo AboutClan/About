@@ -43,7 +43,7 @@ export default class MyDocument extends Document {
           <meta property="og:title" content="About" />
           <meta property="og:url" content="https://studyabout.herokuapp.com" />
           <meta property="og:description" content="스터디 & 친목 동아리" />
-          <meta property="og:image" content="/ogImage.png" />
+          <meta property="og:image" content="/ogImage.jpg" />
           <meta property="og:locale" content="ko_KR" />
           <meta property="og:site_name" content="https://studyabout.herokuapp.com" />
           <meta charSet="utf-8" key="charset" />{" "}

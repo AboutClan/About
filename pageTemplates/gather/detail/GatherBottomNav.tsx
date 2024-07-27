@@ -76,11 +76,11 @@ function GatherBottomNav({ data }: IGatherBottomNav) {
     text: string;
     handleFunction?: () => void;
   }
-  console.log(myGather);
+  console.log(myGather, feed);
   const getButtonSettings = (status: GatherStatus): IButtonSetting => {
     switch (status) {
       case "open":
-        if (feed) {
+        if (feed?.length) {
           return {
             text: "모임 후기 도착! 확인하러 가기",
             handleFunction: () => setIsReviewDrawer(true),

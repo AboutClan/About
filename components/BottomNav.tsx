@@ -8,7 +8,7 @@ import styled from "styled-components";
 import { getStudyStandardDate } from "../libs/study/date/getStudyStandardDate";
 import { slideDirectionState } from "../recoils/navigationRecoils";
 import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
-import { detectDevice } from "../utils/validationUtils";
+import { getBottomNavSize } from "../utils/mathUtils";
 
 interface INavButtonProps {
   url: string;
@@ -32,10 +32,8 @@ export default function BottomNav() {
 
   const locationEn = convertLocationLangTo(session?.user.location, "en");
 
-  const deviceType = detectDevice();
-
   return (
-    <Nav isIPhone={deviceType === "iPhone"}>
+    <Nav height={getBottomNavSize()}>
       {navItems.map((item, idx) => {
         const getParams = (category: Category) => {
           switch (category) {
@@ -116,13 +114,13 @@ const navItems: INavButtonProps[] = [
   },
 ];
 
-const Nav = styled.nav<{ isIPhone: boolean }>`
+const Nav = styled.nav<{ height: number }>`
   width: 100%;
   display: flex;
   justify-content: even;
   position: fixed;
   bottom: 0;
-  height: ${(props) => (props.isIPhone ? "87px" : "77px")};
+  height: ${(props) => `${props.height}px`};
   background-color: white;
   z-index: 10;
 

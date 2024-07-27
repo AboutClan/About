@@ -13,6 +13,7 @@ export interface FeedLayoutProps {
   images: string[];
   content: string;
   summary?: SummaryBlockProps;
+  refetch?: () => void;
   likeUsers: IUserSummary[];
   likeCnt: number;
   id: string;
@@ -27,6 +28,7 @@ function FeedLayout({
   summary,
   likeCnt,
   id,
+  refetch,
 }: FeedLayoutProps) {
   return (
     <Flex direction="column" border="var(--border)">
@@ -44,7 +46,7 @@ function FeedLayout({
           {content && <ContentSummary text={content} />}
         </Box>
       </Box>
-      <ContentHeartBar feedId={id} likeUsers={likeUsers} likeCnt={likeCnt} />
+      <ContentHeartBar feedId={id} likeUsers={likeUsers} likeCnt={likeCnt} refetch={refetch} />
     </Flex>
   );
 }

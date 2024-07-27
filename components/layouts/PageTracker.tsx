@@ -7,6 +7,20 @@ import { BASE_BOTTOM_NAV_SEGMENT } from "../../pageTemplates/layout/Layout";
 import { slideDirectionState } from "../../recoils/navigationRecoils";
 import { parseUrlToSegments } from "../../utils/stringUtils";
 
+const REGISTER_WRITING_SEQUENCE = {
+  location: 1,
+  name: 2,
+  gender: 3,
+  birthday: 4,
+  mbti: 5,
+  major: 6,
+  interest: 7,
+  comment: 8,
+  instagram: 9,
+  phone: 9,
+  fee: 10,
+};
+
 const GATHER_WRITING_SEQUENCE = {
   category: 1,
   content: 2,
@@ -44,7 +58,7 @@ function PageTracker() {
 
       const setLeftSlide = () => setSlideDirection("left");
       const setRightSlide = () => setSlideDirection("right");
-
+      console.log(24, curFirstSegment);
       switch (curFirstSegment) {
         case "home":
           if (prevSegments[0] !== "vote") setLeftSlide();
@@ -96,6 +110,18 @@ function PageTracker() {
           }
           break;
 
+        case "register":
+          console.log(444);
+          handleWritingPage(
+            REGISTER_WRITING_SEQUENCE,
+            currentSegments,
+            prevSegments,
+            setLeftSlide,
+            setRightSlide,
+          );
+
+          break;
+
         case "gather":
           if (currentSegments?.[1] === "writing") {
             handleWritingPage(
@@ -138,14 +164,18 @@ function PageTracker() {
       setLeftSlide,
       setRightSlide,
     ) => {
+      console.log(123, currentSegments[1], pageSequence, prevSegments);
+      const isRegister = prevSegments?.[0] === "register";
+
       if (!currentSegments[1]) {
         setLeftSlide();
-      } else if (currentSegments[1] === "writing") {
-        if (!prevSegments[2]) {
+      } else if (currentSegments[1] === "writing" || isRegister) {
+        if (!prevSegments[2] && !isRegister) {
           setRightSlide();
         } else {
-          const prevCategoryValue = pageSequence[prevSegments[2]];
-          const curCategoryValue = pageSequence[currentSegments[2]];
+          const prevCategoryValue = pageSequence[isRegister ? prevSegments[1] : prevSegments[2]];
+          const curCategoryValue =
+            pageSequence[isRegister ? currentSegments[1] : currentSegments[2]];
 
           if (prevCategoryValue < curCategoryValue) {
             setRightSlide();

@@ -1,17 +1,16 @@
-import { Box, Drawer, DrawerBody, DrawerContent, DrawerOverlay, Flex } from "@chakra-ui/react";
+import { Drawer, DrawerBody, DrawerContent, DrawerOverlay } from "@chakra-ui/react";
 
-import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import Header from "../../layouts/Header";
-import ProfileCommentCard from "../../molecules/cards/ProfileCommentCard";
 
 interface RightUserDrawerProps {
   title: string;
-  users: IUserSummary[];
+
   isOpen: boolean;
   onClose: () => void;
+  children: React.ReactNode;
 }
 
-function RightUserDrawer({ title, users, isOpen, onClose }: RightUserDrawerProps) {
+function RightUserDrawer({ title, isOpen, onClose, children }: RightUserDrawerProps) {
   const handleClose = () => {
     onClose();
   };
@@ -22,15 +21,7 @@ function RightUserDrawer({ title, users, isOpen, onClose }: RightUserDrawerProps
       <DrawerContent>
         <DrawerBody p="0">
           <Header title={title} isSlide={false} func={onClose} />
-          <Box>
-            <Flex direction="column">
-              {users.map((who, idx) => (
-                <Box key={idx}>
-                  <ProfileCommentCard user={who} comment={who.comment} />
-                </Box>
-              ))}
-            </Flex>
-          </Box>
+          {children}
         </DrawerBody>
       </DrawerContent>
     </Drawer>

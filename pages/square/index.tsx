@@ -1,6 +1,7 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import WritingIcon from "../../components/atoms/Icons/WritingIcon";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import SquareLoungeSection from "../../pageTemplates/square/SquareLoungeSection";
@@ -20,11 +21,12 @@ function SquarePage() {
 
   return (
     <>
-      <Header title="어바웃 스퀘어" isBack={false} />
+      <Header title="커뮤니티" isBack={false} />
       <Slide>
         <SquareTabNav tab={tab} />
         {tab === "시크릿 스퀘어" ? <SquareSecretSection /> : <SquareLoungeSection />}
       </Slide>
+      {tab === "시크릿 스퀘어" && <WritingIcon url="/square/writing" />}
     </>
   );
 }

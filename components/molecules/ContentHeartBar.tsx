@@ -1,41 +1,65 @@
 import { Button, Flex } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 
 import { useFeedLikeMutation } from "../../hooks/feed/mutations";
+import { useUserInfoQuery } from "../../hooks/user/queries";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import RightUserDrawer from "../organisms/drawer/RightUserDrawer";
+import ProfileCommentCard from "./cards/ProfileCommentCard";
 import AvatarGroupsOverwrap from "./groups/AvatarGroupsOverwrap";
 
 interface ContentHeartBarProps {
   feedId: string;
   likeUsers: IUserSummary[];
   likeCnt: number;
+  refetch?: () => void;
 }
 
-function ContentHeartBar({ feedId, likeUsers, likeCnt }: ContentHeartBarProps) {
-  const { data: session } = useSession();
+function ContentHeartBar({ feedId, likeUsers, likeCnt, refetch }: ContentHeartBarProps) {
+  const { data: userInfo } = useUserInfoQuery();
 
   const [modalType, setModalType] = useState<"like" | "comment">(null);
-  const [heartProps, setHeartProps] = useState({ isMine: false, cnt: likeCnt });
+  const [heartProps, setHeartProps] = useState({ isMine: false, users: likeUsers, cnt: likeCnt });
 
-  const { mutate } = useFeedLikeMutation();
+  const { mutate } = useFeedLikeMutation({
+    onSuccess() {
+      refetch();
+    },
+  });
 
   useEffect(() => {
-    if (likeUsers?.some((who) => who.uid === session?.user.uid)) {
-      setHeartProps((old) => ({ ...old, isMine: true }));
+    if (likeUsers?.some((who) => who.uid === userInfo?.uid)) {
+      setHeartProps((old) => ({ ...old, isMine: true, users: likeUsers }));
     }
     if (likeCnt) {
-      setHeartProps((old) => ({ ...old, cnt: likeCnt }));
+      setHeartProps((old) => ({ ...old, cnt: likeCnt, users: likeUsers }));
     }
-  }, [likeUsers, likeCnt, session?.user]);
+  }, [likeUsers, likeCnt, userInfo?.uid]);
 
   const onClickHeart = () => {
-    setHeartProps((old) => ({ isMine: !old.isMine, cnt: old.isMine ? old.cnt - 1 : old.cnt + 1 }));
+    setHeartProps((old) => {
+      if (old.isMine) {
+        return {
+          isMine: false,
+          cnt: old.cnt - 1,
+          users: old.users.filter((who) => who.uid !== userInfo?.uid),
+        };
+      } else {
+        return {
+          isMine: true,
+          cnt: old.cnt + 1,
+          users: [userInfo, ...old.users],
+        };
+      }
+    });
+
     mutate(feedId);
   };
 
-  const userAvatarArr = likeUsers?.map((who) => ({ avatar: who?.avatar, image: who.profileImage }));
+  const userAvatarArr = heartProps?.users?.map((who) => ({
+    avatar: who?.avatar,
+    image: who.profileImage,
+  }));
 
   return (
     <>
@@ -69,12 +93,37 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt }: ContentHeartBarProps) {
         </Button>
       </Flex>
       {modalType === "like" && (
-        <RightUserDrawer
-          title={modalType === "like" ? "좋아요" : "댓글"}
-          users={likeUsers}
-          isOpen={true}
-          onClose={() => setModalType(null)}
-        />
+        <RightUserDrawer title="좋아요" isOpen={true} onClose={() => setModalType(null)}>
+          <Flex direction="column">
+            {likeUsers.map((who, idx) => (
+              <Fragment key={idx}>
+                <ProfileCommentCard user={who} comment={who.comment} />
+              </Fragment>
+            ))}
+          </Flex>
+        </RightUserDrawer>
+      )}
+      {modalType === "comment" && (
+        <RightUserDrawer title="댓글" isOpen={true} onClose={() => setModalType(null)}>
+          <Flex direction="column">
+            {/* {commentArr?.map((item, idx) => (
+              <UserComment
+                key={idx}
+                type="gather"
+                user={item.user}
+                updatedAt={item.updatedAt}
+                comment={item.comment}
+                pageId={gatherId}
+                commentId={item._id}
+                setCommentArr={setCommentArr}
+                resetCache={resetCache}
+              />
+            ))} */}{" "}
+            {/* <Box mr="8px">
+              <UserCommentInput user={userInfo} onSubmit={onSubmit} />
+            </Box> */}
+          </Flex>
+        </RightUserDrawer>
       )}
     </>
   );

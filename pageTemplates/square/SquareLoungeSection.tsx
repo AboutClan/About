@@ -15,21 +15,23 @@ function SquareLoungeSection() {
   const newSearchParams = new URLSearchParams(searchParams);
   const categoryParam = searchParams.get("category") as FeedType | undefined;
 
-  const [category, setCategory] = useState<FeedType | "all">("all");
-  const [loungeData, setLoungeData] = useState<FeedProps[]>([]);
+  const [category, setCategory] = useState<FeedType | "all">();
+  const [loungeData, setLoungeData] = useState<FeedProps[]>();
   const [cursor, setCursor] = useState(0);
 
   const loader = useRef<HTMLDivElement | null>(null);
   const firstLoad = useRef(true);
 
-  const { data: feeds, isLoading } = useFeedsQuery(
-    category === "all" ? null : category,
-    null,
-    cursor,
-  );
+  const {
+    data: feeds,
+    isLoading,
+    refetch,
+  } = useFeedsQuery(category === "all" ? null : category, null, cursor);
 
   useEffect(() => {
     if (categoryParam) {
+      setLoungeData(null);
+      setCursor(0);
       setCategory(categoryParam);
     } else {
       newSearchParams.append("category", "all");
@@ -40,9 +42,13 @@ function SquareLoungeSection() {
   useEffect(() => {
     if (!feeds) return;
     firstLoad.current = false;
-    setLoungeData((old) => [...feeds as FeedProps[], ...old]);
-  }, [feeds]);
-  console.log(34, cursor);
+
+    setLoungeData((old) => {
+      if (old?.length) return [...(feeds as FeedProps[]), ...old];
+      else return feeds;
+    });
+  }, [feeds, categoryParam]);
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -81,7 +87,6 @@ function SquareLoungeSection() {
     },
   );
 
-  console.log(feeds, category);
   return (
     <Box pb="60px">
       <Box p="12px 16px">
@@ -92,26 +97,31 @@ function SquareLoungeSection() {
           isEllipse
         />
       </Box>
-      {loungeData ? (
-        loungeData?.length ? (
-          loungeData.map((feed, idx) => {
-            const feedProps: FeedLayoutProps = convertFeedToLayout(feed);
-            return (
-              <Box key={idx}>
-                <FeedLayout {...feedProps} />
-              </Box>
-            );
-          })
+      <Box minH="calc(100dvh - 162px)">
+        {loungeData ? (
+          loungeData?.length ? (
+            loungeData.map((feed, idx) => {
+              const feedProps: FeedLayoutProps = convertFeedToLayout(feed);
+              return (
+                <Box key={idx}>
+                  <FeedLayout {...feedProps} refetch={() => refetch()} />
+                </Box>
+              );
+            })
+          ) : (
+            <Flex fontSize="18px" height="200px" justify="center" align="center">
+              게시된 피드가 없습니다.
+            </Flex>
+          )
         ) : (
-          <Flex fontSize="18px" height="200px" justify="center" align="center">
-            게시된 피드가 없습니다.
-          </Flex>
-        )
-      ) : (
-        <MainLoadingAbsolute size="sm" />
-      )}
+          <Box bg="pink" mt="180px" position="relative">
+            <MainLoadingAbsolute size="md" />
+          </Box>
+        )}
+      </Box>
+
       <div ref={loader} />
-      {isLoading && loungeData.length ? (
+      {isLoading && loungeData?.length ? (
         <Box position="relative" mt="32px" mb="40px">
           <MainLoadingAbsolute size="sm" />
         </Box>

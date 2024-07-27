@@ -1,7 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 
-import WritingIcon from "../../components/atoms/Icons/WritingIcon";
 import { type SecretSquareCategory, type SecretSquareItem } from "../../types/models/square";
 import SecretSquareCategories from "./SecretSquare/SecretSquareCategories";
 import SquareItem from "./SecretSquare/SquareItem";
@@ -57,7 +56,6 @@ function SquareSecretSection() {
           <SquareItem key={item.id} item={item} />
         ))}
       </Box>
-      <WritingIcon url="/square/writing" />
     </>
   );
 }

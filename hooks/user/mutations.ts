@@ -57,10 +57,14 @@ type UserInfoFieldParam<T> = T extends "avatar"
       ? { info: IApplyRest }
       : T extends "belong"
         ? { uid: string; belong: string }
-        : { comment: string };
+        : T extends "isPrivate"
+          ? { isPrivate: boolean }
+          : T extends "instagram"
+            ? { instagram: string }
+            : { comment: string };
 
 export const useUserInfoFieldMutation = <
-  T extends "avatar" | "comment" | "role" | "rest" | "belong",
+  T extends "avatar" | "comment" | "role" | "rest" | "belong" | "isPrivate" | "instagram",
 >(
   field: T,
   options?: MutationOptions<UserInfoFieldParam<T>>,
