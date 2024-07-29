@@ -2,13 +2,20 @@ import { ITimeStamps } from "../utils/timeAndDate";
 
 export type SecretSquareCategory = "전체" | "일상" | "고민" | "정보" | "같이해요";
 
+interface Comment extends ITimeStamps {
+  id: string;
+  comment: string;
+}
+
 interface BaseSecretSquareItem extends ITimeStamps {
   id: string;
   category: SecretSquareCategory;
-  author: string;
   title: string;
   content: string;
   viewCount: number;
+  likeCount: number;
+  images: string[];
+  comments: Comment[];
 }
 
 interface GeneralSecretSquareItem extends BaseSecretSquareItem {
