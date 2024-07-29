@@ -55,8 +55,6 @@ function GroupPage() {
     enabled: !!filterType,
   });
 
-  console.log(24, filterType);
-
   useEffect(() => {
     setCursor(0);
     setGroupStudies([]);

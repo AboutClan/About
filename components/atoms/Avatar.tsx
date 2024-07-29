@@ -21,7 +21,7 @@ interface IAvatar {
   isLink?: boolean;
 }
 
-function Avatar({
+function AvatarComponent({
   image,
   size,
   sizeLength,
@@ -123,9 +123,9 @@ function Avatar({
   );
 }
 
-const MemoizedAvatar = memo(Avatar);
+const Avatar = memo(AvatarComponent);
 
-export default MemoizedAvatar;
+export default Avatar;
 
 const AvatarContainer = styled.div<{
   size: Size;
