@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 
 import { COLOR_TABLE_LIGHT } from "../../constants/colorConstants";
@@ -122,7 +122,8 @@ function Avatar({
     </>
   );
 }
-const MemoizedAvatar = Avatar;
+
+const MemoizedAvatar = memo(Avatar);
 
 export default MemoizedAvatar;
 
