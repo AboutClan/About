@@ -161,6 +161,7 @@ function Review() {
                       likeUsers={[]}
                       likeCnt={0}
                       id={item.id + ""}
+                      comments={[]}
                     />
                   );
                 })}

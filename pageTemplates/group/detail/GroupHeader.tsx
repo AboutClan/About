@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -79,12 +79,9 @@ function GroupHeader({ group }: IGroupHeader) {
           </IconWrapper>
         </Flex>
       </Header>
-      <BottomDrawer
-        type="group"
-        isModal={isSettigModal}
-        setIsModal={setIsSettingModal}
-        onSubmit={handleQuit}
-      />
+      {isSettigModal && (
+        <BottomDrawer type="group" onClose={() => setIsSettingModal(false)} onSubmit={handleQuit} />
+      )}
     </>
   );
 }

@@ -8,6 +8,13 @@ export interface FeedProps extends Omit<WritingFormProps, "images">, ITimeStamps
   like: IUserSummary[];
   likeCnt: number;
   writer: IUserSummary;
+  comments: FeedComment[];
+}
+
+export interface FeedComment extends ITimeStamps {
+  user: IUserSummary;
+  comment: string;
+  feedId: string;
 }
 
 export type FeedType = "gather" | "group";

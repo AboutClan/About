@@ -42,6 +42,7 @@ function ContentFeed({ group }: ContentFeedProps) {
               likeUsers: feed.like,
               likeCnt: feed?.likeCnt,
               id: feed._id,
+              comments: feed.comments,
             };
             return (
               <Box key={idx}>

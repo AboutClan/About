@@ -5,5 +5,5 @@ export const appendFormData = <T extends keyof WritingFormProps>(
   key: T,
   value: WritingFormProps[T],
 ) => {
-  formData.append(key, value);
+  formData.append(key, value.toString());
 };

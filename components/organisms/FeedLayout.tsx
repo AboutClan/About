@@ -1,5 +1,6 @@
 import { AspectRatio, Box, Flex } from "@chakra-ui/react";
 
+import { FeedComment } from "../../types/models/feed";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import ContentSummary from "../atoms/ContentSummary";
 import ContentHeartBar from "../molecules/ContentHeartBar";
@@ -17,6 +18,7 @@ export interface FeedLayoutProps {
   likeUsers: IUserSummary[];
   likeCnt: number;
   id: string;
+  comments: FeedComment[];
 }
 
 function FeedLayout({
@@ -27,9 +29,11 @@ function FeedLayout({
   likeUsers,
   summary,
   likeCnt,
+  comments,
   id,
   refetch,
 }: FeedLayoutProps) {
+
   return (
     <Flex direction="column" border="var(--border)">
       <FeedHeader writer={user} date={date} />
@@ -46,7 +50,13 @@ function FeedLayout({
           {content && <ContentSummary text={content} />}
         </Box>
       </Box>
-      <ContentHeartBar feedId={id} likeUsers={likeUsers} likeCnt={likeCnt} refetch={refetch} />
+      <ContentHeartBar
+        comments={comments}
+        feedId={id}
+        likeUsers={likeUsers}
+        likeCnt={likeCnt}
+        refetch={refetch}
+      />
     </Flex>
   );
 }

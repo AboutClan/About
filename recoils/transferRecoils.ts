@@ -6,7 +6,7 @@ import { IGiftEntry } from "../pages/store";
 import { IGather } from "../types/models/gatherTypes/gatherTypes";
 import { IGroup } from "../types/models/groupTypes/group";
 import { MemberGroup } from "../types/models/member";
-import { IUser, IUserSummary } from "../types/models/userTypes/userInfoTypes";
+import { IUser } from "../types/models/userTypes/userInfoTypes";
 import { Alphabet } from "../types/services/alphabetTypes";
 
 export const transferAlphabetState = atom<Alphabet>({
@@ -21,11 +21,6 @@ export const transferDailyCheckWinState = atom<IDailyCheckWinList>({
 export const transferShowDailyCheckState = atom<boolean>({
   key: "TransferShowDailyCheck",
   default: true,
-});
-
-export const transferUserSummaryState = atom<IUserSummary | IUser>({
-  key: "TransferUserSummary",
-  default: null,
 });
 
 export const transferGatherDataState = atom<IGather>({

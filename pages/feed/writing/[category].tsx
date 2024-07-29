@@ -11,9 +11,11 @@ import Slide from "../../../components/layouts/PageSlide";
 import SuccessScreen from "../../../components/layouts/SuccessScreen";
 import ImageUploadButton from "../../../components/molecules/ImageUploadButton";
 import SummaryBlock, { SummaryBlockProps } from "../../../components/molecules/SummaryBlock";
+import UserSecretButton from "../../../components/molecules/UserSecretButton";
 import ImageUploadSlider, {
   ImageUploadTileProps,
 } from "../../../components/organisms/sliders/ImageUploadSlider";
+import { useToast } from "../../../hooks/custom/CustomToast";
 import { useFeedMutation } from "../../../hooks/feed/mutations";
 import { useGatherIDQuery } from "../../../hooks/gather/queries";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
@@ -21,6 +23,7 @@ import { transferFeedSummaryState } from "../../../recoils/transferRecoils";
 import { appendFormData } from "../../../utils/formDataUtils";
 
 function FeedWritingPage() {
+  const toast = useToast();
   const searchParams = useSearchParams();
   const { category } = useParams<{ category: "gather" | "group" }>() || {};
   const id = searchParams.get("id");
@@ -35,6 +38,7 @@ function FeedWritingPage() {
   const [summary, setSummary] = useState<SummaryBlockProps>();
   const [imageArr, setImageArr] = useState<string[]>([]);
   const [imageFormArr, setImageFormArr] = useState<Blob[]>([]);
+  const [isAnonymous, setIsAnonymous] = useState(false);
 
   const { data: group } = useGroupIdQuery(id, {
     enabled: category === "group" && !!id && !transferFeedSummary,
@@ -45,6 +49,7 @@ function FeedWritingPage() {
 
   const { mutate, isLoading } = useFeedMutation({
     onSuccess() {
+     
       setIsSuccessScreen(true);
     },
   });
@@ -70,11 +75,17 @@ function FeedWritingPage() {
   const formData = new FormData();
 
   const onSubmit: SubmitHandler<{ content: string }> = () => {
+    if (!imageFormArr?.length) {
+      toast("warning", "최소 한장 이상의 사진이 필요합니다.");
+      return;
+    }
+  
     appendFormData(formData, "type", category);
     for (const form of imageFormArr) {
       appendFormData(formData, "images", form);
     }
     appendFormData(formData, "title", summary.title);
+    appendFormData(formData, "isAnonymous", isAnonymous);
     appendFormData(
       formData,
       "text",
@@ -128,11 +139,12 @@ function FeedWritingPage() {
                 </Box>
               ) : null}
             </Box>
-          </FormProvider>{" "}
+          </FormProvider>
         </VStack>
       </Slide>
       <WritingNavigation>
         <ImageUploadButton setImageUrls={setImageArr} setImageForms={setImageFormArr} />
+        <UserSecretButton isAnonymous={isAnonymous} setIsAnonymous={setIsAnonymous} />
       </WritingNavigation>
       {isSuccessScreen && (
         <SuccessScreen url={`/${category}/${id}`}>

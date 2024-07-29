@@ -11,8 +11,7 @@ function RequestBirthModal({ setIsModal }: IModal) {
   const { data: session } = useSession();
 
   const { mutate } = useUserInfoFieldMutation("isPrivate", {
-    onSuccess(data) {
-      console.log(data);
+    onSuccess() {
       completeToast("success");
       setIsModal(false);
     },

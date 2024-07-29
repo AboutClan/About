@@ -38,7 +38,6 @@ function SquareWritingPage() {
   const isPollType = pollList.every(({ value }) => !!value);
 
   const onSubmit: SubmitHandler<SecretSquareFormData> = (data) => {
-    console.log(data);
 
     const type = isPollType ? "poll" : "general";
 
@@ -72,7 +71,7 @@ function SquareWritingPage() {
       setImageArr(imageArr.filter((old) => old !== url));
     },
   }));
-  console.log(23, imageArr);
+
   return (
     <>
       <Header title="글 쓰기" rightPadding={8}>

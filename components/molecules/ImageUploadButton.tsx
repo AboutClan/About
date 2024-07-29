@@ -50,6 +50,7 @@ export default function ImageUploadButton({ setImageUrls, setImageForms }: IImag
         onChange={handleImageChange}
       />
       <Button
+        px="8px"
         color="var(--gray-600)"
         type="button"
         leftIcon={<i className="fa-regular fa-image fa-lg" />}

@@ -21,7 +21,7 @@ interface IAvatar {
   isLink?: boolean;
 }
 
-export default function Avatar({
+function Avatar({
   image,
   size,
   sizeLength,
@@ -112,7 +112,7 @@ export default function Avatar({
 
   return (
     <>
-      {size === "sm" || !isLink ? (
+      {!isLink ? (
         <AvatarComponent />
       ) : (
         <Link href={`/profile/${uid}`} style={{ outline: "none" }}>
@@ -122,6 +122,9 @@ export default function Avatar({
     </>
   );
 }
+const MemoizedAvatar = Avatar;
+
+export default MemoizedAvatar;
 
 const AvatarContainer = styled.div<{
   size: Size;
@@ -197,7 +200,7 @@ const ImageContainer = styled.div<{
     (props.size === "sm"
       ? "3px"
       : props.size === "smd"
-        ? "6px"
+        ? "4px"
         : props.size === "md"
           ? "6px"
           : props.size === "lg"

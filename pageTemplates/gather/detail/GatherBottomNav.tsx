@@ -76,7 +76,7 @@ function GatherBottomNav({ data }: IGatherBottomNav) {
     text: string;
     handleFunction?: () => void;
   }
-  console.log(myGather, feed);
+
   const getButtonSettings = (status: GatherStatus): IButtonSetting => {
     switch (status) {
       case "open":

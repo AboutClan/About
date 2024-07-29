@@ -4,4 +4,5 @@ export interface WritingFormProps {
   images: Blob;
   type: string;
   typeId: string;
+  isAnonymous: boolean;
 }

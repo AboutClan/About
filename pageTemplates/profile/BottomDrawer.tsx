@@ -1,35 +1,16 @@
-import {
-  Button,
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerOverlay,
-  useDisclosure,
-} from "@chakra-ui/react";
-import { useEffect } from "react";
+import { Button, Drawer, DrawerBody, DrawerContent, DrawerOverlay } from "@chakra-ui/react";
 
-import { DispatchBoolean, DispatchType } from "../../types/hooks/reactTypes";
+import { DispatchType } from "../../types/hooks/reactTypes";
 import { DeclareRequest } from "../../types/models/userTypes/userRequestTypes";
 
 interface IBottomDrawer {
-  isModal: boolean;
-  setIsModal: DispatchBoolean;
+  onClose: () => void;
   setDeclareModal?: DispatchType<DeclareRequest>;
   type?: "group";
   onSubmit?: () => void;
 }
 
-function BottomDrawer({ type, isModal, setIsModal, setDeclareModal, onSubmit }: IBottomDrawer) {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
-  useEffect(() => {
-    if (isModal) onOpen();
-  }, [isModal, onOpen]);
-
-  useEffect(() => {
-    if (!isOpen) setIsModal(false);
-  }, [isOpen, setIsModal]);
-
+function BottomDrawer({ type, onClose, setDeclareModal, onSubmit }: IBottomDrawer) {
   const onClick = (type: DeclareRequest) => {
     setDeclareModal(type);
     onClose();
@@ -40,7 +21,7 @@ function BottomDrawer({ type, isModal, setIsModal, setDeclareModal, onSubmit }: 
   };
 
   return (
-    <Drawer placement="bottom" onClose={onClose} isOpen={isOpen}>
+    <Drawer placement="bottom" onClose={onClose} isOpen>
       <DrawerOverlay />
       <DrawerContent bg="transparent">
         <DrawerBody display="flex" flexDir="column" p="0 var(--gap-2)">

@@ -8,7 +8,6 @@ import styled from "styled-components";
 import Avatar from "../../../components/atoms/Avatar";
 import InviteUserModal from "../../../modals/InviteUserModal";
 import { prevPageUrlState } from "../../../recoils/navigationRecoils";
-import { transferUserSummaryState } from "../../../recoils/transferRecoils";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 
@@ -19,7 +18,7 @@ interface IGatherParticipation {
 function GatherParticipation({ data }: IGatherParticipation) {
   const { data: session } = useSession();
   const router = useRouter();
-  const setTransferUserSummary = useSetRecoilState(transferUserSummaryState);
+
   const setPrevPageUrl = useSetRecoilState(prevPageUrlState);
 
   const organizer = data.user as IUserSummary;
@@ -31,7 +30,6 @@ function GatherParticipation({ data }: IGatherParticipation) {
   const isAdminOpen = data.isAdminOpen;
 
   const onClickProfile = (user: IUserSummary) => {
-    setTransferUserSummary(user);
     setPrevPageUrl(router?.asPath);
     router.push(`/profile/${user.uid}`);
   };

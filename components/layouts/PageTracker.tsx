@@ -58,7 +58,7 @@ function PageTracker() {
 
       const setLeftSlide = () => setSlideDirection("left");
       const setRightSlide = () => setSlideDirection("right");
-      console.log(24, curFirstSegment);
+  
       switch (curFirstSegment) {
         case "home":
           if (prevSegments[0] !== "vote") setLeftSlide();
@@ -111,7 +111,7 @@ function PageTracker() {
           break;
 
         case "register":
-          console.log(444);
+          
           handleWritingPage(
             REGISTER_WRITING_SEQUENCE,
             currentSegments,
@@ -124,6 +124,7 @@ function PageTracker() {
 
         case "gather":
           if (currentSegments?.[1] === "writing") {
+       
             handleWritingPage(
               GATHER_WRITING_SEQUENCE,
               currentSegments,
@@ -131,6 +132,7 @@ function PageTracker() {
               setLeftSlide,
               setRightSlide,
             );
+            break;
           }
           if (prevSegments[0] === "gather" && prevSegments?.[1]) {
             setLeftSlide();
@@ -164,7 +166,7 @@ function PageTracker() {
       setLeftSlide,
       setRightSlide,
     ) => {
-      console.log(123, currentSegments[1], pageSequence, prevSegments);
+  
       const isRegister = prevSegments?.[0] === "register";
 
       if (!currentSegments[1]) {
@@ -176,10 +178,12 @@ function PageTracker() {
           const prevCategoryValue = pageSequence[isRegister ? prevSegments[1] : prevSegments[2]];
           const curCategoryValue =
             pageSequence[isRegister ? currentSegments[1] : currentSegments[2]];
-
+        
           if (prevCategoryValue < curCategoryValue) {
+          
             setRightSlide();
           } else {
+          
             setLeftSlide();
           }
         }
