@@ -72,7 +72,7 @@ function SquareWritingPage() {
       setImageArr(imageArr.filter((old) => old !== url));
     },
   }));
-  console.log(23, imageArr);
+
   return (
     <>
       <Header title="글 쓰기" rightPadding={8}>
