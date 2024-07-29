@@ -57,8 +57,7 @@ export default function StudyParticipants({ participants, absences }: IStudyPart
                   sizes="50px"
                   alt="studyAttend"
                   priority={true}
-                  objectFit="cover"
-                  objectPosition="center"
+                  style={{ objectPosition: "center", objectFit: "cover" }}
                 />
               </Box>
             )}
@@ -96,11 +95,7 @@ export default function StudyParticipants({ participants, absences }: IStudyPart
         )}
       </Slide>
       {hasImageProps?.image && hasImageProps?.toUid && (
-        <ImageZoomModal
-          imageUrl={hasImageProps.image}
-          toUid={hasImageProps.toUid}
-          setIsModal={() => setHasImageProps(null)}
-        />
+        <ImageZoomModal imageUrl={hasImageProps.image} setIsModal={() => setHasImageProps(null)} />
       )}
       {hasModalMemo && (
         <StudyChangeMemoModal

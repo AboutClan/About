@@ -13,7 +13,7 @@ export interface IReviewData {
 export const REVIEW_DATA: IReviewData[] = [
   {
     id: 1,
-    dateCreated: "5월 26일",
+    dateCreated: "2023-05-26",
     images: [
       "https://user-images.githubusercontent.com/84257439/242179172-dc4938a6-7902-4ea5-b3a9-1c44f15f1d77.jpg",
       "https://user-images.githubusercontent.com/84257439/242162595-d3b92717-2e92-4039-b17c-d0d53cdefdf6.png",
@@ -22,26 +22,26 @@ export const REVIEW_DATA: IReviewData[] = [
       "https://user-images.githubusercontent.com/84257439/242466281-39e2eef3-c450-443b-bfc2-980470e0dc00.jpg",
       "https://user-images.githubusercontent.com/84257439/242162770-c68c8380-39f3-4483-ad61-e28fe29338a4.jpg",
     ],
-    text: `5월 26일, 수원시청역 인근 파티룸을 대관해서 정기모임을 진행했어요!🥰 50명이 넘는 인원이 신청을 해주셨지만 아쉽게도 30여명만 받아서 진행했답니다 ㅠ  20대 초반부터 중후반까지 나이대가 다양하게 있다보니, 또래끼리 빨리 친해지길 바라는 마음으로 사전에 조를 짜서 진행했어요! 나이, 성별, 요청사항 등 여러가지를 고려해서 말이에요. 초면인 사람들이 많다보니 다들 금방 친해지고 괜찮은 진행방식 이었던 거 같아요 ㅎㅎ (다음에도 이렇게 해 봐야지) 조가 여러개 있다보니, 조마다 분위기가 다 달랐던 거 같아요. 보드게임 하는 팀도 있고, 노래방, 홀덤, 진대, 그냥 술 드시는 팀 등...! 1차팀에서 2차팀으로 이동하기 전에 단체 사진을 한번 찍었어요. 사진 나오기 싫은 사람들은 알아서 잘 숨으라고 했더니 다들 정말 잘 숨어서 보이지도 않네요. 보드게임이랑 노래방도 특히 핫 했던 거 같아. 그리고 노래 잘 부르시는 분들이 정말 많았어요. (깜짝 놀랐음) 사람들 좀 집에 가고 나면 한병 있던 엑세레이티드 술을 까려고 했는데, 새벽 2시 넘어서야 10여명이 되더라고요! 야식으로 족발에 보쌈을 시켜서 같이 맛있게 먹고 밤 샌 뒤에 집에 귀가 ! 아무쪼록 정말 재미있던 모임이었습니다. 다들 다음에 또 봬요~!
+    text: `수원시청역 인근 파티룸을 대관해서 정기모임을 진행했어요!🥰 50명이 넘는 인원이 신청을 해주셨지만 아쉽게도 30여명만 받아서 진행했답니다 ㅠ  20대 초반부터 중후반까지 나이대가 다양하게 있다보니, 또래끼리 빨리 친해지길 바라는 마음으로 사전에 조를 짜서 진행했어요! 나이, 성별, 요청사항 등 여러가지를 고려해서 말이에요. 초면인 사람들이 많다보니 다들 금방 친해지고 괜찮은 진행방식 이었던 거 같아요 ㅎㅎ (다음에도 이렇게 해 봐야지) 조가 여러개 있다보니, 조마다 분위기가 다 달랐던 거 같아요. 보드게임 하는 팀도 있고, 노래방, 홀덤, 진대, 그냥 술 드시는 팀 등...! 1차팀에서 2차팀으로 이동하기 전에 단체 사진을 한번 찍었어요. 사진 나오기 싫은 사람들은 알아서 잘 숨으라고 했더니 다들 정말 잘 숨어서 보이지도 않네요. 보드게임이랑 노래방도 특히 핫 했던 거 같아. 그리고 노래 잘 부르시는 분들이 정말 많았어요. (깜짝 놀랐음) 사람들 좀 집에 가고 나면 한병 있던 엑세레이티드 술을 까려고 했는데, 새벽 2시 넘어서야 10여명이 되더라고요! 야식으로 족발에 보쌈을 시켜서 같이 맛있게 먹고 밤 샌 뒤에 집에 귀가 ! 아무쪼록 정말 재미있던 모임이었습니다. 다들 다음에 또 봬요~!
     `,
     title: "수원 파티룸 정기모임",
     place: "수원",
   },
   {
     id: 2,
-    dateCreated: "6월 9일",
+    dateCreated: "2023-06-09",
     images: [
       "https://user-images.githubusercontent.com/84257439/245070814-13b64848-adc9-4cd8-ad87-b210838e413e.jpg",
       "https://user-images.githubusercontent.com/84257439/245070827-73c7765f-487f-4343-b4b5-f6bf2efc2507.jpg",
       "https://user-images.githubusercontent.com/84257439/245070832-f0dafd76-3dc7-4f76-b93e-e35aa34e0bdb.jpg",
     ],
-    text: "6월 9일, 무제한 칵테일 바 번개. 시간 가는 줄 몰랐던 번개모임 이었습니다 ㅎㅎ",
+    text: "무제한 칵테일 바 번개. 시간 가는 줄 몰랐던 번개모임 이었습니다 ㅎㅎ",
     title: "칵테일 번개",
     place: "수원",
   },
   {
     id: 3,
-    dateCreated: "6월 16일",
+    dateCreated: "2023-06-16",
     images: [
       "https://user-images.githubusercontent.com/84257439/246738782-d0c6e638-5138-4b37-80d4-6456d290291a.jpg",
       "https://user-images.githubusercontent.com/84257439/246738794-b5c714a4-55ff-4990-9fed-29b7a3c096b2.jpg",
@@ -52,7 +52,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 14,
-    dateCreated: "6월 30일",
+    dateCreated: "2023-06-30",
     images: [
       "https://user-images.githubusercontent.com/84257439/250274299-c0788f54-9fbc-40db-ae7e-02e3220d4bef.jpg",
       "https://user-images.githubusercontent.com/84257439/250274300-a63e0be7-6503-4702-a465-2555dfae29b3.jpg",
@@ -65,7 +65,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 17,
-    dateCreated: "6월 30일",
+    dateCreated: "2023-06-30",
     images: [
       "https://user-images.githubusercontent.com/84257439/250282485-f027b035-8ca4-4ed2-9a10-9e533aeb5bb9.jpg",
       "https://user-images.githubusercontent.com/84257439/250282148-1b21f61d-ffce-49ec-8ed7-b97e24435d07.jpg",
@@ -77,7 +77,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 15,
-    dateCreated: "7월 8일",
+    dateCreated: "2023-07-08",
     images: [
       "https://user-images.githubusercontent.com/84257439/252233983-bf00efd0-4d81-479f-acb0-60c7faa2d942.jpg",
     ],
@@ -87,7 +87,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 29,
-    dateCreated: "7월 16일",
+    dateCreated: "2023-07-16",
     images: [
       "https://user-images.githubusercontent.com/84257439/254543410-eb71f96e-e806-4f40-a05b-f872378f9f33.jpg",
       "https://user-images.githubusercontent.com/84257439/254543437-efae8f20-9bfc-445f-aa7b-cf89896dbc6c.jpg",
@@ -98,7 +98,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 10000,
-    dateCreated: "7월 18일",
+    dateCreated: "2023-07-18",
     images: [
       "https://user-images.githubusercontent.com/84257439/254543546-dc941f45-03b0-4c4f-9920-973222b54561.jpg",
       "https://user-images.githubusercontent.com/84257439/254543534-3eb3d025-f4ac-4172-8250-c7b401223fc5.jpg",
@@ -110,7 +110,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 30,
-    dateCreated: "7월 22일",
+    dateCreated: "2023-07-22",
     images: [
       "https://user-images.githubusercontent.com/84257439/258633961-6abb3f44-ad04-49d5-af78-8fc671ad74bd.jpg",
       "https://user-images.githubusercontent.com/84257439/258633963-d3295aac-30da-4442-ac67-bb304aa0d247.jpg",
@@ -121,7 +121,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 38,
-    dateCreated: "7월 29일",
+    dateCreated: "2023-07-29",
     images: [
       "https://user-images.githubusercontent.com/84257439/258634102-c952777d-af37-47cb-956c-473606bfecae.jpg",
       "https://user-images.githubusercontent.com/84257439/258634104-c374d425-5355-4cd8-8b7a-11329a843802.jpg",
@@ -133,7 +133,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 40,
-    dateCreated: "8월 4일",
+    dateCreated: "2023-08-04",
     images: [
       "https://user-images.githubusercontent.com/84257439/258634206-4642ab30-7af4-4c73-8f88-632f3db05423.jpg",
     ],
@@ -141,7 +141,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 52,
-    dateCreated: "8월 5일",
+    dateCreated: "2023-08-05",
     images: [
       "https://user-images.githubusercontent.com/84257439/258634458-563a4584-d6d6-4cb2-a851-4f5205748ccb.jpg",
       "https://user-images.githubusercontent.com/84257439/258634461-a0f853fb-2f13-4ff6-bfed-8d56b63e1f94.jpg",
@@ -155,7 +155,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 50,
-    dateCreated: "8월 9일",
+    dateCreated: "2023-08-09",
     images: [
       "https://user-images.githubusercontent.com/84257439/260235052-4262a4d3-5e69-463a-89a0-2746e0722be6.jpg",
       "https://user-images.githubusercontent.com/84257439/260235051-796e3568-c11b-4044-b747-0f283d36bb55.jpg",
@@ -168,7 +168,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 39,
-    dateCreated: "8월 12일",
+    dateCreated: "2023-08-12",
     images: [
       "https://user-images.githubusercontent.com/84257439/260235228-a8f51260-08f2-415c-849a-6dd77c1cc924.jpg",
       "https://user-images.githubusercontent.com/84257439/260235229-6408664c-8ebd-4483-9d38-a399be934e45.jpg",
@@ -178,7 +178,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 61,
-    dateCreated: "8월 17일",
+    dateCreated: "2023-08-17",
     images: [
       "https://user-images.githubusercontent.com/84257439/262350984-f4c2472f-4ed2-4a82-ab53-60d956863b94.jpg",
       "https://user-images.githubusercontent.com/84257439/262351015-b0ed304b-08f7-461d-97eb-20c02e366a18.jpg",
@@ -188,7 +188,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 60,
-    dateCreated: "8월 20일",
+    dateCreated: "2023-08-20",
     images: [
       "https://user-images.githubusercontent.com/84257439/262351038-804a7392-a91a-4901-905d-dd31364a56ca.jpg",
       "https://user-images.githubusercontent.com/84257439/262351111-240d33cb-0fdf-4f25-b4ee-34fa453aea63.jpg",
@@ -201,7 +201,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 28,
-    dateCreated: "8월 22일",
+    dateCreated: "2023-08-22",
     images: [
       "https://user-images.githubusercontent.com/84257439/262351141-504ef563-5881-4eb0-bb03-8989c3017451.jpg",
       "https://user-images.githubusercontent.com/84257439/262351125-d1d9c2d8-5d32-4c2c-a831-e3f59f43e02f.jpg",
@@ -215,7 +215,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 62,
-    dateCreated: "8월 23일",
+    dateCreated: "2023-08-23",
     images: [
       "https://user-images.githubusercontent.com/84257439/266530760-c9211cd5-5406-4dbe-8726-351f0710c240.jpg",
       "https://user-images.githubusercontent.com/84257439/266530731-c72566b7-5c14-46b0-9bf3-67da6f503307.jpg",
@@ -228,7 +228,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 64,
-    dateCreated: "8월 25일",
+    dateCreated: "2023-08-25",
     images: [
       "https://user-images.githubusercontent.com/84257439/266534122-ee0f4627-25cb-48ea-8b9c-faee32e7c723.jpg",
       "https://user-images.githubusercontent.com/84257439/266534132-8dd6f018-4786-49d7-b487-15e087d4e8d1.jpg",
@@ -238,7 +238,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 10001,
-    dateCreated: "10월 2일",
+    dateCreated: "2023-10-02",
     images: [
       "https://user-images.githubusercontent.com/84257439/271972590-35d30eb1-126d-4462-aa09-3e194c428e1e.jpg",
       "https://user-images.githubusercontent.com/84257439/271972604-d45bc71c-ad56-4b0c-8bda-21cfb7fb788d.jpg",
@@ -251,7 +251,7 @@ export const REVIEW_DATA: IReviewData[] = [
 
   {
     id: 10003,
-    dateCreated: "10월 2일",
+    dateCreated: "2023-10-02",
     images: [
       "https://user-images.githubusercontent.com/84257439/271977064-e0c86716-ec3c-4107-a420-712834c5433d.jpg",
       "https://user-images.githubusercontent.com/84257439/271977041-c7583f00-5d68-49b7-9c86-4c6064d4bacc.jpg",
@@ -262,7 +262,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 10004,
-    dateCreated: "10월 2일",
+    dateCreated: "2023-10-02",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%A1%B0%EB%AA%A8%EC%9E%84/271978083-e4294333-6b0b-4ec3-b35f-d30f9c42d47f+(1).webp",
       "https://user-images.githubusercontent.com/84257439/271973650-b75cd620-5d50-4004-b940-cc7ad0bbf2a6.jpg",
@@ -272,7 +272,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 10005,
-    dateCreated: "10월 2일",
+    dateCreated: "2023-10-02",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%A1%B0%EB%AA%A8%EC%9E%84/271978078-bb49b768-27a6-4acb-8c1b-4b7442529f56.webp",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%A1%B0%EB%AA%A8%EC%9E%84/271978061-4e192f9b-8b5b-4de8-a7e4-0d0ef9d673f2.webp",
@@ -283,7 +283,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 10006,
-    dateCreated: "10월 2일",
+    dateCreated: "2023-10-02",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%A1%B0%EB%AA%A8%EC%9E%84/271976398-86da4b7a-9811-4399-a6eb-3ba10053af8f.webp",
       "https://user-images.githubusercontent.com/84257439/271976421-d0a2cb5c-1959-4cb3-ae4f-014455df9879.jpg",
@@ -296,7 +296,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 72,
-    dateCreated: "10월 2일",
+    dateCreated: "2023-10-02",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%A1%B0%EB%AA%A8%EC%9E%84/271933759-39a5e429-493a-46d2-9179-0df6192dbb05.webp",
       "https://user-images.githubusercontent.com/84257439/271933797-f6c9bcd5-56be-4176-a536-5f6b9956561e.jpg",
@@ -309,7 +309,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 82,
-    dateCreated: "10월 10일",
+    dateCreated: "2023-10-10",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%88%98%EC%9B%90+10.9/KakaoTalk_20231010_045952391_02.webp",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%88%98%EC%9B%90+10.9/KakaoTalk_20231010_045952391.webp",
@@ -323,7 +323,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 84,
-    dateCreated: "10월 28일",
+    dateCreated: "2023-10-28",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%88%98%EC%9B%90+10.28/KakaoTalk_20231031_173829100_01.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%88%98%EC%9B%90+10.28/KakaoTalk_20231031_173829100_02.jpg",
@@ -335,7 +335,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 87,
-    dateCreated: "10월 29일",
+    dateCreated: "2023-10-29",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/10.29+%EA%B0%95%EB%82%A8+%EB%B2%88%EA%B0%9C/KakaoTalk_20231031_174933331.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/10.29+%EA%B0%95%EB%82%A8+%EB%B2%88%EA%B0%9C/KakaoTalk_20231031_173628666_01.jpg",
@@ -349,7 +349,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 71,
-    dateCreated: "11월 4일",
+    dateCreated: "2023-11-04",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/11.03+%EC%88%98%EC%9B%90/KakaoTalk_20231104_140640981_01.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/11.03+%EC%88%98%EC%9B%90/KakaoTalk_20231104_140640981.jpg",
@@ -361,7 +361,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 94,
-    dateCreated: "11월 4일",
+    dateCreated: "2023-11-04",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/11.04+%EB%B2%94%EA%B3%84/KakaoTalk_20231105_143924081_01.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/11.04+%EB%B2%94%EA%B3%84/KakaoTalk_20231105_143924081.jpg",
@@ -371,7 +371,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 97,
-    dateCreated: "11월 11일",
+    dateCreated: "2023-11-11",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/11.11+%EC%88%98%EC%9B%90/KakaoTalk_20231117_162333882_03.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/11.11+%EC%88%98%EC%9B%90/KakaoTalk_20231117_162333882_02.jpg",
@@ -383,7 +383,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 99,
-    dateCreated: "11월 17일",
+    dateCreated: "2023-11-17",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/11.17+%EC%88%98%EC%9B%90+%EC%A0%95%EB%AA%A8/KakaoTalk_20231119_190648380.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/11.17+%EC%88%98%EC%9B%90+%EC%A0%95%EB%AA%A8/KakaoTalk_20231119_190648380_01.jpg",
@@ -393,7 +393,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 98,
-    dateCreated: "11월 18일",
+    dateCreated: "2023-11-18",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/11.18+%EC%96%91%EC%B2%9C+%EC%A0%95%EA%B8%B0%EB%AA%A8%EC%9E%84/KakaoTalk_20231119_190729310.jpg",
     ],
@@ -402,7 +402,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 108,
-    dateCreated: "11월 24일",
+    dateCreated: "2023-11-24",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/11.24+%EC%88%98%EC%9B%90/KakaoTalk_20231130_155203036_03.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/11.24+%EC%88%98%EC%9B%90/KakaoTalk_20231130_155203036.jpg",
@@ -414,7 +414,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 110,
-    dateCreated: "12월 1일",
+    dateCreated: "2023-12-01",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/12.1+%EC%88%98%EC%9B%90/KakaoTalk_20231206_193123506_03.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/12.1+%EC%88%98%EC%9B%90/KakaoTalk_20231206_193123506_01.jpg",
@@ -426,7 +426,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 111,
-    dateCreated: "12월 2일",
+    dateCreated: "2023-12-02",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/12.2+%EC%88%98%EC%9B%90+%EC%A0%95%EA%B8%B0%EC%8A%A4%ED%84%B0%EB%94%94/KakaoTalk_20231206_193541715.jpg",
     ],
@@ -435,7 +435,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 114,
-    dateCreated: "12월 6일",
+    dateCreated: "2023-12-06",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/12.6+%EC%88%98%EC%9B%90+%EC%A0%95%EA%B8%B0+%EC%8A%A4%ED%84%B0%EB%94%94/KakaoTalk_20231206_193820021_01.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/12.6+%EC%88%98%EC%9B%90+%EC%A0%95%EA%B8%B0+%EC%8A%A4%ED%84%B0%EB%94%94/KakaoTalk_20231206_193820021_02.jpg",
@@ -444,11 +444,11 @@ export const REVIEW_DATA: IReviewData[] = [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/12.6+%EC%88%98%EC%9B%90+%EC%A0%95%EA%B8%B0+%EC%8A%A4%ED%84%B0%EB%94%94/KakaoTalk_20231206_193820021.jpg",
     ],
     text: "일찍부터 와서 공부를 시작함. 일단 여기 대박인게 저 넓은 공간에 사람이 우리밖에 없었음. 그래서 눈치 안보고 공부하다가 얘기하다가 함. 케이크 먹으면서 그렇게 5시간 정도 하고 저녁을 먹으러 감. 오랜 토론 끝에 닭갈비로 결정했음. 맥주 딱 한잔만 했음. 원래 약간의 술은 공부에 도움이 된다고 누가 그랬음. 아무튼 그럼. 저녁을 먹은 뒤 앞에 투썸 미팅룸 큰걸로 빌려서 10시까지 공부함. 되게 뭔가 많이 한 듯.",
-    title: "12월 6일 정기스터디",
+    title: "2023-12-06 정기스터디",
   },
   {
     id: 116,
-    dateCreated: "12월 14일",
+    dateCreated: "2023-12-14",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/12.14+%EC%88%98%EC%9B%90+%EC%8A%A4%ED%84%B0%EB%94%94/KakaoTalk_20231216_145858635.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/12.14+%EC%88%98%EC%9B%90+%EC%8A%A4%ED%84%B0%EB%94%94/KakaoTalk_20231216_145858635_01.jpg",
@@ -456,11 +456,11 @@ export const REVIEW_DATA: IReviewData[] = [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/12.14+%EC%88%98%EC%9B%90+%EC%8A%A4%ED%84%B0%EB%94%94/KakaoTalk_20231216_145858635_03.jpg",
     ],
     text: "오늘도 역시 거의 장소 전세내고 쓴 기분... 알고보니 9시까지 사용이 가능해서 6시까지 공부하다가 저녁먹고 다시와서 마저 했음. 저녁은 역할맥에 갔는데 술 먹으러 간건 아니고(설마 시험 기간인데) 라이트한 안주를 찾다가 가게 됨.",
-    title: "12월 14일 정기스터디",
+    title: "2023-12-14 정기스터디",
   },
   {
     id: 120,
-    dateCreated: "12월 20일",
+    dateCreated: "2023-12-20",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/12.20+%EC%88%98%EC%9B%90/KakaoTalk_20231221_202156894_03.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/12.20+%EC%88%98%EC%9B%90/KakaoTalk_20231221_202156894_01.jpg",
@@ -472,7 +472,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 121,
-    dateCreated: "12월 28일",
+    dateCreated: "2023-12-28",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/12.28+%EC%88%98%EC%9B%90/KakaoTalk_20240101_124748459.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/12.28+%EC%88%98%EC%9B%90/KakaoTalk_20240101_124748459_01.jpg",
@@ -484,7 +484,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 122,
-    dateCreated: "1월 8일",
+    dateCreated: "2023-01-08",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/01.08_%EC%A0%84%EC%8B%9C%ED%9A%8C/KakaoTalk_20240110_171022564_01.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/01.08_%EC%A0%84%EC%8B%9C%ED%9A%8C/KakaoTalk_20240110_171022564_02.jpg",
@@ -496,7 +496,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 162,
-    dateCreated: "5월 5일",
+    dateCreated: "2023-05-05",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/5.04_%ED%95%9C%EA%B0%95+%EB%B2%88%EA%B0%9C/KakaoTalk_20240505_145027199_01.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/5.04_%ED%95%9C%EA%B0%95+%EB%B2%88%EA%B0%9C/KakaoTalk_20240505_145148461.jpg",
@@ -506,7 +506,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 24152525,
-    dateCreated: "6월 21일",
+    dateCreated: "2024-06-21",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%9D%B8%EC%B2%9C+%EC%A2%85%EC%B4%9D/KakaoTalk_20240622_123446533.jpg",
     ],
@@ -515,7 +515,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 241314,
-    dateCreated: "6월 20일",
+    dateCreated: "2024-06-20",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/1%EC%B0%A8+MT+%EC%A1%B0%EB%AA%A8%EC%9E%84/KakaoTalk_20240622_123422162_03.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/1%EC%B0%A8+MT+%EC%A1%B0%EB%AA%A8%EC%9E%84/KakaoTalk_20240622_123422162_02.jpg",
@@ -526,7 +526,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 193,
-    dateCreated: "6월 25일",
+    dateCreated: "2024-06-25",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%97%AC%EB%A6%84+MT+1%EC%B0%A8/KakaoTalk_20240702_174821152.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%97%AC%EB%A6%84+MT+1%EC%B0%A8/KakaoTalk_20240702_174821152_02.jpg",
@@ -539,7 +539,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 198,
-    dateCreated: "6월 29일",
+    dateCreated: "2024-06-29",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%ED%95%98%EC%9D%B4%EB%94%94%EB%9D%BC%EC%98%A4/KakaoTalk_20240702_181154762.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%ED%95%98%EC%9D%B4%EB%94%94%EB%9D%BC%EC%98%A4/KakaoTalk_20240702_181154762_02.jpg",
@@ -552,7 +552,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 198,
-    dateCreated: "6월 30일",
+    dateCreated: "2024-06-30",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EB%B9%84%EC%98%A4%EB%8A%94+%EC%A0%84%EB%A7%89%EA%B1%B8%EB%A6%AC/KakaoTalk_20240702_175212634_01.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EB%B9%84%EC%98%A4%EB%8A%94+%EC%A0%84%EB%A7%89%EA%B1%B8%EB%A6%AC/KakaoTalk_20240702_175212634_02.jpg",
@@ -566,7 +566,7 @@ export const REVIEW_DATA: IReviewData[] = [
 
   {
     id: 199,
-    dateCreated: "7월 1일",
+    dateCreated: "2023-07-01",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%9B%94%EC%9A%94%EC%9D%BC+%EA%B0%95%EB%82%A8/KakaoTalk_20240702_175357967_02.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%9B%94%EC%9A%94%EC%9D%BC+%EA%B0%95%EB%82%A8/KakaoTalk_20240702_175357967_02.jpg",
@@ -579,7 +579,7 @@ export const REVIEW_DATA: IReviewData[] = [
 
   {
     id: 212,
-    dateCreated: "7월 4일",
+    dateCreated: "2023-07-04",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%97%AC%EB%A6%84+2%EC%B0%A8+MT/KakaoTalk_20240704_171706137_03.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%97%AC%EB%A6%84+2%EC%B0%A8+MT/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7+2024-07-04+185102.png",
@@ -593,7 +593,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 211,
-    dateCreated: "7월 6일",
+    dateCreated: "2023-07-06",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EA%B0%81%EC%9E%A1%EA%B3%A0+%EC%B9%B4%EA%B3%B5+1%EC%B0%A8/KakaoTalk_20240713_032438474_06.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EA%B0%81%EC%9E%A1%EA%B3%A0+%EC%B9%B4%EA%B3%B5+1%EC%B0%A8/KakaoTalk_20240713_032438474.jpg",
@@ -608,7 +608,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 214,
-    dateCreated: "7월 11일",
+    dateCreated: "2024-07-11",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EB%9D%BC%EC%9D%B4%ED%81%AC%EC%96%B4%EC%8B%9C%EB%84%A4%EB%A7%88/KakaoTalk_20240713_032654762_04.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EB%9D%BC%EC%9D%B4%ED%81%AC%EC%96%B4%EC%8B%9C%EB%84%A4%EB%A7%88/KakaoTalk_20240713_032654762_03.jpg",
@@ -622,7 +622,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 215,
-    dateCreated: "7월 14일",
+    dateCreated: "2024-07-14",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%B6%9C%EC%82%AC/%EC%B6%9C%EC%82%AC.jpg",
     ],
@@ -631,7 +631,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 218,
-    dateCreated: "7월 18일",
+    dateCreated: "2024-07-18",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%9D%B4%EC%9E%90%EC%B9%B4%EC%95%BC+%EB%A5%98/KakaoTalk_20240722_024634451_01.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%9D%B4%EC%9E%90%EC%B9%B4%EC%95%BC+%EB%A5%98/KakaoTalk_20240722_024634451_04.jpg",
@@ -644,7 +644,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 216,
-    dateCreated: "7월 18일",
+    dateCreated: "2024-07-18",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%88%98%EC%9B%90+%EC%A0%95%EA%B8%B0%EB%AA%A8%EC%9E%84(24.7.22)/KakaoTalk_20240722_024634451_06.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/%EC%88%98%EC%9B%90+%EC%A0%95%EA%B8%B0%EB%AA%A8%EC%9E%84(24.7.22)/KakaoTalk_20240722_025258961_04.jpg",

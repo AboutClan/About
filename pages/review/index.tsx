@@ -159,6 +159,9 @@ function Review() {
                       summary={summaryProps}
                       content={item.text}
                       likeUsers={[]}
+                      likeCnt={0}
+                      id={item.id + ""}
+                      comments={[]}
                     />
                   );
                 })}

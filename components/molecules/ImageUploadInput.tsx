@@ -5,62 +5,33 @@ import { useRef, useState } from "react";
 import styled from "styled-components";
 
 import { DispatchType } from "../../types/hooks/reactTypes";
+import { processFile } from "../../utils/imageUtils";
 
 interface IImageUploadInput {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setImageUrl: DispatchType<any>;
+  setImageUrl: DispatchType<Blob>;
 }
 
 export default function ImageUploadInput({ setImageUrl: changeImage }: IImageUploadInput) {
-  const [imageUrl, setImageUrl] = useState(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleImageChange = async (e) => {
-    const file = e.target.files[0];
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
     if (file) {
-      const fileExtension = file.name.split(".").pop().toLowerCase();
-
-      // 이미 브라우저에서 읽을 수 있는 이미지 형식이거나, 확장자가 HEIC인 경우에만 변환 시도
-      if (file.type !== "image/heic" && fileExtension !== "heic") {
-        const image = URL.createObjectURL(file);
-        setImageUrl(image);
-        changeImage(file);
-      } else {
-        // 동적 임포트를 사용하여 heic2any를 클라이언트 사이드에서만 로드
-        const heic2any = (await import("heic2any")).default;
-        try {
-          const convertedBlob = (await heic2any({
-            blob: file,
-            toType: "image/jpeg",
-            quality: 0.8,
-          })) as Blob;
-
-          const image = URL.createObjectURL(convertedBlob);
-          setImageUrl(image);
-          changeImage(convertedBlob);
-        } catch (error) {
-          // 이미 브라우저에서 읽을 수 있는 형식의 이미지인 경우 변환 과정 생략
-          if (error.code === 1) {
-            const image = URL.createObjectURL(file);
-            setImageUrl(image);
-            changeImage(file);
-          } else {
-            captureException(error);
-            console.error("Error converting HEIC to JPEG", error);
-          }
-        }
+      try {
+        const image = await processFile(file);
+        setImageUrl(image.url);
+        changeImage(image.blob);
+      } catch (error) {
+        captureException(error);
+        console.error("Error processing image", error);
       }
     }
   };
 
-  const fileInputRef = useRef(null);
-
   const handleBtnClick = () => {
     fileInputRef.current.click();
   };
-
-  // useEffect(() => {
-  //   changeImage(imageUrl);
-  // }, [imageUrl]);
 
   return (
     <>

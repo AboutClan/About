@@ -105,7 +105,7 @@ function EnthusiasticModal({ setIsModal }: IEnthusiasticModal) {
 
 const CurrentMember = styled.div`
   border: var(--border-mint);
-  width: max-content;
+  width: 126px;
   padding: var(--gap-1) var(--gap-2);
   border-radius: var(--rounded-lg);
   font-size: 13px;

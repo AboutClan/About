@@ -17,6 +17,8 @@ export interface IUser extends Omit<IUserRegisterForm, "location">, IUserSummary
   studyPreference?: IStudyVotePlaces;
   belong?: string;
   monthScore: number;
+  instagram?: string;
+  isPrivate?: boolean;
   _id: string;
 }
 

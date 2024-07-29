@@ -21,7 +21,7 @@ export default function TabNav({
   isThick,
 }: ITabNav) {
   const idx = tabOptionsArr.findIndex((tab) => tab.text === selected);
- 
+
   return (
     <>
       <Tabs
@@ -55,6 +55,10 @@ export default function TabNav({
               flex={tab?.flex}
               key={tab.text}
               onClick={tab.text !== selected ? tab.func : undefined}
+              _focus={{
+                outline: "none",
+                boxShadow: "none",
+              }}
             >
               {tab.text}
             </Tab>

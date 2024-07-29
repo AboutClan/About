@@ -21,6 +21,7 @@ export interface IImageTile {
   imageUrl: string;
   text?: string;
   url?: string;
+  func?: () => void;
   priority?: boolean;
 }
 
@@ -36,7 +37,7 @@ function ImageTileSlider({ imageTileArr, size, aspect = 1, slidesPerView }: IIma
     <Swiper slidesPerView={slidesPerView} spaceBetween={12}>
       {imageTileArr.map((imageTile, index) => (
         <SwiperSlide key={index}>
-          <Wrapper size={size}>
+          <Wrapper size={size} onClick={imageTile?.func}>
             {imageTile?.url ? (
               <CustomLink href={imageTile.url}>
                 <SlideItem imageTile={imageTile} size={size} aspect={aspect} />

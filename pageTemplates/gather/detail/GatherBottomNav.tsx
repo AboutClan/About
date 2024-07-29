@@ -1,23 +1,27 @@
 import { Button } from "@chakra-ui/react";
 import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import Slide from "../../../components/layouts/PageSlide";
 import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../../hooks/custom/CustomHooks";
 import { useCompleteToast, useErrorToast } from "../../../hooks/custom/CustomToast";
+import { useFeedsQuery } from "../../../hooks/feed/queries";
 import { useGatherParticipationMutation } from "../../../hooks/gather/mutations";
 import GatherExpireModal from "../../../modals/gather/gatherExpireModal/GatherExpireModal";
+import GatherReviewDrawer from "../../../modals/gather/gatherExpireModal/GatherReviewDrawer";
 import GatherParticipateModal from "../../../modals/gather/gatherParticipateModal/GatherParticipateModal";
+import { transferFeedSummaryState } from "../../../recoils/transferRecoils";
 import { GatherStatus, IGather } from "../../../types/models/gatherTypes/gatherTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 interface IGatherBottomNav {
   data: IGather;
 }
 
-type ButtonType = "cancel" | "participate" | "expire";
+type ButtonType = "cancel" | "participate" | "expire" | "review";
 
 function GatherBottomNav({ data }: IGatherBottomNav) {
   const router = useRouter();
@@ -28,11 +32,18 @@ function GatherBottomNav({ data }: IGatherBottomNav) {
   const myUid = session?.user.uid;
   const myGather = (data.user as IUserSummary).uid === myUid;
   const isParticipant = data?.participants.some((who) => who?.user && who.user.uid === myUid);
+
+  const setTransferFeedSummary = useSetRecoilState(transferFeedSummaryState);
   const [isExpirationModal, setIsExpirationModal] = useState(false);
   const [isParticipationModal, setIsParticipationModal] = useState(false);
+  const [isReviewDrawer, setIsReviewDrawer] = useState(false);
   const gatherId = +router.query.id;
 
   const resetQueryData = useResetQueryData();
+
+  const { data: feed } = useFeedsQuery("gather", data?.id, null, {
+    enabled: !!data?.id,
+  });
 
   const { mutate: cancel } = useGatherParticipationMutation("delete", gatherId, {
     onSuccess() {
@@ -46,7 +57,20 @@ function GatherBottomNav({ data }: IGatherBottomNav) {
     if (type === "cancel") cancel();
     if (type === "participate") setIsParticipationModal(true);
     if (type === "expire") setIsExpirationModal(true);
+    if (type === "review") {
+      router.push(`/feed/writing/gather?id=${data.id}`);
+    }
   };
+
+  useEffect(() => {
+    if (data?.status === "open" && (myGather || isParticipant)) {
+      setTransferFeedSummary({
+        url: `/gather/${data.id}`,
+        title: data.title,
+        text: data.content,
+      });
+    }
+  }, [data?.status]);
 
   interface IButtonSetting {
     text: string;
@@ -56,9 +80,23 @@ function GatherBottomNav({ data }: IGatherBottomNav) {
   const getButtonSettings = (status: GatherStatus): IButtonSetting => {
     switch (status) {
       case "open":
-        return {
-          text: "모임장은 단톡방을 만들어주세요!",
-        };
+        if (feed?.length) {
+          return {
+            text: "모임 후기 도착! 확인하러 가기",
+            handleFunction: () => setIsReviewDrawer(true),
+          };
+        }
+
+        if (myGather || isParticipant) {
+          return {
+            text: "모임 리뷰 쓰고 포인트 받기",
+            handleFunction: () => onClick("review"),
+          };
+        } else {
+          return {
+            text: "마감된 모임입니다.",
+          };
+        }
       case "close":
         return {
           text: "취소된 모임입니다.",
@@ -95,6 +133,9 @@ function GatherBottomNav({ data }: IGatherBottomNav) {
       </Slide>
       {isParticipationModal && <GatherParticipateModal setIsModal={setIsParticipationModal} />}
       {isExpirationModal && <GatherExpireModal setIsModal={setIsExpirationModal} />}
+      {isReviewDrawer && (
+        <GatherReviewDrawer feed={feed?.[0]} isOpen onClose={() => setIsReviewDrawer(false)} />
+      )}
     </>
   );
 }

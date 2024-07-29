@@ -1,11 +1,12 @@
 import { atom } from "recoil";
 
+import { SummaryBlockProps } from "../components/molecules/SummaryBlock";
 import { IDailyCheckWinList } from "../constants/serviceConstants/dailyCheckConstatns";
 import { IGiftEntry } from "../pages/store";
 import { IGather } from "../types/models/gatherTypes/gatherTypes";
 import { IGroup } from "../types/models/groupTypes/group";
 import { MemberGroup } from "../types/models/member";
-import { IUser, IUserSummary } from "../types/models/userTypes/userInfoTypes";
+import { IUser } from "../types/models/userTypes/userInfoTypes";
 import { Alphabet } from "../types/services/alphabetTypes";
 
 export const transferAlphabetState = atom<Alphabet>({
@@ -22,11 +23,6 @@ export const transferShowDailyCheckState = atom<boolean>({
   default: true,
 });
 
-export const transferUserSummaryState = atom<IUserSummary | IUser>({
-  key: "TransferUserSummary",
-  default: null,
-});
-
 export const transferGatherDataState = atom<IGather>({
   key: "transferGatherDataState",
   default: null,
@@ -34,6 +30,11 @@ export const transferGatherDataState = atom<IGather>({
 
 export const transferGroupDataState = atom<IGroup>({
   key: "transferGroupDataState",
+  default: null,
+});
+
+export const transferFeedSummaryState = atom<SummaryBlockProps>({
+  key: "transferFeedSummary",
   default: null,
 });
 

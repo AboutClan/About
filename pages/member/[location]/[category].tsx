@@ -10,10 +10,7 @@ import Slide from "../../../components/layouts/PageSlide";
 import { FRIEND_RECOMMEND_CATEGORY } from "../../../constants/contentsText/friend";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { prevPageUrlState } from "../../../recoils/previousAtoms";
-import {
-  transferMemberDataState,
-  transferUserSummaryState,
-} from "../../../recoils/transferRecoils";
+import { transferMemberDataState } from "../../../recoils/transferRecoils";
 import { IUser, IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { birthToAge, birthToDayjs } from "../../../utils/convertUtils/convertTypes";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
@@ -25,7 +22,6 @@ function FriendCategory() {
 
   const membersData = useRecoilValue(transferMemberDataState);
   const setBeforePage = useSetRecoilState(prevPageUrlState);
-  const setUserData = useSetRecoilState(transferUserSummaryState);
 
   const [filterMember, setFilterMember] = useState<IUser[]>([]);
 
@@ -55,7 +51,6 @@ function FriendCategory() {
   }, [isLoading]);
 
   const onClickProfile = (user: IUserSummary) => {
-    setUserData(user);
     setBeforePage(router?.asPath);
     router.push(`/profile/${user.uid}`);
   };

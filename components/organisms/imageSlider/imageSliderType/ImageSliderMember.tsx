@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { prevPageUrlState } from "../../../../recoils/previousAtoms";
-import { transferUserSummaryState } from "../../../../recoils/transferRecoils";
 import { IUser, IUserSummary } from "../../../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../../../utils/dateTimeUtils";
 import Avatar from "../../../atoms/Avatar";
@@ -19,10 +18,8 @@ interface IImageSliderMember {
 function ImageSliderMember({ imageContainer }: IImageSliderMember) {
   const router = useRouter();
   const setBeforePage = useSetRecoilState(prevPageUrlState);
-  const setUserData = useSetRecoilState(transferUserSummaryState);
 
   const onClickUser = (user: IUserSummary) => {
-    setUserData(user);
     router.push(`/profile/${user.uid}`);
     setBeforePage(router?.asPath);
   };

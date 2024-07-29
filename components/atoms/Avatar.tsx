@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 
 import { COLOR_TABLE_LIGHT } from "../../constants/colorConstants";
@@ -21,7 +21,7 @@ interface IAvatar {
   isLink?: boolean;
 }
 
-export default function Avatar({
+function AvatarComponent({
   image,
   size,
   sizeLength,
@@ -97,6 +97,7 @@ export default function Avatar({
                 priority={isPriority}
                 alt="avatar"
                 onError={onError}
+                style={{ objectPosition: "center", objectFit: "cover" }}
               />
             ) : (
               <Flex fontSize="12px" h="100%" justify="center" alignItems="center" color="white">
@@ -111,7 +112,7 @@ export default function Avatar({
 
   return (
     <>
-      {size === "sm" || !isLink ? (
+      {!isLink ? (
         <AvatarComponent />
       ) : (
         <Link href={`/profile/${uid}`} style={{ outline: "none" }}>
@@ -121,6 +122,10 @@ export default function Avatar({
     </>
   );
 }
+
+const Avatar = memo(AvatarComponent);
+
+export default Avatar;
 
 const AvatarContainer = styled.div<{
   size: Size;
@@ -196,7 +201,7 @@ const ImageContainer = styled.div<{
     (props.size === "sm"
       ? "3px"
       : props.size === "smd"
-        ? "6px"
+        ? "4px"
         : props.size === "md"
           ? "6px"
           : props.size === "lg"

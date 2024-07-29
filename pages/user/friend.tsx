@@ -9,7 +9,6 @@ import Slide from "../../components/layouts/PageSlide";
 import ProfileCommentCard from "../../components/molecules/cards/ProfileCommentCard";
 import { useUidsToUsersInfoQuery, useUserInfoQuery } from "../../hooks/user/queries";
 import { prevPageUrlState } from "../../recoils/navigationRecoils";
-import { transferUserSummaryState } from "../../recoils/transferRecoils";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 
 function ProfileFriend() {
@@ -17,7 +16,6 @@ function ProfileFriend() {
 
   const { data: userInfo } = useUserInfoQuery();
 
-  const setUserData = useSetRecoilState(transferUserSummaryState);
   const setBeforePage = useSetRecoilState(prevPageUrlState);
 
   const { data: friends } = useUidsToUsersInfoQuery(userInfo?.friend, {
@@ -25,7 +23,6 @@ function ProfileFriend() {
   });
 
   const onClickUser = (user: IUserSummary) => {
-    setUserData(user);
     setBeforePage(router?.asPath);
     router.push(`/profile/${user.uid}`);
   };

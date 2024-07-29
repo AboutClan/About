@@ -1,38 +1,61 @@
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { NewAlertIcon } from "../../components/atoms/Icons/AlertIcon";
-import { NOTICE_ACTIVE_CNT } from "../../constants/keys/localStorage";
-import { DispatchBoolean } from "../../types/hooks/reactTypes";
+import { NOTICE_ACTIVE_CNT, RECENT_CHAT_ID } from "../../constants/keys/localStorage";
+import { NoticeType } from "../../pages/notice";
+import { DispatchType } from "../../types/hooks/reactTypes";
 
 interface INoticeNav {
-  isNotice: boolean;
-  setIsNotice: DispatchBoolean;
+  noticeType: NoticeType;
+  setNoticeType: DispatchType<NoticeType>;
   activeAlertCnt: number;
+  recentChatId: string;
 }
 
-function NoticeNav({ isNotice, setIsNotice, activeAlertCnt }: INoticeNav) {
+function NoticeNav({ noticeType, setNoticeType, activeAlertCnt, recentChatId }: INoticeNav) {
+  const router = useRouter();
   const [isActiveAlert, setIsActiveAlert] = useState(false);
+  const [isChatAlert, setIsChatAlert] = useState(false);
 
   useEffect(() => {
     if (activeAlertCnt === undefined) return;
-    if (!isNotice) {
+    if (noticeType === "active") {
       localStorage.setItem(NOTICE_ACTIVE_CNT, `${activeAlertCnt}`);
       setIsActiveAlert(false);
     }
+    if (noticeType === "chat") {
+      localStorage.setItem(RECENT_CHAT_ID, recentChatId);
+      setIsChatAlert(false);
+    }
 
     if (+localStorage.getItem(NOTICE_ACTIVE_CNT) < activeAlertCnt) setIsActiveAlert(true);
+    if (localStorage.getItem(RECENT_CHAT_ID) !== recentChatId) setIsChatAlert(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeAlertCnt, isNotice]);
+  }, [activeAlertCnt, noticeType]);
+
+  const handleNavigate = (type) => {
+    router.replace(`/notice?type=${type}`);
+    setNoticeType(type);
+  };
 
   return (
     <Layout>
-      <Button isSelected={isNotice} onClick={() => setIsNotice(true)}>
+      <Button isSelected={noticeType === "notice"} onClick={() => handleNavigate("notice")}>
         공지 알림
       </Button>
-      <Button isSelected={!isNotice} onClick={() => setIsNotice(false)}>
+      <Button isSelected={noticeType === "active"} onClick={() => handleNavigate("active")}>
         활동 알림
         {isActiveAlert && (
+          <IconWrapper>
+            <NewAlertIcon size="sm" />
+          </IconWrapper>
+        )}
+      </Button>
+      <Button isSelected={noticeType === "chat"} onClick={() => handleNavigate("chat")}>
+        쪽지 알림
+        {isChatAlert && (
           <IconWrapper>
             <NewAlertIcon size="sm" />
           </IconWrapper>
@@ -46,6 +69,11 @@ const Layout = styled.div`
   display: flex;
   max-width: var(--max-width);
   margin: 0 auto;
+
+  > button:nth-child(2) {
+    border-left: var(--border);
+    border-right: var(--border);
+  }
 `;
 
 const Button = styled.button<{ isSelected: boolean }>`
@@ -61,8 +89,8 @@ const Button = styled.button<{ isSelected: boolean }>`
 `;
 const IconWrapper = styled.div`
   position: absolute;
-  right: 40px;
-  bottom: 8px;
+  right: 16px;
+  bottom: 4px;
 `;
 
 export default NoticeNav;

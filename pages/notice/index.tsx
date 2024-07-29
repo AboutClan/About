@@ -1,38 +1,54 @@
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
+import { useMyChatsQuery, useRecentChatQuery } from "../../hooks/chat/queries";
 import { useNoticeActiveLogQuery } from "../../hooks/user/sub/interaction/queries";
 import NoticeActive from "../../pageTemplates/notice/NoticeActive";
+import NoticeChat from "../../pageTemplates/notice/NoticeChat";
 import NoticeItem from "../../pageTemplates/notice/NoticeItem";
 import NoticeNav from "../../pageTemplates/notice/NoticeNav";
 
+export type NoticeType = "notice" | "active" | "chat";
+
 function Notice() {
-  const [isNotice, setIsNotice] = useState(true);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const type = searchParams.get("type") as NoticeType;
+
+  const [noticeType, setNoticeType] = useState<NoticeType>("notice");
   const { data: activeLogs } = useNoticeActiveLogQuery();
+  const { data: chats } = useMyChatsQuery();
+
+  const { data: recentChat } = useRecentChatQuery();
 
   useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth",
-    });
-  }, [isNotice]);
+    if (!type) router.replace(`/notice?type=notice`);
+    setNoticeType(type);
+  }, [type]);
 
   return (
     <>
       <Slide isFixed={true}>
         <Header title="알림" isSlide={false} />
         <NoticeNav
-          isNotice={isNotice}
-          setIsNotice={setIsNotice}
+          noticeType={noticeType}
+          setNoticeType={setNoticeType}
           activeAlertCnt={activeLogs?.length}
+          recentChatId={recentChat}
         />
       </Slide>
       <Slide>
         <Container>
-          {isNotice ? <NoticeItem /> : <NoticeActive activeLogs={activeLogs} />}
+          {noticeType === "notice" ? (
+            <NoticeItem />
+          ) : noticeType === "active" ? (
+            <NoticeActive activeLogs={activeLogs} />
+          ) : (
+            <NoticeChat chats={chats} />
+          )}
         </Container>
       </Slide>
     </>

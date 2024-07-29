@@ -33,6 +33,8 @@ export const GATHER_CONTENT = "GATHER";
 export const GROUP_STUDY_ALL = "GroupAll";
 export const GROUP_STUDY = "group";
 
+export const Feed = "feed";
+
 export const KAKAO_SEARCH = "kakaoSearch";
 
 export const STORE_GIFT = "storeGift";

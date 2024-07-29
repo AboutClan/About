@@ -21,7 +21,6 @@ import {
 } from "../../hooks/user/sub/collection/queries";
 import AlphabetChangeModal from "../../modals/user/collection/AlphabetChangeModal";
 import { prevPageUrlState } from "../../recoils/previousAtoms";
-import { transferUserSummaryState } from "../../recoils/transferRecoils";
 import { Alphabet, ICollectionAlphabet } from "../../types/models/collections";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import { getUserBadge } from "../../utils/convertUtils/convertDatas";
@@ -34,7 +33,6 @@ function CollectionAlphabet() {
   const router = useRouter();
   const { data: session } = useSession();
 
-  const setTransferUser = useSetRecoilState(transferUserSummaryState);
   const setBeforePage = useSetRecoilState(prevPageUrlState);
 
   const { data: userInfo } = useUserInfoQuery();
@@ -83,7 +81,6 @@ function CollectionAlphabet() {
   }, [isLoading, session?.user?.uid, userAlphabetAll]);
 
   const onClickProfile = (user: IUserSummary) => {
-    setTransferUser(user);
     setBeforePage(router?.asPath);
     router.push(`/profile/${user.uid}`);
   };

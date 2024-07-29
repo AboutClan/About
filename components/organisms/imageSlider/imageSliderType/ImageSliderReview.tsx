@@ -27,6 +27,7 @@ function ImageSliderReview({ imageContainer }: IImageSliderReview) {
             fill={true}
             sizes="400px"
             priority={index === 0}
+            style={{ objectPosition: "center", objectFit: "cover" }}
           />
         </SwiperSlide>
       ))}

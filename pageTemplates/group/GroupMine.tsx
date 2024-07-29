@@ -1,6 +1,8 @@
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import ImageTileSlider, { IImageTile } from "../../components/organisms/sliders/ImageTileSlider";
+import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { IGroup } from "../../types/models/groupTypes/group";
 import { getRandomImage } from "../../utils/imageUtils";
 
@@ -9,12 +11,15 @@ interface IGroupMine {
 }
 
 function GroupMine({ myGroups }: IGroupMine) {
+  const setGroup = useSetRecoilState(transferGroupDataState);
+
   const imageTileArr: IImageTile[] = myGroups
     ?.filter((group) => group.status !== "end")
     .map((group) => ({
       imageUrl: group.image || getRandomImage(),
       text: group.title,
       url: `/group/${group.id}`,
+      func: () => setGroup(group),
     }));
 
   return (

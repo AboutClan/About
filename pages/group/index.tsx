@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
@@ -104,11 +104,6 @@ function GroupPage() {
     newSearchParams.set("filter", statusToEn[status]);
     router.replace(`/group?${newSearchParams.toString()}`);
   }, [status]);
-
-  useEffect(() => {
-    if (!groups || category.main !== "전체") return;
-    setGroupStudies((old) => [...shuffleArray(groups), ...old]);
-  }, [groups, category.main]);
 
   useEffect(() => {
     if (!groups) return;

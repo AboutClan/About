@@ -205,7 +205,7 @@ function HomeInitialSetting() {
 
   return (
     <>
-      {userInfo && !isGuest && <UserSettingPopUp cnt={isGuide ? 1 : 0} />}
+      {userInfo && !isGuest && <UserSettingPopUp userInfo={userInfo} cnt={isGuide ? 1 : 0} />}
       {isGuestModal && <FAQPopUp setIsModal={setIsGuestModal} />}
       <GlobalStyle />
       {!isPWALogin && detectDevice() !== "PC" && <PCBottomNav />}

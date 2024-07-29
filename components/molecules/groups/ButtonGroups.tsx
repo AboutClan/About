@@ -32,6 +32,10 @@ export default function ButtonGroups({
             bg={buttonData.text === currentValue ? undefined : "white"}
             size={size}
             rounded={isEllipse ? "2xl" : "md"}
+            _focus={{
+              outline: "none",
+              boxShadow: "none",
+            }}
           >
             {buttonData.text}
           </Button>

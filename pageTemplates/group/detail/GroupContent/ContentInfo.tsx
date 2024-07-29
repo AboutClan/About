@@ -3,7 +3,9 @@ import styled from "styled-components";
 
 import BlurredLink from "../../../../components/molecules/BlurredLink";
 import { IGroup } from "../../../../types/models/groupTypes/group";
+import GroupComments from "../GroupComment";
 import GroupDetailInfo from "../GroupDetail";
+import GroupParticipation from "../GroupParticipation";
 
 interface IContentInfo {
   group: IGroup;
@@ -17,36 +19,40 @@ function ContentInfo({ group }: IContentInfo) {
   const isMember = group?.participants?.some((who) => who?.user?.uid === session?.user.uid);
 
   return (
-    <Layout>
-      <Wrapper>
-        <GroupDetailInfo group={group} />
-      </Wrapper>
-      <ContentWrapper>
-        <span>소개</span>
-        <Content>{group.content}</Content>
-      </ContentWrapper>
-      {!!group?.rules?.length && (
+    <>
+      <Layout>
+        <Wrapper>
+          <GroupDetailInfo group={group} />
+        </Wrapper>
         <ContentWrapper>
-          <span>규칙</span>
-          <Rules>{group?.rules.map((rule, idx) => <Rule key={idx}>{rule}</Rule>)}</Rules>
+          <span>소개</span>
+          <Content>{group.content}</Content>
         </ContentWrapper>
-      )}
-      {group?.link && (
-        <KakaoLink>
-          <BlurredLink url={group.link} isBlur={!isMember} />
-        </KakaoLink>
-      )}
-      {group?.challenge && (
-        <Challenge>
-          <i
-            className="fa-regular fa-bell-on"
-            style={{ color: "var(--color-red)", marginRight: "2px" }}
-          />
-          {group?.challenge}
-        </Challenge>
-      )}
-      <Tag>{hashTagArr?.map((tag, idx) => (tag ? <div key={idx}>#{tag}</div> : null))}</Tag>
-    </Layout>
+        {!!group?.rules?.length && (
+          <ContentWrapper>
+            <span>규칙</span>
+            <Rules>{group?.rules.map((rule, idx) => <Rule key={idx}>{rule}</Rule>)}</Rules>
+          </ContentWrapper>
+        )}
+        {group?.link && (
+          <KakaoLink>
+            <BlurredLink url={group.link} isBlur={!isMember} />
+          </KakaoLink>
+        )}
+        {group?.challenge && (
+          <Challenge>
+            <i
+              className="fa-regular fa-bell-on"
+              style={{ color: "var(--color-red)", marginRight: "2px" }}
+            />
+            {group?.challenge}
+          </Challenge>
+        )}
+        <Tag>{hashTagArr?.map((tag, idx) => (tag ? <div key={idx}>#{tag}</div> : null))}</Tag>
+      </Layout>
+      <GroupParticipation data={group} />
+      <GroupComments comments={group.comment} />
+    </>
   );
 }
 

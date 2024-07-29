@@ -1,6 +1,11 @@
+import { Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-function WritingNavigation() {
+import Slide from "../layouts/PageSlide";
+
+interface WritingNavigationProps extends React.PropsWithChildren {}
+
+function WritingNavigation({ children }: WritingNavigationProps) {
   const [modalBottom, setModalBottom] = useState("0px");
 
   useEffect(() => {
@@ -24,19 +29,21 @@ function WritingNavigation() {
   }, []);
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        bottom: modalBottom,
-        left: 0,
-        right: 0,
-        backgroundColor: "white",
-        padding: "20px",
-        boxShadow: "0 -2px 10px rgba(0, 0, 0, 0.1)",
-      }}
-    >
-      <p>This is AComponent</p>
-    </div>
+    <Slide isFixed={true}>
+      <Flex
+        mx="auto"
+        maxW="var(--max-width)"
+        position="fixed"
+        bottom={modalBottom}
+        left={0}
+        right={0}
+        bgColor="white"
+        borderTop="var(--border-main)"
+        p="8px"
+      >
+        {children}
+      </Flex>
+    </Slide>
   );
 }
 

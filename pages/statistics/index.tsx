@@ -108,7 +108,7 @@ function Ranking() {
 
   return (
     <>
-      <Header title="ABOUT 랭킹" isBack={false}>
+      <Header title="ABOUT 랭킹">
         <RuleIcon setIsModal={setIsModal} />
       </Header>
       <Slide>
@@ -125,7 +125,7 @@ function Ranking() {
                 setFilterOption={setFilterOptions}
               />
               <Box
-                h="calc(100vh - 364px)"
+                h="calc(100vh - 317px)"
                 position="relative"
                 m="0 20px"
                 borderRadius="var(--rounded-lg)"
