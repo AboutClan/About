@@ -43,6 +43,7 @@ function ProfilePage() {
   };
   console.log(24, user);
 
+
   return (
     <>
       <Header title="" url={beforePage} rightPadding={8}>
