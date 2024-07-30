@@ -44,7 +44,7 @@ function SquareLoungeSection() {
     firstLoad.current = false;
 
     setLoungeData((old) => {
-      if (old?.length) return [...(feeds as FeedProps[]), ...old];
+      if (old?.length) return [...old, ...(feeds as FeedProps[])];
       else return feeds;
     });
   }, [feeds, categoryParam]);
