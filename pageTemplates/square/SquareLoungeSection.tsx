@@ -19,7 +19,7 @@ function SquareLoungeSection() {
   const [category, setCategory] = useState<FeedType | "all">();
   const [loungeData, setLoungeData] = useState<FeedProps[]>();
   const [cursor, setCursor] = useState(0);
-  const [subCategory, setSubCategory] = useState<"최신순" | "오래된순">("최신순");
+  const [subCategory, setSubCategory] = useState<"최신순" | "예전순">("최신순");
 
   const loader = useRef<HTMLDivElement | null>(null);
   const firstLoad = useRef(true);
@@ -72,8 +72,8 @@ function SquareLoungeSection() {
 
   const textObj: Record<FeedType | "all", string> = {
     all: "전체",
-    gather: "모임 리뷰",
-    group: "소모임 활동",
+    gather: "번개 리뷰",
+    group: "소모임",
   };
 
   const buttonItems: IButtonOptions[] = (["all", "gather", "group"] as (FeedType | "all")[]).map(
@@ -89,9 +89,11 @@ function SquareLoungeSection() {
     },
   );
 
+  console.log(444, loungeData);
+
   return (
     <Box pb="60px">
-      <Flex p="12px 16px" justify="space-between">
+      <Flex p="12px 16px" pr="8px" justify="space-between">
         <ButtonGroups
           buttonItems={buttonItems}
           currentValue={`${textObj[category]}`}
@@ -100,8 +102,9 @@ function SquareLoungeSection() {
         />
         <Selector
           defaultValue={subCategory}
-          options={["최신순", "오래된순"]}
+          options={["최신순", "예전순"]}
           setValue={setSubCategory}
+          isBorder={false}
         />
       </Flex>
       <Box minH="calc(100dvh - 162px)">

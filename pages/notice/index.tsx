@@ -21,9 +21,9 @@ function Notice() {
   const [noticeType, setNoticeType] = useState<NoticeType>("notice");
   const { data: activeLogs } = useNoticeActiveLogQuery();
   const { data: chats } = useMyChatsQuery();
-  console.log(44, chats);
+ 
   const { data: recentChat } = useRecentChatQuery();
-  console.log(54, recentChat);
+ 
   useEffect(() => {
     if (!type) router.replace(`/notice?type=notice`);
     setNoticeType(type);

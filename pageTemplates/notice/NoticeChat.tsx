@@ -13,7 +13,7 @@ interface NoticeChatProps {
 }
 
 function NoticeChat({ chats }: NoticeChatProps) {
-  console.log(34, chats);
+
 
   const setTransferUserName = useSetRecoilState(transferUserName);
 
@@ -21,7 +21,7 @@ function NoticeChat({ chats }: NoticeChatProps) {
     <>
       {chats?.map((chat, idx) => {
         const user = chat.user;
-        console.log(23, user);
+      
         return (
           <Link
             href={`/chat/${user._id}`}

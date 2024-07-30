@@ -26,7 +26,7 @@ function NoticeNav({ noticeType, setNoticeType, activeAlertCnt, recentChatId }: 
       localStorage.getItem(RECENT_CHAT_ID) &&
       localStorage.getItem(RECENT_CHAT_ID) !== recentChatId
     ) {
-      console.log(3434, recentChatId);
+     
       setIsChatAlert(true);
     }
     if (noticeType === "active") {
