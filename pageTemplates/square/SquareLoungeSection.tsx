@@ -19,8 +19,8 @@ function SquareLoungeSection() {
   const [category, setCategory] = useState<FeedType | "all">();
   const [loungeData, setLoungeData] = useState<FeedProps[]>();
   const [cursor, setCursor] = useState(0);
-  const [subCategory, setSubCategory] = useState<"최신순" | "예전순">("최신순");
 
+  const [subCategory, setSubCategory] = useState<"최신순" | "예전순">("최신순");
   const loader = useRef<HTMLDivElement | null>(null);
   const firstLoad = useRef(true);
 

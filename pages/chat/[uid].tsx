@@ -42,7 +42,7 @@ function Uid() {
     await mutate({ message });
     setChats((old) => [...old, { message, isMine: true, createdAt: dayjs().toString() }]);
   };
- 
+
   useEffect(() => {
     if (!chatInfo || !userInfo) return;
     console.log("info", chatInfo);
@@ -54,8 +54,6 @@ function Uid() {
       })),
     );
   }, [chatInfo, userInfo]);
-
-
 
   useEffect(() => {
     // 스크롤을 맨 아래로 이동
