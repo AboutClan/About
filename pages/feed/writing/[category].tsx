@@ -88,7 +88,7 @@ function FeedWritingPage() {
     appendFormData(
       formData,
       "text",
-      category === "gather" ? gather.content : category === "group" ? group.guide : null,
+      category === "gather" ? gather.content : category === "group" ? group.content : null,
     );
     appendFormData(formData, "typeId", id);
     mutate(formData);
