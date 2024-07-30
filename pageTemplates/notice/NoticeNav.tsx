@@ -21,6 +21,14 @@ function NoticeNav({ noticeType, setNoticeType, activeAlertCnt, recentChatId }: 
 
   useEffect(() => {
     if (activeAlertCnt === undefined) return;
+    if (+localStorage.getItem(NOTICE_ACTIVE_CNT) < activeAlertCnt) setIsActiveAlert(true);
+    if (
+      localStorage.getItem(RECENT_CHAT_ID) &&
+      localStorage.getItem(RECENT_CHAT_ID) !== recentChatId
+    ) {
+      console.log(3434, recentChatId);
+      setIsChatAlert(true);
+    }
     if (noticeType === "active") {
       localStorage.setItem(NOTICE_ACTIVE_CNT, `${activeAlertCnt}`);
       setIsActiveAlert(false);
@@ -30,8 +38,6 @@ function NoticeNav({ noticeType, setNoticeType, activeAlertCnt, recentChatId }: 
       setIsChatAlert(false);
     }
 
-    if (+localStorage.getItem(NOTICE_ACTIVE_CNT) < activeAlertCnt) setIsActiveAlert(true);
-    if (localStorage.getItem(RECENT_CHAT_ID) !== recentChatId) setIsChatAlert(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeAlertCnt, noticeType]);
 

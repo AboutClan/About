@@ -58,7 +58,14 @@ function PageTracker() {
 
       const setLeftSlide = () => setSlideDirection("left");
       const setRightSlide = () => setSlideDirection("right");
-  
+
+      if (prevSegments?.[0] === "profile") {
+        if (currentSegments?.[0] === "chat") {
+          setRightSlide();
+        } else setLeftSlide();
+        return;
+      }
+
       switch (curFirstSegment) {
         case "home":
           if (prevSegments[0] !== "vote") setLeftSlide();
@@ -111,7 +118,6 @@ function PageTracker() {
           break;
 
         case "register":
-          
           handleWritingPage(
             REGISTER_WRITING_SEQUENCE,
             currentSegments,
@@ -124,7 +130,6 @@ function PageTracker() {
 
         case "gather":
           if (currentSegments?.[1] === "writing") {
-       
             handleWritingPage(
               GATHER_WRITING_SEQUENCE,
               currentSegments,
@@ -166,7 +171,6 @@ function PageTracker() {
       setLeftSlide,
       setRightSlide,
     ) => {
-  
       const isRegister = prevSegments?.[0] === "register";
 
       if (!currentSegments[1]) {
@@ -178,12 +182,10 @@ function PageTracker() {
           const prevCategoryValue = pageSequence[isRegister ? prevSegments[1] : prevSegments[2]];
           const curCategoryValue =
             pageSequence[isRegister ? currentSegments[1] : currentSegments[2]];
-        
+
           if (prevCategoryValue < curCategoryValue) {
-          
             setRightSlide();
           } else {
-          
             setLeftSlide();
           }
         }

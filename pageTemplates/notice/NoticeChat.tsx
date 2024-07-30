@@ -1,8 +1,10 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Link from "next/link";
+import { useSetRecoilState } from "recoil";
 
 import Avatar from "../../components/atoms/Avatar";
+import { transferUserName } from "../../recoils/transferRecoils";
 import { MyChatsProps } from "../../types/models/chat";
 import { getDateDiff } from "../../utils/dateTimeUtils";
 
@@ -11,13 +13,21 @@ interface NoticeChatProps {
 }
 
 function NoticeChat({ chats }: NoticeChatProps) {
+  console.log(34, chats);
+
+  const setTransferUserName = useSetRecoilState(transferUserName);
+
   return (
     <>
       {chats?.map((chat, idx) => {
         const user = chat.user;
-        const recentMessage = chat.contents[chat.contents.length - 1];
+        console.log(23, user);
         return (
-          <Link href={`/chat/${user.uid}`} key={idx}>
+          <Link
+            href={`/chat/${user._id}`}
+            key={idx}
+            onClick={() => setTransferUserName(chat.user.name)}
+          >
             <Flex p="16px" justify="space-between" align="center" borderBottom="var(--border)">
               <Flex>
                 <Avatar size="md" uid={user.uid} avatar={user.avatar} image={user.profileImage} />
@@ -35,12 +45,12 @@ function NoticeChat({ chats }: NoticeChatProps) {
                       overflow: "hidden",
                     }}
                   >
-                    {recentMessage.content}
+                    {chat.content.content}
                   </Box>
                 </Flex>
               </Flex>
               <Box fontSize="12px" color="var(--gray-600)">
-                {getDateDiff(dayjs(recentMessage.createdAt))}
+                {getDateDiff(dayjs(chat.content.createdAt))}
               </Box>
             </Flex>
           </Link>

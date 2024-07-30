@@ -51,7 +51,7 @@ function HomeHeader() {
     const noticeCnt = localStorage.getItem(NOTICE_ALERT);
     const recentChatId = localStorage.getItem(RECENT_CHAT_ID);
 
-    if (recentChat && recentChatId !== recentChat) {
+    if (recentChat?.length && recentChatId !== recentChat) {
       setIsNoticeAlert(true);
     }
 

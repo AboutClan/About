@@ -1,8 +1,8 @@
 import { Button } from "@chakra-ui/react";
 import { useParams, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useEffect, useState } from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import Header from "../../components/layouts/Header";
@@ -13,6 +13,7 @@ import DeclareDrawer from "../../pageTemplates/profile/DeclareDrawer";
 import DetailInfo from "../../pageTemplates/profile/DetailInfo";
 import ProfileOverview from "../../pageTemplates/profile/ProfileOverview";
 import { prevPageUrlState } from "../../recoils/previousAtoms";
+import { transferUserName } from "../../recoils/transferRecoils";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { DeclareRequest } from "../../types/models/userTypes/userRequestTypes";
 
@@ -26,20 +27,31 @@ function ProfilePage() {
 
   const { uid } = useParams<{ uid: string }>() || {};
 
+  const setTransferUserName = useSetRecoilState(transferUserName);
   const [declareModal, setDeclareModal] = useState<DeclareRequest>();
 
   const { data: user } = useUidToUserInfoQuery(uid as string, {
     enabled: !!uid,
   });
 
+  useEffect(() => {
+    if (user) setTransferUserName(user.name);
+  }, [user]);
+
   const handleDrawer = () => {
     router.replace(`/profile/${uid}?declare=on`);
   };
+  console.log(24, user);
 
   return (
     <>
       <Header title="" url={beforePage} rightPadding={8}>
-        <Button px="12px" size="md" variant="ghost" onClick={() => router.push(`/chat/${uid}`)}>
+        <Button
+          px="12px"
+          size="md"
+          variant="ghost"
+          onClick={() => router.push(`/chat/${user._id}`)}
+        >
           <i className="fa-regular fa-paper-plane fa-lg" />
         </Button>
         <Button px="12px" size="md" variant="ghost" onClick={handleDrawer}>
