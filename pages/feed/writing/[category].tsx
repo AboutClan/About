@@ -73,12 +73,12 @@ function FeedWritingPage() {
 
   const formData = new FormData();
 
-  const onSubmit: SubmitHandler<{ content: string }> = () => {
+  const onSubmit: SubmitHandler<{ content: string }> = ({ content }) => {
     if (!imageFormArr?.length) {
       toast("warning", "최소 한장 이상의 사진이 필요합니다.");
       return;
     }
-
+    console.log(2, content);
     appendFormData(formData, "type", category);
     for (const form of imageFormArr) {
       appendFormData(formData, "images", form);
@@ -88,9 +88,10 @@ function FeedWritingPage() {
     appendFormData(
       formData,
       "text",
-      category === "gather" ? gather.content : category === "group" ? group.content : null,
+      category === "gather" ? content : category === "group" ? group.content : null,
     );
     appendFormData(formData, "typeId", id);
+
     mutate(formData);
   };
 
