@@ -484,7 +484,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 122,
-    dateCreated: "2023-01-08",
+    dateCreated: "2024-01-08",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/01.08_%EC%A0%84%EC%8B%9C%ED%9A%8C/KakaoTalk_20240110_171022564_01.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/01.08_%EC%A0%84%EC%8B%9C%ED%9A%8C/KakaoTalk_20240110_171022564_02.jpg",
@@ -496,7 +496,7 @@ export const REVIEW_DATA: IReviewData[] = [
   },
   {
     id: 162,
-    dateCreated: "2023-05-05",
+    dateCreated: "2024-05-05",
     images: [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/5.04_%ED%95%9C%EA%B0%95+%EB%B2%88%EA%B0%9C/KakaoTalk_20240505_145027199_01.jpg",
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A6%AC%EB%B7%B0/5.04_%ED%95%9C%EA%B0%95+%EB%B2%88%EA%B0%9C/KakaoTalk_20240505_145148461.jpg",

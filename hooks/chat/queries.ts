@@ -4,14 +4,21 @@ import { useQuery } from "react-query";
 import { SERVER_URI } from "../../constants/apiConstants";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import { ChatProps, MyChatsProps } from "../../types/models/chat";
+import { IUser } from "../../types/models/userTypes/userInfoTypes";
 
-export const useChatQuery = (toUid: string, options?: QueryOptions<ChatProps[]>) =>
-  useQuery<ChatProps[], AxiosError>(
+export const useChatQuery = (
+  toUid: string,
+  options?: QueryOptions<{ opponent: IUser; contents: ChatProps[] }>,
+) =>
+  useQuery<{ opponent: IUser; contents: ChatProps[] }, AxiosError>(
     ["chat", toUid],
     async () => {
-      const res = await axios.get<ChatProps[]>(`${SERVER_URI}/chat`, {
-        params: { toUid },
-      });
+      const res = await axios.get<{ opponent: IUser; contents: ChatProps[] }>(
+        `${SERVER_URI}/chat`,
+        {
+          params: { toUid },
+        },
+      );
       return res.data;
     },
     options,

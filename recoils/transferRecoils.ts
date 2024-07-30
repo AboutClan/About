@@ -23,6 +23,11 @@ export const transferShowDailyCheckState = atom<boolean>({
   default: true,
 });
 
+export const transferUserName = atom<string>({
+  key: "transferUserName",
+  default: null,
+});
+
 export const transferGatherDataState = atom<IGather>({
   key: "transferGatherDataState",
   default: null,

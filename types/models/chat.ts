@@ -8,10 +8,10 @@ export interface SendChatProps {
 export interface ChatProps {
   content: string;
   createdAt: string;
-  uid: string;
+  userId: string;
 }
 
 export interface MyChatsProps {
-  contents: ChatProps[];
+  content: ChatProps;
   user: IUser;
 }

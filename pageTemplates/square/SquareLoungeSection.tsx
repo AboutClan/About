@@ -3,6 +3,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
+import Selector from "../../components/atoms/Selector";
 import ButtonGroups, { IButtonOptions } from "../../components/molecules/groups/ButtonGroups";
 import FeedLayout, { FeedLayoutProps } from "../../components/organisms/FeedLayout";
 import { useFeedsQuery } from "../../hooks/feed/queries";
@@ -18,6 +19,7 @@ function SquareLoungeSection() {
   const [category, setCategory] = useState<FeedType | "all">();
   const [loungeData, setLoungeData] = useState<FeedProps[]>();
   const [cursor, setCursor] = useState(0);
+  const [subCategory, setSubCategory] = useState<"최신순" | "오래된순">("최신순");
 
   const loader = useRef<HTMLDivElement | null>(null);
   const firstLoad = useRef(true);
@@ -26,7 +28,7 @@ function SquareLoungeSection() {
     data: feeds,
     isLoading,
     refetch,
-  } = useFeedsQuery(category === "all" ? null : category, null, cursor);
+  } = useFeedsQuery(category === "all" ? null : category, null, cursor, subCategory === "최신순");
 
   useEffect(() => {
     if (categoryParam) {
@@ -37,7 +39,7 @@ function SquareLoungeSection() {
       newSearchParams.append("category", "all");
       router.replace(`/square?${newSearchParams}`);
     }
-  }, [categoryParam]);
+  }, [categoryParam, subCategory]);
 
   useEffect(() => {
     if (!feeds) return;
@@ -89,14 +91,19 @@ function SquareLoungeSection() {
 
   return (
     <Box pb="60px">
-      <Box p="12px 16px">
+      <Flex p="12px 16px" justify="space-between">
         <ButtonGroups
           buttonItems={buttonItems}
           currentValue={`${textObj[category]}`}
           size="sm"
           isEllipse
         />
-      </Box>
+        <Selector
+          defaultValue={subCategory}
+          options={["최신순", "오래된순"]}
+          setValue={setSubCategory}
+        />
+      </Flex>
       <Box minH="calc(100dvh - 162px)">
         {loungeData ? (
           loungeData?.length ? (

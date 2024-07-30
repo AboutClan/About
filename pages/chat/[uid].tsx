@@ -2,6 +2,7 @@ import { Box, Button, Flex, Menu, MenuButton, MenuItem, MenuList } from "@chakra
 import dayjs from "dayjs";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { useRecoilValue } from "recoil";
 
 import Avatar from "../../components/atoms/Avatar";
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
@@ -10,8 +11,9 @@ import Slide from "../../components/layouts/PageSlide";
 import UserCommentInput from "../../components/molecules/UserCommentInput";
 import { useChatMutation } from "../../hooks/chat/mutations";
 import { useChatQuery } from "../../hooks/chat/queries";
-import { useUidToUserInfoQuery, useUserInfoQuery } from "../../hooks/user/queries";
-import { dayjsToStr, getDateDiff } from "../../utils/dateTimeUtils";
+import { useUserInfoQuery } from "../../hooks/user/queries";
+import { transferUserName } from "../../recoils/transferRecoils";
+import { getDateDiff } from "../../utils/dateTimeUtils";
 
 interface Chat {
   message: string;
@@ -23,12 +25,9 @@ function Uid() {
   const router = useRouter();
   const { uid } = useParams<{ uid: string }>() || {};
 
+  const userName = useRecoilValue(transferUserName);
   const [chats, setChats] = useState<Chat[]>([]);
   const bottomRef = useRef<HTMLDivElement>(null);
-
-  const { data: opponent } = useUidToUserInfoQuery(uid as string, {
-    enabled: !!uid,
-  });
 
   const { data: userInfo } = useUserInfoQuery();
   const { data: chatInfo, isLoading } = useChatQuery(uid);
@@ -41,28 +40,33 @@ function Uid() {
 
   const onSubmit = async (message: string) => {
     await mutate({ message });
-    setChats((old) => [...old, { message, isMine: true, createdAt: dayjsToStr(dayjs()) }]);
+    setChats((old) => [...old, { message, isMine: true, createdAt: dayjs().toString() }]);
   };
-
+  console.log(2424, chats);
   useEffect(() => {
     if (!chatInfo || !userInfo) return;
+    console.log("info", chatInfo);
     setChats(
-      chatInfo.map((chat) => ({
+      chatInfo.contents.map((chat) => ({
         message: chat.content,
         createdAt: chat.createdAt,
-        isMine: userInfo.uid === chat.uid,
+        isMine: userInfo._id === chat.userId,
       })),
     );
   }, [chatInfo, userInfo]);
+
+  console.log(44, chats);
 
   useEffect(() => {
     // 스크롤을 맨 아래로 이동
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chats]);
 
+  const opponent = chatInfo?.opponent;
+
   return (
     <>
-      <Header title={`${opponent?.name || "ㅇㅇ"}님과의 메세지`} rightPadding={4}>
+      <Header title={`${userName || "ㅇㅇ"}님과의 메세지`} rightPadding={4}>
         <Menu>
           <MenuButton variant="ghost" size="md" as={Button}>
             <i className="fa-regular fa-ellipsis fa-lg" />

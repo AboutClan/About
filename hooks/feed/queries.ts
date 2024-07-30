@@ -17,17 +17,20 @@ export const useFeedQuery = (id: string, options?: QueryOptions<FeedProps>) =>
     },
     options,
   );
+
 export const useFeedsQuery = (
   type?: FeedType,
   typeId?: number,
   cursor?: number,
+  isRecent?: boolean,
   options?: QueryOptions<FeedProps[]>,
 ) =>
   useQuery<FeedProps[], AxiosError>(
-    [Feed + "s", type, typeId, cursor],
+    [Feed + "s", type, typeId, cursor, isRecent],
     async () => {
+      console.log(24, isRecent);
       const res = await axios.get<FeedProps[]>(`${SERVER_URI}/feed`, {
-        params: { type, typeId, cursor },
+        params: { type, typeId, cursor, isRecent: isRecent === undefined ? true : isRecent },
       });
       return res.data;
     },
