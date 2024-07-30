@@ -89,7 +89,7 @@ function SquareLoungeSection() {
     },
   );
 
-  console.log(444, loungeData);
+ 
 
   return (
     <Box pb="60px">
