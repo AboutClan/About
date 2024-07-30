@@ -1,5 +1,4 @@
 import dayjs from "dayjs";
-import Link from "next/link";
 import styled from "styled-components";
 
 import { SecretSquareItem } from "../../../types/models/square";
@@ -13,7 +12,7 @@ export default function SquareItem({ item }: SquareItemProps) {
   const id = item.id;
 
   return (
-    <Layout href={`/square/${id}`}>
+    <Layout>
       <IconCategory category={item.category} />
 
       <Title>{item.title}</Title>
@@ -30,7 +29,7 @@ function IconCategory({ category }: { category: string }) {
   return <IconLayout>#{category}</IconLayout>;
 }
 
-const Layout = styled(Link)`
+const Layout = styled.div`
   display: flex;
   flex-direction: column;
   background-color: white;
