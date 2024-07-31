@@ -67,7 +67,7 @@ function GatherBottomNav({ data }: IGatherBottomNav) {
       setTransferFeedSummary({
         url: `/gather/${data.id}`,
         title: data.title,
-        text: data.content,
+        subCategory: data.type.subtitle,
       });
     }
   }, [data?.status]);

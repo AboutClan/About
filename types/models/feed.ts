@@ -9,6 +9,7 @@ export interface FeedProps extends Omit<WritingFormProps, "images">, ITimeStamps
   likeCnt: number;
   writer: IUserSummary;
   comments: FeedComment[];
+  subCategory: string;
 }
 
 export interface FeedComment extends ITimeStamps {

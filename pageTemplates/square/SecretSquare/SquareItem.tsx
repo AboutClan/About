@@ -9,8 +9,6 @@ interface SquareItemProps {
 }
 
 export default function SquareItem({ item }: SquareItemProps) {
-  const id = item.id;
-
   return (
     <Layout>
       <IconCategory category={item.category} />
