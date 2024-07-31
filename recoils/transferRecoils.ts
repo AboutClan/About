@@ -38,7 +38,11 @@ export const transferGroupDataState = atom<IGroup>({
   default: null,
 });
 
-export const transferFeedSummaryState = atom<SummaryBlockProps>({
+export interface TransferFeedSummaryProps extends Omit<SummaryBlockProps, "text"> {
+  subCategory: string;
+}
+
+export const transferFeedSummaryState = atom<TransferFeedSummaryProps>({
   key: "transferFeedSummary",
   default: null,
 });

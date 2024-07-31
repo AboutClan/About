@@ -24,7 +24,7 @@ function ContentFeed({ group }: ContentFeedProps) {
       setTransferFeedSummary({
         url: `/group/${group.id}`,
         title: group.title,
-        text: group.guide,
+        subCategory: group.category.sub,
       });
     }
   }, [group]);

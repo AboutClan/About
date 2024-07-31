@@ -24,6 +24,9 @@ function SquareLoungeSection() {
   const loader = useRef<HTMLDivElement | null>(null);
   const firstLoad = useRef(true);
 
+  const scrollId = searchParams.get("scroll");
+  console.log(24, scrollId);
+
   const {
     data: feeds,
     isLoading,
@@ -70,6 +73,21 @@ function SquareLoungeSection() {
     };
   }, []);
 
+  useEffect(() => {
+    if (scrollId && loungeData) {
+      const element = document.getElementById(`review${scrollId}`);
+
+      if (element) {
+        window.scrollTo({
+          top: element.offsetTop,
+          behavior: "smooth",
+        });
+      }
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [scrollId, loungeData]);
+
   const textObj: Record<FeedType | "all", string> = {
     all: "전체",
     gather: "번개 리뷰",
@@ -88,8 +106,6 @@ function SquareLoungeSection() {
       };
     },
   );
-
- 
 
   return (
     <Box pb="60px">
@@ -113,7 +129,7 @@ function SquareLoungeSection() {
             loungeData.map((feed, idx) => {
               const feedProps: FeedLayoutProps = convertFeedToLayout(feed);
               return (
-                <Box key={idx}>
+                <Box key={idx} id={`review${feed.typeId}`}>
                   <FeedLayout {...feedProps} refetch={() => refetch()} />
                 </Box>
               );
