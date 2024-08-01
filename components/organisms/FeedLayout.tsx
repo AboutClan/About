@@ -33,7 +33,6 @@ function FeedLayout({
   id,
   refetch,
 }: FeedLayoutProps) {
-  console.log(2, summary, content);
   return (
     <Flex direction="column" border="var(--border)">
       <FeedHeader writer={user} date={date} />
