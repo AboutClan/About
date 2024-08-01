@@ -1,4 +1,5 @@
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -14,15 +15,17 @@ import NoticeNav from "../../pageTemplates/notice/NoticeNav";
 export type NoticeType = "notice" | "active" | "chat";
 
 function Notice() {
+  const { data: session } = useSession();
+  const isGuest = session ? session?.user.name === "guest" : undefined;
   const router = useRouter();
   const searchParams = useSearchParams();
   const type = searchParams.get("type") as NoticeType;
 
   const [noticeType, setNoticeType] = useState<NoticeType>("notice");
-  const { data: activeLogs } = useNoticeActiveLogQuery();
-  const { data: chats } = useMyChatsQuery();
+  const { data: activeLogs } = useNoticeActiveLogQuery(undefined, { enabled: isGuest === false });
+  const { data: chats } = useMyChatsQuery({ enabled: isGuest === false });
 
-  const { data: recentChat } = useRecentChatQuery();
+  const { data: recentChat } = useRecentChatQuery({ enabled: isGuest === false });
 
   useEffect(() => {
     if (!type) router.replace(`/notice?type=notice`);
