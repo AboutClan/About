@@ -131,8 +131,10 @@ function GatherBottomNav({ data }: IGatherBottomNav) {
           </Button>
         </Layout>
       </Slide>
-      {isParticipationModal && <GatherParticipateModal setIsModal={setIsParticipationModal} />}
-      {isExpirationModal && <GatherExpireModal setIsModal={setIsExpirationModal} />}
+      {isParticipationModal && (
+        <GatherParticipateModal gather={data} setIsModal={setIsParticipationModal} />
+      )}
+      {isExpirationModal && <GatherExpireModal gather={data} setIsModal={setIsExpirationModal} />}
       {isReviewDrawer && (
         <GatherReviewDrawer feed={feed?.[0]} isOpen onClose={() => setIsReviewDrawer(false)} />
       )}

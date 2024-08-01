@@ -1,26 +1,25 @@
 import { Box } from "@chakra-ui/react";
-import { useParams } from "next/navigation";
 import { useState } from "react";
 import styled from "styled-components";
 
 import TwoButtonNav from "../../../components/layouts/TwoButtonNav";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
-import { useGatherQuery } from "../../../hooks/gather/queries";
 import { DispatchNumber } from "../../../types/hooks/reactTypes";
+import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
 
 interface IGatherParticipateModalPassword {
   setPageNum: DispatchNumber;
+  gather: IGather;
 }
 
-function GatherParticipateModalPassword({ setPageNum }: IGatherParticipateModalPassword) {
+function GatherParticipateModalPassword({
+  setPageNum,
+  gather: gatherData,
+}: IGatherParticipateModalPassword) {
   const failToast = useFailToast();
-  const { id } = useParams<{ id: string }>() || {};
 
   const [password, setPassword] = useState("");
 
-  const { data: gathers } = useGatherQuery();
-
-  const gatherData = gathers?.find((item) => item.id + "" === id);
   const onApply = () => {
     if (password === gatherData?.password) setPageNum(2);
     else failToast("free", "암호가 일치하지 않습니다.");
