@@ -1,7 +1,9 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import { Fragment, useEffect, useState } from "react";
 
+import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useFeedCommentMutation, useFeedLikeMutation } from "../../hooks/feed/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { UserCommentProps } from "../../types/components/propTypes";
@@ -23,7 +25,10 @@ interface ContentHeartBarProps {
 }
 
 function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: ContentHeartBarProps) {
+  const typeToast = useTypeToast();
+  const { data: session } = useSession();
   const { data: userInfo } = useUserInfoQuery();
+  const isGuest = session ? session.user.name : undefined;
 
   const [modalType, setModalType] = useState<"like" | "comment">(null);
   const [heartProps, setHeartProps] = useState({ isMine: false, users: likeUsers, cnt: likeCnt });
@@ -41,7 +46,6 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
 
   const { mutate: writeComment } = useFeedCommentMutation(feedId);
 
-
   useEffect(() => {
     if (likeUsers?.some((who) => who.uid === userInfo?.uid)) {
       setHeartProps((old) => ({ ...old, isMine: true, users: likeUsers }));
@@ -56,6 +60,10 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
   };
 
   const onClickHeart = () => {
+    if (isGuest) {
+      typeToast("guest");
+      return;
+    }
     setHeartProps((old) => {
       if (old.isMine) {
         return {
