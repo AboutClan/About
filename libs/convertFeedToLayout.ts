@@ -14,6 +14,7 @@ export const convertFeedToLayout = (feed: FeedProps): FeedLayoutProps => {
     likeCnt: feed?.likeCnt,
     id: feed._id,
     comments: feed.comments,
+    isAnonymous: feed.isAnonymous,
     summary: {
       title: feed.title,
       url: feed.type === "gather" ? `/gather/${feed.typeId}` : `/group/${feed.typeId}`,

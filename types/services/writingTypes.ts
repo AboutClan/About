@@ -4,6 +4,6 @@ export interface WritingFormProps {
   images: Blob;
   type: "gather" | "group";
   typeId: string;
-  isAnonymous: string;
+  isAnonymous: boolean;
   subCategory: string;
 }
