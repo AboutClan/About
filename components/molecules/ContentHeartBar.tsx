@@ -182,6 +182,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
             mt="8px"
             position={isKeyboardVisible ? "fixed" : "relative"}
             top={isKeyboardVisible ? "0" : "auto"}
+            zIndex={isKeyboardVisible ? 2 : "auto"} // RightDrawer보다 높은 z-index
           >
             {commentArr.map((item, idx) => (
               <UserComment
