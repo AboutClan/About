@@ -49,6 +49,12 @@ a {
 
   overflow: hidden;
 }
+@media (min-width: 400px) {
+  #__next {
+    border-left: var(--border);
+    border-right: var(--border);
+  }
+}
 
 .CircularProgressbar-trail {
   stroke-width: 1;

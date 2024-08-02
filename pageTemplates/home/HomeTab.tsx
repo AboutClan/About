@@ -33,7 +33,7 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
   const matchParam = {
     study: "스터디",
     gather: "번개",
-    club: "동아리",
+    club: "캘린더",
     temp: "랭킹",
   };
 
