@@ -182,6 +182,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
             mt="8px"
             position={isKeyboardVisible ? "fixed" : "relative"}
             top={isKeyboardVisible ? "0" : "auto"}
+            zIndex={1}
           >
             {commentArr.map((item, idx) => (
               <UserComment
@@ -207,7 +208,6 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
             maxW="var(--max-width)"
           >
             <UserCommentInput user={userInfo} onSubmit={onSubmit} />
-            {isKeyboardVisible ? "." : "x"}
           </Box>
         </RightDrawer>
       )}
