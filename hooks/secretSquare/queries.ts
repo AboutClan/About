@@ -35,22 +35,60 @@ export const useSecretSquareListQuery = (
       if (category !== "전체") {
         searchParams.set("category", category);
       }
-      const res = await axios.get<SecretSquareListResponse>(`${SERVER_URI}/square`);
+      const res = await axios.get<SecretSquareListResponse>(
+        `http://localhost:3001/square?${searchParams.toString()}`,
+      );
+      // return { squareList };
+      // const res = await axios.get<SecretSquareListResponse>(`${SERVER_URI}/square`);
       return res.data;
     },
     options,
   );
 
-type SecretSquareDetailResponse = SecretSquareItem;
+type SecretSquareDetailResponse = { square: SecretSquareItem };
 
 export const useGetSquareDetailQuery = (
   { squareId }: { squareId: string },
-  options?: QueryOptions<SecretSquareDetailResponse>,
+  options?: QueryOptions<SecretSquareDetailResponse["square"]>,
 ) =>
-  useQuery<SecretSquareDetailResponse, AxiosError, SecretSquareDetailResponse>(
+  useQuery(
     ["secretSquare", { squareId }],
     async () => {
-      const res = await axios.get<SecretSquareDetailResponse>(`${SERVER_URI}/square/${squareId}`);
+      const res = await axios.get<SecretSquareDetailResponse>(
+        `http://localhost:3001/square/${squareId}`,
+      );
+      // return detail;
+      // const res = await axios.get<SecretSquareDetailResponse>(`${SERVER_URI}/square/${squareId}`);
+      return res.data.square;
+    },
+    options,
+  );
+
+type SecretSquarePollStatusResponse = {
+  pollItems: string[];
+};
+
+export const useCurrentPollStatusQuery = (
+  { squareId, user }: { squareId: string; user: string },
+  options?: QueryOptions<SecretSquarePollStatusResponse>,
+) =>
+  useQuery<SecretSquarePollStatusResponse, AxiosError, SecretSquarePollStatusResponse>(
+    ["secretSquare", "currentPollStatus", { squareId }],
+    async () => {
+      // return { pollItems: ["66a89681d03a0dcf5b8cb217", "66a89681d03a0dcf5b8cb218"] };
+      // return { pollItems: [] };
+      const res = await axios.get<SecretSquarePollStatusResponse>(
+        `http://localhost:3001/square/${squareId}/poll`,
+        { params: { user } },
+      );
+      // const res = await axios.get<SecretSquarePollStatusResponse>(
+      //   `${SERVER_URI}/square/${squareId}/poll`,
+      //   {
+      //     data: {
+      //       user,
+      //     },
+      //   },
+      // );
       return res.data;
     },
     options,

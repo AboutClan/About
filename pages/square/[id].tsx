@@ -1,17 +1,20 @@
-import { Box, Button, Flex, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Flex, Text, VStack } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Avatar from "../../components/atoms/Avatar";
 import Divider from "../../components/atoms/Divider";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
-import { usePrevious } from "../../hooks/custom/usePrevious";
-import { useGetSquareDetailQuery } from "../../hooks/secretSquare/queries";
-import PollItem from "../../pageTemplates/square/SecretSquare/PollItem";
+import { usePatchPollMutation } from "../../hooks/secretSquare/mutations";
+import {
+  useCurrentPollStatusQuery,
+  useGetSquareDetailQuery,
+} from "../../hooks/secretSquare/queries";
+import PollItemButton from "../../pageTemplates/square/SecretSquare/PollItemButton";
 import SecretSquareComments from "../../pageTemplates/square/SecretSquare/SecretSquareComments";
 import { AVATAR_IMAGE_ARR } from "../../storage/avatarStorage";
 import { getDateDiff } from "../../utils/dateTimeUtils";
@@ -19,46 +22,46 @@ import { getDateDiff } from "../../utils/dateTimeUtils";
 function SecretSquareDetailPage() {
   const router = useRouter();
   const squareId = router.query.id as string;
-  // TODO remove mock data
-  // TODO API
+
   const { data: session } = useSession();
-  // PATCH poll
-  // GET poll current status (staleTime infinity)
-  // DELETE comment
+  const { mutate: mutatePoll, isLoading: isPollLoading } = usePatchPollMutation({ squareId });
   const { data: squareDetail } = useGetSquareDetailQuery({ squareId }, { staleTime: Infinity });
+  const { data: pollStatus } = useCurrentPollStatusQuery(
+    { squareId, user: session?.user.id },
+    {
+      enabled: !!session?.user.id,
+      staleTime: Infinity,
+    },
+  );
+  const initialSelectedPollItems = new Set(pollStatus.pollItems);
 
-  // poll logic (initial)
-  // users check poll items (inactive 투표하기)
-  //    if diff from before, active
-  //    else, inactive
-  // click poll button
-  // users can see poll items checked
-  // active poll button(다시 투표하기)
+  const [selectedPollItems, setSelectedPollItems] = useState<Set<string>>(new Set());
+  // calculate the difference btw poll and initialPoll
+  const isModified =
+    selectedPollItems.size !== initialSelectedPollItems.size ||
+    selectedPollItems.keys().some((id) => !initialSelectedPollItems.has(id)) ||
+    initialSelectedPollItems.keys().some((id) => !selectedPollItems.has(id));
 
-  // poll logic (modification)
-  // click poll button(다시 투표하기) for checking poll items again (inactive 투표하기)
-  // that can activate poll items for selecting
-  // check poll items again
-  //    if different from before, active 투표하기
-  //    else, inactive 투표하기
-  //  if empty poll item => go to initial state
-  //  else ...
-  // click poll button
-  // users can see poll items modified
+  const [showRePollButton, setShowRePollButton] = useState(false);
+  const [isActiveRePollButton, setIsActiveRePollButton] = useState(false);
 
-  // click button
-  // -> mutate patch poll
-  // -> invalidate current poll status
+  useEffect(() => {
+    if (pollStatus) {
+      setSelectedPollItems(new Set(pollStatus.pollItems));
+      if (pollStatus.pollItems.length !== 0) {
+        setShowRePollButton(true);
+        setIsActiveRePollButton(true);
+      } else {
+        setIsActiveRePollButton(false);
+      }
+    }
+  }, [pollStatus]);
 
-  const handlePatchPoll = () => {};
+  const handlePatchPoll = () => {
+    if (!isModified) return;
 
-  const [poll, setPoll] = useState<Map<string, string>>(new Map());
-  const prevPoll = usePrevious(poll);
-  // calculate the difference btw poll and prevPoll
-  const isDirtyPoll =
-    poll.size !== prevPoll.size ||
-    poll.keys().some((id) => !prevPoll.has(id)) ||
-    prevPoll.keys().some((id) => !poll.has(id));
+    mutatePoll({ user: session?.user.id, pollItems: Array.from(selectedPollItems.keys()) });
+  };
 
   return (
     <>
@@ -101,37 +104,39 @@ function SecretSquareDetailPage() {
                 >
                   <VStack as="ul" align="flex-start">
                     <Text fontWeight={600} display="flex" gap={1} align="center">
-                      <Box display="flex" alignItems="center">
+                      <Box as="span" display="flex" alignItems="center">
                         <i className="fa-regular fa-check-to-slot" />
                       </Box>
                       <span>투표</span>
                     </Text>
-                    {squareDetail.poll.pollItems.map(({ _id, name }, index) => {
+                    {squareDetail.poll.pollItems.map(({ _id, name, count }, index) => {
                       return (
-                        <PollItem
+                        <PollItemButton
                           key={index}
-                          isChecked={poll.has(_id)}
-                          value={name}
-                          onChange={() => {
-                            const isChecked = poll.has(_id);
+                          isChecked={selectedPollItems.has(_id)}
+                          isDisabled={showRePollButton}
+                          name={name}
+                          count={count}
+                          onClick={() => {
+                            const isChecked = selectedPollItems.has(_id);
                             if (squareDetail.poll.canMultiple) {
-                              setPoll((prev) => {
-                                const cloned = new Map(prev);
+                              setSelectedPollItems((prev) => {
+                                const cloned = new Set(prev);
                                 if (isChecked) cloned.delete(_id);
-                                else cloned.set(_id, name);
+                                else cloned.add(_id);
                                 return cloned;
                               });
                             } else {
-                              setPoll((prev) => {
-                                const cloned = new Map(prev);
+                              setSelectedPollItems((prev) => {
+                                const cloned = new Set(prev);
                                 if (isChecked) {
                                   cloned.delete(_id);
                                 } else if (cloned.size !== 0) {
                                   // if already checking other poll item
                                   cloned.clear();
-                                  cloned.set(_id, name);
+                                  cloned.add(_id);
                                 } else {
-                                  cloned.set(_id, name);
+                                  cloned.add(_id);
                                 }
                                 return cloned;
                               });
@@ -140,16 +145,47 @@ function SecretSquareDetailPage() {
                         />
                       );
                     })}
-                    <Button
-                      type="button"
-                      rounded="lg"
-                      w="100%"
-                      colorScheme="mintTheme"
-                      isActive={isDirtyPoll}
-                      onClick={handlePatchPoll}
-                    >
-                      투표하기
-                    </Button>
+
+                    {showRePollButton ? (
+                      <Button
+                        type="button"
+                        rounded="lg"
+                        w="100%"
+                        colorScheme="gray"
+                        onClick={() => setShowRePollButton(false)}
+                      >
+                        <i className="fa-regular fa-rotate-right" style={{ marginRight: "4px" }} />
+                        다시 투표하기
+                      </Button>
+                    ) : (
+                      <ButtonGroup w="100%">
+                        <Button
+                          type="button"
+                          rounded="lg"
+                          w="100%"
+                          colorScheme="mintTheme"
+                          isDisabled={!isModified}
+                          isLoading={isPollLoading}
+                          onClick={handlePatchPoll}
+                        >
+                          투표하기
+                        </Button>
+                        {isActiveRePollButton && (
+                          <Button
+                            type="button"
+                            rounded="lg"
+                            w="100%"
+                            colorScheme="gray"
+                            onClick={() => {
+                              setShowRePollButton(true);
+                              setSelectedPollItems(new Set(pollStatus.pollItems));
+                            }}
+                          >
+                            취소
+                          </Button>
+                        )}
+                      </ButtonGroup>
+                    )}
                   </VStack>
                 </Box>
               )}
@@ -176,6 +212,7 @@ function SecretSquareDetailPage() {
                             }}
                             width={400}
                             height={400}
+                            // TODO remove unoptimized prop
                             unoptimized
                           />
                         </Box>
@@ -204,7 +241,8 @@ function SecretSquareDetailPage() {
                   fontWeight={400}
                   size="sm"
                   sx={{
-                    // hover state is NOT removed on mobile device. It's confused for user
+                    // hover state is NOT removed on mobile device.
+                    // It could be confused for user so we remove the style of hover state.
                     // see https://github.com/chakra-ui/chakra-ui/issues/6173
                     _hover: {},
                     display: "flex",
