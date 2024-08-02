@@ -20,7 +20,7 @@ export interface FeedLayoutProps {
   likeCnt: number;
   id: string;
   comments: FeedComment[];
-  isAnonymous?: boolean;
+  isAnonymous: boolean;
 }
 
 function FeedLayout({
