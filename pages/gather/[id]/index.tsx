@@ -30,7 +30,7 @@ function GatherDetail() {
 
   const transferGather = useRecoilValue(transferGatherDataState);
   const { data: gatherData } = useGatherIDQuery(id, { enabled: !!id && !transferGather });
-
+ 
   useEffect(() => {
     if (transferGather) setGather(transferGather);
     else if (gatherData) setGather(gatherData);
@@ -62,7 +62,7 @@ function GatherDetail() {
                 isMember={isMember}
               />
               <GatherParticipation data={gather} />
-              <GatherComments comments={gather.comment} />
+              <GatherComments comments={gather.comments} />
             </Layout>
           </Slide>
           {!isGuest && <GatherBottomNav data={gather} />}
