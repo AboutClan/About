@@ -2,6 +2,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import RuleIcon from "../../components/atoms/Icons/RuleIcon";
+import WritingIcon from "../../components/atoms/Icons/WritingIcon";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import RuleModal, { IRuleModalContent } from "../../modals/RuleModal";
@@ -37,7 +38,7 @@ function SquarePage() {
         <SquareTabNav tab={tab} />
         {tab === "시크릿 스퀘어" ? <SquareSecretSection /> : <SquareLoungeSection />}
       </Slide>
-      {/* {tab === "시크릿 스퀘어" && <WritingIcon url="/square/writing" />} */}
+      {tab === "시크릿 스퀘어" && <WritingIcon url="/square/writing" />}
       {isRuleModal && <RuleModal content={CONTENT} setIsModal={setIsRuleModal} />}
     </>
   );
