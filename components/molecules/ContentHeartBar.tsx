@@ -196,7 +196,6 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
                 resetCache={resetCache}
               />
             ))}
-            {isKeyboardVisible ? "." : "x"}
           </Flex>
           <Box
             position="fixed"
@@ -208,6 +207,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
             maxW="var(--max-width)"
           >
             <UserCommentInput user={userInfo} onSubmit={onSubmit} />
+            {isKeyboardVisible ? "." : "x"}
           </Box>
         </RightDrawer>
       )}
