@@ -1,5 +1,6 @@
 import { Box, Button, Flex, Text, VStack } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
@@ -69,21 +70,26 @@ function SecretSquareDetailPage() {
               <Box bg="gray.200" rounded="full" w="fit-content" px={2} py={1}>
                 # {squareDetail.category}
               </Box>
-              <Flex as="section" align="center" gap={4}>
-                <Avatar isLink={false} image={AVATAR_IMAGE_ARR[0]} size="md" />
-                <Flex direction="column">
-                  <Text fontWeight={500}>익명</Text>
-                  <Text color="GrayText">{getDateDiff(dayjs(squareDetail.createdAt))}</Text>
+              <section id="avatar-section">
+                <Flex align="center" gap={4}>
+                  <Avatar isLink={false} image={AVATAR_IMAGE_ARR[0]} size="md" />
+                  <Flex direction="column">
+                    <Text fontWeight={500}>익명</Text>
+                    <Text color="GrayText">{getDateDiff(dayjs(squareDetail.createdAt))}</Text>
+                  </Flex>
                 </Flex>
-              </Flex>
-              <Box as="section">
+              </section>
+              <section id="content-section">
                 <Text as="h1" fontSize="xl" fontWeight={700}>
                   {squareDetail.title}
                 </Text>
                 <Text mt={2}>{squareDetail.content}</Text>
-              </Box>
+              </section>
+
               {squareDetail.type === "poll" && (
                 <Box
+                  as="section"
+                  id="poll-section"
                   p={4}
                   my={4}
                   sx={{
@@ -145,8 +151,38 @@ function SecretSquareDetailPage() {
                       투표하기
                     </Button>
                   </VStack>
-                  <VStack as="ul"></VStack>
                 </Box>
+              )}
+
+              {squareDetail.images.length !== 0 && (
+                <section id="images-section">
+                  <VStack as="ul">
+                    {squareDetail.images.map((src, index) => {
+                      return (
+                        <Box
+                          as="li"
+                          w="100%"
+                          borderRadius="var(--rounded-lg)"
+                          listStyleType="none"
+                          overflow="hidden"
+                          key={index}
+                        >
+                          <Image
+                            src={src}
+                            alt={`image ${index}`}
+                            style={{
+                              width: "100%",
+                              height: "auto",
+                            }}
+                            width={400}
+                            height={400}
+                            unoptimized
+                          />
+                        </Box>
+                      );
+                    })}
+                  </VStack>
+                </section>
               )}
 
               <Flex color="GrayText" align="center" gap={1}>
