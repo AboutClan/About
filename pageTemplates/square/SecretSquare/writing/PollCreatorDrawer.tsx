@@ -25,30 +25,31 @@ interface PollCreatorDrawerProps {
 export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawerProps) {
   const { control, register, trigger, resetField, getValues } =
     useFormContext<SecretSquareFormData>();
+  // TODO 2 <= pollItems.length <= 5
   const {
-    fields: pollList,
+    fields: pollItems,
     append,
     remove,
   } = useFieldArray({
     control,
-    name: "pollList",
+    name: "pollItems",
     rules: {
       validate: (pollList) => {
         // pollist is default value
-        const isDefaultValue = pollList.length === 3 && pollList.every(({ value }) => value === "");
+        const isDefaultValue = pollList.length === 3 && pollList.every(({ name }) => name === "");
         const isValid =
-          pollList.length >= 2 && pollList.every(({ value }) => !!value && !!value.trim());
+          pollList.length >= 2 && pollList.every(({ name }) => !!name && !!name.trim());
         return isDefaultValue || isValid || "2개 이상의 항목을 입력해주세요.";
       },
     },
   });
 
   const addPollItem = () => {
-    append({ value: "" });
+    append({ name: "" });
   };
 
   const handleClose = () => {
-    resetField("pollList");
+    resetField("pollItems");
     resetField("canMultiple");
     onClose();
   };
@@ -62,24 +63,27 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
 
         <DrawerBody>
           <VStack spacing={4}>
-            {pollList.map((item, index) => {
+            {pollItems.map((item, index) => {
+              const showRemovePollItemButton = index >= 2;
               return (
                 <Flex key={item.id} w="100%">
                   <Input
                     autoFocus={index === 0}
                     placeholder="항목 입력"
-                    {...register(`pollList.${index}.value`, {
+                    {...register(`pollItems.${index}.name`, {
                       setValueAs: (value) => value.trim(),
                     })}
                   />
-                  <Button
-                    type="button"
-                    onClick={() => {
-                      remove(index);
-                    }}
-                  >
-                    삭제
-                  </Button>
+                  {showRemovePollItemButton && (
+                    <Button
+                      type="button"
+                      onClick={() => {
+                        remove(index);
+                      }}
+                    >
+                      삭제
+                    </Button>
+                  )}
                 </Flex>
               );
             })}
@@ -101,9 +105,9 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
             w="100%"
             colorScheme="mintTheme"
             onClick={async () => {
-              const isValid = await trigger("pollList");
+              const isValid = await trigger("pollItems");
               if (isValid) {
-                resetField("pollList", { defaultValue: getValues("pollList") });
+                resetField("pollItems", { defaultValue: getValues("pollItems") });
                 resetField("canMultiple", { defaultValue: getValues("canMultiple") });
                 onClose();
               }

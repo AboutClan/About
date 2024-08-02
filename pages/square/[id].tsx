@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Text, VStack } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import Avatar from "../../components/atoms/Avatar";
 import Divider from "../../components/atoms/Divider";
@@ -12,35 +12,45 @@ import { SecretSquareItem } from "../../types/models/square";
 import { getDateDiff } from "../../utils/dateTimeUtils";
 
 function SecretSquareDetailPage() {
-  // TODO API
-  // POST poll
-  // PATCH poll
-  // POST comment
-  // DELETE comment
-  // GET square detail
   // TODO remove mock data
-  const detail: SecretSquareItem = {
-    category: "일상",
-    title: "테스트",
-    content:
-      "테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.",
-    id: "35",
-    type: "poll",
-    createdAt: "2023-05-30",
-    viewCount: 124,
-    likeCount: 123,
-    pollList: [
-      { id: "0", value: "떡볶이", count: 3 },
-      { id: "1", value: "떡볶이", count: 3 },
-      { id: "2", value: "연어", count: 3 },
-      { id: "3", value: "대창", count: 3 },
-    ],
-    canMultiple: true,
-    images: [],
-    comments: [],
-  };
+  // TODO API
+  // PATCH poll
+  // GET poll current status (staleTime infinity)
+  // DELETE comment
+  // GET square detail (staleTime infinity)
+
+  // poll logic (initial)
+  // users check poll items (inactive 투표하기)
+  //    if diff from before, active
+  //    else, inactive
+  // click poll button
+  // users can see poll items checked
+  // active poll button(다시 투표하기)
+
+  // poll logic (modification)
+  // click poll button(다시 투표하기) for checking poll items again (inactive 투표하기)
+  // that can activate poll items for selecting
+  // check poll items again
+  //    if different from before, active 투표하기
+  //    else, inactive 투표하기
+  //  if empty poll item => go to initial state
+  //  else ...
+  // click poll button
+  // users can see poll items modified
+
+  // click button
+  // -> mutate patch poll
+  // -> invalidate current poll status
+
+  const handlePatchPoll = () => {};
 
   const [poll, setPoll] = useState<Map<string, string>>(new Map());
+  const prevPoll = usePrevious(poll);
+  // calculate the difference btw poll and prevPoll
+  const isDirtyPoll =
+    poll.size !== prevPoll.size ||
+    poll.keys().some((id) => !prevPoll.has(id)) ||
+    prevPoll.keys().some((id) => !poll.has(id));
 
   return (
     <>
@@ -76,30 +86,32 @@ function SecretSquareDetailPage() {
             >
               <VStack as="ul" align="flex-start">
                 <Text fontWeight={600}>투표</Text>
-                {detail.pollList.map(({ id, value }, index) => {
+                {detail.poll.pollItems.map(({ _id, name }, index) => {
                   return (
                     <PollItem
                       key={index}
-                      isChecked={poll.has(id)}
-                      value={value}
+                      isChecked={poll.has(_id)}
+                      value={name}
                       onChange={() => {
-                        if (detail.canMultiple) {
+                        const isChecked = poll.has(_id);
+                        if (detail.poll.canMultiple) {
                           setPoll((prev) => {
                             const cloned = new Map(prev);
-                            if (cloned.has(id)) cloned.delete(id);
-                            else cloned.set(id, value);
+                            if (isChecked) cloned.delete(_id);
+                            else cloned.set(_id, name);
                             return cloned;
                           });
                         } else {
                           setPoll((prev) => {
                             const cloned = new Map(prev);
-                            if (cloned.has(id)) {
-                              cloned.delete(id);
+                            if (isChecked) {
+                              cloned.delete(_id);
                             } else if (cloned.size !== 0) {
+                              // if already checking other poll item
                               cloned.clear();
-                              cloned.set(id, value);
+                              cloned.set(_id, name);
                             } else {
-                              cloned.set(id, value);
+                              cloned.set(_id, name);
                             }
                             return cloned;
                           });
@@ -108,28 +120,51 @@ function SecretSquareDetailPage() {
                     />
                   );
                 })}
-                <Button type="button" rounded="lg" w="100%" colorScheme="mintTheme">
+                <Button
+                  type="button"
+                  rounded="lg"
+                  w="100%"
+                  colorScheme="mintTheme"
+                  isActive={isDirtyPoll}
+                  onClick={handlePatchPoll}
+                >
                   투표하기
                 </Button>
               </VStack>
             </Box>
           )}
 
-          <Text color="GrayText">{detail.viewCount}명이 봤어요</Text>
+          <Flex color="GrayText" align="center" gap={1}>
+            <i className="fa-light fa-eye" />
+            <span>{detail.viewCount}명이 봤어요</span>
+          </Flex>
 
-          <Text
-            as="button"
-            px="2"
-            py="1"
-            maxW="fit-content"
-            backgroundColor="white"
-            border="var(--border-main)"
-            rounded="full"
-            color="GrayText"
-            type="button"
-          >
-            공감하기
-          </Text>
+          <Flex justify="space-between">
+            <Flex
+              as="button"
+              px="2"
+              py="1"
+              maxW="fit-content"
+              backgroundColor="white"
+              border="var(--border-main)"
+              rounded="full"
+              color="GrayText"
+              type="button"
+              gap={1}
+              align="center"
+              onClick={() => {
+                // TODO put or delete like
+                console.log("put or delete like");
+              }}
+            >
+              <i className="fa-light fa-thumbs-up" />
+              <span>공감하기</span>
+            </Flex>
+            <Flex gap={1} align="center">
+              <i className="fa-light fa-comment" />
+              <span>{detail.comments.length}</span>
+            </Flex>
+          </Flex>
         </Flex>
         <Divider />
         {/* comments section */}
@@ -140,5 +175,72 @@ function SecretSquareDetailPage() {
     </>
   );
 }
+function usePrevious<T>(value: T): T {
+  const ref = useRef<T>(value);
+
+  // execute whenever initial render and re-render
+  useEffect(() => {
+    ref.current = value;
+  });
+
+  return ref.current;
+}
+
+const detail: SecretSquareItem = {
+  _id: "66a89681d03a0dcf5b8cb216",
+  category: "일상",
+  title: "test title",
+  content: "테스트 본문입니다. 테스트 본문입니다. 테스트 본문입니다. ",
+  type: "poll",
+  poll: {
+    canMultiple: true,
+    pollItems: [
+      {
+        _id: "66a89681d03a0dcf5b8cb217",
+        name: "test1",
+        count: 1,
+      },
+      {
+        _id: "66a89681d03a0dcf5b8cb218",
+        name: "test2",
+        count: 1,
+      },
+      {
+        _id: "66a89681d03a0dcf5b8cb219",
+        name: "test3",
+        count: 0,
+      },
+    ],
+  },
+  images: [
+    "https://images.unsplash.com/photo-1591154669695-5f2a8d20c089?q=80&w=2487&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://images.unsplash.com/photo-1591154669695-5f2a8d20c089?q=80&w=2487&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    "https://images.unsplash.com/photo-1591154669695-5f2a8d20c089?q=80&w=2487&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  ],
+  viewCount: 13,
+  createdAt: "2024-07-30T07:30:09.027Z",
+  updatedAt: "2024-07-30T23:45:57.650Z",
+  likeCount: 0,
+  comments: [
+    {
+      _id: "66a89c87774db8d2e59f7e5e",
+      comment: "댓글 예시입니다.",
+      createdAt: "2024-07-30T07:55:51.848Z",
+      updatedAt: "2024-07-30T07:55:51.848Z",
+    },
+    {
+      _id: "66a89c8d774db8d2e59f7e63",
+      comment: "댓글 예시입니다.1",
+      createdAt: "2024-07-30T07:55:57.663Z",
+      updatedAt: "2024-07-30T07:55:57.663Z",
+    },
+    {
+      _id: "66a8ae32e86eb8c7b4afd3a2",
+      comment: "1",
+      createdAt: "2024-07-30T09:11:14.100Z",
+      updatedAt: "2024-07-30T09:11:14.100Z",
+    },
+  ],
+};
 
 export default SecretSquareDetailPage;

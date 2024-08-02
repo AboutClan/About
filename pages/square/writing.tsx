@@ -19,7 +19,7 @@ const defaultFormData: SecretSquareFormData = {
   category: "일상",
   title: "",
   content: "",
-  pollList: [{ value: "" }, { value: "" }, { value: "" }],
+  pollItems: [{ name: "" }, { name: "" }, { name: "" }],
   canMultiple: false,
 };
 
@@ -34,11 +34,10 @@ function SquareWritingPage() {
   const [imageArr, setImageArr] = useState<string[]>([]);
   /* eslint-disable @typescript-eslint/no-unused-vars */
   const [imageFormArr, setImageFormArr] = useState<Blob[]>([]);
-  const pollList = getValues("pollList");
-  const isPollType = pollList.every(({ value }) => !!value);
+  const pollItems = getValues("pollItems");
+  const isPollType = pollItems.every(({ name }) => !!name);
 
   const onSubmit: SubmitHandler<SecretSquareFormData> = (data) => {
-
     const type = isPollType ? "poll" : "general";
 
     // TODO
@@ -134,7 +133,7 @@ function SquareWritingPage() {
                   <Button
                     type="button"
                     onClick={() => {
-                      resetField("pollList", { defaultValue: defaultFormData["pollList"] });
+                      resetField("pollItems", { defaultValue: defaultFormData["pollItems"] });
                       resetField("canMultiple", { defaultValue: defaultFormData["canMultiple"] });
                     }}
                   >
@@ -142,7 +141,7 @@ function SquareWritingPage() {
                   </Button>
                 </Flex>
                 <VStack as="ul" mt={2}>
-                  {pollList.map(({ value }, index) => {
+                  {pollItems.map(({ name }, index) => {
                     return (
                       <Box
                         as="li"
@@ -155,7 +154,7 @@ function SquareWritingPage() {
                         }}
                         key={index}
                       >
-                        {value}
+                        {name}
                       </Box>
                     );
                   })}

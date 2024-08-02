@@ -1,14 +1,15 @@
 import { ITimeStamps } from "../utils/timeAndDate";
 
-export type SecretSquareCategory = "전체" | "일상" | "고민" | "정보" | "같이해요";
+export type SecretSquareCategory = "일상" | "고민" | "정보" | "같이해요";
+export type SecretSquareCategoryWithAll = "전체" | SecretSquareCategory;
 
 interface Comment extends ITimeStamps {
-  id: string;
+  _id: string;
   comment: string;
 }
 
 interface BaseSecretSquareItem extends ITimeStamps {
-  id: string;
+  _id: string;
   category: SecretSquareCategory;
   title: string;
   content: string;
@@ -23,25 +24,27 @@ interface GeneralSecretSquareItem extends BaseSecretSquareItem {
 }
 
 interface PollItem {
-  id: string;
-  value: string;
+  _id: string;
+  name: string;
   count: number;
 }
 
 interface PollSecretSquareItem extends BaseSecretSquareItem {
   type: "poll";
-  pollList: PollItem[];
-  canMultiple: boolean;
+  poll: {
+    pollItems: PollItem[];
+    canMultiple: boolean;
+  };
 }
 
-export type SquareType = "general" | "poll";
+export type SecretSquareType = "general" | "poll";
 
 export type SecretSquareItem = GeneralSecretSquareItem | PollSecretSquareItem;
 
 export type SecretSquareFormData = {
-  category: "일상" | "고민" | "정보" | "같이해요";
+  category: SecretSquareCategory;
   title: string;
   content: string;
-  pollList: { value: string }[];
+  pollItems: { name: string }[];
   canMultiple: boolean;
 };
