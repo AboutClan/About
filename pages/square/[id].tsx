@@ -7,6 +7,7 @@ import Divider from "../../components/atoms/Divider";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import PollItem from "../../pageTemplates/square/SecretSquare/PollItem";
+import SecretSquareComments from "../../pageTemplates/square/SecretSquare/SecretSquareComments";
 import { AVATAR_IMAGE_ARR } from "../../storage/avatarStorage";
 import { SecretSquareItem } from "../../types/models/square";
 import { getDateDiff } from "../../utils/dateTimeUtils";
@@ -169,7 +170,7 @@ function SecretSquareDetailPage() {
         <Divider />
         {/* comments section */}
         <Box px={4} as="section" bg="white">
-          comments section
+          <SecretSquareComments />
         </Box>
       </Slide>
     </>

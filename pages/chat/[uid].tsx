@@ -45,7 +45,7 @@ function Uid() {
 
   useEffect(() => {
     if (!chatInfo || !userInfo) return;
-    console.log("info", chatInfo);
+  
     setChats(
       chatInfo.contents.map((chat) => ({
         message: chat.content,
