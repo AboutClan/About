@@ -1,18 +1,14 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
-import dayjs from "dayjs";
-import { Fragment, useEffect, useState } from "react";
+import { Button, Flex } from "@chakra-ui/react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useSetRecoilState } from "recoil";
 
-import { useFeedCommentMutation, useFeedLikeMutation } from "../../hooks/feed/mutations";
+import { useFeedLikeMutation } from "../../hooks/feed/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
-import { UserCommentProps } from "../../types/components/propTypes";
+import { transferCommentsState, transferLikeUsersState } from "../../recoils/transferRecoils";
 import { FeedComment } from "../../types/models/feed";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
-import RightDrawer from "../organisms/drawer/RightDrawer";
-import ProfileCommentCard from "./cards/ProfileCommentCard";
 import AvatarGroupsOverwrap from "./groups/AvatarGroupsOverwrap";
-import UserComment from "./UserComment";
-import UserCommentInput from "./UserCommentInput";
 
 interface ContentHeartBarProps {
   feedId: string;
@@ -23,24 +19,22 @@ interface ContentHeartBarProps {
 }
 
 function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: ContentHeartBarProps) {
+  const router = useRouter();
+
+  const searchParams = useSearchParams();
+
   const { data: userInfo } = useUserInfoQuery();
 
-  const [modalType, setModalType] = useState<"like" | "comment">(null);
   const [heartProps, setHeartProps] = useState({ isMine: false, users: likeUsers, cnt: likeCnt });
-  const [commentArr, setCommentArr] = useState<UserCommentProps[]>(comments);
+
+  const transferLikeUsers = useSetRecoilState(transferLikeUsersState);
+  const transferComments = useSetRecoilState(transferCommentsState);
 
   const { mutate } = useFeedLikeMutation({
     onSuccess() {
       refetch();
     },
   });
-
-  useEffect(() => {
-    setCommentArr(comments);
-  }, [comments]);
-
-  const { mutate: writeComment } = useFeedCommentMutation(feedId);
-
 
   useEffect(() => {
     if (likeUsers?.some((who) => who.uid === userInfo?.uid)) {
@@ -50,10 +44,6 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
       setHeartProps((old) => ({ ...old, cnt: likeCnt, users: likeUsers }));
     }
   }, [likeUsers, likeCnt, userInfo?.uid]);
-
-  const resetCache = () => {
-    refetch();
-  };
 
   const onClickHeart = () => {
     setHeartProps((old) => {
@@ -80,17 +70,16 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
     image: who.profileImage,
   }));
 
-  const addNewComment = (user: IUserSummary, comment: string): UserCommentProps => {
-    return {
-      user,
-      comment,
-      createdAt: dayjsToStr(dayjs()),
-    };
-  };
-
-  const onSubmit = async (value: string) => {
-    await writeComment({ comment: value });
-    setCommentArr((old) => [...old, addNewComment(userInfo, value)]);
+  const handleDrawerBtn = (type: "comment" | "like") => {
+    if (type === "comment") {
+      setTransferLikeorComment(commentArr);
+    }
+    if (type === "like") {
+      setTransferLikeorComment(likeUsers);
+    }
+    router.push(`/square/${type}`);
+    // urlSearchParams.append("drawer", type);
+    // router.push(`/square?${urlSearchParams.toString()}`);
   };
 
   return (
@@ -112,7 +101,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
           {heartProps.cnt}
         </Button>
         <Button
-          onClick={() => setModalType("comment")}
+          onClick={() => handleDrawerBtn("comment")}
           size="sm"
           px="8px"
           variant="ghost"
@@ -120,50 +109,10 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
         >
           {commentArr.length}
         </Button>
-        <Button size="sm" variant="ghost" mb="2px" onClick={() => setModalType("like")}>
+        <Button size="sm" variant="ghost" mb="2px" onClick={() => handleDrawerBtn("like")}>
           <AvatarGroupsOverwrap userAvatarArr={userAvatarArr} size="sm" />
         </Button>
       </Flex>
-      {modalType === "like" && (
-        <RightDrawer title="좋아요" onClose={() => setModalType(null)}>
-          <Flex direction="column">
-            {likeUsers.map((who, idx) => (
-              <Fragment key={idx}>
-                <ProfileCommentCard user={who} comment={who.comment} />
-              </Fragment>
-            ))}
-          </Flex>
-        </RightDrawer>
-      )}
-      {modalType === "comment" && (
-        <RightDrawer title="댓글" onClose={() => setModalType(null)}>
-          <Flex direction="column" px="16px" mt="8px">
-            {commentArr.map((item, idx) => (
-              <UserComment
-                key={idx}
-                type="gather"
-                user={item.user}
-                updatedAt={item.updatedAt}
-                comment={item.comment}
-                pageId={feedId}
-                commentId="item._id"
-                setCommentArr={setCommentArr}
-                resetCache={resetCache}
-              />
-            ))}
-          </Flex>
-          <Box
-            position="fixed"
-            bottom="0"
-            flex={1}
-            w="100%"
-            p="16px"
-            borderTop="var(--border-main)dww"
-          >
-            <UserCommentInput user={userInfo} onSubmit={onSubmit} />
-          </Box>
-        </RightDrawer>
-      )}
     </>
   );
 }
