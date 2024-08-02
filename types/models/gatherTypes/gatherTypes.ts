@@ -10,7 +10,7 @@ export interface IGather extends Omit<IGatherWriting, "date">, ITimeStamps {
   participants: IGatherParticipants[];
   id: number;
   status: GatherStatus;
-  comment: UserCommentProps[];
+  comments: UserCommentProps[];
 }
 
 export interface IGatherWriting {
