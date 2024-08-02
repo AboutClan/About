@@ -1,17 +1,14 @@
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { useSetRecoilState } from "recoil";
 
 import HighlightedTextButton from "../../components/atoms/buttons/HighlightedTextButton";
 import SectionBar from "../../components/molecules/bars/SectionBar";
 import { IImageTileData } from "../../components/molecules/layouts/ImageTileFlexLayout";
 import ImageTileGridLayout from "../../components/molecules/layouts/ImageTitleGridLayout";
 import { useFeedsQuery } from "../../hooks/feed/queries";
-import { slideDirectionState } from "../../recoils/navigationRecoils";
 
 export default function HomeReviewSection() {
   const router = useRouter();
-  const setSlideDirection = useSetRecoilState(slideDirectionState);
 
   const { data: feeds } = useFeedsQuery("gather", null, 0, true);
 

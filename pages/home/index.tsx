@@ -13,7 +13,7 @@ import EventBanner from "../../pageTemplates/home/study/EventBanner";
 
 function Home() {
   const [tab, setTab] = useState<HomeTab>();
-  console.log(tab);
+;
   return (
     <>
       <HomeInitialSetting />

@@ -25,7 +25,6 @@ function SquareLoungeSection() {
   const firstLoad = useRef(true);
 
   const scrollId = searchParams.get("scroll");
-  console.log(24, scrollId);
 
   const {
     data: feeds,
