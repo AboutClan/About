@@ -1,6 +1,6 @@
 import { AspectRatio, Box, Flex } from "@chakra-ui/react";
-import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 
+import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import { FeedComment } from "../../types/models/feed";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import ContentSummary from "../atoms/ContentSummary";
