@@ -131,7 +131,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
     urlSearchParams.append("drawer", type);
     router.push(`/square?${urlSearchParams.toString()}`);
   };
- 
+
   return (
     <>
       <Flex align="center" pl="8px" pr="16px" pb="8px">
