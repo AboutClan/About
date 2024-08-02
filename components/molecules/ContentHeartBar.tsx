@@ -31,6 +31,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
   const { data: userInfo } = useUserInfoQuery();
   const drawerType = searchParams.get("drawer");
 
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [modalType, setModalType] = useState<"like" | "comment">(null);
   const [heartProps, setHeartProps] = useState({ isMine: false, users: likeUsers, cnt: likeCnt });
   const [commentArr, setCommentArr] = useState<UserCommentProps[]>(comments);
@@ -43,11 +44,15 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
   });
 
   useEffect(() => {
+    const viewportHeight = window.visualViewport.height;
+    const fullHeight = window.innerHeight;
     const handleResize = () => {
       if (window.visualViewport.height < window.innerHeight) {
         setIsKeyboardVisible(true);
+        setKeyboardHeight(fullHeight - viewportHeight);
       } else {
         setIsKeyboardVisible(false);
+        setKeyboardHeight(0);
       }
     };
 
@@ -179,9 +184,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
           <Flex
             direction="column"
             px="16px"
-            mt="8px"
-            position={isKeyboardVisible ? "fixed" : "relative"}
-            top={isKeyboardVisible ? "0" : "auto"}
+            mt={isKeyboardVisible ? `${keyboardHeight + 8}px` : "8px"}
             zIndex={1}
           >
             {commentArr.map((item, idx) => (
