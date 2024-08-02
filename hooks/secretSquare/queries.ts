@@ -35,12 +35,8 @@ export const useSecretSquareListQuery = (
       if (category !== "전체") {
         searchParams.set("category", category);
       }
-      //   const res = await axios.get<SecretSquareListResponse>(
-      //   `http://localhost:3001/square?${searchParams.toString()}`,
-      // );
-      return { squareList };
-      // const res = await axios.get<SecretSquareListResponse>(`${SERVER_URI}/square`);
-      // return res.data;
+      const res = await axios.get<SecretSquareListResponse>(`${SERVER_URI}/square`);
+      return res.data;
     },
     options,
   );
@@ -54,12 +50,8 @@ export const useGetSquareDetailQuery = (
   useQuery<SecretSquareDetailResponse, AxiosError, SecretSquareDetailResponse>(
     ["secretSquare", { squareId }],
     async () => {
-      //   const res = await axios.get<SecretSquareDetailResponse>(
-      //   `http://localhost:3001/square/${squareId}`,
-      // );
-      return detail;
-      // const res = await axios.get<SecretSquareDetailResponse>(`${SERVER_URI}/square/${squareId}`);
-      // return res.data;
+      const res = await axios.get<SecretSquareDetailResponse>(`${SERVER_URI}/square/${squareId}`);
+      return res.data;
     },
     options,
   );
