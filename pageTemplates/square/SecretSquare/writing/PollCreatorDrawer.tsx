@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Drawer,
   DrawerBody,
@@ -22,10 +23,12 @@ interface PollCreatorDrawerProps {
   onClose: () => void;
 }
 
+const MIN_POLL_ITEMS = 2;
+const MAX_POLL_ITEMS = 5;
+
 export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawerProps) {
   const { control, register, trigger, resetField, getValues } =
     useFormContext<SecretSquareFormData>();
-  // TODO 2 <= pollItems.length <= 5
   const {
     fields: pollItems,
     append,
@@ -38,7 +41,9 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
         // pollist is default value
         const isDefaultValue = pollList.length === 3 && pollList.every(({ name }) => name === "");
         const isValid =
-          pollList.length >= 2 && pollList.every(({ name }) => !!name && !!name.trim());
+          pollList.length >= MIN_POLL_ITEMS &&
+          pollList.length <= MAX_POLL_ITEMS &&
+          pollList.every(({ name }) => !!name && !!name.trim());
         return isDefaultValue || isValid || "2개 이상의 항목을 입력해주세요.";
       },
     },
@@ -75,19 +80,28 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
                     })}
                   />
                   {showRemovePollItemButton && (
-                    <Button
+                    <Box
+                      as="button"
                       type="button"
+                      color="var(--color-mint)"
+                      px={6}
                       onClick={() => {
                         remove(index);
                       }}
                     >
-                      삭제
-                    </Button>
+                      <i className="fa-regular fa-circle-minus fa-xl" />
+                    </Box>
                   )}
                 </Flex>
               );
             })}
-            <Button type="button" w="100%" onClick={addPollItem}>
+            <Button
+              type="button"
+              w="100%"
+              onClick={addPollItem}
+              isDisabled={pollItems.length >= MAX_POLL_ITEMS}
+            >
+              <i className="fa-regular fa-plus-large" style={{ marginRight: "8px" }} />
               항목 추가
             </Button>
             <Flex align="center" justifyContent="space-between" w="100%">

@@ -2,19 +2,32 @@ import { Button, Input } from "@chakra-ui/react";
 import { captureException } from "@sentry/nextjs";
 import { useRef } from "react";
 
+import { useFailToast } from "../../hooks/custom/CustomToast";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { processFile } from "../../utils/imageUtils";
 
 interface IImageUploadButton {
   setImageUrls: DispatchType<string[]>;
   setImageForms: DispatchType<Blob[]>;
+  maxFiles?: number;
 }
 
-export default function ImageUploadButton({ setImageUrls, setImageForms }: IImageUploadButton) {
+export default function ImageUploadButton({
+  setImageUrls,
+  setImageForms,
+  maxFiles,
+}: IImageUploadButton) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const toast = useFailToast();
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files as FileList);
+
+    if (maxFiles && files.length > maxFiles) {
+      toast("free", "이미지는 5개 이하로 추가할 수 있어요.");
+      return;
+    }
+
     const newImageUrls: string[] = [];
     const newImageForms: Blob[] = [];
 

@@ -86,7 +86,9 @@ function SecretSquareDetailPage() {
                 <Text as="h1" fontSize="xl" fontWeight={700}>
                   {squareDetail.title}
                 </Text>
-                <Text mt={2}>{squareDetail.content}</Text>
+                <Text mt={2} whiteSpace="break-spaces">
+                  {squareDetail.content}
+                </Text>
               </section>
 
               {squareDetail.type === "poll" && (
