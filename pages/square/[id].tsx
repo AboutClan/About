@@ -33,7 +33,7 @@ function SecretSquareDetailPage() {
       staleTime: Infinity,
     },
   );
-  const initialSelectedPollItems = new Set(pollStatus.pollItems);
+  const initialSelectedPollItems = new Set(pollStatus?.pollItems);
 
   const [selectedPollItems, setSelectedPollItems] = useState<Set<string>>(new Set());
   // calculate the difference btw poll and initialPoll
