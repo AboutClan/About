@@ -39,7 +39,7 @@ export default function SquareItem({ item }: SquareItemProps) {
       >
         {item.title}
       </Text>
-      <Flex justifyContent="space-between">
+      <Flex justifyContent="space-between" gap={4}>
         <Box
           mt={1}
           mb={2}

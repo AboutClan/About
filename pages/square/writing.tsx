@@ -13,7 +13,7 @@ import ImageUploadButton from "../../components/molecules/ImageUploadButton";
 import ImageUploadSlider, {
   ImageUploadTileProps,
 } from "../../components/organisms/sliders/ImageUploadSlider";
-import { useCompleteToast } from "../../hooks/custom/CustomToast";
+import { useCompleteToast, useInfoToast } from "../../hooks/custom/CustomToast";
 import { usePostSecretSquareMutation } from "../../hooks/secretSquare/mutations";
 import PollCreatorDrawer from "../../pageTemplates/square/SecretSquare/writing/PollCreatorDrawer";
 import SquareCategoryRadioGroup from "../../pageTemplates/square/SecretSquare/writing/SquareCategoryRadioGroup";
@@ -44,7 +44,8 @@ function SquareWritingPage() {
   const isPollType = pollItems.every(({ name }) => !!name);
 
   const { mutate: postSecretSquareMutate, isLoading } = usePostSecretSquareMutation();
-  const toast = useCompleteToast();
+  const completeToast = useCompleteToast();
+  const infoToast = useInfoToast();
 
   const onSubmit: SubmitHandler<SecretSquareFormData> = (data) => {
     const type = isPollType ? "poll" : "general";
@@ -70,7 +71,7 @@ function SquareWritingPage() {
       { formData },
       {
         onSuccess: () => {
-          toast("free", "게시물 등록이 완료되었습니다.");
+          completeToast("free", "게시물 등록이 완료되었습니다.");
           router.replace("/square");
         },
       },
@@ -187,7 +188,7 @@ function SquareWritingPage() {
           type="button"
           onClick={() => {
             if (isPollType) {
-              // TODO toast
+              infoToast("free", "투표는 최대 1개 등록할 수 있습니다.");
               return;
             }
             onOpen();

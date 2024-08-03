@@ -4,8 +4,7 @@ import { Dispatch, SetStateAction } from "react";
 import ButtonGroups, { IButtonOptions } from "../../../components/molecules/groups/ButtonGroups";
 import { type SecretSquareCategoryWithAll } from "../../../types/models/square";
 
-// FIXME extract constants file
-export const SECRET_SQUARE_CATEGORY: SecretSquareCategoryWithAll[] = [
+const SECRET_SQUARE_CATEGORY: SecretSquareCategoryWithAll[] = [
   "전체",
   "일상",
   "고민",
