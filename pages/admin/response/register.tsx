@@ -1,6 +1,7 @@
 /* eslint-disable */
 
 import { Button } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Avatar from "../../../components/atoms/Avatar";
@@ -9,6 +10,7 @@ import AdminLocationSelector from "../../../components/molecules/picker/AdminLoc
 import { useUserRegisterFormsQuery } from "../../../hooks/admin/quries";
 import CheckRegisterModal from "../../../modals/admin/checkRegisterModal/CheckRegisterModal";
 import { IUserRegisterForm } from "../../../types/models/userTypes/userInfoTypes";
+import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
 function AdminRegister() {
   const [isModal, setIsModal] = useState(false);
@@ -17,7 +19,7 @@ function AdminRegister() {
   const [registerData, setRegisterData] = useState<IUserRegisterForm[]>([]);
 
   const { data: applyData, refetch } = useUserRegisterFormsQuery();
-
+  console.log(4, applyData);
   const onClick = (who?: IUserRegisterForm) => {
     setApplicant(who);
     setIsModal(true);
@@ -47,7 +49,7 @@ function AdminRegister() {
               <Summary>
                 <div>
                   <span>{who?.name}</span>
-                  <span>2023년 o월 oo일 신청</span>
+                  <span>{dayjsToFormat(dayjs(who.updatedAt), "YY-MM-DD / HH:mm 신청")}</span>
                 </div>
                 <span>{who?.location}</span>
               </Summary>
