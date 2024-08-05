@@ -12,7 +12,8 @@ export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
   useEffect(() => {
     if (isWebView()) {
       const deviceInfoMessageListener = ({ data }: MessageEvent) => {
-        const deviceInfos: DeviceInfo = data ? JSON.parse(data) : {};
+        const isAccurateData = typeof data && data === "string" && data.includes("deviceInfo");
+        const deviceInfos: DeviceInfo = isAccurateData ? JSON.parse(data) : {};
         const shouldRegisterListener = !isNil(uid) && !isEmpty(deviceInfos);
 
         if (shouldRegisterListener) {
