@@ -1,8 +1,8 @@
 import { Box } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import ButtonGroups from "../../components/molecules/groups/ButtonGroups";
+import ButtonGroups, { IButtonOptions } from "../../components/molecules/groups/ButtonGroups";
 import { ActiveLocation, LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { createUrlWithLocation } from "../../utils/convertUtils/convertTypes";
@@ -17,6 +17,10 @@ export default function GatherLocationFilter() {
 
   const [location, setLocation] = useState<ActiveLocation | "전체">(defaultLocation || "전체");
 
+  useEffect(() => {
+    setLocation(defaultLocation);
+  }, [defaultLocation]);
+
   const onClickButton = (locationType: ActiveLocation | "전체") => {
     setLocation(locationType);
     const url =
@@ -26,7 +30,7 @@ export default function GatherLocationFilter() {
     router.replace(url);
   };
 
-  const buttonDataArr = [
+  const buttonItems: IButtonOptions[] = [
     {
       text: "전체",
       func: () => onClickButton("전체"),
@@ -60,7 +64,7 @@ export default function GatherLocationFilter() {
   return (
     <Box p="12px 16px" pr="0">
       <ButtonGroups
-        buttonDataArr={buttonDataArr.sort((x, y) => {
+        buttonItems={buttonItems.sort((x, y) => {
           if (x.text === "전체") return -1;
           if (y.text === "전체") return 1;
           if (x.text === defaultLocation) return -1;

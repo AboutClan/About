@@ -26,6 +26,7 @@ export default function AvatarGroupsOverwrap({ userAvatarArr }: IAvatarGroupsOve
               image={att.image}
               avatar={att.avatar}
               size="sm"
+              isLink={false}
               shadowAvatar={idx === VOTER_SHOW_MAX - 1 && userAvatarArr.length - idx}
             />
           )

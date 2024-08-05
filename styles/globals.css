@@ -42,13 +42,18 @@ a {
 #__next {
   min-width: 340px;
   max-width: 400px;
-  padding-top: 56px !important;
-  padding-bottom: 40px;
+
   min-height: 100dvh;
   margin: 0 auto;
   background-color: var(--gray-100);
 
   overflow: hidden;
+}
+@media (min-width: 400px) {
+  #__next {
+    border-left: var(--border);
+    border-right: var(--border);
+  }
 }
 
 .CircularProgressbar-trail {

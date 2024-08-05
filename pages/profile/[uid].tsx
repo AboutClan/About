@@ -1,7 +1,8 @@
 import { Button } from "@chakra-ui/react";
+import { useParams, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useEffect, useState } from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import Header from "../../components/layouts/Header";
@@ -12,43 +13,72 @@ import DeclareDrawer from "../../pageTemplates/profile/DeclareDrawer";
 import DetailInfo from "../../pageTemplates/profile/DetailInfo";
 import ProfileOverview from "../../pageTemplates/profile/ProfileOverview";
 import { prevPageUrlState } from "../../recoils/previousAtoms";
-import { transferUserSummaryState } from "../../recoils/transferRecoils";
+import { transferUserName } from "../../recoils/transferRecoils";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { DeclareRequest } from "../../types/models/userTypes/userRequestTypes";
 
 function ProfilePage() {
   const router = useRouter();
-  const userData = useRecoilValue(transferUserSummaryState);
+  const searchParams = useSearchParams();
+
   const beforePage = useRecoilValue(prevPageUrlState);
 
-  const uid = router.query.uid;
+  const isDeclare = searchParams.get("declare") === "on";
 
-  const [isModal, setIsModal] = useState(false);
+  const { uid } = useParams<{ uid: string }>() || {};
+
+  const setTransferUserName = useSetRecoilState(transferUserName);
   const [declareModal, setDeclareModal] = useState<DeclareRequest>();
 
-  const { data: userInfo } = useUidToUserInfoQuery(uid as string, {
-    enabled: !!uid && !userData,
+  const { data: user } = useUidToUserInfoQuery(uid as string, {
+    enabled: !!uid,
   });
+
+  useEffect(() => {
+    if (user) setTransferUserName(user.name);
+  }, [user]);
+
+  const handleDrawer = () => {
+    router.replace(`/profile/${uid}?declare=on`);
+  };
+ 
+
 
   return (
     <>
-      <Header title="" url={beforePage}>
-        <Button pr="4px" variant="ghost">
-          <i className="fa-solid fa-ellipsis-vertical fa-lg"  onClick={() => setIsModal(true)} />
+      <Header title="" url={beforePage} rightPadding={8}>
+        <Button
+          px="12px"
+          size="md"
+          variant="ghost"
+          onClick={() => router.push(`/chat/${user._id}`)}
+        >
+          <i className="fa-regular fa-paper-plane fa-lg" />
+        </Button>
+        <Button px="12px" size="md" variant="ghost" onClick={handleDrawer}>
+          <i className="fa-regular fa-ellipsis fa-lg" />
         </Button>
       </Header>
       <Slide>
         <Container>
           <Layout>
-            <ProfileOverview user={(userData as IUser) || userInfo} />
+            <ProfileOverview user={user as IUser} />
             <HrDiv />
-            <DetailInfo user={(userData as IUser) || userInfo} />
+            <DetailInfo user={user as IUser} />
           </Layout>
         </Container>
       </Slide>
-      <BottomDrawer isModal={isModal} setIsModal={setIsModal} setDeclareModal={setDeclareModal} />
+      {isDeclare && (
+        <BottomDrawer
+          onClose={() => {
+            router.replace(`/profile/${uid}`);
+          }}
+          setDeclareModal={setDeclareModal}
+        />
+      )}
+
       <DeclareDrawer
-        userData={(userData as IUser) || userInfo}
+        userData={user}
         declareModal={declareModal}
         setDeclareModal={setDeclareModal}
       />

@@ -6,18 +6,44 @@ import { SERVER_URI } from "../../constants/system";
 import { IGatherSummary } from "../../pages/review";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
-import { IGroup, IGroupAttendance } from "../../types/models/groupTypes/group";
+import {
+  GroupCategory,
+  GroupStatus,
+  IGroup,
+  IGroupAttendance,
+} from "../../types/models/groupTypes/group";
 
-export const useGroupQuery = (options?: QueryOptions<IGroup[]>) =>
+export const useGroupQuery = (
+  filter: GroupStatus,
+  category: GroupCategory,
+  cursor: number,
+  options?: QueryOptions<IGroup[]>,
+) =>
   useQuery<IGroup[], AxiosError, IGroup[]>(
-    [GROUP_STUDY_ALL],
+    [GROUP_STUDY_ALL, filter, category, cursor],
     async () => {
-      const res = await axios.get<IGroup[]>(`${SERVER_URI}/groupStudy`);
+      const res = await axios.get<IGroup[]>(`${SERVER_URI}/groupStudy`, {
+        params: { filter, category, cursor },
+      });
 
       return res.data;
     },
     options,
   );
+
+export const useGroupIdQuery = (groupStudyId?: string, options?: QueryOptions<IGroup>) =>
+  useQuery<IGroup, AxiosError, IGroup>(
+    [GROUP_STUDY, groupStudyId],
+    async () => {
+      const res = await axios.get<IGroup>(`${SERVER_URI}/groupStudy`, {
+        params: { groupStudyId },
+      });
+
+      return res.data;
+    },
+    options,
+  );
+
 export const useGroupAttendanceQuery = (id: number, options?: QueryOptions<IGroupAttendance>) =>
   useQuery<IGroupAttendance, AxiosError, IGroupAttendance>(
     [GROUP_STUDY, "attendance"],

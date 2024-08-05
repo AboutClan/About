@@ -12,7 +12,7 @@ import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { getUrlWithLocationAndDate } from "../../utils/convertUtils/convertTypes";
 
-export type HomeTab = "스터디" | "모임" | "동아리" | "기타";
+export type HomeTab = "스터디" | "번개" | "캘린더" | "랭킹";
 
 interface HomeTabProps {
   tab: HomeTab;
@@ -32,9 +32,9 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
 
   const matchParam = {
     study: "스터디",
-    gather: "모임",
-    club: "동아리",
-    temp: "기타",
+    gather: "번개",
+    club: "캘린더",
+    temp: "랭킹",
   };
 
   useEffect(() => {
@@ -58,15 +58,15 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
       const initialUrl = getUrlWithLocationAndDate(locationParam, dateParam, session.user.location);
       router.replace(initialUrl);
     }
-    if (tab === "모임") {
+    if (tab === "번개") {
       router.replace(
         `/home?tab=gather&location=${locationParam || convertLocationLangTo(session?.user.location || "suw", "en")}`,
       );
     }
-    if (tab === "기타") {
+    if (tab === "랭킹") {
       router.replace(`/home?tab=temp`);
     }
-    if (tab === "동아리") {
+    if (tab === "캘린더") {
       router.replace(`/home?tab=club`);
     }
 
@@ -85,18 +85,18 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
       flex: 1,
     },
     {
-      text: "모임",
-      func: () => handleTabMove("모임"),
+      text: "번개",
+      func: () => handleTabMove("번개"),
       flex: 1,
     },
     {
-      text: "동아리",
-      func: () => handleTabMove("동아리"),
+      text: "캘린더",
+      func: () => handleTabMove("캘린더"),
       flex: 1,
     },
     {
-      text: "기타",
-      func: () => handleTabMove("기타"),
+      text: "랭킹",
+      func: () => handleTabMove("랭킹"),
       flex: 1,
     },
   ];

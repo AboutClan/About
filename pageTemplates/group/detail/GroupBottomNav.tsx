@@ -1,8 +1,11 @@
 import { Button } from "@chakra-ui/react";
 import { useRouter } from "next/dist/client/router";
+import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
+import { GROUP_STUDY } from "../../../constants/keys/queryKeys";
 import { useCompleteToast, useErrorToast } from "../../../hooks/custom/CustomToast";
 import { useGroupParticipationMutation } from "../../../hooks/groupStudy/mutations";
 import { IGroup } from "../../../types/models/groupTypes/group";
@@ -16,6 +19,7 @@ type ButtonType = "cancel" | "participate" | "expire";
 function GroupBottomNav({ data }: IGroupBottomNav) {
   const router = useRouter();
   const completeToast = useCompleteToast();
+  const { id } = useParams<{ id: string }>() || {};
 
   const errorToast = useErrorToast();
   const { data: session } = useSession();
@@ -25,14 +29,15 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
 
   const isPending = data.waiting.find((who) => who.user.uid === myUid);
 
-  const GroupId = +router.query.id;
+  const groupId = router.query.id;
 
-  const isFull = data?.participants.length >= data?.memberCnt.max;
+  const isFull = data?.memberCnt.max !== 0 && data?.participants.length >= data?.memberCnt.max;
 
-  const { mutate: cancel } = useGroupParticipationMutation("delete", GroupId, {
+  const queryClient = useQueryClient();
+  const { mutate: cancel } = useGroupParticipationMutation("delete", +groupId, {
     onSuccess() {
       completeToast("free", "참여 신청이 취소되었습니다.", true);
-      // resetQueryData([Group_CONTENT]);
+      queryClient.invalidateQueries([GROUP_STUDY, id]);
     },
     onError: errorToast,
   });

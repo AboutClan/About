@@ -50,7 +50,7 @@ function PromotionModal({ setIsModal }: IModal) {
           </div>
         </IconWrapper>
         <Info>
-          <span>+ 100 POINT</span>
+          <span>+ 200 POINT</span>
           <span>+ 추첨 선물</span>
         </Info>
       </ImageContainer>

@@ -46,7 +46,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
             </IconWrapper>
           )}
           <IconWrapper>
-            <i className="fa-light fa-share-nodes fa-lg"  onClick={() => setIsModal(true)} />
+            <i className="fa-light fa-share-nodes fa-lg" onClick={() => setIsModal(true)} />
           </IconWrapper>
         </Flex>
       </Header>

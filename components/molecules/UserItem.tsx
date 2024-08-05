@@ -3,7 +3,6 @@ import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { prevPageUrlState } from "../../recoils/previousAtoms";
-import { transferUserSummaryState } from "../../recoils/transferRecoils";
 import { IUser, IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import Avatar from "../atoms/Avatar";
 
@@ -15,10 +14,9 @@ interface IUserItem {
 
 export function UserItem({ user, children }: IUserItem) {
   const router = useRouter();
-  const setUserData = useSetRecoilState(transferUserSummaryState);
+
   const setBeforePage = useSetRecoilState(prevPageUrlState);
   const onClickProfile = (user: IUserSummary) => {
-    setUserData(user);
     setBeforePage(router?.asPath);
     router.push(`/profile/${user.uid}`);
   };

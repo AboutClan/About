@@ -1,6 +1,8 @@
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import ImageTileSlider, { IImageTile } from "../../components/organisms/sliders/ImageTileSlider";
+import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { IGroup } from "../../types/models/groupTypes/group";
 import { getRandomImage } from "../../utils/imageUtils";
 
@@ -9,12 +11,15 @@ interface IGroupMine {
 }
 
 function GroupMine({ myGroups }: IGroupMine) {
+  const setGroup = useSetRecoilState(transferGroupDataState);
+
   const imageTileArr: IImageTile[] = myGroups
     ?.filter((group) => group.status !== "end")
     .map((group) => ({
       imageUrl: group.image || getRandomImage(),
       text: group.title,
       url: `/group/${group.id}`,
+      func: () => setGroup(group),
     }));
 
   return (
@@ -36,19 +41,14 @@ const Layout = styled.div`
 
 const BlockLayout = styled.div`
   height: 110px;
-
-  margin-right: var(--gap-4);
-  padding: var(--gap-3) var(--gap-3);
-  padding-bottom: var(--gap-2);
   background-color: inherit;
-
+  padding-top: 2px;
   border-radius: var(--rounded);
   flex-direction: column;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: var(--gap-4);
-  margin-bottom: var(--gap-4);
+
   font-size: 18px;
   color: var(--gray-600);
 `;

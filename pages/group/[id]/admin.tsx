@@ -1,6 +1,7 @@
 import { Box, Button } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 import Header from "../../../components/layouts/Header";
@@ -9,9 +10,10 @@ import { UserItem } from "../../../components/molecules/UserItem";
 import { useAdminPointSystemMutation } from "../../../hooks/admin/mutation";
 import { useCompleteToast } from "../../../hooks/custom/CustomToast";
 import { useGroupWaitingStatusMutation } from "../../../hooks/groupStudy/mutations";
-import { useGroupQuery } from "../../../hooks/groupStudy/queries";
+import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
 import InviteOuterModal from "../../../modals/groupStudy/InviteOuterModal";
 import GroupAdminInvitation from "../../../pageTemplates/group/admin/GroupAdminInvitation";
+import { transferGroupDataState } from "../../../recoils/transferRecoils";
 import { IGroup } from "../../../types/models/groupTypes/group";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
 
@@ -22,12 +24,14 @@ function Admin() {
   const [deletedUsers, setDeletedUser] = useState([]);
   const [group, setGroup] = useState<IGroup>();
   const [isOuterModal, setIsOuterModal] = useState(false);
+  const transferGroup = useRecoilValue(transferGroupDataState);
 
-  const { data: groups } = useGroupQuery();
+  const { data: groupData } = useGroupIdQuery(id, { enabled: !!id && !transferGroup });
 
   useEffect(() => {
-    if (groups) setGroup(groups.find((item) => item.id + "" === id));
-  }, [groups]);
+    if (transferGroup) setGroup(transferGroup);
+    else if (groupData) setGroup(groupData);
+  }, [transferGroup, groupData]);
 
   const { mutate, isLoading } = useGroupWaitingStatusMutation(+id, {
     onSuccess() {
@@ -46,7 +50,7 @@ function Admin() {
     const chargeFee = {
       uid: user.uid,
       type: pointType,
-      message: "동아리 가입",
+      message: "소모임 가입",
       value: pointType === "deposit" ? -group.fee || -200 : -group.fee * 0.15 || -30,
     };
 

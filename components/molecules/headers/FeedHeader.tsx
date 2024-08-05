@@ -1,25 +1,23 @@
 import styled from "styled-components";
 
-import Avatar from "../../components/atoms/Avatar";
-
-interface IReviewItemHeader {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  writer: any;
+import { ABOUT_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
+import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import Avatar from "../../atoms/Avatar";
+interface IFeedHeader {
+  writer: IUserSummary;
   date: string;
 }
 
-function ReviewItemHeader({ writer, date }: IReviewItemHeader) {
-  const isABOUT = writer.name === "이승주";
+function FeedHeader({ writer = ABOUT_USER_SUMMARY, date }: IFeedHeader) {
   return (
     <Layout>
       <Profile>
         <Avatar image={writer?.profileImage} avatar={writer?.avatar} uid={writer?.uid} size="smd" />
         <div>
-          <Writer isABOUT={isABOUT}>{isABOUT ? "어바웃" : writer.name}</Writer>
+          <Writer>{writer.name}</Writer>
           <span>{date}</span>
         </div>
       </Profile>
-      {/* <i className="fa- fa-ellipsis" size="lg" /> */}
     </Layout>
   );
 }
@@ -33,16 +31,9 @@ const Layout = styled.div`
   align-items: center;
 `;
 
-const Writer = styled.span<{ isABOUT: boolean }>`
+const Writer = styled.span`
   font-weight: 600;
   font-size: 13px;
-  ${(props) =>
-    props.isABOUT &&
-    `
-background: linear-gradient(90deg, #04e19b, #03b1e8);
--webkit-background-clip: text;
-color: transparent;
-display: inline;`}
 `;
 
 const Profile = styled.div`
@@ -60,4 +51,4 @@ const Profile = styled.div`
   }
 `;
 
-export default ReviewItemHeader;
+export default FeedHeader;

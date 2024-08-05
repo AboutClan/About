@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
@@ -23,8 +23,12 @@ import { checkAndSetLocalStorage } from "../../utils/storageUtils";
 import { detectDevice } from "../../utils/validationUtils";
 
 function HomeInitialSetting() {
+<<<<<<< HEAD
   usePushServiceInitialize();
 
+=======
+  const router = useRouter();
+>>>>>>> main
   const toast = useToast();
   const { data: session } = useSession();
   const searchParams = useSearchParams();
@@ -34,7 +38,19 @@ function HomeInitialSetting() {
   const [isGuide, setIsGuide] = useState(false);
   const [isGuestModal, setIsGuestModal] = useState(false);
 
-  const { data: userInfo } = useUserInfoQuery({ enabled: !isGuest });
+  const { data: userInfo } = useUserInfoQuery({
+    enabled: !isGuest,
+    onSuccess(data) {
+      if (data.role === "newUser") {
+        router.push("/register/location");
+        return;
+      }
+      if (data.role === "waiting") {
+        router.push("/login?status=waiting");
+        return;
+      }
+    },
+  });
 
   const setStudyDateStatus = useSetRecoilState(studyDateStatusState);
   const setRenderHomeHeaderState = useSetRecoilState(renderHomeHeaderState);
@@ -117,7 +133,7 @@ function HomeInitialSetting() {
 
   return (
     <>
-      {userInfo && !isGuest && <UserSettingPopUp cnt={isGuide ? 1 : 0} />}
+      {userInfo && !isGuest && <UserSettingPopUp userInfo={userInfo} cnt={isGuide ? 1 : 0} />}
       {isGuestModal && <FAQPopUp setIsModal={setIsGuestModal} />}
       <GlobalStyle />
       {!isPWALogin && detectDevice() !== "PC" && <PCBottomNav />}

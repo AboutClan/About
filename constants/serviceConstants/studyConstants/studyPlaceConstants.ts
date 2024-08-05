@@ -40,6 +40,9 @@ export const YANG_목동10단지점 = "665b92d98582d7bab14810c8";
 export const YANG_홍대입구역점 = "666d91490cfe48b2ae710e2d";
 export const YANG_대방역점 = "6671407d8fc22736d823aa4b";
 export const YANG_여의도브라이튼점 = "668ffd326f0575e13e45ba3d";
+export const YANG_홍대역1번출구점 = "6699177a49b4b7bb22a19e71";
+export const YANG_홍대땡땡거리점 = "669918c249b4b7bb22a1a196";
+export const YANG_양천목동점 = "669de00d353c23244e5530db";
 
 //안양
 export const ANYANG_범계역 = "6456ede120352b2d87582955";
@@ -58,6 +61,7 @@ export const GANGNAM_교대역 = "652a5245db9e8e554deafd66";
 export const GANGNAM_강남역 = "652a9e8adb9e8e554deafd68";
 export const GANGNAM_도곡동점 = "65522b7ed01680084c5c6a93";
 export const GANGNAM_교대법원점 = "665b25218582d7bab1478ad7";
+export const GANGNAM_강남역중앙점 = "669c9bbf8cf5ed92ba8266ba";
 
 //동대문
 export const DONG_혜화역 = "6597be44a11634850ed506d3";
@@ -91,3 +95,4 @@ export const INC_청라점 = "6669d0ebe7d56ca0ebf7b547";
 export const INC_서구청점 = "666c80000cfe48b2ae6fbf7a";
 export const INC_인하대역점 = "667d174aede956c155749a4e";
 export const INC_인하대점2 = "667d1771ede956c155749a5a";
+export const INC_송도캐슬파크점 = "669ba6ba27474ebca2cad7d5";

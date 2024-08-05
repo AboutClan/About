@@ -1,9 +1,10 @@
+import { Box } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-import RuleIcon from "../../components/atoms/Icons/RuleIcon";
+import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import Selector from "../../components/atoms/Selector";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
@@ -13,12 +14,10 @@ import CheckBoxNav from "../../components/molecules/CheckBoxNav";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import {
   GROUP_STUDY_CATEGORY_ARR,
-  GROUP_STUDY_RULE_CONTENT,
   GROUP_STUDY_SUB_CATEGORY,
 } from "../../constants/contentsText/GroupStudyContents";
 import { GROUP_WRITING_STORE } from "../../constants/keys/localStorage";
 import { useGroupQuery } from "../../hooks/groupStudy/queries";
-import RuleModal from "../../modals/RuleModal";
 import GroupBlock from "../../pageTemplates/group/GroupBlock";
 import GroupMine from "../../pageTemplates/group/GroupMine";
 import GroupSkeletonMain from "../../pageTemplates/group/GroupSkeletonMain";
@@ -31,11 +30,11 @@ interface ICategory {
   sub: string | null;
 }
 
-function Index() {
+function GroupPage() {
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
   const categoryIdx = searchParams.get("category");
-  const filterType = searchParams.get("filter");
+  const filterType = searchParams.get("filter") as "pending" | "end";
   const router = useRouter();
   const { data: session } = useSession();
   const isGuest = session?.user.name === "guest";
@@ -46,13 +45,20 @@ function Index() {
     sub: null,
   });
 
-  const isFirstRender = useRef(true);
+  const loader = useRef<HTMLDivElement | null>(null);
+  const firstLoad = useRef(true);
 
-  const [groupStudies, setGroupStudies] = useState<IGroup[]>();
-  const [myGroups, setMyGroups] = useState<IGroup[]>([]);
-  const [isRuleModal, setIsRuleModal] = useState(false);
+  const [groupStudies, setGroupStudies] = useState<IGroup[]>([]);
+  const [myGroups, setMyGroups] = useState<IGroup[]>();
+  const [cursor, setCursor] = useState(0);
+  const { data: groups, isLoading } = useGroupQuery(filterType, category.main, cursor, {
+    enabled: !!filterType,
+  });
 
-  const { data: groups, isLoading } = useGroupQuery();
+  useEffect(() => {
+    setCursor(0);
+    setGroupStudies([]);
+  }, [filterType, category.main]);
 
   useEffect(() => {
     localStorage.setItem(GROUP_WRITING_STORE, null);
@@ -60,69 +66,72 @@ function Index() {
       main: categoryIdx !== null ? GROUP_STUDY_CATEGORY_ARR[categoryIdx] : "전체",
       sub: null,
     });
-
-    const filterToStatus = {
-      open: "모집중",
-      gathering: "소그룹",
+    const filterToStatus: Record<string, "모집중" | "종료"> = {
+      pending: "모집중",
       end: "종료",
     };
-
     setStatus(filterType ? filterToStatus[filterType] : "모집중");
     if (!searchParams.get("filter")) {
-      newSearchParams.append("filter", "open");
+      newSearchParams.append("filter", "pending");
       newSearchParams.append("category", "0");
       router.replace(`/group?${newSearchParams.toString()}`);
     }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !firstLoad.current) {
+          setCursor((prevCursor) => prevCursor + 1);
+        }
+      },
+      { threshold: 1.0 },
+    );
+
+    if (loader.current) {
+      observer.observe(loader.current);
+    }
+
+    return () => {
+      if (loader.current) {
+        observer.unobserve(loader.current);
+      }
+    };
   }, []);
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false; // 첫 렌더링 후에 false로 설정
-      return; // 첫 렌더링 시에는 여기서 종료
-    }
     const statusToEn = {
-      모집중: "open",
-      소그룹: "gathering",
+      모집중: "pending",
       종료: "end",
     };
-
     newSearchParams.set("filter", statusToEn[status]);
     router.replace(`/group?${newSearchParams.toString()}`);
   }, [status]);
 
   useEffect(() => {
     if (!groups) return;
-    if (!isGuest) {
+    firstLoad.current = false;
+    if (category.main !== "전체") return;
+    setGroupStudies((old) => [...shuffleArray(groups), ...old]);
+  }, [groups, category.main]);
+
+  useEffect(() => {
+    if (!groups || category.main === "전체") return;
+    setGroupStudies(groups.filter((item) => !category.sub || item.category.sub === category.sub));
+  }, [category.sub, groups]);
+
+  useEffect(() => {
+    if (!isGuest && groupStudies.length && !myGroups) {
       setMyGroups(
-        groups.filter((item) =>
+        groupStudies.filter((item) =>
           item.participants.some((who) => {
             if (!who?.user?.uid) {
               return;
             }
+
             return who.user.uid === session?.user.uid;
           }),
         ),
       );
     }
-
-    const filtered =
-      category.main === "전체"
-        ? groups
-        : groups.filter(
-            (item) =>
-              (item.category.main === category.main && !category.sub) ||
-              item.category.sub === category.sub,
-          );
-
-    const filtered2 =
-      status === "모집중"
-        ? filtered.filter((item) => item.status === "open" || item.status === "pending")
-        : status === "종료"
-          ? filtered.filter((item) => item.status === "end")
-          : filtered;
-
-    setGroupStudies(shuffleArray(filtered2));
-  }, [category, groups, isGuest, status, session?.user]);
+  }, [groupStudies, session?.user]);
 
   const mainTabOptionsArr: ITabNavOptions[] = GROUP_STUDY_CATEGORY_ARR.map((category, idx) => ({
     text: category,
@@ -144,13 +153,10 @@ function Index() {
 
   return (
     <>
-      <Header title="소모임" url="/home" isBack={false}>
-        <RuleIcon setIsModal={setIsRuleModal} />
-      </Header>
-
+      <Header title="소모임" url="/home" isBack={false} />
       <Slide>
         <Layout>
-          {!groupStudies ? <GroupSkeletonMine /> : <GroupMine myGroups={myGroups} />}
+          {!myGroups ? <GroupSkeletonMine /> : <GroupMine myGroups={myGroups} />}
           <SectionBar title="전체 소모임" rightComponent={<StatusSelector />} />
           <NavWrapper>
             <TabNav selected={category.main} tabOptionsArr={mainTabOptionsArr} isMain />
@@ -162,8 +168,8 @@ function Index() {
               setSelectedButton={(value: string) => setCategory((old) => ({ ...old, sub: value }))}
             />
           </SubNavWrapper>
-          <>
-            {isLoading ? (
+          <Box minH="1000px">
+            {!groupStudies.length && isLoading ? (
               <GroupSkeletonMain />
             ) : (
               <Main>
@@ -173,11 +179,15 @@ function Index() {
                   ?.map((group) => <GroupBlock group={group} key={group.id} />)}
               </Main>
             )}
-          </>
+          </Box>
+          <div ref={loader} />
+          {isLoading && groupStudies.length ? (
+            <Box position="relative" mt="32px" mb="40px">
+              <MainLoadingAbsolute size="sm" />
+            </Box>
+          ) : undefined}
         </Layout>
       </Slide>
-
-      {isRuleModal && <RuleModal content={GROUP_STUDY_RULE_CONTENT} setIsModal={setIsRuleModal} />}
     </>
   );
 }
@@ -185,7 +195,7 @@ function Index() {
 const Layout = styled.div`
   min-height: 100vh;
   background-color: var(--gray-100);
-  padding-bottom: 40px;
+  padding-bottom: 60px;
 `;
 
 const NavWrapper = styled.div`
@@ -198,4 +208,4 @@ const Main = styled.main`
   margin: 8px var(--gap-4);
 `;
 
-export default Index;
+export default GroupPage;

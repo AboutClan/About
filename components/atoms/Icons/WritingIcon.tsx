@@ -1,23 +1,26 @@
-import { useRouter } from "next/router";
+import Link from "next/link";
 import styled from "styled-components";
 
 interface IWritingIcon {
   url: string;
+  isBottomNav?: boolean;
+  onClick?: () => void;
 }
 
-function WritingIcon({ url }: IWritingIcon) {
-  const router = useRouter();
+function WritingIcon({ url, isBottomNav = true, onClick }: IWritingIcon) {
   return (
-    <Layout onClick={() => router.push(url)}>
-      <i className="fa-light fa-pen-line fa-xl" style={{ color: "white" }} />
-    </Layout>
+    <Link href={url} onClick={onClick}>
+      <Layout isBottomNav={isBottomNav}>
+        <i className="fa-light fa-pen-line fa-xl" style={{ color: "white" }} />
+      </Layout>
+    </Link>
   );
 }
 
-const Layout = styled.button`
+const Layout = styled.button<{ isBottomNav: boolean }>`
   font-size: 16px;
   position: fixed;
-  bottom: 92px;
+  bottom: ${(props) => (props.isBottomNav ? "92px" : "16px")};
   right: 16px;
   background-color: var(--color-mint);
   width: 58px;

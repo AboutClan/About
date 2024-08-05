@@ -44,6 +44,7 @@ interface IModalLayout extends IModal {
   headerOptions?: IHeaderOptions;
   paddingOptions?: IPaddingOptions;
   isInputFocus?: boolean;
+  isCloseButton?: boolean;
 }
 
 export interface IPaddingOptions {
@@ -64,6 +65,7 @@ export function ModalLayout({
   children,
   paddingOptions,
   isInputFocus,
+  isCloseButton = true,
 }: IModalLayout) {
   const onClose = () => setIsModal(false);
 
@@ -105,7 +107,7 @@ export function ModalLayout({
             <ChakraModalHeader p="16px 20px" fontSize="20px" borderBottom="var(--border)">
               {title}
             </ChakraModalHeader>
-            <ModalCloseButton size="lg" />
+            {isCloseButton && <ModalCloseButton size="lg" />}
           </>
         ) : headerOptions?.children ? (
           headerOptions.children

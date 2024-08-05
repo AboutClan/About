@@ -1,7 +1,11 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-function ReviewContent({ text }: { text: string }) {
+interface ContentSummaryProps {
+  text: string;
+}
+
+function ContentSummary({ text }: ContentSummaryProps) {
   const [isShort, setIsShort] = useState(true);
 
   return (
@@ -11,20 +15,20 @@ function ReviewContent({ text }: { text: string }) {
   );
 }
 
-const P = styled.p<{ isShort: boolean }>`
+const P = styled.pre<{ isShort: boolean }>`
   ${(props) =>
     props.isShort &&
     `-webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;   `}
-
-  padding: 0 var(--gap-4);
+  white-space: pre-wrap;
   font-size: 13px;
   display: -webkit-box;
+  font-family: apple;
 
   > span {
     font-size: 12px;
   }
 `;
 
-export default ReviewContent;
+export default ContentSummary;

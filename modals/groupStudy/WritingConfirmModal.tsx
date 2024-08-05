@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 import SuccessScreen from "../../components/layouts/SuccessScreen";
 import { GROUP_WRITING_STORE } from "../../constants/keys/localStorage";
-import { GROUP_STUDY_ALL } from "../../constants/keys/queryKeys";
+import { GROUP_STUDY, GROUP_STUDY_ALL } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
 import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";
 import { useGroupWritingMutation } from "../../hooks/groupStudy/mutations";
@@ -25,28 +25,31 @@ function GroupConfirmModal({ setIsModal, groupWriting }: IGroupConfirmModal) {
   const completeToast = useCompleteToast();
 
   const [isSuccessScreen, setIsSuccessScreen] = useState(false);
-  const setGroup = useSetRecoilState(transferGroupDataState);
+
+  const setTransferGroup = useSetRecoilState(transferGroupDataState);
+
   const resetQueryData = useResetQueryData();
 
   const resetLocalStorage = () => {
     localStorage.setItem(GROUP_WRITING_STORE, null);
+    setTransferGroup(null);
   };
 
   const { mutate } = useGroupWritingMutation("post", {
     onSuccess() {
       resetQueryData([GROUP_STUDY_ALL]);
-      setGroup(null);
       resetLocalStorage();
       setIsSuccessScreen(true);
     },
     onError: errorToast,
   });
+
   const { mutate: updateGroup } = useGroupWritingMutation("patch", {
     onSuccess() {
       resetLocalStorage();
-      setGroup(null);
+
       completeToast("free", "수정되었습니다.");
-      resetQueryData([GROUP_STUDY_ALL], () => {
+      resetQueryData([GROUP_STUDY, groupWriting.id], () => {
         router.push(`/group/${groupWriting.id}`);
       });
     },

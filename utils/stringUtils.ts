@@ -20,6 +20,7 @@ export const parseUrlToSegments = (url) => {
 };
 
 export const searchName = (users: IUser[] | IUserSummary[], name: string) => {
+  if (!users) return;
   return users.filter(
     (user) => (user.isActive && user.name === name) || user.name.slice(1) === name,
   );

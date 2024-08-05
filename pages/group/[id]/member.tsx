@@ -3,6 +3,7 @@ import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
+import { useRecoilValue } from "recoil";
 
 import AlertModal, { IAlertModalOptions } from "../../../components/AlertModal";
 import Header from "../../../components/layouts/Header";
@@ -12,9 +13,10 @@ import { GROUP_STUDY_ALL } from "../../../constants/keys/queryKeys";
 import { GROUP_STUDY_ROLE } from "../../../constants/settingValue/groupStudy";
 import { useCompleteToast } from "../../../hooks/custom/CustomToast";
 import { useGroupExileUserMutation } from "../../../hooks/groupStudy/mutations";
-import { useGroupQuery } from "../../../hooks/groupStudy/queries";
+import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
 import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
 import { checkGroupGathering } from "../../../libs/group/checkGroupGathering";
+import { transferGroupDataState } from "../../../recoils/transferRecoils";
 import { GroupParicipantProps, IGroup } from "../../../types/models/groupTypes/group";
 
 export default function Member() {
@@ -25,7 +27,14 @@ export default function Member() {
   const [deleteUser, setDeleteUser] = useState<GroupParicipantProps>(null);
   const [group, setGroup] = useState<IGroup>();
 
-  const { data: groups } = useGroupQuery();
+  const transferGroup = useRecoilValue(transferGroupDataState);
+
+  const { data: groupData } = useGroupIdQuery(id, { enabled: !!id && !transferGroup });
+
+  useEffect(() => {
+    if (transferGroup) setGroup(transferGroup);
+    else if (groupData) setGroup(groupData);
+  }, [transferGroup, groupData]);
 
   const queryClient = useQueryClient();
   const { mutate } = useGroupExileUserMutation(+id, {
@@ -42,10 +51,6 @@ export default function Member() {
     onSuccess() {},
   });
   const belong = group && checkGroupGathering(group.hashTag);
-
-  useEffect(() => {
-    if (groups) setGroup(groups.find((item) => item.id + "" === id));
-  }, [groups]);
 
   const alertOptions: IAlertModalOptions = {
     title: "유저 추방",

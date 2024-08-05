@@ -17,11 +17,11 @@ import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast"
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
 import { DispatchString, DispatchType } from "../../types/hooks/reactTypes";
-import { IUser } from "../../types/models/userTypes/userInfoTypes";
+import { IUser, IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import { DeclareRequest, IUserRequest } from "../../types/models/userTypes/userRequestTypes";
 
 interface IDeclareDrawer {
-  userData: IUser;
+  userData: IUser | IUserSummary;
   declareModal: DeclareRequest;
   setDeclareModal: DispatchType<DeclareRequest>;
 }

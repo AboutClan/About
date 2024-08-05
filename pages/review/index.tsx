@@ -1,25 +1,22 @@
 /* eslint-disable */
 
 import { Box, Button } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { DEFAULT_IMAGE_URL } from "../../assets/images/imageUrl";
 import KakaoShareBtn from "../../components/atoms/Icons/KakaoShareBtn";
 import { MainLoading } from "../../components/atoms/loaders/MainLoading";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
-import ButtonGroups, { IButtonOpions } from "../../components/molecules/groups/ButtonGroups";
-import ImageSlider from "../../components/organisms/imageSlider/ImageSlider";
+import ButtonGroups, { IButtonOptions } from "../../components/molecules/groups/ButtonGroups";
+import FeedLayout from "../../components/organisms/FeedLayout";
 import { LOCATION_OPEN } from "../../constants/location";
+import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import { WEB_URL } from "../../constants/system";
 import { useErrorToast } from "../../hooks/custom/CustomToast";
 import { useGatherAllSummaryQuery } from "../../hooks/gather/queries";
-import ReviewContent from "../../pageTemplates/review/ReviewContent";
-import ReviewGatherSummary from "../../pageTemplates/review/ReviewGatherSummary";
-import ReviewItemHeader from "../../pageTemplates/review/ReviewItemHeader";
-import ReviewStatus from "../../pageTemplates/review/ReviewStatus";
 import { IReviewData, REVIEW_DATA } from "../../storage/Review";
 import { IGatherLocation, IGatherType } from "../../types/models/gatherTypes/gatherTypes";
 import {
@@ -29,6 +26,7 @@ import {
   LocationFilterType,
 } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
+import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 export interface IGatherSummary {
   title: string;
@@ -57,48 +55,6 @@ function Review() {
   const reviewContentId = searchParams.get("scroll");
 
   const [visibleCnt, setVisibleCnt] = useState(8);
-
-  const writers = {
-    이승주: {
-      name: "이승주",
-      profileImage: null,
-      avatar: { bg: 6, type: 13 },
-    },
-    서유진: { name: "서유진", profileImage: null, avatar: { bg: 3, type: 7 } },
-    찬민: {
-      name: "찬민",
-      profileImage:
-        "https://p.kakaocdn.net/th/talkp/wnUXvUROY2/jUp0CmCy3sXzVO8hEoLZhk/duaypz_640x640_s.jpg",
-      avatar: null,
-    },
-    윤경: {
-      name: "윤경",
-      profileImage: null,
-      avatar: { bg: 0, type: 8 },
-    },
-    재욱: {
-      name: "재욱",
-      profileImage:
-        "https://p.kakaocdn.net/th/talkp/wn07WrT0Bp/xZrUl20KAKbNB3QKIvG4Bk/hjiiy1_640x640_s.jpg",
-      avatar: null,
-    },
-    김석훈: {
-      name: "김석훈",
-      profileImage:
-        "http://k.kakaocdn.net/dn/cWx5rA/btr7dOzI5TO/AW8kPq23hSHFF7TjSihJ91/img_640x640.jpg",
-      avatar: null,
-    },
-    최지아: {
-      name: "최지아",
-      profileImage:
-        "https://p.kakaocdn.net/th/talkp/woeoxF3Sok/CwC8U0RXEY4zM2nnOl7MN0/wxwkco_640x640_s.jpg",
-      avatar: null,
-    },
-    김지훈: {
-      name: "김지훈",
-      profileImage: DEFAULT_IMAGE_URL,
-    },
-  };
 
   const { data: gatherAllData } = useGatherAllSummaryQuery({
     enabled: !initialData,
@@ -155,7 +111,7 @@ function Review() {
     setVisibleCnt((old) => old + 8);
   };
 
-  const buttonArr: IButtonOpions[] = ["전체", ...LOCATION_OPEN].map((location) => ({
+  const buttonArr: IButtonOptions[] = ["전체", ...LOCATION_OPEN].map((location) => ({
     text: location,
     func: () =>
       location === "전체"
@@ -182,26 +138,34 @@ function Review() {
             <>
               <Box p="12px 16px">
                 <ButtonGroups
-                  buttonDataArr={buttonArr}
+                  buttonItems={buttonArr}
                   currentValue={convertLocationLangTo(location as LocationEn, "kr") || "전체"}
                 />
               </Box>
 
               <Main>
-                {reviewData.slice(0, visibleCnt).map((item) => (
-                  <Item id={"review" + item.id} key={item.id}>
-                    <ReviewItemHeader
-                      writer={writers[item?.writer || "이승주"]}
+                {reviewData.slice(0, visibleCnt).map((item) => {
+                  const summary = item?.summary;
+                  const summaryProps = summary && {
+                    url: `/gather/${item.summary.id}`,
+                    title: item.summary.title,
+                    text: `${summary.place} · ${summary.type.title} · ${dayjsToFormat(dayjs(summary.date), "M월 D일")} · ${summary.location.main}`,
+                  };
+                  return (
+                    <FeedLayout
+                      user={ABOUT_USER_SUMMARY}
                       date={item.dateCreated}
+                      images={item.images}
+                      summary={summaryProps}
+                      content={item.text}
+                      likeUsers={[]}
+                      likeCnt={0}
+                      id={item.id + ""}
+                      comments={[]}
+                      isAnonymous={false}
                     />
-                    <ImageWrapper>
-                      <ImageSlider imageContainer={item.images} type="review" />
-                    </ImageWrapper>
-                    {item.summary ? <ReviewGatherSummary summary={item.summary} /> : <Spacing />}
-                    {item?.text && <ReviewContent text={item.text} />}
-                    <ReviewStatus />
-                  </Item>
-                ))}
+                  );
+                })}
                 {visibleCnt < reviewData.length && (
                   <Button
                     onClick={handleLoadMore}

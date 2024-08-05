@@ -1,36 +1,44 @@
 import { Button, Flex } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import { ButtonSize } from "../../../types/components/assetTypes";
-export interface IButtonOpions {
+export interface IButtonOptions {
   text: string;
   func: () => void;
 }
 
-interface IButtonGroups {
-  buttonDataArr: IButtonOpions[];
+export interface IButtonGroups {
+  buttonItems: IButtonOptions[];
   currentValue: string;
-  size?: ButtonSize;
+  size?: "sm" | "md";
   isWrap?: boolean;
+  isEllipse?: boolean;
 }
+
 export default function ButtonGroups({
-  buttonDataArr,
+  buttonItems,
   currentValue,
+  size,
   isWrap = false,
+  isEllipse = false,
 }: IButtonGroups) {
   return (
     <Layout isWrap={isWrap}>
-      {buttonDataArr.map((buttonData, idx) => (
+      {buttonItems.map((buttonData, idx) => (
         <Flex flexShrink={0} key={idx} onClick={buttonData.func}>
-          {buttonData.text === currentValue ? (
-            <Button mr="8px" colorScheme="mintTheme">
-              {buttonData.text}
-            </Button>
-          ) : (
-            <Button mr="8px" variant="outline" bg="white">
-              {buttonData.text}
-            </Button>
-          )}
+          <Button
+            mr="8px"
+            colorScheme={buttonData.text === currentValue ? "mintTheme" : undefined}
+            variant={buttonData.text === currentValue ? undefined : "outline"}
+            bg={buttonData.text === currentValue ? undefined : "white"}
+            size={size}
+            rounded={isEllipse ? "2xl" : "md"}
+            _focus={{
+              outline: "none",
+              boxShadow: "none",
+            }}
+          >
+            {buttonData.text}
+          </Button>
         </Flex>
       ))}
     </Layout>

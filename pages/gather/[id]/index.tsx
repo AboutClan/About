@@ -1,4 +1,4 @@
-import "dayjs/locale/ko"; // 로케일 플러그인 로드
+import "dayjs/locale/ko";
 
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -10,7 +10,7 @@ import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../components/layouts/PageSlide";
 import { useGatherIDQuery } from "../../../hooks/gather/queries";
 import GatherBottomNav from "../../../pageTemplates/gather/detail/GatherBottomNav";
-import GatherComments from "../../../pageTemplates/gather/detail/GatherComment";
+import GatherComments from "../../../pageTemplates/gather/detail/GatherComments";
 import GatherContent from "../../../pageTemplates/gather/detail/GatherContent";
 import GatherDetailInfo from "../../../pageTemplates/gather/detail/GatherDetail";
 import GatherHeader from "../../../pageTemplates/gather/detail/GatherHeader";
@@ -29,8 +29,8 @@ function GatherDetail() {
   const [gather, setGather] = useState<IGather>();
 
   const transferGather = useRecoilValue(transferGatherDataState);
-  const { data: gatherData } = useGatherIDQuery(+id, { enabled: !!id && !transferGather });
-
+  const { data: gatherData } = useGatherIDQuery(id, { enabled: !!id && !transferGather });
+ 
   useEffect(() => {
     if (transferGather) setGather(transferGather);
     else if (gatherData) setGather(gatherData);
@@ -62,7 +62,7 @@ function GatherDetail() {
                 isMember={isMember}
               />
               <GatherParticipation data={gather} />
-              <GatherComments comment={gather.comment} />
+              <GatherComments comments={gather.comments} />
             </Layout>
           </Slide>
           {!isGuest && <GatherBottomNav data={gather} />}

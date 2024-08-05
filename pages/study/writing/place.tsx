@@ -7,7 +7,7 @@ import styled from "styled-components";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
-import ButtonGroups, { IButtonOpions } from "../../../components/molecules/groups/ButtonGroups";
+import ButtonGroups, { IButtonOptions } from "../../../components/molecules/groups/ButtonGroups";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
 import SearchLocation from "../../../components/organisms/SearchLocation";
 import { LOCATION_CONVERT, LOCATION_OPEN } from "../../../constants/location";
@@ -60,7 +60,7 @@ function WritingStudyPlace() {
     router.push(`/study/writing/content`);
   };
 
-  const buttonDataArr: IButtonOpions[] = LOCATION_OPEN.map((locationInfo) => ({
+  const buttonItems: IButtonOptions[] = LOCATION_OPEN.map((locationInfo) => ({
     text: LOCATION_CONVERT[locationInfo],
     func: () => setLocation(locationInfo),
   }));
@@ -78,7 +78,7 @@ function WritingStudyPlace() {
         <ButtonGroups
           isWrap={true}
           currentValue={LOCATION_CONVERT[location]}
-          buttonDataArr={buttonDataArr}
+          buttonItems={buttonItems}
         />
 
         <RegisterOverview>

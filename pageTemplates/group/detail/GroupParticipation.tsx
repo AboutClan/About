@@ -10,8 +10,7 @@ interface IGroupParticipation {
 }
 
 function GroupParticipation({ data }: IGroupParticipation) {
-  const status = data.status;
-  const participantsCnt = data.participants.length + (data.id === 33 ? 3 : 0);
+  const participantsCnt = data.participants.length;
 
   const isSecret = data?.isSecret;
 
@@ -37,7 +36,7 @@ function GroupParticipation({ data }: IGroupParticipation) {
   return (
     <Layout>
       <Header>
-        <span>{status === "open" ? "확정 인원" : "참여중인 인원"}</span>
+        <span>참여중인 인원</span>
         <span>{participantsCnt}</span>
         <span>/</span>
         {data?.memberCnt.max ? (

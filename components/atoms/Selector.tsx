@@ -1,4 +1,4 @@
-import { Select } from "@chakra-ui/react";
+import { css, Select } from "@chakra-ui/react";
 import { ChangeEvent, useEffect, useState } from "react";
 
 import { DispatchType } from "../../types/hooks/reactTypes";
@@ -19,7 +19,7 @@ export default function Selector({
   isBorder = true,
 }: ISelector) {
   const [value, setValue] = useState(defaultValue);
-  
+
   useEffect(() => {
     setValue(defaultValue);
   }, [defaultValue]);
@@ -40,6 +40,11 @@ export default function Selector({
         onChange={onChange}
         border={!isBorder ? "none" : undefined}
         bgColor={!isBorder ? "inherit" : "white"}
+        css={css`
+          .chakra-select__wrapper .chakra-select {
+            padding: 10px !important; // 원하는 패딩 값으로 변경
+          }
+        `}
       >
         {options.map((option, idx) => (
           <option key={idx}>{option}</option>

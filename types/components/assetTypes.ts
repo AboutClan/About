@@ -15,4 +15,4 @@ export interface ISize {
   size: Size;
 }
 
-export type ButtonSize = "md";
+

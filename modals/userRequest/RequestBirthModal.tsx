@@ -1,52 +1,37 @@
 import { useSession } from "next-auth/react";
 
-import { useCompleteToast, useFailToast } from "../../hooks/custom/CustomToast";
-import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
+import { useCompleteToast } from "../../hooks/custom/CustomToast";
+import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 function RequestBirthModal({ setIsModal }: IModal) {
-  const failToast = useFailToast();
   const completeToast = useCompleteToast();
   const { data: session } = useSession();
 
-  const role = session?.user.role;
-
-  const { mutate } = useUserRequestMutation({
+  const { mutate } = useUserInfoFieldMutation("isPrivate", {
     onSuccess() {
       completeToast("success");
       setIsModal(false);
     },
   });
 
-  const onClick = () => {
-    if (role === "human") {
-      failToast("free", "정식 멤버만 신청 가능합니다.");
-      return;
-    }
-    mutate({
-      writer: session?.user.name,
-      category: "건의",
-      title: "생일 비공개 신청",
-      content: session?.user?.uid as string,
-    });
-  };
-
   const footerOptions: IFooterOptions = {
     main: {
       text: "비공개",
+      func: () => mutate({ isPrivate: true }),
     },
     sub: {
       text: "공개",
-      func: onClick,
+      func: () => mutate({ isPrivate: false }),
     },
   };
 
   return (
-    <ModalLayout footerOptions={footerOptions} title="생일 공개 설정" setIsModal={setIsModal}>
+    <ModalLayout footerOptions={footerOptions} title="프로필 공개 설정" setIsModal={setIsModal}>
       <ModalSubtitle>
-        기본 설정으로 동아리원 생일에는 축하를 위해 멤버게시판에 프로필이 표시됩니다.
+        친구로 등록된 인원을 제외하고 {session?.user.name}님의 프로필을 확인할 수 없습니다.
       </ModalSubtitle>
     </ModalLayout>
   );

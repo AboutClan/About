@@ -9,7 +9,7 @@ type GroupWritingParam<T> = T extends "post"
   ? { groupStudy: IGroupWriting }
   : T extends "patch"
     ? { groupStudy: IGroup }
-    : { id: number };
+    : { id: string };
 
 /** group info */
 export const useGroupWritingMutation = <T extends "post" | "patch" | "delete">(
@@ -84,45 +84,6 @@ export const useGroupAttendMutation = (
         method: "patch",
         url: "groupStudy/attendance",
         body: { id, weekRecord, type, weekRecordSub },
-      }),
-    options,
-  );
-
-type GroupCommentParam<T> = T extends "post"
-  ? {
-      comment: string;
-      commentId?: string;
-    }
-  : T extends "patch"
-    ? {
-        comment: string;
-        commentId: string;
-      }
-    : {
-        comment?: never;
-        commentId: string;
-      };
-
-interface IGroupCommentRequest {
-  id: number;
-  comment?: string;
-  commentId?: string;
-}
-export const useGroupCommentMutation = <T extends "post" | "patch" | "delete">(
-  method: T,
-  GroupId: number,
-  options?: MutationOptions<GroupCommentParam<T>>,
-) =>
-  useMutation<void, AxiosError, GroupCommentParam<T>>(
-    (param) =>
-      requestServer<IGroupCommentRequest>({
-        method,
-        url: "groupStudy/comment",
-        body: {
-          id: GroupId,
-          comment: param?.comment,
-          commentId: param?.commentId,
-        },
       }),
     options,
   );

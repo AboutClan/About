@@ -1,16 +1,16 @@
 import { AxiosError } from "axios";
 import { AnimatePresence, motion } from "framer-motion";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { UseMutateFunction } from "react-query";
 import styled from "styled-components";
 
+import Avatar from "../../../components/atoms/Avatar";
 import ImageSlider from "../../../components/organisms/imageSlider/ImageSlider";
 import { COLOR_TABLE_LIGHT } from "../../../constants/colorConstants";
-import { AVATAR_COST, AVATAR_ICON } from "../../../constants/settingValue/avatar";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import { usePointSystemQuery } from "../../../hooks/user/queries";
+import { AVATAR_COST, AVATAR_IMAGE_ARR } from "../../../storage/avatarStorage";
 import { IModal } from "../../../types/components/modalTypes";
 import { IAvatar } from "../../../types/models/userTypes/userInfoTypes";
 import { IFooterOptions, ModalLayout } from "../../Modals";
@@ -41,7 +41,7 @@ function RequestChangeProfileImageModalAvatar({
 
   useEffect(() => {
     if (iconIdx === 0) setBack(false);
-    if (iconIdx === AVATAR_ICON.length - 1) setBack(true);
+    if (iconIdx === AVATAR_IMAGE_ARR.length - 1) setBack(true);
   }, [iconIdx]);
 
   const handleMove = (type: "prev" | "next") => {
@@ -51,7 +51,7 @@ function RequestChangeProfileImageModalAvatar({
       setIconIdx(iconIdx - 1);
     }
     if (type === "next") {
-      if (iconIdx === AVATAR_ICON.length) return;
+      if (iconIdx === AVATAR_IMAGE_ARR.length) return;
       setBack(false);
       setIconIdx(iconIdx + 1);
     }
@@ -92,14 +92,13 @@ function RequestChangeProfileImageModalAvatar({
             exit="exit"
             key={iconIdx}
           >
-            <Icon bg={COLOR_TABLE_LIGHT[BG]}>
-              <Image width={80} height={80} src={AVATAR_ICON[iconIdx]} alt="avatar" />
-            </Icon>
+            <Avatar avatar={{ type: iconIdx, bg: BG }} size="xl" />
+
             <IconPoint>{AVATAR_COST[iconIdx]}점 달성</IconPoint>
           </IconWrapper>
         </AnimatePresence>
         <ArrowIcon isLeft={false} onClick={() => handleMove("next")}>
-          {iconIdx !== AVATAR_ICON.length - 1 && <i className="fa-solid fa-chevron-right" />}
+          {iconIdx !== AVATAR_IMAGE_ARR.length - 1 && <i className="fa-solid fa-chevron-right" />}
         </ArrowIcon>
       </UpPart>
       <DownPart>
@@ -143,17 +142,6 @@ const DownPart = styled.div`
   margin-top: var(--gap-3);
   border-top: var(--border);
   border-bottom: var(--border);
-`;
-
-const Icon = styled.div<{ bg: string }>`
-  width: 100px;
-  height: 100px;
-  margin-bottom: var(--gap-3);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  background-color: ${(props) => props.bg};
 `;
 
 const IconPoint = styled.div`
