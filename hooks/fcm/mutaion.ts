@@ -3,17 +3,20 @@ import { useEffect } from "react";
 import { isWebView } from "../../utils/appEnvUtils";
 import { urlBase64ToUint8Array } from "../../utils/convertUtils/convertBase64";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
-import { isEmpty } from "../../utils/validationUtils";
+import { isEmpty, isNil } from "../../utils/validationUtils";
 import { registerPushServiceWithApp, registerPushServiceWithPWA } from "./apis";
 import { DeviceInfo } from "./types";
 import { requestNotificationPermission } from "./utils";
 
-export const usePushServiceInitialize = () => {
+export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
   useEffect(() => {
     if (isWebView()) {
       const deviceInfoMessageListener = ({ data }: MessageEvent) => {
-        if (typeof data === "string" && data.includes("deviceInfo")) {
-          subscribePushServiceOnAPP(data);
+        const deviceInfos: DeviceInfo = data ? JSON.parse(data) : {};
+        const shouldRegisterListener = !isNil(uid) && !isEmpty(deviceInfos);
+
+        if (shouldRegisterListener) {
+          subscribePushServiceOnAPP(data, uid);
         }
       };
 
@@ -30,17 +33,13 @@ export const usePushServiceInitialize = () => {
   }, []);
 };
 
-const subscribePushServiceOnAPP = async (data: string) => {
+const subscribePushServiceOnAPP = async (data: DeviceInfo, uid: string) => {
   try {
-    const deviceInfos: DeviceInfo = data ? JSON.parse(data) : {};
-    const hasInfos = !isEmpty(deviceInfos);
-
-    if (hasInfos) {
-      await registerPushServiceWithApp({
-        fcmToken: deviceInfos.fcmToken,
-        platform: deviceInfos.platform,
-      });
-    }
+    await registerPushServiceWithApp({
+      uid,
+      fcmToken: data.fcmToken,
+      platform: data.platform,
+    });
   } catch (err) {
     console.error("Error parsing device info message:", err);
   }
