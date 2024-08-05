@@ -23,12 +23,9 @@ import { checkAndSetLocalStorage } from "../../utils/storageUtils";
 import { detectDevice } from "../../utils/validationUtils";
 
 function HomeInitialSetting() {
-<<<<<<< HEAD
   usePushServiceInitialize();
 
-=======
   const router = useRouter();
->>>>>>> main
   const toast = useToast();
   const { data: session } = useSession();
   const searchParams = useSearchParams();
