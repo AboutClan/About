@@ -53,6 +53,5 @@ module.exports = {
     "import/no-default-export": "off", // default export 금지 설정
     "react/react-in-jsx-scope": "off", // jsx를 쓸 때 React가 scope 에 있어야 하는지 여부
     "react-hooks/exhaustive-deps": "off", // React Hook useEffect의 의존성 배열 검사 비활성화
-    "@typescript-eslint/ban-types": "off",
   },
 };
