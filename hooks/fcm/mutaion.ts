@@ -31,7 +31,7 @@ export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
     } else {
       subscribePushServiceOnPWA();
     }
-  }, []);
+  }, [uid]);
 };
 
 const subscribePushServiceOnAPP = async (data: DeviceInfo, uid: string) => {
