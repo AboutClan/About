@@ -10,7 +10,7 @@ import { slideDirectionState } from "../recoils/navigationRecoils";
 import { isWebView } from "../utils/appEnvUtils";
 import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
 import { getBottomNavSize } from "../utils/mathUtils";
-import { NATIVE_METHODS } from "../utils/nativeMethodUtils";
+import { nativeMethodUtils } from "../utils/nativeMethodUtils";
 
 interface INavButtonProps {
   url: string;
@@ -69,7 +69,7 @@ function NavButton({ text, url, activeIcon, defaultIcon, active, idx }: INavButt
 
   const handleMove = () => {
     if (isWebView()) {
-      NATIVE_METHODS.HAPTIC();
+      nativeMethodUtils.haptic();
     }
     setSlideDirection(null);
   };

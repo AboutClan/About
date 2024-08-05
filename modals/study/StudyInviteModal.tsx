@@ -8,7 +8,7 @@ import { WEB_URL } from "../../constants/system";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
 import { isWebView } from "../../utils/appEnvUtils";
-import { NATIVE_METHODS } from "../../utils/nativeMethodUtils";
+import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
 import { IFooterOptions, ModalLayout } from "../Modals";
 const kakaoAppKey = process.env.NEXT_PUBLIC_KAKAO_JS;
 
@@ -34,7 +34,7 @@ function StudyInviteModal({ setIsModal, place }: IStudyInviteModal) {
   const handleShareOnApp = () => {
     if (!isWebView()) return;
 
-    NATIVE_METHODS.SHARE(url);
+    nativeMethodUtils.share(url);
   };
 
   useEffect(() => {

@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import { REVIEW_DATA } from "../../../storage/Review";
 import { isWebView } from "../../../utils/appEnvUtils";
-import { NATIVE_METHODS } from "../../../utils/nativeMethodUtils";
+import { nativeMethodUtils } from "../../../utils/nativeMethodUtils";
 
 const kakaoAppKey = process.env.NEXT_PUBLIC_KAKAO_JS;
 
@@ -32,7 +32,7 @@ function KakaoShareBtn({
   const handleShareOnApp = () => {
     if (!isWebView()) return;
 
-    NATIVE_METHODS.SHARE(url);
+    nativeMethodUtils.share(url);
   };
 
   useEffect(() => {

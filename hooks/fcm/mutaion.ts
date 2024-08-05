@@ -1,19 +1,15 @@
-import { isEmpty } from "lodash-es";
 import { useEffect } from "react";
 
-import { isPWA, isWebView } from "../../utils/appEnvUtils";
+import { isWebView } from "../../utils/appEnvUtils";
 import { urlBase64ToUint8Array } from "../../utils/convertUtils/convertBase64";
-import { NATIVE_METHODS } from "../../utils/nativeMethodUtils";
+import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
+import { isEmpty } from "../../utils/validationUtils";
 import { registerPushServiceWithApp, registerPushServiceWithPWA } from "./apis";
 import { DeviceInfo } from "./types";
 import { requestNotificationPermission } from "./utils";
 
 export const usePushServiceInitialize = () => {
   useEffect(() => {
-    if (isPWA()) {
-      subscribePushServiceOnPWA();
-    }
-
     if (isWebView()) {
       const deviceInfoMessageListener = ({ data }: MessageEvent) => {
         if (typeof data === "string" && data.includes("deviceInfo")) {
@@ -23,19 +19,23 @@ export const usePushServiceInitialize = () => {
 
       window.addEventListener("message", deviceInfoMessageListener);
 
-      NATIVE_METHODS.GET_DEVICE_INFO();
+      nativeMethodUtils.getDeviceInfo();
 
       return () => {
         window.removeEventListener("message", deviceInfoMessageListener);
       };
+    } else {
+      subscribePushServiceOnPWA();
     }
   }, []);
 };
 
 const subscribePushServiceOnAPP = async (data: string) => {
   try {
-    const deviceInfos: DeviceInfo = JSON.parse(data);
-    if (!isEmpty(deviceInfos)) {
+    const deviceInfos: DeviceInfo = data ? JSON.parse(data) : {};
+    const hasInfos = !isEmpty(deviceInfos);
+
+    if (hasInfos) {
       await registerPushServiceWithApp({
         fcmToken: deviceInfos.fcmToken,
         platform: deviceInfos.platform,
@@ -53,15 +53,17 @@ const subscribePushServiceOnPWA = async () => {
   }
 
   try {
-    const registration = await navigator.serviceWorker.getRegistration();
-    const hasSubscription = await registration?.pushManager.getSubscription();
+    const register = await navigator.serviceWorker.register("/worker.js", {
+      scope: "/",
+    });
+    const hasSubscription = await register.pushManager.getSubscription();
 
     if (hasSubscription) {
       return;
     }
 
     const publicVapidKey = process.env.NEXT_PUBLIC_PWA_KEY;
-    const subscription = await registration?.pushManager.subscribe({
+    const subscription = await register?.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
     });

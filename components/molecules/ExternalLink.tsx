@@ -3,7 +3,7 @@ import NextLink from "next/link";
 import React, { type PropsWithChildren, type ReactHTML } from "react";
 
 import { isWebView } from "../../utils/appEnvUtils";
-import { NATIVE_METHODS } from "../../utils/nativeMethodUtils";
+import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
 
 interface IExternalLink {
   href: string;
@@ -22,7 +22,7 @@ const ExternalLink = React.forwardRef<HTMLElement, PropsWithChildren<IExternalLi
           ...props,
           ref,
           className,
-          onClick: () => NATIVE_METHODS.OPEN_EXTERNAL_LINK(href),
+          onClick: () => nativeMethodUtils.openExternalLink(href),
         },
         children,
       );

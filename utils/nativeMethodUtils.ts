@@ -1,21 +1,21 @@
 import { NATIVE_CUSTOM_EVENTS } from "../constants/nativeCustomEvent";
 
-export const NATIVE_METHODS = {
-  HAPTIC: () => {
+export const nativeMethodUtils = {
+  haptic: () => {
     window.ReactNativeWebView?.postMessage(
       JSON.stringify({
         type: NATIVE_CUSTOM_EVENTS.HAPTIC,
       }),
     );
   },
-  VIBRATE: () => {
+  vibrate: () => {
     window.ReactNativeWebView?.postMessage(
       JSON.stringify({
         type: NATIVE_CUSTOM_EVENTS.VIBRATE,
       }),
     );
   },
-  OPEN_EXTERNAL_LINK: (link: string) => {
+  openExternalLink: (link: string) => {
     window.ReactNativeWebView?.postMessage(
       JSON.stringify({
         link,
@@ -23,7 +23,7 @@ export const NATIVE_METHODS = {
       }),
     );
   },
-  SHARE: (link: string) => {
+  share: (link: string) => {
     window.ReactNativeWebView?.postMessage(
       JSON.stringify({
         link,
@@ -31,7 +31,7 @@ export const NATIVE_METHODS = {
       }),
     );
   },
-  SEND_TEXT_MESSAGE: (number: number) => {
+  sendTextMessage: (number: number) => {
     window.ReactNativeWebView?.postMessage(
       JSON.stringify({
         number,
@@ -39,7 +39,7 @@ export const NATIVE_METHODS = {
       }),
     );
   },
-  CALL_PHONE: (number: number) => {
+  callPhone: (number: number) => {
     window.ReactNativeWebView?.postMessage(
       JSON.stringify({
         number,
@@ -47,21 +47,7 @@ export const NATIVE_METHODS = {
       }),
     );
   },
-  KAKAO_LOGIN: () => {
-    window.ReactNativeWebView?.postMessage(
-      JSON.stringify({
-        type: NATIVE_CUSTOM_EVENTS.KAKAO_LOGIN,
-      }),
-    );
-  },
-  APPLE_LOGIN: () => {
-    window.ReactNativeWebView?.postMessage(
-      JSON.stringify({
-        type: NATIVE_CUSTOM_EVENTS.APPLE_LOGIN,
-      }),
-    );
-  },
-  GET_DEVICE_INFO: () => {
+  getDeviceInfo: () => {
     window.ReactNativeWebView?.postMessage(
       JSON.stringify({
         type: NATIVE_CUSTOM_EVENTS.GET_DEVICE_INFO,
