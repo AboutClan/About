@@ -56,7 +56,7 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
                 <button onClick={() => onClickBlock("page", "/admin")}>관리자 페이지</button>
               </NavBlock>
               <NavBlock>
-                <button onClick={() => onClickBlock("page", "/test")}>테스트</button>
+                <button onClick={() => onClickBlock("page", "/admin/test")}>테스트</button>
               </NavBlock>
             </>
           )}
@@ -76,9 +76,10 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
       <div>
         <BlockName>기타 세팅</BlockName>
         <NavBlock>
+          <button onClick={() => onClickBlock("modal", "profile")}>프로필 공개 설정</button>
+
           <button onClick={() => onClickBlock("modal", "deposit")}>보증금 충전</button>
           <button onClick={() => onClickBlock("modal", "spaceSetting")}>스터디 프리셋 설정</button>
-          <button onClick={() => onClickBlock("modal", "birthday")}>생일 공개 설정</button>
           <button onClick={() => onClickBlock("modal", "logout")}>로그아웃</button>
         </NavBlock>
       </div>

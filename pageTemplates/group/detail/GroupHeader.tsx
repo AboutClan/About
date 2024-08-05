@@ -79,12 +79,9 @@ function GroupHeader({ group }: IGroupHeader) {
           </IconWrapper>
         </Flex>
       </Header>
-      <BottomDrawer
-        type="group"
-        isModal={isSettigModal}
-        setIsModal={setIsSettingModal}
-        onSubmit={handleQuit}
-      />
+      {isSettigModal && (
+        <BottomDrawer type="group" onClose={() => setIsSettingModal(false)} onSubmit={handleQuit} />
+      )}
     </>
   );
 }

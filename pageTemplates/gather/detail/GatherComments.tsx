@@ -51,9 +51,9 @@ function GatherComments({ comments }: IGatherComments) {
     };
   };
 
-  const onSubmit = () => async (value: string) => {
+  const onSubmit = async (value: string) => {
     await writeComment({ comment: value });
-    await setCommentArr((old) => [...old, addNewComment(userInfo, value)]);
+    setCommentArr((old) => [...old, addNewComment(userInfo, value)]);
   };
 
   const resetCache = () => {
@@ -67,7 +67,7 @@ function GatherComments({ comments }: IGatherComments) {
         <span>할 얘기가 있다면 댓글을 남겨보세요</span>
         <Comment>
           {!isGuest && userInfo && (
-            <Box mr="8px">
+            <Box mr="8px" mt="20px" mb="12px">
               <UserCommentInput user={userInfo} onSubmit={onSubmit} />
             </Box>
           )}

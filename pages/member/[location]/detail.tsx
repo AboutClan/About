@@ -9,11 +9,8 @@ import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import { BADGE_COLOR_MAPPINGS } from "../../../constants/serviceConstants/badgeConstants";
 import { prevPageUrlState } from "../../../recoils/previousAtoms";
-import {
-  transferMemberDataState,
-  transferUserSummaryState,
-} from "../../../recoils/transferRecoils";
-import { IUser, IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import { transferMemberDataState } from "../../../recoils/transferRecoils";
+import { IUser } from "../../../types/models/userTypes/userInfoTypes";
 import { getUserBadge } from "../../../utils/convertUtils/convertDatas";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 import { SECTION_NAME } from ".";
@@ -22,13 +19,12 @@ function MemberDetail() {
   const router = useRouter();
 
   const memberData = useRecoilValue(transferMemberDataState);
-  const setUserData = useSetRecoilState(transferUserSummaryState);
+
   const setBeforePage = useSetRecoilState(prevPageUrlState);
 
   const section = memberData?.section;
 
   const onClickUser = (user: IUser) => {
-    setUserData(user as IUserSummary);
     setBeforePage(router?.asPath);
     router.push(`/profile/${user.uid}`);
   };

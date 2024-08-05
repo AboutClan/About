@@ -12,7 +12,9 @@ import {
   DAILY_CHECK_POP_UP,
   NOTICE_ACTIVE_CNT,
   NOTICE_ALERT,
+  RECENT_CHAT_ID,
 } from "../../../constants/keys/localStorage";
+import { useRecentChatQuery } from "../../../hooks/chat/queries";
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import { useNoticeActiveLogQuery } from "../../../hooks/user/sub/interaction/queries";
 import DailyCheckModal from "../../../modals/aboutHeader/dailyCheckModal/DailyCheckModal";
@@ -41,15 +43,22 @@ function HomeHeader() {
 
   const { data } = useNoticeActiveLogQuery();
 
+  const { data: recentChat } = useRecentChatQuery();
+
   useEffect(() => {
     if (!data) return;
     const activeCnt = localStorage.getItem(NOTICE_ACTIVE_CNT);
     const noticeCnt = localStorage.getItem(NOTICE_ALERT);
+    const recentChatId = localStorage.getItem(RECENT_CHAT_ID);
+
+    if (recentChat?.length && recentChatId !== recentChat) {
+      setIsNoticeAlert(true);
+    }
 
     if (+activeCnt !== data?.length || NOTICE_ARR.length !== +noticeCnt) {
       setIsNoticeAlert(true);
     }
-  }, [data]);
+  }, [data, recentChat]);
 
   const generateIconBtnArr = () => {
     const arr = [

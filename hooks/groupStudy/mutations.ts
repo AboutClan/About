@@ -9,7 +9,7 @@ type GroupWritingParam<T> = T extends "post"
   ? { groupStudy: IGroupWriting }
   : T extends "patch"
     ? { groupStudy: IGroup }
-    : { id: number };
+    : { id: string };
 
 /** group info */
 export const useGroupWritingMutation = <T extends "post" | "patch" | "delete">(

@@ -29,12 +29,12 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
 
   const isPending = data.waiting.find((who) => who.user.uid === myUid);
 
-  const GroupId = +router.query.id;
+  const groupId = router.query.id;
 
   const isFull = data?.memberCnt.max !== 0 && data?.participants.length >= data?.memberCnt.max;
 
   const queryClient = useQueryClient();
-  const { mutate: cancel } = useGroupParticipationMutation("delete", GroupId, {
+  const { mutate: cancel } = useGroupParticipationMutation("delete", +groupId, {
     onSuccess() {
       completeToast("free", "참여 신청이 취소되었습니다.", true);
       queryClient.invalidateQueries([GROUP_STUDY, id]);

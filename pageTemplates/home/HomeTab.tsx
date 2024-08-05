@@ -12,7 +12,7 @@ import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { getUrlWithLocationAndDate } from "../../utils/convertUtils/convertTypes";
 
-export type HomeTab = "스터디" | "번개" | "캘린더" | "추천";
+export type HomeTab = "스터디" | "번개" | "캘린더" | "랭킹";
 
 interface HomeTabProps {
   tab: HomeTab;
@@ -33,8 +33,8 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
   const matchParam = {
     study: "스터디",
     gather: "번개",
-    club: "동아리",
-    temp: "추천",
+    club: "캘린더",
+    temp: "랭킹",
   };
 
   useEffect(() => {
@@ -63,7 +63,7 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
         `/home?tab=gather&location=${locationParam || convertLocationLangTo(session?.user.location || "suw", "en")}`,
       );
     }
-    if (tab === "추천") {
+    if (tab === "랭킹") {
       router.replace(`/home?tab=temp`);
     }
     if (tab === "캘린더") {
@@ -95,8 +95,8 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
       flex: 1,
     },
     {
-      text: "추천",
-      func: () => handleTabMove("추천"),
+      text: "랭킹",
+      func: () => handleTabMove("랭킹"),
       flex: 1,
     },
   ];

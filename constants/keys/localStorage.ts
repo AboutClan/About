@@ -25,8 +25,10 @@ export const MEMBER_MASKING_POP_UP = "memberMaskingPopUp";
 export const RABBIT_POP_UP = "rabbitPopUp";
 export const NEW_POINT_SYSTEM_POP_UP = "newPointSystemPopUp";
 export const ENTHUSIASTIC_POP_UP = "enthusiasticPopUp";
+export const INSTAGRAM_POP_UP = "instagramPopUp";
 //체크
 export const RABBIT_RUN = "rabbitRun";
+export const RECENT_CHAT_ID = "recentChatId";
 
 export const REGISTER_INFO = "registerInfo";
 export const GROUP_WRITING_STORE = "groupWritingStore";

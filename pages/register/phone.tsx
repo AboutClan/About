@@ -14,7 +14,7 @@ function Phone() {
   const [errorMessage, setErrorMessage] = useState("");
   const [value, setValue] = useState(info?.telephone || "");
 
-  const phoneRegex = /^010\d{8}$/;
+  const phoneRegex = /^010-\d{4}-\d{4}$/;
 
   const onClickNext = (e) => {
     if (value === "") {
@@ -23,7 +23,7 @@ function Phone() {
       return;
     }
     if (!phoneRegex.test(value)) {
-      setErrorMessage("핸드폰 번호를 확인해 주세요. 형식: 01012345678");
+      setErrorMessage("핸드폰 번호를 확인해 주세요. 형식: 010-1234-5678");
       e.preventDefault();
       return;
     }
@@ -51,8 +51,8 @@ function Phone() {
         <Input
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          placeholder="전화번호를 입력해 주세요."
-          inputRef={inputRef}
+          placeholder="010-1234-5678"
+          ref={inputRef}
         />
       </RegisterLayout>
       <BottomNav onClick={onClickNext} url="/register/fee" />

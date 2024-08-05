@@ -54,7 +54,8 @@ function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals
 
       {modalOpen === "secede" && <RequestSecedeModal setIsModal={setIsModal} />}
       {isPresetModal && <StudyPresetModal />}
-      {modalOpen === "birthday" && <RequestBirthModal setIsModal={setIsModal} />}
+
+      {modalOpen === "profile" && <RequestBirthModal setIsModal={setIsModal} />}
       <RequestLogoutModal isModal={modalOpen === "logout"} setIsModal={setIsModal} />
     </Layout>
   );

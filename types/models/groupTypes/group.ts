@@ -10,7 +10,7 @@ export type GroupStatus = "end" | "pending";
 export interface IGroup extends IGroupWriting {
   createdAt: string;
   participants: GroupParicipantProps[];
-  comment: UserCommentProps[];
+  comments: UserCommentProps[];
 }
 
 export interface GroupParicipantProps {

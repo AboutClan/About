@@ -17,7 +17,7 @@ import BaseModal from "./BaseModal";
 import BaseScript from "./BaseScript";
 import Seo from "./Seo";
 
-export const BASE_BOTTOM_NAV_SEGMENT = ["home", "statistics", "user", "group"];
+export const BASE_BOTTOM_NAV_SEGMENT = ["home", "square", "user", "group"];
 export const NOT_PADDING_NAV_SEGMENT = ["login"];
 interface ILayout {
   children: React.ReactNode;
@@ -54,7 +54,7 @@ function Layout({ children }: ILayout) {
     if (!session?.user?.location) {
       toast(
         "warning",
-        "업데이트가 필요합니다. 다시 로그인 해주세요! 반복되는 경우 관리자에게 문의 부탁드립니다!!",
+        "접속 권한이 없습니다. 다시 로그인 해주세요! 반복되는 경우 관리자에게 문의 부탁드립니다!!",
       );
       signOut({ callbackUrl: `/login/?status=logout` });
     }
