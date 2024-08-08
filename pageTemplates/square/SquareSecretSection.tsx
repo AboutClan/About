@@ -14,19 +14,29 @@ export const SECRET_SQUARE_CATEGORY: SecretSquareCategory[] = [
   "같이해요",
 ];
 
+// TODO it's just temp type
+type SecretSquareResponse = Omit<SecretSquareItem, "comments" | "images"> & {
+  thumbnail: string;
+  commentsCount: number;
+};
+
 function SquareSecretSection() {
   const [category, setCategory] = useState<SecretSquareCategory>("전체");
+  // TODO GET /square
 
-  const temp: SecretSquareItem[] = [
+  const temp: SecretSquareResponse[] = [
     {
       category: "전체",
       title: "테스트",
       content: "테스트로 만들어진 게시글입니다!",
       id: "34",
       type: "general",
-      author: "이승주", // TODO 익명
       createdAt: "2024-07-24",
       viewCount: 10,
+      likeCount: 123,
+      commentsCount: 12,
+      thumbnail:
+        "https://images.unsplash.com/photo-1591154669695-5f2a8d20c089?q=80&w=2487&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
       category: "일상",
@@ -35,16 +45,12 @@ function SquareSecretSection() {
         "테스트용 게시글입니다.테스트용  게시글입니다스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.",
       id: "35",
       type: "poll",
-      author: "이승주", // TODO 익명
       createdAt: "2024-07-22",
-      viewCount: 124,
-      pollList: [
-        { id: "0", value: "떡볶이", count: 3 },
-        { id: "1", value: "마라탕", count: 3 },
-        { id: "2", value: "연어", count: 3 },
-        { id: "3", value: "대창", count: 3 },
-      ],
-      canMultiple: false,
+      viewCount: 53234,
+      likeCount: 123,
+      commentsCount: 12,
+      thumbnail:
+        "https://images.unsplash.com/photo-1591154669695-5f2a8d20c089?q=80&w=2487&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
       category: "일상",
@@ -53,16 +59,12 @@ function SquareSecretSection() {
         "테스트용 게시글입니다.테스트용  게글입니다스트용 게시시글입니다.테스트용 게시글입니다.테시시글입니다.테스트용 게스트용 게시글입니다.",
       id: "35",
       type: "poll",
-      author: "이승주", // TODO 익명
       createdAt: "2024-07-22",
-      viewCount: 124,
-      pollList: [
-        { id: "0", value: "떡볶이", count: 3 },
-        { id: "1", value: "마라탕", count: 3 },
-        { id: "2", value: "연어", count: 3 },
-        { id: "3", value: "대창", count: 3 },
-      ],
-      canMultiple: false,
+      viewCount: 53234,
+      likeCount: 123,
+      commentsCount: 12,
+      thumbnail:
+        "https://images.unsplash.com/photo-1591154669695-5f2a8d20c089?q=80&w=2487&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
   ];
 

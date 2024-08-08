@@ -1,4 +1,5 @@
 import { Box, Button, Flex, Text, VStack } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { useState } from "react";
 
 import Avatar from "../../../components/atoms/Avatar";
@@ -8,6 +9,7 @@ import Slide from "../../../components/layouts/PageSlide";
 import PollItem from "../../../pageTemplates/square/SecretSquare/PollItem";
 import { AVATAR_IMAGE_ARR } from "../../../storage/avatarStorage";
 import { SecretSquareItem } from "../../../types/models/square";
+import { getDateDiff } from "../../../utils/dateTimeUtils";
 
 function SecretSquareDetailPage() {
   // TODO API
@@ -24,9 +26,9 @@ function SecretSquareDetailPage() {
       "테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.",
     id: "35",
     type: "poll",
-    author: "이승주",
     createdAt: "2023-05-30",
     viewCount: 124,
+    likeCount: 123,
     pollList: [
       { id: "0", value: "떡볶이", count: 3 },
       { id: "1", value: "떡볶이", count: 3 },
@@ -34,6 +36,8 @@ function SecretSquareDetailPage() {
       { id: "3", value: "대창", count: 3 },
     ],
     canMultiple: true,
+    images: [],
+    comments: [],
   };
 
   const [poll, setPoll] = useState<Map<string, string>>(new Map());
@@ -50,7 +54,7 @@ function SecretSquareDetailPage() {
             <Avatar isLink={false} image={AVATAR_IMAGE_ARR[0]} size="md" />
             <Flex direction="column">
               <Text fontWeight={500}>익명</Text>
-              <Text color="GrayText">{detail.createdAt}</Text>
+              <Text color="GrayText">{getDateDiff(dayjs(detail.createdAt))}</Text>
             </Flex>
           </Flex>
           <Box as="section">
@@ -112,6 +116,20 @@ function SecretSquareDetailPage() {
           )}
 
           <Text color="GrayText">{detail.viewCount}명이 봤어요</Text>
+
+          <Text
+            as="button"
+            px="2"
+            py="1"
+            maxW="fit-content"
+            backgroundColor="white"
+            border="var(--border-main)"
+            rounded="full"
+            color="GrayText"
+            type="button"
+          >
+            공감하기
+          </Text>
         </Flex>
         <Divider />
         {/* comments section */}
