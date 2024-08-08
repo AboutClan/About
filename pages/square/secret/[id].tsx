@@ -1,141 +1,270 @@
-import { Box, Button, Flex, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, ButtonGroup, Flex, Text, VStack } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 import Avatar from "../../../components/atoms/Avatar";
 import Divider from "../../../components/atoms/Divider";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
-import PollItem from "../../../pageTemplates/square/SecretSquare/PollItem";
 import { AVATAR_IMAGE_ARR } from "../../../storage/avatarStorage";
-import { SecretSquareItem } from "../../../types/models/square";
 import { getDateDiff } from "../../../utils/dateTimeUtils";
 
-function SecretSquareDetailPage() {
-  // TODO API
-  // POST poll
-  // PATCH poll
-  // POST comment
-  // DELETE comment
-  // GET square detail
-  // TODO remove mock data
-  const detail: SecretSquareItem = {
-    category: "일상",
-    title: "테스트",
-    content:
-      "테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.",
-    id: "35",
-    type: "poll",
-    createdAt: "2023-05-30",
-    viewCount: 124,
-    likeCount: 123,
-    pollList: [
-      { id: "0", value: "떡볶이", count: 3 },
-      { id: "1", value: "떡볶이", count: 3 },
-      { id: "2", value: "연어", count: 3 },
-      { id: "3", value: "대창", count: 3 },
-    ],
-    canMultiple: true,
-    images: [],
-    comments: [],
-  };
 
-  const [poll, setPoll] = useState<Map<string, string>>(new Map());
+function SecretSquareDetailPage() {
+  const router = useRouter();
+  const squareId = router.query.id as string;
+
+  const { data: session } = useSession();
+  const { mutate: mutatePoll, isLoading: isPollLoading } = usePatchPollMutation({ squareId });
+  const { data: squareDetail } = useGetSquareDetailQuery({ squareId }, { staleTime: Infinity });
+  const { data: pollStatus } = useCurrentPollStatusQuery(
+    { squareId, user: session?.user.id },
+    {
+      enabled: !!session?.user.id,
+      staleTime: Infinity,
+    },
+  );
+  const initialSelectedPollItems = new Set(pollStatus?.pollItems);
+
+  const [selectedPollItems, setSelectedPollItems] = useState<Set<string>>(new Set());
+  // calculate the difference btw poll and initialPoll
+  const isModified =
+    selectedPollItems.size !== initialSelectedPollItems.size ||
+    selectedPollItems.keys().some((id) => !initialSelectedPollItems.has(id)) ||
+    initialSelectedPollItems.keys().some((id) => !selectedPollItems.has(id));
+
+  const [showRePollButton, setShowRePollButton] = useState(false);
+  const [isActiveRePollButton, setIsActiveRePollButton] = useState(false);
+
+  useEffect(() => {
+    if (pollStatus) {
+      setSelectedPollItems(new Set(pollStatus.pollItems));
+      if (pollStatus.pollItems.length !== 0) {
+        setShowRePollButton(true);
+        setIsActiveRePollButton(true);
+      } else {
+        setIsActiveRePollButton(false);
+      }
+    }
+  }, [pollStatus]);
+
+  const handlePatchPoll = () => {
+    if (!isModified) return;
+
+    mutatePoll({ user: session?.user.id, pollItems: Array.from(selectedPollItems.keys()) });
+  };
 
   return (
     <>
       <Header title="" />
       <Slide>
-        <Flex px={4} py={4} direction="column" gap={2} as="section" bg="white">
-          <Box bg="gray.200" rounded="full" w="fit-content" px={2} py={1}>
-            # {detail.category}
-          </Box>
-          <Flex as="section" align="center" gap={4}>
-            <Avatar isLink={false} image={AVATAR_IMAGE_ARR[0]} size="md" />
-            <Flex direction="column">
-              <Text fontWeight={500}>익명</Text>
-              <Text color="GrayText">{getDateDiff(dayjs(detail.createdAt))}</Text>
-            </Flex>
-          </Flex>
-          <Box as="section">
-            <Text as="h1" fontSize="xl" fontWeight={700}>
-              {detail.title}
-            </Text>
-            <Text mt={2}>{detail.content}</Text>
-          </Box>
-          {detail.type === "poll" && (
-            <Box
-              p={4}
-              my={4}
-              sx={{
-                width: "100%",
-                borderRadius: "var(--rounded-lg)",
-                border: "var(--border-main)",
-                background: "white",
-              }}
-            >
-              <VStack as="ul" align="flex-start">
-                <Text fontWeight={600}>투표</Text>
-                {detail.pollList.map(({ id, value }, index) => {
-                  return (
-                    <PollItem
-                      key={index}
-                      isChecked={poll.has(id)}
-                      value={value}
-                      onChange={() => {
-                        if (detail.canMultiple) {
-                          setPoll((prev) => {
-                            const cloned = new Map(prev);
-                            if (cloned.has(id)) cloned.delete(id);
-                            else cloned.set(id, value);
-                            return cloned;
-                          });
-                        } else {
-                          setPoll((prev) => {
-                            const cloned = new Map(prev);
-                            if (cloned.has(id)) {
-                              cloned.delete(id);
-                            } else if (cloned.size !== 0) {
-                              cloned.clear();
-                              cloned.set(id, value);
+        {squareDetail && (
+          <>
+            <Flex px={4} py={4} direction="column" gap={2} as="section" bg="white">
+              <Box bg="gray.200" rounded="full" w="fit-content" px={2} py={1}>
+                # {squareDetail.category}
+              </Box>
+              <section id="avatar-section">
+                <Flex align="center" gap={4}>
+                  <Avatar isLink={false} image={AVATAR_IMAGE_ARR[0]} size="md" />
+                  <Flex direction="column">
+                    <Text fontWeight={500}>익명</Text>
+                    <Text color="GrayText">{getDateDiff(dayjs(squareDetail.createdAt))}</Text>
+                  </Flex>
+                </Flex>
+              </section>
+              <section id="content-section">
+                <Text as="h1" fontSize="xl" fontWeight={700}>
+                  {squareDetail.title}
+                </Text>
+                <Text mt={2} whiteSpace="break-spaces">
+                  {squareDetail.content}
+                </Text>
+              </section>
+
+              {squareDetail.type === "poll" && (
+                <Box
+                  as="section"
+                  id="poll-section"
+                  p={4}
+                  my={4}
+                  sx={{
+                    width: "100%",
+                    borderRadius: "var(--rounded-lg)",
+                    border: "var(--border-main)",
+                    background: "white",
+                  }}
+                >
+                  <VStack as="ul" align="flex-start">
+                    <Text fontWeight={600} display="flex" gap={1} align="center">
+                      <Box as="span" display="flex" alignItems="center">
+                        <i className="fa-regular fa-check-to-slot" />
+                      </Box>
+                      <span>투표</span>
+                    </Text>
+                    {squareDetail.poll.pollItems.map(({ _id, name, count }, index) => {
+                      return (
+                        <PollItemButton
+                          key={index}
+                          isChecked={selectedPollItems.has(_id)}
+                          isDisabled={showRePollButton}
+                          name={name}
+                          count={count}
+                          onClick={() => {
+                            const isChecked = selectedPollItems.has(_id);
+                            if (squareDetail.poll.canMultiple) {
+                              setSelectedPollItems((prev) => {
+                                const cloned = new Set(prev);
+                                if (isChecked) cloned.delete(_id);
+                                else cloned.add(_id);
+                                return cloned;
+                              });
                             } else {
-                              cloned.set(id, value);
+                              setSelectedPollItems((prev) => {
+                                const cloned = new Set(prev);
+                                if (isChecked) {
+                                  cloned.delete(_id);
+                                } else if (cloned.size !== 0) {
+                                  // if already checking other poll item
+                                  cloned.clear();
+                                  cloned.add(_id);
+                                } else {
+                                  cloned.add(_id);
+                                }
+                                return cloned;
+                              });
                             }
-                            return cloned;
-                          });
-                        }
-                      }}
-                    />
-                  );
-                })}
-                <Button type="button" rounded="lg" w="100%" colorScheme="mintTheme">
-                  투표하기
+                          }}
+                        />
+                      );
+                    })}
+
+                    {showRePollButton ? (
+                      <Button
+                        type="button"
+                        rounded="lg"
+                        w="100%"
+                        colorScheme="gray"
+                        onClick={() => setShowRePollButton(false)}
+                      >
+                        <i className="fa-regular fa-rotate-right" style={{ marginRight: "4px" }} />
+                        다시 투표하기
+                      </Button>
+                    ) : (
+                      <ButtonGroup w="100%">
+                        <Button
+                          type="button"
+                          rounded="lg"
+                          w="100%"
+                          colorScheme="mintTheme"
+                          isDisabled={!isModified}
+                          isLoading={isPollLoading}
+                          onClick={handlePatchPoll}
+                        >
+                          투표하기
+                        </Button>
+                        {isActiveRePollButton && (
+                          <Button
+                            type="button"
+                            rounded="lg"
+                            w="100%"
+                            colorScheme="gray"
+                            onClick={() => {
+                              setShowRePollButton(true);
+                              setSelectedPollItems(new Set(pollStatus.pollItems));
+                            }}
+                          >
+                            취소
+                          </Button>
+                        )}
+                      </ButtonGroup>
+                    )}
+                  </VStack>
+                </Box>
+              )}
+
+              {squareDetail.images.length !== 0 && (
+                <section id="images-section">
+                  <VStack as="ul">
+                    {squareDetail.images.map((src, index) => {
+                      return (
+                        <Box
+                          as="li"
+                          w="100%"
+                          borderRadius="var(--rounded-lg)"
+                          listStyleType="none"
+                          overflow="hidden"
+                          key={index}
+                        >
+                          <Image
+                            src={src}
+                            alt={`image ${index}`}
+                            style={{
+                              width: "100%",
+                              height: "auto",
+                            }}
+                            width={400}
+                            height={400}
+                            // TODO remove unoptimized prop
+                            unoptimized
+                          />
+                        </Box>
+                      );
+                    })}
+                  </VStack>
+                </section>
+              )}
+
+              <Flex color="GrayText" align="center" gap={1}>
+                <i className="fa-light fa-eye" />
+                <span>{squareDetail.viewCount}명이 봤어요</span>
+              </Flex>
+
+              <Flex justify="space-between">
+                <Button
+                  type="button"
+                  px="2"
+                  py="1"
+                  maxW="fit-content"
+                  backgroundColor="white"
+                  border="var(--border-main)"
+                  rounded="full"
+                  color="GrayText"
+                  gap={1}
+                  fontWeight={400}
+                  size="sm"
+                  sx={{
+                    // hover state is NOT removed on mobile device.
+                    // It could be confused for user so we remove the style of hover state.
+                    // see https://github.com/chakra-ui/chakra-ui/issues/6173
+                    _hover: {},
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                  onClick={() => {
+                    // TODO put or delete like
+                    console.log("put or delete like");
+                  }}
+                >
+                  <i className="fa-light fa-thumbs-up" />
+                  <span>공감하기</span>
                 </Button>
-              </VStack>
+                <Flex gap={1} align="center">
+                  <i className="fa-light fa-comment" />
+                  <span>{squareDetail.comments.length}</span>
+                </Flex>
+              </Flex>
+            </Flex>
+            <Divider />
+            {/* comments section */}
+            <Box px={4} as="section" bg="white">
+              <SecretSquareComments />
             </Box>
-          )}
-
-          <Text color="GrayText">{detail.viewCount}명이 봤어요</Text>
-
-          <Text
-            as="button"
-            px="2"
-            py="1"
-            maxW="fit-content"
-            backgroundColor="white"
-            border="var(--border-main)"
-            rounded="full"
-            color="GrayText"
-            type="button"
-          >
-            공감하기
-          </Text>
-        </Flex>
-        <Divider />
-        {/* comments section */}
-        <Box px={4} as="section" bg="white">
-          comments section
-        </Box>
+          </>
+        )}
       </Slide>
     </>
   );

@@ -1,20 +1,29 @@
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import Link from "next/link";
 import styled from "styled-components";
 
-import { SecretSquareItem } from "../../../types/models/square";
+import type { SecretSquareCategory, SecretSquareType } from "../../../types/models/square";
 import { getDateDiff } from "../../../utils/dateTimeUtils";
 
 interface SquareItemProps {
-  item: Omit<SecretSquareItem, "comments" | "images"> & {
+  item: {
+    _id: string;
+    category: SecretSquareCategory;
+    title: string;
+    content: string;
+    type: SecretSquareType;
+    viewCount: number;
     thumbnail: string;
+    likeCount: number;
     commentsCount: number;
+    createdAt: string;
   };
 }
 
 export default function SquareItem({ item }: SquareItemProps) {
   return (
-    <Layout>
+    <Layout href={`/square/${item._id}`}>
       <IconCategory category={item.category} />
 
       <Text
@@ -30,7 +39,7 @@ export default function SquareItem({ item }: SquareItemProps) {
       >
         {item.title}
       </Text>
-      <Flex>
+      <Flex justifyContent="space-between">
         <Box
           mt={1}
           mb={2}
@@ -97,9 +106,15 @@ export default function SquareItem({ item }: SquareItemProps) {
           <span>{getDateDiff(dayjs(item.createdAt))}</span>
           <span>조회 {item.viewCount}</span>
         </Flex>
-        <Flex>
-          <span>{item.likeCount}</span>
-          <span>{item.commentsCount}</span>
+        <Flex gap={4}>
+          <Flex gap={1} align="center">
+            <i className="fa-light fa-thumbs-up" />
+            <span>{item.likeCount}</span>
+          </Flex>
+          <Flex gap={1} align="center">
+            <i className="fa-light fa-comment" />
+            <span>{item.commentsCount}</span>
+          </Flex>
         </Flex>
       </Flex>
     </Layout>
@@ -110,7 +125,7 @@ function IconCategory({ category }: { category: string }) {
   return <IconLayout>#{category}</IconLayout>;
 }
 
-const Layout = styled.div`
+const Layout = styled(Link)`
   display: flex;
   flex-direction: column;
   background-color: white;

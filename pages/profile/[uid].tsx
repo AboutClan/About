@@ -41,8 +41,6 @@ function ProfilePage() {
   const handleDrawer = () => {
     router.replace(`/profile/${uid}?declare=on`);
   };
- 
-
 
   return (
     <>
