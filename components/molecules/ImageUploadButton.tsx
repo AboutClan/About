@@ -24,7 +24,7 @@ export default function ImageUploadButton({
     const files = Array.from(e.target.files as FileList);
 
     if (maxFiles && files.length > maxFiles) {
-      toast("free", "이미지는 5개 이하로 추가할 수 있어요.");
+      toast("free", `이미지는 ${maxFiles}개 이하로 추가할 수 있어요.`);
       return;
     }
 
