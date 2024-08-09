@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useMutation, useQueryClient } from "react-query";
 
 import { requestServer } from "../../libs/methodHelpers";
@@ -28,7 +27,7 @@ export const usePatchPollMutation = ({ squareId }: { squareId: string }) => {
   );
 };
 
-export const usePostSecretSquareMutation = () => {
+export const useCreateSecretSquareMutation = () => {
   const queryClient = useQueryClient();
   return useMutation(
     ({ formData }: { formData: FormData }) =>
@@ -44,6 +43,41 @@ export const usePostSecretSquareMutation = () => {
         queryClient.invalidateQueries({
           queryKey: ["secretSquare", { category }],
         });
+      },
+    },
+  );
+};
+
+export const usePutLikeSecretSquareMutation = ({ squareId }: { squareId: string }) => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    () =>
+      requestServer({
+        method: "put",
+        url: `square/${squareId}/like`,
+      }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["secretSquare", { squareId }] });
+        queryClient.invalidateQueries({ queryKey: ["secretSquare", "isLike", { squareId }] });
+      },
+    },
+  );
+};
+
+export const useDeleteLikeSecretSquareMutation = ({ squareId }: { squareId: string }) => {
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    () =>
+      requestServer({
+        method: "delete",
+        url: `square/${squareId}/like`,
+      }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["secretSquare", { squareId }] });
+        queryClient.invalidateQueries({ queryKey: ["secretSquare", "isLike", { squareId }] });
       },
     },
   );

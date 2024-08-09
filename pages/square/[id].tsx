@@ -9,10 +9,15 @@ import Avatar from "../../components/atoms/Avatar";
 import Divider from "../../components/atoms/Divider";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
-import { usePatchPollMutation } from "../../hooks/secretSquare/mutations";
+import {
+  useDeleteLikeSecretSquareMutation,
+  usePatchPollMutation,
+  usePutLikeSecretSquareMutation,
+} from "../../hooks/secretSquare/mutations";
 import {
   useCurrentPollStatusQuery,
   useGetSquareDetailQuery,
+  useLikeStatus,
 } from "../../hooks/secretSquare/queries";
 import PollItemButton from "../../pageTemplates/square/SecretSquare/PollItemButton";
 import SecretSquareComments from "../../pageTemplates/square/SecretSquare/SecretSquareComments";
@@ -24,10 +29,22 @@ function SecretSquareDetailPage() {
   const squareId = router.query.id as string;
 
   const { data: session } = useSession();
+  const { mutate: putLikeMutate, isLoading: isPutLikeLoading } = usePutLikeSecretSquareMutation({
+    squareId,
+  });
+  const { mutate: deleteLikeMutate, isLoading: isDeleteLikeLoading } =
+    useDeleteLikeSecretSquareMutation({ squareId });
+  const { data: likeStatus, isFetching: isLikeStatusFetching } = useLikeStatus(
+    { squareId },
+    { staleTime: Infinity },
+  );
   const { mutate: mutatePoll, isLoading: isPollLoading } = usePatchPollMutation({ squareId });
-  const { data: squareDetail } = useGetSquareDetailQuery({ squareId }, { staleTime: Infinity });
+  const { data: squareDetail, isFetching: isSquareDetailFetching } = useGetSquareDetailQuery(
+    { squareId },
+    { staleTime: Infinity },
+  );
   const { data: pollStatus } = useCurrentPollStatusQuery(
-    { squareId, user: session?.user.id },
+    { squareId },
     {
       enabled: !!session?.user.id,
       staleTime: Infinity,
@@ -45,6 +62,9 @@ function SecretSquareDetailPage() {
   const [showRePollButton, setShowRePollButton] = useState(false);
   const [isActiveRePollButton, setIsActiveRePollButton] = useState(false);
 
+  const likeButtonDisabled =
+    isPutLikeLoading || isDeleteLikeLoading || isLikeStatusFetching || isSquareDetailFetching;
+
   useEffect(() => {
     if (pollStatus) {
       setSelectedPollItems(new Set(pollStatus.pollItems));
@@ -61,6 +81,15 @@ function SecretSquareDetailPage() {
     if (!isModified) return;
 
     mutatePoll({ user: session?.user.id, pollItems: Array.from(selectedPollItems.keys()) });
+  };
+
+  const handleLikeSquare = () => {
+    if (!likeStatus) return;
+    if (likeStatus.isLike) {
+      deleteLikeMutate();
+    } else {
+      putLikeMutate();
+    }
   };
 
   return (
@@ -236,9 +265,9 @@ function SecretSquareDetailPage() {
                   py="1"
                   maxW="fit-content"
                   backgroundColor="white"
-                  border="var(--border-main)"
+                  border={likeStatus?.isLike ? "var(--border-mint-light)" : "var(--border-main)"}
                   rounded="full"
-                  color="GrayText"
+                  color={likeStatus?.isLike ? "var(--color-mint)" : "GrayText"}
                   gap={1}
                   fontWeight={400}
                   size="sm"
@@ -250,13 +279,11 @@ function SecretSquareDetailPage() {
                     display: "flex",
                     alignItems: "center",
                   }}
-                  onClick={() => {
-                    // TODO put or delete like
-                    console.log("put or delete like");
-                  }}
+                  onClick={handleLikeSquare}
+                  isDisabled={likeButtonDisabled}
                 >
                   <i className="fa-light fa-thumbs-up" />
-                  <span>공감하기</span>
+                  <span>{squareDetail.likeCount}</span>
                 </Button>
                 <Flex gap={1} align="center">
                   <i className="fa-light fa-comment" />
