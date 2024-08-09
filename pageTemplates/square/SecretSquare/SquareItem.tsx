@@ -23,7 +23,7 @@ interface SquareItemProps {
 
 export default function SquareItem({ item }: SquareItemProps) {
   return (
-    <Layout href={`/square/${item._id}`}>
+    <Layout href={`/square/secret/${item._id}`}>
       <IconCategory category={item.category} />
 
       <Text

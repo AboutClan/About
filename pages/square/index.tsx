@@ -38,7 +38,7 @@ function SquarePage() {
         <SquareTabNav tab={tab} />
         {tab === "시크릿 스퀘어" ? <SquareSecretSection /> : <SquareLoungeSection />}
       </Slide>
-      {tab === "시크릿 스퀘어" && <WritingIcon url="/square/writing" />}
+      {tab === "시크릿 스퀘어" && <WritingIcon url="/square/secret/writing" />}
       {isRuleModal && <RuleModal content={CONTENT} setIsModal={setIsRuleModal} />}
     </>
   );

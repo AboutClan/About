@@ -72,7 +72,7 @@ function SquareWritingPage() {
       {
         onSuccess: ({ squareId }) => {
           completeToast("free", "게시물 등록이 완료되었습니다.");
-          router.replace(`/square/${squareId}`);
+          router.replace(`/square/secret/${squareId}`);
         },
         onError: () => {
           failToast("error");
