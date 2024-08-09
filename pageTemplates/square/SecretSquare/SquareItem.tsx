@@ -32,8 +32,8 @@ export default function SquareItem({ item }: SquareItemProps) {
         sx={{
           width: "240px",
           display: "-webkit-box",
-          "-webkit-line-clamp": "1",
-          "-webkit-box-orient": "vertical",
+          WebkitLineClamp: "1",
+          WebkitBoxOrient: "vertical",
           overflow: "hidden",
         }}
       >
@@ -48,8 +48,8 @@ export default function SquareItem({ item }: SquareItemProps) {
             fontSize: "13px",
 
             display: "-webkit-box",
-            "-webkit-line-clamp": "4",
-            "-webkit-box-orient": "vertical",
+            WebkitLineClamp: "4",
+            WebkitBoxOrient: "vertical",
             overflow: "hidden",
           }}
         >
