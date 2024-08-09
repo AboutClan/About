@@ -24,7 +24,7 @@ function ContentFeed({ group }: ContentFeedProps) {
       setTransferFeedSummary({
         url: `/group/${group.id}`,
         title: group.title,
-        text: group.guide,
+        subCategory: group.category.sub,
       });
     }
   }, [group]);
@@ -43,6 +43,7 @@ function ContentFeed({ group }: ContentFeedProps) {
               likeCnt: feed?.likeCnt,
               id: feed._id,
               comments: feed.comments,
+              isAnonymous: feed.isAnonymous as boolean,
             };
             return (
               <Box key={idx}>

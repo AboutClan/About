@@ -10,7 +10,7 @@ import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import SuccessScreen from "../../../components/layouts/SuccessScreen";
 import ImageUploadButton from "../../../components/molecules/ImageUploadButton";
-import SummaryBlock, { SummaryBlockProps } from "../../../components/molecules/SummaryBlock";
+import SummaryBlock from "../../../components/molecules/SummaryBlock";
 import UserSecretButton from "../../../components/molecules/UserSecretButton";
 import ImageUploadSlider, {
   ImageUploadTileProps,
@@ -19,7 +19,11 @@ import { useToast } from "../../../hooks/custom/CustomToast";
 import { useFeedMutation } from "../../../hooks/feed/mutations";
 import { useGatherIDQuery } from "../../../hooks/gather/queries";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
-import { transferFeedSummaryState } from "../../../recoils/transferRecoils";
+import { convertSummaryText } from "../../../libs/convertFeedToLayout";
+import {
+  TransferFeedSummaryProps,
+  transferFeedSummaryState,
+} from "../../../recoils/transferRecoils";
 import { appendFormData } from "../../../utils/formDataUtils";
 
 function FeedWritingPage() {
@@ -35,7 +39,7 @@ function FeedWritingPage() {
 
   const transferFeedSummary = useRecoilValue(transferFeedSummaryState);
   const [isSuccessScreen, setIsSuccessScreen] = useState(false);
-  const [summary, setSummary] = useState<SummaryBlockProps>();
+  const [summary, setSummary] = useState<TransferFeedSummaryProps>();
   const [imageArr, setImageArr] = useState<string[]>([]);
   const [imageFormArr, setImageFormArr] = useState<Blob[]>([]);
   const [isAnonymous, setIsAnonymous] = useState(false);
@@ -60,20 +64,20 @@ function FeedWritingPage() {
       setSummary({
         url: `/group/${group.id}`,
         title: group.title,
-        text: group.guide,
+        subCategory: group.category.sub,
       });
     } else if (gather) {
       setSummary({
         url: `/gather/${gather.id}`,
         title: gather.title,
-        text: gather.content,
+        subCategory: gather.type.subtitle,
       });
     }
   }, [transferFeedSummary, group]);
 
   const formData = new FormData();
 
-  const onSubmit: SubmitHandler<{ content: string }> = () => {
+  const onSubmit: SubmitHandler<{ content: string }> = ({ content }) => {
     if (!imageFormArr?.length) {
       toast("warning", "최소 한장 이상의 사진이 필요합니다.");
       return;
@@ -85,12 +89,10 @@ function FeedWritingPage() {
     }
     appendFormData(formData, "title", summary.title);
     appendFormData(formData, "isAnonymous", isAnonymous ? "true" : "false");
-    appendFormData(
-      formData,
-      "text",
-      category === "gather" ? gather.content : category === "group" ? group.content : null,
-    );
+    appendFormData(formData, "text", content);
     appendFormData(formData, "typeId", id);
+    appendFormData(formData, "subCategory", summary.subCategory);
+
     mutate(formData);
   };
 
@@ -117,7 +119,11 @@ function FeedWritingPage() {
       <Slide>
         {summary && (
           <Box p="16px">
-            <SummaryBlock url={summary.url} title={summary.title} text={summary.text} />
+            <SummaryBlock
+              url={summary.url}
+              title={summary.title}
+              text={convertSummaryText(category, summary.subCategory)}
+            />
           </Box>
         )}
         <VStack h="100%" px={4}>
@@ -142,7 +148,11 @@ function FeedWritingPage() {
         </VStack>
       </Slide>
       <WritingNavigation>
-        <ImageUploadButton setImageUrls={setImageArr} setImageForms={setImageFormArr} />
+        <ImageUploadButton
+          maxFiles={5}
+          setImageUrls={setImageArr}
+          setImageForms={setImageFormArr}
+        />
         <UserSecretButton isAnonymous={isAnonymous} setIsAnonymous={setIsAnonymous} />
       </WritingNavigation>
       {isSuccessScreen && (

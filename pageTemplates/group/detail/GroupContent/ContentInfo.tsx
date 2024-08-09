@@ -51,7 +51,7 @@ function ContentInfo({ group }: IContentInfo) {
         <Tag>{hashTagArr?.map((tag, idx) => (tag ? <div key={idx}>#{tag}</div> : null))}</Tag>
       </Layout>
       <GroupParticipation data={group} />
-      <GroupComments comments={group.comment} />
+      <GroupComments comments={group.comments} />
     </>
   );
 }

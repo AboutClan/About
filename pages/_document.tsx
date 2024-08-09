@@ -38,6 +38,18 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <link
+            rel="preload"
+            href="/fonts/subsetAppleSDGothicNeoB.woff2"
+            as="font"
+            crossOrigin="anonymous"
+          />
+          <link
+            rel="preload"
+            href="/fonts/subsetAppleSDGothicNeoR.woff2"
+            as="font"
+            crossOrigin="anonymous"
+          />
           <link rel="manifest" href="/manifest.json" />
           <meta property="og:type" content="website" />
           <meta property="og:title" content="About" />
@@ -46,6 +58,10 @@ export default class MyDocument extends Document {
           <meta property="og:image" content="/ogImage.jpg" />
           <meta property="og:locale" content="ko_KR" />
           <meta property="og:site_name" content="https://studyabout.herokuapp.com" />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+          />
           <meta charSet="utf-8" key="charset" />{" "}
           <Script src="https://kit.fontawesome.com/4071928605.js" crossOrigin="anonymous"></Script>
         </Head>

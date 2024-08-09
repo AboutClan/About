@@ -45,7 +45,7 @@ function Uid() {
 
   useEffect(() => {
     if (!chatInfo || !userInfo) return;
-  
+
     setChats(
       chatInfo.contents.map((chat) => ({
         message: chat.content,
@@ -154,6 +154,7 @@ function Uid() {
         flex={1}
         w="100%"
         p="16px"
+        maxW="var(--max-width)"
       >
         <UserCommentInput user={userInfo} onSubmit={onSubmit} type="message" initialFocus />
       </Box>

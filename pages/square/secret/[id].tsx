@@ -17,27 +17,27 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-import AlertModal from "../../components/AlertModal";
-import Avatar from "../../components/atoms/Avatar";
-import Divider from "../../components/atoms/Divider";
-import Header from "../../components/layouts/Header";
-import Slide from "../../components/layouts/PageSlide";
-import { useFailToast } from "../../hooks/custom/CustomToast";
+import AlertModal from "../../../components/AlertModal";
+import Avatar from "../../../components/atoms/Avatar";
+import Divider from "../../../components/atoms/Divider";
+import Header from "../../../components/layouts/Header";
+import Slide from "../../../components/layouts/PageSlide";
+import { useFailToast } from "../../../hooks/custom/CustomToast";
 import {
   useDeleteLikeSecretSquareMutation,
   useDeleteSecretSquareMutation,
   usePatchPollMutation,
   usePutLikeSecretSquareMutation,
-} from "../../hooks/secretSquare/mutations";
+} from "../../../hooks/secretSquare/mutations";
 import {
   useCurrentPollStatusQuery,
   useGetSquareDetailQuery,
   useLikeStatus,
-} from "../../hooks/secretSquare/queries";
-import PollItemButton from "../../pageTemplates/square/SecretSquare/PollItemButton";
-import SecretSquareComments from "../../pageTemplates/square/SecretSquare/SecretSquareComments";
-import { AVATAR_IMAGE_ARR } from "../../storage/avatarStorage";
-import { getDateDiff } from "../../utils/dateTimeUtils";
+} from "../../../hooks/secretSquare/queries";
+import PollItemButton from "../../../pageTemplates/square/SecretSquare/PollItemButton";
+import SecretSquareComments from "../../../pageTemplates/square/SecretSquare/SecretSquareComments";
+import { AVATAR_IMAGE_ARR } from "../../../storage/avatarStorage";
+import { getDateDiff } from "../../../utils/dateTimeUtils";
 
 function SecretSquareDetailPage() {
   const router = useRouter();

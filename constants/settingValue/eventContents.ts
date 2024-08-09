@@ -171,13 +171,34 @@ export const EVENT_CONTENT_2024: Record<string, Content[]> = {
       text: "",
     },
     {
-      content: "조모임 진행 기간",
-      start: 25,
-      end: 28,
-      color: "var(--color-orange)",
+      content: "라운지 및 피드, 채팅, 인스타 기능 출시",
+      start: 29,
+      end: 31,
+      color: "var(--color-mint)",
       text: "",
     },
   ],
+
+  8: [
+    {
+      content: "조모임 진행 기간",
+      start: 8,
+      end: 11,
+      color: "var(--color-orange)",
+      text: "",
+    },
+    {
+      content: "커뮤니티 출시",
+      start: 5,
+      end: 6,
+      color: "var(--color-mint)",
+      text: "",
+    },
+  ],
+  9: [],
+  10: [],
+  11: [],
+  12: [],
 };
 
 export const EVENT_ALWAYS = [

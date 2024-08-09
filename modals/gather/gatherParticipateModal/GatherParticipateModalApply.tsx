@@ -1,24 +1,22 @@
-import { useParams } from "next/navigation";
-
 import { useFailToast, useTypeErrorToast } from "../../../hooks/custom/CustomToast";
-import { useGatherQuery } from "../../../hooks/gather/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { DispatchNumber } from "../../../types/hooks/reactTypes";
+import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
 import { birthToAge } from "../../../utils/convertUtils/convertTypes";
 import { ModalBodyNavTwo } from "../../Modals";
 
 interface IGatherParticipateModalApply {
   setPageNum: DispatchNumber;
+  gather: IGather;
 }
 
-function GatherParticipateModalApply({ setPageNum }: IGatherParticipateModalApply) {
+function GatherParticipateModalApply({
+  setPageNum,
+  gather: gatherData,
+}: IGatherParticipateModalApply) {
   const failToast = useFailToast();
   const userErrorToast = useTypeErrorToast();
-  const { id } = useParams<{ id: string }>() || {};
-  const { data: gathers } = useGatherQuery();
-
-  const gatherData = gathers?.find((item) => item.id + "" === id);
 
   const { data: userInfo } = useUserInfoQuery({
     onError: (e) => userErrorToast(e, "user"),

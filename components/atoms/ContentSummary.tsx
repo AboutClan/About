@@ -15,15 +15,16 @@ function ContentSummary({ text }: ContentSummaryProps) {
   );
 }
 
-const P = styled.p<{ isShort: boolean }>`
+const P = styled.pre<{ isShort: boolean }>`
   ${(props) =>
     props.isShort &&
     `-webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;   `}
-
+  white-space: pre-wrap;
   font-size: 13px;
   display: -webkit-box;
+  font-family: apple;
 
   > span {
     font-size: 12px;

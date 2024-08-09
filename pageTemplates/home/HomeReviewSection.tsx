@@ -1,25 +1,24 @@
 import { Box } from "@chakra-ui/react";
-import { useSetRecoilState } from "recoil";
+import { useRouter } from "next/navigation";
 
 import HighlightedTextButton from "../../components/atoms/buttons/HighlightedTextButton";
 import SectionBar from "../../components/molecules/bars/SectionBar";
-import ImageTileGridLayout, {
-  IImageTileData,
-} from "../../components/molecules/layouts/ImageTitleGridLayout";
-import { slideDirectionState } from "../../recoils/navigationRecoils";
-import { REVIEW_DATA } from "../../storage/Review";
+import { IImageTileData } from "../../components/molecules/layouts/ImageTileFlexLayout";
+import ImageTileGridLayout from "../../components/molecules/layouts/ImageTitleGridLayout";
+import { useFeedsQuery } from "../../hooks/feed/queries";
 
 export default function HomeReviewSection() {
-  const setSlideDirection = useSetRecoilState(slideDirectionState);
+  const router = useRouter();
 
-  const imageData: IImageTileData[] = REVIEW_DATA.slice(-4)
-    .reverse()
-    .map((review) => ({
-      imageUrl: review.images[0],
-      text: review.text,
-      url: `/review?scroll=${review.id}`,
-      func: () => setSlideDirection("right"),
-    }));
+  const { data: feeds } = useFeedsQuery("gather", null, 0, true);
+
+  const imageArr: IImageTileData[] = feeds
+    ?.map((feed) => ({
+      imageUrl: feed.images[0],
+      func: () => router.push(`/square?tab=lounge&category=gather&scroll=${feed.typeId}`),
+      text: feed.text,
+    }))
+    .slice(0, 4);
 
   return (
     <Box mb="24px">
@@ -27,9 +26,7 @@ export default function HomeReviewSection() {
         title="ABOUT 모임 후기"
         rightComponent={<HighlightedTextButton text="더보기" url="/review" />}
       />
-      <Box p="16px">
-        <ImageTileGridLayout imageDataArr={imageData} />
-      </Box>
+      <Box p="16px">{imageArr && <ImageTileGridLayout imageDataArr={imageArr} />}</Box>
     </Box>
   );
 }

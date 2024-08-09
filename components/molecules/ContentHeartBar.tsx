@@ -1,5 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
 
 import { useFeedCommentMutation, useFeedLikeMutation } from "../../hooks/feed/mutations";
@@ -23,11 +24,18 @@ interface ContentHeartBarProps {
 }
 
 function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: ContentHeartBarProps) {
-  const { data: userInfo } = useUserInfoQuery();
+  const router = useRouter();
 
+  const searchParams = useSearchParams();
+  const urlSearchParams = new URLSearchParams(searchParams);
+  const { data: userInfo } = useUserInfoQuery();
+  const drawerType = searchParams.get("drawer");
+
+  const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [modalType, setModalType] = useState<"like" | "comment">(null);
   const [heartProps, setHeartProps] = useState({ isMine: false, users: likeUsers, cnt: likeCnt });
   const [commentArr, setCommentArr] = useState<UserCommentProps[]>(comments);
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
 
   const { mutate } = useFeedLikeMutation({
     onSuccess() {
@@ -36,11 +44,30 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
   });
 
   useEffect(() => {
+    const viewportHeight = window.visualViewport.height;
+    const fullHeight = window.innerHeight;
+    const handleResize = () => {
+      if (window.visualViewport.height < window.innerHeight) {
+        setIsKeyboardVisible(true);
+        setKeyboardHeight(fullHeight - viewportHeight);
+      } else {
+        setIsKeyboardVisible(false);
+        setKeyboardHeight(0);
+      }
+    };
+
+    window.visualViewport.addEventListener("resize", handleResize);
+
+    return () => {
+      window.visualViewport.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
     setCommentArr(comments);
   }, [comments]);
 
   const { mutate: writeComment } = useFeedCommentMutation(feedId);
-
 
   useEffect(() => {
     if (likeUsers?.some((who) => who.uid === userInfo?.uid)) {
@@ -50,6 +77,12 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
       setHeartProps((old) => ({ ...old, cnt: likeCnt, users: likeUsers }));
     }
   }, [likeUsers, likeCnt, userInfo?.uid]);
+
+  useEffect(() => {
+    if (!drawerType) {
+      setModalType(null);
+    }
+  }, [drawerType]);
 
   const resetCache = () => {
     refetch();
@@ -93,6 +126,17 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
     setCommentArr((old) => [...old, addNewComment(userInfo, value)]);
   };
 
+  const handleDrawerBtn = (type: "comment" | "like") => {
+    if (type === "comment") {
+      setModalType("comment");
+    }
+    if (type === "like") {
+      setModalType("like");
+    }
+    urlSearchParams.append("drawer", type);
+    router.push(`/square?${urlSearchParams.toString()}`);
+  };
+
   return (
     <>
       <Flex align="center" pl="8px" pr="16px" pb="8px">
@@ -112,7 +156,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
           {heartProps.cnt}
         </Button>
         <Button
-          onClick={() => setModalType("comment")}
+          onClick={() => handleDrawerBtn("comment")}
           size="sm"
           px="8px"
           variant="ghost"
@@ -120,12 +164,12 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
         >
           {commentArr.length}
         </Button>
-        <Button size="sm" variant="ghost" mb="2px" onClick={() => setModalType("like")}>
+        <Button size="sm" variant="ghost" mb="2px" onClick={() => handleDrawerBtn("like")}>
           <AvatarGroupsOverwrap userAvatarArr={userAvatarArr} size="sm" />
         </Button>
       </Flex>
       {modalType === "like" && (
-        <RightDrawer title="좋아요" onClose={() => setModalType(null)}>
+        <RightDrawer title="좋아요" onClose={() => router.back()}>
           <Flex direction="column">
             {likeUsers.map((who, idx) => (
               <Fragment key={idx}>
@@ -136,8 +180,13 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
         </RightDrawer>
       )}
       {modalType === "comment" && (
-        <RightDrawer title="댓글" onClose={() => setModalType(null)}>
-          <Flex direction="column" px="16px" mt="8px">
+        <RightDrawer title="댓글" onClose={() => router.back()}>
+          <Flex
+            direction="column"
+            px="16px"
+            mt={isKeyboardVisible ? `${keyboardHeight + 8}px` : "8px"}
+            zIndex={1}
+          >
             {commentArr.map((item, idx) => (
               <UserComment
                 key={idx}
@@ -158,7 +207,8 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
             flex={1}
             w="100%"
             p="16px"
-            borderTop="var(--border-main)dww"
+            borderTop="var(--border-main)"
+            maxW="var(--max-width)"
           >
             <UserCommentInput user={userInfo} onSubmit={onSubmit} />
           </Box>

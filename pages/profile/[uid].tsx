@@ -42,8 +42,6 @@ function ProfilePage() {
     router.replace(`/profile/${uid}?declare=on`);
   };
 
-
-
   return (
     <>
       <Header title="" url={beforePage} rightPadding={8}>
