@@ -318,8 +318,6 @@ function SecretSquareDetailPage() {
                             }}
                             width={400}
                             height={400}
-                            // TODO remove unoptimized prop
-                            unoptimized
                           />
                         </Box>
                       );
