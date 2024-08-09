@@ -12,7 +12,7 @@ import ImageUploadButton from "../../components/molecules/ImageUploadButton";
 import ImageUploadSlider, {
   ImageUploadTileProps,
 } from "../../components/organisms/sliders/ImageUploadSlider";
-import { useCompleteToast, useInfoToast } from "../../hooks/custom/CustomToast";
+import { useCompleteToast, useFailToast, useInfoToast } from "../../hooks/custom/CustomToast";
 import { useCreateSecretSquareMutation } from "../../hooks/secretSquare/mutations";
 import PollCreatorDrawer from "../../pageTemplates/square/SecretSquare/writing/PollCreatorDrawer";
 import SquareCategoryRadioGroup from "../../pageTemplates/square/SecretSquare/writing/SquareCategoryRadioGroup";
@@ -42,9 +42,11 @@ function SquareWritingPage() {
   const pollItems = getValues("pollItems");
   const isPollType = pollItems.every(({ name }) => !!name);
 
-  const { mutate: createSecretSquareMutate, isLoading } = useCreateSecretSquareMutation();
+  const { mutate: createSecretSquareMutate, isLoading: isCreateSquareLoading } =
+    useCreateSecretSquareMutation();
   const completeToast = useCompleteToast();
   const infoToast = useInfoToast();
+  const failToast = useFailToast();
 
   const onSubmit: SubmitHandler<SecretSquareFormData> = (data) => {
     const type = isPollType ? "poll" : "general";
@@ -68,9 +70,12 @@ function SquareWritingPage() {
     createSecretSquareMutate(
       { formData },
       {
-        onSuccess: () => {
+        onSuccess: ({ squareId }) => {
           completeToast("free", "게시물 등록이 완료되었습니다.");
-          router.replace("/square");
+          router.replace(`/square/${squareId}`);
+        },
+        onError: () => {
+          failToast("error");
         },
       },
     );
@@ -91,6 +96,7 @@ function SquareWritingPage() {
           size="sm"
           type="submit"
           form="secret-square-form"
+          isLoading={isCreateSquareLoading}
         >
           완료
         </Button>
