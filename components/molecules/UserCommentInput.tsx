@@ -41,7 +41,7 @@ function UserCommentInput({
   };
 
   return (
-    <Flex align="center" flex={1} w="200px">
+    <Flex align="center" flex={1}>
       {user && (
         <>
           {!isSecret ? (
