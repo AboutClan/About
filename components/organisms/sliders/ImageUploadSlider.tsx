@@ -3,8 +3,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
-import { Box } from "@chakra-ui/react";
-import Image from "next/image";
+import { Box, Image } from "@chakra-ui/react";
 import { useState } from "react";
 import styled from "styled-components";
 import SwiperCore from "swiper";
@@ -52,7 +51,6 @@ function ImageUploadSlider({ imageTileArr, size, selectedImageUrl, aspect = 1 }:
                 <Image
                   src={imageTile.imageUrl}
                   alt="thumbnailImage"
-                  fill={true}
                   sizes={size === "sm" ? "80px" : "360px"}
                   objectFit="cover"
                   objectPosition="center"

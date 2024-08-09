@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import Avatar from "../../atoms/Avatar";
 import UserBadge from "../../atoms/badges/UserBadge";
-import SecretAvatar from "../../atoms/SecretAvatar";
+import BasicAvatar from "../../atoms/BasicAvatar";
 
 export interface IProfileCommentCard {
   user: IUserSummary;
@@ -27,7 +27,7 @@ export default function ProfileCommentCard({
       {user ? (
         <Avatar image={user.profileImage} size="md" avatar={user.avatar} uid={user.uid} />
       ) : (
-        <SecretAvatar />
+        <BasicAvatar />
       )}
       <UserInfoContainer>
         <UserNameBadgeContainer>

@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
@@ -9,8 +9,10 @@ import { UserCommentProps as CommentProps } from "../../types/components/propTyp
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { getDateDiff } from "../../utils/dateTimeUtils";
 import Avatar from "../atoms/Avatar";
+import SecretAvatar from "../atoms/SecretAvatar";
 
 interface UserCommentProps extends Omit<CommentProps, "_id"> {
+  isSecret?: boolean;
   setCommentArr: DispatchType<CommentProps[]>;
   type: "gather" | "group";
   pageId: string;
@@ -19,6 +21,7 @@ interface UserCommentProps extends Omit<CommentProps, "_id"> {
 }
 
 function UserComment({
+  isSecret,
   user,
   updatedAt,
   comment,
@@ -64,16 +67,20 @@ function UserComment({
   return (
     <>
       <Flex align="center" py="8px">
-        <Flex justify="center" align="center" mr="12px">
-          <Avatar size="sm" avatar={user.avatar} image={user.profileImage} uid={user.uid} />
+        <Flex justify="center" alignSelf="flex-start" mr="12px">
+          {!isSecret ? (
+            <Avatar size="sm" avatar={user.avatar} image={user.profileImage} uid={user.uid} />
+          ) : (
+            <SecretAvatar />
+          )}
         </Flex>
         <Flex direction="column" fontSize="12px" lineHeight={1.6} justify="space-around">
           <Flex align="center">
             <Box fontWeight={600} mr="4px">
-              {user.name}
+              {isSecret ? "익명1" : user.name}
             </Box>
             <Box fontSize="10px" color="var(--gray-600)">
-              {user.location} · {getDateDiff(dayjs(updatedAt))}
+              {!isSecret && user.location} {!isSecret && "."} {getDateDiff(dayjs(updatedAt))}
             </Box>
           </Flex>
           <p>
@@ -83,7 +90,30 @@ function UserComment({
                 <i className="fa-solid fa-ellipsis" />
               </Box>
             )}
-          </p>
+          </p>{" "}
+          <Flex>
+            <Button
+              px="0"
+              size="xs"
+              variant="ghost"
+              color="var(--gray-600)"
+              fontSize="10px"
+              fontWeight={500}
+            >
+              좋아요 0개
+            </Button>
+            <Button
+              ml="12px"
+              px="0"
+              size="xs"
+              variant="ghost"
+              color="var(--gray-600)"
+              fontSize="10px"
+              fontWeight={500}
+            >
+              답글 달기
+            </Button>
+          </Flex>
         </Flex>
       </Flex>
       {isEditModal && (

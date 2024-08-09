@@ -133,7 +133,7 @@ const AvatarContainer = styled.div<{
 }>`
   overflow: hidden;
   position: relative;
-  border-radius: 50%; // rounded-full
+  border-radius: 50%;
   background-color: white;
 
   ${(props) => {

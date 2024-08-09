@@ -2,7 +2,9 @@ import { Flex, Radio, RadioGroup } from "@chakra-ui/react";
 import { Controller, useFormContext } from "react-hook-form";
 import styled from "styled-components";
 
-import { SECRET_SQUARE_CATEGORY } from "../SecretSquareCategories";
+import { type SecretSquareCategory } from "../../../../types/models/square";
+
+const SECRET_SQUARE_CATEGORY: SecretSquareCategory[] = ["일상", "고민", "정보", "같이해요"];
 
 function SquareCategoryRadioGroup() {
   const { control } = useFormContext();

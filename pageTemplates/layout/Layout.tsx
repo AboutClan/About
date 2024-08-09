@@ -12,6 +12,7 @@ import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
 import PageTracker from "../../components/layouts/PageTracker";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
+import { getBottomNavSize } from "../../utils/mathUtils";
 import { parseUrlToSegments } from "../../utils/stringUtils";
 import BaseModal from "./BaseModal";
 import BaseScript from "./BaseScript";
@@ -75,7 +76,7 @@ function Layout({ children }: ILayout) {
               !NOT_PADDING_NAV_SEGMENT.includes(currentSegment?.[0])
                 ? {
                     paddingTop: "56px",
-                    paddingBottom: "40px",
+                    paddingBottom: `${getBottomNavSize()}px`,
                   }
                 : undefined
             }

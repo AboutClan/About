@@ -1,4 +1,5 @@
 import { Box, Button, Flex, Spacer, useDisclosure, VStack } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 
@@ -11,6 +12,8 @@ import ImageUploadButton from "../../../components/molecules/ImageUploadButton";
 import ImageUploadSlider, {
   ImageUploadTileProps,
 } from "../../../components/organisms/sliders/ImageUploadSlider";
+import { useCompleteToast, useFailToast, useInfoToast } from "../../../hooks/custom/CustomToast";
+import { useCreateSecretSquareMutation } from "../../../hooks/secretSquare/mutations";
 import PollCreatorDrawer from "../../../pageTemplates/square/SecretSquare/writing/PollCreatorDrawer";
 import SquareCategoryRadioGroup from "../../../pageTemplates/square/SecretSquare/writing/SquareCategoryRadioGroup";
 import { SecretSquareFormData } from "../../../types/models/square";
@@ -19,11 +22,13 @@ const defaultFormData: SecretSquareFormData = {
   category: "일상",
   title: "",
   content: "",
-  pollList: [{ value: "" }, { value: "" }, { value: "" }],
+  pollItems: [{ name: "" }, { name: "" }, { name: "" }],
   canMultiple: false,
 };
 
 function SquareWritingPage() {
+  const router = useRouter();
+
   const methods = useForm<SecretSquareFormData>({
     defaultValues: defaultFormData,
   });
@@ -32,38 +37,48 @@ function SquareWritingPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [imageArr, setImageArr] = useState<string[]>([]);
-  /* eslint-disable @typescript-eslint/no-unused-vars */
+
   const [imageFormArr, setImageFormArr] = useState<Blob[]>([]);
-  const pollList = getValues("pollList");
-  const isPollType = pollList.every(({ value }) => !!value);
+  const pollItems = getValues("pollItems");
+  const isPollType = pollItems.every(({ name }) => !!name);
+
+  const { mutate: createSecretSquareMutate, isLoading: isCreateSquareLoading } =
+    useCreateSecretSquareMutation();
+  const completeToast = useCompleteToast();
+  const infoToast = useInfoToast();
+  const failToast = useFailToast();
 
   const onSubmit: SubmitHandler<SecretSquareFormData> = (data) => {
-
     const type = isPollType ? "poll" : "general";
+    const { category, title, content, pollItems, canMultiple } = data;
 
-    // TODO
-    // POST request body
+    const formData = new FormData();
+
     if (type === "poll") {
-      // const body = {
-      //   category: data.category,
-      //   title: data.title,
-      //   content: data.content,
-      //   type: type,
-      //   authorId: session?.user.uid, // 서버에서 이 값으로 어떤 유저인지 찾기 위함
-      //   author: session?.user.name,
-      //   pollList: data.pollList,
-      //   canMultiple: data.canMultiple,
-      // };
-    } else if (type === "general") {
-      // const body = {
-      //   category: data.category,
-      //   title: data.title,
-      //   content: data.content,
-      //   type: type,
-      //   authorId: session?.user.uid, // 서버에서 이 값으로 어떤 유저인지 찾기 위함
-      //   author: session?.user.name,
-      // };
+      formData.append("pollItems", JSON.stringify(pollItems));
+      formData.append("canMultiple", JSON.stringify(canMultiple));
     }
+
+    formData.append("category", category);
+    formData.append("title", title);
+    formData.append("type", type);
+    formData.append("content", content);
+    imageFormArr.forEach((imageBlob) => {
+      formData.append("images", imageBlob);
+    });
+
+    createSecretSquareMutate(
+      { formData },
+      {
+        onSuccess: ({ squareId }) => {
+          completeToast("free", "게시물 등록이 완료되었습니다.");
+          router.replace(`/square/secret/${squareId}`);
+        },
+        onError: () => {
+          failToast("error");
+        },
+      },
+    );
   };
   const imageTileArr: ImageUploadTileProps[] = imageArr.map((image) => ({
     imageUrl: image,
@@ -81,6 +96,7 @@ function SquareWritingPage() {
           size="sm"
           type="submit"
           form="secret-square-form"
+          isLoading={isCreateSquareLoading}
         >
           완료
         </Button>
@@ -134,7 +150,7 @@ function SquareWritingPage() {
                   <Button
                     type="button"
                     onClick={() => {
-                      resetField("pollList", { defaultValue: defaultFormData["pollList"] });
+                      resetField("pollItems", { defaultValue: defaultFormData["pollItems"] });
                       resetField("canMultiple", { defaultValue: defaultFormData["canMultiple"] });
                     }}
                   >
@@ -142,7 +158,7 @@ function SquareWritingPage() {
                   </Button>
                 </Flex>
                 <VStack as="ul" mt={2}>
-                  {pollList.map(({ value }, index) => {
+                  {pollItems.map(({ name }, index) => {
                     return (
                       <Box
                         as="li"
@@ -155,7 +171,7 @@ function SquareWritingPage() {
                         }}
                         key={index}
                       >
-                        {value}
+                        {name}
                       </Box>
                     );
                   })}
@@ -166,13 +182,17 @@ function SquareWritingPage() {
         </VStack>
       </Slide>
       <WritingNavigation>
-        <ImageUploadButton setImageUrls={setImageArr} setImageForms={setImageFormArr} />
+        <ImageUploadButton
+          maxFiles={5}
+          setImageUrls={setImageArr}
+          setImageForms={setImageFormArr}
+        />
         <Button
           color="var(--gray-600)"
           type="button"
           onClick={() => {
             if (isPollType) {
-              // TODO toast
+              infoToast("free", "투표는 최대 1개 등록할 수 있습니다.");
               return;
             }
             onOpen();
