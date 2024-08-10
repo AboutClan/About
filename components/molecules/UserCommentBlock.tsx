@@ -11,7 +11,7 @@ interface UserCommentBlockProps {
   id: string;
   commentProps: UserCommentProps;
   setCommentArr: DispatchType<UserCommentProps[]>;
-  writeSubComment: ({ comment, id }: { comment: string; id: string }) => void;
+  writeSubComment: ({ comment, commentId }: { comment: string; commentId: string }) => void;
 }
 
 function UserCommentBlock({
@@ -26,10 +26,11 @@ function UserCommentBlock({
   const [isReCommentInput, setIsReCommentInput] = useState(false);
 
   const onSubmitReComment = (text: string) => {
-    writeSubComment({ comment: text, id });
+    writeSubComment({ comment: text, commentId: commentProps._id });
+    console.log(commentProps, "aaa");
     setCommentArr((old) =>
       old.map((obj) =>
-        obj._id === id
+        obj._id === commentProps._id
           ? { ...obj, subComments: [...obj?.subComments, { comment: text, user: userInfo }] }
           : obj,
       ),

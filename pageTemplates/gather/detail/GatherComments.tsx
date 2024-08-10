@@ -9,7 +9,7 @@ import styled from "styled-components";
 import UserCommentBlock from "../../../components/molecules/UserCommentBlock";
 
 import UserCommentInput from "../../../components/molecules/UserCommentInput";
-import { useCommentMutation } from "../../../hooks/common/mutations";
+import { useCommentMutation, useSubCommentMutation } from "../../../hooks/common/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { transferGatherDataState } from "../../../recoils/transferRecoils";
 import { UserCommentProps } from "../../../types/components/propTypes";
@@ -29,14 +29,16 @@ function GatherComments({ comments }: IGatherComments) {
 
   const setTransferGather = useSetRecoilState(transferGatherDataState);
   const [commentArr, setCommentArr] = useState<UserCommentProps[]>(comments);
-
+  console.log(1234, commentArr);
   const { data: userInfo } = useUserInfoQuery();
   console.log(comments);
 
   const { mutate: writeComment } = useCommentMutation("post", "gather", gatherId, {
     onSuccess() {},
   });
-
+  const { mutate: writeSubComment } = useSubCommentMutation("post", "gather", gatherId, {
+    onSuccess() {},
+  });
   useEffect(() => {
     setCommentArr(comments);
   }, [comments]);
@@ -70,9 +72,9 @@ function GatherComments({ comments }: IGatherComments) {
                 key={idx}
                 type="gather"
                 id={gatherId}
-                commentProps={item}
+                commentProps={commentArr?.find((comment) => comment._id === item._id)}
                 setCommentArr={setCommentArr}
-                writeSubComment={}
+                writeSubComment={writeSubComment}
               />
             ))}
           </section>

@@ -8,9 +8,9 @@ import { type SecretSquareCategoryWithAll } from "../../../types/models/square";
 export const SECRET_SQUARE_CATEGORY: SecretSquareCategoryWithAll[] = [
   "전체",
   "일상",
-  "고민",
   "정보",
   "같이해요",
+  "고민",
 ];
 
 interface SecretSquareCategoryProps {

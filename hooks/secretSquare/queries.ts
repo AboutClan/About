@@ -1,7 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { useQuery } from "react-query";
 
-import { SERVER_URI } from "../../constants/system";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import type {
   SecretSquareCategory,
@@ -38,6 +37,7 @@ export const useSecretSquareListQuery = (
       const res = await axios.get<SecretSquareListResponse>(
         `http://localhost:3001/square?${searchParams.toString()}`,
       );
+      console.log(res);
       // return { squareList };
       // const res = await axios.get<SecretSquareListResponse>(`${SERVER_URI}/square`);
       return res.data;

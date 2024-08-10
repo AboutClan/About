@@ -14,6 +14,7 @@ import ImageUploadSlider, {
   ImageUploadTileProps,
 } from "../../../components/organisms/sliders/ImageUploadSlider";
 import { useCompleteToast } from "../../../hooks/custom/CustomToast";
+import { usePostSecretSquareMutation } from "../../../hooks/secretSquare/mutations";
 import PollCreatorDrawer from "../../../pageTemplates/square/SecretSquare/writing/PollCreatorDrawer";
 import SquareCategoryRadioGroup from "../../../pageTemplates/square/SecretSquare/writing/SquareCategoryRadioGroup";
 import { SecretSquareFormData } from "../../../types/models/square";
@@ -105,7 +106,7 @@ function SquareWritingPage() {
                 placeholder="제목을 입력해주세요"
                 {...register("title", {
                   required: true,
-                  minLength: 3,
+                  minLength: 2,
                   setValueAs: (value) => value.trim(),
                 })}
               />
@@ -114,7 +115,7 @@ function SquareWritingPage() {
                 placeholder="본문을 입력해주세요"
                 {...register("content", {
                   required: true,
-                  minLength: 10,
+                  minLength: 3,
                   setValueAs: (value) => value.trim(),
                 })}
                 minH={180}
@@ -128,7 +129,9 @@ function SquareWritingPage() {
             </Box>
             {isPollType && (
               <Box
-                p={4}
+                px={4}
+                py={3}
+                pb={4}
                 sx={{
                   margin: "1rem",
                   width: "100%",
@@ -137,21 +140,30 @@ function SquareWritingPage() {
                   background: "white",
                 }}
               >
-                <Flex justifyContent="flex-end" gap={2}>
-                  <Button type="button" onClick={onOpen}>
-                    수정
-                  </Button>
-                  <Button
-                    type="button"
-                    onClick={() => {
-                      resetField("pollItems", { defaultValue: defaultFormData["pollItems"] });
-                      resetField("canMultiple", { defaultValue: defaultFormData["canMultiple"] });
-                    }}
-                  >
-                    삭제
-                  </Button>
+                <Flex justifyContent="space-between" align="center" gap={2}>
+                  <Box>
+                    <i className="fa-solid fa-check-to-slot" />
+                    <Box as="span" ml="4px" fontWeight={600}>
+                      투표
+                    </Box>
+                  </Box>
+                  <Box>
+                    <Button size="sm" type="button" mr="8px" onClick={onOpen}>
+                      수정
+                    </Button>
+                    <Button
+                      type="button"
+                      size="sm"
+                      onClick={() => {
+                        resetField("pollItems", { defaultValue: defaultFormData["pollItems"] });
+                        resetField("canMultiple", { defaultValue: defaultFormData["canMultiple"] });
+                      }}
+                    >
+                      삭제
+                    </Button>
+                  </Box>
                 </Flex>
-                <VStack as="ul" mt={2}>
+                <VStack as="ul" mt={3}>
                   {pollItems.map(({ name }, index) => {
                     return (
                       <Box

@@ -23,9 +23,8 @@ interface SquareItemProps {
 
 export default function SquareItem({ item }: SquareItemProps) {
   return (
-    <Layout href={`/square/${item._id}`}>
+    <Layout href={`/square/secret/${item._id}`}>
       <IconCategory category={item.category} />
-
       <Text
         fontSize="16px"
         fontWeight={600}
@@ -46,7 +45,6 @@ export default function SquareItem({ item }: SquareItemProps) {
           sx={{
             color: "var(--font-h7)",
             fontSize: "13px",
-
             display: "-webkit-box",
             "-webkit-line-clamp": "4",
             "-webkit-box-orient": "vertical",
@@ -94,8 +92,11 @@ export default function SquareItem({ item }: SquareItemProps) {
         <Flex
           sx={{
             "& :after": {
+              height: "100%",
               content: "'•'",
               margin: "0 4px",
+              verticalAlign: "middle",
+              fontSize: "8px",
             },
 
             "& :last-child:after": {
@@ -106,13 +107,13 @@ export default function SquareItem({ item }: SquareItemProps) {
           <span>{getDateDiff(dayjs(item.createdAt))}</span>
           <span>조회 {item.viewCount}</span>
         </Flex>
-        <Flex gap={4}>
+        <Flex gap={3}>
           <Flex gap={1} align="center">
-            <i className="fa-light fa-thumbs-up" />
+            <i className="fa-regular fa-thumbs-up" />
             <span>{item.likeCount}</span>
           </Flex>
           <Flex gap={1} align="center">
-            <i className="fa-light fa-comment" />
+            <i className="fa-regular fa-comment" />
             <span>{item.commentsCount}</span>
           </Flex>
         </Flex>

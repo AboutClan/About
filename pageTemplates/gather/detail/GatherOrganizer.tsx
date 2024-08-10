@@ -1,12 +1,9 @@
-import dayjs from "dayjs";
 import styled from "styled-components";
 
-import Avatar from "../../../components/atoms/Avatar";
 import { Badge } from "../../../components/atoms/badges/Badges";
-import { AboutIcon } from "../../../components/atoms/Icons/AboutIcon";
+import OrganizerBar from "../../../components/molecules/OrganizerBar";
 import { ABOUT_UID } from "../../../constants/system";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
-import { getDateDiff } from "../../../utils/dateTimeUtils";
 
 interface IGatherOrganizer {
   createdAt: string;
@@ -16,27 +13,12 @@ interface IGatherOrganizer {
 }
 
 function GatherOrganizer({ createdAt, organizer, isAdminOpen, category }: IGatherOrganizer) {
-  const writingDate = getDateDiff(dayjs(createdAt));
   const isABOUT = organizer.uid === ABOUT_UID || isAdminOpen;
   return (
     <Layout>
-      <div>
-        {isABOUT ? (
-          <AboutIcon size="md" />
-        ) : (
-          <Avatar
-            avatar={organizer.avatar}
-            uid={organizer.uid}
-            image={organizer.profileImage}
-            size="md"
-          />
-        )}
-        <Info>
-          <Writer>{isABOUT ? "어바웃" : organizer.name}</Writer>
-          <span>{writingDate}</span>
-        </Info>
-      </div>
-      <Badge colorScheme="redTheme" text={category} size="lg" />
+      <OrganizerBar organizer={organizer} createdAt={createdAt} isAdminOpen={isABOUT}>
+        <Badge colorScheme="redTheme" text={category} size="lg" />
+      </OrganizerBar>
     </Layout>
   );
 }

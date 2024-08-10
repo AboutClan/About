@@ -6,12 +6,20 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import Avatar from "../../../components/atoms/Avatar";
+import { Badge } from "../../../components/atoms/badges/Badges";
 import Divider from "../../../components/atoms/Divider";
+import KakaoShareBtn from "../../../components/atoms/Icons/KakaoShareBtn";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
+import { usePatchPollMutation } from "../../../hooks/secretSquare/mutations";
+import {
+  useCurrentPollStatusQuery,
+  useGetSquareDetailQuery,
+} from "../../../hooks/secretSquare/queries";
+import PollItemButton from "../../../pageTemplates/square/SecretSquare/PollItemButton";
+import SecretSquareComments from "../../../pageTemplates/square/SecretSquare/SecretSquareComments";
 import { AVATAR_IMAGE_ARR } from "../../../storage/avatarStorage";
 import { getDateDiff } from "../../../utils/dateTimeUtils";
-
 
 function SecretSquareDetailPage() {
   const router = useRouter();
@@ -59,13 +67,21 @@ function SecretSquareDetailPage() {
 
   return (
     <>
-      <Header title="" />
+      <Header title="">
+        <KakaoShareBtn
+          type="secretSquare"
+          title={""}
+          subtitle={""}
+          // img={coverImage}
+          url={`/square/secret/${squareId}`}
+        />
+      </Header>
       <Slide>
         {squareDetail && (
           <>
             <Flex px={4} py={4} direction="column" gap={2} as="section" bg="white">
-              <Box bg="gray.200" rounded="full" w="fit-content" px={2} py={1}>
-                # {squareDetail.category}
+              <Box>
+                <Badge text={`# ${squareDetail.category}`} colorScheme="grayTheme" size="md" />
               </Box>
               <section id="avatar-section">
                 <Flex align="center" gap={4}>

@@ -10,7 +10,7 @@ import UserCommentBlock from "../../../components/molecules/UserCommentBlock";
 
 import UserCommentInput from "../../../components/molecules/UserCommentInput";
 import { GROUP_STUDY } from "../../../constants/keys/queryKeys";
-import { useCommentMutation } from "../../../hooks/common/mutations";
+import { useCommentMutation, useSubCommentMutation } from "../../../hooks/common/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { transferGroupDataState } from "../../../recoils/transferRecoils";
 import { UserCommentProps } from "../../../types/components/propTypes";
@@ -34,6 +34,11 @@ function GroupComments({ comments }: IGroupComments) {
   const { data: userInfo } = useUserInfoQuery();
 
   const { mutate: writeComment } = useCommentMutation("post", "group", groupId, {
+    onSuccess() {
+      resetCache();
+    },
+  });
+  const { mutate: writeSubComment } = useSubCommentMutation("post", "group", groupId, {
     onSuccess() {
       resetCache();
     },
@@ -80,7 +85,7 @@ function GroupComments({ comments }: IGroupComments) {
                 id={groupId}
                 commentProps={item}
                 setCommentArr={setCommentArr}
-                writeComment={writeComment}
+                writeSubComment={writeSubComment}
               />
             ))}
           </section>

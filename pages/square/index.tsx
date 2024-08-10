@@ -17,14 +17,12 @@ function SquarePage() {
 
   const [tab, setTab] = useState<SquareTab>("시크릿 스퀘어");
   const [isRuleModal, setIsRuleModal] = useState(false);
-
   useEffect(() => {
     if (!tabParam) {
-      router.replace("/square?tab=lounge");
-      setTab("라운지");
+      router.replace("/square?tab=secret");
+      setTab("시크릿 스퀘어");
       return;
     }
-
     if (tabParam === "secret") setTab("시크릿 스퀘어");
     if (tabParam === "lounge") setTab("라운지");
   }, [tabParam]);
@@ -32,13 +30,13 @@ function SquarePage() {
   return (
     <>
       <Header title="커뮤니티" isBack={false}>
-        <RuleIcon setIsModal={setIsRuleModal} />
+        {tab === "라운지" && <RuleIcon setIsModal={setIsRuleModal} />}
       </Header>
       <Slide>
         <SquareTabNav tab={tab} />
         {tab === "시크릿 스퀘어" ? <SquareSecretSection /> : <SquareLoungeSection />}
       </Slide>
-      {tab === "시크릿 스퀘어" && <WritingIcon url="/square/writing" />}
+      {tab === "시크릿 스퀘어" && <WritingIcon url="/square/secret/writing" />}
       {isRuleModal && <RuleModal content={CONTENT} setIsModal={setIsRuleModal} />}
     </>
   );
