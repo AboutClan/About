@@ -1,16 +1,16 @@
 import { Box, Button, ButtonGroup, Flex, Text, VStack } from "@chakra-ui/react";
-import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import Avatar from "../../../components/atoms/Avatar";
 import { Badge } from "../../../components/atoms/badges/Badges";
 import Divider from "../../../components/atoms/Divider";
 import KakaoShareBtn from "../../../components/atoms/Icons/KakaoShareBtn";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
+import OrganizerBar from "../../../components/molecules/OrganizerBar";
+import { SECRET_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
 import { usePatchPollMutation } from "../../../hooks/secretSquare/mutations";
 import {
   useCurrentPollStatusQuery,
@@ -18,8 +18,6 @@ import {
 } from "../../../hooks/secretSquare/queries";
 import PollItemButton from "../../../pageTemplates/square/SecretSquare/PollItemButton";
 import SecretSquareComments from "../../../pageTemplates/square/SecretSquare/SecretSquareComments";
-import { AVATAR_IMAGE_ARR } from "../../../storage/avatarStorage";
-import { getDateDiff } from "../../../utils/dateTimeUtils";
 
 function SecretSquareDetailPage() {
   const router = useRouter();
@@ -64,7 +62,7 @@ function SecretSquareDetailPage() {
 
     mutatePoll({ user: session?.user.id, pollItems: Array.from(selectedPollItems.keys()) });
   };
-
+  console.log(squareDetail);
   return (
     <>
       <Header title="">
@@ -84,16 +82,10 @@ function SecretSquareDetailPage() {
                 <Badge text={`# ${squareDetail.category}`} colorScheme="grayTheme" size="md" />
               </Box>
               <section id="avatar-section">
-                <Flex align="center" gap={4}>
-                  <Avatar isLink={false} image={AVATAR_IMAGE_ARR[0]} size="md" />
-                  <Flex direction="column">
-                    <Text fontWeight={500}>익명</Text>
-                    <Text color="GrayText">{getDateDiff(dayjs(squareDetail.createdAt))}</Text>
-                  </Flex>
-                </Flex>
+                <OrganizerBar organizer={SECRET_USER_SUMMARY} createdAt={squareDetail.createdAt} />
               </section>
               <section id="content-section">
-                <Text as="h1" fontSize="xl" fontWeight={700}>
+                <Text py="8px" as="h1" fontSize="xl" fontWeight={700}>
                   {squareDetail.title}
                 </Text>
                 <Text mt={2} whiteSpace="break-spaces">
@@ -115,9 +107,9 @@ function SecretSquareDetailPage() {
                   }}
                 >
                   <VStack as="ul" align="flex-start">
-                    <Text fontWeight={600} display="flex" gap={1} align="center">
+                    <Text fontWeight={600} display="flex" mb="4px" gap={1} align="center">
                       <Box as="span" display="flex" alignItems="center">
-                        <i className="fa-regular fa-check-to-slot" />
+                        <i className="fa-solid fa-check-to-slot" />
                       </Box>
                       <span>투표</span>
                     </Text>
@@ -164,13 +156,14 @@ function SecretSquareDetailPage() {
                         rounded="lg"
                         w="100%"
                         colorScheme="gray"
+                        mt="8px"
                         onClick={() => setShowRePollButton(false)}
                       >
                         <i className="fa-regular fa-rotate-right" style={{ marginRight: "4px" }} />
                         다시 투표하기
                       </Button>
                     ) : (
-                      <ButtonGroup w="100%">
+                      <ButtonGroup w="100%" mt="8px">
                         <Button
                           type="button"
                           rounded="lg"
@@ -234,21 +227,20 @@ function SecretSquareDetailPage() {
                 </section>
               )}
 
-              <Flex color="GrayText" align="center" gap={1}>
-                <i className="fa-light fa-eye" />
+              <Flex color="var(--gray-600)" align="center" gap={1} fontSize="12px">
+                <i className="fa-regular fa-eye" />
                 <span>{squareDetail.viewCount}명이 봤어요</span>
               </Flex>
-
-              <Flex justify="space-between">
+              <Flex justify="space-between" mt="8px">
                 <Button
                   type="button"
-                  px="2"
+                  px="3"
                   py="1"
                   maxW="fit-content"
                   backgroundColor="white"
                   border="var(--border-main)"
                   rounded="full"
-                  color="GrayText"
+                  color="var(--gray-700)"
                   gap={1}
                   fontWeight={400}
                   size="sm"
@@ -265,13 +257,9 @@ function SecretSquareDetailPage() {
                     console.log("put or delete like");
                   }}
                 >
-                  <i className="fa-light fa-thumbs-up" />
+                  <i className="fa-regular fa-thumbs-up" />
                   <span>공감하기</span>
                 </Button>
-                <Flex gap={1} align="center">
-                  <i className="fa-light fa-comment" />
-                  <span>{squareDetail.comments.length}</span>
-                </Flex>
               </Flex>
             </Flex>
             <Divider />

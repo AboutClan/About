@@ -10,36 +10,42 @@ interface OrganizerBarProps {
   createdAt: string;
   organizer: IUserSummary;
   isAdminOpen?: boolean;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 function OrganizerBar({ organizer, createdAt, children, isAdminOpen }: OrganizerBarProps) {
+  const isSecret = organizer.name === "익명";
+
   return (
-    <Layout>
-      {isAdminOpen ? (
-        <AboutIcon size="md" />
-      ) : (
-        <Avatar
-          avatar={organizer.avatar}
-          uid={organizer.uid}
-          image={organizer.profileImage}
-          size="md"
-        />
-      )}
-      <Info>
-        <Box as="span">{isAdminOpen ? "어바웃" : organizer.name}</Box>
-        <span>{getDateDiff(dayjs(createdAt))}</span>
-      </Info>
+    <Layout isSecret={isSecret}>
+      <Box>
+        {isAdminOpen ? (
+          <AboutIcon size="md" />
+        ) : (
+          <Avatar
+            avatar={organizer.avatar}
+            uid={organizer.uid}
+            image={organizer.profileImage}
+            size="md"
+            isLink={!isSecret}
+          />
+        )}
+        <Info>
+          <Box as="span">{isAdminOpen ? "어바웃" : organizer.name}</Box>
+          <span>{getDateDiff(dayjs(createdAt))}</span>
+        </Info>
+      </Box>
       {children}
     </Layout>
   );
 }
 
-const Layout = styled.div`
+const Layout = styled.div<{ isSecret: boolean }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--gap-3) var(--gap-4);
+  padding: ${(props) =>
+    !props.isSecret ? "var(--gap-3) var(--gap-4)" : "var(--gap-1) 0 var(--gap-3) 0"};
   background-color: white;
   border-bottom: var(--border);
   > div:first-child {

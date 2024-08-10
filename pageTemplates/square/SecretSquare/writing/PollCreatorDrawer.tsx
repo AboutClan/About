@@ -123,6 +123,7 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
             colorScheme="mintTheme"
             onClick={async () => {
               const isValid = await trigger("pollItems");
+
               if (isValid) {
                 resetField("pollItems", { defaultValue: getValues("pollItems") });
                 resetField("canMultiple", { defaultValue: getValues("canMultiple") });

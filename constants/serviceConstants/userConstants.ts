@@ -29,3 +29,19 @@ export const ABOUT_USER_SUMMARY: IUserSummary = {
   location: "수원",
   monthScore: 30,
 };
+export const SECRET_USER_SUMMARY: IUserSummary = {
+  _id: "",
+  uid: "",
+  name: "익명",
+  profileImage: "",
+  isActive: true,
+  birth: "000101",
+  comment: "어바웃 운영진 계정입니다.",
+  score: 10000,
+  avatar: {
+    type: 0,
+    bg: 0,
+  },
+  location: "수원",
+  monthScore: 30,
+};
