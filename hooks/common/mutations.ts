@@ -20,14 +20,15 @@ export type CommentParamProps<T> = T extends "post"
       };
 
 interface CommentRequestProps {
-  id: string;
+  id?: string;
+  feedId?: string;
   comment?: string;
   commentId?: string;
 }
 
 export const useCommentMutation = <T extends "post" | "patch" | "delete">(
   method: T,
-  type: "gather" | "group",
+  type: "gather" | "group" | "feed",
   id: string,
   options?: MutationOptions<CommentParamProps<T>>,
 ) =>
@@ -37,7 +38,7 @@ export const useCommentMutation = <T extends "post" | "patch" | "delete">(
       method,
       url,
       body: {
-        id,
+        ...(type !== "feed" ? { id } : { feedId: id }),
         comment: param?.comment,
         commentId: param?.commentId,
       },
@@ -48,20 +49,20 @@ export type SubCommentParamProps<T> = T extends "post"
   ? {
       comment: string;
       commentId?: string;
-      gatherId: string;
+
       subCommentId?: string;
     }
   : T extends "patch"
     ? {
         comment: string;
         commentId: string;
-        gatherId: string;
+
         subCommentId: string;
       }
     : {
         comment?: never;
         commentId: string;
-        gatherId: string;
+
         subCommentId: string;
       };
 

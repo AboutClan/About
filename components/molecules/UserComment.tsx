@@ -2,11 +2,15 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import { useQueryClient } from "react-query";
+import { useSetRecoilState } from "recoil";
+import { GATHER_CONTENT, GROUP_STUDY } from "../../constants/keys/queryKeys";
 
-import { useCommentMutation, useSubCommentMutation } from "../../hooks/common/mutations";
+import { useCommentMutation } from "../../hooks/common/mutations";
 import CommentEditModal from "../../modals/common/CommentEditModal";
+import { transferGatherDataState, transferGroupDataState } from "../../recoils/transferRecoils";
 import { UserCommentProps as CommentProps } from "../../types/components/propTypes";
-import { DispatchType } from "../../types/hooks/reactTypes";
+import { DispatchBoolean, DispatchType } from "../../types/hooks/reactTypes";
 import { getDateDiff } from "../../utils/dateTimeUtils";
 import Avatar from "../atoms/Avatar";
 import SecretAvatar from "../atoms/SecretAvatar";
@@ -14,10 +18,11 @@ import SecretAvatar from "../atoms/SecretAvatar";
 interface UserCommentProps extends Omit<CommentProps, "_id"> {
   isSecret?: boolean;
   setCommentArr: DispatchType<CommentProps[]>;
-  type: "gather" | "group";
+  type: "gather" | "group" | "feed";
   pageId: string;
   commentId?: string;
-  resetCache: () => void;
+  isReComment?: boolean;
+  setIsReCommentInput: DispatchBoolean;
 }
 
 function UserComment({
@@ -25,13 +30,19 @@ function UserComment({
   user,
   updatedAt,
   comment,
+  setIsReCommentInput,
   commentId,
   setCommentArr,
+  isReComment,
   type,
   pageId,
-  resetCache,
 }: UserCommentProps) {
+  const queryClient = useQueryClient();
+
   const { data: session } = useSession();
+
+  const setTransferGather = useSetRecoilState(transferGatherDataState);
+  const setTransferGroup = useSetRecoilState(transferGroupDataState);
 
   const [text, setText] = useState(comment);
   const [isEditModal, setIsEditModal] = useState(false);
@@ -49,8 +60,6 @@ function UserComment({
     },
   });
 
-  const { mutate: writeSubComment } = useSubCommentMutation("post", "gather", pageId);
-
   const editCommentNow = (value: string, commentId: string) => {
     setCommentArr((old) =>
       old.map((obj) => (obj._id === commentId ? { ...obj, comment: value } : obj)),
@@ -62,7 +71,14 @@ function UserComment({
   };
 
   const onCompleted = () => {
-    resetCache();
+    if (type === "gather") {
+      setTransferGather(null);
+      queryClient.invalidateQueries([GATHER_CONTENT, pageId]);
+    }
+    if (type === "group") {
+      setTransferGroup(null);
+      queryClient.invalidateQueries([GROUP_STUDY, pageId]);
+    }
     setIsEditModal(false);
   };
 
@@ -104,20 +120,24 @@ function UserComment({
             >
               좋아요 0개
             </Button>
-            <Button
-              ml="12px"
-              px="0"
-              size="xs"
-              variant="ghost"
-              color="var(--gray-600)"
-              fontSize="10px"
-              fontWeight={500}
-            >
-              답글 달기
-            </Button>
+            {!isReComment && (
+              <Button
+                ml="12px"
+                px="0"
+                size="xs"
+                variant="ghost"
+                color="var(--gray-600)"
+                fontSize="10px"
+                fontWeight={500}
+                onClick={() => setIsReCommentInput(true)}
+              >
+                답글 달기
+              </Button>
+            )}
           </Flex>
         </Flex>
       </Flex>
+
       {isEditModal && (
         <CommentEditModal
           text={text}

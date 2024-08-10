@@ -6,8 +6,8 @@ import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import UserCommentBlock from "../../../components/molecules/UserCommentBlock";
 
-import UserComment from "../../../components/molecules/UserComment";
 import UserCommentInput from "../../../components/molecules/UserCommentInput";
 import { GROUP_STUDY } from "../../../constants/keys/queryKeys";
 import { useCommentMutation } from "../../../hooks/common/mutations";
@@ -38,7 +38,7 @@ function GroupComments({ comments }: IGroupComments) {
       resetCache();
     },
   });
-
+  console.log(52, comments, commentArr);
   useEffect(() => {
     setCommentArr(comments);
   }, [comments]);
@@ -74,16 +74,13 @@ function GroupComments({ comments }: IGroupComments) {
           )}
           <section>
             {commentArr?.map((item, idx) => (
-              <UserComment
+              <UserCommentBlock
                 key={idx}
                 type="group"
-                user={item.user}
-                updatedAt={item.updatedAt}
-                comment={item.comment}
-                pageId={groupId}
-                commentId={item._id}
+                id={groupId}
+                commentProps={item}
                 setCommentArr={setCommentArr}
-                resetCache={resetCache}
+                writeComment={writeComment}
               />
             ))}
           </section>

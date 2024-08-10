@@ -15,7 +15,7 @@ function ContentInfo({ group }: IContentInfo) {
   const { data: session } = useSession();
   const hashTagText = group.hashTag;
   const hashTagArr = hashTagText?.split("#");
-
+  console.log(13, group);
   const isMember = group?.participants?.some((who) => who?.user?.uid === session?.user.uid);
 
   return (

@@ -2,8 +2,9 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
+import { useCommentMutation } from "../../hooks/common/mutations";
 
-import { useFeedCommentMutation, useFeedLikeMutation } from "../../hooks/feed/mutations";
+import { useFeedLikeMutation } from "../../hooks/feed/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { UserCommentProps } from "../../types/components/propTypes";
 import { FeedComment } from "../../types/models/feed";
@@ -20,6 +21,7 @@ interface ContentHeartBarProps {
   likeUsers: IUserSummary[];
   likeCnt: number;
   comments: FeedComment[];
+
   refetch?: () => void;
 }
 
@@ -67,7 +69,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
     setCommentArr(comments);
   }, [comments]);
 
-  const { mutate: writeComment } = useFeedCommentMutation(feedId);
+  const { mutate: writeComment } = useCommentMutation("post", "feed", feedId);
 
   useEffect(() => {
     if (likeUsers?.some((who) => who.uid === userInfo?.uid)) {
@@ -83,10 +85,6 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
       setModalType(null);
     }
   }, [drawerType]);
-
-  const resetCache = () => {
-    refetch();
-  };
 
   const onClickHeart = () => {
     setHeartProps((old) => {
@@ -190,14 +188,13 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
             {commentArr.map((item, idx) => (
               <UserComment
                 key={idx}
-                type="gather"
+                type="feed"
                 user={item.user}
                 updatedAt={item.updatedAt}
                 comment={item.comment}
                 pageId={feedId}
-                commentId="item._id"
+                commentId={item._id}
                 setCommentArr={setCommentArr}
-                resetCache={resetCache}
               />
             ))}
           </Flex>

@@ -1,15 +1,14 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/dist/client/router";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import UserCommentBlock from "../../../components/molecules/UserCommentBlock";
 
-import UserComment from "../../../components/molecules/UserComment";
 import UserCommentInput from "../../../components/molecules/UserCommentInput";
-import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
 import { useCommentMutation } from "../../../hooks/common/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { transferGatherDataState } from "../../../recoils/transferRecoils";
@@ -32,11 +31,10 @@ function GatherComments({ comments }: IGatherComments) {
   const [commentArr, setCommentArr] = useState<UserCommentProps[]>(comments);
 
   const { data: userInfo } = useUserInfoQuery();
+  console.log(comments);
 
   const { mutate: writeComment } = useCommentMutation("post", "gather", gatherId, {
-    onSuccess() {
-      resetCache();
-    },
+    onSuccess() {},
   });
 
   useEffect(() => {
@@ -56,11 +54,6 @@ function GatherComments({ comments }: IGatherComments) {
     setCommentArr((old) => [...old, addNewComment(userInfo, value)]);
   };
 
-  const resetCache = () => {
-    setTransferGather(null);
-    queryClient.invalidateQueries([GATHER_CONTENT, gatherId]);
-  };
-
   return (
     <>
       <Layout>
@@ -73,16 +66,13 @@ function GatherComments({ comments }: IGatherComments) {
           )}
           <section>
             {commentArr?.map((item, idx) => (
-              <UserComment
+              <UserCommentBlock
                 key={idx}
                 type="gather"
-                user={item.user}
-                updatedAt={item.updatedAt}
-                comment={item.comment}
-                pageId={gatherId}
-                commentId={item._id}
+                id={gatherId}
+                commentProps={item}
                 setCommentArr={setCommentArr}
-                resetCache={resetCache}
+                writeSubComment={}
               />
             ))}
           </section>
