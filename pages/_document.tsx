@@ -38,6 +38,18 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <link
+            rel="preload"
+            href="/fonts/subsetAppleSDGothicNeoB.woff2"
+            as="font"
+            crossOrigin="anonymous"
+          />
+          <link
+            rel="preload"
+            href="/fonts/subsetAppleSDGothicNeoR.woff2"
+            as="font"
+            crossOrigin="anonymous"
+          />
           <link rel="manifest" href="/manifest.json" />
           <meta property="og:type" content="website" />
           <meta property="og:title" content="About" />
