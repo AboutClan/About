@@ -22,7 +22,7 @@ const defaultFormData: SecretSquareFormData = {
   category: "일상",
   title: "",
   content: "",
-  pollItems: [{ name: "" }, { name: "" }, { name: "" }],
+  pollItems: [{ name: "" }, { name: "" }],
   canMultiple: false,
 };
 
@@ -34,7 +34,11 @@ function SquareWritingPage() {
   });
   const { register, handleSubmit, watch, getValues, resetField } = methods;
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenPollCreatorDrawer,
+    onOpen: onOpenPollCreatorDrawer,
+    onClose: onClosePollCreatorDrawer,
+  } = useDisclosure();
 
   const [imageArr, setImageArr] = useState<string[]>([]);
 
@@ -47,6 +51,14 @@ function SquareWritingPage() {
   const completeToast = useCompleteToast();
   const infoToast = useInfoToast();
   const failToast = useFailToast();
+
+  const openPollCreatorDrawer = () => {
+    if (isPollType) {
+      infoToast("free", "투표는 최대 1개 등록할 수 있습니다.");
+      return;
+    }
+    onOpenPollCreatorDrawer();
+  };
 
   const onSubmit: SubmitHandler<SecretSquareFormData> = (data) => {
     const type = isPollType ? "poll" : "general";
@@ -130,7 +142,10 @@ function SquareWritingPage() {
                   <ImageUploadSlider imageTileArr={imageTileArr} size="sm" />
                 </Box>
               ) : null}
-              <PollCreatorDrawer isOpen={isOpen} onClose={onClose} />
+              <PollCreatorDrawer
+                isOpen={isOpenPollCreatorDrawer}
+                onClose={onClosePollCreatorDrawer}
+              />
             </Box>
             {isPollType && (
               <Box
@@ -144,7 +159,7 @@ function SquareWritingPage() {
                 }}
               >
                 <Flex justifyContent="flex-end" gap={2}>
-                  <Button type="button" onClick={onOpen}>
+                  <Button type="button" onClick={onOpenPollCreatorDrawer}>
                     수정
                   </Button>
                   <Button
@@ -190,13 +205,7 @@ function SquareWritingPage() {
         <Button
           color="var(--gray-600)"
           type="button"
-          onClick={() => {
-            if (isPollType) {
-              infoToast("free", "투표는 최대 1개 등록할 수 있습니다.");
-              return;
-            }
-            onOpen();
-          }}
+          onClick={openPollCreatorDrawer}
           leftIcon={<i className="fa-regular fa-check-to-slot fa-lg" />}
           variant="ghost"
           size="sm"
