@@ -24,8 +24,9 @@ interface PollCreatorDrawerProps {
   onClose: () => void;
 }
 
-const MIN_POLL_ITEMS = 2;
-const MAX_POLL_ITEMS = 5;
+const DEFAULT_POLL_ITEMS_COUNT = 2;
+const MIN_POLL_ITEMS_COUNT = 2;
+const MAX_POLL_ITEMS_COUNT = 5;
 
 export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawerProps) {
   const { control, register, trigger, resetField, getValues } =
@@ -39,9 +40,12 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
     name: "pollItems",
     rules: {
       validate: (pollList) => {
+        // pollist is default value
+        const isDefaultValue =
+          pollList.length === DEFAULT_POLL_ITEMS_COUNT && pollList.every(({ name }) => name === "");
         const isValid =
-          pollList.length >= MIN_POLL_ITEMS && pollList.every(({ name }) => !!name.trim());
-        return isValid;
+          pollList.length >= MIN_POLL_ITEMS_COUNT && pollList.every(({ name }) => !!name.trim());
+        return isDefaultValue || isValid;
       },
     },
   });
@@ -108,7 +112,7 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
               type="button"
               w="100%"
               onClick={addPollItem}
-              isDisabled={pollItems.length >= MAX_POLL_ITEMS}
+              isDisabled={pollItems.length >= MAX_POLL_ITEMS_COUNT}
             >
               <i className="fa-regular fa-plus-large" style={{ marginRight: "8px" }} />
               항목 추가
