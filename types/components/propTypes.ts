@@ -20,7 +20,7 @@ export interface ITextAndColorSchemes {
 
 interface CommentProps extends ITimeStamps {
   comment: string;
-  user: IUserSummary;
+  user?: IUserSummary;
   _id?: string;
 }
 export interface UserCommentProps extends CommentProps {

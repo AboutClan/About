@@ -7,7 +7,7 @@ import UserComment from "./UserComment";
 import UserCommentInput from "./UserCommentInput";
 
 interface UserCommentBlockProps {
-  type: "gather" | "group";
+  type: "gather" | "group" | "feed";
   id: string;
   commentProps: UserCommentProps;
   setCommentArr: DispatchType<UserCommentProps[]>;

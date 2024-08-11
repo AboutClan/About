@@ -265,7 +265,7 @@ function SecretSquareDetailPage() {
             <Divider />
             {/* comments section */}
             <Box px={4} as="section" bg="white">
-              <SecretSquareComments />
+              <SecretSquareComments comments={squareDetail?.comments} />
             </Box>
           </>
         )}

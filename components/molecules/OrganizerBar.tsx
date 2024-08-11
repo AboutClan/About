@@ -59,6 +59,7 @@ const Info = styled.div`
   flex-direction: column;
   justify-content: center;
   font-size: 13px;
+  line-height: 1.6;
   align-items: flex-start;
   > span:first-child {
     font-weight: 600;

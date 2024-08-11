@@ -3,15 +3,12 @@ import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
 import { useEffect, useState } from "react";
-import { useQueryClient } from "react-query";
-import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import UserCommentBlock from "../../../components/molecules/UserCommentBlock";
 
 import UserCommentInput from "../../../components/molecules/UserCommentInput";
 import { useCommentMutation, useSubCommentMutation } from "../../../hooks/common/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
-import { transferGatherDataState } from "../../../recoils/transferRecoils";
 import { UserCommentProps } from "../../../types/components/propTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
@@ -21,17 +18,14 @@ interface IGatherComments {
 }
 
 function GatherComments({ comments }: IGatherComments) {
-  const queryClient = useQueryClient();
   const router = useRouter();
   const { data: session } = useSession();
   const isGuest = session?.user.name === "guest";
   const gatherId = router.query.id as string;
 
-  const setTransferGather = useSetRecoilState(transferGatherDataState);
   const [commentArr, setCommentArr] = useState<UserCommentProps[]>(comments);
-  console.log(1234, commentArr);
+
   const { data: userInfo } = useUserInfoQuery();
-  console.log(comments);
 
   const { mutate: writeComment } = useCommentMutation("post", "gather", gatherId, {
     onSuccess() {},
