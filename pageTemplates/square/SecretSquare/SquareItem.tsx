@@ -31,14 +31,14 @@ export default function SquareItem({ item }: SquareItemProps) {
         sx={{
           width: "240px",
           display: "-webkit-box",
-          "-webkit-line-clamp": "1",
-          "-webkit-box-orient": "vertical",
+          WebkitLineClamp: "1",
+          WebkitBoxOrient: "vertical",
           overflow: "hidden",
         }}
       >
         {item.title}
       </Text>
-      <Flex justifyContent="space-between">
+      <Flex justifyContent="space-between" gap={4}>
         <Box
           mt={1}
           mb={2}
@@ -46,8 +46,8 @@ export default function SquareItem({ item }: SquareItemProps) {
             color: "var(--font-h7)",
             fontSize: "13px",
             display: "-webkit-box",
-            "-webkit-line-clamp": "4",
-            "-webkit-box-orient": "vertical",
+            WebkitLineClamp: "4",
+            WebkitBoxOrient: "vertical",
             overflow: "hidden",
           }}
         >
@@ -95,8 +95,8 @@ export default function SquareItem({ item }: SquareItemProps) {
               height: "100%",
               content: "'•'",
               margin: "0 4px",
-              // verticalAlign: "middle",
-              // fontSize: "8px",
+              verticalAlign: "middle",
+              fontSize: "8px",
             },
 
             "& :last-child:after": {

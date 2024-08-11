@@ -1,35 +1,70 @@
-import { Box, Button, ButtonGroup, Flex, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerOverlay,
+  Flex,
+  Text,
+  useDisclosure,
+  VStack,
+} from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import AlertModal from "../../../components/AlertModal";
+import Avatar from "../../../components/atoms/Avatar";
 
 import { Badge } from "../../../components/atoms/badges/Badges";
 import Divider from "../../../components/atoms/Divider";
 import KakaoShareBtn from "../../../components/atoms/Icons/KakaoShareBtn";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
-import OrganizerBar from "../../../components/molecules/OrganizerBar";
-import { SECRET_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
-import { usePatchPollMutation } from "../../../hooks/secretSquare/mutations";
+import { useFailToast } from "../../../hooks/custom/CustomToast";
+import {
+  useDeleteLikeSecretSquareMutation,
+  useDeleteSecretSquareMutation,
+  usePatchPollMutation,
+  usePutLikeSecretSquareMutation,
+} from "../../../hooks/secretSquare/mutations";
 import {
   useCurrentPollStatusQuery,
   useGetSquareDetailQuery,
+  useLikeStatus,
 } from "../../../hooks/secretSquare/queries";
 import PollItemButton from "../../../pageTemplates/square/SecretSquare/PollItemButton";
 import SecretSquareComments from "../../../pageTemplates/square/SecretSquare/SecretSquareComments";
+import { AVATAR_IMAGE_ARR } from "../../../storage/avatarStorage";
+import { getDateDiff } from "../../../utils/dateTimeUtils";
 
 function SecretSquareDetailPage() {
   const router = useRouter();
   const squareId = router.query.id as string;
 
   const { data: session } = useSession();
+  const { mutate: putLikeMutate, isLoading: isPutLikeLoading } = usePutLikeSecretSquareMutation({
+    squareId,
+  });
+  const { mutate: deleteLikeMutate, isLoading: isDeleteLikeLoading } =
+    useDeleteLikeSecretSquareMutation({ squareId });
+  const { data: likeStatus, isFetching: isLikeStatusFetching } = useLikeStatus(
+    { squareId },
+    { staleTime: Infinity },
+  );
   const { mutate: mutatePoll, isLoading: isPollLoading } = usePatchPollMutation({ squareId });
-  const { data: squareDetail } = useGetSquareDetailQuery({ squareId }, { staleTime: Infinity });
+  const { mutate: deleteSquareMutate } = useDeleteSecretSquareMutation({ squareId });
+  const { data: squareDetail, isFetching: isSquareDetailFetching } = useGetSquareDetailQuery(
+    { squareId },
+    { staleTime: Infinity },
+  );
   const { data: pollStatus } = useCurrentPollStatusQuery(
-    { squareId, user: session?.user.id },
+    { squareId },
     {
-      enabled: !!session?.user.id,
+      enabled: !!session?.user.id && squareDetail?.type === "poll",
       staleTime: Infinity,
     },
   );
@@ -44,6 +79,14 @@ function SecretSquareDetailPage() {
 
   const [showRePollButton, setShowRePollButton] = useState(false);
   const [isActiveRePollButton, setIsActiveRePollButton] = useState(false);
+
+  const { isOpen: isMenuOpen, onOpen: onMenuOpen, onClose: onMenuClose } = useDisclosure();
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
+
+  const likeButtonDisabled =
+    isPutLikeLoading || isDeleteLikeLoading || isLikeStatusFetching || isSquareDetailFetching;
+
+  const failToast = useFailToast();
 
   useEffect(() => {
     if (pollStatus) {
@@ -62,7 +105,35 @@ function SecretSquareDetailPage() {
 
     mutatePoll({ user: session?.user.id, pollItems: Array.from(selectedPollItems.keys()) });
   };
-  console.log(squareDetail);
+
+  const handleLikeSquare = () => {
+    if (!likeStatus) return;
+    if (likeStatus.isLike) {
+      deleteLikeMutate();
+    } else {
+      putLikeMutate();
+    }
+  };
+
+  const openAlertModal = () => {
+    setIsAlertOpen(true);
+    onMenuClose();
+  };
+
+  const handleDeleteSquare = () => {
+    deleteSquareMutate(
+      { category: squareDetail?.category },
+      {
+        onSuccess: () => {
+          router.replace("/square");
+        },
+        onError: () => {
+          failToast("error");
+        },
+      },
+    );
+  };
+
   return (
     <>
       <Header title="">
@@ -82,7 +153,49 @@ function SecretSquareDetailPage() {
                 <Badge text={`# ${squareDetail.category}`} colorScheme="grayTheme" size="md" />
               </Box>
               <section id="avatar-section">
-                <OrganizerBar organizer={SECRET_USER_SUMMARY} createdAt={squareDetail.createdAt} />
+                {/* <OrganizerBar organizer={SECRET_USER_SUMMARY} createdAt={squareDetail.createdAt} /> */}
+                <Flex align="center" gap={4}>
+                  <Avatar isLink={false} image={AVATAR_IMAGE_ARR[0]} size="md" />
+                  <Flex direction="column" flex={1}>
+                    <Text fontWeight={500}>익명</Text>
+                    <Text color="GrayText">{getDateDiff(dayjs(squareDetail.createdAt))}</Text>
+                  </Flex>
+                  {squareDetail.isMySquare && (
+                    <>
+                      <Box as="button" type="button" onClick={onMenuOpen}>
+                        <i className="fa-regular fa-ellipsis fa-xl" />
+                      </Box>
+                      <Drawer placement="bottom" onClose={onMenuClose} isOpen={isMenuOpen}>
+                        <DrawerOverlay />
+                        <DrawerContent pb={8}>
+                          <DrawerBody>
+                            <Box
+                              as="button"
+                              w="100%"
+                              color="var(--color-red)"
+                              textAlign="center"
+                              onClick={openAlertModal}
+                            >
+                              삭제
+                            </Box>
+                          </DrawerBody>
+                        </DrawerContent>
+                      </Drawer>
+                      {isAlertOpen && (
+                        <AlertModal
+                          setIsModal={setIsAlertOpen}
+                          options={{
+                            title: "게시글을 삭제할까요?",
+                            subTitle:
+                              "게시글을 삭제하면 모든 데이터가 삭제되고 다시는 볼 수 없어요.",
+                            func: handleDeleteSquare,
+                            text: "삭제하기",
+                          }}
+                        />
+                      )}
+                    </>
+                  )}
+                </Flex>
               </section>
               <section id="content-section">
                 <Text py="8px" as="h1" fontSize="xl" fontWeight={700}>
@@ -113,10 +226,10 @@ function SecretSquareDetailPage() {
                       </Box>
                       <span>투표</span>
                     </Text>
-                    {squareDetail.poll.pollItems.map(({ _id, name, count }, index) => {
+                    {squareDetail.poll.pollItems.map(({ _id, name, count }) => {
                       return (
                         <PollItemButton
-                          key={index}
+                          key={_id}
                           isChecked={selectedPollItems.has(_id)}
                           isDisabled={showRePollButton}
                           name={name}
@@ -217,8 +330,6 @@ function SecretSquareDetailPage() {
                             }}
                             width={400}
                             height={400}
-                            // TODO remove unoptimized prop
-                            unoptimized
                           />
                         </Box>
                       );
@@ -238,9 +349,9 @@ function SecretSquareDetailPage() {
                   py="1"
                   maxW="fit-content"
                   backgroundColor="white"
-                  border="var(--border-main)"
+                  border={likeStatus?.isLike ? "var(--border-mint-light)" : "var(--border-main)"}
                   rounded="full"
-                  color="var(--gray-700)"
+                  color={likeStatus?.isLike ? "var(--color-mint)" : "var(--gray-700)"}
                   gap={1}
                   fontWeight={400}
                   size="sm"
@@ -252,13 +363,13 @@ function SecretSquareDetailPage() {
                     display: "flex",
                     alignItems: "center",
                   }}
-                  onClick={() => {
-                    // TODO put or delete like
-                    console.log("put or delete like");
-                  }}
+                  onClick={handleLikeSquare}
+                  isDisabled={likeButtonDisabled}
                 >
-                  <i className="fa-regular fa-thumbs-up" />
-                  <span>공감하기</span>
+                  {/* <i className="fa-regular fa-thumbs-up" />
+                  <span>공감하기</span> */}
+                  <i className="fa-light fa-thumbs-up" />
+                  <span>{squareDetail.likeCount}</span>
                 </Button>
               </Flex>
             </Flex>

@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
@@ -11,7 +11,6 @@ function SquareSecretSection() {
   const [category, setCategory] = useState<SecretSquareCategoryWithAll>("전체");
   const { data, isLoading } = useSecretSquareListQuery({ category });
   console.log(data);
-  // TODO empty squareList UI
   return (
     <>
       <SecretSquareCategories category={category} setCategory={setCategory} />
@@ -19,7 +18,9 @@ function SquareSecretSection() {
       <Box>
         {data &&
           (data.squareList.length === 0 ? (
-            <>empty squareList</>
+            <Flex fontSize="18px" height="200px" justify="center" align="center">
+              가장 먼저 &ldquo;{category}&rdquo; 카테고리에 글을 남겨보세요!
+            </Flex>
           ) : (
             <>
               {data.squareList.map((squareItem) => (

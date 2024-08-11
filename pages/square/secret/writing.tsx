@@ -1,5 +1,4 @@
 import { Box, Button, Flex, IconButton, Spacer, useDisclosure, VStack } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
@@ -13,8 +12,8 @@ import ImageUploadButton from "../../../components/molecules/ImageUploadButton";
 import ImageUploadSlider, {
   ImageUploadTileProps,
 } from "../../../components/organisms/sliders/ImageUploadSlider";
-import { useCompleteToast } from "../../../hooks/custom/CustomToast";
-import { usePostSecretSquareMutation } from "../../../hooks/secretSquare/mutations";
+import { useCompleteToast, useFailToast, useInfoToast } from "../../../hooks/custom/CustomToast";
+import { useCreateSecretSquareMutation } from "../../../hooks/secretSquare/mutations";
 import PollCreatorDrawer from "../../../pageTemplates/square/SecretSquare/writing/PollCreatorDrawer";
 import SquareCategoryRadioGroup from "../../../pageTemplates/square/SecretSquare/writing/SquareCategoryRadioGroup";
 import { SecretSquareFormData } from "../../../types/models/square";
@@ -29,7 +28,7 @@ const defaultFormData: SecretSquareFormData = {
 
 function SquareWritingPage() {
   const router = useRouter();
-  const { data: session } = useSession();
+
   const methods = useForm<SecretSquareFormData>({
     defaultValues: defaultFormData,
   });
@@ -38,13 +37,16 @@ function SquareWritingPage() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [imageArr, setImageArr] = useState<string[]>([]);
-  /* eslint-disable @typescript-eslint/no-unused-vars */
+
   const [imageFormArr, setImageFormArr] = useState<Blob[]>([]);
   const pollItems = getValues("pollItems");
   const isPollType = pollItems.every(({ name }) => !!name);
 
-  const { mutate: postSecretSquareMutate, isLoading } = usePostSecretSquareMutation();
-  const toast = useCompleteToast();
+  const { mutate: createSecretSquareMutate, isLoading: isCreateSquareLoading } =
+    useCreateSecretSquareMutation();
+  const completeToast = useCompleteToast();
+  const infoToast = useInfoToast();
+  const failToast = useFailToast();
 
   const onSubmit: SubmitHandler<SecretSquareFormData> = (data) => {
     const type = isPollType ? "poll" : "general";
@@ -61,17 +63,19 @@ function SquareWritingPage() {
     formData.append("title", title);
     formData.append("type", type);
     formData.append("content", content);
-    formData.append("author", session?.user.id);
     imageFormArr.forEach((imageBlob) => {
       formData.append("images", imageBlob);
     });
 
-    postSecretSquareMutate(
+    createSecretSquareMutate(
       { formData },
       {
-        onSuccess: () => {
-          toast("free", "게시물 등록이 완료되었습니다.");
-          router.replace("/square");
+        onSuccess: ({ squareId }) => {
+          completeToast("free", "게시물 등록이 완료되었습니다.");
+          router.replace(`/square/secret/${squareId}`);
+        },
+        onError: () => {
+          failToast("error");
         },
       },
     );
@@ -92,6 +96,7 @@ function SquareWritingPage() {
           size="sm"
           type="submit"
           form="secret-square-form"
+          isLoading={isCreateSquareLoading}
         >
           완료
         </Button>
@@ -206,7 +211,7 @@ function SquareWritingPage() {
           type="button"
           onClick={() => {
             if (isPollType) {
-              // TODO toast
+              infoToast("free", "투표는 최대 1개 등록할 수 있습니다.");
               return;
             }
             onOpen();

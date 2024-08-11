@@ -18,7 +18,7 @@ import SecretAvatar from "../atoms/SecretAvatar";
 interface UserCommentProps extends Omit<CommentProps, "_id"> {
   isSecret?: boolean;
   setCommentArr: DispatchType<CommentProps[]>;
-  type: "gather" | "group" | "feed";
+  type: "gather" | "group" | "feed" | "square";
   pageId: string;
   commentId?: string;
   isReComment?: boolean;
@@ -81,7 +81,7 @@ function UserComment({
     }
     setIsEditModal(false);
   };
-
+  console.log(24, isSecret);
   return (
     <>
       <Flex align="center" py="8px">

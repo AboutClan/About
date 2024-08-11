@@ -7,7 +7,7 @@ import UserComment from "./UserComment";
 import UserCommentInput from "./UserCommentInput";
 
 interface UserCommentBlockProps {
-  type: "gather" | "group" | "feed";
+  type: "gather" | "group" | "feed" | "square";
   id: string;
   commentProps: UserCommentProps;
   setCommentArr: DispatchType<UserCommentProps[]>;
@@ -36,7 +36,7 @@ function UserCommentBlock({
       ),
     );
   };
-
+  console.log(type);
   return (
     <>
       <UserComment
@@ -48,12 +48,14 @@ function UserCommentBlock({
         commentId={commentProps._id}
         setCommentArr={setCommentArr}
         setIsReCommentInput={setIsReCommentInput}
+        isSecret={type === "square"}
       />
       {commentProps?.subComments?.map((sub, idx2) => (
         <Box key={idx2} ml="20px">
           <UserComment
             isReComment
             type={type}
+            isSecret={type === "square"}
             setIsReCommentInput={setIsReCommentInput}
             user={sub.user}
             updatedAt={sub.updatedAt}

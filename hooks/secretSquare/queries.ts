@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { useQuery } from "react-query";
+import { SERVER_URI } from "../../constants/apiConstants";
 
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import type {
@@ -35,17 +36,14 @@ export const useSecretSquareListQuery = (
         searchParams.set("category", category);
       }
       const res = await axios.get<SecretSquareListResponse>(
-        `http://localhost:3001/square?${searchParams.toString()}`,
+        `${SERVER_URI}/square?${searchParams.toString()}`,
       );
-      console.log(res);
-      // return { squareList };
-      // const res = await axios.get<SecretSquareListResponse>(`${SERVER_URI}/square`);
       return res.data;
     },
     options,
   );
 
-type SecretSquareDetailResponse = { square: SecretSquareItem };
+type SecretSquareDetailResponse = { square: SecretSquareItem & { isMySquare: boolean } };
 
 export const useGetSquareDetailQuery = (
   { squareId }: { squareId: string },
@@ -54,11 +52,7 @@ export const useGetSquareDetailQuery = (
   useQuery(
     ["secretSquare", { squareId }],
     async () => {
-      const res = await axios.get<SecretSquareDetailResponse>(
-        `http://localhost:3001/square/${squareId}`,
-      );
-      // return detail;
-      // const res = await axios.get<SecretSquareDetailResponse>(`${SERVER_URI}/square/${squareId}`);
+      const res = await axios.get<SecretSquareDetailResponse>(`${SERVER_URI}/square/${squareId}`);
       return res.data.square;
     },
     options,
@@ -69,137 +63,34 @@ type SecretSquarePollStatusResponse = {
 };
 
 export const useCurrentPollStatusQuery = (
-  { squareId, user }: { squareId: string; user: string },
+  { squareId }: { squareId: string },
   options?: QueryOptions<SecretSquarePollStatusResponse>,
 ) =>
   useQuery<SecretSquarePollStatusResponse, AxiosError, SecretSquarePollStatusResponse>(
     ["secretSquare", "currentPollStatus", { squareId }],
     async () => {
-      // return { pollItems: ["66a89681d03a0dcf5b8cb217", "66a89681d03a0dcf5b8cb218"] };
-      // return { pollItems: [] };
       const res = await axios.get<SecretSquarePollStatusResponse>(
-        `http://localhost:3001/square/${squareId}/poll`,
-        { params: { user } },
+        `${SERVER_URI}/square/${squareId}/poll`,
       );
-      // const res = await axios.get<SecretSquarePollStatusResponse>(
-      //   `${SERVER_URI}/square/${squareId}/poll`,
-      //   {
-      //     data: {
-      //       user,
-      //     },
-      //   },
-      // );
       return res.data;
     },
     options,
   );
 
-// TODO remove mock data
-const squareList: SecretSquareListResponse["squareList"] = [
-  {
-    _id: "66a89681d03a0dcf5b8cb216",
-    category: "일상",
-    title: "test title",
-    content: "테스트 본문입니다. 테스트 본문입니다. 테스트 본문입니다. ",
-    type: "poll",
-    viewCount: 13,
-    createdAt: "2024-07-30T07:30:09.027Z",
-    thumbnail:
-      "https://images.unsplash.com/photo-1591154669695-5f2a8d20c089?q=80&w=2487&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    likeCount: 0,
-    commentsCount: 3,
-  },
-  {
-    _id: "66a89cfab648df8f5472d84d",
-    category: "일상",
-    title: "test title",
-    content: "테스트 본문입니다. 테스트 본문입니다. 테스트 본문입니다. ",
-    type: "poll",
-    viewCount: 0,
-    createdAt: "2024-07-30T07:57:46.764Z",
-    thumbnail: "",
-    likeCount: 0,
-    commentsCount: 0,
-  },
-  {
-    _id: "66a8b9bc6240f90fe315da0d",
-    category: "일상",
-    title: "tt",
-    content: "테스트 본문입니다. 테스트 본문입니다. 테스트 본문입니다.",
-    type: "poll",
-    viewCount: 0,
-    createdAt: "2024-07-30T10:00:28.037Z",
-    thumbnail: "",
-    likeCount: 0,
-    commentsCount: 0,
-  },
-  {
-    _id: "66a8f07df28eefb5818cd49f",
-    category: "고민",
-    title: "ttt",
-    content: "테스트 본문입니다. 테스트 본문입니다. 테스트 본문입니다.",
-    type: "poll",
-    viewCount: 1,
-    createdAt: "2024-07-30T13:54:05.194Z",
-    thumbnail: "",
-    likeCount: 0,
-    commentsCount: 0,
-  },
-];
+type SecretSquareIsLikeResponse = {
+  isLike: boolean;
+};
 
-const detail: SecretSquareItem = {
-  _id: "66a89681d03a0dcf5b8cb216",
-  category: "일상",
-  title: "test title",
-  content: "테스트 본문입니다. 테스트 본문입니다. 테스트 본문입니다. ",
-  type: "poll",
-  poll: {
-    canMultiple: true,
-    pollItems: [
-      {
-        _id: "66a89681d03a0dcf5b8cb217",
-        name: "test1",
-        count: 1,
-      },
-      {
-        _id: "66a89681d03a0dcf5b8cb218",
-        name: "test2",
-        count: 1,
-      },
-      {
-        _id: "66a89681d03a0dcf5b8cb219",
-        name: "test3",
-        count: 0,
-      },
-    ],
-  },
-  images: [
-    "https://images.unsplash.com/photo-1591154669695-5f2a8d20c089?q=80&w=2487&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1591154669695-5f2a8d20c089?q=80&w=2487&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1591154669695-5f2a8d20c089?q=80&w=2487&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  ],
-  viewCount: 13,
-  createdAt: "2024-07-30T07:30:09.027Z",
-  updatedAt: "2024-07-30T23:45:57.650Z",
-  likeCount: 0,
-  comments: [
-    {
-      _id: "66a89c87774db8d2e59f7e5e",
-      comment: "댓글 예시입니다.",
-      createdAt: "2024-07-30T07:55:51.848Z",
-      updatedAt: "2024-07-30T07:55:51.848Z",
+export const useLikeStatus = (
+  { squareId }: { squareId: string },
+  options?: QueryOptions<SecretSquareIsLikeResponse>,
+) => {
+  return useQuery(
+    ["secretSquare", "isLike", { squareId }],
+    async () => {
+      const res = await axios.get<SecretSquareIsLikeResponse>(`${SERVER_URI}/${squareId}/like`);
+      return res.data;
     },
-    {
-      _id: "66a89c8d774db8d2e59f7e63",
-      comment: "댓글 예시입니다.1",
-      createdAt: "2024-07-30T07:55:57.663Z",
-      updatedAt: "2024-07-30T07:55:57.663Z",
-    },
-    {
-      _id: "66a8ae32e86eb8c7b4afd3a2",
-      comment: "1",
-      createdAt: "2024-07-30T09:11:14.100Z",
-      updatedAt: "2024-07-30T09:11:14.100Z",
-    },
-  ],
+    options,
+  );
 };

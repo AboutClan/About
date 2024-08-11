@@ -28,10 +28,10 @@ function SecretSquareComments({ comments }: SecretSquareCommentsProps) {
     setCommentArr(comments);
   }, [comments]);
 
-  const { mutate: writeComment } = useCommentMutation("post", "gather", squareId, {
+  const { mutate: writeComment } = useCommentMutation("post", "square", squareId, {
     onSuccess() {},
   });
-  const { mutate: writeSubComment } = useSubCommentMutation("post", "gather", squareId, {
+  const { mutate: writeSubComment } = useSubCommentMutation("post", "square", squareId, {
     onSuccess() {},
   });
 
@@ -44,18 +44,18 @@ function SecretSquareComments({ comments }: SecretSquareCommentsProps) {
   };
 
   const onSubmit = async (value: string) => {
-    // await writeComment({ comment: value });
+    await writeComment({ comment: value });
     setCommentArr((old) => [...old, addNewComment(userInfo, value)]);
   };
-
+  console.log(commentArr);
   return (
     <>
       <Flex direction="column" pt="8px">
-        {comments?.map((user, idx) => (
+        {commentArr?.map((item, idx) => (
           <UserCommentBlock
             key={idx}
-            type="feed"
-            id={""}
+            type="square"
+            id={squareId}
             commentProps={commentArr?.find((comment) => comment._id === item._id)}
             setCommentArr={setCommentArr}
             writeSubComment={writeSubComment}
