@@ -44,7 +44,7 @@ function SquareWritingPage() {
 
   const [imageFormArr, setImageFormArr] = useState<Blob[]>([]);
   const pollItems = getValues("pollItems");
-  const isPollType = pollItems.every(({ name }) => !!name);
+  const isPollType = pollItems.every(({ name }) => !!name.trim());
 
   const { mutate: createSecretSquareMutate, isLoading: isCreateSquareLoading } =
     useCreateSecretSquareMutation();
@@ -123,7 +123,7 @@ function SquareWritingPage() {
                 placeholder="제목을 입력해주세요"
                 {...register("title", {
                   required: true,
-                  minLength: 3,
+                  minLength: 1,
                   setValueAs: (value) => value.trim(),
                 })}
               />
@@ -132,7 +132,7 @@ function SquareWritingPage() {
                 placeholder="본문을 입력해주세요"
                 {...register("content", {
                   required: true,
-                  minLength: 10,
+                  minLength: 1,
                   setValueAs: (value) => value.trim(),
                 })}
                 minH={180}
