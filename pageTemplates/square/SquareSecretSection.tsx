@@ -29,7 +29,7 @@ function SquareSecretSection() {
           ))}
 
         {isLoading && (
-          <Box position="relative" mt="32px" mb="40px">
+          <Box position="relative" mt="60px" mb="40px">
             <MainLoadingAbsolute size="sm" />
           </Box>
         )}

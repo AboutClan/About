@@ -95,8 +95,8 @@ export default function SquareItem({ item }: SquareItemProps) {
               height: "100%",
               content: "'•'",
               margin: "0 4px",
-              verticalAlign: "middle",
-              fontSize: "8px",
+              // verticalAlign: "middle",
+              // fontSize: "8px",
             },
 
             "& :last-child:after": {
