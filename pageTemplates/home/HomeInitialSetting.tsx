@@ -101,13 +101,12 @@ function HomeInitialSetting() {
   const { data: session } = useSession();
   const searchParams = useSearchParams();
   const dateParam = searchParams.get("date");
-  const isGuest = session?.user.name === "guest";
+  const isGuest = session ? session.user.name === "guest" : undefined;
 
   const [isGuide, setIsGuide] = useState(false);
   const [isGuestModal, setIsGuestModal] = useState(false);
-
   const { data: userInfo } = useUserInfoQuery({
-    enabled: !isGuest,
+    enabled: isGuest === false,
     onSuccess(data) {
       if (data.role === "newUser") {
         router.push("/register/location");

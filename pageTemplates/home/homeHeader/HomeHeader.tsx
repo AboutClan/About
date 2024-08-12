@@ -31,7 +31,7 @@ export type HomeHeaderModalType = "rule" | "dailyCheck" | "pointGuide" | null;
 function HomeHeader() {
   const typeToast = useTypeToast();
   const { data: session } = useSession();
-  const isGuest = session?.user.name === "guest";
+  const isGuest = session ? session.user.name === "guest" : false;
   const [modalType, setModalType] = useState<HomeHeaderModalType>(null);
   const showDailyCheck = useRecoilValue(transferShowDailyCheckState);
   const renderHomeHeader = useRecoilValue(renderHomeHeaderState);
@@ -43,7 +43,7 @@ function HomeHeader() {
 
   const { data } = useNoticeActiveLogQuery();
 
-  const { data: recentChat } = useRecentChatQuery();
+  const { data: recentChat } = useRecentChatQuery({ enabled: isGuest === false });
 
   useEffect(() => {
     if (!data) return;

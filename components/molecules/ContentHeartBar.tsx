@@ -1,10 +1,13 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
 
+import { useTypeToast } from "../../hooks/custom/CustomToast";
+import { useFeedCommentMutation, useFeedLikeMutation } from "../../hooks/feed/mutations";
 import { useCommentMutation, useSubCommentMutation } from "../../hooks/common/mutations";
-import { useFeedLikeMutation } from "../../hooks/feed/mutations";
+
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { UserCommentProps } from "../../types/components/propTypes";
 import { FeedComment } from "../../types/models/feed";
@@ -26,11 +29,15 @@ interface ContentHeartBarProps {
 }
 
 function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: ContentHeartBarProps) {
+  const typeToast = useTypeToast();
+  const { data: session } = useSession();
+  const { data: userInfo } = useUserInfoQuery();
+  const isGuest = session ? session.user.name : undefined;
   const router = useRouter();
 
   const searchParams = useSearchParams();
   const urlSearchParams = new URLSearchParams(searchParams);
-  const { data: userInfo } = useUserInfoQuery();
+
   const drawerType = searchParams.get("drawer");
 
   const [keyboardHeight, setKeyboardHeight] = useState(0);
@@ -101,6 +108,10 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
   }, [drawerType]);
 
   const onClickHeart = () => {
+    if (isGuest) {
+      typeToast("guest");
+      return;
+    }
     setHeartProps((old) => {
       if (old.isMine) {
         return {
