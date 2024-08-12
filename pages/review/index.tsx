@@ -11,9 +11,7 @@ import { MainLoading } from "../../components/atoms/loaders/MainLoading";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import ButtonGroups, { IButtonOptions } from "../../components/molecules/groups/ButtonGroups";
-import FeedLayout from "../../components/organisms/FeedLayout";
 import { LOCATION_OPEN } from "../../constants/location";
-import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import { WEB_URL } from "../../constants/system";
 import { useErrorToast } from "../../hooks/custom/CustomToast";
 import { useGatherAllSummaryQuery } from "../../hooks/gather/queries";
@@ -152,18 +150,20 @@ function Review() {
                     text: `${summary.place} · ${summary.type.title} · ${dayjsToFormat(dayjs(summary.date), "M월 D일")} · ${summary.location.main}`,
                   };
                   return (
-                    <FeedLayout
-                      user={ABOUT_USER_SUMMARY}
-                      date={item.dateCreated}
-                      images={item.images}
-                      summary={summaryProps}
-                      content={item.text}
-                      likeUsers={[]}
-                      likeCnt={0}
-                      id={item.id + ""}
-                      comments={[]}
-                      isAnonymous={false}
-                    />
+                    // <FeedLayout
+                    //   user={ABOUT_USER_SUMMARY}
+                    //   date={item.dateCreated}
+                    //   type={}
+                    //   images={item.images}
+                    //   summary={summaryProps}
+                    //   content={item.text}
+                    //   likeUsers={[]}
+                    //   likeCnt={0}
+                    //   id={item.id + ""}
+                    //   comments={[]}
+                    //   isAnonymous={false}
+                    // />
+                    null
                   );
                 })}
                 {visibleCnt < reviewData.length && (

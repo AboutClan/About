@@ -15,6 +15,7 @@ function SquareLoungeSection() {
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
   const categoryParam = searchParams.get("category") as FeedType | undefined;
+  const drawerParam = searchParams.get("drawer");
 
   const [category, setCategory] = useState<FeedType | "all">();
   const [loungeData, setLoungeData] = useState<FeedProps[]>();
@@ -48,7 +49,7 @@ function SquareLoungeSection() {
     firstLoad.current = false;
 
     setLoungeData((old) => {
-      if (old?.length) return [...old, ...(feeds as FeedProps[])];
+      if (old?.length && !drawerParam) return [...old, ...(feeds as FeedProps[])];
       else return feeds;
     });
   }, [feeds, categoryParam]);
@@ -105,6 +106,8 @@ function SquareLoungeSection() {
       };
     },
   );
+
+
 
   return (
     <Box pb="60px">

@@ -148,7 +148,11 @@ function FeedWritingPage() {
         </VStack>
       </Slide>
       <WritingNavigation>
-        <ImageUploadButton setImageUrls={setImageArr} setImageForms={setImageFormArr} />
+        <ImageUploadButton
+          maxFiles={5}
+          setImageUrls={setImageArr}
+          setImageForms={setImageFormArr}
+        />
         <UserSecretButton isAnonymous={isAnonymous} setIsAnonymous={setIsAnonymous} />
       </WritingNavigation>
       {isSuccessScreen && (
