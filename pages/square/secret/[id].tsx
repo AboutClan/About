@@ -145,61 +145,76 @@ function SecretSquareDetailPage() {
       </Header>
       <>
         <Slide>
-          {squareDetail ? (
-            <>
-              <Flex px={4} py={4} direction="column" gap={2} as="section" bg="white">
-                <Box>
-                  <Badge text={`# ${squareDetail.category}`} colorScheme="grayTheme" size="md" />
-                </Box>
-                <section id="avatar-section">
-                  <OrganizerBar organizer={SECRET_USER_SUMMARY} createdAt={squareDetail.createdAt}>
-                    {squareDetail.isMySquare && (
-                      <>
-                        <Box as="button" type="button" onClick={onMenuOpen}>
-                          <i className="fa-regular fa-ellipsis fa-xl" />
-                        </Box>
-                        <Drawer placement="bottom" onClose={onMenuClose} isOpen={isMenuOpen}>
-                          <DrawerOverlay />
-                          <DrawerContent pt={3} pb={5}>
-                            <DrawerBody>
-                              <Box
-                                fontSize="16px"
-                                as="button"
-                                w="100%"
-                                color="var(--color-red)"
-                                textAlign="center"
-                                onClick={openAlertModal}
-                              >
-                                삭제
-                              </Box>
-                            </DrawerBody>
-                          </DrawerContent>
-                        </Drawer>
-                        {isAlertOpen && (
-                          <AlertModal
-                            setIsModal={setIsAlertOpen}
-                            options={{
-                              title: "게시글을 삭제할까요?",
-                              subTitle:
-                                "게시글을 삭제하면 모든 데이터가 삭제되고 다시는 볼 수 없어요.",
-                              func: handleDeleteSquare,
-                              text: "삭제하기",
-                            }}
-                          />
-                        )}
-                      </>
-                    )}
-                  </OrganizerBar>
-                </section>
-                <section id="content-section">
+          <Flex px={4} py={4} direction="column" gap={2} as="section" bg="white" minH="326px">
+            <Box minH="83px">
+              {squareDetail && (
+                <>
+                  <Box mb={2}>
+                    <Badge text={`# ${squareDetail.category}`} colorScheme="grayTheme" size="md" />
+                  </Box>
+                  <section id="avatar-section">
+                    <OrganizerBar
+                      organizer={SECRET_USER_SUMMARY}
+                      createdAt={squareDetail.createdAt}
+                    >
+                      {squareDetail.isMySquare && (
+                        <>
+                          <Box as="button" type="button" onClick={onMenuOpen}>
+                            <i className="fa-regular fa-ellipsis fa-xl" />
+                          </Box>
+                          <Drawer placement="bottom" onClose={onMenuClose} isOpen={isMenuOpen}>
+                            <DrawerOverlay />
+                            <DrawerContent pt={3} pb={5}>
+                              <DrawerBody>
+                                <Box
+                                  fontSize="16px"
+                                  as="button"
+                                  w="100%"
+                                  color="var(--color-red)"
+                                  textAlign="center"
+                                  onClick={openAlertModal}
+                                >
+                                  삭제
+                                </Box>
+                              </DrawerBody>
+                            </DrawerContent>
+                          </Drawer>
+                          {isAlertOpen && (
+                            <AlertModal
+                              setIsModal={setIsAlertOpen}
+                              options={{
+                                title: "게시글을 삭제할까요?",
+                                subTitle:
+                                  "게시글을 삭제하면 모든 데이터가 삭제되고 다시는 볼 수 없어요.",
+                                func: handleDeleteSquare,
+                                text: "삭제하기",
+                              }}
+                            />
+                          )}
+                        </>
+                      )}
+                    </OrganizerBar>
+                  </section>
+                </>
+              )}
+            </Box>
+
+            <section id="content-section" style={{ position: "relative", minHeight: "120px" }}>
+              {squareDetail ? (
+                <>
                   <Text py="8px" as="h1" fontSize="xl" fontWeight={700}>
                     {squareDetail.title}
                   </Text>
                   <Text mt={2} whiteSpace="break-spaces">
                     {squareDetail.content}
                   </Text>
-                </section>
-
+                </>
+              ) : (
+                <MainLoadingAbsolute size="sm" />
+              )}
+            </section>
+            {squareDetail && (
+              <>
                 {squareDetail.type === "poll" && (
                   <Box
                     as="section"
@@ -369,13 +384,10 @@ function SecretSquareDetailPage() {
                     <span>{squareDetail.likeCount}</span>
                   </Button>
                 </Flex>
-              </Flex>
-              <Divider />
-              {/* comments section */}
-            </>
-          ) : (
-            <MainLoadingAbsolute />
-          )}
+              </>
+            )}
+          </Flex>
+          {squareDetail && <Divider />}
         </Slide>
         {squareDetail && (
           <Box as="section" bg="white">
