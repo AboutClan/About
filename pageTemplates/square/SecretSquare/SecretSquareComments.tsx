@@ -74,14 +74,14 @@ function SecretSquareComments({ comments }: SecretSquareCommentsProps) {
                   ...commentProps,
                   user: {
                     ...SECRET_USER_SUMMARY,
-                    name: `익명 ${uniqueUsers[item.user as unknown as string]}`,
+                    name: `익명 ${uniqueUsers[item.user as unknown as string] || ""}`,
                     _id: item.user as unknown as string,
                   },
                   subComments: (commentProps.subComments || []).map((sub) => ({
                     ...sub,
                     user: {
                       ...SECRET_USER_SUMMARY,
-                      name: `익명 ${uniqueUsers[sub.user as unknown as string]}`,
+                      name: `익명 ${uniqueUsers[sub.user as unknown as string] || ""}`,
                       _id: sub.user as unknown as string,
                     },
                   })),

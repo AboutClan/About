@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { useState } from "react";
-import { SECRET_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 
+import { SECRET_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { UserCommentProps } from "../../types/components/propTypes";
 import { DispatchType } from "../../types/hooks/reactTypes";

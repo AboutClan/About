@@ -1,1 +1,1 @@
-export const SERVER_URI = "http://localhost:3001";
+export const SERVER_URI = "https://about-backend.herokuapp.com";

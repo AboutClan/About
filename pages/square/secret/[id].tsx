@@ -11,9 +11,9 @@ import {
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import AlertModal from "../../../components/AlertModal";
@@ -51,13 +51,13 @@ function SecretSquareDetailPage() {
     useDeleteLikeSecretSquareMutation({ squareId });
   const { data: likeStatus, isFetching: isLikeStatusFetching } = useLikeStatus(
     { squareId },
-    { staleTime: Infinity },
+    { staleTime: Infinity, enabled: !!squareId },
   );
   const { mutate: mutatePoll, isLoading: isPollLoading } = usePatchPollMutation({ squareId });
   const { mutate: deleteSquareMutate } = useDeleteSecretSquareMutation({ squareId });
   const { data: squareDetail, isFetching: isSquareDetailFetching } = useGetSquareDetailQuery(
     { squareId },
-    { staleTime: Infinity },
+    { staleTime: Infinity, enabled: !!squareId },
   );
   const { data: pollStatus } = useCurrentPollStatusQuery(
     { squareId },
@@ -133,15 +133,13 @@ function SecretSquareDetailPage() {
   };
 
   return (
-    <>
+  <>
       <Header title="">
         <KakaoShareBtn
           type="secretSquare"
           title={squareDetail?.title}
           subtitle={squareDetail?.content}
-          img={
-            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/%EC%BB%A4%EB%AE%A4%EB%8B%88%ED%8B%B0.jpg"
-          }
+          img="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/%EC%BB%A4%EB%AE%A4%EB%8B%88%ED%8B%B0.jpg"
           url={`/square/secret/${squareId}`}
         />
       </Header>
