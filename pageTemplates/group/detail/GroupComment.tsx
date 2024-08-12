@@ -7,10 +7,10 @@ import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import UserComment from "../../../components/molecules/UserComment";
+import UserCommentBlock from "../../../components/molecules/UserCommentBlock";
 import UserCommentInput from "../../../components/molecules/UserCommentInput";
 import { GROUP_STUDY } from "../../../constants/keys/queryKeys";
-import { useCommentMutation } from "../../../hooks/common/mutations";
+import { useCommentMutation, useSubCommentMutation } from "../../../hooks/common/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { transferGroupDataState } from "../../../recoils/transferRecoils";
 import { UserCommentProps } from "../../../types/components/propTypes";
@@ -38,6 +38,11 @@ function GroupComments({ comments }: IGroupComments) {
       resetCache();
     },
   });
+  const { mutate: writeSubComment } = useSubCommentMutation("post", "group", groupId, {
+    onSuccess() {
+      resetCache();
+    },
+  });
 
   useEffect(() => {
     setCommentArr(comments);
@@ -51,9 +56,9 @@ function GroupComments({ comments }: IGroupComments) {
     };
   };
 
-  const onSubmit = () => async (value: string) => {
+  const onSubmit = async (value: string) => {
     await writeComment({ comment: value });
-    await setCommentArr((old) => [...old, addNewComment(userInfo, value)]);
+    setCommentArr((old) => [...old, addNewComment(userInfo, value)]);
   };
 
   const resetCache = () => {
@@ -73,16 +78,13 @@ function GroupComments({ comments }: IGroupComments) {
           )}
           <section>
             {commentArr?.map((item, idx) => (
-              <UserComment
+              <UserCommentBlock
                 key={idx}
                 type="group"
-                user={item.user}
-                updatedAt={item.updatedAt}
-                comment={item.comment}
-                pageId={groupId}
-                commentId={item._id}
+                id={groupId}
+                commentProps={item}
                 setCommentArr={setCommentArr}
-                resetCache={resetCache}
+                writeSubComment={writeSubComment}
               />
             ))}
           </section>

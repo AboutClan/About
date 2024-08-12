@@ -2,6 +2,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import RuleIcon from "../../components/atoms/Icons/RuleIcon";
+import WritingIcon from "../../components/atoms/Icons/WritingIcon";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import RuleModal, { IRuleModalContent } from "../../modals/RuleModal";
@@ -16,14 +17,12 @@ function SquarePage() {
 
   const [tab, setTab] = useState<SquareTab>("시크릿 스퀘어");
   const [isRuleModal, setIsRuleModal] = useState(false);
-
   useEffect(() => {
     if (!tabParam) {
-      router.replace("/square?tab=lounge");
-      setTab("라운지");
+      router.replace("/square?tab=secret");
+      setTab("시크릿 스퀘어");
       return;
     }
-
     if (tabParam === "secret") setTab("시크릿 스퀘어");
     if (tabParam === "lounge") setTab("라운지");
   }, [tabParam]);
@@ -37,13 +36,18 @@ function SquarePage() {
         <SquareTabNav tab={tab} />
         {tab === "시크릿 스퀘어" ? <SquareSecretSection /> : <SquareLoungeSection />}
       </Slide>
-      {/* {tab === "시크릿 스퀘어" && <WritingIcon url="/square/writing" />} */}
-      {isRuleModal && <RuleModal content={CONTENT} setIsModal={setIsRuleModal} />}
+      {tab === "시크릿 스퀘어" && <WritingIcon url="/square/secret/writing" />}
+      {isRuleModal && (
+        <RuleModal
+          content={tab === "시크릿 스퀘어" ? SECRET_CONTENT : LOUNGE_CONTENT}
+          setIsModal={setIsRuleModal}
+        />
+      )}
     </>
   );
 }
 
-const CONTENT: IRuleModalContent = {
+const LOUNGE_CONTENT: IRuleModalContent = {
   mainContent: [
     {
       title: "라운지 설명",
@@ -58,6 +62,23 @@ const CONTENT: IRuleModalContent = {
   headerContent: {
     title: "라운지",
     text: "번개 리뷰나 소모임 피드를 확인할 수 있습니다.",
+  },
+};
+const SECRET_CONTENT: IRuleModalContent = {
+  mainContent: [
+    {
+      title: "시크릿 스퀘어 설명",
+
+      texts: [
+        "익명성이 보장됩니다.",
+        "주제에 상관없이 다양한 소통 가능",
+        "보유중인 아바타 중 선택하여 사용 가능(예정)",
+      ],
+    },
+  ],
+  headerContent: {
+    title: "시크릿 스퀘어",
+    text: "익명으로 소통을 할 수 있는 커뮤니티",
   },
 };
 

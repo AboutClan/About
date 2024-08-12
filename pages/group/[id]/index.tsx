@@ -37,12 +37,12 @@ function GroupDetail() {
   const { data: groupData, refetch } = useGroupIdQuery(id, { enabled: !!id && !transferGroup });
 
   useEffect(() => {
-    if (transferGroup) {
-      setGroup(transferGroup);
-      setTransferGroup(transferGroup);
-    } else if (groupData) {
+    if (groupData) {
       setGroup(groupData);
       setTransferGroup(groupData);
+    } else if (transferGroup) {
+      setGroup(transferGroup);
+      setTransferGroup(transferGroup);
     }
   }, [transferGroup, groupData]);
 

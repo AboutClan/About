@@ -97,6 +97,7 @@ function Uid() {
                           <Box
                             bg="var(--color-mint)"
                             color="white"
+                            maxW="280px"
                             p="6px 12px"
                             borderRadius="var(--rounded-lg)"
                             borderTopRightRadius="none"
@@ -121,6 +122,7 @@ function Uid() {
                             <Box
                               mt="4px"
                               w="max-content"
+                              maxW="200px"
                               bg="var(--gray-100)"
                               border="var(--border)"
                               p="6px 12px"

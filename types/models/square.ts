@@ -1,14 +1,18 @@
+import { UserCommentProps } from "../components/propTypes";
 import { ITimeStamps } from "../utils/timeAndDate";
 
-export type SecretSquareCategory = "전체" | "일상" | "고민" | "정보" | "같이해요";
+export type SecretSquareCategory = "일상" | "고민" | "정보" | "같이해요";
+export type SecretSquareCategoryWithAll = "전체" | SecretSquareCategory;
 
 interface BaseSecretSquareItem extends ITimeStamps {
-  id: string;
+  _id: string;
   category: SecretSquareCategory;
-  author: string;
   title: string;
   content: string;
   viewCount: number;
+  likeCount: number;
+  images: string[];
+  comments: UserCommentProps[];
 }
 
 interface GeneralSecretSquareItem extends BaseSecretSquareItem {
@@ -16,25 +20,27 @@ interface GeneralSecretSquareItem extends BaseSecretSquareItem {
 }
 
 interface PollItem {
-  id: string;
-  value: string;
+  _id: string;
+  name: string;
   count: number;
 }
 
 interface PollSecretSquareItem extends BaseSecretSquareItem {
   type: "poll";
-  pollList: PollItem[];
-  canMultiple: boolean;
+  poll: {
+    pollItems: PollItem[];
+    canMultiple: boolean;
+  };
 }
 
-export type SquareType = "general" | "poll";
+export type SecretSquareType = "general" | "poll";
 
 export type SecretSquareItem = GeneralSecretSquareItem | PollSecretSquareItem;
 
 export type SecretSquareFormData = {
-  category: "일상" | "고민" | "정보" | "같이해요";
+  category: SecretSquareCategory;
   title: string;
   content: string;
-  pollList: { value: string }[];
+  pollItems: { name: string }[];
   canMultiple: boolean;
 };

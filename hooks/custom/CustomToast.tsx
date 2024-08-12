@@ -2,7 +2,15 @@ import { useToast as useChakraToast } from "@chakra-ui/react";
 import { AxiosError } from "axios";
 import { useCallback } from "react";
 
-export type FailToast = "free" | "guest" | "loadStudy" | "studyVote" | "apply" | "error" | "time";
+export type FailToast =
+  | "free"
+  | "guest"
+  | "loadStudy"
+  | "studyVote"
+  | "apply"
+  | "error"
+  | "time"
+  | "warning";
 
 export const useToast = () => {
   const toast = useChakraToast();
