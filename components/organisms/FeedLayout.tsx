@@ -21,6 +21,7 @@ export interface FeedLayoutProps {
   id: string;
   comments: FeedComment[];
   isAnonymous: boolean;
+  type: "gather" | "group";
 }
 
 function FeedLayout({

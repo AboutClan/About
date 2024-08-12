@@ -3,7 +3,8 @@ import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
 
-import { useFeedCommentMutation, useFeedLikeMutation } from "../../hooks/feed/mutations";
+import { useCommentMutation, useSubCommentMutation } from "../../hooks/common/mutations";
+import { useFeedLikeMutation } from "../../hooks/feed/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { UserCommentProps } from "../../types/components/propTypes";
 import { FeedComment } from "../../types/models/feed";
@@ -12,7 +13,7 @@ import { dayjsToStr } from "../../utils/dateTimeUtils";
 import RightDrawer from "../organisms/drawer/RightDrawer";
 import ProfileCommentCard from "./cards/ProfileCommentCard";
 import AvatarGroupsOverwrap from "./groups/AvatarGroupsOverwrap";
-import UserComment from "./UserComment";
+import UserCommentBlock from "./UserCommentBlock";
 import UserCommentInput from "./UserCommentInput";
 
 interface ContentHeartBarProps {
@@ -20,6 +21,7 @@ interface ContentHeartBarProps {
   likeUsers: IUserSummary[];
   likeCnt: number;
   comments: FeedComment[];
+
   refetch?: () => void;
 }
 
@@ -34,7 +36,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [modalType, setModalType] = useState<"like" | "comment">(null);
   const [heartProps, setHeartProps] = useState({ isMine: false, users: likeUsers, cnt: likeCnt });
-  const [commentArr, setCommentArr] = useState<UserCommentProps[]>(comments);
+  const [commentArr, setCommentArr] = useState<UserCommentProps[]>(comments || []);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
 
   const { mutate } = useFeedLikeMutation({
@@ -67,7 +69,21 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
     setCommentArr(comments);
   }, [comments]);
 
-  const { mutate: writeComment } = useFeedCommentMutation(feedId);
+  const { mutate: writeComment } = useCommentMutation("post", "feed", feedId, {
+    onSuccess() {
+      onCompleted();
+    },
+  });
+
+  const { mutate: writeSubComment } = useSubCommentMutation("post", "feed", feedId, {
+    onSuccess() {
+      onCompleted();
+    },
+  });
+
+  const onCompleted = () => {
+    refetch();
+  };
 
   useEffect(() => {
     if (likeUsers?.some((who) => who.uid === userInfo?.uid)) {
@@ -83,10 +99,6 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
       setModalType(null);
     }
   }, [drawerType]);
-
-  const resetCache = () => {
-    refetch();
-  };
 
   const onClickHeart = () => {
     setHeartProps((old) => {
@@ -188,16 +200,13 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
             zIndex={1}
           >
             {commentArr.map((item, idx) => (
-              <UserComment
+              <UserCommentBlock
                 key={idx}
-                type="gather"
-                user={item.user}
-                updatedAt={item.updatedAt}
-                comment={item.comment}
-                pageId={feedId}
-                commentId="item._id"
+                type="feed"
+                id={feedId}
+                commentProps={commentArr?.find((comment) => comment._id === item._id)}
                 setCommentArr={setCommentArr}
-                resetCache={resetCache}
+                writeSubComment={writeSubComment}
               />
             ))}
           </Flex>

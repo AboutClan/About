@@ -19,7 +19,7 @@ function AdminRegister() {
   const [registerData, setRegisterData] = useState<IUserRegisterForm[]>([]);
 
   const { data: applyData, refetch } = useUserRegisterFormsQuery();
-  console.log(4, applyData);
+
   const onClick = (who?: IUserRegisterForm) => {
     setApplicant(who);
     setIsModal(true);

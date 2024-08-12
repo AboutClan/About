@@ -1,12 +1,8 @@
+import { UserCommentProps } from "../components/propTypes";
 import { ITimeStamps } from "../utils/timeAndDate";
 
 export type SecretSquareCategory = "일상" | "고민" | "정보" | "같이해요";
 export type SecretSquareCategoryWithAll = "전체" | SecretSquareCategory;
-
-interface Comment extends ITimeStamps {
-  _id: string;
-  comment: string;
-}
 
 interface BaseSecretSquareItem extends ITimeStamps {
   _id: string;
@@ -16,7 +12,7 @@ interface BaseSecretSquareItem extends ITimeStamps {
   viewCount: number;
   likeCount: number;
   images: string[];
-  comments: Comment[];
+  comments: UserCommentProps[];
 }
 
 interface GeneralSecretSquareItem extends BaseSecretSquareItem {

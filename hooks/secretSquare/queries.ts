@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { useQuery } from "react-query";
 
-import { SERVER_URI } from "../../constants/system";
+import { SERVER_URI } from "../../constants/apiConstants";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import type {
   SecretSquareCategory,

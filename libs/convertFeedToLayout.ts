@@ -6,6 +6,7 @@ import { dayjsToFormat } from "../utils/dateTimeUtils";
 
 export const convertFeedToLayout = (feed: FeedProps): FeedLayoutProps => {
   return {
+    type: feed.type,
     user: feed.writer,
     date: dayjsToFormat(dayjs(feed.createdAt), "YYYY년 M월 D일"),
     images: feed.images,
@@ -15,11 +16,13 @@ export const convertFeedToLayout = (feed: FeedProps): FeedLayoutProps => {
     id: feed._id,
     comments: feed.comments,
     isAnonymous: feed.isAnonymous,
-    summary: {
-      title: feed.title,
-      url: feed.type === "gather" ? `/gather/${feed.typeId}` : `/group/${feed.typeId}`,
-      text: convertSummaryText(feed.type, feed.subCategory),
-    },
+    summary: feed.type
+      ? {
+          title: feed.title,
+          url: feed.type === "gather" ? `/gather/${feed.typeId}` : `/group/${feed.typeId}`,
+          text: convertSummaryText(feed.type, feed.subCategory),
+        }
+      : null,
   };
 };
 

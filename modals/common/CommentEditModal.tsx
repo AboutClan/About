@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import { Input } from "../../components/atoms/Input";
-import { CommentParamProps } from "../../hooks/common/mutations";
+import { CommentParamProps, SubCommentParamProps } from "../../hooks/common/mutations";
 import { IModal } from "../../types/components/modalTypes";
 import { UserCommentProps } from "../../types/components/propTypes";
 import { DispatchString, DispatchType } from "../../types/hooks/reactTypes";
@@ -12,9 +12,11 @@ interface CommentEditModalProps extends IModal {
   text: string;
   setText: DispatchString;
   commentId: string;
+  subCommentId?: string;
   setCommentArr?: DispatchType<UserCommentProps[]>;
-  handleEdit: (param: CommentParamProps<"patch">) => void;
-  handleDelete: (param: CommentParamProps<"delete">) => void;
+  handleEdit: (param: CommentParamProps<"patch"> | SubCommentParamProps<"patch">) => void;
+  handleDelete: (param: CommentParamProps<"delete"> | SubCommentParamProps<"delete">) => void;
+  isSecret?: boolean;
 }
 
 function CommentEditModal({
@@ -22,15 +24,17 @@ function CommentEditModal({
   setText,
   setIsModal,
   commentId,
+  subCommentId,
   handleDelete,
   handleEdit,
+  isSecret,
 }: CommentEditModalProps) {
   const [isFirst, setIsFirst] = useState(true);
 
   const footerOptions: IFooterOptions = {
     main: {
       text: "변경",
-      func: () => handleEdit({ comment: text, commentId }),
+      func: () => handleEdit({ comment: text, commentId, subCommentId }),
     },
     sub: {
       text: "취소",
@@ -52,7 +56,7 @@ function CommentEditModal({
       <Container>
         {isFirst ? (
           <>
-            <button onClick={() => setIsFirst(false)}>수정하기</button>
+            {!isSecret && <button onClick={() => setIsFirst(false)}>수정하기</button>}
             <button onClick={() => handleDelete({ commentId })}>삭제하기</button>
           </>
         ) : (

@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Spacer, useDisclosure, VStack } from "@chakra-ui/react";
+import { Box, Button, Flex, IconButton, Spacer, useDisclosure, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
@@ -118,7 +118,6 @@ function SquareWritingPage() {
           <FormProvider {...methods}>
             <Box as="form" w="100%" onSubmit={handleSubmit(onSubmit)} id="secret-square-form">
               <SquareCategoryRadioGroup />
-
               <Input
                 placeholder="제목을 입력해주세요"
                 {...register("title", {
@@ -149,7 +148,9 @@ function SquareWritingPage() {
             </Box>
             {isPollType && (
               <Box
-                p={4}
+                px={4}
+                py={3}
+                pb={4}
                 sx={{
                   margin: "1rem",
                   width: "100%",
@@ -158,21 +159,39 @@ function SquareWritingPage() {
                   background: "white",
                 }}
               >
-                <Flex justifyContent="flex-end" gap={2}>
-                  <Button type="button" onClick={onOpenPollCreatorDrawer}>
-                    수정
-                  </Button>
-                  <Button
-                    type="button"
-                    onClick={() => {
-                      resetField("pollItems", { defaultValue: defaultFormData["pollItems"] });
-                      resetField("canMultiple", { defaultValue: defaultFormData["canMultiple"] });
-                    }}
-                  >
-                    삭제
-                  </Button>
+                <Flex justifyContent="space-between" align="center" gap={2}>
+                  <Flex align="center">
+                    <i className="fa-solid fa-check-to-slot" />
+                    <Box as="span" ml="4px" fontWeight={600}>
+                      투표
+                    </Box>
+                  </Flex>
+                  <Box>
+                    <IconButton
+                      icon={<i className="fa-solid fa-pen fa-xs" />}
+                      aria-label="edit vote"
+                      borderRadius="full"
+                      bgColor="var(--gray-200)"
+                      size="xs" // 버튼 크기 설정
+                      onClick={onOpenPollCreatorDrawer}
+                      type="button"
+                      mr="12px"
+                    />
+                    <IconButton
+                      icon={<i className="fa-solid fa-x fa-xs" />}
+                      aria-label="delete vote"
+                      borderRadius="full"
+                      bgColor="var(--gray-200)"
+                      size="xs"
+                      type="button"
+                      onClick={() => {
+                        resetField("pollItems", { defaultValue: defaultFormData["pollItems"] });
+                        resetField("canMultiple", { defaultValue: defaultFormData["canMultiple"] });
+                      }}
+                    />
+                  </Box>
                 </Flex>
-                <VStack as="ul" mt={2}>
+                <VStack as="ul" mt={3}>
                   {pollItems.map(({ name }, index) => {
                     return (
                       <Box

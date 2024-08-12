@@ -7,10 +7,10 @@ import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import UserComment from "../../../components/molecules/UserComment";
+import UserCommentBlock from "../../../components/molecules/UserCommentBlock";
 import UserCommentInput from "../../../components/molecules/UserCommentInput";
 import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
-import { useCommentMutation } from "../../../hooks/common/mutations";
+import { useCommentMutation, useSubCommentMutation } from "../../../hooks/common/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { transferGatherDataState } from "../../../recoils/transferRecoils";
 import { UserCommentProps } from "../../../types/components/propTypes";
@@ -35,9 +35,19 @@ function GatherComments({ comments }: IGatherComments) {
 
   const { mutate: writeComment } = useCommentMutation("post", "gather", gatherId, {
     onSuccess() {
-      resetCache();
+      onCompleted();
     },
   });
+  const { mutate: writeSubComment } = useSubCommentMutation("post", "gather", gatherId, {
+    onSuccess() {
+      onCompleted();
+    },
+  });
+
+  const onCompleted = () => {
+    setTransferGather(null);
+    queryClient.invalidateQueries([GATHER_CONTENT, gatherId]);
+  };
 
   useEffect(() => {
     setCommentArr(comments);
@@ -55,12 +65,7 @@ function GatherComments({ comments }: IGatherComments) {
     await writeComment({ comment: value });
     setCommentArr((old) => [...old, addNewComment(userInfo, value)]);
   };
-
-  const resetCache = () => {
-    setTransferGather(null);
-    queryClient.invalidateQueries([GATHER_CONTENT, gatherId]);
-  };
-
+ 
   return (
     <>
       <Layout>
@@ -73,16 +78,13 @@ function GatherComments({ comments }: IGatherComments) {
           )}
           <section>
             {commentArr?.map((item, idx) => (
-              <UserComment
+              <UserCommentBlock
                 key={idx}
                 type="gather"
-                user={item.user}
-                updatedAt={item.updatedAt}
-                comment={item.comment}
-                pageId={gatherId}
-                commentId={item._id}
+                id={gatherId}
+                commentProps={commentArr?.find((comment) => comment._id === item._id)}
                 setCommentArr={setCommentArr}
-                resetCache={resetCache}
+                writeSubComment={writeSubComment}
               />
             ))}
           </section>

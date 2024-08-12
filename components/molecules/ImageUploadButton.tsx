@@ -31,11 +31,6 @@ export default function ImageUploadButton({
     const newImageUrls: string[] = [];
     const newImageForms: Blob[] = [];
 
-    if (files.length + newImageUrls.length > 5) {
-      toast("warning", "이미지는 최대 5장까지 가능합니다.");
-      return;
-    }
-
     for (const file of files) {
       try {
         const { url, blob } = await processFile(file);

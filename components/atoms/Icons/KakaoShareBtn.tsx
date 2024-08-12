@@ -78,19 +78,35 @@ function KakaoShareBtn({
                   },
                 ],
               }
-            : {
-                container: "#kakao-share-button",
-                objectType: "feed",
-                content: {
-                  title,
-                  description: subtitle,
-                  imageUrl: REVIEW_DATA[0]?.images[0],
-                  link: {
-                    mobileWebUrl: url,
-                    webUrl: url,
+            : type === "secretSquare"
+              ? {
+                  container: "#kakao-share-button",
+                  objectType: "feed",
+                  content: {
+                    title,
+                    description: subtitle,
+                    imageWidth: 800,
+                    imageHeight: 400,
+                    imageUrl: img,
+                    link: {
+                      mobileWebUrl: url,
+                      webUrl: url,
+                    },
                   },
-                },
-              };
+                }
+              : {
+                  container: "#kakao-share-button",
+                  objectType: "feed",
+                  content: {
+                    title,
+                    description: subtitle,
+                    imageUrl: REVIEW_DATA[0]?.images[0],
+                    link: {
+                      mobileWebUrl: url,
+                      webUrl: url,
+                    },
+                  },
+                };
 
       window.Kakao.Link.createDefaultButton(options);
     }

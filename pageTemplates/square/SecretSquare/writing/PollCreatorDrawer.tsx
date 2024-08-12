@@ -76,10 +76,11 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
     <Drawer isOpen={isOpen} onClose={handleClose} size="full" placement="bottom">
       <DrawerOverlay />
       <DrawerContent>
-        <DrawerCloseButton />
-        <DrawerHeader>투표 만들기</DrawerHeader>
-
-        <DrawerBody>
+        <DrawerCloseButton size="lg" />
+        <DrawerHeader px="16px" h="var(--header-h)">
+          투표 만들기
+        </DrawerHeader>
+        <DrawerBody px="16px">
           <VStack spacing={4}>
             {pollItems.map((item, index) => {
               const showRemovePollItemButton = index >= 2;
@@ -94,10 +95,11 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
                   />
                   {showRemovePollItemButton && (
                     <Box
+                      ml="4px"
                       as="button"
                       type="button"
-                      color="var(--color-mint)"
-                      px={6}
+                      color="var(--gray-500)"
+                      px={2}
                       onClick={() => {
                         remove(index);
                       }}
@@ -117,7 +119,7 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
               <i className="fa-regular fa-plus-large" style={{ marginRight: "8px" }} />
               항목 추가
             </Button>
-            <Flex align="center" justifyContent="space-between" w="100%">
+            <Flex mt="12px" align="center" justifyContent="space-between" w="100%">
               <FormLabel htmlFor="can-multiple" mb="0">
                 복수 선택 가능
               </FormLabel>
@@ -126,8 +128,9 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
           </VStack>
         </DrawerBody>
 
-        <DrawerFooter>
+        <DrawerFooter px="16px">
           <Button
+            h="46px"
             type="button"
             w="100%"
             colorScheme="mintTheme"
