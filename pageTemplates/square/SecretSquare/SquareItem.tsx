@@ -1,7 +1,7 @@
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import styled from "styled-components";
 
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
@@ -40,7 +40,7 @@ export default function SquareItem({ item }: SquareItemProps) {
     <Layout href={`/square/secret/${item._id}`} onClick={onClick}>
       <IconCategory category={item.category} />
       <Text
-        fontSize="16px"
+        fontSize="15px"
         fontWeight={600}
         sx={{
           width: "240px",
