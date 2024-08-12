@@ -2,13 +2,12 @@ import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Slide from "../../../components/layouts/PageSlide";
 
+import Slide from "../../../components/layouts/PageSlide";
 import UserCommentBlock from "../../../components/molecules/UserCommentBlock";
 import UserCommentInput from "../../../components/molecules/UserCommentInput";
 import { SECRET_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
 import { useCommentMutation, useSubCommentMutation } from "../../../hooks/common/mutations";
-import { useFeedsQuery } from "../../../hooks/feed/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { UserCommentProps } from "../../../types/components/propTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
@@ -21,9 +20,9 @@ interface SecretSquareCommentsProps {
 function SecretSquareComments({ comments }: SecretSquareCommentsProps) {
   const router = useRouter();
   const { data: userInfo } = useUserInfoQuery();
-  const { data } = useFeedsQuery("group", 110, null, null);
+
   const squareId = router.query.id as string;
- 
+
   const [commentArr, setCommentArr] = useState<UserCommentProps[]>(comments || []);
   useEffect(() => {
     setCommentArr(comments);
@@ -48,7 +47,7 @@ function SecretSquareComments({ comments }: SecretSquareCommentsProps) {
     await writeComment({ comment: value });
     setCommentArr((old) => [...old, addNewComment(userInfo, value)]);
   };
- 
+
   const uniqueUsers = {};
   let uniqueIdCounter = 1;
   commentArr
@@ -105,7 +104,12 @@ function SecretSquareComments({ comments }: SecretSquareCommentsProps) {
         p="16px"
         maxW="var(--max-width)"
       >
-        <UserCommentInput user={userInfo} onSubmit={onSubmit} type="message" initialFocus />
+        <UserCommentInput
+          user={SECRET_USER_SUMMARY}
+          onSubmit={onSubmit}
+          type="message"
+          initialFocus
+        />
       </Box>
     </>
   );

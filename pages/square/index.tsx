@@ -78,7 +78,7 @@ const SECRET_CONTENT: IRuleModalContent = {
   ],
   headerContent: {
     title: "시크릿 스퀘어",
-    text: "익명으로 자유로운 소통을 할 수 있는 커뮤니티",
+    text: "익명으로 소통을 할 수 있는 커뮤니티",
   },
 };
 

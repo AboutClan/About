@@ -1,5 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { useState } from "react";
+import { SECRET_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
+
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { UserCommentProps } from "../../types/components/propTypes";
 import { DispatchType } from "../../types/hooks/reactTypes";
@@ -33,10 +35,9 @@ function UserCommentBlock({
         return obj._id === commentProps._id
           ? {
               ...obj,
-              subComments: obj?.subComments && [
-                ...obj?.subComments,
-                { comment: text, user: userInfo },
-              ],
+              subComments: Array.isArray(obj.subComments)
+                ? [...obj.subComments, { comment: text, user: userInfo }]
+                : [],
             }
           : obj;
       }),
@@ -77,7 +78,11 @@ function UserCommentBlock({
       ))}
       {isReCommentInput && (
         <Box ml="20px" my="12px">
-          <UserCommentInput user={userInfo} onSubmit={onSubmitReComment} initialFocus />
+          <UserCommentInput
+            user={type === "square" ? SECRET_USER_SUMMARY : userInfo}
+            onSubmit={onSubmitReComment}
+            initialFocus
+          />
         </Box>
       )}
     </>

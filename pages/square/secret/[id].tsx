@@ -15,8 +15,8 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import AlertModal from "../../../components/AlertModal";
 
+import AlertModal from "../../../components/AlertModal";
 import { Badge } from "../../../components/atoms/badges/Badges";
 import Divider from "../../../components/atoms/Divider";
 import KakaoShareBtn from "../../../components/atoms/Icons/KakaoShareBtn";
@@ -72,8 +72,8 @@ function SecretSquareDetailPage() {
   // calculate the difference btw poll and initialPoll
   const isModified =
     selectedPollItems.size !== initialSelectedPollItems.size ||
-    selectedPollItems.keys().some((id) => !initialSelectedPollItems.has(id)) ||
-    initialSelectedPollItems.keys().some((id) => !selectedPollItems.has(id));
+    Array.from(selectedPollItems.keys()).some((id) => !initialSelectedPollItems.has(id)) ||
+    Array.from(initialSelectedPollItems.keys()).some((id) => !selectedPollItems.has(id));
 
   const [showRePollButton, setShowRePollButton] = useState(false);
   const [isActiveRePollButton, setIsActiveRePollButton] = useState(false);
@@ -137,16 +137,18 @@ function SecretSquareDetailPage() {
       <Header title="">
         <KakaoShareBtn
           type="secretSquare"
-          title={""}
-          subtitle={""}
-          // img={coverImage}
+          title={squareDetail?.title}
+          subtitle={squareDetail?.content}
+          img={
+            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/%EC%BB%A4%EB%AE%A4%EB%8B%88%ED%8B%B0.jpg"
+          }
           url={`/square/secret/${squareId}`}
         />
       </Header>
       <>
-        {squareDetail && (
-          <>
-            <Slide>
+        <Slide>
+          {squareDetail && (
+            <>
               <Flex px={4} py={4} direction="column" gap={2} as="section" bg="white">
                 <Box>
                   <Badge text={`# ${squareDetail.category}`} colorScheme="grayTheme" size="md" />
@@ -160,9 +162,10 @@ function SecretSquareDetailPage() {
                         </Box>
                         <Drawer placement="bottom" onClose={onMenuClose} isOpen={isMenuOpen}>
                           <DrawerOverlay />
-                          <DrawerContent pb={8}>
+                          <DrawerContent pt={3} pb={5}>
                             <DrawerBody>
                               <Box
+                                fontSize="16px"
                                 as="button"
                                 w="100%"
                                 color="var(--color-red)"
@@ -370,13 +373,13 @@ function SecretSquareDetailPage() {
                 </Flex>
               </Flex>
               <Divider />
-            </Slide>
-            {/* comments section */}
-            <Box as="section" bg="white">
-              <SecretSquareComments comments={squareDetail?.comments } />
-            </Box>
-          </>
-        )}
+              {/* comments section */}
+              <Box as="section" bg="white">
+                <SecretSquareComments comments={squareDetail?.comments} />
+              </Box>
+            </>
+          )}
+        </Slide>
       </>
     </>
   );

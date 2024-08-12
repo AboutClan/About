@@ -2,8 +2,8 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
-import { useCommentMutation, useSubCommentMutation } from "../../hooks/common/mutations";
 
+import { useCommentMutation, useSubCommentMutation } from "../../hooks/common/mutations";
 import { useFeedLikeMutation } from "../../hooks/feed/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { UserCommentProps } from "../../types/components/propTypes";

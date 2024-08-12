@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import styled from "styled-components";
+
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import { getDateDiff } from "../../utils/dateTimeUtils";
 import Avatar from "../atoms/Avatar";

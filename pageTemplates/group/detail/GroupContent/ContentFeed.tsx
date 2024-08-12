@@ -36,6 +36,7 @@ function ContentFeed({ group }: ContentFeedProps) {
           feeds.map((feed, idx) => {
             const feedProps: FeedLayoutProps = {
               user: feed.writer,
+              type: feed.type,
               date: getDateDiff(dayjs(feed.createdAt)),
               images: feed.images,
               content: feed.text,

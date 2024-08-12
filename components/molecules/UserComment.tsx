@@ -4,8 +4,8 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
-import { GATHER_CONTENT, GROUP_STUDY } from "../../constants/keys/queryKeys";
 
+import { GATHER_CONTENT, GROUP_STUDY } from "../../constants/keys/queryKeys";
 import {
   useCommentLikeMutation,
   useCommentMutation,
@@ -45,7 +45,7 @@ function UserComment({
   likeList,
 }: UserCommentProps) {
   const queryClient = useQueryClient();
- 
+
   const { data: session } = useSession();
 
   const setTransferGather = useSetRecoilState(transferGatherDataState);
@@ -132,13 +132,17 @@ function UserComment({
   };
 
   const hasMyLike = likeArr?.some((user) => user === session?.user.id);
-
+  
   const onClickLike = () => {
     if (hasMyLike || user._id === session?.user.id) return;
-    handleLike({ commentId, subCommentId: parentId });
+
+    handleLike({
+      commentId: isReComment ? parentId : commentId,
+      subCommentId: isReComment ? commentId : null,
+    });
     setLikeArr((old) => [...old, session?.user.id]);
   };
-  
+
   return (
     <>
       <Flex align="center" py="8px">
