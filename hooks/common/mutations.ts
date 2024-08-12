@@ -75,7 +75,7 @@ interface SubCommentRequestProps {
 
 export const useSubCommentMutation = <T extends "post" | "patch" | "delete">(
   method: T,
-  type: "gather" | "group",
+  type: "gather" | "group" | "square",
   id: string,
   options?: MutationOptions<SubCommentParamProps<T>>,
 ) =>
