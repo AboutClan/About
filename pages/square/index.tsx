@@ -30,19 +30,24 @@ function SquarePage() {
   return (
     <>
       <Header title="커뮤니티" isBack={false}>
-        {tab === "라운지" && <RuleIcon setIsModal={setIsRuleModal} />}
+        <RuleIcon setIsModal={setIsRuleModal} />
       </Header>
       <Slide>
         <SquareTabNav tab={tab} />
         {tab === "시크릿 스퀘어" ? <SquareSecretSection /> : <SquareLoungeSection />}
       </Slide>
       {tab === "시크릿 스퀘어" && <WritingIcon url="/square/secret/writing" />}
-      {isRuleModal && <RuleModal content={CONTENT} setIsModal={setIsRuleModal} />}
+      {isRuleModal && (
+        <RuleModal
+          content={tab === "시크릿 스퀘어" ? SECRET_CONTENT : LOUNGE_CONTENT}
+          setIsModal={setIsRuleModal}
+        />
+      )}
     </>
   );
 }
 
-const CONTENT: IRuleModalContent = {
+const LOUNGE_CONTENT: IRuleModalContent = {
   mainContent: [
     {
       title: "라운지 설명",
@@ -57,6 +62,23 @@ const CONTENT: IRuleModalContent = {
   headerContent: {
     title: "라운지",
     text: "번개 리뷰나 소모임 피드를 확인할 수 있습니다.",
+  },
+};
+const SECRET_CONTENT: IRuleModalContent = {
+  mainContent: [
+    {
+      title: "시크릿 스퀘어 설명",
+
+      texts: [
+        "익명성이 보장됩니다.",
+        "주제에 상관없이 다양한 소통 가능",
+        "보유중인 아바타 중 선택하여 사용 가능(예정)",
+      ],
+    },
+  ],
+  headerContent: {
+    title: "시크릿 스퀘어",
+    text: "익명으로 자유로운 소통을 할 수 있는 커뮤니티",
   },
 };
 

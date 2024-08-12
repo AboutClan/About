@@ -10,11 +10,10 @@ import SquareItem from "./SecretSquare/SquareItem";
 function SquareSecretSection() {
   const [category, setCategory] = useState<SecretSquareCategoryWithAll>("전체");
   const { data, isLoading } = useSecretSquareListQuery({ category });
-  console.log(data);
+
   return (
     <>
       <SecretSquareCategories category={category} setCategory={setCategory} />
-
       <Box>
         {data &&
           (data.squareList.length === 0 ? (

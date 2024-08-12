@@ -27,16 +27,22 @@ function UserCommentBlock({
 
   const onSubmitReComment = (text: string) => {
     writeSubComment({ comment: text, commentId: commentProps._id });
-    console.log(commentProps, "aaa");
+
     setCommentArr((old) =>
-      old.map((obj) =>
-        obj._id === commentProps._id
-          ? { ...obj, subComments: [...obj?.subComments, { comment: text, user: userInfo }] }
-          : obj,
-      ),
+      old.map((obj) => {
+        return obj._id === commentProps._id
+          ? {
+              ...obj,
+              subComments: obj?.subComments && [
+                ...obj?.subComments,
+                { comment: text, user: userInfo },
+              ],
+            }
+          : obj;
+      }),
     );
   };
-  console.log(type);
+
   return (
     <>
       <UserComment
@@ -49,6 +55,7 @@ function UserCommentBlock({
         setCommentArr={setCommentArr}
         setIsReCommentInput={setIsReCommentInput}
         isSecret={type === "square"}
+        likeList={commentProps.likeList}
       />
       {commentProps?.subComments?.map((sub, idx2) => (
         <Box key={idx2} ml="20px">
@@ -63,11 +70,13 @@ function UserCommentBlock({
             pageId={id}
             commentId={sub._id}
             setCommentArr={setCommentArr}
+            parentId={commentProps._id}
+            likeList={sub.likeList}
           />
         </Box>
       ))}
       {isReCommentInput && (
-        <Box ml="20px" mt="12px">
+        <Box ml="20px" my="12px">
           <UserCommentInput user={userInfo} onSubmit={onSubmitReComment} initialFocus />
         </Box>
       )}

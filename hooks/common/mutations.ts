@@ -75,7 +75,7 @@ interface SubCommentRequestProps {
 
 export const useSubCommentMutation = <T extends "post" | "patch" | "delete">(
   method: T,
-  type: "gather" | "group" | "square",
+  type: "gather" | "group" | "square" | "feed",
   id: string,
   options?: MutationOptions<SubCommentParamProps<T>>,
 ) =>
@@ -90,6 +90,35 @@ export const useSubCommentMutation = <T extends "post" | "patch" | "delete">(
         comment: param?.comment,
         commentId: param?.commentId,
         ...(method !== "post" && { subCommentId: param?.subCommentId }),
+      },
+    });
+  }, options);
+
+interface CommentLikeMutationProps {
+  commentId?: string;
+  subCommentId?: string;
+}
+
+interface CommentLikeRequestProps extends CommentLikeMutationProps {
+  [key: string]: string | undefined;
+}
+
+export const useCommentLikeMutation = (
+  commentType: "comment" | "subComment",
+  type: "gather" | "group" | "square" | "feed",
+  id: string,
+  options?: MutationOptions<CommentLikeMutationProps>,
+) =>
+  useMutation<void, AxiosError, CommentLikeMutationProps>((param) => {
+    const typeName = type === "group" ? "groupStudy" : type;
+
+    return requestServer<CommentLikeRequestProps>({
+      method: "post",
+      url: typeName + "/" + commentType + "/like",
+      body: {
+        [typeName + "Id"]: id,
+        commentId: param?.commentId,
+        ...(commentType === "subComment" && { subCommentId: param?.subCommentId }),
       },
     });
   }, options);

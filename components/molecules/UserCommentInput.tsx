@@ -74,6 +74,7 @@ function UserCommentInput({
 
 const MyTextArea = styled.textarea`
   margin-left: var(--gap-3);
+  padding: 2px 0;
   flex: 1;
   background-color: inherit;
   height: 28px;

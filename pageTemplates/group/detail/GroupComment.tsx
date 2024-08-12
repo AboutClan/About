@@ -43,7 +43,7 @@ function GroupComments({ comments }: IGroupComments) {
       resetCache();
     },
   });
-  console.log(52, comments, commentArr);
+
   useEffect(() => {
     setCommentArr(comments);
   }, [comments]);
@@ -57,7 +57,6 @@ function GroupComments({ comments }: IGroupComments) {
   };
 
   const onSubmit = async (value: string) => {
-    console.log(24, value);
     await writeComment({ comment: value });
     setCommentArr((old) => [...old, addNewComment(userInfo, value)]);
   };

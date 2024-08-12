@@ -21,6 +21,7 @@ export interface ITextAndColorSchemes {
 interface CommentProps extends ITimeStamps {
   comment: string;
   user?: IUserSummary;
+  likeList?: string[];
   _id?: string;
 }
 export interface UserCommentProps extends CommentProps {

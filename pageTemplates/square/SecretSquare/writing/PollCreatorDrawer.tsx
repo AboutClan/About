@@ -16,6 +16,7 @@ import {
 import { useFieldArray, useFormContext } from "react-hook-form";
 
 import { Input } from "../../../../components/atoms/Input";
+import { useInfoToast } from "../../../../hooks/custom/CustomToast";
 import { SecretSquareFormData } from "../../../../types/models/square";
 
 interface PollCreatorDrawerProps {
@@ -23,8 +24,9 @@ interface PollCreatorDrawerProps {
   onClose: () => void;
 }
 
-const MIN_POLL_ITEMS = 2;
-const MAX_POLL_ITEMS = 5;
+const DEFAULT_POLL_ITEMS_COUNT = 2;
+const MIN_POLL_ITEMS_COUNT = 2;
+const MAX_POLL_ITEMS_COUNT = 5;
 
 export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawerProps) {
   const { control, register, trigger, resetField, getValues } =
@@ -39,15 +41,15 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
     rules: {
       validate: (pollList) => {
         // pollist is default value
-        const isDefaultValue = pollList.length === 3 && pollList.every(({ name }) => name === "");
+        const isDefaultValue =
+          pollList.length === DEFAULT_POLL_ITEMS_COUNT && pollList.every(({ name }) => name === "");
         const isValid =
-          pollList.length >= MIN_POLL_ITEMS &&
-          pollList.length <= MAX_POLL_ITEMS &&
-          pollList.every(({ name }) => !!name && !!name.trim());
-        return isDefaultValue || isValid || "2개 이상의 항목을 입력해주세요.";
+          pollList.length >= MIN_POLL_ITEMS_COUNT && pollList.every(({ name }) => !!name.trim());
+        return isDefaultValue || isValid;
       },
     },
   });
+  const infoToast = useInfoToast();
 
   const addPollItem = () => {
     append({ name: "" });
@@ -56,6 +58,17 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
   const handleClose = () => {
     resetField("pollItems");
     resetField("canMultiple");
+    onClose();
+  };
+
+  const handleCompletePollCreation = async () => {
+    const isValid = await trigger("pollItems");
+    if (!isValid) {
+      infoToast("free", "비어있는 항목이 있어요.");
+      return;
+    }
+    resetField("pollItems", { defaultValue: getValues("pollItems") });
+    resetField("canMultiple", { defaultValue: getValues("canMultiple") });
     onClose();
   };
 
@@ -101,7 +114,7 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
               type="button"
               w="100%"
               onClick={addPollItem}
-              isDisabled={pollItems.length >= MAX_POLL_ITEMS}
+              isDisabled={pollItems.length >= MAX_POLL_ITEMS_COUNT}
             >
               <i className="fa-regular fa-plus-large" style={{ marginRight: "8px" }} />
               항목 추가
@@ -121,15 +134,7 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
             type="button"
             w="100%"
             colorScheme="mintTheme"
-            onClick={async () => {
-              const isValid = await trigger("pollItems");
-
-              if (isValid) {
-                resetField("pollItems", { defaultValue: getValues("pollItems") });
-                resetField("canMultiple", { defaultValue: getValues("canMultiple") });
-                onClose();
-              }
-            }}
+            onClick={handleCompletePollCreation}
           >
             완료
           </Button>

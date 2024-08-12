@@ -22,7 +22,7 @@ const defaultFormData: SecretSquareFormData = {
   category: "일상",
   title: "",
   content: "",
-  pollItems: [{ name: "" }, { name: "" }, { name: "" }],
+  pollItems: [{ name: "" }, { name: "" }],
   canMultiple: false,
 };
 
@@ -34,19 +34,31 @@ function SquareWritingPage() {
   });
   const { register, handleSubmit, watch, getValues, resetField } = methods;
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenPollCreatorDrawer,
+    onOpen: onOpenPollCreatorDrawer,
+    onClose: onClosePollCreatorDrawer,
+  } = useDisclosure();
 
   const [imageArr, setImageArr] = useState<string[]>([]);
 
   const [imageFormArr, setImageFormArr] = useState<Blob[]>([]);
   const pollItems = getValues("pollItems");
-  const isPollType = pollItems.every(({ name }) => !!name);
+  const isPollType = pollItems.every(({ name }) => !!name.trim());
 
   const { mutate: createSecretSquareMutate, isLoading: isCreateSquareLoading } =
     useCreateSecretSquareMutation();
   const completeToast = useCompleteToast();
   const infoToast = useInfoToast();
   const failToast = useFailToast();
+
+  const openPollCreatorDrawer = () => {
+    if (isPollType) {
+      infoToast("free", "투표는 최대 1개 등록할 수 있습니다.");
+      return;
+    }
+    onOpenPollCreatorDrawer();
+  };
 
   const onSubmit: SubmitHandler<SecretSquareFormData> = (data) => {
     const type = isPollType ? "poll" : "general";
@@ -110,7 +122,7 @@ function SquareWritingPage() {
                 placeholder="제목을 입력해주세요"
                 {...register("title", {
                   required: true,
-                  minLength: 2,
+                  minLength: 1,
                   setValueAs: (value) => value.trim(),
                 })}
               />
@@ -119,7 +131,7 @@ function SquareWritingPage() {
                 placeholder="본문을 입력해주세요"
                 {...register("content", {
                   required: true,
-                  minLength: 3,
+                  minLength: 1,
                   setValueAs: (value) => value.trim(),
                 })}
                 minH={180}
@@ -129,7 +141,10 @@ function SquareWritingPage() {
                   <ImageUploadSlider imageTileArr={imageTileArr} size="sm" />
                 </Box>
               ) : null}
-              <PollCreatorDrawer isOpen={isOpen} onClose={onClose} />
+              <PollCreatorDrawer
+                isOpen={isOpenPollCreatorDrawer}
+                onClose={onClosePollCreatorDrawer}
+              />
             </Box>
             {isPollType && (
               <Box
@@ -158,7 +173,7 @@ function SquareWritingPage() {
                       borderRadius="full"
                       bgColor="var(--gray-200)"
                       size="xs" // 버튼 크기 설정
-                      onClick={onOpen}
+                      onClick={onOpenPollCreatorDrawer}
                       type="button"
                       mr="12px"
                     />
@@ -209,13 +224,7 @@ function SquareWritingPage() {
         <Button
           color="var(--gray-600)"
           type="button"
-          onClick={() => {
-            if (isPollType) {
-              infoToast("free", "투표는 최대 1개 등록할 수 있습니다.");
-              return;
-            }
-            onOpen();
-          }}
+          onClick={openPollCreatorDrawer}
           leftIcon={<i className="fa-regular fa-check-to-slot fa-lg" />}
           variant="ghost"
           size="sm"

@@ -1,7 +1,7 @@
 import "dayjs/locale/ko";
 
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -30,7 +30,7 @@ function GatherDetail() {
 
   const transferGather = useRecoilValue(transferGatherDataState);
   const { data: gatherData } = useGatherIDQuery(id, { enabled: !!id && !transferGather });
- 
+
   useEffect(() => {
     if (transferGather) setGather(transferGather);
     else if (gatherData) setGather(gatherData);

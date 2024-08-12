@@ -88,7 +88,9 @@ export const useLikeStatus = (
   return useQuery(
     ["secretSquare", "isLike", { squareId }],
     async () => {
-      const res = await axios.get<SecretSquareIsLikeResponse>(`${SERVER_URI}/${squareId}/like`);
+      const res = await axios.get<SecretSquareIsLikeResponse>(
+        `${SERVER_URI}/square/${squareId}/like`,
+      );
       return res.data;
     },
     options,
