@@ -22,6 +22,7 @@ interface SquareItemProps {
 }
 
 export default function SquareItem({ item }: SquareItemProps) {
+  console.log(item);
   return (
     <Layout href={`/square/secret/${item._id}`}>
       <IconCategory category={item.category} />
@@ -51,6 +52,12 @@ export default function SquareItem({ item }: SquareItemProps) {
             overflow: "hidden",
           }}
         >
+          {item.type === "poll" && (
+            <i
+              className="fa-solid fa-check-to-slot"
+              style={{ color: "var(--gray-500)", marginRight: "8px" }}
+            />
+          )}
           {item.content}
         </Box>
         {item.thumbnail && (
