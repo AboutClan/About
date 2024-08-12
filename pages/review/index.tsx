@@ -162,6 +162,7 @@ function Review() {
                       likeCnt={0}
                       id={item.id + ""}
                       comments={[]}
+                      isAnonymous={false}
                     />
                   );
                 })}

@@ -2,18 +2,18 @@ import { Box, Button, Flex, Spacer, useDisclosure, VStack } from "@chakra-ui/rea
 import { useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 
-import { Input } from "../../components/atoms/Input";
-import Textarea from "../../components/atoms/Textarea";
-import WritingNavigation from "../../components/atoms/WritingNavigation";
-import Header from "../../components/layouts/Header";
-import Slide from "../../components/layouts/PageSlide";
-import ImageUploadButton from "../../components/molecules/ImageUploadButton";
+import { Input } from "../../../components/atoms/Input";
+import Textarea from "../../../components/atoms/Textarea";
+import WritingNavigation from "../../../components/atoms/WritingNavigation";
+import Header from "../../../components/layouts/Header";
+import Slide from "../../../components/layouts/PageSlide";
+import ImageUploadButton from "../../../components/molecules/ImageUploadButton";
 import ImageUploadSlider, {
   ImageUploadTileProps,
-} from "../../components/organisms/sliders/ImageUploadSlider";
-import PollCreatorDrawer from "../../pageTemplates/square/SecretSquare/writing/PollCreatorDrawer";
-import SquareCategoryRadioGroup from "../../pageTemplates/square/SecretSquare/writing/SquareCategoryRadioGroup";
-import { SecretSquareFormData } from "../../types/models/square";
+} from "../../../components/organisms/sliders/ImageUploadSlider";
+import PollCreatorDrawer from "../../../pageTemplates/square/SecretSquare/writing/PollCreatorDrawer";
+import SquareCategoryRadioGroup from "../../../pageTemplates/square/SecretSquare/writing/SquareCategoryRadioGroup";
+import { SecretSquareFormData } from "../../../types/models/square";
 
 const defaultFormData: SecretSquareFormData = {
   category: "일상",

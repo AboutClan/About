@@ -1,3 +1,5 @@
+import { Box, Button, Flex } from "@chakra-ui/react";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
@@ -8,17 +10,27 @@ function ApplySuccess() {
   return (
     <Layout>
       <Content2>
-        <i className="fa-solid fa-circle-check fa-5x" style={{ color: "var(--color-mint)" }} />
-
-        <Content>
-          <span>신청이 완료됐어요!</span>
-          <span style={{ textAlign: "center" }}>
-            확인하는대로 연락 드릴게요!
-            <br /> 조금만 기다려주세요~!
-          </span>
-        </Content>
+        <Box>
+          <i className="fa-solid fa-circle-check fa-5x" style={{ color: "var(--color-mint)" }} />
+        </Box>
+        <Flex mt="20px" fontSize="16px" direction="column" align="center">
+          <Box fontSize="22px" fontWeight={800}>
+            가입 신청이 완료됐어요!
+          </Box>
+          <Box my="12px" color="var(--gray-700)">
+            곧 운영진이 확인 후 최종 연락을 드릴 예정입니다. <br /> 톡방에 성함을 남겨주시면 더 빠른
+            가입이 가능해요!
+          </Box>
+        </Flex>
+        <Box mt="8px" mx="auto">
+          <Link href="https://open.kakao.com/o/sapxSHGg">
+            <Button variant="ghost" textDecor="underline" colorScheme="mintTheme" fontWeight={400}>
+              어바웃 문의 톡방
+            </Button>
+          </Link>
+        </Box>
       </Content2>
-      <BottomNav text="확인" onClick={() => router.push(`/login`)} />
+      <BottomNav text="로그인 화면으로 이동" onClick={() => router.push(`/login`)} />
     </Layout>
   );
 }
@@ -32,7 +44,7 @@ const Layout = styled.div`
 
 const Content2 = styled.div`
   position: fixed;
-  top: 30%;
+  top: 43%;
   left: 50%;
   transform: translate(-50%, -50%);
   justify-content: center;
@@ -40,23 +52,6 @@ const Content2 = styled.div`
   position: fixed;
   width: 100%;
   text-align: center;
-`;
-
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: var(--gap-4);
-  > span:first-child {
-    color: var(--gray-800);
-    font-weight: 600;
-    font-size: 22px;
-  }
-  > span:last-child {
-    margin-top: var(--gap-3);
-    font-size: 17px;
-    color: var(--gray-700);
-  }
 `;
 
 export default ApplySuccess;

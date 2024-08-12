@@ -1,13 +1,13 @@
 import { Box, Button, Flex, Text, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 
-import Avatar from "../../components/atoms/Avatar";
-import Divider from "../../components/atoms/Divider";
-import Header from "../../components/layouts/Header";
-import Slide from "../../components/layouts/PageSlide";
-import PollItem from "../../pageTemplates/square/SecretSquare/PollItem";
-import { AVATAR_IMAGE_ARR } from "../../storage/avatarStorage";
-import { SecretSquareItem } from "../../types/models/square";
+import Avatar from "../../../components/atoms/Avatar";
+import Divider from "../../../components/atoms/Divider";
+import Header from "../../../components/layouts/Header";
+import Slide from "../../../components/layouts/PageSlide";
+import PollItem from "../../../pageTemplates/square/SecretSquare/PollItem";
+import { AVATAR_IMAGE_ARR } from "../../../storage/avatarStorage";
+import { SecretSquareItem } from "../../../types/models/square";
 
 function SecretSquareDetailPage() {
   // TODO API

@@ -43,6 +43,7 @@ function ContentFeed({ group }: ContentFeedProps) {
               likeCnt: feed?.likeCnt,
               id: feed._id,
               comments: feed.comments,
+              isAnonymous: feed.isAnonymous as boolean,
             };
             return (
               <Box key={idx}>
