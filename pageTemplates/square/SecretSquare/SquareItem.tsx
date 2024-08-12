@@ -1,8 +1,10 @@
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
+import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import type { SecretSquareCategory, SecretSquareType } from "../../../types/models/square";
 import { getDateDiff } from "../../../utils/dateTimeUtils";
 
@@ -22,9 +24,21 @@ interface SquareItemProps {
 }
 
 export default function SquareItem({ item }: SquareItemProps) {
+  const { data: session } = useSession();
+  const typeToast = useTypeToast();
+  const isGuest = session?.user.name === "guest";
   console.log(item);
+
+  const onClick = (e) => {
+    if (isGuest) {
+      e.preventDefault();
+      typeToast("guest");
+      return;
+    }
+  };
+
   return (
-    <Layout href={`/square/secret/${item._id}`}>
+    <Layout href={`/square/secret/${item._id}`} onClick={onClick}>
       <IconCategory category={item.category} />
       <Text
         fontSize="16px"

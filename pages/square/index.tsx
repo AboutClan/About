@@ -1,4 +1,5 @@
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import RuleIcon from "../../components/atoms/Icons/RuleIcon";
@@ -11,9 +12,11 @@ import SquareSecretSection from "../../pageTemplates/square/SquareSecretSection"
 import SquareTabNav, { SquareTab } from "../../pageTemplates/square/SquareTabNav";
 
 function SquarePage() {
+  const { data: session } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
   const tabParam = searchParams.get("tab") as "secret" | "lounge";
+  const isGuest = session?.user.name === "guest";
 
   const [tab, setTab] = useState<SquareTab>("시크릿 스퀘어");
   const [isRuleModal, setIsRuleModal] = useState(false);
@@ -36,7 +39,7 @@ function SquarePage() {
         <SquareTabNav tab={tab} />
         {tab === "시크릿 스퀘어" ? <SquareSecretSection /> : <SquareLoungeSection />}
       </Slide>
-      {tab === "시크릿 스퀘어" && <WritingIcon url="/square/secret/writing" />}
+      {tab === "시크릿 스퀘어" && !isGuest && <WritingIcon url="/square/secret/writing" />}
       {isRuleModal && (
         <RuleModal
           content={tab === "시크릿 스퀘어" ? SECRET_CONTENT : LOUNGE_CONTENT}

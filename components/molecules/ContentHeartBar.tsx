@@ -149,6 +149,11 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
   };
 
   const handleDrawerBtn = (type: "comment" | "like") => {
+    if (isGuest) {
+      typeToast("guest");
+      return;
+    }
+
     if (type === "comment") {
       setModalType("comment");
     }

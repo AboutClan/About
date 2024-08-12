@@ -42,7 +42,6 @@ import SecretSquareComments from "../../../pageTemplates/square/SecretSquare/Sec
 function SecretSquareDetailPage() {
   const router = useRouter();
   const squareId = router.query.id as string;
-
   const { data: session } = useSession();
   const { mutate: putLikeMutate, isLoading: isPutLikeLoading } = usePutLikeSecretSquareMutation({
     squareId,
