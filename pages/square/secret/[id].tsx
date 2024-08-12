@@ -307,7 +307,7 @@ function SecretSquareDetailPage() {
 
                 {squareDetail.images.length !== 0 && (
                   <section id="images-section">
-                    <VStack as="ul">
+                    <VStack as="ul" mt="8px">
                       {squareDetail.images.map((src, index) => {
                         return (
                           <Box
