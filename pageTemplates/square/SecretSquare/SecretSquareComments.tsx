@@ -104,12 +104,7 @@ function SecretSquareComments({ comments }: SecretSquareCommentsProps) {
         p="16px"
         maxW="var(--max-width)"
       >
-        <UserCommentInput
-          user={SECRET_USER_SUMMARY}
-          onSubmit={onSubmit}
-          type="message"
-          initialFocus
-        />
+        <UserCommentInput user={SECRET_USER_SUMMARY} onSubmit={onSubmit} type="message" />
       </Box>
     </>
   );

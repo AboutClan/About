@@ -11,9 +11,9 @@ import {
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import AlertModal from "../../../components/AlertModal";
@@ -133,7 +133,7 @@ function SecretSquareDetailPage() {
   };
 
   return (
-  <>
+    <>
       <Header title="">
         <KakaoShareBtn
           type="secretSquare"
@@ -372,12 +372,14 @@ function SecretSquareDetailPage() {
               </Flex>
               <Divider />
               {/* comments section */}
-              <Box as="section" bg="white">
-                <SecretSquareComments comments={squareDetail?.comments} />
-              </Box>
             </>
           )}
         </Slide>
+        {squareDetail && (
+          <Box as="section" bg="white">
+            <SecretSquareComments comments={squareDetail?.comments} />
+          </Box>
+        )}
       </>
     </>
   );
