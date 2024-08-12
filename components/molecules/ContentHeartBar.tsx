@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
 
 import { useCommentMutation, useSubCommentMutation } from "../../hooks/common/mutations";
@@ -31,7 +31,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
   const typeToast = useTypeToast();
   const { data: session } = useSession();
   const { data: userInfo } = useUserInfoQuery();
-  const isGuest = session ? session.user.name : undefined;
+  const isGuest = session ? session.user.name === "guest" : undefined;
   const router = useRouter();
 
   const searchParams = useSearchParams();

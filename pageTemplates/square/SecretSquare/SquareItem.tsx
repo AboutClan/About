@@ -1,7 +1,7 @@
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import styled from "styled-components";
 
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
@@ -27,7 +27,6 @@ export default function SquareItem({ item }: SquareItemProps) {
   const { data: session } = useSession();
   const typeToast = useTypeToast();
   const isGuest = session?.user.name === "guest";
-  console.log(item);
 
   const onClick = (e) => {
     if (isGuest) {
@@ -75,7 +74,7 @@ export default function SquareItem({ item }: SquareItemProps) {
           {item.content}
         </Box>
         {item.thumbnail && (
-          <Box position="relative" overflow="visible" my="8px">
+          <Box position="relative" overflow="visible" mb="8px">
             <Box
               w="64px"
               aspectRatio="1/1"
