@@ -4,14 +4,12 @@ import styled from "styled-components";
 
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import Avatar from "../atoms/Avatar";
-import SecretAvatar from "../atoms/SecretAvatar";
 
 interface UserCommentInputProps {
   type?: "comment" | "message";
   onSubmit: (value: string) => void;
   user: IUserSummary;
   initialFocus?: boolean;
-  isSecret?: boolean;
 }
 
 function UserCommentInput({
@@ -19,7 +17,6 @@ function UserCommentInput({
   onSubmit,
   initialFocus,
   type = "comment",
-  isSecret,
 }: UserCommentInputProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -39,22 +36,19 @@ function UserCommentInput({
     onSubmit(text);
     setText("");
   };
-
+  console.log("user", user);
   return (
     <Flex align="center" flex={1}>
       {user && (
         <>
-          {!isSecret ? (
-            <Avatar
-              isLink={false}
-              size="sm"
-              uid={user.uid}
-              avatar={user.avatar}
-              image={user.profileImage}
-            />
-          ) : (
-            <SecretAvatar />
-          )}
+          <Avatar
+            isLink={false}
+            size="sm"
+            uid={user.uid}
+            avatar={user.avatar}
+            image={user.profileImage}
+          />
+
           <Flex flex={1}>
             <MyTextArea
               placeholder={type === "comment" ? "댓글 달기..." : "메세지 입력"}

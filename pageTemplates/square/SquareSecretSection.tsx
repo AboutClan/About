@@ -16,6 +16,7 @@ function SquareSecretSection() {
       <SecretSquareCategories category={category} setCategory={setCategory} />
       <Box>
         {data &&
+          data?.squareList &&
           (data.squareList.length === 0 ? (
             <Flex fontSize="18px" height="200px" justify="center" align="center">
               가장 먼저 &ldquo;{category}&rdquo; 카테고리에 글을 남겨보세요!

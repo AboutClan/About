@@ -132,7 +132,7 @@ function UserComment({
   };
 
   const hasMyLike = likeArr?.some((user) => user === session?.user.id);
-  
+
   const onClickLike = () => {
     if (hasMyLike || user._id === session?.user.id) return;
 
@@ -211,6 +211,7 @@ function UserComment({
               : handleDelete
           }
           subCommentId={isReComment ? commentId : undefined}
+          isSecret={isSecret}
         />
       )}
     </>
