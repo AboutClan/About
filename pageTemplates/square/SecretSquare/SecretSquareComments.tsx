@@ -34,6 +34,7 @@ function SecretSquareComments({ comments, refetch }: SecretSquareCommentsProps) 
       refetch();
     },
   });
+
   const { mutate: writeSubComment } = useSubCommentMutation("post", "square", squareId, {
     onSuccess() {
       refetch();

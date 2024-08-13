@@ -35,6 +35,7 @@ function KakaoShareBtn({
 
   useEffect(() => {
     if (type === "gather" && !img) return;
+
     if (window.Kakao) {
       const options =
         type === "gather" || type === "study"
@@ -110,8 +111,7 @@ function KakaoShareBtn({
 
       window.Kakao.Link.createDefaultButton(options);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [img]);
+  }, [img, type, url, subtitle]);
 
   return (
     <Layout id="kakao-share-button" isFull={isFull}>
@@ -119,7 +119,7 @@ function KakaoShareBtn({
         <i className="fa-light fa-share-nodes fa-lg" />
       ) : (
         <Button as="div" colorScheme="mintTheme" width="100%" size="lg">
-          공유하기
+          카카오톡으로 공유하기
         </Button>
       )}
     </Layout>
@@ -129,6 +129,7 @@ function KakaoShareBtn({
 const Layout = styled.button<{ isFull: boolean }>`
   padding: ${(props) => (props.isFull ? 0 : "8px")};
   width: ${(props) => (props.isFull ? "100%" : "undefined")};
+  width: 100%;
 `;
 
 export default KakaoShareBtn;

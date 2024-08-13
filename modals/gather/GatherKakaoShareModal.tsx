@@ -74,7 +74,6 @@ const Container = styled.div`
 const Item = styled.div<{ isSelected: boolean }>`
   position: relative;
   border: ${(props) => (props.isSelected ? "4px solid var(--color-mint)" : null)};
-
   border-radius: var(--rounded-lg);
   overflow: hidden;
   width: 100%;

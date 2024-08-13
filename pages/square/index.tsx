@@ -20,6 +20,7 @@ function SquarePage() {
 
   const [tab, setTab] = useState<SquareTab>("시크릿 스퀘어");
   const [isRuleModal, setIsRuleModal] = useState(false);
+
   useEffect(() => {
     if (!tabParam) {
       router.replace("/square?tab=secret");
