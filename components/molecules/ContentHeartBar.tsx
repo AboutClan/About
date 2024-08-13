@@ -192,7 +192,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
           {commentArr.length}
         </Button>
         <Button size="sm" variant="ghost" mb="2px" onClick={() => handleDrawerBtn("like")}>
-          <AvatarGroupsOverwrap userAvatarArr={userAvatarArr} size="sm" />
+          <AvatarGroupsOverwrap userAvatarArr={userAvatarArr} userLength={heartProps.cnt} />
         </Button>
       </Flex>
       {modalType === "like" && (

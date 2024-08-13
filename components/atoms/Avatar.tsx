@@ -62,11 +62,12 @@ function AvatarComponent({
   };
 
   function AvatarComponent() {
+   
     return (
       <AvatarContainer size={size} sizeLength={sizeLength}>
         <ImageContainer
           bg={
-            bgImage ||
+            (!shadowAvatar && bgImage) ||
             (shadowAvatar
               ? "var(--gray-500)"
               : hasAvatar && avatar.bg !== null && COLOR_TABLE_LIGHT[avatar.bg])

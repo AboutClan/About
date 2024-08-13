@@ -36,7 +36,7 @@ function UserCommentInput({
     onSubmit(text);
     setText("");
   };
-  console.log("user", user);
+
   return (
     <Flex align="center" flex={1}>
       {user && (

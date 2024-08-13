@@ -87,7 +87,7 @@ export function PostThumbnailCard({
           <Subtitle>{subtitle}</Subtitle>
           {participants ? (
             <StatusContainer>
-              <AvatarGroupsOverwrap userAvatarArr={userAvatarArr} size="sm" />
+              <AvatarGroupsOverwrap userAvatarArr={userAvatarArr} />
               <div className="statusText">
                 <Box fontSize="14px" color="var(--color-mint)" fontWeight={600} mr="8px" mt="4px">
                   {statusText}

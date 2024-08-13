@@ -36,7 +36,7 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
 
   const { data: userInfo } = useUserInfoQuery();
   const { data: myPoint, isLoading } = usePointSystemQuery("point");
-  const { mutate: applyGift } = useStoreMutation({
+  const { mutate: applyGift, isLoading: isLoading2 } = useStoreMutation({
     onSuccess() {
       getPoint({ value: -totalCost, message: `${giftInfo.name} 응모` });
       completeToast("free", "응모에 성공했어요! 당첨 발표일을 기다려주세요!");
@@ -90,9 +90,9 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
     main: {
       text: "응모하기",
       func: onApply,
+      isLoading: isLoading2,
     },
   };
-
 
   return (
     <ModalLayout title="상품 응모" footerOptions={footerOptions} setIsModal={setIsModal}>

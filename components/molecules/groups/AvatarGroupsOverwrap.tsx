@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 import { IAvatar } from "../../../types/models/userTypes/userInfoTypes";
 import Avatar from "../../atoms/Avatar";
-type Size = "sm";
 
 interface IUserAvatar {
   image: string;
@@ -11,11 +10,11 @@ interface IUserAvatar {
 
 interface IAvatarGroupsOverwrap {
   userAvatarArr: IUserAvatar[];
-  size: Size;
+  userLength?: number;
 }
 const VOTER_SHOW_MAX = 6;
 
-export default function AvatarGroupsOverwrap({ userAvatarArr }: IAvatarGroupsOverwrap) {
+export default function AvatarGroupsOverwrap({ userAvatarArr, userLength }: IAvatarGroupsOverwrap) {
   return (
     <Participants>
       {userAvatarArr.map((att, idx) => {
@@ -27,7 +26,10 @@ export default function AvatarGroupsOverwrap({ userAvatarArr }: IAvatarGroupsOve
               avatar={att.avatar}
               size="sm"
               isLink={false}
-              shadowAvatar={idx === VOTER_SHOW_MAX - 1 && userAvatarArr.length - idx}
+              shadowAvatar={
+                idx === VOTER_SHOW_MAX - 1 &&
+                (userLength ? userLength - VOTER_SHOW_MAX : userAvatarArr.length - idx)
+              }
             />
           )
         );
