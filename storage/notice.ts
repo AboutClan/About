@@ -4,6 +4,7 @@ interface INoticeArr {
   category: NoticeCategory;
   content: string;
   date: string;
+  link?: string;
 }
 
 export type NoticeCategory = "main" | "sub" | "event" | "update";
@@ -865,5 +866,14 @@ export const NOTICE_ARR: INoticeArr[] = [
     content:
       "라운지에 이어 익명 커뮤니티가 출시되었습니다! 익명이 보장되니까 할 얘기가 있다면 부담없이 소통하세요!",
     date: "2023-08-13",
+  },
+  {
+    id: "110",
+    title: "8월 3주차 주간 공지",
+    category: "main",
+    content:
+      "이벤트 당첨자 발표, 커뮤니티 출시, 번개/소모임 개설 가이드. 상세 내용은 하단 링크 참조.",
+    date: "2023-08-13",
+    link: "https://mewing-sombrero-e36.notion.site/8-0eec96824f8e4ff09d6a66a27de9572f?pvs=25",
   },
 ];

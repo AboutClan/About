@@ -8,6 +8,7 @@ import {
   Flex,
   Text,
 } from "@chakra-ui/react";
+import Link from "next/link";
 import { useEffect } from "react";
 
 import { NoticeIcon } from "../../components/atoms/Icons/NoticeIcons";
@@ -47,7 +48,23 @@ function NoticeItem() {
               color="var(--gray-700)"
               lineHeight="22px"
             >
-              {item.content}
+              <p>{item.content}</p>
+              {item?.link && (
+                <Link href={item.link}>
+                  <Box
+                    my="12px"
+                    bgColor="var(--gray-200)"
+                    color="var(--gray-700)"
+                    fontSize="13px"
+                    w="max-content"
+                    p="4px 8px"
+                    rounded="lg"
+                    textDecoration="underline"
+                  >
+                    @{item.title}
+                  </Box>
+                </Link>
+              )}
             </AccordionPanel>
           </AccordionItem>
         ))}
