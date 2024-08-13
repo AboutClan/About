@@ -188,7 +188,7 @@ export const STORE_GIFT_ACTIVE: IStoreGift[] = [
     image:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%B0%B0%EA%B2%BD1.png",
     name: "배경 프로필 1(한정)",
-    brand: "메가커피",
+    brand: "아바타",
     point: 100,
     winner: 5,
     max: 5,
@@ -198,7 +198,7 @@ export const STORE_GIFT_ACTIVE: IStoreGift[] = [
     image:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%B0%B0%EA%B2%BD2.png",
     name: "배경 프로필 2(한정)",
-    brand: "메가커피",
+    brand: "아바타",
     point: 100,
     winner: 5,
     max: 5,
@@ -208,11 +208,21 @@ export const STORE_GIFT_ACTIVE: IStoreGift[] = [
     image:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%B0%B0%EA%B2%BD3.png",
     name: "배경 프로필 3(한정)",
-    brand: "메가커피",
+    brand: "아바타",
     point: 100,
     winner: 5,
     max: 5,
     giftId: 53,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EB%B0%94%ED%83%80+%EC%95%84%EC%9D%B4%EC%BD%98/%EB%B0%B0%EA%B2%BD/KakaoTalk_20240804_224737102_05.png",
+    name: "배경 프로필 4(한정)",
+    brand: "아바타",
+    point: 100,
+    winner: 5,
+    max: 5,
+    giftId: 54,
   },
 ];
 
