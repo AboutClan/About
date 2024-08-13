@@ -42,6 +42,7 @@ function UserCommentBlock({
           : obj;
       }),
     );
+    setIsReCommentInput(false);
   };
 
   return (

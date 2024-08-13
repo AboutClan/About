@@ -15,9 +15,10 @@ import { dayjsToStr } from "../../../utils/dateTimeUtils";
 
 interface SecretSquareCommentsProps {
   comments: UserCommentProps[];
+  refetch: () => void;
 }
 
-function SecretSquareComments({ comments }: SecretSquareCommentsProps) {
+function SecretSquareComments({ comments, refetch }: SecretSquareCommentsProps) {
   const router = useRouter();
   const { data: userInfo } = useUserInfoQuery();
 
@@ -29,10 +30,14 @@ function SecretSquareComments({ comments }: SecretSquareCommentsProps) {
   }, [comments]);
 
   const { mutate: writeComment } = useCommentMutation("post", "square", squareId, {
-    onSuccess() {},
+    onSuccess() {
+      refetch();
+    },
   });
   const { mutate: writeSubComment } = useSubCommentMutation("post", "square", squareId, {
-    onSuccess() {},
+    onSuccess() {
+      refetch();
+    },
   });
 
   const addNewComment = (user: IUserSummary, comment: string): UserCommentProps => {
@@ -51,7 +56,10 @@ function SecretSquareComments({ comments }: SecretSquareCommentsProps) {
   const uniqueUsers = {};
   let uniqueIdCounter = 1;
   commentArr
-    .map((item) => item.user)
+    .flatMap((item) => [
+      item.user,
+      ...(Array.isArray(item.subComments) ? item.subComments.map((sub) => sub.user) : []),
+    ])
     .forEach((user) => {
       if (!uniqueUsers[user as unknown as string]) {
         uniqueUsers[user as unknown as string] = uniqueIdCounter;
