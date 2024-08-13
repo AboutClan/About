@@ -182,7 +182,7 @@ export const STORE_GIFT_ACTIVE: IStoreGift[] = [
     point: 150,
     winner: 5,
     max: 5,
-    giftId: 50,
+    giftId: 54,
   },
   {
     image:
