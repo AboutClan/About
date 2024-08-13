@@ -55,10 +55,11 @@ function SecretSquareDetailPage() {
   );
   const { mutate: mutatePoll, isLoading: isPollLoading } = usePatchPollMutation({ squareId });
   const { mutate: deleteSquareMutate } = useDeleteSecretSquareMutation({ squareId });
-  const { data: squareDetail, isFetching: isSquareDetailFetching } = useGetSquareDetailQuery(
-    { squareId },
-    { staleTime: Infinity, enabled: !!squareId },
-  );
+  const {
+    data: squareDetail,
+    isFetching: isSquareDetailFetching,
+    refetch,
+  } = useGetSquareDetailQuery({ squareId }, { staleTime: Infinity, enabled: !!squareId });
   const { data: pollStatus } = useCurrentPollStatusQuery(
     { squareId },
     {
@@ -391,7 +392,7 @@ function SecretSquareDetailPage() {
         </Slide>
         {squareDetail && (
           <Box as="section" bg="white">
-            <SecretSquareComments comments={squareDetail?.comments} />
+            <SecretSquareComments comments={squareDetail?.comments} refetch={refetch} />
           </Box>
         )}
       </>
