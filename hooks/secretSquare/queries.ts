@@ -10,7 +10,7 @@ import type {
   SecretSquareType,
 } from "../../types/models/square";
 
-type SecretSquareListResponse = {
+export type SecretSquareListResponse = {
   squareList: {
     _id: string;
     category: SecretSquareCategory;
@@ -25,11 +25,11 @@ type SecretSquareListResponse = {
   }[];
 };
 export const useSecretSquareListQuery = (
-  { category }: { category: SecretSquareCategoryWithAll },
+  { category, cursor }: { category: SecretSquareCategoryWithAll; cursor: number },
   options?: QueryOptions<SecretSquareListResponse>,
 ) =>
   useQuery<SecretSquareListResponse, AxiosError, SecretSquareListResponse>(
-    ["secretSquare", { category }],
+    ["secretSquare", { category, cursor }],
     async () => {
       const searchParams = new URLSearchParams();
       if (category !== "전체") {
@@ -37,6 +37,9 @@ export const useSecretSquareListQuery = (
       }
       const res = await axios.get<SecretSquareListResponse>(
         `${SERVER_URI}/square?${searchParams.toString()}`,
+        {
+          params: { cursor },
+        },
       );
       return res.data;
     },
