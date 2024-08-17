@@ -132,7 +132,7 @@ function SecretSquareDetailPage() {
       },
     );
   };
-
+  console.log(squareDetail);
   return (
     <>
       <Header title="">
@@ -392,7 +392,11 @@ function SecretSquareDetailPage() {
         </Slide>
         {squareDetail && (
           <Box as="section" bg="white">
-            <SecretSquareComments comments={squareDetail?.comments} refetch={refetch} />
+            <SecretSquareComments
+              author={squareDetail.author}
+              comments={squareDetail?.comments}
+              refetch={refetch}
+            />
           </Box>
         )}
       </>

@@ -14,11 +14,12 @@ import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 
 interface SecretSquareCommentsProps {
+  author: string;
   comments: UserCommentProps[];
   refetch: () => void;
 }
 
-function SecretSquareComments({ comments, refetch }: SecretSquareCommentsProps) {
+function SecretSquareComments({ author, comments, refetch }: SecretSquareCommentsProps) {
   const router = useRouter();
   const { data: userInfo } = useUserInfoQuery();
 
@@ -62,9 +63,14 @@ function SecretSquareComments({ comments, refetch }: SecretSquareCommentsProps) 
       ...(Array.isArray(item.subComments) ? item.subComments.map((sub) => sub.user) : []),
     ])
     .forEach((user) => {
-      if (!uniqueUsers[user as unknown as string]) {
-        uniqueUsers[user as unknown as string] = uniqueIdCounter;
-        uniqueIdCounter++;
+      const userId = user as unknown as string;
+      if (!uniqueUsers[userId]) {
+        if (userId === author) {
+          uniqueUsers[userId] = -1;
+        } else {
+          uniqueUsers[userId] = uniqueIdCounter;
+          uniqueIdCounter++;
+        }
       }
     });
 
@@ -83,14 +89,20 @@ function SecretSquareComments({ comments, refetch }: SecretSquareCommentsProps) 
                   ...commentProps,
                   user: {
                     ...SECRET_USER_SUMMARY,
-                    name: `익명 ${uniqueUsers[item.user as unknown as string] || ""}`,
+                    name:
+                      uniqueUsers[item.user as unknown as string] === -1
+                        ? "익명(글쓴이)"
+                        : `익명 ${uniqueUsers[item.user as unknown as string] || ""}`,
                     _id: item.user as unknown as string,
                   },
                   subComments: (commentProps.subComments || []).map((sub) => ({
                     ...sub,
                     user: {
                       ...SECRET_USER_SUMMARY,
-                      name: `익명 ${uniqueUsers[sub.user as unknown as string] || ""}`,
+                      name:
+                        uniqueUsers[sub.user as unknown as string] === -1
+                          ? "익명(글쓴이)"
+                          : `익명 ${uniqueUsers[sub.user as unknown as string] || ""}`,
                       _id: sub.user as unknown as string,
                     },
                   })),
