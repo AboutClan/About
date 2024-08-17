@@ -29,7 +29,8 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
   const scoreObj = filteredData?.reduce(
     (acc, cur) => {
       const value = cur.meta.value;
-      if (cur.message.includes("모임")) {
+      if (cur.message.includes("번개 모임 참여")) {
+        console.log(1, value);
         return { ...acc, gather: acc.gather + value };
       }
       if (cur.message.includes("스터디")) {
@@ -41,7 +42,7 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
   );
 
   const totalScore = scoreObj?.study + scoreObj?.gather;
-
+  console.log(2, filteredData, scoreObj);
   const footerOptions: IFooterOptions = {
     main: {},
     sub: {
