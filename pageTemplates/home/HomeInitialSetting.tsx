@@ -8,9 +8,9 @@ import { useSetRecoilState } from "recoil";
 import { createGlobalStyle } from "styled-components";
 
 import PCBottomNav from "../../components/layouts/PCBottomNav";
-import { SERVER_URI } from "../../constants/apiConstants";
 import { STEPS_CONTENTS } from "../../constants/contentsText/GuideContents";
 import { USER_GUIDE } from "../../constants/keys/localStorage";
+import { SERVER_URI } from "../../constants/system";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
