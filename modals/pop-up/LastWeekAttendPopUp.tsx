@@ -29,8 +29,7 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
   const scoreObj = filteredData?.reduce(
     (acc, cur) => {
       const value = cur.meta.value;
-      if (cur.message.includes("번개 모임 참여")) {
-        console.log(1, value);
+      if (cur.message.includes("번개 모임")) {
         return { ...acc, gather: acc.gather + value };
       }
       if (cur.message.includes("스터디")) {
