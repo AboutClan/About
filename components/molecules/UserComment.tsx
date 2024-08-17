@@ -28,6 +28,7 @@ interface UserCommentProps extends Omit<CommentProps, "_id"> {
   isReComment?: boolean;
   setIsReCommentInput: DispatchBoolean;
   likeList: string[];
+  isAuthor: boolean;
 }
 
 function UserComment({
@@ -43,6 +44,7 @@ function UserComment({
   type,
   pageId,
   likeList,
+  isAuthor,
 }: UserCommentProps) {
   const queryClient = useQueryClient();
 
@@ -151,7 +153,7 @@ function UserComment({
         </Flex>
         <Flex direction="column" fontSize="12px" lineHeight={1.6} justify="space-around">
           <Flex align="center">
-            <Box fontWeight={600} mr="4px">
+            <Box fontWeight={600} mr="4px" color={isAuthor ? "var(--color-mint)" : "inherit"}>
               {user.name}
             </Box>
             <Box fontSize="10px" color="var(--gray-600)">
@@ -173,7 +175,7 @@ function UserComment({
               variant="ghost"
               color={hasMyLike ? "var(--color-mint)" : "var(--gray-600)"}
               fontSize="10px"
-              fontWeight={500}
+              fontWeight={hasMyLike ? 600 : 500}
               onClick={onClickLike}
               _focus={{ boxShadow: "none", background: "transparent" }}
             >

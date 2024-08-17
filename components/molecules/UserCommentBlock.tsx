@@ -58,6 +58,7 @@ function UserCommentBlock({
         setIsReCommentInput={setIsReCommentInput}
         isSecret={type === "square"}
         likeList={commentProps.likeList}
+        isAuthor={commentProps.user.name === "익명(글쓴이)"}
       />
       {commentProps?.subComments?.map((sub, idx2) => (
         <Box key={idx2} ml="20px">
@@ -74,6 +75,7 @@ function UserCommentBlock({
             setCommentArr={setCommentArr}
             parentId={commentProps._id}
             likeList={sub.likeList}
+            isAuthor={sub.user.name === "익명(글쓴이)"}
           />
         </Box>
       ))}

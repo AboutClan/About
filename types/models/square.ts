@@ -12,6 +12,7 @@ interface BaseSecretSquareItem extends ITimeStamps {
   viewCount: number;
   likeCount: number;
   images: string[];
+  author: string;
   comments: UserCommentProps[];
 }
 
