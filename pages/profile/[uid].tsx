@@ -39,6 +39,8 @@ function ProfilePage() {
     enabled: !!uid,
   });
 
+  console.log(uid, user);
+
   useEffect(() => {
     if (user) setTransferUserName(user.name);
   }, [user]);
