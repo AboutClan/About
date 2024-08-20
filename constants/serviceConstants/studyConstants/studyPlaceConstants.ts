@@ -17,6 +17,7 @@ export const SUWAN_경기대 = "65bfc9347d1dd938049ed1a2";
 export const SUWAN_광교 = "65fbdd5eba2597c46415a02c";
 export const SUWAN_경희대 = "661cdae4aaae875d410236d2";
 export const SUWAN_수원역 = "6637352830c7250eac355cc6";
+export const SUWAN_수원역2 = "66c49d1f3d3a5a1891a9fc3c";
 export const SUWAN_청년바람지대 = "66678e4ef592be9aae20e5ad";
 
 //양천

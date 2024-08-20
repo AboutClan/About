@@ -58,6 +58,7 @@ import {
   SUWAN_송죽,
   SUWAN_수원시청,
   SUWAN_수원역,
+  SUWAN_수원역2,
   SUWAN_아주대,
   SUWAN_청년바람지대,
   SUWAN_행궁동,
@@ -108,6 +109,7 @@ export const LOCATION_TO_PLACE: LocationToPlace = {
     SUWAN_광교,
     SUWAN_경희대,
     SUWAN_수원역,
+    SUWAN_수원역2,
     SUWAN_청년바람지대,
   ],
   양천: [
