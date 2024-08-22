@@ -27,7 +27,7 @@ import {
   DONG_회기역,
   GANGNAM_강남구청역,
   GANGNAM_강남역,
-  GANGNAM_강남역중앙점,
+  GANGNAM_강남역아라타워점,
   GANGNAM_교대법원점,
   GANGNAM_교대역,
   GANGNAM_논현역,
@@ -154,7 +154,7 @@ export const LOCATION_TO_PLACE: LocationToPlace = {
     GANGNAM_강남역,
     GANGNAM_도곡동점,
     GANGNAM_교대법원점,
-    GANGNAM_강남역중앙점,
+    GANGNAM_강남역아라타워점,
   ],
   동대문: [
     DONG_혜화역,

@@ -53,7 +53,14 @@ export const useStudyVoteQuery = (
       const res = await axios.get<IStudy>(`${SERVER_URI}/vote/${date}`, {
         params: { location },
       });
-      return res.data.participations.filter((par) => par.place.status === "active");
+
+      return res.data.participations.filter((par) => {
+        if (par.place.status === "inactive") return false;
+        if (par.place.status === "pending" && par.status === "pending") {
+          return false;
+        }
+        return true;
+      });
     },
     options,
   );
