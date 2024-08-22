@@ -3,6 +3,7 @@ export const ALL_스터디인증 = "6479f39e907daf3e8a5cda6e";
 
 //수원
 export const SUWAN_아주대 = "62e5d6e0e098c232c05c3d3f";
+export const SUWAN_아주대2 = "66bb36aa4fef5cbda34dbebb";
 export const SUWAN_수원시청 = "64395f1e8d1edf4e056e993d";
 export const SUWAN_송죽 = "644f6ffe9edb56992ccda5e9";
 export const SUWAN_상현역 = "64b15fb72704a3af110733ba";
@@ -19,6 +20,7 @@ export const SUWAN_경희대 = "661cdae4aaae875d410236d2";
 export const SUWAN_수원역 = "6637352830c7250eac355cc6";
 export const SUWAN_수원역2 = "66c49d1f3d3a5a1891a9fc3c";
 export const SUWAN_청년바람지대 = "66678e4ef592be9aae20e5ad";
+export const SUWAN_수원종합운동장점 = "66ab5567f021e1a969fdf1c6";
 
 //양천
 export const YANG_등촌역 = "6437e9d7ab537b843c6143ac";
@@ -44,6 +46,8 @@ export const YANG_여의도브라이튼점 = "668ffd326f0575e13e45ba3d";
 export const YANG_홍대역1번출구점 = "6699177a49b4b7bb22a19e71";
 export const YANG_홍대땡땡거리점 = "669918c249b4b7bb22a1a196";
 export const YANG_양천목동점 = "669de00d353c23244e5530db";
+export const YANG_신촌점 = "66b9efc2e1e39c7b7ccc1554";
+export const YANG_광명철산점 = "66aa269c01b5b5c2051ef255";
 
 //안양
 export const ANYANG_범계역 = "6456ede120352b2d87582955";
@@ -62,7 +66,7 @@ export const GANGNAM_교대역 = "652a5245db9e8e554deafd66";
 export const GANGNAM_강남역 = "652a9e8adb9e8e554deafd68";
 export const GANGNAM_도곡동점 = "65522b7ed01680084c5c6a93";
 export const GANGNAM_교대법원점 = "665b25218582d7bab1478ad7";
-export const GANGNAM_강남역중앙점 = "669c9bbf8cf5ed92ba8266ba";
+export const GANGNAM_강남역아라타워점 = "669c9bbf8cf5ed92ba8266ba";
 
 //동대문
 export const DONG_혜화역 = "6597be44a11634850ed506d3";
@@ -97,3 +101,4 @@ export const INC_서구청점 = "666c80000cfe48b2ae6fbf7a";
 export const INC_인하대역점 = "667d174aede956c155749a4e";
 export const INC_인하대점2 = "667d1771ede956c155749a5a";
 export const INC_송도캐슬파크점 = "669ba6ba27474ebca2cad7d5";
+export const INC_인천서구청점 = "66b4d4f0b4881a6f4237b7ae";
