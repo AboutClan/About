@@ -21,6 +21,7 @@ export const SUWAN_수원역 = "6637352830c7250eac355cc6";
 export const SUWAN_수원역2 = "66c49d1f3d3a5a1891a9fc3c";
 export const SUWAN_청년바람지대 = "66678e4ef592be9aae20e5ad";
 export const SUWAN_수원종합운동장점 = "66ab5567f021e1a969fdf1c6";
+export const SUWAN_병점역 = "66c837ef844974cf4453a756";
 
 //양천
 export const YANG_등촌역 = "6437e9d7ab537b843c6143ac";
