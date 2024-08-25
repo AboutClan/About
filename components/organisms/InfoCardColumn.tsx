@@ -4,8 +4,9 @@ import InfoCard, { IInfoCard } from "../atoms/InfoCard";
 
 interface IInfoCardColumn {
   placeCardArr: IInfoCard[];
+  isLink?: boolean;
 }
-export default function InfoCardColumn({ placeCardArr }: IInfoCardColumn) {
+export default function InfoCardColumn({ placeCardArr, isLink = true }: IInfoCardColumn) {
   return (
     <Layout>
       {placeCardArr.map((userCard, idx) => (
@@ -14,6 +15,7 @@ export default function InfoCardColumn({ placeCardArr }: IInfoCardColumn) {
           image={userCard.image}
           text={userCard.text}
           name={userCard.name}
+          isLink={isLink}
           leftComponent={userCard?.leftComponent}
           rightComponent={userCard?.rightComponent}
         />

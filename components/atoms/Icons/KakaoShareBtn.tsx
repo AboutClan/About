@@ -15,6 +15,7 @@ interface IKakaoShareBtn {
   url: string;
   isBig?: boolean;
   isFull?: boolean;
+  temp?: boolean;
 }
 
 function KakaoShareBtn({
@@ -26,6 +27,7 @@ function KakaoShareBtn({
   url,
   isBig,
   isFull,
+  temp,
 }: IKakaoShareBtn) {
   useEffect(() => {
     if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
@@ -114,7 +116,7 @@ function KakaoShareBtn({
   }, [img, type, url, subtitle]);
 
   return (
-    <Layout id="kakao-share-button" isFull={isFull}>
+    <Layout id="kakao-share-button" isFull={isFull} temp={temp}>
       {!isBig ? (
         <i className="fa-light fa-share-nodes fa-lg" />
       ) : (
@@ -126,8 +128,8 @@ function KakaoShareBtn({
   );
 }
 
-const Layout = styled.button<{ isFull: boolean }>`
-  padding: ${(props) => (props.isFull ? 0 : "8px")};
+const Layout = styled.button<{ isFull: boolean; temp: boolean }>`
+  padding: ${(props) => (props.isFull ? 0 : props.temp ? 0 : "8px")};
   width: ${(props) => (props.isFull ? "100%" : "undefined")};
   width: 100%;
 `;
