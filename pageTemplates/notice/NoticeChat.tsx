@@ -26,7 +26,7 @@ function NoticeChat({ chats }: NoticeChatProps) {
             onClick={() => setTransferUserName(chat.user.name)}
           >
             <Flex p="16px" justify="space-between" align="center" borderBottom="var(--border)">
-              <Flex>
+              <Flex flex={1}>
                 <Avatar size="md" uid={user.uid} avatar={user.avatar} image={user.profileImage} />
                 <Flex ml="12px" direction="column">
                   <Box fontSize="13px" fontWeight={600}>
@@ -46,7 +46,7 @@ function NoticeChat({ chats }: NoticeChatProps) {
                   </Box>
                 </Flex>
               </Flex>
-              <Box fontSize="12px" color="var(--gray-600)">
+              <Box fontSize="12px" color="var(--gray-600)" ml="12px">
                 {getDateDiff(dayjs(chat.content.createdAt))}
               </Box>
             </Flex>

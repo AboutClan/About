@@ -10,6 +10,7 @@ export interface IInfoCard {
   leftComponent?: React.ReactNode;
   rightComponent?: React.ReactNode;
   badge?: React.ReactNode;
+  isLink?: boolean;
 }
 
 export default function InfoCard({
@@ -19,12 +20,12 @@ export default function InfoCard({
   leftComponent,
   rightComponent,
   badge,
+  isLink = true,
 }: IInfoCard) {
-
   return (
     <CardContainer>
       {leftComponent && <Box mr="16px">{leftComponent}</Box>}
-      <Avatar image={image} size="md" />
+      <Avatar image={image} size="md" isLink={isLink} />
       <UserInfoContainer>
         <UserNameBadgeContainer>
           <span>{name}</span>

@@ -36,7 +36,7 @@ function StudyWaitingPlaces({ studyWaitingPlaces }: StudyWaitingPlacesProps) {
   return (
     <>
       {placeCardArr.length ? (
-        <InfoCardColumn placeCardArr={placeCardArr} />
+        <InfoCardColumn placeCardArr={placeCardArr} isLink={false} />
       ) : (
         <Flex
           align="center"

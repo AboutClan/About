@@ -71,6 +71,7 @@ function GroupHeader({ group }: IGroupHeader) {
                 url={WEB_URL + `/group/${group.id}`}
                 img={group?.image}
                 type="gather"
+                temp
               />
             )}
           </Wrapper>
@@ -92,6 +93,7 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: center;
   margin-left: 16px;
 `;
 
@@ -99,9 +101,11 @@ const IconWrapper = styled.button`
   width: 26px;
   height: 26px;
   display: flex;
+  padding: 8px;
   justify-content: center;
   align-items: center;
   margin-left: var(--gap-3);
+  margin-left: 16px;
 `;
 
 export default GroupHeader;
