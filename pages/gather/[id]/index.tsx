@@ -3,7 +3,7 @@ import "dayjs/locale/ko";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
@@ -27,13 +27,15 @@ function GatherDetail() {
   const isGuest = session?.user.name === "guest";
 
   const [gather, setGather] = useState<IGather>();
-
-  const transferGather = useRecoilValue(transferGatherDataState);
-  const { data: gatherData } = useGatherIDQuery(id, { enabled: !!id && !transferGather });
-
+  console.log(gather);
+  const [transferGather, setTransferGather] = useRecoilState(transferGatherDataState);
+  const { data: gatherData } = useGatherIDQuery(+id, { enabled: !!id && !transferGather });
+  console.log(23, gatherData);
   useEffect(() => {
-    if (transferGather) setGather(transferGather);
-    else if (gatherData) setGather(gatherData);
+    if (gatherData) {
+      setGather(gatherData);
+      setTransferGather(gatherData);
+    } else if (transferGather) setGather(transferGather);
   }, [transferGather, gatherData]);
 
   const isMember =

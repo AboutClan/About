@@ -1,12 +1,9 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
-import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import Avatar from "../../../components/atoms/Avatar";
-import InviteUserModal from "../../../modals/InviteUserModal";
 import { prevPageUrlState } from "../../../recoils/navigationRecoils";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
@@ -16,7 +13,6 @@ interface IGatherParticipation {
 }
 
 function GatherParticipation({ data }: IGatherParticipation) {
-  const { data: session } = useSession();
   const router = useRouter();
 
   const setPrevPageUrl = useSetRecoilState(prevPageUrlState);
@@ -24,8 +20,6 @@ function GatherParticipation({ data }: IGatherParticipation) {
   const organizer = data.user as IUserSummary;
   const status = data.status;
   const participantsCnt = data.participants.length;
-
-  const [isModal, setIsModal] = useState(false);
 
   const isAdminOpen = data.isAdminOpen;
 
@@ -51,11 +45,6 @@ function GatherParticipation({ data }: IGatherParticipation) {
               </>
             )}
           </Box>
-          {session?.user.uid === (organizer as IUserSummary).uid && (
-            <Button size="sm" ml="auto" colorScheme="mintTheme" onClick={() => setIsModal(true)}>
-              인원초대
-            </Button>
-          )}
         </Header>
         <Members>
           {!isAdminOpen ? (
@@ -108,7 +97,6 @@ function GatherParticipation({ data }: IGatherParticipation) {
           )}
         </Members>
       </Layout>
-      {isModal && <InviteUserModal setIsModal={setIsModal} />}
     </>
   );
 }
@@ -126,6 +114,7 @@ const Header = styled.header`
   font-weight: 600;
   border-bottom: var(--border);
   display: flex;
+  justify-content: space-between;
   align-items: center;
 
   > div:first-child {

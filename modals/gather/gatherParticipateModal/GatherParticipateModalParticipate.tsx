@@ -1,31 +1,47 @@
 import { useRouter } from "next/router";
+import { useQueryClient } from "react-query";
+import { useRecoilState } from "recoil";
 
 import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
-import { useResetQueryData } from "../../../hooks/custom/CustomHooks";
 import { useCompleteToast, useErrorToast } from "../../../hooks/custom/CustomToast";
-import { useGatherParticipationMutation } from "../../../hooks/gather/mutations";
+import {
+  useGatherParticipationMutation,
+  useGatherWaitingMutation,
+} from "../../../hooks/gather/mutations";
+import { transferGatherDataState } from "../../../recoils/transferRecoils";
 import { IModal } from "../../../types/components/modalTypes";
 import { ModalBodyNavTwo } from "../../Modals";
 
 function GatherParticipateModalParticipate({ setIsModal }: IModal) {
+  const queryClient = useQueryClient();
   const completeToast = useCompleteToast();
   const errorToast = useErrorToast();
+  const [transferGather, setTransferGather] = useRecoilState(transferGatherDataState);
 
   const router = useRouter();
   const gatherId = +router.query.id;
 
-  const resetQueryData = useResetQueryData();
-
   const { mutate: participate } = useGatherParticipationMutation("post", gatherId, {
     onSuccess() {
-      resetQueryData([GATHER_CONTENT]);
+      queryClient.invalidateQueries([GATHER_CONTENT, gatherId]);
+      setTransferGather(null);
+      completeToast("free", "참여가 완료되었습니다. 5 SCORE 획득 !");
+    },
+    onError: errorToast,
+  });
+  const { mutate: applyWaiting } = useGatherWaitingMutation(gatherId, {
+    onSuccess() {
+      queryClient.invalidateQueries([GATHER_CONTENT, gatherId]);
+      setTransferGather(null);
       completeToast("free", "참여가 완료되었습니다. 5 SCORE 획득 !");
     },
     onError: errorToast,
   });
 
   const selectGatherTime = (phase: "first" | "second") => {
-    participate({ phase });
+    const isApproval = transferGather?.isApprovalRequired;
+    if (isApproval) applyWaiting({ phase });
+    else participate({ phase });
     setIsModal(false);
   };
 

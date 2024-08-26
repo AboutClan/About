@@ -47,7 +47,7 @@ function FeedWritingPage() {
   const { data: group } = useGroupIdQuery(id, {
     enabled: category === "group" && !!id && !transferFeedSummary,
   });
-  const { data: gather } = useGatherIDQuery(id, {
+  const { data: gather } = useGatherIDQuery(+id, {
     enabled: category === "gather" && !!id && !transferFeedSummary,
   });
 

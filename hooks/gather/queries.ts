@@ -19,7 +19,7 @@ export const useGatherQuery = (cursor?: number, options?: QueryOptions<IGather[]
     options,
   );
 
-export const useGatherIDQuery = (gatherId: string, options?: QueryOptions<IGather>) =>
+export const useGatherIDQuery = (gatherId: number, options?: QueryOptions<IGather>) =>
   useQuery<IGather, AxiosError, IGather>(
     [GATHER_CONTENT, gatherId],
     async () => {
