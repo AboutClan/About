@@ -1,10 +1,10 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { GATHER_SHARE_IMAGES } from "../../../assets/images/imageUrl";
@@ -12,10 +12,7 @@ import KakaoShareBtn from "../../../components/atoms/Icons/KakaoShareBtn";
 import Header from "../../../components/layouts/Header";
 import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import { WEB_URL } from "../../../constants/system";
-import { isGatherEditState } from "../../../recoils/checkAtoms";
-import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
-import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 
 interface IGatherHeader {
   gatherData: IGather;
@@ -23,23 +20,15 @@ interface IGatherHeader {
 
 function GatherHeader({ gatherData }: IGatherHeader) {
   const router = useRouter();
+  const { data: session } = useSession();
 
   const title = gatherData?.title;
   const date = gatherData?.date;
   const locationMain = gatherData?.location.main;
-  const organizer = gatherData?.user;
-  const { data: session } = useSession();
-  const setGatherWriting = useSetRecoilState(sharedGatherWritingState);
-  const setIsGatherEdit = useSetRecoilState(isGatherEditState);
 
-  const [isModal, setIsModal] = useState(false);
+  const [drawerType, setDrawerType] = useState<"kakaoShare">(null);
+
   const [selectedItem, setSelectedItem] = useState<number>();
-
-  const onClick = () => {
-    setGatherWriting({ ...gatherData, date: dayjs(gatherData.date) });
-    setIsGatherEdit(true);
-    router.push("/gather/writing/category");
-  };
 
   const onClickItem = (idx) => {
     setSelectedItem(idx);
@@ -47,20 +36,22 @@ function GatherHeader({ gatherData }: IGatherHeader) {
 
   return (
     <>
-      <Header title="">
+      <Header title="" url="/gather">
         <Flex>
-          {session?.user.uid === (organizer as IUserSummary)?.uid && (
-            <IconWrapper onClick={onClick}>
-              <i className="fa-light fa-pen-circle fa-xl" />
+          <IconWrapper onClick={() => setDrawerType("kakaoShare")}>
+            <i className="fa-light fa-share-nodes fa-lg" />
+          </IconWrapper>
+          {gatherData.user === session?.user.id && (
+            <IconWrapper>
+              <Link href={`/gather/${gatherData.id}/setting`}>
+                <i className="fa-light fa-gear fa-lg" />
+              </Link>
             </IconWrapper>
           )}
-          <IconWrapper>
-            <i className="fa-light fa-share-nodes fa-lg" onClick={() => setIsModal(true)} />
-          </IconWrapper>
         </Flex>
       </Header>
-      {isModal && (
-        <RightDrawer title="이미지 공유" onClose={() => setIsModal(false)}>
+      {drawerType === "kakaoShare" && (
+        <RightDrawer title="이미지 공유" onClose={() => setDrawerType(null)}>
           <Box p="16px">
             <Box fontSize="16px" mt="4px" mb="20px" fontWeight={600}>
               단톡방에 공유 할 이미지를 선택해 주세요!
@@ -99,7 +90,7 @@ const IconWrapper = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-left: var(--gap-3);
+  margin-left: 16px;
 `;
 
 const Container = styled.div`

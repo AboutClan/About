@@ -39,6 +39,7 @@ function GatherWritingConditionLocation({ setLocation }: IGatherWritingCondition
 
 const Layout = styled.div`
   margin-top: var(--gap-3);
+  margin-bottom: 4px;
   display: flex;
 `;
 

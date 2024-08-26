@@ -2,19 +2,22 @@ import { Button } from "@chakra-ui/react";
 import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import Slide from "../../../components/layouts/PageSlide";
 import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
-import { useResetQueryData } from "../../../hooks/custom/CustomHooks";
 import { useCompleteToast, useErrorToast } from "../../../hooks/custom/CustomToast";
 import { useFeedsQuery } from "../../../hooks/feed/queries";
 import { useGatherParticipationMutation } from "../../../hooks/gather/mutations";
 import GatherExpireModal from "../../../modals/gather/gatherExpireModal/GatherExpireModal";
 import GatherReviewDrawer from "../../../modals/gather/gatherExpireModal/GatherReviewDrawer";
 import GatherParticipateModal from "../../../modals/gather/gatherParticipateModal/GatherParticipateModal";
-import { transferFeedSummaryState } from "../../../recoils/transferRecoils";
+import {
+  transferFeedSummaryState,
+  transferGatherDataState,
+} from "../../../recoils/transferRecoils";
 import { GatherStatus, IGather } from "../../../types/models/gatherTypes/gatherTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 interface IGatherBottomNav {
@@ -24,6 +27,7 @@ interface IGatherBottomNav {
 type ButtonType = "cancel" | "participate" | "expire" | "review";
 
 function GatherBottomNav({ data }: IGatherBottomNav) {
+  const queryClient = useQueryClient();
   const router = useRouter();
   const completeToast = useCompleteToast();
 
@@ -38,8 +42,7 @@ function GatherBottomNav({ data }: IGatherBottomNav) {
   const [isParticipationModal, setIsParticipationModal] = useState(false);
   const [isReviewDrawer, setIsReviewDrawer] = useState(false);
   const gatherId = +router.query.id;
-
-  const resetQueryData = useResetQueryData();
+  const setTransferGather = useSetRecoilState(transferGatherDataState);
 
   const { data: feed } = useFeedsQuery("gather", data?.id, null, true, {
     enabled: !!data?.id,
@@ -48,7 +51,8 @@ function GatherBottomNav({ data }: IGatherBottomNav) {
   const { mutate: cancel } = useGatherParticipationMutation("delete", gatherId, {
     onSuccess() {
       completeToast("free", "참여 신청이 취소되었습니다.", true);
-      resetQueryData([GATHER_CONTENT]);
+      queryClient.invalidateQueries([GATHER_CONTENT, gatherId]);
+      setTransferGather(null);
     },
     onError: errorToast,
   });
@@ -102,6 +106,10 @@ function GatherBottomNav({ data }: IGatherBottomNav) {
           text: "취소된 모임입니다.",
         };
     }
+    if (data?.waiting.some((who) => who.user._id === session?.user.id)) {
+      return { text: "참여 승인을 기다리고 있습니다." };
+    }
+
     if (myGather) return { text: "모집 종료", handleFunction: () => onClick("expire") };
     if (isParticipant) {
       return { text: "참여 취소", handleFunction: () => onClick("cancel") };

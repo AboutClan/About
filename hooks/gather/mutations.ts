@@ -51,6 +51,56 @@ export const useGatherParticipationMutation = <T extends "post" | "delete">(
     options,
   );
 
+interface IGatherWaitingRequest {
+  id: number;
+  phase?: "first" | "second";
+  userId?: string;
+}
+
+interface IGatherWaitingParam {
+  phase: "first" | "second";
+}
+
+export const useGatherWaitingMutation = (
+  gatherId: number,
+  options?: MutationOptions<IGatherWaitingParam>,
+) =>
+  useMutation<void, AxiosError, IGatherWaitingParam>(
+    ({ phase }) =>
+      requestServer<IGatherWaitingRequest>({
+        method: "post",
+        url: "gather/waiting",
+        body: { id: gatherId, phase },
+      }),
+    options,
+  );
+
+interface IGatherWaitingStuatusParam {
+  userId: string;
+  status: "agree" | "refuse";
+  text?: string;
+}
+interface IGatherWaitingStatusRequest {
+  id: number;
+  status: "agree" | "refuse";
+  userId: string;
+  text?: string;
+}
+
+export const useGatherWaitingStatusMutation = (
+  gatherId: number,
+  options?: MutationOptions<IGatherWaitingStuatusParam>,
+) =>
+  useMutation<void, AxiosError, IGatherWaitingStuatusParam>(
+    ({ status, userId, text }) =>
+      requestServer<IGatherWaitingStatusRequest>({
+        method: "post",
+        url: "gather/waiting/status",
+        body: { id: gatherId, userId, status, text },
+      }),
+    options,
+  );
+
 type Status = "pending" | "open" | "close" | "end";
 
 interface IGatherStatusRequest {
