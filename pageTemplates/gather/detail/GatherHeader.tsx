@@ -13,6 +13,7 @@ import Header from "../../../components/layouts/Header";
 import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import { WEB_URL } from "../../../constants/system";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
+import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 
 interface IGatherHeader {
   gatherData: IGather;
@@ -41,7 +42,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
           <IconWrapper onClick={() => setDrawerType("kakaoShare")}>
             <i className="fa-light fa-share-nodes fa-lg" />
           </IconWrapper>
-          {gatherData.user === session?.user.id && (
+          {(gatherData.user as IUserSummary)._id === session?.user.id && (
             <IconWrapper>
               <Link href={`/gather/${gatherData.id}/setting`}>
                 <i className="fa-light fa-gear fa-lg" />
