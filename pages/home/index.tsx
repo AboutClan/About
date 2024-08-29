@@ -20,14 +20,14 @@ function Home() {
       <Slide>
         <HomeCategoryNav tab={tab} setTab={setTab} />
         <>
-          {tab !== "랭킹" && <EventBanner tab={tab} />}
+          {tab !== "추천" && <EventBanner tab={tab} />}
           {tab === "스터디" ? (
             <HomeStudySection />
           ) : tab === "번개" ? (
             <HomeGatherSection />
           ) : tab === "캘린더" ? (
             <HomeClubSection />
-          ) : tab === "랭킹" ? (
+          ) : tab === "추천" ? (
             <HomeRankingSection />
           ) : null}
           <Box w="100%" h="40px" />
