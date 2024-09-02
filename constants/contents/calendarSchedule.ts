@@ -296,7 +296,7 @@ export const EVENT_CONTENT_2024: Record<string, CalendarContentProps[]> = {
     {
       content: "ABOUT 빙고판 이벤트",
       start: 17,
-      end: 28,
+      end: 18,
       type: "event",
       text: "",
     },
