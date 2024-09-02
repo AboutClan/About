@@ -1,7 +1,9 @@
 import { Box } from "@chakra-ui/react";
 import { Dispatch, SetStateAction } from "react";
 
-import ButtonGroups, { IButtonOptions } from "../../../components/molecules/groups/ButtonGroups";
+import ButtonGroups, {
+  ButtonOptionsProps,
+} from "../../../components/molecules/groups/ButtonGroups";
 import { type SecretSquareCategoryWithAll } from "../../../types/models/square";
 
 const SECRET_SQUARE_CATEGORY: SecretSquareCategoryWithAll[] = [
@@ -21,7 +23,7 @@ function SecretSquareCategories({
   category: selectedCategory,
   setCategory,
 }: SecretSquareCategoryProps) {
-  const buttonItems: IButtonOptions[] = SECRET_SQUARE_CATEGORY.map((category) => ({
+  const buttonOptionsArr: ButtonOptionsProps[] = SECRET_SQUARE_CATEGORY.map((category) => ({
     text: `#${category}`,
     func: () => setCategory(category),
   }));
@@ -29,7 +31,7 @@ function SecretSquareCategories({
   return (
     <Box p="12px 16px">
       <ButtonGroups
-        buttonItems={buttonItems}
+        buttonOptionsArr={buttonOptionsArr}
         currentValue={`#${selectedCategory}`}
         size="sm"
         isEllipse

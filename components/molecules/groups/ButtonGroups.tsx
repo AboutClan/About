@@ -1,44 +1,64 @@
 import { Button, Flex } from "@chakra-ui/react";
 import styled from "styled-components";
 
-export interface IButtonOptions {
+export interface ButtonOptionsProps {
   text: string;
   func: () => void;
+  color?: string;
 }
 
 export interface IButtonGroups {
-  buttonItems: IButtonOptions[];
+  buttonOptionsArr: ButtonOptionsProps[];
   currentValue: string;
   size?: "sm" | "md";
   isWrap?: boolean;
   isEllipse?: boolean;
+  type?: "block" | "text";
 }
 
 export default function ButtonGroups({
-  buttonItems,
+  buttonOptionsArr,
   currentValue,
   size,
   isWrap = false,
   isEllipse = false,
+  type = "block",
 }: IButtonGroups) {
+  console.log(buttonOptionsArr, currentValue);
   return (
     <Layout isWrap={isWrap}>
-      {buttonItems.map((buttonData, idx) => (
-        <Flex flexShrink={0} key={idx} onClick={buttonData.func}>
-          <Button
-            mr="8px"
-            colorScheme={buttonData.text === currentValue ? "mintTheme" : undefined}
-            variant={buttonData.text === currentValue ? undefined : "outline"}
-            bg={buttonData.text === currentValue ? undefined : "white"}
-            size={size}
-            rounded={isEllipse ? "2xl" : "md"}
-            _focus={{
-              outline: "none",
-              boxShadow: "none",
-            }}
-          >
-            {buttonData.text}
-          </Button>
+      {buttonOptionsArr.map((buttonOptions, idx) => (
+        <Flex flexShrink={0} key={idx} onClick={buttonOptions.func}>
+          {type === "block" ? (
+            <Button
+              mr="8px"
+              colorScheme={buttonOptions.text === currentValue ? "mintTheme" : undefined}
+              variant={buttonOptions.text === currentValue ? undefined : "outline"}
+              bg={buttonOptions.text === currentValue ? undefined : "white"}
+              size={size}
+              rounded={isEllipse ? "2xl" : "md"}
+              _focus={{
+                outline: "none",
+                boxShadow: "none",
+              }}
+            >
+              {buttonOptions.text}
+            </Button>
+          ) : (
+            <Button
+              mr="8px"
+              color={buttonOptions.color}
+              fontWeight={buttonOptions.text === currentValue ? 600 : 400}
+              variant="ghost"
+              size="xs"
+              _focus={{
+                outline: "none",
+                boxShadow: "none",
+              }}
+            >
+              {buttonOptions.text}
+            </Button>
+          )}
         </Flex>
       ))}
     </Layout>

@@ -61,7 +61,7 @@ export default function InviteUserModal({ setIsModal }: IInviteUserModal) {
     },
   };
 
-  const buttonItems = [
+  const buttonOptionsArr = [
     {
       text: "수원",
       func: () => setLocation("수원"),
@@ -90,7 +90,7 @@ export default function InviteUserModal({ setIsModal }: IInviteUserModal) {
 
   return (
     <ModalLayout setIsModal={setIsModal} title="인원 초대" footerOptions={footerOptions}>
-      <ButtonGroups buttonItems={buttonItems} currentValue={location} />
+      <ButtonGroups buttonOptionsArr={buttonOptionsArr} currentValue={location} />
       <Box mt="16px">
         <Input
           placeholder="이름 검색"
