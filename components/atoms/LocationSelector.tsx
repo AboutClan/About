@@ -1,7 +1,7 @@
 import { Select } from "@chakra-ui/react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 
-import { LOCATION_CONVERT } from "../../constants/location";
+import { LOCATION_TO_FULLNAME } from "../../constants/location";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { isLocationType } from "../../utils/validationUtils";
@@ -57,7 +57,7 @@ export default function LocationSelector({
       >
         {options.map((option, idx) => (
           <option key={idx} value={option}>
-            {LOCATION_CONVERT[option]}
+            {LOCATION_TO_FULLNAME[option]}
           </option>
         ))}
       </Select>

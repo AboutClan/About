@@ -14,7 +14,7 @@ import {
   CardColumnLayoutSkeleton,
 } from "../../../components/organisms/CardColumnLayout";
 import { STUDY_CHECK_POP_UP, STUDY_VOTING_TABLE } from "../../../constants/keys/localStorage";
-import { LOCATION_CONVERT, LOCATION_RECRUITING } from "../../../constants/location";
+import { LOCATION_RECRUITING, LOCATION_TO_FULLNAME } from "../../../constants/location";
 import {
   STUDY_DATE_START_HOUR,
   STUDY_RESULT_HOUR,
@@ -142,7 +142,7 @@ function HomeStudyCol({ studyVoteData, isLoading }: HomeStudyColProps) {
               <BlurredPart
                 text={
                   LOCATION_RECRUITING.includes(location as InactiveLocation)
-                    ? `${LOCATION_CONVERT[location]} 오픈 준비중`
+                    ? `${LOCATION_TO_FULLNAME[location]} 오픈 준비중`
                     : ""
                 }
                 isBlur={LOCATION_RECRUITING.includes(location as InactiveLocation)}

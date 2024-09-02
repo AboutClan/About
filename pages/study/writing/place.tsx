@@ -7,10 +7,12 @@ import styled from "styled-components";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
-import ButtonGroups, { IButtonOptions } from "../../../components/molecules/groups/ButtonGroups";
+import ButtonGroups, {
+  ButtonOptionsProps,
+} from "../../../components/molecules/groups/ButtonGroups";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
 import SearchLocation from "../../../components/organisms/SearchLocation";
-import { LOCATION_CONVERT, LOCATION_OPEN } from "../../../constants/location";
+import { LOCATION_OPEN, LOCATION_TO_FULLNAME } from "../../../constants/location";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
@@ -60,8 +62,8 @@ function WritingStudyPlace() {
     router.push(`/study/writing/content`);
   };
 
-  const buttonItems: IButtonOptions[] = LOCATION_OPEN.map((locationInfo) => ({
-    text: LOCATION_CONVERT[locationInfo],
+  const buttonOptionsArr: ButtonOptionsProps[] = LOCATION_OPEN.map((locationInfo) => ({
+    text: LOCATION_TO_FULLNAME[locationInfo],
     func: () => setLocation(locationInfo),
   }));
 
@@ -77,8 +79,8 @@ function WritingStudyPlace() {
         </RegisterOverview>
         <ButtonGroups
           isWrap={true}
-          currentValue={LOCATION_CONVERT[location]}
-          buttonItems={buttonItems}
+          currentValue={LOCATION_TO_FULLNAME[location]}
+          buttonOptionsArr={buttonOptionsArr}
         />
 
         <RegisterOverview>

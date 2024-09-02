@@ -1,11 +1,12 @@
+import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import styled from "styled-components";
 
-import { LOCATION_CONVERT, LOCATION_OPEN, LOCATION_TABLE_COLOR } from "../../constants/location";
+import ButtonGroups from "../../components/molecules/groups/ButtonGroups";
+import { LOCATION_OPEN, LOCATION_TO_COLOR, LOCATION_TO_FULLNAME } from "../../constants/location";
 import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { IArrivedData } from "../../types/models/studyTypes/studyRecords";
-import { Location, LocationFilterType } from "../../types/services/locationTypes";
+import { ActiveLocationAll } from "../../types/services/locationTypes";
 
 interface IRecordLocationCategory {
   initialData: IArrivedData[];
@@ -13,12 +14,7 @@ interface IRecordLocationCategory {
 }
 
 function RecordLocationCategory({ initialData, setFilterData }: IRecordLocationCategory) {
-  const [category, setCategory] = useState<LocationFilterType>("전체");
-
-  const onClickBadge = (value: Location) => {
-    if (value === category) setCategory("전체");
-    else setCategory(value);
-  };
+  const [category, setCategory] = useState<ActiveLocationAll>("전체");
 
   useEffect(() => {
     if (!initialData) return;
@@ -35,58 +31,31 @@ function RecordLocationCategory({ initialData, setFilterData }: IRecordLocationC
     }
   }, [category, initialData, setFilterData]);
 
+  const buttonOptionsArr = (["전체", ...LOCATION_OPEN] as ActiveLocationAll[]).map((location) => ({
+    text: LOCATION_TO_FULLNAME[location] || "전체",
+    func: () => {
+      if (location === category) setCategory("전체");
+      else setCategory(location);
+    },
+    color: LOCATION_TO_COLOR[location],
+  }));
+
   return (
-    <Layout>
-      <SpaceBadge>
-        {LOCATION_OPEN.map((location) => (
-          <Button
-            key={location}
-            location={location}
-            category={category}
-            onClick={() => onClickBadge(location)}
-          >
-            {LOCATION_CONVERT[location]}
-          </Button>
-        ))}
-      </SpaceBadge>
-    </Layout>
+    <Box
+      py={1}
+      pl={2}
+      borderTop="var(--border)"
+      borderBottom="var(--border)"
+      bgColor="var(--gray-200)"
+    >
+      <ButtonGroups
+        buttonOptionsArr={buttonOptionsArr}
+        currentValue={category}
+        type="text"
+        isWrap
+      />
+    </Box>
   );
 }
-
-const Layout = styled.div`
-  padding: 0 var(--gap-4);
-  height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: var(--gray-200);
-  border-top: 1px solid var(--gray-300);
-  border-bottom: 1px solid var(--gray-300);
-  > div {
-    display: flex;
-    align-items: center;
-  }
-  > span:last-child {
-    font-size: 10px;
-    color: var(--gray-600);
-  }
-`;
-
-const SpaceBadge = styled.section`
-  display: flex;
-  align-items: center;
-`;
-
-const Button = styled.button<{
-  location: Location;
-  category: LocationFilterType;
-}>`
-  margin-right: var(--gap-3);
-  font-weight: 600;
-  color: ${(props) => LOCATION_TABLE_COLOR[props.location]};
-  font-size: ${(props) => (props.category === props.location ? "14px" : "12px")};
-  opacity: ${(props) =>
-    props.category !== "전체" && props.category !== props.location ? "0.7" : "1"};
-`;
 
 export default RecordLocationCategory;

@@ -1,11 +1,11 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import dynamic from "next/dynamic";
-import { useRouter } from "next/navigation";
 
 import HighlightedTextButton from "../../../components/atoms/buttons/HighlightedTextButton";
 import SectionBar from "../../../components/molecules/bars/SectionBar";
 import { ChartStudyOptions } from "../../../components/organisms/chart/ChartOptions";
+import { useToast } from "../../../hooks/custom/CustomToast";
 import { VoteCntProps } from "../../../types/models/studyTypes/studyRecords";
 
 interface HomeStudyChartProps {
@@ -13,7 +13,8 @@ interface HomeStudyChartProps {
 }
 
 function HomeStudyChart({ voteCntArr }: HomeStudyChartProps) {
-  const router = useRouter();
+  // const router = useRouter();
+  const toast = useToast();
   const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
   const filtered: VoteCntProps[] = voteCntArr?.reduce((acc, cur) => {
@@ -35,13 +36,15 @@ function HomeStudyChart({ voteCntArr }: HomeStudyChartProps) {
     xArr.push(dayjs(obj.date).date() + "");
   });
 
+  const onClick = () => {
+    toast("warning", "24년 9월 5일 오픈");
+  };
+
   return (
     <>
       <SectionBar
         title="스터디 전체 통계"
-        rightComponent={
-          <HighlightedTextButton text="더보기" onClick={() => router.push("/calendar")} />
-        }
+        rightComponent={<HighlightedTextButton text="더보기" onClick={onClick} />}
       />
       <Box pt="16px" pr="16px">
         <ApexCharts
