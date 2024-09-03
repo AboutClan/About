@@ -10,6 +10,7 @@ function RowTextBlockButton({ text, onClick }: RowTextBlockButtonProps) {
 }
 
 const Button = styled.button`
+  width: 100%;
   padding: 16px;
   text-align: start;
   border-bottom: var(--border);
