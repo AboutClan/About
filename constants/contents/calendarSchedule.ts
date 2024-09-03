@@ -294,6 +294,13 @@ export const EVENT_CONTENT_2024: Record<string, CalendarContentProps[]> = {
       text: "",
     },
     {
+      content: "지역 정기 스터디 주간",
+      start: 26,
+      end: 29,
+      type: "schedule",
+      text: "",
+    },
+    {
       content: "ABOUT 빙고판 이벤트",
       start: 17,
       end: 18,
