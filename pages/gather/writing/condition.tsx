@@ -82,7 +82,7 @@ function WritingCondition() {
 
   const toggleSwitch = (e: ChangeEvent<HTMLInputElement>, type: GatherConditionType) => {
     const isChecked = e.target.checked;
-    console.log(type);
+   
     if (type === "location" && isChecked) {
       setLocation(session?.user.location);
     }

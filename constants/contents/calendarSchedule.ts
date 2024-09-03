@@ -2,9 +2,10 @@ export interface CalendarContentProps {
   content: string;
   start: number;
   end: number;
-  type: "event" | "schedule" | "main";
+  type?: "event" | "schedule" | "main";
   text?: string;
   blockIdx?: number;
+  color?: string;
 }
 
 export const EVENT_CONTENT_2023: Record<string, CalendarContentProps[]> = {
@@ -294,10 +295,17 @@ export const EVENT_CONTENT_2024: Record<string, CalendarContentProps[]> = {
       text: "",
     },
     {
-      content: "지역 정기 스터디 주간",
+      content: "조모임 진행 주간",
       start: 26,
       end: 29,
       type: "schedule",
+      text: "",
+    },
+    {
+      content: "시험대비 스터디 집중 ~ ",
+      start: 29,
+      end: 30,
+      type: "main",
       text: "",
     },
     {
