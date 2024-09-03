@@ -1,6 +1,7 @@
 import dayjs, { Dayjs } from "dayjs";
 import { useEffect } from "react";
 
+import { ALL_스터디인증 } from "../../constants/serviceConstants/studyConstants/studyPlaceConstants";
 import { useErrorToast } from "../../hooks/custom/CustomToast";
 import { useStudyAttendRecordQuery } from "../../hooks/study/queries";
 import { DispatchBoolean, DispatchType } from "../../types/hooks/reactTypes";
@@ -40,11 +41,17 @@ function RecordCalendarSetting({
         ? null
         : { date: idx - frontBlankDate + 1, arrivedInfoList: [] },
     );
-    studyRecords.forEach((item) => {
-      const filledIdx = dayjs(item.date).date() + frontBlankDate - 1;
-      const data = filledDates[filledIdx];
-      if (data) data.arrivedInfoList = item.arrivedInfoList;
-    });
+
+    studyRecords
+      .map((study) => ({
+        arrivedInfoList: study.arrivedInfoList.filter((item) => item.placeId !== ALL_스터디인증),
+        date: study.date,
+      }))
+      .forEach((item) => {
+        const filledIdx = dayjs(item.date).date() + frontBlankDate - 1;
+        const data = filledDates[filledIdx];
+        if (data) data.arrivedInfoList = item.arrivedInfoList;
+      });
     setArrivedCalendar(filledDates);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, navMonth, studyRecords]);

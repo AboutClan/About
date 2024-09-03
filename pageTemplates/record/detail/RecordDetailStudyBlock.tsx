@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import styled from "styled-components";
 
-import { LOCATION_TABLE_COLOR } from "../../../constants/location";
+import { LOCATION_TO_COLOR } from "../../../constants/location";
 import { PLACE_TO_NAME } from "../../../constants/serviceConstants/studyConstants/studyCafeNameConstants";
 import { PLACE_TO_LOCATION } from "../../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { Location } from "../../../types/services/locationTypes";
@@ -59,7 +59,7 @@ const PlaceInfo = styled.div<{ location: Location }>`
   width: 148px;
   flex-shrink: 0;
   margin-bottom: var(--gap-4);
-  border: ${(props) => `1px solid ${LOCATION_TABLE_COLOR[props.location]}`};
+  border: ${(props) => `1px solid ${LOCATION_TO_COLOR[props.location]}`};
 
   border-radius: var(--rounded-lg);
   padding: var(--gap-2);
@@ -79,7 +79,7 @@ const PlaceName = styled.div`
 
 const OpenLocation = styled.span<{ location: Location }>`
   font-size: 11px;
-  color: ${(props) => LOCATION_TABLE_COLOR[props.location]};
+  color: ${(props) => LOCATION_TO_COLOR[props.location]};
 `;
 
 const MemberWrapper = styled.div`

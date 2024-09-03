@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
-import { LOCATION_CONVERT, LOCATION_MEMBER_CNT } from "../../../constants/location";
+import { LOCATION_MEMBER_CNT, LOCATION_TO_FULLNAME } from "../../../constants/location";
 import { Location } from "../../../types/services/locationTypes";
 
 function LocationMember({ location }: { location: Location }) {
   return (
     <Layout>
-      <Title>{LOCATION_CONVERT[location]}</Title>
+      <Title>{LOCATION_TO_FULLNAME[location]}</Title>
       <NewMember>
         <i className="fa-solid fa-caret-up" />
         <span>{LOCATION_MEMBER_CNT[location].new}</span>

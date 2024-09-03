@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import PointCircleTextRow from "../../../../components/molecules/PointCircleTextRow";
+import ColorLabelRow from "../../../../components/molecules/rows/ColorLabelRow";
 import WeekSlideCalendar from "../../../../components/molecules/WeekSlideCalendar";
 import { getStudyVoteCnt } from "../../../../libs/study/getStudyVoteCnt";
 import DateCalendarModal from "../../../../modals/aboutHeader/DateCalendarModal";
@@ -75,7 +75,7 @@ function StudyController({
               날짜 선택
             </Box>
 
-            <PointCircleTextRow
+            <ColorLabelRow
               props={[
                 { text: "오픈 확정", color: "mint" },
                 { text: "오픈 예정", color: "gray" },

@@ -1,42 +1,30 @@
+import { Box, Flex } from "@chakra-ui/react";
 import { Dayjs } from "dayjs";
-import styled from "styled-components";
 
 import { DispatchType } from "../../types/hooks/reactTypes";
 
-interface IMonthNav {
-  month: number;
-  setNavMonth: DispatchType<Dayjs>;
+interface MonthNavProps {
+  monthNum: number;
+  changeMonth: DispatchType<Dayjs>;
 }
 
-function MonthNav({ month, setNavMonth }: IMonthNav) {
-  const onClick = (dir: "left" | "right") => {
-    if (dir === "left") setNavMonth((old) => old.subtract(1, "month"));
-    else setNavMonth((old) => old.add(1, "month"));
+function MonthNav({ monthNum, changeMonth }: MonthNavProps) {
+  const handleMonthChange = (dir: "left" | "right") => {
+    if (dir === "left") changeMonth((old) => old.subtract(1, "month"));
+    else changeMonth((old) => old.add(1, "month"));
   };
 
   return (
-    <Layout>
-      <IconWrapper onClick={() => onClick("left")}>
+    <Flex align="center" fontSize="20px" fontWeight={800}>
+      <Box as="button" px={2} onClick={() => handleMonthChange("left")}>
         <i className="fa-solid fa-caret-left fa-xs" />
-      </IconWrapper>
-      <span>{month + 1}월</span>
-      <IconWrapper onClick={() => onClick("right")}>
+      </Box>
+      <span>{monthNum + 1}월</span>
+      <Box as="button" px={2} onClick={() => handleMonthChange("right")}>
         <i className="fa-solid fa-caret-right fa-xs" />
-      </IconWrapper>
-    </Layout>
+      </Box>
+    </Flex>
   );
 }
-
-const Layout = styled.div`
-  display: flex;
-  align-items: center;
-
-  font-size: 20px;
-  font-weight: 700;
-`;
-
-const IconWrapper = styled.button`
-  padding: 0 var(--gap-1);
-`;
 
 export default MonthNav;

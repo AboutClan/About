@@ -208,7 +208,6 @@ export const PLACE_TO_LOCATION = createPlaceToLocationMap(LOCATION_TO_PLACE);
 
 function createPlaceToLocationMap(obj: LocationToPlace) {
   const placeToLocationMap: { [key: string]: ActiveLocation } = {};
-
   Object.entries(obj).forEach(([location, ids]) => {
     ids.forEach((id) => {
       placeToLocationMap[id] = location as ActiveLocation;

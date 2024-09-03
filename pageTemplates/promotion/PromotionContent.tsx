@@ -4,7 +4,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import { CopyBtn } from "../../components/atoms/Icons/CopyIcon";
-import { PROMOTION_TEXT } from "../../constants/contentsText/Private";
+import { PROMOTION_TEXT, PROMOTION_TITLE } from "../../constants/contentsText/Private";
 
 function PromotionContent() {
   const [isText, setIsText] = useState(true);
@@ -34,18 +34,18 @@ function PromotionContent() {
               이미지
             </Button>
           </Nav>
-          {isText && <CopyBtn size="md" text={PROMOTION_TEXT} />}
+          {isText && <CopyBtn size="md" text={PROMOTION_TITLE + "\n" + PROMOTION_TEXT} />}
         </Wrapper>
         <Content>
           {isText ? (
             <>
-              <Title>✨대학생들의 소모임 플랫폼 ABOUT✨</Title>
+              <Title>{PROMOTION_TITLE}</Title>
               <Pre>{PROMOTION_TEXT}</Pre>
             </>
           ) : (
             <ImageWrapper>
               <Image
-                src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EC%97%AC%EB%A6%84+%ED%95%9C%EC%A0%95+%ED%8F%AC%EC%8A%A4%ED%8A%B8.jpg"
+                src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%A9%94%EC%9D%B8+%ED%8F%AC%EC%8A%A4%ED%84%B0.jpg"
                 alt="promotionImage"
                 width={220}
                 height={220}

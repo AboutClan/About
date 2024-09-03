@@ -2,7 +2,7 @@ import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 
 import Slide from "../../components/layouts/PageSlide";
-import HomeClubSection from "../../pageTemplates/home/HomeClubSection";
+import HomeCalendarSection from "../../pageTemplates/home/HomeCalendarSection";
 import HomeGatherSection from "../../pageTemplates/home/HomeGatherSection";
 import HomeHeader from "../../pageTemplates/home/homeHeader/HomeHeader";
 import HomeInitialSetting from "../../pageTemplates/home/HomeInitialSetting";
@@ -26,7 +26,7 @@ function Home() {
           ) : tab === "번개" ? (
             <HomeGatherSection />
           ) : tab === "캘린더" ? (
-            <HomeClubSection />
+            <HomeCalendarSection />
           ) : tab === "추천" ? (
             <HomeRankingSection />
           ) : null}

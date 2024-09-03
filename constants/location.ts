@@ -2,11 +2,12 @@ import {
   ActiveLocation,
   InactiveLocation,
   Location,
-  LocationEn,
+  LocationEn
 } from "../types/services/locationTypes";
-import { TABLE_COLORS } from "./styles";
+import { COLOR_TABLE } from "./colorConstants";
 
-export const LOCATION_OPEN: ActiveLocation[] = ["수원", "양천", "안양", "강남", "동대문", "인천"];
+export const LOCATION_OPEN: ActiveLocation[] = ["수원", "양천", "강남", "동대문", "인천", "안양"];
+
 export const LOCATION_RECRUITING: InactiveLocation[] = [
   "마포",
   "성남",
@@ -23,7 +24,7 @@ export const LOCATION_RECRUITING: InactiveLocation[] = [
 
 export const LOCATION_ALL = [...LOCATION_OPEN, ...LOCATION_RECRUITING];
 
-export const LOCATION_CONVERT: Record<Location, string> = {
+export const LOCATION_TO_FULLNAME: Record<Location, string> = {
   수원: "수원시",
   양천: "양천구 · 영등포구",
   안양: "안양 인근 지역",
@@ -76,15 +77,6 @@ export const LOCATION_MEMBER_CNT: {
   시흥: { member: 7, new: 2 },
 };
 
-export const LOCATION_TABLE_COLOR: Record<ActiveLocation, string> = {
-  수원: TABLE_COLORS[0],
-  양천: TABLE_COLORS[3],
-  안양: TABLE_COLORS[2],
-  강남: TABLE_COLORS[1],
-  인천: TABLE_COLORS[4],
-  동대문: TABLE_COLORS[5],
-};
-
 export const krToEnMapping: Record<Location, LocationEn> = {
   수원: "suw",
   강남: "gan",
@@ -123,4 +115,13 @@ export const enToKrMapping: Record<LocationEn, Location> = {
   gangbuk: "강북",
   buc: "부천",
   sih: "시흥",
+};
+
+export const LOCATION_TO_COLOR: Record<ActiveLocation, string> = {
+  수원: COLOR_TABLE[0],
+  양천: COLOR_TABLE[1],
+  강남: COLOR_TABLE[3],
+  동대문: COLOR_TABLE[4],
+  인천: COLOR_TABLE[2],
+  안양: COLOR_TABLE[5],
 };

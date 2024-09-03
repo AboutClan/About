@@ -11,7 +11,6 @@ import RecordCalendarSetting from "../../pageTemplates/record/RecordCalendarSett
 import RecordLocationCategory from "../../pageTemplates/record/RecordLocationCategory";
 import RecordNavigation from "../../pageTemplates/record/RecordNavigation";
 import RecordOverview from "../../pageTemplates/record/RecordOverview";
-import RecordSkeleton from "../../pageTemplates/record/RecordSkeleton";
 import { IArrivedData } from "../../types/models/studyTypes/studyRecords";
 
 export interface IDateRange {
@@ -37,7 +36,7 @@ function Record() {
     setFilterData(arrivedCalendar);
     setIsLoading(false);
   }, [arrivedCalendar]);
-
+  
   return (
     <>
       <Header title="스터디 기록" />
@@ -47,21 +46,19 @@ function Record() {
           setArrivedCalendar={setArrivedCalendar}
           setIsRecordLoading={setIsLoading}
         />
-        <Box mx="16px" mt="12px">
-          <RecordMonthNav month={navMonth.month()} setNavMonth={setNavMonth} />
+        <Box mx="16px" ml="8px" mt="12px">
+          <RecordMonthNav monthNum={navMonth.month()} changeMonth={setNavMonth} />
         </Box>
-        {!isLoading ? (
+        {!isLoading && (
           <>
             <RecordOverview arrivedCalendar={arrivedCalendar} />
             <RecordLocationCategory initialData={arrivedCalendar} setFilterData={setFilterData} />
             {isCalendar ? (
-              <RecordCalendar filterData={filterData} navMonth={navMonth} />
+              <RecordCalendar filterData={filterData} monthFirstDate={navMonth} />
             ) : (
               <RecordDetail filterData={filterData} navMonth={navMonth} />
             )}
           </>
-        ) : (
-          <RecordSkeleton isCalendar={isCalendar} />
         )}
       </Slide>
       <RecordNavigation isCalendar={isCalendar} setIsCalendar={setIsCalendar} />

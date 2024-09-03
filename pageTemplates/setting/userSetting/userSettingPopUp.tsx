@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import {
   ALPHABET_POP_UP,
   ATTEND_POP_UP,
-  ENTHUSIASTIC_POP_UP,
   FAQ_POP_UP,
   GATHER_JOIN_MEMBERS,
   INSTAGRAM_POP_UP,
@@ -24,7 +23,6 @@ import InstaPopUp from "../../../modals/pop-up/InstaPopUp";
 import LastWeekAttendPopUp from "../../../modals/pop-up/LastWeekAttendPopUp";
 import ManagerPopUp from "../../../modals/pop-up/ManagerPopUp";
 import SuggestPopUp from "../../../modals/pop-up/SuggestPopUp";
-import RecentJoinUserPopUp from "../../../modals/RecentJoinUserPopUp";
 import { IUser, IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { checkAndSetLocalStorage } from "../../../utils/storageUtils";
 
@@ -60,7 +58,7 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
   const { data: session } = useSession();
 
   const [modalTypes, setModalTypes] = useState<UserPopUp[]>([]);
-  const [recentMembers, setRecentMembers] = useState<IUserSummary[]>();
+  // const [recentMembers, setRecentMembers] = useState<IUserSummary[]>();
 
   const { data: gatherData } = useGatherQuery();
 
@@ -109,9 +107,9 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
     localStorage.setItem(GATHER_JOIN_MEMBERS, JSON.stringify(temp));
     localStorage.setItem(STUDY_ATTEND_MEMBERS, JSON.stringify(filtered));
 
-    const gatherMembers = filteredGather.flatMap((obj) => obj.participants.map((who) => who.user));
+    // const gatherMembers = filteredGather.flatMap((obj) => obj.participants.map((who) => who.user));
 
-    setRecentMembers([...gatherMembers, ...(firstData ? firstData.members : [])]);
+    // setRecentMembers([...gatherMembers, ...(firstData ? firstData.members : [])]);
   }, [gatherData]);
 
   useEffect(() => {
@@ -124,10 +122,10 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
       setModalTypes((old) => [...old, "lastWeekAttend"]);
       if (++popUpCnt === 2) return;
     }
-    if (!checkAndSetLocalStorage(ENTHUSIASTIC_POP_UP, 27)) {
-      setModalTypes((old) => [...old, "enthusiastic"]);
-      if (++popUpCnt === 2) return;
-    }
+    // if (!checkAndSetLocalStorage(ENTHUSIASTIC_POP_UP, 27)) {
+    //   setModalTypes((old) => [...old, "enthusiastic"]);
+    //   if (++popUpCnt === 2) return;
+    // }
     if (!checkAndSetLocalStorage(FAQ_POP_UP, 21)) {
       setModalTypes((old) => [...old, "faq"]);
       if (++popUpCnt === 2) return;
@@ -158,12 +156,12 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
 
   return (
     <>
-      {recentMembers?.length ? (
+      {/* {recentMembers?.length ? (
         <RecentJoinUserPopUp
           users={recentMembers.filter((who) => who.uid !== session?.user.uid)}
           setIsModal={() => setRecentMembers(null)}
         />
-      ) : null}
+      ) : null} */}
 
       {Object.entries(MODAL_COMPONENTS).map(([key, Component]) => {
         const type = key as UserPopUp;

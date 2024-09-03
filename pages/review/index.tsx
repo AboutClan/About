@@ -10,7 +10,7 @@ import KakaoShareBtn from "../../components/atoms/Icons/KakaoShareBtn";
 import { MainLoading } from "../../components/atoms/loaders/MainLoading";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
-import ButtonGroups, { IButtonOptions } from "../../components/molecules/groups/ButtonGroups";
+import ButtonGroups, { ButtonOptionsProps } from "../../components/molecules/groups/ButtonGroups";
 import { LOCATION_OPEN } from "../../constants/location";
 import { WEB_URL } from "../../constants/system";
 import { useErrorToast } from "../../hooks/custom/CustomToast";
@@ -109,7 +109,7 @@ function Review() {
     setVisibleCnt((old) => old + 8);
   };
 
-  const buttonArr: IButtonOptions[] = ["전체", ...LOCATION_OPEN].map((location) => ({
+  const buttonArr: ButtonOptionsProps[] = ["전체", ...LOCATION_OPEN].map((location) => ({
     text: location,
     func: () =>
       location === "전체"
@@ -136,7 +136,7 @@ function Review() {
             <>
               <Box p="12px 16px">
                 <ButtonGroups
-                  buttonItems={buttonArr}
+                  buttonOptionsArr={buttonArr}
                   currentValue={convertLocationLangTo(location as LocationEn, "kr") || "전체"}
                 />
               </Box>
