@@ -63,9 +63,10 @@ function Calendar({ monthFirstDate, calendarContents }: CalendarProps) {
       const isFirstDay = date === schedule.start;
       const isEndDay = date === schedule.end;
       if (schedule.start <= date && date <= schedule.end) {
+       
         acc.push({
           content: schedule.content,
-          color: SCHEDULE_TYPE_TO_COLOR[schedule.type],
+          color: schedule?.color || SCHEDULE_TYPE_TO_COLOR[schedule.type],
           isFirst: isFirstDay,
           isLast: isEndDay,
           blockIdx: schedule?.blockIdx,
@@ -118,9 +119,11 @@ function Calendar({ monthFirstDate, calendarContents }: CalendarProps) {
           const day = idx % 7 === 0 ? "sun" : idx % 7 === 6 ? "sat" : null;
           const isToday = monthFirstDate.date(item).isSame(dayjs(), "day");
           const contentArr = getDaySchedules(item);
-          const dateInfo = Object.values(daySchedules).map((title) =>
-            contentArr?.find((c) => c.content === title),
-          );
+
+          const dateInfo = Object.values(daySchedules).map((title, index) => {
+            const matchedContents = contentArr.filter((c) => c.content === title);
+            return matchedContents[index]; // 순서를 고려하여 index에 해당하는 요소를 선택
+          });
 
           endingSchedules.forEach((item) => deleteSchedule(item));
           endingSchedules = [];
@@ -160,6 +163,7 @@ function Calendar({ monthFirstDate, calendarContents }: CalendarProps) {
               </Flex>
               <>
                 {dateInfo.map((item, idx2) => {
+               
                   return (
                     <EventBlock
                       key={idx2}
@@ -195,6 +199,7 @@ const EventBlock = styled.div<{
   z-index: ${(props) => (props.isFirst ? 4 : 0)};
   padding-left: ${(props) => (props.isFirst ? "var(--gap-1)" : 0)};
   padding-right: ${(props) => (props.isLast ? "var(--gap-1)" : 0)};
+  text-align: ${(props) => props.isFirst && props.isLast && "center"};
 `;
 
 export default Calendar;
