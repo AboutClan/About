@@ -17,7 +17,6 @@ interface IRecordCalendar {
   monthFirstDate: Dayjs;
 }
 function RecordCalendar({ filterData, monthFirstDate }: IRecordCalendar) {
-  console.log(2, filterData);
   const calendarContents: CalendarContentProps[] = filterData.flatMap((data) => {
     const arrivedInfo = data?.arrivedInfoList;
     const date = data?.date;
@@ -36,18 +35,19 @@ function RecordCalendar({ filterData, monthFirstDate }: IRecordCalendar) {
         cnt: place.arrivedInfo.length,
       });
     });
-    console.log(24, arrivedInfo, openLocation, openStudyLocation);
-    let tempCnt = 0;
 
+    let tempCnt = 0;
+  
     const resData = Array.from(openStudyLocation)
       .map((location, idx) => {
         if (idx > 2 || location.cnt < 2) return null;
         tempCnt++;
+
         return {
-          content: "오픈",
+          content: "스터디",
           start: date,
           end: date,
-          type: "main" as "main" | "event" | "schedule",
+          color: LOCATION_TO_COLOR[location.location],
           blockIdx: tempCnt - 1,
         };
       })
@@ -69,7 +69,7 @@ function RecordCalendar({ filterData, monthFirstDate }: IRecordCalendar) {
     //   });
     // }
   });
-  console.log(calendarContents);
+ 
   return (
     <Box mt={3} borderRadius={1}>
       <Calendar

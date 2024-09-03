@@ -36,7 +36,7 @@ function Record() {
     setFilterData(arrivedCalendar);
     setIsLoading(false);
   }, [arrivedCalendar]);
-
+  
   return (
     <>
       <Header title="스터디 기록" />

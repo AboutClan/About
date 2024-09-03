@@ -24,7 +24,6 @@ export default function ButtonGroups({
   isEllipse = false,
   type = "block",
 }: IButtonGroups) {
-  console.log(buttonOptionsArr, currentValue);
   return (
     <Layout isWrap={isWrap}>
       {buttonOptionsArr.map((buttonOptions, idx) => (

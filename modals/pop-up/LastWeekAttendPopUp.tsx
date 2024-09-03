@@ -41,7 +41,7 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
   );
 
   const totalScore = scoreObj?.study + scoreObj?.gather;
-  console.log(2, filteredData, scoreObj);
+  
   const footerOptions: IFooterOptions = {
     main: {},
     sub: {

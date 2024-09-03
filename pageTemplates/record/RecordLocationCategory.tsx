@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import ButtonGroups from "../../components/molecules/groups/ButtonGroups";
 import { LOCATION_OPEN, LOCATION_TO_COLOR, LOCATION_TO_FULLNAME } from "../../constants/location";
 import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
+import { ALL_스터디인증 } from "../../constants/serviceConstants/studyConstants/studyPlaceConstants";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { IArrivedData } from "../../types/models/studyTypes/studyRecords";
 import { ActiveLocationAll } from "../../types/services/locationTypes";
@@ -22,7 +23,8 @@ function RecordLocationCategory({ initialData, setFilterData }: IRecordLocationC
     else {
       const filtered = initialData.map((item) => {
         const filteredArrived = item?.arrivedInfoList.filter(
-          (place) => PLACE_TO_LOCATION[place?.placeId] === category,
+          (place) =>
+            place?.placeId !== ALL_스터디인증 && PLACE_TO_LOCATION[place?.placeId] === category,
         );
         if (!filteredArrived) return;
         return { ...item, arrivedInfoList: filteredArrived };
@@ -50,7 +52,7 @@ function RecordLocationCategory({ initialData, setFilterData }: IRecordLocationC
     >
       <ButtonGroups
         buttonOptionsArr={buttonOptionsArr}
-        currentValue={category}
+        currentValue={LOCATION_TO_FULLNAME[category]}
         type="text"
         isWrap
       />
