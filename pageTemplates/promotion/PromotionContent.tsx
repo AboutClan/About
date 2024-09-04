@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import Image from "next/image";
 import { useState } from "react";
 import styled from "styled-components";
@@ -12,7 +12,11 @@ function PromotionContent() {
   return (
     <Layout>
       <Guide>
-        <span>아래 글을 복사하여 홍보글을 게시해주세요!</span>
+        <Box fontWeight={600} mb={2} textAlign="center">
+          아래 글을 복사하여 홍보글을 게시해주세요!
+          <br />
+          <Box>(굵은 글씨는 제목입니다)</Box>
+        </Box>
         <i className="fa-solid fa-chevron-down" />
       </Guide>
       <Container>
@@ -52,7 +56,6 @@ function PromotionContent() {
               />
               <div>
                 <span>사진을 꾹 눌러서 저장 !</span>
-                <span>(이미지는 선택사항!)</span>
               </div>
             </ImageWrapper>
           )}
@@ -67,10 +70,6 @@ const Guide = styled.div`
   flex-direction: column;
   align-items: center;
   margin-bottom: var(--gap-5);
-  > span:first-child {
-    font-weight: 600;
-    margin-bottom: var(--gap-2);
-  }
 `;
 
 const Container = styled.div`
