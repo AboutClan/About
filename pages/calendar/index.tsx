@@ -2,6 +2,7 @@ import { Box } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
 
+import { MainLoading } from "../../components/atoms/loaders/MainLoading";
 import RecordMonthNav from "../../components/atoms/MonthNav";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
@@ -36,7 +37,7 @@ function Record() {
     setFilterData(arrivedCalendar);
     setIsLoading(false);
   }, [arrivedCalendar]);
-  
+
   return (
     <>
       <Header title="스터디 기록" />
@@ -49,7 +50,7 @@ function Record() {
         <Box mx="16px" ml="8px" mt="12px">
           <RecordMonthNav monthNum={navMonth.month()} changeMonth={setNavMonth} />
         </Box>
-        {!isLoading && (
+        {!isLoading ? (
           <>
             <RecordOverview arrivedCalendar={arrivedCalendar} />
             <RecordLocationCategory initialData={arrivedCalendar} setFilterData={setFilterData} />
@@ -59,6 +60,8 @@ function Record() {
               <RecordDetail filterData={filterData} navMonth={navMonth} />
             )}
           </>
+        ) : (
+          <MainLoading />
         )}
       </Slide>
       <RecordNavigation isCalendar={isCalendar} setIsCalendar={setIsCalendar} />

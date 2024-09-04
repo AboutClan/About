@@ -1,5 +1,5 @@
 import { Box, Flex, Grid } from "@chakra-ui/react";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 import styled from "styled-components";
 
 import { COLOR_TABLE } from "../../constants/colorConstants";
@@ -63,7 +63,6 @@ function Calendar({ monthFirstDate, calendarContents }: CalendarProps) {
       const isFirstDay = date === schedule.start;
       const isEndDay = date === schedule.end;
       if (schedule.start <= date && date <= schedule.end) {
-       
         acc.push({
           content: schedule.content,
           color: schedule?.color || SCHEDULE_TYPE_TO_COLOR[schedule.type],
@@ -117,17 +116,18 @@ function Calendar({ monthFirstDate, calendarContents }: CalendarProps) {
       >
         {calendarDates?.map((item, idx) => {
           const day = idx % 7 === 0 ? "sun" : idx % 7 === 6 ? "sat" : null;
-          const isToday = monthFirstDate.date(item).isSame(dayjs(), "day");
+          const isToday = false;
           const contentArr = getDaySchedules(item);
 
-          const dateInfo = Object.values(daySchedules).map((title, index) => {
-            const matchedContents = contentArr.filter((c) => c.content === title);
-            return matchedContents[index]; // 순서를 고려하여 index에 해당하는 요소를 선택
+          console.log(5, Object.values(daySchedules));
+          const dateInfo = Object.values(daySchedules).map((title) => {
+            return contentArr?.find((c) => c.content === title);
+            // return contentArr[index]; // 순서를 고려하여 index에 해당하는 요소를 선택
           });
 
           endingSchedules.forEach((item) => deleteSchedule(item));
           endingSchedules = [];
-
+          console.log(dateInfo);
           return (
             <Box
               w={DAY_BLOCK_WIDTH}
@@ -163,7 +163,6 @@ function Calendar({ monthFirstDate, calendarContents }: CalendarProps) {
               </Flex>
               <>
                 {dateInfo.map((item, idx2) => {
-               
                   return (
                     <EventBlock
                       key={idx2}

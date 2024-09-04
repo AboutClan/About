@@ -36,6 +36,7 @@ function HomeCalendarSection() {
     <>
       <Flex align="center" justify="space-between" my={4} mr={4} ml={2}>
         <MonthNav monthNum={monthNum} changeMonth={setMonthFirstDate} />
+
         <ColorLabelRow props={SCHEDULE_CATEGORIES} />
       </Flex>
       <Calendar monthFirstDate={monthFirstDate} calendarContents={calendarContents} />
