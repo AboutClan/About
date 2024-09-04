@@ -20,7 +20,7 @@ function GroupOrganizer({
   category,
 }: IGroupOrganizer) {
   const writingDate = getDateDiff(dayjs(createdAt));
-  // const isABOUT = organizer.uid === ABOUT_UID || isAdminOpen;
+
   return (
     <Layout>
       <div>
