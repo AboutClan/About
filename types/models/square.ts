@@ -44,4 +44,5 @@ export type SecretSquareFormData = {
   content: string;
   pollItems: { name: string }[];
   canMultiple: boolean;
+  isAnonymous: boolean;
 };
