@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styled from "styled-components";
 
 import ImageTileGridLayout, {
-  IImageTileData
+  IImageTileData,
 } from "../../../components/molecules/layouts/ImageTitleGridLayout";
 import { MAX_USER_PER_PLACE } from "../../../constants/settingValue/study/study";
 import { useToast } from "../../../hooks/custom/CustomToast";
@@ -53,7 +53,7 @@ function PlaceSelectorSub({ places, selectPlaces, setSelectPlaces }: IPlaceSelec
   const imageDataArr: IImageTileData[] = (isFirst ? pagePlaces?.first : pagePlaces?.second)?.map(
     (par) => ({
       imageUrl: par.place.image,
-      text: par.place.brand,
+      text: par.place.branch,
       func: () => onClick(par),
       id: par.place._id,
     }),

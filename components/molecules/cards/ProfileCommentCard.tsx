@@ -36,11 +36,11 @@ export default function ProfileCommentCard({
         </UserNameBadgeContainer>
         <Flex alignItems="center" flex={1}>
           <CommentText>{comment !== null ? comment : user.comment}</CommentText>
-          {setMemo && (
+          {/* {setMemo && (
             <Button onClick={setMemo}>
               <i className="fa-regular fa-pen-to-square fa-sm" />
             </Button>
-          )}
+          )} */}
         </Flex>
       </UserInfoContainer>
       <RightComponentContainer>{rightComponent}</RightComponentContainer>

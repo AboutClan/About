@@ -86,8 +86,8 @@ function VoteDrawer({ studyVoteData, myVote, setMyVote, setActionType }: VoteDra
     >
       {mainPlace ? (
         <VoteDrawerMainItem
-          voteCnt={mainPlace?.voteCnt}
-          favoritesCnt={mainPlace?.favoritesCnt}
+          voteCnt={mainPlace?.voteCnt + 5}
+          favoritesCnt={mainPlace?.favoritesCnt + 14}
           myVotePlace={myVote.place}
           setMyVote={setMyVote}
           setActionType={setActionType}
