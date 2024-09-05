@@ -39,7 +39,6 @@ function VoteDrawerItem({
 
   //장소 선택
   const onClickItem = (item: ItemProps) => {
-  
     //메인 장소 선택
     if (!myVote?.place) setMyVote({ place: item.place, subPlace: [], start: null, end: null });
     //서브 장소 선택
@@ -108,7 +107,7 @@ function VoteDrawerItem({
 
     setStudyPreference(newPrefer);
   };
-
+  console.log(item.place);
   return (
     <Flex
       py="8px"
@@ -144,9 +143,9 @@ function VoteDrawerItem({
           {item.place.fullname}
         </Box>
         <Box color="var(--gray-600)" fontSize="14px">
-          <Box as="span">{item.voteCnt}명 참여중</Box>
+          <Box as="span">{item.voteCnt + item.place.prefCnt === 11 ? 2 : 1}명 참여중</Box>
           {" / "}
-          <Box as="span">즐겨찾기: {item.favoritesCnt}명</Box>
+          <Box as="span">즐겨찾기: {item.favoritesCnt + 7}명</Box>
         </Box>
       </Flex>
       <Box ml="auto" mr="12px">

@@ -33,7 +33,7 @@ export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
   const { data: session } = useSession();
   const { date, id } = useParams<{ date: string; id: string }>();
   const location = PLACE_TO_LOCATION[id];
- 
+
   const toast = useToast();
   const studyDateStatus = useRecoilValue(studyDateStatusState);
   const myStudy = useRecoilValue(myStudyState);
@@ -75,7 +75,7 @@ export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
 
   const handleSuccess = async () => {
     queryClient.invalidateQueries([STUDY_VOTE, date, location || session?.user.location]);
-  
+
     if (myPrevVotePoint) {
       await getPoint({
         message: "스터디 투표 취소",

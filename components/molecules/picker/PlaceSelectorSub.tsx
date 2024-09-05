@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styled from "styled-components";
 
 import ImageTileGridLayout, {
-  IImageTileData
+  IImageTileData,
 } from "../../../components/molecules/layouts/ImageTitleGridLayout";
 import { MAX_USER_PER_PLACE } from "../../../constants/settingValue/study/study";
 import { useToast } from "../../../hooks/custom/CustomToast";
@@ -53,7 +53,7 @@ function PlaceSelectorSub({ places, selectPlaces, setSelectPlaces }: IPlaceSelec
   const imageDataArr: IImageTileData[] = (isFirst ? pagePlaces?.first : pagePlaces?.second)?.map(
     (par) => ({
       imageUrl: par.place.image,
-      text: par.place.brand,
+      text: par.place.branch,
       func: () => onClick(par),
       id: par.place._id,
     }),
@@ -86,20 +86,21 @@ function PlaceSelectorSub({ places, selectPlaces, setSelectPlaces }: IPlaceSelec
 const Layout = styled.div<{ isTwoPage: boolean }>`
   position: relative;
   height: 100%;
-  padding: 12px 20px;
+  padding: 12px 16px;
+  padding-top: 4px;
 `;
 
 const LeftArrow = styled.div`
   padding: 8px;
   position: absolute;
   top: 38%;
-  left: -8px;
+  left: -12px;
 `;
 const RightArrow = styled.div`
   padding: 8px;
   position: absolute;
   top: 38%;
-  right: -8px;
+  right: -12px;
 `;
 
 export default PlaceSelectorSub;

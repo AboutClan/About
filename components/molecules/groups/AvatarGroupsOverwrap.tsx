@@ -28,7 +28,7 @@ export default function AvatarGroupsOverwrap({ userAvatarArr, userLength }: IAva
               isLink={false}
               shadowAvatar={
                 idx === VOTER_SHOW_MAX - 1 &&
-                (userLength ? userLength - VOTER_SHOW_MAX + 1 : userAvatarArr.length - idx)
+                (userLength ? userLength - VOTER_SHOW_MAX + 1 : userAvatarArr.length - idx) + 1
               }
             />
           )
