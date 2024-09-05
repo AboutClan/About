@@ -86,20 +86,21 @@ function PlaceSelectorSub({ places, selectPlaces, setSelectPlaces }: IPlaceSelec
 const Layout = styled.div<{ isTwoPage: boolean }>`
   position: relative;
   height: 100%;
-  padding: 12px 20px;
+  padding: 12px 16px;
+  padding-top: 4px;
 `;
 
 const LeftArrow = styled.div`
   padding: 8px;
   position: absolute;
   top: 38%;
-  left: -8px;
+  left: -12px;
 `;
 const RightArrow = styled.div`
   padding: 8px;
   position: absolute;
   top: 38%;
-  right: -8px;
+  right: -12px;
 `;
 
 export default PlaceSelectorSub;
