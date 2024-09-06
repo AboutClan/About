@@ -107,7 +107,7 @@ function Setting() {
       </Slide>
       {modalType === "inviteMember" && <InviteUserModal setIsModal={() => setModalType(null)} />}
       {modalType === "waitingMember" && (
-        <RightDrawer title="신천중인 인원" onClose={() => setModalType(null)}>
+        <RightDrawer title="신청중인 인원" onClose={() => setModalType(null)}>
           <Flex direction="column">
             {waitingMembers?.map((who, idx) => (
               <ProfileCommentCard

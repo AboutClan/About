@@ -119,7 +119,7 @@ function Calendar({ monthFirstDate, calendarContents }: CalendarProps) {
           const isToday = false;
           const contentArr = getDaySchedules(item);
 
-          console.log(5, Object.values(daySchedules));
+         
           const dateInfo = Object.values(daySchedules).map((title) => {
             return contentArr?.find((c) => c.content === title);
             // return contentArr[index]; // 순서를 고려하여 index에 해당하는 요소를 선택
@@ -127,7 +127,7 @@ function Calendar({ monthFirstDate, calendarContents }: CalendarProps) {
 
           endingSchedules.forEach((item) => deleteSchedule(item));
           endingSchedules = [];
-          console.log(dateInfo);
+       
           return (
             <Box
               w={DAY_BLOCK_WIDTH}

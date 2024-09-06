@@ -2,11 +2,16 @@ import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
+import { STUDY_PREFERENCE_LOCAL } from "../../../constants/keys/queryKeys";
+import { useToast } from "../../../hooks/custom/CustomToast";
+import { useStudyPreferenceMutation } from "../../../hooks/study/mutations";
 import { SingleLineText } from "../../../styles/layout/components";
 import { IImageProps } from "../../../types/components/assetTypes";
 import { ITextAndColorSchemes } from "../../../types/components/propTypes";
+import { IStudyVotePlaces } from "../../../types/models/studyTypes/studyInterActions";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 import OutlineBadge from "../../atoms/badges/OutlineBadge";
@@ -23,8 +28,9 @@ export interface IPostThumbnailCard {
   statusText?: string;
   maxCnt?: number;
   func?: () => void;
-
   registerDate?: string;
+  isPreferPlace?: boolean;
+  id?: string;
 }
 
 interface IPostThumbnailCardObj {
@@ -43,8 +49,13 @@ export function PostThumbnailCard({
     func = undefined,
     type,
     registerDate,
+    isPreferPlace,
+    id,
   },
 }: IPostThumbnailCardObj) {
+  const toast = useToast();
+ 
+
   const userAvatarArr = participants
     ?.filter((par) => par)
     .map((par) => ({
@@ -53,6 +64,45 @@ export function PostThumbnailCard({
     }));
 
   const CLOSED_TEXT_ARR = ["모집 마감", "닫힘"];
+
+  const [isHeart, setIsHeart] = useState(isPreferPlace);
+
+  useEffect(() => {
+    setIsHeart(isPreferPlace);
+  }, [isPreferPlace]);
+
+  const { mutate: setStudyPreference } = useStudyPreferenceMutation({
+    onSuccess() {
+      toast("success", "변경되었습니다.");
+    },
+  });
+
+  const toggleHeart = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const preferenceStorage = localStorage.getItem(STUDY_PREFERENCE_LOCAL);
+    const savedPrefer = JSON.parse(preferenceStorage) as IStudyVotePlaces;
+
+    const newPrefer = { ...savedPrefer };
+    if (isHeart) {
+      if (savedPrefer.place === id) {
+        newPrefer.place = savedPrefer.subPlace?.[0];
+        newPrefer.subPlace = savedPrefer.subPlace.filter((sub) => sub !== newPrefer.place);
+      } else {
+        newPrefer.subPlace = savedPrefer.subPlace.filter((sub) => sub !== id);
+      }
+    } else {
+      if (newPrefer?.place) {
+        newPrefer.subPlace = [...savedPrefer.subPlace, id];
+      } else {
+        newPrefer.place = id;
+      }
+    }
+    setIsHeart((old) => !old);
+
+    localStorage.setItem(STUDY_PREFERENCE_LOCAL, JSON.stringify(newPrefer as IStudyVotePlaces));
+
+    setStudyPreference(newPrefer);
+  };
 
   return (
     <CardLink href={url} onClick={func}>
@@ -72,6 +122,23 @@ export function PostThumbnailCard({
             sizes="100px"
             priority={image.priority}
           />
+          {type === "study" && (
+            <Box
+              as="button"
+              pos="absolute"
+              p={1}
+              bottom={-1}
+              right={1}
+              color="white"
+              onClick={toggleHeart}
+            >
+              {isHeart ? (
+                <i className="fa-solid fa-heart fa-sm" />
+              ) : (
+                <i className="fa-regular fa-heart fa-sm" />
+              )}
+            </Box>
+          )}
         </Box>
         <Flex direction="column" ml="12px" flex={1}>
           <Flex align="center" fontSize="16px">

@@ -14,6 +14,7 @@ import {
   CardColumnLayoutSkeleton,
 } from "../../../components/organisms/CardColumnLayout";
 import { STUDY_CHECK_POP_UP, STUDY_VOTING_TABLE } from "../../../constants/keys/localStorage";
+import { STUDY_PREFERENCE_LOCAL } from "../../../constants/keys/queryKeys";
 import { LOCATION_RECRUITING, LOCATION_TO_FULLNAME } from "../../../constants/location";
 import {
   STUDY_DATE_START_HOUR,
@@ -29,7 +30,10 @@ import {
   studyDateStatusState,
 } from "../../../recoils/studyRecoils";
 import { IParticipation, StudyStatus } from "../../../types/models/studyTypes/studyDetails";
-import { StudyVotingSave } from "../../../types/models/studyTypes/studyInterActions";
+import {
+  IStudyVotePlaces,
+  StudyVotingSave,
+} from "../../../types/models/studyTypes/studyInterActions";
 import { InactiveLocation, LocationEn } from "../../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
@@ -57,15 +61,28 @@ function HomeStudyCol({ studyVoteData, isLoading }: HomeStudyColProps) {
 
   const { mutate: decideStudyResult } = useStudyResultDecideMutation(date);
 
+  const preferenceStorage = JSON.parse(
+    localStorage.getItem(STUDY_PREFERENCE_LOCAL),
+  ) as IStudyVotePlaces;
+
   useEffect(() => {
     if (!studyVoteData || !studyVoteData.length || !session?.user || !studyDateStatus) {
       setMyStudy(undefined);
       setStudyCardColData(null);
       return;
     }
-    const sortedData = sortStudyVoteData(studyVoteData, studyDateStatus !== "not passed");
+    const sortedData = sortStudyVoteData(
+      studyVoteData,
+      preferenceStorage,
+      studyDateStatus !== "not passed",
+    );
 
-    const cardList = setStudyDataToCardCol(sortedData, date as string, session?.user.uid);
+    const cardList = setStudyDataToCardCol(
+      sortedData,
+      date as string,
+      session?.user.uid,
+      preferenceStorage ? [preferenceStorage?.place, ...(preferenceStorage?.subPlace || [])] : [],
+    );
 
     setStudyCardColData(cardList.slice(0, 3));
     setSortedStudyCardList(cardList);
@@ -172,6 +189,7 @@ export const setStudyDataToCardCol = (
   studyData: IParticipation[],
   urlDateParam: string,
   uid: string,
+  preferPlaces: string[],
 ): IPostThumbnailCard[] => {
   const privateStudy = studyData.find((par) => par.place.brand === "자유 신청");
   const filteredData = studyData.filter((par) => par.place.brand !== "자유 신청");
@@ -192,6 +210,8 @@ export const setStudyDataToCardCol = (
     type: "study",
     statusText:
       data.status === "pending" && data.attendences.some((who) => who.user.uid === uid) && "GOOD",
+    isPreferPlace: preferPlaces?.includes(data.place._id),
+    id: data.place._id,
   }));
 
   return cardColData;

@@ -1,19 +1,15 @@
 import { Box, Flex } from "@chakra-ui/react";
-import dayjs from "dayjs";
 import styled from "styled-components";
 
 import { STUDY_PREFERENCE_LOCAL } from "../../../constants/keys/queryKeys";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useStudyPreferenceMutation } from "../../../hooks/study/mutations";
-import { PreferStorageProps } from "../../../pages/vote";
 import { DispatchType } from "../../../types/hooks/reactTypes";
 import {
   IStudyVotePlaces,
   IStudyVoteWithPlace,
 } from "../../../types/models/studyTypes/studyInterActions";
-import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import { VoteDrawerItemProps as ItemProps } from "../VoteDrawer";
-
 interface VoteDrawerItemProps {
   item: ItemProps;
   savedPrefer: IStudyVotePlaces;
@@ -97,17 +93,11 @@ function VoteDrawerItem({
       }
     }
 
-    localStorage.setItem(
-      STUDY_PREFERENCE_LOCAL,
-      JSON.stringify({
-        prefer: newPrefer,
-        date: dayjsToStr(dayjs()),
-      } as PreferStorageProps),
-    );
+    localStorage.setItem(STUDY_PREFERENCE_LOCAL, JSON.stringify(newPrefer as IStudyVotePlaces));
 
     setStudyPreference(newPrefer);
   };
-  console.log(item.place);
+
   return (
     <Flex
       py="8px"

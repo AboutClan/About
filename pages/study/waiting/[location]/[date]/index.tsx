@@ -55,7 +55,7 @@ export default function Page() {
   }, [studyAll]);
 
   const studyWaitingUsers = studyAll && getWaitingSpaceProps(studyAll);
-  const sortedStudyPlaces = studyAll && sortStudyVoteData(studyAll, false);
+  const sortedStudyPlaces = studyAll && sortStudyVoteData(studyAll, null, false);
 
   const [category, setCategory] = useState("참여 멤버");
   const [isPointModal, setIsPointModal] = useState(false);
