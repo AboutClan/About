@@ -172,7 +172,7 @@ export const STORE_GIFT_ACTIVE: IStoreGift[] = [
     point: 150,
     winner: 5,
     max: 5,
-    giftId: 49,
+    giftId: 56,
   },
   {
     image:
@@ -222,7 +222,7 @@ export const STORE_GIFT_ACTIVE: IStoreGift[] = [
     point: 100,
     winner: 5,
     max: 5,
-    giftId: 54,
+    giftId: 55,
   },
 ];
 
