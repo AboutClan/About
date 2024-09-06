@@ -30,7 +30,7 @@ function DateVoteBlock({ buttonProps, func, cnt }: DateVoteBlockProps) {
     <Flex w="100%" justify="space-between" align="center">
       <Box fontSize="16px" fontWeight={500}>
         <Box as="span" mr="4px">
-          현재 신청 인원:
+          현재 인원:
         </Box>
 
         <Box display="inline-block" color="var(--color-mint)">
