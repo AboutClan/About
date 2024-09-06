@@ -27,10 +27,10 @@ function GatherDetail() {
   const isGuest = session?.user.name === "guest";
 
   const [gather, setGather] = useState<IGather>();
-  console.log(gather);
+
   const [transferGather, setTransferGather] = useRecoilState(transferGatherDataState);
   const { data: gatherData } = useGatherIDQuery(+id, { enabled: !!id && !transferGather });
-  console.log(23, gatherData);
+  
   useEffect(() => {
     if (gatherData) {
       setGather(gatherData);
