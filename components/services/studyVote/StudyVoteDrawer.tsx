@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
@@ -94,6 +94,11 @@ export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
   };
 
   const onSubmit = () => {
+    const diffHour = voteTime.end.diff(voteTime.start, "hour");
+    if (diffHour < 2) {
+      toast("warning", "최소 2시간은 선택되어야 합니다.");
+      return;
+    }
     const temp = {
       ...myVote,
       place: myVote.place,
