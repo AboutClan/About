@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useRecoilValue } from "recoil";
 
 import DateVoteBlock from "../../../../components/molecules/DateVoteBlock";
@@ -15,7 +15,7 @@ export type StudyVoteActionType =
   | "스터디 투표하기"
   | "투표 변경하기"
   | "스터디 출석체크"
-  | "출석체크 완료"
+  | "출석 완료"
   | "당일 불참"
   | "기간 만료"
   | "당일 참여";
@@ -24,7 +24,7 @@ export const ACTION_TO_VOTE_TYPE: Record<StudyVoteActionType, VoteType> = {
   "스터디 투표하기": "vote",
   "투표 변경하기": "voteChange",
   "스터디 출석체크": "attendCheck",
-  "출석체크 완료": "attendCompleted",
+  "출석 완료": "attendCompleted",
   "당일 불참": "absent",
   "기간 만료": "expired",
   "당일 참여": "todayVote",
@@ -98,7 +98,7 @@ export const getStudyVoteButtonProps = (
     case "today":
       if (isAttend)
         return {
-          text: "출석체크 완료",
+          text: "출석 완료",
           color: "var(--color-orange)",
           type: "inactive",
         };
@@ -116,7 +116,7 @@ export const getStudyVoteButtonProps = (
     case "passed":
       if (myStudy && isAttend)
         return {
-          text: "출석체크 완료",
+          text: "출석 완료",
           color: "#F6AD55",
           type: "inactive",
         };
