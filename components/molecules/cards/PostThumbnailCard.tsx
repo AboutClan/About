@@ -54,7 +54,6 @@ export function PostThumbnailCard({
   },
 }: IPostThumbnailCardObj) {
   const toast = useToast();
- 
 
   const userAvatarArr = participants
     ?.filter((par) => par)
@@ -82,7 +81,10 @@ export function PostThumbnailCard({
     const preferenceStorage = localStorage.getItem(STUDY_PREFERENCE_LOCAL);
     const savedPrefer = JSON.parse(preferenceStorage) as IStudyVotePlaces;
 
-    const newPrefer = { ...savedPrefer };
+    const newPrefer: IStudyVotePlaces = {
+      place: savedPrefer?.place,
+      subPlace: savedPrefer?.subPlace || [],
+    };
     if (isHeart) {
       if (savedPrefer.place === id) {
         newPrefer.place = savedPrefer.subPlace?.[0];
