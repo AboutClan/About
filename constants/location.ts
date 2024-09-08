@@ -2,7 +2,7 @@ import {
   ActiveLocation,
   InactiveLocation,
   Location,
-  LocationEn
+  LocationEn,
 } from "../types/services/locationTypes";
 import { COLOR_TABLE } from "./colorConstants";
 
@@ -65,16 +65,16 @@ export const LOCATION_MEMBER_CNT: {
   동대문: { member: 56, new: 2 },
   마포: { member: 38, new: 2 },
   인천: { member: 45, new: 3 },
-  성남: { member: 7, new: 3 },
-  성동: { member: 4, new: 1 },
-  고양: { member: 7, new: 3 },
-  중구: { member: 13, new: 2 },
-  송파: { member: 9, new: 4 },
-  구로: { member: 5, new: 1 },
-  동작: { member: 7, new: 4 },
-  강북: { member: 5, new: 3 },
-  부천: { member: 4, new: 2 },
-  시흥: { member: 7, new: 2 },
+  성남: { member: 17, new: 3 },
+  성동: { member: 8, new: 1 },
+  고양: { member: 11, new: 3 },
+  중구: { member: 17, new: 2 },
+  송파: { member: 14, new: 4 },
+  구로: { member: 11, new: 1 },
+  동작: { member: 13, new: 4 },
+  강북: { member: 11, new: 3 },
+  부천: { member: 10, new: 2 },
+  시흥: { member: 13, new: 2 },
 };
 
 export const krToEnMapping: Record<Location, LocationEn> = {

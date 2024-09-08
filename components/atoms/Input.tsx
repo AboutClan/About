@@ -24,7 +24,7 @@ export const Input = forwardRef(function Input(
       size={size}
       border={size === "sm" ? "none" : undefined}
       borderBottom={size === "sm" && "var(--border-main)"}
-      borderRadius={size === "sm" && "none"}
+      borderRadius={size === "sm" ? "none" : "4px"}
       _focus={{
         outline: size === "sm" ? "none" : undefined,
         boxShadow: size === "sm" ? "none" : undefined,

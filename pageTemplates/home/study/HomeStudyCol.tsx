@@ -61,9 +61,12 @@ function HomeStudyCol({ studyVoteData, isLoading }: HomeStudyColProps) {
 
   const { mutate: decideStudyResult } = useStudyResultDecideMutation(date);
 
-  const preferenceStorage = JSON.parse(
-    localStorage.getItem(STUDY_PREFERENCE_LOCAL),
-  ) as IStudyVotePlaces;
+  const preferenceLocal = localStorage.getItem(STUDY_PREFERENCE_LOCAL);
+
+  const preferenceStorage =
+    preferenceLocal && preferenceLocal !== "undefined"
+      ? (JSON.parse(preferenceLocal) as IStudyVotePlaces)
+      : null;
 
   useEffect(() => {
     if (!studyVoteData || !studyVoteData.length || !session?.user || !studyDateStatus) {
