@@ -35,6 +35,6 @@ const deg2rad = (deg) => {
 export const getBottomNavSize = () => {
   const deviceType = detectDevice();
   if (deviceType === "iPhone") {
-    return 87;
+    return 95;
   } else return 77;
 };

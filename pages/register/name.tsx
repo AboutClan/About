@@ -1,6 +1,6 @@
 import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 import { Input } from "../../components/atoms/Input";
 import BottomNav from "../../components/layouts/BottomNav";
@@ -21,11 +21,11 @@ function Name() {
 
   const inputRef = useRef(null);
 
-  // useEffect(() => {
-  //   if (inputRef.current) {
-  //     inputRef.current.focus();
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
 
   const isProfileEdit = !!searchParams.get("edit");
 

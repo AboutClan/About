@@ -101,14 +101,14 @@ const Container = styled.div`
 const Item = styled.div<{ $isSelected: boolean }>`
   background-color: white;
   width: 100%;
-  border-radius: var(--rounded-lg);
+  border-radius: 4px;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 48px;
   margin-bottom: var(--gap-3);
   color: ${(props) => (props.$isSelected ? "var(--gray-800)" : "var(--gray-500)")};
-  border: ${(props) => (props.$isSelected ? "var(--border-thick)" : "var(--border-main)")};
+  border: ${(props) => (props.$isSelected ? "var(--border-mint)" : "var(--border-main)")};
 `;
 
 export default Comment;

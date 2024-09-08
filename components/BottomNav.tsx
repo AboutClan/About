@@ -127,6 +127,7 @@ const Nav = styled.nav<{ height: number }>`
   border-top: var(--border);
   max-width: var(--max-width);
   margin: 0 auto;
+  padding-top: 4px;
 `;
 
 const NavLink = styled(Link)<{ active: "true" | "false" } & LinkProps>`
@@ -136,7 +137,6 @@ const NavLink = styled(Link)<{ active: "true" | "false" } & LinkProps>`
   justify-content: center;
   align-items: center;
 
-  margin-top: 4px;
   color: ${({ active }) => (active === "true" ? "var(--gray-800)" : "var(--gray-500)")};
 `;
 
