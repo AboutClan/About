@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import BottomDrawerLg from "../../components/organisms/drawer/BottomDrawerLg";
 import { STUDY_PREFERENCE_LOCAL } from "../../constants/keys/queryKeys";
 import { useStudyPreferenceQuery } from "../../hooks/study/queries";
-import { StudyVoteMapActionType } from "../../pages/vote";
+import { PreferStorageProps, StudyVoteMapActionType } from "../../pages/vote";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { IParticipation, IPlace } from "../../types/models/studyTypes/studyDetails";
 import {
@@ -33,16 +33,16 @@ function VoteDrawer({ studyVoteData, myVote, setMyVote, setActionType }: VoteDra
   const preferenceStorage = localStorage.getItem(STUDY_PREFERENCE_LOCAL);
 
   const { data: studyPreference } = useStudyPreferenceQuery({
-    enabled: !preferenceStorage,
-    onSuccess(data) {
-      localStorage.setItem(STUDY_PREFERENCE_LOCAL, JSON.stringify(data));
+    enabled: !preferenceStorage || preferenceStorage === "undefined",
+    onSuccess() {
       setMyVote(null);
     },
   });
-
-  const savedPrefer = preferenceStorage
-    ? (JSON.parse(preferenceStorage) as IStudyVotePlaces)
-    : studyPreference;
+  console.log(preferenceStorage);
+  const savedPrefer =
+    preferenceStorage && preferenceStorage !== "undefined"
+      ? (JSON.parse(preferenceStorage) as PreferStorageProps)?.prefer
+      : studyPreference;
 
   const savedPreferPlace: { place: IPlace; subPlace: IPlace[] } = savedPrefer && {
     place: studyVoteData.find((par) => par.place._id === savedPrefer.place)?.place,
