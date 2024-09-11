@@ -21,7 +21,7 @@ function PromotionAllCoolTimeModal({ promotionData, setIsModal }: IPromotionAllC
       item.uid !== "2636066822" &&
       item.uid !== "3224546232",
   ).length;
- 
+
 
   const footerOptions: IFooterOptions = {
     children: (
