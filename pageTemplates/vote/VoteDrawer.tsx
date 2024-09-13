@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import BottomDrawerLg from "../../components/organisms/drawer/BottomDrawerLg";
 import { STUDY_PREFERENCE_LOCAL } from "../../constants/keys/queryKeys";
 import { useStudyPreferenceQuery } from "../../hooks/study/queries";
-import { PreferStorageProps, StudyVoteMapActionType } from "../../pages/vote";
+import { StudyVoteMapActionType } from "../../pages/vote";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { IParticipation, IPlace } from "../../types/models/studyTypes/studyDetails";
 import {
@@ -38,10 +38,10 @@ function VoteDrawer({ studyVoteData, myVote, setMyVote, setActionType }: VoteDra
       setMyVote(null);
     },
   });
-  console.log(preferenceStorage);
+
   const savedPrefer =
     preferenceStorage && preferenceStorage !== "undefined"
-      ? (JSON.parse(preferenceStorage) as PreferStorageProps)?.prefer
+      ? (JSON.parse(preferenceStorage) as IStudyVotePlaces)
       : studyPreference;
 
   const savedPreferPlace: { place: IPlace; subPlace: IPlace[] } = savedPrefer && {

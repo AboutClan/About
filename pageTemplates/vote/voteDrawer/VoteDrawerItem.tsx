@@ -61,8 +61,9 @@ function VoteDrawerItem({
     heartType: "first" | "second" | null,
   ) => {
     event.stopPropagation();
+
     const preferMain = savedPrefer?.place;
-    const preferSub = savedPrefer?.subPlace;
+    const preferSub = savedPrefer?.subPlace || [];
 
     setPlaceItems((old) =>
       old.map((item) =>
@@ -71,7 +72,7 @@ function VoteDrawerItem({
           : item,
       ),
     );
-    const newPrefer = { ...savedPrefer };
+    const newPrefer = { place: preferMain, subPlace: preferSub };
 
     if (heartType === "first") {
       newPrefer.place = null;
@@ -87,9 +88,11 @@ function VoteDrawerItem({
       if (savedPrefer?.place) {
         if (Array.isArray(savedPrefer.subPlace)) {
           newPrefer.subPlace = [placeId, ...savedPrefer.subPlace];
+        } else {
+          newPrefer.subPlace = [];
         }
       } else {
-        newPrefer.subPlace = savedPrefer?.subPlace;
+        newPrefer.subPlace = savedPrefer?.subPlace || [];
       }
     }
 
