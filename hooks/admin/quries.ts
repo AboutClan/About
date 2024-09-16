@@ -106,3 +106,17 @@ export const usePushQuery = (uid: string, options?: QueryOptions<void>) =>
     },
     options,
   );
+
+export const useAdminLocationActiveQuery = (month: number, options?: QueryOptions<any>) =>
+  useQuery(
+    [ADMIN_STUDY_RECORD, month],
+    async () => {
+      const res = await axios.get<any>(`${SERVER_URI}/static/sameLoc`, {
+        params: {
+          date: "2024-09-01",
+        },
+      });
+      return res.data;
+    },
+    options,
+  );
