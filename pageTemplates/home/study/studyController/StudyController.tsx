@@ -5,9 +5,7 @@ import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import ColorLabelRow from "../../../../components/molecules/rows/ColorLabelRow";
 import WeekSlideCalendar from "../../../../components/molecules/WeekSlideCalendar";
-import { getStudyVoteCnt } from "../../../../libs/study/getStudyVoteCnt";
 import DateCalendarModal from "../../../../modals/aboutHeader/DateCalendarModal";
 import StudyAttendCheckModal from "../../../../modals/study/StudyAttendCheckModal";
 import StudySimpleVoteModal from "../../../../modals/study/StudySimpleVoteModal";
@@ -16,7 +14,6 @@ import { DispatchString } from "../../../../types/hooks/reactTypes";
 import { IParticipation } from "../../../../types/models/studyTypes/studyDetails";
 import { VoteCntProps } from "../../../../types/models/studyTypes/studyRecords";
 import { dayjsToStr } from "../../../../utils/dateTimeUtils";
-import StudyControllerVoteButton from "./StudyControllerVoteButton";
 
 export type VoteType =
   | "vote"
@@ -70,7 +67,7 @@ function StudyController({
     <>
       <>
         <OuterContainer>
-          <Flex justify="space-between" align="center" mb="16px" mr="12px">
+          {/* <Flex justify="space-between" align="center" mb="16px" mr="12px">
             <Box fontSize="16px" fontWeight={600}>
               날짜 선택
             </Box>
@@ -81,11 +78,11 @@ function StudyController({
                 { text: "오픈 예정", color: "gray" },
               ]}
             />
-          </Flex>
-          <Box minH="138px">
+          </Flex> */}
+          <Box>
             {selectedDate && (
               <>
-                <Flex align="center" borderBottom="var(--border)">
+                <Flex align="center">
                   <Flex pr="4px" flex={1} minW="48px" justify="center">
                     <MonthButton
                       onClick={() => setModalType("monthCalendar")}
@@ -104,10 +101,10 @@ function StudyController({
                     func={handleSelectDate}
                   />
                 </Flex>
-                <StudyControllerVoteButton
+                {/* <StudyControllerVoteButton
                   memberCnt={getStudyVoteCnt(studyVoteData)}
                   setModalType={setModalType}
-                />
+                /> */}
               </>
             )}
           </Box>
@@ -202,7 +199,9 @@ const OuterContainer = styled.div`
   border: var(--border);
   margin-top: 16px;
   padding: 16px;
+
   padding-right: 8px;
+  padding-bottom: 4px;
   position: relative;
 `;
 

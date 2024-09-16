@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -12,7 +12,7 @@ import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { getUrlWithLocationAndDate } from "../../utils/convertUtils/convertTypes";
 
-export type HomeTab = "스터디" | "번개" | "캘린더" | "추천";
+export type HomeTab = "추천" | "스터디" | "번개" | "캘린더";
 
 interface HomeTabProps {
   tab: HomeTab;
@@ -34,7 +34,7 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
     study: "스터디",
     gather: "번개",
     club: "캘린더",
-    temp: "추천",
+    recommendation: "추천",
   };
 
   useEffect(() => {
@@ -64,7 +64,7 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
       );
     }
     if (tab === "추천") {
-      router.replace(`/home?tab=temp`);
+      router.replace(`/home?tab=recommendation`);
     }
     if (tab === "캘린더") {
       router.replace(`/home?tab=club`);
@@ -80,6 +80,11 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
 
   const tabNavOptions: ITabNavOptions[] = [
     {
+      text: "추천",
+      func: () => handleTabMove("추천"),
+      flex: 1,
+    },
+    {
       text: "스터디",
       func: onClickStudy,
       flex: 1,
@@ -92,11 +97,6 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
     {
       text: "캘린더",
       func: () => handleTabMove("캘린더"),
-      flex: 1,
-    },
-    {
-      text: "추천",
-      func: () => handleTabMove("추천"),
       flex: 1,
     },
   ];
