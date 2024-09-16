@@ -43,4 +43,4 @@ export const COLLECTION_ALPHABET = "collectionAlphabet";
 
 export const ADMIN_STUDY_RECORD = "adminStudyRecord";
 
-export const STUDY_PREFERENCE_LOCAL = "studyPreferenceLocal3";
+export const STUDY_PREFERENCE_LOCAL = "studyPreferenceLocal4";

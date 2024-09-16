@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Link, { LinkProps } from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
@@ -127,7 +127,8 @@ const Nav = styled.nav<{ height: number }>`
   border-top: var(--border);
   max-width: var(--max-width);
   margin: 0 auto;
-  padding-top: 4px;
+  padding-top: ${(props) => (props.height > 90 ? 0 : "4px")};
+  padding-bottom: ${(props) => (props.height > 90 ? "4px" : 0)};
 `;
 
 const NavLink = styled(Link)<{ active: "true" | "false" } & LinkProps>`

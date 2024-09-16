@@ -1,1 +1,1 @@
-export const PROMOTION_WIN_DATE = "2024-09-03";
+export const PROMOTION_WIN_DATE = "2024-09-11";

@@ -13,18 +13,10 @@ import VoteDrawer from "../pageTemplates/vote/VoteDrawer";
 import VoteTimeDrawer from "../pageTemplates/vote/VoteTimeDrawer";
 import { IMapOptions, IMarkerOptions } from "../types/externals/naverMapTypes";
 import { IParticipation, IPlace } from "../types/models/studyTypes/studyDetails";
-import {
-  IStudyVotePlaces,
-  IStudyVoteWithPlace,
-} from "../types/models/studyTypes/studyInterActions";
+import { IStudyVoteWithPlace } from "../types/models/studyTypes/studyInterActions";
 import { ActiveLocation, LocationEn } from "../types/services/locationTypes";
 import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
 import { getDistanceFromLatLonInKm } from "../utils/mathUtils";
-
-export interface PreferStorageProps {
-  date: string;
-  prefer: IStudyVotePlaces;
-}
 
 export type StudyVoteMapActionType = "timeSelect";
 

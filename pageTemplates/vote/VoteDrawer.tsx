@@ -33,16 +33,16 @@ function VoteDrawer({ studyVoteData, myVote, setMyVote, setActionType }: VoteDra
   const preferenceStorage = localStorage.getItem(STUDY_PREFERENCE_LOCAL);
 
   const { data: studyPreference } = useStudyPreferenceQuery({
-    enabled: !preferenceStorage,
-    onSuccess(data) {
-      localStorage.setItem(STUDY_PREFERENCE_LOCAL, JSON.stringify(data));
+    enabled: !preferenceStorage || preferenceStorage === "undefined",
+    onSuccess() {
       setMyVote(null);
     },
   });
 
-  const savedPrefer = preferenceStorage
-    ? (JSON.parse(preferenceStorage) as IStudyVotePlaces)
-    : studyPreference;
+  const savedPrefer =
+    preferenceStorage && preferenceStorage !== "undefined"
+      ? (JSON.parse(preferenceStorage) as IStudyVotePlaces)
+      : studyPreference;
 
   const savedPreferPlace: { place: IPlace; subPlace: IPlace[] } = savedPrefer && {
     place: studyVoteData.find((par) => par.place._id === savedPrefer.place)?.place,
