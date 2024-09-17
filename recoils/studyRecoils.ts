@@ -1,8 +1,13 @@
 import { atom } from "recoil";
 
 import { IPostThumbnailCard } from "../components/molecules/cards/PostThumbnailCard";
-import { IParticipation } from "../types/models/studyTypes/studyDetails";
+import { IParticipation, IStudy } from "../types/models/studyTypes/studyDetails";
 import { StudyDateStatus } from "../types/models/studyTypes/studyInterActions";
+
+export const studyPairArrState = atom<IStudy[]>({
+  key: "StudyPairArr",
+  default: null,
+});
 
 export const studyDateStatusState = atom<StudyDateStatus>({
   key: "StudyDateStatus",
@@ -13,8 +18,6 @@ export const myStudyState = atom<IParticipation | null>({
   key: "MyStudy",
   default: undefined,
 });
-
-
 
 export const sortedStudyCardListState = atom<IPostThumbnailCard[]>({
   key: "SortedStudyCardList",

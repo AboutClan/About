@@ -36,11 +36,15 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
     club: "캘린더",
     recommendation: "추천",
   };
-
+ 
   useEffect(() => {
     if (!session?.user) return;
     if (!category) setCategory(matchParam[tabParam]);
-    if ((tabParam === "study" || !tabParam) && (!locationParam || !dateParam)) {
+    if (!tabParam) {
+      router.replace("/home?tab=recommendation");
+      return;
+    }
+    if (tabParam === "study" && (!locationParam || !dateParam)) {
       const initialUrl = getUrlWithLocationAndDate(locationParam, dateParam, session.user.location);
       router.replace(initialUrl);
     }

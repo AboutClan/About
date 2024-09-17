@@ -1,5 +1,5 @@
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -31,7 +31,7 @@ export default function StudyVoteMap() {
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>();
   const [actionType, setActionType] = useState(null);
 
-  const { data: studyVoteData } = useStudyVoteQuery(date, location, {
+  const { data: studyVoteData } = useStudyVoteQuery(date, location, false, false, {
     enabled: !!location && !!date,
   });
 

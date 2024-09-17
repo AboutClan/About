@@ -2,8 +2,6 @@ import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 import BottomDrawerLg from "../../components/organisms/drawer/BottomDrawerLg";
-import { STUDY_PREFERENCE_LOCAL } from "../../constants/keys/queryKeys";
-import { useStudyPreferenceQuery } from "../../hooks/study/queries";
 import { StudyVoteMapActionType } from "../../pages/vote";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { IParticipation, IPlace } from "../../types/models/studyTypes/studyDetails";
@@ -30,25 +28,13 @@ interface VoteDrawerProps {
 }
 
 function VoteDrawer({ studyVoteData, myVote, setMyVote, setActionType }: VoteDrawerProps) {
-  const preferenceStorage = localStorage.getItem(STUDY_PREFERENCE_LOCAL);
-
-  const { data: studyPreference } = useStudyPreferenceQuery({
-    enabled: !preferenceStorage || preferenceStorage === "undefined",
-    onSuccess() {
-      setMyVote(null);
-    },
-  });
-
-  const savedPrefer =
-    preferenceStorage && preferenceStorage !== "undefined"
-      ? (JSON.parse(preferenceStorage) as IStudyVotePlaces)
-      : studyPreference;
-
-  const savedPreferPlace: { place: IPlace; subPlace: IPlace[] } = savedPrefer && {
-    place: studyVoteData.find((par) => par.place._id === savedPrefer.place)?.place,
-    subPlace: studyVoteData
-      .filter((par) => savedPrefer?.subPlace.includes(par.place._id))
-      .map((item) => item.place),
+  const savedPreferPlace: { place: IPlace; subPlace: IPlace[] } = {
+    place: studyVoteData.find((par) => par.myPrefer === "main")?.place,
+    subPlace: studyVoteData.filter((par) => par.myPrefer === "sub").map((item) => item.place),
+  };
+  const savedPrefer: { place: string; subPlace: string[] } = {
+    place: studyVoteData.find((par) => par.myPrefer === "main")?.place._id,
+    subPlace: studyVoteData.filter((par) => par.myPrefer === "sub").map((item) => item.place._id),
   };
 
   const items = getSortedMainPlace(studyVoteData, savedPrefer);

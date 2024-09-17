@@ -27,7 +27,7 @@ export default function HomeGatherCol() {
   const setTransferGather = useSetRecoilState(transferGatherDataState);
 
   const { data: gathers } = useGatherQuery(-1);
-  console.log(gathers);
+
   useEffect(() => {
     if (!gathers) return;
     const handleNavigate = (gather: IGather) => {

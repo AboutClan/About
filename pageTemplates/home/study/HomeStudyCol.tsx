@@ -1,11 +1,9 @@
 import { ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { AnimatePresence, motion, PanInfo } from "framer-motion";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import styled from "styled-components";
+import { useRecoilValue } from "recoil";
 
 import BlurredPart from "../../../components/molecules/BlurredPart";
 import { IPostThumbnailCard } from "../../../components/molecules/cards/PostThumbnailCard";
@@ -14,7 +12,6 @@ import {
   CardColumnLayoutSkeleton,
 } from "../../../components/organisms/CardColumnLayout";
 import { STUDY_CHECK_POP_UP, STUDY_VOTING_TABLE } from "../../../constants/keys/localStorage";
-import { STUDY_PREFERENCE_LOCAL } from "../../../constants/keys/queryKeys";
 import { LOCATION_RECRUITING, LOCATION_TO_FULLNAME } from "../../../constants/location";
 import {
   STUDY_DATE_START_HOUR,
@@ -22,18 +19,10 @@ import {
 } from "../../../constants/serviceConstants/studyConstants/studyTimeConstant";
 import { useStudyResultDecideMutation } from "../../../hooks/study/mutations";
 import { getStudyConfimCondition } from "../../../libs/study/getStudyConfimCondition";
-import { sortStudyVoteData } from "../../../libs/study/sortStudyVoteData";
 import StudyOpenCheckModal from "../../../modals/study/StudyOpenCheckModal";
-import {
-  myStudyState,
-  sortedStudyCardListState,
-  studyDateStatusState,
-} from "../../../recoils/studyRecoils";
+import { studyDateStatusState } from "../../../recoils/studyRecoils";
 import { IParticipation, StudyStatus } from "../../../types/models/studyTypes/studyDetails";
-import {
-  IStudyVotePlaces,
-  StudyVotingSave,
-} from "../../../types/models/studyTypes/studyInterActions";
+import { StudyVotingSave } from "../../../types/models/studyTypes/studyInterActions";
 import { InactiveLocation, LocationEn } from "../../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
@@ -41,54 +30,33 @@ import { dayjsToStr } from "../../../utils/dateTimeUtils";
 interface HomeStudyColProps {
   studyVoteData: IParticipation[];
   isLoading: boolean;
+  date: string;
 }
 
-function HomeStudyCol({ studyVoteData, isLoading }: HomeStudyColProps) {
+function HomeStudyCol({ studyVoteData, isLoading, date }: HomeStudyColProps) {
   const { data: session } = useSession();
-  const router = useRouter();
+
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
-  const date = searchParams.get("date");
+
   const locationEn = searchParams.get("location") as LocationEn;
   const location = convertLocationLangTo(locationEn, "kr");
   const myUid = session?.user.uid;
 
-  const setSortedStudyCardList = useSetRecoilState(sortedStudyCardListState);
-  const setMyStudy = useSetRecoilState(myStudyState);
   const studyDateStatus = useRecoilValue(studyDateStatusState);
   const [studyCardColData, setStudyCardColData] = useState<IPostThumbnailCard[]>();
   const [dismissedStudy, setDismissedStudy] = useState<IParticipation>();
 
   const { mutate: decideStudyResult } = useStudyResultDecideMutation(date);
 
-  const preferenceLocal = localStorage.getItem(STUDY_PREFERENCE_LOCAL);
-
-  const preferenceStorage =
-    preferenceLocal && preferenceLocal !== "undefined"
-      ? (JSON.parse(preferenceLocal) as IStudyVotePlaces)
-      : null;
-
   useEffect(() => {
     if (!studyVoteData || !studyVoteData.length || !session?.user || !studyDateStatus) {
-      setMyStudy(undefined);
       setStudyCardColData(null);
       return;
     }
-    const sortedData = sortStudyVoteData(
-      studyVoteData,
-      preferenceStorage,
-      studyDateStatus !== "not passed",
-    );
-
-    const cardList = setStudyDataToCardCol(
-      sortedData,
-      date as string,
-      session?.user.uid,
-      preferenceStorage ? [preferenceStorage?.place, ...(preferenceStorage?.subPlace || [])] : [],
-    );
-
+    const cardList = setStudyDataToCardCol(studyVoteData, date as string, session?.user.uid);
     setStudyCardColData(cardList.slice(0, 3));
-    setSortedStudyCardList(cardList);
+
     let myStudy: IParticipation = null;
 
     const studyOpenCheck = localStorage.getItem(STUDY_CHECK_POP_UP);
@@ -99,8 +67,7 @@ function HomeStudyCol({ studyVoteData, isLoading }: HomeStudyColProps) {
       }),
     );
 
-    if (myStudy?.status !== "dismissed") setMyStudy(myStudy);
-    else {
+    if (myStudy?.status === "dismissed") {
       if (
         (studyOpenCheck !== dayjsToStr(dayjs()) && dayjs().hour() <= STUDY_DATE_START_HOUR) ||
         dayjs().hour() >= STUDY_RESULT_HOUR
@@ -108,7 +75,6 @@ function HomeStudyCol({ studyVoteData, isLoading }: HomeStudyColProps) {
         setDismissedStudy(myStudy);
         localStorage.setItem(STUDY_CHECK_POP_UP, dayjsToStr(dayjs()));
       }
-      setMyStudy(null);
     }
 
     if (dayjs(date).isAfter(dayjs().subtract(1, "day"))) {
@@ -138,49 +104,27 @@ function HomeStudyCol({ studyVoteData, isLoading }: HomeStudyColProps) {
     }
   }, [studyDateStatus, studyVoteData]);
 
-  const onDragEnd = (panInfo: PanInfo) => {
-    const newDate = getNewDateBySwipe(panInfo, date as string);
-    if (newDate !== date) {
-      newSearchParams.set("date", newDate);
-      router.replace(`/home?${newSearchParams.toString()}`, { scroll: false });
-    }
-    return;
-  };
-
   return (
     <>
-      <>
-        <AnimatePresence initial={false}>
-          <MotionDiv
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={1}
-            onDragEnd={(_, panInfo) => onDragEnd(panInfo)}
-            className="study_space"
-          >
-            <>
-              <BlurredPart
-                text={
-                  LOCATION_RECRUITING.includes(location as InactiveLocation)
-                    ? `${LOCATION_TO_FULLNAME[location]} 오픈 준비중`
-                    : ""
-                }
-                isBlur={LOCATION_RECRUITING.includes(location as InactiveLocation)}
-                size="lg"
-              >
-                {!isLoading && studyCardColData ? (
-                  <CardColumnLayout
-                    cardDataArr={studyCardColData}
-                    url={`/studyList/?${newSearchParams.toString()}`}
-                  />
-                ) : (
-                  <CardColumnLayoutSkeleton />
-                )}
-              </BlurredPart>
-            </>
-          </MotionDiv>
-        </AnimatePresence>
-      </>
+      <BlurredPart
+        text={
+          LOCATION_RECRUITING.includes(location as InactiveLocation)
+            ? `${LOCATION_TO_FULLNAME[location]} 오픈 준비중`
+            : ""
+        }
+        isBlur={LOCATION_RECRUITING.includes(location as InactiveLocation)}
+        size="lg"
+      >
+        {!isLoading && studyCardColData ? (
+          <CardColumnLayout
+            cardDataArr={studyCardColData}
+            url={`/studyList/?${newSearchParams.toString()}`}
+          />
+        ) : (
+          <CardColumnLayoutSkeleton />
+        )}
+      </BlurredPart>
+
       {dismissedStudy && (
         <StudyOpenCheckModal setIsModal={() => setDismissedStudy(null)} par={dismissedStudy} />
       )}
@@ -192,14 +136,8 @@ export const setStudyDataToCardCol = (
   studyData: IParticipation[],
   urlDateParam: string,
   uid: string,
-  preferPlaces: string[],
 ): IPostThumbnailCard[] => {
-  const privateStudy = studyData.find((par) => par.place.brand === "자유 신청");
-  const filteredData = studyData.filter((par) => par.place.brand !== "자유 신청");
-
-  if (privateStudy) filteredData.splice(2, 0, privateStudy);
-
-  const cardColData: IPostThumbnailCard[] = filteredData.map((data) => ({
+  const cardColData: IPostThumbnailCard[] = studyData.map((data) => ({
     title: data.place.branch,
     subtitle: data.place.brand,
     participants: data.attendences.map((att) => att.user),
@@ -213,7 +151,6 @@ export const setStudyDataToCardCol = (
     type: "study",
     statusText:
       data.status === "pending" && data.attendences.some((who) => who.user.uid === uid) && "GOOD",
-    isPreferPlace: preferPlaces?.includes(data.place._id),
     id: data.place._id,
   }));
 
@@ -236,28 +173,5 @@ const getBadgeText = (
       return null;
   }
 };
-
-export const getNewDateBySwipe = (panInfo: PanInfo, date: string) => {
-  const { offset, velocity } = panInfo;
-  const swipe = swipePower(offset.x, velocity.x);
-
-  let dateDayjs = dayjs(date);
-  if (swipe < -swipeConfidenceThreshold) {
-    dateDayjs = dateDayjs.add(1, "day");
-  } else if (swipe > swipeConfidenceThreshold) {
-    dateDayjs = dateDayjs.subtract(1, "day");
-  }
-  return dayjsToStr(dateDayjs);
-};
-
-const swipeConfidenceThreshold = 10000;
-const swipePower = (offset: number, velocity: number) => {
-  return Math.abs(offset) * velocity;
-};
-
-const MotionDiv = styled(motion.div)`
-  margin-top: 16px;
-  margin-bottom: 24px;
-`;
 
 export default HomeStudyCol;

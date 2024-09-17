@@ -83,7 +83,7 @@ function StudyController({
             {selectedDate && (
               <>
                 <Flex align="center">
-                  <Flex pr="4px" flex={1} minW="48px" justify="center">
+                  <Flex pr="4px" flex={1} minW="48px" justify="center" pb={3}>
                     <MonthButton
                       onClick={() => setModalType("monthCalendar")}
                       className="about_calendar_month"
@@ -92,7 +92,7 @@ function StudyController({
                       <i className="fa-regular fa-chevron-down fa-xs" />
                     </MonthButton>
                   </Flex>
-                  <Flex flex={0.6} h="32px" justify="center">
+                  <Flex flex={0.6} h="32px" justify="center" pb={3}>
                     <Box h="100%" bg="var(--gray-300)" w="1px" />
                   </Flex>
                   <WeekSlideCalendar
@@ -125,6 +125,7 @@ function StudyController({
 
 const MonthButton = styled.button`
   width: 44px;
+
   text-align: start;
   padding: 8px 0px;
   font-size: 16px;
@@ -201,7 +202,8 @@ const OuterContainer = styled.div`
   padding: 16px;
 
   padding-right: 8px;
-  padding-bottom: 4px;
+  padding-top: 12px;
+  padding-bottom: 0px;
   position: relative;
 `;
 
