@@ -5,13 +5,12 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { STUDY_PREFERENCE_LOCAL } from "../../../constants/keys/queryKeys";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useStudyPreferenceMutation } from "../../../hooks/study/mutations";
+import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { SingleLineText } from "../../../styles/layout/components";
 import { IImageProps } from "../../../types/components/assetTypes";
 import { ITextAndColorSchemes } from "../../../types/components/propTypes";
-import { IStudyVotePlaces } from "../../../types/models/studyTypes/studyInterActions";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 import OutlineBadge from "../../atoms/badges/OutlineBadge";
@@ -29,12 +28,15 @@ export interface IPostThumbnailCard {
   maxCnt?: number;
   func?: () => void;
   registerDate?: string;
-  isPreferPlace?: boolean;
   id?: string;
+  hasMainPrefer?: boolean;
 }
+
+const VOTER_SHOW_MAX = 6;
 
 interface IPostThumbnailCardObj {
   postThumbnailCardProps: IPostThumbnailCard;
+  isShort?: boolean;
 }
 export function PostThumbnailCard({
   postThumbnailCardProps: {
@@ -49,11 +51,15 @@ export function PostThumbnailCard({
     func = undefined,
     type,
     registerDate,
-    isPreferPlace,
     id,
+    hasMainPrefer,
   },
+  isShort,
 }: IPostThumbnailCardObj) {
   const toast = useToast();
+
+  const { data: userInfo } = useUserInfoQuery();
+  console.log(55, userInfo);
 
   const userAvatarArr = participants
     ?.filter((par) => par)
@@ -64,13 +70,16 @@ export function PostThumbnailCard({
 
   const CLOSED_TEXT_ARR = ["모집 마감", "닫힘"];
 
-  const [isHeart, setIsHeart] = useState(isPreferPlace);
+  const [heartType, setHeartType] = useState<"main" | "sub" | null>();
 
   useEffect(() => {
-    setIsHeart(isPreferPlace);
-  }, [isPreferPlace]);
+    if (!userInfo?.studyPreference) return;
+    const { place, subPlace } = userInfo?.studyPreference || { place: null, subPlace: [] };
+    if (place === id) setHeartType("main");
+    else if (subPlace?.includes(id)) setHeartType("sub");
+  }, [userInfo?.studyPreference]);
 
-  const { mutate: setStudyPreference } = useStudyPreferenceMutation({
+  const { mutate: patchStudyPreference } = useStudyPreferenceMutation("patch", {
     onSuccess() {
       toast("success", "변경되었습니다.");
     },
@@ -78,32 +87,35 @@ export function PostThumbnailCard({
 
   const toggleHeart = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const preferenceStorage = localStorage.getItem(STUDY_PREFERENCE_LOCAL);
-    const savedPrefer = JSON.parse(preferenceStorage) as IStudyVotePlaces;
 
-    const newPrefer: IStudyVotePlaces = {
-      place: savedPrefer?.place,
-      subPlace: savedPrefer?.subPlace || [],
-    };
-    if (isHeart) {
-      if (savedPrefer.place === id) {
-        newPrefer.place = savedPrefer.subPlace?.[0];
-        newPrefer.subPlace = savedPrefer.subPlace.filter((sub) => sub !== newPrefer.place);
-      } else {
-        newPrefer.subPlace = savedPrefer.subPlace.filter((sub) => sub !== id);
-      }
-    } else {
-      if (newPrefer?.place) {
-        newPrefer.subPlace = [...savedPrefer.subPlace, id];
-      } else {
-        newPrefer.place = id;
-      }
-    }
-    setIsHeart((old) => !old);
+    const preferenceType = heartType
+      ? heartType
+      : userInfo?.studyPreference?.place
+        ? "sub"
+        : "main";
+    patchStudyPreference({ id, type: preferenceType });
 
-    localStorage.setItem(STUDY_PREFERENCE_LOCAL, JSON.stringify(newPrefer as IStudyVotePlaces));
+    console.log(43, hasMainPrefer);
 
-    setStudyPreference(newPrefer);
+    // if (heartType) {
+    //   if (myPrefer.place === id) {
+    //     newPrefer.place = myPrefer.subPlace?.[0];
+    //     newPrefer.subPlace = myPrefer.subPlace.filter((sub) => sub !== newPrefer.place);
+    //   } else {
+    //     newPrefer.subPlace = myPrefer.subPlace.filter((sub) => sub !== id);
+    //   }
+    // } else {
+    //   if (newPrefer?.place) {
+    //     newPrefer.subPlace = [...myPrefer.subPlace, id];
+    //   } else {
+    //     newPrefer.place = id;
+    //   }
+    // }
+    // setHeartType((old) => !old);
+
+    // localStorage.setItem(STUDY_PREFERENCE_LOCAL, JSON.stringify(newPrefer as IStudyVotePlaces));
+
+    // patchStudyPreference(newPrefer);
   };
 
   return (
@@ -134,7 +146,7 @@ export function PostThumbnailCard({
               color="white"
               onClick={toggleHeart}
             >
-              {isHeart ? (
+              {heartType ? (
                 <i className="fa-solid fa-heart fa-sm" />
               ) : (
                 <i className="fa-regular fa-heart fa-sm" />
@@ -156,7 +168,10 @@ export function PostThumbnailCard({
           <Subtitle>{subtitle}</Subtitle>
           {participants ? (
             <StatusContainer>
-              <AvatarGroupsOverwrap userAvatarArr={userAvatarArr} />
+              <AvatarGroupsOverwrap
+                userAvatarArr={userAvatarArr}
+                maxCnt={VOTER_SHOW_MAX - (isShort ? 1 : 0)}
+              />
               <div className="statusText">
                 <Box fontSize="14px" color="var(--color-mint)" fontWeight={600} mr="8px" mt="4px">
                   {statusText}

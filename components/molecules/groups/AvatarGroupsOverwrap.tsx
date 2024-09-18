@@ -11,15 +11,22 @@ interface IUserAvatar {
 interface IAvatarGroupsOverwrap {
   userAvatarArr: IUserAvatar[];
   userLength?: number;
+  maxCnt?: number;
 }
-const VOTER_SHOW_MAX = 6;
 
-export default function AvatarGroupsOverwrap({ userAvatarArr, userLength }: IAvatarGroupsOverwrap) {
+const BASIC_MAX_CNT = 8;
+
+export default function AvatarGroupsOverwrap({
+  userAvatarArr,
+  userLength,
+  maxCnt,
+}: IAvatarGroupsOverwrap) {
+  console.log(userAvatarArr.length, userLength, maxCnt);
   return (
     <Participants>
       {userAvatarArr.map((att, idx) => {
         return (
-          idx < VOTER_SHOW_MAX && (
+          idx < maxCnt && (
             <Avatar
               key={idx}
               image={att.image}
@@ -27,8 +34,8 @@ export default function AvatarGroupsOverwrap({ userAvatarArr, userLength }: IAva
               size="sm"
               isLink={false}
               shadowAvatar={
-                idx === VOTER_SHOW_MAX - 1 &&
-                (userLength ? userLength - VOTER_SHOW_MAX + 1 : userAvatarArr.length - idx) + 1
+                idx === maxCnt - 1 &&
+                (userLength ? userLength - maxCnt : userAvatarArr.length - idx)
               }
             />
           )

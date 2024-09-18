@@ -70,11 +70,19 @@ function HomeStudySection() {
         LOCATION_OPEN.includes(locationKr as ActiveLocation),
     },
   );
+  useStudyVoteQuery(date, locationKr, false, false, {
+    enabled: !!locationKr && !!date,
+  });
 
   useEffect(() => {
+    setStudyPairArr(null);
+  }, [locationKr]);
+
+  useEffect(() => {
+    if (isLoading) return;
     if (studyVoteData) setStudyPairArr(studyVoteData);
     if (findStudyData) setStudyVoteArr(findStudyData);
-  }, [findStudyData, studyVoteData]);
+  }, [findStudyData, studyVoteData, isLoading]);
 
   const selectedDateDayjs = dayjs(selectedDate);
 
@@ -204,7 +212,7 @@ function HomeStudySection() {
             onDragEnd={(_, panInfo) => onDragEnd(panInfo)}
             className="study_space"
           >
-            <HomeStudyCol studyVoteData={studyVoteArr} isLoading={isLoading} date={date} />
+            <HomeStudyCol studyVoteData={studyVoteArr} isLoading={!findStudyData} date={date} />
           </MotionDiv>
         </AnimatePresence>
       </Box>

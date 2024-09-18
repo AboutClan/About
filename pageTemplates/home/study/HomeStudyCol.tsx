@@ -30,10 +30,11 @@ import { dayjsToStr } from "../../../utils/dateTimeUtils";
 interface HomeStudyColProps {
   studyVoteData: IParticipation[];
   isLoading: boolean;
+  isShort?: boolean;
   date: string;
 }
 
-function HomeStudyCol({ studyVoteData, isLoading, date }: HomeStudyColProps) {
+function HomeStudyCol({ studyVoteData, isLoading, date, isShort }: HomeStudyColProps) {
   const { data: session } = useSession();
 
   const searchParams = useSearchParams();
@@ -119,6 +120,7 @@ function HomeStudyCol({ studyVoteData, isLoading, date }: HomeStudyColProps) {
           <CardColumnLayout
             cardDataArr={studyCardColData}
             url={`/studyList/?${newSearchParams.toString()}`}
+            isShort={isShort}
           />
         ) : (
           <CardColumnLayoutSkeleton />

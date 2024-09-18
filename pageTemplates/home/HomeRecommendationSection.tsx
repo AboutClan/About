@@ -91,6 +91,7 @@ function HomeRecommendationSection() {
                 studyVoteData={studyVoteData?.[0]?.participations}
                 isLoading={isLoading}
                 date={dayjsToStr(todayDayjs)}
+                isShort
               />
             </Box>
           </Box>
@@ -105,6 +106,7 @@ function HomeRecommendationSection() {
                 studyVoteData={studyVoteData?.[1]?.participations}
                 isLoading={isLoading}
                 date={dayjsToStr(todayDayjs.add(1, "day"))}
+                isShort
               />
             </Box>
           </Box>

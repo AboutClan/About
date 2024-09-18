@@ -101,13 +101,23 @@ export const useStudyResultDecideMutation = (date: string, options?: MutationOpt
     options,
   );
 
-export const useStudyPreferenceMutation = (options?: MutationOptions<IStudyVotePlaces>) =>
-  useMutation<void, AxiosError, IStudyVotePlaces>(
-    (votePlaces) =>
-      requestServer<IStudyVotePlaces>({
-        method: "post",
+type StudyPreferenceParam<T> = T extends "post"
+  ? IStudyVotePlaces
+  : {
+      id: string;
+      type: "main" | "sub";
+    };
+
+export const useStudyPreferenceMutation = <T extends "post" | "patch">(
+  method: T,
+  options?: MutationOptions<StudyPreferenceParam<T>>,
+) =>
+  useMutation<void, AxiosError, StudyPreferenceParam<T>>(
+    (param) =>
+      requestServer<StudyPreferenceParam<T>>({
+        method: method,
         url: `user/preference`,
-        body: votePlaces,
+        body: param,
       }),
     options,
   );

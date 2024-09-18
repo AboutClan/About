@@ -15,7 +15,6 @@ export interface IParticipation {
   absences: IAbsence[];
   startTime?: Date;
   status: StudyStatus;
-  myPrefer?: "main" | "sub" | null;
 }
 
 export interface IAttendance {
