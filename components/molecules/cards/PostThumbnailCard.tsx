@@ -3,7 +3,9 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useQueryClient } from "react-query";
 import styled from "styled-components";
+import { USER_INFO } from "../../../constants/keys/queryKeys";
 
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useStudyPreferenceMutation } from "../../../hooks/study/mutations";
@@ -29,7 +31,6 @@ export interface IPostThumbnailCard {
   func?: () => void;
   registerDate?: string;
   id?: string;
-  hasMainPrefer?: boolean;
 }
 
 const VOTER_SHOW_MAX = 6;
@@ -52,14 +53,14 @@ export function PostThumbnailCard({
     type,
     registerDate,
     id,
-    hasMainPrefer,
   },
   isShort,
 }: IPostThumbnailCardObj) {
+  const queryClient = useQueryClient();
   const toast = useToast();
 
   const { data: userInfo } = useUserInfoQuery();
-  console.log(55, userInfo);
+  const preference = userInfo?.studyPreference;
 
   const userAvatarArr = participants
     ?.filter((par) => par)
@@ -73,11 +74,12 @@ export function PostThumbnailCard({
   const [heartType, setHeartType] = useState<"main" | "sub" | null>();
 
   useEffect(() => {
-    if (!userInfo?.studyPreference) return;
-    const { place, subPlace } = userInfo?.studyPreference || { place: null, subPlace: [] };
+    if (!preference) return;
+    const { place, subPlace } = preference || { place: null, subPlace: [] };
+
     if (place === id) setHeartType("main");
     else if (subPlace?.includes(id)) setHeartType("sub");
-  }, [userInfo?.studyPreference]);
+  }, [preference, id]);
 
   const { mutate: patchStudyPreference } = useStudyPreferenceMutation("patch", {
     onSuccess() {
@@ -87,35 +89,10 @@ export function PostThumbnailCard({
 
   const toggleHeart = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-
-    const preferenceType = heartType
-      ? heartType
-      : userInfo?.studyPreference?.place
-        ? "sub"
-        : "main";
+    const preferenceType = heartType ? null : preference?.place ? "sub" : "main";
     patchStudyPreference({ id, type: preferenceType });
-
-    console.log(43, hasMainPrefer);
-
-    // if (heartType) {
-    //   if (myPrefer.place === id) {
-    //     newPrefer.place = myPrefer.subPlace?.[0];
-    //     newPrefer.subPlace = myPrefer.subPlace.filter((sub) => sub !== newPrefer.place);
-    //   } else {
-    //     newPrefer.subPlace = myPrefer.subPlace.filter((sub) => sub !== id);
-    //   }
-    // } else {
-    //   if (newPrefer?.place) {
-    //     newPrefer.subPlace = [...myPrefer.subPlace, id];
-    //   } else {
-    //     newPrefer.place = id;
-    //   }
-    // }
-    // setHeartType((old) => !old);
-
-    // localStorage.setItem(STUDY_PREFERENCE_LOCAL, JSON.stringify(newPrefer as IStudyVotePlaces));
-
-    // patchStudyPreference(newPrefer);
+    setHeartType(preferenceType);
+    queryClient.invalidateQueries([USER_INFO]);
   };
 
   return (

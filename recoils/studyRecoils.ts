@@ -19,7 +19,3 @@ export const myStudyState = atom<IParticipation | null>({
   default: undefined,
 });
 
-export const sortedStudyCardListState = atom<IPostThumbnailCard[]>({
-  key: "SortedStudyCardList",
-  default: undefined,
-});

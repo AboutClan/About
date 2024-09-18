@@ -38,7 +38,7 @@ export default function StudyVoteMap() {
 
   const studyVoteData = studyVoteOne?.[0]?.participations;
 
-  //메인 스터디 장소가 선택되면 3km 거리 이하의 장소들이 2지망으로 자동 선택
+  //메인 스터디 장소가 선택되면 일정 거리 이하의 장소들이 2지망으로 자동 선택
   useEffect(() => {
     if (!studyVoteData || !myVote?.place || myVote?.subPlace) return;
     const subPlace = [];

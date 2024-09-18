@@ -126,7 +126,7 @@ function HomeStudySection() {
     <>
       <Box p={4} pb={5}>
         <Box fontSize="18px" fontWeight={600} py={4} pt={2}>
-          빠른 스터디 투표
+          직관적인 장소 선택!
         </Box>
         <Flex
           direction="column"
@@ -137,15 +137,15 @@ function HomeStudySection() {
           <Flex justify="space-between">
             <Flex direction="column" pb={3}>
               <Box p={2} fontSize="18px" fontWeight={600}>
-                바쁘다 바빠
+                여기서 스터디 할까?
                 <br />
-                알아서 좀 찾아주라
+                지도를 통해 쉽게 확인하자!
               </Box>
               <Box p={2} pt={1}>
-                스터디 투표가 효율적이에요
+                한 눈에 장소들을 볼 수 있어요
               </Box>
             </Flex>
-            <Flex justify="center" align="center" fontSize="24px" pr={4}>
+            <Flex justify="center" align="center" fontSize="24px" pr={3}>
               <Box position="relative" width="50px" height="50px">
                 <Box
                   position="absolute"
