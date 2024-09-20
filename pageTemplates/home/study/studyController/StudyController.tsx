@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
@@ -10,7 +10,6 @@ import DateCalendarModal from "../../../../modals/aboutHeader/DateCalendarModal"
 import StudyAttendCheckModal from "../../../../modals/study/StudyAttendCheckModal";
 import StudySimpleVoteModal from "../../../../modals/study/StudySimpleVoteModal";
 import { studyDateStatusState } from "../../../../recoils/studyRecoils";
-import { DispatchString } from "../../../../types/hooks/reactTypes";
 import { IParticipation } from "../../../../types/models/studyTypes/studyDetails";
 import { VoteCntProps } from "../../../../types/models/studyTypes/studyRecords";
 import { dayjsToStr } from "../../../../utils/dateTimeUtils";
@@ -32,14 +31,15 @@ interface StudyControllerProps {
   studyVoteData: IParticipation[];
   voteCntArr: VoteCntProps[];
   selectedDate: string;
-  setSelectedDate: DispatchString;
+
+  handleChangeDate: (date: string) => void;
 }
 
 function StudyController({
   studyVoteData,
   voteCntArr,
   selectedDate,
-  setSelectedDate,
+  handleChangeDate,
 }: StudyControllerProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -51,14 +51,11 @@ function StudyController({
   const setStudyDateStatus = useSetRecoilState(studyDateStatusState);
 
   const selectedDateDayjs = dayjs(selectedDate);
-
-  useEffect(() => {
-    setSelectedDate(date);
-  }, [date]);
-
+ 
   const handleSelectDate = (moveDate: string) => {
     if (date === moveDate) return;
     setStudyDateStatus(undefined);
+    handleChangeDate(moveDate);
     newSearchParams.set("date", moveDate);
     router.replace(`/home?${newSearchParams.toString()}`, { scroll: false });
   };

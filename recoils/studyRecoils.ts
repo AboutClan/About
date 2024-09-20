@@ -1,6 +1,5 @@
 import { atom } from "recoil";
 
-import { IPostThumbnailCard } from "../components/molecules/cards/PostThumbnailCard";
 import { IParticipation, IStudy } from "../types/models/studyTypes/studyDetails";
 import { StudyDateStatus } from "../types/models/studyTypes/studyInterActions";
 
@@ -18,4 +17,3 @@ export const myStudyState = atom<IParticipation | null>({
   key: "MyStudy",
   default: undefined,
 });
-

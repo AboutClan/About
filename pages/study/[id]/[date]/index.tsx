@@ -33,27 +33,26 @@ export default function Page() {
   const studyPairArr = useRecoilValue(studyPairArrState);
   const setMyStudy = useSetRecoilState(myStudyState);
   const [studyDateStatus, setStudyDateStatus] = useRecoilState(studyDateStatusState);
+  const findStudy = studyPairArr
+    ?.find((study) => dayjsToStr(dayjs(study.date)) === date)
+    .participations.find((par) => par.place._id === id);
 
   const isPrivateStudy = id === ALL_스터디인증;
-
-  const { data: studyOne } = useStudyVoteOneQuery(date, id, { enabled: !!date && !!id });
-
+  const { data: studyOne } = useStudyVoteOneQuery(date, id, {
+    enabled: !findStudy && !!date && !!id,
+  });
+ 
   useEffect(() => {
     if (!session) return;
     if (studyOne) {
-      setStudy(studyOne);
       const isMyStudy =
         studyOne.status !== "dismissed" &&
-        studyOne.attendences.find((who) => who.user.uid === session.user.uid)?.firstChoice;
+        studyOne.attendences.find((who) => who.user.uid === session.user.uid);
       if (isMyStudy) setMyStudy(studyOne);
       return;
     }
-    if (studyPairArr) {
-      setStudy(
-        studyPairArr
-          .find((study) => dayjsToStr(dayjs(study.date)) === date)
-          .participations.find((par) => par.place._id === id),
-      );
+    if (findStudy) {
+      setStudy(findStudy);
     }
   }, [studyPairArr, studyOne, session]);
 

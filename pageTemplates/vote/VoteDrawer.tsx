@@ -2,6 +2,8 @@ import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 import BottomDrawerLg from "../../components/organisms/drawer/BottomDrawerLg";
+import { useToast } from "../../hooks/custom/CustomToast";
+import { useUserInfoQuery } from "../../hooks/user/queries";
 import { StudyVoteMapActionType } from "../../pages/vote";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { IParticipation, IPlace } from "../../types/models/studyTypes/studyDetails";
@@ -28,15 +30,10 @@ interface VoteDrawerProps {
 }
 
 function VoteDrawer({ studyVoteData, myVote, setMyVote, setActionType }: VoteDrawerProps) {
-  const savedPreferPlace: { place: IPlace; subPlace: IPlace[] } = {
-    place: studyVoteData.find((par) => par.myPrefer === "main")?.place,
-    subPlace: studyVoteData.filter((par) => par.myPrefer === "sub").map((item) => item.place),
-  };
-  const savedPrefer: { place: string; subPlace: string[] } = {
-    place: studyVoteData.find((par) => par.myPrefer === "main")?.place._id,
-    subPlace: studyVoteData.filter((par) => par.myPrefer === "sub").map((item) => item.place._id),
-  };
-
+  const { data: userInfo } = useUserInfoQuery();
+  const preference = userInfo?.studyPreference;
+  const savedPrefer = preference || { place: null, subPlace: [] };
+  const toast = useToast();
   const items = getSortedMainPlace(studyVoteData, savedPrefer);
   const [placeItems, setPlaceItems] = useState<VoteDrawerItemProps[]>(items);
 
@@ -50,19 +47,33 @@ function VoteDrawer({ studyVoteData, myVote, setMyVote, setActionType }: VoteDra
 
     const placeId = myVote.place._id;
     const subPlaceIds = new Set(myVote.subPlace?.map((obj) => obj._id));
+    const sortedItem = placeItems.sort((a, b) => b.voteCnt - a.voteCnt);
 
-    const sortedItem = placeItems.sort((a, b) => (a.voteCnt > b.voteCnt ? -1 : 1));
     const noSubPlaceItems = sortedItem.filter((item) => !subPlaceIds.has(item.place._id));
     const subPlaceItems = sortedItem.filter((item) => subPlaceIds.has(item.place._id));
 
     setPlaceItems(
       [...subPlaceItems, ...noSubPlaceItems].filter((place) => place.place._id !== placeId),
     );
-  }, [myVote?.place, myVote?.subPlace]);
+  }, [myVote?.place, myVote?.subPlace, savedPrefer]);
 
   const mainPlace = items?.find((item) => item.place._id === myVote?.place?._id);
   const bodyWidth = document.body.clientWidth > 400 ? 400 : document.body.clientWidth;
   const bodyHeight = document.body.clientHeight;
+
+  const handleQuickVote = () => {
+    if (!savedPrefer?.place) {
+      toast("warning", "즐겨찾기중인 장소가 없습니다.");
+      return;
+    }
+    setMyVote((old) => ({
+      ...old,
+      place: studyVoteData.find((study) => study.place._id === savedPrefer?.place)?.place,
+      subPlace: studyVoteData
+        .filter((study) => savedPrefer?.subPlace?.includes(study.place._id))
+        ?.map((par) => par.place),
+    }));
+  };
 
   return (
     <BottomDrawerLg
@@ -80,7 +91,7 @@ function VoteDrawer({ studyVoteData, myVote, setMyVote, setActionType }: VoteDra
           setActionType={setActionType}
         />
       ) : (
-        <VoteDrawerQuickVoteItem savedPreferPlace={savedPreferPlace} setMyVote={setMyVote} />
+        <VoteDrawerQuickVoteItem savedPreferPlace={savedPrefer} handleQuickVote={handleQuickVote} />
       )}
 
       <Box overflow="auto" w="100%" flex={1}>
@@ -106,9 +117,7 @@ const getSortedMainPlace = (
   const mainPlace = myFavorites?.place;
   const subPlaceSet = new Set(myFavorites?.subPlace);
 
-  const sortedVoteCntItem = studyData.sort((a, b) =>
-    a.attendences.length > b.attendences.length ? -1 : 1,
-  );
+  const sortedVoteCntItem = studyData.sort((a, b) => a.attendences.length - b.attendences.length);
 
   const sortedArr = !myFavorites
     ? sortedVoteCntItem

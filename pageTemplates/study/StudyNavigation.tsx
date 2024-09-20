@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
@@ -12,10 +12,10 @@ import { IIconLinkTile } from "../../components/atoms/IconLinkTile";
 import Slide from "../../components/layouts/PageSlide";
 import IconTileRowLayout from "../../components/organisms/IconTileRowLayout";
 import { STUDY_CHECK_POP_UP } from "../../constants/keys/localStorage";
-import { STUDY_VOTE } from "../../constants/keys/queryKeys";
 import { PLACE_TO_NAME } from "../../constants/serviceConstants/studyConstants/studyCafeNameConstants";
 import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { MAX_USER_PER_PLACE } from "../../constants/settingValue/study/study";
+import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
@@ -43,7 +43,7 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
   const searchParams = useSearchParams();
   const isPrivate = searchParams.get("isPrivate");
   const isFree = searchParams.get("isFree");
-
+  const resetStudy = useResetStudyQuery();
   const queryClient = useQueryClient();
 
   const location = PLACE_TO_LOCATION[id];
@@ -53,6 +53,7 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
 
   const studyDateStatus = useRecoilValue(studyDateStatusState);
   const myStudy = useRecoilValue(myStudyState);
+
   const votingType = getVotingType(myStudy, id);
 
   const [modalType, setModalType] = useState<StudyModalType>();
@@ -69,7 +70,7 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
   const myPrevVotePoint = getMyPrevVotePoint(pointLog, date);
   const { mutate: handleAbsent } = useStudyParticipationMutation(dayjs(date), "delete", {
     onSuccess() {
-      queryClient.invalidateQueries([STUDY_VOTE, date, location]);
+      resetStudy();
       if (myPrevVotePoint) {
         getPoint({
           message: "스터디 투표 취소",

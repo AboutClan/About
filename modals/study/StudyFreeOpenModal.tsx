@@ -1,12 +1,12 @@
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 
 import TimeSelector from "../../components/molecules/picker/TimeSelector";
-import { STUDY_VOTE } from "../../constants/keys/queryKeys";
 import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
+import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useCompleteToast, useErrorToast, useFailToast } from "../../hooks/custom/CustomToast";
 import {
   useStudyOpenFreeMutation,
@@ -21,7 +21,7 @@ interface IStudyFreeOpenModal extends IModal {}
 function StudyFreeOpenModal({ setIsModal }: IStudyFreeOpenModal) {
   const { data: session } = useSession();
   const { id, date } = useParams<{ id: string; date: string }>() || {};
-
+  const resetStudy = useResetStudyQuery();
   const completeToast = useCompleteToast();
   const failToast = useFailToast();
   const errorToast = useErrorToast();
@@ -39,7 +39,7 @@ function StudyFreeOpenModal({ setIsModal }: IStudyFreeOpenModal) {
 
   const { mutateAsync: openFree, isLoading } = useStudyOpenFreeMutation(date, {
     onSuccess() {
-      queryClient.invalidateQueries([STUDY_VOTE, date, location]);
+      resetStudy();
       completeToast("free", "스터디가 Free로 오픈되었습니다.");
       setIsModal(false);
     },
@@ -50,7 +50,7 @@ function StudyFreeOpenModal({ setIsModal }: IStudyFreeOpenModal) {
     "post",
     {
       onSuccess: () => {
-        queryClient.invalidateQueries([STUDY_VOTE, date, location]);
+        resetStudy();
       },
       onError: errorToast,
     },

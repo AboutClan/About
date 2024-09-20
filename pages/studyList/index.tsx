@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
@@ -22,6 +22,7 @@ export default function StudyList() {
   const { data } = useStudyVoteQuery(date, locationKr, false, false, {
     enabled: !!locationKr && !!date,
   });
+
   const studyVoteOne = data?.[0]?.participations;
 
   const cardArr =

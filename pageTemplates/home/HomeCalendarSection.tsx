@@ -11,7 +11,7 @@ import { COLOR_TABLE } from "../../constants/colorConstants";
 import { EVENT_CONTENT_2024 } from "../../constants/contents/calendarSchedule";
 import { ACCORDION_CONTENT_EVENT } from "../../constants/contentsText/accordionContents";
 
-const SCHEDULE_CATEGORIES: ColorLabelProps[] = [
+export const SCHEDULE_CATEGORIES: ColorLabelProps[] = [
   {
     text: "공식 행사",
     colorText: COLOR_TABLE[0],

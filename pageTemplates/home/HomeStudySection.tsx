@@ -1,8 +1,9 @@
 import { Box, Button, Flex, keyframes } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
-import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
@@ -57,32 +58,29 @@ function HomeStudySection() {
     (study) => dayjsToStr(dayjs(study.date)) === date,
   )?.participations;
 
-  const { data: studyVoteData, isLoading } = useStudyVoteQuery(
-    date as string,
-    locationKr,
-    true,
-    true,
-    {
-      enabled:
-        !findStudyData &&
-        !!date &&
-        !!locationKr &&
-        LOCATION_OPEN.includes(locationKr as ActiveLocation),
-    },
-  );
+  const { data: studyVoteData } = useStudyVoteQuery(date as string, locationKr, true, true, {
+    enabled:
+      !findStudyData &&
+      !!date &&
+      !!locationKr &&
+      LOCATION_OPEN.includes(locationKr as ActiveLocation),
+  });
   useStudyVoteQuery(date, locationKr, false, false, {
     enabled: !!locationKr && !!date,
   });
+
+  useEffect(() => {
+    if (!selectedDate) setSelectedDate(date);
+  }, [date]);
 
   useEffect(() => {
     setStudyPairArr(null);
   }, [locationKr]);
 
   useEffect(() => {
-    if (isLoading) return;
-    if (studyVoteData) setStudyPairArr(studyVoteData);
     if (findStudyData) setStudyVoteArr(findStudyData);
-  }, [findStudyData, studyVoteData, isLoading]);
+    else if (studyVoteData) setStudyPairArr(studyVoteData);
+  }, [findStudyData, studyVoteData]);
 
   const selectedDateDayjs = dayjs(selectedDate);
 
@@ -108,7 +106,6 @@ function HomeStudySection() {
       typeToast("guest");
       return;
     }
-
     newSearchParams.delete("tab");
     router.push(`/vote?${newSearchParams.toString()}`);
   };
@@ -122,6 +119,11 @@ function HomeStudySection() {
     return;
   };
 
+  const handleChangeDate = (date: string) => {
+    setStudyVoteArr(null);
+    setSelectedDate(date);
+  };
+
   return (
     <>
       <Box p={4} pb={5}>
@@ -131,61 +133,65 @@ function HomeStudySection() {
         <Flex
           direction="column"
           p={4}
+          pt={2}
           bgColor="var(--color-mint-light)"
           borderRadius="var(--rounded-lg)"
         >
           <Flex justify="space-between">
-            <Flex direction="column" pb={3}>
-              <Box p={2} fontSize="18px" fontWeight={600}>
-                여기서 스터디 할까?
+            <Flex direction="column" pb={3} pt={2}>
+              <Box p={1} fontSize="17px" fontWeight={600}>
+                어디서 스터디 하지?
                 <br />
-                지도를 통해 쉽게 확인하자!
+                지도로 한 눈에 확인하자!
               </Box>
-              <Box p={2} pt={1}>
-                한 눈에 장소들을 볼 수 있어요
-              </Box>
+              <Box p={1}>스터디 투표가 간편해요</Box>
             </Flex>
-            <Flex justify="center" align="center" fontSize="24px" pr={3}>
-              <Box position="relative" width="50px" height="50px">
+            <Flex
+              justify="center"
+              position="relative"
+              align="center"
+              mb="auto"
+              fontSize="24px"
+              height="100px"
+              width="100px"
+              mr={2}
+            >
+              <Box>
+                <Image
+                  src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%8F%99%EC%95%84%EB%A6%AC+%EC%A7%84%EC%A7%9C+%EC%A7%80%EB%8F%84.png"
+                  width={100}
+                  height={100}
+                  alt="map"
+                />
+              </Box>
+              <Box
+                position="absolute"
+                bottom="32px"
+                right="4px"
+                width="80px"
+                height="30px"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                animation={`${orbit} 3s linear infinite`}
+                color="var(--gray-600)"
+              >
                 <Box
-                  position="absolute"
-                  top="-12px"
-                  right="16px"
-                  width="100%"
-                  height="100%"
                   display="flex"
-                  alignItems="center"
                   justifyContent="center"
-                  color="var(--color-mint)"
-                >
-                  <i className="fa-duotone fa-solid fa-map-location-dot fa-2x"></i>
-                </Box>
-
-                <Box
+                  alignItems="center"
                   position="absolute"
-                  bottom="12px"
-                  right="12px"
-                  display="flex"
-                  width="20px"
-                  height="20px"
-                  alignItems="center"
-                  justifyContent="center"
-                  animation={`${orbit} 3s linear infinite`}
-                  color="var(--gray-600)"
+                  top="0"
+                  right="0"
+                  transform="translate(-50%, -50%)"
+                  animation={`${orbit2} 3s linear infinite`}
                 >
-                  <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    position="absolute"
-                    w="16px"
-                    h="16px"
-                    top="50%"
-                    left="50%"
-                    animation={`${orbit2} 3s linear infinite`}
-                  >
-                    <i className="fa-magnifying-glass fa-solid"></i>
-                  </Box>
+                  <Image
+                    src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%8F%8B%EB%B3%B4%EA%B8%B0%EC%9E%85%EB%8B%88%EB%8B%A4.png"
+                    width={60}
+                    height={60}
+                    alt="돋보기"
+                  />
                 </Box>
               </Box>
             </Flex>
@@ -200,7 +206,7 @@ function HomeStudySection() {
       <Box px="16px">
         <StudyController
           selectedDate={selectedDate}
-          setSelectedDate={setSelectedDate}
+          handleChangeDate={handleChangeDate}
           studyVoteData={studyVoteArr}
           voteCntArr={voteCntArr}
         />

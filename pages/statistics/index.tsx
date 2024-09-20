@@ -114,7 +114,6 @@ function Ranking() {
       <Slide>
         <Layout>
           <RankingOverview myRankInfo={usersRanking?.mine} />
-
           <StatisticsTabNav setTabValue={setTabValue} />
           {tabValue === "전체 랭킹" ? (
             <>

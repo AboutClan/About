@@ -27,7 +27,13 @@ function NoticeChat({ chats }: NoticeChatProps) {
           >
             <Flex p="16px" justify="space-between" align="center" borderBottom="var(--border)">
               <Flex flex={1}>
-                <Avatar size="md" uid={user.uid} avatar={user.avatar} image={user.profileImage} />
+                <Avatar
+                  size="md"
+                  uid={user.uid}
+                  avatar={user.avatar}
+                  image={user.profileImage}
+                  isLink={false}
+                />
                 <Flex ml="12px" direction="column">
                   <Box fontSize="13px" fontWeight={600}>
                     {user.name}

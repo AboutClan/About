@@ -1,13 +1,14 @@
-import { Box, Flex } from "@chakra-ui/react";
-import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
-import Link from "next/link";
-import { useEffect } from "react";
-import { useSetRecoilState } from "recoil";
 import "swiper/css";
 import "swiper/css/navigation";
 
+import { Box, Flex } from "@chakra-ui/react";
+import dayjs from "dayjs";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import { useSetRecoilState } from "recoil";
 import { Swiper, SwiperSlide } from "swiper/react";
+
 import {
   CalendarIcon,
   CampfireIcon,
@@ -53,7 +54,7 @@ function HomeRecommendationSection() {
       title: "멤버",
       url: `/member/${session?.user.location}`,
     },
-    { icon: <CalendarIcon />, title: "캘린더", url: "/eventCalendar" },
+    { icon: <CalendarIcon />, title: "캘린더", url: "/calendar" },
     { icon: <GroupIcon />, title: "디스코드", url: "https://discord.gg/dDu2kg2uez" },
   ];
   return (

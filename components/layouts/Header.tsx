@@ -20,7 +20,6 @@ export default function Header({
   url,
   rightPadding,
   func,
-
   children,
 }: IHeader) {
   function HeaderLayout() {

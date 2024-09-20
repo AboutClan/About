@@ -1,7 +1,7 @@
 import { ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
@@ -38,10 +38,12 @@ function HomeStudyCol({ studyVoteData, isLoading, date, isShort }: HomeStudyColP
   const { data: session } = useSession();
 
   const searchParams = useSearchParams();
-  const newSearchParams = new URLSearchParams(searchParams);
 
-  const locationEn = searchParams.get("location") as LocationEn;
+  const locationEn =
+    (searchParams.get("location") as LocationEn) ||
+    convertLocationLangTo(session?.user.location, "en");
   const location = convertLocationLangTo(locationEn, "kr");
+
   const myUid = session?.user.uid;
 
   const studyDateStatus = useRecoilValue(studyDateStatusState);
@@ -119,7 +121,7 @@ function HomeStudyCol({ studyVoteData, isLoading, date, isShort }: HomeStudyColP
         {!isLoading && studyCardColData ? (
           <CardColumnLayout
             cardDataArr={studyCardColData}
-            url={`/studyList/?${newSearchParams.toString()}`}
+            url={`/studyList?tab=study&location=${locationEn}&date=${date}`}
             isShort={isShort}
           />
         ) : (

@@ -14,14 +14,14 @@ interface IAvatarGroupsOverwrap {
   maxCnt?: number;
 }
 
-const BASIC_MAX_CNT = 8;
+
 
 export default function AvatarGroupsOverwrap({
   userAvatarArr,
   userLength,
   maxCnt,
 }: IAvatarGroupsOverwrap) {
-  console.log(userAvatarArr.length, userLength, maxCnt);
+
   return (
     <Participants>
       {userAvatarArr.map((att, idx) => {
