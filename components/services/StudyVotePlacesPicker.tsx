@@ -19,9 +19,10 @@ function StudyVotePlacesPicker({ setVotePlaces }: IStudyVotePlacesPicker) {
 
   const location = PLACE_TO_LOCATION[id];
 
-  const { data: studyVote } = useStudyVoteQuery(date, location, {
+  const { data: studyVoteArr } = useStudyVoteQuery(date, location, false, false, {
     enabled: !!location && !!date,
   });
+  const studyVote = studyVoteArr?.[0]?.participations;
 
   const [filteredStudy, setFilteredStudy] = useState<IParticipation[]>();
 

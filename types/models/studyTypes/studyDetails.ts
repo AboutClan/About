@@ -14,7 +14,6 @@ export interface IParticipation {
   attendences: IAttendance[];
   absences: IAbsence[];
   startTime?: Date;
-
   status: StudyStatus;
 }
 
@@ -50,6 +49,7 @@ export interface IPlace extends PlaceRegisterProps {
   _id: string;
   prefCnt: number;
   registerDate: string;
+  myPrefer: boolean;
 }
 
 export type StudyStatus = "pending" | "open" | "dismissed" | "free";

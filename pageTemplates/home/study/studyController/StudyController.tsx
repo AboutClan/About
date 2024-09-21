@@ -1,22 +1,18 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import ColorLabelRow from "../../../../components/molecules/rows/ColorLabelRow";
 import WeekSlideCalendar from "../../../../components/molecules/WeekSlideCalendar";
-import { getStudyVoteCnt } from "../../../../libs/study/getStudyVoteCnt";
 import DateCalendarModal from "../../../../modals/aboutHeader/DateCalendarModal";
 import StudyAttendCheckModal from "../../../../modals/study/StudyAttendCheckModal";
 import StudySimpleVoteModal from "../../../../modals/study/StudySimpleVoteModal";
 import { studyDateStatusState } from "../../../../recoils/studyRecoils";
-import { DispatchString } from "../../../../types/hooks/reactTypes";
 import { IParticipation } from "../../../../types/models/studyTypes/studyDetails";
 import { VoteCntProps } from "../../../../types/models/studyTypes/studyRecords";
 import { dayjsToStr } from "../../../../utils/dateTimeUtils";
-import StudyControllerVoteButton from "./StudyControllerVoteButton";
 
 export type VoteType =
   | "vote"
@@ -35,14 +31,15 @@ interface StudyControllerProps {
   studyVoteData: IParticipation[];
   voteCntArr: VoteCntProps[];
   selectedDate: string;
-  setSelectedDate: DispatchString;
+
+  handleChangeDate: (date: string) => void;
 }
 
 function StudyController({
   studyVoteData,
   voteCntArr,
   selectedDate,
-  setSelectedDate,
+  handleChangeDate,
 }: StudyControllerProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -54,14 +51,11 @@ function StudyController({
   const setStudyDateStatus = useSetRecoilState(studyDateStatusState);
 
   const selectedDateDayjs = dayjs(selectedDate);
-
-  useEffect(() => {
-    setSelectedDate(date);
-  }, [date]);
-
+ 
   const handleSelectDate = (moveDate: string) => {
     if (date === moveDate) return;
     setStudyDateStatus(undefined);
+    handleChangeDate(moveDate);
     newSearchParams.set("date", moveDate);
     router.replace(`/home?${newSearchParams.toString()}`, { scroll: false });
   };
@@ -70,7 +64,7 @@ function StudyController({
     <>
       <>
         <OuterContainer>
-          <Flex justify="space-between" align="center" mb="16px" mr="12px">
+          {/* <Flex justify="space-between" align="center" mb="16px" mr="12px">
             <Box fontSize="16px" fontWeight={600}>
               날짜 선택
             </Box>
@@ -81,12 +75,12 @@ function StudyController({
                 { text: "오픈 예정", color: "gray" },
               ]}
             />
-          </Flex>
-          <Box minH="138px">
+          </Flex> */}
+          <Box>
             {selectedDate && (
               <>
-                <Flex align="center" borderBottom="var(--border)">
-                  <Flex pr="4px" flex={1} minW="48px" justify="center">
+                <Flex align="center">
+                  <Flex pr="4px" flex={1} minW="48px" justify="center" pb={3}>
                     <MonthButton
                       onClick={() => setModalType("monthCalendar")}
                       className="about_calendar_month"
@@ -95,7 +89,7 @@ function StudyController({
                       <i className="fa-regular fa-chevron-down fa-xs" />
                     </MonthButton>
                   </Flex>
-                  <Flex flex={0.6} h="32px" justify="center">
+                  <Flex flex={0.6} h="32px" justify="center" pb={3}>
                     <Box h="100%" bg="var(--gray-300)" w="1px" />
                   </Flex>
                   <WeekSlideCalendar
@@ -104,10 +98,10 @@ function StudyController({
                     func={handleSelectDate}
                   />
                 </Flex>
-                <StudyControllerVoteButton
+                {/* <StudyControllerVoteButton
                   memberCnt={getStudyVoteCnt(studyVoteData)}
                   setModalType={setModalType}
-                />
+                /> */}
               </>
             )}
           </Box>
@@ -128,6 +122,7 @@ function StudyController({
 
 const MonthButton = styled.button`
   width: 44px;
+
   text-align: start;
   padding: 8px 0px;
   font-size: 16px;
@@ -202,7 +197,10 @@ const OuterContainer = styled.div`
   border: var(--border);
   margin-top: 16px;
   padding: 16px;
+
   padding-right: 8px;
+  padding-top: 12px;
+  padding-bottom: 0px;
   position: relative;
 `;
 

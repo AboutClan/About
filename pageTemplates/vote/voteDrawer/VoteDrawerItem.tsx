@@ -1,7 +1,8 @@
 import { Box, Flex } from "@chakra-ui/react";
+import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
-import { STUDY_PREFERENCE_LOCAL } from "../../../constants/keys/queryKeys";
+import { USER_INFO } from "../../../constants/keys/queryKeys";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useStudyPreferenceMutation } from "../../../hooks/study/mutations";
 import { DispatchType } from "../../../types/hooks/reactTypes";
@@ -25,10 +26,12 @@ function VoteDrawerItem({
   setMyVote,
   setPlaceItems,
 }: VoteDrawerItemProps) {
+  const queryClient = useQueryClient();
   const toast = useToast();
 
-  const { mutate: setStudyPreference } = useStudyPreferenceMutation({
+  const { mutate: patchStudyPreference } = useStudyPreferenceMutation("patch", {
     onSuccess() {
+      queryClient.refetchQueries([USER_INFO]);
       toast("success", "변경되었습니다.");
     },
   });
@@ -63,7 +66,6 @@ function VoteDrawerItem({
     event.stopPropagation();
 
     const preferMain = savedPrefer?.place;
-    const preferSub = savedPrefer?.subPlace || [];
 
     setPlaceItems((old) =>
       old.map((item) =>
@@ -72,33 +74,10 @@ function VoteDrawerItem({
           : item,
       ),
     );
-    const newPrefer = { place: preferMain, subPlace: preferSub };
 
-    if (heartType === "first") {
-      newPrefer.place = null;
-    }
-
-    if (heartType === "second") {
-      if (Array.isArray(preferSub)) {
-        newPrefer.subPlace = preferSub.filter((item) => item !== placeId);
-      }
-    }
-    if (!heartType) {
-      newPrefer.place = savedPrefer?.place || placeId;
-      if (savedPrefer?.place) {
-        if (Array.isArray(savedPrefer.subPlace)) {
-          newPrefer.subPlace = [placeId, ...savedPrefer.subPlace];
-        } else {
-          newPrefer.subPlace = [];
-        }
-      } else {
-        newPrefer.subPlace = savedPrefer?.subPlace || [];
-      }
-    }
-
-    localStorage.setItem(STUDY_PREFERENCE_LOCAL, JSON.stringify(newPrefer as IStudyVotePlaces));
-
-    setStudyPreference(newPrefer);
+    const preferenceType =
+      heartType === "first" ? "main" : heartType === "second" ? "sub" : preferMain ? "sub" : "main";
+    patchStudyPreference({ id: item?.place._id, type: preferenceType });
   };
 
   return (

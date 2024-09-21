@@ -66,10 +66,7 @@ function HomeHeader() {
         icon: <i className="fa-light fa-calendar-star" />,
         func: isGuest ? () => typeToast("guest") : () => setModalType("pointGuide"),
       },
-      {
-        icon: <i className="fa-light fa-circle-book-open" />,
-        func: () => setModalType("rule"),
-      },
+
       {
         icon: (
           <>

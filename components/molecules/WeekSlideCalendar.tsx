@@ -35,7 +35,7 @@ function WeekSlideCalendar({ voteCntArr, selectedDate, func }: CalendarProps) {
         ref={containerRef}
         className="about_calendar"
         overflow="auto"
-        pb="12px"
+        pb={2}
         w="240px"
         css={css`
           @media (max-width: 400px) {

@@ -6,13 +6,14 @@ import HomeCalendarSection from "../../pageTemplates/home/HomeCalendarSection";
 import HomeGatherSection from "../../pageTemplates/home/HomeGatherSection";
 import HomeHeader from "../../pageTemplates/home/homeHeader/HomeHeader";
 import HomeInitialSetting from "../../pageTemplates/home/HomeInitialSetting";
-import HomeRankingSection from "../../pageTemplates/home/HomeRankingSection";
+import HomeRecommendationSection from "../../pageTemplates/home/HomeRecommendationSection";
 import HomeStudySection from "../../pageTemplates/home/HomeStudySection";
 import HomeCategoryNav, { HomeTab } from "../../pageTemplates/home/HomeTab";
 import EventBanner from "../../pageTemplates/home/study/EventBanner";
 
 function Home() {
   const [tab, setTab] = useState<HomeTab>();
+
   return (
     <>
       <HomeInitialSetting />
@@ -20,7 +21,7 @@ function Home() {
       <Slide>
         <HomeCategoryNav tab={tab} setTab={setTab} />
         <>
-          {tab !== "추천" && <EventBanner tab={tab} />}
+          {tab !== "스터디" && <EventBanner tab={tab} />}
           {tab === "스터디" ? (
             <HomeStudySection />
           ) : tab === "번개" ? (
@@ -28,7 +29,7 @@ function Home() {
           ) : tab === "캘린더" ? (
             <HomeCalendarSection />
           ) : tab === "추천" ? (
-            <HomeRankingSection />
+            <HomeRecommendationSection />
           ) : null}
           <Box w="100%" h="40px" />
         </>

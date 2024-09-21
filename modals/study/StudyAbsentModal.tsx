@@ -3,13 +3,11 @@ import dayjs from "dayjs";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
-import { STUDY_VOTE } from "../../constants/keys/queryKeys";
 import { POINT_SYSTEM_DEPOSIT } from "../../constants/serviceConstants/pointSystemConstants";
-import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
+import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyAbsentMutation } from "../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
@@ -22,9 +20,10 @@ import { IFooterOptions, ModalLayout } from "../Modals";
 function StudyAbsentModal({ setIsModal }: IModal) {
   const toast = useToast();
   const typeToast = useTypeToast();
+  const resetStudy = useResetStudyQuery();
   const { data: session } = useSession();
-  const { id, date } = useParams<{ id: string; date: string }>();
-  const location = PLACE_TO_LOCATION[id];
+  const { date } = useParams<{ id: string; date: string }>();
+
   const myStudy = useRecoilValue(myStudyState);
 
   const [value, setValue] = useState<string>("");
@@ -36,8 +35,6 @@ function StudyAbsentModal({ setIsModal }: IModal) {
   const { mutate: sendRequest } = useUserRequestMutation();
   const { mutate: getDeposit } = usePointSystemMutation("deposit");
 
-  const queryClient = useQueryClient();
-
   const { mutate: absentStudy } = useStudyAbsentMutation(dayjs(date), {
     onSuccess: () => {
       typeToast("success");
@@ -46,7 +43,7 @@ function StudyAbsentModal({ setIsModal }: IModal) {
       if (dayjs() > startTime) fee = POINT_SYSTEM_DEPOSIT.STUDY_ABSENT_AFTER;
       else fee = POINT_SYSTEM_DEPOSIT.STUDY_ABSENT_BEFORE;
       getDeposit(fee);
-      queryClient.invalidateQueries([STUDY_VOTE, date, location]);
+      resetStudy();
       sendRequest({
         writer: session.user.name,
         title: session.user.uid + `D${fee.value}`,
