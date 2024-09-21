@@ -54,6 +54,7 @@ export default function UserOverview({ userInfo }: UserOverviewProps) {
               image={userInfo.profileImage}
               uid={userInfo.uid}
               size="xl"
+              isLink={false}
             />
             <IconWrapper onClick={() => setIsProfileModal(true)}>
               <CameraIcon />

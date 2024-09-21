@@ -33,13 +33,17 @@ export default function Page() {
 
   const setMyStudy = useSetRecoilState(myStudyState);
 
-  const { data: studyAll } = useStudyVoteQuery(
+  const { data: studyData } = useStudyVoteQuery(
     date,
     convertLocationLangTo(location as ActiveLocation, "kr"),
+    false,
+    false,
     {
       enabled: !!location || !!date,
     },
   );
+
+  const studyAll = studyData?.[0]?.participations;
 
   const [isHidden, setIsHidden] = useState(true);
 

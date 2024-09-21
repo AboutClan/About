@@ -1,9 +1,8 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
-import { USER_INFO } from "../../../constants/keys/queryKeys";
 
+import { USER_INFO } from "../../../constants/keys/queryKeys";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useStudyPreferenceMutation } from "../../../hooks/study/mutations";
 import { DispatchType } from "../../../types/hooks/reactTypes";
@@ -30,21 +29,12 @@ function VoteDrawerItem({
   const queryClient = useQueryClient();
   const toast = useToast();
 
-  const [heartType, setHeartType] = useState<"main" | "sub" | null>();
-
   const { mutate: patchStudyPreference } = useStudyPreferenceMutation("patch", {
     onSuccess() {
+      queryClient.refetchQueries([USER_INFO]);
       toast("success", "변경되었습니다.");
     },
   });
-
-  useEffect(() => {
-    if (!savedPrefer) return;
-    const { place, subPlace } = savedPrefer || { place: null, subPlace: [] };
-
-    if (place === item?.place._id) setHeartType("main");
-    else if (subPlace?.includes(item?.place._id)) setHeartType("sub");
-  }, [savedPrefer, item?.place._id]);
 
   //장소 선택
   const onClickItem = (item: ItemProps) => {
@@ -74,9 +64,8 @@ function VoteDrawerItem({
     heartType: "first" | "second" | null,
   ) => {
     event.stopPropagation();
-    console.log(145, heartType);
+
     const preferMain = savedPrefer?.place;
-    const preferSub = savedPrefer?.subPlace || [];
 
     setPlaceItems((old) =>
       old.map((item) =>
@@ -86,10 +75,9 @@ function VoteDrawerItem({
       ),
     );
 
-    const preferenceType = heartType ? null : savedPrefer?.place ? "sub" : "main";
+    const preferenceType =
+      heartType === "first" ? "main" : heartType === "second" ? "sub" : preferMain ? "sub" : "main";
     patchStudyPreference({ id: item?.place._id, type: preferenceType });
-    setHeartType(preferenceType);
-    queryClient.invalidateQueries([USER_INFO]);
   };
 
   return (

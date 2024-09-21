@@ -1,9 +1,8 @@
 import { Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useParams, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
@@ -13,7 +12,6 @@ import Slide from "../../components/layouts/PageSlide";
 import IconTileRowLayout from "../../components/organisms/IconTileRowLayout";
 import { STUDY_CHECK_POP_UP } from "../../constants/keys/localStorage";
 import { PLACE_TO_NAME } from "../../constants/serviceConstants/studyConstants/studyCafeNameConstants";
-import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { MAX_USER_PER_PLACE } from "../../constants/settingValue/study/study";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
@@ -44,9 +42,7 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
   const isPrivate = searchParams.get("isPrivate");
   const isFree = searchParams.get("isFree");
   const resetStudy = useResetStudyQuery();
-  const queryClient = useQueryClient();
 
-  const location = PLACE_TO_LOCATION[id];
   const isGuest = session?.user.name === "guest";
 
   const uid = session?.user.uid;

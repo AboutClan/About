@@ -1,12 +1,9 @@
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
 
 import { PLACE_TO_NAME } from "../../../constants/serviceConstants/studyConstants/studyCafeNameConstants";
-import { PLACE_TO_LOCATION } from "../../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../../hooks/study/mutations";
@@ -30,9 +27,7 @@ dayjs.locale("ko");
 interface IStudyVoteDrawer extends IModal {}
 
 export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
-  const { data: session } = useSession();
   const { date, id } = useParams<{ date: string; id: string }>();
-  const location = PLACE_TO_LOCATION[id];
 
   const resetStudy = useResetStudyQuery();
 
@@ -54,8 +49,6 @@ export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
   useEffect(() => {
     setMyVote((old) => ({ ...old, ...voteTime, ...votePlaces }));
   }, [voteTime, votePlaces]);
-
-  const queryClient = useQueryClient();
 
   const { data: pointLog } = usePointSystemLogQuery("point", true, {
     enabled: !!myStudy,

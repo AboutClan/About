@@ -36,7 +36,7 @@ function VoteDrawer({ studyVoteData, myVote, setMyVote, setActionType }: VoteDra
   const toast = useToast();
   const items = getSortedMainPlace(studyVoteData, savedPrefer);
   const [placeItems, setPlaceItems] = useState<VoteDrawerItemProps[]>(items);
-
+  console.log(52, savedPrefer);
   //선택지 항목 필터 및 정렬
   useEffect(() => {
     if (!myVote?.place) {
@@ -63,7 +63,9 @@ function VoteDrawer({ studyVoteData, myVote, setMyVote, setActionType }: VoteDra
 
   const handleQuickVote = () => {
     if (!savedPrefer?.place) {
-      toast("warning", "즐겨찾기중인 장소가 없습니다.");
+      if (savedPrefer?.subPlace?.length) {
+        toast("warning", "1지망 장소가 등록되어 있지 않습니다.");
+      } else toast("warning", "즐겨찾기중인 장소가 없습니다.");
       return;
     }
     setMyVote((old) => ({

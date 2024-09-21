@@ -34,9 +34,10 @@ function StudySubVoteModal({ subPlaces, setMyVote, setTimeModal, setIsModal }: I
     setIsModal(false);
   };
 
-  const { data: studyVoteData } = useStudyVoteQuery(date, location, {
+  const { data: studyVoteArr } = useStudyVoteQuery(date, location, false, false, {
     enabled: !!location && !!date,
   });
+  const studyVoteData = studyVoteArr?.[0]?.participations;
 
   useEffect(() => {
     setMyVote((old) => ({ ...old, subPlace: choices }));

@@ -1,14 +1,12 @@
 import { Textarea } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 import { POINT_SYSTEM_DEPOSIT } from "../../constants/serviceConstants/pointSystemConstants";
-import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyAbsentMutation } from "../../hooks/study/mutations";
@@ -24,8 +22,8 @@ function StudyAbsentModal({ setIsModal }: IModal) {
   const typeToast = useTypeToast();
   const resetStudy = useResetStudyQuery();
   const { data: session } = useSession();
-  const { id, date } = useParams<{ id: string; date: string }>();
-  const location = PLACE_TO_LOCATION[id];
+  const { date } = useParams<{ id: string; date: string }>();
+
   const myStudy = useRecoilValue(myStudyState);
 
   const [value, setValue] = useState<string>("");
@@ -36,8 +34,6 @@ function StudyAbsentModal({ setIsModal }: IModal) {
 
   const { mutate: sendRequest } = useUserRequestMutation();
   const { mutate: getDeposit } = usePointSystemMutation("deposit");
-
-  const queryClient = useQueryClient();
 
   const { mutate: absentStudy } = useStudyAbsentMutation(dayjs(date), {
     onSuccess: () => {

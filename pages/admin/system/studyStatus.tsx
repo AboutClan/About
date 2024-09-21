@@ -26,15 +26,14 @@ import styled from "styled-components";
 import Header from "../../../components/layouts/Header";
 import { useStudyVoteQuery } from "../../../hooks/study/queries";
 import { StudyStatus } from "../../../types/models/studyTypes/studyDetails";
-import { IUser } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 
 const LOCATION = ["SUWAN", "YANG"];
 
 function AdminStudyStatus() {
   const [date, setDate] = useState(dayjs());
-  const { data: SUWAN } = useStudyVoteQuery(dayjsToStr(date), "수원");
-  const { data: YANG } = useStudyVoteQuery(dayjsToStr(date), "양천");
+  const { data: SUWAN } = useStudyVoteQuery(dayjsToStr(date), "수원", false, false);
+  const { data: YANG } = useStudyVoteQuery(dayjsToStr(date), "양천", false, false);
 
   const handleStatus = (type: StudyStatus) => {};
 
@@ -59,11 +58,11 @@ function AdminStudyStatus() {
               <SectionHeader>{place}</SectionHeader>
               <Accordion defaultIndex={[0]} allowMultiple>
                 {(place === "SUWAN" ? SUWAN : YANG).map((place) => (
-                  <AccordionItem key={place.place._id}>
+                  <AccordionItem key={""}>
                     <h2>
                       <AccordionButton background="gray.200" borderBottom="1px solid lightGray">
                         <Box as="span" flex="1" textAlign="left" fontWeight="600">
-                          {place.place.brand} / {place.attendences.length}명 /{place.status}
+                          {/* {place.place.brand} / {place.attendences.length}명 /{place.status} */}
                         </Box>
                         <AccordionIcon />
                       </AccordionButton>
@@ -71,7 +70,7 @@ function AdminStudyStatus() {
                     <AccordionPanel pb={4}>
                       <SpaceItem>
                         <div>
-                          <span style={{ fontSize: "15px" }}>상태: {place.status}</span>
+                          {/* <span style={{ fontSize: "15px" }}>상태: {place.status}</span> */}
                           <Popover>
                             <PopoverTrigger>
                               <Button>Trigger</Button>
@@ -102,15 +101,15 @@ function AdminStudyStatus() {
                           </Popover>
                         </div>
                         <Participant>
-                          {place?.attendences.map((who, idx) => (
+                          {/* {place?.attendences.map((who, idx) => (
                             <Att key={idx}>
                               <span> {(who.user as IUser).name}</span>
-                              {/* <Delete onClick={() => handleDeleteUser(who)}>
+                              <Delete onClick={() => handleDeleteUser(who)}>
                                 <i className="fa- fa-deleteleft" />
-                              </Delete> */}
+                              </Delete> 
                               temp
                             </Att>
-                          ))}
+                          ))} */}
                         </Participant>
                       </SpaceItem>
                     </AccordionPanel>

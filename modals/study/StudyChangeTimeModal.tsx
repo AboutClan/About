@@ -1,13 +1,11 @@
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
 
 import RulletPickerTwo from "../../components/molecules/picker/RulletPickerTwo";
 import { POINT_SYSTEM_DEPOSIT } from "../../constants/serviceConstants/pointSystemConstants";
-import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { STUDY_VOTE_HOUR_ARR } from "../../constants/serviceConstants/studyConstants/studyTimeConstant";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
@@ -38,8 +36,7 @@ function StudyChangeTimeModal({ setIsModal }: IStudyChangeTimeModal) {
   const typeToast = useTypeToast();
   const resetStudy = useResetStudyQuery();
   const { data: session } = useSession();
-  const { id, date } = useParams<{ id: string; date: string }>();
-  const location = PLACE_TO_LOCATION[id];
+  const { date } = useParams<{ id: string; date: string }>();
 
   const myStudy = useRecoilValue(myStudyState);
   const isFree = myStudy.status === "free";
@@ -71,8 +68,6 @@ function StudyChangeTimeModal({ setIsModal }: IStudyChangeTimeModal) {
     (item) =>
       item?.meta?.sub === date && item.message === POINT_SYSTEM_DEPOSIT.STUDY_TIME_CHANGE.message,
   );
-
-  const queryClient = useQueryClient();
 
   const { mutate: getDeposit } = usePointSystemMutation("deposit");
   const { mutate: patchAttend } = useStudyParticipationMutation(dayjs(date), "patch", {

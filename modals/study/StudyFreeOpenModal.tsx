@@ -1,11 +1,8 @@
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useState } from "react";
-import { useQueryClient } from "react-query";
 
 import TimeSelector from "../../components/molecules/picker/TimeSelector";
-import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useCompleteToast, useErrorToast, useFailToast } from "../../hooks/custom/CustomToast";
 import {
@@ -19,18 +16,13 @@ import { IFooterOptions, ModalLayout } from "../Modals";
 interface IStudyFreeOpenModal extends IModal {}
 
 function StudyFreeOpenModal({ setIsModal }: IStudyFreeOpenModal) {
-  const { data: session } = useSession();
   const { id, date } = useParams<{ id: string; date: string }>() || {};
   const resetStudy = useResetStudyQuery();
   const completeToast = useCompleteToast();
   const failToast = useFailToast();
   const errorToast = useErrorToast();
 
-  const queryClient = useQueryClient();
-
   const placeId = id;
-
-  const location = PLACE_TO_LOCATION[id] || session?.user.location;
 
   const [time, setTime] = useState<ITimeStartToEnd>({
     start: { hours: 14, minutes: 0 },
