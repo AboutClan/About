@@ -30,18 +30,20 @@ interface VoteDrawerProps {
 }
 
 function VoteDrawer({ studyVoteData, myVote, setMyVote, setActionType }: VoteDrawerProps) {
-  const { data: userInfo } = useUserInfoQuery();
+  const { data: userInfo, isLoading } = useUserInfoQuery();
   const preference = userInfo?.studyPreference;
   const savedPrefer = preference || { place: null, subPlace: [] };
   const toast = useToast();
   const items = getSortedMainPlace(studyVoteData, savedPrefer);
   const [placeItems, setPlaceItems] = useState<VoteDrawerItemProps[]>(items);
-  console.log(52, savedPrefer);
+
   //선택지 항목 필터 및 정렬
   useEffect(() => {
     if (!myVote?.place) {
       const items = getSortedMainPlace(studyVoteData, savedPrefer);
-      setPlaceItems(items);
+      if (JSON.stringify(items) !== JSON.stringify(placeItems)) {
+        setPlaceItems(items);
+      }
       return;
     }
 
@@ -78,37 +80,43 @@ function VoteDrawer({ studyVoteData, myVote, setMyVote, setActionType }: VoteDra
   };
 
   return (
-    <BottomDrawerLg
-      height={bodyHeight - bodyWidth * 0.8 - 74}
-      setIsModal={() => {}}
-      isxpadding={false}
-      isOverlay={false}
-    >
-      {mainPlace ? (
-        <VoteDrawerMainItem
-          voteCnt={mainPlace?.voteCnt + 5}
-          favoritesCnt={mainPlace?.favoritesCnt + 14}
-          myVotePlace={myVote.place}
-          setMyVote={setMyVote}
-          setActionType={setActionType}
-        />
-      ) : (
-        <VoteDrawerQuickVoteItem savedPreferPlace={savedPrefer} handleQuickVote={handleQuickVote} />
-      )}
-
-      <Box overflow="auto" w="100%" flex={1}>
-        {placeItems?.map((item, idx) => (
-          <VoteDrawerItem
-            item={item}
-            savedPrefer={savedPrefer}
-            myVote={myVote}
+    <>
+      <BottomDrawerLg
+        height={bodyHeight - bodyWidth * 0.8 - 74}
+        setIsModal={() => {}}
+        isxpadding={false}
+        isOverlay={false}
+      >
+        {mainPlace ? (
+          <VoteDrawerMainItem
+            voteCnt={mainPlace?.voteCnt + 5}
+            favoritesCnt={mainPlace?.favoritesCnt + 14}
+            myVotePlace={myVote.place}
             setMyVote={setMyVote}
-            setPlaceItems={setPlaceItems}
-            key={idx}
+            setActionType={setActionType}
           />
-        ))}
-      </Box>
-    </BottomDrawerLg>
+        ) : (
+          <VoteDrawerQuickVoteItem
+            savedPreferPlace={savedPrefer}
+            handleQuickVote={handleQuickVote}
+          />
+        )}
+
+        <Box overflow="auto" w="100%" flex={1} id=".vote_favorite">
+          {placeItems?.map((item, idx) => (
+            <VoteDrawerItem
+              item={item}
+              savedPrefer={savedPrefer}
+              myVote={myVote}
+              setMyVote={setMyVote}
+              setPlaceItems={setPlaceItems}
+              userLoading={isLoading}
+              key={idx}
+            />
+          ))}
+        </Box>
+      </BottomDrawerLg>{" "}
+    </>
   );
 }
 

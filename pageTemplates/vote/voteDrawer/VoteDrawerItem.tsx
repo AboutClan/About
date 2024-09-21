@@ -17,6 +17,7 @@ interface VoteDrawerItemProps {
   myVote: IStudyVoteWithPlace;
   setMyVote: DispatchType<IStudyVoteWithPlace>;
   setPlaceItems: DispatchType<ItemProps[]>;
+  userLoading: boolean;
 }
 
 function VoteDrawerItem({
@@ -25,11 +26,12 @@ function VoteDrawerItem({
   myVote,
   setMyVote,
   setPlaceItems,
+  userLoading,
 }: VoteDrawerItemProps) {
   const queryClient = useQueryClient();
   const toast = useToast();
 
-  const { mutate: patchStudyPreference } = useStudyPreferenceMutation("patch", {
+  const { mutate: patchStudyPreference, isLoading } = useStudyPreferenceMutation("patch", {
     onSuccess() {
       queryClient.refetchQueries([USER_INFO]);
       toast("success", "변경되었습니다.");
@@ -56,7 +58,6 @@ function VoteDrawerItem({
       });
     }
   };
-
   //즐겨찾기에 추가 및 등록
   const onClickHeart = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -64,6 +65,9 @@ function VoteDrawerItem({
     heartType: "first" | "second" | null,
   ) => {
     event.stopPropagation();
+    console.log(53, userLoading);
+
+    if (isLoading || userLoading) return;
 
     const preferMain = savedPrefer?.place;
 

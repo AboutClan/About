@@ -87,8 +87,6 @@ export default function StudyVoteMap() {
       };
   };
 
-
-
   return (
     <>
       <Header title="스터디 투표" />
