@@ -16,9 +16,11 @@ import {
   MemberIcon,
   StoreIcon,
 } from "../../components/atoms/Icons/AboutCategoryIcons";
+import { USER_LOCATION } from "../../constants/keys/localStorage";
 import { VOTER_DATE_END } from "../../constants/settingValue/study/study";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { studyPairArrState } from "../../recoils/studyRecoils";
+import { ActiveLocation } from "../../types/services/locationTypes";
 import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 import HomeGatherCol from "./HomeGatherCol";
 import HomeStudyCol from "./study/HomeStudyCol";
@@ -34,16 +36,22 @@ function HomeRecommendationSection() {
   const todayDayjs = dayjs().hour() < VOTER_DATE_END ? dayjs() : dayjs().add(1, "day");
   const setStudyPairArr = useSetRecoilState(studyPairArrState);
 
+  const userLocation = localStorage.getItem(USER_LOCATION) as ActiveLocation;
+
   const { data: studyVoteData, isLoading } = useStudyVoteQuery(
     dayjsToStr(todayDayjs),
-    session?.user.location,
+    userLocation || session?.user.location,
     true,
     true,
-    { enabled: !!session },
+    {
+      enabled: !!userLocation || !!session?.user.location,
+    },
   );
 
   useEffect(() => {
-    if (studyVoteData) setStudyPairArr(studyVoteData);
+    if (studyVoteData) {
+      setStudyPairArr(studyVoteData);
+    }
   }, [studyVoteData]);
 
   const HOME_RECOMMENDATION_ICON_ARR: HomeRecommendationItemProps[] = [

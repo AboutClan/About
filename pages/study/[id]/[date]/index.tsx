@@ -41,19 +41,16 @@ export default function Page() {
   const { data: studyOne } = useStudyVoteOneQuery(date, id, {
     enabled: !findStudy && !!date && !!id,
   });
- 
+
   useEffect(() => {
     if (!session) return;
-    if (studyOne) {
-      const isMyStudy =
-        studyOne.status !== "dismissed" &&
-        studyOne.attendences.find((who) => who.user.uid === session.user.uid);
-      if (isMyStudy) setMyStudy(studyOne);
-      return;
-    }
-    if (findStudy) {
-      setStudy(findStudy);
-    }
+    const tempStudy = studyOne || findStudy;
+    if (!tempStudy) return;
+    setStudy(tempStudy);
+    const isMyStudy =
+      tempStudy.status !== "dismissed" &&
+      tempStudy.attendences.find((who) => who.user.uid === session.user.uid);
+    if (isMyStudy) setMyStudy(tempStudy);
   }, [studyPairArr, studyOne, session]);
 
   useEffect(() => {

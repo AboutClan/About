@@ -43,3 +43,5 @@ export const STUDY_CHECK_POP_UP = "studyCheckPopUp";
 export const STUDY_ATTEND_MEMBERS = "studyAttendMembers";
 
 export const GATHER_JOIN_MEMBERS = "gatherJoinMembers";
+
+export const USER_LOCATION = "userLocation";

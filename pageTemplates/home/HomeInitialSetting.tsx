@@ -9,7 +9,7 @@ import { createGlobalStyle } from "styled-components";
 
 import PCBottomNav from "../../components/layouts/PCBottomNav";
 import { STEPS_CONTENTS } from "../../constants/contentsText/GuideContents";
-import { USER_GUIDE } from "../../constants/keys/localStorage";
+import { USER_GUIDE, USER_LOCATION } from "../../constants/keys/localStorage";
 import { SERVER_URI } from "../../constants/system";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
@@ -144,11 +144,16 @@ function HomeInitialSetting() {
   }, [dateParam]);
 
   useEffect(() => {
+    if (isGuest) {
+      localStorage.setItem(USER_LOCATION, "수원");
+    }
+
     if (isGuest && !checkAndSetLocalStorage(USER_GUIDE, 1)) {
       setIsGuestModal(true);
       setIsGuide(true);
     }
     if (userInfo) {
+      localStorage.setItem(USER_LOCATION, userInfo.location);
       if (dayjs().diff(dayjs(userInfo?.registerDate)) <= 7) {
         if (!checkAndSetLocalStorage(USER_GUIDE, 3)) setIsGuide(true);
       } else if (!checkAndSetLocalStorage(USER_GUIDE, 14)) setIsGuide(true);
