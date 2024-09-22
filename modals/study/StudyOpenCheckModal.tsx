@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { ALL_스터디인증 } from "../../constants/serviceConstants/studyConstants/studyPlaceConstants";
@@ -13,9 +13,8 @@ interface StudyOpenCheckModalProps extends IModal {
   date: string;
 }
 
-function StudyOpenCheckModal({ setIsModal, par,date }: StudyOpenCheckModalProps) {
+function StudyOpenCheckModal({ setIsModal, par, date }: StudyOpenCheckModalProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const [isFirstPage, setIsFirstPage] = useState(true);
 
