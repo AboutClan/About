@@ -10,12 +10,12 @@ import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface StudyOpenCheckModalProps extends IModal {
   par: IParticipation;
+  date: string;
 }
 
-function StudyOpenCheckModal({ setIsModal, par }: StudyOpenCheckModalProps) {
+function StudyOpenCheckModal({ setIsModal, par,date }: StudyOpenCheckModalProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const date = searchParams.get("date");
 
   const [isFirstPage, setIsFirstPage] = useState(true);
 

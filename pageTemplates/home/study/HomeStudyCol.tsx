@@ -130,7 +130,7 @@ function HomeStudyCol({ studyVoteData, isLoading, date, isShort }: HomeStudyColP
       </BlurredPart>
 
       {dismissedStudy && (
-        <StudyOpenCheckModal setIsModal={() => setDismissedStudy(null)} par={dismissedStudy} />
+        <StudyOpenCheckModal date={date} setIsModal={() => setDismissedStudy(null)} par={dismissedStudy} />
       )}
     </>
   );
