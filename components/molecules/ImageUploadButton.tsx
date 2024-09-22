@@ -1,5 +1,4 @@
 import { Button, Input } from "@chakra-ui/react";
-import { captureException } from "@sentry/nextjs";
 import { useRef } from "react";
 
 import { useToast } from "../../hooks/custom/CustomToast";
@@ -37,7 +36,6 @@ export default function ImageUploadButton({
         newImageUrls.push(url);
         newImageForms.push(blob);
       } catch (error) {
-        captureException(error);
         console.error("Error processing image", error);
       }
     }
