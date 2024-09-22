@@ -65,7 +65,6 @@ function VoteDrawerItem({
     heartType: "first" | "second" | null,
   ) => {
     event.stopPropagation();
-    console.log(53, userLoading);
 
     if (isLoading || userLoading) return;
 

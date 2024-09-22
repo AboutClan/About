@@ -36,7 +36,7 @@ interface HomeStudyColProps {
 
 function HomeStudyCol({ studyVoteData, isLoading, date, isShort }: HomeStudyColProps) {
   const { data: session } = useSession();
-
+ 
   const searchParams = useSearchParams();
 
   const locationEn =
@@ -101,7 +101,7 @@ function HomeStudyCol({ studyVoteData, isLoading, date, isShort }: HomeStudyColP
 
       localStorage.setItem(STUDY_VOTING_TABLE, JSON.stringify(updatedTable));
     }
-
+  
     if (getStudyConfimCondition(studyDateStatus, studyVoteData[1].status)) {
       decideStudyResult();
     }
@@ -130,7 +130,11 @@ function HomeStudyCol({ studyVoteData, isLoading, date, isShort }: HomeStudyColP
       </BlurredPart>
 
       {dismissedStudy && (
-        <StudyOpenCheckModal date={date} setIsModal={() => setDismissedStudy(null)} par={dismissedStudy} />
+        <StudyOpenCheckModal
+          date={date}
+          setIsModal={() => setDismissedStudy(null)}
+          par={dismissedStudy}
+        />
       )}
     </>
   );

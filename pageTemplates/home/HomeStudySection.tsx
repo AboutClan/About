@@ -5,13 +5,14 @@ import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { LOCATION_OPEN } from "../../constants/location";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyDailyVoteCntQuery, useStudyVoteQuery } from "../../hooks/study/queries";
-import { studyPairArrState } from "../../recoils/studyRecoils";
+import { getStudyDateStatus } from "../../libs/study/date/getStudyDateStatus";
+import { studyDateStatusState, studyPairArrState } from "../../recoils/studyRecoils";
 import { IParticipation } from "../../types/models/studyTypes/studyDetails";
 import { ActiveLocation, LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
@@ -50,6 +51,7 @@ function HomeStudySection() {
   const locationKr = convertLocationLangTo(location as LocationEn, "kr");
   const isGuest = session?.user.name === "guest";
 
+  const setStudyDateStatus = useSetRecoilState(studyDateStatusState);
   const [studyPairArr, setStudyPairArr] = useRecoilState(studyPairArrState);
   const [selectedDate, setSelectedDate] = useState<string>();
   const [studyVoteArr, setStudyVoteArr] = useState<IParticipation[]>();
@@ -71,6 +73,7 @@ function HomeStudySection() {
 
   useEffect(() => {
     if (!selectedDate) setSelectedDate(date);
+    setStudyDateStatus(getStudyDateStatus(date));
   }, [date]);
 
   useEffect(() => {

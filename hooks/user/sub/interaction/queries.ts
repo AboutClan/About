@@ -8,12 +8,16 @@ import { QueryOptions } from "../../../../types/hooks/reactTypes";
 
 export const useNoticeActiveLogQuery = (
   type?: "like" | "friend" | "alphabet",
+  isRecent?: boolean,
   options?: QueryOptions<INoticeActiveLog[]>,
 ) =>
   useQuery<INoticeActiveLog[], AxiosError, INoticeActiveLog[]>(
-    [NOTICE_ACTIVE_LOG, type],
+    [NOTICE_ACTIVE_LOG, type, isRecent],
     async () => {
-      const res = await axios.get<INoticeActiveLog[]>(`${SERVER_URI}/notice`);
+      console.log(25, isRecent);
+      const res = await axios.get<INoticeActiveLog[]>(`${SERVER_URI}/notice`, {
+        params: { isRecent },
+      });
       if (type) return res.data.filter((item) => item.type === type);
       return res.data;
     },

@@ -9,6 +9,7 @@ export const POINT_ALERT = "pointAlert";
 export const LIKE_HEART = "LikeHeart";
 
 export const NOTICE_ACTIVE_CNT = "noticeActiveCnt";
+export const NOTICE_RECENT = "noticeRecent";
 
 // 팝업
 export const GATHER_INTRO_MODAL = "gatherIntro";

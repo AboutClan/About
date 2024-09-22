@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
 
-import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
+import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/react";
@@ -20,6 +20,13 @@ import Seo from "./Seo";
 
 export const BASE_BOTTOM_NAV_SEGMENT = ["home", "square", "user", "group"];
 export const NOT_PADDING_NAV_SEGMENT = ["login"];
+
+const GoogleAnalytics = dynamic(
+  () => import("@next/third-parties/google").then((mod) => mod.GoogleAnalytics),
+  {
+    ssr: false, // 서버 사이드 렌더링 비활성화
+  },
+);
 interface ILayout {
   children: React.ReactNode;
 }
