@@ -20,7 +20,8 @@ export interface IMapOptions {
   mapDataControlOptions?: any;
   mapTypeControl?: boolean;
   mapTypeControlOptions?: any;
-  mapTypeId?: string;
+  mapTypeId?: "normal";
+
   mapTypes?: any;
   maxBounds?: any;
   maxZoom?: number;

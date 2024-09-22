@@ -53,7 +53,7 @@ function ImageSliderBanner({ imageArr, isLightBanner }: IImageSliderEventBanner)
       onSlideChange={handleSliderChange}
       autoplay={{
         delay: 3000,
-        disableOnInteraction: false,
+        disableOnInteraction: true,
       }}
     >
       {imageArr.map((item, index) => (

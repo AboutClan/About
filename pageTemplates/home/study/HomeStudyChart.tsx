@@ -37,7 +37,7 @@ function HomeStudyChart({ voteCntArr }: HomeStudyChartProps) {
     <>
       <SectionBar
         title="스터디 전체 통계"
-        rightComponent={<HighlightedTextButton text="더보기" url="/calendar" />}
+        rightComponent={<HighlightedTextButton text="더보기" url="/studyCalendar" />}
       />
       <Box pt="16px" pr="16px">
         <ApexCharts

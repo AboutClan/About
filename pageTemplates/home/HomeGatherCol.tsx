@@ -68,7 +68,6 @@ export const setGatherDataToCardCol = (
   gathers: IGather[],
   func: (gather: IGather) => void,
 ): IPostThumbnailCard[] => {
-
   const cardCol: IPostThumbnailCard[] = gathers.map((gather, idx) => ({
     title: gather.title,
     subtitle:

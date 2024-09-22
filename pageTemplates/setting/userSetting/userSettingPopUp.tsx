@@ -60,7 +60,7 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
   const [modalTypes, setModalTypes] = useState<UserPopUp[]>([]);
   // const [recentMembers, setRecentMembers] = useState<IUserSummary[]>();
 
-  const { data: gatherData } = useGatherQuery();
+  const { data: gatherData } = useGatherQuery(-1);
 
   useEffect(() => {
     if (!gatherData) return;

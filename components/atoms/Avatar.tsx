@@ -62,7 +62,6 @@ function AvatarComponent({
   };
 
   function AvatarComponent() {
-   
     return (
       <AvatarContainer size={size} sizeLength={sizeLength}>
         <ImageContainer
@@ -114,7 +113,9 @@ function AvatarComponent({
   return (
     <>
       {!isLink ? (
-        <AvatarComponent />
+        <Box>
+          <AvatarComponent />
+        </Box>
       ) : (
         <Link href={`/profile/${uid}`} style={{ outline: "none" }}>
           <AvatarComponent />

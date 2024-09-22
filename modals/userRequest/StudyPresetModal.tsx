@@ -68,7 +68,7 @@ function StudyPresetModal() {
 
   const queryClient = useQueryClient();
 
-  const { mutate: setStudyPreference } = useStudyPreferenceMutation({
+  const { mutate: setStudyPreference } = useStudyPreferenceMutation("post", {
     onSuccess() {
       typeToast("change");
       queryClient.refetchQueries([STUDY_PREFERENCE]);

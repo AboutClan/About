@@ -8,15 +8,8 @@ import styled from "styled-components";
 import MainLogo from "../../../assets/MainLogo";
 import Slide from "../../../components/layouts/PageSlide";
 import IconButtonNav, { IIconButtonNavBtn } from "../../../components/molecules/navs/IconButtonNav";
-import {
-  DAILY_CHECK_POP_UP,
-  NOTICE_ACTIVE_CNT,
-  NOTICE_ALERT,
-  RECENT_CHAT_ID,
-} from "../../../constants/keys/localStorage";
-import { useRecentChatQuery } from "../../../hooks/chat/queries";
+import { DAILY_CHECK_POP_UP, NOTICE_ALERT } from "../../../constants/keys/localStorage";
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
-import { useNoticeActiveLogQuery } from "../../../hooks/user/sub/interaction/queries";
 import DailyCheckModal from "../../../modals/aboutHeader/dailyCheckModal/DailyCheckModal";
 import PointSystemsModal from "../../../modals/aboutHeader/pointSystemsModal/PointSystemsModal";
 import LastWeekAttendPopUp from "../../../modals/pop-up/LastWeekAttendPopUp";
@@ -41,24 +34,25 @@ function HomeHeader() {
 
   const [isNoticeAlert, setIsNoticeAlert] = useState(false);
 
-  const { data } = useNoticeActiveLogQuery();
+  // const { data } = useNoticeActiveLogQuery(undefined, false);
 
-  const { data: recentChat } = useRecentChatQuery({ enabled: isGuest === false });
+  // const { data: recentChat } = useRecentChatQuery({ enabled: isGuest === false });
 
   useEffect(() => {
-    if (!data) return;
-    const activeCnt = localStorage.getItem(NOTICE_ACTIVE_CNT);
+    // if (!data) return;
+    // const recentOne = data[0]?.message;
+    // const noticeRecent = localStorage.getItem(NOTICE_RECENT);
     const noticeCnt = localStorage.getItem(NOTICE_ALERT);
-    const recentChatId = localStorage.getItem(RECENT_CHAT_ID);
+    // const recentChatId = localStorage.getItem(RECENT_CHAT_ID);
 
-    if (recentChat?.length && recentChatId !== recentChat) {
+    // if (recentChat?.length && recentChatId !== recentChat) {
+    //   setIsNoticeAlert(true);
+    // }
+
+    if (NOTICE_ARR.length !== +noticeCnt) {
       setIsNoticeAlert(true);
     }
-
-    if (+activeCnt !== data?.length || NOTICE_ARR.length !== +noticeCnt) {
-      setIsNoticeAlert(true);
-    }
-  }, [data, recentChat]);
+  }, []);
 
   const generateIconBtnArr = () => {
     const arr = [
@@ -66,10 +60,7 @@ function HomeHeader() {
         icon: <i className="fa-light fa-calendar-star" />,
         func: isGuest ? () => typeToast("guest") : () => setModalType("pointGuide"),
       },
-      {
-        icon: <i className="fa-light fa-circle-book-open" />,
-        func: () => setModalType("rule"),
-      },
+
       {
         icon: (
           <>

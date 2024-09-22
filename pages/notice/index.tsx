@@ -22,7 +22,9 @@ function Notice() {
   const type = searchParams.get("type") as NoticeType;
 
   const [noticeType, setNoticeType] = useState<NoticeType>("notice");
-  const { data: activeLogs } = useNoticeActiveLogQuery(undefined, { enabled: isGuest === false });
+  const { data: activeLogs } = useNoticeActiveLogQuery(undefined, false, {
+    enabled: isGuest === false,
+  });
   const { data: chats } = useMyChatsQuery({ enabled: isGuest === false });
 
   const { data: recentChat } = useRecentChatQuery({ enabled: isGuest === false });

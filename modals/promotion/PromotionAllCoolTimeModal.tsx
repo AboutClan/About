@@ -22,7 +22,6 @@ function PromotionAllCoolTimeModal({ promotionData, setIsModal }: IPromotionAllC
       item.uid !== "3224546232",
   ).length;
 
-
   const footerOptions: IFooterOptions = {
     children: (
       <Flex w="100%" align="center" justifyContent="space-between">

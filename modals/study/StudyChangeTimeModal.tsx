@@ -2,14 +2,12 @@ import dayjs from "dayjs";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
 
 import RulletPickerTwo from "../../components/molecules/picker/RulletPickerTwo";
-import { STUDY_VOTE } from "../../constants/keys/queryKeys";
 import { POINT_SYSTEM_DEPOSIT } from "../../constants/serviceConstants/pointSystemConstants";
-import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { STUDY_VOTE_HOUR_ARR } from "../../constants/serviceConstants/studyConstants/studyTimeConstant";
+import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
@@ -36,9 +34,9 @@ const endTimeArr = createTimeArr(
 function StudyChangeTimeModal({ setIsModal }: IStudyChangeTimeModal) {
   const toast = useToast();
   const typeToast = useTypeToast();
+  const resetStudy = useResetStudyQuery();
   const { data: session } = useSession();
-  const { id, date } = useParams<{ id: string; date: string }>();
-  const location = PLACE_TO_LOCATION[id];
+  const { date } = useParams<{ id: string; date: string }>();
 
   const myStudy = useRecoilValue(myStudyState);
   const isFree = myStudy.status === "free";
@@ -71,12 +69,10 @@ function StudyChangeTimeModal({ setIsModal }: IStudyChangeTimeModal) {
       item?.meta?.sub === date && item.message === POINT_SYSTEM_DEPOSIT.STUDY_TIME_CHANGE.message,
   );
 
-  const queryClient = useQueryClient();
-
   const { mutate: getDeposit } = usePointSystemMutation("deposit");
   const { mutate: patchAttend } = useStudyParticipationMutation(dayjs(date), "patch", {
     onSuccess() {
-      queryClient.invalidateQueries([STUDY_VOTE, date, location]);
+      resetStudy();
       if (isFree) return;
       if (startTime && dayjs() > startTime && !prevFee) {
         getDeposit({

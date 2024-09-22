@@ -37,7 +37,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
 
   return (
     <>
-      <Header title="" url="/gather">
+      <Header title="">
         <Flex>
           <IconWrapper onClick={() => setDrawerType("kakaoShare")}>
             <i className="fa-light fa-share-nodes fa-lg" />

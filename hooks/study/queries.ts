@@ -42,25 +42,38 @@ export const useStudyPlacesQuery = (
     options,
   );
 
+export interface StudyVoteProps {}
+
 export const useStudyVoteQuery = (
   date: string,
   location: Location,
-  options?: QueryOptions<IParticipation[]>,
+  isBasic: boolean,
+  isTwoDay: boolean,
+  options?: QueryOptions<IStudy[]>,
 ) =>
-  useQuery<IParticipation[], AxiosError, IParticipation[]>(
-    [STUDY_VOTE, date, location],
+  useQuery<IStudy[], AxiosError, IStudy[]>(
+    [STUDY_VOTE, date, location, isBasic, isTwoDay],
     async () => {
-      const res = await axios.get<IStudy>(`${SERVER_URI}/vote/${date}`, {
-        params: { location },
+      const res = await axios.get<IStudy[]>(`${SERVER_URI}/vote/${date}`, {
+        params: { location, isBasic, isTwoDay },
       });
+      return res.data;
+    },
+    options,
+  );
 
-      return res.data.participations.filter((par) => {
-        if (par.place.status === "inactive") return false;
-        if (par.place.status === "pending" && par.status === "pending") {
-          return false;
-        }
-        return true;
+export const useStudyVoteOneQuery = (
+  date: string,
+  id: string,
+  options?: QueryOptions<IParticipation>,
+) =>
+  useQuery<IParticipation, AxiosError, IParticipation>(
+    [STUDY_VOTE, date, id],
+    async () => {
+      const res = await axios.get<IParticipation>(`${SERVER_URI}/vote/${date}/one`, {
+        params: { id },
       });
+      return res.data;
     },
     options,
   );

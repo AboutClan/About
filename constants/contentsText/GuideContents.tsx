@@ -507,3 +507,40 @@ export const STEPS_CONTENTS: Step[] = [
     target: "body",
   },
 ];
+
+export const STEPS_FAVORITES_CONTENTS: Step[] = [
+  {
+    content: (
+      <Content>
+        스터디 상세 정보와 참여자를 알 수 있습니다. 좌우 스와이프로 날짜 이동도 가능!
+      </Content>
+    ),
+    placement: "top",
+    styles: {
+      options: {
+        width: 320,
+      },
+    },
+    locale: {
+      back: (
+        <Button
+          as="div"
+          color="var(--color-mint)"
+          borderColor="var(--color-mint)"
+          variant="outline"
+        >
+          뒤로
+        </Button>
+      ),
+      close: "닫기",
+      skip: null,
+      next: (
+        <Button as="div" colorScheme="mintTheme">
+          다음
+        </Button>
+      ),
+    },
+    spotlightPadding: 8,
+    target: ".vote_favorite",
+  },
+];

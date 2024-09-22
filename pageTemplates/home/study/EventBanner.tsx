@@ -16,7 +16,7 @@ interface EventBannerProps {
 
 function EventBanner({ tab }: EventBannerProps) {
   const imageArr: ImageBannerProp[] = (
-    tab === "스터디" || !tab
+    tab === "추천" || !tab
       ? MAIN_BANNER_IMAGE
       : tab === "번개"
         ? GATHER_BANNER_IMAGE

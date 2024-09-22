@@ -876,4 +876,12 @@ export const NOTICE_ARR: INoticeArr[] = [
     date: "2023-08-13",
     link: "https://mewing-sombrero-e36.notion.site/8-0eec96824f8e4ff09d6a66a27de9572f?pvs=25",
   },
+  {
+    id: "111",
+    title: "리뉴얼 공지",
+    category: "main",
+    content:
+      "단톡방에서 공지한대로 지역 -> 동네 단위로 곧 한번 더 세분화가 될 예정입니다. 또한 앱 서비스도 리뉴얼을 진행중이니 확인해주세요! 마지막으로 한 달에 1회 스터디 참여는 '필수' 사항입니다!",
+    date: "2023-09-21",
+  },
 ];

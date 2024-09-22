@@ -1,18 +1,18 @@
 import { Box, Flex } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { DispatchType } from "../../../types/hooks/reactTypes";
-import { IPlace } from "../../../types/models/studyTypes/studyDetails";
-import { IStudyVoteWithPlace } from "../../../types/models/studyTypes/studyInterActions";
+import { IStudyVotePlaces } from "../../../types/models/studyTypes/studyInterActions";
 
 interface VoteDrawerQuickVoteItemProps {
-  savedPreferPlace: { place: IPlace; subPlace: IPlace[] };
-  setMyVote: DispatchType<IStudyVoteWithPlace>;
+  savedPreferPlace: IStudyVotePlaces;
+
+  handleQuickVote: () => void;
 }
 
-function VoteDrawerQuickVoteItem({ savedPreferPlace, setMyVote }: VoteDrawerQuickVoteItemProps) {
-  const toast = useToast();
+function VoteDrawerQuickVoteItem({
+  savedPreferPlace,
+  handleQuickVote,
+}: VoteDrawerQuickVoteItemProps) {
   const favoritesCnt = (savedPreferPlace?.place ? 1 : 0) + savedPreferPlace?.subPlace?.length || 0;
 
   return (
@@ -22,17 +22,7 @@ function VoteDrawerQuickVoteItem({ savedPreferPlace, setMyVote }: VoteDrawerQuic
       pl="16px"
       pr="20px"
       borderBottom="var(--border-main)"
-      onClick={() => {
-        if (favoritesCnt === 0) {
-          toast("warning", "즐겨찾기중인 장소가 없습니다.");
-          return;
-        }
-        setMyVote((old) => ({
-          ...old,
-          place: savedPreferPlace.place,
-          subPlace: savedPreferPlace.subPlace,
-        }));
-      }}
+      onClick={handleQuickVote}
       as="button"
       w="100%"
     >

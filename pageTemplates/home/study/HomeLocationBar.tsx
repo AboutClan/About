@@ -9,6 +9,7 @@ import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas"
 
 export default function HomeLocationBar() {
   const router = useRouter();
+
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
 
@@ -22,7 +23,7 @@ export default function HomeLocationBar() {
   useEffect(() => {
     if (locationKr !== location) {
       newSearchParams.set("location", convertLocationLangTo(location, "en"));
-      router.replace(`/home?${newSearchParams.toString()}`);
+      router.replace(`/home?${newSearchParams.toString()}`, { scroll: false });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);

@@ -2,12 +2,7 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import {
-  DAILY_CHECK_POP_UP,
-  NOTICE_ACTIVE_CNT,
-  NOTICE_ALERT,
-} from "../../../constants/keys/localStorage";
-import { useNoticeActiveLogQuery } from "../../../hooks/user/sub/interaction/queries";
+import { DAILY_CHECK_POP_UP, NOTICE_ALERT } from "../../../constants/keys/localStorage";
 import { NOTICE_ARR } from "../../../storage/notice";
 import { AlertIcon } from "../../../styles/icons";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
@@ -21,12 +16,12 @@ interface IHomeHeaderIcons {
 function HomeHeaderIcons({ setIconType }: IHomeHeaderIcons) {
   const [isNoticeAlert, setIsNoticeAlert] = useState(false);
 
-  useNoticeActiveLogQuery(null, {
-    onSuccess(data) {
-      const activeCnt = localStorage.getItem(NOTICE_ACTIVE_CNT);
-      if (+activeCnt !== data?.length) setIsNoticeAlert(true);
-    },
-  });
+  // useNoticeActiveLogQuery(null, false, {
+  //   onSuccess(data) {
+  //     const activeCnt = localStorage.getItem(NOTICE_ACTIVE_CNT);
+  //     if (+activeCnt !== data?.length) setIsNoticeAlert(true);
+  //   },
+  // });
 
   useEffect(() => {
     if (localStorage.getItem(NOTICE_ALERT) !== String(NOTICE_ARR.length)) {

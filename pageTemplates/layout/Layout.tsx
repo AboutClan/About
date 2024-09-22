@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
 
-import { GoogleAnalytics } from "@next/third-parties/google";
 import axios from "axios";
+import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
 import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
@@ -20,6 +20,13 @@ import Seo from "./Seo";
 
 export const BASE_BOTTOM_NAV_SEGMENT = ["home", "square", "user", "group"];
 export const NOT_PADDING_NAV_SEGMENT = ["login"];
+
+const GoogleAnalytics = dynamic(
+  () => import("@next/third-parties/google").then((mod) => mod.GoogleAnalytics),
+  {
+    ssr: false, // 서버 사이드 렌더링 비활성화
+  },
+);
 interface ILayout {
   children: React.ReactNode;
 }
@@ -32,13 +39,23 @@ function Layout({ children }: ILayout) {
 
   const segment = pathname?.split("/")?.[1];
   const PUBLIC_SEGMENT = ["register", "login"];
-  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+
   const { data: session, status } = useSession();
-  const isGuest = session?.user.name === "guest";
+
+  const currentSegment = parseUrlToSegments(pathname);
+  const isBottomNavCondition = useMemo(
+    () => BASE_BOTTOM_NAV_SEGMENT.includes(currentSegment?.[0]) && !currentSegment?.[1],
+    [currentSegment],
+  );
+  const isGuest = useMemo(() => session?.user?.name === "guest", [session]);
 
   const [isErrorModal, setIsErrorModal] = useState(false);
 
-  const currentSegment = parseUrlToSegments(pathname);
+  useEffect(() => {
+    if (token) {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    }
+  }, [token]);
 
   useEffect(() => {
     if (PUBLIC_SEGMENT.includes(segment)) return;
@@ -60,9 +77,6 @@ function Layout({ children }: ILayout) {
       signOut({ callbackUrl: `/login/?status=logout` });
     }
   }, [session]);
-
-  const isBottomNavCondition =
-    BASE_BOTTOM_NAV_SEGMENT.includes(currentSegment?.[0]) && !currentSegment?.[1];
 
   return (
     <>
