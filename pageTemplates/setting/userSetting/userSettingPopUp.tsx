@@ -21,6 +21,7 @@ import AlphabetPopUp from "../../../modals/pop-up/AlphabetPopUp";
 import FAQPopUp from "../../../modals/pop-up/FAQPopUp";
 import InstaPopUp from "../../../modals/pop-up/InstaPopUp";
 import LastWeekAttendPopUp from "../../../modals/pop-up/LastWeekAttendPopUp";
+import LocationRegisterPopUp from "../../../modals/pop-up/LocationRegisterPopUp";
 import ManagerPopUp from "../../../modals/pop-up/ManagerPopUp";
 import SuggestPopUp from "../../../modals/pop-up/SuggestPopUp";
 import { IUser, IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
@@ -35,7 +36,8 @@ export type UserPopUp =
   // | "manager"
   | "alphabet"
   | "enthusiastic"
-  | "instagram";
+  | "instagram"
+  | "registerLocation";
 
 const MODAL_COMPONENTS = {
   faq: FAQPopUp,
@@ -47,6 +49,7 @@ const MODAL_COMPONENTS = {
   enthusiastic: EnthusiasticModal,
   manager: ManagerPopUp,
   instagram: InstaPopUp,
+  registerLocation: LocationRegisterPopUp,
 };
 
 interface UserSettingPopUpProps {
@@ -114,38 +117,43 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
 
   useEffect(() => {
     let popUpCnt = cnt;
+    if (!userInfo?.locationDetail) {
+      setModalTypes((old) => [...old, "registerLocation"]);
+      if (popUpCnt++ === 2) return;
+    }
+
     if (!checkAndSetLocalStorage(ALPHABET_POP_UP, 15)) {
       setModalTypes((old) => [...old, "alphabet"]);
-      if (++popUpCnt === 2) return;
+      if (popUpCnt++ === 2) return;
     }
     if (!checkAndSetLocalStorage(ATTEND_POP_UP, 7)) {
       setModalTypes((old) => [...old, "lastWeekAttend"]);
-      if (++popUpCnt === 2) return;
+      if (popUpCnt++ === 2) return;
     }
     // if (!checkAndSetLocalStorage(ENTHUSIASTIC_POP_UP, 27)) {
     //   setModalTypes((old) => [...old, "enthusiastic"]);
-    //   if (++popUpCnt === 2) return;
+    //   if (popUpCnt++ === 2) return;
     // }
     if (!checkAndSetLocalStorage(FAQ_POP_UP, 21)) {
       setModalTypes((old) => [...old, "faq"]);
-      if (++popUpCnt === 2) return;
+      if (popUpCnt++ === 2) return;
     }
 
     if (!checkAndSetLocalStorage(PROMOTION_POP_UP, 14)) {
       setModalTypes((old) => [...old, "promotion"]);
-      if (++popUpCnt === 2) return;
+      if (popUpCnt++ === 2) return;
     }
     if (!checkAndSetLocalStorage(SUGGEST_POP_UP, 29)) {
       setModalTypes((old) => [...old, "suggest"]);
-      if (++popUpCnt === 2) return;
+      if (popUpCnt++ === 2) return;
     }
     if (!checkAndSetLocalStorage(USER_GUIDE_POP_UP, 30)) {
       setModalTypes((old) => [...old, "userGuide"]);
-      if (++popUpCnt === 2) return;
+      if (popUpCnt++ === 2) return;
     }
     if (!checkAndSetLocalStorage(INSTAGRAM_POP_UP, 26) && !userInfo?.instagram) {
       setModalTypes((old) => [...old, "instagram"]);
-      if (++popUpCnt === 2) return;
+      if (popUpCnt++ === 2) return;
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
