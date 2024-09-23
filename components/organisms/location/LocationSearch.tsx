@@ -10,9 +10,10 @@ import { InputGroup } from "../../atoms/Input";
 interface ISearchLocation {
   info: KakaoLocationProps;
   setInfo: DispatchType<KakaoLocationProps>;
+  isSmall?: boolean;
 }
 
-function LocationSearch({ info, setInfo }: ISearchLocation) {
+function LocationSearch({ info, setInfo, isSmall = false }: ISearchLocation) {
   const [value, setValue] = useState(info?.place_name || "");
   const [results, setResults] = useState<KakaoLocationProps[]>([]);
 
@@ -45,7 +46,7 @@ function LocationSearch({ info, setInfo }: ISearchLocation) {
         />
       </Wrapper>
 
-      <SearchContent isContent={results.length !== 0}>
+      <SearchContent isContent={results.length !== 0} isSmall={isSmall}>
         {results.length > 0 && (
           <>
             {results.map((result, idx) => {
@@ -79,10 +80,10 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
-const SearchContent = styled.div<{ isContent: boolean }>`
+const SearchContent = styled.div<{ isContent: boolean; isSmall: boolean }>`
   display: ${(props) => (props.isContent ? "block" : "none")};
   margin-top: var(--gap-3);
-  height: ${(props) => props.isContent && "240px"};
+  height: ${(props) => props.isContent && (props.isSmall ? "120px" : "240px")};
   padding: 12px 16px;
   overflow: auto;
   border: ${(props) => (props.isContent ? "1px solid var(--gray-400)" : null)};

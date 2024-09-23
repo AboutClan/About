@@ -9,6 +9,7 @@ import {
   IAvatar,
   IUser,
   IUserRegisterFormWriting,
+  LocationDeatilProps,
   UserRole,
 } from "../../types/models/userTypes/userInfoTypes";
 import { IPointSystem } from "../../types/services/pointSystem";
@@ -61,10 +62,22 @@ type UserInfoFieldParam<T> = T extends "avatar"
           ? { isPrivate: boolean }
           : T extends "instagram"
             ? { instagram: string }
-            : { comment: string };
+            : T extends "comment"
+              ? { comment: string }
+              : T extends "locationDetail"
+                ? LocationDeatilProps
+                : null;
 
 export const useUserInfoFieldMutation = <
-  T extends "avatar" | "comment" | "role" | "rest" | "belong" | "isPrivate" | "instagram",
+  T extends
+    | "avatar"
+    | "comment"
+    | "role"
+    | "rest"
+    | "belong"
+    | "isPrivate"
+    | "instagram"
+    | "locationDetail",
 >(
   field: T,
   options?: MutationOptions<UserInfoFieldParam<T>>,
