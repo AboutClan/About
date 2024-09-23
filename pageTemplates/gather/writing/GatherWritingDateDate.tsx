@@ -39,7 +39,6 @@ function GatherWritingDateDate({ date, setDate, gatherWriting }: IGatherWritingD
 
   const CustomInput = forwardRef<HTMLButtonElement, CustomInputProps>(({ value, onClick }, ref) => {
     const isDefault = value === dayjsToFormat(dayjs().hour(14).minute(0), "M월 D일 HH:mm");
-
     return (
       <Button size="lg" colorScheme="gray" onClick={onClick} ref={ref} _focus={{ outline: "none" }}>
         {!isDefault ? value : "날짜/시간 선택"}
@@ -54,7 +53,6 @@ function GatherWritingDateDate({ date, setDate, gatherWriting }: IGatherWritingD
       currentDate.setHours(14);
       currentDate.setMinutes(0);
     } else currentDate = dayjs(gatherWriting?.date).toDate();
-
     setDate(currentDate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gatherWriting]);

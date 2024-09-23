@@ -8,6 +8,7 @@ import {
   USER_REQUEST,
 } from "../../constants/keys/queryKeys";
 import { SERVER_URI } from "../../constants/system";
+import { UserActiveInfoProps } from "../../pages/admin/response/locationActive";
 import { RankingCategorySource } from "../../pages/statistics";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import { IUser, IUserRegisterForm, IUserSummary } from "../../types/models/userTypes/userInfoTypes";
@@ -102,6 +103,23 @@ export const usePushQuery = (uid: string, options?: QueryOptions<void>) =>
     ["pushMessage"],
     async () => {
       const res = await axios.get<void>(`${SERVER_URI}/webpush/notification/${uid}`);
+      return res.data;
+    },
+    options,
+  );
+
+export const useAdminLocationActiveQuery = (
+  date: string,
+  options?: QueryOptions<UserActiveInfoProps[]>,
+) =>
+  useQuery(
+    [ADMIN_STUDY_RECORD, date],
+    async () => {
+      const res = await axios.get<UserActiveInfoProps[]>(`${SERVER_URI}/static/sameLoc`, {
+        params: {
+          date,
+        },
+      });
       return res.data;
     },
     options,

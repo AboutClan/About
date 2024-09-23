@@ -28,7 +28,7 @@ const Login: NextPage<{
   const router = useRouter();
   const { data: session } = useSession();
   const toast = useToast();
-
+ 
   const status = router.query?.status;
   const kakaoProvider = Object.values(providers).find((p) => p.id == "kakao");
   const [isLoading, setIsLoading] = useState(false);
