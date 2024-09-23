@@ -1,9 +1,11 @@
+/* eslint-disable */
 import { Box, Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Header from "../../../components/layouts/Header";
 import ButtonGroups, {
   ButtonOptionsProps,
 } from "../../../components/molecules/groups/ButtonGroups";
+import ProfileDetailBlock from "../../../components/molecules/ProfileDetailBlock";
 import { LOCATION_OPEN } from "../../../constants/location";
 import { useUpdateProfileMutation } from "../../../hooks/admin/mutation";
 import { useAdminLocationActiveQuery } from "../../../hooks/admin/quries";
@@ -21,11 +23,20 @@ export interface UserModalInfoProps {
 }
 
 export interface UserActiveInfoProps {
-  attendCnt: number;
+  attendInfo: UserAttendInfo;
+  user: UserActiveSummaryProps;
+}
+
+export interface UserAttendInfo {
+  studyCnt: number;
+  selfStudyCnt: number;
   gatherCnt: number;
   groupCnt: number;
-  selfStudyCnt: number;
-  userInfo: IUserSummary;
+}
+
+export interface UserActiveSummaryProps extends IUserSummary {
+  registerDate: string;
+  role: UserRole;
 }
 
 function LocationActive({}: LocationActiveProps) {
@@ -41,8 +52,7 @@ function LocationActive({}: LocationActiveProps) {
     }
   }, [userInfo]);
 
-  const { data } = useAdminLocationActiveQuery("2024-09-04");
-  console.log(data);
+  const { data: data } = useAdminLocationActiveQuery("2024-09-04");
 
   const { mutate: updateProfile } = useUpdateProfileMutation({
     onSuccess() {
@@ -82,9 +92,9 @@ function LocationActive({}: LocationActiveProps) {
         )}
       </Box>
       <Flex direction="column" px={2}>
-        {/* <ProfileDetailBlock handleInfoButton={(info) => setUserModalInfo(info)} />
-        <ProfileDetailBlock handleInfoButton={(info) => setUserModalInfo(info)} />
-        <ProfileDetailBlock handleInfoButton={(info) => setUserModalInfo(info)} /> */}
+        {data?.map((data) => (
+          <ProfileDetailBlock key={data.user.uid} user={data.user} attendInfo={data.attendInfo} />
+        ))}
       </Flex>
     </>
   );

@@ -15,7 +15,7 @@ function PromotionContent() {
         <Box fontWeight={600} mb={2} textAlign="center">
           아래 글을 복사하여 홍보글을 게시해주세요!
           <br />
-          <Box>(굵은 글씨는 제목입니다)</Box>
+          <Box>(굵은 글씨는 제목으로 옮기기)</Box>
         </Box>
         <i className="fa-solid fa-chevron-down" />
       </Guide>

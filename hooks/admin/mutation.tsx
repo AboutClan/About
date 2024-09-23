@@ -9,9 +9,7 @@ import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { IPointSystem } from "../../types/services/pointSystem";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useUpdateProfileMutation = (options?: MutationOptions<IUser>) =>
-  // eslint-disable-next-line @typescript-eslint/no-explicit-IUser
   useMutation<void, AxiosError, IUser>(async (profile) => {
     await axios.post(`${SERVER_URI}/admin/user`, {
       profile,

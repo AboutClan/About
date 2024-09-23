@@ -36,7 +36,7 @@ interface HomeStudyColProps {
 
 function HomeStudyCol({ studyVoteData, isLoading, date, isShort }: HomeStudyColProps) {
   const { data: session } = useSession();
- 
+
   const searchParams = useSearchParams();
 
   const locationEn =
@@ -101,7 +101,7 @@ function HomeStudyCol({ studyVoteData, isLoading, date, isShort }: HomeStudyColP
 
       localStorage.setItem(STUDY_VOTING_TABLE, JSON.stringify(updatedTable));
     }
-  
+
     if (getStudyConfimCondition(studyDateStatus, studyVoteData[1].status)) {
       decideStudyResult();
     }
@@ -145,22 +145,26 @@ export const setStudyDataToCardCol = (
   urlDateParam: string,
   uid: string,
 ): IPostThumbnailCard[] => {
-  const cardColData: IPostThumbnailCard[] = studyData.map((data) => ({
-    title: data.place.branch,
-    subtitle: data.place.brand,
-    participants: data.attendences.map((att) => att.user),
-    url: `/study/${data.place._id}/${urlDateParam}`,
-    maxCnt: 8,
-    image: {
-      url: data.place.image,
-      priority: true,
-    },
-    badge: getBadgeText(data.status),
-    type: "study",
-    statusText:
-      data.status === "pending" && data.attendences.some((who) => who.user.uid === uid) && "GOOD",
-    id: data.place._id,
-  }));
+  const cardColData: IPostThumbnailCard[] = [...studyData]
+    ?.sort((a, b) =>
+      a.place.branch === "개인 스터디" ? 1 : b.place.branch === "개인 스터디" ? -1 : 0,
+    )
+    .map((data) => ({
+      title: data.place.branch,
+      subtitle: data.place.brand,
+      participants: data.attendences.map((att) => att.user),
+      url: `/study/${data.place._id}/${urlDateParam}`,
+      maxCnt: 8,
+      image: {
+        url: data.place.image,
+        priority: true,
+      },
+      badge: getBadgeText(data.status),
+      type: "study",
+      statusText:
+        data.status === "pending" && data.attendences.some((who) => who.user.uid === uid) && "GOOD",
+      id: data.place._id,
+    }));
 
   return cardColData;
 };

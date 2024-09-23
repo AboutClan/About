@@ -14,7 +14,7 @@ export const useNoticeActiveLogQuery = (
   useQuery<INoticeActiveLog[], AxiosError, INoticeActiveLog[]>(
     [NOTICE_ACTIVE_LOG, type, isRecent],
     async () => {
-      console.log(25, isRecent);
+    
       const res = await axios.get<INoticeActiveLog[]>(`${SERVER_URI}/notice`, {
         params: { isRecent },
       });

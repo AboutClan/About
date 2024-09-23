@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
 
 import axios from "axios";
-import { signOut, useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
+import { signOut, useSession } from "next-auth/react";
 import { useEffect, useMemo, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -40,6 +40,7 @@ function Layout({ children }: ILayout) {
 
   const segment = pathname?.split("/")?.[1];
   const PUBLIC_SEGMENT = ["register", "login"];
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
   const { data: session, status } = useSession();
 
@@ -52,7 +53,6 @@ function Layout({ children }: ILayout) {
 
   const [isErrorModal, setIsErrorModal] = useState(false);
 
-  console.log(3434314, token);
   useEffect(() => {
     if (PUBLIC_SEGMENT.includes(segment)) return;
     if (status === "loading" || session === undefined) return;

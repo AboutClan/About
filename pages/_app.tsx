@@ -2,9 +2,9 @@ import "../styles/globals.css";
 import "../styles/variable.css";
 
 import { ChakraProvider } from "@chakra-ui/react";
-import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
+import { SessionProvider } from "next-auth/react";
 import { useState } from "react";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { RecoilRoot } from "recoil";
@@ -26,7 +26,7 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
         },
       }),
   );
-  console.log(123);
+ 
   return (
     <>
       <Head>

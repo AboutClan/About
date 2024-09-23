@@ -110,12 +110,12 @@ export const usePushQuery = (uid: string, options?: QueryOptions<void>) =>
 
 export const useAdminLocationActiveQuery = (
   date: string,
-  options?: QueryOptions<UserActiveInfoProps>,
+  options?: QueryOptions<UserActiveInfoProps[]>,
 ) =>
   useQuery(
     [ADMIN_STUDY_RECORD, date],
     async () => {
-      const res = await axios.get<UserActiveInfoProps>(`${SERVER_URI}/static/sameLoc`, {
+      const res = await axios.get<UserActiveInfoProps[]>(`${SERVER_URI}/static/sameLoc`, {
         params: {
           date,
         },
