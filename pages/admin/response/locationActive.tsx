@@ -4,7 +4,6 @@ import Header from "../../../components/layouts/Header";
 import ButtonGroups, {
   ButtonOptionsProps,
 } from "../../../components/molecules/groups/ButtonGroups";
-import ProfileDetailBlock from "../../../components/molecules/ProfileDetailBlock";
 import { LOCATION_OPEN } from "../../../constants/location";
 import { useUpdateProfileMutation } from "../../../hooks/admin/mutation";
 import { useAdminLocationActiveQuery } from "../../../hooks/admin/quries";
@@ -42,7 +41,7 @@ function LocationActive({}: LocationActiveProps) {
     }
   }, [userInfo]);
 
-  const { data } = useAdminLocationActiveQuery(2);
+  const { data } = useAdminLocationActiveQuery("2024-09-04");
   console.log(data);
 
   const { mutate: updateProfile } = useUpdateProfileMutation({
@@ -74,8 +73,6 @@ function LocationActive({}: LocationActiveProps) {
       func: () => handleChangeLocation(location),
     }));
 
-  console.log(42, selectedLocation, buttonOptionArr);
-
   return (
     <>
       <Header title="지역 활동 정보" />
@@ -85,9 +82,9 @@ function LocationActive({}: LocationActiveProps) {
         )}
       </Box>
       <Flex direction="column" px={2}>
+        {/* <ProfileDetailBlock handleInfoButton={(info) => setUserModalInfo(info)} />
         <ProfileDetailBlock handleInfoButton={(info) => setUserModalInfo(info)} />
-        <ProfileDetailBlock handleInfoButton={(info) => setUserModalInfo(info)} />
-        <ProfileDetailBlock handleInfoButton={(info) => setUserModalInfo(info)} />
+        <ProfileDetailBlock handleInfoButton={(info) => setUserModalInfo(info)} /> */}
       </Flex>
     </>
   );
