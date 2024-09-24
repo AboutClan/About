@@ -1,7 +1,9 @@
 import { Box } from "@chakra-ui/react";
 import { useState } from "react";
+import { useQueryClient } from "react-query";
 
 import SearchLocation from "../../components/organisms/SearchLocation";
+import { USER_INFO } from "../../constants/keys/queryKeys";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { ModalSubtitle } from "../../styles/layout/modal";
@@ -18,9 +20,11 @@ function LocationRegisterPopUp({ setIsModal }: LocationRegisterPopUp) {
     road_address_name: "",
   });
 
+  const queryClient = useQueryClient();
   const { mutate } = useUserInfoFieldMutation("locationDetail", {
     onSuccess() {
       toast("success", "등록되었습니다. 이후 연락을 기다려주세요!");
+      queryClient.invalidateQueries([USER_INFO]);
       setIsModal(false);
     },
     onError() {
