@@ -10,7 +10,6 @@ import HomeRecommendationSection from "../../pageTemplates/home/HomeRecommendati
 import HomeStudySection from "../../pageTemplates/home/HomeStudySection";
 import HomeCategoryNav, { HomeTab } from "../../pageTemplates/home/HomeTab";
 import EventBanner from "../../pageTemplates/home/study/EventBanner";
-
 function Home() {
   const [tab, setTab] = useState<HomeTab>();
 

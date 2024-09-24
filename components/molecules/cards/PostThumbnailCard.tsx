@@ -2,6 +2,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
@@ -56,10 +57,12 @@ export function PostThumbnailCard({
   },
   isShort,
 }: IPostThumbnailCardObj) {
+  const { data: session } = useSession();
   const queryClient = useQueryClient();
   const toast = useToast();
+  const isGuest = session?.user.name === "guest";
 
-  const { data: userInfo } = useUserInfoQuery();
+  const { data: userInfo } = useUserInfoQuery({ enabled: isGuest === false });
   const preference = userInfo?.studyPreference;
 
   const userAvatarArr = participants
