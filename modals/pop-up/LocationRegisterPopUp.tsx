@@ -23,6 +23,9 @@ function LocationRegisterPopUp({ setIsModal }: LocationRegisterPopUp) {
       toast("success", "등록되었습니다. 이후 연락을 기다려주세요!");
       setIsModal(false);
     },
+    onError() {
+      setIsModal(false);
+    },
   });
 
   const footerOptions: IFooterOptions = {
