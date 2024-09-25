@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { MouseEvent } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
@@ -43,8 +44,9 @@ function GroupBlock({ group }: IGroupBlock) {
     개설: dayjsToFormat(dayjs(group.createdAt), "YY년 M월 D일"),
   };
 
-  const onClick = () => {
+  const onClick = (e: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>) => {
     if (isGuest) {
+      e.preventDefault();
       failToast("guest");
       return;
     }
@@ -90,8 +92,8 @@ function GroupBlock({ group }: IGroupBlock) {
   };
 
   return (
-    <Link href={`/group/${group.id}`}>
-      <Layout onClick={onClick}>
+    <Link href={`/group/${group.id}`} onClick={(e) => onClick(e)}>
+      <Layout>
         <Header>
           <div>
             <span>{group.category.main}</span>·<span>{group.category.sub}</span>

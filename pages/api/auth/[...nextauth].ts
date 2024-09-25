@@ -141,10 +141,11 @@ export const authOptions: NextAuthOptions = {
         if (account && account.provider === "guest") {
           token = {
             ...token,
-            id: "0",
-            uid: "0",
+            id: "66f29811e0f0564ae35c52a4",
+            uid: "1234567890",
             name: "guest",
             role: "guest",
+            location: "수원",
             isActive: false,
             profileImage: "",
           };

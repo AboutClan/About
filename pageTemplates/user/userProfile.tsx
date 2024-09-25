@@ -24,8 +24,8 @@ function UserProfile() {
   return (
     <>
       <Info>
-        <Link href="/user/friend" passHref>
-          <BlockItem onClick={handleClick}>
+        <Link href="/user/friend" passHref onClick={handleClick}>
+          <BlockItem>
             <span>
               내 친구{" "}
               <b style={{ display: "inline-block", width: "20px", textAlign: "center" }}>
@@ -36,8 +36,8 @@ function UserProfile() {
             <i className="fa-solid fa-chevron-right" />
           </BlockItem>
         </Link>
-        <Link href="/user/like" passHref>
-          <BlockItem onClick={handleClick}>
+        <Link href="/user/like" passHref onClick={handleClick}>
+          <BlockItem>
             <span>
               받은 좋아요{" "}
               <b style={{ display: "inline-block", width: "20px", textAlign: "center" }}>
@@ -58,7 +58,7 @@ const Info = styled.div`
   flex-direction: column;
 `;
 
-const BlockItem = styled.a`
+const BlockItem = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
