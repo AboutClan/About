@@ -51,11 +51,7 @@ function KakaoShareBtn({
   useEffect(() => {
     if (type === "gather" && !img) return;
 
-<<<<<<< HEAD
     if (window.Kakao && !isWebView()) {
-=======
-    if (window.Kakao) {
->>>>>>> main
       const options =
         type === "gather" || type === "study"
           ? {
@@ -133,11 +129,7 @@ function KakaoShareBtn({
   }, [img, type, url, subtitle]);
 
   return (
-<<<<<<< HEAD
-    <Layout id="kakao-share-button" isFull={isFull} onClick={handleShareOnApp}>
-=======
-    <Layout id="kakao-share-button" isFull={isFull} temp={temp}>
->>>>>>> main
+    <Layout id="kakao-share-button" isFull={isFull} temp={temp} onClick={handleShareOnApp}>
       {!isBig ? (
         <i className="fa-light fa-share-nodes fa-lg" />
       ) : (

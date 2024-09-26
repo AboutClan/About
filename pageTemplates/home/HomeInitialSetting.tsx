@@ -9,19 +9,14 @@ import { createGlobalStyle } from "styled-components";
 import PCBottomNav from "../../components/layouts/PCBottomNav";
 import { STEPS_CONTENTS } from "../../constants/contentsText/GuideContents";
 import { USER_GUIDE, USER_LOCATION } from "../../constants/keys/localStorage";
-import { SERVER_URI } from "../../constants/system";
 import { useToast } from "../../hooks/custom/CustomToast";
-import { usePushServiceInitialize } from "../../hooks/fcm/mutaion";
+import { usePushServiceInitialize } from "../../hooks/FCM/mutaion";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import FAQPopUp from "../../modals/pop-up/FAQPopUp";
 import UserSettingPopUp from "../../pageTemplates/setting/userSetting/userSettingPopUp";
 import { renderHomeHeaderState } from "../../recoils/renderRecoils";
-<<<<<<< HEAD
-import { studyDateStatusState } from "../../recoils/studyRecoils";
 import { isPWA } from "../../utils/appEnvUtils";
-=======
->>>>>>> main
 import { checkAndSetLocalStorage } from "../../utils/storageUtils";
 import { detectDevice } from "../../utils/validationUtils";
 
@@ -33,15 +28,8 @@ function HomeInitialSetting() {
 
   const router = useRouter();
   const toast = useToast();
-<<<<<<< HEAD
-  const searchParams = useSearchParams();
-  const dateParam = searchParams.get("date");
-  const isGuest = session?.user.name === "guest";
-=======
-  const { data: session } = useSession();
 
   const isGuest = session ? session.user.name === "guest" : undefined;
->>>>>>> main
 
   const [isGuide, setIsGuide] = useState(false);
   const [isGuestModal, setIsGuestModal] = useState(false);
