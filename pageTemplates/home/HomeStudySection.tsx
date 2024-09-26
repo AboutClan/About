@@ -1,9 +1,9 @@
 import { Box, Button, Flex, keyframes } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -143,11 +143,11 @@ function HomeStudySection() {
           <Flex justify="space-between">
             <Flex direction="column" pb={3} pt={2}>
               <Box p={1} fontSize="17px" fontWeight={600}>
-                어디서 스터디 하지?
+                공부하고 있는 친구 없나?
                 <br />
-                지도로 한 눈에 확인하자!
+                실시간으로 한눈에 확인하자!
               </Box>
-              <Box p={1}>스터디 투표가 간편해요</Box>
+              <Box p={1}>실시간 참여 인원: 34</Box>
             </Flex>
             <Flex
               justify="center"
@@ -200,7 +200,7 @@ function HomeStudySection() {
             </Flex>
           </Flex>
           <Button colorScheme="mintTheme" onClick={handleMapVote}>
-            지도에서 스터디 투표하기
+            실시간 스터디 참여하기
           </Button>
         </Flex>
       </Box>
