@@ -5,12 +5,11 @@ import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
+import useHandleMove from "../@natives/useHandleBottomNav";
 import { getStudyStandardDate } from "../libs/study/date/getStudyStandardDate";
 import { slideDirectionState } from "../recoils/navigationRecoils";
-import { isWebView } from "../utils/appEnvUtils";
 import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
 import { getBottomNavSize } from "../utils/mathUtils";
-import { nativeMethodUtils } from "../utils/nativeMethodUtils";
 
 interface INavButtonProps {
   url: string;
@@ -66,17 +65,11 @@ export default function BottomNav() {
 
 function NavButton({ text, url, activeIcon, defaultIcon, active, idx }: INavButton) {
   const setSlideDirection = useSetRecoilState(slideDirectionState);
-
-  const handleMove = () => {
-    if (isWebView()) {
-      nativeMethodUtils.haptic();
-    }
-    setSlideDirection(null);
-  };
+  const handleMove = useHandleMove(setSlideDirection);
 
   return (
     <NavLink
-      onClick={() => handleMove()}
+      onClick={handleMove}
       href={url}
       active={active.toString() as "true" | "false"}
       replace={!text}

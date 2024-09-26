@@ -10,69 +10,65 @@ import { requestNotificationPermission } from "./utils";
 
 export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
   useEffect(() => {
-    if (isWebView()) {
-      const deviceInfoMessageListener = ({ data }: MessageEvent) => {
-        const isAccurateData = data && typeof data === "string" && data.includes("deviceInfo");
-        const deviceInfos: DeviceInfo = isAccurateData ? JSON.parse(data) : {};
-        const shouldRegisterListener = !isNil(uid) && !isEmpty(deviceInfos);
+    const initializePushService = async () => {
+      if (isWebView()) {
+        await initializeAppPushService(uid);
+      } else {
+        await initializePWAPushService();
+      }
+    };
 
-        if (shouldRegisterListener) {
-          subscribePushServiceOnAPP(data, uid);
-        }
-      };
-
-      window.addEventListener("message", deviceInfoMessageListener);
-
-      nativeMethodUtils.getDeviceInfo();
-
-      return () => {
-        window.removeEventListener("message", deviceInfoMessageListener);
-      };
-    } else {
-      subscribePushServiceOnPWA();
-    }
+    initializePushService();
   }, [uid]);
 };
 
-const subscribePushServiceOnAPP = async (data: DeviceInfo, uid: string) => {
-  try {
-    await registerPushServiceWithApp({
-      uid,
-      fcmToken: data.fcmToken,
-      platform: data.platform,
-    });
-  } catch (err) {
-    console.error("Error parsing device info message:", err);
-  }
+const initializeAppPushService = async (uid?: string) => {
+  const handleDeviceInfo = async (event: MessageEvent) => {
+    try {
+      const { data } = event;
+      if (typeof data !== "string" || !data.includes("deviceInfo")) return;
+
+      const deviceInfo: DeviceInfo = JSON.parse(data);
+      if (isNil(uid) || isEmpty(deviceInfo)) return;
+
+      await registerPushServiceWithApp({
+        uid,
+        fcmToken: deviceInfo.fcmToken,
+        platform: deviceInfo.platform,
+      });
+    } catch (error) {
+      console.error("Error handling device info:", error);
+    }
+  };
+
+  window.addEventListener("message", handleDeviceInfo);
+  nativeMethodUtils.getDeviceInfo();
+
+  return () => {
+    window.removeEventListener("message", handleDeviceInfo);
+  };
 };
 
-const subscribePushServiceOnPWA = async () => {
-  const hasPermission = await requestNotificationPermission();
-  if (!hasPermission) {
-    return;
-  }
-
+const initializePWAPushService = async () => {
   try {
-    const register = await navigator.serviceWorker.register("/worker.js", {
-      scope: "/",
-    });
-    const hasSubscription = await register.pushManager.getSubscription();
+    const hasPermission = await requestNotificationPermission();
+    if (!hasPermission) return;
 
-    if (hasSubscription) {
-      return;
-    }
+    const registration = await navigator.serviceWorker.register("/worker.js", { scope: "/" });
+    const subscription = await registration.pushManager.getSubscription();
+    if (subscription) return;
 
     const publicVapidKey = process.env.NEXT_PUBLIC_PWA_KEY;
-    const subscription = await register?.pushManager.subscribe({
+    if (!publicVapidKey) throw new Error("Missing NEXT_PUBLIC_PWA_KEY");
+
+    const newSubscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
     });
 
-    if (subscription) {
-      await registerPushServiceWithPWA(subscription);
-      console.log("Subscribed to push service successfully");
-    }
-  } catch (err) {
-    console.error("Failed to subscribe to push service on PWA:", err);
+    await registerPushServiceWithPWA(newSubscription);
+    console.log("Successfully subscribed to push service");
+  } catch (error) {
+    console.error("Failed to initialize PWA push service:", error);
   }
 };

@@ -1,43 +1,39 @@
-import { Link } from "@chakra-ui/react";
+import { Link, LinkProps } from "@chakra-ui/react";
 import NextLink from "next/link";
-import React, { type PropsWithChildren, type ReactHTML } from "react";
+import React, { forwardRef, useCallback } from "react";
 
 import { isWebView } from "../../utils/appEnvUtils";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
 
-interface IExternalLink {
+interface ExternalLinkProps extends Omit<LinkProps, "href"> {
   href: string;
   className?: string;
-  as?: keyof ReactHTML;
 }
 
-const ExternalLink = React.forwardRef<HTMLElement, PropsWithChildren<IExternalLink>>(
-  (props, ref) => {
-    const { as = "button", href, className, children } = props;
+const ExternalLink = forwardRef<HTMLAnchorElement, ExternalLinkProps>(
+  ({ href, className, children, ...rest }, ref) => {
+    const handleClick = useCallback(() => {
+      if (isWebView()) {
+        nativeMethodUtils.openExternalLink(href);
+      }
+    }, [href]);
 
     if (isWebView()) {
-      return React.createElement(
-        as,
-        {
-          ...props,
-          ref,
-          className,
-          onClick: () => nativeMethodUtils.openExternalLink(href),
-        },
-        children,
+      return (
+        <Link as="button" className={className} onClick={handleClick} ref={ref} {...rest}>
+          {children}
+        </Link>
       );
     }
 
     return (
-      <Link href={href} as={NextLink} className={className} isExternal>
+      <Link href={href} as={NextLink} className={className} isExternal ref={ref} {...rest}>
         {children}
       </Link>
     );
   },
 );
 
-if (process.env.NODE_ENV === "development") {
-  ExternalLink.displayName = "ExternalLink";
-}
+ExternalLink.displayName = "ExternalLink";
 
 export default ExternalLink;

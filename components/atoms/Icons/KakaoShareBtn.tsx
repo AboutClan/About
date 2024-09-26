@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import styled from "styled-components";
 
 import { REVIEW_DATA } from "../../../storage/Review";
@@ -31,11 +31,11 @@ function KakaoShareBtn({
   isFull,
   temp,
 }: IKakaoShareBtn) {
-  const handleShareOnApp = () => {
-    if (!isWebView()) return;
-
-    nativeMethodUtils.share(url);
-  };
+  const handleShareOnApp = useCallback(() => {
+    if (isWebView()) {
+      nativeMethodUtils.share(url);
+    }
+  }, []);
 
   useEffect(() => {
     if (
