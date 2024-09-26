@@ -1,9 +1,10 @@
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import Header from "../components/layouts/Header";
+import TabNav, { ITabNavOptions } from "../components/molecules/navs/TabNav";
 import VoteMap from "../components/organisms/VoteMap";
 import { STUDY_RECOMMENDATION_DISTANCE } from "../constants/settingValue/study/study";
 import { useStudyVoteQuery } from "../hooks/study/queries";
@@ -21,6 +22,8 @@ import { getDistanceFromLatLonInKm } from "../utils/mathUtils";
 
 export type StudyVoteMapActionType = "timeSelect";
 
+type Tab = "실시간 스터디" | "내일의 스터디";
+
 export default function StudyVoteMap() {
   const { data: session } = useSession();
   const searchParams = useSearchParams();
@@ -28,6 +31,7 @@ export default function StudyVoteMap() {
 
   const location = convertLocationLangTo(searchParams.get("location") as LocationEn, "kr");
 
+  const [tab, setTab] = useState<Tab>("실시간 스터디");
   const [myVote, setMyVote] = useState<IStudyVoteWithPlace>();
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>();
   const [actionType, setActionType] = useState(null);
@@ -87,10 +91,27 @@ export default function StudyVoteMap() {
       };
   };
 
+  const tabOptionsArr: ITabNavOptions[] = [
+    {
+      text: "실시간 스터디",
+      func: () => {
+        setTab("실시간 스터디");
+      },
+      flex: 1,
+    },
+    {
+      text: "내일의 스터디",
+      func: () => {
+        setTab("내일의 스터디");
+      },
+      flex: 1,
+    },
+  ];
+
   return (
     <>
       <Header title="스터디 투표" />
-
+      <TabNav selected={tab} tabOptionsArr={tabOptionsArr} isMain isThick />
       <MapLayout>
         <VoteMap
           mapOptions={mapOptions}
