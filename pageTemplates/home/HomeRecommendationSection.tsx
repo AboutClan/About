@@ -47,7 +47,7 @@ function HomeRecommendationSection() {
       enabled: !!userLocation || !!session?.user.location,
     },
   );
-  console.log(32, studyVoteData);
+
   useEffect(() => {
     if (studyVoteData) {
       setStudyPairArr(studyVoteData);

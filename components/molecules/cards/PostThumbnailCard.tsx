@@ -1,9 +1,8 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
@@ -62,7 +61,9 @@ export function PostThumbnailCard({
   const toast = useToast();
   const isGuest = session?.user.name === "guest";
 
-  const { data: userInfo } = useUserInfoQuery({ enabled: isGuest === false });
+  const { data: userInfo, isLoading: userLoading } = useUserInfoQuery({
+    enabled: isGuest === false,
+  });
   const preference = userInfo?.studyPreference;
 
   const userAvatarArr = participants
@@ -72,19 +73,11 @@ export function PostThumbnailCard({
       ...(par.avatar?.type !== null ? { avatar: par.avatar } : {}),
     }));
 
+  const isMyPrefer = preference?.place === id || preference?.subPlace?.includes(id);
+
   const CLOSED_TEXT_ARR = ["모집 마감", "닫힘"];
 
-  const [heartType, setHeartType] = useState<"main" | "sub" | null>();
-
-  useEffect(() => {
-    if (!preference) return;
-    const { place, subPlace } = preference || { place: null, subPlace: [] };
-
-    if (place === id) setHeartType("main");
-    else if (subPlace?.includes(id)) setHeartType("sub");
-  }, [preference, id]);
-
-  const { mutate: patchStudyPreference } = useStudyPreferenceMutation("patch", {
+  const { mutate: patchStudyPreference, isLoading } = useStudyPreferenceMutation("patch", {
     onSuccess() {
       toast("success", "변경되었습니다.");
       queryClient.refetchQueries([USER_INFO]);
@@ -93,13 +86,21 @@ export function PostThumbnailCard({
 
   const toggleHeart = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    if (isLoading || userLoading) return;
 
-    const preferenceType = heartType || preference?.place ? "sub" : "main";
-    // const A =
-    //   heartType === "first" ? "main" : heartType === "second" ? "sub" : preferMain ? "sub" : "main";
-    console.log(id, preferenceType);
+    const preferMain = preference?.place;
+
+    const preferenceType =
+      preference?.place === id
+        ? "main"
+        : preference?.subPlace?.includes(id)
+          ? "sub"
+          : preferMain
+            ? "sub"
+            : "main";
+
     patchStudyPreference({ id, type: preferenceType });
-    setHeartType(preferenceType);
+
     queryClient.invalidateQueries([USER_INFO]);
   };
 
@@ -131,7 +132,7 @@ export function PostThumbnailCard({
               color="white"
               onClick={toggleHeart}
             >
-              {heartType ? (
+              {isMyPrefer ? (
                 <i className="fa-solid fa-heart fa-sm" />
               ) : (
                 <i className="fa-regular fa-heart fa-sm" />

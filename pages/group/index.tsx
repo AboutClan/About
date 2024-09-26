@@ -151,7 +151,7 @@ function GroupPage() {
   function StatusSelector() {
     return <Selector defaultValue={status} setValue={setStatus} options={["모집중", "종료"]} />;
   }
-  console.log(24, myGroups);
+
   return (
     <>
       <Header title="소모임" url="/home" isBack={false} />
