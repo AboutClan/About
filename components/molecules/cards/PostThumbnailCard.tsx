@@ -167,9 +167,12 @@ export function PostThumbnailCard({
         </Flex>
       </Flex>
       <Flex direction="column" justifyContent="space-between" align="flex-end">
-        <Box>
-          {badge && <OutlineBadge size="sm" text={badge.text} colorScheme={badge.colorScheme} />}
-        </Box>
+        {badge ? (
+          <OutlineBadge size="sm" text={badge.text} colorScheme={badge.colorScheme} />
+        ) : (
+          <Box />
+        )}
+
         {participants && (
           <Flex
             mb="-2px"
