@@ -1,8 +1,8 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
@@ -87,12 +87,17 @@ export function PostThumbnailCard({
   const { mutate: patchStudyPreference } = useStudyPreferenceMutation("patch", {
     onSuccess() {
       toast("success", "변경되었습니다.");
+      queryClient.refetchQueries([USER_INFO]);
     },
   });
 
   const toggleHeart = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const preferenceType = heartType ? null : preference?.place ? "sub" : "main";
+
+    const preferenceType = heartType || preference?.place ? "sub" : "main";
+    // const A =
+    //   heartType === "first" ? "main" : heartType === "second" ? "sub" : preferMain ? "sub" : "main";
+    console.log(id, preferenceType);
     patchStudyPreference({ id, type: preferenceType });
     setHeartType(preferenceType);
     queryClient.invalidateQueries([USER_INFO]);
