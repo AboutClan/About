@@ -47,7 +47,7 @@ function FeedWritingPage() {
   const { data: group } = useGroupIdQuery(id, {
     enabled: category === "group" && !!id && !transferFeedSummary,
   });
-  const { data: gather } = useGatherIDQuery(id, {
+  const { data: gather } = useGatherIDQuery(+id, {
     enabled: category === "gather" && !!id && !transferFeedSummary,
   });
 
@@ -148,7 +148,11 @@ function FeedWritingPage() {
         </VStack>
       </Slide>
       <WritingNavigation>
-        <ImageUploadButton setImageUrls={setImageArr} setImageForms={setImageFormArr} />
+        <ImageUploadButton
+          maxFiles={5}
+          setImageUrls={setImageArr}
+          setImageForms={setImageFormArr}
+        />
         <UserSecretButton isAnonymous={isAnonymous} setIsAnonymous={setIsAnonymous} />
       </WritingNavigation>
       {isSuccessScreen && (

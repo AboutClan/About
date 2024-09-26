@@ -4,6 +4,7 @@ interface INoticeArr {
   category: NoticeCategory;
   content: string;
   date: string;
+  link?: string;
 }
 
 export type NoticeCategory = "main" | "sub" | "event" | "update";
@@ -857,5 +858,30 @@ export const NOTICE_ARR: INoticeArr[] = [
     content:
       "마이페이지에서 프로필을 비공개로 설정하면 친구로 등록된 인원만 프로필 열람이 가능해집니다. 또한 인스타 아이디를 프로필에 추가할 수 있습니다. 유저끼리 쪽지를 보낼 수 있는 기능이 출시되었습니다.",
     date: "2023-07-30",
+  },
+  {
+    id: "109",
+    title: "커뮤니티 출시",
+    category: "update",
+    content:
+      "라운지에 이어 익명 커뮤니티가 출시되었습니다! 익명이 보장되니까 할 얘기가 있다면 부담없이 소통하세요!",
+    date: "2023-08-13",
+  },
+  {
+    id: "110",
+    title: "8월 3주차 주간 공지",
+    category: "main",
+    content:
+      "이벤트 당첨자 발표, 커뮤니티 출시, 번개/소모임 개설 가이드. 상세 내용은 하단 링크 참조.",
+    date: "2023-08-13",
+    link: "https://mewing-sombrero-e36.notion.site/8-0eec96824f8e4ff09d6a66a27de9572f?pvs=25",
+  },
+  {
+    id: "111",
+    title: "리뉴얼 공지",
+    category: "main",
+    content:
+      "단톡방에서 공지한대로 지역 -> 동네 단위로 곧 한번 더 세분화가 될 예정입니다. 또한 앱 서비스도 리뉴얼을 진행중이니 확인해주세요! 마지막으로 한 달에 1회 스터디 참여는 '필수' 사항입니다!",
+    date: "2023-09-21",
   },
 ];

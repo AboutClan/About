@@ -132,6 +132,8 @@ const Nav = styled.nav<{ height: number }>`
   border-top: var(--border);
   max-width: var(--max-width);
   margin: 0 auto;
+  padding-top: ${(props) => (props.height > 90 ? 0 : "4px")};
+  padding-bottom: ${(props) => (props.height > 90 ? "4px" : 0)};
 `;
 
 const NavLink = styled(Link)<{ active: "true" | "false" } & LinkProps>`
@@ -141,7 +143,6 @@ const NavLink = styled(Link)<{ active: "true" | "false" } & LinkProps>`
   justify-content: center;
   align-items: center;
 
-  margin-top: 4px;
   color: ${({ active }) => (active === "true" ? "var(--gray-800)" : "var(--gray-500)")};
 `;
 

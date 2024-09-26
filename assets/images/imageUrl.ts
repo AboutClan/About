@@ -10,6 +10,9 @@ export const GATHER_SHARE_IMAGES = [
   "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EA%B3%B5%EC%9C%A0+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EA%B2%8C%EC%9E%84.jpg",
   "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EA%B3%B5%EC%9C%A0+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EC%98%81%ED%99%94%EA%B4%80.jpg",
   "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%86%8C%EB%AA%A8%EC%9E%84/%EB%A9%94%EC%9D%B8%EC%BB%A4%EB%B2%84/%EC%B6%9C%EC%82%AC.webp",
+  "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/%ED%8E%AD%EA%B7%842.jpg",
+  "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/%ED%8E%AD%EA%B7%841.jpg",
+  "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EA%B3%B5%EC%9C%A0+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EB%85%B8%ED%8A%B8%EB%B6%81+%EC%B9%B4%EA%B3%B5.jpg",
 ];
 
 export const DEFAULT_IMAGE_URL =

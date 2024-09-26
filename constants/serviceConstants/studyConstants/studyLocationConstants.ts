@@ -27,7 +27,7 @@ import {
   DONG_회기역,
   GANGNAM_강남구청역,
   GANGNAM_강남역,
-  GANGNAM_강남역중앙점,
+  GANGNAM_강남역아라타워점,
   GANGNAM_교대법원점,
   GANGNAM_교대역,
   GANGNAM_논현역,
@@ -41,6 +41,7 @@ import {
   INC_송도점,
   INC_송도캐슬파크점,
   INC_인천대점,
+  INC_인천서구청점,
   INC_인하대역점,
   INC_인하대점,
   INC_인하대점2,
@@ -53,14 +54,19 @@ import {
   SUWAN_광교역,
   SUWAN_구운동,
   SUWAN_망포역,
+  SUWAN_병점역,
   SUWAN_상현역,
   SUWAN_성균관대역,
   SUWAN_송죽,
   SUWAN_수원시청,
   SUWAN_수원역,
+  SUWAN_수원역2,
+  SUWAN_수원종합운동장점,
   SUWAN_아주대,
+  SUWAN_아주대2,
   SUWAN_청년바람지대,
   SUWAN_행궁동,
+  YANG_광명철산점,
   YANG_까치산역,
   YANG_당산역,
   YANG_대방역점,
@@ -72,6 +78,7 @@ import {
   YANG_신길역,
   YANG_신도림역,
   YANG_신월동점,
+  YANG_신촌점,
   YANG_신풍역,
   YANG_양천구청역,
   YANG_양천목동점,
@@ -108,6 +115,10 @@ export const LOCATION_TO_PLACE: LocationToPlace = {
     SUWAN_광교,
     SUWAN_경희대,
     SUWAN_수원역,
+    SUWAN_수원역2,
+    SUWAN_병점역,
+    SUWAN_수원종합운동장점,
+    SUWAN_아주대2,
     SUWAN_청년바람지대,
   ],
   양천: [
@@ -134,6 +145,8 @@ export const LOCATION_TO_PLACE: LocationToPlace = {
     YANG_홍대역1번출구점,
     YANG_홍대땡땡거리점,
     YANG_양천목동점,
+    YANG_광명철산점,
+    YANG_신촌점,
   ],
   안양: [
     ANYANG_범계역,
@@ -152,7 +165,7 @@ export const LOCATION_TO_PLACE: LocationToPlace = {
     GANGNAM_강남역,
     GANGNAM_도곡동점,
     GANGNAM_교대법원점,
-    GANGNAM_강남역중앙점,
+    GANGNAM_강남역아라타워점,
   ],
   동대문: [
     DONG_혜화역,
@@ -187,6 +200,7 @@ export const LOCATION_TO_PLACE: LocationToPlace = {
     INC_인하대역점,
     INC_인하대점2,
     INC_송도캐슬파크점,
+    INC_인천서구청점,
   ],
 };
 
@@ -194,7 +208,6 @@ export const PLACE_TO_LOCATION = createPlaceToLocationMap(LOCATION_TO_PLACE);
 
 function createPlaceToLocationMap(obj: LocationToPlace) {
   const placeToLocationMap: { [key: string]: ActiveLocation } = {};
-
   Object.entries(obj).forEach(([location, ids]) => {
     ids.forEach((id) => {
       placeToLocationMap[id] = location as ActiveLocation;

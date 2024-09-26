@@ -1,5 +1,4 @@
 import { Input } from "@chakra-ui/react";
-import { captureException } from "@sentry/nextjs";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import styled from "styled-components";
@@ -23,7 +22,6 @@ export default function ImageUploadInput({ setImageUrl: changeImage }: IImageUpl
         setImageUrl(image.url);
         changeImage(image.blob);
       } catch (error) {
-        captureException(error);
         console.error("Error processing image", error);
       }
     }

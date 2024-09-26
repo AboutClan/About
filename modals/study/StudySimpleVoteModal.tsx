@@ -2,7 +2,6 @@ import { Box } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
 
 import PlaceSelector from "../../components/atoms/PlaceSelector";
@@ -10,8 +9,8 @@ import ImageTileFlexLayout from "../../components/molecules/layouts/ImageTileFle
 import { IImageTileData } from "../../components/molecules/layouts/ImageTitleGridLayout";
 import { StudyVoteTimeRullets } from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { STUDY_CHECK_POP_UP } from "../../constants/keys/localStorage";
-import { STUDY_VOTE } from "../../constants/keys/queryKeys";
 import { POINT_SYSTEM_PLUS } from "../../constants/serviceConstants/pointSystemConstants";
+import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
 import {
   useStudyOpenFreeMutation,
@@ -24,8 +23,6 @@ import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
 import { IParticipation } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVote } from "../../types/models/studyTypes/studyInterActions";
-import { LocationEn } from "../../types/services/locationTypes";
-import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
@@ -37,9 +34,8 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
   const toast = useToast();
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
-  const locationEn = searchParams.get("location") as LocationEn;
-  const location = convertLocationLangTo(locationEn, "kr");
 
+  const resetStudy = useResetStudyQuery();
   const myStudy = useRecoilValue(myStudyState);
   const [selectedPlace, setSelectedPlace] = useState<string>();
   const [isFirstPage, setIsFirstPage] = useState(true);
@@ -68,10 +64,8 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
     }));
   }, [selectedPlace, voteTime]);
 
-  const queryClient = useQueryClient();
-
   const handleSuccess = async () => {
-    queryClient.invalidateQueries([STUDY_VOTE, date, location]);
+    resetStudy();
     if (myPrevVotePoint) {
       await getPoint({
         message: "스터디 투표 취소",

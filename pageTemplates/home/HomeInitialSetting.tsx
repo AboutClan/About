@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
@@ -8,17 +8,20 @@ import { createGlobalStyle } from "styled-components";
 
 import PCBottomNav from "../../components/layouts/PCBottomNav";
 import { STEPS_CONTENTS } from "../../constants/contentsText/GuideContents";
-import { USER_GUIDE } from "../../constants/keys/localStorage";
+import { USER_GUIDE, USER_LOCATION } from "../../constants/keys/localStorage";
+import { SERVER_URI } from "../../constants/system";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { usePushServiceInitialize } from "../../hooks/fcm/mutaion";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
-import { getStudyDateStatus } from "../../libs/study/date/getStudyDateStatus";
 import FAQPopUp from "../../modals/pop-up/FAQPopUp";
 import UserSettingPopUp from "../../pageTemplates/setting/userSetting/userSettingPopUp";
 import { renderHomeHeaderState } from "../../recoils/renderRecoils";
+<<<<<<< HEAD
 import { studyDateStatusState } from "../../recoils/studyRecoils";
 import { isPWA } from "../../utils/appEnvUtils";
+=======
+>>>>>>> main
 import { checkAndSetLocalStorage } from "../../utils/storageUtils";
 import { detectDevice } from "../../utils/validationUtils";
 
@@ -30,15 +33,20 @@ function HomeInitialSetting() {
 
   const router = useRouter();
   const toast = useToast();
+<<<<<<< HEAD
   const searchParams = useSearchParams();
   const dateParam = searchParams.get("date");
   const isGuest = session?.user.name === "guest";
+=======
+  const { data: session } = useSession();
+
+  const isGuest = session ? session.user.name === "guest" : undefined;
+>>>>>>> main
 
   const [isGuide, setIsGuide] = useState(false);
   const [isGuestModal, setIsGuestModal] = useState(false);
-
   const { data: userInfo } = useUserInfoQuery({
-    enabled: !isGuest,
+    enabled: isGuest === false,
     onSuccess(data) {
       if (data.role === "newUser") {
         router.push("/register/location");
@@ -51,7 +59,6 @@ function HomeInitialSetting() {
     },
   });
 
-  const setStudyDateStatus = useSetRecoilState(studyDateStatusState);
   const setRenderHomeHeaderState = useSetRecoilState(renderHomeHeaderState);
 
   const { mutate: setRole } = useUserInfoFieldMutation("role", {
@@ -71,16 +78,16 @@ function HomeInitialSetting() {
   }, [userInfo?.role]);
 
   useEffect(() => {
-    setStudyDateStatus(getStudyDateStatus(dateParam));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dateParam]);
+    if (isGuest) {
+      localStorage.setItem(USER_LOCATION, "수원");
+    }
 
-  useEffect(() => {
     if (isGuest && !checkAndSetLocalStorage(USER_GUIDE, 1)) {
       setIsGuestModal(true);
       setIsGuide(true);
     }
     if (userInfo) {
+      localStorage.setItem(USER_LOCATION, userInfo.location);
       if (dayjs().diff(dayjs(userInfo?.registerDate)) <= 7) {
         if (!checkAndSetLocalStorage(USER_GUIDE, 3)) setIsGuide(true);
       } else if (!checkAndSetLocalStorage(USER_GUIDE, 14)) setIsGuide(true);

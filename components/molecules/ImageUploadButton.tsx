@@ -1,5 +1,4 @@
 import { Button, Input } from "@chakra-ui/react";
-import { captureException } from "@sentry/nextjs";
 import { useRef } from "react";
 
 import { useToast } from "../../hooks/custom/CustomToast";
@@ -9,21 +8,27 @@ import { processFile } from "../../utils/imageUtils";
 interface IImageUploadButton {
   setImageUrls: DispatchType<string[]>;
   setImageForms: DispatchType<Blob[]>;
+  maxFiles?: number;
 }
 
-export default function ImageUploadButton({ setImageUrls, setImageForms }: IImageUploadButton) {
+export default function ImageUploadButton({
+  setImageUrls,
+  setImageForms,
+  maxFiles,
+}: IImageUploadButton) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const toast = useToast();
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files as FileList);
-    const newImageUrls: string[] = [];
-    const newImageForms: Blob[] = [];
 
-    if (files.length + newImageUrls.length > 5) {
-      toast("warning", "이미지는 최대 5장까지 가능합니다.");
+    if (maxFiles && files.length > maxFiles) {
+      toast("warning", `이미지는 ${maxFiles}개까지 추가할 수 있어요.`);
       return;
     }
+
+    const newImageUrls: string[] = [];
+    const newImageForms: Blob[] = [];
 
     for (const file of files) {
       try {
@@ -31,7 +36,6 @@ export default function ImageUploadButton({ setImageUrls, setImageForms }: IImag
         newImageUrls.push(url);
         newImageForms.push(blob);
       } catch (error) {
-        captureException(error);
         console.error("Error processing image", error);
       }
     }

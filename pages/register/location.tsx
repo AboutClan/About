@@ -121,7 +121,7 @@ const Button = styled.button<{ $picked: string }>`
   height: 72px;
   position: relative;
   border-radius: var(--rounded);
-  border: ${(props) => (props.$picked === "true" ? "var(--border-thick)" : "var(--border-main)")};
+  border: ${(props) => (props.$picked === "true" ? "var(--border-mint)" : "var(--border-main)")};
   background-color: white;
 `;
 

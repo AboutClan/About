@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import Selector from "../../components/atoms/Selector";
-import ButtonGroups, { IButtonOptions } from "../../components/molecules/groups/ButtonGroups";
+import ButtonGroups, { ButtonOptionsProps } from "../../components/molecules/groups/ButtonGroups";
 import FeedLayout, { FeedLayoutProps } from "../../components/organisms/FeedLayout";
 import { useFeedsQuery } from "../../hooks/feed/queries";
 import { convertFeedToLayout } from "../../libs/convertFeedToLayout";
@@ -15,6 +15,7 @@ function SquareLoungeSection() {
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
   const categoryParam = searchParams.get("category") as FeedType | undefined;
+  const drawerParam = searchParams.get("drawer");
 
   const [category, setCategory] = useState<FeedType | "all">();
   const [loungeData, setLoungeData] = useState<FeedProps[]>();
@@ -48,7 +49,7 @@ function SquareLoungeSection() {
     firstLoad.current = false;
 
     setLoungeData((old) => {
-      if (old?.length) return [...old, ...(feeds as FeedProps[])];
+      if (old?.length && !drawerParam) return [...old, ...(feeds as FeedProps[])];
       else return feeds;
     });
   }, [feeds, categoryParam]);
@@ -93,24 +94,24 @@ function SquareLoungeSection() {
     group: "소모임",
   };
 
-  const buttonItems: IButtonOptions[] = (["all", "gather", "group"] as (FeedType | "all")[]).map(
-    (category) => {
-      return {
-        text: `${textObj[category]}`,
-        func: () => {
-          newSearchParams.set("category", category);
-          router.replace(`/square?${newSearchParams}`);
-          setCategory(category);
-        },
-      };
-    },
-  );
+  const buttonOptionsArr: ButtonOptionsProps[] = (
+    ["all", "gather", "group"] as (FeedType | "all")[]
+  ).map((category) => {
+    return {
+      text: `${textObj[category]}`,
+      func: () => {
+        newSearchParams.set("category", category);
+        router.replace(`/square?${newSearchParams}`);
+        setCategory(category);
+      },
+    };
+  });
 
   return (
     <Box pb="60px">
       <Flex p="12px 16px" pr="8px" justify="space-between">
         <ButtonGroups
-          buttonItems={buttonItems}
+          buttonOptionsArr={buttonOptionsArr}
           currentValue={`${textObj[category]}`}
           size="sm"
           isEllipse

@@ -5,6 +5,7 @@ import styled from "styled-components";
 
 import Header from "../components/layouts/Header";
 import VoteMap from "../components/organisms/VoteMap";
+import { STUDY_RECOMMENDATION_DISTANCE } from "../constants/settingValue/study/study";
 import { useStudyVoteQuery } from "../hooks/study/queries";
 import { getStudyVoteCnt } from "../libs/study/getStudyVoteCnt";
 import { getStudyVoteIcon } from "../libs/study/getStudyVoteIcon";
@@ -13,18 +14,10 @@ import VoteDrawer from "../pageTemplates/vote/VoteDrawer";
 import VoteTimeDrawer from "../pageTemplates/vote/VoteTimeDrawer";
 import { IMapOptions, IMarkerOptions } from "../types/externals/naverMapTypes";
 import { IParticipation, IPlace } from "../types/models/studyTypes/studyDetails";
-import {
-  IStudyVotePlaces,
-  IStudyVoteWithPlace,
-} from "../types/models/studyTypes/studyInterActions";
+import { IStudyVoteWithPlace } from "../types/models/studyTypes/studyInterActions";
 import { ActiveLocation, LocationEn } from "../types/services/locationTypes";
 import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
 import { getDistanceFromLatLonInKm } from "../utils/mathUtils";
-
-export interface PreferStorageProps {
-  date: string;
-  prefer: IStudyVotePlaces;
-}
 
 export type StudyVoteMapActionType = "timeSelect";
 
@@ -39,11 +32,13 @@ export default function StudyVoteMap() {
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>();
   const [actionType, setActionType] = useState(null);
 
-  const { data: studyVoteData } = useStudyVoteQuery(date, location, {
+  const { data: studyVoteOne } = useStudyVoteQuery(date, location, false, false, {
     enabled: !!location && !!date,
   });
 
-  //메인 스터디 장소가 선택되면 3km 거리 이하의 장소들이 2지망으로 자동 선택
+  const studyVoteData = studyVoteOne?.[0]?.participations;
+
+  //메인 스터디 장소가 선택되면 일정 거리 이하의 장소들이 2지망으로 자동 선택
   useEffect(() => {
     if (!studyVoteData || !myVote?.place || myVote?.subPlace) return;
     const subPlace = [];
@@ -55,7 +50,7 @@ export default function StudyVoteMap() {
         item.place.latitude,
         item.place.longitude,
       );
-      if (distance < 3) subPlace.push(item.place);
+      if (distance < STUDY_RECOMMENDATION_DISTANCE) subPlace.push(item.place);
     });
 
     setMyVote((old) => ({ ...old, subPlace }));
@@ -103,7 +98,6 @@ export default function StudyVoteMap() {
           handleMarker={(place) => setMyVote((old) => setVotePlaceInfo(place, old))}
         />
       </MapLayout>
-
       {studyVoteData && (
         <VoteDrawer
           myVote={myVote}
@@ -112,7 +106,6 @@ export default function StudyVoteMap() {
           setActionType={setActionType}
         />
       )}
-
       <VoteTimeDrawer
         myVote={
           myVote && {

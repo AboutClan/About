@@ -1,12 +1,14 @@
 import { Button } from "@chakra-ui/react";
 import { useParams, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
+import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUidToUserInfoQuery } from "../../hooks/user/queries";
 import BottomDrawer from "../../pageTemplates/profile/BottomDrawer";
 import DeclareDrawer from "../../pageTemplates/profile/DeclareDrawer";
@@ -18,8 +20,11 @@ import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { DeclareRequest } from "../../types/models/userTypes/userRequestTypes";
 
 function ProfilePage() {
+  const { data: session } = useSession();
+  const typeToast = useTypeToast();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const isGuest = session ? session.user.name === "guest" : undefined;
 
   const beforePage = useRecoilValue(prevPageUrlState);
 
@@ -34,28 +39,28 @@ function ProfilePage() {
     enabled: !!uid,
   });
 
+  
+
   useEffect(() => {
     if (user) setTransferUserName(user.name);
   }, [user]);
 
-  const handleDrawer = () => {
-    router.replace(`/profile/${uid}?declare=on`);
+  const handleDrawer = (type: "chat" | "declare") => {
+    if (isGuest) {
+      typeToast("guest");
+      return;
+    }
+    if (type === "chat") router.push(`/chat/${user._id}`);
+    if (type === "declare") router.replace(`/profile/${uid}?declare=on`);
   };
- 
-
 
   return (
     <>
       <Header title="" url={beforePage} rightPadding={8}>
-        <Button
-          px="12px"
-          size="md"
-          variant="ghost"
-          onClick={() => router.push(`/chat/${user._id}`)}
-        >
+        <Button px="12px" size="md" variant="ghost" onClick={() => handleDrawer("chat")}>
           <i className="fa-regular fa-paper-plane fa-lg" />
         </Button>
-        <Button px="12px" size="md" variant="ghost" onClick={handleDrawer}>
+        <Button px="12px" size="md" variant="ghost" onClick={() => handleDrawer("declare")}>
           <i className="fa-regular fa-ellipsis fa-lg" />
         </Button>
       </Header>

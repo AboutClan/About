@@ -61,12 +61,12 @@ const ButtonNav = styled.nav`
 
 const Button = styled.button<{ $isSelected: boolean }>`
   color: ${(props) => (props.$isSelected ? "var(--gray-800)" : "var(--gray-500)")};
-  border-radius: var(--rounded-lg);
+  border-radius: 4px;
   flex: 0.49;
   height: 48px;
   font-size: 14px;
   font-weight: ${(props) => props.$isSelected && "600"};
-  border: ${(props) => (props.$isSelected ? "var(--border-thick)" : "var(--border-main)")};
+  border: ${(props) => (props.$isSelected ? "var(--border-mint)" : "var(--border-main)")};
   background-color: white;
 `;
 

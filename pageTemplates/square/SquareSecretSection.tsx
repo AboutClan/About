@@ -1,81 +1,84 @@
-import { Box } from "@chakra-ui/react";
-import { useState } from "react";
+import { Box, Flex } from "@chakra-ui/react";
+import { useEffect, useRef, useState } from "react";
 
-import BlurredPart from "../../components/molecules/BlurredPart";
-import { type SecretSquareCategory, type SecretSquareItem } from "../../types/models/square";
+import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
+import {
+  SecretSquareListResponse,
+  useSecretSquareListQuery,
+} from "../../hooks/secretSquare/queries";
+import { type SecretSquareCategoryWithAll } from "../../types/models/square";
 import SecretSquareCategories from "./SecretSquare/SecretSquareCategories";
 import SquareItem from "./SecretSquare/SquareItem";
 
-export const SECRET_SQUARE_CATEGORY: SecretSquareCategory[] = [
-  "전체",
-  "일상",
-  "고민",
-  "정보",
-  "같이해요",
-];
-
 function SquareSecretSection() {
-  const [category, setCategory] = useState<SecretSquareCategory>("전체");
+  const [category, setCategory] = useState<SecretSquareCategoryWithAll>("전체");
+  const [cursor, setCursor] = useState(0);
+  const [sqaures, setSqaures] = useState<SecretSquareListResponse["squareList"]>([]);
 
-  const temp: SecretSquareItem[] = [
+  const loader = useRef<HTMLDivElement | null>(null);
+  const firstLoad = useRef(true);
+
+  const { data, isLoading } = useSecretSquareListQuery(
+    { category, cursor },
     {
-      category: "전체",
-      title: "테스트",
-      content: "테스트로 만들어진 게시글입니다!",
-      id: "34",
-      type: "general",
-      author: "이승주", // TODO 익명
-      createdAt: "2024-07-24",
-      viewCount: 10,
+      enabled: (!!category && cursor === 0 && firstLoad.current) || cursor !== 0,
     },
-    {
-      category: "일상",
-      title: "테스트로 만든 게시글",
-      content:
-        "테스트용 게시글입니다.테스트용  게시글입니다스트용 게시글입니다.테스트용 게시글입니다.테스트용 게시글입니다.",
-      id: "35",
-      type: "poll",
-      author: "이승주", // TODO 익명
-      createdAt: "2024-07-22",
-      viewCount: 124,
-      pollList: [
-        { id: "0", value: "떡볶이", count: 3 },
-        { id: "1", value: "마라탕", count: 3 },
-        { id: "2", value: "연어", count: 3 },
-        { id: "3", value: "대창", count: 3 },
-      ],
-      canMultiple: false,
-    },
-    {
-      category: "일상",
-      title: "테스트로 만든 게시글입니다다다다ㅏ",
-      content:
-        "테스트용 게시글입니다.테스트용  게글입니다스트용 게시시글입니다.테스트용 게시글입니다.테시시글입니다.테스트용 게스트용 게시글입니다.",
-      id: "35",
-      type: "poll",
-      author: "이승주", // TODO 익명
-      createdAt: "2024-07-22",
-      viewCount: 124,
-      pollList: [
-        { id: "0", value: "떡볶이", count: 3 },
-        { id: "1", value: "마라탕", count: 3 },
-        { id: "2", value: "연어", count: 3 },
-        { id: "3", value: "대창", count: 3 },
-      ],
-      canMultiple: false,
-    },
-  ];
+  );
+
+  useEffect(() => {
+    firstLoad.current = true;
+    setSqaures([]);
+    setCursor(0);
+  }, [category]);
+
+  useEffect(() => {
+    if (data) {
+      setSqaures((old) => [...old, ...data.squareList]);
+      firstLoad.current = false;
+    }
+  }, [data]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !firstLoad.current) {
+          setCursor((prevCursor) => prevCursor + 1);
+        }
+      },
+      { threshold: 1.0 },
+    );
+    if (loader.current) {
+      observer.observe(loader.current);
+    }
+    return () => {
+      if (loader.current) {
+        observer.unobserve(loader.current);
+      }
+    };
+  }, []);
 
   return (
     <>
       <SecretSquareCategories category={category} setCategory={setCategory} />
-      <BlurredPart isBlur text="8월 5일 오픈 예정" size="lg">
-        <Box>
-          {temp.map((item) => (
-            <SquareItem key={item.id} item={item} />
-          ))}
-        </Box>
-      </BlurredPart>
+      <Box pb="80px">
+        {sqaures && sqaures.length === 0 && data ? (
+          <Flex fontSize="18px" height="200px" justify="center" align="center">
+            가장 먼저 &ldquo;#{category}&rdquo;에 글을 남겨보세요!
+          </Flex>
+        ) : (
+          <>
+            {sqaures.map((squareItem) => (
+              <SquareItem key={squareItem._id} item={squareItem} />
+            ))}
+          </>
+        )}
+        <div ref={loader} />
+        {isLoading && (
+          <Box position="relative" mt="60px" mb="40px">
+            <MainLoadingAbsolute size="sm" />
+          </Box>
+        )}
+      </Box>
     </>
   );
 }

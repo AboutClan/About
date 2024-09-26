@@ -25,25 +25,3 @@ export const useFeedLikeMutation = (options?: MutationOptions<string>) =>
       }),
     options,
   );
-
-interface FeedCommentProps {
-  comment: string;
-}
-
-interface FeedCommentRequest extends FeedCommentProps {
-  feedId: string;
-}
-
-export const useFeedCommentMutation = (
-  feedId: string,
-  options?: MutationOptions<FeedCommentProps>,
-) =>
-  useMutation<void, AxiosError, FeedCommentProps>(
-    ({ comment }) =>
-      requestServer<FeedCommentRequest>({
-        method: "post",
-        url: "feed/comment",
-        body: { comment, feedId },
-      }),
-    options,
-  );

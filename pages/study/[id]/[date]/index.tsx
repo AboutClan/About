@@ -1,16 +1,15 @@
+import dayjs from "dayjs";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useEffect, useState } from "react";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import Divider from "../../../../components/atoms/Divider";
 import Slide from "../../../../components/layouts/PageSlide";
-import { PLACE_TO_LOCATION } from "../../../../constants/serviceConstants/studyConstants/studyLocationConstants";
 import { ALL_스터디인증 } from "../../../../constants/serviceConstants/studyConstants/studyPlaceConstants";
-import { useStudyVoteQuery } from "../../../../hooks/study/queries";
+import { useStudyVoteOneQuery } from "../../../../hooks/study/queries";
 import { getStudyDateStatus } from "../../../../libs/study/date/getStudyDateStatus";
-import { getMyStudy } from "../../../../libs/study/getMyStudy";
 import StudyCover from "../../../../pageTemplates/study/StudyCover";
 import StudyDateBar from "../../../../pageTemplates/study/StudyDateBar";
 import StudyHeader from "../../../../pageTemplates/study/StudyHeader";
@@ -18,34 +17,45 @@ import StudyNavigation from "../../../../pageTemplates/study/StudyNavigation";
 import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
 import StudyParticipants from "../../../../pageTemplates/study/StudyParticipants";
 import StudyTimeBoard from "../../../../pageTemplates/study/StudyTimeBoard";
-import { myStudyState, studyDateStatusState } from "../../../../recoils/studyRecoils";
+import {
+  myStudyState,
+  studyDateStatusState,
+  studyPairArrState,
+} from "../../../../recoils/studyRecoils";
+import { IParticipation } from "../../../../types/models/studyTypes/studyDetails";
+import { dayjsToStr } from "../../../../utils/dateTimeUtils";
 
 export default function Page() {
-  const { data } = useSession();
+  const { data: session } = useSession();
   const { id, date } = useParams<{ id: string; date: string }>() || {};
 
+  const [study, setStudy] = useState<IParticipation>();
+  const studyPairArr = useRecoilValue(studyPairArrState);
   const setMyStudy = useSetRecoilState(myStudyState);
-
-  const location = PLACE_TO_LOCATION[id] || data?.user.location;
+  const [studyDateStatus, setStudyDateStatus] = useRecoilState(studyDateStatusState);
+  const findStudy = studyPairArr
+    ?.find((study) => dayjsToStr(dayjs(study.date)) === date)
+    .participations.find((par) => par.place._id === id);
 
   const isPrivateStudy = id === ALL_스터디인증;
-
-  const { data: studyAll } = useStudyVoteQuery(date, location, {
-    enabled: (!!location || isPrivateStudy) && !!date,
+  const { data: studyOne } = useStudyVoteOneQuery(date, id, {
+    enabled: !findStudy && !!date && !!id,
   });
 
-  const [studyDateStatus, setStudyDateStatus] = useRecoilState(studyDateStatusState);
+  useEffect(() => {
+    if (!session) return;
+    const tempStudy = studyOne || findStudy;
+    if (!tempStudy) return;
+    setStudy(tempStudy);
+    const isMyStudy =
+      tempStudy.status !== "dismissed" &&
+      tempStudy.attendences.find((who) => who.user.uid === session.user.uid);
+    if (isMyStudy) setMyStudy(tempStudy);
+  }, [studyPairArr, studyOne, session]);
 
   useEffect(() => {
     setStudyDateStatus(getStudyDateStatus(date));
   }, [date]);
-
-  useEffect(() => {
-    if (!studyAll || !data?.user) return;
-    setMyStudy(getMyStudy(studyAll, data.user.uid));
-  }, [studyAll]);
-
-  const study = studyAll?.find((study) => study.place._id === id);
 
   const place = study?.place;
 

@@ -11,7 +11,6 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import ScreenOverlay from "../../components/atoms/ScreenOverlay";
 import Spinner from "../../components/atoms/Spinner";
 import ImageUploadInput from "../../components/molecules/ImageUploadInput";
-import { STUDY_VOTE } from "../../constants/keys/queryKeys";
 import {
   POINT_SYSTEM_DEPOSIT,
   POINT_SYSTEM_PLUS,
@@ -29,6 +28,7 @@ import { transferAlphabetState } from "../../recoils/transferRecoils";
 import Textarea from "../../components/atoms/Textarea";
 import { STUDY_ATTEND_MEMBERS } from "../../constants/keys/localStorage";
 import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstants/studyLocationConstants";
+import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
 import { LocationEn } from "../../types/services/locationTypes";
@@ -44,6 +44,7 @@ function StudyAttendCheckModal({ setIsModal }: IStudyAttendCheckModal) {
   const toast = useToast();
   const typeToast = useTypeToast();
   const searchParams = useSearchParams();
+  const resetStudy = useResetStudyQuery();
 
   const { date: dateParam2, id } = useParams<{ date: string; id: string }>() || {};
   const dateParam1 = searchParams.get("date");
@@ -84,7 +85,7 @@ function StudyAttendCheckModal({ setIsModal }: IStudyAttendCheckModal) {
         };
         localStorage.setItem(STUDY_ATTEND_MEMBERS, JSON.stringify([...studyVotingTable, newEntry]));
       }
-      queryClient.invalidateQueries([STUDY_VOTE, date, location]);
+      resetStudy();
       const alphabet = getRandomAlphabet(20);
       if (alphabet) {
         getAlphabet({ alphabet });
@@ -128,7 +129,7 @@ function StudyAttendCheckModal({ setIsModal }: IStudyAttendCheckModal) {
 
   const { mutate: imageUpload } = useImageUploadMutation({
     onSuccess() {
-      queryClient.invalidateQueries([STUDY_VOTE, date, location]);
+      resetStudy();
     },
     onError(err) {
       console.error(err);

@@ -20,7 +20,14 @@ import { IGatherWriting } from "../../../types/models/gatherTypes/gatherTypes";
 import { Location } from "../../../types/services/locationTypes";
 import { randomPassword } from "../../../utils/validationUtils";
 
-export type GatherConditionType = "gender" | "age" | "pre" | "location" | "manager" | "kakaoUrl";
+export type GatherConditionType =
+  | "gender"
+  | "age"
+  | "pre"
+  | "location"
+  | "manager"
+  | "kakaoUrl"
+  | "isApprove";
 
 export type CombinedLocation = "전체" | "수원/안양" | "양천/강남";
 
@@ -35,6 +42,7 @@ function WritingCondition() {
     location: gatherContent?.place ? gatherContent.place === session?.user.location : false,
     manager: true,
     kakaoUrl: false,
+    isApprove: false,
   });
 
   const [isMemberConditionModal, setIsMemberConditionModal] = useState(false);
@@ -62,6 +70,7 @@ function WritingCondition() {
       place: location || session?.user.location,
       isAdminOpen: !condition.manager,
       kakaoUrl,
+      isApprovalRequired: condition.isApprove,
     };
     setGatherContent(gatherData);
     setIsConfirmModal(true);
@@ -73,6 +82,7 @@ function WritingCondition() {
 
   const toggleSwitch = (e: ChangeEvent<HTMLInputElement>, type: GatherConditionType) => {
     const isChecked = e.target.checked;
+   
     if (type === "location" && isChecked) {
       setLocation(session?.user.location);
     }
@@ -144,6 +154,26 @@ function WritingCondition() {
               />
             </Item>
             {!condition.location && <GatherWritingConditionLocation setLocation={setLocation} />}
+
+            <Item>
+              <Name>
+                <div>
+                  <i className="fa-solid fa-person-to-door" />
+                </div>
+                <span>참여 승인제 사용</span>
+                <PopOverIcon
+                  title="참여 승인제"
+                  text="선착순 참여가 아니라 모임장이 승인하는 방식으로 진행됩니다."
+                />
+              </Name>
+              <Switch
+                mr="var(--gap-1)"
+                colorScheme="mintTheme"
+                isChecked={condition.isApprove}
+                onChange={(e) => toggleSwitch(e, "isApprove")}
+              />
+            </Item>
+
             {/* <Item>
               <Name>
                 <div>

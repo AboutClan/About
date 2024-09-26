@@ -12,18 +12,18 @@ import { StudyDateStatus } from "../../../../types/models/studyTypes/studyInterA
 import { VoteType } from "./StudyController";
 
 export type StudyVoteActionType =
-  | "참여 신청"
-  | "투표 변경"
-  | "출석 체크"
+  | "스터디 투표하기"
+  | "투표 변경하기"
+  | "스터디 출석체크"
   | "출석 완료"
   | "당일 불참"
   | "기간 만료"
   | "당일 참여";
 
 export const ACTION_TO_VOTE_TYPE: Record<StudyVoteActionType, VoteType> = {
-  "참여 신청": "vote",
-  "투표 변경": "voteChange",
-  "출석 체크": "attendCheck",
+  "스터디 투표하기": "vote",
+  "투표 변경하기": "voteChange",
+  "스터디 출석체크": "attendCheck",
   "출석 완료": "attendCompleted",
   "당일 불참": "absent",
   "기간 만료": "expired",
@@ -54,7 +54,7 @@ function StudyControllerVoteButton({ setModalType, memberCnt }: IStudyController
       return;
     }
     const type = buttonProps.text;
-    if (type === "참여 신청" || type === "투표 변경") {
+    if (type === "스터디 투표하기" || type === "투표 변경하기") {
       newSearchParams.delete("tab");
       router.push(`/vote?${newSearchParams.toString()}`);
       return;
@@ -86,12 +86,12 @@ export const getStudyVoteButtonProps = (
     case "not passed":
       if (myStudy)
         return {
-          text: "투표 변경",
+          text: "투표 변경하기",
           color: "var(--color-mint)",
           type: "active",
         };
       return {
-        text: "참여 신청",
+        text: "스터디 투표하기",
         color: "var(--color-mint)",
         type: "active",
       };
@@ -104,7 +104,7 @@ export const getStudyVoteButtonProps = (
         };
       else if (myStudy)
         return {
-          text: "출석 체크",
+          text: "스터디 출석체크",
           color: "var(--color-orange)",
           type: "active",
         };
@@ -133,7 +133,7 @@ export const getStudyVoteButtonProps = (
       };
     default:
       return {
-        text: "참여 신청",
+        text: "스터디 투표하기",
         color: "var(--color-mint)",
         type: "active",
       };

@@ -5,7 +5,7 @@ import styled from "styled-components";
 import Header from "../../../components/layouts/Header";
 import { useUpdateProfileMutation } from "../../../hooks/admin/mutation";
 import { useAdminUsersLocationControlQuery } from "../../../hooks/admin/quries";
-import { IUser } from "../../../types/models/userTypes/userInfoTypes";
+import { IUser, UserRole } from "../../../types/models/userTypes/userInfoTypes";
 
 function AdminUserInfo() {
   const [admins, setAdmins] = useState<IUser[]>([]);
@@ -120,12 +120,12 @@ function UserSection({ user }: { user: IUser }) {
     },
   });
 
-  const onRoleChanged = (role: string, profile: IUser) => {
+  const onRoleChanged = (role: UserRole, profile: IUser) => {
     const newProfile = { ...profile, role };
 
     updateProfile(newProfile);
   };
-  const onActiveChanged = (active: string, profile: IUser) => {
+  const onActiveChanged = (active: UserRole, profile: IUser) => {
     const isActive = JSON.parse(active);
     const newProfile = { ...profile, isActive };
     updateProfile(newProfile);
@@ -166,12 +166,15 @@ function UserSection({ user }: { user: IUser }) {
   return (
     <SectionItem>
       <Item>{user.name}</Item>
-      <Select defaultValue={user.role} onChange={(e) => onRoleChanged(e.target.value, user)}>
+      <Select
+        defaultValue={user.role}
+        onChange={(e) => onRoleChanged(e.target.value as UserRole, user)}
+      >
         <option value="member">M</option>
         <option value="previliged">P</option>
       </Select>
       <Select
-        onChange={(e) => onActiveChanged(e.target.value, user)}
+        onChange={(e) => onActiveChanged(e.target.value as UserRole, user)}
         defaultValue={user.isActive.toString()}
       >
         <option value="true">T</option>

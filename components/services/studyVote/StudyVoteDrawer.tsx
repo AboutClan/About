@@ -1,13 +1,10 @@
 import dayjs from "dayjs";
 import { useParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
 
-import { STUDY_VOTE } from "../../../constants/keys/queryKeys";
 import { PLACE_TO_NAME } from "../../../constants/serviceConstants/studyConstants/studyCafeNameConstants";
-import { PLACE_TO_LOCATION } from "../../../constants/serviceConstants/studyConstants/studyLocationConstants";
+import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../../hooks/user/mutations";
@@ -30,10 +27,10 @@ dayjs.locale("ko");
 interface IStudyVoteDrawer extends IModal {}
 
 export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
-  const { data: session } = useSession();
   const { date, id } = useParams<{ date: string; id: string }>();
-  const location = PLACE_TO_LOCATION[id];
- 
+
+  const resetStudy = useResetStudyQuery();
+
   const toast = useToast();
   const studyDateStatus = useRecoilValue(studyDateStatusState);
   const myStudy = useRecoilValue(myStudyState);
@@ -52,8 +49,6 @@ export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
   useEffect(() => {
     setMyVote((old) => ({ ...old, ...voteTime, ...votePlaces }));
   }, [voteTime, votePlaces]);
-
-  const queryClient = useQueryClient();
 
   const { data: pointLog } = usePointSystemLogQuery("point", true, {
     enabled: !!myStudy,
@@ -74,8 +69,8 @@ export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
   });
 
   const handleSuccess = async () => {
-    queryClient.invalidateQueries([STUDY_VOTE, date, location || session?.user.location]);
-  
+    resetStudy();
+
     if (myPrevVotePoint) {
       await getPoint({
         message: "스터디 투표 취소",
@@ -94,6 +89,11 @@ export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
   };
 
   const onSubmit = () => {
+    const diffHour = voteTime.end.diff(voteTime.start, "hour");
+    if (diffHour < 2) {
+      toast("warning", "최소 2시간은 선택되어야 합니다.");
+      return;
+    }
     const temp = {
       ...myVote,
       place: myVote.place,

@@ -92,7 +92,7 @@ function DailyCheckModal({ setIsModal }: IModal) {
       sendRequest(data);
     }
     getScore(POINT_SYSTEM_PLUS.DAILY_ATTEND);
-    toast("success", "출석체크 완료 !");
+    toast("success", "출석 완료 !");
   };
 
   const footerOptions: IFooterOptions = {

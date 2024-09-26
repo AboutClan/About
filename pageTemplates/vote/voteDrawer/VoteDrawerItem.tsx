@@ -1,25 +1,23 @@
 import { Box, Flex } from "@chakra-ui/react";
-import dayjs from "dayjs";
+import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
-import { STUDY_PREFERENCE_LOCAL } from "../../../constants/keys/queryKeys";
+import { USER_INFO } from "../../../constants/keys/queryKeys";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useStudyPreferenceMutation } from "../../../hooks/study/mutations";
-import { PreferStorageProps } from "../../../pages/vote";
 import { DispatchType } from "../../../types/hooks/reactTypes";
 import {
   IStudyVotePlaces,
   IStudyVoteWithPlace,
 } from "../../../types/models/studyTypes/studyInterActions";
-import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import { VoteDrawerItemProps as ItemProps } from "../VoteDrawer";
-
 interface VoteDrawerItemProps {
   item: ItemProps;
   savedPrefer: IStudyVotePlaces;
   myVote: IStudyVoteWithPlace;
   setMyVote: DispatchType<IStudyVoteWithPlace>;
   setPlaceItems: DispatchType<ItemProps[]>;
+  userLoading: boolean;
 }
 
 function VoteDrawerItem({
@@ -28,18 +26,20 @@ function VoteDrawerItem({
   myVote,
   setMyVote,
   setPlaceItems,
+  userLoading,
 }: VoteDrawerItemProps) {
+  const queryClient = useQueryClient();
   const toast = useToast();
 
-  const { mutate: setStudyPreference } = useStudyPreferenceMutation({
+  const { mutate: patchStudyPreference, isLoading } = useStudyPreferenceMutation("patch", {
     onSuccess() {
+      queryClient.refetchQueries([USER_INFO]);
       toast("success", "변경되었습니다.");
     },
   });
 
   //장소 선택
   const onClickItem = (item: ItemProps) => {
-  
     //메인 장소 선택
     if (!myVote?.place) setMyVote({ place: item.place, subPlace: [], start: null, end: null });
     //서브 장소 선택
@@ -58,7 +58,6 @@ function VoteDrawerItem({
       });
     }
   };
-
   //즐겨찾기에 추가 및 등록
   const onClickHeart = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -66,8 +65,10 @@ function VoteDrawerItem({
     heartType: "first" | "second" | null,
   ) => {
     event.stopPropagation();
+
+    if (isLoading || userLoading) return;
+
     const preferMain = savedPrefer?.place;
-    const preferSub = savedPrefer?.subPlace;
 
     setPlaceItems((old) =>
       old.map((item) =>
@@ -76,37 +77,10 @@ function VoteDrawerItem({
           : item,
       ),
     );
-    const newPrefer = { ...savedPrefer };
 
-    if (heartType === "first") {
-      newPrefer.place = null;
-    }
-
-    if (heartType === "second") {
-      if (Array.isArray(preferSub)) {
-        newPrefer.subPlace = preferSub.filter((item) => item !== placeId);
-      }
-    }
-    if (!heartType) {
-      newPrefer.place = savedPrefer?.place || placeId;
-      if (savedPrefer?.place) {
-        if (Array.isArray(savedPrefer.subPlace)) {
-          newPrefer.subPlace = [placeId, ...savedPrefer.subPlace];
-        }
-      } else {
-        newPrefer.subPlace = savedPrefer?.subPlace;
-      }
-    }
-
-    localStorage.setItem(
-      STUDY_PREFERENCE_LOCAL,
-      JSON.stringify({
-        prefer: newPrefer,
-        date: dayjsToStr(dayjs()),
-      } as PreferStorageProps),
-    );
-
-    setStudyPreference(newPrefer);
+    const preferenceType =
+      heartType === "first" ? "main" : heartType === "second" ? "sub" : preferMain ? "sub" : "main";
+    patchStudyPreference({ id: item?.place._id, type: preferenceType });
   };
 
   return (
@@ -144,9 +118,9 @@ function VoteDrawerItem({
           {item.place.fullname}
         </Box>
         <Box color="var(--gray-600)" fontSize="14px">
-          <Box as="span">{item.voteCnt}명 참여중</Box>
+          <Box as="span">{item.voteCnt + item.place.prefCnt === 11 ? 2 : 1}명 참여중</Box>
           {" / "}
-          <Box as="span">즐겨찾기: {item.favoritesCnt}명</Box>
+          <Box as="span">즐겨찾기: {item.favoritesCnt + 7}명</Box>
         </Box>
       </Flex>
       <Box ml="auto" mr="12px">

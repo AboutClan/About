@@ -25,6 +25,7 @@ function HomeNewStudySpace({ places }: HomeNewStudySpaceProps) {
     badge: { text: "신규 오픈", colorScheme: "red" },
     type: "study",
     registerDate: place.registerDate,
+    id: place._id,
   }));
 
   return (

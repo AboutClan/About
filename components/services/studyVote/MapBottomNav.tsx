@@ -123,6 +123,11 @@ function MapBottomNav({ morePlaces, myVote, voteScore, setMyVote }: IMapBottomNa
   };
 
   const onSubmit = () => {
+    const diffHour = voteTime.end.diff(voteTime.start, "hour");
+    if (diffHour < 2) {
+      toast("warning", "최소 2시간은 선택되어야 합니다.");
+      return;
+    }
     studyVote({
       ...myVote,
       ...voteTime,

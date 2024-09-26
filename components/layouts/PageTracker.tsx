@@ -139,10 +139,14 @@ function PageTracker() {
             );
             break;
           }
-          if (prevSegments[0] === "gather" && prevSegments?.[1]) {
-            setLeftSlide();
-          }
 
+          if (prevSegments[0] === "gather") {
+            if (currentSegments?.[2] === "setting") {
+              setRightSlide();
+            } else if (prevSegments?.[1]) {
+              setLeftSlide();
+            }
+          }
           break;
 
         case "group":

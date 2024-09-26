@@ -21,6 +21,13 @@ export interface IUser extends Omit<IUserRegisterForm, "location">, IUserSummary
   instagram?: string;
   isPrivate?: boolean;
   _id: string;
+  locationDetail: LocationDeatilProps;
+}
+
+export interface LocationDeatilProps {
+  text: string;
+  lat: number;
+  lon: number;
 }
 
 export interface IUserSummary {

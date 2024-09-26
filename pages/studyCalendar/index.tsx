@@ -2,6 +2,7 @@ import { Box } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
 import { useEffect, useState } from "react";
 
+import { MainLoading } from "../../components/atoms/loaders/MainLoading";
 import RecordMonthNav from "../../components/atoms/MonthNav";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
@@ -11,7 +12,6 @@ import RecordCalendarSetting from "../../pageTemplates/record/RecordCalendarSett
 import RecordLocationCategory from "../../pageTemplates/record/RecordLocationCategory";
 import RecordNavigation from "../../pageTemplates/record/RecordNavigation";
 import RecordOverview from "../../pageTemplates/record/RecordOverview";
-import RecordSkeleton from "../../pageTemplates/record/RecordSkeleton";
 import { IArrivedData } from "../../types/models/studyTypes/studyRecords";
 
 export interface IDateRange {
@@ -47,21 +47,21 @@ function Record() {
           setArrivedCalendar={setArrivedCalendar}
           setIsRecordLoading={setIsLoading}
         />
-        <Box mx="16px" mt="12px">
-          <RecordMonthNav month={navMonth.month()} setNavMonth={setNavMonth} />
+        <Box mx="16px" ml="8px" mt="12px">
+          <RecordMonthNav monthNum={navMonth.month()} changeMonth={setNavMonth} />
         </Box>
         {!isLoading ? (
           <>
             <RecordOverview arrivedCalendar={arrivedCalendar} />
             <RecordLocationCategory initialData={arrivedCalendar} setFilterData={setFilterData} />
             {isCalendar ? (
-              <RecordCalendar filterData={filterData} navMonth={navMonth} />
+              <RecordCalendar filterData={filterData} monthFirstDate={navMonth} />
             ) : (
               <RecordDetail filterData={filterData} navMonth={navMonth} />
             )}
           </>
         ) : (
-          <RecordSkeleton isCalendar={isCalendar} />
+          <MainLoading />
         )}
       </Slide>
       <RecordNavigation isCalendar={isCalendar} setIsCalendar={setIsCalendar} />

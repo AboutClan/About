@@ -2,9 +2,9 @@ import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 import BottomDrawerLg from "../../components/organisms/drawer/BottomDrawerLg";
-import { STUDY_PREFERENCE_LOCAL } from "../../constants/keys/queryKeys";
-import { useStudyPreferenceQuery } from "../../hooks/study/queries";
-import { PreferStorageProps, StudyVoteMapActionType } from "../../pages/vote";
+import { useToast } from "../../hooks/custom/CustomToast";
+import { useUserInfoQuery } from "../../hooks/user/queries";
+import { StudyVoteMapActionType } from "../../pages/vote";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { IParticipation, IPlace } from "../../types/models/studyTypes/studyDetails";
 import {
@@ -30,26 +30,10 @@ interface VoteDrawerProps {
 }
 
 function VoteDrawer({ studyVoteData, myVote, setMyVote, setActionType }: VoteDrawerProps) {
-  const preferenceStorage = localStorage.getItem(STUDY_PREFERENCE_LOCAL);
-
-  const { data: studyPreference } = useStudyPreferenceQuery({
-    enabled: !preferenceStorage,
-    onSuccess() {
-      setMyVote(null);
-    },
-  });
-
-  const savedPrefer = preferenceStorage
-    ? (JSON.parse(preferenceStorage) as PreferStorageProps)?.prefer
-    : studyPreference;
-
-  const savedPreferPlace: { place: IPlace; subPlace: IPlace[] } = savedPrefer && {
-    place: studyVoteData.find((par) => par.place._id === savedPrefer.place)?.place,
-    subPlace: studyVoteData
-      .filter((par) => savedPrefer?.subPlace.includes(par.place._id))
-      .map((item) => item.place),
-  };
-
+  const { data: userInfo, isLoading } = useUserInfoQuery();
+  const preference = userInfo?.studyPreference;
+  const savedPrefer = preference || { place: null, subPlace: [] };
+  const toast = useToast();
   const items = getSortedMainPlace(studyVoteData, savedPrefer);
   const [placeItems, setPlaceItems] = useState<VoteDrawerItemProps[]>(items);
 
@@ -57,58 +41,82 @@ function VoteDrawer({ studyVoteData, myVote, setMyVote, setActionType }: VoteDra
   useEffect(() => {
     if (!myVote?.place) {
       const items = getSortedMainPlace(studyVoteData, savedPrefer);
-      setPlaceItems(items);
+      if (JSON.stringify(items) !== JSON.stringify(placeItems)) {
+        setPlaceItems(items);
+      }
       return;
     }
 
     const placeId = myVote.place._id;
     const subPlaceIds = new Set(myVote.subPlace?.map((obj) => obj._id));
+    const sortedItem = placeItems.sort((a, b) => b.voteCnt - a.voteCnt);
 
-    const sortedItem = placeItems.sort((a, b) => (a.voteCnt > b.voteCnt ? -1 : 1));
     const noSubPlaceItems = sortedItem.filter((item) => !subPlaceIds.has(item.place._id));
     const subPlaceItems = sortedItem.filter((item) => subPlaceIds.has(item.place._id));
 
     setPlaceItems(
       [...subPlaceItems, ...noSubPlaceItems].filter((place) => place.place._id !== placeId),
     );
-  }, [myVote?.place, myVote?.subPlace]);
+  }, [myVote?.place, myVote?.subPlace, savedPrefer]);
 
   const mainPlace = items?.find((item) => item.place._id === myVote?.place?._id);
   const bodyWidth = document.body.clientWidth > 400 ? 400 : document.body.clientWidth;
   const bodyHeight = document.body.clientHeight;
 
-  return (
-    <BottomDrawerLg
-      height={bodyHeight - bodyWidth * 0.8 - 74}
-      setIsModal={() => {}}
-      isxpadding={false}
-      isOverlay={false}
-    >
-      {mainPlace ? (
-        <VoteDrawerMainItem
-          voteCnt={mainPlace?.voteCnt}
-          favoritesCnt={mainPlace?.favoritesCnt}
-          myVotePlace={myVote.place}
-          setMyVote={setMyVote}
-          setActionType={setActionType}
-        />
-      ) : (
-        <VoteDrawerQuickVoteItem savedPreferPlace={savedPreferPlace} setMyVote={setMyVote} />
-      )}
+  const handleQuickVote = () => {
+    if (!savedPrefer?.place) {
+      if (savedPrefer?.subPlace?.length) {
+        toast("warning", "1지망 장소가 등록되어 있지 않습니다.");
+      } else toast("warning", "즐겨찾기중인 장소가 없습니다.");
+      return;
+    }
+    setMyVote((old) => ({
+      ...old,
+      place: studyVoteData.find((study) => study.place._id === savedPrefer?.place)?.place,
+      subPlace: studyVoteData
+        .filter((study) => savedPrefer?.subPlace?.includes(study.place._id))
+        ?.map((par) => par.place),
+    }));
+  };
 
-      <Box overflow="auto" w="100%" flex={1}>
-        {placeItems?.map((item, idx) => (
-          <VoteDrawerItem
-            item={item}
-            savedPrefer={savedPrefer}
-            myVote={myVote}
+  return (
+    <>
+      <BottomDrawerLg
+        height={bodyHeight - bodyWidth * 0.8 - 74}
+        setIsModal={() => {}}
+        isxpadding={false}
+        isOverlay={false}
+      >
+        {mainPlace ? (
+          <VoteDrawerMainItem
+            voteCnt={mainPlace?.voteCnt + 5}
+            favoritesCnt={mainPlace?.favoritesCnt + 14}
+            myVotePlace={myVote.place}
             setMyVote={setMyVote}
-            setPlaceItems={setPlaceItems}
-            key={idx}
+            setActionType={setActionType}
           />
-        ))}
-      </Box>
-    </BottomDrawerLg>
+        ) : (
+          <VoteDrawerQuickVoteItem
+            savedPreferPlace={savedPrefer}
+            handleQuickVote={handleQuickVote}
+          />
+        )}
+
+        <Box overflow="auto" w="100%" flex={1} id=".vote_favorite">
+          {placeItems?.map((item, idx) => (
+            <VoteDrawerItem
+              item={item}
+              savedPrefer={savedPrefer}
+              myVote={myVote}
+              setMyVote={setMyVote}
+              setPlaceItems={setPlaceItems}
+              userLoading={isLoading}
+              key={idx}
+            />
+          ))}
+        </Box>
+      </BottomDrawerLg>{" "}
+    </>
   );
 }
 
@@ -119,9 +127,7 @@ const getSortedMainPlace = (
   const mainPlace = myFavorites?.place;
   const subPlaceSet = new Set(myFavorites?.subPlace);
 
-  const sortedVoteCntItem = studyData.sort((a, b) =>
-    a.attendences.length > b.attendences.length ? -1 : 1,
-  );
+  const sortedVoteCntItem = studyData.sort((a, b) => a.attendences.length - b.attendences.length);
 
   const sortedArr = !myFavorites
     ? sortedVoteCntItem

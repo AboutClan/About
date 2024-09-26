@@ -10,10 +10,8 @@ import KakaoShareBtn from "../../components/atoms/Icons/KakaoShareBtn";
 import { MainLoading } from "../../components/atoms/loaders/MainLoading";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
-import ButtonGroups, { IButtonOptions } from "../../components/molecules/groups/ButtonGroups";
-import FeedLayout from "../../components/organisms/FeedLayout";
+import ButtonGroups, { ButtonOptionsProps } from "../../components/molecules/groups/ButtonGroups";
 import { LOCATION_OPEN } from "../../constants/location";
-import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import { WEB_URL } from "../../constants/system";
 import { useErrorToast } from "../../hooks/custom/CustomToast";
 import { useGatherAllSummaryQuery } from "../../hooks/gather/queries";
@@ -111,7 +109,7 @@ function Review() {
     setVisibleCnt((old) => old + 8);
   };
 
-  const buttonArr: IButtonOptions[] = ["전체", ...LOCATION_OPEN].map((location) => ({
+  const buttonArr: ButtonOptionsProps[] = ["전체", ...LOCATION_OPEN].map((location) => ({
     text: location,
     func: () =>
       location === "전체"
@@ -138,7 +136,7 @@ function Review() {
             <>
               <Box p="12px 16px">
                 <ButtonGroups
-                  buttonItems={buttonArr}
+                  buttonOptionsArr={buttonArr}
                   currentValue={convertLocationLangTo(location as LocationEn, "kr") || "전체"}
                 />
               </Box>
@@ -152,18 +150,20 @@ function Review() {
                     text: `${summary.place} · ${summary.type.title} · ${dayjsToFormat(dayjs(summary.date), "M월 D일")} · ${summary.location.main}`,
                   };
                   return (
-                    <FeedLayout
-                      user={ABOUT_USER_SUMMARY}
-                      date={item.dateCreated}
-                      images={item.images}
-                      summary={summaryProps}
-                      content={item.text}
-                      likeUsers={[]}
-                      likeCnt={0}
-                      id={item.id + ""}
-                      comments={[]}
-                      isAnonymous={false}
-                    />
+                    // <FeedLayout
+                    //   user={ABOUT_USER_SUMMARY}
+                    //   date={item.dateCreated}
+                    //   type={}
+                    //   images={item.images}
+                    //   summary={summaryProps}
+                    //   content={item.text}
+                    //   likeUsers={[]}
+                    //   likeCnt={0}
+                    //   id={item.id + ""}
+                    //   comments={[]}
+                    //   isAnonymous={false}
+                    // />
+                    null
                   );
                 })}
                 {visibleCnt < reviewData.length && (

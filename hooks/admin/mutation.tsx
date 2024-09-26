@@ -5,13 +5,12 @@ import { useMutation } from "react-query";
 import { SERVER_URI } from "../../constants/system";
 import { requestServer } from "../../libs/methodHelpers";
 import { MutationOptions } from "../../types/hooks/reactTypes";
+import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { IPointSystem } from "../../types/services/pointSystem";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const useUpdateProfileMutation = (options?: MutationOptions<any>) =>
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  useMutation<void, AxiosError, any>(async (profile) => {
+export const useUpdateProfileMutation = (options?: MutationOptions<IUser>) =>
+  useMutation<void, AxiosError, IUser>(async (profile) => {
     await axios.post(`${SERVER_URI}/admin/user`, {
       profile,
     });

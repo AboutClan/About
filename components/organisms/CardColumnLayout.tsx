@@ -12,13 +12,14 @@ interface ICardColumnLayout {
   cardDataArr: IPostThumbnailCard[];
   url: string;
   func?: () => void;
+  isShort?: boolean;
 }
-export function CardColumnLayout({ cardDataArr, url, func }: ICardColumnLayout) {
+export function CardColumnLayout({ cardDataArr, url, func, isShort }: ICardColumnLayout) {
   return (
     <Layout>
       {cardDataArr.map((cardData, idx) => (
         <Item key={idx}>
-          <PostThumbnailCard postThumbnailCardProps={cardData} />
+          <PostThumbnailCard postThumbnailCardProps={cardData} isShort={isShort} />
         </Item>
       ))}
       {cardDataArr?.length >= 3 && <ShadowBlockButton text="더보기" url={url} func={func} />}

@@ -57,7 +57,7 @@ export const usePointSystemLogQuery = (
     [USER_POINT_SYSTEM, category, isUserScope, "log"],
     async () => {
       const scopeQuery = isUserScope ? "" : "all";
-     
+
       const res = await axios.get<IPointLog[]>(`${SERVER_URI}/log/${category}/${scopeQuery}`);
       return res.data;
     },
@@ -69,7 +69,6 @@ export const useUidToUserInfoQuery = (uid: string, options?: QueryOptions<IUser>
     [UID_TO_USER, uid],
     async () => {
       const res = await axios.get<IUser>(`${SERVER_URI}/user/profile/${uid}`);
-
       return res.data;
     },
     options,

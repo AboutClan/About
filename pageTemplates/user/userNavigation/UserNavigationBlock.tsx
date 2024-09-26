@@ -3,6 +3,8 @@ import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
 import RowButtonBlock from "../../../components/atoms/blocks/RowButtonBlock";
+import RowTextBlockButton from "../../../components/atoms/buttons/RowTextBlockButton";
+import TextDevider from "../../../components/atoms/devider/TextDevider";
 import { DESIGN_PAGE_USER_PERMISSION } from "../../../constants/storage/userPermissions";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import { DispatchString } from "../../../types/hooks/reactTypes";
@@ -49,12 +51,13 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
     <Layout>
       {(isAdmin || hasDesignAccess) && (
         <div>
-          <BlockName>관리자</BlockName>
+          <TextDevider text="관리자" />
           {isAdmin && (
             <>
-              <NavBlock>
-                <button onClick={() => onClickBlock("page", "/admin")}>관리자 페이지</button>
-              </NavBlock>
+              <RowTextBlockButton
+                text="관리자 페이지"
+                onClick={() => onClickBlock("page", "/admin")}
+              />
               <NavBlock>
                 <button onClick={() => onClickBlock("page", "/admin/test")}>테스트</button>
               </NavBlock>

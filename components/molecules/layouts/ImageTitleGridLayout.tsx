@@ -48,6 +48,7 @@ export default function ImageTileGridLayout({
             fill={true}
             alt="reviewThumbnailImage"
             priority={isPriority}
+            style={{ objectPosition: "center", objectFit: "cover" }}
           />
         </ImageContainer>
         <TextContainer>{text}</TextContainer>

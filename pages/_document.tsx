@@ -52,16 +52,12 @@ export default class MyDocument extends Document {
           />
           <link rel="manifest" href="/manifest.json" />
           <meta property="og:type" content="website" />
-          <meta property="og:title" content="About" />
+          <meta property="og:title" content="ABOUT" />
           <meta property="og:url" content="https://studyabout.herokuapp.com" />
-          <meta property="og:description" content="스터디 & 친목 동아리" />
+          <meta property="og:description" content="대학생 스터디 동아리" />
           <meta property="og:image" content="/ogImage.jpg" />
           <meta property="og:locale" content="ko_KR" />
           <meta property="og:site_name" content="https://studyabout.herokuapp.com" />
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
-          />
           <meta charSet="utf-8" key="charset" />{" "}
           <Script src="https://kit.fontawesome.com/4071928605.js" crossOrigin="anonymous"></Script>
         </Head>

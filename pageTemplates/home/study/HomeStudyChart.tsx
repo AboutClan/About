@@ -1,7 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import dynamic from "next/dynamic";
-import { useRouter } from "next/navigation";
 
 import HighlightedTextButton from "../../../components/atoms/buttons/HighlightedTextButton";
 import SectionBar from "../../../components/molecules/bars/SectionBar";
@@ -13,7 +12,6 @@ interface HomeStudyChartProps {
 }
 
 function HomeStudyChart({ voteCntArr }: HomeStudyChartProps) {
-  const router = useRouter();
   const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
   const filtered: VoteCntProps[] = voteCntArr?.reduce((acc, cur) => {
@@ -39,9 +37,7 @@ function HomeStudyChart({ voteCntArr }: HomeStudyChartProps) {
     <>
       <SectionBar
         title="스터디 전체 통계"
-        rightComponent={
-          <HighlightedTextButton text="더보기" onClick={() => router.push("/calendar")} />
-        }
+        rightComponent={<HighlightedTextButton text="더보기" url="/studyCalendar" />}
       />
       <Box pt="16px" pr="16px">
         <ApexCharts

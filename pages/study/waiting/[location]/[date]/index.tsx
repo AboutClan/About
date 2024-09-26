@@ -33,13 +33,17 @@ export default function Page() {
 
   const setMyStudy = useSetRecoilState(myStudyState);
 
-  const { data: studyAll } = useStudyVoteQuery(
+  const { data: studyData } = useStudyVoteQuery(
     date,
     convertLocationLangTo(location as ActiveLocation, "kr"),
+    false,
+    false,
     {
       enabled: !!location || !!date,
     },
   );
+
+  const studyAll = studyData?.[0]?.participations;
 
   const [isHidden, setIsHidden] = useState(true);
 
@@ -55,7 +59,7 @@ export default function Page() {
   }, [studyAll]);
 
   const studyWaitingUsers = studyAll && getWaitingSpaceProps(studyAll);
-  const sortedStudyPlaces = studyAll && sortStudyVoteData(studyAll, false);
+  const sortedStudyPlaces = studyAll && sortStudyVoteData(studyAll, null, false);
 
   const [category, setCategory] = useState("참여 멤버");
   const [isPointModal, setIsPointModal] = useState(false);

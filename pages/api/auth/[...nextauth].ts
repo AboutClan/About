@@ -27,8 +27,8 @@ export const authOptions: NextAuthOptions = {
       credentials: {},
       async authorize(credentials, req) {
         const profile = {
-          id: "0",
-          uid: "0",
+          id: "66f29811e0f0564ae35c52a4",
+          uid: "1234567890",
           name: "guest",
           role: "guest",
           profileImage: "",
@@ -109,8 +109,8 @@ export const authOptions: NextAuthOptions = {
 
       if (session.user.name === "guest") {
         session.user = {
-          id: "0",
-          uid: "0",
+          id: "66f29811e0f0564ae35c52a4",
+          uid: "1234567890",
           name: "guest",
           role: "guest",
           location: "수원",
@@ -141,10 +141,11 @@ export const authOptions: NextAuthOptions = {
         if (account && account.provider === "guest") {
           token = {
             ...token,
-            id: "0",
-            uid: "0",
+            id: "66f29811e0f0564ae35c52a4",
+            uid: "1234567890",
             name: "guest",
             role: "guest",
+            location: "수원",
             isActive: false,
             profileImage: "",
           };

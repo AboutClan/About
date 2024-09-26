@@ -24,7 +24,7 @@ export default function HomeReviewSection() {
     <Box mb="24px">
       <SectionBar
         title="ABOUT 모임 후기"
-        rightComponent={<HighlightedTextButton text="더보기" url="/review" />}
+        rightComponent={<HighlightedTextButton text="더보기" url="/square?tab=lounge" />}
       />
       <Box p="16px">{imageArr && <ImageTileGridLayout imageDataArr={imageArr} />}</Box>
     </Box>

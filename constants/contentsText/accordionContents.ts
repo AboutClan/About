@@ -1,5 +1,5 @@
 import { IAccordionContent } from "../../components/molecules/Accordion";
-import { EVENT_ALWAYS, EVENT_CONTENT_2024 } from "../../constants/settingValue/eventContents";
+import { EVENT_ALWAYS, EVENT_CONTENT_2024 } from "../contents/calendarSchedule";
 
 //회원가입 질문 컨텐츠
 export const ACCORDION_CONTENT_FEE: IAccordionContent[] = [

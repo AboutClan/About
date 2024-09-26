@@ -43,14 +43,14 @@ function ResetStudyStatus() {
           )}
         </span>
         <Month>
-          {[3, 4, 5, 6, 7].map((item) => (
+          {[8, 9, 10, 11, 12].map((item) => (
             <Button key={item} onClick={() => onClickBtn("month", item)}>
               {item}
             </Button>
           ))}
         </Month>
         <Date>
-          {[currentDate - 1, currentDate, currentDate + 1, currentDate + 2].map((item) => (
+          {[currentDate - 3, currentDate, currentDate + 1, currentDate + 2].map((item) => (
             <Button key={item} onClick={() => onClickBtn("date", item)}>
               {item}
             </Button>

@@ -18,8 +18,12 @@ export interface ITextAndColorSchemes {
   colorScheme: ThemeTypings["colorSchemes"];
 }
 
-export interface UserCommentProps extends ITimeStamps {
-  user: IUserSummary;
+interface CommentProps extends ITimeStamps {
   comment: string;
+  user?: IUserSummary;
+  likeList?: string[];
   _id?: string;
+}
+export interface UserCommentProps extends CommentProps {
+  subComments?: CommentProps[];
 }

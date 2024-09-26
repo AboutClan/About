@@ -36,7 +36,7 @@ export const GROUP_STUDY_SUB_CATEGORY: { [key in GroupCategory]: string[] } = {
   문화탐방: ["방탈출", "보드게임", "소그룹", "전시회/미술관"],
   운동: ["러닝", "운동 인증", "다이어트"],
   피크닉: ["출사"],
-  기타: ["편입준비", "공사", "수리 통계", "노래"],
+  기타: ["편입준비", "공사", "수리 통계", "노래", "친목 모임"],
 };
 
 export const GROUP_STUDY_CATEGORY_ARR_ICONS = {

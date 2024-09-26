@@ -107,7 +107,6 @@ const MyRecordItem = styled.div`
   flex-direction: column;
   justify-content: space-around;
   height: 100%;
-
   > div {
     display: flex;
     align-items: center;

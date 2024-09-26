@@ -66,7 +66,7 @@ function AvatarComponent({
       <AvatarContainer size={size} sizeLength={sizeLength}>
         <ImageContainer
           bg={
-            bgImage ||
+            (!shadowAvatar && bgImage) ||
             (shadowAvatar
               ? "var(--gray-500)"
               : hasAvatar && avatar.bg !== null && COLOR_TABLE_LIGHT[avatar.bg])
@@ -113,7 +113,9 @@ function AvatarComponent({
   return (
     <>
       {!isLink ? (
-        <AvatarComponent />
+        <Box>
+          <AvatarComponent />
+        </Box>
       ) : (
         <Link href={`/profile/${uid}`} style={{ outline: "none" }}>
           <AvatarComponent />
@@ -133,7 +135,7 @@ const AvatarContainer = styled.div<{
 }>`
   overflow: hidden;
   position: relative;
-  border-radius: 50%; // rounded-full
+  border-radius: 50%;
   background-color: white;
 
   ${(props) => {

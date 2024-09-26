@@ -14,7 +14,7 @@ interface IGatherDetailInfo {
 }
 
 function GatherDetailInfo({
-  data: { location, date, age, memberCnt, user, password, genderCondition },
+  data: { location, date, age, user, password, genderCondition, isApprovalRequired },
 }: IGatherDetailInfo) {
   const { data: session } = useSession();
   const isOrganizer = (user as IUserSummary)?.uid === session?.user?.uid;
@@ -40,8 +40,8 @@ function GatherDetailInfo({
         {genderCondition && <i className="fa-solid fa-venus-mars" style={{ color: "#9E7CFF" }} />}
       </Item>
       <Item>
-        <ItemText>오픈</ItemText>
-        <span>{memberCnt.min}명 이상 오픈</span>
+        <ItemText>방식</ItemText>
+        <span>{isApprovalRequired ? "승인제" : "선착순"}</span>
       </Item>
       {isOrganizer && password && (
         <Item>

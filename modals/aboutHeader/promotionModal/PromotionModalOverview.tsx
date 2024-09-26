@@ -10,8 +10,7 @@ function PromotionModalOverview() {
         <EveryTimeLogo />
       </Flex>
       <Detail>
-        에브리타임에 홍보글을 작성해주시면 <b>200 Point</b>와 매주 추첨을 통해 <b>치킨 기프티콘</b>
-        을 드려요!
+        (한정)에브리타임에 홍보글을 작성해주시면 매주 두분께 올리브영 기프티콘을 드려요!
       </Detail>
     </Layout>
   );

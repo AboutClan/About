@@ -80,59 +80,70 @@ const Login: NextPage<{
   };
 
   return (
-    <>
-      <Box position="relative">
-        <Image src="/loginBackground.jpg" alt="loginBackground" width={750} height={1624} />
+    <Flex direction="column" alignItems="center" height="100vh" overflow="hidden">
+      <Box position="relative" width="100%" height="100%">
+        <Image
+          src="/loginBackground.jpg"
+          alt="loginBackground"
+          layout="fill"
+          sizes="1624px"
+          objectFit="cover"
+        />
       </Box>
-
       <Flex
-        width="300px"
         direction="column"
         align="center"
         position="fixed"
-        bottom="10%"
+        width="100%"
+        px="32px"
+        bottom="9%"
         left="50%"
         transform="translate(-50%,0)"
       >
         <Button
+          maxW="calc(var(--max-width) - 2 * 20px)"
           size="lg"
           fontSize="16px"
           width="100%"
           backgroundColor="#FEE500"
-          rounded="md"
+          borderRadius="4px"
           isLoading={isLoading}
           onClick={() => customSignin("member")}
           mb="8px"
+          aspectRatio={2 / 1}
           display="flex"
           justifyContent="space-between"
           leftIcon={<IconKakao />}
           pr="32px"
         >
-          <span>카카오 로그인</span>
+          <span>카카오톡으로 시작하기</span>
           <div />
         </Button>
         <Button
           size="lg"
           fontSize="16px"
           width="100%"
-          rounded="md"
-          background="var(--gray-200)"
+          borderRadius="4px"
+          backgroundColor="var(--gray-200)"
           onClick={() => setIsModal(true)}
           mb="16px"
           justifyContent="space-between"
           leftIcon={<IconUser />}
           pr="32px"
         >
-          <span>게스트 로그인</span>
+          <span>게스트로 구경하기</span>
           <div />
         </Button>
-        <Box fontSize="13px" color="var(--gray-700)">
-          활동 및 신규 가입은 <u style={{ textUnderlineOffset: "4px" }}> 카카오 로그인</u>을
-          이용해주세요!
-        </Box>
-        <Link mt="8px" href="https://open.kakao.com/o/sjDgVzmf" isExternal fontSize="13px">
-          <u style={{ textUnderlineOffset: "4px", color: "var(--gray-700)" }}>
-            로그인이 안되시나요?
+
+        <Link mt={1} href="https://open.kakao.com/o/sjDgVzmf" isExternal fontSize="13px">
+          <u
+            style={{
+              textUnderlineOffset: "4px",
+              color: "var(--gray-600)",
+              textDecorationColor: "var(--gray-600)",
+            }}
+          >
+            관리자에게 문의하기
           </u>
         </Link>
       </Flex>
@@ -148,7 +159,7 @@ const Login: NextPage<{
           가입 대기중입니다. <br /> 며칠 내에 카톡으로 연락드려요!
         </ModalLayout>
       )}
-    </>
+    </Flex>
   );
 };
 

@@ -1,6 +1,11 @@
 import { IParticipation, StudyStatus } from "../../types/models/studyTypes/studyDetails";
+import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
 
-export const sortStudyVoteData = (participations: IParticipation[], isConfirmed?: boolean) => {
+export const sortStudyVoteData = (
+  participations: IParticipation[],
+  preferPlaces?: IStudyVotePlaces,
+  isConfirmed?: boolean,
+) => {
   const getCount = (participation: IParticipation) => {
     if (!isConfirmed) return participation.attendences.length;
     return participation.attendences.filter((who) => who.firstChoice).length;
@@ -16,6 +21,13 @@ export const sortStudyVoteData = (participations: IParticipation[], isConfirmed?
     }
   };
 
+  const getPlacePriority = (placeId: string) => {
+    if (!preferPlaces) return;
+    if (placeId === preferPlaces.place) return 1; // main이면 가장 높은 우선순위
+    if (preferPlaces.subPlace.includes(placeId)) return 2; // sub 배열에 있으면 그다음 우선순위
+    return 3; // 그 외는 낮은 우선순위
+  };
+
   const sortedData = participations
     .map((par) => ({
       ...par,
@@ -25,8 +37,12 @@ export const sortStudyVoteData = (participations: IParticipation[], isConfirmed?
       const aStatusPriority = getStatusPriority(a.status);
       const bStatusPriority = getStatusPriority(b.status);
       if (aStatusPriority !== bStatusPriority) return aStatusPriority - bStatusPriority;
+      const countDiff = getCount(b) - getCount(a);
+      if (countDiff !== 0) return countDiff;
+      const aPlacePriority = getPlacePriority(a.place._id);
+      const bPlacePriority = getPlacePriority(b.place._id);
 
-      return getCount(b) - getCount(a);
+      return aPlacePriority - bPlacePriority;
     });
 
   return isConfirmed ? sortedData : sortedData.filter((par) => par.place.brand !== "자유 신청");

@@ -6,9 +6,9 @@ import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import Avatar from "../atoms/Avatar";
 
 interface UserCommentInputProps {
-  user: IUserSummary;
-  onSubmit: (value: string) => void;
   type?: "comment" | "message";
+  onSubmit: (value: string) => void;
+  user: IUserSummary;
   initialFocus?: boolean;
 }
 
@@ -48,6 +48,7 @@ function UserCommentInput({
             avatar={user.avatar}
             image={user.profileImage}
           />
+
           <Flex flex={1}>
             <MyTextArea
               placeholder={type === "comment" ? "댓글 달기..." : "메세지 입력"}
@@ -67,6 +68,7 @@ function UserCommentInput({
 
 const MyTextArea = styled.textarea`
   margin-left: var(--gap-3);
+  padding: 2px 0;
   flex: 1;
   background-color: inherit;
   height: 28px;

@@ -42,5 +42,6 @@ export const STORE_GIFT = "storeGift";
 export const COLLECTION_ALPHABET = "collectionAlphabet";
 
 export const ADMIN_STUDY_RECORD = "adminStudyRecord";
+export const ADMIN_LOCATION_ACTIVE = "adminLocationActive";
 
-export const STUDY_PREFERENCE_LOCAL = "studyPreferenceLocal2";
+export const STUDY_PREFERENCE_LOCAL = "studyPreferenceLocal4";

@@ -3,7 +3,6 @@ import dayjs from "dayjs";
 import styled from "styled-components";
 
 import { dayjsToStr, getToday } from "../../utils/dateTimeUtils";
-import PointCircle from "../atoms/PointCircle";
 
 export interface DatePointButtonProps {
   date: string;
@@ -15,7 +14,7 @@ export interface DatePointButtonProps {
   weekend?: "sat" | "sun";
 }
 
-function DatePointButton({ date, value, func, size = "md", isSelected }: DatePointButtonProps) {
+function DatePointButton({ date, func, size = "md", isSelected }: DatePointButtonProps) {
   const today = getToday();
 
   function TodayCircle({ date }: { date: number }) {
@@ -54,11 +53,9 @@ function DatePointButton({ date, value, func, size = "md", isSelected }: DatePoi
       >
         {!date ? null : !isSelected ? dateNum : <TodayCircle date={dateNum} />}
       </Flex>
-      <Flex justify="center" w="16px" h="16px">
-        {date === dayjsToStr(today) ? (
+      <Flex justify="center">
+        {date === dayjsToStr(today) && (
           <Box fontSize="10px" mt="4px" color="var(--color-mint)"></Box>
-        ) : (
-          value >= 1 && <PointCircle color={value >= 3 ? "mint" : "gray"} />
         )}
       </Flex>
     </Button>

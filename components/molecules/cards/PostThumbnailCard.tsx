@@ -2,8 +2,15 @@ import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
+import { USER_INFO } from "../../../constants/keys/queryKeys";
+import { useToast } from "../../../hooks/custom/CustomToast";
+import { useStudyPreferenceMutation } from "../../../hooks/study/mutations";
+import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { SingleLineText } from "../../../styles/layout/components";
 import { IImageProps } from "../../../types/components/assetTypes";
 import { ITextAndColorSchemes } from "../../../types/components/propTypes";
@@ -23,12 +30,15 @@ export interface IPostThumbnailCard {
   statusText?: string;
   maxCnt?: number;
   func?: () => void;
-
   registerDate?: string;
+  id?: string;
 }
+
+const VOTER_SHOW_MAX = 6;
 
 interface IPostThumbnailCardObj {
   postThumbnailCardProps: IPostThumbnailCard;
+  isShort?: boolean;
 }
 export function PostThumbnailCard({
   postThumbnailCardProps: {
@@ -43,8 +53,18 @@ export function PostThumbnailCard({
     func = undefined,
     type,
     registerDate,
+    id,
   },
+  isShort,
 }: IPostThumbnailCardObj) {
+  const { data: session } = useSession();
+  const queryClient = useQueryClient();
+  const toast = useToast();
+  const isGuest = session?.user.name === "guest";
+
+  const { data: userInfo } = useUserInfoQuery({ enabled: isGuest === false });
+  const preference = userInfo?.studyPreference;
+
   const userAvatarArr = participants
     ?.filter((par) => par)
     .map((par) => ({
@@ -53,6 +73,30 @@ export function PostThumbnailCard({
     }));
 
   const CLOSED_TEXT_ARR = ["모집 마감", "닫힘"];
+
+  const [heartType, setHeartType] = useState<"main" | "sub" | null>();
+
+  useEffect(() => {
+    if (!preference) return;
+    const { place, subPlace } = preference || { place: null, subPlace: [] };
+
+    if (place === id) setHeartType("main");
+    else if (subPlace?.includes(id)) setHeartType("sub");
+  }, [preference, id]);
+
+  const { mutate: patchStudyPreference } = useStudyPreferenceMutation("patch", {
+    onSuccess() {
+      toast("success", "변경되었습니다.");
+    },
+  });
+
+  const toggleHeart = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const preferenceType = heartType ? null : preference?.place ? "sub" : "main";
+    patchStudyPreference({ id, type: preferenceType });
+    setHeartType(preferenceType);
+    queryClient.invalidateQueries([USER_INFO]);
+  };
 
   return (
     <CardLink href={url} onClick={func}>
@@ -72,6 +116,23 @@ export function PostThumbnailCard({
             sizes="100px"
             priority={image.priority}
           />
+          {type === "study" && (
+            <Box
+              as="button"
+              pos="absolute"
+              p={1}
+              bottom={-1}
+              right={1}
+              color="white"
+              onClick={toggleHeart}
+            >
+              {heartType ? (
+                <i className="fa-solid fa-heart fa-sm" />
+              ) : (
+                <i className="fa-regular fa-heart fa-sm" />
+              )}
+            </Box>
+          )}
         </Box>
         <Flex direction="column" ml="12px" flex={1}>
           <Flex align="center" fontSize="16px">
@@ -87,7 +148,10 @@ export function PostThumbnailCard({
           <Subtitle>{subtitle}</Subtitle>
           {participants ? (
             <StatusContainer>
-              <AvatarGroupsOverwrap userAvatarArr={userAvatarArr} size="sm" />
+              <AvatarGroupsOverwrap
+                userAvatarArr={userAvatarArr}
+                maxCnt={VOTER_SHOW_MAX - (isShort ? 1 : 0)}
+              />
               <div className="statusText">
                 <Box fontSize="14px" color="var(--color-mint)" fontWeight={600} mr="8px" mt="4px">
                   {statusText}
@@ -103,9 +167,12 @@ export function PostThumbnailCard({
         </Flex>
       </Flex>
       <Flex direction="column" justifyContent="space-between" align="flex-end">
-        <Box>
-          {badge && <OutlineBadge size="sm" text={badge.text} colorScheme={badge.colorScheme} />}
-        </Box>
+        {badge ? (
+          <OutlineBadge size="sm" text={badge.text} colorScheme={badge.colorScheme} />
+        ) : (
+          <Box />
+        )}
+
         {participants && (
           <Flex
             mb="-2px"
