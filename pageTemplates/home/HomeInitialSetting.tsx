@@ -10,7 +10,7 @@ import PCBottomNav from "../../components/layouts/PCBottomNav";
 import { STEPS_CONTENTS } from "../../constants/contentsText/GuideContents";
 import { USER_GUIDE, USER_LOCATION } from "../../constants/keys/localStorage";
 import { useToast } from "../../hooks/custom/CustomToast";
-import { usePushServiceInitialize } from "../../hooks/FCM/mutaion";
+import { usePushServiceInitialize } from "../../hooks/FcmManger/mutaion";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import FAQPopUp from "../../modals/pop-up/FAQPopUp";
