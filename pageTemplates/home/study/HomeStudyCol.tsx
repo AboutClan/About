@@ -1,7 +1,7 @@
 import { ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
@@ -18,7 +18,6 @@ import {
   STUDY_RESULT_HOUR,
 } from "../../../constants/serviceConstants/studyConstants/studyTimeConstant";
 import { useStudyResultDecideMutation } from "../../../hooks/study/mutations";
-import { getStudyConfimCondition } from "../../../libs/study/getStudyConfimCondition";
 import StudyOpenCheckModal from "../../../modals/study/StudyOpenCheckModal";
 import { studyDateStatusState } from "../../../recoils/studyRecoils";
 import { IParticipation, StudyStatus } from "../../../types/models/studyTypes/studyDetails";
@@ -100,10 +99,6 @@ function HomeStudyCol({ studyVoteData, isLoading, date, isShort }: HomeStudyColP
         : [...studyVotingTable, newEntry];
 
       localStorage.setItem(STUDY_VOTING_TABLE, JSON.stringify(updatedTable));
-    }
-
-    if (getStudyConfimCondition(studyDateStatus, studyVoteData[1].status)) {
-      decideStudyResult();
     }
   }, [studyDateStatus, studyVoteData]);
 

@@ -1,8 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
-import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
@@ -14,11 +13,8 @@ import { SingleLineText } from "../../../styles/layout/components";
 import { IImageProps } from "../../../types/components/assetTypes";
 import { ITextAndColorSchemes } from "../../../types/components/propTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
-import OutlineBadge from "../../atoms/badges/OutlineBadge";
 import Skeleton from "../../atoms/skeleton/Skeleton";
-import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
-export interface IPostThumbnailCard {
+export interface IHighlightedThumbnailCard {
   participants?: IUserSummary[];
   title: string;
   subtitle: string;
@@ -35,12 +31,12 @@ export interface IPostThumbnailCard {
 
 const VOTER_SHOW_MAX = 6;
 
-interface IPostThumbnailCardObj {
-  postThumbnailCardProps: IPostThumbnailCard;
+interface IHighlightedThumbnailCardObj {
+  highlightedThumbnailCardProps: IHighlightedThumbnailCard;
   isShort?: boolean;
 }
-export function PostThumbnailCard({
-  postThumbnailCardProps: {
+export function HighlightedThumbnailCard({
+  highlightedThumbnailCardProps: {
     participants,
     title,
     subtitle,
@@ -55,7 +51,7 @@ export function PostThumbnailCard({
     id,
   },
   isShort,
-}: IPostThumbnailCardObj) {
+}: IHighlightedThumbnailCardObj) {
   const { data: session } = useSession();
   const queryClient = useQueryClient();
   const toast = useToast();
@@ -116,108 +112,36 @@ export function PostThumbnailCard({
           pos="relative"
         >
           <Image
-            src={image.url}
+            src={"/실시간.jpg"}
             alt="thumbnailImage"
             fill={true}
             sizes="100px"
             priority={image.priority}
           />
-          {type === "study" && (
-            <Box
-              as="button"
-              pos="absolute"
-              p={1}
-              bottom={-1}
-              right={1}
-              color="white"
-              onClick={toggleHeart}
-            >
-              {isMyPrefer ? (
-                <i className="fa-solid fa-heart fa-sm" />
-              ) : (
-                <i className="fa-regular fa-heart fa-sm" />
-              )}
-            </Box>
-          )}
         </Box>
         <Flex direction="column" ml="12px" flex={1}>
           <Flex align="center" fontSize="16px">
             {title !== "개인 스터디" && type === "study" && (
-              <Flex mr="4px" w="12px" justify="center" align="center">
+              <Flex mr="8px" w="12px" justify="center" align="center">
                 <Box>
-                  <i className="fa-regular fa-location-dot fa-sm" />
+                  <i className="fa-regular fa-map-location-dot fa-sm" />
                 </Box>
               </Flex>
             )}
-            <Title>{title}</Title>
+            <Title>실시간 스터디</Title>
           </Flex>
-          <Subtitle>{subtitle}</Subtitle>
-          {participants ? (
-            <StatusContainer>
-              <AvatarGroupsOverwrap
-                userAvatarArr={userAvatarArr}
-                maxCnt={VOTER_SHOW_MAX - (isShort ? 1 : 0)}
-              />
-              <div className="statusText">
-                <Box fontSize="14px" color="var(--color-mint)" fontWeight={600} mr="8px" mt="4px">
-                  {statusText}
-                </Box>
-              </div>
-            </StatusContainer>
-          ) : (
-            <Flex mt="auto" color="var(--gray-500)">
-              <Box>등록일: </Box>
-              <Box>{dayjsToFormat(dayjs(registerDate), "YYYY년 M월 D일")}</Box>
-            </Flex>
-          )}
+          <Subtitle>동네 지도</Subtitle>
+          <Flex fontSize="16px" mt="auto" align="center">
+            <i className="fa-solid fa-user fa-sm" />
+            <Box ml="4px">실시간 현재 인원: 14명</Box>
+          </Flex>
         </Flex>
-      </Flex>
-      <Flex direction="column" justifyContent="space-between" align="flex-end">
-        {badge ? (
-          <OutlineBadge size="sm" text={badge.text} colorScheme={badge.colorScheme} />
-        ) : (
-          <Box />
-        )}
-
-        {participants && (
-          <Flex
-            mb="-2px"
-            className="userIconContainer"
-            fontSize="15px"
-            align="center"
-            color="var(--gray-500)"
-          >
-            <Box>
-              <i className="fa-regular fa-user fa-xs" />
-            </Box>
-            <Flex ml="8px" align="center" fontWeight={500}>
-              <Box
-                as="span"
-                color={
-                  CLOSED_TEXT_ARR.includes(badge?.text)
-                    ? "inherit"
-                    : maxCnt && participants.length >= maxCnt
-                      ? "var(--color-red)"
-                      : "var(--gray-800)"
-                }
-              >
-                {participants.length}
-              </Box>
-              <Box>
-                <Box as="span" mr="2px" ml="4px">
-                  /
-                </Box>
-                {maxCnt || <i className="fa-regular fa-infinity" />}
-              </Box>
-            </Flex>
-          </Flex>
-        )}
       </Flex>
     </CardLink>
   );
 }
 
-export function PostThumbnailCardSkeleton() {
+export function HighlightedThumbnailCardSkeleton() {
   return (
     <SkeletonContainer>
       <SkeletonBlock style={{ width: "80px", height: "80px" }}>
@@ -241,16 +165,58 @@ export function PostThumbnailCardSkeleton() {
 }
 
 const CardLink = styled(Link)`
+  position: relative;
   height: 112px;
   display: flex;
   padding: 16px;
   background-color: white;
-  border: var(--border);
-  border-radius: var(--rounded-lg);
+  border-radius: var(--rounded-lg); /* 둥근 모서리 */
   justify-content: space-between;
 
+  /* 빗금 패턴 배경 */
+  background-image: linear-gradient(
+    45deg,
+    rgba(0, 194, 179, 0.1) 25%,
+    transparent 25%,
+    transparent 50%,
+    rgba(0, 194, 179, 0.1) 50%,
+    rgba(0, 194, 179, 0.1) 75%,
+    transparent 75%,
+    transparent 100%
+  );
+  background-size: 10px 10px;
+
+  /* Hover 시 배경색 변경 */
   &:hover {
-    background-color: var(--gray-200);
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  }
+  /* 그림자 효과 추가 */
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.05),
+    0 4px 6px rgba(0, 0, 0, 0.1);
+  /* 3D 입체 효과 */
+
+  /* 가상 요소를 사용해 그라데이션 테두리 추가 */
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: var(--rounded-lg); /* 둥근 모서리 */
+    padding: 2px; /* 테두리 두께 */
+    background: linear-gradient(to right, var(--color-mint), var(--color-blue)); /* 그라데이션 */
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    -webkit-mask-composite: destination-out;
+    pointer-events: none; /* 클릭 방지 */
   }
 `;
 
