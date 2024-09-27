@@ -1,7 +1,7 @@
 import { ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
@@ -17,6 +17,7 @@ import {
   STUDY_DATE_START_HOUR,
   STUDY_RESULT_HOUR,
 } from "../../../constants/serviceConstants/studyConstants/studyTimeConstant";
+import { useStudyResultDecideMutation } from "../../../hooks/study/mutations";
 import StudyOpenCheckModal from "../../../modals/study/StudyOpenCheckModal";
 import { studyDateStatusState } from "../../../recoils/studyRecoils";
 import { IParticipation, StudyStatus } from "../../../types/models/studyTypes/studyDetails";
@@ -47,6 +48,8 @@ function HomeStudyCol({ studyVoteData, isLoading, date, isShort }: HomeStudyColP
   const studyDateStatus = useRecoilValue(studyDateStatusState);
   const [studyCardColData, setStudyCardColData] = useState<IPostThumbnailCard[]>();
   const [dismissedStudy, setDismissedStudy] = useState<IParticipation>();
+
+  const { mutate: decideStudyResult } = useStudyResultDecideMutation(date);
 
   useEffect(() => {
     if (!studyVoteData || !studyVoteData.length || !session?.user || !studyDateStatus) {

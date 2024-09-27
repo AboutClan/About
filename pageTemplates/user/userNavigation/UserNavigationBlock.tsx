@@ -1,5 +1,6 @@
-import { useRouter } from "next/router";
+import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import RowButtonBlock from "../../../components/atoms/blocks/RowButtonBlock";
@@ -8,6 +9,7 @@ import TextDevider from "../../../components/atoms/devider/TextDevider";
 import { DESIGN_PAGE_USER_PERMISSION } from "../../../constants/storage/userPermissions";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import { DispatchString } from "../../../types/hooks/reactTypes";
+import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import { UserOverviewModal } from "./UserNavigation";
 
 interface IUserNavigationBlock {
@@ -100,6 +102,9 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
             아바타 아이콘 저작권
           </button>
           <button onClick={() => onClickBlock("modal", "secede")}>회원 탈퇴</button>
+          <button onClick={() => router.push(`/vote?location=suw&date=${dayjsToStr(dayjs())}`)}>
+            임시
+          </button>
         </NavBlock>
       </div>
       <div>

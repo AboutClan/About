@@ -2,6 +2,7 @@ import { Box } from "@chakra-ui/react";
 import styled from "styled-components";
 
 import ShadowBlockButton from "../atoms/buttons/ShadowBlockButton";
+import { HighlightedThumbnailCard } from "../molecules/cards/HighlightedThumbnailCard";
 import {
   IPostThumbnailCard,
   PostThumbnailCard,
@@ -17,6 +18,12 @@ interface ICardColumnLayout {
 export function CardColumnLayout({ cardDataArr, url, func, isShort }: ICardColumnLayout) {
   return (
     <Layout>
+      <Item>
+        <HighlightedThumbnailCard
+          highlightedThumbnailCardProps={cardDataArr[0]}
+          isShort={isShort}
+        />
+      </Item>
       {cardDataArr.map((cardData, idx) => (
         <Item key={idx}>
           <PostThumbnailCard postThumbnailCardProps={cardData} isShort={isShort} />
