@@ -1,7 +1,7 @@
 import "swiper/css";
 import "swiper/css/navigation";
 
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -9,7 +9,6 @@ import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import Image from "next/image";
 import {
   CalendarIcon,
   CampfireIcon,
@@ -18,7 +17,7 @@ import {
   StoreIcon,
 } from "../../components/atoms/Icons/AboutCategoryIcons";
 import { USER_LOCATION } from "../../constants/keys/localStorage";
-import { VOTER_DATE_END } from "../../constants/settingValue/study/study";
+import { STUDY_VOTE_END_HOUR } from "../../constants/settingValue/study/study";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { studyPairArrState } from "../../recoils/studyRecoils";
 import { ActiveLocation } from "../../types/services/locationTypes";
@@ -34,9 +33,9 @@ interface HomeRecommendationItemProps {
 function HomeRecommendationSection() {
   const { data: session } = useSession();
 
-  const todayDayjs = dayjs().hour() < VOTER_DATE_END ? dayjs() : dayjs().add(1, "day");
+  const todayDayjs = dayjs().hour() < STUDY_VOTE_END_HOUR ? dayjs() : dayjs().add(1, "day");
   const setStudyPairArr = useSetRecoilState(studyPairArrState);
-
+  console.log(55, todayDayjs, session);
   const userLocation = localStorage.getItem(USER_LOCATION) as ActiveLocation;
 
   const { data: studyVoteData, isLoading } = useStudyVoteQuery(
@@ -68,9 +67,6 @@ function HomeRecommendationSection() {
   ];
   return (
     <>
-      {/* {HOME_RECOMMENDATION_TAB_CONTENTS.map((content) => (
-        <RecommendationBannerCard key={content.title} {...content} />
-      ))} */}
       <Flex justify="space-between" p={4} borderBottom="var(--border)">
         {HOME_RECOMMENDATION_ICON_ARR.map((item) => (
           <Link href={item.url} key={item.title}>
@@ -83,73 +79,6 @@ function HomeRecommendationSection() {
           </Link>
         ))}
       </Flex>{" "}
-      <Flex
-        mx={4}
-        direction="column"
-        p={4}
-        pt={2}
-        bgColor="var(--color-mint-light)"
-        borderRadius="var(--rounded-lg)"
-      >
-        <Flex justify="space-between">
-          <Flex direction="column" pb={3} pt={2}>
-            <Box p={1} fontSize="17px" fontWeight={600}>
-              공부하고 있는 친구 없나?
-              <br />
-              실시간으로 한눈에 확인하자!
-            </Box>
-            <Box p={1}>실시간 참여 인원: 34</Box>
-          </Flex>
-          <Flex
-            justify="center"
-            position="relative"
-            align="center"
-            mb="auto"
-            fontSize="24px"
-            height="100px"
-            width="100px"
-            mr={2}
-          >
-            <Box>
-              <Image
-                src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%8F%99%EC%95%84%EB%A6%AC+%EC%A7%84%EC%A7%9C+%EC%A7%80%EB%8F%84.png"
-                width={100}
-                height={100}
-                alt="map"
-              />
-            </Box>
-            <Box
-              position="absolute"
-              bottom="32px"
-              right="4px"
-              width="80px"
-              height="30px"
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              color="var(--gray-600)"
-            >
-              <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                position="absolute"
-                top="0"
-                right="0"
-                transform="translate(-50%, -50%)"
-              >
-                <Image
-                  src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%8F%8B%EB%B3%B4%EA%B8%B0%EC%9E%85%EB%8B%88%EB%8B%A4.png"
-                  width={60}
-                  height={60}
-                  alt="돋보기"
-                />
-              </Box>
-            </Box>
-          </Flex>
-        </Flex>
-        <Button colorScheme="mintTheme">실시간 스터디 참여하기</Button>
-      </Flex>
       <Swiper
         style={{
           width: "100%",
@@ -166,6 +95,7 @@ function HomeRecommendationSection() {
             <Box>
               <HomeStudyCol
                 studyVoteData={studyVoteData?.[0]?.participations}
+                specialVoteData={studyVoteData?.[1]?.participations[0]}
                 isLoading={isLoading}
                 date={dayjsToStr(todayDayjs)}
                 isShort

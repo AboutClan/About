@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import BottomDrawerLg from "../../components/organisms/drawer/BottomDrawerLg";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
-import { StudyVoteMapActionType } from "../../pages/vote";
+
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { IParticipation, IPlace } from "../../types/models/studyTypes/studyDetails";
 import {
@@ -26,7 +26,7 @@ interface VoteDrawerProps {
   studyVoteData: IParticipation[];
   myVote: IStudyVoteWithPlace;
   setMyVote: DispatchType<IStudyVoteWithPlace>;
-  setActionType: DispatchType<StudyVoteMapActionType>;
+  setActionType: DispatchType<"timeSelect">;
 }
 
 function VoteDrawer({ studyVoteData, myVote, setMyVote, setActionType }: VoteDrawerProps) {

@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
 
 import axios from "axios";
+import { signOut, useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
 import { useEffect, useMemo, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -20,6 +20,7 @@ import Seo from "./Seo";
 
 export const BASE_BOTTOM_NAV_SEGMENT = ["home", "square", "user", "group"];
 export const NOT_PADDING_NAV_SEGMENT = ["login"];
+export const NOT_PADDING_BOTTOM_NAV_SEGMENT = ["vote"];
 
 const GoogleAnalytics = dynamic(
   () => import("@next/third-parties/google").then((mod) => mod.GoogleAnalytics),
@@ -83,12 +84,16 @@ function Layout({ children }: ILayout) {
           <div
             id="root-modal"
             style={
-              !NOT_PADDING_NAV_SEGMENT.includes(currentSegment?.[0])
+              NOT_PADDING_BOTTOM_NAV_SEGMENT.includes(currentSegment?.[0])
                 ? {
                     paddingTop: "56px",
-                    paddingBottom: `${getBottomNavSize()}px`,
                   }
-                : undefined
+                : !NOT_PADDING_NAV_SEGMENT.includes(currentSegment?.[0])
+                  ? {
+                      paddingTop: "56px",
+                      paddingBottom: `${getBottomNavSize()}px`,
+                    }
+                  : undefined
             }
           >
             {children}

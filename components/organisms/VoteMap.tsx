@@ -2,12 +2,11 @@ import { useEffect, useRef } from "react";
 import styled from "styled-components";
 
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
-import { IPlace } from "../../types/models/studyTypes/studyDetails";
 
 interface IVoteMap {
   mapOptions?: IMapOptions;
   markersOptions?: IMarkerOptions[];
-  handleMarker?: (id: IPlace) => void;
+  handleMarker?: (id: string) => void;
   centerValue?: {
     lat: number;
     lng: number;
@@ -36,6 +35,7 @@ export default function VoteMap({
 
   useEffect(() => {
     const map = mapInstanceRef.current;
+    console.log(4444, markersOptions);
     if (!mapRef?.current || !map || typeof naver === "undefined") return;
 
     //새로운 옵션 적용 전 초기화
@@ -43,7 +43,6 @@ export default function VoteMap({
     mapElementsRef.current.polylines.forEach((polyline) => polyline.setMap(null));
     mapElementsRef.current.infoWindow.forEach((info) => info.close());
     mapElementsRef.current = { markers: [], polylines: [], infoWindow: [] };
-
     //새로운 옵션 적용
     markersOptions?.forEach((markerOptions) => {
       const marker = new naver.maps.Marker({
@@ -70,6 +69,7 @@ export default function VoteMap({
 
       naver.maps.Event.addListener(marker, "click", () => {
         if (handleMarker) {
+          console.log(24, markerOptions.id);
           handleMarker(markerOptions.id);
         }
       });
@@ -90,6 +90,5 @@ const Map = styled.div`
   width: 100%;
   height: 100%;
   max-width: var(--max-width);
-  max-height: var(--max-width);
   margin: 0 auto;
 `;

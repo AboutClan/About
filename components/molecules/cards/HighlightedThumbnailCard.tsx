@@ -2,17 +2,14 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
-import { USER_INFO } from "../../../constants/keys/queryKeys";
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { useStudyPreferenceMutation } from "../../../hooks/study/mutations";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
+import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import { SingleLineText } from "../../../styles/layout/components";
 import { IImageProps } from "../../../types/components/assetTypes";
 import { ITextAndColorSchemes } from "../../../types/components/propTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
 import Skeleton from "../../atoms/skeleton/Skeleton";
 export interface IHighlightedThumbnailCard {
   participants?: IUserSummary[];
@@ -32,76 +29,19 @@ export interface IHighlightedThumbnailCard {
 const VOTER_SHOW_MAX = 6;
 
 interface IHighlightedThumbnailCardObj {
-  highlightedThumbnailCardProps: IHighlightedThumbnailCard;
+  date: string;
   isShort?: boolean;
 }
-export function HighlightedThumbnailCard({
-  highlightedThumbnailCardProps: {
-    participants,
-    title,
-    subtitle,
-    image,
-    url,
-    badge,
-    statusText = undefined,
-    maxCnt = undefined,
-    func = undefined,
-    type,
-    registerDate,
-    id,
-  },
-  isShort,
-}: IHighlightedThumbnailCardObj) {
+export function HighlightedThumbnailCard({ date, isShort }: IHighlightedThumbnailCardObj) {
+  const typeToast = useTypeToast();
   const { data: session } = useSession();
-  const queryClient = useQueryClient();
-  const toast = useToast();
+
   const isGuest = session?.user.name === "guest";
 
-  const { data: userInfo, isLoading: userLoading } = useUserInfoQuery({
-    enabled: isGuest === false,
-  });
-  const preference = userInfo?.studyPreference;
-
-  const userAvatarArr = participants
-    ?.filter((par) => par)
-    .map((par) => ({
-      image: par.profileImage,
-      ...(par.avatar?.type !== null ? { avatar: par.avatar } : {}),
-    }));
-
-  const isMyPrefer = preference?.place === id || preference?.subPlace?.includes(id);
-
-  const CLOSED_TEXT_ARR = ["모집 마감", "닫힘"];
-
-  const { mutate: patchStudyPreference, isLoading } = useStudyPreferenceMutation("patch", {
-    onSuccess() {
-      toast("success", "변경되었습니다.");
-      queryClient.refetchQueries([USER_INFO]);
-    },
-  });
-
-  const toggleHeart = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    if (isLoading || userLoading) return;
-
-    const preferMain = preference?.place;
-
-    const preferenceType =
-      preference?.place === id
-        ? "main"
-        : preference?.subPlace?.includes(id)
-          ? "sub"
-          : preferMain
-            ? "sub"
-            : "main";
-
-    patchStudyPreference({ id, type: preferenceType });
-
-    queryClient.invalidateQueries([USER_INFO]);
-  };
-
   return (
-    <CardLink href={url} onClick={func}>
+    <CardLink
+      href={`/vote?location=${convertLocationLangTo(session?.user.location, "en")}&date=${date}&tab=real`}
+    >
       <Flex flex={1}>
         <Box
           w="80px"
@@ -111,29 +51,27 @@ export function HighlightedThumbnailCard({
           overflow="hidden"
           pos="relative"
         >
-          <Image
-            src={"/실시간.jpg"}
-            alt="thumbnailImage"
-            fill={true}
-            sizes="100px"
-            priority={image.priority}
-          />
+          <Image src={"/실시간.jpg"} alt="thumbnailImage" fill={true} sizes="100px" />
         </Box>
         <Flex direction="column" ml="12px" flex={1}>
           <Flex align="center" fontSize="16px">
-            {title !== "개인 스터디" && type === "study" && (
-              <Flex mr="8px" w="12px" justify="center" align="center">
-                <Box>
-                  <i className="fa-regular fa-map-location-dot fa-sm" />
-                </Box>
-              </Flex>
-            )}
+            <Box>
+              <i
+                className="fa-solid fa-location-dot"
+                style={{
+                  color: "var(--color-mint)",
+                  marginRight: "4px",
+                }}
+              />
+            </Box>
             <Title>실시간 스터디</Title>
           </Flex>
-          <Subtitle>동네 지도</Subtitle>
-          <Flex fontSize="16px" mt="auto" align="center">
-            <i className="fa-solid fa-user fa-sm" />
-            <Box ml="4px">실시간 현재 인원: 14명</Box>
+          <Subtitle>공부하고 인증하면 혜택을 드려요!</Subtitle>
+          <Flex fontSize="14px" mt="auto" align="center">
+            <Box mr={0.5}>
+              <i className="fa-solid fa-user fa-sm" />
+            </Box>
+            <Box ml="4px">참여중인 인원: 14명</Box>
           </Flex>
         </Flex>
       </Flex>
@@ -173,30 +111,13 @@ const CardLink = styled(Link)`
   border-radius: var(--rounded-lg); /* 둥근 모서리 */
   justify-content: space-between;
 
-  /* 빗금 패턴 배경 */
-  background-image: linear-gradient(
-    45deg,
-    rgba(0, 194, 179, 0.1) 25%,
-    transparent 25%,
-    transparent 50%,
-    rgba(0, 194, 179, 0.1) 50%,
-    rgba(0, 194, 179, 0.1) 75%,
-    transparent 75%,
-    transparent 100%
-  );
-  background-size: 10px 10px;
-
   /* Hover 시 배경색 변경 */
   &:hover {
     background-color: rgba(255, 255, 255, 0.9);
     box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
   }
-  /* 그림자 효과 추가 */
-  box-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.05),
-    0 4px 6px rgba(0, 0, 0, 0.1);
-  /* 3D 입체 효과 */
 
+  border-bottom-right-radius: 0;
   /* 가상 요소를 사용해 그라데이션 테두리 추가 */
   &::before {
     content: "";
@@ -206,8 +127,9 @@ const CardLink = styled(Link)`
     right: 0;
     bottom: 0;
     border-radius: var(--rounded-lg); /* 둥근 모서리 */
+    border-bottom-right-radius: 0;
     padding: 2px; /* 테두리 두께 */
-    background: linear-gradient(to right, var(--color-mint), var(--color-blue)); /* 그라데이션 */
+    background: linear-gradient(to right, #4de1b6, #1c5bd0); /* 그라데이션 */
     -webkit-mask:
       linear-gradient(#fff 0 0) content-box,
       linear-gradient(#fff 0 0);

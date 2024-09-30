@@ -73,7 +73,7 @@ function HomeHeader() {
       },
     ];
 
-    if (todayDailyCheck === false && showDailyCheck) {
+    if (todayDailyCheck  && showDailyCheck) {
       arr.unshift({
         icon: <i className="fa-light fa-badge-check" style={{ color: "var(--color-mint)" }} />,
         func: () => setModalType("dailyCheck"),
@@ -83,7 +83,7 @@ function HomeHeader() {
     return arr;
   };
 
-  const [iconBtnArr, setIconBtnArr] = useState<IIconButtonNavBtn[]>(generateIconBtnArr);
+  const [iconBtnArr, setIconBtnArr] = useState<IIconButtonNavBtn[]>(generateIconBtnArr());
 
   useEffect(() => {
     setIconBtnArr(generateIconBtnArr());

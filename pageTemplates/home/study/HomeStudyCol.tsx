@@ -17,7 +17,6 @@ import {
   STUDY_DATE_START_HOUR,
   STUDY_RESULT_HOUR,
 } from "../../../constants/serviceConstants/studyConstants/studyTimeConstant";
-import { useStudyResultDecideMutation } from "../../../hooks/study/mutations";
 import StudyOpenCheckModal from "../../../modals/study/StudyOpenCheckModal";
 import { studyDateStatusState } from "../../../recoils/studyRecoils";
 import { IParticipation, StudyStatus } from "../../../types/models/studyTypes/studyDetails";
@@ -28,12 +27,19 @@ import { dayjsToStr } from "../../../utils/dateTimeUtils";
 
 interface HomeStudyColProps {
   studyVoteData: IParticipation[];
+  specialVoteData?: any;
   isLoading: boolean;
   isShort?: boolean;
   date: string;
 }
 
-function HomeStudyCol({ studyVoteData, isLoading, date, isShort }: HomeStudyColProps) {
+function HomeStudyCol({
+  studyVoteData,
+  isLoading,
+  date,
+  isShort,
+  specialVoteData,
+}: HomeStudyColProps) {
   const { data: session } = useSession();
 
   const searchParams = useSearchParams();
@@ -48,21 +54,18 @@ function HomeStudyCol({ studyVoteData, isLoading, date, isShort }: HomeStudyColP
   const studyDateStatus = useRecoilValue(studyDateStatusState);
   const [studyCardColData, setStudyCardColData] = useState<IPostThumbnailCard[]>();
   const [dismissedStudy, setDismissedStudy] = useState<IParticipation>();
-
-  const { mutate: decideStudyResult } = useStudyResultDecideMutation(date);
-
+  console.log(25, studyDateStatus);
   useEffect(() => {
     if (!studyVoteData || !studyVoteData.length || !session?.user || !studyDateStatus) {
       setStudyCardColData(null);
       return;
     }
     const cardList = setStudyDataToCardCol(studyVoteData, date as string, session?.user.uid);
-    setStudyCardColData(cardList.slice(0, 3));
+
+    setStudyCardColData(cardList.slice(0, specialVoteData ? 2 : 3));
 
     let myStudy: IParticipation = null;
-
     const studyOpenCheck = localStorage.getItem(STUDY_CHECK_POP_UP);
-
     studyVoteData.forEach((par) =>
       par.attendences.forEach((who) => {
         if (who.user.uid === myUid && who.firstChoice) myStudy = par;
@@ -101,7 +104,7 @@ function HomeStudyCol({ studyVoteData, isLoading, date, isShort }: HomeStudyColP
       localStorage.setItem(STUDY_VOTING_TABLE, JSON.stringify(updatedTable));
     }
   }, [studyDateStatus, studyVoteData]);
-
+  console.log(studyCardColData?.[0]?.statusText);
   return (
     <>
       <BlurredPart
@@ -116,6 +119,7 @@ function HomeStudyCol({ studyVoteData, isLoading, date, isShort }: HomeStudyColP
         {!isLoading && studyCardColData ? (
           <CardColumnLayout
             cardDataArr={studyCardColData}
+            specialCardData={specialVoteData}
             url={`/studyList?tab=study&location=${locationEn}&date=${date}`}
             isShort={isShort}
           />

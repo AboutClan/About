@@ -4,8 +4,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import ColorLabelRow from "../../../../components/molecules/rows/ColorLabelRow";
 
 import WeekSlideCalendar from "../../../../components/molecules/WeekSlideCalendar";
+import { getStudyVoteCnt } from "../../../../libs/study/getStudyVoteCnt";
 import DateCalendarModal from "../../../../modals/aboutHeader/DateCalendarModal";
 import StudyAttendCheckModal from "../../../../modals/study/StudyAttendCheckModal";
 import StudySimpleVoteModal from "../../../../modals/study/StudySimpleVoteModal";
@@ -13,6 +15,7 @@ import { studyDateStatusState } from "../../../../recoils/studyRecoils";
 import { IParticipation } from "../../../../types/models/studyTypes/studyDetails";
 import { VoteCntProps } from "../../../../types/models/studyTypes/studyRecords";
 import { dayjsToStr } from "../../../../utils/dateTimeUtils";
+import StudyControllerVoteButton from "./StudyControllerVoteButton";
 
 export type VoteType =
   | "vote"
@@ -51,7 +54,7 @@ function StudyController({
   const setStudyDateStatus = useSetRecoilState(studyDateStatusState);
 
   const selectedDateDayjs = dayjs(selectedDate);
- 
+
   const handleSelectDate = (moveDate: string) => {
     if (date === moveDate) return;
     setStudyDateStatus(undefined);
@@ -64,7 +67,7 @@ function StudyController({
     <>
       <>
         <OuterContainer>
-          {/* <Flex justify="space-between" align="center" mb="16px" mr="12px">
+          <Flex justify="space-between" align="center" mb="16px" mr="12px">
             <Box fontSize="16px" fontWeight={600}>
               날짜 선택
             </Box>
@@ -75,7 +78,7 @@ function StudyController({
                 { text: "오픈 예정", color: "gray" },
               ]}
             />
-          </Flex> */}
+          </Flex>
           <Box>
             {selectedDate && (
               <>
@@ -98,10 +101,10 @@ function StudyController({
                     func={handleSelectDate}
                   />
                 </Flex>
-                {/* <StudyControllerVoteButton
+                <StudyControllerVoteButton
                   memberCnt={getStudyVoteCnt(studyVoteData)}
                   setModalType={setModalType}
-                /> */}
+                />
               </>
             )}
           </Box>

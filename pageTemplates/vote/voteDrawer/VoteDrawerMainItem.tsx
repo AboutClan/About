@@ -1,6 +1,5 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 
-import { StudyVoteMapActionType } from "../../../pages/vote";
 import { DispatchType } from "../../../types/hooks/reactTypes";
 import { IPlace } from "../../../types/models/studyTypes/studyDetails";
 import { IStudyVoteWithPlace } from "../../../types/models/studyTypes/studyInterActions";
@@ -10,7 +9,7 @@ interface VoteDrawerMainItemProps {
   favoritesCnt: number;
   myVotePlace: IPlace;
   setMyVote: DispatchType<IStudyVoteWithPlace>;
-  setActionType: DispatchType<StudyVoteMapActionType>;
+  setActionType: DispatchType<"timeSelect">;
 }
 
 function VoteDrawerMainItem({

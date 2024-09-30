@@ -9,8 +9,8 @@ import { IBottomDrawerLgOptions } from "../../components/organisms/drawer/Bottom
 import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { STUDY_VOTE, STUDY_VOTE_CNT } from "../../constants/keys/queryKeys";
 import {
-  POINT_SYSTEM_PLUS,
   PointSystemProp,
+  POINT_SYSTEM_PLUS,
 } from "../../constants/serviceConstants/pointSystemConstants";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";

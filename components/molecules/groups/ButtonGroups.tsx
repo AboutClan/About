@@ -1,9 +1,11 @@
 import { Button, Flex } from "@chakra-ui/react";
+import { JSXElementConstructor, ReactElement } from "react";
 import styled from "styled-components";
 
 export interface ButtonOptionsProps {
   text: string;
   func: () => void;
+  icon?: ReactElement<any, string | JSXElementConstructor<any>>;
   color?: string;
 }
 
@@ -36,6 +38,7 @@ export default function ButtonGroups({
               bg={buttonOptions.text === currentValue ? undefined : "white"}
               size={size}
               rounded={isEllipse ? "2xl" : "md"}
+              leftIcon={buttonOptions?.icon}
               _focus={{
                 outline: "none",
                 boxShadow: "none",
@@ -49,6 +52,7 @@ export default function ButtonGroups({
               color={buttonOptions.color}
               fontWeight={buttonOptions.text === currentValue ? 600 : 400}
               variant="ghost"
+              leftIcon={buttonOptions?.icon}
               size="xs"
               _focus={{
                 outline: "none",
