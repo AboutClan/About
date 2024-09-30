@@ -10,16 +10,14 @@ import styled from "styled-components";
 
 import { LOCATION_OPEN } from "../../constants/location";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
-import { useStudyDailyVoteCntQuery, useStudyVoteQuery } from "../../hooks/study/queries";
+import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { getStudyDateStatus } from "../../libs/study/date/getStudyDateStatus";
-import { studyDateStatusState, studyPairArrState } from "../../recoils/studyRecoils";
+import { myStudyState, studyDateStatusState, studyPairArrState } from "../../recoils/studyRecoils";
 import { IParticipation } from "../../types/models/studyTypes/studyDetails";
 import { ActiveLocation, LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 import HomeLocationBar from "./study/HomeLocationBar";
-import HomeNewStudySpace from "./study/HomeNewStudySpace";
-import HomeStudyChart from "./study/HomeStudyChart";
 import HomeStudyCol from "./study/HomeStudyCol";
 import StudyController from "./study/studyController/StudyController";
 
@@ -55,6 +53,7 @@ function HomeStudySection() {
   const [studyPairArr, setStudyPairArr] = useRecoilState(studyPairArrState);
   const [selectedDate, setSelectedDate] = useState<string>();
   const [studyVoteArr, setStudyVoteArr] = useState<IParticipation[]>();
+  const setMyStudy = useSetRecoilState(myStudyState);
 
   const findStudyData = studyPairArr?.find(
     (study) => dayjsToStr(dayjs(study.date)) === date,
@@ -66,9 +65,6 @@ function HomeStudySection() {
       !!date &&
       !!locationKr &&
       LOCATION_OPEN.includes(locationKr as ActiveLocation),
-  });
-  useStudyVoteQuery(date, locationKr, false, false, {
-    enabled: !!locationKr && !!date,
   });
 
   useEffect(() => {
@@ -83,26 +79,26 @@ function HomeStudySection() {
   useEffect(() => {
     if (findStudyData) setStudyVoteArr(findStudyData);
     else if (studyVoteData) setStudyPairArr(studyVoteData);
+    const tempStudy =
+      findStudyData?.find(
+        (par) =>
+          par.status !== "dismissed" &&
+          par.attendences.some((who) => who.user.uid === session?.user?.uid),
+      ) || null;
+    setMyStudy(tempStudy);
   }, [findStudyData, studyVoteData]);
 
   const selectedDateDayjs = dayjs(selectedDate);
 
-  const { data: voteCntArr } = useStudyDailyVoteCntQuery(
-    locationKr,
-    selectedDateDayjs.startOf("month"),
-    selectedDateDayjs.endOf("month"),
-    {
-      enabled: !!locationKr,
-    },
-  );
+  console.log(53, selectedDateDayjs);
 
-  const newStudyPlaces = studyVoteArr
-    ?.filter(
-      (par) =>
-        par.place?.registerDate &&
-        dayjs(par.place.registerDate).isAfter(dayjs().subtract(2, "month")),
-    )
-    .map((par) => par.place);
+  // const newStudyPlaces = studyVoteArr
+  //   ?.filter(
+  //     (par) =>
+  //       par.place?.registerDate &&
+  //       dayjs(par.place.registerDate).isAfter(dayjs().subtract(2, "month")),
+  //   )
+  //   .map((par) => par.place);
 
   const handleMapVote = () => {
     if (isGuest) {
@@ -117,6 +113,7 @@ function HomeStudySection() {
     const newDate = getNewDateBySwipe(panInfo, date as string);
     if (newDate !== date) {
       newSearchParams.set("date", newDate);
+      setSelectedDate(newDate);
       router.replace(`/home?${newSearchParams.toString()}`, { scroll: false });
     }
     return;
@@ -211,7 +208,7 @@ function HomeStudySection() {
           selectedDate={selectedDate}
           handleChangeDate={handleChangeDate}
           studyVoteData={studyVoteArr}
-          voteCntArr={voteCntArr}
+          // voteCntArr={voteCntArr}
         />
         <AnimatePresence initial={false}>
           <MotionDiv
@@ -225,8 +222,8 @@ function HomeStudySection() {
           </MotionDiv>
         </AnimatePresence>
       </Box>
-      <HomeNewStudySpace places={newStudyPlaces} />
-      <HomeStudyChart voteCntArr={voteCntArr} />
+      {/* <HomeNewStudySpace places={newStudyPlaces} /> */}
+      {/* <HomeStudyChart voteCntArr={voteCntArr} /> */}
     </>
   );
 }

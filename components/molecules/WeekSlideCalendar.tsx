@@ -2,20 +2,19 @@ import { Box, css, Flex } from "@chakra-ui/react";
 import { Dayjs } from "dayjs";
 import { useEffect, useRef } from "react";
 
-import { VoteCntProps } from "../../types/models/studyTypes/studyRecords";
 import { dayjsToStr, getCalendarDates } from "../../utils/dateTimeUtils";
 import CalendarDayBox from "../atoms/CalendarDayBox";
 
 interface CalendarProps {
   selectedDate: Dayjs;
-  voteCntArr: VoteCntProps[];
+  // voteCntArr: VoteCntProps[];
   func: (date: string) => void;
 }
 
-function WeekSlideCalendar({ voteCntArr, selectedDate, func }: CalendarProps) {
+function WeekSlideCalendar({  selectedDate, func }: CalendarProps) {
   const dateRefs: React.MutableRefObject<(HTMLDivElement | null)[]> = useRef([]);
   const containerRef = useRef<HTMLDivElement>();
-  const calendarArr = getCalendarDates("week", selectedDate, voteCntArr);
+  const calendarArr = getCalendarDates("week", selectedDate);
 
   useEffect(() => {
     if (!calendarArr || !selectedDate) return;

@@ -114,18 +114,19 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
 
   useEffect(() => {
     let popUpCnt = cnt;
+    console.log(popUpCnt);
     if (!userInfo?.locationDetail) {
       setModalTypes((old) => [...old, "registerLocation"]);
-      if (popUpCnt++ === 2) return;
+      return;
     }
 
     if (!checkAndSetLocalStorage(ALPHABET_POP_UP, 15)) {
       setModalTypes((old) => [...old, "alphabet"]);
-      if (popUpCnt++ === 2) return;
+      return;
     }
     if (!checkAndSetLocalStorage(ATTEND_POP_UP, 7)) {
       setModalTypes((old) => [...old, "lastWeekAttend"]);
-      if (popUpCnt++ === 2) return;
+      return;
     }
     // if (!checkAndSetLocalStorage(ENTHUSIASTIC_POP_UP, 27)) {
     //   setModalTypes((old) => [...old, "enthusiastic"]);
@@ -133,12 +134,12 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
     // }
     if (!checkAndSetLocalStorage(FAQ_POP_UP, 21)) {
       setModalTypes((old) => [...old, "faq"]);
-      if (popUpCnt++ === 2) return;
+      return;
     }
 
     if (!checkAndSetLocalStorage(PROMOTION_POP_UP, 14)) {
       setModalTypes((old) => [...old, "promotion"]);
-      if (popUpCnt++ === 2) return;
+      return;
     }
     // if (!checkAndSetLocalStorage(SUGGEST_POP_UP, 29)) {
     //   setModalTypes((old) => [...old, "suggest"]);

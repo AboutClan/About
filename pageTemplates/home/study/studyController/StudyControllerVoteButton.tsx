@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useRecoilValue } from "recoil";
 
 import DateVoteBlock from "../../../../components/molecules/DateVoteBlock";
@@ -12,7 +12,7 @@ import { StudyDateStatus } from "../../../../types/models/studyTypes/studyInterA
 import { VoteType } from "./StudyController";
 
 export type StudyVoteActionType =
-  | "스터디 투표하기"
+  | "원클릭 스터디 투표"
   | "투표 변경하기"
   | "스터디 출석체크"
   | "출석 완료"
@@ -21,7 +21,7 @@ export type StudyVoteActionType =
   | "당일 참여";
 
 export const ACTION_TO_VOTE_TYPE: Record<StudyVoteActionType, VoteType> = {
-  "스터디 투표하기": "vote",
+  "원클릭 스터디 투표": "vote",
   "투표 변경하기": "voteChange",
   "스터디 출석체크": "attendCheck",
   "출석 완료": "attendCompleted",
@@ -54,7 +54,7 @@ function StudyControllerVoteButton({ setModalType, memberCnt }: IStudyController
       return;
     }
     const type = buttonProps.text;
-    if (type === "스터디 투표하기" || type === "투표 변경하기") {
+    if (type === "원클릭 스터디 투표" || type === "투표 변경하기") {
       newSearchParams.delete("tab");
       router.push(`/vote?${newSearchParams.toString()}`);
       return;
@@ -91,7 +91,7 @@ export const getStudyVoteButtonProps = (
           type: "active",
         };
       return {
-        text: "스터디 투표하기",
+        text: "원클릭 스터디 투표",
         color: "var(--color-mint)",
         type: "active",
       };
@@ -133,7 +133,7 @@ export const getStudyVoteButtonProps = (
       };
     default:
       return {
-        text: "스터디 투표하기",
+        text: "원클릭 스터디 투표",
         color: "var(--color-mint)",
         type: "active",
       };

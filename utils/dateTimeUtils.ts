@@ -73,7 +73,7 @@ export const getDateWeek = (date: Dayjs) => {
 export const getCalendarDates = (
   type: "week" | "month",
   selectedDate: Dayjs,
-  pointArr?: VoteCntProps[],
+  // pointArr?: VoteCntProps[],
 ) => {
   const calendar: VoteCntProps[] = [];
 
@@ -81,7 +81,7 @@ export const getCalendarDates = (
     const startDate = selectedDate.startOf("month");
     for (let i = 0; i < selectedDate.endOf("month").date(); i++) {
       const date = startDate.add(i, "day");
-      calendar.push({ date: dayjsToStr(date), value: pointArr ? pointArr?.[i].value : 0 });
+      calendar.push({ date: dayjsToStr(date), value: 0 });
     }
   } else {
     const startOfMonth = selectedDate.startOf("month");
@@ -95,7 +95,7 @@ export const getCalendarDates = (
       if (current.isBefore(startOfMonth) || current.isAfter(endOfMonth)) {
         calendar.push(null);
       } else {
-        calendar.push({ date: dayjsToStr(current), value: pointArr ? pointArr?.[idx]?.value : 0 });
+        calendar.push({ date: dayjsToStr(current), value:  0 });
       }
 
       current = current.add(1, "day");

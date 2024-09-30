@@ -13,7 +13,6 @@ import StudyAttendCheckModal from "../../../../modals/study/StudyAttendCheckModa
 import StudySimpleVoteModal from "../../../../modals/study/StudySimpleVoteModal";
 import { studyDateStatusState } from "../../../../recoils/studyRecoils";
 import { IParticipation } from "../../../../types/models/studyTypes/studyDetails";
-import { VoteCntProps } from "../../../../types/models/studyTypes/studyRecords";
 import { dayjsToStr } from "../../../../utils/dateTimeUtils";
 import StudyControllerVoteButton from "./StudyControllerVoteButton";
 
@@ -32,18 +31,13 @@ dayjs.locale("ko");
 
 interface StudyControllerProps {
   studyVoteData: IParticipation[];
-  voteCntArr: VoteCntProps[];
+  // voteCntArr: VoteCntProps[];
   selectedDate: string;
 
   handleChangeDate: (date: string) => void;
 }
 
-function StudyController({
-  studyVoteData,
-  voteCntArr,
-  selectedDate,
-  handleChangeDate,
-}: StudyControllerProps) {
+function StudyController({ studyVoteData, selectedDate, handleChangeDate }: StudyControllerProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
@@ -96,7 +90,7 @@ function StudyController({
                     <Box h="100%" bg="var(--gray-300)" w="1px" />
                   </Flex>
                   <WeekSlideCalendar
-                    voteCntArr={voteCntArr}
+                    // voteCntArr={voteCntArr}
                     selectedDate={selectedDateDayjs}
                     func={handleSelectDate}
                   />
@@ -203,7 +197,7 @@ const OuterContainer = styled.div`
 
   padding-right: 8px;
   padding-top: 12px;
-  padding-bottom: 0px;
+  padding-bottom: 16px;
   position: relative;
 `;
 

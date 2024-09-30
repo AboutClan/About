@@ -35,7 +35,7 @@ function HomeRecommendationSection() {
 
   const todayDayjs = dayjs().hour() < STUDY_VOTE_END_HOUR ? dayjs() : dayjs().add(1, "day");
   const setStudyPairArr = useSetRecoilState(studyPairArrState);
-  console.log(55, todayDayjs, session);
+
   const userLocation = localStorage.getItem(USER_LOCATION) as ActiveLocation;
 
   const { data: studyVoteData, isLoading } = useStudyVoteQuery(

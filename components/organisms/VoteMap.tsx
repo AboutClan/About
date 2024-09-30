@@ -35,7 +35,7 @@ export default function VoteMap({
 
   useEffect(() => {
     const map = mapInstanceRef.current;
-    console.log(4444, markersOptions);
+
     if (!mapRef?.current || !map || typeof naver === "undefined") return;
 
     //새로운 옵션 적용 전 초기화
@@ -69,7 +69,6 @@ export default function VoteMap({
 
       naver.maps.Event.addListener(marker, "click", () => {
         if (handleMarker) {
-          console.log(24, markerOptions.id);
           handleMarker(markerOptions.id);
         }
       });

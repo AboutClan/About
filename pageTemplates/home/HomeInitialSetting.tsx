@@ -1,7 +1,7 @@
 import axios from "axios";
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
 import { useSetRecoilState } from "recoil";
@@ -197,7 +197,7 @@ function HomeInitialSetting() {
       setState({ run: false });
     }
   };
-
+  console.log(23, isGuide);
   return (
     <>
       {userInfo && !isGuest && <UserSettingPopUp userInfo={userInfo} cnt={isGuide ? 1 : 0} />}

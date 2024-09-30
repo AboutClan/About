@@ -54,7 +54,7 @@ function HomeStudyCol({
   const studyDateStatus = useRecoilValue(studyDateStatusState);
   const [studyCardColData, setStudyCardColData] = useState<IPostThumbnailCard[]>();
   const [dismissedStudy, setDismissedStudy] = useState<IParticipation>();
-  console.log(25, studyDateStatus);
+
   useEffect(() => {
     if (!studyVoteData || !studyVoteData.length || !session?.user || !studyDateStatus) {
       setStudyCardColData(null);
@@ -104,7 +104,7 @@ function HomeStudyCol({
       localStorage.setItem(STUDY_VOTING_TABLE, JSON.stringify(updatedTable));
     }
   }, [studyDateStatus, studyVoteData]);
-  console.log(studyCardColData?.[0]?.statusText);
+
   return (
     <>
       <BlurredPart

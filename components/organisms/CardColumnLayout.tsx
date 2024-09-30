@@ -11,7 +11,7 @@ import {
 
 interface ICardColumnLayout {
   cardDataArr: IPostThumbnailCard[];
-  specialCardData: any;
+  specialCardData?: any;
   url: string;
   func?: () => void;
   isShort?: boolean;
