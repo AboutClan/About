@@ -6,7 +6,7 @@ import { nativeMethodUtils } from "../utils/nativeMethodUtils";
 
 type SlideDirectionType = string | null;
 
-const useHandleMove = (setSlideDirection: SetterOrUpdater<SlideDirectionType>) => {
+export const useHandleMove = (setSlideDirection: SetterOrUpdater<SlideDirectionType>) => {
   const handleHapticFeedback = useCallback(() => {
     if (isWebView()) {
       nativeMethodUtils.haptic();
@@ -20,5 +20,3 @@ const useHandleMove = (setSlideDirection: SetterOrUpdater<SlideDirectionType>) =
 
   return handleMove;
 };
-
-export default useHandleMove;

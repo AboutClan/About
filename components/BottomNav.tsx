@@ -5,7 +5,7 @@ import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import useHandleMove from "../@natives/useHandleBottomNav";
+import { useHandleMove } from "../@natives/useHandleBottomNav";
 import { getStudyStandardDate } from "../libs/study/date/getStudyStandardDate";
 import { slideDirectionState } from "../recoils/navigationRecoils";
 import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
