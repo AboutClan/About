@@ -73,7 +73,7 @@ function HomeHeader() {
       },
     ];
 
-    if (todayDailyCheck  && showDailyCheck) {
+    if (!todayDailyCheck && showDailyCheck) {
       arr.unshift({
         icon: <i className="fa-light fa-badge-check" style={{ color: "var(--color-mint)" }} />,
         func: () => setModalType("dailyCheck"),

@@ -7,11 +7,8 @@ import {
   ATTEND_POP_UP,
   FAQ_POP_UP,
   GATHER_JOIN_MEMBERS,
-  INSTAGRAM_POP_UP,
   PROMOTION_POP_UP,
   STUDY_ATTEND_MEMBERS,
-  SUGGEST_POP_UP,
-  USER_GUIDE_POP_UP,
 } from "../../../constants/keys/localStorage";
 import { useGatherQuery } from "../../../hooks/gather/queries";
 import EnthusiasticModal from "../../../modals/aboutHeader/EnthusiasticModal/EnthusiasticModal";
@@ -143,18 +140,18 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
       setModalTypes((old) => [...old, "promotion"]);
       if (popUpCnt++ === 2) return;
     }
-    if (!checkAndSetLocalStorage(SUGGEST_POP_UP, 29)) {
-      setModalTypes((old) => [...old, "suggest"]);
-      if (popUpCnt++ === 2) return;
-    }
-    if (!checkAndSetLocalStorage(USER_GUIDE_POP_UP, 30)) {
-      setModalTypes((old) => [...old, "userGuide"]);
-      if (popUpCnt++ === 2) return;
-    }
-    if (!checkAndSetLocalStorage(INSTAGRAM_POP_UP, 26) && !userInfo?.instagram) {
-      setModalTypes((old) => [...old, "instagram"]);
-      if (popUpCnt++ === 2) return;
-    }
+    // if (!checkAndSetLocalStorage(SUGGEST_POP_UP, 29)) {
+    //   setModalTypes((old) => [...old, "suggest"]);
+    //   if (popUpCnt++ === 2) return;
+    // }
+    // if (!checkAndSetLocalStorage(USER_GUIDE_POP_UP, 30)) {
+    //   setModalTypes((old) => [...old, "userGuide"]);
+    //   if (popUpCnt++ === 2) return;
+    // }
+    // if (!checkAndSetLocalStorage(INSTAGRAM_POP_UP, 26) && !userInfo?.instagram) {
+    //   setModalTypes((old) => [...old, "instagram"]);
+    //   if (popUpCnt++ === 2) return;
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
