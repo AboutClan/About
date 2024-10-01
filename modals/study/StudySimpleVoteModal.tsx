@@ -18,7 +18,7 @@ import {
 } from "../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { usePointSystemLogQuery } from "../../hooks/user/queries";
-import { myStudyState } from "../../recoils/studyRecoils";
+import { myStudyInfoState } from "../../recoils/studyRecoils";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
 import { IParticipation } from "../../types/models/studyTypes/studyDetails";
@@ -36,7 +36,7 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
   const date = searchParams.get("date");
 
   const resetStudy = useResetStudyQuery();
-  const myStudy = useRecoilValue(myStudyState);
+  const myStudy = useRecoilValue(myStudyInfoState);
   const [selectedPlace, setSelectedPlace] = useState<string>();
   const [isFirstPage, setIsFirstPage] = useState(true);
   const [myVote, setMyVote] = useState<IStudyVote>();

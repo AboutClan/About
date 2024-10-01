@@ -4,7 +4,7 @@ import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 
 import { STUDY_VOTE } from "../../constants/keys/queryKeys";
-import { myStudyState, studyPairArrState } from "../../recoils/studyRecoils";
+import { myStudyInfoState, studyPairArrState } from "../../recoils/studyRecoils";
 
 export const useToken = () => {
   const [token, setToken] = useState();
@@ -39,7 +39,7 @@ export const useResetQueryData = () => {
 export const useResetStudyQuery = () => {
   const queryClient = useQueryClient();
   const setStudyPairArr = useSetRecoilState(studyPairArrState);
-  const setMyStudy = useSetRecoilState(myStudyState);
+  const setMyStudy = useSetRecoilState(myStudyInfoState);
 
   const refetchWithDelay = useCallback(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

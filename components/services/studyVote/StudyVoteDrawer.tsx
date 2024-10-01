@@ -10,7 +10,7 @@ import { useStudyParticipationMutation } from "../../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../../hooks/user/mutations";
 import { usePointSystemLogQuery } from "../../../hooks/user/queries";
 import StudyVoteSubModalPrivate from "../../../modals/study/studyVoteSubModal/StudyVoteSubModalPrivate";
-import { myStudyState, studyDateStatusState } from "../../../recoils/studyRecoils";
+import { myStudyInfoState, studyDateStatusState } from "../../../recoils/studyRecoils";
 import { IModal } from "../../../types/components/modalTypes";
 import {
   IStudyVote,
@@ -33,7 +33,7 @@ export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
 
   const toast = useToast();
   const studyDateStatus = useRecoilValue(studyDateStatusState);
-  const myStudy = useRecoilValue(myStudyState);
+  const myStudy = useRecoilValue(myStudyInfoState);
 
   const [isFirst, setIsFirst] = useState(true);
   const [myVote, setMyVote] = useState<IStudyVote>({

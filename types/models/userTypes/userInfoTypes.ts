@@ -24,6 +24,15 @@ export interface IUser extends Omit<IUserRegisterForm, "location">, IUserSummary
   locationDetail: LocationDeatilProps;
 }
 
+export interface UserSimpleInfoProps {
+  name: string;
+  avatar: IAvatar;
+  profileImage: string;
+  _id: string;
+  uid: string;
+  score: number;
+}
+
 export interface LocationDeatilProps {
   text: string;
   lat: number;

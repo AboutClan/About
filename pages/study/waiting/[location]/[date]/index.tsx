@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -21,7 +21,7 @@ import StudyHeader from "../../../../../pageTemplates/study/StudyHeader";
 import StudyWaitingOverview from "../../../../../pageTemplates/study/StudyWaitingOverview";
 import StudyWaitingPlaces from "../../../../../pageTemplates/study/StudyWaitingPlaces";
 import StudyWaitingUsers from "../../../../../pageTemplates/study/StudyWaitingUsers";
-import { myStudyState, studyDateStatusState } from "../../../../../recoils/studyRecoils";
+import { myStudyInfoState, studyDateStatusState } from "../../../../../recoils/studyRecoils";
 import { IParticipation } from "../../../../../types/models/studyTypes/studyDetails";
 import { StudyWaitingUser } from "../../../../../types/models/studyTypes/studyInterActions";
 import { ActiveLocation } from "../../../../../types/services/locationTypes";
@@ -31,7 +31,7 @@ export default function Page() {
   const { data: session } = useSession();
   const { location, date } = useParams<{ location: string; date: string }>() || {};
 
-  const setMyStudy = useSetRecoilState(myStudyState);
+  const setMyStudy = useSetRecoilState(myStudyInfoState);
 
   const { data: studyData } = useStudyVoteQuery(
     date,

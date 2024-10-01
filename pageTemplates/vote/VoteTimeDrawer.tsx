@@ -18,7 +18,7 @@ import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { usePointSystemLogQuery } from "../../hooks/user/queries";
 import { StudyVoteMapActionType } from "../../pages/vote";
 import { slideDirectionState } from "../../recoils/navigationRecoils";
-import { myStudyState, studyDateStatusState } from "../../recoils/studyRecoils";
+import { myStudyInfoState, studyDateStatusState } from "../../recoils/studyRecoils";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { IStudyVote } from "../../types/models/studyTypes/studyInterActions";
 import { LocationEn } from "../../types/services/locationTypes";
@@ -43,7 +43,7 @@ function VoteTimeDrawer({ myVote, voterCnt, actionType, setActionType }: IVoteTi
   const date = searchParams.get("date");
   const location = searchParams.get("location") as LocationEn;
   const studyDateStatus = useRecoilValue(studyDateStatusState);
-  const myStudy = useRecoilValue(myStudyState);
+  const myStudy = useRecoilValue(myStudyInfoState);
 
   const setSlideDirection = useSetRecoilState(slideDirectionState);
 

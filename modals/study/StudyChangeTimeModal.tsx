@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
@@ -13,7 +13,7 @@ import { useStudyParticipationMutation } from "../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { usePointSystemLogQuery } from "../../hooks/user/queries";
 import { getMyStudyVoteInfo } from "../../libs/study/getMyStudy";
-import { myStudyState } from "../../recoils/studyRecoils";
+import { myStudyInfoState } from "../../recoils/studyRecoils";
 import { IModal } from "../../types/components/modalTypes";
 import { IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
 import { createTimeArr, parseTimeToDayjs } from "../../utils/dateTimeUtils";
@@ -38,7 +38,7 @@ function StudyChangeTimeModal({ setIsModal }: IStudyChangeTimeModal) {
   const { data: session } = useSession();
   const { date } = useParams<{ id: string; date: string }>();
 
-  const myStudy = useRecoilValue(myStudyState);
+  const myStudy = useRecoilValue(myStudyInfoState);
   const isFree = myStudy.status === "free";
   const { start, end, startTime } = getMyStudyVoteInfo(myStudy, session?.user.uid);
 

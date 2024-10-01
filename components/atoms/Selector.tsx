@@ -23,13 +23,16 @@ export default function Selector({
   useEffect(() => {
     setValue(defaultValue);
   }, [defaultValue]);
-
+  console.log(111);
   const onChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    console.log(525252);
     const targetValue = e.currentTarget.value;
+    setValue(targetValue);
+    console.log(52, targetValue);
     if (isLocationType(targetValue)) setParentValue(targetValue as ActiveLocation);
     else (setParentValue as DispatchType<string>)(targetValue);
   };
-
+  console.log(235, options);
   return (
     <div className="max-w-md">
       <Select

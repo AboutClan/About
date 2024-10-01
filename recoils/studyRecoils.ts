@@ -1,6 +1,9 @@
 import { atom } from "recoil";
-
-import { IParticipation, IStudy } from "../types/models/studyTypes/studyDetails";
+import {
+  IParticipation,
+  IStudy,
+  StudyAttendanceProps,
+} from "../types/models/studyTypes/studyDetails";
 import { StudyDateStatus } from "../types/models/studyTypes/studyInterActions";
 
 export const studyPairArrState = atom<IStudy[]>({
@@ -13,7 +16,12 @@ export const studyDateStatusState = atom<StudyDateStatus>({
   default: "today",
 });
 
-export const myStudyState = atom<IParticipation | null>({
-  key: "MyStudy",
+export const myStudyInfoState = atom<IParticipation | null>({
+  key: "MyStudyInfo",
   default: undefined,
+});
+
+export const myRealStudyInfoState = atom<StudyAttendanceProps>({
+  key: "MyRealStudyInfo",
+  default: null,
 });

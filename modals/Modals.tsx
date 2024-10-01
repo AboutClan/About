@@ -81,7 +81,7 @@ export function ModalLayout({
         : window.innerHeight;
       if (viewportHeight < 500) {
         // 모바일 키보드가 올라왔을 때의 높이 기준 조정
-        setModalTop("-10%"); // 모달을 조금 더 위로 이동
+        setModalTop("-15%"); // 모달을 조금 더 위로 이동
       } else {
         setModalTop("0%"); // 기본 위치
       }

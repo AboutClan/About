@@ -1,7 +1,7 @@
 import { Textarea } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -13,7 +13,7 @@ import { useStudyAbsentMutation } from "../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
 import { getMyStudyVoteInfo } from "../../libs/study/getMyStudy";
-import { myStudyState } from "../../recoils/studyRecoils";
+import { myStudyInfoState } from "../../recoils/studyRecoils";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
 import { IFooterOptions, ModalLayout } from "../Modals";
@@ -24,7 +24,7 @@ function StudyAbsentModal({ setIsModal }: IModal) {
   const { data: session } = useSession();
   const { date } = useParams<{ id: string; date: string }>();
 
-  const myStudy = useRecoilValue(myStudyState);
+  const myStudy = useRecoilValue(myStudyInfoState);
 
   const [value, setValue] = useState<string>("");
 

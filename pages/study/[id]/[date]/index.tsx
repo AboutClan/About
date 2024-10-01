@@ -18,7 +18,7 @@ import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
 import StudyParticipants from "../../../../pageTemplates/study/StudyParticipants";
 import StudyTimeBoard from "../../../../pageTemplates/study/StudyTimeBoard";
 import {
-  myStudyState,
+  myStudyInfoState,
   studyDateStatusState,
   studyPairArrState,
 } from "../../../../recoils/studyRecoils";
@@ -31,7 +31,7 @@ export default function Page() {
 
   const [study, setStudy] = useState<IParticipation>();
   const studyPairArr = useRecoilValue(studyPairArrState);
-  const setMyStudy = useSetRecoilState(myStudyState);
+  const setMyStudy = useSetRecoilState(myStudyInfoState);
   const [studyDateStatus, setStudyDateStatus] = useRecoilState(studyDateStatusState);
   const findStudy = studyPairArr
     ?.find((study) => dayjsToStr(dayjs(study.date)) === date)

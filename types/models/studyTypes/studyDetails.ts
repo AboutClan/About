@@ -1,7 +1,7 @@
 import { Dayjs } from "dayjs";
 
-import { ActiveLocation } from "../../services/locationTypes";
-import { IUserSummary } from "../userTypes/userInfoTypes";
+import { ActiveLocation, Location } from "../../services/locationTypes";
+import { IUserSummary, UserSimpleInfoProps } from "../userTypes/userInfoTypes";
 import { IAbsence } from "./studyInterActions";
 
 export interface IStudy {
@@ -28,6 +28,27 @@ export interface IAttendance {
   arrived?: Date;
   firstChoice: boolean;
   memo: string;
+}
+
+export type StudyUserStatus = "pending" | "solo" | "open" | "completed";
+
+export interface StudyAttendanceProps {
+  user: UserSimpleInfoProps;
+  place: {
+    lat: number;
+    lon: number;
+    text: string;
+    location: Location;
+  };
+  status: StudyUserStatus;
+  arrived?: string;
+  image?: string;
+  memo?: string;
+  comment?: string;
+  time: {
+    start: string;
+    end: string;
+  };
 }
 
 export interface PlaceRegisterProps {

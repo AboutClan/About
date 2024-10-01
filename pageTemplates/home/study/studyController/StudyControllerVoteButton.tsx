@@ -5,7 +5,7 @@ import { useRecoilValue } from "recoil";
 
 import DateVoteBlock from "../../../../components/molecules/DateVoteBlock";
 import { useTypeToast } from "../../../../hooks/custom/CustomToast";
-import { myStudyState, studyDateStatusState } from "../../../../recoils/studyRecoils";
+import { myStudyInfoState, studyDateStatusState } from "../../../../recoils/studyRecoils";
 import { DispatchType } from "../../../../types/hooks/reactTypes";
 import { IParticipation } from "../../../../types/models/studyTypes/studyDetails";
 import { StudyDateStatus } from "../../../../types/models/studyTypes/studyInterActions";
@@ -44,7 +44,7 @@ function StudyControllerVoteButton({ setModalType, memberCnt }: IStudyController
   const isGuest = session?.user.name === "guest";
 
   const studyDateStatus = useRecoilValue(studyDateStatusState);
-  const myStudy = useRecoilValue(myStudyState);
+  const myStudy = useRecoilValue(myStudyInfoState);
 
   const buttonProps = getStudyVoteButtonProps(studyDateStatus, myStudy, session?.user.uid);
 

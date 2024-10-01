@@ -18,7 +18,7 @@ import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { usePointSystemLogQuery } from "../../hooks/user/queries";
-import { myStudyState, studyDateStatusState } from "../../recoils/studyRecoils";
+import { myStudyInfoState, studyDateStatusState } from "../../recoils/studyRecoils";
 import { IParticipation, StudyStatus } from "../../types/models/studyTypes/studyDetails";
 import { StudyDateStatus } from "../../types/models/studyTypes/studyInterActions";
 import { IPointLog } from "../../types/services/pointSystem";
@@ -48,7 +48,7 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
   const uid = session?.user.uid;
 
   const studyDateStatus = useRecoilValue(studyDateStatusState);
-  const myStudy = useRecoilValue(myStudyState);
+  const myStudy = useRecoilValue(myStudyInfoState);
 
   const votingType = getVotingType(myStudy, id);
 

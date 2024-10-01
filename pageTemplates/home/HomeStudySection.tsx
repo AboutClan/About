@@ -12,7 +12,11 @@ import { LOCATION_OPEN } from "../../constants/location";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { getStudyDateStatus } from "../../libs/study/date/getStudyDateStatus";
-import { myStudyState, studyDateStatusState, studyPairArrState } from "../../recoils/studyRecoils";
+import {
+  myStudyInfoState,
+  studyDateStatusState,
+  studyPairArrState,
+} from "../../recoils/studyRecoils";
 import { IParticipation } from "../../types/models/studyTypes/studyDetails";
 import { ActiveLocation, LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
@@ -53,7 +57,7 @@ function HomeStudySection() {
   const [studyPairArr, setStudyPairArr] = useRecoilState(studyPairArrState);
   const [selectedDate, setSelectedDate] = useState<string>();
   const [studyVoteArr, setStudyVoteArr] = useState<IParticipation[]>();
-  const setMyStudy = useSetRecoilState(myStudyState);
+  const setMyStudy = useSetRecoilState(myStudyInfoState);
 
   const findStudyData = studyPairArr?.find(
     (study) => dayjsToStr(dayjs(study.date)) === date,
