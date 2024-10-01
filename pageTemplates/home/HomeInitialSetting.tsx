@@ -197,7 +197,7 @@ function HomeInitialSetting() {
       setState({ run: false });
     }
   };
-  console.log(23, isGuide);
+
   return (
     <>
       {userInfo && !isGuest && <UserSettingPopUp userInfo={userInfo} cnt={isGuide ? 1 : 0} />}

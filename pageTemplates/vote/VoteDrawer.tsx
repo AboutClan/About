@@ -5,7 +5,7 @@ import BottomDrawerLg from "../../components/organisms/drawer/BottomDrawerLg";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 
-import { DispatchType } from "../../types/hooks/reactTypes";
+import { DispatchBoolean, DispatchType } from "../../types/hooks/reactTypes";
 import { IParticipation, IPlace } from "../../types/models/studyTypes/studyDetails";
 import {
   IStudyVotePlaces,
@@ -27,15 +27,29 @@ interface VoteDrawerProps {
   myVote: IStudyVoteWithPlace;
   setMyVote: DispatchType<IStudyVoteWithPlace>;
   setActionType: DispatchType<"timeSelect">;
+  setIsDrawerDown: DispatchBoolean;
 }
 
-function VoteDrawer({ studyVoteData, myVote, setMyVote, setActionType }: VoteDrawerProps) {
+function VoteDrawer({
+  studyVoteData,
+  myVote,
+  setMyVote,
+  setActionType,
+  setIsDrawerDown,
+}: VoteDrawerProps) {
   const { data: userInfo, isLoading } = useUserInfoQuery();
   const preference = userInfo?.studyPreference;
   const savedPrefer = preference || { place: null, subPlace: [] };
   const toast = useToast();
   const items = getSortedMainPlace(studyVoteData, savedPrefer);
   const [placeItems, setPlaceItems] = useState<VoteDrawerItemProps[]>(items);
+
+  const preferPlaces = {
+    main: studyVoteData?.find((study) => study.place._id === savedPrefer.place)?.place.fullname,
+    sub: studyVoteData
+      ?.filter((study) => savedPrefer.subPlace.includes(study.place._id))
+      .map((study) => study.place.fullname),
+  };
 
   //선택지 항목 필터 및 정렬
   useEffect(() => {
@@ -64,6 +78,10 @@ function VoteDrawer({ studyVoteData, myVote, setMyVote, setActionType }: VoteDra
   const bodyHeight = document.body.clientHeight;
 
   const handleQuickVote = () => {
+    if (savedPrefer?.place && !preferPlaces?.main) {
+      toast("warning", "즐겨찾기 장소와 현재 선택중인 지역이 다릅니다.");
+      return;
+    }
     if (!savedPrefer?.place) {
       if (savedPrefer?.subPlace?.length) {
         toast("warning", "1지망 장소가 등록되어 있지 않습니다.");
@@ -83,23 +101,21 @@ function VoteDrawer({ studyVoteData, myVote, setMyVote, setActionType }: VoteDra
     <>
       <BottomDrawerLg
         height={bodyHeight - bodyWidth * 0.8 - 74}
-        setIsModal={() => {}}
+        setIsModal={setIsDrawerDown}
+        isLittleClose
         isxpadding={false}
         isOverlay={false}
       >
         {mainPlace ? (
           <VoteDrawerMainItem
-            voteCnt={mainPlace?.voteCnt + 5}
-            favoritesCnt={mainPlace?.favoritesCnt + 14}
+            voteCnt={mainPlace?.voteCnt}
+            favoritesCnt={mainPlace?.favoritesCnt}
             myVotePlace={myVote.place}
             setMyVote={setMyVote}
             setActionType={setActionType}
           />
         ) : (
-          <VoteDrawerQuickVoteItem
-            savedPreferPlace={savedPrefer}
-            handleQuickVote={handleQuickVote}
-          />
+          <VoteDrawerQuickVoteItem preferPlaces={preferPlaces} handleQuickVote={handleQuickVote} />
         )}
 
         <Box overflow="auto" w="100%" flex={1} id=".vote_favorite">
@@ -110,6 +126,7 @@ function VoteDrawer({ studyVoteData, myVote, setMyVote, setActionType }: VoteDra
               myVote={myVote}
               setMyVote={setMyVote}
               setPlaceItems={setPlaceItems}
+              isFavoriteLocation={!!preferPlaces?.main}
               userLoading={isLoading}
               key={idx}
             />

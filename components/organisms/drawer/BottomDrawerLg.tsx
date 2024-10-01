@@ -1,5 +1,6 @@
 import { Button } from "@chakra-ui/react";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { IModal } from "../../../types/components/modalTypes";
@@ -24,6 +25,7 @@ interface IBottomDrawerLg extends IModal {
   height?: number;
   isxpadding?: boolean;
   isOverlay?: boolean;
+  isLittleClose?: boolean;
 }
 
 export default function BottomDrawerLg({
@@ -34,13 +36,25 @@ export default function BottomDrawerLg({
   children,
   isxpadding = true,
   isOverlay = true,
+  isLittleClose,
 }: IBottomDrawerLg) {
   const header = options?.header;
   const footer = options?.footer;
 
+  const [drawerHeight, setDrawerHeight] = useState(height);
+
+  useEffect(() => {
+    setDrawerHeight(height);
+  }, [height]);
+
   const handleDragEnd = (_, info) => {
     if (info.offset.y > 40) {
+      if (isLittleClose) setDrawerHeight(60);
       setIsModal(false);
+    }
+    if (info.offset.y < -40 && isLittleClose) {
+      setDrawerHeight(height);
+      setIsModal(true);
     }
   };
 
@@ -48,25 +62,26 @@ export default function BottomDrawerLg({
     <>
       {isOverlay && <ScreenOverlay onClick={() => setIsModal(false)} />}
       <Layout
-        height={height}
+        height={drawerHeight}
         isxpadding={isxpadding.toString()}
         drag="y"
         dragConstraints={{ top: 0, bottom: 0 }}
         onDragEnd={handleDragEnd}
-        initial={{ y: isAnimation ? height : 0 }}
+        initial={{ y: isAnimation ? drawerHeight : 0 }}
         animate={{ y: 0 }}
-        exit={{ y: height, transition: { duration: 0.2 } }}
+        exit={{ y: drawerHeight, transition: { duration: 0.2 } }}
         transition={{ duration: 0.4 }}
       >
         <TopNav />
-        {header && (
+
+        {header && drawerHeight > 100 && (
           <Header>
             <span>{header.subTitle}</span>
             <span>{header.title}</span>
           </Header>
         )}
-        {children}
-        {footer && (
+        {drawerHeight > 100 && children}
+        {footer && drawerHeight > 100 && (
           <Button
             w="100%"
             mt="auto"
@@ -95,7 +110,7 @@ const Layout = styled(motion.div)<{ height: number; isxpadding: string }>`
   background-color: white;
   z-index: 5000;
   padding: ${(props) => (props.isxpadding === "true" ? "12px 20px" : "12px 0")};
-
+  touch-action: none; /* 터치 스크롤을 막음 */
   display: flex;
   flex-direction: column;
   align-items: center;

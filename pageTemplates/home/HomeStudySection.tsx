@@ -94,7 +94,6 @@ function HomeStudySection() {
 
   const selectedDateDayjs = dayjs(selectedDate);
 
-  console.log(53, selectedDateDayjs);
 
   // const newStudyPlaces = studyVoteArr
   //   ?.filter(

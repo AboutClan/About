@@ -1,4 +1,5 @@
 import { Box } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -17,6 +18,7 @@ import { IPlace } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVoteWithPlace } from "../../types/models/studyTypes/studyInterActions";
 import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
+import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 type StudyCategoryTab = "실시간 스터디" | "내일 스터디";
 
@@ -37,6 +39,8 @@ export default function StudyVoteMap() {
   const [myVoteInfo, setMyVoteInfo] = useState<IStudyVoteWithPlace>();
   const [isLocationRefetch, setIsLocationRefetch] = useState(false);
   const [isAttendModal, setIsAttendModal] = useState(false);
+  const [isDrawerFixed, setIsDrawerDown] = useState(true);
+  const [resizeToggle, setResizeToggle] = useState(false);
 
   const { data: userInfo } = useUserInfoQuery();
   const { data: studyVoteOne } = useStudyVoteQuery(date, locationParamKr, false, false, {
@@ -67,6 +71,10 @@ export default function StudyVoteMap() {
   }, [isLocationRefetch]);
 
   useEffect(() => {
+    setResizeToggle((old) => !old);
+  }, [isDrawerFixed, studyCategoryTab]);
+
+  useEffect(() => {
     if (currentLocation) {
       setMapOptions(getMapOptions(currentLocation));
       setMarkersOptions(getMarkersOptions(currentLocation));
@@ -90,7 +98,7 @@ export default function StudyVoteMap() {
     },
   ];
 
-  const buttonOptionsArr: ButtonOptionsProps[] = [
+  const realButtonOptionsArr: ButtonOptionsProps[] = [
     {
       text: "현재 위치",
       func: () => {
@@ -114,6 +122,24 @@ export default function StudyVoteMap() {
     },
   ];
 
+  const voteButtonOptionsArr: ButtonOptionsProps[] = [
+    {
+      text: dayjsToFormat(dayjs(date), "M월 D일(ddd) 스터디"),
+      icon: <i className="fa-solid fa-retweet" />,
+      func: () => {
+        setLocationFilterType("현재 위치");
+      },
+    },
+    {
+      text: `${locationParamKr} 지역`,
+      icon: <i className="fa-solid fa-retweet" />,
+      func: () => {
+        setLocationFilterType(`${locationParamKr} 지역`);
+        setCurrentLocation(getLocationCenterDot()[locationParamKr]);
+      },
+    },
+  ];
+
   const handleMarker = (id) => {
     const myPlace = studyVoteData?.find((par) => par.place._id === id).place;
     setMyVoteInfo((old) => setVotePlaceInfo(myPlace, old));
@@ -123,19 +149,29 @@ export default function StudyVoteMap() {
     <>
       <Header title="스터디 투표" />
       <TabNav selected={studyCategoryTab} tabOptionsArr={tabOptionsArr} isMain isThick />
-      <Box position="relative" height="calc(100dvh - 97px)">
+      <Box
+        position="relative"
+        height={
+          studyCategoryTab === "실시간 스터디" || !isDrawerFixed
+            ? "calc(100dvh - 97px)"
+            : "calc(100dvh - 412px)"
+        }
+      >
         <Box w="100%" py={3} px={4} position="absolute" top="0" left="0" zIndex={500}>
           <ButtonGroups
-            buttonOptionsArr={buttonOptionsArr}
+            buttonOptionsArr={
+              studyCategoryTab === "실시간 스터디" ? realButtonOptionsArr : voteButtonOptionsArr
+            }
             size="sm"
             isEllipse
-            currentValue={locationFilterType}
+            currentValue={studyCategoryTab === "실시간 스터디" && locationFilterType}
           />
         </Box>
         <VoteMap
           mapOptions={mapOptions}
           markersOptions={markersOptions}
           handleMarker={handleMarker}
+          resizeToggle={resizeToggle}
         />
       </Box>
       {studyCategoryTab === "실시간 스터디" ? (
@@ -147,6 +183,7 @@ export default function StudyVoteMap() {
           myVoteInfo={myVoteInfo}
           studyVoteData={studyVoteData}
           setMyVoteInfo={setMyVoteInfo}
+          setIsDrawerDown={setIsDrawerDown}
         />
       )}
     </>

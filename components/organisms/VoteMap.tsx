@@ -7,6 +7,7 @@ interface IVoteMap {
   mapOptions?: IMapOptions;
   markersOptions?: IMarkerOptions[];
   handleMarker?: (id: string) => void;
+  resizeToggle: boolean;
   centerValue?: {
     lat: number;
     lng: number;
@@ -17,6 +18,7 @@ export default function VoteMap({
   mapOptions,
   markersOptions,
   handleMarker,
+  resizeToggle,
   centerValue,
 }: IVoteMap) {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -27,11 +29,18 @@ export default function VoteMap({
     infoWindow: [],
   });
 
+
   useEffect(() => {
     if (!mapRef?.current || typeof naver === "undefined") return;
     const map = new naver.maps.Map(mapRef.current, mapOptions);
     mapInstanceRef.current = map;
   }, [mapOptions]);
+
+  useEffect(() => {
+    if (!mapRef?.current || typeof naver === "undefined") return;
+    const map = new naver.maps.Map(mapRef.current, mapOptions);
+    naver.maps.Event.trigger(map, "resize");
+  }, [resizeToggle]);
 
   useEffect(() => {
     const map = mapInstanceRef.current;

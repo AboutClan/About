@@ -6,7 +6,7 @@ import { STUDY_RECOMMENDATION_DISTANCE } from "../../constants/settingValue/stud
 import { getStudyVoteCnt } from "../../libs/study/getStudyVoteCnt";
 import { getStudyVoteIcon } from "../../libs/study/getStudyVoteIcon";
 import { IMarkerOptions } from "../../types/externals/naverMapTypes";
-import { DispatchType } from "../../types/hooks/reactTypes";
+import { DispatchBoolean, DispatchType } from "../../types/hooks/reactTypes";
 import { IParticipation, IPlace } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVoteWithPlace } from "../../types/models/studyTypes/studyInterActions";
 import { LocationEn } from "../../types/services/locationTypes";
@@ -21,6 +21,7 @@ interface VotePreProps {
   setMyVoteInfo: DispatchType<IStudyVoteWithPlace>;
   studyVoteData: IParticipation[];
   refetchCurrentLocation: () => void;
+  setIsDrawerDown: DispatchBoolean;
 }
 
 function VotePreComponent({
@@ -29,6 +30,7 @@ function VotePreComponent({
   myVoteInfo,
   setMyVoteInfo,
   refetchCurrentLocation,
+  setIsDrawerDown,
 }: VotePreProps) {
   const { data: session } = useSession();
   const searchParams = useSearchParams();
@@ -45,7 +47,7 @@ function VotePreComponent({
   //메인 스터디 장소가 선택되면 일정 거리 이하의 장소들이 2지망으로 자동 선택
 
   useEffect(() => {
-    if (!studyVoteData || !myVoteInfo?.place || myVoteInfo?.subPlace) return;
+    if (!studyVoteData || !myVoteInfo?.place || myVoteInfo?.subPlace?.length > 0) return;
     const subPlace = [];
 
     studyVoteData?.forEach((item) => {
@@ -70,15 +72,20 @@ function VotePreComponent({
         bgColor="white"
         boxShadow="0 4px 8px rgba(0,0,0,0.1)"
         onClick={refetchCurrentLocation}
+        position="fixed"
+        bottom="80px"
+        left="0"
       >
         <i className="fa-regular fa-location-crosshairs" />
       </Button>
+
       {studyVoteData && (
         <VoteDrawer
           myVote={myVoteInfo}
           setMyVote={setMyVoteInfo}
           studyVoteData={studyVoteData?.filter((par) => par.place.branch !== "개인 스터디")}
           setActionType={setActionType}
+          setIsDrawerDown={setIsDrawerDown}
         />
       )}
       <VoteTimeDrawer
