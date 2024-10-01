@@ -34,7 +34,7 @@ const initializeAppPushService = async (uid?: string) => {
       await registerPushServiceWithApp({
         uid,
         fcmToken: deviceInfo.fcmToken,
-        platform: deviceInfo.platform,
+        deviceId: deviceInfo.deviceId,
       });
     } catch (error) {
       console.error("Error handling device info:", error);
