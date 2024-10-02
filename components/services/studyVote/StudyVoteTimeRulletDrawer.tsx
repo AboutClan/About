@@ -37,7 +37,7 @@ export function StudyVoteTimeRullets({ setVoteTime }: StudyVoteTimeRulletsProps)
   const startItemArr = createTimeArr(STUDY_VOTE_HOUR_ARR[0], STUDY_VOTE_HOUR_ARR[11]);
 
   const endTimeArr = createTimeArr(
-    STUDY_VOTE_HOUR_ARR[3],
+    STUDY_VOTE_HOUR_ARR[2],
     STUDY_VOTE_HOUR_ARR[STUDY_VOTE_HOUR_ARR.length - 1],
   );
 

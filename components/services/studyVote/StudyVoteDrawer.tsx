@@ -108,8 +108,8 @@ export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
       subTitle: "스터디 참여시간을 선택해주세요!",
     },
     footer: {
-      buttonText: isFirst ? "다음" : "신청 완료",
-      onClick: isFirst ? () => setIsFirst(false) : onSubmit,
+      buttonText: isFirst && studyDateStatus !== "today" ? "다음" : "신청 완료",
+      onClick: isFirst && studyDateStatus !== "today" ? () => setIsFirst(false) : onSubmit,
       buttonLoading: isLoading,
     },
   };

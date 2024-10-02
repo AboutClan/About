@@ -1,12 +1,15 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import LocationSelector from "../../components/atoms/LocationSelector";
+import Selector from "../../components/atoms/Selector";
 import Header from "../../components/layouts/Header";
 import ButtonGroups, { ButtonOptionsProps } from "../../components/molecules/groups/ButtonGroups";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import VoteMap from "../../components/organisms/VoteMap";
+import { LOCATION_OPEN } from "../../constants/location";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { getStudyVoteIcon } from "../../libs/study/getStudyVoteIcon";
@@ -14,41 +17,63 @@ import { getLocationCenterDot } from "../../libs/study/getStudyVoteMap";
 import RealStudyBottomNav from "../../pageTemplates/vote/RealStudyBottomNav";
 import VotePreComponent from "../../pageTemplates/vote/VotePreComponent";
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
-import { IPlace } from "../../types/models/studyTypes/studyDetails";
+import { IParticipation, IPlace } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVoteWithPlace } from "../../types/models/studyTypes/studyInterActions";
-import { LocationEn } from "../../types/services/locationTypes";
+import { ActiveLocation, LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
-
+import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 type StudyCategoryTab = "실시간 스터디" | "내일 스터디";
 
 export default function StudyVoteMap() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const date = searchParams.get("date");
+  const newSearchParams = new URLSearchParams(searchParams);
+  const dateParam = searchParams.get("date");
 
-  const locationParamKr = convertLocationLangTo(searchParams.get("location") as LocationEn, "kr");
+  const locationParamKr = convertLocationLangTo(
+    searchParams.get("location") as LocationEn,
+    "kr",
+  ) as ActiveLocation;
 
   const [mapOptions, setMapOptions] = useState<IMapOptions>();
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>();
   const [currentLocation, setCurrentLocation] = useState<{ lat: number; lon: number }>();
   const [studyCategoryTab, setStudyCategoryTab] = useState<StudyCategoryTab>("실시간 스터디");
-  const [locationFilterType, setLocationFilterType] = useState<
-    "현재 위치" | "주 활동 장소" | string
-  >("현재 위치");
+  const [locationFilterType, setLocationFilterType] = useState<"현재 위치" | "주 활동 장소">(
+    "현재 위치",
+  );
   const [myVoteInfo, setMyVoteInfo] = useState<IStudyVoteWithPlace>();
   const [isLocationRefetch, setIsLocationRefetch] = useState(false);
-  const [isAttendModal, setIsAttendModal] = useState(false);
   const [isDrawerFixed, setIsDrawerDown] = useState(true);
   const [resizeToggle, setResizeToggle] = useState(false);
+  const [dateValue, setDateValue] = useState(dateParam);
+  const [locationValue, setLocationValue] = useState<ActiveLocation>(locationParamKr);
 
   const { data: userInfo } = useUserInfoQuery();
-  const { data: studyVoteOne } = useStudyVoteQuery(date, locationParamKr, false, false, {
-    enabled: !!locationParamKr && !!date,
-  });
+  const { data: studyVoteOne, isLoading } = useStudyVoteQuery(
+    dateValue,
+    locationValue,
+    false,
+    false,
+    {
+      enabled: !!locationValue && !!dateValue,
+    },
+  );
 
-  const currentLocationDetail = userInfo?.locationDetail;
+  const mainLocation = userInfo?.locationDetail;
   const studyVoteData = studyVoteOne?.[0]?.participations;
+
+  useEffect(() => {
+    if (!locationValue) setLocationValue(locationParamKr);
+    if (!dateValue) setDateValue(dateParam);
+  }, [locationParamKr, dateParam]);
+
+  useEffect(() => {
+    newSearchParams.set("location", convertLocationLangTo(locationValue, "en"));
+    newSearchParams.set("date", dateValue);
+    router.replace(`/vote?${newSearchParams.toString()}`);
+    setCurrentLocation(getLocationCenterDot()[locationValue]);
+  }, [locationValue, dateValue]);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -75,11 +100,13 @@ export default function StudyVoteMap() {
   }, [isDrawerFixed, studyCategoryTab]);
 
   useEffect(() => {
-    if (currentLocation) {
+    if (studyCategoryTab === "실시간 스터디" && currentLocation) {
       setMapOptions(getMapOptions(currentLocation));
-      setMarkersOptions(getMarkersOptions(currentLocation));
+    } else if (mainLocation) {
+      setMapOptions(getMapOptions({ lat: mainLocation.lat, lon: mainLocation.lon }));
     }
-  }, [currentLocation]);
+    if (studyVoteData) setMarkersOptions(getMarkersOptions(studyVoteData, currentLocation));
+  }, [currentLocation, mainLocation, studyCategoryTab, studyVoteData]);
 
   const tabOptionsArr: ITabNavOptions[] = [
     {
@@ -103,46 +130,29 @@ export default function StudyVoteMap() {
       text: "현재 위치",
       func: () => {
         setLocationFilterType("현재 위치");
+        setIsLocationRefetch(true);
       },
     },
     {
       text: `주 활동 장소`,
       func: () => {
         setLocationFilterType("주 활동 장소");
-        setCurrentLocation({ lat: currentLocationDetail?.lat, lon: currentLocationDetail?.lon });
-      },
-    },
-    {
-      text: `${locationParamKr} 지역`,
-      icon: <i className="fa-solid fa-retweet" />,
-      func: () => {
-        setLocationFilterType(`${locationParamKr} 지역`);
-        setCurrentLocation(getLocationCenterDot()[locationParamKr]);
+        setCurrentLocation({ lat: mainLocation?.lat, lon: mainLocation?.lon });
       },
     },
   ];
 
-  const voteButtonOptionsArr: ButtonOptionsProps[] = [
-    {
-      text: dayjsToFormat(dayjs(date), "M월 D일(ddd) 스터디"),
-      icon: <i className="fa-solid fa-retweet" />,
-      func: () => {
-        setLocationFilterType("현재 위치");
-      },
-    },
-    {
-      text: `${locationParamKr} 지역`,
-      icon: <i className="fa-solid fa-retweet" />,
-      func: () => {
-        setLocationFilterType(`${locationParamKr} 지역`);
-        setCurrentLocation(getLocationCenterDot()[locationParamKr]);
-      },
-    },
-  ];
+  const dateArr = Array(10)
+    .fill(0)
+    .map((_, idx) => dayjsToStr(dayjs().add(idx, "day")));
 
-  const handleMarker = (id) => {
-    const myPlace = studyVoteData?.find((par) => par.place._id === id).place;
-    setMyVoteInfo((old) => setVotePlaceInfo(myPlace, old));
+  const handleMarker = (id: string) => {
+    if (!id) return;
+
+    if (studyCategoryTab === "내일 스터디") {
+      const myPlace = studyVoteData?.find((par) => par.place._id === id).place;
+      setMyVoteInfo((old) => setVotePlaceInfo(myPlace, old));
+    }
   };
 
   return (
@@ -157,16 +167,40 @@ export default function StudyVoteMap() {
             : "calc(100dvh - 412px)"
         }
       >
-        <Box w="100%" py={3} px={4} position="absolute" top="0" left="0" zIndex={500}>
-          <ButtonGroups
-            buttonOptionsArr={
-              studyCategoryTab === "실시간 스터디" ? realButtonOptionsArr : voteButtonOptionsArr
-            }
-            size="sm"
-            isEllipse
-            currentValue={studyCategoryTab === "실시간 스터디" && locationFilterType}
-          />
-        </Box>
+        <Flex
+          w="100%"
+          justify="space-between"
+          py={3}
+          px={4}
+          position="absolute"
+          top="0"
+          left="0"
+          zIndex={500}
+        >
+          {studyCategoryTab === "실시간 스터디" ? (
+            <ButtonGroups
+              buttonOptionsArr={realButtonOptionsArr}
+              size="sm"
+              isEllipse
+              currentValue={locationFilterType}
+            />
+          ) : (
+            <>
+              <Selector
+                defaultValue={dateValue}
+                options={dateArr}
+                setValue={setDateValue}
+                convertTextFunc={(text) => dayjsToFormat(dayjs(text), "M월 D일(ddd) 스터디")}
+              />
+
+              <LocationSelector
+                defaultValue={locationValue}
+                options={LOCATION_OPEN}
+                setValue={setLocationValue}
+              />
+            </>
+          )}
+        </Flex>
         <VoteMap
           mapOptions={mapOptions}
           markersOptions={markersOptions}
@@ -209,26 +243,45 @@ const setVotePlaceInfo = (myPlace: IPlace, voteInfo?: IStudyVoteWithPlace): IStu
     };
 };
 
-const getMarkersOptions = ({
-  lat,
-  lon,
-}: {
-  lat: number;
-  lon: number;
-}): IMarkerOptions[] | undefined => {
-  if (typeof naver === "undefined") return;
-  return [1, 2, 3].map((item) => {
-    return {
-      // id: par.place._id,
-      position: new naver.maps.LatLng(lat, lon),
-      title: "테스트트",
-      icon: {
-        content: getStudyVoteIcon("default", "내 위치"),
-        size: new naver.maps.Size(72, 72),
-        anchor: new naver.maps.Point(36, 44),
-      },
-    };
+const getMarkersOptions = (
+  studyVoteData: IParticipation[],
+  {
+    lat,
+    lon,
+  }: {
+    lat: number;
+    lon: number;
+  },
+): IMarkerOptions[] | undefined => {
+  if (typeof naver === "undefined" || !studyVoteData) return;
+  const temp = [];
+
+  temp.push({
+    position: new naver.maps.LatLng(lat, lon),
+    title: "테스트트",
+    icon: {
+      content: getStudyVoteIcon("default", "장소"),
+      size: new naver.maps.Size(72, 72),
+      anchor: new naver.maps.Point(36, 44),
+    },
   });
+
+  studyVoteData
+    .filter((par) => par.attendences.length >= 1)
+    .forEach((par) => {
+      temp.push({
+        id: par.place._id,
+        position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
+        title: "메인",
+        icon: {
+          content: getStudyVoteIcon("main", "내 위치"),
+          size: new naver.maps.Size(72, 72),
+          anchor: new naver.maps.Point(36, 44),
+        },
+      });
+    });
+
+  return temp;
 };
 
 const getMapOptions = (currentLocation: { lat: number; lon: number }): IMapOptions | undefined => {

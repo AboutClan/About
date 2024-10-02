@@ -1,14 +1,10 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
-import PlaceSelector from "../../components/atoms/PlaceSelector";
-import ImageTileFlexLayout from "../../components/molecules/layouts/ImageTileFlexLayout";
-import { IImageTileData } from "../../components/molecules/layouts/ImageTitleGridLayout";
 import { StudyVoteTimeRullets } from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
-import { STUDY_CHECK_POP_UP } from "../../constants/keys/localStorage";
 import { POINT_SYSTEM_PLUS } from "../../constants/serviceConstants/pointSystemConstants";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
@@ -17,9 +13,8 @@ import {
   useStudyParticipationMutation,
 } from "../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
-import { usePointSystemLogQuery } from "../../hooks/user/queries";
+import { usePointSystemLogQuery, useUserInfoQuery } from "../../hooks/user/queries";
 import { myStudyInfoState } from "../../recoils/studyRecoils";
-import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
 import { IParticipation } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVote } from "../../types/models/studyTypes/studyInterActions";
@@ -41,6 +36,16 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
   const [isFirstPage, setIsFirstPage] = useState(true);
   const [myVote, setMyVote] = useState<IStudyVote>();
   const [voteTime, setVoteTime] = useState<{ start: Dayjs; end: Dayjs }>();
+
+  const { data: userInfo } = useUserInfoQuery();
+  const savedPrefer = userInfo?.studyPreference;
+
+  const preferPlaces = {
+    main: studyVoteData?.find((study) => study.place._id === savedPrefer.place)?.place.fullname,
+    sub: studyVoteData
+      ?.filter((study) => savedPrefer.subPlace.includes(study.place._id))
+      .map((study) => study.place.fullname),
+  };
 
   const { data: pointLog } = usePointSystemLogQuery("point", true, {
     enabled: !!myStudy,
@@ -102,66 +107,37 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
     } else patchAttend(myVote);
   };
 
-  const hasDismissedStudy = localStorage.getItem(STUDY_CHECK_POP_UP) === dayjsToStr(dayjs());
-
-  const imageDataArr: IImageTileData[] = studyVoteData
-    ?.filter((par) => par.status !== "dismissed")
-    .map((par) => ({
-      imageUrl: par.place.image,
-      text: par.place.branch,
-      id: par.place._id,
-      func: () => {
-        if (par.place.branch === "개인 스터디" && !hasDismissedStudy) {
-          toast("warning", "사전 투표 인원만 참여가 가능합니다.");
-          return;
-        }
-        setSelectedPlace(par.place._id);
-      },
-    }))
-    .sort((a) => (a.text === "개인 스터디" ? 1 : -1));
-
-  const dismissedPlaces = studyVoteData?.filter((par) => par.status === "dismissed");
-
-  const handleFirstPage = () => {
-    if (!selectedPlace) {
-      toast("warning", "선택된 장소가 없습니다.");
-      return;
-    }
-    setIsFirstPage(false);
-  };
-
   const footerOptions: IFooterOptions = {
     main: {
-      text: isFirstPage ? "다음" : "참여 신청",
-      func: isFirstPage ? handleFirstPage : handleVote,
+      text: "투표 완료",
+      func: handleVote,
       isLoading: isLoading || isLoading2,
-    },
-    sub: {
-      text: isFirstPage ? "닫기" : "이전",
-      func: isFirstPage ? () => setIsModal(false) : () => setIsFirstPage(true),
     },
   };
 
   return (
     <ModalLayout title="당일 참여 신청" footerOptions={footerOptions} setIsModal={setIsModal}>
       <Box>
-        {isFirstPage ? (
-          <>
-            <ModalSubtitle>
-              오픈된 스터디에 참여하거나 자유 스터디로 오픈할 수 있습니다.
-            </ModalSubtitle>
-            <ImageTileFlexLayout imageDataArr={imageDataArr} selectedId={[selectedPlace]} />
-            <Box mt="20px">
+        <Flex justify="space-between" align="center" fontSize="16px" mb={4}>
+          <Box>
+            <Box fontWeight={600} as="span" mr={1}>
+              투표 장소:
+            </Box>
+            {preferPlaces?.main} 외 {preferPlaces?.sub?.length + 1}곳
+          </Box>
+          <Button size="sm" colorScheme="mintTheme">
+            직접 선택
+          </Button>
+        </Flex>
+        {/* <ImageTileFlexLayout imageDataArr={imageDataArr} selectedId={[selectedPlace]} /> */}
+        {/* <Box mt="20px">
               <PlaceSelector
                 options={dismissedPlaces}
                 defaultValue={selectedPlace}
                 setValue={setSelectedPlace}
               />
-            </Box>
-          </>
-        ) : (
-          <StudyVoteTimeRullets setVoteTime={setVoteTime} />
-        )}
+            </Box> */}
+        <StudyVoteTimeRullets setVoteTime={setVoteTime} />
       </Box>
     </ModalLayout>
   );

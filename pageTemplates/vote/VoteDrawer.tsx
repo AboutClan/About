@@ -72,7 +72,7 @@ function VoteDrawer({
       [...subPlaceItems, ...noSubPlaceItems].filter((place) => place.place._id !== placeId),
     );
   }, [myVote?.place, myVote?.subPlace, savedPrefer]);
-
+  console.log(studyVoteData, placeItems);
   const mainPlace = items?.find((item) => item.place._id === myVote?.place?._id);
   const bodyWidth = document.body.clientWidth > 400 ? 400 : document.body.clientWidth;
   const bodyHeight = document.body.clientHeight;

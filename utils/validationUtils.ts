@@ -73,3 +73,8 @@ export const detectDevice = () => {
     return "PC";
   }
 };
+
+export const isPWA = () => {
+  const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
+  return isStandalone;
+};

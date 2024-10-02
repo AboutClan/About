@@ -31,7 +31,8 @@ import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { getRandomAlphabet } from "../../libs/userEventLibs/collection";
 import { myRealStudyInfoState, myStudyInfoState } from "../../recoils/studyRecoils";
 import { IModal } from "../../types/components/modalTypes";
-import { createTimeArr } from "../../utils/dateTimeUtils";
+import { createTimeArr, dayjsToFormat } from "../../utils/dateTimeUtils";
+import { isPWA } from "../../utils/validationUtils";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 const LOCATE_GAP = 0.00008;
@@ -54,7 +55,7 @@ function StudyAttendCheckModal({ setIsModal }: IModal) {
   const [isOtherPermission, setIsOtherPermission] = useState(true);
   const [titleText, setTitleText] = useState("");
   const [attendText, setAttendText] = useState("");
-  const [endHour, setEndHour] = useState<string>("20:00");
+  const [endHour, setEndHour] = useState<string>(dayjsToFormat(dayjs(), "HH:mm"));
 
   const myStudy = useRecoilValue(myStudyInfoState);
   const myRealStudy = useRecoilValue(myRealStudyInfoState);
@@ -100,9 +101,9 @@ function StudyAttendCheckModal({ setIsModal }: IModal) {
     },
   });
 
-  // useEffect(() => {
-  //   setEndHour(dayjsToFormat(dayjs(myParticipationInfo?.time?.end) || dayjs(), "HH:mm"));
-  // }, []);
+  useEffect(() => {
+    setEndHour(dayjsToFormat(dayjs(myParticipationInfo?.time?.end) || dayjs(), "HH:mm"));
+  }, []);
 
   useEffect(() => {
     const newTitleText = myStudy?.place.fullname || myRealStudy?.place.text;
@@ -129,6 +130,10 @@ function StudyAttendCheckModal({ setIsModal }: IModal) {
   };
 
   const handleAttendCheck = () => {
+    if (isPWA()) {
+      toast("error", "어플상으로만 출석체크가 가능합니다.");
+      return;
+    }
     setIsChecking(true);
     handleArrived(attendText || "출석");
     setTimeout(() => {

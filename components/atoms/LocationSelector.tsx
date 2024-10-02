@@ -54,6 +54,7 @@ export default function LocationSelector({
         onChange={onChange}
         border={!isBorder ? "none" : undefined}
         style={{ width: "auto" }}
+        bgColor="white"
       >
         {options.map((option, idx) => (
           <option key={idx} value={option}>

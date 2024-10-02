@@ -18,7 +18,7 @@ import FAQPopUp from "../../modals/pop-up/FAQPopUp";
 import UserSettingPopUp from "../../pageTemplates/setting/userSetting/userSettingPopUp";
 import { renderHomeHeaderState } from "../../recoils/renderRecoils";
 import { checkAndSetLocalStorage } from "../../utils/storageUtils";
-import { detectDevice } from "../../utils/validationUtils";
+import { detectDevice, isPWA } from "../../utils/validationUtils";
 
 const urlBase64ToUint8Array = (base64String) => {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
@@ -86,11 +86,6 @@ const subscribePushService = async (options: { onSuccess?: () => void } = {}) =>
   } catch (err) {
     console.error(err);
   }
-};
-
-const isPWA = () => {
-  const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
-  return isStandalone;
 };
 
 function HomeInitialSetting() {

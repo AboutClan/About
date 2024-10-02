@@ -316,7 +316,15 @@ export const EVENT_CONTENT_2024: Record<string, CalendarContentProps[]> = {
       text: "",
     },
   ],
-  10: [],
+  10: [
+    {
+      content: "서비스 리뉴얼",
+      start: 1,
+      end: 5,
+      type: "main",
+      text: "",
+    },
+  ],
   11: [],
   12: [],
 };

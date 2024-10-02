@@ -7,7 +7,7 @@ interface IVoteMap {
   mapOptions?: IMapOptions;
   markersOptions?: IMarkerOptions[];
   handleMarker?: (id: string) => void;
-  resizeToggle: boolean;
+  resizeToggle?: boolean;
   centerValue?: {
     lat: number;
     lng: number;
@@ -28,7 +28,6 @@ export default function VoteMap({
     polylines: [],
     infoWindow: [],
   });
-
 
   useEffect(() => {
     if (!mapRef?.current || typeof naver === "undefined") return;

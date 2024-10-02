@@ -7,6 +7,7 @@ interface IRulletPickerTwo {
   rightDefaultIdx: number;
   leftRulletArr: string[];
   rightRulletArr: string[];
+
   setRulletValue: Dispatch<
     SetStateAction<{
       left: string;

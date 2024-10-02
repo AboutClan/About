@@ -1,10 +1,9 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import ColorLabelRow from "../../../../components/molecules/rows/ColorLabelRow";
 
 import WeekSlideCalendar from "../../../../components/molecules/WeekSlideCalendar";
 import { getStudyVoteCnt } from "../../../../libs/study/getStudyVoteCnt";
@@ -61,23 +60,20 @@ function StudyController({ studyVoteData, selectedDate, handleChangeDate }: Stud
     <>
       <>
         <OuterContainer>
-          <Flex justify="space-between" align="center" mb="16px" mr="12px">
+          <Flex justify="space-between" align="center" mb="16px">
             <Box fontSize="16px" fontWeight={600}>
               날짜 선택
             </Box>
 
-            <ColorLabelRow
-              props={[
-                { text: "오픈 확정", color: "mint" },
-                { text: "오픈 예정", color: "gray" },
-              ]}
-            />
+            <Button variant="ghost" color="var(--gray-600)" size="sm">
+              <i className="fa-solid fa-map" />
+            </Button>
           </Flex>
           <Box>
             {selectedDate && (
               <>
                 <Flex align="center">
-                  <Flex pr="4px" flex={1} minW="48px" justify="center" pb={3}>
+                  <Flex flex={1} minW="48px" justify="center" pb={2.5}>
                     <MonthButton
                       onClick={() => setModalType("monthCalendar")}
                       className="about_calendar_month"
@@ -113,12 +109,15 @@ function StudyController({ studyVoteData, selectedDate, handleChangeDate }: Stud
       {modalType === "todayVote" && (
         <StudySimpleVoteModal studyVoteData={studyVoteData} setIsModal={() => setModalType(null)} />
       )}
+      {modalType === "vote" && (
+        <StudySimpleVoteModal studyVoteData={studyVoteData} setIsModal={() => setModalType(null)} />
+      )}
     </>
   );
 }
 
 const MonthButton = styled.button`
-  width: 44px;
+  width: 52px;
 
   text-align: start;
   padding: 8px 0px;

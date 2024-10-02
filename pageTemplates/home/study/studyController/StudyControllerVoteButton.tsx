@@ -54,11 +54,7 @@ function StudyControllerVoteButton({ setModalType, memberCnt }: IStudyController
       return;
     }
     const type = buttonProps.text;
-    if (type === "원클릭 스터디 투표" || type === "투표 변경하기") {
-      newSearchParams.delete("tab");
-      router.push(`/vote?${newSearchParams.toString()}`);
-      return;
-    }
+  
     setModalType(ACTION_TO_VOTE_TYPE[type]);
   };
 

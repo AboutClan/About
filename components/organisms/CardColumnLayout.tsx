@@ -1,5 +1,7 @@
 import { Box } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import styled from "styled-components";
+import { dayjsToStr } from "../../utils/dateTimeUtils";
 
 import ShadowBlockButton from "../atoms/buttons/ShadowBlockButton";
 import { HighlightedThumbnailCard } from "../molecules/cards/HighlightedThumbnailCard";
@@ -27,7 +29,7 @@ export function CardColumnLayout({
     <Layout>
       {specialCardData && (
         <Item>
-          <HighlightedThumbnailCard date={"2024-09-28"} isShort={isShort} />
+          <HighlightedThumbnailCard date={dayjsToStr(dayjs())} isShort={isShort} />
         </Item>
       )}
       {cardDataArr.map((cardData, idx) => (

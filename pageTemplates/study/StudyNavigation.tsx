@@ -233,7 +233,7 @@ const getMainButtonStatus = (
     case "today":
       if (studyStatus === "dismissed") return { text: "FREE 오픈 신청", funcType: "freeOpen" };
       if (votingType === "same") return { text: "출석 체크", funcType: "attendCheck" };
-      if (votingType === "other") return { text: "다른 스터디에 참여중입니다." };
+      // if (votingType === "other") return { text: "다른 스터디에 참여중입니다." };
       if (isMax) return { text: "인원 마감" };
       return { text: "스터디 투표", funcType: "vote" };
   }
