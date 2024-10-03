@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { IModal } from "../../../types/components/modalTypes";
+import { iPhoneNotchSize } from "../../../utils/validationUtils";
 import ScreenOverlay from "../../atoms/ScreenOverlay";
 
 export interface IBottomDrawerLgOptions {
@@ -100,16 +101,18 @@ export default function BottomDrawerLg({
 }
 
 const Layout = styled(motion.div)<{ height: number; isxpadding: string }>`
-  height: ${(props) => props.height}px;
+  height: ${(props) => props.height + iPhoneNotchSize()}px;
   position: fixed;
   bottom: 0;
   width: 100%;
   max-width: var(--max-width);
-  border-top-left-radius: var(--rounded-lg);
-  border-top-right-radius: var(--rounded-lg);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
   background-color: white;
   z-index: 5000;
   padding: ${(props) => (props.isxpadding === "true" ? "12px 20px" : "12px 0")};
+  padding-bottom: ${(props) =>
+    props.isxpadding === "true" ? `${20 + iPhoneNotchSize()}px` : iPhoneNotchSize()};
   touch-action: none; /* 터치 스크롤을 막음 */
   display: flex;
   flex-direction: column;
@@ -121,7 +124,7 @@ const TopNav = styled.nav`
   height: 4px;
   border-radius: 4px;
   background-color: var(--gray-400);
-  margin-bottom: 12px;
+  margin-bottom: 16px;
 `;
 
 const Header = styled.header`

@@ -2,6 +2,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import Avatar from "../../components/atoms/Avatar";
 import CurrentLocationBtn from "../../components/atoms/CurrentLocationBtn";
 
 import LocationSelector from "../../components/atoms/LocationSelector";
@@ -9,21 +10,43 @@ import Selector from "../../components/atoms/Selector";
 import Header from "../../components/layouts/Header";
 import ButtonGroups, { ButtonOptionsProps } from "../../components/molecules/groups/ButtonGroups";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
+import NewTwoButtonRow from "../../components/molecules/NewTwoButtonRow";
+import BottomDrawerLg from "../../components/organisms/drawer/BottomDrawerLg";
 import VoteMap from "../../components/organisms/VoteMap";
 import { LOCATION_OPEN } from "../../constants/location";
+import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { useUserInfoQuery } from "../../hooks/user/queries";
-import { getStudyIcon } from "../../libs/study/getStudyVoteIcon";
+import { getFirstComment, getStudyTime } from "../../libs/study/getStudyTime";
+import { getCurrentLocationIcon, getStudyIcon } from "../../libs/study/getStudyVoteIcon";
 import { getLocationCenterDot } from "../../libs/study/getStudyVoteMap";
 import RealStudyBottomNav from "../../pageTemplates/vote/RealStudyBottomNav";
 import VotePreComponent from "../../pageTemplates/vote/VotePreComponent";
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
 import { IParticipation, IPlace } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVoteWithPlace } from "../../types/models/studyTypes/studyInterActions";
+import { IAvatar } from "../../types/models/userTypes/userInfoTypes";
 import { ActiveLocation, LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
+
 type StudyCategoryTab = "실시간 스터디" | "내일의 스터디";
+
+interface DetailInfoProps {
+  id: string;
+  title: string;
+  time: { start: string; end: string };
+  participantCnt: number;
+  image: string;
+  comment: {
+    user: {
+      userImage: string;
+      uid: string;
+      avatar: IAvatar;
+    };
+    text: string;
+  };
+}
 
 export default function StudyVoteMap() {
   const router = useRouter();
@@ -49,6 +72,7 @@ export default function StudyVoteMap() {
   const [resizeToggle, setResizeToggle] = useState(false);
   const [dateValue, setDateValue] = useState(dateParam);
   const [locationValue, setLocationValue] = useState<ActiveLocation>(locationParamKr);
+  const [detailInfo, setDetailInfo] = useState<DetailInfoProps>();
 
   const { data: userInfo } = useUserInfoQuery();
   const { data: studyVoteOne, isLoading } = useStudyVoteQuery(
@@ -150,14 +174,34 @@ export default function StudyVoteMap() {
     .map((_, idx) => dayjsToStr(dayjs().add(idx, "day")));
 
   const handleMarker = (id: string) => {
-    if (!id) return;
+    console.log(34, id);
+    if (!id || !studyVoteData) return;
+    const findStudy = studyVoteData.find((par) => par.place._id === id);
+
+    if (studyCategoryTab === "실시간 스터디") {
+      setDetailInfo({
+        title: findStudy.place.fullname,
+        id,
+        time: getStudyTime(findStudy.attendences),
+        participantCnt: findStudy.attendences.length,
+        image: findStudy.place.image,
+        comment: {
+          user: {
+            uid: ABOUT_USER_SUMMARY.uid,
+            avatar: ABOUT_USER_SUMMARY.avatar,
+            userImage: ABOUT_USER_SUMMARY.profileImage,
+          },
+          text: getFirstComment(findStudy.attendences),
+        },
+      });
+    }
 
     if (studyCategoryTab === "내일의 스터디") {
-      const myPlace = studyVoteData?.find((par) => par.place._id === id).place;
+      const myPlace = findStudy.place;
       setMyVoteInfo((old) => setVotePlaceInfo(myPlace, old));
     }
   };
-
+  console.log(51, detailInfo);
   return (
     <>
       <Header title="스터디 투표" isCenter isBorder={false} />
@@ -179,7 +223,7 @@ export default function StudyVoteMap() {
           position="absolute"
           top="0"
           left="0"
-          zIndex={500}
+          zIndex={10}
         >
           {studyCategoryTab === "실시간 스터디" ? (
             <>
@@ -230,6 +274,46 @@ export default function StudyVoteMap() {
           setIsDrawerDown={setIsDrawerDown}
         />
       )}
+      {detailInfo && (
+        <BottomDrawerLg height={219} setIsModal={() => setDetailInfo(null)}>
+          <Flex direction="column" w="100%">
+            <Flex justifyContent="space-between" bg="pink">
+              <Flex direction="column">
+                <Box fontSize="18px" fontWeight={600}>
+                  {detailInfo.title}
+                </Box>
+                <Box>
+                  <Box>
+                    <i className="fa-solid fa-clock fa-xs" style={{ color: "var(--color-mint)" }} />
+                  </Box>
+                  <Box>
+                    {detailInfo.time.start} ~ {detailInfo.time.end}
+                  </Box>
+                  <Box px={0.5}>·</Box>
+                  <Box color="var(--color-blue)">{detailInfo.participantCnt + 1}명 참여 중</Box>
+                </Box>
+                <Box>
+                  <Avatar {...detailInfo.comment.user} size="sm" />
+                  <Box>{detailInfo.comment.text}</Box>
+                </Box>
+              </Flex>
+              <Box>23</Box>
+            </Flex>
+            <NewTwoButtonRow
+              leftProps={{
+                icon: (
+                  <i className="fa-solid fa-circle-info" style={{ color: "var(--gray-400)" }} />
+                ),
+                children: "자세히 보기",
+              }}
+              rightProps={{
+                icon: <i className="fa-solid fa-user-plus" style={{ color: "#CCF3F0" }} />,
+                children: "스터디 합류",
+              }}
+            />
+          </Flex>
+        </BottomDrawerLg>
+      )}
     </>
   );
 }
@@ -270,7 +354,7 @@ const getMarkersOptions = (
     position: new naver.maps.LatLng(lat, lon),
     title: "테스트트",
     icon: {
-      content: getStudyIcon(),
+      content: getCurrentLocationIcon(),
       size: new naver.maps.Size(72, 72),
       anchor: new naver.maps.Point(36, 44),
     },
@@ -284,7 +368,7 @@ const getMarkersOptions = (
         position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
         title: "메인",
         icon: {
-          content: getStudyIcon(),
+          content: getStudyIcon(null, 4),
           size: new naver.maps.Size(72, 72),
           anchor: new naver.maps.Point(36, 44),
         },

@@ -1,8 +1,6 @@
 import { Button } from "@chakra-ui/react";
 
-interface CurrentLocationBtnProps {}
-
-function CurrentLocationBtn({}: CurrentLocationBtnProps) {
+function CurrentLocationBtn() {
   return (
     <Button
       rounded="full"

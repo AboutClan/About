@@ -1,7 +1,8 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
+import BottomNavWrapper from "../../components/atoms/BottomNavWrapper";
+import NewTwoButtonRow from "../../components/molecules/NewTwoButtonRow";
 import StudyAttendCheckModal from "../../modals/study/StudyAttendCheckModal";
 
 interface RealStudyBottomNavProps {
@@ -13,44 +14,49 @@ function RealStudyBottomNav({ refetchCurrentLocation }: RealStudyBottomNavProps)
   const [isAttendModal, setIsAttendModal] = useState(false);
 
   return (
-    <>
-      <Box position="absolute" bottom="0" w="100%">
-        <Button
-          ml={4}
-          rounded="full"
-          aspectRatio={1 / 1}
+    <BottomNavWrapper>
+      <NewTwoButtonRow
+        leftProps={{
+          icon: <i className="fa-solid fa-clock" style={{ color: "var(--gray-400)" }} />,
+          children: <Link href={`/vote/participate?${searchParams.toString()}`}>스터디 예약</Link>,
+        }}
+        rightProps={{
+          icon: <i className="fa-solid fa-badge-check" style={{ color: "#CCF3F0" }} />,
+          children: "실시간 출석체크",
+        }}
+      />
+      {/* <Flex>
+        <NewButton
+          as="div"
+          flex={1}
+          fontWeight={700}
+          mr={3}
+          size="sm"
+          h="48px"
           bgColor="white"
-          boxShadow="0 4px 8px rgba(0,0,0,0.1)"
-          onClick={refetchCurrentLocation}
+          borderRadius="12px"
+          boxShadow=" 0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
+          leftIcon={<i className="fa-solid fa-clock" style={{ color: "var(--gray-400)" }} />}
         >
-          <i className="fa-regular fa-location-crosshairs" />
-        </Button>
-        <Flex p={4}>
-          <Button
-            as="div"
-            flex={1}
-            mr={3}
-            size="lg"
-            h="50px"
-            bgColor="white"
-            boxShadow="0 4px 8px rgba(0,0,0,0.1)"
-          >
-            <Link href={`/vote/participate?${searchParams.toString()}`}>스터디 예약</Link>
-          </Button>
-          <Button
-            flex={1}
-            size="lg"
-            h="50px"
-            colorScheme="mintTheme"
-            boxShadow="0 4px 8px rgba(0,0,0,0.1)"
-            onClick={() => setIsAttendModal(true)}
-          >
-            실시간 출석체크
-          </Button>
-        </Flex>
-      </Box>
+          <Link href={`/vote/participate?${searchParams.toString()}`}>스터디 예약</Link>
+        </NewButton>
+        <NewButton
+          as="div"
+          flex={1}
+          fontWeight={700}
+          mr={3}
+          size="sm"
+          h="48px"
+          colorScheme="mintTheme"
+          borderRadius="12px"
+          boxShadow=" 0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
+          leftIcon={<i className="fa-solid fa-badge-check" style={{ color: "#CCF3F0" }} />}
+        >
+          실시간 출석체크
+        </NewButton>
+      </Flex> */}
       {isAttendModal && <StudyAttendCheckModal setIsModal={setIsAttendModal} />}
-    </>
+    </BottomNavWrapper>
   );
 }
 
