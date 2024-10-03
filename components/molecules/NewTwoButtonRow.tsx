@@ -26,6 +26,7 @@ function NewTwoButtonRow({ leftProps, rightProps }: NewTwoButtonRowProps) {
         bgColor="white"
         borderRadius="12px"
         boxShadow=" 0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
+        border="1px solid var(--gray-100)"
         leftIcon={leftProps?.icon}
       >
         {leftProps.children}

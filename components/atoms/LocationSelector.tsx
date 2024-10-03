@@ -1,4 +1,4 @@
-import { Select } from "@chakra-ui/react";
+import { Flex, Select } from "@chakra-ui/react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 import { LOCATION_TO_FULLNAME } from "../../constants/location";
@@ -39,27 +39,43 @@ export default function LocationSelector({
   const adjustWidth = () => {
     if (selectRef.current) {
       const textLength = selectRef.current.selectedOptions[0].text.length;
-      selectRef.current.style.width = `${textLength * 10 + 50}px`;
+      selectRef.current.style.width = `${textLength * 6.5 + 44}px`;
     }
   };
 
   return (
     <div>
       <Select
+        icon={
+          <Flex justify="center" align="center" fontSize="12px">
+            <i className="fa-solid fa-chevron-down fa-xs" style={{ color: "var(--color-mint)" }} />
+          </Flex>
+        }
         ref={selectRef}
         focusBorderColor="#00c2b3"
-        size="sm"
+        size="xs"
         color="primary"
         value={value}
         onChange={onChange}
+        borderRadius="9999px"
         border={!isBorder ? "none" : undefined}
-        style={{ width: "auto" }}
+        borderColor="var(--gray-200)"
         bgColor="white"
+        fontSize="11px"
+        fontWeight={500}
+        height="24px"
+        width="mon-content"
+        sx={{
+          paddingInlineStart: "8px", // padding-left
+          paddingInlineEnd: "20px", // padding-right (아이콘 오른쪽에 여유 공간)
+        }}
       >
         {options.map((option, idx) => (
-          <option key={idx} value={option}>
-            {LOCATION_TO_FULLNAME[option]}
-          </option>
+          <>
+            <option key={idx} value={option}>
+              {LOCATION_TO_FULLNAME[option]}
+            </option>
+          </>
         ))}
       </Select>
     </div>

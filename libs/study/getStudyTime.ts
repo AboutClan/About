@@ -22,7 +22,7 @@ export const getFirstComment = (users: IAttendance[]) => {
   let text = "basic";
   users.forEach((user) => {
     if (true) {
-      text = "test";
+      text = "오늘도 공부 파이팅 !! 같이 하실 분";
       return;
     }
   });

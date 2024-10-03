@@ -1,7 +1,7 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import Selector from "../../components/atoms/Selector";
+import LocationSelector from "../../components/atoms/LocationSelector";
 import BottomNav from "../../components/layouts/BottomNav";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
@@ -50,14 +50,38 @@ function Participate() {
 
   return (
     <>
-      <Header title="스터디 예약" />
+      <Header title="" isBorder={false}>
+        <Button
+          fontSize="13px"
+          fontWeight={500}
+          size="xs"
+          variant="ghost"
+          height="20px"
+          color="var(--color-blue)"
+        >
+          직접 입력
+        </Button>
+      </Header>
       <Slide>
-        <Flex direction="column" p={4}>
-          <Flex justify="space-between" align="center" mb={2}>
-            <Box fontSize="18px" fontWeight={600}>
+        <Box pt={2} pb={10} px={5} bgColor="white">
+          <Box mb={2} fontSize="24px" fontWeight={600}>
+            스터디를 진행할 <br /> 장소를 선택해 주세요
+          </Box>
+          <Box fontWeight={300} color="var(--gray-500)" fontSize="13px">
+            예정인 장소가 없다면 직접 입력하실 수 있습니다.
+          </Box>
+        </Box>
+
+        <Flex direction="column" px={5} bgColor="white">
+          <Flex justify="space-between" align="center" mb={5}>
+            <Box fontSize="16px" fontWeight={700}>
               기존 스터디 장소
-            </Box>
-            <Selector options={LOCATION_OPEN} defaultValue={location} setValue={setLocation} />
+            </Box>{" "}
+            <LocationSelector
+              options={LOCATION_OPEN}
+              defaultValue={location}
+              setValue={setLocation}
+            />
           </Flex>
           <Box h={"240px"} p={4} border="var(--border-mint)" overflowY="auto">
             {imageDataArr && (

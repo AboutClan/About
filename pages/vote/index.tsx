@@ -1,5 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Avatar from "../../components/atoms/Avatar";
@@ -275,42 +277,58 @@ export default function StudyVoteMap() {
         />
       )}
       {detailInfo && (
-        <BottomDrawerLg height={219} setIsModal={() => setDetailInfo(null)}>
+        <BottomDrawerLg height={185} setIsModal={() => setDetailInfo(null)}>
           <Flex direction="column" w="100%">
-            <Flex justifyContent="space-between" bg="pink">
+            <Flex justifyContent="space-between" mb={4}>
               <Flex direction="column">
                 <Box fontSize="18px" fontWeight={600}>
                   {detailInfo.title}
                 </Box>
-                <Box>
-                  <Box>
+                <Flex align="center" fontSize="11px">
+                  <Box mr={1}>
                     <i className="fa-solid fa-clock fa-xs" style={{ color: "var(--color-mint)" }} />
                   </Box>
-                  <Box>
+                  <Box color="var(--gray-500)">
                     {detailInfo.time.start} ~ {detailInfo.time.end}
                   </Box>
-                  <Box px={0.5}>·</Box>
+                  <Box w={3} textAlign="center">
+                    ·
+                  </Box>
                   <Box color="var(--color-blue)">{detailInfo.participantCnt + 1}명 참여 중</Box>
-                </Box>
-                <Box>
-                  <Avatar {...detailInfo.comment.user} size="sm" />
-                  <Box>{detailInfo.comment.text}</Box>
-                </Box>
+                </Flex>
+                <Flex mt={2} align="center">
+                  <Avatar {...detailInfo.comment.user} size="xs" />
+                  <Box ml={1} fontSize="12px" color="var(--gray-600)">
+                    {detailInfo.comment.text}
+                  </Box>
+                </Flex>
               </Flex>
-              <Box>23</Box>
+              <Box
+                width="75px"
+                height="75px"
+                position="relative"
+                borderRadius="4px"
+                overflow="hidden"
+              >
+                <Image src={detailInfo.image} fill sizes="80px" alt="studyImage" />
+              </Box>
             </Flex>
-            <NewTwoButtonRow
-              leftProps={{
-                icon: (
-                  <i className="fa-solid fa-circle-info" style={{ color: "var(--gray-400)" }} />
-                ),
-                children: "자세히 보기",
-              }}
-              rightProps={{
-                icon: <i className="fa-solid fa-user-plus" style={{ color: "#CCF3F0" }} />,
-                children: "스터디 합류",
-              }}
-            />
+            <Box py={2}>
+              <NewTwoButtonRow
+                leftProps={{
+                  icon: (
+                    <i className="fa-solid fa-circle-info" style={{ color: "var(--gray-400)" }} />
+                  ),
+                  children: (
+                    <Link href={`/study/${detailInfo.id}/${dayjsToStr(dayjs())}`}>자세히 보기</Link>
+                  ),
+                }}
+                rightProps={{
+                  icon: <i className="fa-solid fa-user-plus" style={{ color: "#CCF3F0" }} />,
+                  children: "스터디 합류",
+                }}
+              />
+            </Box>
           </Flex>
         </BottomDrawerLg>
       )}
