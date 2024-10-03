@@ -2,6 +2,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import CurrentLocationBtn from "../../components/atoms/CurrentLocationBtn";
 
 import LocationSelector from "../../components/atoms/LocationSelector";
 import Selector from "../../components/atoms/Selector";
@@ -12,7 +13,7 @@ import VoteMap from "../../components/organisms/VoteMap";
 import { LOCATION_OPEN } from "../../constants/location";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { useUserInfoQuery } from "../../hooks/user/queries";
-import { getStudyVoteIcon } from "../../libs/study/getStudyVoteIcon";
+import { getStudyIcon } from "../../libs/study/getStudyVoteIcon";
 import { getLocationCenterDot } from "../../libs/study/getStudyVoteMap";
 import RealStudyBottomNav from "../../pageTemplates/vote/RealStudyBottomNav";
 import VotePreComponent from "../../pageTemplates/vote/VotePreComponent";
@@ -22,7 +23,7 @@ import { IStudyVoteWithPlace } from "../../types/models/studyTypes/studyInterAct
 import { ActiveLocation, LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
-type StudyCategoryTab = "실시간 스터디" | "내일 스터디";
+type StudyCategoryTab = "실시간 스터디" | "내일의 스터디";
 
 export default function StudyVoteMap() {
   const router = useRouter();
@@ -105,7 +106,9 @@ export default function StudyVoteMap() {
     } else if (mainLocation) {
       setMapOptions(getMapOptions({ lat: mainLocation.lat, lon: mainLocation.lon }));
     }
-    if (studyVoteData) setMarkersOptions(getMarkersOptions(studyVoteData, currentLocation));
+    if (studyVoteData && currentLocation) {
+      setMarkersOptions(getMarkersOptions(studyVoteData, currentLocation));
+    }
   }, [currentLocation, mainLocation, studyCategoryTab, studyVoteData]);
 
   const tabOptionsArr: ITabNavOptions[] = [
@@ -117,9 +120,9 @@ export default function StudyVoteMap() {
       flex: 1,
     },
     {
-      text: "내일 스터디",
+      text: "내일의 스터디",
       func: () => {
-        setStudyCategoryTab("내일 스터디");
+        setStudyCategoryTab("내일의 스터디");
       },
       flex: 1,
     },
@@ -149,7 +152,7 @@ export default function StudyVoteMap() {
   const handleMarker = (id: string) => {
     if (!id) return;
 
-    if (studyCategoryTab === "내일 스터디") {
+    if (studyCategoryTab === "내일의 스터디") {
       const myPlace = studyVoteData?.find((par) => par.place._id === id).place;
       setMyVoteInfo((old) => setVotePlaceInfo(myPlace, old));
     }
@@ -157,8 +160,9 @@ export default function StudyVoteMap() {
 
   return (
     <>
-      <Header title="스터디 투표" />
-      <TabNav selected={studyCategoryTab} tabOptionsArr={tabOptionsArr} isMain isThick />
+      <Header title="스터디 투표" isCenter isBorder={false} />
+
+      <TabNav selected={studyCategoryTab} tabOptionsArr={tabOptionsArr} isMain />
       <Box
         position="relative"
         height={
@@ -171,33 +175,39 @@ export default function StudyVoteMap() {
           w="100%"
           justify="space-between"
           py={3}
-          px={4}
+          px={5}
           position="absolute"
           top="0"
           left="0"
           zIndex={500}
         >
           {studyCategoryTab === "실시간 스터디" ? (
-            <ButtonGroups
-              buttonOptionsArr={realButtonOptionsArr}
-              size="sm"
-              isEllipse
-              currentValue={locationFilterType}
-            />
+            <>
+              <CurrentLocationBtn />
+              <ButtonGroups
+                buttonOptionsArr={realButtonOptionsArr}
+                size="sm"
+                isEllipse
+                currentValue={locationFilterType}
+              />
+            </>
           ) : (
             <>
-              <Selector
-                defaultValue={dateValue}
-                options={dateArr}
-                setValue={setDateValue}
-                convertTextFunc={(text) => dayjsToFormat(dayjs(text), "M월 D일(ddd) 스터디")}
-              />
-
-              <LocationSelector
-                defaultValue={locationValue}
-                options={LOCATION_OPEN}
-                setValue={setLocationValue}
-              />
+              <Flex>
+                <Box mr={2}>
+                  <Selector
+                    defaultValue={dateValue}
+                    options={dateArr}
+                    setValue={setDateValue}
+                    convertTextFunc={(text) => dayjsToFormat(dayjs(text), "M월 D일(ddd) 스터디")}
+                  />
+                </Box>
+                <LocationSelector
+                  defaultValue={locationValue}
+                  options={LOCATION_OPEN}
+                  setValue={setLocationValue}
+                />
+              </Flex>
             </>
           )}
         </Flex>
@@ -260,7 +270,7 @@ const getMarkersOptions = (
     position: new naver.maps.LatLng(lat, lon),
     title: "테스트트",
     icon: {
-      content: getStudyVoteIcon("default", "장소"),
+      content: getStudyIcon(),
       size: new naver.maps.Size(72, 72),
       anchor: new naver.maps.Point(36, 44),
     },
@@ -274,7 +284,7 @@ const getMarkersOptions = (
         position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
         title: "메인",
         icon: {
-          content: getStudyVoteIcon("main", "내 위치"),
+          content: getStudyIcon(),
           size: new naver.maps.Size(72, 72),
           anchor: new naver.maps.Point(36, 44),
         },

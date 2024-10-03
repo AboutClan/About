@@ -209,7 +209,7 @@ function StudyAttendCheckModal({ setIsModal }: IModal) {
               <Switch
                 mr="var(--gap-1)"
                 colorScheme="mintTheme"
-                isChecked={isOtherPermission}
+                isChecked={!isOtherPermission}
                 onChange={() => setIsOtherPermission((old) => !old)}
               />
             </Item>

@@ -10,6 +10,8 @@ interface IHeader {
   url?: string;
   isSlide?: boolean;
   rightPadding?: number;
+  isCenter?: boolean;
+  isBorder?: boolean;
   children?: React.ReactNode;
 }
 
@@ -21,14 +23,18 @@ export default function Header({
   rightPadding,
   func,
   children,
+  isCenter,
+  isBorder = true,
 }: IHeader) {
   function HeaderLayout() {
     return (
-      <HeaderContainer rightPadding={rightPadding}>
+      <HeaderContainer isCenter={isCenter} isBorder={isBorder} rightPadding={rightPadding}>
         <LeftSection>
           {isBack ? <ArrowBackButton url={url} func={func} /> : <Box w="16px" />}
-          <Title>{title}</Title>
+          {!isCenter && <Title>{title}</Title>}
         </LeftSection>
+        {isCenter && <CenterTitle>{title}</CenterTitle>}
+        {isCenter && <Box w={5} />}
         <div>{children}</div>
       </HeaderContainer>
     );
@@ -47,16 +53,20 @@ export default function Header({
   );
 }
 
-const HeaderContainer = styled.header<{ rightPadding: number }>`
+const HeaderContainer = styled.header<{
+  isBorder?: boolean;
+  isCenter?: boolean;
+  rightPadding: number;
+}>`
   background-color: white;
   height: var(--header-h);
-  font-size: 18px;
+  font-size: 16px;
   padding-right: ${(props) => props.rightPadding || 16}px;
-
+  padding-left: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: var(--border);
+  border-bottom: ${(props) => (props.isBorder ? "var(--border)" : "none")};
   max-width: var(--max-width);
   margin: 0 auto;
 `;
@@ -69,6 +79,13 @@ const LeftSection = styled.div`
 
 // Title 스타일
 const Title = styled.div`
-  font-weight: 800; /* font-extrabold */
+  font-weight: 700; /* font-extrabold */
   color: var(--gray-800); /* text-gray-1 - 색상은 예시입니다 */
+`;
+
+const CenterTitle = styled.div`
+  flex: 1;
+  font-weight: 700; /* font-extrabold */
+  color: var(--gray-800); /* text-gray-1 - 색상은 예시입니다 */
+  text-align: center;
 `;

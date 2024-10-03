@@ -21,16 +21,18 @@ export default function TabNav({
   isThick,
 }: ITabNav) {
   const idx = tabOptionsArr.findIndex((tab) => tab.text === selected);
-
+  console.log(52, idx, isThick);
   return (
     <>
       <Tabs
         index={selected ? idx : undefined}
-        color={isThick ? "var(--gray-600)" : "var(--gray-500)"}
+        color={"var(--gray-600)"}
         colorScheme="mintTheme"
         bgColor="white"
+        height="44px"
       >
         <TabList
+          height="44px"
           display="flex"
           flexWrap="nowrap"
           overflowX="scroll"
@@ -49,7 +51,7 @@ export default function TabNav({
             <Tab
               display="flex"
               flexShrink="0 !important"
-              fontSize="inherit"
+              fontSize="13px"
               fontWeight={isThick ? 600 : index === idx || idx === -1 ? 600 : 400}
               p={!isMain ? "8px 20px" : "8px 16px"}
               flex={tab?.flex}

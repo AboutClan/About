@@ -37,6 +37,7 @@ export default function VoteMap({
 
   useEffect(() => {
     if (!mapRef?.current || typeof naver === "undefined") return;
+
     const map = new naver.maps.Map(mapRef.current, mapOptions);
     naver.maps.Event.trigger(map, "resize");
   }, [resizeToggle]);
