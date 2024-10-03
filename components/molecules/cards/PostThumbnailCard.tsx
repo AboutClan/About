@@ -1,15 +1,8 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import Image from "next/image";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
-import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
-import { USER_INFO } from "../../../constants/keys/queryKeys";
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { useStudyPreferenceMutation } from "../../../hooks/study/mutations";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { SingleLineText } from "../../../styles/layout/components";
 import { IImageProps } from "../../../types/components/assetTypes";
 import { ITextAndColorSchemes } from "../../../types/components/propTypes";
@@ -18,6 +11,7 @@ import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 import OutlineBadge from "../../atoms/badges/OutlineBadge";
 import Skeleton from "../../atoms/skeleton/Skeleton";
 import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
+import PlaceImage from "../PlaceImage";
 export interface IPostThumbnailCard {
   participants?: IUserSummary[];
   title: string;
@@ -56,16 +50,6 @@ export function PostThumbnailCard({
   },
   isShort,
 }: IPostThumbnailCardObj) {
-  const { data: session } = useSession();
-  const queryClient = useQueryClient();
-  const toast = useToast();
-  const isGuest = session?.user.name === "guest";
-
-  const { data: userInfo, isLoading: userLoading } = useUserInfoQuery({
-    enabled: isGuest === false,
-  });
-  const preference = userInfo?.studyPreference;
-
   const userAvatarArr = participants
     ?.filter((par) => par)
     .map((par) => ({
@@ -73,73 +57,17 @@ export function PostThumbnailCard({
       ...(par.avatar?.type !== null ? { avatar: par.avatar } : {}),
     }));
 
-  const isMyPrefer = preference?.place === id || preference?.subPlace?.includes(id);
-
   const CLOSED_TEXT_ARR = ["모집 마감", "닫힘"];
-
-  const { mutate: patchStudyPreference, isLoading } = useStudyPreferenceMutation("patch", {
-    onSuccess() {
-      toast("success", "변경되었습니다.");
-      queryClient.refetchQueries([USER_INFO]);
-    },
-  });
-
-  const toggleHeart = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    if (isLoading || userLoading) return;
-
-    const preferMain = preference?.place;
-
-    const preferenceType =
-      preference?.place === id
-        ? "main"
-        : preference?.subPlace?.includes(id)
-          ? "sub"
-          : preferMain
-            ? "sub"
-            : "main";
-
-    patchStudyPreference({ id, type: preferenceType });
-
-    queryClient.invalidateQueries([USER_INFO]);
-  };
 
   return (
     <CardLink href={url} onClick={func}>
       <Flex flex={1}>
-        <Box
-          w="80px"
-          h="80px"
-          borderRadius="var(--rounded-lg)"
-          position="relative"
-          overflow="hidden"
-          pos="relative"
-        >
-          <Image
-            src={image.url}
-            alt="thumbnailImage"
-            fill={true}
-            sizes="100px"
-            priority={image.priority}
-          />
-          {type === "study" && (
-            <Box
-              as="button"
-              pos="absolute"
-              p={1}
-              bottom={-1}
-              right={1}
-              color="white"
-              onClick={toggleHeart}
-            >
-              {isMyPrefer ? (
-                <i className="fa-solid fa-heart fa-sm" />
-              ) : (
-                <i className="fa-regular fa-heart fa-sm" />
-              )}
-            </Box>
-          )}
-        </Box>
+        <PlaceImage
+          image={{ url: image.url, isPriority: image.priority }}
+          hasToggleHeart={type === "study"}
+          id={id}
+        />
+
         <Flex direction="column" ml="12px" flex={1}>
           <Flex align="center" fontSize="16px">
             {title !== "개인 스터디" && type === "study" && (

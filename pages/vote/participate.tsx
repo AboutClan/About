@@ -7,7 +7,6 @@ import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import { IImageTileData } from "../../components/molecules/layouts/ImageTileFlexLayout";
 import ImageTileGridLayout from "../../components/molecules/layouts/ImageTitleGridLayout";
-import SearchLocation from "../../components/organisms/SearchLocation";
 import { LOCATION_OPEN } from "../../constants/location";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { KakaoLocationProps } from "../../types/externals/kakaoLocationSearch";
@@ -47,7 +46,7 @@ function Participate() {
       id: place._id,
     };
   });
-
+  console.log(studyVoteData);
   return (
     <>
       <Header title="" isBorder={false}>
@@ -83,16 +82,17 @@ function Participate() {
               setValue={setLocation}
             />
           </Flex>
-          <Box h={"240px"} p={4} border="var(--border-mint)" overflowY="auto">
+          <Box>
             {imageDataArr && (
               <ImageTileGridLayout
                 imageDataArr={imageDataArr}
                 grid={{ row: null, col: 4 }}
                 selectedId={[placeId]}
+                hasToggleHeart
               />
             )}
           </Box>
-          <Box mt={4} fontSize="18px" fontWeight={600}>
+          {/* <Box mt={4} fontSize="18px" fontWeight={600}>
             신규 장소 직접 입력
           </Box>
           <Box mt={3}>
@@ -100,7 +100,7 @@ function Participate() {
           </Box>
           <Box mt={3}>
             <SearchLocation placeInfo={placeInfo} setPlaceInfo={setPlaceInfo} />
-          </Box>
+          </Box> */}
         </Flex>
       </Slide>
       <BottomNav text="스터디 신청" />
