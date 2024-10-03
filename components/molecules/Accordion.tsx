@@ -8,6 +8,7 @@ import {
 import styled from "styled-components";
 
 import { OPEN_KAKAO_LINK } from "../../constants/contentsText/Private";
+import ExternalLink from "./ExternalLink";
 
 export interface IAccordionContent {
   title: string;
@@ -47,7 +48,9 @@ function Accordion({ contentArr, isFull, isQ = true }: IAccordion) {
                 ) : (
                   <p>
                     {content}
-                    {content === "" && <a href={OPEN_KAKAO_LINK}>{OPEN_KAKAO_LINK}</a>}
+                    {content === "" && (
+                      <ExternalLink href={OPEN_KAKAO_LINK}>{OPEN_KAKAO_LINK}</ExternalLink>
+                    )}
                   </p>
                 )}
               </Content>

@@ -1,8 +1,10 @@
 import { Button } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import styled from "styled-components";
 
 import { REVIEW_DATA } from "../../../storage/Review";
+import { isWebView } from "../../../utils/appEnvUtils";
+import { nativeMethodUtils } from "../../../utils/nativeMethodUtils";
 
 const kakaoAppKey = process.env.NEXT_PUBLIC_KAKAO_JS;
 
@@ -29,8 +31,19 @@ function KakaoShareBtn({
   isFull,
   temp,
 }: IKakaoShareBtn) {
+  const handleShareOnApp = useCallback(() => {
+    if (isWebView()) {
+      nativeMethodUtils.share(url);
+    }
+  }, []);
+
   useEffect(() => {
-    if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
+    if (
+      typeof window !== "undefined" &&
+      window.Kakao &&
+      !window.Kakao.isInitialized() &&
+      !isWebView()
+    ) {
       window.Kakao.init(kakaoAppKey);
     }
   }, []);
@@ -38,7 +51,7 @@ function KakaoShareBtn({
   useEffect(() => {
     if (type === "gather" && !img) return;
 
-    if (window.Kakao) {
+    if (window.Kakao && !isWebView()) {
       const options =
         type === "gather" || type === "study"
           ? {
@@ -116,7 +129,7 @@ function KakaoShareBtn({
   }, [img, type, url, subtitle]);
 
   return (
-    <Layout id="kakao-share-button" isFull={isFull} temp={temp}>
+    <Layout id="kakao-share-button" isFull={isFull} temp={temp} onClick={handleShareOnApp}>
       {!isBig ? (
         <i className="fa-light fa-share-nodes fa-lg" />
       ) : (
