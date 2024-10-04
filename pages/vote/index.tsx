@@ -19,6 +19,7 @@ import { LOCATION_OPEN } from "../../constants/location";
 import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { useUserInfoQuery } from "../../hooks/user/queries";
+import { isMember } from "../../libs/backend/authUtils";
 import { getFirstComment, getStudyTime } from "../../libs/study/getStudyTime";
 import { getCurrentLocationIcon, getStudyIcon } from "../../libs/study/getStudyVoteIcon";
 import { getLocationCenterDot } from "../../libs/study/getStudyVoteMap";
@@ -48,6 +49,7 @@ interface DetailInfoProps {
     };
     text: string;
   };
+  isMember: boolean;
 }
 
 export default function StudyVoteMap() {
@@ -64,6 +66,7 @@ export default function StudyVoteMap() {
   const [mapOptions, setMapOptions] = useState<IMapOptions>();
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>();
   const [currentLocation, setCurrentLocation] = useState<{ lat: number; lon: number }>();
+  const [centerLocation, setCenterLocation] = useState<{ lat: number; lon: number }>();
   const [studyCategoryTab, setStudyCategoryTab] = useState<StudyCategoryTab>("실시간 스터디");
   const [locationFilterType, setLocationFilterType] = useState<"현재 위치" | "주 활동 장소">(
     "현재 위치",
@@ -77,15 +80,9 @@ export default function StudyVoteMap() {
   const [detailInfo, setDetailInfo] = useState<DetailInfoProps>();
 
   const { data: userInfo } = useUserInfoQuery();
-  const { data: studyVoteOne, isLoading } = useStudyVoteQuery(
-    dateValue,
-    locationValue,
-    false,
-    false,
-    {
-      enabled: !!locationValue && !!dateValue,
-    },
-  );
+  const { data: studyVoteOne } = useStudyVoteQuery(dateValue, locationValue, false, false, {
+    enabled: !!locationValue && !!dateValue,
+  });
 
   const mainLocation = userInfo?.locationDetail;
   const studyVoteData = studyVoteOne?.[0]?.participations;
@@ -99,15 +96,19 @@ export default function StudyVoteMap() {
     newSearchParams.set("location", convertLocationLangTo(locationValue, "en"));
     newSearchParams.set("date", dateValue);
     router.replace(`/vote?${newSearchParams.toString()}`);
-    setCurrentLocation(getLocationCenterDot()[locationValue]);
+    if (studyCategoryTab === "내일의 스터디") {
+      setCenterLocation(getLocationCenterDot()[locationValue] || null);
+    }
   }, [locationValue, dateValue]);
 
   useEffect(() => {
+    console.log(52);
     navigator.geolocation.getCurrentPosition(
       function (position) {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
         setCurrentLocation({ lat, lon });
+        setCenterLocation({ lat, lon });
         setIsLocationRefetch(false);
       },
       function (error) {
@@ -127,16 +128,16 @@ export default function StudyVoteMap() {
   }, [isDrawerFixed, studyCategoryTab]);
 
   useEffect(() => {
-    if (studyCategoryTab === "실시간 스터디" && currentLocation) {
-      setMapOptions(getMapOptions(currentLocation));
-    } else if (mainLocation) {
+    if (studyCategoryTab === "실시간 스터디" && centerLocation) {
+      setMapOptions(getMapOptions(centerLocation));
+    } else if (centerLocation === null && mainLocation) {
       setMapOptions(getMapOptions({ lat: mainLocation.lat, lon: mainLocation.lon }));
     }
     if (studyVoteData && currentLocation) {
       setMarkersOptions(getMarkersOptions(studyVoteData, currentLocation));
     }
-  }, [currentLocation, mainLocation, studyCategoryTab, studyVoteData]);
-
+  }, [currentLocation, centerLocation, mainLocation, studyCategoryTab, studyVoteData]);
+  console.log(423, markersOptions);
   const tabOptionsArr: ITabNavOptions[] = [
     {
       text: "실시간 스터디",
@@ -154,19 +155,23 @@ export default function StudyVoteMap() {
     },
   ];
 
+  const handleCurrentLocation = () => {
+    setLocationFilterType("현재 위치");
+    setIsLocationRefetch(true);
+  };
+
   const realButtonOptionsArr: ButtonOptionsProps[] = [
     {
       text: "현재 위치",
       func: () => {
-        setLocationFilterType("현재 위치");
-        setIsLocationRefetch(true);
+        handleCurrentLocation();
       },
     },
     {
       text: `주 활동 장소`,
       func: () => {
         setLocationFilterType("주 활동 장소");
-        setCurrentLocation({ lat: mainLocation?.lat, lon: mainLocation?.lon });
+        setCenterLocation({ lat: mainLocation?.lat, lon: mainLocation?.lon });
       },
     },
   ];
@@ -194,6 +199,7 @@ export default function StudyVoteMap() {
           },
           text: getFirstComment(findStudy.attendences),
         },
+        isMember: findStudy?.attendences?.some((who) => who.user.uid === userInfo.uid),
       });
     }
 
@@ -202,7 +208,7 @@ export default function StudyVoteMap() {
       setMyVoteInfo((old) => setVotePlaceInfo(myPlace, old));
     }
   };
-  console.log(51, detailInfo);
+
   return (
     <>
       <Header title="스터디 투표" isCenter isBorder={false} />
@@ -228,7 +234,7 @@ export default function StudyVoteMap() {
         >
           {studyCategoryTab === "실시간 스터디" ? (
             <>
-              <CurrentLocationBtn />
+              <CurrentLocationBtn onClick={handleCurrentLocation} />
               <ButtonGroups
                 buttonOptionsArr={realButtonOptionsArr}
                 size="sm"
@@ -275,65 +281,67 @@ export default function StudyVoteMap() {
           setIsDrawerDown={setIsDrawerDown}
         />
       )}
-      {detailInfo && (
-        <BottomDrawerLg height={185} setIsModal={() => setDetailInfo(null)}>
-          <Flex direction="column" w="100%">
-            <Flex justifyContent="space-between" mb={4}>
-              <Flex direction="column">
-                <Box fontSize="18px" fontWeight={600}>
-                  {detailInfo.title}
-                </Box>
-                <Flex align="center" fontSize="11px">
-                  <Box mr={1}>
-                    <i className="fa-solid fa-clock fa-xs" style={{ color: "var(--color-mint)" }} />
-                  </Box>
-                  <Box color="var(--gray-500)">
-                    {detailInfo.time.start} ~ {detailInfo.time.end}
-                  </Box>
-                  <Box w={3} textAlign="center">
-                    ·
-                  </Box>
-                  <Box color="var(--color-blue)">{detailInfo.participantCnt + 1}명 참여 중</Box>
-                </Flex>
-                <Flex mt={2} align="center">
-                  <Avatar {...detailInfo.comment.user} size="xs" />
-                  <Box ml={1} fontSize="12px" color="var(--gray-600)">
-                    {detailInfo.comment.text}
-                  </Box>
-                </Flex>
-              </Flex>
-              <Box
-                width="75px"
-                height="75px"
-                position="relative"
-                borderRadius="4px"
-                overflow="hidden"
-              >
-                <Image src={detailInfo.image} fill sizes="80px" alt="studyImage" />
-              </Box>
-            </Flex>
-            <Box py={2}>
-              <NewTwoButtonRow
-                leftProps={{
-                  icon: (
-                    <i className="fa-solid fa-circle-info" style={{ color: "var(--gray-400)" }} />
-                  ),
-                  children: (
-                    <Link href={`/study/${detailInfo.id}/${dayjsToStr(dayjs())}`}>자세히 보기</Link>
-                  ),
-                }}
-                rightProps={{
-                  icon: <i className="fa-solid fa-user-plus" style={{ color: "#CCF3F0" }} />,
-                  children: "스터디 합류",
-                }}
-              />
-            </Box>
-          </Flex>
-        </BottomDrawerLg>
-      )}
+      {detailInfo && <DetailDrawer detailInfo={detailInfo} setDetailInfo={setDetailInfo} />}
     </>
   );
 }
+
+const DetailDrawer = ({ detailInfo, setDetailInfo }) => {
+  console.log(detailInfo);
+  return (
+    <BottomDrawerLg height={185} setIsModal={() => setDetailInfo(null)}>
+      <Flex direction="column" w="100%">
+        <Flex justifyContent="space-between" mb={4}>
+          <Flex direction="column">
+            <Box fontSize="18px" fontWeight={600}>
+              {detailInfo.title}
+            </Box>
+            <Flex align="center" fontSize="11px">
+              <Box mr={1}>
+                <i className="fa-solid fa-clock fa-xs" style={{ color: "var(--color-mint)" }} />
+              </Box>
+              <Box color="var(--gray-500)">
+                {detailInfo.time.start} ~ {detailInfo.time.end}
+              </Box>
+              <Box w={3} textAlign="center">
+                ·
+              </Box>
+              <Box color="var(--color-blue)">{detailInfo.participantCnt + 1}명 참여 중</Box>
+            </Flex>
+            <Flex mt={2} align="center">
+              <Avatar {...detailInfo.comment.user} size="xs" />
+              <Box ml={1} fontSize="12px" color="var(--gray-600)">
+                {detailInfo.comment.text}
+              </Box>
+            </Flex>
+          </Flex>
+          <Box width="75px" height="75px" position="relative" borderRadius="4px" overflow="hidden">
+            <Image src={detailInfo.image} fill sizes="80px" alt="studyImage" />
+          </Box>
+        </Flex>
+        <Box py={2}>
+          <NewTwoButtonRow
+            leftProps={{
+              icon: <i className="fa-solid fa-circle-info" style={{ color: "var(--gray-400)" }} />,
+              children: (
+                <Link href={`/study/${detailInfo.id}/${dayjsToStr(dayjs())}`}>자세히 보기</Link>
+              ),
+            }}
+            rightProps={{
+              icon: isMember ? (
+                <i className="fa-solid fa-comment-quote fa-flip-horizontal" />
+              ) : (
+                <i className="fa-solid fa-user-plus" style={{ color: "#CCF3F0" }} />
+              ),
+
+              children: <div>{isMember ? "한줄 코멘트 변경" : "스터디 합류"}</div>,
+            }}
+          />
+        </Box>
+      </Flex>
+    </BottomDrawerLg>
+  );
+};
 
 //지도에서 마커를 통한 핸들링
 const setVotePlaceInfo = (myPlace: IPlace, voteInfo?: IStudyVoteWithPlace): IStudyVoteWithPlace => {
@@ -369,7 +377,6 @@ const getMarkersOptions = (
 
   temp.push({
     position: new naver.maps.LatLng(lat, lon),
-    title: "테스트트",
     icon: {
       content: getCurrentLocationIcon(),
       size: new naver.maps.Size(72, 72),
@@ -383,9 +390,8 @@ const getMarkersOptions = (
       temp.push({
         id: par.place._id,
         position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
-        title: "메인",
         icon: {
-          content: getStudyIcon(null, 4),
+          content: getStudyIcon(null, par.attendences.length),
           size: new naver.maps.Size(72, 72),
           anchor: new naver.maps.Point(36, 44),
         },

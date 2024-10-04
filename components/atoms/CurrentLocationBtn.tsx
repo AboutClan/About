@@ -1,6 +1,10 @@
 import { Button } from "@chakra-ui/react";
 
-function CurrentLocationBtn() {
+interface CurrentLocationBtnProps {
+  onClick: () => void;
+}
+
+function CurrentLocationBtn({ onClick }: CurrentLocationBtnProps) {
   return (
     <Button
       rounded="full"
@@ -11,6 +15,7 @@ function CurrentLocationBtn() {
       h="32px"
       p="0"
       border="1px solid var(--gray-100)"
+      onClick={onClick}
     >
       <i className="fa-regular fa-location-crosshairs" />
     </Button>

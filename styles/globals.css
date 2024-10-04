@@ -22,7 +22,7 @@ html {
 body {
   font-family: apple;
   font-size: 14px;
-  background-color: var(--gray-100);
+  background-color: white;
   color: var(--gray-800);
 }
 
@@ -45,7 +45,7 @@ a {
 
   min-height: 100dvh;
   margin: 0 auto;
-  background-color: var(--gray-100);
+  background-color: white;
 
   overflow: hidden;
 }

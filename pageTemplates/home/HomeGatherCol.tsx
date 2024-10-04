@@ -38,18 +38,10 @@ export default function HomeGatherCol() {
 
   return (
     <Box mb="24px">
-      <Flex
-        mb="16px"
-        px="16px"
-        bgColor="white"
-        align="center"
-        h="58px"
-        fontWeight={600}
-        fontSize="18px"
-      >
+      <Flex mb="16px" bgColor="white" align="center" h="58px" fontWeight={600} fontSize="18px">
         ABOUT 모임
       </Flex>
-      <Box px="16px">
+      <Box>
         {cardDataArr.length ? (
           <CardColumnLayout
             cardDataArr={cardDataArr}

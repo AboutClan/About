@@ -70,7 +70,6 @@ function PlaceImage({ image, id, hasToggleHeart, selected }: PlaceHeartImageProp
       )}
       {hasToggleHeart && (
         <Box
-          as="button"
           pos="absolute"
           p={1}
           bottom={-0.5}

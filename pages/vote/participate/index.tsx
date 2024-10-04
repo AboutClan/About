@@ -2,8 +2,8 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import LocationSelector from "../../../components/atoms/LocationSelector";
 import PageIntro from "../../../components/atoms/PageIntro";
+import Select from "../../../components/atoms/Select";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
@@ -20,28 +20,37 @@ function Participate() {
   const dateParam = searchParams.get("date");
 
   const [location, setLocation] = useState<Location>();
-
   const [placeId, setPlaceId] = useState<string>();
-
-  useEffect(() => {
-    setLocation(convertLocationLangTo(locationParam, "kr"));
-  }, [locationParam]);
+  const [imageDataArr, setImageDataArr] = useState<IImageTileData[]>();
 
   const { data: studyVoteData } = useStudyVoteQuery(dateParam, location, false, false, {
     enabled: !!dateParam && !!location,
   });
 
-  const imageDataArr: IImageTileData[] = studyVoteData?.[0]?.participations?.map((par) => {
-    const place = par.place;
-    return {
-      imageUrl: place.image,
-      text: place.fullname,
-      func: () => {
-        setPlaceId(place._id);
-      },
-      id: place._id,
-    };
-  });
+  useEffect(() => {
+    setLocation(convertLocationLangTo(locationParam, "kr"));
+  }, [locationParam]);
+
+  useEffect(() => {
+    if (!studyVoteData) return;
+
+    setImageDataArr(
+      studyVoteData?.[0]?.participations?.map((par) => {
+        const place = par.place;
+        return {
+          imageUrl: place.image,
+          text: place.fullname,
+          func: () => {
+         
+            setPlaceId(place._id);
+          },
+          id: place._id,
+        };
+      }),
+    );
+  }, [studyVoteData]);
+
+  
 
   return (
     <>
@@ -64,15 +73,16 @@ function Participate() {
           sub="예정인 장소가 없다면 직접 입력하실 수 있습니다."
         />
 
-        <Flex direction="column" px={5} bgColor="white">
+        <Flex direction="column" bgColor="white">
           <Flex justify="space-between" align="center" mb={5}>
             <Box fontSize="16px" fontWeight={700}>
               기존 스터디 장소
-            </Box>{" "}
-            <LocationSelector
+            </Box>
+            <Select
               options={LOCATION_OPEN}
               defaultValue={location}
               setValue={setLocation}
+              type={"location"}
             />
           </Flex>
           <Box pb={20}>

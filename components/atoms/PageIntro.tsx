@@ -10,7 +10,7 @@ interface PageIntroProps {
 
 function PageIntro({ main: { first, second }, sub }: PageIntroProps) {
   return (
-    <Box pt={2} pb={10} px={5} bgColor="white">
+    <Box pt={2} pb={10} bgColor="white">
       <Box mb={2} fontSize="24px" fontWeight={600}>
         {first} <br /> {second}
       </Box>

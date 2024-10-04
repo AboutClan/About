@@ -21,7 +21,7 @@ export default function TabNav({
   isThick,
 }: ITabNav) {
   const idx = tabOptionsArr.findIndex((tab) => tab.text === selected);
-  console.log(52, idx, isThick);
+
   return (
     <>
       <Tabs

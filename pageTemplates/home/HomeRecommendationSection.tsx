@@ -16,6 +16,7 @@ import {
   MemberIcon,
   StoreIcon,
 } from "../../components/atoms/Icons/AboutCategoryIcons";
+import Slide from "../../components/layouts/PageSlide";
 import { USER_LOCATION } from "../../constants/keys/localStorage";
 import { STUDY_VOTE_END_HOUR } from "../../constants/settingValue/study/study";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
@@ -119,7 +120,9 @@ function HomeRecommendationSection() {
           </Box>
         </SwiperSlide>
       </Swiper>
-      <HomeGatherCol />
+      <Slide>
+        <HomeGatherCol />
+      </Slide>
     </>
   );
 }

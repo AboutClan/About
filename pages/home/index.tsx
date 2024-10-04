@@ -17,22 +17,23 @@ function Home() {
     <>
       <HomeInitialSetting />
       <HomeHeader />
-      <Slide>
+      <Slide isNoPadding>
         <HomeCategoryNav tab={tab} setTab={setTab} />
-        <>
-          {tab !== "스터디" && <EventBanner tab={tab} />}
-          {tab === "스터디" ? (
-            <HomeStudySection />
-          ) : tab === "번개" ? (
-            <HomeGatherSection />
-          ) : tab === "캘린더" ? (
-            <HomeCalendarSection />
-          ) : tab === "추천" ? (
-            <HomeRecommendationSection />
-          ) : null}
-          <Box w="100%" h="40px" />
-        </>
+        {tab !== "스터디" && <EventBanner tab={tab} />}
       </Slide>
+
+      <>
+        {tab === "추천" ? (
+          <HomeRecommendationSection />
+        ) : tab === "스터디" ? (
+          <HomeStudySection />
+        ) : tab === "번개" ? (
+          <HomeGatherSection />
+        ) : tab === "캘린더" ? (
+          <HomeCalendarSection />
+        ) : null}
+        <Box w="100%" h="40px" />
+      </>
     </>
   );
 }

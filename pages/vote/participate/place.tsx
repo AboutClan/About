@@ -24,7 +24,7 @@ function Place({}: PlaceProps) {
             main={{ first: "리스트에 없으신가요?", second: "스터디 장소를 알려주세요" }}
             sub="스터디를 진행할 장소를 입력해 보세요"
           />
-          <Box mt={10} mx={5}>
+          <Box>
             <SearchLocation placeInfo={placeInfo} setPlaceInfo={setPlaceInfo} />
           </Box>
         </Slide>

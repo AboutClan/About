@@ -30,14 +30,13 @@ export default function VoteMap({
   });
 
   useEffect(() => {
-    if (!mapRef?.current || typeof naver === "undefined") return;
+    if (!mapRef?.current || typeof naver === "undefined" || !mapOptions) return;
     const map = new naver.maps.Map(mapRef.current, mapOptions);
     mapInstanceRef.current = map;
   }, [mapOptions]);
 
   useEffect(() => {
     if (!mapRef?.current || typeof naver === "undefined") return;
-
     const map = new naver.maps.Map(mapRef.current, mapOptions);
     naver.maps.Event.trigger(map, "resize");
   }, [resizeToggle]);
