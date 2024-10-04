@@ -22,7 +22,7 @@ function RealStudyBottomNav({ refetchCurrentLocation }: RealStudyBottomNavProps)
         }}
         rightProps={{
           icon: <i className="fa-solid fa-badge-check" style={{ color: "#CCF3F0" }} />,
-          children: "실시간 출석체크",
+          children: <Link href={`/vote/attend/certification`}>실시간 출석체크</Link>,
         }}
       />
       {/* <Flex>

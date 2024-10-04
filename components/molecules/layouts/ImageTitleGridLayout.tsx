@@ -67,6 +67,13 @@ export default function ImageTileGridLayout({
               text={imageData.text}
               isPriority={idx === 0}
               id={imageData?.id}
+              selected={
+                selectedId?.includes(imageData?.id)
+                  ? "main"
+                  : selectedSubId?.includes(imageData?.id)
+                    ? "sub"
+                    : null
+              }
             />
           </Link>
         ) : (
@@ -75,6 +82,7 @@ export default function ImageTileGridLayout({
               url={imageData.imageUrl}
               text={imageData.text}
               isPriority={idx === 0}
+              id={imageData?.id}
               selected={
                 selectedId?.includes(imageData?.id)
                   ? "main"

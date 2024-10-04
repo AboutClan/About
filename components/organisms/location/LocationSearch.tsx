@@ -39,7 +39,7 @@ function LocationSearch({ info, setInfo, isSmall = false }: ISearchLocation) {
     <Layout>
       <Wrapper>
         <InputGroup
-          placeholder="장소를 입력해 주세요."
+          placeholder="스터디 장소를 검색해 보세요"
           onChange={onChange}
           value={value}
           icon={<i className="fa-solid fa-location-dot" />}
@@ -52,8 +52,8 @@ function LocationSearch({ info, setInfo, isSmall = false }: ISearchLocation) {
             {results.map((result, idx) => {
               return (
                 <Item key={idx} onClick={() => onClickItem(result)}>
-                  <Box>{result.place_name}</Box>
-                  <Box color="var(--gray-600)" fontSize="12px">
+                  <Box fontSize="13px">{result.place_name}</Box>
+                  <Box color="var(--gray-500)" fontSize="11px">
                     {result.road_address_name}
                   </Box>
                 </Item>
@@ -75,7 +75,7 @@ const Layout = styled.div`
 const Wrapper = styled.div`
   width: 100%;
   height: 100%;
-  border-bottom: var(--border);
+
   display: flex;
   align-items: center;
 `;
@@ -86,14 +86,14 @@ const SearchContent = styled.div<{ isContent: boolean; isSmall: boolean }>`
   height: ${(props) => props.isContent && (props.isSmall ? "120px" : "240px")};
   padding: 12px 16px;
   overflow: auto;
-  border: ${(props) => (props.isContent ? "1px solid var(--gray-400)" : null)};
-  border-radius: var(--rounded-lg);
+  border: ${(props) => (props.isContent ? "1px solid var(--gray-200)" : null)};
+  border-radius: 12px;
   background-color: white;
 `;
 
 const Item = styled.div`
   padding: var(--gap-1) 0;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 `;
 
 export default LocationSearch;

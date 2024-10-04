@@ -70,7 +70,8 @@ export const useTogglePlaceHeart = () => {
   const togglePlaceHeart = useCallback(
     (preference: IStudyVotePlaces, id: string, userLoading) => {
       if (isLoading || userLoading) return;
-
+      console.log(23, id);
+      return;
       const preferMain = preference?.place;
       const preferenceType =
         preference?.place === id

@@ -1,10 +1,11 @@
-import { Input } from "@chakra-ui/react";
+import { Box, Flex, Input } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRef, useState } from "react";
 import styled from "styled-components";
 
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { processFile } from "../../utils/imageUtils";
+import ImageUploadIcon from "../atoms/Icons/ImageUploadIcon";
 
 interface IImageUploadInput {
   setImageUrl: DispatchType<Blob>;
@@ -42,21 +43,19 @@ export default function ImageUploadInput({ setImageUrl: changeImage }: IImageUpl
         name="image"
         onChange={handleImageChange}
       />
-      <Container onClick={handleBtnClick}>
+      <Flex mb={5} justify="center" onClick={handleBtnClick}>
         {!imageUrl ? (
           <>
-            <i
-              className="fa-light fa-camera-viewfinder fa-4x "
-              style={{ color: "var(--gray-500)" }}
-            />
-            <CameraText>사진 올리기</CameraText>
+            <Box onClick={handleBtnClick} position="relative" w="122px" h="122px">
+              <ImageUploadIcon />
+            </Box>
           </>
         ) : (
           <ImageContainer>
             <Image src={imageUrl} alt="Image Preview" width={140} height={140} />
           </ImageContainer>
         )}
-      </Container>
+      </Flex>
     </>
   );
 }

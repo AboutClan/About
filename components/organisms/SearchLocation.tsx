@@ -15,12 +15,15 @@ function SearchLocation({ placeInfo, setPlaceInfo, isSmall }: SearchLocationProp
   return (
     <>
       <LocationSearch info={placeInfo} setInfo={setPlaceInfo} isSmall={isSmall} />
+
       <Box mt="20px">
         <Input
+          color="var(--gray-500)"
           placeholder="상세 주소"
           value={placeInfo.road_address_name}
           onChange={(e) => setPlaceInfo((old) => ({ ...old, road_address_name: e.target.value }))}
           size="sm"
+          fontSize="11px"
         />
       </Box>
     </>

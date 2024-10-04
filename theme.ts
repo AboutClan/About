@@ -103,7 +103,7 @@ const theme = extendTheme({
           h: "42px",
         },
         lg: {
-          h: "46px",
+          h: "48px",
         },
       },
     },

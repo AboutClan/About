@@ -176,7 +176,6 @@ export default function StudyVoteMap() {
     .map((_, idx) => dayjsToStr(dayjs().add(idx, "day")));
 
   const handleMarker = (id: string) => {
-    console.log(34, id);
     if (!id || !studyVoteData) return;
     const findStudy = studyVoteData.find((par) => par.place._id === id);
 
