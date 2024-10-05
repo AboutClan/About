@@ -46,7 +46,7 @@ export interface StudyVoteProps {}
 
 export const useStudyVoteQuery = (
   date: string,
-  location: Location,
+  location: Location | "전체",
   isBasic: boolean,
   isTwoDay: boolean,
   options?: QueryOptions<IStudy[]>,

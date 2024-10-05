@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -6,10 +7,10 @@ import NewTwoButtonRow from "../../components/molecules/NewTwoButtonRow";
 import StudyAttendCheckModal from "../../modals/study/StudyAttendCheckModal";
 
 interface RealStudyBottomNavProps {
-  refetchCurrentLocation: () => void;
+  isAleadyAttend: boolean;
 }
 
-function RealStudyBottomNav({ refetchCurrentLocation }: RealStudyBottomNavProps) {
+function RealStudyBottomNav({ isAleadyAttend }: RealStudyBottomNavProps) {
   const searchParams = useSearchParams();
   const [isAttendModal, setIsAttendModal] = useState(false);
 
@@ -22,7 +23,12 @@ function RealStudyBottomNav({ refetchCurrentLocation }: RealStudyBottomNavProps)
         }}
         rightProps={{
           icon: <i className="fa-solid fa-badge-check" style={{ color: "#CCF3F0" }} />,
-          children: <Link href={`/vote/attend/certification`}>실시간 출석체크</Link>,
+          children: !isAleadyAttend ? (
+            <Link href={`/vote/attend/certification`}>실시간 출석체크</Link>
+          ) : (
+            <Box>스터디 출석 완료</Box>
+          ),
+          isDisabled: isAleadyAttend,
         }}
       />
       {/* <Flex>

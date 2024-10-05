@@ -1,6 +1,6 @@
 import { Dayjs } from "dayjs";
 
-import { ActiveLocation, Location } from "../../services/locationTypes";
+import { ActiveLocation } from "../../services/locationTypes";
 import { IUserSummary, UserSimpleInfoProps } from "../userTypes/userInfoTypes";
 import { IAbsence } from "./studyInterActions";
 
@@ -35,14 +35,13 @@ export type StudyUserStatus = "pending" | "solo" | "open" | "completed";
 export interface StudyAttendanceProps {
   user: UserSimpleInfoProps;
   place: {
-    lat: number;
-    lon: number;
+    lat?: number;
+    lon?: number;
     text: string;
-    location: Location;
   };
   status: StudyUserStatus;
   arrived?: string;
-  image?: string;
+  image?: Blob | string;
   memo?: string;
   comment?: string;
   time: {

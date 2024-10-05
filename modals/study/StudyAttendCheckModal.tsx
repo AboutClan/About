@@ -49,7 +49,7 @@ function StudyAttendCheckModal({ setIsModal }: IModal) {
   const date = dateParam1 || dateParam2;
 
   const initialRef = useRef(null);
-  const [imageUrl, setImageUrl] = useState();
+  const [imageUrl, setImageUrl] = useState<Blob>();
   const [isChecking, setIsChecking] = useState(false);
   const [isFocus, setIsFocus] = useState(false);
   const [isOtherPermission, setIsOtherPermission] = useState(true);

@@ -78,7 +78,6 @@ function VotePreComponent({
       >
         <i className="fa-regular fa-location-crosshairs" />
       </Button>
-
       {studyVoteData && (
         <VoteDrawer
           myVote={myVoteInfo}

@@ -1,7 +1,6 @@
 import { Box, Flex, Input } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRef, useState } from "react";
-import styled from "styled-components";
 
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { processFile } from "../../utils/imageUtils";
@@ -43,47 +42,25 @@ export default function ImageUploadInput({ setImageUrl: changeImage }: IImageUpl
         name="image"
         onChange={handleImageChange}
       />
-      <Flex mb={5} justify="center" onClick={handleBtnClick}>
+      <Flex mb={5} justify="center">
         {!imageUrl ? (
           <>
-            <Box onClick={handleBtnClick} position="relative" w="122px" h="122px">
+            <Box onClick={handleBtnClick}>
               <ImageUploadIcon />
             </Box>
           </>
         ) : (
-          <ImageContainer>
-            <Image src={imageUrl} alt="Image Preview" width={140} height={140} />
-          </ImageContainer>
+          <Box w="160px" h="160px" borderRadius="20px" position="relative" overflow="hidden">
+            <Image
+              src={imageUrl}
+              alt="Image Preview"
+              layout="fill"
+              objectFit="cover" // 이미지를 자를 때 비율을 유지하며 박스에 맞춤
+              objectPosition="center" // 이미지를 중앙에서 자르도록 설정
+            />
+          </Box>
         )}
       </Flex>
     </>
   );
 }
-
-const CameraText = styled.span`
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--gray-500);
-  margin-top: var(--gap-3);
-`;
-
-const Container = styled.div`
-  margin: var(--gap-1) 0;
-  padding: 16px;
-  padding-bottom: 12px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border: 1.5px dashed var(--gray-400);
-  border-radius: var(--rounded-lg);
-  background-color: var(--gray-100);
-`;
-
-const ImageContainer = styled.div`
-  width: 150px;
-  height: 150px;
-  display: flex;
-  justify-content: center;
-`;

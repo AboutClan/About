@@ -56,24 +56,17 @@ function PlaceImage({ image, id, hasToggleHeart, selected }: PlaceHeartImageProp
         priority={image?.isPriority}
       />
       {selected === "main" && (
-        <Box
-          as="button"
-          pos="absolute"
-          p={1}
-          top={0.5}
-          right={0.5}
-          color="white"
-          onClick={() => toggleHeart(preference, id, userLoading)}
-        >
+        <Box pos="absolute" top={1} right={1} color="white">
           <CheckCircleSvg />
         </Box>
       )}
       {hasToggleHeart && (
         <Box
           pos="absolute"
-          p={1}
-          bottom={-0.5}
-          right={0.5}
+          w="20px"
+          h="20px"
+          bottom={0}
+          right={0}
           color="white"
           onClick={() => toggleHeart(preference, id, userLoading)}
         >

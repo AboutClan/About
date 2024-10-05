@@ -10,6 +10,7 @@ interface NewTwoButtonRowProps {
   rightProps: {
     icon?: ReactElement<any, string | JSXElementConstructor<any>>;
     children?: React.ReactNode;
+    isDisabled?: boolean;
   };
 }
 
@@ -41,6 +42,7 @@ function NewTwoButtonRow({ leftProps, rightProps }: NewTwoButtonRowProps) {
         borderRadius="12px"
         boxShadow=" 0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
         leftIcon={rightProps?.icon}
+        isDisabled={rightProps?.isDisabled}
       >
         {rightProps.children}
       </NewButton>

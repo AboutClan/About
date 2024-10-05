@@ -19,11 +19,20 @@ const Textarea = forwardRef(function Textarea(
   return (
     <ChakraTextarea
       ref={ref}
+      py={4}
+      px={5}
       focusBorderColor="#00c2b3"
       minHeight={minHeight}
       backgroundColor="white"
       onFocus={() => setIsFocus && setIsFocus(true)}
       onBlur={() => setIsFocus && setIsFocus(false)}
+      fontSize="13px"
+      h="92px"
+      fontWeight={300}
+      borderRadius="12px"
+      _placeholder={{
+        color: "var(--gray-500)",
+      }}
       {...textareaProps}
     />
   );

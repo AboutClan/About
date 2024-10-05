@@ -24,6 +24,7 @@ function SearchLocation({ placeInfo, setPlaceInfo, isSmall }: SearchLocationProp
           onChange={(e) => setPlaceInfo((old) => ({ ...old, road_address_name: e.target.value }))}
           size="sm"
           fontSize="11px"
+          _placeholder={{ color: "var(--gray-500)" }}
         />
       </Box>
     </>

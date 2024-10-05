@@ -24,6 +24,7 @@ interface IMyStudyVoteInfo {
   end: Dayjs;
   arrived?: Date;
   startTime?: Dayjs;
+  fullname: string;
 }
 
 export const getMyStudyVoteInfo = (myStudy: IParticipation, myUid: string): IMyStudyVoteInfo => {
@@ -35,6 +36,7 @@ export const getMyStudyVoteInfo = (myStudy: IParticipation, myUid: string): IMyS
 
   return {
     placeId: myStudy.place._id,
+    fullname: myStudy.place.fullname,
     startTime: myStudy?.startTime ? dayjs(myStudy.startTime) : null,
     start,
     end,

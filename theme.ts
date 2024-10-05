@@ -92,6 +92,9 @@ const theme = extendTheme({
           outline: "none",
           boxShadow: "none",
         },
+        _disabled: {
+          opacity: 0.6,
+        },
       },
       sizes: {
         xs: {

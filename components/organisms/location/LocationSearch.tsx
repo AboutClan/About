@@ -11,13 +11,21 @@ interface ISearchLocation {
   info: KakaoLocationProps;
   setInfo: DispatchType<KakaoLocationProps>;
   isSmall?: boolean;
+  hasInitialValue?: boolean;
 }
 
-function LocationSearch({ info, setInfo, isSmall = false }: ISearchLocation) {
+function LocationSearch({ info, setInfo, isSmall = false, hasInitialValue }: ISearchLocation) {
   const [value, setValue] = useState(info?.place_name || "");
   const [results, setResults] = useState<KakaoLocationProps[]>([]);
 
-  const { data } = useKakaoSearchQuery(value, { enabled: !location || info?.place_name !== value });
+  const { data } = useKakaoSearchQuery(value, {
+    enabled: info?.place_name !== value && (value !== "" || !hasInitialValue),
+  });
+  console.log(5, value, info);
+
+  useEffect(() => {
+    if (info) setValue(info?.place_name);
+  }, [info]);
 
   useEffect(() => {
     if (data) setResults(data);

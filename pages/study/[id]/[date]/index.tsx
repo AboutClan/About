@@ -74,12 +74,13 @@ export default function Page() {
             locationDetail={place.location}
             coverImage={place.coverImage}
           />
-          <Slide>
+          <Slide isNoPadding>
             <StudyCover
               isPrivateStudy={isPrivateStudy}
               imageUrl={place.coverImage}
               brand={place.brand}
             />
+
             {!isPrivateStudy && (
               <>
                 <StudyOverview
@@ -99,9 +100,9 @@ export default function Page() {
             {!isPrivateStudy && (
               <StudyTimeBoard participants={attendances} studyStatus={study.status} />
             )}
+            <StudyParticipants participants={attendances} absences={study.absences} />
+            <StudyNavigation voteCnt={attendances?.length} studyStatus={study.status} />
           </Slide>
-          <StudyParticipants participants={attendances} absences={study.absences} />
-          <StudyNavigation voteCnt={attendances?.length} studyStatus={study.status} />
         </>
       )}
     </Layout>

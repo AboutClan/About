@@ -25,3 +25,8 @@ export const myRealStudyInfoState = atom<StudyAttendanceProps>({
   key: "MyRealStudyInfo",
   default: null,
 });
+
+export const studyAttendInfoState = atom<StudyAttendanceProps>({
+  key: "StudyAttendInfo",
+  default: null,
+});

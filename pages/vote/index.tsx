@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 import Avatar from "../../components/atoms/Avatar";
 import CurrentLocationBtn from "../../components/atoms/CurrentLocationBtn";
 
@@ -25,6 +26,7 @@ import { getCurrentLocationIcon, getStudyIcon } from "../../libs/study/getStudyV
 import { getLocationCenterDot } from "../../libs/study/getStudyVoteMap";
 import RealStudyBottomNav from "../../pageTemplates/vote/RealStudyBottomNav";
 import VotePreComponent from "../../pageTemplates/vote/VotePreComponent";
+import { myStudyInfoState } from "../../recoils/studyRecoils";
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
 import { IParticipation, IPlace } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVoteWithPlace } from "../../types/models/studyTypes/studyInterActions";
@@ -32,6 +34,7 @@ import { IAvatar } from "../../types/models/userTypes/userInfoTypes";
 import { ActiveLocation, LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
+import { getPerformanceTime } from "../../utils/mathUtils";
 
 type StudyCategoryTab = "실시간 스터디" | "내일의 스터디";
 
@@ -79,10 +82,18 @@ export default function StudyVoteMap() {
   const [locationValue, setLocationValue] = useState<ActiveLocation>(locationParamKr);
   const [detailInfo, setDetailInfo] = useState<DetailInfoProps>();
 
+  const [myStudy, setMyStudy] = useRecoilState(myStudyInfoState);
+
   const { data: userInfo } = useUserInfoQuery();
-  const { data: studyVoteOne } = useStudyVoteQuery(dateValue, locationValue, false, false, {
+  const { data: studyVoteOne } = useStudyVoteQuery(dateValue, "전체", false, false, {
     enabled: !!locationValue && !!dateValue,
   });
+  console.log(34, studyVoteOne);
+
+  useEffect(() => {
+    if (!studyVoteOne) console.log("start", getPerformanceTime());
+    else console.log("end", getPerformanceTime());
+  }, [studyVoteOne]);
 
   const mainLocation = userInfo?.locationDetail;
   const studyVoteData = studyVoteOne?.[0]?.participations;
@@ -102,7 +113,17 @@ export default function StudyVoteMap() {
   }, [locationValue, dateValue]);
 
   useEffect(() => {
-    console.log(52);
+    if (!studyVoteData) return;
+    const tempStudy =
+      studyVoteData?.find(
+        (par) =>
+          par.status !== "dismissed" &&
+          par.attendences.some((who) => who.user.uid === userInfo?.uid),
+      ) || null;
+    setMyStudy(tempStudy);
+  }, [studyVoteData, userInfo?.uid]);
+
+  useEffect(() => {
     navigator.geolocation.getCurrentPosition(
       function (position) {
         const lat = position.coords.latitude;
@@ -212,7 +233,6 @@ export default function StudyVoteMap() {
   return (
     <>
       <Header title="스터디 투표" isCenter isBorder={false} />
-
       <TabNav selected={studyCategoryTab} tabOptionsArr={tabOptionsArr} isMain />
       <Box
         position="relative"
@@ -270,7 +290,11 @@ export default function StudyVoteMap() {
         />
       </Box>
       {studyCategoryTab === "실시간 스터디" ? (
-        <RealStudyBottomNav refetchCurrentLocation={() => setIsLocationRefetch(true)} />
+        <RealStudyBottomNav
+          isAleadyAttend={
+            !!myStudy?.attendences?.find((who) => who?.user.uid === userInfo?.uid)?.arrived
+          }
+        />
       ) : (
         <VotePreComponent
           setMarkersOptions={setMarkersOptions}
@@ -288,6 +312,9 @@ export default function StudyVoteMap() {
 
 const DetailDrawer = ({ detailInfo, setDetailInfo }) => {
   console.log(detailInfo);
+
+  const onClick = (type: "vote" | "comment") => {};
+
   return (
     <BottomDrawerLg height={185} setIsModal={() => setDetailInfo(null)}>
       <Flex direction="column" w="100%">
@@ -306,7 +333,7 @@ const DetailDrawer = ({ detailInfo, setDetailInfo }) => {
               <Box w={3} textAlign="center">
                 ·
               </Box>
-              <Box color="var(--color-blue)">{detailInfo.participantCnt + 1}명 참여 중</Box>
+              <Box color="var(--color-blue)">{detailInfo.participantCnt}명 참여 중</Box>
             </Flex>
             <Flex mt={2} align="center">
               <Avatar {...detailInfo.comment.user} size="xs" />
@@ -334,7 +361,11 @@ const DetailDrawer = ({ detailInfo, setDetailInfo }) => {
                 <i className="fa-solid fa-user-plus" style={{ color: "#CCF3F0" }} />
               ),
 
-              children: <div>{isMember ? "한줄 코멘트 변경" : "스터디 합류"}</div>,
+              children: (
+                <div onClick={() => onClick(isMember ? "comment" : "vote")}>
+                  {isMember ? "한줄 코멘트 변경" : "스터디 합류"}
+                </div>
+              ),
             }}
           />
         </Box>

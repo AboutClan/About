@@ -12,6 +12,8 @@ interface ISelect {
   setValue: DispatchType<string> | DispatchType<ActiveLocation>;
   isBorder?: boolean;
   type?: "location";
+  size: "sm" | "lg";
+  isFullSize?: boolean;
 }
 
 export default function Select({
@@ -20,6 +22,8 @@ export default function Select({
   setValue: setParentValue,
   isBorder = true,
   type,
+  size = "sm",
+  isFullSize,
 }: ISelect) {
   const [value, setValue] = useState(defaultValue);
   const selectRef = useRef<HTMLSelectElement>(null);
@@ -29,6 +33,7 @@ export default function Select({
   }, [defaultValue]);
 
   useEffect(() => {
+    if (isFullSize) return;
     adjustWidth();
   }, [value]);
 
@@ -48,35 +53,41 @@ export default function Select({
   return (
     <ChakraSelect
       icon={
-        <Flex justify="center" align="center" fontSize="12px">
-          <i className="fa-solid fa-chevron-down fa-xs" style={{ color: "var(--color-mint)" }} />
+        <Flex
+          justify="center"
+          pr={size === "lg" && 4}
+          align="center"
+          fontSize={size === "sm" ? "12px" : "12px"}
+        >
+          <i
+            className={`fa-solid fa-chevron-down fa-${size === "sm" ? "xs" : "lg"}`}
+            style={{ color: "var(--color-mint)" }}
+          />
         </Flex>
       }
       ref={selectRef}
       focusBorderColor="#00c2b3"
-      size="xs"
+      size={size === "sm" ? "xs" : "lg"}
       color="primary"
       value={value}
       onChange={onChange}
-      borderRadius="9999px"
+      borderRadius={size === "sm" ? "9999px" : "12px"}
       border={!isBorder ? "none" : undefined}
       borderColor="var(--gray-200)"
       bgColor="white"
-      fontSize="11px"
+      fontSize={size === "sm" ? "11px" : "13px"}
       fontWeight={500}
-      height="24px"
-      width="mon-content"
+      height={size === "sm" ? "24px" : "52px"}
+      width={!isFullSize ? "max-content" : "100%"}
       sx={{
-        paddingInlineStart: "8px", // padding-left
+        paddingInlineStart: size === "sm" ? "8px" : "20px", // padding-left
         paddingInlineEnd: "20px", // padding-right (아이콘 오른쪽에 여유 공간)
       }}
     >
       {options.map((option) => (
-        <>
-          <option key={option} value={option}>
-            {type === "location" ? LOCATION_TO_FULLNAME[option] : option}
-          </option>
-        </>
+        <option key={option} value={option}>
+          {type === "location" ? LOCATION_TO_FULLNAME[option] : option}
+        </option>
       ))}
     </ChakraSelect>
   );
