@@ -3,6 +3,10 @@ import dayjs, { Dayjs } from "dayjs";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
+import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
+import ImageTileGridLayout, {
+  IImageTileData,
+} from "../../components/molecules/layouts/ImageTitleGridLayout";
 
 import { StudyVoteTimeRullets } from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { POINT_SYSTEM_PLUS } from "../../constants/serviceConstants/pointSystemConstants";
@@ -12,13 +16,20 @@ import {
   useStudyOpenFreeMutation,
   useStudyParticipationMutation,
 } from "../../hooks/study/mutations";
+import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { usePointSystemLogQuery, useUserInfoQuery } from "../../hooks/user/queries";
+import { getStudyDateStatus } from "../../libs/study/date/getStudyDateStatus";
+import { recommendTodayStudyPlace } from "../../libs/study/recommendTodayStudyPlace";
+import { selectStudyPlace } from "../../libs/study/selectStudyPlace";
+import { selectSubPlaceAuto } from "../../libs/study/selectSubPlaceAuto";
 import { myStudyInfoState } from "../../recoils/studyRecoils";
 import { IModal } from "../../types/components/modalTypes";
 import { IParticipation } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVote } from "../../types/models/studyTypes/studyInterActions";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
+import { LocationEn } from "../../types/services/locationTypes";
+import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
+import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface StudySimpleVoteModalProps extends IModal {
@@ -28,46 +39,108 @@ interface StudySimpleVoteModalProps extends IModal {
 function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModalProps) {
   const toast = useToast();
   const searchParams = useSearchParams();
-  const date = searchParams.get("date");
-
+  const dateParam = searchParams.get("date");
+  const location = searchParams.get("location");
+  const locationKr = convertLocationLangTo(location as LocationEn, "kr");
   const resetStudy = useResetStudyQuery();
   const myStudy = useRecoilValue(myStudyInfoState);
-  const [selectedPlace, setSelectedPlace] = useState<string>();
+  const studyDateStatus = getStudyDateStatus(dateParam);
+
   const [isFirstPage, setIsFirstPage] = useState(true);
-  const [myVote, setMyVote] = useState<IStudyVote>();
+  const [myVote, setMyVote] = useState<IStudyVote>({
+    place: null,
+    subPlace: [],
+    start: null,
+    end: null,
+  });
   const [voteTime, setVoteTime] = useState<{ start: Dayjs; end: Dayjs }>();
+  const [imageDataArr, setImageDataArr] = useState<IImageTileData[]>();
+  const [recommendationPlace, setRecommendationPlace] = useState<IParticipation>();
 
   const { data: userInfo } = useUserInfoQuery();
-  const savedPrefer = userInfo?.studyPreference;
-
-  const preferPlaces = {
-    main: studyVoteData?.find((study) => study.place._id === savedPrefer.place)?.place.fullname,
-    sub: studyVoteData
-      ?.filter((study) => savedPrefer.subPlace.includes(study.place._id))
-      .map((study) => study.place.fullname),
-  };
-
+  const { data: studyVoteDataAll } = useStudyVoteQuery(dateParam, locationKr, false, false, {
+    enabled: !isFirstPage && !!dateParam && !!location,
+  });
   const { data: pointLog } = usePointSystemLogQuery("point", true, {
     enabled: !!myStudy,
   });
+
   const { mutate: getPoint } = usePointSystemMutation("point");
-
-  const { mutateAsync: openFree, isLoading: isLoading2 } = useStudyOpenFreeMutation(date, {});
-
-  const { mutate: patchAttend, isLoading } = useStudyParticipationMutation(dayjs(date), "post", {
-    onSuccess() {
-      handleSuccess();
+  const { mutateAsync: openFree, isLoading: isLoading2 } = useStudyOpenFreeMutation(dateParam, {});
+  const { mutate: patchAttend, isLoading } = useStudyParticipationMutation(
+    dayjs(dateParam),
+    "post",
+    {
+      onSuccess() {
+        handleSuccess();
+      },
     },
-  });
+  );
+
+  const savedPrefer = userInfo?.studyPreference;
+
+  const myPrevVotePoint = pointLog?.find(
+    (item) => item.message === "스터디 투표" && item.meta.sub === dayjsToStr(dayjs(dateParam)),
+  )?.meta.value;
+
+  const mainPlaceFullName = studyVoteData?.find((par) => par?.place._id === myVote?.place)?.place
+    .fullname;
 
   useEffect(() => {
-    setMyVote((old) => ({
-      ...old,
-      place: selectedPlace,
-      start: voteTime?.start,
-      end: voteTime?.end,
-    }));
-  }, [selectedPlace, voteTime]);
+    if (studyDateStatus !== "today" || !studyVoteData) return;
+    setRecommendationPlace(recommendTodayStudyPlace(studyVoteData, userInfo?.locationDetail));
+  }, [studyDateStatus, studyVoteData, userInfo?.locationDetail]);
+
+  useEffect(() => {
+    setMyVote((old) => ({ ...old, ...voteTime }));
+  }, [voteTime]);
+
+  useEffect(() => {
+    if (studyDateStatus === "not passed") {
+      const preferPlaces = {
+        main: studyVoteData?.find((study) => study.place._id === savedPrefer.place)?.place._id,
+        sub: studyVoteData
+          ?.filter((study) => savedPrefer.subPlace.includes(study.place._id))
+          .map((study) => study.place._id),
+      };
+      if (preferPlaces) {
+        setMyVote((old) => ({ ...old, place: preferPlaces?.main, subPlace: preferPlaces?.sub }));
+      }
+    }
+    if (studyDateStatus === "today") {
+      if (recommendationPlace)
+        setMyVote((old) => ({ ...old, place: recommendationPlace.place._id }));
+    }
+  }, [recommendationPlace, studyVoteData, studyDateStatus]);
+
+  useEffect(() => {
+    if (!studyVoteDataAll) return;
+    setImageDataArr(
+      studyVoteDataAll?.[0]?.participations?.map((par) => {
+        const placeProps = par.place;
+        return {
+          imageUrl: placeProps.image,
+          text: placeProps.fullname,
+          func: () => {
+            const voteMainId = myVote?.place;
+            const voteSubIdArr = myVote?.subPlace;
+            const id = par.place._id;
+            const { place, subPlace } = selectStudyPlace(id, voteMainId, voteSubIdArr);
+            if (!voteMainId && voteSubIdArr?.length === 0) {
+              const participations = studyVoteDataAll[0].participations;
+              const placeInfo = participations.find((par) => par.place._id === place).place;
+              setMyVote((old) => ({
+                ...old,
+                place,
+                subPlace: selectSubPlaceAuto(placeInfo, participations),
+              }));
+            } else setMyVote((old) => ({ ...old, place, subPlace }));
+          },
+          id: placeProps._id,
+        };
+      }),
+    );
+  }, [studyVoteDataAll, myVote]);
 
   const handleSuccess = async () => {
     resetStudy();
@@ -79,7 +152,7 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
     }
     await getPoint({
       ...POINT_SYSTEM_PLUS.STUDY_VOTE_DAILY,
-      sub: date,
+      sub: dateParam,
     });
     toast(
       "success",
@@ -88,23 +161,29 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
     setIsModal(false);
   };
 
-  const myPrevVotePoint = pointLog?.find(
-    (item) => item.message === "스터디 투표" && item.meta.sub === dayjsToStr(dayjs(date)),
-  )?.meta.value;
-
   const handleVote = async () => {
     if (!myVote?.place || !myVote?.start || !myVote?.end) {
       toast("error", "누락된 정보가 있습니다.");
       return;
     }
     const findPlace = studyVoteData?.find((par) => par.place._id === myVote.place);
-
     if (findPlace.status === "dismissed") {
       await openFree(myVote?.place);
       setTimeout(() => {
         patchAttend(myVote);
       }, 500);
     } else patchAttend(myVote);
+  };
+
+  const handlePlaceButton = (type: "select" | "complete") => {
+    if (type === "select") setIsFirstPage(false);
+    else {
+      if (!myVote?.place) {
+        toast("warning", "장소를 선택해 주세요");
+        return;
+      }
+      setIsFirstPage(true);
+    }
   };
 
   const footerOptions: IFooterOptions = {
@@ -116,29 +195,60 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
   };
 
   return (
-    <ModalLayout title="당일 참여 신청" footerOptions={footerOptions} setIsModal={setIsModal}>
-      <Box>
-        <Flex justify="space-between" align="center" fontSize="16px" mb={4}>
-          <Box>
-            <Box fontWeight={600} as="span" mr={1}>
-              투표 장소:
-            </Box>
-            {preferPlaces?.main} 외 {preferPlaces?.sub?.length + 1}곳
+    <ModalLayout
+      title={
+        studyDateStatus === "today"
+          ? "당일 참여 신청"
+          : `${dayjsToFormat(dayjs(dateParam), "M월 D일")} 스터디 신청`
+      }
+      footerOptions={footerOptions}
+      setIsModal={setIsModal}
+    >
+      <Flex justify="space-between" align="center" fontSize="16px" mb={4}>
+        <Box>
+          <Box fontWeight={600} as="span" mr={1}>
+            {studyDateStatus === "today" ? "참여 장소" : "투표 장소"}:
           </Box>
-          <Button size="sm" colorScheme="mintTheme">
-            직접 선택
-          </Button>
-        </Flex>
-        {/* <ImageTileFlexLayout imageDataArr={imageDataArr} selectedId={[selectedPlace]} /> */}
-        {/* <Box mt="20px">
+          <Box as="span">
+            {studyDateStatus === "today"
+              ? mainPlaceFullName
+              : mainPlaceFullName
+                ? `${mainPlaceFullName} 외 ${myVote?.subPlace?.length + 1}곳`
+                : "등록된 장소가 없습니다."}
+          </Box>
+        </Box>
+        <Button
+          size="sm"
+          colorScheme="mintTheme"
+          onClick={() => handlePlaceButton(isFirstPage ? "select" : "complete")}
+        >
+          {isFirstPage ? "직접 선택" : "선택 완료"}
+        </Button>
+      </Flex>
+      {isFirstPage ? (
+        <Box>
+          {/* <ImageTileFlexLayout imageDataArr={imageDataArr} selectedId={[selectedPlace]} /> */}
+          {/* <Box mt="20px">
               <PlaceSelector
                 options={dismissedPlaces}
                 defaultValue={selectedPlace}
                 setValue={setSelectedPlace}
               />
             </Box> */}
-        <StudyVoteTimeRullets setVoteTime={setVoteTime} />
-      </Box>
+          <StudyVoteTimeRullets setVoteTime={setVoteTime} />
+        </Box>
+      ) : imageDataArr ? (
+        <Box height="240px" overflowY="scroll">
+          <ImageTileGridLayout
+            imageDataArr={imageDataArr}
+            grid={{ row: null, col: 4 }}
+            selectedId={[myVote?.place]}
+            selectedSubId={myVote?.subPlace}
+          />
+        </Box>
+      ) : (
+        <MainLoadingAbsolute />
+      )}
     </ModalLayout>
   );
 }

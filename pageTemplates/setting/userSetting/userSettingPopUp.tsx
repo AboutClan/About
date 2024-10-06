@@ -1,6 +1,9 @@
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import BottomDrawerLg from "../../../components/organisms/drawer/BottomDrawerLg";
+import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 
 import {
   ALPHABET_POP_UP,
@@ -59,6 +62,7 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
 
   const [modalTypes, setModalTypes] = useState<UserPopUp[]>([]);
   // const [recentMembers, setRecentMembers] = useState<IUserSummary[]>();
+  const [drawerType, setDrawerType] = useState<"bottom" | "right">();
 
   const { data: gatherData } = useGatherQuery(-1);
 
@@ -114,7 +118,7 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
 
   useEffect(() => {
     let popUpCnt = cnt;
-  
+
     if (!userInfo?.locationDetail) {
       setModalTypes((old) => [...old, "registerLocation"]);
       return;
@@ -177,6 +181,26 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
           )
         );
       })}
+      {drawerType === "bottom" && (
+        <BottomDrawerLg
+          height={260}
+          paddingOptions={{ bottom: 0 }}
+          setIsModal={() => setDrawerType(null)}
+        >
+          <Box w="100%" fontWeight={600} fontSize="18px" textAlign="start">
+            어제의 스터디 기록이 도착했어요! <br /> 기록을 확인해볼까요?
+          </Box>
+          <Flex direction="column" mt="auto" w="100%">
+            <Button size="lg" colorScheme="mintTheme" onClick={() => setDrawerType("right")}>
+              확인하러 가기
+            </Button>
+            <Button size="lg" variant="ghost">
+              무시하고 넘기기
+            </Button>
+          </Flex>
+        </BottomDrawerLg>
+      )}
+      {drawerType === "right" && <RightDrawer>23</RightDrawer>}
     </>
   );
 }

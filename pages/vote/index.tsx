@@ -18,6 +18,7 @@ import BottomDrawerLg from "../../components/organisms/drawer/BottomDrawerLg";
 import VoteMap from "../../components/organisms/VoteMap";
 import { LOCATION_OPEN } from "../../constants/location";
 import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
+import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { isMember } from "../../libs/backend/authUtils";
@@ -34,7 +35,6 @@ import { IAvatar } from "../../types/models/userTypes/userInfoTypes";
 import { ActiveLocation, LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
-import { getPerformanceTime } from "../../utils/mathUtils";
 
 type StudyCategoryTab = "실시간 스터디" | "내일의 스터디";
 
@@ -56,6 +56,7 @@ interface DetailInfoProps {
 }
 
 export default function StudyVoteMap() {
+  const toast = useToast();
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
@@ -88,12 +89,6 @@ export default function StudyVoteMap() {
   const { data: studyVoteOne } = useStudyVoteQuery(dateValue, "전체", false, false, {
     enabled: !!locationValue && !!dateValue,
   });
-  console.log(34, studyVoteOne);
-
-  useEffect(() => {
-    if (!studyVoteOne) console.log("start", getPerformanceTime());
-    else console.log("end", getPerformanceTime());
-  }, [studyVoteOne]);
 
   const mainLocation = userInfo?.locationDetail;
   const studyVoteData = studyVoteOne?.[0]?.participations;
@@ -158,7 +153,7 @@ export default function StudyVoteMap() {
       setMarkersOptions(getMarkersOptions(studyVoteData, currentLocation));
     }
   }, [currentLocation, centerLocation, mainLocation, studyCategoryTab, studyVoteData]);
-  console.log(423, markersOptions);
+
   const tabOptionsArr: ITabNavOptions[] = [
     {
       text: "실시간 스터디",
@@ -191,6 +186,11 @@ export default function StudyVoteMap() {
     {
       text: `주 활동 장소`,
       func: () => {
+        if (!mainLocation) {
+          toast("warning", "등록된 활동 장소가 없습니다.");
+          return;
+        }
+
         setLocationFilterType("주 활동 장소");
         setCenterLocation({ lat: mainLocation?.lat, lon: mainLocation?.lon });
       },
@@ -311,8 +311,6 @@ export default function StudyVoteMap() {
 }
 
 const DetailDrawer = ({ detailInfo, setDetailInfo }) => {
-  console.log(detailInfo);
-
   const onClick = (type: "vote" | "comment") => {};
 
   return (

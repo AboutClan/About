@@ -1,55 +1,43 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 
 import RulletPicker from "../../atoms/RulletPicker";
 interface IRulletPickerTwo {
-  leftDefaultIdx: number;
-  rightDefaultIdx: number;
   leftRulletArr: string[];
   rightRulletArr: string[];
-
-  setRulletValue: Dispatch<
+  rulletIndex: {
+    left: number;
+    right: number;
+  };
+  setRulletIndex: Dispatch<
     SetStateAction<{
-      left: string;
-      right: string;
+      left: number;
+      right: number;
     }>
   >;
 }
 export default function RulletPickerTwo({
-  leftDefaultIdx,
-  rightDefaultIdx,
+  rulletIndex,
   leftRulletArr,
   rightRulletArr,
-  setRulletValue,
+  setRulletIndex,
 }: IRulletPickerTwo) {
-  const [rulletIndex, setRulletIndex] = useState<{
-    start: number;
-    end: number;
-  }>({ start: leftDefaultIdx, end: rightDefaultIdx });
-
-  useEffect(() => {
-    setRulletValue({
-      left: leftRulletArr[rulletIndex.start],
-      right: rightRulletArr[rulletIndex.end],
-    });
-  }, [rulletIndex]);
-
   return (
     <Layout>
       <Wrapper>
         <RulletPicker
           text="시작 시간"
           rulletItemArr={leftRulletArr}
-          rulletIndex={rulletIndex.start}
-          setRulletIndex={(idx: number) => setRulletIndex((old) => ({ ...old, start: idx }))}
+          rulletIndex={rulletIndex.left}
+          setRulletIndex={(idx: number) => setRulletIndex((old) => ({ ...old, left: idx }))}
         />
       </Wrapper>
       <Wrapper>
         <RulletPicker
           text="종료 시간"
           rulletItemArr={rightRulletArr}
-          rulletIndex={rulletIndex.end}
-          setRulletIndex={(idx: number) => setRulletIndex((old) => ({ ...old, end: idx }))}
+          rulletIndex={rulletIndex.right}
+          setRulletIndex={(idx: number) => setRulletIndex((old) => ({ ...old, right: idx }))}
         />
       </Wrapper>
     </Layout>

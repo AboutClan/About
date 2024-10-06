@@ -56,7 +56,7 @@ function HomeRecommendationSection() {
   }, [studyVoteData]);
 
   const HOME_RECOMMENDATION_ICON_ARR: HomeRecommendationItemProps[] = [
-    { icon: <CampfireIcon />, title: "랭킹", url: "/statistics" },
+    { icon: <CampfireIcon />, title: "랭킹", url: "/ranking" },
     { icon: <StoreIcon />, title: "스토어", url: "/store" },
     {
       icon: <MemberIcon />,

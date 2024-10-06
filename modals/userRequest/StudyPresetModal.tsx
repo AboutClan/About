@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 
@@ -13,6 +13,7 @@ import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyPreferenceMutation } from "../../hooks/study/mutations";
 import { useStudyPlacesQuery, useStudyPreferenceQuery } from "../../hooks/study/queries";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
+import { selectStudyPlace } from "../../libs/study/selectStudyPlace";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 import { IConfirmContent } from "../common/ConfirmModal";
@@ -107,28 +108,19 @@ function StudyPresetModal() {
     onClickRight: () => onSubmit(),
   };
 
-  const imageDataArr: IImageTileData[] = studyPlaces?.map((place) => ({
-    imageUrl: place.image,
-    text: place.branch,
+  const imageDataArr: IImageTileData[] = studyPlaces?.map((placeProps) => ({
+    imageUrl: placeProps.image,
+    text: placeProps.branch,
     func: () => {
-      if (!presetPlaces?.place) setPresetPlaces({ place: place._id, subPlace: [] });
-      else {
-        if (place._id === presetPlaces.place) {
-          setPresetPlaces({ place: null, subPlace: [] });
-        } else if (presetPlaces?.subPlace?.includes(place._id)) {
-          setPresetPlaces((old) => ({
-            ...old,
-            subPlace: old.subPlace.filter((sub) => sub !== place._id),
-          }));
-        } else {
-          setPresetPlaces((old) => ({
-            ...old,
-            subPlace: [...(old?.subPlace || []), place._id],
-          }));
-        }
-      }
+      const { place, subPlace } = selectStudyPlace(
+        placeProps._id,
+        presetPlaces?.place,
+        presetPlaces?.subPlace,
+      );
+
+      setPresetPlaces((old) => ({ ...old, place, subPlace }));
     },
-    id: place._id,
+    id: placeProps._id,
   }));
 
   const footerOptions: IFooterOptions = {

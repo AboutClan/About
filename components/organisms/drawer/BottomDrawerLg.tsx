@@ -27,6 +27,9 @@ interface IBottomDrawerLg extends IModal {
   isxpadding?: boolean;
   isOverlay?: boolean;
   isLittleClose?: boolean;
+  paddingOptions?: {
+    bottom?: number;
+  };
 }
 
 export default function BottomDrawerLg({
@@ -38,6 +41,7 @@ export default function BottomDrawerLg({
   isxpadding = true,
   isOverlay = true,
   isLittleClose,
+  paddingOptions,
 }: IBottomDrawerLg) {
   const header = options?.header;
   const footer = options?.footer;
@@ -72,6 +76,7 @@ export default function BottomDrawerLg({
         animate={{ y: 0 }}
         exit={{ y: drawerHeight, transition: { duration: 0.2 } }}
         transition={{ duration: 0.4 }}
+        paddingOptions={paddingOptions}
       >
         <TopNav />
 
@@ -100,7 +105,11 @@ export default function BottomDrawerLg({
   );
 }
 
-const Layout = styled(motion.div)<{ height: number; isxpadding: string }>`
+const Layout = styled(motion.div)<{
+  paddingOptions: { bottom?: number };
+  height: number;
+  isxpadding: string;
+}>`
   height: ${(props) => props.height + iPhoneNotchSize()}px;
   position: fixed;
   bottom: 0;
@@ -112,7 +121,9 @@ const Layout = styled(motion.div)<{ height: number; isxpadding: string }>`
   z-index: 5000;
   padding: ${(props) => (props.isxpadding === "true" ? "12px 20px" : "12px 0")};
   padding-bottom: ${(props) =>
-    props.isxpadding === "true" ? `${20 + iPhoneNotchSize()}px` : iPhoneNotchSize()};
+    props.isxpadding === "true" && props?.paddingOptions?.bottom !== 0
+      ? `${20 + iPhoneNotchSize()}px`
+      : iPhoneNotchSize()};
   touch-action: none; /* 터치 스크롤을 막음 */
   display: flex;
   flex-direction: column;

@@ -21,7 +21,6 @@ function LocationSearch({ info, setInfo, isSmall = false, hasInitialValue }: ISe
   const { data } = useKakaoSearchQuery(value, {
     enabled: info?.place_name !== value && (value !== "" || !hasInitialValue),
   });
-  console.log(5, value, info);
 
   useEffect(() => {
     if (info) setValue(info?.place_name);

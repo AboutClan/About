@@ -19,14 +19,15 @@ export default function RulletPicker({
 }: IRulletPicker) {
   const [index, setIndex] = useState<number>(rulletIndex);
 
+  useEffect(() => {
+    setIndex(rulletIndex);
+  }, [rulletIndex]);
+
   const y = useMotionValue(0);
 
   useEffect(() => {
-    handleDragEnd();
-  }, []);
-
-  useEffect(() => {
     setRulletIndex(index);
+    handleDragEnd();
   }, [index]);
 
   useEffect(() => {
@@ -54,7 +55,7 @@ export default function RulletPicker({
     const Y = y.get();
     const activeItem = Math.round(-Y / ITEM_HEIGHT) + 2;
 
-    setIndex(activeItem < 0 ? 0 : activeItem > 20 ? 20 : activeItem);
+    setIndex(activeItem < 0 ? 0 : activeItem > 22 ? 22 : activeItem);
   };
 
   const onClick = (idx: number) => {

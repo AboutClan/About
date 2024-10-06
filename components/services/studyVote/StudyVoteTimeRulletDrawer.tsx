@@ -31,9 +31,6 @@ interface StudyVoteTimeRulletsProps {
 }
 
 export function StudyVoteTimeRullets({ setVoteTime }: StudyVoteTimeRulletsProps) {
-  const leftDefaultIdx = 8;
-  const rightDefaultIdx = 10;
-
   const startItemArr = createTimeArr(STUDY_VOTE_HOUR_ARR[0], STUDY_VOTE_HOUR_ARR[11]);
 
   const endTimeArr = createTimeArr(
@@ -41,28 +38,34 @@ export function StudyVoteTimeRullets({ setVoteTime }: StudyVoteTimeRulletsProps)
     STUDY_VOTE_HOUR_ARR[STUDY_VOTE_HOUR_ARR.length - 1],
   );
 
-  const [rulletValue, setRulletValue] = useState<{
-    left: string;
-    right: string;
+  const [rulletIndex, setRulletIndex] = useState<{
+    left: number;
+    right: number;
   }>({
-    left: startItemArr[leftDefaultIdx],
-    right: endTimeArr[rightDefaultIdx],
+    left: 8,
+    right: 10,
   });
+  console.log("r", startItemArr[rulletIndex.left], endTimeArr[rulletIndex.right]);
+
+  useEffect(() => {
+    if (rulletIndex.left + 6 > rulletIndex.right && rulletIndex.left + 6 < endTimeArr.length - 1) {
+      setRulletIndex((old) => ({ ...old, right: old.left + 6 }));
+    }
+  }, [rulletIndex.left]);
 
   useEffect(() => {
     setVoteTime({
-      start: parseTimeToDayjs(rulletValue.left),
-      end: parseTimeToDayjs(rulletValue.right),
+      start: parseTimeToDayjs(startItemArr[rulletIndex.left]),
+      end: parseTimeToDayjs(endTimeArr[rulletIndex.right]),
     });
-  }, [rulletValue]);
+  }, [rulletIndex]);
 
   return (
     <RulletPickerTwo
-      leftDefaultIdx={leftDefaultIdx}
-      rightDefaultIdx={rightDefaultIdx}
       leftRulletArr={startItemArr}
       rightRulletArr={endTimeArr}
-      setRulletValue={setRulletValue}
+      rulletIndex={rulletIndex}
+      setRulletIndex={setRulletIndex}
     />
   );
 }

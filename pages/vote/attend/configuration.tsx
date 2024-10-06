@@ -19,7 +19,7 @@ function Configuration() {
   const [otherPermission, setOtherPermission] = useState<"허용" | "비허용">("허용");
   const [attendMessage, setAttendMessage] = useState("");
   const [studyAttendInfo, setStudyAttendInfo] = useRecoilState(studyAttendInfoState);
-  console.log(24, studyAttendInfo);
+
   const textareaRef = useRef(null);
 
   let currentDayjs = dayjs().startOf("hour");

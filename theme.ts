@@ -107,6 +107,8 @@ const theme = extendTheme({
         },
         lg: {
           h: "48px",
+          fontWeight: 700,
+          fontSize: "14px",
         },
       },
     },

@@ -21,7 +21,6 @@ function Home() {
         <HomeCategoryNav tab={tab} setTab={setTab} />
         {tab !== "스터디" && <EventBanner tab={tab} />}
       </Slide>
-
       <>
         {tab === "추천" ? (
           <HomeRecommendationSection />

@@ -111,7 +111,7 @@ function Ranking() {
       <Header title="ABOUT 랭킹">
         <RuleIcon setIsModal={setIsModal} />
       </Header>
-      <Slide>
+      <Slide isNoPadding>
         <Layout>
           <RankingOverview myRankInfo={usersRanking?.mine} />
           <StatisticsTabNav setTabValue={setTabValue} />

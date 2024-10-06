@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -34,6 +34,7 @@ type SubNavBtn = "changeTime" | "absent" | "cancelVote";
 export type StudyModalType = MainBtnType | SubNavBtn;
 
 function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
+  const router = useRouter();
   const toast = useToast();
   const typeToast = useTypeToast();
   const { data: session } = useSession();
@@ -117,6 +118,7 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
       toast("error", "스터디 확정 이후부터 사용이 가능합니다.");
       return;
     }
+
     setModalType(type);
   };
 
@@ -125,7 +127,13 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
       typeToast("guest");
       return;
     }
+    if (type === "attendCheck") {
+      if (myStudy.status === "open") {
+      } else if (myStudy.status === "free") {
+      }
 
+      return;
+    }
     setModalType(type);
   };
 
