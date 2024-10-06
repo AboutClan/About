@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import BottomDrawerLg from "../../components/organisms/drawer/BottomDrawerLg";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
-
 import { DispatchBoolean, DispatchType } from "../../types/hooks/reactTypes";
 import { IParticipation, IPlace } from "../../types/models/studyTypes/studyDetails";
 import {
@@ -72,7 +71,7 @@ function VoteDrawer({
       [...subPlaceItems, ...noSubPlaceItems].filter((place) => place.place._id !== placeId),
     );
   }, [myVote?.place, myVote?.subPlace, savedPrefer]);
- 
+
   const mainPlace = items?.find((item) => item.place._id === myVote?.place?._id);
   const bodyWidth = document.body.clientWidth > 400 ? 400 : document.body.clientWidth;
   const bodyHeight = document.body.clientHeight;

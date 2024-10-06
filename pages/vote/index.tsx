@@ -5,9 +5,9 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
+
 import Avatar from "../../components/atoms/Avatar";
 import CurrentLocationBtn from "../../components/atoms/CurrentLocationBtn";
-
 import LocationSelector from "../../components/atoms/LocationSelector";
 import Selector from "../../components/atoms/Selector";
 import Header from "../../components/layouts/Header";
@@ -310,7 +310,7 @@ export default function StudyVoteMap() {
   );
 }
 
-const DetailDrawer = ({ detailInfo, setDetailInfo }) => {
+function DetailDrawer({ detailInfo, setDetailInfo }) {
   const onClick = (type: "vote" | "comment") => {};
 
   return (
@@ -370,7 +370,7 @@ const DetailDrawer = ({ detailInfo, setDetailInfo }) => {
       </Flex>
     </BottomDrawerLg>
   );
-};
+}
 
 //지도에서 마커를 통한 핸들링
 const setVotePlaceInfo = (myPlace: IPlace, voteInfo?: IStudyVoteWithPlace): IStudyVoteWithPlace => {

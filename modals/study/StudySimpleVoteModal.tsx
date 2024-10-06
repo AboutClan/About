@@ -3,11 +3,11 @@ import dayjs, { Dayjs } from "dayjs";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
+
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import ImageTileGridLayout, {
   IImageTileData,
 } from "../../components/molecules/layouts/ImageTitleGridLayout";
-
 import { StudyVoteTimeRullets } from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { POINT_SYSTEM_PLUS } from "../../constants/serviceConstants/pointSystemConstants";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";

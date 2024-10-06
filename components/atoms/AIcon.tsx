@@ -1,6 +1,4 @@
-interface AIconProps {}
-
-function AIcon({}: AIconProps) {
+function AIcon() {
   return (
     <>
       <svg

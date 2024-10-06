@@ -43,13 +43,12 @@ export function StudyVoteTimeRullets({ setVoteTime }: StudyVoteTimeRulletsProps)
     right: number;
   }>({
     left: 8,
-    right: 10,
+    right: 12,
   });
-  console.log("r", startItemArr[rulletIndex.left], endTimeArr[rulletIndex.right]);
 
   useEffect(() => {
-    if (rulletIndex.left + 6 > rulletIndex.right && rulletIndex.left + 6 < endTimeArr.length - 1) {
-      setRulletIndex((old) => ({ ...old, right: old.left + 6 }));
+    if (rulletIndex.left + 4 > rulletIndex.right && rulletIndex.left + 4 < endTimeArr.length - 1) {
+      setRulletIndex((old) => ({ ...old, right: old.left + 4 }));
     }
   }, [rulletIndex.left]);
 

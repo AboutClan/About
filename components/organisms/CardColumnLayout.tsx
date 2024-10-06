@@ -1,8 +1,8 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import styled from "styled-components";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
 
+import { dayjsToStr } from "../../utils/dateTimeUtils";
 import ShadowBlockButton from "../atoms/buttons/ShadowBlockButton";
 import { HighlightedThumbnailCard } from "../molecules/cards/HighlightedThumbnailCard";
 import {

@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
@@ -17,6 +17,7 @@ import {
   IStudyVotePlaces,
   IStudyVoteTime,
 } from "../../../types/models/studyTypes/studyInterActions";
+import { LocationEn } from "../../../types/services/locationTypes";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import BottomDrawerLg, { IBottomDrawerLgOptions } from "../../organisms/drawer/BottomDrawerLg";
 import StudyVotePlacesPicker from "../StudyVotePlacesPicker";
@@ -24,11 +25,22 @@ import StudyVoteTimeRulletDrawer from "./StudyVoteTimeRulletDrawer";
 
 dayjs.locale("ko");
 
-interface IStudyVoteDrawer extends IModal {}
+interface IStudyVoteDrawer extends IModal {
+  place?: string;
+  subPlace?: string[];
+  locationEn?: LocationEn;
+  dateParam?: string;
+}
 
-export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
+export default function StudyVoteDrawer({
+  place,
+  subPlace = [],
+  locationEn,
+  dateParam,
+  setIsModal,
+}: IStudyVoteDrawer) {
   const { date, id } = useParams<{ date: string; id: string }>();
-
+  const router = useRouter();
   const resetStudy = useResetStudyQuery();
 
   const toast = useToast();
@@ -45,6 +57,10 @@ export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
 
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
   const [votePlaces, setVotePlaces] = useState<IStudyVotePlaces>();
+
+  useEffect(() => {
+    setMyVote((old) => ({ ...old, place, subPlace }));
+  }, [place, subPlace]);
 
   useEffect(() => {
     setMyVote((old) => ({ ...old, ...voteTime, ...votePlaces }));
@@ -77,7 +93,7 @@ export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
         value: -myPrevVotePoint,
       });
     }
-    if (studyDateStatus === "not passed" && votePlaces.subPlace.length) {
+    if (studyDateStatus === "not passed" && votePlaces?.subPlace?.length) {
       await getPoint({
         value: 5 + votePlaces.subPlace.length,
         message: "스터디 투표",
@@ -85,6 +101,12 @@ export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
       });
       toast("success", `투표 완료! ${!myStudy && "포인트가 적립되었습니다."}`);
     } else toast("success", "투표 완료!");
+    //place가 있는 경우는 지도에서 투표한 경우로 생각
+    if (place) {
+      setIsModal(false);
+      router.push(`/home?tab=study&location=${locationEn}&date=${dateParam}`);
+      return;
+    }
     setIsModal(false);
   };
 
@@ -99,6 +121,7 @@ export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
       place: myVote.place,
       subPlace: myVote.subPlace,
     };
+
     patchAttend(temp);
   };
 
@@ -108,8 +131,9 @@ export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
       subTitle: "스터디 참여시간을 선택해주세요!",
     },
     footer: {
-      buttonText: isFirst && studyDateStatus !== "today" ? "다음" : "신청 완료",
-      onClick: isFirst && studyDateStatus !== "today" ? () => setIsFirst(false) : onSubmit,
+      buttonText: isFirst && studyDateStatus !== "today" && !place ? "다음" : "신청 완료",
+      onClick:
+        isFirst && studyDateStatus !== "today" && !place ? () => setIsFirst(false) : onSubmit,
       buttonLoading: isLoading,
     },
   };

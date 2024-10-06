@@ -2,6 +2,7 @@ import { Box } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
+
 import PageIntro from "../../../components/atoms/PageIntro";
 import SectionTitle from "../../../components/atoms/SectionTitle";
 import BottomNav from "../../../components/layouts/BottomNav";

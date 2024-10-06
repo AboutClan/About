@@ -1,6 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 import styled from "styled-components";
+
 import { SingleLineText } from "../../../styles/layout/components";
 import PlaceImage from "../PlaceImage";
 

@@ -1,19 +1,24 @@
 import { Box } from "@chakra-ui/react";
 import { useState } from "react";
+
 import PageIntro from "../../../components/atoms/PageIntro";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import SearchLocation from "../../../components/organisms/SearchLocation";
+import StudyVoteDrawer from "../../../components/services/studyVote/StudyVoteDrawer";
 import { KakaoLocationProps } from "../../../types/externals/kakaoLocationSearch";
 
-interface PlaceProps {}
-
-function Place({}: PlaceProps) {
+function Place() {
   const [placeInfo, setPlaceInfo] = useState<KakaoLocationProps>({
     place_name: "",
     road_address_name: "",
   });
+  const [isVoteDrawer, setIsVoteDrawer] = useState(false);
+
+  const handleBottomNav = () => {
+    setIsVoteDrawer(true);
+  };
 
   return (
     <>
@@ -29,7 +34,8 @@ function Place({}: PlaceProps) {
           </Box>
         </Slide>
       </Box>
-      <BottomNav text="입력 완료" />
+      <BottomNav text="스터디 신청" onClick={handleBottomNav} />
+      {isVoteDrawer && <StudyVoteDrawer setIsModal={() => setIsVoteDrawer(false)} />}
     </>
   );
 }

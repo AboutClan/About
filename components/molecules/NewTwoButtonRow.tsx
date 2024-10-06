@@ -1,5 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import { JSXElementConstructor, ReactElement } from "react";
+
 import NewButton from "../../components/atoms/NewButton";
 
 interface NewTwoButtonRowProps {

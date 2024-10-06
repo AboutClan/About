@@ -36,7 +36,7 @@ export default function BottomDrawerLg({
   setIsModal,
   options,
   isAnimation = true,
-  height = 397.5,
+  height = 403.5,
   children,
   isxpadding = true,
   isOverlay = true,

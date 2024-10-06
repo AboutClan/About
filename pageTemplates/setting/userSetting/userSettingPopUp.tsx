@@ -2,9 +2,8 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import BottomDrawerLg from "../../../components/organisms/drawer/BottomDrawerLg";
-import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 
+import BottomDrawerLg from "../../../components/organisms/drawer/BottomDrawerLg";
 import {
   ALPHABET_POP_UP,
   ATTEND_POP_UP,
@@ -117,7 +116,7 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
   }, [gatherData]);
 
   useEffect(() => {
-    let popUpCnt = cnt;
+    const popUpCnt = cnt;
 
     if (!userInfo?.locationDetail) {
       setModalTypes((old) => [...old, "registerLocation"]);
@@ -200,7 +199,7 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
           </Flex>
         </BottomDrawerLg>
       )}
-      {drawerType === "right" && <RightDrawer>23</RightDrawer>}
+      {/* {drawerType === "right" && <RightDrawer>23</RightDrawer>} */}
     </>
   );
 }

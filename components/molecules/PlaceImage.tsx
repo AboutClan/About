@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
+
 import { useTogglePlaceHeart } from "../../hooks/custom/CustomHooks";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 
@@ -81,8 +82,8 @@ function PlaceImage({ image, id, hasToggleHeart, selected }: PlaceHeartImageProp
   );
 }
 
-const CheckCircleSvg = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="12" viewBox="0 0 13 12" fill="none">
+function CheckCircleSvg() {
+  return <svg xmlns="http://www.w3.org/2000/svg" width="13" height="12" viewBox="0 0 13 12" fill="none">
     <rect x="0.5" y="0.000488281" width="12" height="11.9996" rx="5.99981" fill="white" />
     <g clipPath="url(#clip0_78_554)">
       <path
@@ -98,6 +99,6 @@ const CheckCircleSvg = () => (
       </clipPath>
     </defs>
   </svg>
-);
+}
 
 export default PlaceImage;

@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
@@ -51,7 +51,7 @@ export function HighlightedThumbnailCard({ date, isShort }: IHighlightedThumbnai
           overflow="hidden"
           pos="relative"
         >
-          <Image src={"/실시간.jpg"} alt="thumbnailImage" fill={true} sizes="100px" />
+          <Image src="/실시간.jpg" alt="thumbnailImage" fill={true} sizes="100px" />
         </Box>
         <Flex direction="column" ml="12px" flex={1}>
           <Flex align="center" fontSize="16px">

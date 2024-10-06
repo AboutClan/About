@@ -91,11 +91,10 @@ export const getCalendarDates = (
 
     let current = startCalendar;
     while (current.isBefore(endCalendar) || current.isSame(endCalendar)) {
-      const idx = current.diff(startOfMonth, "day");
       if (current.isBefore(startOfMonth) || current.isAfter(endOfMonth)) {
         calendar.push(null);
       } else {
-        calendar.push({ date: dayjsToStr(current), value:  0 });
+        calendar.push({ date: dayjsToStr(current), value: 0 });
       }
 
       current = current.add(1, "day");

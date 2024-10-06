@@ -1,35 +1,34 @@
-import { useSession } from "next-auth/react";
+import { Box, Flex, Switch } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { useParams, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 // import { RotatingLines } from "react-loader-spinner";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import styled from "styled-components";
 
+import { PopOverIcon } from "../../components/atoms/Icons/PopOverIcon";
+import { Input } from "../../components/atoms/Input";
 import ScreenOverlay from "../../components/atoms/ScreenOverlay";
+import Selector from "../../components/atoms/Selector";
 import Spinner from "../../components/atoms/Spinner";
+import Textarea from "../../components/atoms/Textarea";
+import ImageUploadInput from "../../components/molecules/ImageUploadInput";
+import { STUDY_ATTEND_MEMBERS } from "../../constants/keys/localStorage";
 import {
   POINT_SYSTEM_DEPOSIT,
   POINT_SYSTEM_PLUS,
 } from "../../constants/serviceConstants/pointSystemConstants";
+import { STUDY_VOTE_HOUR_ARR } from "../../constants/serviceConstants/studyConstants/studyTimeConstant";
+import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useImageUploadMutation } from "../../hooks/image/mutations";
 import { useStudyAttendCheckMutation } from "../../hooks/study/mutations";
 import { useAboutPointMutation, usePointSystemMutation } from "../../hooks/user/mutations";
 import { useAlphabetMutation } from "../../hooks/user/sub/collection/mutations";
-import { transferAlphabetState } from "../../recoils/transferRecoils";
-
-import { Box, Flex, Switch } from "@chakra-ui/react";
-import dayjs from "dayjs";
-import styled from "styled-components";
-import { PopOverIcon } from "../../components/atoms/Icons/PopOverIcon";
-import { Input } from "../../components/atoms/Input";
-import Selector from "../../components/atoms/Selector";
-import Textarea from "../../components/atoms/Textarea";
-import ImageUploadInput from "../../components/molecules/ImageUploadInput";
-import { STUDY_ATTEND_MEMBERS } from "../../constants/keys/localStorage";
-import { STUDY_VOTE_HOUR_ARR } from "../../constants/serviceConstants/studyConstants/studyTimeConstant";
-import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { getRandomAlphabet } from "../../libs/userEventLibs/collection";
 import { myRealStudyInfoState, myStudyInfoState } from "../../recoils/studyRecoils";
+import { transferAlphabetState } from "../../recoils/transferRecoils";
 import { IModal } from "../../types/components/modalTypes";
 import { createTimeArr, dayjsToFormat } from "../../utils/dateTimeUtils";
 import { isPWA } from "../../utils/validationUtils";

@@ -2,6 +2,7 @@ import { Box } from "@chakra-ui/react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
+
 import BottomNavWrapper from "../../components/atoms/BottomNavWrapper";
 import NewTwoButtonRow from "../../components/molecules/NewTwoButtonRow";
 import StudyAttendCheckModal from "../../modals/study/StudyAttendCheckModal";
@@ -24,7 +25,7 @@ function RealStudyBottomNav({ isAleadyAttend }: RealStudyBottomNavProps) {
         rightProps={{
           icon: <i className="fa-solid fa-badge-check" style={{ color: "#CCF3F0" }} />,
           children: !isAleadyAttend ? (
-            <Link href={`/vote/attend/certification`}>실시간 출석체크</Link>
+            <Link href="/vote/attend/certification">실시간 출석체크</Link>
           ) : (
             <Box>스터디 출석 완료</Box>
           ),

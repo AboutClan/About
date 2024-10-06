@@ -9,14 +9,13 @@ import { IBottomDrawerLgOptions } from "../../components/organisms/drawer/Bottom
 import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { STUDY_VOTE, STUDY_VOTE_CNT } from "../../constants/keys/queryKeys";
 import {
-  PointSystemProp,
   POINT_SYSTEM_PLUS,
+  PointSystemProp,
 } from "../../constants/serviceConstants/pointSystemConstants";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { usePointSystemLogQuery } from "../../hooks/user/queries";
-import { StudyVoteMapActionType } from "../../pages/vote";
 import { slideDirectionState } from "../../recoils/navigationRecoils";
 import { myStudyInfoState, studyDateStatusState } from "../../recoils/studyRecoils";
 import { DispatchType } from "../../types/hooks/reactTypes";
@@ -29,8 +28,8 @@ dayjs.locale("ko");
 interface IVoteTimeDrawer {
   myVote: IStudyVote;
   voterCnt: number;
-  actionType: StudyVoteMapActionType;
-  setActionType: DispatchType<StudyVoteMapActionType>;
+  actionType: any;
+  setActionType: DispatchType<any>;
 }
 
 function VoteTimeDrawer({ myVote, voterCnt, actionType, setActionType }: IVoteTimeDrawer) {

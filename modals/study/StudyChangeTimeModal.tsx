@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
@@ -20,9 +20,6 @@ import { createTimeArr, parseTimeToDayjs } from "../../utils/dateTimeUtils";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface IStudyChangeTimeModal extends IModal {}
-
-const leftDefaultIdx = 8;
-const rightDefaultIdx = 10;
 
 const startItemArr = createTimeArr(STUDY_VOTE_HOUR_ARR[0], STUDY_VOTE_HOUR_ARR[11]);
 
@@ -47,20 +44,26 @@ function StudyChangeTimeModal({ setIsModal }: IStudyChangeTimeModal) {
     end,
   });
 
-  const [rulletValue, setRulletValue] = useState<{
-    left: string;
-    right: string;
+  const [rulletIndex, setRulletIndex] = useState<{
+    left: number;
+    right: number;
   }>({
-    left: startItemArr[leftDefaultIdx],
-    right: endTimeArr[rightDefaultIdx],
+    left: 8,
+    right: 12,
   });
 
   useEffect(() => {
+    if (rulletIndex.left + 4 > rulletIndex.right && rulletIndex.left + 4 < endTimeArr.length - 1) {
+      setRulletIndex((old) => ({ ...old, right: old.left + 4 }));
+    }
+  }, [rulletIndex.left]);
+
+  useEffect(() => {
     setTime({
-      start: parseTimeToDayjs(rulletValue.left),
-      end: parseTimeToDayjs(rulletValue.right),
+      start: parseTimeToDayjs(startItemArr[rulletIndex.left]),
+      end: parseTimeToDayjs(endTimeArr[rulletIndex.right]),
     });
-  }, [rulletValue]);
+  }, [rulletIndex]);
 
   const { data } = usePointSystemLogQuery("deposit");
 
@@ -103,11 +106,10 @@ function StudyChangeTimeModal({ setIsModal }: IStudyChangeTimeModal) {
   return (
     <ModalLayout title="시간 변경" footerOptions={footerOptions} setIsModal={setIsModal}>
       <RulletPickerTwo
-        leftDefaultIdx={leftDefaultIdx}
-        rightDefaultIdx={rightDefaultIdx}
         leftRulletArr={startItemArr}
         rightRulletArr={endTimeArr}
-        setRulletValue={setRulletValue}
+        rulletIndex={rulletIndex}
+        setRulletIndex={setRulletIndex}
       />
     </ModalLayout>
   );

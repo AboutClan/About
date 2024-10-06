@@ -3,8 +3,8 @@ import "swiper/css/navigation";
 
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import { Swiper, SwiperSlide } from "swiper/react";

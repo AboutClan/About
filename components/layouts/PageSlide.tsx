@@ -10,7 +10,7 @@ interface IPageLayout {
   children: React.ReactNode;
 }
 
-function Slide({ children, isFixed, posZero, isNoPadding = true }: IPageLayout) {
+function Slide({ children, isFixed, posZero, isNoPadding }: IPageLayout) {
   const [slideDirection, setSlideDirection] = useRecoilState(slideDirectionState);
 
   useEffect(() => {
