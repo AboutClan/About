@@ -38,3 +38,7 @@ export const getBottomNavSize = () => {
     return 95;
   } else return 77;
 };
+
+export const getRandomIdx = (totalCnt: number) => {
+  return Math.floor(Math.random() * totalCnt);
+};

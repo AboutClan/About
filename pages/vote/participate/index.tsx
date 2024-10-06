@@ -74,7 +74,7 @@ function Participate() {
           height="20px"
           color="var(--color-blue)"
         >
-          <Link href="/vote/participate/place">직접 입력</Link>
+          <Link href={`/vote/participate/place?${searchParams.toString()}`}>직접 입력</Link>
         </Button>
       </Header>
       <Slide>

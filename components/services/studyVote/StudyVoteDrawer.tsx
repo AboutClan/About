@@ -54,13 +54,14 @@ export default function StudyVoteDrawer({
     start: null,
     end: null,
   });
+  console.log(place);
 
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
   const [votePlaces, setVotePlaces] = useState<IStudyVotePlaces>();
 
   useEffect(() => {
-    setMyVote((old) => ({ ...old, place, subPlace }));
-  }, [place, subPlace]);
+    if (place) setMyVote((old) => ({ ...old, place, subPlace }));
+  }, [place]);
 
   useEffect(() => {
     setMyVote((old) => ({ ...old, ...voteTime, ...votePlaces }));

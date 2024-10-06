@@ -7,6 +7,7 @@ import { IAbsence } from "./studyInterActions";
 export interface IStudy {
   date: Date;
   participations: IParticipation[];
+  realTime: RealTimeInfoProps[];
 }
 
 export interface IParticipation {
@@ -32,22 +33,26 @@ export interface IAttendance {
 
 export type StudyUserStatus = "pending" | "solo" | "open" | "completed";
 
-export interface StudyAttendanceProps {
-  user: UserSimpleInfoProps;
+export interface RealTimeBasicVoteProps {
   place: {
     lat?: number;
     lon?: number;
     text: string;
   };
+  time: {
+    start: string | Dayjs;
+    end: string | Dayjs;
+  };
+}
+
+export interface RealTimeInfoProps extends RealTimeBasicVoteProps {
+  user: UserSimpleInfoProps;
   status: StudyUserStatus;
   arrived?: string;
   image?: Blob | string;
   memo?: string;
   comment?: string;
-  time: {
-    start: string;
-    end: string;
-  };
+  _id: string;
 }
 
 export interface PlaceRegisterProps {

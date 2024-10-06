@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
+import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
 
 import Avatar from "../../components/atoms/Avatar";
 import CurrentLocationBtn from "../../components/atoms/CurrentLocationBtn";
@@ -27,14 +28,19 @@ import { getCurrentLocationIcon, getStudyIcon } from "../../libs/study/getStudyV
 import { getLocationCenterDot } from "../../libs/study/getStudyVoteMap";
 import RealStudyBottomNav from "../../pageTemplates/vote/RealStudyBottomNav";
 import VotePreComponent from "../../pageTemplates/vote/VotePreComponent";
-import { myStudyInfoState } from "../../recoils/studyRecoils";
+import { myRealStudyInfoState, myStudyInfoState } from "../../recoils/studyRecoils";
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
-import { IParticipation, IPlace } from "../../types/models/studyTypes/studyDetails";
+import {
+  IParticipation,
+  IPlace,
+  RealTimeInfoProps,
+} from "../../types/models/studyTypes/studyDetails";
 import { IStudyVoteWithPlace } from "../../types/models/studyTypes/studyInterActions";
 import { IAvatar } from "../../types/models/userTypes/userInfoTypes";
 import { ActiveLocation, LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
+import { getRandomIdx } from "../../utils/mathUtils";
 
 type StudyCategoryTab = "실시간 스터디" | "내일의 스터디";
 
@@ -84,6 +90,7 @@ export default function StudyVoteMap() {
   const [detailInfo, setDetailInfo] = useState<DetailInfoProps>();
 
   const [myStudy, setMyStudy] = useRecoilState(myStudyInfoState);
+  const [myRealStudy, setMyRealStudy] = useRecoilState(myRealStudyInfoState);
 
   const { data: userInfo } = useUserInfoQuery();
   const { data: studyVoteOne } = useStudyVoteQuery(dateValue, "전체", false, false, {
@@ -92,7 +99,9 @@ export default function StudyVoteMap() {
 
   const mainLocation = userInfo?.locationDetail;
   const studyVoteData = studyVoteOne?.[0]?.participations;
+  const realTimeUsers = studyVoteOne?.[0]?.realTime;
 
+  console.log(realTimeUsers);
   useEffect(() => {
     if (!locationValue) setLocationValue(locationParamKr);
     if (!dateValue) setDateValue(dateParam);
@@ -108,15 +117,21 @@ export default function StudyVoteMap() {
   }, [locationValue, dateValue]);
 
   useEffect(() => {
-    if (!studyVoteData) return;
+    if (!studyVoteOne) return;
+
     const tempStudy =
       studyVoteData?.find(
         (par) =>
           par.status !== "dismissed" &&
           par.attendences.some((who) => who.user.uid === userInfo?.uid),
       ) || null;
+
+    const tempRealStudy = realTimeUsers?.find(
+      (userProps) => userProps.user.uid === userInfo?.uid || true,
+    );
     setMyStudy(tempStudy);
-  }, [studyVoteData, userInfo?.uid]);
+    setMyRealStudy(tempRealStudy);
+  }, [studyVoteOne, userInfo?.uid]);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -150,7 +165,7 @@ export default function StudyVoteMap() {
       setMapOptions(getMapOptions({ lat: mainLocation.lat, lon: mainLocation.lon }));
     }
     if (studyVoteData && currentLocation) {
-      setMarkersOptions(getMarkersOptions(studyVoteData, currentLocation));
+      setMarkersOptions(getMarkersOptions(studyVoteData, currentLocation, realTimeUsers));
     }
   }, [currentLocation, centerLocation, mainLocation, studyCategoryTab, studyVoteData]);
 
@@ -204,14 +219,21 @@ export default function StudyVoteMap() {
   const handleMarker = (id: string) => {
     if (!id || !studyVoteData) return;
     const findStudy = studyVoteData.find((par) => par.place._id === id);
+    const findRealStudy = realTimeUsers.find((par) => par._id === id);
+    const realStudyAttendance = realTimeUsers?.filter(
+      (real) => real.place.text === findRealStudy.place.text,
+    );
 
     if (studyCategoryTab === "실시간 스터디") {
       setDetailInfo({
-        title: findStudy.place.fullname,
+        title: findStudy?.place?.fullname || findRealStudy?.place?.text,
         id,
-        time: getStudyTime(findStudy.attendences),
-        participantCnt: findStudy.attendences.length,
-        image: findStudy.place.image,
+        time: getStudyTime(findStudy?.attendences) || {
+          start: dayjsToFormat(dayjs(findRealStudy.time.start), "HH:mm"),
+          end: dayjsToFormat(dayjs(findRealStudy.time.end), "HH:mm"),
+        },
+        participantCnt: findStudy?.attendences?.length || realStudyAttendance?.length,
+        image: findStudy?.place?.image || STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length)],
         comment: {
           user: {
             uid: ABOUT_USER_SUMMARY.uid,
@@ -220,7 +242,9 @@ export default function StudyVoteMap() {
           },
           text: getFirstComment(findStudy.attendences),
         },
-        isMember: findStudy?.attendences?.some((who) => who.user.uid === userInfo.uid),
+        isMember:
+          findStudy?.attendences?.some((who) => who.user.uid === userInfo.uid) ||
+          realStudyAttendance?.some((who) => who.user.uid === userInfo.uid),
       });
     }
 
@@ -400,6 +424,7 @@ const getMarkersOptions = (
     lat: number;
     lon: number;
   },
+  realTimeUsers: RealTimeInfoProps[],
 ): IMarkerOptions[] | undefined => {
   if (typeof naver === "undefined" || !studyVoteData) return;
   const temp = [];
@@ -426,6 +451,41 @@ const getMarkersOptions = (
         },
       });
     });
+
+  const tempArr = [];
+  const placeMap = new Map(); // fullname을 기준으로 그룹화할 Map 생성
+
+  // 그룹화: fullname을 키로 하여 개수를 카운트하고 중복된 place 정보를 저장
+  realTimeUsers.forEach((par) => {
+    const fullname = par.place.text;
+    if (placeMap.has(fullname)) {
+      // 이미 fullname이 존재하면 개수를 증가시킴
+      const existing = placeMap.get(fullname);
+      existing.count += 1;
+    } else {
+      // 새롭게 fullname을 추가하며 초기 값 설정
+      placeMap.set(fullname, {
+        id: par._id,
+        position: new naver.maps.LatLng(par.place.lat, par.place.lon),
+        count: 1, // 처음에는 1로 설정
+      });
+    }
+  });
+
+  // 그룹화된 결과를 temp에 추가
+  placeMap.forEach((value, fullname) => {
+    temp.push({
+      id: value.id,
+      position: value.position,
+      icon: {
+        content: value.count === 1 ? getStudyIcon("active") : getStudyIcon(null, value.count), // count에 따라 content 값 설정
+        size: new naver.maps.Size(72, 72),
+        anchor: new naver.maps.Point(36, 44),
+      },
+    });
+
+    tempArr.push(fullname); // fullname을 tempArr에 추가
+  });
 
   return temp;
 };

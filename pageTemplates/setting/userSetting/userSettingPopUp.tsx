@@ -66,6 +66,7 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
   const { data: gatherData } = useGatherQuery(-1);
 
   useEffect(() => {
+    return;
     if (!gatherData) return;
     const gatherJoin = JSON.parse(localStorage.getItem(GATHER_JOIN_MEMBERS)) || [];
     const filteredGather = gatherData.filter((obj) => {
@@ -73,7 +74,7 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
       const isWithinDateRange =
         dayjs(obj.date).isAfter(dayjs().subtract(7, "day")) &&
         dayjs(obj.date).isBefore(dayjs(), "dates");
-
+      if (obj.participants?.find((who) => !who?.user?.uid)) console.log(obj);
       const isParticipant = obj.participants.some((who) => who.user.uid === session?.user.uid);
       const isUser = (obj.user as IUserSummary).uid === session?.user.uid;
 

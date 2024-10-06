@@ -117,6 +117,13 @@ export const useAboutPointMutation = (options?: MutationOptions<IPointSystem>) =
     ]);
   }, options);
 
+export const useScoreMutation = (options?: MutationOptions<IPointSystem>) =>
+  useMutation<void, AxiosError, IPointSystem>(
+    async ({ value, message, sub }) =>
+      await axios.patch(`${SERVER_URI}/user/score`, { score: value, message, sub }),
+    options,
+  );
+
 export const useUserUpdateProfileImageMutation = (options?: MutationOptions<void>) =>
   useMutation<void, AxiosError, void>(async () => {
     await axios.patch("/api/user/profile");

@@ -76,7 +76,7 @@ export default function BottomDrawerLg({
         animate={{ y: 0 }}
         exit={{ y: drawerHeight, transition: { duration: 0.2 } }}
         transition={{ duration: 0.4 }}
-        paddingOptions={paddingOptions}
+        paddingoptions={paddingOptions}
       >
         <TopNav />
 
@@ -106,7 +106,7 @@ export default function BottomDrawerLg({
 }
 
 const Layout = styled(motion.div)<{
-  paddingOptions: { bottom?: number };
+  paddingoptions: { bottom?: number };
   height: number;
   isxpadding: string;
 }>`
@@ -121,7 +121,7 @@ const Layout = styled(motion.div)<{
   z-index: 5000;
   padding: ${(props) => (props.isxpadding === "true" ? "12px 20px" : "12px 0")};
   padding-bottom: ${(props) =>
-    props.isxpadding === "true" && props?.paddingOptions?.bottom !== 0
+    props.isxpadding === "true" && props?.paddingoptions?.bottom !== 0
       ? `${20 + iPhoneNotchSize()}px`
       : iPhoneNotchSize()};
   touch-action: none; /* 터치 스크롤을 막음 */
