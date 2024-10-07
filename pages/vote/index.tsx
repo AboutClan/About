@@ -126,9 +126,7 @@ export default function StudyVoteMap() {
           par.attendences.some((who) => who.user.uid === userInfo?.uid),
       ) || null;
 
-    const tempRealStudy = realTimeUsers?.find(
-      (userProps) => userProps.user.uid === userInfo?.uid || true,
-    );
+    const tempRealStudy = realTimeUsers?.find((userProps) => userProps.user.uid === userInfo?.uid);
     setMyStudy(tempStudy);
     setMyRealStudy(tempRealStudy);
   }, [studyVoteOne, userInfo?.uid]);
@@ -240,7 +238,7 @@ export default function StudyVoteMap() {
             avatar: ABOUT_USER_SUMMARY.avatar,
             userImage: ABOUT_USER_SUMMARY.profileImage,
           },
-          text: getFirstComment(findStudy.attendences),
+          text: getFirstComment(findStudy?.attendences),
         },
         isMember:
           findStudy?.attendences?.some((who) => who.user.uid === userInfo.uid) ||

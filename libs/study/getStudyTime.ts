@@ -21,6 +21,7 @@ export const getStudyTime = (users: IAttendance[]): { start: string; end: string
 };
 
 export const getFirstComment = (users: IAttendance[]) => {
+  if (!users) return null;
   let text = "basic";
   users.forEach((user) => {
     if (true) {

@@ -156,7 +156,7 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
     });
     toast(
       "success",
-      `참여 완료! ${POINT_SYSTEM_PLUS.STUDY_VOTE_DAILY.value} 포인트가 적립되었습니다."}`,
+      `참여 완료! ${POINT_SYSTEM_PLUS.STUDY_VOTE_DAILY.value} 포인트가 적립되었습니다}`,
     );
     setIsModal(false);
   };

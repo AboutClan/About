@@ -1,13 +1,20 @@
 import { Box } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useRecoilValue } from "recoil";
 
 import DateVoteBlock from "../../../../components/molecules/DateVoteBlock";
 import { useTypeToast } from "../../../../hooks/custom/CustomToast";
-import { myStudyInfoState, studyDateStatusState } from "../../../../recoils/studyRecoils";
+import {
+  myRealStudyInfoState,
+  myStudyInfoState,
+  studyDateStatusState,
+} from "../../../../recoils/studyRecoils";
 import { DispatchType } from "../../../../types/hooks/reactTypes";
-import { IParticipation } from "../../../../types/models/studyTypes/studyDetails";
+import {
+  IParticipation,
+  RealTimeInfoProps,
+} from "../../../../types/models/studyTypes/studyDetails";
 import { StudyDateStatus } from "../../../../types/models/studyTypes/studyInterActions";
 import { VoteType } from "./StudyController";
 
@@ -45,8 +52,15 @@ function StudyControllerVoteButton({ setModalType, memberCnt }: IStudyController
 
   const studyDateStatus = useRecoilValue(studyDateStatusState);
   const myStudy = useRecoilValue(myStudyInfoState);
+  const myRealStudy = useRecoilValue(myRealStudyInfoState);
 
-  const buttonProps = getStudyVoteButtonProps(studyDateStatus, myStudy, session?.user.uid);
+  console.log("real", myRealStudy);
+  const buttonProps = getStudyVoteButtonProps(
+    studyDateStatus,
+    myStudy,
+    myRealStudy,
+    session?.user.uid,
+  );
 
   const handleModalOpen = () => {
     if (isGuest) {
@@ -54,7 +68,7 @@ function StudyControllerVoteButton({ setModalType, memberCnt }: IStudyController
       return;
     }
     const type = buttonProps.text;
-  
+
     setModalType(ACTION_TO_VOTE_TYPE[type]);
   };
 
@@ -74,13 +88,14 @@ export interface DateVoteButtonProps {
 export const getStudyVoteButtonProps = (
   studyDateStatus: StudyDateStatus,
   myStudy: IParticipation | null,
+  myRealStudy?: RealTimeInfoProps,
   myUid?: string,
 ): DateVoteButtonProps => {
   const isAttend = myStudy?.attendences.find((who) => who.user.uid === myUid)?.arrived;
 
   switch (studyDateStatus) {
     case "not passed":
-      if (myStudy)
+      if (myStudy || myRealStudy)
         return {
           text: "투표 변경하기",
           color: "var(--color-mint)",
@@ -98,7 +113,7 @@ export const getStudyVoteButtonProps = (
           color: "var(--color-orange)",
           type: "inactive",
         };
-      else if (myStudy)
+      else if (myStudy || myRealStudy)
         return {
           text: "스터디 출석체크",
           color: "var(--color-orange)",

@@ -2,14 +2,29 @@ import { AxiosError } from "axios";
 import { useMutation } from "react-query";
 import { requestServer } from "../../libs/methodHelpers";
 import { MutationOptions } from "../../types/hooks/reactTypes";
-import { RealtimeBasicVoteProps } from "../../types/models/studyTypes/studyDetails";
+import {
+  RealTimeBasicAttendanceProps,
+  RealTimeBasicVoteProps,
+} from "../../types/models/studyTypes/studyDetails";
 
-export const useRealtimeVoteMutation = (options?: MutationOptions<RealtimeBasicVoteProps>) =>
-  useMutation<void, AxiosError, RealtimeBasicVoteProps>(
+export const useRealtimeVoteMutation = (options?: MutationOptions<RealTimeBasicVoteProps>) =>
+  useMutation<void, AxiosError, RealTimeBasicVoteProps>(
     (param) =>
-      requestServer<RealtimeBasicVoteProps>({
+      requestServer<RealTimeBasicVoteProps>({
         method: "post",
         url: `realtime/basicVote`,
+        body: param,
+      }),
+    options,
+  );
+export const useRealtimeAttendMutation = (
+  options?: MutationOptions<RealTimeBasicAttendanceProps>,
+) =>
+  useMutation<void, AxiosError, RealTimeBasicAttendanceProps>(
+    (param) =>
+      requestServer<RealTimeBasicAttendanceProps>({
+        method: "post",
+        url: `realtime/attendance`,
         body: param,
       }),
     options,

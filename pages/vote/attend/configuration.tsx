@@ -20,6 +20,7 @@ import {
 } from "../../../constants/serviceConstants/pointSystemConstants";
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
+import { useRealtimeAttendMutation } from "../../../hooks/realtime/mutations";
 import { useStudyAttendCheckMutation } from "../../../hooks/study/mutations";
 import {
   useAboutPointMutation,
@@ -80,6 +81,8 @@ function Configuration() {
     onError: () => typeToast("error"),
   });
 
+  const { mutate } = useRealtimeAttendMutation();
+
   const getRandomAlphabetOrNone = () => {
     const alphabet = getRandomAlphabet(20);
     if (alphabet) {
@@ -109,15 +112,31 @@ function Configuration() {
       }, 500);
     }
   }, []);
-
   while (1) {
     timeOptions.push(dayjsToFormat(currentDayjs, "HH:mm"));
     currentDayjs = currentDayjs.add(30, "m");
     if (currentDayjs.date() !== dayjs().date()) break;
   }
+  console.log(3434);
+
+  const formData = new FormData();
 
   const handleBottomNav = () => {
-    setStudyAttendInfo(null);
+    console.log(studyAttendInfo);
+    // setStudyAttendInfo(null);
+
+    if (myStudy) {
+      setIsChecking(true);
+      handleArrived(attendMessage);
+      setTimeout(() => {
+        setIsChecking(false);
+      }, 2000);
+    } else {
+      formData.append("memo", "test");
+      formData.append("status", "solo");
+      formData.append("image", studyAttendInfo?.image as Blob);
+      mutate(formData);
+    }
   };
 
   const handleAttendCheck = () => {
@@ -130,58 +149,58 @@ function Configuration() {
     setTimeout(() => {
       setIsChecking(false);
     }, 2000);
-
-    return (
-      <>
-        <Box minH="calc(100dvh - var(--header-h))" bgColor="white">
-          <Header title="" isBorder={false} />
-          <Slide>
-            <PageIntro main={{ first: "출석 인증하기" }} sub="스터디 출석을 인증해 보세요" />
-            <Box mb={3}>
-              <SectionTitle text="나의 인상착의" />
-            </Box>
-            <Textarea
-              value={attendMessage}
-              onChange={(e) => setAttendMessage(e.target.value)}
-              ref={textareaRef}
-              placeholder="나를 유추할 수 있는 정보를 기입해 보세요"
-            />
-            <Box my={5}>
-              <Box mb={3}>
-                <SectionTitle text="다른 인원 참어 허용" />
-              </Box>
-              <Select
-                options={["허용", "비허용"]}
-                defaultValue={otherPermission}
-                setValue={setOtherPermission}
-                size="lg"
-                isFullSize
-              />
-            </Box>
-            <Box>
-              <Box mb={3}>
-                <SectionTitle text="예상 종료 시간" />
-              </Box>
-              <Select
-                size="lg"
-                isFullSize
-                options={timeOptions}
-                defaultValue={endTime}
-                setValue={setEndTime}
-              />
-            </Box>
-          </Slide>
-        </Box>
-        <BottomNav text="출 석" onClick={handleBottomNav} />
-        {isChecking && (
-          <>
-            <Spinner text="위치를 확인중입니다..." />
-            <ScreenOverlay zIndex={2000} />
-          </>
-        )}
-      </>
-    );
   };
+
+  return (
+    <>
+      <Box minH="calc(100dvh - var(--header-h))" bgColor="white">
+        <Header title="" isBorder={false} />
+        <Slide>
+          <PageIntro main={{ first: "출석 인증하기" }} sub="스터디 출석을 인증해 보세요" />
+          <Box mb={3}>
+            <SectionTitle text="나의 인상착의" />
+          </Box>
+          <Textarea
+            value={attendMessage}
+            onChange={(e) => setAttendMessage(e.target.value)}
+            ref={textareaRef}
+            placeholder="나를 유추할 수 있는 정보를 기입해 보세요"
+          />
+          <Box my={5}>
+            <Box mb={3}>
+              <SectionTitle text="다른 인원 참어 허용" />
+            </Box>
+            <Select
+              options={["허용", "비허용"]}
+              defaultValue={otherPermission}
+              setValue={setOtherPermission}
+              size="lg"
+              isFullSize
+            />
+          </Box>
+          <Box>
+            <Box mb={3}>
+              <SectionTitle text="예상 종료 시간" />
+            </Box>
+            <Select
+              size="lg"
+              isFullSize
+              options={timeOptions}
+              defaultValue={endTime}
+              setValue={setEndTime}
+            />
+          </Box>
+        </Slide>
+      </Box>
+      <BottomNav text="출 석" onClick={handleBottomNav} />
+      {isChecking && (
+        <>
+          <Spinner text="위치를 확인중입니다..." />
+          <ScreenOverlay zIndex={2000} />
+        </>
+      )}
+    </>
+  );
 }
 
 export default Configuration;

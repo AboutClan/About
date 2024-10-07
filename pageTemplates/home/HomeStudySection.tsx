@@ -1,9 +1,9 @@
 import { Box, Button, Flex, keyframes } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -13,6 +13,7 @@ import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { getStudyDateStatus } from "../../libs/study/date/getStudyDateStatus";
 import {
+  myRealStudyInfoState,
   myStudyInfoState,
   studyDateStatusState,
   studyPairArrState,
@@ -58,6 +59,7 @@ function HomeStudySection() {
   const [selectedDate, setSelectedDate] = useState<string>();
   const [studyVoteArr, setStudyVoteArr] = useState<IParticipation[]>();
   const setMyStudy = useSetRecoilState(myStudyInfoState);
+  const setMyRealStudy = useSetRecoilState(myRealStudyInfoState);
 
   const findStudyData = studyPairArr?.find(
     (study) => dayjsToStr(dayjs(study.date)) === date,
@@ -90,10 +92,15 @@ function HomeStudySection() {
           par.attendences.some((who) => who.user.uid === session?.user?.uid),
       ) || null;
     setMyStudy(tempStudy);
-  }, [findStudyData, studyVoteData]);
+    const realTimeUsers = Array.isArray(studyVoteData?.[0]?.realTime)
+      ? studyVoteData?.[0]?.realTime
+      : [];
+
+    const myRealStudy = realTimeUsers?.find((real) => real.user.uid === session?.user.uid);
+    setMyRealStudy(myRealStudy);
+  }, [findStudyData, studyVoteData, session?.user.uid]);
 
   const selectedDateDayjs = dayjs(selectedDate);
-
 
   // const newStudyPlaces = studyVoteArr
   //   ?.filter(
