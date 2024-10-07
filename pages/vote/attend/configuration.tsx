@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -42,6 +43,7 @@ import { convertTimeStringToDayjs } from "../../../utils/convertUtils/convertTyp
 import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
 
 function Configuration() {
+  const router = useRouter();
   const { data: session } = useSession();
   const toast = useToast();
   const typeToast = useTypeToast();
@@ -134,6 +136,7 @@ function Configuration() {
       },
     };
     localStorage.setItem(STUDY_RECORD_INFO, JSON.stringify(record));
+    router.push("/home");
   };
 
   const formData = new FormData();
@@ -141,7 +144,7 @@ function Configuration() {
   const handleSubmit = () => {
     // setStudyAttendInfo(null);
 
-    if (true) {
+    if (false) {
       setIsChecking(true);
       handleArrived({ memo: attendMessage, endHour: convertTimeStringToDayjs(endTime) });
       setTimeout(() => {

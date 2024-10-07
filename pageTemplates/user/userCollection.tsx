@@ -1,19 +1,19 @@
 import { Flex } from "@chakra-ui/react";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useState } from "react";
 import styled from "styled-components";
 
 import { AlphabetIcon } from "../../components/atoms/Icons/AlphabetIcon";
 import { useCollectionAlphabetQuery } from "../../hooks/user/sub/collection/queries";
-import UserCollectionAlphabetModal from "../../modals/user/collection/UserCollectionAlphabetModal";
+import UserCollectionCollectionModal from "../../modals/user/collection/UserCollectionCollectionModal";
 
 export default function UserCollection() {
   const { data: session } = useSession();
 
   const isGuest = session?.user.name === "guest";
 
-  const [isAlphabetModal, setIsAlphabetModal] = useState(false);
+  const [isCollectionModal, setIsCollectionModal] = useState(false);
 
   const { data: alphabets } = useCollectionAlphabetQuery({
     enabled: !isGuest,
@@ -35,7 +35,7 @@ export default function UserCollection() {
           <AlphabetIcon alphabet="T" isDuotone={!alphabetArr?.includes("T")} />
         </AlphabetContainer>
       </Link>
-      <AlphabetQNABtn onClick={() => setIsAlphabetModal(true)}>
+      <AlphabetQNABtn onClick={() => setIsCollectionModal(true)}>
         <IconWrapper>
           <i className="fa-duotone fa-stars fa-2x" style={{ color: "var(--color-mint)" }} />
         </IconWrapper>
@@ -44,7 +44,7 @@ export default function UserCollection() {
           <span>컬렉션 수집 보상</span>
         </AlphabetQNABtnContents>
       </AlphabetQNABtn>
-      {isAlphabetModal && <UserCollectionAlphabetModal setIsModal={setIsAlphabetModal} />}
+      {isCollectionModal && <UserCollectionCollectionModal setIsModal={setIsCollectionModal} />}
     </Flex>
   );
 }

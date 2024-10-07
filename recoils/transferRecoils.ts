@@ -10,7 +10,7 @@ import { MemberGroup } from "../types/models/member";
 import { IUser } from "../types/models/userTypes/userInfoTypes";
 
 export const transferCollectionState = atom<CollectionProps>({
-  key: "TransferAlphabet",
+  key: "transferCollection",
   default: null,
 });
 

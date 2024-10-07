@@ -11,6 +11,7 @@ import Slide from "../../../components/layouts/PageSlide";
 import ImageUploadInput from "../../../components/molecules/ImageUploadInput";
 import LocationSearch from "../../../components/organisms/location/LocationSearch";
 import { useToast } from "../../../hooks/custom/CustomToast";
+import { useRealtimeAttendMutation } from "../../../hooks/realtime/mutations";
 import { getMyStudyVoteInfo } from "../../../libs/study/getMyStudy";
 import {
   myRealStudyInfoState,
@@ -33,6 +34,7 @@ function Certification() {
   const myStudyInfo = useRecoilValue(myStudyInfoState);
   const myRealStudyInfo = useRecoilValue(myRealStudyInfoState);
   const myStudy = getMyStudyVoteInfo(myStudyInfo, session?.user.uid);
+  console.log(52, myRealStudyInfo);
 
   useEffect(() => {
     if (studyAttendInfo) {
@@ -47,12 +49,21 @@ function Certification() {
   }, [studyAttendInfo]);
 
   useEffect(() => {
+    if (myRealStudyInfo) {
+      setPlaceInfo((old) => ({ ...old, place_name: myRealStudyInfo.place.text }));
+    }
     if (myStudyInfo) {
       setPlaceInfo((old) => ({ ...old, place_name: myStudy?.fullname }));
     }
-  }, [myStudyInfo]);
-
+  }, [myStudyInfo, myRealStudyInfo]);
+  const { mutate } = useRealtimeAttendMutation();
+  const formData = new FormData();
   const handleBottomNav = (e) => {
+    formData.append("memo", "test");
+    formData.append("status", "solo");
+    formData.append("image", [image]);
+    mutate(formData);
+    return;
     if (!image) {
       toast("warning", "이미지를 등록해 주세요");
       e.preventDefault();

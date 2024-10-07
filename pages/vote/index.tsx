@@ -101,7 +101,6 @@ export default function StudyVoteMap() {
   const studyVoteData = studyVoteOne?.[0]?.participations;
   const realTimeUsers = studyVoteOne?.[0]?.realTime;
 
-
   useEffect(() => {
     if (!locationValue) setLocationValue(locationParamKr);
     if (!dateValue) setDateValue(dateParam);
@@ -128,6 +127,7 @@ export default function StudyVoteMap() {
 
     const tempRealStudy = realTimeUsers?.find((userProps) => userProps.user.uid === userInfo?.uid);
     setMyStudy(tempStudy);
+
     setMyRealStudy(tempRealStudy);
   }, [studyVoteOne, userInfo?.uid]);
 

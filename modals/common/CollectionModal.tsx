@@ -2,15 +2,15 @@ import styled from "styled-components";
 
 import { AlphabetIcon } from "../../components/atoms/Icons/AlphabetIcon";
 import { IModal } from "../../types/components/modalTypes";
-import { Alphabet } from "../../types/models/collections";
+import { CollectionProps } from "../../types/models/collections";
 import { IFooterOptions, IHeaderOptions, ModalLayout } from "../Modals";
 
-interface IAlphabetModal extends IModal {
-  alphabet: Alphabet;
+interface ICollectionModal extends IModal {
+  collection: CollectionProps;
 }
 
-function AlphabetModal({ alphabet, setIsModal }: IAlphabetModal) {
-  if (!alphabet) return;
+function CollectionModal({ collection, setIsModal }: ICollectionModal) {
+  if (!collection) return;
 
   const footerOptions: IFooterOptions = {
     main: {},
@@ -26,7 +26,11 @@ function AlphabetModal({ alphabet, setIsModal }: IAlphabetModal) {
       setIsModal={setIsModal}
     >
       <Container>
-        <AlphabetIcon alphabet={alphabet} isBeat={true} />
+        {collection?.alphabet ? (
+          <AlphabetIcon alphabet={collection.alphabet} isBeat={true} />
+        ) : (
+          <></>
+        )}
       </Container>
     </ModalLayout>
   );
@@ -40,4 +44,4 @@ const Container = styled.div`
   height: 100%;
 `;
 
-export default AlphabetModal;
+export default CollectionModal;
