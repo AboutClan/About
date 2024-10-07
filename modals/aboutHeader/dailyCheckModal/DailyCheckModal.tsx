@@ -24,7 +24,7 @@ import { useDailyCheckMutation } from "../../../hooks/user/sub/dailyCheck/mutati
 import { useUserRequestMutation } from "../../../hooks/user/sub/request/mutations";
 import { getRandomAlphabet } from "../../../libs/userEventLibs/collection";
 import {
-  transferAlphabetState,
+  transferCollectionState,
   transferDailyCheckWinState,
   transferShowDailyCheckState,
 } from "../../../recoils/transferRecoils";
@@ -43,7 +43,7 @@ function DailyCheckModal({ setIsModal }: IModal) {
 
   const setDailyCheckWin = useSetRecoilState(transferDailyCheckWinState);
   const setShowDailyCheck = useSetRecoilState(transferShowDailyCheckState);
-  const setAlphabet = useSetRecoilState(transferAlphabetState);
+  const setAlphabet = useSetRecoilState(transferCollectionState);
 
   const { mutate: getAlphabet } = useAlphabetMutation("get");
   const { mutate: setDailyCheck } = useDailyCheckMutation({

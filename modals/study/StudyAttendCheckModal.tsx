@@ -1,7 +1,7 @@
 import { Box, Flex, Switch } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 // import { RotatingLines } from "react-loader-spinner";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -28,7 +28,7 @@ import { useAboutPointMutation, usePointSystemMutation } from "../../hooks/user/
 import { useAlphabetMutation } from "../../hooks/user/sub/collection/mutations";
 import { getRandomAlphabet } from "../../libs/userEventLibs/collection";
 import { myRealStudyInfoState, myStudyInfoState } from "../../recoils/studyRecoils";
-import { transferAlphabetState } from "../../recoils/transferRecoils";
+import { transferCollectionState } from "../../recoils/transferRecoils";
 import { IModal } from "../../types/components/modalTypes";
 import { createTimeArr, dayjsToFormat } from "../../utils/dateTimeUtils";
 import { isPWA } from "../../utils/validationUtils";
@@ -58,7 +58,7 @@ function StudyAttendCheckModal({ setIsModal }: IModal) {
 
   const myStudy = useRecoilValue(myStudyInfoState);
   const myRealStudy = useRecoilValue(myRealStudyInfoState);
-  const setTransferAlphabet = useSetRecoilState(transferAlphabetState);
+  const setTransferCollection = useSetRecoilState(transferCollectionState);
 
   const myParticipationInfo =
     myStudy?.attendences?.find((who) => who.user.uid === session?.user?.uid) || myRealStudy;
@@ -124,7 +124,7 @@ function StudyAttendCheckModal({ setIsModal }: IModal) {
     const alphabet = getRandomAlphabet(20);
     if (alphabet) {
       getAlphabet({ alphabet });
-      setTransferAlphabet(alphabet);
+      setTransferCollection(alphabet);
     }
   };
 

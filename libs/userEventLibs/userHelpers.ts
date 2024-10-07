@@ -1,4 +1,4 @@
-import { RankingCategorySource } from "../../pages/ranking";
+import { RankingCategorySource } from "../../pages/statistics/ranking";
 import { IMyRank } from "../../types/models/ranking";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import { IScore } from "../../types/services/pointSystem";

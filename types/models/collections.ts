@@ -8,3 +8,8 @@ export interface ICollectionAlphabet extends ITimeStamps {
   collectCnt: number;
   user: IUserSummary;
 }
+
+export interface CollectionProps {
+  stamps: number;
+  alphabet: Alphabet;
+}

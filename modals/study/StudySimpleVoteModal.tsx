@@ -106,11 +106,13 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
       }
     }
     if (studyDateStatus === "today") {
-      if (recommendationPlace)
+      if (recommendationPlace) {
         setMyVote((old) => ({ ...old, place: recommendationPlace.place._id }));
+      }
+      console.log("re", recommendationPlace);
     }
   }, [recommendationPlace, studyVoteData, studyDateStatus]);
-
+  console.log(2333, myVote);
   useEffect(() => {
     if (!studyVoteDataAll) return;
     setImageDataArr(
@@ -164,6 +166,10 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
   };
 
   const handleVote = async () => {
+    if (!mainPlaceFullName) {
+      toast("error", "누락된 정보가 있습니다.");
+      return;
+    }
     if (!myVote?.place || !myVote?.start || !myVote?.end) {
       toast("error", "누락된 정보가 있습니다.");
       return;
@@ -207,7 +213,7 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
           </Box>
           <Box as="span">
             {studyDateStatus === "today"
-              ? mainPlaceFullName
+              ? mainPlaceFullName || "장소를 선택해 주세요"
               : mainPlaceFullName
                 ? `${mainPlaceFullName} 외 ${myVote?.subPlace?.length + 1}곳`
                 : "등록된 장소가 없습니다."}

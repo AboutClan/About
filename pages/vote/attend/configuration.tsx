@@ -13,7 +13,7 @@ import Textarea from "../../../components/atoms/Textarea";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
-import { STUDY_ATTEND_MEMBERS } from "../../../constants/keys/localStorage";
+import { STUDY_RECORD_INFO } from "../../../constants/keys/localStorage";
 import {
   POINT_SYSTEM_DEPOSIT,
   POINT_SYSTEM_PLUS,
@@ -28,14 +28,18 @@ import {
   usePointSystemMutation,
   useScoreMutation,
 } from "../../../hooks/user/mutations";
-import { useAlphabetMutation } from "../../../hooks/user/sub/collection/mutations";
 import { getMyStudyVoteInfo } from "../../../libs/study/getMyStudy";
-import { getRandomAlphabet } from "../../../libs/userEventLibs/collection";
-import { myStudyInfoState, studyAttendInfoState } from "../../../recoils/studyRecoils";
-import { transferAlphabetState } from "../../../recoils/transferRecoils";
+import { ModalLayout } from "../../../modals/Modals";
+import {
+  myRealStudyInfoState,
+  myStudyInfoState,
+  studyAttendInfoState,
+} from "../../../recoils/studyRecoils";
+import { transferCollectionState } from "../../../recoils/transferRecoils";
+import { CollectionProps } from "../../../types/models/collections";
+
 import { convertTimeStringToDayjs } from "../../../utils/convertUtils/convertTypes";
 import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
-import { isPWA } from "../../../utils/validationUtils";
 
 function Configuration() {
   const { data: session } = useSession();
@@ -49,36 +53,19 @@ function Configuration() {
   const [otherPermission, setOtherPermission] = useState<"허용" | "비허용">("허용");
   const [attendMessage, setAttendMessage] = useState("");
   const [isChecking, setIsChecking] = useState(false);
+  const [stampCnt, setStampCnt] = useState<number>();
 
   const [studyAttendInfo, setStudyAttendInfo] = useRecoilState(studyAttendInfoState);
-  const setTransferAlphabet = useSetRecoilState(transferAlphabetState);
+  const setTransferCollection = useSetRecoilState(transferCollectionState);
   const myStudy = useRecoilValue(myStudyInfoState);
+  const myRealStudy = useRecoilValue(myRealStudyInfoState);
 
   const { mutate: getAboutPoint } = useAboutPointMutation();
   const { mutate: getScore } = useScoreMutation();
-  const { mutate: getAlphabet } = useAlphabetMutation("get");
   const { mutate: getDeposit } = usePointSystemMutation("deposit");
-
   const { mutate: handleArrived } = useStudyAttendCheckMutation(dayjsToStr(dayjs()), {
-    onSuccess() {
-      saveTogetherMembers();
-      resetStudy();
-      getRandomAlphabetOrNone();
-
-      const pointObj = POINT_SYSTEM_PLUS.STUDY_ATTEND_CHECK;
-      if (myStudy?.status === "open") {
-        getAboutPoint(pointObj);
-        const myStudyInfo = getMyStudyVoteInfo(myStudy, session?.user.uid);
-        const isLate = dayjs().isAfter(dayjs(myStudyInfo?.end).add(1, "hour"));
-        if (isLate) getDeposit(POINT_SYSTEM_DEPOSIT.STUDY_ATTEND_LATE);
-        toast(
-          "success",
-          `출석 완료! ${pointObj.value} 포인트가 적립되었습니다. ${isLate ? "하지만 지각..." : ""}`,
-        );
-      } else {
-        getScore(pointObj);
-        toast("success", `출석 완료! ${pointObj.value}점을 획득했습니다`);
-      }
+    onSuccess(data) {
+      handleAttendSuccess(data.data);
     },
     onError: () => typeToast("error"),
   });
@@ -94,27 +81,14 @@ function Configuration() {
     },
   });
 
-  const getRandomAlphabetOrNone = () => {
-    const alphabet = getRandomAlphabet(20);
-    if (alphabet) {
-      getAlphabet({ alphabet });
-      setTransferAlphabet(alphabet);
-    }
-  };
-  const saveTogetherMembers = () => {
-    const studyVotingTable = JSON.parse(localStorage.getItem(STUDY_ATTEND_MEMBERS)) || [];
-    const newEntry = {
-      date: dayjsToStr(dayjs()),
-      members: myStudy?.attendences
-        .map((who) => who.user)
-        .filter((who) => who.uid !== session?.user.uid),
-    };
-    localStorage.setItem(STUDY_ATTEND_MEMBERS, JSON.stringify([...studyVotingTable, newEntry]));
-  };
-
   let currentDayjs = dayjs().startOf("hour");
-
   const timeOptions = [];
+
+  while (1) {
+    timeOptions.push(dayjsToFormat(currentDayjs, "HH:mm"));
+    currentDayjs = currentDayjs.add(30, "m");
+    if (currentDayjs.date() !== dayjs().date()) break;
+  }
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -123,20 +97,51 @@ function Configuration() {
       }, 500);
     }
   }, []);
-  while (1) {
-    timeOptions.push(dayjsToFormat(currentDayjs, "HH:mm"));
-    currentDayjs = currentDayjs.add(30, "m");
-    if (currentDayjs.date() !== dayjs().date()) break;
-  }
-  console.log(3434, convertTimeStringToDayjs(endTime));
+
+  const handleAttendSuccess = (collection: CollectionProps) => {
+    setTransferCollection({ alphabet: collection.alphabet, stamps: collection.stamps });
+    saveTogetherMembers();
+    resetStudy();
+
+    const pointObj = POINT_SYSTEM_PLUS.STUDY_ATTEND_CHECK;
+    if (myStudy?.status === "open") {
+      getAboutPoint(pointObj);
+      const myStudyInfo = getMyStudyVoteInfo(myStudy, session?.user.uid);
+      const isLate = dayjs().isAfter(dayjs(myStudyInfo?.end).add(1, "hour"));
+      if (isLate) getDeposit(POINT_SYSTEM_DEPOSIT.STUDY_ATTEND_LATE);
+      toast(
+        "success",
+        `출석 완료! ${pointObj.value} 포인트가 적립되었습니다. ${isLate ? "하지만 지각..." : ""}`,
+      );
+    } else {
+      getScore(pointObj);
+      toast("success", `출석 완료! ${pointObj.value}점을 획득했습니다`);
+    }
+  };
+
+  const saveTogetherMembers = () => {
+    const myStudyDetail = getMyStudyVoteInfo(myStudy, session?.user.uid);
+    const record = {
+      date: dayjsToStr(dayjs()),
+      place: myStudyDetail?.fullname,
+      arrived: myStudyDetail?.arrived,
+      members: myStudy?.attendences
+        .map((who) => who.user)
+        .filter((who) => who.uid !== session?.user.uid),
+      time: {
+        start: myStudyDetail?.start,
+        end: convertTimeStringToDayjs(endTime),
+      },
+    };
+    localStorage.setItem(STUDY_RECORD_INFO, JSON.stringify(record));
+  };
 
   const formData = new FormData();
 
-  const handleBottomNav = () => {
-    console.log(studyAttendInfo);
+  const handleSubmit = () => {
     // setStudyAttendInfo(null);
 
-    if (false) {
+    if (true) {
       setIsChecking(true);
       handleArrived({ memo: attendMessage, endHour: convertTimeStringToDayjs(endTime) });
       setTimeout(() => {
@@ -148,18 +153,6 @@ function Configuration() {
       formData.append("image", studyAttendInfo?.image as Blob);
       mutate(formData);
     }
-  };
-
-  const handleAttendCheck = () => {
-    if (isPWA()) {
-      toast("error", "어플상으로만 출석체크가 가능합니다.");
-      return;
-    }
-    setIsChecking(true);
-    handleArrived("" || "출석");
-    setTimeout(() => {
-      setIsChecking(false);
-    }, 2000);
   };
 
   return (
@@ -179,13 +172,14 @@ function Configuration() {
           />
           <Box my={5}>
             <Box mb={3}>
-              <SectionTitle text="다른 인원 참어 허용" />
+              <SectionTitle text="다른 인원 참어 허용" isActive={false} />
             </Box>
             <Select
               options={["허용", "비허용"]}
               defaultValue={otherPermission}
               setValue={setOtherPermission}
               size="lg"
+              isActive={false}
               isFullSize
             />
           </Box>
@@ -203,13 +197,14 @@ function Configuration() {
           </Box>
         </Slide>
       </Box>
-      <BottomNav text="출 석" onClick={handleBottomNav} />
+      <BottomNav text="출 석" onClick={handleSubmit} />
       {isChecking && (
         <>
           <Spinner text="위치를 확인중입니다..." />
           <ScreenOverlay zIndex={2000} />
         </>
       )}
+      {stampCnt && <ModalLayout setIsModal={() => setStampCnt(null)}>{stampCnt}</ModalLayout>}
     </>
   );
 }

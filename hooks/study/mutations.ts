@@ -4,12 +4,14 @@ import { useMutation } from "react-query";
 
 import { requestServer } from "../../libs/methodHelpers";
 import { MutationOptions } from "../../types/hooks/reactTypes";
+import { CollectionProps } from "../../types/models/collections";
 import { PlaceRegisterProps } from "../../types/models/studyTypes/studyDetails";
 import {
   IStudyVote,
   IStudyVotePlaces,
   IStudyVoteTime,
 } from "../../types/models/studyTypes/studyInterActions";
+
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
 type StudyParticipationParam<T> = T extends "post"
@@ -70,11 +72,11 @@ export const useStudyOpenFreeMutation = (date: string, options?: MutationOptions
 
 export const useStudyAttendCheckMutation = (
   date: string,
-  options?: MutationOptions<{ memo: string; endHour: Dayjs }>,
+  options?: MutationOptions<{ memo: string; endHour: Dayjs }, { data: CollectionProps }>,
 ) =>
-  useMutation<void, AxiosError, { memo: string; endHour: Dayjs }>(
+  useMutation<{ data: CollectionProps }, AxiosError, { memo: string; endHour: Dayjs }>(
     ({ memo, endHour }) =>
-      requestServer<{ memo: string; endHour: Dayjs }>({
+      requestServer<{ memo: string; endHour: Dayjs }, { data: CollectionProps }>({
         method: "patch",
         url: `vote/${date}/arrived`,
         body: { memo, endHour },

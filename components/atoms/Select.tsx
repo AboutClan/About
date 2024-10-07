@@ -14,6 +14,7 @@ interface ISelect {
   type?: "location";
   size: "sm" | "lg";
   isFullSize?: boolean;
+  isActive?: boolean;
 }
 
 export default function Select({
@@ -24,6 +25,7 @@ export default function Select({
   type,
   size = "sm",
   isFullSize,
+  isActive = true,
 }: ISelect) {
   const [value, setValue] = useState(defaultValue);
   const selectRef = useRef<HTMLSelectElement>(null);
@@ -77,6 +79,7 @@ export default function Select({
       bgColor="white"
       fontSize={size === "sm" ? "11px" : "13px"}
       fontWeight={500}
+      isDisabled={!isActive}
       height={size === "sm" ? "24px" : "52px"}
       width={!isFullSize ? "max-content" : "100%"}
       sx={{
