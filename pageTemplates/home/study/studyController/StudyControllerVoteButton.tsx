@@ -54,7 +54,7 @@ function StudyControllerVoteButton({ setModalType, memberCnt }: IStudyController
   const myStudy = useRecoilValue(myStudyInfoState);
   const myRealStudy = useRecoilValue(myRealStudyInfoState);
 
-  console.log("real", myRealStudy);
+ 
   const buttonProps = getStudyVoteButtonProps(
     studyDateStatus,
     myStudy,

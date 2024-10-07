@@ -101,7 +101,7 @@ export default function StudyVoteMap() {
   const studyVoteData = studyVoteOne?.[0]?.participations;
   const realTimeUsers = studyVoteOne?.[0]?.realTime;
 
-  console.log(realTimeUsers);
+
   useEffect(() => {
     if (!locationValue) setLocationValue(locationParamKr);
     if (!dateValue) setDateValue(dateParam);

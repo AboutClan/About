@@ -54,7 +54,7 @@ export default function StudyVoteDrawer({
     start: null,
     end: null,
   });
-  console.log(place);
+
 
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
   const [votePlaces, setVotePlaces] = useState<IStudyVotePlaces>();

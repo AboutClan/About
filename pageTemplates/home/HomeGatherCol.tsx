@@ -20,9 +20,9 @@ import { getRandomImage } from "../../utils/imageUtils";
 export default function HomeGatherCol() {
   const searchParams = useSearchParams();
   const location = searchParams.get("location");
-
+  const tab = searchParams.get("tab") as "recommendation" | "gather";
   const [cardDataArr, setCardDataArr] = useState<IPostThumbnailCard[]>([]);
-
+  console.log(54, tab);
   const setSlideDirection = useSetRecoilState(slideDirectionState);
   const setTransferGather = useSetRecoilState(transferGatherDataState);
 
@@ -33,7 +33,7 @@ export default function HomeGatherCol() {
     const handleNavigate = (gather: IGather) => {
       setTransferGather(gather);
     };
-    setCardDataArr(setGatherDataToCardCol(gathers, handleNavigate).slice(0, 3));
+    setCardDataArr(setGatherDataToCardCol(gathers, tab, handleNavigate).slice(0, 3));
   }, [gathers]);
 
   return (
@@ -58,6 +58,7 @@ export default function HomeGatherCol() {
 
 export const setGatherDataToCardCol = (
   gathers: IGather[],
+  tab: "recommendation" | "gather",
   func: (gather: IGather) => void,
 ): IPostThumbnailCard[] => {
   const cardCol: IPostThumbnailCard[] = gathers.map((gather, idx) => ({
@@ -69,7 +70,7 @@ export const setGatherDataToCardCol = (
     func: func ? () => func(gather) : undefined,
     image: {
       url: gather.image || getRandomImage(),
-      priority: idx < 4,
+      priority: tab === "gather" && idx < 4,
     },
     badge: getGatherBadge(gather.status),
     maxCnt: gather.memberCnt.max,
