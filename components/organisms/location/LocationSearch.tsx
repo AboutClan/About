@@ -12,9 +12,16 @@ interface ISearchLocation {
   setInfo: DispatchType<KakaoLocationProps>;
   isSmall?: boolean;
   hasInitialValue?: boolean;
+  isActive?: boolean;
 }
 
-function LocationSearch({ info, setInfo, isSmall = false, hasInitialValue }: ISearchLocation) {
+function LocationSearch({
+  info,
+  setInfo,
+  isSmall = false,
+  hasInitialValue,
+  isActive = true,
+}: ISearchLocation) {
   const [value, setValue] = useState(info?.place_name || "");
   const [results, setResults] = useState<KakaoLocationProps[]>([]);
 
@@ -50,6 +57,7 @@ function LocationSearch({ info, setInfo, isSmall = false, hasInitialValue }: ISe
           onChange={onChange}
           value={value}
           icon={<i className="fa-solid fa-location-dot" />}
+          isDisabled={!isActive}
         />
       </Wrapper>
 

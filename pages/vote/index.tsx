@@ -260,7 +260,7 @@ export default function StudyVoteMap() {
         position="relative"
         height={
           studyCategoryTab === "실시간 스터디" || !isDrawerFixed
-            ? "calc(100dvh - 97px)"
+            ? "calc(100dvh - 100px)"
             : "calc(100dvh - 412px)"
         }
       >

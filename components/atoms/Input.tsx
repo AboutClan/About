@@ -1,10 +1,10 @@
 import {
   Input as ChakraInput,
   InputGroup as ChakraInputGroup,
-  type InputProps as ChakraInputProps,
   InputRightElement,
+  type InputProps as ChakraInputProps,
 } from "@chakra-ui/react";
-import { type ForwardedRef,forwardRef } from "react";
+import { forwardRef, type ForwardedRef } from "react";
 
 type InputProps = ChakraInputProps & {
   size?: "xs" | "sm" | "md";
@@ -39,7 +39,7 @@ interface InputGroupProps extends InputProps {
 }
 
 export const InputGroup = forwardRef(function InputGroup(
-  { icon, value, onChange, placeholder, disabled }: InputGroupProps,
+  { icon, isDisabled, value, onChange, placeholder, disabled }: InputGroupProps,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   return (
@@ -49,6 +49,7 @@ export const InputGroup = forwardRef(function InputGroup(
         h="52px"
         value={value}
         ref={ref}
+        isDisabled={isDisabled}
         onChange={onChange}
         placeholder={placeholder}
         focusBorderColor="#00c2b3"

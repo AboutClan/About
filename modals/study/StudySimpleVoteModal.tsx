@@ -12,10 +12,7 @@ import { StudyVoteTimeRullets } from "../../components/services/studyVote/StudyV
 import { POINT_SYSTEM_PLUS } from "../../constants/serviceConstants/pointSystemConstants";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
-import {
-  useStudyOpenFreeMutation,
-  useStudyParticipationMutation,
-} from "../../hooks/study/mutations";
+import { useStudyParticipationMutation } from "../../hooks/study/mutations";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { usePointSystemLogQuery, useUserInfoQuery } from "../../hooks/user/queries";
@@ -66,7 +63,7 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
   });
 
   const { mutate: getPoint } = usePointSystemMutation("point");
-  const { mutateAsync: openFree, isLoading: isLoading2 } = useStudyOpenFreeMutation(dateParam, {});
+
   const { mutate: patchAttend, isLoading } = useStudyParticipationMutation(
     dayjs(dateParam),
     "post",
@@ -83,8 +80,9 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
     (item) => item.message === "스터디 투표" && item.meta.sub === dayjsToStr(dayjs(dateParam)),
   )?.meta.value;
 
-  const mainPlaceFullName = studyVoteData?.find((par) => par?.place._id === myVote?.place)?.place
-    .fullname;
+  const mainPlaceFullName = studyVoteDataAll?.[0]?.participations?.find(
+    (par) => par?.place._id === myVote?.place,
+  )?.place.fullname;
 
   useEffect(() => {
     if (studyDateStatus !== "today" || !studyVoteData) return;
@@ -122,9 +120,13 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
           imageUrl: placeProps.image,
           text: placeProps.fullname,
           func: () => {
+            const id = par.place._id;
+            if (studyDateStatus === "today") {
+              setMyVote((old) => ({ ...old, place: id }));
+              return;
+            }
             const voteMainId = myVote?.place;
             const voteSubIdArr = myVote?.subPlace;
-            const id = par.place._id;
             const { place, subPlace } = selectStudyPlace(id, voteMainId, voteSubIdArr);
             if (!voteMainId && voteSubIdArr?.length === 0) {
               const participations = studyVoteDataAll[0].participations;
@@ -166,13 +168,7 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
       toast("error", "누락된 정보가 있습니다.");
       return;
     }
-    const findPlace = studyVoteData?.find((par) => par.place._id === myVote.place);
-    if (findPlace.status === "dismissed") {
-      await openFree(myVote?.place);
-      setTimeout(() => {
-        patchAttend(myVote);
-      }, 500);
-    } else patchAttend(myVote);
+    patchAttend(myVote);
   };
 
   const handlePlaceButton = (type: "select" | "complete") => {
@@ -190,7 +186,7 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
     main: {
       text: "투표 완료",
       func: handleVote,
-      isLoading: isLoading || isLoading2,
+      isLoading: isLoading,
     },
   };
 

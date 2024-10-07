@@ -68,13 +68,16 @@ export const useStudyOpenFreeMutation = (date: string, options?: MutationOptions
     options,
   );
 
-export const useStudyAttendCheckMutation = (date: string, options?: MutationOptions<string>) =>
-  useMutation<void, AxiosError, string>(
-    (memo) =>
-      requestServer<{ memo: string }>({
+export const useStudyAttendCheckMutation = (
+  date: string,
+  options?: MutationOptions<{ memo: string; endHour: Dayjs }>,
+) =>
+  useMutation<void, AxiosError, { memo: string; endHour: Dayjs }>(
+    ({ memo, endHour }) =>
+      requestServer<{ memo: string; endHour: Dayjs }>({
         method: "patch",
         url: `vote/${date}/arrived`,
-        body: { memo },
+        body: { memo, endHour },
       }),
     options,
   );

@@ -20,6 +20,7 @@ import {
 } from "../../../constants/serviceConstants/pointSystemConstants";
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
+import { useImageUploadMutation } from "../../../hooks/image/mutations";
 import { useRealtimeAttendMutation } from "../../../hooks/realtime/mutations";
 import { useStudyAttendCheckMutation } from "../../../hooks/study/mutations";
 import {
@@ -32,6 +33,7 @@ import { getMyStudyVoteInfo } from "../../../libs/study/getMyStudy";
 import { getRandomAlphabet } from "../../../libs/userEventLibs/collection";
 import { myStudyInfoState, studyAttendInfoState } from "../../../recoils/studyRecoils";
 import { transferAlphabetState } from "../../../recoils/transferRecoils";
+import { convertTimeStringToDayjs } from "../../../utils/convertUtils/convertTypes";
 import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
 import { isPWA } from "../../../utils/validationUtils";
 
@@ -82,6 +84,15 @@ function Configuration() {
   });
 
   const { mutate } = useRealtimeAttendMutation();
+  const { mutate: imageUpload } = useImageUploadMutation({
+    onSuccess() {
+      resetStudy();
+    },
+    onError(err) {
+      console.error(err);
+      toast("error", "이미지 업로드에 실패했습니다.");
+    },
+  });
 
   const getRandomAlphabetOrNone = () => {
     const alphabet = getRandomAlphabet(20);
@@ -117,7 +128,7 @@ function Configuration() {
     currentDayjs = currentDayjs.add(30, "m");
     if (currentDayjs.date() !== dayjs().date()) break;
   }
-  console.log(3434);
+  console.log(3434, convertTimeStringToDayjs(endTime));
 
   const formData = new FormData();
 
@@ -125,9 +136,9 @@ function Configuration() {
     console.log(studyAttendInfo);
     // setStudyAttendInfo(null);
 
-    if (myStudy) {
+    if (false) {
       setIsChecking(true);
-      handleArrived(attendMessage);
+      handleArrived({ memo: attendMessage, endHour: convertTimeStringToDayjs(endTime) });
       setTimeout(() => {
         setIsChecking(false);
       }, 2000);

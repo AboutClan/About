@@ -12,7 +12,11 @@ import ImageUploadInput from "../../../components/molecules/ImageUploadInput";
 import LocationSearch from "../../../components/organisms/location/LocationSearch";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { getMyStudyVoteInfo } from "../../../libs/study/getMyStudy";
-import { myStudyInfoState, studyAttendInfoState } from "../../../recoils/studyRecoils";
+import {
+  myRealStudyInfoState,
+  myStudyInfoState,
+  studyAttendInfoState,
+} from "../../../recoils/studyRecoils";
 import { KakaoLocationProps } from "../../../types/externals/kakaoLocationSearch";
 
 function Certification() {
@@ -27,6 +31,7 @@ function Certification() {
   const [studyAttendInfo, setStudyAttendInfo] = useRecoilState(studyAttendInfoState);
 
   const myStudyInfo = useRecoilValue(myStudyInfoState);
+  const myRealStudyInfo = useRecoilValue(myRealStudyInfoState);
   const myStudy = getMyStudyVoteInfo(myStudyInfo, session?.user.uid);
 
   useEffect(() => {
@@ -73,9 +78,14 @@ function Certification() {
           <PageIntro main={{ first: "출석 인증하기" }} sub="스터디 출석을 인증해 보세요" />
           <ImageUploadInput setImageUrl={setImage} />
           <Box mb={3}>
-            <SectionTitle text="현재 장소" />
+            <SectionTitle text="현재 장소" isActive={!myStudy && !myRealStudyInfo} />
           </Box>
-          <LocationSearch info={placeInfo} setInfo={setPlaceInfo} hasInitialValue />
+          <LocationSearch
+            info={placeInfo}
+            setInfo={setPlaceInfo}
+            isActive={!myStudy && !myRealStudyInfo}
+            hasInitialValue
+          />
         </Slide>
       </Box>
       <BottomNav url="/vote/attend/configuration" onClick={handleBottomNav} />

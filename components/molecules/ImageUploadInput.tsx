@@ -54,9 +54,11 @@ export default function ImageUploadInput({ setImageUrl: changeImage }: IImageUpl
             <Image
               src={imageUrl}
               alt="Image Preview"
-              layout="fill"
-              objectFit="cover" // 이미지를 자를 때 비율을 유지하며 박스에 맞춤
-              objectPosition="center" // 이미지를 중앙에서 자르도록 설정
+              fill
+              style={{
+                objectFit: "cover", // 여기에 스타일로 objectFit 적용
+                objectPosition: "center", // 중앙 정렬
+              }}
             />
           </Box>
         )}

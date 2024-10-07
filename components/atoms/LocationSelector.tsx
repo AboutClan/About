@@ -71,11 +71,9 @@ export default function LocationSelector({
         }}
       >
         {options.map((option, idx) => (
-          <>
-            <option key={idx} value={option}>
-              {LOCATION_TO_FULLNAME[option]}
-            </option>
-          </>
+          <option key={idx} value={option}>
+            {LOCATION_TO_FULLNAME[option]}
+          </option>
         ))}
       </Select>
     </div>
