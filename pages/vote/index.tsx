@@ -9,6 +9,7 @@ import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
 
 import Avatar from "../../components/atoms/Avatar";
 import CurrentLocationBtn from "../../components/atoms/CurrentLocationBtn";
+import { Input } from "../../components/atoms/Input";
 import LocationSelector from "../../components/atoms/LocationSelector";
 import Selector from "../../components/atoms/Selector";
 import Header from "../../components/layouts/Header";
@@ -18,18 +19,20 @@ import NewTwoButtonRow from "../../components/molecules/NewTwoButtonRow";
 import BottomDrawerLg from "../../components/organisms/drawer/BottomDrawerLg";
 import VoteMap from "../../components/organisms/VoteMap";
 import { LOCATION_OPEN } from "../../constants/location";
-import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
+import { STUDY_COMMENT_ARR } from "../../constants/settingValue/comment";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { isMember } from "../../libs/backend/authUtils";
-import { getFirstComment, getStudyTime } from "../../libs/study/getStudyTime";
+import { getStudyTime } from "../../libs/study/getStudyTime";
 import { getCurrentLocationIcon, getStudyIcon } from "../../libs/study/getStudyVoteIcon";
 import { getLocationCenterDot } from "../../libs/study/getStudyVoteMap";
+import { ModalLayout } from "../../modals/Modals";
 import RealStudyBottomNav from "../../pageTemplates/vote/RealStudyBottomNav";
 import VotePreComponent from "../../pageTemplates/vote/VotePreComponent";
 import { myRealStudyInfoState, myStudyInfoState } from "../../recoils/studyRecoils";
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
+import { DispatchType } from "../../types/hooks/reactTypes";
 import {
   IParticipation,
   IPlace,
@@ -59,6 +62,7 @@ interface DetailInfoProps {
     text: string;
   };
   isMember: boolean;
+  isPrivate: boolean;
 }
 
 export default function StudyVoteMap() {
@@ -96,7 +100,7 @@ export default function StudyVoteMap() {
 
   const { data: userInfo } = useUserInfoQuery();
   const { data: studyVoteOne } = useStudyVoteQuery(dateValue, "전체", false, false, {
-    enabled: !!locationValue && !!dateValue,
+    enabled: !!dateValue,
   });
 
   const mainLocation = userInfo?.locationDetail;
@@ -111,7 +115,7 @@ export default function StudyVoteMap() {
   useEffect(() => {
     const lat = myStudy?.place?.latitude || myRealStudy?.place?.lat;
     const lon = myStudy?.place?.longitude || myRealStudy?.place?.lon;
-    console.log(myStudy, myRealStudy, lat, lon);
+
     if (lat && lon) {
       newSearchParams.set("lat", lat + "");
       newSearchParams.set("lon", lon + "");
@@ -248,12 +252,36 @@ export default function StudyVoteMap() {
     if (!id || !studyVoteData) return;
     const findStudy = studyVoteData.find((par) => par.place._id === id);
     const findRealStudy = realTimeUsers.find((par) => par._id === id);
+    console.log(234, findStudy, findRealStudy, realTimeUsers);
     const realStudyAttendance = realTimeUsers?.filter(
-      (real) => real.place.text === findRealStudy.place.text,
+      (real) => real.place.text === findRealStudy?.place.text,
     );
 
     if (studyCategoryTab === "실시간 스터디") {
+      const myStudy =
+        findStudy?.attendences?.some((who) => who.user.uid === userInfo?.uid) ||
+        realStudyAttendance?.some((who) => who.user.uid === userInfo?.uid);
+
+      const sortedCommentUserArr = findStudy
+        ? findStudy.attendences?.sort((a, b) => {
+            const aTime = dayjs(a?.comment?.updatedAt);
+            const bTime = dayjs(b?.comment?.updatedAt);
+            if (aTime.isBefore(bTime)) return -1;
+            else if (aTime.isAfter(bTime)) return 1;
+            return 0;
+          })
+        : realStudyAttendance?.sort((a, b) => {
+            const aTime = dayjs(a?.comment?.updatedAt);
+            const bTime = dayjs(b?.comment?.updatedAt);
+            if (aTime.isBefore(bTime)) return -1;
+            else if (aTime.isAfter(bTime)) return 1;
+            return 0;
+          });
+
+      const commentUser = sortedCommentUserArr?.[0]?.user;
+      console.log(5, commentUser);
       setDetailInfo({
+        isPrivate: !!findRealStudy,
         title: findStudy?.place?.fullname || findRealStudy?.place?.text,
         id,
         time: getStudyTime(findStudy?.attendences) || {
@@ -264,11 +292,13 @@ export default function StudyVoteMap() {
         image: findStudy?.place?.image || STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length)],
         comment: {
           user: {
-            uid: ABOUT_USER_SUMMARY.uid,
-            avatar: ABOUT_USER_SUMMARY.avatar,
-            userImage: ABOUT_USER_SUMMARY.profileImage,
+            uid: commentUser.uid,
+            avatar: commentUser.avatar,
+            userImage: commentUser.profileImage,
           },
-          text: getFirstComment(findStudy?.attendences),
+          text:
+            sortedCommentUserArr?.[0]?.comment?.text ||
+            STUDY_COMMENT_ARR[getRandomIdx(STUDY_COMMENT_ARR.length - 1)],
         },
         isMember:
           findStudy?.attendences?.some((who) => who.user.uid === userInfo.uid) ||
@@ -363,65 +393,103 @@ export default function StudyVoteMap() {
   );
 }
 
-function DetailDrawer({ detailInfo, setDetailInfo }) {
-  const onClick = (type: "vote" | "comment") => {};
+function DetailDrawer({
+  detailInfo,
+  setDetailInfo,
+}: {
+  detailInfo: DetailInfoProps;
+  setDetailInfo: DispatchType<DetailInfoProps>;
+}) {
+  console.log(13, detailInfo);
+
+  const [isCommentModal, setIsCommentModal] = useState(false);
+  const [commentValue, setCommentValue] = useState(detailInfo?.comment?.text);
+
+  const onClick = (type: "vote" | "comment") => {
+    if (type === "comment") {
+      setIsCommentModal(true);
+    }
+  };
 
   return (
-    <BottomDrawerLg height={185} setIsModal={() => setDetailInfo(null)}>
-      <Flex direction="column" w="100%">
-        <Flex justifyContent="space-between" mb={4}>
-          <Flex direction="column">
-            <Box fontSize="18px" fontWeight={600}>
-              {detailInfo.title}
+    <>
+      <BottomDrawerLg height={185} setIsModal={() => setDetailInfo(null)}>
+        <Flex direction="column" w="100%">
+          <Flex justifyContent="space-between" mb={4}>
+            <Flex direction="column">
+              <Box fontSize="18px" fontWeight={600}>
+                {detailInfo.title}
+              </Box>
+              <Flex align="center" fontSize="11px">
+                <Box mr={1}>
+                  <i className="fa-solid fa-clock fa-xs" style={{ color: "var(--color-mint)" }} />
+                </Box>
+                <Box color="var(--gray-500)">
+                  {detailInfo.time.start} ~ {detailInfo.time.end}
+                </Box>
+                <Box w={3} textAlign="center">
+                  ·
+                </Box>
+                <Box color="var(--color-blue)">{detailInfo.participantCnt}명 참여 중</Box>
+              </Flex>
+              <Flex mt={2} align="center">
+                <Avatar {...detailInfo.comment.user} size="xs" />
+                <Box ml={1} fontSize="12px" color="var(--gray-600)">
+                  {detailInfo.comment.text}
+                </Box>
+              </Flex>
+            </Flex>
+            <Box
+              width="75px"
+              height="75px"
+              position="relative"
+              borderRadius="4px"
+              overflow="hidden"
+            >
+              <Image src={detailInfo.image} fill sizes="80px" alt="studyImage" />
             </Box>
-            <Flex align="center" fontSize="11px">
-              <Box mr={1}>
-                <i className="fa-solid fa-clock fa-xs" style={{ color: "var(--color-mint)" }} />
-              </Box>
-              <Box color="var(--gray-500)">
-                {detailInfo.time.start} ~ {detailInfo.time.end}
-              </Box>
-              <Box w={3} textAlign="center">
-                ·
-              </Box>
-              <Box color="var(--color-blue)">{detailInfo.participantCnt}명 참여 중</Box>
-            </Flex>
-            <Flex mt={2} align="center">
-              <Avatar {...detailInfo.comment.user} size="xs" />
-              <Box ml={1} fontSize="12px" color="var(--gray-600)">
-                {detailInfo.comment.text}
-              </Box>
-            </Flex>
           </Flex>
-          <Box width="75px" height="75px" position="relative" borderRadius="4px" overflow="hidden">
-            <Image src={detailInfo.image} fill sizes="80px" alt="studyImage" />
+          <Box py={2}>
+            <NewTwoButtonRow
+              leftProps={{
+                icon: (
+                  <i className="fa-solid fa-circle-info" style={{ color: "var(--gray-400)" }} />
+                ),
+                children: (
+                  <Link
+                    href={`/study/${detailInfo.id}/${dayjsToStr(dayjs())}?private=${detailInfo.isPrivate ? "on" : "off"}`}
+                  >
+                    자세히 보기
+                  </Link>
+                ),
+              }}
+              rightProps={{
+                icon: isMember ? (
+                  <i className="fa-solid fa-comment-quote fa-flip-horizontal" />
+                ) : (
+                  <i className="fa-solid fa-user-plus" style={{ color: "#CCF3F0" }} />
+                ),
+
+                children: (
+                  <div onClick={() => onClick(isMember ? "comment" : "vote")}>
+                    {isMember ? "한줄 코멘트 변경" : "스터디 합류"}
+                  </div>
+                ),
+              }}
+            />
           </Box>
         </Flex>
-        <Box py={2}>
-          <NewTwoButtonRow
-            leftProps={{
-              icon: <i className="fa-solid fa-circle-info" style={{ color: "var(--gray-400)" }} />,
-              children: (
-                <Link href={`/study/${detailInfo.id}/${dayjsToStr(dayjs())}`}>자세히 보기</Link>
-              ),
-            }}
-            rightProps={{
-              icon: isMember ? (
-                <i className="fa-solid fa-comment-quote fa-flip-horizontal" />
-              ) : (
-                <i className="fa-solid fa-user-plus" style={{ color: "#CCF3F0" }} />
-              ),
-
-              children: (
-                <div onClick={() => onClick(isMember ? "comment" : "vote")}>
-                  {isMember ? "한줄 코멘트 변경" : "스터디 합류"}
-                </div>
-              ),
-            }}
-          />
-        </Box>
-      </Flex>
-    </BottomDrawerLg>
+      </BottomDrawerLg>
+      {isCommentModal && (
+        <ModalLayout
+          footerOptions={{ main: { text: "작성 완료" } }}
+          title="코멘트 작성"
+          setIsModal={setIsCommentModal}
+        >
+          <Input value={commentValue} onChange={(e) => setCommentValue(e.target.value)} />
+        </ModalLayout>
+      )}
+    </>
   );
 }
 

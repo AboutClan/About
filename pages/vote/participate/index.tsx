@@ -1,6 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import PageIntro from "../../../components/atoms/PageIntro";
@@ -12,24 +13,45 @@ import { IImageTileData } from "../../../components/molecules/layouts/ImageTileF
 import ImageTileGridLayout from "../../../components/molecules/layouts/ImageTitleGridLayout";
 import StudyVoteDrawer from "../../../components/services/studyVote/StudyVoteDrawer";
 import { LOCATION_OPEN } from "../../../constants/location";
-import { useToast } from "../../../hooks/custom/CustomToast";
+import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
+import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
+import { useStudyParticipationMutation } from "../../../hooks/study/mutations";
 import { useStudyVoteQuery } from "../../../hooks/study/queries";
+import { IStudyVoteTime } from "../../../types/models/studyTypes/studyInterActions";
 import { Location, LocationEn } from "../../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
 
 function Participate() {
+  const router = useRouter();
   const toast = useToast();
+  const typeToast = useTypeToast();
   const searchParams = useSearchParams();
+  const resetStudy = useResetStudyQuery();
+  const newSearchParams = new URLSearchParams(searchParams);
+
   const locationParam = searchParams.get("location") as LocationEn;
   const dateParam = searchParams.get("date");
 
   const [location, setLocation] = useState<Location>();
   const [placeId, setPlaceId] = useState<string>();
   const [imageDataArr, setImageDataArr] = useState<IImageTileData[]>();
-  const [isStudyVoteDrawer, setIsStudyVoteDrawer] = useState(false);
+  const [isVoteDrawer, setIsVoteDrawer] = useState(false);
 
   const { data: studyVoteData } = useStudyVoteQuery(dateParam, location, false, false, {
     enabled: !!dateParam && !!location,
+  });
+
+  const participations = studyVoteData?.[0]?.participations;
+
+  const { mutate, isLoading } = useStudyParticipationMutation(dayjs(), "post", {
+    onSuccess() {
+      typeToast("vote");
+      resetStudy();
+      const myPlace = participations.find((props) => props.place._id === placeId).place;
+      newSearchParams.set("lat", myPlace.latitude + "");
+      newSearchParams.set("lon", myPlace.longitude + "");
+      router.push(`/vote?${newSearchParams.toString()}`);
+    },
   });
 
   useEffect(() => {
@@ -40,7 +62,7 @@ function Participate() {
     if (!studyVoteData) return;
 
     setImageDataArr(
-      studyVoteData?.[0]?.participations?.map((par) => {
+      participations.map((par) => {
         const place = par.place;
         return {
           imageUrl: place.image,
@@ -59,7 +81,14 @@ function Participate() {
       toast("warning", "장소를 입력해 주세요");
       return;
     }
-    setIsStudyVoteDrawer(true);
+    setIsVoteDrawer(true);
+  };
+
+  const handleSubmit = (voteTime: IStudyVoteTime) => {
+    mutate({
+      place: placeId,
+      ...voteTime,
+    });
   };
 
   return (
@@ -109,12 +138,12 @@ function Participate() {
         </Flex>
       </Slide>
       <BottomNav text="스터디 신청" onClick={handleBottomNav} />
-      {isStudyVoteDrawer && (
+      {isVoteDrawer && (
         <StudyVoteDrawer
-          locationEn={locationParam}
-          place={placeId}
-          dateParam={dateParam}
-          setIsModal={() => setIsStudyVoteDrawer(false)}
+          hasPlace
+          isLoading={isLoading}
+          handleSubmit={handleSubmit}
+          setIsModal={setIsVoteDrawer}
         />
       )}
     </>

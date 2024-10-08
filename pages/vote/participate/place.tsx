@@ -36,8 +36,8 @@ function Place() {
     onSuccess() {
       typeToast("vote");
       resetStudy();
-      newSearchParams.append("lat", placeInfo.y);
-      newSearchParams.append("lon", placeInfo.x);
+      newSearchParams.set("lat", placeInfo.y);
+      newSearchParams.set("lon", placeInfo.x);
       router.push(`/vote?${newSearchParams.toString()}`);
     },
   });

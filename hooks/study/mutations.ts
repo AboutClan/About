@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { useMutation } from "react-query";
 
 import { requestServer } from "../../libs/methodHelpers";
@@ -71,14 +71,13 @@ export const useStudyOpenFreeMutation = (date: string, options?: MutationOptions
   );
 
 export const useStudyAttendCheckMutation = (
-  date: string,
   options?: MutationOptions<{ memo: string; endHour: Dayjs }, { data: CollectionProps }>,
 ) =>
   useMutation<{ data: CollectionProps }, AxiosError, { memo: string; endHour: Dayjs }>(
     ({ memo, endHour }) =>
       requestServer<{ memo: string; endHour: Dayjs }, { data: CollectionProps }>({
         method: "patch",
-        url: `vote/${date}/arrived`,
+        url: `vote/${dayjsToStr(dayjs())}/arrived`,
         body: { memo, endHour },
       }),
     options,

@@ -29,6 +29,10 @@ export interface IAttendance {
   arrived?: Date;
   firstChoice: boolean;
   memo: string;
+  comment: {
+    text: string;
+    updatedAt: string;
+  };
 }
 
 export type StudyUserStatus = "pending" | "solo" | "open" | "completed";
@@ -57,7 +61,10 @@ export interface RealTimeInfoProps extends RealTimeBasicVoteProps {
   arrived?: string;
   image?: Blob | string;
   memo?: string;
-  comment?: string;
+  comment?: {
+    text: string;
+    updatedAt: string;
+  };
   _id: string;
 }
 
