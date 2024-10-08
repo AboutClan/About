@@ -101,7 +101,6 @@ export default function Page() {
               imageUrl={place.coverImage}
               brand={place.brand}
             />
-
             {!isPrivateStudy && (
               <>
                 <StudyOverview

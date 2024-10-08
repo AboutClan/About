@@ -93,6 +93,15 @@ export const useStudyAbsentMutation = (date: Dayjs, options?: MutationOptions<st
       }),
     options,
   );
+export const useDeleteMyVoteMutation = (date: Dayjs, options?: MutationOptions<void>) =>
+  useMutation<void, AxiosError, void>(
+    () =>
+      requestServer<void>({
+        method: "delete",
+        url: `vote/${dayjsToStr(date)}/mine`,
+      }),
+    options,
+  );
 
 export const useStudyResultDecideMutation = (date: string, options?: MutationOptions<void>) =>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -149,6 +158,16 @@ export const useStudyStatusMutation = (options?: MutationOptions<StudyStatusPara
         method: "post",
         url: `place/status`,
         body: params,
+      }),
+    options,
+  );
+export const useStudyCommentMutation = (date: Dayjs, options?: MutationOptions<string>) =>
+  useMutation<void, AxiosError, string>(
+    (params) =>
+      requestServer<{ comment: string }>({
+        method: "patch",
+        url: `vote/${dayjsToStr(date)}/comment`,
+        body: { comment: params },
       }),
     options,
   );

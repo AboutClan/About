@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -44,13 +44,16 @@ import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
 
 function Configuration() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const newSearchParams = new URLSearchParams(searchParams);
   const { data: session } = useSession();
   const toast = useToast();
   const typeToast = useTypeToast();
   const resetStudy = useResetStudyQuery();
   const [endTime, setEndTime] = useState(
-    dayjsToFormat(dayjs().startOf("hour").add(3, "hour"), "HH:mm"),
+    dayjs().hour() < 21 ? dayjsToFormat(dayjs().startOf("hour").add(3, "hour"), "HH:mm") : "23:30",
   );
+
   const textareaRef = useRef(null);
   const [otherPermission, setOtherPermission] = useState<"허용" | "비허용">("허용");
   const [attendMessage, setAttendMessage] = useState("");
@@ -65,14 +68,18 @@ function Configuration() {
   const { mutate: getAboutPoint } = useAboutPointMutation();
   const { mutate: getScore } = useScoreMutation();
   const { mutate: getDeposit } = usePointSystemMutation("deposit");
-  const { mutate: handleArrived } = useStudyAttendCheckMutation(dayjsToStr(dayjs()), {
+  const { mutate: handleArrived } = useStudyAttendCheckMutation({
     onSuccess(data) {
       handleAttendSuccess(data.data);
     },
     onError: () => typeToast("error"),
   });
 
-  const { mutate: attendRealTimeStudy } = useRealTimeAttendMutation();
+  const { mutate: attendRealTimeStudy } = useRealTimeAttendMutation({
+    onSuccess() {
+      setStudyAttendInfo(null);
+    },
+  });
 
   const { mutate: imageUpload } = useImageUploadMutation({
     onSuccess() {
@@ -105,7 +112,7 @@ function Configuration() {
     setTransferCollection({ alphabet: collection.alphabet, stamps: collection.stamps });
     saveTogetherMembers();
     resetStudy();
-
+    setStudyAttendInfo(null);
     const pointObj = POINT_SYSTEM_PLUS.STUDY_ATTEND_CHECK;
     if (myStudy?.status === "open") {
       getAboutPoint(pointObj);
@@ -120,6 +127,8 @@ function Configuration() {
       getScore(pointObj);
       toast("success", `출석 완료! ${pointObj.value}점을 획득했습니다`);
     }
+    newSearchParams.set("category", "votePlace");
+    router.push(`/vote?${newSearchParams.toString()}`);
   };
 
   const saveTogetherMembers = () => {
@@ -137,17 +146,17 @@ function Configuration() {
       },
     };
     localStorage.setItem(STUDY_RECORD_INFO, JSON.stringify(record));
-    router.push("/home");
   };
 
   const formData = new FormData();
-  console.log(myStudy, myRealStudy, studyAttendInfo);
+ 
   const handleSubmit = () => {
-    // setStudyAttendInfo(null);
-
     if (myStudy) {
       setIsChecking(true);
       handleArrived({ memo: attendMessage, endHour: convertTimeStringToDayjs(endTime) });
+      formData.append("image", studyAttendInfo.image);
+      formData.append("path", "studyAttend");
+      imageUpload(formData);
       setTimeout(() => {
         setIsChecking(false);
       }, 2000);

@@ -36,8 +36,7 @@ function Certification() {
   const myStudyInfo = useRecoilValue(myStudyInfoState);
   const myRealStudyInfo = useRecoilValue(myRealStudyInfoState);
   const myStudy = getMyStudyVoteInfo(myStudyInfo, session?.user.uid);
-  console.log(52, myRealStudyInfo);
-
+ 
   useEffect(() => {
     if (studyAttendInfo) {
       const { text, lat, lon } = studyAttendInfo.place;
@@ -70,7 +69,7 @@ function Certification() {
       e.preventDefault();
       return;
     }
-    console.log(111, placeInfo);
+    
     setStudyAttendInfo((old) => ({
       ...old,
       image,

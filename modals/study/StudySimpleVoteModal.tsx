@@ -109,10 +109,10 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
       if (recommendationPlace) {
         setMyVote((old) => ({ ...old, place: recommendationPlace.place._id }));
       }
-      console.log("re", recommendationPlace);
+      
     }
   }, [recommendationPlace, studyVoteData, studyDateStatus]);
-  console.log(2333, myVote);
+ 
   useEffect(() => {
     if (!studyVoteDataAll) return;
     setImageDataArr(

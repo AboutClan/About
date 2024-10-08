@@ -32,8 +32,9 @@ export default function UserTimeBoard({ participants, headerText }: ITimeBoard) 
 }
 
 const UserTimeBoardContainer = styled.div`
-  margin: 16px auto;
-  width: 344px;
+  padding: 16px;
+  width: 376px;
+  background-color: var(--gray-100);
 `;
 
 const BoardContainer = styled.div<{ participants: ITimeBoardParticipant[] }>`

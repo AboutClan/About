@@ -1,6 +1,7 @@
 import { Dayjs } from "dayjs";
 
 import { ActiveLocation } from "../../services/locationTypes";
+import { ITimeStamps } from "../../utils/timeAndDate";
 import { IUserSummary, UserSimpleInfoProps } from "../userTypes/userInfoTypes";
 import { IAbsence } from "./studyInterActions";
 
@@ -18,7 +19,7 @@ export interface IParticipation {
   status: StudyStatus;
 }
 
-export interface IAttendance {
+export interface IAttendance extends ITimeStamps {
   user: IUserSummary;
   time: {
     start: Dayjs;
@@ -29,10 +30,7 @@ export interface IAttendance {
   arrived?: Date;
   firstChoice: boolean;
   memo: string;
-  comment: {
-    text: string;
-    updatedAt: string;
-  };
+  comment: string;
 }
 
 export type StudyUserStatus = "pending" | "solo" | "open" | "completed";
@@ -55,16 +53,13 @@ export interface RealTimeBasicAttendanceProps {
   status: "solo";
 }
 
-export interface RealTimeInfoProps extends RealTimeBasicVoteProps {
+export interface RealTimeInfoProps extends RealTimeBasicVoteProps, ITimeStamps {
   user: UserSimpleInfoProps;
   status: StudyUserStatus;
   arrived?: string;
   image?: Blob | string;
   memo?: string;
-  comment?: {
-    text: string;
-    updatedAt: string;
-  };
+  comment?: string;
   _id: string;
 }
 

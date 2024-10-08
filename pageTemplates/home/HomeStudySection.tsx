@@ -72,7 +72,7 @@ function HomeStudySection() {
       !!locationKr &&
       LOCATION_OPEN.includes(locationKr as ActiveLocation),
   });
-  console.log(234, studyVoteData);
+
   useEffect(() => {
     if (!selectedDate) setSelectedDate(date);
     setStudyDateStatus(getStudyDateStatus(date));

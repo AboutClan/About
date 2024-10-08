@@ -22,7 +22,7 @@ export default function HomeGatherCol() {
   const location = searchParams.get("location");
   const tab = searchParams.get("tab") as "recommendation" | "gather";
   const [cardDataArr, setCardDataArr] = useState<IPostThumbnailCard[]>([]);
-  console.log(54, tab);
+ 
   const setSlideDirection = useSetRecoilState(slideDirectionState);
   const setTransferGather = useSetRecoilState(transferGatherDataState);
 

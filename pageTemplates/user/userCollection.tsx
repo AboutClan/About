@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 import { AlphabetIcon } from "../../components/atoms/Icons/AlphabetIcon";
 import { useCollectionAlphabetQuery } from "../../hooks/user/sub/collection/queries";
-import UserCollectionCollectionModal from "../../modals/user/collection/UserCollectionCollectionModal";
+import UserCollectionModal from "../../modals/user/collection/UserCollectionAlphabetModal";
 
 export default function UserCollection() {
   const { data: session } = useSession();
@@ -44,7 +44,7 @@ export default function UserCollection() {
           <span>컬렉션 수집 보상</span>
         </AlphabetQNABtnContents>
       </AlphabetQNABtn>
-      {isCollectionModal && <UserCollectionCollectionModal setIsModal={setIsCollectionModal} />}
+      {isCollectionModal && <UserCollectionModal setIsModal={setIsCollectionModal} />}
     </Flex>
   );
 }

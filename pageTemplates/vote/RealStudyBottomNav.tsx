@@ -29,7 +29,13 @@ function RealStudyBottomNav({ isAleadyAttend }: RealStudyBottomNavProps) {
         rightProps={{
           icon: <i className="fa-solid fa-badge-check" style={{ color: "#CCF3F0" }} />,
           children: !isAleadyAttend ? (
-            <Link href={isOpenStudy ? "vote/attend/configuration" : "/vote/attend/certification"}>
+            <Link
+              href={
+                isOpenStudy
+                  ? `/vote/attend/configuration?${searchParams.toString()}`
+                  : `/vote/attend/certification?${searchParams.toString()}`
+              }
+            >
               실시간 출석체크
             </Link>
           ) : (

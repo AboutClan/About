@@ -20,7 +20,8 @@ import BottomDrawerLg from "../../components/organisms/drawer/BottomDrawerLg";
 import VoteMap from "../../components/organisms/VoteMap";
 import { LOCATION_OPEN } from "../../constants/location";
 import { STUDY_COMMENT_ARR } from "../../constants/settingValue/comment";
-import { useToast } from "../../hooks/custom/CustomToast";
+import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
+import { useDeleteMyVoteMutation, useStudyCommentMutation } from "../../hooks/study/mutations";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { isMember } from "../../libs/backend/authUtils";
@@ -71,8 +72,9 @@ export default function StudyVoteMap() {
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
   const dateParam = searchParams.get("date");
-  const latParam = searchParams.get("lat");
-  const lonParam = searchParams.get("lon");
+  const categoryParam = searchParams.get("category") as "currentPlace" | "mainPlace" | "votePlace";
+  // const latParam = searchParams.get("lat");
+  // const lonParam = searchParams.get("lon");
 
   const locationParamKr = convertLocationLangTo(
     searchParams.get("location") as LocationEn,
@@ -113,29 +115,33 @@ export default function StudyVoteMap() {
   }, [locationParamKr, dateParam]);
 
   useEffect(() => {
-    const lat = myStudy?.place?.latitude || myRealStudy?.place?.lat;
-    const lon = myStudy?.place?.longitude || myRealStudy?.place?.lon;
+    switch (categoryParam) {
+      case "currentPlace":
+        setLocationFilterType("현재 위치");
+        setIsLocationRefetch(true);
 
-    if (lat && lon) {
-      newSearchParams.set("lat", lat + "");
-      newSearchParams.set("lon", lon + "");
-      router.replace(`/vote?${newSearchParams.toString()}`);
+        break;
+      case "mainPlace":
+        setLocationFilterType("주 활동 장소");
+        setCenterLocation({ lat: mainLocation?.lat, lon: mainLocation?.lon });
+
+        break;
+      case "votePlace":
+        setLocationFilterType("내 투표 장소");
+        setCenterToVotePlace(myStudy, myRealStudy);
+        break;
     }
-  }, [myStudy, myRealStudy]);
+  }, [categoryParam]);
 
   useEffect(() => {
     newSearchParams.set("location", convertLocationLangTo(locationValue, "en"));
     newSearchParams.set("date", dateValue);
     router.replace(`/vote?${newSearchParams.toString()}`);
-    if (studyCategoryTab === "실시간 스터디") {
-      if (latParam && lonParam) {
-        setCenterLocation({ lat: +latParam, lon: +lonParam });
-      }
-    }
+
     if (studyCategoryTab === "내일의 스터디") {
       setCenterLocation(getLocationCenterDot()[locationValue] || null);
     }
-  }, [locationValue, dateValue, latParam, lonParam]);
+  }, [locationValue, dateValue]);
 
   useEffect(() => {
     if (!studyVoteOne) return;
@@ -149,8 +155,10 @@ export default function StudyVoteMap() {
 
     const tempRealStudy = realTimeUsers?.find((userProps) => userProps.user.uid === userInfo?.uid);
     setMyStudy(tempStudy);
-
     setMyRealStudy(tempRealStudy);
+    if (studyCategoryTab === "실시간 스터디" && locationFilterType === "내 투표 장소") {
+      setCenterToVotePlace(tempStudy, tempRealStudy);
+    }
   }, [studyVoteOne, userInfo?.uid]);
 
   useEffect(() => {
@@ -159,7 +167,7 @@ export default function StudyVoteMap() {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
         setCurrentLocation({ lat, lon });
-        setCenterLocation({ lat, lon });
+        if (isLocationRefetch || categoryParam !== "votePlace") setCenterLocation({ lat, lon });
         setIsLocationRefetch(false);
       },
       function (error) {
@@ -206,16 +214,21 @@ export default function StudyVoteMap() {
     },
   ];
 
-  const handleCurrentLocation = () => {
-    setLocationFilterType("현재 위치");
-    setIsLocationRefetch(true);
+  const setCenterToVotePlace = (myStudy: IParticipation, myRealStudy: RealTimeInfoProps) => {
+    if (!myStudy && !myRealStudy) return;
+    const lat = myStudy?.place?.latitude || myRealStudy?.place?.lat;
+    const lon = myStudy?.place?.longitude || myRealStudy?.place?.lon;
+
+    setCenterLocation({ lat, lon });
   };
 
   const realButtonOptionsArr: ButtonOptionsProps[] = [
     {
       text: "현재 위치",
       func: () => {
-        handleCurrentLocation();
+        setLocationFilterType("현재 위치");
+        newSearchParams.set("category", "currentPlace");
+        router.replace(`/vote?${newSearchParams.toString()}`);
       },
     },
     {
@@ -227,19 +240,20 @@ export default function StudyVoteMap() {
         }
 
         setLocationFilterType("주 활동 장소");
-        setCenterLocation({ lat: mainLocation?.lat, lon: mainLocation?.lon });
+        newSearchParams.set("category", "mainPlace");
+        router.replace(`/vote?${newSearchParams.toString()}`);
       },
     },
     {
       text: `내 투표 장소`,
       func: () => {
-        if (!latParam || !lonParam) {
+        if (!myStudy && !myRealStudy) {
           toast("warning", "참여중인 장소가 없습니다.");
           return;
         }
-
+        newSearchParams.set("category", "votePlace");
+        router.replace(`/vote?${newSearchParams.toString()}`);
         setLocationFilterType("내 투표 장소");
-        setCenterLocation({ lat: +latParam, lon: +lonParam });
       },
     },
   ];
@@ -252,7 +266,7 @@ export default function StudyVoteMap() {
     if (!id || !studyVoteData) return;
     const findStudy = studyVoteData.find((par) => par.place._id === id);
     const findRealStudy = realTimeUsers.find((par) => par._id === id);
-    console.log(234, findStudy, findRealStudy, realTimeUsers);
+
     const realStudyAttendance = realTimeUsers?.filter(
       (real) => real.place.text === findRealStudy?.place.text,
     );
@@ -264,22 +278,22 @@ export default function StudyVoteMap() {
 
       const sortedCommentUserArr = findStudy
         ? findStudy.attendences?.sort((a, b) => {
-            const aTime = dayjs(a?.comment?.updatedAt);
-            const bTime = dayjs(b?.comment?.updatedAt);
+            const aTime = dayjs(a?.updatedAt);
+            const bTime = dayjs(b?.updatedAt);
             if (aTime.isBefore(bTime)) return -1;
             else if (aTime.isAfter(bTime)) return 1;
             return 0;
           })
         : realStudyAttendance?.sort((a, b) => {
-            const aTime = dayjs(a?.comment?.updatedAt);
-            const bTime = dayjs(b?.comment?.updatedAt);
+            const aTime = dayjs(a?.updatedAt);
+            const bTime = dayjs(b?.updatedAt);
             if (aTime.isBefore(bTime)) return -1;
             else if (aTime.isAfter(bTime)) return 1;
             return 0;
           });
 
       const commentUser = sortedCommentUserArr?.[0]?.user;
-      console.log(5, commentUser);
+
       setDetailInfo({
         isPrivate: !!findRealStudy,
         title: findStudy?.place?.fullname || findRealStudy?.place?.text,
@@ -297,7 +311,7 @@ export default function StudyVoteMap() {
             userImage: commentUser.profileImage,
           },
           text:
-            sortedCommentUserArr?.[0]?.comment?.text ||
+            sortedCommentUserArr?.[0]?.comment ||
             STUDY_COMMENT_ARR[getRandomIdx(STUDY_COMMENT_ARR.length - 1)],
         },
         isMember:
@@ -311,10 +325,11 @@ export default function StudyVoteMap() {
       setMyVoteInfo((old) => setVotePlaceInfo(myPlace, old));
     }
   };
-
+  const { mutate } = useDeleteMyVoteMutation(dayjs());
   return (
     <>
       <Header title="스터디 투표" isCenter isBorder={false} />
+
       <TabNav selected={studyCategoryTab} tabOptionsArr={tabOptionsArr} isMain />
       <Box
         position="relative"
@@ -336,7 +351,7 @@ export default function StudyVoteMap() {
         >
           {studyCategoryTab === "실시간 스터디" ? (
             <>
-              <CurrentLocationBtn onClick={handleCurrentLocation} />
+              <CurrentLocationBtn onClick={() => setLocationFilterType("현재 위치")} />
               <ButtonGroups
                 buttonOptionsArr={realButtonOptionsArr}
                 size="sm"
@@ -400,15 +415,28 @@ function DetailDrawer({
   detailInfo: DetailInfoProps;
   setDetailInfo: DispatchType<DetailInfoProps>;
 }) {
-  console.log(13, detailInfo);
+  const typeToast = useTypeToast();
+
+  const { mutate } = useStudyCommentMutation(dayjs(), {
+    onSuccess() {
+      typeToast("change");
+      setCommentText(commentValue);
+      setIsCommentModal(false);
+    },
+  });
 
   const [isCommentModal, setIsCommentModal] = useState(false);
   const [commentValue, setCommentValue] = useState(detailInfo?.comment?.text);
+  const [commentText, setCommentText] = useState(detailInfo?.comment?.text);
 
   const onClick = (type: "vote" | "comment") => {
     if (type === "comment") {
       setIsCommentModal(true);
     }
+  };
+
+  const handleComment = () => {
+    mutate(commentValue);
   };
 
   return (
@@ -435,7 +463,7 @@ function DetailDrawer({
               <Flex mt={2} align="center">
                 <Avatar {...detailInfo.comment.user} size="xs" />
                 <Box ml={1} fontSize="12px" color="var(--gray-600)">
-                  {detailInfo.comment.text}
+                  {commentText}
                 </Box>
               </Flex>
             </Flex>
@@ -482,7 +510,7 @@ function DetailDrawer({
       </BottomDrawerLg>
       {isCommentModal && (
         <ModalLayout
-          footerOptions={{ main: { text: "작성 완료" } }}
+          footerOptions={{ main: { text: "작성 완료", func: handleComment } }}
           title="코멘트 작성"
           setIsModal={setIsCommentModal}
         >
@@ -568,7 +596,6 @@ const getMarkersOptions = (
       });
     }
   });
-
   // 그룹화된 결과를 temp에 추가
   placeMap.forEach((value, fullname) => {
     temp.push({
@@ -580,10 +607,8 @@ const getMarkersOptions = (
         anchor: new naver.maps.Point(36, 44),
       },
     });
-
     tempArr.push(fullname); // fullname을 tempArr에 추가
   });
-
   return temp;
 };
 

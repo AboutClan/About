@@ -47,10 +47,8 @@ function Participate() {
     onSuccess() {
       typeToast("vote");
       resetStudy();
-      const myPlace = participations.find((props) => props.place._id === placeId).place;
-      newSearchParams.set("lat", myPlace.latitude + "");
-      newSearchParams.set("lon", myPlace.longitude + "");
-      router.push(`/vote?${newSearchParams.toString()}`);
+
+      router.push(`/vote?${newSearchParams.toString()}&category=votePlace`);
     },
   });
 

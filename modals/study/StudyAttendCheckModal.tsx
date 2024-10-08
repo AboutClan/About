@@ -67,7 +67,7 @@ function StudyAttendCheckModal({ setIsModal }: IModal) {
   const { mutate: getAlphabet } = useAlphabetMutation("get");
   const { mutate: getDeposit } = usePointSystemMutation("deposit");
 
-  const { mutate: handleArrived } = useStudyAttendCheckMutation(date, {
+  const { mutate: handleArrived } = useStudyAttendCheckMutation({
     onSuccess() {
       saveTogetherMembers();
       resetStudy();
