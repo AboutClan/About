@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -11,7 +11,6 @@ import Slide from "../../../components/layouts/PageSlide";
 import ImageUploadInput from "../../../components/molecules/ImageUploadInput";
 import LocationSearch from "../../../components/organisms/location/LocationSearch";
 import { useToast } from "../../../hooks/custom/CustomToast";
-import { useRealtimeAttendMutation } from "../../../hooks/realtime/mutations";
 import { getMyStudyVoteInfo } from "../../../libs/study/getMyStudy";
 import {
   myRealStudyInfoState,
@@ -28,6 +27,9 @@ function Certification() {
     place_name: "",
     road_address_name: "",
   });
+
+  const [imageArr, setImageArr] = useState<string[]>([]);
+  const [imageFormArr, setImageFormArr] = useState<Blob[]>([]);
 
   const [studyAttendInfo, setStudyAttendInfo] = useRecoilState(studyAttendInfoState);
 
@@ -56,14 +58,8 @@ function Certification() {
       setPlaceInfo((old) => ({ ...old, place_name: myStudy?.fullname }));
     }
   }, [myStudyInfo, myRealStudyInfo]);
-  const { mutate } = useRealtimeAttendMutation();
-  const formData = new FormData();
+
   const handleBottomNav = (e) => {
-    formData.append("memo", "test");
-    formData.append("status", "solo");
-    formData.append("image", [image]);
-    mutate(formData);
-    return;
     if (!image) {
       toast("warning", "이미지를 등록해 주세요");
       e.preventDefault();
@@ -74,6 +70,7 @@ function Certification() {
       e.preventDefault();
       return;
     }
+    console.log(111, placeInfo);
     setStudyAttendInfo((old) => ({
       ...old,
       image,
@@ -88,8 +85,23 @@ function Certification() {
         <Slide>
           <PageIntro main={{ first: "출석 인증하기" }} sub="스터디 출석을 인증해 보세요" />
           <ImageUploadInput setImageUrl={setImage} />
+
           <Box mb={3}>
-            <SectionTitle text="현재 장소" isActive={!myStudy && !myRealStudyInfo} />
+            <SectionTitle text="현재 장소" isActive={!myStudy && !myRealStudyInfo}>
+              <Button
+                fontSize="12px"
+                fontWeight={500}
+                size="xs"
+                variant="ghost"
+                height="20px"
+                color="var(--color-blue)"
+                rightIcon={<i className="fa-solid fa-arrows-rotate" />}
+                onClick={() => setPlaceInfo({ place_name: "", road_address_name: "" })}
+                isDisabled={!!(myStudy || myRealStudyInfo)}
+              >
+                초기화
+              </Button>
+            </SectionTitle>
           </Box>
           <LocationSearch
             info={placeInfo}

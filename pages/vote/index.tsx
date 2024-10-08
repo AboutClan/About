@@ -67,6 +67,8 @@ export default function StudyVoteMap() {
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
   const dateParam = searchParams.get("date");
+  const latParam = searchParams.get("lat");
+  const lonParam = searchParams.get("lon");
 
   const locationParamKr = convertLocationLangTo(
     searchParams.get("location") as LocationEn,
@@ -78,9 +80,9 @@ export default function StudyVoteMap() {
   const [currentLocation, setCurrentLocation] = useState<{ lat: number; lon: number }>();
   const [centerLocation, setCenterLocation] = useState<{ lat: number; lon: number }>();
   const [studyCategoryTab, setStudyCategoryTab] = useState<StudyCategoryTab>("실시간 스터디");
-  const [locationFilterType, setLocationFilterType] = useState<"현재 위치" | "주 활동 장소">(
-    "현재 위치",
-  );
+  const [locationFilterType, setLocationFilterType] = useState<
+    "현재 위치" | "주 활동 장소" | "내 투표 장소"
+  >("현재 위치");
   const [myVoteInfo, setMyVoteInfo] = useState<IStudyVoteWithPlace>();
   const [isLocationRefetch, setIsLocationRefetch] = useState(false);
   const [isDrawerFixed, setIsDrawerDown] = useState(true);
@@ -107,13 +109,29 @@ export default function StudyVoteMap() {
   }, [locationParamKr, dateParam]);
 
   useEffect(() => {
+    const lat = myStudy?.place?.latitude || myRealStudy?.place?.lat;
+    const lon = myStudy?.place?.longitude || myRealStudy?.place?.lon;
+    console.log(myStudy, myRealStudy, lat, lon);
+    if (lat && lon) {
+      newSearchParams.set("lat", lat + "");
+      newSearchParams.set("lon", lon + "");
+      router.replace(`/vote?${newSearchParams.toString()}`);
+    }
+  }, [myStudy, myRealStudy]);
+
+  useEffect(() => {
     newSearchParams.set("location", convertLocationLangTo(locationValue, "en"));
     newSearchParams.set("date", dateValue);
     router.replace(`/vote?${newSearchParams.toString()}`);
+    if (studyCategoryTab === "실시간 스터디") {
+      if (latParam && lonParam) {
+        setCenterLocation({ lat: +latParam, lon: +lonParam });
+      }
+    }
     if (studyCategoryTab === "내일의 스터디") {
       setCenterLocation(getLocationCenterDot()[locationValue] || null);
     }
-  }, [locationValue, dateValue]);
+  }, [locationValue, dateValue, latParam, lonParam]);
 
   useEffect(() => {
     if (!studyVoteOne) return;
@@ -206,6 +224,18 @@ export default function StudyVoteMap() {
 
         setLocationFilterType("주 활동 장소");
         setCenterLocation({ lat: mainLocation?.lat, lon: mainLocation?.lon });
+      },
+    },
+    {
+      text: `내 투표 장소`,
+      func: () => {
+        if (!latParam || !lonParam) {
+          toast("warning", "참여중인 장소가 없습니다.");
+          return;
+        }
+
+        setLocationFilterType("내 투표 장소");
+        setCenterLocation({ lat: +latParam, lon: +lonParam });
       },
     },
   ];
@@ -314,7 +344,8 @@ export default function StudyVoteMap() {
       {studyCategoryTab === "실시간 스터디" ? (
         <RealStudyBottomNav
           isAleadyAttend={
-            !!myStudy?.attendences?.find((who) => who?.user.uid === userInfo?.uid)?.arrived
+            !!myStudy?.attendences?.find((who) => who?.user.uid === userInfo?.uid)?.arrived ||
+            !!myRealStudy?.arrived
           }
         />
       ) : (

@@ -34,17 +34,17 @@ export default function ButtonGroups({
             <Button
               mr={idx !== buttonOptionsArr.length - 1 ? "8px" : 0}
               variant={buttonOptions.text === currentValue ? undefined : "outline"}
-              bgColor={buttonOptions.text === currentValue ? "var(--gray-800)" : "white"}
+              bgColor={buttonOptions.text === currentValue ? "var(--gray-800) !important" : "white"}
               color={buttonOptions.text === currentValue ? "white" : "var(--gray-800)"}
               size={size}
               px={size === "sm" ? "16px" : "inherit"}
               rounded={isEllipse ? "2xl" : "md"}
               leftIcon={buttonOptions?.icon}
               fontSize="11px"
-              _focus={{
-                outline: "none",
-                boxShadow: "none",
-              }}
+              // _focus={{
+              //   outline: "none",
+              //   boxShadow: "none",
+              // }}
             >
               {buttonOptions.text}
             </Button>

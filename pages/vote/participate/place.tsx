@@ -7,20 +7,20 @@ import PageIntro from "../../../components/atoms/PageIntro";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
-import { IBottomDrawerLgOptions } from "../../../components/organisms/drawer/BottomDrawerLg";
 import SearchLocation from "../../../components/organisms/SearchLocation";
-import StudyVoteTimeRulletDrawer from "../../../components/services/studyVote/StudyVoteTimeRulletDrawer";
+import StudyVoteDrawer from "../../../components/services/studyVote/StudyVoteDrawer";
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
-import { useToast } from "../../../hooks/custom/CustomToast";
+import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import { useRealtimeVoteMutation } from "../../../hooks/realtime/mutations";
 import { KakaoLocationProps } from "../../../types/externals/kakaoLocationSearch";
 import { IStudyVoteTime } from "../../../types/models/studyTypes/studyInterActions";
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
 dayjs.locale("ko");
 
 function Place() {
+  const typeToast = useTypeToast();
   const searchParams = useSearchParams();
+  const newSearchParams = new URLSearchParams(searchParams);
 
   const router = useRouter();
   const resetStudy = useResetStudyQuery();
@@ -29,13 +29,16 @@ function Place() {
     place_name: "",
     road_address_name: "",
   });
-  const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
+
   const [isVoteDrawer, setIsVoteDrawer] = useState(false);
 
   const { mutate, isLoading } = useRealtimeVoteMutation({
     onSuccess() {
+      typeToast("vote");
       resetStudy();
-      router.push(`/vote?${searchParams.toString()}`);
+      newSearchParams.append("lat", placeInfo.y);
+      newSearchParams.append("lon", placeInfo.x);
+      router.push(`/vote?${newSearchParams.toString()}`);
     },
   });
 
@@ -47,24 +50,24 @@ function Place() {
     setIsVoteDrawer(true);
   };
 
-  const onSubmit = () => {
+  const handleSubmit = (voteTime: IStudyVoteTime) => {
     mutate({
       place: { text: placeInfo.place_name, lat: +placeInfo.y, lon: +placeInfo.x },
       time: { ...voteTime },
     });
   };
 
-  const drawerOptions: IBottomDrawerLgOptions = {
-    header: {
-      title: dayjsToFormat(dayjs(), "M월 D일 ddd요일"),
-      subTitle: "스터디 참여시간을 선택해주세요!",
-    },
-    footer: {
-      buttonText: "신청 완료",
-      onClick: onSubmit,
-      buttonLoading: isLoading,
-    },
-  };
+  // const drawerOptions: IBottomDrawerLgOptions = {
+  //   header: {
+  //     title: dayjsToFormat(dayjs(), "M월 D일 ddd요일"),
+  //     subTitle: "스터디 참여시간을 선택해주세요!",
+  //   },
+  //   footer: {
+  //     buttonText: "신청 완료",
+  //     onClick: handleSubmit,
+  //     buttonLoading: isLoading,
+  //   },
+  // };
 
   return (
     <>
@@ -81,11 +84,19 @@ function Place() {
         </Slide>
       </Box>
       <BottomNav text="스터디 신청" onClick={handleBottomNav} />
-      {isVoteDrawer && (
+      {/* {isVoteDrawer && (
         <StudyVoteTimeRulletDrawer
           setVoteTime={setVoteTime}
           drawerOptions={drawerOptions}
           setIsModal={() => setIsVoteDrawer(false)}
+        />
+      )} */}
+      {isVoteDrawer && (
+        <StudyVoteDrawer
+          hasPlace
+          isLoading={isLoading}
+          handleSubmit={handleSubmit}
+          setIsModal={setIsVoteDrawer}
         />
       )}
     </>

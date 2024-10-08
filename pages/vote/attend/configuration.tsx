@@ -22,7 +22,7 @@ import {
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import { useImageUploadMutation } from "../../../hooks/image/mutations";
-import { useRealtimeAttendMutation } from "../../../hooks/realtime/mutations";
+import { useRealTimeAttendMutation } from "../../../hooks/realtime/mutations";
 import { useStudyAttendCheckMutation } from "../../../hooks/study/mutations";
 import {
   useAboutPointMutation,
@@ -72,7 +72,8 @@ function Configuration() {
     onError: () => typeToast("error"),
   });
 
-  const { mutate } = useRealtimeAttendMutation();
+  const { mutate: attendRealTimeStudy } = useRealTimeAttendMutation();
+
   const { mutate: imageUpload } = useImageUploadMutation({
     onSuccess() {
       resetStudy();
@@ -140,21 +141,28 @@ function Configuration() {
   };
 
   const formData = new FormData();
-
+  console.log(myStudy, myRealStudy, studyAttendInfo);
   const handleSubmit = () => {
     // setStudyAttendInfo(null);
 
-    if (false) {
+    if (myStudy) {
       setIsChecking(true);
       handleArrived({ memo: attendMessage, endHour: convertTimeStringToDayjs(endTime) });
       setTimeout(() => {
         setIsChecking(false);
       }, 2000);
     } else {
-      formData.append("memo", "test");
-      formData.append("status", "solo");
-      formData.append("image", studyAttendInfo?.image as Blob);
-      mutate(formData);
+      formData.append("memo", attendMessage);
+      formData.append("status", "open");
+      formData.append("images", studyAttendInfo?.image as Blob);
+      formData.append(
+        "time",
+        JSON.stringify({
+          start: dayjs().toISOString(),
+          end: convertTimeStringToDayjs(endTime).toISOString(),
+        }),
+      );
+      attendRealTimeStudy(formData);
     }
   };
 

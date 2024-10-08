@@ -17,12 +17,12 @@ export const useRealtimeVoteMutation = (options?: MutationOptions<RealTimeBasicV
       }),
     options,
   );
-export const useRealtimeAttendMutation = (
-  options?: MutationOptions<RealTimeBasicAttendanceProps>,
+export const useRealTimeAttendMutation = (
+  options?: MutationOptions<RealTimeBasicAttendanceProps | FormData>,
 ) =>
-  useMutation<void, AxiosError, RealTimeBasicAttendanceProps>(
+  useMutation<void, AxiosError, RealTimeBasicAttendanceProps | FormData>(
     (param) =>
-      requestServer<RealTimeBasicAttendanceProps>({
+      requestServer<RealTimeBasicAttendanceProps | FormData>({
         method: "post",
         url: `realtime/attendance`,
         body: param,

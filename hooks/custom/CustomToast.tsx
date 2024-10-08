@@ -39,7 +39,8 @@ type ToastType =
   | "change"
   | "invite"
   | "not-yet"
-  | "secret-avatar";
+  | "secret-avatar"
+  | "vote";
 
 export const useTypeToast = () => {
   const toast = useChakraToast();
@@ -62,6 +63,11 @@ const getTypeToToast = (
   subTitle?: string;
 } => {
   switch (type) {
+    case "vote":
+      return {
+        status: "success",
+        title: "투표 완료",
+      };
     case "guest":
       return {
         status: "error",
