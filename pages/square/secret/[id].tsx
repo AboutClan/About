@@ -24,7 +24,6 @@ import { MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoadi
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import OrganizerBar from "../../../components/molecules/OrganizerBar";
-import { SECRET_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import {
   useDeleteLikeSecretSquareMutation,
@@ -158,13 +157,13 @@ function SecretSquareDetailPage() {
                       avatar={
                         <OrganizerBar.Avatar
                           avatar={{ bg: 7, type: 0 }}
-                          uid={squareDetail.author}
-                          image=""
-                          isLink
+                          uid={squareDetail.isAnonymous ? squareDetail.uid : ""}
+                          image={squareDetail.isAnonymous ? squareDetail.profileImage : ""}
+                          isLink={!squareDetail.isAnonymous}
                           size="md"
                         />
                       }
-                      name="익명"
+                      name={squareDetail.isAnonymous ? "익명" : squareDetail.name}
                       createdAt={squareDetail.createdAt}
                       right={
                         <>
