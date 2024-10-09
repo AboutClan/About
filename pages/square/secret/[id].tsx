@@ -14,7 +14,7 @@ import {
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import AlertModal from "../../../components/AlertModal";
 import { Badge } from "../../../components/atoms/badges/Badges";
@@ -25,6 +25,7 @@ import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import OrganizerBar from "../../../components/molecules/OrganizerBar";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
+import { usePollState } from "../../../hooks/custom/usePollState";
 import {
   useDeleteLikeSecretSquareMutation,
   useDeleteSecretSquareMutation,
@@ -66,17 +67,19 @@ function SecretSquareDetailPage() {
       staleTime: Infinity,
     },
   );
-  const initialSelectedPollItems = new Set(pollStatus?.pollItems);
 
-  const [selectedPollItems, setSelectedPollItems] = useState<Set<string>>(new Set());
-  // calculate the difference btw poll and initialPoll
-  const isModified =
-    selectedPollItems.size !== initialSelectedPollItems.size ||
-    Array.from(selectedPollItems.keys()).some((id) => !initialSelectedPollItems.has(id)) ||
-    Array.from(initialSelectedPollItems.keys()).some((id) => !selectedPollItems.has(id));
-
-  const [showRePollButton, setShowRePollButton] = useState(false);
-  const [isActiveRePollButton, setIsActiveRePollButton] = useState(false);
+  const {
+    selectedPollItems,
+    isModified,
+    isActiveRePollButton,
+    showRePollButton,
+    handlePoll,
+    isSelected,
+    hideRePollButton,
+    cancelPoll,
+  } = usePollState({
+    initialPollItems: pollStatus?.pollItems,
+  });
 
   const { isOpen: isMenuOpen, onOpen: onMenuOpen, onClose: onMenuClose } = useDisclosure();
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -86,22 +89,10 @@ function SecretSquareDetailPage() {
 
   const failToast = useFailToast();
 
-  useEffect(() => {
-    if (pollStatus) {
-      setSelectedPollItems(new Set(pollStatus.pollItems));
-      if (pollStatus.pollItems.length !== 0) {
-        setShowRePollButton(true);
-        setIsActiveRePollButton(true);
-      } else {
-        setIsActiveRePollButton(false);
-      }
-    }
-  }, [pollStatus]);
-
   const handlePatchPoll = () => {
     if (!isModified) return;
 
-    mutatePoll({ user: session?.user.id, pollItems: Array.from(selectedPollItems.keys()) });
+    mutatePoll({ user: session?.user.id, pollItems: selectedPollItems });
   };
 
   const handleLikeSquare = () => {
@@ -249,35 +240,16 @@ function SecretSquareDetailPage() {
                           return (
                             <PollItemButton
                               key={_id}
-                              isChecked={selectedPollItems.has(_id)}
+                              isChecked={isSelected(_id)}
                               isDisabled={showRePollButton}
                               name={name}
                               count={count}
-                              onClick={() => {
-                                const isChecked = selectedPollItems.has(_id);
-                                if (squareDetail.poll.canMultiple) {
-                                  setSelectedPollItems((prev) => {
-                                    const cloned = new Set(prev);
-                                    if (isChecked) cloned.delete(_id);
-                                    else cloned.add(_id);
-                                    return cloned;
-                                  });
-                                } else {
-                                  setSelectedPollItems((prev) => {
-                                    const cloned = new Set(prev);
-                                    if (isChecked) {
-                                      cloned.delete(_id);
-                                    } else if (cloned.size !== 0) {
-                                      // if already checking other poll item
-                                      cloned.clear();
-                                      cloned.add(_id);
-                                    } else {
-                                      cloned.add(_id);
-                                    }
-                                    return cloned;
-                                  });
-                                }
-                              }}
+                              onClick={() =>
+                                handlePoll({
+                                  canMultiple: squareDetail.poll.canMultiple,
+                                  pollItem: _id,
+                                })
+                              }
                             />
                           );
                         })}
@@ -289,7 +261,7 @@ function SecretSquareDetailPage() {
                             w="100%"
                             colorScheme="gray"
                             mt="8px"
-                            onClick={() => setShowRePollButton(false)}
+                            onClick={hideRePollButton}
                           >
                             <i
                               className="fa-regular fa-rotate-right"
@@ -316,10 +288,7 @@ function SecretSquareDetailPage() {
                                 rounded="lg"
                                 w="100%"
                                 colorScheme="gray"
-                                onClick={() => {
-                                  setShowRePollButton(true);
-                                  setSelectedPollItems(new Set(pollStatus.pollItems));
-                                }}
+                                onClick={cancelPoll}
                               >
                                 취소
                               </Button>
