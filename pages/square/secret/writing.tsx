@@ -244,12 +244,7 @@ function SquareWritingPage() {
             투표
           </Button>
         </div>
-        <Checkbox
-          {...register("isAnonymous", {
-            required: true,
-          })}
-          colorScheme="mintTheme"
-        >
+        <Checkbox {...register("isAnonymous")} colorScheme="mintTheme">
           익명
         </Checkbox>
       </WritingNavigation>

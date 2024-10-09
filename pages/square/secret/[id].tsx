@@ -156,9 +156,9 @@ function SecretSquareDetailPage() {
                     <OrganizerBar
                       avatar={
                         <OrganizerBar.Avatar
-                          avatar={{ bg: 7, type: 0 }}
-                          uid={squareDetail.isAnonymous ? squareDetail.uid : ""}
-                          image={squareDetail.isAnonymous ? squareDetail.profileImage : ""}
+                          avatar={squareDetail.isAnonymous ? { bg: 7, type: 0 } : undefined}
+                          uid={squareDetail.isAnonymous ? "" : squareDetail.uid}
+                          image={squareDetail.isAnonymous ? "" : squareDetail.profileImage}
                           isLink={!squareDetail.isAnonymous}
                           size="md"
                         />
