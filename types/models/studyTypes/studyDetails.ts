@@ -40,6 +40,7 @@ export interface RealTimeBasicVoteProps {
     lat?: number;
     lon?: number;
     text: string;
+    locationDetail: string;
   };
   time: {
     start: string | Dayjs;

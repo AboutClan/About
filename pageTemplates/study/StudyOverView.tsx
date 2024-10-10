@@ -63,7 +63,7 @@ function StudyOverview({
       icon: <i className="fa-solid fa-clock" />,
     },
   ];
-
+  console.log(mapOptions, markersOptions);
   return (
     <>
       <OverviewWrapper>

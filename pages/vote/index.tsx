@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
@@ -104,6 +104,7 @@ export default function StudyVoteMap() {
   const { data: studyVoteOne } = useStudyVoteQuery(dateValue, "전체", false, false, {
     enabled: !!dateValue,
   });
+  console.log(24, studyVoteOne);
 
   const mainLocation = userInfo?.locationDetail;
   const studyVoteData = studyVoteOne?.[0]?.participations;
@@ -328,7 +329,8 @@ export default function StudyVoteMap() {
   const { mutate } = useDeleteMyVoteMutation(dayjs());
   return (
     <>
-      <Header title="스터디 투표" isCenter isBorder={false} />
+      <Button onClick={() => mutate()}>삭제</Button>
+      <Header title="스터디 투표" url="/home" isCenter isBorder={false} />
 
       <TabNav selected={studyCategoryTab} tabOptionsArr={tabOptionsArr} isMain />
       <Box

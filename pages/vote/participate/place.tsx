@@ -36,8 +36,8 @@ function Place() {
     onSuccess() {
       typeToast("vote");
       resetStudy();
-      newSearchParams.set("lat", placeInfo.y);
-      newSearchParams.set("lon", placeInfo.x);
+      newSearchParams.set("category", "votePlace");
+
       router.push(`/vote?${newSearchParams.toString()}`);
     },
   });
@@ -49,10 +49,15 @@ function Place() {
     }
     setIsVoteDrawer(true);
   };
-
+  console.log(placeInfo);
   const handleSubmit = (voteTime: IStudyVoteTime) => {
     mutate({
-      place: { text: placeInfo.place_name, lat: +placeInfo.y, lon: +placeInfo.x },
+      place: {
+        text: placeInfo.place_name,
+        locationDetail: placeInfo.road_address_name,
+        lat: +placeInfo.y,
+        lon: +placeInfo.x,
+      },
       time: { ...voteTime },
     });
   };

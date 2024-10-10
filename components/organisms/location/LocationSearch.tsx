@@ -26,7 +26,7 @@ function LocationSearch({
   const [results, setResults] = useState<KakaoLocationProps[]>([]);
 
   const { data } = useKakaoSearchQuery(value, {
-    enabled: info?.place_name !== value && (value !== "" || !hasInitialValue),
+    enabled: isActive && info?.place_name !== value && (value !== "" || !hasInitialValue),
   });
 
   useEffect(() => {

@@ -13,18 +13,22 @@ interface InfoBoxProps {
 function InfoBox({ infos }: InfoBoxProps) {
   return (
     <InfoContainer>
-      {infos.map((info, idx) => (
-        <InfoRow key={idx}>
-          <InfoIconText className="flex-1">
-            <Box w="16px" textAlign="center" color="var(--gray-600)">
-              {info.icon}
-            </Box>
-            <Box as="span" ml="4px">
-              {info.text}
-            </Box>
-          </InfoIconText>
-        </InfoRow>
-      ))}
+      {infos.map((info, idx) => {
+        if (!info?.text) return null;
+        return (
+          <InfoRow key={idx}>
+            <InfoIconText className="flex-1">
+              <Box w="16px" textAlign="center" color="var(--gray-600)">
+                {info.icon}
+              </Box>
+
+              <Box as="span" ml="4px">
+                {info.text || "시간 정보 없음"}
+              </Box>
+            </InfoIconText>
+          </InfoRow>
+        );
+      })}
     </InfoContainer>
   );
 }
