@@ -25,6 +25,7 @@ export interface IPostThumbnailCard {
   func?: () => void;
   registerDate?: string;
   id?: string;
+  locationDetail?: string;
 }
 
 const VOTER_SHOW_MAX = 6;
@@ -46,6 +47,7 @@ export function PostThumbnailCard({
     func = undefined,
     type,
     registerDate,
+    locationDetail,
     id,
   },
   isShort,

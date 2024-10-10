@@ -1,7 +1,7 @@
 import { ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
@@ -24,6 +24,7 @@ import { StudyVotingSave } from "../../../types/models/studyTypes/studyInterActi
 import { InactiveLocation, LocationEn } from "../../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
+import { getDistanceFromLatLonInKm } from "../../../utils/mathUtils";
 
 interface HomeStudyColProps {
   studyVoteData: IParticipation[];
@@ -149,8 +150,9 @@ export const setStudyDataToCardCol = (
       a.place.branch === "개인 스터디" ? 1 : b.place.branch === "개인 스터디" ? -1 : 0,
     )
     .map((data) => ({
-      title: data.place.branch,
-      subtitle: data.place.brand,
+      title: data.place.fullname,
+      subtitle: data.place.branch,
+      locationDetail: data.place.locationDetail,
       participants: data.attendences.map((att) => att.user),
       url: `/study/${data.place._id}/${urlDateParam}`,
       maxCnt: 8,
@@ -158,6 +160,7 @@ export const setStudyDataToCardCol = (
         url: data.place.image,
         priority: true,
       },
+      distance: 1.4 || getDistanceFromLatLonInKm(2, 2, 2, 2),
       badge: getBadgeText(data.status),
       type: "study",
       statusText:
