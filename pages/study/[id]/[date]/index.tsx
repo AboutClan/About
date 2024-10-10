@@ -12,6 +12,7 @@ import { ALL_스터디인증 } from "../../../../constants/serviceConstants/stud
 import { useStudyVoteOneQuery, useStudyVoteQuery } from "../../../../hooks/study/queries";
 import { getStudyDateStatus } from "../../../../libs/study/date/getStudyDateStatus";
 import StudyCover from "../../../../pageTemplates/study/StudyCover";
+import StudyDateBar from "../../../../pageTemplates/study/StudyDateBar";
 import StudyHeader from "../../../../pageTemplates/study/StudyHeader";
 import StudyNavigation from "../../../../pageTemplates/study/StudyNavigation";
 import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
@@ -123,10 +124,8 @@ export default function Page() {
               }}
             />
             <Divider />
-            {/* <StudyDateBar isPrivateStudy={isPrivateStudy} place={place} /> */}
-            {!isPrivateStudy && (
-              <StudyTimeBoard participants={attendances} studyStatus={study.status} />
-            )}
+            <StudyDateBar place={place} />
+            <StudyTimeBoard participants={attendances} studyStatus={study.status} />
             <StudyParticipants participants={attendances} absences={study.absences} />
             <StudyNavigation voteCnt={attendances?.length} studyStatus={study.status} />
           </Slide>
@@ -156,13 +155,12 @@ export default function Page() {
               }}
             />
             <Divider />
+            <StudyDateBar place={place} />
 
-            {/* <StudyDateBar isPrivateStudy={isPrivateStudy} place={place} /> */}
-            {/* {!isPrivateStudy && (
-              <StudyTimeBoard participants={attendances} studyStatus={study.status} />
-            )} */}
-            {/* <StudyParticipants participants={attendances} absences={study.absences} />
-            <StudyNavigation voteCnt={attendances?.length} studyStatus={study.status} /> */}
+            <StudyTimeBoard participants={realStudy} studyStatus={findRealStudy.status} />
+
+            <StudyParticipants participants={realStudy} absences={null} />
+            <StudyNavigation voteCnt={realStudy?.length} studyStatus={findRealStudy.status} />
           </Slide>
         </>
       ) : null}

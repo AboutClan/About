@@ -2,6 +2,7 @@ import { Box, Button } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
+import AlertModal from "../../../components/AlertModal";
 
 import PageIntro from "../../../components/atoms/PageIntro";
 import SectionTitle from "../../../components/atoms/SectionTitle";
@@ -30,13 +31,14 @@ function Certification() {
 
   const [imageArr, setImageArr] = useState<string[]>([]);
   const [imageFormArr, setImageFormArr] = useState<Blob[]>([]);
+  const [isResetAlert, setIsResetAlert] = useState(false);
 
   const [studyAttendInfo, setStudyAttendInfo] = useRecoilState(studyAttendInfoState);
 
   const myStudyInfo = useRecoilValue(myStudyInfoState);
   const myRealStudyInfo = useRecoilValue(myRealStudyInfoState);
   const myStudy = getMyStudyVoteInfo(myStudyInfo, session?.user.uid);
- 
+
   useEffect(() => {
     if (studyAttendInfo) {
       const { text, lat, lon } = studyAttendInfo.place;
@@ -69,12 +71,25 @@ function Certification() {
       e.preventDefault();
       return;
     }
-    
+
     setStudyAttendInfo((old) => ({
       ...old,
       image,
-      place: { lat: +placeInfo?.y, lon: +placeInfo?.x, text: placeInfo?.place_name },
+      place: {
+        lat: +placeInfo?.y,
+        lon: +placeInfo?.x,
+        locationDetail: placeInfo?.road_address_name,
+        text: placeInfo?.place_name,
+      },
     }));
+  };
+
+  const handleResetButton = () => {
+    if (myStudyInfo || myRealStudyInfo) {
+      setIsResetAlert(true);
+      return;
+    }
+    setPlaceInfo({ place_name: "", road_address_name: "" });
   };
 
   return (
@@ -84,7 +99,6 @@ function Certification() {
         <Slide>
           <PageIntro main={{ first: "출석 인증하기" }} sub="스터디 출석을 인증해 보세요" />
           <ImageUploadInput setImageUrl={setImage} />
-
           <Box mb={3}>
             <SectionTitle text="현재 장소" isActive={!myStudy && !myRealStudyInfo}>
               <Button
@@ -95,8 +109,7 @@ function Certification() {
                 height="20px"
                 color="var(--color-blue)"
                 rightIcon={<i className="fa-solid fa-arrows-rotate" />}
-                onClick={() => setPlaceInfo({ place_name: "", road_address_name: "" })}
-                isDisabled={!!(myStudy || myRealStudyInfo)}
+                onClick={handleResetButton}
               >
                 초기화
               </Button>
@@ -111,6 +124,19 @@ function Certification() {
         </Slide>
       </Box>
       <BottomNav url="/vote/attend/configuration" onClick={handleBottomNav} />
+      {isResetAlert && (
+        <AlertModal
+          options={{
+            title: "스터디 장소 변경",
+            subTitle: "장소를 변경하는 경우 기존에 투표 장소는 취소됩니다.",
+            text: "변경합니다",
+            func: () => {
+              setPlaceInfo({ place_name: "", road_address_name: "" });
+            },
+          }}
+          setIsModal={setIsResetAlert}
+        />
+      )}
     </>
   );
 }

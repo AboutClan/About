@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -19,14 +19,18 @@ import { useStudyParticipationMutation } from "../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { usePointSystemLogQuery } from "../../hooks/user/queries";
 import { myStudyInfoState, studyDateStatusState } from "../../recoils/studyRecoils";
-import { IParticipation, StudyStatus } from "../../types/models/studyTypes/studyDetails";
+import {
+  IParticipation,
+  StudyStatus,
+  StudyUserStatus,
+} from "../../types/models/studyTypes/studyDetails";
 import { StudyDateStatus } from "../../types/models/studyTypes/studyInterActions";
 import { IPointLog } from "../../types/services/pointSystem";
 import StudyNavModal from "./studyNavModal";
 
 interface IStudyNavigation {
   voteCnt: number;
-  studyStatus: StudyStatus;
+  studyStatus: StudyStatus | StudyUserStatus;
 }
 
 type MainBtnType = "vote" | "freeOpen" | "attendCheck";
@@ -218,7 +222,7 @@ const getMainButtonStatus = (
   studyDateStatus: StudyDateStatus,
   votingType: "same" | "other" | null,
   isAttend: boolean,
-  studyStatus: StudyStatus,
+  studyStatus: StudyStatus | StudyUserStatus,
   isFree: boolean,
   hasDismissed: boolean,
 ): {

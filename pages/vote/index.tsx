@@ -4,8 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
+import AlertModal from "../../components/AlertModal";
 
 import Avatar from "../../components/atoms/Avatar";
 import CurrentLocationBtn from "../../components/atoms/CurrentLocationBtn";
@@ -18,13 +19,19 @@ import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import NewTwoButtonRow from "../../components/molecules/NewTwoButtonRow";
 import BottomDrawerLg from "../../components/organisms/drawer/BottomDrawerLg";
 import VoteMap from "../../components/organisms/VoteMap";
+import StudyVoteDrawer from "../../components/services/studyVote/StudyVoteDrawer";
 import { LOCATION_OPEN } from "../../constants/location";
 import { STUDY_COMMENT_ARR } from "../../constants/settingValue/comment";
+import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
-import { useDeleteMyVoteMutation, useStudyCommentMutation } from "../../hooks/study/mutations";
+import { useRealtimeVoteMutation } from "../../hooks/realtime/mutations";
+import {
+  useDeleteMyVoteMutation,
+  useStudyCommentMutation,
+  useStudyParticipationMutation,
+} from "../../hooks/study/mutations";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { useUserInfoQuery } from "../../hooks/user/queries";
-import { isMember } from "../../libs/backend/authUtils";
 import { getStudyTime } from "../../libs/study/getStudyTime";
 import { getCurrentLocationIcon, getStudyIcon } from "../../libs/study/getStudyVoteIcon";
 import { getLocationCenterDot } from "../../libs/study/getStudyVoteMap";
@@ -38,8 +45,12 @@ import {
   IParticipation,
   IPlace,
   RealTimeInfoProps,
+  RealTimeStudyPlaceProps,
 } from "../../types/models/studyTypes/studyDetails";
-import { IStudyVoteWithPlace } from "../../types/models/studyTypes/studyInterActions";
+import {
+  IStudyVoteTime,
+  IStudyVoteWithPlace,
+} from "../../types/models/studyTypes/studyInterActions";
 import { IAvatar } from "../../types/models/userTypes/userInfoTypes";
 import { ActiveLocation, LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
@@ -50,6 +61,7 @@ type StudyCategoryTab = "실시간 스터디" | "내일의 스터디";
 
 interface DetailInfoProps {
   id: string;
+  place: RealTimeStudyPlaceProps;
   title: string;
   time: { start: string; end: string };
   participantCnt: number;
@@ -276,16 +288,16 @@ export default function StudyVoteMap() {
       const myStudy =
         findStudy?.attendences?.some((who) => who.user.uid === userInfo?.uid) ||
         realStudyAttendance?.some((who) => who.user.uid === userInfo?.uid);
-
+      console.log(123, findStudy, findStudy?.attendences);
       const sortedCommentUserArr = findStudy
-        ? findStudy.attendences?.sort((a, b) => {
+        ? [...findStudy.attendences]?.sort((a, b) => {
             const aTime = dayjs(a?.updatedAt);
             const bTime = dayjs(b?.updatedAt);
             if (aTime.isBefore(bTime)) return -1;
             else if (aTime.isAfter(bTime)) return 1;
             return 0;
           })
-        : realStudyAttendance?.sort((a, b) => {
+        : [...realStudyAttendance]?.sort((a, b) => {
             const aTime = dayjs(a?.updatedAt);
             const bTime = dayjs(b?.updatedAt);
             if (aTime.isBefore(bTime)) return -1;
@@ -297,6 +309,7 @@ export default function StudyVoteMap() {
 
       setDetailInfo({
         isPrivate: !!findRealStudy,
+        place: findRealStudy?.place,
         title: findStudy?.place?.fullname || findRealStudy?.place?.text,
         id,
         time: getStudyTime(findStudy?.attendences) || {
@@ -417,7 +430,26 @@ function DetailDrawer({
   detailInfo: DetailInfoProps;
   setDetailInfo: DispatchType<DetailInfoProps>;
 }) {
+  const resetStudy = useResetStudyQuery();
   const typeToast = useTypeToast();
+  const myStudy = useRecoilValue(myStudyInfoState);
+  const myRealStudy = useRecoilValue(myRealStudyInfoState);
+
+  const { mutate: studyVote, isLoading: isLoading1 } = useStudyParticipationMutation(
+    dayjs(),
+    "post",
+    {
+      onSuccess() {
+        handleSuccess();
+      },
+    },
+  );
+
+  const { mutate: realTimeStudyVote, isLoading: isLoading2 } = useRealtimeVoteMutation({
+    onSuccess() {
+      handleSuccess();
+    },
+  });
 
   const { mutate } = useStudyCommentMutation(dayjs(), {
     onSuccess() {
@@ -430,15 +462,51 @@ function DetailDrawer({
   const [isCommentModal, setIsCommentModal] = useState(false);
   const [commentValue, setCommentValue] = useState(detailInfo?.comment?.text);
   const [commentText, setCommentText] = useState(detailInfo?.comment?.text);
+  const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
+  const [isVoteDrawer, setIsVoteDrawer] = useState(false);
+  const [isAlertMoal, setIsAlertModal] = useState(false);
 
   const onClick = (type: "vote" | "comment") => {
     if (type === "comment") {
       setIsCommentModal(true);
     }
+    if (type === "vote") {
+      setIsVoteDrawer(true);
+    }
+  };
+
+  const handleSuccess = () => {
+    typeToast("vote");
+    resetStudy();
+    setIsVoteDrawer(false);
+    setDetailInfo(null);
   };
 
   const handleComment = () => {
     mutate(commentValue);
+  };
+
+  const onClickStudyVote = (voteTime: IStudyVoteTime) => {
+    if (myStudy || myRealStudy) {
+      setVoteTime(voteTime);
+      setIsAlertModal(true);
+      return;
+    }
+    handleVote();
+  };
+
+  const handleVote = () => {
+    if (!detailInfo.isPrivate) {
+      studyVote({
+        place: detailInfo?.id,
+        ...voteTime,
+      });
+    } else {
+      realTimeStudyVote({
+        place: detailInfo.place as RealTimeStudyPlaceProps,
+        time: { ...voteTime },
+      });
+    }
   };
 
   return (
@@ -494,15 +562,15 @@ function DetailDrawer({
                 ),
               }}
               rightProps={{
-                icon: isMember ? (
+                icon: detailInfo.isMember ? (
                   <i className="fa-solid fa-comment-quote fa-flip-horizontal" />
                 ) : (
                   <i className="fa-solid fa-user-plus" style={{ color: "#CCF3F0" }} />
                 ),
 
                 children: (
-                  <div onClick={() => onClick(isMember ? "comment" : "vote")}>
-                    {isMember ? "한줄 코멘트 변경" : "스터디 합류"}
+                  <div onClick={() => onClick(detailInfo.isMember ? "comment" : "vote")}>
+                    {detailInfo.isMember ? "한줄 코멘트 변경" : "스터디 합류"}
                   </div>
                 ),
               }}
@@ -518,6 +586,25 @@ function DetailDrawer({
         >
           <Input value={commentValue} onChange={(e) => setCommentValue(e.target.value)} />
         </ModalLayout>
+      )}
+      {isVoteDrawer && (
+        <StudyVoteDrawer
+          hasPlace
+          isLoading={isLoading1 || isLoading2}
+          handleSubmit={onClickStudyVote}
+          setIsModal={setIsVoteDrawer}
+        />
+      )}
+      {isAlertMoal && (
+        <AlertModal
+          options={{
+            title: "스터디 장소 변경",
+            subTitle: "장소를 변경하는 경우 기존에 투표 장소는 취소됩니다.",
+            text: "변경합니다",
+            func: () => handleVote(),
+          }}
+          setIsModal={setIsAlertModal}
+        />
       )}
     </>
   );

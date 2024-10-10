@@ -10,12 +10,12 @@ import { IProfileCommentCard } from "../../components/molecules/cards/ProfileCom
 import ProfileCardColumn from "../../components/organisms/ProfileCardColumn";
 import ImageZoomModal from "../../modals/ImageZoomModal";
 import StudyChangeMemoModal from "../../modals/study/StudyChangeMemoModal";
-import { IAttendance } from "../../types/models/studyTypes/studyDetails";
+import { IAttendance, RealTimeInfoProps } from "../../types/models/studyTypes/studyDetails";
 import { IAbsence } from "../../types/models/studyTypes/studyInterActions";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 interface IStudyParticipants {
-  participants: IAttendance[];
+  participants: IAttendance[] | RealTimeInfoProps[];
   absences: IAbsence[];
 }
 export default function StudyParticipants({ participants, absences }: IStudyParticipants) {
@@ -122,7 +122,7 @@ const composeUserCardArr = (
   const arrived = participant?.arrived
     ? dayjsToFormat(dayjs(participant.arrived).subtract(9, "hour"), "HH:mm")
     : null;
-  const absent = absences.find((absence) => absence.user.uid === participant.user.uid);
+  const absent = absences?.find((absence) => absence.user.uid === participant.user.uid);
   const memo = participant.memo;
   const user = participant.user;
 

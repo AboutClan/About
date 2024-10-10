@@ -28,15 +28,17 @@ export default function VoteMap({
     polylines: [],
     infoWindow: [],
   });
-
+  console.log(0);
   useEffect(() => {
     if (!mapRef?.current || typeof naver === "undefined" || !mapOptions) return;
+    console.log(1);
     const map = new naver.maps.Map(mapRef.current, mapOptions);
     mapInstanceRef.current = map;
   }, [mapOptions]);
 
   useEffect(() => {
-    if (!mapRef?.current || typeof naver === "undefined") return;
+    if (!mapRef?.current || typeof naver === "undefined" || !resizeToggle) return;
+
     const map = new naver.maps.Map(mapRef.current, mapOptions);
     naver.maps.Event.trigger(map, "resize");
   }, [resizeToggle]);
@@ -45,7 +47,7 @@ export default function VoteMap({
     const map = mapInstanceRef.current;
 
     if (!mapRef?.current || !map || typeof naver === "undefined") return;
-
+    console.log(3);
     //새로운 옵션 적용 전 초기화
     mapElementsRef.current.markers.forEach((marker) => marker.setMap(null));
     mapElementsRef.current.polylines.forEach((polyline) => polyline.setMap(null));
@@ -86,6 +88,7 @@ export default function VoteMap({
 
   useEffect(() => {
     if (!centerValue) return;
+    console.log(4);
     const map = mapInstanceRef.current;
     map.setCenter(new naver.maps.LatLng(centerValue.lat, centerValue.lng));
   }, [centerValue]);

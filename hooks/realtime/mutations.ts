@@ -2,6 +2,7 @@ import { AxiosError } from "axios";
 import { useMutation } from "react-query";
 import { requestServer } from "../../libs/methodHelpers";
 import { MutationOptions } from "../../types/hooks/reactTypes";
+import { CollectionProps } from "../../types/models/collections";
 import {
   RealTimeBasicAttendanceProps,
   RealTimeBasicVoteProps,
@@ -18,11 +19,11 @@ export const useRealtimeVoteMutation = (options?: MutationOptions<RealTimeBasicV
     options,
   );
 export const useRealTimeAttendMutation = (
-  options?: MutationOptions<RealTimeBasicAttendanceProps | FormData>,
+  options?: MutationOptions<RealTimeBasicAttendanceProps | FormData, CollectionProps>,
 ) =>
-  useMutation<void, AxiosError, RealTimeBasicAttendanceProps | FormData>(
+  useMutation<CollectionProps, AxiosError, RealTimeBasicAttendanceProps | FormData>(
     (param) =>
-      requestServer<RealTimeBasicAttendanceProps | FormData>({
+      requestServer<RealTimeBasicAttendanceProps | FormData, CollectionProps>({
         method: "post",
         url: `realtime/attendance`,
         body: param,

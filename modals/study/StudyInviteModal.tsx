@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -14,7 +14,7 @@ interface IStudyInviteModal extends IModal {
   place: {
     locationDetail: string;
     fullname: string;
-    image: string;
+    coverImage: string;
   };
 }
 
@@ -45,7 +45,7 @@ function StudyInviteModal({ setIsModal, place }: IStudyInviteModal) {
         content: {
           title: "같이 스터디 할래?",
           description: place?.fullname,
-          imageUrl: place.image,
+          imageUrl: place.coverImage,
           link: {
             mobileWebUrl: url,
             webUrl: url,

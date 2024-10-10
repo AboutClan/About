@@ -33,15 +33,16 @@ export interface IAttendance extends ITimeStamps {
   comment: string;
 }
 
-export type StudyUserStatus = "pending" | "solo" | "open" | "completed";
+export type StudyUserStatus = "pending" | "solo" | "open" | "completed" | "cancel";
 
+export interface RealTimeStudyPlaceProps {
+  lat?: number;
+  lon?: number;
+  text: string;
+  locationDetail: string;
+}
 export interface RealTimeBasicVoteProps {
-  place: {
-    lat?: number;
-    lon?: number;
-    text: string;
-    locationDetail: string;
-  };
+  place: RealTimeStudyPlaceProps;
   time: {
     start: string | Dayjs;
     end: string | Dayjs;
