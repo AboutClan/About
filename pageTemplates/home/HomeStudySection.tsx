@@ -1,30 +1,10 @@
-import { Box, Button, Flex, keyframes } from "@chakra-ui/react";
+import { keyframes } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { AnimatePresence, motion, PanInfo } from "framer-motion";
-import { useSession } from "next-auth/react";
-import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { motion, PanInfo } from "framer-motion";
+import { useState } from "react";
 import styled from "styled-components";
 
-import { LOCATION_OPEN } from "../../constants/location";
-import { useTypeToast } from "../../hooks/custom/CustomToast";
-import { useStudyVoteQuery } from "../../hooks/study/queries";
-import { getStudyDateStatus } from "../../libs/study/date/getStudyDateStatus";
-import {
-  myRealStudyInfoState,
-  myStudyInfoState,
-  studyDateStatusState,
-  studyPairArrState,
-} from "../../recoils/studyRecoils";
-import { IParticipation } from "../../types/models/studyTypes/studyDetails";
-import { ActiveLocation, LocationEn } from "../../types/services/locationTypes";
-import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
-import HomeLocationBar from "./study/HomeLocationBar";
-import HomeStudyCol from "./study/HomeStudyCol";
-import StudyController from "./study/studyController/StudyController";
 
 const orbit = keyframes`
   from {
@@ -44,99 +24,83 @@ const orbit2 = keyframes`
 `;
 
 function HomeStudySection() {
-  const { data: session } = useSession();
-  const router = useRouter();
-  const typeToast = useTypeToast();
-  const searchParams = useSearchParams();
-  const newSearchParams = new URLSearchParams(searchParams);
-  const date = searchParams.get("date");
-  const location = searchParams.get("location");
-  const locationKr = convertLocationLangTo(location as LocationEn, "kr");
-  const isGuest = session?.user.name === "guest";
+  // const { data: session } = useSession();
+  // const router = useRouter();
+  // const typeToast = useTypeToast();
+  // const searchParams = useSearchParams();
+  // const newSearchParams = new URLSearchParams(searchParams);
+  // const date = searchParams.get("date");
+  // const location = searchParams.get("location");
+  // const locationKr = convertLocationLangTo(location as LocationEn, "kr");
+  // const isGuest = session?.user.name === "guest";
 
-  const setStudyDateStatus = useSetRecoilState(studyDateStatusState);
-  const [studyPairArr, setStudyPairArr] = useRecoilState(studyPairArrState);
-  const [selectedDate, setSelectedDate] = useState<string>();
-  const [studyVoteArr, setStudyVoteArr] = useState<IParticipation[]>();
-  const setMyStudy = useSetRecoilState(myStudyInfoState);
-  const setMyRealStudy = useSetRecoilState(myRealStudyInfoState);
+  // const setStudyDateStatus = useSetRecoilState(studyDateStatusState);
 
-  const findStudyData = studyPairArr?.find(
-    (study) => dayjsToStr(dayjs(study.date)) === date,
-  )?.participations;
+  // const [selectedDate, setSelectedDate] = useState<string>();
+  // const [studyVoteArr, setStudyVoteArr] = useState<IParticipation[]>();
+  // const setMyStudy = useSetRecoilState(myStudyInfoState);
+  // const setMyRealStudy = useSetRecoilState(myRealStudyInfoState);
 
-  const { data: studyVoteData } = useStudyVoteQuery(date as string, locationKr, true, true, {
-    enabled:
-      !findStudyData &&
-      !!date &&
-      !!locationKr &&
-      LOCATION_OPEN.includes(locationKr as ActiveLocation),
-  });
+  // const { data: studyVoteData, isLoading } = useStudyVoteQuery(date as string, locationKr, {
+  //   enabled: !!date && !!locationKr && LOCATION_OPEN.includes(locationKr as ActiveLocation),
+  // });
 
-  useEffect(() => {
-    if (!selectedDate) setSelectedDate(date);
-    setStudyDateStatus(getStudyDateStatus(date));
-  }, [date]);
+  // useEffect(() => {
+  //   if (!selectedDate) setSelectedDate(date);
+  //   setStudyDateStatus(getStudyDateStatus(date));
+  // }, [date]);
 
-  useEffect(() => {
-    setStudyPairArr(null);
-  }, [locationKr]);
+  // useEffect(() => {
+  //   if (!studyVoteData) return;
+  //   const participations = studyVoteData.participations;
+  //   setStudyVoteArr(participations);
 
-  useEffect(() => {
-    if (findStudyData) setStudyVoteArr(findStudyData);
-    else if (studyVoteData) setStudyPairArr(studyVoteData);
-    const tempStudy =
-      findStudyData?.find(
-        (par) =>
-          par.status !== "dismissed" &&
-          par.attendences.some((who) => who.user.uid === session?.user?.uid),
-      ) || null;
-    setMyStudy(tempStudy);
-    const realTimeUsers = Array.isArray(studyVoteData?.[0]?.realTime)
-      ? studyVoteData?.[0]?.realTime
-      : [];
+  //   const tempStudy =
+  //     participations.find((par) =>
+  //       par.attendences.some((who) => who.user.uid === session?.user?.uid),
+  //     ) || null;
+  //   setMyStudy(tempStudy);
+  //   const realTimeUsers = Array.isArray(studyVoteData.realTime) ? studyVoteData.realTime : [];
+  //   const myRealStudy = realTimeUsers?.find((real) => real.user.uid === session?.user.uid);
+  //   setMyRealStudy(myRealStudy);
+  // }, [studyVoteData, session?.user.uid]);
 
-    const myRealStudy = realTimeUsers?.find((real) => real.user.uid === session?.user.uid);
-    setMyRealStudy(myRealStudy);
-  }, [findStudyData, studyVoteData, session?.user.uid]);
+  // const selectedDateDayjs = dayjs(selectedDate);
 
-  const selectedDateDayjs = dayjs(selectedDate);
+  // const handleMapVote = () => {
+  //   if (isGuest) {
+  //     typeToast("guest");
+  //     return;
+  //   }
+  //   newSearchParams.delete("tab");
+  //   router.push(`/vote?${newSearchParams.toString()}`);
+  // };
 
-  // const newStudyPlaces = studyVoteArr
-  //   ?.filter(
-  //     (par) =>
-  //       par.place?.registerDate &&
-  //       dayjs(par.place.registerDate).isAfter(dayjs().subtract(2, "month")),
-  //   )
-  //   .map((par) => par.place);
+  // const onDragEnd = (panInfo: PanInfo) => {
+  //   const newDate = getNewDateBySwipe(panInfo, date as string);
+  //   if (newDate !== date) {
+  //     newSearchParams.set("date", newDate);
+  //     setSelectedDate(newDate);
+  //     router.replace(`/home?${newSearchParams.toString()}`, { scroll: false });
+  //   }
+  //   return;
+  // };
 
-  const handleMapVote = () => {
-    if (isGuest) {
-      typeToast("guest");
-      return;
-    }
-    newSearchParams.delete("tab");
-    router.push(`/vote?${newSearchParams.toString()}`);
-  };
+  // const handleChangeDate = (date: string) => {
+  //   setStudyVoteArr(null);
+  //   setSelectedDate(date);
+  // };
 
-  const onDragEnd = (panInfo: PanInfo) => {
-    const newDate = getNewDateBySwipe(panInfo, date as string);
-    if (newDate !== date) {
-      newSearchParams.set("date", newDate);
-      setSelectedDate(newDate);
-      router.replace(`/home?${newSearchParams.toString()}`, { scroll: false });
-    }
-    return;
-  };
-
-  const handleChangeDate = (date: string) => {
-    setStudyVoteArr(null);
-    setSelectedDate(date);
-  };
+  const [bottomDrawerUp, setBottomDrawerUp] = useState(true);
 
   return (
     <>
-      <Box p={4} pb={5}>
+      {/* <BottomFlexDrawer
+        height={bottomDrawerUp ? 500 : 200}
+        isLittleClose
+        setIsModal={setBottomDrawerUp}
+      /> */}
+      {/* <Box p={4} pb={5}>
         <Box fontSize="18px" fontWeight={600} py={4} pt={2}>
           직관적인 장소 선택!
         </Box>
@@ -228,10 +192,10 @@ function HomeStudySection() {
             onDragEnd={(_, panInfo) => onDragEnd(panInfo)}
             className="study_space"
           >
-            <HomeStudyCol studyVoteData={studyVoteArr} isLoading={!findStudyData} date={date} />
+            <HomeStudyCol studyVoteData={studyVoteArr} isLoading={isLoading} date={date} />
           </MotionDiv>
         </AnimatePresence>
-      </Box>
+      </Box> */}
       {/* <HomeNewStudySpace places={newStudyPlaces} /> */}
       {/* <HomeStudyChart voteCntArr={voteCntArr} /> */}
     </>

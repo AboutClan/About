@@ -5,57 +5,48 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
-import AlertModal from "../../components/AlertModal";
+import { STUDY_MAIN_IMAGES } from "../assets/images/studyMain";
+import AlertModal from "../components/AlertModal";
 
-import Avatar from "../../components/atoms/Avatar";
-import CurrentLocationBtn from "../../components/atoms/CurrentLocationBtn";
-import { Input } from "../../components/atoms/Input";
-import LocationSelector from "../../components/atoms/LocationSelector";
-import Selector from "../../components/atoms/Selector";
-import Header from "../../components/layouts/Header";
-import ButtonGroups, { ButtonOptionsProps } from "../../components/molecules/groups/ButtonGroups";
-import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
-import NewTwoButtonRow from "../../components/molecules/NewTwoButtonRow";
-import BottomDrawerLg from "../../components/organisms/drawer/BottomDrawerLg";
-import VoteMap from "../../components/organisms/VoteMap";
-import StudyVoteDrawer from "../../components/services/studyVote/StudyVoteDrawer";
-import { LOCATION_OPEN } from "../../constants/location";
-import { STUDY_COMMENT_ARR } from "../../constants/settingValue/comment";
-import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
-import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
-import { useRealtimeVoteMutation } from "../../hooks/realtime/mutations";
+import Avatar from "../components/atoms/Avatar";
+import CurrentLocationBtn from "../components/atoms/CurrentLocationBtn";
+import { Input } from "../components/atoms/Input";
+import ButtonGroups, { ButtonOptionsProps } from "../components/molecules/groups/ButtonGroups";
+import NewTwoButtonRow from "../components/molecules/NewTwoButtonRow";
+import BottomDrawerLg from "../components/organisms/drawer/BottomDrawerLg";
+import BottomFlexDrawer from "../components/organisms/drawer/BottomFlexDrawer";
+import VoteMap from "../components/organisms/VoteMap";
+import StudyVoteDrawer from "../components/services/studyVote/StudyVoteDrawer";
+import { STUDY_COMMENT_ARR } from "../constants/settingValue/comment";
+import { useResetStudyQuery } from "../hooks/custom/CustomHooks";
+import { useToast, useTypeToast } from "../hooks/custom/CustomToast";
+import { useRealtimeVoteMutation } from "../hooks/realtime/mutations";
 import {
   useDeleteMyVoteMutation,
   useStudyCommentMutation,
   useStudyParticipationMutation,
-} from "../../hooks/study/mutations";
-import { useStudyVoteQuery } from "../../hooks/study/queries";
-import { useUserInfoQuery } from "../../hooks/user/queries";
-import { getStudyTime } from "../../libs/study/getStudyTime";
-import { getCurrentLocationIcon, getStudyIcon } from "../../libs/study/getStudyVoteIcon";
-import { getLocationCenterDot } from "../../libs/study/getStudyVoteMap";
-import { ModalLayout } from "../../modals/Modals";
-import RealStudyBottomNav from "../../pageTemplates/vote/RealStudyBottomNav";
-import VotePreComponent from "../../pageTemplates/vote/VotePreComponent";
-import { myRealStudyInfoState, myStudyInfoState } from "../../recoils/studyRecoils";
-import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
-import { DispatchType } from "../../types/hooks/reactTypes";
+} from "../hooks/study/mutations";
+import { useStudyVoteQuery } from "../hooks/study/queries";
+import { useUserInfoQuery } from "../hooks/user/queries";
+import { getStudyTime } from "../libs/study/getStudyTime";
+import { getCurrentLocationIcon, getStudyIcon } from "../libs/study/getStudyVoteIcon";
+import { ModalLayout } from "../modals/Modals";
+import RealStudyBottomNav from "../pageTemplates/vote/RealStudyBottomNav";
+import { myRealStudyInfoState, myStudyInfoState } from "../recoils/studyRecoils";
+import { IMapOptions, IMarkerOptions } from "../types/externals/naverMapTypes";
+import { DispatchType } from "../types/hooks/reactTypes";
 import {
   IParticipation,
   IPlace,
   RealTimeInfoProps,
   RealTimeStudyPlaceProps,
-} from "../../types/models/studyTypes/studyDetails";
-import {
-  IStudyVoteTime,
-  IStudyVoteWithPlace,
-} from "../../types/models/studyTypes/studyInterActions";
-import { IAvatar } from "../../types/models/userTypes/userInfoTypes";
-import { ActiveLocation, LocationEn } from "../../types/services/locationTypes";
-import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
-import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
-import { getRandomIdx } from "../../utils/mathUtils";
+} from "../types/models/studyTypes/studyDetails";
+import { IStudyVoteTime, IStudyVoteWithPlace } from "../types/models/studyTypes/studyInterActions";
+import { IAvatar } from "../types/models/userTypes/userInfoTypes";
+import { ActiveLocation, LocationEn } from "../types/services/locationTypes";
+import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
+import { dayjsToFormat, dayjsToStr } from "../utils/dateTimeUtils";
+import { getRandomIdx } from "../utils/mathUtils";
 
 type StudyCategoryTab = "실시간 스터디" | "내일의 스터디";
 
@@ -97,13 +88,13 @@ export default function StudyVoteMap() {
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>();
   const [currentLocation, setCurrentLocation] = useState<{ lat: number; lon: number }>();
   const [centerLocation, setCenterLocation] = useState<{ lat: number; lon: number }>();
-  const [studyCategoryTab, setStudyCategoryTab] = useState<StudyCategoryTab>("실시간 스터디");
+
   const [locationFilterType, setLocationFilterType] = useState<
     "현재 위치" | "주 활동 장소" | "내 투표 장소"
   >("현재 위치");
   const [myVoteInfo, setMyVoteInfo] = useState<IStudyVoteWithPlace>();
   const [isLocationRefetch, setIsLocationRefetch] = useState(false);
-  const [isDrawerFixed, setIsDrawerDown] = useState(true);
+
   const [resizeToggle, setResizeToggle] = useState(false);
   const [dateValue, setDateValue] = useState(dateParam);
   const [locationValue, setLocationValue] = useState<ActiveLocation>(locationParamKr);
@@ -149,11 +140,7 @@ export default function StudyVoteMap() {
   useEffect(() => {
     newSearchParams.set("location", convertLocationLangTo(locationValue, "en"));
     newSearchParams.set("date", dateValue);
-    router.replace(`/vote?${newSearchParams.toString()}`);
-
-    if (studyCategoryTab === "내일의 스터디") {
-      setCenterLocation(getLocationCenterDot()[locationValue] || null);
-    }
+    router.replace(`/studyPage?${newSearchParams.toString()}`);
   }, [locationValue, dateValue]);
 
   useEffect(() => {
@@ -169,7 +156,7 @@ export default function StudyVoteMap() {
     const tempRealStudy = realTimeUsers?.find((userProps) => userProps.user.uid === userInfo?.uid);
     setMyStudy(tempStudy);
     setMyRealStudy(tempRealStudy);
-    if (studyCategoryTab === "실시간 스터디" && locationFilterType === "내 투표 장소") {
+    if (locationFilterType === "내 투표 장소") {
       setCenterToVotePlace(tempStudy, tempRealStudy);
     }
   }, [studyVoteOne, userInfo?.uid]);
@@ -196,11 +183,7 @@ export default function StudyVoteMap() {
   }, [isLocationRefetch]);
 
   useEffect(() => {
-    setResizeToggle((old) => !old);
-  }, [isDrawerFixed, studyCategoryTab]);
-
-  useEffect(() => {
-    if (studyCategoryTab === "실시간 스터디" && centerLocation) {
+    if (centerLocation) {
       setMapOptions(getMapOptions(centerLocation));
     } else if (centerLocation === null && mainLocation) {
       setMapOptions(getMapOptions({ lat: mainLocation.lat, lon: mainLocation.lon }));
@@ -208,24 +191,7 @@ export default function StudyVoteMap() {
     if (studyVoteData && currentLocation) {
       setMarkersOptions(getMarkersOptions(studyVoteData, currentLocation, realTimeUsers));
     }
-  }, [currentLocation, centerLocation, mainLocation, studyCategoryTab, studyVoteData]);
-
-  const tabOptionsArr: ITabNavOptions[] = [
-    {
-      text: "실시간 스터디",
-      func: () => {
-        setStudyCategoryTab("실시간 스터디");
-      },
-      flex: 1,
-    },
-    {
-      text: "내일의 스터디",
-      func: () => {
-        setStudyCategoryTab("내일의 스터디");
-      },
-      flex: 1,
-    },
-  ];
+  }, [currentLocation, centerLocation, mainLocation, studyVoteData]);
 
   const setCenterToVotePlace = (myStudy: IParticipation, myRealStudy: RealTimeInfoProps) => {
     if (!myStudy && !myRealStudy) return;
@@ -284,75 +250,58 @@ export default function StudyVoteMap() {
       (real) => real.place.text === findRealStudy?.place.text,
     );
 
-    if (studyCategoryTab === "실시간 스터디") {
-      const myStudy =
-        findStudy?.attendences?.some((who) => who.user.uid === userInfo?.uid) ||
-        realStudyAttendance?.some((who) => who.user.uid === userInfo?.uid);
-      console.log(123, findStudy, findStudy?.attendences);
-      const sortedCommentUserArr = findStudy
-        ? [...findStudy.attendences]?.sort((a, b) => {
-            const aTime = dayjs(a?.updatedAt);
-            const bTime = dayjs(b?.updatedAt);
-            if (aTime.isBefore(bTime)) return -1;
-            else if (aTime.isAfter(bTime)) return 1;
-            return 0;
-          })
-        : [...realStudyAttendance]?.sort((a, b) => {
-            const aTime = dayjs(a?.updatedAt);
-            const bTime = dayjs(b?.updatedAt);
-            if (aTime.isBefore(bTime)) return -1;
-            else if (aTime.isAfter(bTime)) return 1;
-            return 0;
-          });
+    const myStudy =
+      findStudy?.attendences?.some((who) => who.user.uid === userInfo?.uid) ||
+      realStudyAttendance?.some((who) => who.user.uid === userInfo?.uid);
+    console.log(123, findStudy, findStudy?.attendences);
+    const sortedCommentUserArr = findStudy
+      ? [...findStudy.attendences]?.sort((a, b) => {
+          const aTime = dayjs(a?.updatedAt);
+          const bTime = dayjs(b?.updatedAt);
+          if (aTime.isBefore(bTime)) return -1;
+          else if (aTime.isAfter(bTime)) return 1;
+          return 0;
+        })
+      : [...realStudyAttendance]?.sort((a, b) => {
+          const aTime = dayjs(a?.updatedAt);
+          const bTime = dayjs(b?.updatedAt);
+          if (aTime.isBefore(bTime)) return -1;
+          else if (aTime.isAfter(bTime)) return 1;
+          return 0;
+        });
 
-      const commentUser = sortedCommentUserArr?.[0]?.user;
+    const commentUser = sortedCommentUserArr?.[0]?.user;
 
-      setDetailInfo({
-        isPrivate: !!findRealStudy,
-        place: findRealStudy?.place,
-        title: findStudy?.place?.fullname || findRealStudy?.place?.text,
-        id,
-        time: getStudyTime(findStudy?.attendences) || {
-          start: dayjsToFormat(dayjs(findRealStudy.time.start), "HH:mm"),
-          end: dayjsToFormat(dayjs(findRealStudy.time.end), "HH:mm"),
+    setDetailInfo({
+      isPrivate: !!findRealStudy,
+      place: findRealStudy?.place,
+      title: findStudy?.place?.fullname || findRealStudy?.place?.text,
+      id,
+      time: getStudyTime(findStudy?.attendences) || {
+        start: dayjsToFormat(dayjs(findRealStudy.time.start), "HH:mm"),
+        end: dayjsToFormat(dayjs(findRealStudy.time.end), "HH:mm"),
+      },
+      participantCnt: findStudy?.attendences?.length || realStudyAttendance?.length,
+      image: findStudy?.place?.image || STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length)],
+      comment: {
+        user: {
+          uid: commentUser.uid,
+          avatar: commentUser.avatar,
+          userImage: commentUser.profileImage,
         },
-        participantCnt: findStudy?.attendences?.length || realStudyAttendance?.length,
-        image: findStudy?.place?.image || STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length)],
-        comment: {
-          user: {
-            uid: commentUser.uid,
-            avatar: commentUser.avatar,
-            userImage: commentUser.profileImage,
-          },
-          text:
-            sortedCommentUserArr?.[0]?.comment ||
-            STUDY_COMMENT_ARR[getRandomIdx(STUDY_COMMENT_ARR.length - 1)],
-        },
-        isMember:
-          findStudy?.attendences?.some((who) => who.user.uid === userInfo.uid) ||
-          realStudyAttendance?.some((who) => who.user.uid === userInfo.uid),
-      });
-    }
-
-    if (studyCategoryTab === "내일의 스터디") {
-      const myPlace = findStudy.place;
-      setMyVoteInfo((old) => setVotePlaceInfo(myPlace, old));
-    }
+        text:
+          sortedCommentUserArr?.[0]?.comment ||
+          STUDY_COMMENT_ARR[getRandomIdx(STUDY_COMMENT_ARR.length - 1)],
+      },
+      isMember:
+        findStudy?.attendences?.some((who) => who.user.uid === userInfo.uid) ||
+        realStudyAttendance?.some((who) => who.user.uid === userInfo.uid),
+    });
   };
   const { mutate } = useDeleteMyVoteMutation(dayjs());
   return (
     <>
-      <Header title="스터디 투표" url="/home" isCenter isBorder={false} />
-
-      <TabNav selected={studyCategoryTab} tabOptionsArr={tabOptionsArr} isMain />
-      <Box
-        position="relative"
-        height={
-          studyCategoryTab === "실시간 스터디" || !isDrawerFixed
-            ? "calc(100dvh - 100px)"
-            : "calc(100dvh - 412px)"
-        }
-      >
+      <Box position="relative" height={"calc(100dvh - 100px)"}>
         <Flex
           w="100%"
           justify="space-between"
@@ -363,35 +312,13 @@ export default function StudyVoteMap() {
           left="0"
           zIndex={10}
         >
-          {studyCategoryTab === "실시간 스터디" ? (
-            <>
-              <CurrentLocationBtn onClick={() => setLocationFilterType("현재 위치")} />
-              <ButtonGroups
-                buttonOptionsArr={realButtonOptionsArr}
-                size="sm"
-                isEllipse
-                currentValue={locationFilterType}
-              />
-            </>
-          ) : (
-            <>
-              <Flex>
-                <Box mr={2}>
-                  <Selector
-                    defaultValue={dateValue}
-                    options={dateArr}
-                    setValue={setDateValue}
-                    convertTextFunc={(text) => dayjsToFormat(dayjs(text), "M월 D일(ddd) 스터디")}
-                  />
-                </Box>
-                <LocationSelector
-                  defaultValue={locationValue}
-                  options={LOCATION_OPEN}
-                  setValue={setLocationValue}
-                />
-              </Flex>
-            </>
-          )}
+          <CurrentLocationBtn onClick={() => setLocationFilterType("현재 위치")} />
+          <ButtonGroups
+            buttonOptionsArr={realButtonOptionsArr}
+            size="sm"
+            isEllipse
+            currentValue={locationFilterType}
+          />
         </Flex>
         <VoteMap
           mapOptions={mapOptions}
@@ -400,24 +327,16 @@ export default function StudyVoteMap() {
           resizeToggle={resizeToggle}
         />
       </Box>
-      {studyCategoryTab === "실시간 스터디" ? (
-        <RealStudyBottomNav
-          isAleadyAttend={
-            !!myStudy?.attendences?.find((who) => who?.user.uid === userInfo?.uid)?.arrived ||
-            !!myRealStudy?.arrived
-          }
-        />
-      ) : (
-        <VotePreComponent
-          setMarkersOptions={setMarkersOptions}
-          refetchCurrentLocation={() => setIsLocationRefetch(true)}
-          myVoteInfo={myVoteInfo}
-          studyVoteData={studyVoteData}
-          setMyVoteInfo={setMyVoteInfo}
-          setIsDrawerDown={setIsDrawerDown}
-        />
-      )}
+
+      <RealStudyBottomNav
+        isAleadyAttend={
+          !!myStudy?.attendences?.find((who) => who?.user.uid === userInfo?.uid)?.arrived ||
+          !!myRealStudy?.arrived
+        }
+      />
+
       {detailInfo && <DetailDrawer detailInfo={detailInfo} setDetailInfo={setDetailInfo} />}
+      <BottomFlexDrawer isOverlay={false} />
     </>
   );
 }

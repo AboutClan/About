@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
 
 import axios from "axios";
+import { signOut, useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
 import { useEffect, useMemo, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -18,8 +18,8 @@ import BaseModal from "./BaseModal";
 import BaseScript from "./BaseScript";
 import Seo from "./Seo";
 
-export const BASE_BOTTOM_NAV_SEGMENT = ["home", "square", "user", "group"];
-export const NOT_PADDING_NAV_SEGMENT = ["login"];
+export const BASE_BOTTOM_NAV_SEGMENT = ["home", "studyPage", "gatherPage", "user", "square"];
+export const NOT_PADDING_NAV_SEGMENT = ["login", "studyPage"];
 export const NOT_PADDING_BOTTOM_NAV_SEGMENT = ["vote"];
 
 const GoogleAnalytics = dynamic(

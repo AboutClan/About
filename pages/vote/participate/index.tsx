@@ -42,7 +42,7 @@ function Participate() {
   });
 
   const participations = studyVoteData?.[0]?.participations;
-
+  
   const { mutate, isLoading } = useStudyParticipationMutation(dayjs(), "post", {
     onSuccess() {
       typeToast("vote");

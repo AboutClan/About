@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { STUDY_COVER_IMAGES } from "../../../../assets/images/studyCover";
 
@@ -39,11 +39,11 @@ export default function Page() {
   const [study, setStudy] = useState<IParticipation>();
   const [realStudy, setRealStudy] = useState<RealTimeInfoProps[]>();
   const studyPairArr = useRecoilValue(studyPairArrState);
-  const setMyStudy = useSetRecoilState(myStudyInfoState);
+  const [myStudy, setMyStudy] = useRecoilState(myStudyInfoState);
   const [studyDateStatus, setStudyDateStatus] = useRecoilState(studyDateStatusState);
   const findStudy = studyPairArr
     ?.find((study) => dayjsToStr(dayjs(study.date)) === date)
-    .participations.find((par) => par.place._id === id);
+    ?.participations?.find((par) => par.place._id === id);
 
   const isPrivateStudy = id === ALL_스터디인증;
   const { data: studyOne } = useStudyVoteOneQuery(date, id, {
@@ -59,27 +59,28 @@ export default function Page() {
     if (!session) return;
     if (privateParam) {
       if (privateParam === "off") {
-        setStudy(studyVoteOne?.[0]?.participations?.find((par) => par.place._id === id));
+        const findStudy = studyVoteOne?.[0]?.participations?.find((par) => par.place._id === id);
+        setStudy(findStudy);
+        setMyStudy(findStudy);
       } else {
         setRealStudy(
           studyVoteOne?.[0]?.realTime?.filter((par) => par.place.text === findRealStudy.place.text),
         );
       }
-      return;
     }
+
     const tempStudy = studyOne || findStudy;
+
     if (!tempStudy) return;
     setStudy(tempStudy);
-    const isMyStudy =
-      tempStudy.status !== "dismissed" &&
-      tempStudy.attendences.find((who) => who.user.uid === session.user.uid);
+    const isMyStudy = tempStudy.attendences.find((who) => who.user.uid === session.user.uid);
     if (isMyStudy) setMyStudy(tempStudy);
   }, [studyPairArr, studyOne, session, studyVoteOne, privateParam]);
 
   useEffect(() => {
     setStudyDateStatus(getStudyDateStatus(date));
   }, [date]);
-
+  console.log(123, myStudy);
   const place =
     study?.place ||
     (findRealStudy && {

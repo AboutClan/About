@@ -127,17 +127,18 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
   };
 
   const handleMainButton = (type: MainBtnType) => {
+    console.log(2, type);
     if (isGuest) {
       typeToast("guest");
       return;
     }
-    if (type === "attendCheck") {
-      if (myStudy.status === "open") {
-      } else if (myStudy.status === "free") {
-      }
+    // if (type === "attendCheck") {
+    //   if (myStudy.status === "open") {
+    //   } else if (myStudy.status === "free") {
+    //   }
 
-      return;
-    }
+    //   return;
+    // }
     setModalType(type);
   };
 
@@ -158,7 +159,7 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
       func: () => handleSubNav("absent"),
     },
   ];
-
+  console.log(123, modalType);
   return (
     <>
       <Slide isFixed={true} posZero="top">
@@ -245,7 +246,7 @@ const getMainButtonStatus = (
     case "today":
       if (studyStatus === "dismissed") return { text: "FREE 오픈 신청", funcType: "freeOpen" };
       if (votingType === "same") return { text: "출석 체크", funcType: "attendCheck" };
-      // if (votingType === "other") return { text: "다른 스터디에 참여중입니다." };
+      if (votingType === "other") return { text: "다른 스터디에 참여중입니다." };
       if (isMax) return { text: "인원 마감" };
       return { text: "스터디 투표", funcType: "vote" };
   }

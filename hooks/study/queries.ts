@@ -47,15 +47,13 @@ export interface StudyVoteProps {}
 export const useStudyVoteQuery = (
   date: string,
   location: Location | "전체",
-  isBasic: boolean,
-  isTwoDay: boolean,
-  options?: QueryOptions<IStudy[]>,
+  options?: QueryOptions<IStudy>,
 ) =>
-  useQuery<IStudy[], AxiosError, IStudy[]>(
-    [STUDY_VOTE, date, location, isBasic, isTwoDay],
+  useQuery<IStudy, AxiosError, IStudy>(
+    [STUDY_VOTE, date, location],
     async () => {
-      const res = await axios.get<IStudy[]>(`${SERVER_URI}/vote/${date}`, {
-        params: { location, isBasic, isTwoDay },
+      const res = await axios.get<IStudy>(`${SERVER_URI}/vote/${date}`, {
+        params: { location },
       });
       return res.data;
     },

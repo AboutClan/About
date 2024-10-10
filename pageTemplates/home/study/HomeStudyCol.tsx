@@ -28,19 +28,13 @@ import { getDistanceFromLatLonInKm } from "../../../utils/mathUtils";
 
 interface HomeStudyColProps {
   studyVoteData: IParticipation[];
-  specialVoteData?: any;
+
   isLoading: boolean;
   isShort?: boolean;
   date: string;
 }
 
-function HomeStudyCol({
-  studyVoteData,
-  isLoading,
-  date,
-  isShort,
-  specialVoteData,
-}: HomeStudyColProps) {
+function HomeStudyCol({ studyVoteData, isLoading, date, isShort }: HomeStudyColProps) {
   const { data: session } = useSession();
 
   const searchParams = useSearchParams();
@@ -63,7 +57,7 @@ function HomeStudyCol({
     }
     const cardList = setStudyDataToCardCol(studyVoteData, date as string, session?.user.uid);
 
-    setStudyCardColData(cardList.slice(0, specialVoteData ? 2 : 3));
+    setStudyCardColData(cardList.slice(0, 3));
 
     let myStudy: IParticipation = null;
     const studyOpenCheck = localStorage.getItem(STUDY_CHECK_POP_UP);
@@ -120,7 +114,6 @@ function HomeStudyCol({
         {!isLoading && studyCardColData ? (
           <CardColumnLayout
             cardDataArr={studyCardColData}
-            specialCardData={specialVoteData}
             url={`/studyList?tab=study&location=${locationEn}&date=${date}`}
             isShort={isShort}
           />

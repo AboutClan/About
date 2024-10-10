@@ -1,10 +1,7 @@
 import { Box } from "@chakra-ui/react";
-import dayjs from "dayjs";
 import styled from "styled-components";
 
-import { dayjsToStr } from "../../utils/dateTimeUtils";
 import ShadowBlockButton from "../atoms/buttons/ShadowBlockButton";
-import { HighlightedThumbnailCard } from "../molecules/cards/HighlightedThumbnailCard";
 import {
   IPostThumbnailCard,
   PostThumbnailCard,
@@ -13,33 +10,26 @@ import {
 
 interface ICardColumnLayout {
   cardDataArr: IPostThumbnailCard[];
-  specialCardData?: any;
+
   url: string;
   func?: () => void;
   isShort?: boolean;
 }
 export function CardColumnLayout({
   cardDataArr,
-  specialCardData,
+
   url,
   func,
   isShort,
 }: ICardColumnLayout) {
   return (
     <Layout>
-      {specialCardData && (
-        <Item>
-          <HighlightedThumbnailCard date={dayjsToStr(dayjs())} isShort={isShort} />
-        </Item>
-      )}
       {cardDataArr.map((cardData, idx) => (
         <Item key={idx}>
           <PostThumbnailCard postThumbnailCardProps={cardData} isShort={isShort} />
         </Item>
       ))}
-      {(cardDataArr?.length >= 3 || specialCardData) && (
-        <ShadowBlockButton text="더보기" url={url} func={func} />
-      )}
+      {cardDataArr?.length >= 3 && <ShadowBlockButton text="더보기" url={url} func={func} />}
     </Layout>
   );
 }
