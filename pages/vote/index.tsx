@@ -487,24 +487,30 @@ function DetailDrawer({
   };
 
   const onClickStudyVote = (voteTime: IStudyVoteTime) => {
+    console.log(25, voteTime);
     if (myStudy || myRealStudy) {
+      console.log(2224);
       setVoteTime(voteTime);
       setIsAlertModal(true);
       return;
     }
-    handleVote();
+    handleVote(voteTime);
   };
 
-  const handleVote = () => {
+  const handleVote = (time?: IStudyVoteTime) => {
     if (!detailInfo.isPrivate) {
       studyVote({
         place: detailInfo?.id,
-        ...voteTime,
+        start: time?.start || voteTime?.start,
+        end: time?.end || voteTime?.end,
       });
     } else {
       realTimeStudyVote({
         place: detailInfo.place as RealTimeStudyPlaceProps,
-        time: { ...voteTime },
+        time: {
+          start: time?.start || voteTime?.start,
+          end: time?.end || voteTime?.end,
+        },
       });
     }
   };

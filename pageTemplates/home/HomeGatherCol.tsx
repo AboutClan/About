@@ -64,7 +64,7 @@ export const setGatherDataToCardCol = (
   const cardCol: IPostThumbnailCard[] = gathers.map((gather, idx) => ({
     title: gather.title,
     subtitle:
-      gather.place + " · " + gather.type.title + " · " + dayjs(gather.date).format("M월 D일(ddd)"),
+      gather.location.main + " · " + gather.type.title + " · " + dayjs(gather.date).format("M월 D일(ddd)"),
     participants: [gather.user, ...gather.participants.map((par) => par.user)] as IUserSummary[],
     url: `/gather/${gather.id}`,
     func: func ? () => func(gather) : undefined,

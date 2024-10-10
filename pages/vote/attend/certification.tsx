@@ -32,6 +32,7 @@ function Certification() {
   const [imageArr, setImageArr] = useState<string[]>([]);
   const [imageFormArr, setImageFormArr] = useState<Blob[]>([]);
   const [isResetAlert, setIsResetAlert] = useState(false);
+  const [isActive, setIsActive] = useState(true);
 
   const [studyAttendInfo, setStudyAttendInfo] = useRecoilState(studyAttendInfoState);
 
@@ -54,9 +55,11 @@ function Certification() {
   useEffect(() => {
     if (myRealStudyInfo) {
       setPlaceInfo((old) => ({ ...old, place_name: myRealStudyInfo.place.text }));
+      setIsActive(false);
     }
     if (myStudyInfo) {
       setPlaceInfo((old) => ({ ...old, place_name: myStudy?.fullname }));
+      setIsActive(false);
     }
   }, [myStudyInfo, myRealStudyInfo]);
 
@@ -90,8 +93,9 @@ function Certification() {
       return;
     }
     setPlaceInfo({ place_name: "", road_address_name: "" });
+    setIsActive(true);
   };
-
+  console.log(myStudy, myRealStudyInfo);
   return (
     <>
       <Box minH="calc(100dvh - var(--header-h))" bgColor="white">
@@ -100,7 +104,7 @@ function Certification() {
           <PageIntro main={{ first: "출석 인증하기" }} sub="스터디 출석을 인증해 보세요" />
           <ImageUploadInput setImageUrl={setImage} />
           <Box mb={3}>
-            <SectionTitle text="현재 장소" isActive={!myStudy && !myRealStudyInfo}>
+            <SectionTitle text="현재 장소" isActive={isActive}>
               <Button
                 fontSize="12px"
                 fontWeight={500}
@@ -118,7 +122,7 @@ function Certification() {
           <LocationSearch
             info={placeInfo}
             setInfo={setPlaceInfo}
-            isActive={!myStudy && !myRealStudyInfo}
+            isActive={isActive}
             hasInitialValue
           />
         </Slide>
@@ -132,6 +136,7 @@ function Certification() {
             text: "변경합니다",
             func: () => {
               setPlaceInfo({ place_name: "", road_address_name: "" });
+              setIsActive(true);
             },
           }}
           setIsModal={setIsResetAlert}

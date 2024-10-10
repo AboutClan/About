@@ -22,7 +22,10 @@ import {
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import { useImageUploadMutation } from "../../../hooks/image/mutations";
-import { useRealTimeAttendMutation } from "../../../hooks/realtime/mutations";
+import {
+  useRealTimeAttendMutation,
+  useRealTimeDirectAttendMutation,
+} from "../../../hooks/realtime/mutations";
 import { useStudyAttendCheckMutation } from "../../../hooks/study/mutations";
 import {
   useAboutPointMutation,
@@ -76,6 +79,12 @@ function Configuration() {
   });
 
   const { mutate: attendRealTimeStudy } = useRealTimeAttendMutation({
+    onSuccess(data) {
+      handleAttendSuccess(data);
+    },
+  });
+
+  const { mutate: attendRealTimeDirect } = useRealTimeDirectAttendMutation({
     onSuccess(data) {
       handleAttendSuccess(data);
     },
@@ -152,9 +161,9 @@ function Configuration() {
   };
 
   const formData = new FormData();
-
+  console.log(53, studyAttendInfo, myStudy);
   const handleSubmit = () => {
-    if (myStudy) {
+    if (myStudy && myStudy?.place?.fullname === studyAttendInfo?.place?.text) {
       setIsChecking(true);
       handleArrived({ memo: attendMessage, endHour: convertTimeStringToDayjs(endTime) });
       formData.append("image", studyAttendInfo.image);
@@ -163,7 +172,7 @@ function Configuration() {
       setTimeout(() => {
         setIsChecking(false);
       }, 2000);
-    } else {
+    } else if (myRealStudy && myRealStudy?.place?.text === studyAttendInfo?.place?.text) {
       formData.append("memo", attendMessage);
       formData.append("status", "open");
       formData.append("images", studyAttendInfo?.image as Blob);
@@ -175,6 +184,19 @@ function Configuration() {
         }),
       );
       attendRealTimeStudy(formData);
+    } else {
+      formData.append("memo", attendMessage);
+      formData.append("status", "open");
+      formData.append("images", studyAttendInfo?.image as Blob);
+      formData.append("place", JSON.stringify(studyAttendInfo?.place));
+      formData.append(
+        "time",
+        JSON.stringify({
+          start: dayjs().toISOString(),
+          end: convertTimeStringToDayjs(endTime).toISOString(),
+        }),
+      );
+      attendRealTimeDirect(formData);
     }
   };
 

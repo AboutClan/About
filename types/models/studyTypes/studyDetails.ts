@@ -52,8 +52,11 @@ export interface RealTimeBasicVoteProps {
 export interface RealTimeBasicAttendanceProps {
   memo: string;
   image: string | Blob;
-  status: "solo";
+  status: StudyUserStatus;
 }
+export interface RealTimeDirectAttendanceProps
+  extends RealTimeBasicAttendanceProps,
+    RealTimeBasicVoteProps {}
 
 export interface RealTimeInfoProps extends RealTimeBasicVoteProps, ITimeStamps {
   user: UserSimpleInfoProps;
