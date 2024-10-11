@@ -94,7 +94,6 @@ export default function BottomDrawerLg({
             colorScheme="mintTheme"
             size="lg"
             isLoading={footer.buttonLoading}
-            borderRadius="var(--rounded-lg)"
             onClick={footer.onClick}
           >
             {footer.buttonText}
@@ -118,11 +117,11 @@ const Layout = styled(motion.div)<{
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   background-color: white;
-  z-index: 500;
+  z-index: 501;
   padding: ${(props) => (props.isxpadding === "true" ? "12px 20px" : "12px 0")};
   padding-bottom: ${(props) =>
     props.isxpadding === "true" && props?.paddingoptions?.bottom !== 0
-      ? `${20 + iPhoneNotchSize()}px`
+      ? `${8 + iPhoneNotchSize()}px`
       : iPhoneNotchSize()};
   touch-action: none; /* 터치 스크롤을 막음 */
   display: flex;
@@ -131,11 +130,12 @@ const Layout = styled(motion.div)<{
 `;
 
 const TopNav = styled.nav`
-  width: 56px;
-  height: 4px;
-  border-radius: 4px;
-  background-color: var(--gray-400);
-  margin-bottom: 16px;
+  width: 60px;
+  height: 5px;
+  border-radius: 100px;
+  background-color: var(--gray-500);
+  opacity: 0.4;
+  margin-bottom: 12px;
 `;
 
 const Header = styled.header`

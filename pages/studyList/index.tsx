@@ -19,11 +19,11 @@ export default function StudyList() {
   const location = searchParams.get("location") as LocationEn;
   const locationKr = convertLocationLangTo(location, "kr");
 
-  const { data } = useStudyVoteQuery(date, locationKr, false, false, {
+  const { data } = useStudyVoteQuery(date, locationKr, {
     enabled: !!locationKr && !!date,
   });
 
-  const studyVoteOne = data?.[0]?.participations;
+  const studyVoteOne = data?.participations;
 
   const cardArr =
     studyVoteOne && session && setStudyDataToCardCol(studyVoteOne, date, session.user.uid);
@@ -32,7 +32,7 @@ export default function StudyList() {
     <>
       <Header title={dayjsToFormat(dayjs(date), "M월 D일 스터디")} />
 
-      <Slide>
+      <Slide isNoPadding>
         <Box px="16px">
           {cardArr &&
             cardArr.map((card, idx) => (

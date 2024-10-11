@@ -11,7 +11,7 @@ export default function BottomFlexDrawer({
   setIsModal,
   options,
   isAnimation = true,
-  height = 403.5,
+
   children,
   isxpadding = true,
   isOverlay = true,
@@ -21,7 +21,7 @@ export default function BottomFlexDrawer({
   const header = options?.header;
   const footer = options?.footer;
 
-  const [drawerHeight, setDrawerHeight] = useState(height); // 초기 높이
+  const [drawerHeight, setDrawerHeight] = useState(DRAWER_MAX_HEIGHT); // 초기 높이
   const startYRef = useRef(0); // 드래그 시작 위치 저장
   const currentHeightRef = useRef(drawerHeight); // 현재 높이 저장
 

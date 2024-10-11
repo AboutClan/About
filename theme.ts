@@ -111,6 +111,7 @@ const theme = extendTheme({
           h: "48px",
           fontWeight: 700,
           fontSize: "14px",
+          borderRadius: "12px",
         },
       },
       variants: {

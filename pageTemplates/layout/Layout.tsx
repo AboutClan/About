@@ -13,6 +13,7 @@ import PageTracker from "../../components/layouts/PageTracker";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { parseUrlToSegments } from "../../utils/stringUtils";
+import { iPhoneNotchSize } from "../../utils/validationUtils";
 import BaseModal from "./BaseModal";
 import BaseScript from "./BaseScript";
 import Seo from "./Seo";
@@ -90,7 +91,7 @@ function Layout({ children }: ILayout) {
                 : !NOT_PADDING_NAV_SEGMENT.includes(currentSegment?.[0])
                   ? {
                       paddingTop: "56px",
-                      // paddingBottom: `calc(var(--bottom-nav-height) + ${iPhoneNotchSize()}px`,
+                      paddingBottom: `calc(var(--bottom-nav-height) + ${iPhoneNotchSize()}px`,
                     }
                   : undefined
             }
