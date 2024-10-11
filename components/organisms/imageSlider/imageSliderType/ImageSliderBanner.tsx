@@ -7,10 +7,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import styled from "styled-components";
 import SwiperCore from "swiper";
-import { Autoplay, Scrollbar } from "swiper/modules";
+import { Autoplay, Pagination, Scrollbar } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-
-import { Pagination } from "swiper/modules";
 import { useTypeToast } from "../../../../hooks/custom/CustomToast";
 
 SwiperCore.use([Autoplay, Scrollbar]);
@@ -82,6 +80,9 @@ function ImageSliderBanner({ imageArr, isLightBanner }: IImageSliderEventBanner)
 }
 
 const StyledSwiper = styled(Swiper)`
+  .swiper-wrapper {
+    display: -webkit-inline-box;
+  }
   .swiper-pagination-bullet {
     background-color: white;
     width: 4px;

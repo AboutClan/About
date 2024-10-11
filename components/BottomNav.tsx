@@ -74,7 +74,7 @@ function NavButton({ text, url, activeIcon, defaultIcon, isActive, idx }: INavBu
     <NavLink
       onClick={() => handleMove()}
       href={url}
-      isActive={isActive.toString() as "true" | "false"}
+      isactive={isActive.toString() as "true" | "false"}
       replace={!text}
       className={`bottom_nav${idx}`}
     >
@@ -141,14 +141,14 @@ const Nav = styled.nav<{ height: number }>`
   padding-bottom: ${(props) => (props.height > 90 ? "4px" : 0)};
 `;
 
-const NavLink = styled(Link)<{ isActive: "true" | "false" } & LinkProps>`
+const NavLink = styled(Link)<{ isactive: "true" | "false" } & LinkProps>`
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
-  color: ${({ isActive }) => (isActive === "true" ? "var(--gray-800)" : "var(--gray-500)")};
+  color: ${({ isactive }) => (isactive === "true" ? "var(--gray-800)" : "var(--gray-500)")};
 `;
 
 const NavText = styled.div`

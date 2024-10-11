@@ -1,5 +1,4 @@
 import { Box } from "@chakra-ui/react";
-import { useState } from "react";
 
 import Slide from "../../components/layouts/PageSlide";
 import HomeBannerSlide from "../../pageTemplates/home/HomeBannerSlide";
@@ -9,18 +8,17 @@ import HomeInitialSetting from "../../pageTemplates/home/HomeInitialSetting";
 import HomeNav from "../../pageTemplates/home/HomeNav";
 import HomeStudySection from "../../pageTemplates/home/HomeStudySection";
 
-import { HomeTab } from "../../pageTemplates/home/HomeTab";
 function Home() {
-  const [tab, setTab] = useState<HomeTab>();
-
   return (
     <>
       <HomeInitialSetting />
       <HomeHeader />
+
       <Slide>
-        <HomeBannerSlide tab={tab} />
+        <HomeBannerSlide />
         <HomeNav />
       </Slide>
+
       <Slide isNoPadding>
         <HomeStudySection />
       </Slide>

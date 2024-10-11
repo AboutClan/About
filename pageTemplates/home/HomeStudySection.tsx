@@ -34,7 +34,7 @@ function HomeStudySection({}: HomeStudySectionProps) {
       func: () => setDate(dayjsToStr(dayjs())),
     },
     {
-      text: dayjsToKr(dayjs()),
+      text: dayjsToKr(dayjs().add(1, "day")),
       func: () => setDate(dayjsToStr(dayjs().add(1, "day"))),
     },
   ];

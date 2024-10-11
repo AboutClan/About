@@ -5,28 +5,15 @@ import {
   GATHER_BANNER_IMAGE,
   MAIN_BANNER_IMAGE,
 } from "../../assets/images/BannerImages";
-import ImageSliderBanner, {
-  ImageBannerProp,
-} from "../../components/organisms/imageSlider/imageSliderType/ImageSliderBanner";
-import { HomeTab } from "./HomeTab";
+import ImageSliderBanner from "../../components/organisms/imageSlider/imageSliderType/ImageSliderBanner";
 
-interface EventBannerProps {
-  tab: HomeTab;
-}
-
-function HomeBannerSlide({ tab }: EventBannerProps) {
-  const imageArr: ImageBannerProp[] = (
-    tab === "추천" || !tab
-      ? MAIN_BANNER_IMAGE
-      : tab === "번개"
-        ? GATHER_BANNER_IMAGE
-        : CLUB_BANNER_IMAGE
-  ).map((banner) => ({
-    url: banner?.url,
-    imageUrl: banner.image,
-  }));
-
-  const isLightBanner = tab === "캘린더";
+function HomeBannerSlide() {
+  const imageArr = [...MAIN_BANNER_IMAGE, ...GATHER_BANNER_IMAGE, ...CLUB_BANNER_IMAGE].map(
+    (banner) => ({
+      url: banner?.url,
+      imageUrl: banner.image,
+    }),
+  );
 
   return (
     <>
@@ -38,7 +25,7 @@ function HomeBannerSlide({ tab }: EventBannerProps) {
         borderRadius="16px"
         overflow="hidden"
       >
-        <ImageSliderBanner imageArr={imageArr} isLightBanner={isLightBanner} />
+        <ImageSliderBanner imageArr={imageArr} />
       </Flex>
     </>
   );
