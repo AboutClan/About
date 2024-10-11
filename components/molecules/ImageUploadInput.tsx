@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { processFile } from "../../utils/imageUtils";
-import ImageUploadIcon from "../atoms/Icons/ImageUploadIcon";
+import ImageUploadIcon from "../Icons/ImageUploadIcon";
 
 interface IImageUploadInput {
   setImageUrl: DispatchType<Blob>;

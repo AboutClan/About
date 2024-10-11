@@ -1,14 +1,14 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
 
 import { GATHER_SHARE_IMAGES } from "../../../assets/images/imageUrl";
-import KakaoShareBtn from "../../../components/atoms/Icons/KakaoShareBtn";
+import KakaoShareBtn from "../../../components/Icons/KakaoShareBtn";
 import Header from "../../../components/layouts/Header";
 import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import { WEB_URL } from "../../../constants/system";

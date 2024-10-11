@@ -20,7 +20,7 @@ import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { usePointSystemLogQuery } from "../../hooks/user/queries";
 import { myStudyInfoState, studyDateStatusState } from "../../recoils/studyRecoils";
 import {
-  IParticipation,
+  StudyParticipationProps,
   StudyStatus,
   StudyUserStatus,
 } from "../../types/models/studyTypes/studyDetails";
@@ -183,7 +183,7 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
   );
 }
 
-const getVotingType = (myStudy: IParticipation, placeId: string) => {
+const getVotingType = (myStudy: StudyParticipationProps, placeId: string) => {
   return !myStudy ? null : myStudy?.place._id === placeId ? "same" : "other";
 };
 
@@ -192,10 +192,14 @@ const getMyPrevVotePoint = (pointLogs: IPointLog[], date: string) => {
     .value;
 };
 
-const checkMyAttend = (studyDateStatus: StudyDateStatus, myStudy: IParticipation, uid: string) => {
+const checkMyAttend = (
+  studyDateStatus: StudyDateStatus,
+  myStudy: StudyParticipationProps,
+  uid: string,
+) => {
   return !!(
     studyDateStatus !== "not passed" &&
-    myStudy?.attendences.find((who) => who.user.uid === uid)?.arrived
+    myStudy?.members.find((who) => who.user.uid === uid)?.arrived
   );
 };
 

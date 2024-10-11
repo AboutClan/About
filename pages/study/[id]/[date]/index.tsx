@@ -24,8 +24,8 @@ import {
   studyPairArrState,
 } from "../../../../recoils/studyRecoils";
 import {
-  IParticipation,
   RealTimeInfoProps,
+  StudyParticipationProps,
 } from "../../../../types/models/studyTypes/studyDetails";
 import { dayjsToStr } from "../../../../utils/dateTimeUtils";
 import { getRandomIdx } from "../../../../utils/mathUtils";
@@ -36,7 +36,7 @@ export default function Page() {
   const { id, date } = useParams<{ id: string; date: string }>() || {};
   const privateParam = searchParams.get("private");
 
-  const [study, setStudy] = useState<IParticipation>();
+  const [study, setStudy] = useState<StudyParticipationProps>();
   const [realStudy, setRealStudy] = useState<RealTimeInfoProps[]>();
   const studyPairArr = useRecoilValue(studyPairArrState);
   const [myStudy, setMyStudy] = useRecoilState(myStudyInfoState);
@@ -73,7 +73,7 @@ export default function Page() {
 
     if (!tempStudy) return;
     setStudy(tempStudy);
-    const isMyStudy = tempStudy.attendences.find((who) => who.user.uid === session.user.uid);
+    const isMyStudy = tempStudy.members.find((who) => who.user.uid === session.user.uid);
     if (isMyStudy) setMyStudy(tempStudy);
   }, [studyPairArr, studyOne, session, studyVoteOne, privateParam]);
 
@@ -94,10 +94,10 @@ export default function Page() {
     });
   const realPlace = findRealStudy?.place;
 
-  const attendances =
+  const members =
     studyDateStatus !== "not passed"
-      ? study?.attendences.filter((att) => att.firstChoice)
-      : study?.attendences;
+      ? study?.members.filter((att) => att.firstChoice)
+      : study?.members;
 
   return (
     <Layout>
@@ -118,7 +118,7 @@ export default function Page() {
               title={place.fullname}
               locationDetail={place.locationDetail}
               time={place.time}
-              participantsNum={attendances.length}
+              participantsNum={members.length}
               coordinate={{
                 lat: place.latitude,
                 lng: place.longitude,
@@ -126,9 +126,9 @@ export default function Page() {
             />
             <Divider />
             <StudyDateBar place={place} />
-            <StudyTimeBoard participants={attendances} studyStatus={study.status} />
-            <StudyParticipants participants={attendances} absences={study.absences} />
-            <StudyNavigation voteCnt={attendances?.length} studyStatus={study.status} />
+            <StudyTimeBoard participants={members} studyStatus={study.status} />
+            <StudyParticipants participants={members} absences={study.absences} />
+            <StudyNavigation voteCnt={members?.length} studyStatus={study.status} />
           </Slide>
         </>
       ) : realStudy ? (

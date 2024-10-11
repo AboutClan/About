@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/react";
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { STUDY_RECOMMENDATION_DISTANCE } from "../../constants/settingValue/study/study";
@@ -8,7 +8,10 @@ import { getStudyVoteCnt } from "../../libs/study/getStudyVoteCnt";
 import { getStudyVoteIcon } from "../../libs/study/getStudyVoteIcon";
 import { IMarkerOptions } from "../../types/externals/naverMapTypes";
 import { DispatchBoolean, DispatchType } from "../../types/hooks/reactTypes";
-import { IParticipation, IPlace } from "../../types/models/studyTypes/studyDetails";
+import {
+  StudyParticipationProps,
+  StudyPlaceProps,
+} from "../../types/models/studyTypes/studyDetails";
 import { IStudyVoteWithPlace } from "../../types/models/studyTypes/studyInterActions";
 import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
@@ -20,7 +23,7 @@ interface VotePreProps {
   setMarkersOptions: DispatchType<IMarkerOptions[]>;
   myVoteInfo: IStudyVoteWithPlace;
   setMyVoteInfo: DispatchType<IStudyVoteWithPlace>;
-  studyVoteData: IParticipation[];
+  studyVoteData: StudyParticipationProps[];
   refetchCurrentLocation: () => void;
   setIsDrawerDown: DispatchBoolean;
 }
@@ -105,7 +108,7 @@ function VotePreComponent({
 }
 
 const getMarkersOptions = (
-  studyVoteData?: IParticipation[],
+  studyVoteData?: StudyParticipationProps[],
   myVote?: IStudyVoteWithPlace,
 ): IMarkerOptions[] | undefined => {
   if (typeof naver === "undefined" || !studyVoteData) return;
@@ -146,7 +149,11 @@ const getMarkersOptions = (
   });
 };
 
-const getPolyline = (mainPlace: IPlace, subPlace: IPlace, isSecondSub?: boolean) => {
+const getPolyline = (
+  mainPlace: StudyPlaceProps,
+  subPlace: StudyPlaceProps,
+  isSecondSub?: boolean,
+) => {
   const { latitude, longitude } = mainPlace;
   const { latitude: subLat, longitude: subLon } = subPlace;
   return {

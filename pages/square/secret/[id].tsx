@@ -11,16 +11,16 @@ import {
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import AlertModal from "../../../components/AlertModal";
 import { Badge } from "../../../components/atoms/badges/Badges";
 import Divider from "../../../components/atoms/Divider";
-import KakaoShareBtn from "../../../components/atoms/Icons/KakaoShareBtn";
 import { MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
+import KakaoShareBtn from "../../../components/Icons/KakaoShareBtn";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import OrganizerBar from "../../../components/molecules/OrganizerBar";
@@ -132,7 +132,7 @@ function SecretSquareDetailPage() {
       },
     );
   };
-  
+
   return (
     <>
       <Header title="">

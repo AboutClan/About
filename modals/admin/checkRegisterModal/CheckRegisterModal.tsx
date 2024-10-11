@@ -1,7 +1,7 @@
 import { useDisclosure } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import { CopyBtn } from "../../../components/atoms/Icons/CopyIcon";
+import { CopyBtn } from "../../../components/Icons/CopyIcon";
 import { useCompleteToast, useErrorToast } from "../../../hooks/custom/CustomToast";
 import { useUserRegisterControlMutation } from "../../../hooks/user/mutations";
 import { IModal } from "../../../types/components/modalTypes";

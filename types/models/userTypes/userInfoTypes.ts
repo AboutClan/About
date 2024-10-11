@@ -4,7 +4,7 @@ import {
 } from "../../../constants/serviceConstants/badgeConstants";
 import { USER_ROLE } from "../../../constants/serviceConstants/userConstants";
 import { ActiveLocation, Location } from "../../services/locationTypes";
-import { ITimeStamps } from "../../utils/timeAndDate";
+import { TimeStampProps } from "../../utils/timeAndDate";
 import { IStudyVotePlaces } from "../studyTypes/studyInterActions";
 
 export interface IUser extends Omit<IUserRegisterForm, "location">, IUserSummary {
@@ -53,7 +53,7 @@ export interface IUserSummary {
   _id?: string;
 }
 
-export interface IUserRegisterForm extends IUserRegisterFormWriting, ITimeStamps {
+export interface IUserRegisterForm extends IUserRegisterFormWriting, TimeStampProps {
   registerDate: string;
   profileImage: string;
   uid: string;

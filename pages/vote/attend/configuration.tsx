@@ -149,7 +149,7 @@ function Configuration() {
       date: dayjsToStr(dayjs()),
       place: myStudyDetail?.fullname,
       arrived: myStudyDetail?.arrived,
-      members: myStudy?.attendences
+      members: myStudy?.members
         .map((who) => who.user)
         .filter((who) => who.uid !== session?.user.uid),
       time: {

@@ -19,7 +19,11 @@ import {
 } from "../../../constants/serviceConstants/studyConstants/studyTimeConstant";
 import StudyOpenCheckModal from "../../../modals/study/StudyOpenCheckModal";
 import { studyDateStatusState } from "../../../recoils/studyRecoils";
-import { IParticipation, StudyStatus } from "../../../types/models/studyTypes/studyDetails";
+import {
+  StudyParticipationProps,
+  StudyStatus,
+} from "../../../types/models/studyTypes/studyDetails";
+
 import { StudyVotingSave } from "../../../types/models/studyTypes/studyInterActions";
 import { InactiveLocation, LocationEn } from "../../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
@@ -27,14 +31,12 @@ import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import { getDistanceFromLatLonInKm } from "../../../utils/mathUtils";
 
 interface HomeStudyColProps {
-  studyVoteData: IParticipation[];
-
+  participations: StudyParticipationProps[];
   isLoading: boolean;
-  isShort?: boolean;
   date: string;
 }
 
-function HomeStudyCol({ studyVoteData, isLoading, date, isShort }: HomeStudyColProps) {
+function HomeStudyCol({ participations, isLoading, date }: HomeStudyColProps) {
   const { data: session } = useSession();
 
   const searchParams = useSearchParams();
@@ -48,22 +50,22 @@ function HomeStudyCol({ studyVoteData, isLoading, date, isShort }: HomeStudyColP
 
   const studyDateStatus = useRecoilValue(studyDateStatusState);
   const [studyCardColData, setStudyCardColData] = useState<IPostThumbnailCard[]>();
-  const [dismissedStudy, setDismissedStudy] = useState<IParticipation>();
+  const [dismissedStudy, setDismissedStudy] = useState<StudyParticipationProps>();
 
   useEffect(() => {
-    if (!studyVoteData || !studyVoteData.length || !session?.user || !studyDateStatus) {
+    if (!participations || !participations.length || !session?.user || !studyDateStatus) {
       setStudyCardColData(null);
       return;
     }
-    const cardList = setStudyDataToCardCol(studyVoteData, date as string, session?.user.uid);
+    const cardList = setStudyDataToCardCol(participations, date as string, session?.user.uid);
 
     setStudyCardColData(cardList.slice(0, 3));
 
-    let myStudy: IParticipation = null;
+    let myStudy: StudyParticipationProps = null;
     const studyOpenCheck = localStorage.getItem(STUDY_CHECK_POP_UP);
-    studyVoteData.forEach((par) =>
-      par.attendences.forEach((who) => {
-        if (who.user.uid === myUid && who.firstChoice) myStudy = par;
+    participations.forEach((par) =>
+      par.members.forEach((who) => {
+        if (who.user.uid === myUid && who.isMainChoice) myStudy = par;
       }),
     );
 
@@ -79,9 +81,9 @@ function HomeStudyCol({ studyVoteData, isLoading, date, isShort }: HomeStudyColP
 
     if (dayjs(date).isAfter(dayjs().subtract(1, "day"))) {
       let isVoting = false;
-      studyVoteData.forEach((par) =>
-        par.attendences.forEach((who) => {
-          if (who.user.uid === myUid && who.firstChoice) {
+      participations.forEach((par) =>
+        par.members.forEach((who) => {
+          if (who.user.uid === myUid && who.isMainChoice) {
             isVoting = true;
           }
         }),
@@ -98,7 +100,7 @@ function HomeStudyCol({ studyVoteData, isLoading, date, isShort }: HomeStudyColP
 
       localStorage.setItem(STUDY_VOTING_TABLE, JSON.stringify(updatedTable));
     }
-  }, [studyDateStatus, studyVoteData]);
+  }, [studyDateStatus, participations]);
 
   return (
     <>
@@ -115,7 +117,6 @@ function HomeStudyCol({ studyVoteData, isLoading, date, isShort }: HomeStudyColP
           <CardColumnLayout
             cardDataArr={studyCardColData}
             url={`/studyList?tab=study&location=${locationEn}&date=${date}`}
-            isShort={isShort}
           />
         ) : (
           <CardColumnLayoutSkeleton />
@@ -134,10 +135,11 @@ function HomeStudyCol({ studyVoteData, isLoading, date, isShort }: HomeStudyColP
 }
 
 export const setStudyDataToCardCol = (
-  studyData: IParticipation[],
+  studyData: StudyParticipationProps[],
   urlDateParam: string,
   uid: string,
 ): IPostThumbnailCard[] => {
+  console.log(51, studyData[0]);
   const cardColData: IPostThumbnailCard[] = [...studyData]
     ?.sort((a, b) =>
       a.place.branch === "개인 스터디" ? 1 : b.place.branch === "개인 스터디" ? -1 : 0,
@@ -146,7 +148,7 @@ export const setStudyDataToCardCol = (
       title: data.place.fullname,
       subtitle: data.place.branch,
       locationDetail: data.place.locationDetail,
-      participants: data.attendences.map((att) => att.user),
+      participants: data.members.map((att) => att.user),
       url: `/study/${data.place._id}/${urlDateParam}`,
       maxCnt: 8,
       image: {
@@ -157,7 +159,7 @@ export const setStudyDataToCardCol = (
       badge: getBadgeText(data.status),
       type: "study",
       statusText:
-        data.status === "pending" && data.attendences.some((who) => who.user.uid === uid) && "GOOD",
+        data.status === "pending" && data.members.some((who) => who.user.uid === uid) && "GOOD",
       id: data.place._id,
     }));
 

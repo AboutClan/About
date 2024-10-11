@@ -1,25 +1,48 @@
 import { Dayjs } from "dayjs";
 
 import { ActiveLocation } from "../../services/locationTypes";
-import { ITimeStamps } from "../../utils/timeAndDate";
+import { TimeStampProps } from "../../utils/timeAndDate";
+import { MessageSimpleProps } from "../commonTypes";
 import { IUserSummary, UserSimpleInfoProps } from "../userTypes/userInfoTypes";
-import { IAbsence } from "./studyInterActions";
+import { PlaceInfoProps, TimeRangeProps } from "../utilTypes";
 
-export interface IStudy {
-  date: Date;
-  participations: IParticipation[];
+export interface StudyDailyInfoProps {
+  date: string;
+  participations: StudyParticipationProps[];
   realTime: RealTimeInfoProps[];
 }
 
-export interface IParticipation {
-  place: IPlace;
-  attendences: IAttendance[];
-  absences: IAbsence[];
-  startTime?: Date;
+export interface StudyParticipationProps {
+  place: StudyPlaceProps;
   status: StudyStatus;
+  members: StudyMemberProps[];
+}
+export interface MyStudyParticipationProps extends Omit<StudyParticipationProps, "place"> {
+  place: StudyPlaceProps | PlaceInfoProps;
+}
+export interface StudyMemberProps extends TimeStampProps {
+  user: UserSimpleInfoProps;
+  time: TimeRangeProps;
+  isMainChoice: boolean;
+  attendanceInfo?: StudyAttendanceInfoProps;
+  comment?: MessageSimpleProps;
+  absenceInfo?: MessageSimpleProps;
 }
 
-export interface IAttendance extends ITimeStamps {
+export interface StudyAttendanceInfoProps {
+  attendanceImage?: string;
+  arrived: string;
+  arrivedMessage: string;
+}
+
+////
+
+export interface AbsenceInfoProps extends TimeStampProps {
+  user: UserSimpleInfoProps;
+  message: string;
+}
+
+export interface IAttendance extends TimeStampProps {
   user: IUserSummary;
   time: {
     start: Dayjs;
@@ -31,6 +54,16 @@ export interface IAttendance extends ITimeStamps {
   firstChoice: boolean;
   memo: string;
   comment: string;
+}
+
+export interface RealTimeInfoProps extends RealTimeBasicVoteProps, TimeStampProps {
+  user: UserSimpleInfoProps;
+  status: StudyUserStatus;
+  arrived?: string;
+  image?: Blob | string;
+  memo?: string;
+  comment?: string;
+  _id: string;
 }
 
 export type StudyUserStatus = "pending" | "solo" | "open" | "completed" | "cancel";
@@ -58,7 +91,7 @@ export interface RealTimeDirectAttendanceProps
   extends RealTimeBasicAttendanceProps,
     RealTimeBasicVoteProps {}
 
-export interface RealTimeInfoProps extends RealTimeBasicVoteProps, ITimeStamps {
+export interface RealTimeInfoProps extends RealTimeBasicVoteProps, TimeStampProps {
   user: UserSimpleInfoProps;
   status: StudyUserStatus;
   arrived?: string;
@@ -82,12 +115,10 @@ export interface PlaceRegisterProps {
   time?: string;
 }
 
-export interface IPlace extends PlaceRegisterProps {
+export interface StudyPlaceProps extends PlaceRegisterProps {
   status: string;
   _id: string;
-  prefCnt: number;
   registerDate: string;
-  myPrefer: boolean;
 }
 
 export type StudyStatus = "pending" | "open" | "dismissed" | "free";

@@ -5,7 +5,10 @@ import BottomDrawerLg from "../../components/organisms/drawer/BottomDrawerLg";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { DispatchBoolean, DispatchType } from "../../types/hooks/reactTypes";
-import { IParticipation, IPlace } from "../../types/models/studyTypes/studyDetails";
+import {
+  StudyParticipationProps,
+  StudyPlaceProps,
+} from "../../types/models/studyTypes/studyDetails";
 import {
   IStudyVotePlaces,
   IStudyVoteWithPlace,
@@ -15,14 +18,14 @@ import VoteDrawerMainItem from "./voteDrawer/VoteDrawerMainItem";
 import VoteDrawerQuickVoteItem from "./voteDrawer/VoteDrawerQuickVoteItem";
 
 export interface VoteDrawerItemProps {
-  place: IPlace;
+  place: StudyPlaceProps;
   voteCnt: number;
   favoritesCnt: number;
   myFavorite: "first" | "second";
 }
 
 interface VoteDrawerProps {
-  studyVoteData: IParticipation[];
+  studyVoteData: StudyParticipationProps[];
   myVote: IStudyVoteWithPlace;
   setMyVote: DispatchType<IStudyVoteWithPlace>;
   setActionType: DispatchType<"timeSelect">;
@@ -137,13 +140,13 @@ function VoteDrawer({
 }
 
 const getSortedMainPlace = (
-  studyData: IParticipation[],
+  studyData: StudyParticipationProps[],
   myFavorites: IStudyVotePlaces,
 ): VoteDrawerItemProps[] => {
   const mainPlace = myFavorites?.place;
   const subPlaceSet = new Set(myFavorites?.subPlace);
 
-  const sortedVoteCntItem = studyData.sort((a, b) => a.attendences.length - b.attendences.length);
+  const sortedVoteCntItem = studyData.sort((a, b) => a.members.length - b.members.length);
 
   const sortedArr = !myFavorites
     ? sortedVoteCntItem
@@ -160,8 +163,8 @@ const getSortedMainPlace = (
 
   const results = sortedArr.map((par) => ({
     fullname: par.place.fullname,
-    voteCnt: par.attendences.length,
-    favoritesCnt: par.place?.prefCnt || 0,
+    voteCnt: par.members.length,
+    // favoritesCnt: par.place?.prefCnt || 0,
     locationDetail: par.place.locationDetail,
     place: par.place,
     myFavorite: (par.place._id === mainPlace

@@ -1,14 +1,14 @@
 import dayjs, { Dayjs } from "dayjs";
 
-import { IParticipation } from "../../types/models/studyTypes/studyDetails";
+import { StudyParticipationProps } from "../../types/models/studyTypes/studyDetails";
 
 export const getMyStudy = (
-  participations: IParticipation[],
+  participations: StudyParticipationProps[],
   myUid: string,
-): IParticipation | null => {
-  let myStudy: IParticipation | null = null;
+): StudyParticipationProps | null => {
+  let myStudy: StudyParticipationProps | null = null;
   participations.forEach((par) =>
-    par.attendences.forEach((who) => {
+    par.members.forEach((who) => {
       if (who.user.uid === myUid && who.firstChoice && par.status !== "dismissed") {
         myStudy = par;
       }
@@ -27,12 +27,15 @@ interface IMyStudyVoteInfo {
   fullname: string;
 }
 
-export const getMyStudyVoteInfo = (myStudy: IParticipation, myUid: string): IMyStudyVoteInfo => {
+export const getMyStudyVoteInfo = (
+  myStudy: StudyParticipationProps,
+  myUid: string,
+): IMyStudyVoteInfo => {
   if (!myStudy) return null;
   const {
     time: { start, end },
     arrived = null,
-  } = myStudy.attendences.find((who) => who.user.uid === myUid);
+  } = myStudy.members.find((who) => who.user.uid === myUid);
 
   return {
     placeId: myStudy.place._id,

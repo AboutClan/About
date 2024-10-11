@@ -2,7 +2,7 @@ import { Button } from "@chakra-ui/react";
 import { useEffect } from "react";
 import styled from "styled-components";
 
-import { REVIEW_DATA } from "../../../storage/Review";
+import { REVIEW_DATA } from "../../storage/Review";
 
 const kakaoAppKey = process.env.NEXT_PUBLIC_KAKAO_JS;
 

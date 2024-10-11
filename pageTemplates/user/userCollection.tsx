@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import styled from "styled-components";
 
-import { AlphabetIcon } from "../../components/atoms/Icons/AlphabetIcon";
+import { AlphabetIcon } from "../../components/Icons/AlphabetIcon";
 import { useCollectionAlphabetQuery } from "../../hooks/user/sub/collection/queries";
 import UserCollectionModal from "../../modals/user/collection/UserCollectionAlphabetModal";
 

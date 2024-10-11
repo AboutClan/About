@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import RuleIcon from "../../components/atoms/Icons/RuleIcon";
+import RuleIcon from "../../components/Icons/RuleIcon";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import { useErrorToast } from "../../hooks/custom/CustomToast";

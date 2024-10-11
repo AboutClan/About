@@ -6,14 +6,14 @@ import styled from "styled-components";
 import { SingleLineText } from "../../../styles/layout/components";
 import { IImageProps } from "../../../types/components/assetTypes";
 import { ITextAndColorSchemes } from "../../../types/components/propTypes";
-import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 import OutlineBadge from "../../atoms/badges/OutlineBadge";
 import Skeleton from "../../atoms/skeleton/Skeleton";
 import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
 import PlaceImage from "../PlaceImage";
 export interface IPostThumbnailCard {
-  participants?: IUserSummary[];
+  participants?: UserSimpleInfoProps[];
   title: string;
   subtitle: string;
   image: IImageProps;

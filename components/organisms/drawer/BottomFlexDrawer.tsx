@@ -117,7 +117,7 @@ const Layout = styled.div<{
 }>`
   height: ${(props) => props.height + iPhoneNotchSize()}px;
   position: fixed;
-  bottom: 0;
+  bottom: 100px;
   width: 100%;
   max-width: var(--max-width);
   border-top-left-radius: 20px;

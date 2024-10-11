@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { IModal } from "../../../types/components/modalTypes";
+import { IModal } from "../../types/components/modalTypes";
 
 function RuleIcon({ setIsModal }: IModal) {
   return (

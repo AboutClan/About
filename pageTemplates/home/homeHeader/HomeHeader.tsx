@@ -4,10 +4,12 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import AlertCirclePoint from "../../../components/atoms/AlertCirclePoint";
+import { CalendarCheckIcon, NoticeIcon } from "../../../components/Icons/SolidIcons";
 
-import MainLogo from "../../../assets/MainLogo";
 import Slide from "../../../components/layouts/PageSlide";
 import IconButtonNav, { IIconButtonNavBtn } from "../../../components/molecules/navs/IconButtonNav";
+import { AboutLogo } from "../../../components/services/AboutLogo";
 import { DAILY_CHECK_POP_UP, NOTICE_ALERT } from "../../../constants/keys/localStorage";
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import DailyCheckModal from "../../../modals/aboutHeader/dailyCheckModal/DailyCheckModal";
@@ -57,15 +59,25 @@ function HomeHeader() {
   const generateIconBtnArr = () => {
     const arr = [
       {
-        icon: <i className="fa-light fa-calendar-star" />,
-        func: isGuest ? () => typeToast("guest") : () => setModalType("pointGuide"),
+        icon: (
+          <>
+            <CalendarCheckIcon />
+            <Box position="absolute" right={0} bottom={0}>
+              <AlertCirclePoint />
+            </Box>
+          </>
+        ),
+        func: isGuest ? () => typeToast("guest") : () => setModalType("dailyCheck"),
       },
 
       {
         icon: (
           <>
-            <i className="fa-light fa-bell" />
-            {isNoticeAlert && <Alert />}
+            <NoticeIcon />
+
+            <Box position="absolute" right={0} bottom={0}>
+              <AlertCirclePoint />
+            </Box>
           </>
         ),
         link: "/notice",
@@ -73,12 +85,12 @@ function HomeHeader() {
       },
     ];
 
-    if (!todayDailyCheck && showDailyCheck) {
-      arr.unshift({
-        icon: <i className="fa-light fa-badge-check" style={{ color: "var(--color-mint)" }} />,
-        func: () => setModalType("dailyCheck"),
-      });
-    }
+    // if (!todayDailyCheck && showDailyCheck) {
+    //   arr.unshift({
+    //     icon: <i className="fa-light fa-badge-check" style={{ color: "var(--color-mint)" }} />,
+    //     func: () => setModalType("dailyCheck"),
+    //   });
+    // }
 
     return arr;
   };
@@ -94,7 +106,7 @@ function HomeHeader() {
       <Slide isFixed={true}>
         {renderHomeHeader && (
           <Layout>
-            <MainLogo />
+            <AboutLogo />
             <Box className="about_header" fontSize="21px" color="var(--gray-700)">
               <IconButtonNav iconList={iconBtnArr} />
             </Box>
@@ -116,7 +128,7 @@ const Layout = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
+  border-bottom: 1px solid var(--gray-100);
   max-width: var(--max-width);
   margin: 0 auto;
 

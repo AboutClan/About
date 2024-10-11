@@ -1,4 +1,5 @@
 import "swiper/css/autoplay";
+import "swiper/css/pagination";
 
 import { Box } from "@chakra-ui/react";
 import Image from "next/image";
@@ -9,6 +10,7 @@ import SwiperCore from "swiper";
 import { Autoplay, Scrollbar } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
+import { Pagination } from "swiper/modules";
 import { useTypeToast } from "../../../../hooks/custom/CustomToast";
 
 SwiperCore.use([Autoplay, Scrollbar]);
@@ -41,8 +43,10 @@ function ImageSliderBanner({ imageArr, isLightBanner }: IImageSliderEventBanner)
   };
 
   return (
-    <Swiper
+    <StyledSwiper
       navigation
+      pagination={true}
+      modules={[Pagination]}
       scrollbar={{ draggable: true, el: ".swiper-scrollbar" }}
       style={{
         width: "100%",
@@ -73,26 +77,29 @@ function ImageSliderBanner({ imageArr, isLightBanner }: IImageSliderEventBanner)
           </Box>
         </SwiperSlide>
       ))}
-      {!isLightBanner && (
-        <Box
-          w="80px"
-          p="2px 4px"
-          color="white"
-          opacity={0.75}
-          pos="absolute"
-          bgColor="var(--gray-800)"
-          zIndex={10}
-          bottom="0"
-          right="0"
-          fontSize="12px"
-          onClick={() => router.push("/banner")}
-        >
-          {pageNum + 1} / {imageArr.length} 전체보기
-        </Box>
-      )}
-    </Swiper>
+    </StyledSwiper>
   );
 }
+
+const StyledSwiper = styled(Swiper)`
+  .swiper-pagination-bullet {
+    background-color: white;
+    width: 4px;
+    height: 4px;
+    opacity: 0.8;
+  }
+
+  .swiper-pagination-bullet-active {
+    background-color: var(--color-mint);
+  }
+  .swiper-pagination-bullet:nth-child(1) {
+    width: 12px; /* 첫 번째 원의 가로 길이 */
+    height: 4px;
+    border-radius: 16px;
+    opacity: 0.6;
+  }
+`;
+
 const Container = styled.div``;
 
 export default ImageSliderBanner;

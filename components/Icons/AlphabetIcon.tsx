@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-import { TABLE_STRING_COLORS_BG, TABLE_STRONG_COLORS } from "../../../constants/styles";
-import { Alphabet } from "../../../types/models/collections";
+import { TABLE_STRING_COLORS_BG, TABLE_STRONG_COLORS } from "../../constants/styles";
+import { Alphabet } from "../../types/models/collections";
 
 interface IAlphabetIcon {
   alphabet: Alphabet;

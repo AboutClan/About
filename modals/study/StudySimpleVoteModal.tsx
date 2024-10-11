@@ -22,7 +22,7 @@ import { selectStudyPlace } from "../../libs/study/selectStudyPlace";
 import { selectSubPlaceAuto } from "../../libs/study/selectSubPlaceAuto";
 import { myStudyInfoState } from "../../recoils/studyRecoils";
 import { IModal } from "../../types/components/modalTypes";
-import { IParticipation } from "../../types/models/studyTypes/studyDetails";
+import { StudyParticipationProps } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVote } from "../../types/models/studyTypes/studyInterActions";
 import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
@@ -30,7 +30,7 @@ import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface StudySimpleVoteModalProps extends IModal {
-  studyVoteData: IParticipation[];
+  studyVoteData: StudyParticipationProps[];
 }
 
 function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModalProps) {
@@ -52,7 +52,7 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
   });
   const [voteTime, setVoteTime] = useState<{ start: Dayjs; end: Dayjs }>();
   const [imageDataArr, setImageDataArr] = useState<IImageTileData[]>();
-  const [recommendationPlace, setRecommendationPlace] = useState<IParticipation>();
+  const [recommendationPlace, setRecommendationPlace] = useState<StudyParticipationProps>();
 
   const { data: userInfo } = useUserInfoQuery();
   const { data: studyVoteDataAll } = useStudyVoteQuery(dateParam, locationKr, false, false, {
@@ -109,10 +109,9 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
       if (recommendationPlace) {
         setMyVote((old) => ({ ...old, place: recommendationPlace.place._id }));
       }
-      
     }
   }, [recommendationPlace, studyVoteData, studyDateStatus]);
- 
+
   useEffect(() => {
     if (!studyVoteDataAll) return;
     setImageDataArr(

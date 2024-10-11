@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
 
-import KakaoShareBtn from "../../components/atoms/Icons/KakaoShareBtn";
+import KakaoShareBtn from "../../components/Icons/KakaoShareBtn";
 import Header from "../../components/layouts/Header";
 import { WEB_URL } from "../../constants/system";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";

@@ -42,10 +42,10 @@ import { myRealStudyInfoState, myStudyInfoState } from "../../recoils/studyRecoi
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import {
-  IParticipation,
-  IPlace,
   RealTimeInfoProps,
   RealTimeStudyPlaceProps,
+  StudyParticipationProps,
+  StudyPlaceProps,
 } from "../../types/models/studyTypes/studyDetails";
 import {
   IStudyVoteTime,
@@ -162,8 +162,7 @@ export default function StudyVoteMap() {
     const tempStudy =
       studyVoteData?.find(
         (par) =>
-          par.status !== "dismissed" &&
-          par.attendences.some((who) => who.user.uid === userInfo?.uid),
+          par.status !== "dismissed" && par.members.some((who) => who.user.uid === userInfo?.uid),
       ) || null;
 
     const tempRealStudy = realTimeUsers?.find((userProps) => userProps.user.uid === userInfo?.uid);
@@ -227,7 +226,10 @@ export default function StudyVoteMap() {
     },
   ];
 
-  const setCenterToVotePlace = (myStudy: IParticipation, myRealStudy: RealTimeInfoProps) => {
+  const setCenterToVotePlace = (
+    myStudy: StudyParticipationProps,
+    myRealStudy: RealTimeInfoProps,
+  ) => {
     if (!myStudy && !myRealStudy) return;
     const lat = myStudy?.place?.latitude || myRealStudy?.place?.lat;
     const lon = myStudy?.place?.longitude || myRealStudy?.place?.lon;
@@ -286,11 +288,11 @@ export default function StudyVoteMap() {
 
     if (studyCategoryTab === "실시간 스터디") {
       const myStudy =
-        findStudy?.attendences?.some((who) => who.user.uid === userInfo?.uid) ||
+        findStudy?.members?.some((who) => who.user.uid === userInfo?.uid) ||
         realStudyAttendance?.some((who) => who.user.uid === userInfo?.uid);
-      console.log(123, findStudy, findStudy?.attendences);
+      console.log(123, findStudy, findStudy?.members);
       const sortedCommentUserArr = findStudy
-        ? [...findStudy.attendences]?.sort((a, b) => {
+        ? [...findStudy.members]?.sort((a, b) => {
             const aTime = dayjs(a?.updatedAt);
             const bTime = dayjs(b?.updatedAt);
             if (aTime.isBefore(bTime)) return -1;
@@ -312,11 +314,11 @@ export default function StudyVoteMap() {
         place: findRealStudy?.place,
         title: findStudy?.place?.fullname || findRealStudy?.place?.text,
         id,
-        time: getStudyTime(findStudy?.attendences) || {
+        time: getStudyTime(findStudy?.members) || {
           start: dayjsToFormat(dayjs(findRealStudy.time.start), "HH:mm"),
           end: dayjsToFormat(dayjs(findRealStudy.time.end), "HH:mm"),
         },
-        participantCnt: findStudy?.attendences?.length || realStudyAttendance?.length,
+        participantCnt: findStudy?.members?.length || realStudyAttendance?.length,
         image: findStudy?.place?.image || STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length)],
         comment: {
           user: {
@@ -329,7 +331,7 @@ export default function StudyVoteMap() {
             STUDY_COMMENT_ARR[getRandomIdx(STUDY_COMMENT_ARR.length - 1)],
         },
         isMember:
-          findStudy?.attendences?.some((who) => who.user.uid === userInfo.uid) ||
+          findStudy?.members?.some((who) => who.user.uid === userInfo.uid) ||
           realStudyAttendance?.some((who) => who.user.uid === userInfo.uid),
       });
     }
@@ -403,7 +405,7 @@ export default function StudyVoteMap() {
       {studyCategoryTab === "실시간 스터디" ? (
         <RealStudyBottomNav
           isAleadyAttend={
-            !!myStudy?.attendences?.find((who) => who?.user.uid === userInfo?.uid)?.arrived ||
+            !!myStudy?.members?.find((who) => who?.user.uid === userInfo?.uid)?.arrived ||
             !!myRealStudy?.arrived
           }
         />
@@ -616,7 +618,10 @@ function DetailDrawer({
 }
 
 //지도에서 마커를 통한 핸들링
-const setVotePlaceInfo = (myPlace: IPlace, voteInfo?: IStudyVoteWithPlace): IStudyVoteWithPlace => {
+const setVotePlaceInfo = (
+  myPlace: StudyPlaceProps,
+  voteInfo?: IStudyVoteWithPlace,
+): IStudyVoteWithPlace => {
   const id = myPlace?._id;
 
   if (!voteInfo?.place) return { ...voteInfo, place: myPlace };
@@ -635,7 +640,7 @@ const setVotePlaceInfo = (myPlace: IPlace, voteInfo?: IStudyVoteWithPlace): IStu
 };
 
 const getMarkersOptions = (
-  studyVoteData: IParticipation[],
+  studyVoteData: StudyParticipationProps[],
   {
     lat,
     lon,
@@ -658,13 +663,13 @@ const getMarkersOptions = (
   });
 
   studyVoteData
-    .filter((par) => par.attendences.length >= 1)
+    .filter((par) => par.members.length >= 1)
     .forEach((par) => {
       temp.push({
         id: par.place._id,
         position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
         icon: {
-          content: getStudyIcon(null, par.attendences.length),
+          content: getStudyIcon(null, par.members.length),
           size: new naver.maps.Size(72, 72),
           anchor: new naver.maps.Point(36, 44),
         },

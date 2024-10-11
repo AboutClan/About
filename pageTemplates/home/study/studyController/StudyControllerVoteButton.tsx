@@ -12,8 +12,8 @@ import {
 } from "../../../../recoils/studyRecoils";
 import { DispatchType } from "../../../../types/hooks/reactTypes";
 import {
-  IParticipation,
   RealTimeInfoProps,
+  StudyParticipationProps,
 } from "../../../../types/models/studyTypes/studyDetails";
 import { StudyDateStatus } from "../../../../types/models/studyTypes/studyInterActions";
 import { VoteType } from "./StudyController";
@@ -54,7 +54,6 @@ function StudyControllerVoteButton({ setModalType, memberCnt }: IStudyController
   const myStudy = useRecoilValue(myStudyInfoState);
   const myRealStudy = useRecoilValue(myRealStudyInfoState);
 
- 
   const buttonProps = getStudyVoteButtonProps(
     studyDateStatus,
     myStudy,
@@ -87,11 +86,11 @@ export interface DateVoteButtonProps {
 
 export const getStudyVoteButtonProps = (
   studyDateStatus: StudyDateStatus,
-  myStudy: IParticipation | null,
+  myStudy: StudyParticipationProps | null,
   myRealStudy?: RealTimeInfoProps,
   myUid?: string,
 ): DateVoteButtonProps => {
-  const isAttend = myStudy?.attendences.find((who) => who.user.uid === myUid)?.arrived;
+  const isAttend = myStudy?.members.find((who) => who.user.uid === myUid)?.arrived;
 
   switch (studyDateStatus) {
     case "not passed":

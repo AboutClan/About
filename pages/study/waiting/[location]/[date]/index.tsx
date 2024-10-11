@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -22,7 +22,7 @@ import StudyWaitingOverview from "../../../../../pageTemplates/study/StudyWaitin
 import StudyWaitingPlaces from "../../../../../pageTemplates/study/StudyWaitingPlaces";
 import StudyWaitingUsers from "../../../../../pageTemplates/study/StudyWaitingUsers";
 import { myStudyInfoState, studyDateStatusState } from "../../../../../recoils/studyRecoils";
-import { IParticipation } from "../../../../../types/models/studyTypes/studyDetails";
+import { StudyParticipationProps } from "../../../../../types/models/studyTypes/studyDetails";
 import { StudyWaitingUser } from "../../../../../types/models/studyTypes/studyInterActions";
 import { ActiveLocation } from "../../../../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../../../../utils/convertUtils/convertDatas";
@@ -134,11 +134,11 @@ export default function Page() {
   );
 }
 
-const getWaitingSpaceProps = (studyData: IParticipation[]) => {
+const getWaitingSpaceProps = (studyData: StudyParticipationProps[]) => {
   const userArr: StudyWaitingUser[] = [];
 
   studyData.forEach((par) => {
-    par.attendences.forEach((who) => {
+    par.members.forEach((who) => {
       const user = who.user;
       const place = { id: par.place._id, branch: par.place.branch };
       const findUser = userArr.find((obj) => obj.user.uid === user.uid);

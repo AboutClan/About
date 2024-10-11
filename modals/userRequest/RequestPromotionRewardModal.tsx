@@ -1,11 +1,11 @@
 import { Button } from "@chakra-ui/react";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useState } from "react";
 import styled from "styled-components";
 
-import { CopyBtn } from "../../components/atoms/Icons/CopyIcon";
-import { PROMOTION_TEXT,PromotionComponent } from "../../constants/contentsText/Private";
+import { CopyBtn } from "../../components/Icons/CopyIcon";
+import { PromotionComponent, PROMOTION_TEXT } from "../../constants/contentsText/Private";
 import { POINT_SYSTEM_PLUS } from "../../constants/serviceConstants/pointSystemConstants";
 import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";
 import { usePointSystemMutation } from "../../hooks/user/mutations";

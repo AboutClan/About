@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { AlphabetIcon } from "../../components/atoms/Icons/AlphabetIcon";
+import { AlphabetIcon } from "../../components/Icons/AlphabetIcon";
 import { IModal } from "../../types/components/modalTypes";
 import { CollectionProps } from "../../types/models/collections";
 import { IFooterOptions, IHeaderOptions, ModalLayout } from "../Modals";

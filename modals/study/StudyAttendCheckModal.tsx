@@ -7,12 +7,12 @@ import { useEffect, useRef, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import { PopOverIcon } from "../../components/atoms/Icons/PopOverIcon";
 import { Input } from "../../components/atoms/Input";
 import ScreenOverlay from "../../components/atoms/ScreenOverlay";
 import Selector from "../../components/atoms/Selector";
 import Spinner from "../../components/atoms/Spinner";
 import Textarea from "../../components/atoms/Textarea";
+import { PopOverIcon } from "../../components/Icons/PopOverIcon";
 import ImageUploadInput from "../../components/molecules/ImageUploadInput";
 import { STUDY_ATTEND_MEMBERS } from "../../constants/keys/localStorage";
 import {
@@ -61,7 +61,7 @@ function StudyAttendCheckModal({ setIsModal }: IModal) {
   const setTransferCollection = useSetRecoilState(transferCollectionState);
 
   const myParticipationInfo =
-    myStudy?.attendences?.find((who) => who.user.uid === session?.user?.uid) || myRealStudy;
+    myStudy?.members?.find((who) => who.user.uid === session?.user?.uid) || myRealStudy;
 
   const { mutate: getAboutPoint } = useAboutPointMutation();
   const { mutate: getAlphabet } = useAlphabetMutation("get");
@@ -113,7 +113,7 @@ function StudyAttendCheckModal({ setIsModal }: IModal) {
     const studyVotingTable = JSON.parse(localStorage.getItem(STUDY_ATTEND_MEMBERS)) || [];
     const newEntry = {
       date,
-      members: myStudy?.attendences
+      members: myStudy?.members
         .map((who) => who.user)
         .filter((who) => who.uid !== session?.user.uid),
     };

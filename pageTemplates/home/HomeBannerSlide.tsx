@@ -4,17 +4,17 @@ import {
   CLUB_BANNER_IMAGE,
   GATHER_BANNER_IMAGE,
   MAIN_BANNER_IMAGE,
-} from "../../../assets/images/BannerImages";
+} from "../../assets/images/BannerImages";
 import ImageSliderBanner, {
   ImageBannerProp,
-} from "../../../components/organisms/imageSlider/imageSliderType/ImageSliderBanner";
-import { HomeTab } from "../HomeTab";
+} from "../../components/organisms/imageSlider/imageSliderType/ImageSliderBanner";
+import { HomeTab } from "./HomeTab";
 
 interface EventBannerProps {
   tab: HomeTab;
 }
 
-function EventBanner({ tab }: EventBannerProps) {
+function HomeBannerSlide({ tab }: EventBannerProps) {
   const imageArr: ImageBannerProp[] = (
     tab === "추천" || !tab
       ? MAIN_BANNER_IMAGE
@@ -30,11 +30,18 @@ function EventBanner({ tab }: EventBannerProps) {
 
   return (
     <>
-      <Flex aspectRatio={!isLightBanner ? "2.1/1" : "4/1"} flexDir="column">
+      <Flex
+        aspectRatio={"2.127/1"}
+        flexDir="column"
+        mt={3}
+        mb={5}
+        borderRadius="16px"
+        overflow="hidden"
+      >
         <ImageSliderBanner imageArr={imageArr} isLightBanner={isLightBanner} />
       </Flex>
     </>
   );
 }
 
-export default EventBanner;
+export default HomeBannerSlide;

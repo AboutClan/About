@@ -9,13 +9,7 @@ import { getStudyStandardDate } from "../libs/study/date/getStudyStandardDate";
 import { slideDirectionState } from "../recoils/navigationRecoils";
 import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
 import { getBottomNavSize } from "../utils/mathUtils";
-import {
-  CommunityIcon,
-  HomeIcon,
-  StudyIcon,
-  ThunderIcon,
-  UserIcon,
-} from "./atoms/Icons/BottomNavIcons";
+import { CommunityIcon, HomeIcon, StudyIcon, ThunderIcon, UserIcon } from "./Icons/BottomNavIcons";
 
 interface INavButtonProps {
   url: string;

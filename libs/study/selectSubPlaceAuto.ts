@@ -1,10 +1,13 @@
 import { STUDY_RECOMMENDATION_DISTANCE } from "../../constants/settingValue/study/study";
-import { IParticipation, IPlace } from "../../types/models/studyTypes/studyDetails";
+import {
+  StudyParticipationProps,
+  StudyPlaceProps,
+} from "../../types/models/studyTypes/studyDetails";
 import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
 
 export const selectSubPlaceAuto = (
-  myVotePlace: IPlace,
-  studyVoteData: IParticipation[],
+  myVotePlace: StudyPlaceProps,
+  studyVoteData: StudyParticipationProps[],
 ): string[] => {
   if (!myVotePlace || !studyVoteData) return;
   const subPlace = [];

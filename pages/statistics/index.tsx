@@ -4,8 +4,8 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import RuleIcon from "../../components/atoms/Icons/RuleIcon";
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
+import RuleIcon from "../../components/Icons/RuleIcon";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import { useAdminUsersLocationControlQuery } from "../../hooks/admin/quries";

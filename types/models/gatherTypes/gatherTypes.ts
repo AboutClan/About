@@ -2,10 +2,10 @@ import { Dayjs } from "dayjs";
 
 import { UserCommentProps } from "../../components/propTypes";
 import { CombinedLocation, Location } from "../../services/locationTypes";
-import { ITimeStamps } from "../../utils/timeAndDate";
+import { TimeStampProps } from "../../utils/timeAndDate";
 import { IUserSummary } from "../userTypes/userInfoTypes";
 
-export interface IGather extends Omit<IGatherWriting, "date">, ITimeStamps {
+export interface IGather extends Omit<IGatherWriting, "date">, TimeStampProps {
   date: string;
   participants: IGatherParticipants[];
   id: number;

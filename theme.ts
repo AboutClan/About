@@ -98,7 +98,9 @@ const theme = extendTheme({
       },
       sizes: {
         xs: {
-          h: "24px",
+          // width: "12px !important",
+          // height: "12px",
+          padding: 0,
         },
 
         md: {
@@ -109,6 +111,13 @@ const theme = extendTheme({
           h: "48px",
           fontWeight: 700,
           fontSize: "14px",
+        },
+      },
+      variants: {
+        unstyled: {
+          minWidth: "unset", // 최소 너비 제거
+
+          padding: 0, // 패딩 제거
         },
       },
     },

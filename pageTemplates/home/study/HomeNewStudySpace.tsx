@@ -4,10 +4,10 @@ import { useSearchParams } from "next/navigation";
 import SectionBar from "../../../components/molecules/bars/SectionBar";
 import { IPostThumbnailCard } from "../../../components/molecules/cards/PostThumbnailCard";
 import { CardColumnLayout } from "../../../components/organisms/CardColumnLayout";
-import { IPlace } from "../../../types/models/studyTypes/studyDetails";
+import { StudyPlaceProps } from "../../../types/models/studyTypes/studyDetails";
 
 interface HomeNewStudySpaceProps {
-  places: IPlace[];
+  places: StudyPlaceProps[];
 }
 
 function HomeNewStudySpace({ places }: HomeNewStudySpaceProps) {

@@ -1,8 +1,8 @@
-import { IParticipation } from "../../types/models/studyTypes/studyDetails";
+import { StudyParticipationProps } from "../../types/models/studyTypes/studyDetails";
 import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
 
 export const recommendTodayStudyPlace = (
-  studyVoteData: IParticipation[],
+  studyVoteData: StudyParticipationProps[],
   myLocationDetail?: { lat: number; lon: number }, // Optional parameter
 ) => {
   if (!studyVoteData) return null;

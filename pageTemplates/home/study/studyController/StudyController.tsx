@@ -11,7 +11,7 @@ import DateCalendarModal from "../../../../modals/aboutHeader/DateCalendarModal"
 import StudyAttendCheckModal from "../../../../modals/study/StudyAttendCheckModal";
 import StudySimpleVoteModal from "../../../../modals/study/StudySimpleVoteModal";
 import { studyDateStatusState } from "../../../../recoils/studyRecoils";
-import { IParticipation } from "../../../../types/models/studyTypes/studyDetails";
+import { StudyParticipationProps } from "../../../../types/models/studyTypes/studyDetails";
 import { dayjsToStr } from "../../../../utils/dateTimeUtils";
 import StudyControllerVoteButton from "./StudyControllerVoteButton";
 
@@ -29,7 +29,7 @@ export type VoteType =
 dayjs.locale("ko");
 
 interface StudyControllerProps {
-  studyVoteData: IParticipation[];
+  studyVoteData: StudyParticipationProps[];
   // voteCntArr: VoteCntProps[];
   selectedDate: string;
 
