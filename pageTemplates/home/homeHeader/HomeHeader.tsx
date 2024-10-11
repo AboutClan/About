@@ -61,7 +61,9 @@ function HomeHeader() {
       {
         icon: (
           <>
-            <CalendarCheckIcon />
+            <Box w="20px" h="20px" opacity={0.4}>
+              <CalendarCheckIcon />
+            </Box>
             <Box position="absolute" right={0} bottom={0}>
               <AlertCirclePoint />
             </Box>
@@ -73,8 +75,9 @@ function HomeHeader() {
       {
         icon: (
           <>
-            <NoticeIcon />
-
+            <Box opacity={0.4} w="20px" h="20px">
+              <NoticeIcon />
+            </Box>
             <Box position="absolute" right={0} bottom={0}>
               <AlertCirclePoint />
             </Box>

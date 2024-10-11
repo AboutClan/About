@@ -32,15 +32,18 @@ import {
   usePointSystemMutation,
   useScoreMutation,
 } from "../../../hooks/user/mutations";
-import { getMyStudyVoteInfo } from "../../../libs/study/getMyStudy";
+import { getMyStudyInfo } from "../../../libs/study/getMyStudyMethods";
+
 import { ModalLayout } from "../../../modals/Modals";
+import { myStudyParticipationState } from "../../../recoils/studyRecoils";
+
 import {
-  myRealStudyInfoState,
-  myStudyInfoState,
-  studyAttendInfoState,
-} from "../../../recoils/studyRecoils";
-import { transferCollectionState } from "../../../recoils/transferRecoils";
+  transferCollectionState,
+  transferStudyAttendanceState,
+} from "../../../recoils/transferRecoils";
 import { CollectionProps } from "../../../types/models/collections";
+import { StudyPlaceProps } from "../../../types/models/studyTypes/studyDetails";
+import { PlaceInfoProps } from "../../../types/models/utilTypes";
 
 import { convertTimeStringToDayjs } from "../../../utils/convertUtils/convertTypes";
 import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
@@ -63,10 +66,12 @@ function Configuration() {
   const [isChecking, setIsChecking] = useState(false);
   const [stampCnt, setStampCnt] = useState<number>();
 
-  const [studyAttendInfo, setStudyAttendInfo] = useRecoilState(studyAttendInfoState);
+  const [transferStudyAttendance, setTransferStudyAttendance] = useRecoilState(
+    transferStudyAttendanceState,
+  );
   const setTransferCollection = useSetRecoilState(transferCollectionState);
-  const myStudy = useRecoilValue(myStudyInfoState);
-  const myRealStudy = useRecoilValue(myRealStudyInfoState);
+
+  const myStudyParticipation = useRecoilValue(myStudyParticipationState);
 
   const { mutate: getAboutPoint } = useAboutPointMutation();
   const { mutate: getScore } = useScoreMutation();
@@ -122,13 +127,13 @@ function Configuration() {
     setTransferCollection({ alphabet: collection.alphabet, stamps: collection.stamps });
     saveTogetherMembers();
     resetStudy();
-    setStudyAttendInfo(null);
+    setTransferStudyAttendance(null);
     const pointObj = POINT_SYSTEM_PLUS.STUDY_ATTEND_CHECK;
     console.log(23);
-    if (myStudy?.status === "open") {
+    if (myStudyParticipation?.status === "open") {
       getAboutPoint(pointObj);
-      const myStudyInfo = getMyStudyVoteInfo(myStudy, session?.user.uid);
-      const isLate = dayjs().isAfter(dayjs(myStudyInfo?.end).add(1, "hour"));
+      const myStudyInfo = getMyStudyInfo(myStudyParticipation, session?.user.uid);
+      const isLate = dayjs().isAfter(dayjs(myStudyInfo?.time.end).add(1, "hour"));
       if (isLate) getDeposit(POINT_SYSTEM_DEPOSIT.STUDY_ATTEND_LATE);
       toast(
         "success",
@@ -144,16 +149,18 @@ function Configuration() {
   };
 
   const saveTogetherMembers = () => {
-    const myStudyDetail = getMyStudyVoteInfo(myStudy, session?.user.uid);
+    const myStudyInfo = getMyStudyInfo(myStudyParticipation, session?.user.uid);
     const record = {
       date: dayjsToStr(dayjs()),
-      place: myStudyDetail?.fullname,
-      arrived: myStudyDetail?.arrived,
-      members: myStudy?.members
+      place:
+        (myStudyParticipation?.place as StudyPlaceProps)?.fullname ||
+        (myStudyParticipation?.place as PlaceInfoProps)?.name,
+      arrived: myStudyInfo?.attendanceInfo.arrived,
+      members: myStudyParticipation?.members
         .map((who) => who.user)
         .filter((who) => who.uid !== session?.user.uid),
       time: {
-        start: myStudyDetail?.start,
+        start: dayjs(),
         end: convertTimeStringToDayjs(endTime),
       },
     };
@@ -161,21 +168,31 @@ function Configuration() {
   };
 
   const formData = new FormData();
-  console.log(53, studyAttendInfo, myStudy);
+
   const handleSubmit = () => {
-    if (myStudy && myStudy?.place?.fullname === studyAttendInfo?.place?.text) {
+    const isParticipationStudy = (myStudyParticipation?.place as StudyPlaceProps)?.fullname;
+    const isRealTimeStudy = (myStudyParticipation?.place as PlaceInfoProps)?.name;
+
+    if (
+      isParticipationStudy &&
+      (myStudyParticipation?.place as StudyPlaceProps)?.fullname ===
+        transferStudyAttendance?.place?.name
+    ) {
       setIsChecking(true);
       handleArrived({ memo: attendMessage, endHour: convertTimeStringToDayjs(endTime) });
-      formData.append("image", studyAttendInfo.image);
+      formData.append("image", transferStudyAttendance.image);
       formData.append("path", "studyAttend");
       imageUpload(formData);
       setTimeout(() => {
         setIsChecking(false);
       }, 2000);
-    } else if (myRealStudy && myRealStudy?.place?.text === studyAttendInfo?.place?.text) {
+    } else if (
+      isRealTimeStudy &&
+      (myStudyParticipation?.place as PlaceInfoProps)?.name === transferStudyAttendance?.place?.name
+    ) {
       formData.append("memo", attendMessage);
       formData.append("status", "open");
-      formData.append("images", studyAttendInfo?.image as Blob);
+      formData.append("images", transferStudyAttendance?.image as Blob);
       formData.append(
         "time",
         JSON.stringify({
@@ -187,8 +204,8 @@ function Configuration() {
     } else {
       formData.append("memo", attendMessage);
       formData.append("status", "open");
-      formData.append("images", studyAttendInfo?.image as Blob);
-      formData.append("place", JSON.stringify(studyAttendInfo?.place));
+      formData.append("images", transferStudyAttendance?.image as Blob);
+      formData.append("place", JSON.stringify(transferStudyAttendance?.place));
       formData.append(
         "time",
         JSON.stringify({

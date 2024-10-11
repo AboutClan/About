@@ -7,6 +7,7 @@ import { CollectionProps } from "../types/models/collections";
 import { IGather } from "../types/models/gatherTypes/gatherTypes";
 import { IGroup } from "../types/models/groupTypes/group";
 import { MemberGroup } from "../types/models/member";
+import { StudyAttendanceRequestProps } from "../types/models/studyTypes/studyDetails";
 import { IUser } from "../types/models/userTypes/userInfoTypes";
 
 export const transferCollectionState = atom<CollectionProps>({
@@ -61,5 +62,10 @@ interface ItransferStoreGiftData {
 
 export const transferStoreGiftDataState = atom<ItransferStoreGiftData>({
   key: "transferStoreGiftDataState",
+  default: null,
+});
+
+export const transferStudyAttendanceState = atom<StudyAttendanceRequestProps>({
+  key: "TransferStudyAttendance",
   default: null,
 });

@@ -5,7 +5,9 @@ import {
   StudyMemberProps,
 } from "../../types/models/studyTypes/studyDetails";
 
-export const getStudyParticipation = (
+//participation은 study의 participations와 realTime을 모두 포함한다.
+
+export const getStudyParticipationById = (
   studyVoteData: StudyDailyInfoProps,
   id: string,
 ): MyStudyParticipationProps => {
@@ -15,6 +17,7 @@ export const getStudyParticipation = (
   const realTimeFiltered = getRealTimeFilteredById(studyVoteData.realTime, id);
   return findMyParticipation || realTimeFiltered;
 };
+
 export const getMyStudyParticipation = (
   studyVoteData: StudyDailyInfoProps,
   myUid: string,
@@ -34,7 +37,6 @@ export const getMyRealTimeFiltered = (
   const findMyStudy = realTime.find((who) => who.user.uid === myUid);
 
   const filtered = realTime.filter((who) => who.place.name === findMyStudy?.place.name);
-
   return { ...findMyStudy, members: filtered };
 };
 export const getRealTimeFilteredById = (

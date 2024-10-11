@@ -12,13 +12,12 @@ import Slide from "../../../components/layouts/PageSlide";
 import ImageUploadInput from "../../../components/molecules/ImageUploadInput";
 import LocationSearch from "../../../components/organisms/location/LocationSearch";
 import { useToast } from "../../../hooks/custom/CustomToast";
-import { getMyStudyVoteInfo } from "../../../libs/study/getMyStudy";
-import {
-  myRealStudyInfoState,
-  myStudyInfoState,
-  studyAttendInfoState,
-} from "../../../recoils/studyRecoils";
+import { myStudyParticipationState } from "../../../recoils/studyRecoils";
+import { transferStudyAttendanceState } from "../../../recoils/transferRecoils";
+
 import { KakaoLocationProps } from "../../../types/externals/kakaoLocationSearch";
+import { StudyPlaceProps } from "../../../types/models/studyTypes/studyDetails";
+import { PlaceInfoProps } from "../../../types/models/utilTypes";
 
 function Certification() {
   const toast = useToast();
@@ -34,34 +33,37 @@ function Certification() {
   const [isResetAlert, setIsResetAlert] = useState(false);
   const [isActive, setIsActive] = useState(true);
 
-  const [studyAttendInfo, setStudyAttendInfo] = useRecoilState(studyAttendInfoState);
+  const [studyAttendanceRequest, setStudyAttendanceRequest] = useRecoilState(
+    transferStudyAttendanceState,
+  );
 
-  const myStudyInfo = useRecoilValue(myStudyInfoState);
-  const myRealStudyInfo = useRecoilValue(myRealStudyInfoState);
-  const myStudy = getMyStudyVoteInfo(myStudyInfo, session?.user.uid);
+  const myStudyParticipation = useRecoilValue(myStudyParticipationState);
 
   useEffect(() => {
-    if (studyAttendInfo) {
-      const { text, lat, lon } = studyAttendInfo.place;
+    if (studyAttendanceRequest) {
+      const { name, latitude, longitude } = studyAttendanceRequest.place;
       setPlaceInfo({
-        place_name: text,
-        x: lon + "",
-        y: lat + "",
+        place_name: name,
+        x: longitude + "",
+        y: latitude + "",
       });
-      setImage(studyAttendInfo?.image as Blob);
+      setImage(studyAttendanceRequest?.image);
     }
-  }, [studyAttendInfo]);
+  }, [studyAttendanceRequest]);
 
   useEffect(() => {
-    if (myRealStudyInfo) {
-      setPlaceInfo((old) => ({ ...old, place_name: myRealStudyInfo.place.text }));
-      setIsActive(false);
-    }
-    if (myStudyInfo) {
-      setPlaceInfo((old) => ({ ...old, place_name: myStudy?.fullname }));
-      setIsActive(false);
-    }
-  }, [myStudyInfo, myRealStudyInfo]);
+    if (!myStudyParticipation) return;
+    setPlaceInfo((old) => ({
+      ...old,
+      place_name:
+        (myStudyParticipation?.place as StudyPlaceProps)?.fullname ||
+        (myStudyParticipation?.place as PlaceInfoProps)?.name,
+    }));
+
+    setIsActive(false);
+
+    setIsActive(false);
+  }, [myStudyParticipation]);
 
   const handleBottomNav = (e) => {
     if (!image) {
@@ -75,27 +77,27 @@ function Certification() {
       return;
     }
 
-    setStudyAttendInfo((old) => ({
+    setStudyAttendanceRequest((old) => ({
       ...old,
       image,
       place: {
-        lat: +placeInfo?.y,
-        lon: +placeInfo?.x,
-        locationDetail: placeInfo?.road_address_name,
-        text: placeInfo?.place_name,
+        latitude: +placeInfo?.y,
+        longitude: +placeInfo?.x,
+        address: placeInfo?.road_address_name,
+        name: placeInfo?.place_name,
       },
     }));
   };
 
   const handleResetButton = () => {
-    if (myStudyInfo || myRealStudyInfo) {
+    if (myStudyParticipation) {
       setIsResetAlert(true);
       return;
     }
     setPlaceInfo({ place_name: "", road_address_name: "" });
     setIsActive(true);
   };
-  console.log(myStudy, myRealStudyInfo);
+
   return (
     <>
       <Box minH="calc(100dvh - var(--header-h))" bgColor="white">

@@ -37,12 +37,12 @@ function Participate() {
   const [imageDataArr, setImageDataArr] = useState<IImageTileData[]>();
   const [isVoteDrawer, setIsVoteDrawer] = useState(false);
 
-  const { data: studyVoteData } = useStudyVoteQuery(dateParam, location, false, false, {
+  const { data: studyVoteData } = useStudyVoteQuery(dateParam, location, {
     enabled: !!dateParam && !!location,
   });
 
-  const participations = studyVoteData?.[0]?.participations;
-  
+  const participations = studyVoteData?.participations;
+
   const { mutate, isLoading } = useStudyParticipationMutation(dayjs(), "post", {
     onSuccess() {
       typeToast("vote");

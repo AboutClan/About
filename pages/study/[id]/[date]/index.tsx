@@ -6,7 +6,7 @@ import { STUDY_MAIN_IMAGES } from "../../../../assets/images/studyMain";
 import Divider from "../../../../components/atoms/Divider";
 import Slide from "../../../../components/layouts/PageSlide";
 import { useStudyVoteOneQuery, useStudyVoteQuery } from "../../../../hooks/study/queries";
-import { getStudyParticipation } from "../../../../libs/study/getMyStudyMethods";
+import { getStudyParticipationById } from "../../../../libs/study/getMyStudyMethods";
 import StudyCover from "../../../../pageTemplates/study/StudyCover";
 import StudyDateBar from "../../../../pageTemplates/study/StudyDateBar";
 import StudyHeader from "../../../../pageTemplates/study/StudyHeader";
@@ -52,7 +52,7 @@ export default function Page() {
     enabled: !locationParam && !!date && !!id,
   });
 
-  const participation = studyVoteData ? getStudyParticipation(studyVoteData, id) : studyOne;
+  const participation = studyVoteData ? getStudyParticipationById(studyVoteData, id) : studyOne;
 
   useEffect(() => {
     if (!session) return;

@@ -48,6 +48,7 @@ export default function StudyVoteMap() {
   const newSearchParams = new URLSearchParams(searchParams);
   const dateParam = searchParams.get("date");
   const categoryParam = searchParams.get("category") as "currentPlace" | "mainPlace" | "votePlace";
+  const drawerParam = searchParams.get("drawer") as "up" | "down";
   // const latParam = searchParams.get("lat");
   // const lonParam = searchParams.get("lon");
 

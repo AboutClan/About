@@ -33,7 +33,6 @@ export interface MyStudyParticipationProps extends Omit<StudyParticipationProps,
 export interface StudyMemberProps extends TimeStampProps {
   user: UserSimpleInfoProps;
   time: TimeRangeProps;
-  place: PlaceInfoProps;
   isMainChoice?: boolean;
   attendanceInfo?: StudyAttendanceInfoProps;
   comment?: MessageSimpleProps;
@@ -44,6 +43,14 @@ export interface StudyAttendanceInfoProps {
   attendanceImage?: string;
   arrived: string;
   arrivedMessage: string;
+}
+
+export interface StudyAttendanceRequestProps {
+  image?: Blob;
+  place?: PlaceInfoProps;
+  arrivedMessage: string;
+  status: StudyStatus;
+  time: TimeRangeProps;
 }
 
 ////
@@ -88,11 +95,11 @@ export interface RealTimeDirectAttendanceProps
 
 export interface RealTimeInfoProps extends RealTimeBasicVoteProps, TimeStampProps {
   user: UserSimpleInfoProps;
-  status: StudyUserStatus;
+  // status: StudyUserStatus;
   arrived?: string;
   image?: Blob | string;
   memo?: string;
-  comment?: string;
+  // comment?: string;
   _id: string;
 }
 

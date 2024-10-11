@@ -1,4 +1,5 @@
 import { Box, Button } from "@chakra-ui/react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
@@ -18,7 +19,6 @@ interface StudyControlButtonProps {
 
 function StudyControlButton({ isAleadyAttend }: StudyControlButtonProps) {
   const searchParams = useSearchParams();
-  const [isAttendModal, setIsAttendModal] = useState(false);
 
   const [isStudyDrawer, setIsStudyDrawer] = useState(false);
 
@@ -29,7 +29,7 @@ function StudyControlButton({ isAleadyAttend }: StudyControlButtonProps) {
   const options: IBottomDrawerLgOptions = {
     footer: {
       buttonText: "취소",
-      onClick: () => {},
+      onClick: () => setIsStudyDrawer(false),
     },
   };
 
@@ -49,44 +49,55 @@ function StudyControlButton({ isAleadyAttend }: StudyControlButtonProps) {
         right="20px"
         iconSpacing={1}
         rightIcon={<CheckCircleIcon />}
+        onClick={() => setIsStudyDrawer(true)}
       >
         스터디
       </Button>
-      {
+      {isStudyDrawer && (
         <BottomDrawerLg setIsModal={setIsStudyDrawer} options={options} height={197}>
-          <Button
-            h="52px"
-            justifyContent="flex-start"
-            display="flex"
-            variant="unstyled"
-            py={4}
-            w="100%"
+          <Link href={`/vote/participate?${searchParams.toString()}`} style={{ width: "100%" }}>
+            <Button
+              h="52px"
+              justifyContent="flex-start"
+              display="flex"
+              variant="unstyled"
+              py={4}
+              w="100%"
+            >
+              <Box w="20px" h="20px" mr={4} opacity={0.28}>
+                <ClockIcon />
+              </Box>
+              <Box fontSize="13px" color="var(--gray-600)">
+                스터디 예약
+              </Box>
+            </Button>
+          </Link>
+          <Link
+            href={
+              isOpenStudy
+                ? `/vote/attend/configuration?${searchParams.toString()}`
+                : `/vote/attend/certification?${searchParams.toString()}`
+            }
+            style={{ width: "100%" }}
           >
-            <Box w="20px" h="20px" mr={4} opacity={0.28}>
-              <ClockIcon />
-            </Box>
-            <Box fontSize="13px" color="var(--gray-600)">
-              스터디 예약
-            </Box>
-          </Button>
-
-          <Button
-            h="52px"
-            display="flex"
-            justifyContent="flex-start"
-            variant="unstyled"
-            py={4}
-            w="100%"
-          >
-            <Box w="20px" h="20px" mr={4} opacity={0.28}>
-              <CalendarCheckIcon />
-            </Box>
-            <Box fontSize="13px" color="var(--gray-600)">
-              실시간 출석체크
-            </Box>
-          </Button>
+            <Button
+              h="52px"
+              display="flex"
+              justifyContent="flex-start"
+              variant="unstyled"
+              py={4}
+              w="100%"
+            >
+              <Box w="20px" h="20px" mr={4} opacity={0.28}>
+                <CalendarCheckIcon />
+              </Box>
+              <Box fontSize="13px" color="var(--gray-600)">
+                실시간 출석체크
+              </Box>
+            </Button>
+          </Link>
         </BottomDrawerLg>
-      }
+      )}
     </>
     // <BottomNavWrapper>
     //   <NewTwoButtonRow
