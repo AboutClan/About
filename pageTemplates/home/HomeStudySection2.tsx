@@ -192,7 +192,7 @@ function HomeStudySection() {
             onDragEnd={(_, panInfo) => onDragEnd(panInfo)}
             className="study_space"
           >
-            <HomeStudyCol studyVoteData={studyVoteArr} isLoading={isLoading} date={date} />
+            <StudyCardCol studyVoteData={studyVoteArr} isLoading={isLoading} date={date} />
           </MotionDiv>
         </AnimatePresence>
       </Box> */}

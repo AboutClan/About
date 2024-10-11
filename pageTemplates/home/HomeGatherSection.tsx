@@ -1,13 +1,14 @@
-import Slide from "../../components/layouts/PageSlide";
+import SectionHeader from "../../components/atoms/SectionHeader";
 import HomeGatherCol from "./HomeGatherCol";
-import HomeReviewSection from "./HomeReviewSection";
 
-function HomeGatherSection() {
+interface HomeGatherSectionProps {}
+
+function HomeGatherSection({}: HomeGatherSectionProps) {
   return (
-    <Slide>
+    <>
+      <SectionHeader title="About 번개" subTitle="Meeting" />
       <HomeGatherCol />
-      <HomeReviewSection />
-    </Slide>
+    </>
   );
 }
 

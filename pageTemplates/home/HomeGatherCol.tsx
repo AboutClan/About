@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -22,7 +22,7 @@ export default function HomeGatherCol() {
   const location = searchParams.get("location");
   const tab = searchParams.get("tab") as "recommendation" | "gather";
   const [cardDataArr, setCardDataArr] = useState<IPostThumbnailCard[]>([]);
- 
+
   const setSlideDirection = useSetRecoilState(slideDirectionState);
   const setTransferGather = useSetRecoilState(transferGatherDataState);
 
@@ -38,9 +38,6 @@ export default function HomeGatherCol() {
 
   return (
     <Box mb="24px">
-      <Flex mb="16px" bgColor="white" align="center" h="58px" fontWeight={600} fontSize="18px">
-        ABOUT 모임
-      </Flex>
       <Box>
         {cardDataArr.length ? (
           <CardColumnLayout
@@ -64,7 +61,11 @@ export const setGatherDataToCardCol = (
   const cardCol: IPostThumbnailCard[] = gathers.map((gather, idx) => ({
     title: gather.title,
     subtitle:
-      gather.location.main + " · " + gather.type.title + " · " + dayjs(gather.date).format("M월 D일(ddd)"),
+      gather.location.main +
+      " · " +
+      gather.type.title +
+      " · " +
+      dayjs(gather.date).format("M월 D일(ddd)"),
     participants: [gather.user, ...gather.participants.map((par) => par.user)] as IUserSummary[],
     url: `/gather/${gather.id}`,
     func: func ? () => func(gather) : undefined,

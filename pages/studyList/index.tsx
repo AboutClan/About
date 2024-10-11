@@ -1,13 +1,13 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import { PostThumbnailCard } from "../../components/molecules/cards/PostThumbnailCard";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
-import { setStudyDataToCardCol } from "../../pageTemplates/home/study/HomeStudyCol";
+import { setStudyDataToCardCol } from "../../pageTemplates/home/study/StudyCardCol";
 import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";

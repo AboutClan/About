@@ -11,13 +11,13 @@ import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 import HomeGatherCol from "./HomeGatherCol";
-import HomeStudyCol from "./study/HomeStudyCol";
+import StudyCardCol from "./study/StudyCardCol";
 
 function HomeRecommendationSection() {
   const { data: session } = useSession();
 
   const userLocation = localStorage.getItem(USER_LOCATION) as ActiveLocation;
-
+  console.log(session, userLocation);
   const { data: studyVoteData, isLoading } = useStudyVoteQuery(
     dayjsToStr(dayjs()),
     userLocation || session?.user.location,
@@ -34,7 +34,7 @@ function HomeRecommendationSection() {
           {dayjsToFormat(dayjs(), "M월 D일")} 카공 스터디
         </Box>
 
-        <HomeStudyCol
+        <StudyCardCol
           participations={studyVoteData?.participations}
           isLoading={isLoading}
           date={dayjsToStr(dayjs())}

@@ -2,7 +2,6 @@ import { Tab, TabList, Tabs } from "@chakra-ui/react";
 export interface ITabNavOptions {
   text: string;
   func: () => void;
-  flex?: 1;
 }
 
 interface ITabNav {
@@ -10,7 +9,7 @@ interface ITabNav {
   tabOptionsArr: ITabNavOptions[];
   hasBorder?: boolean;
   isMain?: boolean;
-  isThick?: boolean;
+  isFullSize?: boolean;
 }
 
 export default function TabNav({
@@ -18,7 +17,7 @@ export default function TabNav({
   tabOptionsArr,
   hasBorder = true,
   isMain = false,
-  isThick,
+  isFullSize = true,
 }: ITabNav) {
   const idx = tabOptionsArr.findIndex((tab) => tab.text === selected);
 
@@ -26,7 +25,7 @@ export default function TabNav({
     <>
       <Tabs
         index={selected ? idx : undefined}
-        color="var(--gray-600)"
+        color="var(--gray-500)"
         colorScheme="mintTheme"
         bgColor="white"
         height="44px"
@@ -36,6 +35,7 @@ export default function TabNav({
           display="flex"
           flexWrap="nowrap"
           overflowX="scroll"
+          borderBottom="var(--border)"
           pb="2px"
           sx={{
             "&::-webkit-scrollbar": {
@@ -52,9 +52,9 @@ export default function TabNav({
               display="flex"
               flexShrink="0 !important"
               fontSize="13px"
-              fontWeight={isThick ? 600 : index === idx || idx === -1 ? 600 : 400}
+              fontWeight={index === idx ? 600 : 400}
               p={!isMain ? "8px 20px" : "8px 16px"}
-              flex={tab?.flex}
+              flex={isFullSize ? 1 : undefined}
               key={tab.text}
               onClick={tab.text !== selected ? tab.func : undefined}
               _focus={{

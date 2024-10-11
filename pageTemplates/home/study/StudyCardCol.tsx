@@ -30,13 +30,13 @@ import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas"
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import { getDistanceFromLatLonInKm } from "../../../utils/mathUtils";
 
-interface HomeStudyColProps {
+interface StudyCardColProps {
   participations: StudyParticipationProps[];
-  isLoading: boolean;
+
   date: string;
 }
 
-function HomeStudyCol({ participations, isLoading, date }: HomeStudyColProps) {
+function StudyCardCol({ participations, date }: StudyCardColProps) {
   const { data: session } = useSession();
 
   const searchParams = useSearchParams();
@@ -113,7 +113,7 @@ function HomeStudyCol({ participations, isLoading, date }: HomeStudyColProps) {
         isBlur={LOCATION_RECRUITING.includes(location as InactiveLocation)}
         size="lg"
       >
-        {!isLoading && studyCardColData ? (
+        {studyCardColData ? (
           <CardColumnLayout
             cardDataArr={studyCardColData}
             url={`/studyList?tab=study&location=${locationEn}&date=${date}`}
@@ -183,4 +183,4 @@ const getBadgeText = (
   }
 };
 
-export default HomeStudyCol;
+export default StudyCardCol;

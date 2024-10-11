@@ -10,6 +10,8 @@ export const dayjsToStr = (date: Dayjs) => date?.format("YYYY-MM-DD");
 
 export const dayjsToFormat = (date: Dayjs, text: string) => date.format(text);
 
+export const dayjsToKr = (date: Dayjs) => date.format("M월 D일");
+
 export const getToday = () => dayjs().startOf("day");
 
 export const createTimeArr = (startHour: number, endHour: number, offset = 0) => {
