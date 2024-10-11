@@ -36,7 +36,7 @@ import { getStudyTime } from "../../libs/study/getStudyTime";
 import { getCurrentLocationIcon, getStudyIcon } from "../../libs/study/getStudyVoteIcon";
 import { getLocationCenterDot } from "../../libs/study/getStudyVoteMap";
 import { ModalLayout } from "../../modals/Modals";
-import RealStudyBottomNav from "../../pageTemplates/vote/RealStudyBottomNav";
+import RealStudyBottomNav from "../../pageTemplates/vote/StudyControlButton";
 import VotePreComponent from "../../pageTemplates/vote/VotePreComponent";
 import { myRealStudyInfoState, myStudyInfoState } from "../../recoils/studyRecoils";
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";

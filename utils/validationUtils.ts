@@ -74,6 +74,8 @@ export const detectDevice = () => {
   }
 };
 export const iPhoneNotchSize = () => {
+  if (typeof navigator === "undefined") return 0;
+
   const ua = navigator.userAgent;
   // iPhone 감지
   if (/iPhone/i.test(ua)) {

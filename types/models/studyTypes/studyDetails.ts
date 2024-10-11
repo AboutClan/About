@@ -17,13 +17,24 @@ export interface StudyParticipationProps {
   status: StudyStatus;
   members: StudyMemberProps[];
 }
+export interface RealTimeInfoProps extends TimeStampProps {
+  user: UserSimpleInfoProps;
+  place: PlaceInfoProps;
+  status: StudyStatus;
+  attendanceInfo?: StudyAttendanceInfoProps;
+  comment?: MessageSimpleProps;
+  time: TimeRangeProps;
+  _id: string;
+}
+
 export interface MyStudyParticipationProps extends Omit<StudyParticipationProps, "place"> {
   place: StudyPlaceProps | PlaceInfoProps;
 }
 export interface StudyMemberProps extends TimeStampProps {
   user: UserSimpleInfoProps;
   time: TimeRangeProps;
-  isMainChoice: boolean;
+  place: PlaceInfoProps;
+  isMainChoice?: boolean;
   attendanceInfo?: StudyAttendanceInfoProps;
   comment?: MessageSimpleProps;
   absenceInfo?: MessageSimpleProps;
@@ -56,26 +67,10 @@ export interface IAttendance extends TimeStampProps {
   comment: string;
 }
 
-export interface RealTimeInfoProps extends RealTimeBasicVoteProps, TimeStampProps {
-  user: UserSimpleInfoProps;
-  status: StudyUserStatus;
-  arrived?: string;
-  image?: Blob | string;
-  memo?: string;
-  comment?: string;
-  _id: string;
-}
-
 export type StudyUserStatus = "pending" | "solo" | "open" | "completed" | "cancel";
 
-export interface RealTimeStudyPlaceProps {
-  lat?: number;
-  lon?: number;
-  text: string;
-  locationDetail: string;
-}
 export interface RealTimeBasicVoteProps {
-  place: RealTimeStudyPlaceProps;
+  place: PlaceInfoProps;
   time: {
     start: string | Dayjs;
     end: string | Dayjs;

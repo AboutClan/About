@@ -2,33 +2,10 @@ import { Button } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useRef, useState } from "react";
 import styled from "styled-components";
-import { IModal } from "../../../types/components/modalTypes";
 import { iPhoneNotchSize } from "../../../utils/validationUtils";
 
-export interface IBottomDrawerLgOptions {
-  header?: {
-    title: string;
-    subTitle: string;
-  };
-  footer?: {
-    buttonText: string;
-    onClick: () => void;
-    buttonLoading?: boolean;
-  };
-}
-
-interface IBottomDrawerLg extends IModal {
-  options?: IBottomDrawerLgOptions;
-  children: React.ReactNode;
-  isAnimation?: boolean;
-  height?: number;
-  isxpadding?: boolean;
-  isOverlay?: boolean;
-  isLittleClose?: boolean;
-  paddingOptions?: {
-    bottom?: number;
-  };
-}
+export const DRAWER_MIN_HEIGHT = 40;
+export const DRAWER_MAX_HEIGHT = 650; // 최대 높이
 
 export default function BottomFlexDrawer({
   setIsModal,
@@ -40,13 +17,15 @@ export default function BottomFlexDrawer({
   isOverlay = true,
   isLittleClose,
   paddingOptions,
-}: IBottomDrawerLg) {
+}: any) {
   const header = options?.header;
   const footer = options?.footer;
 
   const [drawerHeight, setDrawerHeight] = useState(height); // 초기 높이
   const startYRef = useRef(0); // 드래그 시작 위치 저장
   const currentHeightRef = useRef(drawerHeight); // 현재 높이 저장
+
+  const SWIPE_THRESHOLD = 40; // 스와이프 임계값
 
   const handlePointerDown = (event) => {
     startYRef.current = event.clientY || event.touches[0].clientY; // 드래그 시작 위치 저장
@@ -58,66 +37,71 @@ export default function BottomFlexDrawer({
   const handlePointerMove = (event) => {
     const currentY = event.clientY || event.touches[0].clientY;
     const deltaY = startYRef.current - currentY; // 드래그한 만큼의 변화량
-
-    const newHeight = Math.max(currentHeightRef.current + deltaY, 60); // 최소 높이 60 설정
-    setDrawerHeight(newHeight); // 높이 업데이트
+    const newHeight = Math.max(currentHeightRef.current + deltaY, DRAWER_MIN_HEIGHT); // 최소 높이 설정
+    setDrawerHeight(newHeight); // 드래그 중 높이 업데이트
   };
 
-  const handlePointerUp = () => {
+  const handlePointerUp = (event) => {
+    const endY = event.clientY || event.touches[0].clientY;
+    const deltaY = startYRef.current - endY; // 드래그한 만큼의 변화량
+
     window.removeEventListener("pointermove", handlePointerMove);
     window.removeEventListener("pointerup", handlePointerUp);
 
-    // 드래그 종료 후 닫기 조건 확인
-    if (drawerHeight < 100 && isLittleClose) {
-      setDrawerHeight(60); // 최소 높이로 설정
-      setIsModal(false);
+    // 스와이프 종료 시 부드럽게 애니메이션 적용
+    if (deltaY > SWIPE_THRESHOLD) {
+      console.log("Swiped up"); // 위로 스와이프
+      setDrawerHeight(DRAWER_MAX_HEIGHT); // 위로 쭉 올라가는 동작
+    } else if (deltaY < -SWIPE_THRESHOLD) {
+      console.log("Swiped down"); // 아래로 스와이프
+      setDrawerHeight(DRAWER_MIN_HEIGHT); // 아래로 내려가는 동작
+    } else {
+      console.log("Swipe too short, resetting to original height");
+      setDrawerHeight(currentHeightRef.current); // 스와이프가 임계값보다 짧으면 원래 높이로 복원
     }
   };
 
   return (
-    <>
-      <Layout
-        as={motion.div}
-        height={drawerHeight}
-        isxpadding={isxpadding.toString()}
-        paddingoptions={paddingOptions}
-        onPointerDown={handlePointerDown} // 드래그 시작 시
-      >
-        <TopNav />
+    <Layout
+      as={motion.div}
+      animate={{ height: drawerHeight }} // 애니메이션 적용
+      transition={{ type: "spring", stiffness: 300, damping: 30 }} // 부드러운 스프링 애니메이션
+      isxpadding={isxpadding.toString()}
+      paddingoptions={paddingOptions}
+      onPointerDown={handlePointerDown} // 드래그 시작 시
+    >
+      <TopNav />
 
-        {header && drawerHeight > 100 && (
-          <Header>
-            <span>{header.subTitle}</span>
-            <span>{header.title}</span>
-          </Header>
-        )}
-        {drawerHeight > 100 && children}
-        {footer && drawerHeight > 100 && (
-          <Button
-            w="100%"
-            mt="auto"
-            colorScheme="mintTheme"
-            size="lg"
-            isLoading={footer.buttonLoading}
-            borderRadius="var(--rounded-lg)"
-            onClick={footer.onClick}
-          >
-            {footer.buttonText}
-          </Button>
-        )}
-      </Layout>
-    </>
+      {header && drawerHeight > 100 && (
+        <Header>
+          <span>{header.subTitle}</span>
+          <span>{header.title}</span>
+        </Header>
+      )}
+      {drawerHeight > 100 && children}
+      {footer && drawerHeight > 100 && (
+        <Button
+          w="100%"
+          mt="auto"
+          colorScheme="mintTheme"
+          size="lg"
+          isLoading={footer.buttonLoading}
+          borderRadius="var(--rounded-lg)"
+          onClick={footer.onClick}
+        >
+          {footer.buttonText}
+        </Button>
+      )}
+    </Layout>
   );
 }
 
 const Layout = styled.div<{
   paddingoptions: { bottom?: number };
-  height: number;
   isxpadding: string;
 }>`
-  height: ${(props) => props.height + iPhoneNotchSize()}px;
   position: fixed;
-  bottom: 100px;
+  bottom: ${52 + iPhoneNotchSize()}px;
   width: 100%;
   max-width: var(--max-width);
   border-top-left-radius: 20px;
@@ -125,10 +109,7 @@ const Layout = styled.div<{
   background-color: white;
   z-index: 500;
   padding: ${(props) => (props.isxpadding === "true" ? "12px 20px" : "12px 0")};
-  padding-bottom: ${(props) =>
-    props.isxpadding === "true" && props?.paddingoptions?.bottom !== 0
-      ? `${20 + iPhoneNotchSize()}px`
-      : iPhoneNotchSize()};
+  padding-bottom: 0;
   display: flex;
   flex-direction: column;
   align-items: center;

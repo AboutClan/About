@@ -1,10 +1,8 @@
 import { Flex } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { useRecoilValue } from "recoil";
 import CurrentLocationBtn from "../../components/atoms/CurrentLocationBtn";
 import ButtonGroups, { ButtonOptionsProps } from "../../components/molecules/groups/ButtonGroups";
-import { myRealStudyInfoState, myStudyInfoState } from "../../recoils/studyRecoils";
 
 type LocationFilterType = "현재 위치" | "주 활동 장소" | "내 투표 장소";
 
@@ -24,8 +22,8 @@ function StudyMapTopNav({}: StudyMapTopNavProps) {
   const newSearchParams = new URLSearchParams(searchParams);
 
   const [locationFilterType, setLocationFilterType] = useState<LocationFilterType>("현재 위치");
-  const myStudy = useRecoilValue(myStudyInfoState);
-  const myRealStudy = useRecoilValue(myRealStudyInfoState);
+  // const myStudy = useRecoilValue(myStudyInfoState);
+  // const myRealStudy = useRecoilValue(myRealStudyInfoState);
 
   const handleNavButton = (type: LocationFilterType) => {
     //  if (type==="주 활동 장소"&& !mainLocation) {
@@ -49,16 +47,7 @@ function StudyMapTopNav({}: StudyMapTopNavProps) {
   }));
 
   return (
-    <Flex
-      w="100%"
-      justify="space-between"
-      py={3}
-      px={5}
-      position="absolute"
-      top="0"
-      left="0"
-      zIndex={10}
-    >
+    <Flex w="100%" justify="space-between" p={5} position="absolute" top="0" left="0" zIndex={10}>
       <CurrentLocationBtn onClick={() => setLocationFilterType("현재 위치")} />
       <ButtonGroups
         buttonOptionsArr={realButtonOptionsArr}

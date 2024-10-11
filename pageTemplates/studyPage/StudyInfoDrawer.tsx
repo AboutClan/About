@@ -3,7 +3,6 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import { useRecoilValue } from "recoil";
 import AlertModal from "../../components/AlertModal";
 import { DispatchType } from "../../types/hooks/reactTypes";
 
@@ -20,15 +19,16 @@ import {
   useStudyParticipationMutation,
 } from "../../hooks/study/mutations";
 import { ModalLayout } from "../../modals/Modals";
-import { myRealStudyInfoState, myStudyInfoState } from "../../recoils/studyRecoils";
-import { RealTimeStudyPlaceProps } from "../../types/models/studyTypes/studyDetails";
+
+import { StudyPlaceProps } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
 import { IAvatar } from "../../types/models/userTypes/userInfoTypes";
+import { PlaceInfoProps } from "../../types/models/utilTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
 export interface StudyInfoProps {
   id: string;
-  place: RealTimeStudyPlaceProps;
+  place: StudyPlaceProps | PlaceInfoProps;
   title: string;
   time: { start: string; end: string };
   participantCnt: number;
@@ -53,8 +53,6 @@ interface StudyInFoDrawerProps {
 function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
   const resetStudy = useResetStudyQuery();
   const typeToast = useTypeToast();
-  const myStudy = useRecoilValue(myStudyInfoState);
-  const myRealStudy = useRecoilValue(myRealStudyInfoState);
 
   const { mutate: studyVote, isLoading: isLoading1 } = useStudyParticipationMutation(
     dayjs(),
@@ -109,31 +107,31 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
 
   const onClickStudyVote = (voteTime: IStudyVoteTime) => {
     console.log(25, voteTime);
-    if (myStudy || myRealStudy) {
-      console.log(2224);
-      setVoteTime(voteTime);
-      setIsAlertModal(true);
-      return;
-    }
+    // if (myStudy || myRealStudy) {
+    //   console.log(2224);
+    //   setVoteTime(voteTime);
+    //   setIsAlertModal(true);
+    //   return;
+    // }
     handleVote(voteTime);
   };
 
   const handleVote = (time?: IStudyVoteTime) => {
-    if (!detailInfo.isPrivate) {
-      studyVote({
-        place: detailInfo?.id,
-        start: time?.start || voteTime?.start,
-        end: time?.end || voteTime?.end,
-      });
-    } else {
-      realTimeStudyVote({
-        place: detailInfo.place as RealTimeStudyPlaceProps,
-        time: {
-          start: time?.start || voteTime?.start,
-          end: time?.end || voteTime?.end,
-        },
-      });
-    }
+    // if (!detailInfo.isPrivate) {
+    //   studyVote({
+    //     place: detailInfo?.id,
+    //     start: time?.start || voteTime?.start,
+    //     end: time?.end || voteTime?.end,
+    //   });
+    // } else {
+    //   realTimeStudyVote({
+    //     place: detailInfo.place as RealTimeStudyPlaceProps,
+    //     time: {
+    //       start: time?.start || voteTime?.start,
+    //       end: time?.end || voteTime?.end,
+    //     },
+    //   });
+    // }
   };
 
   return (
@@ -155,7 +153,7 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
                 <Box w={3} textAlign="center">
                   ·
                 </Box>
-                <Box color="var(--color-blue)">{detailInfo.participantCnt}명 참여 중</Box>
+                <Box color="var(--color-blue)">{detailInfo.participantCnt + 2}명 참여 중</Box>
               </Flex>
               <Flex mt={2} align="center">
                 <Avatar {...detailInfo.comment.user} size="xs" />
@@ -197,7 +195,7 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
 
                 children: (
                   <div onClick={() => onClick(detailInfo.isMember ? "comment" : "vote")}>
-                    {detailInfo.isMember ? "한줄 코멘트 변경" : "스터디 합류"}
+                    {!detailInfo.isMember ? "한줄 코멘트 변경" : "스터디 합류"}
                   </div>
                 ),
               }}

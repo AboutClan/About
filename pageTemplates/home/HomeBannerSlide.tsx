@@ -1,19 +1,13 @@
 import { Flex } from "@chakra-ui/react";
 
-import {
-  CLUB_BANNER_IMAGE,
-  GATHER_BANNER_IMAGE,
-  MAIN_BANNER_IMAGE,
-} from "../../assets/images/BannerImages";
+import { GATHER_BANNER_IMAGE, MAIN_BANNER_IMAGE } from "../../assets/images/BannerImages";
 import ImageSliderBanner from "../../components/organisms/imageSlider/imageSliderType/ImageSliderBanner";
 
 function HomeBannerSlide() {
-  const imageArr = [...MAIN_BANNER_IMAGE, ...GATHER_BANNER_IMAGE, ...CLUB_BANNER_IMAGE].map(
-    (banner) => ({
-      url: banner?.url,
-      imageUrl: banner.image,
-    }),
-  );
+  const imageArr = [...MAIN_BANNER_IMAGE, ...GATHER_BANNER_IMAGE].map((banner) => ({
+    url: banner?.url,
+    imageUrl: banner.image,
+  }));
 
   return (
     <>

@@ -1,15 +1,17 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSetRecoilState } from "recoil";
 import SectionHeader from "../../components/atoms/SectionHeader";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import { USER_LOCATION } from "../../constants/keys/localStorage";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
+import { getMyStudyParticipation } from "../../libs/study/getMyStudyMethods";
+import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { dayjsToKr, dayjsToStr } from "../../utils/dateTimeUtils";
 import StudyCardCol from "./study/StudyCardCol";
-
 interface HomeStudySectionProps {}
 
 function HomeStudySection({}: HomeStudySectionProps) {
@@ -18,8 +20,9 @@ function HomeStudySection({}: HomeStudySectionProps) {
   const userLocation = localStorage.getItem(USER_LOCATION) as ActiveLocation;
 
   const [date, setDate] = useState(dayjsToStr(dayjs()));
+  const setMyStudyParticipation = useSetRecoilState(myStudyParticipationState);
 
-  const { data: studyVoteData, isLoading } = useStudyVoteQuery(
+  const { data: studyVoteData } = useStudyVoteQuery(
     date,
     userLocation || session?.user.location,
 
@@ -27,6 +30,12 @@ function HomeStudySection({}: HomeStudySectionProps) {
       enabled: !!userLocation || !!session?.user.location,
     },
   );
+
+  useEffect(() => {
+    if (!studyVoteData || !session?.user) return;
+    const myStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
+    setMyStudyParticipation(myStudyParticipation);
+  }, [studyVoteData, session?.user.uid]);
 
   const tabOptionsArr: ITabNavOptions[] = [
     {

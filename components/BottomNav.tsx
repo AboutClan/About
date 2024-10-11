@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import Link, { LinkProps } from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
@@ -8,7 +8,7 @@ import styled from "styled-components";
 import { getStudyStandardDate } from "../libs/study/date/getStudyStandardDate";
 import { slideDirectionState } from "../recoils/navigationRecoils";
 import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
-import { getBottomNavSize } from "../utils/mathUtils";
+import { iPhoneNotchSize } from "../utils/validationUtils";
 import { CommunityIcon, HomeIcon, StudyIcon, ThunderIcon, UserIcon } from "./Icons/BottomNavIcons";
 
 interface INavButtonProps {
@@ -34,7 +34,7 @@ export default function BottomNav() {
   const locationEn = convertLocationLangTo(session?.user.location, "en");
 
   return (
-    <Nav height={getBottomNavSize()}>
+    <Nav>
       {navItems.map((item, idx) => {
         const getParams = (category: Category) => {
           switch (category) {
@@ -78,11 +78,13 @@ function NavButton({ text, url, activeIcon, defaultIcon, isActive, idx }: INavBu
       replace={!text}
       className={`bottom_nav${idx}`}
     >
-      <Box>{isActive ? activeIcon || defaultIcon : defaultIcon}</Box>
+      <Flex justify="center" align="center" w="26px" h="26px">
+        {isActive ? activeIcon || defaultIcon : defaultIcon}
+      </Flex>
       <Box
         as="span"
+        mt="2px"
         fontSize="11px"
-        fontWeight={500}
         color={isActive ? "var(--color-mint)" : "var(--gray-400)"}
       >
         {text}
@@ -124,21 +126,19 @@ const navItems: INavButtonProps[] = [
   },
 ];
 
-const Nav = styled.nav<{ height: number }>`
+const Nav = styled.nav`
   width: 100%;
   display: flex;
-  justify-content: even;
   position: fixed;
   bottom: 0;
-  height: ${(props) => `${props.height}px`};
+  height: ${52 + iPhoneNotchSize()}px;
   background-color: white;
   z-index: 10;
+  padding-bottom: ${iPhoneNotchSize()}px;
 
   border-top: var(--border);
   max-width: var(--max-width);
   margin: 0 auto;
-  padding-top: ${(props) => (props.height > 90 ? 0 : "4px")};
-  padding-bottom: ${(props) => (props.height > 90 ? "4px" : 0)};
 `;
 
 const NavLink = styled(Link)<{ isactive: "true" | "false" } & LinkProps>`

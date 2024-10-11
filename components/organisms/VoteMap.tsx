@@ -28,11 +28,17 @@ export default function VoteMap({
     polylines: [],
     infoWindow: [],
   });
-  console.log(0);
+
   useEffect(() => {
     if (!mapRef?.current || typeof naver === "undefined" || !mapOptions) return;
-    console.log(1);
-    const map = new naver.maps.Map(mapRef.current, mapOptions);
+
+    const map = new naver.maps.Map(mapRef.current, {
+      ...mapOptions,
+      logoControl: true,
+      logoControlOptions: {
+        position: naver.maps.Position.BOTTOM_LEFT,
+      },
+    });
     mapInstanceRef.current = map;
   }, [mapOptions]);
 

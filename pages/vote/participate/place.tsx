@@ -53,10 +53,10 @@ function Place() {
   const handleSubmit = (voteTime: IStudyVoteTime) => {
     mutate({
       place: {
-        text: placeInfo.place_name,
-        locationDetail: placeInfo.road_address_name,
-        lat: +placeInfo.y,
-        lon: +placeInfo.x,
+        name: placeInfo.place_name,
+        address: placeInfo.road_address_name,
+        latitude: +placeInfo.y,
+        longitude: +placeInfo.x,
       },
       time: { ...voteTime },
     });
