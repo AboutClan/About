@@ -12,7 +12,7 @@ export interface ButtonOptionsProps {
 export interface IButtonGroups {
   buttonOptionsArr: ButtonOptionsProps[];
   currentValue: string;
-  size?: "sm" | "md";
+  size?: "sm" | "md" | "lg";
   isWrap?: boolean;
   isEllipse?: boolean;
   type?: "block" | "text";
@@ -76,6 +76,7 @@ const Layout = styled.div<{ isWrap: boolean }>`
     display: none;
   }
   display: flex;
+  flex-direction: row; /* 가로로 배치 */
   row-gap: ${(props) => (props.isWrap ? "8px" : 0)};
   flex-wrap: ${(props) => (props.isWrap ? "wrap" : "nowrap")};
   overflow-x: auto;

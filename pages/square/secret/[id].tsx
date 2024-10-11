@@ -145,7 +145,7 @@ function SecretSquareDetailPage() {
         />
       </Header>
       <>
-        <Slide>
+        <Slide isNoPadding>
           <Flex px={4} py={4} direction="column" gap={2} as="section" bg="white" minH="326px">
             <Box minH="83px">
               {squareDetail && (

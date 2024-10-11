@@ -1,5 +1,5 @@
-import { Dayjs } from "dayjs";
 import styled from "styled-components";
+import { TimeRangeProps } from "../../../../types/models/utilTypes";
 
 import { IHighlightedText } from "../../../atoms/HighlightedText";
 import BoardHeaderText from "./_component/BoardHeaderText";
@@ -8,24 +8,21 @@ import TimeBoard from "./_component/TimeBoard";
 
 export interface ITimeBoardParticipant {
   name: string;
-  time: {
-    start: Dayjs;
-    end: Dayjs;
-  };
+  time: TimeRangeProps;
 }
 
 interface ITimeBoard {
   headerText: IHighlightedText;
-  participants: ITimeBoardParticipant[];
+  members: ITimeBoardParticipant[];
 }
 
-export default function UserTimeBoard({ participants, headerText }: ITimeBoard) {
+export default function UserTimeBoard({ members, headerText }: ITimeBoard) {
   return (
     <UserTimeBoardContainer>
       <BoardHeaderText headerText={headerText} />
-      <BoardContainer participants={participants}>
+      <BoardContainer members={members}>
         <TimeBoard />
-        <BoardUserBlocks participants={participants} />
+        <BoardUserBlocks members={members} />
       </BoardContainer>
     </UserTimeBoardContainer>
   );
@@ -37,7 +34,7 @@ const UserTimeBoardContainer = styled.div`
   background-color: var(--gray-100);
 `;
 
-const BoardContainer = styled.div<{ participants: ITimeBoardParticipant[] }>`
+const BoardContainer = styled.div<{ members: ITimeBoardParticipant[] }>`
   min-height: 160px;
   display: flex;
   flex-direction: column;
@@ -46,5 +43,5 @@ const BoardContainer = styled.div<{ participants: ITimeBoardParticipant[] }>`
   border-radius: var(--rounded-lg); /* rounded-lg */
   background-color: white;
 
-  height: ${({ participants }) => `${participants.length * 38 + 52}px`};
+  height: ${({ members }) => `${members.length * 38 + 52}px`};
 `;

@@ -18,15 +18,14 @@ import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { usePointSystemLogQuery } from "../../hooks/user/queries";
-import { myStudyInfoState, studyDateStatusState } from "../../recoils/studyRecoils";
+import { myStudyParticipationState, studyDateStatusState } from "../../recoils/studyRecoils";
 import {
-  StudyParticipationProps,
+  MyStudyParticipationProps,
   StudyStatus,
   StudyUserStatus,
 } from "../../types/models/studyTypes/studyDetails";
 import { StudyDateStatus } from "../../types/models/studyTypes/studyInterActions";
 import { IPointLog } from "../../types/services/pointSystem";
-import StudyNavModal from "./studyNavModal";
 
 interface IStudyNavigation {
   voteCnt: number;
@@ -53,14 +52,14 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
   const uid = session?.user.uid;
 
   const studyDateStatus = useRecoilValue(studyDateStatusState);
-  const myStudy = useRecoilValue(myStudyInfoState);
+  const myStudyParticipation = useRecoilValue(myStudyParticipationState);
 
-  const votingType = getVotingType(myStudy, id);
+  const votingType = getVotingType(myStudyParticipation, id);
 
   const [modalType, setModalType] = useState<StudyModalType>();
   const [modalOptions, setModalOptions] = useState<IAlertModalOptions>();
 
-  const isAttend = checkMyAttend(studyDateStatus, myStudy, uid);
+  const isAttend = checkMyAttend(studyDateStatus, myStudyParticipation, uid);
   const isSubNav = checkSubNavExists(studyDateStatus, votingType, isAttend);
 
   const { mutate: getPoint } = usePointSystemMutation("point");
@@ -178,13 +177,13 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
           </Button>
         </Layout>
       </Slide>
-      <StudyNavModal type={modalType} setType={setModalType} modalOptions={modalOptions} />
+      {/* <StudyNavModal type={modalType} setType={setModalType} modalOptions={modalOptions} /> */}
     </>
   );
 }
 
-const getVotingType = (myStudy: StudyParticipationProps, placeId: string) => {
-  return !myStudy ? null : myStudy?.place._id === placeId ? "same" : "other";
+const getVotingType = (myStudy: MyStudyParticipationProps, placeId: string) => {
+  return !myStudy ? null : myStudy?.place?._id === placeId ? "same" : "other";
 };
 
 const getMyPrevVotePoint = (pointLogs: IPointLog[], date: string) => {
@@ -194,12 +193,12 @@ const getMyPrevVotePoint = (pointLogs: IPointLog[], date: string) => {
 
 const checkMyAttend = (
   studyDateStatus: StudyDateStatus,
-  myStudy: StudyParticipationProps,
+  myStudy: MyStudyParticipationProps,
   uid: string,
 ) => {
   return !!(
     studyDateStatus !== "not passed" &&
-    myStudy?.members.find((who) => who.user.uid === uid)?.arrived
+    myStudy?.members.find((who) => who.user.uid === uid)?.attendanceInfo?.arrived
   );
 };
 

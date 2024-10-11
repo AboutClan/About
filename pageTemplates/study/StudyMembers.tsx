@@ -10,15 +10,15 @@ import { IProfileCommentCard } from "../../components/molecules/cards/ProfileCom
 import ProfileCardColumn from "../../components/organisms/ProfileCardColumn";
 import ImageZoomModal from "../../modals/ImageZoomModal";
 import StudyChangeMemoModal from "../../modals/study/StudyChangeMemoModal";
-import { IAttendance, RealTimeInfoProps } from "../../types/models/studyTypes/studyDetails";
+import { IAttendance, StudyMemberProps } from "../../types/models/studyTypes/studyDetails";
 import { IAbsence } from "../../types/models/studyTypes/studyInterActions";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
-interface IStudyParticipants {
-  participants: IAttendance[] | RealTimeInfoProps[];
+interface IStudyMembers {
+  members: StudyMemberProps[];
   absences: IAbsence[];
 }
-export default function StudyParticipants({ participants, absences }: IStudyParticipants) {
+export default function StudyMembers({ members, absences }: IStudyMembers) {
   const { data: session } = useSession();
 
   const [hasModalMemo, setHasModalMemo] = useState<string>();
@@ -27,7 +27,7 @@ export default function StudyParticipants({ participants, absences }: IStudyPart
     toUid: string;
   }>();
 
-  const userCardArr: IProfileCommentCard[] = participants.map((par) => {
+  const userCardArr: IProfileCommentCard[] = members.map((par) => {
     const togglehasModalMemo =
       par.user.uid === session?.user.uid && par.memo
         ? (memo: string) => setHasModalMemo(memo)

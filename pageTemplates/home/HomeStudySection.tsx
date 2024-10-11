@@ -17,17 +17,18 @@ interface HomeStudySectionProps {}
 function HomeStudySection({}: HomeStudySectionProps) {
   const { data: session } = useSession();
   //session이나 userInfo보다 더 빠른 속도를 위해. 그래야 메인 데이터도 빨리 가져옴
-  const userLocation = localStorage.getItem(USER_LOCATION) as ActiveLocation;
+  const userLocation =
+    (localStorage.getItem(USER_LOCATION) as ActiveLocation) || session?.user.location;
 
   const [date, setDate] = useState(dayjsToStr(dayjs()));
   const setMyStudyParticipation = useSetRecoilState(myStudyParticipationState);
 
   const { data: studyVoteData } = useStudyVoteQuery(
     date,
-    userLocation || session?.user.location,
+    userLocation,
 
     {
-      enabled: !!userLocation || !!session?.user.location,
+      enabled: !!userLocation,
     },
   );
 
@@ -54,7 +55,7 @@ function HomeStudySection({}: HomeStudySectionProps) {
         <SectionHeader title="카공 스터디 같이 하실 분" subTitle="Study" />
       </Box>
       <Box px={5} mt={3} mb={5} borderBottom="var(--border)">
-        <TabNav tabOptionsArr={tabOptionsArr} selected={dayjsToKr(dayjs())} />
+        <TabNav tabOptionsArr={tabOptionsArr} selected={dayjsToKr(dayjs(date))} isFullSize />
       </Box>
       <Box px={5}>
         <StudyCardCol participations={studyVoteData?.participations} date={date} />

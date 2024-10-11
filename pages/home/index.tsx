@@ -1,5 +1,3 @@
-import { Box } from "@chakra-ui/react";
-
 import Slide from "../../components/layouts/PageSlide";
 import HomeBannerSlide from "../../pageTemplates/home/HomeBannerSlide";
 import HomeGatherSection from "../../pageTemplates/home/HomeGatherSection";
@@ -13,34 +11,16 @@ function Home() {
     <>
       <HomeInitialSetting />
       <HomeHeader />
-
       <Slide>
         <HomeBannerSlide />
         <HomeNav />
       </Slide>
-
       <Slide isNoPadding>
         <HomeStudySection />
       </Slide>
-
       <Slide>
-        <Box my={5}>
-          <HomeGatherSection />
-        </Box>
+        <HomeGatherSection />
       </Slide>
-
-      {/* <>
-        {tab === "추천" ? (
-          <HomeRecommendationSection />
-        ) : tab === "스터디" ? (
-          <HomeStudySection />
-        ) : tab === "번개" ? (
-          <HomeGatherSection />
-        ) : tab === "캘린더" ? (
-          <HomeCalendarSection />
-        ) : null}
-        <Box w="100%" h="40px" />
-      </> */}
     </>
   );
 }

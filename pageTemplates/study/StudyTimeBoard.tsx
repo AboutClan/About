@@ -3,26 +3,25 @@ import UserTimeBoard, {
   ITimeBoardParticipant,
 } from "../../components/molecules/boards/userTimeBoard/UserTimeBoard";
 import {
-  IAttendance,
-  RealTimeInfoProps,
+  StudyMemberProps,
   StudyStatus,
   StudyUserStatus,
 } from "../../types/models/studyTypes/studyDetails";
 
 interface IStudyTimeBoard {
-  participants: IAttendance[] | RealTimeInfoProps[];
-  studyStatus: StudyStatus | StudyUserStatus;
+  members: StudyMemberProps[];
+  studyStatus: StudyStatus;
 }
-export default function StudyTimeBoard({ participants, studyStatus }: IStudyTimeBoard) {
-  const timeBoardParticipants: ITimeBoardParticipant[] = transformToTimeBoardProp(participants);
+export default function StudyTimeBoard({ members, studyStatus }: IStudyTimeBoard) {
+  const timeBoardMembers: ITimeBoardParticipant[] = transformToTimeBoardProp(members);
 
-  const headerText: IHighlightedText = getHeaderText(studyStatus, participants.length);
+  const headerText: IHighlightedText = getHeaderText(studyStatus, members.length);
 
-  return <UserTimeBoard headerText={headerText} participants={timeBoardParticipants} />;
+  return <UserTimeBoard headerText={headerText} members={timeBoardMembers} />;
 }
 
-const transformToTimeBoardProp = (participants: IAttendance[] | RealTimeInfoProps[]) => {
-  return participants.map((par) => ({
+const transformToTimeBoardProp = (members: StudyMemberProps[]) => {
+  return members.map((par) => ({
     name: par.user.name,
     time: {
       start: par.time.start,

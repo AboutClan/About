@@ -36,7 +36,7 @@ function SquarePage() {
       <Header title="커뮤니티" isBack={false}>
         <RuleIcon setIsModal={setIsRuleModal} />
       </Header>
-      <Slide>
+      <Slide isNoPadding>
         <SquareTabNav tab={tab} />
         {tab === "시크릿 스퀘어" ? <SquareSecretSection /> : <SquareLoungeSection />}
       </Slide>

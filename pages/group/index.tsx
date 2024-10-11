@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
@@ -154,8 +154,8 @@ function GroupPage() {
 
   return (
     <>
-      <Header title="소모임" url="/home" isBack={false} />
-      <Slide>
+      <Header title="소모임" url="/home" />
+      <Slide isNoPadding>
         <Layout>
           {!myGroups ? <GroupSkeletonMine /> : <GroupMine myGroups={myGroups} />}
           <SectionBar title="전체 소모임" rightComponent={<StatusSelector />} />

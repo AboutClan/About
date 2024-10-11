@@ -5,13 +5,14 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import StudyInviteModal from "../../modals/study/StudyInviteModal";
+import { StudyPlaceProps } from "../../types/models/studyTypes/studyDetails";
+import { PlaceInfoProps } from "../../types/models/utilTypes";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 interface IStudyDateBar {
-
-  place: { locationDetail: string; fullname: string; coverImage: string };
+  place: StudyPlaceProps | PlaceInfoProps;
 }
-function StudyDateBar({  place }: IStudyDateBar) {
+function StudyDateBar({ place }: IStudyDateBar) {
   const { date } = useParams<{ date: string }>();
   const [isInviteModal, setIsInviteModal] = useState(false);
 

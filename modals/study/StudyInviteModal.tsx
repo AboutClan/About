@@ -7,15 +7,13 @@ import styled from "styled-components";
 import { WEB_URL } from "../../constants/system";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
+import { StudyPlaceProps } from "../../types/models/studyTypes/studyDetails";
+import { PlaceInfoProps } from "../../types/models/utilTypes";
 import { IFooterOptions, ModalLayout } from "../Modals";
 const kakaoAppKey = process.env.NEXT_PUBLIC_KAKAO_JS;
 
 interface IStudyInviteModal extends IModal {
-  place: {
-    locationDetail: string;
-    fullname: string;
-    coverImage: string;
-  };
+  place: StudyPlaceProps | PlaceInfoProps;
 }
 
 function StudyInviteModal({ setIsModal, place }: IStudyInviteModal) {
@@ -27,7 +25,7 @@ function StudyInviteModal({ setIsModal, place }: IStudyInviteModal) {
 
   const [isRenderingCheck, setIsRenderingCheck] = useState(false);
 
-  const location = place.locationDetail;
+  const location = (place as StudyPlaceProps)?.locationDetail || (place as PlaceInfoProps)?.address;
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {

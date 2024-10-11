@@ -72,6 +72,7 @@ export default function GatherLocationFilter() {
           return x.text.localeCompare(y.text);
         })}
         currentValue={location}
+        size="lg"
       />
     </Box>
   );

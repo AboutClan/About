@@ -15,16 +15,16 @@ export interface IUserTimeBlock {
 }
 
 interface IBoardUserBlocks {
-  participants: ITimeBoardParticipant[];
+  members: ITimeBoardParticipant[];
 }
-export default function BoardUserBlocks({ participants }: IBoardUserBlocks) {
+export default function BoardUserBlocks({ members }: IBoardUserBlocks) {
   const [userBlocks, setUserBlocks] = useState<IUserTimeBlock[]>([]);
 
   useEffect(() => {
-    // Assuming transformToUserBlocks is a function that transforms participants into userBlocks
-    const newUserBlocks = transformToUserBlocks(participants);
+    // Assuming transformToUserBlocks is a function that transforms members into userBlocks
+    const newUserBlocks = transformToUserBlocks(members);
     setUserBlocks(newUserBlocks);
-  }, [participants]);
+  }, [members]);
   
   return (
     <BlocksContainer>

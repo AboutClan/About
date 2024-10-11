@@ -2,9 +2,19 @@ import {
   MyStudyParticipationProps,
   RealTimeInfoProps,
   StudyDailyInfoProps,
-  StudyMemberProps
+  StudyMemberProps,
 } from "../../types/models/studyTypes/studyDetails";
 
+export const getStudyParticipation = (
+  studyVoteData: StudyDailyInfoProps,
+  id: string,
+): MyStudyParticipationProps => {
+  const findMyParticipation = studyVoteData.participations.find(
+    (participation) => participation.place._id === id,
+  );
+  const realTimeFiltered = getRealTimeFilteredById(studyVoteData.realTime, id);
+  return findMyParticipation || realTimeFiltered;
+};
 export const getMyStudyParticipation = (
   studyVoteData: StudyDailyInfoProps,
   myUid: string,

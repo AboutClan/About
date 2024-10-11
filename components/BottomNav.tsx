@@ -110,7 +110,7 @@ const navItems: INavButtonProps[] = [
     activeIcon: <ThunderIcon isActive />,
     defaultIcon: <ThunderIcon />,
     text: "번개",
-    url: "/gatherPage",
+    url: "/gather",
   },
   {
     activeIcon: <CommunityIcon isActive />,

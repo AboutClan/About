@@ -118,7 +118,7 @@ function Event() {
       <Header title="포인트 스토어">
         <RuleIcon setIsModal={setIsModal} />
       </Header>
-      <Slide>
+      <Slide isNoPadding>
         <Layout>
           <Nav>
             <Button

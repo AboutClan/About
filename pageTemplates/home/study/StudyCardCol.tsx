@@ -149,7 +149,7 @@ export const setStudyDataToCardCol = (
       subtitle: data.place.branch,
       locationDetail: data.place.locationDetail,
       participants: data.members.map((att) => att.user),
-      url: `/study/${data.place._id}/${urlDateParam}`,
+      url: `/study/${data.place._id}/${urlDateParam}?location=${convertLocationLangTo(data.place.location, "en")}`,
       maxCnt: 8,
       image: {
         url: data.place.image,

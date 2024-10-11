@@ -8,7 +8,7 @@ import UserBadge from "../../components/atoms/badges/UserBadge";
 import RankingNumberIcon from "../../components/Icons/RankingNumberIcon";
 import { RANKING_ANONYMOUS_USERS } from "../../constants/storage/anonymous";
 import { RankingUserProp } from "../../libs/userEventLibs/userHelpers";
-import { RankingCategorySource } from "../../pages/statistics/ranking";
+import { RankingCategorySource } from "../../pages/ranking/ranking";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 
 interface IRankingMembers {

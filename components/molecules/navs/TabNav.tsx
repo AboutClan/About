@@ -17,7 +17,7 @@ export default function TabNav({
   tabOptionsArr,
   hasBorder = true,
   isMain = false,
-  isFullSize = true,
+  isFullSize,
 }: ITabNav) {
   const idx = tabOptionsArr.findIndex((tab) => tab.text === selected);
 

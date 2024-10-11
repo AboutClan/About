@@ -1,33 +1,26 @@
-import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import styled from "styled-components";
-import { STUDY_COVER_IMAGES } from "../../../../assets/images/studyCover";
+import { STUDY_MAIN_IMAGES } from "../../../../assets/images/studyMain";
 
 import Divider from "../../../../components/atoms/Divider";
 import Slide from "../../../../components/layouts/PageSlide";
-import { ALL_스터디인증 } from "../../../../constants/serviceConstants/studyConstants/studyPlaceConstants";
 import { useStudyVoteOneQuery, useStudyVoteQuery } from "../../../../hooks/study/queries";
-import { getStudyDateStatus } from "../../../../libs/study/date/getStudyDateStatus";
+import { getStudyParticipation } from "../../../../libs/study/getMyStudyMethods";
 import StudyCover from "../../../../pageTemplates/study/StudyCover";
 import StudyDateBar from "../../../../pageTemplates/study/StudyDateBar";
 import StudyHeader from "../../../../pageTemplates/study/StudyHeader";
+import StudyParticipants from "../../../../pageTemplates/study/StudyMembers";
 import StudyNavigation from "../../../../pageTemplates/study/StudyNavigation";
 import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
-import StudyParticipants from "../../../../pageTemplates/study/StudyParticipants";
 import StudyTimeBoard from "../../../../pageTemplates/study/StudyTimeBoard";
 import {
-  myStudyInfoState,
-  studyDateStatusState,
-  studyPairArrState,
-} from "../../../../recoils/studyRecoils";
-import {
-  RealTimeInfoProps,
   StudyParticipationProps,
+  StudyPlaceProps,
 } from "../../../../types/models/studyTypes/studyDetails";
-import { dayjsToStr } from "../../../../utils/dateTimeUtils";
+import { PlaceInfoProps } from "../../../../types/models/utilTypes";
+import { LocationEn } from "../../../../types/services/locationTypes";
+import { convertLocationLangTo } from "../../../../utils/convertUtils/convertDatas";
 import { getRandomIdx } from "../../../../utils/mathUtils";
 
 export default function Page() {
@@ -35,90 +28,105 @@ export default function Page() {
   const { data: session } = useSession();
   const { id, date } = useParams<{ id: string; date: string }>() || {};
   const privateParam = searchParams.get("private");
+  const locationParam = searchParams.get("location") as LocationEn;
 
-  const [study, setStudy] = useState<StudyParticipationProps>();
-  const [realStudy, setRealStudy] = useState<RealTimeInfoProps[]>();
-  const studyPairArr = useRecoilValue(studyPairArrState);
-  const [myStudy, setMyStudy] = useRecoilState(myStudyInfoState);
-  const [studyDateStatus, setStudyDateStatus] = useRecoilState(studyDateStatusState);
-  const findStudy = studyPairArr
-    ?.find((study) => dayjsToStr(dayjs(study.date)) === date)
-    ?.participations?.find((par) => par.place._id === id);
+  const [studyParticipation, setStudyParticipation] = useState<StudyParticipationProps>();
 
-  const isPrivateStudy = id === ALL_스터디인증;
+  // const [myStudy, setMyStudy] = useRecoilState(myStudyInfoState);
+  // const [studyDateStatus, setStudyDateStatus] = useRecoilState(studyDateStatusState);
+  // const findStudy = studyPairArr
+  //   ?.find((study) => dayjsToStr(dayjs(study.date)) === date)
+  //   ?.participations?.find((par) => par.place._id === id);
+
+  // const isPrivateStudy = id === ALL_스터디인증;
+
+  const { data: studyVoteData } = useStudyVoteQuery(
+    date,
+    convertLocationLangTo(locationParam, "kr"),
+    {
+      enabled: !!date && !!locationParam,
+    },
+  );
+
   const { data: studyOne } = useStudyVoteOneQuery(date, id, {
-    enabled: !findStudy && !!date && !!id && !privateParam,
+    enabled: !locationParam && !!date && !!id,
   });
 
-  const { data: studyVoteOne } = useStudyVoteQuery(date, "전체", false, false, {
-    enabled: !!date && !!privateParam,
-  });
-  const findRealStudy = studyVoteOne?.[0]?.realTime?.find((par) => par._id === id);
+  const participation = studyVoteData ? getStudyParticipation(studyVoteData, id) : studyOne;
 
   useEffect(() => {
     if (!session) return;
-    if (privateParam) {
-      if (privateParam === "off") {
-        const findStudy = studyVoteOne?.[0]?.participations?.find((par) => par.place._id === id);
-        setStudy(findStudy);
-        setMyStudy(findStudy);
-      } else {
-        setRealStudy(
-          studyVoteOne?.[0]?.realTime?.filter((par) => par.place.text === findRealStudy.place.text),
-        );
-      }
-    }
+    // if (privateParam) {
+    //   if (privateParam === "off") {
+    //     const findStudy = studyVoteOne?.[0]?.participations?.find((par) => par.place._id === id);
+    //     setStudy(findStudy);
+    //     setMyStudy(findStudy);
+    //   } else {
+    //     setRealStudy(
+    //       studyVoteOne?.[0]?.realTime?.filter((par) => par.place.text === findRealStudy.place.text),
+    //     );
+    //   }
+    // }
 
-    const tempStudy = studyOne || findStudy;
+    // const tempStudy = studyOne || findStudy;
 
-    if (!tempStudy) return;
-    setStudy(tempStudy);
-    const isMyStudy = tempStudy.members.find((who) => who.user.uid === session.user.uid);
-    if (isMyStudy) setMyStudy(tempStudy);
-  }, [studyPairArr, studyOne, session, studyVoteOne, privateParam]);
+    // if (!tempStudy) return;
+    // setStudy(tempStudy);
+    // const isMyStudy = tempStudy.members.find((who) => who.user.uid === session.user.uid);
+    // if (isMyStudy) setMyStudy(tempStudy);
+  }, [studyOne, session, privateParam]);
 
-  useEffect(() => {
-    setStudyDateStatus(getStudyDateStatus(date));
-  }, [date]);
-  console.log(123, myStudy);
-  const place =
-    study?.place ||
-    (findRealStudy && {
-      fullname: findRealStudy.place.text,
-      latitude: findRealStudy.place.lat,
-      longitude: findRealStudy.place.lon,
-      coverImage: STUDY_COVER_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
-      brand: findRealStudy.place.text.split(" ")?.[0],
-      locationDetail: findRealStudy.place.locationDetail,
-      time: null,
-    });
-  const realPlace = findRealStudy?.place;
+  // useEffect(() => {
+  //   setStudyDateStatus(getStudyDateStatus(date));
+  // }, [date]);
 
-  const members =
-    studyDateStatus !== "not passed"
-      ? study?.members.filter((att) => att.firstChoice)
-      : study?.members;
+  // const place =
+  //   study?.place ||
+  //   (findRealStudy && {
+  //     fullname: findRealStudy.place.text,
+  //     latitude: findRealStudy.place.lat,
+  //     longitude: findRealStudy.place.lon,
+  //     coverImage: STUDY_COVER_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
+  //     brand: findRealStudy.place.text.split(" ")?.[0],
+  //     locationDetail: findRealStudy.place.locationDetail,
+  //     time: null,
+  //   });
+  // const realPlace = findRealStudy?.place;
+
+  // const members =
+  //   studyDateStatus !== "not passed"
+  //     ? study?.members.filter((att) => att.firstChoice)
+  //     : study?.members;
+
+  const place = participation?.place;
+  const studyPlace = participation?.place as StudyPlaceProps;
+  const realTimePlace = participation?.place as PlaceInfoProps;
+
+  const members = participation?.members;
 
   return (
-    <Layout>
-      {study ? (
+    <>
+      {participation && (
         <>
           <StudyHeader
-            fullname={place.fullname}
-            locationDetail={place.locationDetail}
-            coverImage={place.coverImage}
+            fullname={studyPlace?.fullname || realTimePlace?.name}
+            locationDetail={studyPlace?.locationDetail || realTimePlace?.address}
+            coverImage={
+              studyPlace?.coverImage || STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length)]
+            }
           />
           <Slide isNoPadding>
             <StudyCover
-              isPrivateStudy={isPrivateStudy}
-              imageUrl={place.coverImage}
-              brand={place.brand}
+              imageUrl={
+                studyPlace?.coverImage || STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length)]
+              }
+              brand={studyPlace?.brand || realTimePlace?.name.split(" ")?.[0]}
             />
             <StudyOverview
-              title={place.fullname}
-              locationDetail={place.locationDetail}
-              time={place.time}
-              participantsNum={members.length}
+              title={studyPlace?.fullname || realTimePlace?.name}
+              locationDetail={studyPlace?.locationDetail || realTimePlace?.address}
+              time={studyPlace?.time}
+              participantsNum={participation.members.length}
               coordinate={{
                 lat: place.latitude,
                 lng: place.longitude,
@@ -126,49 +134,12 @@ export default function Page() {
             />
             <Divider />
             <StudyDateBar place={place} />
-            <StudyTimeBoard participants={members} studyStatus={study.status} />
-            <StudyParticipants participants={members} absences={study.absences} />
-            <StudyNavigation voteCnt={members?.length} studyStatus={study.status} />
+            <StudyTimeBoard members={members} studyStatus={participation.status} />
+            <StudyParticipants members={members} />
+            <StudyNavigation voteCnt={members?.length} studyStatus={participation.status} />
           </Slide>
         </>
-      ) : realStudy ? (
-        <>
-          <StudyHeader
-            fullname={place.fullname}
-            locationDetail={place.locationDetail}
-            coverImage={place.coverImage}
-          />
-          <Slide isNoPadding>
-            <StudyCover
-              isPrivateStudy={isPrivateStudy}
-              imageUrl={place.coverImage}
-              brand={place.brand}
-            />
-
-            <StudyOverview
-              title={place.fullname}
-              locationDetail={place.locationDetail}
-              time={place.time}
-              participantsNum={realStudy.length}
-              coordinate={{
-                lat: place.latitude,
-                lng: place.longitude,
-              }}
-            />
-            <Divider />
-            <StudyDateBar place={place} />
-
-            <StudyTimeBoard participants={realStudy} studyStatus={findRealStudy.status} />
-
-            <StudyParticipants participants={realStudy} absences={null} />
-            <StudyNavigation voteCnt={realStudy?.length} studyStatus={findRealStudy.status} />
-          </Slide>
-        </>
-      ) : null}
-    </Layout>
+      )}
+    </>
   );
 }
-
-const Layout = styled.div`
-  padding-bottom: 161px;
-`;
