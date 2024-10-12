@@ -32,32 +32,6 @@ export default function ImageTileGridLayout({
 }: IImageTileGridLayout) {
   const { row = 2, col = 2 } = grid || {};
 
-  function ImageTileLayout({
-    url,
-    text,
-    isPriority,
-    id,
-    selected,
-  }: {
-    url: string;
-    text: string;
-    isPriority: boolean;
-    id?: string;
-    selected: "main" | "sub" | null;
-  }) {
-    return (
-      <Flex direction="column" textAlign="center" mb={2}>
-        <PlaceImage
-          selected={selected}
-          image={{ url, isPriority }}
-          id={id}
-          hasToggleHeart={hasToggleHeart}
-        />
-        <TextContainer selected={selected}>{text}</TextContainer>
-      </Flex>
-    );
-  }
-
   return (
     <GridContainer row={row} col={col}>
       {imageDataArr.map((imageData, idx) =>
@@ -67,6 +41,7 @@ export default function ImageTileGridLayout({
               url={imageData.imageUrl}
               text={imageData.text}
               isPriority={idx === 0}
+              hasToggleHeart={hasToggleHeart}
               id={imageData?.id}
               selected={
                 selectedId?.includes(imageData?.id)
@@ -81,6 +56,7 @@ export default function ImageTileGridLayout({
           <Box as="button" key={idx} onClick={imageData.func}>
             <ImageTileLayout
               url={imageData.imageUrl}
+              hasToggleHeart={hasToggleHeart}
               text={imageData.text}
               isPriority={idx === 0}
               id={imageData?.id}
@@ -98,6 +74,34 @@ export default function ImageTileGridLayout({
     </GridContainer>
   );
 }
+
+export const ImageTileLayout = ({
+  url,
+  text,
+  isPriority,
+  id,
+  selected,
+  hasToggleHeart,
+}: {
+  url: string;
+  text: string;
+  isPriority: boolean;
+  id?: string;
+  selected: "main" | "sub" | null;
+  hasToggleHeart: boolean;
+}) => {
+  return (
+    <Flex direction="column" textAlign="center" mb={2}>
+      <PlaceImage
+        selected={selected}
+        image={{ url, isPriority }}
+        id={id}
+        hasToggleHeart={hasToggleHeart}
+      />
+      <TextContainer selected={selected}>{text}</TextContainer>
+    </Flex>
+  );
+};
 
 const GridContainer = styled.div<{ row: number; col: number }>`
   display: grid;

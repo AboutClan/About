@@ -67,7 +67,7 @@ export default function StudyVoteMap() {
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>();
   const [currentLocation, setCurrentLocation] = useState<{ lat: number; lon: number }>();
   const [centerLocation, setCenterLocation] = useState<{ lat: number; lon: number }>();
- 
+
   const [locationFilterType, setLocationFilterType] = useState<
     "현재 위치" | "활동 장소" | "스터디 장소"
   >("현재 위치");
@@ -92,11 +92,9 @@ export default function StudyVoteMap() {
     enabled: !!locationValue && !!date,
   });
 
-
   const mainLocation = userInfo?.locationDetail;
 
   useEffect(() => {
-   
     if (!locationParamKr) {
       newSearchParams.set("location", convertLocationLangTo(locationValue, "en"));
     }
@@ -105,14 +103,13 @@ export default function StudyVoteMap() {
     }
     if (locationValue) {
       const locationCenter = LOCATION_CENTER_DOT[locationValue];
-    
+
       setCenterLocation({ lat: locationCenter.latitude, lon: locationCenter.longitude });
     }
     router.replace(`/studyPage?${newSearchParams.toString()}`);
   }, [locationParamKr, dateParam, locationValue]);
 
   useEffect(() => {
-  
     switch (categoryParam) {
       case "currentPlace":
         setLocationFilterType("현재 위치");
@@ -125,7 +122,7 @@ export default function StudyVoteMap() {
         break;
       case "votePlace":
         setLocationFilterType("스터디 장소");
-       
+
         setCenterLocation({
           lat: myStudyParticipation?.place.latitude,
           lon: myStudyParticipation?.place.longitude,
@@ -146,11 +143,10 @@ export default function StudyVoteMap() {
   }, [locationValue, date]);
 
   useEffect(() => {
-    
     if (!studyVoteData || !session?.user) return;
     const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
     setMyStudyParticipation(findMyStudyParticipation);
-  
+
     if (locationFilterType === "스터디 장소" && findMyStudyParticipation) {
       setCenterLocation({
         lat: findMyStudyParticipation.place.latitude,
@@ -164,7 +160,7 @@ export default function StudyVoteMap() {
       function (position) {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
-      
+
         setCurrentLocation({ lat, lon });
         if (isLocationRefetch || categoryParam !== "votePlace") setCenterLocation({ lat, lon });
         setIsLocationRefetch(false);
@@ -182,7 +178,6 @@ export default function StudyVoteMap() {
   }, [isLocationRefetch]);
 
   useEffect(() => {
-   
     if (centerLocation) {
       setMapOptions(getMapOptions(centerLocation, locationValue));
     } else if (centerLocation === null && mainLocation) {
@@ -220,7 +215,7 @@ export default function StudyVoteMap() {
     const findMyInfo = findStudy?.members?.find((who) => who.user.uid);
 
     setDetailInfo({
-      isPrivate: !!findStudy,
+      isPrivate: !!realTimeStudy,
       place: findStudy?.place,
       title: participation?.place.fullname || (realTimeStudy?.place as PlaceInfoProps)?.name,
       id,
@@ -234,7 +229,7 @@ export default function StudyVoteMap() {
         ? participation.place.image
         : STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length)],
       status: findStudy.status,
-      location: location,
+      location: locationValue,
       comment: {
         user: {
           uid: commentUser.uid,
@@ -242,7 +237,7 @@ export default function StudyVoteMap() {
           userImage: commentUser.profileImage,
         },
         text:
-          sortedCommentUserArr?.[0]?.comment ||
+          sortedCommentUserArr?.[0]?.comment.text ||
           STUDY_COMMENT_ARR[getRandomIdx(STUDY_COMMENT_ARR.length - 1)],
       },
       memberStatus:

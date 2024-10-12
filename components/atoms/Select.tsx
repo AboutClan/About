@@ -16,6 +16,7 @@ interface ISelect {
   isEllipse?: boolean;
   isFullSize?: boolean;
   isActive?: boolean;
+  isThick?: boolean;
 }
 
 export default function Select({
@@ -28,6 +29,7 @@ export default function Select({
   isFullSize,
   isEllipse,
   isActive = true,
+  isThick,
 }: ISelect) {
   const [value, setValue] = useState(defaultValue);
   const selectRef = useRef<HTMLSelectElement>(null);
@@ -50,7 +52,7 @@ export default function Select({
   const adjustWidth = () => {
     if (selectRef.current) {
       const textLength = selectRef.current.selectedOptions[0].text.length;
-  
+
       const addSize = size === "sm" ? 44 : size === "md" ? 60 : 0;
       selectRef.current.style.width = `${textLength * 6.5 + addSize}px`;
     }
@@ -84,7 +86,7 @@ export default function Select({
       bgColor="white"
       fontSize={size === "sm" || size === "md" ? "11px" : "13px"}
       outline={size === "md" ? "1px solid var(--gray-100)" : undefined}
-      fontWeight={size === "sm" ? 500 : 600}
+      fontWeight={size === "sm" ? 500 : isThick ? 600 : 500}
       isDisabled={!isActive}
       height={size === "sm" ? "24px" : size === "md" ? "32px" : "52px"}
       width={!isFullSize ? "max-content" : "100%"}

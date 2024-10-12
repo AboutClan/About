@@ -47,6 +47,7 @@ export const getRealTimeFilteredById = (
 ): MyStudyParticipationProps => {
   if (!realTime || !id) return;
   const findStudy = realTime.find((who) => who._id === id);
+  if (!findStudy) return null;
   const filtered = realTime.filter((who) => who.place.name === findStudy?.place.name);
 
   return { ...findStudy, members: filtered };

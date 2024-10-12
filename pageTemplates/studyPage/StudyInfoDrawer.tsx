@@ -3,7 +3,6 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import AlertModal from "../../components/AlertModal";
 import { DispatchType } from "../../types/hooks/reactTypes";
 
 import Avatar from "../../components/atoms/Avatar";
@@ -21,11 +20,15 @@ import {
 import { ModalLayout } from "../../modals/Modals";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { useRecoilValue } from "recoil";
 import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
+import StudyChangeAlertModal from "../../components/modals/alertModals/StudyChangeAlertModal";
+import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import { StudyPlaceProps, StudyStatus } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
 import { IAvatar } from "../../types/models/userTypes/userInfoTypes";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
+import { ActiveLocation } from "../../types/services/locationTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
 export interface StudyInfoProps {
@@ -44,6 +47,7 @@ export interface StudyInfoProps {
     };
     text: string;
   };
+  location: ActiveLocation;
   memberStatus: "participation" | "notParticipation" | "attendance";
   isPrivate: boolean;
 }
@@ -58,6 +62,8 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
   const typeToast = useTypeToast();
+
+  const myStudyParticipation = useRecoilValue(myStudyParticipationState);
 
   const { mutate: studyVote, isLoading: isLoading1 } = useStudyParticipationMutation(
     dayjs(),
@@ -119,32 +125,32 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
   };
 
   const onClickStudyVote = (voteTime: IStudyVoteTime) => {
-    // if (myStudy || myRealStudy) {
-    //   setVoteTime(voteTime);
-    //   setIsAlertModal(true);
-    //   return;
-    // }
+    if (myStudyParticipation) {
+      setVoteTime(voteTime);
+      setIsAlertModal(true);
+      return;
+    }
     handleVote(voteTime);
   };
 
   const handleVote = (time?: IStudyVoteTime) => {
-    // if (!detailInfo.isPrivate) {
-    //   studyVote({
-    //     place: detailInfo?.id,
-    //     start: time?.start || voteTime?.start,
-    //     end: time?.end || voteTime?.end,
-    //   });
-    // } else {
-    //   realTimeStudyVote({
-    //     place: detailInfo.place as RealTimeStudyPlaceProps,
-    //     time: {
-    //       start: time?.start || voteTime?.start,
-    //       end: time?.end || voteTime?.end,
-    //     },
-    //   });
-    // }
+    console.log(54, detailInfo);
+    if (!detailInfo.isPrivate) {
+      studyVote({
+        place: detailInfo?.id,
+        start: time?.start || voteTime?.start,
+        end: time?.end || voteTime?.end,
+      });
+    } else {
+      realTimeStudyVote({
+        place: detailInfo.place as PlaceInfoProps,
+        time: {
+          start: time?.start || voteTime?.start,
+          end: time?.end || voteTime?.end,
+        },
+      });
+    }
   };
-
 
   const status = detailInfo.memberStatus;
 
@@ -194,7 +200,7 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
                 ),
                 children: (
                   <Link
-                    href={`/study/${detailInfo.id}/${dayjsToStr(dayjs())}?location=${location}`}
+                    href={`/study/${detailInfo.id}/${dayjsToStr(dayjs())}?location=${detailInfo.location}`}
                   >
                     자세히 보기
                   </Link>
@@ -252,15 +258,7 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
         />
       )}
       {isAlertMoal && (
-        <AlertModal
-          options={{
-            title: "스터디 장소 변경",
-            subTitle: "장소를 변경하는 경우 기존에 투표 장소는 취소됩니다.",
-            text: "변경합니다",
-            func: () => handleVote(),
-          }}
-          setIsModal={setIsAlertModal}
-        />
+        <StudyChangeAlertModal handleFunction={handleVote} setIsModal={setIsAlertModal} />
       )}
     </>
   );

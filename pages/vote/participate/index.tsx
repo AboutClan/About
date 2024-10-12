@@ -3,12 +3,14 @@ import dayjs from "dayjs";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useRecoilValue } from "recoil";
 
 import PageIntro from "../../../components/atoms/PageIntro";
 import Select from "../../../components/atoms/Select";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
+import StudyChangeAlertModal from "../../../components/modals/alertModals/StudyChangeAlertModal";
 import { IImageTileData } from "../../../components/molecules/layouts/ImageTileFlexLayout";
 import ImageTileGridLayout from "../../../components/molecules/layouts/ImageTitleGridLayout";
 import StudyVoteDrawer from "../../../components/services/studyVote/StudyVoteDrawer";
@@ -17,6 +19,7 @@ import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../../hooks/study/mutations";
 import { useStudyVoteQuery } from "../../../hooks/study/queries";
+import { myStudyParticipationState } from "../../../recoils/studyRecoils";
 import { IStudyVoteTime } from "../../../types/models/studyTypes/studyInterActions";
 import { Location, LocationEn } from "../../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
@@ -36,6 +39,10 @@ function Participate() {
   const [placeId, setPlaceId] = useState<string>();
   const [imageDataArr, setImageDataArr] = useState<IImageTileData[]>();
   const [isVoteDrawer, setIsVoteDrawer] = useState(false);
+  const [isAlertModal, setIsAlertModal] = useState(false);
+  const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
+
+  const myStudyParticipation = useRecoilValue(myStudyParticipationState);
 
   const { data: studyVoteData } = useStudyVoteQuery(dateParam, location, {
     enabled: !!dateParam && !!location,
@@ -48,7 +55,7 @@ function Participate() {
       typeToast("vote");
       resetStudy();
 
-      router.push(`/studyPage?${newSearchParams.toString()}&category=votePlace`);
+      router.push(`/studyPage?${newSearchParams.toString()}&category=votePlace&drawer=down`);
     },
   });
 
@@ -82,10 +89,21 @@ function Participate() {
     setIsVoteDrawer(true);
   };
 
-  const handleSubmit = (voteTime: IStudyVoteTime) => {
+  const onClickStudyVote = (voteTime: IStudyVoteTime) => {
+    if (myStudyParticipation) {
+      setVoteTime(voteTime);
+      setIsAlertModal(true);
+      return;
+    }
+
+    handleVote(voteTime);
+  };
+
+  const handleVote = (time?: IStudyVoteTime) => {
     mutate({
       place: placeId,
-      ...voteTime,
+      start: time?.start || voteTime?.start,
+      end: time?.end || voteTime?.end,
     });
   };
 
@@ -140,9 +158,12 @@ function Participate() {
         <StudyVoteDrawer
           hasPlace
           isLoading={isLoading}
-          handleSubmit={handleSubmit}
+          handleSubmit={onClickStudyVote}
           setIsModal={setIsVoteDrawer}
         />
+      )}
+      {isAlertModal && (
+        <StudyChangeAlertModal setIsModal={setIsAlertModal} handleFunction={handleVote} />
       )}
     </>
   );
