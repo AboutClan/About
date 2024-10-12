@@ -14,6 +14,7 @@ export const getStudyParticipationById = (
   const findMyParticipation = studyVoteData.participations.find(
     (participation) => participation.place._id === id,
   );
+  console.log(222, findMyParticipation);
   const realTimeFiltered = getRealTimeFilteredById(studyVoteData.realTime, id);
 
   return findMyParticipation || realTimeFiltered;

@@ -49,9 +49,14 @@ function StudyMapTopNav({
     if (type === "현재 위치") {
       setIsLocationFetch(true);
     }
-   
-    setLocationFilterType(type);
-    newSearchParams.set("category", FILTER_TO_PARAM[type]);
+    if (locationFilterType === type) {
+      console.log(532);
+      setLocationFilterType("현재 위치");
+      newSearchParams.set("category", "currentPlace");
+    } else {
+      setLocationFilterType(type);
+      newSearchParams.set("category", FILTER_TO_PARAM[type]);
+    }
     router.replace(`/studyPage?${newSearchParams.toString()}`);
   };
 
@@ -77,6 +82,7 @@ function StudyMapTopNav({
             setValue={setLocation}
             type="location"
             size="md"
+            isThick
           />
         </Box>
       </Flex>

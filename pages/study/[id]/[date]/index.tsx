@@ -53,7 +53,7 @@ export default function Page() {
   });
 
   const participation = studyVoteData ? getStudyParticipationById(studyVoteData, id) : studyOne;
-
+  console.log(2424, studyVoteData, studyOne, id);
   useEffect(() => {
     if (!session) return;
     // if (privateParam) {
@@ -103,7 +103,7 @@ export default function Page() {
   const realTimePlace = participation?.place as PlaceInfoProps;
 
   const members = participation?.members;
-  
+  console.log(123, participation);
   return (
     <>
       {participation && (

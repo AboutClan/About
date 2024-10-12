@@ -1,5 +1,5 @@
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -45,7 +45,7 @@ function Notice() {
           recentChatId={recentChat}
         />
       </Slide>
-      <Slide>
+      <Slide isNoPadding>
         <Container>
           {noticeType === "notice" ? (
             <NoticeItem />

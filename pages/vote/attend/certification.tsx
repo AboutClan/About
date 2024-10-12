@@ -12,6 +12,7 @@ import Slide from "../../../components/layouts/PageSlide";
 import ImageUploadInput from "../../../components/molecules/ImageUploadInput";
 import LocationSearch from "../../../components/organisms/location/LocationSearch";
 import { useToast } from "../../../hooks/custom/CustomToast";
+import { getLocationByCoordinates } from "../../../libs/study/getLocationByCoordinates";
 import { myStudyParticipationState } from "../../../recoils/studyRecoils";
 import { transferStudyAttendanceState } from "../../../recoils/transferRecoils";
 
@@ -53,7 +54,7 @@ function Certification() {
       setImage(studyAttendanceRequest?.image);
     }
   }, [studyAttendanceRequest]);
- 
+
   useEffect(() => {
     if (!myStudyParticipation) return;
     const studyPlace = myStudyParticipation?.place as StudyPlaceProps;
@@ -82,6 +83,14 @@ function Certification() {
     }
     if (!placeInfo?.place_name) {
       toast("warning", "장소를 입력해 주세요");
+      e.preventDefault();
+      return;
+    }
+
+    const changeLocation = getLocationByCoordinates(+placeInfo?.y, +placeInfo?.x);
+
+    if (!changeLocation) {
+      toast("warning", "서비스중인 지역이 아닙니다.");
       e.preventDefault();
       return;
     }

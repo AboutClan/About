@@ -2,7 +2,6 @@ import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { useSetRecoilState } from "recoil";
 
 import PageIntro from "../../../components/atoms/PageIntro";
 import BottomNav from "../../../components/layouts/BottomNav";
@@ -13,7 +12,7 @@ import StudyVoteDrawer from "../../../components/services/studyVote/StudyVoteDra
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import { useRealtimeVoteMutation } from "../../../hooks/realtime/mutations";
-import { myStudyParticipationState } from "../../../recoils/studyRecoils";
+import { getLocationByCoordinates } from "../../../libs/study/getLocationByCoordinates";
 import { KakaoLocationProps } from "../../../types/externals/kakaoLocationSearch";
 import { IStudyVoteTime } from "../../../types/models/studyTypes/studyInterActions";
 
@@ -34,7 +33,6 @@ function Place() {
 
   const [isVoteDrawer, setIsVoteDrawer] = useState(false);
 
-
   const { mutate, isLoading } = useRealtimeVoteMutation({
     onSuccess() {
       typeToast("vote");
@@ -50,9 +48,16 @@ function Place() {
       toast("warning", "장소를 입력해 주세요");
       return;
     }
+    const changeLocation = getLocationByCoordinates(+placeInfo?.y, +placeInfo?.x);
+
+    if (!changeLocation) {
+      toast("warning", "서비스중인 지역이 아닙니다.");
+      return;
+    }
+
     setIsVoteDrawer(true);
   };
- 
+
   const handleSubmit = (voteTime: IStudyVoteTime) => {
     mutate({
       place: {

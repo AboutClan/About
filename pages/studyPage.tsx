@@ -1,4 +1,4 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -17,9 +17,9 @@ import {
 } from "../constants/serviceConstants/studyConstants/studyVoteMapConstants";
 import { STUDY_COMMENT_ARR } from "../constants/settingValue/comment";
 import { useToast } from "../hooks/custom/CustomToast";
-import { useDeleteMyVoteMutation } from "../hooks/study/mutations";
 import { useStudyVoteQuery } from "../hooks/study/queries";
 import { useUserInfoQuery } from "../hooks/user/queries";
+import { getLocationByCoordinates } from "../libs/study/getLocationByCoordinates";
 import {
   getMyStudyInfo,
   getMyStudyParticipation,
@@ -42,8 +42,6 @@ import { dayjsToFormat, dayjsToStr } from "../utils/dateTimeUtils";
 import { getRandomIdx } from "../utils/mathUtils";
 import { iPhoneNotchSize } from "../utils/validationUtils";
 
-type StudyCategoryTab = "실시간 스터디" | "내일의 스터디";
-
 export default function StudyVoteMap() {
   const { data: session } = useSession();
   const toast = useToast();
@@ -53,8 +51,6 @@ export default function StudyVoteMap() {
   const dateParam = searchParams.get("date");
   const categoryParam = searchParams.get("category") as "currentPlace" | "mainPlace" | "votePlace";
   const drawerParam = searchParams.get("drawer") as "up" | "down";
-  // const latParam = searchParams.get("lat");
-  // const lonParam = searchParams.get("lon");
 
   const locationParamKr = convertLocationLangTo(
     searchParams.get("location") as LocationEn,
@@ -113,9 +109,20 @@ export default function StudyVoteMap() {
     switch (categoryParam) {
       case "currentPlace":
         setLocationFilterType("현재 위치");
-        setIsLocationRefetch(true);
+
         break;
       case "mainPlace":
+        console.log(555, mainLocation);
+        const changeLocation = getLocationByCoordinates(mainLocation?.lat, mainLocation?.lon);
+
+        if (!changeLocation) {
+          toast("warning", "활성화 된 지역이 아닙니다.");
+          newSearchParams.set("category", "currentPlace");
+          router.replace(`/studyPage?${newSearchParams.toString()}`);
+          return;
+        } else if (changeLocation !== locationValue) {
+          setLocationValue(changeLocation as ActiveLocation);
+        }
         setLocationFilterType("활동 장소");
         setCenterLocation({ lat: mainLocation?.lat, lon: mainLocation?.lon });
 
@@ -160,9 +167,20 @@ export default function StudyVoteMap() {
       function (position) {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
-
+        console.log(24, isLocationRefetch);
         setCurrentLocation({ lat, lon });
-        if (isLocationRefetch || categoryParam !== "votePlace") setCenterLocation({ lat, lon });
+        if (isLocationRefetch || categoryParam !== "votePlace") {
+          const changeLocation = getLocationByCoordinates(lat, lon);
+          if (!changeLocation && isLocationRefetch) {
+            toast("warning", "활성화 된 지역에 있지 않습니다.");
+            setIsLocationRefetch(false);
+
+            return;
+          } else if (changeLocation !== locationValue) {
+            setLocationValue(changeLocation as ActiveLocation);
+          }
+          setCenterLocation({ lat, lon });
+        }
         setIsLocationRefetch(false);
       },
       function (error) {
@@ -237,7 +255,7 @@ export default function StudyVoteMap() {
           userImage: commentUser.profileImage,
         },
         text:
-          sortedCommentUserArr?.[0]?.comment.text ||
+          sortedCommentUserArr?.[0]?.comment?.text ||
           STUDY_COMMENT_ARR[getRandomIdx(STUDY_COMMENT_ARR.length - 1)],
       },
       memberStatus:
@@ -249,11 +267,8 @@ export default function StudyVoteMap() {
     });
   };
 
-  const { mutate } = useDeleteMyVoteMutation(dayjs());
-
   return (
     <>
-      <Button onClick={() => mutate()}>삭제</Button>
       <Box
         position="relative"
         height={`calc(100dvh - var(--bottom-nav-height) - ${DRAWER_MIN_HEIGHT + iPhoneNotchSize()}px)`}

@@ -10,7 +10,12 @@ import { CalendarCheckIcon, NoticeIcon } from "../../../components/Icons/SolidIc
 import Slide from "../../../components/layouts/PageSlide";
 import IconButtonNav, { IIconButtonNavBtn } from "../../../components/molecules/navs/IconButtonNav";
 import { AboutLogo } from "../../../components/services/AboutLogo";
-import { DAILY_CHECK_POP_UP, NOTICE_ALERT } from "../../../constants/keys/localStorage";
+import {
+  DAILY_CHECK_POP_UP,
+  NOTICE_ALERT,
+  NOTICE_RECENT,
+  RECENT_CHAT_ID,
+} from "../../../constants/keys/localStorage";
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import DailyCheckModal from "../../../modals/aboutHeader/dailyCheckModal/DailyCheckModal";
 import PointSystemsModal from "../../../modals/aboutHeader/pointSystemsModal/PointSystemsModal";
@@ -33,7 +38,7 @@ function HomeHeader() {
   const setSlideDirection = useSetRecoilState(slideDirectionState);
 
   const todayDailyCheck = localStorage.getItem(DAILY_CHECK_POP_UP) === dayjsToStr(dayjs());
-
+  console.log(5, todayDailyCheck);
   const [isNoticeAlert, setIsNoticeAlert] = useState(false);
 
   // const { data } = useNoticeActiveLogQuery(undefined, false);
@@ -43,13 +48,9 @@ function HomeHeader() {
   useEffect(() => {
     // if (!data) return;
     // const recentOne = data[0]?.message;
-    // const noticeRecent = localStorage.getItem(NOTICE_RECENT);
+    const noticeRecent = localStorage.getItem(NOTICE_RECENT);
     const noticeCnt = localStorage.getItem(NOTICE_ALERT);
-    // const recentChatId = localStorage.getItem(RECENT_CHAT_ID);
-
-    // if (recentChat?.length && recentChatId !== recentChat) {
-    //   setIsNoticeAlert(true);
-    // }
+    const recentChatId = localStorage.getItem(RECENT_CHAT_ID);
 
     if (NOTICE_ARR.length !== +noticeCnt) {
       setIsNoticeAlert(true);
@@ -64,8 +65,15 @@ function HomeHeader() {
             <Box w="20px" h="20px" opacity={0.4}>
               <CalendarCheckIcon />
             </Box>
-            <Box position="absolute" right={0} bottom={0}>
-              <AlertCirclePoint />
+            <Box
+              position="absolute"
+              right={0}
+              bottom={0}
+              p="1px"
+              bgColor="white"
+              borderRadius="50%"
+            >
+              <AlertCirclePoint isActive={!todayDailyCheck} />
             </Box>
           </>
         ),
@@ -78,8 +86,15 @@ function HomeHeader() {
             <Box opacity={0.4} w="20px" h="20px">
               <NoticeIcon />
             </Box>
-            <Box position="absolute" right={0} bottom={0}>
-              <AlertCirclePoint />
+            <Box
+              position="absolute"
+              right={"2px"}
+              top={"-1px"}
+              p="1px"
+              bgColor="white"
+              borderRadius="50%"
+            >
+              <AlertCirclePoint isActive={isNoticeAlert} />
             </Box>
           </>
         ),

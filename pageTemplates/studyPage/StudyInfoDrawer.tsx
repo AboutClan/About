@@ -29,6 +29,7 @@ import { IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions"
 import { IAvatar } from "../../types/models/userTypes/userInfoTypes";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
 import { ActiveLocation } from "../../types/services/locationTypes";
+import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
 export interface StudyInfoProps {
@@ -200,7 +201,7 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
                 ),
                 children: (
                   <Link
-                    href={`/study/${detailInfo.id}/${dayjsToStr(dayjs())}?location=${detailInfo.location}`}
+                    href={`/study/${detailInfo.id}/${dayjsToStr(dayjs())}?location=${convertLocationLangTo(detailInfo.location, "en")}`}
                   >
                     자세히 보기
                   </Link>
