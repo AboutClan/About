@@ -102,10 +102,17 @@ const theme = extendTheme({
           // height: "12px",
           padding: 0,
         },
+        sm: {
+          fontSize: "10px",
+          h: "28px",
+          border: "1px solid var(--gray-100)",
+        },
 
         md: {
           padding: "0 20px",
           h: "42px",
+          fontWeight: 700,
+          fontSize: "12px",
         },
         lg: {
           h: "48px",

@@ -1,5 +1,7 @@
 import {
+  Box,
   Button,
+  Flex,
   Popover,
   PopoverArrow,
   PopoverBody,
@@ -13,7 +15,7 @@ import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import { Badge } from "../../../components/atoms/badges/Badges";
+import { CheckCircleBigIcon } from "../../../components/Icons/CircleIcons";
 import { DAILY_CHECK_POP_UP } from "../../../constants/keys/localStorage";
 import { DAILY_CHECK_WIN_LIST } from "../../../constants/serviceConstants/dailyCheckConstatns";
 import { POINT_SYSTEM_PLUS } from "../../../constants/serviceConstants/pointSystemConstants";
@@ -97,7 +99,7 @@ function DailyCheckModal({ setIsModal }: IModal) {
 
   const footerOptions: IFooterOptions = {
     main: {
-      text: "출석",
+      text: "출 석",
       func: onClickCheck,
     },
     isFull: true,
@@ -105,23 +107,23 @@ function DailyCheckModal({ setIsModal }: IModal) {
 
   return (
     <ModalLayout title="매일매일 출석체크!" footerOptions={footerOptions} setIsModal={setIsModal}>
-      <PresentMessage>
-        매일 출석체크로 <b>2 SCORE</b>을 얻을 수 있고, 확률적으로
-        <b> 랜덤 이벤트 선물</b>도 받을 수 있어요!
-      </PresentMessage>
-      <Container>
-        <Detail>
-          <Badge text="+ 5 POINT" colorScheme="redTheme" />
-          <Badge text="+랜덤 선물" colorScheme="redTheme" />
-        </Detail>
-        <CheckWrapper>
-          <i className="fa-regular fa-check-circle fa-4x" style={{ color: "var(--color-mint)" }} />
-        </CheckWrapper>
-        <Detail>
-          <PresentListPopOver />
-          <PresentPercentPopOver />
-        </Detail>
-      </Container>
+      <Flex direction="column" align="center">
+        <Flex justify="center" h="60px" mb={2} align="center">
+          <CheckCircleBigIcon />
+        </Flex>
+        <Box textAlign="center">
+          매일 출석체크로 <b style={{ color: "var(--color-mint)" }}>2 Score</b>을 얻을 수 있고,
+          <br />
+          확률적으로 <b style={{ color: "var(--color-mint)" }}>랜덤 이벤트 선물</b>도 받을 수 있어요
+          !
+        </Box>
+        <Box mt={2}>
+          <Button size="sm" borderRadius="20px" bgColor="var(--gray-100)" color="var(--gray-600)">
+            {" "}
+            상품 목록 및 확률 정보
+          </Button>
+        </Box>
+      </Flex>
     </ModalLayout>
   );
 }

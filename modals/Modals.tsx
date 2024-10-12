@@ -95,19 +95,37 @@ export function ModalLayout({
     <Modal isOpen={true} onClose={onClose} initialFocusRef={initialRef}>
       <ModalOverlay />
       <ModalContent
+        w="300px"
         top={modalTop}
         mx="var(--gap-4)"
         // h={height || SIZE_HEIGHT_MAP[size]}
         maxWidth="358px"
         my="auto"
-        borderRadius="var(--rounded-lg)"
+        borderRadius="12px"
       >
         {!headerOptions ? (
           <>
-            <ChakraModalHeader p="16px 20px" fontSize="20px" borderBottom="var(--border)">
+            <ChakraModalHeader
+              fontWeight={700}
+              px={6}
+              pt={4}
+              pb={3}
+              fontSize="16px"
+              color="var(--gray-800)"
+              textAlign="center"
+            >
               {title}
             </ChakraModalHeader>
-            {isCloseButton && <ModalCloseButton size="lg" />}
+            {isCloseButton && (
+              <ModalCloseButton
+                color="var(--gray-500)"
+                mr="8px"
+                size="md"
+                mt={2.5}
+                w="16px"
+                h="16px"
+              />
+            )}
           </>
         ) : headerOptions?.children ? (
           headerOptions.children
@@ -131,37 +149,41 @@ export function ModalLayout({
           </>
         )}
         <ChakraModalBody
-          pt={paddingOptions?.body?.top !== undefined ? `${paddingOptions.body.top}px` : "16px"}
+          pt={paddingOptions?.body?.top !== undefined ? `${paddingOptions.body.top}px` : "12px"}
           pb={
-            paddingOptions?.body?.bottom !== undefined ? `${paddingOptions.body.bottom}px` : "4px"
+            paddingOptions?.body?.bottom !== undefined ? `${paddingOptions.body.bottom}px` : "12px"
           }
-          px="20px"
+          px={6}
+          fontSize="13px"
         >
           {children}
         </ChakraModalBody>
 
         {footerOptions && (
           <ChakraModalFooter
-            pb="20px"
-            pt={paddingOptions?.footer !== undefined ? `${paddingOptions.footer}px` : "16px"}
-            px="20px"
+            pb={5}
+            pt={paddingOptions?.footer !== undefined ? `${paddingOptions.footer}px` : "12px"}
+            px={6}
           >
             {footerOptions?.children ? (
               footerOptions.children
             ) : !sub ? (
               isFull ? (
                 <Button
-                  size="lg"
+                  size="md"
                   colorScheme={main?.isRedTheme ? "redTheme" : "mintTheme"}
+                  borderRadius="8px"
                   w="100%"
                   onClick={func}
                   isLoading={main?.isLoading}
+                  h={10}
                 >
                   {text}
                 </Button>
               ) : (
                 <Button
                   onClick={func}
+                  h={10}
                   variant="ghost"
                   color={main?.isRedTheme ? "var(--color-red)" : "var(--color-mint)"}
                 >
