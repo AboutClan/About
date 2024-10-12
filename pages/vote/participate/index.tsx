@@ -48,7 +48,7 @@ function Participate() {
       typeToast("vote");
       resetStudy();
 
-      router.push(`/vote?${newSearchParams.toString()}&category=votePlace`);
+      router.push(`/studyPage?${newSearchParams.toString()}&category=votePlace`);
     },
   });
 

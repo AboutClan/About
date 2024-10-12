@@ -2,6 +2,7 @@ import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+import { useSetRecoilState } from "recoil";
 
 import PageIntro from "../../../components/atoms/PageIntro";
 import BottomNav from "../../../components/layouts/BottomNav";
@@ -12,6 +13,7 @@ import StudyVoteDrawer from "../../../components/services/studyVote/StudyVoteDra
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import { useRealtimeVoteMutation } from "../../../hooks/realtime/mutations";
+import { myStudyParticipationState } from "../../../recoils/studyRecoils";
 import { KakaoLocationProps } from "../../../types/externals/kakaoLocationSearch";
 import { IStudyVoteTime } from "../../../types/models/studyTypes/studyInterActions";
 
@@ -32,13 +34,14 @@ function Place() {
 
   const [isVoteDrawer, setIsVoteDrawer] = useState(false);
 
+
   const { mutate, isLoading } = useRealtimeVoteMutation({
     onSuccess() {
       typeToast("vote");
       resetStudy();
       newSearchParams.set("category", "votePlace");
 
-      router.push(`/vote?${newSearchParams.toString()}`);
+      router.push(`/studyPage?${newSearchParams.toString()}`);
     },
   });
 
@@ -49,7 +52,7 @@ function Place() {
     }
     setIsVoteDrawer(true);
   };
-  console.log(placeInfo);
+ 
   const handleSubmit = (voteTime: IStudyVoteTime) => {
     mutate({
       place: {

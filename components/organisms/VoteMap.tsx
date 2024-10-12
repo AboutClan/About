@@ -53,7 +53,7 @@ export default function VoteMap({
     const map = mapInstanceRef.current;
 
     if (!mapRef?.current || !map || typeof naver === "undefined") return;
-    console.log(3);
+  
     //새로운 옵션 적용 전 초기화
     mapElementsRef.current.markers.forEach((marker) => marker.setMap(null));
     mapElementsRef.current.polylines.forEach((polyline) => polyline.setMap(null));
@@ -94,7 +94,7 @@ export default function VoteMap({
 
   useEffect(() => {
     if (!centerValue) return;
-    console.log(4);
+  
     const map = mapInstanceRef.current;
     map.setCenter(new naver.maps.LatLng(centerValue.lat, centerValue.lng));
   }, [centerValue]);

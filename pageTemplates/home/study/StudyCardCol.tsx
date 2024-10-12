@@ -139,7 +139,7 @@ export const setStudyDataToCardCol = (
   urlDateParam: string,
   uid: string,
 ): IPostThumbnailCard[] => {
-  console.log(51, studyData[0]);
+ 
   const cardColData: IPostThumbnailCard[] = [...studyData]
     ?.sort((a, b) =>
       a.place.branch === "개인 스터디" ? 1 : b.place.branch === "개인 스터디" ? -1 : 0,

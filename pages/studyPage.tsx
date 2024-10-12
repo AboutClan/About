@@ -13,7 +13,6 @@ import VoteMap from "../components/organisms/VoteMap";
 import { USER_LOCATION } from "../constants/keys/localStorage";
 import { STUDY_COMMENT_ARR } from "../constants/settingValue/comment";
 import { useToast } from "../hooks/custom/CustomToast";
-import { useDeleteMyVoteMutation } from "../hooks/study/mutations";
 import { useStudyVoteQuery } from "../hooks/study/queries";
 import { useUserInfoQuery } from "../hooks/user/queries";
 import {
@@ -62,7 +61,9 @@ export default function StudyVoteMap() {
   const [currentLocation, setCurrentLocation] = useState<{ lat: number; lon: number }>();
   const [centerLocation, setCenterLocation] = useState<{ lat: number; lon: number }>();
 
-  const [locationFilterType, setLocationFilterType] = useState();
+  const [locationFilterType, setLocationFilterType] = useState<
+    "현재 위치" | "주 활동 장소" | "내 투표 장소"
+  >("현재 위치");
 
   const [myVoteInfo, setMyVoteInfo] = useState<IStudyVoteWithPlace>();
   const [isLocationRefetch, setIsLocationRefetch] = useState(false);
@@ -99,24 +100,32 @@ export default function StudyVoteMap() {
     // if (!date) setDate(dateParam);
   }, [locationParamKr, dateParam]);
 
-  // useEffect(() => {
-  //   switch (categoryParam) {
-  //     case "currentPlace":
-  //       setLocationFilterType("현재 위치");
-  //       setIsLocationRefetch(true);
+  useEffect(() => {
+    switch (categoryParam) {
+      case "currentPlace":
+        setLocationFilterType("현재 위치");
+        setIsLocationRefetch(true);
+        break;
+      case "mainPlace":
+        setLocationFilterType("주 활동 장소");
+        setCenterLocation({ lat: mainLocation?.lat, lon: mainLocation?.lon });
 
-  //       break;
-  //     case "mainPlace":
-  //       setLocationFilterType("주 활동 장소");
-  //       setCenterLocation({ lat: mainLocation?.lat, lon: mainLocation?.lon });
+        break;
+      case "votePlace":
+        setLocationFilterType("내 투표 장소");
 
-  //       break;
-  //     case "votePlace":
-  //       setLocationFilterType("내 투표 장소");
-  //       setCenterToVotePlace(myStudy, myRealStudy);
-  //       break;
-  //   }
-  // }, [categoryParam]);
+        setCenterLocation({
+          lat: myStudyParticipation?.place.latitude,
+          lon: myStudyParticipation?.place.longitude,
+        });
+
+        break;
+    }
+    if (categoryParam !== "currentPlace") {
+      newSearchParams.set("drawer", "down");
+      router.replace(`/studyPage?${newSearchParams.toString()}`);
+    }
+  }, [categoryParam]);
 
   useEffect(() => {
     newSearchParams.set("location", convertLocationLangTo(locationValue, "en"));
@@ -125,13 +134,15 @@ export default function StudyVoteMap() {
   }, [locationValue, date]);
 
   useEffect(() => {
+    console.log(222, studyVoteData);
     if (!studyVoteData || !session?.user) return;
-    const myStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
-    setMyStudyParticipation(myStudyParticipation);
-    if (locationFilterType === "내 투표 장소") {
+    const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
+    setMyStudyParticipation(findMyStudyParticipation);
+    console.log(123, findMyStudyParticipation);
+    if (locationFilterType === "내 투표 장소" && findMyStudyParticipation) {
       setCenterLocation({
-        lat: myStudyParticipation.place.latitude,
-        lon: myStudyParticipation.place.longitude,
+        lat: findMyStudyParticipation.place.latitude,
+        lon: findMyStudyParticipation.place.longitude,
       });
     }
   }, [studyVoteData, session?.user.uid]);
@@ -190,8 +201,9 @@ export default function StudyVoteMap() {
       else if (aTime.isAfter(bTime)) return 1;
       return 0;
     });
-    console.log(52, sortedCommentUserArr);
+
     const commentUser = sortedCommentUserArr?.[0]?.user;
+    const findMyInfo = findStudy?.members?.find((who) => who.user.uid);
 
     setDetailInfo({
       isPrivate: !!findStudy,
@@ -207,6 +219,7 @@ export default function StudyVoteMap() {
       image: participation
         ? participation.place.image
         : STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length)],
+      status: findStudy.status,
       comment: {
         user: {
           uid: commentUser.uid,
@@ -217,10 +230,14 @@ export default function StudyVoteMap() {
           sortedCommentUserArr?.[0]?.comment ||
           STUDY_COMMENT_ARR[getRandomIdx(STUDY_COMMENT_ARR.length - 1)],
       },
-      isMember: findStudy?.members?.some((who) => who.user.uid === userInfo.uid),
+      memberStatus: !findMyInfo
+        ? "notParticipation"
+        : findMyInfo?.attendanceInfo?.arrived
+          ? "attendance"
+          : "participation",
     });
   };
-  const { mutate } = useDeleteMyVoteMutation(dayjs());
+
   return (
     <>
       <Box
@@ -238,7 +255,7 @@ export default function StudyVoteMap() {
       <StudyControlButton isAleadyAttend={!!myStudyInfo?.attendanceInfo.arrived} />
 
       {detailInfo && <StudyInFoDrawer detailInfo={detailInfo} setDetailInfo={setDetailInfo} />}
-      <BottomFlexDrawer isOverlay={false} />
+      <BottomFlexDrawer isOverlay={false} isDrawerUp={drawerParam !== "down"} />
     </>
   );
 }

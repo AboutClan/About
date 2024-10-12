@@ -15,6 +15,7 @@ export const getStudyParticipationById = (
     (participation) => participation.place._id === id,
   );
   const realTimeFiltered = getRealTimeFilteredById(studyVoteData.realTime, id);
+
   return findMyParticipation || realTimeFiltered;
 };
 
@@ -26,6 +27,7 @@ export const getMyStudyParticipation = (
     participation.members.some((who) => who.user.uid === myUid),
   );
   const myRealTimeFiltered = getMyRealTimeFiltered(studyVoteData.realTime, myUid);
+
   return findMyParticipation || myRealTimeFiltered;
 };
 
@@ -35,7 +37,7 @@ export const getMyRealTimeFiltered = (
 ): MyStudyParticipationProps => {
   if (!realTime || !myUid) return;
   const findMyStudy = realTime.find((who) => who.user.uid === myUid);
-
+  if (!findMyStudy) return null;
   const filtered = realTime.filter((who) => who.place.name === findMyStudy?.place.name);
   return { ...findMyStudy, members: filtered };
 };

@@ -116,7 +116,6 @@ export default function StudyVoteMap() {
   const { data: studyVoteOne } = useStudyVoteQuery(dateValue, "전체", {
     enabled: !!dateValue,
   });
-  console.log(24, studyVoteOne);
 
   const mainLocation = userInfo?.locationDetail;
   const studyVoteData = studyVoteOne?.[0]?.participations;
@@ -290,7 +289,7 @@ export default function StudyVoteMap() {
       const myStudy =
         findStudy?.members?.some((who) => who.user.uid === userInfo?.uid) ||
         realStudyAttendance?.some((who) => who.user.uid === userInfo?.uid);
-      console.log(123, findStudy, findStudy?.members);
+     
       const sortedCommentUserArr = findStudy
         ? [...findStudy.members]?.sort((a, b) => {
             const aTime = dayjs(a?.updatedAt);
@@ -488,9 +487,9 @@ function DetailDrawer({
   };
 
   const onClickStudyVote = (voteTime: IStudyVoteTime) => {
-    console.log(25, voteTime);
+    
     if (myStudy || myRealStudy) {
-      console.log(2224);
+  
       setVoteTime(voteTime);
       setIsAlertModal(true);
       return;

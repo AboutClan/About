@@ -126,7 +126,7 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
   };
 
   const handleMainButton = (type: MainBtnType) => {
-    console.log(2, type);
+   
     if (isGuest) {
       typeToast("guest");
       return;
@@ -158,7 +158,7 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
       func: () => handleSubNav("absent"),
     },
   ];
-  console.log(123, modalType);
+  
   return (
     <>
       <Slide isFixed={true} posZero="top">

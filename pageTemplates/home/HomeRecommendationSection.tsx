@@ -17,7 +17,7 @@ function HomeRecommendationSection() {
   const { data: session } = useSession();
 
   const userLocation = localStorage.getItem(USER_LOCATION) as ActiveLocation;
-  console.log(session, userLocation);
+
   const { data: studyVoteData, isLoading } = useStudyVoteQuery(
     dayjsToStr(dayjs()),
     userLocation || session?.user.location,

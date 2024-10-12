@@ -123,13 +123,12 @@ function Configuration() {
   }, []);
 
   const handleAttendSuccess = (collection: CollectionProps) => {
-    console.log(222, collection);
     setTransferCollection({ alphabet: collection.alphabet, stamps: collection.stamps });
     saveTogetherMembers();
     resetStudy();
     setTransferStudyAttendance(null);
     const pointObj = POINT_SYSTEM_PLUS.STUDY_ATTEND_CHECK;
-    console.log(23);
+
     if (myStudyParticipation?.status === "open") {
       getAboutPoint(pointObj);
       const myStudyInfo = getMyStudyInfo(myStudyParticipation, session?.user.uid);
@@ -143,9 +142,9 @@ function Configuration() {
       getScore(pointObj);
       toast("success", `출석 완료! ${pointObj.value}점을 획득했습니다`);
     }
-    console.log(15);
+
     newSearchParams.set("category", "votePlace");
-    router.push(`/vote?${newSearchParams.toString()}`);
+    router.push(`/studyPage?${newSearchParams.toString()}`);
   };
 
   const saveTogetherMembers = () => {
@@ -178,6 +177,8 @@ function Configuration() {
       (myStudyParticipation?.place as StudyPlaceProps)?.fullname ===
         transferStudyAttendance?.place?.name
     ) {
+      console.log(isParticipationStudy, isRealTimeStudy, transferStudyAttendance);
+
       setIsChecking(true);
       handleArrived({ memo: attendMessage, endHour: convertTimeStringToDayjs(endTime) });
       formData.append("image", transferStudyAttendance.image);

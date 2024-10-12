@@ -20,7 +20,9 @@ import {
 } from "../../hooks/study/mutations";
 import { ModalLayout } from "../../modals/Modals";
 
-import { StudyPlaceProps } from "../../types/models/studyTypes/studyDetails";
+import { useRouter, useSearchParams } from "next/navigation";
+import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
+import { StudyPlaceProps, StudyStatus } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
 import { IAvatar } from "../../types/models/userTypes/userInfoTypes";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
@@ -32,6 +34,7 @@ export interface StudyInfoProps {
   title: string;
   time: { start: string; end: string };
   participantCnt: number;
+  status: StudyStatus;
   image: string;
   comment: {
     user: {
@@ -41,7 +44,7 @@ export interface StudyInfoProps {
     };
     text: string;
   };
-  isMember: boolean;
+  memberStatus: "participation" | "notParticipation" | "attendance";
   isPrivate: boolean;
 }
 
@@ -52,6 +55,8 @@ interface StudyInFoDrawerProps {
 
 function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
   const resetStudy = useResetStudyQuery();
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const typeToast = useTypeToast();
 
   const { mutate: studyVote, isLoading: isLoading1 } = useStudyParticipationMutation(
@@ -85,12 +90,20 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
   const [isVoteDrawer, setIsVoteDrawer] = useState(false);
   const [isAlertMoal, setIsAlertModal] = useState(false);
 
-  const onClick = (type: "vote" | "comment") => {
+  const handleStudyActionButton = (type: "vote" | "comment" | "attend") => {
     if (type === "comment") {
       setIsCommentModal(true);
     }
     if (type === "vote") {
       setIsVoteDrawer(true);
+    }
+    if (type === "attend") {
+      const isOpenStudy = detailInfo.status === "open";
+      router.push(
+        isOpenStudy
+          ? `/vote/attend/configuration?${searchParams.toString()}`
+          : `/vote/attend/certification?${searchParams.toString()}`,
+      );
     }
   };
 
@@ -106,7 +119,6 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
   };
 
   const onClickStudyVote = (voteTime: IStudyVoteTime) => {
-    console.log(25, voteTime);
     // if (myStudy || myRealStudy) {
     //   console.log(2224);
     //   setVoteTime(voteTime);
@@ -133,6 +145,9 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
     //   });
     // }
   };
+  console.log(24, detailInfo);
+
+  const status = detailInfo.memberStatus;
 
   return (
     <>
@@ -153,7 +168,7 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
                 <Box w={3} textAlign="center">
                   ·
                 </Box>
-                <Box color="var(--color-blue)">{detailInfo.participantCnt + 2}명 참여 중</Box>
+                <Box color="var(--color-blue)">{detailInfo.participantCnt}명 참여 중</Box>
               </Flex>
               <Flex mt={2} align="center">
                 <Avatar {...detailInfo.comment.user} size="xs" />
@@ -187,15 +202,32 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
                 ),
               }}
               rightProps={{
-                icon: detailInfo.isMember ? (
-                  <i className="fa-solid fa-comment-quote fa-flip-horizontal" />
-                ) : (
-                  <i className="fa-solid fa-user-plus" style={{ color: "#CCF3F0" }} />
-                ),
+                icon:
+                  status === "attendance" ? (
+                    <i className="fa-solid fa-comment-quote fa-flip-horizontal" />
+                  ) : status === "notParticipation" ? (
+                    <i className="fa-solid fa-user-plus" style={{ color: "#CCF3F0" }} />
+                  ) : (
+                    <CheckCircleIcon />
+                  ),
 
                 children: (
-                  <div onClick={() => onClick(detailInfo.isMember ? "comment" : "vote")}>
-                    {!detailInfo.isMember ? "한줄 코멘트 변경" : "스터디 합류"}
+                  <div
+                    onClick={() =>
+                      handleStudyActionButton(
+                        status === "attendance"
+                          ? "comment"
+                          : status === "notParticipation"
+                            ? "vote"
+                            : "attend",
+                      )
+                    }
+                  >
+                    {status === "attendance"
+                      ? "한줄 코멘트 변경"
+                      : status === "notParticipation"
+                        ? "스터디 합류"
+                        : "스터디 출석"}
                   </div>
                 ),
               }}
