@@ -14,14 +14,11 @@ interface IAvatarGroupsOverwrap {
   maxCnt?: number;
 }
 
-
-
 export default function AvatarGroupsOverwrap({
   userAvatarArr,
   userLength,
   maxCnt,
 }: IAvatarGroupsOverwrap) {
-
   return (
     <Participants>
       {userAvatarArr.map((att, idx) => {
@@ -31,7 +28,7 @@ export default function AvatarGroupsOverwrap({
               key={idx}
               image={att.image}
               avatar={att.avatar}
-              size="sm"
+              size="xs"
               isLink={false}
               shadowAvatar={
                 idx === maxCnt - 1 &&

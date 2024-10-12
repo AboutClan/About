@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 import { useTogglePlaceHeart } from "../../hooks/custom/CustomHooks";
 import { useUserInfoQuery } from "../../hooks/user/queries";
@@ -26,7 +26,7 @@ function PlaceImage({ image, id, hasToggleHeart, selected }: PlaceHeartImageProp
   const isMyPrefer = preference?.place === id || preference?.subPlace?.includes(id);
 
   const toggleHeart = useTogglePlaceHeart();
-  
+
   return (
     <Box
       aspectRatio={1 / 1}
@@ -48,13 +48,18 @@ function PlaceImage({ image, id, hasToggleHeart, selected }: PlaceHeartImageProp
             ? "0px 5px 10px 0px #1BB8760A"
             : null
       }
+      w="100px"
+      h="100px"
     >
       <Image
         src={image.url}
         alt="thumbnailImage"
-        fill={true}
         sizes="100px"
+        fill
         priority={image?.isPriority}
+        style={{
+          objectFit: "cover",
+        }}
       />
       {selected === "main" && (
         <Box pos="absolute" top={1} right={1} color="white">
@@ -66,8 +71,8 @@ function PlaceImage({ image, id, hasToggleHeart, selected }: PlaceHeartImageProp
           pos="absolute"
           w="20px"
           h="20px"
-          bottom={0}
-          right={0}
+          bottom={2}
+          right={1}
           color="white"
           onClick={(e) => toggleHeart(e, preference, id, userLoading)}
         >

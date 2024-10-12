@@ -1,14 +1,13 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
+import ShadowBlockButton from "../../components/atoms/buttons/ShadowBlockButton";
+import { GatherThumbnailCard } from "../../components/molecules/cards/GatherThumbnailCard";
 import { IPostThumbnailCard } from "../../components/molecules/cards/PostThumbnailCard";
-import {
-  CardColumnLayout,
-  CardColumnLayoutSkeleton,
-} from "../../components/organisms/CardColumnLayout";
+import { CardColumnLayoutSkeleton } from "../../components/organisms/CardColumnLayout";
 import { useGatherQuery } from "../../hooks/gather/queries";
 import { slideDirectionState } from "../../recoils/navigationRecoils";
 import { transferGatherDataState } from "../../recoils/transferRecoils";
@@ -37,18 +36,23 @@ export default function HomeGatherCol() {
   }, [gathers]);
 
   return (
-    <Box mb="24px">
-      <Box>
-        {cardDataArr.length ? (
-          <CardColumnLayout
-            cardDataArr={cardDataArr}
-            url={`/gather?location=${location}`}
-            func={() => setSlideDirection("right")}
-          />
-        ) : (
-          <CardColumnLayoutSkeleton />
-        )}
-      </Box>
+    <Box my="24px">
+      {cardDataArr ? (
+        <Flex direction="column">
+          {cardDataArr.map((cardData, idx) => (
+            <GatherThumbnailCard key={idx} postThumbnailCardProps={cardData} />
+          ))}
+          {cardDataArr.length >= 3 && (
+            <ShadowBlockButton
+              text="더보기"
+              url={`/gather?location=${location}`}
+              func={() => setSlideDirection("right")}
+            />
+          )}
+        </Flex>
+      ) : (
+        <CardColumnLayoutSkeleton />
+      )}
     </Box>
   );
 }

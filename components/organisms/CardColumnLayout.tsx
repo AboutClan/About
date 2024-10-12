@@ -25,9 +25,7 @@ export function CardColumnLayout({
   return (
     <Layout>
       {cardDataArr.map((cardData, idx) => (
-        <Item key={idx}>
-          <PostThumbnailCard postThumbnailCardProps={cardData} isShort={isShort} />
-        </Item>
+        <PostThumbnailCard key={idx} postThumbnailCardProps={cardData} isShort={isShort} />
       ))}
       {cardDataArr?.length >= 3 && <ShadowBlockButton text="더보기" url={url} func={func} />}
     </Layout>
@@ -50,8 +48,4 @@ export function CardColumnLayoutSkeleton() {
 const Layout = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const Item = styled.div`
-  margin-bottom: 16px;
 `;
