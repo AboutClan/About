@@ -30,15 +30,3 @@ export const useRealTimeAttendMutation = (
       }),
     options,
   );
-export const useRealTimeDirectAttendMutation = (
-  options?: MutationOptions<RealTimeBasicAttendanceProps | FormData, CollectionProps>,
-) =>
-  useMutation<CollectionProps, AxiosError, RealTimeBasicAttendanceProps | FormData>(
-    (param) =>
-      requestServer<RealTimeBasicAttendanceProps | FormData, CollectionProps>({
-        method: "post",
-        url: `realtime/directAttendance`,
-        body: param,
-      }),
-    options,
-  );

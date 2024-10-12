@@ -41,6 +41,7 @@ export default function ButtonGroups({
               rounded={isEllipse ? "2xl" : "md"}
               leftIcon={buttonOptions?.icon}
               fontSize="11px"
+              border={size === "sm" ? "1px solid var(--gray-100)" : undefined}
               // _focus={{
               //   outline: "none",
               //   boxShadow: "none",

@@ -22,10 +22,7 @@ import {
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import { useImageUploadMutation } from "../../../hooks/image/mutations";
-import {
-  useRealTimeAttendMutation,
-  useRealTimeDirectAttendMutation,
-} from "../../../hooks/realtime/mutations";
+import { useRealTimeAttendMutation } from "../../../hooks/realtime/mutations";
 import { useStudyAttendCheckMutation } from "../../../hooks/study/mutations";
 import {
   useAboutPointMutation,
@@ -84,12 +81,6 @@ function Configuration() {
   });
 
   const { mutate: attendRealTimeStudy } = useRealTimeAttendMutation({
-    onSuccess(data) {
-      handleAttendSuccess(data);
-    },
-  });
-
-  const { mutate: attendRealTimeDirect } = useRealTimeDirectAttendMutation({
     onSuccess(data) {
       handleAttendSuccess(data);
     },
@@ -167,7 +158,7 @@ function Configuration() {
   };
 
   const formData = new FormData();
-
+ 
   const handleSubmit = () => {
     const isParticipationStudy = (myStudyParticipation?.place as StudyPlaceProps)?.fullname;
     const isRealTimeStudy = (myStudyParticipation?.place as PlaceInfoProps)?.name;
@@ -177,8 +168,6 @@ function Configuration() {
       (myStudyParticipation?.place as StudyPlaceProps)?.fullname ===
         transferStudyAttendance?.place?.name
     ) {
-      console.log(isParticipationStudy, isRealTimeStudy, transferStudyAttendance);
-
       setIsChecking(true);
       handleArrived({ memo: attendMessage, endHour: convertTimeStringToDayjs(endTime) });
       formData.append("image", transferStudyAttendance.image);
@@ -187,13 +176,14 @@ function Configuration() {
       setTimeout(() => {
         setIsChecking(false);
       }, 2000);
-    } else if (
-      isRealTimeStudy &&
-      (myStudyParticipation?.place as PlaceInfoProps)?.name === transferStudyAttendance?.place?.name
-    ) {
+    } else {
       formData.append("memo", attendMessage);
       formData.append("status", "open");
       formData.append("images", transferStudyAttendance?.image as Blob);
+      formData.append(
+        "place",
+        JSON.stringify(transferStudyAttendance?.place || myStudyParticipation?.place),
+      );
       formData.append(
         "time",
         JSON.stringify({
@@ -202,19 +192,6 @@ function Configuration() {
         }),
       );
       attendRealTimeStudy(formData);
-    } else {
-      formData.append("memo", attendMessage);
-      formData.append("status", "open");
-      formData.append("images", transferStudyAttendance?.image as Blob);
-      formData.append("place", JSON.stringify(transferStudyAttendance?.place));
-      formData.append(
-        "time",
-        JSON.stringify({
-          start: dayjs().toISOString(),
-          end: convertTimeStringToDayjs(endTime).toISOString(),
-        }),
-      );
-      attendRealTimeDirect(formData);
     }
   };
 

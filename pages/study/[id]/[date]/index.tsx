@@ -27,7 +27,7 @@ export default function Page() {
   const searchParams = useSearchParams();
   const { data: session } = useSession();
   const { id, date } = useParams<{ id: string; date: string }>() || {};
-  const privateParam = searchParams.get("private");
+
   const locationParam = searchParams.get("location") as LocationEn;
 
   const [studyParticipation, setStudyParticipation] = useState<StudyParticipationProps>();
@@ -74,7 +74,7 @@ export default function Page() {
     // setStudy(tempStudy);
     // const isMyStudy = tempStudy.members.find((who) => who.user.uid === session.user.uid);
     // if (isMyStudy) setMyStudy(tempStudy);
-  }, [studyOne, session, privateParam]);
+  }, [studyOne, session]);
 
   // useEffect(() => {
   //   setStudyDateStatus(getStudyDateStatus(date));
@@ -103,7 +103,7 @@ export default function Page() {
   const realTimePlace = participation?.place as PlaceInfoProps;
 
   const members = participation?.members;
-
+  
   return (
     <>
       {participation && (
@@ -126,7 +126,7 @@ export default function Page() {
               title={studyPlace?.fullname || realTimePlace?.name}
               locationDetail={studyPlace?.locationDetail || realTimePlace?.address}
               time={studyPlace?.time}
-              participantsNum={participation.members.length}
+              participantsNum={members.length}
               coordinate={{
                 lat: place.latitude,
                 lng: place.longitude,

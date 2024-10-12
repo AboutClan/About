@@ -36,7 +36,10 @@ function Certification() {
   const [studyAttendanceRequest, setStudyAttendanceRequest] = useRecoilState(
     transferStudyAttendanceState,
   );
-
+  //  latitude: +placeInfo?.y,
+  //       longitude: +placeInfo?.x,
+  //       address: placeInfo?.road_address_name,
+  //       name: placeInfo?.place_name,
   const myStudyParticipation = useRecoilValue(myStudyParticipationState);
 
   useEffect(() => {
@@ -50,11 +53,17 @@ function Certification() {
       setImage(studyAttendanceRequest?.image);
     }
   }, [studyAttendanceRequest]);
-
+ 
   useEffect(() => {
     if (!myStudyParticipation) return;
+    const studyPlace = myStudyParticipation?.place as StudyPlaceProps;
+    const realTimePlace = myStudyParticipation?.place as PlaceInfoProps;
+
     setPlaceInfo((old) => ({
       ...old,
+      x: (studyPlace?.longitude || realTimePlace?.longitude) + "",
+      y: (studyPlace?.latitude || realTimePlace?.latitude) + "",
+      road_address_name: studyPlace?.locationDetail || realTimePlace?.address,
       place_name:
         (myStudyParticipation?.place as StudyPlaceProps)?.fullname ||
         (myStudyParticipation?.place as PlaceInfoProps)?.name,

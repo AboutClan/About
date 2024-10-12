@@ -120,7 +120,6 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
 
   const onClickStudyVote = (voteTime: IStudyVoteTime) => {
     // if (myStudy || myRealStudy) {
-    //   console.log(2224);
     //   setVoteTime(voteTime);
     //   setIsAlertModal(true);
     //   return;
@@ -145,7 +144,7 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
     //   });
     // }
   };
-  console.log(24, detailInfo);
+
 
   const status = detailInfo.memberStatus;
 
@@ -195,7 +194,7 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
                 ),
                 children: (
                   <Link
-                    href={`/study/${detailInfo.id}/${dayjsToStr(dayjs())}?private=${detailInfo.isPrivate ? "on" : "off"}`}
+                    href={`/study/${detailInfo.id}/${dayjsToStr(dayjs())}?location=${location}`}
                   >
                     자세히 보기
                   </Link>

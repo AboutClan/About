@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -11,8 +11,13 @@ import BottomFlexDrawer, {
 } from "../components/organisms/drawer/BottomFlexDrawer";
 import VoteMap from "../components/organisms/VoteMap";
 import { USER_LOCATION } from "../constants/keys/localStorage";
+import {
+  LOCATION_CENTER_DOT,
+  LOCATION_MAX_BOUNDARY,
+} from "../constants/serviceConstants/studyConstants/studyVoteMapConstants";
 import { STUDY_COMMENT_ARR } from "../constants/settingValue/comment";
 import { useToast } from "../hooks/custom/CustomToast";
+import { useDeleteMyVoteMutation } from "../hooks/study/mutations";
 import { useStudyVoteQuery } from "../hooks/study/queries";
 import { useUserInfoQuery } from "../hooks/user/queries";
 import {
@@ -55,14 +60,16 @@ export default function StudyVoteMap() {
     searchParams.get("location") as LocationEn,
     "kr",
   ) as ActiveLocation;
+  const userLocation =
+    (localStorage.getItem(USER_LOCATION) as ActiveLocation) || session?.user.location;
 
   const [mapOptions, setMapOptions] = useState<IMapOptions>();
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>();
   const [currentLocation, setCurrentLocation] = useState<{ lat: number; lon: number }>();
   const [centerLocation, setCenterLocation] = useState<{ lat: number; lon: number }>();
-
+ 
   const [locationFilterType, setLocationFilterType] = useState<
-    "현재 위치" | "주 활동 장소" | "내 투표 장소"
+    "현재 위치" | "활동 장소" | "스터디 장소"
   >("현재 위치");
 
   const [myVoteInfo, setMyVoteInfo] = useState<IStudyVoteWithPlace>();
@@ -70,7 +77,9 @@ export default function StudyVoteMap() {
 
   const [resizeToggle, setResizeToggle] = useState(false);
   const [date, setDate] = useState(dateParam || dayjsToStr(dayjs()));
-  const [locationValue, setLocationValue] = useState<ActiveLocation>(locationParamKr);
+  const [locationValue, setLocationValue] = useState<ActiveLocation>(
+    locationParamKr || userLocation,
+  );
   const [detailInfo, setDetailInfo] = useState<StudyInfoProps>();
 
   const [myStudyParticipation, setMyStudyParticipation] = useRecoilState(myStudyParticipationState);
@@ -78,42 +87,45 @@ export default function StudyVoteMap() {
   const myStudyInfo = getMyStudyInfo(myStudyParticipation, session?.user.uid);
 
   const { data: userInfo } = useUserInfoQuery();
-  const userLocation =
-    (localStorage.getItem(USER_LOCATION) as ActiveLocation) || session?.user.location;
 
-  const { data: studyVoteData } = useStudyVoteQuery(date, userLocation, {
-    enabled: !!userLocation && !!date,
+  const { data: studyVoteData } = useStudyVoteQuery(date, locationValue, {
+    enabled: !!locationValue && !!date,
   });
-  console.log(54, studyVoteData, date, userLocation);
+
 
   const mainLocation = userInfo?.locationDetail;
 
   useEffect(() => {
+   
     if (!locationParamKr) {
-      newSearchParams.set("location", convertLocationLangTo(userLocation, "en"));
+      newSearchParams.set("location", convertLocationLangTo(locationValue, "en"));
     }
     if (!dateParam) {
       newSearchParams.set("date", date);
     }
+    if (locationValue) {
+      const locationCenter = LOCATION_CENTER_DOT[locationValue];
+    
+      setCenterLocation({ lat: locationCenter.latitude, lon: locationCenter.longitude });
+    }
     router.replace(`/studyPage?${newSearchParams.toString()}`);
-    // if (!locationValue) setLocationValue(locationParamKr);
-    // if (!date) setDate(dateParam);
-  }, [locationParamKr, dateParam]);
+  }, [locationParamKr, dateParam, locationValue]);
 
   useEffect(() => {
+  
     switch (categoryParam) {
       case "currentPlace":
         setLocationFilterType("현재 위치");
         setIsLocationRefetch(true);
         break;
       case "mainPlace":
-        setLocationFilterType("주 활동 장소");
+        setLocationFilterType("활동 장소");
         setCenterLocation({ lat: mainLocation?.lat, lon: mainLocation?.lon });
 
         break;
       case "votePlace":
-        setLocationFilterType("내 투표 장소");
-
+        setLocationFilterType("스터디 장소");
+       
         setCenterLocation({
           lat: myStudyParticipation?.place.latitude,
           lon: myStudyParticipation?.place.longitude,
@@ -134,12 +146,12 @@ export default function StudyVoteMap() {
   }, [locationValue, date]);
 
   useEffect(() => {
-    console.log(222, studyVoteData);
+    
     if (!studyVoteData || !session?.user) return;
     const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
     setMyStudyParticipation(findMyStudyParticipation);
-    console.log(123, findMyStudyParticipation);
-    if (locationFilterType === "내 투표 장소" && findMyStudyParticipation) {
+  
+    if (locationFilterType === "스터디 장소" && findMyStudyParticipation) {
       setCenterLocation({
         lat: findMyStudyParticipation.place.latitude,
         lon: findMyStudyParticipation.place.longitude,
@@ -152,6 +164,7 @@ export default function StudyVoteMap() {
       function (position) {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
+      
         setCurrentLocation({ lat, lon });
         if (isLocationRefetch || categoryParam !== "votePlace") setCenterLocation({ lat, lon });
         setIsLocationRefetch(false);
@@ -169,15 +182,16 @@ export default function StudyVoteMap() {
   }, [isLocationRefetch]);
 
   useEffect(() => {
+   
     if (centerLocation) {
-      setMapOptions(getMapOptions(centerLocation));
+      setMapOptions(getMapOptions(centerLocation, locationValue));
     } else if (centerLocation === null && mainLocation) {
-      setMapOptions(getMapOptions({ lat: mainLocation.lat, lon: mainLocation.lon }));
+      setMapOptions(getMapOptions({ lat: mainLocation.lat, lon: mainLocation.lon }, locationValue));
     }
     if (studyVoteData && currentLocation) {
       setMarkersOptions(getMarkersOptions(studyVoteData, currentLocation));
     }
-  }, [currentLocation, centerLocation, mainLocation, studyVoteData]);
+  }, [currentLocation, centerLocation, mainLocation, studyVoteData, locationValue]);
 
   const dateArr = Array(10)
     .fill(0)
@@ -220,6 +234,7 @@ export default function StudyVoteMap() {
         ? participation.place.image
         : STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length)],
       status: findStudy.status,
+      location: location,
       comment: {
         user: {
           uid: commentUser.uid,
@@ -230,21 +245,30 @@ export default function StudyVoteMap() {
           sortedCommentUserArr?.[0]?.comment ||
           STUDY_COMMENT_ARR[getRandomIdx(STUDY_COMMENT_ARR.length - 1)],
       },
-      memberStatus: !findMyInfo
-        ? "notParticipation"
-        : findMyInfo?.attendanceInfo?.arrived
-          ? "attendance"
-          : "participation",
+      memberStatus:
+        !findMyInfo || !findStudy?.members.some((who) => who.user.uid === userInfo.uid)
+          ? "notParticipation"
+          : findMyInfo?.attendanceInfo?.arrived
+            ? "attendance"
+            : "participation",
     });
   };
 
+  const { mutate } = useDeleteMyVoteMutation(dayjs());
+
   return (
     <>
+      <Button onClick={() => mutate()}>삭제</Button>
       <Box
         position="relative"
         height={`calc(100dvh - var(--bottom-nav-height) - ${DRAWER_MIN_HEIGHT + iPhoneNotchSize()}px)`}
       >
-        <StudyMapTopNav />
+        <StudyMapTopNav
+          location={locationValue}
+          setLocation={setLocationValue}
+          hasMainLocation={!!mainLocation}
+          setIsLocationFetch={setIsLocationRefetch}
+        />
         <VoteMap
           mapOptions={mapOptions}
           markersOptions={markersOptions}
@@ -353,12 +377,32 @@ const getMarkersOptions = (
   return temp;
 };
 
-const getMapOptions = (currentLocation: { lat: number; lon: number }): IMapOptions | undefined => {
+const getMapOptions = (
+  currentLocation: { lat: number; lon: number },
+  location: ActiveLocation,
+): IMapOptions | undefined => {
   if (typeof naver === "undefined") return undefined;
+
+  const locationBoundary = LOCATION_MAX_BOUNDARY[location];
+
+  const bounds = locationBoundary
+    ? new naver.maps.LatLngBounds(
+        new naver.maps.LatLng(
+          locationBoundary.southwest.latitude,
+          locationBoundary.southwest.longitude,
+        ),
+        new naver.maps.LatLng(
+          locationBoundary.northeast.latitude,
+          locationBoundary.northeast.longitude,
+        ),
+      )
+    : undefined;
+
   return {
     center: new naver.maps.LatLng(currentLocation.lat, currentLocation.lon),
-    zoom: 14,
+    zoom: 13,
     minZoom: 11,
+    maxBounds: bounds,
     mapTypeControl: false,
     scaleControl: false,
     logoControl: false,

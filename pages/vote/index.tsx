@@ -99,7 +99,7 @@ export default function StudyVoteMap() {
   const [centerLocation, setCenterLocation] = useState<{ lat: number; lon: number }>();
   const [studyCategoryTab, setStudyCategoryTab] = useState<StudyCategoryTab>("실시간 스터디");
   const [locationFilterType, setLocationFilterType] = useState<
-    "현재 위치" | "주 활동 장소" | "내 투표 장소"
+    "현재 위치" | "활동 장소" | "스터디 장소"
   >("현재 위치");
   const [myVoteInfo, setMyVoteInfo] = useState<IStudyVoteWithPlace>();
   const [isLocationRefetch, setIsLocationRefetch] = useState(false);
@@ -134,12 +134,12 @@ export default function StudyVoteMap() {
 
         break;
       case "mainPlace":
-        setLocationFilterType("주 활동 장소");
+        setLocationFilterType("활동 장소");
         setCenterLocation({ lat: mainLocation?.lat, lon: mainLocation?.lon });
 
         break;
       case "votePlace":
-        setLocationFilterType("내 투표 장소");
+        setLocationFilterType("스터디 장소");
         setCenterToVotePlace(myStudy, myRealStudy);
         break;
     }
@@ -167,7 +167,7 @@ export default function StudyVoteMap() {
     const tempRealStudy = realTimeUsers?.find((userProps) => userProps.user.uid === userInfo?.uid);
     setMyStudy(tempStudy);
     setMyRealStudy(tempRealStudy);
-    if (studyCategoryTab === "실시간 스터디" && locationFilterType === "내 투표 장소") {
+    if (studyCategoryTab === "실시간 스터디" && locationFilterType === "스터디 장소") {
       setCenterToVotePlace(tempStudy, tempRealStudy);
     }
   }, [studyVoteOne, userInfo?.uid]);
@@ -246,20 +246,20 @@ export default function StudyVoteMap() {
       },
     },
     {
-      text: `주 활동 장소`,
+      text: `활동 장소`,
       func: () => {
         if (!mainLocation) {
           toast("warning", "등록된 활동 장소가 없습니다.");
           return;
         }
 
-        setLocationFilterType("주 활동 장소");
+        setLocationFilterType("활동 장소");
         newSearchParams.set("category", "mainPlace");
         router.replace(`/vote?${newSearchParams.toString()}`);
       },
     },
     {
-      text: `내 투표 장소`,
+      text: `스터디 장소`,
       func: () => {
         if (!myStudy && !myRealStudy) {
           toast("warning", "참여중인 장소가 없습니다.");
@@ -267,7 +267,7 @@ export default function StudyVoteMap() {
         }
         newSearchParams.set("category", "votePlace");
         router.replace(`/vote?${newSearchParams.toString()}`);
-        setLocationFilterType("내 투표 장소");
+        setLocationFilterType("스터디 장소");
       },
     },
   ];
@@ -289,7 +289,7 @@ export default function StudyVoteMap() {
       const myStudy =
         findStudy?.members?.some((who) => who.user.uid === userInfo?.uid) ||
         realStudyAttendance?.some((who) => who.user.uid === userInfo?.uid);
-     
+
       const sortedCommentUserArr = findStudy
         ? [...findStudy.members]?.sort((a, b) => {
             const aTime = dayjs(a?.updatedAt);
@@ -487,9 +487,7 @@ function DetailDrawer({
   };
 
   const onClickStudyVote = (voteTime: IStudyVoteTime) => {
-    
     if (myStudy || myRealStudy) {
-  
       setVoteTime(voteTime);
       setIsAlertModal(true);
       return;
