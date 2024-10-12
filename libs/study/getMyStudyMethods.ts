@@ -1,16 +1,43 @@
 import {
-  MyStudyParticipationProps,
   RealTimeInfoProps,
   StudyDailyInfoProps,
   StudyMemberProps,
+  StudyMergeParticipationProps,
 } from "../../types/models/studyTypes/studyDetails";
 
 //participation은 study의 participations와 realTime을 모두 포함한다.
 
+export const convertStudyToParticipations = (studyVoteData: StudyDailyInfoProps) => {
+  if (!studyVoteData) return;
+  console.log(3131);
+  const temp: StudyMergeParticipationProps[] = [];
+
+  studyVoteData.realTime.forEach((props) => {
+    const findParticipationIdx = temp.findIndex(
+      (participation) => participation.place._id === props.place._id,
+    );
+
+    if (findParticipationIdx !== -1) {
+      temp[findParticipationIdx].members.push(props);
+    } else {
+      temp.push({
+        place: props.place,
+        status: props.status,
+        members: [props],
+      });
+    }
+  });
+  console.log(51, temp);
+  return;
+  // return { ...findMyStudy, members: filtered };
+
+  [...studyVoteData.participations, studyVoteData.realTime];
+};
+
 export const getStudyParticipationById = (
   studyVoteData: StudyDailyInfoProps,
   id: string,
-): MyStudyParticipationProps => {
+): StudyMergeParticipationProps => {
   const findMyParticipation = studyVoteData.participations.find(
     (participation) => participation.place._id === id,
   );
@@ -23,7 +50,7 @@ export const getStudyParticipationById = (
 export const getMyStudyParticipation = (
   studyVoteData: StudyDailyInfoProps,
   myUid: string,
-): MyStudyParticipationProps => {
+): StudyMergeParticipationProps => {
   const findMyParticipation = studyVoteData.participations.find((participation) =>
     participation.members.some((who) => who.user.uid === myUid),
   );
@@ -35,7 +62,7 @@ export const getMyStudyParticipation = (
 export const getMyRealTimeFiltered = (
   realTime: RealTimeInfoProps[],
   myUid: string,
-): MyStudyParticipationProps => {
+): StudyMergeParticipationProps => {
   if (!realTime || !myUid) return;
   const findMyStudy = realTime.find((who) => who.user.uid === myUid);
   if (!findMyStudy) return null;
@@ -45,7 +72,7 @@ export const getMyRealTimeFiltered = (
 export const getRealTimeFilteredById = (
   realTime: RealTimeInfoProps[],
   id: string,
-): MyStudyParticipationProps => {
+): StudyMergeParticipationProps => {
   if (!realTime || !id) return;
   const findStudy = realTime.find((who) => who._id === id);
   if (!findStudy) return null;
@@ -59,7 +86,7 @@ import dayjs, { Dayjs } from "dayjs";
 import { StudyParticipationProps } from "../../types/models/studyTypes/studyDetails";
 
 export const getMyStudyInfo = (
-  participations: MyStudyParticipationProps,
+  participations: StudyMergeParticipationProps,
   myUid: string,
 ): StudyMemberProps => {
   if (!participations || !myUid) return;

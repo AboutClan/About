@@ -1,4 +1,3 @@
-import { Button } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
@@ -34,7 +33,7 @@ export default function BottomFlexDrawer({
     if (isDrawerUp) setDrawerHeight(DRAWER_MAX_HEIGHT);
     else setDrawerHeight(DRAWER_MIN_HEIGHT);
   }, [isDrawerUp]);
- 
+
   const handlePointerDown = (event) => {
     startYRef.current = event.clientY || event.touches[0].clientY; // 드래그 시작 위치 저장
     currentHeightRef.current = drawerHeight; // 드래그 시작 시점의 높이 저장
@@ -58,13 +57,10 @@ export default function BottomFlexDrawer({
 
     // 스와이프 종료 시 부드럽게 애니메이션 적용
     if (deltaY > SWIPE_THRESHOLD) {
-    
       setDrawerHeight(DRAWER_MAX_HEIGHT); // 위로 쭉 올라가는 동작
     } else if (deltaY < -SWIPE_THRESHOLD) {
-     
       setDrawerHeight(DRAWER_MIN_HEIGHT); // 아래로 내려가는 동작
     } else {
-     
       setDrawerHeight(currentHeightRef.current); // 스와이프가 임계값보다 짧으면 원래 높이로 복원
     }
   };
@@ -79,27 +75,7 @@ export default function BottomFlexDrawer({
       onPointerDown={handlePointerDown} // 드래그 시작 시
     >
       <TopNav />
-
-      {header && drawerHeight > 100 && (
-        <Header>
-          <span>{header.subTitle}</span>
-          <span>{header.title}</span>
-        </Header>
-      )}
       {drawerHeight > 100 && children}
-      {footer && drawerHeight > 100 && (
-        <Button
-          w="100%"
-          mt="auto"
-          colorScheme="mintTheme"
-          size="lg"
-          isLoading={footer.buttonLoading}
-          borderRadius="var(--rounded-lg)"
-          onClick={footer.onClick}
-        >
-          {footer.buttonText}
-        </Button>
-      )}
     </Layout>
   );
 }

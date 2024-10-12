@@ -1,32 +1,13 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import WeekSlideCalendar from "../../../../components/molecules/WeekSlideCalendar";
-import { getStudyVoteCnt } from "../../../../libs/study/getStudyVoteCnt";
-import DateCalendarModal from "../../../../modals/aboutHeader/DateCalendarModal";
-import StudyAttendCheckModal from "../../../../modals/study/StudyAttendCheckModal";
-import StudySimpleVoteModal from "../../../../modals/study/StudySimpleVoteModal";
 import { studyDateStatusState } from "../../../../recoils/studyRecoils";
 import { StudyParticipationProps } from "../../../../types/models/studyTypes/studyDetails";
 import { dayjsToStr } from "../../../../utils/dateTimeUtils";
-import StudyControllerVoteButton from "./StudyControllerVoteButton";
-
-export type VoteType =
-  | "vote"
-  | "voteChange"
-  | "attendCheck"
-  | "attendCompleted"
-  | "absent"
-  | "expired"
-  | "attendPrivate"
-  | "todayVote"
-  | "monthCalendar";
-
-dayjs.locale("ko");
 
 interface StudyControllerProps {
   studyVoteData: StudyParticipationProps[];
@@ -36,13 +17,11 @@ interface StudyControllerProps {
   handleChangeDate: (date: string) => void;
 }
 
-function StudyController({ studyVoteData, selectedDate, handleChangeDate }: StudyControllerProps) {
+function StudyController({ selectedDate, handleChangeDate }: StudyControllerProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
   const date = searchParams.get("date");
-
-  const [modalType, setModalType] = useState<VoteType>(null);
 
   const setStudyDateStatus = useSetRecoilState(studyDateStatusState);
 
@@ -60,72 +39,22 @@ function StudyController({ studyVoteData, selectedDate, handleChangeDate }: Stud
     <>
       <>
         <OuterContainer>
-          <Flex justify="space-between" align="center" mb="16px">
-            <Box fontSize="16px" fontWeight={600}>
-              날짜 선택
-            </Box>
-
-            <Button variant="ghost" color="var(--gray-600)" size="sm">
-              <i className="fa-solid fa-map" />
-            </Button>
-          </Flex>
           <Box>
             {selectedDate && (
               <>
-                <Flex align="center">
-                  <Flex flex={1} minW="48px" justify="center" pb={2.5}>
-                    <MonthButton
-                      onClick={() => setModalType("monthCalendar")}
-                      className="about_calendar_month"
-                    >
-                      <span>{selectedDateDayjs.month() + 1}월</span>
-                      <i className="fa-regular fa-chevron-down fa-xs" />
-                    </MonthButton>
-                  </Flex>
-                  <Flex flex={0.6} h="32px" justify="center" pb={3}>
-                    <Box h="100%" bg="var(--gray-300)" w="1px" />
-                  </Flex>
-                  <WeekSlideCalendar
-                    // voteCntArr={voteCntArr}
-                    selectedDate={selectedDateDayjs}
-                    func={handleSelectDate}
-                  />
-                </Flex>
-                <StudyControllerVoteButton
-                  memberCnt={getStudyVoteCnt(studyVoteData)}
-                  setModalType={setModalType}
+                <WeekSlideCalendar
+                  // voteCntArr={voteCntArr}
+                  selectedDate={selectedDateDayjs}
+                  func={handleSelectDate}
                 />
               </>
             )}
           </Box>
         </OuterContainer>
       </>
-      {modalType === "attendCheck" && (
-        <StudyAttendCheckModal setIsModal={() => setModalType(null)} />
-      )}
-      {modalType === "monthCalendar" && (
-        <DateCalendarModal selectedDate={selectedDateDayjs} setIsModal={() => setModalType(null)} />
-      )}
-      {modalType === "todayVote" && (
-        <StudySimpleVoteModal studyVoteData={studyVoteData} setIsModal={() => setModalType(null)} />
-      )}
-      {modalType === "vote" && (
-        <StudySimpleVoteModal studyVoteData={studyVoteData} setIsModal={() => setModalType(null)} />
-      )}
     </>
   );
 }
-
-const MonthButton = styled.button`
-  width: 52px;
-
-  text-align: start;
-  padding: 8px 0px;
-  font-size: 16px;
-  > span {
-    margin-right: 8px;
-  }
-`;
 
 export const getTextSwitcherProps = (
   selectedDateDayjs: Dayjs,

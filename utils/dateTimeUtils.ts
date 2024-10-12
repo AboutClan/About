@@ -83,7 +83,7 @@ export const getCalendarDates = (
     const startDate = selectedDate.startOf("month");
     for (let i = 0; i < selectedDate.endOf("month").date(); i++) {
       const date = startDate.add(i, "day");
-      calendar.push({ date: dayjsToStr(date), value: 0 });
+      calendar.push({ date: dayjsToStr(date), value: date.date() });
     }
   } else {
     const startOfMonth = selectedDate.startOf("month");

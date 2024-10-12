@@ -29,6 +29,7 @@ import { getStudyTime } from "../libs/study/getStudyTime";
 import { getCurrentLocationIcon, getStudyIcon } from "../libs/study/getStudyVoteIcon";
 import StudyInFoDrawer, { StudyInfoProps } from "../pageTemplates/studyPage/StudyInfoDrawer";
 import StudyMapTopNav from "../pageTemplates/studyPage/StudyMapTopNav";
+import StudyPageDrawer from "../pageTemplates/studyPage/StudyPageDrawer";
 import StudyControlButton from "../pageTemplates/vote/StudyControlButton";
 import { myStudyParticipationState } from "../recoils/studyRecoils";
 
@@ -70,12 +71,12 @@ export default function StudyVoteMap() {
 
   const [myVoteInfo, setMyVoteInfo] = useState<IStudyVoteWithPlace>();
   const [isLocationRefetch, setIsLocationRefetch] = useState(false);
-
   const [resizeToggle, setResizeToggle] = useState(false);
   const [date, setDate] = useState(dateParam || dayjsToStr(dayjs()));
   const [locationValue, setLocationValue] = useState<ActiveLocation>(
     locationParamKr || userLocation,
   );
+  console.log(52, locationParamKr, userLocation, locationValue);
   const [detailInfo, setDetailInfo] = useState<StudyInfoProps>();
 
   const [myStudyParticipation, setMyStudyParticipation] = useRecoilState(myStudyParticipationState);
@@ -87,23 +88,30 @@ export default function StudyVoteMap() {
   const { data: studyVoteData } = useStudyVoteQuery(date, locationValue, {
     enabled: !!locationValue && !!date,
   });
-
+  console.log(32, studyVoteData, locationValue, date);
   const mainLocation = userInfo?.locationDetail;
 
   useEffect(() => {
+    if (locationParamKr && dateParam) return;
     if (!locationParamKr) {
       newSearchParams.set("location", convertLocationLangTo(locationValue, "en"));
     }
     if (!dateParam) {
       newSearchParams.set("date", date);
     }
-    if (locationValue) {
-      const locationCenter = LOCATION_CENTER_DOT[locationValue];
-
-      setCenterLocation({ lat: locationCenter.latitude, lon: locationCenter.longitude });
-    }
     router.replace(`/studyPage?${newSearchParams.toString()}`);
-  }, [locationParamKr, dateParam, locationValue]);
+  }, [locationParamKr, dateParam]);
+
+  useEffect(() => {
+    if (!locationValue) return;
+
+    const locationCenter = LOCATION_CENTER_DOT[locationValue];
+
+    setCenterLocation({ lat: locationCenter.latitude, lon: locationCenter.longitude });
+    newSearchParams.set("location", convertLocationLangTo(locationValue, "en"));
+    newSearchParams.set("date", date);
+    router.replace(`/studyPage?${newSearchParams.toString()}`);
+  }, [locationValue, date]);
 
   useEffect(() => {
     switch (categoryParam) {
@@ -112,7 +120,6 @@ export default function StudyVoteMap() {
 
         break;
       case "mainPlace":
-        console.log(555, mainLocation);
         const changeLocation = getLocationByCoordinates(mainLocation?.lat, mainLocation?.lon);
 
         if (!changeLocation) {
@@ -121,6 +128,7 @@ export default function StudyVoteMap() {
           router.replace(`/studyPage?${newSearchParams.toString()}`);
           return;
         } else if (changeLocation !== locationValue) {
+          console.log(824124);
           setLocationValue(changeLocation as ActiveLocation);
         }
         setLocationFilterType("활동 장소");
@@ -137,17 +145,11 @@ export default function StudyVoteMap() {
 
         break;
     }
-    if (categoryParam !== "currentPlace") {
+    if (categoryParam && categoryParam !== "currentPlace") {
       newSearchParams.set("drawer", "down");
       router.replace(`/studyPage?${newSearchParams.toString()}`);
     }
   }, [categoryParam]);
-
-  useEffect(() => {
-    newSearchParams.set("location", convertLocationLangTo(locationValue, "en"));
-    newSearchParams.set("date", date);
-    router.replace(`/studyPage?${newSearchParams.toString()}`);
-  }, [locationValue, date]);
 
   useEffect(() => {
     if (!studyVoteData || !session?.user) return;
@@ -167,12 +169,14 @@ export default function StudyVoteMap() {
       function (position) {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
-        console.log(24, isLocationRefetch);
+
         setCurrentLocation({ lat, lon });
         if (isLocationRefetch || categoryParam !== "votePlace") {
           const changeLocation = getLocationByCoordinates(lat, lon);
-          if (!changeLocation && isLocationRefetch) {
-            toast("warning", "활성화 된 지역에 있지 않습니다.");
+          if (!changeLocation) {
+            if (isLocationRefetch) {
+              toast("warning", "활성화 된 지역에 있지 않습니다.");
+            }
             setIsLocationRefetch(false);
 
             return;
@@ -289,7 +293,9 @@ export default function StudyVoteMap() {
       <StudyControlButton isAleadyAttend={!!myStudyInfo?.attendanceInfo.arrived} />
 
       {detailInfo && <StudyInFoDrawer detailInfo={detailInfo} setDetailInfo={setDetailInfo} />}
-      <BottomFlexDrawer isOverlay={false} isDrawerUp={drawerParam !== "down"} />
+      <BottomFlexDrawer isOverlay={false} isDrawerUp={drawerParam !== "down"}>
+        <StudyPageDrawer studyVoteData={studyVoteData} date={date} setDate={setDate} />
+      </BottomFlexDrawer>
     </>
   );
 }

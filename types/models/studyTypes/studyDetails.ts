@@ -27,7 +27,7 @@ export interface RealTimeInfoProps extends TimeStampProps {
   _id: string;
 }
 
-export interface MyStudyParticipationProps extends Omit<StudyParticipationProps, "place"> {
+export interface StudyMergeParticipationProps extends Omit<StudyParticipationProps, "place"> {
   place: StudyPlaceProps | PlaceInfoProps;
 }
 export interface StudyMemberProps extends TimeStampProps {
@@ -92,16 +92,6 @@ export interface RealTimeBasicAttendanceProps {
 export interface RealTimeDirectAttendanceProps
   extends RealTimeBasicAttendanceProps,
     RealTimeBasicVoteProps {}
-
-export interface RealTimeInfoProps extends RealTimeBasicVoteProps, TimeStampProps {
-  user: UserSimpleInfoProps;
-  // status: StudyUserStatus;
-  arrived?: string;
-  image?: Blob | string;
-  memo?: string;
-  // comment?: string;
-  _id: string;
-}
 
 export interface PlaceRegisterProps {
   fullname: string;

@@ -1,8 +1,8 @@
 import "swiper/css";
 
-import dayjs, { Dayjs } from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
+import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -19,10 +19,10 @@ import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 import { IFooterOptions, IPaddingOptions, ModalLayout } from "../Modals";
 
 interface DateCalendarModalProps extends IModal {
-  selectedDate: Dayjs;
+  date: string;
 }
 
-function DateCalendarModal({ selectedDate, setIsModal }: DateCalendarModalProps) {
+function DateCalendarModal({ date: selectedDate, setIsModal }: DateCalendarModalProps) {
   const typeToast = useTypeToast();
   const { data: session } = useSession();
   const router = useRouter();
@@ -33,7 +33,7 @@ function DateCalendarModal({ selectedDate, setIsModal }: DateCalendarModalProps)
 
   const setStudyDateStatus = useSetRecoilState(studyDateStatusState);
 
-  const [date, setDate] = useState(selectedDate);
+  const [date, setDate] = useState(dayjs(selectedDate));
   const [calendarArr, setCalendarArr] = useState([
     date.subtract(3, "month"),
     date.subtract(2, "month"),

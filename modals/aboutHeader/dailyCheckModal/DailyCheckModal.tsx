@@ -119,7 +119,6 @@ function DailyCheckModal({ setIsModal }: IModal) {
         </Box>
         <Box mt={2}>
           <Button size="sm" borderRadius="20px" bgColor="var(--gray-100)" color="var(--gray-600)">
-            {" "}
             상품 목록 및 확률 정보
           </Button>
         </Box>

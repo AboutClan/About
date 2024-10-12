@@ -4,21 +4,24 @@ import { RightShortArrowIcon } from "../Icons/ArrowIcons";
 interface SectionHeaderProps {
   title: string;
   subTitle: string;
+  children?: React.ReactNode;
 }
 
-function SectionHeader({ title, subTitle }: SectionHeaderProps) {
+function SectionHeader({ title, subTitle, children }: SectionHeaderProps) {
   return (
     <Box>
       <Box fontSize="12px" mb={1} color="var(--gray-400)">
         {subTitle}
       </Box>
       <Flex align="center">
-        <Box flex={1} color="var(--gray-800)" fontSize="18px" fontWeight={600}>
+        <Box mr="auto" color="var(--gray-800)" fontSize="18px" fontWeight={600}>
           {title}
         </Box>
-        <Button variant="unstyled" w="12px" height="12px" color="var(--color-mint)">
-          <RightShortArrowIcon />
-        </Button>
+        {children || (
+          <Button variant="unstyled" w="12px" height="12px" color="var(--color-mint)">
+            <RightShortArrowIcon />
+          </Button>
+        )}
       </Flex>
     </Box>
   );

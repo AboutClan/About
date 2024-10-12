@@ -1,9 +1,9 @@
 import { atom } from "recoil";
-import { MyStudyParticipationProps, RealTimeInfoProps } from "../types/models/studyTypes/studyDetails";
+import { StudyMergeParticipationProps } from "../types/models/studyTypes/studyDetails";
 
 import { StudyDateStatus } from "../types/models/studyTypes/studyInterActions";
 
-export const myStudyParticipationState = atom<MyStudyParticipationProps>({
+export const myStudyParticipationState = atom<StudyMergeParticipationProps>({
   key: "MyStudyParticipation",
   default: undefined,
 });
@@ -21,4 +21,3 @@ export const studyDateStatusState = atom<StudyDateStatus>({
 //   key: "MyRealStudyInfo",
 //   default: null,
 // });
-

@@ -17,6 +17,7 @@ interface ISelect {
   isFullSize?: boolean;
   isActive?: boolean;
   isThick?: boolean;
+
 }
 
 export default function Select({

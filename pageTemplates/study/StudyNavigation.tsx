@@ -20,7 +20,7 @@ import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { usePointSystemLogQuery } from "../../hooks/user/queries";
 import { myStudyParticipationState, studyDateStatusState } from "../../recoils/studyRecoils";
 import {
-  MyStudyParticipationProps,
+  StudyMergeParticipationProps,
   StudyStatus,
   StudyUserStatus,
 } from "../../types/models/studyTypes/studyDetails";
@@ -126,7 +126,6 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
   };
 
   const handleMainButton = (type: MainBtnType) => {
-   
     if (isGuest) {
       typeToast("guest");
       return;
@@ -158,7 +157,7 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
       func: () => handleSubNav("absent"),
     },
   ];
-  
+
   return (
     <>
       <Slide isFixed={true} posZero="top">
@@ -182,7 +181,7 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
   );
 }
 
-const getVotingType = (myStudy: MyStudyParticipationProps, placeId: string) => {
+const getVotingType = (myStudy: StudyMergeParticipationProps, placeId: string) => {
   return !myStudy ? null : myStudy?.place?._id === placeId ? "same" : "other";
 };
 
@@ -193,7 +192,7 @@ const getMyPrevVotePoint = (pointLogs: IPointLog[], date: string) => {
 
 const checkMyAttend = (
   studyDateStatus: StudyDateStatus,
-  myStudy: MyStudyParticipationProps,
+  myStudy: StudyMergeParticipationProps,
   uid: string,
 ) => {
   return !!(
