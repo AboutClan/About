@@ -4,10 +4,13 @@ import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
+import SectionFooterButton from "../../../components/atoms/SectionFooterButton";
 
-import ShadowBlockButton from "../../../components/atoms/buttons/ShadowBlockButton";
 import BlurredPart from "../../../components/molecules/BlurredPart";
-import { StudyThumbnailCard, StudyThumbnailCardProps } from "../../../components/molecules/cards/StudyThumbnailCard";
+import {
+  StudyThumbnailCard,
+  StudyThumbnailCardProps,
+} from "../../../components/molecules/cards/StudyThumbnailCard";
 import { CardColumnLayoutSkeleton } from "../../../components/organisms/CardColumnLayout";
 import { STUDY_CHECK_POP_UP, STUDY_VOTING_TABLE } from "../../../constants/keys/localStorage";
 import { LOCATION_RECRUITING, LOCATION_TO_FULLNAME } from "../../../constants/location";
@@ -143,8 +146,7 @@ function StudyCardCol({ participations, date }: StudyCardColProps) {
               </Box>
             ))}
             {studyCardColData.length >= 3 && (
-              <ShadowBlockButton
-                text="더보기"
+              <SectionFooterButton
                 url={`/studyList?tab=study&location=${locationEn}&date=${date}`}
               />
             )}

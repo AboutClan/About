@@ -68,11 +68,12 @@ function AvatarComponent({
           bg={
             (!shadowAvatar && bgImage) ||
             (shadowAvatar
-              ? "var(--gray-500)"
+              ? "var(--gray-200)"
               : hasAvatar && avatar.bg !== null && COLOR_TABLE_LIGHT[avatar.bg])
           }
           hasType={hasAvatar && avatar.type < 100}
           size={size}
+          color="var(--gray-500)"
           isBgImage={!!bgImage}
         >
           <Box w="100%" h="100%" pos="relative">
@@ -104,8 +105,17 @@ function AvatarComponent({
                 style={{ objectPosition: "center", objectFit: "cover" }}
               />
             ) : (
-              <Flex fontSize="12px" h="100%" justify="center" alignItems="center" color="white">
-                +{shadowAvatar}
+              <Flex
+                fontSize="6px"
+                color="var(--gray-500)"
+                fontWeight={600}
+                justify="center"
+                alignItems="center"
+                h="100%"
+              >
+                <Box w={2} h={2} textAlign="center">
+                  +{shadowAvatar}
+                </Box>
               </Flex>
             )}
           </Box>
@@ -213,7 +223,7 @@ const ImageContainer = styled.div<{
   height: 100%;
   border-radius: 50%;
   overflow: hidden;
-  border: var(--border-main);
+
   padding: ${(props) =>
     props.hasType &&
     (props.size === "2xs"

@@ -1,30 +1,37 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
-import ShadowBlockButton from "../../components/atoms/buttons/ShadowBlockButton";
+import SectionFooterButton from "../../components/atoms/SectionFooterButton";
 import {
   GatherThumbnailCard,
   GatherThumbnailCardProps,
 } from "../../components/molecules/cards/GatherThumbnailCard";
 import { CardColumnLayoutSkeleton } from "../../components/organisms/CardColumnLayout";
+import { USER_LOCATION } from "../../constants/keys/localStorage";
 import { useGatherQuery } from "../../hooks/gather/queries";
-import { slideDirectionState } from "../../recoils/navigationRecoils";
 import { transferGatherDataState } from "../../recoils/transferRecoils";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
+import { ActiveLocation } from "../../types/services/locationTypes";
+import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomImage } from "../../utils/imageUtils";
 dayjs().locale("ko");
 
 export default function HomeGatherCol() {
+  const { data: session } = useSession();
   const searchParams = useSearchParams();
-  const location = searchParams.get("location");
+
   const tab = searchParams.get("tab") as "recommendation" | "gather";
+
+  const userLocation =
+    (localStorage.getItem(USER_LOCATION) as ActiveLocation) || session?.user.location;
+
   const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>([]);
 
-  const setSlideDirection = useSetRecoilState(slideDirectionState);
   const setTransferGather = useSetRecoilState(transferGatherDataState);
 
   const { data: gathers } = useGatherQuery(-1);
@@ -36,7 +43,7 @@ export default function HomeGatherCol() {
     };
     setCardDataArr(setGatherDataToCardCol(gathers, tab, handleNavigate).slice(0, 3));
   }, [gathers]);
-  console.log(25, cardDataArr);
+
   return (
     <Box my={4}>
       {cardDataArr?.length ? (
@@ -45,10 +52,8 @@ export default function HomeGatherCol() {
             <GatherThumbnailCard key={idx} {...cardData} />
           ))}
           {cardDataArr.length >= 3 && (
-            <ShadowBlockButton
-              text="더보기"
-              url={`/gather?location=${location}`}
-              func={() => setSlideDirection("right")}
+            <SectionFooterButton
+              url={`/gather?location=${convertLocationLangTo(userLocation, "en")}`}
             />
           )}
         </Flex>

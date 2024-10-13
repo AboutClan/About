@@ -37,7 +37,7 @@ function HomeNav({}: HomeNavProps) {
                 height={36}
                 alt={item.title}
                 priority
-                style={{ width: "auto", height: "auto" }}
+                style={{ width: "36px", height: "36px", objectFit: "contain" }}
               />
             </Flex>
             <Box fontSize="11px" color="black">
