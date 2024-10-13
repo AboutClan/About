@@ -1,14 +1,16 @@
-import { Flex, ThemeTypings } from "@chakra-ui/react";
+import { Box, Flex, ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
 import ShadowBlockButton from "../../../components/atoms/buttons/ShadowBlockButton";
 import BlurredPart from "../../../components/molecules/BlurredPart";
-import { IPostThumbnailCard } from "../../../components/molecules/cards/PostThumbnailCard";
-import { StudyThumbnailCard } from "../../../components/molecules/cards/StudyThumbnailCard";
+import {
+  StudyThumbnailCard,
+  StudyThumbnailCardInfoProps,
+} from "../../../components/molecules/cards/StudyThumbnailCard";
 import { CardColumnLayoutSkeleton } from "../../../components/organisms/CardColumnLayout";
 import { STUDY_CHECK_POP_UP, STUDY_VOTING_TABLE } from "../../../constants/keys/localStorage";
 import { LOCATION_RECRUITING, LOCATION_TO_FULLNAME } from "../../../constants/location";
@@ -47,15 +49,40 @@ function StudyCardCol({ participations, date }: StudyCardColProps) {
   const myUid = session?.user.uid;
 
   const studyDateStatus = useRecoilValue(studyDateStatusState);
-  const [studyCardColData, setStudyCardColData] = useState<IPostThumbnailCard[]>();
+  const [studyCardColData, setStudyCardColData] = useState<StudyThumbnailCardInfoProps[]>();
   const [dismissedStudy, setDismissedStudy] = useState<StudyParticipationProps>();
+  const [currentLocation, setCurrentLocation] = useState<{ lat: number; lon: number }>();
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      function (position) {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+
+        setCurrentLocation({ lat, lon });
+      },
+      function (error) {
+        console.error("위치 정보를 가져오는 데 실패했습니다: ", error);
+      },
+      {
+        enableHighAccuracy: true, // 고정밀도 모드 활성화
+        timeout: 5000, // 5초 안에 위치를 가져오지 못하면 오류 발생
+        maximumAge: 0, // 캐시된 위치 정보를 사용하지 않음
+      },
+    );
+  }, []);
 
   useEffect(() => {
     if (!participations || !participations.length || !session?.user || !studyDateStatus) {
       setStudyCardColData(null);
       return;
     }
-    const cardList = setStudyDataToCardCol(participations, date as string, session?.user.uid);
+    const cardList = setStudyDataToCardCol(
+      participations,
+      currentLocation,
+      date as string,
+      session?.user.uid,
+    );
 
     setStudyCardColData(cardList.slice(0, 3));
 
@@ -114,7 +141,9 @@ function StudyCardCol({ participations, date }: StudyCardColProps) {
         {studyCardColData ? (
           <Flex direction="column">
             {studyCardColData.map((cardData, idx) => (
-              <StudyThumbnailCard key={idx} postThumbnailCardProps={cardData} />
+              <Box key={idx} mb={3}>
+                <StudyThumbnailCard cardInfo={cardData} />
+              </Box>
             ))}
             {studyCardColData.length >= 3 && (
               <ShadowBlockButton
@@ -141,31 +170,41 @@ function StudyCardCol({ participations, date }: StudyCardColProps) {
 
 export const setStudyDataToCardCol = (
   studyData: StudyParticipationProps[],
+  currentLocation: { lat: number; lon: number },
   urlDateParam: string,
   uid: string,
-): IPostThumbnailCard[] => {
-  const cardColData: IPostThumbnailCard[] = [...studyData]
+): StudyThumbnailCardInfoProps[] => {
+  const cardColData: StudyThumbnailCardInfoProps[] = [...studyData]
     ?.sort((a, b) =>
       a.place.branch === "개인 스터디" ? 1 : b.place.branch === "개인 스터디" ? -1 : 0,
     )
-    .map((data) => ({
-      title: data.place.fullname,
-      subtitle: data.place.branch,
-      locationDetail: data.place.locationDetail,
-      participants: data.members.map((att) => att.user),
-      url: `/study/${data.place._id}/${urlDateParam}?location=${convertLocationLangTo(data.place.location, "en")}`,
-      maxCnt: 8,
-      image: {
-        url: data.place.image,
-        priority: true,
-      },
-      distance: 1.4 || getDistanceFromLatLonInKm(2, 2, 2, 2),
-      badge: getBadgeText(data.status),
-      type: "study",
-      statusText:
-        data.status === "pending" && data.members.some((who) => who.user.uid === uid) && "GOOD",
-      id: data.place._id,
-    }));
+    .map((data) => {
+      const placeInfo = data.place;
+      return {
+        place: {
+          fullname: placeInfo.fullname,
+          branch: placeInfo.branch,
+          address: placeInfo.locationDetail,
+          distance: getDistanceFromLatLonInKm(
+            currentLocation.lat,
+            currentLocation.lon,
+            placeInfo.latitude,
+            placeInfo.longitude,
+          ),
+          imageProps: { image: placeInfo.image, isPriority: true },
+        },
+
+        participants: data.members.map((att) => att.user),
+        url: `/study/${data.place._id}/${urlDateParam}?location=${convertLocationLangTo(data.place.location, "en")}`,
+        maxCnt: 8,
+
+        badge: getBadgeText(data.status),
+        type: "study",
+        statusText:
+          data.status === "pending" && data.members.some((who) => who.user.uid === uid) && "GOOD",
+        id: data.place._id,
+      };
+    });
 
   return cardColData;
 };

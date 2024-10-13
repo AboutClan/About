@@ -1,21 +1,23 @@
 import { Box } from "@chakra-ui/react";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 import { useTogglePlaceHeart } from "../../hooks/custom/CustomHooks";
 import { useUserInfoQuery } from "../../hooks/user/queries";
+import { HeartIcon } from "../Icons/HeartIcons";
 
 interface PlaceHeartImageProps {
-  image: {
-    url: string;
+  imageProps: {
+    image: string;
     isPriority?: boolean;
   };
   id?: string;
   hasToggleHeart?: boolean;
   selected?: "main" | "sub" | null;
+  size: "sm" | "md" | "lg";
 }
 
-function PlaceImage({ image, id, hasToggleHeart, selected }: PlaceHeartImageProps) {
+function PlaceImage({ imageProps, id, hasToggleHeart, selected, size }: PlaceHeartImageProps) {
   const { data: session } = useSession();
   const isGuest = session?.user.name === "guest";
 
@@ -27,13 +29,13 @@ function PlaceImage({ image, id, hasToggleHeart, selected }: PlaceHeartImageProp
 
   const toggleHeart = useTogglePlaceHeart();
 
+  const sizeLength = size === "md" ? "80px" : "100px";
+
   return (
     <Box
-      aspectRatio={1 / 1}
-      borderRadius="var(--rounded-lg)"
+      borderRadius={size === "md" ? "4px" : "12px"}
       position="relative"
       overflow="hidden"
-      pos="relative"
       border={
         selected === "main"
           ? "2px solid var(--color-mint)"
@@ -48,18 +50,16 @@ function PlaceImage({ image, id, hasToggleHeart, selected }: PlaceHeartImageProp
             ? "0px 5px 10px 0px #1BB8760A"
             : null
       }
-      w="100px"
-      h="100px"
+      w={sizeLength}
+      h={sizeLength}
     >
       <Image
-        src={image.url}
+        src={imageProps.image}
         alt="thumbnailImage"
-        sizes="100px"
+        sizes={sizeLength}
         fill
-        priority={image?.isPriority}
-        style={{
-          objectFit: "cover",
-        }}
+        priority={imageProps?.isPriority}
+        style={{ objectPosition: "center", objectFit: "cover" }}
       />
       {selected === "main" && (
         <Box pos="absolute" top={1} right={1} color="white">
@@ -69,18 +69,14 @@ function PlaceImage({ image, id, hasToggleHeart, selected }: PlaceHeartImageProp
       {hasToggleHeart && (
         <Box
           pos="absolute"
-          w="20px"
-          h="20px"
-          bottom={2}
-          right={1}
+          w={4}
+          h={4}
+          bottom={1.5}
+          right={1.5}
           color="white"
           onClick={(e) => toggleHeart(e, preference, id, userLoading)}
         >
-          {isMyPrefer ? (
-            <i className="fa-solid fa-heart fa-sm" />
-          ) : (
-            <i className="fa-regular fa-heart fa-sm" />
-          )}
+          {isMyPrefer ? <HeartIcon fill /> : <HeartIcon />}
         </Box>
       )}
     </Box>

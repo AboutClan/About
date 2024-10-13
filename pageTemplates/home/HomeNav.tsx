@@ -31,7 +31,14 @@ function HomeNav({}: HomeNavProps) {
                 bgColor={item.bgColor}
                 borderRadius="50%"
               ></Box>
-              <Image src={item.iconImage} width={36} height={36} alt={item.title} priority />
+              <Image
+                src={item.iconImage}
+                width={36}
+                height={36}
+                alt={item.title}
+                priority
+                style={{ width: "auto", height: "auto" }}
+              />
             </Flex>
             <Box fontSize="11px" color="black">
               {item.title}

@@ -84,7 +84,17 @@ const theme = extendTheme({
         lineHeight: 1.5,
         padding: "0px 4px",
       },
+      sizes: {
+        md: {
+          px: "8px !important",
+          py: "4px",
+          fontWeight: 600,
+          fontSize: "8px",
+          borderRadius: "4px",
+        },
+      },
     },
+
     Button: {
       baseStyle: {
         borderRadius: "4px",

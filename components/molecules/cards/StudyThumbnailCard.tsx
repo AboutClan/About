@@ -1,58 +1,65 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Badge, Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Link from "next/link";
 import styled from "styled-components";
 
 import { SingleLineText } from "../../../styles/layout/components";
-import { IImageProps } from "../../../types/components/assetTypes";
 import { ITextAndColorSchemes } from "../../../types/components/propTypes";
 import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
-import { SolidBadge } from "../../atoms/badges/SolidBadge";
+import { UserIcon } from "../../Icons/UserIcons";
 import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
 import PlaceImage from "../PlaceImage";
 
-const VOTER_SHOW_MAX = 6;
+const VOTER_SHOW_MAX = 4;
+const STUDY_MAX_CNT = 8;
 
-export interface IPostThumbnailCard {
+export interface StudyThumbnailCardInfoProps {
+  place: {
+    fullname: string;
+    branch: string;
+    address: string;
+    distance: number;
+    imageProps: {
+      image: string;
+      isPriority?: boolean;
+    };
+  };
+
   participants?: UserSimpleInfoProps[];
-  title: string;
-  subtitle: string;
-  image: IImageProps;
+
   url: string;
   badge: ITextAndColorSchemes;
-  type: "study" | "gather";
+
   statusText?: string;
   maxCnt?: number;
   func?: () => void;
   registerDate?: string;
   id?: string;
-  locationDetail?: string;
 }
 
-interface IPostThumbnailCardObj {
-  postThumbnailCardProps: IPostThumbnailCard;
+interface StudyThumbnailCardProps {
+  cardInfo: StudyThumbnailCardInfoProps;
   isShort?: boolean;
 }
 
 export function StudyThumbnailCard({
-  postThumbnailCardProps: {
+  cardInfo: {
+    place,
     participants,
-    title,
-    subtitle,
-    image,
+
     url,
     badge,
     statusText = undefined,
     maxCnt = undefined,
     func = undefined,
-    type,
+
     registerDate,
-    locationDetail,
+
     id,
   },
   isShort,
-}: IPostThumbnailCardObj) {
+}: StudyThumbnailCardProps) {
   const userAvatarArr = participants
     ?.filter((par) => par)
     .map((par) => ({
@@ -60,80 +67,86 @@ export function StudyThumbnailCard({
       ...(par.avatar?.type !== null ? { avatar: par.avatar } : {}),
     }));
 
-  const CLOSED_TEXT_ARR = ["모집 마감", "닫힘"];
-
   return (
-    <CardLink href={url} onClick={func}>
-      <PlaceImage image={{ url: image.url, isPriority: image.priority }} hasToggleHeart id={id} />
-      <Flex direction="column" ml="12px" flex={1}>
-        {badge && <SolidBadge text={badge.text} colorScheme={badge.colorScheme} />}
-        <Title>{title}</Title>
-        <Subtitle>
-          <Box as="span" color="var(--color-mint)" mr={1}>
-            <i className="fa-solid fa-location-dot fa-sm" />
-          </Box>
-          {subtitle}
-        </Subtitle>
-        {participants ? (
-          <Flex alignItems="center" mt={2}>
-            <AvatarGroupsOverwrap
-              userAvatarArr={userAvatarArr}
-              maxCnt={VOTER_SHOW_MAX - (isShort ? 1 : 0)}
-            />
+    <Box pb={3} borderBottom="var(--border)">
+      <CardLink href={url} onClick={func}>
+        <PlaceImage size="md" imageProps={place.imageProps} hasToggleHeart id={id} />
+        <Flex direction="column" ml={4} flex={1}>
+          <Badge mr="auto" colorScheme={badge.colorScheme} size="md">
+            자유참여
+          </Badge>
 
-            <Box
-              fontSize="14px"
-              color="var(--color-mint)"
-              fontWeight={600}
-              mr="8px"
-              mt="4px"
-              ml="auto"
-            >
-              {statusText}
+          <Title>{place.fullname}</Title>
+          <Subtitle>
+            <Box>
+              <Box as="span">
+                <i
+                  className="fa-solid fa-location-dot fa-sm"
+                  style={{ color: "var(--color-mint)" }}
+                />
+              </Box>
+              <Box as="span" ml={1} color="var(--gray-600)">
+                {place.branch}
+              </Box>
+              <Box as="span" color="var(--gray-400)">
+                ・
+              </Box>
+              <Box as="span" fontWeight={600}>
+                {place.distance}KM
+              </Box>
+              <Box as="span" color="var(--gray-400)">
+                ・
+              </Box>{" "}
+              <Box as="span">{place.address}</Box>
             </Box>
-            <Flex
-              mb="-2px"
-              fontSize="15px"
-              align="center"
-              color="var(--gray-500)"
-              letterSpacing="2px"
-            >
-              <i className="fa-solid fa-user fa-xs" />
-              <Flex ml="8px" align="center" fontWeight={500}>
-                <Box
-                  as="span"
-                  color={
-                    CLOSED_TEXT_ARR.includes(badge?.text)
-                      ? "inherit"
-                      : maxCnt && participants.length >= maxCnt
+          </Subtitle>
+          {participants ? (
+            <Flex mt={3} alignItems="center" justify="space-between">
+              <AvatarGroupsOverwrap
+                userAvatarArr={userAvatarArr}
+                maxCnt={VOTER_SHOW_MAX - (isShort ? 1 : 0)}
+              />
+
+              <Flex align="center" color="var(--gray-500)">
+                <UserIcon size="sm" />
+                <Flex ml={1} fontSize="10px" align="center" fontWeight={500}>
+                  <Box
+                    fontWeight={600}
+                    as="span"
+                    color={
+                      maxCnt && participants.length >= maxCnt
                         ? "var(--color-red)"
-                        : "var(--gray-800)"
-                  }
-                >
-                  {participants.length}
-                </Box>
-                <Box as="span" mr="2px" ml="4px">
-                  /
-                </Box>
-                <span>{maxCnt || <i className="fa-regular fa-infinity" />}</span>
+                        : "var(--color-gray)"
+                    }
+                  >
+                    {participants.length}
+                  </Box>
+                  <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
+                    /
+                  </Box>
+                  <Box as="span" color="var(--gray-500)">
+                    {STUDY_MAX_CNT}
+                  </Box>
+                </Flex>
               </Flex>
             </Flex>
-          </Flex>
-        ) : (
-          <Flex mt="auto" color="var(--gray-500)">
-            <Box>등록일: </Box>
-            <Box>{dayjsToFormat(dayjs(registerDate), "YYYY년 M월 D일")}</Box>
-          </Flex>
-        )}
-      </Flex>
-    </CardLink>
+          ) : (
+            <Flex mt="auto" color="var(--gray-500)">
+              <Box>등록일: </Box>
+              <Box>{dayjsToFormat(dayjs(registerDate), "YYYY년 M월 D일")}</Box>
+            </Flex>
+          )}
+        </Flex>
+      </CardLink>
+    </Box>
   );
 }
 
 const CardLink = styled(Link)`
   height: fit-content;
   display: flex;
-  padding: 16px 0;
+  padding-right: 12px;
+
   background-color: white;
   justify-content: space-between;
 
@@ -147,15 +160,12 @@ const CardLink = styled(Link)`
 `;
 
 const Title = styled(SingleLineText)`
-  margin-top: 8px;
-  font-size: 16px;
+  margin: 4px 0;
+  font-size: 14px;
   font-weight: 600;
 `;
 
 const Subtitle = styled(SingleLineText)`
   color: var(--gray-500);
-  font-size: 12px;
-  width: 90%;
-  font-weight: 500;
-  margin-top: 4px;
+  font-size: 11px;
 `;

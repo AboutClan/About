@@ -20,7 +20,7 @@ export default function AvatarGroupsOverwrap({
   maxCnt,
 }: IAvatarGroupsOverwrap) {
   return (
-    <Participants>
+    <Participants size="2xs">
       {userAvatarArr.map((att, idx) => {
         return (
           idx < maxCnt && (
@@ -28,7 +28,7 @@ export default function AvatarGroupsOverwrap({
               key={idx}
               image={att.image}
               avatar={att.avatar}
-              size="xs"
+              size="2xs"
               isLink={false}
               shadowAvatar={
                 idx === maxCnt - 1 &&
@@ -41,9 +41,9 @@ export default function AvatarGroupsOverwrap({
     </Participants>
   );
 }
-const Participants = styled.div`
+const Participants = styled.div<{ size: string }>`
   display: flex;
   & > *:not(:first-child) {
-    margin-left: -8px;
+    margin-left: ${(props) => (props.size === "2xs" ? "-4px" : "-8px")};
   }
 `;

@@ -8,7 +8,7 @@ import { COLOR_TABLE_LIGHT } from "../../constants/colorConstants";
 import { AVATAR_IMAGE_ARR, SPECIAL_AVATAR, SPECIAL_BG } from "../../storage/avatarStorage";
 import { IAvatar as IAvatarProp } from "../../types/models/userTypes/userInfoTypes";
 
-type Size = "xs" | "sm" | "smd" | "md" | "lg" | "xl";
+type Size = "2xs" | "xs" | "sm" | "smd" | "md" | "lg" | "xl";
 
 interface IAvatar {
   image?: string;
@@ -82,19 +82,21 @@ function AvatarComponent({
                 fill={true}
                 sizes={
                   `${sizeLength}px` ||
-                  (size === "xs"
-                    ? "24px"
-                    : size === "sm"
-                      ? "28px"
-                      : size === "smd"
-                        ? "32px"
-                        : size === "md"
-                          ? "44px"
-                          : size === "lg"
-                            ? "64px"
-                            : size === "xl"
-                              ? "80px"
-                              : "")
+                  (size === "2xs"
+                    ? "16px"
+                    : size === "xs"
+                      ? "24px"
+                      : size === "sm"
+                        ? "28px"
+                        : size === "smd"
+                          ? "32px"
+                          : size === "md"
+                            ? "44px"
+                            : size === "lg"
+                              ? "64px"
+                              : size === "xl"
+                                ? "80px"
+                                : "")
                 }
                 priority={isPriority}
                 alt="avatar"
@@ -143,6 +145,12 @@ const AvatarContainer = styled.div<{
   ${(props) => {
     const sizeStyles = (() => {
       switch (props.size) {
+        case "2xs":
+          return css`
+            width: 16px;
+            height: 16px;
+            padding: 1px;
+          `;
         case "xs":
           return css`
             width: 24px;
@@ -208,17 +216,19 @@ const ImageContainer = styled.div<{
   border: var(--border-main);
   padding: ${(props) =>
     props.hasType &&
-    (props.size === "xs"
-      ? "2px"
-      : props.size === "sm"
-        ? "3px"
-        : props.size === "smd"
-          ? "4px"
-          : props.size === "md"
-            ? "6px"
-            : props.size === "lg"
+    (props.size === "2xs"
+      ? "1px"
+      : props.size === "xs"
+        ? "2px"
+        : props.size === "sm"
+          ? "3px"
+          : props.size === "smd"
+            ? "4px"
+            : props.size === "md"
               ? "6px"
-              : "8px")};
+              : props.size === "lg"
+                ? "6px"
+                : "8px")};
 
   background: ${(props) => (props.isBgImage ? `center/cover no-repeat ${props.bg}` : props.bg)};
 `;

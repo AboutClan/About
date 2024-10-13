@@ -9,7 +9,8 @@ import { getStudyStandardDate } from "../libs/study/date/getStudyStandardDate";
 import { slideDirectionState } from "../recoils/navigationRecoils";
 import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
 import { iPhoneNotchSize } from "../utils/validationUtils";
-import { CommunityIcon, HomeIcon, StudyIcon, ThunderIcon, UserIcon } from "./Icons/BottomNavIcons";
+import { CommunityIcon, HomeIcon, StudyIcon, ThunderIcon } from "./Icons/BottomNavIcons";
+import { UserIcon } from "./Icons/UserIcons";
 
 interface INavButtonProps {
   url: string;
@@ -119,8 +120,8 @@ const navItems: INavButtonProps[] = [
     url: "/square",
   },
   {
-    activeIcon: <UserIcon isActive />,
-    defaultIcon: <UserIcon />,
+    activeIcon: <UserIcon size="md" isActive />,
+    defaultIcon: <UserIcon size="md" />,
     text: "내 정보",
     url: "/user",
   },
