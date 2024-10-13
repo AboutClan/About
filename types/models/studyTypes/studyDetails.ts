@@ -113,4 +113,4 @@ export interface StudyPlaceProps extends PlaceRegisterProps {
   registerDate: string;
 }
 
-export type StudyStatus = "pending" | "open" | "dismissed" | "free";
+export type StudyStatus = "pending" | "open" | "dismissed" | "free" | "solo" | "cancel";

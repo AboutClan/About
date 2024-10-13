@@ -5,6 +5,12 @@ import { STUDY_MAIN_IMAGES } from "../../../../assets/images/studyMain";
 
 import Divider from "../../../../components/atoms/Divider";
 import Slide from "../../../../components/layouts/PageSlide";
+import {
+  useRealTimeCancelMutation,
+  useRealTimeCommentMutation,
+  useRealTimeStatusMutation,
+  useRealTimeTimeChangeMutation,
+} from "../../../../hooks/realtime/mutations";
 import { useStudyVoteOneQuery, useStudyVoteQuery } from "../../../../hooks/study/queries";
 import { getStudyParticipationById } from "../../../../libs/study/getMyStudyMethods";
 import StudyCover from "../../../../pageTemplates/study/StudyCover";
@@ -104,6 +110,12 @@ export default function Page() {
 
   const members = participation?.members;
   console.log(123, participation);
+
+  const { mutate: changeTime } = useRealTimeTimeChangeMutation();
+  const { mutate: deleteVote } = useRealTimeCancelMutation();
+  const { mutate: changeStatus } = useRealTimeStatusMutation();
+  const { mutate: changeComment } = useRealTimeCommentMutation();
+
   return (
     <>
       {participation && (

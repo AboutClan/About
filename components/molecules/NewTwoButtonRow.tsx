@@ -1,7 +1,5 @@
-import { Flex } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import { JSXElementConstructor, ReactElement } from "react";
-
-import NewButton from "../../components/atoms/NewButton";
 
 interface NewTwoButtonRowProps {
   leftProps: {
@@ -18,12 +16,11 @@ interface NewTwoButtonRowProps {
 function NewTwoButtonRow({ leftProps, rightProps }: NewTwoButtonRowProps) {
   return (
     <Flex>
-      <NewButton
+      <Button
         as="div"
         flex={1}
-        fontWeight={700}
         mr={3}
-        size="sm"
+        size="lg"
         h="48px"
         bgColor="white"
         borderRadius="12px"
@@ -32,12 +29,11 @@ function NewTwoButtonRow({ leftProps, rightProps }: NewTwoButtonRowProps) {
         leftIcon={leftProps?.icon}
       >
         {leftProps.children}
-      </NewButton>
-      <NewButton
+      </Button>
+      <Button
         as="div"
         flex={1}
-        fontWeight={700}
-        size="sm"
+        size="lg"
         h="48px"
         colorScheme="mintTheme"
         borderRadius="12px"
@@ -46,7 +42,7 @@ function NewTwoButtonRow({ leftProps, rightProps }: NewTwoButtonRowProps) {
         isDisabled={rightProps?.isDisabled}
       >
         {rightProps.children}
-      </NewButton>
+      </Button>
     </Flex>
   );
 }

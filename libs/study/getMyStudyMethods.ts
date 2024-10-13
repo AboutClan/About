@@ -27,11 +27,14 @@ export const convertStudyToParticipations = (studyVoteData: StudyDailyInfoProps)
       });
     }
   });
-  console.log(51, temp);
-  return;
-  // return { ...findMyStudy, members: filtered };
 
-  [...studyVoteData.participations, studyVoteData.realTime];
+  return [...studyVoteData.participations, ...temp].sort((a, b) => {
+    const aCnt = a.members.length;
+    const bCnt = b.members.length;
+    if (aCnt > bCnt) return -1;
+    else if (aCnt < bCnt) return 1;
+    return 0;
+  });
 };
 
 export const getStudyParticipationById = (

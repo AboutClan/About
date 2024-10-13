@@ -1,10 +1,13 @@
 import { Box } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import WeekSlideCalendar from "../../components/molecules/WeekSlideCalendar";
 import { convertStudyToParticipations } from "../../libs/study/getMyStudyMethods";
 import { DispatchString } from "../../types/hooks/reactTypes";
-import { StudyDailyInfoProps } from "../../types/models/studyTypes/studyDetails";
+import {
+  StudyDailyInfoProps,
+  StudyMergeParticipationProps,
+} from "../../types/models/studyTypes/studyDetails";
 import StudyPageDrawerFilterBar from "./studyPageDrawer/StudyPageDrawerFilterBar";
 import StudyPageDrawerHeader from "./studyPageDrawer/StudyPageDrawerHeader";
 
@@ -18,10 +21,13 @@ function StudyPageDrawer({ studyVoteData, date, setDate }: StudyPageDrawerProps)
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
-  
-  const A = convertStudyToParticipations(studyVoteData);
 
-  const [participationArr, setParticipationArr] = useState();
+  const [participationArr, setParticipationArr] = useState<StudyMergeParticipationProps[]>();
+
+  useEffect(() => {
+    const participations = convertStudyToParticipations(studyVoteData);
+    setParticipationArr(participations);
+  }, []);
 
   const handleChangeDate = () => {};
 
