@@ -25,14 +25,9 @@ export interface StudyThumbnailCardInfoProps {
       isPriority?: boolean;
     };
   };
-
   participants?: UserSimpleInfoProps[];
-
   url: string;
   badge: ITextAndColorSchemes;
-
-  statusText?: string;
-  maxCnt?: number;
   func?: () => void;
   registerDate?: string;
   id?: string;
@@ -44,20 +39,7 @@ interface StudyThumbnailCardProps {
 }
 
 export function StudyThumbnailCard({
-  cardInfo: {
-    place,
-    participants,
-
-    url,
-    badge,
-    statusText = undefined,
-    maxCnt = undefined,
-    func = undefined,
-
-    registerDate,
-
-    id,
-  },
+  cardInfo: { place, participants, url, badge, func = undefined, registerDate, id },
   isShort,
 }: StudyThumbnailCardProps) {
   const userAvatarArr = participants
@@ -114,7 +96,7 @@ export function StudyThumbnailCard({
                     fontWeight={600}
                     as="span"
                     color={
-                      maxCnt && participants.length >= maxCnt
+                      participants.length >= STUDY_MAX_CNT
                         ? "var(--color-red)"
                         : "var(--color-gray)"
                     }

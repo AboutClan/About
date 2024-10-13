@@ -193,15 +193,10 @@ export const setStudyDataToCardCol = (
           ),
           imageProps: { image: placeInfo.image, isPriority: true },
         },
-
         participants: data.members.map((att) => att.user),
         url: `/study/${data.place._id}/${urlDateParam}?location=${convertLocationLangTo(data.place.location, "en")}`,
-        maxCnt: 8,
-
         badge: getBadgeText(data.status),
-        type: "study",
-        statusText:
-          data.status === "pending" && data.members.some((who) => who.user.uid === uid) && "GOOD",
+
         id: data.place._id,
       };
     });
