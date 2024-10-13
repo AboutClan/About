@@ -5,22 +5,24 @@ import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
 import ShadowBlockButton from "../../components/atoms/buttons/ShadowBlockButton";
-import { GatherThumbnailCard } from "../../components/molecules/cards/GatherThumbnailCard";
-import { IPostThumbnailCard } from "../../components/molecules/cards/PostThumbnailCard";
+import {
+  GatherThumbnailCard,
+  GatherThumbnailCardProps,
+} from "../../components/molecules/cards/GatherThumbnailCard";
 import { CardColumnLayoutSkeleton } from "../../components/organisms/CardColumnLayout";
 import { useGatherQuery } from "../../hooks/gather/queries";
 import { slideDirectionState } from "../../recoils/navigationRecoils";
 import { transferGatherDataState } from "../../recoils/transferRecoils";
-import { ITextAndColorSchemes } from "../../types/components/propTypes";
-import { GatherStatus, IGather } from "../../types/models/gatherTypes/gatherTypes";
-import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
+import { IGather } from "../../types/models/gatherTypes/gatherTypes";
+import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomImage } from "../../utils/imageUtils";
+dayjs().locale("ko");
 
 export default function HomeGatherCol() {
   const searchParams = useSearchParams();
   const location = searchParams.get("location");
   const tab = searchParams.get("tab") as "recommendation" | "gather";
-  const [cardDataArr, setCardDataArr] = useState<IPostThumbnailCard[]>([]);
+  const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>([]);
 
   const setSlideDirection = useSetRecoilState(slideDirectionState);
   const setTransferGather = useSetRecoilState(transferGatherDataState);
@@ -34,13 +36,13 @@ export default function HomeGatherCol() {
     };
     setCardDataArr(setGatherDataToCardCol(gathers, tab, handleNavigate).slice(0, 3));
   }, [gathers]);
-
+  console.log(25, cardDataArr);
   return (
-    <Box my="24px">
-      {cardDataArr ? (
+    <Box my={4}>
+      {cardDataArr?.length ? (
         <Flex direction="column">
           {cardDataArr.map((cardData, idx) => (
-            <GatherThumbnailCard key={idx} postThumbnailCardProps={cardData} />
+            <GatherThumbnailCard key={idx} {...cardData} />
           ))}
           {cardDataArr.length >= 3 && (
             <ShadowBlockButton
@@ -61,39 +63,22 @@ export const setGatherDataToCardCol = (
   gathers: IGather[],
   tab: "recommendation" | "gather",
   func: (gather: IGather) => void,
-): IPostThumbnailCard[] => {
-  const cardCol: IPostThumbnailCard[] = gathers.map((gather, idx) => ({
+): GatherThumbnailCardProps[] => {
+  const cardCol: GatherThumbnailCardProps[] = gathers.map((gather, idx) => ({
     title: gather.title,
-    subtitle:
-      gather.location.main +
-      " · " +
-      gather.type.title +
-      " · " +
-      dayjs(gather.date).format("M월 D일(ddd)"),
-    participants: [gather.user, ...gather.participants.map((par) => par.user)] as IUserSummary[],
-    url: `/gather/${gather.id}`,
-    func: func ? () => func(gather) : undefined,
-    image: {
-      url: gather.image || getRandomImage(),
+    status: gather.status,
+    category: gather.type.title,
+    date: dayjsToFormat(dayjs(gather.date).locale("ko"), "M.D(ddd) HH:mm"),
+    place: gather.location.main,
+    imageProps: {
+      image: gather.image || getRandomImage(),
       priority: tab === "gather" && idx < 4,
     },
-    badge: getGatherBadge(gather.status),
+    id: gather.id,
     maxCnt: gather.memberCnt.max,
-    type: "gather",
+    participants: gather.participants,
+    func: func ? () => func(gather) : undefined,
   }));
 
   return cardCol;
-};
-
-const getGatherBadge = (gatherStatus: GatherStatus): ITextAndColorSchemes => {
-  switch (gatherStatus) {
-    case "open":
-      return { text: "모집 마감", colorScheme: "grayTheme" };
-    case "close":
-      return { text: "취소", colorScheme: "grayTheme" };
-    case "pending":
-      return { text: "모집중", colorScheme: "mintTheme" };
-    case "end":
-      return { text: "종료", colorScheme: "grayTheme" };
-  }
 };

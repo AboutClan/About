@@ -14,7 +14,7 @@ import PlaceImage from "../PlaceImage";
 const VOTER_SHOW_MAX = 4;
 const STUDY_MAX_CNT = 8;
 
-export interface StudyThumbnailCardInfoProps {
+export interface StudyThumbnailCardProps {
   place: {
     fullname: string;
     branch: string;
@@ -30,17 +30,17 @@ export interface StudyThumbnailCardInfoProps {
   badge: ITextAndColorSchemes;
   func?: () => void;
   registerDate?: string;
-  id?: string;
-}
-
-interface StudyThumbnailCardProps {
-  cardInfo: StudyThumbnailCardInfoProps;
-  isShort?: boolean;
+  id: string;
 }
 
 export function StudyThumbnailCard({
-  cardInfo: { place, participants, url, badge, func = undefined, registerDate, id },
-  isShort,
+  place,
+  participants,
+  url,
+  badge,
+  func = undefined,
+  registerDate,
+  id,
 }: StudyThumbnailCardProps) {
   const userAvatarArr = participants
     ?.filter((par) => par)
@@ -84,10 +84,7 @@ export function StudyThumbnailCard({
           </Subtitle>
           {participants ? (
             <Flex mt={3} alignItems="center" justify="space-between">
-              <AvatarGroupsOverwrap
-                userAvatarArr={userAvatarArr}
-                maxCnt={VOTER_SHOW_MAX - (isShort ? 1 : 0)}
-              />
+              <AvatarGroupsOverwrap userAvatarArr={userAvatarArr} maxCnt={VOTER_SHOW_MAX} />
 
               <Flex align="center" color="var(--gray-500)">
                 <UserIcon size="sm" />
@@ -106,7 +103,7 @@ export function StudyThumbnailCard({
                   <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
                     /
                   </Box>
-                  <Box as="span" color="var(--gray-500)">
+                  <Box as="span" color="var(--gray-500)" fontWeight={500}>
                     {STUDY_MAX_CNT}
                   </Box>
                 </Flex>

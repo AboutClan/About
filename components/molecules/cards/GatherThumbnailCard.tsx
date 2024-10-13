@@ -1,131 +1,105 @@
-import { Box, Flex } from "@chakra-ui/react";
-import dayjs from "dayjs";
+import { Badge, Box, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { ComponentProps } from "react";
 import styled from "styled-components";
 
 import { SingleLineText } from "../../../styles/layout/components";
-import { IImageProps } from "../../../types/components/assetTypes";
-import { ITextAndColorSchemes } from "../../../types/components/propTypes";
-import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
-import { SolidBadge } from "../../atoms/badges/SolidBadge";
+import { GatherStatus, IGatherParticipants } from "../../../types/models/gatherTypes/gatherTypes";
+import { UserIcon } from "../../Icons/UserIcons";
 import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
 
-const VOTER_SHOW_MAX = 6;
-
-export interface IPostThumbnailCard {
-  participants?: UserSimpleInfoProps[];
+const VOTER_SHOW_MAX = 4;
+export interface GatherThumbnailCardProps {
   title: string;
-  subtitle: string;
-  image: IImageProps;
-  url: string;
-  badge: ITextAndColorSchemes;
-  type: "study" | "gather";
-  statusText?: string;
-  maxCnt?: number;
+  status: string;
+  category: string;
+  date: string;
+  place: string;
+  participants?: IGatherParticipants[];
+  imageProps: {
+    image: string;
+    isPriority?: boolean;
+  };
+  maxCnt: number;
+  id: number;
   func?: () => void;
-  registerDate?: string;
-  id?: string;
-  locationDetail?: string;
 }
 
-interface IPostThumbnailCardObj {
-  postThumbnailCardProps: IPostThumbnailCard;
-  isShort?: boolean;
-}
+const STATUS_TO_BADGE_PROPS: Record<GatherStatus, { text: string; colorScheme: string }> = {
+  open: { text: "모집 마감", colorScheme: "redTheme" },
+  close: { text: "취소", colorScheme: "grayTheme" },
+  pending: { text: "모집중", colorScheme: "mintTheme" },
+  end: { text: "종료", colorScheme: "grayTheme" },
+};
 
 export function GatherThumbnailCard({
-  postThumbnailCardProps: {
-    participants,
-    title,
-    subtitle,
-    image,
-    url,
-    badge,
-    statusText = undefined,
-    maxCnt = undefined,
-    func = undefined,
-    type,
-    registerDate,
-    locationDetail,
-    id,
-  },
-  isShort,
-}: IPostThumbnailCardObj) {
+  participants,
+  title,
+  status,
+  category,
+  date,
+  place,
+  imageProps,
+  id,
+  maxCnt,
+  func,
+}: GatherThumbnailCardProps) {
   const userAvatarArr = participants
     ?.filter((par) => par)
     .map((par) => ({
-      image: par.profileImage,
-      ...(par.avatar?.type !== null ? { avatar: par.avatar } : {}),
+      image: par.user.profileImage,
+      ...(par.user.avatar?.type !== null ? { avatar: par.user.avatar } : {}),
     }));
 
-  const CLOSED_TEXT_ARR = ["모집 마감", "닫힘"];
-
   return (
-    <CardLink href={url} onClick={func}>
-      <PlaceImage src={image.url} priority={image.priority} />
+    <CardLink href={`/gather/${id}`} onClick={func}>
+      <PlaceImage src={imageProps.image} priority={imageProps.isPriority} />
       <Flex direction="column" ml="12px" flex={1}>
-        {badge && <SolidBadge text={badge.text} colorScheme={badge.colorScheme} />}
+        <Flex>
+          <Badge mr={1} size="md" colorScheme={STATUS_TO_BADGE_PROPS[status].colorScheme}>
+            {STATUS_TO_BADGE_PROPS[status].text}
+          </Badge>
+          <Badge size="md" colorScheme={"gray"} color="var(--gray-600)">
+            {category}
+          </Badge>
+        </Flex>
         <Title>{title}</Title>
         <Subtitle>
-          <Box as="span" color="var(--color-mint)" mr={1}>
-            <i className="fa-solid fa-location-dot fa-sm" />
+          <Box as="span">{date}</Box>
+          <Box as="span" color="var(--gray-400)">
+            ・
           </Box>
-          {subtitle}
+          <Box as="span" fontWeight={600}>
+            {place}
+          </Box>
         </Subtitle>
-        {participants ? (
-          <Flex alignItems="center" mt={1}>
-            <AvatarGroupsOverwrap
-              userAvatarArr={userAvatarArr}
-              maxCnt={VOTER_SHOW_MAX - (isShort ? 1 : 0)}
-            />
 
-            <Box
-              fontSize="14px"
-              color="var(--color-mint)"
-              fontWeight={600}
-              mr="8px"
-              mt="4px"
-              ml="auto"
-            >
-              {statusText}
-            </Box>
-            <Flex
-              mb="-2px"
-              fontSize="15px"
-              align="center"
-              color="var(--gray-500)"
-              letterSpacing="2px"
-            >
-              <i className="fa-solid fa-user fa-xs" />
-              <Flex ml="8px" align="center" fontWeight={500}>
-                <Box
-                  as="span"
-                  color={
-                    CLOSED_TEXT_ARR.includes(badge?.text)
-                      ? "inherit"
-                      : maxCnt && participants.length >= maxCnt
-                        ? "var(--color-red)"
-                        : "var(--gray-800)"
-                  }
-                >
-                  {participants.length}
-                </Box>
-                <Box as="span" mr="2px" ml="4px">
-                  /
-                </Box>
-                <span>{maxCnt || <i className="fa-regular fa-infinity" />}</span>
-              </Flex>
+        <Flex mt={1} alignItems="center" justify="space-between">
+          <AvatarGroupsOverwrap userAvatarArr={userAvatarArr} maxCnt={VOTER_SHOW_MAX} />
+          <Flex align="center" color="var(--gray-500)">
+            <UserIcon size="sm" />
+            <Flex ml={1} fontSize="10px" align="center" fontWeight={500}>
+              <Box
+                fontWeight={600}
+                as="span"
+                color={
+                  maxCnt !== 0 && participants.length >= maxCnt
+                    ? "var(--color-red)"
+                    : "var(--color-gray)"
+                }
+              >
+                {participants.length}
+              </Box>
+              <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
+                /
+              </Box>
+              <Box as="span" color="var(--gray-500)" fontWeight={500}>
+                {maxCnt === 0 ? <i className="fa-regular fa-infinity" /> : maxCnt}
+              </Box>
             </Flex>
           </Flex>
-        ) : (
-          <Flex mt="auto" color="var(--gray-500)">
-            <Box>등록일: </Box>
-            <Box>{dayjsToFormat(dayjs(registerDate), "YYYY년 M월 D일")}</Box>
-          </Flex>
-        )}
+        </Flex>
       </Flex>
     </CardLink>
   );
@@ -141,13 +115,13 @@ function PlaceImage(props: PlaceImageProps) {
       position="relative"
       overflow="hidden"
       pos="relative"
-      w="120px"
-      h="120px"
+      w="98px"
+      h="98px"
     >
       <Image
         {...props}
         alt="thumbnailImage"
-        sizes="120px"
+        sizes="98px"
         fill
         style={{
           objectFit: "cover",
@@ -161,8 +135,9 @@ const CardLink = styled(Link)`
   height: fit-content;
   display: flex;
   padding: 8px;
+  padding-right: 12px;
   border: var(--border);
-  border-radius: var(--rounded-lg);
+  border-radius: 12px;
   background-color: white;
   justify-content: space-between;
 
@@ -176,15 +151,13 @@ const CardLink = styled(Link)`
 `;
 
 const Title = styled(SingleLineText)`
-  font-weight: 600;
-  font-size: 16px;
-  margin-top: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  margin: 8px 0;
+  color: var(--gray-800);
 `;
 
 const Subtitle = styled(SingleLineText)`
   color: var(--gray-500);
-  font-size: 12px;
-  width: 90%;
-  margin-top: 8px;
-  font-weight: 500;
+  font-size: 11px;
 `;

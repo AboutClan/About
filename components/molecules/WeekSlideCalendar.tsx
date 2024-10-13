@@ -27,7 +27,7 @@ function WeekSlideCalendar({ selectedDate, func }: CalendarProps) {
       }
     }
   }, [calendarArr, selectedDate]);
-  console.log(24, calendarArr);
+ 
   return (
     <>
       <Flex

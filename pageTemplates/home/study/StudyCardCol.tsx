@@ -7,10 +7,7 @@ import { useRecoilValue } from "recoil";
 
 import ShadowBlockButton from "../../../components/atoms/buttons/ShadowBlockButton";
 import BlurredPart from "../../../components/molecules/BlurredPart";
-import {
-  StudyThumbnailCard,
-  StudyThumbnailCardInfoProps,
-} from "../../../components/molecules/cards/StudyThumbnailCard";
+import { StudyThumbnailCard, StudyThumbnailCardProps } from "../../../components/molecules/cards/StudyThumbnailCard";
 import { CardColumnLayoutSkeleton } from "../../../components/organisms/CardColumnLayout";
 import { STUDY_CHECK_POP_UP, STUDY_VOTING_TABLE } from "../../../constants/keys/localStorage";
 import { LOCATION_RECRUITING, LOCATION_TO_FULLNAME } from "../../../constants/location";
@@ -49,7 +46,7 @@ function StudyCardCol({ participations, date }: StudyCardColProps) {
   const myUid = session?.user.uid;
 
   const studyDateStatus = useRecoilValue(studyDateStatusState);
-  const [studyCardColData, setStudyCardColData] = useState<StudyThumbnailCardInfoProps[]>();
+  const [studyCardColData, setStudyCardColData] = useState<StudyThumbnailCardProps[]>();
   const [dismissedStudy, setDismissedStudy] = useState<StudyParticipationProps>();
   const [currentLocation, setCurrentLocation] = useState<{ lat: number; lon: number }>();
 
@@ -142,7 +139,7 @@ function StudyCardCol({ participations, date }: StudyCardColProps) {
           <Flex direction="column">
             {studyCardColData.map((cardData, idx) => (
               <Box key={idx} mb={3}>
-                <StudyThumbnailCard cardInfo={cardData} />
+                <StudyThumbnailCard {...cardData} />
               </Box>
             ))}
             {studyCardColData.length >= 3 && (
@@ -173,8 +170,8 @@ export const setStudyDataToCardCol = (
   currentLocation: { lat: number; lon: number },
   urlDateParam: string,
   uid: string,
-): StudyThumbnailCardInfoProps[] => {
-  const cardColData: StudyThumbnailCardInfoProps[] = [...studyData]
+): StudyThumbnailCardProps[] => {
+  const cardColData: StudyThumbnailCardProps[] = [...studyData]
     ?.sort((a, b) =>
       a.place.branch === "개인 스터디" ? 1 : b.place.branch === "개인 스터디" ? -1 : 0,
     )

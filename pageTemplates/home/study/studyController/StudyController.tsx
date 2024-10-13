@@ -44,7 +44,7 @@ function StudyController({ selectedDate, handleChangeDate }: StudyControllerProp
               <>
                 <WeekSlideCalendar
                   // voteCntArr={voteCntArr}
-                  selectedDate={selectedDateDayjs}
+                 date={selectedDateDayjs}
                   func={handleSelectDate}
                 />
               </>
