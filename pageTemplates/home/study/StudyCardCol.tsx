@@ -1,16 +1,15 @@
-import { ThemeTypings } from "@chakra-ui/react";
+import { Flex, ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
+import ShadowBlockButton from "../../../components/atoms/buttons/ShadowBlockButton";
 import BlurredPart from "../../../components/molecules/BlurredPart";
 import { IPostThumbnailCard } from "../../../components/molecules/cards/PostThumbnailCard";
-import {
-  CardColumnLayout,
-  CardColumnLayoutSkeleton,
-} from "../../../components/organisms/CardColumnLayout";
+import { StudyThumbnailCard } from "../../../components/molecules/cards/StudyThumbnailCard";
+import { CardColumnLayoutSkeleton } from "../../../components/organisms/CardColumnLayout";
 import { STUDY_CHECK_POP_UP, STUDY_VOTING_TABLE } from "../../../constants/keys/localStorage";
 import { LOCATION_RECRUITING, LOCATION_TO_FULLNAME } from "../../../constants/location";
 import {
@@ -23,7 +22,6 @@ import {
   StudyParticipationProps,
   StudyStatus,
 } from "../../../types/models/studyTypes/studyDetails";
-
 import { StudyVotingSave } from "../../../types/models/studyTypes/studyInterActions";
 import { InactiveLocation, LocationEn } from "../../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
@@ -114,10 +112,17 @@ function StudyCardCol({ participations, date }: StudyCardColProps) {
         size="lg"
       >
         {studyCardColData ? (
-          <CardColumnLayout
-            cardDataArr={studyCardColData}
-            url={`/studyList?tab=study&location=${locationEn}&date=${date}`}
-          />
+          <Flex direction="column">
+            {studyCardColData.map((cardData, idx) => (
+              <StudyThumbnailCard key={idx} postThumbnailCardProps={cardData} />
+            ))}
+            {studyCardColData.length >= 3 && (
+              <ShadowBlockButton
+                text="더보기"
+                url={`/studyList?tab=study&location=${locationEn}&date=${date}`}
+              />
+            )}
+          </Flex>
         ) : (
           <CardColumnLayoutSkeleton />
         )}
@@ -139,7 +144,6 @@ export const setStudyDataToCardCol = (
   urlDateParam: string,
   uid: string,
 ): IPostThumbnailCard[] => {
- 
   const cardColData: IPostThumbnailCard[] = [...studyData]
     ?.sort((a, b) =>
       a.place.branch === "개인 스터디" ? 1 : b.place.branch === "개인 스터디" ? -1 : 0,
