@@ -6,6 +6,7 @@ import {
   StudyThumbnailCardProps,
 } from "../../components/molecules/cards/StudyThumbnailCard";
 import WeekSlideCalendar from "../../components/molecules/WeekSlideCalendar";
+import { StudyThumbnailCardSkeleton } from "../../components/skeleton/StudyThumbnailCardSkeleton";
 import { useCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
 import { convertStudyToParticipations } from "../../libs/study/getMyStudyMethods";
 import { setStudyToThumbnailInfo } from "../../libs/study/setStudyToThumbnailInfo";
@@ -30,7 +31,7 @@ function StudyPageDrawer({ studyVoteData, location, date, setDate }: StudyPageDr
   const { currentLocation } = useCurrentLocation();
 
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
- 
+
   useEffect(() => {
     if (!studyVoteData) return;
     const participations = convertStudyToParticipations(studyVoteData, location);
@@ -45,6 +46,7 @@ function StudyPageDrawer({ studyVoteData, location, date, setDate }: StudyPageDr
 
   const handleSelectDate = (moveDate: string) => {
     if (date === moveDate) return;
+    setThumbnailCardinfoArr(null);
     setDate(moveDate);
     newSearchParams.set("date", moveDate);
     router.replace(`/studyPage?${newSearchParams.toString()}`);
@@ -52,7 +54,7 @@ function StudyPageDrawer({ studyVoteData, location, date, setDate }: StudyPageDr
 
   return (
     <>
-      <Box w="100%">
+      <Box w="100%" h="400px">
         <StudyPageDrawerHeader date={date} />
         <WeekSlideCalendar selectedDate={date} func={handleSelectDate} />
         <StudyPageDrawerFilterBar
@@ -60,11 +62,15 @@ function StudyPageDrawer({ studyVoteData, location, date, setDate }: StudyPageDr
           setThumbnailCardInfoArr={setThumbnailCardinfoArr}
           placeCnt={thumbnailCardInfoArr?.length}
         />
-        {thumbnailCardInfoArr?.map((thumbnailCardInfo, idx) => (
-          <Box key={idx} mb={3}>
-            <StudyThumbnailCard {...thumbnailCardInfo} />
-          </Box>
-        ))}
+        <Box overflowY="scroll" h="411px">
+          {thumbnailCardInfoArr
+            ? thumbnailCardInfoArr.map(({ participants, ...thumbnailCardInfo }, idx) => (
+                <Box key={idx} mb={3}>
+                  <StudyThumbnailCard {...thumbnailCardInfo} participantCnt={participants.length} />
+                </Box>
+              ))
+            : [1, 2, 3, 4, 5].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)}
+        </Box>
       </Box>
     </>
   );

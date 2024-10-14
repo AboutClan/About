@@ -41,6 +41,7 @@
   --color-blue: #007dfb;
   --color-gray: #a0aec0;
   --color-green: #11b1a7;
+  --color-yellow: #faca15;
   --color-purple: #bb57d5;
-   --input-bg: var(--gray-200);
+  --input-bg: var(--gray-200);
 }

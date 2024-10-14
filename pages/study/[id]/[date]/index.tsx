@@ -2,7 +2,6 @@ import { Box } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import LocationDot from "../../../../components/atoms/LocationDot";
 
 import Slide from "../../../../components/layouts/PageSlide";
 import { useCurrentLocation } from "../../../../hooks/custom/CurrentLocationHook";
@@ -11,8 +10,10 @@ import { convertMergePlaceToPlace } from "../../../../libs/study/convertMergePla
 import { getStudyParticipationById } from "../../../../libs/study/getMyStudyMethods";
 import StudyAddressMap from "../../../../pageTemplates/study/StudyAddressMap";
 import StudyCover from "../../../../pageTemplates/study/StudyCover";
+import StudyDateBar from "../../../../pageTemplates/study/StudyDateBar";
 import StudyHeader from "../../../../pageTemplates/study/StudyHeader";
 import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
+import StudyTimeBoard from "../../../../pageTemplates/study/StudyTimeBoard";
 import { StudyParticipationProps } from "../../../../types/models/studyTypes/studyDetails";
 import { LocationEn } from "../../../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../../../utils/convertUtils/convertDatas";
@@ -119,17 +120,19 @@ export default function Page() {
           </Slide>
           <Box h={2} bg="gray.100" />
           <Slide>
-          
             <StudyAddressMap
               name={name}
               address={address}
               latitude={latitude}
               longitude={longitude}
             />
-            {/* <Divider />
-            <StudyDateBar place={place} />
-            <StudyTimeBoard members={members} studyStatus={participation.status} />
-            <StudyParticipants members={members} />
+
+            <StudyDateBar date={date} memberCnt={mergeParticipation.members.length} place={place} />
+            <StudyTimeBoard
+              members={mergeParticipation.members}
+              studyStatus={mergeParticipation.status}
+            />
+            {/* <StudyParticipants members={members} />
             <StudyNavigation voteCnt={members?.length} studyStatus={participation.status} /> */}
           </Slide>
         </>

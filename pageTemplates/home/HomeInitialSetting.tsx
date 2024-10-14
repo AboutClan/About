@@ -7,7 +7,6 @@ import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
 import { useSetRecoilState } from "recoil";
 import { createGlobalStyle } from "styled-components";
 
-import PCBottomNav from "../../components/layouts/PCBottomNav";
 import { STEPS_CONTENTS } from "../../constants/contentsText/GuideContents";
 import { USER_GUIDE, USER_LOCATION } from "../../constants/keys/localStorage";
 import { SERVER_URI } from "../../constants/system";
@@ -18,7 +17,7 @@ import FAQPopUp from "../../modals/pop-up/FAQPopUp";
 import UserSettingPopUp from "../../pageTemplates/setting/userSetting/userSettingPopUp";
 import { renderHomeHeaderState } from "../../recoils/renderRecoils";
 import { checkAndSetLocalStorage } from "../../utils/storageUtils";
-import { detectDevice, isPWA } from "../../utils/validationUtils";
+import { isPWA } from "../../utils/validationUtils";
 
 const urlBase64ToUint8Array = (base64String) => {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
@@ -198,7 +197,6 @@ function HomeInitialSetting() {
       {userInfo && !isGuest && <UserSettingPopUp userInfo={userInfo} cnt={isGuide ? 1 : 0} />}
       {isGuestModal && <FAQPopUp setIsModal={setIsGuestModal} />}
       <GlobalStyle />
-      {!isPWALogin && detectDevice() !== "PC" && <PCBottomNav />}
       <Joyride
         hideCloseButton={true}
         callback={handleJoyrideCallback}

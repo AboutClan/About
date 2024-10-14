@@ -76,7 +76,7 @@ export default function StudyVoteMap() {
   const [locationValue, setLocationValue] = useState<ActiveLocation>(
     locationParamKr || userLocation,
   );
- 
+
   const [detailInfo, setDetailInfo] = useState<StudyInfoProps>();
 
   const [myStudyParticipation, setMyStudyParticipation] = useRecoilState(myStudyParticipationState);
@@ -88,7 +88,7 @@ export default function StudyVoteMap() {
   const { data: studyVoteData } = useStudyVoteQuery(date, locationValue, {
     enabled: !!locationValue && !!date,
   });
-  
+
   const mainLocation = userInfo?.locationDetail;
 
   useEffect(() => {
@@ -106,7 +106,7 @@ export default function StudyVoteMap() {
     if (!locationValue) return;
 
     const locationCenter = LOCATION_CENTER_DOT[locationValue];
-
+    console.log(1, locationValue);
     setCenterLocation({ lat: locationCenter.latitude, lon: locationCenter.longitude });
     newSearchParams.set("location", convertLocationLangTo(locationValue, "en"));
     newSearchParams.set("date", date);
@@ -128,7 +128,7 @@ export default function StudyVoteMap() {
           router.replace(`/studyPage?${newSearchParams.toString()}`);
           return;
         } else if (changeLocation !== locationValue) {
-         
+          console.log(25);
           setLocationValue(changeLocation as ActiveLocation);
         }
         setLocationFilterType("활동 장소");
@@ -155,7 +155,7 @@ export default function StudyVoteMap() {
     if (!studyVoteData || !session?.user) return;
     const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
     setMyStudyParticipation(findMyStudyParticipation);
-
+    console.log(24, findMyStudyParticipation);
     if (locationFilterType === "스터디 장소" && findMyStudyParticipation) {
       setCenterLocation({
         lat: findMyStudyParticipation.place.latitude,
@@ -171,7 +171,9 @@ export default function StudyVoteMap() {
         const lon = position.coords.longitude;
 
         setCurrentLocation({ lat, lon });
-        if (isLocationRefetch || categoryParam !== "votePlace") {
+        setIsLocationRefetch(false);
+        if (!isLocationRefetch) return;
+        if (categoryParam !== "votePlace") {
           const changeLocation = getLocationByCoordinates(lat, lon);
           if (!changeLocation) {
             if (isLocationRefetch) {
@@ -185,7 +187,6 @@ export default function StudyVoteMap() {
           }
           setCenterLocation({ lat, lon });
         }
-        setIsLocationRefetch(false);
       },
       function (error) {
         console.error("위치 정보를 가져오는 데 실패했습니다: ", error);
@@ -292,9 +293,14 @@ export default function StudyVoteMap() {
       </Box>
       <StudyControlButton isAleadyAttend={!!myStudyInfo?.attendanceInfo.arrived} />
 
-      {detailInfo && <StudyInFoDrawer  detailInfo={detailInfo} setDetailInfo={setDetailInfo} />}
+      {detailInfo && <StudyInFoDrawer detailInfo={detailInfo} setDetailInfo={setDetailInfo} />}
       <BottomFlexDrawer isOverlay={false} isDrawerUp={drawerParam !== "down"}>
-        <StudyPageDrawer studyVoteData={studyVoteData} location={locationValue} date={date} setDate={setDate} />
+        <StudyPageDrawer
+          studyVoteData={studyVoteData}
+          location={locationValue}
+          date={date}
+          setDate={setDate}
+        />
       </BottomFlexDrawer>
     </>
   );

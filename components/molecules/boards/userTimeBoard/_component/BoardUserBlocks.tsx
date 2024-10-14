@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-
-import { COLOR_TABLE } from "../../../../../constants/colorConstants";
-import { transformToUserBlocks } from "../_lib/transformToUserBlocks";
+import { Box } from "@chakra-ui/react";
+import { useEffect, useRef, useState } from "react";
+import { COLOR_400_ARR } from "../../../../../constants/colorConstants";
+import { STUDY_VOTE_HOUR_ARR } from "../../../../../constants/serviceConstants/studyConstants/studyTimeConstant";
 import { ITimeBoardParticipant } from "../UserTimeBoard";
+import { transformToUserBlocks } from "../_lib/transformToUserBlocks";
 
-const BLOCK_WIDTH = 24;
 export interface IUserTimeBlock {
   name: string;
   start: string;
@@ -17,50 +16,64 @@ export interface IUserTimeBlock {
 interface IBoardUserBlocks {
   members: ITimeBoardParticipant[];
 }
+
 export default function BoardUserBlocks({ members }: IBoardUserBlocks) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [blockWidth, setBlockWidth] = useState<number>(0);
   const [userBlocks, setUserBlocks] = useState<IUserTimeBlock[]>([]);
 
+  const calculateBlockWidth = () => {
+    const screenWidth = window.innerWidth; // 현재 화면 가로 길이 가져오기
+    const width = (screenWidth - 40) / STUDY_VOTE_HOUR_ARR.length; // 40px을 빼고 7로 나누기
+    setBlockWidth(parseFloat(width.toFixed(2))); // 소수점 두 자리 반올림
+  };
+
   useEffect(() => {
-    // Assuming transformToUserBlocks is a function that transforms members into userBlocks
+    calculateBlockWidth(); // 초기 계산
+
+    const observer = new ResizeObserver(() => {
+      requestAnimationFrame(calculateBlockWidth); // 리사이즈 시 재계산
+    });
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
+
+    return () => observer.disconnect(); // 컴포넌트 언마운트 시 정리
+  }, []);
+
+  useEffect(() => {
     const newUserBlocks = transformToUserBlocks(members);
     setUserBlocks(newUserBlocks);
   }, [members]);
-  
+
+  console.log("Block Width:", blockWidth);
+
   return (
-    <BlocksContainer>
-      {userBlocks?.map((userBlock, idx) => (
-        <UserBlock key={idx} index={idx} userBlock={userBlock}>
-          <div>{userBlock.name}</div>
-          <div>
-            {userBlock.start} ~ {userBlock.startToEndInterval >= 3 && userBlock.end}
-          </div>
-        </UserBlock>
+    <Box ref={containerRef}>
+      {userBlocks.map((props, idx) => (
+        <Box
+          key={idx}
+          w={`${props.startToEndInterval * blockWidth}px`}
+          ml={`${(props.startInterval + 0.5) * blockWidth}px`}
+          fontSize="9px"
+          py={1}
+          px="1px"
+        >
+          <Box
+            borderRadius="4px"
+            lineHeight="12px"
+            px={1}
+            color="white"
+            py={0.5}
+            bg={COLOR_400_ARR[idx]}
+          >
+            {props.name}
+            <br />
+            {props.start} - {props.startToEndInterval >= 3 && props.end}
+          </Box>
+        </Box>
       ))}
-    </BlocksContainer>
+    </Box>
   );
 }
-
-const BlocksContainer = styled.div`
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  padding-top: 28px; /* pt-7 */
-`;
-
-const UserBlock = styled.div<{ index: number; userBlock: IUserTimeBlock }>`
-  background-color: ${(props) => COLOR_TABLE[props.index % COLOR_TABLE.length]};
-  height: 36px; /* h-9 */
-  position: relative;
-  z-index: 10;
-  border-radius: var(--rounded-lg); /* rounded-lg */
-  padding: 4px; /* p-1 */
-  display: flex;
-  flex-direction: column;
-  color: white;
-  margin-bottom: 4px; /* mb-1 */
-  overflow: hidden;
-  width: ${(props) => `${props.userBlock.startToEndInterval * BLOCK_WIDTH}px`};
-  margin-left: ${(props) =>
-    `${props.userBlock.startInterval * BLOCK_WIDTH + BLOCK_WIDTH / 2 + 4}px`};
-  font-size: 10px; /* text-xxs */
-`;

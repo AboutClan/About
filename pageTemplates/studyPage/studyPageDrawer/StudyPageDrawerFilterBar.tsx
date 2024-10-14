@@ -18,7 +18,7 @@ function StudyPageDrawerFilterBar({
   thumbnailCardInfoArr,
   setThumbnailCardInfoArr,
 }: StudyPageDrawerFilterBarProps) {
-  const [selectOption, setSelectOption] = useState<SelectOption>("거리순");
+  const [selectOption, setSelectOption] = useState<SelectOption>("인원순");
 
   const { data: userInfo } = useUserInfoQuery();
   const preference = userInfo?.studyPreference;
@@ -50,7 +50,7 @@ function StudyPageDrawerFilterBar({
   const selectOptionArr = ["인원순", "거리순", "선호순"];
 
   return (
-    <Flex justify="space-between" my="13.5px">
+    <Flex justify="space-between" lineHeight="16px" my={4}>
       <Box fontSize="12px">
         전체 <b style={{ color: "var(--color-mint)" }}>{placeCnt}개</b>
       </Box>

@@ -1,16 +1,16 @@
+import { Box } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { iPhoneNotchSize } from "../../../utils/validationUtils";
 
 export const DRAWER_MIN_HEIGHT = 40;
-export const DRAWER_MAX_HEIGHT = 650; // 최대 높이
+export const DRAWER_MAX_HEIGHT = 618; // 최대 높이
 
 export default function BottomFlexDrawer({
   setIsModal,
   options,
   isAnimation = true,
-
   children,
   isxpadding = true,
   isOverlay = true,
@@ -55,7 +55,6 @@ export default function BottomFlexDrawer({
     window.removeEventListener("pointermove", handlePointerMove);
     window.removeEventListener("pointerup", handlePointerUp);
 
-    // 스와이프 종료 시 부드럽게 애니메이션 적용
     if (deltaY > SWIPE_THRESHOLD) {
       setDrawerHeight(DRAWER_MAX_HEIGHT); // 위로 쭉 올라가는 동작
     } else if (deltaY < -SWIPE_THRESHOLD) {
@@ -67,21 +66,23 @@ export default function BottomFlexDrawer({
 
   return (
     <Layout
+      isdrawerup={isDrawerUp}
       as={motion.div}
-      animate={{ height: drawerHeight }} // 애니메이션 적용
-      transition={{ type: "spring", stiffness: 300, damping: 30 }} // 부드러운 스프링 애니메이션
+      animate={{ height: drawerHeight }}
+      transition={{ type: "spring", stiffness: 300, damping: 30 }}
       isxpadding={isxpadding.toString()}
       paddingoptions={paddingOptions}
-      onPointerDown={handlePointerDown} // 드래그 시작 시
     >
-      <TopNav />
-
+      <Box py={3} cursor="grab" onPointerDown={handlePointerDown}>
+        <TopNav />
+      </Box>
       {drawerHeight > 100 && children}
     </Layout>
   );
 }
 
 const Layout = styled.div<{
+  isdrawerup: boolean;
   paddingoptions: { bottom?: number };
   isxpadding: string;
 }>`
@@ -94,7 +95,8 @@ const Layout = styled.div<{
   background-color: white;
   z-index: 500;
   padding: ${(props) => (props.isxpadding === "true" ? "12px 20px" : "12px 0")};
-  padding-bottom: 0;
+  padding-bottom: ${(props) => !props.isdrawerup && "12px"};
+  padding-top: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -104,24 +106,8 @@ const Layout = styled.div<{
 const TopNav = styled.nav`
   width: 56px;
   height: 4px;
-  border-radius: 4px;
-  background-color: var(--gray-400);
-  margin-bottom: 16px;
-`;
 
-const Header = styled.header`
-  align-self: flex-start;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: var(--gap-5);
-  > span:first-child {
-    font-weight: 600;
-    font-size: 15px;
-    margin-bottom: var(--gap-1);
-  }
-  > span:last-child {
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--gray-800);
-  }
+  border-radius: 4px;
+  opacity: 0.4;
+  background-color: var(--color-gray);
 `;

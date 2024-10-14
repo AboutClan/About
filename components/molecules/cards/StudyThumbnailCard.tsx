@@ -1,12 +1,11 @@
 import { Badge, Box, Flex } from "@chakra-ui/react";
-import dayjs from "dayjs";
 import Link from "next/link";
 import styled from "styled-components";
 import { STUDY_STATUS_TO_BADGE } from "../../../constants/studyConstants";
 
 import { SingleLineText } from "../../../styles/layout/components";
 import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
+import { LocationDotIcon } from "../../Icons/LocationIcons";
 import { UserIcon } from "../../Icons/UserIcons";
 import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
 import PlaceImage from "../PlaceImage";
@@ -26,6 +25,7 @@ export interface StudyThumbnailCardProps {
     };
   };
   participants?: UserSimpleInfoProps[];
+  participantCnt?: number;
   url: string;
   status: string;
   func?: () => void;
@@ -39,6 +39,7 @@ export function StudyThumbnailCard({
   url,
   status,
   func = undefined,
+  participantCnt,
   registerDate,
   id,
 }: StudyThumbnailCardProps) {
@@ -50,43 +51,39 @@ export function StudyThumbnailCard({
     }));
 
   return (
-    <Box pb={3} borderBottom="var(--border)">
-      <CardLink href={url} onClick={func}>
-        <PlaceImage size="md" imageProps={place.imageProps} hasToggleHeart id={id} />
-        <Flex direction="column" ml={4} flex={1}>
-          <Badge mr="auto" colorScheme={STUDY_STATUS_TO_BADGE[status].colorScheme} size="md">
-            {STUDY_STATUS_TO_BADGE[status].text}
-          </Badge>
+    <CardLink href={url} onClick={func}>
+      {participants ? (
+        <>
+          <PlaceImage size="md" imageProps={place.imageProps} hasToggleHeart id={id} />
+          <Flex direction="column" ml={4} flex={1}>
+            <Badge mr="auto" colorScheme={STUDY_STATUS_TO_BADGE[status].colorScheme} size="md">
+              {STUDY_STATUS_TO_BADGE[status].text}
+            </Badge>
 
-          <Title>{place.name}</Title>
-          <Subtitle>
-            <Box>
-              <Box as="span">
-                <i
-                  className="fa-solid fa-location-dot fa-sm"
-                  style={{ color: "var(--color-mint)" }}
-                />
-              </Box>
-              <Box as="span" ml={1} color="var(--gray-600)">
-                {place.branch}
-              </Box>
-              <Box as="span" color="var(--gray-400)">
-                ・
-              </Box>
-              <Box as="span" fontWeight={600} w="37px">
-                {place.distance && `${place.distance}KM`}
-              </Box>
-              <Box as="span" color="var(--gray-400)">
-                ・
-              </Box>{" "}
-              <Box as="span">{place.address}</Box>
-            </Box>
-          </Subtitle>
-          {participants ? (
+            <Title>{place.name}</Title>
+            <Flex>
+              <LocationDotIcon size="md" />
+              <Subtitle>
+                <Box as="span" ml={1} color="var(--gray-600)">
+                  {place.branch}
+                </Box>
+                <Box as="span" color="var(--gray-400)">
+                  ・
+                </Box>
+                <Box as="span" fontWeight={600} w="37px">
+                  {place.distance && `${place.distance}KM`}
+                </Box>
+                <Box as="span" color="var(--gray-400)">
+                  ・
+                </Box>{" "}
+                <Box as="span">{place.address}</Box>
+              </Subtitle>
+            </Flex>
+
             <Flex mt={3} alignItems="center" justify="space-between">
               <AvatarGroupsOverwrap userAvatarArr={userAvatarArr} maxCnt={VOTER_SHOW_MAX} />
 
-              <Flex align="center" color="var(--gray-500)">
+              <Flex align="center" color="var(--gray-500)" h={4}>
                 <UserIcon size="sm" />
                 <Flex ml={1} fontSize="10px" align="center" fontWeight={500}>
                   <Box
@@ -109,15 +106,59 @@ export function StudyThumbnailCard({
                 </Flex>
               </Flex>
             </Flex>
-          ) : (
-            <Flex mt="auto" color="var(--gray-500)">
-              <Box>등록일: </Box>
-              <Box>{dayjsToFormat(dayjs(registerDate), "YYYY년 M월 D일")}</Box>
+          </Flex>
+        </>
+      ) : (
+        <>
+          <PlaceImage size="md" imageProps={place.imageProps} hasToggleHeart id={id} />
+          <Flex direction="column" ml={4} flex={1}>
+            <Flex fontSize="10px" lineHeight="12px" color="gray.600">
+              <Box as="span">
+                <LocationDotIcon size="md" />
+              </Box>
+              <Box as="span" ml={1} color="var(--gray-600)">
+                {place.branch}
+              </Box>
             </Flex>
-          )}
-        </Flex>
-      </CardLink>
-    </Box>
+            <Title>{place.name}</Title>
+            <Subtitle>
+              <Box>
+                <Box as="span" fontWeight={600}>
+                  {place.distance && `${place.distance}KM`}
+                </Box>
+                <Box as="span" color="var(--gray-400)">
+                  ・
+                </Box>{" "}
+                <Box as="span">{place.address}</Box>
+              </Box>
+            </Subtitle>
+
+            <Flex mt={3} alignItems="center" justify="space-between">
+              <Flex align="center" color="var(--gray-500)">
+                <UserIcon size="sm" />
+                <Flex lineHeight="12px" ml={1} fontSize="10px" align="center" fontWeight={500}>
+                  <Box
+                    fontWeight={600}
+                    as="span"
+                    color={
+                      participantCnt >= STUDY_MAX_CNT ? "var(--color-red)" : "var(--color-gray)"
+                    }
+                  >
+                    {participantCnt}
+                  </Box>
+                  <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
+                    /
+                  </Box>
+                  <Box as="span" color="var(--gray-500)" fontWeight={500}>
+                    {STUDY_MAX_CNT}
+                  </Box>
+                </Flex>
+              </Flex>
+            </Flex>
+          </Flex>
+        </>
+      )}
+    </CardLink>
   );
 }
 
@@ -125,7 +166,8 @@ const CardLink = styled(Link)`
   height: fit-content;
   display: flex;
   padding-right: 12px;
-
+  padding-bottom: 12px;
+  border-bottom: var(--border);
   background-color: white;
   justify-content: space-between;
 
@@ -142,9 +184,11 @@ const Title = styled(SingleLineText)`
   margin: 4px 0;
   font-size: 14px;
   font-weight: 600;
+  line-height: 20px;
 `;
 
 const Subtitle = styled(SingleLineText)`
   color: var(--gray-500);
   font-size: 11px;
+  line-height: 12px;
 `;

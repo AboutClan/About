@@ -15,8 +15,30 @@ export const MapIcon = () => (
   </svg>
 );
 
-export const LocationDotIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="9" height="8" viewBox="0 0 9 8" fill="none">
+export const LocationDotIcon = ({ size }: { size: "sm" | "md" }) =>
+  size === "sm" ? (
+    <svg xmlns="http://www.w3.org/2000/svg" width="9" height="8" viewBox="0 0 9 8" fill="none">
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M4.49989 4.24744C4.37965 4.24975 4.26016 4.22806 4.1484 4.18364C4.03664 4.13922 3.93485 4.07296 3.849 3.98874C3.76315 3.90453 3.69495 3.80403 3.6484 3.69315C3.60184 3.58226 3.57786 3.4632 3.57786 3.34294C3.57786 3.22267 3.60184 3.10362 3.6484 2.99273C3.69495 2.88184 3.76315 2.78135 3.849 2.69713C3.93485 2.61291 4.03664 2.54666 4.1484 2.50224C4.26016 2.45782 4.37965 2.43613 4.49989 2.43844C4.73677 2.44299 4.96242 2.54028 5.12833 2.70941C5.29425 2.87854 5.3872 3.10601 5.3872 3.34294C5.3872 3.57986 5.29425 3.80733 5.12833 3.97647C4.96242 4.1456 4.73677 4.24289 4.49989 4.24744ZM3.79189 0.345772C2.36856 0.663439 1.37056 2.00311 1.42656 3.46044C1.47056 4.60511 2.17289 5.62911 4.26256 7.63811C4.39456 7.76477 4.60589 7.76544 4.73823 7.63844C6.89956 5.56077 7.57689 4.53677 7.57689 3.34277C7.57689 1.41277 5.79923 -0.102228 3.79189 0.346105"
+        fill="#00C2B3"
+      />
+    </svg>
+  ) : (
+    <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M5.49999 5.30924C5.34969 5.31212 5.20032 5.28501 5.06062 5.22949C4.92092 5.17396 4.79369 5.09114 4.68637 4.98587C4.57906 4.8806 4.49381 4.75498 4.43562 4.61637C4.37742 4.47776 4.34745 4.32894 4.34745 4.17861C4.34745 4.02828 4.37742 3.87946 4.43562 3.74085C4.49381 3.60224 4.57906 3.47663 4.68637 3.37135C4.79369 3.26608 4.92092 3.18326 5.06062 3.12774C5.20032 3.07221 5.34969 3.0451 5.49999 3.04799C5.79609 3.05367 6.07815 3.17529 6.28554 3.3867C6.49294 3.59812 6.60912 3.88246 6.60912 4.17861C6.60912 4.47477 6.49294 4.75911 6.28554 4.97052C6.07815 5.18194 5.79609 5.30355 5.49999 5.30924ZM4.61499 0.432154C2.83582 0.829237 1.58832 2.50382 1.65832 4.32549C1.71332 5.75632 2.59124 7.03632 5.20332 9.54757C5.36832 9.7059 5.63249 9.70674 5.7979 9.54799C8.49957 6.9509 9.34624 5.6709 9.34624 4.1784C9.34624 1.7659 7.12416 -0.127846 4.61499 0.432571"
+        fill="#00C2B3"
+      />
+    </svg>
+  );
+export const LocationDotIconHTML = (name: string) => `<div style="position: relative;">
+      <div style="display: flex; align-items:center; padding: 4px 8px; padding-left:4px; border-radius: 14px; background-color: #00C2B3;">
+        <div style="display: flex; justify-content: center; align-items: center; width: 16px; height: 16px; margin-right: 4px; background-color: white; border-radius: 50%;">
+         <svg xmlns="http://www.w3.org/2000/svg" width="9" height="8" viewBox="0 0 9 8" fill="none">
     <path
       fill-rule="evenodd"
       clip-rule="evenodd"
@@ -24,4 +46,17 @@ export const LocationDotIcon = () => (
       fill="#00C2B3"
     />
   </svg>
-);
+        </div>
+        <div style="font-weight: 600; font-size: 8px; color: white;">
+          ${name}
+        </div>
+      </div>
+      <div style="display: flex; justify-content: flex-end; position: absolute; left: 0; bottom: -3.5px; width: 14.5px;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="5" height="5" viewBox="0 0 5 5" fill="none">
+    <path
+      d="M2.95811 4.3999C2.76566 4.73323 2.28453 4.73324 2.09208 4.3999L0.295083 1.2874C0.102633 0.954069 0.343195 0.537402 0.728095 0.537402L4.3221 0.537402C4.707 0.537402 4.94756 0.954069 4.75511 1.2874L2.95811 4.3999Z"
+      fill="#00C2B3"
+    />
+  </svg>
+      </div>
+    </div>`;
