@@ -292,7 +292,7 @@ export default function StudyVoteMap() {
       </Box>
       <StudyControlButton isAleadyAttend={!!myStudyInfo?.attendanceInfo.arrived} />
 
-      {detailInfo && <StudyInFoDrawer detailInfo={detailInfo} setDetailInfo={setDetailInfo} />}
+      {detailInfo && <StudyInFoDrawer  detailInfo={detailInfo} setDetailInfo={setDetailInfo} />}
       <BottomFlexDrawer isOverlay={false} isDrawerUp={drawerParam !== "down"}>
         <StudyPageDrawer studyVoteData={studyVoteData} date={date} setDate={setDate} />
       </BottomFlexDrawer>

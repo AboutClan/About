@@ -30,6 +30,7 @@ function CalendarDayBox({ date, value, func, selectedDate }: CalendarDayBoxProps
       opacity={
         isSelected ? 1 : dayjs(date).isBefore(dayjs(selectedDate)) ? "0.4" : "var(--gray-800)"
       }
+      onClick={() => func(date)}
     >
       <Box
         px="6px"

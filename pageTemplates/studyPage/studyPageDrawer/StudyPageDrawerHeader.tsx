@@ -2,7 +2,8 @@ import { Box, Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useState } from "react";
 import SectionHeader from "../../../components/atoms/SectionHeader";
-import { BottomShortArrowIcon } from "../../../components/Icons/ArrowIcons";
+import { ShortArrowIcon } from "../../../components/Icons/ArrowIcons";
+
 import DateCalendarModal from "../../../modals/aboutHeader/DateCalendarModal";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
@@ -32,7 +33,7 @@ function StudyPageDrawerHeader({ date }: StudyPageDrawerHeaderProps) {
               color="var(--color-mint)"
               onClick={() => setIsCalendarModal(true)}
             >
-              <BottomShortArrowIcon />
+              <ShortArrowIcon dir="bottom" />
             </Button>
           </Box>
         </SectionHeader>

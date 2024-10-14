@@ -54,7 +54,7 @@ function StudyControlButton({ isAleadyAttend }: StudyControlButtonProps) {
         스터디
       </Button>
       {isStudyDrawer && (
-        <BottomDrawerLg setIsModal={setIsStudyDrawer} options={options} height={197}>
+        <BottomDrawerLg zIndex={700} setIsModal={setIsStudyDrawer} options={options} height={197}>
           <Link href={`/vote/participate?${searchParams.toString()}`} style={{ width: "100%" }}>
             <Button
               h="52px"

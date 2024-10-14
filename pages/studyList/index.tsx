@@ -5,9 +5,11 @@ import { useSearchParams } from "next/navigation";
 
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
-import { PostThumbnailCard } from "../../components/molecules/cards/PostThumbnailCard";
+import { StudyThumbnailCard } from "../../components/molecules/cards/StudyThumbnailCard";
+import { useCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
-import { setStudyDataToCardCol } from "../../pageTemplates/home/study/StudyCardCol";
+import { setStudyToThumbnailInfo } from "../../libs/study/setStudyToThumbnailInfo";
+
 import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
@@ -19,27 +21,26 @@ export default function StudyList() {
   const location = searchParams.get("location") as LocationEn;
   const locationKr = convertLocationLangTo(location, "kr");
 
-  const { data } = useStudyVoteQuery(date, locationKr, {
+  const { currentLocation } = useCurrentLocation();
+  const { data: studyVoteData } = useStudyVoteQuery(date, locationKr, {
     enabled: !!locationKr && !!date,
   });
 
-  const studyVoteOne = data?.participations;
+  const participations = studyVoteData?.participations;
 
-  const cardArr =
-    studyVoteOne && session && setStudyDataToCardCol(studyVoteOne, date, session.user.uid);
+  const thumbnailCardInfoArr = setStudyToThumbnailInfo(participations, currentLocation, date);
 
   return (
     <>
       <Header title={dayjsToFormat(dayjs(date), "M월 D일 스터디")} />
 
-      <Slide isNoPadding>
-        <Box px="16px">
-          {cardArr &&
-            cardArr.map((card, idx) => (
-              <Box mt="12px" key={idx}>
-                <PostThumbnailCard postThumbnailCardProps={card} />
-              </Box>
-            ))}
+      <Slide>
+        <Box mt={3}>
+          {thumbnailCardInfoArr?.map((thumbnailCardInfo, idx) => (
+            <Box mb={3} key={idx}>
+              <StudyThumbnailCard {...thumbnailCardInfo} />
+            </Box>
+          ))}
         </Box>
       </Slide>
     </>

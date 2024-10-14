@@ -27,6 +27,7 @@ interface IBottomDrawerLg extends IModal {
   isxpadding?: boolean;
   isOverlay?: boolean;
   isLittleClose?: boolean;
+  zIndex?: number;
   paddingOptions?: {
     bottom?: number;
   };
@@ -41,6 +42,7 @@ export default function BottomDrawerLg({
   isxpadding = true,
   isOverlay = true,
   isLittleClose,
+  zIndex,
   paddingOptions,
 }: IBottomDrawerLg) {
   const header = options?.header;
@@ -68,6 +70,7 @@ export default function BottomDrawerLg({
       {isOverlay && <ScreenOverlay onClick={() => setIsModal(false)} />}
       <Layout
         height={drawerHeight}
+        zIndex={zIndex}
         isxpadding={isxpadding.toString()}
         drag="y"
         dragConstraints={{ top: 0, bottom: 0 }}
@@ -105,6 +108,7 @@ export default function BottomDrawerLg({
 }
 
 const Layout = styled(motion.div)<{
+  zIndex?: number;
   paddingoptions: { bottom?: number };
   height: number;
   isxpadding: string;
@@ -117,7 +121,7 @@ const Layout = styled(motion.div)<{
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   background-color: white;
-  z-index: 501;
+  z-index: ${(props) => props.zIndex || 501};
   padding: ${(props) => (props.isxpadding === "true" ? "12px 20px" : "12px 0")};
   padding-bottom: ${(props) =>
     props.isxpadding === "true" && props?.paddingoptions?.bottom !== 0

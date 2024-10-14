@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
+import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
@@ -42,6 +43,8 @@ function DailyCheckModal({ setIsModal }: IModal) {
   const typeToast = useTypeToast();
   const { data: session } = useSession();
   const isGuest = session?.user.name === "guest";
+
+  const [isDetailModal, setIsDetailModal] = useState(false);
 
   const setDailyCheckWin = useSetRecoilState(transferDailyCheckWinState);
   const setShowDailyCheck = useSetRecoilState(transferShowDailyCheckState);
@@ -81,7 +84,7 @@ function DailyCheckModal({ setIsModal }: IModal) {
         const alphabet = getRandomAlphabet(20);
         if (alphabet) {
           getAlphabet({ alphabet });
-          setAlphabet(alphabet);
+          setAlphabet({ alphabet });
         }
       } else {
         setDailyCheckWin(gift);
@@ -106,24 +109,58 @@ function DailyCheckModal({ setIsModal }: IModal) {
   };
 
   return (
-    <ModalLayout title="매일매일 출석체크!" footerOptions={footerOptions} setIsModal={setIsModal}>
-      <Flex direction="column" align="center">
-        <Flex justify="center" h="60px" mb={2} align="center">
-          <CheckCircleBigIcon />
+    <>
+      <ModalLayout title="매일매일 출석체크!" footerOptions={footerOptions} setIsModal={setIsModal}>
+        <Flex direction="column" align="center">
+          <Flex justify="center" h="60px" mb={2} align="center">
+            <CheckCircleBigIcon />
+          </Flex>
+          <Box textAlign="center">
+            매일 출석체크로 <b style={{ color: "var(--color-mint)" }}>2 Score</b>을 얻을 수 있고,
+            <br />
+            확률적으로 <b style={{ color: "var(--color-mint)" }}>랜덤 이벤트 선물</b>도 받을 수
+            있어요 !
+          </Box>
+          <Box mt={2}>
+            <Button
+              onClick={() => setIsDetailModal(true)}
+              size="sm"
+              borderRadius="20px"
+              bgColor="var(--gray-100)"
+              color="var(--gray-600)"
+            >
+              상품 목록 및 확률 정보
+            </Button>
+          </Box>
         </Flex>
-        <Box textAlign="center">
-          매일 출석체크로 <b style={{ color: "var(--color-mint)" }}>2 Score</b>을 얻을 수 있고,
-          <br />
-          확률적으로 <b style={{ color: "var(--color-mint)" }}>랜덤 이벤트 선물</b>도 받을 수 있어요
-          !
-        </Box>
-        <Box mt={2}>
-          <Button size="sm" borderRadius="20px" bgColor="var(--gray-100)" color="var(--gray-600)">
-            상품 목록 및 확률 정보
-          </Button>
-        </Box>
-      </Flex>
-    </ModalLayout>
+      </ModalLayout>
+      {isDetailModal && (
+        <ModalLayout
+          title="출석체크 확률표"
+          footerOptions={{ main: { text: "확 인" } }}
+          setIsModal={setIsDetailModal}
+        >
+          <Flex w="100%">
+            <Flex flex={1} direction="column" borderRight="var(--border)">
+              <Box fontWeight={600} mb={1}>
+                당첨 목록
+              </Box>
+              {DAILY_CHECK_WIN_LIST.map((item, idx) => (
+                <span key={idx}>{item.item}</span>
+              ))}
+            </Flex>
+            <Flex flex={1} direction="column">
+              <Box fontWeight={600} mb={1}>
+                당첨 확률
+              </Box>
+              {DAILY_CHECK_WIN_LIST.map((item, idx) => (
+                <span key={idx}>{item.percent}%</span>
+              ))}
+            </Flex>
+          </Flex>
+        </ModalLayout>
+      )}
+    </>
   );
 }
 
@@ -143,10 +180,11 @@ function PresentListPopOver() {
         <PopoverCloseButton />
         <PopoverBody fontSize="12px">
           {DAILY_CHECK_WIN_LIST.map((item, idx) => (
-            <span key={idx}>
-              {item.item}
+            <PercentItem key={idx}>
+              <span>{item.item}</span>
+              <span>({item.percent}%)</span>
               {idx !== DAILY_CHECK_WIN_LIST.length - 1 && ", "}
-            </span>
+            </PercentItem>
           ))}
         </PopoverBody>
       </PopoverContent>

@@ -136,7 +136,8 @@ export function ModalLayout({
                 paddingOptions?.header !== undefined ? `${paddingOptions.header}px` : "var(--gap-5)"
               }
               pb={paddingOptions?.header !== undefined ? `${paddingOptions.header}px` : "8px"}
-              fontSize="20px"
+              fontSize="16px"
+              fontWeight={700}
               textAlign="center"
             >
               {title}
@@ -154,7 +155,10 @@ export function ModalLayout({
             paddingOptions?.body?.bottom !== undefined ? `${paddingOptions.body.bottom}px` : "12px"
           }
           px={6}
+          textAlign="center"
           fontSize="13px"
+          display="flex"
+          justifyContent="center"
         >
           {children}
         </ChakraModalBody>

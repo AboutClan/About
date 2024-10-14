@@ -1,5 +1,4 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
-import { RightShortArrowIcon } from "../Icons/ArrowIcons";
+import { Box, Flex } from "@chakra-ui/react";
 
 interface SectionHeaderProps {
   title: string;
@@ -17,11 +16,7 @@ function SectionHeader({ title, subTitle, children }: SectionHeaderProps) {
         <Box mr="auto" color="var(--gray-800)" fontSize="18px" fontWeight={600}>
           {title}
         </Box>
-        {children || (
-          <Button variant="unstyled" w="12px" height="12px" color="var(--color-mint)">
-            <RightShortArrowIcon />
-          </Button>
-        )}
+        {children}
       </Flex>
     </Box>
   );

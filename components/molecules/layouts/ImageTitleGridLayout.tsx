@@ -94,9 +94,10 @@ export const ImageTileLayout = ({
     <Flex direction="column" textAlign="center" mb={2}>
       <PlaceImage
         selected={selected}
-        image={{ url, isPriority }}
+        imageProps={{ image: url, isPriority }}
         id={id}
         hasToggleHeart={hasToggleHeart}
+        size="sm"
       />
       <TextContainer selected={selected}>{text}</TextContainer>
     </Flex>

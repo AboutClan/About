@@ -1,13 +1,16 @@
 import { Box } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import WeekSlideCalendar from "../../components/molecules/WeekSlideCalendar";
-import { convertStudyToParticipations } from "../../libs/study/getMyStudyMethods";
-import { DispatchString } from "../../types/hooks/reactTypes";
 import {
-  StudyDailyInfoProps,
-  StudyMergeParticipationProps,
-} from "../../types/models/studyTypes/studyDetails";
+  StudyThumbnailCard,
+  StudyThumbnailCardProps,
+} from "../../components/molecules/cards/StudyThumbnailCard";
+import WeekSlideCalendar from "../../components/molecules/WeekSlideCalendar";
+import { useCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
+import { convertStudyToParticipations } from "../../libs/study/getMyStudyMethods";
+import { setStudyToThumbnailInfo } from "../../libs/study/setStudyToThumbnailInfo";
+import { DispatchString } from "../../types/hooks/reactTypes";
+import { StudyDailyInfoProps } from "../../types/models/studyTypes/studyDetails";
 import StudyPageDrawerFilterBar from "./studyPageDrawer/StudyPageDrawerFilterBar";
 import StudyPageDrawerHeader from "./studyPageDrawer/StudyPageDrawerHeader";
 
@@ -22,16 +25,23 @@ function StudyPageDrawer({ studyVoteData, date, setDate }: StudyPageDrawerProps)
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
 
-  const [participationArr, setParticipationArr] = useState<StudyMergeParticipationProps[]>();
+  const { currentLocation } = useCurrentLocation();
 
+  const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
+  console.log(555, thumbnailCardInfoArr);
   useEffect(() => {
+    if (!studyVoteData) return;
     const participations = convertStudyToParticipations(studyVoteData);
-    setParticipationArr(participations);
-  }, []);
+    const getThumbnailCardInfoArr = setStudyToThumbnailInfo(participations, currentLocation, date);
+    setThumbnailCardinfoArr(getThumbnailCardInfoArr);
+  }, [studyVoteData]);
 
-  const handleChangeDate = () => {};
+  const handleChangeDate = (moveDate: string) => {
+    setDate(moveDate);
+  };
 
   const handleSelectDate = (moveDate: string) => {
+    console.log(52);
     if (date === moveDate) return;
     setDate(moveDate);
     newSearchParams.set("date", moveDate);
@@ -42,12 +52,17 @@ function StudyPageDrawer({ studyVoteData, date, setDate }: StudyPageDrawerProps)
     <>
       <Box w="100%">
         <StudyPageDrawerHeader date={date} />
-        <WeekSlideCalendar
-          // voteCntArr={voteCntArr}
-          selectedDate={date}
-          func={handleSelectDate}
+        <WeekSlideCalendar selectedDate={date} func={handleSelectDate} />
+        <StudyPageDrawerFilterBar
+          thumbnailCardInfoArr={thumbnailCardInfoArr}
+          setThumbnailCardInfoArr={setThumbnailCardinfoArr}
+          placeCnt={thumbnailCardInfoArr?.length}
         />
-        <StudyPageDrawerFilterBar />
+        {thumbnailCardInfoArr?.map((thumbnailCardInfo, idx) => (
+          <Box key={idx} mb={3}>
+            <StudyThumbnailCard {...thumbnailCardInfo} />
+          </Box>
+        ))}
       </Box>
     </>
   );

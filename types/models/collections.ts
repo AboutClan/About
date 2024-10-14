@@ -1,7 +1,7 @@
 import { TimeStampProps } from "../utils/timeAndDate";
 import { IUserSummary } from "./userTypes/userInfoTypes";
 
-export type Alphabet = "A" | "B" | "O" | "U" | "T";
+export type Alphabet = "A" | "b" | "o" | "u" | "t";
 
 export interface ICollectionAlphabet extends TimeStampProps {
   collects: Alphabet[];
@@ -10,6 +10,6 @@ export interface ICollectionAlphabet extends TimeStampProps {
 }
 
 export interface CollectionProps {
-  stamps: number;
   alphabet: Alphabet;
+  stamps?: number;
 }

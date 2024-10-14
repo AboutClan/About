@@ -11,11 +11,9 @@ import {
   GatherThumbnailCardProps,
 } from "../../components/molecules/cards/GatherThumbnailCard";
 import { CardColumnLayoutSkeleton } from "../../components/organisms/CardColumnLayout";
-import { USER_LOCATION } from "../../constants/keys/localStorage";
 import { useGatherQuery } from "../../hooks/gather/queries";
 import { transferGatherDataState } from "../../recoils/transferRecoils";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
-import { ActiveLocation } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomImage } from "../../utils/imageUtils";
@@ -26,9 +24,6 @@ export default function HomeGatherCol() {
   const searchParams = useSearchParams();
 
   const tab = searchParams.get("tab") as "recommendation" | "gather";
-
-  const userLocation =
-    (localStorage.getItem(USER_LOCATION) as ActiveLocation) || session?.user.location;
 
   const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>([]);
 
@@ -53,7 +48,7 @@ export default function HomeGatherCol() {
           ))}
           {cardDataArr.length >= 3 && (
             <SectionFooterButton
-              url={`/gather?location=${convertLocationLangTo(userLocation, "en")}`}
+              url={`/gather?location=${convertLocationLangTo(session?.user.location, "en")}`}
             />
           )}
         </Flex>

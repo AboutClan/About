@@ -3,8 +3,8 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
 import styled from "styled-components";
+import { AboutIcon } from "../../components/atoms/AboutIcons";
 
-import { AlphabetIcon } from "../../components/Icons/AlphabetIcon";
 import { useCollectionAlphabetQuery } from "../../hooks/user/sub/collection/queries";
 import UserCollectionModal from "../../modals/user/collection/UserCollectionAlphabetModal";
 
@@ -28,11 +28,11 @@ export default function UserCollection() {
           <i className="fa-solid fa-chevron-right" />
         </BlockItem>
         <AlphabetContainer>
-          <AlphabetIcon alphabet="A" isDuotone={!alphabetArr?.includes("A")} />
-          <AlphabetIcon alphabet="B" isDuotone={!alphabetArr?.includes("B")} />
-          <AlphabetIcon alphabet="O" isDuotone={!alphabetArr?.includes("O")} />
-          <AlphabetIcon alphabet="U" isDuotone={!alphabetArr?.includes("U")} />
-          <AlphabetIcon alphabet="T" isDuotone={!alphabetArr?.includes("T")} />
+          <AboutIcon alphabet="A" isActive={alphabetArr?.includes("A")} />
+          <AboutIcon alphabet="b" isActive={alphabetArr?.includes("b")} />
+          <AboutIcon alphabet="o" isActive={alphabetArr?.includes("o")} />
+          <AboutIcon alphabet="u" isActive={alphabetArr?.includes("u")} />
+          <AboutIcon alphabet="t" isActive={alphabetArr?.includes("t")} />
         </AlphabetContainer>
       </Link>
       <AlphabetQNABtn onClick={() => setIsCollectionModal(true)}>

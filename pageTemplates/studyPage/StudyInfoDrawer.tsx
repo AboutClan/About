@@ -157,7 +157,7 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
 
   return (
     <>
-      <BottomDrawerLg height={185} setIsModal={() => setDetailInfo(null)}>
+      <BottomDrawerLg zIndex={700} height={185} setIsModal={() => setDetailInfo(null)}>
         <Flex direction="column" w="100%">
           <Flex justifyContent="space-between" mb={4}>
             <Flex direction="column">

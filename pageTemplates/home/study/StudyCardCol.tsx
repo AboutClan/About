@@ -1,9 +1,8 @@
-import { Box, Flex, ThemeTypings } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
 import SectionFooterButton from "../../../components/atoms/SectionFooterButton";
 
 import BlurredPart from "../../../components/molecules/BlurredPart";
@@ -18,21 +17,16 @@ import {
   STUDY_DATE_START_HOUR,
   STUDY_RESULT_HOUR,
 } from "../../../constants/serviceConstants/studyConstants/studyTimeConstant";
+import { setStudyToThumbnailInfo } from "../../../libs/study/setStudyToThumbnailInfo";
 import StudyOpenCheckModal from "../../../modals/study/StudyOpenCheckModal";
-import { studyDateStatusState } from "../../../recoils/studyRecoils";
-import {
-  StudyParticipationProps,
-  StudyStatus,
-} from "../../../types/models/studyTypes/studyDetails";
+import { StudyParticipationProps } from "../../../types/models/studyTypes/studyDetails";
 import { StudyVotingSave } from "../../../types/models/studyTypes/studyInterActions";
 import { InactiveLocation, LocationEn } from "../../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
-import { getDistanceFromLatLonInKm } from "../../../utils/mathUtils";
 
 interface StudyCardColProps {
   participations: StudyParticipationProps[];
-
   date: string;
 }
 
@@ -48,7 +42,6 @@ function StudyCardCol({ participations, date }: StudyCardColProps) {
 
   const myUid = session?.user.uid;
 
-  const studyDateStatus = useRecoilValue(studyDateStatusState);
   const [studyCardColData, setStudyCardColData] = useState<StudyThumbnailCardProps[]>();
   const [dismissedStudy, setDismissedStudy] = useState<StudyParticipationProps>();
   const [currentLocation, setCurrentLocation] = useState<{ lat: number; lon: number }>();
@@ -73,17 +66,14 @@ function StudyCardCol({ participations, date }: StudyCardColProps) {
   }, []);
 
   useEffect(() => {
-    if (!participations || !participations.length || !session?.user || !studyDateStatus) {
+    console.log(54, participations);
+    if (!participations || !participations.length) {
       setStudyCardColData(null);
       return;
     }
-    const cardList = setStudyDataToCardCol(
-      participations,
-      currentLocation,
-      date as string,
-      session?.user.uid,
-    );
-
+    const cardList = setStudyToThumbnailInfo(participations, currentLocation, date as string);
+    console.log(33, cardList);
+    if (!cardList?.length) return;
     setStudyCardColData(cardList.slice(0, 3));
 
     let myStudy: StudyParticipationProps = null;
@@ -125,7 +115,7 @@ function StudyCardCol({ participations, date }: StudyCardColProps) {
 
       localStorage.setItem(STUDY_VOTING_TABLE, JSON.stringify(updatedTable));
     }
-  }, [studyDateStatus, participations]);
+  }, [participations, currentLocation]);
 
   return (
     <>
@@ -166,58 +156,5 @@ function StudyCardCol({ participations, date }: StudyCardColProps) {
     </>
   );
 }
-
-export const setStudyDataToCardCol = (
-  studyData: StudyParticipationProps[],
-  currentLocation: { lat: number; lon: number },
-  urlDateParam: string,
-  uid: string,
-): StudyThumbnailCardProps[] => {
-  const cardColData: StudyThumbnailCardProps[] = [...studyData]
-    ?.sort((a, b) =>
-      a.place.branch === "개인 스터디" ? 1 : b.place.branch === "개인 스터디" ? -1 : 0,
-    )
-    .map((data) => {
-      const placeInfo = data.place;
-      return {
-        place: {
-          fullname: placeInfo.fullname,
-          branch: placeInfo.branch,
-          address: placeInfo.locationDetail,
-          distance: getDistanceFromLatLonInKm(
-            currentLocation.lat,
-            currentLocation.lon,
-            placeInfo.latitude,
-            placeInfo.longitude,
-          ),
-          imageProps: { image: placeInfo.image, isPriority: true },
-        },
-        participants: data.members.map((att) => att.user),
-        url: `/study/${data.place._id}/${urlDateParam}?location=${convertLocationLangTo(data.place.location, "en")}`,
-        badge: getBadgeText(data.status),
-
-        id: data.place._id,
-      };
-    });
-
-  return cardColData;
-};
-
-const getBadgeText = (
-  status: StudyStatus,
-): { text: string; colorScheme: ThemeTypings["colorSchemes"] } => {
-  switch (status) {
-    case "open":
-      return { text: "스터디 오픈", colorScheme: "mintTheme" };
-    case "dismissed":
-      return { text: "닫힘", colorScheme: "grayTheme" };
-    case "free":
-      return { text: "자유 참여", colorScheme: "purple" };
-    case "pending":
-      return null;
-    default:
-      return null;
-  }
-};
 
 export default StudyCardCol;

@@ -41,7 +41,6 @@ function Layout({ children }: ILayout) {
 
   const segment = pathname?.split("/")?.[1];
   const PUBLIC_SEGMENT = ["register", "login"];
-  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
   const { data: session, status } = useSession();
 

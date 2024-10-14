@@ -134,7 +134,7 @@ const Nav = styled.nav`
   bottom: 0;
   height: ${52 + iPhoneNotchSize()}px;
   background-color: white;
-  z-index: 10;
+  z-index: 600;
   padding-bottom: ${iPhoneNotchSize()}px;
 
   border-top: var(--border);
@@ -150,9 +150,4 @@ const NavLink = styled(Link)<{ isactive: "true" | "false" } & LinkProps>`
   align-items: center;
 
   color: ${({ isactive }) => (isactive === "true" ? "var(--gray-800)" : "var(--gray-500)")};
-`;
-
-const NavText = styled.div`
-  margin-top: 6px;
-  font-size: 12px;
 `;

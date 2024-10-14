@@ -1,15 +1,18 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import SectionHeader from "../../components/atoms/SectionHeader";
+import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import { USER_LOCATION } from "../../constants/keys/localStorage";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { getMyStudyParticipation } from "../../libs/study/getMyStudyMethods";
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import { ActiveLocation } from "../../types/services/locationTypes";
+import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToKr, dayjsToStr } from "../../utils/dateTimeUtils";
 import StudyCardCol from "./study/StudyCardCol";
 interface HomeStudySectionProps {}
@@ -31,7 +34,7 @@ function HomeStudySection({}: HomeStudySectionProps) {
       enabled: !!userLocation,
     },
   );
-
+  console.log(2, studyVoteData);
   useEffect(() => {
     if (!studyVoteData || !session?.user) return;
     const myStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
@@ -49,10 +52,18 @@ function HomeStudySection({}: HomeStudySectionProps) {
     },
   ];
 
+  const navigateStudyListPage = () => {};
+
   return (
     <>
       <Box px={5}>
-        <SectionHeader title="카공 스터디 같이 하실 분" subTitle="Study" />
+        <SectionHeader title="카공 스터디 같이 하실 분" subTitle="Study">
+          <Link
+            href={`/studyList?tab=study&location=${convertLocationLangTo(userLocation, "en")}&date=${date}`}
+          >
+            <ShortArrowIcon dir="right" />
+          </Link>
+        </SectionHeader>
       </Box>
       <Box px={5} mt={3} mb={5} borderBottom="var(--border)">
         <TabNav tabOptionsArr={tabOptionsArr} selected={dayjsToKr(dayjs(date))} isFullSize />

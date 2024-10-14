@@ -5,6 +5,7 @@ import { LOCATION_TO_FULLNAME } from "../../constants/location";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { isLocationType } from "../../utils/validationUtils";
+import { ShortArrowIcon } from "../Icons/ArrowIcons";
 
 interface ISelect {
   defaultValue: string;
@@ -17,7 +18,6 @@ interface ISelect {
   isFullSize?: boolean;
   isActive?: boolean;
   isThick?: boolean;
-
 }
 
 export default function Select({
@@ -28,7 +28,7 @@ export default function Select({
   type,
   size = "sm",
   isFullSize,
-  isEllipse,
+
   isActive = true,
   isThick,
 }: ISelect) {
@@ -69,10 +69,7 @@ export default function Select({
           fontSize={size === "sm" ? "12px" : "12px"}
           pointerEvents="none"
         >
-          <i
-            className={`fa-solid fa-chevron-down fa-${size === "sm" ? "xs" : size === "md" ? "sm" : "lg"}`}
-            style={{ color: "var(--color-mint)" }}
-          />
+          <ShortArrowIcon dir="bottom" />
         </Flex>
       }
       ref={selectRef}
@@ -85,19 +82,22 @@ export default function Select({
       border={!isBorder ? "none" : undefined}
       borderColor="var(--gray-200)"
       bgColor="white"
-      fontSize={size === "sm" || size === "md" ? "11px" : "13px"}
+      fontSize={
+        size === "sm" && !isBorder ? "12px" : size === "sm" || size === "md" ? "11px" : "13px"
+      }
       outline={size === "md" ? "1px solid var(--gray-100)" : undefined}
       fontWeight={size === "sm" ? 500 : isThick ? 600 : 500}
       isDisabled={!isActive}
-      height={size === "sm" ? "24px" : size === "md" ? "32px" : "52px"}
+      height={size === "sm" ? (isBorder ? "24px" : "16px") : size === "md" ? "32px" : "52px"}
       width={!isFullSize ? "max-content" : "100%"}
+      mr={size === "sm" && !isBorder && "-6px"}
       sx={{
         paddingInlineStart: size === "sm" ? "8px" : size === "md" ? "16px" : "20px", // padding-left
         paddingInlineEnd: "20px", // padding-right (아이콘 오른쪽에 여유 공간)
       }}
       _focus={{
-        outline: "var(--border)",
-        border: "var(--border)",
+        outline: isBorder ? "var(--border)" : "none",
+        border: isBorder ? "var(--border)" : "none",
         boxShadow: "none",
       }}
     >

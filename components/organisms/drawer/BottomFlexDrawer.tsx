@@ -75,6 +75,7 @@ export default function BottomFlexDrawer({
       onPointerDown={handlePointerDown} // 드래그 시작 시
     >
       <TopNav />
+
       {drawerHeight > 100 && children}
     </Layout>
   );

@@ -1,5 +1,7 @@
 import { GatherStatus } from "../types/models/gatherTypes/gatherTypes";
 
+export const SUB_COLORS = ["var(--color-red)", "var(--color-orange)", "var(--color-blue)"];
+
 export const TABLE_COLORS = [
   "#FF8896",
   "#FEBC5A",

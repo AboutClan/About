@@ -1,10 +1,10 @@
-import { Badge, Box, Flex } from "@chakra-ui/react";
+import { Badge, Box, Flex, ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Link from "next/link";
 import styled from "styled-components";
 
 import { SingleLineText } from "../../../styles/layout/components";
-import { ITextAndColorSchemes } from "../../../types/components/propTypes";
+import { StudyStatus } from "../../../types/models/studyTypes/studyDetails";
 import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 import { UserIcon } from "../../Icons/UserIcons";
@@ -27,17 +27,27 @@ export interface StudyThumbnailCardProps {
   };
   participants?: UserSimpleInfoProps[];
   url: string;
-  badge: ITextAndColorSchemes;
+  status: string;
   func?: () => void;
   registerDate?: string;
   id: string;
 }
 
+const STATUS_TO_BADGE_PROPS: Record<
+  StudyStatus,
+  { text: string; colorScheme: ThemeTypings["colorSchemes"] }
+> = {
+  open: { text: "스터디 오픈", colorScheme: "mintTheme" },
+  dismissed: { text: "닫힘", colorScheme: "gray" },
+  free: { text: "자유참여", colorScheme: "purple" },
+  pending: { text: "신청가능", colorScheme: "redTheme" },
+};
+
 export function StudyThumbnailCard({
   place,
   participants,
   url,
-  badge,
+  status,
   func = undefined,
   registerDate,
   id,
@@ -54,8 +64,8 @@ export function StudyThumbnailCard({
       <CardLink href={url} onClick={func}>
         <PlaceImage size="md" imageProps={place.imageProps} hasToggleHeart id={id} />
         <Flex direction="column" ml={4} flex={1}>
-          <Badge mr="auto" colorScheme={badge.colorScheme} size="md">
-            자유참여
+          <Badge mr="auto" colorScheme={STATUS_TO_BADGE_PROPS[status].colorScheme} size="md">
+            {STATUS_TO_BADGE_PROPS[status].text}
           </Badge>
 
           <Title>{place.fullname}</Title>
@@ -73,8 +83,8 @@ export function StudyThumbnailCard({
               <Box as="span" color="var(--gray-400)">
                 ・
               </Box>
-              <Box as="span" fontWeight={600}>
-                {place.distance}KM
+              <Box as="span" fontWeight={600} w="37px">
+                {place.distance && `${place.distance}KM`}
               </Box>
               <Box as="span" color="var(--gray-400)">
                 ・
