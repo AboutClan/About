@@ -17,6 +17,7 @@ export const getPerformanceTime = () => {
 };
 
 export const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
+  if (!lat1 || !lon1 || !lat2 || !lon2) return;
   const R = 6371; // 지구 반경 (킬로미터)
   const dLat = deg2rad(lat2 - lat1); // 위도 차이를 라디안으로 변환
   const dLon = deg2rad(lon2 - lon1); // 경도 차이를 라디안으로 변환

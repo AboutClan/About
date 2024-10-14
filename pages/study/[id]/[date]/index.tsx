@@ -1,38 +1,28 @@
+import { Box } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { STUDY_MAIN_IMAGES } from "../../../../assets/images/studyMain";
+import LocationDot from "../../../../components/atoms/LocationDot";
 
-import Divider from "../../../../components/atoms/Divider";
 import Slide from "../../../../components/layouts/PageSlide";
-import {
-  useRealTimeCancelMutation,
-  useRealTimeCommentMutation,
-  useRealTimeStatusMutation,
-  useRealTimeTimeChangeMutation,
-} from "../../../../hooks/realtime/mutations";
+import { useCurrentLocation } from "../../../../hooks/custom/CurrentLocationHook";
 import { useStudyVoteOneQuery, useStudyVoteQuery } from "../../../../hooks/study/queries";
+import { convertMergePlaceToPlace } from "../../../../libs/study/convertMergePlaceToPlace";
 import { getStudyParticipationById } from "../../../../libs/study/getMyStudyMethods";
+import StudyAddressMap from "../../../../pageTemplates/study/StudyAddressMap";
 import StudyCover from "../../../../pageTemplates/study/StudyCover";
-import StudyDateBar from "../../../../pageTemplates/study/StudyDateBar";
 import StudyHeader from "../../../../pageTemplates/study/StudyHeader";
-import StudyParticipants from "../../../../pageTemplates/study/StudyMembers";
-import StudyNavigation from "../../../../pageTemplates/study/StudyNavigation";
 import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
-import StudyTimeBoard from "../../../../pageTemplates/study/StudyTimeBoard";
-import {
-  StudyParticipationProps,
-  StudyPlaceProps,
-} from "../../../../types/models/studyTypes/studyDetails";
-import { PlaceInfoProps } from "../../../../types/models/utilTypes";
+import { StudyParticipationProps } from "../../../../types/models/studyTypes/studyDetails";
 import { LocationEn } from "../../../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../../../utils/convertUtils/convertDatas";
-import { getRandomIdx } from "../../../../utils/mathUtils";
+import { getDistanceFromLatLonInKm } from "../../../../utils/mathUtils";
 
 export default function Page() {
   const searchParams = useSearchParams();
   const { data: session } = useSession();
   const { id, date } = useParams<{ id: string; date: string }>() || {};
+  const { currentLocation } = useCurrentLocation();
 
   const locationParam = searchParams.get("location") as LocationEn;
 
@@ -58,8 +48,6 @@ export default function Page() {
     enabled: !locationParam && !!date && !!id,
   });
 
-  const participation = studyVoteData ? getStudyParticipationById(studyVoteData, id) : studyOne;
-  console.log(2424, studyVoteData, studyOne, id);
   useEffect(() => {
     if (!session) return;
     // if (privateParam) {
@@ -104,51 +92,45 @@ export default function Page() {
   //     ? study?.members.filter((att) => att.firstChoice)
   //     : study?.members;
 
-  const place = participation?.place;
-  const studyPlace = participation?.place as StudyPlaceProps;
-  const realTimePlace = participation?.place as PlaceInfoProps;
+  const mergeParticipation = studyVoteData
+    ? getStudyParticipationById(studyVoteData, id)
+    : studyOne;
 
-  const members = participation?.members;
-  console.log(123, participation);
+  const place = convertMergePlaceToPlace(mergeParticipation?.place);
+  const { name, address, coverImage, latitude, longitude, time } = place || {};
 
-  const { mutate: changeTime } = useRealTimeTimeChangeMutation();
-  const { mutate: deleteVote } = useRealTimeCancelMutation();
-  const { mutate: changeStatus } = useRealTimeStatusMutation();
-  const { mutate: changeComment } = useRealTimeCommentMutation();
+  const distance =
+    currentLocation &&
+    getDistanceFromLatLonInKm(currentLocation.lat, currentLocation.lon, latitude, longitude);
 
   return (
     <>
-      {participation && (
+      {mergeParticipation && (
         <>
-          <StudyHeader
-            fullname={studyPlace?.fullname || realTimePlace?.name}
-            locationDetail={studyPlace?.locationDetail || realTimePlace?.address}
-            coverImage={
-              studyPlace?.coverImage || STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length)]
-            }
-          />
-          <Slide isNoPadding>
-            <StudyCover
-              imageUrl={
-                studyPlace?.coverImage || STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length)]
-              }
-              brand={studyPlace?.brand || realTimePlace?.name.split(" ")?.[0]}
-            />
+          <StudyHeader name={name} address={address} coverImage={coverImage} />
+          <Slide>
+            <StudyCover coverImage={coverImage} />
             <StudyOverview
-              title={studyPlace?.fullname || realTimePlace?.name}
-              locationDetail={studyPlace?.locationDetail || realTimePlace?.address}
-              time={studyPlace?.time}
-              participantsNum={members.length}
-              coordinate={{
-                lat: place.latitude,
-                lng: place.longitude,
-              }}
+              place={{ ...place }}
+              distance={distance}
+              status={mergeParticipation.status}
+              time={time}
             />
-            <Divider />
+          </Slide>
+          <Box h={2} bg="gray.100" />
+          <Slide>
+          
+            <StudyAddressMap
+              name={name}
+              address={address}
+              latitude={latitude}
+              longitude={longitude}
+            />
+            {/* <Divider />
             <StudyDateBar place={place} />
             <StudyTimeBoard members={members} studyStatus={participation.status} />
             <StudyParticipants members={members} />
-            <StudyNavigation voteCnt={members?.length} studyStatus={participation.status} />
+            <StudyNavigation voteCnt={members?.length} studyStatus={participation.status} /> */}
           </Slide>
         </>
       )}

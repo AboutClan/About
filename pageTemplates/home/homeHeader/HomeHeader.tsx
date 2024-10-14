@@ -38,7 +38,7 @@ function HomeHeader() {
   const setSlideDirection = useSetRecoilState(slideDirectionState);
 
   const todayDailyCheck = localStorage.getItem(DAILY_CHECK_POP_UP) === dayjsToStr(dayjs());
-  console.log(5, todayDailyCheck);
+
   const [isNoticeAlert, setIsNoticeAlert] = useState(false);
 
   // const { data } = useNoticeActiveLogQuery(undefined, false);

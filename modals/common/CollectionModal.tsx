@@ -14,7 +14,7 @@ interface ICollectionModal extends IModal {
 function CollectionModal({ collection, setIsModal }: ICollectionModal) {
   if (!collection) return;
 
-  console.log("collection", collection);
+  
   const footerOptions: IFooterOptions = {
     main: {},
   };

@@ -60,7 +60,7 @@ a {
 }
 
 .CircularProgressbar-trail {
-  stroke-width: 1;
+  strokewidth: 1;
 }
 .swiper-button-prev:after {
   display: none;

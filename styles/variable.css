@@ -36,10 +36,11 @@
 
   --view-max-width: calc(var(--max-width) - 2 * var(--gap-4));
 
-  --color-orange: #ffa500;
-  --color-red: #ff6b6b;
-  --color-blue: #6bafff;
+  --color-orange: #ffa501;
+  --color-red: #ff6969;
+  --color-blue: #007dfb;
   --color-gray: #a0aec0;
-
-  --input-bg: var(--gray-200);
+  --color-green: #11b1a7;
+  --color-purple: #bb57d5;
+   --input-bg: var(--gray-200);
 }

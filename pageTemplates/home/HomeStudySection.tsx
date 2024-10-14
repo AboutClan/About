@@ -34,7 +34,7 @@ function HomeStudySection({}: HomeStudySectionProps) {
       enabled: !!userLocation,
     },
   );
-  console.log(2, studyVoteData);
+ 
   useEffect(() => {
     if (!studyVoteData || !session?.user) return;
     const myStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);

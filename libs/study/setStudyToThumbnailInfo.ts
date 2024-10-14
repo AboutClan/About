@@ -1,31 +1,28 @@
-import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
 import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
 import {
   StudyMergeParticipationProps,
   StudyParticipationProps,
-  StudyPlaceProps,
 } from "../../types/models/studyTypes/studyDetails";
-import { PlaceInfoProps } from "../../types/models/utilTypes";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
-import { getDistanceFromLatLonInKm, getRandomIdx } from "../../utils/mathUtils";
+import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
+import { convertMergePlaceToPlace } from "./convertMergePlaceToPlace";
 
 export const setStudyToThumbnailInfo = (
   studyData: StudyParticipationProps[] | StudyMergeParticipationProps[],
   currentLocation: { lat: number; lon: number },
   urlDateParam: string,
-  location?: ActiveLocation,
+  location: ActiveLocation,
 ): StudyThumbnailCardProps[] => {
   if (!studyData) return;
-  const cardColData: StudyThumbnailCardProps[] = [...studyData]?.map((data) => {
-    const placeInfo = data.place;
-    const studyPlace = data.place as StudyPlaceProps;
-    const realTimePlace = data.place as PlaceInfoProps;
+  const cardColData: StudyThumbnailCardProps[] = [...studyData]?.map((data, idx) => {
+    const placeInfo = convertMergePlaceToPlace(data.place);
+
     return {
       place: {
-        fullname: studyPlace?.fullname || realTimePlace?.name,
-        branch: studyPlace?.branch || realTimePlace?.name.split(" ")?.[1] || "알수없음",
-        address: studyPlace?.locationDetail || realTimePlace?.address,
+        name: placeInfo.name,
+        branch: placeInfo.branch,
+        address: placeInfo.address,
         distance: currentLocation
           ? getDistanceFromLatLonInKm(
               currentLocation.lat,
@@ -35,12 +32,12 @@ export const setStudyToThumbnailInfo = (
             )
           : undefined,
         imageProps: {
-          image: studyPlace?.image || STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length)],
+          image: placeInfo.image,
           isPriority: true,
         },
       },
       participants: data.members.map((att) => att.user),
-      url: `/study/${data.place._id}/${urlDateParam}?location=${convertLocationLangTo(studyPlace?.location || location, "en")}`,
+      url: `/study/${data.place._id}/${urlDateParam}?location=${convertLocationLangTo(location, "en")}`,
       status: data.status,
 
       id: data.place._id,

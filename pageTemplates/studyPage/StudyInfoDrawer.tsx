@@ -135,7 +135,7 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
   };
 
   const handleVote = (time?: IStudyVoteTime) => {
-    console.log(54, detailInfo);
+  ;
     if (!detailInfo.isPrivate) {
       studyVote({
         place: detailInfo?.id,

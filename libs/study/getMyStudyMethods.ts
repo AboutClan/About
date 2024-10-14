@@ -7,24 +7,30 @@ import {
 
 //participation은 study의 participations와 realTime을 모두 포함한다.
 
-export const convertStudyToParticipations = (studyVoteData: StudyDailyInfoProps) => {
+export const convertStudyToParticipations = (
+  studyVoteData: StudyDailyInfoProps,
+  location: ActiveLocation,
+) => {
   if (!studyVoteData) return;
-  console.log(3131);
+
   const temp: StudyMergeParticipationProps[] = [];
 
   studyVoteData.realTime.forEach((props) => {
-    const findParticipationIdx = temp.findIndex(
-      (participation) => participation.place._id === props.place._id,
-    );
+    const changeLocation = getLocationByCoordinates(props.place?.latitude, props.place?.longitude);
+    if (location === changeLocation) {
+      const findParticipationIdx = temp.findIndex(
+        (participation) => participation.place._id === props.place._id,
+      );
 
-    if (findParticipationIdx !== -1) {
-      temp[findParticipationIdx].members.push(props);
-    } else {
-      temp.push({
-        place: props.place,
-        status: props.status,
-        members: [props],
-      });
+      if (findParticipationIdx !== -1) {
+        temp[findParticipationIdx].members.push(props);
+      } else {
+        temp.push({
+          place: props.place,
+          status: props.status,
+          members: [props],
+        });
+      }
     }
   });
 
@@ -44,7 +50,7 @@ export const getStudyParticipationById = (
   const findMyParticipation = studyVoteData.participations.find(
     (participation) => participation.place._id === id,
   );
-  console.log(222, findMyParticipation);
+
   const realTimeFiltered = getRealTimeFilteredById(studyVoteData.realTime, id);
 
   return findMyParticipation || realTimeFiltered;
@@ -84,9 +90,10 @@ export const getRealTimeFilteredById = (
   return { ...findStudy, members: filtered };
 };
 
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 
-import { StudyParticipationProps } from "../../types/models/studyTypes/studyDetails";
+import { ActiveLocation } from "../../types/services/locationTypes";
+import { getLocationByCoordinates } from "./getLocationByCoordinates";
 
 export const getMyStudyInfo = (
   participations: StudyMergeParticipationProps,
@@ -106,22 +113,22 @@ interface IMyStudyVoteInfo {
   fullname: string;
 }
 
-export const getMyStudyVoteInfo = (
-  myStudy: StudyParticipationProps,
-  myUid: string,
-): IMyStudyVoteInfo => {
-  if (!myStudy) return null;
-  const {
-    time: { start, end },
-    arrived = null,
-  } = myStudy.members.find((who) => who.user.uid === myUid);
+// export const getMyStudyVoteInfo = (
+//   myStudy: StudyParticipationProps,
+//   myUid: string,
+// ): IMyStudyVoteInfo => {
+//   if (!myStudy) return null;
+//   const {
+//     time: { start, end },
+//     arrived = null,
+//   } = myStudy.members.find((who) => who.user.uid === myUid);
 
-  return {
-    placeId: myStudy.place._id,
-    fullname: myStudy.place.fullname,
-    startTime: myStudy?.startTime ? dayjs(myStudy.startTime) : null,
-    start,
-    end,
-    arrived,
-  };
-};
+//   return {
+//     placeId: myStudy.place._id,
+//     fullname: myStudy.place.fullname,
+//     startTime: myStudy?.startTime ? dayjs(myStudy.startTime) : null,
+//     start,
+//     end,
+//     arrived,
+//   };
+// };

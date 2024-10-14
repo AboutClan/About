@@ -76,7 +76,7 @@ export default function StudyVoteMap() {
   const [locationValue, setLocationValue] = useState<ActiveLocation>(
     locationParamKr || userLocation,
   );
-  console.log(52, locationParamKr, userLocation, locationValue);
+ 
   const [detailInfo, setDetailInfo] = useState<StudyInfoProps>();
 
   const [myStudyParticipation, setMyStudyParticipation] = useRecoilState(myStudyParticipationState);
@@ -88,7 +88,7 @@ export default function StudyVoteMap() {
   const { data: studyVoteData } = useStudyVoteQuery(date, locationValue, {
     enabled: !!locationValue && !!date,
   });
-  console.log(32, studyVoteData, locationValue, date);
+  
   const mainLocation = userInfo?.locationDetail;
 
   useEffect(() => {
@@ -128,7 +128,7 @@ export default function StudyVoteMap() {
           router.replace(`/studyPage?${newSearchParams.toString()}`);
           return;
         } else if (changeLocation !== locationValue) {
-          console.log(824124);
+         
           setLocationValue(changeLocation as ActiveLocation);
         }
         setLocationFilterType("활동 장소");
@@ -294,7 +294,7 @@ export default function StudyVoteMap() {
 
       {detailInfo && <StudyInFoDrawer  detailInfo={detailInfo} setDetailInfo={setDetailInfo} />}
       <BottomFlexDrawer isOverlay={false} isDrawerUp={drawerParam !== "down"}>
-        <StudyPageDrawer studyVoteData={studyVoteData} date={date} setDate={setDate} />
+        <StudyPageDrawer studyVoteData={studyVoteData} location={locationValue} date={date} setDate={setDate} />
       </BottomFlexDrawer>
     </>
   );

@@ -20,7 +20,7 @@ function AIcon() {
         <g opacity="0.12" filter="url(#filter0_f_35_316)">
           <ellipse cx="18" cy="41.1499" rx="16" ry="1" fill="#424242" />
         </g>
-        <circle cx="30" cy="7" r="6" fill="#6BAFFF" stroke="white" stroke-width="2" />
+        <circle cx="30" cy="7" r="6" fill="#6BAFFF" stroke="white" strokeWidth="2" />
         <defs>
           <filter
             id="filter0_f_35_316"

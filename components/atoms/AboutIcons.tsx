@@ -3,7 +3,10 @@ import { Alphabet } from "../../types/models/collections";
 
 const ALPHABET_BG: Record<Alphabet, string> = {
   A: "var(--color-red)",
-  b: "var(--color-blue)",
+  b: "var(--color-orange)",
+  o: "var(--color-blue)",
+  u: "var(--color-green)",
+  t: "var(--color-purple)",
 };
 
 export const AboutIcon = ({

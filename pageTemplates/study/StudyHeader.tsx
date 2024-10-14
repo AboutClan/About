@@ -7,12 +7,12 @@ import Header from "../../components/layouts/Header";
 import { WEB_URL } from "../../constants/system";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 interface IStudyHeader {
-  fullname: string;
-  locationDetail: string;
+  name: string;
+  address: string;
   coverImage: string;
 }
 
-function StudyHeader({ fullname, locationDetail, coverImage }: IStudyHeader) {
+function StudyHeader({ name, address, coverImage }: IStudyHeader) {
   const { date } = useParams<{ date: string }>();
   const router = useRouter();
 
@@ -23,8 +23,8 @@ function StudyHeader({ fullname, locationDetail, coverImage }: IStudyHeader) {
       <KakaoShareBtn
         type="study"
         title={`${dayjsToFormat(dayjs(date), "(M/D)")} 같이 스터디 해요~!`}
-        subtitle={fullname}
-        location={locationDetail}
+        subtitle={name}
+        location={address}
         img={coverImage}
         url={url}
       />

@@ -1,10 +1,10 @@
-import { Badge, Box, Flex, ThemeTypings } from "@chakra-ui/react";
+import { Badge, Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Link from "next/link";
 import styled from "styled-components";
+import { STUDY_STATUS_TO_BADGE } from "../../../constants/studyConstants";
 
 import { SingleLineText } from "../../../styles/layout/components";
-import { StudyStatus } from "../../../types/models/studyTypes/studyDetails";
 import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 import { UserIcon } from "../../Icons/UserIcons";
@@ -16,7 +16,7 @@ const STUDY_MAX_CNT = 8;
 
 export interface StudyThumbnailCardProps {
   place: {
-    fullname: string;
+    name: string;
     branch: string;
     address: string;
     distance: number;
@@ -32,16 +32,6 @@ export interface StudyThumbnailCardProps {
   registerDate?: string;
   id: string;
 }
-
-const STATUS_TO_BADGE_PROPS: Record<
-  StudyStatus,
-  { text: string; colorScheme: ThemeTypings["colorSchemes"] }
-> = {
-  open: { text: "스터디 오픈", colorScheme: "mintTheme" },
-  dismissed: { text: "닫힘", colorScheme: "gray" },
-  free: { text: "자유참여", colorScheme: "purple" },
-  pending: { text: "신청가능", colorScheme: "redTheme" },
-};
 
 export function StudyThumbnailCard({
   place,
@@ -64,11 +54,11 @@ export function StudyThumbnailCard({
       <CardLink href={url} onClick={func}>
         <PlaceImage size="md" imageProps={place.imageProps} hasToggleHeart id={id} />
         <Flex direction="column" ml={4} flex={1}>
-          <Badge mr="auto" colorScheme={STATUS_TO_BADGE_PROPS[status].colorScheme} size="md">
-            {STATUS_TO_BADGE_PROPS[status].text}
+          <Badge mr="auto" colorScheme={STUDY_STATUS_TO_BADGE[status].colorScheme} size="md">
+            {STUDY_STATUS_TO_BADGE[status].text}
           </Badge>
 
-          <Title>{place.fullname}</Title>
+          <Title>{place.name}</Title>
           <Subtitle>
             <Box>
               <Box as="span">

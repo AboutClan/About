@@ -50,7 +50,7 @@ function StudyMapTopNav({
       setIsLocationFetch(true);
     }
     if (locationFilterType === type) {
-      console.log(532);
+    
       setLocationFilterType("현재 위치");
       newSearchParams.set("category", "currentPlace");
     } else {

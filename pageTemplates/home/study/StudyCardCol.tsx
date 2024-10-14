@@ -21,7 +21,11 @@ import { setStudyToThumbnailInfo } from "../../../libs/study/setStudyToThumbnail
 import StudyOpenCheckModal from "../../../modals/study/StudyOpenCheckModal";
 import { StudyParticipationProps } from "../../../types/models/studyTypes/studyDetails";
 import { StudyVotingSave } from "../../../types/models/studyTypes/studyInterActions";
-import { InactiveLocation, LocationEn } from "../../../types/services/locationTypes";
+import {
+  ActiveLocation,
+  InactiveLocation,
+  LocationEn,
+} from "../../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 
@@ -38,7 +42,7 @@ function StudyCardCol({ participations, date }: StudyCardColProps) {
   const locationEn =
     (searchParams.get("location") as LocationEn) ||
     convertLocationLangTo(session?.user.location, "en");
-  const location = convertLocationLangTo(locationEn, "kr");
+  const location = convertLocationLangTo(locationEn, "kr") as ActiveLocation;
 
   const myUid = session?.user.uid;
 
@@ -66,13 +70,17 @@ function StudyCardCol({ participations, date }: StudyCardColProps) {
   }, []);
 
   useEffect(() => {
-    console.log(54, participations);
     if (!participations || !participations.length) {
       setStudyCardColData(null);
       return;
     }
-    const cardList = setStudyToThumbnailInfo(participations, currentLocation, date as string);
-    console.log(33, cardList);
+    const cardList = setStudyToThumbnailInfo(
+      participations,
+      currentLocation,
+      date as string,
+      location,
+    );
+
     if (!cardList?.length) return;
     setStudyCardColData(cardList.slice(0, 3));
 
