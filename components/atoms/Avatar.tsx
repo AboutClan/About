@@ -12,7 +12,7 @@ type Size = "2xs" | "xs" | "sm" | "smd" | "md" | "lg" | "xl";
 
 interface IAvatar {
   image?: string;
-  size: Size;
+  size: "2xs" | "md";
   sizeLength?: number;
   avatar?: IAvatarProp;
   uid?: string;
@@ -180,8 +180,8 @@ const AvatarContainer = styled.div<{
           `;
         case "md":
           return css`
-            width: 44px; // w-11
-            height: 44px; // h-11
+            width: 48px; // w-11
+            height: 48px; // h-11
           `;
         case "lg":
           return css`

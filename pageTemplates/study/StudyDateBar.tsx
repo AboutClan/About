@@ -1,22 +1,17 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useState } from "react";
 import styled from "styled-components";
 import { PlusIcon } from "../../components/Icons/MathIcons";
+import { DispatchBoolean } from "../../types/hooks/reactTypes";
 
-import StudyInviteModal from "../../modals/study/StudyInviteModal";
-import { StudyPlaceProps } from "../../types/models/studyTypes/studyDetails";
-import { PlaceInfoProps } from "../../types/models/utilTypes";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 interface IStudyDateBar {
   date: string;
-  place: StudyPlaceProps | PlaceInfoProps;
+  setIsInviteModal: DispatchBoolean;
   memberCnt: number;
 }
-function StudyDateBar({ place, date, memberCnt }: IStudyDateBar) {
-  const [isInviteModal, setIsInviteModal] = useState(false);
-
+function StudyDateBar({ date, memberCnt, setIsInviteModal }: IStudyDateBar) {
   return (
     <>
       <Box mt={10} mb={2}>
@@ -32,7 +27,6 @@ function StudyDateBar({ place, date, memberCnt }: IStudyDateBar) {
           현재 <b>{memberCnt}의 멤버</b>가 참여중이에요 !
         </Box>
       </Box>
-      {isInviteModal && <StudyInviteModal setIsModal={setIsInviteModal} place={place} />}
     </>
   );
 }

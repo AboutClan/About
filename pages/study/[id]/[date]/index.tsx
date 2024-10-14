@@ -8,10 +8,13 @@ import { useCurrentLocation } from "../../../../hooks/custom/CurrentLocationHook
 import { useStudyVoteOneQuery, useStudyVoteQuery } from "../../../../hooks/study/queries";
 import { convertMergePlaceToPlace } from "../../../../libs/study/convertMergePlaceToPlace";
 import { getStudyParticipationById } from "../../../../libs/study/getMyStudyMethods";
+import StudyInviteModal from "../../../../modals/study/StudyInviteModal";
 import StudyAddressMap from "../../../../pageTemplates/study/StudyAddressMap";
 import StudyCover from "../../../../pageTemplates/study/StudyCover";
 import StudyDateBar from "../../../../pageTemplates/study/StudyDateBar";
 import StudyHeader from "../../../../pageTemplates/study/StudyHeader";
+import StudyMembers from "../../../../pageTemplates/study/StudyMembers";
+import StudyNavigation from "../../../../pageTemplates/study/StudyNavigation";
 import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
 import StudyTimeBoard from "../../../../pageTemplates/study/StudyTimeBoard";
 import { StudyParticipationProps } from "../../../../types/models/studyTypes/studyDetails";
@@ -28,6 +31,7 @@ export default function Page() {
   const locationParam = searchParams.get("location") as LocationEn;
 
   const [studyParticipation, setStudyParticipation] = useState<StudyParticipationProps>();
+  const [isInviteModal, setIsInviteModal] = useState(false);
 
   // const [myStudy, setMyStudy] = useRecoilState(myStudyInfoState);
   // const [studyDateStatus, setStudyDateStatus] = useRecoilState(studyDateStatusState);
@@ -103,7 +107,7 @@ export default function Page() {
   const distance =
     currentLocation &&
     getDistanceFromLatLonInKm(currentLocation.lat, currentLocation.lon, latitude, longitude);
-
+  const members = mergeParticipation?.members;
   return (
     <>
       {mergeParticipation && (
@@ -127,14 +131,18 @@ export default function Page() {
               longitude={longitude}
             />
 
-            <StudyDateBar date={date} memberCnt={mergeParticipation.members.length} place={place} />
-            <StudyTimeBoard
-              members={mergeParticipation.members}
-              studyStatus={mergeParticipation.status}
+            <StudyDateBar
+              date={date}
+              memberCnt={members.length}
+              setIsInviteModal={setIsInviteModal}
             />
-            {/* <StudyParticipants members={members} />
-            <StudyNavigation voteCnt={members?.length} studyStatus={participation.status} /> */}
+            <StudyTimeBoard members={members} studyStatus={mergeParticipation.status} />
+            <Box h="1px" bg="gray.100" my={4} />
+            <StudyMembers members={members} setIsInviteModal={setIsInviteModal} />
+
+            <StudyNavigation voteCnt={members?.length} studyStatus={mergeParticipation.status} />
           </Slide>
+          {isInviteModal && <StudyInviteModal setIsModal={setIsInviteModal} place={place} />}
         </>
       )}
     </>

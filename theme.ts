@@ -194,7 +194,6 @@ const theme = extendTheme({
       },
       variants: {
         solid: (props) => ({
-          // 모든 colorScheme에 대해 기본 배경색을 mint.400으로 설정
           bg: `${props.colorScheme === "gray" ? "gray.200" : `${props.colorScheme}.500`}`,
         }),
       },

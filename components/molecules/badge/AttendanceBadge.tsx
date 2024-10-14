@@ -1,6 +1,5 @@
-import styled from "styled-components";
+import { Box, Flex } from "@chakra-ui/react";
 
-import OutlineBadge from "../../atoms/badges/OutlineBadge";
 interface IAttendanceBadge {
   type: "attend" | "dismissed";
   time?: string;
@@ -8,25 +7,29 @@ interface IAttendanceBadge {
 
 export default function AttendanceBadge({ type, time }: IAttendanceBadge) {
   return (
-    <BadgeContainer time={time}>
-      <OutlineBadge
-        text={type === "attend" ? "출석" : "불참"}
-        colorScheme={type === "attend" ? "mintTheme" : "redTheme"}
-      />
+    <Box my={1}>
+      <Flex
+        mb={1}
+        align="center"
+        w="56px"
+        h="24px"
+        px="10px"
+        py={1}
+        borderRadius="8px"
+        color="white"
+        bg={type === "attend" ? "mint" : "red"}
+      >
+        <i className="fa-solid fa-check-circle fa-xs" />
+        <Box ml={1} fontSize="11px" fontWeight="semibold">
+          {type === "attend" ? "출석" : "불참"}
+        </Box>
+      </Flex>
 
-      {time && <TimeText>{time}</TimeText>}
-    </BadgeContainer>
+      {time && (
+        <Box fontSize="11px" lineHeight="12px" color="gray.500" textAlign="center">
+          {time}
+        </Box>
+      )}
+    </Box>
   );
 }
-
-const BadgeContainer = styled.div<{ time?: string }>`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: ${({ time }) => (time ? "8px" : "0")};
-`;
-
-const TimeText = styled.span`
-  font-size: 10px; /* Equivalent to text-xxs */
-  color: var(--gray-600); /* Assuming text-gray-4 maps to this color */
-`;

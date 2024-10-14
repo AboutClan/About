@@ -3,22 +3,22 @@ import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useState } from "react";
+import HighlightButton from "../../components/atoms/HighlightButton";
 
-import Slide from "../../components/layouts/PageSlide";
 import AttendanceBadge from "../../components/molecules/badge/AttendanceBadge";
 import { IProfileCommentCard } from "../../components/molecules/cards/ProfileCommentCard";
 import ProfileCardColumn from "../../components/organisms/ProfileCardColumn";
 import ImageZoomModal from "../../modals/ImageZoomModal";
 import StudyChangeMemoModal from "../../modals/study/StudyChangeMemoModal";
-import { IAttendance, StudyMemberProps } from "../../types/models/studyTypes/studyDetails";
-import { IAbsence } from "../../types/models/studyTypes/studyInterActions";
+import { DispatchBoolean } from "../../types/hooks/reactTypes";
+import { StudyMemberProps } from "../../types/models/studyTypes/studyDetails";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 interface IStudyMembers {
   members: StudyMemberProps[];
-  absences: IAbsence[];
+  setIsInviteModal: DispatchBoolean;
 }
-export default function StudyMembers({ members, absences }: IStudyMembers) {
+export default function StudyMembers({ members, setIsInviteModal }: IStudyMembers) {
   const { data: session } = useSession();
 
   const [hasModalMemo, setHasModalMemo] = useState<string>();
@@ -27,32 +27,33 @@ export default function StudyMembers({ members, absences }: IStudyMembers) {
     toUid: string;
   }>();
 
-  const userCardArr: IProfileCommentCard[] = members.map((par) => {
+  const userCardArr: IProfileCommentCard[] = members.map((member) => {
     const togglehasModalMemo =
-      par.user.uid === session?.user.uid && par.memo
+      member.user.uid === session?.user.uid && member.attendanceInfo.attendanceImage
         ? (memo: string) => setHasModalMemo(memo)
         : null;
-    const obj = composeUserCardArr(par, absences, togglehasModalMemo);
+    const obj = composeUserCardArr(member, togglehasModalMemo);
 
     const rightComponentProps = obj.rightComponentProps;
+    const image = member?.attendanceInfo.attendanceImage;
 
     return {
       ...obj,
       rightComponent: rightComponentProps ? (
         <>
           <Flex align="center">
-            {par?.imageUrl && (
+            {image && (
               <Box
                 mr="12px"
                 rounded="md"
                 overflow="hidden"
-                onClick={() => setHasImageProps({ image: par.imageUrl, toUid: par.user.uid })}
+                onClick={() => setHasImageProps({ image, toUid: member.user.uid })}
                 w="50px"
                 h="50px"
                 position="relative"
               >
                 <Image
-                  src={par.imageUrl}
+                  src={image}
                   fill={true}
                   sizes="50px"
                   alt="studyAttend"
@@ -70,30 +71,34 @@ export default function StudyMembers({ members, absences }: IStudyMembers) {
 
   return (
     <>
-      <Slide isNoPadding>
-        {userCardArr.length ? (
+      {userCardArr.length ? (
+        <>
           <ProfileCardColumn userCardArr={userCardArr} />
-        ) : (
-          <Flex
-            align="center"
-            justify="center"
-            h="200"
-            color="var(--gray-600)"
-            fontSize="16px"
-            textAlign="center"
-          >
-            <Box as="p" lineHeight="1.8">
-              현재 참여중인 멤버가 없습니다.
-              <br />
-              지금 신청하면{" "}
-              <Box as="b" color="var(--color-mint)">
-                10 POINT
-              </Box>{" "}
-              추가 획득!
-            </Box>
-          </Flex>
-        )}
-      </Slide>
+          <Box mt={4} mb={2}>
+            <HighlightButton text="친구 초대 +" func={() => setIsInviteModal(true)} />
+          </Box>
+        </>
+      ) : (
+        <Flex
+          align="center"
+          justify="center"
+          h="200"
+          color="var(--gray-600)"
+          fontSize="16px"
+          textAlign="center"
+        >
+          <Box as="p" lineHeight="1.8">
+            현재 참여중인 멤버가 없습니다.
+            <br />
+            지금 신청하면{" "}
+            <Box as="b" color="var(--color-mint)">
+              10 POINT
+            </Box>{" "}
+            추가 획득!
+          </Box>
+        </Flex>
+      )}
+
       {hasImageProps?.image && hasImageProps?.toUid && (
         <ImageZoomModal imageUrl={hasImageProps.image} setIsModal={() => setHasImageProps(null)} />
       )}
@@ -115,26 +120,27 @@ interface IReturnProps extends Omit<IProfileCommentCard, "rightComponent"> {
 }
 
 const composeUserCardArr = (
-  participant: IAttendance,
-  absences: IAbsence[],
+  participant: StudyMemberProps,
   setHasModalMemo: (memo: string) => void,
 ): IReturnProps => {
-  const arrived = participant?.arrived
-    ? dayjsToFormat(dayjs(participant.arrived).subtract(9, "hour"), "HH:mm")
+  const attendanceInfo = participant?.attendanceInfo;
+  const absences = participant?.absenceInfo;
+  const arrived = attendanceInfo.arrived
+    ? dayjsToFormat(dayjs(attendanceInfo.arrived).subtract(9, "hour"), "HH:mm")
     : null;
-  const absent = absences?.find((absence) => absence.user.uid === participant.user.uid);
-  const memo = participant.memo;
+
+  const memo = attendanceInfo.arrivedMessage;
   const user = participant.user;
 
   return {
     user: user,
-    comment: memo || absent?.message || "",
+    comment: memo || absences?.text || "",
     setMemo: setHasModalMemo ? () => setHasModalMemo(memo) : null,
     rightComponentProps:
-      arrived || absent
+      arrived || absences
         ? {
             type: arrived ? "attend" : "dismissed",
-            time: arrived || dayjsToFormat(dayjs(absent?.updatedAt), "HH:mm"),
+            time: arrived || dayjsToFormat(dayjs(absences?.updatedAt), "HH:mm"),
           }
         : undefined,
   };

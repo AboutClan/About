@@ -9,5 +9,19 @@ interface IUserBadge {
 
 export default function UserBadge({ score, uid }: IUserBadge) {
   const badge = getUserBadge(score, uid);
-  return <Badge colorScheme={BADGE_COLOR_MAPPINGS[badge]}>{badge}</Badge>;
+  console.log(52, badge);
+  return (
+    <Badge
+      h="20px"
+      variant="subtle"
+      px={2}
+      py={1}
+      fontWeight="semibold"
+      fontSize="9px"
+      borderRadius="10px"
+      colorScheme={BADGE_COLOR_MAPPINGS[badge]}
+    >
+      {badge}
+    </Badge>
+  );
 }

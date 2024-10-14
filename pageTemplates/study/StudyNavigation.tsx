@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
@@ -9,7 +9,6 @@ import styled from "styled-components";
 import { IAlertModalOptions } from "../../components/AlertModal";
 import { IIconLinkTile } from "../../components/atoms/IconLinkTile";
 import Slide from "../../components/layouts/PageSlide";
-import IconTileRowLayout from "../../components/organisms/IconTileRowLayout";
 import { STUDY_CHECK_POP_UP } from "../../constants/keys/localStorage";
 import { PLACE_TO_NAME } from "../../constants/serviceConstants/studyConstants/studyCafeNameConstants";
 import { MAX_USER_PER_PLACE } from "../../constants/settingValue/study/study";
@@ -161,12 +160,7 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
   return (
     <>
       <Slide isFixed={true} posZero="top">
-        <Layout>
-          {isSubNav && (
-            <Wrapper>
-              <IconTileRowLayout tileDataArr={subNavOptions} size="lg" />
-            </Wrapper>
-          )}
+        <Box h="64px" pl={7} pr={5}>
           <Button
             onClick={() => handleMainButton(mainFuncType)}
             colorScheme={mainFuncType ? "mintTheme" : "blackAlpha"}
@@ -174,7 +168,21 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
           >
             {mainText}
           </Button>
-        </Layout>
+          <Button
+            onClick={() => handleMainButton(mainFuncType)}
+            colorScheme={mainFuncType ? "mintTheme" : "blackAlpha"}
+            size="lg"
+          >
+            {mainText}
+          </Button>
+          <Button
+            onClick={() => handleMainButton(mainFuncType)}
+            colorScheme={mainFuncType ? "mintTheme" : "blackAlpha"}
+            size="lg"
+          >
+            {mainText}
+          </Button>
+        </Box>
       </Slide>
       {/* <StudyNavModal type={modalType} setType={setModalType} modalOptions={modalOptions} /> */}
     </>
