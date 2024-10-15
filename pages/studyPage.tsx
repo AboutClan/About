@@ -31,6 +31,7 @@ import StudyInFoDrawer, { StudyInfoProps } from "../pageTemplates/studyPage/Stud
 import StudyMapTopNav from "../pageTemplates/studyPage/StudyMapTopNav";
 import StudyPageDrawer from "../pageTemplates/studyPage/StudyPageDrawer";
 import StudyControlButton from "../pageTemplates/vote/StudyControlButton";
+import VoteDrawer from "../pageTemplates/vote/VoteDrawer";
 import { myStudyParticipationState } from "../recoils/studyRecoils";
 
 import { IMapOptions, IMarkerOptions } from "../types/externals/naverMapTypes";
@@ -302,6 +303,13 @@ export default function StudyVoteMap() {
           setDate={setDate}
         />
       </BottomFlexDrawer>
+      {studyVoteData && (
+        <VoteDrawer
+          location={locationValue}
+          studyVoteData={studyVoteData}
+          setIsDrawerDown={() => {}}
+        />
+      )}
     </>
   );
 }

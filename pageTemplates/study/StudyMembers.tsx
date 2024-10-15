@@ -74,7 +74,7 @@ export default function StudyMembers({ members, setIsInviteModal }: IStudyMember
       {userCardArr.length ? (
         <>
           <ProfileCardColumn userCardArr={userCardArr} />
-          <Box mt={4} mb={2}>
+          <Box pt={4} pb={2}>
             <HighlightButton text="친구 초대 +" func={() => setIsInviteModal(true)} />
           </Box>
         </>

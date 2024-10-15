@@ -14,6 +14,43 @@ const theme = extendTheme({
         default: "mint.500",
         _dark: "mint.300",
       },
+      red: {
+        default: "red.500", // 기본으로 red.500을 매칭
+        _dark: "red.400", // 다크 모드 시 red.400 사용 (선택)
+      },
+      orange: {
+        default: "orange.500",
+        _dark: "orange.400",
+      },
+      yellow: {
+        default: "yellow.500",
+        _dark: "yellow.400",
+      },
+      green: {
+        default: "green.500",
+        _dark: "green.400",
+      },
+      teal: {
+        default: "teal.500",
+        _dark: "teal.400",
+      },
+      blue: {
+        default: "blue.500",
+        _dark: "blue.400",
+      },
+      cyan: {
+        default: "cyan.500",
+        _dark: "cyan.400",
+      },
+      purple: {
+        default: "purple.500",
+        _dark: "purple.400",
+      },
+
+      gray: {
+        default: "gray.500",
+        _dark: "gray.400",
+      },
     },
   },
 
@@ -29,6 +66,9 @@ const theme = extendTheme({
       700: "#424242",
       800: "#303030",
       900: "black",
+    },
+    black: {
+      500: "#303030",
     },
     mint: {
       50: "#e0f7f5",

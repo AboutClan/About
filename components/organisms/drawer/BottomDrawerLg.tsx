@@ -135,7 +135,7 @@ const Layout = styled(motion.div)<{
 
 const TopNav = styled.nav`
   width: 60px;
-  height: 5px;
+  height: 4px;
   border-radius: 100px;
   background-color: var(--gray-500);
   opacity: 0.4;

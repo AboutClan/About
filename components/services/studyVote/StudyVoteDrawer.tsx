@@ -1,15 +1,22 @@
+import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { IModal } from "../../../types/components/modalTypes";
 import { IStudyVoteTime } from "../../../types/models/studyTypes/studyInterActions";
+import ImageTileGridLayout, { IImageTileData } from "../../molecules/layouts/ImageTitleGridLayout";
 import BottomDrawerLg, { IBottomDrawerLgOptions } from "../../organisms/drawer/BottomDrawerLg";
 import StudyVoteTimeRulletDrawer from "./StudyVoteTimeRulletDrawer";
 
 dayjs.locale("ko");
 
 interface IStudyVoteDrawer extends IModal {
+  imagePropsArr: {
+    id: string;
+    name: string;
+  };
+
   handleSubmit: (voteTime: IStudyVoteTime) => void;
   isLoading?: boolean;
   date?: string;
@@ -30,51 +37,46 @@ export default function StudyVoteDrawer({
   // const studyDateStatus = useRecoilValue(studyDateStatusState);
 
   const [isFirst, setIsFirst] = useState(true);
-  // const [myVote, setMyVote] = useState<IStudyVote>({
-  //   place: id,
-  //   subPlace: [],
-  //   start: null,
-  //   end: null,
-  // });
-
+  const [imageDataArr, setImageDataArr] = useState<IImageTileData[]>();
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
-  // const [votePlaces, setVotePlaces] = useState<IStudyVotePlaces>();
 
-  // useEffect(() => {
-  //   if (place) setMyVote((old) => ({ ...old, place, subPlace }));
-  // }, [place]);
+  console.log(studyVoteDataAll);
 
-  // useEffect(() => {
-  //   setMyVote((old) => ({ ...old, ...voteTime, ...votePlaces }));
-  // }, [voteTime, votePlaces]);
-
-  // const isPrivateStudy = PLACE_TO_NAME[id] === "개인 스터디";
-
-  // const handleSuccess = () => {
-
-  //   // if (myPrevVotePoint) {
-  //   //   await getPoint({
-  //   //     message: "스터디 투표 취소",
-  //   //     value: -myPrevVotePoint,
-  //   //   });
-  //   // }
-  //   // if (studyDateStatus === "not passed" && votePlaces?.subPlace?.length) {
-  //   //   await getPoint({
-  //   //     value: 5 + votePlaces.subPlace.length,
-  //   //     message: "스터디 투표",
-  //   //     sub: date,
-  //   //   });
-  //   //   toast("success", `투표 완료! ${!myStudy && "포인트가 적립되었습니다."}`);
-  //   // } else toast("success", "투표 완료!");
-  //   // //place가 있는 경우는 지도에서 투표한 경우로 생각
-  //   // if (place) {
-  //   //   setIsModal(false);
-  //   //   router.push(`/home?tab=study&location=${locationEn}&date=${dateParam}`);
-  //   //   return;
-  //   // }
-  //   setIsModal(false);
-  // };
-
+  useEffect(() => {
+    if (!studyVoteDataAll) return;
+    console.log(23);
+    setImageDataArr(
+      studyVoteDataAll?.participations?.map((par) => {
+        const placeProps = par.place;
+        console.log(32);
+        return {
+          imageUrl: placeProps.image,
+          text: placeProps.fullname,
+          func: () => {
+            const id = par.place._id;
+            // if (studyDateStatus === "today") {
+            //   setMyVote((old) => ({ ...old, place: id }));
+            //   return;
+            // }
+            // const voteMainId = myVote?.place;
+            // const voteSubIdArr = myVote?.subPlace;
+            // const { place, subPlace } = selectStudyPlace(id, voteMainId, voteSubIdArr);
+            // if (!voteMainId && voteSubIdArr?.length === 0) {
+            //   const participations = studyVoteDataAll[0].participations;
+            //   const placeInfo = participations.find((par) => par.place._id === place).place;
+            //   setMyVote((old) => ({
+            //     ...old,
+            //     place,
+            //     subPlace: selectSubPlaceAuto(placeInfo, participations),
+            //   }));
+            // } else setMyVote((old) => ({ ...old, place, subPlace }));
+          },
+          id: placeProps._id,
+        };
+      }),
+    );
+  }, [studyVoteDataAll]);
+  console.log(12, imageDataArr);
   const onSubmit = () => {
     const diffHour = voteTime.end.diff(voteTime.start, "hour");
     if (diffHour < 2) {
@@ -102,7 +104,7 @@ export default function StudyVoteDrawer({
 
   return (
     <>
-      {isFirst ? (
+      {false ? (
         <StudyVoteTimeRulletDrawer
           setVoteTime={setVoteTime}
           drawerOptions={drawerOptions}
@@ -110,6 +112,17 @@ export default function StudyVoteDrawer({
         />
       ) : (
         <BottomDrawerLg options={drawerOptions} setIsModal={setIsModal} isAnimation={false}>
+          {/* <StudyVotePlacesPicker /> */}
+          <Box height="240px" overflowY="scroll">
+            {imageDataArr && (
+              <ImageTileGridLayout
+                imageDataArr={imageDataArr}
+                grid={{ row: null, col: 4 }}
+                // selectedId={[myVote?.place]}
+                // selectedSubId={myVote?.subPlace}
+              />
+            )}
+          </Box>
           {/* {!isPrivateStudy ? (
             <StudyVotePlacesPicker setVotePlaces={setVotePlaces} />
           ) : (

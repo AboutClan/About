@@ -11,7 +11,7 @@ import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
 import PlaceImage from "../PlaceImage";
 
 const VOTER_SHOW_MAX = 4;
-const STUDY_MAX_CNT = 8;
+export const STUDY_MAX_CNT = 8;
 
 export interface StudyThumbnailCardProps {
   place: {

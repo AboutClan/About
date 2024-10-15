@@ -11,7 +11,7 @@ import { convertMergePlaceToPlace } from "./convertMergePlaceToPlace";
 export const setStudyToThumbnailInfo = (
   studyData: StudyParticipationProps[] | StudyMergeParticipationProps[],
   currentLocation: { lat: number; lon: number },
-  urlDateParam: string,
+  urlDateParam: string | null,
   location: ActiveLocation,
 ): StudyThumbnailCardProps[] => {
   if (!studyData) return;
@@ -37,7 +37,9 @@ export const setStudyToThumbnailInfo = (
         },
       },
       participants: data.members.map((att) => att.user),
-      url: `/study/${data.place._id}/${urlDateParam}?location=${convertLocationLangTo(location, "en")}`,
+      url:
+        urlDateParam &&
+        `/study/${data.place._id}/${urlDateParam}?location=${convertLocationLangTo(location, "en")}`,
       status: data.status,
 
       id: data.place._id,

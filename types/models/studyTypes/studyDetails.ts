@@ -5,6 +5,7 @@ import { TimeStampProps } from "../../utils/timeAndDate";
 import { MessageSimpleProps } from "../commonTypes";
 import { IUserSummary, UserSimpleInfoProps } from "../userTypes/userInfoTypes";
 import { PlaceInfoProps, TimeRangeProps } from "../utilTypes";
+import { IAbsence } from "./studyInterActions";
 
 export interface StudyDailyInfoProps {
   date: string;
@@ -16,6 +17,7 @@ export interface StudyParticipationProps {
   place: StudyPlaceProps;
   status: StudyStatus;
   members: StudyMemberProps[];
+  absences?: IAbsence[];
 }
 export interface RealTimeInfoProps extends TimeStampProps {
   user: UserSimpleInfoProps;

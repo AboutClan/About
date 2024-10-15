@@ -2,7 +2,6 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
 
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import ImageTileGridLayout, {
@@ -20,7 +19,7 @@ import { getStudyDateStatus } from "../../libs/study/date/getStudyDateStatus";
 import { recommendTodayStudyPlace } from "../../libs/study/recommendTodayStudyPlace";
 import { selectStudyPlace } from "../../libs/study/selectStudyPlace";
 import { selectSubPlaceAuto } from "../../libs/study/selectSubPlaceAuto";
-import { myStudyInfoState } from "../../recoils/studyRecoils";
+
 import { IModal } from "../../types/components/modalTypes";
 import { StudyParticipationProps } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVote } from "../../types/models/studyTypes/studyInterActions";
@@ -40,7 +39,7 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
   const location = searchParams.get("location");
   const locationKr = convertLocationLangTo(location as LocationEn, "kr");
   const resetStudy = useResetStudyQuery();
-  const myStudy = useRecoilValue(myStudyInfoState);
+
   const studyDateStatus = getStudyDateStatus(dateParam);
 
   const [isFirstPage, setIsFirstPage] = useState(true);
@@ -55,12 +54,10 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
   const [recommendationPlace, setRecommendationPlace] = useState<StudyParticipationProps>();
 
   const { data: userInfo } = useUserInfoQuery();
-  const { data: studyVoteDataAll } = useStudyVoteQuery(dateParam, locationKr, false, false, {
+  const { data: studyVoteDataAll } = useStudyVoteQuery(dateParam, locationKr, {
     enabled: !isFirstPage && !!dateParam && !!location,
   });
-  const { data: pointLog } = usePointSystemLogQuery("point", true, {
-    enabled: !!myStudy,
-  });
+  const { data: pointLog } = usePointSystemLogQuery("point", true, {});
 
   const { mutate: getPoint } = usePointSystemMutation("point");
 

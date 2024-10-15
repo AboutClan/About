@@ -1,11 +1,17 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
+import PickerRowButton from "../../components/molecules/PickerRowButton";
 
 import BottomDrawerLg from "../../components/organisms/drawer/BottomDrawerLg";
+import { useCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
-import { DispatchBoolean, DispatchType } from "../../types/hooks/reactTypes";
+import { convertStudyToParticipations } from "../../libs/study/getMyStudyMethods";
+import { setStudyToThumbnailInfo } from "../../libs/study/setStudyToThumbnailInfo";
+import { DispatchBoolean } from "../../types/hooks/reactTypes";
 import {
+  StudyDailyInfoProps,
   StudyParticipationProps,
   StudyPlaceProps,
 } from "../../types/models/studyTypes/studyDetails";
@@ -13,9 +19,7 @@ import {
   IStudyVotePlaces,
   IStudyVoteWithPlace,
 } from "../../types/models/studyTypes/studyInterActions";
-import VoteDrawerItem from "./voteDrawer/VoteDrawerItem";
-import VoteDrawerMainItem from "./voteDrawer/VoteDrawerMainItem";
-import VoteDrawerQuickVoteItem from "./voteDrawer/VoteDrawerQuickVoteItem";
+import { ActiveLocation } from "../../types/services/locationTypes";
 
 export interface VoteDrawerItemProps {
   place: StudyPlaceProps;
@@ -25,38 +29,50 @@ export interface VoteDrawerItemProps {
 }
 
 interface VoteDrawerProps {
-  studyVoteData: StudyParticipationProps[];
-  myVote: IStudyVoteWithPlace;
-  setMyVote: DispatchType<IStudyVoteWithPlace>;
-  setActionType: DispatchType<"timeSelect">;
+  studyVoteData: StudyDailyInfoProps;
+  location: ActiveLocation;
+  // myVote: IStudyVoteWithPlace;
+  // setMyVote: DispatchType<IStudyVoteWithPlace>;
+  // setActionType: DispatchType<"timeSelect">;
   setIsDrawerDown: DispatchBoolean;
 }
 
-function VoteDrawer({
-  studyVoteData,
-  myVote,
-  setMyVote,
-  setActionType,
-  setIsDrawerDown,
-}: VoteDrawerProps) {
+function VoteDrawer({ studyVoteData, location, setIsDrawerDown }: VoteDrawerProps) {
   const { data: userInfo, isLoading } = useUserInfoQuery();
   const preference = userInfo?.studyPreference;
   const savedPrefer = preference || { place: null, subPlace: [] };
+  const { currentLocation } = useCurrentLocation();
   const toast = useToast();
-  const items = getSortedMainPlace(studyVoteData, savedPrefer);
+  const participations = studyVoteData?.participations;
+  const items = participations && getSortedMainPlace(participations, savedPrefer);
   const [placeItems, setPlaceItems] = useState<VoteDrawerItemProps[]>(items);
 
+  const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
+
+  const [myVote, setMyVote] = useState<IStudyVoteWithPlace>();
+
   const preferPlaces = {
-    main: studyVoteData?.find((study) => study.place._id === savedPrefer.place)?.place.fullname,
-    sub: studyVoteData
+    main: participations?.find((study) => study.place._id === savedPrefer.place)?.place.fullname,
+    sub: participations
       ?.filter((study) => savedPrefer.subPlace.includes(study.place._id))
       .map((study) => study.place.fullname),
   };
+  useEffect(() => {
+    if (!studyVoteData) return;
+    const participations = convertStudyToParticipations(studyVoteData, location);
+    const getThumbnailCardInfoArr = setStudyToThumbnailInfo(
+      participations,
+      currentLocation,
+      null,
+      location,
+    );
+    setThumbnailCardinfoArr(getThumbnailCardInfoArr);
+  }, [studyVoteData]);
 
   //선택지 항목 필터 및 정렬
   useEffect(() => {
     if (!myVote?.place) {
-      const items = getSortedMainPlace(studyVoteData, savedPrefer);
+      const items = getSortedMainPlace(participations, savedPrefer);
       if (JSON.stringify(items) !== JSON.stringify(placeItems)) {
         setPlaceItems(items);
       }
@@ -92,8 +108,8 @@ function VoteDrawer({
     }
     setMyVote((old) => ({
       ...old,
-      place: studyVoteData.find((study) => study.place._id === savedPrefer?.place)?.place,
-      subPlace: studyVoteData
+      place: participations.find((study) => study.place._id === savedPrefer?.place)?.place,
+      subPlace: participations
         .filter((study) => savedPrefer?.subPlace?.includes(study.place._id))
         ?.map((par) => par.place),
     }));
@@ -108,32 +124,47 @@ function VoteDrawer({
         isxpadding={false}
         isOverlay={false}
       >
-        {mainPlace ? (
+        <Flex direction="column" px={5} w="100%">
+          {/* {mainPlace ? (
           <VoteDrawerMainItem
             voteCnt={mainPlace?.voteCnt}
             favoritesCnt={mainPlace?.favoritesCnt}
             myVotePlace={myVote.place}
             setMyVote={setMyVote}
-            setActionType={setActionType}
+            // setActionType={setActionType}
           />
         ) : (
           <VoteDrawerQuickVoteItem preferPlaces={preferPlaces} handleQuickVote={handleQuickVote} />
-        )}
-
-        <Box overflow="auto" w="100%" flex={1} id=".vote_favorite">
-          {placeItems?.map((item, idx) => (
-            <VoteDrawerItem
-              item={item}
-              savedPrefer={savedPrefer}
-              myVote={myVote}
-              setMyVote={setMyVote}
-              setPlaceItems={setPlaceItems}
-              isFavoriteLocation={!!preferPlaces?.main}
-              userLoading={isLoading}
-              key={idx}
-            />
-          ))}
-        </Box>
+        )} */}
+          <Flex justify="space-between">
+            <Box>
+              <Box>1지망 투표</Box>
+              <Box>원하시는 카페가 없으신가요?</Box>
+            </Box>
+            <Button
+              as="div"
+              fontSize="13px"
+              fontWeight={500}
+              size="xs"
+              variant="ghost"
+              height="20px"
+              color="var(--color-blue)"
+            >
+              직접 입력
+            </Button>
+          </Flex>
+          <Box overflow="auto" h="300px">
+            {thumbnailCardInfoArr?.map((props, idx) => (
+              <Box key={idx} mb={3}>
+                <PickerRowButton
+                  {...props}
+                  participantCnt={props.participants.length}
+                  pickType="main"
+                />
+              </Box>
+            ))}
+          </Box>
+        </Flex>
       </BottomDrawerLg>{" "}
     </>
   );
@@ -145,7 +176,7 @@ const getSortedMainPlace = (
 ): VoteDrawerItemProps[] => {
   const mainPlace = myFavorites?.place;
   const subPlaceSet = new Set(myFavorites?.subPlace);
-
+  console.log(25, studyData);
   const sortedVoteCntItem = studyData.sort((a, b) => a.members.length - b.members.length);
 
   const sortedArr = !myFavorites

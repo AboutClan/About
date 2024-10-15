@@ -1,4 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
+import { CheckCircleIcon, XCircleIcon } from "../../Icons/CircleIcons";
 
 interface IAttendanceBadge {
   type: "attend" | "dismissed";
@@ -19,8 +20,8 @@ export default function AttendanceBadge({ type, time }: IAttendanceBadge) {
         color="white"
         bg={type === "attend" ? "mint" : "red"}
       >
-        <i className="fa-solid fa-check-circle fa-xs" />
-        <Box ml={1} fontSize="11px" fontWeight="semibold">
+        {type === "attend" ? <CheckCircleIcon /> : <XCircleIcon />}
+        <Box ml={1} fontSize="11px" lineHeight="16px" fontWeight="semibold">
           {type === "attend" ? "출석" : "불참"}
         </Box>
       </Flex>

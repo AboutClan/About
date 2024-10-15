@@ -30,7 +30,7 @@ function PlaceImage({ imageProps, id, hasToggleHeart, selected, size }: PlaceHea
   const toggleHeart = useTogglePlaceHeart();
 
   const sizeLength =
-    size === "sm" ? "77.5px" : size === "md" ? "80px" : size === "lg" ? "100px" : null;
+    size === "sm" ? "60px" : size === "md" ? "80px" : size === "lg" ? "100px" : null;
 
   return (
     <Box

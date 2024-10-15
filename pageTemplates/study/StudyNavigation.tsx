@@ -1,4 +1,4 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
@@ -7,11 +7,12 @@ import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 import { IAlertModalOptions } from "../../components/AlertModal";
+import IconTextColButton from "../../components/atoms/buttons/IconTextColButton";
 import { IIconLinkTile } from "../../components/atoms/IconLinkTile";
+import { XCircleIcon } from "../../components/Icons/CircleIcons";
+import { ClockIcon } from "../../components/Icons/ClockIcons";
 import Slide from "../../components/layouts/PageSlide";
 import { STUDY_CHECK_POP_UP } from "../../constants/keys/localStorage";
-import { PLACE_TO_NAME } from "../../constants/serviceConstants/studyConstants/studyCafeNameConstants";
-import { MAX_USER_PER_PLACE } from "../../constants/settingValue/study/study";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";
@@ -19,23 +20,34 @@ import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { usePointSystemLogQuery } from "../../hooks/user/queries";
 import { myStudyParticipationState, studyDateStatusState } from "../../recoils/studyRecoils";
 import {
+  StudyMemberProps,
   StudyMergeParticipationProps,
   StudyStatus,
   StudyUserStatus,
 } from "../../types/models/studyTypes/studyDetails";
-import { StudyDateStatus } from "../../types/models/studyTypes/studyInterActions";
+import { IAbsence, StudyDateStatus } from "../../types/models/studyTypes/studyInterActions";
 import { IPointLog } from "../../types/services/pointSystem";
+import { iPhoneNotchSize } from "../../utils/validationUtils";
 
 interface IStudyNavigation {
-  voteCnt: number;
-  studyStatus: StudyStatus | StudyUserStatus;
+  memberCnt: number;
+  mergeParticipations: StudyMergeParticipationProps[];
+  myStudyInfo: StudyMemberProps;
+  absences: IAbsence[];
 }
 
 type MainBtnType = "vote" | "freeOpen" | "attendCheck";
 type SubNavBtn = "changeTime" | "absent" | "cancelVote";
 export type StudyModalType = MainBtnType | SubNavBtn;
 
-function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
+type UserStudyStatus = "pending" | "voting" | "attended" | "cancelled" | "expired";
+
+function StudyNavigation({
+  mergeParticipations,
+  memberCnt,
+  myStudyInfo,
+  absences,
+}: IStudyNavigation) {
   const router = useRouter();
   const toast = useToast();
   const typeToast = useTypeToast();
@@ -86,17 +98,20 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
     if (isFree === "on") setModalType("freeOpen");
   }, [isPrivate, isFree]);
 
+  const myStudyStatus = getMyStudyStatus(myStudyInfo, absences, session?.user.uid, date);
+  const { text, type, colorScheme } = getStudyNavigationProps(myStudyStatus);
+
   const hasDismissedStudy = localStorage.getItem(STUDY_CHECK_POP_UP) === date;
 
-  const { text: mainText, funcType: mainFuncType } = getMainButtonStatus(
-    voteCnt >= MAX_USER_PER_PLACE,
-    studyDateStatus,
-    votingType,
-    isAttend,
-    studyStatus,
-    PLACE_TO_NAME[id] === "개인 스터디",
-    hasDismissedStudy,
-  );
+  // const { text: mainText, funcType: mainFuncType } = getMainButtonStatus(
+  //   memberCnt >= MAX_USER_PER_PLACE,
+  //   studyDateStatus,
+  //   votingType,
+  //   isAttend,
+  //   studyStatus,
+  //   PLACE_TO_NAME[id] === "개인 스터디",
+  //   hasDismissedStudy,
+  // );
 
   const handleSubNav = (type: SubNavBtn) => {
     if (isGuest) {
@@ -157,37 +172,72 @@ function StudyNavigation({ voteCnt, studyStatus }: IStudyNavigation) {
     },
   ];
 
+  const handleNavButton = (type: "vote" | "attend" | "cancel" | "timeChange") => {
+    switch (type) {
+      case "vote":
+    }
+  };
+
   return (
     <>
       <Slide isFixed={true} posZero="top">
-        <Box h="64px" pl={7} pr={5}>
-          <Button
-            onClick={() => handleMainButton(mainFuncType)}
-            colorScheme={mainFuncType ? "mintTheme" : "blackAlpha"}
-            size="lg"
-          >
-            {mainText}
+        <Flex
+          borderTop="var(--border)"
+          align="center"
+          bg="white"
+          h={`${64 + iPhoneNotchSize()}px`}
+          mt={3}
+          py={2}
+          px={5}
+        >
+          {type === "multi" && (
+            <>
+              <IconTextColButton icon={<XCircleIcon size="md" />} text="참여 취소" />
+              <IconTextColButton icon={<ClockIcon />} text="시간 변경" />
+            </>
+          )}
+          <Button size="lg" flex={1} colorScheme={colorScheme}>
+            {text}
           </Button>
-          <Button
-            onClick={() => handleMainButton(mainFuncType)}
-            colorScheme={mainFuncType ? "mintTheme" : "blackAlpha"}
-            size="lg"
-          >
-            {mainText}
-          </Button>
-          <Button
-            onClick={() => handleMainButton(mainFuncType)}
-            colorScheme={mainFuncType ? "mintTheme" : "blackAlpha"}
-            size="lg"
-          >
-            {mainText}
-          </Button>
-        </Box>
+        </Flex>
       </Slide>
-      {/* <StudyNavModal type={modalType} setType={setModalType} modalOptions={modalOptions} /> */}
+
+      {/* <StudySimpleVoteModal studyVoteData={[]} /> */}
+      {/* <StudyAttendCheckModal /> */}
     </>
   );
 }
+
+const getMyStudyStatus = (
+  myStudyInfo: StudyMemberProps,
+  absences: IAbsence[],
+  myUid: string,
+  date: string,
+): UserStudyStatus => {
+  if (!myUid) return undefined;
+  if (myStudyInfo?.attendanceInfo.arrived) return "attended";
+  else if (absences.map((absence) => absence.user.uid).includes(myUid)) return "cancelled";
+  else if (dayjs(date).endOf("day").isBefore(dayjs())) return "expired";
+  else if (myStudyInfo) return "voting";
+  else if (!myStudyInfo) return "pending";
+};
+
+const getStudyNavigationProps = (
+  myStudyStatus: UserStudyStatus,
+): { type: "single" | "multi"; text: string; colorScheme: string } => {
+  switch (myStudyStatus) {
+    case "voting":
+      return { text: "출석 체크", type: "multi", colorScheme: "mint" };
+    case "attended":
+      return { text: "출석 완료", type: "multi", colorScheme: "black" };
+    case "cancelled":
+      return { text: "불 참", type: "multi", colorScheme: "red" };
+    case "pending":
+      return { text: "스터디 투표", type: "single", colorScheme: "mint" };
+    case "expired":
+      return { text: "기간 만료", type: "single", colorScheme: "gray" };
+  }
+};
 
 const getVotingType = (myStudy: StudyMergeParticipationProps, placeId: string) => {
   return !myStudy ? null : myStudy?.place?._id === placeId ? "same" : "other";
@@ -234,18 +284,12 @@ const getMainButtonStatus = (
   votingType: "same" | "other" | null,
   isAttend: boolean,
   studyStatus: StudyStatus | StudyUserStatus,
-  isFree: boolean,
-  hasDismissed: boolean,
 ): {
   text: string;
   funcType?: MainBtnType;
 } => {
   if (isAttend) return { text: "출석 완료" };
-  if (isFree) {
-    if (votingType === "same") return { text: "출석 체크", funcType: "attendCheck" };
-    if (hasDismissed) return { text: "스터디 투표", funcType: "vote" };
-    return { text: "사전 스터디 신청 인원만 참여가 가능합니다." };
-  }
+
   switch (studyDateStatus) {
     case "passed":
       return { text: "기간 만료" };
