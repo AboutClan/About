@@ -40,15 +40,15 @@ export default function StudyVoteDrawer({
   const [imageDataArr, setImageDataArr] = useState<IImageTileData[]>();
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
 
-  console.log(studyVoteDataAll);
+
 
   useEffect(() => {
     if (!studyVoteDataAll) return;
-    console.log(23);
+   
     setImageDataArr(
       studyVoteDataAll?.participations?.map((par) => {
         const placeProps = par.place;
-        console.log(32);
+        
         return {
           imageUrl: placeProps.image,
           text: placeProps.fullname,
@@ -76,7 +76,7 @@ export default function StudyVoteDrawer({
       }),
     );
   }, [studyVoteDataAll]);
-  console.log(12, imageDataArr);
+
   const onSubmit = () => {
     const diffHour = voteTime.end.diff(voteTime.start, "hour");
     if (diffHour < 2) {

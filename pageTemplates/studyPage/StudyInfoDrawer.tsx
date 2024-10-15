@@ -8,7 +8,6 @@ import { DispatchType } from "../../types/hooks/reactTypes";
 import Avatar from "../../components/atoms/Avatar";
 import { Input } from "../../components/atoms/Input";
 import NewTwoButtonRow from "../../components/molecules/NewTwoButtonRow";
-import BottomDrawerLg from "../../components/organisms/drawer/BottomDrawerLg";
 import StudyVoteDrawer from "../../components/services/studyVote/StudyVoteDrawer";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
@@ -23,6 +22,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useRecoilValue } from "recoil";
 import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
 import StudyChangeAlertModal from "../../components/modals/alertModals/StudyChangeAlertModal";
+import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import { StudyPlaceProps, StudyStatus } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
@@ -135,7 +135,6 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
   };
 
   const handleVote = (time?: IStudyVoteTime) => {
-  ;
     if (!detailInfo.isPrivate) {
       studyVote({
         place: detailInfo?.id,
@@ -157,7 +156,7 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
 
   return (
     <>
-      <BottomDrawerLg zIndex={700} height={185} setIsModal={() => setDetailInfo(null)}>
+      <BottomFlexDrawer isDrawerUp zIndex={700} height={185} setIsModal={() => setDetailInfo(null)}>
         <Flex direction="column" w="100%">
           <Flex justifyContent="space-between" mb={4}>
             <Flex direction="column">
@@ -240,7 +239,7 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
             />
           </Box>
         </Flex>
-      </BottomDrawerLg>
+      </BottomFlexDrawer>
       {isCommentModal && (
         <ModalLayout
           footerOptions={{ main: { text: "작성 완료", func: handleComment } }}

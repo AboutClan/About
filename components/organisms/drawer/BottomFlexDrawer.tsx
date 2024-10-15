@@ -1,36 +1,46 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import { IModal } from "../../../types/components/modalTypes";
 import { iPhoneNotchSize } from "../../../utils/validationUtils";
 
 export const DRAWER_MIN_HEIGHT = 40;
 export const DRAWER_MAX_HEIGHT = 618; // 최대 높이
 
+interface BottomFlexDrawerProps extends IModal {
+  isHideBottom?: boolean;
+
+  children: React.ReactNode;
+  isDrawerUp: boolean;
+  height: number;
+  zIndex?: number;
+  bottom?: {
+    text: string;
+    func: () => void;
+    isLoading?: boolean;
+  };
+}
+
 export default function BottomFlexDrawer({
   setIsModal,
-  options,
-  isAnimation = true,
+  isHideBottom,
+  bottom,
   children,
-  isxpadding = true,
-  isOverlay = true,
-  isLittleClose,
   isDrawerUp,
-  paddingOptions,
-}: any) {
-  const header = options?.header;
-  const footer = options?.footer;
+  height,
+  zIndex,
+}: BottomFlexDrawerProps) {
+  const maxHeight = height || DRAWER_MAX_HEIGHT;
 
-  const [drawerHeight, setDrawerHeight] = useState(
-    isDrawerUp ? DRAWER_MAX_HEIGHT : DRAWER_MIN_HEIGHT,
-  ); // 초기 높이
+  const [drawerHeight, setDrawerHeight] = useState(isDrawerUp ? maxHeight : DRAWER_MIN_HEIGHT); // 초기 높이
   const startYRef = useRef(0); // 드래그 시작 위치 저장
   const currentHeightRef = useRef(drawerHeight); // 현재 높이 저장
 
   const SWIPE_THRESHOLD = 40; // 스와이프 임계값
-
+  console.log(2415, setIsModal);
   useEffect(() => {
-    if (isDrawerUp) setDrawerHeight(DRAWER_MAX_HEIGHT);
+    if (isDrawerUp) setDrawerHeight(maxHeight);
     else setDrawerHeight(DRAWER_MIN_HEIGHT);
   }, [isDrawerUp]);
 
@@ -56,8 +66,10 @@ export default function BottomFlexDrawer({
     window.removeEventListener("pointerup", handlePointerUp);
 
     if (deltaY > SWIPE_THRESHOLD) {
-      setDrawerHeight(DRAWER_MAX_HEIGHT); // 위로 쭉 올라가는 동작
+      setDrawerHeight(maxHeight); // 위로 쭉 올라가는 동작
     } else if (deltaY < -SWIPE_THRESHOLD) {
+      if (setIsModal) setIsModal(false);
+
       setDrawerHeight(DRAWER_MIN_HEIGHT); // 아래로 내려가는 동작
     } else {
       setDrawerHeight(currentHeightRef.current); // 스와이프가 임계값보다 짧으면 원래 높이로 복원
@@ -66,35 +78,49 @@ export default function BottomFlexDrawer({
 
   return (
     <Layout
+      ishide={isHideBottom ? "true" : "false"}
+      zindex={zIndex}
       isdrawerup={isDrawerUp}
       as={motion.div}
       animate={{ height: drawerHeight }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      isxpadding={isxpadding.toString()}
-      paddingoptions={paddingOptions}
     >
       <Box py={3} cursor="grab" onPointerDown={handlePointerDown}>
         <TopNav />
       </Box>
       {drawerHeight > 100 && children}
+      {bottom && drawerHeight > 100 && (
+        <Box py={2} w="100%">
+          <Button
+            w="100%"
+            mt="auto"
+            colorScheme="mintTheme"
+            size="lg"
+            isLoading={bottom?.isLoading}
+            onClick={bottom?.func}
+          >
+            {bottom?.text}
+          </Button>
+        </Box>
+      )}
     </Layout>
   );
 }
 
 const Layout = styled.div<{
+  ishide: string;
+  zindex: number;
   isdrawerup: boolean;
-  paddingoptions: { bottom?: number };
-  isxpadding: string;
 }>`
   position: fixed;
-  bottom: ${52 + iPhoneNotchSize()}px;
+  bottom: ${(props) => (props.ishide === "true" ? iPhoneNotchSize() : 52 + iPhoneNotchSize())}px;
   width: 100%;
   max-width: var(--max-width);
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   background-color: white;
-  z-index: 500;
-  padding: ${(props) => (props.isxpadding === "true" ? "12px 20px" : "12px 0")};
+  z-index: ${(props) => props.zindex || (props.ishide ? 700 : 500)};
+  padding: 0 20px;
   padding-bottom: ${(props) => !props.isdrawerup && "12px"};
   padding-top: 0;
   display: flex;

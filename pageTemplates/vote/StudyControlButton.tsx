@@ -5,22 +5,28 @@ import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
 import { CalendarCheckIcon, ClockIcon } from "../../components/Icons/SolidIcons";
-import BottomDrawerLg, {
-  IBottomDrawerLgOptions,
-} from "../../components/organisms/drawer/BottomDrawerLg";
-import { DRAWER_MIN_HEIGHT } from "../../components/organisms/drawer/BottomFlexDrawer";
+import { IBottomDrawerLgOptions } from "../../components/organisms/drawer/BottomDrawerLg";
+import BottomFlexDrawer, {
+  DRAWER_MIN_HEIGHT,
+} from "../../components/organisms/drawer/BottomFlexDrawer";
 
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
+import { StudyDailyInfoProps } from "../../types/models/studyTypes/studyDetails";
+import { ActiveLocation } from "../../types/services/locationTypes";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
+import VoteDrawer from "./VoteDrawer";
 
 interface StudyControlButtonProps {
   isAleadyAttend: boolean;
+  location: ActiveLocation;
+  studyVoteData: StudyDailyInfoProps;
 }
 
-function StudyControlButton({ isAleadyAttend }: StudyControlButtonProps) {
+function StudyControlButton({ location, studyVoteData, isAleadyAttend }: StudyControlButtonProps) {
   const searchParams = useSearchParams();
 
   const [isStudyDrawer, setIsStudyDrawer] = useState(false);
+  const [isVoteDrawer, setIsVoteDrawer] = useState(false);
 
   const myStudyParticipation = useRecoilValue(myStudyParticipationState);
 
@@ -54,24 +60,31 @@ function StudyControlButton({ isAleadyAttend }: StudyControlButtonProps) {
         스터디
       </Button>
       {isStudyDrawer && (
-        <BottomDrawerLg zIndex={700} setIsModal={setIsStudyDrawer} options={options} height={197}>
-          <Link href={`/vote/participate?${searchParams.toString()}`} style={{ width: "100%" }}>
-            <Button
-              h="52px"
-              justifyContent="flex-start"
-              display="flex"
-              variant="unstyled"
-              py={4}
-              w="100%"
-            >
-              <Box w="20px" h="20px" mr={4} opacity={0.28}>
-                <ClockIcon />
-              </Box>
-              <Box fontSize="13px" color="var(--gray-600)">
-                스터디 예약
-              </Box>
-            </Button>
-          </Link>
+        <BottomFlexDrawer
+          isDrawerUp
+          setIsModal={setIsStudyDrawer}
+          isHideBottom
+          bottom={{ text: "취소", func: () => setIsStudyDrawer(false) }}
+          height={197}
+          zIndex={800}
+        >
+          <Button
+            h="52px"
+            justifyContent="flex-start"
+            display="flex"
+            variant="unstyled"
+            py={4}
+            w="100%"
+            onClick={() => setIsVoteDrawer(true)}
+          >
+            <Box w="20px" h="20px" mr={4} opacity={0.28}>
+              <ClockIcon />
+            </Box>
+            <Box fontSize="13px" color="var(--gray-600)">
+              스터디 예약
+            </Box>
+          </Button>
+
           <Link
             href={
               isOpenStudy
@@ -96,7 +109,15 @@ function StudyControlButton({ isAleadyAttend }: StudyControlButtonProps) {
               </Box>
             </Button>
           </Link>
-        </BottomDrawerLg>
+        </BottomFlexDrawer>
+      )}
+      {isVoteDrawer && (
+        <VoteDrawer
+          location={location}
+          setIsModal={setIsVoteDrawer}
+          studyVoteData={studyVoteData}
+          setIsDrawerDown={() => {}}
+        />
       )}
     </>
     // <BottomNavWrapper>

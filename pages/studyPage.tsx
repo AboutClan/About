@@ -31,7 +31,6 @@ import StudyInFoDrawer, { StudyInfoProps } from "../pageTemplates/studyPage/Stud
 import StudyMapTopNav from "../pageTemplates/studyPage/StudyMapTopNav";
 import StudyPageDrawer from "../pageTemplates/studyPage/StudyPageDrawer";
 import StudyControlButton from "../pageTemplates/vote/StudyControlButton";
-import VoteDrawer from "../pageTemplates/vote/VoteDrawer";
 import { myStudyParticipationState } from "../recoils/studyRecoils";
 
 import { IMapOptions, IMarkerOptions } from "../types/externals/naverMapTypes";
@@ -52,8 +51,7 @@ export default function StudyVoteMap() {
   const newSearchParams = new URLSearchParams(searchParams);
   const dateParam = searchParams.get("date");
   const categoryParam = searchParams.get("category") as "currentPlace" | "mainPlace" | "votePlace";
-  const drawerParam = searchParams.get("drawer") as "up" | "down";
-
+ 
   const locationParamKr = convertLocationLangTo(
     searchParams.get("location") as LocationEn,
     "kr",
@@ -107,7 +105,7 @@ export default function StudyVoteMap() {
     if (!locationValue) return;
 
     const locationCenter = LOCATION_CENTER_DOT[locationValue];
-    console.log(1, locationValue);
+
     setCenterLocation({ lat: locationCenter.latitude, lon: locationCenter.longitude });
     newSearchParams.set("location", convertLocationLangTo(locationValue, "en"));
     newSearchParams.set("date", date);
@@ -129,7 +127,6 @@ export default function StudyVoteMap() {
           router.replace(`/studyPage?${newSearchParams.toString()}`);
           return;
         } else if (changeLocation !== locationValue) {
-          console.log(25);
           setLocationValue(changeLocation as ActiveLocation);
         }
         setLocationFilterType("활동 장소");
@@ -156,7 +153,7 @@ export default function StudyVoteMap() {
     if (!studyVoteData || !session?.user) return;
     const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
     setMyStudyParticipation(findMyStudyParticipation);
-    console.log(24, findMyStudyParticipation);
+
     if (locationFilterType === "스터디 장소" && findMyStudyParticipation) {
       setCenterLocation({
         lat: findMyStudyParticipation.place.latitude,
@@ -292,24 +289,21 @@ export default function StudyVoteMap() {
           resizeToggle={resizeToggle}
         />
       </Box>
-      <StudyControlButton isAleadyAttend={!!myStudyInfo?.attendanceInfo.arrived} />
+      <StudyControlButton
+        studyVoteData={studyVoteData}
+        location={locationValue}
+        isAleadyAttend={!!myStudyInfo?.attendanceInfo.arrived}
+      />
 
       {detailInfo && <StudyInFoDrawer detailInfo={detailInfo} setDetailInfo={setDetailInfo} />}
-      <BottomFlexDrawer isOverlay={false} isDrawerUp={drawerParam !== "down"}>
+      
         <StudyPageDrawer
           studyVoteData={studyVoteData}
           location={locationValue}
           date={date}
           setDate={setDate}
         />
-      </BottomFlexDrawer>
-      {studyVoteData && (
-        <VoteDrawer
-          location={locationValue}
-          studyVoteData={studyVoteData}
-          setIsDrawerDown={() => {}}
-        />
-      )}
+    
     </>
   );
 }

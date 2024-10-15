@@ -51,7 +51,7 @@ export default function Page() {
       enabled: !!date && !!locationParam,
     },
   );
-  console.log(42, studyVoteData);
+  
 
   useEffect(() => {
     if (!session) return;

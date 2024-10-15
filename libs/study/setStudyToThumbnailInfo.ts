@@ -13,9 +13,12 @@ export const setStudyToThumbnailInfo = (
   currentLocation: { lat: number; lon: number },
   urlDateParam: string | null,
   location: ActiveLocation,
+  votePlaceProps?: { main: string; sub: string[] },
 ): StudyThumbnailCardProps[] => {
-  if (!studyData) return;
-  const cardColData: StudyThumbnailCardProps[] = [...studyData]?.map((data, idx) => {
+  if (!studyData) return [];
+
+  // 카드 데이터 생성
+  const cardColData: StudyThumbnailCardProps[] = studyData.map((data) => {
     const placeInfo = convertMergePlaceToPlace(data.place);
 
     return {
@@ -41,14 +44,31 @@ export const setStudyToThumbnailInfo = (
         urlDateParam &&
         `/study/${data.place._id}/${urlDateParam}?location=${convertLocationLangTo(location, "en")}`,
       status: data.status,
-
       id: data.place._id,
     };
   });
 
-  return [...cardColData].sort((a, b) => {
-    if (a.place.distance > b.place.distance) return 1;
-    else if (a.place.distance < b.place.distance) return -1;
-    else return 0;
+  // 정렬 로직 개선
+  const sorted = cardColData.sort((a, b) => {
+    // 1. main 장소 우선 정렬
+    if (votePlaceProps) {
+      if (a.id === votePlaceProps.main) return -1;
+      if (b.id === votePlaceProps.main) return 1;
+
+      // 2. sub 장소들 정렬
+      const aIsSub = votePlaceProps.sub.includes(a.id);
+      const bIsSub = votePlaceProps.sub.includes(b.id);
+      if (aIsSub && !bIsSub) return -1;
+      if (!aIsSub && bIsSub) return 1;
+    }
+
+    // 3. 거리순 정렬
+    if (a.place.distance !== undefined && b.place.distance !== undefined) {
+      return a.place.distance - b.place.distance;
+    }
+
+    return 0;
   });
+
+  return sorted;
 };

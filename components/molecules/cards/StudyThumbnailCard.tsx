@@ -28,7 +28,7 @@ export interface StudyThumbnailCardProps {
   participantCnt?: number;
   url: string;
   status: string;
-  func?: () => void;
+
   registerDate?: string;
   id: string;
 }

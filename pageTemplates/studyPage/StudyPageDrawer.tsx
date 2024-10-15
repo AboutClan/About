@@ -6,6 +6,7 @@ import {
   StudyThumbnailCardProps,
 } from "../../components/molecules/cards/StudyThumbnailCard";
 import WeekSlideCalendar from "../../components/molecules/WeekSlideCalendar";
+import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
 import { StudyThumbnailCardSkeleton } from "../../components/skeleton/StudyThumbnailCardSkeleton";
 import { useCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
 import { convertStudyToParticipations } from "../../libs/study/getMyStudyMethods";
@@ -27,6 +28,7 @@ function StudyPageDrawer({ studyVoteData, location, date, setDate }: StudyPageDr
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
+  const drawerParam = searchParams.get("drawer") as "up" | "down";
 
   const { currentLocation } = useCurrentLocation();
 
@@ -53,7 +55,7 @@ function StudyPageDrawer({ studyVoteData, location, date, setDate }: StudyPageDr
   };
 
   return (
-    <>
+    <BottomFlexDrawer height={618}  isDrawerUp={drawerParam !== "down"}>
       <Box w="100%" h="400px">
         <StudyPageDrawerHeader date={date} />
         <WeekSlideCalendar selectedDate={date} func={handleSelectDate} />
@@ -72,7 +74,7 @@ function StudyPageDrawer({ studyVoteData, location, date, setDate }: StudyPageDr
             : [1, 2, 3, 4, 5].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)}
         </Box>
       </Box>
-    </>
+    </BottomFlexDrawer>
   );
 }
 

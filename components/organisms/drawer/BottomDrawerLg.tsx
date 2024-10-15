@@ -70,7 +70,6 @@ export default function BottomDrawerLg({
       {isOverlay && <ScreenOverlay onClick={() => setIsModal(false)} />}
       <Layout
         height={drawerHeight}
-        zIndex={zIndex}
         isxpadding={isxpadding.toString()}
         drag="y"
         dragConstraints={{ top: 0, bottom: 0 }}
@@ -107,8 +106,8 @@ export default function BottomDrawerLg({
   );
 }
 
-const Layout = styled(motion.div)<{
-  zIndex?: number;
+const Layout = styled(motion.div) <{
+  zIndex
   paddingoptions: { bottom?: number };
   height: number;
   isxpadding: string;
@@ -121,7 +120,7 @@ const Layout = styled(motion.div)<{
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   background-color: white;
-  z-index: ${(props) => props.zIndex || 501};
+  z-index: 501;
   padding: ${(props) => (props.isxpadding === "true" ? "12px 20px" : "12px 0")};
   padding-bottom: ${(props) =>
     props.isxpadding === "true" && props?.paddingoptions?.bottom !== 0
@@ -135,7 +134,7 @@ const Layout = styled(motion.div)<{
 
 const TopNav = styled.nav`
   width: 60px;
-  height: 4px;
+  height: 5px;
   border-radius: 100px;
   background-color: var(--gray-500);
   opacity: 0.4;

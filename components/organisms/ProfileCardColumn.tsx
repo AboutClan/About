@@ -5,7 +5,7 @@ interface IProfileCardColumn {
   userCardArr: IProfileCommentCard[];
 }
 export default function ProfileCardColumn({ userCardArr }: IProfileCardColumn) {
-  console.log(15, userCardArr);
+
   return (
     <Layout>
       {userCardArr.map((userCard, idx) => (
