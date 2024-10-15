@@ -235,7 +235,7 @@ function VoteDrawer({ studyVoteData, location, date, setIsModal }: VoteDrawerPro
                   participantCnt={props.participants.length}
                   onClick={() => handleClickPlaceButton(id)}
                   pickType={
-                    myVote?.sub.includes(id)
+                    !isFirstPage && myVote?.sub.includes(id)
                       ? "second"
                       : myVote?.main !== id
                         ? null
