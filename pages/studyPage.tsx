@@ -1,11 +1,11 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { STUDY_MAIN_IMAGES } from "../assets/images/studyMain";
 
+import { STUDY_MAIN_IMAGES } from "../assets/images/studyMain";
 import BottomFlexDrawer, {
   DRAWER_MIN_HEIGHT,
 } from "../components/organisms/drawer/BottomFlexDrawer";
@@ -32,7 +32,6 @@ import StudyMapTopNav from "../pageTemplates/studyPage/StudyMapTopNav";
 import StudyPageDrawer from "../pageTemplates/studyPage/StudyPageDrawer";
 import StudyControlButton from "../pageTemplates/vote/StudyControlButton";
 import { myStudyParticipationState } from "../recoils/studyRecoils";
-
 import { IMapOptions, IMarkerOptions } from "../types/externals/naverMapTypes";
 import { StudyDailyInfoProps, StudyPlaceProps } from "../types/models/studyTypes/studyDetails";
 import { IStudyVoteWithPlace } from "../types/models/studyTypes/studyInterActions";

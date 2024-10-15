@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+
 import {
   StudyThumbnailCard,
   StudyThumbnailCardProps,

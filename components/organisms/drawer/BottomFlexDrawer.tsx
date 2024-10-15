@@ -2,6 +2,7 @@ import { Box, Button } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+
 import { IModal } from "../../../types/components/modalTypes";
 import { iPhoneNotchSize } from "../../../utils/validationUtils";
 

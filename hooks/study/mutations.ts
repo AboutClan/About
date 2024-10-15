@@ -11,7 +11,6 @@ import {
   IStudyVotePlaces,
   IStudyVoteTime,
 } from "../../types/models/studyTypes/studyInterActions";
-
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
 type StudyParticipationParam<T> = T extends "post"

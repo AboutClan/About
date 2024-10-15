@@ -2,8 +2,8 @@ interface IconProps {
   isActive?: boolean;
 }
 
-export const HomeIcon = ({ isActive = false }: IconProps) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="17" viewBox="0 0 15 17" fill="none">
+export function HomeIcon({ isActive = false }: IconProps) {
+  return <svg xmlns="http://www.w3.org/2000/svg" width="15" height="17" viewBox="0 0 15 17" fill="none">
     <path
       fillRule="evenodd"
       clipRule="evenodd"
@@ -11,19 +11,19 @@ export const HomeIcon = ({ isActive = false }: IconProps) => (
       fill={isActive ? "var(--color-mint)" : "var(--gray-400)"}
     />
   </svg>
-);
+}
 
-export const StudyIcon = ({ isActive }: IconProps) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="17" height="18" viewBox="0 0 17 18" fill="none">
+export function StudyIcon({ isActive }: IconProps) {
+  return <svg xmlns="http://www.w3.org/2000/svg" width="17" height="18" viewBox="0 0 17 18" fill="none">
     <path
       d="M8.49973 17.125C8.12419 17.125 7.74933 17.0729 7.38462 16.9687L2.83351 15.6689C1.38888 15.2561 0.380005 13.9184 0.380005 12.4156V3.59213C0.380005 3.21862 0.683141 2.91548 1.05665 2.91548C1.43016 2.91548 1.73329 3.21862 1.73329 3.59213V12.4156C1.73329 13.3175 2.33889 14.12 3.20567 14.3677L7.75677 15.6675C8.24328 15.8062 8.75685 15.8062 9.24404 15.6675L13.7945 14.3677C14.6612 14.12 15.2668 13.3175 15.2668 12.4156V2.91548C15.2668 2.54198 15.57 2.23884 15.9435 2.23884C16.317 2.23884 16.6201 2.54198 16.6201 2.91548V12.4156C16.6201 13.9177 15.6113 15.2554 14.1666 15.6689L9.61551 16.9687C9.25013 17.0729 8.87526 17.125 8.5004 17.125H8.49973ZM12.5752 0.990433C12.0826 0.808415 11.5338 0.853751 11.0459 1.04862L10.4525 1.28545C9.68182 1.59332 9.17569 2.34034 9.17569 3.17058V12.9792C8.95376 13.036 8.72708 13.0651 8.49905 13.0651C8.27102 13.0651 8.04435 13.036 7.82241 12.9792V3.17058C7.82241 2.34034 7.31695 1.59332 6.54558 1.28545L5.95149 1.04795C5.46363 0.853074 4.91487 0.807739 4.42227 0.990433C3.60015 1.29492 3.08523 2.06156 3.08523 2.89992V11.5028C3.08523 12.4088 3.68609 13.2052 4.55693 13.4542L7.38259 14.2621C7.74662 14.3656 8.12216 14.4177 8.4977 14.4177C8.87323 14.4177 9.24877 14.3656 9.61281 14.2621L12.4385 13.4542C13.31 13.2052 13.9102 12.4088 13.9102 11.5028V2.89992C13.9102 2.06156 13.3946 1.29425 12.5724 0.990433H12.5752Z"
       fill={isActive ? "var(--color-mint)" : "var(--gray-400)"}
     />
   </svg>
-);
+}
 
-export const ThunderIcon = ({ isActive }: IconProps) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="18" viewBox="0 0 13 18" fill="none">
+export function ThunderIcon({ isActive }: IconProps) {
+  return <svg xmlns="http://www.w3.org/2000/svg" width="13" height="18" viewBox="0 0 13 18" fill="none">
     <path
       fillRule="evenodd"
       clipRule="evenodd"
@@ -31,10 +31,10 @@ export const ThunderIcon = ({ isActive }: IconProps) => (
       fill={isActive ? "var(--color-mint)" : "var(--gray-400)"}
     />
   </svg>
-);
+}
 
-export const CommunityIcon = ({ isActive }: IconProps) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="17" height="18" viewBox="0 0 17 18" fill="none">
+export function CommunityIcon({ isActive }: IconProps) {
+  return <svg xmlns="http://www.w3.org/2000/svg" width="17" height="18" viewBox="0 0 17 18" fill="none">
     <path
       fillRule="evenodd"
       clipRule="evenodd"
@@ -42,4 +42,4 @@ export const CommunityIcon = ({ isActive }: IconProps) => (
       fill={isActive ? "var(--color-mint)" : "var(--gray-400)"}
     />
   </svg>
-);
+}

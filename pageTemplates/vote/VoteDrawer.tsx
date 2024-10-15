@@ -1,23 +1,17 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+
 import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
 import PickerRowButton from "../../components/molecules/PickerRowButton";
 import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
-
 import { useCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
-import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { convertStudyToParticipations } from "../../libs/study/getMyStudyMethods";
 import { setStudyToThumbnailInfo } from "../../libs/study/setStudyToThumbnailInfo";
 import { IModal } from "../../types/components/modalTypes";
 import { DispatchBoolean } from "../../types/hooks/reactTypes";
-import {
-  StudyDailyInfoProps,
-  StudyParticipationProps,
-  StudyPlaceProps,
-} from "../../types/models/studyTypes/studyDetails";
-import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
+import { StudyDailyInfoProps, StudyPlaceProps } from "../../types/models/studyTypes/studyDetails";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
@@ -42,23 +36,16 @@ interface VoteDrawerProps extends IModal {
 const DEFAULT_SUB_PLACE_CNT = 4;
 
 function VoteDrawer({ studyVoteData, location, date, setIsModal }: VoteDrawerProps) {
-  const { data: userInfo, isLoading } = useUserInfoQuery();
+  const { data: userInfo } = useUserInfoQuery();
   const preference = userInfo?.studyPreference;
-  console.log(51, studyVoteData);
-  const savedPrefer = preference || { place: null, subPlace: [] };
+
   const { currentLocation } = useCurrentLocation();
-  const toast = useToast();
-  const participations = studyVoteData?.participations;
-  const items = participations && getSortedMainPlace(participations, savedPrefer);
-  const [placeItems, setPlaceItems] = useState<VoteDrawerItemProps[]>(items);
 
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
 
   const [myVote, setMyVote] = useState<{ main: string; sub: string[] }>({ main: null, sub: [] });
   const [isFirstPage, setIsFirstPage] = useState(true);
   const isTodayVote = dayjs().isSame(date, "day") && dayjs().hour() >= 9;
-
-  const recommendSubPlace = () => {};
 
   useEffect(() => {
     if (preference === undefined || !studyVoteData) return;
@@ -131,33 +118,13 @@ function VoteDrawer({ studyVoteData, location, date, setIsModal }: VoteDrawerPro
     );
 
     setThumbnailCardinfoArr(getThumbnailCardInfoArr);
-  }, [preference, studyVoteData, isFirstPage]);
+  }, [preference, studyVoteData, isFirstPage, currentLocation]);
 
   useEffect(() => {
     if (!myVote?.main) setIsFirstPage(true);
   }, [myVote]);
-  // const handleQuickVote = () => {
-  //   if (savedPrefer?.place && !preferPlaces?.main) {
-  //     toast("warning", "즐겨찾기 장소와 현재 선택중인 지역이 다릅니다.");
-  //     return;
-  //   }
-  //   if (!savedPrefer?.place) {
-  //     if (savedPrefer?.subPlace?.length) {
-  //       toast("warning", "1지망 장소가 등록되어 있지 않습니다.");
-  //     } else toast("warning", "즐겨찾기중인 장소가 없습니다.");
-  //     return;
-  //   }
-  //   setMyVote((old) => ({
-  //     ...old,
-  //     place: participations.find((study) => study.place._id === savedPrefer?.place)?.place,
-  //     subPlace: participations
-  //       .filter((study) => savedPrefer?.subPlace?.includes(study.place._id))
-  //       ?.map((par) => par.place),
-  //   }));
-  // };
 
   const handleClickPlaceButton = (id: string) => {
-    console.log("id", id);
     if (isFirstPage) {
       if (myVote?.main === id) return;
       else setMyVote({ main: id, sub: [] });
@@ -252,43 +219,5 @@ function VoteDrawer({ studyVoteData, location, date, setIsModal }: VoteDrawerPro
     </BottomFlexDrawer>
   );
 }
-
-const getSortedMainPlace = (
-  studyData: StudyParticipationProps[],
-  myFavorites: IStudyVotePlaces,
-): VoteDrawerItemProps[] => {
-  const mainPlace = myFavorites?.place;
-  const subPlaceSet = new Set(myFavorites?.subPlace);
-
-  const sortedVoteCntItem = studyData.sort((a, b) => a.members.length - b.members.length);
-
-  const sortedArr = !myFavorites
-    ? sortedVoteCntItem
-    : [...sortedVoteCntItem].sort((a, b) => {
-        const x = a.place._id;
-        const y = b.place._id;
-        if (x === mainPlace) return -1;
-        if (y === mainPlace) return 1;
-        if (subPlaceSet.has(x) && subPlaceSet.has(y)) return 0;
-        if (subPlaceSet.has(x)) return -1;
-        if (subPlaceSet.has(y)) return 1;
-        return 0;
-      });
-
-  const results = sortedArr.map((par) => ({
-    fullname: par.place.fullname,
-    voteCnt: par.members.length,
-    // favoritesCnt: par.place?.prefCnt || 0,
-    locationDetail: par.place.locationDetail,
-    place: par.place,
-    myFavorite: (par.place._id === mainPlace
-      ? "first"
-      : subPlaceSet.has(par.place._id)
-        ? "second"
-        : null) as "first" | "second" | null,
-  }));
-
-  return results;
-};
 
 export default VoteDrawer;

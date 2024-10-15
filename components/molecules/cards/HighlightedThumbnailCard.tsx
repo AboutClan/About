@@ -1,10 +1,9 @@
 import { Box, Flex } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
-import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import { SingleLineText } from "../../../styles/layout/components";
 import { IImageProps } from "../../../types/components/assetTypes";
 import { ITextAndColorSchemes } from "../../../types/components/propTypes";
@@ -26,17 +25,12 @@ export interface IHighlightedThumbnailCard {
   id?: string;
 }
 
-const VOTER_SHOW_MAX = 6;
-
 interface IHighlightedThumbnailCardObj {
   date: string;
   isShort?: boolean;
 }
-export function HighlightedThumbnailCard({ date, isShort }: IHighlightedThumbnailCardObj) {
-  const typeToast = useTypeToast();
+export function HighlightedThumbnailCard({ date }: IHighlightedThumbnailCardObj) {
   const { data: session } = useSession();
-
-  const isGuest = session?.user.name === "guest";
 
   return (
     <CardLink
@@ -165,30 +159,6 @@ const Subtitle = styled(SingleLineText)`
   font-size: 12px;
   width: 90%;
   font-weight: 500;
-`;
-
-const StatusContainer = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: flex-end;
-  margin-bottom: -2px;
-  .statusText {
-    display: flex;
-    margin-left: auto;
-    align-items: center;
-    color: var(--gray-600); // text-gray-500
-    .userIconContainer {
-      display: flex;
-      align-items: center;
-      letter-spacing: 2px;
-      > svg {
-        margin-bottom: 2px;
-      }
-      > span:last-child {
-        margin-left: 6px;
-      }
-    }
-  }
 `;
 
 const SkeletonContainer = styled.div`

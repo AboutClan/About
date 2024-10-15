@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -30,10 +30,8 @@ import {
   useScoreMutation,
 } from "../../../hooks/user/mutations";
 import { getMyStudyInfo } from "../../../libs/study/getMyStudyMethods";
-
 import { ModalLayout } from "../../../modals/Modals";
 import { myStudyParticipationState } from "../../../recoils/studyRecoils";
-
 import {
   transferCollectionState,
   transferStudyAttendanceState,
@@ -41,7 +39,6 @@ import {
 import { CollectionProps } from "../../../types/models/collections";
 import { StudyPlaceProps } from "../../../types/models/studyTypes/studyDetails";
 import { PlaceInfoProps } from "../../../types/models/utilTypes";
-
 import { convertTimeStringToDayjs } from "../../../utils/convertUtils/convertTypes";
 import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
 

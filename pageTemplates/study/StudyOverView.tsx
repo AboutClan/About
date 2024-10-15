@@ -1,6 +1,6 @@
 import { Badge, Box } from "@chakra-ui/react";
-import InfoBoxCol, { InfoBoxProps } from "../../components/molecules/InfoBoxCol";
 
+import InfoBoxCol, { InfoBoxProps } from "../../components/molecules/InfoBoxCol";
 import { STUDY_STATUS_TO_BADGE } from "../../constants/studyConstants";
 import { StudyStatus } from "../../types/models/studyTypes/studyDetails";
 

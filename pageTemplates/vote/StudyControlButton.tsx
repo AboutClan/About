@@ -3,13 +3,13 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
+
 import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
 import { CalendarCheckIcon, ClockIcon } from "../../components/Icons/SolidIcons";
 import { IBottomDrawerLgOptions } from "../../components/organisms/drawer/BottomDrawerLg";
 import BottomFlexDrawer, {
   DRAWER_MIN_HEIGHT,
 } from "../../components/organisms/drawer/BottomFlexDrawer";
-
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import { StudyDailyInfoProps } from "../../types/models/studyTypes/studyDetails";
 import { ActiveLocation } from "../../types/services/locationTypes";

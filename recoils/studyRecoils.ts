@@ -1,6 +1,6 @@
 import { atom } from "recoil";
-import { StudyMergeParticipationProps } from "../types/models/studyTypes/studyDetails";
 
+import { StudyMergeParticipationProps } from "../types/models/studyTypes/studyDetails";
 import { StudyDateStatus } from "../types/models/studyTypes/studyInterActions";
 
 export const myStudyParticipationState = atom<StudyMergeParticipationProps>({

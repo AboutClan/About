@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import { useToast } from "./CustomToast";
 
 interface Location {

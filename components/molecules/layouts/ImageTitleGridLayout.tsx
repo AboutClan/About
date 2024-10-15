@@ -75,7 +75,7 @@ export default function ImageTileGridLayout({
   );
 }
 
-export const ImageTileLayout = ({
+export function ImageTileLayout({
   url,
   text,
   isPriority,
@@ -89,7 +89,7 @@ export const ImageTileLayout = ({
   id?: string;
   selected: "main" | "sub" | null;
   hasToggleHeart: boolean;
-}) => {
+}) {
   return (
     <Flex direction="column" textAlign="center" mb={2}>
       <PlaceImage
@@ -102,7 +102,7 @@ export const ImageTileLayout = ({
       <TextContainer selected={selected}>{text}</TextContainer>
     </Flex>
   );
-};
+}
 
 const GridContainer = styled.div<{ row: number; col: number }>`
   display: grid;

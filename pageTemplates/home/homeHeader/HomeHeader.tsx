@@ -4,9 +4,9 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
+
 import AlertCirclePoint from "../../../components/atoms/AlertCirclePoint";
 import { CalendarCheckIcon, NoticeIcon } from "../../../components/Icons/SolidIcons";
-
 import Slide from "../../../components/layouts/PageSlide";
 import IconButtonNav, { IIconButtonNavBtn } from "../../../components/molecules/navs/IconButtonNav";
 import { AboutLogo } from "../../../components/services/AboutLogo";
@@ -88,8 +88,8 @@ function HomeHeader() {
             </Box>
             <Box
               position="absolute"
-              right={"2px"}
-              top={"-1px"}
+              right="2px"
+              top="-1px"
               p="1px"
               bgColor="white"
               borderRadius="50%"

@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import { STUDY_RECOMMENDATION_DISTANCE } from "../../constants/settingValue/study/study";

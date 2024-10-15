@@ -1,10 +1,11 @@
 import { Badge, Box, Button, Flex } from "@chakra-ui/react";
 import styled from "styled-components";
+
 import { SingleLineText } from "../../styles/layout/components";
 import { TurnArrowIcon } from "../Icons/ArrowIcons";
 import { CheckCircleIcon } from "../Icons/CircleIcons";
 import { UserIcon } from "../Icons/UserIcons";
-import { StudyThumbnailCardProps, STUDY_MAX_CNT } from "./cards/StudyThumbnailCard";
+import { STUDY_MAX_CNT,StudyThumbnailCardProps } from "./cards/StudyThumbnailCard";
 import PlaceImage from "./PlaceImage";
 
 interface PickerRowButtonProps extends Partial<StudyThumbnailCardProps> {
@@ -16,7 +17,7 @@ function PickerRowButton({ onClick, pickType, place, participantCnt, id }: Picke
   console.log(pickType);
   return (
     <Button
-      h="92px"
+      h={pickType === "second" ? "68px" : "92px"}
       w="full"
       p={4}
       pl={pickType == "second" ? 5 : undefined}
@@ -30,7 +31,10 @@ function PickerRowButton({ onClick, pickType, place, participantCnt, id }: Picke
       <Flex align="center">
         <Box mr={4}>
           {pickType !== "second" ? (
-            <CheckCircleIcon size="lg" type={pickType === "first" ? "mint" : "gray"} />
+            <CheckCircleIcon
+              size="lg"
+              type={pickType === "first" || pickType === "main" ? "mint" : "gray"}
+            />
           ) : (
             <TurnArrowIcon />
           )}
@@ -51,17 +55,27 @@ function PickerRowButton({ onClick, pickType, place, participantCnt, id }: Picke
             </Badge>
           )}
           <Title>{place.name}</Title>
-          <Subtitle>
-            <Box as="span" fontWeight={600}>
-              {place.distance && `${place.distance}KM`}
-            </Box>
-            <Box as="span" color="var(--gray-400)">
-              ・
-            </Box>
-            <Box as="span">{place.address}</Box>
-          </Subtitle>
+          {pickType !== "second" && (
+            <Subtitle fontsize={pickType === "main" ? 12 : 11}>
+              <Box as="span" fontWeight={600}>
+                {place.distance && `${place.distance}KM`}
+              </Box>
+              <Box as="span" fontWeight={400} color="var(--gray-400)">
+                ・
+              </Box>
+              <Box as="span" fontWeight={400}>
+                {place.address}
+              </Box>
+            </Subtitle>
+          )}
           {pickType !== "main" && (
-            <Flex mt={3} mr={4} alignItems="center" justify="space-between">
+            <Flex
+              mt={pickType !== "second" && 3}
+              mr={4}
+              alignItems="center"
+              lineHeight="12px"
+              justify="space-between"
+            >
               <Flex align="center" color="var(--gray-500)">
                 <UserIcon size="sm" />
                 <Flex lineHeight="12px" ml={1} fontSize="10px" align="center" fontWeight={500}>
@@ -82,6 +96,16 @@ function PickerRowButton({ onClick, pickType, place, participantCnt, id }: Picke
                   </Box>
                 </Flex>
               </Flex>
+              {pickType === "second" && (
+                <Box fontSize="11px">
+                  <Box as="span" fontWeight={400} color="var(--gray-400)">
+                    ・
+                  </Box>
+                  <Box as="span" fontWeight="semibold" color="var(--gray-500)">
+                    1지망으로부터 {place?.distance}KM
+                  </Box>
+                </Box>
+              )}
             </Flex>
           )}
         </Flex>
@@ -104,9 +128,9 @@ const Title = styled(SingleLineText)`
   line-height: 20px;
 `;
 
-const Subtitle = styled(SingleLineText)`
+const Subtitle = styled(SingleLineText)<{ fontsize: number }>`
   color: var(--gray-500);
-  font-size: 11px;
+  font-size: ${(props) => props.fontsize}px;
 
   line-height: 12px;
 `;

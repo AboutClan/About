@@ -1,10 +1,10 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
-import HighlightButton from "../../components/atoms/HighlightButton";
 
+import HighlightButton from "../../components/atoms/HighlightButton";
 import AttendanceBadge from "../../components/molecules/badge/AttendanceBadge";
 import { IProfileCommentCard } from "../../components/molecules/cards/ProfileCommentCard";
 import ProfileCardColumn from "../../components/organisms/ProfileCardColumn";

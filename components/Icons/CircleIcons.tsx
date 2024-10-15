@@ -1,11 +1,11 @@
-export const CheckCircleIcon = ({
+export function CheckCircleIcon({
   size,
   type,
 }: {
   size: "sm" | "md" | "lg";
   type: "mint" | "orange" | "gray";
-}) =>
-  size === "sm" ? (
+}) {
+  return size === "sm" ? (
     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
       <g clip-path="url(#clip0_2194_1565)">
         <path
@@ -30,19 +30,20 @@ export const CheckCircleIcon = ({
         fill={type === "mint" ? "#00C2B3" : type === "orange" ? "#ffa501" : "#e0e0e0"}
       />
     </svg>
-  );
+  )
+}
 
-export const CheckCircleBigIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50" fill="none">
+export function CheckCircleBigIcon() {
+  return <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50" fill="none">
     <path
       d="M25 0C11.225 0 0 11.225 0 25C0 38.775 11.225 50 25 50C38.775 50 50 38.775 50 25C50 11.225 38.775 0 25 0ZM36.95 19.25L22.775 33.425C22.425 33.775 21.95 33.975 21.45 33.975C20.95 33.975 20.475 33.775 20.125 33.425L13.05 26.35C12.325 25.625 12.325 24.425 13.05 23.7C13.775 22.975 14.975 22.975 15.7 23.7L21.45 29.45L34.3 16.6C35.025 15.875 36.225 15.875 36.95 16.6C37.675 17.325 37.675 18.5 36.95 19.25Z"
       fill="#00C2B3"
     />
   </svg>
-);
+}
 
-export const XCircleIcon = ({ size }: { size: "sm" | "md" }) =>
-  size === "sm" ? (
+export function XCircleIcon({ size }: { size: "sm" | "md" }) {
+  return size === "sm" ? (
     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
       <g clip-path="url(#clip0_2194_2037)">
         <path
@@ -68,4 +69,5 @@ export const XCircleIcon = ({ size }: { size: "sm" | "md" }) =>
         fill="#BDBDBD"
       />
     </svg>
-  );
+  )
+}

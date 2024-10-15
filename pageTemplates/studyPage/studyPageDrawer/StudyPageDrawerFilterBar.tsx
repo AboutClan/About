@@ -1,5 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+
 import Select from "../../../components/atoms/Select";
 import { StudyThumbnailCardProps } from "../../../components/molecules/cards/StudyThumbnailCard";
 import { useUserInfoQuery } from "../../../hooks/user/queries";

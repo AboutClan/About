@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { IModal } from "../../../types/components/modalTypes";
@@ -40,42 +40,40 @@ export default function StudyVoteDrawer({
   const [imageDataArr, setImageDataArr] = useState<IImageTileData[]>();
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
 
+  // useEffect(() => {
+  //   if (!studyVoteDataAll) return;
 
+  //   setImageDataArr(
+  //     studyVoteDataAll?.participations?.map((par) => {
+  //       const placeProps = par.place;
 
-  useEffect(() => {
-    if (!studyVoteDataAll) return;
-   
-    setImageDataArr(
-      studyVoteDataAll?.participations?.map((par) => {
-        const placeProps = par.place;
-        
-        return {
-          imageUrl: placeProps.image,
-          text: placeProps.fullname,
-          func: () => {
-            const id = par.place._id;
-            // if (studyDateStatus === "today") {
-            //   setMyVote((old) => ({ ...old, place: id }));
-            //   return;
-            // }
-            // const voteMainId = myVote?.place;
-            // const voteSubIdArr = myVote?.subPlace;
-            // const { place, subPlace } = selectStudyPlace(id, voteMainId, voteSubIdArr);
-            // if (!voteMainId && voteSubIdArr?.length === 0) {
-            //   const participations = studyVoteDataAll[0].participations;
-            //   const placeInfo = participations.find((par) => par.place._id === place).place;
-            //   setMyVote((old) => ({
-            //     ...old,
-            //     place,
-            //     subPlace: selectSubPlaceAuto(placeInfo, participations),
-            //   }));
-            // } else setMyVote((old) => ({ ...old, place, subPlace }));
-          },
-          id: placeProps._id,
-        };
-      }),
-    );
-  }, [studyVoteDataAll]);
+  //       return {
+  //         imageUrl: placeProps.image,
+  //         text: placeProps.fullname,
+  //         func: () => {
+  //           const id = par.place._id;
+  //           // if (studyDateStatus === "today") {
+  //           //   setMyVote((old) => ({ ...old, place: id }));
+  //           //   return;
+  //           // }
+  //           // const voteMainId = myVote?.place;
+  //           // const voteSubIdArr = myVote?.subPlace;
+  //           // const { place, subPlace } = selectStudyPlace(id, voteMainId, voteSubIdArr);
+  //           // if (!voteMainId && voteSubIdArr?.length === 0) {
+  //           //   const participations = studyVoteDataAll[0].participations;
+  //           //   const placeInfo = participations.find((par) => par.place._id === place).place;
+  //           //   setMyVote((old) => ({
+  //           //     ...old,
+  //           //     place,
+  //           //     subPlace: selectSubPlaceAuto(placeInfo, participations),
+  //           //   }));
+  //           // } else setMyVote((old) => ({ ...old, place, subPlace }));
+  //         },
+  //         id: placeProps._id,
+  //       };
+  //     }),
+  //   );
+  // }, [studyVoteDataAll]);
 
   const onSubmit = () => {
     const diffHour = voteTime.end.diff(voteTime.start, "hour");

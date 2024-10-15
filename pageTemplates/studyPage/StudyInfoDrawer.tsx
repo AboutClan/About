@@ -2,12 +2,16 @@ import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { DispatchType } from "../../types/hooks/reactTypes";
+import { useRecoilValue } from "recoil";
 
 import Avatar from "../../components/atoms/Avatar";
 import { Input } from "../../components/atoms/Input";
+import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
+import StudyChangeAlertModal from "../../components/modals/alertModals/StudyChangeAlertModal";
 import NewTwoButtonRow from "../../components/molecules/NewTwoButtonRow";
+import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
 import StudyVoteDrawer from "../../components/services/studyVote/StudyVoteDrawer";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
@@ -17,13 +21,8 @@ import {
   useStudyParticipationMutation,
 } from "../../hooks/study/mutations";
 import { ModalLayout } from "../../modals/Modals";
-
-import { useRouter, useSearchParams } from "next/navigation";
-import { useRecoilValue } from "recoil";
-import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
-import StudyChangeAlertModal from "../../components/modals/alertModals/StudyChangeAlertModal";
-import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
+import { DispatchType } from "../../types/hooks/reactTypes";
 import { StudyPlaceProps, StudyStatus } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
 import { IAvatar } from "../../types/models/userTypes/userInfoTypes";

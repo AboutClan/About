@@ -1,4 +1,5 @@
 import { ThemeTypings } from "@chakra-ui/system";
+
 import { StudyStatus } from "../types/models/studyTypes/studyDetails";
 
 export const STUDY_STATUS_TO_BADGE: Record<

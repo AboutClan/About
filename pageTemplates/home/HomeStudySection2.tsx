@@ -1,27 +1,25 @@
-import { keyframes } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { motion, PanInfo } from "framer-motion";
+import { PanInfo } from "framer-motion";
 import { useState } from "react";
-import styled from "styled-components";
 
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
-const orbit = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`;
-const orbit2 = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(-360deg);
-  }
-`;
+// const orbit = keyframes`
+//   from {
+//     transform: rotate(0deg);
+//   }
+//   to {
+//     transform: rotate(360deg);
+//   }
+// `;
+// const orbit2 = keyframes`
+//   from {
+//     transform: rotate(0deg);
+//   }
+//   to {
+//     transform: rotate(-360deg);
+//   }
+// `;
 
 function HomeStudySection() {
   // const { data: session } = useSession();
@@ -202,10 +200,10 @@ function HomeStudySection() {
   );
 }
 
-const MotionDiv = styled(motion.div)`
+/* const MotionDiv = styled(motion.div)`
   margin-top: 16px;
   margin-bottom: 24px;
-`;
+`; */
 
 export const getNewDateBySwipe = (panInfo: PanInfo, date: string) => {
   const { offset, velocity } = panInfo;

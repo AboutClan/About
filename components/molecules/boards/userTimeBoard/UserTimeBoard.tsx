@@ -1,9 +1,9 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
+
 import { COLOR_400_ARR } from "../../../../constants/colorConstants";
 import { STUDY_VOTE_HOUR_ARR } from "../../../../constants/serviceConstants/studyConstants/studyTimeConstant";
 import { TimeRangeProps } from "../../../../types/models/utilTypes";
-
 import { IHighlightedText } from "../../../atoms/HighlightedText";
 import { transformToUserBlocks } from "./_lib/transformToUserBlocks";
 
@@ -13,7 +13,7 @@ export interface ITimeBoardParticipant {
 }
 
 interface ITimeBoard {
-  headerText: IHighlightedText;
+
   members: ITimeBoardParticipant[];
 }
 
@@ -25,7 +25,7 @@ interface IUserTimeBlock {
   end: string;
 }
 
-export default function UserTimeBoard({ members, headerText }: ITimeBoard) {
+export default function UserTimeBoard({ members, }: ITimeBoard) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [blockWidth, setBlockWidth] = useState<number>(0);
   const [userBlocks, setUserBlocks] = useState<IUserTimeBlock[]>([]);

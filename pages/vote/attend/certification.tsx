@@ -2,8 +2,8 @@ import { Box, Button } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import AlertModal from "../../../components/AlertModal";
 
+import AlertModal from "../../../components/AlertModal";
 import PageIntro from "../../../components/atoms/PageIntro";
 import SectionTitle from "../../../components/atoms/SectionTitle";
 import BottomNav from "../../../components/layouts/BottomNav";
@@ -15,7 +15,6 @@ import { useToast } from "../../../hooks/custom/CustomToast";
 import { getLocationByCoordinates } from "../../../libs/study/getLocationByCoordinates";
 import { myStudyParticipationState } from "../../../recoils/studyRecoils";
 import { transferStudyAttendanceState } from "../../../recoils/transferRecoils";
-
 import { KakaoLocationProps } from "../../../types/externals/kakaoLocationSearch";
 import { StudyPlaceProps } from "../../../types/models/studyTypes/studyDetails";
 import { PlaceInfoProps } from "../../../types/models/utilTypes";

@@ -1,5 +1,5 @@
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import RuleIcon from "../../components/Icons/RuleIcon";

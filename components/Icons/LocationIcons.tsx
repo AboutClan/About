@@ -1,5 +1,5 @@
-export const MapIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="12" viewBox="0 0 13 12" fill="none">
+export function MapIcon() {
+  return <svg xmlns="http://www.w3.org/2000/svg" width="13" height="12" viewBox="0 0 13 12" fill="none">
     <path
       fill-rule="evenodd"
       clip-rule="evenodd"
@@ -13,10 +13,10 @@ export const MapIcon = () => (
       fill="#9E9E9E"
     />
   </svg>
-);
+}
 
-export const LocationDotIcon = ({ size }: { size: "sm" | "md" }) =>
-  size === "sm" ? (
+export function LocationDotIcon({ size }: { size: "sm" | "md" }) {
+  return size === "sm" ? (
     <svg xmlns="http://www.w3.org/2000/svg" width="9" height="8" viewBox="0 0 9 8" fill="none">
       <path
         fill-rule="evenodd"
@@ -34,7 +34,8 @@ export const LocationDotIcon = ({ size }: { size: "sm" | "md" }) =>
         fill="#00C2B3"
       />
     </svg>
-  );
+  )
+}
 export const LocationDotIconHTML = (name: string) => `<div style="position: relative;">
       <div style="display: flex; align-items:center; padding: 4px 8px; padding-left:4px; border-radius: 14px; background-color: #00C2B3;">
         <div style="display: flex; justify-content: center; align-items: center; width: 16px; height: 16px; margin-right: 4px; background-color: white; border-radius: 50%;">

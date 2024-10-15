@@ -1,9 +1,9 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import styled from "styled-components";
+
 import { PlusIcon } from "../../components/Icons/MathIcons";
 import { DispatchBoolean } from "../../types/hooks/reactTypes";
-
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 interface IStudyDateBar {

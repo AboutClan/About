@@ -60,7 +60,7 @@ export function GatherThumbnailCard({
           <Badge mr={1} size="md" colorScheme={STATUS_TO_BADGE_PROPS[status].colorScheme}>
             {STATUS_TO_BADGE_PROPS[status].text}
           </Badge>
-          <Badge size="md" colorScheme={"gray"} color="var(--gray-600)">
+          <Badge size="md" colorScheme="gray" color="var(--gray-600)">
             {category}
           </Badge>
         </Flex>

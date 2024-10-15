@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 import { Button, Flex } from "@chakra-ui/react";
 import { JSXElementConstructor, ReactElement } from "react";
 

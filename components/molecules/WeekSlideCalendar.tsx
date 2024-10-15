@@ -56,7 +56,7 @@ function WeekSlideCalendar({ selectedDate, func }: CalendarProps) {
           <Flex
             justify="center"
             w="{`calc((100dvw - 40px) / 7)`}"
-            minWidth={`calc((100dvw - 40px) / 7)`}
+            minWidth="calc((100dvw - 40px) / 7)"
             key={idx}
             ref={(el) => (dateRefs.current[idx] = el)}
           >

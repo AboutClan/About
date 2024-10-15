@@ -1,6 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
+
 import CurrentLocationBtn from "../../components/atoms/CurrentLocationBtn";
 import Select from "../../components/atoms/Select";
 import ButtonGroups, { ButtonOptionsProps } from "../../components/molecules/groups/ButtonGroups";

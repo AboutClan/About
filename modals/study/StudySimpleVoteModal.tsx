@@ -19,7 +19,6 @@ import { getStudyDateStatus } from "../../libs/study/date/getStudyDateStatus";
 import { recommendTodayStudyPlace } from "../../libs/study/recommendTodayStudyPlace";
 import { selectStudyPlace } from "../../libs/study/selectStudyPlace";
 import { selectSubPlaceAuto } from "../../libs/study/selectSubPlaceAuto";
-
 import { IModal } from "../../types/components/modalTypes";
 import { StudyParticipationProps } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVote } from "../../types/models/studyTypes/studyInterActions";

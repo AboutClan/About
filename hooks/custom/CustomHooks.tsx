@@ -5,7 +5,6 @@ import { useSetRecoilState } from "recoil";
 
 import { STUDY_VOTE, USER_INFO } from "../../constants/keys/queryKeys";
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
-
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
 import { useStudyPreferenceMutation } from "../study/mutations";
 import { useToast } from "./CustomToast";

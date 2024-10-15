@@ -39,7 +39,7 @@ interface InputGroupProps extends InputProps {
 }
 
 export const InputGroup = forwardRef(function InputGroup(
-  { icon, isDisabled, value, onChange, placeholder, disabled }: InputGroupProps,
+  { isDisabled, value, onChange, placeholder, disabled }: InputGroupProps,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   return (

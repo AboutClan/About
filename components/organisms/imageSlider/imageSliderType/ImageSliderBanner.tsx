@@ -4,11 +4,11 @@ import "swiper/css/pagination";
 import { Box } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import styled from "styled-components";
 import SwiperCore from "swiper";
 import { Autoplay, Pagination, Scrollbar } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+
 import { useTypeToast } from "../../../../hooks/custom/CustomToast";
 
 SwiperCore.use([Autoplay, Scrollbar]);
@@ -26,11 +26,6 @@ interface IImageSliderEventBanner {
 function ImageSliderBanner({ imageArr, isLightBanner }: IImageSliderEventBanner) {
   const typeToast = useTypeToast();
   const router = useRouter();
-  const [pageNum, setPageNum] = useState(0);
-
-  const handleSliderChange = (swiper) => {
-    setPageNum(swiper.realIndex);
-  };
 
   const onClick = (url: string) => {
     if (url) {
@@ -52,7 +47,6 @@ function ImageSliderBanner({ imageArr, isLightBanner }: IImageSliderEventBanner)
         position: "relative",
       }}
       slidesPerView={1}
-      onSlideChange={handleSliderChange}
       autoplay={{
         delay: 3000,
         disableOnInteraction: true,

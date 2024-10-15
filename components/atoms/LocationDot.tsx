@@ -1,4 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
+
 import { TriangleIcon } from "../Icons/DiagramIcon";
 import { LocationDotIcon } from "../Icons/LocationIcons";
 

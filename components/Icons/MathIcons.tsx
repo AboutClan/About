@@ -1,5 +1,5 @@
-export const PlusIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+export function PlusIcon() {
+  return <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
     <path
       fill-rule="evenodd"
       clip-rule="evenodd"
@@ -7,4 +7,4 @@ export const PlusIcon = () => (
       fill="#00C2B3"
     />
   </svg>
-);
+}

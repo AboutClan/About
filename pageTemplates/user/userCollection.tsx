@@ -1,10 +1,10 @@
 import { Flex } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
-import { AboutIcon } from "../../components/atoms/AboutIcons";
 
+import { AboutIcon } from "../../components/atoms/AboutIcons";
 import { useCollectionAlphabetQuery } from "../../hooks/user/sub/collection/queries";
 import UserCollectionModal from "../../modals/user/collection/UserCollectionAlphabetModal";
 

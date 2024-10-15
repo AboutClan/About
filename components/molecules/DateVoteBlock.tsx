@@ -1,11 +1,10 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useRecoilValue } from "recoil";
 
 import { LOCATION_OPEN } from "../../constants/location";
 import { DateVoteButtonProps } from "../../pageTemplates/home/study/studyController/StudyControllerVoteButton";
-import { myStudyInfoState } from "../../recoils/studyRecoils";
+
 import { ActiveLocation, LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 
@@ -21,8 +20,6 @@ function DateVoteBlock({ buttonProps, func, cnt }: DateVoteBlockProps) {
   const date = searchParams.get("date");
   const locationEn = searchParams.get("location");
   const location = convertLocationLangTo(locationEn as LocationEn, "kr");
-
-  const myStudy = useRecoilValue(myStudyInfoState);
 
   const isOpen = LOCATION_OPEN.includes(location as ActiveLocation);
 
@@ -46,7 +43,7 @@ function DateVoteBlock({ buttonProps, func, cnt }: DateVoteBlockProps) {
         </Box>
       </Box>
 
-      <Button
+      {/* <Button
         className="main_vote_btn"
         isLoading={myStudy === undefined && isOpen}
         bgColor={
@@ -67,7 +64,7 @@ function DateVoteBlock({ buttonProps, func, cnt }: DateVoteBlockProps) {
         onClick={isOpen ? func : undefined}
       >
         {isOpen ? buttonProps.text : "준비중 ..."}
-      </Button>
+      </Button> */}
     </Flex>
   );
 }

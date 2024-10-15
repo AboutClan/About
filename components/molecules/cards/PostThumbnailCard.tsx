@@ -11,7 +11,6 @@ import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 import OutlineBadge from "../../atoms/badges/OutlineBadge";
 import Skeleton from "../../atoms/skeleton/Skeleton";
 import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
-import PlaceImage from "../PlaceImage";
 export interface IPostThumbnailCard {
   participants?: UserSimpleInfoProps[];
   title: string;
@@ -64,11 +63,11 @@ export function PostThumbnailCard({
   return (
     <CardLink href={url} onClick={func}>
       <Flex flex={1}>
-        <PlaceImage
+        {/* <PlaceImage
           image={{ url: image.url, isPriority: image.priority }}
           hasToggleHeart={type === "study"}
           id={id}
-        />
+        /> */}
 
         <Flex direction="column" ml="12px" flex={1}>
           <Flex align="center" fontSize="16px">

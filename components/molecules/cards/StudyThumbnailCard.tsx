@@ -1,8 +1,8 @@
 import { Badge, Box, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 import styled from "styled-components";
-import { STUDY_STATUS_TO_BADGE } from "../../../constants/studyConstants";
 
+import { STUDY_STATUS_TO_BADGE } from "../../../constants/studyConstants";
 import { SingleLineText } from "../../../styles/layout/components";
 import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { LocationDotIcon } from "../../Icons/LocationIcons";
@@ -29,7 +29,7 @@ export interface StudyThumbnailCardProps {
   url: string;
   status: string;
 
-  registerDate?: string;
+  func?: () => void;
   id: string;
 }
 
@@ -40,7 +40,7 @@ export function StudyThumbnailCard({
   status,
   func = undefined,
   participantCnt,
-  registerDate,
+
   id,
 }: StudyThumbnailCardProps) {
   const userAvatarArr = participants

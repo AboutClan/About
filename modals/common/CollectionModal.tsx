@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import styled from "styled-components";
-import { AboutIcon } from "../../components/atoms/AboutIcons";
 
+import { AboutIcon } from "../../components/atoms/AboutIcons";
 import { StarIcon } from "../../components/Icons/StarIcons";
 import { IModal } from "../../types/components/modalTypes";
 import { CollectionProps } from "../../types/models/collections";

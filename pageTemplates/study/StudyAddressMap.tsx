@@ -1,5 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { renderToString } from "react-dom/server";
+
 import LocationDot from "../../components/atoms/LocationDot";
 import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
 import { LocationDotIcon, LocationDotIconHTML } from "../../components/Icons/LocationIcons";

@@ -57,29 +57,6 @@ const Button = styled.button`
   color: var(--gray-600);
 `;
 
-const CardContainer = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 12px 16px;
-  border-bottom: var(--border-main);
-  line-height: 24px;
-  height: 72px;
-`;
-
-const UserInfoContainer = styled.div`
-  margin-left: 12px;
-  flex: 0.9;
-`;
-
-const UserNameBadgeContainer = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 14px; /* text-sm */
-  font-weight: 600; /* font-semibold */
-  > span:first-child {
-    margin-right: 6px;
-  }
-`;
 
 const CommentText = styled.span`
   display: -webkit-box;

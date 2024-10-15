@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
@@ -9,7 +9,6 @@ import { StudyThumbnailCard } from "../../components/molecules/cards/StudyThumbn
 import { useCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { setStudyToThumbnailInfo } from "../../libs/study/setStudyToThumbnailInfo";
-
 import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";

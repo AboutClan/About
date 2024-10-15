@@ -1,5 +1,4 @@
 import { Box, Flex } from "@chakra-ui/react";
-import styled from "styled-components";
 
 export interface InfoBoxProps {
   category: string;
@@ -37,29 +36,5 @@ function InfoBoxCol({ infoBoxPropsArr }: InfoBoxColProps) {
     </Flex>
   );
 }
-
-const InfoContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const InfoRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  line-height: 2;
-  font-size: 14px;
-`;
-
-const InfoIconText = styled.div`
-  display: flex;
-  align-items: center;
-
-  i {
-    width: 14px;
-    margin-right: 8px;
-    color: var(--gray-600);
-  }
-`;
 
 export default InfoBoxCol;

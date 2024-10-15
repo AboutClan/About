@@ -1,4 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
+
 import { CheckCircleIcon, XCircleIcon } from "../../Icons/CircleIcons";
 
 interface IAttendanceBadge {

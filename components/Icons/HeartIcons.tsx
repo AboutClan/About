@@ -1,5 +1,5 @@
-export const HeartIcon = ({ fill = false }: { fill?: boolean }) => (
-  <svg
+export function HeartIcon({ fill = false }: { fill?: boolean }) {
+  return <svg
     xmlns="http://www.w3.org/2000/svg"
     width="16"
     height="16"
@@ -19,4 +19,4 @@ export const HeartIcon = ({ fill = false }: { fill?: boolean }) => (
       strokeWidth="0.5"
     />
   </svg>
-);
+}

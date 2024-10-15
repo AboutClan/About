@@ -12,7 +12,7 @@ function HomeBannerSlide() {
   return (
     <>
       <Flex
-        aspectRatio={"2.127/1"}
+        aspectRatio="2.127/1"
         flexDir="column"
         mt={3}
         mb={5}

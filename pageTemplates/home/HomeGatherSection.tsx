@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+
 import SectionHeader from "../../components/atoms/SectionHeader";
 import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";

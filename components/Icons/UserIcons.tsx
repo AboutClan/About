@@ -1,5 +1,5 @@
-export const UserIcon = ({ size, isActive }: { size: "sm" | "md"; isActive?: boolean }) =>
-  size === "sm" ? (
+export function UserIcon({ size, isActive }: { size: "sm" | "md"; isActive?: boolean }) {
+  return size === "sm" ? (
     <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
       <path
         fillRule="evenodd"
@@ -17,4 +17,5 @@ export const UserIcon = ({ size, isActive }: { size: "sm" | "md"; isActive?: boo
         fill={isActive ? "var(--color-mint)" : "var(--gray-400)"}
       />
     </svg>
-  );
+  )
+}
