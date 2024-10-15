@@ -68,7 +68,7 @@ const theme = extendTheme({
       900: "black",
     },
     black: {
-      500: "#303030",
+      500: "#303030", // 명도 46% (유지)
     },
     mint: {
       50: "#e0f7f5",

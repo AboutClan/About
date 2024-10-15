@@ -14,7 +14,7 @@ function PickerRowButton({ pickType, place, participantCnt, func, id }: PickerRo
   return (
     <Button
       h="92px"
-      w="100%"
+      w="full"
       p={4}
       variant="unstyled"
       border="1px solid var(--gray-200)"
@@ -25,7 +25,7 @@ function PickerRowButton({ pickType, place, participantCnt, func, id }: PickerRo
           <CheckCircleIcon size="lg" />
         </Box>
 
-        <Flex flexShrink={0} mr={4} direction="column" align="flex-start">
+        <Flex flex={1} bg="pink" mr={4} direction="column" align="flex-start">
           <Title>하우짓 블랙</Title>
           <Subtitle>
             <Box as="span" fontWeight={600}>
