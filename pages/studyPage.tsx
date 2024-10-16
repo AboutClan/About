@@ -1,11 +1,12 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
 import { STUDY_MAIN_IMAGES } from "../assets/images/studyMain";
+import ArrowBackButton from "../components/atoms/buttons/ArrowBackButton";
 import { DRAWER_MIN_HEIGHT } from "../components/organisms/drawer/BottomFlexDrawer";
 import VoteMap from "../components/organisms/VoteMap";
 import { USER_LOCATION } from "../constants/keys/localStorage";
@@ -32,7 +33,6 @@ import StudyControlButton from "../pageTemplates/vote/StudyControlButton";
 import { myStudyParticipationState } from "../recoils/studyRecoils";
 import { IMapOptions, IMarkerOptions } from "../types/externals/naverMapTypes";
 import { StudyDailyInfoProps } from "../types/models/studyTypes/studyDetails";
-import { IStudyVoteWithPlace } from "../types/models/studyTypes/studyInterActions";
 import { PlaceInfoProps } from "../types/models/utilTypes";
 import { ActiveLocation, LocationEn } from "../types/services/locationTypes";
 import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
@@ -64,14 +64,14 @@ export default function StudyVoteMap() {
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>();
   const [currentLocation, setCurrentLocation] = useState<{ lat: number; lon: number }>();
   const [centerLocation, setCenterLocation] = useState<{ lat: number; lon: number }>();
+  const [isVoteDrawer, setIsVoteDrawer] = useState(false);
 
   const [locationFilterType, setLocationFilterType] = useState<
     "현재 위치" | "활동 장소" | "스터디 장소"
   >("현재 위치");
 
-  const [myVoteInfo, setMyVoteInfo] = useState<IStudyVoteWithPlace>();
   const [isLocationRefetch, setIsLocationRefetch] = useState(false);
-  const [resizeToggle, setResizeToggle] = useState<boolean>(null);
+
   const [date, setDate] = useState(dateParam || dayjsToStr(dayjs()));
   const [locationValue, setLocationValue] = useState<ActiveLocation>(
     locationParamKr || userLocation,
@@ -201,7 +201,7 @@ export default function StudyVoteMap() {
   }, [isLocationRefetch]);
 
   useEffect(() => {
-    if (categoryParam === "voting") return;
+    if (isVoteDrawer) return;
     if (centerLocation) {
       setMapOptions(getMapOptions(centerLocation, locationValue));
     } else if (centerLocation === null && mainLocation) {
@@ -210,7 +210,7 @@ export default function StudyVoteMap() {
     if (studyVoteData && currentLocation) {
       setMarkersOptions(getMarkersOptions(studyVoteData, currentLocation));
     }
-  }, [currentLocation, centerLocation, mainLocation, studyVoteData, locationValue]);
+  }, [currentLocation, centerLocation, mainLocation, studyVoteData, locationValue, isVoteDrawer]);
 
   const handleMarker = (id: string, type: "vote") => {
     if (!id || !studyVoteData) return;
@@ -277,31 +277,41 @@ export default function StudyVoteMap() {
             : "participation",
     });
   };
-
+  console.log(1, mapOptions);
   return (
     <>
       <Box
         position="relative"
         height={
-          !resizeToggle
+          !isVoteDrawer
             ? `calc(100dvh - var(--bottom-nav-height) - ${DRAWER_MIN_HEIGHT + iPhoneNotchSize()}px)`
-            : `calc(100vh - 468px - ${iPhoneNotchSize()}px)`
+            : `calc(100vh - 452px - ${iPhoneNotchSize()}px)`
         }
         maxH="100dvh"
       >
-        {categoryParam !== "voting" && (
+        {!isVoteDrawer ? (
           <StudyMapTopNav
             location={locationValue}
             setLocation={setLocationValue}
             hasMainLocation={!!mainLocation}
             setIsLocationFetch={setIsLocationRefetch}
           />
+        ) : (
+          <Box position="fixed" zIndex={20} top="16px" left="16px">
+            <ArrowBackButton
+              func={() => {
+                newSearchParams.set("category", "currentPlace");
+                router.replace(`/studyPage?${newSearchParams.toString()}`);
+              }}
+            />
+          </Box>
         )}
+
         <VoteMap
           mapOptions={mapOptions}
           markersOptions={markersOptions}
           handleMarker={handleMarker}
-          resizeToggle={resizeToggle}
+          resizeToggle={isVoteDrawer}
         />
       </Box>
       <StudyControlButton
@@ -309,13 +319,14 @@ export default function StudyVoteMap() {
         location={locationValue}
         isAleadyAttend={!!myStudyInfo?.attendanceInfo.arrived}
         setMarkersOptions={setMarkersOptions}
-        setResizeToggle={setResizeToggle}
         setIsLocationRefetch={setIsLocationRefetch}
         setCenterLocation={setCenterLocation}
         setMapOptions={() => setMapOptions(getMapOptions(currentLocation, locationValue, 14))}
         date={date}
         myVote={myVote}
         setMyVote={setMyVote}
+        isVoteDrawer={isVoteDrawer}
+        setIsVoteDrawer={setIsVoteDrawer}
       />
 
       {detailInfo && <StudyInFoDrawer detailInfo={detailInfo} setDetailInfo={setDetailInfo} />}

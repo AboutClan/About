@@ -1,8 +1,8 @@
 import "swiper/css";
 
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -79,7 +79,7 @@ function DateCalendarModal({ date: selectedDate, setIsModal }: DateCalendarModal
   };
 
   const moveDate = () => {
-    if (dayjsToStr(selectedDate) === dayjsToStr(date)) {
+    if (selectedDate === dayjsToStr(date)) {
       setIsModal(false);
       return;
     }
@@ -103,10 +103,6 @@ function DateCalendarModal({ date: selectedDate, setIsModal }: DateCalendarModal
 
   const footerOptions: IFooterOptions = {
     main: {
-      text: "참여 신청",
-      func: voteStudy,
-    },
-    sub: {
       text: "날짜 이동",
       func: moveDate,
     },

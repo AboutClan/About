@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 import { useTogglePlaceHeart } from "../../hooks/custom/CustomHooks";
 import { useUserInfoQuery } from "../../hooks/user/queries";
@@ -25,13 +25,14 @@ function PlaceImage({ imageProps, id, hasToggleHeart, selected, size }: PlaceHea
     enabled: isGuest === false,
   });
   const preference = userInfo?.studyPreference;
-  const isMyPrefer = preference?.place === id || preference?.subPlace?.includes(id);
+  const myPreferType =
+    preference?.place === id ? "main" : preference?.subPlace?.includes(id) ? "sub" : null;
 
   const toggleHeart = useTogglePlaceHeart();
 
   const sizeLength =
     size === "sm" ? "60px" : size === "md" ? "80px" : size === "lg" ? "100px" : null;
-
+ 
   return (
     <Box
       borderRadius={size === "md" ? "4px" : "12px"}
@@ -77,7 +78,11 @@ function PlaceImage({ imageProps, id, hasToggleHeart, selected, size }: PlaceHea
           color="white"
           onClick={(e) => toggleHeart(e, preference, id, userLoading)}
         >
-          {isMyPrefer ? <HeartIcon fill /> : <HeartIcon />}
+          {myPreferType ? (
+            <HeartIcon fill color={myPreferType === "main" ? "red" : "orange"} />
+          ) : (
+            <HeartIcon fill={false} />
+          )}
         </Box>
       )}
     </Box>

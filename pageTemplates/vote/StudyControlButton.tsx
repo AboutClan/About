@@ -6,7 +6,6 @@ import { useRecoilValue } from "recoil";
 
 import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
 import { CalendarCheckIcon, ClockIcon } from "../../components/Icons/SolidIcons";
-import { IBottomDrawerLgOptions } from "../../components/organisms/drawer/BottomDrawerLg";
 import BottomFlexDrawer, {
   DRAWER_MIN_HEIGHT,
 } from "../../components/organisms/drawer/BottomFlexDrawer";
@@ -24,13 +23,15 @@ interface StudyControlButtonProps {
   location: ActiveLocation;
   studyVoteData: StudyDailyInfoProps;
   setMarkersOptions: DispatchType<IMarkerOptions[]>;
-  setResizeToggle: DispatchBoolean;
+
   setIsLocationRefetch: DispatchBoolean;
   setCenterLocation: DispatchType<{ lat: number; lon: number }>;
   setMapOptions: () => void;
   date: string;
   myVote: MyVoteProps;
   setMyVote: DispatchType<MyVoteProps>;
+  isVoteDrawer: boolean;
+  setIsVoteDrawer: DispatchBoolean;
 }
 
 function StudyControlButton({
@@ -41,7 +42,9 @@ function StudyControlButton({
   setMapOptions,
   setCenterLocation,
   setIsLocationRefetch,
-  setResizeToggle,
+  isVoteDrawer,
+  setIsVoteDrawer,
+
   date,
   myVote,
   setMyVote,
@@ -52,41 +55,34 @@ function StudyControlButton({
   const newSearchParams = new URLSearchParams(searchParams);
 
   const [isStudyDrawer, setIsStudyDrawer] = useState(false);
-  const [isVoteDrawer, setIsVoteDrawer] = useState(false);
 
   const myStudyParticipation = useRecoilValue(myStudyParticipationState);
 
   const isOpenStudy = myStudyParticipation?.status === "open";
 
   useEffect(() => {
+    if (categoryParam === "voting") setIsVoteDrawer(true);
+    else setIsVoteDrawer(false);
+  }, [categoryParam]);
+
+  useEffect(() => {
     if (isVoteDrawer) {
       setMapOptions();
-      setResizeToggle(true);
-      setIsStudyDrawer(true);
 
       newSearchParams.set("category", "voting");
       router.replace(`/studyPage?${newSearchParams.toString()}`);
     } else if (categoryParam === "voting") {
-      setResizeToggle(false);
       setIsLocationRefetch(true);
       newSearchParams.set("category", "currentplace");
       router.replace(`/studyPage?${newSearchParams.toString()}`);
     }
   }, [isVoteDrawer]);
 
-  const options: IBottomDrawerLgOptions = {
-    footer: {
-      buttonText: "취소",
-      onClick: () => setIsStudyDrawer(false),
-    },
-  };
-
-  const handleStudyDrawerDown = () => {
-   
-    setIsVoteDrawer(false);
+  const handleStudyVoteButton = () => {
     setIsStudyDrawer(false);
+    setIsVoteDrawer(true);
   };
-
+  console.log(51, isStudyDrawer);
   return (
     <>
       <Button
@@ -97,6 +93,7 @@ function StudyControlButton({
         fontWeight={700}
         color="white"
         position="fixed"
+        zIndex="800"
         borderRadius="20px"
         lineHeight="24px"
         bottom={`calc(var(--bottom-nav-height) + ${DRAWER_MIN_HEIGHT + iPhoneNotchSize() + 12}px)`}
@@ -109,10 +106,12 @@ function StudyControlButton({
       </Button>
       {isStudyDrawer && (
         <BottomFlexDrawer
+          isOverlay
+          overlayNum={750}
           isDrawerUp
-          setIsModal={handleStudyDrawerDown}
+          setIsModal={() => setIsStudyDrawer(false)}
           isHideBottom
-          bottom={{ text: "취소", func: () => handleStudyDrawerDown() }}
+          bottom={{ text: "취소", func: () => setIsStudyDrawer(false) }}
           height={197}
           zIndex={800}
         >
@@ -123,7 +122,7 @@ function StudyControlButton({
             variant="unstyled"
             py={4}
             w="100%"
-            onClick={() => setIsVoteDrawer(true)}
+            onClick={handleStudyVoteButton}
           >
             <Box w="20px" h="20px" mr={4} opacity={0.28}>
               <ClockIcon />
@@ -163,7 +162,7 @@ function StudyControlButton({
         <VoteDrawer
           date={date}
           location={location}
-          setIsModal={handleStudyDrawerDown}
+          setIsModal={() => setIsVoteDrawer(false)}
           studyVoteData={studyVoteData}
           setMarkersOptions={setMarkersOptions}
           setCenterLocation={setCenterLocation}

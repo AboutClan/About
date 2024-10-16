@@ -4,13 +4,21 @@ import { Alphabet } from "../../types/models/collections";
 
 const ALPHABET_BG: Record<Alphabet, string> = {
   A: "var(--color-red)",
-  b: "var(--color-orange)",
-  o: "var(--color-blue)",
-  u: "var(--color-green)",
-  t: "var(--color-purple)",
+  B: "var(--color-orange)",
+  O: "var(--color-blue)",
+  U: "var(--color-green)",
+  T: "var(--color-purple)",
 };
 
-export function AboutIcon({ alphabet, size = "md" }: { alphabet: Alphabet; size?: "md" | "lg" }) {
+export function AboutIcon({
+  alphabet,
+  size = "md",
+  isActive,
+}: {
+  alphabet: Alphabet;
+  size?: "md" | "lg";
+  isActive: boolean;
+}) {
   return (
     <Flex
       justify="center"
@@ -19,6 +27,7 @@ export function AboutIcon({ alphabet, size = "md" }: { alphabet: Alphabet; size?
       w={size === "md" ? "48px" : size === "lg" ? "62px" : null}
       borderRadius="50%"
       bg={ALPHABET_BG[alphabet]}
+      opacity={isActive ? 1 : 0.28}
     >
       {alphabet === "A" ? (
         <svg
@@ -33,7 +42,7 @@ export function AboutIcon({ alphabet, size = "md" }: { alphabet: Alphabet; size?
             fill="white"
           />
         </svg>
-      ) : alphabet === "b" ? (
+      ) : alphabet === "B" ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -46,7 +55,7 @@ export function AboutIcon({ alphabet, size = "md" }: { alphabet: Alphabet; size?
             fill="white"
           />
         </svg>
-      ) : alphabet === "o" ? (
+      ) : alphabet === "O" ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -59,7 +68,7 @@ export function AboutIcon({ alphabet, size = "md" }: { alphabet: Alphabet; size?
             fill="white"
           />
         </svg>
-      ) : alphabet === "u" ? (
+      ) : alphabet === "U" ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"

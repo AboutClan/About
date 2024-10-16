@@ -234,7 +234,8 @@ const theme = extendTheme({
       },
       variants: {
         solid: (props) => ({
-          bg: `${props.colorScheme === "gray" ? "gray.200" : `${props.colorScheme}.500`}`,
+          bg: `${props.colorScheme === "gray" ? "gray.100" : `${props.colorScheme}.500`}`,
+          color: `${props.colorScheme === "gray" ? "gray.600" : `white`}`,
         }),
       },
       defaultProps: {

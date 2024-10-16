@@ -1,5 +1,4 @@
 import { Box, Flex } from "@chakra-ui/react";
-import styled from "styled-components";
 
 import { AboutIcon } from "../../components/atoms/AboutIcons";
 import { StarIcon } from "../../components/Icons/StarIcons";
@@ -14,7 +13,7 @@ interface ICollectionModal extends IModal {
 function CollectionModal({ collection, setIsModal }: ICollectionModal) {
   if (!collection) return;
 
-  
+  console.log(4, collection);
   const footerOptions: IFooterOptions = {
     main: {},
   };
@@ -57,7 +56,5 @@ function CollectionModal({ collection, setIsModal }: ICollectionModal) {
     </ModalLayout>
   );
 }
-
-
 
 export default CollectionModal;

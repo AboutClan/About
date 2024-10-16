@@ -5,7 +5,7 @@ import { SingleLineText } from "../../styles/layout/components";
 import { TurnArrowIcon } from "../Icons/ArrowIcons";
 import { CheckCircleIcon } from "../Icons/CircleIcons";
 import { UserIcon } from "../Icons/UserIcons";
-import { STUDY_MAX_CNT,StudyThumbnailCardProps } from "./cards/StudyThumbnailCard";
+import { StudyThumbnailCardProps, STUDY_MAX_CNT } from "./cards/StudyThumbnailCard";
 import PlaceImage from "./PlaceImage";
 
 interface PickerRowButtonProps extends Partial<StudyThumbnailCardProps> {
@@ -14,7 +14,6 @@ interface PickerRowButtonProps extends Partial<StudyThumbnailCardProps> {
 }
 
 function PickerRowButton({ onClick, pickType, place, participantCnt, id }: PickerRowButtonProps) {
-  
   return (
     <Button
       h={pickType === "second" ? "68px" : "92px"}
@@ -33,7 +32,8 @@ function PickerRowButton({ onClick, pickType, place, participantCnt, id }: Picke
           {pickType !== "second" ? (
             <CheckCircleIcon
               size="lg"
-              type={pickType === "first" || pickType === "main" ? "mint" : "gray"}
+              color={pickType === "first" || pickType === "main" ? "mint" : "gray"}
+              isFill
             />
           ) : (
             <TurnArrowIcon />
@@ -114,7 +114,7 @@ function PickerRowButton({ onClick, pickType, place, participantCnt, id }: Picke
           {pickType !== "second" ? (
             <PlaceImage size="sm" imageProps={place.imageProps} hasToggleHeart id={id} />
           ) : (
-            <CheckCircleIcon size="lg" type="orange" />
+            <CheckCircleIcon size="lg" color="orange" isFill />
           )}
         </Box>
       </Flex>

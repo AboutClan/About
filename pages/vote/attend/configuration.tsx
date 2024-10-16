@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -53,7 +53,7 @@ function Configuration() {
   const [endTime, setEndTime] = useState(
     dayjs().hour() < 21 ? dayjsToFormat(dayjs().startOf("hour").add(3, "hour"), "HH:mm") : "23:30",
   );
-
+  console.log(13, endTime);
   const textareaRef = useRef(null);
   const [otherPermission, setOtherPermission] = useState<"허용" | "비허용">("허용");
   const [attendMessage, setAttendMessage] = useState("");
@@ -155,7 +155,7 @@ function Configuration() {
   };
 
   const formData = new FormData();
- 
+
   const handleSubmit = () => {
     const isParticipationStudy = (myStudyParticipation?.place as StudyPlaceProps)?.fullname;
     const isRealTimeStudy = (myStudyParticipation?.place as PlaceInfoProps)?.name;

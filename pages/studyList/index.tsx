@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
@@ -27,7 +27,7 @@ export default function StudyList() {
 
   const participations = studyVoteData?.participations;
 
-  const thumbnailCardInfoArr = setStudyToThumbnailInfo(participations, currentLocation, date);
+  const thumbnailCardInfoArr = setStudyToThumbnailInfo(participations, currentLocation, date, true);
 
   return (
     <>

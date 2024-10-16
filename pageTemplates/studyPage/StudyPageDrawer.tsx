@@ -10,10 +10,12 @@ import WeekSlideCalendar from "../../components/molecules/WeekSlideCalendar";
 import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
 import { StudyThumbnailCardSkeleton } from "../../components/skeleton/StudyThumbnailCardSkeleton";
 import { useCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
+import { useUserInfoQuery } from "../../hooks/user/queries";
 import { convertStudyToParticipations } from "../../libs/study/getMyStudyMethods";
 import { setStudyToThumbnailInfo } from "../../libs/study/setStudyToThumbnailInfo";
 import { DispatchString } from "../../types/hooks/reactTypes";
 import { StudyDailyInfoProps } from "../../types/models/studyTypes/studyDetails";
+import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import StudyPageDrawerFilterBar from "./studyPageDrawer/StudyPageDrawerFilterBar";
 import StudyPageDrawerHeader from "./studyPageDrawer/StudyPageDrawerHeader";
@@ -25,6 +27,8 @@ interface StudyPageDrawerProps {
   location: ActiveLocation;
 }
 
+type SelectOption = "인원순" | "거리순" | "선호순";
+
 function StudyPageDrawer({ studyVoteData, location, date, setDate }: StudyPageDrawerProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -34,18 +38,30 @@ function StudyPageDrawer({ studyVoteData, location, date, setDate }: StudyPageDr
   const { currentLocation } = useCurrentLocation();
 
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
+  const [selectOption, setSelectOption] = useState<SelectOption>("인원순");
+
+  const { data: userInfo } = useUserInfoQuery();
+  const preference = userInfo?.studyPreference;
 
   useEffect(() => {
-    if (!studyVoteData) return;
+    if (!studyVoteData || !currentLocation) return;
     const participations = convertStudyToParticipations(studyVoteData, location);
     const getThumbnailCardInfoArr = setStudyToThumbnailInfo(
       participations,
       currentLocation,
       date,
+      true,
       location,
     );
-    setThumbnailCardinfoArr(getThumbnailCardInfoArr);
-  }, [studyVoteData]);
+    setThumbnailCardinfoArr(
+      sortThumbnailCardInfoArr(selectOption, preference, getThumbnailCardInfoArr),
+    );
+  }, [studyVoteData, currentLocation]);
+
+  useEffect(() => {
+    if (!thumbnailCardInfoArr || (selectOption === "선호순" && !preference?.place)) return;
+    setThumbnailCardinfoArr((old) => sortThumbnailCardInfoArr(selectOption, preference, old));
+  }, [selectOption, preference]);
 
   const handleSelectDate = (moveDate: string) => {
     if (date === moveDate) return;
@@ -56,13 +72,13 @@ function StudyPageDrawer({ studyVoteData, location, date, setDate }: StudyPageDr
   };
 
   return (
-    <BottomFlexDrawer height={618}  isDrawerUp={drawerParam !== "down"}>
+    <BottomFlexDrawer height={618} isDrawerUp={drawerParam !== "down"}>
       <Box w="100%" h="400px">
         <StudyPageDrawerHeader date={date} />
         <WeekSlideCalendar selectedDate={date} func={handleSelectDate} />
         <StudyPageDrawerFilterBar
-          thumbnailCardInfoArr={thumbnailCardInfoArr}
-          setThumbnailCardInfoArr={setThumbnailCardinfoArr}
+          selectOption={selectOption}
+          setSelectOption={setSelectOption}
           placeCnt={thumbnailCardInfoArr?.length}
         />
         <Box overflowY="scroll" h="411px">
@@ -78,5 +94,39 @@ function StudyPageDrawer({ studyVoteData, location, date, setDate }: StudyPageDr
     </BottomFlexDrawer>
   );
 }
+
+const sortThumbnailCardInfoArr = (
+  selectOption: SelectOption,
+  preference: IStudyVotePlaces,
+  arr: StudyThumbnailCardProps[],
+) => {
+  return [...arr].sort((a, b) => {
+    if (selectOption === "거리순") {
+      if (a.place.distance > b.place.distance) return 1;
+      else if (a.place.distance < b.place.distance) return -1;
+      else return 0;
+    }
+    if (selectOption === "인원순") {
+      if (a.participants.length > b.participants.length) return -1;
+      if (a.participants.length < b.participants.length) return 1;
+      return 0;
+    }
+    if (selectOption === "선호순") {
+      // 1. main place가 있는 경우 우선순위
+      if (a.id === preference.place && b.id !== preference.place) return -1;
+      if (b.id === preference.place && a.id !== preference.place) return 1;
+
+      // 2. sub place가 있는 경우 우선순위
+      const aIsSub = preference.subPlace?.includes(a.id);
+      const bIsSub = preference.subPlace?.includes(b.id);
+
+      if (aIsSub && !bIsSub) return -1;
+      if (!aIsSub && bIsSub) return 1;
+
+      // 3. 나머지 (main도 sub도 아닌 경우)
+      return 0;
+    }
+  });
+};
 
 export default StudyPageDrawer;

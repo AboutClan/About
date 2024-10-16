@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -29,10 +29,10 @@ export default function UserCollection() {
         </BlockItem>
         <AlphabetContainer>
           <AboutIcon alphabet="A" isActive={alphabetArr?.includes("A")} />
-          <AboutIcon alphabet="b" isActive={alphabetArr?.includes("b")} />
-          <AboutIcon alphabet="o" isActive={alphabetArr?.includes("o")} />
-          <AboutIcon alphabet="u" isActive={alphabetArr?.includes("u")} />
-          <AboutIcon alphabet="t" isActive={alphabetArr?.includes("t")} />
+          <AboutIcon alphabet="B" isActive={alphabetArr?.includes("B")} />
+          <AboutIcon alphabet="O" isActive={alphabetArr?.includes("O")} />
+          <AboutIcon alphabet="U" isActive={alphabetArr?.includes("U")} />
+          <AboutIcon alphabet="T" isActive={alphabetArr?.includes("T")} />
         </AlphabetContainer>
       </Link>
       <AlphabetQNABtn onClick={() => setIsCollectionModal(true)}>

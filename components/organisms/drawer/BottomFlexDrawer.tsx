@@ -5,6 +5,7 @@ import styled from "styled-components";
 
 import { IModal } from "../../../types/components/modalTypes";
 import { iPhoneNotchSize } from "../../../utils/validationUtils";
+import ScreenOverlay from "../../atoms/ScreenOverlay";
 
 export const DRAWER_MIN_HEIGHT = 40;
 export const DRAWER_MAX_HEIGHT = 618; // 최대 높이
@@ -21,6 +22,8 @@ interface BottomFlexDrawerProps extends IModal {
     func: () => void;
     isLoading?: boolean;
   };
+  isOverlay: boolean;
+  overlayNum?: number;
 }
 
 export default function BottomFlexDrawer({
@@ -31,6 +34,8 @@ export default function BottomFlexDrawer({
   isDrawerUp,
   height,
   zIndex,
+  isOverlay,
+  overlayNum,
 }: BottomFlexDrawerProps) {
   const maxHeight = height || DRAWER_MAX_HEIGHT;
 
@@ -78,33 +83,36 @@ export default function BottomFlexDrawer({
   };
 
   return (
-    <Layout
-      ishide={isHideBottom ? "true" : "false"}
-      zindex={zIndex}
-      isdrawerup={isDrawerUp ? "true" : "false"}
-      as={motion.div}
-      animate={{ height: drawerHeight }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-    >
-      <Box py={3} cursor="grab" onPointerDown={handlePointerDown}>
-        <TopNav />
-      </Box>
-      {drawerHeight > 100 && children}
-      {bottom && drawerHeight > 100 && (
-        <Box py={2} w="100%">
-          <Button
-            w="100%"
-            mt="auto"
-            colorScheme="mintTheme"
-            size="lg"
-            isLoading={bottom?.isLoading}
-            onClick={bottom?.func}
-          >
-            {bottom?.text}
-          </Button>
+    <>
+      {isOverlay && <ScreenOverlay zIndex={overlayNum} onClick={() => setIsModal(false)} />}
+      <Layout
+        ishide={isHideBottom ? "true" : "false"}
+        zindex={zIndex}
+        isdrawerup={isDrawerUp ? "true" : "false"}
+        as={motion.div}
+        animate={{ height: drawerHeight }}
+        transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      >
+        <Box py={3} cursor="grab" onPointerDown={handlePointerDown}>
+          <TopNav />
         </Box>
-      )}
-    </Layout>
+        {drawerHeight > 100 && children}
+        {bottom && drawerHeight > 100 && (
+          <Box py={2} w="100%">
+            <Button
+              w="100%"
+              mt="auto"
+              colorScheme="mintTheme"
+              size="lg"
+              isLoading={bottom?.isLoading}
+              onClick={bottom?.func}
+            >
+              {bottom?.text}
+            </Button>
+          </Box>
+        )}
+      </Layout>
+    </>
   );
 }
 
@@ -119,6 +127,7 @@ const Layout = styled.div<{
   max-width: var(--max-width);
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
+
   background-color: white;
   z-index: ${(props) => props.zindex || (props.ishide ? 700 : 500)};
   padding: 0 20px;

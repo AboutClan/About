@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -14,6 +14,7 @@ import { GatherThumbnailCardSkeleton } from "../../components/skeleton/GatherThu
 import { useGatherQuery } from "../../hooks/gather/queries";
 import { transferGatherDataState } from "../../recoils/transferRecoils";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
+import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomImage } from "../../utils/imageUtils";
@@ -34,7 +35,7 @@ export default function HomeGatherCol() {
     const handleNavigate = (gather: IGather) => {
       setTransferGather(gather);
     };
-    setCardDataArr(setGatherDataToCardCol(gathers, handleNavigate).slice(0, 3));
+    setCardDataArr(setGatherDataToCardCol(gathers, false, handleNavigate).slice(0, 3));
   }, [gathers]);
 
   return (
@@ -59,7 +60,7 @@ export default function HomeGatherCol() {
 
 export const setGatherDataToCardCol = (
   gathers: IGather[],
-
+  imagePriority: boolean,
   func?: (gather: IGather) => void,
 ): GatherThumbnailCardProps[] => {
   const cardCol: GatherThumbnailCardProps[] = gathers.map((gather, idx) => ({
@@ -70,11 +71,11 @@ export const setGatherDataToCardCol = (
     place: gather.location.main,
     imageProps: {
       image: gather.image || getRandomImage(),
-      priority: idx < 3,
+      priority: imagePriority && idx < 4,
     },
     id: gather.id,
     maxCnt: gather.memberCnt.max,
-    participants: gather.participants,
+    participants: [{ user: gather.user as IUserSummary, phase: "first" }, ...gather.participants],
     func: func ? () => func(gather) : undefined,
   }));
 

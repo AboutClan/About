@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useState } from "react";
 
 import SectionHeader from "../../components/atoms/SectionHeader";
@@ -31,12 +31,6 @@ function HomeStudySection({}: HomeStudySectionProps) {
       enabled: !!userLocation,
     },
   );
-
-  // useEffect(() => {
-  //   if (!studyVoteData || !session?.user) return;
-  //   const myStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
-  //   setMyStudyParticipation(myStudyParticipation);
-  // }, [studyVoteData, session?.user.uid]);
 
   const tabOptionsArr: ITabNavOptions[] = [
     {

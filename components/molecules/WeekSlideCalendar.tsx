@@ -27,7 +27,7 @@ function WeekSlideCalendar({ selectedDate, func }: CalendarProps) {
       }
     }
   }, [calendarArr, selectedDate]);
- 
+
   return (
     <>
       <Flex
@@ -35,6 +35,7 @@ function WeekSlideCalendar({ selectedDate, func }: CalendarProps) {
         ref={containerRef}
         className="about_calendar"
         overflowX="auto"
+        maxW="var(--max-width)"
         pb={3}
         css={css`
           @media (max-width: 400px) {

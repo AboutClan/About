@@ -73,7 +73,7 @@ function PageTracker() {
           break;
 
         case "study":
-          console.log(12);
+        
           if (currentSegments?.[1] === "writing") {
             handleWritingPage(
               STUDY_WRITING_SEQUENCE,

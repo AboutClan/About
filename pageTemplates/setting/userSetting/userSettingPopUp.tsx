@@ -3,9 +3,8 @@ import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-import BottomDrawerLg from "../../../components/organisms/drawer/BottomDrawerLg";
+import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
 import {
-  ALPHABET_POP_UP,
   ATTEND_POP_UP,
   FAQ_POP_UP,
   GATHER_JOIN_MEMBERS,
@@ -13,41 +12,35 @@ import {
   STUDY_ATTEND_MEMBERS,
 } from "../../../constants/keys/localStorage";
 import { useGatherQuery } from "../../../hooks/gather/queries";
-import EnthusiasticModal from "../../../modals/aboutHeader/EnthusiasticModal/EnthusiasticModal";
-import PointSystemsModal from "../../../modals/aboutHeader/pointSystemsModal/PointSystemsModal";
 import PromotionModal from "../../../modals/aboutHeader/promotionModal/PromotionModal";
-import AlphabetPopUp from "../../../modals/pop-up/AlphabetPopUp";
 import FAQPopUp from "../../../modals/pop-up/FAQPopUp";
-import InstaPopUp from "../../../modals/pop-up/InstaPopUp";
 import LastWeekAttendPopUp from "../../../modals/pop-up/LastWeekAttendPopUp";
 import LocationRegisterPopUp from "../../../modals/pop-up/LocationRegisterPopUp";
-import ManagerPopUp from "../../../modals/pop-up/ManagerPopUp";
-import SuggestPopUp from "../../../modals/pop-up/SuggestPopUp";
 import { IUser, IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { checkAndSetLocalStorage } from "../../../utils/storageUtils";
 
 export type UserPopUp =
   | "lastWeekAttend"
-  | "suggest"
+  // | "suggest"
   | "promotion"
   | "userGuide"
   | "faq"
   // | "manager"
-  | "alphabet"
-  | "enthusiastic"
-  | "instagram"
+  // | "alphabet"
+  // | "enthusiastic"
+  // | "instagram"
   | "registerLocation";
 
 const MODAL_COMPONENTS = {
   faq: FAQPopUp,
   lastWeekAttend: LastWeekAttendPopUp,
-  suggest: SuggestPopUp,
+  // suggest: SuggestPopUp,
   promotion: PromotionModal,
-  userGuide: PointSystemsModal,
-  alphabet: AlphabetPopUp,
-  enthusiastic: EnthusiasticModal,
-  manager: ManagerPopUp,
-  instagram: InstaPopUp,
+  // userGuide: PointSystemsModal,
+  // alphabet: AlphabetPopUp,
+  // enthusiastic: EnthusiasticModal,
+  // manager: ManagerPopUp,
+  // instagram: InstaPopUp,
   registerLocation: LocationRegisterPopUp,
 };
 
@@ -124,10 +117,10 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
       return;
     }
 
-    if (!checkAndSetLocalStorage(ALPHABET_POP_UP, 15)) {
-      setModalTypes((old) => [...old, "alphabet"]);
-      return;
-    }
+    // if (!checkAndSetLocalStorage(ALPHABET_POP_UP, 15)) {
+    //   setModalTypes((old) => [...old, "alphabet"]);
+    //   return;
+    // }
     if (!checkAndSetLocalStorage(ATTEND_POP_UP, 7)) {
       setModalTypes((old) => [...old, "lastWeekAttend"]);
       return;
@@ -182,9 +175,11 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
         );
       })}
       {drawerType === "bottom" && (
-        <BottomDrawerLg
+        <BottomFlexDrawer
+          isDrawerUp
+          isOverlay
           height={260}
-          paddingOptions={{ bottom: 0 }}
+          isHideBottom
           setIsModal={() => setDrawerType(null)}
         >
           <Box w="100%" fontWeight={600} fontSize="18px" textAlign="start">
@@ -198,7 +193,7 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
               무시하고 넘기기
             </Button>
           </Flex>
-        </BottomDrawerLg>
+        </BottomFlexDrawer>
       )}
       {/* {drawerType === "right" && <RightDrawer>23</RightDrawer>} */}
     </>

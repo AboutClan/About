@@ -12,13 +12,14 @@ export const setStudyToThumbnailInfo = (
   studyData: StudyParticipationProps[] | StudyMergeParticipationProps[],
   currentLocation: { lat: number; lon: number },
   urlDateParam: string | null,
+  imagePriority: boolean,
   location?: ActiveLocation,
   votePlaceProps?: { main: string; sub: string[] },
 ): StudyThumbnailCardProps[] => {
   if (!studyData) return [];
 
   // 카드 데이터 생성
-  const cardColData: StudyThumbnailCardProps[] = studyData.map((data) => {
+  const cardColData: StudyThumbnailCardProps[] = studyData.map((data, idx) => {
     const placeInfo = convertMergePlaceToPlace(data.place);
 
     return {
@@ -36,7 +37,7 @@ export const setStudyToThumbnailInfo = (
           : undefined,
         imageProps: {
           image: placeInfo.image,
-          isPriority: true,
+          isPriority: imagePriority === false ? false : idx < 4 ? true : false,
         },
       },
       participants: data.members.map((att) => att.user),
@@ -60,6 +61,9 @@ export const setStudyToThumbnailInfo = (
       const bIsSub = votePlaceProps.sub.includes(b.id);
       if (aIsSub && !bIsSub) return -1;
       if (!aIsSub && bIsSub) return 1;
+    }
+    if (a.participants.length !== b.participants.length) {
+      return b.participants.length - a.participants.length;
     }
 
     // 3. 거리순 정렬

@@ -9,9 +9,10 @@ interface IBottomNav {
   onClick: (e?: any) => void;
   text?: string;
   url?: string;
+  isSlide?: boolean;
 }
 
-function BottomNav({ onClick, text, url }: IBottomNav) {
+function BottomNav({ onClick, text, url, isSlide = true }: IBottomNav) {
   const searchParams = useSearchParams();
   const params = searchParams.toString();
 
@@ -40,15 +41,30 @@ function BottomNav({ onClick, text, url }: IBottomNav) {
   }
 
   return (
-    <Slide isFixed={true} posZero="top">
-      {url ? (
-        <Link href={url + (params ? `?${params}` : "")}>
-          <BottomButton />
-        </Link>
+    <>
+      {isSlide ? (
+        <Slide isFixed={true} posZero="top">
+          {url ? (
+            <Link href={url + (params ? `?${params}` : "")}>
+              <BottomButton />
+            </Link>
+          ) : (
+            <BottomButton />
+          )}
+        </Slide>
       ) : (
-        <BottomButton />
+        <>
+          {" "}
+          {url ? (
+            <Link href={url + (params ? `?${params}` : "")}>
+              <BottomButton />
+            </Link>
+          ) : (
+            <BottomButton />
+          )}
+        </>
       )}
-    </Slide>
+    </>
   );
 }
 

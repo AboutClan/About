@@ -34,16 +34,18 @@ export default function VoteMap({
 
     const map = new naver.maps.Map(mapRef.current, {
       ...mapOptions,
+
       logoControl: true,
       logoControlOptions: {
         position: naver.maps.Position.BOTTOM_LEFT,
       },
     });
+    map.setZoom(mapOptions.zoom);
     mapInstanceRef.current = map;
   }, [mapOptions]);
 
   useEffect(() => {
-    if (!mapRef?.current || !mapInstanceRef?.current || typeof naver === "undefined") return;
+    if (!mapInstanceRef?.current || typeof naver === "undefined") return;
 
     naver.maps.Event.trigger(mapInstanceRef.current, "resize");
   }, [resizeToggle]);
@@ -92,7 +94,7 @@ export default function VoteMap({
   }, [markersOptions]);
 
   useEffect(() => {
-    if (!centerValue) return;
+    if (!centerValue || !mapInstanceRef.current) return;
 
     const map = mapInstanceRef.current;
     map.setCenter(new naver.maps.LatLng(centerValue.lat, centerValue.lng));

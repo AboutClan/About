@@ -45,6 +45,7 @@ export function GatherThumbnailCard({
   maxCnt,
   func,
 }: GatherThumbnailCardProps) {
+ 
   const userAvatarArr = participants
     ?.filter((par) => par)
     .map((par) => ({

@@ -156,14 +156,4 @@ const Layout = styled.header`
   }
 `;
 
-const Alert = styled.div`
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--color-red);
-  position: absolute;
-  right: 14px;
-  bottom: 24px;
-`;
-
 export default HomeHeader;
