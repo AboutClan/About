@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import styled from "styled-components";
 
 import { PlusIcon } from "../../components/Icons/MathIcons";
+import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { DispatchBoolean } from "../../types/hooks/reactTypes";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
@@ -12,6 +13,8 @@ interface IStudyDateBar {
   memberCnt: number;
 }
 function StudyDateBar({ date, memberCnt, setIsInviteModal }: IStudyDateBar) {
+  const typeToast = useTypeToast();
+
   return (
     <>
       <Box mt={10} mb={2}>
@@ -19,7 +22,7 @@ function StudyDateBar({ date, memberCnt, setIsInviteModal }: IStudyDateBar) {
           <Box fontWeight="bold" fontSize="18px">
             {dayjsToFormat(dayjs(date), "M월 D일 참여 멤버")}
           </Box>
-          <Button variant="unstyled" onClick={() => setIsInviteModal(true)}>
+          <Button variant="unstyled" onClick={() => typeToast("not-yet")}>
             <PlusIcon />
           </Button>
         </Flex>

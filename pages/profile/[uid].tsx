@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import { useParams, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -39,8 +39,6 @@ function ProfilePage() {
     enabled: !!uid,
   });
 
-  
-
   useEffect(() => {
     if (user) setTransferUserName(user.name);
   }, [user]);
@@ -64,7 +62,7 @@ function ProfilePage() {
           <i className="fa-regular fa-ellipsis fa-lg" />
         </Button>
       </Header>
-      <Slide>
+      <Slide isNoPadding>
         <Container>
           <Layout>
             <ProfileOverview user={user as IUser} />

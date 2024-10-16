@@ -8,10 +8,17 @@ import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer
 import { useCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { convertStudyToParticipations } from "../../libs/study/getMyStudyMethods";
+import {
+  getCurrentLocationIcon,
+  getStudyIcon,
+  getStudyVoteIcon,
+} from "../../libs/study/getStudyVoteIcon";
 import { setStudyToThumbnailInfo } from "../../libs/study/setStudyToThumbnailInfo";
 import { IModal } from "../../types/components/modalTypes";
-import { DispatchBoolean } from "../../types/hooks/reactTypes";
+import { IMarkerOptions } from "../../types/externals/naverMapTypes";
+import { DispatchType } from "../../types/hooks/reactTypes";
 import { StudyDailyInfoProps, StudyPlaceProps } from "../../types/models/studyTypes/studyDetails";
+import { MyVoteProps } from "../../types/models/studyTypes/studyInterActions";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
@@ -27,15 +34,24 @@ interface VoteDrawerProps extends IModal {
   studyVoteData: StudyDailyInfoProps;
   location: ActiveLocation;
   date: string;
-  // myVote: IStudyVoteWithPlace;
-  // setMyVote: DispatchType<IStudyVoteWithPlace>;
-  // setActionType: DispatchType<"timeSelect">;
-  setIsDrawerDown: DispatchBoolean;
+  setMarkersOptions: DispatchType<IMarkerOptions[]>;
+  setCenterLocation: DispatchType<{ lat: number; lon: number }>;
+  myVote: MyVoteProps;
+  setMyVote: DispatchType<MyVoteProps>;
 }
 
 const DEFAULT_SUB_PLACE_CNT = 4;
 
-function VoteDrawer({ studyVoteData, location, date, setIsModal }: VoteDrawerProps) {
+function VoteDrawer({
+  studyVoteData,
+  location,
+  date,
+  setIsModal,
+  setMarkersOptions,
+  setCenterLocation,
+  myVote,
+  setMyVote,
+}: VoteDrawerProps) {
   const { data: userInfo } = useUserInfoQuery();
   const preference = userInfo?.studyPreference;
 
@@ -43,16 +59,26 @@ function VoteDrawer({ studyVoteData, location, date, setIsModal }: VoteDrawerPro
 
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
 
-  const [myVote, setMyVote] = useState<{ main: string; sub: string[] }>({ main: null, sub: [] });
   const [isFirstPage, setIsFirstPage] = useState(true);
   const isTodayVote = dayjs().isSame(date, "day") && dayjs().hour() >= 9;
 
+  const findMainPlace = studyVoteData.participations.find(
+    (par) => par.place._id === (isFirstPage ? preference?.place : myVote?.main),
+  );
+
+  useEffect(() => {
+    if (!studyVoteData) return;
+    setMarkersOptions(
+      getMarkersOptions(
+        studyVoteData,
+        { lat: currentLocation?.lat, lon: currentLocation?.lon },
+        myVote,
+      ),
+    );
+  }, [studyVoteData, currentLocation, myVote]);
+
   useEffect(() => {
     if (preference === undefined || !studyVoteData) return;
-
-    const findMainPlace = studyVoteData.participations.find(
-      (par) => par.place._id === (isFirstPage ? preference?.place : myVote?.main),
-    );
 
     let votePlaceProps = {
       main: null,
@@ -121,8 +147,13 @@ function VoteDrawer({ studyVoteData, location, date, setIsModal }: VoteDrawerPro
   }, [preference, studyVoteData, isFirstPage, currentLocation]);
 
   useEffect(() => {
-    if (!myVote?.main) setIsFirstPage(true);
-  }, [myVote]);
+    if (myVote?.main && findMainPlace)
+      setCenterLocation({
+        lat: findMainPlace?.place?.latitude,
+        lon: findMainPlace?.place?.longitude,
+      });
+    else setIsFirstPage(true);
+  }, [myVote?.main, findMainPlace]);
 
   const handleClickPlaceButton = (id: string) => {
     if (isFirstPage) {
@@ -132,7 +163,7 @@ function VoteDrawer({ studyVoteData, location, date, setIsModal }: VoteDrawerPro
       if (!myVote?.main) {
         setMyVote({ main: id, sub: [] });
       } else if (myVote?.main === id) {
-        setMyVote(null);
+        setMyVote({ main: null, sub: [] });
       } else if (myVote?.sub.includes(id))
         setMyVote((old) => ({ ...old, sub: old.sub.filter((place) => place !== id) }));
       else {
@@ -145,7 +176,7 @@ function VoteDrawer({ studyVoteData, location, date, setIsModal }: VoteDrawerPro
     <BottomFlexDrawer
       bottom={{
         text: isTodayVote || !isFirstPage ? "선택 완료" : "다음",
-        func: isFirstPage && isTodayVote ? () => setIsFirstPage(false) : () => {},
+        func: isFirstPage && !isTodayVote ? () => setIsFirstPage(false) : () => {},
       }}
       isDrawerUp
       isHideBottom
@@ -185,7 +216,7 @@ function VoteDrawer({ studyVoteData, location, date, setIsModal }: VoteDrawerPro
           )}
         </Flex>
         <Box
-          overflow="auto"
+          overflow="scroll"
           h="312px"
           sx={{
             "&::-webkit-scrollbar": {
@@ -219,5 +250,120 @@ function VoteDrawer({ studyVoteData, location, date, setIsModal }: VoteDrawerPro
     </BottomFlexDrawer>
   );
 }
+
+const getMarkersOptions = (
+  studyVoteData: StudyDailyInfoProps,
+  {
+    lat,
+    lon,
+  }: {
+    lat: number;
+    lon: number;
+  },
+  myVote?: { main: string; sub: string[] },
+): IMarkerOptions[] | undefined => {
+  if (typeof naver === "undefined" || !studyVoteData) return;
+  const temp = [];
+
+  temp.push({
+    position: new naver.maps.LatLng(lat, lon),
+    icon: {
+      content: getCurrentLocationIcon(),
+      size: new naver.maps.Size(72, 72),
+      anchor: new naver.maps.Point(36, 44),
+    },
+  });
+
+  studyVoteData.participations
+    .filter((par) => (myVote ? true : par.members.length >= 1))
+    .forEach((par) => {
+      if (myVote) {
+        const mainPlace = studyVoteData?.participations?.find(
+          (par) => par.place._id === myVote?.main,
+        )?.place;
+        const placeId = par.place._id;
+
+        const iconType =
+          placeId === myVote?.main ? "main" : myVote?.sub?.includes(placeId) ? "sub" : "default";
+
+        const polyline =
+          mainPlace && myVote?.sub?.includes(placeId)
+            ? getPolyline(mainPlace, par.place, myVote?.sub?.includes(placeId))
+            : null;
+        temp.push({
+          isPicked: myVote?.main === placeId,
+          id: par.place._id,
+          position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
+          title: par.place.brand,
+          icon: {
+            content: getStudyVoteIcon(iconType, par.place.branch),
+            size: new naver.maps.Size(72, 72),
+            anchor: new naver.maps.Point(36, 44),
+          },
+          type: "vote",
+          polyline,
+        });
+      } else {
+        temp.push({
+          id: par.place._id,
+          position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
+          icon: {
+            content: getStudyIcon(null, par.members.length),
+            size: new naver.maps.Size(72, 72),
+            anchor: new naver.maps.Point(36, 44),
+          },
+        });
+      }
+    });
+
+  const tempArr = [];
+  const placeMap = new Map(); // fullname을 기준으로 그룹화할 Map 생성
+
+  // 그룹화: fullname을 키로 하여 개수를 카운트하고 중복된 place 정보를 저장
+  studyVoteData.realTime.forEach((par) => {
+    const fullname = par.place.name;
+    if (placeMap.has(fullname)) {
+      // 이미 fullname이 존재하면 개수를 증가시킴
+      const existing = placeMap.get(fullname);
+      existing.count += 1;
+    } else {
+      // 새롭게 fullname을 추가하며 초기 값 설정
+      placeMap.set(fullname, {
+        id: par._id,
+        position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
+        count: 1, // 처음에는 1로 설정
+      });
+    }
+  });
+  // 그룹화된 결과를 temp에 추가
+  placeMap.forEach((value, fullname) => {
+    temp.push({
+      id: value.id,
+      position: value.position,
+      icon: {
+        content: value.count === 1 ? getStudyIcon("active") : getStudyIcon(null, value.count), // count에 따라 content 값 설정
+        size: new naver.maps.Size(72, 72),
+        anchor: new naver.maps.Point(36, 44),
+      },
+    });
+    tempArr.push(fullname); // fullname을 tempArr에 추가
+  });
+  return temp;
+};
+
+const getPolyline = (
+  mainPlace: StudyPlaceProps,
+  subPlace: StudyPlaceProps,
+  isSecondSub?: boolean,
+) => {
+  const { latitude, longitude } = mainPlace;
+  const { latitude: subLat, longitude: subLon } = subPlace;
+  return {
+    path: [new naver.maps.LatLng(latitude, longitude), new naver.maps.LatLng(subLat, subLon)],
+    strokeColor: isSecondSub ? "var(--gray-500)" : "var(--color-mint)",
+    strokeOpacity: 0.5,
+    strokeWeight: 3,
+  };
+};
 
 export default VoteDrawer;

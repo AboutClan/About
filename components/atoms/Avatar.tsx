@@ -12,7 +12,7 @@ type Size = "2xs" | "xs" | "sm" | "smd" | "md" | "lg" | "xl";
 
 interface IAvatar {
   image?: string;
-  size: "2xs" | "md";
+  size: "2xs" | "md" | Size;
   sizeLength?: number;
   avatar?: IAvatarProp;
   uid?: string;

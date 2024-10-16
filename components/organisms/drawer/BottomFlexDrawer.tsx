@@ -39,7 +39,7 @@ export default function BottomFlexDrawer({
   const currentHeightRef = useRef(drawerHeight); // 현재 높이 저장
 
   const SWIPE_THRESHOLD = 40; // 스와이프 임계값
-  console.log(2415, setIsModal);
+
   useEffect(() => {
     if (isDrawerUp) setDrawerHeight(maxHeight);
     else setDrawerHeight(DRAWER_MIN_HEIGHT);
@@ -81,7 +81,7 @@ export default function BottomFlexDrawer({
     <Layout
       ishide={isHideBottom ? "true" : "false"}
       zindex={zIndex}
-      isdrawerup={isDrawerUp}
+      isdrawerup={isDrawerUp ? "true" : "false"}
       as={motion.div}
       animate={{ height: drawerHeight }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -111,7 +111,7 @@ export default function BottomFlexDrawer({
 const Layout = styled.div<{
   ishide: string;
   zindex: number;
-  isdrawerup: boolean;
+  isdrawerup: string;
 }>`
   position: fixed;
   bottom: ${(props) => (props.ishide === "true" ? iPhoneNotchSize() : 52 + iPhoneNotchSize())}px;
@@ -122,7 +122,7 @@ const Layout = styled.div<{
   background-color: white;
   z-index: ${(props) => props.zindex || (props.ishide ? 700 : 500)};
   padding: 0 20px;
-  padding-bottom: ${(props) => !props.isdrawerup && "12px"};
+  padding-bottom: ${(props) => props.isdrawerup === "false" && "12px"};
   padding-top: 0;
   display: flex;
   flex-direction: column;

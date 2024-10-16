@@ -6,7 +6,7 @@ import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes
 interface IVoteMap {
   mapOptions?: IMapOptions;
   markersOptions?: IMarkerOptions[];
-  handleMarker?: (id: string) => void;
+  handleMarker?: (id: string, type?: "vote") => void;
   resizeToggle?: boolean;
   centerValue?: {
     lat: number;
@@ -43,17 +43,16 @@ export default function VoteMap({
   }, [mapOptions]);
 
   useEffect(() => {
-    if (!mapRef?.current || typeof naver === "undefined" || !resizeToggle) return;
+    if (!mapRef?.current || !mapInstanceRef?.current || typeof naver === "undefined") return;
 
-    const map = new naver.maps.Map(mapRef.current, mapOptions);
-    naver.maps.Event.trigger(map, "resize");
+    naver.maps.Event.trigger(mapInstanceRef.current, "resize");
   }, [resizeToggle]);
 
   useEffect(() => {
     const map = mapInstanceRef.current;
 
     if (!mapRef?.current || !map || typeof naver === "undefined") return;
-  
+
     //새로운 옵션 적용 전 초기화
     mapElementsRef.current.markers.forEach((marker) => marker.setMap(null));
     mapElementsRef.current.polylines.forEach((polyline) => polyline.setMap(null));
@@ -85,7 +84,7 @@ export default function VoteMap({
 
       naver.maps.Event.addListener(marker, "click", () => {
         if (handleMarker) {
-          handleMarker(markerOptions.id);
+          handleMarker(markerOptions.id, markerOptions?.type);
         }
       });
       mapElementsRef.current.markers.push(marker);
@@ -94,7 +93,7 @@ export default function VoteMap({
 
   useEffect(() => {
     if (!centerValue) return;
-  
+
     const map = mapInstanceRef.current;
     map.setCenter(new naver.maps.LatLng(centerValue.lat, centerValue.lng));
   }, [centerValue]);

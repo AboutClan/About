@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { COLOR_400_ARR } from "../../../../constants/colorConstants";
 import { STUDY_VOTE_HOUR_ARR } from "../../../../constants/serviceConstants/studyConstants/studyTimeConstant";
 import { TimeRangeProps } from "../../../../types/models/utilTypes";
-import { IHighlightedText } from "../../../atoms/HighlightedText";
 import { transformToUserBlocks } from "./_lib/transformToUserBlocks";
 
 export interface ITimeBoardParticipant {
@@ -13,7 +12,6 @@ export interface ITimeBoardParticipant {
 }
 
 interface ITimeBoard {
-
   members: ITimeBoardParticipant[];
 }
 
@@ -25,7 +23,7 @@ interface IUserTimeBlock {
   end: string;
 }
 
-export default function UserTimeBoard({ members, }: ITimeBoard) {
+export default function UserTimeBoard({ members }: ITimeBoard) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [blockWidth, setBlockWidth] = useState<number>(0);
   const [userBlocks, setUserBlocks] = useState<IUserTimeBlock[]>([]);
@@ -58,8 +56,8 @@ export default function UserTimeBoard({ members, }: ITimeBoard) {
   return (
     <Box h={`${members.length * 36 + 32}px`} position="relative">
       <Flex h="100%" w="100%" position="absolute">
-        {STUDY_VOTE_HOUR_ARR.map((hour) => (
-          <Flex direction="column" align="center" flex={1}>
+        {STUDY_VOTE_HOUR_ARR.map((hour, idx) => (
+          <Flex key={idx} direction="column" align="center" flex={1}>
             <Box py="6px" h="28px" color="gray.500" fontSize="11px">
               {hour}
             </Box>

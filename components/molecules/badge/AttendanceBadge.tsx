@@ -21,7 +21,11 @@ export default function AttendanceBadge({ type, time }: IAttendanceBadge) {
         color="white"
         bg={type === "attend" ? "mint" : "red"}
       >
-        {type === "attend" ? <CheckCircleIcon /> : <XCircleIcon />}
+        {type === "attend" ? (
+          <CheckCircleIcon size="sm" isFill={false} />
+        ) : (
+          <XCircleIcon size="sm" />
+        )}
         <Box ml={1} fontSize="11px" lineHeight="16px" fontWeight="semibold">
           {type === "attend" ? "출석" : "불참"}
         </Box>

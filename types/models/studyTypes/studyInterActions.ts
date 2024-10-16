@@ -7,6 +7,11 @@ import { StudyPlaceProps } from "./studyDetails";
 export interface IStudyVote extends IStudyVotePlaces, IStudyVoteTime {
   memo?: string;
 }
+
+export interface MyVoteProps {
+  main: string;
+  sub: string[];
+}
 export interface IStudyVoteWithPlace extends IStudyVoteTime {
   memo?: string;
   place: StudyPlaceProps;

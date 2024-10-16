@@ -1,14 +1,12 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
 import { STUDY_MAIN_IMAGES } from "../assets/images/studyMain";
-import BottomFlexDrawer, {
-  DRAWER_MIN_HEIGHT,
-} from "../components/organisms/drawer/BottomFlexDrawer";
+import { DRAWER_MIN_HEIGHT } from "../components/organisms/drawer/BottomFlexDrawer";
 import VoteMap from "../components/organisms/VoteMap";
 import { USER_LOCATION } from "../constants/keys/localStorage";
 import {
@@ -33,7 +31,7 @@ import StudyPageDrawer from "../pageTemplates/studyPage/StudyPageDrawer";
 import StudyControlButton from "../pageTemplates/vote/StudyControlButton";
 import { myStudyParticipationState } from "../recoils/studyRecoils";
 import { IMapOptions, IMarkerOptions } from "../types/externals/naverMapTypes";
-import { StudyDailyInfoProps, StudyPlaceProps } from "../types/models/studyTypes/studyDetails";
+import { StudyDailyInfoProps } from "../types/models/studyTypes/studyDetails";
 import { IStudyVoteWithPlace } from "../types/models/studyTypes/studyInterActions";
 import { PlaceInfoProps } from "../types/models/utilTypes";
 import { ActiveLocation, LocationEn } from "../types/services/locationTypes";
@@ -49,8 +47,12 @@ export default function StudyVoteMap() {
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
   const dateParam = searchParams.get("date");
-  const categoryParam = searchParams.get("category") as "currentPlace" | "mainPlace" | "votePlace";
- 
+  const categoryParam = searchParams.get("category") as
+    | "currentPlace"
+    | "mainPlace"
+    | "votePlace"
+    | "voting";
+
   const locationParamKr = convertLocationLangTo(
     searchParams.get("location") as LocationEn,
     "kr",
@@ -69,11 +71,12 @@ export default function StudyVoteMap() {
 
   const [myVoteInfo, setMyVoteInfo] = useState<IStudyVoteWithPlace>();
   const [isLocationRefetch, setIsLocationRefetch] = useState(false);
-  const [resizeToggle, setResizeToggle] = useState(false);
+  const [resizeToggle, setResizeToggle] = useState<boolean>(null);
   const [date, setDate] = useState(dateParam || dayjsToStr(dayjs()));
   const [locationValue, setLocationValue] = useState<ActiveLocation>(
     locationParamKr || userLocation,
   );
+  const [myVote, setMyVote] = useState<{ main: string; sub: string[] }>({ main: null, sub: [] });
 
   const [detailInfo, setDetailInfo] = useState<StudyInfoProps>();
 
@@ -86,7 +89,7 @@ export default function StudyVoteMap() {
   const { data: studyVoteData } = useStudyVoteQuery(date, locationValue, {
     enabled: !!locationValue && !!date,
   });
-
+ 
   const mainLocation = userInfo?.locationDetail;
 
   useEffect(() => {
@@ -173,7 +176,7 @@ export default function StudyVoteMap() {
         if (categoryParam !== "votePlace") {
           const changeLocation = getLocationByCoordinates(lat, lon);
           if (!changeLocation) {
-            if (isLocationRefetch) {
+            if (isLocationRefetch && categoryParam !== "voting") {
               toast("warning", "활성화 된 지역에 있지 않습니다.");
             }
             setIsLocationRefetch(false);
@@ -198,6 +201,7 @@ export default function StudyVoteMap() {
   }, [isLocationRefetch]);
 
   useEffect(() => {
+    if (categoryParam === "voting") return;
     if (centerLocation) {
       setMapOptions(getMapOptions(centerLocation, locationValue));
     } else if (centerLocation === null && mainLocation) {
@@ -208,12 +212,25 @@ export default function StudyVoteMap() {
     }
   }, [currentLocation, centerLocation, mainLocation, studyVoteData, locationValue]);
 
-  const dateArr = Array(10)
-    .fill(0)
-    .map((_, idx) => dayjsToStr(dayjs().add(idx, "day")));
-
-  const handleMarker = (id: string) => {
+ 
+  const handleMarker = (id: string, type: "vote") => {
+  
     if (!id || !studyVoteData) return;
+    
+    if (type === "vote") {
+      setMyVote((old) => {
+      
+        if (old?.main === id) return { main: null, sub: [] };
+        else if (!old?.main) return { main: id, sub: [] };
+        else if (old?.sub.includes(id))
+          return { ...old, sub: old.sub.filter((place) => place !== id) };
+        else return { ...old, sub: [...old.sub, id] };
+      });
+
+      return;
+    }
+  
+
     const participation = studyVoteData.participations?.find((par) => par.place._id === id);
     const realTimeStudy = getRealTimeFilteredById(studyVoteData.realTime, id);
     // const findStudy = parti
@@ -273,14 +290,21 @@ export default function StudyVoteMap() {
     <>
       <Box
         position="relative"
-        height={`calc(100dvh - var(--bottom-nav-height) - ${DRAWER_MIN_HEIGHT + iPhoneNotchSize()}px)`}
+        height={
+          !resizeToggle
+            ? `calc(100dvh - var(--bottom-nav-height) - ${DRAWER_MIN_HEIGHT + iPhoneNotchSize()}px)`
+            : `calc(100vh - 468px - ${iPhoneNotchSize()}px)`
+        }
+        maxH="100dvh"
       >
-        <StudyMapTopNav
-          location={locationValue}
-          setLocation={setLocationValue}
-          hasMainLocation={!!mainLocation}
-          setIsLocationFetch={setIsLocationRefetch}
-        />
+        {categoryParam !== "voting" && (
+          <StudyMapTopNav
+            location={locationValue}
+            setLocation={setLocationValue}
+            hasMainLocation={!!mainLocation}
+            setIsLocationFetch={setIsLocationRefetch}
+          />
+        )}
         <VoteMap
           mapOptions={mapOptions}
           markersOptions={markersOptions}
@@ -292,42 +316,27 @@ export default function StudyVoteMap() {
         studyVoteData={studyVoteData}
         location={locationValue}
         isAleadyAttend={!!myStudyInfo?.attendanceInfo.arrived}
+        setMarkersOptions={setMarkersOptions}
+        setResizeToggle={setResizeToggle}
+        setIsLocationRefetch={setIsLocationRefetch}
+        setCenterLocation={setCenterLocation}
+        setMapOptions={() => setMapOptions(getMapOptions(currentLocation, locationValue, 14))}
+        date={date}
+        myVote={myVote}
+        setMyVote={setMyVote}
       />
 
       {detailInfo && <StudyInFoDrawer detailInfo={detailInfo} setDetailInfo={setDetailInfo} />}
-      
-        <StudyPageDrawer
-          studyVoteData={studyVoteData}
-          location={locationValue}
-          date={date}
-          setDate={setDate}
-        />
-    
+
+      <StudyPageDrawer
+        studyVoteData={studyVoteData}
+        location={locationValue}
+        date={date}
+        setDate={setDate}
+      />
     </>
   );
 }
-
-//지도에서 마커를 통한 핸들링
-const setVotePlaceInfo = (
-  myPlace: StudyPlaceProps,
-  voteInfo?: IStudyVoteWithPlace,
-): IStudyVoteWithPlace => {
-  const id = myPlace?._id;
-
-  if (!voteInfo?.place) return { ...voteInfo, place: myPlace };
-  else if (voteInfo.place._id === id) {
-    return { ...voteInfo, place: undefined, subPlace: undefined };
-  } else if (voteInfo?.subPlace?.map((place) => place._id).includes(id)) {
-    return {
-      ...voteInfo,
-      subPlace: voteInfo.subPlace.filter((place) => place._id !== id),
-    };
-  } else
-    return {
-      ...voteInfo,
-      subPlace: [...(voteInfo?.subPlace || []), myPlace],
-    };
-};
 
 const getMarkersOptions = (
   studyVoteData: StudyDailyInfoProps,
@@ -400,12 +409,13 @@ const getMarkersOptions = (
   return temp;
 };
 
-const getMapOptions = (
+export const getMapOptions = (
   currentLocation: { lat: number; lon: number },
   location: ActiveLocation,
+  zoomValue?: number,
 ): IMapOptions | undefined => {
   if (typeof naver === "undefined") return undefined;
-
+  if (!currentLocation || !location) return;
   const locationBoundary = LOCATION_MAX_BOUNDARY[location];
 
   const bounds = locationBoundary
@@ -423,7 +433,7 @@ const getMapOptions = (
 
   return {
     center: new naver.maps.LatLng(currentLocation.lat, currentLocation.lon),
-    zoom: 13,
+    zoom: zoomValue || 13,
     minZoom: 11,
     maxBounds: bounds,
     mapTypeControl: false,

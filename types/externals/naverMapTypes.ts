@@ -44,6 +44,7 @@ export interface IMapOptions {
 export interface IMarkerOptions {
   isPicked?: boolean;
   id?: string;
+  type?: "vote";
   animation?: any;
   map?: any;
   position: any;

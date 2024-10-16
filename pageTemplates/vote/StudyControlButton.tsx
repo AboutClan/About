@@ -1,7 +1,7 @@
 import { Box, Button } from "@chakra-ui/react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
 import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
@@ -11,7 +11,10 @@ import BottomFlexDrawer, {
   DRAWER_MIN_HEIGHT,
 } from "../../components/organisms/drawer/BottomFlexDrawer";
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
+import { IMarkerOptions } from "../../types/externals/naverMapTypes";
+import { DispatchBoolean, DispatchType } from "../../types/hooks/reactTypes";
 import { StudyDailyInfoProps } from "../../types/models/studyTypes/studyDetails";
+import { MyVoteProps } from "../../types/models/studyTypes/studyInterActions";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
 import VoteDrawer from "./VoteDrawer";
@@ -20,10 +23,33 @@ interface StudyControlButtonProps {
   isAleadyAttend: boolean;
   location: ActiveLocation;
   studyVoteData: StudyDailyInfoProps;
+  setMarkersOptions: DispatchType<IMarkerOptions[]>;
+  setResizeToggle: DispatchBoolean;
+  setIsLocationRefetch: DispatchBoolean;
+  setCenterLocation: DispatchType<{ lat: number; lon: number }>;
+  setMapOptions: () => void;
+  date: string;
+  myVote: MyVoteProps;
+  setMyVote: DispatchType<MyVoteProps>;
 }
 
-function StudyControlButton({ location, studyVoteData, isAleadyAttend }: StudyControlButtonProps) {
+function StudyControlButton({
+  location,
+  studyVoteData,
+  setMarkersOptions,
+  isAleadyAttend,
+  setMapOptions,
+  setCenterLocation,
+  setIsLocationRefetch,
+  setResizeToggle,
+  date,
+  myVote,
+  setMyVote,
+}: StudyControlButtonProps) {
+  const router = useRouter();
   const searchParams = useSearchParams();
+  const categoryParam = searchParams.get("category");
+  const newSearchParams = new URLSearchParams(searchParams);
 
   const [isStudyDrawer, setIsStudyDrawer] = useState(false);
   const [isVoteDrawer, setIsVoteDrawer] = useState(false);
@@ -32,11 +58,33 @@ function StudyControlButton({ location, studyVoteData, isAleadyAttend }: StudyCo
 
   const isOpenStudy = myStudyParticipation?.status === "open";
 
+  useEffect(() => {
+    if (isVoteDrawer) {
+      setMapOptions();
+      setResizeToggle(true);
+      setIsStudyDrawer(true);
+
+      newSearchParams.set("category", "voting");
+      router.replace(`/studyPage?${newSearchParams.toString()}`);
+    } else if (categoryParam === "voting") {
+      setResizeToggle(false);
+      setIsLocationRefetch(true);
+      newSearchParams.set("category", "currentplace");
+      router.replace(`/studyPage?${newSearchParams.toString()}`);
+    }
+  }, [isVoteDrawer]);
+
   const options: IBottomDrawerLgOptions = {
     footer: {
       buttonText: "취소",
       onClick: () => setIsStudyDrawer(false),
     },
+  };
+
+  const handleStudyDrawerDown = () => {
+   
+    setIsVoteDrawer(false);
+    setIsStudyDrawer(false);
   };
 
   return (
@@ -54,7 +102,7 @@ function StudyControlButton({ location, studyVoteData, isAleadyAttend }: StudyCo
         bottom={`calc(var(--bottom-nav-height) + ${DRAWER_MIN_HEIGHT + iPhoneNotchSize() + 12}px)`}
         right="20px"
         iconSpacing={1}
-        rightIcon={<CheckCircleIcon />}
+        rightIcon={<CheckCircleIcon size="sm" isFill={false} />}
         onClick={() => setIsStudyDrawer(true)}
       >
         스터디
@@ -62,9 +110,9 @@ function StudyControlButton({ location, studyVoteData, isAleadyAttend }: StudyCo
       {isStudyDrawer && (
         <BottomFlexDrawer
           isDrawerUp
-          setIsModal={setIsStudyDrawer}
+          setIsModal={handleStudyDrawerDown}
           isHideBottom
-          bottom={{ text: "취소", func: () => setIsStudyDrawer(false) }}
+          bottom={{ text: "취소", func: () => handleStudyDrawerDown() }}
           height={197}
           zIndex={800}
         >
@@ -113,69 +161,17 @@ function StudyControlButton({ location, studyVoteData, isAleadyAttend }: StudyCo
       )}
       {isVoteDrawer && (
         <VoteDrawer
+          date={date}
           location={location}
-          setIsModal={setIsVoteDrawer}
+          setIsModal={handleStudyDrawerDown}
           studyVoteData={studyVoteData}
-          setIsDrawerDown={() => {}}
+          setMarkersOptions={setMarkersOptions}
+          setCenterLocation={setCenterLocation}
+          myVote={myVote}
+          setMyVote={setMyVote}
         />
       )}
     </>
-    // <BottomNavWrapper>
-    //   <NewTwoButtonRow
-    //     leftProps={{
-    //       icon: <i className="fa-solid fa-clock" style={{ color: "var(--gray-400)" }} />,
-    //       children: <Link href={`/vote/participate?${searchParams.toString()}`}>스터디 예약</Link>,
-    //     }}
-    //     rightProps={{
-    //       icon: <i className="fa-solid fa-badge-check" style={{ color: "#CCF3F0" }} />,
-    //       children: !isAleadyAttend ? (
-    //         <Link
-    //           href={
-    //             isOpenStudy
-    //               ? `/vote/attend/configuration?${searchParams.toString()}`
-    //               : `/vote/attend/certification?${searchParams.toString()}`
-    //           }
-    //         >
-    //           실시간 출석체크
-    //         </Link>
-    //       ) : (
-    //         <Box>스터디 출석 완료</Box>
-    //       ),
-    //       isDisabled: isAleadyAttend,
-    //     }}
-    //   />
-    //   {/* <Flex>
-    //     <NewButton
-    //       as="div"
-    //       flex={1}
-    //       fontWeight={700}
-    //       mr={3}
-    //       size="sm"
-    //       h="48px"
-    //       bgColor="white"
-    //       borderRadius="12px"
-    //       boxShadow=" 0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
-    //       leftIcon={<i className="fa-solid fa-clock" style={{ color: "var(--gray-400)" }} />}
-    //     >
-    //       <Link href={`/vote/participate?${searchParams.toString()}`}>스터디 예약</Link>
-    //     </NewButton>
-    //     <NewButton
-    //       as="div"
-    //       flex={1}
-    //       fontWeight={700}
-    //       mr={3}
-    //       size="sm"
-    //       h="48px"
-    //       colorScheme="mintTheme"
-    //       borderRadius="12px"
-    //       boxShadow=" 0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
-    //       leftIcon={<i className="fa-solid fa-badge-check" style={{ color: "#CCF3F0" }} />}
-    //     >
-    //       실시간 출석체크
-    //     </NewButton>
-    //   </Flex> */}
-    //   {isAttendModal && <StudyAttendCheckModal setIsModal={setIsAttendModal} />}
-    // </BottomNavWrapper>
   );
 }
 

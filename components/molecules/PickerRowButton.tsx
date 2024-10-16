@@ -5,7 +5,7 @@ import { SingleLineText } from "../../styles/layout/components";
 import { TurnArrowIcon } from "../Icons/ArrowIcons";
 import { CheckCircleIcon } from "../Icons/CircleIcons";
 import { UserIcon } from "../Icons/UserIcons";
-import { STUDY_MAX_CNT,StudyThumbnailCardProps } from "./cards/StudyThumbnailCard";
+import { StudyThumbnailCardProps, STUDY_MAX_CNT } from "./cards/StudyThumbnailCard";
 import PlaceImage from "./PlaceImage";
 
 interface PickerRowButtonProps extends Partial<StudyThumbnailCardProps> {
@@ -14,7 +14,7 @@ interface PickerRowButtonProps extends Partial<StudyThumbnailCardProps> {
 }
 
 function PickerRowButton({ onClick, pickType, place, participantCnt, id }: PickerRowButtonProps) {
-  console.log(pickType);
+  
   return (
     <Button
       h={pickType === "second" ? "68px" : "92px"}
@@ -39,7 +39,7 @@ function PickerRowButton({ onClick, pickType, place, participantCnt, id }: Picke
             <TurnArrowIcon />
           )}
         </Box>
-        <Flex flex={1} mr={4} direction="column" align="flex-start">
+        <Flex overflow="hidden" flex={1} mr={4} direction="column" align="flex-start">
           {pickType === "main" && (
             <Badge
               mb={1}

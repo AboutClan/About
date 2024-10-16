@@ -886,9 +886,9 @@ export const NOTICE_ARR: INoticeArr[] = [
   },
   {
     id: "112",
-    title: "1차 리뉴얼 완료 공지",
+    title: "1차 리뉴얼 베타 공지",
     category: "main",
     content: "상세 내용은 단톡방을 확인해 주세요!",
-    date: "2023-10-15",
+    date: "2023-10-17",
   },
 ];

@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
-import { useParams, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useParams, useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 import Slide from "../../../../components/layouts/PageSlide";
 import { useCurrentLocation } from "../../../../hooks/custom/CurrentLocationHook";
@@ -20,7 +20,6 @@ import StudyMembers from "../../../../pageTemplates/study/StudyMembers";
 import StudyNavigation from "../../../../pageTemplates/study/StudyNavigation";
 import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
 import StudyTimeBoard from "../../../../pageTemplates/study/StudyTimeBoard";
-import { StudyParticipationProps } from "../../../../types/models/studyTypes/studyDetails";
 import { LocationEn } from "../../../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../../../utils/convertUtils/convertDatas";
 import { getDistanceFromLatLonInKm } from "../../../../utils/mathUtils";
@@ -33,16 +32,7 @@ export default function Page() {
 
   const locationParam = searchParams.get("location") as LocationEn;
 
-  const [studyParticipation, setStudyParticipation] = useState<StudyParticipationProps>();
   const [isInviteModal, setIsInviteModal] = useState(false);
-
-  // const [myStudy, setMyStudy] = useRecoilState(myStudyInfoState);
-  // const [studyDateStatus, setStudyDateStatus] = useRecoilState(studyDateStatusState);
-  // const findStudy = studyPairArr
-  //   ?.find((study) => dayjsToStr(dayjs(study.date)) === date)
-  //   ?.participations?.find((par) => par.place._id === id);
-
-  // const isPrivateStudy = id === ALL_스터디인증;
 
   const { data: studyVoteData } = useStudyVoteQuery(
     date,
@@ -51,51 +41,6 @@ export default function Page() {
       enabled: !!date && !!locationParam,
     },
   );
-  
-
-  useEffect(() => {
-    if (!session) return;
-    // if (privateParam) {
-    //   if (privateParam === "off") {
-    //     const findStudy = studyVoteOne?.[0]?.participations?.find((par) => par.place._id === id);
-    //     setStudy(findStudy);
-    //     setMyStudy(findStudy);
-    //   } else {
-    //     setRealStudy(
-    //       studyVoteOne?.[0]?.realTime?.filter((par) => par.place.text === findRealStudy.place.text),
-    //     );
-    //   }
-    // }
-
-    // const tempStudy = studyOne || findStudy;
-
-    // if (!tempStudy) return;
-    // setStudy(tempStudy);
-    // const isMyStudy = tempStudy.members.find((who) => who.user.uid === session.user.uid);
-    // if (isMyStudy) setMyStudy(tempStudy);
-  }, [session]);
-
-  // useEffect(() => {
-  //   setStudyDateStatus(getStudyDateStatus(date));
-  // }, [date]);
-
-  // const place =
-  //   study?.place ||
-  //   (findRealStudy && {
-  //     fullname: findRealStudy.place.text,
-  //     latitude: findRealStudy.place.lat,
-  //     longitude: findRealStudy.place.lon,
-  //     coverImage: STUDY_COVER_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
-  //     brand: findRealStudy.place.text.split(" ")?.[0],
-  //     locationDetail: findRealStudy.place.locationDetail,
-  //     time: null,
-  //   });
-  // const realPlace = findRealStudy?.place;
-
-  // const members =
-  //   studyDateStatus !== "not passed"
-  //     ? study?.members.filter((att) => att.firstChoice)
-  //     : study?.members;
 
   const mergeParticipations = convertStudyToParticipations(
     studyVoteData,

@@ -12,7 +12,7 @@ export const setStudyToThumbnailInfo = (
   studyData: StudyParticipationProps[] | StudyMergeParticipationProps[],
   currentLocation: { lat: number; lon: number },
   urlDateParam: string | null,
-  location: ActiveLocation,
+  location?: ActiveLocation,
   votePlaceProps?: { main: string; sub: string[] },
 ): StudyThumbnailCardProps[] => {
   if (!studyData) return [];
