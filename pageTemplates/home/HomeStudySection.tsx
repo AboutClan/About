@@ -2,16 +2,13 @@ import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import { useSetRecoilState } from "recoil";
+import { useState } from "react";
 
 import SectionHeader from "../../components/atoms/SectionHeader";
 import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import { USER_LOCATION } from "../../constants/keys/localStorage";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
-import { getMyStudyParticipation } from "../../libs/study/getMyStudyMethods";
-import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToKr, dayjsToStr } from "../../utils/dateTimeUtils";
@@ -25,7 +22,6 @@ function HomeStudySection({}: HomeStudySectionProps) {
     (localStorage.getItem(USER_LOCATION) as ActiveLocation) || session?.user.location;
 
   const [date, setDate] = useState(dayjsToStr(dayjs()));
-  const setMyStudyParticipation = useSetRecoilState(myStudyParticipationState);
 
   const { data: studyVoteData } = useStudyVoteQuery(
     date,
@@ -35,12 +31,12 @@ function HomeStudySection({}: HomeStudySectionProps) {
       enabled: !!userLocation,
     },
   );
- 
-  useEffect(() => {
-    if (!studyVoteData || !session?.user) return;
-    const myStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
-    setMyStudyParticipation(myStudyParticipation);
-  }, [studyVoteData, session?.user.uid]);
+
+  // useEffect(() => {
+  //   if (!studyVoteData || !session?.user) return;
+  //   const myStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
+  //   setMyStudyParticipation(myStudyParticipation);
+  // }, [studyVoteData, session?.user.uid]);
 
   const tabOptionsArr: ITabNavOptions[] = [
     {
@@ -52,8 +48,6 @@ function HomeStudySection({}: HomeStudySectionProps) {
       func: () => setDate(dayjsToStr(dayjs().add(1, "day"))),
     },
   ];
-
-  const navigateStudyListPage = () => {};
 
   return (
     <>

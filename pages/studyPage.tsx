@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -89,7 +89,7 @@ export default function StudyVoteMap() {
   const { data: studyVoteData } = useStudyVoteQuery(date, locationValue, {
     enabled: !!locationValue && !!date,
   });
- 
+
   const mainLocation = userInfo?.locationDetail;
 
   useEffect(() => {
@@ -212,14 +212,11 @@ export default function StudyVoteMap() {
     }
   }, [currentLocation, centerLocation, mainLocation, studyVoteData, locationValue]);
 
- 
   const handleMarker = (id: string, type: "vote") => {
-  
     if (!id || !studyVoteData) return;
-    
+
     if (type === "vote") {
       setMyVote((old) => {
-      
         if (old?.main === id) return { main: null, sub: [] };
         else if (!old?.main) return { main: id, sub: [] };
         else if (old?.sub.includes(id))
@@ -229,16 +226,11 @@ export default function StudyVoteMap() {
 
       return;
     }
-  
 
     const participation = studyVoteData.participations?.find((par) => par.place._id === id);
     const realTimeStudy = getRealTimeFilteredById(studyVoteData.realTime, id);
-    // const findStudy = parti
-    const findStudy = participation || realTimeStudy;
 
-    // const myStudy =
-    //   findStudy?.members?.some((who) => who.user.uid === userInfo?.uid) ||
-    //   realStudyAttendance?.some((who) => who.user.uid === userInfo?.uid);
+    const findStudy = participation || realTimeStudy;
 
     const sortedCommentUserArr = [...findStudy.members]?.sort((a, b) => {
       const aTime = dayjs(a?.updatedAt);

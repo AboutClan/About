@@ -10,7 +10,7 @@ import {
   StudyThumbnailCard,
   StudyThumbnailCardProps,
 } from "../../../components/molecules/cards/StudyThumbnailCard";
-import { CardColumnLayoutSkeleton } from "../../../components/organisms/CardColumnLayout";
+import { StudyThumbnailCardSkeleton } from "../../../components/skeleton/StudyThumbnailCardSkeleton";
 import { STUDY_CHECK_POP_UP, STUDY_VOTING_TABLE } from "../../../constants/keys/localStorage";
 import { LOCATION_RECRUITING, LOCATION_TO_FULLNAME } from "../../../constants/location";
 import {
@@ -68,7 +68,7 @@ function StudyCardCol({ participations, date }: StudyCardColProps) {
       },
     );
   }, []);
-
+  console.log(studyCardColData);
   useEffect(() => {
     if (!participations || !participations.length) {
       setStudyCardColData(null);
@@ -150,7 +150,7 @@ function StudyCardCol({ participations, date }: StudyCardColProps) {
             )}
           </Flex>
         ) : (
-          <CardColumnLayoutSkeleton />
+          [1, 2, 3].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)
         )}
       </BlurredPart>
 

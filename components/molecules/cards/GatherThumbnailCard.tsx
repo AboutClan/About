@@ -27,10 +27,10 @@ export interface GatherThumbnailCardProps {
 }
 
 const STATUS_TO_BADGE_PROPS: Record<GatherStatus, { text: string; colorScheme: string }> = {
-  open: { text: "모집 마감", colorScheme: "redTheme" },
-  close: { text: "취소", colorScheme: "grayTheme" },
-  pending: { text: "모집중", colorScheme: "mintTheme" },
-  end: { text: "종료", colorScheme: "grayTheme" },
+  open: { text: "모집 마감", colorScheme: "red" },
+  close: { text: "취소", colorScheme: "gray" },
+  pending: { text: "모집중", colorScheme: "mint" },
+  end: { text: "종료", colorScheme: "gray" },
 };
 
 export function GatherThumbnailCard({

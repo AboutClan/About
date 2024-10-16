@@ -220,55 +220,12 @@ function PresentPercentPopOver() {
   );
 }
 
-const Container = styled.div`
-  margin-top: var(--gap-2);
-  flex: 1;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  > div:first-child {
-    padding: var(--gap-1) 0;
-  }
-`;
-
-const Detail = styled.div`
-  height: 70%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  flex: 0.35;
-  > * {
-    margin-bottom: 4px;
-  }
-  /* > span {
-    width: 65px;
-    text-align: end;
-    
-    display: block;
-    padding: 2px 0;
-    font-weight: 600;
-    font-size: 11px;
-  } */
-`;
-
 const SubTitle = styled.span`
   color: var(--gray-600);
   font-weight: 400;
   font-size: 12px;
 `;
-const PresentMessage = styled.div`
-  font-size: 15px;
-  margin-bottom: var(--gap-4);
-  > b {
-    color: var(--color-mint);
-  }
-`;
 
 const PercentItem = styled.span``;
-
-const CheckWrapper = styled.div``;
 
 export default DailyCheckModal;

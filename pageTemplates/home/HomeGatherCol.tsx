@@ -10,7 +10,7 @@ import {
   GatherThumbnailCard,
   GatherThumbnailCardProps,
 } from "../../components/molecules/cards/GatherThumbnailCard";
-import { CardColumnLayoutSkeleton } from "../../components/organisms/CardColumnLayout";
+import { GatherThumbnailCardSkeleton } from "../../components/skeleton/GatherThumbnailCardSkeleton";
 import { useGatherQuery } from "../../hooks/gather/queries";
 import { transferGatherDataState } from "../../recoils/transferRecoils";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
@@ -23,8 +23,6 @@ export default function HomeGatherCol() {
   const { data: session } = useSession();
   const searchParams = useSearchParams();
 
-  const tab = searchParams.get("tab") as "recommendation" | "gather";
-
   const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>([]);
 
   const setTransferGather = useSetRecoilState(transferGatherDataState);
@@ -36,7 +34,7 @@ export default function HomeGatherCol() {
     const handleNavigate = (gather: IGather) => {
       setTransferGather(gather);
     };
-    setCardDataArr(setGatherDataToCardCol(gathers, tab, handleNavigate).slice(0, 3));
+    setCardDataArr(setGatherDataToCardCol(gathers, handleNavigate).slice(0, 3));
   }, [gathers]);
 
   return (
@@ -53,7 +51,7 @@ export default function HomeGatherCol() {
           )}
         </Flex>
       ) : (
-        <CardColumnLayoutSkeleton />
+        [1, 2, 3].map((idx) => <GatherThumbnailCardSkeleton key={idx} />)
       )}
     </Box>
   );
@@ -61,8 +59,8 @@ export default function HomeGatherCol() {
 
 export const setGatherDataToCardCol = (
   gathers: IGather[],
-  tab: "recommendation" | "gather",
-  func: (gather: IGather) => void,
+
+  func?: (gather: IGather) => void,
 ): GatherThumbnailCardProps[] => {
   const cardCol: GatherThumbnailCardProps[] = gathers.map((gather, idx) => ({
     title: gather.title,
@@ -72,7 +70,7 @@ export const setGatherDataToCardCol = (
     place: gather.location.main,
     imageProps: {
       image: gather.image || getRandomImage(),
-      priority: tab === "gather" && idx < 4,
+      priority: idx < 3,
     },
     id: gather.id,
     maxCnt: gather.memberCnt.max,

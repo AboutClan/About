@@ -5,9 +5,9 @@ import { useSetRecoilState } from "recoil";
 
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import {
-  IPostThumbnailCard,
-  PostThumbnailCard,
-} from "../../components/molecules/cards/PostThumbnailCard";
+  GatherThumbnailCard,
+  GatherThumbnailCardProps,
+} from "../../components/molecules/cards/GatherThumbnailCard";
 import { useGatherQuery } from "../../hooks/gather/queries";
 import { transferGatherDataState } from "../../recoils/transferRecoils";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
@@ -19,7 +19,7 @@ export default function GatherMain() {
   const searchParams = useSearchParams();
 
   const location = convertLocationLangTo(searchParams.get("location") as LocationEn, "kr");
-  const [cardDataArr, setCardDataArr] = useState<IPostThumbnailCard[]>();
+  const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>();
 
   const setTransferGatherData = useSetRecoilState(transferGatherDataState);
   const [gathers, setGathers] = useState<IGather[]>([]);
@@ -75,7 +75,7 @@ export default function GatherMain() {
         <>
           {cardDataArr.map((cardData, idx) => (
             <Box mb="12px" key={idx}>
-              <PostThumbnailCard postThumbnailCardProps={cardData} />
+              <GatherThumbnailCard {...cardData} />
             </Box>
           ))}
         </>

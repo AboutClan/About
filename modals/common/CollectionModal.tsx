@@ -58,12 +58,6 @@ function CollectionModal({ collection, setIsModal }: ICollectionModal) {
   );
 }
 
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 32px;
-  height: 100%;
-`;
+
 
 export default CollectionModal;

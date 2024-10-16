@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useParams, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 import Slide from "../../../../components/layouts/PageSlide";
