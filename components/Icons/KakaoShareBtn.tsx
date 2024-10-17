@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import styled from "styled-components";
 
 import { REVIEW_DATA } from "../../storage/Review";
+import { ShareIcon } from "./ShareIcon";
 
 const kakaoAppKey = process.env.NEXT_PUBLIC_KAKAO_JS;
 
@@ -16,6 +17,7 @@ interface IKakaoShareBtn {
   isBig?: boolean;
   isFull?: boolean;
   temp?: boolean;
+  isTemp?: boolean;
 }
 
 function KakaoShareBtn({
@@ -28,6 +30,7 @@ function KakaoShareBtn({
   isBig,
   isFull,
   temp,
+  isTemp,
 }: IKakaoShareBtn) {
   useEffect(() => {
     if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
@@ -117,8 +120,18 @@ function KakaoShareBtn({
 
   return (
     <Layout id="kakao-share-button" isFull={isFull} temp={temp}>
-      {!isBig ? (
-        <i className="fa-light fa-share-nodes fa-lg" />
+      {isTemp ? (
+        <Button
+          color="mint"
+          bg="white"
+          border="1px solid var(--color-mint)"
+          _focus={{ bg: "white", boxShadow: "none" }}
+          _hover={{ bg: "white", boxShadow: "none" }}
+        >
+          카카오톡 공유
+        </Button>
+      ) : !isBig ? (
+        <ShareIcon />
       ) : (
         <Button as="div" colorScheme="mintTheme" width="100%" size="lg">
           카카오톡으로 공유하기
@@ -129,7 +142,6 @@ function KakaoShareBtn({
 }
 
 const Layout = styled.button<{ isFull: boolean; temp: boolean }>`
-  padding: ${(props) => (props.isFull ? 0 : props.temp ? 0 : "8px")};
   width: ${(props) => (props.isFull ? "100%" : "undefined")};
   width: 100%;
 `;

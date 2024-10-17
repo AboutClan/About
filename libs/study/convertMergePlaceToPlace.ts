@@ -13,7 +13,7 @@ export const convertMergePlaceToPlace = (mergePlace: StudyPlaceProps | PlaceInfo
     name: studyPlace?.fullname || realTimePlace?.name,
     branch: studyPlace?.branch || realTimePlace?.name.split(" ")?.[1] || "알수없음",
     address: studyPlace?.locationDetail || realTimePlace?.address,
-
+    brand: studyPlace?.brand || realTimePlace?.name.split(" ")?.[0] || "",
     image: studyPlace?.image || STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length)],
     coverImage:
       studyPlace?.coverImage || STUDY_COVER_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length)],

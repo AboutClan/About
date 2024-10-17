@@ -1,4 +1,5 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import Link from "next/link";
 import { renderToString } from "react-dom/server";
 
 import LocationDot from "../../components/atoms/LocationDot";
@@ -44,9 +45,11 @@ function StudyAddressMap({ latitude, longitude, address, name }: StudyAddressMap
         <Box fontWeight="bold" fontSize="18px">
           길찾기
         </Box>
-        <Button variant="unstyled">
-          <ShortArrowIcon dir="right" />
-        </Button>
+        <Link href={`https://map.naver.com/v5/search/${address}`}>
+          <Button variant="unstyled">
+            <ShortArrowIcon dir="right" />
+          </Button>
+        </Link>
       </Flex>
       <Flex mb={4} align="center" fontSize="12px">
         <LocationDotIcon size="md" />

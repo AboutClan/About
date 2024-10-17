@@ -6,16 +6,19 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
+  Box,
   Button,
 } from "@chakra-ui/react";
 import React from "react";
 
 import { IModal } from "../types/components/modalTypes";
+import KakaoShareBtn from "./Icons/KakaoShareBtn";
 export interface IAlertSimpleModalOptions {
   title: string;
   subTitle: string;
-  func: () => void;
+
   text?: string;
+  kakaoOption?: any;
 }
 
 interface IAlertSimpleModal extends IModal {
@@ -25,7 +28,7 @@ interface IAlertSimpleModal extends IModal {
 
 export default function AlertSimpleModal({
   setIsModal,
-  options: { title, subTitle },
+  options: { title, subTitle, kakaoOption },
 }: IAlertSimpleModal) {
   const cancelRef = React.useRef();
 
@@ -46,6 +49,9 @@ export default function AlertSimpleModal({
           <AlertDialogCloseButton />
           <AlertDialogBody p="0 16px">{subTitle}</AlertDialogBody>
           <AlertDialogFooter p="16px">
+            <Box mr={3}>
+              <KakaoShareBtn isTemp {...kakaoOption} />
+            </Box>
             <Button colorScheme="mintTheme" onClick={() => setIsModal(false)}>
               확인
             </Button>

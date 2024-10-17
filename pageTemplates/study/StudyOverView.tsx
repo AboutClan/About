@@ -39,7 +39,7 @@ function StudyOverview({
 
   return (
     <>
-      <Box mt={4} mb={5} >
+      <Box mx={5} mt={4} mb={5}>
         <Box color="var(--gray-500)" fontSize="12px">
           <Badge mr={2} size="lg" colorScheme={badgeColorScheme}>
             {badgeText}
@@ -57,7 +57,6 @@ function StudyOverview({
 
         <InfoBoxCol infoBoxPropsArr={infoBoxPropsArr} />
       </Box>
-    
     </>
   );
 }

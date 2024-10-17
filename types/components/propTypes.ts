@@ -27,3 +27,9 @@ interface CommentProps extends TimeStampProps {
 export interface UserCommentProps extends CommentProps {
   subComments?: CommentProps[];
 }
+
+export interface BasicButtonProps {
+  text: string;
+  func: () => void;
+  isLoading?: boolean;
+}

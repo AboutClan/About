@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useState } from "react";
 
 import HighlightButton from "../../components/atoms/HighlightButton";
@@ -27,6 +27,8 @@ export default function StudyMembers({ members, setIsInviteModal }: IStudyMember
     image: string;
     toUid: string;
   }>();
+
+  const isMyStudy = members?.some((who) => who.user.uid === session?.user.uid);
 
   const userCardArr: IProfileCommentCard[] = members.map((member) => {
     const togglehasModalMemo =
@@ -75,9 +77,11 @@ export default function StudyMembers({ members, setIsInviteModal }: IStudyMember
       {userCardArr.length ? (
         <>
           <ProfileCardColumn userCardArr={userCardArr} />
-          <Box pt={4} pb={2}>
-            <HighlightButton text="친구 초대 +" func={() => typeToast("not-yet")} />
-          </Box>
+          {isMyStudy && (
+            <Box pt={4} pb={2}>
+              <HighlightButton text="친구 초대 +" func={() => typeToast("not-yet")} />
+            </Box>
+          )}
         </>
       ) : (
         <Flex

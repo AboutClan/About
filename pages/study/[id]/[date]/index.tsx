@@ -53,7 +53,7 @@ export default function Page() {
   console.log(5, mergeParticipations);
 
   const place = convertMergePlaceToPlace(mergeParticipation?.place);
-  const { name, address, coverImage, latitude, longitude, time } = place || {};
+  const { name, address, coverImage, latitude, brand, longitude, time } = place || {};
 
   const distance =
     currentLocation &&
@@ -64,9 +64,9 @@ export default function Page() {
     <>
       {mergeParticipation && (
         <>
-          <StudyHeader name={name} address={address} coverImage={coverImage} />
+          <StudyHeader brand={brand} name={name} address={address} coverImage={coverImage} />
           <Box mb={3}>
-            <Slide>
+            <Slide isNoPadding>
               <StudyCover coverImage={coverImage} />
               <StudyOverview
                 place={{ ...place }}

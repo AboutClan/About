@@ -363,13 +363,7 @@ export function ModalBodyNavTwo({
   onClickTop,
 }: IModalBodyNavTwo) {
   return (
-    <Flex
-      direction="column"
-      h="100%"
-      mb="var(--gap-4)"
-      py="var(--gap-3)"
-      justifyContent="space-around"
-    >
+    <Flex w="100%" direction="column" h="100%" pb={2} justifyContent="space-around">
       <Button
         colorScheme="mintTheme"
         marginBottom="var(--gap-3)"

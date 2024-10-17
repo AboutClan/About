@@ -43,7 +43,7 @@ export default function Header({
           )}
         </Flex>
         {isCenter && <CenterTitle>{title}</CenterTitle>}
-        {isCenter && <Box w={5} />}
+        {isCenter && !children && <Box w={5} />}
         <div>{children}</div>
       </HeaderContainer>
     );
