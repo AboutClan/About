@@ -90,8 +90,6 @@ export const getRealTimeFilteredById = (
   return { ...findStudy, members: filtered };
 };
 
-import { Dayjs } from "dayjs";
-
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { getLocationByCoordinates } from "./getLocationByCoordinates";
 
@@ -103,15 +101,6 @@ export const getMyStudyInfo = (
 
   return participations.members.find((who) => who.user.uid === myUid);
 };
-
-interface IMyStudyVoteInfo {
-  placeId: string;
-  start: Dayjs;
-  end: Dayjs;
-  arrived?: Date;
-  startTime?: Dayjs;
-  fullname: string;
-}
 
 // export const getMyStudyVoteInfo = (
 //   myStudy: StudyParticipationProps,

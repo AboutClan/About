@@ -20,14 +20,3 @@ export const getStudyTime = (users: StudyMemberProps[]): { start: string; end: s
   return { start: dayjsToFormat(startTime, "HH:mm"), end: dayjsToFormat(endTime, "HH:mm") };
 };
 
-export const getFirstComment = (users: IAttendance[]) => {
-  if (!users) return null;
-  let text = "basic";
-  users.forEach((user) => {
-    if (true) {
-      text = "오늘도 공부 파이팅 !! 같이 하실 분";
-      return;
-    }
-  });
-  return text;
-};

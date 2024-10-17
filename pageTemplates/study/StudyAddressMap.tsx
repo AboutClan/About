@@ -1,8 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import Link from "next/link";
-import { renderToString } from "react-dom/server";
 
-import LocationDot from "../../components/atoms/LocationDot";
 import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
 import { LocationDotIcon, LocationDotIconHTML } from "../../components/Icons/LocationIcons";
 import VoteMap from "../../components/organisms/VoteMap";
@@ -15,8 +13,6 @@ interface StudyAddressMapProps {
 }
 
 function StudyAddressMap({ latitude, longitude, address, name }: StudyAddressMapProps) {
-  const infoWindowContent = renderToString(<LocationDot name="테스트" />);
-
   const mapOptions: IMapOptions = {
     center: new naver.maps.LatLng(latitude, longitude),
     zoom: 15,

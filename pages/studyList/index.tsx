@@ -1,6 +1,5 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 
 import Header from "../../components/layouts/Header";
@@ -14,7 +13,6 @@ import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 export default function StudyList() {
-  const { data: session } = useSession();
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
   const location = searchParams.get("location") as LocationEn;

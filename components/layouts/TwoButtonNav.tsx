@@ -1,5 +1,4 @@
-import { Button } from "@chakra-ui/react";
-import styled from "styled-components";
+import { Button, Flex } from "@chakra-ui/react";
 
 interface ITwoButtonNav {
   leftText?: string;
@@ -16,51 +15,38 @@ function TwoButtonNav({
   isLoading,
   onClickLeft,
   onClickRight,
-  size = "lg",
 }: ITwoButtonNav) {
-
   return (
-    <Layout size={size}>
+    <Flex w="full">
       <Button
-        bg="white"
-        h="100%"
-        border="1.2px solid var(--color-mint)"
-        color="var(--color-mint)"
-        fontSize="16px"
+        color="mint"
+        w="full"
+        h="40px"
+        border="1px solid var(--color-mint)"
+        borderRadius="8px"
         onClick={onClickLeft}
+        fontSize="12px"
+        fontWeight="bold"
+        mr={2}
+        bg="white"
       >
         {leftText}
       </Button>
       <Button
+        colorScheme="mint"
+        w="full"
+        fontSize="12px"
+        fontWeight="bold"
+        h="40px"
         onClick={onClickRight}
-        bg="var(--color-mint)"
-        h="100%"
-        color="white"
-        fontSize="16px"
+        borderRadius="8px"
         isLoading={isLoading}
         disabled={false}
       >
         {rightText}
       </Button>
-    </Layout>
+    </Flex>
   );
 }
-
-const Layout = styled.div<{ size: "md" | "lg" }>`
-  width: 100%;
-  display: flex;
-  height: ${(props) => (props.size === "lg" ? "46px" : "42px")};
-  > button:first-child {
-    margin-right: var(--gap-3);
-  }
-  > button {
-    flex: 1;
-  }
-  > button:last-child {
-    :hover {
-      background-color: var(--color-mint);
-    }
-  }
-`;
 
 export default TwoButtonNav;

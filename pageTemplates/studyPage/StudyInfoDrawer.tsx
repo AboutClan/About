@@ -68,7 +68,7 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo, date }: StudyInFoDrawerPro
   const router = useRouter();
   const toast = useToast();
   const typeToast = useTypeToast();
-  console.log(detailInfo);
+  
   const myStudyParticipation = useRecoilValue(myStudyParticipationState);
 
   const { data: userInfo } = useUserInfoQuery({ enabled: detailInfo.status === "solo" });

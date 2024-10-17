@@ -12,7 +12,6 @@ import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { usePointSystemLogQuery } from "../../hooks/user/queries";
-
 import { IModal } from "../../types/components/modalTypes";
 import { IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
 import { createTimeArr, parseTimeToDayjs } from "../../utils/dateTimeUtils";

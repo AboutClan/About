@@ -5,6 +5,7 @@ import styled from "styled-components";
 export interface ButtonOptionsProps {
   text: string;
   func: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   icon?: ReactElement<any, string | JSXElementConstructor<any>>;
   color?: string;
 }

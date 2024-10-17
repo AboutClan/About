@@ -2,18 +2,18 @@ import { motion, useMotionValue } from "framer-motion";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-const ITEM_HEIGHT = 34;
+const ITEM_HEIGHT = 38;
 
 interface IRulletPicker {
   rulletIndex: number;
-  text: string;
+
   rulletItemArr: string[];
   setRulletIndex: (idx: number) => void;
 }
 
 export default function RulletPicker({
   rulletIndex,
-  text,
+
   rulletItemArr,
   setRulletIndex,
 }: IRulletPicker) {
@@ -64,46 +64,42 @@ export default function RulletPicker({
   };
 
   return (
-    <>
-      <Text>{text}</Text>
-      <Container>
-        <ItemsContainer
-          drag="y"
-          dragConstraints={{
-            top: -ITEM_HEIGHT * (rulletItemArr.length - 3),
-            bottom: ITEM_HEIGHT * 2,
-          }}
-          dragElastic={0.2}
-          onUpdate={handleUpdate}
-          style={{ y }}
-        >
-          {rulletItemArr.map((item, idx) => (
-            <Item key={idx} onClick={() => onClick(idx)} isActive={index === idx}>
-              {item}
-            </Item>
-          ))}
-        </ItemsContainer>
-        <Highlight />
-      </Container>
-    </>
+    <Container>
+      <ItemsContainer
+        drag="y"
+        dragConstraints={{
+          top: -ITEM_HEIGHT * (rulletItemArr.length - 3),
+          bottom: ITEM_HEIGHT * 2,
+        }}
+        dragElastic={0.2}
+        onUpdate={handleUpdate}
+        style={{ y }}
+      >
+        {rulletItemArr.map((item, idx) => (
+          <Item
+            key={idx}
+            onClick={() => onClick(idx)}
+            isActive={
+              index === idx ? "main" : idx + 1 === index || idx - 1 === index ? "sub" : null
+            }
+          >
+            {item}
+          </Item>
+        ))}
+      </ItemsContainer>
+      <Highlight />
+    </Container>
   );
 }
-
-const Text = styled.div`
-  color: var(--gray-600); /* text-gray-3 */
-  margin-bottom: 8px; /* mb-2 */
-  font-weight: 600; /* font-semibold */
-`;
 
 const Container = styled.div`
   position: relative;
   width: 100%;
   border-radius: var(--rounded-lg); /* rounded-lg */
-  background-color: var(--gray-200); /* bg-gray-8 */
+
   overflow-y: hidden;
-  padding-top: 8px; /* py-2 */
-  padding-bottom: 8px; /* py-2 */
-  height: ${ITEM_HEIGHT * 5 + 16}px;
+
+  height: ${ITEM_HEIGHT * 5}px;
 `;
 
 const ItemsContainer = styled(motion.div)`
@@ -113,22 +109,27 @@ const ItemsContainer = styled(motion.div)`
   z-index: 10;
 `;
 
-const Item = styled.div<{ isActive: boolean }>`
+const Item = styled.div<{ isActive: "main" | "sub" | null }>`
   position: relative;
   z-index: 10;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-weight: 600; /* font-semibold */
+  font-weight: ${(props) => (props.isActive === "main" ? " 600" : "400")}; /* font-semibold */
   font-size: 16px; /* text-base */
   height: ${ITEM_HEIGHT}px;
-  color: ${({ isActive }) => (isActive ? "#FFFFFF" : "var(--gray-600)")}; /* Conditional color */
+  color: ${({ isActive }) =>
+    isActive === "main"
+      ? "var(--color-mint)"
+      : isActive === "sub"
+        ? "var(--gray-500)"
+        : "var(--gray-400)"}; /* Conditional color */
 `;
 
 const Highlight = styled.div`
-  border-radius: var(--rounded-lg); /* rounded-lg */
+  border-radius: 8px; /* rounded-lg */
   width: 100%;
-  background-color: var(--gray-800); /* bg-gray-2 */
+  background-color: rgba(0, 194, 179, 0.08); /* bg-gray-2 */
   position: absolute;
   top: 50%;
   transform: translateY(-50%);

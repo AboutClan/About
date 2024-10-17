@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import Selector from "../../components/atoms/Selector";
 import { IUserRankings } from "../../libs/userEventLibs/userHelpers";
-import { RankingCategoryProp, RankingFilterOptionProps } from "../../pages/ranking/ranking";
+import { RankingCategoryProp, RankingFilterOptionProps } from "../../pages/ranking";
 import { DispatchType } from "../../types/hooks/reactTypes";
 
 interface IStatisticsFilterBar {

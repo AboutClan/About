@@ -1,18 +1,16 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import styled from "styled-components";
 
 import { PlusIcon } from "../../components/Icons/MathIcons";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
-import { DispatchBoolean } from "../../types/hooks/reactTypes";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 interface IStudyDateBar {
   date: string;
-  setIsInviteModal: DispatchBoolean;
+
   memberCnt: number;
 }
-function StudyDateBar({ date, memberCnt, setIsInviteModal }: IStudyDateBar) {
+function StudyDateBar({ date, memberCnt }: IStudyDateBar) {
   const typeToast = useTypeToast();
 
   return (
@@ -33,18 +31,5 @@ function StudyDateBar({ date, memberCnt, setIsInviteModal }: IStudyDateBar) {
     </>
   );
 }
-
-const StudyDateBarContainer = styled.div`
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: white;
-`;
-
-const DateText = styled.span`
-  font-size: 18px; /* text-lg */
-  font-weight: 700; /* font-semibold */
-`;
 
 export default StudyDateBar;

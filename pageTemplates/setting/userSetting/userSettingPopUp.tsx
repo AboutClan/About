@@ -50,6 +50,7 @@ interface UserSettingPopUpProps {
 }
 
 export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProps) {
+  console.log(cnt);
   const { data: session } = useSession();
 
   const [modalTypes, setModalTypes] = useState<UserPopUp[]>([]);
@@ -110,7 +111,7 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
   }, [gatherData]);
 
   useEffect(() => {
-    const popUpCnt = cnt;
+    // const popUpCnt = cnt;
 
     if (!userInfo?.locationDetail) {
       setModalTypes((old) => [...old, "registerLocation"]);

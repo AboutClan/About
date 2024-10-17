@@ -79,10 +79,11 @@ function StudyPageDrawer({ studyVoteData, location, date, setDate }: StudyPageDr
   };
 
   const handleDrawerDown = () => {
+    
     newSearchParams.set("category", "currentPlace");
     newSearchParams.set("drawer", "down");
     router.replace(`/studyPage?${newSearchParams.toString()}`);
-    console.log(54);
+    
   };
 
   return (

@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 import HighlightButton from "../../components/atoms/HighlightButton";
@@ -11,15 +11,15 @@ import ProfileCardColumn from "../../components/organisms/ProfileCardColumn";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import ImageZoomModal from "../../modals/ImageZoomModal";
 import StudyChangeMemoModal from "../../modals/study/StudyChangeMemoModal";
-import { DispatchBoolean } from "../../types/hooks/reactTypes";
 import { StudyMemberProps } from "../../types/models/studyTypes/studyDetails";
+import { IAbsence } from "../../types/models/studyTypes/studyInterActions";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 interface IStudyMembers {
   members: StudyMemberProps[];
-  setIsInviteModal: DispatchBoolean;
+  absences: IAbsence[];
 }
-export default function StudyMembers({ members, setIsInviteModal }: IStudyMembers) {
+export default function StudyMembers({ members, absences }: IStudyMembers) {
   const { data: session } = useSession();
   const typeToast = useTypeToast();
   const [hasModalMemo, setHasModalMemo] = useState<string>();
@@ -31,11 +31,16 @@ export default function StudyMembers({ members, setIsInviteModal }: IStudyMember
   const isMyStudy = members?.some((who) => who.user.uid === session?.user.uid);
 
   const userCardArr: IProfileCommentCard[] = members.map((member) => {
+    console.log(member);
     const togglehasModalMemo =
       member.user.uid === session?.user.uid && member.attendanceInfo.attendanceImage
         ? (memo: string) => setHasModalMemo(memo)
         : null;
-    const obj = composeUserCardArr(member, togglehasModalMemo);
+    const obj = composeUserCardArr(
+      member,
+      togglehasModalMemo,
+      absences?.find((who) => who.user.uid === member.user.uid),
+    );
 
     const rightComponentProps = obj.rightComponentProps;
     const image = member?.attendanceInfo.attendanceImage;
@@ -127,25 +132,27 @@ interface IReturnProps extends Omit<IProfileCommentCard, "rightComponent"> {
 const composeUserCardArr = (
   participant: StudyMemberProps,
   setHasModalMemo: (memo: string) => void,
+  absence: IAbsence,
 ): IReturnProps => {
   const attendanceInfo = participant?.attendanceInfo;
-  const absences = participant?.absenceInfo;
+
   const arrived = attendanceInfo.arrived
     ? dayjsToFormat(dayjs(attendanceInfo.arrived).subtract(9, "hour"), "HH:mm")
     : null;
 
   const memo = attendanceInfo.arrivedMessage;
+  console.log(5, memo);
   const user = participant.user;
 
   return {
     user: user,
-    comment: memo || absences?.text || "",
+    comment: memo || (absence ? absence?.message || "불참" : null),
     setMemo: setHasModalMemo ? () => setHasModalMemo(memo) : null,
     rightComponentProps:
-      arrived || absences
+      arrived || absence
         ? {
             type: arrived ? "attend" : "dismissed",
-            time: arrived || dayjsToFormat(dayjs(absences?.updatedAt), "HH:mm"),
+            time: arrived || dayjsToFormat(dayjs(absence?.updatedAt), "HH:mm"),
           }
         : undefined,
   };

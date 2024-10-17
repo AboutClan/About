@@ -1,13 +1,14 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 import { Button, Flex } from "@chakra-ui/react";
 import { JSXElementConstructor, ReactElement } from "react";
 
 interface NewTwoButtonRowProps {
   leftProps: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     icon?: ReactElement<any, string | JSXElementConstructor<any>>;
     children?: React.ReactNode;
   };
   rightProps: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     icon?: ReactElement<any, string | JSXElementConstructor<any>>;
     children?: React.ReactNode;
     isDisabled?: boolean;

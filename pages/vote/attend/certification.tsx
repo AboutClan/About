@@ -1,5 +1,4 @@
 import { Box, Button } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
@@ -21,25 +20,20 @@ import { PlaceInfoProps } from "../../../types/models/utilTypes";
 
 function Certification() {
   const toast = useToast();
-  const { data: session } = useSession();
+
   const [image, setImage] = useState<Blob>();
   const [placeInfo, setPlaceInfo] = useState<KakaoLocationProps>({
     place_name: "",
     road_address_name: "",
   });
 
-  const [imageArr, setImageArr] = useState<string[]>([]);
-  const [imageFormArr, setImageFormArr] = useState<Blob[]>([]);
   const [isResetAlert, setIsResetAlert] = useState(false);
   const [isActive, setIsActive] = useState(true);
 
   const [studyAttendanceRequest, setStudyAttendanceRequest] = useRecoilState(
     transferStudyAttendanceState,
   );
-  //  latitude: +placeInfo?.y,
-  //       longitude: +placeInfo?.x,
-  //       address: placeInfo?.road_address_name,
-  //       name: placeInfo?.place_name,
+
   const myStudyParticipation = useRecoilValue(myStudyParticipationState);
 
   useEffect(() => {
@@ -73,7 +67,7 @@ function Certification() {
 
     setIsActive(false);
   }, [myStudyParticipation]);
-  console.log(234, placeInfo);
+
   const handleBottomNav = (e) => {
     if (!image) {
       toast("warning", "이미지를 등록해 주세요");

@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -97,10 +97,9 @@ function Configuration() {
   let currentDayjs = dayjs().startOf("hour");
   const timeOptions = [];
 
-  while (1) {
+  while (currentDayjs.date() === dayjs().date()) {
     timeOptions.push(dayjsToFormat(currentDayjs, "HH:mm"));
     currentDayjs = currentDayjs.add(30, "m");
-    if (currentDayjs.date() !== dayjs().date()) break;
   }
 
   useEffect(() => {
@@ -110,7 +109,7 @@ function Configuration() {
       }, 500);
     }
   }, []);
-  console.log(24, otherPermission);
+
   const handleAttendSuccess = (collection: CollectionProps) => {
     setTransferCollection({ alphabet: collection.alphabet, stamps: collection.stamps });
     saveTogetherMembers();
@@ -159,8 +158,7 @@ function Configuration() {
 
   const handleSubmit = () => {
     const isParticipationStudy = (myStudyParticipation?.place as StudyPlaceProps)?.fullname;
-    const isRealTimeStudy = (myStudyParticipation?.place as PlaceInfoProps)?.name;
-    console.log(25, transferStudyAttendance);
+
     if (
       isParticipationStudy &&
       (myStudyParticipation?.place as StudyPlaceProps)?.fullname ===
@@ -193,7 +191,7 @@ function Configuration() {
       attendRealTimeStudy(formData);
     }
   };
-  console.log(54, transferStudyAttendance);
+
   return (
     <>
       <Box minH="calc(100dvh - var(--header-h))" bgColor="white">

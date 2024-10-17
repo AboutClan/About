@@ -2,8 +2,9 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import PageIntro from "../../components/atoms/PageIntro";
+import { useRecoilValue } from "recoil";
 
+import PageIntro from "../../components/atoms/PageIntro";
 import BottomNav from "../../components/layouts/BottomNav";
 import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
 import PickerRowButton from "../../components/molecules/PickerRowButton";
@@ -26,6 +27,7 @@ import {
   getStudyVoteIcon,
 } from "../../libs/study/getStudyVoteIcon";
 import { setStudyToThumbnailInfo } from "../../libs/study/setStudyToThumbnailInfo";
+import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import { IModal } from "../../types/components/modalTypes";
 import { KakaoLocationProps } from "../../types/externals/kakaoLocationSearch";
 import { IMarkerOptions } from "../../types/externals/naverMapTypes";
@@ -85,10 +87,12 @@ function VoteDrawer({
   const isTodayVote = dayjs().isSame(date, "day") && dayjs().hour() >= 9;
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
 
+  const myStudyParticipation = useRecoilValue(myStudyParticipationState);
+
   const findMainPlace = studyVoteData?.participations.find(
     (par) => par.place._id === (isFirstPage ? preference?.place : myVote?.main),
   );
-  const subPlace = studyVoteData.participations
+  const subPlace = studyVoteData?.participations
     .filter((par) => preference?.subPlace.includes(par.place._id))
     .map((par) => par.place._id);
 
@@ -117,7 +121,13 @@ function VoteDrawer({
       main: null,
       sub: [],
     };
-    if (findMainPlace) {
+    const findMyStudy = studyVoteData.participations.find(
+      (par) => par.place._id === myStudyParticipation?.place._id,
+    );
+
+    if (findMyStudy) {
+      setMyVote({ main: findMyStudy.place._id, sub: [] });
+    } else if (findMainPlace) {
       if (subPlace?.length >= DEFAULT_SUB_PLACE_CNT) {
         votePlaceProps = {
           main: preference?.place,
@@ -145,7 +155,7 @@ function VoteDrawer({
       });
     }
     const participations = studyVoteData?.participations;
-  
+
     const getThumbnailCardInfoArr = setStudyToThumbnailInfo(
       participations,
       isFirstPage
@@ -158,7 +168,7 @@ function VoteDrawer({
     );
 
     setThumbnailCardinfoArr(getThumbnailCardInfoArr);
-  }, [preference, studyVoteData, isFirstPage, currentLocation]);
+  }, [preference, studyVoteData, isFirstPage, currentLocation, myStudyParticipation]);
 
   useEffect(() => {
     if (myVote?.main && findMainPlace) {
@@ -346,7 +356,7 @@ interface PlaceDrawerProps {
   date: string;
 }
 
-export const PlaceDrawer = ({ setIsRightDrawer, date }: PlaceDrawerProps) => {
+export function PlaceDrawer({ setIsRightDrawer, date }: PlaceDrawerProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
@@ -405,7 +415,7 @@ export const PlaceDrawer = ({ setIsRightDrawer, date }: PlaceDrawerProps) => {
       loading: isLoading,
     },
   };
-  console.log(54, isTimeDrawer);
+ 
   return (
     <>
       <RightDrawer title="" onClose={() => setIsRightDrawer(false)}>
@@ -427,7 +437,7 @@ export const PlaceDrawer = ({ setIsRightDrawer, date }: PlaceDrawerProps) => {
       )}
     </>
   );
-};
+}
 
 const getMarkersOptions = (
   studyVoteData: StudyDailyInfoProps,

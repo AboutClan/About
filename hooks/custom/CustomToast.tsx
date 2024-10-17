@@ -22,7 +22,10 @@ export const useToast = () => {
         description: subTitle,
         status,
         duration: 3000,
-        variant: "left-accent",
+        variant: "subtle",
+        containerStyle: {
+          marginBottom: "76px", // 바닥에서 12px 위로 위치 설정
+        },
       });
     },
     [toast],

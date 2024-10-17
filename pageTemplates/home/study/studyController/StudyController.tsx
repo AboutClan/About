@@ -1,11 +1,8 @@
-import { Box } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import WeekSlideCalendar from "../../../../components/molecules/WeekSlideCalendar";
-import { studyDateStatusState } from "../../../../recoils/studyRecoils";
 import { StudyParticipationProps } from "../../../../types/models/studyTypes/studyDetails";
 import { dayjsToStr } from "../../../../utils/dateTimeUtils";
 
@@ -23,36 +20,18 @@ function StudyController({ selectedDate, handleChangeDate }: StudyControllerProp
   const newSearchParams = new URLSearchParams(searchParams);
   const date = searchParams.get("date");
 
-  const setStudyDateStatus = useSetRecoilState(studyDateStatusState);
-
-  const selectedDateDayjs = dayjs(selectedDate);
-
   const handleSelectDate = (moveDate: string) => {
     if (date === moveDate) return;
-    setStudyDateStatus(undefined);
+
     handleChangeDate(moveDate);
     newSearchParams.set("date", moveDate);
     router.replace(`/home?${newSearchParams.toString()}`, { scroll: false });
   };
 
   return (
-    <>
-      <>
-        <OuterContainer>
-          <Box>
-            {selectedDate && (
-              <>
-                <WeekSlideCalendar
-                  // voteCntArr={voteCntArr}
-                 date={selectedDateDayjs}
-                  func={handleSelectDate}
-                />
-              </>
-            )}
-          </Box>
-        </OuterContainer>
-      </>
-    </>
+    <OuterContainer>
+      {selectedDate && <WeekSlideCalendar selectedDate={selectedDate} func={handleSelectDate} />}
+    </OuterContainer>
   );
 }
 

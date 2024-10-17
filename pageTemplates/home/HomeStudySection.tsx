@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -16,9 +16,8 @@ import { ActiveLocation } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToKr, dayjsToStr } from "../../utils/dateTimeUtils";
 import StudyCardCol from "./study/StudyCardCol";
-interface HomeStudySectionProps {}
 
-function HomeStudySection({}: HomeStudySectionProps) {
+function HomeStudySection() {
   const { data: session } = useSession();
   //session이나 userInfo보다 더 빠른 속도를 위해. 그래야 메인 데이터도 빨리 가져옴
   const userLocation =

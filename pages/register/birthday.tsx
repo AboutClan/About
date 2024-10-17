@@ -1,7 +1,6 @@
 import "react-datepicker/dist/react-datepicker.css";
 
 import { Button } from "@chakra-ui/react";
-import ko from "date-fns/locale/ko";
 import dayjs from "dayjs";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -17,7 +16,6 @@ import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoT
 import { birthToAge } from "../../utils/convertUtils/convertTypes";
 import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
-dayjs.locale("ko");
 function Birthday() {
   const searchParams = useSearchParams();
   const info: IUserRegisterFormWriting = getLocalStorageObj(REGISTER_INFO);

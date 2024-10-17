@@ -42,7 +42,7 @@ export default function BottomDrawerLg({
   isxpadding = true,
   isOverlay = true,
   isLittleClose,
-  zIndex,
+
   paddingOptions,
 }: IBottomDrawerLg) {
   const header = options?.header;
@@ -107,7 +107,6 @@ export default function BottomDrawerLg({
 }
 
 const Layout = styled(motion.div)<{
-  zIndex;
   paddingoptions: { bottom?: number };
   height: number;
   isxpadding: string;

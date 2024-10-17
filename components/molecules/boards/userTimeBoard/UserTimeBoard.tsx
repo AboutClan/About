@@ -27,7 +27,7 @@ export default function UserTimeBoard({ members }: ITimeBoard) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [blockWidth, setBlockWidth] = useState<number>(0);
   const [userBlocks, setUserBlocks] = useState<IUserTimeBlock[]>([]);
-
+  
   const calculateBlockWidth = () => {
     const screenWidth = window.innerWidth; // 현재 화면 가로 길이 가져오기
     const width = (screenWidth - 40) / STUDY_VOTE_HOUR_ARR.length; // 40px을 빼고 7로 나누기

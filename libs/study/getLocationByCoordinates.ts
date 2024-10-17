@@ -4,7 +4,7 @@ export function getLocationByCoordinates(lat: number, lon: number): string | nul
   for (const [location, boundary] of Object.entries(LOCATION_MAX_BOUNDARY)) {
     const { southwest, northeast } = boundary;
 
-    const isWithinLatitude = lat <= southwest.latitude && lat >= northeast.latitude;
+    const isWithinLatitude = lat >= southwest.latitude && lat <= northeast.latitude;
     const isWithinLongitude = lon >= southwest.longitude && lon <= northeast.longitude;
 
     if (isWithinLatitude && isWithinLongitude) {

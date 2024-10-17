@@ -1,17 +1,13 @@
 import "swiper/css";
 
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { useSetRecoilState } from "recoil";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import Calendar from "../../components/molecules/MonthCalendar";
-import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyDailyVoteCntQuery } from "../../hooks/study/queries";
 import { handleChangeDate } from "../../pageTemplates/home/study/studyController/StudyController";
-import { studyDateStatusState } from "../../recoils/studyRecoils";
 import { IModal } from "../../types/components/modalTypes";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
@@ -23,15 +19,11 @@ interface DateCalendarModalProps extends IModal {
 }
 
 function DateCalendarModal({ date: selectedDate, setIsModal }: DateCalendarModalProps) {
-  const typeToast = useTypeToast();
-  const { data: session } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
-  const isGuest = session?.user.name === "guest";
-  const location = searchParams.get("location");
 
-  const setStudyDateStatus = useSetRecoilState(studyDateStatusState);
+  const location = searchParams.get("location");
 
   const [date, setDate] = useState(dayjs(selectedDate));
   const [calendarArr, setCalendarArr] = useState([
@@ -83,22 +75,12 @@ function DateCalendarModal({ date: selectedDate, setIsModal }: DateCalendarModal
       setIsModal(false);
       return;
     }
-    setStudyDateStatus(undefined);
+
     const newDate = handleChangeDate(date, "date", date.date());
 
     newSearchParams.set("date", newDate);
     router.replace(`/home?${newSearchParams.toString()}`, { scroll: false });
     setIsModal(false);
-  };
-
-  const voteStudy = () => {
-    if (isGuest) {
-      typeToast("guest");
-      return;
-    }
-    const newDate = handleChangeDate(date, "date", date.date());
-    newSearchParams.set("date", newDate);
-    router.push(`/vote?${newSearchParams.toString()}`);
   };
 
   const footerOptions: IFooterOptions = {

@@ -70,21 +70,23 @@ function StudyControlButton({
     if (!studyVoteData) return;
     if (isVoteDrawer) {
       setMapOptions();
-
       newSearchParams.set("category", "voting");
-      router.replace(`/studyPage?${newSearchParams.toString()}`);
-    } else if (categoryParam === "voting") {
-      setIsLocationRefetch(true);
-      newSearchParams.set("category", "currentplace");
       router.replace(`/studyPage?${newSearchParams.toString()}`);
     }
   }, [isVoteDrawer, studyVoteData]);
-  
+
   const handleStudyVoteButton = () => {
     setIsStudyDrawer(false);
     setIsVoteDrawer(true);
   };
- 
+
+  const handleStudyVoteDrawerDown = () => {
+    setIsVoteDrawer(false);
+    setIsLocationRefetch(true);
+    newSearchParams.set("category", "currentplace");
+    router.replace(`/studyPage?${newSearchParams.toString()}`);
+  };
+
   return (
     <>
       <Button
@@ -163,7 +165,7 @@ function StudyControlButton({
         <VoteDrawer
           date={date}
           location={location}
-          setIsModal={() => setIsVoteDrawer(false)}
+          setIsModal={handleStudyVoteDrawerDown}
           studyVoteData={studyVoteData}
           setMarkersOptions={setMarkersOptions}
           setCenterLocation={setCenterLocation}

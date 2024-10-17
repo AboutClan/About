@@ -1,7 +1,7 @@
 import { Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 
@@ -16,27 +16,24 @@ import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useRealtimeVoteMutation } from "../../hooks/realtime/mutations";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";
+import { ModalLayout } from "../../modals/Modals";
+import StudyAbsentModal from "../../modals/study/StudyAbsentModal";
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
-import {
-  StudyMemberProps,
-  StudyMergeParticipationProps,
-  StudyStatus,
-} from "../../types/models/studyTypes/studyDetails";
-import {
-  IAbsence,
-  IStudyVoteTime,
-  StudyDateStatus,
-} from "../../types/models/studyTypes/studyInterActions";
+import { StudyMemberProps, StudyStatus } from "../../types/models/studyTypes/studyDetails";
+import { IAbsence, IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
+import { LocationEn } from "../../types/services/locationTypes";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
 
 interface IStudyNavigation {
-  mergeParticipations: StudyMergeParticipationProps[];
+  date: string;
+
   myStudyInfo: StudyMemberProps;
   absences: IAbsence[];
   placeInfo: PlaceInfoProps;
   type: "private" | "public" | null;
   status: StudyStatus;
+  locationEn: LocationEn;
 }
 
 export type StudyModalType = "timeRullet";
@@ -44,8 +41,7 @@ export type StudyModalType = "timeRullet";
 type UserStudyStatus = "pending" | "voting" | "attended" | "cancelled" | "expired";
 
 function StudyNavigation({
-  mergeParticipations,
-
+  locationEn,
   placeInfo,
   myStudyInfo,
   absences,
@@ -68,8 +64,8 @@ function StudyNavigation({
   const [modalType, setModalType] = useState<StudyModalType>();
 
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
-  const [isAlertMoal, setIsAlertModal] = useState(false);
-
+  const [isCancelModal, setIsCancelModal] = useState(false);
+  const [isAbsentModal, setIsAbsentModal] = useState(false);
   const [alertModalInfo, setAlertModalInfo] = useState<IAlertModalOptions>();
 
   const { mutate: realTimeStudyVote, isLoading: isLoading2 } = useRealtimeVoteMutation({
@@ -98,7 +94,7 @@ function StudyNavigation({
   });
 
   const myStudyStatus = getMyStudyStatus(myStudyInfo, absences, session?.user.uid, date);
-  const { text, type, colorScheme } = getStudyNavigationProps(myStudyStatus);
+  const { text, type, colorScheme } = getStudyNavigationProps(myStudyStatus) || {};
 
   const handleSuccess = (type: "vote" | "cancel" | "change") => {
     if (type === "vote") typeToast("vote");
@@ -120,13 +116,19 @@ function StudyNavigation({
     } else if (type === "timeChange") {
       setModalType("timeRullet");
     } else if (type == "cancel") {
-      if (status === "pending") handleCancel();
-      else {
-        setAlertModalInfo({
-          title: "스터디 참여 취소",
-          subTitle: "",
-          func: () => {},
-        });
+      if (myStudyInfo?.attendanceInfo.arrived) {
+        toast("warning", "이미 출석을 완료했습니다");
+        return;
+      }
+      if (status === "pending") {
+        setIsCancelModal(true);
+      } else {
+        // setAlertModalInfo({
+        //   title: "스터디 참여 취소",
+        //   subTitle: "",
+        //   func: () => handleCancel(),
+        // });
+        setIsAbsentModal(true);
       }
     }
   };
@@ -152,7 +154,18 @@ function StudyNavigation({
   const onClickStudyVote = (voteTime: IStudyVoteTime) => {
     if (myStudyParticipation) {
       setVoteTime(voteTime);
-      setIsAlertModal(true);
+      setAlertModalInfo({
+        title: "스터디 장소 변경",
+        subTitle: "장소를 변경하는 경우 기존에 투표 장소는 취소됩니다.",
+        text: "변경합니다",
+        func: () => {
+          handleVote(voteTime);
+        },
+        subFunc: () => {
+          setModalType(null);
+          setAlertModalInfo(null);
+        },
+      });
       return;
     }
     handleVote(voteTime);
@@ -160,8 +173,8 @@ function StudyNavigation({
 
   const drawerOptions: BottomFlexDrawerOptions = {
     header: {
-      title: dayjs(date).locale("ko").format("M월 D일 ddd요일"),
-      subTitle: "스터디 참여시간을 선택해주세요!",
+      title: "스터디 참여 시간 선택",
+      subTitle: "예상 시작 시간과 종료 시간을 선택해 주세요!",
     },
     footer: {
       text: myStudyInfo ? "시간 변경" : "신청 완료",
@@ -215,16 +228,46 @@ function StudyNavigation({
                 }
               : null
           }
+          zIndex={300}
           setVoteTime={setVoteTime}
           setIsModal={() => setModalType(null)}
           drawerOptions={drawerOptions}
         />
       )}
       {alertModalInfo && (
-        <AlertModal options={alertModalInfo} setIsModal={() => setAlertModalInfo(null)} />
+        <AlertModal
+          options={alertModalInfo}
+          colorType="red"
+          setIsModal={() => setAlertModalInfo(null)}
+        />
       )}
-      {/* <StudySimpleVoteModal studyVoteData={[]} /> */}
-      {/* <StudyAttendCheckModal /> */}
+      {isAbsentModal && <StudyAbsentModal setIsModal={setIsAbsentModal} />}
+
+      {isCancelModal && (
+        <ModalLayout
+          setIsModal={setIsCancelModal}
+          footerOptions={{
+            main: {
+              text: "장소 변경",
+              func: () => {
+                router.replace(
+                  `/studyPage?location=${locationEn}&date=${date}&category=voting&drawer=down  `,
+                );
+              },
+            },
+            sub: {
+              text: "참여 취소",
+              func: () => {
+                setIsCancelModal(false);
+                handleCancel();
+              },
+            },
+          }}
+          title="참여를 취소하시겠어요?"
+        >
+          스터디 장소를 변경해 보는 건 어떨까요?
+        </ModalLayout>
+      )}
     </>
   );
 }
@@ -252,45 +295,11 @@ const getStudyNavigationProps = (
     case "attended":
       return { text: "출석 완료", type: "multi", colorScheme: "black" };
     case "cancelled":
-      return { text: "불 참", type: "multi", colorScheme: "red" };
+      return { text: "당일 불참", type: "multi", colorScheme: "gray" };
     case "pending":
       return { text: "스터디 투표", type: "single", colorScheme: "mint" };
     case "expired":
       return { text: "기간 만료", type: "single", colorScheme: "gray" };
-  }
-};
-
-const getVotingType = (myStudy: StudyMergeParticipationProps, placeId: string) => {
-  return !myStudy ? null : myStudy?.place?._id === placeId ? "same" : "other";
-};
-
-const checkMyAttend = (
-  studyDateStatus: StudyDateStatus,
-  myStudy: StudyMergeParticipationProps,
-  uid: string,
-) => {
-  return !!(
-    studyDateStatus !== "not passed" &&
-    myStudy?.members.find((who) => who.user.uid === uid)?.attendanceInfo?.arrived
-  );
-};
-
-const checkSubNavExists = (
-  studyDateStatus: StudyDateStatus,
-  votingType: "same" | "other" | null,
-  isAttend: boolean,
-): boolean => {
-  if (isAttend) return false;
-  switch (studyDateStatus) {
-    case "passed":
-      return false;
-    case "not passed":
-      if (votingType) return true;
-      break;
-    case "today": {
-      if (votingType === "same") return true;
-      return false;
-    }
   }
 };
 

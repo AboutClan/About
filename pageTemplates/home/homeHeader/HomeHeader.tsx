@@ -10,12 +10,7 @@ import { CalendarCheckIcon, NoticeIcon } from "../../../components/Icons/SolidIc
 import Slide from "../../../components/layouts/PageSlide";
 import IconButtonNav, { IIconButtonNavBtn } from "../../../components/molecules/navs/IconButtonNav";
 import { AboutLogo } from "../../../components/services/AboutLogo";
-import {
-  DAILY_CHECK_POP_UP,
-  NOTICE_ALERT,
-  NOTICE_RECENT,
-  RECENT_CHAT_ID,
-} from "../../../constants/keys/localStorage";
+import { DAILY_CHECK_POP_UP, NOTICE_ALERT } from "../../../constants/keys/localStorage";
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import DailyCheckModal from "../../../modals/aboutHeader/dailyCheckModal/DailyCheckModal";
 import PointSystemsModal from "../../../modals/aboutHeader/pointSystemsModal/PointSystemsModal";
@@ -48,9 +43,8 @@ function HomeHeader() {
   useEffect(() => {
     // if (!data) return;
     // const recentOne = data[0]?.message;
-    const noticeRecent = localStorage.getItem(NOTICE_RECENT);
+
     const noticeCnt = localStorage.getItem(NOTICE_ALERT);
-    const recentChatId = localStorage.getItem(RECENT_CHAT_ID);
 
     if (NOTICE_ARR.length !== +noticeCnt) {
       setIsNoticeAlert(true);

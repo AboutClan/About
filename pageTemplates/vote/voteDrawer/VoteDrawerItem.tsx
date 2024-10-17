@@ -18,7 +18,6 @@ interface VoteDrawerItemProps {
   setMyVote: DispatchType<IStudyVoteWithPlace>;
   setPlaceItems: DispatchType<ItemProps[]>;
   userLoading: boolean;
-  isFavoriteLocation: boolean;
 }
 
 function VoteDrawerItem({
@@ -28,7 +27,6 @@ function VoteDrawerItem({
   setMyVote,
   setPlaceItems,
   userLoading,
-  isFavoriteLocation,
 }: VoteDrawerItemProps) {
   const queryClient = useQueryClient();
   const toast = useToast();

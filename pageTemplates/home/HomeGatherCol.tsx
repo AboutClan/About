@@ -1,7 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -22,7 +21,6 @@ dayjs().locale("ko");
 
 export default function HomeGatherCol() {
   const { data: session } = useSession();
-  const searchParams = useSearchParams();
 
   const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>([]);
 

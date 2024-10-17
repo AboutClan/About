@@ -2,9 +2,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 
-interface HomeNavProps {}
-
-function HomeNav({}: HomeNavProps) {
+function HomeNav() {
   return (
     <Flex mb={8}>
       {HOME_RECOMMENDATION_ICON_ARR.map((item, idx) => (

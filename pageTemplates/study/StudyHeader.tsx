@@ -3,13 +3,11 @@ import dayjs from "dayjs";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useState } from "react";
+
 import AlertSimpleModal from "../../components/AlertSimpleModal";
 import { EllipsisIcon } from "../../components/Icons/DotIcons";
-
 import Header from "../../components/layouts/Header";
 import { WEB_URL } from "../../constants/system";
-import { useToast } from "../../hooks/custom/CustomToast";
-import { BasicButtonProps } from "../../types/components/propTypes";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 interface IStudyHeader {
   brand: string;
@@ -20,25 +18,10 @@ interface IStudyHeader {
 
 function StudyHeader({ brand, name, address, coverImage }: IStudyHeader) {
   const { date } = useParams<{ date: string }>();
-  const toast = useToast();
+
   const router = useRouter();
   const [isModal, setIsModal] = useState(false);
   const url = WEB_URL + router?.asPath;
-
-  const infoArr: BasicButtonProps[] = [
-    {
-      text: "카카오톡으로 공유하기",
-      func: () => {},
-    },
-    {
-      text: "스터디 정보 수정하기",
-      func: () => {},
-    },
-  ];
-
-  const onClick = () => {
-    toast("warning", "장소 수정 요청, 공유하기 등 준비중입니다");
-  };
 
   return (
     <>

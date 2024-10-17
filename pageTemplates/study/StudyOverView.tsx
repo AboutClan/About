@@ -9,8 +9,6 @@ interface IStudyOverview {
     name: string;
     address: string;
     branch: string;
-    latitude: number;
-    longitude: number;
   };
   distance: number;
   status: StudyStatus;
@@ -19,7 +17,7 @@ interface IStudyOverview {
 }
 
 function StudyOverview({
-  place: { name, address, branch, latitude, longitude },
+  place: { name, address, branch },
   distance,
   status,
   time,

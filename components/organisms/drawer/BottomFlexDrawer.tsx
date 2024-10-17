@@ -1,4 +1,4 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
@@ -105,10 +105,14 @@ export default function BottomFlexDrawer({
           <TopNav />
         </Box>
         {drawerOptions?.header && (
-          <Header>
-            <span>{drawerOptions?.header.subTitle}</span>
-            <span>{drawerOptions?.header.title}</span>
-          </Header>
+          <Flex mb={4} w="full" direction="column" align="flex-start">
+            <Box lineHeight="28px" fontWeight={800} mb={1} fontSize="18px">
+              {drawerOptions?.header.title}
+            </Box>
+            <Box fontSize="12px" color="gray.500">
+              {drawerOptions?.header.subTitle}
+            </Box>
+          </Flex>
         )}
         {drawerHeight > 100 && children}
         {drawerOptions?.footer && drawerHeight > 100 && (
@@ -160,22 +164,4 @@ const TopNav = styled.nav`
   border-radius: 4px;
   opacity: 0.4;
   background-color: var(--color-gray);
-`;
-
-const Header = styled.header`
-  align-self: flex-start;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: var(--gap-5);
-  > span:first-child {
-    font-weight: 600;
-    font-size: 15px;
-
-    margin-bottom: var(--gap-1);
-  }
-  > span:last-child {
-    font-size: 20px;
-    font-weight: 600;
-    color: var(--gray-800);
-  }
 `;

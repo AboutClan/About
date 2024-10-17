@@ -8,7 +8,7 @@ import RulletPickerTwo from "../../molecules/picker/RulletPickerTwo";
 import BottomFlexDrawer, { BottomFlexDrawerOptions } from "../../organisms/drawer/BottomFlexDrawer";
 
 interface IStudyVoteTimeRulletDrawer extends IModal {
-  defaultVoteTime: { start: Dayjs; end: Dayjs };
+  defaultVoteTime?: { start: Dayjs; end: Dayjs };
   setVoteTime: Dispatch<{ start: Dayjs; end: Dayjs }>;
   drawerOptions: BottomFlexDrawerOptions;
   zIndex?: number;
@@ -28,7 +28,7 @@ export default function StudyVoteTimeRulletDrawer({
         isHideBottom
         isDrawerUp
         zIndex={zIndex || 5000}
-        height={382}
+        height={400}
         setIsModal={setIsModal}
         drawerOptions={drawerOptions}
       >

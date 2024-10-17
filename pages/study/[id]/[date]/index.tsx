@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useParams, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -59,8 +59,6 @@ export default function Page() {
     (participation) => participation.place._id === id,
   );
 
-  console.log(5, mergeParticipations);
-
   const place = convertMergePlaceToPlace(mergeParticipation?.place);
   const { name, address, coverImage, latitude, brand, longitude, time, type } = place || {};
 
@@ -68,6 +66,8 @@ export default function Page() {
     currentLocation &&
     getDistanceFromLatLonInKm(currentLocation.lat, currentLocation.lon, latitude, longitude);
   const members = mergeParticipation?.members;
+
+  const absences = studyVoteData?.participations.find((par) => par.place._id === id)?.absences;
 
   return (
     <>
@@ -100,12 +100,17 @@ export default function Page() {
               />
               <StudyTimeBoard members={members} studyStatus={mergeParticipation.status} />
               <Box h="1px" bg="gray.100" my={4} />
-              <StudyMembers members={members} setIsInviteModal={setIsInviteModal} />
+              <StudyMembers
+                members={members}
+                absences={absences}
+                setIsInviteModal={setIsInviteModal}
+              />
             </Slide>
           </Box>
           <StudyNavigation
             mergeParticipations={mergeParticipations}
-            memberCnt={members?.length}
+            locationEn={locationParam}
+            date={date}
             myStudyInfo={getMyStudyInfo(mergeParticipation, session?.user.uid)}
             absences={mergeParticipation?.absences}
             placeInfo={{ name, address, latitude, longitude }}
