@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { useParams, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 import Slide from "../../../../components/layouts/PageSlide";
@@ -49,6 +49,8 @@ export default function Page() {
   const mergeParticipation = mergeParticipations?.find(
     (participation) => participation.place._id === id,
   );
+
+  console.log(5, mergeParticipations);
 
   const place = convertMergePlaceToPlace(mergeParticipation?.place);
   const { name, address, coverImage, latitude, longitude, time } = place || {};

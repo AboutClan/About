@@ -69,7 +69,9 @@ function VoteDrawer({
   setMyVote,
 }: VoteDrawerProps) {
   const typeToast = useTypeToast();
+  const router = useRouter();
   const searchParams = useSearchParams();
+  const newSearchParams = new URLSearchParams(searchParams);
   const { data: userInfo } = useUserInfoQuery();
   const preference = userInfo?.studyPreference;
 
@@ -143,7 +145,7 @@ function VoteDrawer({
       });
     }
     const participations = studyVoteData?.participations;
-    console.log("P", preference, studyVoteData, currentLocation, isFirstPage, votePlaceProps);
+  
     const getThumbnailCardInfoArr = setStudyToThumbnailInfo(
       participations,
       isFirstPage
@@ -215,7 +217,7 @@ function VoteDrawer({
   };
 
   const resetStudy = useResetStudyQuery();
-  const toast = useToast();
+
   const handleVote = async () => {
     if (!myVote?.main || !voteTime?.start || !voteTime?.end) {
       typeToast("omission");
@@ -224,14 +226,16 @@ function VoteDrawer({
     patchAttend({ place: myVote.main, subPlace: myVote?.sub, ...voteTime });
   };
   const handleSuccess = async () => {
-    resetStudy();
-    toast("success", `참여 완료!`);
     setIsModal(false);
+    typeToast("vote");
+    resetStudy();
+    newSearchParams.set("category", "votePlace");
+    router.push(`/studyPage?${newSearchParams.toString()}`);
   };
 
   const drawerOptions: BottomFlexDrawerOptions = {
     header: {
-      title: dayjs(date).format("M월 D일 ddd요일"),
+      title: dayjs(date).locale("ko").format("M월 D일 ddd요일"),
       subTitle: "스터디 참여시간을 선택해주세요!",
     },
     footer: {
@@ -392,7 +396,7 @@ export const PlaceDrawer = ({ setIsRightDrawer, date }: PlaceDrawerProps) => {
 
   const drawerOptions: BottomFlexDrawerOptions = {
     header: {
-      title: dayjs(date).format("M월 D일 ddd요일"),
+      title: dayjs(date).locale("ko").format("M월 D일 ddd요일"),
       subTitle: "스터디 참여시간을 선택해주세요!",
     },
     footer: {

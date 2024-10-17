@@ -1,7 +1,7 @@
 import { Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -216,7 +216,7 @@ const getMyStudyStatus = (
 ): UserStudyStatus => {
   if (!myUid) return undefined;
   if (myStudyInfo?.attendanceInfo.arrived) return "attended";
-  else if (absences.map((absence) => absence.user.uid).includes(myUid)) return "cancelled";
+  else if (absences?.map((absence) => absence.user.uid).includes(myUid)) return "cancelled";
   else if (dayjs(date).endOf("day").isBefore(dayjs())) return "expired";
   else if (myStudyInfo) return "voting";
   else if (!myStudyInfo) return "pending";

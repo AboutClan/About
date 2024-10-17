@@ -12,4 +12,5 @@ export const STUDY_STATUS_TO_BADGE: Record<
   free: { text: "자유 참여", colorScheme: "purple" },
   pending: { text: "신청 가능", colorScheme: "mint" },
   expected: { text: "오픈 예정", colorScheme: "blue" },
+  solo: { text: "개인 스터디", colorScheme: "purple" },
 };

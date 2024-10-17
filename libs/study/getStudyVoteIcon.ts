@@ -16,6 +16,7 @@ export const getStudyVoteIcon = (type: "default" | "main" | "sub", text: string)
 };
 
 export const getStudyIcon = (type: "active" | "inactive" | "pending", cnt?: number) => {
+  console.log(4, type);
   return `<svg xmlns="http://www.w3.org/2000/svg" width="37" height="45" viewBox="0 0 37 45" fill="none">
       <rect x="2" y="3" width="32" height="32" rx="16" fill="#00C2B3" />
       <path

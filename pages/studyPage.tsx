@@ -47,6 +47,8 @@ export default function StudyVoteMap() {
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
   const dateParam = searchParams.get("date");
+  const drawerParam = searchParams.get("drawer") as "up" | "down";
+
   const categoryParam = searchParams.get("category") as
     | "currentPlace"
     | "mainPlace"
@@ -115,6 +117,12 @@ export default function StudyVoteMap() {
   }, [locationValue, date]);
 
   useEffect(() => {
+    if (!categoryParam && drawerParam === "down") {
+      newSearchParams.set("category", "currentPlace");
+      router.replace(`/studyPage?${newSearchParams.toString()}`);
+      return;
+    }
+
     switch (categoryParam) {
       case "currentPlace":
         setLocationFilterType("현재 위치");
@@ -148,7 +156,7 @@ export default function StudyVoteMap() {
       newSearchParams.set("drawer", "down");
       router.replace(`/studyPage?${newSearchParams.toString()}`);
     }
-  }, [categoryParam]);
+  }, [categoryParam, drawerParam]);
   console.log(2525, locationFilterType);
   useEffect(() => {
     if (!studyVoteData || !session?.user) return;
@@ -295,12 +303,13 @@ export default function StudyVoteMap() {
         user: {
           uid: commentUser.uid,
           avatar: commentUser.avatar,
-          userImage: commentUser.profileImage,
+          image: commentUser.profileImage,
         },
         text:
           sortedCommentUserArr?.[0]?.comment?.text ||
           STUDY_COMMENT_ARR[getRandomIdx(STUDY_COMMENT_ARR.length - 1)],
       },
+      firstUserUid: findStudy?.members?.[0]?.user?.uid,
       memberStatus:
         !findMyInfo || !findStudy?.members.some((who) => who.user.uid === userInfo.uid)
           ? "notParticipation"
@@ -361,7 +370,9 @@ export default function StudyVoteMap() {
         setIsVoteDrawer={setIsVoteDrawer}
       />
 
-      {detailInfo && <StudyInFoDrawer detailInfo={detailInfo} setDetailInfo={setDetailInfo} />}
+      {detailInfo && (
+        <StudyInFoDrawer date={date} detailInfo={detailInfo} setDetailInfo={setDetailInfo} />
+      )}
 
       <StudyPageDrawer
         studyVoteData={studyVoteData}
@@ -424,7 +435,8 @@ const getMarkersOptions = (
       placeMap.set(fullname, {
         id: par._id,
         position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
-        count: 1, // 처음에는 1로 설정
+        count: 1,
+        status: par.status,
       });
     }
   });
@@ -434,7 +446,12 @@ const getMarkersOptions = (
       id: value.id,
       position: value.position,
       icon: {
-        content: value.count === 1 ? getStudyIcon("active") : getStudyIcon(null, value.count), // count에 따라 content 값 설정
+        content:
+          value.status === "solo"
+            ? getStudyIcon("inactive")
+            : value.count === 1
+              ? getStudyIcon("active")
+              : getStudyIcon(null, value.count), // count에 따라 content 값 설정
         size: new naver.maps.Size(72, 72),
         anchor: new naver.maps.Point(36, 44),
       },

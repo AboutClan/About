@@ -28,7 +28,7 @@ interface BottomFlexDrawerProps extends IModal {
   isDrawerUp: boolean;
   height: number;
   zIndex?: number;
-  drawerOptions: BottomFlexDrawerOptions;
+  drawerOptions?: BottomFlexDrawerOptions;
   isOverlay: boolean;
 }
 
@@ -80,7 +80,9 @@ export default function BottomFlexDrawer({
     if (deltaY > SWIPE_THRESHOLD) {
       setDrawerHeight(maxHeight); // 위로 쭉 올라가는 동작
     } else if (deltaY < -SWIPE_THRESHOLD) {
-      if (setIsModal) setIsModal(false);
+      if (setIsModal) {
+        setIsModal(false);
+      }
 
       setDrawerHeight(DRAWER_MIN_HEIGHT); // 아래로 내려가는 동작
     } else {

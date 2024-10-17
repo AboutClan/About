@@ -63,6 +63,13 @@ function StudyPageDrawer({ studyVoteData, location, date, setDate }: StudyPageDr
     setThumbnailCardinfoArr((old) => sortThumbnailCardInfoArr(selectOption, preference, old));
   }, [selectOption, preference]);
 
+  useEffect(() => {
+    if (!drawerParam) {
+      newSearchParams.set("drawer", "up");
+      router.replace(`/studyPage?${newSearchParams.toString()}`);
+    }
+  }, [drawerParam]);
+
   const handleSelectDate = (moveDate: string) => {
     if (date === moveDate) return;
     setThumbnailCardinfoArr(null);
@@ -71,8 +78,20 @@ function StudyPageDrawer({ studyVoteData, location, date, setDate }: StudyPageDr
     router.replace(`/studyPage?${newSearchParams.toString()}`);
   };
 
+  const handleDrawerDown = () => {
+    newSearchParams.set("category", "currentPlace");
+    newSearchParams.set("drawer", "down");
+    router.replace(`/studyPage?${newSearchParams.toString()}`);
+    console.log(54);
+  };
+
   return (
-    <BottomFlexDrawer height={618} isDrawerUp={drawerParam !== "down"}>
+    <BottomFlexDrawer
+      isOverlay={false}
+      height={618}
+      isDrawerUp={drawerParam !== "down"}
+      setIsModal={() => handleDrawerDown()}
+    >
       <Box w="100%" h="400px">
         <StudyPageDrawerHeader date={date} />
         <WeekSlideCalendar selectedDate={date} func={handleSelectDate} />

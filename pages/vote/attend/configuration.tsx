@@ -79,6 +79,7 @@ function Configuration() {
 
   const { mutate: attendRealTimeStudy } = useRealTimeAttendMutation({
     onSuccess(data) {
+      return;
       handleAttendSuccess(data);
     },
   });
@@ -159,7 +160,7 @@ function Configuration() {
   const handleSubmit = () => {
     const isParticipationStudy = (myStudyParticipation?.place as StudyPlaceProps)?.fullname;
     const isRealTimeStudy = (myStudyParticipation?.place as PlaceInfoProps)?.name;
-
+    console.log(25, transferStudyAttendance);
     if (
       isParticipationStudy &&
       (myStudyParticipation?.place as StudyPlaceProps)?.fullname ===
@@ -176,7 +177,7 @@ function Configuration() {
     } else {
       formData.append("memo", attendMessage);
       formData.append("status", otherPermission === "허용" ? "open" : "solo");
-      formData.append("images", transferStudyAttendance?.image as Blob);
+      formData.append("image", [transferStudyAttendance?.image as Blob]);
       formData.append(
         "place",
         JSON.stringify(transferStudyAttendance?.place || myStudyParticipation?.place),

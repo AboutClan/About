@@ -11,15 +11,18 @@ import { Input } from "../../components/atoms/Input";
 import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
 import StudyChangeAlertModal from "../../components/modals/alertModals/StudyChangeAlertModal";
 import NewTwoButtonRow from "../../components/molecules/NewTwoButtonRow";
-import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
-import StudyVoteDrawer from "../../components/services/studyVote/StudyVoteDrawer";
+import BottomFlexDrawer, {
+  BottomFlexDrawerOptions,
+} from "../../components/organisms/drawer/BottomFlexDrawer";
+import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
-import { useTypeToast } from "../../hooks/custom/CustomToast";
+import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useRealtimeVoteMutation } from "../../hooks/realtime/mutations";
 import {
   useStudyCommentMutation,
   useStudyParticipationMutation,
 } from "../../hooks/study/mutations";
+import { useUserInfoQuery } from "../../hooks/user/queries";
 import { ModalLayout } from "../../modals/Modals";
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import { DispatchType } from "../../types/hooks/reactTypes";
@@ -37,11 +40,11 @@ export interface StudyInfoProps {
   title: string;
   time: { start: string; end: string };
   participantCnt: number;
-  status: StudyStatus;
+  status: StudyStatus | "solo";
   image: string;
   comment: {
     user: {
-      userImage: string;
+      image: string;
       uid: string;
       avatar: IAvatar;
     };
@@ -50,20 +53,25 @@ export interface StudyInfoProps {
   location: ActiveLocation;
   memberStatus: "participation" | "notParticipation" | "attendance";
   isPrivate: boolean;
+  firstUserUid: string;
 }
 
 interface StudyInFoDrawerProps {
   detailInfo: StudyInfoProps;
   setDetailInfo: DispatchType<StudyInfoProps>;
+  date: string;
 }
 
-function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
+function StudyInFoDrawer({ detailInfo, setDetailInfo, date }: StudyInFoDrawerProps) {
   const resetStudy = useResetStudyQuery();
   const searchParams = useSearchParams();
   const router = useRouter();
+  const toast = useToast();
   const typeToast = useTypeToast();
-
+  console.log(detailInfo);
   const myStudyParticipation = useRecoilValue(myStudyParticipationState);
+
+  const { data: userInfo } = useUserInfoQuery({ enabled: detailInfo.status === "solo" });
 
   const { mutate: studyVote, isLoading: isLoading1 } = useStudyParticipationMutation(
     dayjs(),
@@ -101,6 +109,16 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
       setIsCommentModal(true);
     }
     if (type === "vote") {
+      if (detailInfo.status === "solo") {
+        if (userInfo?.friend?.includes(detailInfo?.firstUserUid)) {
+          setIsVoteDrawer(true);
+        } else {
+          toast("warning", "친구로 등록된 인원만 참여 가능합니다");
+        }
+
+        return;
+      }
+
       setIsVoteDrawer(true);
     }
     if (type === "attend") {
@@ -153,10 +171,23 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
 
   const status = detailInfo.memberStatus;
 
+  const drawerOptions: BottomFlexDrawerOptions = {
+    header: {
+      title: dayjs(date).locale("ko").format("M월 D일 ddd요일"),
+      subTitle: "스터디 참여시간을 선택해주세요!",
+    },
+    footer: {
+      text: "신청 완료",
+      func: () => onClickStudyVote(voteTime),
+      loading: isLoading1 || isLoading2,
+    },
+  };
+
   return (
     <>
       <BottomFlexDrawer
         isDrawerUp
+        isOverlay
         isHideBottom
         zIndex={900}
         height={185}
@@ -178,7 +209,9 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
                 <Box w={3} textAlign="center">
                   ·
                 </Box>
-                <Box color="var(--color-blue)">{detailInfo.participantCnt}명 참여 중</Box>
+                <Box color="var(--color-blue)">
+                  {detailInfo.participantCnt}명 참여 중{detailInfo.status === "solo" && "(개인)"}
+                </Box>
               </Flex>
               <Flex mt={2} align="center">
                 <Avatar {...detailInfo.comment.user} size="xs" />
@@ -205,7 +238,7 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
                 ),
                 children: (
                   <Link
-                    href={`/study/${detailInfo.id}/${dayjsToStr(dayjs())}?location=${convertLocationLangTo(detailInfo.location, "en")}`}
+                    href={`/study/${detailInfo.place._id}/${dayjsToStr(dayjs())}?location=${convertLocationLangTo(detailInfo.location, "en")}`}
                   >
                     자세히 보기
                   </Link>
@@ -218,7 +251,7 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
                   ) : status === "notParticipation" ? (
                     <i className="fa-solid fa-user-plus" style={{ color: "#CCF3F0" }} />
                   ) : (
-                    <CheckCircleIcon />
+                    <CheckCircleIcon size="md" isFill />
                   ),
 
                 children: (
@@ -255,11 +288,11 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo }: StudyInFoDrawerProps) {
         </ModalLayout>
       )}
       {isVoteDrawer && (
-        <StudyVoteDrawer
-          hasPlace
-          isLoading={isLoading1 || isLoading2}
-          handleSubmit={onClickStudyVote}
+        <StudyVoteTimeRulletDrawer
+          setVoteTime={setVoteTime}
+          drawerOptions={drawerOptions}
           setIsModal={setIsVoteDrawer}
+          zIndex={900}
         />
       )}
       {isAlertMoal && (

@@ -10,12 +10,14 @@ import BottomFlexDrawer, { BottomFlexDrawerOptions } from "../../organisms/drawe
 interface IStudyVoteTimeRulletDrawer extends IModal {
   setVoteTime: Dispatch<{ start: Dayjs; end: Dayjs }>;
   drawerOptions: BottomFlexDrawerOptions;
+  zIndex?: number;
 }
 
 export default function StudyVoteTimeRulletDrawer({
   setVoteTime,
   drawerOptions,
   setIsModal,
+  zIndex,
 }: IStudyVoteTimeRulletDrawer) {
   return (
     <>
@@ -23,7 +25,7 @@ export default function StudyVoteTimeRulletDrawer({
         isOverlay
         isHideBottom
         isDrawerUp
-        zIndex={5000}
+        zIndex={zIndex || 5000}
         height={382}
         setIsModal={setIsModal}
         drawerOptions={drawerOptions}
