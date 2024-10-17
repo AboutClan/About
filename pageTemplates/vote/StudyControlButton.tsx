@@ -61,11 +61,13 @@ function StudyControlButton({
   const isOpenStudy = myStudyParticipation?.status === "open";
 
   useEffect(() => {
+    if (!studyVoteData) return;
     if (categoryParam === "voting") setIsVoteDrawer(true);
     else setIsVoteDrawer(false);
-  }, [categoryParam]);
+  }, [categoryParam, studyVoteData]);
 
   useEffect(() => {
+    if (!studyVoteData) return;
     if (isVoteDrawer) {
       setMapOptions();
 
@@ -76,13 +78,13 @@ function StudyControlButton({
       newSearchParams.set("category", "currentplace");
       router.replace(`/studyPage?${newSearchParams.toString()}`);
     }
-  }, [isVoteDrawer]);
-
+  }, [isVoteDrawer, studyVoteData]);
+  
   const handleStudyVoteButton = () => {
     setIsStudyDrawer(false);
     setIsVoteDrawer(true);
   };
-  console.log(51, isStudyDrawer);
+ 
   return (
     <>
       <Button
@@ -107,11 +109,10 @@ function StudyControlButton({
       {isStudyDrawer && (
         <BottomFlexDrawer
           isOverlay
-          overlayNum={750}
           isDrawerUp
           setIsModal={() => setIsStudyDrawer(false)}
           isHideBottom
-          bottom={{ text: "취소", func: () => setIsStudyDrawer(false) }}
+          drawerOptions={{ footer: { text: "취소", func: () => setIsStudyDrawer(false) } }}
           height={197}
           zIndex={800}
         >

@@ -5,11 +5,11 @@ import { STUDY_VOTE_HOUR_ARR } from "../../../constants/serviceConstants/studyCo
 import { IModal } from "../../../types/components/modalTypes";
 import { createTimeArr, parseTimeToDayjs } from "../../../utils/dateTimeUtils";
 import RulletPickerTwo from "../../molecules/picker/RulletPickerTwo";
-import BottomDrawerLg, { IBottomDrawerLgOptions } from "../../organisms/drawer/BottomDrawerLg";
+import BottomFlexDrawer, { BottomFlexDrawerOptions } from "../../organisms/drawer/BottomFlexDrawer";
 
 interface IStudyVoteTimeRulletDrawer extends IModal {
   setVoteTime: Dispatch<{ start: Dayjs; end: Dayjs }>;
-  drawerOptions: IBottomDrawerLgOptions;
+  drawerOptions: BottomFlexDrawerOptions;
 }
 
 export default function StudyVoteTimeRulletDrawer({
@@ -19,9 +19,17 @@ export default function StudyVoteTimeRulletDrawer({
 }: IStudyVoteTimeRulletDrawer) {
   return (
     <>
-      <BottomDrawerLg options={drawerOptions} setIsModal={setIsModal}>
+      <BottomFlexDrawer
+        isOverlay
+        isHideBottom
+        isDrawerUp
+        zIndex={5000}
+        height={382}
+        setIsModal={setIsModal}
+        drawerOptions={drawerOptions}
+      >
         <StudyVoteTimeRullets setVoteTime={setVoteTime} />
-      </BottomDrawerLg>
+      </BottomFlexDrawer>
     </>
   );
 }

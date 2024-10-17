@@ -1,4 +1,4 @@
-import { Flex, Select as ChakraSelect } from "@chakra-ui/react";
+import { Box, Flex, Select as ChakraSelect } from "@chakra-ui/react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 import { LOCATION_TO_FULLNAME } from "../../constants/location";
@@ -69,7 +69,9 @@ export default function Select({
           fontSize={size === "sm" ? "12px" : "12px"}
           pointerEvents="none"
         >
-          <ShortArrowIcon dir="bottom" />
+          <Box>
+            <ShortArrowIcon dir="bottom" />
+          </Box>
         </Flex>
       }
       ref={selectRef}

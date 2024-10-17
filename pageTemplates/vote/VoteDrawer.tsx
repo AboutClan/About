@@ -1,20 +1,23 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import PageIntro from "../../components/atoms/PageIntro";
 
 import BottomNav from "../../components/layouts/BottomNav";
 import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
 import PickerRowButton from "../../components/molecules/PickerRowButton";
-import { IBottomDrawerLgOptions } from "../../components/organisms/drawer/BottomDrawerLg";
-import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
+import BottomFlexDrawer, {
+  BottomFlexDrawerOptions,
+} from "../../components/organisms/drawer/BottomFlexDrawer";
 import RightDrawer from "../../components/organisms/drawer/RightDrawer";
 import SearchLocation from "../../components/organisms/SearchLocation";
 import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { useCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
+import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useRealtimeVoteMutation } from "../../hooks/realtime/mutations";
+import { useStudyParticipationMutation } from "../../hooks/study/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { getLocationByCoordinates } from "../../libs/study/getLocationByCoordinates";
 import {
@@ -65,6 +68,7 @@ function VoteDrawer({
   myVote,
   setMyVote,
 }: VoteDrawerProps) {
+  const typeToast = useTypeToast();
   const searchParams = useSearchParams();
   const { data: userInfo } = useUserInfoQuery();
   const preference = userInfo?.studyPreference;
@@ -86,6 +90,12 @@ function VoteDrawer({
     .filter((par) => preference?.subPlace.includes(par.place._id))
     .map((par) => par.place._id);
 
+  const { mutate: patchAttend, isLoading } = useStudyParticipationMutation(dayjs(date), "post", {
+    onSuccess() {
+      handleSuccess();
+    },
+  });
+
   useEffect(() => {
     if (!studyVoteData) return;
     setMarkersOptions(
@@ -98,35 +108,9 @@ function VoteDrawer({
     );
   }, [studyVoteData, currentLocation, myVote]);
 
-  const sortByDistanceSub = (mainPlace: StudyParticipationProps) => {
-    const updatedParticipations = studyVoteData.participations.map((participation) => {
-      const distance = getDistanceFromLatLonInKm(
-        participation.place.latitude,
-        participation.place.longitude,
-        mainPlace.place.latitude,
-        mainPlace.place.longitude,
-      );
-      return {
-        ...participation,
-        place: {
-          ...participation.place,
-          distance, // distance 추가
-        },
-      };
-    });
-
-    const sortedArr = updatedParticipations.sort((a, b) => {
-      if (a.place.distance < b.place.distance) return -1;
-      if (a.place.distance > b.place.distance) return 1;
-      return 0;
-    });
-    console.log(54, sortedArr);
-    return sortedArr;
-  };
-
   useEffect(() => {
     if (preference === undefined || !studyVoteData) return;
-
+    if (isFirstPage && !currentLocation) return;
     let votePlaceProps = {
       main: null,
       sub: [],
@@ -138,7 +122,6 @@ function VoteDrawer({
           sub: preference?.subPlace,
         };
       } else {
-        console.log(23, findMainPlace, subPlace);
         const temp = [];
         const sortedSub = sortByDistanceSub(findMainPlace);
 
@@ -147,7 +130,7 @@ function VoteDrawer({
             return;
           } else temp.push(par.place._id);
         });
-        console.log(52, temp);
+
         votePlaceProps = {
           main: findMainPlace.place._id,
           sub: temp,
@@ -159,8 +142,8 @@ function VoteDrawer({
         sub: votePlaceProps.sub.filter((place) => place !== votePlaceProps.main),
       });
     }
-
     const participations = studyVoteData?.participations;
+    console.log("P", preference, studyVoteData, currentLocation, isFirstPage, votePlaceProps);
     const getThumbnailCardInfoArr = setStudyToThumbnailInfo(
       participations,
       isFirstPage
@@ -188,6 +171,32 @@ function VoteDrawer({
     } else setIsFirstPage(true);
   }, [myVote?.main, findMainPlace, isFirstPage]);
 
+  const sortByDistanceSub = (mainPlace: StudyParticipationProps) => {
+    const updatedParticipations = studyVoteData.participations.map((participation) => {
+      const distance = getDistanceFromLatLonInKm(
+        participation.place.latitude,
+        participation.place.longitude,
+        mainPlace.place.latitude,
+        mainPlace.place.longitude,
+      );
+      return {
+        ...participation,
+        place: {
+          ...participation.place,
+          distance, // distance 추가
+        },
+      };
+    });
+
+    const sortedArr = updatedParticipations.sort((a, b) => {
+      if (a.place.distance < b.place.distance) return -1;
+      if (a.place.distance > b.place.distance) return 1;
+      return 0;
+    });
+
+    return sortedArr;
+  };
+
   const handleClickPlaceButton = (id: string) => {
     if (isFirstPage) {
       if (myVote?.main === id) return;
@@ -205,24 +214,44 @@ function VoteDrawer({
     }
   };
 
-  const drawerOptions: IBottomDrawerLgOptions = {
+  const resetStudy = useResetStudyQuery();
+  const toast = useToast();
+  const handleVote = async () => {
+    if (!myVote?.main || !voteTime?.start || !voteTime?.end) {
+      typeToast("omission");
+      return;
+    }
+    patchAttend({ place: myVote.main, subPlace: myVote?.sub, ...voteTime });
+  };
+  const handleSuccess = async () => {
+    resetStudy();
+    toast("success", `참여 완료!`);
+    setIsModal(false);
+  };
+
+  const drawerOptions: BottomFlexDrawerOptions = {
     header: {
       title: dayjs(date).format("M월 D일 ddd요일"),
       subTitle: "스터디 참여시간을 선택해주세요!",
     },
-    // footer: {
-    //   buttonText:  "신청 완료",
-    //   onClick:  onSubmit,
-    //   buttonLoading: isLoading,
-    // },
+    footer: {
+      text: "신청 완료",
+      func: handleVote,
+      loading: isLoading,
+    },
   };
 
   return (
     <>
       <BottomFlexDrawer
-        bottom={{
-          text: isTodayVote || !isFirstPage ? "선택 완료" : "다음",
-          func: isFirstPage && !isTodayVote ? () => setIsFirstPage(false) : () => {},
+        drawerOptions={{
+          footer: {
+            text: isTodayVote || !isFirstPage ? "선택 완료" : "다음",
+            func:
+              isFirstPage && !isTodayVote
+                ? () => setIsFirstPage(false)
+                : () => setIsTimeDrawer(true),
+          },
         }}
         isOverlay={false}
         isDrawerUp
@@ -296,7 +325,7 @@ function VoteDrawer({
           </Box>
         </Flex>
       </BottomFlexDrawer>
-      {isRightDrawer && <PlaceDrawer setIsRightDrawer={setIsRightDrawer} />}
+      {isRightDrawer && <PlaceDrawer date={date} setIsRightDrawer={setIsRightDrawer} />}
       {isTimeDrawer && (
         <StudyVoteTimeRulletDrawer
           setVoteTime={setVoteTime}
@@ -310,23 +339,29 @@ function VoteDrawer({
 
 interface PlaceDrawerProps {
   setIsRightDrawer: DispatchBoolean;
+  date: string;
 }
 
-export const PlaceDrawer = ({ setIsRightDrawer }: PlaceDrawerProps) => {
+export const PlaceDrawer = ({ setIsRightDrawer, date }: PlaceDrawerProps) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const newSearchParams = new URLSearchParams(searchParams);
+  const resetStudy = useResetStudyQuery();
   const typeToast = useTypeToast();
   const toast = useToast();
   const [placeInfo, setPlaceInfo] = useState<KakaoLocationProps>({
     place_name: "",
     road_address_name: "",
   });
+  const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
+  const [isTimeDrawer, setIsTimeDrawer] = useState(false);
 
   const { mutate, isLoading } = useRealtimeVoteMutation({
     onSuccess() {
       typeToast("vote");
-      // resetStudy();
-      // newSearchParams.set("category", "votePlace");
-
-      // router.push(`/studyPage?${newSearchParams.toString()}`);
+      resetStudy();
+      newSearchParams.set("category", "votePlace");
+      router.push(`/studyPage?${newSearchParams.toString()}`);
     },
   });
 
@@ -341,10 +376,9 @@ export const PlaceDrawer = ({ setIsRightDrawer }: PlaceDrawerProps) => {
       toast("warning", "서비스중인 지역이 아닙니다.");
       return;
     }
-
-    // setIsVoteDrawer(true);
+    setIsTimeDrawer(true);
   };
-  const handleSubmit = (voteTime: IStudyVoteTime) => {
+  const handleSubmit = () => {
     mutate({
       place: {
         name: placeInfo.place_name,
@@ -356,17 +390,38 @@ export const PlaceDrawer = ({ setIsRightDrawer }: PlaceDrawerProps) => {
     });
   };
 
+  const drawerOptions: BottomFlexDrawerOptions = {
+    header: {
+      title: dayjs(date).format("M월 D일 ddd요일"),
+      subTitle: "스터디 참여시간을 선택해주세요!",
+    },
+    footer: {
+      text: "신청 완료",
+      func: handleSubmit,
+      loading: isLoading,
+    },
+  };
+  console.log(54, isTimeDrawer);
   return (
-    <RightDrawer title="" onClose={() => setIsRightDrawer(false)}>
-      <PageIntro
-        main={{ first: "리스트에 없으신가요?", second: "스터디 장소를 알려주세요" }}
-        sub="스터디를 진행할 장소를 입력해 보세요"
-      />
-      <Box>
-        <SearchLocation placeInfo={placeInfo} setPlaceInfo={setPlaceInfo} />
-      </Box>{" "}
-      <BottomNav isSlide={false} text="스터디 신청" onClick={handleBottomNav} />
-    </RightDrawer>
+    <>
+      <RightDrawer title="" onClose={() => setIsRightDrawer(false)}>
+        <PageIntro
+          main={{ first: "리스트에 없으신가요?", second: "스터디 장소를 알려주세요" }}
+          sub="스터디를 진행할 장소를 입력해 보세요"
+        />
+        <Box>
+          <SearchLocation placeInfo={placeInfo} setPlaceInfo={setPlaceInfo} />
+        </Box>{" "}
+        <BottomNav isSlide={false} text="스터디 신청" onClick={handleBottomNav} />
+      </RightDrawer>{" "}
+      {isTimeDrawer && (
+        <StudyVoteTimeRulletDrawer
+          setVoteTime={setVoteTime}
+          drawerOptions={drawerOptions}
+          setIsModal={setIsTimeDrawer}
+        />
+      )}
+    </>
   );
 };
 

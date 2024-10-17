@@ -26,7 +26,7 @@ function LocationSearch({
   const [results, setResults] = useState<KakaoLocationProps[]>([]);
 
   const { data } = useKakaoSearchQuery(value, {
-    enabled: isActive && info?.place_name !== value && (value !== "" || !hasInitialValue),
+    enabled: isActive && (value !== "" || !hasInitialValue),
   });
 
   useEffect(() => {
@@ -34,7 +34,11 @@ function LocationSearch({
   }, [info]);
 
   useEffect(() => {
-    if (data) setResults(data);
+    if (!data) return;
+    if (value === info?.place_name) {
+      setInfo(data?.[0]);
+      setResults([]);
+    } else setResults(data);
   }, [data]);
 
   const onClickItem = (searchInfo: KakaoLocationProps) => {

@@ -73,7 +73,7 @@ function Certification() {
 
     setIsActive(false);
   }, [myStudyParticipation]);
-
+  console.log(234, placeInfo);
   const handleBottomNav = (e) => {
     if (!image) {
       toast("warning", "이미지를 등록해 주세요");

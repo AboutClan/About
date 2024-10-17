@@ -13,7 +13,6 @@ interface ICollectionModal extends IModal {
 function CollectionModal({ collection, setIsModal }: ICollectionModal) {
   if (!collection) return;
 
-  console.log(4, collection);
   const footerOptions: IFooterOptions = {
     main: {},
   };
@@ -26,7 +25,7 @@ function CollectionModal({ collection, setIsModal }: ICollectionModal) {
     >
       <>
         {collection?.alphabet ? (
-          <AboutIcon alphabet={collection.alphabet} size="lg" />
+          <AboutIcon alphabet={collection.alphabet} size="lg" isActive />
         ) : (
           <Box w="100%">
             <Flex w="100%" justify="space-between" px={3}>
@@ -37,9 +36,9 @@ function CollectionModal({ collection, setIsModal }: ICollectionModal) {
                   key={idx}
                   w={10}
                   h={10}
-                  opacity={idx < collection.stamps - 1 ? 1 : 0.2}
+                  opacity={idx <= collection.stamps - 1 ? 1 : 0.2}
                   borderRadius="50%"
-                  bgColor={idx < collection.stamps - 1 ? "var(--color-mint)" : "var(--color-gray)"}
+                  bg={idx <= collection.stamps - 1 ? "var(--color-mint)" : "var(--color-gray)"}
                 >
                   <StarIcon />
                 </Flex>

@@ -121,22 +121,21 @@ export default function StudyVoteMap() {
 
         break;
       case "mainPlace":
-        const changeLocation = getLocationByCoordinates(mainLocation?.lat, mainLocation?.lon);
+        const changeLocation = changeDefaultLocation(mainLocation);
 
-        if (!changeLocation) {
-          toast("warning", "활성화 된 지역이 아닙니다.");
-          newSearchParams.set("category", "currentPlace");
-          router.replace(`/studyPage?${newSearchParams.toString()}`);
-          return;
-        } else if (changeLocation !== locationValue) {
-          setLocationValue(changeLocation as ActiveLocation);
-        }
         setLocationFilterType("활동 장소");
         setCenterLocation({ lat: mainLocation?.lat, lon: mainLocation?.lon });
 
         break;
       case "votePlace":
+        console.log("my", myStudyParticipation);
+
         setLocationFilterType("스터디 장소");
+        if (!myStudyParticipation) return;
+        const changeLocation2 = changeDefaultLocation({
+          lat: myStudyParticipation?.place.latitude,
+          lon: myStudyParticipation?.place.longitude,
+        });
 
         setCenterLocation({
           lat: myStudyParticipation?.place.latitude,
@@ -150,13 +149,20 @@ export default function StudyVoteMap() {
       router.replace(`/studyPage?${newSearchParams.toString()}`);
     }
   }, [categoryParam]);
-
+  console.log(2525, locationFilterType);
   useEffect(() => {
     if (!studyVoteData || !session?.user) return;
+
     const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
+
     setMyStudyParticipation(findMyStudyParticipation);
 
     if (locationFilterType === "스터디 장소" && findMyStudyParticipation) {
+      const changeLocation2 = changeDefaultLocation({
+        lat: findMyStudyParticipation?.place.latitude,
+        lon: findMyStudyParticipation?.place.longitude,
+      });
+
       setCenterLocation({
         lat: findMyStudyParticipation.place.latitude,
         lon: findMyStudyParticipation.place.longitude,
@@ -185,6 +191,7 @@ export default function StudyVoteMap() {
           } else if (changeLocation !== locationValue) {
             setLocationValue(changeLocation as ActiveLocation);
           }
+          console.log(444);
           setCenterLocation({ lat, lon });
         }
       },
@@ -202,15 +209,40 @@ export default function StudyVoteMap() {
 
   useEffect(() => {
     if (isVoteDrawer) return;
+    console.log("category", categoryParam);
     if (centerLocation) {
-      setMapOptions(getMapOptions(centerLocation, locationValue));
+      setMapOptions(
+        getMapOptions(centerLocation, locationValue, categoryParam === "votePlace" && 15),
+      );
     } else if (centerLocation === null && mainLocation) {
-      setMapOptions(getMapOptions({ lat: mainLocation.lat, lon: mainLocation.lon }, locationValue));
+      setMapOptions(
+        getMapOptions(
+          { lat: mainLocation.lat, lon: mainLocation.lon },
+          locationValue,
+          categoryParam === "votePlace" && 15,
+        ),
+      );
     }
     if (studyVoteData && currentLocation) {
       setMarkersOptions(getMarkersOptions(studyVoteData, currentLocation));
     }
   }, [currentLocation, centerLocation, mainLocation, studyVoteData, locationValue, isVoteDrawer]);
+
+  const changeDefaultLocation = (selectedLocation: { lat: number; lon: number }): boolean => {
+    const changeLocation = getLocationByCoordinates(selectedLocation?.lat, selectedLocation?.lon);
+    console.log(32, changeLocation, locationValue);
+    if (!changeLocation) {
+      toast("warning", "활성화 된 지역이 아닙니다.");
+      newSearchParams.set("category", "currentPlace");
+      router.replace(`/studyPage?${newSearchParams.toString()}`);
+      return true;
+    } else if (changeLocation !== locationValue) {
+      console.log(54545);
+      setLocationValue(changeLocation as ActiveLocation);
+      return true;
+    }
+    return false;
+  };
 
   const handleMarker = (id: string, type: "vote") => {
     if (!id || !studyVoteData) return;
@@ -277,7 +309,7 @@ export default function StudyVoteMap() {
             : "participation",
     });
   };
-  console.log(1, mapOptions);
+
   return (
     <>
       <Box
@@ -433,7 +465,7 @@ export const getMapOptions = (
         ),
       )
     : undefined;
-
+  console.log(535534, zoomValue);
   return {
     center: new naver.maps.LatLng(currentLocation.lat, currentLocation.lon),
     zoom: zoomValue || 13,

@@ -8,7 +8,18 @@ import { iPhoneNotchSize } from "../../../utils/validationUtils";
 import ScreenOverlay from "../../atoms/ScreenOverlay";
 
 export const DRAWER_MIN_HEIGHT = 40;
-export const DRAWER_MAX_HEIGHT = 618; // 최대 높이
+
+export interface BottomFlexDrawerOptions {
+  header?: {
+    title: string;
+    subTitle: string;
+  };
+  footer?: {
+    text: string;
+    func: () => void;
+    loading?: boolean;
+  };
+}
 
 interface BottomFlexDrawerProps extends IModal {
   isHideBottom?: boolean;
@@ -17,27 +28,22 @@ interface BottomFlexDrawerProps extends IModal {
   isDrawerUp: boolean;
   height: number;
   zIndex?: number;
-  bottom?: {
-    text: string;
-    func: () => void;
-    isLoading?: boolean;
-  };
+  drawerOptions: BottomFlexDrawerOptions;
   isOverlay: boolean;
-  overlayNum?: number;
 }
 
 export default function BottomFlexDrawer({
   setIsModal,
   isHideBottom,
-  bottom,
+  drawerOptions,
   children,
   isDrawerUp,
   height,
   zIndex,
+
   isOverlay,
-  overlayNum,
 }: BottomFlexDrawerProps) {
-  const maxHeight = height || DRAWER_MAX_HEIGHT;
+  const maxHeight = height;
 
   const [drawerHeight, setDrawerHeight] = useState(isDrawerUp ? maxHeight : DRAWER_MIN_HEIGHT); // 초기 높이
   const startYRef = useRef(0); // 드래그 시작 위치 저장
@@ -84,7 +90,7 @@ export default function BottomFlexDrawer({
 
   return (
     <>
-      {isOverlay && <ScreenOverlay zIndex={overlayNum} onClick={() => setIsModal(false)} />}
+      {isOverlay && <ScreenOverlay zIndex={zIndex} onClick={() => setIsModal(false)} />}
       <Layout
         ishide={isHideBottom ? "true" : "false"}
         zindex={zIndex}
@@ -96,18 +102,24 @@ export default function BottomFlexDrawer({
         <Box py={3} cursor="grab" onPointerDown={handlePointerDown}>
           <TopNav />
         </Box>
+        {drawerOptions?.header && (
+          <Header>
+            <span>{drawerOptions?.header.subTitle}</span>
+            <span>{drawerOptions?.header.title}</span>
+          </Header>
+        )}
         {drawerHeight > 100 && children}
-        {bottom && drawerHeight > 100 && (
+        {drawerOptions?.footer && drawerHeight > 100 && (
           <Box py={2} w="100%">
             <Button
               w="100%"
               mt="auto"
               colorScheme="mintTheme"
               size="lg"
-              isLoading={bottom?.isLoading}
-              onClick={bottom?.func}
+              isLoading={drawerOptions?.footer?.loading}
+              onClick={drawerOptions?.footer?.func}
             >
-              {bottom?.text}
+              {drawerOptions?.footer?.text}
             </Button>
           </Box>
         )}
@@ -146,4 +158,22 @@ const TopNav = styled.nav`
   border-radius: 4px;
   opacity: 0.4;
   background-color: var(--color-gray);
+`;
+
+const Header = styled.header`
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: var(--gap-5);
+  > span:first-child {
+    font-weight: 600;
+    font-size: 15px;
+
+    margin-bottom: var(--gap-1);
+  }
+  > span:last-child {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--gray-800);
+  }
 `;

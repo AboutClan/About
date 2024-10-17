@@ -40,6 +40,7 @@ export default function VoteMap({
         position: naver.maps.Position.BOTTOM_LEFT,
       },
     });
+
     map.setZoom(mapOptions.zoom);
     mapInstanceRef.current = map;
   }, [mapOptions]);

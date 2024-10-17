@@ -29,14 +29,14 @@ export default function ProfileCommentCard({
       ) : (
         <BasicAvatar />
       )}
-      <Box ml={3} my={1}>
+      <Flex direction="column" justify="center" ml={3} my={1}>
         <Flex align="center" mb={1}>
           <Box as="span" mr={1} fontWeight="semibold" fontSize="13px">
             {user?.name}
           </Box>
           <UserBadge score={user?.score || 0} uid={user?.uid} />
         </Flex>
-        <Flex alignItems="center" flex={1} color="gray.500" fontSize="12px">
+        <Flex alignItems="center" color="gray.500" fontSize="12px">
           <CommentText>{comment}</CommentText>
           {setMemo && (
             <Button onClick={setMemo}>
@@ -44,7 +44,7 @@ export default function ProfileCommentCard({
             </Button>
           )}
         </Flex>
-      </Box>
+      </Flex>
       <RightComponentContainer>{rightComponent}</RightComponentContainer>
     </Flex>
   );
@@ -56,7 +56,6 @@ const Button = styled.button`
   padding: 0 4px;
   color: var(--gray-600);
 `;
-
 
 const CommentText = styled.span`
   display: -webkit-box;

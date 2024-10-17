@@ -39,7 +39,7 @@ function PickerRowButton({ onClick, pickType, place, participantCnt, id }: Picke
             <TurnArrowIcon />
           )}
         </Box>
-        <Flex overflow="hidden" flex={1} mr={4} direction="column" align="flex-start">
+        <Flex flex={1} mr={4} direction="column" align="flex-start">
           {pickType === "main" && (
             <Badge
               mb={1}
@@ -55,19 +55,21 @@ function PickerRowButton({ onClick, pickType, place, participantCnt, id }: Picke
             </Badge>
           )}
           <Title>{place.name}</Title>
-          {pickType !== "second" && (
-            <Subtitle fontsize={pickType === "main" ? 12 : 11}>
-              <Box as="span" fontWeight={600}>
-                {place.distance && `${place.distance}KM`}
-              </Box>
-              <Box as="span" fontWeight={400} color="var(--gray-400)">
-                ・
-              </Box>
-              <Box as="span" fontWeight={400}>
-                {place.address}
-              </Box>
-            </Subtitle>
-          )}
+          <Box overflow="hidden" w="100%">
+            {pickType !== "second" && (
+              <Subtitle fontsize={pickType === "main" ? 12 : 11}>
+                <Box as="span" fontWeight={600}>
+                  {place.distance && `${place.distance}KM`}
+                </Box>
+                <Box as="span" fontWeight={400} color="var(--gray-400)">
+                  ・
+                </Box>
+                <Box as="span" fontWeight={400}>
+                  {place.address}
+                </Box>
+              </Subtitle>
+            )}
+          </Box>
           {pickType !== "main" && (
             <Flex
               mt={pickType !== "second" && 3}
@@ -110,7 +112,7 @@ function PickerRowButton({ onClick, pickType, place, participantCnt, id }: Picke
           )}
         </Flex>
 
-        <Box ml="auto">
+        <Box>
           {pickType !== "second" ? (
             <PlaceImage size="sm" imageProps={place.imageProps} hasToggleHeart id={id} />
           ) : (

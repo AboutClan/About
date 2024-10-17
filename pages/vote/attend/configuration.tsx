@@ -53,7 +53,7 @@ function Configuration() {
   const [endTime, setEndTime] = useState(
     dayjs().hour() < 21 ? dayjsToFormat(dayjs().startOf("hour").add(3, "hour"), "HH:mm") : "23:30",
   );
-  console.log(13, endTime);
+
   const textareaRef = useRef(null);
   const [otherPermission, setOtherPermission] = useState<"허용" | "비허용">("허용");
   const [attendMessage, setAttendMessage] = useState("");
@@ -109,7 +109,7 @@ function Configuration() {
       }, 500);
     }
   }, []);
-
+  console.log(24, otherPermission);
   const handleAttendSuccess = (collection: CollectionProps) => {
     setTransferCollection({ alphabet: collection.alphabet, stamps: collection.stamps });
     saveTogetherMembers();
@@ -175,7 +175,7 @@ function Configuration() {
       }, 2000);
     } else {
       formData.append("memo", attendMessage);
-      formData.append("status", "open");
+      formData.append("status", otherPermission === "허용" ? "open" : "solo");
       formData.append("images", transferStudyAttendance?.image as Blob);
       formData.append(
         "place",
@@ -191,7 +191,7 @@ function Configuration() {
       attendRealTimeStudy(formData);
     }
   };
-
+  console.log(54, transferStudyAttendance);
   return (
     <>
       <Box minH="calc(100dvh - var(--header-h))" bgColor="white">
@@ -209,14 +209,17 @@ function Configuration() {
           />
           <Box my={5}>
             <Box mb={3}>
-              <SectionTitle text="다른 인원 참어 허용" isActive={false} />
+              <SectionTitle
+                text="다른 인원 참어 허용"
+                isActive={!!transferStudyAttendance?.image}
+              />
             </Box>
             <Select
               options={["허용", "비허용"]}
               defaultValue={otherPermission}
               setValue={setOtherPermission}
               size="lg"
-              isActive={false}
+              isActive={!!transferStudyAttendance?.image}
               isFullSize
             />
           </Box>

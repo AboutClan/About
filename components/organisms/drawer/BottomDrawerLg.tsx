@@ -106,8 +106,8 @@ export default function BottomDrawerLg({
   );
 }
 
-const Layout = styled(motion.div) <{
-  zIndex
+const Layout = styled(motion.div)<{
+  zIndex;
   paddingoptions: { bottom?: number };
   height: number;
   isxpadding: string;
