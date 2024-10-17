@@ -177,7 +177,7 @@ function Configuration() {
     } else {
       formData.append("memo", attendMessage);
       formData.append("status", otherPermission === "허용" ? "open" : "solo");
-      formData.append("images", [transferStudyAttendance?.image as Blob]);
+      formData.append("images", transferStudyAttendance?.image as Blob);
       formData.append(
         "place",
         JSON.stringify(transferStudyAttendance?.place || myStudyParticipation?.place),
@@ -189,6 +189,7 @@ function Configuration() {
           end: convertTimeStringToDayjs(endTime).toISOString(),
         }),
       );
+
       attendRealTimeStudy(formData);
     }
   };

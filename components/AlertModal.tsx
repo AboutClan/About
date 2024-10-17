@@ -21,13 +21,13 @@ export interface IAlertModalOptions {
 
 interface IAlertModal extends IModal {
   options: IAlertModalOptions;
-  colorType?: "mintTheme" | "redTheme";
+  colorType?: "mint" | "red";
 }
 
 export default function AlertModal({
   setIsModal,
   options: { title, subTitle, func, text = "취소합니다" },
-  colorType = "mintTheme",
+  colorType = "mint",
 }: IAlertModal) {
   const cancelRef = React.useRef();
 

@@ -2,13 +2,16 @@ import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSetRecoilState } from "recoil";
 
 import SectionHeader from "../../components/atoms/SectionHeader";
 import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import { USER_LOCATION } from "../../constants/keys/localStorage";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
+import { getMyStudyParticipation } from "../../libs/study/getMyStudyMethods";
+import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToKr, dayjsToStr } from "../../utils/dateTimeUtils";
@@ -23,6 +26,8 @@ function HomeStudySection({}: HomeStudySectionProps) {
 
   const [date, setDate] = useState(dayjsToStr(dayjs()));
 
+  const setMyStudyParticipation = useSetRecoilState(myStudyParticipationState);
+
   const { data: studyVoteData } = useStudyVoteQuery(
     date,
     userLocation,
@@ -31,6 +36,12 @@ function HomeStudySection({}: HomeStudySectionProps) {
       enabled: !!userLocation,
     },
   );
+
+  useEffect(() => {
+    if (!studyVoteData) return;
+    const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
+    setMyStudyParticipation(findMyStudyParticipation);
+  }, [studyVoteData]);
 
   const tabOptionsArr: ITabNavOptions[] = [
     {

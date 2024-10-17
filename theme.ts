@@ -259,6 +259,26 @@ const theme = extendTheme({
         },
       },
     },
+    Toast: {
+      variants: {
+        leftAccent: (props) => {
+          const { status } = props;
+          const bgColor = {
+            success: "mint.500",
+            error: "red.500",
+            warning: "yellow.500",
+            info: "blue.500",
+          };
+
+          return {
+            container: {
+              bg: bgColor[status],
+              color: "white",
+            },
+          };
+        },
+      },
+    },
 
     Button: {
       baseStyle: {

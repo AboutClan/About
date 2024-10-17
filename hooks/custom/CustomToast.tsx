@@ -22,7 +22,7 @@ export const useToast = () => {
         description: subTitle,
         status,
         duration: 3000,
-        variant: "subtle",
+        variant: "left-accent",
       });
     },
     [toast],
@@ -138,6 +138,7 @@ export const useFailToast = () => {
         duration: 3000,
         isClosable: true,
         position: isTop ? "top" : "bottom",
+        variant: "solid",
       });
     },
     [toast],

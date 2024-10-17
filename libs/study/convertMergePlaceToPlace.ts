@@ -20,5 +20,10 @@ export const convertMergePlaceToPlace = (mergePlace: StudyPlaceProps | PlaceInfo
     latitude: studyPlace.latitude,
     longitude: studyPlace.longitude,
     time: studyPlace?.time || null,
+    type: studyPlace?.fullname
+      ? "public"
+      : realTimePlace?.name
+        ? "private"
+        : (null as "public" | "private"),
   };
 };

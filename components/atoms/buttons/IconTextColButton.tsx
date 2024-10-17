@@ -3,9 +3,10 @@ import { Box, Button } from "@chakra-ui/react";
 interface IconTextColButtonProps {
   icon: React.ReactNode;
   text: string;
+  func: () => void;
 }
 
-function IconTextColButton({ icon, text }: IconTextColButtonProps) {
+function IconTextColButton({ icon, text, func }: IconTextColButtonProps) {
   return (
     <Button
       mr={3}
@@ -16,6 +17,7 @@ function IconTextColButton({ icon, text }: IconTextColButtonProps) {
       w="48px"
       h={10}
       color="gray.500"
+      onClick={func}
     >
       {icon}
 

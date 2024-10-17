@@ -1,7 +1,8 @@
 import { Box } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useParams, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSetRecoilState } from "recoil";
 
 import Slide from "../../../../components/layouts/PageSlide";
 import { useCurrentLocation } from "../../../../hooks/custom/CurrentLocationHook";
@@ -10,6 +11,7 @@ import { convertMergePlaceToPlace } from "../../../../libs/study/convertMergePla
 import {
   convertStudyToParticipations,
   getMyStudyInfo,
+  getMyStudyParticipation,
 } from "../../../../libs/study/getMyStudyMethods";
 import StudyInviteModal from "../../../../modals/study/StudyInviteModal";
 import StudyAddressMap from "../../../../pageTemplates/study/StudyAddressMap";
@@ -20,6 +22,7 @@ import StudyMembers from "../../../../pageTemplates/study/StudyMembers";
 import StudyNavigation from "../../../../pageTemplates/study/StudyNavigation";
 import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
 import StudyTimeBoard from "../../../../pageTemplates/study/StudyTimeBoard";
+import { myStudyParticipationState } from "../../../../recoils/studyRecoils";
 import { LocationEn } from "../../../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../../../utils/convertUtils/convertDatas";
 import { getDistanceFromLatLonInKm } from "../../../../utils/mathUtils";
@@ -31,7 +34,7 @@ export default function Page() {
   const { currentLocation } = useCurrentLocation();
 
   const locationParam = searchParams.get("location") as LocationEn;
-
+  const setMyStudyParticipation = useSetRecoilState(myStudyParticipationState);
   const [isInviteModal, setIsInviteModal] = useState(false);
 
   const { data: studyVoteData } = useStudyVoteQuery(
@@ -41,6 +44,12 @@ export default function Page() {
       enabled: !!date && !!locationParam,
     },
   );
+
+  useEffect(() => {
+    if (!studyVoteData) return;
+    const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
+    setMyStudyParticipation(findMyStudyParticipation);
+  }, [studyVoteData]);
 
   const mergeParticipations = convertStudyToParticipations(
     studyVoteData,
@@ -53,7 +62,7 @@ export default function Page() {
   console.log(5, mergeParticipations);
 
   const place = convertMergePlaceToPlace(mergeParticipation?.place);
-  const { name, address, coverImage, latitude, brand, longitude, time } = place || {};
+  const { name, address, coverImage, latitude, brand, longitude, time, type } = place || {};
 
   const distance =
     currentLocation &&
@@ -65,7 +74,7 @@ export default function Page() {
       {mergeParticipation && (
         <>
           <StudyHeader brand={brand} name={name} address={address} coverImage={coverImage} />
-          <Box mb={3}>
+          <Box mb={5}>
             <Slide isNoPadding>
               <StudyCover coverImage={coverImage} />
               <StudyOverview
@@ -99,6 +108,9 @@ export default function Page() {
             memberCnt={members?.length}
             myStudyInfo={getMyStudyInfo(mergeParticipation, session?.user.uid)}
             absences={mergeParticipation?.absences}
+            placeInfo={{ name, address, latitude, longitude }}
+            type={type}
+            status={mergeParticipation?.status}
           />
           {isInviteModal && <StudyInviteModal setIsModal={setIsInviteModal} place={place} />}
         </>
