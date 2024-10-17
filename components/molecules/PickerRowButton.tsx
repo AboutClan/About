@@ -1,11 +1,10 @@
 import { Badge, Box, Button, Flex } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import { SingleLineText } from "../../styles/layout/components";
 import { TurnArrowIcon } from "../Icons/ArrowIcons";
 import { CheckCircleIcon } from "../Icons/CircleIcons";
 import { UserIcon } from "../Icons/UserIcons";
-import { STUDY_MAX_CNT,StudyThumbnailCardProps } from "./cards/StudyThumbnailCard";
+import { StudyThumbnailCardProps, STUDY_MAX_CNT } from "./cards/StudyThumbnailCard";
 import PlaceImage from "./PlaceImage";
 
 interface PickerRowButtonProps extends Partial<StudyThumbnailCardProps> {
@@ -24,6 +23,7 @@ function PickerRowButton({ onClick, pickType, place, participantCnt, id }: Picke
       border=" 1px solid var(--gray-200)"
       borderColor={pickType === "second" ? "orange" : !pickType ? "gray.200" : "mint"}
       bg={pickType === "first" || pickType === "main" ? "rgba(0, 194, 179, 0.02)" : "white"}
+      display="block"
       borderRadius="12px"
       onClick={onClick}
     >
@@ -39,7 +39,7 @@ function PickerRowButton({ onClick, pickType, place, participantCnt, id }: Picke
             <TurnArrowIcon />
           )}
         </Box>
-        <Flex flex={1} mr={4} direction="column" align="flex-start">
+        <Flex flex={1} mr={4} direction="column" alignItems="flex-start" minW={0} textAlign="left">
           {pickType === "main" && (
             <Badge
               mb={1}
@@ -55,21 +55,19 @@ function PickerRowButton({ onClick, pickType, place, participantCnt, id }: Picke
             </Badge>
           )}
           <Title>{place.name}</Title>
-          <Box overflow="hidden" w="100%">
-            {pickType !== "second" && (
-              <Subtitle fontsize={pickType === "main" ? 12 : 11}>
-                <Box as="span" fontWeight={600}>
-                  {place.distance && `${place.distance}KM`}
-                </Box>
-                <Box as="span" fontWeight={400} color="var(--gray-400)">
-                  ・
-                </Box>
-                <Box as="span" fontWeight={400}>
-                  {place.address}
-                </Box>
-              </Subtitle>
-            )}
-          </Box>
+          {pickType !== "second" && (
+            <Subtitle fontsize={pickType === "main" ? 12 : 11}>
+              <Box as="span" fontWeight={600}>
+                {place.distance && `${place.distance}KM`}
+              </Box>
+              <Box as="span" fontWeight={400} color="var(--gray-400)">
+                ・
+              </Box>
+              <Box as="span" fontWeight={400}>
+                {place.address}
+              </Box>
+            </Subtitle>
+          )}
           {pickType !== "main" && (
             <Flex
               mt={pickType !== "second" && 3}
@@ -123,17 +121,24 @@ function PickerRowButton({ onClick, pickType, place, participantCnt, id }: Picke
     </Button>
   );
 }
-const Title = styled(SingleLineText)`
+const Title = styled.div`
   margin-bottom: 4px;
   font-size: 14px;
   font-weight: 600;
   line-height: 20px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 100%;
 `;
 
-const Subtitle = styled(SingleLineText)<{ fontsize: number }>`
+const Subtitle = styled.div<{ fontsize: number }>`
   color: var(--gray-500);
   font-size: ${(props) => props.fontsize}px;
-
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 100%;
   line-height: 12px;
 `;
 export default PickerRowButton;
