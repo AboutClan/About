@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
 
-import { CopyBtn } from "../../components/atoms/Icons/CopyIcon";
+import { CopyBtn } from "../../components/Icons/CopyIcon";
 import { PROMOTION_TEXT,PromotionComponent } from "../../constants/contentsText/Private";
 import { POINT_SYSTEM_PLUS } from "../../constants/serviceConstants/pointSystemConstants";
 import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";

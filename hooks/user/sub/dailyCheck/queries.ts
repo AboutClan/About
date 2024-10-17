@@ -3,9 +3,9 @@ import { useQuery } from "react-query";
 
 import { SERVER_URI } from "../../../../constants/system";
 import { QueryOptions } from "../../../../types/hooks/reactTypes";
-import { ITimeStamps } from "../../../../types/utils/timeAndDate";
+import { TimeStampProps } from "../../../../types/utils/timeAndDate";
 
-export interface IDailyCheck extends ITimeStamps {
+export interface IDailyCheck extends TimeStampProps {
   uid: string;
   name: string;
 }

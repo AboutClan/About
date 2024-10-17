@@ -10,7 +10,7 @@ export interface IImageTileData {
   id?: string;
 }
 
-interface IImageTileGridLayout {
+interface IImageTileFlexLayout {
   imageDataArr: IImageTileData[];
   selectedId?: string[];
   selectedSubId?: string[];
@@ -20,7 +20,7 @@ export default function ImageTileFlexLayout({
 
   selectedId,
   selectedSubId,
-}: IImageTileGridLayout) {
+}: IImageTileFlexLayout) {
   function ImageTileLayout({ url, text }: { url: string; text: string }) {
     return (
       <Flex direction="column" alignItems="center">

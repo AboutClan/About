@@ -9,9 +9,10 @@ interface IBottomNav {
   onClick: (e?: any) => void;
   text?: string;
   url?: string;
+  isSlide?: boolean;
 }
 
-function BottomNav({ onClick, text, url }: IBottomNav) {
+function BottomNav({ onClick, text, url, isSlide = true }: IBottomNav) {
   const searchParams = useSearchParams();
   const params = searchParams.toString();
 
@@ -26,28 +27,44 @@ function BottomNav({ onClick, text, url }: IBottomNav) {
         width="calc(100% - 2*var(--gap-4))"
         size="lg"
         mb="var(--gap-4)"
-        borderRadius="var(--rounded)"
+        borderRadius="12px"
         backgroundColor="var(--color-mint)"
         color="white"
-        fontSize="15px"
+        fontSize="14px"
+        fontWeight={700}
         onClick={onClick}
         _focus={{ backgroundColor: "var(--color-mint)", color: "white" }}
       >
-        {text || "다음"}
+        {text || "다 음"}
       </Button>
     );
   }
 
   return (
-    <Slide isFixed={true} posZero="top">
-      {url ? (
-        <Link href={url + (params ? `?${params}` : "")}>
-          <BottomButton />
-        </Link>
+    <>
+      {isSlide ? (
+        <Slide isFixed={true} posZero="top">
+          {url ? (
+            <Link href={url + (params ? `?${params}` : "")}>
+              <BottomButton />
+            </Link>
+          ) : (
+            <BottomButton />
+          )}
+        </Slide>
       ) : (
-        <BottomButton />
+        <>
+          {" "}
+          {url ? (
+            <Link href={url + (params ? `?${params}` : "")}>
+              <BottomButton />
+            </Link>
+          ) : (
+            <BottomButton />
+          )}
+        </>
       )}
-    </Slide>
+    </>
   );
 }
 

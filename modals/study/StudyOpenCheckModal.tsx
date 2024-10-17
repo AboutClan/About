@@ -5,11 +5,11 @@ import { useState } from "react";
 import { ALL_스터디인증 } from "../../constants/serviceConstants/studyConstants/studyPlaceConstants";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
-import { IParticipation } from "../../types/models/studyTypes/studyDetails";
+import { StudyParticipationProps } from "../../types/models/studyTypes/studyDetails";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface StudyOpenCheckModalProps extends IModal {
-  par: IParticipation;
+  par: StudyParticipationProps;
   date: string;
 }
 
@@ -55,7 +55,7 @@ function StudyOpenCheckModal({ setIsModal, par, date }: StudyOpenCheckModalProps
               원하는 스터디 방식을 선택해 주세요!
               <br />
               현재 <ColorText text={par.place.branch} /> 지점의 참여 인원은{" "}
-              <ColorText text={`${par.attendences.length}명`} />
+              <ColorText text={`${par.members.length}명`} />
               입니다.
             </>
           )}

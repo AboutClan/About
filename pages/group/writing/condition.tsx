@@ -3,8 +3,8 @@ import { useSession } from "next-auth/react";
 import { ChangeEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { PopOverIcon } from "../../../components/atoms/Icons/PopOverIcon";
 import { Input } from "../../../components/atoms/Input";
+import { PopOverIcon } from "../../../components/Icons/PopOverIcon";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";

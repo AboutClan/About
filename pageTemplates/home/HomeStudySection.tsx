@@ -1,257 +1,77 @@
-import { Box, Button, Flex, keyframes } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { AnimatePresence, motion, PanInfo } from "framer-motion";
-import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
-import styled from "styled-components";
+import { useSetRecoilState } from "recoil";
 
-import { LOCATION_OPEN } from "../../constants/location";
-import { useTypeToast } from "../../hooks/custom/CustomToast";
-import { useStudyDailyVoteCntQuery, useStudyVoteQuery } from "../../hooks/study/queries";
-import { getStudyDateStatus } from "../../libs/study/date/getStudyDateStatus";
-import { studyDateStatusState, studyPairArrState } from "../../recoils/studyRecoils";
-import { IParticipation } from "../../types/models/studyTypes/studyDetails";
-import { ActiveLocation, LocationEn } from "../../types/services/locationTypes";
+import SectionHeader from "../../components/atoms/SectionHeader";
+import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
+import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
+import { USER_LOCATION } from "../../constants/keys/localStorage";
+import { useStudyVoteQuery } from "../../hooks/study/queries";
+import { getMyStudyParticipation } from "../../libs/study/getMyStudyMethods";
+import { myStudyParticipationState } from "../../recoils/studyRecoils";
+import { ActiveLocation } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
-import HomeLocationBar from "./study/HomeLocationBar";
-import HomeNewStudySpace from "./study/HomeNewStudySpace";
-import HomeStudyChart from "./study/HomeStudyChart";
-import HomeStudyCol from "./study/HomeStudyCol";
-import StudyController from "./study/studyController/StudyController";
-
-const orbit = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-`;
-const orbit2 = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(-360deg);
-  }
-`;
+import { dayjsToKr, dayjsToStr } from "../../utils/dateTimeUtils";
+import StudyCardCol from "./study/StudyCardCol";
 
 function HomeStudySection() {
   const { data: session } = useSession();
-  const router = useRouter();
-  const typeToast = useTypeToast();
-  const searchParams = useSearchParams();
-  const newSearchParams = new URLSearchParams(searchParams);
-  const date = searchParams.get("date");
-  const location = searchParams.get("location");
-  const locationKr = convertLocationLangTo(location as LocationEn, "kr");
-  const isGuest = session?.user.name === "guest";
+  //session이나 userInfo보다 더 빠른 속도를 위해. 그래야 메인 데이터도 빨리 가져옴
+  const userLocation =
+    (localStorage.getItem(USER_LOCATION) as ActiveLocation) || session?.user.location;
 
-  const setStudyDateStatus = useSetRecoilState(studyDateStatusState);
-  const [studyPairArr, setStudyPairArr] = useRecoilState(studyPairArrState);
-  const [selectedDate, setSelectedDate] = useState<string>();
-  const [studyVoteArr, setStudyVoteArr] = useState<IParticipation[]>();
+  const [date, setDate] = useState(dayjsToStr(dayjs()));
 
-  const findStudyData = studyPairArr?.find(
-    (study) => dayjsToStr(dayjs(study.date)) === date,
-  )?.participations;
+  const setMyStudyParticipation = useSetRecoilState(myStudyParticipationState);
 
-  const { data: studyVoteData } = useStudyVoteQuery(date as string, locationKr, true, true, {
-    enabled:
-      !findStudyData &&
-      !!date &&
-      !!locationKr &&
-      LOCATION_OPEN.includes(locationKr as ActiveLocation),
-  });
-  useStudyVoteQuery(date, locationKr, false, false, {
-    enabled: !!locationKr && !!date,
-  });
+  const { data: studyVoteData } = useStudyVoteQuery(
+    date,
+    userLocation,
 
-  useEffect(() => {
-    if (!selectedDate) setSelectedDate(date);
-    setStudyDateStatus(getStudyDateStatus(date));
-  }, [date]);
-
-  useEffect(() => {
-    setStudyPairArr(null);
-  }, [locationKr]);
-
-  useEffect(() => {
-    if (findStudyData) setStudyVoteArr(findStudyData);
-    else if (studyVoteData) setStudyPairArr(studyVoteData);
-  }, [findStudyData, studyVoteData]);
-
-  const selectedDateDayjs = dayjs(selectedDate);
-
-  const { data: voteCntArr } = useStudyDailyVoteCntQuery(
-    locationKr,
-    selectedDateDayjs.startOf("month"),
-    selectedDateDayjs.endOf("month"),
     {
-      enabled: !!locationKr,
+      enabled: !!userLocation,
     },
   );
 
-  const newStudyPlaces = studyVoteArr
-    ?.filter(
-      (par) =>
-        par.place?.registerDate &&
-        dayjs(par.place.registerDate).isAfter(dayjs().subtract(2, "month")),
-    )
-    .map((par) => par.place);
+  useEffect(() => {
+    if (!studyVoteData) return;
+    const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
+    setMyStudyParticipation(findMyStudyParticipation);
+  }, [studyVoteData]);
 
-  const handleMapVote = () => {
-    if (isGuest) {
-      typeToast("guest");
-      return;
-    }
-    newSearchParams.delete("tab");
-    router.push(`/vote?${newSearchParams.toString()}`);
-  };
-
-  const onDragEnd = (panInfo: PanInfo) => {
-    const newDate = getNewDateBySwipe(panInfo, date as string);
-    if (newDate !== date) {
-      newSearchParams.set("date", newDate);
-      router.replace(`/home?${newSearchParams.toString()}`, { scroll: false });
-    }
-    return;
-  };
-
-  const handleChangeDate = (date: string) => {
-    setStudyVoteArr(null);
-    setSelectedDate(date);
-  };
+  const tabOptionsArr: ITabNavOptions[] = [
+    {
+      text: dayjsToKr(dayjs()),
+      func: () => setDate(dayjsToStr(dayjs())),
+    },
+    {
+      text: dayjsToKr(dayjs().add(1, "day")),
+      func: () => setDate(dayjsToStr(dayjs().add(1, "day"))),
+    },
+  ];
 
   return (
     <>
-      <Box p={4} pb={5}>
-        <Box fontSize="18px" fontWeight={600} py={4} pt={2}>
-          직관적인 장소 선택!
-        </Box>
-        <Flex
-          direction="column"
-          p={4}
-          pt={2}
-          bgColor="var(--color-mint-light)"
-          borderRadius="var(--rounded-lg)"
-        >
-          <Flex justify="space-between">
-            <Flex direction="column" pb={3} pt={2}>
-              <Box p={1} fontSize="17px" fontWeight={600}>
-                어디서 스터디 하지?
-                <br />
-                지도로 한 눈에 확인하자!
-              </Box>
-              <Box p={1}>스터디 투표가 간편해요</Box>
-            </Flex>
-            <Flex
-              justify="center"
-              position="relative"
-              align="center"
-              mb="auto"
-              fontSize="24px"
-              height="100px"
-              width="100px"
-              mr={2}
-            >
-              <Box>
-                <Image
-                  src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%8F%99%EC%95%84%EB%A6%AC+%EC%A7%84%EC%A7%9C+%EC%A7%80%EB%8F%84.png"
-                  width={100}
-                  height={100}
-                  alt="map"
-                />
-              </Box>
-              <Box
-                position="absolute"
-                bottom="32px"
-                right="4px"
-                width="80px"
-                height="30px"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                animation={`${orbit} 3s linear infinite`}
-                color="var(--gray-600)"
-              >
-                <Box
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  position="absolute"
-                  top="0"
-                  right="0"
-                  transform="translate(-50%, -50%)"
-                  animation={`${orbit2} 3s linear infinite`}
-                >
-                  <Image
-                    src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%8F%8B%EB%B3%B4%EA%B8%B0%EC%9E%85%EB%8B%88%EB%8B%A4.png"
-                    width={60}
-                    height={60}
-                    alt="돋보기"
-                  />
-                </Box>
-              </Box>
-            </Flex>
-          </Flex>
-          <Button colorScheme="mintTheme" onClick={handleMapVote}>
-            지도에서 스터디 투표하기
-          </Button>
-        </Flex>
-      </Box>
-
-      <HomeLocationBar />
-      <Box px="16px">
-        <StudyController
-          selectedDate={selectedDate}
-          handleChangeDate={handleChangeDate}
-          studyVoteData={studyVoteArr}
-          voteCntArr={voteCntArr}
-        />
-        <AnimatePresence initial={false}>
-          <MotionDiv
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            dragElastic={1}
-            onDragEnd={(_, panInfo) => onDragEnd(panInfo)}
-            className="study_space"
+      <Box px={5}>
+        <SectionHeader title="카공 스터디 같이 하실 분" subTitle="Study">
+          <Link
+            href={`/studyList?tab=study&location=${convertLocationLangTo(userLocation, "en")}&date=${date}`}
           >
-            <HomeStudyCol studyVoteData={studyVoteArr} isLoading={!findStudyData} date={date} />
-          </MotionDiv>
-        </AnimatePresence>
+            <ShortArrowIcon dir="right" />
+          </Link>
+        </SectionHeader>
       </Box>
-      <HomeNewStudySpace places={newStudyPlaces} />
-      <HomeStudyChart voteCntArr={voteCntArr} />
+      <Box px={5} mt={3} mb={5} borderBottom="var(--border)">
+        <TabNav tabOptionsArr={tabOptionsArr} selected={dayjsToKr(dayjs(date))} isFullSize />
+      </Box>
+      <Box px={5}>
+        <StudyCardCol participations={studyVoteData?.participations} date={date} />
+      </Box>
     </>
   );
 }
-
-const MotionDiv = styled(motion.div)`
-  margin-top: 16px;
-  margin-bottom: 24px;
-`;
-
-export const getNewDateBySwipe = (panInfo: PanInfo, date: string) => {
-  const { offset, velocity } = panInfo;
-  const swipe = swipePower(offset.x, velocity.x);
-
-  let dateDayjs = dayjs(date);
-  if (swipe < -swipeConfidenceThreshold) {
-    dateDayjs = dateDayjs.add(1, "day");
-  } else if (swipe > swipeConfidenceThreshold) {
-    dateDayjs = dateDayjs.subtract(1, "day");
-  }
-  return dayjsToStr(dateDayjs);
-};
-
-const swipeConfidenceThreshold = 10000;
-const swipePower = (offset: number, velocity: number) => {
-  return Math.abs(offset) * velocity;
-};
 
 export default HomeStudySection;

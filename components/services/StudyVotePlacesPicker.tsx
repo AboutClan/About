@@ -6,7 +6,10 @@ import { PLACE_TO_LOCATION } from "../../constants/serviceConstants/studyConstan
 import { ALL_스터디인증 } from "../../constants/serviceConstants/studyConstants/studyPlaceConstants";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { DispatchType } from "../../types/hooks/reactTypes";
-import { IParticipation, IPlace } from "../../types/models/studyTypes/studyDetails";
+import {
+  StudyParticipationProps,
+  StudyPlaceProps,
+} from "../../types/models/studyTypes/studyDetails";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
 import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
 import PlaceSelectorSub from "../molecules/picker/PlaceSelectorSub";
@@ -24,7 +27,7 @@ function StudyVotePlacesPicker({ setVotePlaces }: IStudyVotePlacesPicker) {
   });
   const studyVote = studyVoteArr?.[0]?.participations;
 
-  const [filteredStudy, setFilteredStudy] = useState<IParticipation[]>();
+  const [filteredStudy, setFilteredStudy] = useState<StudyParticipationProps[]>();
 
   useEffect(() => {
     if (studyVote) {
@@ -34,7 +37,7 @@ function StudyVotePlacesPicker({ setVotePlaces }: IStudyVotePlacesPicker) {
     }
   }, [studyVote]);
 
-  const [subPlace, setSubPlace] = useState<IPlace[]>([]);
+  const [subPlace, setSubPlace] = useState<StudyPlaceProps[]>([]);
 
   useEffect(() => {
     if (!studyVote) return;

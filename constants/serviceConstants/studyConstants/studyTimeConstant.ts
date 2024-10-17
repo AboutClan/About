@@ -1,4 +1,4 @@
-export const STUDY_RESULT_HOUR = 23;
+export const STUDY_RESULT_HOUR = 9;
 export const STUDY_DATE_START_HOUR = 15;
 export const STUDY_DATE_END_HOUR = 19;
 

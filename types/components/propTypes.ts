@@ -2,7 +2,7 @@ import { ThemeTypings } from "@chakra-ui/react";
 
 import { IUserSummary } from "../models/userTypes/userInfoTypes";
 import { LocationEn } from "../services/locationTypes";
-import { ITimeStamps } from "../utils/timeAndDate";
+import { TimeStampProps } from "../utils/timeAndDate";
 
 export interface ILocationParam {
   locationParam: LocationEn;
@@ -18,7 +18,7 @@ export interface ITextAndColorSchemes {
   colorScheme: ThemeTypings["colorSchemes"];
 }
 
-interface CommentProps extends ITimeStamps {
+interface CommentProps extends TimeStampProps {
   comment: string;
   user?: IUserSummary;
   likeList?: string[];
@@ -26,4 +26,10 @@ interface CommentProps extends ITimeStamps {
 }
 export interface UserCommentProps extends CommentProps {
   subComments?: CommentProps[];
+}
+
+export interface BasicButtonProps {
+  text: string;
+  func: () => void;
+  isLoading?: boolean;
 }

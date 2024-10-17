@@ -1,9 +1,9 @@
-import { Flex } from "@chakra-ui/react";
-import Image from "next/image";
+import { Box, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 import styled from "styled-components";
 
 import { SingleLineText } from "../../../styles/layout/components";
+import PlaceImage from "../PlaceImage";
 
 export interface IImageTileData {
   imageUrl: string;
@@ -21,40 +21,16 @@ interface IImageTileGridLayout {
   };
   selectedId?: string[];
   selectedSubId?: string[];
+  hasToggleHeart?: boolean;
 }
 export default function ImageTileGridLayout({
   imageDataArr,
   grid,
   selectedId,
   selectedSubId,
+  hasToggleHeart,
 }: IImageTileGridLayout) {
   const { row = 2, col = 2 } = grid || {};
-
-  function ImageTileLayout({
-    url,
-    text,
-    isPriority,
-  }: {
-    url: string;
-    text: string;
-    isPriority: boolean;
-  }) {
-    return (
-      <Flex direction="column" textAlign="center">
-        <ImageContainer>
-          <Image
-            src={url}
-            sizes="180px"
-            fill={true}
-            alt="reviewThumbnailImage"
-            priority={isPriority}
-            style={{ objectPosition: "center", objectFit: "cover" }}
-          />
-        </ImageContainer>
-        <TextContainer>{text}</TextContainer>
-      </Flex>
-    );
-  }
 
   return (
     <GridContainer row={row} col={col}>
@@ -65,56 +41,84 @@ export default function ImageTileGridLayout({
               url={imageData.imageUrl}
               text={imageData.text}
               isPriority={idx === 0}
+              hasToggleHeart={hasToggleHeart}
+              id={imageData?.id}
+              selected={
+                selectedId?.includes(imageData?.id)
+                  ? "main"
+                  : selectedSubId?.includes(imageData?.id)
+                    ? "sub"
+                    : null
+              }
             />
           </Link>
         ) : (
-          <Button
-            key={idx}
-            $isSelected={
-              selectedId?.includes(imageData?.id)
-                ? "main"
-                : selectedSubId?.includes(imageData?.id)
-                  ? "sub"
-                  : null
-            }
-            onClick={imageData.func}
-          >
+          <Box as="button" key={idx} onClick={imageData.func}>
             <ImageTileLayout
               url={imageData.imageUrl}
+              hasToggleHeart={hasToggleHeart}
               text={imageData.text}
               isPriority={idx === 0}
+              id={imageData?.id}
+              selected={
+                selectedId?.includes(imageData?.id)
+                  ? "main"
+                  : selectedSubId?.includes(imageData?.id)
+                    ? "sub"
+                    : null
+              }
             />
-          </Button>
+          </Box>
         ),
       )}
     </GridContainer>
   );
 }
+
+export function ImageTileLayout({
+  url,
+  text,
+  isPriority,
+  id,
+  selected,
+  hasToggleHeart,
+}: {
+  url: string;
+  text: string;
+  isPriority: boolean;
+  id?: string;
+  selected: "main" | "sub" | null;
+  hasToggleHeart: boolean;
+}) {
+  return (
+    <Flex direction="column" textAlign="center" mb={2}>
+      <PlaceImage
+        selected={selected}
+        imageProps={{ image: url, isPriority }}
+        id={id}
+        hasToggleHeart={hasToggleHeart}
+        size="sm"
+      />
+      <TextContainer selected={selected}>{text}</TextContainer>
+    </Flex>
+  );
+}
+
 const GridContainer = styled.div<{ row: number; col: number }>`
   display: grid;
   grid-template-columns: ${(props) => `repeat(${props.col}, 1fr)`};
   grid-template-rows: ${(props) => `repeat(${props.row}, 1fr)`};
-  gap: 12px;
+  gap: 8px;
 `;
 
-const ImageContainer = styled.div`
-  position: relative;
-  aspect-ratio: 1;
-  border-radius: 8px;
-  overflow: hidden;
-`;
-
-const TextContainer = styled(SingleLineText)`
-  margin-top: 12px;
-`;
-
-const Button = styled.button<{ $isSelected: "main" | "sub" | null }>`
-  background-color: ${(props) =>
-    props.$isSelected === "main"
+const TextContainer = styled(SingleLineText)<{ selected: "main" | "sub" | null }>`
+  margin-top: 8px;
+  font-size: 11px;
+  font-weight: ${(props) => (props.selected ? "700" : "500")};
+  color: ${(props) =>
+    props.selected === "main"
       ? "var(--color-mint)"
-      : props.$isSelected === "sub"
+      : props.selected === "sub"
         ? "var(--color-orange)"
         : null};
-  color: ${(props) => (props.$isSelected ? "white" : "inherit")};
-  border-radius: var(--rounded);
 `;

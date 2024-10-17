@@ -1,8 +1,8 @@
 import {
   Input as ChakraInput,
   InputGroup as ChakraInputGroup,
-  InputLeftElement,
   type InputProps as ChakraInputProps,
+  InputRightElement,
 } from "@chakra-ui/react";
 import { type ForwardedRef,forwardRef } from "react";
 
@@ -23,7 +23,7 @@ export const Input = forwardRef(function Input(
       borderColor="var(--gray-300)"
       size={size}
       border={size === "sm" ? "none" : undefined}
-      borderBottom={size === "sm" && "var(--border-main)"}
+      borderBottom={size === "sm" && "1px solid var(--gray-200)"}
       borderRadius={size === "sm" ? "none" : "4px"}
       _focus={{
         outline: size === "sm" ? "none" : undefined,
@@ -39,23 +39,31 @@ interface InputGroupProps extends InputProps {
 }
 
 export const InputGroup = forwardRef(function InputGroup(
-  { icon, value, onChange, placeholder, disabled }: InputGroupProps,
+  { isDisabled, value, onChange, placeholder, disabled }: InputGroupProps,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   return (
-    <ChakraInputGroup>
-      <InputLeftElement pointerEvents="none">{icon}</InputLeftElement>
+    <ChakraInputGroup display="flex" alignItems="center">
       <ChakraInput
-        pl="36px"
+        pl="20px"
+        h="52px"
         value={value}
         ref={ref}
+        isDisabled={isDisabled}
         onChange={onChange}
         placeholder={placeholder}
         focusBorderColor="#00c2b3"
         backgroundColor="white"
         disabled={disabled}
-        borderColor="var(--gray-300)"
+        fontWeight={300}
+        fontSize="13px"
+        border="1px solid var(--gray-200)"
+        borderRadius="12px"
+        _placeholder={{ color: "var(--gray-500)" }}
       />
+      <InputRightElement h="100%" display="flex" pr="8px">
+        <i className="fa-solid fa-magnifying-glass fa-sm" style={{ color: "var(--color-mint)" }} />
+      </InputRightElement>
     </ChakraInputGroup>
   );
 });

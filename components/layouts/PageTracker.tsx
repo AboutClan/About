@@ -73,6 +73,7 @@ function PageTracker() {
           break;
 
         case "study":
+        
           if (currentSegments?.[1] === "writing") {
             handleWritingPage(
               STUDY_WRITING_SEQUENCE,
@@ -84,7 +85,7 @@ function PageTracker() {
             break;
           }
 
-          if (prevSegments[0] !== "home" && prevSegments[0] !== "studyList") {
+          if (!["home", "studyList", "studyPage"].includes(prevSegments?.[0])) {
             setLeftSlide();
           }
           break;
@@ -150,6 +151,9 @@ function PageTracker() {
           break;
 
         case "group":
+          if (prevSegments?.[0] === "home") {
+            return;
+          }
           handleWritingPage(
             GROUP_WRITING_SEQUENCE,
             currentSegments,

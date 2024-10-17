@@ -45,7 +45,7 @@ function Notice() {
           recentChatId={recentChat}
         />
       </Slide>
-      <Slide>
+      <Slide isNoPadding>
         <Container>
           {noticeType === "notice" ? (
             <NoticeItem />

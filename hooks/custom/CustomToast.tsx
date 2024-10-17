@@ -23,6 +23,9 @@ export const useToast = () => {
         status,
         duration: 3000,
         variant: "subtle",
+        containerStyle: {
+          marginBottom: "76px", // 바닥에서 12px 위로 위치 설정
+        },
       });
     },
     [toast],
@@ -39,7 +42,9 @@ type ToastType =
   | "change"
   | "invite"
   | "not-yet"
-  | "secret-avatar";
+  | "secret-avatar"
+  | "vote"
+  | "omission";
 
 export const useTypeToast = () => {
   const toast = useChakraToast();
@@ -62,15 +67,20 @@ const getTypeToToast = (
   subTitle?: string;
 } => {
   switch (type) {
+    case "vote":
+      return {
+        status: "success",
+        title: "투표 완료",
+      };
     case "guest":
       return {
         status: "error",
-        title: "게스트는 사용할 수 없는 기능입니다.",
+        title: "게스트는 사용할 수 없는 기능입니다",
       };
     case "cancel":
       return {
         status: "error",
-        title: "취소되었습니다.",
+        title: "취소되었습니다",
       };
     case "error":
       return {
@@ -80,27 +90,33 @@ const getTypeToToast = (
     case "success":
       return {
         status: "success",
-        title: "완료되었습니다.",
+        title: "완료되었습니다",
       };
     case "change":
       return {
         status: "success",
-        title: "변경되었습니다.",
+        title: "변경되었습니다",
       };
     case "invite":
       return {
         status: "success",
-        title: "초대가 완료되었습니다.",
+        title: "초대가 완료되었습니다",
       };
     case "not-yet":
       return {
         status: "warning",
-        title: "준비중입니다.",
+        title: "준비중입니다",
       };
     case "secret-avatar":
       return {
         status: "warning",
-        title: "비공개 프로필입니다.",
+        title: "비공개 프로필입니다",
+      };
+
+    case "omission":
+      return {
+        status: "error",
+        title: "누락된 정보가 있습니다",
       };
   }
 };
@@ -125,6 +141,7 @@ export const useFailToast = () => {
         duration: 3000,
         isClosable: true,
         position: isTop ? "top" : "bottom",
+        variant: "solid",
       });
     },
     [toast],

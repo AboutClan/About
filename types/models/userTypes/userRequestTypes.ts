@@ -1,7 +1,7 @@
 import { Dayjs } from "dayjs";
 
 import { Location } from "../../services/locationTypes";
-import { ITimeStamps } from "../../utils/timeAndDate";
+import { TimeStampProps } from "../../utils/timeAndDate";
 
 export type UserRequestCategory =
   | "건의"
@@ -16,7 +16,7 @@ export type UserRequestCategory =
   | "조모임"
   | "장소 추가";
 
-export interface IUserRequest extends ITimeStamps {
+export interface IUserRequest extends TimeStampProps {
   category: UserRequestCategory;
   location?: Location;
   title?: string;

@@ -1,12 +1,24 @@
+import { Box } from "@chakra-ui/react";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+
+import SectionHeader from "../../components/atoms/SectionHeader";
+import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
+import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import HomeGatherCol from "./HomeGatherCol";
-import HomeReviewSection from "./HomeReviewSection";
 
 function HomeGatherSection() {
+  const { data: session } = useSession();
+
   return (
-    <>
+    <Box my={5}>
+      <SectionHeader title="About 번개" subTitle="Meeting">
+        <Link href={`/gather?location=${convertLocationLangTo(session?.user.location, "en")}`}>
+          <ShortArrowIcon dir="right" />
+        </Link>
+      </SectionHeader>
       <HomeGatherCol />
-      <HomeReviewSection />
-    </>
+    </Box>
   );
 }
 

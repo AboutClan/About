@@ -8,7 +8,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import { GATHER_SHARE_IMAGES } from "../../../assets/images/imageUrl";
-import KakaoShareBtn from "../../../components/atoms/Icons/KakaoShareBtn";
+import KakaoShareBtn from "../../../components/Icons/KakaoShareBtn";
 import Header from "../../../components/layouts/Header";
 import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import { WEB_URL } from "../../../constants/system";

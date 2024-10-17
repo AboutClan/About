@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import RuleIcon from "../../components/atoms/Icons/RuleIcon";
+import RuleIcon from "../../components/Icons/RuleIcon";
 import Header from "../../components/layouts/Header";
 import GatherRuleModal from "../../modals/gather/GatherRuleModal";
 

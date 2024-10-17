@@ -1,6 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 
-import { NoticeIcon } from "../../atoms/Icons/NoticeIcons";
+import { NoticeIcon } from "../../Icons/NoticeIcons";
 
 export interface IButtonCardProps {
   title: string;

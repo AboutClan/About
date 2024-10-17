@@ -9,6 +9,5 @@ export default function IconButton({ children, onClick }: IIconButton) {
 }
 
 const Button = styled.button`
-  padding: 16px;
   position: relative;
 `;

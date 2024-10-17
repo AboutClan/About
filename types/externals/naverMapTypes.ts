@@ -1,7 +1,5 @@
 /* eslint-disable */
 
-import { IPlace } from "../models/studyTypes/studyDetails";
-
 export interface IMapOptions {
   background?: string;
   baseTileOpacity?: number;
@@ -45,7 +43,8 @@ export interface IMapOptions {
 
 export interface IMarkerOptions {
   isPicked?: boolean;
-  id?: IPlace;
+  id?: string;
+  type?: "vote";
   animation?: any;
   map?: any;
   position: any;

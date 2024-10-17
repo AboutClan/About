@@ -5,10 +5,10 @@ import styled from "styled-components";
 
 import Avatar from "../../components/atoms/Avatar";
 import UserBadge from "../../components/atoms/badges/UserBadge";
-import RankingNumberIcon from "../../components/atoms/Icons/RankingNumberIcon";
+import RankingNumberIcon from "../../components/Icons/RankingNumberIcon";
 import { RANKING_ANONYMOUS_USERS } from "../../constants/storage/anonymous";
 import { RankingUserProp } from "../../libs/userEventLibs/userHelpers";
-import { RankingCategorySource } from "../../pages/statistics";
+import { RankingCategorySource } from "../../pages/ranking";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 
 interface IRankingMembers {

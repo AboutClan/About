@@ -8,6 +8,22 @@ import { MutationOptions } from "../../../../types/hooks/reactTypes";
 import { Alphabet } from "../../../../types/models/collections";
 import { useResetQueryData } from "../../../custom/CustomHooks";
 
+export const useAlphabetStampMutation = (options?: MutationOptions<void, string>) => {
+  const resetQueryData = useResetQueryData();
+  return useMutation<string, AxiosError, void>(
+    async () =>
+      requestServer<void, string>({
+        method: "patch",
+        url: `collection/alphabet`,
+      }),
+    {
+      ...options,
+      onSuccess() {
+        resetQueryData(COLLECTION_ALPHABET);
+      },
+    },
+  );
+};
 type CollectionAlphabetParam<T> = T extends "get"
   ? { alphabet: Alphabet }
   : { mine: Alphabet; opponent: Alphabet; myId: string; toUid: string };

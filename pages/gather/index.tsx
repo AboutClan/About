@@ -9,7 +9,7 @@ function Gather() {
   return (
     <>
       <GatherHeader />
-      <Slide>
+      <Slide isNoPadding>
         <GatherReviewSlider />
         <Divider />
         <GatherLocationFilter />

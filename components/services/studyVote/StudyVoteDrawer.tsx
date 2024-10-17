@@ -1,92 +1,79 @@
+import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useState } from "react";
 
-import { PLACE_TO_NAME } from "../../../constants/serviceConstants/studyConstants/studyCafeNameConstants";
-import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
-import { useStudyParticipationMutation } from "../../../hooks/study/mutations";
-import { usePointSystemMutation } from "../../../hooks/user/mutations";
-import { usePointSystemLogQuery } from "../../../hooks/user/queries";
-import StudyVoteSubModalPrivate from "../../../modals/study/studyVoteSubModal/StudyVoteSubModalPrivate";
-import { myStudyState, studyDateStatusState } from "../../../recoils/studyRecoils";
 import { IModal } from "../../../types/components/modalTypes";
-import {
-  IStudyVote,
-  IStudyVotePlaces,
-  IStudyVoteTime,
-} from "../../../types/models/studyTypes/studyInterActions";
-import { dayjsToStr } from "../../../utils/dateTimeUtils";
+import { IStudyVoteTime } from "../../../types/models/studyTypes/studyInterActions";
+import ImageTileGridLayout, { IImageTileData } from "../../molecules/layouts/ImageTitleGridLayout";
 import BottomDrawerLg, { IBottomDrawerLgOptions } from "../../organisms/drawer/BottomDrawerLg";
-import StudyVotePlacesPicker from "../StudyVotePlacesPicker";
 import StudyVoteTimeRulletDrawer from "./StudyVoteTimeRulletDrawer";
 
 dayjs.locale("ko");
 
-interface IStudyVoteDrawer extends IModal {}
+interface IStudyVoteDrawer extends IModal {
+  imagePropsArr: {
+    id: string;
+    name: string;
+  };
 
-export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
-  const { date, id } = useParams<{ date: string; id: string }>();
+  handleSubmit: (voteTime: IStudyVoteTime) => void;
+  isLoading?: boolean;
+  date?: string;
+  hasPlace?: boolean;
+}
 
-  const resetStudy = useResetStudyQuery();
+export default function StudyVoteDrawer({
+  setIsModal,
+  date,
+  hasPlace,
+  handleSubmit,
+  isLoading,
+}: IStudyVoteDrawer) {
+  // const { date, id } = useParams<{ date: string; id: string }>();
+  // const router = useRouter();
 
   const toast = useToast();
-  const studyDateStatus = useRecoilValue(studyDateStatusState);
-  const myStudy = useRecoilValue(myStudyState);
+  // const studyDateStatus = useRecoilValue(studyDateStatusState);
 
   const [isFirst, setIsFirst] = useState(true);
-  const [myVote, setMyVote] = useState<IStudyVote>({
-    place: id,
-    subPlace: [],
-    start: null,
-    end: null,
-  });
-
+  const [imageDataArr, setImageDataArr] = useState<IImageTileData[]>();
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
-  const [votePlaces, setVotePlaces] = useState<IStudyVotePlaces>();
 
-  useEffect(() => {
-    setMyVote((old) => ({ ...old, ...voteTime, ...votePlaces }));
-  }, [voteTime, votePlaces]);
+  // useEffect(() => {
+  //   if (!studyVoteDataAll) return;
 
-  const { data: pointLog } = usePointSystemLogQuery("point", true, {
-    enabled: !!myStudy,
-  });
+  //   setImageDataArr(
+  //     studyVoteDataAll?.participations?.map((par) => {
+  //       const placeProps = par.place;
 
-  const isPrivateStudy = PLACE_TO_NAME[id] === "개인 스터디";
-
-  //오늘 날짜 투표 포인트 받은거 찾기
-  const myPrevVotePoint = pointLog?.find(
-    (item) => item.message === "스터디 투표" && item.meta.sub === dayjsToStr(dayjs(date)),
-  )?.meta.value;
-
-  const { mutate: getPoint } = usePointSystemMutation("point");
-  const { mutate: patchAttend, isLoading } = useStudyParticipationMutation(dayjs(date), "post", {
-    onSuccess() {
-      handleSuccess();
-    },
-  });
-
-  const handleSuccess = async () => {
-    resetStudy();
-
-    if (myPrevVotePoint) {
-      await getPoint({
-        message: "스터디 투표 취소",
-        value: -myPrevVotePoint,
-      });
-    }
-    if (studyDateStatus === "not passed" && votePlaces.subPlace.length) {
-      await getPoint({
-        value: 5 + votePlaces.subPlace.length,
-        message: "스터디 투표",
-        sub: date,
-      });
-      toast("success", `투표 완료! ${!myStudy && "포인트가 적립되었습니다."}`);
-    } else toast("success", "투표 완료!");
-    setIsModal(false);
-  };
+  //       return {
+  //         imageUrl: placeProps.image,
+  //         text: placeProps.fullname,
+  //         func: () => {
+  //           const id = par.place._id;
+  //           // if (studyDateStatus === "today") {
+  //           //   setMyVote((old) => ({ ...old, place: id }));
+  //           //   return;
+  //           // }
+  //           // const voteMainId = myVote?.place;
+  //           // const voteSubIdArr = myVote?.subPlace;
+  //           // const { place, subPlace } = selectStudyPlace(id, voteMainId, voteSubIdArr);
+  //           // if (!voteMainId && voteSubIdArr?.length === 0) {
+  //           //   const participations = studyVoteDataAll[0].participations;
+  //           //   const placeInfo = participations.find((par) => par.place._id === place).place;
+  //           //   setMyVote((old) => ({
+  //           //     ...old,
+  //           //     place,
+  //           //     subPlace: selectSubPlaceAuto(placeInfo, participations),
+  //           //   }));
+  //           // } else setMyVote((old) => ({ ...old, place, subPlace }));
+  //         },
+  //         id: placeProps._id,
+  //       };
+  //     }),
+  //   );
+  // }, [studyVoteDataAll]);
 
   const onSubmit = () => {
     const diffHour = voteTime.end.diff(voteTime.start, "hour");
@@ -94,29 +81,28 @@ export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
       toast("warning", "최소 2시간은 선택되어야 합니다.");
       return;
     }
-    const temp = {
-      ...myVote,
-      place: myVote.place,
-      subPlace: myVote.subPlace,
+    const realVoteTime: IStudyVoteTime = {
+      start: dayjs(date).hour(voteTime.start.hour()).minute(voteTime.start.minute()),
+      end: dayjs(date).hour(voteTime.end.hour()).minute(voteTime.end.minute()),
     };
-    patchAttend(temp);
+    handleSubmit({ ...realVoteTime });
   };
 
   const drawerOptions: IBottomDrawerLgOptions = {
     header: {
-      title: dayjs(date).format("M월 DD일 ddd요일"),
+      title: dayjs(date).format("M월 D일 ddd요일"),
       subTitle: "스터디 참여시간을 선택해주세요!",
     },
     footer: {
-      buttonText: isFirst ? "다음" : "신청 완료",
-      onClick: isFirst ? () => setIsFirst(false) : onSubmit,
+      buttonText: isFirst && !hasPlace ? "다음" : "신청 완료",
+      onClick: isFirst && !hasPlace ? () => setIsFirst(false) : onSubmit,
       buttonLoading: isLoading,
     },
   };
 
   return (
     <>
-      {isFirst ? (
+      {false ? (
         <StudyVoteTimeRulletDrawer
           setVoteTime={setVoteTime}
           drawerOptions={drawerOptions}
@@ -124,11 +110,22 @@ export default function StudyVoteDrawer({ setIsModal }: IStudyVoteDrawer) {
         />
       ) : (
         <BottomDrawerLg options={drawerOptions} setIsModal={setIsModal} isAnimation={false}>
-          {!isPrivateStudy ? (
+          {/* <StudyVotePlacesPicker /> */}
+          <Box height="240px" overflowY="scroll">
+            {imageDataArr && (
+              <ImageTileGridLayout
+                imageDataArr={imageDataArr}
+                grid={{ row: null, col: 4 }}
+                // selectedId={[myVote?.place]}
+                // selectedSubId={myVote?.subPlace}
+              />
+            )}
+          </Box>
+          {/* {!isPrivateStudy ? (
             <StudyVotePlacesPicker setVotePlaces={setVotePlaces} />
           ) : (
             <StudyVoteSubModalPrivate setVoteInfo={setMyVote} />
-          )}
+          )} */}
         </BottomDrawerLg>
       )}
     </>

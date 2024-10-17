@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-import { AlphabetIcon } from "../../../components/atoms/Icons/AlphabetIcon";
+import { AlphabetIcon } from "../../../components/Icons/AlphabetIcon";
 import { useCompleteToast, useFailToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { useInteractionMutation } from "../../../hooks/user/sub/interaction/mutations";

@@ -9,7 +9,7 @@ interface ICircleLogImage {
 export default function CircleLogoImage({ logoName, imageUrl }: ICircleLogImage) {
   return (
     <CircleLogoWrapper>
-      <Image src={imageUrl} width={72} height={72} alt={logoName} />
+      <Image src={imageUrl} fill={true} sizes="100px" alt={logoName} />
     </CircleLogoWrapper>
   );
 }
@@ -20,4 +20,6 @@ const CircleLogoWrapper = styled.div`
   border-radius: 50%;
   overflow: hidden;
   position: relative;
+  width: 72px;
+  height: 72px;
 `;

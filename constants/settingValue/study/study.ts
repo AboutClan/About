@@ -5,6 +5,8 @@ export const STUDY_VOTE_START_HOUR = 16;
 export const VOTER_DATE_END = 18;
 export const STUDY_VOTE_END_HOUR = 23;
 
+
+
 export const TODAY_START_HOUR = 9;
 
 export const STUDY_START_VOTETIME_HOUR = 10;

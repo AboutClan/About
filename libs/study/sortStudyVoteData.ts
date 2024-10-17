@@ -1,14 +1,14 @@
-import { IParticipation, StudyStatus } from "../../types/models/studyTypes/studyDetails";
+import { StudyParticipationProps, StudyStatus } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
 
 export const sortStudyVoteData = (
-  participations: IParticipation[],
+  participations: StudyParticipationProps[],
   preferPlaces?: IStudyVotePlaces,
   isConfirmed?: boolean,
 ) => {
-  const getCount = (participation: IParticipation) => {
-    if (!isConfirmed) return participation.attendences.length;
-    return participation.attendences.filter((who) => who.firstChoice).length;
+  const getCount = (participation: StudyParticipationProps) => {
+    if (!isConfirmed) return participation.members.length;
+    return participation.members.filter((who) => who.firstChoice).length;
   };
   const getStatusPriority = (status: StudyStatus) => {
     switch (status) {
@@ -31,7 +31,7 @@ export const sortStudyVoteData = (
   const sortedData = participations
     .map((par) => ({
       ...par,
-      attendences: par.attendences.filter((who) => (isConfirmed ? who.firstChoice : true)),
+      members: par.members.filter((who) => (isConfirmed ? who.firstChoice : true)),
     }))
     .sort((a, b) => {
       const aStatusPriority = getStatusPriority(a.status);

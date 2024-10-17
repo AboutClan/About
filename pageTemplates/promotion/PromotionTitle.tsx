@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import EveryTimeLogo from "../../components/atoms/Icons/CustomIcons";
+import EveryTimeLogo from "../../components/Icons/CustomIcons";
 
 function PromotionTitle() {
   return (

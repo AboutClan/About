@@ -21,7 +21,7 @@ function CalendarPage() {
   return (
     <>
       <Header title="동아리 캘린더" />
-      <Slide>
+      <Slide isNoPadding>
         <Flex align="center" justify="space-between" my={4} mr={4} ml={2}>
           <MonthNav monthNum={monthNum} changeMonth={setMonthFirstDate} />
 

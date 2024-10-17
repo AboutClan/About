@@ -11,7 +11,7 @@ import {
 import Link from "next/link";
 import { useEffect } from "react";
 
-import { NoticeIcon } from "../../components/atoms/Icons/NoticeIcons";
+import { NoticeIcon } from "../../components/Icons/NoticeIcons";
 import { NOTICE_ALERT } from "../../constants/keys/localStorage";
 import { NOTICE_ARR } from "../../storage/notice";
 

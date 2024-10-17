@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 // import "react-date-range/dist/theme/default.css"; // theme css file
 import styled from "styled-components";
 
-import { PopOverIcon } from "../../../components/atoms/Icons/PopOverIcon";
+import { PopOverIcon } from "../../../components/Icons/PopOverIcon";
 import { useCompleteToast, useFailToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
 import { useUserRequestMutation } from "../../../hooks/user/sub/request/mutations";

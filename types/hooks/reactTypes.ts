@@ -17,7 +17,7 @@ export type QueryOptions<TData = unknown> = Omit<
   "queryKey" | "queryFn"
 >;
 
-export type MutationOptions<TData = unknown> = Omit<
-  UseMutationOptions<void, AxiosError, TData>,
+export type MutationOptions<TData = unknown, TReturnType = void> = Omit<
+  UseMutationOptions<TReturnType, AxiosError, TData>,
   "mutationKey" | "mutationFn"
 >;

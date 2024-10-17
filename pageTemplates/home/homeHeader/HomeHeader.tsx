@@ -5,9 +5,11 @@ import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import MainLogo from "../../../assets/MainLogo";
+import AlertCirclePoint from "../../../components/atoms/AlertCirclePoint";
+import { CalendarCheckIcon, NoticeIcon } from "../../../components/Icons/SolidIcons";
 import Slide from "../../../components/layouts/PageSlide";
 import IconButtonNav, { IIconButtonNavBtn } from "../../../components/molecules/navs/IconButtonNav";
+import { AboutLogo } from "../../../components/services/AboutLogo";
 import { DAILY_CHECK_POP_UP, NOTICE_ALERT } from "../../../constants/keys/localStorage";
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import DailyCheckModal from "../../../modals/aboutHeader/dailyCheckModal/DailyCheckModal";
@@ -41,13 +43,8 @@ function HomeHeader() {
   useEffect(() => {
     // if (!data) return;
     // const recentOne = data[0]?.message;
-    // const noticeRecent = localStorage.getItem(NOTICE_RECENT);
-    const noticeCnt = localStorage.getItem(NOTICE_ALERT);
-    // const recentChatId = localStorage.getItem(RECENT_CHAT_ID);
 
-    // if (recentChat?.length && recentChatId !== recentChat) {
-    //   setIsNoticeAlert(true);
-    // }
+    const noticeCnt = localStorage.getItem(NOTICE_ALERT);
 
     if (NOTICE_ARR.length !== +noticeCnt) {
       setIsNoticeAlert(true);
@@ -57,15 +54,42 @@ function HomeHeader() {
   const generateIconBtnArr = () => {
     const arr = [
       {
-        icon: <i className="fa-light fa-calendar-star" />,
-        func: isGuest ? () => typeToast("guest") : () => setModalType("pointGuide"),
+        icon: (
+          <>
+            <Box w="20px" h="20px" opacity={0.4}>
+              <CalendarCheckIcon />
+            </Box>
+            <Box
+              position="absolute"
+              right={0}
+              bottom={0}
+              p="1px"
+              bgColor="white"
+              borderRadius="50%"
+            >
+              <AlertCirclePoint isActive={!todayDailyCheck} />
+            </Box>
+          </>
+        ),
+        func: isGuest ? () => typeToast("guest") : () => setModalType("dailyCheck"),
       },
 
       {
         icon: (
           <>
-            <i className="fa-light fa-bell" />
-            {isNoticeAlert && <Alert />}
+            <Box opacity={0.4} w="20px" h="20px">
+              <NoticeIcon />
+            </Box>
+            <Box
+              position="absolute"
+              right="2px"
+              top="-1px"
+              p="1px"
+              bgColor="white"
+              borderRadius="50%"
+            >
+              <AlertCirclePoint isActive={isNoticeAlert} />
+            </Box>
           </>
         ),
         link: "/notice",
@@ -73,17 +97,17 @@ function HomeHeader() {
       },
     ];
 
-    if (todayDailyCheck === false && showDailyCheck) {
-      arr.unshift({
-        icon: <i className="fa-light fa-badge-check" style={{ color: "var(--color-mint)" }} />,
-        func: () => setModalType("dailyCheck"),
-      });
-    }
+    // if (!todayDailyCheck && showDailyCheck) {
+    //   arr.unshift({
+    //     icon: <i className="fa-light fa-badge-check" style={{ color: "var(--color-mint)" }} />,
+    //     func: () => setModalType("dailyCheck"),
+    //   });
+    // }
 
     return arr;
   };
 
-  const [iconBtnArr, setIconBtnArr] = useState<IIconButtonNavBtn[]>(generateIconBtnArr);
+  const [iconBtnArr, setIconBtnArr] = useState<IIconButtonNavBtn[]>(generateIconBtnArr());
 
   useEffect(() => {
     setIconBtnArr(generateIconBtnArr());
@@ -94,7 +118,7 @@ function HomeHeader() {
       <Slide isFixed={true}>
         {renderHomeHeader && (
           <Layout>
-            <MainLogo />
+            <AboutLogo />
             <Box className="about_header" fontSize="21px" color="var(--gray-700)">
               <IconButtonNav iconList={iconBtnArr} />
             </Box>
@@ -116,7 +140,7 @@ const Layout = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-
+  border-bottom: 1px solid var(--gray-100);
   max-width: var(--max-width);
   margin: 0 auto;
 
@@ -124,16 +148,6 @@ const Layout = styled.header`
     display: flex;
     align-items: center;
   }
-`;
-
-const Alert = styled.div`
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background-color: var(--color-red);
-  position: absolute;
-  right: 14px;
-  bottom: 24px;
 `;
 
 export default HomeHeader;

@@ -6,12 +6,15 @@ import ImageTileGridLayout, {
 } from "../../../components/molecules/layouts/ImageTitleGridLayout";
 import { MAX_USER_PER_PLACE } from "../../../constants/settingValue/study/study";
 import { useToast } from "../../../hooks/custom/CustomToast";
-import { IParticipation, IPlace } from "../../../types/models/studyTypes/studyDetails";
+import {
+  StudyParticipationProps,
+  StudyPlaceProps,
+} from "../../../types/models/studyTypes/studyDetails";
 
 interface IPlaceSelectorSub {
-  places: IParticipation[];
-  selectPlaces: IPlace[];
-  setSelectPlaces: Dispatch<SetStateAction<IPlace[]>>;
+  places: StudyParticipationProps[];
+  selectPlaces: StudyPlaceProps[];
+  setSelectPlaces: Dispatch<SetStateAction<StudyPlaceProps[]>>;
 }
 
 function PlaceSelectorSub({ places, selectPlaces, setSelectPlaces }: IPlaceSelectorSub) {
@@ -19,8 +22,8 @@ function PlaceSelectorSub({ places, selectPlaces, setSelectPlaces }: IPlaceSelec
   const isTwoPage = places?.length > 8;
 
   const [pagePlaces, setPagePlaces] = useState<{
-    first: IParticipation[];
-    second: IParticipation[];
+    first: StudyParticipationProps[];
+    second: StudyParticipationProps[];
   }>();
   const [isFirst, setIsFirst] = useState(true);
 
@@ -32,8 +35,8 @@ function PlaceSelectorSub({ places, selectPlaces, setSelectPlaces }: IPlaceSelec
     });
   }, [isTwoPage, places]);
 
-  const onClick = (par: IParticipation) => {
-    if (par.attendences.length >= MAX_USER_PER_PLACE) {
+  const onClick = (par: StudyParticipationProps) => {
+    if (par.members.length >= MAX_USER_PER_PLACE) {
       toast("error", "인원이 마감되었습니다.");
       return;
     }

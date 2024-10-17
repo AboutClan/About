@@ -4,10 +4,10 @@ import { useRecoilState, useRecoilValue } from "recoil";
 
 import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
 import DailyCheckWinModal from "../../modals/aboutHeader/dailyCheckModal/DailyCheckWinModal";
-import AlphabetModal from "../../modals/common/AlphabetModal";
+import CollectionModal from "../../modals/common/CollectionModal";
 import WriteDrawer from "../../modals/home/writeDrawer";
 import ErrorUserInfoPopUp from "../../modals/pop-up/ErrorUserInfoPopUp";
-import { transferAlphabetState, transferDailyCheckWinState } from "../../recoils/transferRecoils";
+import { transferCollectionState, transferDailyCheckWinState } from "../../recoils/transferRecoils";
 import { DispatchBoolean } from "../../types/hooks/reactTypes";
 interface IBaseModal {
   isGuest: boolean;
@@ -30,7 +30,7 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
   const isWriteModal = !!searchParams.get("write");
   const isLogoutModal = !!searchParams.get("logout");
 
-  const [transferAlphabet, setTransferAlphabet] = useRecoilState(transferAlphabetState);
+  const [transferCollection, setTransferCollection] = useRecoilState(transferCollectionState);
 
   const dailyCheckWin = useRecoilValue(transferDailyCheckWinState);
 
@@ -46,8 +46,11 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
       {isLogoutModal && <AlertModal options={LOGOUT_ALERT_OPTIONS} setIsModal={cancelLogout} />}
       {isError && <ErrorUserInfoPopUp setIsModal={setIsError} />}
       {isWriteModal && <WriteDrawer />}
-      {transferAlphabet && (
-        <AlphabetModal setIsModal={() => setTransferAlphabet(null)} alphabet={transferAlphabet} />
+      {transferCollection && (
+        <CollectionModal
+          setIsModal={() => setTransferCollection(null)}
+          collection={transferCollection}
+        />
       )}
     </>
   );

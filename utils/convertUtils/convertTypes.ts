@@ -36,3 +36,8 @@ export const birthToAge = (birth: string) => {
 
 //생년월일 to Dayjs
 export const birthToDayjs = (birth: string) => dayjs(birth.slice(2, 4) + "-" + birth.slice(4, 6));
+
+export const convertTimeStringToDayjs = (timeString: string) => {
+  const [hour, minute] = timeString.split(":").map(Number); // '18'과 '00'을 숫자로 변환
+  return dayjs().hour(hour).minute(minute).second(0);
+};

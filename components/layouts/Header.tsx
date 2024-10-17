@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import styled from "styled-components";
 
 import ArrowBackButton from "../../components/atoms/buttons/ArrowBackButton";
@@ -10,6 +10,8 @@ interface IHeader {
   url?: string;
   isSlide?: boolean;
   rightPadding?: number;
+  isCenter?: boolean;
+  isBorder?: boolean;
   children?: React.ReactNode;
 }
 
@@ -21,14 +23,27 @@ export default function Header({
   rightPadding,
   func,
   children,
+  isCenter,
+  isBorder = true,
 }: IHeader) {
   function HeaderLayout() {
     return (
-      <HeaderContainer rightPadding={rightPadding}>
-        <LeftSection>
-          {isBack ? <ArrowBackButton url={url} func={func} /> : <Box w="16px" />}
-          <Title>{title}</Title>
-        </LeftSection>
+      <HeaderContainer
+        isBack={isBack}
+        isCenter={isCenter}
+        isBorder={isBorder}
+        rightPadding={rightPadding}
+      >
+        <Flex>
+          {isBack && <ArrowBackButton url={url} func={func} />}
+          {!isCenter && (
+            <Box ml={isBack && 2} fontWeight={700}>
+              {title}
+            </Box>
+          )}
+        </Flex>
+        {isCenter && <CenterTitle>{title}</CenterTitle>}
+        {isCenter && !children && <Box w={5} />}
         <div>{children}</div>
       </HeaderContainer>
     );
@@ -47,28 +62,28 @@ export default function Header({
   );
 }
 
-const HeaderContainer = styled.header<{ rightPadding: number }>`
+const HeaderContainer = styled.header<{
+  isBorder?: boolean;
+  isBack?: boolean;
+  isCenter?: boolean;
+  rightPadding: number;
+}>`
   background-color: white;
   height: var(--header-h);
-  font-size: 18px;
-  padding-right: ${(props) => props.rightPadding || 16}px;
-
+  font-size: 16px;
+  padding-right: ${(props) => props.rightPadding || 20}px;
+  padding-left: ${(props) => (props.isBack ? "16px" : "20px")};
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: var(--border);
+  border-bottom: ${(props) => (props.isBorder ? "var(--border)" : "none")};
   max-width: var(--max-width);
   margin: 0 auto;
 `;
 
-// Left Section 스타일
-const LeftSection = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-// Title 스타일
-const Title = styled.div`
-  font-weight: 800; /* font-extrabold */
+const CenterTitle = styled.div`
+  flex: 1;
+  font-weight: 700; /* font-extrabold */
   color: var(--gray-800); /* text-gray-1 - 색상은 예시입니다 */
+  text-align: center;
 `;

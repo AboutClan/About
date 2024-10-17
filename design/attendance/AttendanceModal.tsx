@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import styled from "styled-components";
 
 import Avatar from "../../components/atoms/Avatar";
-import { PopOverIcon } from "../../components/atoms/Icons/PopOverIcon";
+import { PopOverIcon } from "../../components/Icons/PopOverIcon";
 import { IFooterOptions, ModalLayout } from "../../modals/Modals";
 import { DispatchBoolean } from "../../types/hooks/reactTypes";
 import AttendanceBar from "./AttendanceBar";

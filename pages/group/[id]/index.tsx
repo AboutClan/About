@@ -8,8 +8,8 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { GROUP_GATHERING_IMAGE } from "../../../assets/images/randomImages";
-import WritingIcon from "../../../components/atoms/Icons/WritingIcon";
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
+import WritingIcon from "../../../components/Icons/WritingIcon";
 import Slide from "../../../components/layouts/PageSlide";
 import { useGroupAttendancePatchMutation } from "../../../hooks/groupStudy/mutations";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";

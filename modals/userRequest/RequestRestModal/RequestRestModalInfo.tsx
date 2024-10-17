@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
-import { PopOverIcon } from "../../../components/atoms/Icons/PopOverIcon";
+import { PopOverIcon } from "../../../components/Icons/PopOverIcon";
 import { ModalBody } from "../../Modals";
 import { IApplyRest } from "./RequestRestModal";
 const POPOVER_MESSAGE =

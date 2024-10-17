@@ -10,6 +10,7 @@ interface ISelector {
   options: string[];
   setValue: DispatchType<string> | DispatchType<ActiveLocation>;
   isBorder?: boolean;
+  convertTextFunc?: (text: string) => string;
 }
 
 export default function Selector({
@@ -17,6 +18,7 @@ export default function Selector({
   options,
   setValue: setParentValue,
   isBorder = true,
+  convertTextFunc,
 }: ISelector) {
   const [value, setValue] = useState(defaultValue);
 
@@ -26,6 +28,7 @@ export default function Selector({
 
   const onChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const targetValue = e.currentTarget.value;
+
     if (isLocationType(targetValue)) setParentValue(targetValue as ActiveLocation);
     else (setParentValue as DispatchType<string>)(targetValue);
   };
@@ -47,7 +50,9 @@ export default function Selector({
         `}
       >
         {options.map((option, idx) => (
-          <option key={idx}>{option}</option>
+          <option key={idx} value={option}>
+            {!convertTextFunc ? option : convertTextFunc(option)}
+          </option>
         ))}
       </Select>
     </div>

@@ -2,7 +2,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 import Avatar from "../components/atoms/Avatar";
-import HeartIcon from "../components/atoms/Icons/HeartIcon";
+import HeartIcon from "../components/Icons/HeartIcon";
 import { useToast } from "../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../hooks/user/queries";
 import { useInteractionMutation } from "../hooks/user/sub/interaction/mutations";

@@ -2,7 +2,7 @@ import { Button } from "@chakra-ui/react";
 import styled from "styled-components";
 
 import CountNum from "../../../../components/atoms/CountNum";
-import { CopyBtn } from "../../../../components/atoms/Icons/CopyIcon";
+import { CopyBtn } from "../../../../components/Icons/CopyIcon";
 import { DispatchNumber } from "../../../../types/hooks/reactTypes";
 
 interface IGatherWritingConditionPre {

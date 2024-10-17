@@ -6,26 +6,29 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogOverlay,
+  Box,
   Button,
 } from "@chakra-ui/react";
 import React from "react";
 
 import { IModal } from "../types/components/modalTypes";
+import KakaoShareBtn from "./Icons/KakaoShareBtn";
 export interface IAlertSimpleModalOptions {
   title: string;
   subTitle: string;
-  func: () => void;
-  text?: string;
+  text?: string; // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  kakaoOption?: any;
 }
 
 interface IAlertSimpleModal extends IModal {
   options: IAlertSimpleModalOptions;
-  colorType?: "mintTheme" | "redTheme";
+  color?: "mint" | "red";
 }
 
 export default function AlertSimpleModal({
   setIsModal,
-  options: { title, subTitle },
+  options: { title, subTitle, kakaoOption },
+  color = "mint",
 }: IAlertSimpleModal) {
   const cancelRef = React.useRef();
 
@@ -46,7 +49,12 @@ export default function AlertSimpleModal({
           <AlertDialogCloseButton />
           <AlertDialogBody p="0 16px">{subTitle}</AlertDialogBody>
           <AlertDialogFooter p="16px">
-            <Button colorScheme="mintTheme" onClick={() => setIsModal(false)}>
+            {kakaoOption && (
+              <Box mr={3}>
+                <KakaoShareBtn isTemp {...kakaoOption} />
+              </Box>
+            )}
+            <Button colorScheme={color} onClick={() => setIsModal(false)}>
               확인
             </Button>
           </AlertDialogFooter>

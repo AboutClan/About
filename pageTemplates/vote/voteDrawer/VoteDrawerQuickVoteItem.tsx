@@ -1,20 +1,12 @@
 import { Box, Flex } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import { IStudyVotePlaces } from "../../../types/models/studyTypes/studyInterActions";
-
 interface VoteDrawerQuickVoteItemProps {
-  savedPreferPlace: IStudyVotePlaces;
-
+  preferPlaces: { main: string; sub: string[] };
   handleQuickVote: () => void;
 }
 
-function VoteDrawerQuickVoteItem({
-  savedPreferPlace,
-  handleQuickVote,
-}: VoteDrawerQuickVoteItemProps) {
-  const favoritesCnt = (savedPreferPlace?.place ? 1 : 0) + savedPreferPlace?.subPlace?.length || 0;
-
+function VoteDrawerQuickVoteItem({ preferPlaces, handleQuickVote }: VoteDrawerQuickVoteItemProps) {
   return (
     <Flex
       py="8px"
@@ -32,10 +24,16 @@ function VoteDrawerQuickVoteItem({
 
       <Flex direction="column" align="flex-start">
         <Box fontWeight={600} fontSize="16px">
-          빠른 투표
+          1초 만에 스터디 투표하기
         </Box>
         <Box color="var(--gray-600)" fontSize="14px">
-          <Box as="span">등록된 장소:{favoritesCnt || 0}개</Box>
+          {preferPlaces?.main ? (
+            <Box as="span">
+              즐겨찾기: {preferPlaces?.main} 외 {preferPlaces?.sub?.length + 1}곳
+            </Box>
+          ) : (
+            <Box as="span">해당 지역에 즐겨찾기된 장소가 없습니다.</Box>
+          )}
         </Box>
       </Flex>
     </Flex>

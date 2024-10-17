@@ -2,11 +2,11 @@ import { Select } from "@chakra-ui/react";
 import { ChangeEvent } from "react";
 
 import { DispatchType } from "../../types/hooks/reactTypes";
-import { IParticipation } from "../../types/models/studyTypes/studyDetails";
+import { StudyParticipationProps } from "../../types/models/studyTypes/studyDetails";
 
 interface IPlaceSelector {
   defaultValue: string;
-  options: IParticipation[];
+  options: StudyParticipationProps[];
   setValue: DispatchType<string>;
   isBorder?: boolean;
 }

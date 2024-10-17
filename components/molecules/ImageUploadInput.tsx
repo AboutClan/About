@@ -1,10 +1,10 @@
-import { Input } from "@chakra-ui/react";
+import { Box, Flex, Input } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRef, useState } from "react";
-import styled from "styled-components";
 
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { processFile } from "../../utils/imageUtils";
+import ImageUploadIcon from "../Icons/ImageUploadIcon";
 
 interface IImageUploadInput {
   setImageUrl: DispatchType<Blob>;
@@ -42,49 +42,27 @@ export default function ImageUploadInput({ setImageUrl: changeImage }: IImageUpl
         name="image"
         onChange={handleImageChange}
       />
-      <Container onClick={handleBtnClick}>
+      <Flex mb={5} justify="center">
         {!imageUrl ? (
           <>
-            <i
-              className="fa-light fa-camera-viewfinder fa-4x "
-              style={{ color: "var(--gray-500)" }}
-            />
-            <CameraText>사진 올리기</CameraText>
+            <Box onClick={handleBtnClick}>
+              <ImageUploadIcon />
+            </Box>
           </>
         ) : (
-          <ImageContainer>
-            <Image src={imageUrl} alt="Image Preview" width={140} height={140} />
-          </ImageContainer>
+          <Box w="160px" h="160px" borderRadius="20px" position="relative" overflow="hidden">
+            <Image
+              src={imageUrl}
+              alt="Image Preview"
+              fill
+              style={{
+                objectFit: "cover", // 여기에 스타일로 objectFit 적용
+                objectPosition: "center", // 중앙 정렬
+              }}
+            />
+          </Box>
         )}
-      </Container>
+      </Flex>
     </>
   );
 }
-
-const CameraText = styled.span`
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--gray-500);
-  margin-top: var(--gap-3);
-`;
-
-const Container = styled.div`
-  margin: var(--gap-1) 0;
-  padding: 16px;
-  padding-bottom: 12px;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border: 1.5px dashed var(--gray-400);
-  border-radius: var(--rounded-lg);
-  background-color: var(--gray-100);
-`;
-
-const ImageContainer = styled.div`
-  width: 150px;
-  height: 150px;
-  display: flex;
-  justify-content: center;
-`;

@@ -1,7 +1,7 @@
 import { GROUP_STUDY_CATEGORY_ARR } from "../../../constants/contentsText/GroupStudyContents";
 import { UserCommentProps } from "../../components/propTypes";
 import { LocationFilterType } from "../../services/locationTypes";
-import { ITimeStamps } from "../../utils/timeAndDate";
+import { TimeStampProps } from "../../utils/timeAndDate";
 import { IUser, IUserSummary } from "../userTypes/userInfoTypes";
 
 export type GroupCategory = (typeof GROUP_STUDY_CATEGORY_ARR)[number];
@@ -20,7 +20,7 @@ export interface GroupParicipantProps {
   randomId?: number;
 }
 
-export interface IGroupWriting extends ITimeStamps {
+export interface IGroupWriting extends TimeStampProps {
   category: IGroupWritingCategory;
   challenge?: string;
   title: string;

@@ -1,4 +1,4 @@
-import { Textarea } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -6,42 +6,43 @@ import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
-import { POINT_SYSTEM_DEPOSIT } from "../../constants/serviceConstants/pointSystemConstants";
+import Textarea from "../../components/atoms/Textarea";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
-import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
+import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyAbsentMutation } from "../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
-import { getMyStudyVoteInfo } from "../../libs/study/getMyStudy";
-import { myStudyState } from "../../recoils/studyRecoils";
-import { ModalSubtitle } from "../../styles/layout/modal";
+import { getMyStudyInfo } from "../../libs/study/getMyStudyMethods";
+import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import { IModal } from "../../types/components/modalTypes";
 import { IFooterOptions, ModalLayout } from "../Modals";
-function StudyAbsentModal({ setIsModal }: IModal) {
-  const toast = useToast();
+
+interface StudyAbsentModalProps extends IModal {}
+
+function StudyAbsentModal({ setIsModal }: StudyAbsentModalProps) {
   const typeToast = useTypeToast();
   const resetStudy = useResetStudyQuery();
   const { data: session } = useSession();
   const { date } = useParams<{ id: string; date: string }>();
 
-  const myStudy = useRecoilValue(myStudyState);
-
   const [value, setValue] = useState<string>("");
 
-  const { startTime } = getMyStudyVoteInfo(myStudy, session?.user.uid);
-
-  const isFree = myStudy.status === "free";
+  const myStudyParticipation = useRecoilValue(myStudyParticipationState);
 
   const { mutate: sendRequest } = useUserRequestMutation();
   const { mutate: getDeposit } = usePointSystemMutation("deposit");
+
+  const myStudyInfo = getMyStudyInfo(myStudyParticipation, session?.user.uid);
+  const startTime = myStudyInfo?.time?.start;
+  const studyStatus = myStudyParticipation?.status;
 
   const { mutate: absentStudy } = useStudyAbsentMutation(dayjs(date), {
     onSuccess: () => {
       typeToast("success");
       let fee: { value: number; message: string };
-      if (isFree) return;
-      if (dayjs() > startTime) fee = POINT_SYSTEM_DEPOSIT.STUDY_ABSENT_AFTER;
-      else fee = POINT_SYSTEM_DEPOSIT.STUDY_ABSENT_BEFORE;
+      if (studyStatus !== "open") fee = { value: 100, message: "개인 스터디 불참" };
+      else if (dayjs() < dayjs(startTime)) fee = { value: 300, message: "당일 스터디 불참" };
+      else fee = { value: 500, message: "늦은 스터디 불참" };
       getDeposit(fee);
       resetStudy();
       sendRequest({
@@ -54,16 +55,10 @@ function StudyAbsentModal({ setIsModal }: IModal) {
     onError: () => typeToast("error"),
   });
 
-  const handleCancleBtn = () => {
-    if (myStudy) absentStudy(value);
-    else toast("error", "스터디에 참여하지 않은 인원입니다.");
-    setIsModal(false);
-  };
-
   const footerOptions: IFooterOptions = {
     main: {
       text: "불참",
-      func: handleCancleBtn,
+      func: () => absentStudy(value),
     },
     sub: {
       text: "취소",
@@ -74,20 +69,28 @@ function StudyAbsentModal({ setIsModal }: IModal) {
     <>
       <ModalLayout title="당일 불참" footerOptions={footerOptions} setIsModal={setIsModal}>
         <Body>
-          <ModalSubtitle>
-            {dayjs() < startTime ? (
-              <P>
-                스터디 시작 시간이 지났기 때문에 벌금 <b>500원</b>이 부여됩니다. 참여 시간을 변경해
-                보는 것은 어떨까요?{" "}
-              </P>
-            ) : (
-              <P>
-                당일 불참으로 벌금 <b>{-POINT_SYSTEM_DEPOSIT.STUDY_ABSENT_BEFORE.value}원</b>이
-                부과됩니다. 참여 시간을 변경해 보는 건 어떨까요?
-              </P>
-            )}
-          </ModalSubtitle>
-          <Textarea value={value} onChange={(e) => setValue(e.target.value)} />
+          {studyStatus !== "open" ? (
+            <P>
+              개인 스터디 불참도 벌금 <b>100원</b>이 부과됩니다. <br />
+              시간을 변경해 보는 것은 어떨까요?
+            </P>
+          ) : dayjs() < dayjs(startTime) ? (
+            <P>
+              스터디 시작 시간이 지났기 때문에 벌금 <b>500원</b>이 부과됩니다. 시간을 변경해 보는
+              것은 어떨까요?{" "}
+            </P>
+          ) : (
+            <P>
+              당일 불참으로 벌금 <b>300원</b>이 부과됩니다. 참여 시간을 변경해 보는 건 어떨까요?
+            </P>
+          )}
+          <Box w="full">
+            <Textarea
+              value={value}
+              placeholder="불참 사유를 적어주세요"
+              onChange={(e) => setValue(e.target.value)}
+            />
+          </Box>
         </Body>
       </ModalLayout>
     </>
@@ -99,6 +102,8 @@ const Body = styled.div`
   flex: 1;
 `;
 
-const P = styled.p``;
+const P = styled.p`
+  margin-bottom: 12px;
+`;
 
 export default StudyAbsentModal;

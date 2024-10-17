@@ -12,14 +12,15 @@ import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
 import PageTracker from "../../components/layouts/PageTracker";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
-import { getBottomNavSize } from "../../utils/mathUtils";
 import { parseUrlToSegments } from "../../utils/stringUtils";
+import { iPhoneNotchSize } from "../../utils/validationUtils";
 import BaseModal from "./BaseModal";
 import BaseScript from "./BaseScript";
 import Seo from "./Seo";
 
-export const BASE_BOTTOM_NAV_SEGMENT = ["home", "square", "user", "group"];
-export const NOT_PADDING_NAV_SEGMENT = ["login"];
+export const BASE_BOTTOM_NAV_SEGMENT = ["home", "studyPage", "gather", "user", "square"];
+export const NOT_PADDING_NAV_SEGMENT = ["login", "studyPage"];
+export const NOT_PADDING_BOTTOM_NAV_SEGMENT = ["vote"];
 
 const GoogleAnalytics = dynamic(
   () => import("@next/third-parties/google").then((mod) => mod.GoogleAnalytics),
@@ -40,7 +41,6 @@ function Layout({ children }: ILayout) {
 
   const segment = pathname?.split("/")?.[1];
   const PUBLIC_SEGMENT = ["register", "login"];
-  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
   const { data: session, status } = useSession();
 
@@ -83,12 +83,16 @@ function Layout({ children }: ILayout) {
           <div
             id="root-modal"
             style={
-              !NOT_PADDING_NAV_SEGMENT.includes(currentSegment?.[0])
+              NOT_PADDING_BOTTOM_NAV_SEGMENT.includes(currentSegment?.[0])
                 ? {
                     paddingTop: "56px",
-                    paddingBottom: `${getBottomNavSize()}px`,
                   }
-                : undefined
+                : !NOT_PADDING_NAV_SEGMENT.includes(currentSegment?.[0])
+                  ? {
+                      paddingTop: "56px",
+                      paddingBottom: `calc(var(--bottom-nav-height) + ${iPhoneNotchSize()}px`,
+                    }
+                  : undefined
             }
           >
             {children}

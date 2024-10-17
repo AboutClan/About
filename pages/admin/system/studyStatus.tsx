@@ -62,7 +62,7 @@ function AdminStudyStatus() {
                     <h2>
                       <AccordionButton background="gray.200" borderBottom="1px solid lightGray">
                         <Box as="span" flex="1" textAlign="left" fontWeight="600">
-                          {/* {place.place.brand} / {place.attendences.length}명 /{place.status} */}
+                          {/* {place.place.brand} / {place.members.length}명 /{place.status} */}
                         </Box>
                         <AccordionIcon />
                       </AccordionButton>
@@ -101,7 +101,7 @@ function AdminStudyStatus() {
                           </Popover>
                         </div>
                         <Participant>
-                          {/* {place?.attendences.map((who, idx) => (
+                          {/* {place?.members.map((who, idx) => (
                             <Att key={idx}>
                               <span> {(who.user as IUser).name}</span>
                               <Delete onClick={() => handleDeleteUser(who)}>

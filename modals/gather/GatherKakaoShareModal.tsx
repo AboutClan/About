@@ -7,7 +7,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import { GATHER_SHARE_IMAGES } from "../../assets/images/imageUrl";
-import KakaoShareBtn from "../../components/atoms/Icons/KakaoShareBtn";
+import KakaoShareBtn from "../../components/Icons/KakaoShareBtn";
 import { WEB_URL } from "../../constants/system";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";

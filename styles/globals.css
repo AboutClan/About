@@ -22,8 +22,11 @@ html {
 body {
   font-family: apple;
   font-size: 14px;
-  background-color: var(--gray-100);
+  background-color: white;
   color: var(--gray-800);
+}
+b {
+  color: #00c2b3;
 }
 
 a {
@@ -41,15 +44,15 @@ a {
 
 #__next {
   min-width: 340px;
-  max-width: 400px;
+  max-width: 428px;
 
   min-height: 100dvh;
   margin: 0 auto;
-  background-color: var(--gray-100);
+  background-color: white;
 
   overflow: hidden;
 }
-@media (min-width: 400px) {
+@media (min-width: 428px) {
   #__next {
     border-left: var(--border);
     border-right: var(--border);
@@ -57,7 +60,7 @@ a {
 }
 
 .CircularProgressbar-trail {
-  stroke-width: 1;
+  strokewidth: 1;
 }
 .swiper-button-prev:after {
   display: none;

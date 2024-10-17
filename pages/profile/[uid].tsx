@@ -39,8 +39,6 @@ function ProfilePage() {
     enabled: !!uid,
   });
 
-  
-
   useEffect(() => {
     if (user) setTransferUserName(user.name);
   }, [user]);
@@ -64,7 +62,7 @@ function ProfilePage() {
           <i className="fa-regular fa-ellipsis fa-lg" />
         </Button>
       </Header>
-      <Slide>
+      <Slide isNoPadding>
         <Container>
           <Layout>
             <ProfileOverview user={user as IUser} />

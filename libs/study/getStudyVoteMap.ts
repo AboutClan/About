@@ -6,6 +6,14 @@ export const getVoteLocationCenterDot = () => ({
   동대문: new naver.maps.LatLng(37.58452, 127.041047),
   인천: new naver.maps.LatLng(37.428334, 126.680935),
 });
+export const getLocationCenterDot = () => ({
+  수원: { lat: 37.278992, lon: 127.025727 },
+  안양: { lat: 37.388896, lon: 126.950088 },
+  양천: { lat: 37.527588, lon: 126.896441 },
+  강남: { lat: 37.503744, lon: 127.048898 },
+  동대문: { lat: 37.58452, lon: 127.041047 },
+  인천: { lat: 37.428334, lon: 126.680935 },
+});
 
 export const getVoteLocationMaxBound = () => ({
   수원: new naver.maps.LatLngBounds(

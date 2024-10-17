@@ -12,17 +12,12 @@ import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { usePointSystemLogQuery } from "../../hooks/user/queries";
-import { getMyStudyVoteInfo } from "../../libs/study/getMyStudy";
-import { myStudyState } from "../../recoils/studyRecoils";
 import { IModal } from "../../types/components/modalTypes";
 import { IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
 import { createTimeArr, parseTimeToDayjs } from "../../utils/dateTimeUtils";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface IStudyChangeTimeModal extends IModal {}
-
-const leftDefaultIdx = 8;
-const rightDefaultIdx = 10;
 
 const startItemArr = createTimeArr(STUDY_VOTE_HOUR_ARR[0], STUDY_VOTE_HOUR_ARR[11]);
 
@@ -38,7 +33,7 @@ function StudyChangeTimeModal({ setIsModal }: IStudyChangeTimeModal) {
   const { data: session } = useSession();
   const { date } = useParams<{ id: string; date: string }>();
 
-  const myStudy = useRecoilValue(myStudyState);
+  const myStudy = useRecoilValue(myStudyInfoState);
   const isFree = myStudy.status === "free";
   const { start, end, startTime } = getMyStudyVoteInfo(myStudy, session?.user.uid);
 
@@ -47,20 +42,26 @@ function StudyChangeTimeModal({ setIsModal }: IStudyChangeTimeModal) {
     end,
   });
 
-  const [rulletValue, setRulletValue] = useState<{
-    left: string;
-    right: string;
+  const [rulletIndex, setRulletIndex] = useState<{
+    left: number;
+    right: number;
   }>({
-    left: startItemArr[leftDefaultIdx],
-    right: endTimeArr[rightDefaultIdx],
+    left: 8,
+    right: 12,
   });
 
   useEffect(() => {
+    if (rulletIndex.left + 4 > rulletIndex.right && rulletIndex.left + 4 < endTimeArr.length - 1) {
+      setRulletIndex((old) => ({ ...old, right: old.left + 4 }));
+    }
+  }, [rulletIndex.left]);
+
+  useEffect(() => {
     setTime({
-      start: parseTimeToDayjs(rulletValue.left),
-      end: parseTimeToDayjs(rulletValue.right),
+      start: parseTimeToDayjs(startItemArr[rulletIndex.left]),
+      end: parseTimeToDayjs(endTimeArr[rulletIndex.right]),
     });
-  }, [rulletValue]);
+  }, [rulletIndex]);
 
   const { data } = usePointSystemLogQuery("deposit");
 
@@ -103,11 +104,10 @@ function StudyChangeTimeModal({ setIsModal }: IStudyChangeTimeModal) {
   return (
     <ModalLayout title="시간 변경" footerOptions={footerOptions} setIsModal={setIsModal}>
       <RulletPickerTwo
-        leftDefaultIdx={leftDefaultIdx}
-        rightDefaultIdx={rightDefaultIdx}
         leftRulletArr={startItemArr}
         rightRulletArr={endTimeArr}
-        setRulletValue={setRulletValue}
+        rulletIndex={rulletIndex}
+        setRulletIndex={setRulletIndex}
       />
     </ModalLayout>
   );

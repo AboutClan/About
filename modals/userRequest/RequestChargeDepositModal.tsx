@@ -2,7 +2,7 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
 
-import { CopyBtn } from "../../components/atoms/Icons/CopyIcon";
+import { CopyBtn } from "../../components/Icons/CopyIcon";
 import { ACCOUNT_SHORT } from "../../constants/contentsText/Private";
 import { USER_INFO } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
