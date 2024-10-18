@@ -24,7 +24,7 @@ export const useToast = () => {
         duration: 3000,
         variant: "subtle",
         containerStyle: {
-          marginBottom: "76px", // 바닥에서 12px 위로 위치 설정
+          marginBottom: "76px",
         },
       });
     },
@@ -51,7 +51,14 @@ export const useTypeToast = () => {
 
   const showToast = useCallback(
     (type: ToastType) => {
-      toast({ ...getTypeToToast(type), duration: 3000, variant: "subtle" });
+      toast({
+        ...getTypeToToast(type),
+        duration: 3000,
+        variant: "subtle",
+        containerStyle: {
+          marginBottom: "76px",
+        },
+      });
     },
     [toast],
   );
@@ -140,8 +147,11 @@ export const useFailToast = () => {
         status: "error",
         duration: 3000,
         isClosable: true,
-        position: isTop ? "top" : "bottom",
-        variant: "solid",
+
+        variant: "subtle",
+        containerStyle: {
+          marginBottom: "76px",
+        },
       });
     },
     [toast],

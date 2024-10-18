@@ -71,7 +71,7 @@ export function ModalLayout({
 
   const { main, sub, isFull = true } = footerOptions || {};
   const { text = "확인", func = onClose } = main || {};
-  const { text: subText = "닫기", func: subFunc = onClose } = sub || {};
+  const { text: subText = "취소", func: subFunc = onClose } = sub || {};
   const [modalTop, setModalTop] = useState("0%");
 
   useEffect(() => {
@@ -187,7 +187,9 @@ export function ModalLayout({
               ) : (
                 <Button
                   onClick={func}
-                  h={10}
+                  size="md"
+                  h={5}
+                  px={2}
                   variant="ghost"
                   color={main?.isRedTheme ? "var(--color-red)" : "var(--color-mint)"}
                 >
@@ -204,10 +206,17 @@ export function ModalLayout({
               />
             ) : (
               <>
-                <Button onClick={subFunc} variant="ghost" color="var(--color-mint)">
+                <Button h={5} px={2} mr={3} onClick={subFunc} variant="ghost" color="gray">
                   {subText}
                 </Button>
-                <Button onClick={func} variant="ghost" isLoading={main?.isLoading}>
+                <Button
+                  h={5}
+                  px={2}
+                  onClick={func}
+                  variant="ghost"
+                  color="mint"
+                  isLoading={main?.isLoading}
+                >
                   {text}
                 </Button>
               </>

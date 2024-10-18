@@ -1,7 +1,7 @@
 import { Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 
@@ -123,11 +123,6 @@ function StudyNavigation({
       if (status === "pending") {
         setIsCancelModal(true);
       } else {
-        // setAlertModalInfo({
-        //   title: "스터디 참여 취소",
-        //   subTitle: "",
-        //   func: () => handleCancel(),
-        // });
         setIsAbsentModal(true);
       }
     }

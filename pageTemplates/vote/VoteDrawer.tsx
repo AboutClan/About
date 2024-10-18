@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
+import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
 
 import PageIntro from "../../components/atoms/PageIntro";
 import BottomNav from "../../components/layouts/BottomNav";
@@ -86,6 +87,7 @@ function VoteDrawer({
   const [isTimeDrawer, setIsTimeDrawer] = useState(false);
   const isTodayVote = dayjs().isSame(date, "day") && dayjs().hour() >= 9;
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
+  const [alertModalInfo, setAlertModalInfo] = useState<IAlertModalOptions>();
 
   const myStudyParticipation = useRecoilValue(myStudyParticipationState);
 
@@ -228,6 +230,26 @@ function VoteDrawer({
 
   const resetStudy = useResetStudyQuery();
 
+  const onClickStudyVote = () => {
+    if (myStudyParticipation) {
+      setVoteTime(voteTime);
+      setAlertModalInfo({
+        title: "스터디 장소 변경",
+        subTitle: "장소를 변경하는 경우 기존에 투표 장소는 취소됩니다.",
+        text: "변경합니다",
+        func: () => {
+          handleVote();
+        },
+        subFunc: () => {
+          setIsTimeDrawer(false);
+          setAlertModalInfo(null);
+        },
+      });
+      return;
+    }
+    handleVote();
+  };
+
   const handleVote = async () => {
     if (!myVote?.main || !voteTime?.start || !voteTime?.end) {
       typeToast("omission");
@@ -245,12 +267,12 @@ function VoteDrawer({
 
   const drawerOptions: BottomFlexDrawerOptions = {
     header: {
-      title: dayjs(date).locale("ko").format("M월 D일 ddd요일"),
-      subTitle: "스터디 참여시간을 선택해주세요!",
+      title: "스터디 참여 시간 선택",
+      subTitle: "예상 시작 시간과 종료 시간을 선택해 주세요!",
     },
     footer: {
       text: "신청 완료",
-      func: handleVote,
+      func: onClickStudyVote,
       loading: isLoading,
     },
   };
@@ -345,6 +367,14 @@ function VoteDrawer({
           setVoteTime={setVoteTime}
           drawerOptions={drawerOptions}
           setIsModal={setIsModal}
+          zIndex={600}
+        />
+      )}
+      {alertModalInfo && (
+        <AlertModal
+          options={alertModalInfo}
+          colorType="red"
+          setIsModal={() => setAlertModalInfo(null)}
         />
       )}
     </>
@@ -415,7 +445,7 @@ export function PlaceDrawer({ setIsRightDrawer, date }: PlaceDrawerProps) {
       loading: isLoading,
     },
   };
- 
+
   return (
     <>
       <RightDrawer title="" onClose={() => setIsRightDrawer(false)}>

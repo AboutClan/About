@@ -19,7 +19,7 @@ export const convertMergePlaceToPlace = (mergePlace: StudyPlaceProps | PlaceInfo
       studyPlace?.coverImage || STUDY_COVER_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length)],
     latitude: studyPlace.latitude,
     longitude: studyPlace.longitude,
-    time: studyPlace?.time || null,
+    time: studyPlace?.time || "unknown",
     type: studyPlace?.fullname
       ? "public"
       : realTimePlace?.name

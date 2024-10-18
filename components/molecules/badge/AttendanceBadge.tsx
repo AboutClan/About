@@ -1,18 +1,33 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
+import { useTypeToast } from "../../../hooks/custom/CustomToast";
 
 import { CheckCircleIcon, XCircleIcon } from "../../Icons/CircleIcons";
+import { ImageIcon } from "../../Icons/ImageIcons";
 
 interface IAttendanceBadge {
   type: "attend" | "dismissed";
   time?: string;
+  setImageProps: () => void;
 }
 
-export default function AttendanceBadge({ type, time }: IAttendanceBadge) {
+export default function AttendanceBadge({ type, time, setImageProps }: IAttendanceBadge) {
+  const toast = useTypeToast();
+
+  const onClickButton = () => {
+    if (setImageProps) {
+      setImageProps();
+    } else {
+      toast("not-yet");
+    }
+  };
+
   return (
     <Box my={1}>
-      <Flex
+      <Button
+        variant="unstyled"
+        display="flex"
         mb={1}
-        align="center"
+        alignItems="center"
         w="56px"
         h="24px"
         px="10px"
@@ -20,16 +35,21 @@ export default function AttendanceBadge({ type, time }: IAttendanceBadge) {
         borderRadius="8px"
         color="white"
         bg={type === "attend" ? "mint" : "red"}
+        onClick={onClickButton}
       >
         {type === "attend" ? (
-          <CheckCircleIcon size="sm" isFill={false} />
+          setImageProps ? (
+            <ImageIcon />
+          ) : (
+            <CheckCircleIcon size="sm" isFill />
+          )
         ) : (
           <XCircleIcon size="sm" />
         )}
         <Box ml={1} fontSize="11px" lineHeight="16px" fontWeight="semibold">
-          {type === "attend" ? "출석" : "불참"}
+          {type === "attend" ? (setImageProps ? "인증" : "출석") : "불참"}
         </Box>
-      </Flex>
+      </Button>
 
       {time && (
         <Box fontSize="11px" lineHeight="12px" color="gray.500" textAlign="center">

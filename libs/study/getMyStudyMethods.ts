@@ -3,7 +3,9 @@ import {
   StudyDailyInfoProps,
   StudyMemberProps,
   StudyMergeParticipationProps,
+  StudyPlaceProps,
 } from "../../types/models/studyTypes/studyDetails";
+import { PlaceInfoProps } from "../../types/models/utilTypes";
 
 //participation은 study의 participations와 realTime을 모두 포함한다.
 
@@ -94,12 +96,20 @@ import { ActiveLocation } from "../../types/services/locationTypes";
 import { getLocationByCoordinates } from "./getLocationByCoordinates";
 
 export const getMyStudyInfo = (
-  participations: StudyMergeParticipationProps,
+  participation: StudyMergeParticipationProps,
   myUid: string,
 ): StudyMemberProps => {
-  if (!participations || !myUid) return;
+  if (!participation || !myUid) return;
 
-  return participations.members.find((who) => who.user.uid === myUid);
+  return participation.members.find((who) => who.user.uid === myUid);
+};
+
+export const checkStudyType = (
+  participations: StudyMergeParticipationProps,
+): "study"|"realTime"  => {
+  if ((participations?.place as StudyPlaceProps)?.fullname) return "study";
+  else if ((participations?.place as PlaceInfoProps)?.name) return "realTime";
+  return null;
 };
 
 // export const getMyStudyVoteInfo = (

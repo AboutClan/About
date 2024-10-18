@@ -160,12 +160,12 @@ export const useStudyStatusMutation = (options?: MutationOptions<StudyStatusPara
       }),
     options,
   );
-export const useStudyCommentMutation = (date: Dayjs, options?: MutationOptions<string>) =>
+export const useStudyCommentMutation = (date: string, options?: MutationOptions<string>) =>
   useMutation<void, AxiosError, string>(
     (params) =>
       requestServer<{ comment: string }>({
         method: "patch",
-        url: `vote/${dayjsToStr(date)}/comment`,
+        url: `vote/${date}/comment`,
         body: { comment: params },
       }),
     options,

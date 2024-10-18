@@ -1,25 +1,30 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
 
 import HighlightButton from "../../components/atoms/HighlightButton";
 import AttendanceBadge from "../../components/molecules/badge/AttendanceBadge";
 import { IProfileCommentCard } from "../../components/molecules/cards/ProfileCommentCard";
 import ProfileCardColumn from "../../components/organisms/ProfileCardColumn";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
+import { useRealTimeCommentMutation } from "../../hooks/realtime/mutations";
+import { useStudyCommentMutation } from "../../hooks/study/mutations";
+import { checkStudyType } from "../../libs/study/getMyStudyMethods";
 import ImageZoomModal from "../../modals/ImageZoomModal";
 import StudyChangeMemoModal from "../../modals/study/StudyChangeMemoModal";
+import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import { StudyMemberProps } from "../../types/models/studyTypes/studyDetails";
 import { IAbsence } from "../../types/models/studyTypes/studyInterActions";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 interface IStudyMembers {
+  date?: string;
   members: StudyMemberProps[];
   absences: IAbsence[];
 }
-export default function StudyMembers({ members, absences }: IStudyMembers) {
+export default function StudyMembers({ date, members, absences }: IStudyMembers) {
   const { data: session } = useSession();
   const typeToast = useTypeToast();
   const [hasModalMemo, setHasModalMemo] = useState<string>();
@@ -27,11 +32,24 @@ export default function StudyMembers({ members, absences }: IStudyMembers) {
     image: string;
     toUid: string;
   }>();
+  console.log(34, members);
+
+  const myStudyParticipation = useRecoilValue(myStudyParticipationState);
+  const studyType = checkStudyType(myStudyParticipation);
+
+  const { mutate: setRealTimeComment } = useRealTimeCommentMutation();
+  const { mutate: setVoteComment } = useStudyCommentMutation(date);
 
   const isMyStudy = members?.some((who) => who.user.uid === session?.user.uid);
 
+  const changeComment = (comment: string) => {
+    if (studyType === "study") {
+      setVoteComment(comment);
+    } else if (studyType === "realTime") setRealTimeComment(comment);
+  };
+
   const userCardArr: IProfileCommentCard[] = members.map((member) => {
-    console.log(member);
+    
     const togglehasModalMemo =
       member.user.uid === session?.user.uid && member.attendanceInfo.attendanceImage
         ? (memo: string) => setHasModalMemo(memo)
@@ -47,30 +65,15 @@ export default function StudyMembers({ members, absences }: IStudyMembers) {
 
     return {
       ...obj,
+      changeComment,
       rightComponent: rightComponentProps ? (
         <>
           <Flex align="center">
-            {image && (
-              <Box
-                mr="12px"
-                rounded="md"
-                overflow="hidden"
-                onClick={() => setHasImageProps({ image, toUid: member.user.uid })}
-                w="50px"
-                h="50px"
-                position="relative"
-              >
-                <Image
-                  src={image}
-                  fill={true}
-                  sizes="50px"
-                  alt="studyAttend"
-                  priority={true}
-                  style={{ objectPosition: "center", objectFit: "cover" }}
-                />
-              </Box>
-            )}
-            <AttendanceBadge type={rightComponentProps.type} time={rightComponentProps.time} />
+            <AttendanceBadge
+              type={rightComponentProps.type}
+              time={rightComponentProps.time}
+              setImageProps={() => setHasImageProps({ image, toUid: member.user.uid })}
+            />
           </Flex>
         </>
       ) : null,
@@ -141,12 +144,13 @@ const composeUserCardArr = (
     : null;
 
   const memo = attendanceInfo.arrivedMessage;
-  console.log(5, memo);
+
   const user = participant.user;
 
   return {
     user: user,
-    comment: memo || (absence ? absence?.message || "불참" : null),
+    memo: memo || (absence ? absence?.message || "불참" : null),
+    comment: participant?.comment,
     setMemo: setHasModalMemo ? () => setHasModalMemo(memo) : null,
     rightComponentProps:
       arrived || absence

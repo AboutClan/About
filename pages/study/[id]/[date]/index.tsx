@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { useParams, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -48,6 +48,7 @@ export default function Page() {
   useEffect(() => {
     if (!studyVoteData) return;
     const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
+
     setMyStudyParticipation(findMyStudyParticipation);
   }, [studyVoteData]);
 
@@ -55,11 +56,13 @@ export default function Page() {
     studyVoteData,
     convertLocationLangTo(locationParam, "kr"),
   );
+
   const mergeParticipation = mergeParticipations?.find(
     (participation) => participation.place._id === id,
   );
 
   const place = convertMergePlaceToPlace(mergeParticipation?.place);
+
   const { name, address, coverImage, latitude, brand, longitude, time, type } = place || {};
 
   const distance =
@@ -93,22 +96,13 @@ export default function Page() {
                 longitude={longitude}
               />
 
-              <StudyDateBar
-                date={date}
-                memberCnt={members.length}
-                setIsInviteModal={setIsInviteModal}
-              />
-              <StudyTimeBoard members={members} studyStatus={mergeParticipation.status} />
+              <StudyDateBar date={date} memberCnt={members.length} />
+              <StudyTimeBoard members={members} />
               <Box h="1px" bg="gray.100" my={4} />
-              <StudyMembers
-                members={members}
-                absences={absences}
-                setIsInviteModal={setIsInviteModal}
-              />
+              <StudyMembers members={members} absences={absences} />
             </Slide>
           </Box>
           <StudyNavigation
-            mergeParticipations={mergeParticipations}
             locationEn={locationParam}
             date={date}
             myStudyInfo={getMyStudyInfo(mergeParticipation, session?.user.uid)}
