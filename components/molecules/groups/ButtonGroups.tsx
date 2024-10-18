@@ -17,6 +17,7 @@ export interface IButtonGroups {
   isWrap?: boolean;
   isEllipse?: boolean;
   type?: "block" | "text";
+  height?: number;
 }
 
 export default function ButtonGroups({
@@ -25,6 +26,7 @@ export default function ButtonGroups({
   size,
   isWrap = false,
   isEllipse = false,
+  height,
   type = "block",
 }: IButtonGroups) {
   return (
@@ -43,6 +45,7 @@ export default function ButtonGroups({
               leftIcon={buttonOptions?.icon}
               fontSize="11px"
               border={size === "sm" ? "1px solid var(--gray-300)" : undefined}
+              h={`${height}px`}
             >
               {buttonOptions.text}
             </Button>

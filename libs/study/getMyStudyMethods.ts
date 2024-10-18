@@ -64,7 +64,7 @@ export const getMyStudyParticipation = (
   myUid: string,
 ): StudyMergeParticipationProps => {
   if (!studyVoteData) return;
-  console.log(123, studyVoteData.participations);
+ 
   const findMyParticipation = studyVoteData.participations?.find((participation) =>
     participation.members.some((who) => who.user.uid === myUid),
   );

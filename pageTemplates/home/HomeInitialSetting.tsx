@@ -91,6 +91,7 @@ function HomeInitialSetting() {
   const isGuest = session ? session.user.name === "guest" : undefined;
 
   const [isGuide, setIsGuide] = useState(false);
+  console.log(isGuide);
   const [isGuestModal, setIsGuestModal] = useState(false);
   const { data: userInfo } = useUserInfoQuery({
     enabled: isGuest === false,
@@ -190,7 +191,7 @@ function HomeInitialSetting() {
 
   return (
     <>
-      {userInfo && !isGuest && <UserSettingPopUp userInfo={userInfo} cnt={isGuide ? 1 : 0} />}
+      {userInfo && !isGuest && <UserSettingPopUp userInfo={userInfo} />}
       {isGuestModal && <FAQPopUp setIsModal={setIsGuestModal} />}
       <GlobalStyle />
       {/* <Joyride

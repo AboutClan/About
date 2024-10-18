@@ -22,16 +22,10 @@ import { useRealtimeVoteMutation } from "../../hooks/realtime/mutations";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { getLocationByCoordinates } from "../../libs/study/getLocationByCoordinates";
-import {
-  getCurrentLocationIcon,
-  getStudyIcon,
-  getStudyVoteIcon,
-} from "../../libs/study/getStudyVoteIcon";
 import { setStudyToThumbnailInfo } from "../../libs/study/setStudyToThumbnailInfo";
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import { IModal } from "../../types/components/modalTypes";
 import { KakaoLocationProps } from "../../types/externals/kakaoLocationSearch";
-import { IMarkerOptions } from "../../types/externals/naverMapTypes";
 import { DispatchBoolean, DispatchType } from "../../types/hooks/reactTypes";
 import {
   StudyDailyInfoProps,
@@ -40,6 +34,7 @@ import {
 } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVoteTime, MyVoteProps } from "../../types/models/studyTypes/studyInterActions";
 import { ActiveLocation } from "../../types/services/locationTypes";
+import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
 export interface VoteDrawerItemProps {
@@ -53,10 +48,13 @@ interface VoteDrawerProps extends IModal {
   studyVoteData: StudyDailyInfoProps;
   location: ActiveLocation;
   date: string;
-  setMarkersOptions: DispatchType<IMarkerOptions[]>;
+
   setCenterLocation: DispatchType<{ lat: number; lon: number }>;
   myVote: MyVoteProps;
   setMyVote: DispatchType<MyVoteProps>;
+  isFirstPage: boolean;
+  setIsFirstPage: DispatchBoolean;
+  setIsVoteDrawer: DispatchBoolean;
 }
 
 const DEFAULT_SUB_PLACE_CNT = 2;
@@ -66,12 +64,15 @@ function VoteDrawer({
   location,
   date,
   setIsModal,
-  setMarkersOptions,
+  isFirstPage,
+  setIsFirstPage,
   setCenterLocation,
   myVote,
+  setIsVoteDrawer,
   setMyVote,
 }: VoteDrawerProps) {
   const typeToast = useTypeToast();
+  const toast = useToast();
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
@@ -83,7 +84,7 @@ function VoteDrawer({
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
 
   const [isRightDrawer, setIsRightDrawer] = useState(false);
-  const [isFirstPage, setIsFirstPage] = useState(true);
+
   const [isTimeDrawer, setIsTimeDrawer] = useState(false);
   const isTodayVote = dayjs().isSame(date, "day") && dayjs().hour() >= 9;
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
@@ -103,18 +104,6 @@ function VoteDrawer({
       handleSuccess();
     },
   });
-
-  useEffect(() => {
-    if (!studyVoteData) return;
-    setMarkersOptions(
-      getMarkersOptions(
-        studyVoteData,
-        { lat: currentLocation?.lat, lon: currentLocation?.lon },
-        myVote,
-        isFirstPage,
-      ),
-    );
-  }, [studyVoteData, currentLocation, myVote]);
 
   useEffect(() => {
     if (preference === undefined || !studyVoteData) return;
@@ -250,19 +239,20 @@ function VoteDrawer({
     handleVote();
   };
 
-  const handleVote = async () => {
+  const handleVote = () => {
     if (!myVote?.main || !voteTime?.start || !voteTime?.end) {
       typeToast("omission");
       return;
     }
     patchAttend({ place: myVote.main, subPlace: myVote?.sub, ...voteTime });
   };
-  const handleSuccess = async () => {
+  const handleSuccess = () => {
     setIsModal(false);
     typeToast("vote");
     resetStudy();
     newSearchParams.set("category", "votePlace");
-    router.push(`/studyPage?${newSearchParams.toString()}`);
+    router.replace(`/studyPage?${newSearchParams.toString()}`);
+    setIsVoteDrawer(false);
   };
 
   const drawerOptions: BottomFlexDrawerOptions = {
@@ -275,6 +265,14 @@ function VoteDrawer({
       func: onClickStudyVote,
       loading: isLoading,
     },
+  };
+
+  const onClickPlaceSelectButton = () => {
+    if (dayjsToStr(dayjs()) === date) {
+      setIsRightDrawer(true);
+    } else {
+      toast("warning", "실시간 스터디는 당일에만 신청 가능합니다");
+    }
   };
 
   return (
@@ -293,14 +291,14 @@ function VoteDrawer({
         isDrawerUp
         isHideBottom
         setIsModal={setIsModal}
-        zIndex={900}
+        zIndex={800}
         height={468 + iPhoneNotchSize()}
       >
         <Flex direction="column" w="100%">
           <Flex mb={4} justify="space-between">
             <Box>
               <Box mb={1} lineHeight="28px" fontWeight="bold" fontSize="18px">
-                {isFirstPage ? 1 : 2}지망 투표
+                {isFirstPage ? dayjsToFormat(dayjs(date), "M월 D일 스터디 투표") : "2지망 투표"}{" "}
               </Box>
               <Box color="gray.500" fontSize="12px" lineHeight="16px">
                 {isFirstPage && "원하시는 카페가 없으신가요?"}
@@ -322,7 +320,7 @@ function VoteDrawer({
                 variant="ghost"
                 height="20px"
                 color="var(--color-blue)"
-                onClick={() => setIsRightDrawer(true)}
+                onClick={() => onClickPlaceSelectButton()}
               >
                 직접 입력
               </Button>
@@ -361,13 +359,19 @@ function VoteDrawer({
           </Box>
         </Flex>
       </BottomFlexDrawer>
-      {isRightDrawer && <PlaceDrawer date={date} setIsRightDrawer={setIsRightDrawer} />}
+      {isRightDrawer && (
+        <PlaceDrawer
+          setIsVoteDrawer={setIsVoteDrawer}
+          date={date}
+          setIsRightDrawer={setIsRightDrawer}
+        />
+      )}
       {isTimeDrawer && (
         <StudyVoteTimeRulletDrawer
           setVoteTime={setVoteTime}
           drawerOptions={drawerOptions}
           setIsModal={setIsModal}
-          zIndex={600}
+          zIndex={800}
         />
       )}
       {alertModalInfo && (
@@ -383,10 +387,11 @@ function VoteDrawer({
 
 interface PlaceDrawerProps {
   setIsRightDrawer: DispatchBoolean;
+  setIsVoteDrawer: DispatchBoolean;
   date: string;
 }
 
-export function PlaceDrawer({ setIsRightDrawer, date }: PlaceDrawerProps) {
+export function PlaceDrawer({ setIsRightDrawer, setIsVoteDrawer, date }: PlaceDrawerProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
@@ -403,9 +408,11 @@ export function PlaceDrawer({ setIsRightDrawer, date }: PlaceDrawerProps) {
   const { mutate, isLoading } = useRealtimeVoteMutation({
     onSuccess() {
       typeToast("vote");
+
       resetStudy();
       newSearchParams.set("category", "votePlace");
       router.push(`/studyPage?${newSearchParams.toString()}`);
+      setIsVoteDrawer(false);
     },
   });
 
@@ -468,93 +475,5 @@ export function PlaceDrawer({ setIsRightDrawer, date }: PlaceDrawerProps) {
     </>
   );
 }
-
-const getMarkersOptions = (
-  studyVoteData: StudyDailyInfoProps,
-  {
-    lat,
-    lon,
-  }: {
-    lat: number;
-    lon: number;
-  },
-  myVote: { main: string; sub: string[] },
-  onlyFirst: boolean,
-): IMarkerOptions[] | undefined => {
-  if (typeof naver === "undefined" || !studyVoteData) return;
-  const temp = [];
-
-  temp.push({
-    position: new naver.maps.LatLng(lat, lon),
-    icon: {
-      content: getCurrentLocationIcon(),
-      size: new naver.maps.Size(72, 72),
-      anchor: new naver.maps.Point(36, 44),
-    },
-  });
-
-  studyVoteData.participations.forEach((par) => {
-    if (myVote) {
-      const mainPlace = studyVoteData?.participations?.find(
-        (par) => par.place._id === myVote?.main,
-      )?.place;
-      const placeId = par.place._id;
-
-      const iconType =
-        placeId === myVote?.main
-          ? "main"
-          : onlyFirst
-            ? "default"
-            : myVote?.sub?.includes(placeId)
-              ? "sub"
-              : "default";
-
-      const polyline =
-        mainPlace && myVote?.sub?.includes(placeId)
-          ? getPolyline(mainPlace, par.place, myVote?.sub?.includes(placeId))
-          : null;
-
-      temp.push({
-        isPicked: myVote?.main === placeId,
-        id: par.place._id,
-        position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
-        title: par.place.brand,
-        icon: {
-          content: getStudyVoteIcon(iconType, par.place.branch),
-          size: new naver.maps.Size(72, 72),
-          anchor: new naver.maps.Point(36, 44),
-        },
-        type: "vote",
-        polyline,
-      });
-    } else {
-      temp.push({
-        id: par.place._id,
-        position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
-        icon: {
-          content: getStudyIcon(null, par.members.length),
-          size: new naver.maps.Size(72, 72),
-          anchor: new naver.maps.Point(36, 44),
-        },
-      });
-    }
-  });
-  return temp;
-};
-
-const getPolyline = (
-  mainPlace: StudyPlaceProps,
-  subPlace: StudyPlaceProps,
-  isSecondSub?: boolean,
-) => {
-  const { latitude, longitude } = mainPlace;
-  const { latitude: subLat, longitude: subLon } = subPlace;
-  return {
-    path: [new naver.maps.LatLng(latitude, longitude), new naver.maps.LatLng(subLat, subLon)],
-    strokeColor: isSecondSub ? "var(--gray-500)" : "var(--color-mint)",
-    strokeOpacity: 0.5,
-    strokeWeight: 3,
-  };
-};
 
 export default VoteDrawer;

@@ -28,23 +28,27 @@ export default function VoteMap({
     polylines: [],
     infoWindow: [],
   });
-
+ 
   useEffect(() => {
     if (!mapRef?.current || typeof naver === "undefined" || !mapOptions) return;
 
-    const map = new naver.maps.Map(mapRef.current, {
-      ...mapOptions,
+    if (!mapInstanceRef.current) {
+      // 처음에만 맵을 생성
+      const map = new naver.maps.Map(mapRef.current, {
+        ...mapOptions,
+        logoControl: true,
+        logoControlOptions: {
+          position: naver.maps.Position.BOTTOM_LEFT,
+        },
+      });
 
-      logoControl: true,
-      logoControlOptions: {
-        position: naver.maps.Position.BOTTOM_LEFT,
-      },
-    });
-
-    map.setZoom(mapOptions.zoom);
-    mapInstanceRef.current = map;
+      map.setZoom(mapOptions.zoom);
+      mapInstanceRef.current = map;
+    } else {
+      // 이미 맵이 생성된 경우, 설정만 업데이트
+      mapInstanceRef.current.setOptions(mapOptions);
+    }
   }, [mapOptions]);
-
   useEffect(() => {
     if (!mapInstanceRef?.current || typeof naver === "undefined") return;
 

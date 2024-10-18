@@ -70,20 +70,20 @@ function Configuration() {
   const { mutate: getAboutPoint } = useAboutPointMutation();
   const { mutate: getScore } = useScoreMutation();
   const { mutate: getDeposit } = usePointSystemMutation("deposit");
-  const { mutate: handleArrived } = useStudyAttendCheckMutation({
+  const { mutate: handleArrived, isLoading: isLoading1 } = useStudyAttendCheckMutation({
     onSuccess(data) {
       handleAttendSuccess(data.data);
     },
     onError: () => typeToast("error"),
   });
 
-  const { mutate: attendRealTimeStudy } = useRealTimeAttendMutation({
+  const { mutate: attendRealTimeStudy, isLoading: isLoading2 } = useRealTimeAttendMutation({
     onSuccess(data) {
       handleAttendSuccess(data);
     },
   });
 
-  const { mutate: imageUpload } = useImageUploadMutation({
+  const { mutate: imageUpload, isLoading: isLoading3 } = useImageUploadMutation({
     onSuccess() {
       resetStudy();
     },
@@ -240,7 +240,11 @@ function Configuration() {
           </Box>
         </Slide>
       </Box>
-      <BottomNav text="출 석" onClick={handleSubmit} />
+      <BottomNav
+        text="출 석"
+        onClick={handleSubmit}
+        isLoading={isLoading1 || isLoading2 || isLoading3}
+      />
       {isChecking && (
         <>
           <Spinner text="위치를 확인중입니다..." />

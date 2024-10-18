@@ -35,7 +35,7 @@ function HomeStudySection() {
       enabled: !!userLocation,
     },
   );
-  console.log(54, studyVoteData);
+
   useEffect(() => {
     if (!studyVoteData || !session?.user.uid) return;
     const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
@@ -58,7 +58,7 @@ function HomeStudySection() {
       <Box px={5}>
         <SectionHeader title="카공 스터디 같이 하실 분" subTitle="Study">
           <Link
-            href={`/studyList?tab=study&location=${convertLocationLangTo(userLocation, "en")}&date=${date}`}
+            href={`/studyList?location=${convertLocationLangTo(userLocation, "en")}&date=${date}`}
           >
             <ShortArrowIcon dir="right" />
           </Link>

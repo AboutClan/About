@@ -17,7 +17,7 @@ export default function GatherLocationFilter() {
   ) as ActiveLocation;
 
   const [location, setLocation] = useState<ActiveLocation | "전체">(defaultLocation || "전체");
-  console.log(24, location);
+ 
   useEffect(() => {
     if (defaultLocation) setLocation(defaultLocation);
   }, [defaultLocation]);

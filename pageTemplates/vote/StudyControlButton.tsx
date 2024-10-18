@@ -1,7 +1,7 @@
 import { Box, Button } from "@chakra-ui/react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { useRecoilValue } from "recoil";
 
 import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
@@ -10,47 +10,16 @@ import BottomFlexDrawer, {
   DRAWER_MIN_HEIGHT,
 } from "../../components/organisms/drawer/BottomFlexDrawer";
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
-import { IMarkerOptions } from "../../types/externals/naverMapTypes";
-import { DispatchBoolean, DispatchType } from "../../types/hooks/reactTypes";
-import { StudyDailyInfoProps } from "../../types/models/studyTypes/studyDetails";
-import { MyVoteProps } from "../../types/models/studyTypes/studyInterActions";
-import { ActiveLocation } from "../../types/services/locationTypes";
+import { DispatchBoolean } from "../../types/hooks/reactTypes";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
-import VoteDrawer from "./VoteDrawer";
 
 interface StudyControlButtonProps {
-  location: ActiveLocation;
-  studyVoteData: StudyDailyInfoProps;
-  setMarkersOptions: DispatchType<IMarkerOptions[]>;
-
-  setIsLocationRefetch: DispatchBoolean;
-  setCenterLocation: DispatchType<{ lat: number; lon: number }>;
-  setMapOptions: () => void;
-  date: string;
-  myVote: MyVoteProps;
-  setMyVote: DispatchType<MyVoteProps>;
-  isVoteDrawer: boolean;
   setIsVoteDrawer: DispatchBoolean;
+  setIsDrawerUp: DispatchBoolean;
 }
 
-function StudyControlButton({
-  location,
-  studyVoteData,
-  setMarkersOptions,
-  setMapOptions,
-  setCenterLocation,
-  setIsLocationRefetch,
-  isVoteDrawer,
-  setIsVoteDrawer,
-
-  date,
-  myVote,
-  setMyVote,
-}: StudyControlButtonProps) {
-  const router = useRouter();
+function StudyControlButton({ setIsVoteDrawer, setIsDrawerUp }: StudyControlButtonProps) {
   const searchParams = useSearchParams();
-  const categoryParam = searchParams.get("category");
-  const newSearchParams = new URLSearchParams(searchParams);
 
   const [isStudyDrawer, setIsStudyDrawer] = useState(false);
 
@@ -58,31 +27,10 @@ function StudyControlButton({
 
   const isOpenStudy = myStudyParticipation?.status === "open";
 
-  useEffect(() => {
-    if (!studyVoteData) return;
-    if (categoryParam === "voting") setIsVoteDrawer(true);
-    else setIsVoteDrawer(false);
-  }, [categoryParam, studyVoteData]);
-
-  useEffect(() => {
-    if (!studyVoteData) return;
-    if (isVoteDrawer) {
-      setMapOptions();
-      newSearchParams.set("category", "voting");
-      router.replace(`/studyPage?${newSearchParams.toString()}`);
-    }
-  }, [isVoteDrawer, studyVoteData]);
-
   const handleStudyVoteButton = () => {
+    setIsDrawerUp(false);
     setIsStudyDrawer(false);
     setIsVoteDrawer(true);
-  };
-
-  const handleStudyVoteDrawerDown = () => {
-    setIsVoteDrawer(false);
-    setIsLocationRefetch(true);
-    newSearchParams.set("category", "currentplace");
-    router.replace(`/studyPage?${newSearchParams.toString()}`);
   };
 
   return (
@@ -158,18 +106,6 @@ function StudyControlButton({
             </Button>
           </Link>
         </BottomFlexDrawer>
-      )}
-      {isVoteDrawer && (
-        <VoteDrawer
-          date={date}
-          location={location}
-          setIsModal={handleStudyVoteDrawerDown}
-          studyVoteData={studyVoteData}
-          setMarkersOptions={setMarkersOptions}
-          setCenterLocation={setCenterLocation}
-          myVote={myVote}
-          setMyVote={setMyVote}
-        />
       )}
     </>
   );

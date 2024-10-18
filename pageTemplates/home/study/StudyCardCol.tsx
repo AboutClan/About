@@ -145,9 +145,7 @@ function StudyCardCol({ participations, date }: StudyCardColProps) {
               </Box>
             ))}
             {studyCardColData.length >= 3 && (
-              <SectionFooterButton
-                url={`/studyList?tab=study&location=${locationEn}&date=${date}`}
-              />
+              <SectionFooterButton url={`/studyList?location=${locationEn}&date=${date}`} />
             )}
           </Flex>
         ) : (
