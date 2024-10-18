@@ -56,15 +56,15 @@ const theme = extendTheme({
 
   colors: {
     gray: {
-      50: "#f5f5f5",
-      100: "#eeeeee",
-      200: "#e0e0e0",
-      300: "#bdbdbd",
-      400: "#9e9e9e",
-      500: "#757575", // 명도 46% (유지)
-      600: "#616161",
-      700: "#424242",
-      800: "#303030",
+      50: "#fafafa",
+      100: "#f5f5f5",
+      200: "#eeeeee",
+      300: "#e0e0e0",
+      400: "#bdbdbd",
+      500: "#9e9e9e",
+      600: "#757575", // 명도 46% (유지)
+      700: "#616161",
+      800: "#424242",
       900: "black",
     },
     black: {
@@ -236,6 +236,12 @@ const theme = extendTheme({
         solid: (props) => ({
           bg: `${props.colorScheme === "gray" ? "gray.100" : `${props.colorScheme}.500`}`,
           color: `${props.colorScheme === "gray" ? "gray.600" : `white`}`,
+        }),
+        subtle: (props) => ({
+          ...(props.colorScheme === "gray" && {
+            bg: "gray.200",
+            color: "gray.600",
+          }),
         }),
       },
       defaultProps: {

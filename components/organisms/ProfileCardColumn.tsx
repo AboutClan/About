@@ -13,6 +13,7 @@ export default function ProfileCardColumn({ userCardArr }: IProfileCardColumn) {
           key={idx}
           user={userCard.user}
           comment={userCard?.comment}
+        
           memo={userCard?.memo}
           changeComment={userCard?.changeComment}
           leftComponent={userCard?.leftComponent}

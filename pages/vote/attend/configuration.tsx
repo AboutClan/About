@@ -79,7 +79,6 @@ function Configuration() {
 
   const { mutate: attendRealTimeStudy } = useRealTimeAttendMutation({
     onSuccess(data) {
-      return;
       handleAttendSuccess(data);
     },
   });
@@ -158,6 +157,10 @@ function Configuration() {
 
   const handleSubmit = () => {
     const isParticipationStudy = (myStudyParticipation?.place as StudyPlaceProps)?.fullname;
+    if (attendMessage?.length < 1) {
+      toast("warning", "출석 메세지를 남겨주세요");
+      return;
+    }
 
     if (
       isParticipationStudy &&
@@ -174,7 +177,7 @@ function Configuration() {
       }, 2000);
     } else {
       formData.append("memo", attendMessage);
-      formData.append("status", otherPermission === "허용" ? "open" : "solo");
+      formData.append("status", otherPermission === "허용" ? "free" : "solo");
       formData.append("images", transferStudyAttendance?.image as Blob);
       formData.append(
         "place",

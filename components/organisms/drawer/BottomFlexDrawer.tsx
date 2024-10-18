@@ -8,6 +8,7 @@ import { iPhoneNotchSize } from "../../../utils/validationUtils";
 import ScreenOverlay from "../../atoms/ScreenOverlay";
 
 export const DRAWER_MIN_HEIGHT = 40;
+export const MAX_DRAG_DISTANCE = 40;
 
 export interface BottomFlexDrawerOptions {
   header?: {
@@ -65,9 +66,15 @@ export default function BottomFlexDrawer({
 
   const handlePointerMove = (event) => {
     const currentY = event.clientY || event.touches[0].clientY;
-    const deltaY = startYRef.current - currentY; // 드래그한 만큼의 변화량
-    const newHeight = Math.max(currentHeightRef.current + deltaY, DRAWER_MIN_HEIGHT); // 최소 높이 설정
-    setDrawerHeight(newHeight); // 드래그 중 높이 업데이트
+    const deltaY = startYRef.current - currentY;
+    let newHeight = currentHeightRef.current + deltaY;
+
+    // 최대 드래그 범위를 30px로 제한
+    const maxDragHeight = currentHeightRef.current + MAX_DRAG_DISTANCE;
+    const minDragHeight = currentHeightRef.current - MAX_DRAG_DISTANCE;
+    newHeight = Math.max(Math.min(newHeight, maxDragHeight), minDragHeight);
+
+    setDrawerHeight(newHeight);
   };
 
   const handlePointerUp = (event) => {

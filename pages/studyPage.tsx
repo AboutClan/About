@@ -120,6 +120,7 @@ export default function StudyVoteMap() {
       router.replace(`/studyPage?${newSearchParams.toString()}`);
       return;
     }
+
     switch (categoryParam) {
       case "currentPlace":
         setLocationFilterType("현재 위치");
@@ -148,9 +149,18 @@ export default function StudyVoteMap() {
 
   useEffect(() => {
     if (!studyVoteData || !session?.user) return;
+
     const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
     setMyStudyParticipation(findMyStudyParticipation);
     if (locationFilterType === "스터디 장소" && findMyStudyParticipation) {
+      const changeLocation = getLocationByCoordinates(
+        findMyStudyParticipation.place.latitude,
+        findMyStudyParticipation.place.longitude,
+      );
+
+      if (changeLocation !== locationValue) {
+        setLocationValue(changeLocation as ActiveLocation);
+      }
       setCenterLocation({
         lat: findMyStudyParticipation.place.latitude,
         lon: findMyStudyParticipation.place.longitude,

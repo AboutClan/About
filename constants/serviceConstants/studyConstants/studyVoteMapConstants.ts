@@ -24,32 +24,32 @@ export const LOCATION_CENTER_DOT: {
 // };
 export const LOCATION_MAX_BOUNDARY: {
   [key in ActiveLocation]: {
-    southwest: { latitude: number; longitude: number };
     northeast: { latitude: number; longitude: number };
+    southwest: { latitude: number; longitude: number };
   };
 } = {
   수원: {
-    southwest: { latitude: 37.220011, longitude: 126.955637 },
     northeast: { latitude: 37.357058, longitude: 127.142965 },
+    southwest: { latitude: 37.220011, longitude: 126.955637 },
   },
   안양: {
-    southwest: { latitude: 37.451075, longitude: 126.888074 },
-    northeast: { latitude: 37.357058, longitude: 127.142965 },
+    northeast: { latitude: 37.451075, longitude: 127.142965 },
+    southwest: { latitude: 37.357058, longitude: 126.888074 },
   },
   양천: {
-    southwest: { latitude: 37.553289, longitude: 126.819398 },
-    northeast: { latitude: 37.482753, longitude: 126.941598 },
+    northeast: { latitude: 37.553289, longitude: 126.941598 },
+    southwest: { latitude: 37.482753, longitude: 126.819398 },
   },
   강남: {
-    southwest: { latitude: 37.532565, longitude: 126.991213 },
-    northeast: { latitude: 37.468873, longitude: 127.107285 },
+    northeast: { latitude: 37.532565, longitude: 127.107285 },
+    southwest: { latitude: 37.468873, longitude: 126.991213 },
   },
   동대문: {
-    southwest: { latitude: 37.557579, longitude: 126.989614 },
     northeast: { latitude: 37.638954, longitude: 127.106856 },
+    southwest: { latitude: 37.557579, longitude: 126.989614 },
   },
   인천: {
-    southwest: { latitude: 37.584965, longitude: 126.580845 },
-    northeast: { latitude: 37.341746, longitude: 126.803871 },
+    northeast: { latitude: 37.584965, longitude: 126.803871 },
+    southwest: { latitude: 37.341746, longitude: 126.580845 },
   },
 };

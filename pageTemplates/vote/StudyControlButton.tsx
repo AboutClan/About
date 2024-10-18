@@ -19,7 +19,6 @@ import { iPhoneNotchSize } from "../../utils/validationUtils";
 import VoteDrawer from "./VoteDrawer";
 
 interface StudyControlButtonProps {
-  isAleadyAttend: boolean;
   location: ActiveLocation;
   studyVoteData: StudyDailyInfoProps;
   setMarkersOptions: DispatchType<IMarkerOptions[]>;
@@ -38,7 +37,6 @@ function StudyControlButton({
   location,
   studyVoteData,
   setMarkersOptions,
-  isAleadyAttend,
   setMapOptions,
   setCenterLocation,
   setIsLocationRefetch,

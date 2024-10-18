@@ -132,7 +132,7 @@ export const useFailToast = () => {
   const toast = useChakraToast();
 
   const showFailToast = useCallback(
-    (type: FailToast, sub?: string, isTop: boolean = false) => {
+    (type: FailToast, sub?: string) => {
       let text = "";
       if (type === "free") text = sub;
       if (type === "error") text = "오류가 발생했어요! 관리자에게 문의해주세요!";

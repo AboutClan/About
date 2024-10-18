@@ -41,7 +41,7 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
   );
 
   const totalScore = scoreObj?.study + scoreObj?.gather;
-  
+
   const footerOptions: IFooterOptions = {
     main: {},
     sub: {
@@ -57,10 +57,8 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
   return (
     <ModalLayout
       title={`${dayjs().month() + 1}월 활동 점수표`}
-      headerOptions={{}}
       footerOptions={footerOptions}
       setIsModal={setIsModal}
-      paddingOptions={{ body: { top: 4 } }}
     >
       <Flex
         align="center"

@@ -23,7 +23,7 @@ function StudyOverview({
   time,
 }: IStudyOverview) {
   const { text: badgeText, colorScheme: badgeColorScheme } = STUDY_STATUS_TO_BADGE[status];
-  console.log(134, time);
+
   const infoBoxPropsArr: InfoBoxProps[] = [
     {
       category: "영업 시간",

@@ -3,8 +3,8 @@ import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
-import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
 
+import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
 import PageIntro from "../../components/atoms/PageIntro";
 import BottomNav from "../../components/layouts/BottomNav";
 import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";

@@ -1,6 +1,6 @@
 import { Box, Button } from "@chakra-ui/react";
-import { useTypeToast } from "../../../hooks/custom/CustomToast";
 
+import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import { CheckCircleIcon, XCircleIcon } from "../../Icons/CircleIcons";
 import { ImageIcon } from "../../Icons/ImageIcons";
 
@@ -14,7 +14,9 @@ export default function AttendanceBadge({ type, time, setImageProps }: IAttendan
   const toast = useTypeToast();
 
   const onClickButton = () => {
+   
     if (setImageProps) {
+    
       setImageProps();
     } else {
       toast("not-yet");

@@ -1,5 +1,5 @@
-export const ChatTalkIcon = ({ isActive }: { isActive: boolean }) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+export function ChatTalkIcon({ isActive }: { isActive: boolean }) {
+  return <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
     <rect width="20" height="20" rx="10" fill="#A0AEC0" fill-opacity={isActive ? "0.64" : "0.32"} />
     <g clip-path="url(#clip0_2234_1923)">
       <path
@@ -15,4 +15,4 @@ export const ChatTalkIcon = ({ isActive }: { isActive: boolean }) => (
       </clipPath>
     </defs>
   </svg>
-);
+}

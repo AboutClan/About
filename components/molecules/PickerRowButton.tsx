@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { TurnArrowIcon } from "../Icons/ArrowIcons";
 import { CheckCircleIcon } from "../Icons/CircleIcons";
 import { UserIcon } from "../Icons/UserIcons";
-import { StudyThumbnailCardProps, STUDY_MAX_CNT } from "./cards/StudyThumbnailCard";
+import { STUDY_MAX_CNT,StudyThumbnailCardProps } from "./cards/StudyThumbnailCard";
 import PlaceImage from "./PlaceImage";
 
 interface PickerRowButtonProps extends Partial<StudyThumbnailCardProps> {

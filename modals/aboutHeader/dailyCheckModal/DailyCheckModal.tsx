@@ -1,20 +1,8 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverHeader,
-  PopoverTrigger,
-} from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
-import styled from "styled-components";
 
 import { CheckCircleBigIcon } from "../../../components/Icons/CircleIcons";
 import { DAILY_CHECK_POP_UP } from "../../../constants/keys/localStorage";
@@ -163,69 +151,5 @@ function DailyCheckModal({ setIsModal }: IModal) {
     </>
   );
 }
-
-function PresentListPopOver() {
-  return (
-    <Popover placement="top-start">
-      <PopoverTrigger>
-        <Button fontSize="11px" size="xs" colorScheme="yellowTheme">
-          선물 목록
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent bg="var(--gray-100)">
-        <PopoverHeader fontWeight="semibold">
-          선물 목록 <SubTitle>(16 종류)</SubTitle>
-        </PopoverHeader>
-        <PopoverArrow />
-        <PopoverCloseButton />
-        <PopoverBody fontSize="12px">
-          {DAILY_CHECK_WIN_LIST.map((item, idx) => (
-            <PercentItem key={idx}>
-              <span>{item.item}</span>
-              <span>({item.percent}%)</span>
-              {idx !== DAILY_CHECK_WIN_LIST.length - 1 && ", "}
-            </PercentItem>
-          ))}
-        </PopoverBody>
-      </PopoverContent>
-    </Popover>
-  );
-}
-
-function PresentPercentPopOver() {
-  return (
-    <Popover placement="top-start">
-      <PopoverTrigger>
-        <Button size="xs" fontSize="11px" colorScheme="yellowTheme">
-          당첨 확률
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent bg="var(--gray-100)">
-        <PopoverHeader fontWeight="semibold">
-          당첨 확률<SubTitle>(총 7.06%)</SubTitle>
-        </PopoverHeader>
-        <PopoverArrow />
-        <PopoverCloseButton />
-        <PopoverBody fontSize="12px">
-          {DAILY_CHECK_WIN_LIST.map((item, idx) => (
-            <PercentItem key={idx}>
-              <span>{item.item}</span>
-              <span>({item.percent}%)</span>
-              {idx !== DAILY_CHECK_WIN_LIST.length - 1 && ", "}
-            </PercentItem>
-          ))}
-        </PopoverBody>
-      </PopoverContent>
-    </Popover>
-  );
-}
-
-const SubTitle = styled.span`
-  color: var(--gray-600);
-  font-weight: 400;
-  font-size: 12px;
-`;
-
-const PercentItem = styled.span``;
 
 export default DailyCheckModal;

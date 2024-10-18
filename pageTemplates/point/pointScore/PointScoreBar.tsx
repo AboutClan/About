@@ -2,6 +2,7 @@ import { Badge } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import UserBadge from "../../../components/atoms/badges/UserBadge";
 
 import ProgressBar from "../../../components/atoms/ProgressBar";
 import {
@@ -9,8 +10,9 @@ import {
   BADGE_INFO,
 } from "../../../constants/serviceConstants/badgeConstants";
 import { SCHEME_TO_COLOR } from "../../../constants/styles";
+import { useUserInfoQuery } from "../../../hooks/user/queries";
 import BadgeInfoModal from "../../../modals/store/badgeInfoModal/BadgeInfoModal";
-import { UserBadge } from "../../../types/models/userTypes/userInfoTypes";
+
 import { getNextBadge, getUserBadge } from "../../../utils/convertUtils/convertDatas";
 
 interface IPointScoreBar {
@@ -21,9 +23,11 @@ interface IPointScoreBar {
 function PointScoreBar({ myScore, hasQuestion = true }: IPointScoreBar) {
   const { data: session } = useSession();
 
+  const { data: userInfo } = useUserInfoQuery();
+
   const [userBadge, setUserBadge] = useState<{
-    badge: UserBadge;
-    nextBadge: UserBadge;
+    badge: string;
+    nextBadge: string;
   }>({ badge: null, nextBadge: null });
   const [isBadgeModal, setIsBadgeModal] = useState(false);
 
@@ -41,7 +45,7 @@ function PointScoreBar({ myScore, hasQuestion = true }: IPointScoreBar) {
   const { badge, nextBadge } = userBadge;
 
   const badgeColor = BADGE_COLOR_MAPPINGS[userBadge.badge];
-
+  console.log(badgeColor);
   const getBadgePoint = () => {
     for (let i = 0; i < BADGE_INFO.length; i++) {
       const badgeInfo = BADGE_INFO[i];
@@ -60,9 +64,7 @@ function PointScoreBar({ myScore, hasQuestion = true }: IPointScoreBar) {
       <Layout>
         <Grade>
           <div>
-            <Badge fontSize="14px" marginRight="var(--gap-2)" colorScheme={badgeColor}>
-              {badge}
-            </Badge>
+            <UserBadge score={userInfo?.score || 0} uid={userInfo?.uid} />
             <BadgeName color={SCHEME_TO_COLOR[badgeColor] || badgeColor}>{myScore}점</BadgeName>
             {hasQuestion && (
               <IconWrapper onClick={() => setIsBadgeModal(true)}>

@@ -2,9 +2,9 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
+
 import { ModalLayout } from "../../../modals/Modals";
 import { MessageSimpleProps } from "../../../types/models/commonTypes";
-
 import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import Avatar from "../../atoms/Avatar";
 import UserBadge from "../../atoms/badges/UserBadge";
@@ -34,6 +34,12 @@ export default function ProfileCommentCard({
   const [isCommentModal, setIsCommentModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [text, setText] = useState(comment?.text || "");
+
+  const changeText = () => {
+    changeComment(text);
+    setIsEdit(false);
+    setIsCommentModal(false);
+  };
 
   return (
     <>
@@ -65,7 +71,7 @@ export default function ProfileCommentCard({
           footerOptions={{
             main: {
               text: isEdit ? "변경" : "확인",
-              func: isEdit ? () => changeComment(text) : null,
+              func: isEdit ? changeText : null,
             },
             sub: {},
             isFull: false,
@@ -79,17 +85,19 @@ export default function ProfileCommentCard({
               textAlign="start"
               p={2}
               borderRadius="12px"
+              w="full"
+              h="full"
               color="gray.500"
             >
-              {comment?.text} 테스트 코멘트 작성을 해보겠습니다. 테스트입니다.
+              {comment?.text || "미작성"}
               {user.uid === session?.user.uid && (
-                <Button ml={1} variant="unstyled" color="mint" onClick={() => setIsEdit(true)}>
+                <Button ml={2} variant="unstyled" color="mint" onClick={() => setIsEdit(true)}>
                   <i className="fa-solid fa-pen-to-square fa-sm" />
                 </Button>
               )}
             </Box>
           ) : (
-            <Textarea defaultValue={comment?.text} />
+            <Textarea defaultValue={comment?.text} onChange={(e) => setText(e.target.value)} />
           )}
         </ModalLayout>
       )}
@@ -108,6 +116,5 @@ const CommentText = styled.span`
 `;
 
 const RightComponentContainer = styled.div`
-  margin-right: 4px;
   margin-left: auto;
 `;

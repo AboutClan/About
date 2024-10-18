@@ -8,6 +8,7 @@ import HighlightButton from "../../components/atoms/HighlightButton";
 import AttendanceBadge from "../../components/molecules/badge/AttendanceBadge";
 import { IProfileCommentCard } from "../../components/molecules/cards/ProfileCommentCard";
 import ProfileCardColumn from "../../components/organisms/ProfileCardColumn";
+import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useRealTimeCommentMutation } from "../../hooks/realtime/mutations";
 import { useStudyCommentMutation } from "../../hooks/study/mutations";
@@ -20,27 +21,35 @@ import { IAbsence } from "../../types/models/studyTypes/studyInterActions";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 interface IStudyMembers {
-  date?: string;
+  date: string;
   members: StudyMemberProps[];
   absences: IAbsence[];
 }
 export default function StudyMembers({ date, members, absences }: IStudyMembers) {
   const { data: session } = useSession();
+  const resetStudy = useResetStudyQuery();
   const typeToast = useTypeToast();
   const [hasModalMemo, setHasModalMemo] = useState<string>();
   const [hasImageProps, setHasImageProps] = useState<{
     image: string;
     toUid: string;
   }>();
-  console.log(34, members);
-
   const myStudyParticipation = useRecoilValue(myStudyParticipationState);
   const studyType = checkStudyType(myStudyParticipation);
 
-  const { mutate: setRealTimeComment } = useRealTimeCommentMutation();
-  const { mutate: setVoteComment } = useStudyCommentMutation(date);
+  const { mutate: setRealTimeComment } = useRealTimeCommentMutation({
+    onSuccess: () => handleSuccessChange(),
+  });
+  const { mutate: setVoteComment } = useStudyCommentMutation(date, {
+    onSuccess: () => handleSuccessChange(),
+  });
 
   const isMyStudy = members?.some((who) => who.user.uid === session?.user.uid);
+
+  const handleSuccessChange = () => {
+    typeToast("change");
+    resetStudy();
+  };
 
   const changeComment = (comment: string) => {
     if (studyType === "study") {
@@ -49,14 +58,8 @@ export default function StudyMembers({ date, members, absences }: IStudyMembers)
   };
 
   const userCardArr: IProfileCommentCard[] = members.map((member) => {
-    
-    const togglehasModalMemo =
-      member.user.uid === session?.user.uid && member.attendanceInfo.attendanceImage
-        ? (memo: string) => setHasModalMemo(memo)
-        : null;
     const obj = composeUserCardArr(
       member,
-      togglehasModalMemo,
       absences?.find((who) => who.user.uid === member.user.uid),
     );
 
@@ -67,15 +70,11 @@ export default function StudyMembers({ date, members, absences }: IStudyMembers)
       ...obj,
       changeComment,
       rightComponent: rightComponentProps ? (
-        <>
-          <Flex align="center">
-            <AttendanceBadge
-              type={rightComponentProps.type}
-              time={rightComponentProps.time}
-              setImageProps={() => setHasImageProps({ image, toUid: member.user.uid })}
-            />
-          </Flex>
-        </>
+        <AttendanceBadge
+          type={rightComponentProps.type}
+          time={rightComponentProps.time}
+          setImageProps={() => setHasImageProps({ image, toUid: member.user.uid })}
+        />
       ) : null,
     };
   });
@@ -134,7 +133,7 @@ interface IReturnProps extends Omit<IProfileCommentCard, "rightComponent"> {
 
 const composeUserCardArr = (
   participant: StudyMemberProps,
-  setHasModalMemo: (memo: string) => void,
+
   absence: IAbsence,
 ): IReturnProps => {
   const attendanceInfo = participant?.attendanceInfo;
@@ -151,7 +150,6 @@ const composeUserCardArr = (
     user: user,
     memo: memo || (absence ? absence?.message || "불참" : null),
     comment: participant?.comment,
-    setMemo: setHasModalMemo ? () => setHasModalMemo(memo) : null,
     rightComponentProps:
       arrived || absence
         ? {

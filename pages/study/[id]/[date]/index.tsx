@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useParams, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -99,7 +99,7 @@ export default function Page() {
               <StudyDateBar date={date} memberCnt={members.length} />
               <StudyTimeBoard members={members} />
               <Box h="1px" bg="gray.100" my={4} />
-              <StudyMembers members={members} absences={absences} />
+              <StudyMembers date={date} members={members} absences={absences} />
             </Slide>
           </Box>
           <StudyNavigation
