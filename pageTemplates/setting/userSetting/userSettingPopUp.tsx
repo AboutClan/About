@@ -45,12 +45,10 @@ const MODAL_COMPONENTS = {
 };
 
 interface UserSettingPopUpProps {
-  cnt: number;
   userInfo: IUser;
 }
 
-export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProps) {
-  console.log(cnt);
+export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
   const { data: session } = useSession();
 
   const [modalTypes, setModalTypes] = useState<UserPopUp[]>([]);

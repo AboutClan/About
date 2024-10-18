@@ -2,6 +2,7 @@ import { Button } from "@chakra-ui/react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
+import { iPhoneNotchSize } from "../../utils/validationUtils";
 import Slide from "./PageSlide";
 
 interface IBottomNav {
@@ -10,9 +11,10 @@ interface IBottomNav {
   text?: string;
   url?: string;
   isSlide?: boolean;
+  isLoading?: boolean;
 }
 
-function BottomNav({ onClick, text, url, isSlide = true }: IBottomNav) {
+function BottomNav({ onClick, text, url, isSlide = true, isLoading }: IBottomNav) {
   const searchParams = useSearchParams();
   const params = searchParams.toString();
 
@@ -21,16 +23,16 @@ function BottomNav({ onClick, text, url, isSlide = true }: IBottomNav) {
       <Button
         position="fixed"
         left="50%"
-        bottom="0"
+        bottom={`calc(8px + ${iPhoneNotchSize()}px)`}
         maxW="var(--view-max-width)"
         transform="translate(-50%,0)"
         width="calc(100% - 2*var(--gap-4))"
         size="lg"
-        mb="var(--gap-4)"
         borderRadius="12px"
         backgroundColor="var(--color-mint)"
         color="white"
         fontSize="14px"
+        isLoading={isLoading}
         fontWeight={700}
         onClick={onClick}
         _focus={{ backgroundColor: "var(--color-mint)", color: "white" }}

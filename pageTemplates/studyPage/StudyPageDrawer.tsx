@@ -9,11 +9,11 @@ import {
 import WeekSlideCalendar from "../../components/molecules/WeekSlideCalendar";
 import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
 import { StudyThumbnailCardSkeleton } from "../../components/skeleton/StudyThumbnailCardSkeleton";
-import { useCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { convertStudyToParticipations } from "../../libs/study/getMyStudyMethods";
 import { setStudyToThumbnailInfo } from "../../libs/study/setStudyToThumbnailInfo";
-import { DispatchString } from "../../types/hooks/reactTypes";
+import { CoordinateProps } from "../../types/common";
+import { DispatchBoolean, DispatchString } from "../../types/hooks/reactTypes";
 import { StudyDailyInfoProps } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
 import { ActiveLocation } from "../../types/services/locationTypes";
@@ -25,17 +25,25 @@ interface StudyPageDrawerProps {
   date: string;
   setDate: DispatchString;
   location: ActiveLocation;
+  currentLocation: CoordinateProps;
+  isDrawerUp: boolean;
+  setIsDrawerUp: DispatchBoolean;
 }
 
 type SelectOption = "인원순" | "거리순" | "선호순";
 
-function StudyPageDrawer({ studyVoteData, location, date, setDate }: StudyPageDrawerProps) {
+function StudyPageDrawer({
+  studyVoteData,
+  location,
+  date,
+  setDate,
+  currentLocation,
+  isDrawerUp,
+  setIsDrawerUp,
+}: StudyPageDrawerProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
-  const drawerParam = searchParams.get("drawer") as "up" | "down";
-
-  const { currentLocation } = useCurrentLocation();
 
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
   const [selectOption, setSelectOption] = useState<SelectOption>("인원순");
@@ -45,6 +53,7 @@ function StudyPageDrawer({ studyVoteData, location, date, setDate }: StudyPageDr
 
   useEffect(() => {
     if (!studyVoteData || !currentLocation) return;
+
     const participations = convertStudyToParticipations(studyVoteData, location);
     const getThumbnailCardInfoArr = setStudyToThumbnailInfo(
       participations,
@@ -63,13 +72,6 @@ function StudyPageDrawer({ studyVoteData, location, date, setDate }: StudyPageDr
     setThumbnailCardinfoArr((old) => sortThumbnailCardInfoArr(selectOption, preference, old));
   }, [selectOption, preference]);
 
-  useEffect(() => {
-    if (!drawerParam) {
-      newSearchParams.set("drawer", "up");
-      router.replace(`/studyPage?${newSearchParams.toString()}`);
-    }
-  }, [drawerParam]);
-
   const handleSelectDate = (moveDate: string) => {
     if (date === moveDate) return;
     setThumbnailCardinfoArr(null);
@@ -78,20 +80,12 @@ function StudyPageDrawer({ studyVoteData, location, date, setDate }: StudyPageDr
     router.replace(`/studyPage?${newSearchParams.toString()}`);
   };
 
-  const handleDrawerDown = () => {
-    
-    newSearchParams.set("category", "currentPlace");
-    newSearchParams.set("drawer", "down");
-    router.replace(`/studyPage?${newSearchParams.toString()}`);
-    
-  };
-
   return (
     <BottomFlexDrawer
       isOverlay={false}
       height={618}
-      isDrawerUp={drawerParam !== "down"}
-      setIsModal={() => handleDrawerDown()}
+      isDrawerUp={isDrawerUp}
+      setIsModal={setIsDrawerUp}
     >
       <Box w="100%" h="400px">
         <StudyPageDrawerHeader date={date} />

@@ -14,7 +14,11 @@ import { BottomFlexDrawerOptions } from "../../components/organisms/drawer/Botto
 import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
-import { useRealtimeVoteMutation } from "../../hooks/realtime/mutations";
+import {
+  useRealTimeCancelMutation,
+  useRealTimeTimeChangeMutation,
+  useRealtimeVoteMutation,
+} from "../../hooks/realtime/mutations";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";
 import { ModalLayout } from "../../modals/Modals";
 import StudyAbsentModal from "../../modals/study/StudyAbsentModal";
@@ -90,6 +94,18 @@ function StudyNavigation({
   const { mutate: handleCancel } = useStudyParticipationMutation(dayjs(date), "delete", {
     onSuccess() {
       handleSuccess("cancel");
+    },
+  });
+[]
+  const { mutate: handleRealTimeCancel } = useRealTimeCancelMutation({
+    onSuccess() {
+      handleSuccess("cancel");
+      router.push(`/studyPage?${searchParams.toString()}`);
+    },
+  });
+  const { mutate: handleRealTimeTimeChange } = useRealTimeTimeChangeMutation({
+    onSuccess() {
+      handleSuccess("change");
     },
   });
 
@@ -173,7 +189,11 @@ function StudyNavigation({
     },
     footer: {
       text: myStudyInfo ? "시간 변경" : "신청 완료",
-      func: myStudyInfo ? () => handleTimeChange(voteTime) : () => onClickStudyVote(voteTime),
+      func: myStudyInfo
+        ? studyType === "public"
+          ? () => handleTimeChange(voteTime)
+          : () => handleRealTimeTimeChange(voteTime)
+        : () => onClickStudyVote(voteTime),
       loading: isLoading1 || isLoading2,
     },
   };
@@ -245,16 +265,15 @@ function StudyNavigation({
             main: {
               text: "장소 변경",
               func: () => {
-                router.replace(
-                  `/studyPage?location=${locationEn}&date=${date}&category=voting&drawer=down  `,
-                );
+                router.replace(`/studyPage?location=${locationEn}&date=${date}&voteDrawer=up  `);
               },
             },
             sub: {
               text: "참여 취소",
               func: () => {
                 setIsCancelModal(false);
-                handleCancel();
+                if (studyType === "public") handleCancel();
+                else if (studyType === "private") handleRealTimeCancel();
               },
             },
           }}

@@ -29,6 +29,7 @@ function HomeNav() {
                 bgColor={item.bgColor}
                 borderRadius="50%"
               ></Box>
+
               <Image
                 src={item.iconImage}
                 width={36}
@@ -58,35 +59,35 @@ interface HomeRecommendationItemProps {
 const HOME_RECOMMENDATION_ICON_ARR: HomeRecommendationItemProps[] = [
   {
     iconImage:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%ED%8A%B8%EB%A1%9C%ED%94%BC.png",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%ED%8A%B8%EB%A1%9C%ED%94%BC2.png",
     title: "랭킹",
     url: "/ranking",
     bgColor: "var(--color-red)",
   },
   {
     iconImage:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%EC%8A%A4%ED%86%A0%EC%96%B4.png",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%EC%87%BC%ED%95%912.png",
     title: "스토어",
     url: "/store",
     bgColor: "var(--color-mint)",
   },
   {
     iconImage:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%EB%8B%AC%EB%A0%A5.png",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%EB%8B%AC%EB%A0%A52.png",
     title: "캘린더",
     url: `/calendar`,
     bgColor: "var(--color-orange)",
   },
   {
     iconImage:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%EA%B9%83%EB%B0%9C.png",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%EA%B9%83%EB%B0%9C2.png",
     title: "소모임",
     url: "/group",
     bgColor: "var(--color-gray)",
   },
   {
     iconImage:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%EB%94%94%EC%8A%A4%EC%BD%94%EB%93%9C.png",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%EB%94%94%EC%BD%942.png",
     title: "디스코드",
     url: "https://discord.gg/dDu2kg2uez",
     bgColor: "var(--color-blue)",

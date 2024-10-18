@@ -1,81 +1,71 @@
-import { Box, Flex } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { Box, Button, Flex } from "@chakra-ui/react";
+import { useRecoilValue } from "recoil";
 
 import CurrentLocationBtn from "../../components/atoms/CurrentLocationBtn";
 import Select from "../../components/atoms/Select";
-import ButtonGroups, { ButtonOptionsProps } from "../../components/molecules/groups/ButtonGroups";
 import { LOCATION_OPEN } from "../../constants/location";
 import { useToast } from "../../hooks/custom/CustomToast";
+import { useUserInfoQuery } from "../../hooks/user/queries";
+import { getLocationByCoordinates } from "../../libs/study/getLocationByCoordinates";
+import { myStudyParticipationState } from "../../recoils/studyRecoils";
+import { CoordinateProps } from "../../types/common";
 import { DispatchBoolean, DispatchType } from "../../types/hooks/reactTypes";
 import { ActiveLocation } from "../../types/services/locationTypes";
 
-type LocationFilterType = "현재 위치" | "활동 장소" | "스터디 장소";
-
-const FILTER_TYPE_ARR = ["활동 장소"] as LocationFilterType[];
-
-const FILTER_TO_PARAM: Record<LocationFilterType, string> = {
-  "현재 위치": "currentPlace",
-  "활동 장소": "mainPlace",
-  "스터디 장소": "votePlace",
-};
-
 interface StudyMapTopNavProps {
-  hasMainLocation: boolean;
   location: ActiveLocation;
   setLocation: DispatchType<ActiveLocation>;
   setIsLocationFetch: DispatchBoolean;
+  setCenterLocation: DispatchType<CoordinateProps>;
 }
 
 function StudyMapTopNav({
   setIsLocationFetch,
   location,
   setLocation,
-  hasMainLocation,
+  setCenterLocation,
 }: StudyMapTopNavProps) {
   const toast = useToast();
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const newSearchParams = new URLSearchParams(searchParams);
 
-  const [locationFilterType, setLocationFilterType] = useState<LocationFilterType>("현재 위치");
-  // const myStudy = useRecoilValue(myStudyInfoState);
-  // const myRealStudy = useRecoilValue(myRealStudyInfoState);
+  const { data: userInfo } = useUserInfoQuery();
+  const userPlace = userInfo?.locationDetail;
 
-  const handleNavButton = (type: LocationFilterType) => {
-    if (type === "활동 장소" && !hasMainLocation) {
-      toast("warning", "등록된 활동 장소가 없습니다.");
+  const myStudyParticipation = useRecoilValue(myStudyParticipationState);
+  const { latitude, longitude } = myStudyParticipation?.place || {};
+
+  const handleNavButton = () => {
+    if (!myStudyParticipation && !userPlace) {
+      toast("warning", "등록된 주소지가 없습니다.");
       return;
     }
-    if (type === "현재 위치") {
-      setIsLocationFetch(true);
+    const { lat, lon }: CoordinateProps = {
+      lat: myStudyParticipation ? latitude : userPlace?.lat,
+      lon: myStudyParticipation ? longitude : userPlace?.lon,
+    };
+    const changeLocation = getLocationByCoordinates(lat, lon);
+    if (changeLocation) {
+      setLocation(changeLocation as ActiveLocation);
+      setCenterLocation({ lat, lon });
     }
-    if (locationFilterType === type) {
-    
-      setLocationFilterType("현재 위치");
-      newSearchParams.set("category", "currentPlace");
-    } else {
-      setLocationFilterType(type);
-      newSearchParams.set("category", FILTER_TO_PARAM[type]);
-    }
-    router.replace(`/studyPage?${newSearchParams.toString()}`);
   };
-
-  const realButtonOptionsArr: ButtonOptionsProps[] = FILTER_TYPE_ARR.map((type) => ({
-    text: type,
-    func: () => handleNavButton(type),
-  }));
 
   return (
     <Flex w="100%" justify="space-between" p={5} position="absolute" top="0" left="0" zIndex={10}>
-      <CurrentLocationBtn onClick={() => handleNavButton("현재 위치")} />
+      <CurrentLocationBtn onClick={() => setIsLocationFetch(true)} />
       <Flex>
-        <ButtonGroups
-          buttonOptionsArr={realButtonOptionsArr}
-          size="sm"
-          isEllipse
-          currentValue={locationFilterType}
-        />
+        <Button
+          borderRadius="20px"
+          size="md"
+          fontSize="11px"
+          fontWeight="semibold"
+          h="32px"
+          bg="white"
+          border="var(--border)"
+          borderColor="gray.200"
+          onClick={handleNavButton}
+        >
+          {myStudyParticipation ? "스터디 장소" : "주 활동 장소"}
+        </Button>
         <Box ml={2}>
           <Select
             options={LOCATION_OPEN}

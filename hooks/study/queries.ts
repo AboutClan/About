@@ -46,7 +46,6 @@ export const useStudyPlacesQuery = (
     options,
   );
 
-export interface StudyVoteProps {}
 
 export const useStudyVoteQuery = (
   date: string,

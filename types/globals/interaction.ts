@@ -20,3 +20,4 @@ export interface IInteractionLikeStorage {
 }
 
 export type CustomColor = "mint" | "orange" | "blue" | "gray";
+
