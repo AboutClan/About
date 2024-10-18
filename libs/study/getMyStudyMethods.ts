@@ -49,6 +49,7 @@ export const getStudyParticipationById = (
   studyVoteData: StudyDailyInfoProps,
   id: string,
 ): StudyMergeParticipationProps => {
+  if (!studyVoteData) return;
   const findMyParticipation = studyVoteData.participations.find(
     (participation) => participation.place._id === id,
   );
@@ -62,7 +63,9 @@ export const getMyStudyParticipation = (
   studyVoteData: StudyDailyInfoProps,
   myUid: string,
 ): StudyMergeParticipationProps => {
-  const findMyParticipation = studyVoteData.participations.find((participation) =>
+  if (!studyVoteData) return;
+  console.log(123, studyVoteData.participations);
+  const findMyParticipation = studyVoteData.participations?.find((participation) =>
     participation.members.some((who) => who.user.uid === myUid),
   );
   const myRealTimeFiltered = getMyRealTimeFiltered(studyVoteData.realTime, myUid);
@@ -106,7 +109,8 @@ export const getMyStudyInfo = (
 
 export const checkStudyType = (
   participations: StudyMergeParticipationProps,
-): "study"|"realTime"  => {
+): "study" | "realTime" => {
+  if (!participations) return;
   if ((participations?.place as StudyPlaceProps)?.fullname) return "study";
   else if ((participations?.place as PlaceInfoProps)?.name) return "realTime";
   return null;

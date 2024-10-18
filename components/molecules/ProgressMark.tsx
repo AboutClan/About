@@ -4,9 +4,9 @@ interface ProgressMarkProps {
   value: number;
 }
 
-function ProgressMark({ value = 20 }: ProgressMarkProps) {
+function ProgressMark({ value }: ProgressMarkProps) {
   const isMax = value >= 30;
-  console.log(54, value);
+
   return (
     <Box fontSize="8px" color="gray.800">
       {!isMax ? (

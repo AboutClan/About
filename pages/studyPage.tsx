@@ -189,10 +189,13 @@ export default function StudyVoteMap() {
       },
       function (error) {
         console.error("위치 정보를 가져오는 데 실패했습니다: ", error);
+        const locationCenter = LOCATION_CENTER_DOT[locationValue];
+        setCenterLocation({ lat: locationCenter.latitude, lon: locationCenter.longitude });
+        setCurrentLocation({ lat: locationCenter.latitude, lon: locationCenter.longitude });
       },
       {
         enableHighAccuracy: true, // 고정밀도 모드 활성화
-        timeout: 5000, // 5초 안에 위치를 가져오지 못하면 오류 발생
+        timeout: 3000, // 5초 안에 위치를 가져오지 못하면 오류 발생
         maximumAge: 0, // 캐시된 위치 정보를 사용하지 않음
       },
     );

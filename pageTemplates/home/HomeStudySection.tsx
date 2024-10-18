@@ -35,12 +35,12 @@ function HomeStudySection() {
       enabled: !!userLocation,
     },
   );
-
+  console.log(54, studyVoteData);
   useEffect(() => {
-    if (!studyVoteData) return;
+    if (!studyVoteData || !session?.user.uid) return;
     const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
     setMyStudyParticipation(findMyStudyParticipation);
-  }, [studyVoteData]);
+  }, [studyVoteData, session]);
 
   const tabOptionsArr: ITabNavOptions[] = [
     {
