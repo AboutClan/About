@@ -125,6 +125,7 @@ function KakaoShareBtn({
           color="mint"
           bg="white"
           border="1px solid var(--color-mint)"
+          
           _focus={{ bg: "white", boxShadow: "none" }}
           _hover={{ bg: "white", boxShadow: "none" }}
         >
@@ -133,7 +134,7 @@ function KakaoShareBtn({
       ) : !isBig ? (
         <ShareIcon />
       ) : (
-        <Button as="div" colorScheme="mintTheme" width="100%" size="lg">
+        <Button as="div" colorScheme="mintTheme" flex={1} size="lg" maxW="var( --view-max-width)">
           카카오톡으로 공유하기
         </Button>
       )}
@@ -143,6 +144,7 @@ function KakaoShareBtn({
 
 const Layout = styled.button<{ isFull: boolean; temp: boolean }>`
   width: ${(props) => (props.isFull ? "100%" : "undefined")};
+  display: flex;
   width: 100%;
 `;
 

@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 import { ModalLayout } from "../../../modals/Modals";
 import { MessageSimpleProps } from "../../../types/models/commonTypes";
-import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
+import { IUserSummary, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import Avatar from "../../atoms/Avatar";
 import UserBadge from "../../atoms/badges/UserBadge";
 import BasicAvatar from "../../atoms/BasicAvatar";
@@ -13,11 +13,11 @@ import Textarea from "../../atoms/Textarea";
 import { ChatTalkIcon } from "../../Icons/chatIcons";
 
 export interface IProfileCommentCard {
-  user: UserSimpleInfoProps;
+  user: UserSimpleInfoProps | IUserSummary;
   memo?: string;
   leftComponent?: React.ReactNode;
   rightComponent?: React.ReactNode;
-
+  hasCommentButton?: boolean;
   comment?: MessageSimpleProps;
   changeComment?: (comment: string) => void;
 }
@@ -28,6 +28,7 @@ export default function ProfileCommentCard({
   leftComponent,
   rightComponent,
   changeComment,
+  hasCommentButton,
   comment,
 }: IProfileCommentCard) {
   const { data: session } = useSession();
@@ -41,6 +42,11 @@ export default function ProfileCommentCard({
     setIsCommentModal(false);
   };
 
+  const closeModal = () => {
+    setIsCommentModal(false);
+    setIsEdit(false);
+  };
+
   return (
     <>
       <Flex py={3}>
@@ -52,13 +58,15 @@ export default function ProfileCommentCard({
         )}
         <Flex direction="column" justify="center" ml={3} my={1}>
           <Flex align="center" mb={memo ? 1 : 0}>
-            <Box as="span" mr={1} fontWeight="semibold" fontSize="13px">
+            <Box lineHeight="20px" mr={1} fontWeight="semibold" fontSize="13px">
               {user?.name}
             </Box>
             <UserBadge score={user?.score || 0} uid={user?.uid} />
-            <Button ml={1} variant="unstyled" onClick={() => setIsCommentModal(true)}>
-              <ChatTalkIcon isActive={!!comment} />
-            </Button>
+            {hasCommentButton && (
+              <Button ml={1} variant="unstyled" onClick={() => setIsCommentModal(true)}>
+                <ChatTalkIcon isActive={!!comment} />
+              </Button>
+            )}
           </Flex>
           <Flex lineHeight="18px" alignItems="center" color="gray.500" fontSize="12px">
             <CommentText>{memo}</CommentText>
@@ -71,9 +79,9 @@ export default function ProfileCommentCard({
           footerOptions={{
             main: {
               text: isEdit ? "변경" : "확인",
-              func: isEdit ? changeText : null,
+              func: isEdit ? changeText : closeModal,
             },
-            sub: {},
+            ...(isEdit && { sub: { func: closeModal } }),
             isFull: false,
           }}
           setIsModal={setIsCommentModal}

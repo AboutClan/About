@@ -83,7 +83,7 @@ export default function StudyMembers({ date, members, absences }: IStudyMembers)
     <>
       {userCardArr.length ? (
         <>
-          <ProfileCardColumn userCardArr={userCardArr} />
+          <ProfileCardColumn userCardArr={userCardArr} hasCommentButton />
           {isMyStudy && (
             <Box pt={4} pb={2}>
               <HighlightButton text="친구 초대 +" func={() => typeToast("not-yet")} />

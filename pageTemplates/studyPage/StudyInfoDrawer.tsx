@@ -68,7 +68,7 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo, date }: StudyInFoDrawerPro
   const router = useRouter();
   const toast = useToast();
   const typeToast = useTypeToast();
-  
+
   const myStudyParticipation = useRecoilValue(myStudyParticipationState);
 
   const { data: userInfo } = useUserInfoQuery({ enabled: detailInfo.status === "solo" });
@@ -89,7 +89,7 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo, date }: StudyInFoDrawerPro
     },
   });
 
-  const { mutate } = useStudyCommentMutation(dayjs(), {
+  const { mutate } = useStudyCommentMutation(dayjsToStr(dayjs()), {
     onSuccess() {
       typeToast("change");
       setCommentText(commentValue);

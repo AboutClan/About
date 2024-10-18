@@ -24,7 +24,7 @@ function WritingGatherCategory() {
 
   const onClickNext = () => {
     if (!IGatherType) {
-      failToast("free", "주제를 선택해 주세요!", true);
+      failToast("free", "주제를 선택해 주세요!");
       return;
     }
     setGatherWriting((old) => ({ ...old, type: IGatherType }));

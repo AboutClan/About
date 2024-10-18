@@ -34,11 +34,9 @@ function ScoreLog() {
           {!isGuest &&
             (score && scoreLog ? (
               <>
-                <Box>
-                  <PointScoreBar myScore={score} />
-                </Box>
+                <PointScoreBar />
                 <EventBadge />
-                <Box mt="4px" border="var(--border)" rounded="md" minHeight="calc(100vh - 176px)">
+                <Box mt={3} border="var(--border)" rounded="md" minHeight="calc(100vh - 176px)">
                   <SummaryTable headerInfos={headerInfos} tableInfosArr={tableInfosArr} size="lg" />
                 </Box>
               </>

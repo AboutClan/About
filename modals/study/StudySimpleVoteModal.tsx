@@ -7,7 +7,6 @@ import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading"
 import ImageTileGridLayout, {
   IImageTileData,
 } from "../../components/molecules/layouts/ImageTitleGridLayout";
-import { StudyVoteTimeRullets } from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { POINT_SYSTEM_PLUS } from "../../constants/serviceConstants/pointSystemConstants";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
@@ -48,7 +47,7 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
     start: null,
     end: null,
   });
-  const [voteTime, setVoteTime] = useState<{ start: Dayjs; end: Dayjs }>();
+  const [voteTime] = useState<{ start: Dayjs; end: Dayjs }>();
   const [imageDataArr, setImageDataArr] = useState<IImageTileData[]>();
   const [recommendationPlace, setRecommendationPlace] = useState<StudyParticipationProps>();
 
@@ -232,7 +231,7 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
                 setValue={setSelectedPlace}
               />
             </Box> */}
-          <StudyVoteTimeRullets setVoteTime={setVoteTime} />
+          {/* <StudyVoteTimeRullets setVoteTime={setVoteTime} /> */}
         </Box>
       ) : imageDataArr ? (
         <Box height="240px" overflowY="scroll">

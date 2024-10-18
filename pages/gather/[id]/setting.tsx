@@ -113,7 +113,7 @@ function Setting() {
               <ProfileCommentCard
                 key={idx}
                 user={who.user}
-                comment={who.phase === "first" ? "1차 참여" : "2차 참여"}
+                comment={{ text: who.phase === "first" ? "1차 참여" : "2차 참여" }}
                 rightComponent={
                   <Flex>
                     <Button

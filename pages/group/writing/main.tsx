@@ -24,7 +24,7 @@ function WritingStudyCategoryMain() {
 
   const onClickNext = () => {
     if (!category) {
-      failToast("free", "주제를 선택해 주세요!", true);
+      failToast("free", "주제를 선택해 주세요!");
       return;
     }
     setLocalStorageObj(GROUP_WRITING_STORE, {

@@ -19,11 +19,7 @@ import { useToast } from "../hooks/custom/CustomToast";
 import { useStudyVoteQuery } from "../hooks/study/queries";
 import { useUserInfoQuery } from "../hooks/user/queries";
 import { getLocationByCoordinates } from "../libs/study/getLocationByCoordinates";
-import {
-  getMyStudyInfo,
-  getMyStudyParticipation,
-  getRealTimeFilteredById,
-} from "../libs/study/getMyStudyMethods";
+import { getMyStudyParticipation, getRealTimeFilteredById } from "../libs/study/getMyStudyMethods";
 import { getStudyTime } from "../libs/study/getStudyTime";
 import { getCurrentLocationIcon, getStudyIcon } from "../libs/study/getStudyVoteIcon";
 import StudyInFoDrawer, { StudyInfoProps } from "../pageTemplates/studyPage/StudyInfoDrawer";
@@ -83,8 +79,6 @@ export default function StudyVoteMap() {
   const [detailInfo, setDetailInfo] = useState<StudyInfoProps>();
 
   const [myStudyParticipation, setMyStudyParticipation] = useRecoilState(myStudyParticipationState);
-
-  const myStudyInfo = getMyStudyInfo(myStudyParticipation, session?.user.uid);
 
   const { data: userInfo } = useUserInfoQuery();
 
@@ -332,7 +326,6 @@ export default function StudyVoteMap() {
       <StudyControlButton
         studyVoteData={studyVoteData}
         location={locationValue}
-        isAleadyAttend={!!myStudyInfo?.attendanceInfo.arrived}
         setMarkersOptions={setMarkersOptions}
         setIsLocationRefetch={setIsLocationRefetch}
         setCenterLocation={setCenterLocation}

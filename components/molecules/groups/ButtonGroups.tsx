@@ -38,15 +38,11 @@ export default function ButtonGroups({
               bgColor={buttonOptions.text === currentValue ? "var(--gray-800) !important" : "white"}
               color={buttonOptions.text === currentValue ? "white" : "var(--gray-800)"}
               size={size}
-              px={size === "sm" ? "16px" : "inherit"}
+              px={size === "sm" ? "16px" : "undefined"}
               rounded={isEllipse ? "2xl" : "md"}
               leftIcon={buttonOptions?.icon}
               fontSize="11px"
-              border={size === "sm" ? "1px solid var(--gray-100)" : undefined}
-              // _focus={{
-              //   outline: "none",
-              //   boxShadow: "none",
-              // }}
+              border={size === "sm" ? "1px solid var(--gray-300)" : undefined}
             >
               {buttonOptions.text}
             </Button>

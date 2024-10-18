@@ -66,7 +66,6 @@ const ParticipationSchema: Schema<StudyParticipationProps> = new Schema(
 
     members: [AttendenceSchema],
     absences: [AbsenceSchema],
-    startTime: Date,
 
     status: {
       type: Schema.Types.String,

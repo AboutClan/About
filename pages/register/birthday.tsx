@@ -67,7 +67,6 @@ function Birthday() {
           <DateStr>{myBirth}</DateStr>
           <Button size="md" as="div" bgColor="white" border="var(--border-main)">
             <StyledDatePicker
-              locale={ko}
               selected={startDate}
               onChange={(date) => setStartDate(date as Date)}
               dateFormat="연도 / 월 선택"
@@ -77,7 +76,6 @@ function Birthday() {
           </Button>
           <Button size="md" mt="10px" as="div" bgColor="white" border="var(--border-main)">
             <StyledDatePicker
-              locale={ko}
               selected={startDate}
               onChange={(date) => setStartDate(date as Date)}
               dateFormat="날짜 선택"

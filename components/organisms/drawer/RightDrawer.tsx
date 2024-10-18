@@ -15,7 +15,7 @@ function RightDrawer({ title, onClose, children, headerBtn }: RightUserDrawerPro
   };
 
   return (
-    <Drawer  isOpen onClose={handleClose} size="full" placement="right">
+    <Drawer isOpen onClose={handleClose} size="full" placement="right">
       <DrawerOverlay />
       <DrawerContent>
         <DrawerBody p="0" mx="auto" w="100%" maxW="var(--max-width)">

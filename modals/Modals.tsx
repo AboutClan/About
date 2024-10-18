@@ -143,7 +143,7 @@ export function ModalLayout({
               {title}
             </ChakraModalHeader>
             {headerOptions?.subTitle && (
-              <Box textAlign="center" fontSize="16px">
+              <Box textAlign="center" fontSize="13px">
                 {headerOptions.subTitle}
               </Box>
             )}

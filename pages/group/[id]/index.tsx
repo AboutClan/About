@@ -76,7 +76,7 @@ function GroupDetail() {
   return (
     <>
       <GroupHeader group={group} />
-      <Slide>
+      <Slide isNoPadding>
         {group && (
           <Layout>
             <GroupCover image={belong ? GROUP_GATHERING_IMAGE : group?.image} />
@@ -110,6 +110,7 @@ function GroupDetail() {
 const Layout = styled.div`
   display: flex;
   flex-direction: column;
+
   padding-bottom: 100px;
   background-color: var(--gray-100);
 `;

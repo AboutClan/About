@@ -8,7 +8,7 @@ import { COLOR_TABLE_LIGHT } from "../../constants/colorConstants";
 import { AVATAR_IMAGE_ARR, SPECIAL_AVATAR, SPECIAL_BG } from "../../storage/avatarStorage";
 import { IAvatar as IAvatarProp } from "../../types/models/userTypes/userInfoTypes";
 
-type Size = "2xs" | "xs" | "sm" | "smd" | "md" | "lg" | "xl";
+type Size = "2xs" | "xs" | "sm" | "smd" | "mds" | "md" | "lg" | "xl";
 
 interface IAvatar {
   image?: string;
@@ -91,13 +91,15 @@ function AvatarComponent({
                         ? "28px"
                         : size === "smd"
                           ? "32px"
-                          : size === "md"
-                            ? "44px"
-                            : size === "lg"
-                              ? "64px"
-                              : size === "xl"
-                                ? "80px"
-                                : "")
+                          : size === "mds"
+                            ? "40px"
+                            : size === "md"
+                              ? "48px"
+                              : size === "lg"
+                                ? "64px"
+                                : size === "xl"
+                                  ? "80px"
+                                  : "")
                 }
                 priority={isPriority}
                 alt="avatar"
@@ -178,6 +180,11 @@ const AvatarContainer = styled.div<{
             width: 32px; // w-8
             height: 32px; // h-8
           `;
+        case "mds":
+          return css`
+            width: 40px;
+            height: 40px;
+          `;
         case "md":
           return css`
             width: 48px; // w-11
@@ -234,11 +241,13 @@ const ImageContainer = styled.div<{
           ? "3px"
           : props.size === "smd"
             ? "4px"
-            : props.size === "md"
-              ? "6px"
-              : props.size === "lg"
+            : props.size === "mds"
+              ? "5px"
+              : props.size === "md"
                 ? "6px"
-                : "8px")};
+                : props.size === "lg"
+                  ? "6px"
+                  : "8px")};
 
   background: ${(props) => (props.isBgImage ? `center/cover no-repeat ${props.bg}` : props.bg)};
 `;

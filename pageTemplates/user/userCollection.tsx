@@ -81,7 +81,7 @@ const AlphabetQNABtn = styled.button`
   width: inherit;
   display: flex;
   align-items: center;
-  background-color: var(--gray-200);
+  background-color: var(--gray-100);
 
   padding: var(--gap-3) var(--gap-4);
   border-radius: var(--rounded-lg);

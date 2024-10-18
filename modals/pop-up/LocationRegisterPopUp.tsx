@@ -53,7 +53,9 @@ function LocationRegisterPopUp({ setIsModal }: LocationRegisterPopUp) {
 
   return (
     <ModalLayout title="활동 장소 등록" footerOptions={footerOptions} setIsModal={setIsModal}>
-      <ModalSubtitle>주로 활동하는 장소를 입력해 주세요! 이후에도 변경이 가능합니다.</ModalSubtitle>
+      <ModalSubtitle>
+        주로 활동하는 대략적인 장소를 입력해 주세요! 이후에도 변경이 가능합니다.
+      </ModalSubtitle>
       <Box h="228px">
         <SearchLocation placeInfo={placeInfo} setPlaceInfo={setPlaceInfo} isSmall={true} />
       </Box>

@@ -175,7 +175,7 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
           )
         );
       })}
-      <LastWeekAttendPopUp />
+
       {drawerType === "bottom" && (
         <BottomFlexDrawer
           isDrawerUp

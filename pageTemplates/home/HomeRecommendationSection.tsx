@@ -18,7 +18,7 @@ function HomeRecommendationSection() {
 
   const userLocation = localStorage.getItem(USER_LOCATION) as ActiveLocation;
 
-  const { data: studyVoteData, isLoading } = useStudyVoteQuery(
+  const { data: studyVoteData } = useStudyVoteQuery(
     dayjsToStr(dayjs()),
     userLocation || session?.user.location,
 
@@ -34,11 +34,7 @@ function HomeRecommendationSection() {
           {dayjsToFormat(dayjs(), "M월 D일")} 카공 스터디
         </Box>
 
-        <StudyCardCol
-          participations={studyVoteData?.participations}
-          isLoading={isLoading}
-          date={dayjsToStr(dayjs())}
-        />
+        <StudyCardCol participations={studyVoteData?.participations} date={dayjsToStr(dayjs())} />
       </Box>
       <Slide>
         <HomeGatherCol />

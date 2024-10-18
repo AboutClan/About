@@ -4,11 +4,13 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
+import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
 import { WEB_URL } from "../../constants/system";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
 import { StudyPlaceProps } from "../../types/models/studyTypes/studyDetails";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
+import { getRandomIdx } from "../../utils/mathUtils";
 import { IFooterOptions, ModalLayout } from "../Modals";
 const kakaoAppKey = process.env.NEXT_PUBLIC_KAKAO_JS;
 
@@ -42,8 +44,10 @@ function StudyInviteModal({ setIsModal, place }: IStudyInviteModal) {
         objectType: "location",
         content: {
           title: "같이 스터디 할래?",
-          description: place?.fullname,
-          imageUrl: place.coverImage,
+          description: (place as StudyPlaceProps)?.fullname || (place as PlaceInfoProps)?.name,
+          imageUrl:
+            (place as StudyPlaceProps)?.coverImage ||
+            STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length)],
           link: {
             mobileWebUrl: url,
             webUrl: url,
@@ -64,7 +68,7 @@ function StudyInviteModal({ setIsModal, place }: IStudyInviteModal) {
 
       window.Kakao.Link.createDefaultButton(options);
     }
-  }, [isRenderingCheck, location, place?.fullname, randomNum, url]);
+  }, [isRenderingCheck, location, place, randomNum, url]);
 
   const footerOptions: IFooterOptions = {
     children: (

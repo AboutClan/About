@@ -10,7 +10,6 @@ import {
 import { SERVER_URI } from "../../constants/system";
 import { UserActiveInfoProps } from "../../pages/admin/response/locationActive";
 import { RankingCategorySource } from "../../pages/ranking";
-
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import { IUser, IUserRegisterForm, IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import { IUserRequest, UserRequestCategory } from "../../types/models/userTypes/userRequestTypes";

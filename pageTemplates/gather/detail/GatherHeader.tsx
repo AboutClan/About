@@ -53,7 +53,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
       </Header>
       {drawerType === "kakaoShare" && (
         <RightDrawer title="이미지 공유" onClose={() => setDrawerType(null)}>
-          <Box p="16px">
+          <Box>
             <Box fontSize="16px" mt="4px" mb="20px" fontWeight={600}>
               단톡방에 공유 할 이미지를 선택해 주세요!
             </Box>
@@ -65,7 +65,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
               ))}
             </Container>
           </Box>
-          <Box position="fixed" bottom="0" w="100%" p="16px">
+          <Box position="fixed" bottom="0" w="90%" maxW="var(--view-max-width)">
             <KakaoShareBtn
               isFull
               title={title}

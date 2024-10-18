@@ -57,7 +57,7 @@ function StudyNavigation({
 
   const resetStudy = useResetStudyQuery();
 
-  const isGuest = session?.user.name === "guest";
+  // const isGuest = session?.user.name === "guest";
 
   const myStudyParticipation = useRecoilValue(myStudyParticipationState);
 
