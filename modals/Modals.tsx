@@ -71,7 +71,7 @@ export function ModalLayout({
 
   const { main, sub, isFull = true } = footerOptions || {};
   const { text = "확인", func = onClose } = main || {};
-  const { text: subText = "닫기", func: subFunc = onClose } = sub || {};
+  const { text: subText = "취소", func: subFunc = onClose } = sub || {};
   const [modalTop, setModalTop] = useState("0%");
 
   useEffect(() => {
@@ -81,7 +81,7 @@ export function ModalLayout({
         : window.innerHeight;
       if (viewportHeight < 500) {
         // 모바일 키보드가 올라왔을 때의 높이 기준 조정
-        setModalTop("-10%"); // 모달을 조금 더 위로 이동
+        setModalTop("-15%"); // 모달을 조금 더 위로 이동
       } else {
         setModalTop("0%"); // 기본 위치
       }
@@ -95,19 +95,37 @@ export function ModalLayout({
     <Modal isOpen={true} onClose={onClose} initialFocusRef={initialRef}>
       <ModalOverlay />
       <ModalContent
+        w="300px"
         top={modalTop}
         mx="var(--gap-4)"
         // h={height || SIZE_HEIGHT_MAP[size]}
         maxWidth="358px"
         my="auto"
-        borderRadius="var(--rounded-lg)"
+        borderRadius="12px"
       >
         {!headerOptions ? (
           <>
-            <ChakraModalHeader p="16px 20px" fontSize="20px" borderBottom="var(--border)">
+            <ChakraModalHeader
+              fontWeight={700}
+              px={6}
+              pt={4}
+              pb={3}
+              fontSize="16px"
+              color="var(--gray-800)"
+              textAlign="center"
+            >
               {title}
             </ChakraModalHeader>
-            {isCloseButton && <ModalCloseButton size="lg" />}
+            {isCloseButton && (
+              <ModalCloseButton
+                color="var(--gray-500)"
+                mr="8px"
+                size="md"
+                mt={2.5}
+                w="16px"
+                h="16px"
+              />
+            )}
           </>
         ) : headerOptions?.children ? (
           headerOptions.children
@@ -118,50 +136,61 @@ export function ModalLayout({
                 paddingOptions?.header !== undefined ? `${paddingOptions.header}px` : "var(--gap-5)"
               }
               pb={paddingOptions?.header !== undefined ? `${paddingOptions.header}px` : "8px"}
-              fontSize="20px"
+              fontSize="16px"
+              fontWeight={700}
               textAlign="center"
             >
               {title}
             </ChakraModalHeader>
             {headerOptions?.subTitle && (
-              <Box textAlign="center" fontSize="16px">
+              <Box textAlign="center" fontSize="13px">
                 {headerOptions.subTitle}
               </Box>
             )}
           </>
         )}
         <ChakraModalBody
-          pt={paddingOptions?.body?.top !== undefined ? `${paddingOptions.body.top}px` : "16px"}
+          pt={paddingOptions?.body?.top !== undefined ? `${paddingOptions.body.top}px` : "12px"}
           pb={
-            paddingOptions?.body?.bottom !== undefined ? `${paddingOptions.body.bottom}px` : "4px"
+            paddingOptions?.body?.bottom !== undefined ? `${paddingOptions.body.bottom}px` : "12px"
           }
-          px="20px"
+          px={6}
+          textAlign="center"
+          fontSize="13px"
+          display="flex"
+          justifyContent="center"
+          flexDir="column"
         >
           {children}
         </ChakraModalBody>
 
         {footerOptions && (
           <ChakraModalFooter
-            pb="20px"
-            pt={paddingOptions?.footer !== undefined ? `${paddingOptions.footer}px` : "16px"}
-            px="20px"
+            pb={5}
+            pt={paddingOptions?.footer !== undefined ? `${paddingOptions.footer}px` : "12px"}
+            px={6}
           >
             {footerOptions?.children ? (
               footerOptions.children
             ) : !sub ? (
               isFull ? (
                 <Button
-                  size="lg"
+                  size="md"
                   colorScheme={main?.isRedTheme ? "redTheme" : "mintTheme"}
+                  borderRadius="8px"
                   w="100%"
                   onClick={func}
                   isLoading={main?.isLoading}
+                  h={10}
                 >
                   {text}
                 </Button>
               ) : (
                 <Button
                   onClick={func}
+                  size="md"
+                  h={5}
+                  px={2}
                   variant="ghost"
                   color={main?.isRedTheme ? "var(--color-red)" : "var(--color-mint)"}
                 >
@@ -178,10 +207,17 @@ export function ModalLayout({
               />
             ) : (
               <>
-                <Button onClick={subFunc} variant="ghost" color="var(--color-mint)">
+                <Button h={5} px={2} mr={3} onClick={subFunc} variant="ghost" color="gray">
                   {subText}
                 </Button>
-                <Button onClick={func} variant="ghost" isLoading={main?.isLoading}>
+                <Button
+                  h={5}
+                  px={2}
+                  onClick={func}
+                  variant="ghost"
+                  color="mint"
+                  isLoading={main?.isLoading}
+                >
                   {text}
                 </Button>
               </>
@@ -337,13 +373,7 @@ export function ModalBodyNavTwo({
   onClickTop,
 }: IModalBodyNavTwo) {
   return (
-    <Flex
-      direction="column"
-      h="100%"
-      mb="var(--gap-4)"
-      py="var(--gap-3)"
-      justifyContent="space-around"
-    >
+    <Flex w="100%" direction="column" h="100%" pb={2} justifyContent="space-around">
       <Button
         colorScheme="mintTheme"
         marginBottom="var(--gap-3)"

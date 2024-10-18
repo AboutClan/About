@@ -1,7 +1,6 @@
 import "react-datepicker/dist/react-datepicker.css";
 
 import { Button } from "@chakra-ui/react";
-import ko from "date-fns/locale/ko";
 import dayjs from "dayjs";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -17,7 +16,6 @@ import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoT
 import { birthToAge } from "../../utils/convertUtils/convertTypes";
 import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
-dayjs.locale("ko");
 function Birthday() {
   const searchParams = useSearchParams();
   const info: IUserRegisterFormWriting = getLocalStorageObj(REGISTER_INFO);
@@ -69,7 +67,6 @@ function Birthday() {
           <DateStr>{myBirth}</DateStr>
           <Button size="md" as="div" bgColor="white" border="var(--border-main)">
             <StyledDatePicker
-              locale={ko}
               selected={startDate}
               onChange={(date) => setStartDate(date as Date)}
               dateFormat="연도 / 월 선택"
@@ -79,7 +76,6 @@ function Birthday() {
           </Button>
           <Button size="md" mt="10px" as="div" bgColor="white" border="var(--border-main)">
             <StyledDatePicker
-              locale={ko}
               selected={startDate}
               onChange={(date) => setStartDate(date as Date)}
               dateFormat="날짜 선택"

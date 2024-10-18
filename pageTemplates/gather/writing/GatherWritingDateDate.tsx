@@ -1,5 +1,4 @@
 import { Box, Button } from "@chakra-ui/react";
-import ko from "date-fns/locale/ko";
 import dayjs from "dayjs";
 import { forwardRef, useEffect } from "react";
 import DatePicker from "react-datepicker";
@@ -20,7 +19,6 @@ TIME_RANGE_MIN.setMinutes(0);
 const TIME_RAGNE_MAX = new Date();
 TIME_RAGNE_MAX.setHours(23);
 TIME_RAGNE_MAX.setMinutes(0);
-dayjs.locale("ko");
 
 interface IGatherWritingDateDate {
   date: Date;
@@ -64,7 +62,7 @@ function GatherWritingDateDate({ date, setDate, gatherWriting }: IGatherWritingD
           <StyledDatePicker
             {...PICKER_DATE_AND_TIME}
             customInput={<CustomInput />}
-            locale={ko}
+            locale={dayjs.locale("ko")}
             onChange={(date) => setDate(date as Date)}
             selected={date}
             minTime={TIME_RANGE_MIN}

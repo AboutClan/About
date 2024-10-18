@@ -33,7 +33,7 @@ export default function UserOverview({ userInfo }: UserOverviewProps) {
   return (
     <>
       <Box
-        m="16px"
+        my={4}
         bgColor="white"
         p="16px"
         pt="12px"

@@ -2,8 +2,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-import RuleIcon from "../../components/atoms/Icons/RuleIcon";
-import WritingIcon from "../../components/atoms/Icons/WritingIcon";
+import RuleIcon from "../../components/Icons/RuleIcon";
+import WritingIcon from "../../components/Icons/WritingIcon";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import RuleModal, { IRuleModalContent } from "../../modals/RuleModal";
@@ -36,7 +36,7 @@ function SquarePage() {
       <Header title="커뮤니티" isBack={false}>
         <RuleIcon setIsModal={setIsRuleModal} />
       </Header>
-      <Slide>
+      <Slide isNoPadding>
         <SquareTabNav tab={tab} />
         {tab === "시크릿 스퀘어" ? <SquareSecretSection /> : <SquareLoungeSection />}
       </Slide>

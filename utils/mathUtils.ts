@@ -17,6 +17,7 @@ export const getPerformanceTime = () => {
 };
 
 export const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
+  if (!lat1 || !lon1 || !lat2 || !lon2) return;
   const R = 6371; // 지구 반경 (킬로미터)
   const dLat = deg2rad(lat2 - lat1); // 위도 차이를 라디안으로 변환
   const dLon = deg2rad(lon2 - lon1); // 경도 차이를 라디안으로 변환
@@ -25,7 +26,7 @@ export const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
     Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const distance = R * c; // 거리 계산
-  return distance;
+  return Number(distance.toFixed(1));
 };
 
 const deg2rad = (deg) => {
@@ -37,4 +38,8 @@ export const getBottomNavSize = () => {
   if (deviceType === "iPhone") {
     return 95;
   } else return 77;
+};
+
+export const getRandomIdx = (totalCnt: number) => {
+  return Math.floor(Math.random() * totalCnt);
 };

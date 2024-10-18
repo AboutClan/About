@@ -1,9 +1,13 @@
-import { useParams } from "next/navigation";
+import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
+import { useRecoilValue } from "recoil";
 
 import Textarea from "../../components/atoms/Textarea";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useStudyAttendCheckMutation } from "../../hooks/study/mutations";
+import { getMyStudyInfo } from "../../libs/study/getMyStudyMethods";
+import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import { IModal } from "../../types/components/modalTypes";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
@@ -11,12 +15,14 @@ interface IStudyChangeMemoModal extends IModal {
   hasModalMemo;
 }
 export default function StudyChangeMemoModal({ hasModalMemo, setIsModal }: IStudyChangeMemoModal) {
-  const { date } = useParams<{ id: string; date: string }>() || {};
-
+  const { data: session } = useSession();
   const resetStudy = useResetStudyQuery();
-  const [value, setValue] = useState(hasModalMemo);
+  const [value, setValue] = useState<string>(hasModalMemo || "");
 
-  const { mutate: changeStudyMemo, isLoading } = useStudyAttendCheckMutation(date, {
+  const myStudyParticipation = useRecoilValue(myStudyParticipationState);
+  const myStudyInfo = getMyStudyInfo(myStudyParticipation, session?.user.uid);
+
+  const { mutate: changeStudyMemo, isLoading } = useStudyAttendCheckMutation({
     onSuccess() {
       resetStudy();
       setIsModal(true);
@@ -26,7 +32,7 @@ export default function StudyChangeMemoModal({ hasModalMemo, setIsModal }: IStud
   const footerOptions: IFooterOptions = {
     main: {
       text: "변경",
-      func: () => changeStudyMemo(value),
+      func: () => changeStudyMemo({ memo: value, endHour: dayjs(myStudyInfo.time.end) }),
       isLoading,
     },
   };

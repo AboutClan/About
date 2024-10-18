@@ -1,7 +1,11 @@
 /* eslint-disable */
 import mongoose, { Model, model, Schema } from "mongoose";
 
-import { IAttendance, IParticipation, IStudy } from "../types/models/studyTypes/studyDetails";
+import {
+  IAttendance,
+  StudyDailyInfoProps,
+  StudyParticipationProps,
+} from "../types/models/studyTypes/studyDetails";
 import { IAbsence } from "../types/models/studyTypes/studyInterActions";
 import { IDayjsStartToEnd } from "../types/utils/timeAndDate";
 
@@ -53,16 +57,15 @@ const AbsenceSchema: Schema<IAbsence> = new Schema(
   { _id: false, timestamps: true },
 );
 
-const ParticipationSchema: Schema<IParticipation> = new Schema(
+const ParticipationSchema: Schema<StudyParticipationProps> = new Schema(
   {
     place: {
       type: Schema.Types.ObjectId,
       ref: "Place",
     },
 
-    attendences: [AttendenceSchema],
+    members: [AttendenceSchema],
     absences: [AbsenceSchema],
-    startTime: Date,
 
     status: {
       type: Schema.Types.String,
@@ -73,10 +76,11 @@ const ParticipationSchema: Schema<IParticipation> = new Schema(
   { _id: false },
 );
 
-const VoteSchema: Schema<IStudy> = new Schema({
+const VoteSchema: Schema<StudyDailyInfoProps> = new Schema({
   date: Date,
   participations: [ParticipationSchema],
 });
 
 export const Vote =
-  (mongoose.models.Vote as Model<IStudy, {}, {}, {}>) || model<IStudy>("Vote", VoteSchema);
+  (mongoose.models.Vote as Model<StudyDailyInfoProps, {}, {}, {}>) ||
+  model<StudyDailyInfoProps>("Vote", VoteSchema);

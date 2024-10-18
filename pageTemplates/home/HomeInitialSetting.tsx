@@ -3,12 +3,8 @@ import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
-import { useSetRecoilState } from "recoil";
 import { createGlobalStyle } from "styled-components";
 
-import PCBottomNav from "../../components/layouts/PCBottomNav";
-import { STEPS_CONTENTS } from "../../constants/contentsText/GuideContents";
 import { USER_GUIDE, USER_LOCATION } from "../../constants/keys/localStorage";
 import { SERVER_URI } from "../../constants/system";
 import { useToast } from "../../hooks/custom/CustomToast";
@@ -16,9 +12,8 @@ import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import FAQPopUp from "../../modals/pop-up/FAQPopUp";
 import UserSettingPopUp from "../../pageTemplates/setting/userSetting/userSettingPopUp";
-import { renderHomeHeaderState } from "../../recoils/renderRecoils";
 import { checkAndSetLocalStorage } from "../../utils/storageUtils";
-import { detectDevice } from "../../utils/validationUtils";
+import { isPWA } from "../../utils/validationUtils";
 
 const urlBase64ToUint8Array = (base64String) => {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
@@ -88,11 +83,6 @@ const subscribePushService = async (options: { onSuccess?: () => void } = {}) =>
   }
 };
 
-const isPWA = () => {
-  const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
-  return isStandalone;
-};
-
 function HomeInitialSetting() {
   const router = useRouter();
   const toast = useToast();
@@ -116,7 +106,7 @@ function HomeInitialSetting() {
     },
   });
 
-  const setRenderHomeHeaderState = useSetRecoilState(renderHomeHeaderState);
+  // const setRenderHomeHeaderState = useSetRecoilState(renderHomeHeaderState);
 
   const { mutate: setRole } = useUserInfoFieldMutation("role", {
     onSuccess() {
@@ -170,48 +160,47 @@ function HomeInitialSetting() {
     requestAndSubscribePushService();
   }, []);
 
-  const [{ steps }, setState] = useState<{
-    run: boolean;
-    steps?: Step[];
-  }>({
-    run: false,
-    steps: STEPS_CONTENTS,
-  });
+  // const [{ steps }, setState] = useState<{
+  //   run: boolean;
+  //   steps?: Step[];
+  // }>({
+  //   run: false,
+  //   steps: STEPS_CONTENTS,
+  // });
 
-  const handleJoyrideCallback = (data: CallBackProps) => {
-    if (data.step.target === ".about_navigation1") {
-      setRenderHomeHeaderState(false);
-    }
-    if (data.step.target === "body") {
-      setRenderHomeHeaderState(true);
-    }
+  // const handleJoyrideCallback = (data: CallBackProps) => {
+  //   if (data.step.target === ".about_navigation1") {
+  //     setRenderHomeHeaderState(false);
+  //   }
+  //   if (data.step.target === "body") {
+  //     setRenderHomeHeaderState(true);
+  //   }
 
-    const { status } = data;
-    const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
+  //   const { status } = data;
+  //   const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
 
-    if (finishedStatuses.includes(status)) {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-      setState({ run: false });
-    }
-  };
+  //   if (finishedStatuses.includes(status)) {
+  //     window.scrollTo({
+  //       top: 0,
+  //       behavior: "smooth",
+  //     });
+  //     setState({ run: false });
+  //   }
+  // };
 
   return (
     <>
       {userInfo && !isGuest && <UserSettingPopUp userInfo={userInfo} cnt={isGuide ? 1 : 0} />}
       {isGuestModal && <FAQPopUp setIsModal={setIsGuestModal} />}
       <GlobalStyle />
-      {!isPWALogin && detectDevice() !== "PC" && <PCBottomNav />}
-      <Joyride
+      {/* <Joyride
         hideCloseButton={true}
         callback={handleJoyrideCallback}
         continuous
         steps={steps}
         run={isGuide}
         showSkipButton
-      />
+      /> */}
     </>
   );
 }

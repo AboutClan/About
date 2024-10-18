@@ -23,12 +23,10 @@ function StudyRuleModal({ setIsModal }: IModal) {
     {
       text: "스터디 설명서",
       func: () => setIsTip(true),
-      flex: 1,
     },
     {
       text: "활동 설명서",
       func: () => setIsTip(false),
-      flex: 1,
     },
   ];
 

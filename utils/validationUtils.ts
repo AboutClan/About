@@ -73,3 +73,17 @@ export const detectDevice = () => {
     return "PC";
   }
 };
+export const iPhoneNotchSize = () => {
+  if (typeof navigator === "undefined") return 0;
+
+  const ua = navigator.userAgent;
+  // iPhone 감지
+  if (/iPhone/i.test(ua)) {
+    return 34;
+  } else return 0;
+};
+
+export const isPWA = () => {
+  const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
+  return isStandalone;
+};

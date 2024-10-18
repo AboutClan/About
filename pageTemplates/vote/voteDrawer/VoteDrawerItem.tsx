@@ -118,9 +118,9 @@ function VoteDrawerItem({
           {item.place.fullname}
         </Box>
         <Box color="var(--gray-600)" fontSize="14px">
-          <Box as="span">{item.voteCnt + item.place.prefCnt === 11 ? 2 : 1}명 참여중</Box>
+          <Box as="span">{item.voteCnt}명 참여중</Box>
           {" / "}
-          <Box as="span">즐겨찾기: {item.favoritesCnt + 7}명</Box>
+          <Box as="span">즐겨찾기: {item.favoritesCnt}명</Box>
         </Box>
       </Flex>
       <Box ml="auto" mr="12px">

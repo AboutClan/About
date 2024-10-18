@@ -36,7 +36,7 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
     club: "캘린더",
     recommendation: "추천",
   };
- 
+
   useEffect(() => {
     if (!session?.user) return;
     if (!category) setCategory(matchParam[tabParam]);
@@ -86,22 +86,18 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
     {
       text: "추천",
       func: () => handleTabMove("추천"),
-      flex: 1,
     },
     {
       text: "스터디",
       func: onClickStudy,
-      flex: 1,
     },
     {
       text: "번개",
       func: () => handleTabMove("번개"),
-      flex: 1,
     },
     {
       text: "캘린더",
       func: () => handleTabMove("캘린더"),
-      flex: 1,
     },
   ];
 
@@ -109,7 +105,7 @@ function HomeTab({ tab: category, setTab: setCategory }: HomeTabProps) {
     <>
       <>
         <Box fontSize="16px" bgColor="white" pt="8px">
-          <TabNav tabOptionsArr={tabNavOptions} selected={category} hasBorder={false} isThick />
+          <TabNav tabOptionsArr={tabNavOptions} selected={category} hasBorder={false} />
         </Box>
       </>
       {isNotCompletedModal && <NotCompletedModal setIsModal={setIsNotCompletedModal} />}

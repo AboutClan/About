@@ -23,11 +23,13 @@ export default function ArrowBackButton({ url, func }: IArrowBackButton) {
 export function ArrowBackButtonUI({ onClick }: { onClick: () => void }) {
   return (
     <Button onClick={onClick}>
-      <i className="fa-solid fa-chevron-left" />
+      <i className="fa-solid fa-chevron-left fa-sm" />
     </Button>
   );
 }
 
 const Button = styled.button`
-  padding: 16px;
+  width: 20px;
+  height: 20px;
+  color: var(--color-mint);
 `;

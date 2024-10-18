@@ -24,8 +24,15 @@ export default function ImageZoomModal({ imageUrl, setIsModal }: IImageZoommodal
         overflow="hidden"
         onClick={() => setIsModal(null)}
       >
-        <Box position="relative" width="320px" maxHeight="400px">
-          <Image src={imageUrl} width={320} height={400} alt="studyPrivateImage" priority={true} />
+        <Box position="relative" width="320px" height="100%" maxHeight="400px">
+          <Image
+            src={imageUrl}
+            fill
+            alt="studyPrivateImage"
+            priority={true}
+            sizes="400px"
+            style={{ objectPosition: "center", objectFit: "cover" }}
+          />
         </Box>
       </Box>
     </>

@@ -27,7 +27,7 @@ function WritingGahterLocation() {
 
   const onClickNext = () => {
     if (!placeInfo?.place_name) {
-      failToast("free", "장소를 선택해 주세요!", true);
+      failToast("free", "장소를 선택해 주세요!");
       return;
     }
     setGatherWriting((old) => ({

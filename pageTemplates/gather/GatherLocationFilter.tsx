@@ -3,6 +3,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import ButtonGroups, { ButtonOptionsProps } from "../../components/molecules/groups/ButtonGroups";
+import { LOCATION_TO_FULLNAME } from "../../constants/location";
 import { ActiveLocation, LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { createUrlWithLocation } from "../../utils/convertUtils/convertTypes";
@@ -16,9 +17,9 @@ export default function GatherLocationFilter() {
   ) as ActiveLocation;
 
   const [location, setLocation] = useState<ActiveLocation | "전체">(defaultLocation || "전체");
-
+  console.log(24, location);
   useEffect(() => {
-    setLocation(defaultLocation);
+    if (defaultLocation) setLocation(defaultLocation);
   }, [defaultLocation]);
 
   const onClickButton = (locationType: ActiveLocation | "전체") => {
@@ -64,14 +65,21 @@ export default function GatherLocationFilter() {
   return (
     <Box p="12px 16px" pr="0">
       <ButtonGroups
-        buttonOptionsArr={buttonOptionsArr.sort((x, y) => {
-          if (x.text === "전체") return -1;
-          if (y.text === "전체") return 1;
-          if (x.text === defaultLocation) return -1;
-          if (y.text === defaultLocation) return 1;
-          return x.text.localeCompare(y.text);
-        })}
-        currentValue={location}
+        buttonOptionsArr={buttonOptionsArr
+          .map((prop) =>
+            prop.text === "전체"
+              ? prop
+              : { text: LOCATION_TO_FULLNAME[prop.text], func: prop.func },
+          )
+          .sort((x, y) => {
+            if (x.text === "전체") return -1;
+            if (y.text === "전체") return 1;
+            if (x.text === defaultLocation) return -1;
+            if (y.text === defaultLocation) return 1;
+            return x.text.localeCompare(y.text);
+          })}
+        currentValue={location === "전체" ? "전체" : LOCATION_TO_FULLNAME[location]}
+        size="md"
       />
     </Box>
   );

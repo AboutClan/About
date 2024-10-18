@@ -1,16 +1,19 @@
 import { Button, Flex } from "@chakra-ui/react";
+import { JSXElementConstructor, ReactElement } from "react";
 import styled from "styled-components";
 
 export interface ButtonOptionsProps {
   text: string;
   func: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  icon?: ReactElement<any, string | JSXElementConstructor<any>>;
   color?: string;
 }
 
 export interface IButtonGroups {
   buttonOptionsArr: ButtonOptionsProps[];
   currentValue: string;
-  size?: "sm" | "md";
+  size?: "sm" | "md" | "lg";
   isWrap?: boolean;
   isEllipse?: boolean;
   type?: "block" | "text";
@@ -30,25 +33,27 @@ export default function ButtonGroups({
         <Flex flexShrink={0} key={idx} onClick={buttonOptions.func}>
           {type === "block" ? (
             <Button
-              mr="8px"
-              colorScheme={buttonOptions.text === currentValue ? "mintTheme" : undefined}
+              mr={idx !== buttonOptionsArr.length - 1 ? "8px" : 0}
               variant={buttonOptions.text === currentValue ? undefined : "outline"}
-              bg={buttonOptions.text === currentValue ? undefined : "white"}
+              bgColor={buttonOptions.text === currentValue ? "var(--gray-800) !important" : "white"}
+              color={buttonOptions.text === currentValue ? "white" : "var(--gray-800)"}
               size={size}
+              px={size === "sm" ? "16px" : "undefined"}
               rounded={isEllipse ? "2xl" : "md"}
-              _focus={{
-                outline: "none",
-                boxShadow: "none",
-              }}
+              leftIcon={buttonOptions?.icon}
+              fontSize="11px"
+              border={size === "sm" ? "1px solid var(--gray-300)" : undefined}
             >
               {buttonOptions.text}
             </Button>
           ) : (
             <Button
-              mr="8px"
+              mr={idx !== buttonOptionsArr.length - 1 ? "8px" : 0}
               color={buttonOptions.color}
               fontWeight={buttonOptions.text === currentValue ? 600 : 400}
               variant="ghost"
+              leftIcon={buttonOptions?.icon}
+              fontSize="11px"
               size="xs"
               _focus={{
                 outline: "none",
@@ -69,6 +74,7 @@ const Layout = styled.div<{ isWrap: boolean }>`
     display: none;
   }
   display: flex;
+  flex-direction: row; /* 가로로 배치 */
   row-gap: ${(props) => (props.isWrap ? "8px" : 0)};
   flex-wrap: ${(props) => (props.isWrap ? "wrap" : "nowrap")};
   overflow-x: auto;

@@ -1,6 +1,6 @@
 import { Dayjs } from "dayjs";
 
-export interface ITimeStamps {
+export interface TimeStampProps {
   createdAt?: string;
   updatedAt?: string;
 }

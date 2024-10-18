@@ -14,8 +14,8 @@ interface CalendarProps {
 
 const DAY = ["일", "월", "화", "수", "목", "금", "토"];
 
-function MonthCalendar({ voteCntArr, standardDate, selectedDate, func }: CalendarProps) {
-  const calendarArr = getCalendarDates("month", standardDate, voteCntArr);
+function MonthCalendar({ standardDate, selectedDate, func }: CalendarProps) {
+  const calendarArr = getCalendarDates("month", standardDate);
 
   return (
     <>

@@ -11,7 +11,7 @@ function Promotion() {
   return (
     <>
       <Header title="홍보 페이지" url="/home" />
-      <Slide>
+      <Slide isNoPadding>
         <Layout>
           <PromotionTitle />
           <PromotionDetail />

@@ -19,12 +19,10 @@ function PointSystemsModal({ setIsModal }: IModal) {
     {
       text: "포인트 가이드",
       func: () => setIsFirst(true),
-      flex: 1,
     },
     {
       text: "서비스 소개",
       func: () => setIsFirst(false),
-      flex: 1,
     },
   ];
 

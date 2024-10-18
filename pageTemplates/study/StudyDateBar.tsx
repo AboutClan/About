@@ -1,56 +1,35 @@
-import { Button } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
-import { useState } from "react";
-import styled from "styled-components";
 
-import StudyInviteModal from "../../modals/study/StudyInviteModal";
+import { PlusIcon } from "../../components/Icons/MathIcons";
+import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 interface IStudyDateBar {
-  isPrivateStudy: boolean;
-  place: { locationDetail: string; fullname: string; image: string };
+  date: string;
+
+  memberCnt: number;
 }
-function StudyDateBar({ isPrivateStudy, place }: IStudyDateBar) {
-  const { date } = useParams<{ date: string }>();
-  const [isInviteModal, setIsInviteModal] = useState(false);
+function StudyDateBar({ date, memberCnt }: IStudyDateBar) {
+  const typeToast = useTypeToast();
 
   return (
     <>
-      <StudyDateBarContainer>
-        <DateText>
-          {isPrivateStudy ? "개인 스터디" : dayjsToFormat(dayjs(date), "M월 D일 참여 멤버")}
-        </DateText>
-        {!isPrivateStudy && (
-          <Button
-            size="sm"
-            variant="outline"
-            color="var(--gray-600)"
-            rightIcon={<i className="fa-solid fa-plus fa-xs" />}
-            padding="0 var(--gap-2)"
-            borderColor="var(--gray-400)"
-            onClick={() => setIsInviteModal(true)}
-          >
-            친구초대
+      <Box mt={10} mb={2}>
+        <Flex justify="space-between" align="center">
+          <Box fontWeight="bold" fontSize="18px">
+            {dayjsToFormat(dayjs(date), "M월 D일 참여 멤버")}
+          </Box>
+          <Button variant="unstyled" onClick={() => typeToast("not-yet")}>
+            <PlusIcon />
           </Button>
-        )}
-      </StudyDateBarContainer>
-      {isInviteModal && <StudyInviteModal setIsModal={setIsInviteModal} place={place} />}
+        </Flex>
+        <Box mt={1} fontSize="12px" color="gray.500">
+          현재 <b>{memberCnt}의 멤버</b>가 참여중이에요 !
+        </Box>
+      </Box>
     </>
   );
 }
-
-const StudyDateBarContainer = styled.div`
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: white;
-`;
-
-const DateText = styled.span`
-  font-size: 18px; /* text-lg */
-  font-weight: 700; /* font-semibold */
-`;
 
 export default StudyDateBar;

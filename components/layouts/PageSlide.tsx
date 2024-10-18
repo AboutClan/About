@@ -6,10 +6,11 @@ import { slideDirectionState } from "../../recoils/navigationRecoils";
 interface IPageLayout {
   isFixed?: boolean;
   posZero?: "top";
+  isNoPadding?: boolean;
   children: React.ReactNode;
 }
 
-function Slide({ children, isFixed, posZero }: IPageLayout) {
+function Slide({ children, isFixed, posZero, isNoPadding }: IPageLayout) {
   const [slideDirection, setSlideDirection] = useRecoilState(slideDirectionState);
 
   useEffect(() => {
@@ -42,13 +43,14 @@ function Slide({ children, isFixed, posZero }: IPageLayout) {
       <motion.div
         {...animationProps}
         style={{
+          paddingLeft: !isNoPadding && !isFixed ? "20px" : 0,
+          paddingRight: !isNoPadding && !isFixed ? "20px" : 0,
           position: isFixed ? "fixed" : "static",
-          zIndex: isFixed ? 100 : 0,
+          zIndex: isFixed ? 10 : 0,
           width: "100%",
           maxWidth: "var(--max-width)",
           height: isFixed ? "min-content" : "max-content",
           top: posZero !== "top" ? 0 : "auto",
-
           bottom: posZero !== "top" ? "auto" : 0,
         }}
       >

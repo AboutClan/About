@@ -2,7 +2,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { NewAlertIcon } from "../../components/atoms/Icons/AlertIcon";
+import { NewAlertIcon } from "../../components/Icons/AlertIcon";
 import { NOTICE_ACTIVE_CNT, RECENT_CHAT_ID } from "../../constants/keys/localStorage";
 import { NoticeType } from "../../pages/notice";
 import { DispatchType } from "../../types/hooks/reactTypes";

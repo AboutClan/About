@@ -19,8 +19,8 @@ import { useEffect, useState } from "react";
 import AlertModal from "../../../components/AlertModal";
 import { Badge } from "../../../components/atoms/badges/Badges";
 import Divider from "../../../components/atoms/Divider";
-import KakaoShareBtn from "../../../components/atoms/Icons/KakaoShareBtn";
 import { MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
+import KakaoShareBtn from "../../../components/Icons/KakaoShareBtn";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import OrganizerBar from "../../../components/molecules/OrganizerBar";
@@ -132,7 +132,7 @@ function SecretSquareDetailPage() {
       },
     );
   };
-  
+
   return (
     <>
       <Header title="">
@@ -145,7 +145,7 @@ function SecretSquareDetailPage() {
         />
       </Header>
       <>
-        <Slide>
+        <Slide isNoPadding>
           <Flex px={4} py={4} direction="column" gap={2} as="section" bg="white" minH="326px">
             <Box minH="83px">
               {squareDetail && (

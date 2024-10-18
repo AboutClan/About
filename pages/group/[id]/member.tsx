@@ -77,7 +77,9 @@ export default function Member() {
               <Box key={idx}>
                 <ProfileCommentCard
                   user={who.user}
-                  comment={`구성:${GROUP_STUDY_ROLE[who.role]} / 출석 횟수:${who.attendCnt}회`}
+                  comment={{
+                    text: `구성:${GROUP_STUDY_ROLE[who.role]} / 출석 횟수:${who.attendCnt}회`,
+                  }}
                   rightComponent={
                     who.user?.uid !== session?.user.uid ? (
                       <Button onClick={() => setDeleteUser(who)} colorScheme="redTheme" size="sm">

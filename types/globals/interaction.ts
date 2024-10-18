@@ -1,4 +1,4 @@
-import { ITimeStamps } from "../utils/timeAndDate";
+import { TimeStampProps } from "../utils/timeAndDate";
 
 export type InteractionType = "like" | "friend" | "alphabet";
 
@@ -7,7 +7,7 @@ export interface IInteractionSendLike {
   message?: string;
 }
 
-export interface INoticeActiveLog extends IInteractionSendLike, ITimeStamps {
+export interface INoticeActiveLog extends IInteractionSendLike, TimeStampProps {
   from: string;
   type: InteractionType;
   sub?: string;

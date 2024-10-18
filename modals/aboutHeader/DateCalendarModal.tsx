@@ -1,17 +1,13 @@
 import "swiper/css";
 
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { useSetRecoilState } from "recoil";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import Calendar from "../../components/molecules/MonthCalendar";
-import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyDailyVoteCntQuery } from "../../hooks/study/queries";
 import { handleChangeDate } from "../../pageTemplates/home/study/studyController/StudyController";
-import { studyDateStatusState } from "../../recoils/studyRecoils";
 import { IModal } from "../../types/components/modalTypes";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
@@ -19,21 +15,17 @@ import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 import { IFooterOptions, IPaddingOptions, ModalLayout } from "../Modals";
 
 interface DateCalendarModalProps extends IModal {
-  selectedDate: Dayjs;
+  date: string;
 }
 
-function DateCalendarModal({ selectedDate, setIsModal }: DateCalendarModalProps) {
-  const typeToast = useTypeToast();
-  const { data: session } = useSession();
+function DateCalendarModal({ date: selectedDate, setIsModal }: DateCalendarModalProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
-  const isGuest = session?.user.name === "guest";
+
   const location = searchParams.get("location");
 
-  const setStudyDateStatus = useSetRecoilState(studyDateStatusState);
-
-  const [date, setDate] = useState(selectedDate);
+  const [date, setDate] = useState(dayjs(selectedDate));
   const [calendarArr, setCalendarArr] = useState([
     date.subtract(3, "month"),
     date.subtract(2, "month"),
@@ -79,11 +71,11 @@ function DateCalendarModal({ selectedDate, setIsModal }: DateCalendarModalProps)
   };
 
   const moveDate = () => {
-    if (dayjsToStr(selectedDate) === dayjsToStr(date)) {
+    if (selectedDate === dayjsToStr(date)) {
       setIsModal(false);
       return;
     }
-    setStudyDateStatus(undefined);
+
     const newDate = handleChangeDate(date, "date", date.date());
 
     newSearchParams.set("date", newDate);
@@ -91,22 +83,8 @@ function DateCalendarModal({ selectedDate, setIsModal }: DateCalendarModalProps)
     setIsModal(false);
   };
 
-  const voteStudy = () => {
-    if (isGuest) {
-      typeToast("guest");
-      return;
-    }
-    const newDate = handleChangeDate(date, "date", date.date());
-    newSearchParams.set("date", newDate);
-    router.push(`/vote?${newSearchParams.toString()}`);
-  };
-
   const footerOptions: IFooterOptions = {
     main: {
-      text: "참여 신청",
-      func: voteStudy,
-    },
-    sub: {
       text: "날짜 이동",
       func: moveDate,
     },

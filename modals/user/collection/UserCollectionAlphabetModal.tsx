@@ -5,7 +5,7 @@ import { ModalSubtitle } from "../../../styles/layout/modal";
 import { IModal } from "../../../types/components/modalTypes";
 import { IHeaderOptions, ModalLayout } from "../../Modals";
 
-function UserCollectionAlphabetModal({ setIsModal }: IModal) {
+function UserCollectionModal({ setIsModal }: IModal) {
   const headerOptions: IHeaderOptions = {};
   return (
     <ModalLayout title="수집 보상" headerOptions={headerOptions} setIsModal={setIsModal}>
@@ -66,4 +66,4 @@ const Item = styled.div`
   }
 `;
 
-export default UserCollectionAlphabetModal;
+export default UserCollectionModal;

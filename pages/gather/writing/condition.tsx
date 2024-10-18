@@ -4,8 +4,8 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
-import { PopOverIcon } from "../../../components/atoms/Icons/PopOverIcon";
 import { Input } from "../../../components/atoms/Input";
+import { PopOverIcon } from "../../../components/Icons/PopOverIcon";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
@@ -82,7 +82,7 @@ function WritingCondition() {
 
   const toggleSwitch = (e: ChangeEvent<HTMLInputElement>, type: GatherConditionType) => {
     const isChecked = e.target.checked;
-   
+
     if (type === "location" && isChecked) {
       setLocation(session?.user.location);
     }

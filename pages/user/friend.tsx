@@ -36,7 +36,7 @@ function ProfileFriend() {
             friends?.map((who) => {
               return (
                 <Item key={who.uid} onClick={() => onClickUser(who)}>
-                  <ProfileCommentCard user={who} comment={who.comment} />
+                  <ProfileCommentCard user={who} comment={{ text: who.comment }} />
                 </Item>
               );
             })

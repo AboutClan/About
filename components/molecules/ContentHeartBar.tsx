@@ -200,7 +200,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
           <Flex direction="column">
             {likeUsers.map((who, idx) => (
               <Fragment key={idx}>
-                <ProfileCommentCard user={who} comment={who.comment} />
+                <ProfileCommentCard user={who} comment={{ text: who.comment }} />
               </Fragment>
             ))}
           </Flex>

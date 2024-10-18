@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { useUserInfoQuery } from "../../../hooks/user/queries";
+import LocationRegisterPopUp from "../../../modals/pop-up/LocationRegisterPopUp";
 import RequestBirthModal from "../../../modals/userRequest/RequestBirthModal";
 import RequestChargeDepositModal from "../../../modals/userRequest/RequestChargeDepositModal";
 import RequestLevelUpModal from "../../../modals/userRequest/RequestLevelUpModal";
@@ -56,6 +57,7 @@ function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals
       {isPresetModal && <StudyPresetModal />}
 
       {modalOpen === "profile" && <RequestBirthModal setIsModal={setIsModal} />}
+      {modalOpen === "mainPlace" && <LocationRegisterPopUp setIsModal={setIsModal} />}
       <RequestLogoutModal isModal={modalOpen === "logout"} setIsModal={setIsModal} />
     </Layout>
   );

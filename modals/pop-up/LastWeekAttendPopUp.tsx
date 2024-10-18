@@ -41,11 +41,11 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
   );
 
   const totalScore = scoreObj?.study + scoreObj?.gather;
-  
+
   const footerOptions: IFooterOptions = {
     main: {},
     sub: {
-      text: "기록 보러 가기",
+      text: "기록 보기",
       func: () => router.push("/user/score"),
     },
     isFull: true,
@@ -57,39 +57,33 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
   return (
     <ModalLayout
       title={`${dayjs().month() + 1}월 활동 점수표`}
-      headerOptions={{}}
       footerOptions={footerOptions}
       setIsModal={setIsModal}
-      paddingOptions={{ body: { top: 4 } }}
     >
-      <Flex
-        align="center"
-        mt="12px"
-        borderTop="var(--border)"
-        borderBottom="var(--border)"
-        py="12px"
-      >
-        <Box>
-          <Avatar
-            image={userInfo?.profileImage}
-            uid={userInfo?.uid}
-            avatar={userInfo?.avatar}
-            size="md"
-          />
-        </Box>
-        <Box ml="12px" fontSize="15px" color="var(--gray-800)">
+      <Flex align="center">
+        <Avatar
+          image={userInfo?.profileImage}
+          uid={userInfo?.uid}
+          avatar={userInfo?.avatar}
+          size="mds"
+        />
+
+        <Box ml={2} lineHeight="16px" fontSize="12px" fontWeight="semibold" color="var(--gray-800)">
           {userInfo?.name} ({USER_ROLE?.[userInfo?.role]})
         </Box>
         <Box ml="auto">
           <UserBadge uid={userInfo?.uid} score={userInfo?.score} />
         </Box>
       </Flex>
-      <Box mt="12px">
-        <ProgressMark value={totalScore} />
+      <Box my={3} h="1px" bg="gray.100" />
+
+      <Box mb={3}>
+        <ProgressMark value={userInfo?.monthScore} />
       </Box>
-      <Container>
+
+      <Info>
         {scoreObj ? (
-          <Info>
+          <>
             <Item>
               <span>이번 달 동아리 점수</span>
               <span>{userInfo?.monthScore} 점</span>
@@ -103,14 +97,12 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
               <span>{scoreObj.gather} 점</span>
             </Item>
             <Item>
-              <div style={{ display: "flex" }}>
-                <span>이번 달에 받은 좋아요</span>
-              </div>
+              <span>이번 달에 받은 좋아요</span>
               <span>{likeCnt || 0} 개</span>
             </Item>
-          </Info>
+          </>
         ) : (
-          <Info>
+          <>
             <Item>
               <span>이번 달 동아리 점수</span>
               <Box w="36px" h="20px">
@@ -136,9 +128,9 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
                 <Skeleton>2</Skeleton>
               </Box>
             </Item>
-          </Info>
+          </>
         )}
-      </Container>
+      </Info>
 
       <Message>
         {totalScore >= 0 &&
@@ -163,7 +155,7 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
             <div>
               🍒이번 달도 파이팅🍒
               <br />
-              열심히 활동해 봐요!
+              같이 열심히 활동해요!
             </div>
           ))}
       </Message>
@@ -172,32 +164,37 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
 }
 
 const Message = styled.div`
-  padding: var(--gap-2) var(--gap-3);
-  min-height: 58px;
-  border-radius: var(--rounded);
+  padding: 12px 16px;
+  min-height: 48px;
+  border-radius: 8px;
+  color: var(--gray-600);
+  font-size: 10px;
+  font-weight: medium;
   background-color: var(--gray-100);
-`;
-
-const Container = styled.div`
-  padding: var(--gap-3) 0;
-  display: flex;
-  flex-direction: row;
-  height: 100%;
 `;
 
 const Info = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  margin-bottom: 12px;
 `;
 
 const Item = styled.div`
+  width: 100%;
+
   display: flex;
   justify-content: space-between;
-  font-size: 14px;
-  padding: var(--gap-1) 0;
+  font-size: 10px;
+  margin: 4px 0;
+  line-height: 12px;
+  > span:first-child {
+    font-weight: regular;
+    color: var(--gray-600);
+  }
   > span:last-child {
-    font-weight: 600;
+    font-weight: medium;
+    color: var(--gray-800);
   }
 `;
 
