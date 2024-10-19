@@ -1,4 +1,3 @@
-import axios from "axios";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -6,87 +5,23 @@ import { useEffect, useState } from "react";
 import { createGlobalStyle } from "styled-components";
 
 import { USER_GUIDE, USER_LOCATION } from "../../constants/keys/localStorage";
-import { SERVER_URI } from "../../constants/system";
 import { useToast } from "../../hooks/custom/CustomToast";
+import { usePushServiceInitialize } from "../../hooks/FcmManger/mutaion";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import FAQPopUp from "../../modals/pop-up/FAQPopUp";
 import UserSettingPopUp from "../../pageTemplates/setting/userSetting/userSettingPopUp";
+import { isPWA } from "../../utils/appEnvUtils";
 import { checkAndSetLocalStorage } from "../../utils/storageUtils";
-import { isPWA } from "../../utils/validationUtils";
-
-const urlBase64ToUint8Array = (base64String) => {
-  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
-
-  let rawData;
-  try {
-    rawData = window.atob(base64);
-  } catch (e) {
-    console.error("Failed to decode base64 string:", e);
-    throw new Error("The string to be decoded is not correctly encoded.");
-  }
-
-  const outputArray = new Uint8Array(rawData.length);
-  for (let i = 0; i < rawData.length; ++i) {
-    outputArray[i] = rawData.charCodeAt(i);
-  }
-
-  return outputArray;
-};
-
-const requestAndSubscribePushService = async () => {
-  const hasPermission = await requestNotificationPermission();
-  if (!hasPermission) {
-    return;
-  }
-
-  await subscribePushService({
-    onSuccess: () => {
-      console.log("Subscribe push service successfully");
-    },
-  });
-};
-
-const requestNotificationPermission = async () => {
-  if (Notification.permission === "granted") {
-    return true;
-  }
-  if (Notification.permission !== "denied") {
-    const permission = await Notification.requestPermission();
-    return permission === "granted";
-  }
-
-  return false;
-};
-
-const subscribePushService = async (options: { onSuccess?: () => void } = {}) => {
-  try {
-    const registration = await navigator.serviceWorker.getRegistration();
-    const hasSubscription = await registration.pushManager.getSubscription();
-
-    if (hasSubscription) {
-      return;
-    }
-
-    const publicVapidKey = process.env.NEXT_PUBLIC_PWA_KEY;
-    const subscription = await registration.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
-    });
-
-    await axios.post(`${SERVER_URI}/webpush/subscribe`, subscription);
-
-    options.onSuccess?.();
-  } catch (err) {
-    console.error(err);
-  }
-};
 
 function HomeInitialSetting() {
+  const { data: session } = useSession();
+  usePushServiceInitialize({
+    uid: session?.user?.uid,
+  });
+
   const router = useRouter();
   const toast = useToast();
-  const { data: session } = useSession();
 
   const isGuest = session ? session.user.name === "guest" : undefined;
 
@@ -157,10 +92,6 @@ function HomeInitialSetting() {
     });
   }, []);
 
-  useEffect(() => {
-    requestAndSubscribePushService();
-  }, []);
-
   // const [{ steps }, setState] = useState<{
   //   run: boolean;
   //   steps?: Step[];
@@ -168,6 +99,9 @@ function HomeInitialSetting() {
   //   run: false,
   //   steps: STEPS_CONTENTS,
   // });
+  // useEffect(() => {
+  //   requestAndSubscribePushService();
+  // }, []);
 
   // const handleJoyrideCallback = (data: CallBackProps) => {
   //   if (data.step.target === ".about_navigation1") {

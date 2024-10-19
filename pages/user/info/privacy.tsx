@@ -1,9 +1,9 @@
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import { Container, Heading, Link, List, ListItem, Text } from "@chakra-ui/react";
-import NextLink from "next/link";
+import { Container, Heading, List, ListItem, Text } from "@chakra-ui/react";
 
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
+import ExternalLink from "../../../components/molecules/ExternalLink";
 
 function Privacy() {
   return (
@@ -130,12 +130,10 @@ function Privacy() {
           </Text>
           <Heading as="h4" size="sm" marginTop="10px">
             카카오에서 제공하는{" "}
-            <NextLink href="https://datatracker.ietf.org/doc/html/rfc6749">
-              <Link>
-                OAuth2.0
-                <ExternalLinkIcon mx="2px" />
-              </Link>
-            </NextLink>{" "}
+            <ExternalLink href="https://datatracker.ietf.org/doc/html/rfc6749">
+              OAuth2.0
+              <ExternalLinkIcon mx="2px" />
+            </ExternalLink>{" "}
             서비스를 사용하고 있습니다.
           </Heading>
           <Text>
@@ -209,12 +207,10 @@ function Privacy() {
               <Text>개인정보침해신고센터</Text>
               <Text>
                 (
-                <NextLink href="http://privacy.kisa.or.kr">
-                  <Link>
-                    privacy.kisa.or.kr
-                    <ExternalLinkIcon mx="2px" />
-                  </Link>
-                </NextLink>{" "}
+                <ExternalLink href="https://privacy.kisa.or.kr">
+                  privacy.kisa.or.kr
+                  <ExternalLinkIcon mx="2px" />
+                </ExternalLink>{" "}
                 / 국번없이 118)
               </Text>
             </ListItem>
@@ -222,12 +218,10 @@ function Privacy() {
               <Text>대검찰청 사이버수사과</Text>
               <Text>
                 (
-                <NextLink href="http://www.spo.go.kr">
-                  <Link>
-                    www.spo.go.kr
-                    <ExternalLinkIcon mx="2px" />
-                  </Link>
-                </NextLink>{" "}
+                <ExternalLink href="https://www.spo.go.kr">
+                  www.spo.go.kr
+                  <ExternalLinkIcon mx="2px" />
+                </ExternalLink>{" "}
                 / 국번없이 1301)
               </Text>
             </ListItem>
@@ -235,12 +229,10 @@ function Privacy() {
               <Text>경찰청 사이버안전국</Text>
               <Text>
                 (
-                <NextLink href="http://police.go.kr">
-                  <Link>
-                    police.go.kr
-                    <ExternalLinkIcon mx="2px" />
-                  </Link>
-                </NextLink>{" "}
+                <ExternalLink href="https://police.go.kr">
+                  police.go.kr
+                  <ExternalLinkIcon mx="2px" />
+                </ExternalLink>{" "}
                 / 국번없이 182)
               </Text>
             </ListItem>
