@@ -8,6 +8,14 @@ export const COLOR_400_ARR = [
   "cyan.400",
   "teal.400",
   "purple.400",
+  "red.400",
+  "orange.400",
+  "yellow.400",
+  "green.400",
+  "teal.400",
+  "blue.400",
+  "cyan.400",
+  "teal.400",
 ];
 
 export const COLOR_TABLE_STRONG = [

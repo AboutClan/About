@@ -108,9 +108,9 @@ export default function BottomFlexDrawer({
         animate={{ height: drawerHeight }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
       >
-        <Box py={3} cursor="grab" onPointerDown={handlePointerDown}>
+        <Flex justify="center" py={3} w="full" cursor="grab" onPointerDown={handlePointerDown}>
           <TopNav />
-        </Box>
+        </Flex>
         {drawerOptions?.header && (
           <Flex mb={4} w="full" direction="column" align="flex-start">
             <Box lineHeight="28px" fontWeight={800} mb={1} fontSize="18px">
