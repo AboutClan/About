@@ -131,18 +131,14 @@ interface IReturnProps extends Omit<IProfileCommentCard, "rightComponent"> {
   };
 }
 
-const composeUserCardArr = (
-  participant: StudyMemberProps,
-
-  absence: IAbsence,
-): IReturnProps => {
+const composeUserCardArr = (participant: StudyMemberProps, absence: IAbsence): IReturnProps => {
   const attendanceInfo = participant?.attendanceInfo;
 
   const arrived = attendanceInfo.arrived
     ? dayjsToFormat(dayjs(attendanceInfo.arrived), "HH:mm")
     : null;
 
-  const memo = attendanceInfo.arrivedMessage;
+  const memo = arrived ? attendanceInfo.arrivedMessage || "출석" : null;
 
   const user = participant.user;
 
