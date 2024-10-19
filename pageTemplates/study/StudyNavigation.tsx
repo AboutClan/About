@@ -1,7 +1,7 @@
 import { Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 
@@ -206,6 +206,7 @@ function StudyNavigation({
           align="center"
           bg="white"
           h={`${64 + iPhoneNotchSize()}px`}
+          pt={2}
           pb={`${8 + iPhoneNotchSize()}px`}
           px={5}
         >
