@@ -55,6 +55,7 @@ function StudyPageDrawer({
     if (!studyVoteData || !currentLocation) return;
 
     const participations = convertStudyToParticipations(studyVoteData, location);
+   
     const getThumbnailCardInfoArr = setStudyToThumbnailInfo(
       participations,
       currentLocation,

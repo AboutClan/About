@@ -10,7 +10,10 @@ import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import { USER_LOCATION } from "../../constants/keys/localStorage";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
-import { getMyStudyParticipation } from "../../libs/study/getMyStudyMethods";
+import {
+  convertStudyToParticipations,
+  getMyStudyParticipation,
+} from "../../libs/study/getMyStudyMethods";
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
@@ -29,12 +32,14 @@ function HomeStudySection() {
 
   const { data: studyVoteData } = useStudyVoteQuery(
     date,
-    userLocation,
+    "수원",
 
     {
       enabled: !!userLocation,
     },
   );
+
+  const studyMergeParticipations = convertStudyToParticipations(studyVoteData, userLocation);
 
   useEffect(() => {
     if (!studyVoteData || !session?.user.uid) return;
@@ -68,7 +73,7 @@ function HomeStudySection() {
         <TabNav tabOptionsArr={tabOptionsArr} selected={dayjsToKr(dayjs(date))} isFullSize />
       </Box>
       <Box px={5}>
-        <StudyCardCol participations={studyVoteData?.participations} date={date} />
+        <StudyCardCol participations={studyMergeParticipations} date={date} />
       </Box>
     </>
   );

@@ -18,8 +18,7 @@ import {
   STUDY_RESULT_HOUR,
 } from "../../../constants/serviceConstants/studyConstants/studyTimeConstant";
 import { setStudyToThumbnailInfo } from "../../../libs/study/setStudyToThumbnailInfo";
-import StudyOpenCheckModal from "../../../modals/study/StudyOpenCheckModal";
-import { StudyParticipationProps } from "../../../types/models/studyTypes/studyDetails";
+import { StudyMergeParticipationProps } from "../../../types/models/studyTypes/studyDetails";
 import { StudyVotingSave } from "../../../types/models/studyTypes/studyInterActions";
 import {
   ActiveLocation,
@@ -30,7 +29,7 @@ import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas"
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 
 interface StudyCardColProps {
-  participations: StudyParticipationProps[];
+  participations: StudyMergeParticipationProps[];
   date: string;
 }
 
@@ -47,7 +46,7 @@ function StudyCardCol({ participations, date }: StudyCardColProps) {
   const myUid = session?.user.uid;
 
   const [studyCardColData, setStudyCardColData] = useState<StudyThumbnailCardProps[]>();
-  const [dismissedStudy, setDismissedStudy] = useState<StudyParticipationProps>();
+
   const [currentLocation, setCurrentLocation] = useState<{ lat: number; lon: number }>();
 
   useEffect(() => {
@@ -85,7 +84,7 @@ function StudyCardCol({ participations, date }: StudyCardColProps) {
     if (!cardList?.length) return;
     setStudyCardColData(cardList.slice(0, 3));
 
-    let myStudy: StudyParticipationProps = null;
+    let myStudy: StudyMergeParticipationProps = null;
     const studyOpenCheck = localStorage.getItem(STUDY_CHECK_POP_UP);
     participations.forEach((par) =>
       par.members.forEach((who) => {
@@ -98,7 +97,6 @@ function StudyCardCol({ participations, date }: StudyCardColProps) {
         (studyOpenCheck !== dayjsToStr(dayjs()) && dayjs().hour() <= STUDY_DATE_START_HOUR) ||
         dayjs().hour() >= STUDY_RESULT_HOUR
       ) {
-        setDismissedStudy(myStudy);
         localStorage.setItem(STUDY_CHECK_POP_UP, dayjsToStr(dayjs()));
       }
     }
@@ -153,13 +151,13 @@ function StudyCardCol({ participations, date }: StudyCardColProps) {
         )}
       </BlurredPart>
 
-      {dismissedStudy && (
+      {/* {dismissedStudy && (
         <StudyOpenCheckModal
           date={date}
           setIsModal={() => setDismissedStudy(null)}
           par={dismissedStudy}
         />
-      )}
+      )} */}
     </>
   );
 }

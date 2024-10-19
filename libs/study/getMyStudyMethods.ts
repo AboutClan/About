@@ -4,24 +4,28 @@ import {
   StudyMemberProps,
   StudyMergeParticipationProps,
   StudyPlaceProps,
+  StudyStatus,
 } from "../../types/models/studyTypes/studyDetails";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
-
 //participation은 study의 participations와 realTime을 모두 포함한다.
 
 export const convertStudyToParticipations = (
   studyVoteData: StudyDailyInfoProps,
   location: ActiveLocation,
-) => {
+): StudyMergeParticipationProps[] => {
   if (!studyVoteData) return;
 
-  const temp: StudyMergeParticipationProps[] = [];
+  const temp: {
+    place: PlaceInfoProps;
+    status: StudyStatus;
+    members: RealTimeInfoProps[];
+  }[] = [];
 
   studyVoteData.realTime.forEach((props) => {
     const changeLocation = getLocationByCoordinates(props.place?.latitude, props.place?.longitude);
     if (location === changeLocation) {
       const findParticipationIdx = temp.findIndex(
-        (participation) => participation.place._id === props.place._id,
+        (participation) => participation.place.name === props.place.name,
       );
 
       if (findParticipationIdx !== -1) {
@@ -64,7 +68,7 @@ export const getMyStudyParticipation = (
   myUid: string,
 ): StudyMergeParticipationProps => {
   if (!studyVoteData) return;
- 
+
   const findMyParticipation = studyVoteData.participations?.find((participation) =>
     participation.members.some((who) => who.user.uid === myUid),
   );
