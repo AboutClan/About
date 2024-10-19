@@ -45,7 +45,7 @@ export default function ButtonGroups({
               leftIcon={buttonOptions?.icon}
               fontSize="11px"
               border={size === "sm" ? "1px solid var(--gray-300)" : undefined}
-              h={`${height}px`}
+              {...(height && { h: `${height}px` })}
             >
               {buttonOptions.text}
             </Button>

@@ -22,7 +22,7 @@ function FAQPopUp({ setIsModal }: IModal) {
       text: "보러가기",
       func: onSubmit,
     },
-    sub: {},
+    sub: { text: "닫기" },
     isFull: true,
   };
 
