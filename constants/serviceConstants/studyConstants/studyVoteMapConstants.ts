@@ -37,7 +37,7 @@ export const LOCATION_MAX_BOUNDARY: {
     southwest: { latitude: 37.357058, longitude: 126.888074 },
   },
   양천: {
-    northeast: { latitude: 37.553289, longitude: 126.941598 },
+    northeast: { latitude: 37.558289, longitude: 126.941598 },
     southwest: { latitude: 37.482753, longitude: 126.819398 },
   },
   강남: {
