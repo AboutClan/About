@@ -48,7 +48,7 @@ function DepositLog() {
       toast("info", "최대 금액입니다.");
       return;
     }
-    getDeposit({ value: 3000 + deposit, message: "보증금 리필" });
+    getDeposit({ value: 3000 - deposit, message: "보증금 리필" });
   };
 
   return (
