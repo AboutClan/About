@@ -139,7 +139,7 @@ const composeUserCardArr = (
   const attendanceInfo = participant?.attendanceInfo;
 
   const arrived = attendanceInfo.arrived
-    ? dayjsToFormat(dayjs(attendanceInfo.arrived).subtract(9, "hour"), "HH:mm")
+    ? dayjsToFormat(dayjs(attendanceInfo.arrived), "HH:mm")
     : null;
 
   const memo = attendanceInfo.arrivedMessage;
