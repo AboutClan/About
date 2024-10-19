@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import SectionFooterButton from "../../../components/atoms/SectionFooterButton";
@@ -69,17 +69,11 @@ function StudyCardCol({ participations, date }: StudyCardColProps) {
   }, []);
 
   useEffect(() => {
-    if (!participations || !participations.length || !currentLocation) {
+    if (!participations || !participations.length) {
       setStudyCardColData(null);
       return;
     }
-    const cardList = setStudyToThumbnailInfo(
-      participations,
-      currentLocation,
-      date as string,
-      true,
-      location,
-    );
+    const cardList = setStudyToThumbnailInfo(participations, null, date as string, true, location);
 
     if (!cardList?.length) return;
     setStudyCardColData(cardList.slice(0, 3));

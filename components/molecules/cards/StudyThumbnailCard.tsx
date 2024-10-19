@@ -70,12 +70,16 @@ export function StudyThumbnailCard({
                 <Box as="span" ml={1} color="var(--gray-600)">
                   {place.branch}
                 </Box>
-                <Box as="span" color="var(--gray-400)">
-                  ・
-                </Box>
-                <Box as="span" fontWeight={600} w="37px">
-                  {place.distance && `${place.distance}KM`}
-                </Box>
+                {place.distance && (
+                  <>
+                    <Box as="span" color="var(--gray-400)">
+                      ・
+                    </Box>
+                    <Box as="span" fontWeight={600} w="37px">
+                      {`${place.distance}KM`}
+                    </Box>
+                  </>
+                )}
                 <Box as="span" color="var(--gray-400)">
                   ・
                 </Box>{" "}
