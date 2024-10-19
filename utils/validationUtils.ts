@@ -72,6 +72,18 @@ export const detectDevice = () => {
   }
 };
 
+export const isNil = <T>(val: T | undefined | null): val is null | undefined => {
+  return val == null;
+};
+
+export const isEmpty = <T>(value: T | undefined | null): boolean => {
+  return (
+    isNil(value) ||
+    (Array.isArray(value) && value.length === 0) ||
+    (typeof value === "object" && Object.keys(value).length === 0)
+  );
+};
+
 export const iPhoneNotchSize = () => {
   if (typeof navigator === "undefined") return 0;
   const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
@@ -80,9 +92,4 @@ export const iPhoneNotchSize = () => {
   if (/iPhone/i.test(ua) && isStandalone) {
     return 34;
   } else return 0;
-};
-
-export const isPWA = () => {
-  const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
-  return isStandalone;
 };
