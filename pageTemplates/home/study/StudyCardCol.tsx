@@ -73,7 +73,13 @@ function StudyCardCol({ participations, date }: StudyCardColProps) {
       setStudyCardColData(null);
       return;
     }
-    const cardList = setStudyToThumbnailInfo(participations, null, date as string, true, location);
+    const cardList = setStudyToThumbnailInfo(
+      participations,
+      currentLocation,
+      date as string,
+      true,
+      location,
+    );
 
     if (!cardList?.length) return;
     setStudyCardColData(cardList.slice(0, 3));
