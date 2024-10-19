@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -30,14 +30,9 @@ function HomeStudySection() {
 
   const setMyStudyParticipation = useSetRecoilState(myStudyParticipationState);
 
-  const { data: studyVoteData } = useStudyVoteQuery(
-    date,
-    "수원",
-
-    {
-      enabled: !!userLocation,
-    },
-  );
+  const { data: studyVoteData } = useStudyVoteQuery(date, userLocation, {
+    enabled: !!userLocation,
+  });
 
   const studyMergeParticipations = convertStudyToParticipations(studyVoteData, userLocation);
 
