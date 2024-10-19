@@ -17,6 +17,7 @@ import { DispatchBoolean, DispatchString } from "../../types/hooks/reactTypes";
 import { StudyDailyInfoProps } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
 import { ActiveLocation } from "../../types/services/locationTypes";
+import { iPhoneNotchSize } from "../../utils/validationUtils";
 import StudyPageDrawerFilterBar from "./studyPageDrawer/StudyPageDrawerFilterBar";
 import StudyPageDrawerHeader from "./studyPageDrawer/StudyPageDrawerHeader";
 
@@ -55,9 +56,10 @@ function StudyPageDrawer({
     if (!studyVoteData || !currentLocation) return;
 
     const participations = convertStudyToParticipations(studyVoteData, location);
-   
+
     const getThumbnailCardInfoArr = setStudyToThumbnailInfo(
       participations,
+      preference,
       currentLocation,
       date,
       true,
@@ -81,14 +83,17 @@ function StudyPageDrawer({
     router.replace(`/studyPage?${newSearchParams.toString()}`);
   };
 
+  const screenHeight = window.innerHeight;
+  const adjustedHeight = (screenHeight - 56 - iPhoneNotchSize()) * 0.9;
+
   return (
     <BottomFlexDrawer
       isOverlay={false}
-      height={618}
+      height={adjustedHeight}
       isDrawerUp={isDrawerUp}
       setIsModal={setIsDrawerUp}
     >
-      <Box w="100%" h="400px">
+      <Box w="100%" overflow="hidden">
         <StudyPageDrawerHeader date={date} />
         <WeekSlideCalendar selectedDate={date} func={handleSelectDate} />
         <StudyPageDrawerFilterBar
@@ -96,7 +101,7 @@ function StudyPageDrawer({
           setSelectOption={setSelectOption}
           placeCnt={thumbnailCardInfoArr?.length}
         />
-        <Box overflowY="scroll" h="411px">
+        <Box overflowY="scroll" h="66.5%">
           {thumbnailCardInfoArr
             ? thumbnailCardInfoArr.map(({ participants, ...thumbnailCardInfo }, idx) => (
                 <Box key={idx} mb={3}>

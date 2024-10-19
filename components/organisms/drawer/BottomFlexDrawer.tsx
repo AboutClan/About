@@ -8,6 +8,7 @@ import { iPhoneNotchSize } from "../../../utils/validationUtils";
 import ScreenOverlay from "../../atoms/ScreenOverlay";
 
 export const DRAWER_MIN_HEIGHT = 40;
+//적당한 값 조율해야 함
 export const MAX_DRAG_DISTANCE = 40;
 
 export interface BottomFlexDrawerOptions {
@@ -147,6 +148,7 @@ const Layout = styled.div<{
   isdrawerup: string;
 }>`
   position: fixed;
+  overflow: hidden;
   bottom: ${(props) => (props.ishide === "true" ? iPhoneNotchSize() : 52 + iPhoneNotchSize())}px;
   width: 100%;
   max-width: var(--max-width);

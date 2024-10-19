@@ -130,7 +130,7 @@ function Configuration() {
       toast("success", `출석 완료! ${pointObj.value}점을 획득했습니다`);
     }
 
-    newSearchParams.set("category", "votePlace");
+    newSearchParams.set("center", "votePlace");
     router.push(`/studyPage?${newSearchParams.toString()}`);
   };
 

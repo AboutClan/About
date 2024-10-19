@@ -3,6 +3,7 @@ import {
   StudyMergeParticipationProps,
   StudyParticipationProps,
 } from "../../types/models/studyTypes/studyDetails";
+import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
@@ -10,6 +11,7 @@ import { convertMergePlaceToPlace } from "./convertMergePlaceToPlace";
 
 export const setStudyToThumbnailInfo = (
   studyData: StudyParticipationProps[] | StudyMergeParticipationProps[],
+  myPrefer: IStudyVotePlaces,
   currentLocation: { lat: number; lon: number },
   urlDateParam: string | null,
   imagePriority: boolean,
@@ -64,6 +66,15 @@ export const setStudyToThumbnailInfo = (
     }
     if (a.participants.length !== b.participants.length) {
       return b.participants.length - a.participants.length;
+    }
+    if (myPrefer) {
+      if (a.id === myPrefer.place) return -1;
+      if (b.id === myPrefer.place) return 1;
+
+      const aIsMySub = myPrefer?.subPlace?.includes(a.id);
+      const bIsMySub = myPrefer?.subPlace?.includes(b.id);
+      if (aIsMySub && !bIsMySub) return -1;
+      if (!aIsMySub && bIsMySub) return 1;
     }
 
     // 3. 거리순 정렬

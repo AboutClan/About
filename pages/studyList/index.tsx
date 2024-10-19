@@ -25,7 +25,13 @@ export default function StudyList() {
 
   const participations = studyVoteData?.participations;
 
-  const thumbnailCardInfoArr = setStudyToThumbnailInfo(participations, currentLocation, date, true);
+  const thumbnailCardInfoArr = setStudyToThumbnailInfo(
+    participations,
+    null,
+    currentLocation,
+    date,
+    true,
+  );
 
   return (
     <>

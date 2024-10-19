@@ -89,7 +89,7 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo, date }: StudyInFoDrawerPro
     },
   });
 
-  const { mutate } = useStudyCommentMutation(dayjsToStr(dayjs()), {
+  const { mutate, isLoading: isCommentLoading } = useStudyCommentMutation(dayjsToStr(dayjs()), {
     onSuccess() {
       typeToast("change");
       setCommentText(commentValue);
@@ -280,7 +280,9 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo, date }: StudyInFoDrawerPro
       </BottomFlexDrawer>
       {isCommentModal && (
         <ModalLayout
-          footerOptions={{ main: { text: "작성 완료", func: handleComment } }}
+          footerOptions={{
+            main: { text: "작성 완료", func: handleComment, isLoading: isCommentLoading },
+          }}
           title="코멘트 작성"
           setIsModal={setIsCommentModal}
         >

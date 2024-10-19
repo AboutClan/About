@@ -16,7 +16,7 @@ const DAY = ["일", "월", "화", "수", "목", "금", "토"];
 
 function MonthCalendar({ standardDate, selectedDate, func }: CalendarProps) {
   const calendarArr = getCalendarDates("month", standardDate);
-  console.log(calendarArr);
+ 
   return (
     <>
       <Flex mb="12px">
@@ -35,7 +35,7 @@ function MonthCalendar({ standardDate, selectedDate, func }: CalendarProps) {
       </Flex>
       <Grid templateColumns="repeat(7,1fr)" rowGap="6px">
         {calendarArr.map((item, idx) => {
-          console.log(1, item);
+         
           return (
             <Box key={idx}>
               <DatePointButton

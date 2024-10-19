@@ -149,7 +149,13 @@ function UserComment({
     <>
       <Flex align="center" py="8px">
         <Flex justify="center" alignSelf="flex-start" mr="12px">
-          <Avatar size="sm" avatar={user.avatar} image={user.profileImage} uid={user.uid} />
+          <Avatar
+            size="sm"
+            avatar={user.avatar}
+            image={user.profileImage}
+            uid={user.uid}
+            isLink={false}
+          />
         </Flex>
         <Flex direction="column" fontSize="12px" lineHeight={1.6} justify="space-around">
           <Flex align="center">

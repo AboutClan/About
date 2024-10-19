@@ -1,5 +1,4 @@
 import axios from "axios";
-import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -90,8 +89,8 @@ function HomeInitialSetting() {
 
   const isGuest = session ? session.user.name === "guest" : undefined;
 
-  const [isGuide, setIsGuide] = useState(false);
-  console.log(isGuide);
+  // const [isGuide, setIsGuide] = useState(false);
+
   const [isGuestModal, setIsGuestModal] = useState(false);
   const { data: userInfo } = useUserInfoQuery({
     enabled: isGuest === false,
@@ -132,13 +131,13 @@ function HomeInitialSetting() {
 
     if (isGuest && !checkAndSetLocalStorage(USER_GUIDE, 1)) {
       setIsGuestModal(true);
-      setIsGuide(true);
+      // setIsGuide(true);
     }
     if (userInfo) {
       localStorage.setItem(USER_LOCATION, userInfo.location);
-      if (dayjs().diff(dayjs(userInfo?.registerDate)) <= 7) {
-        if (!checkAndSetLocalStorage(USER_GUIDE, 3)) setIsGuide(true);
-      } else if (!checkAndSetLocalStorage(USER_GUIDE, 14)) setIsGuide(true);
+      // if (dayjs().diff(dayjs(userInfo?.registerDate)) <= 7) {
+      //   if (!checkAndSetLocalStorage(USER_GUIDE, 3)) setIsGuide(true);
+      // } else if (!checkAndSetLocalStorage(USER_GUIDE, 14)) setIsGuide(true);
     }
   }, [isGuest, userInfo]);
 

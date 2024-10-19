@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import SectionFooterButton from "../../../components/atoms/SectionFooterButton";
@@ -75,6 +75,7 @@ function StudyCardCol({ participations, date }: StudyCardColProps) {
     }
     const cardList = setStudyToThumbnailInfo(
       participations,
+      null,
       currentLocation,
       date as string,
       true,

@@ -15,7 +15,6 @@ import {
   LOCATION_MAX_BOUNDARY,
 } from "../constants/serviceConstants/studyConstants/studyVoteMapConstants";
 import { STUDY_COMMENT_ARR } from "../constants/settingValue/comment";
-import { useToast } from "../hooks/custom/CustomToast";
 import { useStudyVoteQuery } from "../hooks/study/queries";
 import { useUserInfoQuery } from "../hooks/user/queries";
 import { getStudyViewDate } from "../libs/study/date/getStudyDateStatus";
@@ -45,17 +44,13 @@ import { iPhoneNotchSize } from "../utils/validationUtils";
 
 export default function StudyVoteMap() {
   const { data: session } = useSession();
-  const toast = useToast();
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
   const dateParam = searchParams.get("date");
   const voteDrawerParam = searchParams.get("voteDrawer");
-  const centerParam = searchParams.get("center") as
-    | "locationPlace"
-    | "currentPlace"
-    | "mainPlace"
-    | "votePlace";
+  const centerParam = searchParams.get("center") as "locationPlace" | "mainPlace" | "votePlace";
 
   const locationParamKr = convertLocationLangTo(
     searchParams.get("location") as LocationEn,
@@ -121,7 +116,6 @@ export default function StudyVoteMap() {
   //currentLocation이 없더라도 지도는 생성하고, currentLocation 변화는 많지 않기에 같이 묶었음
   //voteDrawer에 대해 의존인자가 겹치는 게 많고 한번에 관리하기 위해 같이 다룸
   //하지만 voteDrawer로 인해 렌더링이 여러번 되지 않도록 잘 방지해야 함
-  //my
   useEffect(() => {
     if (!studyVoteData || !session?.user.uid) return;
 
@@ -129,13 +123,14 @@ export default function StudyVoteMap() {
 
     if (!isVoteDrawer) {
       const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
-      setMyStudyParticipation(findMyStudyParticipation);
 
+      setMyStudyParticipation(findMyStudyParticipation);
       if (findMyStudyParticipation) {
         const changeLocation = getLocationByCoordinates(
           findMyStudyParticipation.place.latitude,
           findMyStudyParticipation.place.longitude,
         );
+
         if (!changeLocation) return;
         if (changeLocation === locationValue) {
           setCenterLocation({
@@ -182,16 +177,15 @@ export default function StudyVoteMap() {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
         setCurrentLocation({ lat, lon });
-
         const changeLocation = getLocationByCoordinates(lat, lon);
-
         if (changeLocation) {
           if (!isGPSInitialRender.current) {
             setLocationValue(changeLocation as ActiveLocation);
             setCenterLocation({ lat, lon });
           }
         } else if (!isGPSInitialRender.current) {
-          toast("warning", "활성화 된 지역에 있지 않습니다.");
+          //원하는 시점에 동작하지 않아서 일단 비활성화. 이후 추가
+          // toast("warning", "활성화 된 지역에 있지 않습니다.");
         }
       },
       function (error) {
@@ -251,10 +245,10 @@ export default function StudyVoteMap() {
         position="relative"
         height={
           !isVoteDrawer
-            ? `calc(100dvh - var(--bottom-nav-height) - ${DRAWER_MIN_HEIGHT + iPhoneNotchSize()}px)`
+            ? `calc(100vh - var(--bottom-nav-height) - ${DRAWER_MIN_HEIGHT + iPhoneNotchSize()}px)`
             : `calc(100vh - 452px - ${iPhoneNotchSize()}px)`
         }
-        maxH="100dvh"
+        overflow="hidden"
       >
         {!isVoteDrawer ? (
           <StudyMapTopNav
@@ -273,7 +267,6 @@ export default function StudyVoteMap() {
             />
           </Box>
         )}
-
         <VoteMap
           mapOptions={mapOptions}
           markersOptions={markersOptions}
@@ -295,6 +288,7 @@ export default function StudyVoteMap() {
 
       {isVoteDrawer && (
         <VoteDrawer
+          currentLocation={currentLocation}
           date={date}
           location={locationValue}
           setIsModal={() => {

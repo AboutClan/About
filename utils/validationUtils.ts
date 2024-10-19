@@ -47,7 +47,6 @@ export const selectRandomWinners = (
 
   while (winners.size < winner) {
     const hashValue = hashStringToInt(seedStr, total);
-
     if (!winners.has(hashValue)) {
       winners.add(hashValue);
     }
@@ -59,7 +58,6 @@ export const selectRandomWinners = (
 
 export const detectDevice = () => {
   const ua = navigator.userAgent;
-
   // iPhone 감지
   if (/iPhone/i.test(ua)) {
     return "iPhone";
@@ -73,12 +71,13 @@ export const detectDevice = () => {
     return "PC";
   }
 };
+
 export const iPhoneNotchSize = () => {
   if (typeof navigator === "undefined") return 0;
-
+  const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
   const ua = navigator.userAgent;
   // iPhone 감지
-  if (/iPhone/i.test(ua)) {
+  if (/iPhone/i.test(ua) && isStandalone) {
     return 34;
   } else return 0;
 };
