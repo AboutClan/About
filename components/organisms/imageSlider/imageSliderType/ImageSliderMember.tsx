@@ -8,7 +8,7 @@ import { prevPageUrlState } from "../../../../recoils/previousAtoms";
 import { IUser, IUserSummary } from "../../../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../../../utils/dateTimeUtils";
 import Avatar from "../../../atoms/Avatar";
-import HeartCircleIcon from "../../../atoms/Icons/HeartCircleIcon";
+import HeartCircleIcon from "../../../Icons/HeartCircleIcon";
 import { ImageContainer } from "../ImageSlider";
 
 interface IImageSliderMember {

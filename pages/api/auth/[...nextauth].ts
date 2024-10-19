@@ -153,7 +153,7 @@ export const authOptions: NextAuthOptions = {
           return token;
         }
 
-        if (account && user) {
+        if (account && account.provider === "kakao") {
           await Account.updateOne(
             { providerAccountId: account.providerAccountId },
             {

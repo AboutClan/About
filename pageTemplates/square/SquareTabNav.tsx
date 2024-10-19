@@ -33,7 +33,7 @@ function SquareTabNav({ tab }: SquareTabNavProps) {
 
   return (
     <Box fontSize="16px" pt="8px" bgColor="white">
-      <TabNav tabOptionsArr={tabNavOptions} selected={tab} hasBorder={false} isThick />
+      <TabNav tabOptionsArr={tabNavOptions} selected={tab} hasBorder={false} isFullSize />
     </Box>
   );
 }

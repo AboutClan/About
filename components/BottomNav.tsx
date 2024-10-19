@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import Link, { LinkProps } from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -9,7 +9,9 @@ import { useHandleMove } from "../@natives/useHandleBottomNav";
 import { getStudyStandardDate } from "../libs/study/date/getStudyStandardDate";
 import { slideDirectionState } from "../recoils/navigationRecoils";
 import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
-import { getBottomNavSize } from "../utils/mathUtils";
+import { iPhoneNotchSize } from "../utils/validationUtils";
+import { CommunityIcon, HomeIcon, StudyIcon, ThunderIcon } from "./Icons/BottomNavIcons";
+import { UserIcon } from "./Icons/UserIcons";
 
 interface INavButtonProps {
   url: string;
@@ -19,11 +21,11 @@ interface INavButtonProps {
 }
 
 interface INavButton extends INavButtonProps {
-  active: boolean;
+  isActive: boolean;
   idx: number;
 }
 
-type Category = "홈" | "커뮤니티" | "마이페이지" | "소모임";
+type Category = "홈" | "스터디" | "번개" | "커뮤니티" | "내 정보";
 
 export default function BottomNav() {
   const { data: session } = useSession();
@@ -34,7 +36,7 @@ export default function BottomNav() {
   const locationEn = convertLocationLangTo(session?.user.location, "en");
 
   return (
-    <Nav height={getBottomNavSize()}>
+    <Nav>
       {navItems.map((item, idx) => {
         const getParams = (category: Category) => {
           switch (category) {
@@ -55,7 +57,7 @@ export default function BottomNav() {
             url={item.url + `${getParams(item.text)}`}
             activeIcon={item.activeIcon}
             defaultIcon={item.defaultIcon}
-            active={pathname === item.url}
+            isActive={pathname === item.url}
           />
         );
       })}
@@ -63,7 +65,7 @@ export default function BottomNav() {
   );
 }
 
-function NavButton({ text, url, activeIcon, defaultIcon, active, idx }: INavButton) {
+function NavButton({ text, url, activeIcon, defaultIcon, isActive, idx }: INavButton) {
   const setSlideDirection = useSetRecoilState(slideDirectionState);
   const handleMove = useHandleMove(setSlideDirection);
 
@@ -71,75 +73,79 @@ function NavButton({ text, url, activeIcon, defaultIcon, active, idx }: INavButt
     <NavLink
       onClick={handleMove}
       href={url}
-      active={active.toString() as "true" | "false"}
+      isactive={isActive.toString() as "true" | "false"}
       replace={!text}
       className={`bottom_nav${idx}`}
     >
-      <Box>{active ? activeIcon || defaultIcon : defaultIcon}</Box>
-      <NavText>{text}</NavText>
+      <Flex justify="center" align="center" w="26px" h="26px">
+        {isActive ? activeIcon || defaultIcon : defaultIcon}
+      </Flex>
+      <Box
+        as="span"
+        mt="2px"
+        fontSize="11px"
+        color={isActive ? "var(--color-mint)" : "var(--gray-400)"}
+      >
+        {text}
+      </Box>
     </NavLink>
   );
 }
 
 const navItems: INavButtonProps[] = [
   {
-    activeIcon: <i className="fa-solid fa-house fa-xl" />,
-    defaultIcon: <i className="fa-light fa-house fa-xl" />,
+    activeIcon: <HomeIcon isActive />,
+    defaultIcon: <HomeIcon />,
     text: "홈",
     url: "/home",
   },
   {
-    activeIcon: <i className="fa-solid fa-comments fa-xl" />,
-    defaultIcon: <i className="fa-light fa-comments fa-xl" />,
+    activeIcon: <StudyIcon isActive />,
+    defaultIcon: <StudyIcon />,
+    text: "스터디",
+    url: "/studyPage",
+  },
+  {
+    activeIcon: <ThunderIcon isActive />,
+    defaultIcon: <ThunderIcon />,
+    text: "번개",
+    url: "/gather",
+  },
+  {
+    activeIcon: <CommunityIcon isActive />,
+    defaultIcon: <CommunityIcon />,
     text: "커뮤니티",
     url: "/square",
   },
   {
-    defaultIcon: <i className="fa-light fa-circle-plus" style={{ fontSize: "36px" }} />,
-    url: "",
-  },
-  {
-    activeIcon: <i className="fa-solid fa-users-rectangle fa-xl" />,
-    defaultIcon: <i className="fa-light fa-users-rectangle fa-xl" />,
-    text: "소모임",
-    url: "/group",
-  },
-  {
-    activeIcon: <i className="fa-solid fa-user fa-xl" />,
-    defaultIcon: <i className="fa-light fa-user fa-xl" />,
-    text: "마이페이지",
+    activeIcon: <UserIcon size="md" isActive />,
+    defaultIcon: <UserIcon size="md" />,
+    text: "내 정보",
     url: "/user",
   },
 ];
 
-const Nav = styled.nav<{ height: number }>`
+const Nav = styled.nav`
   width: 100%;
   display: flex;
-  justify-content: even;
   position: fixed;
   bottom: 0;
-  height: ${(props) => `${props.height}px`};
+  height: ${52 + iPhoneNotchSize()}px;
   background-color: white;
-  z-index: 10;
+  z-index: 600;
+  padding-bottom: ${iPhoneNotchSize()}px;
 
   border-top: var(--border);
   max-width: var(--max-width);
   margin: 0 auto;
-  padding-top: ${(props) => (props.height > 90 ? 0 : "4px")};
-  padding-bottom: ${(props) => (props.height > 90 ? "4px" : 0)};
 `;
 
-const NavLink = styled(Link)<{ active: "true" | "false" } & LinkProps>`
+const NavLink = styled(Link)<{ isactive: "true" | "false" } & LinkProps>`
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
-  color: ${({ active }) => (active === "true" ? "var(--gray-800)" : "var(--gray-500)")};
-`;
-
-const NavText = styled.div`
-  margin-top: 6px;
-  font-size: 12px;
+  color: ${({ isactive }) => (isactive === "true" ? "var(--gray-800)" : "var(--gray-500)")};
 `;

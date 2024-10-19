@@ -121,6 +121,7 @@ const Login: NextPage<{
         </Button>
         <Button
           size="lg"
+          maxW="calc(var(--max-width) - 2 * 20px)"
           fontSize="16px"
           width="100%"
           borderRadius="4px"

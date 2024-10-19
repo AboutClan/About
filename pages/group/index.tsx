@@ -151,14 +151,16 @@ function GroupPage() {
   function StatusSelector() {
     return <Selector defaultValue={status} setValue={setStatus} options={["모집중", "종료"]} />;
   }
-  console.log(24, myGroups);
+
   return (
     <>
-      <Header title="소모임" url="/home" isBack={false} />
-      <Slide>
+      <Header title="소모임" url="/home" />
+      <Slide isNoPadding>
         <Layout>
           {!myGroups ? <GroupSkeletonMine /> : <GroupMine myGroups={myGroups} />}
-          <SectionBar title="전체 소모임" rightComponent={<StatusSelector />} />
+          <Box px={5} bg="white">
+            <SectionBar title="전체 소모임" rightComponent={<StatusSelector />} />
+          </Box>
           <NavWrapper>
             <TabNav selected={category.main} tabOptionsArr={mainTabOptionsArr} isMain />
           </NavWrapper>
@@ -200,7 +202,8 @@ const Layout = styled.div`
 `;
 
 const NavWrapper = styled.div`
-  padding: 12px 16px;
+  padding: 0px 20px;
+  background: white;
 `;
 
 const SubNavWrapper = styled.div``;

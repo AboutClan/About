@@ -2,8 +2,8 @@ import { Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import styled from "styled-components";
 
-import { AlphabetIcon } from "../../components/atoms/Icons/AlphabetIcon";
-import { ActiveIcon } from "../../components/atoms/Icons/NoticeIcons";
+import { AlphabetIcon } from "../../components/Icons/AlphabetIcon";
+import { ActiveIcon } from "../../components/Icons/NoticeIcons";
 import { NOTICE_ACTIVE_LOG } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
 import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";

@@ -1,8 +1,10 @@
 import { Button } from "@chakra-ui/react";
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { IModal } from "../../../types/components/modalTypes";
+import { iPhoneNotchSize } from "../../../utils/validationUtils";
 import ScreenOverlay from "../../atoms/ScreenOverlay";
 
 export interface IBottomDrawerLgOptions {
@@ -24,23 +26,42 @@ interface IBottomDrawerLg extends IModal {
   height?: number;
   isxpadding?: boolean;
   isOverlay?: boolean;
+  isLittleClose?: boolean;
+  zIndex?: number;
+  paddingOptions?: {
+    bottom?: number;
+  };
 }
 
 export default function BottomDrawerLg({
   setIsModal,
   options,
   isAnimation = true,
-  height = 397.5,
+  height = 403.5,
   children,
   isxpadding = true,
   isOverlay = true,
+  isLittleClose,
+
+  paddingOptions,
 }: IBottomDrawerLg) {
   const header = options?.header;
   const footer = options?.footer;
 
+  const [drawerHeight, setDrawerHeight] = useState(height);
+
+  useEffect(() => {
+    setDrawerHeight(height);
+  }, [height]);
+
   const handleDragEnd = (_, info) => {
     if (info.offset.y > 40) {
+      if (isLittleClose) setDrawerHeight(60);
       setIsModal(false);
+    }
+    if (info.offset.y < -40 && isLittleClose) {
+      setDrawerHeight(height);
+      setIsModal(true);
     }
   };
 
@@ -48,32 +69,33 @@ export default function BottomDrawerLg({
     <>
       {isOverlay && <ScreenOverlay onClick={() => setIsModal(false)} />}
       <Layout
-        height={height}
+        height={drawerHeight}
         isxpadding={isxpadding.toString()}
         drag="y"
         dragConstraints={{ top: 0, bottom: 0 }}
         onDragEnd={handleDragEnd}
-        initial={{ y: isAnimation ? height : 0 }}
+        initial={{ y: isAnimation ? drawerHeight : 0 }}
         animate={{ y: 0 }}
-        exit={{ y: height, transition: { duration: 0.2 } }}
+        exit={{ y: drawerHeight, transition: { duration: 0.2 } }}
         transition={{ duration: 0.4 }}
+        paddingoptions={paddingOptions}
       >
         <TopNav />
-        {header && (
+
+        {header && drawerHeight > 100 && (
           <Header>
             <span>{header.subTitle}</span>
             <span>{header.title}</span>
           </Header>
         )}
-        {children}
-        {footer && (
+        {drawerHeight > 100 && children}
+        {footer && drawerHeight > 100 && (
           <Button
             w="100%"
             mt="auto"
             colorScheme="mintTheme"
             size="lg"
             isLoading={footer.buttonLoading}
-            borderRadius="var(--rounded-lg)"
             onClick={footer.onClick}
           >
             {footer.buttonText}
@@ -84,28 +106,37 @@ export default function BottomDrawerLg({
   );
 }
 
-const Layout = styled(motion.div)<{ height: number; isxpadding: string }>`
-  height: ${(props) => props.height}px;
+const Layout = styled(motion.div)<{
+  paddingoptions: { bottom?: number };
+  height: number;
+  isxpadding: string;
+}>`
+  height: ${(props) => props.height + iPhoneNotchSize()}px;
   position: fixed;
   bottom: 0;
   width: 100%;
   max-width: var(--max-width);
-  border-top-left-radius: var(--rounded-lg);
-  border-top-right-radius: var(--rounded-lg);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
   background-color: white;
-  z-index: 5000;
+  z-index: 501;
   padding: ${(props) => (props.isxpadding === "true" ? "12px 20px" : "12px 0")};
-
+  padding-bottom: ${(props) =>
+    props.isxpadding === "true" && props?.paddingoptions?.bottom !== 0
+      ? `${8 + iPhoneNotchSize()}px`
+      : iPhoneNotchSize()};
+  touch-action: none; /* 터치 스크롤을 막음 */
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
 const TopNav = styled.nav`
-  width: 56px;
-  height: 4px;
-  border-radius: 4px;
-  background-color: var(--gray-400);
+  width: 60px;
+  height: 5px;
+  border-radius: 100px;
+  background-color: var(--gray-500);
+  opacity: 0.4;
   margin-bottom: 12px;
 `;
 

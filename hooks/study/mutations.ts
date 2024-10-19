@@ -1,9 +1,10 @@
 import { AxiosError } from "axios";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { useMutation } from "react-query";
 
 import { requestServer } from "../../libs/methodHelpers";
 import { MutationOptions } from "../../types/hooks/reactTypes";
+import { CollectionProps } from "../../types/models/collections";
 import { PlaceRegisterProps } from "../../types/models/studyTypes/studyDetails";
 import {
   IStudyVote,
@@ -68,13 +69,15 @@ export const useStudyOpenFreeMutation = (date: string, options?: MutationOptions
     options,
   );
 
-export const useStudyAttendCheckMutation = (date: string, options?: MutationOptions<string>) =>
-  useMutation<void, AxiosError, string>(
-    (memo) =>
-      requestServer<{ memo: string }>({
+export const useStudyAttendCheckMutation = (
+  options?: MutationOptions<{ memo: string; endHour: Dayjs }, { data: CollectionProps }>,
+) =>
+  useMutation<{ data: CollectionProps }, AxiosError, { memo: string; endHour: Dayjs }>(
+    ({ memo, endHour }) =>
+      requestServer<{ memo: string; endHour: Dayjs }, { data: CollectionProps }>({
         method: "patch",
-        url: `vote/${date}/arrived`,
-        body: { memo },
+        url: `vote/${dayjsToStr(dayjs())}/arrived`,
+        body: { memo, endHour },
       }),
     options,
   );
@@ -86,6 +89,15 @@ export const useStudyAbsentMutation = (date: Dayjs, options?: MutationOptions<st
         method: "post",
         url: `vote/${dayjsToStr(date)}/absence`,
         body: { message },
+      }),
+    options,
+  );
+export const useDeleteMyVoteMutation = (date: Dayjs, options?: MutationOptions<void>) =>
+  useMutation<void, AxiosError, void>(
+    () =>
+      requestServer<void>({
+        method: "delete",
+        url: `vote/${dayjsToStr(date)}/mine`,
       }),
     options,
   );
@@ -145,6 +157,16 @@ export const useStudyStatusMutation = (options?: MutationOptions<StudyStatusPara
         method: "post",
         url: `place/status`,
         body: params,
+      }),
+    options,
+  );
+export const useStudyCommentMutation = (date: string, options?: MutationOptions<string>) =>
+  useMutation<void, AxiosError, string>(
+    (params) =>
+      requestServer<{ comment: string }>({
+        method: "patch",
+        url: `vote/${date}/comment`,
+        body: { comment: params },
       }),
     options,
   );

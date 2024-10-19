@@ -76,7 +76,6 @@ const QIcon = styled.span`
 const Title = styled.div`
   width: 90%;
   text-align: start;
-  font-weight: 600;
 `;
 
 const Content = styled.div<{ isFull: boolean }>`

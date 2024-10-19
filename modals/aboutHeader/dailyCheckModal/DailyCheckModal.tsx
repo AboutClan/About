@@ -1,19 +1,10 @@
-import {
-  Button,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverHeader,
-  PopoverTrigger,
-} from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
+import { useState } from "react";
 import { useSetRecoilState } from "recoil";
-import styled from "styled-components";
 
-import { Badge } from "../../../components/atoms/badges/Badges";
+import { CheckCircleBigIcon } from "../../../components/Icons/CircleIcons";
 import { DAILY_CHECK_POP_UP } from "../../../constants/keys/localStorage";
 import { DAILY_CHECK_WIN_LIST } from "../../../constants/serviceConstants/dailyCheckConstatns";
 import { POINT_SYSTEM_PLUS } from "../../../constants/serviceConstants/pointSystemConstants";
@@ -24,7 +15,7 @@ import { useDailyCheckMutation } from "../../../hooks/user/sub/dailyCheck/mutati
 import { useUserRequestMutation } from "../../../hooks/user/sub/request/mutations";
 import { getRandomAlphabet } from "../../../libs/userEventLibs/collection";
 import {
-  transferAlphabetState,
+  transferCollectionState,
   transferDailyCheckWinState,
   transferShowDailyCheckState,
 } from "../../../recoils/transferRecoils";
@@ -41,9 +32,11 @@ function DailyCheckModal({ setIsModal }: IModal) {
   const { data: session } = useSession();
   const isGuest = session?.user.name === "guest";
 
+  const [isDetailModal, setIsDetailModal] = useState(false);
+
   const setDailyCheckWin = useSetRecoilState(transferDailyCheckWinState);
   const setShowDailyCheck = useSetRecoilState(transferShowDailyCheckState);
-  const setAlphabet = useSetRecoilState(transferAlphabetState);
+  const setAlphabet = useSetRecoilState(transferCollectionState);
 
   const { mutate: getAlphabet } = useAlphabetMutation("get");
   const { mutate: setDailyCheck } = useDailyCheckMutation({
@@ -79,7 +72,7 @@ function DailyCheckModal({ setIsModal }: IModal) {
         const alphabet = getRandomAlphabet(20);
         if (alphabet) {
           getAlphabet({ alphabet });
-          setAlphabet(alphabet);
+          setAlphabet({ alphabet });
         }
       } else {
         setDailyCheckWin(gift);
@@ -97,139 +90,66 @@ function DailyCheckModal({ setIsModal }: IModal) {
 
   const footerOptions: IFooterOptions = {
     main: {
-      text: "출석",
+      text: "출 석",
       func: onClickCheck,
     },
     isFull: true,
   };
 
   return (
-    <ModalLayout title="매일매일 출석체크!" footerOptions={footerOptions} setIsModal={setIsModal}>
-      <PresentMessage>
-        매일 출석체크로 <b>2 SCORE</b>을 얻을 수 있고, 확률적으로
-        <b> 랜덤 이벤트 선물</b>도 받을 수 있어요!
-      </PresentMessage>
-      <Container>
-        <Detail>
-          <Badge text="+ 5 POINT" colorScheme="redTheme" />
-          <Badge text="+랜덤 선물" colorScheme="redTheme" />
-        </Detail>
-        <CheckWrapper>
-          <i className="fa-regular fa-check-circle fa-4x" style={{ color: "var(--color-mint)" }} />
-        </CheckWrapper>
-        <Detail>
-          <PresentListPopOver />
-          <PresentPercentPopOver />
-        </Detail>
-      </Container>
-    </ModalLayout>
+    <>
+      <ModalLayout title="매일매일 출석체크!" footerOptions={footerOptions} setIsModal={setIsModal}>
+        <Flex direction="column" align="center">
+          <Flex justify="center" h="60px" mb={2} align="center">
+            <CheckCircleBigIcon />
+          </Flex>
+          <Box textAlign="center">
+            매일 출석체크로 <b style={{ color: "var(--color-mint)" }}>2 Score</b>을 얻을 수 있고,
+            <br />
+            확률적으로 <b style={{ color: "var(--color-mint)" }}>랜덤 이벤트 선물</b>도 받을 수
+            있어요 !
+          </Box>
+          <Box mt={2}>
+            <Button
+              onClick={() => setIsDetailModal(true)}
+              size="sm"
+              borderRadius="20px"
+              bgColor="var(--gray-100)"
+              color="var(--gray-600)"
+            >
+              상품 목록 및 확률 정보
+            </Button>
+          </Box>
+        </Flex>
+      </ModalLayout>
+      {isDetailModal && (
+        <ModalLayout
+          title="출석체크 확률표"
+          footerOptions={{ main: { text: "확 인" } }}
+          setIsModal={setIsDetailModal}
+        >
+          <Flex w="100%">
+            <Flex flex={1} direction="column" borderRight="var(--border)">
+              <Box fontWeight={600} mb={1}>
+                당첨 목록
+              </Box>
+              {DAILY_CHECK_WIN_LIST.map((item, idx) => (
+                <span key={idx}>{item.item}</span>
+              ))}
+            </Flex>
+            <Flex flex={1} direction="column">
+              <Box fontWeight={600} mb={1}>
+                당첨 확률
+              </Box>
+              {DAILY_CHECK_WIN_LIST.map((item, idx) => (
+                <span key={idx}>{item.percent}%</span>
+              ))}
+            </Flex>
+          </Flex>
+        </ModalLayout>
+      )}
+    </>
   );
 }
-
-function PresentListPopOver() {
-  return (
-    <Popover placement="top-start">
-      <PopoverTrigger>
-        <Button fontSize="11px" size="xs" colorScheme="yellowTheme">
-          선물 목록
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent bg="var(--gray-100)">
-        <PopoverHeader fontWeight="semibold">
-          선물 목록 <SubTitle>(16 종류)</SubTitle>
-        </PopoverHeader>
-        <PopoverArrow />
-        <PopoverCloseButton />
-        <PopoverBody fontSize="12px">
-          {DAILY_CHECK_WIN_LIST.map((item, idx) => (
-            <span key={idx}>
-              {item.item}
-              {idx !== DAILY_CHECK_WIN_LIST.length - 1 && ", "}
-            </span>
-          ))}
-        </PopoverBody>
-      </PopoverContent>
-    </Popover>
-  );
-}
-
-function PresentPercentPopOver() {
-  return (
-    <Popover placement="top-start">
-      <PopoverTrigger>
-        <Button size="xs" fontSize="11px" colorScheme="yellowTheme">
-          당첨 확률
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent bg="var(--gray-100)">
-        <PopoverHeader fontWeight="semibold">
-          당첨 확률<SubTitle>(총 7.06%)</SubTitle>
-        </PopoverHeader>
-        <PopoverArrow />
-        <PopoverCloseButton />
-        <PopoverBody fontSize="12px">
-          {DAILY_CHECK_WIN_LIST.map((item, idx) => (
-            <PercentItem key={idx}>
-              <span>{item.item}</span>
-              <span>({item.percent}%)</span>
-              {idx !== DAILY_CHECK_WIN_LIST.length - 1 && ", "}
-            </PercentItem>
-          ))}
-        </PopoverBody>
-      </PopoverContent>
-    </Popover>
-  );
-}
-
-const Container = styled.div`
-  margin-top: var(--gap-2);
-  flex: 1;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  > div:first-child {
-    padding: var(--gap-1) 0;
-  }
-`;
-
-const Detail = styled.div`
-  height: 70%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  flex: 0.35;
-  > * {
-    margin-bottom: 4px;
-  }
-  /* > span {
-    width: 65px;
-    text-align: end;
-    
-    display: block;
-    padding: 2px 0;
-    font-weight: 600;
-    font-size: 11px;
-  } */
-`;
-
-const SubTitle = styled.span`
-  color: var(--gray-600);
-  font-weight: 400;
-  font-size: 12px;
-`;
-const PresentMessage = styled.div`
-  font-size: 15px;
-  margin-bottom: var(--gap-4);
-  > b {
-    color: var(--color-mint);
-  }
-`;
-
-const PercentItem = styled.span``;
-
-const CheckWrapper = styled.div``;
 
 export default DailyCheckModal;

@@ -45,7 +45,7 @@ export const getNextBadge = (currentBadge: UserBadge): UserBadge => {
   }
 };
 
-type ReturnLocationLang<T> = T extends "kr" ? Location : LocationEn;
+type ReturnLocationLang<T> = T extends "kr" ? ActiveLocation : LocationEn;
 
 export const convertLocationLangTo = <T extends "kr" | "en">(
   location: Location | LocationEn,

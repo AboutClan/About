@@ -4,16 +4,16 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
 
-import { AlphabetIcon } from "../../components/atoms/Icons/AlphabetIcon";
+import { AboutIcon } from "../../components/atoms/AboutIcons";
 import { useCollectionAlphabetQuery } from "../../hooks/user/sub/collection/queries";
-import UserCollectionAlphabetModal from "../../modals/user/collection/UserCollectionAlphabetModal";
+import UserCollectionModal from "../../modals/user/collection/UserCollectionAlphabetModal";
 
 export default function UserCollection() {
   const { data: session } = useSession();
 
   const isGuest = session?.user.name === "guest";
 
-  const [isAlphabetModal, setIsAlphabetModal] = useState(false);
+  const [isCollectionModal, setIsCollectionModal] = useState(false);
 
   const { data: alphabets } = useCollectionAlphabetQuery({
     enabled: !isGuest,
@@ -28,14 +28,14 @@ export default function UserCollection() {
           <i className="fa-solid fa-chevron-right" />
         </BlockItem>
         <AlphabetContainer>
-          <AlphabetIcon alphabet="A" isDuotone={!alphabetArr?.includes("A")} />
-          <AlphabetIcon alphabet="B" isDuotone={!alphabetArr?.includes("B")} />
-          <AlphabetIcon alphabet="O" isDuotone={!alphabetArr?.includes("O")} />
-          <AlphabetIcon alphabet="U" isDuotone={!alphabetArr?.includes("U")} />
-          <AlphabetIcon alphabet="T" isDuotone={!alphabetArr?.includes("T")} />
+          <AboutIcon alphabet="A" isActive={alphabetArr?.includes("A")} />
+          <AboutIcon alphabet="B" isActive={alphabetArr?.includes("B")} />
+          <AboutIcon alphabet="O" isActive={alphabetArr?.includes("O")} />
+          <AboutIcon alphabet="U" isActive={alphabetArr?.includes("U")} />
+          <AboutIcon alphabet="T" isActive={alphabetArr?.includes("T")} />
         </AlphabetContainer>
       </Link>
-      <AlphabetQNABtn onClick={() => setIsAlphabetModal(true)}>
+      <AlphabetQNABtn onClick={() => setIsCollectionModal(true)}>
         <IconWrapper>
           <i className="fa-duotone fa-stars fa-2x" style={{ color: "var(--color-mint)" }} />
         </IconWrapper>
@@ -44,7 +44,7 @@ export default function UserCollection() {
           <span>컬렉션 수집 보상</span>
         </AlphabetQNABtnContents>
       </AlphabetQNABtn>
-      {isAlphabetModal && <UserCollectionAlphabetModal setIsModal={setIsAlphabetModal} />}
+      {isCollectionModal && <UserCollectionModal setIsModal={setIsCollectionModal} />}
     </Flex>
   );
 }
@@ -81,7 +81,7 @@ const AlphabetQNABtn = styled.button`
   width: inherit;
   display: flex;
   align-items: center;
-  background-color: var(--gray-200);
+  background-color: var(--gray-100);
 
   padding: var(--gap-3) var(--gap-4);
   border-radius: var(--rounded-lg);

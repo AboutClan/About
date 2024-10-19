@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
 
-import KakaoShareBtn from "../../../components/atoms/Icons/KakaoShareBtn";
+import KakaoShareBtn from "../../../components/Icons/KakaoShareBtn";
 import Header from "../../../components/layouts/Header";
 import { GROUP_WRITING_STORE } from "../../../constants/keys/localStorage";
 import { GROUP_STUDY_ALL } from "../../../constants/keys/queryKeys";

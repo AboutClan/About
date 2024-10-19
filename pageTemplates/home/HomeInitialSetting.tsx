@@ -2,12 +2,8 @@ import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import Joyride, { CallBackProps, STATUS, Step } from "react-joyride";
-import { useSetRecoilState } from "recoil";
 import { createGlobalStyle } from "styled-components";
 
-import PCBottomNav from "../../components/layouts/PCBottomNav";
-import { STEPS_CONTENTS } from "../../constants/contentsText/GuideContents";
 import { USER_GUIDE, USER_LOCATION } from "../../constants/keys/localStorage";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { usePushServiceInitialize } from "../../hooks/FcmManger/mutaion";
@@ -15,10 +11,8 @@ import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import FAQPopUp from "../../modals/pop-up/FAQPopUp";
 import UserSettingPopUp from "../../pageTemplates/setting/userSetting/userSettingPopUp";
-import { renderHomeHeaderState } from "../../recoils/renderRecoils";
 import { isPWA } from "../../utils/appEnvUtils";
 import { checkAndSetLocalStorage } from "../../utils/storageUtils";
-import { detectDevice } from "../../utils/validationUtils";
 
 function HomeInitialSetting() {
   const { data: session } = useSession();
@@ -32,6 +26,7 @@ function HomeInitialSetting() {
   const isGuest = session ? session.user.name === "guest" : undefined;
 
   const [isGuide, setIsGuide] = useState(false);
+  console.log(isGuide);
   const [isGuestModal, setIsGuestModal] = useState(false);
   const { data: userInfo } = useUserInfoQuery({
     enabled: isGuest === false,
@@ -47,7 +42,7 @@ function HomeInitialSetting() {
     },
   });
 
-  const setRenderHomeHeaderState = useSetRecoilState(renderHomeHeaderState);
+  // const setRenderHomeHeaderState = useSetRecoilState(renderHomeHeaderState);
 
   const { mutate: setRole } = useUserInfoFieldMutation("role", {
     onSuccess() {
@@ -97,48 +92,50 @@ function HomeInitialSetting() {
     });
   }, []);
 
-  const [{ steps }, setState] = useState<{
-    run: boolean;
-    steps?: Step[];
-  }>({
-    run: false,
-    steps: STEPS_CONTENTS,
-  });
+  // const [{ steps }, setState] = useState<{
+  //   run: boolean;
+  //   steps?: Step[];
+  // }>({
+  //   run: false,
+  //   steps: STEPS_CONTENTS,
+  // });
+  // useEffect(() => {
+  //   requestAndSubscribePushService();
+  // }, []);
 
-  const handleJoyrideCallback = (data: CallBackProps) => {
-    if (data.step.target === ".about_navigation1") {
-      setRenderHomeHeaderState(false);
-    }
-    if (data.step.target === "body") {
-      setRenderHomeHeaderState(true);
-    }
+  // const handleJoyrideCallback = (data: CallBackProps) => {
+  //   if (data.step.target === ".about_navigation1") {
+  //     setRenderHomeHeaderState(false);
+  //   }
+  //   if (data.step.target === "body") {
+  //     setRenderHomeHeaderState(true);
+  //   }
 
-    const { status } = data;
-    const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
+  //   const { status } = data;
+  //   const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
 
-    if (finishedStatuses.includes(status)) {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-      setState({ run: false });
-    }
-  };
+  //   if (finishedStatuses.includes(status)) {
+  //     window.scrollTo({
+  //       top: 0,
+  //       behavior: "smooth",
+  //     });
+  //     setState({ run: false });
+  //   }
+  // };
 
   return (
     <>
-      {userInfo && !isGuest && <UserSettingPopUp userInfo={userInfo} cnt={isGuide ? 1 : 0} />}
+      {userInfo && !isGuest && <UserSettingPopUp userInfo={userInfo} />}
       {isGuestModal && <FAQPopUp setIsModal={setIsGuestModal} />}
       <GlobalStyle />
-      {!isPWALogin && detectDevice() !== "PC" && <PCBottomNav />}
-      <Joyride
+      {/* <Joyride
         hideCloseButton={true}
         callback={handleJoyrideCallback}
         continuous
         steps={steps}
         run={isGuide}
         showSkipButton
-      />
+      /> */}
     </>
   );
 }

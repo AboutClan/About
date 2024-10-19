@@ -5,7 +5,7 @@ import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import { PopOverIcon } from "../../components/atoms/Icons/PopOverIcon";
+import { PopOverIcon } from "../../components/Icons/PopOverIcon";
 import { GROUP_STUDY } from "../../constants/keys/queryKeys";
 import { useCompleteToast, useFailToast } from "../../hooks/custom/CustomToast";
 import {
@@ -62,7 +62,7 @@ function ParticipateModal({ isFree, id, setIsModal, answer }: IParticipateModal)
       resetCache();
     },
   });
- 
+
   const { mutate: sendRegisterForm } = useGroupWaitingMutation(id, {
     onSuccess() {
       completeToast("free", "가입 신청이 완료되었습니다.");

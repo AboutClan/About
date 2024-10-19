@@ -30,13 +30,13 @@ export const BADGE_SCORE_MAPPINGS: {
   [key in (typeof USER_SCORE_BADGE_ARR)[number]]: number;
 } = {
   아메리카노: 0,
-  망고: 20,
-  그린티: 40,
-  블루레몬: 60,
-  라즈베리: 80,
-  페퍼민트: 100,
-  홍차: 120,
-  에스프레소: 140,
+  망고: 30,
+  그린티: 60,
+  블루레몬: 90,
+  라즈베리: 120,
+  페퍼민트: 150,
+  홍차: 180,
+  에스프레소: 210,
 };
 export const BADGE_COLOR_MAPPINGS: {
   [key in (typeof USER_BADGE_ARR)[number]]: string;

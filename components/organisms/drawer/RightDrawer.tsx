@@ -1,4 +1,4 @@
-import { Drawer, DrawerBody, DrawerContent, DrawerOverlay } from "@chakra-ui/react";
+import { Box, Drawer, DrawerBody, DrawerContent, DrawerOverlay } from "@chakra-ui/react";
 
 import Header from "../../layouts/Header";
 
@@ -27,7 +27,7 @@ function RightDrawer({ title, onClose, children, headerBtn }: RightUserDrawerPro
           >
             {headerBtn}
           </Header>
-          {children}
+          <Box px={5}>{children}</Box>
         </DrawerBody>
       </DrawerContent>
     </Drawer>

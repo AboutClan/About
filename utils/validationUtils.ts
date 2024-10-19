@@ -84,4 +84,14 @@ export const isEmpty = <T>(value: T | undefined | null): boolean => {
     (Array.isArray(value) && value.length === 0) ||
     (typeof value === "object" && Object.keys(value).length === 0)
   );
+}
+
+export const iPhoneNotchSize = () => {
+  if (typeof navigator === "undefined") return 0;
+
+  const ua = navigator.userAgent;
+  // iPhone 감지
+  if (/iPhone/i.test(ua)) {
+    return 34;
+  } else return 0;
 };

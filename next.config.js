@@ -64,7 +64,7 @@ const baseNextConfig = {
         headers: [
           {
             key: "Set-Cookie",
-            value: "cookieName=cookieValue; Path=/; HttpOnly; Secure; SameSite=Lax",
+            value: "cookieName=cookieValue; Path=/; HttpOnly; Secure; SameSite=None;",
           },
         ],
       },

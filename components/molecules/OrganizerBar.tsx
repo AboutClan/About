@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import { getDateDiff } from "../../utils/dateTimeUtils";
 import Avatar from "../atoms/Avatar";
-import { AboutIcon } from "../atoms/Icons/AboutIcon";
+import { AboutIcon } from "../Icons/AboutIcon";
 
 interface OrganizerBarProps {
   createdAt: string;

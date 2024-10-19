@@ -1,71 +1,64 @@
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
+import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
 import {
-  ALPHABET_POP_UP,
   ATTEND_POP_UP,
   FAQ_POP_UP,
   GATHER_JOIN_MEMBERS,
-  INSTAGRAM_POP_UP,
   PROMOTION_POP_UP,
   STUDY_ATTEND_MEMBERS,
-  SUGGEST_POP_UP,
-  USER_GUIDE_POP_UP,
 } from "../../../constants/keys/localStorage";
 import { useGatherQuery } from "../../../hooks/gather/queries";
-import EnthusiasticModal from "../../../modals/aboutHeader/EnthusiasticModal/EnthusiasticModal";
-import PointSystemsModal from "../../../modals/aboutHeader/pointSystemsModal/PointSystemsModal";
 import PromotionModal from "../../../modals/aboutHeader/promotionModal/PromotionModal";
-import AlphabetPopUp from "../../../modals/pop-up/AlphabetPopUp";
 import FAQPopUp from "../../../modals/pop-up/FAQPopUp";
-import InstaPopUp from "../../../modals/pop-up/InstaPopUp";
 import LastWeekAttendPopUp from "../../../modals/pop-up/LastWeekAttendPopUp";
 import LocationRegisterPopUp from "../../../modals/pop-up/LocationRegisterPopUp";
-import ManagerPopUp from "../../../modals/pop-up/ManagerPopUp";
-import SuggestPopUp from "../../../modals/pop-up/SuggestPopUp";
 import { IUser, IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { checkAndSetLocalStorage } from "../../../utils/storageUtils";
 
 export type UserPopUp =
   | "lastWeekAttend"
-  | "suggest"
+  // | "suggest"
   | "promotion"
   | "userGuide"
   | "faq"
   // | "manager"
-  | "alphabet"
-  | "enthusiastic"
-  | "instagram"
+  // | "alphabet"
+  // | "enthusiastic"
+  // | "instagram"
   | "registerLocation";
 
 const MODAL_COMPONENTS = {
   faq: FAQPopUp,
   lastWeekAttend: LastWeekAttendPopUp,
-  suggest: SuggestPopUp,
+  // suggest: SuggestPopUp,
   promotion: PromotionModal,
-  userGuide: PointSystemsModal,
-  alphabet: AlphabetPopUp,
-  enthusiastic: EnthusiasticModal,
-  manager: ManagerPopUp,
-  instagram: InstaPopUp,
+  // userGuide: PointSystemsModal,
+  // alphabet: AlphabetPopUp,
+  // enthusiastic: EnthusiasticModal,
+  // manager: ManagerPopUp,
+  // instagram: InstaPopUp,
   registerLocation: LocationRegisterPopUp,
 };
 
 interface UserSettingPopUpProps {
-  cnt: number;
   userInfo: IUser;
 }
 
-export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProps) {
+export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
   const { data: session } = useSession();
 
   const [modalTypes, setModalTypes] = useState<UserPopUp[]>([]);
   // const [recentMembers, setRecentMembers] = useState<IUserSummary[]>();
+  const [drawerType, setDrawerType] = useState<"bottom" | "right">();
 
   const { data: gatherData } = useGatherQuery(-1);
 
   useEffect(() => {
+    return;
     if (!gatherData) return;
     const gatherJoin = JSON.parse(localStorage.getItem(GATHER_JOIN_MEMBERS)) || [];
     const filteredGather = gatherData.filter((obj) => {
@@ -116,19 +109,20 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
   }, [gatherData]);
 
   useEffect(() => {
-    let popUpCnt = cnt;
+    // const popUpCnt = cnt;
+
     if (!userInfo?.locationDetail) {
       setModalTypes((old) => [...old, "registerLocation"]);
-      if (popUpCnt++ === 2) return;
+      return;
     }
 
-    if (!checkAndSetLocalStorage(ALPHABET_POP_UP, 15)) {
-      setModalTypes((old) => [...old, "alphabet"]);
-      if (popUpCnt++ === 2) return;
-    }
+    // if (!checkAndSetLocalStorage(ALPHABET_POP_UP, 15)) {
+    //   setModalTypes((old) => [...old, "alphabet"]);
+    //   return;
+    // }
     if (!checkAndSetLocalStorage(ATTEND_POP_UP, 7)) {
       setModalTypes((old) => [...old, "lastWeekAttend"]);
-      if (popUpCnt++ === 2) return;
+      return;
     }
     // if (!checkAndSetLocalStorage(ENTHUSIASTIC_POP_UP, 27)) {
     //   setModalTypes((old) => [...old, "enthusiastic"]);
@@ -136,25 +130,25 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
     // }
     if (!checkAndSetLocalStorage(FAQ_POP_UP, 21)) {
       setModalTypes((old) => [...old, "faq"]);
-      if (popUpCnt++ === 2) return;
+      return;
     }
 
     if (!checkAndSetLocalStorage(PROMOTION_POP_UP, 14)) {
       setModalTypes((old) => [...old, "promotion"]);
-      if (popUpCnt++ === 2) return;
+      return;
     }
-    if (!checkAndSetLocalStorage(SUGGEST_POP_UP, 29)) {
-      setModalTypes((old) => [...old, "suggest"]);
-      if (popUpCnt++ === 2) return;
-    }
-    if (!checkAndSetLocalStorage(USER_GUIDE_POP_UP, 30)) {
-      setModalTypes((old) => [...old, "userGuide"]);
-      if (popUpCnt++ === 2) return;
-    }
-    if (!checkAndSetLocalStorage(INSTAGRAM_POP_UP, 26) && !userInfo?.instagram) {
-      setModalTypes((old) => [...old, "instagram"]);
-      if (popUpCnt++ === 2) return;
-    }
+    // if (!checkAndSetLocalStorage(SUGGEST_POP_UP, 29)) {
+    //   setModalTypes((old) => [...old, "suggest"]);
+    //   if (popUpCnt++ === 2) return;
+    // }
+    // if (!checkAndSetLocalStorage(USER_GUIDE_POP_UP, 30)) {
+    //   setModalTypes((old) => [...old, "userGuide"]);
+    //   if (popUpCnt++ === 2) return;
+    // }
+    // if (!checkAndSetLocalStorage(INSTAGRAM_POP_UP, 26) && !userInfo?.instagram) {
+    //   setModalTypes((old) => [...old, "instagram"]);
+    //   if (popUpCnt++ === 2) return;
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -179,6 +173,29 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
           )
         );
       })}
+
+      {drawerType === "bottom" && (
+        <BottomFlexDrawer
+          isDrawerUp
+          isOverlay
+          height={260}
+          isHideBottom
+          setIsModal={() => setDrawerType(null)}
+        >
+          <Box w="100%" fontWeight={600} fontSize="18px" textAlign="start">
+            어제의 스터디 기록이 도착했어요! <br /> 기록을 확인해볼까요?
+          </Box>
+          <Flex direction="column" mt="auto" w="100%">
+            <Button size="lg" colorScheme="mintTheme" onClick={() => setDrawerType("right")}>
+              확인하러 가기
+            </Button>
+            <Button size="lg" variant="ghost">
+              무시하고 넘기기
+            </Button>
+          </Flex>
+        </BottomFlexDrawer>
+      )}
+      {/* {drawerType === "right" && <RightDrawer>23</RightDrawer>} */}
     </>
   );
 }

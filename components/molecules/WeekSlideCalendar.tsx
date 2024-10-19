@@ -1,25 +1,24 @@
-import { Box, css, Flex } from "@chakra-ui/react";
-import { Dayjs } from "dayjs";
+import { css, Flex } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { useEffect, useRef } from "react";
 
-import { VoteCntProps } from "../../types/models/studyTypes/studyRecords";
-import { dayjsToStr, getCalendarDates } from "../../utils/dateTimeUtils";
+import { getCalendarDates } from "../../utils/dateTimeUtils";
 import CalendarDayBox from "../atoms/CalendarDayBox";
 
 interface CalendarProps {
-  selectedDate: Dayjs;
-  voteCntArr: VoteCntProps[];
+  selectedDate: string;
+  // voteCntArr: VoteCntProps[];
   func: (date: string) => void;
 }
 
-function WeekSlideCalendar({ voteCntArr, selectedDate, func }: CalendarProps) {
+function WeekSlideCalendar({ selectedDate, func }: CalendarProps) {
   const dateRefs: React.MutableRefObject<(HTMLDivElement | null)[]> = useRef([]);
   const containerRef = useRef<HTMLDivElement>();
-  const calendarArr = getCalendarDates("week", selectedDate, voteCntArr);
+  const calendarArr = getCalendarDates("week", dayjs(selectedDate));
 
   useEffect(() => {
     if (!calendarArr || !selectedDate) return;
-    const selectedIdx = calendarArr.findIndex((obj) => obj.date === dayjsToStr(selectedDate));
+    const selectedIdx = calendarArr.findIndex((obj) => obj.date === selectedDate);
 
     if (selectedIdx !== -1 && containerRef.current) {
       const selectedElement = dateRefs.current[selectedIdx];
@@ -32,11 +31,12 @@ function WeekSlideCalendar({ voteCntArr, selectedDate, func }: CalendarProps) {
   return (
     <>
       <Flex
+        borderBottom="var(--border)"
         ref={containerRef}
         className="about_calendar"
-        overflow="auto"
-        pb={2}
-        w="240px"
+        overflowX="auto"
+        maxW="var(--max-width)"
+        pb={3}
         css={css`
           @media (max-width: 400px) {
             &::-webkit-scrollbar {
@@ -54,14 +54,20 @@ function WeekSlideCalendar({ voteCntArr, selectedDate, func }: CalendarProps) {
         `}
       >
         {calendarArr.map((item, idx) => (
-          <Box key={idx} ref={(el) => (dateRefs.current[idx] = el)}>
+          <Flex
+            justify="center"
+            w="{`calc((100dvw - 40px) / 7)`}"
+            minWidth="calc((100dvw - 40px) / 7)"
+            key={idx}
+            ref={(el) => (dateRefs.current[idx] = el)}
+          >
             <CalendarDayBox
               date={item.date}
               value={item.value}
-              selectedDate={dayjsToStr(selectedDate)}
+              selectedDate={selectedDate}
               func={func}
             />
-          </Box>
+          </Flex>
         ))}
       </Flex>
     </>

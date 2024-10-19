@@ -30,7 +30,7 @@ function GatherDetail() {
 
   const [transferGather, setTransferGather] = useRecoilState(transferGatherDataState);
   const { data: gatherData } = useGatherIDQuery(+id, { enabled: !!id && !transferGather });
-  
+
   useEffect(() => {
     if (gatherData) {
       setGather(gatherData);
@@ -47,7 +47,7 @@ function GatherDetail() {
       {gather ? (
         <>
           <GatherHeader gatherData={gather} />
-          <Slide>
+          <Slide isNoPadding>
             <Layout>
               <GatherOrganizer
                 createdAt={gather.createdAt}

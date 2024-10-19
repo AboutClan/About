@@ -18,13 +18,13 @@ function GroupParticipation({ data }: IGroupParticipation) {
     if (isSecret) {
       return {
         user: null,
-        comment: "익명으로 진행되는 소모임입니다.",
+        comment: { text: "익명으로 진행되는 소모임입니다." },
         rightComponent: <ParticipateTime isFirst={true}>비공개</ParticipateTime>,
       };
     }
     return {
       user: par.user,
-      comment: par.user?.comment || "비공개 계정입니다.",
+      comment: { text: par.user?.comment || "비공개 계정입니다." },
       rightComponent: (
         <>
           <ParticipateTime isFirst={true}>{GROUP_STUDY_ROLE[par.role]}</ParticipateTime>
@@ -48,14 +48,14 @@ function GroupParticipation({ data }: IGroupParticipation) {
           </>
         )}
       </Header>
-      <ProfileCardColumn userCardArr={userCardArr} />
+      <ProfileCardColumn hasCommentButton={false} userCardArr={userCardArr} />
     </Layout>
   );
 }
 
 const Header = styled.header`
   font-size: 16px;
-  padding: var(--gap-4);
+  padding: var(--gap-4) 0;
   font-weight: 600;
 
   > span:first-child {
@@ -85,6 +85,7 @@ const Layout = styled.div`
   display: flex;
   flex-direction: column;
   background-color: white;
+  padding: 0 20px;
   padding-bottom: var(--gap-4);
 `;
 

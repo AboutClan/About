@@ -13,7 +13,16 @@ function BadgeInfoModalFirstInfo() {
         return (
           <Item key={idx}>
             <div>
-              <Badge fontSize={12} colorScheme={BADGE_COLOR_MAPPINGS[badge]}>
+              <Badge
+                borderRadius="10px"
+                fontSize="9px"
+                variant="subtle"
+                h="20px"
+                px={2}
+                py={1}
+                fontWeight="semibold"
+                colorScheme={BADGE_COLOR_MAPPINGS[badge]}
+              >
                 {badge}
               </Badge>
             </div>

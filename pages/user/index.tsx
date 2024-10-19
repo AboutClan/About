@@ -50,7 +50,6 @@ function UserInfo() {
               pb="16px"
               mb="40px"
               bgColor="white"
-              mx="16px"
               border="var(--border-main)"
               rounded="var(--rounded-lg)"
             >

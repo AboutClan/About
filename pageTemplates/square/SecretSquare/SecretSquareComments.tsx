@@ -77,7 +77,7 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
   return (
     <>
       <Slide>
-        <Flex direction="column" pt="8px" px="16px" pb="20px">
+        <Flex direction="column" pt="8px" pb="20px">
           {commentArr?.map((item, idx) => {
             const commentProps = commentArr?.find((comment) => comment._id === item._id);
             return (

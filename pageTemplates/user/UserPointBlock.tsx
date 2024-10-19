@@ -9,7 +9,7 @@ function UserPointBlock() {
 
   return (
     <Flex
-      m="16px"
+      my="16px"
       p="16px 8px"
       pb="8px"
       justify="space-around"

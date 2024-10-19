@@ -316,7 +316,29 @@ export const EVENT_CONTENT_2024: Record<string, CalendarContentProps[]> = {
       text: "",
     },
   ],
-  10: [],
+  10: [
+    {
+      content: "서비스 리뉴얼 ~ ",
+      start: 1,
+      end: 18,
+      type: "main",
+      text: "1차 리뉴얼 준비 기간",
+    },
+    {
+      content: "시험 기간 이벤트 ~ ",
+      start: 18,
+      end: 25,
+      type: "event",
+      text: "매일 매일!! 어떤 스터디든 상관없이 스터디 인증만 하면 랜덤으로 기프티콘을 보내드립니다!!",
+    },
+    {
+      content: "스터디 참여 이벤트 ~ ",
+      start: 18,
+      end: 31,
+      type: "schedule",
+      text: "정규 스터디, 매칭된 스터디, 심지어 개인 스터디까지! 공부하고 인증만 하면 치킨을 드립니다!! ",
+    },
+  ],
   11: [],
   12: [],
 };

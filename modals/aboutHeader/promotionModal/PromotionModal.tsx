@@ -81,8 +81,9 @@ const Info = styled.div`
   flex-direction: column;
   align-items: flex-end;
   font-weight: 600;
-  font-size: 12px;
-  margin-left: 8px;
+  color: var(--gray-600);
+  font-size: 10px;
+  margin-left: 12px;
 `;
 
 export default PromotionModal;

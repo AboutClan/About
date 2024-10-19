@@ -40,7 +40,7 @@ function WritingStudyPlace() {
         (field) => !field,
       )
     ) {
-      failToast("free", "장소를 선택해 주세요!", true);
+      failToast("free", "장소를 선택해 주세요!");
       return;
     }
 

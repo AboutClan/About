@@ -1,6 +1,9 @@
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 
-import { STUDY_RESULT_HOUR } from "../../../constants/serviceConstants/studyConstants/studyTimeConstant";
+import {
+  STUDY_RESULT_HOUR,
+  STUDY_VIEW_CHANGE_HOUR,
+} from "../../../constants/serviceConstants/studyConstants/studyTimeConstant";
 import { dayjsToStr, getHour, getToday } from "../../../utils/dateTimeUtils";
 
 /**
@@ -12,16 +15,19 @@ export const getStudyDateStatus = (date: string) => {
   const currentHours = getHour();
 
   const isTodayCondition =
-    (currentDate.add(1, "day").isSame(selectedDate) && currentHours >= STUDY_RESULT_HOUR) ||
-    (currentDate.isSame(selectedDate) && currentHours < STUDY_RESULT_HOUR);
+    // (currentDate.add(1, "day").isSame(selectedDate) && currentHours >= STUDY_RESULT_HOUR) ||
+    currentDate.isSame(selectedDate) && currentHours >= STUDY_RESULT_HOUR;
 
   if (isTodayCondition) return "today";
-  if (
-    (dayjsToStr(selectedDate) === dayjsToStr(currentDate) && currentHours >= STUDY_RESULT_HOUR) ||
-    selectedDate.isBefore(currentDate)
-  ) {
+  if (selectedDate.isBefore(currentDate)) {
     return "passed";
   }
 
   return "not passed";
+};
+
+export const getStudyViewDate = (dateDayjs: Dayjs) => {
+  if (dateDayjs.hour() < STUDY_VIEW_CHANGE_HOUR) {
+    return dayjsToStr(dateDayjs);
+  } else return dayjsToStr(dateDayjs.add(1, "day"));
 };

@@ -6,7 +6,16 @@ function BadgeInfoModalSecondInfo() {
     <Layout>
       <Item>
         <div>
-          <Badge fontSize={12} colorScheme="badgePink">
+          <Badge
+            borderRadius="10px"
+            fontSize="9px"
+            variant="subtle"
+            h="20px"
+            px={2}
+            py={1}
+            fontWeight="semibold"
+            colorScheme="badgePink"
+          >
             딸기스무디
           </Badge>
         </div>
@@ -14,7 +23,16 @@ function BadgeInfoModalSecondInfo() {
       </Item>
       <Item>
         <div>
-          <Badge fontSize={12} colorScheme="facebook">
+          <Badge
+            borderRadius="10px"
+            fontSize="9px"
+            variant="subtle"
+            h="20px"
+            px={2}
+            py={1}
+            fontWeight="semibold"
+            colorScheme="facebook"
+          >
             라벤더
           </Badge>
         </div>
@@ -22,7 +40,16 @@ function BadgeInfoModalSecondInfo() {
       </Item>
       <Item>
         <div>
-          <Badge fontSize={12} colorScheme="badgeMint">
+          <Badge
+            borderRadius="10px"
+            fontSize="9px"
+            variant="subtle"
+            h="20px"
+            px={2}
+            py={1}
+            fontWeight="semibold"
+            colorScheme="badgeMint"
+          >
             민트초코
           </Badge>
         </div>
@@ -30,7 +57,16 @@ function BadgeInfoModalSecondInfo() {
       </Item>
       <Item>
         <div>
-          <Badge fontSize={12} colorScheme="yellow">
+          <Badge
+            borderRadius="10px"
+            fontSize="9px"
+            variant="subtle"
+            h="20px"
+            px={2}
+            py={1}
+            fontWeight="semibold"
+            colorScheme="yellow"
+          >
             바닐라
           </Badge>
         </div>
@@ -38,7 +74,16 @@ function BadgeInfoModalSecondInfo() {
       </Item>
       <Item>
         <div>
-          <Badge fontSize={12} colorScheme="badgeBrown">
+          <Badge
+            borderRadius="10px"
+            fontSize="9px"
+            variant="subtle"
+            h="20px"
+            px={2}
+            py={1}
+            fontWeight="semibold"
+            colorScheme="badgeBrown"
+          >
             코코아
           </Badge>
         </div>
@@ -46,7 +91,16 @@ function BadgeInfoModalSecondInfo() {
       </Item>
       <Item>
         <div>
-          <Badge fontSize={12} colorScheme="badgeMojito">
+          <Badge
+            borderRadius="10px"
+            fontSize="9px"
+            variant="subtle"
+            h="20px"
+            px={2}
+            py={1}
+            fontWeight="semibold"
+            colorScheme="badgeMojito"
+          >
             모히또
           </Badge>
         </div>
@@ -54,7 +108,16 @@ function BadgeInfoModalSecondInfo() {
       </Item>
       <Item>
         <div>
-          <Badge fontSize={12} colorScheme="badgeOcean">
+          <Badge
+            borderRadius="10px"
+            fontSize="9px"
+            variant="subtle"
+            h="20px"
+            px={2}
+            py={1}
+            fontWeight="semibold"
+            colorScheme="badgeOcean"
+          >
             슈팅스타
           </Badge>
         </div>

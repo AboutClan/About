@@ -2,10 +2,10 @@ import { Box, Flex } from "@chakra-ui/react";
 
 import { IInfoCard } from "../../components/atoms/InfoCard";
 import InfoCardColumn from "../../components/organisms/InfoCardColumn";
-import { IParticipation } from "../../types/models/studyTypes/studyDetails";
+import { StudyParticipationProps } from "../../types/models/studyTypes/studyDetails";
 
 interface StudyWaitingPlacesProps {
-  studyWaitingPlaces: IParticipation[];
+  studyWaitingPlaces: StudyParticipationProps[];
 }
 
 function StudyWaitingPlaces({ studyWaitingPlaces }: StudyWaitingPlacesProps) {
@@ -27,7 +27,7 @@ function StudyWaitingPlaces({ studyWaitingPlaces }: StudyWaitingPlacesProps) {
       ),
       rightComponent: (
         <Box fontSize="16px" color="var(--color-mint)">
-          {par.attendences.length}명 신청중
+          {par.members.length}명 신청중
         </Box>
       ),
     };
