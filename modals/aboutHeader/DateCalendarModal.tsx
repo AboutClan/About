@@ -35,6 +35,7 @@ function DateCalendarModal({ date: selectedDate, setIsModal }: DateCalendarModal
     date.add(2, "month"),
     date.add(3, "month"),
   ]);
+
   const [initialLoad, setInitialLoad] = useState(true);
   const [pageIdx, setPageIdx] = useState(3);
 
