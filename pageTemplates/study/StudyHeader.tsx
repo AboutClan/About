@@ -25,7 +25,7 @@ function StudyHeader({ brand, name, address, coverImage }: IStudyHeader) {
 
   return (
     <>
-      <Header title={brand} isCenter>
+      <Header title={brand} isCenter defaultUrl="/home">
         <Button variant="unstyled" onClick={() => setIsModal(true)}>
           <EllipsisIcon />
         </Button>

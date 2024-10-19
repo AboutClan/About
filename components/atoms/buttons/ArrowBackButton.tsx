@@ -2,10 +2,11 @@ import { useRouter } from "next/navigation";
 import styled from "styled-components";
 
 interface IArrowBackButton {
+  defaultUrl?: string;
   url?: string;
   func?: () => void;
 }
-export default function ArrowBackButton({ url, func }: IArrowBackButton) {
+export default function ArrowBackButton({ url, func, defaultUrl }: IArrowBackButton) {
   const router = useRouter();
 
   const handleGoBack = () => {
@@ -14,7 +15,8 @@ export default function ArrowBackButton({ url, func }: IArrowBackButton) {
       return;
     }
     if (url) router.push(url);
-    else router.back();
+    else if (window.history.length > 1) router.back();
+    else router.push(defaultUrl);
   };
 
   return <ArrowBackButtonUI onClick={handleGoBack} />;

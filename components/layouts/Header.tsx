@@ -13,6 +13,7 @@ interface IHeader {
   isCenter?: boolean;
   isBorder?: boolean;
   children?: React.ReactNode;
+  defaultUrl?: string;
 }
 
 export default function Header({
@@ -25,6 +26,7 @@ export default function Header({
   children,
   isCenter,
   isBorder = true,
+  defaultUrl,
 }: IHeader) {
   function HeaderLayout() {
     return (
@@ -35,7 +37,7 @@ export default function Header({
         rightPadding={rightPadding}
       >
         <Flex>
-          {isBack && <ArrowBackButton url={url} func={func} />}
+          {isBack && <ArrowBackButton defaultUrl={defaultUrl} url={url} func={func} />}
           {!isCenter && (
             <Box ml={isBack && 2} fontWeight={700}>
               {title}
