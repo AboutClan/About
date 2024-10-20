@@ -120,7 +120,7 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
     //   setModalTypes((old) => [...old, "alphabet"]);
     //   return;
     // }
-    if (!checkAndSetLocalStorage(ATTEND_POP_UP, 7)) {
+    if (checkAndSetLocalStorage(ATTEND_POP_UP, 7)) {
       setModalTypes((old) => [...old, "lastWeekAttend"]);
       return;
     }

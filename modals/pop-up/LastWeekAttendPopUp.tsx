@@ -168,7 +168,7 @@ const Message = styled.div`
   min-height: 48px;
   border-radius: 8px;
   color: var(--gray-600);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: medium;
   background-color: var(--gray-100);
 `;
@@ -185,9 +185,9 @@ const Item = styled.div`
 
   display: flex;
   justify-content: space-between;
-  font-size: 10px;
+  font-size: 11px;
   margin: 4px 0;
-  line-height: 12px;
+
   > span:first-child {
     font-weight: regular;
     color: var(--gray-600);

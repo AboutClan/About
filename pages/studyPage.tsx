@@ -1,9 +1,9 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 
 import { STUDY_MAIN_IMAGES } from "../assets/images/studyMain";
 import ArrowBackButton from "../components/atoms/buttons/ArrowBackButton";
@@ -42,88 +42,81 @@ import { dayjsToFormat, dayjsToStr } from "../utils/dateTimeUtils";
 import { getRandomIdx } from "../utils/mathUtils";
 import { iPhoneNotchSize } from "../utils/validationUtils";
 
-export default function StudyVoteMap() {
+export default function StudyPage() {
   const { data: session } = useSession();
-
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
-  const dateParam = searchParams.get("date");
-  const voteDrawerParam = searchParams.get("voteDrawer");
-  const centerParam = searchParams.get("center") as "locationPlace" | "mainPlace" | "votePlace";
 
+  const dateParam = searchParams.get("date");
+  const voteDrawerParam = searchParams.get("voteDrawer") as "up" | "down";
+  const centerParam = searchParams.get("center") as "locationPlace" | "mainPlace" | "votePlace";
   const locationParamKr = convertLocationLangTo(
     searchParams.get("location") as LocationEn,
     "kr",
   ) as ActiveLocation;
+
   const userLocation =
     (localStorage.getItem(USER_LOCATION) as ActiveLocation) || session?.user.location;
-
-  const [mapOptions, setMapOptions] = useState<IMapOptions>();
-  const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>();
-  const [currentLocation, setCurrentLocation] = useState<CoordinateProps>();
-  const [centerLocation, setCenterLocation] = useState<CoordinateProps>();
-  const [isVoteDrawer, setIsVoteDrawer] = useState(false);
-  const [isDrawerUp, setIsDrawerUp] = useState(true);
-  // const [locationFilterType, setLocationFilterType] = useState<
-  //   "현재 위치" | "활동 장소" | "스터디 장소"
-  // >("현재 위치");
-
-  //최초에 GPS 키면서 시작
-  const [isLocationRefetch, setIsLocationRefetch] = useState(true);
 
   const [date, setDate] = useState(dateParam || dayjsToStr(dayjs()));
   const [locationValue, setLocationValue] = useState<ActiveLocation>(
     locationParamKr || userLocation,
   );
+  const [mapOptions, setMapOptions] = useState<IMapOptions>();
+  const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>();
+  const [currentLocation, setCurrentLocation] = useState<CoordinateProps>();
+  const [centerLocation, setCenterLocation] = useState<CoordinateProps>();
+  const [isVoteDrawer, setIsVoteDrawer] = useState(false);
+  const [isLocationRefetch, setIsLocationRefetch] = useState(true);
   const [myVote, setMyVote] = useState<VotePlacesProps>({ main: null, sub: [] });
+  const [detailInfo, setDetailInfo] = useState<StudyInfoProps>();
   //이후 제거
   const [isVoteDrawerFirst, setIsVoteDrawerFirst] = useState(true);
 
-  const [detailInfo, setDetailInfo] = useState<StudyInfoProps>();
-
-  const setMyStudyParticipation = useSetRecoilState(myStudyParticipationState);
+  const [myStudyParticipation, setMyStudyParticipation] = useRecoilState(myStudyParticipationState);
+  const [isDrawerUp, setIsDrawerUp] = useState(myStudyParticipation ? false : true);
 
   const { data: userInfo } = useUserInfoQuery();
-
   const { data: studyVoteData } = useStudyVoteQuery(date, locationValue, {
     enabled: !!locationValue && !!date,
   });
 
   //초기 param 값들 설정
+  //locationValue와 date는 초기부터 존재 (+ useEffect의 의존 인자x)
+  //내 스터디 투표 정보가 있는지에 따라 분류
   useEffect(() => {
-    if (!userLocation) return;
-    newSearchParams.set("center", "locationPlace");
-    newSearchParams.set("location", `${convertLocationLangTo(userLocation, "en")}`);
-    newSearchParams.set("date", `${getStudyViewDate(dayjs())}`);
-    router.replace(`/studyPage?${newSearchParams.toString()}`);
-    const locationCenter = LOCATION_CENTER_DOT[userLocation];
-    setCenterLocation({ lat: locationCenter.latitude, lon: locationCenter.longitude });
-  }, [userLocation]);
+    if (!locationValue) return;
 
-  //studyVoteData가 바뀌는 경우는 지역이 바뀌거나 초기화 된 경우
-  //지역 바뀌었을때 내 투표 정보가 없으면 어차피 find는 false가 된다.
-  //고로 내 투표 장소를 찾았다면 무조건 중심으로 바꿔도 된다.
-  //단 !! 실시간 스터디는 어느 지역이든 데이터가 포함되니 확인이 필요!!
-  //그렇다고 무조건 지역 변경까지 해버리면 안됨.
-  //1. 이게 필요한 경우는 '내 스터디 장소'로 버튼을 직접 누르거나,
-  //2. 스터디 투표나 출석을 한 직후에 지역이 다른 경우에만 바꿔줌
-  //그러면 1번은 직접 하고, 2번은 param을 통해 하자.
-  //centerParam은 이전 투표나 출석에서 이동하는 경우 하나라서 의존 인자로 넣을 필요가 없다!
-  //changeLocation이 있는 경우는 해당 지역 투표에 있거나, 실시간 스터디에 참여중이거나!
-  //각 경우 나눠서 생각해야 함
-  //changeLocation이 아예 없는 경우가 있을 수 있나? 투표를 못하게 했으니까 의도적으로는 없음.
-  //currentLocation이 없더라도 지도는 생성하고, currentLocation 변화는 많지 않기에 같이 묶었음
-  //voteDrawer에 대해 의존인자가 겹치는 게 많고 한번에 관리하기 위해 같이 다룸
-  //하지만 voteDrawer로 인해 렌더링이 여러번 되지 않도록 잘 방지해야 함
+    newSearchParams.set("center", myStudyParticipation ? "votePlace" : "locationPlace");
+    newSearchParams.set("location", `${convertLocationLangTo(locationValue, "en")}`);
+    newSearchParams.set("date", `${getStudyViewDate(dayjs(date))}`);
+
+    router.replace(`/studyPage?${newSearchParams.toString()}`);
+
+    if (myStudyParticipation) {
+      const lat = myStudyParticipation.place.latitude;
+      const lon = myStudyParticipation.place.longitude;
+      const changeLocation = getLocationByCoordinates(lat, lon);
+      if (changeLocation !== locationValue) {
+        setLocationValue(changeLocation as ActiveLocation);
+      }
+      setCenterLocation({
+        lat: lat,
+        lon: lon,
+      });
+    } else {
+      const locationCenter = LOCATION_CENTER_DOT[userLocation];
+      setCenterLocation({ lat: locationCenter.latitude, lon: locationCenter.longitude });
+    }
+  }, [myStudyParticipation]);
+
   useEffect(() => {
     if (!studyVoteData || !session?.user.uid) return;
-
     let isChangeLocation = false;
-
     if (!isVoteDrawer) {
       const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
-
+      setIsDrawerUp(false);
       setMyStudyParticipation(findMyStudyParticipation);
       if (findMyStudyParticipation) {
         const changeLocation = getLocationByCoordinates(
@@ -161,13 +154,6 @@ export default function StudyVoteMap() {
     }
   }, [studyVoteData, session?.user.uid, currentLocation, myVote, isVoteDrawer]);
 
-  //최초 실행일때는 활성화 된 지역이 아니라는 경고를 보내지 않는다
-  //첫 렌더링을 제외하고는 무조건 isLocationFetch를 통해서만 실행된다
-  //활성화 된 지역이 아니더라도 장소까지의 distance 측정을 위해 값은 부여한다.
-  //최초 실행때는 지역 기준이지만, 의도적으로 실행된 경우에는 center와 location까지 변경
-  //위치 정보 가져오는게 실패하면 기본 값인 지역 기준으로 변경한다.
-  //currentLocation은? 장소까지의 거리 계산을 위해 필요하긴 한데...
-  //일단 지역 중심으로 같이 초기화
   const isGPSInitialRender = useRef(true);
   useEffect(() => {
     if (!isLocationRefetch) return;
