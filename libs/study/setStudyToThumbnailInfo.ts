@@ -1,8 +1,5 @@
 import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
-import {
-  StudyMergeParticipationProps,
-  StudyParticipationProps,
-} from "../../types/models/studyTypes/studyDetails";
+import { StudyMergeParticipationProps } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
@@ -10,20 +7,21 @@ import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
 import { convertMergePlaceToPlace } from "./convertMergePlaceToPlace";
 
 export const setStudyToThumbnailInfo = (
-  studyData: StudyParticipationProps[] | StudyMergeParticipationProps[],
+  studyData: StudyMergeParticipationProps[],
   myPrefer: IStudyVotePlaces,
   currentLocation: { lat: number; lon: number },
   urlDateParam: string | null,
   imagePriority: boolean,
   location?: ActiveLocation,
   votePlaceProps?: { main: string; sub: string[] },
-  // imageCache?: Map<string, string>,
+  imageCache?: Map<string, string>,
 ): StudyThumbnailCardProps[] => {
   if (!studyData) return [];
 
   // 카드 데이터 생성
   const cardColData: StudyThumbnailCardProps[] = studyData.map((data, idx) => {
     const placeInfo = convertMergePlaceToPlace(data.place);
+    const image = imageCache?.get(data.place._id);
 
     return {
       place: {
@@ -39,7 +37,7 @@ export const setStudyToThumbnailInfo = (
             )
           : undefined,
         imageProps: {
-          image: placeInfo.image,
+          image,
           isPriority: imagePriority === false ? false : idx < 4 ? true : false,
         },
       },

@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
+import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
 
 import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
 import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
@@ -29,7 +30,7 @@ import {
 import { IStudyVoteTime, MyVoteProps } from "../../types/models/studyTypes/studyInterActions";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
-import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
+import { getDistanceFromLatLonInKm, getRandomIdx } from "../../utils/mathUtils";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
 import VoteDrawerPlaceDrawer from "./voteDrawer/VoteDrawerPlace";
 export interface VoteDrawerItemProps {
@@ -80,7 +81,7 @@ function VoteDrawer({
   const [isTimeDrawer, setIsTimeDrawer] = useState(false);
   const isTodayVote = dayjs().isSame(date, "day") && dayjs().hour() >= 9;
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
-  const [imageCache, setImageCache] = useState(new Map());
+  const [imageCache, setImageCache] = useState<Map<string, string>>(new Map());
 
   const [alertModalInfo, setAlertModalInfo] = useState<IAlertModalOptions>();
 
@@ -110,12 +111,10 @@ function VoteDrawer({
     //기존에 존재하는 내 스터디 장소
 
     if (isFirstPage) {
-      console.log(15, myStudyParticipation);
       const findMyStudy = mergeParticipations.find(
         (par) => par.place._id === myStudyParticipation?.place._id,
       );
-      console.log(2, findMyStudy);
-      console.log(findMyStudy?.place._id);
+
       //기준 투표 장소 또는 즐겨찾기 메인 장소로 자동 선택
       setMyVote({
         main: findMyStudy?.place._id || findMyPreferMainPlace?.place._id || null,
@@ -157,7 +156,20 @@ function VoteDrawer({
   useEffect(() => {
     if (!mergeParticipations || !location) return;
 
-    const getThumbnailCardInfoArr = setStudyToThumbnailInfo(
+    // 이미지를 캐싱할 Map 생성
+    const newImageCache = new Map(imageCache);
+
+    // mergeParticipations를 통해 캐시되지 않은 이미지를 추가
+    mergeParticipations.forEach((par) => {
+      const placeId = par.place._id;
+      if (!newImageCache.has(placeId)) {
+        const randomImage = STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length)];
+        newImageCache.set(placeId, (par.place as StudyPlaceProps)?.image || randomImage);
+      }
+    });
+    setImageCache(newImageCache);
+
+    const newThumbnailCardInfoArr = setStudyToThumbnailInfo(
       mergeParticipations,
       preference,
       isFirstPage
@@ -167,8 +179,11 @@ function VoteDrawer({
       true,
       location,
       isFirstPage ? null : myVote,
+      newImageCache,
     );
-    setThumbnailCardinfoArr(getThumbnailCardInfoArr);
+    if (JSON.stringify(thumbnailCardInfoArr) !== JSON.stringify(newThumbnailCardInfoArr)) {
+      setThumbnailCardinfoArr(newThumbnailCardInfoArr);
+    }
   }, [mergeParticipations, isFirstPage, currentLocation, myVote, location]);
 
   useEffect(() => {
