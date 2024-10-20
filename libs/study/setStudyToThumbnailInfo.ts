@@ -17,13 +17,15 @@ export const setStudyToThumbnailInfo = (
   imagePriority: boolean,
   location?: ActiveLocation,
   votePlaceProps?: { main: string; sub: string[] },
-  // imageCache?: Map<string, string>,
+  imageCache?: Map<string, string>,
 ): StudyThumbnailCardProps[] => {
   if (!studyData) return [];
 
   // 카드 데이터 생성
   const cardColData: StudyThumbnailCardProps[] = studyData.map((data, idx) => {
     const placeInfo = convertMergePlaceToPlace(data.place);
+
+    const image = imageCache?.get(placeInfo?.id);
 
     return {
       place: {
@@ -39,7 +41,7 @@ export const setStudyToThumbnailInfo = (
             )
           : undefined,
         imageProps: {
-          image: placeInfo.image,
+          image: image || placeInfo.image,
           isPriority: imagePriority === false ? false : idx < 4 ? true : false,
         },
       },

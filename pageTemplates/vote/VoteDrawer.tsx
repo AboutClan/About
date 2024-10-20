@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
+import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
 import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
 import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
 import PickerRowButton from "../../components/molecules/PickerRowButton";
@@ -23,13 +24,14 @@ import { IModal } from "../../types/components/modalTypes";
 import { DispatchBoolean, DispatchType } from "../../types/hooks/reactTypes";
 import {
   StudyDailyInfoProps,
+  StudyMergeParticipationProps,
   StudyParticipationProps,
   StudyPlaceProps,
 } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVoteTime, MyVoteProps } from "../../types/models/studyTypes/studyInterActions";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
-import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
+import { getDistanceFromLatLonInKm, getRandomIdx } from "../../utils/mathUtils";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
 import VoteDrawerPlaceDrawer from "./voteDrawer/VoteDrawerPlace";
 export interface VoteDrawerItemProps {
@@ -80,7 +82,8 @@ function VoteDrawer({
   const [isTimeDrawer, setIsTimeDrawer] = useState(false);
   const isTodayVote = dayjs().isSame(date, "day") && dayjs().hour() >= 9;
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
-  const [imageCache, setImageCache] = useState(new Map());
+  const [mergeParticipations, setMergeParticipations] = useState<StudyMergeParticipationProps[]>();
+  const [imageCache, setImageCache] = useState<Map<string, string>>(new Map());
 
   const [alertModalInfo, setAlertModalInfo] = useState<IAlertModalOptions>();
 
@@ -93,8 +96,6 @@ function VoteDrawer({
     },
   });
 
-  const participations = studyVoteData?.participations;
-  const mergeParticipations = convertStudyToParticipations(studyVoteData, location);
   const preference = userInfo?.studyPreference;
   const findMyPickMainPlace = studyVoteData?.participations.find(
     (par) => par.place._id === myVote?.main,
@@ -102,7 +103,7 @@ function VoteDrawer({
   const findMyPreferMainPlace = studyVoteData?.participations.find(
     (par) => par.place._id === preference?.place,
   );
-  console.log(myVote);
+ 
   //스터디 장소 자동 선택 알고리즘
   useEffect(() => {
     if (preference === undefined || !studyVoteData) return;
@@ -110,12 +111,11 @@ function VoteDrawer({
     //기존에 존재하는 내 스터디 장소
 
     if (isFirstPage) {
-      console.log(15, myStudyParticipation);
-      const findMyStudy = mergeParticipations.find(
+      const convertMergeParticipations = convertStudyToParticipations(studyVoteData, location);
+      setMergeParticipations(convertMergeParticipations);
+      const findMyStudy = convertMergeParticipations.find(
         (par) => par.place._id === myStudyParticipation?.place._id,
       );
-      console.log(2, findMyStudy);
-      console.log(findMyStudy?.place._id);
       //기준 투표 장소 또는 즐겨찾기 메인 장소로 자동 선택
       setMyVote({
         main: findMyStudy?.place._id || findMyPreferMainPlace?.place._id || null,
@@ -156,6 +156,16 @@ function VoteDrawer({
 
   useEffect(() => {
     if (!mergeParticipations || !location) return;
+    const newImageCache = new Map(imageCache);
+
+    mergeParticipations.forEach((par) => {
+      const placeId = par.place._id;
+      if (!newImageCache.has(placeId)) {
+        const randomImage = STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length)];
+        newImageCache.set(placeId, (par.place as StudyPlaceProps)?.image || randomImage);
+      }
+    });
+    setImageCache(newImageCache);
 
     const getThumbnailCardInfoArr = setStudyToThumbnailInfo(
       mergeParticipations,
@@ -167,6 +177,7 @@ function VoteDrawer({
       true,
       location,
       isFirstPage ? null : myVote,
+      newImageCache,
     );
     setThumbnailCardinfoArr(getThumbnailCardInfoArr);
   }, [mergeParticipations, isFirstPage, currentLocation, myVote, location]);

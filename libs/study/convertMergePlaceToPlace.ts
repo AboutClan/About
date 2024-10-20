@@ -25,5 +25,7 @@ export const convertMergePlaceToPlace = (mergePlace: StudyPlaceProps | PlaceInfo
       : realTimePlace?.name
         ? "private"
         : (null as "public" | "private"),
+
+    id: studyPlace?._id || realTimePlace?._id,
   };
 };

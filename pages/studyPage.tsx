@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -34,7 +34,11 @@ import VoteDrawer from "../pageTemplates/vote/VoteDrawer";
 import { myStudyParticipationState } from "../recoils/studyRecoils";
 import { CoordinateProps, VotePlacesProps } from "../types/common";
 import { IMapOptions, IMarkerOptions } from "../types/externals/naverMapTypes";
-import { StudyDailyInfoProps, StudyPlaceProps } from "../types/models/studyTypes/studyDetails";
+import {
+  StudyDailyInfoProps,
+  StudyPlaceProps,
+  StudyStatus,
+} from "../types/models/studyTypes/studyDetails";
 import { PlaceInfoProps } from "../types/models/utilTypes";
 import { ActiveLocation, LocationEn } from "../types/services/locationTypes";
 import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
@@ -366,10 +370,13 @@ const getMarkersOptions = (
       }
     });
 
-  if (myVote) return temp;
+  // if (myVote) return temp;
 
   const tempArr = [];
-  const placeMap = new Map(); // fullname을 기준으로 그룹화할 Map 생성
+  const placeMap = new Map<
+    string,
+    { id: string; position: naver.maps.LatLng; name: string; count: number; status: StudyStatus }
+  >(); // fullname을 기준으로 그룹화할 Map 생성
 
   // 그룹화: fullname을 키로 하여 개수를 카운트하고 중복된 place 정보를 저장
   studyVoteData.realTime.forEach((par) => {
@@ -381,31 +388,60 @@ const getMarkersOptions = (
     } else {
       // 새롭게 fullname을 추가하며 초기 값 설정
       placeMap.set(fullname, {
-        id: par._id,
+        id: par.place._id,
         position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
         count: 1,
         status: par.status,
+        name: par.place.name,
       });
     }
   });
-  // 그룹화된 결과를 temp에 추가
-  placeMap.forEach((value, fullname) => {
-    temp.push({
-      id: value.id,
-      position: value.position,
-      icon: {
-        content:
-          value.status === "solo"
-            ? getStudyIcon("inactive")
-            : value.count === 1
-              ? getStudyIcon("active")
-              : getStudyIcon(null, value.count), // count에 따라 content 값 설정
-        size: new naver.maps.Size(72, 72),
-        anchor: new naver.maps.Point(36, 44),
-      },
+
+  if (myVote) {
+    placeMap.forEach((value, fullname) => {
+      const iconType =
+        value.id === myVote?.main
+          ? "main"
+          : onlyFirst
+            ? "default"
+            : myVote?.sub?.includes(value.id)
+              ? "sub"
+              : "default";
+
+      temp.push({
+        isPicked: myVote?.main === value.id,
+        id: value.id,
+        position: value.position,
+        title: value.name,
+        icon: {
+          content: getStudyVoteIcon(iconType, value.name),
+          size: new naver.maps.Size(72, 72),
+          anchor: new naver.maps.Point(36, 44),
+        },
+        type: "vote",
+      });
+      tempArr.push(fullname); // fullname을 tempArr에 추가
     });
-    tempArr.push(fullname); // fullname을 tempArr에 추가
-  });
+  } else {
+    // 그룹화된 결과를 temp에 추가
+    placeMap.forEach((value, fullname) => {
+      temp.push({
+        id: value.id,
+        position: value.position,
+        icon: {
+          content:
+            value.status === "solo"
+              ? getStudyIcon("inactive")
+              : value.count === 1
+                ? getStudyIcon("active")
+                : getStudyIcon(null, value.count), // count에 따라 content 값 설정
+          size: new naver.maps.Size(72, 72),
+          anchor: new naver.maps.Point(36, 44),
+        },
+      });
+      tempArr.push(fullname); // fullname을 tempArr에 추가
+    });
+  }
 
   return temp;
 };
