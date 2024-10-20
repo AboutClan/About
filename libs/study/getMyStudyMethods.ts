@@ -89,10 +89,10 @@ export const getMyRealTimeFiltered = (
 };
 export const getRealTimeFilteredById = (
   realTime: RealTimeInfoProps[],
-  id: string,
+  placeId: string,
 ): StudyMergeParticipationProps => {
-  if (!realTime || !id) return;
-  const findStudy = realTime.find((who) => who._id === id);
+  if (!realTime || !placeId) return;
+  const findStudy = realTime.find((props) => props.place._id === placeId);
   if (!findStudy) return null;
   const filtered = realTime.filter((who) => who.place.name === findStudy?.place.name);
 

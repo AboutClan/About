@@ -212,6 +212,7 @@ export default function StudyPage() {
   }, [centerLocation, locationValue, isVoteDrawer]);
 
   const handleMarker = (id: string, type: "vote") => {
+    console.log(34, id);
     if (!id || !studyVoteData) return;
 
     if (type === "vote") {
@@ -505,7 +506,7 @@ export const getDetailInfo = (
   const realTimeStudy = getRealTimeFilteredById(studyVoteData.realTime, id);
 
   const findStudy = participation || realTimeStudy;
-
+  console.log(52, findStudy, id, myUid);
   const sortedCommentUserArr = [...findStudy.members]?.sort((a, b) => {
     const aTime = dayjs(a?.updatedAt);
     const bTime = dayjs(b?.updatedAt);
