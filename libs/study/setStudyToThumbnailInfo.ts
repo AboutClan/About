@@ -17,6 +17,7 @@ export const setStudyToThumbnailInfo = (
   imagePriority: boolean,
   location?: ActiveLocation,
   votePlaceProps?: { main: string; sub: string[] },
+  // imageCache?: Map<string, string>,
 ): StudyThumbnailCardProps[] => {
   if (!studyData) return [];
 
@@ -52,7 +53,7 @@ export const setStudyToThumbnailInfo = (
   });
 
   // 정렬 로직 개선
-  const sorted = cardColData.sort((a, b) => {
+  const sorted = [...cardColData].sort((a, b) => {
     // 1. main 장소 우선 정렬
     if (votePlaceProps) {
       if (a.id === votePlaceProps.main) return -1;

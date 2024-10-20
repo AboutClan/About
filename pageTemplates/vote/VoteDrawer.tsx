@@ -15,6 +15,7 @@ import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
+import { convertStudyToParticipations } from "../../libs/study/getMyStudyMethods";
 import { setStudyToThumbnailInfo } from "../../libs/study/setStudyToThumbnailInfo";
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import { CoordinateProps } from "../../types/common";
@@ -79,6 +80,8 @@ function VoteDrawer({
   const [isTimeDrawer, setIsTimeDrawer] = useState(false);
   const isTodayVote = dayjs().isSame(date, "day") && dayjs().hour() >= 9;
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
+  const [imageCache, setImageCache] = useState(new Map());
+
   const [alertModalInfo, setAlertModalInfo] = useState<IAlertModalOptions>();
 
   const myStudyParticipation = useRecoilValue(myStudyParticipationState);
@@ -91,6 +94,7 @@ function VoteDrawer({
   });
 
   const participations = studyVoteData?.participations;
+  const mergeParticipations = convertStudyToParticipations(studyVoteData, location);
   const preference = userInfo?.studyPreference;
   const findMyPickMainPlace = studyVoteData?.participations.find(
     (par) => par.place._id === myVote?.main,
@@ -98,7 +102,7 @@ function VoteDrawer({
   const findMyPreferMainPlace = studyVoteData?.participations.find(
     (par) => par.place._id === preference?.place,
   );
-
+  console.log(myVote);
   //스터디 장소 자동 선택 알고리즘
   useEffect(() => {
     if (preference === undefined || !studyVoteData) return;
@@ -106,9 +110,12 @@ function VoteDrawer({
     //기존에 존재하는 내 스터디 장소
 
     if (isFirstPage) {
-      const findMyStudy = studyVoteData.participations.find(
+      console.log(15, myStudyParticipation);
+      const findMyStudy = mergeParticipations.find(
         (par) => par.place._id === myStudyParticipation?.place._id,
       );
+      console.log(2, findMyStudy);
+      console.log(findMyStudy?.place._id);
       //기준 투표 장소 또는 즐겨찾기 메인 장소로 자동 선택
       setMyVote({
         main: findMyStudy?.place._id || findMyPreferMainPlace?.place._id || null,
@@ -148,11 +155,11 @@ function VoteDrawer({
   }, [preference, studyVoteData, isFirstPage, currentLocation, myStudyParticipation]);
 
   useEffect(() => {
-    if (!participations || !location) return;
-    const getThumbnailCardInfoArr = setStudyToThumbnailInfo(
-      participations,
-      preference,
+    if (!mergeParticipations || !location) return;
 
+    const getThumbnailCardInfoArr = setStudyToThumbnailInfo(
+      mergeParticipations,
+      preference,
       isFirstPage
         ? currentLocation
         : { lat: findMyPickMainPlace?.place.latitude, lon: findMyPickMainPlace?.place?.longitude },
@@ -162,7 +169,7 @@ function VoteDrawer({
       isFirstPage ? null : myVote,
     );
     setThumbnailCardinfoArr(getThumbnailCardInfoArr);
-  }, [participations, isFirstPage, currentLocation, myVote, location]);
+  }, [mergeParticipations, isFirstPage, currentLocation, myVote, location]);
 
   useEffect(() => {
     if (!myVote?.main) setIsFirstPage(true);
