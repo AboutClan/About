@@ -78,7 +78,7 @@ function StudyNavigation({
     },
   });
   const { mutate: studyVote, isLoading: isLoading1 } = useStudyParticipationMutation(
-    dayjs(),
+    dayjs(date),
     "post",
     {
       onSuccess() {
