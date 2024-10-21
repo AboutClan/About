@@ -1,4 +1,5 @@
 import Divider from "../../components/atoms/Divider";
+import WritingIcon from "../../components/Icons/WritingIcon";
 import Slide from "../../components/layouts/PageSlide";
 import GatherHeader from "../../pageTemplates/gather/GatherHeader";
 import GatherLocationFilter from "../../pageTemplates/gather/GatherLocationFilter";
@@ -15,6 +16,7 @@ function Gather() {
         <GatherLocationFilter />
         <GatherMain />
       </Slide>
+      <WritingIcon url="/gather/writing/category" />
     </>
   );
 }

@@ -1,6 +1,8 @@
 import Link from "next/link";
 import styled from "styled-components";
 
+import { iPhoneNotchSize } from "../../utils/validationUtils";
+
 interface IWritingIcon {
   url: string;
   isBottomNav?: boolean;
@@ -11,7 +13,7 @@ function WritingIcon({ url, isBottomNav = true, onClick }: IWritingIcon) {
   return (
     <Link href={url} onClick={onClick}>
       <Layout isBottomNav={isBottomNav}>
-        <i className="fa-light fa-pen-line fa-xl" style={{ color: "white" }} />
+        <i className="fa-light fa-pen-line fa-lg" style={{ color: "white" }} />
       </Layout>
     </Link>
   );
@@ -20,11 +22,12 @@ function WritingIcon({ url, isBottomNav = true, onClick }: IWritingIcon) {
 const Layout = styled.button<{ isBottomNav: boolean }>`
   font-size: 16px;
   position: fixed;
-  bottom: ${(props) => (props.isBottomNav ? "92px" : "16px")};
-  right: 16px;
+  bottom: ${(props) =>
+    props.isBottomNav ? `calc(var(--bottom-nav-height) + 20px + ${iPhoneNotchSize()}px)` : "20px"};
+  right: 20px;
   background-color: var(--color-mint);
-  width: 58px;
-  height: 58px;
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   display: flex;
   align-items: center;
