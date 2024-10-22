@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -42,7 +42,7 @@ import {
 import { PlaceInfoProps } from "../types/models/utilTypes";
 import { ActiveLocation, LocationEn } from "../types/services/locationTypes";
 import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
-import { dayjsToFormat, dayjsToStr } from "../utils/dateTimeUtils";
+import { dayjsToFormat } from "../utils/dateTimeUtils";
 import { getRandomIdx } from "../utils/mathUtils";
 import { iPhoneNotchSize } from "../utils/validationUtils";
 
@@ -63,7 +63,7 @@ export default function StudyPage() {
   const userLocation =
     (localStorage.getItem(USER_LOCATION) as ActiveLocation) || session?.user.location;
 
-  const [date, setDate] = useState(dateParam || dayjsToStr(dayjs()));
+  const [date, setDate] = useState(dateParam || getStudyViewDate(dayjs()));
   const [locationValue, setLocationValue] = useState<ActiveLocation>(
     locationParamKr || userLocation,
   );
@@ -120,9 +120,9 @@ export default function StudyPage() {
     let isChangeLocation = false;
     if (!isVoteDrawer) {
       const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
-      setIsDrawerUp(false);
       setMyStudyParticipation(findMyStudyParticipation);
       if (findMyStudyParticipation) {
+        setIsDrawerUp(false);
         const changeLocation = getLocationByCoordinates(
           findMyStudyParticipation.place.latitude,
           findMyStudyParticipation.place.longitude,
@@ -212,7 +212,7 @@ export default function StudyPage() {
   }, [centerLocation, locationValue, isVoteDrawer]);
 
   const handleMarker = (id: string, type: "vote") => {
-    console.log(34, id);
+  
     if (!id || !studyVoteData) return;
 
     if (type === "vote") {
@@ -266,7 +266,6 @@ export default function StudyPage() {
         />
       </Box>
       <StudyControlButton setIsVoteDrawer={setIsVoteDrawer} setIsDrawerUp={setIsDrawerUp} />
-
       <StudyPageDrawer
         studyVoteData={studyVoteData}
         location={locationValue}
@@ -506,7 +505,7 @@ export const getDetailInfo = (
   const realTimeStudy = getRealTimeFilteredById(studyVoteData.realTime, id);
 
   const findStudy = participation || realTimeStudy;
-  console.log(52, findStudy, id, myUid);
+
   const sortedCommentUserArr = [...findStudy.members]?.sort((a, b) => {
     const aTime = dayjs(a?.updatedAt);
     const bTime = dayjs(b?.updatedAt);

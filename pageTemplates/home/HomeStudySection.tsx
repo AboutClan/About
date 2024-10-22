@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -10,6 +10,7 @@ import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import { USER_LOCATION } from "../../constants/keys/localStorage";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
+import { getStudyViewDayjs } from "../../libs/study/date/getStudyDateStatus";
 import {
   convertStudyToParticipations,
   getMyStudyParticipation,
@@ -26,7 +27,10 @@ function HomeStudySection() {
   const userLocation =
     (localStorage.getItem(USER_LOCATION) as ActiveLocation) || session?.user.location;
 
-  const [date, setDate] = useState(dayjsToStr(dayjs()));
+  const viewDayjs = getStudyViewDayjs(dayjs());
+  const nextDayjs = getStudyViewDayjs(dayjs().add(1, "day"));
+
+  const [date, setDate] = useState(dayjsToStr(viewDayjs));
 
   const setMyStudyParticipation = useSetRecoilState(myStudyParticipationState);
 
@@ -44,12 +48,12 @@ function HomeStudySection() {
 
   const tabOptionsArr: ITabNavOptions[] = [
     {
-      text: dayjsToKr(dayjs()),
-      func: () => setDate(dayjsToStr(dayjs())),
+      text: dayjsToKr(viewDayjs),
+      func: () => setDate(dayjsToStr(viewDayjs)),
     },
     {
-      text: dayjsToKr(dayjs().add(1, "day")),
-      func: () => setDate(dayjsToStr(dayjs().add(1, "day"))),
+      text: dayjsToKr(nextDayjs),
+      func: () => setDate(dayjsToStr(nextDayjs)),
     },
   ];
 

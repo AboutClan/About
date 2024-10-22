@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -84,7 +84,7 @@ function StudyPageDrawer({
   };
 
   const screenHeight = window.innerHeight;
-  const adjustedHeight = (screenHeight - 56 - iPhoneNotchSize()) * 0.9;
+  const adjustedHeight = (screenHeight - 52 - iPhoneNotchSize()) * 0.9;
 
   return (
     <BottomFlexDrawer
@@ -93,7 +93,7 @@ function StudyPageDrawer({
       isDrawerUp={isDrawerUp}
       setIsModal={setIsDrawerUp}
     >
-      <Box w="100%" overflow="hidden">
+      <Flex flexDir="column" w="100%" overflow="hidden">
         <StudyPageDrawerHeader date={date} />
         <WeekSlideCalendar selectedDate={date} func={handleSelectDate} />
         <StudyPageDrawerFilterBar
@@ -101,7 +101,7 @@ function StudyPageDrawer({
           setSelectOption={setSelectOption}
           placeCnt={thumbnailCardInfoArr?.length}
         />
-        <Box overflowY="scroll" h="66.5%">
+        <Box overflowY="scroll" flex={1}>
           {thumbnailCardInfoArr
             ? thumbnailCardInfoArr.map(({ participants, ...thumbnailCardInfo }, idx) => (
                 <Box key={idx} mb={3}>
@@ -110,7 +110,7 @@ function StudyPageDrawer({
               ))
             : [1, 2, 3, 4, 5].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)}
         </Box>
-      </Box>
+      </Flex>
     </BottomFlexDrawer>
   );
 }

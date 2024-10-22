@@ -338,6 +338,13 @@ export const EVENT_CONTENT_2024: Record<string, CalendarContentProps[]> = {
       type: "schedule",
       text: "정규 스터디, 매칭된 스터디, 심지어 개인 스터디까지! 공부하고 인증만 하면 치킨을 드립니다!! ",
     },
+    {
+      content: "동아리 규칙 및 운영방침 리뉴얼 ~ ",
+      start: 21,
+      end: 25,
+      type: "main",
+      text: "더 활성화 된 동아리가 될 수 있도록! 운영 방식을 리뉴얼 합니다.",
+    },
   ],
   11: [],
   12: [],

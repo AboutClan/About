@@ -26,6 +26,11 @@ export const getStudyDateStatus = (date: string) => {
   return "not passed";
 };
 
+export const getStudyViewDayjs = (dateDayjs: Dayjs) => {
+  if (dateDayjs.hour() < STUDY_VIEW_CHANGE_HOUR) {
+    return dateDayjs;
+  } else return dateDayjs.add(1, "day");
+};
 export const getStudyViewDate = (dateDayjs: Dayjs) => {
   if (dateDayjs.hour() < STUDY_VIEW_CHANGE_HOUR) {
     return dayjsToStr(dateDayjs);
