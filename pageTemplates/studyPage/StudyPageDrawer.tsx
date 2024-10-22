@@ -101,7 +101,7 @@ function StudyPageDrawer({
           setSelectOption={setSelectOption}
           placeCnt={thumbnailCardInfoArr?.length}
         />
-        <Box overflowY="scroll" flex={1}>
+        <Box overflowY="scroll" overscrollBehaviorY="contain" flex={1}>
           {thumbnailCardInfoArr
             ? thumbnailCardInfoArr.map(({ participants, ...thumbnailCardInfo }, idx) => (
                 <Box key={idx} mb={3}>

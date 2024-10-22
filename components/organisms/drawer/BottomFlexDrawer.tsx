@@ -11,6 +11,8 @@ export const DRAWER_MIN_HEIGHT = 40;
 //적당한 값 조율해야 함
 export const MAX_DRAG_DISTANCE = 40;
 
+const SWIPE_THRESHOLD = 40; // 스와이프 임계값
+
 export interface BottomFlexDrawerOptions {
   header?: {
     title: string;
@@ -40,18 +42,14 @@ export default function BottomFlexDrawer({
   drawerOptions,
   children,
   isDrawerUp,
-  height,
+  height: maxHeight,
   zIndex,
 
   isOverlay,
 }: BottomFlexDrawerProps) {
-  const maxHeight = height;
-
   const [drawerHeight, setDrawerHeight] = useState(isDrawerUp ? maxHeight : DRAWER_MIN_HEIGHT); // 초기 높이
   const startYRef = useRef(0); // 드래그 시작 위치 저장
   const currentHeightRef = useRef(drawerHeight); // 현재 높이 저장
-
-  const SWIPE_THRESHOLD = 40; // 스와이프 임계값
 
   useEffect(() => {
     if (isDrawerUp) setDrawerHeight(maxHeight);
@@ -70,7 +68,7 @@ export default function BottomFlexDrawer({
     const deltaY = startYRef.current - currentY;
     let newHeight = currentHeightRef.current + deltaY;
 
-    // 최대 드래그 범위를 30px로 제한
+    // 최대 드래그 범위를 40px로 제한
     const maxDragHeight = currentHeightRef.current + MAX_DRAG_DISTANCE;
     const minDragHeight = currentHeightRef.current - MAX_DRAG_DISTANCE;
     newHeight = Math.max(Math.min(newHeight, maxDragHeight), minDragHeight);
@@ -88,9 +86,7 @@ export default function BottomFlexDrawer({
     if (deltaY > SWIPE_THRESHOLD) {
       setDrawerHeight(maxHeight); // 위로 쭉 올라가는 동작
     } else if (deltaY < -SWIPE_THRESHOLD) {
-      if (setIsModal) {
-        setIsModal(false);
-      }
+      setIsModal(false);
 
       setDrawerHeight(DRAWER_MIN_HEIGHT); // 아래로 내려가는 동작
     } else {
