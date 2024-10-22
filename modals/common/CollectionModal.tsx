@@ -25,7 +25,9 @@ function CollectionModal({ collection, setIsModal }: ICollectionModal) {
     >
       <>
         {collection?.alphabet ? (
-          <AboutIcon alphabet={collection.alphabet} size="lg" isActive />
+          <Flex justify="center">
+            <AboutIcon alphabet={collection.alphabet} size="lg" isActive />
+          </Flex>
         ) : (
           <Box w="100%">
             <Flex w="100%" justify="space-between" px={3}>

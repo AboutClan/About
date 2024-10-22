@@ -27,7 +27,9 @@ function InfoBoxCol({ infoBoxPropsArr }: InfoBoxColProps) {
           >
             <Box color="gray.500">{props.category}</Box>
             <Flex align="center">
-              <Box as="span">{props.text}</Box>
+              <Box color={idx !== 0 ? "mint" : "red"} as="span">
+                {props.text}
+              </Box>
               <Box ml={props?.rightChildren && 2}>{props?.rightChildren}</Box>
             </Flex>
           </Flex>

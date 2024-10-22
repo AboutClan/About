@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Link, { LinkProps } from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
@@ -41,7 +41,7 @@ export default function BottomNav() {
         const getParams = (category: Category) => {
           switch (category) {
             case "홈":
-              return `?tab=study&location=${locationEn}&date=${getStudyStandardDate()}`;
+              return `?location=${locationEn}&date=${getStudyStandardDate()}`;
             case undefined:
               newSearchParams.append("write", "on");
               return pathname + "?" + newSearchParams.toString();

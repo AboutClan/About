@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -14,7 +14,8 @@ import Textarea from "../../../components/atoms/Textarea";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
-import { STUDY_RECORD_INFO } from "../../../constants/keys/localStorage";
+import { STUDY_RECORD } from "../../../constants/keys/localStorage";
+
 import {
   POINT_SYSTEM_DEPOSIT,
   POINT_SYSTEM_PLUS,
@@ -38,7 +39,7 @@ import {
 } from "../../../recoils/transferRecoils";
 import { CollectionProps } from "../../../types/models/collections";
 import { StudyPlaceProps } from "../../../types/models/studyTypes/studyDetails";
-import { PlaceInfoProps } from "../../../types/models/utilTypes";
+import { LocationEn } from "../../../types/services/locationTypes";
 import { convertTimeStringToDayjs } from "../../../utils/convertUtils/convertTypes";
 import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
 
@@ -46,6 +47,8 @@ function Configuration() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
+  const locationParam = searchParams.get("location") as LocationEn;
+
   const { data: session } = useSession();
   const toast = useToast();
   const typeToast = useTypeToast();
@@ -131,26 +134,18 @@ function Configuration() {
     }
 
     newSearchParams.set("center", "votePlace");
+    newSearchParams.set("date", dayjsToStr(dayjs()));
+    newSearchParams.set("voteDrawer", "down");
     router.push(`/studyPage?${newSearchParams.toString()}`);
   };
 
   const saveTogetherMembers = () => {
-    const myStudyInfo = getMyStudyInfo(myStudyParticipation, session?.user.uid);
     const record = {
+      location: locationParam,
       date: dayjsToStr(dayjs()),
-      place:
-        (myStudyParticipation?.place as StudyPlaceProps)?.fullname ||
-        (myStudyParticipation?.place as PlaceInfoProps)?.name,
-      arrived: myStudyInfo?.attendanceInfo.arrived,
-      members: myStudyParticipation?.members
-        .map((who) => who.user)
-        .filter((who) => who.uid !== session?.user.uid),
-      time: {
-        start: dayjs(),
-        end: convertTimeStringToDayjs(endTime),
-      },
+      isChecked: false,
     };
-    localStorage.setItem(STUDY_RECORD_INFO, JSON.stringify(record));
+    localStorage.setItem(STUDY_RECORD, JSON.stringify(record));
   };
 
   const formData = new FormData();

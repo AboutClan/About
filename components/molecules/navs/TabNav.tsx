@@ -1,4 +1,4 @@
-import { Tab, TabList, Tabs } from "@chakra-ui/react";
+import { Skeleton, Tab, TabList, Tabs } from "@chakra-ui/react";
 export interface ITabNavOptions {
   text: string;
   func: () => void;
@@ -10,6 +10,7 @@ interface ITabNav {
   hasBorder?: boolean;
   isMain?: boolean;
   isFullSize?: boolean;
+  isLoading?: boolean;
 }
 
 export default function TabNav({
@@ -18,6 +19,7 @@ export default function TabNav({
   hasBorder = true,
   isMain = false,
   isFullSize,
+  isLoading,
 }: ITabNav) {
   const idx = tabOptionsArr.findIndex((tab) => tab.text === selected);
 
@@ -62,7 +64,9 @@ export default function TabNav({
                 boxShadow: "none",
               }}
             >
-              {tab.text}
+              <Skeleton w="54px" isLoaded={!isLoading}>
+                {tab.text}
+              </Skeleton>
             </Tab>
           ))}
         </TabList>
