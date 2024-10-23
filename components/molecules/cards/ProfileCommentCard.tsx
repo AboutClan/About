@@ -46,10 +46,10 @@ export default function ProfileCommentCard({
     setIsCommentModal(false);
     setIsEdit(false);
   };
-
+  console.log(rightComponent);
   return (
     <>
-      <Flex py={3}>
+      <Flex py={3} align="center">
         {leftComponent && <Box mr="16px">{leftComponent}</Box>}
         {user ? (
           <Avatar image={user.profileImage} size="md" avatar={user.avatar} uid={user.uid} />

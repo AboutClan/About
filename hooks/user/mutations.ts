@@ -66,7 +66,9 @@ type UserInfoFieldParam<T> = T extends "avatar"
               ? { comment: string }
               : T extends "locationDetail"
                 ? LocationDeatilProps
-                : null;
+                : T extends "weekStudyTargetHour"
+                  ? { hour: number }
+                  : null;
 
 export const useUserInfoFieldMutation = <
   T extends
@@ -77,7 +79,8 @@ export const useUserInfoFieldMutation = <
     | "belong"
     | "isPrivate"
     | "instagram"
-    | "locationDetail",
+    | "locationDetail"
+    | "weekStudyTargetHour",
 >(
   field: T,
   options?: MutationOptions<UserInfoFieldParam<T>>,

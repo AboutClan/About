@@ -1,12 +1,29 @@
-import { Flex } from "@chakra-ui/react";
-import Link from "next/link";
+import { Box, Flex } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useState } from "react";
 import styled from "styled-components";
 
 import { AboutIcon } from "../../components/atoms/AboutIcons";
+import IconRowBlock from "../../components/atoms/blocks/IconRowBlock";
 import { useCollectionAlphabetQuery } from "../../hooks/user/sub/collection/queries";
 import UserCollectionModal from "../../modals/user/collection/UserCollectionAlphabetModal";
+import { Alphabet } from "../../types/models/collections";
+
+export const changeAlphabet = (alphabet: Alphabet) => {
+  switch (alphabet) {
+    case "A":
+      return "A";
+    case "B":
+      return "b";
+    case "O":
+      return "o";
+    case "U":
+      return "u";
+    case "T":
+      return "t";
+  }
+};
 
 export default function UserCollection() {
   const { data: session } = useSession();
@@ -35,15 +52,16 @@ export default function UserCollection() {
           <AboutIcon alphabet="T" isActive={alphabetArr?.includes("T")} />
         </AlphabetContainer>
       </Link>
-      <AlphabetQNABtn onClick={() => setIsCollectionModal(true)}>
-        <IconWrapper>
-          <i className="fa-duotone fa-stars fa-2x" style={{ color: "var(--color-mint)" }} />
-        </IconWrapper>
-        <AlphabetQNABtnContents>
-          <span>여러번 수집하면 보상이 더 올라가요!</span>
-          <span>컬렉션 수집 보상</span>
-        </AlphabetQNABtnContents>
-      </AlphabetQNABtn>
+      <Box mx={5}>
+        <IconRowBlock
+          leftIcon={
+            <i className="fa-duotone fa-stars fa-2x" style={{ color: "var(--color-mint)" }} />
+          }
+          func={() => setIsCollectionModal(true)}
+          mainText=" 컬렉션 수집 보상"
+          subText=" 여러번 수집하면 보상이 더 올라가요!"
+        />
+      </Box>
       {isCollectionModal && <UserCollectionModal setIsModal={setIsCollectionModal} />}
     </Flex>
   );

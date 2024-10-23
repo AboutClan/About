@@ -7,6 +7,7 @@ export interface ICollectionAlphabet extends TimeStampProps {
   collects: Alphabet[];
   collectCnt: number;
   user: IUserSummary;
+  stamps: number;
 }
 
 export interface CollectionProps {

@@ -18,7 +18,7 @@ interface IStudyHeader {
 }
 
 function StudyHeader({ brand, name, address, coverImage }: IStudyHeader) {
-  const { date } = useParams<{ date: string }>();
+  const { date } = useParams<{ date: string }>() || {};
   const typeToast = useTypeToast();
   const router = useRouter();
   const [isModal, setIsModal] = useState(false);

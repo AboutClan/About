@@ -22,6 +22,8 @@ export interface IUser extends Omit<IUserRegisterForm, "location">, IUserSummary
   isPrivate?: boolean;
   _id: string;
   locationDetail: LocationDeatilProps;
+  weekStudyTragetHour: number;
+  weekStudyAccumulationMinutes: number;
 }
 
 export interface UserSimpleInfoProps {
@@ -31,6 +33,7 @@ export interface UserSimpleInfoProps {
   _id: string;
   uid: string;
   score: number;
+  comment?: string;
 }
 
 export interface LocationDeatilProps {

@@ -16,15 +16,17 @@ export function AboutIcon({
   isActive,
 }: {
   alphabet: Alphabet;
-  size?: "md" | "lg";
+  size?: "sm" | "md" | "lg";
   isActive: boolean;
 }) {
+  const width = size === "sm" ? 32 : size === "md" ? 48 : size === "lg" ? 62 : null;
+
   return (
     <Flex
       justify="center"
       align="center"
       aspectRatio={1 / 1}
-      w={size === "md" ? "48px" : size === "lg" ? "62px" : null}
+      w={`${width}px`}
       borderRadius="50%"
       bg={ALPHABET_BG[alphabet]}
       opacity={isActive ? 1 : 0.28}
@@ -32,8 +34,8 @@ export function AboutIcon({
       {alphabet === "A" ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
+          width={width / 2}
+          height={width / 2}
           viewBox="0 0 24 24"
           fill="none"
         >
@@ -45,8 +47,8 @@ export function AboutIcon({
       ) : alphabet === "B" ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
+          width={width / 2}
+          height={width / 2}
           viewBox="0 0 24 24"
           fill="none"
         >
@@ -58,8 +60,8 @@ export function AboutIcon({
       ) : alphabet === "O" ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
+          width={width / 2}
+          height={width / 2}
           viewBox="0 0 24 24"
           fill="none"
         >
@@ -71,8 +73,8 @@ export function AboutIcon({
       ) : alphabet === "U" ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
+          width={width / 2}
+          height={width / 2}
           viewBox="0 0 24 24"
           fill="none"
         >
@@ -84,8 +86,8 @@ export function AboutIcon({
       ) : (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
+          width={width / 2}
+          height={width / 2}
           viewBox="0 0 24 24"
           fill="none"
         >

@@ -3,6 +3,7 @@ import { Box, Flex } from "@chakra-ui/react";
 export interface InfoBoxProps {
   category: string;
   text: string;
+  color?: "mint" | "red" ;
   rightChildren?: React.ReactNode;
 }
 
@@ -27,7 +28,7 @@ function InfoBoxCol({ infoBoxPropsArr }: InfoBoxColProps) {
           >
             <Box color="gray.500">{props.category}</Box>
             <Flex align="center">
-              <Box color={idx !== 0 ? "mint" : "red"} as="span">
+              <Box color={props?.color || undefined} as="span">
                 {props.text}
               </Box>
               <Box ml={props?.rightChildren && 2}>{props?.rightChildren}</Box>

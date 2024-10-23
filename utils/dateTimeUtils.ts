@@ -10,6 +10,8 @@ export const dayjsToStr = (date: Dayjs) => date?.format("YYYY-MM-DD");
 
 export const dayjsToFormat = (date: Dayjs, text: string) => date.format(text);
 
+export const dayjsToTime = (date: Dayjs) => date.format("HH:mm");
+
 export const dayjsToKr = (date: Dayjs) => date.format("M월 D일");
 
 export const getToday = () => dayjs().startOf("day");
@@ -52,7 +54,7 @@ export const toDate = (raw: string | Date) => {
 export const getWeekNumber = (date: Dayjs) => {
   const startDay = date.startOf("month").day();
   const currentDate = date.date();
-  return Math.ceil((currentDate - startDay) / 7) + 2;
+  return Math.ceil((currentDate - startDay) / 7);
 };
 
 export const getDateDiff = (date: Dayjs) => {

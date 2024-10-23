@@ -39,7 +39,6 @@ import {
 } from "../../../recoils/transferRecoils";
 import { CollectionProps } from "../../../types/models/collections";
 import { StudyPlaceProps } from "../../../types/models/studyTypes/studyDetails";
-import { LocationEn } from "../../../types/services/locationTypes";
 import { convertTimeStringToDayjs } from "../../../utils/convertUtils/convertTypes";
 import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
 
@@ -47,7 +46,6 @@ function Configuration() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
-  const locationParam = searchParams.get("location") as LocationEn;
 
   const { data: session } = useSession();
   const toast = useToast();
@@ -141,7 +139,6 @@ function Configuration() {
 
   const saveTogetherMembers = () => {
     const record = {
-      location: locationParam,
       date: dayjsToStr(dayjs()),
       isChecked: false,
     };

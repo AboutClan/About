@@ -36,9 +36,12 @@ export const TABLE_STRING_COLORS_BG = {
 };
 
 export const SCHEME_TO_COLOR = {
+  badgeBrown: "#6B4226",
+  badgeOcean: "#1E90FF",
+  badgeMojito: "#006400",
   facebook: "#223B67",
   badgePink: "#FF69B4",
-  mintTheme: "#00c2b3",
+  badgeMint: "#00c2b3",
 };
 
 export const ICON_SIZE = {

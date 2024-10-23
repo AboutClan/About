@@ -1,80 +1,268 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Badge, Box, Button, Flex, Grid, GridItem } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { STUDY_MAIN_IMAGES } from "../../../assets/images/studyMain";
+import { AboutIcon } from "../../../components/atoms/AboutIcons";
+import IconRowBlock from "../../../components/atoms/blocks/IconRowBlock";
+import BottomNavButton from "../../../components/atoms/BottomNavButton";
+import UserPlusButton from "../../../components/atoms/buttons/UserPlusButton";
 import ProgressBar from "../../../components/atoms/ProgressBar";
+import { ShortArrowIcon } from "../../../components/Icons/ArrowIcons";
+import HeartIcon from "../../../components/Icons/HeartIcon";
+import { RankingNumIcon } from "../../../components/Icons/RankingIcons";
+import { StarIcon } from "../../../components/Icons/StarIcons";
 import Slide from "../../../components/layouts/PageSlide";
-import { useStudyVoteQuery } from "../../../hooks/study/queries";
+import ProfileCommentCard from "../../../components/molecules/cards/ProfileCommentCard";
+import { STUDY_STATUS_TO_BADGE } from "../../../constants/studyConstants";
+import { useStudyVoteOneQuery } from "../../../hooks/study/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
+import { useCollectionAlphabetQuery } from "../../../hooks/user/sub/collection/queries";
 import { convertMergePlaceToPlace } from "../../../libs/study/convertMergePlaceToPlace";
-import { getMyStudyInfo, getMyStudyParticipation } from "../../../libs/study/getMyStudyMethods";
+import PointScoreBar from "../../../pageTemplates/point/pointScore/PointScoreBar";
 import StudyHeader from "../../../pageTemplates/study/StudyHeader";
-import { LocationEn } from "../../../types/services/locationTypes";
-import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
+import { changeAlphabet } from "../../../pageTemplates/user/userCollection";
+import { dayjsToFormat, dayjsToTime } from "../../../utils/dateTimeUtils";
 import { getRandomIdx } from "../../../utils/mathUtils";
-
 function StudyResultPage() {
+  const router = useRouter();
   const searchParams = useSearchParams();
 
   const dateParam = searchParams.get("date");
-  const locationParam = searchParams.get("location") as LocationEn;
 
   const { data: userInfo } = useUserInfoQuery();
+  const { data: collectionInfo } = useCollectionAlphabetQuery();
+  console.log(42, collectionInfo);
 
-  const { data: studyVoteData } = useStudyVoteQuery(
-    dateParam,
-    convertLocationLangTo(locationParam, "kr"),
+  const { data: studyVoteOne } = useStudyVoteOneQuery(
+    "2024-10-19" || dateParam,
+
     {
-      enabled: !!dateParam && !!locationParam,
+      enabled: !!dateParam,
     },
   );
 
-  const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, userInfo?.uid);
+  const findStudy = studyVoteOne?.[0];
+  const alphabet =
+    collectionInfo?.stamps === 0
+      ? collectionInfo?.collects?.[collectionInfo?.collects?.length - 1]
+      : null;
 
-  const myStudyInfo = getMyStudyInfo(findMyStudyParticipation, userInfo?.uid);
-  console.log(23, myStudyInfo);
-  const place = convertMergePlaceToPlace(findMyStudyParticipation?.place);
+  console.log(23, alphabet, findStudy);
+
+  const place = convertMergePlaceToPlace(findStudy?.place);
   const { name, address, coverImage, latitude, brand, longitude, time, type } = place || {};
-  const members = findMyStudyParticipation?.members;
-  //스터디 기본 이미지
 
+  //스터디 기본 이미지
+  const { text: badgeText, colorScheme: badgeColorScheme } =
+    STUDY_STATUS_TO_BADGE[findStudy?.status] || {};
+
+  const studyTime = dayjs(findStudy?.time.end).diff(dayjs(findStudy?.attendanceInfo?.arrived), "m");
+  const getStudyTime = `${Math.floor(studyTime / 60)}시간 ${studyTime % 60}분`;
+  const members = studyVoteOne?.filter(
+    (one) => one.place.name === findStudy?.place.name && one.user.uid !== userInfo?.uid,
+  );
+
+  const gridProps = findStudy && [
+    {
+      title: "목표 시간",
+      text: `${dayjsToTime(dayjs(findStudy.time.start))} ~ ${dayjsToTime(dayjs(findStudy.time.end))}`,
+    },
+    {
+      title: "출석 체크",
+      text: `${dayjsToTime(dayjs(findStudy.attendanceInfo.arrived))}(${dayjs(findStudy?.attendanceInfo.arrived).diff(dayjs(findStudy?.time?.start), "m")}분 지각)`,
+    },
+    {
+      title: "달성 시간",
+      text: getStudyTime,
+    },
+    {
+      title: "이번 주 누적 시간",
+      text: `${Math.ceil(userInfo.weekStudyAccumulationMinutes / 60)}시간 ${userInfo.weekStudyAccumulationMinutes % 60}분`,
+    },
+  ];
+
+  const targetHour = userInfo?.weekStudyTragetHour;
+ 
   return (
     <>
       <StudyHeader brand="스터디 결과" />
       <Slide>
-        {myStudyInfo && (
+        {studyVoteOne && (
           <>
             <Box position="relative" w="full" aspectRatio={1 / 1}>
               <Image
                 src={
-                  myStudyInfo?.attendanceInfo?.attendanceImage ||
+                  findStudy.attendanceInfo?.attendanceImage ||
                   STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length)]
                 }
                 fill
                 alt="studyRecordImage"
               />
             </Box>
-            <Flex mt="30px" mb={4} justify="space-between">
-              <Box>{dayjsToFormat(dayjs(dateParam), "M월 D일(ddd) 스터디")}</Box>
-              <Box>출석</Box>
+            <Flex align="center" mt="30px" mb={4} justify="space-between">
+              <Box fontWeight="bold" fontSize="20px" lineHeight="32px">
+                {dayjsToFormat(dayjs(dateParam).locale("ko"), "M월 D일(ddd) 스터디")}
+              </Box>
+              <Badge mr={2} size="lg" colorScheme={badgeColorScheme}>
+                {badgeText}
+              </Badge>
             </Flex>
-            <Flex direction="column" p={3}>
-              <Flex fontSize="11px" fontWeight="regular" justify="space-between">
-                <Box color="gray.500">목표 시간</Box>
-                <Box color="gray.800">9시간</Box>
+            <Flex
+              mb={4}
+              direction="column"
+              borderRadius="8px"
+              p={3}
+              border="var(--border)"
+              borderColor="gray.200"
+            >
+              <Flex
+                lineHeight="12px"
+                mb={2}
+                fontSize="11px"
+                fontWeight="regular"
+                justify="space-between"
+              >
+                <Box color="gray.500">주간 목표 시간</Box>
+                <Box color="gray.800">{targetHour ? `${targetHour}시간` : "미설정"}</Box>
               </Flex>
-              <Box w="full" borderLeft="var(--border)" borderRight="var(--border)"></Box>
-              <ProgressBar value={30} />
-              <Flex fontSize="11px" fontWeight="regular" justify="space-between">
-                <Box color="gray.500">목표 시간</Box>
-                <Box color="gray.800">9시간</Box>
+              <Flex justify="space-between" w="full" h={2}>
+                <Box w="1px" bg="gray.200" />
+                <Box w="1px" bg="gray.200" />
+              </Flex>
+              <ProgressBar
+                value={(userInfo?.weekStudyAccumulationMinutes / targetHour) * 60}
+                size="sm"
+              />
+              <Flex
+                lineHeight="12px"
+                mt={2}
+                fontSize="11px"
+                fontWeight="regular"
+                justify="space-between"
+              >
+                <Box color="gray.500">누적 스터디 시간</Box>
+                <Box color="blue" fontWeight="bold">
+                  {getStudyTime}
+                </Box>
               </Flex>
             </Flex>
+            <Grid
+              border="var(--border)"
+              borderColor="gray.200"
+              borderRadius="12px"
+              templateColumns="repeat(2,1fr)"
+              py={1}
+              px={3}
+            >
+              {gridProps.map((prop) => (
+                <GridItem py={3} key={prop.text} display="flex" flexDir="column">
+                  <Box
+                    mb={1}
+                    fontWeight="medium"
+                    fontSize="11px"
+                    color="gray.500"
+                    lineHeight="12px"
+                  >
+                    {prop.title}
+                  </Box>
+                  <Box fontSize="14px" fontWeight="semibold" lineHeight="20px">
+                    {prop.text}
+                  </Box>
+                </GridItem>
+              ))}
+            </Grid>
+            <Box h={2} bg="gray.100" my={5}></Box>
+            <Flex direction="column">
+              <Flex mb={4} lineHeight="28px" justify="space-between">
+                <Box fontSize="18px" fontWeight="bold">
+                  스터디 랭킹
+                </Box>
+                <Button variant="unstyled">
+                  <ShortArrowIcon dir="right" />
+                </Button>
+              </Flex>
+              <ProfileCommentCard
+                user={userInfo}
+                memo={userInfo?.comment}
+                rightComponent={
+                  <Box mr="10px">
+                    <RankingNumIcon num={1} />
+                  </Box>
+                }
+              />
+              <Box pt={1} pb={3} borderTop="var(--border)" borderBottom="var(--border)">
+                <Box mt={3}>
+                  <PointScoreBar />
+                </Box>
+                <IconRowBlock
+                  leftIcon={
+                    alphabet ? (
+                      <AboutIcon alphabet={alphabet} isActive size="sm" />
+                    ) : (
+                      <Flex
+                        justify="center"
+                        align="center"
+                        w={8}
+                        h={8}
+                        borderRadius="50%"
+                        bg={"var(--color-mint)"}
+                      >
+                        <StarIcon />
+                      </Flex>
+                    )
+                  }
+                  mainText={alphabet ? `알파벳 ${changeAlphabet(alphabet)} 획득` : "스탬프 획득"}
+                  subText={
+                    alphabet
+                      ? "알파벳을 수집해 상품을 획득해 봐요!"
+                      : "스탬프를 모아 알파벳을 획득해 봐요 !"
+                  }
+                />
+              </Box>
+            </Flex>{" "}
+            <Box h={2} bg="gray.100" my={5}></Box>
+            <Box fontSize="18px" fontWeight="bold">
+              같이 공부한 인원
+            </Box>
+            <Box mb={10}>
+              {members.map((member, idx) => {
+                const isMyFriend = userInfo?.friend.includes(member.user.uid);
+
+                return (
+                  <ProfileCommentCard
+                    user={member.user}
+                    memo={member.user.comment}
+                    key={idx}
+                    rightComponent={
+                      <Flex>
+                        <Button
+                          mr={1}
+                          borderRadius="50%"
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="center"
+                          w={5}
+                          h={5}
+                          variant="unstyled"
+                        >
+                          <HeartIcon toUid={member.user.uid} />
+                        </Button>
+                        <UserPlusButton isMyFriend={isMyFriend} toUid={member.user.uid} />
+                      </Flex>
+                    }
+                  />
+                );
+              })}
+            </Box>
           </>
         )}
       </Slide>
+      <BottomNavButton
+        text="홈 화면으로 돌아가기"
+        color="black"
+        func={() => router.push("/home")}
+      />
     </>
   );
 }

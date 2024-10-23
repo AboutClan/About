@@ -8,6 +8,7 @@ import {
   BADGE_COLOR_MAPPINGS,
   BADGE_SCORE_MAPPINGS,
 } from "../../../constants/serviceConstants/badgeConstants";
+import { SCHEME_TO_COLOR } from "../../../constants/styles";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import BadgeInfoModal from "../../../modals/store/badgeInfoModal/BadgeInfoModal";
 import { getUserBadge } from "../../../utils/convertUtils/convertDatas";
@@ -21,10 +22,18 @@ function PointScoreBar({ hasQuestion = true }: IPointScoreBar) {
 
   const [isBadgeModal, setIsBadgeModal] = useState(false);
   const myScoreBadge = getUserBadge(userInfo?.score, userInfo?.uid);
-  const nextBadgeObj =
-    userInfo !== undefined &&
-    Object.entries(BADGE_SCORE_MAPPINGS).find(([, value]) => value > userInfo?.score);
-
+  const nextBadgeObj = (userInfo !== undefined &&
+    Object.entries(BADGE_SCORE_MAPPINGS).find(([, value]) => value > userInfo?.score)) || [
+    "에스프레소",
+    1000,
+  ];
+  console.log(
+    24,
+    myScoreBadge,
+    nextBadgeObj,
+    BADGE_COLOR_MAPPINGS[myScoreBadge],
+    SCHEME_TO_COLOR[BADGE_COLOR_MAPPINGS[myScoreBadge]],
+  );
   return (
     <>
       <Layout>
@@ -33,24 +42,21 @@ function PointScoreBar({ hasQuestion = true }: IPointScoreBar) {
             <UserBadge score={userInfo?.score || 0} uid={userInfo?.uid} />
             <Box
               fontSize="10px"
-              alignSelf="flex-end"
-              ml={2}
+              fontWeight="semibold"
+              lineHeight="12px"
+              ml={1}
+              py={1}
               color={
-                BADGE_COLOR_MAPPINGS[myScoreBadge] !== "gray"
+                SCHEME_TO_COLOR[BADGE_COLOR_MAPPINGS[myScoreBadge]] ||
+                (BADGE_COLOR_MAPPINGS[myScoreBadge] !== "gray"
                   ? BADGE_COLOR_MAPPINGS[myScoreBadge]
-                  : "var(--gray-600)"
+                  : "var(--gray-600)")
               }
             >
               {userInfo?.score}점
             </Box>
             {hasQuestion && (
-              <Box
-                ml={2}
-                mt={0.5}
-                fontSize="12px"
-                color="gray.600"
-                onClick={() => setIsBadgeModal(true)}
-              >
+              <Box ml={1} fontSize="12px" color="gray.500" onClick={() => setIsBadgeModal(true)}>
                 <i className="fa-regular fa-question-circle fa-sm " />
               </Box>
             )}
@@ -59,22 +65,37 @@ function PointScoreBar({ hasQuestion = true }: IPointScoreBar) {
             <div>
               <Box
                 fontSize="10px"
-                alignSelf="flex-end"
+                mt="1px"
+                lineHeight="12px"
+                fontWeight="semibold"
                 color={BADGE_COLOR_MAPPINGS[nextBadgeObj[0]]}
               >
                 {nextBadgeObj[1]}점
               </Box>
-              <Box ml={2}>
-                <UserBadge score={30} uid="" />
+              <Box ml={1} h="20px">
+                <UserBadge score={nextBadgeObj[1]} uid="" />
               </Box>
             </div>
           )}
-        </Grade>
+        </Grade>{" "}
+        <Flex w="100%">
+          <Box ml="0" h="8px" borderLeft="1px solid var(--gray-200)" w="1px" />
+          <Box ml="calc(33.3%)" h="8px" borderLeft="1px solid var(--gray-200)" w="1px" />
+          <Box ml="calc(33.3%)" h="8px" borderLeft="1px solid var(--gray-200)" w="1px" />
+          <Box ml="auto" h="8px" borderRight="1.5px solid var(--gray-200)" w="1px"></Box>
+        </Flex>
         <ProgressBar
           value={(1 - (nextBadgeObj[1] - userInfo?.score) / nextBadgeObj[1]) * 100}
           colorScheme="mintTheme"
           hasStripe={true}
+          size="sm"
         />
+        <Flex lineHeight="12px" fontSize="10px" mt="8px" color="gray.500" fontWeight="medium">
+          <Box>0</Box>
+          <Box ml="calc(33.3% - 9px)">10</Box>
+          <Box ml="calc(33.3% - 7px )">20</Box>
+          <Box ml="auto">30</Box>
+        </Flex>
       </Layout>
 
       {isBadgeModal && <BadgeInfoModal setIsModal={setIsBadgeModal} />}
@@ -88,8 +109,9 @@ const Layout = styled.div`
 const Grade = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: var(--gap-3);
+  margin-bottom: 8px;
   align-items: center;
+
   > div {
     display: flex;
     align-items: center;

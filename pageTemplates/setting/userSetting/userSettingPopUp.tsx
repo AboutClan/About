@@ -146,9 +146,8 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
       setModalTypes((old) => [...old, "promotion"]);
       return;
     }
-    // setModalTypes((old) => [...old, "studyChallenge"]);
+    setModalTypes((old) => [...old, "studyChallenge"]);
 
-    console.log(24, studyRecord);
     if (studyRecord?.isChecked === false) {
       setDrawerType("bottom");
     }
@@ -212,15 +211,19 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
           </Box>
 
           <Flex direction="column" mt="auto" w="100%">
-            <Link
-              href={`/study/result?location=${studyRecord?.location}&date=${studyRecord?.date}`}
-              style={{ width: "100%" }}
-            >
+            <Link href={`/study/result?date=${studyRecord?.date}`} style={{ width: "100%" }}>
               <Button w="full" size="lg" colorScheme="black" onClick={() => setDrawerType("right")}>
                 확인 하러가기
               </Button>
             </Link>
-            <Button my={2} h="24px" color="gray.500" fontWeight="semibold" variant="ghost">
+            <Button
+              my={2}
+              h="24px"
+              color="gray.500"
+              fontWeight="semibold"
+              variant="ghost"
+              onClick={() => setDrawerType(null)}
+            >
               무시하고 넘기기
             </Button>
           </Flex>

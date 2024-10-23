@@ -14,8 +14,9 @@ import {
 import { SERVER_URI } from "../../constants/system";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import {
+  RealTimeInfoProps,
   StudyDailyInfoProps,
-  StudyParticipationProps,
+  StudyMemberProps,
   StudyPlaceProps,
 } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
@@ -46,7 +47,6 @@ export const useStudyPlacesQuery = (
     options,
   );
 
-
 export const useStudyVoteQuery = (
   date: string,
   location: Location | "전체",
@@ -63,17 +63,11 @@ export const useStudyVoteQuery = (
     options,
   );
 
-export const useStudyVoteOneQuery = (
-  date: string,
-  id: string,
-  options?: QueryOptions<StudyParticipationProps>,
-) =>
-  useQuery<StudyParticipationProps, AxiosError, StudyParticipationProps>(
-    [STUDY_VOTE, date, id],
+export const useStudyVoteOneQuery = (date: string, options?: QueryOptions<RealTimeInfoProps[]>) =>
+  useQuery<RealTimeInfoProps[], AxiosError, RealTimeInfoProps[]>(
+    [STUDY_VOTE, date],
     async () => {
-      const res = await axios.get<StudyParticipationProps>(`${SERVER_URI}/vote/${date}/one`, {
-        params: { id },
-      });
+      const res = await axios.get<RealTimeInfoProps[]>(`${SERVER_URI}/vote/${date}/one`, {});
       return res.data;
     },
     options,
