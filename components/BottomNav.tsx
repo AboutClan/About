@@ -41,7 +41,7 @@ export default function BottomNav() {
         const getParams = (category: Category) => {
           switch (category) {
             case "홈":
-              return `?location=${locationEn}&date=${getStudyStandardDate()}`;
+              return `?tab=study&location=${locationEn}&date=${getStudyStandardDate()}`;
             case undefined:
               newSearchParams.append("write", "on");
               return pathname + "?" + newSearchParams.toString();

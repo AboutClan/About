@@ -12,7 +12,7 @@ import VoteMap from "../components/organisms/VoteMap";
 import { USER_LOCATION } from "../constants/keys/localStorage";
 import {
   LOCATION_CENTER_DOT,
-  LOCATION_MAX_BOUNDARY
+  LOCATION_MAX_BOUNDARY,
 } from "../constants/serviceConstants/studyConstants/studyVoteMapConstants";
 import { STUDY_COMMENT_ARR } from "../constants/settingValue/comment";
 import { useStudyVoteQuery } from "../hooks/study/queries";
@@ -24,7 +24,7 @@ import { getStudyTime } from "../libs/study/getStudyTime";
 import {
   getCurrentLocationIcon,
   getStudyIcon,
-  getStudyVoteIcon
+  getStudyVoteIcon,
 } from "../libs/study/getStudyVoteIcon";
 import StudyInFoDrawer, { StudyInfoProps } from "../pageTemplates/studyPage/StudyInfoDrawer";
 import StudyMapTopNav from "../pageTemplates/studyPage/StudyMapTopNav";
@@ -37,7 +37,7 @@ import { IMapOptions, IMarkerOptions } from "../types/externals/naverMapTypes";
 import {
   StudyDailyInfoProps,
   StudyPlaceProps,
-  StudyStatus
+  StudyStatus,
 } from "../types/models/studyTypes/studyDetails";
 import { PlaceInfoProps } from "../types/models/utilTypes";
 import { ActiveLocation, LocationEn } from "../types/services/locationTypes";
@@ -94,7 +94,7 @@ export default function StudyPage() {
 
     newSearchParams.set("center", myStudyParticipation ? "votePlace" : "locationPlace");
     newSearchParams.set("location", `${convertLocationLangTo(locationValue, "en")}`);
-    newSearchParams.set("date", `${ getStudyViewDate(dayjs(date))}`);
+    newSearchParams.set("date", `${getStudyViewDate(dayjs(date))}`);
 
     router.replace(`/studyPage?${newSearchParams.toString()}`);
 
