@@ -95,14 +95,14 @@ function StudyPageDrawer({
     >
       <Flex flexDir="column" w="100%" overflow="hidden">
         <StudyPageDrawerHeader date={date} isDrawerUp={isDrawerUp} />
-        <Box display={isDrawerUp ? "block" : "none"}>
+        <Box overflow="hidden" display={isDrawerUp ? "block" : "none"}>
           <WeekSlideCalendar selectedDate={date} func={handleSelectDate} />
           <StudyPageDrawerFilterBar
             selectOption={selectOption}
             setSelectOption={setSelectOption}
             placeCnt={thumbnailCardInfoArr?.length}
           />
-          <Box overflowY="scroll" overscrollBehaviorY="contain" h="66.5%">
+          <Box overflowY="scroll" overscrollBehaviorY="contain" h={`${adjustedHeight - 210}px`}>
             {thumbnailCardInfoArr
               ? thumbnailCardInfoArr.map(({ participants, ...thumbnailCardInfo }, idx) => (
                   <Box key={idx} mb={3}>
