@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -91,36 +91,5 @@ const AlphabetContainer = styled.div`
   align-items: center;
   > * {
     margin-right: 8px;
-  }
-`;
-
-const AlphabetQNABtn = styled.button`
-  margin: 0 16px;
-  width: inherit;
-  display: flex;
-  align-items: center;
-  background-color: var(--gray-100);
-
-  padding: var(--gap-3) var(--gap-4);
-  border-radius: var(--rounded-lg);
-  color: var(--color-font-h2);
-`;
-
-const IconWrapper = styled.div`
-  margin-right: var(--gap-3);
-`;
-
-const AlphabetQNABtnContents = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  > span:first-child {
-    font-size: 12px;
-    color: var(--gray-600);
-  }
-  > span:last-child {
-    font-weight: 600;
-    color: var(--gray-700);
-    font-size: 14px;
   }
 `;

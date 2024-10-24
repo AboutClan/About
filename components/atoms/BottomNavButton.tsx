@@ -1,4 +1,5 @@
 import { Box, Button } from "@chakra-ui/react";
+
 import { iPhoneNotchSize } from "../../utils/validationUtils";
 import Slide from "../layouts/PageSlide";
 

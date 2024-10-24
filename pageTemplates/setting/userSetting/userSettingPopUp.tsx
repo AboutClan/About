@@ -147,14 +147,13 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
       setModalTypes((old) => [...old, "promotion"]);
       return;
     }
-    if (
-      // userInfo?.weekStudyTragetHour === 0
-      false
-    ) {
-      setModalTypes((old) => [...old, "studyChallenge"]);
-    }
+    // if (
+    //   // userInfo?.weekStudyTragetHour === 0
+    // ) {
+    //   setModalTypes((old) => [...old, "studyChallenge"]);
+    // }
 
-    if (studyRecord?.date === dayjsToStr(dayjs())) {
+    if (studyRecord && studyRecord?.date !== dayjsToStr(dayjs())) {
       setDrawerType("bottom");
     }
     // if (!checkAndSetLocalStorage(SUGGEST_POP_UP, 29)) {

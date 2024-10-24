@@ -20,8 +20,8 @@ export function UserIcon({ size, isActive }: { size: "sm" | "md"; isActive?: boo
   );
 }
 
-export const UserPlusIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="10" viewBox="0 0 12 10" fill="none">
+export function UserPlusIcon() {
+  return <svg xmlns="http://www.w3.org/2000/svg" width="12" height="10" viewBox="0 0 12 10" fill="none">
     <path
       fill-rule="evenodd"
       clip-rule="evenodd"
@@ -29,4 +29,4 @@ export const UserPlusIcon = () => (
       fill="#A0AEC0"
     />
   </svg>
-);
+}

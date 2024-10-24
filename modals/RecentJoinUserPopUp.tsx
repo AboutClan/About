@@ -78,7 +78,7 @@ function RecentJoinUserPopUp({ users, setIsModal }: RecentJoinUserPopUpProps) {
               )}
             </Flex>
             <Flex>
-              <HeartIcon toUid={user.uid} size="md" />
+              <HeartIcon toUid={user.uid} />
             </Flex>
           </Flex>
         ))}

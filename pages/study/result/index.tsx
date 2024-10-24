@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+
 import { STUDY_MAIN_IMAGES } from "../../../assets/images/studyMain";
 import { AboutIcon } from "../../../components/atoms/AboutIcons";
 import IconRowBlock from "../../../components/atoms/blocks/IconRowBlock";
@@ -233,7 +234,7 @@ function StudyResultPage() {
                         w={8}
                         h={8}
                         borderRadius="50%"
-                        bg={"var(--color-mint)"}
+                        bg="var(--color-mint)"
                       >
                         <StarIcon />
                       </Flex>

@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 
-export const RankingNumIcon = ({ num }: { num: number }) => {
+export function RankingNumIcon({ num }: { num: number }) {
   const color =
     num === 1
       ? "red"
@@ -36,9 +36,9 @@ export const RankingNumIcon = ({ num }: { num: number }) => {
       </Box>
     </Box>
   );
-};
+}
 
-export const RankingIcon = ({ color }: { color: string }) => {
+export function RankingIcon({ color }: { color: string }) {
   const colorText = `var(--color-${color})`;
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="36" height="30" viewBox="0 0 36 30" fill="none">
@@ -268,4 +268,4 @@ export const RankingIcon = ({ color }: { color: string }) => {
       />
     </svg>
   );
-};
+}

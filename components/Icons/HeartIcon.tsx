@@ -2,9 +2,9 @@ import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+
 import { LIKE_HEART } from "../../constants/keys/localStorage";
 import { POINT_SYSTEM_PLUS } from "../../constants/serviceConstants/pointSystemConstants";
-
 import { useAdminPointMutation } from "../../hooks/admin/mutation";
 import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";
 import { useInteractionMutation } from "../../hooks/user/sub/interaction/mutations";
@@ -12,10 +12,9 @@ import { isHeartCheckLocalStorage, pushArrToLocalStorage } from "../../utils/sto
 import { HeartIcon as Heart } from "./HeartIcons";
 interface IHeartIcon {
   toUid: string;
-  size?: "sm" | "md" | "lg";
 }
 
-function HeartIcon({ toUid, size = "sm" }: IHeartIcon) {
+function HeartIcon({ toUid }: IHeartIcon) {
   const { data: session } = useSession();
   const completeToast = useCompleteToast();
   const errorToast = useErrorToast();

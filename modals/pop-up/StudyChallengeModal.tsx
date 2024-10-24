@@ -1,6 +1,7 @@
 import { Box, Button, Flex, Grid, ListItem, UnorderedList } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useState } from "react";
+
 import InfoBoxCol, { InfoBoxProps } from "../../components/molecules/InfoBoxCol";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
