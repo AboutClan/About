@@ -94,7 +94,7 @@ export default function BottomFlexDrawer({
       setDrawerHeight(currentHeightRef.current); // 스와이프가 임계값보다 짧으면 원래 높이로 복원
     }
   };
-  console.log(25, isHideBottom ? "true" : "false", zIndex);
+
   return (
     <>
       {isOverlay && <ScreenOverlay zIndex={zIndex} onClick={() => setIsModal(false)} />}
@@ -153,7 +153,7 @@ const Layout = styled.div<{
   border-top-right-radius: 20px;
 
   background-color: white;
-  z-index: ${(props) => props.zindex || (props.ishide==="true" ? 700 : 500)};
+  z-index: ${(props) => props.zindex || (props.ishide === "true" ? 700 : 500)};
   padding: 0 20px;
   padding-bottom: ${(props) => props.isdrawerup === "false" && "12px"};
   padding-top: 0;

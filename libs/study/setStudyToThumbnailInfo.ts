@@ -20,7 +20,7 @@ export const setStudyToThumbnailInfo = (
   imageCache?: Map<string, string>,
 ): StudyThumbnailCardProps[] => {
   if (!studyData) return [];
-  console.log(12312313, location);
+
   // 카드 데이터 생성
   const cardColData: StudyThumbnailCardProps[] = studyData.map((data, idx) => {
     const placeInfo = convertMergePlaceToPlace(data.place);

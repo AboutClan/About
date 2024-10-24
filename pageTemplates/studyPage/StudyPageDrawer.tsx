@@ -45,7 +45,6 @@ function StudyPageDrawer({
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
-  console.log(24, isDrawerUp);
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
   const [selectOption, setSelectOption] = useState<SelectOption>("인원순");
 

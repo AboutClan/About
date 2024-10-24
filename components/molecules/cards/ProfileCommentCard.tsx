@@ -46,7 +46,7 @@ export default function ProfileCommentCard({
     setIsCommentModal(false);
     setIsEdit(false);
   };
-  console.log(rightComponent);
+
   return (
     <>
       <Flex py={3} align="center">

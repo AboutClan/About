@@ -56,7 +56,6 @@ export default function Page() {
     studyVoteData,
     convertLocationLangTo(locationParam, "kr"),
   );
-  console.log(5, studyVoteData, mergeParticipations);
 
   const mergeParticipation = mergeParticipations?.find(
     (participation) => participation.place._id === id,
@@ -72,7 +71,7 @@ export default function Page() {
   const members = mergeParticipation?.members;
 
   const absences = studyVoteData?.participations.find((par) => par.place._id === id)?.absences;
-  console.log(1234, mergeParticipation);
+
   return (
     <>
       {mergeParticipation && (
