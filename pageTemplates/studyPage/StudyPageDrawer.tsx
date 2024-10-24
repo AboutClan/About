@@ -85,7 +85,7 @@ function StudyPageDrawer({
 
   const screenHeight = window.innerHeight;
   const adjustedHeight = (screenHeight - 52 - iPhoneNotchSize()) * 0.9;
-
+  console.log(23, isDrawerUp);
   return (
     <BottomFlexDrawer
       isOverlay={false}
@@ -95,20 +95,25 @@ function StudyPageDrawer({
     >
       <Flex flexDir="column" w="100%" overflow="hidden">
         <StudyPageDrawerHeader date={date} isDrawerUp={isDrawerUp} />
-        <WeekSlideCalendar selectedDate={date} func={handleSelectDate} />
-        <StudyPageDrawerFilterBar
-          selectOption={selectOption}
-          setSelectOption={setSelectOption}
-          placeCnt={thumbnailCardInfoArr?.length}
-        />
-        <Box overflowY="scroll" overscrollBehaviorY="contain" flex={1}>
-          {thumbnailCardInfoArr
-            ? thumbnailCardInfoArr.map(({ participants, ...thumbnailCardInfo }, idx) => (
-                <Box key={idx} mb={3}>
-                  <StudyThumbnailCard {...thumbnailCardInfo} participantCnt={participants.length} />
-                </Box>
-              ))
-            : [1, 2, 3, 4, 5].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)}
+        <Box display={isDrawerUp ? "block" : "none"}>
+          <WeekSlideCalendar selectedDate={date} func={handleSelectDate} />
+          <StudyPageDrawerFilterBar
+            selectOption={selectOption}
+            setSelectOption={setSelectOption}
+            placeCnt={thumbnailCardInfoArr?.length}
+          />
+          <Box overflowY="scroll" overscrollBehaviorY="contain" flex={1}>
+            {thumbnailCardInfoArr
+              ? thumbnailCardInfoArr.map(({ participants, ...thumbnailCardInfo }, idx) => (
+                  <Box key={idx} mb={3}>
+                    <StudyThumbnailCard
+                      {...thumbnailCardInfo}
+                      participantCnt={participants.length}
+                    />
+                  </Box>
+                ))
+              : [1, 2, 3, 4, 5].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)}
+          </Box>
         </Box>
       </Flex>
     </BottomFlexDrawer>
