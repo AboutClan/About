@@ -143,6 +143,9 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
     //   setModalTypes((old) => [...old, "studyChallenge"]);
     // }
 
+    // if (studyRecord && studyRecord?.date !== dayjsToStr(dayjs())) {
+    //   setDrawerType("bottom");
+    // }
     // if (!checkAndSetLocalStorage(SUGGEST_POP_UP, 29)) {
     //   setModalTypes((old) => [...old, "suggest"]);
     //   if (popUpCnt++ === 2) return;
