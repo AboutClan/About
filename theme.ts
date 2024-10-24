@@ -207,12 +207,6 @@ const theme = extendTheme({
       bg: "#FEE7E7",
       color: "#FF69B4",
     },
-    mint: {
-      100: "#00c2b3",
-      500: "#00c2b3",
-      600: "#00c2b3",
-      800: "#ffffff",
-    },
     grayTheme: {
       100: "#9e9e9e",
       500: "#9e9e9e",
