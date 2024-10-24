@@ -36,10 +36,10 @@ export default function Header({
         isBorder={isBorder}
         rightPadding={rightPadding}
       >
-        <Flex>
+        <Flex align="center">
           {isBack && <ArrowBackButton defaultUrl={defaultUrl} url={url} func={func} />}
           {!isCenter && (
-            <Box ml={isBack && 2} fontWeight={700}>
+            <Box ml={isBack && 1} fontWeight={700}>
               {title}
             </Box>
           )}
@@ -74,7 +74,7 @@ const HeaderContainer = styled.header<{
   height: var(--header-h);
   font-size: 16px;
   padding-right: ${(props) => props.rightPadding || 20}px;
-  padding-left: ${(props) => (props.isBack ? "16px" : "20px")};
+  padding-left: ${(props) => (props.isBack ? "4px" : "20px")};
   display: flex;
   justify-content: space-between;
   align-items: center;

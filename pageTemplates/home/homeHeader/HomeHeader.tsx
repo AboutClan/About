@@ -1,23 +1,21 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 import AlertCirclePoint from "../../../components/atoms/AlertCirclePoint";
+import ButtonWrapper from "../../../components/atoms/ButtonWrapper";
 import { CalendarCheckIcon, NoticeIcon } from "../../../components/Icons/SolidIcons";
 import Slide from "../../../components/layouts/PageSlide";
-import IconButtonNav, { IIconButtonNavBtn } from "../../../components/molecules/navs/IconButtonNav";
 import { AboutLogo } from "../../../components/services/AboutLogo";
 import { DAILY_CHECK_POP_UP, NOTICE_ALERT } from "../../../constants/keys/localStorage";
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import DailyCheckModal from "../../../modals/aboutHeader/dailyCheckModal/DailyCheckModal";
 import PointSystemsModal from "../../../modals/aboutHeader/pointSystemsModal/PointSystemsModal";
 import LastWeekAttendPopUp from "../../../modals/pop-up/LastWeekAttendPopUp";
-import { slideDirectionState } from "../../../recoils/navigationRecoils";
 import { renderHomeHeaderState } from "../../../recoils/renderRecoils";
-import { transferShowDailyCheckState } from "../../../recoils/transferRecoils";
 import { NOTICE_ARR } from "../../../storage/notice";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 
@@ -28,9 +26,8 @@ function HomeHeader() {
   const { data: session } = useSession();
   const isGuest = session ? session.user.name === "guest" : false;
   const [modalType, setModalType] = useState<HomeHeaderModalType>(null);
-  const showDailyCheck = useRecoilValue(transferShowDailyCheckState);
+
   const renderHomeHeader = useRecoilValue(renderHomeHeaderState);
-  const setSlideDirection = useSetRecoilState(slideDirectionState);
 
   const todayDailyCheck = localStorage.getItem(DAILY_CHECK_POP_UP) === dayjsToStr(dayjs());
 
@@ -51,77 +48,49 @@ function HomeHeader() {
     }
   }, []);
 
-  const generateIconBtnArr = () => {
-    const arr = [
-      {
-        icon: (
-          <>
-            <Box w="20px" h="20px" opacity={0.4}>
-              <CalendarCheckIcon />
-            </Box>
-            <Box
-              position="absolute"
-              right={0}
-              bottom={0}
-              p="1px"
-              bgColor="white"
-              borderRadius="50%"
-            >
-              <AlertCirclePoint isActive={!todayDailyCheck} />
-            </Box>
-          </>
-        ),
-        func: isGuest ? () => typeToast("guest") : () => setModalType("dailyCheck"),
-      },
-
-      {
-        icon: (
-          <>
-            <Box opacity={0.4} w="20px" h="20px">
-              <NoticeIcon />
-            </Box>
-            <Box
-              position="absolute"
-              right="2px"
-              top="-1px"
-              p="1px"
-              bgColor="white"
-              borderRadius="50%"
-            >
-              <AlertCirclePoint isActive={isNoticeAlert} />
-            </Box>
-          </>
-        ),
-        link: "/notice",
-        func: () => setSlideDirection("right"),
-      },
-    ];
-
-    // if (!todayDailyCheck && showDailyCheck) {
-    //   arr.unshift({
-    //     icon: <i className="fa-light fa-badge-check" style={{ color: "var(--color-mint)" }} />,
-    //     func: () => setModalType("dailyCheck"),
-    //   });
-    // }
-
-    return arr;
-  };
-
-  const [iconBtnArr, setIconBtnArr] = useState<IIconButtonNavBtn[]>(generateIconBtnArr());
-
-  useEffect(() => {
-    setIconBtnArr(generateIconBtnArr());
-  }, [showDailyCheck, isGuest, isNoticeAlert]);
-
   return (
     <>
       <Slide isFixed={true}>
         {renderHomeHeader && (
           <Layout>
             <AboutLogo />
-            <Box className="about_header" fontSize="21px" color="var(--gray-700)">
-              <IconButtonNav iconList={iconBtnArr} />
-            </Box>
+            <Flex align="center">
+              <Box mr={1}>
+                <ButtonWrapper
+                  size="sm"
+                  onClick={isGuest ? () => typeToast("guest") : () => setModalType("dailyCheck")}
+                >
+                  <Box w="20px" h="20px" opacity={0.4}>
+                    <CalendarCheckIcon />
+                  </Box>
+                  <Box
+                    position="absolute"
+                    right="4px"
+                    bottom="4px"
+                    p="1px"
+                    bgColor="white"
+                    borderRadius="50%"
+                  >
+                    <AlertCirclePoint isActive={!todayDailyCheck} />
+                  </Box>
+                </ButtonWrapper>
+              </Box>
+              <ButtonWrapper url="/notice" size="sm">
+                <Box opacity={0.4} w="full" h="full">
+                  <NoticeIcon />
+                </Box>
+                <Box
+                  position="absolute"
+                  right="6px"
+                  top="5px"
+                  p="1px"
+                  bgColor="white"
+                  borderRadius="50%"
+                >
+                  <AlertCirclePoint isActive={isNoticeAlert} />
+                </Box>
+              </ButtonWrapper>
+            </Flex>
           </Layout>
         )}
       </Slide>

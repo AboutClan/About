@@ -1,6 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
+import { AnimatePresence, motion, PanInfo } from "framer-motion";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
@@ -18,6 +19,7 @@ import {
   STUDY_RESULT_HOUR,
 } from "../../../constants/serviceConstants/studyConstants/studyTimeConstant";
 import { setStudyToThumbnailInfo } from "../../../libs/study/setStudyToThumbnailInfo";
+import { DispatchString } from "../../../types/hooks/reactTypes";
 import { StudyMergeParticipationProps } from "../../../types/models/studyTypes/studyDetails";
 import { StudyVotingSave } from "../../../types/models/studyTypes/studyInterActions";
 import {
@@ -31,12 +33,14 @@ import { dayjsToStr } from "../../../utils/dateTimeUtils";
 interface StudyCardColProps {
   participations: StudyMergeParticipationProps[];
   date: string;
+  setDate: DispatchString;
 }
 
-function StudyCardCol({ participations, date }: StudyCardColProps) {
+function StudyCardCol({ participations, date, setDate }: StudyCardColProps) {
   const { data: session } = useSession();
-
+  const router = useRouter();
   const searchParams = useSearchParams();
+  const newSearchParams = new URLSearchParams(searchParams);
 
   const locationEn =
     (searchParams.get("location") as LocationEn) ||
@@ -125,32 +129,70 @@ function StudyCardCol({ participations, date }: StudyCardColProps) {
     }
   }, [participations, currentLocation]);
 
+  const onDragEnd = (panInfo: PanInfo) => {
+    console.log(123);
+    const newDate = getNewDateBySwipe(panInfo, date as string);
+    if (newDate !== date) {
+      setDate(newDate);
+      newSearchParams.set("date", newDate);
+      router.replace(`/home?${newSearchParams.toString()}`, { scroll: false });
+    }
+    return;
+  };
+
+  const getNewDateBySwipe = (panInfo: PanInfo, date: string) => {
+    const { offset, velocity } = panInfo;
+    const swipe = swipePower(offset.x, velocity.x);
+
+    let dateDayjs = dayjs(date);
+    if (swipe < -swipeConfidenceThreshold) {
+      dateDayjs = dateDayjs.add(1, "day");
+    } else if (swipe > swipeConfidenceThreshold) {
+      dateDayjs = dateDayjs.subtract(1, "day");
+    }
+    return dayjsToStr(dateDayjs);
+  };
+
+  const swipeConfidenceThreshold = 10000;
+  const swipePower = (offset: number, velocity: number) => {
+    return Math.abs(offset) * velocity;
+  };
+
   return (
     <>
-      <BlurredPart
-        text={
-          LOCATION_RECRUITING.includes(location as InactiveLocation)
-            ? `${LOCATION_TO_FULLNAME[location]} 오픈 준비중`
-            : ""
-        }
-        isBlur={LOCATION_RECRUITING.includes(location as InactiveLocation)}
-        size="lg"
-      >
-        {studyCardColData ? (
-          <Flex direction="column">
-            {studyCardColData.map((cardData, idx) => (
-              <Box key={idx} mb={3}>
-                <StudyThumbnailCard {...cardData} />
-              </Box>
-            ))}
-            {studyCardColData.length >= 3 && (
-              <SectionFooterButton url={`/studyList?location=${locationEn}&date=${date}`} />
+      <AnimatePresence initial={false}>
+        <motion.div
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.3}
+          onDragEnd={(_, panInfo) => onDragEnd(panInfo)}
+        >
+          <BlurredPart
+            text={
+              LOCATION_RECRUITING.includes(location as InactiveLocation)
+                ? `${LOCATION_TO_FULLNAME[location]} 오픈 준비중`
+                : ""
+            }
+            isBlur={LOCATION_RECRUITING.includes(location as InactiveLocation)}
+            size="lg"
+          >
+            {studyCardColData ? (
+              <Flex direction="column">
+                {studyCardColData.map((cardData, idx) => (
+                  <Box key={idx} mb={3}>
+                    <StudyThumbnailCard {...cardData} />
+                  </Box>
+                ))}
+                {studyCardColData.length >= 3 && (
+                  <SectionFooterButton url={`/studyList?location=${locationEn}&date=${date}`} />
+                )}
+              </Flex>
+            ) : (
+              [1, 2, 3].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)
             )}
-          </Flex>
-        ) : (
-          [1, 2, 3].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)
-        )}
-      </BlurredPart>
+          </BlurredPart>
+        </motion.div>
+      </AnimatePresence>
 
       {/* {dismissedStudy && (
         <StudyOpenCheckModal

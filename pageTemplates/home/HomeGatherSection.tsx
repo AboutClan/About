@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
 
+import ButtonWrapper from "../../components/atoms/ButtonWrapper";
 import SectionHeader from "../../components/atoms/SectionHeader";
 import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
@@ -13,9 +13,12 @@ function HomeGatherSection() {
   return (
     <Box my={5}>
       <SectionHeader title="About 번개" subTitle="Meeting">
-        <Link href={`/gather?location=${convertLocationLangTo(session?.user.location, "en")}`}>
+        <ButtonWrapper
+          size="xs"
+          url={`/gather?location=${convertLocationLangTo(session?.user.location, "en")}`}
+        >
           <ShortArrowIcon dir="right" />
-        </Link>
+        </ButtonWrapper>
       </SectionHeader>
       <HomeGatherCol />
     </Box>

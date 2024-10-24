@@ -44,10 +44,10 @@ export default function Page() {
       enabled: !!date && !!locationParam,
     },
   );
-  console.log(23, studyVoteData);
+
   useEffect(() => {
     if (!studyVoteData) return;
-    const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
+    const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session?.user.uid);
 
     setMyStudyParticipation(findMyStudyParticipation);
   }, [studyVoteData]);

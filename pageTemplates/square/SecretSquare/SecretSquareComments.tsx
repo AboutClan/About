@@ -12,6 +12,7 @@ import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { UserCommentProps } from "../../../types/components/propTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
+import { iPhoneNotchSize } from "../../../utils/validationUtils";
 
 interface SecretSquareCommentsProps {
   author: string;
@@ -115,7 +116,7 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
         </Flex>
       </Slide>
       <Box
-        h="60px"
+        h={`calc(60px + ${iPhoneNotchSize()}px)`}
         position="fixed"
         borderTop="var(--border-main)"
         bottom="0"
@@ -123,6 +124,7 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
         w="100%"
         backgroundColor="white"
         p="16px"
+        paddingBottom={`calc(16px + ${iPhoneNotchSize()}px)`}
         maxW="var(--max-width)"
       >
         <UserCommentInput user={SECRET_USER_SUMMARY} onSubmit={onSubmit} type="message" />

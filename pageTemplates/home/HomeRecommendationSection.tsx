@@ -11,7 +11,6 @@ import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 import HomeGatherCol from "./HomeGatherCol";
-import StudyCardCol from "./study/StudyCardCol";
 
 function HomeRecommendationSection() {
   const { data: session } = useSession();
@@ -34,7 +33,7 @@ function HomeRecommendationSection() {
           {dayjsToFormat(dayjs(), "M월 D일")} 카공 스터디
         </Box>
 
-        <StudyCardCol participations={studyVoteData?.participations} date={dayjsToStr(dayjs())} />
+        {/* <StudyCardCol participations={studyVoteData?.participations} date={dayjsToStr(dayjs())} /> */}
       </Box>
       <Slide>
         <HomeGatherCol />
