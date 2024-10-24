@@ -1,8 +1,8 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import SectionFooterButton from "../../../components/atoms/SectionFooterButton";
@@ -18,6 +18,7 @@ import {
   STUDY_DATE_START_HOUR,
   STUDY_RESULT_HOUR,
 } from "../../../constants/serviceConstants/studyConstants/studyTimeConstant";
+import { useCurrentLocation } from "../../../hooks/custom/CurrentLocationHook";
 import { setStudyToThumbnailInfo } from "../../../libs/study/setStudyToThumbnailInfo";
 import { DispatchString } from "../../../types/hooks/reactTypes";
 import { StudyMergeParticipationProps } from "../../../types/models/studyTypes/studyDetails";
@@ -46,34 +47,15 @@ function StudyCardCol({ participations, date, setDate }: StudyCardColProps) {
     (searchParams.get("location") as LocationEn) ||
     convertLocationLangTo(session?.user.location, "en");
   const location = convertLocationLangTo(locationEn, "kr") as ActiveLocation;
-
+  console.log(54, location);
   const myUid = session?.user.uid;
 
   const [studyCardColData, setStudyCardColData] = useState<StudyThumbnailCardProps[]>();
 
-  const [currentLocation, setCurrentLocation] = useState<{ lat: number; lon: number }>();
+  const { currentLocation } = useCurrentLocation();
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      function (position) {
-        const lat = position.coords.latitude;
-        const lon = position.coords.longitude;
-
-        setCurrentLocation({ lat, lon });
-      },
-      function (error) {
-        console.error("위치 정보를 가져오는 데 실패했습니다: ", error);
-      },
-      {
-        enableHighAccuracy: true, // 고정밀도 모드 활성화
-        timeout: 5000, // 5초 안에 위치를 가져오지 못하면 오류 발생
-        maximumAge: 0, // 캐시된 위치 정보를 사용하지 않음
-      },
-    );
-  }, []);
-
-  useEffect(() => {
-    if (!participations || !participations.length) {
+    if (!participations || !participations.length || currentLocation === undefined) {
       setStudyCardColData(null);
       return;
     }

@@ -12,9 +12,12 @@ import FAQPopUp from "../../modals/pop-up/FAQPopUp";
 import UserSettingPopUp from "../../pageTemplates/setting/userSetting/userSettingPopUp";
 import { isPWA } from "../../utils/appEnvUtils";
 import { checkAndSetLocalStorage } from "../../utils/storageUtils";
+import { ActiveLocation } from "../../types/services/locationTypes";
 
 function HomeInitialSetting() {
   const { data: session } = useSession();
+
+
   usePushServiceInitialize({
     uid: session?.user?.uid,
   });

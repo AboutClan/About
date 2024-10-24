@@ -1,6 +1,7 @@
-import { Box } from "@chakra-ui/react";
-import Image from "next/image";
+import { Box, Button } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
+import { MouseEvent, useEffect, useState } from "react";
 
 import { useTogglePlaceHeart } from "../../hooks/custom/CustomHooks";
 import { useUserInfoQuery } from "../../hooks/user/queries";
@@ -30,9 +31,32 @@ function PlaceImage({ imageProps, id, hasToggleHeart, selected, size }: PlaceHea
 
   const toggleHeart = useTogglePlaceHeart();
 
+  const [heartType, setHeartType] = useState<"main" | "sub" | null>();
+
+  useEffect(() => {
+    console.log(234);
+    setHeartType(myPreferType);
+  }, [myPreferType]);
+
   const sizeLength =
     size === "sm" ? "60px" : size === "md" ? "80px" : size === "lg" ? "100px" : null;
- 
+
+  const onClickHeart = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
+    switch (myPreferType) {
+      case "main":
+        setHeartType(null);
+        break;
+      case "sub":
+        console.log(4534);
+        setHeartType(null);
+        break;
+      default:
+        if (preference?.place) setHeartType("sub");
+        else setHeartType("main");
+    }
+    toggleHeart(e, preference, id, userLoading);
+  };
+
   return (
     <Box
       borderRadius={size === "md" ? "4px" : "12px"}
@@ -69,21 +93,35 @@ function PlaceImage({ imageProps, id, hasToggleHeart, selected, size }: PlaceHea
         </Box>
       )}
       {hasToggleHeart && (
-        <Box
+        <Button
+          variant="unstyled"
           pos="absolute"
-          w={4}
-          h={4}
-          bottom={1.5}
-          right={1.5}
+          w={5}
+          h={5}
+          bottom={1}
+          right={1}
           color="white"
-          onClick={(e) => toggleHeart(e, preference, id, userLoading)}
+          onClick={(e) => onClickHeart(e)}
+          _before={{
+            content: '""',
+            display: "block",
+            position: "absolute",
+            top: "-12px", // 터치 영역을 위쪽으로 12px 확장
+            bottom: "-12px", // 터치 영역을 아래쪽으로 12px 확장
+            left: "-12px", // 터치 영역을 왼쪽으로 12px 확장
+            right: "-12px", // 터치 영역을 오른쪽으로 12px 확장
+            zIndex: -1, // 부모 요소의 뒤쪽에 배치
+            backgroundColor: "rgba(0, 0, 255, 0.3)", // 반투명 파란색 배경으로 시각화
+            borderRadius: "50%", // 둥근 모서리 효과를 위해 설정, 필요에 따라 제거 가능
+            pointerEvents: "none", // 이벤트가 부모 요소로 전달되도록 설정
+          }}
         >
-          {myPreferType ? (
-            <HeartIcon fill color={myPreferType === "main" ? "red" : "orange"} />
+          {heartType ? (
+            <HeartIcon fill color={heartType === "main" ? "red" : "orange"} />
           ) : (
             <HeartIcon fill={false} />
           )}
-        </Box>
+        </Button>
       )}
     </Box>
   );

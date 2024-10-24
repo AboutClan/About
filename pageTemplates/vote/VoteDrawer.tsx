@@ -55,8 +55,8 @@ interface VoteDrawerProps extends IModal {
   currentLocation: CoordinateProps;
 }
 
-const DEFAULT_SUB_PLACE_CNT = 2;
-const RECOMMENDATION_KM = 2;
+export const DEFAULT_SUB_PLACE_CNT = 2;
+export const RECOMMENDATION_KM = 2;
 
 function VoteDrawer({
   studyVoteData,

@@ -1,13 +1,15 @@
 import { Box, Flex } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Link, { LinkProps } from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { useHandleMove } from "../@natives/useHandleBottomNav";
+import { USER_LOCATION } from "../constants/keys/localStorage";
 import { getStudyStandardDate } from "../libs/study/date/getStudyStandardDate";
 import { slideDirectionState } from "../recoils/navigationRecoils";
+import { ActiveLocation } from "../types/services/locationTypes";
 import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
 import { iPhoneNotchSize } from "../utils/validationUtils";
 import { CommunityIcon, HomeIcon, StudyIcon, ThunderIcon } from "./Icons/BottomNavIcons";
@@ -32,8 +34,9 @@ export default function BottomNav() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
-
-  const locationEn = convertLocationLangTo(session?.user.location, "en");
+  const userLocation =
+    (localStorage.getItem(USER_LOCATION) as ActiveLocation) || session?.user.location;
+  const locationEn = convertLocationLangTo(userLocation, "en");
 
   return (
     <Nav>
