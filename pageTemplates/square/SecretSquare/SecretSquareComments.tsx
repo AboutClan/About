@@ -116,16 +116,16 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
         </Flex>
       </Slide>
       <Box
-        h={`calc(60px + ${iPhoneNotchSize()}px)`}
+        h={"60px"}
         position="fixed"
-        borderTop="var(--border-main)"
+        borderTop="var(--border)"
         bottom="0"
         flex={1}
         w="100%"
         backgroundColor="white"
         p="16px"
         marginBottom={`calc(16px + ${iPhoneNotchSize()}px)`}
-        borderBottom="var(--border-main)"
+        borderBottom="var(--border)"
         maxW="var(--max-width)"
       >
         <UserCommentInput user={SECRET_USER_SUMMARY} onSubmit={onSubmit} type="message" />
