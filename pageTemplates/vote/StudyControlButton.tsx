@@ -1,4 +1,5 @@
 import { Box, Button } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -13,14 +14,16 @@ import BottomFlexDrawer, {
 import { getMyStudyInfo } from "../../libs/study/getMyStudyMethods";
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import { DispatchBoolean } from "../../types/hooks/reactTypes";
+import { dayjsToStr } from "../../utils/dateTimeUtils";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
 
 interface StudyControlButtonProps {
   setIsVoteDrawer: DispatchBoolean;
   setIsDrawerUp: DispatchBoolean;
+  date: string;
 }
 
-function StudyControlButton({ setIsVoteDrawer, setIsDrawerUp }: StudyControlButtonProps) {
+function StudyControlButton({ setIsVoteDrawer, setIsDrawerUp, date }: StudyControlButtonProps) {
   const { data: session } = useSession();
   const searchParams = useSearchParams();
 
@@ -103,6 +106,7 @@ function StudyControlButton({ setIsVoteDrawer, setIsDrawerUp }: StudyControlButt
               variant="unstyled"
               py={4}
               w="100%"
+              isDisabled={date !== dayjsToStr(dayjs())}
             >
               <Box w="20px" h="20px" mr={4} opacity={0.28}>
                 <CalendarCheckIcon />

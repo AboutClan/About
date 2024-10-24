@@ -47,6 +47,7 @@ export default function BottomFlexDrawer({
 
   isOverlay,
 }: BottomFlexDrawerProps) {
+  console.log(42, isDrawerUp);
   const [drawerHeight, setDrawerHeight] = useState(isDrawerUp ? maxHeight : DRAWER_MIN_HEIGHT); // 초기 높이
   const startYRef = useRef(0); // 드래그 시작 위치 저장
   const currentHeightRef = useRef(drawerHeight); // 현재 높이 저장
@@ -102,7 +103,7 @@ export default function BottomFlexDrawer({
         zindex={zIndex}
         isdrawerup={isDrawerUp ? "true" : "false"}
         as={motion.div}
-        animate={{ height: drawerHeight }}
+        animate={{ height: drawerHeight + iPhoneNotchSize() }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
       >
         <Flex justify="center" py={3} w="full" cursor="grab" onPointerDown={handlePointerDown}>
@@ -145,7 +146,7 @@ const Layout = styled.div<{
 }>`
   position: fixed;
   overflow: hidden;
-  bottom: ${(props) => (props.ishide === "true" ? iPhoneNotchSize() : 52 + iPhoneNotchSize())}px;
+  bottom: ${(props) => (props.ishide === "true" ? 0 : 52)}px;
   width: 100%;
   max-width: var(--max-width);
   border-top-left-radius: 20px;

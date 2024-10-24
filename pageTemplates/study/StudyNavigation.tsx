@@ -27,6 +27,7 @@ import { StudyMemberProps, StudyStatus } from "../../types/models/studyTypes/stu
 import { IAbsence, IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
 import { LocationEn } from "../../types/services/locationTypes";
+import { dayjsToStr } from "../../utils/dateTimeUtils";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
 
 interface IStudyNavigation {
@@ -110,7 +111,8 @@ function StudyNavigation({
   });
 
   const myStudyStatus = getMyStudyStatus(myStudyInfo, absences, session?.user.uid, date);
-  const { text, type, colorScheme } = getStudyNavigationProps(myStudyStatus) || {};
+  const { text, type, colorScheme } =
+    getStudyNavigationProps(myStudyStatus, date === dayjsToStr(dayjs())) || {};
 
   const handleSuccess = (type: "vote" | "cancel" | "change") => {
     if (type === "vote") typeToast("vote");
@@ -125,9 +127,11 @@ function StudyNavigation({
       if (myStudyStatus === "pending") {
         setModalType("timeRullet");
       } else if (myStudyStatus === "voting") {
-        router.push(
-          `/vote/attend/${status === "open" ? `configuration` : `certification`}?${searchParams.toString()}`,
-        );
+        if (date === dayjsToStr(dayjs())) {
+          router.push(
+            `/vote/attend/${status === "open" ? `configuration` : `certification`}?${searchParams.toString()}`,
+          );
+        }
       }
     } else if (type === "timeChange") {
       setModalType("timeRullet");
@@ -303,10 +307,12 @@ const getMyStudyStatus = (
 
 const getStudyNavigationProps = (
   myStudyStatus: UserStudyStatus,
+  isConfirmed: boolean,
 ): { type: "single" | "multi"; text: string; colorScheme: string } => {
   switch (myStudyStatus) {
     case "voting":
-      return { text: "출석 체크", type: "multi", colorScheme: "mint" };
+      if (isConfirmed) return { text: "출석 체크", type: "multi", colorScheme: "mint" };
+      return { text: "투표중", type: "multi", colorScheme: "mint" };
     case "attended":
       return { text: "출석 완료", type: "multi", colorScheme: "black" };
     case "cancelled":
