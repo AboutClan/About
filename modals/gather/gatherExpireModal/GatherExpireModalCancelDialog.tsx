@@ -83,7 +83,7 @@ function GatherExpireModalCancelDialog({
               <Button ref={cancelRef} onClick={onClose}>
                 취소
               </Button>
-              <Button colorScheme="mintTheme" onClick={onCancel} ml="var(--gap-2)">
+              <Button colorScheme="mint" onClick={onCancel} ml="var(--gap-2)">
                 모집취소
               </Button>
             </AlertDialogFooter>

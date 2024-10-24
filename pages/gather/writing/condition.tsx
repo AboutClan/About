@@ -127,11 +127,7 @@ function WritingCondition() {
               <Box ml="auto" mr="20px" fontSize="12px" color="var(--color-mint)">
                 {getMemberConditionText() || "기본값"}
               </Box>
-              <Button
-                colorScheme="mintTheme"
-                size="sm"
-                onClick={() => setIsMemberConditionModal(true)}
-              >
+              <Button colorScheme="mint" size="sm" onClick={() => setIsMemberConditionModal(true)}>
                 설정
               </Button>
             </Item>
@@ -148,7 +144,7 @@ function WritingCondition() {
               </Box>
               <Switch
                 mr="var(--gap-1)"
-                colorScheme="mintTheme"
+                colorScheme="mint"
                 isChecked={condition.location}
                 onChange={(e) => toggleSwitch(e, "location")}
               />
@@ -168,7 +164,7 @@ function WritingCondition() {
               </Name>
               <Switch
                 mr="var(--gap-1)"
-                colorScheme="mintTheme"
+                colorScheme="mint"
                 isChecked={condition.isApprove}
                 onChange={(e) => toggleSwitch(e, "isApprove")}
               />
@@ -183,7 +179,7 @@ function WritingCondition() {
               </Name>
               <Switch
                 mr="var(--gap-1)"
-                colorScheme="mintTheme"
+                colorScheme="mint"
                 isChecked={condition.pre}
                 onChange={(e) => toggleSwitch(e, "pre")}
               />
@@ -198,7 +194,7 @@ function WritingCondition() {
               </Name>
               <Switch
                 mr="var(--gap-1)"
-                colorScheme="mintTheme"
+                colorScheme="mint"
                 isChecked={condition.kakaoUrl}
                 onChange={(e) => toggleSwitch(e, "kakaoUrl")}
               />
@@ -232,7 +228,7 @@ function WritingCondition() {
                 </Name>
                 <Switch
                   mr="var(--gap-1)"
-                  colorScheme="mintTheme"
+                  colorScheme="mint"
                   isChecked={condition.manager}
                   onChange={(e) => toggleSwitch(e, "manager")}
                 />

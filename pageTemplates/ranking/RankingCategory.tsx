@@ -44,7 +44,7 @@ function RankingCategoryBar({
         <SwitchLabel isSelected={!isLocationFilter}>전체</SwitchLabel>
         <Switch
           isChecked={isLocationFilter}
-          colorScheme="mintTheme"
+          colorScheme="mint"
           mx="var(--gap-2)"
           onChange={(e) => setIsLocationFilter(e.target.checked)}
         />

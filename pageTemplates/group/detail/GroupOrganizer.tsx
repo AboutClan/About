@@ -30,7 +30,7 @@ function GroupOrganizer({
           <span>{writingDate}</span>
         </Info>
       </div>
-      <Badge colorScheme="redTheme" text={category} size="lg" />
+      <Badge colorScheme="red" text={category} size="lg" />
     </Layout>
   );
 }

@@ -1,7 +1,7 @@
 import { Badge, Button } from "@chakra-ui/react";
 import { AxiosError } from "axios";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -195,7 +195,7 @@ function CollectionAlphabet() {
                   ) : (
                     <Button
                       size="xs"
-                      colorScheme="mintTheme"
+                      colorScheme="mint"
                       onClick={() => onClickChangeBtn(user, alphabets)}
                     >
                       교환 신청

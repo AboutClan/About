@@ -34,7 +34,7 @@ export default function IconButtonColBlock({
         size="sm"
         w="100%"
         rounded="lg"
-        colorScheme={!disabled ? "mintTheme" : "blackAlpha"}
+        colorScheme={!disabled ? "mint" : "blackAlpha"}
         disabled={disabled}
         onClick={func}
       >

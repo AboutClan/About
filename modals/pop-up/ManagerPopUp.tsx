@@ -90,7 +90,7 @@ function Dialog({ isOpen, onClose, setIsModal }: IDialog) {
             <Button ref={completeRef} onClick={onClose}>
               취소
             </Button>
-            <Button colorScheme="mintTheme" onClick={handleSubmit} ml="var(--gap-1)">
+            <Button colorScheme="mint" onClick={handleSubmit} ml="var(--gap-1)">
               신청
             </Button>
           </AlertDialogFooter>

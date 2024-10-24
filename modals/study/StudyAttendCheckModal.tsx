@@ -213,7 +213,7 @@ export default StudyAttendCheckModal;
 //               </Name>
 //               <Switch
 //                 mr="var(--gap-1)"
-//                 colorScheme="mintTheme"
+//                 colorScheme="mint"
 //                 isChecked={!isOtherPermission}
 //                 onChange={() => setIsOtherPermission((old) => !old)}
 //               />

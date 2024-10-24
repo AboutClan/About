@@ -119,7 +119,7 @@ function Setting() {
                     <Button
                       variant="outline"
                       size="sm"
-                      colorScheme="redTheme"
+                      colorScheme="red"
                       mr="12px"
                       onClick={() => setIsRefuseModal(who.user._id)}
                     >
@@ -127,7 +127,7 @@ function Setting() {
                     </Button>
                     <Button
                       size="sm"
-                      colorScheme="mintTheme"
+                      colorScheme="mint"
                       onClick={() => handleUserStatus(who.user._id, "agree")}
                     >
                       승인

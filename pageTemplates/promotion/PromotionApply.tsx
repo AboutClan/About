@@ -109,7 +109,7 @@ function PromotionApply() {
               </Collapse>
             )}
           </div>
-          <Button type="submit" colorScheme="mintTheme" borderRadius="var(--rounded-lg)">
+          <Button type="submit" colorScheme="mint" borderRadius="var(--rounded-lg)">
             입력
           </Button>
         </Form>

@@ -24,7 +24,7 @@ function ApplySuccess() {
         </Flex>
         <Box mt="8px" mx="auto">
           <Link href="https://open.kakao.com/o/sapxSHGg">
-            <Button variant="ghost" textDecor="underline" colorScheme="mintTheme" fontWeight={400}>
+            <Button variant="ghost" textDecor="underline" colorScheme="mint" fontWeight={400}>
               어바웃 문의 톡방
             </Button>
           </Link>

@@ -30,17 +30,12 @@ function GatherWritingConditionCnt({ isMin, value, setMemberCnt }: IGatherWritin
       setNumber(4);
     } else setMemberCnt((old) => ({ ...old, max: 0 }));
   };
- 
+
   return (
     <Layout>
       <MemberCnt>
         {!isMin && (
-          <Switch
-            colorScheme="mintTheme"
-            isChecked={value !== 0}
-            onChange={toggleSwitch}
-            mr="16px"
-          />
+          <Switch colorScheme="mint" isChecked={value !== 0} onChange={toggleSwitch} mr="16px" />
         )}
         {value !== 0 ? (
           <CountNum

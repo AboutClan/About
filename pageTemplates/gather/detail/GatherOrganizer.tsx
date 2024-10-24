@@ -13,7 +13,7 @@ function GatherOrganizer({ createdAt, organizer, isAdminOpen, category }: IGathe
   const isABOUT = isAdminOpen;
   return (
     <OrganizerBar organizer={organizer} createdAt={createdAt} isAdminOpen={isABOUT}>
-      <Badge colorScheme="redTheme" text={category} size="lg" />
+      <Badge colorScheme="red" text={category} size="lg" />
     </OrganizerBar>
   );
 }

@@ -11,7 +11,7 @@ function LocationTitle({ location }: { location: ActiveLocation | InactiveLocati
       {LOCATION_RECRUITING.includes(location as InactiveLocation) ? (
         <OutlineBadge text="모집중" size="sm" colorScheme="orange" />
       ) : (
-        <OutlineBadge text="진행중" size="sm" colorScheme="mintTheme" />
+        <OutlineBadge text="진행중" size="sm" colorScheme="mint" />
       )}
       <MemberCnt>
         <Box>

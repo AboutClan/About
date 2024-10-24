@@ -15,7 +15,7 @@ function FlexSwitchBlock({ label, icon, isChecked, onToggle }: FlexSwitchBlockPr
         <Box ml="8px">{label}</Box>
       </Box>
       <Switch
-        colorScheme="mintTheme"
+        colorScheme="mint"
         isChecked={isChecked}
         onChange={(e) => onToggle(e.target.checked)}
       />

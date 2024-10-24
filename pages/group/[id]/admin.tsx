@@ -75,7 +75,7 @@ function Admin() {
                     <Button
                       onClick={(e) => onClick(e, "agree", who.user, who.pointType)}
                       size="sm"
-                      colorScheme="mintTheme"
+                      colorScheme="mint"
                       mr="var(--gap-2)"
                     >
                       승인
@@ -97,7 +97,7 @@ function Admin() {
           </Container>
           <Title>
             <Box>유저 초대</Box>
-            <Button onClick={() => setIsOuterModal(true)} size="xs" colorScheme="mintTheme">
+            <Button onClick={() => setIsOuterModal(true)} size="xs" colorScheme="mint">
               외부 인원 초대
             </Button>
           </Title>

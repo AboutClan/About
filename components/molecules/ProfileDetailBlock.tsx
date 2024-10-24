@@ -74,7 +74,7 @@ function ProfileDetailBlock({ user, attendInfo }: ProfileDetailBlockProps) {
               ml="auto"
               mr={1}
               size="sm"
-              colorScheme="mintTheme"
+              colorScheme="mint"
               onClick={() => setIsInfoModal(true)}
             >
               정보

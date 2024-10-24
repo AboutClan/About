@@ -28,7 +28,7 @@ export const STEPS_CONTENTS: Step[] = [
       close: "닫기",
 
       next: (
-        <Button as="div" colorScheme="mintTheme">
+        <Button as="div" colorScheme="mint">
           보여주세요!
         </Button>
       ),
@@ -61,7 +61,7 @@ export const STEPS_CONTENTS: Step[] = [
       close: "닫기",
       skip: null,
       next: (
-        <Button as="div" colorScheme="mintTheme">
+        <Button as="div" colorScheme="mint">
           다음
         </Button>
       ),
@@ -82,7 +82,7 @@ export const STEPS_CONTENTS: Step[] = [
 
       skip: null,
       next: (
-        <Button as="div" colorScheme="mintTheme">
+        <Button as="div" colorScheme="mint">
           다음
         </Button>
       ),
@@ -112,7 +112,7 @@ export const STEPS_CONTENTS: Step[] = [
       close: "닫기",
       skip: null,
       next: (
-        <Button as="div" colorScheme="mintTheme">
+        <Button as="div" colorScheme="mint">
           다음
         </Button>
       ),
@@ -144,7 +144,7 @@ export const STEPS_CONTENTS: Step[] = [
       skip: null,
 
       next: (
-        <Button as="div" colorScheme="mintTheme">
+        <Button as="div" colorScheme="mint">
           다음
         </Button>
       ),
@@ -175,7 +175,7 @@ export const STEPS_CONTENTS: Step[] = [
       close: "닫기",
       skip: null,
       next: (
-        <Button as="div" colorScheme="mintTheme">
+        <Button as="div" colorScheme="mint">
           다음
         </Button>
       ),
@@ -209,7 +209,7 @@ export const STEPS_CONTENTS: Step[] = [
       close: "닫기",
       skip: null,
       next: (
-        <Button as="div" colorScheme="mintTheme">
+        <Button as="div" colorScheme="mint">
           다음
         </Button>
       ),
@@ -245,7 +245,7 @@ export const STEPS_CONTENTS: Step[] = [
       close: "닫기",
       skip: null,
       next: (
-        <Button as="div" colorScheme="mintTheme">
+        <Button as="div" colorScheme="mint">
           다음
         </Button>
       ),
@@ -280,7 +280,7 @@ export const STEPS_CONTENTS: Step[] = [
       close: "닫기",
       skip: null,
       next: (
-        <Button as="div" colorScheme="mintTheme">
+        <Button as="div" colorScheme="mint">
           다음
         </Button>
       ),
@@ -315,7 +315,7 @@ export const STEPS_CONTENTS: Step[] = [
       close: "닫기",
       skip: null,
       next: (
-        <Button as="div" colorScheme="mintTheme">
+        <Button as="div" colorScheme="mint">
           다음
         </Button>
       ),
@@ -346,7 +346,7 @@ export const STEPS_CONTENTS: Step[] = [
       close: "닫기",
       skip: null,
       next: (
-        <Button as="div" colorScheme="mintTheme">
+        <Button as="div" colorScheme="mint">
           다음
         </Button>
       ),
@@ -377,7 +377,7 @@ export const STEPS_CONTENTS: Step[] = [
       close: "닫기",
       skip: null,
       next: (
-        <Button as="div" colorScheme="mintTheme">
+        <Button as="div" colorScheme="mint">
           다음
         </Button>
       ),
@@ -408,7 +408,7 @@ export const STEPS_CONTENTS: Step[] = [
       close: "닫기",
       skip: null,
       next: (
-        <Button as="div" colorScheme="mintTheme">
+        <Button as="div" colorScheme="mint">
           다음
         </Button>
       ),
@@ -439,7 +439,7 @@ export const STEPS_CONTENTS: Step[] = [
       close: "닫기",
       skip: null,
       next: (
-        <Button as="div" colorScheme="mintTheme">
+        <Button as="div" colorScheme="mint">
           다음
         </Button>
       ),
@@ -472,7 +472,7 @@ export const STEPS_CONTENTS: Step[] = [
       close: "닫기",
       skip: null,
       next: (
-        <Button as="div" colorScheme="mintTheme">
+        <Button as="div" colorScheme="mint">
           다음
         </Button>
       ),
@@ -497,7 +497,7 @@ export const STEPS_CONTENTS: Step[] = [
       back: null,
       skip: null,
       last: (
-        <Button as="div" colorScheme="mintTheme">
+        <Button as="div" colorScheme="mint">
           확인
         </Button>
       ),
@@ -535,7 +535,7 @@ export const STEPS_FAVORITES_CONTENTS: Step[] = [
       close: "닫기",
       skip: null,
       next: (
-        <Button as="div" colorScheme="mintTheme">
+        <Button as="div" colorScheme="mint">
           다음
         </Button>
       ),

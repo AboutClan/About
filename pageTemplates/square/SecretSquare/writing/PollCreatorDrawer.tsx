@@ -123,7 +123,7 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
               <FormLabel htmlFor="can-multiple" mb="0">
                 복수 선택 가능
               </FormLabel>
-              <Switch id="can-multiple" colorScheme="mintTheme" {...register("canMultiple")} />
+              <Switch id="can-multiple" colorScheme="mint" {...register("canMultiple")} />
             </Flex>
           </VStack>
         </DrawerBody>
@@ -133,7 +133,7 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
             h="46px"
             type="button"
             w="100%"
-            colorScheme="mintTheme"
+            colorScheme="mint"
             onClick={handleCompletePollCreation}
           >
             완료

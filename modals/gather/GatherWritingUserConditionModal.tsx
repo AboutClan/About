@@ -91,7 +91,7 @@ function GatherWritingUserConditionModal({
         </Name>
         <Switch
           mr="var(--gap-1)"
-          colorScheme="mintTheme"
+          colorScheme="mint"
           isChecked={isGenderCondition}
           onChange={(e) => toggleSwitch(e, "gender")}
         />
@@ -105,7 +105,7 @@ function GatherWritingUserConditionModal({
         </Name>
         <Switch
           mr="var(--gap-1)"
-          colorScheme="mintTheme"
+          colorScheme="mint"
           isChecked={isAgeCondition}
           onChange={(e) => toggleSwitch(e, "age")}
         />

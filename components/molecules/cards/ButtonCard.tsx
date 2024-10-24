@@ -23,7 +23,7 @@ export default function ButtonCard({ props: { title, subTitle, buttonText, func 
         </Box>
         <Box fontSize="14px">{subTitle}</Box>
       </Box>
-      <Button colorScheme="mintTheme" size="sm" w="64px">
+      <Button colorScheme="mint" size="sm" w="64px">
         {buttonText}
       </Button>
     </Flex>

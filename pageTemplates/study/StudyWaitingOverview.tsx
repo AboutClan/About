@@ -33,7 +33,7 @@ export default StudyWaitingOverview;
 //       <Button
 //         onClick={() => setIsModal(true)}
 //         alignSelf="flex-end"
-//         colorScheme="mintTheme"
+//         colorScheme="mint"
 //         size="xs"
 //       >
 //         포인트 설명서

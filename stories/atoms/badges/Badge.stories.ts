@@ -14,7 +14,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
   args: {
-    colorScheme: "mintTheme",
+    colorScheme: "mint",
     text: "Button",
   },
 };

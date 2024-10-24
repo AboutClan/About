@@ -125,7 +125,7 @@ export default function BottomFlexDrawer({
             <Button
               w="100%"
               mt="auto"
-              colorScheme="mintTheme"
+              colorScheme="mint"
               size="lg"
               isLoading={drawerOptions?.footer?.loading}
               onClick={drawerOptions?.footer?.func}

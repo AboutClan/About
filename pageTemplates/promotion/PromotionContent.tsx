@@ -23,14 +23,14 @@ function PromotionContent() {
         <Wrapper>
           <Nav>
             <Button
-              colorScheme={isText ? "mintTheme" : "gray"}
+              colorScheme={isText ? "mint" : "gray"}
               onClick={() => setIsText(true)}
               _focus={{ outline: "none" }}
             >
               텍스트
             </Button>
             <Button
-              colorScheme={!isText ? "mintTheme" : "gray"}
+              colorScheme={!isText ? "mint" : "gray"}
               onClick={() => setIsText(false)}
               _focus={{ outline: "none" }}
               w="88px"

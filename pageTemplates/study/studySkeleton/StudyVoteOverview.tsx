@@ -22,7 +22,7 @@ function StudyDateBarSkeleton() {
             </span>
             명이 투표했어요
           </div>
-          <Button size="xs" ml="8px" colorScheme="mintTheme">
+          <Button size="xs" ml="8px" colorScheme="mint">
             친구초대
           </Button>
         </Container>

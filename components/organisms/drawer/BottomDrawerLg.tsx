@@ -93,7 +93,7 @@ export default function BottomDrawerLg({
           <Button
             w="100%"
             mt="auto"
-            colorScheme="mintTheme"
+            colorScheme="mint"
             size="lg"
             isLoading={footer.buttonLoading}
             onClick={footer.onClick}

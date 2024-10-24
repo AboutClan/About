@@ -50,7 +50,7 @@ export default function StatisticsFilterBar({
           }
           isChecked={filterOption.isLocationFilter}
           m="0 8px"
-          colorScheme="mintTheme"
+          colorScheme="mint"
         />
         <Box
           fontWeight={filterOption.isLocationFilter ? "semibold" : "regular"}

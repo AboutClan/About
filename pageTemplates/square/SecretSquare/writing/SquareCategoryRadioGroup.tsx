@@ -20,7 +20,7 @@ function SquareCategoryRadioGroup() {
           render={({ field }) => (
             <RadioGroup {...field} as={Flex} ml="4px">
               {SECRET_SQUARE_CATEGORY.map((category) => (
-                <Radio mr="16px" key={category} colorScheme="mintTheme" value={category} size="sm">
+                <Radio mr="16px" key={category} colorScheme="mint" value={category} size="sm">
                   {category}
                 </Radio>
               ))}

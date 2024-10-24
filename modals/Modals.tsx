@@ -24,7 +24,7 @@ export interface IFooterOptions {
   main?: {
     text?: string;
     func?: () => void;
-    isRedTheme?: boolean;
+    isred?: boolean;
     isLoading?: boolean;
   };
   sub?: {
@@ -176,7 +176,7 @@ export function ModalLayout({
               isFull ? (
                 <Button
                   size="md"
-                  colorScheme={main?.isRedTheme ? "redTheme" : "mintTheme"}
+                  colorScheme={main?.isred ? "red" : "mint"}
                   borderRadius="8px"
                   w="100%"
                   onClick={func}
@@ -192,7 +192,7 @@ export function ModalLayout({
                   h={5}
                   px={2}
                   variant="ghost"
-                  color={main?.isRedTheme ? "var(--color-red)" : "var(--color-mint)"}
+                  color={main?.isred ? "var(--color-red)" : "var(--color-mint)"}
                 >
                   {text}
                 </Button>
@@ -349,7 +349,7 @@ export function ModalFooterOne({
         w={isFull && "100%"}
         bg={isOutline ? "white" : null}
         border={isOutline ? "1.5px solid var(--color-mint)" : null}
-        colorScheme={isFull && !isRed && !isOutline ? "mintTheme" : isOutline ? null : "redTheme"}
+        colorScheme={isFull && !isRed && !isOutline ? "mint" : isOutline ? null : "red"}
         isLoading={isLoading}
         onClick={onClick}
       >
@@ -375,7 +375,7 @@ export function ModalBodyNavTwo({
   return (
     <Flex w="100%" direction="column" h="100%" pb={2} justifyContent="space-around">
       <Button
-        colorScheme="mintTheme"
+        colorScheme="mint"
         marginBottom="var(--gap-3)"
         size="lg"
         h="46px"

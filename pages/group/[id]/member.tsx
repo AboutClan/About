@@ -1,6 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
@@ -82,7 +82,7 @@ export default function Member() {
                   }}
                   rightComponent={
                     who.user?.uid !== session?.user.uid ? (
-                      <Button onClick={() => setDeleteUser(who)} colorScheme="redTheme" size="sm">
+                      <Button onClick={() => setDeleteUser(who)} colorScheme="red" size="sm">
                         추방
                       </Button>
                     ) : null

@@ -37,7 +37,7 @@ function NewTwoButtonRow({ leftProps, rightProps }: NewTwoButtonRowProps) {
         flex={1}
         size="lg"
         h="48px"
-        colorScheme="mintTheme"
+        colorScheme="mint"
         borderRadius="12px"
         boxShadow=" 0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
         leftIcon={rightProps?.icon}

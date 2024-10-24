@@ -26,7 +26,7 @@ function GatherWritingConditionLocation({ setLocation }: IGatherWritingCondition
         <Button
           size="sm"
           key={item}
-          colorScheme={buttonType === item ? "mintTheme" : "gray"}
+          colorScheme={buttonType === item ? "mint" : "gray"}
           mr="var(--gap-2)"
           onClick={() => setButtonType(item)}
         >

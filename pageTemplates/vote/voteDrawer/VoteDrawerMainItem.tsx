@@ -57,7 +57,7 @@ function VoteDrawerMainItem({
         fontSize="14px"
         aspectRatio={1}
         h="100%"
-        colorScheme="mintTheme"
+        colorScheme="mint"
         onClick={(e) => handleSubmit(e)}
       >
         <Flex direction="column" h="100%" py="8px" justify="space-between" align="center">
