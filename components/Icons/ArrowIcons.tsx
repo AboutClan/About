@@ -1,4 +1,4 @@
-export function ShortArrowIcon({ dir }: { dir: "right" | "bottom" }) {
+export function ShortArrowIcon({ dir }: { dir: "right" | "bottom" | "top" }) {
   return dir === "right" ? (
     <svg xmlns="http://www.w3.org/2000/svg" width="13" height="12" viewBox="0 0 13 12" fill="none">
       <path
@@ -17,7 +17,16 @@ export function ShortArrowIcon({ dir }: { dir: "right" | "bottom" }) {
         fill="#00C2B3"
       />
     </svg>
-  ) : null;
+  ) : (
+    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M1.95 7.6876C1.95 7.8601 2.0175 8.0326 2.145 8.1676C2.2715 8.29355 2.44274 8.36426 2.62125 8.36426C2.79976 8.36426 2.971 8.29355 3.0975 8.1676L6 5.2651L8.895 8.1676C9.0215 8.29355 9.19274 8.36426 9.37125 8.36426C9.54976 8.36426 9.721 8.29355 9.8475 8.1676C9.97345 8.0411 10.0442 7.86986 10.0442 7.69135C10.0442 7.51284 9.97345 7.3416 9.8475 7.2151L6.4725 3.8401C6.346 3.71415 6.17476 3.64344 5.99625 3.64344C5.81774 3.64344 5.6465 3.71415 5.52 3.8401L2.145 7.2151C2.0175 7.3426 1.95 7.5151 1.95 7.6876Z"
+        fill="#00C2B3"
+      />
+    </svg>
+  );
 }
 
 export function TurnArrowIcon() {

@@ -9,9 +9,10 @@ import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
 interface StudyPageDrawerHeaderProps {
   date: string;
+  isDrawerUp: boolean;
 }
 
-function StudyPageDrawerHeader({ date }: StudyPageDrawerHeaderProps) {
+function StudyPageDrawerHeader({ date, isDrawerUp }: StudyPageDrawerHeaderProps) {
   const [isCalendarModal, setIsCalendarModal] = useState(false);
 
   const englishDayjs = dayjs(date).locale("en");
@@ -23,7 +24,7 @@ function StudyPageDrawerHeader({ date }: StudyPageDrawerHeaderProps) {
           title={dayjsToFormat(dayjs(date), "YYYY년 M월 D일")}
           subTitle={dayjsToFormat(englishDayjs, "MMMM")}
         >
-          <Box flex={1} ml={1}>
+          <Box flex={1} ml={1.5}>
             <Button
               display="flex"
               justifyItems="center"
@@ -33,7 +34,7 @@ function StudyPageDrawerHeader({ date }: StudyPageDrawerHeaderProps) {
               color="var(--color-mint)"
               onClick={() => setIsCalendarModal(true)}
             >
-              <ShortArrowIcon dir="bottom" />
+              <ShortArrowIcon dir={isDrawerUp ? "bottom" : "top"} />
             </Button>
           </Box>
         </SectionHeader>

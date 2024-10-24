@@ -212,7 +212,6 @@ export default function StudyPage() {
   }, [centerLocation, locationValue, isVoteDrawer]);
 
   const handleMarker = (id: string, type: "vote") => {
-  
     if (!id || !studyVoteData) return;
 
     if (type === "vote") {
@@ -265,7 +264,11 @@ export default function StudyPage() {
           resizeToggle={isVoteDrawer}
         />
       </Box>
-      <StudyControlButton date={ date} setIsVoteDrawer={setIsVoteDrawer} setIsDrawerUp={setIsDrawerUp} />
+      <StudyControlButton
+        date={date}
+        setIsVoteDrawer={setIsVoteDrawer}
+        setIsDrawerUp={setIsDrawerUp}
+      />
       <StudyPageDrawer
         studyVoteData={studyVoteData}
         location={locationValue}
