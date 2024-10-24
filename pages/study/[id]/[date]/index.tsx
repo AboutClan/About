@@ -103,6 +103,7 @@ export default function Page() {
             </Slide>
           </Box>
           <StudyNavigation
+            studyVoteData={studyVoteData}
             locationEn={locationParam}
             date={date}
             myStudyInfo={getMyStudyInfo(mergeParticipation, session?.user.uid)}
@@ -110,6 +111,7 @@ export default function Page() {
             placeInfo={{ name, address, latitude, longitude }}
             type={type}
             status={mergeParticipation?.status}
+            mergeParticipations={mergeParticipations}
           />
           {isInviteModal && <StudyInviteModal setIsModal={setIsInviteModal} place={place} />}
         </>

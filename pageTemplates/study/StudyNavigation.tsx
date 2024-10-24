@@ -1,8 +1,8 @@
 import { Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
 import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
@@ -10,7 +10,11 @@ import IconTextColButton from "../../components/atoms/buttons/IconTextColButton"
 import { XCircleIcon } from "../../components/Icons/CircleIcons";
 import { ClockIcon } from "../../components/Icons/ClockIcons";
 import Slide from "../../components/layouts/PageSlide";
-import { BottomFlexDrawerOptions } from "../../components/organisms/drawer/BottomFlexDrawer";
+import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
+import PickerRowButton from "../../components/molecules/PickerRowButton";
+import BottomFlexDrawer, {
+  BottomFlexDrawerOptions,
+} from "../../components/organisms/drawer/BottomFlexDrawer";
 import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
@@ -20,16 +24,23 @@ import {
   useRealtimeVoteMutation,
 } from "../../hooks/realtime/mutations";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";
+import { setStudyToThumbnailInfo } from "../../libs/study/setStudyToThumbnailInfo";
 import { ModalLayout } from "../../modals/Modals";
 import StudyAbsentModal from "../../modals/study/StudyAbsentModal";
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
-import { StudyMemberProps, StudyStatus } from "../../types/models/studyTypes/studyDetails";
+import {
+  StudyDailyInfoProps,
+  StudyMemberProps,
+  StudyMergeParticipationProps,
+  StudyParticipationProps,
+  StudyStatus,
+} from "../../types/models/studyTypes/studyDetails";
 import { IAbsence, IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
 import { LocationEn } from "../../types/services/locationTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
-
+import { DEFAULT_SUB_PLACE_CNT, RECOMMENDATION_KM, sortByDistanceSub } from "../vote/VoteDrawer";
 interface IStudyNavigation {
   date: string;
 
@@ -39,6 +50,8 @@ interface IStudyNavigation {
   type: "private" | "public" | null;
   status: StudyStatus;
   locationEn: LocationEn;
+  studyVoteData: StudyDailyInfoProps;
+  mergeParticipations: StudyMergeParticipationProps[];
 }
 
 export type StudyModalType = "timeRullet";
@@ -48,10 +61,12 @@ type UserStudyStatus = "pending" | "voting" | "attended" | "cancelled" | "expire
 function StudyNavigation({
   locationEn,
   placeInfo,
+  studyVoteData,
   myStudyInfo,
   absences,
   status,
   type: studyType,
+  mergeParticipations,
 }: IStudyNavigation) {
   const router = useRouter();
   const toast = useToast();
@@ -67,10 +82,11 @@ function StudyNavigation({
   const myStudyParticipation = useRecoilValue(myStudyParticipationState);
 
   const [modalType, setModalType] = useState<StudyModalType>();
-
+  const [subArr, setSubArr] = useState<any[]>([]);
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
   const [isCancelModal, setIsCancelModal] = useState(false);
   const [isAbsentModal, setIsAbsentModal] = useState(false);
+  const [isSubVoteDrawer, setIsSubVoteDrawer] = useState(false);
   const [alertModalInfo, setAlertModalInfo] = useState<IAlertModalOptions>();
 
   const { mutate: realTimeStudyVote, isLoading: isLoading2 } = useRealtimeVoteMutation({
@@ -185,6 +201,17 @@ function StudyNavigation({
     }
     handleVote(voteTime);
   };
+  const findMyPickMainPlace = studyVoteData?.participations.find((par) => par.place._id === id);
+
+  useEffect(() => {
+    if (!studyVoteData || !isSubVoteDrawer) return;
+    const temp = [];
+    const sortedSub = sortByDistanceSub(studyVoteData, findMyPickMainPlace);
+    sortedSub.forEach((par, idx) => {
+      if (idx < DEFAULT_SUB_PLACE_CNT && par.place.distance <= RECOMMENDATION_KM) temp.push(par);
+    });
+    setSubArr(temp);
+  }, [studyVoteData, isSubVoteDrawer]);
 
   const drawerOptions: BottomFlexDrawerOptions = {
     header: {
@@ -192,14 +219,49 @@ function StudyNavigation({
       subTitle: "예상 시작 시간과 종료 시간을 선택해 주세요!",
     },
     footer: {
-      text: myStudyInfo ? "시간 변경" : "신청 완료",
+      text: myStudyInfo ? "시간 변경" : date !== dayjsToStr(dayjs()) ? "다 음" : "신청 완료",
       func: myStudyInfo
         ? studyType === "public"
           ? () => handleTimeChange(voteTime)
           : () => handleRealTimeTimeChange(voteTime)
-        : () => onClickStudyVote(voteTime),
+        : date !== dayjsToStr(dayjs())
+          ? () => setIsSubVoteDrawer(true)
+          : () => onClickStudyVote(voteTime),
       loading: isLoading1 || isLoading2,
     },
+  };
+  const drawerOptions2: BottomFlexDrawerOptions = {
+    header: {
+      title: "스터디 참여 시간 선택",
+      subTitle: "예상 시작 시간과 종료 시간을 선택해 주세요!",
+    },
+    footer: {
+      text: myStudyInfo ? "시간 변경" : date !== dayjsToStr(dayjs()) ? "다 음" : "신청 완료",
+      func: myStudyInfo
+        ? studyType === "public"
+          ? () => handleTimeChange(voteTime)
+          : () => handleRealTimeTimeChange(voteTime)
+        : date !== dayjsToStr(dayjs())
+          ? () => setIsSubVoteDrawer(false)
+          : () => onClickStudyVote(voteTime),
+      loading: isLoading1 || isLoading2,
+    },
+  };
+  console.log(findMyPickMainPlace);
+
+  const convertData = (data: StudyParticipationProps): StudyThumbnailCardProps => {
+    const A = setStudyToThumbnailInfo(
+      [data],
+      null,
+      { lat: findMyPickMainPlace?.place.latitude, lon: findMyPickMainPlace?.place?.longitude },
+      null,
+      true,
+      null,
+      null,
+      null,
+    );
+    console.log("A", A);
+    return A[0];
   };
 
   return (
@@ -286,6 +348,38 @@ function StudyNavigation({
         >
           스터디 장소를 변경해 보는 건 어떨까요?
         </ModalLayout>
+      )}
+      {isSubVoteDrawer && (
+        <BottomFlexDrawer
+          isOverlay
+          isHideBottom
+          isDrawerUp
+          zIndex={5000}
+          height={400}
+          setIsModal={setIsSubVoteDrawer}
+          drawerOptions={drawerOptions2}
+        >
+          <PickerRowButton
+            {...convertData(findMyPickMainPlace)}
+            onClick={() => handleClickPlaceButton(id)}
+            pickType={"main"}
+          />
+          {/* {subArr?.map((props, idx) => {
+            const id = props.id;
+            console.log(props);
+            return (
+              <Box key={idx} mb={3}>
+                2
+                <PickerRowButton
+                  place={props.place}
+                  participantCnt={props.members.length}
+                  onClick={() => handleClickPlaceButton(id)}
+                  pickType={"second"}
+                />
+              </Box>
+            );
+          })} */}
+        </BottomFlexDrawer>
       )}
     </>
   );

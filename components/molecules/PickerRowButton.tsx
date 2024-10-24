@@ -4,15 +4,16 @@ import styled from "styled-components";
 import { TurnArrowIcon } from "../Icons/ArrowIcons";
 import { CheckCircleIcon } from "../Icons/CircleIcons";
 import { UserIcon } from "../Icons/UserIcons";
-import { STUDY_MAX_CNT,StudyThumbnailCardProps } from "./cards/StudyThumbnailCard";
+import { StudyThumbnailCardProps, STUDY_MAX_CNT } from "./cards/StudyThumbnailCard";
 import PlaceImage from "./PlaceImage";
 
-interface PickerRowButtonProps extends Partial<StudyThumbnailCardProps> {
+export interface PickerRowButtonProps extends Partial<StudyThumbnailCardProps> {
   pickType: "main" | "first" | "second" | null;
   onClick: () => void;
 }
 
 function PickerRowButton({ onClick, pickType, place, participantCnt, id }: PickerRowButtonProps) {
+  console.log(24, place);
   return (
     <Button
       h={pickType === "second" ? "68px" : "92px"}

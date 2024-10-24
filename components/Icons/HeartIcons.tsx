@@ -42,7 +42,7 @@ export function HeartIcon({
                 : "var(--color-orange)"
             : "white"
         }
-        strokeWidth="0.5"
+        strokeWidth="1"
       />
     </svg>
   );
