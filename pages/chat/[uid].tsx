@@ -153,15 +153,16 @@ function Uid() {
         h="60px"
         borderBottom="var(--border)"
         position="fixed"
-        marginBottom={`calc(16px + ${iPhoneNotchSize()}px)`}
+        pb={`calc(16px + ${iPhoneNotchSize()}px)`}
         borderTop="var(--border)"
         bottom="0"
         flex={1}
         w="100%"
-        p="16px"
         maxW="var(--max-width)"
       >
-        <UserCommentInput user={userInfo} onSubmit={onSubmit} type="message" initialFocus />
+        <Box py={4} borderBottom="var(--border-main)" px={5}>
+          <UserCommentInput user={userInfo} onSubmit={onSubmit} type="message" initialFocus />
+        </Box>
       </Box>
     </>
   );
