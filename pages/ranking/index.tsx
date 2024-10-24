@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
-import RuleIcon from "../../components/Icons/RuleIcon";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import { useAdminUsersLocationControlQuery } from "../../hooks/admin/quries";
@@ -109,9 +108,7 @@ function Ranking() {
 
   return (
     <>
-      <Header title="ABOUT 랭킹">
-        <RuleIcon setIsModal={setIsModal} />
-      </Header>
+      <Header title="ABOUT 랭킹">{/* <RuleIcon setIsModal={setIsModal} /> */}</Header>
       <Slide isNoPadding>
         <Layout>
           <RankingOverview myRankInfo={usersRanking?.mine} />
