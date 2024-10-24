@@ -44,18 +44,19 @@ export default function Page() {
       enabled: !!date && !!locationParam,
     },
   );
-
+  console.log(23, studyVoteData);
   useEffect(() => {
     if (!studyVoteData) return;
     const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
 
     setMyStudyParticipation(findMyStudyParticipation);
   }, [studyVoteData]);
-
+  console.log(123, locationParam);
   const mergeParticipations = convertStudyToParticipations(
     studyVoteData,
     convertLocationLangTo(locationParam, "kr"),
   );
+  console.log(5, studyVoteData, mergeParticipations);
 
   const mergeParticipation = mergeParticipations?.find(
     (participation) => participation.place._id === id,
@@ -71,7 +72,7 @@ export default function Page() {
   const members = mergeParticipation?.members;
 
   const absences = studyVoteData?.participations.find((par) => par.place._id === id)?.absences;
-
+  console.log(1234, mergeParticipation);
   return (
     <>
       {mergeParticipation && (

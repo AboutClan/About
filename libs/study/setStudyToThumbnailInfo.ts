@@ -15,12 +15,12 @@ export const setStudyToThumbnailInfo = (
   currentLocation: { lat: number; lon: number },
   urlDateParam: string | null,
   imagePriority: boolean,
-  location?: ActiveLocation,
+  location: ActiveLocation,
   votePlaceProps?: { main: string; sub: string[] },
   imageCache?: Map<string, string>,
 ): StudyThumbnailCardProps[] => {
   if (!studyData) return [];
-
+  console.log(12312313, location);
   // 카드 데이터 생성
   const cardColData: StudyThumbnailCardProps[] = studyData.map((data, idx) => {
     const placeInfo = convertMergePlaceToPlace(data.place);

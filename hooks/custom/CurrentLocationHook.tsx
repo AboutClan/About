@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 
 import { CoordinateProps } from "../../types/common";
-import { useToast } from "./CustomToast";
 
 export function useCurrentLocation() {
-  const toast = useToast();
+  // const toast = useToast();
   const [coordinate, setCoordinate] = useState<CoordinateProps>(null);
 
   useEffect(() => {
@@ -15,7 +14,7 @@ export function useCurrentLocation() {
     };
 
     const handleError = (error: GeolocationPositionError) => {
-      toast("error", `위치 정보를 가져오는 데 실패했습니다`);
+      // toast("error", `위치 정보를 가져오는 데 실패했습니다`);
       console.error("위치 오류: ", error);
     };
 
