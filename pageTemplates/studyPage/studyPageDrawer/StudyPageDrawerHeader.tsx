@@ -5,14 +5,16 @@ import { useState } from "react";
 import SectionHeader from "../../../components/atoms/SectionHeader";
 import { ShortArrowIcon } from "../../../components/Icons/ArrowIcons";
 import DateCalendarModal from "../../../modals/aboutHeader/DateCalendarModal";
+import { DispatchString } from "../../../types/hooks/reactTypes";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
 interface StudyPageDrawerHeaderProps {
   date: string;
+  setDate: DispatchString;
   isDrawerUp: boolean;
 }
 
-function StudyPageDrawerHeader({ date, isDrawerUp }: StudyPageDrawerHeaderProps) {
+function StudyPageDrawerHeader({ date, setDate, isDrawerUp }: StudyPageDrawerHeaderProps) {
   const [isCalendarModal, setIsCalendarModal] = useState(false);
 
   const englishDayjs = dayjs(date).locale("en");
@@ -39,7 +41,9 @@ function StudyPageDrawerHeader({ date, isDrawerUp }: StudyPageDrawerHeaderProps)
           </Box>
         </SectionHeader>
       </Box>
-      {isCalendarModal && <DateCalendarModal date={date} setIsModal={setIsCalendarModal} />}
+      {isCalendarModal && (
+        <DateCalendarModal date={date} setDate={setDate} setIsModal={setIsCalendarModal} />
+      )}
     </>
   );
 }
