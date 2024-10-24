@@ -13,8 +13,8 @@ export const convertStudyToParticipations = (
   studyVoteData: StudyDailyInfoProps,
   location: ActiveLocation,
 ): StudyMergeParticipationProps[] => {
+  console.log(24, location);
   if (!studyVoteData || !location) return;
-
   const temp: {
     place: PlaceInfoProps;
     status: StudyStatus;

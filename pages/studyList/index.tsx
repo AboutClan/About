@@ -31,6 +31,7 @@ export default function StudyList() {
     currentLocation,
     date,
     true,
+    locationKr,
   );
 
   return (
