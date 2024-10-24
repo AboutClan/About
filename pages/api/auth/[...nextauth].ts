@@ -124,7 +124,7 @@ export const authOptions: NextAuthOptions = {
           name: token.name,
           role: token.role,
           isActive: token.isActive,
-          location: token.location,
+          location: token.location || "수원",
           profileImage: token.profileImage,
         };
       }
@@ -162,7 +162,7 @@ export const authOptions: NextAuthOptions = {
                 refresh_token: account.refresh_token,
                 expires_at: account.expires_at,
                 refresh_token_expires_in: account.refresh_token_expires_in,
-                location: account.location || user.location,
+                location: account.location || user.location || "수원",
               },
             },
           );
@@ -177,7 +177,7 @@ export const authOptions: NextAuthOptions = {
             profileImage: user.profileImage,
             role: user.role,
             isActive: user.isActive,
-            location: account.location || user.location,
+            location: account.location || user.location || "수원",
           };
 
           return newToken;
