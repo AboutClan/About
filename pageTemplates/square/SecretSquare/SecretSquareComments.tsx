@@ -8,6 +8,7 @@ import UserCommentBlock from "../../../components/molecules/UserCommentBlock";
 import UserCommentInput from "../../../components/molecules/UserCommentInput";
 import { SECRET_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
 import { useCommentMutation, useSubCommentMutation } from "../../../hooks/common/mutations";
+import { useKeypadHeight } from "../../../hooks/custom/useKeypadHeight";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { UserCommentProps } from "../../../types/components/propTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
@@ -23,6 +24,7 @@ interface SecretSquareCommentsProps {
 function SecretSquareComments({ author, comments, refetch }: SecretSquareCommentsProps) {
   const router = useRouter();
   const { data: userInfo } = useUserInfoQuery();
+  const keypadHeight = useKeypadHeight();
 
   const squareId = router.query.id as string;
 
@@ -123,8 +125,9 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
         flex={1}
         w="100%"
         backgroundColor="white"
-        p="16px"
-        marginBottom={`calc(16px + ${iPhoneNotchSize()}px)`}
+        px="16px"
+        pt="16px"
+        pb={`calc(16px + ${keypadHeight === 0 ? iPhoneNotchSize() : 0}px)`}
         borderBottom="var(--border)"
         maxW="var(--max-width)"
       >
