@@ -253,17 +253,20 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo, date }: StudyInFoDrawerPro
                   ) : (
                     <CheckCircleIcon size="md" isFill />
                   ),
-
+                isDisabled: dayjsToStr(dayjs()) !== date,
                 children: (
                   <div
-                    onClick={() =>
-                      handleStudyActionButton(
-                        status === "attendance"
-                          ? "comment"
-                          : status === "notParticipation"
-                            ? "vote"
-                            : "attend",
-                      )
+                    onClick={
+                      dayjsToStr(dayjs()) !== date
+                        ? null
+                        : () =>
+                            handleStudyActionButton(
+                              status === "attendance"
+                                ? "comment"
+                                : status === "notParticipation"
+                                  ? "vote"
+                                  : "attend",
+                            )
                     }
                   >
                     {status === "attendance"
