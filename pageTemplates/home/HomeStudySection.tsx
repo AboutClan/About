@@ -51,7 +51,6 @@ function HomeStudySection() {
     setMyStudyParticipation(findMyStudyParticipation);
   }, [studyVoteData, session]);
 
-  console.log(date);
   const tabOptionsArr: ITabNavOptions[] = [
     {
       text: dayjsToKr(isLeft ? dayjs(date) : dayjs(date).subtract(1, "day")),
