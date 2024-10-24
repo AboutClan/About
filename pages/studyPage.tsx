@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -79,7 +79,7 @@ export default function StudyPage() {
   const [isVoteDrawerFirst, setIsVoteDrawerFirst] = useState(true);
 
   const [myStudyParticipation, setMyStudyParticipation] = useRecoilState(myStudyParticipationState);
-  const [isDrawerUp, setIsDrawerUp] = useState(myStudyParticipation ? false : true);
+  const [isDrawerUp, setIsDrawerUp] = useState(false);
 
   const { data: userInfo } = useUserInfoQuery();
   const { data: studyVoteData } = useStudyVoteQuery(date, locationValue, {
@@ -122,7 +122,6 @@ export default function StudyPage() {
       const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
       setMyStudyParticipation(findMyStudyParticipation);
       if (findMyStudyParticipation) {
-        setIsDrawerUp(false);
         const changeLocation = getLocationByCoordinates(
           findMyStudyParticipation.place.latitude,
           findMyStudyParticipation.place.longitude,
