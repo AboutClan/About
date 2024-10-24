@@ -2,6 +2,7 @@ import { Badge, Box, Button, Flex, Grid, GridItem } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect } from "react";
 import { STUDY_MAIN_IMAGES } from "../../../assets/images/studyMain";
 import { AboutIcon } from "../../../components/atoms/AboutIcons";
 import IconRowBlock from "../../../components/atoms/blocks/IconRowBlock";
@@ -14,14 +15,18 @@ import { RankingNumIcon } from "../../../components/Icons/RankingIcons";
 import { StarIcon } from "../../../components/Icons/StarIcons";
 import Slide from "../../../components/layouts/PageSlide";
 import ProfileCommentCard from "../../../components/molecules/cards/ProfileCommentCard";
+import { STUDY_RECORD } from "../../../constants/keys/localStorage";
 import { STUDY_STATUS_TO_BADGE } from "../../../constants/studyConstants";
 import { useStudyVoteOneQuery } from "../../../hooks/study/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { useCollectionAlphabetQuery } from "../../../hooks/user/sub/collection/queries";
-import { convertMergePlaceToPlace } from "../../../libs/study/convertMergePlaceToPlace";
 import PointScoreBar from "../../../pageTemplates/point/pointScore/PointScoreBar";
 import StudyHeader from "../../../pageTemplates/study/StudyHeader";
 import { changeAlphabet } from "../../../pageTemplates/user/userCollection";
+import {
+  RealTimeInfoProps,
+  StudyParticipationProps,
+} from "../../../types/models/studyTypes/studyDetails";
 import { dayjsToFormat, dayjsToTime } from "../../../utils/dateTimeUtils";
 import { getRandomIdx } from "../../../utils/mathUtils";
 function StudyResultPage() {
@@ -34,43 +39,67 @@ function StudyResultPage() {
   const { data: collectionInfo } = useCollectionAlphabetQuery();
   console.log(42, collectionInfo);
 
-  const { data: studyVoteOne } = useStudyVoteOneQuery(
-    "2024-10-19" || dateParam,
+  useEffect(() => {
+    localStorage.setItem(STUDY_RECORD, null);
+  }, []);
 
-    {
-      enabled: !!dateParam,
-    },
-  );
+  const { data: studyVoteOne } = useStudyVoteOneQuery(dateParam, {
+    enabled: !!dateParam,
+  });
+  console.log(234, studyVoteOne);
 
-  const findStudy = studyVoteOne?.[0];
+  const findRealTime = studyVoteOne?.[0] as RealTimeInfoProps;
+
+  const findParticipation = studyVoteOne as StudyParticipationProps;
+  const findParStudy = findParticipation?.members?.find((who) => who.user.uid === userInfo?.uid);
+
+  const commonAttendanceInfo = findRealTime || findParStudy;
+
   const alphabet =
     collectionInfo?.stamps === 0
       ? collectionInfo?.collects?.[collectionInfo?.collects?.length - 1]
       : null;
 
-  console.log(23, alphabet, findStudy);
-
-  const place = convertMergePlaceToPlace(findStudy?.place);
-  const { name, address, coverImage, latitude, brand, longitude, time, type } = place || {};
-
+  console.log(13, studyVoteOne);
   //스터디 기본 이미지
   const { text: badgeText, colorScheme: badgeColorScheme } =
-    STUDY_STATUS_TO_BADGE[findStudy?.status] || {};
+    STUDY_STATUS_TO_BADGE[findRealTime?.status || findParticipation?.status] || {};
 
-  const studyTime = dayjs(findStudy?.time.end).diff(dayjs(findStudy?.attendanceInfo?.arrived), "m");
-  const getStudyTime = `${Math.floor(studyTime / 60)}시간 ${studyTime % 60}분`;
-  const members = studyVoteOne?.filter(
-    (one) => one.place.name === findStudy?.place.name && one.user.uid !== userInfo?.uid,
+  const studyTime = dayjs(commonAttendanceInfo?.time.end).diff(
+    dayjs(commonAttendanceInfo?.attendanceInfo?.arrived),
+    "m",
   );
 
-  const gridProps = findStudy && [
+  const getStudyTime = `${Math.floor(studyTime / 60)}시간 ${studyTime % 60}분`;
+  const members =
+    findParticipation?.members?.filter((who) => who.user.uid !== userInfo?.uid) ||
+    (studyVoteOne as RealTimeInfoProps[])?.filter(
+      (one) => one.place.name === findRealTime?.place.name && one.user.uid !== userInfo?.uid,
+    );
+
+  const lateTime =
+    dayjs(commonAttendanceInfo?.attendanceInfo.arrived).diff(
+      dayjs(commonAttendanceInfo?.time?.start),
+      "m",
+    ) > 0
+      ? `${dayjs(commonAttendanceInfo?.attendanceInfo.arrived).diff(
+          dayjs(commonAttendanceInfo?.time?.start),
+          "m",
+        )}분 지각`
+      : "빠른 출석";
+
+  const accumulationHour =
+    userInfo &&
+    `${Math.ceil(userInfo.weekStudyAccumulationMinutes / 60)}시간 ${userInfo.weekStudyAccumulationMinutes % 60}분`;
+
+  const gridProps = commonAttendanceInfo && [
     {
       title: "목표 시간",
-      text: `${dayjsToTime(dayjs(findStudy.time.start))} ~ ${dayjsToTime(dayjs(findStudy.time.end))}`,
+      text: `${dayjsToTime(dayjs(commonAttendanceInfo.time.start))} ~ ${dayjsToTime(dayjs(commonAttendanceInfo.time.end))}`,
     },
     {
       title: "출석 체크",
-      text: `${dayjsToTime(dayjs(findStudy.attendanceInfo.arrived))}(${dayjs(findStudy?.attendanceInfo.arrived).diff(dayjs(findStudy?.time?.start), "m")}분 지각)`,
+      text: `${dayjsToTime(dayjs(commonAttendanceInfo.attendanceInfo.arrived))}(${lateTime})`,
     },
     {
       title: "달성 시간",
@@ -78,12 +107,12 @@ function StudyResultPage() {
     },
     {
       title: "이번 주 누적 시간",
-      text: `${Math.ceil(userInfo.weekStudyAccumulationMinutes / 60)}시간 ${userInfo.weekStudyAccumulationMinutes % 60}분`,
+      text: accumulationHour,
     },
   ];
 
   const targetHour = userInfo?.weekStudyTragetHour;
- 
+
   return (
     <>
       <StudyHeader brand="스터디 결과" />
@@ -93,7 +122,7 @@ function StudyResultPage() {
             <Box position="relative" w="full" aspectRatio={1 / 1}>
               <Image
                 src={
-                  findStudy.attendanceInfo?.attendanceImage ||
+                  commonAttendanceInfo.attendanceInfo?.attendanceImage ||
                   STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length)]
                 }
                 fill
@@ -143,7 +172,7 @@ function StudyResultPage() {
               >
                 <Box color="gray.500">누적 스터디 시간</Box>
                 <Box color="blue" fontWeight="bold">
-                  {getStudyTime}
+                  {accumulationHour}
                 </Box>
               </Flex>
             </Flex>

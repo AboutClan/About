@@ -140,7 +140,6 @@ function Configuration() {
   const saveTogetherMembers = () => {
     const record = {
       date: dayjsToStr(dayjs()),
-      isChecked: false,
     };
     localStorage.setItem(STUDY_RECORD, JSON.stringify(record));
   };

@@ -37,20 +37,26 @@ export default function StatisticsFilterBar({
         setValue={setValue}
         isBorder={true}
       />
-      <Flex align="center">
-        <Box color={!filterOption.isLocationFilter ? "var(--gray-500)" : "var(--gray-800)"}>
-          {session?.user.location}
+      <Flex align="center" fontSize="12px">
+        <Box
+          fontWeight={!filterOption.isLocationFilter ? "semibold" : "regular"}
+          color={filterOption.isLocationFilter ? "var(--gray-500)" : "mint"}
+        >
+          전체
         </Box>
         <Switch
           onChange={() =>
             setFilterOption((old) => ({ ...old, isLocationFilter: !old.isLocationFilter }))
           }
-          isChecked={!filterOption.isLocationFilter}
+          isChecked={filterOption.isLocationFilter}
           m="0 8px"
           colorScheme="mintTheme"
         />
-        <Box color={filterOption.isLocationFilter ? "var(--gray-500)" : "var(--gray-800)"}>
-          전체
+        <Box
+          fontWeight={filterOption.isLocationFilter ? "semibold" : "regular"}
+          color={!filterOption.isLocationFilter ? "var(--gray-500)" : "mint"}
+        >
+          {session?.user.location}
         </Box>
       </Flex>
     </Flex>

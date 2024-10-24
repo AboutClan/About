@@ -19,12 +19,13 @@ import StatisticsFilterBar from "../../pageTemplates/ranking/StatisticsFilterBar
 import StatisticsMine from "../../pageTemplates/ranking/StatisticsMine";
 import StatisticsTabNav from "../../pageTemplates/ranking/StatisticsTabNav";
 
-export type RankingCategoryProp = "활동 랭킹" | "스터디 랭킹" | "누적 랭킹";
-export type RankingCategorySource = "monthScore" | "cnt" | "score";
+export type RankingCategoryProp = "주간 랭킹" | "활동 랭킹" | "스터디 랭킹" | "누적 랭킹";
+export type RankingCategorySource = "monthScore" | "cnt" | "score" | "weekStudyAccumulationMinutes";
 
-const CATEGORY_ARR: RankingCategoryProp[] = ["활동 랭킹", "스터디 랭킹", "누적 랭킹"];
+const CATEGORY_ARR: RankingCategoryProp[] = ["주간 랭킹", "활동 랭킹", "스터디 랭킹", "누적 랭킹"];
 
 const CATEGORY_SOURCE: { [key in RankingCategoryProp]: RankingCategorySource } = {
+  "주간 랭킹": "weekStudyAccumulationMinutes",
   "활동 랭킹": "monthScore",
   "스터디 랭킹": "cnt",
   "누적 랭킹": "score",
@@ -63,8 +64,8 @@ function Ranking() {
   const [usersRanking, setUsersRanking] = useState<IUserRankings>({ users: [], mine: null });
   const [tabValue, setTabValue] = useState<"전체 랭킹" | "내 통계">("전체 랭킹");
   const [filterOptions, setFilterOptions] = useState<RankingFilterOptionProps>({
-    category: "활동 랭킹",
-    isLocationFilter: false,
+    category: "주간 랭킹",
+    isLocationFilter: true,
   });
   const [isModal, setIsModal] = useState(false);
 
@@ -75,7 +76,7 @@ function Ranking() {
     dayjs(),
     false,
     true,
-    !filterOptions.isLocationFilter ? null : session?.user.location,
+    filterOptions.isLocationFilter ? null : session?.user.location,
     {
       onError: () => typeToast("error"),
       enabled: filterOptions.category === "스터디 랭킹" && !!session,
@@ -102,7 +103,7 @@ function Ranking() {
             ...record.userSummary,
             cnt: record.cnt,
           }));
-
+    console.log(42, users);
     setUsersRanking(sortUserRanking(users, categorySource, session?.user.uid));
   }, [session?.user, attendRecords, filterOptions, usersAll]);
 

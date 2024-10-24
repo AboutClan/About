@@ -17,6 +17,7 @@ import {
   RealTimeInfoProps,
   StudyDailyInfoProps,
   StudyMemberProps,
+  StudyParticipationProps,
   StudyPlaceProps,
 } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
@@ -63,11 +64,11 @@ export const useStudyVoteQuery = (
     options,
   );
 
-export const useStudyVoteOneQuery = (date: string, options?: QueryOptions<RealTimeInfoProps[]>) =>
-  useQuery<RealTimeInfoProps[], AxiosError, RealTimeInfoProps[]>(
+export const useStudyVoteOneQuery = (date: string, options?: QueryOptions<StudyParticipationProps|RealTimeInfoProps[]>) =>
+  useQuery<StudyParticipationProps|RealTimeInfoProps[], AxiosError, StudyParticipationProps|RealTimeInfoProps[]>(
     [STUDY_VOTE, date],
     async () => {
-      const res = await axios.get<RealTimeInfoProps[]>(`${SERVER_URI}/vote/${date}/one`, {});
+      const res = await axios.get<StudyParticipationProps|RealTimeInfoProps[]>(`${SERVER_URI}/vote/${date}/one`, {});
       return res.data;
     },
     options,

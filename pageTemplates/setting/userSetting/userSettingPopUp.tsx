@@ -21,6 +21,7 @@ import LastWeekAttendPopUp from "../../../modals/pop-up/LastWeekAttendPopUp";
 import LocationRegisterPopUp from "../../../modals/pop-up/LocationRegisterPopUp";
 import StudyChallengeModal from "../../../modals/pop-up/StudyChallengeModal";
 import { IUser, IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import { checkAndSetLocalStorage } from "../../../utils/storageUtils";
 
 export type UserPopUp =
@@ -146,9 +147,14 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
       setModalTypes((old) => [...old, "promotion"]);
       return;
     }
-    setModalTypes((old) => [...old, "studyChallenge"]);
+    if (
+      // userInfo?.weekStudyTragetHour === 0
+      false
+    ) {
+      setModalTypes((old) => [...old, "studyChallenge"]);
+    }
 
-    if (studyRecord?.isChecked === false) {
+    if (studyRecord?.date === dayjsToStr(dayjs())) {
       setDrawerType("bottom");
     }
     // if (!checkAndSetLocalStorage(SUGGEST_POP_UP, 29)) {
