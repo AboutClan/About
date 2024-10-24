@@ -11,6 +11,7 @@ import Slide from "../../components/layouts/PageSlide";
 import UserCommentInput from "../../components/molecules/UserCommentInput";
 import { useChatMutation } from "../../hooks/chat/mutations";
 import { useChatQuery } from "../../hooks/chat/queries";
+import { useKeypadHeight } from "../../hooks/custom/useKeypadHeight";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { transferUserName } from "../../recoils/transferRecoils";
 import { getDateDiff } from "../../utils/dateTimeUtils";
@@ -25,6 +26,7 @@ interface Chat {
 function Uid() {
   const router = useRouter();
   const { uid } = useParams<{ uid: string }>() || {};
+  const keypadHeight = useKeypadHeight();
 
   const userName = useRecoilValue(transferUserName);
   const [chats, setChats] = useState<Chat[]>([]);
@@ -150,17 +152,16 @@ function Uid() {
         </Flex>
       </Slide>
       <Box
-        h="60px"
-        borderBottom="var(--border)"
         position="fixed"
-        pb={`calc(16px + ${iPhoneNotchSize()}px)`}
         borderTop="var(--border)"
         bottom="0"
         flex={1}
         w="100%"
+        backgroundColor="white"
         maxW="var(--max-width)"
+        pb={`${keypadHeight === 0 ? iPhoneNotchSize() : 0}px`}
       >
-        <Box py={4} borderBottom="var(--border-main)" px={5}>
+        <Box py={4} borderBottom="var(--border)" px={5}>
           <UserCommentInput user={userInfo} onSubmit={onSubmit} type="message" initialFocus />
         </Box>
       </Box>
