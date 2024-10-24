@@ -123,8 +123,9 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
         flex={1}
         w="100%"
         backgroundColor="white"
-        p="16px"
-        marginBottom={`calc(16px + ${iPhoneNotchSize()}px)`}
+        px="16px"
+        pt="16px"
+        pb={`calc(16px + ${iPhoneNotchSize()}px)`}
         borderBottom="var(--border)"
         maxW="var(--max-width)"
       >
