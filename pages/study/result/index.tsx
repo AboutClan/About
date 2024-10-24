@@ -37,7 +37,6 @@ function StudyResultPage() {
 
   const { data: userInfo } = useUserInfoQuery();
   const { data: collectionInfo } = useCollectionAlphabetQuery();
-  console.log(42, collectionInfo);
 
   useEffect(() => {
     localStorage.setItem(STUDY_RECORD, null);
@@ -46,21 +45,20 @@ function StudyResultPage() {
   const { data: studyVoteOne } = useStudyVoteOneQuery(dateParam, {
     enabled: !!dateParam,
   });
-  console.log(234, studyVoteOne);
 
-  const findRealTime = studyVoteOne?.[0] as RealTimeInfoProps;
+  const findRealTime = studyVoteOne?.data?.[0] as RealTimeInfoProps;
 
-  const findParticipation = studyVoteOne as StudyParticipationProps;
+  const findParticipation = studyVoteOne?.data as StudyParticipationProps;
   const findParStudy = findParticipation?.members?.find((who) => who.user.uid === userInfo?.uid);
 
   const commonAttendanceInfo = findRealTime || findParStudy;
+  const rankNum = studyVoteOne?.rankNum;
 
   const alphabet =
     collectionInfo?.stamps === 0
       ? collectionInfo?.collects?.[collectionInfo?.collects?.length - 1]
       : null;
 
-  console.log(13, studyVoteOne);
   //스터디 기본 이미지
   const { text: badgeText, colorScheme: badgeColorScheme } =
     STUDY_STATUS_TO_BADGE[findRealTime?.status || findParticipation?.status] || {};
@@ -73,7 +71,7 @@ function StudyResultPage() {
   const getStudyTime = `${Math.floor(studyTime / 60)}시간 ${studyTime % 60}분`;
   const members =
     findParticipation?.members?.filter((who) => who.user.uid !== userInfo?.uid) ||
-    (studyVoteOne as RealTimeInfoProps[])?.filter(
+    (studyVoteOne?.data as RealTimeInfoProps[])?.filter(
       (one) => one.place.name === findRealTime?.place.name && one.user.uid !== userInfo?.uid,
     );
 
@@ -216,7 +214,7 @@ function StudyResultPage() {
                 memo={userInfo?.comment}
                 rightComponent={
                   <Box mr="10px">
-                    <RankingNumIcon num={1} />
+                    <RankingNumIcon num={rankNum} />
                   </Box>
                 }
               />
