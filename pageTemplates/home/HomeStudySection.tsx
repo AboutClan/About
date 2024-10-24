@@ -1,10 +1,10 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
+import ButtonWrapper from "../../components/atoms/ButtonWrapper";
 import SectionHeader from "../../components/atoms/SectionHeader";
 import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
@@ -48,11 +48,11 @@ function HomeStudySection() {
 
   const tabOptionsArr: ITabNavOptions[] = [
     {
-      text: dayjsToKr(viewDayjs),
+      text: dayjsToKr(getStudyViewDayjs(dayjs(date))),
       func: () => setDate(dayjsToStr(viewDayjs)),
     },
     {
-      text: dayjsToKr(nextDayjs),
+      text: dayjsToKr(getStudyViewDayjs(dayjs(date).add(1, "day"))),
       func: () => setDate(dayjsToStr(nextDayjs)),
     },
   ];
@@ -61,18 +61,19 @@ function HomeStudySection() {
     <>
       <Box px={5}>
         <SectionHeader title="카공 스터디 같이 하실 분" subTitle="Study">
-          <Link
-            href={`/studyList?location=${convertLocationLangTo(userLocation, "en")}&date=${date}`}
+          <ButtonWrapper
+            size="xs"
+            url={`/studyList?location=${convertLocationLangTo(userLocation, "en")}&date=${date}`}
           >
             <ShortArrowIcon dir="right" />
-          </Link>
+          </ButtonWrapper>
         </SectionHeader>
       </Box>
       <Box px={5} mt={3} mb={5} borderBottom="var(--border)">
         <TabNav tabOptionsArr={tabOptionsArr} selected={dayjsToKr(dayjs(date))} isFullSize />
       </Box>
       <Box px={5}>
-        <StudyCardCol participations={studyMergeParticipations} date={date} />
+        <StudyCardCol participations={studyMergeParticipations} date={date} setDate={setDate} />
       </Box>
     </>
   );

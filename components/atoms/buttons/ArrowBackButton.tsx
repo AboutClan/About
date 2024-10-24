@@ -1,5 +1,6 @@
 import { useRouter } from "next/navigation";
-import styled from "styled-components";
+
+import ButtonWrapper from "../ButtonWrapper";
 
 interface IArrowBackButton {
   defaultUrl?: string;
@@ -24,14 +25,8 @@ export default function ArrowBackButton({ url, func, defaultUrl }: IArrowBackBut
 
 export function ArrowBackButtonUI({ onClick }: { onClick: () => void }) {
   return (
-    <Button onClick={onClick}>
+    <ButtonWrapper onClick={onClick}>
       <i className="fa-solid fa-chevron-left fa-sm" />
-    </Button>
+    </ButtonWrapper>
   );
 }
-
-const Button = styled.button`
-  width: 20px;
-  height: 20px;
-  color: var(--color-mint);
-`;

@@ -1,6 +1,7 @@
 import { Box, Button } from "@chakra-ui/react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 
@@ -9,6 +10,7 @@ import { CalendarCheckIcon, ClockIcon } from "../../components/Icons/SolidIcons"
 import BottomFlexDrawer, {
   DRAWER_MIN_HEIGHT,
 } from "../../components/organisms/drawer/BottomFlexDrawer";
+import { getMyStudyInfo } from "../../libs/study/getMyStudyMethods";
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import { DispatchBoolean } from "../../types/hooks/reactTypes";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
@@ -19,11 +21,14 @@ interface StudyControlButtonProps {
 }
 
 function StudyControlButton({ setIsVoteDrawer, setIsDrawerUp }: StudyControlButtonProps) {
+  const { data: session } = useSession();
   const searchParams = useSearchParams();
 
   const [isStudyDrawer, setIsStudyDrawer] = useState(false);
 
   const myStudyParticipation = useRecoilValue(myStudyParticipationState);
+  const myStudyInfo = getMyStudyInfo(myStudyParticipation, session?.user.uid);
+  const isArrived = myStudyInfo?.attendanceInfo.arrived;
 
   const isOpenStudy = myStudyParticipation?.status === "open";
 
@@ -36,10 +41,10 @@ function StudyControlButton({ setIsVoteDrawer, setIsDrawerUp }: StudyControlButt
   return (
     <>
       <Button
-        w="76px"
         fontSize="12px"
         h="40px"
         bgColor="black"
+        px={4}
         fontWeight={700}
         color="white"
         position="fixed"
@@ -51,8 +56,10 @@ function StudyControlButton({ setIsVoteDrawer, setIsDrawerUp }: StudyControlButt
         iconSpacing={1}
         rightIcon={<CheckCircleIcon size="sm" isFill={false} />}
         onClick={() => setIsStudyDrawer(true)}
+        isDisabled={!!isArrived}
+        _hover={{}}
       >
-        스터디
+        {isArrived ? "출석 완료" : "스터디"}
       </Button>
       {isStudyDrawer && (
         <BottomFlexDrawer

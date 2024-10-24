@@ -103,7 +103,7 @@ function VoteDrawer({
   const findMyPreferMainPlace = studyVoteData?.participations.find(
     (par) => par.place._id === preference?.place,
   );
- 
+
   //스터디 장소 자동 선택 알고리즘
   useEffect(() => {
     if (preference === undefined || !studyVoteData) return;
@@ -290,7 +290,9 @@ function VoteDrawer({
           <Flex mb={4} justify="space-between">
             <Box>
               <Box mb={1} lineHeight="28px" fontWeight="bold" fontSize="18px">
-                {isFirstPage ? dayjsToFormat(dayjs(date), "M월 D일 스터디 투표") : "2지망 투표"}{" "}
+                {isFirstPage
+                  ? dayjsToFormat(dayjs(date).locale("ko"), "M월 D일(ddd) 스터디 투표")
+                  : "2지망 투표"}{" "}
               </Box>
               <Box color="gray.500" fontSize="12px" lineHeight="16px">
                 {isFirstPage && "원하시는 카페가 없으신가요?"}
