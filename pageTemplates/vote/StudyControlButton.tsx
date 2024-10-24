@@ -1,8 +1,8 @@
 import { Box, Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 
@@ -51,7 +51,7 @@ function StudyControlButton({ setIsVoteDrawer, setIsDrawerUp, date }: StudyContr
         fontWeight={700}
         color="white"
         position="fixed"
-        zIndex="800"
+        zIndex="400"
         borderRadius="20px"
         lineHeight="24px"
         bottom={`calc(var(--bottom-nav-height) + ${DRAWER_MIN_HEIGHT + iPhoneNotchSize() + 12}px)`}
