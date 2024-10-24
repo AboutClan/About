@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 
@@ -14,7 +14,6 @@ import Textarea from "../../../components/atoms/Textarea";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
-import { STUDY_RECORD } from "../../../constants/keys/localStorage";
 import {
   POINT_SYSTEM_DEPOSIT,
   POINT_SYSTEM_PLUS,
@@ -39,13 +38,12 @@ import {
 import { CollectionProps } from "../../../types/models/collections";
 import { StudyPlaceProps } from "../../../types/models/studyTypes/studyDetails";
 import { convertTimeStringToDayjs } from "../../../utils/convertUtils/convertTypes";
-import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
+import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
 function Configuration() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
-
   const { data: session } = useSession();
   const toast = useToast();
   const typeToast = useTypeToast();
@@ -131,16 +129,15 @@ function Configuration() {
     }
 
     newSearchParams.set("center", "votePlace");
-    newSearchParams.set("date", dayjsToStr(dayjs()));
-    newSearchParams.set("voteDrawer", "down");
     router.push(`/studyPage?${newSearchParams.toString()}`);
   };
 
   const saveTogetherMembers = () => {
-    const record = {
-      date: dayjsToStr(dayjs()),
-    };
-    localStorage.setItem(STUDY_RECORD, JSON.stringify(record));
+    // const myStudyInfo = getMyStudyInfo(myStudyParticipation, session?.user.uid);
+    // const record = {
+    //   date: dayjsToStr(dayjs()),
+    // };
+    // localStorage.setItem(STUDY_RECORD_INFO, JSON.stringify(record));
   };
 
   const formData = new FormData();

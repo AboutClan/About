@@ -8,33 +8,24 @@ import AlertSimpleModal from "../../components/AlertSimpleModal";
 import { EllipsisIcon } from "../../components/Icons/DotIcons";
 import Header from "../../components/layouts/Header";
 import { WEB_URL } from "../../constants/system";
-import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 interface IStudyHeader {
   brand: string;
-  name?: string;
-  address?: string;
-  coverImage?: string;
+  name: string;
+  address: string;
+  coverImage: string;
 }
 
 function StudyHeader({ brand, name, address, coverImage }: IStudyHeader) {
   const { date } = useParams<{ date: string }>() || {};
-  const typeToast = useTypeToast();
   const router = useRouter();
   const [isModal, setIsModal] = useState(false);
   const url = WEB_URL + router?.asPath;
 
-  const onClick = () => {
-    if (name) setIsModal(true);
-    else {
-      typeToast("not-yet");
-    }
-  };
-
   return (
     <>
       <Header title={brand} isCenter defaultUrl="/home">
-        <Button variant="unstyled" onClick={onClick}>
+        <Button variant="unstyled" onClick={() => setIsModal(true)}>
           <EllipsisIcon />
         </Button>
         {/* <KakaoShareBtn
@@ -46,7 +37,7 @@ function StudyHeader({ brand, name, address, coverImage }: IStudyHeader) {
           url={url}
         /> */}
       </Header>
-
+      {/* {isModal && <BottomButtonColDrawer infoArr={infoArr} setIsModal={setIsModal} />} */}
       {isModal && (
         <AlertSimpleModal
           options={{
