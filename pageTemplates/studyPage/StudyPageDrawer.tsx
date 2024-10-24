@@ -85,7 +85,7 @@ function StudyPageDrawer({
 
   const screenHeight = window.innerHeight;
   const adjustedHeight = (screenHeight - 52 - iPhoneNotchSize()) * 0.9;
-  console.log(23, isDrawerUp);
+ 
   return (
     <BottomFlexDrawer
       isOverlay={false}
