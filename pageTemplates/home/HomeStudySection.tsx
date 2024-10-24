@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -59,7 +59,7 @@ function HomeStudySection() {
         setDate((old) => dayjsToStr(dayjs(old).subtract(1, "day")));
         newSearchParams.set("date", dayjsToStr(dayjs(date).subtract(1, "day")));
         setIsLeft(true);
-        router.replace(`/home?${newSearchParams.toString()}`);
+        router.replace(`/home?${newSearchParams.toString()}`, { scroll: false });
       },
     },
     {
@@ -68,7 +68,7 @@ function HomeStudySection() {
         setDate((old) => dayjsToStr(dayjs(old).add(1, "day")));
         newSearchParams.set("date", dayjsToStr(dayjs(date).add(1, "day")));
         setIsLeft(false);
-        router.replace(`/home?${newSearchParams.toString()}`);
+        router.replace(`/home?${newSearchParams.toString()}`, { scroll: false });
       },
     },
   ];
