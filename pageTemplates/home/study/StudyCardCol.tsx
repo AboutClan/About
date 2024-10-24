@@ -130,7 +130,6 @@ function StudyCardCol({ participations, date, setDate }: StudyCardColProps) {
   }, [participations, currentLocation]);
 
   const onDragEnd = (panInfo: PanInfo) => {
-    console.log(123);
     const newDate = getNewDateBySwipe(panInfo, date as string);
     if (newDate !== date) {
       setDate(newDate);

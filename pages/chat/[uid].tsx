@@ -150,7 +150,7 @@ function Uid() {
         </Flex>
       </Slide>
       <Box
-        h={`60px`}
+        h="60px"
         borderBottom="var(--border)"
         position="fixed"
         marginBottom={`calc(16px + ${iPhoneNotchSize()}px)`}

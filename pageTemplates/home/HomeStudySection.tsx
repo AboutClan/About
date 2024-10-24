@@ -28,8 +28,8 @@ function HomeStudySection() {
     (localStorage.getItem(USER_LOCATION) as ActiveLocation) || session?.user.location;
 
   const viewDayjs = getStudyViewDayjs(dayjs());
-  const nextDayjs = getStudyViewDayjs(dayjs().add(1, "day"));
 
+  const [isLeft, setIsLeft] = useState(true);
   const [date, setDate] = useState(dayjsToStr(viewDayjs));
 
   const setMyStudyParticipation = useSetRecoilState(myStudyParticipationState);
@@ -49,11 +49,13 @@ function HomeStudySection() {
   const tabOptionsArr: ITabNavOptions[] = [
     {
       text: dayjsToKr(getStudyViewDayjs(dayjs(date))),
-      func: () => setDate(dayjsToStr(viewDayjs)),
+      func: () => {
+        setIsLeft(true);
+      },
     },
     {
       text: dayjsToKr(getStudyViewDayjs(dayjs(date).add(1, "day"))),
-      func: () => setDate(dayjsToStr(nextDayjs)),
+      func: () => setIsLeft(false),
     },
   ];
 
@@ -70,7 +72,11 @@ function HomeStudySection() {
         </SectionHeader>
       </Box>
       <Box px={5} mt={3} mb={5} borderBottom="var(--border)">
-        <TabNav tabOptionsArr={tabOptionsArr} selected={dayjsToKr(dayjs(date))} isFullSize />
+        <TabNav
+          tabOptionsArr={tabOptionsArr}
+          selected={dayjsToKr(isLeft ? dayjs(date) : dayjs(date).add(1, "day"))}
+          isFullSize
+        />
       </Box>
       <Box px={5}>
         <StudyCardCol participations={studyMergeParticipations} date={date} setDate={setDate} />

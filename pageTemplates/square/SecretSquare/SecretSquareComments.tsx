@@ -116,7 +116,7 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
         </Flex>
       </Slide>
       <Box
-        h={"60px"}
+        h="60px"
         position="fixed"
         borderTop="var(--border)"
         bottom="0"
