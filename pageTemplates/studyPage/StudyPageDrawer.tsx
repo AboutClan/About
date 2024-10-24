@@ -94,7 +94,7 @@ function StudyPageDrawer({
       setIsModal={setIsDrawerUp}
     >
       <Flex flexDir="column" w="100%" overflow="hidden">
-        <StudyPageDrawerHeader date={date} isDrawerUp={isDrawerUp} />
+        <StudyPageDrawerHeader date={date} setDate={setDate} isDrawerUp={isDrawerUp} />
         <Box overflow="hidden" display={isDrawerUp ? "block" : "none"}>
           <WeekSlideCalendar selectedDate={date} func={handleSelectDate} />
           <StudyPageDrawerFilterBar

@@ -9,6 +9,7 @@ import Calendar from "../../components/molecules/MonthCalendar";
 import { useStudyDailyVoteCntQuery } from "../../hooks/study/queries";
 import { handleChangeDate } from "../../pageTemplates/home/study/studyController/StudyController";
 import { IModal } from "../../types/components/modalTypes";
+import { DispatchString } from "../../types/hooks/reactTypes";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
@@ -16,9 +17,14 @@ import { IFooterOptions, IPaddingOptions, ModalLayout } from "../Modals";
 
 interface DateCalendarModalProps extends IModal {
   date: string;
+  setDate: DispatchString;
 }
 
-function DateCalendarModal({ date: selectedDate, setIsModal }: DateCalendarModalProps) {
+function DateCalendarModal({
+  date: selectedDate,
+  setDate: changeDate,
+  setIsModal,
+}: DateCalendarModalProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
@@ -79,8 +85,10 @@ function DateCalendarModal({ date: selectedDate, setIsModal }: DateCalendarModal
 
     const newDate = handleChangeDate(date, "date", date.date());
 
+    changeDate(newDate);
+
     newSearchParams.set("date", newDate);
-    router.replace(`/home?${newSearchParams.toString()}`, { scroll: false });
+    router.replace(`/studyPage?${newSearchParams.toString()}`, { scroll: false });
     setIsModal(false);
   };
 
