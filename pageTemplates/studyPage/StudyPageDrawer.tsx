@@ -85,7 +85,7 @@ function StudyPageDrawer({
 
   const screenHeight = window.innerHeight;
   const adjustedHeight = (screenHeight - 52 - iPhoneNotchSize()) * 0.9;
- 
+
   return (
     <BottomFlexDrawer
       isOverlay={false}
@@ -102,7 +102,7 @@ function StudyPageDrawer({
             setSelectOption={setSelectOption}
             placeCnt={thumbnailCardInfoArr?.length}
           />
-          <Box overflowY="scroll" overscrollBehaviorY="contain" flex={1}>
+          <Box overflowY="scroll" overscrollBehaviorY="contain" h="66.5%">
             {thumbnailCardInfoArr
               ? thumbnailCardInfoArr.map(({ participants, ...thumbnailCardInfo }, idx) => (
                   <Box key={idx} mb={3}>
