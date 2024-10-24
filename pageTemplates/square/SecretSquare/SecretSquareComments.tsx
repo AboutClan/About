@@ -127,7 +127,7 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
         backgroundColor="white"
         px="16px"
         pt="16px"
-        pb={`calc(16px + ${keypadHeight === 0 ? 0 : iPhoneNotchSize()}px)`}
+        pb={`calc(16px + ${keypadHeight === 0 ? iPhoneNotchSize() : 0}px)`}
         borderBottom="var(--border)"
         maxW="var(--max-width)"
       >
