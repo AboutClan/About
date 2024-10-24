@@ -129,13 +129,11 @@ function SpecialAvatarModal({ setIsModal, setUserAvatar }: ISpecialAvatarModal) 
               size="xl"
             />
             <IconPoint>
-              `
               {iconIdx < 100
                 ? "현재 프로필"
                 : iconIdx < 102
                   ? "스토어 한정 구매"
                   : "이벤트 한정 획득"}
-              `
             </IconPoint>
           </IconWrapper>
         </AnimatePresence>
