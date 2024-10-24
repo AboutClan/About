@@ -37,7 +37,7 @@ function ButtonWrapper({ children, onClick, url, size = "md" }: ButtonWrapperPro
           alignItems="center"
           onClick={onClick}
         >
-          ,<Box>{children}</Box>
+          <Box>{children}</Box>
         </Button>
       )}
     </>
