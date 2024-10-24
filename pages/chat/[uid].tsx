@@ -14,6 +14,7 @@ import { useChatQuery } from "../../hooks/chat/queries";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { transferUserName } from "../../recoils/transferRecoils";
 import { getDateDiff } from "../../utils/dateTimeUtils";
+import { iPhoneNotchSize } from "../../utils/validationUtils";
 
 interface Chat {
   message: string;
@@ -149,8 +150,10 @@ function Uid() {
         </Flex>
       </Slide>
       <Box
-        h="60px"
+        h={`calc(60px + ${iPhoneNotchSize()}px)`}
+        borderBottom="var(--border-main)"
         position="fixed"
+        marginBottom={`calc(16px + ${iPhoneNotchSize()}px)`}
         borderTop="var(--border-main)"
         bottom="0"
         flex={1}

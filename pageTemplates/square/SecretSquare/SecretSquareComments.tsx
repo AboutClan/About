@@ -124,7 +124,8 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
         w="100%"
         backgroundColor="white"
         p="16px"
-        paddingBottom={`calc(16px + ${iPhoneNotchSize()}px)`}
+        marginBottom={`calc(16px + ${iPhoneNotchSize()}px)`}
+        borderBottom="var(--border-main)"
         maxW="var(--max-width)"
       >
         <UserCommentInput user={SECRET_USER_SUMMARY} onSubmit={onSubmit} type="message" />

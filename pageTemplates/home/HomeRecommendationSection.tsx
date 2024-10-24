@@ -7,24 +7,14 @@ import { useSession } from "next-auth/react";
 
 import Slide from "../../components/layouts/PageSlide";
 import { USER_LOCATION } from "../../constants/keys/localStorage";
-import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { ActiveLocation } from "../../types/services/locationTypes";
-import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
+import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import HomeGatherCol from "./HomeGatherCol";
 
 function HomeRecommendationSection() {
   const { data: session } = useSession();
 
   const userLocation = localStorage.getItem(USER_LOCATION) as ActiveLocation;
-
-  const { data: studyVoteData } = useStudyVoteQuery(
-    dayjsToStr(dayjs()),
-    userLocation || session?.user.location,
-
-    {
-      enabled: !!userLocation || !!session?.user.location,
-    },
-  );
 
   return (
     <>

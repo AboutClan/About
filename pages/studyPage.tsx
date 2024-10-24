@@ -265,7 +265,7 @@ export default function StudyPage() {
           resizeToggle={isVoteDrawer}
         />
       </Box>
-      <StudyControlButton setIsVoteDrawer={setIsVoteDrawer} setIsDrawerUp={setIsDrawerUp} />
+      <StudyControlButton date={ date} setIsVoteDrawer={setIsVoteDrawer} setIsDrawerUp={setIsDrawerUp} />
       <StudyPageDrawer
         studyVoteData={studyVoteData}
         location={locationValue}
