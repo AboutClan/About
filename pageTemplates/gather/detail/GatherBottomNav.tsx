@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/react";
-import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/dist/client/router";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
@@ -132,7 +132,7 @@ function GatherBottomNav({ data }: IGatherBottomNav) {
             w="100%"
             borderRadius="var(--rounded-lg)"
             disabled={!handleFunction}
-            colorScheme={handleFunction ? "mintTheme" : "blackAlpha"}
+            colorScheme={handleFunction ? "mint" : "blackAlpha"}
             onClick={handleFunction}
           >
             {text}

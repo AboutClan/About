@@ -86,7 +86,7 @@ function PointScoreBar({ hasQuestion = true }: IPointScoreBar) {
         </Flex>
         <ProgressBar
           value={(1 - (nextBadgeObj[1] - userInfo?.score) / nextBadgeObj[1]) * 100}
-          colorScheme="mintTheme"
+          colorScheme="mint"
           hasStripe={true}
           size="sm"
         />

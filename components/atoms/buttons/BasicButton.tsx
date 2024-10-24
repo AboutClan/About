@@ -44,7 +44,7 @@ export function BasicButton({
   return (
     <ChakraButton
       type="button"
-      colorScheme={primary ? "mintTheme" : null}
+      colorScheme={primary ? "mint" : null}
       {...(!primary ? secondaryOptions : {})}
       {...props}
     >

@@ -65,7 +65,7 @@ function StudyAddition() {
                   <Box>장소: {item.title}</Box>
                   <Content>{item.content}</Content>
                 </Wrapper>
-                <Button mx="20px" onClick={() => onClick(item.id)} colorScheme="mintTheme">
+                <Button mx="20px" onClick={() => onClick(item.id)} colorScheme="mint">
                   승인
                 </Button>
               </Item>

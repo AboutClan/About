@@ -26,7 +26,7 @@ export default function TabNav({
       <Tabs
         index={selected ? idx : undefined}
         color="var(--gray-500)"
-        colorScheme="mintTheme"
+        colorScheme="mint"
         bgColor="white"
         height="44px"
       >

@@ -62,7 +62,7 @@ function GatherExpireModalExpireDialog({ modal, setIsComplete }: IGatherExpireMo
               <Button ref={completeRef} onClick={onClose}>
                 취소
               </Button>
-              <Button colorScheme="mintTheme" onClick={onComplete} ml="var(--gap-1)">
+              <Button colorScheme="mint" onClick={onComplete} ml="var(--gap-1)">
                 모집완료
               </Button>
             </AlertDialogFooter>

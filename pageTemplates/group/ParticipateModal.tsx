@@ -146,13 +146,13 @@ function ParticipateModal({ isFree, id, setIsModal, answer }: IParticipateModal)
         <div>
           <Button
             onClick={() => setSelectBtn("point")}
-            colorScheme={selectBtn === "point" ? "redTheme" : "gray"}
+            colorScheme={selectBtn === "point" ? "red" : "gray"}
           >
             포인트 사용
           </Button>
           <Button
             onClick={() => setSelectBtn("deposit")}
-            colorScheme={selectBtn === "deposit" ? "redTheme" : "gray"}
+            colorScheme={selectBtn === "deposit" ? "red" : "gray"}
           >
             보증금 사용
           </Button>

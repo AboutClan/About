@@ -215,7 +215,7 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
         </Box>
         <Button
           size="sm"
-          colorScheme="mintTheme"
+          colorScheme="mint"
           onClick={() => handlePlaceButton(isFirstPage ? "select" : "complete")}
         >
           {isFirstPage ? "직접 선택" : "선택 완료"}

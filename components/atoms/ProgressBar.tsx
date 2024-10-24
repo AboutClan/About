@@ -2,14 +2,14 @@ import { Progress } from "@chakra-ui/react";
 
 interface IProgressBar {
   value: number;
-  colorScheme?: "mintTheme";
+  colorScheme?: "mint";
   hasStripe?: boolean;
   size?: "sm" | "md";
 }
 
 export default function ProgressBar({
   value,
-  colorScheme = "mintTheme",
+  colorScheme = "mint",
   hasStripe = false,
   size,
 }: IProgressBar) {

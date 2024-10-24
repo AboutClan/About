@@ -29,7 +29,7 @@ function AlertDialog({ isOpen, onClose, onSubmit }: IAlertDialog) {
             <Button ref={cancelRef} onClick={onClose}>
               취소
             </Button>
-            <Button colorScheme="mintTheme" onClick={onSubmit} ml="var(--gap-2)">
+            <Button colorScheme="mint" onClick={onSubmit} ml="var(--gap-2)">
               거절
             </Button>
           </AlertDialogFooter>

@@ -27,12 +27,12 @@ function GroupTitle({
   const router = useRouter();
   const color =
     status === "gathering"
-      ? "mintTheme"
+      ? "mint"
       : status === "open" || status === "pending"
         ? maxCnt === 0 || maxCnt > memberCnt
-          ? "mintTheme"
-          : "redTheme"
-        : "redTheme";
+          ? "mint"
+          : "red"
+        : "red";
 
   const statusText =
     status === "gathering"

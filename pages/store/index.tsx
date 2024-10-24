@@ -123,13 +123,13 @@ function Event() {
           <Nav>
             <Button
               onClick={() => setIsShowActive(true)}
-              colorScheme={isShowActive ? "mintTheme" : "gray"}
+              colorScheme={isShowActive ? "mint" : "gray"}
             >
               현재 상품
             </Button>
             <Button
               onClick={() => setIsShowActive(false)}
-              colorScheme={!isShowActive ? "mintTheme" : "gray"}
+              colorScheme={!isShowActive ? "mint" : "gray"}
             >
               지난 상품
             </Button>

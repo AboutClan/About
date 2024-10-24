@@ -16,7 +16,7 @@ export default function InviteUserGroups({ users, inviteUser }: IInviteUserGroup
           <Avatar image={who.profileImage} avatar={who.avatar} uid={who.uid} size="md" />
           <Flex direction="column" ml="8px">
             <Box>{who.name}</Box>
-            <Button colorScheme="mintTheme" size="xs" onClick={() => inviteUser(who)}>
+            <Button colorScheme="mint" size="xs" onClick={() => inviteUser(who)}>
               초대
             </Button>
           </Flex>

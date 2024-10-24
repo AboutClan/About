@@ -32,7 +32,7 @@ function RecommendationBannerCard({
         </Box>
         <Box>
           <Link href={buttonProps.link}>
-            <Button colorScheme="mintTheme">{buttonProps.text}</Button>
+            <Button colorScheme="mint">{buttonProps.text}</Button>
           </Link>
         </Box>
       </Flex>

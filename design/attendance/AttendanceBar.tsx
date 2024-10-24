@@ -60,7 +60,7 @@ function AttendanceBar({ myScore, hasQuestion = true }: IAttendanceBar) {
         <Progress
           value={(1 - (nextBadgePoint - myScore) / badgeGap) * 100}
           height="12px"
-          colorScheme="mintTheme"
+          colorScheme="mint"
           hasStripe
         />
       </Layout>

@@ -14,14 +14,14 @@ function RecordNavigation({ isCalendar, setIsCalendar }: IRecordNavigation) {
       <Flex p="16px" maxW="var(--max-width)" m="0 auto">
         <Button
           flex="1"
-          colorScheme={isCalendar ? "mintTheme" : "gray"}
+          colorScheme={isCalendar ? "mint" : "gray"}
           onClick={() => setIsCalendar(true)}
         >
           달력
         </Button>
         <Button
           flex="1"
-          colorScheme={!isCalendar ? "mintTheme" : "gray"}
+          colorScheme={!isCalendar ? "mint" : "gray"}
           onClick={() => setIsCalendar(false)}
         >
           상세

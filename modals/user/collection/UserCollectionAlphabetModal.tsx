@@ -31,7 +31,7 @@ function UserCollectionModal({ setIsModal }: IModal) {
           w="100px"
           mt="20px"
           mb="var(--gap-4)"
-          colorScheme="mintTheme"
+          colorScheme="mint"
           onClick={() => setIsModal(false)}
         >
           확인

@@ -15,7 +15,7 @@ function CheckingServer() {
         <Button w="50%" colorScheme="blackAlpha" onClick={() => router.push(`/home`)}>
           재접속
         </Button>
-        <Button w="50%" colorScheme="mintTheme" onClick={() => router.push(`/login`)}>
+        <Button w="50%" colorScheme="mint" onClick={() => router.push(`/login`)}>
           로그인 창으로
         </Button>
       </Nav>

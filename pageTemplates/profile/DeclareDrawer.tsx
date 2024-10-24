@@ -159,7 +159,7 @@ function DeclareContent({ name, declareIdx, setDeclareIdx }: IDeclareContent) {
               _focus={{ outline: "none" }}
               size="lg"
               value={String(idx)}
-              colorScheme="redTheme"
+              colorScheme="red"
             >
               {content}
             </Radio>

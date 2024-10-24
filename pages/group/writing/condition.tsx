@@ -160,11 +160,7 @@ function WritingCondition() {
               <Box ml="auto" mr="20px" fontSize="12px" color="var(--color-mint)">
                 {getMemberConditionText() || "기본값"}
               </Box>
-              <Button
-                colorScheme="mintTheme"
-                size="sm"
-                onClick={() => setIsMemberConditionModal(true)}
-              >
+              <Button colorScheme="mint" size="sm" onClick={() => setIsMemberConditionModal(true)}>
                 설정
               </Button>
             </Item>
@@ -176,7 +172,7 @@ function WritingCondition() {
               </Name>
               <Switch
                 mr="var(--gap-1)"
-                colorScheme="mintTheme"
+                colorScheme="mint"
                 isChecked={condition.location}
                 onChange={(e) => toggleSwitch(e, "location")}
               />
@@ -190,7 +186,7 @@ function WritingCondition() {
               </Name>
               <Switch
                 mr="var(--gap-1)"
-                colorScheme="mintTheme"
+                colorScheme="mint"
                 isChecked={condition.isFree}
                 onChange={(e) => toggleSwitch(e, "isFree")}
               />
@@ -202,7 +198,7 @@ function WritingCondition() {
               </Name>
               <Switch
                 mr="var(--gap-1)"
-                colorScheme="mintTheme"
+                colorScheme="mint"
                 isChecked={condition.challenge}
                 onChange={(e) => toggleSwitch(e, "challenge")}
               />
@@ -221,7 +217,7 @@ function WritingCondition() {
               </Name>
               <Switch
                 mr="var(--gap-1)"
-                colorScheme="mintTheme"
+                colorScheme="mint"
                 isChecked={condition.fee}
                 onChange={(e) => toggleSwitch(e, "fee")}
               />
@@ -252,7 +248,7 @@ function WritingCondition() {
               </Name>
               <Switch
                 mr="var(--gap-1)"
-                colorScheme="mintTheme"
+                colorScheme="mint"
                 isChecked={condition.isSecret}
                 onChange={(e) => toggleSwitch(e, "isSecret")}
               />
@@ -266,7 +262,7 @@ function WritingCondition() {
               </Name>
               <Switch
                 mr="var(--gap-1)"
-                colorScheme="mintTheme"
+                colorScheme="mint"
                 isChecked={condition.link}
                 onChange={(e) => toggleSwitch(e, "link")}
               />

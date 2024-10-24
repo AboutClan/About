@@ -88,7 +88,7 @@ function AttendCheckModal({
               onClick={() => onClickBtn(day)}
               colorScheme={
                 myAttend?.includes(day)
-                  ? "mintTheme"
+                  ? "mint"
                   : mySubAttend?.includes(day)
                     ? "yellowTheme"
                     : "gray"
@@ -99,7 +99,7 @@ function AttendCheckModal({
           );
         })}
         <Button
-          colorScheme={myAttend.length === 7 ? "mintTheme" : "gray"}
+          colorScheme={myAttend.length === 7 ? "mint" : "gray"}
           w="64px"
           onClick={() => onClickBtn("all")}
         >

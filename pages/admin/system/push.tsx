@@ -22,7 +22,7 @@ function PushPage() {
       <Header title="푸쉬 알림 테스트" />
       <Flex p="20px">
         <Input value={value} onChange={(e) => setValue(e.target.value)} placeholder="UID 입력" />
-        <Button colorScheme="mintTheme" ml="16px" onClick={onClick}>
+        <Button colorScheme="mint" ml="16px" onClick={onClick}>
           전송
         </Button>
       </Flex>
