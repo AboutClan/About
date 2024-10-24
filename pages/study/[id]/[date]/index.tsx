@@ -51,7 +51,7 @@ export default function Page() {
 
     setMyStudyParticipation(findMyStudyParticipation);
   }, [studyVoteData]);
-  console.log(123, locationParam);
+
   const mergeParticipations = convertStudyToParticipations(
     studyVoteData,
     convertLocationLangTo(locationParam, "kr"),

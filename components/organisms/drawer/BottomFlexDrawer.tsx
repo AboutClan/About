@@ -7,7 +7,7 @@ import { IModal } from "../../../types/components/modalTypes";
 import { iPhoneNotchSize } from "../../../utils/validationUtils";
 import ScreenOverlay from "../../atoms/ScreenOverlay";
 
-export const DRAWER_MIN_HEIGHT = 40;
+export const DRAWER_MIN_HEIGHT = 103;
 //적당한 값 조율해야 함
 export const MAX_DRAG_DISTANCE = 40;
 
@@ -44,10 +44,8 @@ export default function BottomFlexDrawer({
   isDrawerUp,
   height: maxHeight,
   zIndex,
-
   isOverlay,
 }: BottomFlexDrawerProps) {
-  console.log(42, isDrawerUp);
   const [drawerHeight, setDrawerHeight] = useState(isDrawerUp ? maxHeight : DRAWER_MIN_HEIGHT); // 초기 높이
   const startYRef = useRef(0); // 드래그 시작 위치 저장
   const currentHeightRef = useRef(drawerHeight); // 현재 높이 저장
@@ -58,6 +56,7 @@ export default function BottomFlexDrawer({
   }, [isDrawerUp]);
 
   const handlePointerDown = (event) => {
+    setIsModal(false);
     startYRef.current = event.clientY || event.touches[0].clientY; // 드래그 시작 위치 저장
     currentHeightRef.current = drawerHeight; // 드래그 시작 시점의 높이 저장
     window.addEventListener("pointermove", handlePointerMove);
@@ -65,6 +64,7 @@ export default function BottomFlexDrawer({
   };
 
   const handlePointerMove = (event) => {
+    setIsModal(true);
     const currentY = event.clientY || event.touches[0].clientY;
     const deltaY = startYRef.current - currentY;
     let newHeight = currentHeightRef.current + deltaY;

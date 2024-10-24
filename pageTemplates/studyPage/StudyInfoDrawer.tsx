@@ -238,7 +238,7 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo, date }: StudyInFoDrawerPro
                 ),
                 children: (
                   <Link
-                    href={`/study/${detailInfo.place._id}/${dayjsToStr(dayjs())}?location=${convertLocationLangTo(detailInfo.location, "en")}`}
+                    href={`/study/${detailInfo.place._id}/${dayjsToStr(dayjs(date))}?location=${convertLocationLangTo(detailInfo.location, "en")}`}
                   >
                     자세히 보기
                   </Link>

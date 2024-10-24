@@ -45,7 +45,7 @@ function StudyPageDrawer({
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
-
+  console.log(24, isDrawerUp);
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
   const [selectOption, setSelectOption] = useState<SelectOption>("인원순");
 
@@ -94,7 +94,7 @@ function StudyPageDrawer({
       setIsModal={setIsDrawerUp}
     >
       <Flex flexDir="column" w="100%" overflow="hidden">
-        <StudyPageDrawerHeader date={date} />
+        <StudyPageDrawerHeader date={date} isDrawerUp={isDrawerUp} />
         <WeekSlideCalendar selectedDate={date} func={handleSelectDate} />
         <StudyPageDrawerFilterBar
           selectOption={selectOption}

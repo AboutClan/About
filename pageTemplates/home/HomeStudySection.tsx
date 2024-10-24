@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
@@ -22,7 +23,11 @@ import { dayjsToKr, dayjsToStr } from "../../utils/dateTimeUtils";
 import StudyCardCol from "./study/StudyCardCol";
 
 function HomeStudySection() {
+  const router = useRouter();
   const { data: session } = useSession();
+  const searchParams = useSearchParams();
+  const newSearchParams = new URLSearchParams(searchParams);
+
   //session이나 userInfo보다 더 빠른 속도를 위해. 그래야 메인 데이터도 빨리 가져옴
   const userLocation =
     (localStorage.getItem(USER_LOCATION) as ActiveLocation) || session?.user.location;
@@ -46,16 +51,25 @@ function HomeStudySection() {
     setMyStudyParticipation(findMyStudyParticipation);
   }, [studyVoteData, session]);
 
+  console.log(date);
   const tabOptionsArr: ITabNavOptions[] = [
     {
-      text: dayjsToKr(getStudyViewDayjs(dayjs(date))),
+      text: dayjsToKr(isLeft ? dayjs(date) : dayjs(date).subtract(1, "day")),
       func: () => {
+        setDate((old) => dayjsToStr(dayjs(old).subtract(1, "day")));
+        newSearchParams.set("date", dayjsToStr(dayjs(date).subtract(1, "day")));
         setIsLeft(true);
+        router.replace(`/home?${newSearchParams.toString()}`);
       },
     },
     {
-      text: dayjsToKr(getStudyViewDayjs(dayjs(date).add(1, "day"))),
-      func: () => setIsLeft(false),
+      text: dayjsToKr(isLeft ? dayjs(date).add(1, "day") : dayjs(date)),
+      func: () => {
+        setDate((old) => dayjsToStr(dayjs(old).add(1, "day")));
+        newSearchParams.set("date", dayjsToStr(dayjs(date).add(1, "day")));
+        setIsLeft(false);
+        router.replace(`/home?${newSearchParams.toString()}`);
+      },
     },
   ];
 
@@ -72,11 +86,7 @@ function HomeStudySection() {
         </SectionHeader>
       </Box>
       <Box px={5} mt={3} mb={5} borderBottom="var(--border)">
-        <TabNav
-          tabOptionsArr={tabOptionsArr}
-          selected={dayjsToKr(isLeft ? dayjs(date) : dayjs(date).add(1, "day"))}
-          isFullSize
-        />
+        <TabNav tabOptionsArr={tabOptionsArr} selected={dayjsToKr(dayjs(date))} isFullSize />
       </Box>
       <Box px={5}>
         <StudyCardCol participations={studyMergeParticipations} date={date} setDate={setDate} />
