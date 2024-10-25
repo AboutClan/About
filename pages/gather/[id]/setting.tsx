@@ -89,7 +89,7 @@ function Setting() {
   return (
     <>
       <Header title="모임장 페이지" />
-      <Slide>
+      <Slide isNoPadding>
         <Flex direction="column">
           <TextDevider text="모임 정보 변경" />
           <RowTextBlockButton text="모임 글 수정" onClick={() => handleButtonClick("edit")} />

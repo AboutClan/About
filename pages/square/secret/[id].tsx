@@ -390,15 +390,14 @@ function SecretSquareDetailPage() {
           </Flex>
           {squareDetail && <Divider />}
         </Slide>
-        {squareDetail && (
-          <Box as="section" bg="white">
-            <SecretSquareComments
-              author={squareDetail.author}
-              comments={squareDetail?.comments}
-              refetch={refetch}
-            />
-          </Box>
-        )}
+
+        <Box as="section" bg="white">
+          <SecretSquareComments
+            author={squareDetail?.author}
+            comments={squareDetail?.comments}
+            refetch={refetch}
+          />
+        </Box>
       </>
     </>
   );

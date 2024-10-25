@@ -1,7 +1,7 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
@@ -16,6 +16,7 @@ import BottomFlexDrawer, {
   BottomFlexDrawerOptions,
 } from "../../components/organisms/drawer/BottomFlexDrawer";
 import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
+import { useCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import {
@@ -31,7 +32,6 @@ import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import {
   StudyDailyInfoProps,
   StudyMemberProps,
-  StudyMergeParticipationProps,
   StudyParticipationProps,
   StudyStatus,
 } from "../../types/models/studyTypes/studyDetails";
@@ -40,10 +40,14 @@ import { PlaceInfoProps } from "../../types/models/utilTypes";
 import { LocationEn } from "../../types/services/locationTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
-import { DEFAULT_SUB_PLACE_CNT, RECOMMENDATION_KM, sortByDistanceSub } from "../vote/VoteDrawer";
+import {
+  DEFAULT_SUB_PLACE_CNT,
+  RECOMMENDATION_KM,
+  sortByDistanceSub,
+  SubPlaceProps,
+} from "../vote/VoteDrawer";
 interface IStudyNavigation {
   date: string;
-
   myStudyInfo: StudyMemberProps;
   absences: IAbsence[];
   placeInfo: PlaceInfoProps;
@@ -51,7 +55,6 @@ interface IStudyNavigation {
   status: StudyStatus;
   locationEn: LocationEn;
   studyVoteData: StudyDailyInfoProps;
-  mergeParticipations: StudyMergeParticipationProps[];
 }
 
 export type StudyModalType = "timeRullet";
@@ -66,7 +69,6 @@ function StudyNavigation({
   absences,
   status,
   type: studyType,
-  mergeParticipations,
 }: IStudyNavigation) {
   const router = useRouter();
   const toast = useToast();
@@ -74,7 +76,7 @@ function StudyNavigation({
   const { data: session } = useSession();
   const { id, date } = useParams<{ id: string; date: string }>() || {};
   const searchParams = useSearchParams();
-
+  const { currentLocation } = useCurrentLocation();
   const resetStudy = useResetStudyQuery();
 
   // const isGuest = session?.user.name === "guest";
@@ -82,12 +84,13 @@ function StudyNavigation({
   const myStudyParticipation = useRecoilValue(myStudyParticipationState);
 
   const [modalType, setModalType] = useState<StudyModalType>();
-  const [subArr, setSubArr] = useState<any[]>([]);
+  const [subArr, setSubArr] = useState<SubPlaceProps[]>([]);
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
   const [isCancelModal, setIsCancelModal] = useState(false);
   const [isAbsentModal, setIsAbsentModal] = useState(false);
   const [isSubVoteDrawer, setIsSubVoteDrawer] = useState(false);
   const [alertModalInfo, setAlertModalInfo] = useState<IAlertModalOptions>();
+  const [subPlace, setSubPlace] = useState<string[]>([]);
 
   const { mutate: realTimeStudyVote, isLoading: isLoading2 } = useRealtimeVoteMutation({
     onSuccess() {
@@ -136,6 +139,7 @@ function StudyNavigation({
     else if (type === "change") toast("success", "변경되었습니다");
     resetStudy();
     setModalType(null);
+    setIsSubVoteDrawer(false);
   };
 
   const handleNavButton = (type: "main" | "cancel" | "timeChange") => {
@@ -168,6 +172,7 @@ function StudyNavigation({
     if (studyType === "public") {
       studyVote({
         place: id,
+        subPlace: subPlace,
         start: time?.start || voteTime?.start,
         end: time?.end || voteTime?.end,
       });
@@ -205,12 +210,13 @@ function StudyNavigation({
 
   useEffect(() => {
     if (!studyVoteData || !isSubVoteDrawer) return;
-    const temp = [];
+    const temp: SubPlaceProps[] = [];
     const sortedSub = sortByDistanceSub(studyVoteData, findMyPickMainPlace);
     sortedSub.forEach((par, idx) => {
       if (idx < DEFAULT_SUB_PLACE_CNT && par.place.distance <= RECOMMENDATION_KM) temp.push(par);
     });
     setSubArr(temp);
+    setSubPlace(temp.map((prop) => prop.place._id));
   }, [studyVoteData, isSubVoteDrawer]);
 
   const drawerOptions: BottomFlexDrawerOptions = {
@@ -236,32 +242,36 @@ function StudyNavigation({
       subTitle: "예상 시작 시간과 종료 시간을 선택해 주세요!",
     },
     footer: {
-      text: myStudyInfo ? "시간 변경" : date !== dayjsToStr(dayjs()) ? "다 음" : "신청 완료",
+      text: myStudyInfo
+        ? "시간 변경"
+        : date !== dayjsToStr(dayjs()) && !isSubVoteDrawer
+          ? "다 음"
+          : "신청 완료",
       func: myStudyInfo
         ? studyType === "public"
           ? () => handleTimeChange(voteTime)
           : () => handleRealTimeTimeChange(voteTime)
-        : date !== dayjsToStr(dayjs())
+        : date !== dayjsToStr(dayjs()) && !isSubVoteDrawer
           ? () => setIsSubVoteDrawer(false)
           : () => onClickStudyVote(voteTime),
       loading: isLoading1 || isLoading2,
     },
   };
-  console.log(findMyPickMainPlace);
 
   const convertData = (data: StudyParticipationProps): StudyThumbnailCardProps => {
-    const A = setStudyToThumbnailInfo(
+    const isMain = id === data.place._id;
+    return setStudyToThumbnailInfo(
       [data],
       null,
-      { lat: findMyPickMainPlace?.place.latitude, lon: findMyPickMainPlace?.place?.longitude },
+      isMain
+        ? currentLocation
+        : { lat: findMyPickMainPlace?.place.latitude, lon: findMyPickMainPlace?.place?.longitude },
       null,
       true,
       null,
       null,
       null,
-    );
-    console.log("A", A);
-    return A[0];
+    )[0];
   };
 
   return (
@@ -355,30 +365,35 @@ function StudyNavigation({
           isHideBottom
           isDrawerUp
           zIndex={5000}
-          height={400}
+          height={408}
           setIsModal={setIsSubVoteDrawer}
           drawerOptions={drawerOptions2}
         >
-          <PickerRowButton
-            {...convertData(findMyPickMainPlace)}
-            onClick={() => handleClickPlaceButton(id)}
-            pickType={"main"}
-          />
-          {/* {subArr?.map((props, idx) => {
-            const id = props.id;
+          <Box mb={2} w="full">
+            <PickerRowButton
+              {...convertData(findMyPickMainPlace)}
+              onClick={() => setIsSubVoteDrawer(false)}
+              pickType="main"
+            />
+          </Box>
+          {subArr?.map((props, idx) => {
+            const id = props.place._id;
             console.log(props);
             return (
-              <Box key={idx} mb={3}>
-                2
+              <Box key={idx} mb={2} w="full">
                 <PickerRowButton
-                  place={props.place}
-                  participantCnt={props.members.length}
-                  onClick={() => handleClickPlaceButton(id)}
-                  pickType={"second"}
+                  {...convertData(props)}
+                  onClick={() =>
+                    subPlace.includes(id)
+                      ? setSubPlace((old) => old.filter((placeId) => placeId !== id))
+                      : setSubPlace((old) => [...old, id])
+                  }
+                  pickType="second"
+                  isNoSelect={!subPlace.includes(id)}
                 />
               </Box>
             );
-          })} */}
+          })}
         </BottomFlexDrawer>
       )}
     </>

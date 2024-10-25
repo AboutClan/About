@@ -331,6 +331,7 @@ function VoteDrawer({
           >
             {thumbnailCardInfoArr?.map((props, idx) => {
               const id = props.id;
+              console.log(props);
               return (
                 <Box key={idx} mb={3}>
                   <PickerRowButton
@@ -379,10 +380,17 @@ function VoteDrawer({
   );
 }
 
+interface SubPlaceInfo extends StudyPlaceProps {
+  distance: number;
+}
+export interface SubPlaceProps extends StudyParticipationProps {
+  place: SubPlaceInfo;
+}
+
 export const sortByDistanceSub = (
   studyVoteData: StudyDailyInfoProps,
   mainPlace: StudyParticipationProps,
-) => {
+): SubPlaceProps[] => {
   const updatedParticipations = studyVoteData.participations.map((participation) => {
     const distance = getDistanceFromLatLonInKm(
       participation.place.latitude,

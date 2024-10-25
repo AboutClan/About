@@ -61,7 +61,7 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
   const uniqueUsers = {};
   let uniqueIdCounter = 1;
   commentArr
-    .flatMap((item) => [
+    ?.flatMap((item) => [
       item.user,
       ...(Array.isArray(item.subComments) ? item.subComments.map((sub) => sub.user) : []),
     ])

@@ -4,15 +4,23 @@ import styled from "styled-components";
 import { TurnArrowIcon } from "../Icons/ArrowIcons";
 import { CheckCircleIcon } from "../Icons/CircleIcons";
 import { UserIcon } from "../Icons/UserIcons";
-import { StudyThumbnailCardProps, STUDY_MAX_CNT } from "./cards/StudyThumbnailCard";
+import { STUDY_MAX_CNT,StudyThumbnailCardProps } from "./cards/StudyThumbnailCard";
 import PlaceImage from "./PlaceImage";
 
 export interface PickerRowButtonProps extends Partial<StudyThumbnailCardProps> {
   pickType: "main" | "first" | "second" | null;
   onClick: () => void;
+  isNoSelect?: boolean;
 }
 
-function PickerRowButton({ onClick, pickType, place, participantCnt, id }: PickerRowButtonProps) {
+function PickerRowButton({
+  onClick,
+  pickType,
+  place,
+  participantCnt,
+  id,
+  isNoSelect,
+}: PickerRowButtonProps) {
   console.log(24, place);
   return (
     <Button
@@ -22,7 +30,9 @@ function PickerRowButton({ onClick, pickType, place, participantCnt, id }: Picke
       pl={pickType == "second" ? 5 : undefined}
       variant="unstyled"
       border=" 1px solid var(--gray-200)"
-      borderColor={pickType === "second" ? "orange" : !pickType ? "gray.200" : "mint"}
+      borderColor={
+        isNoSelect ? "gray.200" : pickType === "second" ? "orange" : !pickType ? "gray.200" : "mint"
+      }
       bg={pickType === "first" || pickType === "main" ? "rgba(0, 194, 179, 0.02)" : "white"}
       display="block"
       borderRadius="12px"
@@ -37,7 +47,7 @@ function PickerRowButton({ onClick, pickType, place, participantCnt, id }: Picke
               isFill
             />
           ) : (
-            <TurnArrowIcon />
+            <TurnArrowIcon color={isNoSelect ? "gray" : "orange"} />
           )}
         </Box>
         <Flex flex={1} mr={4} direction="column" alignItems="flex-start" minW={0} textAlign="left">
@@ -87,7 +97,7 @@ function PickerRowButton({ onClick, pickType, place, participantCnt, id }: Picke
                       participantCnt >= STUDY_MAX_CNT ? "var(--color-red)" : "var(--color-gray)"
                     }
                   >
-                    {participantCnt}명 참여중
+                    {participantCnt || 0}명 참여중
                   </Box>
                   <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
                     /
@@ -115,7 +125,7 @@ function PickerRowButton({ onClick, pickType, place, participantCnt, id }: Picke
           {pickType !== "second" ? (
             <PlaceImage size="sm" imageProps={place.imageProps} hasToggleHeart id={id} />
           ) : (
-            <CheckCircleIcon size="lg" color="orange" isFill />
+            <CheckCircleIcon size="lg" color={isNoSelect ? "gray" : "orange"} isFill />
           )}
         </Box>
       </Flex>
