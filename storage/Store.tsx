@@ -549,6 +549,229 @@ export const STORE_GIFT_INACTIVE: IStoreGift[] = [
     max: 20,
     giftId: 31,
   },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EB%A9%94%EA%B0%80_%EC%95%84%EB%A9%94%EB%A6%AC%EC%B9%B4%EB%85%B8.webp",
+    name: "메가 아메리카노",
+    brand: "메가커피",
+    point: 20,
+    winner: 3,
+    max: 30,
+    giftId: 38,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/CU_3000%EC%9B%90%EA%B6%8C.webp",
+    name: "3000원 상품권",
+    brand: "CU",
+    point: 20,
+    winner: 2,
+    max: 30,
+    giftId: 39,
+  },
+
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EB%B2%A0%EC%8A%A4%ED%82%A8%EB%9D%BC%EB%B9%88%EC%8A%A4_%EC%8B%B1%EA%B8%80.webp",
+    name: "베스킨라빈스 싱글",
+    brand: "베스킨라빈스",
+    point: 20,
+    winner: 2,
+    max: 40,
+    giftId: 40,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EC%8A%A4%ED%83%80%EB%B2%85%EC%8A%A4_%EC%95%84%EB%A9%94%EB%A6%AC%EC%B9%B4%EB%85%B8.webp",
+    name: "아메리카노",
+    brand: "스타벅스",
+    point: 30,
+    winner: 2,
+    max: 30,
+    giftId: 41,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/KakaoTalk_20240605_010554846.jpg",
+    name: "5000원 상품권",
+    brand: "GS",
+    point: 50,
+    winner: 3,
+    max: 30,
+    giftId: 50,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EB%8B%A4%EC%9D%B4%EC%86%8C_5000%EC%9B%90%EA%B6%8C.webp",
+    name: "다이소 5000원",
+    brand: "다이소",
+    point: 50,
+    winner: 2,
+    giftId: 42,
+    max: 20,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%ED%88%AC%EC%8D%B8_%EC%95%84%EC%9D%B4%EC%8A%A4%EB%B0%95%EC%8A%A4+%EC%84%B8%ED%8A%B8.webp",
+    name: "아이스박스 세트",
+    brand: "투썸",
+    point: 65,
+    winner: 3,
+    giftId: 43,
+    max: 30,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EB%B9%85%EB%A7%A5.jpg",
+    name: "빅맥 세트",
+    brand: "맥도날드",
+    point: 72,
+    winner: 2,
+    giftId: 49,
+    max: 20,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EC%98%AC%EB%A6%AC%EB%B8%8C%EC%98%81_10000%EC%9B%90%EA%B6%8C.webp",
+    name: "올리브영 10000원",
+    brand: "올리브영",
+    point: 100,
+    winner: 3,
+    giftId: 44,
+    max: 30,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EC%98%AC%EB%A6%AC%EB%B8%8C%EC%98%81_10000%EC%9B%90%EA%B6%8C.webp",
+    name: "올리브영 20000원",
+    brand: "올리브영",
+    point: 200,
+    winner: 2,
+    giftId: 45,
+    max: 20,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EB%B0%B0%EB%AF%BC_10000.webp",
+    name: "배달의민족 10000원",
+    brand: "배달의 민족",
+    point: 100,
+    winner: 2,
+    max: 20,
+    giftId: 46,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EB%B0%B0%EB%AF%BC_10000.webp",
+    name: "배달의민족 20000원",
+    brand: "배달의 민족",
+    point: 200,
+    winner: 2,
+    max: 20,
+    giftId: 47,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/KakaoTalk_20240228_195332095_02.jpg",
+    name: "굽네치킨 세트",
+    brand: "굽네치킨",
+    point: 125,
+    winner: 1,
+    max: 16,
+    giftId: 48,
+  },
+
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/KakaoTalk_20240228_195332095_09.jpg",
+    name: "춘식이 베이비필로우",
+    brand: "카카오 프렌즈",
+    point: 75,
+    winner: 1,
+    max: 20,
+    giftId: 32,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/KakaoTalk_20240228_195332095_10.jpg",
+    name: "공주님 발 매트",
+    brand: "굴뚝 강아지",
+    point: 80,
+    winner: 1,
+    max: 20,
+    giftId: 33,
+  },
+
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/KakaoTalk_20240228_195332095_03.jpg",
+    name: "빙그레 고구마",
+    brand: "맘스터치",
+    point: 15,
+    winner: 2,
+    max: 30,
+    giftId: 35,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EA%B8%B0%EB%B3%B8_100px_%ED%88%AC%EB%AA%85.png",
+    name: "삐약이 아바타(한정)",
+    brand: "메가커피",
+    point: 150,
+    winner: 5,
+    max: 5,
+    giftId: 56,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%ED%8E%AD%EA%B7%84+1.png",
+    name: "펭귄 아바타(한정)",
+    brand: "메가커피",
+    point: 150,
+    winner: 5,
+    max: 5,
+    giftId: 54,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%B0%B0%EA%B2%BD1.png",
+    name: "배경 프로필 1(한정)",
+    brand: "아바타",
+    point: 100,
+    winner: 5,
+    max: 5,
+    giftId: 51,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%B0%B0%EA%B2%BD2.png",
+    name: "배경 프로필 2(한정)",
+    brand: "아바타",
+    point: 100,
+    winner: 5,
+    max: 5,
+    giftId: 52,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%B0%B0%EA%B2%BD3.png",
+    name: "배경 프로필 3(한정)",
+    brand: "아바타",
+    point: 100,
+    winner: 5,
+    max: 5,
+    giftId: 53,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EB%B0%94%ED%83%80+%EC%95%84%EC%9D%B4%EC%BD%98/%EB%B0%B0%EA%B2%BD/KakaoTalk_20240804_224737102_05.png",
+    name: "배경 프로필 4(한정)",
+    brand: "아바타",
+    point: 100,
+    winner: 5,
+    max: 5,
+    giftId: 55,
+  },
 ];
 
 export const STORE_GIFT = [...STORE_GIFT_ACTIVE, ...STORE_GIFT_INACTIVE];

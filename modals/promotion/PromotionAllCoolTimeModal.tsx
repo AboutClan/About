@@ -21,6 +21,14 @@ function PromotionAllCoolTimeModal({ promotionData, setIsModal }: IPromotionAllC
       item.uid !== "2636066822" &&
       item.uid !== "3224546232",
   ).length;
+  const applyCnt2 = data?.filter(
+    (item) =>
+      dayjs(item.lastDate) > dayjs(PROMOTION_WIN_DATE) &&
+      item.uid !== "2259633694" &&
+      item.uid !== "2636066822" &&
+      item.uid !== "3224546232",
+  );
+  console.log(applyCnt2);
 
   const footerOptions: IFooterOptions = {
     children: (

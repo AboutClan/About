@@ -19,17 +19,15 @@ export default function GatherReviewSlider() {
 
   return (
     <Box p="12px 16px" pr="0">
-      {feeds && (
-        <ImageBasicSlider
-          imageTileArr={imageArr}
-          size="sm"
-          firstItem={{
-            icon: <i className="fa-solid fa-image fa-3x" style={{ color: "var(--color-gray)" }} />,
-            func: () => router.push("/square?tab=lounge&category=gather"),
-            text: "번개 리뷰",
-          }}
-        />
-      )}
+      <ImageBasicSlider
+        imageTileArr={imageArr}
+        size="sm"
+        firstItem={{
+          icon: <i className="fa-solid fa-image fa-3x" style={{ color: "var(--color-gray)" }} />,
+          func: () => router.push("/square?tab=lounge&category=gather"),
+          text: "번개 리뷰",
+        }}
+      />
     </Box>
   );
 }
