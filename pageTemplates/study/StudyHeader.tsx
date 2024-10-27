@@ -12,9 +12,9 @@ import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 interface IStudyHeader {
   brand: string;
-  name: string;
-  address: string;
-  coverImage: string;
+  name?: string;
+  address?: string;
+  coverImage?: string;
 }
 
 function StudyHeader({ brand, name, address, coverImage }: IStudyHeader) {
@@ -33,7 +33,7 @@ function StudyHeader({ brand, name, address, coverImage }: IStudyHeader) {
   return (
     <>
       <Header title={brand} isCenter defaultUrl="/home">
-        <Button variant="unstyled" onClick={() => setIsModal(true)}>
+        <Button variant="unstyled" onClick={onClick}>
           <EllipsisIcon />
         </Button>
         {/* <KakaoShareBtn
