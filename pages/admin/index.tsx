@@ -1,6 +1,6 @@
 import axios from "axios";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import Header from "../../components/layouts/Header";
@@ -39,7 +39,7 @@ function Admin() {
     <>
       <Layout>
         <Header title="관리자 페이지" url="/user/setting" />
-        <Slide>
+        <Slide isNoPadding>
           <UserLayout>
             <Navigation>
               <div>
