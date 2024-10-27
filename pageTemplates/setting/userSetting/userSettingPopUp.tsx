@@ -1,5 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import Image from "next/image";
+import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
@@ -10,13 +12,16 @@ import {
   GATHER_JOIN_MEMBERS,
   PROMOTION_POP_UP,
   STUDY_ATTEND_MEMBERS,
+  STUDY_RECORD,
 } from "../../../constants/keys/localStorage";
 import { useGatherQuery } from "../../../hooks/gather/queries";
 import PromotionModal from "../../../modals/aboutHeader/promotionModal/PromotionModal";
 import FAQPopUp from "../../../modals/pop-up/FAQPopUp";
 import LastWeekAttendPopUp from "../../../modals/pop-up/LastWeekAttendPopUp";
 import LocationRegisterPopUp from "../../../modals/pop-up/LocationRegisterPopUp";
+import StudyChallengeModal from "../../../modals/pop-up/StudyChallengeModal";
 import { IUser, IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import { checkAndSetLocalStorage } from "../../../utils/storageUtils";
 
 export type UserPopUp =
@@ -29,7 +34,8 @@ export type UserPopUp =
   // | "alphabet"
   // | "enthusiastic"
   // | "instagram"
-  | "registerLocation";
+  | "registerLocation"
+  | "studyChallenge";
 
 const MODAL_COMPONENTS = {
   faq: FAQPopUp,
@@ -42,6 +48,7 @@ const MODAL_COMPONENTS = {
   // manager: ManagerPopUp,
   // instagram: InstaPopUp,
   registerLocation: LocationRegisterPopUp,
+  studyChallenge: StudyChallengeModal,
 };
 
 interface UserSettingPopUpProps {
@@ -56,6 +63,9 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
   const [drawerType, setDrawerType] = useState<"bottom" | "right">();
 
   const { data: gatherData } = useGatherQuery(-1);
+
+  const studyRecordStr = localStorage.getItem(STUDY_RECORD);
+  const studyRecord = JSON.parse(studyRecordStr);
 
   useEffect(() => {
     return;
@@ -137,15 +147,13 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
       setModalTypes((old) => [...old, "promotion"]);
       return;
     }
-    // if (
-    //   // userInfo?.weekStudyTragetHour === 0
-    // ) {
-    //   setModalTypes((old) => [...old, "studyChallenge"]);
-    // }
+    if (userInfo?.weekStudyTragetHour === 0) {
+      setModalTypes((old) => [...old, "studyChallenge"]);
+    }
 
-    // if (studyRecord && studyRecord?.date !== dayjsToStr(dayjs())) {
-    //   setDrawerType("bottom");
-    // }
+    if (studyRecord && studyRecord?.date !== dayjsToStr(dayjs())) {
+      setDrawerType("bottom");
+    }
     // if (!checkAndSetLocalStorage(SUGGEST_POP_UP, 29)) {
     //   setModalTypes((old) => [...old, "suggest"]);
     //   if (popUpCnt++ === 2) return;
@@ -187,19 +195,35 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
         <BottomFlexDrawer
           isDrawerUp
           isOverlay
-          height={260}
+          height={429}
           isHideBottom
           setIsModal={() => setDrawerType(null)}
         >
-          <Box w="100%" fontWeight={600} fontSize="18px" textAlign="start">
-            어제의 스터디 기록이 도착했어요! <br /> 기록을 확인해볼까요?
+          <Box
+            py={3}
+            lineHeight="32px"
+            w="100%"
+            fontWeight="semibold"
+            fontSize="20px"
+            textAlign="start"
+          >
+            지난 스터디 결과가 도착했어요 <br /> 기록을 확인해볼까요?
           </Box>
+          <Box p={5}>
+            <Image
+              src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/recordBook.png"
+              width={160}
+              height={160}
+              alt="studyResult"
+            />
+          </Box>
+
           <Flex direction="column" mt="auto" w="100%">
-            {/* <Link href={`/study/result?date=${studyRecord?.date}`} style={{ width: "100%" }}>
+            <Link href={`/study/result?date=${studyRecord?.date}`} style={{ width: "100%" }}>
               <Button w="full" size="lg" colorScheme="black" onClick={() => setDrawerType("right")}>
                 확인 하러가기
               </Button>
-            </Link> */}
+            </Link>
             <Button
               my={2}
               h="24px"

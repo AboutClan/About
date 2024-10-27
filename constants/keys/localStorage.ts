@@ -50,4 +50,4 @@ export const USER_LOCATION = "userLocation";
 //스터디 출석
 export const STUDY_ATTEND_INFO = "studyAttendInfo";
 
-export const STUDY_RECORD_INFO = "studyRecordInfo";
+export const STUDY_RECORD = "studyRecord";
