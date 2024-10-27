@@ -1,8 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
@@ -66,7 +66,6 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
 
   const studyRecordStr = localStorage.getItem(STUDY_RECORD);
   const studyRecord = JSON.parse(studyRecordStr);
-
   useEffect(() => {
     return;
     if (!gatherData) return;
@@ -154,6 +153,7 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
     if (studyRecord && studyRecord?.date !== dayjsToStr(dayjs())) {
       setDrawerType("bottom");
     }
+
     // if (!checkAndSetLocalStorage(SUGGEST_POP_UP, 29)) {
     //   setModalTypes((old) => [...old, "suggest"]);
     //   if (popUpCnt++ === 2) return;
@@ -210,12 +210,7 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
             지난 스터디 결과가 도착했어요 <br /> 기록을 확인해볼까요?
           </Box>
           <Box p={5}>
-            <Image
-              src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/recordBook.png"
-              width={160}
-              height={160}
-              alt="studyResult"
-            />
+            <Image src="/51.png" width={160} height={160} alt="studyResult" />
           </Box>
 
           <Flex direction="column" mt="auto" w="100%">
@@ -237,6 +232,7 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
           </Flex>
         </BottomFlexDrawer>
       )}
+
       {/* {drawerType === "right" && <RightDrawer>23</RightDrawer>} */}
     </>
   );
