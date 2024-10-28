@@ -64,7 +64,7 @@ function Ranking() {
   const [tabValue, setTabValue] = useState<"전체 랭킹" | "내 통계">("전체 랭킹");
   const [filterOptions, setFilterOptions] = useState<RankingFilterOptionProps>({
     category: "주간 랭킹",
-    isLocationFilter: true,
+    isLocationFilter: false,
   });
   const [isModal, setIsModal] = useState(false);
 
@@ -75,7 +75,7 @@ function Ranking() {
     dayjs(),
     false,
     true,
-    filterOptions.isLocationFilter ? null : session?.user.location,
+    !filterOptions.isLocationFilter ? null : session?.user.location,
     {
       onError: () => typeToast("error"),
       enabled: filterOptions.category === "스터디 랭킹" && !!session,
@@ -102,7 +102,7 @@ function Ranking() {
             ...record.userSummary,
             cnt: record.cnt,
           }));
-    console.log(42, users);
+
     setUsersRanking(sortUserRanking(users, categorySource, session?.user.uid));
   }, [session?.user, attendRecords, filterOptions, usersAll]);
 
