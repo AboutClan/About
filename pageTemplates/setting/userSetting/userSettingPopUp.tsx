@@ -1,8 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
@@ -210,7 +210,12 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
             지난 스터디 결과가 도착했어요 <br /> 기록을 확인해볼까요?
           </Box>
           <Box p={5}>
-            <Image src="/51.png" width={160} height={160} alt="studyResult" />
+            <Image
+              src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/recordBook.png"
+              width={160}
+              height={160}
+              alt="studyResult"
+            />
           </Box>
 
           <Flex direction="column" mt="auto" w="100%">
