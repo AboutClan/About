@@ -19,7 +19,6 @@ import { useToast } from "../../../hooks/custom/CustomToast";
 import { useFeedMutation } from "../../../hooks/feed/mutations";
 import { useGatherIDQuery } from "../../../hooks/gather/queries";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
-import { useRealTimeAttendMutation } from "../../../hooks/realtime/mutations";
 import { convertSummaryText } from "../../../libs/convertFeedToLayout";
 import {
   TransferFeedSummaryProps,
@@ -102,7 +101,7 @@ function FeedWritingPage() {
       setImageArr(imageArr.filter((old) => old !== url));
     },
   }));
-  const { mutate: mutate2 } = useRealTimeAttendMutation();
+
   return (
     <>
       <Header title="글 쓰기" rightPadding={8}>
