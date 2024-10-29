@@ -84,14 +84,6 @@ function FeedWritingPage() {
       return;
     }
 
-    formData.append("memo", "testtest");
-    formData.append("status", "solo");
-    for (const form of imageFormArr) {
-      formData.append("images", form);
-    }
-    mutate2(formData);
-
-    return;
     appendFormData(formData, "type", category);
     for (const form of imageFormArr) {
       appendFormData(formData, "images", form);
