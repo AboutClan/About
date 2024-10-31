@@ -34,7 +34,7 @@ function PlaceImage({ imageProps, id, hasToggleHeart, selected, size }: PlaceHea
   const [heartType, setHeartType] = useState<"main" | "sub" | null>();
 
   useEffect(() => {
-    console.log(234);
+
     setHeartType(myPreferType);
   }, [myPreferType]);
 
@@ -47,7 +47,7 @@ function PlaceImage({ imageProps, id, hasToggleHeart, selected, size }: PlaceHea
         setHeartType(null);
         break;
       case "sub":
-        console.log(4534);
+        
         setHeartType(null);
         break;
       default:

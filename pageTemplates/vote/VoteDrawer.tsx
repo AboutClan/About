@@ -331,7 +331,7 @@ function VoteDrawer({
           >
             {thumbnailCardInfoArr?.map((props, idx) => {
               const id = props.id;
-              console.log(props);
+            
               return (
                 <Box key={idx} mb={3}>
                   <PickerRowButton

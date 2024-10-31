@@ -31,7 +31,7 @@ function HomeStudySection() {
   //session이나 userInfo보다 더 빠른 속도를 위해. 그래야 메인 데이터도 빨리 가져옴
   const userLocation =
     (localStorage.getItem(USER_LOCATION) as ActiveLocation) || session?.user.location;
-  console.log(23, userLocation);
+ 
   const viewDayjs = getStudyViewDayjs(dayjs());
 
   const [isLeft, setIsLeft] = useState(true);

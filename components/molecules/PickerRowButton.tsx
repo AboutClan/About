@@ -21,7 +21,7 @@ function PickerRowButton({
   id,
   isNoSelect,
 }: PickerRowButtonProps) {
-  console.log(24, place);
+
   return (
     <Button
       h={pickType === "second" ? "68px" : "92px"}

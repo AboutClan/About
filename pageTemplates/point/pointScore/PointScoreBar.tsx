@@ -27,13 +27,7 @@ function PointScoreBar({ hasQuestion = true }: IPointScoreBar) {
     "에스프레소",
     1000,
   ];
-  console.log(
-    24,
-    myScoreBadge,
-    nextBadgeObj,
-    BADGE_COLOR_MAPPINGS[myScoreBadge],
-    SCHEME_TO_COLOR[BADGE_COLOR_MAPPINGS[myScoreBadge]],
-  );
+
   return (
     <>
       <Layout>

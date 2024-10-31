@@ -53,7 +53,7 @@ const Login: NextPage<{
         break;
     }
   }, [status]);
-  console.log(session);
+
   const customSignin = async (type: "member" | "guest") => {
     const provider = type === "member" ? kakaoProvider.id : "guest";
     if (provider === "guest") {

@@ -378,7 +378,7 @@ function StudyNavigation({
           </Box>
           {subArr?.map((props, idx) => {
             const id = props.place._id;
-            console.log(props);
+            
             return (
               <Box key={idx} mb={2} w="full">
                 <PickerRowButton
