@@ -1,8 +1,8 @@
+import { Box } from "@chakra-ui/react";
 import Divider from "../../components/atoms/Divider";
 import WritingIcon from "../../components/Icons/WritingIcon";
 import Slide from "../../components/layouts/PageSlide";
 import GatherHeader from "../../pageTemplates/gather/GatherHeader";
-import GatherLocationFilter from "../../pageTemplates/gather/GatherLocationFilter";
 import GatherMain from "../../pageTemplates/gather/GatherMain";
 import GatherReviewSlider from "../../pageTemplates/gather/GatherReviewSlider";
 
@@ -13,7 +13,9 @@ function Gather() {
       <Slide isNoPadding>
         <GatherReviewSlider />
         <Divider />
-        <GatherLocationFilter />
+        <Box h={4} />
+        {/**임시 비활성화 */}
+        {/* <GatherLocationFilter /> */}
         <GatherMain />
       </Slide>
       <WritingIcon url="/gather/writing/category" />
