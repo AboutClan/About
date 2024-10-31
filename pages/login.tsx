@@ -8,6 +8,7 @@ import {
   getProviders,
   LiteralUnion,
   signIn,
+  signOut,
   useSession,
 } from "next-auth/react";
 import Image from "next/image";
@@ -52,7 +53,7 @@ const Login: NextPage<{
         break;
     }
   }, [status]);
-
+  console.log(session);
   const customSignin = async (type: "member" | "guest") => {
     const provider = type === "member" ? kakaoProvider.id : "guest";
     if (provider === "guest") {
@@ -68,6 +69,11 @@ const Login: NextPage<{
       setIsLoading(false);
       return;
     }
+
+    if (session?.user?.name === "guest") {
+      await signOut({ redirect: false });
+    }
+
     await signIn(provider, {
       callbackUrl: `${window.location.origin}/home`,
     });
