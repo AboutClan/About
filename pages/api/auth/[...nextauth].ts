@@ -39,6 +39,28 @@ export const authOptions: NextAuthOptions = {
         return null;
       },
     }),
+    CredentialsProvider({
+      id: "credentials",
+      name: "Credentials",
+      credentials: {
+        username: { label: "Username", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials, req) {
+        const profile = {
+          id: "66f29811e0f0564ae35c52a4",
+          uid: "1234567890",
+          name: "게스트",
+          role: "member",
+          profileImage:
+            "http://img1.kakaocdn.net/thumb/R110x110.q70/?fname=http://t1.kakaocdn.net/account_images/default_profile.jpeg",
+          isActive: true,
+          email: credentials.username, // 예시로 email 추가
+        };
+
+        return profile;
+      },
+    }),
     KakaoProvider({
       clientId: process.env.KAKAO_CLIENT_ID as string,
       clientSecret: process.env.KAKAO_CLIENT_SECRET as string,
@@ -71,6 +93,7 @@ export const authOptions: NextAuthOptions = {
     async signIn({ account, user, profile, credentials }) {
       try {
         if (account.provider === "guest") return true;
+        if (account.provider === "credentials") return true;
 
         if (!account.access_token) return false;
 
@@ -140,7 +163,6 @@ export const authOptions: NextAuthOptions = {
 
         if (account && account.provider === "guest") {
           token = {
-            ...token,
             id: "66f29811e0f0564ae35c52a4",
             uid: "1234567890",
             name: "guest",
@@ -148,6 +170,22 @@ export const authOptions: NextAuthOptions = {
             location: "수원",
             isActive: false,
             profileImage: "",
+            ...token,
+          };
+
+          return token;
+        }
+
+        if (account && account.provider === "credentials") {
+          token = {
+            id: "66f29811e0f0564ae35c52a4",
+            uid: "1234567890",
+            name: "게스트",
+            role: "guest",
+            location: "수원",
+            isActive: false,
+            profileImage: "",
+            ...token,
           };
 
           return token;

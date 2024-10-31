@@ -23,7 +23,9 @@ function HomeInitialSetting() {
   const router = useRouter();
   const toast = useToast();
 
-  const isGuest = session ? session.user.name === "guest" : undefined;
+  const isGuest = session
+    ? session.user.name === "guest" || session.user.name === "게스트"
+    : undefined;
 
   // const [isGuide, setIsGuide] = useState(false);
 
