@@ -1,4 +1,5 @@
 import { Box } from "@chakra-ui/react";
+
 import Divider from "../../components/atoms/Divider";
 import WritingIcon from "../../components/Icons/WritingIcon";
 import Slide from "../../components/layouts/PageSlide";

@@ -107,7 +107,9 @@ const Rank = styled.div`
   font-weight: 600;
 `;
 
-const Score = styled.div``;
+const Score = styled.div`
+  font-size: 13px;
+`;
 
 const RankingMine = styled.div<{ isMine?: boolean }>`
   margin-left: 12px;
@@ -115,7 +117,7 @@ const RankingMine = styled.div<{ isMine?: boolean }>`
 
   font-weight: 600;
   color: ${(props) => props.isMine && "var(--color-mint)"};
-  font-size: 14px;
+  font-size: 13px;
 `;
 
 export default RankingMembers;

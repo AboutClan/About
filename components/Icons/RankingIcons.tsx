@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 
-export function RankingNumIcon({ num }: { num: number }) {
+export function RankingNumIcon({ num, size = "md" }: { num: number; size?: "md" | "lg" }) {
   const color =
     num === 1
       ? "red"
@@ -15,13 +15,17 @@ export function RankingNumIcon({ num }: { num: number }) {
               : "gray";
 
   return (
-    <Box position="relative" w="36px" h="30px">
+    <Box
+      position="relative"
+      w={size === "md" ? "36px" : "48px"}
+      h={size === "md" ? "30px" : "40px"}
+    >
       <Flex
         justify="center"
         align="center"
         h="inherit"
         fontWeight="extrabold"
-        fontSize="12px"
+        fontSize={size === "md" ? "12px" : "14px"}
         lineHeight="16px"
         color={color}
         w="full"
@@ -32,16 +36,22 @@ export function RankingNumIcon({ num }: { num: number }) {
         {num}등
       </Flex>
       <Box position="absolute">
-        <RankingIcon color={color} />
+        <RankingIcon color={color} size={size} />
       </Box>
     </Box>
   );
 }
 
-export function RankingIcon({ color }: { color: string }) {
+export function RankingIcon({ color, size }: { color: string; size: "md" | "lg" }) {
   const colorText = `var(--color-${color})`;
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="30" viewBox="0 0 36 30" fill="none">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={size === "md" ? "36" : "48"}
+      height={size === "md" ? "30" : "40"}
+      viewBox="0 0 36 30"
+      fill="none"
+    >
       <path
         d="M29.5298 2.38552C29.0457 1.04514 28.1049 0.781519 26.6956 0.910279C27.3801 2.21207 28.15 2.8625 29.5298 2.38552Z"
         fill={colorText}

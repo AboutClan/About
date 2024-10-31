@@ -2,7 +2,7 @@ import { Box, Flex, Switch } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-import Selector from "../../components/atoms/Selector";
+import Select from "../../components/atoms/Select";
 import { IUserRankings } from "../../libs/userEventLibs/userHelpers";
 import { RankingCategoryProp, RankingFilterOptionProps } from "../../pages/ranking";
 import { DispatchType } from "../../types/hooks/reactTypes";
@@ -31,12 +31,13 @@ export default function StatisticsFilterBar({
 
   return (
     <Flex justify="space-between" p="12px 20px" mr="4px" align="center">
-      <Selector
+      <Select
         defaultValue={filterOption.category}
         options={categoryArr}
         setValue={setValue}
-        isBorder={true}
+        size="sm"
       />
+
       <Flex align="center" fontSize="12px">
         <Box
           fontWeight={!filterOption.isLocationFilter ? "semibold" : "regular"}

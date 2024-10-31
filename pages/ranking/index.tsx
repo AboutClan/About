@@ -122,7 +122,7 @@ function Ranking() {
                 setFilterOption={setFilterOptions}
               />
               <Box
-                h="calc(100vh - 329px)"
+                h="calc(100vh - 292px)"
                 position="relative"
                 m="0 20px"
                 borderRadius="var(--rounded-lg)"

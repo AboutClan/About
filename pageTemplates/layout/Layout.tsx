@@ -20,7 +20,7 @@ import Seo from "./Seo";
 
 export const BASE_BOTTOM_NAV_SEGMENT = ["home", "studyPage", "gather", "user", "square"];
 export const NOT_PADDING_NAV_SEGMENT = ["login", "studyPage"];
-export const NOT_PADDING_BOTTOM_NAV_SEGMENT = ["vote"];
+export const NOT_PADDING_BOTTOM_NAV_SEGMENT = ["vote", "ranking"];
 
 const GoogleAnalytics = dynamic(
   () => import("@next/third-parties/google").then((mod) => mod.GoogleAnalytics),
