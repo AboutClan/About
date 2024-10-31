@@ -48,15 +48,14 @@ export default function Page() {
   useEffect(() => {
     if (!studyVoteData) return;
     const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session?.user.uid);
-
     setMyStudyParticipation(findMyStudyParticipation);
   }, [studyVoteData]);
 
   const mergeParticipations = convertStudyToParticipations(
     studyVoteData,
     convertLocationLangTo(locationParam, "kr"),
+    true,
   );
-
   const mergeParticipation = mergeParticipations?.find(
     (participation) => participation.place._id === id,
   );

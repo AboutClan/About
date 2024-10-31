@@ -111,7 +111,11 @@ function VoteDrawer({
     //기존에 존재하는 내 스터디 장소
 
     if (isFirstPage) {
-      const convertMergeParticipations = convertStudyToParticipations(studyVoteData, location);
+      const convertMergeParticipations = convertStudyToParticipations(
+        studyVoteData,
+        location,
+        false,
+      );
       setMergeParticipations(convertMergeParticipations);
       const findMyStudy = convertMergeParticipations.find(
         (par) => par.place._id === myStudyParticipation?.place._id,
@@ -331,7 +335,7 @@ function VoteDrawer({
           >
             {thumbnailCardInfoArr?.map((props, idx) => {
               const id = props.id;
-            
+
               return (
                 <Box key={idx} mb={3}>
                   <PickerRowButton

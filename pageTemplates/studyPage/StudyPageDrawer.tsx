@@ -56,7 +56,7 @@ function StudyPageDrawer({
   useEffect(() => {
     if (!studyVoteData || !currentLocation) return;
 
-    const participations = convertStudyToParticipations(studyVoteData, location);
+    const participations = convertStudyToParticipations(studyVoteData, location, false);
 
     const getThumbnailCardInfoArr = setStudyToThumbnailInfo(
       participations,

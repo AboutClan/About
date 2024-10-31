@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -31,7 +31,7 @@ function HomeStudySection() {
   //session이나 userInfo보다 더 빠른 속도를 위해. 그래야 메인 데이터도 빨리 가져옴
   const userLocation =
     (localStorage.getItem(USER_LOCATION) as ActiveLocation) || session?.user.location;
- 
+
   const viewDayjs = getStudyViewDayjs(dayjs());
 
   const [isLeft, setIsLeft] = useState(true);
@@ -43,8 +43,8 @@ function HomeStudySection() {
     enabled: !!userLocation,
   });
 
-  const studyMergeParticipations = convertStudyToParticipations(studyVoteData, userLocation);
-  console.log(studyMergeParticipations);
+  const studyMergeParticipations = convertStudyToParticipations(studyVoteData, userLocation, false);
+
   useEffect(() => {
     if (!studyVoteData || !session?.user.uid) return;
     const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
