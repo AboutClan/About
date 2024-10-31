@@ -47,7 +47,7 @@ function StudyCardCol({ participations, date, setDate }: StudyCardColProps) {
     (searchParams.get("location") as LocationEn) ||
     convertLocationLangTo(session?.user.location, "en");
   const location = convertLocationLangTo(locationEn, "kr") as ActiveLocation;
-  console.log(54, location);
+  
   const myUid = session?.user.uid;
 
   const [studyCardColData, setStudyCardColData] = useState<StudyThumbnailCardProps[]>();

@@ -1,4 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
+import dayjs from "dayjs";
+import { AnimatePresence, motion, PanInfo } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -17,10 +19,10 @@ import { DispatchBoolean, DispatchString } from "../../types/hooks/reactTypes";
 import { StudyDailyInfoProps } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
 import { ActiveLocation } from "../../types/services/locationTypes";
+import { dayjsToStr } from "../../utils/dateTimeUtils";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
 import StudyPageDrawerFilterBar from "./studyPageDrawer/StudyPageDrawerFilterBar";
 import StudyPageDrawerHeader from "./studyPageDrawer/StudyPageDrawerHeader";
-
 interface StudyPageDrawerProps {
   studyVoteData: StudyDailyInfoProps;
   date: string;
@@ -85,6 +87,33 @@ function StudyPageDrawer({
   const screenHeight = window.innerHeight;
   const adjustedHeight = (screenHeight - 52 - iPhoneNotchSize()) * 0.9;
 
+  const onDragEnd = (panInfo: PanInfo) => {
+    const newDate = getNewDateBySwipe(panInfo, date as string);
+    if (newDate !== date) {
+      setDate(newDate);
+      newSearchParams.set("date", newDate);
+      router.replace(`/studyPage?${newSearchParams.toString()}`, { scroll: false });
+    }
+    return;
+  };
+  const getNewDateBySwipe = (panInfo: PanInfo, date: string) => {
+    const { offset, velocity } = panInfo;
+    const swipe = swipePower(offset.x, velocity.x);
+
+    let dateDayjs = dayjs(date);
+    if (swipe < -swipeConfidenceThreshold) {
+      dateDayjs = dateDayjs.add(1, "day");
+    } else if (swipe > swipeConfidenceThreshold) {
+      dateDayjs = dateDayjs.subtract(1, "day");
+    }
+    return dayjsToStr(dateDayjs);
+  };
+
+  const swipeConfidenceThreshold = 10000;
+  const swipePower = (offset: number, velocity: number) => {
+    return Math.abs(offset) * velocity;
+  };
+
   return (
     <BottomFlexDrawer
       isOverlay={false}
@@ -102,16 +131,25 @@ function StudyPageDrawer({
             placeCnt={thumbnailCardInfoArr?.length}
           />
           <Box overflowY="scroll" overscrollBehaviorY="contain" h={`${adjustedHeight - 210}px`}>
-            {thumbnailCardInfoArr
-              ? thumbnailCardInfoArr.map(({ participants, ...thumbnailCardInfo }, idx) => (
-                  <Box key={idx} mb={3}>
-                    <StudyThumbnailCard
-                      {...thumbnailCardInfo}
-                      participantCnt={participants.length}
-                    />
-                  </Box>
-                ))
-              : [1, 2, 3, 4, 5].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)}
+            <AnimatePresence initial={false}>
+              <motion.div
+                drag="x"
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.3}
+                onDragEnd={(_, panInfo) => onDragEnd(panInfo)}
+              >
+                {thumbnailCardInfoArr
+                  ? thumbnailCardInfoArr.map(({ participants, ...thumbnailCardInfo }, idx) => (
+                      <Box key={idx} mb={3}>
+                        <StudyThumbnailCard
+                          {...thumbnailCardInfo}
+                          participantCnt={participants.length}
+                        />
+                      </Box>
+                    ))
+                  : [1, 2, 3, 4, 5].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)}
+              </motion.div>
+            </AnimatePresence>
           </Box>
         </Box>
       </Flex>

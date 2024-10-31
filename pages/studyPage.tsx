@@ -251,7 +251,7 @@ export default function StudyPage() {
             <ArrowBackButton
               func={() => {
                 setIsVoteDrawer(false);
-                setIsDrawerUp(true);
+                setIsDrawerUp(false);
               }}
             />
           </Box>
@@ -285,7 +285,7 @@ export default function StudyPage() {
           location={locationValue}
           setIsModal={() => {
             setIsVoteDrawer(false);
-            setIsDrawerUp(true);
+            setIsDrawerUp(false);
           }}
           studyVoteData={studyVoteData}
           setCenterLocation={setCenterLocation}

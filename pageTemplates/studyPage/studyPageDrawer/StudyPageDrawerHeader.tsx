@@ -1,12 +1,13 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useState } from "react";
 
+import ButtonWrapper from "../../../components/atoms/ButtonWrapper";
 import SectionHeader from "../../../components/atoms/SectionHeader";
 import { ShortArrowIcon } from "../../../components/Icons/ArrowIcons";
 import DateCalendarModal from "../../../modals/aboutHeader/DateCalendarModal";
 import { DispatchString } from "../../../types/hooks/reactTypes";
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
+import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
 
 interface StudyPageDrawerHeaderProps {
   date: string;
@@ -19,6 +20,10 @@ function StudyPageDrawerHeader({ date, setDate, isDrawerUp }: StudyPageDrawerHea
 
   const englishDayjs = dayjs(date).locale("en");
 
+  const navigateNextDay = () => {
+    setDate((old) => dayjsToStr(dayjs(old).add(1, "day")));
+  };
+
   return (
     <>
       <Box mb={4}>
@@ -26,7 +31,7 @@ function StudyPageDrawerHeader({ date, setDate, isDrawerUp }: StudyPageDrawerHea
           title={dayjsToFormat(dayjs(date), "YYYY년 M월 D일")}
           subTitle={dayjsToFormat(englishDayjs, "MMMM")}
         >
-          <Box flex={1} ml={1.5}>
+          <Flex flex={1} ml={1.5} justify="space-between" align="center">
             <Button
               display="flex"
               justifyItems="center"
@@ -38,7 +43,14 @@ function StudyPageDrawerHeader({ date, setDate, isDrawerUp }: StudyPageDrawerHea
             >
               <ShortArrowIcon dir={isDrawerUp ? "bottom" : "top"} />
             </Button>
-          </Box>
+            <ButtonWrapper
+              onClick={navigateNextDay}
+              text={dayjsToFormat(dayjs(date).add(1, "day"), "M월 D일")}
+              size="xs"
+            >
+              <ShortArrowIcon dir="right" />
+            </ButtonWrapper>
+          </Flex>
         </SectionHeader>
       </Box>
       {isCalendarModal && (

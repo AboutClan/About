@@ -206,7 +206,7 @@ function StudyResultPage() {
                 <Box fontSize="18px" fontWeight="bold">
                   스터디 랭킹
                 </Box>
-                <Button variant="unstyled">
+                <Button variant="unstyled" onClick={() => router.push("/ranking")}>
                   <ShortArrowIcon dir="right" />
                 </Button>
               </Flex>

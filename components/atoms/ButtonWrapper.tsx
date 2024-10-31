@@ -1,4 +1,4 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 
 interface ButtonWrapperProps {
@@ -6,9 +6,10 @@ interface ButtonWrapperProps {
   onClick?: () => void;
   url?: string;
   size?: "xs" | "sm" | "md";
+  text?: string;
 }
 
-function ButtonWrapper({ children, onClick, url, size = "md" }: ButtonWrapperProps) {
+function ButtonWrapper({ text, children, onClick, url, size = "md" }: ButtonWrapperProps) {
   const width = size === "md" ? "44px" : size === "sm" ? "32px" : "28px";
   return (
     <>
@@ -30,14 +31,19 @@ function ButtonWrapper({ children, onClick, url, size = "md" }: ButtonWrapperPro
         <Button
           as="div"
           variant="unstyled"
-          w={width}
+          w={!text ? width : undefined}
           h={width}
           display="flex"
           justifyContent="center"
           alignItems="center"
           onClick={onClick}
         >
-          <Box>{children}</Box>
+          <Flex align="center">
+            <Box fontWeight="medium" lineHeight="16px" mt="2px">
+              {text}
+            </Box>
+            <Box>{children}</Box>
+          </Flex>
         </Button>
       )}
     </>
