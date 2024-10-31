@@ -7,6 +7,7 @@ import Slide from "../../components/layouts/PageSlide";
 import { StudyThumbnailCard } from "../../components/molecules/cards/StudyThumbnailCard";
 import { useCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
+import { useUserInfoQuery } from "../../hooks/user/queries";
 import { setStudyToThumbnailInfo } from "../../libs/study/setStudyToThumbnailInfo";
 import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
@@ -18,6 +19,7 @@ export default function StudyList() {
   const location = searchParams.get("location") as LocationEn;
   const locationKr = convertLocationLangTo(location, "kr");
 
+  const { data: userInfo } = useUserInfoQuery();
   const { currentLocation } = useCurrentLocation();
   const { data: studyVoteData } = useStudyVoteQuery(date, locationKr, {
     enabled: !!locationKr && !!date,
@@ -27,7 +29,7 @@ export default function StudyList() {
 
   const thumbnailCardInfoArr = setStudyToThumbnailInfo(
     participations,
-    null,
+    userInfo?.studyPreference,
     currentLocation,
     date,
     true,

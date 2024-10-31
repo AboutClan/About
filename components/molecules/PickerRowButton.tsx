@@ -4,13 +4,14 @@ import styled from "styled-components";
 import { TurnArrowIcon } from "../Icons/ArrowIcons";
 import { CheckCircleIcon } from "../Icons/CircleIcons";
 import { UserIcon } from "../Icons/UserIcons";
-import { STUDY_MAX_CNT,StudyThumbnailCardProps } from "./cards/StudyThumbnailCard";
+import { StudyThumbnailCardProps, STUDY_MAX_CNT } from "./cards/StudyThumbnailCard";
 import PlaceImage from "./PlaceImage";
 
 export interface PickerRowButtonProps extends Partial<StudyThumbnailCardProps> {
   pickType: "main" | "first" | "second" | null;
   onClick: () => void;
   isNoSelect?: boolean;
+  isOnlyPlaceInfo?: boolean;
 }
 
 function PickerRowButton({
@@ -20,14 +21,23 @@ function PickerRowButton({
   participantCnt,
   id,
   isNoSelect,
+  isOnlyPlaceInfo = false,
 }: PickerRowButtonProps) {
-
   return (
     <Button
-      h={pickType === "second" ? "68px" : "92px"}
+      h={
+        pickType === "second"
+          ? isOnlyPlaceInfo
+            ? "64px"
+            : "68px"
+          : isOnlyPlaceInfo
+            ? "88px"
+            : "92px"
+      }
       w="full"
       p={4}
       pl={pickType == "second" ? 5 : undefined}
+      py={isOnlyPlaceInfo ? 3 : 4}
       variant="unstyled"
       border=" 1px solid var(--gray-200)"
       borderColor={
@@ -71,15 +81,17 @@ function PickerRowButton({
               <Box as="span" fontWeight={600}>
                 {place.distance && `${place.distance}KM`}
               </Box>
-              <Box as="span" fontWeight={400} color="var(--gray-400)">
-                ・
-              </Box>
+              {place.distance && (
+                <Box as="span" fontWeight={400} color="var(--gray-400)">
+                  ・
+                </Box>
+              )}
               <Box as="span" fontWeight={400}>
                 {place.address}
               </Box>
             </Subtitle>
           )}
-          {pickType !== "main" && (
+          {pickType !== "main" && !isOnlyPlaceInfo && (
             <Flex
               mt={pickType !== "second" && 3}
               mr={4}
@@ -123,7 +135,7 @@ function PickerRowButton({
 
         <Box>
           {pickType !== "second" ? (
-            <PlaceImage size="sm" imageProps={place.imageProps} hasToggleHeart id={id} />
+            <PlaceImage size="sm" imageProps={place.imageProps} id={id} />
           ) : (
             <CheckCircleIcon size="lg" color={isNoSelect ? "gray" : "orange"} isFill />
           )}

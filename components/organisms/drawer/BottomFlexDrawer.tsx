@@ -16,7 +16,7 @@ const SWIPE_THRESHOLD = 40; // 스와이프 임계값
 export interface BottomFlexDrawerOptions {
   header?: {
     title: string;
-    subTitle: string;
+    subTitle?: string;
   };
   footer?: {
     text: string;
@@ -121,7 +121,7 @@ export default function BottomFlexDrawer({
         )}
         {drawerHeight > 100 && children}
         {drawerOptions?.footer && drawerHeight > 100 && (
-          <Box py={2} w="100%">
+          <Box py={2} w="100%" mt="auto">
             <Button
               w="100%"
               mt="auto"

@@ -38,8 +38,8 @@ function ButtonWrapper({ text, children, onClick, url, size = "md" }: ButtonWrap
           alignItems="center"
           onClick={onClick}
         >
-          <Flex align="center">
-            <Box fontWeight="medium" lineHeight="16px" mt="2px">
+          <Flex align="center" h="16px">
+            <Box fontWeight="400" lineHeight="16px">
               {text}
             </Box>
             <Box>{children}</Box>

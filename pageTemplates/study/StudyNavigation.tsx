@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 
@@ -238,8 +238,8 @@ function StudyNavigation({
   };
   const drawerOptions2: BottomFlexDrawerOptions = {
     header: {
-      title: "스터디 참여 시간 선택",
-      subTitle: "예상 시작 시간과 종료 시간을 선택해 주세요!",
+      title: "스터디 장소 투표",
+      subTitle: "참여 가능한 스터디 장소를 모두 선택해 주세요¡",
     },
     footer: {
       text: myStudyInfo
@@ -365,7 +365,7 @@ function StudyNavigation({
           isHideBottom
           isDrawerUp
           zIndex={5000}
-          height={408}
+          height={410}
           setIsModal={setIsSubVoteDrawer}
           drawerOptions={drawerOptions2}
         >
@@ -378,7 +378,7 @@ function StudyNavigation({
           </Box>
           {subArr?.map((props, idx) => {
             const id = props.place._id;
-            
+
             return (
               <Box key={idx} mb={2} w="full">
                 <PickerRowButton

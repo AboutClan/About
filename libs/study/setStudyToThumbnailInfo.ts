@@ -18,6 +18,7 @@ export const setStudyToThumbnailInfo = (
   location: ActiveLocation,
   votePlaceProps?: { main: string; sub: string[] },
   imageCache?: Map<string, string>,
+  isNoCntMember?: boolean,
 ): StudyThumbnailCardProps[] => {
   if (!studyData) return [];
 
@@ -67,13 +68,16 @@ export const setStudyToThumbnailInfo = (
       if (aIsSub && !bIsSub) return -1;
       if (!aIsSub && bIsSub) return 1;
     }
-    if (a.participants.length !== b.participants.length) {
-      return b.participants.length - a.participants.length;
-    }
     if (myPrefer) {
       if (a.id === myPrefer.place) return -1;
       if (b.id === myPrefer.place) return 1;
+    }
 
+    if (!isNoCntMember && a.participants.length !== b.participants.length) {
+      return b.participants.length - a.participants.length;
+    }
+
+    if (myPrefer) {
       const aIsMySub = myPrefer?.subPlace?.includes(a.id);
       const bIsMySub = myPrefer?.subPlace?.includes(b.id);
       if (aIsMySub && !bIsMySub) return -1;

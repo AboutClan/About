@@ -1,8 +1,8 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import SectionFooterButton from "../../../components/atoms/SectionFooterButton";
@@ -19,6 +19,7 @@ import {
   STUDY_RESULT_HOUR,
 } from "../../../constants/serviceConstants/studyConstants/studyTimeConstant";
 import { useCurrentLocation } from "../../../hooks/custom/CurrentLocationHook";
+import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { setStudyToThumbnailInfo } from "../../../libs/study/setStudyToThumbnailInfo";
 import { DispatchString } from "../../../types/hooks/reactTypes";
 import { StudyMergeParticipationProps } from "../../../types/models/studyTypes/studyDetails";
@@ -47,11 +48,12 @@ function StudyCardCol({ participations, date, setDate }: StudyCardColProps) {
     (searchParams.get("location") as LocationEn) ||
     convertLocationLangTo(session?.user.location, "en");
   const location = convertLocationLangTo(locationEn, "kr") as ActiveLocation;
-  
+
   const myUid = session?.user.uid;
 
   const [studyCardColData, setStudyCardColData] = useState<StudyThumbnailCardProps[]>();
 
+  const { data: userInfo } = useUserInfoQuery();
   const { currentLocation } = useCurrentLocation();
 
   useEffect(() => {
@@ -61,7 +63,7 @@ function StudyCardCol({ participations, date, setDate }: StudyCardColProps) {
     }
     const cardList = setStudyToThumbnailInfo(
       participations,
-      null,
+      userInfo?.studyPreference,
       currentLocation,
       date as string,
       true,

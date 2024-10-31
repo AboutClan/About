@@ -1,8 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
@@ -20,12 +20,16 @@ import FAQPopUp from "../../../modals/pop-up/FAQPopUp";
 import LastWeekAttendPopUp from "../../../modals/pop-up/LastWeekAttendPopUp";
 import LocationRegisterPopUp from "../../../modals/pop-up/LocationRegisterPopUp";
 import StudyChallengeModal from "../../../modals/pop-up/StudyChallengeModal";
+import StudyPrefencerDrawer from "../../../modals/pop-up/StudyPrefenceDrawer";
+import StudyPreferencePopUp from "../../../modals/pop-up/StudyPreferencePopUp";
 import { IUser, IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import { checkAndSetLocalStorage } from "../../../utils/storageUtils";
 
 export type UserPopUp =
   | "lastWeekAttend"
+  | "preference"
+  | "preferenceDrawer"
   // | "suggest"
   | "promotion"
   | "userGuide"
@@ -49,6 +53,7 @@ const MODAL_COMPONENTS = {
   // instagram: InstaPopUp,
   registerLocation: LocationRegisterPopUp,
   studyChallenge: StudyChallengeModal,
+  preferenceDrawer: StudyPrefencerDrawer,
 };
 
 interface UserSettingPopUpProps {
@@ -184,6 +189,7 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
 
       {Object.entries(MODAL_COMPONENTS).map(([key, Component]) => {
         const type = key as UserPopUp;
+
         return (
           modalTypes.includes(type) && (
             <Component key={type} setIsModal={() => filterModalTypes(type)} />
@@ -237,6 +243,10 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
           </Flex>
         </BottomFlexDrawer>
       )}
+      <StudyPreferencePopUp
+        setIsModal={() => filterModalTypes("preference")}
+        handleClick={() => setModalTypes(["preferenceDrawer"])}
+      />
 
       {/* {drawerType === "right" && <RightDrawer>23</RightDrawer>} */}
     </>
