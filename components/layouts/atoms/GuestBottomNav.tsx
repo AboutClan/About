@@ -1,7 +1,8 @@
 import { Box, Button } from "@chakra-ui/react";
-import { signIn, signOut } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { signIn, signOut } from "next-auth/react";
 import styled from "styled-components";
+
 import { iPhoneNotchSize } from "../../../utils/validationUtils";
 
 function GuestBottomNav() {
