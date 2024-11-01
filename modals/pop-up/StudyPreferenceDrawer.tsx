@@ -36,6 +36,7 @@ function StudyPreferenceDrawer({ setIsModal, handleClick }: StudyPreferenceDrawe
   const queryClient = useQueryClient();
   const userLocation =
     (localStorage.getItem(USER_LOCATION) as ActiveLocation) || session?.user.location;
+
   const resetStudy = useResetStudyQuery();
   const [location, setLocation] = useState<ActiveLocation>(userLocation);
 

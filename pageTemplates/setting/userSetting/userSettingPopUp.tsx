@@ -124,7 +124,6 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
   useEffect(() => {
     // const popUpCnt = cnt;
 
-    console.log(24, userInfo?.studyPreference);
     if (!userInfo?.locationDetail) {
       setModalTypes((old) => [...old, "registerLocation"]);
       return;
