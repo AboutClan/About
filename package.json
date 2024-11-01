@@ -11,6 +11,10 @@
     "build-storybook": "storybook build",
     "chromatic": "npx chromatic --project-token=chpt_1eb5fea11274ebd"
   },
+  "engines": {
+    "node": "20.11.0",
+    "npm": "10.2.4"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
