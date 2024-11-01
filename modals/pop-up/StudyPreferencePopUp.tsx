@@ -12,8 +12,14 @@ interface StudyPreferencePopUpProps extends IModal {
 function StudyPreferencePopUp({ setIsModal, handleClick }: StudyPreferencePopUpProps) {
   const footerOptions: IFooterOptions = {
     main: {
-      text: "추천 장소 보러가기",
+      text: "장소 추천받기",
       func: handleClick,
+    },
+    sub: {
+      text: "다음에",
+      func: () => {
+        setIsModal(false);
+      },
     },
 
     isFull: true,

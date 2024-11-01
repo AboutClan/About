@@ -22,7 +22,7 @@ export interface StudyCommentProps extends TimeStampProps {
   text: string;
 }
 
-export interface IStudyVotePlaces {
+export interface IStudyVotePlaces extends TimeStampProps {
   place: string;
   subPlace?: string[];
 }

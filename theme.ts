@@ -287,6 +287,10 @@ const theme = extendTheme({
           outline: "none",
           boxShadow: "none",
         },
+        _hover: {
+          boxShadow: "none", // Hover 시 boxShadow 제거
+          outline: "none",
+        },
         _disabled: {
           opacity: 0.6,
         },

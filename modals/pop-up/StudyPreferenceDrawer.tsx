@@ -1,9 +1,10 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
+
 import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
 import AlertSimpleModal, { IAlertSimpleModalOptions } from "../../components/AlertSimpleModal";
 import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
@@ -13,10 +14,10 @@ import BottomFlexDrawer, {
 } from "../../components/organisms/drawer/BottomFlexDrawer";
 import { USER_LOCATION } from "../../constants/keys/localStorage";
 import { USER_INFO } from "../../constants/keys/queryKeys";
+import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudyPreferenceMutation } from "../../hooks/study/mutations";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
-import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { getStudyViewDayjs } from "../../libs/study/date/getStudyDateStatus";
 import { getLocationByCoordinates } from "../../libs/study/getLocationByCoordinates";
@@ -35,6 +36,8 @@ function StudyPreferenceDrawer({ setIsModal, handleClick }: StudyPreferenceDrawe
   const queryClient = useQueryClient();
   const userLocation =
     (localStorage.getItem(USER_LOCATION) as ActiveLocation) || session?.user.location;
+  const resetStudy = useResetStudyQuery();
+  const [location, setLocation] = useState<ActiveLocation>(userLocation);
 
   const [placeArr, setPlaceArr] = useState<StudyThumbnailCardProps[]>();
   const [pickPreferences, setPickPreferences] = useState<{
@@ -50,51 +53,60 @@ function StudyPreferenceDrawer({ setIsModal, handleClick }: StudyPreferenceDrawe
     useStudyPreferenceMutation("post", {
       onSuccess() {
         setAlertOptions(null);
-        toast("success", "초기화 완료");
+        toast("success", pickPreferences?.mainPlace ? "등록되었습니다" : "초기화 완료");
+
+        if (pickPreferences?.mainPlace) {
+          resetStudy();
+          queryClient.invalidateQueries([USER_INFO]);
+          setIsModal(false);
+        }
       },
     });
 
-  const { mutate: handleLocationDetail } = useUserInfoFieldMutation("locationDetail", {
-    onSuccess() {
-      toast("success", "등록되었습니다");
-      queryClient.invalidateQueries([USER_INFO]);
-      setIsModal(false);
-    },
-    onError() {
-      setIsModal(false);
-    },
-  });
+  useEffect(() => {
+    setLocation(userLocation);
+  }, [userLocation]);
 
   const preference = userInfo?.studyPreference;
   const userLocationDetail = userInfo.locationDetail;
 
   const { data: studyVoteData } = useStudyVoteQuery(
     dayjsToStr(getStudyViewDayjs(dayjs())),
-    userLocation,
+    location,
     {
-      enabled: !!userLocation,
+      enabled: !!location,
     },
   );
 
   useEffect(() => {
-    if (!studyVoteData || !preference) return;
-    const participations = studyVoteData?.participations;
-    setPlaceArr(
-      setStudyToThumbnailInfo(
-        participations,
-        preference,
-        { lat: userLocationDetail.lat, lon: userLocationDetail.lon },
-        null,
-        true,
-        null,
-        null,
-        null,
-        true,
-      ),
-    );
-    setPickPreferences({ mainPlace: preference.place, subPlaceArr: preference.subPlace });
+    if (!studyVoteData || !userInfo) return;
 
-    if (!studyVoteData.participations.some((par) => par.place._id === preference.place)) {
+    const participations = studyVoteData?.participations;
+    const sortedData = setStudyToThumbnailInfo(
+      participations,
+      preference,
+      { lat: userLocationDetail.lat, lon: userLocationDetail.lon },
+      null,
+      true,
+      null,
+      null,
+      null,
+      true,
+    );
+
+    setPlaceArr(sortedData);
+
+    if (pickPreferences?.subPlaceArr.length < 2) {
+      setPickPreferences({
+        mainPlace: sortedData[0].id,
+        subPlaceArr: [sortedData[1].id, sortedData[2].id],
+      });
+    }
+
+    if (
+      preference?.place &&
+      !studyVoteData.participations.some((par) => par.place._id === preference.place)
+    ) {
       const tempOptions: IAlertModalOptions = {
         title: "지역과 즐겨찾기 장소 불일치",
         subTitle:
@@ -102,6 +114,7 @@ function StudyPreferenceDrawer({ setIsModal, handleClick }: StudyPreferenceDrawe
         text: "즐겨찾기 초기화",
         defaultText: "이대로 쓸게요",
         func: () => {
+          setPickPreferences({ mainPlace: null, subPlaceArr: [] });
           handleStudyPreference({ place: null, subPlace: [] });
         },
       };
@@ -136,6 +149,7 @@ function StudyPreferenceDrawer({ setIsModal, handleClick }: StudyPreferenceDrawe
           subPlace: pickPreferences.subPlaceArr,
         });
       },
+      loading: pickPreferences?.mainPlace && isStudyPreferenceLoading,
     },
   };
 
@@ -192,7 +206,7 @@ function StudyPreferenceDrawer({ setIsModal, handleClick }: StudyPreferenceDrawe
           </Flex>
           <Flex justify="space-between" align="center" w="full" mb={2}>
             <Box color="gray.600" fontSize="12px" lineHeight="16px">
-              원하시는 장소가 없으신가요?"
+              원하시는 장소가 없으신가요?
             </Box>
             <Link href="/study/writing/place">
               <Button
@@ -204,7 +218,6 @@ function StudyPreferenceDrawer({ setIsModal, handleClick }: StudyPreferenceDrawe
                 variant="ghost"
                 height="20px"
                 color="var(--color-blue)"
-                // onClick={() => onClickPlaceSelectButton()}
               >
                 장소 추가 요청
               </Button>
@@ -214,8 +227,9 @@ function StudyPreferenceDrawer({ setIsModal, handleClick }: StudyPreferenceDrawe
         <Flex
           w="full"
           direction="column"
-          h="500px"
+          h="382px"
           overflowY="scroll"
+          overscrollBehaviorY="contain"
           sx={{
             "&::-webkit-scrollbar": {
               display: "none",
@@ -226,6 +240,7 @@ function StudyPreferenceDrawer({ setIsModal, handleClick }: StudyPreferenceDrawe
             <Box key={idx} mb={2}>
               <PickerRowButton
                 {...place}
+                hasLocationDetail
                 isOnlyPlaceInfo
                 onClick={() => onClickBox(place.id)}
                 pickType={
@@ -239,31 +254,6 @@ function StudyPreferenceDrawer({ setIsModal, handleClick }: StudyPreferenceDrawe
             </Box>
           ))}
         </Flex>
-        {/* <Box mb={2} w="full">
-        <PickerRowButton
-          {...convertData(findMyPickMainPlace)}
-          onClick={() => setIsModal(false)}
-          pickType="main"
-        />
-      </Box> */}
-        {/* {subArr?.map((props, idx) => {
-        const id = props.place._id;
-
-        return (
-          <Box key={idx} mb={2} w="full">
-            <PickerRowButton
-              {...convertData(props)}
-              onClick={() =>
-                subPlace.includes(id)
-                  ? setSubPlace((old) => old.filter((placeId) => placeId !== id))
-                  : setSubPlace((old) => [...old, id])
-              }
-              pickType="second"
-              isNoSelect={!subPlace.includes(id)}
-            />
-          </Box>
-        );
-      })} */}
       </BottomFlexDrawer>
 
       {alertOptions && (

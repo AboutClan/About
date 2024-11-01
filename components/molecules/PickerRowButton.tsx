@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { TurnArrowIcon } from "../Icons/ArrowIcons";
 import { CheckCircleIcon } from "../Icons/CircleIcons";
 import { UserIcon } from "../Icons/UserIcons";
-import { StudyThumbnailCardProps, STUDY_MAX_CNT } from "./cards/StudyThumbnailCard";
+import { STUDY_MAX_CNT,StudyThumbnailCardProps } from "./cards/StudyThumbnailCard";
 import PlaceImage from "./PlaceImage";
 
 export interface PickerRowButtonProps extends Partial<StudyThumbnailCardProps> {
@@ -12,6 +12,7 @@ export interface PickerRowButtonProps extends Partial<StudyThumbnailCardProps> {
   onClick: () => void;
   isNoSelect?: boolean;
   isOnlyPlaceInfo?: boolean;
+  hasLocationDetail?: boolean;
 }
 
 function PickerRowButton({
@@ -22,6 +23,7 @@ function PickerRowButton({
   id,
   isNoSelect,
   isOnlyPlaceInfo = false,
+  hasLocationDetail,
 }: PickerRowButtonProps) {
   return (
     <Button
@@ -76,7 +78,7 @@ function PickerRowButton({
             </Badge>
           )}
           <Title>{place.name}</Title>
-          {pickType !== "second" && (
+          {(pickType !== "second" || hasLocationDetail) && (
             <Subtitle fontsize={pickType === "main" ? 12 : 11}>
               <Box as="span" fontWeight={600}>
                 {place.distance && `${place.distance}KM`}

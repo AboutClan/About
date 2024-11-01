@@ -33,7 +33,7 @@ function LocationRegisterPopUp({ setIsModal }: LocationRegisterPopUp) {
 
   const footerOptions: IFooterOptions = {
     main: {
-      text: "활동 장소 입력 완료",
+      text: "활동 장소 입력",
       func: () => {
         const { place_name: placeName, y, x } = placeInfo;
         if (!placeName || !y || !x) {
