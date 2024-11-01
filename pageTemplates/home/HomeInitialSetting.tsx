@@ -71,6 +71,7 @@ function HomeInitialSetting() {
       setIsGuestModal(true);
       // setIsGuide(true);
     }
+ 
     if (userInfo) {
       localStorage.setItem(USER_LOCATION, userInfo.location);
       // if (dayjs().diff(dayjs(userInfo?.registerDate)) <= 7) {
