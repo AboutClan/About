@@ -20,7 +20,7 @@ import FAQPopUp from "../../../modals/pop-up/FAQPopUp";
 import LastWeekAttendPopUp from "../../../modals/pop-up/LastWeekAttendPopUp";
 import LocationRegisterPopUp from "../../../modals/pop-up/LocationRegisterPopUp";
 import StudyChallengeModal from "../../../modals/pop-up/StudyChallengeModal";
-import StudyPrefencerDrawer from "../../../modals/pop-up/StudyPrefenceDrawer";
+import { default as StudyPrefenceDrawer } from "../../../modals/pop-up/StudyPreferenceDrawer";
 import StudyPreferencePopUp from "../../../modals/pop-up/StudyPreferencePopUp";
 import { IUser, IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
@@ -53,7 +53,6 @@ const MODAL_COMPONENTS = {
   // instagram: InstaPopUp,
   registerLocation: LocationRegisterPopUp,
   studyChallenge: StudyChallengeModal,
-  preferenceDrawer: StudyPrefencerDrawer,
 };
 
 interface UserSettingPopUpProps {
@@ -127,6 +126,9 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
 
     if (!userInfo?.locationDetail) {
       setModalTypes((old) => [...old, "registerLocation"]);
+      return;
+    } else if (!localStorage.getItem("preference")) {
+      setModalTypes((old) => [...old, "preference"]);
       return;
     }
 
@@ -243,11 +245,18 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
           </Flex>
         </BottomFlexDrawer>
       )}
-      <StudyPreferencePopUp
-        setIsModal={() => filterModalTypes("preference")}
-        handleClick={() => setModalTypes(["preferenceDrawer"])}
-      />
-
+      {modalTypes.includes("preferenceDrawer") && (
+        <StudyPrefenceDrawer
+          setIsModal={() => filterModalTypes("preferenceDrawer")}
+          handleClick={() => setModalTypes((old) => [...old, "registerLocation"])}
+        />
+      )}
+      {modalTypes.includes("preference") && (
+        <StudyPreferencePopUp
+          setIsModal={() => filterModalTypes("preference")}
+          handleClick={() => setModalTypes(["preferenceDrawer"])}
+        />
+      )}
       {/* {drawerType === "right" && <RightDrawer>23</RightDrawer>} */}
     </>
   );

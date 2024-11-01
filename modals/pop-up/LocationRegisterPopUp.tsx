@@ -6,7 +6,6 @@ import SearchLocation from "../../components/organisms/SearchLocation";
 import { USER_INFO } from "../../constants/keys/queryKeys";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
-import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
 import { KakaoLocationProps } from "../../types/externals/kakaoLocationSearch";
 import { IFooterOptions, ModalLayout } from "../Modals";
@@ -53,9 +52,9 @@ function LocationRegisterPopUp({ setIsModal }: LocationRegisterPopUp) {
 
   return (
     <ModalLayout title="활동 장소 등록" footerOptions={footerOptions} setIsModal={setIsModal}>
-      <ModalSubtitle>
+      <Box mb={3} fontSize="15px" textAlign="start">
         주로 활동하는 대략적인 장소를 입력해 주세요! 이후에도 변경이 가능합니다.
-      </ModalSubtitle>
+      </Box>
       <Box h="228px">
         <SearchLocation placeInfo={placeInfo} setPlaceInfo={setPlaceInfo} isSmall={true} />
       </Box>

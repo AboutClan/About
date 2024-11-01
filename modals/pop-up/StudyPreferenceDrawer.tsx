@@ -1,7 +1,10 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useQueryClient } from "react-query";
+import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
 import AlertSimpleModal, { IAlertSimpleModalOptions } from "../../components/AlertSimpleModal";
 import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
 import PickerRowButton from "../../components/molecules/PickerRowButton";
@@ -9,18 +12,27 @@ import BottomFlexDrawer, {
   BottomFlexDrawerOptions,
 } from "../../components/organisms/drawer/BottomFlexDrawer";
 import { USER_LOCATION } from "../../constants/keys/localStorage";
+import { USER_INFO } from "../../constants/keys/queryKeys";
+import { useToast } from "../../hooks/custom/CustomToast";
+import { useStudyPreferenceMutation } from "../../hooks/study/mutations";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
+import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { getStudyViewDayjs } from "../../libs/study/date/getStudyDateStatus";
+import { getLocationByCoordinates } from "../../libs/study/getLocationByCoordinates";
 import { setStudyToThumbnailInfo } from "../../libs/study/setStudyToThumbnailInfo";
 import { IModal } from "../../types/components/modalTypes";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
-interface StudyPrefencerDrawerProps extends IModal {}
+interface StudyPreferenceDrawerProps extends IModal {
+  handleClick: () => void;
+}
 
-function StudyPrefenceDrawer({ setIsModal }: StudyPrefencerDrawerProps) {
+function StudyPreferenceDrawer({ setIsModal, handleClick }: StudyPreferenceDrawerProps) {
   const { data: session } = useSession();
+  const toast = useToast();
+  const queryClient = useQueryClient();
   const userLocation =
     (localStorage.getItem(USER_LOCATION) as ActiveLocation) || session?.user.location;
 
@@ -29,8 +41,29 @@ function StudyPrefenceDrawer({ setIsModal }: StudyPrefencerDrawerProps) {
     mainPlace: string;
     subPlaceArr: string[];
   }>({ mainPlace: null, subPlaceArr: [] });
+  const [alertOptions, setAlertOptions] = useState<IAlertModalOptions>();
+  const [alertSimpleOptions, setAlertSimpleOptions] = useState<IAlertSimpleModalOptions>();
 
   const { data: userInfo } = useUserInfoQuery();
+
+  const { mutate: handleStudyPreference, isLoading: isStudyPreferenceLoading } =
+    useStudyPreferenceMutation("post", {
+      onSuccess() {
+        setAlertOptions(null);
+        toast("success", "초기화 완료");
+      },
+    });
+
+  const { mutate: handleLocationDetail } = useUserInfoFieldMutation("locationDetail", {
+    onSuccess() {
+      toast("success", "등록되었습니다");
+      queryClient.invalidateQueries([USER_INFO]);
+      setIsModal(false);
+    },
+    onError() {
+      setIsModal(false);
+    },
+  });
 
   const preference = userInfo?.studyPreference;
   const userLocationDetail = userInfo.locationDetail;
@@ -60,7 +93,32 @@ function StudyPrefenceDrawer({ setIsModal }: StudyPrefencerDrawerProps) {
       ),
     );
     setPickPreferences({ mainPlace: preference.place, subPlaceArr: preference.subPlace });
-  }, [studyVoteData, preference]);
+
+    if (!studyVoteData.participations.some((par) => par.place._id === preference.place)) {
+      const tempOptions: IAlertModalOptions = {
+        title: "지역과 즐겨찾기 장소 불일치",
+        subTitle:
+          "즐겨찾기 장소가 소속 지역 내에 있지 않습니다. 지역 변경을 원하시면 운영진에게 문의해 주세요.",
+        text: "즐겨찾기 초기화",
+        defaultText: "이대로 쓸게요",
+        func: () => {
+          handleStudyPreference({ place: null, subPlace: [] });
+        },
+      };
+      setAlertOptions(tempOptions);
+      return;
+    }
+    const changeLocation = getLocationByCoordinates(userLocationDetail.lat, userLocationDetail.lon);
+    if (changeLocation !== session?.user.location || changeLocation !== userInfo?.location) {
+      const tempOptions: IAlertModalOptions = {
+        title: "지역과 주 활동 장소 불일치",
+        subTitle:
+          "주 활동 장소가 소속 지역 내에 있지 않습니다. 지역 변경을 원하시면 운영진에게 문의해 주세요.",
+        func: () => {},
+      };
+      setAlertSimpleOptions(tempOptions);
+    }
+  }, [studyVoteData, userInfo, session]);
 
   const drawerOptions2: BottomFlexDrawerOptions = {
     header: {
@@ -68,7 +126,16 @@ function StudyPrefenceDrawer({ setIsModal }: StudyPrefencerDrawerProps) {
     },
     footer: {
       text: "즐겨찾기 등록 완료",
-      func: () => {},
+      func: () => {
+        if (!pickPreferences?.mainPlace) {
+          toast("warning", "장소를 선택해 주세요");
+          return;
+        }
+        handleStudyPreference({
+          place: pickPreferences.mainPlace,
+          subPlace: pickPreferences.subPlaceArr,
+        });
+      },
     },
   };
 
@@ -88,10 +155,7 @@ function StudyPrefenceDrawer({ setIsModal }: StudyPrefencerDrawerProps) {
     }
   };
 
-  const alertOptions: IAlertSimpleModalOptions = {
-    title: "즐겨찾기된 장소와 현재 활동 장소가 다릅니다.",
-    subTitle: "취소할래?",
-  };
+  useEffect(() => {}, []);
 
   return (
     <>
@@ -99,7 +163,7 @@ function StudyPrefenceDrawer({ setIsModal }: StudyPrefencerDrawerProps) {
         isOverlay
         isHideBottom
         isDrawerUp
-        zIndex={2000}
+        zIndex={1400}
         height={600}
         setIsModal={setIsModal}
         drawerOptions={drawerOptions2}
@@ -121,7 +185,7 @@ function StudyPrefenceDrawer({ setIsModal }: StudyPrefencerDrawerProps) {
               variant="ghost"
               height="20px"
               color="var(--color-blue)"
-              // onClick={() => onClickPlaceSelectButton()}
+              onClick={handleClick}
             >
               수정
             </Button>
@@ -130,19 +194,21 @@ function StudyPrefenceDrawer({ setIsModal }: StudyPrefencerDrawerProps) {
             <Box color="gray.600" fontSize="12px" lineHeight="16px">
               원하시는 장소가 없으신가요?"
             </Box>
-            <Button
-              mt="auto"
-              as="div"
-              fontSize="12px"
-              fontWeight={500}
-              size="xs"
-              variant="ghost"
-              height="20px"
-              color="var(--color-blue)"
-              // onClick={() => onClickPlaceSelectButton()}
-            >
-              장소 추가 요청
-            </Button>
+            <Link href="/study/writing/place">
+              <Button
+                mt="auto"
+                as="div"
+                fontSize="12px"
+                fontWeight={500}
+                size="xs"
+                variant="ghost"
+                height="20px"
+                color="var(--color-blue)"
+                // onClick={() => onClickPlaceSelectButton()}
+              >
+                장소 추가 요청
+              </Button>
+            </Link>
           </Flex>
         </Box>
         <Flex
@@ -157,7 +223,7 @@ function StudyPrefenceDrawer({ setIsModal }: StudyPrefencerDrawerProps) {
           }}
         >
           {placeArr?.map((place, idx) => (
-            <Box key={idx} mb={2} h="120px">
+            <Box key={idx} mb={2}>
               <PickerRowButton
                 {...place}
                 isOnlyPlaceInfo
@@ -200,9 +266,21 @@ function StudyPrefenceDrawer({ setIsModal }: StudyPrefencerDrawerProps) {
       })} */}
       </BottomFlexDrawer>
 
-      {<AlertSimpleModal options={alertOptions} />}
+      {alertOptions && (
+        <AlertModal
+          options={alertOptions}
+          isLoading={isStudyPreferenceLoading}
+          setIsModal={() => setAlertOptions(null)}
+        />
+      )}
+      {alertSimpleOptions && (
+        <AlertSimpleModal
+          options={alertSimpleOptions}
+          setIsModal={() => setAlertSimpleOptions(null)}
+        />
+      )}
     </>
   );
 }
 
-export default StudyPrefenceDrawer;
+export default StudyPreferenceDrawer;
