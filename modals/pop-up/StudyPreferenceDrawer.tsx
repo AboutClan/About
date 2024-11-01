@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 
@@ -12,6 +12,7 @@ import PickerRowButton from "../../components/molecules/PickerRowButton";
 import BottomFlexDrawer, {
   BottomFlexDrawerOptions,
 } from "../../components/organisms/drawer/BottomFlexDrawer";
+import { USER_LOCATION } from "../../constants/keys/localStorage";
 import { USER_INFO } from "../../constants/keys/queryKeys";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
@@ -19,6 +20,8 @@ import { useStudyPreferenceMutation } from "../../hooks/study/mutations";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { getStudyViewDayjs } from "../../libs/study/date/getStudyDateStatus";
+import { getLocationByCoordinates } from "../../libs/study/getLocationByCoordinates";
+import { setStudyToThumbnailInfo } from "../../libs/study/setStudyToThumbnailInfo";
 import { IModal } from "../../types/components/modalTypes";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
@@ -31,9 +34,11 @@ function StudyPreferenceDrawer({ setIsModal, handleClick }: StudyPreferenceDrawe
   const { data: session } = useSession();
   const toast = useToast();
   const queryClient = useQueryClient();
+  const userLocation =
+    (localStorage.getItem(USER_LOCATION) as ActiveLocation) || session?.user.location;
 
   const resetStudy = useResetStudyQuery();
-  const [location, setLocation] = useState<ActiveLocation>(session?.user.location);
+  const [location, setLocation] = useState<ActiveLocation>(userLocation);
 
   const [placeArr, setPlaceArr] = useState<StudyThumbnailCardProps[]>();
   const [pickPreferences, setPickPreferences] = useState<{
@@ -60,9 +65,8 @@ function StudyPreferenceDrawer({ setIsModal, handleClick }: StudyPreferenceDrawe
     });
 
   useEffect(() => {
-    if (!session) return;
-    setLocation(session?.user.location);
-  }, [session]);
+    setLocation(userLocation);
+  }, [userLocation]);
 
   const preference = userInfo?.studyPreference;
   const userLocationDetail = userInfo.locationDetail;
@@ -76,54 +80,58 @@ function StudyPreferenceDrawer({ setIsModal, handleClick }: StudyPreferenceDrawe
   );
 
   useEffect(() => {
-    // if (!studyVoteData || !userInfo) return;
-    // const participations = studyVoteData?.participations;
-    // const sortedData = setStudyToThumbnailInfo(
-    //   participations,
-    //   preference,
-    //   { lat: userLocationDetail.lat, lon: userLocationDetail.lon },
-    //   null,
-    //   true,
-    //   null,
-    //   null,
-    //   null,
-    //   true,
-    // );
-    // setPlaceArr(sortedData);
-    // if (pickPreferences?.subPlaceArr.length < 2) {
-    //   setPickPreferences({
-    //     mainPlace: sortedData[0].id,
-    //     subPlaceArr: [sortedData[1].id, sortedData[2].id],
-    //   });
-    // }
-    // if (
-    //   preference?.place &&
-    //   !studyVoteData.participations.some((par) => par.place._id === preference.place)
-    // ) {
-    //   const tempOptions: IAlertModalOptions = {
-    //     title: "지역과 즐겨찾기 장소 불일치",
-    //     subTitle:
-    //       "즐겨찾기 장소가 소속 지역 내에 있지 않습니다. 지역 변경을 원하시면 운영진에게 문의해 주세요.",
-    //     text: "즐겨찾기 초기화",
-    //     defaultText: "이대로 쓸게요",
-    //     func: () => {
-    //       setPickPreferences({ mainPlace: null, subPlaceArr: [] });
-    //       handleStudyPreference({ place: null, subPlace: [] });
-    //     },
-    //   };
-    //   setAlertOptions(tempOptions);
-    //   return;
-    // }
-    // const changeLocation = getLocationByCoordinates(userLocationDetail.lat, userLocationDetail.lon);
-    // if (changeLocation !== session?.user.location || changeLocation !== userInfo?.location) {
-    //   const tempOptions: IAlertModalOptions = {
-    //     title: "지역과 주 활동 장소 불일치",
-    //     subTitle:
-    //       "주 활동 장소가 소속 지역 내에 있지 않습니다. 지역 변경을 원하시면 운영진에게 문의해 주세요.",
-    //     func: () => {},
-    //   };
-    //   setAlertSimpleOptions(tempOptions);
-    // }
+    if (!studyVoteData || !userInfo) return;
+
+    const participations = studyVoteData?.participations;
+    const sortedData = setStudyToThumbnailInfo(
+      participations,
+      preference,
+      { lat: userLocationDetail.lat, lon: userLocationDetail.lon },
+      null,
+      true,
+      null,
+      null,
+      null,
+      true,
+    );
+
+    setPlaceArr(sortedData);
+
+    if (pickPreferences?.subPlaceArr.length < 2) {
+      setPickPreferences({
+        mainPlace: sortedData[0].id,
+        subPlaceArr: [sortedData[1].id, sortedData[2].id],
+      });
+    }
+
+    if (
+      preference?.place &&
+      !studyVoteData.participations.some((par) => par.place._id === preference.place)
+    ) {
+      const tempOptions: IAlertModalOptions = {
+        title: "지역과 즐겨찾기 장소 불일치",
+        subTitle:
+          "즐겨찾기 장소가 소속 지역 내에 있지 않습니다. 지역 변경을 원하시면 운영진에게 문의해 주세요.",
+        text: "즐겨찾기 초기화",
+        defaultText: "이대로 쓸게요",
+        func: () => {
+          setPickPreferences({ mainPlace: null, subPlaceArr: [] });
+          handleStudyPreference({ place: null, subPlace: [] });
+        },
+      };
+      setAlertOptions(tempOptions);
+      return;
+    }
+    const changeLocation = getLocationByCoordinates(userLocationDetail.lat, userLocationDetail.lon);
+    if (changeLocation !== session?.user.location || changeLocation !== userInfo?.location) {
+      const tempOptions: IAlertModalOptions = {
+        title: "지역과 주 활동 장소 불일치",
+        subTitle:
+          "주 활동 장소가 소속 지역 내에 있지 않습니다. 지역 변경을 원하시면 운영진에게 문의해 주세요.",
+        func: () => {},
+      };
+      setAlertSimpleOptions(tempOptions);
+    }
   }, [studyVoteData, userInfo, session]);
 
   const drawerOptions2: BottomFlexDrawerOptions = {
@@ -161,6 +169,8 @@ function StudyPreferenceDrawer({ setIsModal, handleClick }: StudyPreferenceDrawe
       setPickPreferences((old) => ({ ...old, subPlaceArr: [...old.subPlaceArr, id] }));
     }
   };
+
+  useEffect(() => {}, []);
 
   return (
     <>
