@@ -2,7 +2,7 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 
 import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
@@ -34,6 +34,7 @@ function StudyPreferenceDrawer({ setIsModal, handleClick }: StudyPreferenceDrawe
   const { data: session } = useSession();
   const toast = useToast();
   const queryClient = useQueryClient();
+  const ref = useRef(null);
   const userLocation =
     (localStorage.getItem(USER_LOCATION) as ActiveLocation) || session?.user.location;
 
@@ -78,6 +79,59 @@ function StudyPreferenceDrawer({ setIsModal, handleClick }: StudyPreferenceDrawe
       enabled: !!location,
     },
   );
+
+  useEffect(() => {
+    if (!pickPreferences?.mainPlace) return;
+    if (pickPreferences?.subPlaceArr.length >= 2) return;
+    const participations = studyVoteData?.participations;
+
+    const mainPrefer = studyVoteData.participations.find(
+      (par) => par.place._id === pickPreferences.mainPlace,
+    );
+
+    const sortedData = setStudyToThumbnailInfo(
+      participations,
+      { place: pickPreferences.mainPlace, subPlace: pickPreferences.subPlaceArr },
+      { lat: mainPrefer.place.latitude, lon: mainPrefer.place.longitude },
+      null,
+      true,
+      null,
+      null,
+      null,
+      true,
+    );
+
+    const sub = pickPreferences?.subPlaceArr ? pickPreferences?.subPlaceArr : [];
+
+    if (sub.length === 0) {
+      sub.push(sortedData[1].id);
+      sub.push(sortedData[2].id);
+    } else if (sub.length === 1) {
+      sub.push(sortedData[1].id);
+    }
+    console.log(134, sub);
+    setPickPreferences((old) => ({ ...old, subPlaceArr: sub }));
+    setPlaceArr(
+      setStudyToThumbnailInfo(
+        participations,
+        { place: pickPreferences.mainPlace, subPlace: sub },
+        { lat: mainPrefer.place.latitude, lon: mainPrefer.place.longitude },
+        null,
+        true,
+        null,
+        null,
+        null,
+        true,
+      ),
+    );
+    console.log(13);
+    if (ref.current) {
+      ref.current.scrollTo({
+        top: 0,
+        behavior: "smooth", // 부드러운 스크롤
+      });
+    }
+  }, [pickPreferences?.mainPlace]);
 
   useEffect(() => {
     if (!studyVoteData || !userInfo) return;
@@ -157,8 +211,7 @@ function StudyPreferenceDrawer({ setIsModal, handleClick }: StudyPreferenceDrawe
   const onClickBox = (id: string) => {
     if (!pickPreferences?.mainPlace) {
       setPickPreferences({ mainPlace: id, subPlaceArr: [] });
-    }
-    if (pickPreferences?.mainPlace === id) {
+    } else if (pickPreferences?.mainPlace === id) {
       setPickPreferences({ mainPlace: null, subPlaceArr: [] });
     } else if (pickPreferences?.subPlaceArr.includes(id)) {
       setPickPreferences((old) => ({
@@ -226,6 +279,7 @@ function StudyPreferenceDrawer({ setIsModal, handleClick }: StudyPreferenceDrawe
           </Flex>
         </Box>
         <Flex
+          ref={ref}
           w="full"
           direction="column"
           h="382px"
@@ -248,8 +302,8 @@ function StudyPreferenceDrawer({ setIsModal, handleClick }: StudyPreferenceDrawe
                   place.id === pickPreferences?.mainPlace
                     ? "main"
                     : pickPreferences?.subPlaceArr.includes(place.id)
-                      ? "second"
-                      : null
+                    ? "second"
+                    : null
                 }
               />
             </Box>
