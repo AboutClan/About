@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 
@@ -35,7 +35,9 @@ function StudyPreferenceDrawer({ setIsModal, handleClick }: StudyPreferenceDrawe
   const toast = useToast();
   const queryClient = useQueryClient();
   const userLocation =
-    (localStorage.getItem(USER_LOCATION) as ActiveLocation) || session?.user.location;
+    typeof window !== "undefined"
+      ? (localStorage.getItem(USER_LOCATION) as ActiveLocation) || session?.user.location
+      : session?.user.location;
   const resetStudy = useResetStudyQuery();
   const [location, setLocation] = useState<ActiveLocation>(userLocation);
 
