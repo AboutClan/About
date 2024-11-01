@@ -12,7 +12,6 @@ import PickerRowButton from "../../components/molecules/PickerRowButton";
 import BottomFlexDrawer, {
   BottomFlexDrawerOptions,
 } from "../../components/organisms/drawer/BottomFlexDrawer";
-import { USER_LOCATION } from "../../constants/keys/localStorage";
 import { USER_INFO } from "../../constants/keys/queryKeys";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
@@ -34,12 +33,9 @@ function StudyPreferenceDrawer({ setIsModal, handleClick }: StudyPreferenceDrawe
   const { data: session } = useSession();
   const toast = useToast();
   const queryClient = useQueryClient();
-  const userLocation =
-    typeof window !== "undefined"
-      ? (localStorage.getItem(USER_LOCATION) as ActiveLocation) || session?.user.location
-      : session?.user.location;
+
   const resetStudy = useResetStudyQuery();
-  const [location, setLocation] = useState<ActiveLocation>(userLocation);
+  const [location, setLocation] = useState<ActiveLocation>(session?.user.location);
 
   const [placeArr, setPlaceArr] = useState<StudyThumbnailCardProps[]>();
   const [pickPreferences, setPickPreferences] = useState<{
@@ -66,8 +62,9 @@ function StudyPreferenceDrawer({ setIsModal, handleClick }: StudyPreferenceDrawe
     });
 
   useEffect(() => {
-    setLocation(userLocation);
-  }, [userLocation]);
+    if (!session) return;
+    setLocation(session?.user.location);
+  }, [session]);
 
   const preference = userInfo?.studyPreference;
   const userLocationDetail = userInfo.locationDetail;
