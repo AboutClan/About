@@ -5,12 +5,12 @@ import { LIKE_HEART_PERIOD } from "../constants/settingValue/localStorage";
 import { IInteractionLikeStorage } from "../types/globals/interaction";
 import { dayjsToStr } from "./dateTimeUtils";
 
-export const checkAndSetLocalStorage = (key: string, gap: number, isNoSave?: boolean) => {
+export const checkAndSetLocalStorage = (key: string, gap: number) => {
   let temp = true;
   const value = localStorage.getItem(key);
 
   if (!value || dayjs(value).add(gap, "day") <= dayjs()) {
-    if (!isNoSave) localStorage.setItem(key, dayjs().format("YYYYMMDD"));
+    localStorage.setItem(key, dayjs().format("YYYYMMDD"));
     temp = false;
   }
 

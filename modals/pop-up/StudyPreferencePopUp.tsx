@@ -1,10 +1,8 @@
 import { Box } from "@chakra-ui/react";
-import dayjs from "dayjs";
 import Image from "next/image";
 import styled from "styled-components";
 
 import { IModal } from "../../types/components/modalTypes";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface StudyPreferencePopUpProps extends IModal {
@@ -20,7 +18,6 @@ function StudyPreferencePopUp({ setIsModal, handleClick }: StudyPreferencePopUpP
     sub: {
       text: "다음에",
       func: () => {
-        localStorage.setItem("preference", dayjsToStr(dayjs()));
         setIsModal(false);
       },
     },

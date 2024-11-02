@@ -1,8 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
@@ -128,7 +128,7 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
       setModalTypes((old) => [...old, "registerLocation"]);
       return;
     } else if (
-      !checkAndSetLocalStorage("preference", 3, true) &&
+      !checkAndSetLocalStorage("preference", 3) &&
       (!userInfo?.studyPreference?.updatedAt ||
         dayjs().diff(dayjs(userInfo?.studyPreference?.updatedAt), "day") > 30)
     ) {
