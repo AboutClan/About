@@ -53,8 +53,11 @@ const initializePWAPushService = async () => {
   try {
     const hasPermission = await requestNotificationPermission();
     if (!hasPermission) return;
+    const registration =
+      (await navigator.serviceWorker.getRegistration()) ||
+      (await navigator.serviceWorker.register("/worker.js", { scope: "/" }));
 
-    const registration = await navigator.serviceWorker.register("/worker.js", { scope: "/" });
+    // const registration = await navigator.serviceWorker.register("/worker.js", { scope: "/" });
     const subscription = await registration.pushManager.getSubscription();
     if (subscription) return;
 
