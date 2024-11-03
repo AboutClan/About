@@ -89,12 +89,16 @@ function StudyResultPage() {
 
   const accumulationHour =
     userInfo &&
-    `${Math.ceil(userInfo.weekStudyAccumulationMinutes / 60)}시간 ${userInfo.weekStudyAccumulationMinutes % 60}분`;
+    `${Math.ceil(userInfo.weekStudyAccumulationMinutes / 60)}시간 ${
+      userInfo.weekStudyAccumulationMinutes % 60
+    }분`;
 
   const gridProps = commonAttendanceInfo && [
     {
       title: "목표 시간",
-      text: `${dayjsToTime(dayjs(commonAttendanceInfo.time.start))} ~ ${dayjsToTime(dayjs(commonAttendanceInfo.time.end))}`,
+      text: `${dayjsToTime(dayjs(commonAttendanceInfo.time.start))} ~ ${dayjsToTime(
+        dayjs(commonAttendanceInfo.time.end),
+      )}`,
     },
     {
       title: "출석 체크",
@@ -110,7 +114,7 @@ function StudyResultPage() {
     },
   ];
 
-  const targetHour = userInfo?.weekStudyTragetHour;
+  const targetHour = userInfo?.weekStudyTargetHour;
 
   return (
     <>

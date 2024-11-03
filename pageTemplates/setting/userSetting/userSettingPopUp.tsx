@@ -1,8 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
@@ -157,7 +157,7 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
       setModalTypes((old) => [...old, "promotion"]);
       return;
     }
-    if (userInfo?.weekStudyTragetHour === 0) {
+    if (userInfo?.weekStudyTargetHour === 0) {
       setModalTypes((old) => [...old, "studyChallenge"]);
     }
 

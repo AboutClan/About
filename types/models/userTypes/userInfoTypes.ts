@@ -22,7 +22,7 @@ export interface IUser extends Omit<IUserRegisterForm, "location">, IUserSummary
   isPrivate?: boolean;
   _id: string;
   locationDetail: LocationDeatilProps;
-  weekStudyTragetHour: number;
+  weekStudyTargetHour: number;
   weekStudyAccumulationMinutes: number;
 }
 
