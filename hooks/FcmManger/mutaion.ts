@@ -57,20 +57,25 @@ const initializePWAPushService = async () => {
       (await navigator.serviceWorker.getRegistration()) ||
       (await navigator.serviceWorker.register("/worker.js", { scope: "/" }));
 
-    // const registration = await navigator.serviceWorker.register("/worker.js", { scope: "/" });
-    const subscription = await registration.pushManager.getSubscription();
-    if (subscription) return;
+    let subscription = await registration.pushManager.getSubscription();
+    if (!subscription) {
+      const publicVapidKey = process.env.NEXT_PUBLIC_PWA_KEY;
+      if (!publicVapidKey) throw new Error("Missing NEXT_PUBLIC_PWA_KEY");
 
-    const publicVapidKey = process.env.NEXT_PUBLIC_PWA_KEY;
-    if (!publicVapidKey) throw new Error("Missing NEXT_PUBLIC_PWA_KEY");
+      subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
+      });
+      console.log("New subscription created.");
+    } else {
+      console.log("Existing subscription found.");
+    }
 
-    const newSubscription = await registration.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
-    });
-
-    await registerPushServiceWithPWA(newSubscription);
-    console.log("Successfully subscribed to push service");
+    // 서버에 구독 정보 전송
+    const response = await registerPushServiceWithPWA(subscription);
+    if (response) {
+      console.log("Successfully registered push subscription with the server.");
+    }
   } catch (error) {
     console.error("Failed to initialize PWA push service:", error);
   }
