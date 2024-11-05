@@ -113,7 +113,7 @@ function SquareWritingPage() {
           완료
         </Button>
       </Header>
-      <Slide>
+      <Slide isNoPadding>
         <VStack h="100%" px={4}>
           <FormProvider {...methods}>
             <Box as="form" w="100%" onSubmit={handleSubmit(onSubmit)} id="secret-square-form">
@@ -228,6 +228,7 @@ function SquareWritingPage() {
           leftIcon={<i className="fa-regular fa-check-to-slot fa-lg" />}
           variant="ghost"
           size="sm"
+          border="none"
         >
           투표
         </Button>

@@ -68,6 +68,7 @@ export default function ImageUploadButton({
         variant="ghost"
         size="sm"
         onClick={handleBtnClick}
+        border="none"
       >
         사진
       </Button>
