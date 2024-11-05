@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
+import Slide from "../../components/layouts/PageSlide";
 import {
   GatherThumbnailCard,
   GatherThumbnailCardProps,
@@ -71,24 +72,26 @@ export default function GatherMain() {
   }, []);
 
   return (
-    <Box m="0 16px" position="relative" minH="320px">
-      {cardDataArr?.length ? (
-        <>
-          {cardDataArr.map((cardData, idx) => (
-            <Box mb="12px" key={idx}>
-              <GatherThumbnailCard {...cardData} />
-            </Box>
-          ))}
-        </>
-      ) : (
-        <MainLoadingAbsolute />
-      )}
-      <div ref={loader} />
-      {isLoading && cardDataArr?.length ? (
-        <Box position="relative" mt="32px">
-          <MainLoadingAbsolute size="sm" />
-        </Box>
-      ) : undefined}
-    </Box>
+    <Slide>
+      <Box position="relative" minH="320px">
+        {cardDataArr?.length ? (
+          <>
+            {cardDataArr.map((cardData, idx) => (
+              <Box mb="12px" key={idx}>
+                <GatherThumbnailCard {...cardData} />
+              </Box>
+            ))}
+          </>
+        ) : (
+          <MainLoadingAbsolute />
+        )}
+        <div ref={loader} />
+        {isLoading && cardDataArr?.length ? (
+          <Box position="relative" mt="32px">
+            <MainLoadingAbsolute size="sm" />
+          </Box>
+        ) : undefined}
+      </Box>
+    </Slide>
   );
 }

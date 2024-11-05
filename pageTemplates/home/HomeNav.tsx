@@ -29,7 +29,6 @@ function HomeNav() {
                 bgColor={item.bgColor}
                 borderRadius="50%"
               ></Box>
-
               <Image
                 src={item.iconImage}
                 width={36}
@@ -81,8 +80,8 @@ const HOME_RECOMMENDATION_ICON_ARR: HomeRecommendationItemProps[] = [
   {
     iconImage:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%EA%B9%83%EB%B0%9C2.png",
-    title: "소모임",
-    url: "/group",
+    title: "게시판",
+    url: "/board",
     bgColor: "var(--color-gray)",
   },
   {

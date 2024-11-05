@@ -61,7 +61,7 @@ export interface IGatherListItem {
 }
 export interface IGatherParticipants {
   user: IUserSummary;
-  phase: "first" | "second";
+  phase?: "first" | "second";
 }
 
 // export interface IGatherHeader {

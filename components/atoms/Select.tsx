@@ -28,7 +28,7 @@ export default function Select({
   type,
   size = "sm",
   isFullSize,
-
+  isEllipse = true,
   isActive = true,
   isThick,
 }: ISelect) {
@@ -53,7 +53,6 @@ export default function Select({
   const adjustWidth = () => {
     if (selectRef.current) {
       const textLength = selectRef.current.selectedOptions[0].text.length;
-
       const addSize = size === "sm" ? 44 : size === "md" ? 60 : 0;
       selectRef.current.style.width = `${textLength * 6.5 + addSize}px`;
     }
@@ -80,7 +79,9 @@ export default function Select({
       color="primary"
       value={value}
       onChange={onChange}
-      borderRadius={size === "sm" ? "9999px" : size === "md" ? "20px" : "12px"}
+      borderRadius={
+        !isEllipse ? undefined : size === "sm" ? "9999px" : size === "md" ? "20px" : "12px"
+      }
       border={!isBorder ? "none" : undefined}
       borderColor="var(--gray-200)"
       bgColor="white"
@@ -94,8 +95,14 @@ export default function Select({
       width={!isFullSize ? "max-content" : "100%"}
       mr={size === "sm" && !isBorder && "-6px"}
       sx={{
-        paddingInlineStart: size === "sm" ? "8px" : size === "md" ? "16px" : "20px", // padding-left
-        paddingInlineEnd: "20px", // padding-right (아이콘 오른쪽에 여유 공간)
+        paddingInlineStart: !isEllipse
+          ? "12px"
+          : size === "sm"
+          ? "8px"
+          : size === "md"
+          ? "16px"
+          : "20px", // padding-left
+        paddingInlineEnd: !isEllipse ? "16px" : "20px", // padding-right (아이콘 오른쪽에 여유 공간)
       }}
       _focus={{
         outline: isBorder ? "var(--border)" : "none",

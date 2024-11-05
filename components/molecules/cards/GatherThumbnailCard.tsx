@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ComponentProps } from "react";
 import styled from "styled-components";
 
+import { ABOUT_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
 import { SingleLineText } from "../../../styles/layout/components";
 import { GatherStatus, IGatherParticipants } from "../../../types/models/gatherTypes/gatherTypes";
 import { UserIcon } from "../../Icons/UserIcons";
@@ -11,6 +12,7 @@ import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
 
 const VOTER_SHOW_MAX = 4;
 export interface GatherThumbnailCardProps {
+  type?: "gather" | "group";
   title: string;
   status: string;
   category: string;
@@ -44,17 +46,21 @@ export function GatherThumbnailCard({
   id,
   maxCnt,
   func,
+  type = "gather",
 }: GatherThumbnailCardProps) {
- 
   const userAvatarArr = participants
     ?.filter((par) => par)
-    .map((par) => ({
-      image: par.user.profileImage,
-      ...(par.user.avatar?.type !== null ? { avatar: par.user.avatar } : {}),
-    }));
+    .map((par) =>
+      par.user
+        ? {
+            image: par.user?.profileImage,
+            ...(par.user.avatar?.type !== null ? { avatar: par.user.avatar } : {}),
+          }
+        : { image: ABOUT_USER_SUMMARY.profileImage },
+    );
 
   return (
-    <CardLink href={`/gather/${id}`} onClick={func}>
+    <CardLink href={`/${type}/${id}`} onClick={func}>
       <PlaceImage src={imageProps.image} priority={imageProps.isPriority} />
       <Flex direction="column" ml="12px" flex={1}>
         <Flex>
@@ -138,6 +144,7 @@ const CardLink = styled(Link)`
   padding: 8px;
   padding-right: 12px;
   border: var(--border);
+
   border-radius: 12px;
   background-color: white;
   justify-content: space-between;

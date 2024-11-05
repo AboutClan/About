@@ -35,7 +35,7 @@ export default function ProfileCommentCard({
   const [isCommentModal, setIsCommentModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [text, setText] = useState(comment?.text || "");
-
+  console.log(24, comment, text);
   const changeText = () => {
     changeComment(text);
     setIsEdit(false);
@@ -57,7 +57,7 @@ export default function ProfileCommentCard({
           <BasicAvatar />
         )}
         <Flex direction="column" justify="center" ml={3} my={1}>
-          <Flex align="center" mb={memo ? 1 : 0}>
+          <Flex align="center" mb={memo || comment ? 1 : 0}>
             <Box lineHeight="20px" mr={1} fontWeight="semibold" fontSize="13px">
               {user?.name}
             </Box>
@@ -69,7 +69,7 @@ export default function ProfileCommentCard({
             )}
           </Flex>
           <Flex lineHeight="18px" alignItems="center" color="gray.500" fontSize="12px">
-            <CommentText>{memo}</CommentText>
+            <CommentText>{memo || text}</CommentText>
           </Flex>
         </Flex>
         <RightComponentContainer>{rightComponent}</RightComponentContainer>

@@ -27,7 +27,7 @@ interface INavButton extends INavButtonProps {
   idx: number;
 }
 
-type Category = "홈" | "스터디" | "번개" | "커뮤니티" | "내 정보";
+type Category = "홈" | "스터디" | "소셜링" | "소모임" | "내 정보";
 
 export default function BottomNav() {
   const { data: session } = useSession();
@@ -111,14 +111,14 @@ const navItems: INavButtonProps[] = [
   {
     activeIcon: <ThunderIcon isActive />,
     defaultIcon: <ThunderIcon />,
-    text: "번개",
+    text: "소셜링",
     url: "/gather",
   },
   {
     activeIcon: <CommunityIcon isActive />,
     defaultIcon: <CommunityIcon />,
-    text: "커뮤니티",
-    url: "/square",
+    text: "소모임",
+    url: "/group",
   },
   {
     activeIcon: <UserIcon size="md" isActive />,

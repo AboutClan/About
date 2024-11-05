@@ -18,9 +18,9 @@ import BaseModal from "./BaseModal";
 import BaseScript from "./BaseScript";
 import Seo from "./Seo";
 
-export const BASE_BOTTOM_NAV_SEGMENT = ["home", "studyPage", "gather", "user", "square"];
+export const BASE_BOTTOM_NAV_SEGMENT = ["home", "studyPage", "gather", "user", "group"];
 export const NOT_PADDING_NAV_SEGMENT = ["login", "studyPage"];
-export const NOT_PADDING_BOTTOM_NAV_SEGMENT = ["vote", "ranking"];
+export const NOT_PADDING_BOTTOM_NAV_SEGMENT = ["vote", "ranking", "board"];
 
 const GoogleAnalytics = dynamic(
   () => import("@next/third-parties/google").then((mod) => mod.GoogleAnalytics),
@@ -88,11 +88,11 @@ function Layout({ children }: ILayout) {
                     paddingTop: "56px",
                   }
                 : !NOT_PADDING_NAV_SEGMENT.includes(currentSegment?.[0])
-                  ? {
-                      paddingTop: "56px",
-                      paddingBottom: `calc(var(--bottom-nav-height) + ${iPhoneNotchSize()}px`,
-                    }
-                  : undefined
+                ? {
+                    paddingTop: "56px",
+                    paddingBottom: `calc(var(--bottom-nav-height) + ${iPhoneNotchSize()}px`,
+                  }
+                : undefined
             }
           >
             {children}
