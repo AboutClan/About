@@ -1,4 +1,5 @@
 import { Button, Flex } from "@chakra-ui/react";
+
 import RuleIcon from "../../components/Icons/RuleIcon";
 import Header from "../../components/layouts/Header";
 import { useTypeToast } from "../../hooks/custom/CustomToast";

@@ -10,10 +10,9 @@ import {
   GatherThumbnailCardProps,
 } from "../../components/molecules/cards/GatherThumbnailCard";
 import { GatherThumbnailCardSkeleton } from "../../components/skeleton/GatherThumbnailCardSkeleton";
-import { useGatherQuery } from "../../hooks/gather/queries";
-import { transferGatherDataState } from "../../recoils/transferRecoils";
-import { IGather } from "../../types/models/gatherTypes/gatherTypes";
-import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
+import { useGroupQuery } from "../../hooks/groupStudy/queries";
+import { transferGroupDataState } from "../../recoils/transferRecoils";
+import { IGroup } from "../../types/models/groupTypes/group";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomImage } from "../../utils/imageUtils";
@@ -24,17 +23,19 @@ export default function HomeGroupCol() {
 
   const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>([]);
 
-  const setTransferGather = useSetRecoilState(transferGatherDataState);
+  const setTransferGroup = useSetRecoilState(transferGroupDataState);
 
-  const { data: gathers } = useGatherQuery(-1);
+  const { data: groups } = useGroupQuery("pending", null, 0, {});
 
   useEffect(() => {
-    if (!gathers) return;
-    const handleNavigate = (gather: IGather) => {
-      setTransferGather(gather);
+    if (!groups) return;
+    const handleNavigate = (group: IGroup) => {
+      setTransferGroup(group);
     };
-    setCardDataArr(setGatherDataToCardCol(gathers, false, handleNavigate).slice(0, 3));
-  }, [gathers]);
+    console.log(4, groups);
+
+    setCardDataArr(setGroupDataToCardCol(groups.slice(0, 3), false, handleNavigate));
+  }, [groups]);
 
   return (
     <Box my={4}>
@@ -45,7 +46,7 @@ export default function HomeGroupCol() {
           ))}
           {cardDataArr.length >= 3 && (
             <SectionFooterButton
-              url={`/gather?location=${convertLocationLangTo(session?.user.location, "en")}`}
+              url={`/group?location=${convertLocationLangTo(session?.user.location, "en")}`}
             />
           )}
         </Flex>
@@ -56,25 +57,26 @@ export default function HomeGroupCol() {
   );
 }
 
-export const setGatherDataToCardCol = (
-  gathers: IGather[],
+export const setGroupDataToCardCol = (
+  groups: IGroup[],
   imagePriority: boolean,
-  func?: (gather: IGather) => void,
+  func?: (group: IGroup) => void,
 ): GatherThumbnailCardProps[] => {
-  const cardCol: GatherThumbnailCardProps[] = gathers.map((gather, idx) => ({
-    title: gather.title,
-    status: gather.status,
-    category: gather.type.title,
-    date: dayjsToFormat(dayjs(gather.date).locale("ko"), "M.D(ddd) HH:mm"),
-    place: gather.location.main,
+  const cardCol: GatherThumbnailCardProps[] = groups.map((group, idx) => ({
+    type: "group",
+    title: group.title,
+    status: group.status,
+    category: group.category.main,
+    date: dayjsToFormat(dayjs(group.createdAt).locale("ko"), "YY년 M월 D일 개설"),
+    place: group.category.sub,
     imageProps: {
-      image: gather.image || getRandomImage(),
+      image: group.image || getRandomImage(),
       priority: imagePriority && idx < 4,
     },
-    id: gather.id,
-    maxCnt: gather.memberCnt.max,
-    participants: [{ user: gather.user as IUserSummary, phase: "first" }, ...gather.participants],
-    func: func ? () => func(gather) : undefined,
+    id: group.id,
+    maxCnt: group.memberCnt.max,
+    participants: group.participants,
+    func: func ? () => func(group) : undefined,
   }));
 
   return cardCol;

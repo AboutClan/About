@@ -9,7 +9,7 @@ function HomeGroupSection() {
   return (
     <Box my={5}>
       <SectionHeader title="About 소모임" subTitle="Group">
-        <ButtonWrapper size="xs" url={`/group`}>
+        <ButtonWrapper size="xs" url="/group">
           <ShortArrowIcon dir="right" />
         </ButtonWrapper>
       </SectionHeader>

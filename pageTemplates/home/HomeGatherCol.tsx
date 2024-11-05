@@ -33,7 +33,7 @@ export default function HomeGatherCol() {
     const handleNavigate = (gather: IGather) => {
       setTransferGather(gather);
     };
-    setCardDataArr(setGatherDataToCardCol(gathers, false, handleNavigate).slice(0, 3));
+    setCardDataArr(setGatherDataToCardCol(gathers.slice(0, 3), false, handleNavigate));
   }, [gathers]);
 
   return (

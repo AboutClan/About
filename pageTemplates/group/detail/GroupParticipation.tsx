@@ -13,7 +13,7 @@ function GroupParticipation({ data }: IGroupParticipation) {
   const participantsCnt = data.participants.length;
 
   const isSecret = data?.isSecret;
-
+  console.log(data.participants);
   const userCardArr: IProfileCommentCard[] = data.participants.map((par) => {
     if (isSecret) {
       return {
