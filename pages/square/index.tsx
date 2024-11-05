@@ -1,15 +1,12 @@
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import RuleIcon from "../../components/Icons/RuleIcon";
-import WritingIcon from "../../components/Icons/WritingIcon";
-import Header from "../../components/layouts/Header";
+import WritingButton from "../../components/atoms/buttons/WritingButton";
 import Slide from "../../components/layouts/PageSlide";
 import RuleModal, { IRuleModalContent } from "../../modals/RuleModal";
-import SquareLoungeSection from "../../pageTemplates/square/SquareLoungeSection";
 import SquareSecretSection from "../../pageTemplates/square/SquareSecretSection";
-import SquareTabNav, { SquareTab } from "../../pageTemplates/square/SquareTabNav";
+import { SquareTab } from "../../pageTemplates/square/SquareTabNav";
 
 function SquarePage() {
   const { data: session } = useSession();
@@ -33,14 +30,10 @@ function SquarePage() {
 
   return (
     <>
-      <Header title="커뮤니티" isBack={false}>
-        <RuleIcon setIsModal={setIsRuleModal} />
-      </Header>
       <Slide isNoPadding>
-        <SquareTabNav tab={tab} />
-        {tab === "시크릿 스퀘어" ? <SquareSecretSection /> : <SquareLoungeSection />}
+        <SquareSecretSection />
       </Slide>
-      {tab === "시크릿 스퀘어" && !isGuest && <WritingIcon url="/square/secret/writing" />}
+      {tab === "시크릿 스퀘어" && !isGuest && <WritingButton url="/square/secret/writing" />}
       {isRuleModal && (
         <RuleModal
           content={tab === "시크릿 스퀘어" ? SECRET_CONTENT : LOUNGE_CONTENT}

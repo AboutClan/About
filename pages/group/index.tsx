@@ -1,11 +1,12 @@
-import { Box } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { Box, Flex } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
+import WritingButton from "../../components/atoms/buttons/WritingButton";
 
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
-import Selector from "../../components/atoms/Selector";
+import Select from "../../components/atoms/Select";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 // import RuleModal from "../../components/modals/RuleModal";
@@ -149,17 +150,25 @@ function GroupPage() {
   }));
 
   function StatusSelector() {
-    return <Selector defaultValue={status} setValue={setStatus} options={["모집중", "종료"]} />;
+    return (
+      <Select
+        size="md"
+        isEllipse={false}
+        defaultValue={status}
+        setValue={setStatus}
+        options={["모집중", "종료"]}
+      />
+    );
   }
 
   return (
     <>
-      <Header title="소모임" url="/home" />
+      <Header title="소모임" isBack={false} />
       <Slide isNoPadding>
         <Layout>
           {!myGroups ? <GroupSkeletonMine /> : <GroupMine myGroups={myGroups} />}
           <Box px={5} bg="white">
-            <SectionBar title="전체 소모임" rightComponent={<StatusSelector />} />
+            <SectionBar title="전체 소모임" size="md" rightComponent={<StatusSelector />} />
           </Box>
           <NavWrapper>
             <TabNav selected={category.main} tabOptionsArr={mainTabOptionsArr} isMain />
@@ -175,12 +184,14 @@ function GroupPage() {
             {!groupStudies.length && isLoading ? (
               <GroupSkeletonMain />
             ) : (
-              <Main>
+              <Flex direction="column" px={5} py={4}>
                 {groupStudies
                   ?.slice()
                   ?.reverse()
-                  ?.map((group) => <GroupBlock group={group} key={group.id} />)}
-              </Main>
+                  ?.map((group) => (
+                    <GroupBlock group={group} key={group.id} />
+                  ))}
+              </Flex>
             )}
           </Box>
           <div ref={loader} />
@@ -191,6 +202,7 @@ function GroupPage() {
           ) : undefined}
         </Layout>
       </Slide>
+      <WritingButton url="/group/writing/main" />
     </>
   );
 }
@@ -207,9 +219,5 @@ const NavWrapper = styled.div`
 `;
 
 const SubNavWrapper = styled.div``;
-
-const Main = styled.main`
-  margin: 8px var(--gap-4);
-`;
 
 export default GroupPage;

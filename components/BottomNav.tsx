@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Link, { LinkProps } from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
@@ -27,7 +27,7 @@ interface INavButton extends INavButtonProps {
   idx: number;
 }
 
-type Category = "홈" | "스터디" | "번개" | "커뮤니티" | "내 정보";
+type Category = "홈" | "스터디" | "소셜링" | "소모임" | "내 정보";
 
 export default function BottomNav() {
   const { data: session } = useSession();
@@ -111,14 +111,14 @@ const navItems: INavButtonProps[] = [
   {
     activeIcon: <ThunderIcon isActive />,
     defaultIcon: <ThunderIcon />,
-    text: "번개",
+    text: "소셜링",
     url: "/gather",
   },
   {
     activeIcon: <CommunityIcon isActive />,
     defaultIcon: <CommunityIcon />,
-    text: "커뮤니티",
-    url: "/square",
+    text: "소모임",
+    url: "/group",
   },
   {
     activeIcon: <UserIcon size="md" isActive />,

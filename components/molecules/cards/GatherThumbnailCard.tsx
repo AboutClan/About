@@ -45,7 +45,6 @@ export function GatherThumbnailCard({
   maxCnt,
   func,
 }: GatherThumbnailCardProps) {
- 
   const userAvatarArr = participants
     ?.filter((par) => par)
     .map((par) => ({
@@ -138,6 +137,7 @@ const CardLink = styled(Link)`
   padding: 8px;
   padding-right: 12px;
   border: var(--border);
+
   border-radius: 12px;
   background-color: white;
   justify-content: space-between;

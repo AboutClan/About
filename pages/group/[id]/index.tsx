@@ -1,15 +1,15 @@
 import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { GROUP_GATHERING_IMAGE } from "../../../assets/images/randomImages";
+import WritingButton from "../../../components/atoms/buttons/WritingButton";
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
-import WritingIcon from "../../../components/Icons/WritingIcon";
 import Slide from "../../../components/layouts/PageSlide";
 import { useGroupAttendancePatchMutation } from "../../../hooks/groupStudy/mutations";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
@@ -97,7 +97,7 @@ function GroupDetail() {
       {group && category === "정보" && !isMember ? (
         <GroupBottomNav data={group} />
       ) : category === "피드" && isMember ? (
-        <WritingIcon
+        <WritingButton
           url={`/feed/writing/group?id=${id}`}
           isBottomNav={false}
           onClick={resetCache}

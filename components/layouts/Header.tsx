@@ -85,7 +85,7 @@ const HeaderContainer = styled.header<{
 
 const CenterTitle = styled.div`
   flex: 1;
-  font-weight: 700; /* font-extrabold */
+  font-weight: "bold";
   color: var(--gray-800); /* text-gray-1 - 색상은 예시입니다 */
   text-align: center;
 `;

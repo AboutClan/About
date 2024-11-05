@@ -37,8 +37,8 @@ function AvatarComponent({
     !hasAvatar
       ? image
       : avatar.type >= 100
-        ? SPECIAL_AVATAR[avatar.type - 100].image
-        : AVATAR_IMAGE_ARR[avatar.type],
+      ? SPECIAL_AVATAR[avatar.type - 100].image
+      : AVATAR_IMAGE_ARR[avatar.type],
   );
   const [bgImage, setBgImage] = useState<string | null>(null);
 
@@ -47,8 +47,8 @@ function AvatarComponent({
       !hasAvatar
         ? image
         : avatar.type >= 100
-          ? SPECIAL_AVATAR[avatar.type - 100].image
-          : AVATAR_IMAGE_ARR[avatar.type],
+        ? SPECIAL_AVATAR[avatar.type - 100].image
+        : AVATAR_IMAGE_ARR[avatar.type],
     );
     if (avatar?.bg >= 100) {
       setBgImage(`url(${SPECIAL_BG[avatar?.bg - 100].image})`);
@@ -86,20 +86,20 @@ function AvatarComponent({
                   (size === "2xs"
                     ? "16px"
                     : size === "xs"
-                      ? "24px"
-                      : size === "sm"
-                        ? "28px"
-                        : size === "smd"
-                          ? "32px"
-                          : size === "mds"
-                            ? "40px"
-                            : size === "md"
-                              ? "48px"
-                              : size === "lg"
-                                ? "64px"
-                                : size === "xl"
-                                  ? "80px"
-                                  : "")
+                    ? "24px"
+                    : size === "sm"
+                    ? "28px"
+                    : size === "smd"
+                    ? "32px"
+                    : size === "mds"
+                    ? "40px"
+                    : size === "md"
+                    ? "48px"
+                    : size === "lg"
+                    ? "64px"
+                    : size === "xl"
+                    ? "80px"
+                    : "")
                 }
                 priority={isPriority}
                 alt="avatar"
@@ -167,7 +167,7 @@ const AvatarContainer = styled.div<{
           return css`
             width: 24px;
             height: 24px;
-            padding: 1px;
+            padding: 2px;
           `;
         case "sm":
           return css`
@@ -236,18 +236,18 @@ const ImageContainer = styled.div<{
     (props.size === "2xs"
       ? "1px"
       : props.size === "xs"
-        ? "2px"
-        : props.size === "sm"
-          ? "3px"
-          : props.size === "smd"
-            ? "4px"
-            : props.size === "mds"
-              ? "5px"
-              : props.size === "md"
-                ? "6px"
-                : props.size === "lg"
-                  ? "6px"
-                  : "8px")};
+      ? "2px"
+      : props.size === "sm"
+      ? "3px"
+      : props.size === "smd"
+      ? "4px"
+      : props.size === "mds"
+      ? "5px"
+      : props.size === "md"
+      ? "6px"
+      : props.size === "lg"
+      ? "6px"
+      : "8px")};
 
   background: ${(props) => (props.isBgImage ? `center/cover no-repeat ${props.bg}` : props.bg)};
 `;

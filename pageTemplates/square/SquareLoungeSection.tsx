@@ -3,7 +3,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
-import Selector from "../../components/atoms/Selector";
+import Select from "../../components/atoms/Select";
 import ButtonGroups, { ButtonOptionsProps } from "../../components/molecules/groups/ButtonGroups";
 import FeedLayout, { FeedLayoutProps } from "../../components/organisms/FeedLayout";
 import { useFeedsQuery } from "../../hooks/feed/queries";
@@ -40,7 +40,7 @@ function SquareLoungeSection() {
       setCategory(categoryParam);
     } else {
       newSearchParams.append("category", "all");
-      router.replace(`/square?${newSearchParams}`);
+      router.replace(`/gather?${newSearchParams}`);
     }
   }, [categoryParam, subCategory]);
 
@@ -101,26 +101,27 @@ function SquareLoungeSection() {
       text: `${textObj[category]}`,
       func: () => {
         newSearchParams.set("category", category);
-        router.replace(`/square?${newSearchParams}`);
+        router.replace(`/gather?${newSearchParams}`);
         setCategory(category);
       },
     };
   });
-
+  console.log(2, category);
   return (
     <Box pb="60px">
-      <Flex p="12px 16px" pr="8px" justify="space-between">
+      <Flex px={5} pt={1} pb={3} justify="space-between">
         <ButtonGroups
           buttonOptionsArr={buttonOptionsArr}
           currentValue={`${textObj[category]}`}
           size="sm"
           isEllipse
         />
-        <Selector
+        <Select
           defaultValue={subCategory}
           options={["최신순", "예전순"]}
           setValue={setSubCategory}
           isBorder={false}
+          size="sm"
         />
       </Flex>
       <Box minH="calc(100dvh - 162px)">

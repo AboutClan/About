@@ -38,7 +38,7 @@ function FeedLayout({
   isAnonymous,
 }: FeedLayoutProps) {
   return (
-    <Flex direction="column" border="var(--border)">
+    <Flex direction="column" border="var(--border)" pb={2}>
       <FeedHeader writer={isAnonymous ? ABOUT_USER_SUMMARY : user} date={date} />
       <AspectRatio ratio={1}>
         <ImageSlider imageContainer={images} type="review" />

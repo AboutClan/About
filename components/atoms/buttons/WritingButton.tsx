@@ -1,7 +1,7 @@
 import Link from "next/link";
 import styled from "styled-components";
 
-import { iPhoneNotchSize } from "../../utils/validationUtils";
+import { iPhoneNotchSize } from "../../../utils/validationUtils";
 
 interface IWritingIcon {
   url: string;
@@ -9,7 +9,7 @@ interface IWritingIcon {
   onClick?: () => void;
 }
 
-function WritingIcon({ url, isBottomNav = true, onClick }: IWritingIcon) {
+function WritingButton({ url, isBottomNav = true, onClick }: IWritingIcon) {
   return (
     <Link href={url} onClick={onClick}>
       <Layout isBottomNav={isBottomNav}>
@@ -37,4 +37,4 @@ const Layout = styled.button<{ isBottomNav: boolean }>`
   }
 `;
 
-export default WritingIcon;
+export default WritingButton;
