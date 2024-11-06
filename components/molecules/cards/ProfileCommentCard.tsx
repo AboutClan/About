@@ -35,7 +35,7 @@ export default function ProfileCommentCard({
   const [isCommentModal, setIsCommentModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [text, setText] = useState(comment?.text || "");
-  console.log(24, comment, text);
+
   const changeText = () => {
     changeComment(text);
     setIsEdit(false);
@@ -59,7 +59,7 @@ export default function ProfileCommentCard({
         <Flex direction="column" justify="center" ml={3} my={1}>
           <Flex align="center" mb={memo || comment ? 1 : 0}>
             <Box lineHeight="20px" mr={1} fontWeight="semibold" fontSize="13px">
-              {user?.name}
+              {user?.name || "익명"}
             </Box>
             <UserBadge score={user?.score || 0} uid={user?.uid} />
             {hasCommentButton && (

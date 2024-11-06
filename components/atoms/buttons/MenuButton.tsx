@@ -1,4 +1,5 @@
 import { Button, Menu, MenuButton as ChakraMenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+
 import { EllipsisIcon } from "../../Icons/DotIcons";
 import KakaoShareBtn from "../../Icons/KakaoShareBtn";
 import ButtonWrapper from "../ButtonWrapper";
@@ -6,6 +7,7 @@ import ButtonWrapper from "../ButtonWrapper";
 export interface MenuProps {
   text?: string;
   func?: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   kakaoOptions?: any;
 }
 
@@ -25,7 +27,7 @@ function MenuButton({ menuArr }: MenuButtonProps) {
           </ChakraMenuButton>
           <MenuList fontSize="14px">
             {menuArr.map((menu) => (
-              <MenuItem key={menu?.text || "kakao"} onClick={menu?.func}>
+              <MenuItem key={menu?.text || "kakao"} onClick={menu?.func} bg="white">
                 {menu?.text}
                 {menu?.kakaoOptions && <KakaoShareBtn variant="unstyled" {...menu.kakaoOptions} />}
               </MenuItem>
