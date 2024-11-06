@@ -9,7 +9,7 @@ import { Input } from "../../../components/atoms/Input";
 import { MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
 import Selector from "../../../components/atoms/Selector";
 import InviteUserGroups from "../../../components/molecules/groups/InviteUserGroups";
-import { GROUP_STUDY_ALL } from "../../../constants/keys/queryKeys";
+import { GROUP_STUDY } from "../../../constants/keys/queryKeys";
 import { LOCATION_ALL } from "../../../constants/location";
 import { useAdminUsersLocationControlQuery } from "../../../hooks/admin/quries";
 import { useCompleteToast } from "../../../hooks/custom/CustomToast";
@@ -45,7 +45,7 @@ export default function GroupAdminInvitation() {
   const { mutate: mutate2 } = useGroupWaitingStatusMutation(+id, {
     onSuccess() {
       completeToast("free", "가입되었습니다.");
-      queryClient.invalidateQueries([GROUP_STUDY_ALL]);
+      queryClient.invalidateQueries([GROUP_STUDY]);
       refetch();
     },
   });
