@@ -3,7 +3,6 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import styled from "styled-components";
 
-import { GROUP_STUDY_ALL } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
 import { useCompleteToast } from "../../hooks/custom/CustomToast";
 import { useGroupAttendMutation } from "../../hooks/groupStudy/mutations";
@@ -90,8 +89,8 @@ function AttendCheckModal({
                 myAttend?.includes(day)
                   ? "mint"
                   : mySubAttend?.includes(day)
-                    ? "yellowTheme"
-                    : "gray"
+                  ? "yellowTheme"
+                  : "gray"
               }
             >
               {dayjsToFormat(item, "ddd요일")}
