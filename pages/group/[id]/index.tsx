@@ -1,8 +1,8 @@
 import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
@@ -35,7 +35,7 @@ function GroupDetail() {
   const [transferGroup, setTransferGroup] = useRecoilState(transferGroupDataState);
 
   const { data: groupData, refetch } = useGroupIdQuery(id, { enabled: !!id && !transferGroup });
-
+  console.log(groupData);
   useEffect(() => {
     if (groupData) {
       setGroup(groupData);
@@ -75,7 +75,7 @@ function GroupDetail() {
 
   return (
     <>
-      <GroupHeader group={group} />
+      {group && <GroupHeader group={group} />}
       <Slide isNoPadding>
         {group && (
           <Layout>

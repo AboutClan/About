@@ -53,7 +53,7 @@ function StudyHeader({ brand, name, address, coverImage }: IStudyHeader) {
             subTitle: "장소 추가, 카카오톡 공유, 정보 수정 등의 기능을 점검중에 있습니다.",
             kakaoOption: {
               type: "study",
-              title: `${dayjsToFormat(dayjs(date), "(M/D)")} 같이 스터디 해요~!}`,
+              title: `${dayjsToFormat(dayjs(date), "(M/D)")} 같이 스터디 해요~!`,
               subtitle: name,
               location: address,
               img: coverImage,

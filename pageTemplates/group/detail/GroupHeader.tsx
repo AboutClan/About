@@ -1,8 +1,7 @@
-import { Button } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import MenuButton, { MenuProps } from "../../../components/atoms/buttons/MenuButton";
 
-import { EllipsisIcon } from "../../../components/Icons/DotIcons";
 import Header from "../../../components/layouts/Header";
 import { GROUP_STUDY_ALL } from "../../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../../hooks/custom/CustomHooks";
@@ -46,17 +45,26 @@ function GroupHeader({ group }: IGroupHeader) {
     mutate();
   };
 
+  const menuArr: MenuProps[] = [
+    {
+      text: "내용 수정하기",
+      func: () => {},
+    },
+    {
+      kakaoOptions: {
+        type: "study",
+        title: group.title,
+        subtitle: group.category.main,
+        img: group.image,
+        url: `/group/${group.id}`,
+      },
+    },
+  ];
+
   return (
     <>
-      <Header title={group?.title}>
-        <Button
-          variant="unstyled"
-          onClick={() => {
-            typeToast("not-yet");
-          }}
-        >
-          <EllipsisIcon />
-        </Button>
+      <Header title={group?.title} rightPadding={6}>
+        <MenuButton menuArr={menuArr} />
       </Header>
       {isSettigModal && (
         <BottomDrawer type="group" onClose={() => setIsSettingModal(false)} onSubmit={handleQuit} />
