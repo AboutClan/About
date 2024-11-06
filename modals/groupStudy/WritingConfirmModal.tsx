@@ -44,7 +44,7 @@ function GroupConfirmModal({ setIsModal, groupWriting }: IGroupConfirmModal) {
     onError: errorToast,
   });
 
-  const { mutate: updateGroup } = useGroupWritingMutation("patch", {
+  const { mutate: updateGroup, isLoading } = useGroupWritingMutation("patch", {
     onSuccess() {
       resetLocalStorage();
 
@@ -66,6 +66,7 @@ function GroupConfirmModal({ setIsModal, groupWriting }: IGroupConfirmModal) {
     main: {
       text: groupWriting?.id ? "내용 수정" : "소모임 개설",
       func: onSubmit,
+      isLoading,
     },
   };
 
@@ -125,6 +126,7 @@ const Item = styled.div`
     display: inline-block;
     white-space: nowrap;
     overflow: hidden;
+    text-align: start;
     text-overflow: ellipsis;
   }
 `;

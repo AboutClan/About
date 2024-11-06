@@ -91,6 +91,8 @@ function Ranking() {
     },
   );
 
+  console.log(34, attendRecords, usersAll);
+
   useEffect(() => {
     if (filterOptions.category === "스터디 랭킹" && !attendRecords) return;
     if (filterOptions.category !== "스터디 랭킹" && !usersAll) return;

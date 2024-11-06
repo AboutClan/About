@@ -46,8 +46,8 @@ function WritingCondition() {
     age: !groupWriting?.age
       ? false
       : groupWriting.age[0] === 19 && groupWriting.age[1] === 28
-        ? false
-        : true,
+      ? false
+      : true,
     isFree: groupWriting?.isFree !== undefined ? groupWriting?.isFree : true,
     location:
       groupWriting?.location !== undefined ? groupWriting?.location === userInfo?.location : false,
@@ -144,147 +144,145 @@ function WritingCondition() {
         <ProgressStatus value={100} />
         <Header isSlide={false} title="" url="/group/writing/hashTag" />
       </Slide>
-      <Slide>
-        <RegisterLayout>
-          <RegisterOverview>
-            <span>조건을 선택해 주세요.</span>
-          </RegisterOverview>
-          <Container>
-            <Item>
-              <Name>
-                <div>
-                  <i className="fa-solid fa-user-lock" />
-                </div>
-                <span>참여 가능 조건</span>
-              </Name>
-              <Box ml="auto" mr="20px" fontSize="12px" color="var(--color-mint)">
-                {getMemberConditionText() || "기본값"}
-              </Box>
-              <Button colorScheme="mint" size="sm" onClick={() => setIsMemberConditionModal(true)}>
-                설정
-              </Button>
-            </Item>
-            <Item>
-              <Name>
-                <i className="fa-regular fa-location-crosshairs" />
-                <span>지역 필터</span>
-                <PopOverIcon title="지역 필터" text="기본으로는 본인이 속한 지역으로 한정합니다." />
-              </Name>
-              <Switch
-                mr="var(--gap-1)"
-                colorScheme="mint"
-                isChecked={condition.location}
-                onChange={(e) => toggleSwitch(e, "location")}
-              />
-            </Item>
-            {!condition.location && <GatherWritingConditionLocation setLocation={setLocation} />}
-            <Item>
-              <Name>
-                <i className="fa-regular fa-person-to-door" />
-                <span>자유 가입</span>
-                <PopOverIcon title="자유 가입" text="조건에 맞는다면 자유롭게 가입이 가능합니다." />
-              </Name>
-              <Switch
-                mr="var(--gap-1)"
-                colorScheme="mint"
-                isChecked={condition.isFree}
-                onChange={(e) => toggleSwitch(e, "isFree")}
-              />
-            </Item>
-            <Item>
-              <Name>
-                <i className="fa-regular fa-bell-on" />
-                <span>챌린지</span>
-              </Name>
-              <Switch
-                mr="var(--gap-1)"
-                colorScheme="mint"
-                isChecked={condition.challenge}
-                onChange={(e) => toggleSwitch(e, "challenge")}
-              />
-            </Item>
-            {condition.challenge && (
-              <ChallengeText
-                value={challenge}
-                onChange={(e) => setChallenge(e.target.value)}
-                placeholder="2월까지 모든 인증 성공시 +5000원"
-              />
-            )}
-            <Item>
-              <Name>
-                <i className="fa-regular fa-dollar-sign" />
-                <span>참여비</span>
-              </Name>
-              <Switch
-                mr="var(--gap-1)"
-                colorScheme="mint"
-                isChecked={condition.fee}
-                onChange={(e) => toggleSwitch(e, "fee")}
-              />
-            </Item>
-            {condition.fee && (
-              <Fee>
-                <div>
-                  <span>참여비: </span>
-                  <input value={fee} onChange={(e) => setFee(e.target.value)} placeholder="2000" />
-                </div>
+      <RegisterLayout>
+        <RegisterOverview>
+          <span>조건을 선택해 주세요.</span>
+        </RegisterOverview>
+        <Container>
+          <Item>
+            <Name>
+              <div>
+                <i className="fa-solid fa-user-lock" />
+              </div>
+              <span>참여 가능 조건</span>
+            </Name>
+            <Box ml="auto" mr="20px" fontSize="12px" color="var(--color-mint)">
+              {getMemberConditionText() || "기본값"}
+            </Box>
+            <Button colorScheme="mint" size="sm" onClick={() => setIsMemberConditionModal(true)}>
+              설정
+            </Button>
+          </Item>
+          <Item>
+            <Name>
+              <i className="fa-regular fa-location-crosshairs" />
+              <span>지역 필터</span>
+              <PopOverIcon title="지역 필터" text="기본으로는 본인이 속한 지역으로 한정합니다." />
+            </Name>
+            <Switch
+              mr="var(--gap-1)"
+              colorScheme="mint"
+              isChecked={condition.location}
+              onChange={(e) => toggleSwitch(e, "location")}
+            />
+          </Item>
+          {!condition.location && <GatherWritingConditionLocation setLocation={setLocation} />}
+          <Item>
+            <Name>
+              <i className="fa-regular fa-person-to-door" />
+              <span>자유 가입</span>
+              <PopOverIcon title="자유 가입" text="조건에 맞는다면 자유롭게 가입이 가능합니다." />
+            </Name>
+            <Switch
+              mr="var(--gap-1)"
+              colorScheme="mint"
+              isChecked={condition.isFree}
+              onChange={(e) => toggleSwitch(e, "isFree")}
+            />
+          </Item>
+          <Item>
+            <Name>
+              <i className="fa-regular fa-bell-on" />
+              <span>챌린지</span>
+            </Name>
+            <Switch
+              mr="var(--gap-1)"
+              colorScheme="mint"
+              isChecked={condition.challenge}
+              onChange={(e) => toggleSwitch(e, "challenge")}
+            />
+          </Item>
+          {condition.challenge && (
+            <ChallengeText
+              value={challenge}
+              onChange={(e) => setChallenge(e.target.value)}
+              placeholder="2월까지 모든 인증 성공시 +5000원"
+            />
+          )}
+          <Item>
+            <Name>
+              <i className="fa-regular fa-dollar-sign" />
+              <span>참여비</span>
+            </Name>
+            <Switch
+              mr="var(--gap-1)"
+              colorScheme="mint"
+              isChecked={condition.fee}
+              onChange={(e) => toggleSwitch(e, "fee")}
+            />
+          </Item>
+          {condition.fee && (
+            <Fee>
+              <div>
+                <span>참여비: </span>
+                <input value={fee} onChange={(e) => setFee(e.target.value)} placeholder="2000" />
+              </div>
 
-                <div>
-                  <span>사용처: </span>
-                  <input
-                    value={feeText}
-                    onChange={(e) => setFeeText(e.target.value)}
-                    placeholder="출석에 대한 벌금"
-                  />
-                </div>
-              </Fee>
-            )}
-            <Item>
-              <Name>
-                <div>
-                  <i className="fa-regular fa-user-secret" />
-                </div>
-                <span>익명으로 진행</span>
-              </Name>
-              <Switch
-                mr="var(--gap-1)"
-                colorScheme="mint"
-                isChecked={condition.isSecret}
-                onChange={(e) => toggleSwitch(e, "isSecret")}
-              />
-            </Item>{" "}
-            <Item>
-              <Name>
-                <div>
-                  <i className="fa-regular fa-comments" />
-                </div>
-                <span>오픈채팅방</span>
-              </Name>
-              <Switch
-                mr="var(--gap-1)"
-                colorScheme="mint"
-                isChecked={condition.link}
-                onChange={(e) => toggleSwitch(e, "link")}
-              />
-            </Item>{" "}
-            {condition.link && (
-              <Flex align="center" mr="4px">
-                <Box
-                  fontSize="12px"
-                  bgColor="var(--gray-500)"
-                  color="white"
-                  p="2px 6px"
-                  borderRadius="4px"
-                  mr="8px"
-                >
-                  URL
-                </Box>
-                <Input size="sm" value={link} onChange={(e) => setLink(e.target.value)} />
-              </Flex>
-            )}
-          </Container>
-        </RegisterLayout>
-      </Slide>
+              <div>
+                <span>사용처: </span>
+                <input
+                  value={feeText}
+                  onChange={(e) => setFeeText(e.target.value)}
+                  placeholder="출석에 대한 벌금"
+                />
+              </div>
+            </Fee>
+          )}
+          <Item>
+            <Name>
+              <div>
+                <i className="fa-regular fa-user-secret" />
+              </div>
+              <span>익명으로 진행</span>
+            </Name>
+            <Switch
+              mr="var(--gap-1)"
+              colorScheme="mint"
+              isChecked={condition.isSecret}
+              onChange={(e) => toggleSwitch(e, "isSecret")}
+            />
+          </Item>{" "}
+          <Item>
+            <Name>
+              <div>
+                <i className="fa-regular fa-comments" />
+              </div>
+              <span>오픈채팅방</span>
+            </Name>
+            <Switch
+              mr="var(--gap-1)"
+              colorScheme="mint"
+              isChecked={condition.link}
+              onChange={(e) => toggleSwitch(e, "link")}
+            />
+          </Item>{" "}
+          {condition.link && (
+            <Flex align="center" mr="4px">
+              <Box
+                fontSize="12px"
+                bgColor="var(--gray-500)"
+                color="white"
+                p="2px 6px"
+                borderRadius="4px"
+                mr="8px"
+              >
+                URL
+              </Box>
+              <Input size="sm" value={link} onChange={(e) => setLink(e.target.value)} />
+            </Flex>
+          )}
+        </Container>
+      </RegisterLayout>
       <BottomNav onClick={() => onClickNext()} text="완료" />
       <QuestionBottomDrawer
         isModal={isQuestionModal}

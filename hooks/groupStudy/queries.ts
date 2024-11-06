@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { useQuery } from "react-query";
 
-import { GATHER_CONTENT, GROUP_STUDY, GROUP_STUDY_ALL } from "../../constants/keys/queryKeys";
+import { GATHER_CONTENT, GROUP_STUDY } from "../../constants/keys/queryKeys";
 import { SERVER_URI } from "../../constants/system";
 import { IGatherSummary } from "../../pages/review";
 import { QueryOptions } from "../../types/hooks/reactTypes";
@@ -20,7 +20,7 @@ export const useGroupQuery = (
   options?: QueryOptions<IGroup[]>,
 ) =>
   useQuery<IGroup[], AxiosError, IGroup[]>(
-    [GROUP_STUDY_ALL, filter, category, cursor],
+    [GROUP_STUDY, filter, category, cursor],
     async () => {
       const res = await axios.get<IGroup[]>(`${SERVER_URI}/groupStudy`, {
         params: { filter, category, cursor },

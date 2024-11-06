@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { useCallback, useEffect } from "react";
 import styled from "styled-components";
 
@@ -20,6 +20,7 @@ interface IKakaoShareBtn {
   isFull?: boolean;
   temp?: boolean;
   isTemp?: boolean;
+  variant?: "unstyled";
 }
 
 function KakaoShareBtn({
@@ -33,6 +34,7 @@ function KakaoShareBtn({
   isFull,
   temp,
   isTemp,
+  variant,
 }: IKakaoShareBtn) {
   const handleShareOnApp = useCallback(() => {
     if (isWebView()) {
@@ -73,59 +75,59 @@ function KakaoShareBtn({
               },
             }
           : type === "study2"
-            ? {
-                container: "#kakao-share-button",
-                objectType: "location",
-                content: {
-                  title,
-                  description: subtitle,
-                  imageUrl: img,
+          ? {
+              container: "#kakao-share-button",
+              objectType: "location",
+              content: {
+                title,
+                description: subtitle,
+                imageUrl: img,
+                link: {
+                  mobileWebUrl: url,
+                  webUrl: url,
+                },
+              },
+              address: location,
+              // addressTitle: "카카오 본사",
+              buttons: [
+                {
+                  title: "웹으로 이동",
                   link: {
                     mobileWebUrl: url,
                     webUrl: url,
                   },
                 },
-                address: location,
-                // addressTitle: "카카오 본사",
-                buttons: [
-                  {
-                    title: "웹으로 이동",
-                    link: {
-                      mobileWebUrl: url,
-                      webUrl: url,
-                    },
-                  },
-                ],
-              }
-            : type === "secretSquare"
-              ? {
-                  container: "#kakao-share-button",
-                  objectType: "feed",
-                  content: {
-                    title,
-                    description: subtitle,
-                    imageWidth: 800,
-                    imageHeight: 400,
-                    imageUrl: img,
-                    link: {
-                      mobileWebUrl: url,
-                      webUrl: url,
-                    },
-                  },
-                }
-              : {
-                  container: "#kakao-share-button",
-                  objectType: "feed",
-                  content: {
-                    title,
-                    description: subtitle,
-                    imageUrl: REVIEW_DATA[0]?.images[0],
-                    link: {
-                      mobileWebUrl: url,
-                      webUrl: url,
-                    },
-                  },
-                };
+              ],
+            }
+          : type === "secretSquare"
+          ? {
+              container: "#kakao-share-button",
+              objectType: "feed",
+              content: {
+                title,
+                description: subtitle,
+                imageWidth: 800,
+                imageHeight: 400,
+                imageUrl: img,
+                link: {
+                  mobileWebUrl: url,
+                  webUrl: url,
+                },
+              },
+            }
+          : {
+              container: "#kakao-share-button",
+              objectType: "feed",
+              content: {
+                title,
+                description: subtitle,
+                imageUrl: REVIEW_DATA[0]?.images[0],
+                link: {
+                  mobileWebUrl: url,
+                  webUrl: url,
+                },
+              },
+            };
 
       window.Kakao.Link.createDefaultButton(options);
     }
@@ -133,7 +135,9 @@ function KakaoShareBtn({
 
   return (
     <Layout id="kakao-share-button" isFull={isFull} temp={temp} onClick={handleShareOnApp}>
-      {isTemp ? (
+      {variant === "unstyled" ? (
+        <Box>카카오톡으로 공유하기</Box>
+      ) : isTemp ? (
         <Button
           color="mint"
           bg="white"

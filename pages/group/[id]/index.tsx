@@ -75,7 +75,7 @@ function GroupDetail() {
 
   return (
     <>
-      <GroupHeader group={group} />
+      {group && <GroupHeader group={group} />}
       <Slide isNoPadding>
         {group && (
           <Layout>
