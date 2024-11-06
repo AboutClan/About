@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import styled from "styled-components";
 
-import { GROUP_STUDY_ALL } from "../../constants/keys/queryKeys";
+import { GROUP_STUDY } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
 import { useCompleteToast } from "../../hooks/custom/CustomToast";
 import { useGroupAttendMutation } from "../../hooks/groupStudy/mutations";
@@ -37,7 +37,7 @@ function AttendCheckModal({
   const { mutate } = useGroupAttendMutation(id, {
     onSuccess() {
       completeToast("free", "저장되었습니다.");
-      resetQueryData([GROUP_STUDY_ALL]);
+      resetQueryData([GROUP_STUDY]);
       setIsModal(false);
     },
   });
@@ -90,8 +90,8 @@ function AttendCheckModal({
                 myAttend?.includes(day)
                   ? "mint"
                   : mySubAttend?.includes(day)
-                    ? "yellowTheme"
-                    : "gray"
+                  ? "yellowTheme"
+                  : "gray"
               }
             >
               {dayjsToFormat(item, "ddd요일")}
