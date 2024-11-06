@@ -1,8 +1,8 @@
 import { Flex } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import { useQueryClient } from "react-query";
+import { GROUP_STUDY } from "../../constants/keys/queryKeys";
 
-import { GROUP_STUDY_ALL } from "../../constants/keys/queryKeys";
 import { useCompleteToast } from "../../hooks/custom/CustomToast";
 import { useGroupWaitingStatusMutation } from "../../hooks/groupStudy/mutations";
 import { IModal } from "../../types/components/modalTypes";
@@ -17,10 +17,9 @@ function InviteOuterModal({ setIsModal }: InviteOuterModalProps) {
   const { mutate: mutate2, isLoading } = useGroupWaitingStatusMutation(+id, {
     onSuccess() {
       completeToast("free", "가입되었습니다.");
-      queryClient.invalidateQueries([GROUP_STUDY_ALL]);
+      queryClient.invalidateQueries([GROUP_STUDY]);
     },
   });
- 
 
   const footerOptions: IFooterOptions = {
     main: {
