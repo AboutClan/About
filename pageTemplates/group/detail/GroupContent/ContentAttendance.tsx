@@ -30,7 +30,7 @@ function ContentAttend({ group }: ContentAttendProps) {
   const topLineArr = ["이름", ...weekDay];
 
   const isNotMember =
-    group.organizer.uid !== uid && !group.participants.some((who) => who.user.uid === uid);
+    group.organizer.uid !== uid && !group.participants.some((who) => who.user?.uid === uid);
 
   const sortArr = (arr: IWeekRecord[]): IWeekRecord[] => {
     const temp: IWeekRecord[] = [];

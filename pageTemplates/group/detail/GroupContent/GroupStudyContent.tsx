@@ -26,8 +26,7 @@ function GroupContent({ group, category, setCategory }: IGroupContent) {
 
   return (
     <Layout>
-      <TabNav tabOptionsArr={tabArr} selected={category} />
-
+      <TabNav tabOptionsArr={tabArr} selected={category} isFullSize />
       <ContentContainer>
         {category === "정보" ? (
           <ContentInfo group={group} />
