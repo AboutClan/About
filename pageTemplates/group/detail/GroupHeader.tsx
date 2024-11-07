@@ -1,5 +1,5 @@
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
@@ -24,7 +24,7 @@ function GroupHeader({ group }: IGroupHeader) {
   const completeToast = useCompleteToast();
   const router = useRouter();
   const isAdmin = group.organizer.uid === session?.user.uid;
-  const isMember = group.participants.some((par) => par.user.uid === session?.user.uid);
+  const isMember = group.participants.some((par) => par.user?.uid === session?.user.uid);
 
   const [isSettigModal, setIsSettingModal] = useState(false);
   const setTransferGroup = useSetRecoilState(transferGroupDataState);
