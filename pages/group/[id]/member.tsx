@@ -9,7 +9,7 @@ import AlertModal, { IAlertModalOptions } from "../../../components/AlertModal";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import ProfileCommentCard from "../../../components/molecules/cards/ProfileCommentCard";
-import { GROUP_STUDY_ALL } from "../../../constants/keys/queryKeys";
+import { GROUP_STUDY } from "../../../constants/keys/queryKeys";
 import { GROUP_STUDY_ROLE } from "../../../constants/settingValue/groupStudy";
 import { useCompleteToast } from "../../../hooks/custom/CustomToast";
 import { useGroupExileUserMutation } from "../../../hooks/groupStudy/mutations";
@@ -39,7 +39,7 @@ export default function Member() {
   const queryClient = useQueryClient();
   const { mutate } = useGroupExileUserMutation(+id, {
     onSuccess() {
-      queryClient.invalidateQueries([GROUP_STUDY_ALL]);
+      queryClient.invalidateQueries([GROUP_STUDY]);
       completeToast("free", "추방되었습니다.");
     },
     onError(err) {

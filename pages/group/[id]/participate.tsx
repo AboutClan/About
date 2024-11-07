@@ -24,7 +24,7 @@ function Participate() {
     <>
       <>
         <Header title="" />
-        <Slide>
+        <Slide isNoPadding>
           <RegisterLayout>
             <RegisterOverview>
               {group?.questionText ? (

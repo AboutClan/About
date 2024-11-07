@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 import SuccessScreen from "../../components/layouts/SuccessScreen";
 import { GROUP_WRITING_STORE } from "../../constants/keys/localStorage";
-import { GROUP_STUDY, GROUP_STUDY_ALL } from "../../constants/keys/queryKeys";
+import { GROUP_STUDY } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
 import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";
 import { useGroupWritingMutation } from "../../hooks/groupStudy/mutations";
@@ -37,14 +37,14 @@ function GroupConfirmModal({ setIsModal, groupWriting }: IGroupConfirmModal) {
 
   const { mutate } = useGroupWritingMutation("post", {
     onSuccess() {
-      resetQueryData([GROUP_STUDY_ALL]);
+      resetQueryData([GROUP_STUDY]);
       resetLocalStorage();
       setIsSuccessScreen(true);
     },
     onError: errorToast,
   });
 
-  const { mutate: updateGroup } = useGroupWritingMutation("patch", {
+  const { mutate: updateGroup, isLoading } = useGroupWritingMutation("patch", {
     onSuccess() {
       resetLocalStorage();
 
@@ -66,6 +66,7 @@ function GroupConfirmModal({ setIsModal, groupWriting }: IGroupConfirmModal) {
     main: {
       text: groupWriting?.id ? "내용 수정" : "소모임 개설",
       func: onSubmit,
+      isLoading,
     },
   };
 
@@ -125,6 +126,7 @@ const Item = styled.div`
     display: inline-block;
     white-space: nowrap;
     overflow: hidden;
+    text-align: start;
     text-overflow: ellipsis;
   }
 `;
