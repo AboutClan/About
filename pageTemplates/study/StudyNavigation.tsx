@@ -90,7 +90,8 @@ function StudyNavigation({
   const [isAbsentModal, setIsAbsentModal] = useState(false);
   const [isSubVoteDrawer, setIsSubVoteDrawer] = useState(false);
   const [alertModalInfo, setAlertModalInfo] = useState<IAlertModalOptions>();
-  const [subPlace, setSubPlace] = useState<string[]>([]);
+
+  const [defaultPlaceArr, setDefaultPlaceArr] = useState<SubPlaceProps[]>([]);
 
   const { mutate: realTimeStudyVote, isLoading: isLoading2 } = useRealtimeVoteMutation({
     onSuccess() {
@@ -149,7 +150,9 @@ function StudyNavigation({
       } else if (myStudyStatus === "voting") {
         if (date === dayjsToStr(dayjs())) {
           router.push(
-            `/vote/attend/${status === "open" ? `configuration` : `certification`}?${searchParams.toString()}`,
+            `/vote/attend/${
+              status === "open" ? `configuration` : `certification`
+            }?${searchParams.toString()}`,
           );
         }
       }
@@ -172,7 +175,7 @@ function StudyNavigation({
     if (studyType === "public") {
       studyVote({
         place: id,
-        subPlace: subPlace,
+        subPlace: subArr.map((sub) => sub.place._id),
         start: time?.start || voteTime?.start,
         end: time?.end || voteTime?.end,
       });
@@ -211,12 +214,14 @@ function StudyNavigation({
   useEffect(() => {
     if (!studyVoteData || !isSubVoteDrawer) return;
     const temp: SubPlaceProps[] = [];
+    const temp2: SubPlaceProps[] = [];
     const sortedSub = sortByDistanceSub(studyVoteData, findMyPickMainPlace);
     sortedSub.forEach((par, idx) => {
       if (idx < DEFAULT_SUB_PLACE_CNT && par.place.distance <= RECOMMENDATION_KM) temp.push(par);
+      else temp2.push(par);
     });
     setSubArr(temp);
-    setSubPlace(temp.map((prop) => prop.place._id));
+    setDefaultPlaceArr(temp2);
   }, [studyVoteData, isSubVoteDrawer]);
 
   const drawerOptions: BottomFlexDrawerOptions = {
@@ -231,8 +236,8 @@ function StudyNavigation({
           ? () => handleTimeChange(voteTime)
           : () => handleRealTimeTimeChange(voteTime)
         : date !== dayjsToStr(dayjs())
-          ? () => setIsSubVoteDrawer(true)
-          : () => onClickStudyVote(voteTime),
+        ? () => setIsSubVoteDrawer(true)
+        : () => onClickStudyVote(voteTime),
       loading: isLoading1 || isLoading2,
     },
   };
@@ -245,15 +250,15 @@ function StudyNavigation({
       text: myStudyInfo
         ? "시간 변경"
         : date !== dayjsToStr(dayjs()) && !isSubVoteDrawer
-          ? "다 음"
-          : "신청 완료",
+        ? "다 음"
+        : "신청 완료",
       func: myStudyInfo
         ? studyType === "public"
           ? () => handleTimeChange(voteTime)
           : () => handleRealTimeTimeChange(voteTime)
         : date !== dayjsToStr(dayjs()) && !isSubVoteDrawer
-          ? () => setIsSubVoteDrawer(false)
-          : () => onClickStudyVote(voteTime),
+        ? () => setIsSubVoteDrawer(false)
+        : () => onClickStudyVote(voteTime),
       loading: isLoading1 || isLoading2,
     },
   };
@@ -369,31 +374,47 @@ function StudyNavigation({
           setIsModal={setIsSubVoteDrawer}
           drawerOptions={drawerOptions2}
         >
-          <Box mb={2} w="full">
-            <PickerRowButton
-              {...convertData(findMyPickMainPlace)}
-              onClick={() => setIsSubVoteDrawer(false)}
-              pickType="main"
-            />
-          </Box>
-          {subArr?.map((props, idx) => {
-            const id = props.place._id;
-
-            return (
-              <Box key={idx} mb={2} w="full">
-                <PickerRowButton
-                  {...convertData(props)}
-                  onClick={() =>
-                    subPlace.includes(id)
-                      ? setSubPlace((old) => old.filter((placeId) => placeId !== id))
-                      : setSubPlace((old) => [...old, id])
-                  }
-                  pickType="second"
-                  isNoSelect={!subPlace.includes(id)}
-                />
-              </Box>
-            );
-          })}
+          <Flex w="full" direction="column" overflowY="scroll" h="292px">
+            <Box mb={2} w="full">
+              <PickerRowButton
+                {...convertData(findMyPickMainPlace)}
+                onClick={() => setIsSubVoteDrawer(false)}
+                pickType="main"
+              />
+            </Box>
+            {subArr?.map((props, idx) => {
+              const id = props.place._id;
+              const par = defaultPlaceArr.find((par) => par.place._id === id);
+              return (
+                <Box key={idx} mb={2} w="full">
+                  <PickerRowButton
+                    {...convertData(props)}
+                    onClick={() =>
+                      subArr.some((sub) => sub.place._id === id)
+                        ? setSubArr((old) => old.filter((old) => old.place._id !== id))
+                        : setSubArr((old) => [...old, par])
+                    }
+                    pickType="second"
+                    isNoSelect={!subArr.some((par) => par.place._id === id)}
+                  />
+                </Box>
+              );
+            })}
+            {defaultPlaceArr?.map((props, idx) => {
+              const id = props.place._id;
+              const par = defaultPlaceArr.find((par) => par.place._id === id);
+              return (
+                <Box key={idx} mb={2} w="full">
+                  <PickerRowButton
+                    {...convertData(props)}
+                    onClick={() => setSubArr((old) => [...old, par])}
+                    pickType={null}
+                    isNoSelect={!subArr.some((par) => par.place._id === id)}
+                  />
+                </Box>
+              );
+            })}
+          </Flex>
         </BottomFlexDrawer>
       )}
     </>
