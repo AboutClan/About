@@ -10,6 +10,7 @@ import {
   GatherThumbnailCardProps,
 } from "../../components/molecules/cards/GatherThumbnailCard";
 import { GatherThumbnailCardSkeleton } from "../../components/skeleton/GatherThumbnailCardSkeleton";
+import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import { useGroupQuery } from "../../hooks/groupStudy/queries";
 import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { IGroup } from "../../types/models/groupTypes/group";
@@ -32,7 +33,6 @@ export default function HomeGroupCol() {
     const handleNavigate = (group: IGroup) => {
       setTransferGroup(group);
     };
-    console.log(4, groups);
 
     setCardDataArr(setGroupDataToCardCol(groups.slice(0, 3), false, handleNavigate));
   }, [groups]);
@@ -75,7 +75,9 @@ export const setGroupDataToCardCol = (
     },
     id: group.id,
     maxCnt: group.memberCnt.max,
-    participants: group.participants,
+    participants: !group.isSecret
+      ? group.participants
+      : group.participants.map(() => ({ user: ABOUT_USER_SUMMARY, role: "member" })),
     func: func ? () => func(group) : undefined,
   }));
 
