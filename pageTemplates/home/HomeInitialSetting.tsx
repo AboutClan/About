@@ -30,7 +30,7 @@ function HomeInitialSetting() {
     ? session.user.name === "guest" || session.user.name === "게스트"
     : undefined;
 
-  const [joyrideRun, setJoyrideRun] = useState(true);
+  const [joyrideRun, setJoyrideRun] = useState(false);
 
   const [isGuestModal, setIsGuestModal] = useState(false);
   const { data: userInfo } = useUserInfoQuery({
@@ -116,9 +116,6 @@ function HomeInitialSetting() {
 
   return (
     <>
-      <button type="button" onClick={() => setJoyrideRun(true)}>
-        active joyride
-      </button>
       {userInfo && !isGuest && <UserSettingPopUp userInfo={userInfo} />}
       {isGuestModal && <FAQPopUp setIsModal={setIsGuestModal} />}
       <GlobalStyle />
