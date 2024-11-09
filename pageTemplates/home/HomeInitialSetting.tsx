@@ -3,7 +3,6 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Joyride, { CallBackProps, STATUS } from "react-joyride";
-import { useSetRecoilState } from "recoil";
 import { createGlobalStyle } from "styled-components";
 
 import { STEPS_CONTENTS } from "../../constants/contentsText/GuideContents";
@@ -14,7 +13,6 @@ import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import FAQPopUp from "../../modals/pop-up/FAQPopUp";
 import UserSettingPopUp from "../../pageTemplates/setting/userSetting/userSettingPopUp";
-import { renderHomeHeaderState } from "../../recoils/renderRecoils";
 import { isPWA } from "../../utils/appEnvUtils";
 import { checkAndSetLocalStorage } from "../../utils/storageUtils";
 
@@ -32,9 +30,7 @@ function HomeInitialSetting() {
     ? session.user.name === "guest" || session.user.name === "게스트"
     : undefined;
 
-  const [{ run }, setJoyrideRun] = useState<{ run: boolean }>({ run: true });
-
-  const setRenderHomeHeaderState = useSetRecoilState(renderHomeHeaderState);
+  const [joyrideRun, setJoyrideRun] = useState(true);
 
   const [isGuestModal, setIsGuestModal] = useState(false);
   const { data: userInfo } = useUserInfoQuery({
@@ -74,14 +70,14 @@ function HomeInitialSetting() {
 
     if (isGuest && !checkAndSetLocalStorage(USER_GUIDE, 1)) {
       setIsGuestModal(true);
-      setJoyrideRun({ run: true });
+      setJoyrideRun(true);
     }
 
     if (userInfo) {
       localStorage.setItem(USER_LOCATION, userInfo.location);
       if (dayjs().diff(dayjs(userInfo?.registerDate)) <= 7) {
-        if (!checkAndSetLocalStorage(USER_GUIDE, 3)) setJoyrideRun({ run: true });
-      } else if (!checkAndSetLocalStorage(USER_GUIDE, 14)) setJoyrideRun({ run: true });
+        if (!checkAndSetLocalStorage(USER_GUIDE, 3)) setJoyrideRun(true);
+      } else if (!checkAndSetLocalStorage(USER_GUIDE, 14)) setJoyrideRun(true);
     }
   }, [isGuest, userInfo]);
 
@@ -105,28 +101,20 @@ function HomeInitialSetting() {
   // }, []);
 
   const handleJoyrideCallback = (props: CallBackProps) => {
-    const { step, status } = props;
-    // if (step.target === ".about_navigation1") {
-    //   setRenderHomeHeaderState(false);
-    // }
-    // if (step.target === "body") {
-    //   setRenderHomeHeaderState(true);
-    // }
+    const { status } = props;
 
-    const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
-
-    if (finishedStatuses.includes(status)) {
+    if (([STATUS.FINISHED, STATUS.SKIPPED] as string[]).includes(status)) {
       window.scrollTo({
         top: 0,
         behavior: "smooth",
       });
-      setJoyrideRun({ run: false });
+      setJoyrideRun(false);
     }
   };
-  console.log("💡 run: ", run);
+
   return (
     <>
-      <button type="button" onClick={() => setJoyrideRun({ run: true })}>
+      <button type="button" onClick={() => setJoyrideRun(true)}>
         active joyride
       </button>
       {userInfo && !isGuest && <UserSettingPopUp userInfo={userInfo} />}
@@ -138,7 +126,7 @@ function HomeInitialSetting() {
         showSkipButton
         callback={handleJoyrideCallback}
         steps={STEPS_CONTENTS}
-        run={run}
+        run={joyrideRun}
         styles={{
           options: {
             width: 320,
@@ -146,6 +134,7 @@ function HomeInitialSetting() {
           },
         }}
         spotlightPadding={8}
+        scrollOffset={60}
       />
     </>
   );
