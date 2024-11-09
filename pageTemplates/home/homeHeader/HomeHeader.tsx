@@ -54,7 +54,7 @@ function HomeHeader() {
         {renderHomeHeader && (
           <Layout>
             <AboutLogo />
-            <Flex align="center">
+            <Flex align="center" data-joyride-step="about_header">
               <Box mr={1}>
                 <ButtonWrapper
                   size="sm"

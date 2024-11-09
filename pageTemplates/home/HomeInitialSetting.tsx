@@ -1,8 +1,12 @@
+import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import Joyride, { CallBackProps, STATUS } from "react-joyride";
+import { useSetRecoilState } from "recoil";
 import { createGlobalStyle } from "styled-components";
 
+import { STEPS_CONTENTS } from "../../constants/contentsText/GuideContents";
 import { USER_GUIDE, USER_LOCATION } from "../../constants/keys/localStorage";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { usePushServiceInitialize } from "../../hooks/FcmManger/mutaion";
@@ -10,6 +14,7 @@ import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import FAQPopUp from "../../modals/pop-up/FAQPopUp";
 import UserSettingPopUp from "../../pageTemplates/setting/userSetting/userSettingPopUp";
+import { renderHomeHeaderState } from "../../recoils/renderRecoils";
 import { isPWA } from "../../utils/appEnvUtils";
 import { checkAndSetLocalStorage } from "../../utils/storageUtils";
 
@@ -27,7 +32,9 @@ function HomeInitialSetting() {
     ? session.user.name === "guest" || session.user.name === "게스트"
     : undefined;
 
-  // const [isGuide, setIsGuide] = useState(false);
+  const [{ run }, setJoyrideRun] = useState<{ run: boolean }>({ run: true });
+
+  const setRenderHomeHeaderState = useSetRecoilState(renderHomeHeaderState);
 
   const [isGuestModal, setIsGuestModal] = useState(false);
   const { data: userInfo } = useUserInfoQuery({
@@ -43,8 +50,6 @@ function HomeInitialSetting() {
       }
     },
   });
-
-  // const setRenderHomeHeaderState = useSetRecoilState(renderHomeHeaderState);
 
   const { mutate: setRole } = useUserInfoFieldMutation("role", {
     onSuccess() {
@@ -69,14 +74,14 @@ function HomeInitialSetting() {
 
     if (isGuest && !checkAndSetLocalStorage(USER_GUIDE, 1)) {
       setIsGuestModal(true);
-      // setIsGuide(true);
+      setJoyrideRun({ run: true });
     }
 
     if (userInfo) {
       localStorage.setItem(USER_LOCATION, userInfo.location);
-      // if (dayjs().diff(dayjs(userInfo?.registerDate)) <= 7) {
-      //   if (!checkAndSetLocalStorage(USER_GUIDE, 3)) setIsGuide(true);
-      // } else if (!checkAndSetLocalStorage(USER_GUIDE, 14)) setIsGuide(true);
+      if (dayjs().diff(dayjs(userInfo?.registerDate)) <= 7) {
+        if (!checkAndSetLocalStorage(USER_GUIDE, 3)) setJoyrideRun({ run: true });
+      } else if (!checkAndSetLocalStorage(USER_GUIDE, 14)) setJoyrideRun({ run: true });
     }
   }, [isGuest, userInfo]);
 
@@ -95,50 +100,53 @@ function HomeInitialSetting() {
     });
   }, []);
 
-  // const [{ steps }, setState] = useState<{
-  //   run: boolean;
-  //   steps?: Step[];
-  // }>({
-  //   run: false,
-  //   steps: STEPS_CONTENTS,
-  // });
   // useEffect(() => {
   //   requestAndSubscribePushService();
   // }, []);
 
-  // const handleJoyrideCallback = (data: CallBackProps) => {
-  //   if (data.step.target === ".about_navigation1") {
-  //     setRenderHomeHeaderState(false);
-  //   }
-  //   if (data.step.target === "body") {
-  //     setRenderHomeHeaderState(true);
-  //   }
+  const handleJoyrideCallback = (props: CallBackProps) => {
+    const { step, status } = props;
+    // if (step.target === ".about_navigation1") {
+    //   setRenderHomeHeaderState(false);
+    // }
+    // if (step.target === "body") {
+    //   setRenderHomeHeaderState(true);
+    // }
 
-  //   const { status } = data;
-  //   const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
+    const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED];
 
-  //   if (finishedStatuses.includes(status)) {
-  //     window.scrollTo({
-  //       top: 0,
-  //       behavior: "smooth",
-  //     });
-  //     setState({ run: false });
-  //   }
-  // };
-
+    if (finishedStatuses.includes(status)) {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+      setJoyrideRun({ run: false });
+    }
+  };
+  console.log("💡 run: ", run);
   return (
     <>
+      <button type="button" onClick={() => setJoyrideRun({ run: true })}>
+        active joyride
+      </button>
       {userInfo && !isGuest && <UserSettingPopUp userInfo={userInfo} />}
       {isGuestModal && <FAQPopUp setIsModal={setIsGuestModal} />}
       <GlobalStyle />
-      {/* <Joyride
-        hideCloseButton={true}
-        callback={handleJoyrideCallback}
+      <Joyride
+        hideCloseButton
         continuous
-        steps={steps}
-        run={isGuide}
         showSkipButton
-      /> */}
+        callback={handleJoyrideCallback}
+        steps={STEPS_CONTENTS}
+        run={run}
+        styles={{
+          options: {
+            width: 320,
+            zIndex: 1000,
+          },
+        }}
+        spotlightPadding={8}
+      />
     </>
   );
 }

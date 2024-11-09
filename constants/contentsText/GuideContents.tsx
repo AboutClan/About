@@ -1,4 +1,5 @@
 import { Button } from "@chakra-ui/react";
+import { PropsWithChildren } from "react";
 import { Step } from "react-joyride";
 import styled from "styled-components";
 
@@ -10,475 +11,170 @@ const Content = styled.div`
   color: var(--gray-2);
 `;
 
+function BackButton() {
+  return (
+    <Button as="div" color="var(--color-mint)" borderColor="var(--color-mint)" variant="outline">
+      뒤로
+    </Button>
+  );
+}
+
+function NextButton({ children }: PropsWithChildren) {
+  return (
+    <Button as="div" colorScheme="mint">
+      {children}
+    </Button>
+  );
+}
+
 export const STEPS_CONTENTS: Step[] = [
   {
     content: (
       <Content>동아리에서 진행중인 컨텐츠와 웹사이트 기능 설명을 위한 안내 가이드입니다!</Content>
     ),
     title: <Title>웹사이트 이용 가이드</Title>,
-    styles: {
-      options: {
-        width: 320,
-      },
-    },
-
     locale: {
       skip: "나중에",
       back: "뒤로",
       close: "닫기",
 
-      next: (
-        <Button as="div" colorScheme="mint">
-          보여주세요!
-        </Button>
-      ),
+      next: <NextButton>보여주세요!</NextButton>,
     },
 
     placement: "center",
     target: "body",
   },
-
+  // 헤더의 아이콘
   {
-    content: <Content>매일 출석체크, 포인트 가이드, 알림 페이지, 마이페이지가 있어요!</Content>,
-
-    styles: {
-      options: {
-        width: 320,
-      },
-    },
+    content: <Content>매일 출석체크, 알림 페이지가 있어요!</Content>,
     locale: {
-      back: (
-        <Button
-          as="div"
-          color="var(--color-mint)"
-          borderColor="var(--color-mint)"
-          variant="outline"
-        >
-          뒤로
-        </Button>
-      ),
+      back: <BackButton />,
 
       close: "닫기",
-      skip: null,
-      next: (
-        <Button as="div" colorScheme="mint">
-          다음
-        </Button>
-      ),
+      next: <NextButton>다음</NextButton>,
     },
-    spotlightPadding: 8,
-    target: ".about_header",
+    target: "[data-joyride-step='about_header']",
   },
+  // 랭킹
   {
-    content: <Content>스터디 기록을 확인할 수 있습니다.</Content>,
-    styles: {
-      options: {
-        width: 320,
-      },
-    },
-
+    content: <Content>스터디 랭킹을 확인할 수 있어요!</Content>,
     locale: {
-      back: null,
-
-      skip: null,
-      next: (
-        <Button as="div" colorScheme="mint">
-          다음
-        </Button>
-      ),
-    },
-    spotlightPadding: 8,
-    target: ".about_navigation1",
-  },
-  {
-    content: <Content>이벤트와 스토어가 있습니다. 포인트를 모아 상품을 구매해봐요!</Content>,
-    styles: {
-      options: {
-        width: 320,
-      },
-    },
-    locale: {
-      back: (
-        <Button
-          as="div"
-          color="var(--color-mint)"
-          borderColor="var(--color-mint)"
-          variant="outline"
-        >
-          뒤로
-        </Button>
-      ),
+      back: <BackButton />,
 
       close: "닫기",
-      skip: null,
-      next: (
-        <Button as="div" colorScheme="mint">
-          다음
-        </Button>
-      ),
+      next: <NextButton>다음</NextButton>,
     },
-    spotlightPadding: 8,
-    target: ".about_navigation2",
+    target: "[data-joyride-step='랭킹']",
   },
-  {
-    content: <Content>동아리원들의 프로필을 확인하고, 친구를 추천받을 수 있습니다.</Content>,
-    styles: {
-      options: {
-        width: 320,
-      },
-    },
-
-    locale: {
-      back: (
-        <Button
-          as="div"
-          color="var(--color-mint)"
-          borderColor="var(--color-mint)"
-          variant="outline"
-        >
-          뒤로
-        </Button>
-      ),
-
-      close: "닫기",
-      skip: null,
-
-      next: (
-        <Button as="div" colorScheme="mint">
-          다음
-        </Button>
-      ),
-    },
-    spotlightPadding: 8,
-    target: ".about_navigation3",
-  },
-  {
-    content: <Content>진행되었던 모임들의 리뷰를 확인할 수 있습니다.</Content>,
-
-    styles: {
-      options: {
-        width: 320,
-      },
-    },
-    locale: {
-      back: (
-        <Button
-          as="div"
-          color="var(--color-mint)"
-          borderColor="var(--color-mint)"
-          variant="outline"
-        >
-          뒤로
-        </Button>
-      ),
-
-      close: "닫기",
-      skip: null,
-      next: (
-        <Button as="div" colorScheme="mint">
-          다음
-        </Button>
-      ),
-    },
-    spotlightPadding: 8,
-    target: ".about_navigation4",
-  },
-
-  {
-    content: (
-      <Content>원하는 날짜로 이동할 수 있습니다. 버튼을 누르면 월간 달력 팝업이 나와요!</Content>
-    ),
-
-    styles: {
-      options: {
-        width: 320,
-      },
-    },
-    locale: {
-      back: (
-        <Button
-          as="div"
-          color="var(--color-mint)"
-          borderColor="var(--color-mint)"
-          variant="outline"
-        >
-          뒤로
-        </Button>
-      ),
-
-      close: "닫기",
-      skip: null,
-      next: (
-        <Button as="div" colorScheme="mint">
-          다음
-        </Button>
-      ),
-    },
-    spotlightPadding: 8,
-    target: ".about_calendar_month",
-  },
+  // 스토어
   {
     content: (
       <Content>
-        스와이핑을 통해 원하는 날짜로 이동할 수 있습니다. 색상 표시를 통해 현재 참여 인원 정도를 알
-        수 있어요!
+        커피, 아이스크림 등의 상품을 구매할 수 있어요. 포인트를 모아 상품을 구매해봐요!
       </Content>
     ),
-
-    styles: {
-      options: {
-        width: 320,
-      },
-    },
     locale: {
-      back: (
-        <Button
-          as="div"
-          color="var(--color-mint)"
-          borderColor="var(--color-mint)"
-          variant="outline"
-        >
-          뒤로
-        </Button>
-      ),
+      back: <BackButton />,
 
       close: "닫기",
-      skip: null,
-      next: (
-        <Button as="div" colorScheme="mint">
-          다음
-        </Button>
-      ),
+      next: <NextButton>다음</NextButton>,
     },
-    spotlightPadding: 8,
-    target: ".about_calendar",
+    target: "[data-joyride-step='스토어']",
   },
+  // 캘린더
   {
-    content: (
-      <Content>
-        원하는 장소와 시간에 스터디 신청을 할 수 있습니다. 매일 오후 11시에 결과 발표!
-      </Content>
-    ),
-    styles: {
-      options: {
-        width: 320,
-      },
-    },
-    placement: "top",
+    content: <Content>동아리 공식 행사, 이벤트를 확인해보세요!</Content>,
     locale: {
-      back: (
-        <Button
-          as="div"
-          color="var(--color-mint)"
-          borderColor="var(--color-mint)"
-          variant="outline"
-        >
-          뒤로
-        </Button>
-      ),
+      back: <BackButton />,
 
       close: "닫기",
-      skip: null,
-      next: (
-        <Button as="div" colorScheme="mint">
-          다음
-        </Button>
-      ),
+      next: <NextButton>다음</NextButton>,
     },
-    spotlightPadding: 8,
-    target: ".main_vote_btn",
+    target: "[data-joyride-step='캘린더']",
   },
+  // 익명 게시판
   {
-    content: (
-      <Content>
-        스터디 상세 정보와 참여자를 알 수 있습니다. 좌우 스와이프로 날짜 이동도 가능!
-      </Content>
-    ),
-    placement: "top",
-    styles: {
-      options: {
-        width: 320,
-      },
-    },
+    content: <Content>익명 게시판에서 관심있는 주제로 동아리원과 소통해보세요!</Content>,
     locale: {
-      back: (
-        <Button
-          as="div"
-          color="var(--color-mint)"
-          borderColor="var(--color-mint)"
-          variant="outline"
-        >
-          뒤로
-        </Button>
-      ),
+      back: <BackButton />,
 
       close: "닫기",
-      skip: null,
-      next: (
-        <Button as="div" colorScheme="mint">
-          다음
-        </Button>
-      ),
+      next: <NextButton>다음</NextButton>,
     },
-    spotlightPadding: 8,
-    target: ".study_space",
+    target: "[data-joyride-step='게시판']",
   },
+  // 디스코드
   {
-    content: <Content>현재 페이지로 이동합니다.</Content>,
-
-    styles: {
-      options: {
-        width: 320,
-      },
-    },
+    content: <Content>About 공식 디스코드 채널에 가입할 수 있어요!</Content>,
     locale: {
-      back: (
-        <Button
-          as="div"
-          color="var(--color-mint)"
-          borderColor="var(--color-mint)"
-          variant="outline"
-        >
-          뒤로
-        </Button>
-      ),
+      back: <BackButton />,
 
       close: "닫기",
-      skip: null,
-      next: (
-        <Button as="div" colorScheme="mint">
-          다음
-        </Button>
-      ),
+      next: <NextButton>다음</NextButton>,
     },
-    spotlightPadding: 8,
-    target: ".bottom_nav0",
+    target: "[data-joyride-step='디스코드']",
   },
-  {
-    content: <Content>스터디 랭킹과 내 참여 기록을 확인할 수 있습니다.</Content>,
 
-    styles: {
-      options: {
-        width: 320,
-      },
-    },
+  // TODO: 스터디 섹션
+
+  // TODO: 소셜링 섹션
+
+  // TODO: 소모임 섹션
+
+  // Bottom nav: 홈
+  {
+    content: <Content>About 메인 홈으로 이동할 수 있어요!</Content>,
     locale: {
-      back: (
-        <Button
-          as="div"
-          color="var(--color-mint)"
-          borderColor="var(--color-mint)"
-          variant="outline"
-        >
-          뒤로
-        </Button>
-      ),
+      back: <BackButton />,
 
       close: "닫기",
-      skip: null,
-      next: (
-        <Button as="div" colorScheme="mint">
-          다음
-        </Button>
-      ),
+      next: <NextButton>다음</NextButton>,
     },
-    spotlightPadding: 8,
-    target: ".bottom_nav1",
+    target: "[data-joyride-step='홈']",
   },
+  // Bottom nav: 스터디
   {
-    content: <Content>모임, 소그룹, 스터디 등 여러 활동을 직접 열 수 있습니다.</Content>,
-
-    styles: {
-      options: {
-        width: 320,
-      },
-    },
+    content: <Content>About 메인 홈으로 이동할 수 있어요!</Content>,
     locale: {
-      back: (
-        <Button
-          as="div"
-          color="var(--color-mint)"
-          borderColor="var(--color-mint)"
-          variant="outline"
-        >
-          뒤로
-        </Button>
-      ),
+      back: <BackButton />,
 
       close: "닫기",
-      skip: null,
-      next: (
-        <Button as="div" colorScheme="mint">
-          다음
-        </Button>
-      ),
+      next: <NextButton>다음</NextButton>,
     },
-    spotlightPadding: 8,
-    target: ".bottom_nav2",
+    target: "[data-joyride-step='스터디']",
   },
+  // Bottom nav: 소셜링
   {
-    content: <Content>번개, 정기모임 등 동아리 내 오프라인 모임에 참여할 수 있습니다.</Content>,
-
-    styles: {
-      options: {
-        width: 320,
-      },
-    },
+    content: <Content>About 메인 홈으로 이동할 수 있어요!</Content>,
     locale: {
-      back: (
-        <Button
-          as="div"
-          color="var(--color-mint)"
-          borderColor="var(--color-mint)"
-          variant="outline"
-        >
-          뒤로
-        </Button>
-      ),
+      back: <BackButton />,
 
       close: "닫기",
-      skip: null,
-      next: (
-        <Button as="div" colorScheme="mint">
-          다음
-        </Button>
-      ),
+      next: <NextButton>다음</NextButton>,
     },
-    spotlightPadding: 8,
-    target: ".bottom_nav3",
+    target: "[data-joyride-step='소셜링']",
   },
+  // Bottom nav: 소모임
   {
-    content: (
-      <Content>여러 분야의 스터디 및 소모임이 있습니다. 관심있는 모임에 가입해보세요!</Content>
-    ),
-
-    styles: {
-      options: {
-        width: 320,
-      },
-    },
+    content: <Content>About 메인 홈으로 이동할 수 있어요!</Content>,
     locale: {
-      back: (
-        <Button
-          as="div"
-          color="var(--color-mint)"
-          borderColor="var(--color-mint)"
-          variant="outline"
-        >
-          뒤로
-        </Button>
-      ),
+      back: <BackButton />,
 
       close: "닫기",
-      skip: null,
-      next: (
-        <Button as="div" colorScheme="mint">
-          다음
-        </Button>
-      ),
+      next: <NextButton>다음</NextButton>,
     },
-    spotlightPadding: 8,
-    target: ".bottom_nav4",
+    target: "[data-joyride-step='소모임']",
+  },
+  // Bottom nav: 내 정보
+  {
+    content: <Content>About 메인 홈으로 이동할 수 있어요!</Content>,
+    locale: {
+      back: <BackButton />,
+
+      close: "닫기",
+      next: <NextButton>다음</NextButton>,
+    },
+    target: "[data-joyride-step='내 정보']",
   },
   {
     content: (
@@ -496,11 +192,7 @@ export const STEPS_CONTENTS: Step[] = [
     locale: {
       back: null,
       skip: null,
-      last: (
-        <Button as="div" colorScheme="mint">
-          확인
-        </Button>
-      ),
+      last: <NextButton>확인</NextButton>,
     },
 
     placement: "center",

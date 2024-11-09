@@ -62,6 +62,7 @@ export default function BottomNav() {
             activeIcon={item.activeIcon}
             defaultIcon={item.defaultIcon}
             isActive={pathname === item.url}
+            data-joyride-step={item.text}
           />
         );
       })}

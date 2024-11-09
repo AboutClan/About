@@ -7,6 +7,7 @@ function HomeNav() {
     <Flex mb={8}>
       {HOME_RECOMMENDATION_ICON_ARR.map((item, idx) => (
         <Link
+          data-joyride-step={item.title}
           href={item.url}
           key={item.title}
           style={{ flex: 1, marginLeft: idx === 0 ? 0 : "8px" }}
