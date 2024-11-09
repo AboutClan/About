@@ -1,9 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 import { useSetRecoilState } from "recoil";
-import styled from "styled-components";
-import { PlusIcon } from "../../components/Icons/MathIcons";
 
+import { PlusIcon } from "../../components/Icons/MathIcons";
 import ImageTileSlider, { IImageTile } from "../../components/organisms/sliders/ImageTileSlider";
 import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { IGroup } from "../../types/models/groupTypes/group";
@@ -48,33 +47,15 @@ function GroupMine({ myGroups }: IGroupMine) {
         </Flex>
       </Link>
       <Box mx={3} w="1px" bg="gray.200" h="24px" my="auto" />
-      {myGroups?.length ? (
-        <ImageTileSlider imageTileArr={imageTileArr} slidesPerView={3.8} size="md" />
-      ) : (
-        <BlockLayout>가입중인 소모임이 없습니다.</BlockLayout>
+      {imageTileArr?.length && (
+        <ImageTileSlider
+          imageTileArr={imageTileArr}
+          slidesPerView={imageTileArr.length < 4 ? imageTileArr.length : 3.8}
+          size="md"
+        />
       )}
     </Flex>
   );
 }
-
-const Layout = styled.div`
-  background-color: var(--gray-100);
-  border-bottom: 6px solid var(--gray-200);
-  padding: 16px;
-`;
-
-const BlockLayout = styled.div`
-  height: 110px;
-  background-color: inherit;
-  padding-top: 2px;
-  border-radius: var(--rounded);
-  flex-direction: column;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 18px;
-  color: var(--gray-600);
-`;
 
 export default GroupMine;

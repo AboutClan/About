@@ -1,7 +1,7 @@
+import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-import { Badge } from "../../../components/atoms/badges/Badges";
 import { NewAlertIcon } from "../../../components/Icons/AlertIcon";
 import { GatherStatus } from "../../../types/models/gatherTypes/gatherTypes";
 
@@ -25,23 +25,15 @@ function GroupTitle({
   isWaiting,
 }: IGroupTitle) {
   const router = useRouter();
-  const color =
-    status === "gathering"
-      ? "mint"
-      : status === "open" || status === "pending"
-        ? maxCnt === 0 || maxCnt > memberCnt
-          ? "mint"
-          : "red"
-        : "red";
 
   const statusText =
     status === "gathering"
       ? "소그룹"
       : status === "open" || status === "pending"
-        ? maxCnt === 0 || maxCnt > memberCnt
-          ? "모집중"
-          : "마감"
-        : "마감";
+      ? maxCnt === 0 || maxCnt > memberCnt
+        ? "모집중"
+        : "마감"
+      : "마감";
 
   const onClick = () => {
     router.push(`${router.asPath}/admin`);
@@ -49,12 +41,9 @@ function GroupTitle({
 
   return (
     <Layout status={status}>
-      <Title>
-        <div>
-          <span>{title}</span>
-          <Badge text={statusText} colorScheme={color} size="lg" />
-        </div>
-      </Title>
+      <Box fontSize="18px" fontWeight="bold" lineHeight="28px">
+        {title}
+      </Box>
       <SubInfo>
         <span>
           멤버 {memberCnt} · {category} · {statusText}
@@ -86,8 +75,6 @@ const IconWrapper = styled.div`
 `;
 
 const Layout = styled.div<{ status: GatherStatus | "gathering" }>`
-  padding: var(--gap-4);
-  padding-bottom: var(--gap-2);
   background-color: white;
   border-bottom: var(--border);
   display: flex;
@@ -110,21 +97,6 @@ const SettingBtnNav = styled.nav`
   }
   > button {
     position: relative;
-  }
-`;
-
-const Title = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: var(--gap-1);
-  color: var(--gray-800);
-  font-size: 18px;
-
-  font-weight: 800;
-  > div:first-child {
-    > span {
-      margin-right: var(--gap-2);
-    }
   }
 `;
 

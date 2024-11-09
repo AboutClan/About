@@ -160,8 +160,8 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
     if (type === "like") {
       setModalType("like");
     }
-    urlSearchParams.append("drawer", type);
-    router.push(`/gather?${urlSearchParams.toString()}`);
+    // urlSearchParams.append("drawer", type);
+    // router.push(`/gather?${urlSearchParams.toString()}`);
   };
 
   return (
@@ -214,7 +214,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
         ) : null}
       </Flex>
       {modalType === "like" && (
-        <RightDrawer title="좋아요" onClose={() => router.back()}>
+        <RightDrawer title="좋아요" onClose={() => setModalType(null)}>
           <Flex direction="column">
             {likeUsers.map((who, idx) => (
               <Fragment key={idx}>
@@ -225,7 +225,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
         </RightDrawer>
       )}
       {modalType === "comment" && (
-        <RightDrawer title="댓글" onClose={() => router.back()}>
+        <RightDrawer title="댓글" onClose={() => setModalType(null)}>
           <Flex
             direction="column"
             mt={isKeyboardVisible ? `${keyboardHeight + 8}px` : "8px"}

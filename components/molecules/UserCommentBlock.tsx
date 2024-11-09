@@ -12,38 +12,32 @@ interface UserCommentBlockProps {
   type: "gather" | "group" | "feed" | "square";
   id: string;
   commentProps: UserCommentProps;
-  setCommentArr: DispatchType<UserCommentProps[]>;
-  writeSubComment: ({ comment, commentId }: { comment: string; commentId: string }) => void;
+  setCommentArr?: DispatchType<UserCommentProps[]>;
+  writeSubComment?: ({ comment, commentId }: { comment: string; commentId: string }) => void;
 }
 
-function UserCommentBlock({
-  type,
-  id,
-  commentProps,
-  setCommentArr,
-  writeSubComment,
-}: UserCommentBlockProps) {
+function UserCommentBlock({ type, id, commentProps }: UserCommentBlockProps) {
   const { data: userInfo } = useUserInfoQuery();
 
   const [isReCommentInput, setIsReCommentInput] = useState(false);
 
-  const onSubmitReComment = (text: string) => {
-    writeSubComment({ comment: text, commentId: commentProps._id });
+  // const onSubmitReComment = (text: string) => {
+  //   writeSubComment({ comment: text, commentId: commentProps._id });
 
-    setCommentArr((old) =>
-      old.map((obj) => {
-        return obj._id === commentProps._id
-          ? {
-              ...obj,
-              subComments: Array.isArray(obj.subComments)
-                ? [...obj.subComments, { comment: text, user: userInfo }]
-                : [],
-            }
-          : obj;
-      }),
-    );
-    setIsReCommentInput(false);
-  };
+  //   setCommentArr((old) =>
+  //     old.map((obj) => {
+  //       return obj._id === commentProps._id
+  //         ? {
+  //             ...obj,
+  //             subComments: Array.isArray(obj.subComments)
+  //               ? [...obj.subComments, { comment: text, user: userInfo }]
+  //               : [],
+  //           }
+  //         : obj;
+  //     }),
+  //   );
+  //   setIsReCommentInput(false);
+  // };
 
   return (
     <>
@@ -54,7 +48,7 @@ function UserCommentBlock({
         comment={commentProps.comment}
         pageId={id}
         commentId={commentProps._id}
-        setCommentArr={setCommentArr}
+        // setCommentArr={setCommentArr}
         setIsReCommentInput={setIsReCommentInput}
         isSecret={type === "square"}
         likeList={commentProps.likeList}
@@ -72,7 +66,7 @@ function UserCommentBlock({
             comment={sub.comment}
             pageId={id}
             commentId={sub._id}
-            setCommentArr={setCommentArr}
+            // setCommentArr={setCommentArr}
             parentId={commentProps._id}
             likeList={sub.likeList}
             isAuthor={sub.user.name === "익명(글쓴이)"}
@@ -83,7 +77,8 @@ function UserCommentBlock({
         <Box ml="20px" my="12px">
           <UserCommentInput
             user={type === "square" ? SECRET_USER_SUMMARY : userInfo}
-            onSubmit={onSubmitReComment}
+            // onSubmit={onSubmitReComment}
+            onSubmit={() => {}}
             initialFocus
           />
         </Box>

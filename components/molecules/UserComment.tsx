@@ -17,10 +17,11 @@ import { UserCommentProps as CommentProps } from "../../types/components/propTyp
 import { DispatchBoolean, DispatchType } from "../../types/hooks/reactTypes";
 import { getDateDiff } from "../../utils/dateTimeUtils";
 import Avatar from "../atoms/Avatar";
+import { EllipsisIcon } from "../Icons/DotIcons";
 
 interface UserCommentProps extends Omit<CommentProps, "_id"> {
   isSecret?: boolean;
-  setCommentArr: DispatchType<CommentProps[]>;
+  setCommentArr?: DispatchType<CommentProps[]>;
   type: "gather" | "group" | "feed" | "square";
   pageId: string;
   commentId?: string;
@@ -38,7 +39,7 @@ function UserComment({
   comment,
   setIsReCommentInput,
   commentId,
-  setCommentArr,
+
   isReComment,
   parentId,
   type,
@@ -90,35 +91,34 @@ function UserComment({
   });
 
   const editCommentNow = (value: string, commentId: string) => {
-    setCommentArr((old) => {
-      return old.map((obj) =>
-        obj._id === commentId
-          ? { ...obj, comment: value }
-          : {
-              ...obj,
-              subComments: obj.subComments.map((item) => {
-                return item._id === commentId ? { ...item, comment: value } : item;
-              }),
-            },
-      );
-    });
+    // setCommentArr((old) => {
+    //   return old.map((obj) =>
+    //     obj._id === commentId
+    //       ? { ...obj, comment: value }
+    //       : {
+    //           ...obj,
+    //           subComments: obj.subComments.map((item) => {
+    //             return item._id === commentId ? { ...item, comment: value } : item;
+    //           }),
+    //         },
+    //   );
+    // });
   };
 
   const deleteCommentNow = (commentId: string) => {
-    setCommentArr((old) => {
-      return old
-        .map((obj) => {
-          if (obj._id === commentId) {
-            // 메인 댓글 삭제
-            return null;
-          } else {
-            const updatedSubComments = obj.subComments.filter((item) => item._id !== commentId);
-
-            return { ...obj, subComments: updatedSubComments };
-          }
-        })
-        .filter((obj) => obj !== null); // null인 메인 댓글 제거
-    });
+    // setCommentArr((old) => {
+    //   return old
+    //     .map((obj) => {
+    //       if (obj._id === commentId) {
+    //         // 메인 댓글 삭제
+    //         return null;
+    //       } else {
+    //         const updatedSubComments = obj.subComments.filter((item) => item._id !== commentId);
+    //         return { ...obj, subComments: updatedSubComments };
+    //       }
+    //     })
+    //     .filter((obj) => obj !== null); // null인 메인 댓글 제거
+    // });
   };
 
   const onCompleted = () => {
@@ -147,60 +147,66 @@ function UserComment({
 
   return (
     <>
-      <Flex align="center" py="8px">
-        <Flex justify="center" alignSelf="flex-start" mr="12px">
+      <Flex align="center" px={5} py={3} borderBottom="var(--border)">
+        <Flex justify="center" alignSelf="flex-start" mr={2}>
           <Avatar
-            size="sm"
+            size="mds"
             avatar={user.avatar}
             image={user.profileImage}
             uid={user.uid}
             isLink={false}
           />
         </Flex>
-        <Flex direction="column" fontSize="12px" lineHeight={1.6} justify="space-around">
-          <Flex align="center">
-            <Box fontWeight={600} mr="4px" color={isAuthor ? "var(--color-mint)" : "inherit"}>
+        <Flex w="full" direction="column" fontSize="12px" lineHeight={1.6} justify="space-around">
+          <Flex w="full" justify="space-between" mb={1}>
+            <Box fontWeight="bold" fontSize="13px" lineHeight="20px" color="gray.800">
               {user.name}
             </Box>
-            <Box fontSize="10px" color="var(--gray-600)">
+            <Button variant="unstyled">
+              <EllipsisIcon size="sm" />
+            </Button>
+            {/* <Box fontSize="10px" color="var(--gray-600)">
               {!isSecret && user.location} {!isSecret && "."} {getDateDiff(dayjs(updatedAt))}
-            </Box>
+            </Box> */}
           </Flex>
-          <p>
+          <Box mb={2} as="p" fontWeight="light" fontSize="12px" lineHeight="18px">
             {comment}
-            {user._id === session?.user.id && (
+            {/* {user._id === session?.user.id && (
               <Box as="span" ml="8px" onClick={() => setIsEditModal(true)}>
                 <i className="fa-solid fa-ellipsis" />
               </Box>
-            )}
-          </p>{" "}
-          <Flex>
+            )} */}
+          </Box>{" "}
+          <Flex h="16px" align="center" fontSize="10px" color="gray.600">
             <Button
               px="0"
+              h="16px"
               size="xs"
               variant="ghost"
-              color={hasMyLike ? "var(--color-mint)" : "var(--gray-600)"}
+              color="gray.600"
               fontSize="10px"
-              fontWeight={hasMyLike ? 600 : 500}
+              fontWeight="regular"
               onClick={onClickLike}
               _focus={{ boxShadow: "none", background: "transparent" }}
             >
               좋아요 {likeArr.length}개
             </Button>
+            <Box mx={1} w="1px" h="6px" bg="gray.200" my="auto" />
             {!isReComment && (
               <Button
-                ml="12px"
                 px="0"
                 size="xs"
+                fontSize="10px"
                 variant="ghost"
                 color="var(--gray-600)"
-                fontSize="10px"
                 fontWeight={500}
                 onClick={() => setIsReCommentInput(true)}
               >
                 답글 달기
               </Button>
             )}
+            <Box mx={1} w="1px" h="6px" bg="gray.200" my="auto" />
+            <Box>{getDateDiff(dayjs(updatedAt))}</Box>
           </Flex>
         </Flex>
       </Flex>
@@ -211,7 +217,7 @@ function UserComment({
           setText={setText}
           commentId={isReComment ? parentId : commentId}
           setIsModal={setIsEditModal}
-          setCommentArr={setCommentArr}
+          // setCommentArr={setCommentArr}
           handleEdit={isReComment ? handleEditSub : handleEdit}
           handleDelete={
             isReComment

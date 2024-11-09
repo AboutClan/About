@@ -30,7 +30,7 @@ function ContentFeed({ group }: ContentFeedProps) {
   }, [group]);
 
   return (
-    <>
+    <Box position="relative" minH="240px">
       {feeds ? (
         feeds?.length ? (
           feeds.map((feed, idx) => {
@@ -60,7 +60,7 @@ function ContentFeed({ group }: ContentFeedProps) {
       ) : (
         <MainLoadingAbsolute size="sm" />
       )}
-    </>
+    </Box>
   );
 }
 

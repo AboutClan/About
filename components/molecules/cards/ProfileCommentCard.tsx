@@ -49,7 +49,7 @@ export default function ProfileCommentCard({
 
   return (
     <>
-      <Flex py={3} align="center">
+      <Flex py={3} align="center" borderBottom="var(--border)">
         {leftComponent && <Box mr="16px">{leftComponent}</Box>}
         {user ? (
           <Avatar image={user.profileImage} size="md" avatar={user.avatar} uid={user.uid} />

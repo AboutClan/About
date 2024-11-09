@@ -233,9 +233,10 @@ const theme = extendTheme({
         }),
         subtle: (props) => ({
           ...(props.colorScheme === "gray" && {
-            bg: "gray.200",
+            bg: "gray.100",
             color: "gray.600",
           }),
+          fontWeight: "regular",
         }),
       },
       defaultProps: {

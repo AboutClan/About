@@ -1,14 +1,12 @@
-import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/dist/client/router";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import UserCommentBlock from "../../../components/molecules/UserCommentBlock";
-import UserCommentInput from "../../../components/molecules/UserCommentInput";
+import CommentSection from "../../../components/molecules/CommentSection";
 import { GROUP_STUDY } from "../../../constants/keys/queryKeys";
 import { useCommentMutation, useSubCommentMutation } from "../../../hooks/common/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
@@ -30,7 +28,7 @@ function GroupComments({ comments }: IGroupComments) {
 
   const setTransferGroup = useSetRecoilState(transferGroupDataState);
   const [commentArr, setCommentArr] = useState<UserCommentProps[]>(comments);
-
+  console.log(42, commentArr);
   const { data: userInfo } = useUserInfoQuery();
 
   const { mutate: writeComment } = useCommentMutation("post", "group", groupId, {
@@ -68,34 +66,12 @@ function GroupComments({ comments }: IGroupComments) {
 
   return (
     <>
-      <Layout>
-        <span>할 얘기가 있다면 댓글을 남겨보세요</span>
-        <Comment>
-          {!isGuest && userInfo && (
-            <Box mr="8px" mt="20px" mb="12px">
-              <UserCommentInput user={userInfo} onSubmit={onSubmit} />
-            </Box>
-          )}
-          <section>
-            {commentArr?.map((item, idx) => (
-              <UserCommentBlock
-                key={idx}
-                type="group"
-                id={groupId}
-                commentProps={item}
-                setCommentArr={setCommentArr}
-                writeSubComment={writeSubComment}
-              />
-            ))}
-          </section>
-        </Comment>
-      </Layout>
+      <Layout>{commentArr && <CommentSection commentArr={commentArr} id={groupId} />}</Layout>
     </>
   );
 }
 
 const Layout = styled.div`
-  margin: var(--gap-5) var(--gap-4);
   display: flex;
   flex-direction: column;
   > span:first-child {

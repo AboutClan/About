@@ -3,15 +3,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { ComponentProps } from "react";
 import styled from "styled-components";
+
 import { ABOUT_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
 import { SingleLineText } from "../../../styles/layout/components";
 import {
   GroupParicipantProps,
   GroupStatus,
-  IGroupWritingCategory,
+  IGroupWritingCategory
 } from "../../../types/models/groupTypes/group";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
-
 import { UserIcon } from "../../Icons/UserIcons";
 import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
 
@@ -19,24 +19,17 @@ const VOTER_SHOW_MAX = 4;
 export interface GroupThumbnailCardProps {
   title: string;
   text: string;
-  status: "pending" | "end";
+  status: GroupStatus;
   category: IGroupWritingCategory;
-
-  participants: (GroupParicipantProps | IUserSummary)[];
+  participants: (GroupParicipantProps | { user: IUserSummary })[];
   imageProps: {
     image: string;
     isPriority?: boolean;
   };
   maxCnt: number;
+  func: () => void;
   id: number;
 }
-
-const STATUS_TO_BADGE_PROPS: Record<GroupStatus, { text: string; colorScheme: string }> = {
-  open: { text: "모집 마감", colorScheme: "red" },
-  close: { text: "취소", colorScheme: "gray" },
-  pending: { text: "모집중", colorScheme: "mint" },
-  end: { text: "종료", colorScheme: "gray" },
-};
 
 export function GroupThumbnailCard({
   participants,
@@ -44,7 +37,7 @@ export function GroupThumbnailCard({
   status,
   text,
   category,
-
+  func,
   imageProps,
   id,
   maxCnt,
@@ -60,8 +53,16 @@ export function GroupThumbnailCard({
         : { image: ABOUT_USER_SUMMARY.profileImage },
     );
 
+  const statusToBadgeProps: Record<GroupStatus, { text: string; colorScheme: string }> = {
+    imminent: { text: `마감까지 ${maxCnt - participants.length}명`, colorScheme: "red" },
+    full: { text: "인원마감", colorScheme: "orange" },
+    waiting: { text: "오픈대기중", colorScheme: "red" },
+    pending: { text: "모집중", colorScheme: "mint" },
+    end: { text: "종료", colorScheme: "gray" },
+  };
+
   return (
-    <CardLink href={`/group/${id}`}>
+    <CardLink href={`/group/${id}`} onClick={func}>
       <PlaceImage src={imageProps.image} priority={imageProps.isPriority} />
       <Flex direction="column" ml="12px" flex={1}>
         <Flex my={1} justify="space-between" align="center">
@@ -77,8 +78,8 @@ export function GroupThumbnailCard({
             </Box>
           </Box>
 
-          <Badge mr={1} size="lg" colorScheme={STATUS_TO_BADGE_PROPS[status].colorScheme}>
-            {STATUS_TO_BADGE_PROPS[status].text}
+          <Badge mr={1} size="lg" colorScheme={statusToBadgeProps[status].colorScheme}>
+            {statusToBadgeProps[status].text}
           </Badge>
         </Flex>
         <Title>{title}</Title>

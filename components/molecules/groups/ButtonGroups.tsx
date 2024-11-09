@@ -46,7 +46,7 @@ export default function ButtonGroups({
               rounded={isEllipse ? "16px" : "md"}
               leftIcon={buttonOptions?.icon}
               fontSize="12px"
-              border={"1px solid var(--gray-200)"}
+              border="1px solid var(--gray-200)"
               borderColor={
                 buttonOptions.text === currentValue
                   ? "var(--color-mint) !important"

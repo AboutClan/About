@@ -185,6 +185,7 @@ const Layout = styled.div`
   flex-direction: column;
   background-color: white;
   padding-bottom: var(--gap-4);
+
   border: var(--border);
 `;
 
