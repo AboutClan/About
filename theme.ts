@@ -253,8 +253,9 @@ const theme = extendTheme({
           px: "8px !important",
           py: "2px",
           h: "20px",
-          fontWeight: 700,
+          fontWeight: "bold",
           fontSize: "11px",
+
           borderRadius: "4px",
         },
       },

@@ -1,28 +1,28 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-import WritingButton from "../../components/atoms/buttons/WritingButton";
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
+import SectionHeader from "../../components/atoms/SectionHeader";
 import Select from "../../components/atoms/Select";
+import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
+import { GroupThumbnailCard } from "../../components/molecules/cards/GroupThumbnailCard";
+import ButtonGroups from "../../components/molecules/groups/ButtonGroups";
 // import RuleModal from "../../components/modals/RuleModal";
-import SectionBar from "../../components/molecules/bars/SectionBar";
-import CheckBoxNav from "../../components/molecules/CheckBoxNav";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import {
   GROUP_STUDY_CATEGORY_ARR,
   GROUP_STUDY_SUB_CATEGORY,
 } from "../../constants/contentsText/GroupStudyContents";
 import { GROUP_WRITING_STORE } from "../../constants/keys/localStorage";
+import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import { useGroupQuery } from "../../hooks/groupStudy/queries";
-import GroupBlock from "../../pageTemplates/group/GroupBlock";
 import GroupMine from "../../pageTemplates/group/GroupMine";
 import GroupSkeletonMain from "../../pageTemplates/group/GroupSkeletonMain";
-import GroupSkeletonMine from "../../pageTemplates/group/GroupSkeletonMine";
 import { GroupCategory, IGroup } from "../../types/models/groupTypes/group";
 import { shuffleArray } from "../../utils/convertUtils/convertDatas";
 
@@ -166,30 +166,70 @@ function GroupPage() {
       <Header title="소모임" isBack={false} />
       <Slide isNoPadding>
         <Layout>
-          {!myGroups ? <GroupSkeletonMine /> : <GroupMine myGroups={myGroups} />}
-          <Box px={5} bg="white">
-            <SectionBar title="전체 소모임" size="md" rightComponent={<StatusSelector />} />
+          <GroupMine myGroups={myGroups} />
+          <Box px={5} mt={5} mb={3}>
+            <SectionHeader title="전체 소모임" subTitle="All Small Group">
+              <Select
+                size="sm"
+                isThick
+                defaultValue={status}
+                options={["모집중", "종료"]}
+                setValue={setStatus}
+              />
+            </SectionHeader>
           </Box>
-          <NavWrapper>
-            <TabNav selected={category.main} tabOptionsArr={mainTabOptionsArr} isMain />
-          </NavWrapper>
-          <SubNavWrapper>
-            <CheckBoxNav
+          <Box borderBottom="var(--border)" px={5} mb={2}>
+            <TabNav isBlack selected={category.main} tabOptionsArr={mainTabOptionsArr} isMain />
+          </Box>
+
+          {category.main !== "전체" && (
+            <Box px={5} py={3}>
+              <ButtonGroups
+                buttonOptionsArr={GROUP_STUDY_SUB_CATEGORY[category.main].map((prop) => ({
+                  icon: (
+                    <CheckCircleIcon
+                      color={category.sub === prop ? "mint" : "gray"}
+                      size="sm"
+                      isFill
+                    />
+                  ),
+                  text: prop,
+                  func: () => setCategory((old) => ({ ...old, sub: prop })),
+                }))}
+                currentValue={category.sub}
+                isEllipse
+                size="md"
+              />
+              {/* <CheckBoxNav
               buttonList={GROUP_STUDY_SUB_CATEGORY[category.main]}
               selectedButton={category.sub}
               setSelectedButton={(value: string) => setCategory((old) => ({ ...old, sub: value }))}
-            />
-          </SubNavWrapper>
+            /> */}
+            </Box>
+          )}
           <Box minH="1000px">
             {!groupStudies.length && isLoading ? (
               <GroupSkeletonMain />
             ) : (
-              <Flex direction="column" px={5} py={4}>
+              <Flex direction="column" p={5}>
                 {groupStudies
                   ?.slice()
                   ?.reverse()
-                  ?.map((group) => (
-                    <GroupBlock group={group} key={group.id} />
+                  ?.map((group, idx) => (
+                    <Box key={group.id} pb={3} mb={3} borderBottom="var(--border)">
+                      <GroupThumbnailCard
+                        title={group.title}
+                        text={group.guide}
+                        status={group.status}
+                        category={group.category}
+                        participants={group.participants.map((user) =>
+                          group.isSecret ? ABOUT_USER_SUMMARY : user,
+                        )}
+                        imageProps={{ image: group.image, isPriority: idx < 4 }}
+                        maxCnt={group.memberCnt.max}
+                        id={group.id}
+                      />
+                    </Box>
                   ))}
               </Flex>
             )}
@@ -202,14 +242,13 @@ function GroupPage() {
           ) : undefined}
         </Layout>
       </Slide>
-      <WritingButton url="/group/writing/main" />
     </>
   );
 }
 
 const Layout = styled.div`
   min-height: 100vh;
-  background-color: var(--gray-100);
+
   padding-bottom: 60px;
 `;
 

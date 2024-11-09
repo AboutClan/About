@@ -10,7 +10,7 @@ import {
   GroupCategory,
   GroupStatus,
   IGroup,
-  IGroupAttendance,
+  IGroupAttendance
 } from "../../types/models/groupTypes/group";
 
 export const useGroupQuery = (
@@ -26,6 +26,18 @@ export const useGroupQuery = (
         params: { filter, category, cursor },
       });
 
+      return res.data;
+    },
+    options,
+  );
+export const useGroupsShortQuery = (
+
+  options?: QueryOptions<IGroup[]>,
+) =>
+  useQuery<IGroup[], AxiosError, IGroup[]>(
+    [GROUP_STUDY],
+    async () => {
+      const res = await axios.get<IGroup[]>(`${SERVER_URI}/groupStudy/mine`);
       return res.data;
     },
     options,

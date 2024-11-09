@@ -3,7 +3,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
-import { AspectRatio, Box } from "@chakra-ui/react";
+import { AspectRatio, Box, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import styled, { css } from "styled-components";
@@ -23,6 +23,7 @@ export interface IImageTile {
   url?: string;
   func?: () => void;
   priority?: boolean;
+  type?: "circle";
 }
 
 interface IImageTileSlider {
@@ -37,15 +38,54 @@ function ImageTileSlider({ imageTileArr, size, aspect = 1, slidesPerView }: IIma
     <Swiper slidesPerView={slidesPerView} spaceBetween={12}>
       {imageTileArr.map((imageTile, index) => (
         <SwiperSlide key={index}>
-          <Wrapper size={size} onClick={imageTile?.func}>
-            {imageTile?.url ? (
-              <CustomLink href={imageTile.url}>
+          {imageTile.type === "circle" ? (
+            <Link href={imageTile.url}>
+              <Flex direction="column" h="84px" w="64px">
+                <Flex
+                  justify="center"
+                  align="center"
+                  w="64px"
+                  h="64px"
+                  border="2px solid var(--gray-300)"
+                  borderRadius="50%"
+                  p="2px"
+                >
+                  <Box w="56px" h="56px" borderRadius="50%" position="relative" overflow="hidden">
+                    <Image
+                      src={imageTile.imageUrl}
+                      priority={imageTile?.priority}
+                      fill={true}
+                      alt="slideImage"
+                      sizes="60px"
+                    />
+                  </Box>
+                </Flex>
+                <Box
+                  textOverflow="ellipsis"
+                  whiteSpace="nowrap"
+                  overflow="hidden"
+                  mt={2}
+                  fontSize="10px"
+                  fontWeight="medium"
+                  color="gray.600"
+                  lineHeight="12px"
+                  h="12px"
+                >
+                  {imageTile.text}
+                </Box>
+              </Flex>
+            </Link>
+          ) : (
+            <Wrapper size={size} onClick={imageTile?.func}>
+              {imageTile?.url ? (
+                <CustomLink href={imageTile.url}>
+                  <SlideItem imageTile={imageTile} size={size} aspect={aspect} />
+                </CustomLink>
+              ) : (
                 <SlideItem imageTile={imageTile} size={size} aspect={aspect} />
-              </CustomLink>
-            ) : (
-              <SlideItem imageTile={imageTile} size={size} aspect={aspect} />
-            )}
-          </Wrapper>
+              )}
+            </Wrapper>
+          )}
         </SwiperSlide>
       ))}
     </Swiper>

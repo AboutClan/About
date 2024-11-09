@@ -1,5 +1,8 @@
+import { Box, Button, Flex } from "@chakra-ui/react";
+import Link from "next/link";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { PlusIcon } from "../../components/Icons/MathIcons";
 
 import ImageTileSlider, { IImageTile } from "../../components/organisms/sliders/ImageTileSlider";
 import { transferGroupDataState } from "../../recoils/transferRecoils";
@@ -20,16 +23,37 @@ function GroupMine({ myGroups }: IGroupMine) {
       text: group.title,
       url: `/group/${group.id}`,
       func: () => setGroup(group),
+      type: "circle",
     }));
 
   return (
-    <Layout>
+    <Flex pl={5} pt="10px" pb="14px">
+      <Link href="/group/writing/main">
+        <Flex direction="column" w="64px" h="84px" align="center">
+          <Button
+            w="56px"
+            h="56px"
+            color="white"
+            borderRadius="50%"
+            variant="unstyled"
+            bg="gray.800"
+            display="flex"
+            m={1}
+          >
+            <PlusIcon size="md" color="white" />
+          </Button>
+          <Box mt={2} fontSize="10px" lineHeight="12px" fontWeight="regular" color="gray.600">
+            모임 만들기
+          </Box>
+        </Flex>
+      </Link>
+      <Box mx={3} w="1px" bg="gray.200" h="24px" my="auto" />
       {myGroups?.length ? (
-        <ImageTileSlider imageTileArr={imageTileArr} slidesPerView={2.2} size="md" aspect={2} />
+        <ImageTileSlider imageTileArr={imageTileArr} slidesPerView={3.8} size="md" />
       ) : (
         <BlockLayout>가입중인 소모임이 없습니다.</BlockLayout>
       )}
-    </Layout>
+    </Flex>
   );
 }
 
