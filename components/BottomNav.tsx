@@ -25,7 +25,6 @@ interface INavButtonProps {
 
 interface INavButton extends INavButtonProps {
   isActive: boolean;
-  idx: number;
 }
 
 type Category = "홈" | "스터디" | "소셜링" | "소모임" | "내 정보";
@@ -55,14 +54,12 @@ export default function BottomNav() {
 
         return (
           <NavButton
-            idx={idx}
             text={item.text}
             key={idx}
             url={item.url + `${getParams(item.text)}`}
             activeIcon={item.activeIcon}
             defaultIcon={item.defaultIcon}
             isActive={pathname === item.url}
-            data-joyride-step={item.text}
           />
         );
       })}
@@ -70,7 +67,7 @@ export default function BottomNav() {
   );
 }
 
-function NavButton({ text, url, activeIcon, defaultIcon, isActive, idx }: INavButton) {
+function NavButton({ text, url, activeIcon, defaultIcon, isActive }: INavButton) {
   const { data: session } = useSession();
   const typeToast = useTypeToast();
   const isGuest = session?.user.role === "guest";
@@ -92,7 +89,7 @@ function NavButton({ text, url, activeIcon, defaultIcon, isActive, idx }: INavBu
       href={url}
       isactive={isActive.toString() as "true" | "false"}
       replace={!text}
-      className={`bottom_nav${idx}`}
+      data-joyride-step={text}
     >
       <Flex justify="center" align="center" w="26px" h="26px">
         {isActive ? activeIcon || defaultIcon : defaultIcon}

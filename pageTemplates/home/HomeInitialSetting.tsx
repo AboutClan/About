@@ -103,7 +103,9 @@ function HomeInitialSetting() {
   const handleJoyrideCallback = (props: CallBackProps) => {
     const { status } = props;
 
-    if (([STATUS.FINISHED, STATUS.SKIPPED] as string[]).includes(status)) {
+    const finishedStatus = ([STATUS.FINISHED, STATUS.SKIPPED] as string[]).includes(status);
+
+    if (finishedStatus) {
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -124,6 +126,8 @@ function HomeInitialSetting() {
         hideCloseButton
         continuous
         showSkipButton
+        disableOverlayClose
+        disableCloseOnEsc
         callback={handleJoyrideCallback}
         steps={STEPS_CONTENTS}
         run={joyrideRun}

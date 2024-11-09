@@ -74,7 +74,7 @@ function HomeStudySection() {
 
   return (
     <>
-      <Box px={5}>
+      <Box>
         <SectionHeader title="카공 스터디 같이 하실 분" subTitle="Study">
           <ButtonWrapper
             size="xs"
@@ -84,10 +84,10 @@ function HomeStudySection() {
           </ButtonWrapper>
         </SectionHeader>
       </Box>
-      <Box px={5} mt={3} mb={5} borderBottom="var(--border)">
+      <Box mt={3} mb={5} borderBottom="var(--border)">
         <TabNav tabOptionsArr={tabOptionsArr} selected={dayjsToKr(dayjs(date))} isFullSize />
       </Box>
-      <Box px={5}>
+      <Box>
         <StudyCardCol participations={studyMergeParticipations} date={date} setDate={setDate} />
       </Box>
     </>

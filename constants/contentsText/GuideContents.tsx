@@ -115,11 +115,41 @@ export const STEPS_CONTENTS: Step[] = [
     target: "[data-joyride-step='디스코드']",
   },
 
-  // TODO: 스터디 섹션
+  // 스터디 섹션
+  {
+    content: <Content>카공 스터디 모집에 참여할 수 있어요!</Content>,
+    locale: {
+      back: <BackButton />,
 
-  // TODO: 소셜링 섹션
+      close: "닫기",
+      next: <NextButton>다음</NextButton>,
+    },
+    target: "[data-joyride-step='study-section']",
+  },
 
-  // TODO: 소모임 섹션
+  // 소셜링 섹션
+  {
+    content: <Content>동아리원들과의 번개 모임에 참여할 수 있어요!</Content>,
+    locale: {
+      back: <BackButton />,
+
+      close: "닫기",
+      next: <NextButton>다음</NextButton>,
+    },
+    target: "[data-joyride-step='gather-section']",
+  },
+
+  // 소모임 섹션
+  {
+    content: <Content>운동, 어학, 자격증 등 자기계발 소모임에 가입할 수 있어요!</Content>,
+    locale: {
+      back: <BackButton />,
+
+      close: "닫기",
+      next: <NextButton>다음</NextButton>,
+    },
+    target: "[data-joyride-step='group-section']",
+  },
 
   // Bottom nav: 홈
   {
