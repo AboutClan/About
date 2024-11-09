@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -336,10 +336,10 @@ const getMarkersOptions = (
           placeId === myVote?.main
             ? "main"
             : onlyFirst
-              ? "default"
-              : myVote?.sub?.includes(placeId)
-                ? "sub"
-                : "default";
+            ? "default"
+            : myVote?.sub?.includes(placeId)
+            ? "sub"
+            : "default";
 
         const polyline =
           mainPlace && myVote?.sub?.includes(placeId)
@@ -405,10 +405,10 @@ const getMarkersOptions = (
         value.id === myVote?.main
           ? "main"
           : onlyFirst
-            ? "default"
-            : myVote?.sub?.includes(value.id)
-              ? "sub"
-              : "default";
+          ? "default"
+          : myVote?.sub?.includes(value.id)
+          ? "sub"
+          : "default";
 
       temp.push({
         isPicked: myVote?.main === value.id,
@@ -435,8 +435,8 @@ const getMarkersOptions = (
             value.status === "solo"
               ? getStudyIcon("inactive")
               : value.count === 1
-                ? getStudyIcon("active")
-                : getStudyIcon(null, value.count), // count에 따라 content 값 설정
+              ? getStudyIcon("active")
+              : getStudyIcon(null, value.count), // count에 따라 content 값 설정
           size: new naver.maps.Size(72, 72),
           anchor: new naver.maps.Point(36, 44),
         },
@@ -517,7 +517,7 @@ export const getDetailInfo = (
   });
 
   const commentUser = sortedCommentUserArr?.[0]?.user;
-  const findMyInfo = findStudy?.members?.find((who) => who.user.uid);
+  const findMyInfo = findStudy?.members?.find((who) => who.user.uid === myUid);
 
   return {
     isPrivate: !!realTimeStudy,
@@ -550,7 +550,7 @@ export const getDetailInfo = (
       !findMyInfo || !findStudy?.members.some((who) => who.user.uid === myUid)
         ? "notParticipation"
         : findMyInfo?.attendanceInfo?.arrived
-          ? "attendance"
-          : ("participation" as "notParticipation" | "attendance" | "participation"),
+        ? "attendance"
+        : ("participation" as "notParticipation" | "attendance" | "participation"),
   };
 };
