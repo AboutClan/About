@@ -1,4 +1,5 @@
 import { Box } from "@chakra-ui/react";
+
 import { UserCommentProps } from "../../types/components/propTypes";
 import UserCommentBlock from "./UserCommentBlock";
 
@@ -7,13 +8,20 @@ interface CommentSectionProps {
   id: string;
 }
 
-function CommentSection({commentArr,id}: CommentSectionProps) {
+function CommentSection({ commentArr, id }: CommentSectionProps) {
   return (
     <>
-      <Box color="gray.600" fontSize="13px" lineHeight="20px" pb={3} borderBottom="var(--border)">
+      <Box
+        px={5}
+        color="gray.600"
+        fontSize="13px"
+        lineHeight="20px"
+        pb={3}
+        borderBottom="var(--border)"
+      >
         댓글 <b>22개</b>
       </Box>
-      {commentArr.map((comment,idx) => (
+      {commentArr.map((comment, idx) => (
         <UserCommentBlock
           key={idx}
           type="group"
@@ -23,9 +31,7 @@ function CommentSection({commentArr,id}: CommentSectionProps) {
           // writeSubComment={writeSubComment}
         />
       ))}
-      <Box position="fixed" bottom="0">
-
-      </Box>
+      <Box position="fixed" bottom="0"></Box>
     </>
   );
 }

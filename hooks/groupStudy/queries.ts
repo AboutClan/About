@@ -30,7 +30,7 @@ export const useGroupQuery = (
     },
     options,
   );
-export const useGroupsShortQuery = (
+export const useGroupsMineQuery = (
 
   options?: QueryOptions<IGroup[]>,
 ) =>

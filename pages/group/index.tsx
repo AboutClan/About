@@ -38,7 +38,7 @@ function GroupPage() {
   const newSearchParams = new URLSearchParams(searchParams);
   const router = useRouter();
   const { data: session } = useSession();
-  const isGuest = session?.user.name === "guest";
+  const isGuest = session?.user.role === "guest";
 
   const categoryIdx = searchParams.get("category") || "0";
 
@@ -47,7 +47,7 @@ function GroupPage() {
   const setTransdferGroupData = useSetRecoilState(transferGroupDataState);
   const [status, setStatus] = useState<"모집중" | "종료">("모집중");
   const [groupStudies, setGroupStudies] = useState<IGroup[]>([]);
-  const [myGroups, setMyGroups] = useState<IGroup[] | null>(null);
+
   const [cursor, setCursor] = useState(localStorageCursorNum);
   const [category, setCategory] = useState<ICategory>({
     main: GROUP_STUDY_CATEGORY_ARR[categoryIdx] || "전체",
@@ -147,23 +147,6 @@ function GroupPage() {
     }
   }, [groups, category.main, category.sub]);
 
-  useEffect(() => {
-    if (isGuest) setMyGroups([]);
-    else if (groupStudies.length && !myGroups) {
-      setMyGroups(
-        groupStudies.filter((item) =>
-          item.participants.some((who) => {
-            if (!who?.user?.uid) {
-              return;
-            }
-
-            return who.user.uid === session?.user.uid;
-          }),
-        ),
-      );
-    }
-  }, [groupStudies, session?.user]);
-
   const mainTabOptionsArr: ITabNavOptions[] = GROUP_STUDY_CATEGORY_ARR.map((category, idx) => ({
     text: category,
     func: () => {
@@ -183,7 +166,7 @@ function GroupPage() {
       <Header title="소모임" isBack={false} />
       <Slide isNoPadding>
         <Layout>
-          <GroupMine myGroups={myGroups} />
+          {!isGuest && <Box minH="108px"><GroupMine /></Box>}
           <Box px={5} mt={5} mb={3}>
             <SectionHeader title="전체 소모임" subTitle="All Small Group">
               <Select

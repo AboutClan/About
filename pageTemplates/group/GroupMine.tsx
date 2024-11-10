@@ -1,21 +1,20 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import Link from "next/link";
+import { memo } from "react";
 import { useSetRecoilState } from "recoil";
 
 import { PlusIcon } from "../../components/Icons/MathIcons";
 import ImageTileSlider, { IImageTile } from "../../components/organisms/sliders/ImageTileSlider";
+import { useGroupsMineQuery } from "../../hooks/groupStudy/queries";
 import { transferGroupDataState } from "../../recoils/transferRecoils";
-import { IGroup } from "../../types/models/groupTypes/group";
 import { getRandomImage } from "../../utils/imageUtils";
 
-interface IGroupMine {
-  myGroups: IGroup[];
-}
+function GroupMine() {
+  const { data } = useGroupsMineQuery();
 
-function GroupMine({ myGroups }: IGroupMine) {
   const setGroup = useSetRecoilState(transferGroupDataState);
 
-  const imageTileArr: IImageTile[] = myGroups
+  const imageTileArr: IImageTile[] = data
     ?.filter((group) => group.status !== "end")
     .map((group) => ({
       imageUrl: group.image || getRandomImage(),
@@ -47,15 +46,15 @@ function GroupMine({ myGroups }: IGroupMine) {
         </Flex>
       </Link>
       <Box mx={3} w="1px" bg="gray.200" h="24px" my="auto" />
-      {imageTileArr?.length && (
+      {imageTileArr?.length ? (
         <ImageTileSlider
           imageTileArr={imageTileArr}
-          slidesPerView={imageTileArr.length < 4 ? imageTileArr.length : 3.8}
+          slidesPerView={imageTileArr.length < 4 ? imageTileArr.length : 3.7}
           size="md"
         />
-      )}
+      ) : null}
     </Flex>
   );
 }
 
-export default GroupMine;
+export default memo(GroupMine);

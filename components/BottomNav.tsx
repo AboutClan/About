@@ -7,6 +7,7 @@ import styled from "styled-components";
 
 import { useHandleMove } from "../@natives/useHandleBottomNav";
 import { USER_LOCATION } from "../constants/keys/localStorage";
+import { useTypeToast } from "../hooks/custom/CustomToast";
 import { getStudyStandardDate } from "../libs/study/date/getStudyStandardDate";
 import { slideDirectionState } from "../recoils/navigationRecoils";
 import { ActiveLocation } from "../types/services/locationTypes";
@@ -69,12 +70,24 @@ export default function BottomNav() {
 }
 
 function NavButton({ text, url, activeIcon, defaultIcon, isActive, idx }: INavButton) {
+  const { data: session } = useSession();
+  const typeToast = useTypeToast();
+  const isGuest = session?.user.role === "guest";
   const setSlideDirection = useSetRecoilState(slideDirectionState);
   const handleMove = useHandleMove(setSlideDirection);
 
+  const onClick = (e) => {
+    if (isGuest && text === "스터디") {
+      e.preventDefault();
+      typeToast("guest");
+      return;
+    }
+    handleMove();
+  };
+
   return (
     <NavLink
-      onClick={handleMove}
+      onClick={onClick}
       href={url}
       isactive={isActive.toString() as "true" | "false"}
       replace={!text}

@@ -22,12 +22,17 @@ function MenuButton({ menuArr }: MenuButtonProps) {
         <>
           <ChakraMenuButton isActive={isOpen} as={Button} variant="unstyled">
             <ButtonWrapper>
-              <EllipsisIcon />
+              <EllipsisIcon size="md" />
             </ButtonWrapper>
           </ChakraMenuButton>
           <MenuList fontSize="14px">
             {menuArr.map((menu) => (
-              <MenuItem key={menu?.text || "kakao"} onClick={menu?.func} bg="white">
+              <MenuItem
+                as={menu?.kakaoOptions ? "div" : "button"}
+                key={menu?.text || "kakao"}
+                onClick={menu?.func}
+                bg="white"
+              >
                 {menu?.text}
                 {menu?.kakaoOptions && <KakaoShareBtn variant="unstyled" {...menu.kakaoOptions} />}
               </MenuItem>

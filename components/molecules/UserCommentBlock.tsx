@@ -1,22 +1,22 @@
 import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { SECRET_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import { useUserInfoQuery } from "../../hooks/user/queries";
+import { ReplyProps } from "../../pageTemplates/square/SecretSquare/SecretSquareComments";
 import { UserCommentProps } from "../../types/components/propTypes";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import UserComment from "./UserComment";
-import UserCommentInput from "./UserCommentInput";
 
 interface UserCommentBlockProps {
   type: "gather" | "group" | "feed" | "square";
   id: string;
   commentProps: UserCommentProps;
   setCommentArr?: DispatchType<UserCommentProps[]>;
-  writeSubComment?: ({ comment, commentId }: { comment: string; commentId: string }) => void;
+  // writeSubComment?: ({ comment, commentId }: { comment: string; commentId: string }) => void;
+  setReplyProps: DispatchType<ReplyProps>;
 }
 
-function UserCommentBlock({ type, id, commentProps }: UserCommentBlockProps) {
+function UserCommentBlock({ type, id, commentProps, setReplyProps }: UserCommentBlockProps) {
   const { data: userInfo } = useUserInfoQuery();
 
   const [isReCommentInput, setIsReCommentInput] = useState(false);
@@ -49,7 +49,7 @@ function UserCommentBlock({ type, id, commentProps }: UserCommentBlockProps) {
         pageId={id}
         commentId={commentProps._id}
         // setCommentArr={setCommentArr}
-        setIsReCommentInput={setIsReCommentInput}
+        setReplyProps={setReplyProps}
         isSecret={type === "square"}
         likeList={commentProps.likeList}
         isAuthor={commentProps.user.name === "익명(글쓴이)"}
@@ -60,7 +60,7 @@ function UserCommentBlock({ type, id, commentProps }: UserCommentBlockProps) {
             isReComment
             type={type}
             isSecret={type === "square"}
-            setIsReCommentInput={setIsReCommentInput}
+            setReplyProps={setReplyProps}
             user={sub.user}
             updatedAt={sub.updatedAt}
             comment={sub.comment}
@@ -73,16 +73,6 @@ function UserCommentBlock({ type, id, commentProps }: UserCommentBlockProps) {
           />
         </Box>
       ))}
-      {isReCommentInput && (
-        <Box ml="20px" my="12px">
-          <UserCommentInput
-            user={type === "square" ? SECRET_USER_SUMMARY : userInfo}
-            // onSubmit={onSubmitReComment}
-            onSubmit={() => {}}
-            initialFocus
-          />
-        </Box>
-      )}
     </>
   );
 }

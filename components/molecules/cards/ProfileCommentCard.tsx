@@ -56,7 +56,7 @@ export default function ProfileCommentCard({
         ) : (
           <BasicAvatar />
         )}
-        <Flex direction="column" justify="center" ml={3} my={1}>
+        <Flex direction="column" flex={0.95} justify="center" ml={3} my={1}>
           <Flex align="center" mb={memo || comment ? 1 : 0}>
             <Box lineHeight="20px" mr={1} fontWeight="semibold" fontSize="13px">
               {user?.name || "익명"}

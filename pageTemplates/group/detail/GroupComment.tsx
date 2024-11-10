@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
@@ -67,6 +67,7 @@ function GroupComments({ comments }: IGroupComments) {
   return (
     <>
       <Layout>{commentArr && <CommentSection commentArr={commentArr} id={groupId} />}</Layout>
+      
     </>
   );
 }

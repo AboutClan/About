@@ -30,6 +30,7 @@ import { getDistanceFromLatLonInKm } from "../../../../utils/mathUtils";
 export default function Page() {
   const searchParams = useSearchParams();
   const { data: session } = useSession();
+  const isGuest = session?.user.role === "guest";
   const { id, date } = useParams<{ id: string; date: string }>() || {};
   const { currentLocation } = useCurrentLocation();
 
@@ -101,16 +102,18 @@ export default function Page() {
               <StudyMembers date={date} members={members} absences={absences} />
             </Slide>
           </Box>
-          <StudyNavigation
-            studyVoteData={studyVoteData}
-            locationEn={locationParam}
-            date={date}
-            myStudyInfo={getMyStudyInfo(mergeParticipation, session?.user.uid)}
-            absences={mergeParticipation?.absences}
-            placeInfo={{ name, address, latitude, longitude }}
-            type={type}
-            status={mergeParticipation?.status}
-          />
+          {!isGuest && (
+            <StudyNavigation
+              studyVoteData={studyVoteData}
+              locationEn={locationParam}
+              date={date}
+              myStudyInfo={getMyStudyInfo(mergeParticipation, session?.user.uid)}
+              absences={mergeParticipation?.absences}
+              placeInfo={{ name, address, latitude, longitude }}
+              type={type}
+              status={mergeParticipation?.status}
+            />
+          )}
           {isInviteModal && <StudyInviteModal setIsModal={setIsInviteModal} place={place} />}
         </>
       )}

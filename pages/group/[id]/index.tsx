@@ -2,8 +2,8 @@ import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import { Badge, Box, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -24,7 +24,6 @@ import GroupCover from "../../../pageTemplates/group/detail/GroupCover";
 import GroupHeader from "../../../pageTemplates/group/detail/GroupHeader";
 import GroupParticipation from "../../../pageTemplates/group/detail/GroupParticipation";
 import { transferGroupDataState } from "../../../recoils/transferRecoils";
-import { IGroup } from "../../../types/models/groupTypes/group";
 import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
 
 export type GroupSectionCategory = "정 보" | "피 드";
@@ -32,24 +31,20 @@ const TAB_LIST: GroupSectionCategory[] = ["정 보", "피 드"];
 
 function GroupDetail() {
   const { data: session } = useSession();
+  const isGuest = session?.user.name === "guest";
   const { id } = useParams<{ id: string }>() || {};
 
-  const [group, setGroup] = useState<IGroup>();
   const [category, setCategory] = useState<GroupSectionCategory>("정 보");
 
-  const [transferGroup, setTransferGroup] = useRecoilState(transferGroupDataState);
+  const [group, setTransferGroup] = useRecoilState(transferGroupDataState);
 
-  const { data: groupData, refetch } = useGroupIdQuery(id, { enabled: !!id && !transferGroup });
+  const { data: groupData, refetch } = useGroupIdQuery(id, { enabled: !!id && !group });
 
   useEffect(() => {
     if (groupData) {
-      setGroup(groupData);
       setTransferGroup(groupData);
-    } else if (transferGroup) {
-      setGroup(transferGroup);
-      setTransferGroup(transferGroup);
     }
-  }, [transferGroup, groupData]);
+  }, [groupData]);
 
   const { mutate: patchAttendance } = useGroupAttendancePatchMutation(+id, {
     onSuccess() {
@@ -88,10 +83,10 @@ function GroupDetail() {
             <Flex direction="column" px={5} py={4}>
               <Flex mb={4}>
                 <Badge mr={1} variant="subtle" size="lg" colorScheme="badgeMint">
-                  {transferGroup.category.main}
+                  {group.category.main}
                 </Badge>
                 <Badge variant="subtle" size="lg">
-                  {transferGroup.category.sub}
+                  {group.category.sub}
                 </Badge>
               </Flex>
               {/* <GroupTitle
@@ -170,7 +165,7 @@ function GroupDetail() {
                   </Box>
                   <Box lineHeight="20px" mt={4} fontSize="13px">
                     <Box>오픈채팅방</Box>
-                    <BlurredLink isBlur={isMember} url={group.link} />
+                    <BlurredLink isBlur={!isMember} url={group.link} />
                   </Box>
                   <Flex mt={4}>
                     {group.hashTag.split("#").map((tag, idx) =>
@@ -205,7 +200,7 @@ function GroupDetail() {
       </Slide>
 
       {!group && <MainLoading />}
-      {group && category === "정 보" && !isMember ? (
+      {group && category === "정 보" && !isMember && !isGuest ? (
         <GroupBottomNav data={group} />
       ) : category === "피 드" && isMember ? (
         <WritingButton

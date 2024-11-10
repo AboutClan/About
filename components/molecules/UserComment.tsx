@@ -12,9 +12,10 @@ import {
   useSubCommentMutation,
 } from "../../hooks/common/mutations";
 import CommentEditModal from "../../modals/common/CommentEditModal";
+import { ReplyProps } from "../../pageTemplates/square/SecretSquare/SecretSquareComments";
 import { transferGatherDataState, transferGroupDataState } from "../../recoils/transferRecoils";
 import { UserCommentProps as CommentProps } from "../../types/components/propTypes";
-import { DispatchBoolean, DispatchType } from "../../types/hooks/reactTypes";
+import { DispatchType } from "../../types/hooks/reactTypes";
 import { getDateDiff } from "../../utils/dateTimeUtils";
 import Avatar from "../atoms/Avatar";
 import { EllipsisIcon } from "../Icons/DotIcons";
@@ -27,7 +28,7 @@ interface UserCommentProps extends Omit<CommentProps, "_id"> {
   commentId?: string;
   parentId?: string;
   isReComment?: boolean;
-  setIsReCommentInput: DispatchBoolean;
+  setReplyProps: DispatchType<ReplyProps>;
   likeList: string[];
   isAuthor: boolean;
 }
@@ -37,7 +38,7 @@ function UserComment({
   user,
   updatedAt,
   comment,
-  setIsReCommentInput,
+  setReplyProps,
   commentId,
 
   isReComment,
@@ -162,9 +163,11 @@ function UserComment({
             <Box fontWeight="bold" fontSize="13px" lineHeight="20px" color="gray.800">
               {user.name}
             </Box>
-            <Button variant="unstyled">
-              <EllipsisIcon size="sm" />
-            </Button>
+            {session?.user.uid === user.uid && (
+              <Button variant="unstyled">
+                <EllipsisIcon size="sm" />
+              </Button>
+            )}
             {/* <Box fontSize="10px" color="var(--gray-600)">
               {!isSecret && user.location} {!isSecret && "."} {getDateDiff(dayjs(updatedAt))}
             </Box> */}
@@ -191,19 +194,27 @@ function UserComment({
             >
               좋아요 {likeArr.length}개
             </Button>
-            <Box mx={1} w="1px" h="6px" bg="gray.200" my="auto" />
             {!isReComment && (
-              <Button
-                px="0"
-                size="xs"
-                fontSize="10px"
-                variant="ghost"
-                color="var(--gray-600)"
-                fontWeight={500}
-                onClick={() => setIsReCommentInput(true)}
-              >
-                답글 달기
-              </Button>
+              <>
+                <Box mx={1} w="1px" h="6px" bg="gray.200" my="auto" />
+                <Button
+                  px="0"
+                  size="xs"
+                  fontSize="10px"
+                  variant="ghost"
+                  color="var(--gray-600)"
+                  fontWeight={500}
+                  onClick={() =>
+                    setReplyProps({
+                      replyName: user.name,
+                      comment: parentId,
+                      subCommentId: commentId,
+                    })
+                  }
+                >
+                  답글 달기
+                </Button>
+              </>
             )}
             <Box mx={1} w="1px" h="6px" bg="gray.200" my="auto" />
             <Box>{getDateDiff(dayjs(updatedAt))}</Box>
