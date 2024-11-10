@@ -1,6 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import Link from "next/link";
-import { memo } from "react";
+import { useMemo } from "react";
 import { useSetRecoilState } from "recoil";
 
 import { PlusIcon } from "../../components/Icons/MathIcons";
@@ -14,15 +14,19 @@ function GroupMine() {
 
   const setGroup = useSetRecoilState(transferGroupDataState);
 
-  const imageTileArr: IImageTile[] = data
-    ?.filter((group) => group.status !== "end")
-    .map((group) => ({
-      imageUrl: group.image || getRandomImage(),
-      text: group.title,
-      url: `/group/${group.id}`,
-      func: () => setGroup(group),
-      type: "circle",
-    }));
+  const imageTileArr: IImageTile[] = useMemo(
+    () =>
+      data
+        ?.filter((group) => group.status !== "end")
+        .map((group) => ({
+          imageUrl: group.image || getRandomImage(),
+          text: group.title,
+          url: `/group/${group.id}`,
+          func: () => setGroup(group),
+          type: "circle",
+        })),
+    [data, setGroup],
+  );
 
   return (
     <Flex pl={5} pt="10px" pb="14px">
@@ -57,4 +61,4 @@ function GroupMine() {
   );
 }
 
-export default memo(GroupMine);
+export default GroupMine;

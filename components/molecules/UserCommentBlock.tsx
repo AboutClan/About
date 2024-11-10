@@ -1,7 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import { useState } from "react";
 
-import { useUserInfoQuery } from "../../hooks/user/queries";
 import { ReplyProps } from "../../pageTemplates/square/SecretSquare/SecretSquareComments";
 import { UserCommentProps } from "../../types/components/propTypes";
 import { DispatchType } from "../../types/hooks/reactTypes";
@@ -17,10 +15,6 @@ interface UserCommentBlockProps {
 }
 
 function UserCommentBlock({ type, id, commentProps, setReplyProps }: UserCommentBlockProps) {
-  const { data: userInfo } = useUserInfoQuery();
-
-  const [isReCommentInput, setIsReCommentInput] = useState(false);
-
   // const onSubmitReComment = (text: string) => {
   //   writeSubComment({ comment: text, commentId: commentProps._id });
 

@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/dist/client/router";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
@@ -54,10 +54,10 @@ function GroupComments({ comments }: IGroupComments) {
     };
   };
 
-  const onSubmit = async (value: string) => {
-    await writeComment({ comment: value });
-    setCommentArr((old) => [...old, addNewComment(userInfo, value)]);
-  };
+  // const onSubmit = async (value: string) => {
+  //   await writeComment({ comment: value });
+  //   setCommentArr((old) => [...old, addNewComment(userInfo, value)]);
+  // };
 
   const resetCache = () => {
     setTransferGroup(null);
@@ -67,7 +67,6 @@ function GroupComments({ comments }: IGroupComments) {
   return (
     <>
       <Layout>{commentArr && <CommentSection commentArr={commentArr} id={groupId} />}</Layout>
-      
     </>
   );
 }
@@ -78,12 +77,6 @@ const Layout = styled.div`
   > span:first-child {
     font-weight: 700;
   }
-`;
-
-const Comment = styled.div`
-  display: flex;
-  flex-direction: column;
-  font-size: 13px;
 `;
 
 export default GroupComments;

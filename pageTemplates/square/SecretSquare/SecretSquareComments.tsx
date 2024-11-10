@@ -7,11 +7,7 @@ import BottomCommentInput from "../../../components/atoms/BottomCommentInput";
 import Slide from "../../../components/layouts/PageSlide";
 import UserCommentBlock from "../../../components/molecules/UserCommentBlock";
 import { SECRET_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
-import {
-  SubCommentParamProps,
-  useCommentMutation,
-  useSubCommentMutation,
-} from "../../../hooks/common/mutations";
+import { SubCommentParamProps, useCommentMutation } from "../../../hooks/common/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { UserCommentProps } from "../../../types/components/propTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
@@ -46,11 +42,11 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
     },
   });
 
-  const { mutate: writeSubComment } = useSubCommentMutation("post", "square", squareId, {
-    onSuccess() {
-      refetch();
-    },
-  });
+  // const { mutate: writeSubComment } = useSubCommentMutation("post", "square", squareId, {
+  //   onSuccess() {
+  //     refetch();
+  //   },
+  // });
 
   const addNewComment = (user: IUserSummary, comment: string): UserCommentProps => {
     return {
