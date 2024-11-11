@@ -31,7 +31,11 @@ function ContentInfo({ group }: IContentInfo) {
         {!!group?.rules?.length && (
           <ContentWrapper>
             <span>규칙</span>
-            <Rules>{group?.rules.map((rule, idx) => <Rule key={idx}>{rule}</Rule>)}</Rules>
+            <Rules>
+              {group?.rules.map((rule, idx) => (
+                <Rule key={idx}>{rule}</Rule>
+              ))}
+            </Rules>
           </ContentWrapper>
         )}
         {group?.link && (
@@ -51,7 +55,7 @@ function ContentInfo({ group }: IContentInfo) {
         <Tag>{hashTagArr?.map((tag, idx) => (tag ? <div key={idx}>#{tag}</div> : null))}</Tag>
       </Layout>
       <GroupParticipation data={group} />
-      <GroupComments comments={group.comments} />
+      <GroupComments comments={group.comments} hasAutority={isMember} />
     </>
   );
 }

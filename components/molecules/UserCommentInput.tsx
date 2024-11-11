@@ -2,6 +2,8 @@ import { Button, Flex } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
+import { ReplyProps } from "../../pageTemplates/square/SecretSquare/SecretSquareComments";
+import { DispatchType } from "../../types/hooks/reactTypes";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import Avatar from "../atoms/Avatar";
 
@@ -10,7 +12,8 @@ interface UserCommentInputProps {
   onSubmit: (value: string) => void;
   user: IUserSummary;
   initialFocus?: boolean;
-  replyName?: string;
+  replyName: string;
+  setReplyProps: DispatchType<ReplyProps>;
 }
 
 function UserCommentInput({
@@ -19,6 +22,7 @@ function UserCommentInput({
   initialFocus,
   type = "comment",
   replyName,
+  setReplyProps,
 }: UserCommentInputProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [text, setText] = useState(replyName ? "@" + replyName + " " : "");
@@ -33,7 +37,8 @@ function UserCommentInput({
   useEffect(() => {
     if (!user) return;
     if (initialFocus) textareaRef.current.focus();
-    if (text && !text.startsWith("@" + replyName)) {
+    if (replyName && text && !text.startsWith("@" + replyName)) {
+      setReplyProps(null);
       setText("");
     }
 
@@ -50,9 +55,9 @@ function UserCommentInput({
   };
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
-
     setText(value);
   };
+
   return (
     <Flex align="center" flex={1}>
       {user && (
@@ -84,17 +89,19 @@ function UserCommentInput({
               replyName={replyName}
             />
           </Flex>
-          <Button
-            variant="unstyled"
-            borderRadius="50%"
-            w={9}
-            h={9}
-            bg="gray.800"
-            color="white"
-            onClick={onClick}
-          >
-            <i className="fa-regular fa-arrow-right fa-lg" />
-          </Button>
+          {text && (
+            <Button
+              variant="unstyled"
+              borderRadius="50%"
+              w={9}
+              h={9}
+              bg="gray.800"
+              color="white"
+              onClick={onClick}
+            >
+              <i className="fa-regular fa-arrow-right fa-lg" />
+            </Button>
+          )}
         </>
       )}
     </Flex>

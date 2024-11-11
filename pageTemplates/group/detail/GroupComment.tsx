@@ -1,45 +1,38 @@
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
 import { useEffect, useState } from "react";
-import { useQueryClient } from "react-query";
-import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
+import BottomCommentInput from "../../../components/atoms/BottomCommentInput";
 import CommentSection from "../../../components/molecules/CommentSection";
-import { GROUP_STUDY } from "../../../constants/keys/queryKeys";
 import { useCommentMutation, useSubCommentMutation } from "../../../hooks/common/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
-import { transferGroupDataState } from "../../../recoils/transferRecoils";
+import { getCommentArr } from "../../../libs/comment/commentLib";
 import { UserCommentProps } from "../../../types/components/propTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
+import { ReplyProps } from "../../square/SecretSquare/SecretSquareComments";
 
 interface IGroupComments {
   comments: UserCommentProps[];
+  hasAutority: boolean;
 }
 
-function GroupComments({ comments }: IGroupComments) {
-  const queryClient = useQueryClient();
+function GroupComments({ comments, hasAutority }: IGroupComments) {
   const router = useRouter();
-  const { data: session } = useSession();
-  const isGuest = session?.user.name === "guest";
+
   const groupId = router.query.id as string;
 
-  const setTransferGroup = useSetRecoilState(transferGroupDataState);
   const [commentArr, setCommentArr] = useState<UserCommentProps[]>(comments);
-  console.log(42, commentArr);
+  const [replyProps, setReplyProps] = useState<ReplyProps>();
+
   const { data: userInfo } = useUserInfoQuery();
 
   const { mutate: writeComment } = useCommentMutation("post", "group", groupId, {
-    onSuccess() {
-      resetCache();
-    },
+    onSuccess() {},
   });
   const { mutate: writeSubComment } = useSubCommentMutation("post", "group", groupId, {
-    onSuccess() {
-      resetCache();
-    },
+    onSuccess() {},
   });
 
   useEffect(() => {
@@ -54,19 +47,44 @@ function GroupComments({ comments }: IGroupComments) {
     };
   };
 
-  // const onSubmit = async (value: string) => {
-  //   await writeComment({ comment: value });
-  //   setCommentArr((old) => [...old, addNewComment(userInfo, value)]);
-  // };
-
-  const resetCache = () => {
-    setTransferGroup(null);
-    queryClient.invalidateQueries([GROUP_STUDY, groupId]);
+  const onSubmit = async (value: string) => {
+    if (replyProps) {
+      const text = value.split(" ")?.[1];
+      writeSubComment({
+        comment: text,
+        commentId: replyProps.commentId,
+        subCommentId: replyProps.subCommentId,
+      });
+      setCommentArr(getCommentArr(value, replyProps.commentId, commentArr, userInfo));
+      return;
+    }
+    await writeComment({ comment: value });
+    setCommentArr((old) => [...old, addNewComment(userInfo, value)]);
   };
 
   return (
     <>
-      <Layout>{commentArr && <CommentSection commentArr={commentArr} id={groupId} />}</Layout>
+      <Layout>
+        {commentArr && (
+          <CommentSection
+            setReplyProps={setReplyProps}
+            commentArr={commentArr}
+            setCommentArr={setCommentArr}
+            id={groupId}
+            hasAuthority={hasAutority}
+          />
+        )}
+      </Layout>
+      {hasAutority && (
+        <BottomCommentInput
+          onSubmit={onSubmit}
+          type="comment"
+          replyName={replyProps?.replyName}
+          setReplyProps={setReplyProps}
+          isFixed={false}
+          user={userInfo}
+        />
+      )}
     </>
   );
 }

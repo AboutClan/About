@@ -30,7 +30,7 @@ export const LOCATION_MAX_BOUNDARY: {
 } = {
   수원: {
     northeast: { latitude: 37.357058, longitude: 127.142965 },
-    southwest: { latitude: 37.220011, longitude: 126.955637 },
+    southwest: { latitude: 37.195011, longitude: 126.955637 },
   },
   안양: {
     northeast: { latitude: 37.451075, longitude: 127.142965 },

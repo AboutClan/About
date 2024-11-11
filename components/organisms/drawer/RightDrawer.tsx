@@ -7,9 +7,10 @@ interface RightUserDrawerProps {
   onClose: () => void;
   children: React.ReactNode;
   headerBtn?: React.ReactNode;
+  px?: boolean;
 }
 
-function RightDrawer({ title, onClose, children, headerBtn }: RightUserDrawerProps) {
+function RightDrawer({ title, onClose, children, headerBtn, px = true }: RightUserDrawerProps) {
   const handleClose = () => {
     onClose();
   };
@@ -27,7 +28,7 @@ function RightDrawer({ title, onClose, children, headerBtn }: RightUserDrawerPro
           >
             {headerBtn}
           </Header>
-          <Box px={5}>{children}</Box>
+          <Box px={px ? 5 : 0}>{children}</Box>
         </DrawerBody>
       </DrawerContent>
     </Drawer>

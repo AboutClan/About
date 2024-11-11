@@ -2,8 +2,8 @@ import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import { Badge, Box, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -37,7 +37,7 @@ function GroupDetail() {
   const [category, setCategory] = useState<GroupSectionCategory>("정 보");
 
   const [group, setTransferGroup] = useRecoilState(transferGroupDataState);
-  console.log(24, group);
+
   const { data: groupData, refetch } = useGroupIdQuery(id, { enabled: !!id && !group });
 
   useEffect(() => {
@@ -193,7 +193,7 @@ function GroupDetail() {
               )}
               <Box h="1px" my={5} bg="gray.100" />
               <GroupParticipation data={group} />
-              <GroupComments comments={group.comments} />
+              <GroupComments comments={group.comments} hasAutority={isMember} />
             </Flex>
           </>
         )}

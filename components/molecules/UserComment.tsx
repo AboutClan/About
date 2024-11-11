@@ -2,10 +2,7 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { useQueryClient } from "react-query";
-import { useSetRecoilState } from "recoil";
 
-import { GATHER_CONTENT, GROUP_STUDY } from "../../constants/keys/queryKeys";
 import {
   useCommentLikeMutation,
   useCommentMutation,
@@ -13,7 +10,6 @@ import {
 } from "../../hooks/common/mutations";
 import CommentEditModal from "../../modals/common/CommentEditModal";
 import { ReplyProps } from "../../pageTemplates/square/SecretSquare/SecretSquareComments";
-import { transferGatherDataState, transferGroupDataState } from "../../recoils/transferRecoils";
 import { UserCommentProps as CommentProps } from "../../types/components/propTypes";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { getDateDiff } from "../../utils/dateTimeUtils";
@@ -31,6 +27,7 @@ interface UserCommentProps extends Omit<CommentProps, "_id"> {
   setReplyProps: DispatchType<ReplyProps>;
   likeList: string[];
   isAuthor: boolean;
+  hasAuthority: boolean;
 }
 
 function UserComment({
@@ -40,20 +37,15 @@ function UserComment({
   comment,
   setReplyProps,
   commentId,
-
+  setCommentArr,
   isReComment,
   parentId,
   type,
   pageId,
   likeList,
-  isAuthor,
+  hasAuthority,
 }: UserCommentProps) {
-  const queryClient = useQueryClient();
-
   const { data: session } = useSession();
-
-  const setTransferGather = useSetRecoilState(transferGatherDataState);
-  const setTransferGroup = useSetRecoilState(transferGroupDataState);
 
   const [text, setText] = useState(comment);
   const [isEditModal, setIsEditModal] = useState(false);
@@ -92,45 +84,45 @@ function UserComment({
   });
 
   const editCommentNow = (value: string, commentId: string) => {
-    // setCommentArr((old) => {
-    //   return old.map((obj) =>
-    //     obj._id === commentId
-    //       ? { ...obj, comment: value }
-    //       : {
-    //           ...obj,
-    //           subComments: obj.subComments.map((item) => {
-    //             return item._id === commentId ? { ...item, comment: value } : item;
-    //           }),
-    //         },
-    //   );
-    // });
+    setCommentArr((old) => {
+      return old.map((obj) =>
+        obj._id === commentId
+          ? { ...obj, comment: value }
+          : {
+              ...obj,
+              subComments: obj.subComments.map((item) => {
+                return item._id === commentId ? { ...item, comment: value } : item;
+              }),
+            },
+      );
+    });
   };
 
   const deleteCommentNow = (commentId: string) => {
-    // setCommentArr((old) => {
-    //   return old
-    //     .map((obj) => {
-    //       if (obj._id === commentId) {
-    //         // 메인 댓글 삭제
-    //         return null;
-    //       } else {
-    //         const updatedSubComments = obj.subComments.filter((item) => item._id !== commentId);
-    //         return { ...obj, subComments: updatedSubComments };
-    //       }
-    //     })
-    //     .filter((obj) => obj !== null); // null인 메인 댓글 제거
-    // });
+    setCommentArr((old) => {
+      return old
+        .map((obj) => {
+          if (obj._id === commentId) {
+            // 메인 댓글 삭제
+            return null;
+          } else {
+            const updatedSubComments = obj.subComments.filter((item) => item._id !== commentId);
+            return { ...obj, subComments: updatedSubComments };
+          }
+        })
+        .filter((obj) => obj !== null); // null인 메인 댓글 제거
+    });
   };
 
   const onCompleted = () => {
-    if (type === "gather") {
-      setTransferGather(null);
-      queryClient.invalidateQueries([GATHER_CONTENT, pageId]);
-    }
-    if (type === "group") {
-      setTransferGroup(null);
-      queryClient.invalidateQueries([GROUP_STUDY, pageId]);
-    }
+    // if (type === "gather") {
+    //   setTransferGather(null);
+    //   queryClient.invalidateQueries([GATHER_CONTENT, pageId]);
+    // }
+    // if (type === "group") {
+    //   setTransferGroup(null);
+    //   queryClient.invalidateQueries([GROUP_STUDY, pageId]);
+    // }
     setIsEditModal(false);
   };
 
@@ -145,7 +137,7 @@ function UserComment({
     });
     setLikeArr((old) => [...old, session?.user.id]);
   };
-
+  console.log(54, isReComment, parentId, commentId);
   return (
     <>
       <Flex align="center" px={5} py={3} borderBottom="var(--border)">
@@ -164,7 +156,7 @@ function UserComment({
               {user.name}
             </Box>
             {session?.user.uid === user.uid && (
-              <Button variant="unstyled">
+              <Button variant="unstyled" onClick={() => setIsEditModal(true)}>
                 <EllipsisIcon size="sm" />
               </Button>
             )}
@@ -194,7 +186,7 @@ function UserComment({
             >
               좋아요 {likeArr.length}개
             </Button>
-            {!isReComment && (
+            {!isReComment && hasAuthority && (
               <>
                 <Box mx={1} w="1px" h="6px" bg="gray.200" my="auto" />
                 <Button
@@ -207,8 +199,8 @@ function UserComment({
                   onClick={() =>
                     setReplyProps({
                       replyName: user.name,
-                      comment: parentId,
-                      subCommentId: commentId,
+                      commentId,
+                      parentId,
                     })
                   }
                 >
@@ -228,7 +220,7 @@ function UserComment({
           setText={setText}
           commentId={isReComment ? parentId : commentId}
           setIsModal={setIsEditModal}
-          // setCommentArr={setCommentArr}
+          setCommentArr={setCommentArr}
           handleEdit={isReComment ? handleEditSub : handleEdit}
           handleDelete={
             isReComment

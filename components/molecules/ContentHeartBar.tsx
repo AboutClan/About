@@ -1,6 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Fragment, useEffect, useState } from "react";
 
@@ -8,6 +8,8 @@ import { useCommentMutation, useSubCommentMutation } from "../../hooks/common/mu
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useFeedLikeMutation } from "../../hooks/feed/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
+import { getCommentArr } from "../../libs/comment/commentLib";
+import { ReplyProps } from "../../pageTemplates/square/SecretSquare/SecretSquareComments";
 import { UserCommentProps } from "../../types/components/propTypes";
 import { FeedComment } from "../../types/models/feed";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
@@ -32,11 +34,8 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
   const { data: session } = useSession();
   const { data: userInfo } = useUserInfoQuery();
   const isGuest = session ? session.user.name === "guest" : undefined;
-  const router = useRouter();
 
   const searchParams = useSearchParams();
-  const urlSearchParams = new URLSearchParams(searchParams);
-
   const drawerType = searchParams.get("drawer");
 
   const [keyboardHeight, setKeyboardHeight] = useState(0);
@@ -44,6 +43,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
   const [heartProps, setHeartProps] = useState({ isMine: false, users: likeUsers, cnt: likeCnt });
   const [commentArr, setCommentArr] = useState<UserCommentProps[]>(comments || []);
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+  const [replyProps, setReplyProps] = useState<ReplyProps>();
 
   const { mutate } = useFeedLikeMutation({
     onSuccess() {
@@ -144,6 +144,12 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
   };
 
   const onSubmit = async (value: string) => {
+    if (replyProps) {
+      writeSubComment({ comment: value, commentId: replyProps.commentId });
+      setCommentArr(getCommentArr(value, replyProps.commentId, commentArr, userInfo));
+      return;
+    }
+
     await writeComment({ comment: value });
     setCommentArr((old) => [...old, addNewComment(userInfo, value)]);
   };
@@ -225,7 +231,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
         </RightDrawer>
       )}
       {modalType === "comment" && (
-        <RightDrawer title="댓글" onClose={() => setModalType(null)}>
+        <RightDrawer px={false} title="댓글" onClose={() => setModalType(null)}>
           <Flex
             direction="column"
             mt={isKeyboardVisible ? `${keyboardHeight + 8}px` : "8px"}
@@ -238,20 +244,27 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
                 id={feedId}
                 commentProps={commentArr?.find((comment) => comment._id === item._id)}
                 setCommentArr={setCommentArr}
-                writeSubComment={writeSubComment}
+                setReplyProps={setReplyProps}
+                hasAuthority={(item.user as IUserSummary).uid !== userInfo?.uid}
               />
             ))}
           </Flex>
           <Box
             position="fixed"
             bottom="0"
-            flex={1}
-            w="full"
+            left="0"
             p={5}
+            w="full"
             borderTop="var(--border-main)"
             maxW="var(--max-width)"
+            mx="auto"
           >
-            <UserCommentInput user={userInfo} onSubmit={onSubmit} />
+            <UserCommentInput
+              user={userInfo}
+              onSubmit={onSubmit}
+              replyName={replyProps?.replyName}
+              setReplyProps={setReplyProps}
+            />
           </Box>
         </RightDrawer>
       )}

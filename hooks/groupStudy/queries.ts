@@ -10,7 +10,7 @@ import {
   GroupCategory,
   GroupStatus,
   IGroup,
-  IGroupAttendance
+  IGroupAttendance,
 } from "../../types/models/groupTypes/group";
 
 export const useGroupQuery = (
@@ -31,13 +31,16 @@ export const useGroupQuery = (
     options,
   );
 export const useGroupsMineQuery = (
-
+  all: true | null,
+  status: "pending" | "end",
   options?: QueryOptions<IGroup[]>,
 ) =>
   useQuery<IGroup[], AxiosError, IGroup[]>(
-    [GROUP_STUDY],
+    [GROUP_STUDY, all, status],
     async () => {
-      const res = await axios.get<IGroup[]>(`${SERVER_URI}/groupStudy/mine`);
+      const res = await axios.get<IGroup[]>(`${SERVER_URI}/groupStudy/mine`, {
+        params: { all, status },
+      });
       return res.data;
     },
     options,

@@ -1,14 +1,29 @@
 import { Box } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 
+import { ReplyProps } from "../../pageTemplates/square/SecretSquare/SecretSquareComments";
 import { UserCommentProps } from "../../types/components/propTypes";
+import { DispatchType } from "../../types/hooks/reactTypes";
 import UserCommentBlock from "./UserCommentBlock";
 
 interface CommentSectionProps {
   commentArr: UserCommentProps[];
+  setCommentArr: DispatchType<UserCommentProps[]>;
   id: string;
+  hasAuthority?: boolean;
+  setReplyProps: DispatchType<ReplyProps>;
 }
 
-function CommentSection({ commentArr, id }: CommentSectionProps) {
+function CommentSection({
+  setCommentArr,
+  commentArr,
+  id,
+  hasAuthority,
+  setReplyProps,
+}: CommentSectionProps) {
+  const { data: session } = useSession();
+  console.log(52, commentArr);
+
   return (
     <>
       <Box
@@ -19,7 +34,7 @@ function CommentSection({ commentArr, id }: CommentSectionProps) {
         pb={3}
         borderBottom="var(--border)"
       >
-        댓글 <b>22개</b>
+        댓글 <b>{commentArr?.length}개</b>
       </Box>
       {commentArr.map((comment, idx) => (
         <UserCommentBlock
@@ -27,11 +42,11 @@ function CommentSection({ commentArr, id }: CommentSectionProps) {
           type="group"
           id={id}
           commentProps={comment}
-          // setCommentArr={setCommentArr}
-          // writeSubComment={writeSubComment}
+          hasAuthority={session?.user.uid !== comment.user.uid && hasAuthority}
+          setReplyProps={setReplyProps}
+          setCommentArr={setCommentArr}
         />
       ))}
-      <Box position="fixed" bottom="0"></Box>
     </>
   );
 }

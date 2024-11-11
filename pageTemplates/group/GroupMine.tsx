@@ -10,7 +10,8 @@ import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { getRandomImage } from "../../utils/imageUtils";
 
 function GroupMine() {
-  const { data } = useGroupsMineQuery();
+  const { data } = useGroupsMineQuery(true, "pending");
+  console.log(42, data);
 
   const setGroup = useSetRecoilState(transferGroupDataState);
 

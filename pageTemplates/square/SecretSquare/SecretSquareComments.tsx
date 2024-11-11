@@ -7,20 +7,25 @@ import BottomCommentInput from "../../../components/atoms/BottomCommentInput";
 import Slide from "../../../components/layouts/PageSlide";
 import UserCommentBlock from "../../../components/molecules/UserCommentBlock";
 import { SECRET_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
-import { SubCommentParamProps, useCommentMutation } from "../../../hooks/common/mutations";
+import {
+  SubCommentParamProps,
+  useCommentMutation,
+  useSubCommentMutation,
+} from "../../../hooks/common/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
+import { getCommentArr } from "../../../libs/comment/commentLib";
 import { UserCommentProps } from "../../../types/components/propTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
-
 interface SecretSquareCommentsProps {
   author: string;
   comments: UserCommentProps[];
   refetch: () => void;
 }
 
-export interface ReplyProps extends SubCommentParamProps {
+export interface ReplyProps extends Omit<SubCommentParamProps, "comment"> {
   replyName: string;
+  parentId?: string;
 }
 
 function SecretSquareComments({ author, comments, refetch }: SecretSquareCommentsProps) {
@@ -42,11 +47,11 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
     },
   });
 
-  // const { mutate: writeSubComment } = useSubCommentMutation("post", "square", squareId, {
-  //   onSuccess() {
-  //     refetch();
-  //   },
-  // });
+  const { mutate: writeSubComment } = useSubCommentMutation("post", "square", squareId, {
+    onSuccess() {
+      refetch();
+    },
+  });
 
   const addNewComment = (user: IUserSummary, comment: string): UserCommentProps => {
     return {
@@ -57,6 +62,11 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
   };
 
   const onSubmit = async (value: string) => {
+    if (replyProps) {
+      writeSubComment({ comment: value, commentId: replyProps.commentId });
+      setCommentArr(getCommentArr(value, replyProps.commentId, commentArr, userInfo));
+      return;
+    }
     await writeComment({ comment: value });
     setCommentArr((old) => [...old, addNewComment(userInfo, value)]);
   };
@@ -79,7 +89,7 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
         }
       }
     });
-
+  console.log(commentArr);
   return (
     <>
       <Slide isNoPadding>
@@ -114,14 +124,20 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
                   })),
                 }}
                 setCommentArr={setCommentArr}
-                // writeSubComment={writeSubComment}
+                hasAuthority={(item.user as unknown as string) !== userInfo._id}
                 setReplyProps={setReplyProps}
               />
             );
           })}
         </Flex>
       </Slide>
-      <BottomCommentInput onSubmit={onSubmit} type="comment" replyName={replyProps?.replyName} />
+      <BottomCommentInput
+        onSubmit={onSubmit}
+        type="comment"
+        replyName={replyProps?.replyName}
+        setReplyProps={setReplyProps}
+        user={null}
+      />
     </>
   );
 }

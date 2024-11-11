@@ -6,7 +6,14 @@ export function getLocationByCoordinates(lat: number, lon: number): string | nul
 
     const isWithinLatitude = lat >= southwest.latitude && lat <= northeast.latitude;
     const isWithinLongitude = lon >= southwest.longitude && lon <= northeast.longitude;
-
+    console.log(
+      lat,
+      lon,
+      southwest.latitude,
+      northeast.latitude,
+      isWithinLatitude,
+      isWithinLongitude,
+    );
     if (isWithinLatitude && isWithinLongitude) {
       return location;
     }
