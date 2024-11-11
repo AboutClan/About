@@ -11,7 +11,6 @@ import { getRandomImage } from "../../utils/imageUtils";
 
 function GroupMine() {
   const { data } = useGroupsMineQuery(true, "pending");
-  console.log(42, data);
 
   const setGroup = useSetRecoilState(transferGroupDataState);
 
@@ -20,7 +19,7 @@ function GroupMine() {
       data
         ?.filter((group) => group.status !== "end")
         .map((group) => ({
-          imageUrl: group.image || getRandomImage(),
+          imageUrl: group?.squareImage || getRandomImage(),
           text: group.title,
           url: `/group/${group.id}`,
           func: () => setGroup(group),

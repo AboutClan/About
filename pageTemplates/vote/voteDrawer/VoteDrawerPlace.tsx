@@ -54,7 +54,7 @@ export function VoteDrawerPlace({ setIsRightDrawer, setIsVoteDrawer, date }: Pla
       return;
     }
     const changeLocation = getLocationByCoordinates(+placeInfo?.y, +placeInfo?.x);
-    console.log(34, changeLocation);
+  
     if (!changeLocation) {
       toast("warning", "서비스중인 지역이 아닙니다.");
       return;

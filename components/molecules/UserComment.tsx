@@ -137,7 +137,7 @@ function UserComment({
     });
     setLikeArr((old) => [...old, session?.user.id]);
   };
-  console.log(54, isReComment, parentId, commentId);
+
   return (
     <>
       <Flex align="center" px={5} py={3} borderBottom="var(--border)">

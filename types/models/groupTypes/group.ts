@@ -34,6 +34,7 @@ export interface IGroupWriting extends TimeStampProps {
   gender: boolean;
   isFree: boolean;
   age: number[];
+  squareImage?: string;
   password: string;
   period: string;
   organizer: IUser;

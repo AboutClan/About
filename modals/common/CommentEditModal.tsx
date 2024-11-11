@@ -30,7 +30,7 @@ function CommentEditModal({
   isSecret,
 }: CommentEditModalProps) {
   const [isFirst, setIsFirst] = useState(true);
-  console.log(commentId, subCommentId);
+ 
   const footerOptions: IFooterOptions = {
     main: {
       text: "변경",

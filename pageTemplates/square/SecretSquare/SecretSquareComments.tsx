@@ -36,7 +36,7 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
 
   const [commentArr, setCommentArr] = useState<UserCommentProps[]>(comments || []);
   const [replyProps, setReplyProps] = useState<ReplyProps>();
-  console.log(24, replyProps);
+  
   useEffect(() => {
     setCommentArr(comments);
   }, [comments]);
@@ -89,7 +89,7 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
         }
       }
     });
-  console.log(commentArr);
+  
   return (
     <>
       <Slide isNoPadding>

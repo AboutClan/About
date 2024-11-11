@@ -22,7 +22,7 @@ function CommentSection({
   setReplyProps,
 }: CommentSectionProps) {
   const { data: session } = useSession();
-  console.log(52, commentArr);
+  
 
   return (
     <>

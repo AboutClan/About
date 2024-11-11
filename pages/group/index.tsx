@@ -5,6 +5,8 @@ import { useEffect, useRef, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
+// import RuleModal from "../../components/modals/RuleModal";
+import { GATHER_RANDOM_IMAGE_ARR } from "../../assets/images/randomImages";
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import SectionHeader from "../../components/atoms/SectionHeader";
 import Select from "../../components/atoms/Select";
@@ -13,7 +15,6 @@ import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import { GroupThumbnailCard } from "../../components/molecules/cards/GroupThumbnailCard";
 import ButtonGroups from "../../components/molecules/groups/ButtonGroups";
-// import RuleModal from "../../components/modals/RuleModal";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import {
   GROUP_STUDY_CATEGORY_ARR,
@@ -27,6 +28,7 @@ import GroupSkeletonMain from "../../pageTemplates/group/GroupSkeletonMain";
 import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { GroupCategory, IGroup } from "../../types/models/groupTypes/group";
 import { shuffleArray } from "../../utils/convertUtils/convertDatas";
+import { getRandomIdx } from "../../utils/mathUtils";
 
 interface ICategory {
   main: GroupCategory;
@@ -166,7 +168,11 @@ function GroupPage() {
       <Header title="소모임" isBack={false} />
       <Slide isNoPadding>
         <Layout>
-          {!isGuest && <Box minH="108px"><GroupMine /></Box>}
+          {!isGuest && (
+            <Box minH="108px">
+              <GroupMine />
+            </Box>
+          )}
           <Box px={5} mt={5} mb={3}>
             <SectionHeader title="전체 소모임" subTitle="All Small Group">
               <Select
@@ -234,7 +240,14 @@ function GroupPage() {
                           participants={group.participants.map((user) =>
                             group.isSecret ? { user: ABOUT_USER_SUMMARY } : user,
                           )}
-                          imageProps={{ image: group.image, isPriority: idx < 4 }}
+                          imageProps={{
+                            image:
+                              group?.squareImage ||
+                              GATHER_RANDOM_IMAGE_ARR[
+                                getRandomIdx(GATHER_RANDOM_IMAGE_ARR.length - 1)
+                              ],
+                            isPriority: idx < 4,
+                          }}
                           maxCnt={group.memberCnt.max}
                           id={group.id}
                           func={() => setTransdferGroupData(group)}
