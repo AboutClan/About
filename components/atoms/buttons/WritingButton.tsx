@@ -29,6 +29,7 @@ const Layout = styled.button<{ isBottomNav: boolean }>`
   width: 56px;
   height: 56px;
   border-radius: 50%;
+  z-index: 20;
   display: flex;
   align-items: center;
   justify-content: center;
