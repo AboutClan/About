@@ -14,8 +14,8 @@ interface CommentEditModalProps extends IModal {
   commentId: string;
   subCommentId?: string;
   setCommentArr?: DispatchType<UserCommentProps[]>;
-  handleEdit: (param: CommentParamProps<"patch"> | SubCommentParamProps<"patch">) => void;
-  handleDelete: (param: CommentParamProps<"delete"> | SubCommentParamProps<"delete">) => void;
+  handleEdit: (param: CommentParamProps<"patch"> | SubCommentParamProps) => void;
+  handleDelete: (param: CommentParamProps<"delete"> | SubCommentParamProps) => void;
   isSecret?: boolean;
 }
 
@@ -30,7 +30,7 @@ function CommentEditModal({
   isSecret,
 }: CommentEditModalProps) {
   const [isFirst, setIsFirst] = useState(true);
-
+  console.log(commentId, subCommentId);
   const footerOptions: IFooterOptions = {
     main: {
       text: "변경",
@@ -71,7 +71,7 @@ function CommentEditModal({
 
 const Container = styled.div`
   height: 100%;
-  margin-bottom: var(--gap-4);
+
   display: flex;
   flex-direction: column;
   justify-content: space-around;

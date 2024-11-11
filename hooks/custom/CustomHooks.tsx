@@ -3,8 +3,9 @@ import { useCallback, useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 
-import { STUDY_VOTE, USER_INFO } from "../../constants/keys/queryKeys";
+import { GROUP_STUDY, STUDY_VOTE, USER_INFO } from "../../constants/keys/queryKeys";
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
+import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
 import { useStudyPreferenceMutation } from "../study/mutations";
 import { useToast } from "./CustomToast";
@@ -55,6 +56,22 @@ export const useResetStudyQuery = () => {
 
   return refetchWithDelay;
 };
+export const useResetGroupQuery = () => {
+  const queryClient = useQueryClient();
+
+  const setTransferGroupData = useSetRecoilState(transferGroupDataState);
+
+  const refetchWithDelay = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    () => {
+      queryClient.invalidateQueries({ queryKey: [GROUP_STUDY], exact: false });
+      setTransferGroupData(null);
+    },
+    [queryClient],
+  );
+
+  return refetchWithDelay;
+};
 export const useTogglePlaceHeart = () => {
   const queryClient = useQueryClient();
   const toast = useToast();
@@ -75,10 +92,10 @@ export const useTogglePlaceHeart = () => {
         preference?.place === id
           ? "main"
           : preference?.subPlace?.includes(id)
-            ? "sub"
-            : preferMain
-              ? "sub"
-              : "main";
+          ? "sub"
+          : preferMain
+          ? "sub"
+          : "main";
       patchStudyPreference({ id, type: preferenceType });
       queryClient.invalidateQueries([USER_INFO]);
     },

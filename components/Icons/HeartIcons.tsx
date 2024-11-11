@@ -5,7 +5,7 @@ export function HeartIcon({
 }: {
   size?: "sm" | "md";
   fill?: boolean;
-  color?: "gray" | "red" | "orange";
+  color: "gray" | "red" | "orange";
 }) {
   const width = size === "sm" ? 12 : 16;
   return (
@@ -19,8 +19,8 @@ export function HeartIcon({
           ? color === "gray"
             ? "var(--gray-300)"
             : color === "red"
-              ? "var(--color-red)"
-              : "var(--color-orange)"
+            ? "var(--color-red)"
+            : "var(--color-orange)"
           : "none"
       }
     >
@@ -38,8 +38,8 @@ export function HeartIcon({
             ? color === "gray"
               ? "var(--gray-300)"
               : color === "red"
-                ? "var(--color-red)"
-                : "var(--color-orange)"
+              ? "var(--color-red)"
+              : "var(--color-orange)"
             : "white"
         }
         strokeWidth="1"

@@ -13,7 +13,7 @@ interface ISelect {
   setValue: DispatchType<string> | DispatchType<ActiveLocation>;
   isBorder?: boolean;
   type?: "location";
-  size: "sm" | "md" | "lg";
+  size: "xs" | "sm" | "md" | "lg";
   isEllipse?: boolean;
   isFullSize?: boolean;
   isActive?: boolean;
@@ -26,7 +26,7 @@ export default function Select({
   setValue: setParentValue,
   isBorder = true,
   type,
-  size = "sm",
+  size,
   isFullSize,
   isEllipse = true,
   isActive = true,
@@ -53,7 +53,7 @@ export default function Select({
   const adjustWidth = () => {
     if (selectRef.current) {
       const textLength = selectRef.current.selectedOptions[0].text.length;
-      const addSize = size === "sm" ? 44 : size === "md" ? 60 : 0;
+      const addSize = size === "xs" ? 44 : size === "sm" ? 48 : size === "md" ? 60 : 0;
       selectRef.current.style.width = `${textLength * 6.5 + addSize}px`;
     }
   };
@@ -64,8 +64,9 @@ export default function Select({
         <Flex
           justify="center"
           pr={size === "lg" && 4}
+          ml="auto"
           align="center"
-          fontSize={size === "sm" ? "12px" : "12px"}
+          fontSize={size === "xs" ? "12px" : "12px"}
           pointerEvents="none"
         >
           <Box>
@@ -75,34 +76,61 @@ export default function Select({
       }
       ref={selectRef}
       focusBorderColor="#00c2b3"
-      size={size === "sm" ? "xs" : size === "md" ? "md" : "lg"}
+      size={size}
       color="primary"
       value={value}
       onChange={onChange}
       borderRadius={
-        !isEllipse ? undefined : size === "sm" ? "9999px" : size === "md" ? "20px" : "12px"
+        !isEllipse
+          ? undefined
+          : size === "xs"
+          ? "9999px"
+          : size === "sm"
+          ? "8px"
+          : size === "md"
+          ? "20px"
+          : "12px"
       }
       border={!isBorder ? "none" : undefined}
       borderColor="var(--gray-200)"
       bgColor="white"
       fontSize={
-        size === "sm" && !isBorder ? "12px" : size === "sm" || size === "md" ? "11px" : "13px"
+        size === "sm"
+          ? "12px"
+          : size === "xs" && !isBorder
+          ? "12px"
+          : size === "xs" || size === "md"
+          ? "11px"
+          : "13px"
       }
       outline={size === "md" ? "1px solid var(--gray-100)" : undefined}
-      fontWeight={size === "sm" ? 500 : isThick ? 600 : 500}
+      fontWeight={isThick ? 600 : 500}
       isDisabled={!isActive}
-      height={size === "sm" ? (isBorder ? "24px" : "16px") : size === "md" ? "32px" : "52px"}
+      height={
+        size === "xs"
+          ? isBorder
+            ? "24px"
+            : "16px"
+          : size === "sm"
+          ? "28px"
+          : size === "md"
+          ? "32px"
+          : "52px"
+      }
       width={!isFullSize ? "max-content" : "100%"}
-      mr={size === "sm" && !isBorder && "-6px"}
+      mr={size === "xs" && !isBorder && "-6px"}
       sx={{
         paddingInlineStart: !isEllipse
           ? "12px"
-          : size === "sm"
+          : size === "xs"
           ? "8px"
+          : size === "sm"
+          ? "12px"
           : size === "md"
           ? "16px"
           : "20px", // padding-left
-        paddingInlineEnd: !isEllipse ? "16px" : "20px", // padding-right (아이콘 오른쪽에 여유 공간)
+        paddingInlineEnd: size === "sm" ? "4px" : !isEllipse ? "16px" : "20px", // padding-right (아이콘 오른쪽에 여유 공간)
+        paddingBottom: 0,
       }}
       _focus={{
         outline: isBorder ? "var(--border)" : "none",

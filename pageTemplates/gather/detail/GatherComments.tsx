@@ -12,10 +12,12 @@ import UserCommentInput from "../../../components/molecules/UserCommentInput";
 import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
 import { useCommentMutation, useSubCommentMutation } from "../../../hooks/common/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
+import { getCommentArr } from "../../../libs/comment/commentLib";
 import { transferGatherDataState } from "../../../recoils/transferRecoils";
 import { UserCommentProps } from "../../../types/components/propTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
+import { ReplyProps } from "../../square/SecretSquare/SecretSquareComments";
 
 interface IGatherComments {
   comments: UserCommentProps[];
@@ -30,6 +32,7 @@ function GatherComments({ comments }: IGatherComments) {
 
   const setTransferGather = useSetRecoilState(transferGatherDataState);
   const [commentArr, setCommentArr] = useState<UserCommentProps[]>(comments);
+  const [replyProps, setReplyProps] = useState<ReplyProps>();
 
   const { data: userInfo } = useUserInfoQuery();
 
@@ -62,10 +65,15 @@ function GatherComments({ comments }: IGatherComments) {
   };
 
   const onSubmit = async (value: string) => {
+    if (replyProps) {
+      setCommentArr(getCommentArr(value, replyProps.commentId, commentArr, userInfo));
+      writeSubComment({ comment: value, commentId: replyProps.commentId });
+      return;
+    }
     await writeComment({ comment: value });
     setCommentArr((old) => [...old, addNewComment(userInfo, value)]);
   };
- 
+
   return (
     <>
       <Layout>
@@ -73,7 +81,12 @@ function GatherComments({ comments }: IGatherComments) {
         <Comment>
           {!isGuest && userInfo && (
             <Box mr="8px" mt="20px" mb="12px">
-              <UserCommentInput user={userInfo} onSubmit={onSubmit} />
+              <UserCommentInput
+                user={userInfo}
+                replyName={replyProps?.replyName}
+                setReplyProps={setReplyProps}
+                onSubmit={onSubmit}
+              />
             </Box>
           )}
           <section>
@@ -84,7 +97,8 @@ function GatherComments({ comments }: IGatherComments) {
                 id={gatherId}
                 commentProps={commentArr?.find((comment) => comment._id === item._id)}
                 setCommentArr={setCommentArr}
-                writeSubComment={writeSubComment}
+                setReplyProps={setReplyProps}
+                hasAuthority={!isGuest}
               />
             ))}
           </section>

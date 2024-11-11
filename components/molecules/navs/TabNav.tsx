@@ -10,6 +10,7 @@ interface ITabNav {
   hasBorder?: boolean;
   isMain?: boolean;
   isFullSize?: boolean;
+  isBlack?: boolean;
 }
 
 export default function TabNav({
@@ -18,6 +19,7 @@ export default function TabNav({
   hasBorder = true,
   isMain = false,
   isFullSize,
+  isBlack,
 }: ITabNav) {
   const idx = tabOptionsArr.findIndex((tab) => tab.text === selected);
 
@@ -26,7 +28,7 @@ export default function TabNav({
       <Tabs
         index={selected ? idx : undefined}
         color="var(--gray-500)"
-        colorScheme="mint"
+        colorScheme={!isBlack ? "mint" : "black"}
         bgColor="white"
         height="44px"
       >
@@ -56,6 +58,7 @@ export default function TabNav({
               p={!isMain ? "8px 20px" : "8px 16px"}
               flex={isFullSize ? 1 : undefined}
               key={tab.text}
+              color={tab.text === selected ? "black" : undefined}
               onClick={tab.text !== selected ? tab.func : undefined}
               _focus={{
                 outline: "none",

@@ -34,7 +34,6 @@ function PlaceImage({ imageProps, id, hasToggleHeart, selected, size }: PlaceHea
   const [heartType, setHeartType] = useState<"main" | "sub" | null>();
 
   useEffect(() => {
-
     setHeartType(myPreferType);
   }, [myPreferType]);
 
@@ -47,7 +46,6 @@ function PlaceImage({ imageProps, id, hasToggleHeart, selected, size }: PlaceHea
         setHeartType(null);
         break;
       case "sub":
-        
         setHeartType(null);
         break;
       default:
@@ -66,15 +64,15 @@ function PlaceImage({ imageProps, id, hasToggleHeart, selected, size }: PlaceHea
         selected === "main"
           ? "2px solid var(--color-mint)"
           : selected === "sub"
-            ? "2px solid var(--color-orange)"
-            : null
+          ? "2px solid var(--color-orange)"
+          : null
       }
       boxShadow={
         selected === "main"
           ? " 0px 5px 10px 0px #1BB8760A"
           : selected === "sub"
-            ? "0px 5px 10px 0px #1BB8760A"
-            : null
+          ? "0px 5px 10px 0px #1BB8760A"
+          : null
       }
       w={sizeLength}
       h={sizeLength}
@@ -119,7 +117,7 @@ function PlaceImage({ imageProps, id, hasToggleHeart, selected, size }: PlaceHea
           {heartType ? (
             <HeartIcon fill color={heartType === "main" ? "red" : "orange"} />
           ) : (
-            <HeartIcon fill={false} />
+            <HeartIcon fill={false} color="gray" />
           )}
         </Button>
       )}

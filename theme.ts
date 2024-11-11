@@ -233,9 +233,10 @@ const theme = extendTheme({
         }),
         subtle: (props) => ({
           ...(props.colorScheme === "gray" && {
-            bg: "gray.200",
+            bg: "gray.100",
             color: "gray.600",
           }),
+          fontWeight: "regular",
         }),
       },
       defaultProps: {
@@ -253,8 +254,9 @@ const theme = extendTheme({
           px: "8px !important",
           py: "2px",
           h: "20px",
-          fontWeight: 700,
+          fontWeight: "bold",
           fontSize: "11px",
+
           borderRadius: "4px",
         },
       },

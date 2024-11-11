@@ -34,7 +34,7 @@ function StudyHeader({ brand, name, address, coverImage }: IStudyHeader) {
     <>
       <Header title={brand} isCenter defaultUrl="/home">
         <Button variant="unstyled" onClick={onClick}>
-          <EllipsisIcon />
+          <EllipsisIcon size="md" />
         </Button>
         {/* <KakaoShareBtn
           type="study"

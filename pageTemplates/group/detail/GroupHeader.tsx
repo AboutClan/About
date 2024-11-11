@@ -1,17 +1,14 @@
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { useQueryClient } from "react-query";
-import { useSetRecoilState } from "recoil";
 
 import AlertModal, { IAlertModalOptions } from "../../../components/AlertModal";
 import MenuButton, { MenuProps } from "../../../components/atoms/buttons/MenuButton";
 import Header from "../../../components/layouts/Header";
 import { GROUP_WRITING_STORE } from "../../../constants/keys/localStorage";
-import { GROUP_STUDY } from "../../../constants/keys/queryKeys";
+import { useResetGroupQuery } from "../../../hooks/custom/CustomHooks";
 import { useCompleteToast } from "../../../hooks/custom/CustomToast";
 import { useGroupParticipationMutation } from "../../../hooks/groupStudy/mutations";
-import { transferGroupDataState } from "../../../recoils/transferRecoils";
 import { IGroup } from "../../../types/models/groupTypes/group";
 import { setLocalStorageObj } from "../../../utils/storageUtils";
 
@@ -21,6 +18,7 @@ interface IGroupHeader {
 
 function GroupHeader({ group }: IGroupHeader) {
   const { data: session } = useSession();
+  const resetGroupQuery = useResetGroupQuery();
   const completeToast = useCompleteToast();
   const router = useRouter();
   const isAdmin = group.organizer.uid === session?.user.uid;
@@ -29,14 +27,10 @@ function GroupHeader({ group }: IGroupHeader) {
     group.participants.some((par) => par.user?.uid === session?.user.uid);
 
   const [isSettigModal, setIsSettingModal] = useState(false);
-  const setTransferGroup = useSetRecoilState(transferGroupDataState);
 
-  const queryClient = useQueryClient();
   const movePage = async () => {
     completeToast("free", "탈퇴되었습니다.");
-    queryClient.invalidateQueries({ queryKey: [GROUP_STUDY], exact: false });
-    setTransferGroup(null);
-    router.push("/group");
+    resetGroupQuery();
   };
 
   const { mutate } = useGroupParticipationMutation("delete", group?.id, {
@@ -48,7 +42,7 @@ function GroupHeader({ group }: IGroupHeader) {
   };
 
   const menuArr: MenuProps[] = [
-    ...(isMember
+    ...(isMember && !isAdmin
       ? [
           {
             text: "소모임 탈퇴하기",
@@ -60,6 +54,18 @@ function GroupHeader({ group }: IGroupHeader) {
       : []),
     ...(isAdmin
       ? [
+          {
+            text: "관리자 페이지",
+            func: () => {
+              router.push(`/group/${group.id}/admin`);
+            },
+          },
+          {
+            text: "인원 관리",
+            func: () => {
+              router.push(`/group/${group.id}/member`);
+            },
+          },
           {
             text: "내용 수정하기",
             func: () => {
@@ -91,7 +97,7 @@ function GroupHeader({ group }: IGroupHeader) {
 
   return (
     <>
-      <Header title={group?.title} rightPadding={6}>
+      <Header title="모임 정보" rightPadding={6} isCenter>
         <MenuButton menuArr={menuArr} />
       </Header>
       {isSettigModal && (

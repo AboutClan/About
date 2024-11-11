@@ -106,7 +106,7 @@ function SquareLoungeSection() {
       },
     };
   });
-  console.log(2, category);
+
   return (
     <Box pb="60px">
       <Flex px={5} pt={1} pb={3} justify="space-between">

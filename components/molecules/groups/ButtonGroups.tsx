@@ -37,14 +37,21 @@ export default function ButtonGroups({
             <Button
               mr={idx !== buttonOptionsArr.length - 1 ? "8px" : 0}
               variant={buttonOptions.text === currentValue ? undefined : "outline"}
-              bgColor={buttonOptions.text === currentValue ? "var(--gray-800) !important" : "white"}
-              color={buttonOptions.text === currentValue ? "white" : "var(--gray-800)"}
+              bgColor="white !important"
+              color={buttonOptions.text === currentValue ? "mint" : "gray.600"}
+              fontWeight={buttonOptions.text === currentValue ? "medium" : "regular"}
               size={size}
-              px={size === "sm" ? "16px" : "undefined"}
-              rounded={isEllipse ? "2xl" : "md"}
+              h={size === "md" ? "32px" : undefined}
+              px={size === "md" ? "12px" : size === "sm" ? "16px" : "undefined"}
+              rounded={isEllipse ? "16px" : "md"}
               leftIcon={buttonOptions?.icon}
-              fontSize="11px"
-              border={size === "sm" ? "1px solid var(--gray-300)" : undefined}
+              fontSize="12px"
+              border="1px solid var(--gray-200)"
+              borderColor={
+                buttonOptions.text === currentValue
+                  ? "var(--color-mint) !important"
+                  : "var(--gray-200)"
+              }
               {...(height && { h: `${height}px` })}
             >
               {buttonOptions.text}

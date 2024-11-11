@@ -2,33 +2,32 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { useQueryClient } from "react-query";
-import { useSetRecoilState } from "recoil";
 
-import { GATHER_CONTENT, GROUP_STUDY } from "../../constants/keys/queryKeys";
 import {
   useCommentLikeMutation,
   useCommentMutation,
   useSubCommentMutation,
 } from "../../hooks/common/mutations";
 import CommentEditModal from "../../modals/common/CommentEditModal";
-import { transferGatherDataState, transferGroupDataState } from "../../recoils/transferRecoils";
+import { ReplyProps } from "../../pageTemplates/square/SecretSquare/SecretSquareComments";
 import { UserCommentProps as CommentProps } from "../../types/components/propTypes";
-import { DispatchBoolean, DispatchType } from "../../types/hooks/reactTypes";
+import { DispatchType } from "../../types/hooks/reactTypes";
 import { getDateDiff } from "../../utils/dateTimeUtils";
 import Avatar from "../atoms/Avatar";
+import { EllipsisIcon } from "../Icons/DotIcons";
 
 interface UserCommentProps extends Omit<CommentProps, "_id"> {
   isSecret?: boolean;
-  setCommentArr: DispatchType<CommentProps[]>;
+  setCommentArr?: DispatchType<CommentProps[]>;
   type: "gather" | "group" | "feed" | "square";
   pageId: string;
   commentId?: string;
   parentId?: string;
   isReComment?: boolean;
-  setIsReCommentInput: DispatchBoolean;
+  setReplyProps: DispatchType<ReplyProps>;
   likeList: string[];
   isAuthor: boolean;
+  hasAuthority: boolean;
 }
 
 function UserComment({
@@ -36,7 +35,7 @@ function UserComment({
   user,
   updatedAt,
   comment,
-  setIsReCommentInput,
+  setReplyProps,
   commentId,
   setCommentArr,
   isReComment,
@@ -44,14 +43,9 @@ function UserComment({
   type,
   pageId,
   likeList,
-  isAuthor,
+  hasAuthority,
 }: UserCommentProps) {
-  const queryClient = useQueryClient();
-
   const { data: session } = useSession();
-
-  const setTransferGather = useSetRecoilState(transferGatherDataState);
-  const setTransferGroup = useSetRecoilState(transferGroupDataState);
 
   const [text, setText] = useState(comment);
   const [isEditModal, setIsEditModal] = useState(false);
@@ -113,7 +107,6 @@ function UserComment({
             return null;
           } else {
             const updatedSubComments = obj.subComments.filter((item) => item._id !== commentId);
-
             return { ...obj, subComments: updatedSubComments };
           }
         })
@@ -122,14 +115,14 @@ function UserComment({
   };
 
   const onCompleted = () => {
-    if (type === "gather") {
-      setTransferGather(null);
-      queryClient.invalidateQueries([GATHER_CONTENT, pageId]);
-    }
-    if (type === "group") {
-      setTransferGroup(null);
-      queryClient.invalidateQueries([GROUP_STUDY, pageId]);
-    }
+    // if (type === "gather") {
+    //   setTransferGather(null);
+    //   queryClient.invalidateQueries([GATHER_CONTENT, pageId]);
+    // }
+    // if (type === "group") {
+    //   setTransferGroup(null);
+    //   queryClient.invalidateQueries([GROUP_STUDY, pageId]);
+    // }
     setIsEditModal(false);
   };
 
@@ -144,63 +137,79 @@ function UserComment({
     });
     setLikeArr((old) => [...old, session?.user.id]);
   };
-
+  console.log(54, isReComment, parentId, commentId);
   return (
     <>
-      <Flex align="center" py="8px">
-        <Flex justify="center" alignSelf="flex-start" mr="12px">
+      <Flex align="center" px={5} py={3} borderBottom="var(--border)">
+        <Flex justify="center" alignSelf="flex-start" mr={2}>
           <Avatar
-            size="sm"
+            size="mds"
             avatar={user.avatar}
             image={user.profileImage}
             uid={user.uid}
             isLink={false}
           />
         </Flex>
-        <Flex direction="column" fontSize="12px" lineHeight={1.6} justify="space-around">
-          <Flex align="center">
-            <Box fontWeight={600} mr="4px" color={isAuthor ? "var(--color-mint)" : "inherit"}>
+        <Flex w="full" direction="column" fontSize="12px" lineHeight={1.6} justify="space-around">
+          <Flex w="full" justify="space-between" mb={1}>
+            <Box fontWeight="bold" fontSize="13px" lineHeight="20px" color="gray.800">
               {user.name}
             </Box>
-            <Box fontSize="10px" color="var(--gray-600)">
+            {session?.user.uid === user.uid && (
+              <Button variant="unstyled" onClick={() => setIsEditModal(true)}>
+                <EllipsisIcon size="sm" />
+              </Button>
+            )}
+            {/* <Box fontSize="10px" color="var(--gray-600)">
               {!isSecret && user.location} {!isSecret && "."} {getDateDiff(dayjs(updatedAt))}
-            </Box>
+            </Box> */}
           </Flex>
-          <p>
+          <Box mb={2} as="p" fontWeight="light" fontSize="12px" lineHeight="18px">
             {comment}
-            {user._id === session?.user.id && (
+            {/* {user._id === session?.user.id && (
               <Box as="span" ml="8px" onClick={() => setIsEditModal(true)}>
                 <i className="fa-solid fa-ellipsis" />
               </Box>
-            )}
-          </p>{" "}
-          <Flex>
+            )} */}
+          </Box>{" "}
+          <Flex h="16px" align="center" fontSize="10px" color="gray.600">
             <Button
               px="0"
+              h="16px"
               size="xs"
               variant="ghost"
-              color={hasMyLike ? "var(--color-mint)" : "var(--gray-600)"}
+              color="gray.600"
               fontSize="10px"
-              fontWeight={hasMyLike ? 600 : 500}
+              fontWeight="regular"
               onClick={onClickLike}
               _focus={{ boxShadow: "none", background: "transparent" }}
             >
               좋아요 {likeArr.length}개
             </Button>
-            {!isReComment && (
-              <Button
-                ml="12px"
-                px="0"
-                size="xs"
-                variant="ghost"
-                color="var(--gray-600)"
-                fontSize="10px"
-                fontWeight={500}
-                onClick={() => setIsReCommentInput(true)}
-              >
-                답글 달기
-              </Button>
+            {!isReComment && hasAuthority && (
+              <>
+                <Box mx={1} w="1px" h="6px" bg="gray.200" my="auto" />
+                <Button
+                  px="0"
+                  size="xs"
+                  fontSize="10px"
+                  variant="ghost"
+                  color="var(--gray-600)"
+                  fontWeight={500}
+                  onClick={() =>
+                    setReplyProps({
+                      replyName: user.name,
+                      commentId,
+                      parentId,
+                    })
+                  }
+                >
+                  답글 달기
+                </Button>
+              </>
             )}
+            <Box mx={1} w="1px" h="6px" bg="gray.200" my="auto" />
+            <Box>{getDateDiff(dayjs(updatedAt))}</Box>
           </Flex>
         </Flex>
       </Flex>

@@ -1,10 +1,9 @@
-import { Button } from "@chakra-ui/react";
 import { useRouter } from "next/dist/client/router";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useQueryClient } from "react-query";
-import styled from "styled-components";
 
+import BottomFixedButton from "../../../components/atoms/BottomFixedButton";
 import { GROUP_STUDY } from "../../../constants/keys/queryKeys";
 import { useCompleteToast, useErrorToast } from "../../../hooks/custom/CustomToast";
 import { useGroupParticipationMutation } from "../../../hooks/groupStudy/mutations";
@@ -65,33 +64,7 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
 
   const { text, handleFunction } = getButtonSettings();
 
-  return (
-    <>
-      <Layout>
-        <Button
-          size="lg"
-          w="100%"
-          maxW="var(--view-max-width)"
-          borderRadius="var(--rounded)"
-          disabled={!handleFunction}
-          colorScheme={handleFunction ? "mint" : "blackAlpha"}
-          onClick={handleFunction}
-        >
-          {text}
-        </Button>
-      </Layout>
-    </>
-  );
+  return <BottomFixedButton text={text} func={handleFunction} />;
 }
-
-const Layout = styled.nav`
-  position: fixed;
-  left: 50%;
-  bottom: 0;
-  transform: translate(-50%, 0);
-  width: 100%;
-  max-width: 390px;
-  padding: var(--gap-4);
-`;
 
 export default GroupBottomNav;

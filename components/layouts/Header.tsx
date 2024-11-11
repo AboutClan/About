@@ -44,8 +44,11 @@ export default function Header({
             </Box>
           )}
         </Flex>
-        {isCenter && <CenterTitle>{title}</CenterTitle>}
-        {isCenter && !children && <Box w={5} />}
+        {isCenter && (
+          <Box fontWeight="bold" flex={1} textAlign="center" fontSize="16px">
+            {title}
+          </Box>
+        )}
         <div>{children}</div>
       </HeaderContainer>
     );
@@ -81,11 +84,4 @@ const HeaderContainer = styled.header<{
   border-bottom: ${(props) => (props.isBorder ? "var(--border)" : "none")};
   max-width: var(--max-width);
   margin: 0 auto;
-`;
-
-const CenterTitle = styled.div`
-  flex: 1;
-  font-weight: "bold";
-  color: var(--gray-800); /* text-gray-1 - 색상은 예시입니다 */
-  text-align: center;
 `;

@@ -1,34 +1,42 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+import BottomCommentInput from "../../../components/atoms/BottomCommentInput";
 import Slide from "../../../components/layouts/PageSlide";
 import UserCommentBlock from "../../../components/molecules/UserCommentBlock";
-import UserCommentInput from "../../../components/molecules/UserCommentInput";
 import { SECRET_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
-import { useCommentMutation, useSubCommentMutation } from "../../../hooks/common/mutations";
-import { useKeypadHeight } from "../../../hooks/custom/useKeypadHeight";
+import {
+  SubCommentParamProps,
+  useCommentMutation,
+  useSubCommentMutation,
+} from "../../../hooks/common/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
+import { getCommentArr } from "../../../libs/comment/commentLib";
 import { UserCommentProps } from "../../../types/components/propTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
-import { iPhoneNotchSize } from "../../../utils/validationUtils";
-
 interface SecretSquareCommentsProps {
   author: string;
   comments: UserCommentProps[];
   refetch: () => void;
 }
 
+export interface ReplyProps extends Omit<SubCommentParamProps, "comment"> {
+  replyName: string;
+  parentId?: string;
+}
+
 function SecretSquareComments({ author, comments, refetch }: SecretSquareCommentsProps) {
   const router = useRouter();
   const { data: userInfo } = useUserInfoQuery();
-  const keypadHeight = useKeypadHeight();
 
   const squareId = router.query.id as string;
 
   const [commentArr, setCommentArr] = useState<UserCommentProps[]>(comments || []);
+  const [replyProps, setReplyProps] = useState<ReplyProps>();
+  console.log(24, replyProps);
   useEffect(() => {
     setCommentArr(comments);
   }, [comments]);
@@ -54,6 +62,11 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
   };
 
   const onSubmit = async (value: string) => {
+    if (replyProps) {
+      writeSubComment({ comment: value, commentId: replyProps.commentId });
+      setCommentArr(getCommentArr(value, replyProps.commentId, commentArr, userInfo));
+      return;
+    }
     await writeComment({ comment: value });
     setCommentArr((old) => [...old, addNewComment(userInfo, value)]);
   };
@@ -76,10 +89,10 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
         }
       }
     });
-
+  console.log(commentArr);
   return (
     <>
-      <Slide>
+      <Slide isNoPadding>
         <Flex direction="column" pt="8px" pb="20px">
           {commentArr?.map((item, idx) => {
             const commentProps = commentArr?.find((comment) => comment._id === item._id);
@@ -111,26 +124,20 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
                   })),
                 }}
                 setCommentArr={setCommentArr}
-                writeSubComment={writeSubComment}
+                hasAuthority={(item.user as unknown as string) !== userInfo._id}
+                setReplyProps={setReplyProps}
               />
             );
           })}
         </Flex>
       </Slide>
-      <Box
-        position="fixed"
-        borderTop="var(--border)"
-        bottom="0"
-        flex={1}
-        w="100%"
-        backgroundColor="white"
-        maxW="var(--max-width)"
-        pb={`${keypadHeight === 0 ? iPhoneNotchSize() : 0}px`}
-      >
-        <Box py={4} borderBottom="var(--border)" px={5}>
-          <UserCommentInput user={SECRET_USER_SUMMARY} onSubmit={onSubmit} type="message" />
-        </Box>
-      </Box>
+      <BottomCommentInput
+        onSubmit={onSubmit}
+        type="comment"
+        replyName={replyProps?.replyName}
+        setReplyProps={setReplyProps}
+        user={null}
+      />
     </>
   );
 }

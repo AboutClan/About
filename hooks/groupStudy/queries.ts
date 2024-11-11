@@ -30,6 +30,21 @@ export const useGroupQuery = (
     },
     options,
   );
+export const useGroupsMineQuery = (
+  all: true | null,
+  status: "pending" | "end",
+  options?: QueryOptions<IGroup[]>,
+) =>
+  useQuery<IGroup[], AxiosError, IGroup[]>(
+    [GROUP_STUDY, all, status],
+    async () => {
+      const res = await axios.get<IGroup[]>(`${SERVER_URI}/groupStudy/mine`, {
+        params: { all, status },
+      });
+      return res.data;
+    },
+    options,
+  );
 
 export const useGroupIdQuery = (groupStudyId?: string, options?: QueryOptions<IGroup>) =>
   useQuery<IGroup, AxiosError, IGroup>(

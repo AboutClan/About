@@ -123,7 +123,7 @@ function ProfileInfo({ user }: IProfileInfo) {
               <span>{user?.name || session?.user.name}</span>
               <UserBadge score={user?.score} uid={user?.uid} />
             </div>
-            <span>{!isGuest ? status : "게스트"}</span>
+            <span>{status || "게스트"}</span>
           </ProfileName>
           {user && user?.uid !== session?.user?.uid && (
             <>

@@ -25,7 +25,7 @@ function StudyPageDrawerFilterBar({
       <Select
         options={selectOptionArr}
         defaultValue={selectOption}
-        size="sm"
+        size="xs"
         setValue={setSelectOption}
         isBorder={false}
       />

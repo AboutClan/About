@@ -8,6 +8,7 @@ import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import { UserItem } from "../../../components/molecules/UserItem";
 import { useAdminPointSystemMutation } from "../../../hooks/admin/mutation";
+import { useResetGroupQuery } from "../../../hooks/custom/CustomHooks";
 import { useCompleteToast } from "../../../hooks/custom/CustomToast";
 import { useGroupWaitingStatusMutation } from "../../../hooks/groupStudy/mutations";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
@@ -25,6 +26,7 @@ function Admin() {
   const [group, setGroup] = useState<IGroup>();
   const [isOuterModal, setIsOuterModal] = useState(false);
   const transferGroup = useRecoilValue(transferGroupDataState);
+  const resetGroup = useResetGroupQuery();
 
   const { data: groupData } = useGroupIdQuery(id, { enabled: !!id && !transferGroup });
 
@@ -36,6 +38,7 @@ function Admin() {
   const { mutate, isLoading } = useGroupWaitingStatusMutation(+id, {
     onSuccess() {
       completeToast("free", "가입되었습니다.");
+      resetGroup();
     },
   });
 
@@ -63,7 +66,7 @@ function Admin() {
   return (
     <>
       <Header title="관리자 페이지" />
-      <Slide>
+      <Slide isNoPadding>
         <Layout>
           <Title>가입 신청</Title>
           <Question>가입 질문: {group?.questionText} </Question>

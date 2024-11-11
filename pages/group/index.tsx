@@ -2,27 +2,29 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import WritingButton from "../../components/atoms/buttons/WritingButton";
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
+import SectionHeader from "../../components/atoms/SectionHeader";
 import Select from "../../components/atoms/Select";
+import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
+import { GroupThumbnailCard } from "../../components/molecules/cards/GroupThumbnailCard";
+import ButtonGroups from "../../components/molecules/groups/ButtonGroups";
 // import RuleModal from "../../components/modals/RuleModal";
-import SectionBar from "../../components/molecules/bars/SectionBar";
-import CheckBoxNav from "../../components/molecules/CheckBoxNav";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import {
   GROUP_STUDY_CATEGORY_ARR,
   GROUP_STUDY_SUB_CATEGORY,
 } from "../../constants/contentsText/GroupStudyContents";
-import { GROUP_WRITING_STORE } from "../../constants/keys/localStorage";
+import { GROUP_CURSOR_NUM, GROUP_WRITING_STORE } from "../../constants/keys/localStorage";
+import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import { useGroupQuery } from "../../hooks/groupStudy/queries";
-import GroupBlock from "../../pageTemplates/group/GroupBlock";
 import GroupMine from "../../pageTemplates/group/GroupMine";
 import GroupSkeletonMain from "../../pageTemplates/group/GroupSkeletonMain";
-import GroupSkeletonMine from "../../pageTemplates/group/GroupSkeletonMine";
+import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { GroupCategory, IGroup } from "../../types/models/groupTypes/group";
 import { shuffleArray } from "../../utils/convertUtils/convertDatas";
 
@@ -34,32 +36,53 @@ interface ICategory {
 function GroupPage() {
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
-  const categoryIdx = searchParams.get("category");
-  const filterType = searchParams.get("filter") as "pending" | "end";
   const router = useRouter();
   const { data: session } = useSession();
-  const isGuest = session?.user.name === "guest";
+  const isGuest = session?.user.role === "guest";
 
+  const categoryIdx = searchParams.get("category") || "0";
+
+  const localStorageCursorNum = +localStorage.getItem(GROUP_CURSOR_NUM);
+
+  const setTransdferGroupData = useSetRecoilState(transferGroupDataState);
   const [status, setStatus] = useState<"모집중" | "종료">("모집중");
+  const [groupStudies, setGroupStudies] = useState<IGroup[]>([]);
+
+  const [cursor, setCursor] = useState(localStorageCursorNum);
   const [category, setCategory] = useState<ICategory>({
-    main: categoryIdx !== null ? GROUP_STUDY_CATEGORY_ARR[categoryIdx] : "전체",
+    main: GROUP_STUDY_CATEGORY_ARR[categoryIdx] || "전체",
     sub: null,
   });
 
   const loader = useRef<HTMLDivElement | null>(null);
   const firstLoad = useRef(true);
 
-  const [groupStudies, setGroupStudies] = useState<IGroup[]>([]);
-  const [myGroups, setMyGroups] = useState<IGroup[]>();
-  const [cursor, setCursor] = useState(0);
-  const { data: groups, isLoading } = useGroupQuery(filterType, category.main, cursor, {
-    enabled: !!filterType,
-  });
+  const { data: groups, isLoading } = useGroupQuery(
+    status === "모집중" ? "pending" : "end",
+    category.main,
+    category.main === "전체" ? cursor : 0,
+    {
+      enabled: !!status,
+    },
+  );
 
   useEffect(() => {
-    setCursor(0);
+    return () => {
+      const localStorageCursorNumChange = !localStorageCursorNum
+        ? 1
+        : localStorageCursorNum === 1
+        ? 2
+        : localStorageCursorNum === 2
+        ? 0
+        : localStorageCursorNum;
+      localStorage.setItem(GROUP_CURSOR_NUM, localStorageCursorNumChange + "");
+    };
+  }, []);
+
+  useEffect(() => {
+    setCursor(localStorageCursorNum);
     setGroupStudies([]);
-  }, [filterType, category.main]);
+  }, [status, category.main]);
 
   useEffect(() => {
     localStorage.setItem(GROUP_WRITING_STORE, null);
@@ -67,11 +90,7 @@ function GroupPage() {
       main: categoryIdx !== null ? GROUP_STUDY_CATEGORY_ARR[categoryIdx] : "전체",
       sub: null,
     });
-    const filterToStatus: Record<string, "모집중" | "종료"> = {
-      pending: "모집중",
-      end: "종료",
-    };
-    setStatus(filterType ? filterToStatus[filterType] : "모집중");
+
     if (!searchParams.get("filter")) {
       newSearchParams.append("filter", "pending");
       newSearchParams.append("category", "0");
@@ -80,7 +99,14 @@ function GroupPage() {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && !firstLoad.current) {
-          setCursor((prevCursor) => prevCursor + 1);
+          setCursor((prevCursor) => {
+            const nextCursor = prevCursor === 0 ? 1 : prevCursor === 1 ? 2 : 0;
+            if (nextCursor === localStorageCursorNum) {
+              return prevCursor;
+            }
+
+            return nextCursor;
+          });
         }
       },
       { threshold: 1.0 },
@@ -109,31 +135,17 @@ function GroupPage() {
   useEffect(() => {
     if (!groups) return;
     firstLoad.current = false;
-    if (category.main !== "전체") return;
-    setGroupStudies((old) => [...shuffleArray(groups), ...old]);
-  }, [groups, category.main]);
 
-  useEffect(() => {
-    if (!groups || category.main === "전체") return;
-    setGroupStudies(groups.filter((item) => !category.sub || item.category.sub === category.sub));
-  }, [category.sub, groups]);
-
-  useEffect(() => {
-    if (isGuest) setMyGroups([]);
-    else if (groupStudies.length && !myGroups) {
-      setMyGroups(
-        groupStudies.filter((item) =>
-          item.participants.some((who) => {
-            if (!who?.user?.uid) {
-              return;
-            }
-
-            return who.user.uid === session?.user.uid;
-          }),
-        ),
-      );
+    if (category.main === "전체") {
+      const newArray = shuffleArray(groups);
+      setGroupStudies((old) => [
+        ...newArray.filter((item) => !old.some((existingItem) => existingItem.id === item.id)),
+        ...old,
+      ]);
+    } else {
+      setGroupStudies(groups.filter((item) => !category.sub || item.category.sub === category.sub));
     }
-  }, [groupStudies, session?.user]);
+  }, [groups, category.main, category.sub]);
 
   const mainTabOptionsArr: ITabNavOptions[] = GROUP_STUDY_CATEGORY_ARR.map((category, idx) => ({
     text: category,
@@ -149,48 +161,87 @@ function GroupPage() {
     },
   }));
 
-  function StatusSelector() {
-    return (
-      <Select
-        size="md"
-        isEllipse={false}
-        defaultValue={status}
-        setValue={setStatus}
-        options={["모집중", "종료"]}
-      />
-    );
-  }
-
   return (
     <>
       <Header title="소모임" isBack={false} />
       <Slide isNoPadding>
         <Layout>
-          {!myGroups ? <GroupSkeletonMine /> : <GroupMine myGroups={myGroups} />}
-          <Box px={5} bg="white">
-            <SectionBar title="전체 소모임" size="md" rightComponent={<StatusSelector />} />
+          {!isGuest && <Box minH="108px"><GroupMine /></Box>}
+          <Box px={5} mt={5} mb={3}>
+            <SectionHeader title="전체 소모임" subTitle="All Small Group">
+              <Select
+                size="sm"
+                isThick
+                defaultValue={status}
+                options={["모집중", "종료"]}
+                setValue={setStatus}
+              />
+            </SectionHeader>
           </Box>
-          <NavWrapper>
-            <TabNav selected={category.main} tabOptionsArr={mainTabOptionsArr} isMain />
-          </NavWrapper>
-          <SubNavWrapper>
-            <CheckBoxNav
-              buttonList={GROUP_STUDY_SUB_CATEGORY[category.main]}
-              selectedButton={category.sub}
-              setSelectedButton={(value: string) => setCategory((old) => ({ ...old, sub: value }))}
-            />
-          </SubNavWrapper>
-          <Box minH="1000px">
+          <Box borderBottom="var(--border)" px={5} mb={2}>
+            <TabNav isBlack selected={category.main} tabOptionsArr={mainTabOptionsArr} isMain />
+          </Box>
+
+          {category.main !== "전체" && (
+            <Box px={5} py={3}>
+              <ButtonGroups
+                buttonOptionsArr={GROUP_STUDY_SUB_CATEGORY[category.main].map((prop) => ({
+                  icon: (
+                    <CheckCircleIcon
+                      color={category.sub === prop ? "mint" : "gray"}
+                      size="sm"
+                      isFill
+                    />
+                  ),
+                  text: prop,
+                  func: () =>
+                    setCategory((old) => ({ ...old, sub: old.sub === prop ? null : prop })),
+                }))}
+                currentValue={category.sub}
+                isEllipse
+                size="md"
+              />
+            </Box>
+          )}
+          <Box minH="100dvh">
             {!groupStudies.length && isLoading ? (
               <GroupSkeletonMain />
             ) : (
-              <Flex direction="column" px={5} py={4}>
+              <Flex direction="column" p={5}>
                 {groupStudies
                   ?.slice()
                   ?.reverse()
-                  ?.map((group) => (
-                    <GroupBlock group={group} key={group.id} />
-                  ))}
+                  ?.map((group, idx) => {
+                    const status =
+                      group.status === "end"
+                        ? "end"
+                        : group.memberCnt.max === 0
+                        ? "pending"
+                        : group.memberCnt.max <= group.participants.length
+                        ? "full"
+                        : group.memberCnt.max - 2 <= group.participants.length
+                        ? "imminent"
+                        : group.memberCnt.min > group.participants.length
+                        ? "waiting"
+                        : group.status;
+                    return (
+                      <Box key={group.id} pb={3} mb={3} borderBottom="var(--border)">
+                        <GroupThumbnailCard
+                          title={group.title}
+                          text={group.guide}
+                          status={status}
+                          category={group.category}
+                          participants={group.participants.map((user) =>
+                            group.isSecret ? { user: ABOUT_USER_SUMMARY } : user,
+                          )}
+                          imageProps={{ image: group.image, isPriority: idx < 4 }}
+                          maxCnt={group.memberCnt.max}
+                          id={group.id}
+                          func={() => setTransdferGroupData(group)}
+                        />
+                      </Box>
+                    );
+                  })}
               </Flex>
             )}
           </Box>
@@ -202,22 +253,14 @@ function GroupPage() {
           ) : undefined}
         </Layout>
       </Slide>
-      <WritingButton url="/group/writing/main" />
     </>
   );
 }
 
 const Layout = styled.div`
   min-height: 100vh;
-  background-color: var(--gray-100);
+
   padding-bottom: 60px;
 `;
-
-const NavWrapper = styled.div`
-  padding: 0px 20px;
-  background: white;
-`;
-
-const SubNavWrapper = styled.div``;
 
 export default GroupPage;

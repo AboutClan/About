@@ -49,14 +49,14 @@ export default function ProfileCommentCard({
 
   return (
     <>
-      <Flex py={3} align="center">
+      <Flex py={3} align="center" borderBottom="var(--border)">
         {leftComponent && <Box mr="16px">{leftComponent}</Box>}
         {user ? (
           <Avatar image={user.profileImage} size="md" avatar={user.avatar} uid={user.uid} />
         ) : (
           <BasicAvatar />
         )}
-        <Flex direction="column" justify="center" ml={3} my={1}>
+        <Flex direction="column" flex={0.95} justify="center" ml={3} my={1}>
           <Flex align="center" mb={memo || comment ? 1 : 0}>
             <Box lineHeight="20px" mr={1} fontWeight="semibold" fontSize="13px">
               {user?.name || "익명"}

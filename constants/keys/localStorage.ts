@@ -51,3 +51,5 @@ export const USER_LOCATION = "userLocation";
 export const STUDY_ATTEND_INFO = "studyAttendInfo";
 
 export const STUDY_RECORD = "studyRecord";
+
+export const GROUP_CURSOR_NUM = "groupCursorNum";

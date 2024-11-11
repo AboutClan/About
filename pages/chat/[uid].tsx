@@ -162,7 +162,14 @@ function Uid() {
         pb={`${keypadHeight === 0 ? iPhoneNotchSize() : 0}px`}
       >
         <Box py={4} borderBottom="var(--border)" px={5}>
-          <UserCommentInput user={userInfo} onSubmit={onSubmit} type="message" initialFocus />
+          <UserCommentInput
+            replyName={null}
+            setReplyProps={null}
+            user={userInfo}
+            onSubmit={onSubmit}
+            type="message"
+            initialFocus
+          />
         </Box>
       </Box>
     </>

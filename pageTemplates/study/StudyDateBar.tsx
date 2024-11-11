@@ -21,7 +21,7 @@ function StudyDateBar({ date, memberCnt }: IStudyDateBar) {
             {dayjsToFormat(dayjs(date), "M월 D일 참여 멤버")}
           </Box>
           <Button variant="unstyled" onClick={() => typeToast("not-yet")}>
-            <PlusIcon />
+            <PlusIcon color="mint" size="sm" />
           </Button>
         </Flex>
         <Box mt={1} fontSize="12px" color="gray.500">
