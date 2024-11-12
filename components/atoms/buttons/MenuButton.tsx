@@ -32,6 +32,7 @@ function MenuButton({ menuArr }: MenuButtonProps) {
                 key={menu?.text || "kakao"}
                 onClick={menu?.func}
                 bg="white"
+                py={2}
               >
                 {menu?.text}
                 {menu?.kakaoOptions && <KakaoShareBtn variant="unstyled" {...menu.kakaoOptions} />}

@@ -18,6 +18,7 @@ function GroupMine() {
     () =>
       data
         ?.filter((group) => group.status !== "end")
+        .sort(() => Math.random() - 0.5)
         .map((group) => ({
           imageUrl: group?.squareImage || getRandomImage(),
           text: group.title,

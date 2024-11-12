@@ -24,6 +24,7 @@ export interface IGroupWriting extends TimeStampProps {
   category: IGroupWritingCategory;
   challenge?: string;
   title: string;
+  meetingType: "offline" | "online" | "hybrid";
   content: string;
   rules: string[];
   status: GroupStatus;

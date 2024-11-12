@@ -21,7 +21,7 @@ function GroupHeader({ group }: IGroupHeader) {
   const resetGroupQuery = useResetGroupQuery();
   const completeToast = useCompleteToast();
   const router = useRouter();
-  const isAdmin = group.organizer.uid === session?.user.uid;
+  const isAdmin = session?.user.uid === "2259633694" || group.organizer.uid === session?.user.uid;
   const isMember =
     session?.user.uid === "2259633694" ||
     group.participants.some((par) => par.user?.uid === session?.user.uid);
@@ -55,19 +55,19 @@ function GroupHeader({ group }: IGroupHeader) {
     ...(isAdmin
       ? [
           {
-            text: "관리자 페이지",
+            text: "신규 인원 초대 및 수락",
             func: () => {
               router.push(`/group/${group.id}/admin`);
             },
           },
           {
-            text: "인원 관리",
+            text: "현재 참여중인 인원",
             func: () => {
               router.push(`/group/${group.id}/member`);
             },
           },
           {
-            text: "내용 수정하기",
+            text: "모임 내용 수정",
             func: () => {
               setLocalStorageObj(GROUP_WRITING_STORE, {
                 ...group,

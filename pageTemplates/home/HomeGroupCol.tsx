@@ -11,7 +11,6 @@ import {
 } from "../../components/molecules/cards/GatherThumbnailCard";
 import { GatherThumbnailCardSkeleton } from "../../components/skeleton/GatherThumbnailCardSkeleton";
 import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
-import { useGroupQuery } from "../../hooks/groupStudy/queries";
 import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { IGroup } from "../../types/models/groupTypes/group";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
@@ -19,23 +18,25 @@ import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomImage } from "../../utils/imageUtils";
 dayjs().locale("ko");
 
-export default function HomeGroupCol() {
+interface HomeGroupColProps {
+  threeGroups: IGroup[];
+}
+
+export default function HomeGroupCol({ threeGroups }: HomeGroupColProps) {
   const { data: session } = useSession();
 
   const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>([]);
 
   const setTransferGroup = useSetRecoilState(transferGroupDataState);
 
-  const { data: groups } = useGroupQuery("pending", null, 0, {});
-
   useEffect(() => {
-    if (!groups) return;
+    if (!threeGroups) return;
     const handleNavigate = (group: IGroup) => {
       setTransferGroup(group);
     };
 
-    setCardDataArr(setGroupDataToCardCol(groups.slice(0, 3), false, handleNavigate));
-  }, [groups]);
+    setCardDataArr(setGroupDataToCardCol(threeGroups, false, handleNavigate));
+  }, [threeGroups]);
 
   return (
     <Box my={4}>
@@ -70,7 +71,7 @@ export const setGroupDataToCardCol = (
     date: dayjsToFormat(dayjs(group.createdAt).locale("ko"), "YY년 M월 D일 개설"),
     place: group.category.sub,
     imageProps: {
-      image: group.image || getRandomImage(),
+      image: group?.squareImage || getRandomImage(),
       priority: imagePriority && idx < 4,
     },
     id: group.id,

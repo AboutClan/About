@@ -24,6 +24,7 @@ import GroupCover from "../../../pageTemplates/group/detail/GroupCover";
 import GroupHeader from "../../../pageTemplates/group/detail/GroupHeader";
 import GroupParticipation from "../../../pageTemplates/group/detail/GroupParticipation";
 import { transferGroupDataState } from "../../../recoils/transferRecoils";
+import { convertMeetingTypeToKr } from "../../../utils/convertUtils/convertText";
 import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
 
 export type GroupSectionCategory = "정 보" | "피 드";
@@ -39,7 +40,7 @@ function GroupDetail() {
   const [group, setTransferGroup] = useRecoilState(transferGroupDataState);
 
   const { data: groupData, refetch } = useGroupIdQuery(id, { enabled: !!id && !group });
-
+  console.log(4, groupData);
   useEffect(() => {
     if (groupData) {
       setTransferGroup(groupData);
@@ -108,7 +109,7 @@ function GroupDetail() {
                     text: `${dayjsToFormat(dayjs(group.createdAt), "YYYY년 M월 D일")}`,
                   },
                   { category: "가입 방식", text: group.isFree ? "자유 가입" : "승인제" },
-                  { category: "진행 방식", text: "온/오프라인" },
+                  { category: "진행 방식", text: convertMeetingTypeToKr(group?.meetingType) },
                   { category: "참여 비용", text: group.fee ? group.fee + "" : "없음" },
                 ]}
                 size="md"

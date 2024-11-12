@@ -13,6 +13,21 @@ import {
   IGroupAttendance,
 } from "../../types/models/groupTypes/group";
 
+interface GroupShapShotProps {
+  online: IGroup[];
+  offline: IGroup[];
+}
+
+export const useGroupSnapshotQuery = (options?: QueryOptions<GroupShapShotProps>) =>
+  useQuery<GroupShapShotProps, AxiosError, GroupShapShotProps>(
+    [GROUP_STUDY, "snapshot"],
+    async () => {
+      const res = await axios.get<GroupShapShotProps>(`${SERVER_URI}/groupStudy/snapshot`, {});
+
+      return res.data;
+    },
+    options,
+  );
 export const useGroupQuery = (
   filter: GroupStatus,
   category: GroupCategory,

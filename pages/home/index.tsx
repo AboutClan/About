@@ -16,12 +16,12 @@ function Home() {
         <HomeBannerSlide />
         <HomeNav />
       </Slide>
-      <Slide isNoPadding>
-        <HomeStudySection />
-      </Slide>
       <Slide>
         <HomeGatherSection />
         <HomeGroupSection />
+      </Slide>
+      <Slide isNoPadding>
+        <HomeStudySection />
       </Slide>
     </>
   );
