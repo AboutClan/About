@@ -35,6 +35,7 @@ function RankingOverview({ myRankInfo }: IRankingOverview) {
                 uid={userInfo.uid}
                 size="lg"
                 isPriority={true}
+                isLink={false}
               />
               <ProfileUserName>{userInfo?.name}</ProfileUserName>
             </ProfileWrapper>

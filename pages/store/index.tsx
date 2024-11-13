@@ -66,6 +66,7 @@ function Event() {
   const { data: storeGiftEntries } = useStoreGiftEntryQuery({
     onError: errorToast,
   });
+  console.log(4, storeGiftEntries);
 
   useEffect(() => {
     setIsPrevBoolean(isShowActive);

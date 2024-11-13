@@ -92,9 +92,9 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ account, user, profile, credentials }) {
       try {
+        console.log(23);
         if (account.provider === "guest") return true;
         if (account.provider === "credentials") return true;
-
         if (!account.access_token) return false;
 
         if (user) {
