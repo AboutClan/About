@@ -16,9 +16,17 @@ interface PlaceHeartImageProps {
   hasToggleHeart?: boolean;
   selected?: "main" | "sub" | null;
   size: "sm" | "md" | "lg";
+  isFull?: boolean;
 }
 
-function PlaceImage({ imageProps, id, hasToggleHeart, selected, size }: PlaceHeartImageProps) {
+function PlaceImage({
+  imageProps,
+  id,
+  hasToggleHeart,
+  selected,
+  size,
+  isFull,
+}: PlaceHeartImageProps) {
   const { data: session } = useSession();
   const isGuest = session?.user.name === "guest";
 
@@ -39,7 +47,7 @@ function PlaceImage({ imageProps, id, hasToggleHeart, selected, size }: PlaceHea
 
   const sizeLength =
     size === "sm" ? "60px" : size === "md" ? "80px" : size === "lg" ? "100px" : null;
-
+ 
   const onClickHeart = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
     switch (myPreferType) {
       case "main":
@@ -74,8 +82,8 @@ function PlaceImage({ imageProps, id, hasToggleHeart, selected, size }: PlaceHea
           ? "0px 5px 10px 0px #1BB8760A"
           : null
       }
-      w={sizeLength}
-      h={sizeLength}
+      w={isFull ? "100%" : sizeLength}
+      h={isFull ? "100%" : sizeLength}
     >
       <Image
         src={imageProps.image}

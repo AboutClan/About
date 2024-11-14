@@ -5,7 +5,7 @@ import HomeGroupSection from "../../pageTemplates/home/HomeGroupSection";
 import HomeHeader from "../../pageTemplates/home/homeHeader/HomeHeader";
 import HomeInitialSetting from "../../pageTemplates/home/HomeInitialSetting";
 import HomeNav from "../../pageTemplates/home/HomeNav";
-import HomeStudySection from "../../pageTemplates/home/HomeStudySection";
+import HomeReviewSection from "../../pageTemplates/home/HomeReviewSection";
 
 function Home() {
   return (
@@ -19,10 +19,11 @@ function Home() {
       <Slide>
         <HomeGatherSection />
         <HomeGroupSection />
+        <HomeReviewSection />
       </Slide>
-      <Slide isNoPadding>
+      {/* <Slide isNoPadding>
         <HomeStudySection />
-      </Slide>
+      </Slide> */}
     </>
   );
 }

@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import WritingButton from "../../components/atoms/buttons/WritingButton";
 import Slide from "../../components/layouts/PageSlide";
@@ -13,7 +13,14 @@ function Gather() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
+  const tabParam = searchParams.get("tab");
+
   const [tab, setTab] = useState<"번개" | "라운지">("번개");
+
+  useEffect(() => {
+    if (tabParam === "gather") setTab("번개");
+    if (tabParam === "lounge") setTab("라운지");
+  }, [tabParam]);
 
   const tabNavOptions: ITabNavOptions[] = [
     {
