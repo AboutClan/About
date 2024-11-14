@@ -14,7 +14,7 @@ function AdminSuggest() {
 
   const { data: data1 } = useUserRequestQuery("건의");
   const { data: data2, isLoading } = useUserRequestQuery("신고");
-  console.log(4, data2);
+  
   useEffect(() => {
     if (isLoading || !data1) return;
     const sortedData = [...data1, ...data2].sort((a, b) =>

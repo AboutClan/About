@@ -40,7 +40,7 @@ function GroupDetail() {
   const [group, setTransferGroup] = useRecoilState(transferGroupDataState);
 
   const { data: groupData, refetch } = useGroupIdQuery(id, { enabled: !!id && !group });
-  console.log(4, groupData);
+  
   useEffect(() => {
     if (groupData) {
       setTransferGroup(groupData);

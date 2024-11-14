@@ -49,7 +49,7 @@ export default function BottomFlexDrawer({
   const [drawerHeight, setDrawerHeight] = useState(isDrawerUp ? maxHeight : DRAWER_MIN_HEIGHT); // 초기 높이
   const startYRef = useRef(0); // 드래그 시작 위치 저장
   const currentHeightRef = useRef(drawerHeight); // 현재 높이 저장
-
+ 
   useEffect(() => {
     if (isDrawerUp) setDrawerHeight(maxHeight);
     else setDrawerHeight(DRAWER_MIN_HEIGHT);

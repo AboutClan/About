@@ -1,4 +1,5 @@
 import { Button, Flex } from "@chakra-ui/react";
+import Link from "next/link";
 import { JSXElementConstructor, ReactElement } from "react";
 
 interface NewTwoButtonRowProps {
@@ -6,12 +7,14 @@ interface NewTwoButtonRowProps {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     icon?: ReactElement<any, string | JSXElementConstructor<any>>;
     children?: React.ReactNode;
+    url: string;
   };
   rightProps: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     icon?: ReactElement<any, string | JSXElementConstructor<any>>;
     children?: React.ReactNode;
     isDisabled?: boolean;
+    func: () => void;
   };
 }
 
@@ -19,10 +22,10 @@ function NewTwoButtonRow({ leftProps, rightProps }: NewTwoButtonRowProps) {
   return (
     <Flex>
       <Button
-        as="div"
-        flex={1}
-        mr={3}
+        as={Link}
         size="lg"
+        href={leftProps.url}
+        flex={1}
         h="48px"
         bgColor="white"
         borderRadius="12px"
@@ -32,8 +35,8 @@ function NewTwoButtonRow({ leftProps, rightProps }: NewTwoButtonRowProps) {
       >
         {leftProps.children}
       </Button>
+
       <Button
-        as="div"
         flex={1}
         size="lg"
         h="48px"
@@ -42,6 +45,7 @@ function NewTwoButtonRow({ leftProps, rightProps }: NewTwoButtonRowProps) {
         boxShadow=" 0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
         leftIcon={rightProps?.icon}
         isDisabled={rightProps?.isDisabled}
+        onClick={rightProps.func}
       >
         {rightProps.children}
       </Button>

@@ -18,14 +18,14 @@ import StatisticsFilterBar from "../../pageTemplates/ranking/StatisticsFilterBar
 import StatisticsMine from "../../pageTemplates/ranking/StatisticsMine";
 import StatisticsTabNav from "../../pageTemplates/ranking/StatisticsTabNav";
 
-export type RankingCategoryProp = "주간 랭킹" | "활동 랭킹" | "스터디 랭킹" | "누적 랭킹";
+export type RankingCategoryProp = "주간 랭킹" | "월간 랭킹" | "스터디 랭킹" | "누적 랭킹";
 export type RankingCategorySource = "monthScore" | "cnt" | "score" | "weekStudyAccumulationMinutes";
 
-const CATEGORY_ARR: RankingCategoryProp[] = ["주간 랭킹", "활동 랭킹", "스터디 랭킹", "누적 랭킹"];
+const CATEGORY_ARR: RankingCategoryProp[] = ["주간 랭킹", "월간 랭킹", "스터디 랭킹", "누적 랭킹"];
 
 const CATEGORY_SOURCE: { [key in RankingCategoryProp]: RankingCategorySource } = {
   "주간 랭킹": "weekStudyAccumulationMinutes",
-  "활동 랭킹": "monthScore",
+  "월간 랭킹": "monthScore",
   "스터디 랭킹": "cnt",
   "누적 랭킹": "score",
 };
@@ -44,7 +44,7 @@ const CONTENT: IRuleModalContent = {
     {
       title: "카테고리 설명",
       texts: [
-        "활동 랭킹은 이번 달 동아리 활동 점수입니다. 매달 초기화 됩니다.",
+        "월간 랭킹은 이번 달 동아리 활동 점수입니다. 매달 초기화 됩니다.",
         "스터디 랭킹은 이번 달 스터디 참여 횟수입니다. 매달 초기화 됩니다.",
         "누적 랭킹은 동아리 점수입니다. 등급을 나타내는 지표입니다.",
       ],
@@ -63,13 +63,13 @@ function Ranking() {
   const [usersRanking, setUsersRanking] = useState<IUserRankings>({ users: [], mine: null });
   const [tabValue, setTabValue] = useState<"전체 랭킹" | "내 통계">("전체 랭킹");
   const [filterOptions, setFilterOptions] = useState<RankingFilterOptionProps>({
-    category: "주간 랭킹",
+    category: "월간 랭킹",
     isLocationFilter: false,
   });
   const [isModal, setIsModal] = useState(false);
 
   const categorySource = CATEGORY_SOURCE[filterOptions.category];
-
+  
   const { data: attendRecords } = useUserAttendRateQuery(
     dayjs().startOf("month"),
     dayjs(),
@@ -90,7 +90,7 @@ function Ranking() {
       enabled: !!session,
     },
   );
-
+ 
 
   useEffect(() => {
     if (filterOptions.category === "스터디 랭킹" && !attendRecords) return;

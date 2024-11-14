@@ -45,7 +45,7 @@ export default async function giftController(req: NextApiRequest, res: NextApiRe
       const giftUsers = await GiftModel.find({})
         .sort("createdAt")
         .select("-_id -createdAt -updatedAt -__v");
-      console.log(24, giftUsers);
+     
       return res.status(200).json({ users: giftUsers });
     } catch (error) {
       console.error(error);
