@@ -7,6 +7,7 @@ import { useRecoilState } from "recoil";
 
 import { STUDY_MAIN_IMAGES } from "../assets/images/studyMain";
 import ArrowBackButton from "../components/atoms/buttons/ArrowBackButton";
+import { MainLoadingAbsolute } from "../components/atoms/loaders/MainLoading";
 import { DRAWER_MIN_HEIGHT } from "../components/organisms/drawer/BottomFlexDrawer";
 import VoteMap from "../components/organisms/VoteMap";
 import { USER_LOCATION } from "../constants/keys/localStorage";
@@ -82,13 +83,14 @@ export default function StudyPage() {
   const [isDrawerUp, setIsDrawerUp] = useState(false);
 
   const { data: userInfo } = useUserInfoQuery();
-  const { data: studyVoteData } = useStudyVoteQuery(date, locationValue, {
+  const { data: studyVoteData, isLoading } = useStudyVoteQuery(date, locationValue, {
     enabled: !!locationValue && !!date,
   });
 
   //초기 param 값들 설정
   //locationValue와 date는 초기부터 존재 (+ useEffect의 의존 인자x)
   //내 스터디 투표 정보가 있는지에 따라 분류
+
   useEffect(() => {
     if (!locationValue) return;
 
@@ -97,7 +99,7 @@ export default function StudyPage() {
     newSearchParams.set("date", `${getStudyViewDate(dayjs(date))}`);
 
     router.replace(`/studyPage?${newSearchParams.toString()}`);
-
+   
     if (myStudyParticipation) {
       const lat = myStudyParticipation.place.latitude;
       const lon = myStudyParticipation.place.longitude;
@@ -105,12 +107,14 @@ export default function StudyPage() {
       if (changeLocation !== locationValue) {
         setLocationValue(changeLocation as ActiveLocation);
       }
+      
       setCenterLocation({
         lat: lat,
         lon: lon,
       });
     } else {
       const locationCenter = LOCATION_CENTER_DOT[userLocation];
+    
       setCenterLocation({ lat: locationCenter.latitude, lon: locationCenter.longitude });
     }
   }, [myStudyParticipation]);
@@ -120,14 +124,16 @@ export default function StudyPage() {
     let isChangeLocation = false;
     if (!isVoteDrawer) {
       const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
-      setMyStudyParticipation(findMyStudyParticipation);
-      if (findMyStudyParticipation) {
+
+      if (findMyStudyParticipation && !myStudyParticipation) {
+        setMyStudyParticipation(findMyStudyParticipation);
         const changeLocation = getLocationByCoordinates(
           findMyStudyParticipation.place.latitude,
           findMyStudyParticipation.place.longitude,
         );
 
         if (!changeLocation) return;
+        
         if (changeLocation === locationValue) {
           setCenterLocation({
             lat: findMyStudyParticipation.place.latitude,
@@ -141,17 +147,26 @@ export default function StudyPage() {
             lon: findMyStudyParticipation.place.longitude,
           });
         }
+      } else {
+        if (locationValue) {
+          const centerCoordination = LOCATION_CENTER_DOT[locationValue];
+          setCenterLocation({
+            lat: centerCoordination.latitude,
+            lon: centerCoordination.longitude,
+          });
+        }
       }
       setIsVoteDrawerFirst(true);
     }
 
     if (!isChangeLocation) {
+     
       setMarkersOptions(
         getMarkersOptions(
           studyVoteData,
           currentLocation,
           isVoteDrawer ? myVote : null,
-          isVoteDrawer ? isVoteDrawerFirst : null,
+          !isVoteDrawer ? isVoteDrawerFirst : null,
         ),
       );
     }
@@ -163,6 +178,7 @@ export default function StudyPage() {
     setIsLocationRefetch(false);
     navigator.geolocation.getCurrentPosition(
       function (position) {
+        
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
         setCurrentLocation({ lat, lon });
@@ -201,7 +217,7 @@ export default function StudyPage() {
     if (!centerLocation || !locationValue) return;
 
     if (isVoteDrawer) return;
-    setMapOptions(getMapOptions(centerLocation, locationValue, centerParam === "votePlace" && 15));
+    setMapOptions(getMapOptions(centerLocation, locationValue, centerParam === "votePlace" && 13));
     if (voteDrawerParam === "up") {
       setIsDrawerUp(false);
       setIsVoteDrawer(true);
@@ -242,7 +258,16 @@ export default function StudyPage() {
         {!isVoteDrawer ? (
           <StudyMapTopNav
             location={locationValue}
-            setLocation={setLocationValue}
+            setLocation={(location) => {
+              newSearchParams.set("center", "locationPlace");
+              newSearchParams.set(
+                "location",
+                convertLocationLangTo(location as ActiveLocation, "en"),
+              );
+              
+              setLocationValue(location);
+              router.replace(`/studyPage?${newSearchParams.toString()}`);
+            }}
             setCenterLocation={setCenterLocation}
             setIsLocationFetch={setIsLocationRefetch}
           />
@@ -262,6 +287,7 @@ export default function StudyPage() {
           handleMarker={handleMarker}
           resizeToggle={isVoteDrawer}
         />
+        {isLoading && <MainLoadingAbsolute />}
       </Box>
       <StudyControlButton
         date={date}
@@ -297,7 +323,12 @@ export default function StudyPage() {
         />
       )}
       {detailInfo && (
-        <StudyInFoDrawer date={date} detailInfo={detailInfo} setDetailInfo={setDetailInfo} />
+        <StudyInFoDrawer
+          date={date}
+          detailInfo={detailInfo}
+          studyVoteData={studyVoteData}
+          setDetailInfo={setDetailInfo}
+        />
       )}
     </>
   );
@@ -323,54 +354,52 @@ const getMarkersOptions = (
     });
   }
 
-  studyVoteData.participations
-    .filter((par) => (myVote ? true : par.members.length >= 1))
-    .forEach((par) => {
-      if (myVote) {
-        const mainPlace = studyVoteData?.participations?.find(
-          (par) => par.place._id === myVote?.main,
-        )?.place;
-        const placeId = par.place._id;
+  studyVoteData.participations.forEach((par) => {
+    if (myVote) {
+      const mainPlace = studyVoteData?.participations?.find(
+        (par) => par.place._id === myVote?.main,
+      )?.place;
+      const placeId = par.place._id;
 
-        const iconType =
-          placeId === myVote?.main
-            ? "main"
-            : onlyFirst
-            ? "default"
-            : myVote?.sub?.includes(placeId)
-            ? "sub"
-            : "default";
+      const iconType =
+        placeId === myVote?.main
+          ? "main"
+          : onlyFirst
+          ? "default"
+          : myVote?.sub?.includes(placeId)
+          ? "sub"
+          : "default";
 
-        const polyline =
-          mainPlace && myVote?.sub?.includes(placeId)
-            ? getPolyline(mainPlace, par.place, myVote?.sub?.includes(placeId))
-            : null;
+      const polyline =
+        mainPlace && myVote?.sub?.includes(placeId)
+          ? getPolyline(mainPlace, par.place, myVote?.sub?.includes(placeId))
+          : null;
 
-        temp.push({
-          isPicked: myVote?.main === placeId,
-          id: par.place._id,
-          position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
-          title: par.place.brand,
-          icon: {
-            content: getStudyVoteIcon(iconType, par.place.branch),
-            size: new naver.maps.Size(72, 72),
-            anchor: new naver.maps.Point(36, 44),
-          },
-          type: "vote",
-          polyline,
-        });
-      } else {
-        temp.push({
-          id: par.place._id,
-          position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
-          icon: {
-            content: getStudyIcon(null, par.members.length),
-            size: new naver.maps.Size(72, 72),
-            anchor: new naver.maps.Point(36, 44),
-          },
-        });
-      }
-    });
+      temp.push({
+        isPicked: myVote?.main === placeId,
+        id: par.place._id,
+        position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
+        title: par.place.brand,
+        icon: {
+          content: getStudyVoteIcon(iconType, par.place.branch),
+          size: new naver.maps.Size(72, 72),
+          anchor: new naver.maps.Point(36, 44),
+        },
+        type: "vote",
+        polyline,
+      });
+    } else {
+      temp.push({
+        id: par.place._id,
+        position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
+        icon: {
+          content: getStudyIcon(null, par.members.length),
+          size: new naver.maps.Size(72, 72),
+          anchor: new naver.maps.Point(36, 44),
+        },
+      });
+    }
+  });
 
   // if (myVote) return temp;
 
@@ -536,11 +565,13 @@ export const getDetailInfo = (
     status: findStudy.status,
     location: location,
     comment: {
-      user: {
-        uid: commentUser.uid,
-        avatar: commentUser.avatar,
-        image: commentUser.profileImage,
-      },
+      user: commentUser
+        ? {
+            uid: commentUser.uid,
+            avatar: commentUser.avatar,
+            image: commentUser.profileImage,
+          }
+        : null,
       text:
         sortedCommentUserArr?.[0]?.comment?.text ||
         STUDY_COMMENT_ARR[getRandomIdx(STUDY_COMMENT_ARR.length - 1)],

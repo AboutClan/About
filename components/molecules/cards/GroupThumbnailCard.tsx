@@ -9,7 +9,7 @@ import { SingleLineText } from "../../../styles/layout/components";
 import {
   GroupParicipantProps,
   GroupStatus,
-  IGroupWritingCategory
+  IGroupWritingCategory,
 } from "../../../types/models/groupTypes/group";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { UserIcon } from "../../Icons/UserIcons";
@@ -68,13 +68,13 @@ export function GroupThumbnailCard({
         <Flex my={1} justify="space-between" align="center">
           <Box fontSize="11px" lineHeight="12px">
             <Box as="span" fontWeight="medium" lineHeight="12px" color="mint">
-              {category.main}
+              {category?.main}
             </Box>
             <Box as="span" fontWeight="regular" color="var(--gray-400)">
               ・
             </Box>
             <Box as="span" color="gray.500" fontWeight="regular">
-              {category.sub}
+              {category?.sub}
             </Box>
           </Box>
 

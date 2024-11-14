@@ -1,7 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
@@ -14,6 +13,7 @@ import NewTwoButtonRow from "../../components/molecules/NewTwoButtonRow";
 import BottomFlexDrawer, {
   BottomFlexDrawerOptions,
 } from "../../components/organisms/drawer/BottomFlexDrawer";
+import StudyPlacePickerDrawer from "../../components/services/studyVote/StudyPlacePickerDrawer";
 import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
@@ -26,13 +26,18 @@ import { useUserInfoQuery } from "../../hooks/user/queries";
 import { ModalLayout } from "../../modals/Modals";
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import { DispatchType } from "../../types/hooks/reactTypes";
-import { StudyPlaceProps, StudyStatus } from "../../types/models/studyTypes/studyDetails";
+import {
+  StudyDailyInfoProps,
+  StudyPlaceProps,
+  StudyStatus,
+} from "../../types/models/studyTypes/studyDetails";
 import { IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
 import { IAvatar } from "../../types/models/userTypes/userInfoTypes";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
 import { ActiveLocation } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
+import { SubPlaceProps } from "../vote/VoteDrawer";
 
 export interface StudyInfoProps {
   id: string;
@@ -60,9 +65,10 @@ interface StudyInFoDrawerProps {
   detailInfo: StudyInfoProps;
   setDetailInfo: DispatchType<StudyInfoProps>;
   date: string;
+  studyVoteData: StudyDailyInfoProps;
 }
 
-function StudyInFoDrawer({ detailInfo, setDetailInfo, date }: StudyInFoDrawerProps) {
+function StudyInFoDrawer({ detailInfo, setDetailInfo, studyVoteData, date }: StudyInFoDrawerProps) {
   const resetStudy = useResetStudyQuery();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -72,6 +78,7 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo, date }: StudyInFoDrawerPro
   const myStudyParticipation = useRecoilValue(myStudyParticipationState);
 
   const { data: userInfo } = useUserInfoQuery({ enabled: detailInfo.status === "solo" });
+  const [subArr, setSubArr] = useState<SubPlaceProps[]>([]);
 
   const { mutate: studyVote, isLoading: isLoading1 } = useStudyParticipationMutation(
     dayjs(),
@@ -101,7 +108,8 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo, date }: StudyInFoDrawerPro
   const [commentValue, setCommentValue] = useState(detailInfo?.comment?.text);
   const [commentText, setCommentText] = useState(detailInfo?.comment?.text);
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
-  const [isVoteDrawer, setIsVoteDrawer] = useState(false);
+
+  const [modalType, setModalType] = useState<"timeSelect" | "placeSelect">();
   const [isAlertMoal, setIsAlertModal] = useState(false);
 
   const handleStudyActionButton = (type: "vote" | "comment" | "attend") => {
@@ -111,15 +119,15 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo, date }: StudyInFoDrawerPro
     if (type === "vote") {
       if (detailInfo.status === "solo") {
         if (userInfo?.friend?.includes(detailInfo?.firstUserUid)) {
-          setIsVoteDrawer(true);
+          setModalType("timeSelect");
         } else {
           toast("warning", "친구로 등록된 인원만 참여 가능합니다");
         }
 
         return;
       }
-
-      setIsVoteDrawer(true);
+      if (dayjsToStr(dayjs()) === date) setModalType("timeSelect");
+      else setModalType("placeSelect");
     }
     if (type === "attend") {
       const isOpenStudy = detailInfo.status === "open";
@@ -134,7 +142,7 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo, date }: StudyInFoDrawerPro
   const handleSuccess = () => {
     typeToast("vote");
     resetStudy();
-    setIsVoteDrawer(false);
+    setModalType(null);
     setDetailInfo(null);
   };
 
@@ -155,6 +163,7 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo, date }: StudyInFoDrawerPro
     if (!detailInfo.isPrivate) {
       studyVote({
         place: detailInfo?.id,
+        subPlace: subArr.map((sub) => sub.place._id),
         start: time?.start || voteTime?.start,
         end: time?.end || voteTime?.end,
       });
@@ -183,6 +192,9 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo, date }: StudyInFoDrawerPro
     },
   };
 
+  const findMyPickMainPlace = studyVoteData?.participations.find(
+    (par) => par.place._id === detailInfo.id,
+  );
   return (
     <>
       <BottomFlexDrawer
@@ -236,13 +248,10 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo, date }: StudyInFoDrawerPro
                 icon: (
                   <i className="fa-solid fa-circle-info" style={{ color: "var(--gray-400)" }} />
                 ),
-                children: (
-                  <Link
-                    href={`/study/${detailInfo.place._id}/${dayjsToStr(dayjs(date))}?location=${convertLocationLangTo(detailInfo.location, "en")}`}
-                  >
-                    자세히 보기
-                  </Link>
-                ),
+                url: `/study/${detailInfo.place._id}/${dayjsToStr(
+                  dayjs(date),
+                )}?location=${convertLocationLangTo(detailInfo.location, "en")}`,
+                children: "자세히 보기",
               }}
               rightProps={{
                 icon:
@@ -253,27 +262,28 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo, date }: StudyInFoDrawerPro
                   ) : (
                     <CheckCircleIcon size="md" isFill />
                   ),
-                isDisabled: dayjsToStr(dayjs()) !== date,
+                isDisabled: dayjs().startOf("day").isAfter(dayjs(date)),
+                func: dayjs().startOf("day").isAfter(dayjs(date))
+                  ? null
+                  : () =>
+                      handleStudyActionButton(
+                        status === "attendance"
+                          ? "comment"
+                          : status === "notParticipation"
+                          ? "vote"
+                          : "attend",
+                      ),
                 children: (
-                  <div
-                    onClick={
-                      dayjsToStr(dayjs()) !== date
-                        ? null
-                        : () =>
-                            handleStudyActionButton(
-                              status === "attendance"
-                                ? "comment"
-                                : status === "notParticipation"
-                                  ? "vote"
-                                  : "attend",
-                            )
-                    }
-                  >
+                  <div>
                     {status === "attendance"
                       ? "한줄 코멘트 변경"
                       : status === "notParticipation"
-                        ? "스터디 합류"
-                        : "스터디 출석"}
+                      ? date === dayjsToStr(dayjs())
+                        ? detailInfo.participantCnt > 0
+                          ? "스터디 합류"
+                          : "스터디 참여"
+                        : "스터디 투표"
+                      : "스터디 출석"}
                   </div>
                 ),
               }}
@@ -292,14 +302,25 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo, date }: StudyInFoDrawerPro
           <Input value={commentValue} onChange={(e) => setCommentValue(e.target.value)} />
         </ModalLayout>
       )}
-      {isVoteDrawer && (
+      {modalType === "timeSelect" && (
         <StudyVoteTimeRulletDrawer
           setVoteTime={setVoteTime}
           drawerOptions={drawerOptions}
-          setIsModal={setIsVoteDrawer}
+          setIsModal={() => setModalType(null)}
           zIndex={900}
         />
       )}
+      {modalType === "placeSelect" && (
+        <StudyPlacePickerDrawer
+          subArr={subArr}
+          setSubArr={setSubArr}
+          setModalType={setModalType}
+          id={detailInfo.id}
+          studyVoteData={studyVoteData}
+          findMyPickMainPlace={findMyPickMainPlace}
+        />
+      )}
+
       {isAlertMoal && (
         <StudyChangeAlertModal handleFunction={handleVote} setIsModal={setIsAlertModal} />
       )}

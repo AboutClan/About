@@ -1,8 +1,144 @@
-function StudyVoteDrawer() {
-  return <></>;
+import { Box, Flex } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+
+import { useCurrentLocation } from "../../../hooks/custom/CurrentLocationHook";
+import { setStudyToThumbnailInfo } from "../../../libs/study/setStudyToThumbnailInfo";
+import {
+  DEFAULT_SUB_PLACE_CNT,
+  RECOMMENDATION_KM,
+  sortByDistanceSub,
+  SubPlaceProps,
+} from "../../../pageTemplates/vote/VoteDrawer";
+import { DispatchType } from "../../../types/hooks/reactTypes";
+import {
+  StudyDailyInfoProps,
+  StudyParticipationProps,
+} from "../../../types/models/studyTypes/studyDetails";
+import { StudyThumbnailCardProps } from "../../molecules/cards/StudyThumbnailCard";
+import PickerRowButton from "../../molecules/PickerRowButton";
+import BottomFlexDrawer, { BottomFlexDrawerOptions } from "../../organisms/drawer/BottomFlexDrawer";
+
+interface StudyPlacePickerDrawerProps {
+  studyVoteData: StudyDailyInfoProps;
+  setModalType: (type: "timeSelect") => void;
+  id: string;
+
+  subArr: SubPlaceProps[];
+  setSubArr: DispatchType<SubPlaceProps[]>;
+  findMyPickMainPlace: StudyParticipationProps;
 }
 
-export default StudyVoteDrawer;
+function StudyPlacePickerDrawer({
+  setModalType,
+  studyVoteData,
+  id,
+  subArr,
+  setSubArr,
+  findMyPickMainPlace,
+}: StudyPlacePickerDrawerProps) {
+  const { currentLocation } = useCurrentLocation();
+
+  const [defaultPlaceArr, setDefaultPlaceArr] = useState<SubPlaceProps[]>([]);
+
+  useEffect(() => {
+    if (!studyVoteData) return;
+    const temp: SubPlaceProps[] = [];
+    const temp2: SubPlaceProps[] = [];
+    const sortedSub = sortByDistanceSub(studyVoteData, findMyPickMainPlace);
+    sortedSub.forEach((par, idx) => {
+      if (idx < DEFAULT_SUB_PLACE_CNT && par.place.distance <= RECOMMENDATION_KM) temp.push(par);
+      else temp2.push(par);
+    });
+    setSubArr(temp);
+    setDefaultPlaceArr(temp2);
+  }, [studyVoteData]);
+
+  const drawerOptions2: BottomFlexDrawerOptions = {
+    header: {
+      title: "스터디 장소 투표",
+      subTitle: "참여 가능한 스터디 장소를 모두 선택해 주세요¡",
+    },
+    footer: {
+      text: "다 음",
+      func: () => setModalType("timeSelect"),
+      // loading: isLoading1 || isLoading2,
+    },
+  };
+
+  const convertData = (data: StudyParticipationProps): StudyThumbnailCardProps => {
+    const isMain = id === data.place._id;
+    return setStudyToThumbnailInfo(
+      [data],
+      null,
+      isMain
+        ? currentLocation
+        : { lat: findMyPickMainPlace?.place.latitude, lon: findMyPickMainPlace?.place?.longitude },
+      null,
+      true,
+      null,
+      null,
+      null,
+    )[0];
+  };
+
+  return (
+    <>
+      <BottomFlexDrawer
+        isOverlay
+        isHideBottom
+        isDrawerUp
+        zIndex={5000}
+        height={410}
+        setIsModal={() => setModalType(null)}
+        drawerOptions={drawerOptions2}
+      >
+        <Flex w="full" direction="column" overflowY="scroll">
+          <Box mb={2} w="full">
+            <PickerRowButton
+              {...convertData(findMyPickMainPlace)}
+              onClick={() => setModalType(null)}
+              pickType="main"
+            />
+          </Box>
+          {subArr?.map((props, idx) => {
+            const id = props.place._id;
+            const par = defaultPlaceArr.find((par) => par.place._id === id);
+            return (
+              <Box key={idx} mb={2} w="full">
+                <PickerRowButton
+                  {...convertData(props)}
+                  onClick={() =>
+                    subArr.some((sub) => sub.place._id === id)
+                      ? setSubArr((old) => old.filter((old) => old.place._id !== id))
+                      : setSubArr((old) => [...old, par])
+                  }
+                  pickType="second"
+                  isNoSelect={!subArr.some((par) => par.place._id === id)}
+                />
+              </Box>
+            );
+          })}
+          {defaultPlaceArr?.map((props, idx) => {
+            const id = props.place._id;
+            const par = defaultPlaceArr.find((par) => par.place._id === id);
+            return (
+              <Box key={idx} mb={2} w="full">
+                <PickerRowButton
+                  {...convertData(props)}
+                  onClick={() => setSubArr((old) => [...old, par])}
+                  pickType={null}
+                  isNoSelect={!subArr.some((par) => par.place._id === id)}
+                />
+              </Box>
+            );
+          })}
+        </Flex>
+      </BottomFlexDrawer>
+    </>
+  );
+}
+
+export default StudyPlacePickerDrawer;
 
 // import { Box } from "@chakra-ui/react";
 // import dayjs from "dayjs";
@@ -17,7 +153,7 @@ export default StudyVoteDrawer;
 
 // dayjs.locale("ko");
 
-// interface IStudyVoteDrawer extends IModal {
+// interface IStudyPlacePickerDrawer extends IModal {
 //   imagePropsArr: {
 //     id: string;
 //     name: string;
@@ -29,13 +165,13 @@ export default StudyVoteDrawer;
 //   hasPlace?: boolean;
 // }
 
-// export default function StudyVoteDrawer({
+// export default function StudyPlacePickerDrawer({
 //   setIsModal,
 //   date,
 //   hasPlace,
 //   handleSubmit,
 //   isLoading,
-// }: IStudyVoteDrawer) {
+// }: IStudyPlacePickerDrawer) {
 //   // const { date, id } = useParams<{ date: string; id: string }>();
 //   // const router = useRouter();
 

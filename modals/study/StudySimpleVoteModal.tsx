@@ -209,8 +209,8 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
             {studyDateStatus === "today"
               ? mainPlaceFullName || "장소를 선택해 주세요"
               : mainPlaceFullName
-                ? `${mainPlaceFullName} 외 ${myVote?.subPlace?.length + 1}곳`
-                : "등록된 장소가 없습니다."}
+              ? `${mainPlaceFullName} 외 ${myVote?.subPlace?.length + 1}곳`
+              : "등록된 장소가 없습니다."}
           </Box>
         </Box>
         <Button

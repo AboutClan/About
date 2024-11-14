@@ -26,7 +26,6 @@ function StudyMapTopNav({
   setCenterLocation,
 }: StudyMapTopNavProps) {
   const toast = useToast();
-
   const { data: userInfo } = useUserInfoQuery();
   const userPlace = userInfo?.locationDetail;
 
@@ -42,9 +41,10 @@ function StudyMapTopNav({
       lat: myStudyParticipation ? latitude : userPlace?.lat,
       lon: myStudyParticipation ? longitude : userPlace?.lon,
     };
-    const changeLocation = getLocationByCoordinates(lat, lon);
+    const changeLocation = getLocationByCoordinates(lat, lon) as ActiveLocation | null;
     if (changeLocation) {
       setLocation(changeLocation as ActiveLocation);
+
       setCenterLocation({ lat, lon });
     }
   };

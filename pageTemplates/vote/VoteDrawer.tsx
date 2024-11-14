@@ -127,6 +127,7 @@ function VoteDrawer({
       });
     } else {
       //즐겨찾기 메인 장소를 투표한 경우
+
       if (myVote?.main === findMyPreferMainPlace?.place._id) {
         const findMyPreferSubPlaceArr = studyVoteData?.participations
           .filter((par) => preference?.subPlace.includes(par.place._id))
@@ -189,6 +190,14 @@ function VoteDrawer({
   useEffect(() => {
     if (!myVote?.main) setIsFirstPage(true);
     else {
+      if (date !== dayjsToStr(dayjs())) {
+        const temp = [];
+        const sortedSub = sortByDistanceSub(studyVoteData, findMyPickMainPlace);
+        sortedSub.forEach((par) => {
+          if (par.place.distance <= RECOMMENDATION_KM) temp.push(par.place._id);
+        });
+        setMyVote((old) => ({ ...old, sub: temp }));
+      }
       setCenterLocation({
         lat: findMyPickMainPlace?.place?.latitude,
         lon: findMyPickMainPlace?.place?.longitude,
@@ -346,10 +355,10 @@ function VoteDrawer({
                       !isFirstPage && myVote?.sub.includes(id)
                         ? "second"
                         : myVote?.main !== id
-                          ? null
-                          : isFirstPage
-                            ? "first"
-                            : "main"
+                        ? null
+                        : isFirstPage
+                        ? "first"
+                        : "main"
                     }
                   />
                 </Box>

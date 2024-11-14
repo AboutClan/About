@@ -18,7 +18,7 @@ export const POINT_SYSTEM_PLUS = {
   STUDY_INVITE: { value: 2, message: "친구 초대 보너스" },
   DAILY_ATTEND: { value: 2, message: "일일 출석" },
   PROMOTION: { value: 100, message: "홍보 리워드" },
-  LIKE: { value: 2, message: "좋아요" },
+  LIKE: { value: 1, message: "좋아요" },
 };
 
 export const POINT_SYSTEM_DEPOSIT = {

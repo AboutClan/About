@@ -1,5 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 import ButtonWrapper from "../../../components/atoms/ButtonWrapper";
@@ -17,11 +18,17 @@ interface StudyPageDrawerHeaderProps {
 
 function StudyPageDrawerHeader({ date, setDate, isDrawerUp }: StudyPageDrawerHeaderProps) {
   const [isCalendarModal, setIsCalendarModal] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const newSearchParams = new URLSearchParams(searchParams);
 
   const englishDayjs = dayjs(date).locale("en");
 
   const navigateNextDay = () => {
-    setDate((old) => dayjsToStr(dayjs(old).add(1, "day")));
+    const newDate = dayjsToStr(dayjs(date).add(1, "day"));
+    setDate(newDate);
+    newSearchParams.set("date", newDate);
+    router.replace(`/studyPage?${newSearchParams.toString()}`);
   };
 
   return (
