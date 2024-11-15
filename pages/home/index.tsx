@@ -17,9 +17,9 @@ function Home() {
         <HomeNav />
       </Slide>
       <Slide>
-        <HomeGroupSection />
         <HomeGatherSection />
         <HomeReviewSection />
+        <HomeGroupSection />
       </Slide>
       {/* <Slide isNoPadding>
         <HomeStudySection />
