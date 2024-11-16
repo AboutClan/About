@@ -23,7 +23,7 @@ export default function HomeReviewSection() {
 
   return (
     <Box mb="20px">
-      <SectionHeader title="About 소셜링" subTitle="Meeting">
+      <SectionHeader title="About 라운지" subTitle="Lounge">
         <ButtonWrapper size="xs" url="/gather?category=all">
           <ShortArrowIcon dir="right" />
         </ButtonWrapper>
