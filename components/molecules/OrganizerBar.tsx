@@ -24,6 +24,7 @@ function OrganizerBar({ organizer, createdAt, children, isAdminOpen }: Organizer
           <AboutIcon size="md" />
         ) : (
           <Avatar
+            userId={organizer._id}
             avatar={organizer.avatar}
             uid={organizer.uid}
             image={organizer.profileImage}

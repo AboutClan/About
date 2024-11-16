@@ -56,11 +56,17 @@ export const useGroupsMineQuery = (status: "pending" | "all", options?: QueryOpt
     },
     options,
   );
-export const useGroupsTitleQuery = (userId: string, options?: QueryOptions<string[]>) =>
-  useQuery<string[], AxiosError, string[]>(
+export const useGroupsTitleQuery = (
+  userId: string,
+  options?: QueryOptions<{ _id: string; title: string }[]>,
+) =>
+  useQuery<{ _id: string; title: string }[], AxiosError, { _id: string; title: string }[]>(
     [GROUP_STUDY, userId],
     async () => {
-      const res = await axios.get<string[]>(`${SERVER_URI}/groupStudy/profile/${userId}`, {});
+      const res = await axios.get<{ _id: string; title: string }[]>(
+        `${SERVER_URI}/groupStudy/profile/${userId}`,
+        {},
+      );
       return res.data;
     },
     options,

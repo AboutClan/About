@@ -34,6 +34,7 @@ function RankingOverview({ myRankInfo }: IRankingOverview) {
                 avatar={userInfo.avatar}
                 uid={userInfo.uid}
                 size="lg"
+                userId={userInfo._id}
                 isPriority={true}
                 isLink={false}
               />

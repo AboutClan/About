@@ -61,6 +61,7 @@ function RankingMembers({ categorySource, rankingUsers, isScore }: IRankingMembe
             </Box>
             <Name>
               <Avatar
+                userId={who._id}
                 image={who.profileImage}
                 avatar={who.avatar}
                 uid={who.uid}

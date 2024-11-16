@@ -1,21 +1,20 @@
 import { Button } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useParams, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useGroupsTitleQuery } from "../../hooks/groupStudy/queries";
-import { useUidToUserInfoQuery } from "../../hooks/user/queries";
+import { useUserIdToUserInfoQuery } from "../../hooks/user/queries";
 import BottomDrawer from "../../pageTemplates/profile/BottomDrawer";
 import DeclareDrawer from "../../pageTemplates/profile/DeclareDrawer";
 import DetailInfo from "../../pageTemplates/profile/DetailInfo";
 import ProfileOverview from "../../pageTemplates/profile/ProfileOverview";
-import { prevPageUrlState } from "../../recoils/previousAtoms";
 import { transferUserName } from "../../recoils/transferRecoils";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { DeclareRequest } from "../../types/models/userTypes/userRequestTypes";
@@ -27,23 +26,22 @@ function ProfilePage() {
   const searchParams = useSearchParams();
   const isGuest = session ? session.user.name === "guest" : undefined;
 
-  const beforePage = useRecoilValue(prevPageUrlState);
-
   const isDeclare = searchParams.get("declare") === "on";
 
-  const { uid } = useParams<{ uid: string }>() || {};
+  const { userId } = useParams<{ userId: string }>() || {};
 
   const setTransferUserName = useSetRecoilState(transferUserName);
   const [declareModal, setDeclareModal] = useState<DeclareRequest>();
 
-  const { data: user } = useUidToUserInfoQuery(uid as string, {
-    enabled: !!uid,
+  const { data: user } = useUserIdToUserInfoQuery(userId as string, {
+    enabled: !!userId,
   });
 
-  const { data: data2 } = useGroupsTitleQuery(session?.user.id, {
-    enabled: !!session?.user.id,
+  const { data } = useGroupsTitleQuery(userId, {
+    enabled: !!userId,
   });
-  console.log(4, session?.user.id, data2);
+
+  const groups = data?.map((props) => props.title);
 
   useEffect(() => {
     if (user) setTransferUserName(user.name);
@@ -55,12 +53,12 @@ function ProfilePage() {
       return;
     }
     if (type === "chat") router.push(`/chat/${user._id}`);
-    if (type === "declare") router.replace(`/profile/${uid}?declare=on`);
+    if (type === "declare") router.replace(`/profile/${userId}?declare=on`);
   };
 
   return (
     <>
-      <Header title="" url={beforePage} rightPadding={8}>
+      <Header title="" rightPadding={8}>
         <Button px="12px" size="md" variant="ghost" onClick={() => handleDrawer("chat")}>
           <i className="fa-regular fa-paper-plane fa-lg" />
         </Button>
@@ -73,14 +71,14 @@ function ProfilePage() {
           <Layout>
             <ProfileOverview user={user as IUser} />
             <HrDiv />
-            <DetailInfo user={user as IUser} />
+            <DetailInfo user={user as IUser} groups={groups} />
           </Layout>
         </Container>
       </Slide>
       {isDeclare && (
         <BottomDrawer
           onClose={() => {
-            router.replace(`/profile/${uid}`);
+            router.replace(`/profile/${userId}`);
           }}
           setDeclareModal={setDeclareModal}
         />

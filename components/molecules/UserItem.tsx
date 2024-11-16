@@ -22,7 +22,13 @@ export function UserItem({ user, children }: IUserItem) {
   };
   return (
     <MemberItem key={user.uid} onClick={() => onClickProfile(user)}>
-      <Avatar image={user.profileImage} avatar={user.avatar} uid={user.uid} size="sm" />
+      <Avatar
+        userId={user._id}
+        image={user.profileImage}
+        avatar={user.avatar}
+        uid={user.uid}
+        size="sm"
+      />
       <UserOverview>
         <span>{user?.name}</span>
         <div>{user.comment}</div>

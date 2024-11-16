@@ -53,6 +53,7 @@ export default function UserOverview({ userInfo }: UserOverviewProps) {
               avatar={userInfo?.avatar}
               image={userInfo.profileImage}
               uid={userInfo.uid}
+              userId={userInfo._id}
               size="xl"
               isLink={false}
             />

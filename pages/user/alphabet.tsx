@@ -126,6 +126,7 @@ function CollectionAlphabet() {
                   <ProfileWrapper onClick={() => onClickProfile(user)}>
                     <Avatar
                       size="md"
+                      userId={user._id}
                       image={user.profileImage}
                       avatar={user.avatar}
                       uid={user.uid}

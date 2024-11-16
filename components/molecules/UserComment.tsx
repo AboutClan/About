@@ -144,6 +144,7 @@ function UserComment({
         <Flex justify="center" alignSelf="flex-start" mr={2}>
           <Avatar
             size="mds"
+            userId={user._id}
             avatar={user.avatar}
             image={user.profileImage}
             uid={user.uid}

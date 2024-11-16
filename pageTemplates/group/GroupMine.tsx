@@ -1,5 +1,4 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useMemo } from "react";
 import { useSetRecoilState } from "recoil";
@@ -11,7 +10,6 @@ import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { getRandomImage } from "../../utils/imageUtils";
 
 function GroupMine() {
-  const { data: session } = useSession();
   const { data } = useGroupsMineQuery("pending");
 
   const setGroup = useSetRecoilState(transferGroupDataState);

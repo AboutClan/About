@@ -16,6 +16,7 @@ interface IAvatar {
   sizeLength?: number;
   avatar?: IAvatarProp;
   uid?: string;
+  userId?: string;
   isPriority?: boolean;
   shadowAvatar?: number;
   isLink?: boolean;
@@ -28,6 +29,7 @@ function AvatarComponent({
   avatar,
   uid,
   isPriority,
+  userId,
   shadowAvatar,
   isLink = true,
 }: IAvatar) {
@@ -128,12 +130,12 @@ function AvatarComponent({
 
   return (
     <>
-      {!isLink ? (
+      {!isLink || !userId ? (
         <Box>
           <AvatarComponent />
         </Box>
       ) : (
-        <Link href={`/profile/${uid}`} style={{ outline: "none" }}>
+        <Link href={`/profile/${userId}`} style={{ outline: "none" }}>
           <AvatarComponent />
         </Link>
       )}

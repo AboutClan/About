@@ -116,6 +116,7 @@ function Uid() {
                               image={opponent.profileImage}
                               avatar={opponent.avatar}
                               uid={opponent.uid}
+                              userId={opponent._id}
                             />
                           </Box>
                           <Flex ml="8px" direction="column" color="var(--gray-800)">

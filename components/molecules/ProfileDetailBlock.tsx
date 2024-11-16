@@ -46,7 +46,13 @@ function ProfileDetailBlock({ user, attendInfo }: ProfileDetailBlockProps) {
           pr={2}
           borderRight="var(--border-main)"
         >
-          <Avatar uid={user.uid} avatar={user?.avatar} image={user.profileImage} size="md" />
+          <Avatar
+            userId={user._id}
+            uid={user.uid}
+            avatar={user?.avatar}
+            image={user.profileImage}
+            size="md"
+          />
           <Box>{user.name}</Box>
         </Flex>
         <Flex direction="column" flex={1}>

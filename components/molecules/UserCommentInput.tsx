@@ -74,6 +74,7 @@ function UserCommentInput({
             <Avatar
               isLink={false}
               size="mds"
+              userId={user._id}
               uid={user.uid}
               avatar={user.avatar}
               image={user.profileImage}

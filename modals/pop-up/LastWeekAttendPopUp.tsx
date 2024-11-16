@@ -62,6 +62,7 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
     >
       <Flex align="center">
         <Avatar
+          userId={ userInfo._id}
           image={userInfo?.profileImage}
           uid={userInfo?.uid}
           avatar={userInfo?.avatar}

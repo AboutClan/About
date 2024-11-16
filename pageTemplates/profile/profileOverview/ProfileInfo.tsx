@@ -117,7 +117,13 @@ function ProfileInfo({ user }: IProfileInfo) {
     <>
       <Layout>
         <Profile>
-          <Avatar uid={user.uid} image={user.profileImage} avatar={user.avatar} size="xl" />
+          <Avatar
+            userId={user._id}
+            uid={user.uid}
+            image={user.profileImage}
+            avatar={user.avatar}
+            size="xl"
+          />
           <ProfileName>
             <div>
               <span>{user?.name || session?.user.name}</span>

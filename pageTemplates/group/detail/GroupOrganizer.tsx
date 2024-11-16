@@ -24,7 +24,12 @@ function GroupOrganizer({
   return (
     <Layout>
       <div>
-        <Avatar uid={organizer.uid} image={organizer.profileImage} size="sm" />
+        <Avatar
+          userId={organizer._id}
+          uid={organizer.uid}
+          image={organizer.profileImage}
+          size="sm"
+        />
         <Info>
           <Writer>{organizer.name}</Writer>
           <span>{writingDate}</span>
