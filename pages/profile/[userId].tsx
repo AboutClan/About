@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import { useParams, useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -9,6 +9,7 @@ import styled from "styled-components";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
+import { useGroupsTitleQuery } from "../../hooks/groupStudy/queries";
 import { useUidToUserInfoQuery } from "../../hooks/user/queries";
 import BottomDrawer from "../../pageTemplates/profile/BottomDrawer";
 import DeclareDrawer from "../../pageTemplates/profile/DeclareDrawer";
@@ -38,6 +39,11 @@ function ProfilePage() {
   const { data: user } = useUidToUserInfoQuery(uid as string, {
     enabled: !!uid,
   });
+
+  const { data: data2 } = useGroupsTitleQuery(session?.user.id, {
+    enabled: !!session?.user.id,
+  });
+  console.log(4, session?.user.id, data2);
 
   useEffect(() => {
     if (user) setTransferUserName(user.name);
