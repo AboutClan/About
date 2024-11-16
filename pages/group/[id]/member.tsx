@@ -31,6 +31,14 @@ export default function Member() {
 
   const { data: groupData } = useGroupIdQuery(id, { enabled: !!id && !transferGroup });
 
+  const [users, setUsers] = useState<GroupParicipantProps[]>([]);
+
+  useEffect(() => {
+    if (group) {
+      setUsers(group.participants);
+    }
+  }, [group]);
+
   useEffect(() => {
     if (transferGroup) setGroup(transferGroup);
     else if (groupData) setGroup(groupData);
@@ -60,6 +68,11 @@ export default function Member() {
       if (belong) {
         await handleBelong({ uid: deleteUser?.user?.uid, belong: null });
       }
+      setGroup((old) => ({
+        ...old,
+        participants: old.participants.filter((par) => par.user.uid !== deleteUser.user.uid),
+      }));
+      setDeleteUser(null);
     },
     text: "추방",
   };
@@ -73,7 +86,7 @@ export default function Member() {
             참여중인 멤버
           </Box>
           <Flex direction="column">
-            {group?.participants.map((who, idx) => (
+            {users.map((who, idx) => (
               <Box key={idx}>
                 <ProfileCommentCard
                   user={who.user}

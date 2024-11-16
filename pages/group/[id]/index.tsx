@@ -14,7 +14,6 @@ import Slide from "../../../components/layouts/PageSlide";
 import BlurredLink from "../../../components/molecules/BlurredLink";
 import InfoBoxCol from "../../../components/molecules/InfoBoxCol";
 import TabNav from "../../../components/molecules/navs/TabNav";
-import { useGroupAttendancePatchMutation } from "../../../hooks/groupStudy/mutations";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
 import { checkGroupGathering } from "../../../libs/group/checkGroupGathering";
 import GroupBottomNav from "../../../pageTemplates/group/detail/GroupBottomNav";
@@ -25,7 +24,7 @@ import GroupHeader from "../../../pageTemplates/group/detail/GroupHeader";
 import GroupParticipation from "../../../pageTemplates/group/detail/GroupParticipation";
 import { transferGroupDataState } from "../../../recoils/transferRecoils";
 import { convertMeetingTypeToKr } from "../../../utils/convertUtils/convertText";
-import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
+import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
 export type GroupSectionCategory = "정 보" | "피 드";
 const TAB_LIST: GroupSectionCategory[] = ["정 보", "피 드"];
@@ -40,26 +39,21 @@ function GroupDetail() {
   const [group, setTransferGroup] = useRecoilState(transferGroupDataState);
 
   const { data: groupData, refetch } = useGroupIdQuery(id, { enabled: !!id && !group });
-  
+  console.log(43, groupData, !!id, group);
   useEffect(() => {
     if (groupData) {
+      console.log(42, groupData);
       setTransferGroup(groupData);
     }
   }, [groupData]);
 
-  const { mutate: patchAttendance } = useGroupAttendancePatchMutation(+id, {
-    onSuccess() {
-      resetCache();
-    },
-  });
-
-  useEffect(() => {
-    if (!group) return;
-    const firstDate = group.attendance.firstDate;
-    if (!firstDate) return;
-    if (firstDate !== dayjsToStr(dayjs().subtract(1, "day").startOf("week").add(1, "day")))
-      patchAttendance();
-  }, [group?.attendance?.firstDate]);
+  // useEffect(() => {
+  //   if (!group) return;
+  //   const firstDate = group.attendance.firstDate;
+  //   if (!firstDate) return;
+  //   if (firstDate !== dayjsToStr(dayjs().subtract(1, "day").startOf("week").add(1, "day")))
+  //     patchAttendance();
+  // }, [group?.attendance?.firstDate]);
 
   const belong = group && checkGroupGathering(group.hashTag);
 
@@ -74,6 +68,7 @@ function GroupDetail() {
     refetch();
   };
 
+  console.log(group, session, category === "정 보", isMember, !isGuest);
   return (
     <>
       {group && <GroupHeader group={group} />}

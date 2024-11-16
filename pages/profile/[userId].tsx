@@ -41,7 +41,7 @@ function ProfilePage() {
     enabled: !!userId,
   });
 
-  const groups = data?.map((props) => props.title);
+  const groups = data?.map((props) => props.category.sub);
 
   useEffect(() => {
     if (user) setTransferUserName(user.name);

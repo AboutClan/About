@@ -1,9 +1,9 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -42,13 +42,14 @@ function GatherHeader({ gatherData }: IGatherHeader) {
           <IconWrapper onClick={() => setDrawerType("kakaoShare")}>
             <i className="fa-light fa-share-nodes fa-lg" />
           </IconWrapper>
-          {(gatherData.user as IUserSummary)._id === session?.user.id && (
-            <IconWrapper>
-              <Link href={`/gather/${gatherData.id}/setting`}>
-                <i className="fa-light fa-gear fa-lg" />
-              </Link>
-            </IconWrapper>
-          )}
+          {(gatherData.user as IUserSummary)._id === session?.user.id ||
+            (session?.user.uid === "2259633694" && (
+              <IconWrapper>
+                <Link href={`/gather/${gatherData.id}/setting`}>
+                  <i className="fa-light fa-gear fa-lg" />
+                </Link>
+              </IconWrapper>
+            ))}
         </Flex>
       </Header>
       {drawerType === "kakaoShare" && (

@@ -58,12 +58,16 @@ export const useGroupsMineQuery = (status: "pending" | "all", options?: QueryOpt
   );
 export const useGroupsTitleQuery = (
   userId: string,
-  options?: QueryOptions<{ _id: string; title: string }[]>,
+  options?: QueryOptions<{ _id: string; title: string; category: { sub: string } }[]>,
 ) =>
-  useQuery<{ _id: string; title: string }[], AxiosError, { _id: string; title: string }[]>(
+  useQuery<
+    { _id: string; title: string; category: { sub: string } }[],
+    AxiosError,
+    { _id: string; title: string; category: { sub: string } }[]
+  >(
     [GROUP_STUDY, userId],
     async () => {
-      const res = await axios.get<{ _id: string; title: string }[]>(
+      const res = await axios.get<{ _id: string; title: string; category: { sub: string } }[]>(
         `${SERVER_URI}/groupStudy/profile/${userId}`,
         {},
       );
@@ -76,6 +80,7 @@ export const useGroupIdQuery = (groupStudyId?: string, options?: QueryOptions<IG
   useQuery<IGroup, AxiosError, IGroup>(
     [GROUP_STUDY, groupStudyId],
     async () => {
+      console.log(53);
       const res = await axios.get<IGroup>(`${SERVER_URI}/groupStudy`, {
         params: { groupStudyId },
       });

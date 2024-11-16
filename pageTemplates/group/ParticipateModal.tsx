@@ -8,11 +8,7 @@ import styled from "styled-components";
 import { PopOverIcon } from "../../components/Icons/PopOverIcon";
 import { GROUP_STUDY } from "../../constants/keys/queryKeys";
 import { useCompleteToast, useFailToast } from "../../hooks/custom/CustomToast";
-import {
-  useGroupParticipationMutation,
-  useGroupWaitingMutation,
-} from "../../hooks/groupStudy/mutations";
-import { usePointSystemMutation } from "../../hooks/user/mutations";
+import { useGroupWaitingMutation } from "../../hooks/groupStudy/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { IFooterOptions, ModalFooterTwo, ModalLayout } from "../../modals/Modals";
 import { transferGroupDataState } from "../../recoils/transferRecoils";
@@ -21,31 +17,19 @@ import { IModal } from "../../types/components/modalTypes";
 
 interface IParticipateModal extends IModal {
   id: number;
-  isFree: boolean;
+
   feeText: string;
   answer: string;
 }
 
-function ParticipateModal({ isFree, id, setIsModal, answer }: IParticipateModal) {
+function ParticipateModal({ id, setIsModal, answer }: IParticipateModal) {
   const router = useRouter();
   const failToast = useFailToast();
   const completeToast = useCompleteToast();
   const { data: userInfo } = useUserInfoQuery();
   const [selectBtn, setSelectBtn] = useState<"point" | "deposit">("point");
 
-  const { mutate: getPoint } = usePointSystemMutation("point");
-  const { mutate: getDeposit } = usePointSystemMutation("deposit");
-
   const setTransferGroup = useSetRecoilState(transferGroupDataState);
-
-  const chargePoint = () => {
-    if (selectBtn === "point") {
-      getPoint({ value: 30, message: "소모임 가입" });
-    }
-    if (selectBtn === "deposit") {
-      getDeposit({ value: -200, message: "소모임 가입" });
-    }
-  };
 
   const queryClient = useQueryClient();
 
@@ -54,14 +38,6 @@ function ParticipateModal({ isFree, id, setIsModal, answer }: IParticipateModal)
     queryClient.invalidateQueries([GROUP_STUDY, id]);
     router.push(`/group/${id}`);
   };
-
-  const { mutate: participate } = useGroupParticipationMutation("post", id, {
-    onSuccess() {
-      if (isFree) chargePoint();
-      completeToast("free", "가입이 완료되었습니다.");
-      resetCache();
-    },
-  });
 
   const { mutate: sendRegisterForm } = useGroupWaitingMutation(id, {
     onSuccess() {
@@ -87,10 +63,7 @@ function ParticipateModal({ isFree, id, setIsModal, answer }: IParticipateModal)
         failToast("free", "보증금을 사용한 뒤에도 1000원 이상 보유해야 합니다.");
         return;
       }
-    }
-
-    if (isFree) participate();
-    else sendRegisterForm({ answer, pointType: selectBtn });
+    } else sendRegisterForm({ answer, pointType: selectBtn });
     setIsModal(false);
   };
 
