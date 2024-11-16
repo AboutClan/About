@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -80,7 +80,7 @@ export default function StudyPage() {
   const [isVoteDrawerFirst, setIsVoteDrawerFirst] = useState(true);
 
   const [myStudyParticipation, setMyStudyParticipation] = useRecoilState(myStudyParticipationState);
-  const [isDrawerUp, setIsDrawerUp] = useState(false);
+  const [isDrawerUp, setIsDrawerUp] = useState(true);
 
   const { data: userInfo } = useUserInfoQuery();
   const { data: studyVoteData, isLoading } = useStudyVoteQuery(date, locationValue, {
@@ -99,7 +99,7 @@ export default function StudyPage() {
     newSearchParams.set("date", `${getStudyViewDate(dayjs(date))}`);
 
     router.replace(`/studyPage?${newSearchParams.toString()}`);
-   
+
     if (myStudyParticipation) {
       const lat = myStudyParticipation.place.latitude;
       const lon = myStudyParticipation.place.longitude;
@@ -107,14 +107,14 @@ export default function StudyPage() {
       if (changeLocation !== locationValue) {
         setLocationValue(changeLocation as ActiveLocation);
       }
-      
+
       setCenterLocation({
         lat: lat,
         lon: lon,
       });
     } else {
       const locationCenter = LOCATION_CENTER_DOT[userLocation];
-    
+
       setCenterLocation({ lat: locationCenter.latitude, lon: locationCenter.longitude });
     }
   }, [myStudyParticipation]);
@@ -133,7 +133,7 @@ export default function StudyPage() {
         );
 
         if (!changeLocation) return;
-        
+
         if (changeLocation === locationValue) {
           setCenterLocation({
             lat: findMyStudyParticipation.place.latitude,
@@ -160,7 +160,6 @@ export default function StudyPage() {
     }
 
     if (!isChangeLocation) {
-     
       setMarkersOptions(
         getMarkersOptions(
           studyVoteData,
@@ -178,7 +177,6 @@ export default function StudyPage() {
     setIsLocationRefetch(false);
     navigator.geolocation.getCurrentPosition(
       function (position) {
-        
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
         setCurrentLocation({ lat, lon });
@@ -264,7 +262,7 @@ export default function StudyPage() {
                 "location",
                 convertLocationLangTo(location as ActiveLocation, "en"),
               );
-              
+
               setLocationValue(location);
               router.replace(`/studyPage?${newSearchParams.toString()}`);
             }}

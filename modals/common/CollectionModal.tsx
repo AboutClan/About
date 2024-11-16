@@ -16,7 +16,7 @@ function CollectionModal({ collection, setIsModal }: ICollectionModal) {
   const footerOptions: IFooterOptions = {
     main: {},
   };
- 
+
   return (
     <ModalLayout
       title={collection?.alphabet ? "알파벳을 획득했어요!" : "출석 완료!"}
@@ -25,7 +25,9 @@ function CollectionModal({ collection, setIsModal }: ICollectionModal) {
     >
       <>
         {collection?.alphabet ? (
-          <AboutIcon alphabet={collection.alphabet} size="lg" isActive />
+          <Flex justify="center" w="full">
+            <AboutIcon alphabet={collection.alphabet} size="lg" isActive />
+          </Flex>
         ) : (
           <Box w="100%">
             <Flex w="100%" justify="space-between" px={3}>
