@@ -52,7 +52,7 @@ export function StudyThumbnailCard({
     }));
 
   const studyStatus = status === "pending" && participantCnt >= 3 ? "expected" : status;
-
+  console.log(5, status);
   return (
     <CardLink href={url} onClick={func}>
       {participants ? (
@@ -62,7 +62,6 @@ export function StudyThumbnailCard({
             <Badge mr="auto" colorScheme={STUDY_STATUS_TO_BADGE[studyStatus].colorScheme} size="md">
               {STUDY_STATUS_TO_BADGE[studyStatus].text}
             </Badge>
-
             <Title>{place.name}</Title>
             <Flex>
               <LocationDotIcon size="md" />
@@ -86,7 +85,6 @@ export function StudyThumbnailCard({
                 <Box as="span">{place.address}</Box>
               </Subtitle>
             </Flex>
-
             <Flex mt={3} alignItems="center" justify="space-between">
               <AvatarGroupsOverwrap userAvatarArr={userAvatarArr} maxCnt={VOTER_SHOW_MAX} />
 
@@ -119,15 +117,28 @@ export function StudyThumbnailCard({
         <>
           <PlaceImage size="md" imageProps={place.imageProps} hasToggleHeart id={id} />
           <Flex direction="column" ml={4} flex={1}>
-            <Flex fontSize="10px" lineHeight="12px" color="gray.600">
-              <Box as="span">
-                <LocationDotIcon size="md" />
+            <Flex justify="space-between">
+              <Box>
+                <Flex fontSize="10px" lineHeight="12px" color="gray.600">
+                  <Box as="span">
+                    <LocationDotIcon size="md" />
+                  </Box>
+                  <Box as="span" ml={1} color="var(--gray-600)">
+                    {place.branch}
+                  </Box>
+                </Flex>
+                <Title>{place.name}</Title>{" "}
               </Box>
-              <Box as="span" ml={1} color="var(--gray-600)">
-                {place.branch}
+              <Box>
+                <Badge
+                  mr="auto"
+                  colorScheme={STUDY_STATUS_TO_BADGE[studyStatus].colorScheme}
+                  size="md"
+                >
+                  {STUDY_STATUS_TO_BADGE[studyStatus].text}
+                </Badge>
               </Box>
             </Flex>
-            <Title>{place.name}</Title>
             <Subtitle>
               <Box>
                 <Box as="span" fontWeight={600}>
@@ -139,7 +150,6 @@ export function StudyThumbnailCard({
                 <Box as="span">{place.address}</Box>
               </Box>
             </Subtitle>
-
             <Flex mt={3} alignItems="center" justify="space-between">
               <Flex align="center" color="var(--gray-500)">
                 <UserIcon size="sm" />

@@ -165,7 +165,7 @@ function GroupPage() {
 
   return (
     <>
-      <Header title="소모임" isBack={false} />
+      <Header title="소모임" url="/group" isBack={false} />
       <Slide isNoPadding>
         <Layout>
           {!isGuest && (

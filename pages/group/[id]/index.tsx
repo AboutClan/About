@@ -39,10 +39,9 @@ function GroupDetail() {
   const [group, setTransferGroup] = useRecoilState(transferGroupDataState);
 
   const { data: groupData, refetch } = useGroupIdQuery(id, { enabled: !!id && !group });
-  console.log(43, groupData, !!id, group);
+
   useEffect(() => {
     if (groupData) {
-      console.log(42, groupData);
       setTransferGroup(groupData);
     }
   }, [groupData]);
@@ -105,7 +104,7 @@ function GroupDetail() {
                   },
                   { category: "가입 방식", text: group.isFree ? "자유 가입" : "승인제" },
                   { category: "진행 방식", text: convertMeetingTypeToKr(group?.meetingType) },
-                  { category: "참여 비용", text: group.fee ? group.fee + "" : "없음" },
+                  { category: "참여 비용", text: group.fee ? group.fee + "원" : "없음" },
                 ]}
                 size="md"
               />
@@ -164,7 +163,7 @@ function GroupDetail() {
                     <BlurredLink isBlur={!isMember} url={group.link} />
                   </Box>
                   <Flex mt={4}>
-                    {group.hashTag.split("#").map((tag, idx) =>
+                    {group.hashTag?.split("#").map((tag, idx) =>
                       tag ? (
                         <Box
                           h={5}

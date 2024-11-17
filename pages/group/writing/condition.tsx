@@ -26,7 +26,7 @@ export type GroupConditionType =
   | "age"
   | "pre"
   | "location"
-  | "isFree"
+  | "isAgree"
   | "fee"
   | "challenge"
   | "link"
@@ -48,7 +48,7 @@ function WritingCondition() {
       : groupWriting.age[0] === 19 && groupWriting.age[1] === 28
       ? false
       : true,
-    isFree: groupWriting?.isFree !== undefined ? groupWriting?.isFree : true,
+    isAgree: groupWriting?.isFree !== undefined ? groupWriting?.isFree : false,
     location:
       groupWriting?.location !== undefined ? groupWriting?.location === userInfo?.location : false,
     challenge: groupWriting?.challenge ? true : false,
@@ -60,7 +60,7 @@ function WritingCondition() {
     isSecret: groupWriting?.isSecret || false,
     link: !!groupWriting?.link || false,
   });
-
+  console.log(4, groupWriting, condition);
   const [challenge, setChallenge] = useState("");
 
   const [fee, setFee] = useState(groupWriting?.fee || "1000");
@@ -76,9 +76,9 @@ function WritingCondition() {
   const [link, setLink] = useState(groupWriting?.link || "");
 
   useEffect(() => {
-    if (!condition.isFree) setIsQuestionModal(true);
+    if (condition.isAgree) setIsQuestionModal(true);
     else setIsQuestionModal(false);
-  }, [condition.isFree]);
+  }, [condition.isAgree]);
 
   const onClickNext = async () => {
     const groupData: IGroupWriting = {
@@ -90,7 +90,7 @@ function WritingCondition() {
       ...groupWriting,
       fee: condition.fee ? +fee : 0,
       feeText,
-      isFree: condition.isFree,
+      isFree: !condition.isAgree,
       location: location || userInfo?.location,
       link,
       gender: condition.gender,
@@ -180,14 +180,14 @@ function WritingCondition() {
           <Item>
             <Name>
               <i className="fa-regular fa-person-to-door" />
-              <span>자유 가입</span>
+              <span>승인제 사용</span>
               <PopOverIcon title="자유 가입" text="조건에 맞는다면 자유롭게 가입이 가능합니다." />
             </Name>
             <Switch
               mr="var(--gap-1)"
               colorScheme="mint"
-              isChecked={condition.isFree}
-              onChange={(e) => toggleSwitch(e, "isFree")}
+              isChecked={condition.isAgree}
+              onChange={(e) => toggleSwitch(e, "isAgree")}
             />
           </Item>
           <Item>
@@ -286,7 +286,10 @@ function WritingCondition() {
       <BottomNav onClick={() => onClickNext()} text="완료" />
       <QuestionBottomDrawer
         isModal={isQuestionModal}
-        setIsModal={setIsQuestionModal}
+        setIsModal={() => {
+          setCondition((old) => ({ ...old, isAgree: false }));
+          setIsQuestionModal(false);
+        }}
         question={question}
         setQuestion={setQuestion}
       />

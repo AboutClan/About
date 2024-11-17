@@ -81,7 +81,7 @@ function GroupHeader({ group }: IGroupHeader) {
       kakaoOptions: {
         type: "study",
         title: group.title,
-        subtitle: group.category.main,
+        subtitle: `${group.category.main} ・ ${group.category.sub}`,
         img: group.image,
         url: `/group/${group.id}`,
       },

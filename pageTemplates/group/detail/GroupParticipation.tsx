@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import styled from "styled-components";
 
 import { IProfileCommentCard } from "../../../components/molecules/cards/ProfileCommentCard";
@@ -34,9 +34,27 @@ function GroupParticipation({ data }: IGroupParticipation) {
 
   return (
     <Layout>
-      <Box mb={4} fontSize="18px" fontWeight="bold" lineHeight="28px">
-        참여중인 인원
-      </Box>
+      <Flex mb={4} fontSize="18px" lineHeight="28px">
+        <Box mr={2} fontWeight="bold">
+          참여중인 인원
+        </Box>
+        <Box as="span" color="mint">
+          {data?.participants.length}
+        </Box>
+        <Box as="span" mx={1} color="gray.600">
+          /
+        </Box>
+        <Box as="span">
+          {data?.memberCnt.max ? (
+            <span>{data?.memberCnt.max}</span>
+          ) : (
+            <>
+              <span style={{ marginLeft: "4px" }} />
+              <i className="fa-solid fa-infinity" style={{ color: "var(--gray-400)" }} />
+            </>
+          )}
+        </Box>
+      </Flex>
       <ProfileCardColumn hasCommentButton={false} userCardArr={userCardArr} />
     </Layout>
   );
