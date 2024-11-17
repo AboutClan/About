@@ -3,7 +3,6 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import styled from "styled-components";
 import { TrophyIcon } from "../../components/Icons/icons";
 
 import RuleIcon from "../../components/Icons/RuleIcon";
@@ -230,102 +229,5 @@ function Event() {
     </>
   );
 }
-const Layout = styled.div`
-  margin: 0 var(--gap-4);
-`;
-
-const Container = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-
-  gap: var(--gap-3);
-`;
-
-const Item = styled.button`
-  position: relative;
-
-  padding: var(--gap-2);
-  background-color: white;
-  border: var(--border);
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-radius: var(--rounded-lg);
-`;
-
-const Status = styled.div`
-  justify-content: space-between;
-  display: flex;
-  width: 100%;
-  font-size: 14px;
-`;
-
-const Trophy = styled.div`
-  display: flex;
-  margin-left: 4px;
-  > div {
-    margin-left: 4px;
-  }
-`;
-
-const ApplyCnt = styled.div`
-  color: var(--gray-700);
-  font-size: 16px;
-`;
-
-const ImageWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100px;
-  height: 100px;
-  border-radius: var(--rounded-lg);
-  overflow: hidden;
-`;
-
-const Info = styled.div`
-  margin-top: 12px;
-  font-size: 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const Name = styled.span`
-  font-weight: 600;
-`;
-
-const Point = styled.span`
-  color: var(--color-mint);
-  font-size: 16px;
-`;
-
-const Circle = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
-  border: 2px solid var(--gray-800);
-  display: flex;
-  font-size: 14px;
-  justify-content: center;
-  align-items: center;
-  font-weight: 800;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-`;
-const CompletedRapple = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: var(--gray-300);
-  opacity: 0.5;
-`;
 
 export default Event;

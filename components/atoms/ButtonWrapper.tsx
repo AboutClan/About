@@ -16,6 +16,7 @@ function ButtonWrapper({ text, children, onClick, url, size = "md" }: ButtonWrap
       {url ? (
         <Link href={url}>
           <Button
+            bg="inherit"
             as="div"
             variant="unstyled"
             w={width}

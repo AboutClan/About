@@ -7,8 +7,9 @@ interface IArrowBackButton {
   defaultUrl?: string;
   url?: string;
   func?: () => void;
+  color: "mint" | "white";
 }
-export default function ArrowBackButton({ url, func, defaultUrl }: IArrowBackButton) {
+export default function ArrowBackButton({ url, func, defaultUrl, color }: IArrowBackButton) {
   const router = useRouter();
 
   const handleGoBack = () => {
@@ -21,13 +22,19 @@ export default function ArrowBackButton({ url, func, defaultUrl }: IArrowBackBut
     else router.push(defaultUrl);
   };
 
-  return <ArrowBackButtonUI onClick={handleGoBack} />;
+  return <ArrowBackButtonUI onClick={handleGoBack} color={color} />;
 }
 
-export function ArrowBackButtonUI({ onClick }: { onClick: () => void }) {
+export function ArrowBackButtonUI({
+  onClick,
+  color,
+}: {
+  onClick: () => void;
+  color: "mint" | "white";
+}) {
   return (
     <ButtonWrapper onClick={onClick}>
-      <ShortArrowIcon dir="left" />
+      <ShortArrowIcon dir="left" color={ color} />
     </ButtonWrapper>
   );
 }

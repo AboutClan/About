@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
 
 import axios from "axios";
+import { signOut, useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
 import { useEffect, useMemo, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -87,7 +87,8 @@ function Layout({ children }: ILayout) {
                 ? {
                     paddingTop: "56px",
                   }
-                : !NOT_PADDING_NAV_SEGMENT.includes(currentSegment?.[0])
+                : !NOT_PADDING_NAV_SEGMENT.includes(currentSegment?.[0]) &&
+                  !(currentSegment?.[0] === "store" && currentSegment?.[1])
                 ? {
                     paddingTop: "56px",
                     paddingBottom: `calc(var(--bottom-nav-height) + ${iPhoneNotchSize()}px`,
