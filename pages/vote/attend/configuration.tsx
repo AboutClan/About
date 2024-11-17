@@ -152,12 +152,14 @@ function Configuration() {
     }
 
     if (
-      isParticipationStudy &&
-      (myStudyParticipation?.place as StudyPlaceProps)?.fullname ===
-        transferStudyAttendance?.place?.name
+      !transferStudyAttendance ||
+      (isParticipationStudy &&
+        (myStudyParticipation?.place as StudyPlaceProps)?.fullname ===
+          transferStudyAttendance?.place?.name)
     ) {
       setIsChecking(true);
       handleArrived({ memo: attendMessage, endHour: convertTimeStringToDayjs(endTime) });
+      if (!transferStudyAttendance) return;
       formData.append("image", transferStudyAttendance.image);
       formData.append("path", "studyAttend");
       imageUpload(formData);

@@ -158,12 +158,14 @@ function GroupDetail() {
                       ))}
                     </UnorderedList>
                   </Box>
-                  <Box lineHeight="20px" mt={4} fontSize="13px">
-                    <Box>
-                      <b style={{ color: "var(--gray-800)" }}>단톡방 링크</b>(가입 후 입장)
+                  {group?.link && (
+                    <Box lineHeight="20px" mt={4} fontSize="13px">
+                      <Box>
+                        <b style={{ color: "var(--gray-800)" }}>단톡방 링크</b>(가입 후 입장)
+                      </Box>
+                      <BlurredLink isBlur={!isMember} url={group.link} />
                     </Box>
-                    <BlurredLink isBlur={!isMember} url={group.link} />
-                  </Box>
+                  )}
                   <Flex mt={4}>
                     {group.hashTag?.split("#").map((tag, idx) =>
                       tag ? (
