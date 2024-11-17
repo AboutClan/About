@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -235,7 +235,7 @@ function GroupPage() {
                         <GroupThumbnailCard
                           title={group.title}
                           text={group.guide}
-                          status={status}
+                          status={group.participants.length <= 1 ? "ready" : status}
                           category={group.category}
                           participants={group.participants.map((user) =>
                             group.isSecret ? { user: ABOUT_USER_SUMMARY } : user,

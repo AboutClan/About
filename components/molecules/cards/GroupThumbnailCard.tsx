@@ -19,7 +19,7 @@ const VOTER_SHOW_MAX = 4;
 export interface GroupThumbnailCardProps {
   title: string;
   text: string;
-  status: GroupStatus;
+  status: GroupStatus | "ready";
   category: IGroupWritingCategory;
   participants: (GroupParicipantProps | { user: IUserSummary })[];
   imageProps: {
@@ -53,12 +53,13 @@ export function GroupThumbnailCard({
         : { image: ABOUT_USER_SUMMARY.profileImage },
     );
 
-  const statusToBadgeProps: Record<GroupStatus, { text: string; colorScheme: string }> = {
+  const statusToBadgeProps: Record<GroupStatus | "ready", { text: string; colorScheme: string }> = {
     imminent: { text: `마감까지 ${maxCnt - participants.length}명`, colorScheme: "red" },
     full: { text: "인원마감", colorScheme: "orange" },
     waiting: { text: "오픈대기중", colorScheme: "red" },
     pending: { text: "모집중", colorScheme: "mint" },
     end: { text: "종료", colorScheme: "gray" },
+    ready: { text: "오픈 예정", colorScheme: "purple" },
   };
 
   return (
