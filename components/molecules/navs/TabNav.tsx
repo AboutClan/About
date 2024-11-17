@@ -58,7 +58,7 @@ export default function TabNav({
               p={!isMain ? "8px 20px" : "8px 16px"}
               flex={isFullSize ? 1 : undefined}
               key={tab.text}
-              color={tab.text === selected ? "black" : undefined}
+              color={tab.text === selected ? (isBlack ? "black" : "mint") : undefined}
               onClick={tab.text !== selected ? tab.func : undefined}
               _focus={{
                 outline: "none",

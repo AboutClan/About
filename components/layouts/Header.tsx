@@ -24,7 +24,7 @@ export default function Header({
   rightPadding,
   func,
   children,
-  isCenter,
+  isCenter = true,
   isBorder = true,
   defaultUrl,
 }: IHeader) {

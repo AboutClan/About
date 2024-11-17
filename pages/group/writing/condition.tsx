@@ -137,7 +137,7 @@ function WritingCondition() {
     if (temp.length) return String(temp) + " " + "제한";
     return null;
   };
-
+  console.log(24, condition);
   return (
     <>
       <Slide isFixed={true}>
@@ -287,6 +287,7 @@ function WritingCondition() {
       <QuestionBottomDrawer
         isModal={isQuestionModal}
         setIsModal={() => {
+          console.log(54);
           setCondition((old) => ({ ...old, isAgree: false }));
           setIsQuestionModal(false);
         }}

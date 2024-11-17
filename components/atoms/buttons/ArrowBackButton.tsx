@@ -1,4 +1,5 @@
 import { useRouter } from "next/navigation";
+import { ShortArrowIcon } from "../../Icons/ArrowIcons";
 
 import ButtonWrapper from "../ButtonWrapper";
 
@@ -26,7 +27,7 @@ export default function ArrowBackButton({ url, func, defaultUrl }: IArrowBackBut
 export function ArrowBackButtonUI({ onClick }: { onClick: () => void }) {
   return (
     <ButtonWrapper onClick={onClick}>
-      <i className="fa-solid fa-chevron-left fa-sm" />
+      <ShortArrowIcon dir="left" />
     </ButtonWrapper>
   );
 }

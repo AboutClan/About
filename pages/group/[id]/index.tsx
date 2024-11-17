@@ -2,8 +2,8 @@ import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import { Badge, Box, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -39,7 +39,7 @@ function GroupDetail() {
   const [group, setTransferGroup] = useRecoilState(transferGroupDataState);
 
   const { data: groupData, refetch } = useGroupIdQuery(id, { enabled: !!id && !group });
-
+  console.log(1234, groupData);
   useEffect(() => {
     if (groupData) {
       setTransferGroup(groupData);
@@ -120,6 +120,7 @@ function GroupDetail() {
                   }))}
                   selected={category}
                   isFullSize
+                  isBlack
                 />
               </Box>
               {category === "정 보" ? (

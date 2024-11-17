@@ -1,13 +1,15 @@
-import { Button } from "@chakra-ui/react";
+import { Box, Button, Flex, Grid } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { TrophyIcon } from "../../components/Icons/icons";
 
 import RuleIcon from "../../components/Icons/RuleIcon";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
+import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import { useErrorToast } from "../../hooks/custom/CustomToast";
 import { useStoreGiftEntryQuery } from "../../hooks/sub/store/queries";
 import RuleModal, { IRuleModalContent } from "../../modals/RuleModal";
@@ -113,69 +115,116 @@ function Event() {
     router.push(`/store/${item.giftId}`);
   };
 
+  const tabNavOptions: ITabNavOptions[] = [
+    {
+      text: "현재 상품",
+      func: () => {},
+    },
+    {
+      text: "지난 상품",
+      func: () => {},
+    },
+  ];
+
   return (
     <>
       <Header title="포인트 스토어">
         <RuleIcon setIsModal={setIsModal} />
       </Header>
       <Slide isNoPadding>
-        <Layout>
-          <Nav>
-            <Button
-              onClick={() => setIsShowActive(true)}
-              colorScheme={isShowActive ? "mint" : "gray"}
-            >
-              현재 상품
-            </Button>
-            <Button
-              onClick={() => setIsShowActive(false)}
-              colorScheme={!isShowActive ? "mint" : "gray"}
-            >
-              지난 상품
-            </Button>
-          </Nav>
+        <TabNav tabOptionsArr={tabNavOptions} isFullSize />
+        <Box px={5} mt={4}>
+          <Box fontWeight="bold" mb={2} lineHeight="28px" fontSize="18px">
+            All Products
+          </Box>
           {!isLoading && (
-            <Container>
+            <Grid gap={4} templateColumns="repeat(2,1fr)" templateRows="repeat(2,1fr)">
               {giftArr.map((item, idx) => (
-                <Item key={idx} onClick={() => onClickGift(item)}>
-                  <Status>
-                    <ApplyCnt>
-                      <span>{isShowActive ? item.totalCnt : item.max}</span>
-                      <span>/{item.max}</span>
-                    </ApplyCnt>
-                    <Trophy>
-                      {new Array(item.winner).fill(0).map((_, idx) => (
-                        <div key={idx}>
-                          <i
-                            className="fa-solid fa-trophy"
-                            style={{ color: "var(--color-mint)" }}
-                          />
-                        </div>
-                      ))}
-                    </Trophy>
-                  </Status>
-                  <ImageWrapper>
-                    <Image
-                      src={item.image}
-                      alt="storeGift"
-                      priority={idx < 6}
-                      width={86.5}
-                      height={86.5}
-                      style={{ borderRadius: "var(--rounded)" }}
-                    />
+                <Button
+                  display="flex"
+                  flexDir="column"
+                  key={idx}
+                  h="max-content"
+                  onClick={() => onClickGift(item)}
+                  variant="unstyled"
+                >
+                  <Box w="full" aspectRatio={1 / 1} position="relative">
+                    <Image src={item.image} alt="storeGift" priority={idx < 6} fill />
 
-                    {(!isShowActive || item.max <= item.totalCnt) && <Circle>추첨 완료</Circle>}
-                  </ImageWrapper>
-                  <Info>
+                    {(!isShowActive || item.max <= item.totalCnt) && (
+                      <Flex
+                        bg="rgba(0,0,0,0.2)"
+                        justify="center"
+                        align="center"
+                        position="absolute"
+                        w="full"
+                        h="full"
+                        borderRadius="8px"
+                      >
+                        <Box p={1} border="1px solid var(--color-red)" zIndex={5}>
+                          <Box
+                            borderRadius="4px"
+                            color="white"
+                            bg="var(--color-red)"
+                            fontSize="11px"
+                            w="80px"
+                            fontWeight="semibold"
+                            lineHeight="20px"
+                          >
+                            추첨 완료
+                          </Box>
+                        </Box>
+                      </Flex>
+                    )}
+                  </Box>
+                  <Flex mt={3} mb={2} justify="space-between" w="full">
+                    <Box
+                      fontSize="11px"
+                      lineHeight="12px"
+                      fontWeight="medium"
+                      py={1}
+                      px={2}
+                      color="gray.500"
+                      bg="rgba(142,160,172,0.08)"
+                    >
+                      {item.totalCnt}/{item.max}
+                    </Box>
+                    <Flex my="auto">
+                      <TrophyIcon />
+                      <Box
+                        ml={0.5}
+                        fontWeight="semibold"
+                        fontSize="12px"
+                        lineHeight="16px"
+                        as="span"
+                      >
+                        {item.winner}
+                      </Box>
+                    </Flex>
+                  </Flex>
+                  <Box mr="auto" fontWeight="bold" fontSize="14px" lineHeight="20px">
+                    {item.name}
+                  </Box>
+                  <Box
+                    color="mint"
+                    mt={1}
+                    mr="auto"
+                    fontWeight="bold"
+                    fontSize="13px"
+                    lineHeight="20px"
+                  >
+                    {item.point} Point
+                  </Box>
+                  {/* <Info>
                     <Name>{item.name}</Name>
                     <Point>{item.point} point</Point>
-                  </Info>
-                  {(!isShowActive || item.max <= item.totalCnt) && <CompletedRapple />}
-                </Item>
+                  </Info> */}
+                  {/* {(!isShowActive || item.max <= item.totalCnt) && <CompletedRapple />} */}
+                </Button>
               ))}
-            </Container>
+            </Grid>
           )}
-        </Layout>
+        </Box>
       </Slide>
       {isModal && <RuleModal content={content} setIsModal={setIsModal} />}
     </>
@@ -185,17 +234,11 @@ const Layout = styled.div`
   margin: 0 var(--gap-4);
 `;
 
-const Nav = styled.nav`
-  margin-top: var(--gap-3);
-  display: flex;
-`;
-
 const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, 1fr);
 
-  padding: var(--gap-4) 0;
   gap: var(--gap-3);
 `;
 

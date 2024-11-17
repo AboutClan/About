@@ -1,11 +1,12 @@
 import styled from "styled-components";
 
 import { IModal } from "../../types/components/modalTypes";
+import { InfoCircleIcon } from "./CircleIcons";
 
 function RuleIcon({ setIsModal }: IModal) {
   return (
     <Layout onClick={() => setIsModal(true)}>
-      <i className="fa-regular fa-info-circle fa-lg" style={{ color: "var(--gray-600)" }} />
+      <InfoCircleIcon />
     </Layout>
   );
 }
