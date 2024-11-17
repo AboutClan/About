@@ -16,6 +16,7 @@ import {
 interface GroupShapShotProps {
   online: IGroup[];
   offline: IGroup[];
+  new: IGroup[];
 }
 
 export const useGroupSnapshotQuery = (options?: QueryOptions<GroupShapShotProps>) =>

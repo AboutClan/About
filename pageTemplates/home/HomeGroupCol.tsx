@@ -66,7 +66,7 @@ export const setGroupDataToCardCol = (
   const cardCol: GatherThumbnailCardProps[] = groups.map((group, idx) => ({
     type: "group",
     title: group.title,
-    status: group.status,
+    status: group.participants.length <= 1 ? "ready" : group.status,
     category: group.category.main,
     date: dayjsToFormat(dayjs(group.createdAt).locale("ko"), "YY년 M월 D일 개설"),
     place: group.category.sub,

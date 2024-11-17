@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Skeleton } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 
 import ButtonWrapper from "../../components/atoms/ButtonWrapper";
@@ -28,7 +28,25 @@ export default function HomeReviewSection() {
           <ShortArrowIcon dir="right" />
         </ButtonWrapper>
       </SectionHeader>
-      <Box mt={4}>{imageArr && <ImageTileGridLayout size="lg" imageDataArr={imageArr} />}</Box>
+      <Box mt={4}>
+        {imageArr ? (
+          <ImageTileGridLayout size="lg" imageDataArr={imageArr} />
+        ) : (
+          <Grid
+            templateColumns="repeat(auto-fit, minmax(150px, 1fr))"
+            gap={3} // 각 셀 간의 간격
+          >
+            {[1, 2, 3, 4].map((item) => (
+              <GridItem key={item} w="full">
+                <Skeleton w="full" aspectRatio={1 / 1} bg="pink" borderRadius="12px"></Skeleton>
+                <Skeleton mt={2} h="16.5px" w="full" bg="pink">
+                  34
+                </Skeleton>
+              </GridItem>
+            ))}
+          </Grid>
+        )}
+      </Box>
     </Box>
   );
 }

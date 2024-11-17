@@ -159,7 +159,9 @@ function GroupDetail() {
                     </UnorderedList>
                   </Box>
                   <Box lineHeight="20px" mt={4} fontSize="13px">
-                    <Box>오픈채팅방</Box>
+                    <Box>
+                      <b style={{ color: "var(--gray-800)" }}>단톡방 링크</b>(가입 후 입장)
+                    </Box>
                     <BlurredLink isBlur={!isMember} url={group.link} />
                   </Box>
                   <Flex mt={4}>

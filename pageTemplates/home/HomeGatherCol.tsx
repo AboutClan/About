@@ -43,15 +43,17 @@ export default function HomeGatherCol() {
           {cardDataArr.map((cardData, idx) => (
             <GatherThumbnailCard key={idx} {...cardData} />
           ))}
-          {cardDataArr.length >= 3 && (
-            <SectionFooterButton
-              url={`/gather?location=${convertLocationLangTo(session?.user.location, "en")}`}
-            />
-          )}
         </Flex>
       ) : (
-        [1, 2, 3].map((idx) => <GatherThumbnailCardSkeleton key={idx} />)
-      )}
+        <Flex direction="column">
+          {[1, 2, 3].map((idx) => (
+            <GatherThumbnailCardSkeleton key={idx} />
+          ))}
+        </Flex>
+      )}{" "}
+      <SectionFooterButton
+        url={`/gather?location=${convertLocationLangTo(session?.user.location, "en")}`}
+      />
     </Box>
   );
 }
