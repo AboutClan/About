@@ -33,6 +33,8 @@ function GatherWritingConfirmModal({ setIsModal, gatherData }: IGatherWritingCon
   const resetQueryData = useResetQueryData();
   const setGatherContent = useSetRecoilState(sharedGatherWritingState);
 
+
+
   const { mutate } = useGatherWritingMutation("post", {
     onSuccess() {
       resetQueryData([GATHER_CONTENT]);

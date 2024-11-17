@@ -3,9 +3,9 @@ import { useCallback, useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 
-import { GROUP_STUDY, STUDY_VOTE, USER_INFO } from "../../constants/keys/queryKeys";
+import { GATHER_CONTENT, GROUP_STUDY, STUDY_VOTE, USER_INFO } from "../../constants/keys/queryKeys";
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
-import { transferGroupDataState } from "../../recoils/transferRecoils";
+import { transferGatherDataState, transferGroupDataState } from "../../recoils/transferRecoils";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
 import { useStudyPreferenceMutation } from "../study/mutations";
 import { useToast } from "./CustomToast";
@@ -66,6 +66,21 @@ export const useResetGroupQuery = () => {
     () => {
       queryClient.invalidateQueries({ queryKey: [GROUP_STUDY], exact: false });
       setTransferGroupData(null);
+    },
+    [queryClient],
+  );
+
+  return refetchWithDelay;
+};
+export const useResetGatherQuery = () => {
+  const queryClient = useQueryClient();
+  const setTransferGatherData = useSetRecoilState(transferGatherDataState);
+
+  const refetchWithDelay = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    () => {
+      queryClient.invalidateQueries({ queryKey: [GATHER_CONTENT], exact: false });
+      setTransferGatherData(null);
     },
     [queryClient],
   );
