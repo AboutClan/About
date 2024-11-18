@@ -27,6 +27,7 @@ interface IImageTileSlider {
   };
   selectedImageUrl?: string;
   aspect?: number;
+  hasTextSkeleton?: boolean;
 }
 
 function ImageBasicSlider({
@@ -35,6 +36,7 @@ function ImageBasicSlider({
   selectedImageUrl,
   firstItem,
   aspect = 1,
+  hasTextSkeleton = true,
 }: IImageTileSlider) {
   return (
     <Swiper slidesPerView={size === "sm" ? 4.5 : size === "md" ? 3.6 : 1} spaceBetween={20}>
@@ -111,7 +113,7 @@ function ImageBasicSlider({
               w={imageTile?.text ? "72px" : "44px"}
               h="18px"
               mt={2}
-              isLoaded={!!imageTile?.text}
+              isLoaded={!!imageTile?.text || !hasTextSkeleton}
             >
               <Flex justify="center" w="72px">
                 <Box

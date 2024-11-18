@@ -20,7 +20,7 @@ function MenuButton({ menuArr }: MenuButtonProps) {
       {({ isOpen }) => (
         <>
           <ChakraMenuButton isActive={isOpen} as={Button} variant="unstyled">
-            <EllipsisIcon size="md" color="white" />
+            <EllipsisIcon size="md" color="gray" />
           </ChakraMenuButton>
           <MenuList fontSize="14px">
             {menuArr.map((menu) => (

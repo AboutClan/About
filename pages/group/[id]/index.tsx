@@ -67,7 +67,7 @@ function GroupDetail() {
     refetch();
   };
 
-  console.log(group, session, category === "정 보", isMember, !isGuest);
+
   return (
     <>
       {group && <GroupHeader group={group} />}

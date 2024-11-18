@@ -39,7 +39,7 @@ export default function Header({
         rightPadding={rightPadding}
         isTransparent={isTransparent}
       >
-        <Flex align="center">
+        <Flex align="center" position="relative" width="100%">
           {isBack && (
             <ArrowBackButton
               color={isTransparent ? "white" : "mint"}
@@ -48,18 +48,25 @@ export default function Header({
               func={func}
             />
           )}
+          {isCenter && (
+            <Box
+              fontWeight="bold"
+              position="absolute"
+              left="50%"
+              transform="translateX(-50%)"
+              fontSize="16px"
+              textAlign="center"
+            >
+              {title}
+            </Box>
+          )}
           {!isCenter && (
             <Box ml={isBack && 1} fontWeight={700}>
               {title}
             </Box>
           )}
+          <Box ml="auto">{children}</Box>
         </Flex>
-        {isCenter && (
-          <Box fontWeight="bold" flex={1} textAlign="center" fontSize="16px">
-            {title}
-          </Box>
-        )}
-        <div>{children}</div>
       </HeaderContainer>
     );
   }

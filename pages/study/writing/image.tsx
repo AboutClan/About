@@ -68,6 +68,7 @@ function WritingStudyImage() {
             selectedImageUrl={imageProps?.mainImage}
             imageTileArr={mainImageArr}
             size="md"
+            hasTextSkeleton={false}
           />
         </Box>
         <RegisterOverview>
@@ -80,6 +81,7 @@ function WritingStudyImage() {
             imageTileArr={coverImageArr}
             size="full"
             aspect={2}
+            hasTextSkeleton={false}
           />
         </Box>
       </RegisterLayout>

@@ -1,7 +1,7 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
@@ -25,6 +25,7 @@ interface StudyControlButtonProps {
 
 function StudyControlButton({ setIsVoteDrawer, setIsDrawerUp, date }: StudyControlButtonProps) {
   const { data: session } = useSession();
+  const router = useRouter();
   const searchParams = useSearchParams();
 
   const [isStudyDrawer, setIsStudyDrawer] = useState(false);
@@ -43,27 +44,47 @@ function StudyControlButton({ setIsVoteDrawer, setIsDrawerUp, date }: StudyContr
 
   return (
     <>
-      <Button
-        fontSize="12px"
-        h="40px"
-        bgColor="black"
-        px={4}
-        fontWeight={700}
-        color="white"
+      <Flex
+        px={5}
+        w="full"
         position="fixed"
         zIndex="400"
-        borderRadius="20px"
+        fontSize="12px"
         lineHeight="24px"
+        h="40px"
+        fontWeight={700}
         bottom={`calc(var(--bottom-nav-height) + ${DRAWER_MIN_HEIGHT + iPhoneNotchSize() + 12}px)`}
-        right="20px"
-        iconSpacing={1}
-        rightIcon={<CheckCircleIcon size="sm" isFill={false} />}
-        onClick={() => setIsStudyDrawer(true)}
-        isDisabled={!!isArrived}
-        _hover={{}}
+        justify="space-between"
       >
-        {isArrived ? "출석 완료" : "스터디"}
-      </Button>
+        <Button
+          bg="white"
+          color="gray.800"
+          border="gray.100"
+          w="40px"
+          h="40px"
+          borderRadius="50%"
+          onClick={() => router.push("/study/writing/place")}
+          isDisabled={!!isArrived}
+          boxShadow="0px 5px 10px 0px rgba(66,66,66,0.1)"
+        >
+          <i className="fa-solid fa-location-plus fa-xl" />
+        </Button>
+        <Button
+          fontSize="12px"
+          h="40px"
+          bgColor="black"
+          color="white"
+          px={4}
+          borderRadius="20px"
+          lineHeight="24px"
+          iconSpacing={1}
+          leftIcon={<CheckCircleIcon size="sm" isFill={false} />}
+          onClick={() => setIsStudyDrawer(true)}
+          isDisabled={!!isArrived}
+        >
+          {isArrived ? "출석 완료" : "스터디"}
+        </Button>
+      </Flex>
       {isStudyDrawer && (
         <BottomFlexDrawer
           isOverlay

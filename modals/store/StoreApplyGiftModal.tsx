@@ -49,6 +49,10 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
 
   const totalCost = giftInfo.point * value;
 
+  const totalCnt = giftInfo.users.reduce((acc, cur) => {
+    return acc + cur.cnt;
+  }, 0);
+
   const maxCnt = Math.min(
     getStoreMaxCnt(userInfo?.score) -
       giftInfo.users.reduce((acc, cur) => {
@@ -58,8 +62,9 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
         return acc;
       }, 0),
     Math.floor(myPoint / totalCost),
-    giftInfo.max - giftInfo.users.length,
+    giftInfo.max - totalCnt,
   );
+  
 
   const onApply = () => {
     if (isGuest) {
