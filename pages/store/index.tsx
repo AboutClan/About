@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Grid } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
@@ -142,113 +142,115 @@ function StorePage() {
         <RuleIcon setIsModal={setIsModal} />
       </Header>
       <Slide isNoPadding>
-        <TabNav tabOptionsArr={tabNavOptions} isFullSize />
-        <Box px={5} mt={4}>
-          <Box fontWeight="bold" mb={2} lineHeight="28px" fontSize="18px">
-            All Products
-          </Box>
-          {!isLoading ? (
-            <Grid gap={4} templateColumns="repeat(2,1fr)" templateRows="repeat(2,1fr)">
-              {giftArr.map((item, idx) => {
-                const winners: number[] = selectRandomWinners(item.max, item.winner, item.giftId);
-                const users = item.users.reduce((acc, curr) => {
-                  for (let i = 0; i < curr.cnt; i++) {
-                    acc.push(curr);
-                  }
-                  return acc;
-                }, []);
-                const winUsers = winners.map((win) => users[win]);
-                const isMyWin = winUsers.some((user) => user?.uid === session?.user.uid);
+        <Box minH="100dvh">
+          <TabNav tabOptionsArr={tabNavOptions} isFullSize />
+          <Box px={5} mt={4}>
+            <Box fontWeight="bold" mb={2} lineHeight="28px" fontSize="18px">
+              All Products
+            </Box>
+            {!isLoading ? (
+              <Grid gap={4} templateColumns="repeat(2,1fr)" templateRows="repeat(2,1fr)">
+                {giftArr.map((item, idx) => {
+                  const winners: number[] = selectRandomWinners(item.max, item.winner, item.giftId);
+                  const users = item.users.reduce((acc, curr) => {
+                    for (let i = 0; i < curr.cnt; i++) {
+                      acc.push(curr);
+                    }
+                    return acc;
+                  }, []);
+                  const winUsers = winners.map((win) => users[win]);
+                  const isMyWin = winUsers.some((user) => user?.uid === session?.user.uid);
 
-                return (
-                  <Button
-                    display="flex"
-                    flexDir="column"
-                    key={idx}
-                    h="max-content"
-                    onClick={() => onClickGift(item)}
-                    variant="unstyled"
-                  >
-                    <Box w="full" aspectRatio={1 / 1} position="relative">
-                      <Image src={item.image} alt="storeGift" priority={idx < 6} fill />
+                  return (
+                    <Button
+                      display="flex"
+                      flexDir="column"
+                      key={idx}
+                      h="max-content"
+                      onClick={() => onClickGift(item)}
+                      variant="unstyled"
+                    >
+                      <Box w="full" aspectRatio={1 / 1} position="relative">
+                        <Image src={item.image} alt="storeGift" priority={idx < 6} fill />
 
-                      {(!isShowActive || item.max <= item.totalCnt) && (
-                        <Flex
-                          bg="rgba(0,0,0,0.2)"
-                          justify="center"
-                          align="center"
-                          position="absolute"
-                          w="full"
-                          h="full"
-                          borderRadius="8px"
-                        >
-                          <Box
-                            p={1}
-                            border="1px solid var(--color-red)"
-                            borderColor={isMyWin ? "mint" : "red"}
-                            zIndex={5}
+                        {(!isShowActive || item.max <= item.totalCnt) && (
+                          <Flex
+                            bg="rgba(0,0,0,0.2)"
+                            justify="center"
+                            align="center"
+                            position="absolute"
+                            w="full"
+                            h="full"
                             borderRadius="8px"
                           >
                             <Box
-                              borderRadius="4px"
-                              color="white"
-                              bg={!isMyWin ? "var(--color-red)" : "mint"}
-                              fontSize="11px"
-                              w="80px"
-                              fontWeight="semibold"
-                              lineHeight="20px"
+                              p={1}
+                              border="1px solid var(--color-red)"
+                              borderColor={isMyWin ? "mint" : "red"}
+                              zIndex={5}
+                              borderRadius="8px"
                             >
-                              {!isMyWin ? "추첨 완료" : "당 첨"}
+                              <Box
+                                borderRadius="4px"
+                                color="white"
+                                bg={!isMyWin ? "var(--color-red)" : "mint"}
+                                fontSize="11px"
+                                w="80px"
+                                fontWeight="semibold"
+                                lineHeight="20px"
+                              >
+                                {!isMyWin ? "추첨 완료" : "당 첨"}
+                              </Box>
                             </Box>
+                          </Flex>
+                        )}
+                      </Box>
+                      <Flex mt={3} mb={2} justify="space-between" w="full">
+                        <Box
+                          fontSize="11px"
+                          lineHeight="12px"
+                          fontWeight="medium"
+                          py={1}
+                          px={2}
+                          color="gray.500"
+                          bg="rgba(142,160,172,0.08)"
+                        >
+                          {item.totalCnt}/{item.max}
+                        </Box>
+                        <Flex my="auto">
+                          <TrophyIcon />
+                          <Box
+                            ml={0.5}
+                            fontWeight="semibold"
+                            fontSize="12px"
+                            lineHeight="16px"
+                            as="span"
+                          >
+                            {item.winner}
                           </Box>
                         </Flex>
-                      )}
-                    </Box>
-                    <Flex mt={3} mb={2} justify="space-between" w="full">
-                      <Box
-                        fontSize="11px"
-                        lineHeight="12px"
-                        fontWeight="medium"
-                        py={1}
-                        px={2}
-                        color="gray.500"
-                        bg="rgba(142,160,172,0.08)"
-                      >
-                        {item.totalCnt}/{item.max}
-                      </Box>
-                      <Flex my="auto">
-                        <TrophyIcon />
-                        <Box
-                          ml={0.5}
-                          fontWeight="semibold"
-                          fontSize="12px"
-                          lineHeight="16px"
-                          as="span"
-                        >
-                          {item.winner}
-                        </Box>
                       </Flex>
-                    </Flex>
-                    <Box mr="auto" fontWeight="bold" fontSize="14px" lineHeight="20px">
-                      {item.name}
-                    </Box>
-                    <Box
-                      color="mint"
-                      mt={1}
-                      mr="auto"
-                      fontWeight="bold"
-                      fontSize="13px"
-                      lineHeight="20px"
-                    >
-                      {item.point} Point
-                    </Box>
-                  </Button>
-                );
-              })}
-            </Grid>
-          ) : (
-            <MainLoadingAbsolute />
-          )}
+                      <Box mr="auto" fontWeight="bold" fontSize="14px" lineHeight="20px">
+                        {item.name}
+                      </Box>
+                      <Box
+                        color="mint"
+                        mt={1}
+                        mr="auto"
+                        fontWeight="bold"
+                        fontSize="13px"
+                        lineHeight="20px"
+                      >
+                        {item.point} Point
+                      </Box>
+                    </Button>
+                  );
+                })}
+              </Grid>
+            ) : (
+              <MainLoadingAbsolute />
+            )}
+          </Box>
         </Box>
       </Slide>
       {isModal && (
