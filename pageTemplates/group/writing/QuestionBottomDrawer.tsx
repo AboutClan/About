@@ -35,6 +35,7 @@ function QuestionBottomDrawer({
 
   const onClickLeft = () => {
     setQuestion(null);
+    setIsModal(false);
     onClose();
   };
 

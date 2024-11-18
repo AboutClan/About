@@ -96,7 +96,7 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
 
   return (
     <ModalLayout title="상품 응모" footerOptions={footerOptions} setIsModal={setIsModal}>
-      <Box h="130px">
+      <Box minH="124.5px">
         {!isLoading ? (
           <>
             <Item>
@@ -111,10 +111,7 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
               <span>필요 포인트</span>
               <NeedPoint overMax={totalCost > myPoint}>{totalCost} point</NeedPoint>
             </Item>
-            <Item>
-              <span>최대 구매 개수</span>
-              <NeedPoint overMax={totalCost > myPoint}>{maxCnt} 개</NeedPoint>
-            </Item>
+
             <CountNav>
               <CountNum value={value} setValue={setValue} maxValue={maxCnt} />
             </CountNav>
@@ -130,17 +127,22 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
 const Item = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: var(--gap-1);
+  padding: 4px 0;
+  > span:first-child {
+    color: var(--gray-600);
+  }
   > span:last-child {
     font-weight: 600;
   }
 `;
 
 const NeedPoint = styled.span<{ overMax: boolean }>`
-  color: ${(props) => props.overMax && "var(--color-red)"};
+  color: ${(props) => (props.overMax ? "var(--color-red)" : "var(--color-mint)")};
 `;
 
 const CountNav = styled.nav`
+  margin-top: 12px;
+
   flex: 1;
   display: flex;
   align-items: center;

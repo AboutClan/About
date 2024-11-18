@@ -2,7 +2,6 @@ import { Button, Menu, MenuButton as ChakraMenuButton, MenuItem, MenuList } from
 
 import { EllipsisIcon } from "../../Icons/DotIcons";
 import KakaoShareBtn from "../../Icons/KakaoShareBtn";
-import ButtonWrapper from "../ButtonWrapper";
 
 export interface MenuProps {
   text?: string;
@@ -21,9 +20,7 @@ function MenuButton({ menuArr }: MenuButtonProps) {
       {({ isOpen }) => (
         <>
           <ChakraMenuButton isActive={isOpen} as={Button} variant="unstyled">
-            <ButtonWrapper>
-              <EllipsisIcon size="md" />
-            </ButtonWrapper>
+            <EllipsisIcon size="md" color="white" />
           </ChakraMenuButton>
           <MenuList fontSize="14px">
             {menuArr.map((menu) => (

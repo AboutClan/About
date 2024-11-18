@@ -39,7 +39,7 @@ function GroupDetail() {
   const [group, setTransferGroup] = useRecoilState(transferGroupDataState);
 
   const { data: groupData, refetch } = useGroupIdQuery(id, { enabled: !!id && !group });
-
+  console.log(1234, groupData);
   useEffect(() => {
     if (groupData) {
       setTransferGroup(groupData);
@@ -120,6 +120,7 @@ function GroupDetail() {
                   }))}
                   selected={category}
                   isFullSize
+                  isBlack
                 />
               </Box>
               {category === "정 보" ? (

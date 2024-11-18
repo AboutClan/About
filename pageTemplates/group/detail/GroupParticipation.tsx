@@ -12,7 +12,7 @@ interface IGroupParticipation {
 
 function GroupParticipation({ data }: IGroupParticipation) {
   const isSecret = data?.isSecret;
-
+  console.log(53, data);
   const userCardArr: IProfileCommentCard[] = data.participants.map((par) => {
     if (isSecret) {
       return {

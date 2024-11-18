@@ -15,7 +15,7 @@ function PointLog() {
   const { data: session } = useSession();
   const { data: point } = usePointSystemQuery("point");
   const { data: pointLog } = usePointSystemLogQuery("point");
-
+  console.log(point, pointLog);
   const filterLog = pointLog?.filter((item) => item.meta.value);
 
   const headerInfos = ["날짜", "내용", "점수"];
@@ -56,7 +56,7 @@ function PointLog() {
 const Layout = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 var(--gap-4);
+
   margin-top: var(--gap-5);
   font-weight: 600;
   min-height: 100dvh;

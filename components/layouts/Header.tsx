@@ -14,6 +14,7 @@ interface IHeader {
   isBorder?: boolean;
   children?: React.ReactNode;
   defaultUrl?: string;
+  isTransparent?: boolean;
 }
 
 export default function Header({
@@ -24,20 +25,29 @@ export default function Header({
   rightPadding,
   func,
   children,
-  isCenter,
+  isCenter = true,
   isBorder = true,
   defaultUrl,
+  isTransparent,
 }: IHeader) {
   function HeaderLayout() {
     return (
       <HeaderContainer
         isBack={isBack}
         isCenter={isCenter}
-        isBorder={isBorder}
+        isBorder={!isTransparent && isBorder}
         rightPadding={rightPadding}
+        isTransparent={isTransparent}
       >
         <Flex align="center">
-          {isBack && <ArrowBackButton defaultUrl={defaultUrl} url={url} func={func} />}
+          {isBack && (
+            <ArrowBackButton
+              color={isTransparent ? "white" : "mint"}
+              defaultUrl={defaultUrl}
+              url={url}
+              func={func}
+            />
+          )}
           {!isCenter && (
             <Box ml={isBack && 1} fontWeight={700}>
               {title}
@@ -72,8 +82,9 @@ const HeaderContainer = styled.header<{
   isBack?: boolean;
   isCenter?: boolean;
   rightPadding: number;
+  isTransparent: boolean;
 }>`
-  background-color: white;
+  background-color: ${(props) => (props.isTransparent ? "transparent" : "white")};
   height: var(--header-h);
   font-size: 16px;
   padding-right: ${(props) => props.rightPadding || 20}px;

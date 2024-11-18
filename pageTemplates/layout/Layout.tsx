@@ -87,7 +87,8 @@ function Layout({ children }: ILayout) {
                 ? {
                     paddingTop: "56px",
                   }
-                : !NOT_PADDING_NAV_SEGMENT.includes(currentSegment?.[0])
+                : !NOT_PADDING_NAV_SEGMENT.includes(currentSegment?.[0]) &&
+                  !(currentSegment?.[0] === "store" && currentSegment?.[1])
                 ? {
                     paddingTop: "56px",
                     paddingBottom: `calc(var(--bottom-nav-height) + ${iPhoneNotchSize()}px`,

@@ -4,6 +4,7 @@ import "swiper/css/pagination";
 import { Box } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import styled from "styled-components";
 import SwiperCore from "swiper";
 import { Autoplay, Pagination, Scrollbar } from "swiper/modules";
@@ -26,6 +27,7 @@ interface IImageSliderEventBanner {
 function ImageSliderBanner({ imageArr, isLightBanner }: IImageSliderEventBanner) {
   const typeToast = useTypeToast();
   const router = useRouter();
+  const [currentSlide, setCurrentSlide] = useState(0);
 
   const onClick = (url: string) => {
     if (url) {
@@ -38,6 +40,7 @@ function ImageSliderBanner({ imageArr, isLightBanner }: IImageSliderEventBanner)
   return (
     <StyledSwiper
       navigation
+      index={currentSlide + 1}
       pagination={true}
       modules={[Pagination]}
       scrollbar={{ draggable: true, el: ".swiper-scrollbar" }}
@@ -47,6 +50,7 @@ function ImageSliderBanner({ imageArr, isLightBanner }: IImageSliderEventBanner)
         position: "relative",
       }}
       slidesPerView={1}
+      onSlideChange={(swiper) => setCurrentSlide(swiper.activeIndex)}
       autoplay={{
         delay: 3000,
         disableOnInteraction: true,
@@ -55,17 +59,15 @@ function ImageSliderBanner({ imageArr, isLightBanner }: IImageSliderEventBanner)
       {imageArr.map((item, index) => (
         <SwiperSlide key={index}>
           <Box onClick={() => onClick(item?.url)}>
-            <Container>
-              <Box position="relative" aspectRatio={isLightBanner ? "4/1" : "2.1/1"}>
-                <Image
-                  src={item.imageUrl}
-                  fill={true}
-                  sizes="400px"
-                  alt="eventImg"
-                  priority={index === 0}
-                />
-              </Box>
-            </Container>
+            <Box position="relative" aspectRatio={isLightBanner ? "4/1" : "2.1/1"}>
+              <Image
+                src={item.imageUrl}
+                fill={true}
+                sizes="400px"
+                alt="eventImg"
+                priority={index === 0}
+              />
+            </Box>
           </Box>
         </SwiperSlide>
       ))}
@@ -73,7 +75,7 @@ function ImageSliderBanner({ imageArr, isLightBanner }: IImageSliderEventBanner)
   );
 }
 
-const StyledSwiper = styled(Swiper)`
+const StyledSwiper = styled(Swiper)<{ index: number }>`
   .swiper-wrapper {
     display: -webkit-inline-box;
   }
@@ -87,14 +89,12 @@ const StyledSwiper = styled(Swiper)`
   .swiper-pagination-bullet-active {
     background-color: var(--color-mint);
   }
-  .swiper-pagination-bullet:nth-child(1) {
+  .swiper-pagination-bullet:nth-child(${(props) => props.index}) {
     width: 12px; /* 첫 번째 원의 가로 길이 */
     height: 4px;
     border-radius: 16px;
     opacity: 0.6;
   }
 `;
-
-const Container = styled.div``;
 
 export default ImageSliderBanner;

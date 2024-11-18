@@ -68,7 +68,7 @@ const theme = extendTheme({
       900: "black",
     },
     black: {
-      500: "#303030", // 명도 46% (유지)
+      500: "#424242", // 명도 46% (유지)
     },
     mint: {
       50: "#e0f7f5",
@@ -333,6 +333,17 @@ const theme = extendTheme({
           padding: 0, // 패딩 제거
         },
       },
+    },
+    Tabs: {
+      baseStyle: (props) => ({
+        tab: {
+          _selected: {
+            color: props.colorScheme === "mint" ? "mint.500" : "black.500", // 활성화된 탭 텍스트 색상
+            borderColor: props.colorScheme === "mint" ? "mint.500" : "black.500", // 활성화된 탭 하단 테두리 색상
+            fontWeight: "semibold",
+          },
+        },
+      }),
     },
   },
 });
