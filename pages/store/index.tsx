@@ -170,7 +170,13 @@ function StorePage() {
                       onClick={() => onClickGift(item)}
                       variant="unstyled"
                     >
-                      <Box w="full" aspectRatio={1 / 1} position="relative">
+                      <Box
+                        borderRadius="8px"
+                        overflow="hidden"
+                        w="full"
+                        aspectRatio={1 / 1}
+                        position="relative"
+                      >
                         <Image src={item.image} alt="storeGift" priority={idx < 6} fill />
 
                         {(!isShowActive || item.max <= item.totalCnt) && (
