@@ -1,11 +1,12 @@
 import { Box, Button, Flex, Grid } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
 import InfoCol from "../../components/atoms/InfoCol";
+import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import { TrophyIcon } from "../../components/Icons/icons";
 import RuleIcon from "../../components/Icons/RuleIcon";
 import Header from "../../components/layouts/Header";
@@ -146,7 +147,7 @@ function StorePage() {
           <Box fontWeight="bold" mb={2} lineHeight="28px" fontSize="18px">
             All Products
           </Box>
-          {!isLoading && (
+          {!isLoading ? (
             <Grid gap={4} templateColumns="repeat(2,1fr)" templateRows="repeat(2,1fr)">
               {giftArr.map((item, idx) => {
                 const winners: number[] = selectRandomWinners(item.max, item.winner, item.giftId);
@@ -245,6 +246,8 @@ function StorePage() {
                 );
               })}
             </Grid>
+          ) : (
+            <MainLoadingAbsolute />
           )}
         </Box>
       </Slide>
