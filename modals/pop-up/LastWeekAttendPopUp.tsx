@@ -5,7 +5,8 @@ import styled from "styled-components";
 
 import Avatar from "../../components/atoms/Avatar";
 import UserBadge from "../../components/atoms/badges/UserBadge";
-import Skeleton from "../../components/atoms/skeleton/Skeleton";
+import InfoCol from "../../components/atoms/InfoCol";
+import InfoColSkeleton from "../../components/atoms/InfoColSkeleton";
 import ProgressMark from "../../components/molecules/ProgressMark";
 import { USER_ROLE } from "../../constants/settingValue/role";
 import { usePointSystemLogQuery, useUserInfoQuery } from "../../hooks/user/queries";
@@ -62,7 +63,7 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
     >
       <Flex align="center">
         <Avatar
-          userId={ userInfo._id}
+          userId={userInfo._id}
           image={userInfo?.profileImage}
           uid={userInfo?.uid}
           avatar={userInfo?.avatar}
@@ -82,56 +83,37 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
         <ProgressMark value={userInfo?.monthScore} />
       </Box>
 
-      <Info>
-        {scoreObj ? (
-          <>
-            <Item>
-              <span>이번 달 동아리 점수</span>
-              <span>{userInfo?.monthScore} 점</span>
-            </Item>
-            <Item>
-              <span>이번 달 스터디 점수</span>
-              <span>{scoreObj.study} 점</span>
-            </Item>
-            <Item>
-              <span>이번 달 모임 점수</span>
-              <span>{scoreObj.gather} 점</span>
-            </Item>
-            <Item>
-              <span>이번 달에 받은 좋아요</span>
-              <span>{likeCnt || 0} 개</span>
-            </Item>
-          </>
-        ) : (
-          <>
-            <Item>
-              <span>이번 달 동아리 점수</span>
-              <Box w="36px" h="20px">
-                <Skeleton>2</Skeleton>
-              </Box>
-            </Item>
-            <Item>
-              <span>이번 달 스터디 점수</span>
-              <Box w="36px" h="20px">
-                <Skeleton>2</Skeleton>
-              </Box>
-            </Item>
-            <Item>
-              <span>이번 달 모임 점수</span>
-              <Box w="36px" h="20px">
-                <Skeleton>2</Skeleton>
-              </Box>
-            </Item>
-            <Item>
-              <span>이번 달에 받은 좋아요</span>
-
-              <Box w="36px" h="20px">
-                <Skeleton>2</Skeleton>
-              </Box>
-            </Item>
-          </>
-        )}
-      </Info>
+      {scoreObj ? (
+        <InfoCol
+          optionsArr={[
+            {
+              left: "이번 달 동아리 점수",
+              right: `${userInfo?.monthScore} 점`,
+            },
+            {
+              left: "이번 달 스터디 점수",
+              right: `${scoreObj?.study} 점`,
+            },
+            {
+              left: "이번 달 모임 점수",
+              right: `${scoreObj?.gather} 점`,
+            },
+            {
+              left: "이번 달에 받은 좋아요",
+              right: `${likeCnt || 0} 개`,
+            },
+          ]}
+        />
+      ) : (
+        <InfoColSkeleton
+          leftArr={[
+            "이번 달 동아리 점수",
+            "이번 달 스터디 점수",
+            "이번 달 모임 점수",
+            "이번 달에 받은 좋아요",
+          ]}
+        />
+      )}
 
       <Message>
         {totalScore >= 0 &&
@@ -165,6 +147,7 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
 }
 
 const Message = styled.div`
+  margin-top: 12px;
   padding: 12px 16px;
   min-height: 48px;
   border-radius: 8px;
@@ -172,31 +155,6 @@ const Message = styled.div`
   font-size: 11px;
   font-weight: medium;
   background-color: var(--gray-100);
-`;
-
-const Info = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 12px;
-`;
-
-const Item = styled.div`
-  width: 100%;
-
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  margin: 4px 0;
-
-  > span:first-child {
-    font-weight: regular;
-    color: var(--gray-600);
-  }
-  > span:last-child {
-    font-weight: medium;
-    color: var(--gray-800);
-  }
 `;
 
 export default LastWeekAttendPopUp;

@@ -1,15 +1,20 @@
 import { useRouter } from "next/navigation";
-import { ShortArrowIcon } from "../../Icons/ArrowIcons";
 
+import { ShortArrowIcon } from "../../Icons/ArrowIcons";
 import ButtonWrapper from "../ButtonWrapper";
 
 interface IArrowBackButton {
   defaultUrl?: string;
   url?: string;
   func?: () => void;
-  color: "mint" | "white";
+  color?: "mint" | "white";
 }
-export default function ArrowBackButton({ url, func, defaultUrl, color }: IArrowBackButton) {
+export default function ArrowBackButton({
+  url,
+  func,
+  defaultUrl,
+  color = "white",
+}: IArrowBackButton) {
   const router = useRouter();
 
   const handleGoBack = () => {
@@ -34,7 +39,7 @@ export function ArrowBackButtonUI({
 }) {
   return (
     <ButtonWrapper onClick={onClick}>
-      <ShortArrowIcon dir="left" color={ color} />
+      <ShortArrowIcon dir="left" color={color} />
     </ButtonWrapper>
   );
 }

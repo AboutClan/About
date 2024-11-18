@@ -70,8 +70,8 @@ export function ModalLayout({
   const onClose = () => setIsModal(false);
 
   const { main, sub, isFull = true } = footerOptions || {};
-  const { text = "확인", func = onClose } = main || {};
-  const { text: subText = "취소", func: subFunc = onClose } = sub || {};
+  const { text = "확 인", func = onClose } = main || {};
+  const { text: subText = "취 소", func: subFunc = onClose } = sub || {};
   const [modalTop, setModalTop] = useState("0%");
 
   useEffect(() => {

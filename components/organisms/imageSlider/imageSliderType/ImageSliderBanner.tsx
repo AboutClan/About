@@ -4,12 +4,12 @@ import "swiper/css/pagination";
 import { Box } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import styled from "styled-components";
 import SwiperCore from "swiper";
 import { Autoplay, Pagination, Scrollbar } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { useState } from "react";
 import { useTypeToast } from "../../../../hooks/custom/CustomToast";
 
 SwiperCore.use([Autoplay, Scrollbar]);

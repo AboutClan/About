@@ -11,7 +11,6 @@ import { useAdminUsersLocationControlQuery } from "../../hooks/admin/quries";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserAttendRateQuery } from "../../hooks/user/sub/studyRecord/queries";
 import { IUserRankings, sortUserRanking } from "../../libs/userEventLibs/userHelpers";
-import RuleModal, { IRuleModalContent } from "../../modals/RuleModal";
 import RankingMembers from "../../pageTemplates/ranking/RankingMembers";
 import RankingOverview from "../../pageTemplates/ranking/RankingOverview";
 import StatisticsFilterBar from "../../pageTemplates/ranking/StatisticsFilterBar";
@@ -35,26 +34,26 @@ export interface RankingFilterOptionProps {
   isLocationFilter: boolean;
 }
 
-const CONTENT: IRuleModalContent = {
-  headerContent: {
-    title: "ABOUT 랭킹",
-    text: "동아리 내의 랭킹 또는 내 통계를 확인할 수 있습니다.",
-  },
-  mainContent: [
-    {
-      title: "카테고리 설명",
-      texts: [
-        "월간 랭킹은 이번 달 동아리 활동 점수입니다. 매달 초기화 됩니다.",
-        "스터디 랭킹은 이번 달 스터디 참여 횟수입니다. 매달 초기화 됩니다.",
-        "누적 랭킹은 동아리 점수입니다. 등급을 나타내는 지표입니다.",
-      ],
-    },
-    {
-      title: "메달",
-      texts: ["공개 예정 컨텐츠"],
-    },
-  ],
-};
+// const CONTENT: IRuleModalContent = {
+//   headerContent: {
+//     title: "ABOUT 랭킹",
+//     text: "동아리 내의 랭킹 또는 내 통계를 확인할 수 있습니다.",
+//   },
+//   mainContent: [
+//     {
+//       title: "카테고리 설명",
+//       texts: [
+//         "월간 랭킹은 이번 달 동아리 활동 점수입니다. 매달 초기화 됩니다.",
+//         "스터디 랭킹은 이번 달 스터디 참여 횟수입니다. 매달 초기화 됩니다.",
+//         "누적 랭킹은 동아리 점수입니다. 등급을 나타내는 지표입니다.",
+//       ],
+//     },
+//     {
+//       title: "메달",
+//       texts: ["공개 예정 컨텐츠"],
+//     },
+//   ],
+// };
 
 function Ranking() {
   const typeToast = useTypeToast();
@@ -66,10 +65,10 @@ function Ranking() {
     category: "월간 랭킹",
     isLocationFilter: false,
   });
-  const [isModal, setIsModal] = useState(false);
+  // const [isModal, setIsModal] = useState(false);
 
   const categorySource = CATEGORY_SOURCE[filterOptions.category];
-  
+
   const { data: attendRecords } = useUserAttendRateQuery(
     dayjs().startOf("month"),
     dayjs(),
@@ -90,7 +89,6 @@ function Ranking() {
       enabled: !!session,
     },
   );
- 
 
   useEffect(() => {
     if (filterOptions.category === "스터디 랭킹" && !attendRecords) return;
@@ -146,7 +144,7 @@ function Ranking() {
           )}
         </Layout>
       </Slide>
-      {isModal && <RuleModal content={CONTENT} setIsModal={setIsModal} />}
+      {/* {isModal && <RuleModal content={CONTENT} setIsModal={setIsModal} />} */}
     </>
   );
 }

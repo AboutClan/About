@@ -1,17 +1,16 @@
 import "swiper/css/autoplay";
 import "swiper/css/pagination";
 
+import { Box, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import styled from "styled-components";
 import SwiperCore from "swiper";
-import { Pagination } from "swiper/modules";
+import { Pagination, Scrollbar } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { IModal } from "../../types/components/modalTypes";
-import { ModalLayout } from "../Modals";
 
-import { Box, Flex } from "@chakra-ui/react";
-import { Scrollbar } from "swiper/modules";
+import { IModal } from "../../types/components/modalTypes";
 import { IStoreApplicant } from "../../types/models/store";
+import { ModalLayout } from "../Modals";
 
 SwiperCore.use([Scrollbar]);
 
@@ -33,7 +32,7 @@ function StoreMembersModal({ setIsModal, members }: StoreMembersModalProps) {
   const arr = chunkArray(members, 5);
 
   return (
-    <ModalLayout setIsModal={setIsModal}>
+    <ModalLayout title="참여 현황" footerOptions={{}} setIsModal={setIsModal}>
       <StyledSwiper
         navigation
         index={currentSlide + 1}
@@ -50,25 +49,43 @@ function StoreMembersModal({ setIsModal, members }: StoreMembersModalProps) {
       >
         {arr.map((memberArr, index) => (
           <SwiperSlide key={index}>
-            <Box>
-              <Flex direction="column">
-                {memberArr.map((member) => (
-                  <Flex
-                    lineHeight="12px"
-                    justify="space-between"
-                    fontSize="10px"
-                    fontWeight="semibold"
-                    pb={2}
-                    mb={2}
-                  >
-                    <Box color="mint">
-                      {member.name[0]}*{member.name?.[1]}
-                    </Box>
-                    <Box>{member.cnt}회</Box>
-                  </Flex>
-                ))}
-              </Flex>
-            </Box>
+            <Flex
+              borderRadius="8px"
+              direction="column"
+              bg="rgba(97,106,97,0.04)"
+              border="1px solid F7F7F7"
+              px={3}
+              py={2}
+              minH="160px"
+            >
+              {memberArr.map((member, idx) => (
+                <Flex
+                  key={idx}
+                  lineHeight="12px"
+                  justify="space-between"
+                  fontSize="10px"
+                  fontWeight="semibold"
+                  pb={2}
+                  mb={2}
+                >
+                  <Box color="mint">
+                    {member.name[0]}*{member.name?.[2]}
+                  </Box>
+                  <Box color="gray.600">{member.cnt}회</Box>
+                </Flex>
+              ))}
+              {arr.length === 1 && (
+                <Box
+                  opacity={0.6}
+                  borderRadius="16px"
+                  mt="auto"
+                  mx="auto"
+                  w={3}
+                  h={1}
+                  bg="mint"
+                ></Box>
+              )}
+            </Flex>
           </SwiperSlide>
         ))}
       </StyledSwiper>
@@ -77,11 +94,13 @@ function StoreMembersModal({ setIsModal, members }: StoreMembersModalProps) {
 }
 
 const StyledSwiper = styled(Swiper)<{ index: number }>`
+  overflow: hidden;
+
   .swiper-wrapper {
     display: -webkit-inline-box;
   }
   .swiper-pagination-bullet {
-    background-color: white;
+    background-color: var(--gray-400);
     width: 4px;
     height: 4px;
     opacity: 0.8;

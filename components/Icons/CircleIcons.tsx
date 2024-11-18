@@ -132,8 +132,8 @@ export function XCircleIcon({ size }: { size: "sm" | "md" }) {
   );
 }
 
-export const InfoCircleIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+export function InfoCircleIcon() {
+  return <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
     <g clip-path="url(#clip0_2444_1052)">
       <path
         fill-rule="evenodd"
@@ -148,4 +148,4 @@ export const InfoCircleIcon = () => (
       </clipPath>
     </defs>
   </svg>
-);
+}

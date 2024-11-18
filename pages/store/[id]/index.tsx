@@ -1,16 +1,16 @@
 import "dayjs/locale/ko";
 
+import { Badge, Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
-import styled from "styled-components";
 
-import { Badge, Box, Button, Flex } from "@chakra-ui/react";
-import Image from "next/image";
 import MenuButton from "../../../components/atoms/buttons/MenuButton";
 import Header from "../../../components/layouts/Header";
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
+import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import StoreApplyGiftModal from "../../../modals/store/StoreApplyGiftModal";
 import StoreGiftWinModal from "../../../modals/store/StoreGiftWinModal";
 import StoreMembersModal from "../../../modals/store/StoreMembersModal";
@@ -20,18 +20,17 @@ dayjs.extend(localizedFormat);
 dayjs.locale("ko");
 
 function StoreItem() {
+  const typeToast = useTypeToast();
   const [modalType, setModalType] = useState<"vote" | "winner" | "member">();
 
-  const [isApplyModal, setIsApplyModal] = useState(false);
-  const [isWinModal, setIsWinModal] = useState(false);
   const [drawerHeight, setDrawerHeight] = useState(0);
 
   const storeGiftData = useRecoilValue(transferStoreGiftDataState);
+
   const giftInfo = storeGiftData?.data;
-  const isActive = storeGiftData?.isActive;
+
   const isResult = giftInfo.totalCnt >= giftInfo.max;
 
-  console.log(42, giftInfo);
   useEffect(() => {
     // 높이 계산: 100dvh - 100dvw
     const calculateHeight = () => {
@@ -59,9 +58,19 @@ function StoreItem() {
           position="absolute"
           bg="linear-gradient(to top,rgba(31,32,36,0.12) 0%,rgba(31,32,36,0) 60%,rgba(31,32,36,1) 100%)"
           opacity={0.4}
+          zIndex={1}
         />
         <Header title="" isTransparent>
-          <MenuButton menuArr={[{ text: "test", func: () => {} }]} />
+          <MenuButton
+            menuArr={[
+              {
+                text: "카카오톡 공유하기",
+                func: () => {
+                  typeToast("not-yet");
+                },
+              },
+            ]}
+          />
         </Header>
         <Box w="full" h="full" position="absolute">
           {storeGiftData && <Image fill alt="storeImageCover" sizes="800px" src={giftInfo.image} />}
@@ -85,7 +94,7 @@ function StoreItem() {
                 {giftInfo.name}
               </Box>
               <Box fontSize="13px" lineHeight="20px" mb={4}>
-                현재 전체 응모 횟수는 <b>'{giftInfo.totalCnt}회'</b>입니다.
+                현재 전체 응모 횟수는 <b>&lsquo;{giftInfo.totalCnt}회&rsquo;</b>입니다.
               </Box>
               <Box mb={4} fontWeight="extrabold" fontSize="16px" lineHeight="24px" color="mint">
                 {giftInfo.point} Point
@@ -128,14 +137,11 @@ function StoreItem() {
                 lineHeight="20px"
               >
                 <Box fontWeight="medium">안내사항</Box>
-                <Box color="gray.600" fontWeight="regular">
-                  3명
-                </Box>
               </Flex>
               <Box color="gray.600" lineHeight="16px" fontSize="12px">
                 당첨자는 중복되지 않습니다.
                 <br />
-                당첨자가 연락이 되지 않을 경우, 예비 당첨자로 순번이 넘어갑니다.
+                응모할 수 있는 최대 횟수는 개인 점수에 따라 달라집니다.
               </Box>
             </Flex>
           )}
@@ -150,7 +156,7 @@ function StoreItem() {
               참여 현황
             </Button>
             <Button
-              onClick={() => setModalType(isResult ? "member" : "vote")}
+              onClick={() => setModalType(isResult ? "winner" : "vote")}
               size="lg"
               flex={1}
               colorScheme="mint"
@@ -176,11 +182,5 @@ function StoreItem() {
     </>
   );
 }
-
-const Layout = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 0 var(--gap-4);
-`;
 
 export default StoreItem;

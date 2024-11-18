@@ -1,21 +1,24 @@
 import { Box, Button, Flex, Grid } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { TrophyIcon } from "../../components/Icons/icons";
 
+import InfoCol from "../../components/atoms/InfoCol";
+import { TrophyIcon } from "../../components/Icons/icons";
 import RuleIcon from "../../components/Icons/RuleIcon";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import { useErrorToast } from "../../hooks/custom/CustomToast";
 import { useStoreGiftEntryQuery } from "../../hooks/sub/store/queries";
-import RuleModal, { IRuleModalContent } from "../../modals/RuleModal";
+import RuleModal from "../../modals/RuleModal";
 import { isPrevBooleanState } from "../../recoils/previousAtoms";
 import { transferStoreGiftDataState } from "../../recoils/transferRecoils";
 import { STORE_GIFT_ACTIVE, STORE_GIFT_INACTIVE } from "../../storage/Store";
 import { IStoreApplicant, IStoreGift } from "../../types/models/store";
+import { selectRandomWinners } from "../../utils/validationUtils";
 
 export interface IGiftEntry extends IStoreGift {
   users: IStoreApplicant[];
@@ -26,33 +29,8 @@ interface IGiftEntries {
   inactive: IGiftEntry[];
 }
 
-const content: IRuleModalContent = {
-  headerContent: {
-    title: "포인트 스토어",
-    text: "동아리 활동을 통해 포인트를 모으고 추첨에 응모해보세요! 다양한 상품이 있습니다 ~!",
-  },
-  mainContent: [
-    {
-      title: "포인트는 어떻게 얻나요?",
-      texts: [
-        "스터디 참여, 출석체크, 이벤트, 건의, 홍보 등 여러 컨텐츠에서 포인트를 흭득할 수 있어요!",
-      ],
-    },
-
-    {
-      title: "상품 당첨과 인원 관련해서 궁금해요.",
-      texts: ["트로피의 숫자는 당첨 개수, 왼쪽 숫자는 현재 인원과 최대 응모 가능한 인원이에요!"],
-    },
-    {
-      title: "응모 최대 개수에 제한이 있나요?",
-      texts: [
-        "네. 상품 당 중복해서 투표할 수 있는 숫자는 유저 개인 등급에 따라 달라집니다. 기본 아메리카노는 1개, 이후 등급이 오를때마다 하나씩 더 추가돼요.",
-      ],
-    },
-  ],
-};
-
-function Event() {
+function StorePage() {
+  const { data: session } = useSession();
   const router = useRouter();
   const errorToast = useErrorToast();
   const [giftEntries, setGiftEntries] = useState<IGiftEntries>();
@@ -99,6 +77,7 @@ function Event() {
         gift.totalCnt += who.cnt;
       }
     });
+
     setGiftEntries(temp);
     setIsLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -117,11 +96,42 @@ function Event() {
   const tabNavOptions: ITabNavOptions[] = [
     {
       text: "현재 상품",
-      func: () => {},
+      func: () => {
+        setIsShowActive(true);
+      },
     },
     {
       text: "지난 상품",
-      func: () => {},
+      func: () => {
+        setIsShowActive(false);
+      },
+    },
+  ];
+
+  const pointInfoArr: { left: string; right: string }[] = [
+    {
+      left: "스터디 출석체크",
+      right: "5 Point",
+    },
+    {
+      left: "번개 모임 참여",
+      right: "5 Point",
+    },
+    {
+      left: "일일 출석체크",
+      right: "2 Point",
+    },
+    {
+      left: "피드 좋아요 누르기",
+      right: "2 Point",
+    },
+    {
+      left: "함께한 멤버 좋아요 보내기",
+      right: "2 Point",
+    },
+    {
+      left: "동아리 홍보 글 올리기",
+      right: "100 Point",
     },
   ];
 
@@ -138,96 +148,117 @@ function Event() {
           </Box>
           {!isLoading && (
             <Grid gap={4} templateColumns="repeat(2,1fr)" templateRows="repeat(2,1fr)">
-              {giftArr.map((item, idx) => (
-                <Button
-                  display="flex"
-                  flexDir="column"
-                  key={idx}
-                  h="max-content"
-                  onClick={() => onClickGift(item)}
-                  variant="unstyled"
-                >
-                  <Box w="full" aspectRatio={1 / 1} position="relative">
-                    <Image src={item.image} alt="storeGift" priority={idx < 6} fill />
+              {giftArr.map((item, idx) => {
+                const winners: number[] = selectRandomWinners(item.max, item.winner, item.giftId);
+                const users = item.users.reduce((acc, curr) => {
+                  for (let i = 0; i < curr.cnt; i++) {
+                    acc.push(curr);
+                  }
+                  return acc;
+                }, []);
+                const winUsers = winners.map((win) => users[win]);
+                const isMyWin = winUsers.some((user) => user?.uid === session?.user.uid);
 
-                    {(!isShowActive || item.max <= item.totalCnt) && (
-                      <Flex
-                        bg="rgba(0,0,0,0.2)"
-                        justify="center"
-                        align="center"
-                        position="absolute"
-                        w="full"
-                        h="full"
-                        borderRadius="8px"
-                      >
-                        <Box p={1} border="1px solid var(--color-red)" zIndex={5}>
+                return (
+                  <Button
+                    display="flex"
+                    flexDir="column"
+                    key={idx}
+                    h="max-content"
+                    onClick={() => onClickGift(item)}
+                    variant="unstyled"
+                  >
+                    <Box w="full" aspectRatio={1 / 1} position="relative">
+                      <Image src={item.image} alt="storeGift" priority={idx < 6} fill />
+
+                      {(!isShowActive || item.max <= item.totalCnt) && (
+                        <Flex
+                          bg="rgba(0,0,0,0.2)"
+                          justify="center"
+                          align="center"
+                          position="absolute"
+                          w="full"
+                          h="full"
+                          borderRadius="8px"
+                        >
                           <Box
-                            borderRadius="4px"
-                            color="white"
-                            bg="var(--color-red)"
-                            fontSize="11px"
-                            w="80px"
-                            fontWeight="semibold"
-                            lineHeight="20px"
+                            p={1}
+                            border="1px solid var(--color-red)"
+                            borderColor={isMyWin ? "mint" : "red"}
+                            zIndex={5}
+                            borderRadius="8px"
                           >
-                            추첨 완료
+                            <Box
+                              borderRadius="4px"
+                              color="white"
+                              bg={!isMyWin ? "var(--color-red)" : "mint"}
+                              fontSize="11px"
+                              w="80px"
+                              fontWeight="semibold"
+                              lineHeight="20px"
+                            >
+                              {!isMyWin ? "추첨 완료" : "당 첨"}
+                            </Box>
                           </Box>
+                        </Flex>
+                      )}
+                    </Box>
+                    <Flex mt={3} mb={2} justify="space-between" w="full">
+                      <Box
+                        fontSize="11px"
+                        lineHeight="12px"
+                        fontWeight="medium"
+                        py={1}
+                        px={2}
+                        color="gray.500"
+                        bg="rgba(142,160,172,0.08)"
+                      >
+                        {item.totalCnt}/{item.max}
+                      </Box>
+                      <Flex my="auto">
+                        <TrophyIcon />
+                        <Box
+                          ml={0.5}
+                          fontWeight="semibold"
+                          fontSize="12px"
+                          lineHeight="16px"
+                          as="span"
+                        >
+                          {item.winner}
                         </Box>
                       </Flex>
-                    )}
-                  </Box>
-                  <Flex mt={3} mb={2} justify="space-between" w="full">
-                    <Box
-                      fontSize="11px"
-                      lineHeight="12px"
-                      fontWeight="medium"
-                      py={1}
-                      px={2}
-                      color="gray.500"
-                      bg="rgba(142,160,172,0.08)"
-                    >
-                      {item.totalCnt}/{item.max}
-                    </Box>
-                    <Flex my="auto">
-                      <TrophyIcon />
-                      <Box
-                        ml={0.5}
-                        fontWeight="semibold"
-                        fontSize="12px"
-                        lineHeight="16px"
-                        as="span"
-                      >
-                        {item.winner}
-                      </Box>
                     </Flex>
-                  </Flex>
-                  <Box mr="auto" fontWeight="bold" fontSize="14px" lineHeight="20px">
-                    {item.name}
-                  </Box>
-                  <Box
-                    color="mint"
-                    mt={1}
-                    mr="auto"
-                    fontWeight="bold"
-                    fontSize="13px"
-                    lineHeight="20px"
-                  >
-                    {item.point} Point
-                  </Box>
-                  {/* <Info>
-                    <Name>{item.name}</Name>
-                    <Point>{item.point} point</Point>
-                  </Info> */}
-                  {/* {(!isShowActive || item.max <= item.totalCnt) && <CompletedRapple />} */}
-                </Button>
-              ))}
+                    <Box mr="auto" fontWeight="bold" fontSize="14px" lineHeight="20px">
+                      {item.name}
+                    </Box>
+                    <Box
+                      color="mint"
+                      mt={1}
+                      mr="auto"
+                      fontWeight="bold"
+                      fontSize="13px"
+                      lineHeight="20px"
+                    >
+                      {item.point} Point
+                    </Box>
+                  </Button>
+                );
+              })}
             </Grid>
           )}
         </Box>
       </Slide>
-      {isModal && <RuleModal content={content} setIsModal={setIsModal} />}
+      {isModal && (
+        <RuleModal
+          title="포인트 스토어 가이드"
+          text="동아리 활동을 통해 포인트를 획득하고 상품에 응모해보세요. 다양한 상품이 기다리고 있어요!"
+          setIsModal={setIsModal}
+        >
+          <InfoCol optionsArr={pointInfoArr} isMint />
+        </RuleModal>
+      )}
     </>
   );
 }
 
-export default Event;
+export default StorePage;

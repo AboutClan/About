@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import { Box, Flex } from "@chakra-ui/react";
 
 import { IGiftEntry } from "../../pages/store";
 import { IModal } from "../../types/components/modalTypes";
@@ -27,38 +27,25 @@ function StoreGiftWinModal({ setIsModal, applicants, winCnt }: IStoreGiftWinModa
 
   return (
     <ModalLayout title="당첨자 발표" footerOptions={footerOptions} setIsModal={setIsModal}>
-      <Message>당첨을 축하합니다!</Message>
-      <Winner>
+      <Box mb={2} color="gray.700" lineHeight="20px">
+        당첨을 축하합니다.
+      </Box>
+      <Flex py={2} bg="gray.100" border="1px solid var(--gray-200)" borderRadius="8px">
         {winners.map((num, idx) => (
-          <Win key={idx}>{users[num]?.name || "비공개"}</Win>
+          <Box
+            flex={1}
+            color="mint"
+            fontSize="14px"
+            fontWeight="semibold"
+            lineHeight="20px"
+            key={idx}
+          >
+            {users[num]?.name?.[0]}*{users[num]?.name?.[2]}
+          </Box>
         ))}
-      </Winner>
+      </Flex>
     </ModalLayout>
   );
 }
-
-const Message = styled.div`
-  text-align: center;
-  font-weight: 700;
-  font-size: 16px;
-  color: var(--color-mint);
-  margin-top: var(--gap-1);
-  margin-bottom: var(--gap-5);
-`;
-
-const Winner = styled.div`
-  padding: 12px 0;
-  display: flex;
-  align-items: center;
-
-  border-radius: var(--rounded-lg);
-  justify-content: space-around;
-  border: var(--border-mint);
-`;
-
-const Win = styled.span`
-  font-size: 15px;
-  font-weight: 600;
-`;
 
 export default StoreGiftWinModal;
