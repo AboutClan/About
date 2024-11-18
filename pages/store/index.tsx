@@ -116,23 +116,23 @@ function StorePage() {
     },
     {
       left: "번개 모임 참여",
-      right: "5 Point",
+      right: "+ 5 Point",
     },
     {
       left: "일일 출석체크",
-      right: "2 Point",
+      right: "+ 2 Point",
     },
     {
       left: "피드 좋아요 누르기",
-      right: "2 Point",
+      right: "+ 2 Point",
     },
     {
       left: "함께한 멤버 좋아요 보내기",
-      right: "2 Point",
+      right: "+ 2 Point",
     },
     {
       left: "동아리 홍보 글 올리기",
-      right: "100 Point",
+      right: "+ 100 Point",
     },
   ];
 
