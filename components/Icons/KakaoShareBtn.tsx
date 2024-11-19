@@ -1,10 +1,8 @@
 import { Box, Button } from "@chakra-ui/react";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import styled from "styled-components";
 
 import { REVIEW_DATA } from "../../storage/Review";
-import { isWebView } from "../../utils/appEnvUtils";
-import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
 import { ShareIcon } from "./ShareIcon";
 
 const kakaoAppKey = process.env.NEXT_PUBLIC_KAKAO_JS;
@@ -36,19 +34,8 @@ function KakaoShareBtn({
   isTemp,
   variant,
 }: IKakaoShareBtn) {
-  const handleShareOnApp = useCallback(() => {
-    if (isWebView()) {
-      nativeMethodUtils.share(url);
-    }
-  }, []);
-
   useEffect(() => {
-    if (
-      typeof window !== "undefined" &&
-      window.Kakao &&
-      !window.Kakao.isInitialized() &&
-      !isWebView()
-    ) {
+    if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
       window.Kakao.init(kakaoAppKey);
     }
   }, []);
@@ -56,7 +43,7 @@ function KakaoShareBtn({
   useEffect(() => {
     if (type === "gather" && !img) return;
 
-    if (window.Kakao && !isWebView()) {
+    if (window.Kakao) {
       const options =
         type === "gather" || type === "study"
           ? {
@@ -134,7 +121,7 @@ function KakaoShareBtn({
   }, [img, type, url, subtitle]);
 
   return (
-    <Layout id="kakao-share-button" isFull={isFull} temp={temp} onClick={handleShareOnApp}>
+    <Layout id="kakao-share-button" isFull={isFull} temp={temp}>
       {variant === "unstyled" ? (
         <Box>카카오톡으로 공유하기</Box>
       ) : isTemp ? (
