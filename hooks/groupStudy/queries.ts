@@ -17,6 +17,7 @@ interface GroupShapShotProps {
   online: IGroup[];
   offline: IGroup[];
   new: IGroup[];
+  waiting: IGroup[];
 }
 
 export const useGroupSnapshotQuery = (options?: QueryOptions<GroupShapShotProps>) =>
@@ -81,7 +82,7 @@ export const useGroupIdQuery = (groupStudyId?: string, options?: QueryOptions<IG
   useQuery<IGroup, AxiosError, IGroup>(
     [GROUP_STUDY, groupStudyId],
     async () => {
-      console.log(53);
+     
       const res = await axios.get<IGroup>(`${SERVER_URI}/groupStudy`, {
         params: { groupStudyId },
       });

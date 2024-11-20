@@ -7,13 +7,11 @@ import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading"
 import ImageTileGridLayout, {
   IImageTileData,
 } from "../../components/molecules/layouts/ImageTitleGridLayout";
-import { POINT_SYSTEM_PLUS } from "../../constants/serviceConstants/pointSystemConstants";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
-import { usePointSystemMutation } from "../../hooks/user/mutations";
-import { usePointSystemLogQuery, useUserInfoQuery } from "../../hooks/user/queries";
+import { useUserInfoQuery } from "../../hooks/user/queries";
 import { getStudyDateStatus } from "../../libs/study/date/getStudyDateStatus";
 import { recommendTodayStudyPlace } from "../../libs/study/recommendTodayStudyPlace";
 import { selectStudyPlace } from "../../libs/study/selectStudyPlace";
@@ -23,7 +21,7 @@ import { StudyParticipationProps } from "../../types/models/studyTypes/studyDeta
 import { IStudyVote } from "../../types/models/studyTypes/studyInterActions";
 import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
-import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
+import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface StudySimpleVoteModalProps extends IModal {
@@ -55,9 +53,6 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
   const { data: studyVoteDataAll } = useStudyVoteQuery(dateParam, locationKr, {
     enabled: !isFirstPage && !!dateParam && !!location,
   });
-  const { data: pointLog } = usePointSystemLogQuery("point", true, {});
-
-  const { mutate: getPoint } = usePointSystemMutation("point");
 
   const { mutate: patchAttend, isLoading } = useStudyParticipationMutation(
     dayjs(dateParam),
@@ -70,10 +65,6 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
   );
 
   const savedPrefer = userInfo?.studyPreference;
-
-  const myPrevVotePoint = pointLog?.find(
-    (item) => item.message === "스터디 투표" && item.meta.sub === dayjsToStr(dayjs(dateParam)),
-  )?.meta.value;
 
   const mainPlaceFullName = studyVoteDataAll?.[0]?.participations?.find(
     (par) => par?.place._id === myVote?.place,
@@ -142,20 +133,8 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
 
   const handleSuccess = async () => {
     resetStudy();
-    if (myPrevVotePoint) {
-      await getPoint({
-        message: "스터디 투표 취소",
-        value: -myPrevVotePoint,
-      });
-    }
-    await getPoint({
-      ...POINT_SYSTEM_PLUS.STUDY_VOTE_DAILY,
-      sub: dateParam,
-    });
-    toast(
-      "success",
-      `참여 완료! ${POINT_SYSTEM_PLUS.STUDY_VOTE_DAILY.value} 포인트가 적립되었습니다}`,
-    );
+
+    toast("success", `참여 완료! +5 Point가 적립되었습니다}`);
     setIsModal(false);
   };
 

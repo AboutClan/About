@@ -55,6 +55,13 @@ function Layout({ children }: ILayout) {
 
   useEffect(() => {
     if (PUBLIC_SEGMENT.includes(segment)) return;
+    if (!isBottomNavCondition && isGuest) {
+      toast(
+        "info",
+        "현재 게스트 뷰어를 사용하고 있습니다. 활동을 위해서는 앱을 통해 로그인해 주세요.",
+      );
+      return;
+    }
     if (status === "loading" || session === undefined) return;
     const role = session?.user.role;
     if (role === "newUser") {

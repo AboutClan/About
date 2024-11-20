@@ -233,24 +233,28 @@ function GroupPage() {
                     return (
                       <Box key={group.id} pb={3} mb={3} borderBottom="var(--border)">
                         <GroupThumbnailCard
-                          title={group.title}
-                          text={group.guide}
-                          status={group.participants.length <= 1 ? "ready" : status}
-                          category={group.category}
-                          participants={group.participants.map((user) =>
-                            group.isSecret ? { user: ABOUT_USER_SUMMARY } : user,
+                          {...createGroupThumbnailProps(group, status, idx, () =>
+                            setTransdferGroupData(group),
                           )}
-                          imageProps={{
-                            image:
-                              group?.squareImage ||
-                              GATHER_RANDOM_IMAGE_ARR[
-                                getRandomIdx(GATHER_RANDOM_IMAGE_ARR.length - 1)
-                              ],
-                            isPriority: idx < 4,
-                          }}
-                          maxCnt={group.memberCnt.max}
-                          id={group.id}
-                          func={() => setTransdferGroupData(group)}
+                          // title={group.title}
+                          // text={group.guide}
+                          // status={group.participants.length <= 1 ? "ready" : status}
+                          // category={group.category}
+                          // participants={group.participants.map((user) =>
+                          //   group.isSecret ? { user: ABOUT_USER_SUMMARY } : user,
+                          // )}
+                          // imageProps={{
+                          //   image:
+                          //     group?.squareImage ||
+                          //     GATHER_RANDOM_IMAGE_ARR[
+                          //       getRandomIdx(GATHER_RANDOM_IMAGE_ARR.length - 1)
+                          //     ],
+                          //   isPriority: idx < 4,
+                          // }}
+                          // maxCnt={group.memberCnt.max}
+                          // id={group.id}
+                          // func={() => setTransdferGroupData(group)}
+                          // waitingCnt={group.participants.length <= 1 && group.waiting.length}
                         />
                       </Box>
                     );
@@ -269,6 +273,31 @@ function GroupPage() {
     </>
   );
 }
+
+export const createGroupThumbnailProps = (
+  group: IGroup,
+  status: "pending" | "end" | "ready" | "imminent" | "full" | "waiting",
+  idx: number,
+  func,
+) => ({
+  title: group.title,
+  text: group.guide,
+  status: group.participants.length <= 1 ? "ready" : status,
+  category: group.category,
+  participants: group.participants.map((user) =>
+    group.isSecret ? { user: ABOUT_USER_SUMMARY } : user,
+  ),
+  imageProps: {
+    image:
+      group?.squareImage ||
+      GATHER_RANDOM_IMAGE_ARR[getRandomIdx(GATHER_RANDOM_IMAGE_ARR.length - 1)],
+    isPriority: idx < 4,
+  },
+  maxCnt: group.memberCnt.max,
+  id: group.id,
+  func,
+  waitingCnt: group.participants.length <= 1 ? group.waiting.length : null,
+});
 
 const Layout = styled.div`
   min-height: 100vh;

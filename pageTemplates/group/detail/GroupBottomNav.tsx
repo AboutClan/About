@@ -10,8 +10,11 @@ import { useSetRecoilState } from "recoil";
 import BottomFixedButton from "../../../components/atoms/BottomFixedButton";
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
 import { GROUP_STUDY } from "../../../constants/keys/queryKeys";
-import { useCompleteToast, useErrorToast } from "../../../hooks/custom/CustomToast";
-import { useGroupParticipationMutation } from "../../../hooks/groupStudy/mutations";
+import { useCompleteToast, useErrorToast, useToast } from "../../../hooks/custom/CustomToast";
+import {
+  useGroupParticipationMutation,
+  useGroupWaitingMutation,
+} from "../../../hooks/groupStudy/mutations";
 import { transferGroupDataState } from "../../../recoils/transferRecoils";
 import { IGroup } from "../../../types/models/groupTypes/group";
 
@@ -23,6 +26,7 @@ type ButtonType = "cancel" | "participate" | "expire" | "register";
 
 function GroupBottomNav({ data }: IGroupBottomNav) {
   const router = useRouter();
+  const toast = useToast();
   const completeToast = useCompleteToast();
   const { id } = useParams<{ id: string }>() || {};
   const setTransferGroup = useSetRecoilState(transferGroupDataState);
@@ -35,6 +39,14 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
   const { mutate: participate } = useGroupParticipationMutation("post", +id, {
     onSuccess() {
       completeToast("free", "가입이 완료되었습니다.");
+      setTransferGroup(null);
+      queryClient.invalidateQueries([GROUP_STUDY, id]);
+    },
+  });
+
+  const { mutate: sendRegisterForm } = useGroupWaitingMutation(+id, {
+    onSuccess() {
+      toast("success", "참여 대기 완료! 오픈시 연락을 드립니다.");
       setTransferGroup(null);
       queryClient.invalidateQueries([GROUP_STUDY, id]);
     },
@@ -65,15 +77,27 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
   };
 
   const getButtonSettings = () => {
+    if (isPending)
+      if (data?.participants.length <= 1) {
+        return {
+          text: "오픈 대기중",
+        };
+      }
+    return {
+      text: "가입 대기중",
+    };
     if (isFull) {
       return {
         text: "모집 인원 마감",
       };
     }
-    if (isPending)
+    if (data?.participants.length <= 1) {
       return {
-        text: "가입 대기중",
+        text: "참여 대기 신청",
+        handleFunction: () => sendRegisterForm({ answer: "참여 대기 신청", pointType: "point" }),
       };
+    }
+
     return {
       text: "가입 신청",
       handleFunction: data.fee ? () => onClick("participate") : () => setIsModal(true),

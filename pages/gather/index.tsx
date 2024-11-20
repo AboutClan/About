@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import WritingButton from "../../components/atoms/buttons/WritingButton";
@@ -14,6 +15,9 @@ function Gather() {
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
   const tabParam = searchParams.get("tab");
+  const { data: session } = useSession();
+
+  const isGuest = session?.user.role === "guest";
 
   const [tab, setTab] = useState<"번개" | "라운지">("번개");
 
@@ -53,8 +57,7 @@ function Gather() {
       {/**임시 비활성화 */}
       {/* <GatherLocationFilter /> */}
       {tab === "번개" ? <GatherMain /> : <SquareLoungeSection />}
-
-      <WritingButton url="/gather/writing/category" />
+      {!isGuest && <WritingButton url="/gather/writing/category" />}
     </>
   );
 }

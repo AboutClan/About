@@ -35,7 +35,7 @@ function CountNum({ value, setValue, unit, min = 1, isSmall, maxValue }: ICountN
       >
         <i className="fa-regular fa-minus fa-sm" />
       </IconWrapper>
-      <Box as="span" fontSize="20px" mx={1}>
+      <Box as="span" fontSize={isSmall ? "14px" : "20px"} mx={1}>
         {value}
         {unit}
       </Box>

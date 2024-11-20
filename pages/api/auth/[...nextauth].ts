@@ -90,9 +90,8 @@ export const authOptions: NextAuthOptions = {
   },
 
   callbacks: {
-    async signIn({ account, user, profile, credentials }) {
+    async signIn({ account, user, profile }) {
       try {
-        
         if (account.provider === "guest") return true;
         if (account.provider === "credentials") return true;
         if (!account.access_token) return false;
@@ -125,7 +124,7 @@ export const authOptions: NextAuthOptions = {
       }
     },
 
-    async session({ session, token, user, trigger }) {
+    async session({ session, token, trigger }) {
       if (trigger === "update") {
         return session;
       }

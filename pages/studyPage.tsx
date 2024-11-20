@@ -275,7 +275,8 @@ export default function StudyPage() {
               func={() => {
                 setIsVoteDrawer(false);
                 setIsDrawerUp(false);
-              }}
+                }}
+                
             />
           </Box>
         )}

@@ -48,7 +48,7 @@ function WritingCondition() {
       : groupWriting.age[0] === 19 && groupWriting.age[1] === 28
       ? false
       : true,
-    isAgree: groupWriting?.isFree !== undefined ? groupWriting?.isFree : false,
+    isAgree: groupWriting?.isFree !== undefined ? !groupWriting?.isFree : true,
     location:
       groupWriting?.location !== undefined ? groupWriting?.location === userInfo?.location : false,
     challenge: groupWriting?.challenge ? true : false,
@@ -60,7 +60,7 @@ function WritingCondition() {
     isSecret: groupWriting?.isSecret || false,
     link: !!groupWriting?.link || false,
   });
-  console.log(4, groupWriting, condition);
+  
   const [challenge, setChallenge] = useState("");
 
   const [fee, setFee] = useState(groupWriting?.fee || "1000");
@@ -95,7 +95,7 @@ function WritingCondition() {
       link,
       gender: condition.gender,
       organizer: userInfo,
-      questionText: question,
+      questionText: condition.isAgree ? question || "어떤 목적으로 가입을 희망하시나요?" : "",
       isSecret: condition.isSecret,
       challenge,
     };
@@ -137,7 +137,7 @@ function WritingCondition() {
     if (temp.length) return String(temp) + " " + "제한";
     return null;
   };
-  console.log(24, condition);
+
   return (
     <>
       <Slide isFixed={true}>
@@ -181,7 +181,6 @@ function WritingCondition() {
             <Name>
               <i className="fa-regular fa-person-to-door" />
               <span>승인제 사용</span>
-              <PopOverIcon title="자유 가입" text="조건에 맞는다면 자유롭게 가입이 가능합니다." />
             </Name>
             <Switch
               mr="var(--gap-1)"
@@ -287,8 +286,11 @@ function WritingCondition() {
       <QuestionBottomDrawer
         isModal={isQuestionModal}
         setIsModal={() => {
-          console.log(54);
+          setIsQuestionModal(false);
           setCondition((old) => ({ ...old, isAgree: false }));
+        }}
+        onClickRight={() => {
+          setCondition((old) => ({ ...old, isAgree: true }));
           setIsQuestionModal(false);
         }}
         question={question}

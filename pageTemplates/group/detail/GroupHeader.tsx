@@ -97,7 +97,7 @@ function GroupHeader({ group }: IGroupHeader) {
 
   return (
     <>
-      <Header title="모임 정보" isCenter>
+      <Header title="모임 정보" isCenter url="/group">
         <MenuButton menuArr={menuArr} />
       </Header>
       {isSettigModal && (

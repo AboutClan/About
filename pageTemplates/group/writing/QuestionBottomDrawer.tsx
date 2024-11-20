@@ -10,6 +10,7 @@ interface IQuestionBottomDrawer {
   setIsModal: DispatchBoolean;
   setQuestion: DispatchString;
   question: string;
+  onClickRight: () => void;
 }
 
 function QuestionBottomDrawer({
@@ -17,6 +18,7 @@ function QuestionBottomDrawer({
   setIsModal,
   setQuestion,
   question,
+  onClickRight,
 }: IQuestionBottomDrawer) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -54,7 +56,7 @@ function QuestionBottomDrawer({
             leftText="생략"
             rightText="저장"
             onClickLeft={onClickLeft}
-            onClickRight={() => setIsModal(false)}
+            onClickRight={onClickRight}
           />
         </DrawerBody>
       </DrawerContent>

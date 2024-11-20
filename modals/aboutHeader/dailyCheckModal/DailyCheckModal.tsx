@@ -7,9 +7,7 @@ import { useSetRecoilState } from "recoil";
 import { CheckCircleBigIcon } from "../../../components/Icons/CircleIcons";
 import { DAILY_CHECK_POP_UP } from "../../../constants/keys/localStorage";
 import { DAILY_CHECK_WIN_LIST } from "../../../constants/serviceConstants/dailyCheckConstatns";
-import { POINT_SYSTEM_PLUS } from "../../../constants/serviceConstants/pointSystemConstants";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
-import { usePointSystemMutation } from "../../../hooks/user/mutations";
 import { useAlphabetMutation } from "../../../hooks/user/sub/collection/mutations";
 import { useDailyCheckMutation } from "../../../hooks/user/sub/dailyCheck/mutation";
 import { useUserRequestMutation } from "../../../hooks/user/sub/request/mutations";
@@ -48,7 +46,6 @@ function DailyCheckModal({ setIsModal }: IModal) {
     },
   });
 
-  const { mutate: getScore } = usePointSystemMutation("score");
   const { mutate: sendRequest } = useUserRequestMutation();
 
   const winDistribution = getDistributionArr(DAILY_CHECK_WIN_LIST, DISTRIBUTION_SIZE);
@@ -84,7 +81,7 @@ function DailyCheckModal({ setIsModal }: IModal) {
       };
       sendRequest(data);
     }
-    getScore(POINT_SYSTEM_PLUS.DAILY_ATTEND);
+
     toast("success", "출석 완료 !");
   };
 

@@ -52,7 +52,7 @@ export function StudyThumbnailCard({
     }));
 
   const studyStatus = status === "pending" && participantCnt >= 3 ? "expected" : status;
-  console.log(5, status);
+
   return (
     <CardLink href={url} onClick={func}>
       {participants ? (

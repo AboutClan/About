@@ -13,7 +13,7 @@ export default function ArrowBackButton({
   url,
   func,
   defaultUrl,
-  color = "white",
+  color = "mint",
 }: IArrowBackButton) {
   const router = useRouter();
 

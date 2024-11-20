@@ -15,6 +15,7 @@ import {
   STUDY_RECORD,
 } from "../../../constants/keys/localStorage";
 import { useGatherQuery } from "../../../hooks/gather/queries";
+import PointSystemsModal from "../../../modals/aboutHeader/pointSystemsModal/PointSystemsModal";
 import PromotionModal from "../../../modals/aboutHeader/promotionModal/PromotionModal";
 import FAQPopUp from "../../../modals/pop-up/FAQPopUp";
 import LastWeekAttendPopUp from "../../../modals/pop-up/LastWeekAttendPopUp";
@@ -46,7 +47,7 @@ const MODAL_COMPONENTS = {
   lastWeekAttend: LastWeekAttendPopUp,
   // suggest: SuggestPopUp,
   promotion: PromotionModal,
-  // userGuide: PointSystemsModal,
+  userGuide: PointSystemsModal,
   // alphabet: AlphabetPopUp,
   // enthusiastic: EnthusiasticModal,
   // manager: ManagerPopUp,

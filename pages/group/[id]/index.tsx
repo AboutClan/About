@@ -39,7 +39,7 @@ function GroupDetail() {
   const [group, setTransferGroup] = useRecoilState(transferGroupDataState);
 
   const { data: groupData, refetch } = useGroupIdQuery(id, { enabled: !!id && !group });
-  console.log(1234, groupData);
+ 
   useEffect(() => {
     if (groupData) {
       setTransferGroup(groupData);
@@ -67,7 +67,7 @@ function GroupDetail() {
     refetch();
   };
 
-
+  
   return (
     <>
       {group && <GroupHeader group={group} />}
@@ -99,12 +99,15 @@ function GroupDetail() {
               <InfoBoxCol
                 infoBoxPropsArr={[
                   {
-                    category: "개 설",
-                    text: `${dayjsToFormat(dayjs(group.createdAt), "YYYY년 M월 D일")}`,
+                    category: group.participants.length > 1 ? "개 설" : "개설 예정",
+                    text:
+                      group.participants.length > 1
+                        ? dayjsToFormat(dayjs(group.createdAt), "YYYY년 M월 D일")
+                        : "2024년 12월 22일",
                   },
                   { category: "가입 방식", text: group.isFree ? "자유 가입" : "승인제" },
                   { category: "진행 방식", text: convertMeetingTypeToKr(group?.meetingType) },
-                  { category: "참여 비용", text: group.fee ? group.fee + "원" : "없음" },
+                  { category: "보증금", text: group.fee ? group.fee + "원" : "없음" },
                 ]}
                 size="md"
               />

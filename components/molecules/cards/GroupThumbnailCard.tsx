@@ -29,6 +29,7 @@ export interface GroupThumbnailCardProps {
   maxCnt: number;
   func: () => void;
   id: number;
+  waitingCnt?: number;
 }
 
 export function GroupThumbnailCard({
@@ -41,7 +42,9 @@ export function GroupThumbnailCard({
   imageProps,
   id,
   maxCnt,
+  waitingCnt,
 }: GroupThumbnailCardProps) {
+
   const userAvatarArr = participants
     ?.filter((par) => par)
     .map((par) =>
@@ -85,32 +88,37 @@ export function GroupThumbnailCard({
         </Flex>
         <Title>{title}</Title>
         <Subtitle lineNum={2}>{text}</Subtitle>
-
-        <Flex alignItems="center" justify="space-between">
-          <AvatarGroupsOverwrap userAvatarArr={userAvatarArr} maxCnt={VOTER_SHOW_MAX} />
-          <Flex align="center" color="var(--gray-500)">
-            <UserIcon size="sm" />
-            <Flex ml={1} fontSize="10px" align="center" fontWeight={500}>
-              <Box
-                fontWeight={600}
-                as="span"
-                color={
-                  maxCnt !== 0 && participants.length >= maxCnt
-                    ? "var(--color-red)"
-                    : "var(--color-gray)"
-                }
-              >
-                {participants.length}
-              </Box>
-              <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
-                /
-              </Box>
-              <Box as="span" color="var(--gray-500)" fontWeight={500}>
-                {maxCnt === 0 ? <i className="fa-regular fa-infinity" /> : maxCnt}
-              </Box>
+        {waitingCnt === null ? (
+          <Flex alignItems="center" justify="space-between">
+            <AvatarGroupsOverwrap userAvatarArr={userAvatarArr} maxCnt={VOTER_SHOW_MAX} />
+            <Flex align="center" color="var(--gray-500)">
+              <UserIcon size="sm" />
+              <Flex ml={1} fontSize="10px" align="center" fontWeight={500}>
+                <Box
+                  fontWeight={600}
+                  as="span"
+                  color={
+                    maxCnt !== 0 && participants.length >= maxCnt
+                      ? "var(--color-red)"
+                      : "var(--color-gray)"
+                  }
+                >
+                  {participants.length}
+                </Box>
+                <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
+                  /
+                </Box>
+                <Box as="span" color="var(--gray-500)" fontWeight={500}>
+                  {maxCnt === 0 ? <i className="fa-regular fa-infinity" /> : maxCnt}
+                </Box>
+              </Flex>
             </Flex>
           </Flex>
-        </Flex>
+        ) : (
+          <Box ml="auto" mr={1} h={4} fontSize="11px" color="purple" fontWeight="semibold">
+            {waitingCnt + 3}명의 멤버가 오픈을 기다리고 있어요
+          </Box>
+        )}
       </Flex>
     </CardLink>
   );

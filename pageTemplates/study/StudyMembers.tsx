@@ -36,7 +36,7 @@ export default function StudyMembers({ date, members, absences }: IStudyMembers)
   }>();
   const myStudyParticipation = useRecoilValue(myStudyParticipationState);
   const studyType = checkStudyType(myStudyParticipation);
-  console.log(members);
+
   const { mutate: setRealTimeComment } = useRealTimeCommentMutation({
     onSuccess: () => handleSuccessChange(),
   });

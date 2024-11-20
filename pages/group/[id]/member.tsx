@@ -59,7 +59,7 @@ export default function Member() {
     onSuccess() {},
   });
   const belong = group && checkGroupGathering(group.hashTag);
-  console.log(53, group);
+ 
   const alertOptions: IAlertModalOptions = {
     title: "유저 추방",
     subTitle: `${deleteUser?.user?.name || "외부인"}님을 해당 모임에서 추방합니다.`,

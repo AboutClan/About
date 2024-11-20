@@ -15,20 +15,13 @@ import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import { STUDY_RECORD } from "../../../constants/keys/localStorage";
-import {
-  POINT_SYSTEM_DEPOSIT,
-  POINT_SYSTEM_PLUS,
-} from "../../../constants/serviceConstants/pointSystemConstants";
+import { POINT_SYSTEM_DEPOSIT } from "../../../constants/serviceConstants/pointSystemConstants";
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import { useImageUploadMutation } from "../../../hooks/image/mutations";
 import { useRealTimeAttendMutation } from "../../../hooks/realtime/mutations";
 import { useStudyAttendCheckMutation } from "../../../hooks/study/mutations";
-import {
-  useAboutPointMutation,
-  usePointSystemMutation,
-  useScoreMutation,
-} from "../../../hooks/user/mutations";
+import { usePointSystemMutation } from "../../../hooks/user/mutations";
 import { getMyStudyInfo } from "../../../libs/study/getMyStudyMethods";
 import { ModalLayout } from "../../../modals/Modals";
 import { myStudyParticipationState } from "../../../recoils/studyRecoils";
@@ -66,8 +59,6 @@ function Configuration() {
 
   const myStudyParticipation = useRecoilValue(myStudyParticipationState);
 
-  const { mutate: getAboutPoint } = useAboutPointMutation();
-  const { mutate: getScore } = useScoreMutation();
   const { mutate: getDeposit } = usePointSystemMutation("deposit");
   const { mutate: handleArrived, isLoading: isLoading1 } = useStudyAttendCheckMutation({
     onSuccess(data) {
@@ -113,20 +104,14 @@ function Configuration() {
     saveTogetherMembers();
     resetStudy();
     setTransferStudyAttendance(null);
-    const pointObj = POINT_SYSTEM_PLUS.STUDY_ATTEND_CHECK;
 
     if (myStudyParticipation?.status === "open") {
-      getAboutPoint(pointObj);
       const myStudyInfo = getMyStudyInfo(myStudyParticipation, session?.user.uid);
       const isLate = dayjs().isAfter(dayjs(myStudyInfo?.time.end).add(1, "hour"));
       if (isLate) getDeposit(POINT_SYSTEM_DEPOSIT.STUDY_ATTEND_LATE);
-      toast(
-        "success",
-        `출석 완료! ${pointObj.value} 포인트가 적립되었습니다. ${isLate ? "하지만 지각..." : ""}`,
-      );
+      toast("success", `출석 완료! 5 포인트가 적립되었습니다. ${isLate ? "하지만 지각..." : ""}`);
     } else {
-      getScore(pointObj);
-      toast("success", `출석 완료! ${pointObj.value}점을 획득했습니다`);
+      toast("success", `출석 완료! 5점을 획득했습니다`);
     }
 
     newSearchParams.set("center", "votePlace");

@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
+import { MainLoading } from "../../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../../components/layouts/PageSlide";
 import { useCurrentLocation } from "../../../../hooks/custom/CurrentLocationHook";
 import { useStudyVoteQuery } from "../../../../hooks/study/queries";
@@ -74,7 +75,7 @@ export default function Page() {
 
   return (
     <>
-      {mergeParticipation && (
+      {mergeParticipation ? (
         <>
           <StudyHeader brand={brand} name={name} address={address} coverImage={coverImage} />
           <Box mb={5}>
@@ -116,6 +117,8 @@ export default function Page() {
           )}
           {isInviteModal && <StudyInviteModal setIsModal={setIsInviteModal} place={place} />}
         </>
+      ) : (
+        <MainLoading />
       )}
     </>
   );
