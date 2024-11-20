@@ -8,7 +8,7 @@ const withPWA = require("next-pwa")({
   disable: typeof window === "undefined" || !isProduction,
   sourcemap: !isProduction,
 });
-
+//2
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const baseNextConfig = {
   images: {
