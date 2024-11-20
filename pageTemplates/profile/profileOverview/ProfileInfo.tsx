@@ -6,9 +6,7 @@ import Avatar from "../../../components/atoms/Avatar";
 import UserBadge from "../../../components/atoms/badges/UserBadge";
 import { LIKE_HEART } from "../../../constants/keys/localStorage";
 import { NOTICE_HEART_LOG } from "../../../constants/keys/queryKeys";
-
 import { USER_ROLE } from "../../../constants/settingValue/role";
-import { useAdminPointMutation } from "../../../hooks/admin/mutation";
 import { useResetQueryData } from "../../../hooks/custom/CustomHooks";
 import { useCompleteToast, useErrorToast, useFailToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
@@ -51,7 +49,7 @@ function ProfileInfo({ user }: IProfileInfo) {
     onError: errorToast,
   });
 
-  const { mutate: sendAboutPoint } = useAdminPointMutation(user?.uid);
+  // const { mutate: sendAboutPoint } = useAdminPointMutation(user?.uid);
 
   // useStudyAttendRecordQuery(dayjs().subtract(4, "day"), dayjs().add(1, "day"), {
   //   enabled: !isGuest,
