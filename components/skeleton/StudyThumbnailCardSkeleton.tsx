@@ -1,6 +1,6 @@
 import { Box, Flex, Skeleton } from "@chakra-ui/react";
 
-export function StudyThumbnailCardSkeleton() {
+export function StudyThumbnailCardSkeleton({ type }: { type: "home" | "drawer" }) {
   return (
     <Box h="88px" mb={3} borderBottom="var(--border)">
       <Flex pr={3} bg="white" justify="space-between">
@@ -9,7 +9,7 @@ export function StudyThumbnailCardSkeleton() {
 
         <Flex direction="column" ml={4} flex={1}>
           {/* 배지 자리 */}
-          <Skeleton isLoaded={false} w="44px" h="20px" borderRadius="4px" mb={2} />
+          <Skeleton isLoaded={false} w="54px" h="12px" borderRadius="4px" mb={1} />
 
           {/* 타이틀 자리 */}
           <Skeleton isLoaded={false} w="100px" h="20px" borderRadius="4px" mb={1} />

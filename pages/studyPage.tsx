@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -55,6 +55,7 @@ export default function StudyPage() {
 
   const dateParam = searchParams.get("date");
   const voteDrawerParam = searchParams.get("voteDrawer") as "up" | "down";
+  const drawerParam = searchParams.get("drawer") as "up" | "down";
   const centerParam = searchParams.get("center") as "locationPlace" | "mainPlace" | "votePlace";
   const locationParamKr = convertLocationLangTo(
     searchParams.get("location") as LocationEn,
@@ -80,7 +81,7 @@ export default function StudyPage() {
   const [isVoteDrawerFirst, setIsVoteDrawerFirst] = useState(true);
 
   const [myStudyParticipation, setMyStudyParticipation] = useRecoilState(myStudyParticipationState);
-  const [isDrawerUp, setIsDrawerUp] = useState(true);
+  const [isDrawerUp, setIsDrawerUp] = useState(drawerParam === "up" ? true : false);
 
   const { data: userInfo } = useUserInfoQuery();
   const { data: studyVoteData, isLoading } = useStudyVoteQuery(date, locationValue, {
@@ -93,7 +94,8 @@ export default function StudyPage() {
 
   useEffect(() => {
     if (!locationValue) return;
-
+    if (isDrawerUp) newSearchParams.set("drawer", "up");
+    else newSearchParams.set("drawer", "down");
     newSearchParams.set("center", myStudyParticipation ? "votePlace" : "locationPlace");
     newSearchParams.set("location", `${convertLocationLangTo(locationValue, "en")}`);
     newSearchParams.set("date", `${getStudyViewDate(dayjs(date))}`);
@@ -118,6 +120,12 @@ export default function StudyPage() {
       setCenterLocation({ lat: locationCenter.latitude, lon: locationCenter.longitude });
     }
   }, [myStudyParticipation]);
+
+  useEffect(() => {
+    if (isDrawerUp) newSearchParams.set("drawer", "up");
+    else newSearchParams.set("drawer", "down");
+    router.replace(`/studyPage?${newSearchParams.toString()}`);
+  }, [isDrawerUp]);
 
   useEffect(() => {
     if (!studyVoteData || !session?.user.uid) return;
@@ -270,13 +278,12 @@ export default function StudyPage() {
             setIsLocationFetch={setIsLocationRefetch}
           />
         ) : (
-          <Box position="fixed" zIndex={20} top="16px" left="16px">
+          <Box position="fixed" zIndex={20} top="0" left="0">
             <ArrowBackButton
               func={() => {
                 setIsVoteDrawer(false);
                 setIsDrawerUp(false);
-                }}
-                
+              }}
             />
           </Box>
         )}

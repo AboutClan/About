@@ -1,6 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
@@ -11,8 +11,11 @@ import Slide from "../../../components/layouts/PageSlide";
 import ProfileCommentCard from "../../../components/molecules/cards/ProfileCommentCard";
 import { GROUP_STUDY } from "../../../constants/keys/queryKeys";
 import { GROUP_STUDY_ROLE } from "../../../constants/settingValue/groupStudy";
-import { useCompleteToast } from "../../../hooks/custom/CustomToast";
-import { useGroupExileUserMutation } from "../../../hooks/groupStudy/mutations";
+import { useCompleteToast, useToast } from "../../../hooks/custom/CustomToast";
+import {
+  useGroupAttendUserMutation,
+  useGroupExileUserMutation,
+} from "../../../hooks/groupStudy/mutations";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
 import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
 import { checkGroupGathering } from "../../../libs/group/checkGroupGathering";
@@ -23,14 +26,14 @@ export default function Member() {
   const { data: session } = useSession();
   const completeToast = useCompleteToast();
   const { id } = useParams<{ id: string }>() || {};
-
+  const toast = useToast();
   const [deleteUser, setDeleteUser] = useState<GroupParicipantProps>(null);
   const [group, setGroup] = useState<IGroup>();
 
   const transferGroup = useRecoilValue(transferGroupDataState);
 
   const { data: groupData } = useGroupIdQuery(id, { enabled: !!id && !transferGroup });
-
+  console.log(groupData);
   const [users, setUsers] = useState<GroupParicipantProps[]>([]);
 
   useEffect(() => {
@@ -55,18 +58,24 @@ export default function Member() {
     },
   });
 
+  const { mutate: attendUser } = useGroupAttendUserMutation("6687e816d514b89f15031c08", {
+    onSuccess() {
+      toast("success", "출석체크 완료");
+    },
+  });
+
   const { mutate: handleBelong } = useUserInfoFieldMutation("belong", {
     onSuccess() {},
   });
   const belong = group && checkGroupGathering(group.hashTag);
- 
+
   const alertOptions: IAlertModalOptions = {
     title: "유저 추방",
     subTitle: `${deleteUser?.user?.name || "외부인"}님을 해당 모임에서 추방합니다.`,
     func: async () => {
       await mutate({ toUid: deleteUser?.user?._id, randomId: deleteUser?.randomId });
       if (belong) {
-        await handleBelong({ uid: deleteUser?.user?.uid, belong: null });
+        handleBelong({ uid: deleteUser?.user?.uid, belong: null });
       }
       setGroup((old) => ({
         ...old,
@@ -77,12 +86,23 @@ export default function Member() {
     text: "추방",
   };
 
+  const onClickAttend = (userId: string) => {
+    attendUser({ userId });
+    setUsers((old) =>
+      old.map((who) =>
+        who.user._id === userId
+          ? { ...who, attendCnt: who.attendCnt + 1, weekAttendance: true }
+          : who,
+      ),
+    );
+  };
+
   return (
     <>
       <Header title="멤버 관리" />
       <Slide>
         <Box>
-          <Box p="12px 16px" fontSize="16px" fontWeight={800}>
+          <Box p="12px 0" fontSize="16px" fontWeight={800}>
             참여중인 멤버
           </Box>
           <Flex direction="column">
@@ -94,11 +114,30 @@ export default function Member() {
                     text: `구성:${GROUP_STUDY_ROLE[who.role]} / 출석 횟수:${who.attendCnt}회`,
                   }}
                   rightComponent={
-                    who.user?.uid !== session?.user.uid ? (
-                      <Button onClick={() => setDeleteUser(who)} colorScheme="red" size="sm">
+                    <Flex align="center">
+                      {!who.weekAttendance ? (
+                        <Button
+                          onClick={() => onClickAttend(who.user._id)}
+                          colorScheme="mint"
+                          size="sm"
+                        >
+                          출석 체크
+                        </Button>
+                      ) : (
+                        <Box color="mint" mr={5}>
+                          <i className="fa-regular fa-check-circle fa-xl" />
+                        </Box>
+                      )}
+                      <Button
+                        isDisabled={who.user?.uid === session?.user.uid}
+                        onClick={() => setDeleteUser(who)}
+                        colorScheme="red"
+                        size="sm"
+                        ml={3}
+                      >
                         추방
                       </Button>
-                    ) : null
+                    </Flex>
                   }
                 />
               </Box>

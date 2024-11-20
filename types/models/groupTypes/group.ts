@@ -18,6 +18,7 @@ export interface GroupParicipantProps {
   role: "member" | "manager" | "admin";
   attendCnt?: number;
   randomId?: number;
+  weekAttendance: boolean;
 }
 
 export interface IGroupWriting extends TimeStampProps {

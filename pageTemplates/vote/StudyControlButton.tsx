@@ -1,8 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 
@@ -64,7 +64,6 @@ function StudyControlButton({ setIsVoteDrawer, setIsDrawerUp, date }: StudyContr
           h="40px"
           borderRadius="50%"
           onClick={() => router.push("/study/writing/place")}
-          isDisabled={!!isArrived}
           boxShadow="0px 5px 10px 0px rgba(66,66,66,0.1)"
         >
           <i className="fa-solid fa-location-plus fa-xl" />

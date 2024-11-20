@@ -1,5 +1,5 @@
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 import AlertModal, { IAlertModalOptions } from "../../../components/AlertModal";
@@ -67,7 +67,7 @@ function GroupHeader({ group }: IGroupHeader) {
             },
           },
           {
-            text: "모임 내용 수정",
+            text: "모임 정보 수정",
             func: () => {
               setLocalStorageObj(GROUP_WRITING_STORE, {
                 ...group,

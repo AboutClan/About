@@ -23,7 +23,7 @@ export const useAdminUsersLocationControlQuery = <T extends boolean>(
   options?: QueryOptions<T extends true ? IUserSummary[] : IUser[]>,
 ) =>
   useQuery<T extends true ? IUserSummary[] : IUser[], AxiosError>(
-    ["adminUserControl", location, isSummary, filterType],
+    ["adminUserControl", location, isSummary, "monthScore"],
     async () => {
       const res = await axios.get<T extends true ? IUserSummary[] : IUser[]>(
         `${SERVER_URI}/admin/user`,

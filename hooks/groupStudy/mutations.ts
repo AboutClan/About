@@ -8,8 +8,8 @@ import { IGroup, IGroupWriting } from "../../types/models/groupTypes/group";
 type GroupWritingParam<T> = T extends "post"
   ? { groupStudy: IGroupWriting }
   : T extends "patch"
-    ? { groupStudy: IGroup }
-    : { id: string };
+  ? { groupStudy: IGroup }
+  : { id: string };
 
 /** group info */
 export const useGroupWritingMutation = <T extends "post" | "patch" | "delete">(
@@ -60,6 +60,19 @@ export const useGroupExileUserMutation = (id: number, options?: MutationOptions<
         method: "delete",
         url: "groupStudy/participate/exile",
         body: { id, toUid, randomId },
+      }),
+    options,
+  );
+export const useGroupAttendUserMutation = (
+  groupId: string,
+  options?: MutationOptions<{ userId: string }>,
+) =>
+  useMutation<void, AxiosError, { userId: string }>(
+    ({ userId }) =>
+      requestServer<{ groupId: string; userId: string }>({
+        method: "post",
+        url: "groupStudy/weekAttend",
+        body: { groupId, userId },
       }),
     options,
   );

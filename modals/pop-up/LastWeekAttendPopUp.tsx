@@ -30,15 +30,18 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
   const scoreObj = filteredData?.reduce(
     (acc, cur) => {
       const value = cur.meta.value;
-      if (cur.message.includes("번개 모임")) {
+      if (cur.message.includes("번개 모임 참여 취소")) {
+        return { ...acc, gather: acc.gather - value };
+      } else if (cur.message.includes("번개 모임 참여" || "번개 모임 개설")) {
         return { ...acc, gather: acc.gather + value };
-      }
-      if (cur.message.includes("스터디")) {
+      } else if (cur.message.includes("스터디 출석")) {
         return { ...acc, study: acc.study + value };
+      } else if (cur.message.includes("소모임 주간 출석")) {
+        return { ...acc, study: acc.group + value };
       }
       return acc;
     },
-    { study: 0, gather: 0 },
+    { study: 0, gather: 0, group: 0 },
   );
 
   const totalScore = scoreObj?.study + scoreObj?.gather;
@@ -78,43 +81,6 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
         </Box>
       </Flex>
       <Box my={3} h="1px" bg="gray.100" />
-
-      <Box mb={3}>
-        <ProgressMark value={userInfo?.monthScore} />
-      </Box>
-
-      {scoreObj ? (
-        <InfoCol
-          optionsArr={[
-            {
-              left: "이번 달 동아리 점수",
-              right: `${userInfo?.monthScore} 점`,
-            },
-            {
-              left: "이번 달 스터디 점수",
-              right: `${scoreObj?.study} 점`,
-            },
-            {
-              left: "이번 달 모임 점수",
-              right: `${scoreObj?.gather} 점`,
-            },
-            {
-              left: "이번 달에 받은 좋아요",
-              right: `${likeCnt || 0} 개`,
-            },
-          ]}
-        />
-      ) : (
-        <InfoColSkeleton
-          leftArr={[
-            "이번 달 동아리 점수",
-            "이번 달 스터디 점수",
-            "이번 달 모임 점수",
-            "이번 달에 받은 좋아요",
-          ]}
-        />
-      )}
-
       <Message>
         {totalScore >= 0 &&
           (dayjs(userInfo?.registerDate).diff(dayjs(), "month") === 0 ? (
@@ -142,12 +108,50 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
             </div>
           ))}
       </Message>
+
+      <Box mb={3}>
+        <ProgressMark value={userInfo?.monthScore} />
+      </Box>
+
+      {scoreObj ? (
+        <InfoCol
+          optionsArr={[
+            {
+              left: "이번 달 스터디 점수",
+              right: `${scoreObj.study} 점`,
+            },
+            {
+              left: "이번 달 소모임 점수",
+              right: `${scoreObj.group} 점`,
+            },
+            {
+              left: "이번 달 번개 점수",
+              right: `${scoreObj.gather} 점`,
+            },
+            {
+              left: "기타 추가 점수",
+              right: `${
+                userInfo.monthScore - scoreObj?.study - scoreObj.gather - scoreObj.group
+              } 점`,
+            },
+          ]}
+        />
+      ) : (
+        <InfoColSkeleton
+          leftArr={[
+            "이번 달 동아리 점수",
+            "이번 달 스터디 점수",
+            "이번 달 모임 점수",
+            "이번 달에 받은 좋아요",
+          ]}
+        />
+      )}
     </ModalLayout>
   );
 }
 
 const Message = styled.div`
-  margin-top: 12px;
+  margin-bottom: 12px;
   padding: 12px 16px;
   min-height: 48px;
   border-radius: 8px;
