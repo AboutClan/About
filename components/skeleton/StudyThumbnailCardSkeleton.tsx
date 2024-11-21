@@ -1,6 +1,6 @@
 import { Box, Flex, Skeleton } from "@chakra-ui/react";
 
-export function StudyThumbnailCardSkeleton({ type }: { type: "home" | "drawer" }) {
+export function StudyThumbnailCardSkeleton() {
   return (
     <Box h="88px" mb={3} borderBottom="var(--border)">
       <Flex pr={3} bg="white" justify="space-between">

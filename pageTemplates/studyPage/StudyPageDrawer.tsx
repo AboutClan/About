@@ -147,9 +147,7 @@ function StudyPageDrawer({
                         />
                       </Box>
                     ))
-                  : [1, 2, 3, 4, 5].map((idx) => (
-                      <StudyThumbnailCardSkeleton type="drawer" key={idx} />
-                    ))}
+                  : [1, 2, 3, 4, 5].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)}
               </motion.div>
             </AnimatePresence>
           </Box>

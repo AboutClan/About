@@ -8,7 +8,7 @@ import HomeGroupCol from "./HomeGroupCol";
 
 function HomeGroupSection() {
   const { data: data } = useGroupSnapshotQuery();
- 
+
   return (
     <>
       <Box my={5}>
@@ -33,7 +33,7 @@ function HomeGroupSection() {
             <ShortArrowIcon dir="right" />
           </ButtonWrapper>
         </SectionHeader>
-        <HomeGroupCol threeGroups={data?.new} />
+        <HomeGroupCol threeGroups={data?.new.slice().reverse()} />
       </Box>
       <Box my={5}>
         <SectionHeader title="About 오픈 예정 소모임" subTitle="Group">

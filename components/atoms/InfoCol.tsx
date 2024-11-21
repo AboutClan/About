@@ -8,9 +8,10 @@ export interface InfoColOptions {
 interface InfoColProps {
   optionsArr: InfoColOptions[];
   isMint?: boolean;
+  isBig?: boolean;
 }
 
-function InfoCol({ optionsArr, isMint }: InfoColProps) {
+function InfoCol({ optionsArr, isMint, isBig }: InfoColProps) {
   return (
     <Flex
       direction="column"
@@ -22,7 +23,13 @@ function InfoCol({ optionsArr, isMint }: InfoColProps) {
       bg="rgba(97,106,97,0.04)"
     >
       {optionsArr.map(({ left, right }, idx) => (
-        <Flex key={idx} justify="space-between" fontSize="11px" my={1}>
+        <Flex
+          key={idx}
+          justify="space-between"
+          fontSize="11px"
+          py={isBig ? 2 : 1}
+          borderBottom={isBig && idx !== optionsArr.length - 1 ? "var(--border-main)" : null}
+        >
           <Box color="gray.600">{left}</Box>
           <Box color={isMint ? "mint" : "gray.800"} fontWeight="medium">
             {right}

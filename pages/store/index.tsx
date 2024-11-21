@@ -111,8 +111,12 @@ function StorePage() {
 
   const pointInfoArr: { left: string; right: string }[] = [
     {
+      left: "스터디 사전 투표",
+      right: "+ 5 Point",
+    },
+    {
       left: "스터디 출석체크",
-      right: "5 Point",
+      right: "+ 5 Point",
     },
     {
       left: "번개 모임 참여",
@@ -123,6 +127,10 @@ function StorePage() {
       right: "+ 2 Point",
     },
     {
+      left: "건의하기",
+      right: "+ 5 Point",
+    },
+    {
       left: "피드 좋아요 누르기",
       right: "+ 2 Point",
     },
@@ -131,8 +139,16 @@ function StorePage() {
       right: "+ 2 Point",
     },
     {
-      left: "동아리 홍보 글 올리기",
+      left: "피드(번개,소모임) 올리기",
       right: "+ 100 Point",
+    },
+    {
+      left: "번개 모임 개설",
+      right: "+ 200 Point",
+    },
+    {
+      left: "동아리 홍보 글 올리기",
+      right: "+ 200 Point",
     },
   ];
 

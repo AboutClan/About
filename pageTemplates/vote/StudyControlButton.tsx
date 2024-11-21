@@ -1,8 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 
@@ -80,6 +80,9 @@ function StudyControlButton({ setIsVoteDrawer, setIsDrawerUp, date }: StudyContr
           leftIcon={<CheckCircleIcon size="sm" isFill={false} />}
           onClick={() => setIsStudyDrawer(true)}
           isDisabled={!!isArrived}
+          _hover={{
+            background: undefined,
+          }}
         >
           {isArrived ? "출석 완료" : "스터디"}
         </Button>

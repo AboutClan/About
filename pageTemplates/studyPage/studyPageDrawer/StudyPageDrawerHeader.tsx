@@ -51,11 +51,7 @@ function StudyPageDrawerHeader({ date, setDate, isDrawerUp }: StudyPageDrawerHea
               <ShortArrowIcon dir={isDrawerUp ? "bottom" : "top"} />
             </Button>
             {!isDrawerUp && (
-              <ButtonWrapper
-                onClick={navigateNextDay}
-                text={dayjsToFormat(dayjs(date).add(1, "day"), "M월 D일")}
-                size="xs"
-              >
+              <ButtonWrapper onClick={navigateNextDay} text="내일" size="xs">
                 <ShortArrowIcon dir="right" />
               </ButtonWrapper>
             )}

@@ -14,17 +14,23 @@ interface IPopoverIcon {
   text: string;
   size?: "xs" | "md";
   marginDir?: "left" | "right";
+  isMint?: boolean;
 }
 
-export function PopOverIcon({ title, text, size = "md", marginDir = "left" }: IPopoverIcon) {
-  
+export function PopOverIcon({
+  title,
+  text,
+  size = "md",
+  marginDir = "left",
+  isMint,
+}: IPopoverIcon) {
   return (
     <Popover>
       <PopoverTrigger>
         <IconWrapper>
           <i
-            className={`fa-light fa-question-circle fa-${size}`}
-            style={{ color: "var(--gray-500)" }}
+            className={`fa-regular fa-question-circle fa-${size}`}
+            style={{ color: isMint ? "var(--color-mint)" : "var(--gray-500)" }}
           />
         </IconWrapper>
       </PopoverTrigger>

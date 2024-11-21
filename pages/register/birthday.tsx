@@ -1,10 +1,11 @@
 import "react-datepicker/dist/react-datepicker.css";
 
 import { Button } from "@chakra-ui/react";
+import KoreanLocale from "date-fns/locale/ko"; // 한국어 로케일 추가
 import dayjs from "dayjs";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import DatePicker from "react-datepicker";
+import DatePicker, { registerLocale } from "react-datepicker";
 import styled from "styled-components";
 
 import BottomNav from "../../components/layouts/BottomNav";
@@ -15,6 +16,8 @@ import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
 import { birthToAge } from "../../utils/convertUtils/convertTypes";
 import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
+
+registerLocale("ko", KoreanLocale);
 
 function Birthday() {
   const searchParams = useSearchParams();
@@ -67,6 +70,7 @@ function Birthday() {
           <DateStr>{myBirth}</DateStr>
           <Button size="md" as="div" bgColor="white" border="var(--border-main)">
             <StyledDatePicker
+              locale="ko"
               selected={startDate}
               onChange={(date) => setStartDate(date as Date)}
               dateFormat="연도 / 월 선택"
@@ -76,6 +80,7 @@ function Birthday() {
           </Button>
           <Button size="md" mt="10px" as="div" bgColor="white" border="var(--border-main)">
             <StyledDatePicker
+              locale="ko"
               selected={startDate}
               onChange={(date) => setStartDate(date as Date)}
               dateFormat="날짜 선택"
@@ -122,9 +127,18 @@ const DateContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: apple;
+
+  .react-datepicker {
+    font-family: apple;
+  }
   .react-datepicker__header {
     font-size: 14px;
   }
+  .react-datepicker__month {
+    margin: 4px;
+  }
+
   .react-datepicker__month-text {
     width: 80px;
     height: 40px;
@@ -133,8 +147,7 @@ const DateContainer = styled.div`
   .react-datepicker__day-name {
     font-weight: 400;
     font-size: 12px;
-    margin: 4px 5.5px;
-    margin-top: 8px;
+    margin: 2px 4px;
   }
   .react-datepicker__day {
     font-weight: 400;
