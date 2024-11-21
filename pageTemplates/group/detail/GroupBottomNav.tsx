@@ -77,12 +77,16 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
   };
 
   const getButtonSettings = () => {
-    if (isPending)
+    if (isPending) {
       if (data?.participants.length <= 1) {
         return {
           text: "오픈 대기중",
         };
       }
+      return {
+        text: "가입 대기중",
+      };
+    }
     if (isFull) {
       return {
         text: "모집 인원 마감",
