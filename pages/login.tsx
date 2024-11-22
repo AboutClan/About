@@ -15,7 +15,6 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import { Input } from "../components/atoms/Input";
 
 import { useToast } from "../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../hooks/user/queries";
@@ -23,9 +22,6 @@ import ForceLogoutDialog from "../modals/login/ForceLogoutDialog";
 import GuestLoginModal from "../modals/login/GuestLoginModal";
 import { IFooterOptions, ModalLayout } from "../modals/Modals";
 import { IconKakao, IconUser } from "../public/icons/Icons";
-
-const publicID = "abcdef1234";
-const publicPW = "abcd1234?!";
 
 const Login: NextPage<{
   providers: Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider>;
@@ -40,9 +36,6 @@ const Login: NextPage<{
   const [isModal, setIsModal] = useState(false);
   const [isWaitingModal, setIsWaitingModal] = useState(false);
   const [isLoginModal, setIsLoginModal] = useState(false);
-
-  const [id, setId] = useState("");
-  const [pw, setPw] = useState("");
 
   const { data: userInfo } = useUserInfoQuery({
     enabled: !!session,
@@ -93,24 +86,6 @@ const Login: NextPage<{
     main: {},
   };
 
-  const handleLogin = async () => {
-    if (id === publicID && pw === publicPW) {
-      const result = await signIn("credentials", {
-        callbackUrl: `${window.location.origin}/home`,
-        username: "게스트",
-        password: "비밀번호",
-      });
-
-      if (result?.error) {
-        console.error("로그인 실패:", result?.error);
-      } else {
-        console.log("로그인 성공!");
-      }
-    } else {
-      toast("error", "아이디 비밀번호가 일치하지 않습니다.");
-    }
-  };
-
   return (
     <>
       <Flex direction="column" alignItems="center" height="100vh" overflow="hidden">
@@ -149,7 +124,7 @@ const Login: NextPage<{
             leftIcon={<IconKakao />}
             pr="32px"
           >
-            <span>카카오톡으로 시작하기</span>
+            <span>카카오톡으로 5초만에 시작하기</span>
             <div />
           </Button>
           <Button
@@ -169,7 +144,7 @@ const Login: NextPage<{
             <div />
           </Button>
 
-          <Button variant="ghost" size="md" fontSize="13px" onClick={() => setIsLoginModal(true)}>
+          <Button variant="ghost" size="md" fontSize="13px" onClick={() => router.push("/loginId")}>
             <u
               style={{
                 fontWeight: "400",
@@ -203,21 +178,6 @@ const Login: NextPage<{
           footerOptions={waitingFooterOptions}
         >
           가입 대기중입니다. <br /> 며칠 내에 카톡으로 연락드려요!
-        </ModalLayout>
-      )}
-      {isLoginModal && (
-        <ModalLayout title="로그인" setIsModal={setIsLoginModal}>
-          <Box textAlign="start" mb={4}>
-            <Box as="span">아이디</Box>
-            <Input value={id} onChange={(e) => setId(e.target.value)} />
-          </Box>
-          <Box textAlign="start">
-            <Box as="span">비밀번호</Box>
-            <Input value={pw} onChange={(e) => setPw(e.target.value)} />
-          </Box>
-          <Button mt={4} w="full" colorScheme="mint" onClick={handleLogin}>
-            로그인
-          </Button>
         </ModalLayout>
       )}
     </>

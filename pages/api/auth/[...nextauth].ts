@@ -129,7 +129,18 @@ export const authOptions: NextAuthOptions = {
         return session;
       }
 
-      if (session.user.name === "guest") {
+      if (session.user.name === "게스트") {
+        session.user = {
+          id: "66f29811e0f0564ae35c52a4",
+          uid: "1234567890",
+          name: "게스트",
+          role: "member",
+          profileImage:
+            "http://img1.kakaocdn.net/thumb/R110x110.q70/?fname=http://t1.kakaocdn.net/account_images/default_profile.jpeg",
+          isActive: true,
+          location: "수원",
+        };
+      } else if (session.user.name === "guest") {
         session.user = {
           id: "66f29811e0f0564ae35c52a4",
           uid: "1234567890",

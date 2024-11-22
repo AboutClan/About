@@ -7,13 +7,18 @@ interface IWritingIcon {
   url: string;
   isBottomNav?: boolean;
   onClick?: () => void;
+  type?: "thunder";
 }
 
-function WritingButton({ url, isBottomNav = true, onClick }: IWritingIcon) {
+function WritingButton({ url, type, isBottomNav = true, onClick }: IWritingIcon) {
   return (
     <Link href={url} onClick={onClick}>
       <Layout isBottomNav={isBottomNav}>
-        <i className="fa-light fa-pen-line fa-lg" style={{ color: "white" }} />
+        {type === "thunder" ? (
+          <i className="fa-light fa-bolt-lightning fa-lg" style={{ color: "white" }} />
+        ) : (
+          <i className="fa-light fa-pen-line fa-lg" style={{ color: "white" }} />
+        )}
       </Layout>
     </Link>
   );
