@@ -36,10 +36,11 @@ function ParticipateModal({ id, setIsModal, answer }: IParticipateModal) {
   const resetCache = () => {
     setTransferGroup(null);
     queryClient.invalidateQueries([GROUP_STUDY, id]);
+    console.log(id);
     router.push(`/group/${id}`);
   };
 
-  const { mutate: sendRegisterForm } = useGroupWaitingMutation(id, {
+  const { mutate: sendRegisterForm, isLoading } = useGroupWaitingMutation(id, {
     onSuccess() {
       completeToast("free", "가입 신청이 완료되었습니다.");
       resetCache();
@@ -77,6 +78,7 @@ function ParticipateModal({ id, setIsModal, answer }: IParticipateModal) {
     main: {
       text: "가입 신청",
       func: onSubmit,
+      isLoading,
     },
     sub: {},
   };

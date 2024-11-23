@@ -45,15 +45,15 @@ function Fee() {
       <ProgressHeader title="회원가입" value={100} />
       <RegisterLayout>
         <RegisterOverview>
-          <span>회비 납부</span>
-          <span>보증금은 회원 탈퇴시 환급해드려요!</span>
+          <span>최종 가입 신청</span>
+          <span>아래는 운영진에게 연락을 받은 후 내야 할 동아리 회비입니다!</span>
         </RegisterOverview>
         <Cost>
           <div>
             <RegisterCost />
           </div>
         </Cost>
-        <Account>운영진에게 연락을 받은 후 납부해야 할 금액입니다!</Account>
+        <Account>운영진이 신청 내용 확인 후에 연락을 드려요!</Account>
         <Message>현재 페이지에서는 가입 신청만 진행됩니다.</Message>
         <Telephone>
           <span>연락받을 연락처:</span> {info?.telephone}
@@ -88,9 +88,9 @@ const Account = styled.div`
 `;
 
 const Message = styled.div`
-  font-size: 13px;
+  font-size: 12px;
   color: var(--gray-600);
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 `;
 
 const Telephone = styled.div`

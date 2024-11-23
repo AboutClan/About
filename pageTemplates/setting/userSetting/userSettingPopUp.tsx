@@ -1,11 +1,7 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import Image from "next/image";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
 import {
   ATTEND_POP_UP,
   FAQ_POP_UP,
@@ -204,7 +200,7 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
         );
       })}
 
-      {drawerType === "bottom" && (
+      {/* {drawerType === "bottom" && (
         <BottomFlexDrawer
           isDrawerUp
           isOverlay
@@ -249,7 +245,7 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
             </Button>
           </Flex>
         </BottomFlexDrawer>
-      )}
+      )} */}
       {modalTypes.includes("preferenceDrawer") && (
         <StudyPrefenceDrawer
           setIsModal={() => filterModalTypes("preferenceDrawer")}

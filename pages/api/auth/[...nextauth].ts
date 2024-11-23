@@ -86,7 +86,7 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/home",
     error: "/login",
-    newUser: "/register/location",
+    newUser: "/register/name",
   },
 
   callbacks: {

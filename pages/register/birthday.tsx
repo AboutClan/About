@@ -59,12 +59,12 @@ function Birthday() {
 
   return (
     <>
-      <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={40} />
+      <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={33} />
 
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>생년월일을 입력해 주세요</span>
-          <span>만 19세 ~ 만 26세의 인원만 가입할 수 있습니다!</span>
+          <span>만 19세 ~ 만 26세의 인원만 가입이 가능합니다!</span>
         </RegisterOverview>
         <DateContainer>
           <DateStr>{myBirth}</DateStr>
@@ -100,7 +100,7 @@ function Birthday() {
           </Button>
         </DateContainer>
       </RegisterLayout>
-      <BottomNav onClick={onClickNext} url="/register/mbti" />
+      <BottomNav onClick={onClickNext} url="/register/location" />
     </>
   );
 }

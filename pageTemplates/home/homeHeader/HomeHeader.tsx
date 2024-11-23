@@ -11,7 +11,7 @@ import { CalendarCheckIcon, NoticeIcon } from "../../../components/Icons/SolidIc
 import Slide from "../../../components/layouts/PageSlide";
 import { AboutLogo } from "../../../components/services/AboutLogo";
 import { DAILY_CHECK_POP_UP, NOTICE_ALERT } from "../../../constants/keys/localStorage";
-import { useTypeToast } from "../../../hooks/custom/CustomToast";
+import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import DailyCheckModal from "../../../modals/aboutHeader/dailyCheckModal/DailyCheckModal";
 import PointSystemsModal from "../../../modals/aboutHeader/pointSystemsModal/PointSystemsModal";
 import LastWeekAttendPopUp from "../../../modals/pop-up/LastWeekAttendPopUp";
@@ -22,6 +22,7 @@ import { dayjsToStr } from "../../../utils/dateTimeUtils";
 export type HomeHeaderModalType = "rule" | "dailyCheck" | "pointGuide" | null;
 
 function HomeHeader() {
+  const toast = useToast();
   const typeToast = useTypeToast();
   const { data: session } = useSession();
   const isGuest = session ? session.user.name === "guest" : false;
@@ -76,7 +77,18 @@ function HomeHeader() {
                 </ButtonWrapper>
               </Box>
               <ButtonWrapper url="/notice" size="sm">
-                <Box opacity={0.4} w="full" h="full">
+                <Box
+                  opacity={0.4}
+                  w="full"
+                  h="full"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    toast(
+                      "warning",
+                      "알림 페이지 기능 점검중! 주요 공지사항은 단톡방을 확인해 주세요!",
+                    );
+                  }}
+                >
                   <NoticeIcon />
                 </Box>
                 <Box

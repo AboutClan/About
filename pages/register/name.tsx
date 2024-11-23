@@ -1,5 +1,5 @@
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 import { Input } from "../../components/atoms/Input";
@@ -55,7 +55,7 @@ function Name() {
 
   return (
     <>
-      <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={20} />
+      <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={11} />
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>이름을 입력해 주세요</span>

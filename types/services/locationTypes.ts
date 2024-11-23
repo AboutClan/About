@@ -1,8 +1,12 @@
-export type Location = ActiveLocation | InactiveLocation;
+export type Location = ActiveLocation;
 
-export type ActiveLocation = "수원" | "양천" | "안양" | "강남" | "동대문" | "인천";
-
-export type InactiveLocation =
+export type ActiveLocation =
+  | "수원"
+  | "양천"
+  | "안양"
+  | "강남"
+  | "동대문"
+  | "인천"
   | "마포"
   | "성남"
   | "성동"

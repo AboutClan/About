@@ -31,12 +31,12 @@ function Mbti() {
 
   return (
     <>
-      <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={50} />
+      <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={55} />
 
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>MBTI를 선택해 주세요</span>
-          <span></span>
+          <span>필수사항은 아니지만 활동 추천에 도움이 됩니다!</span>
         </RegisterOverview>
         <ButtonNav>
           {MBTI?.map((item, idx) => (

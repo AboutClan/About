@@ -12,6 +12,7 @@ import BottomFlexDrawer, {
   BottomFlexDrawerOptions,
 } from "../../components/organisms/drawer/BottomFlexDrawer";
 import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
+import { PREV_LOCATION } from "../../constants/location";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";
@@ -103,6 +104,11 @@ function VoteDrawer({
   const findMyPreferMainPlace = studyVoteData?.participations.find(
     (par) => par.place._id === preference?.place,
   );
+
+  useEffect(() => {
+    if (PREV_LOCATION.includes(location)) return;
+    setIsRightDrawer(true);
+  }, [location]);
 
   //스터디 장소 자동 선택 알고리즘
   useEffect(() => {
@@ -372,6 +378,7 @@ function VoteDrawer({
           setIsVoteDrawer={setIsVoteDrawer}
           date={date}
           setIsRightDrawer={setIsRightDrawer}
+          noLocation={!PREV_LOCATION.includes(location)}
         />
       )}
       {isTimeDrawer && (

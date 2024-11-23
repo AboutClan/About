@@ -13,6 +13,7 @@ interface ISearchLocation {
   isSmall?: boolean;
   hasInitialValue?: boolean;
   isActive?: boolean;
+  placeHolder?: string;
 }
 
 function LocationSearch({
@@ -21,6 +22,7 @@ function LocationSearch({
   isSmall = false,
   hasInitialValue,
   isActive = true,
+  placeHolder,
 }: ISearchLocation) {
   const [value, setValue] = useState(info?.place_name || "");
   const [results, setResults] = useState<KakaoLocationProps[]>([]);
@@ -57,7 +59,7 @@ function LocationSearch({
     <Layout>
       <Wrapper>
         <InputGroup
-          placeholder="장소를 검색해 보세요"
+          placeholder={placeHolder || "장소를 검색해 보세요"}
           onChange={onChange}
           value={value}
           icon={<i className="fa-solid fa-location-dot" />}

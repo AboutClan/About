@@ -17,6 +17,8 @@ export interface CalendarScheduleProps {
   isFirst: boolean;
   isLast: boolean;
   blockIdx: number;
+
+  textPosition: "start" | "end";
 }
 
 export interface DaySchedules {
@@ -59,22 +61,27 @@ function Calendar({ monthFirstDate, calendarContents }: CalendarProps) {
   };
 
   const getDaySchedules = (date: number): CalendarScheduleProps[] => {
-    return calendarContents.reduce((acc: CalendarScheduleProps[], schedule) => {
-      const isFirstDay = date === schedule.start;
-      const isEndDay = date === schedule.end;
-      if (schedule.start <= date && date <= schedule.end) {
-        acc.push({
-          content: schedule.content,
-          color: schedule?.color || SCHEDULE_TYPE_TO_COLOR[schedule.type],
-          isFirst: isFirstDay,
-          isLast: isEndDay,
-          blockIdx: schedule?.blockIdx,
-        });
-        if (isFirstDay) fillSchedule(schedule.content);
-        if (isEndDay) endingSchedules.push(schedule.content);
-      }
-      return acc;
-    }, []);
+    return calendarContents
+      .sort((a, b) =>
+        a.type === "main" ? -1 : b.type === "main" ? 1 : a.type === "event" ? -1 : 1,
+      )
+      .reduce((acc: CalendarScheduleProps[], schedule) => {
+        const isFirstDay = date === schedule.start;
+        const isEndDay = date === schedule.end;
+        if (schedule.start <= date && date <= schedule.end) {
+          acc.push({
+            content: schedule.content,
+            color: schedule?.color || SCHEDULE_TYPE_TO_COLOR[schedule.type],
+            isFirst: isFirstDay,
+            isLast: isEndDay,
+            blockIdx: schedule?.blockIdx,
+            textPosition: schedule?.textPosition,
+          });
+          if (isFirstDay) fillSchedule(schedule.content);
+          if (isEndDay) endingSchedules.push(schedule.content);
+        }
+        return acc;
+      }, []);
   };
 
   const deleteSchedule = (content: string) => {
@@ -89,8 +96,8 @@ function Calendar({ monthFirstDate, calendarContents }: CalendarProps) {
   };
 
   return (
-    <Box mx="auto" w="350px" overflow="hidden">
-      <Flex bgColor="var(--gray-200)" py={1} fontSize="12px" justifyContent="space-between">
+    <Box mx="auto">
+      <Flex bgColor="var(--gray-100)" py={1} fontSize="12px" justifyContent="space-between">
         {DAYS_OF_WEEK.map((day) => (
           <Box
             key={day}
@@ -99,8 +106,8 @@ function Calendar({ monthFirstDate, calendarContents }: CalendarProps) {
               day === "일"
                 ? CALENDAR_DAY_COLOR["sun"]
                 : day === "토"
-                  ? CALENDAR_DAY_COLOR["sat"]
-                  : "inherit"
+                ? CALENDAR_DAY_COLOR["sat"]
+                : "inherit"
             }
             flex={1}
           >
@@ -111,7 +118,7 @@ function Calendar({ monthFirstDate, calendarContents }: CalendarProps) {
       <Grid
         bgColor="white"
         templateColumns="repeat(7,1fr)"
-        border="var(--border)"
+        // border="var(--border)"
         borderRadius="var(--rounded)"
       >
         {calendarDates?.map((item, idx) => {
@@ -119,7 +126,6 @@ function Calendar({ monthFirstDate, calendarContents }: CalendarProps) {
           const isToday = false;
           const contentArr = getDaySchedules(item);
 
-         
           const dateInfo = Object.values(daySchedules).map((title) => {
             return contentArr?.find((c) => c.content === title);
             // return contentArr[index]; // 순서를 고려하여 index에 해당하는 요소를 선택
@@ -127,22 +133,14 @@ function Calendar({ monthFirstDate, calendarContents }: CalendarProps) {
 
           endingSchedules.forEach((item) => deleteSchedule(item));
           endingSchedules = [];
-       
+
           return (
-            <Box
-              w={DAY_BLOCK_WIDTH}
-              pb={1}
-              fontSize="12px"
-              fontWeight={600}
-              borderTop="var(--border)"
-              key={idx}
-            >
+            <Box pb={1} fontSize="12px" fontWeight="medium" borderTop="var(--border)" key={idx}>
               <Flex
                 color={isToday ? "white" : CALENDAR_DAY_COLOR[day]}
                 position="relative"
                 justify="center"
                 align="center"
-                h="28px"
                 py={1}
               >
                 {!isToday ? (
@@ -169,6 +167,7 @@ function Calendar({ monthFirstDate, calendarContents }: CalendarProps) {
                       isFirst={item?.isFirst}
                       isLast={item?.isLast}
                       color={item?.color}
+                      position={item?.textPosition}
                     >
                       {item?.isFirst ? item?.content : "\u00A0"}
                     </EventBlock>
@@ -187,18 +186,28 @@ const EventBlock = styled.div<{
   color: string;
   isFirst: boolean;
   isLast: boolean;
+  position: "start" | "end";
 }>`
   font-size: 10px;
+  margin: ${(props) => !props.position && "0 1px"};
   margin-bottom: 2px;
+
   font-weight: 400;
-  white-space: nowrap;
+  border-radius: ${(props) => !props.position && "4px"};
+  border-top-left-radius: ${(props) => props.position === "end" && "4px"};
+  border-bottom-left-radius: ${(props) => props.position === "end" && "4px"};
+  border-top-right-radius: ${(props) => props.position === "start" && "4px"};
+  border-bottom-right-radius: ${(props) => props.position === "start" && "4px"};
+
   color: white;
   background-color: ${(props) => props.color};
   position: relative;
   z-index: ${(props) => (props.isFirst ? 4 : 0)};
-  padding-left: ${(props) => (props.isFirst ? "var(--gap-1)" : 0)};
-  padding-right: ${(props) => (props.isLast ? "var(--gap-1)" : 0)};
-  text-align: ${(props) => props.isFirst && props.isLast && "center"};
+  /* padding-left: ${(props) => (props.isFirst ? "var(--gap-1)" : 0)};
+  padding-right: ${(props) => (props.isLast ? "var(--gap-1)" : 0)}; */
+  text-align: ${(props) => props.position || "center"};
+  padding-right: ${(props) => props.position === "end" && "1.5px"};
+  padding-left: ${(props) => props.position === "start" && "1.5px"};
 `;
 
 export default Calendar;

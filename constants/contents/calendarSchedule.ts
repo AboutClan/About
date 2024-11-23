@@ -6,6 +6,7 @@ export interface CalendarContentProps {
   text?: string;
   blockIdx?: number;
   color?: string;
+  textPosition?: "start" | "end";
 }
 
 export const EVENT_CONTENT_2023: Record<string, CalendarContentProps[]> = {
@@ -346,7 +347,192 @@ export const EVENT_CONTENT_2024: Record<string, CalendarContentProps[]> = {
       text: "더 활성화 된 동아리가 될 수 있도록! 운영 방식을 리뉴얼 합니다.",
     },
   ],
-  11: [],
+  11: [
+    {
+      content: "영화관 대관 + 닭발",
+      start: 3,
+      end: 3,
+      type: "schedule",
+    },
+    {
+      content: "행궁동 카페 탐방",
+      start: 2,
+      end: 2,
+      type: "schedule",
+    },
+    {
+      content: "AI 콘텐츠 페스티벌",
+      start: 2,
+      end: 2,
+      type: "schedule",
+    },
+    {
+      content: "카공 + 삼겹살 + 맥주",
+      start: 3,
+      end: 3,
+      type: "schedule",
+    },
+    {
+      content: "전체 지역",
+      start: 8,
+      end: 8,
+      type: "main",
+      textPosition: "end",
+    },
+    {
+      content: "정기 모임",
+      start: 9,
+      end: 9,
+      type: "main",
+      textPosition: "start",
+    },
+    {
+      content: "연어/참치 무한리필",
+      start: 17,
+      end: 17,
+      type: "schedule",
+    },
+    {
+      content: "건대 볼링",
+      start: 21,
+      end: 21,
+      type: "schedule",
+    },
+    {
+      content: "디저트 카페 + 맛집 탐방",
+      start: 24,
+      end: 24,
+      type: "schedule",
+    },
+    {
+      content: "오늘 저녁은 치킨이닭",
+      start: 13,
+      end: 13,
+      type: "schedule",
+    },
+    {
+      content: "광교 카페거리 탐방",
+      start: 23,
+      end: 23,
+      type: "schedule",
+    },
+    {
+      content: "전시회 & 크리스마스",
+      start: 21,
+      end: 21,
+      type: "schedule",
+    },
+    {
+      content: "방 탈출 번개",
+      start: 30,
+      end: 30,
+      type: "schedule",
+    },
+    {
+      content: "을지로 골목 사진 출사",
+      start: 26,
+      end: 26,
+      type: "schedule",
+    },
+    {
+      content: "보드게임 + 공연 관람",
+      start: 24,
+      end: 24,
+      type: "schedule",
+    },
+    {
+      content: "홍보 서포터즈 모집",
+      start: 23,
+      end: 23,
+      type: "main",
+    },
+    {
+      content: "시험 스터디",
+      start: 25,
+      end: 25,
+      type: "main",
+      textPosition: "end",
+    },
+    {
+      content: "챌린지 시작",
+      start: 26,
+      end: 26,
+      type: "main",
+      textPosition: "start",
+    },
+    {
+      content: "new 소모임",
+      start: 21,
+      end: 21,
+      type: "main",
+    },
+    {
+      content: "new 스토어",
+      start: 18,
+      end: 18,
+      type: "main",
+    },
+    {
+      content: "소모임 조사",
+      start: 11,
+      end: 11,
+      type: "main",
+    },
+    {
+      content: "빼빼로데이 선물 이벤트",
+      start: 11,
+      end: 11,
+      type: "event",
+    },
+    {
+      content: "수제 빼빼로",
+      start: 8,
+      end: 8,
+      type: "event",
+      textPosition: "end",
+    },
+    {
+      content: "증정 이벤트",
+      start: 9,
+      end: 9,
+      type: "event",
+      textPosition: "start",
+    },
+    {
+      content: "운영진/서포터즈 모집",
+      start: 1,
+      end: 1,
+      type: "main",
+    },
+    {
+      content: "도전 열품타,",
+      start: 27,
+      end: 27,
+      type: "event",
+      textPosition: "end",
+    },
+    {
+      content: "시작 기간 ~ ",
+      start: 28,
+      end: 28,
+      type: "event",
+      textPosition: "start",
+    },
+    {
+      content: "정기 모임",
+      start: 4,
+      end: 4,
+      type: "main",
+      textPosition: "end",
+    },
+    {
+      content: "취합 기간",
+      start: 5,
+      end: 5,
+      type: "main",
+      textPosition: "start",
+    },
+  ],
   12: [],
 };
 

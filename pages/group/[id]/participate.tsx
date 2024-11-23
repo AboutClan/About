@@ -1,4 +1,4 @@
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { useRecoilState } from "recoil";
@@ -16,6 +16,7 @@ import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { transferGroupDataState } from "../../../recoils/transferRecoils";
 
 function Participate() {
+  const router = useRouter();
   const toast = useToast();
   const [group, setGroup] = useRecoilState(transferGroupDataState);
 
@@ -30,6 +31,7 @@ function Participate() {
       toast("success", "가입 신청이 완료되었습니다.");
       setGroup(null);
       queryClient.invalidateQueries([GROUP_STUDY, id]);
+      router.push(`/group/${id}`);
     },
   });
 

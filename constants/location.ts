@@ -1,14 +1,15 @@
-import {
-  ActiveLocation,
-  InactiveLocation,
-  Location,
-  LocationEn,
-} from "../types/services/locationTypes";
+import { ActiveLocation, Location, LocationEn } from "../types/services/locationTypes";
 import { COLOR_TABLE } from "./colorConstants";
 
-export const LOCATION_OPEN: ActiveLocation[] = ["수원", "양천", "강남", "동대문", "인천", "안양"];
+export const PREV_LOCATION: ActiveLocation[] = ["수원", "양천", "강남", "동대문", "인천", "안양"];
 
-export const LOCATION_RECRUITING: InactiveLocation[] = [
+export const LOCATION_OPEN: ActiveLocation[] = [
+  "수원",
+  "양천",
+  "강남",
+  "동대문",
+  "인천",
+  "안양",
   "마포",
   "성남",
   "성동",
@@ -22,7 +23,7 @@ export const LOCATION_RECRUITING: InactiveLocation[] = [
   "시흥",
 ];
 
-export const LOCATION_ALL = [...LOCATION_OPEN, ...LOCATION_RECRUITING];
+export const LOCATION_ALL = [...LOCATION_OPEN];
 
 export const LOCATION_TO_FULLNAME: Record<Location, string> = {
   수원: "수원시",
@@ -124,4 +125,15 @@ export const LOCATION_TO_COLOR: Record<ActiveLocation, string> = {
   동대문: COLOR_TABLE[4],
   인천: COLOR_TABLE[2],
   안양: COLOR_TABLE[5],
+  성동: COLOR_TABLE[6],
+  마포: COLOR_TABLE[7],
+  성남: COLOR_TABLE[0],
+  고양: COLOR_TABLE[1],
+  중구: COLOR_TABLE[2],
+  송파: COLOR_TABLE[3],
+  구로: COLOR_TABLE[4],
+  동작: COLOR_TABLE[5],
+  강북: COLOR_TABLE[6],
+  부천: COLOR_TABLE[7],
+  시흥: COLOR_TABLE[2],
 };
