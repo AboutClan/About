@@ -43,56 +43,11 @@ export default function BottomFlexDrawer({
   isOverlay,
 }: BottomFlexDrawerProps) {
   const drawerAnimation = useAnimation();
-
   const height = heightProps + iPhoneNotchSize();
 
   useEffect(() => {
     drawerAnimation.start(isDrawerUp ? "active" : "inActive");
   }, [isDrawerUp, drawerAnimation]);
-
-  // useEffect(() => {
-  //   if (isDrawerUp) setDrawerHeight(maxHeight);
-  //   else setDrawerHeight(DRAWER_MIN_HEIGHT);
-  // }, [isDrawerUp]);
-
-  // const handlePointerDown = (event) => {
-  //   setIsModal(false);
-  //   startYRef.current = event.clientY || event.touches[0].clientY; // 드래그 시작 위치 저장
-  //   currentHeightRef.current = drawerHeight; // 드래그 시작 시점의 높이 저장
-
-  //   setIsDragging(true);
-  // };
-
-  // const handlePointerMove = (event) => {
-  //   setIsModal(true);
-  //   const currentY = event.clientY || event.touches[0].clientY;
-  //   const deltaY = startYRef.current - currentY;
-  //   let newHeight = currentHeightRef.current + deltaY;
-
-  //   // 최대 드래그 범위를 40px로 제한
-  //   const maxDragHeight = currentHeightRef.current + MAX_DRAG_DISTANCE;
-  //   const minDragHeight = currentHeightRef.current - MAX_DRAG_DISTANCE;
-  //   newHeight = Math.max(Math.min(newHeight, maxDragHeight), minDragHeight);
-
-  //   setDrawerHeight(newHeight);
-  // };
-
-  // const handlePointerUp = (event) => {
-  //   const endY = event.clientY || event.touches[0].clientY;
-  //   const deltaY = startYRef.current - endY; // 드래그한 만큼의 변화량
-
-  //   if (deltaY > SWIPE_THRESHOLD) {
-  //     setDrawerHeight(maxHeight); // 위로 쭉 올라가는 동작
-  //   } else if (deltaY < -SWIPE_THRESHOLD) {
-  //     setIsModal(false);
-
-  //     setDrawerHeight(DRAWER_MIN_HEIGHT); // 아래로 내려가는 동작
-  //   } else {
-  //     setDrawerHeight(currentHeightRef.current); // 스와이프가 임계값보다 짧으면 원래 높이로 복원
-  //   }
-
-  //   setIsDragging(false);
-  // };
 
   const contentStyles = {
     active: {
@@ -118,13 +73,15 @@ export default function BottomFlexDrawer({
           top: 0,
           bottom: height,
         }}
+        dragDirectionLock
         dragMomentum={false}
-        onDrag={() => console.log("💡 dragging: ")}
         onDragEnd={(event, info) => {
+          const isDraggingUp = info.offset.y < 0;
           const multiplier = 1 / 4;
           const threshold = height * multiplier;
+          const isCorrectDirection = (isDraggingUp && !isDrawerUp) || (!isDraggingUp && isDrawerUp);
 
-          if (Math.abs(info.offset.y) > threshold) {
+          if (isCorrectDirection && Math.abs(info.offset.y) > threshold) {
             setIsModal((prev) => !prev);
           } else {
             drawerAnimation.start(isDrawerUp ? "active" : "inActive");
@@ -146,7 +103,6 @@ export default function BottomFlexDrawer({
           </Flex>
         )}
         <>{children}</>
-        {/* {drawerHeight > 100 && children} */}
         {drawerOptions?.footer && (
           <Box py={2} w="100%" mt="auto">
             <Button
@@ -183,11 +139,9 @@ const Layout = styled.div<{
   z-index: ${(props) => props.zindex || (props.ishide === "true" ? 700 : 500)};
   padding: 0 20px;
   padding-bottom: ${(props) => props.isdrawerup === "false" && "12px"};
-  padding-top: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  touch-action: none; /* 터치 스크롤을 막음 */
 `;
 
 const TopNav = styled.nav`
