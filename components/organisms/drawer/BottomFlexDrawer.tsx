@@ -1,6 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { motion, useAnimation } from "framer-motion";
+import { useEffect } from "react";
 import styled from "styled-components";
 
 import { IModal } from "../../../types/components/modalTypes";
@@ -8,10 +8,6 @@ import { iPhoneNotchSize } from "../../../utils/validationUtils";
 import ScreenOverlay from "../../atoms/ScreenOverlay";
 
 export const DRAWER_MIN_HEIGHT = 103;
-//적당한 값 조율해야 함
-export const MAX_DRAG_DISTANCE = 40;
-
-const SWIPE_THRESHOLD = 40; // 스와이프 임계값
 
 export interface BottomFlexDrawerOptions {
   header?: {
@@ -42,57 +38,69 @@ export default function BottomFlexDrawer({
   drawerOptions,
   children,
   isDrawerUp,
-  height: maxHeight,
+  height: heightProps,
   zIndex,
   isOverlay,
 }: BottomFlexDrawerProps) {
-  const [drawerHeight, setDrawerHeight] = useState(isDrawerUp ? maxHeight : DRAWER_MIN_HEIGHT); // 초기 높이
-  const startYRef = useRef(0); // 드래그 시작 위치 저장
-  const currentHeightRef = useRef(drawerHeight); // 현재 높이 저장
- 
+  const drawerAnimation = useAnimation();
+
+  const height = heightProps + iPhoneNotchSize();
+
   useEffect(() => {
-    if (isDrawerUp) setDrawerHeight(maxHeight);
-    else setDrawerHeight(DRAWER_MIN_HEIGHT);
-  }, [isDrawerUp]);
+    drawerAnimation.start(isDrawerUp ? "active" : "inActive");
+  }, [isDrawerUp, drawerAnimation]);
 
-  const handlePointerDown = (event) => {
-    setIsModal(false);
-    startYRef.current = event.clientY || event.touches[0].clientY; // 드래그 시작 위치 저장
-    currentHeightRef.current = drawerHeight; // 드래그 시작 시점의 높이 저장
-    window.addEventListener("pointermove", handlePointerMove);
-    window.addEventListener("pointerup", handlePointerUp);
-  };
+  // useEffect(() => {
+  //   if (isDrawerUp) setDrawerHeight(maxHeight);
+  //   else setDrawerHeight(DRAWER_MIN_HEIGHT);
+  // }, [isDrawerUp]);
 
-  const handlePointerMove = (event) => {
-    setIsModal(true);
-    const currentY = event.clientY || event.touches[0].clientY;
-    const deltaY = startYRef.current - currentY;
-    let newHeight = currentHeightRef.current + deltaY;
+  // const handlePointerDown = (event) => {
+  //   setIsModal(false);
+  //   startYRef.current = event.clientY || event.touches[0].clientY; // 드래그 시작 위치 저장
+  //   currentHeightRef.current = drawerHeight; // 드래그 시작 시점의 높이 저장
 
-    // 최대 드래그 범위를 40px로 제한
-    const maxDragHeight = currentHeightRef.current + MAX_DRAG_DISTANCE;
-    const minDragHeight = currentHeightRef.current - MAX_DRAG_DISTANCE;
-    newHeight = Math.max(Math.min(newHeight, maxDragHeight), minDragHeight);
+  //   setIsDragging(true);
+  // };
 
-    setDrawerHeight(newHeight);
-  };
+  // const handlePointerMove = (event) => {
+  //   setIsModal(true);
+  //   const currentY = event.clientY || event.touches[0].clientY;
+  //   const deltaY = startYRef.current - currentY;
+  //   let newHeight = currentHeightRef.current + deltaY;
 
-  const handlePointerUp = (event) => {
-    const endY = event.clientY || event.touches[0].clientY;
-    const deltaY = startYRef.current - endY; // 드래그한 만큼의 변화량
+  //   // 최대 드래그 범위를 40px로 제한
+  //   const maxDragHeight = currentHeightRef.current + MAX_DRAG_DISTANCE;
+  //   const minDragHeight = currentHeightRef.current - MAX_DRAG_DISTANCE;
+  //   newHeight = Math.max(Math.min(newHeight, maxDragHeight), minDragHeight);
 
-    window.removeEventListener("pointermove", handlePointerMove);
-    window.removeEventListener("pointerup", handlePointerUp);
+  //   setDrawerHeight(newHeight);
+  // };
 
-    if (deltaY > SWIPE_THRESHOLD) {
-      setDrawerHeight(maxHeight); // 위로 쭉 올라가는 동작
-    } else if (deltaY < -SWIPE_THRESHOLD) {
-      setIsModal(false);
+  // const handlePointerUp = (event) => {
+  //   const endY = event.clientY || event.touches[0].clientY;
+  //   const deltaY = startYRef.current - endY; // 드래그한 만큼의 변화량
 
-      setDrawerHeight(DRAWER_MIN_HEIGHT); // 아래로 내려가는 동작
-    } else {
-      setDrawerHeight(currentHeightRef.current); // 스와이프가 임계값보다 짧으면 원래 높이로 복원
-    }
+  //   if (deltaY > SWIPE_THRESHOLD) {
+  //     setDrawerHeight(maxHeight); // 위로 쭉 올라가는 동작
+  //   } else if (deltaY < -SWIPE_THRESHOLD) {
+  //     setIsModal(false);
+
+  //     setDrawerHeight(DRAWER_MIN_HEIGHT); // 아래로 내려가는 동작
+  //   } else {
+  //     setDrawerHeight(currentHeightRef.current); // 스와이프가 임계값보다 짧으면 원래 높이로 복원
+  //   }
+
+  //   setIsDragging(false);
+  // };
+
+  const contentStyles = {
+    active: {
+      y: 0,
+    },
+    inActive: {
+      y: height - DRAWER_MIN_HEIGHT,
+    },
   };
 
   return (
@@ -103,10 +111,28 @@ export default function BottomFlexDrawer({
         zindex={zIndex}
         isdrawerup={isDrawerUp ? "true" : "false"}
         as={motion.div}
-        animate={{ height: drawerHeight + iPhoneNotchSize() }}
+        animate={drawerAnimation}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
+        drag="y"
+        dragConstraints={{
+          top: 0,
+          bottom: height,
+        }}
+        dragMomentum={false}
+        onDrag={() => console.log("💡 dragging: ")}
+        onDragEnd={(event, info) => {
+          const multiplier = 1 / 4;
+          const threshold = height * multiplier;
+
+          if (Math.abs(info.offset.y) > threshold) {
+            setIsModal((prev) => !prev);
+          } else {
+            drawerAnimation.start(isDrawerUp ? "active" : "inActive");
+          }
+        }}
+        variants={contentStyles}
       >
-        <Flex justify="center" py={3} w="full" cursor="grab" onPointerDown={handlePointerDown}>
+        <Flex justify="center" py={3} w="full" cursor="grab">
           <TopNav />
         </Flex>
         {drawerOptions?.header && (
@@ -119,8 +145,9 @@ export default function BottomFlexDrawer({
             </Box>
           </Flex>
         )}
-        {drawerHeight > 100 && children}
-        {drawerOptions?.footer && drawerHeight > 100 && (
+        <>{children}</>
+        {/* {drawerHeight > 100 && children} */}
+        {drawerOptions?.footer && (
           <Box py={2} w="100%" mt="auto">
             <Button
               w="100%"

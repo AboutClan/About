@@ -123,7 +123,7 @@ function StudyPageDrawer({
     >
       <Flex flexDir="column" w="100%" overflow="hidden">
         <StudyPageDrawerHeader date={date} setDate={setDate} isDrawerUp={isDrawerUp} />
-        <Box overflow="hidden" display={isDrawerUp ? "block" : "none"}>
+        <Box overflow="hidden">
           <WeekSlideCalendar selectedDate={date} func={handleSelectDate} />
           <StudyPageDrawerFilterBar
             selectOption={selectOption}
