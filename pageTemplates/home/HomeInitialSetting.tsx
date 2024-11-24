@@ -134,9 +134,10 @@ function HomeInitialSetting() {
           options: {
             width: 320,
             zIndex: 1000,
+            beaconSize: 0,
           },
         }}
-        spotlightPadding={8}
+        spotlightPadding={5}
         scrollOffset={60}
       />
     </>
