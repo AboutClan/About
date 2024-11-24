@@ -106,11 +106,13 @@ function HomeInitialSetting() {
     const finishedStatus = ([STATUS.FINISHED, STATUS.SKIPPED] as string[]).includes(status);
 
     if (finishedStatus) {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
       setJoyrideRun(false);
+      if (status === STATUS.FINISHED) {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth",
+        });
+      }
     }
   };
 
@@ -132,10 +134,9 @@ function HomeInitialSetting() {
           options: {
             width: 320,
             zIndex: 1000,
-            beaconSize: 0,
           },
         }}
-        spotlightPadding={5}
+        spotlightPadding={8}
         scrollOffset={60}
       />
     </>

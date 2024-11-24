@@ -115,18 +115,6 @@ export const STEPS_CONTENTS: Step[] = [
     target: "[data-joyride-step='디스코드']",
   },
 
-  // 스터디 섹션
-  {
-    content: <Content>카공 스터디 모집에 참여할 수 있어요!</Content>,
-    locale: {
-      back: <BackButton />,
-
-      close: "닫기",
-      next: <NextButton>다음</NextButton>,
-    },
-    target: "[data-joyride-step='study-section']",
-  },
-
   // 소셜링 섹션
   {
     content: <Content>동아리원들과의 번개 모임에 참여할 수 있어요!</Content>,
@@ -139,16 +127,61 @@ export const STEPS_CONTENTS: Step[] = [
     target: "[data-joyride-step='gather-section']",
   },
 
-  // 소모임 섹션
+  // 라운지 섹션
   {
-    content: <Content>운동, 어학, 자격증 등 자기계발 소모임에 가입할 수 있어요!</Content>,
+    content: <Content>동아리 모임 관련 리뷰를 확인할 수 있어요!</Content>,
     locale: {
       back: <BackButton />,
 
       close: "닫기",
       next: <NextButton>다음</NextButton>,
     },
-    target: "[data-joyride-step='group-section']",
+    target: "[data-joyride-step='lounge-section']",
+  },
+
+  // 오프라인 소모임 섹션
+  {
+    content: <Content>동아리에서 열리는 오프라인 모임에 참여해보세요!</Content>,
+    locale: {
+      back: <BackButton />,
+
+      close: "닫기",
+      next: <NextButton>다음</NextButton>,
+    },
+    target: "[data-joyride-step='offline-group-section']",
+  },
+  // 온라인 소모임 섹션
+  {
+    content: <Content>오프라인 모임 외 온라인 모임에 참여할 수 있어요!</Content>,
+    locale: {
+      back: <BackButton />,
+
+      close: "닫기",
+      next: <NextButton>다음</NextButton>,
+    },
+    target: "[data-joyride-step='online-group-section']",
+  },
+  // 신규 소모임 섹션
+  {
+    content: <Content>최근에 열린 소모임 활동에 참여해보세요!</Content>,
+    locale: {
+      back: <BackButton />,
+
+      close: "닫기",
+      next: <NextButton>다음</NextButton>,
+    },
+    target: "[data-joyride-step='new-group-section']",
+  },
+  // 오픈 예정 소모임 섹션
+  {
+    content: <Content>곧 열릴 소모임 활동을 확인해보세요!</Content>,
+    locale: {
+      back: <BackButton />,
+
+      close: "닫기",
+      next: <NextButton>다음</NextButton>,
+    },
+    target: "[data-joyride-step='opened-group-section']",
   },
 
   // Bottom nav: 홈
@@ -164,7 +197,7 @@ export const STEPS_CONTENTS: Step[] = [
   },
   // Bottom nav: 스터디
   {
-    content: <Content>About 메인 홈으로 이동할 수 있어요!</Content>,
+    content: <Content>원하는 장소와 시간에서 함께 스터디 활동을 신청해요!</Content>,
     locale: {
       back: <BackButton />,
 

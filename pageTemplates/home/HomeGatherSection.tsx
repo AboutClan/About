@@ -12,14 +12,16 @@ function HomeGatherSection() {
 
   return (
     <Box my={5}>
-      <SectionHeader title="About 소셜링" subTitle="Meeting">
-        <ButtonWrapper
-          size="xs"
-          url={`/gather?location=${convertLocationLangTo(session?.user.location, "en")}`}
-        >
-          <ShortArrowIcon dir="right" />
-        </ButtonWrapper>
-      </SectionHeader>
+      <Box data-joyride-step="gather-section">
+        <SectionHeader title="About 소셜링" subTitle="Meeting">
+          <ButtonWrapper
+            size="xs"
+            url={`/gather?location=${convertLocationLangTo(session?.user.location, "en")}`}
+          >
+            <ShortArrowIcon dir="right" />
+          </ButtonWrapper>
+        </SectionHeader>
+      </Box>
       <HomeGatherCol />
     </Box>
   );

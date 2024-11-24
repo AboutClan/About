@@ -23,11 +23,13 @@ export default function HomeReviewSection() {
 
   return (
     <Box mb="20px">
-      <SectionHeader title="About 라운지" subTitle="Lounge">
-        <ButtonWrapper size="xs" url="/gather?category=all">
-          <ShortArrowIcon dir="right" />
-        </ButtonWrapper>
-      </SectionHeader>
+      <Box data-joyride-step="lounge-section">
+        <SectionHeader title="About 라운지" subTitle="Lounge">
+          <ButtonWrapper size="xs" url="/gather?category=all">
+            <ShortArrowIcon dir="right" />
+          </ButtonWrapper>
+        </SectionHeader>
+      </Box>
       <Box mt={4}>
         {imageArr ? (
           <ImageTileGridLayout size="lg" imageDataArr={imageArr} />
