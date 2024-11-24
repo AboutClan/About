@@ -27,8 +27,6 @@ export interface DaySchedules {
   third: string | null;
 }
 
-const DAY_BLOCK_WIDTH = 50;
-
 const CALENDAR_DAY_COLOR = {
   sun: "var(--color-red)",
   sat: "var(--color-blue)",

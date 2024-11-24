@@ -20,7 +20,7 @@ export const LOCATION_CENTER_DOT: {
   동작: { latitude: 37.512409, longitude: 126.93996 },
   강북: { latitude: 37.639609, longitude: 127.025657 },
   부천: { latitude: 37.503413, longitude: 126.76603 },
-  시흥: { latitude: 37.380177, longitude: 126.803489 },
+  시흥: { latitude: 37.95177, longitude: 126.903489 },
 };
 // export const VOTE_LOCATION_CENTER_DOT: {
 //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -64,47 +64,47 @@ export const LOCATION_MAX_BOUNDARY: {
     southwest: { latitude: 37.341746, longitude: 126.580845 },
   },
   마포: {
-    northeast: { latitude: 37.582, longitude: 126.96 },
-    southwest: { latitude: 37.538, longitude: 126.886 },
+    northeast: { latitude: 37.6, longitude: 126.98 },
+    southwest: { latitude: 37.52, longitude: 126.86 },
   },
   성남: {
-    northeast: { latitude: 37.466, longitude: 127.18 },
-    southwest: { latitude: 37.394, longitude: 127.098 },
+    northeast: { latitude: 37.5, longitude: 127.25 },
+    southwest: { latitude: 37.36, longitude: 127.05 },
   },
   성동: {
-    northeast: { latitude: 37.57, longitude: 127.054 },
-    southwest: { latitude: 37.544, longitude: 127.02 },
+    northeast: { latitude: 37.58, longitude: 127.08 },
+    southwest: { latitude: 37.53, longitude: 127.0 },
   },
   고양: {
-    northeast: { latitude: 37.705, longitude: 126.912 },
-    southwest: { latitude: 37.598, longitude: 126.832 },
+    northeast: { latitude: 37.73, longitude: 126.95 },
+    southwest: { latitude: 37.55, longitude: 126.75 },
   },
   중구: {
-    northeast: { latitude: 37.566, longitude: 127.011 },
-    southwest: { latitude: 37.554, longitude: 126.973 },
+    northeast: { latitude: 37.58, longitude: 127.05 },
+    southwest: { latitude: 37.54, longitude: 126.93 },
   },
   송파: {
-    northeast: { latitude: 37.55, longitude: 127.146 },
-    southwest: { latitude: 37.494, longitude: 127.073 },
+    northeast: { latitude: 37.57, longitude: 127.2 },
+    southwest: { latitude: 37.46, longitude: 127.05 },
   },
   구로: {
-    northeast: { latitude: 37.507, longitude: 126.902 },
-    southwest: { latitude: 37.475, longitude: 126.854 },
+    northeast: { latitude: 37.52, longitude: 126.95 },
+    southwest: { latitude: 37.45, longitude: 126.8 },
   },
   동작: {
-    northeast: { latitude: 37.514, longitude: 126.973 },
-    southwest: { latitude: 37.484, longitude: 126.923 },
+    northeast: { latitude: 37.53, longitude: 127.0 },
+    southwest: { latitude: 37.46, longitude: 126.88 },
   },
   강북: {
-    northeast: { latitude: 37.659, longitude: 127.025 },
-    southwest: { latitude: 37.612, longitude: 126.982 },
+    northeast: { latitude: 37.68, longitude: 127.1 },
+    southwest: { latitude: 37.59, longitude: 126.95 },
   },
   부천: {
-    northeast: { latitude: 37.538, longitude: 126.814 },
-    southwest: { latitude: 37.47, longitude: 126.731 },
+    northeast: { latitude: 37.55, longitude: 126.85 },
+    southwest: { latitude: 37.45, longitude: 126.7 },
   },
   시흥: {
-    northeast: { latitude: 37.448, longitude: 126.803 },
-    southwest: { latitude: 37.34, longitude: 126.738 },
+    northeast: { latitude: 37.5, longitude: 126.9 },
+    southwest: { latitude: 37.3, longitude: 126.65 },
   },
 };

@@ -1,13 +1,14 @@
 import { Box } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import styled from "styled-components";
 
 import BottomNav from "../../components/layouts/BottomNav";
 import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
 import SearchLocation from "../../components/organisms/SearchLocation";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
+import { LOCATION_TO_FULLNAME } from "../../constants/location";
 import { useUserInfoQuery } from "../../hooks/user/queries";
+import { getLocationByCoordinates } from "../../libs/study/getLocationByCoordinates";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 import { KakaoLocationProps } from "../../types/externals/kakaoLocationSearch";
@@ -37,6 +38,13 @@ function RegisterLocation() {
       console.error(err);
     },
   });
+
+  useEffect(() => {
+    if (!placeInfo) return;
+
+    const getLocation = getLocationByCoordinates(+placeInfo.y, +placeInfo.x);
+    setLocation(getLocation as Location);
+  }, [placeInfo]);
 
   useEffect(() => {
     if (userInfo) {
@@ -76,7 +84,10 @@ function RegisterLocation() {
         <RegisterOverview>
           <span>주 활동 지역을 입력해 주세요</span>
           {!isProfileEdit ? (
-            <span>활동 지역 결정을 위한 것으로 대략적으로 입력해 주세요!</span>
+            <span>
+              활동 지역 결정을 위한 것으로 대략적으로 입력해 주세요. 이후에도 언제든 변경이
+              가능합니다!
+            </span>
           ) : (
             <span>활동 지역 변경은 운영진을 통해서만 가능합니다.</span>
           )}
@@ -90,7 +101,7 @@ function RegisterLocation() {
           />
           {location && (
             <Box ml="auto" w="max-content" mt={4} fontSize="12px" color="gray.600">
-              <b>{location}</b> 지역으로 분류됩니다.
+              <b>{LOCATION_TO_FULLNAME[location]}</b> 지역으로 분류됩니다.
             </Box>
           )}
         </Box>
@@ -99,34 +110,5 @@ function RegisterLocation() {
     </>
   );
 }
-
-const ButtonNav = styled.nav`
-  margin-top: var(--gap-5);
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--gap-3);
-`;
-
-const Button = styled.button<{ $picked: string }>`
-  padding: var(--gap-2) var(--gap-3);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 72px;
-  position: relative;
-  border-radius: var(--rounded);
-  border: ${(props) => (props.$picked === "true" ? "var(--border-mint)" : "var(--border-main)")};
-  background-color: white;
-`;
-
-const Message = styled.div`
-  position: absolute;
-  width: 100%;
-  bottom: -20px;
-  font-size: 10px;
-  left: 50%;
-
-  transform: translate(-50%, 0);
-`;
 
 export default RegisterLocation;

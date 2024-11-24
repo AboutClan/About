@@ -1,7 +1,7 @@
 import { Dayjs } from "dayjs";
 
 import { UserCommentProps } from "../../components/propTypes";
-import { CombinedLocation, Location } from "../../services/locationTypes";
+import { Location } from "../../services/locationTypes";
 import { TimeStampProps } from "../../utils/timeAndDate";
 import { IUserSummary } from "../userTypes/userInfoTypes";
 
@@ -19,7 +19,7 @@ export interface IGather extends Omit<IGatherWriting, "date">, TimeStampProps {
 
 export interface IGatherWriting {
   type: IGatherType;
-  place: Location | CombinedLocation;
+  place: Location | "전체";
   genderCondition: boolean;
   title: string;
   content: string;

@@ -13,7 +13,6 @@ import { GROUP_WRITING_STORE } from "../../../constants/keys/localStorage";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import GatherWritingUserConditionModal from "../../../modals/gather/GatherWritingUserConditionModal";
 import GroupConfirmModal from "../../../modals/groupStudy/WritingConfirmModal";
-import GatherWritingConditionLocation from "../../../pageTemplates/gather/writing/condition/GatherWritingConditionLocation";
 import QuestionBottomDrawer from "../../../pageTemplates/group/writing/QuestionBottomDrawer";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
@@ -31,8 +30,6 @@ export type GroupConditionType =
   | "challenge"
   | "link"
   | "isSecret";
-
-export type CombinedLocation = "전체" | "수원/안양" | "양천/강남";
 
 function WritingCondition() {
   const groupWriting: IGroupWriting = JSON.parse(localStorage.getItem(GROUP_WRITING_STORE));
@@ -60,14 +57,14 @@ function WritingCondition() {
     isSecret: groupWriting?.isSecret || false,
     link: !!groupWriting?.link || false,
   });
-  
+
   const [challenge, setChallenge] = useState("");
 
   const [fee, setFee] = useState(groupWriting?.fee || "1000");
   const [feeText, setFeeText] = useState(groupWriting?.feeText || "기본 참여비");
 
   const [question, setQuestion] = useState(groupWriting?.questionText || "");
-  const [location, setLocation] = useState<Location | CombinedLocation | LocationFilterType>(
+  const [location, setLocation] = useState<Location | LocationFilterType>(
     groupWriting?.location || userInfo?.location,
   );
   const [isConfirmModal, setIsConfirmModal] = useState(false);
@@ -176,7 +173,6 @@ function WritingCondition() {
               onChange={(e) => toggleSwitch(e, "location")}
             />
           </Item>
-          {!condition.location && <GatherWritingConditionLocation setLocation={setLocation} />}
           <Item>
             <Name>
               <i className="fa-regular fa-person-to-door" />

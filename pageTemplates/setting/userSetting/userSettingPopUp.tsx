@@ -8,7 +8,6 @@ import {
   GATHER_JOIN_MEMBERS,
   PROMOTION_POP_UP,
   STUDY_ATTEND_MEMBERS,
-  STUDY_RECORD,
 } from "../../../constants/keys/localStorage";
 import { useGatherQuery } from "../../../hooks/gather/queries";
 import PointSystemsModal from "../../../modals/aboutHeader/pointSystemsModal/PointSystemsModal";
@@ -20,7 +19,6 @@ import StudyChallengeModal from "../../../modals/pop-up/StudyChallengeModal";
 import { default as StudyPrefenceDrawer } from "../../../modals/pop-up/StudyPreferenceDrawer";
 import StudyPreferencePopUp from "../../../modals/pop-up/StudyPreferencePopUp";
 import { IUser, IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
-import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import { checkAndSetLocalStorage } from "../../../utils/storageUtils";
 
 export type UserPopUp =
@@ -61,12 +59,12 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
 
   const [modalTypes, setModalTypes] = useState<UserPopUp[]>([]);
   // const [recentMembers, setRecentMembers] = useState<IUserSummary[]>();
-  const [drawerType, setDrawerType] = useState<"bottom" | "right">();
+  // const [drawerType, setDrawerType] = useState<"bottom" | "right">();
 
   const { data: gatherData } = useGatherQuery(-1);
 
-  const studyRecordStr = localStorage.getItem(STUDY_RECORD);
-  const studyRecord = JSON.parse(studyRecordStr);
+  // const studyRecordStr = localStorage.getItem(STUDY_RECORD);
+  // const studyRecord = JSON.parse(studyRecordStr);
   useEffect(() => {
     return;
     if (!gatherData) return;
@@ -158,9 +156,9 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
       setModalTypes((old) => [...old, "studyChallenge"]);
     }
 
-    if (studyRecord && studyRecord?.date !== dayjsToStr(dayjs())) {
-      setDrawerType("bottom");
-    }
+    // if (studyRecord && studyRecord?.date !== dayjsToStr(dayjs())) {
+    //   setDrawerType("bottom");
+    // }
 
     // if (!checkAndSetLocalStorage(SUGGEST_POP_UP, 29)) {
     //   setModalTypes((old) => [...old, "suggest"]);

@@ -12,7 +12,6 @@ import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
 import GatherWritingConfirmModal from "../../../modals/gather/GatherWritingConfirmModal";
 import GatherWritingUserConditionModal from "../../../modals/gather/GatherWritingUserConditionModal";
-import GatherWritingConditionLocation from "../../../pageTemplates/gather/writing/condition/GatherWritingConditionLocation";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
@@ -28,8 +27,6 @@ export type GatherConditionType =
   | "manager"
   | "kakaoUrl"
   | "isApprove";
-
-export type CombinedLocation = "전체" | "수원/안양" | "양천/강남";
 
 function WritingCondition() {
   const [gatherContent, setGatherContent] = useRecoilState(sharedGatherWritingState);
@@ -47,13 +44,13 @@ function WritingCondition() {
 
   const [isMemberConditionModal, setIsMemberConditionModal] = useState(false);
   const [password, setPassword] = useState(gatherContent?.password);
-  const [location, setLocation] = useState<Location | CombinedLocation>(
+  const [location, setLocation] = useState<Location | "전체">(
     gatherContent?.place || session?.user.location,
   );
   const [kakaoUrl, setKakaoUrl] = useState<string>("");
   const [isConfirmModal, setIsConfirmModal] = useState(false);
 
-  const isManager = ["manager", "previliged"].includes(session?.user.role);
+  // const isManager = ["manager", "previliged"].includes(session?.user.role);
 
   const onClickNext = async () => {
     const gatherData: IGatherWriting = {
@@ -149,7 +146,6 @@ function WritingCondition() {
                 onChange={(e) => toggleSwitch(e, "location")}
               />
             </Item>
-            {!condition.location && <GatherWritingConditionLocation setLocation={setLocation} />}
 
             <Item>
               <Name>
@@ -214,7 +210,7 @@ function WritingCondition() {
                 <Input size="sm" value={kakaoUrl} onChange={(e) => setKakaoUrl(e.target.value)} />
               </Flex>
             )}
-            {isManager && (
+            {/* {isManager && (
               <Item>
                 <Name>
                   <div>
@@ -233,7 +229,7 @@ function WritingCondition() {
                   onChange={(e) => toggleSwitch(e, "manager")}
                 />
               </Item>
-            )}
+            )} */}
           </Container>
         </RegisterLayout>
         <BottomNav onClick={() => onClickNext()} text="완료" />
