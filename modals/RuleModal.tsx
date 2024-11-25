@@ -1,8 +1,7 @@
-import styled from "styled-components";
+import { Box } from "@chakra-ui/react";
 
-import { ModalSubtitle } from "../styles/layout/modal";
 import { IModal } from "../types/components/modalTypes";
-import { IFooterOptions, IPaddingOptions, ModalLayout } from "./Modals";
+import { ModalLayout } from "./Modals";
 
 export interface IContentBasic {
   title: string;
@@ -15,66 +14,18 @@ export interface IRuleModalContent {
 }
 
 interface IRuleModal extends IModal {
-  content: IRuleModalContent;
+  title: string;
+  text: string;
+  children: React.ReactNode;
 }
 
-function RuleModal({ setIsModal, content }: IRuleModal) {
-  if (!content) return null;
-  const header = content.headerContent;
-  const main = content.mainContent;
-
-  function ContentItem({ title, texts }: IContentBasic) {
-    return (
-      <Item>
-        <RuleTitle>{title}</RuleTitle>
-        <ItemContent>
-          {texts.map((text, idx) => (
-            <li key={idx}>{text}</li>
-          ))}
-        </ItemContent>
-      </Item>
-    );
-  }
-
-  const footerOptions: IFooterOptions = {
-    main: {},
-    isFull: false,
-  };
-
-  const paddingOptions: IPaddingOptions = {
-    body: {
-      bottom: 0,
-    },
-  };
-
+function RuleModal({ setIsModal, title, text, children }: IRuleModal) {
   return (
-    <ModalLayout
-      title={header.title}
-      footerOptions={footerOptions}
-      setIsModal={setIsModal}
-      paddingOptions={paddingOptions}
-    >
-      <ModalSubtitle>{header.text}</ModalSubtitle>
-      {main.map((item, idx) => (
-        <ContentItem title={item.title} texts={item.texts} key={idx} />
-      ))}
+    <ModalLayout title={title} footerOptions={{}} setIsModal={setIsModal}>
+      <Box mb={3}>{text}</Box>
+      {children}
     </ModalLayout>
   );
 }
-
-const Item = styled.div``;
-
-const ItemContent = styled.ul`
-  font-size: 14px;
-  margin-left: var(--gap-4);
-  margin-top: var(--gap-1);
-  margin-bottom: var(--gap-3);
-  line-height: 1.8;
-`;
-
-const RuleTitle = styled.span`
-  font-weight: 600;
-  font-size: 15px;
-`;
 
 export default RuleModal;

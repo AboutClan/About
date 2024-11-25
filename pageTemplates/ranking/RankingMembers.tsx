@@ -5,10 +5,10 @@ import styled from "styled-components";
 
 import Avatar from "../../components/atoms/Avatar";
 import UserBadge from "../../components/atoms/badges/UserBadge";
-import RankingNumberIcon from "../../components/atoms/Icons/RankingNumberIcon";
+import { RankingNumIcon } from "../../components/Icons/RankingIcons";
 import { RANKING_ANONYMOUS_USERS } from "../../constants/storage/anonymous";
 import { RankingUserProp } from "../../libs/userEventLibs/userHelpers";
-import { RankingCategorySource } from "../../pages/statistics";
+import { RankingCategorySource } from "../../pages/ranking";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 
 interface IRankingMembers {
@@ -57,10 +57,11 @@ function RankingMembers({ categorySource, rankingUsers, isScore }: IRankingMembe
         return (
           <Item key={idx} id={`ranking${who.uid}`}>
             <Box mr="16px">
-              {rankNum <= 3 ? <RankingNumberIcon rankNum={rankNum} /> : <Rank>{rankNum}위</Rank>}
+              {rankNum <= 10 ? <RankingNumIcon num={rankNum} /> : <Rank>{rankNum}위</Rank>}
             </Box>
             <Name>
               <Avatar
+                userId={who._id}
                 image={who.profileImage}
                 avatar={who.avatar}
                 uid={who.uid}
@@ -75,7 +76,11 @@ function RankingMembers({ categorySource, rankingUsers, isScore }: IRankingMembe
               </RankingMine>
               <UserBadge uid={who.uid} score={who.score} />
             </Name>
-            <Score>{`${value}${isScore ? "점" : "회"}`}</Score>
+            <Score>
+              {categorySource === "weekStudyAccumulationMinutes"
+                ? `${Math.floor(value / 60)}시간 ${value % 60}분`
+                : `${value}${isScore ? "점" : "회"}`}
+            </Score>
           </Item>
         );
       })}
@@ -103,7 +108,9 @@ const Rank = styled.div`
   font-weight: 600;
 `;
 
-const Score = styled.div``;
+const Score = styled.div`
+  font-size: 13px;
+`;
 
 const RankingMine = styled.div<{ isMine?: boolean }>`
   margin-left: 12px;
@@ -111,7 +118,7 @@ const RankingMine = styled.div<{ isMine?: boolean }>`
 
   font-weight: 600;
   color: ${(props) => props.isMine && "var(--color-mint)"};
-  font-size: 14px;
+  font-size: 13px;
 `;
 
 export default RankingMembers;

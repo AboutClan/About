@@ -63,7 +63,13 @@ function FriendCategory() {
           {filterMember?.map((who) => (
             <Item key={who.uid} onClick={() => onClickProfile(who)}>
               <ProfileHeader>
-                <Avatar image={who.profileImage} avatar={who.avatar} uid={who.uid} size="md" />
+                <Avatar
+                  image={who.profileImage}
+                  userId={who._id}
+                  avatar={who.avatar}
+                  uid={who.uid}
+                  size="md"
+                />
                 <span>{who.name}</span>
               </ProfileHeader>
               <Info>

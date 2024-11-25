@@ -14,7 +14,6 @@ import { useErrorToast } from "../../hooks/custom/CustomToast";
 import { useGatherWritingMutation } from "../../hooks/gather/mutations";
 import { isGatherEditState } from "../../recoils/checkAtoms";
 import { sharedGatherWritingState } from "../../recoils/sharedDataAtoms";
-import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
 import { IGather, IGatherWriting } from "../../types/models/gatherTypes/gatherTypes";
 import { IFooterOptions, ModalLayout } from "../Modals";
@@ -33,6 +32,8 @@ function GatherWritingConfirmModal({ setIsModal, gatherData }: IGatherWritingCon
   const [isGatherEdit, setIsGatherEdit] = useRecoilState(isGatherEditState);
   const resetQueryData = useResetQueryData();
   const setGatherContent = useSetRecoilState(sharedGatherWritingState);
+
+
 
   const { mutate } = useGatherWritingMutation("post", {
     onSuccess() {
@@ -79,9 +80,8 @@ function GatherWritingConfirmModal({ setIsModal, gatherData }: IGatherWritingCon
           footerOptions={footerOptions}
         >
           <>
-            <ModalSubtitle>
-              {isFirst ? "개설 내용을 확인해 주세요!" : "선택사항. 기본 랜덤 이미지로 설정됩니다."}
-            </ModalSubtitle>
+            {isFirst ? "개설 내용을 확인해 주세요!" : "선택사항. 기본 랜덤 이미지로 설정됩니다."}
+
             {isFirst ? (
               <Container>
                 <Item>
@@ -120,6 +120,7 @@ function GatherWritingConfirmModal({ setIsModal, gatherData }: IGatherWritingCon
 const Container = styled.div`
   line-height: 2;
   font-size: 13px;
+  text-align: start;
 `;
 
 const Item = styled.div`
@@ -127,12 +128,13 @@ const Item = styled.div`
   display: flex;
   > span:first-child {
     display: inline-block;
-    width: 32px;
+    width: 32px;  text-align: start;
     font-weight: 600;
     margin-right: var(--gap-2);
   }
   > span:last-child {
     flex: 1;
+    text-align: start;
     display: inline-block;
     white-space: nowrap;
     overflow: hidden;

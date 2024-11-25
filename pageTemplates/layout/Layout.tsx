@@ -12,14 +12,15 @@ import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
 import PageTracker from "../../components/layouts/PageTracker";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
-import { getBottomNavSize } from "../../utils/mathUtils";
 import { parseUrlToSegments } from "../../utils/stringUtils";
+import { iPhoneNotchSize } from "../../utils/validationUtils";
 import BaseModal from "./BaseModal";
 import BaseScript from "./BaseScript";
 import Seo from "./Seo";
 
-export const BASE_BOTTOM_NAV_SEGMENT = ["home", "square", "user", "group"];
-export const NOT_PADDING_NAV_SEGMENT = ["login"];
+export const BASE_BOTTOM_NAV_SEGMENT = ["home", "studyPage", "gather", "user", "group"];
+export const NOT_PADDING_NAV_SEGMENT = ["login", "studyPage"];
+export const NOT_PADDING_BOTTOM_NAV_SEGMENT = ["vote", "ranking", "board"];
 
 const GoogleAnalytics = dynamic(
   () => import("@next/third-parties/google").then((mod) => mod.GoogleAnalytics),
@@ -40,7 +41,6 @@ function Layout({ children }: ILayout) {
 
   const segment = pathname?.split("/")?.[1];
   const PUBLIC_SEGMENT = ["register", "login"];
-  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
   const { data: session, status } = useSession();
 
@@ -55,6 +55,13 @@ function Layout({ children }: ILayout) {
 
   useEffect(() => {
     if (PUBLIC_SEGMENT.includes(segment)) return;
+    if (!isBottomNavCondition && isGuest) {
+      toast(
+        "info",
+        "현재 게스트 뷰어를 사용하고 있습니다. 활동을 위해서는 앱을 통해 로그인해 주세요.",
+      );
+      return;
+    }
     if (status === "loading" || session === undefined) return;
     const role = session?.user.role;
     if (role === "newUser") {
@@ -83,10 +90,15 @@ function Layout({ children }: ILayout) {
           <div
             id="root-modal"
             style={
-              !NOT_PADDING_NAV_SEGMENT.includes(currentSegment?.[0])
+              NOT_PADDING_BOTTOM_NAV_SEGMENT.includes(currentSegment?.[0])
                 ? {
                     paddingTop: "56px",
-                    paddingBottom: `${getBottomNavSize()}px`,
+                  }
+                : !NOT_PADDING_NAV_SEGMENT.includes(currentSegment?.[0]) &&
+                  !(currentSegment?.[0] === "store" && currentSegment?.[1])
+                ? {
+                    paddingTop: "56px",
+                    paddingBottom: `calc(var(--bottom-nav-height) + ${iPhoneNotchSize()}px`,
                   }
                 : undefined
             }

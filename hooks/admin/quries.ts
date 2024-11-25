@@ -9,7 +9,7 @@ import {
 } from "../../constants/keys/queryKeys";
 import { SERVER_URI } from "../../constants/system";
 import { UserActiveInfoProps } from "../../pages/admin/response/locationActive";
-import { RankingCategorySource } from "../../pages/statistics";
+import { RankingCategorySource } from "../../pages/ranking";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import { IUser, IUserRegisterForm, IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import { IUserRequest, UserRequestCategory } from "../../types/models/userTypes/userRequestTypes";
@@ -23,7 +23,7 @@ export const useAdminUsersLocationControlQuery = <T extends boolean>(
   options?: QueryOptions<T extends true ? IUserSummary[] : IUser[]>,
 ) =>
   useQuery<T extends true ? IUserSummary[] : IUser[], AxiosError>(
-    ["adminUserControl", location, isSummary, filterType],
+    ["adminUserControl", location, isSummary, "monthScore"],
     async () => {
       const res = await axios.get<T extends true ? IUserSummary[] : IUser[]>(
         `${SERVER_URI}/admin/user`,

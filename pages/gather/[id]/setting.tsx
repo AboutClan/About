@@ -89,7 +89,7 @@ function Setting() {
   return (
     <>
       <Header title="모임장 페이지" />
-      <Slide>
+      <Slide isNoPadding>
         <Flex direction="column">
           <TextDevider text="모임 정보 변경" />
           <RowTextBlockButton text="모임 글 수정" onClick={() => handleButtonClick("edit")} />
@@ -113,13 +113,13 @@ function Setting() {
               <ProfileCommentCard
                 key={idx}
                 user={who.user}
-                comment={who.phase === "first" ? "1차 참여" : "2차 참여"}
+                comment={{ text: who.phase === "first" ? "1차 참여" : "2차 참여" }}
                 rightComponent={
                   <Flex>
                     <Button
                       variant="outline"
                       size="sm"
-                      colorScheme="redTheme"
+                      colorScheme="red"
                       mr="12px"
                       onClick={() => setIsRefuseModal(who.user._id)}
                     >
@@ -127,7 +127,7 @@ function Setting() {
                     </Button>
                     <Button
                       size="sm"
-                      colorScheme="mintTheme"
+                      colorScheme="mint"
                       onClick={() => handleUserStatus(who.user._id, "agree")}
                     >
                       승인

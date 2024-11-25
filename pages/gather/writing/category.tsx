@@ -24,7 +24,7 @@ function WritingGatherCategory() {
 
   const onClickNext = () => {
     if (!IGatherType) {
-      failToast("free", "주제를 선택해 주세요!", true);
+      failToast("free", "주제를 선택해 주세요!");
       return;
     }
     setGatherWriting((old) => ({ ...old, type: IGatherType }));
@@ -75,7 +75,8 @@ const Item = styled.div<{ isSelected: boolean }>`
   margin-bottom: var(--gap-2);
   height: 60px;
   border-radius: var(--rounded-lg);
-  border: ${(props) => (props.isSelected ? "2px solid var(--color-mint)" : "var(--border)")};
+  border: ${(props) =>
+    props.isSelected ? "2px solid var(--color-mint)" : "1px solid var(--gray-200)"};
 `;
 
 const IconWrapper = styled.div`

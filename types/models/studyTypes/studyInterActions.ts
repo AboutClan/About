@@ -1,19 +1,28 @@
 import { Dayjs } from "dayjs";
 
-import { ITimeStamps } from "../../utils/timeAndDate";
+import { TimeStampProps } from "../../utils/timeAndDate";
 import { IUserSummary } from "../userTypes/userInfoTypes";
-import { IPlace } from "./studyDetails";
+import { StudyPlaceProps } from "./studyDetails";
 
 export interface IStudyVote extends IStudyVotePlaces, IStudyVoteTime {
   memo?: string;
 }
+
+export interface MyVoteProps {
+  main: string;
+  sub: string[];
+}
 export interface IStudyVoteWithPlace extends IStudyVoteTime {
   memo?: string;
-  place: IPlace;
-  subPlace: IPlace[];
+  place: StudyPlaceProps;
+  subPlace: StudyPlaceProps[];
 }
 
-export interface IStudyVotePlaces {
+export interface StudyCommentProps extends TimeStampProps {
+  text: string;
+}
+
+export interface IStudyVotePlaces extends TimeStampProps {
   place: string;
   subPlace?: string[];
 }
@@ -23,7 +32,7 @@ export interface IStudyVoteTime {
   end: Dayjs;
 }
 
-export interface IAbsence extends ITimeStamps {
+export interface IAbsence extends TimeStampProps {
   user: IUserSummary;
   noShow: boolean;
   message: string;
@@ -31,7 +40,7 @@ export interface IAbsence extends ITimeStamps {
 
 export type StudyDateStatus = "passed" | "today" | "not passed";
 
-export interface StudyWritingProps extends IPlace {
+export interface StudyWritingProps extends StudyPlaceProps {
   content: string;
 }
 

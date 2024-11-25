@@ -25,7 +25,7 @@ export default function InfoCard({
   return (
     <CardContainer>
       {leftComponent && <Box mr="16px">{leftComponent}</Box>}
-      <Avatar image={image} size="md" isLink={isLink} />
+      <Avatar  image={image} size="md" isLink={isLink} />
       <UserInfoContainer>
         <UserNameBadgeContainer>
           <span>{name}</span>

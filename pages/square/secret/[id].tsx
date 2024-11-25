@@ -19,8 +19,8 @@ import { useState } from "react";
 import AlertModal from "../../../components/AlertModal";
 import { Badge } from "../../../components/atoms/badges/Badges";
 import Divider from "../../../components/atoms/Divider";
-import KakaoShareBtn from "../../../components/atoms/Icons/KakaoShareBtn";
 import { MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
+import KakaoShareBtn from "../../../components/Icons/KakaoShareBtn";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import OrganizerBar from "../../../components/molecules/OrganizerBar";
@@ -367,15 +367,14 @@ function SecretSquareDetailPage() {
           </Flex>
           {squareDetail && <Divider />}
         </Slide>
-        {squareDetail && (
-          <Box as="section" bg="white">
-            <SecretSquareComments
-              author={squareDetail.author}
-              comments={squareDetail?.comments}
-              refetch={refetch}
-            />
-          </Box>
-        )}
+
+        <Box as="section" bg="white">
+          <SecretSquareComments
+            author={squareDetail?.author}
+            comments={squareDetail?.comments}
+            refetch={refetch}
+          />
+        </Box>
       </>
     </>
   );

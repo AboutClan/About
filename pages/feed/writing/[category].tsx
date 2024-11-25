@@ -82,7 +82,6 @@ function FeedWritingPage() {
       toast("warning", "최소 한장 이상의 사진이 필요합니다.");
       return;
     }
-
     appendFormData(formData, "type", category);
     for (const form of imageFormArr) {
       appendFormData(formData, "images", form);

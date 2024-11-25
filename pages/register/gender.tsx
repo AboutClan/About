@@ -30,12 +30,12 @@ function Gender() {
 
   return (
     <>
-      <ProgressHeader value={30} title={!isProfileEdit ? "회원가입" : "프로필 수정"} />
+      <ProgressHeader value={22} title={!isProfileEdit ? "회원가입" : "프로필 수정"} />
 
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>성별을 입력해 주세요</span>
-          <span></span>
+          <span>오프라인 활동에서는 성비도 고려하고 있어요!</span>
         </RegisterOverview>
         <ButtonNav>
           <Button $isSelected={gender === "남성"} onClick={() => setGender("남성")}>

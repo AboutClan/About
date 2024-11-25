@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useState } from "react";
 import styled from "styled-components";
 
-import { CopyBtn } from "../../components/atoms/Icons/CopyIcon";
+import { CopyBtn } from "../../components/Icons/CopyIcon";
 import { PROMOTION_TEXT, PROMOTION_TITLE } from "../../constants/contentsText/Private";
 
 function PromotionContent() {
@@ -23,14 +23,14 @@ function PromotionContent() {
         <Wrapper>
           <Nav>
             <Button
-              colorScheme={isText ? "mintTheme" : "gray"}
+              colorScheme={isText ? "mint" : "gray"}
               onClick={() => setIsText(true)}
               _focus={{ outline: "none" }}
             >
               텍스트
             </Button>
             <Button
-              colorScheme={!isText ? "mintTheme" : "gray"}
+              colorScheme={!isText ? "mint" : "gray"}
               onClick={() => setIsText(false)}
               _focus={{ outline: "none" }}
               w="88px"

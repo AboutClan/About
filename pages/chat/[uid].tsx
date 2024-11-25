@@ -11,9 +11,11 @@ import Slide from "../../components/layouts/PageSlide";
 import UserCommentInput from "../../components/molecules/UserCommentInput";
 import { useChatMutation } from "../../hooks/chat/mutations";
 import { useChatQuery } from "../../hooks/chat/queries";
+import { useKeypadHeight } from "../../hooks/custom/useKeypadHeight";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { transferUserName } from "../../recoils/transferRecoils";
 import { getDateDiff } from "../../utils/dateTimeUtils";
+import { iPhoneNotchSize } from "../../utils/validationUtils";
 
 interface Chat {
   message: string;
@@ -24,6 +26,7 @@ interface Chat {
 function Uid() {
   const router = useRouter();
   const { uid } = useParams<{ uid: string }>() || {};
+  const keypadHeight = useKeypadHeight();
 
   const userName = useRecoilValue(transferUserName);
   const [chats, setChats] = useState<Chat[]>([]);
@@ -113,6 +116,7 @@ function Uid() {
                               image={opponent.profileImage}
                               avatar={opponent.avatar}
                               uid={opponent.uid}
+                              userId={opponent._id}
                             />
                           </Box>
                           <Flex ml="8px" direction="column" color="var(--gray-800)">
@@ -149,16 +153,25 @@ function Uid() {
         </Flex>
       </Slide>
       <Box
-        h="60px"
         position="fixed"
-        borderTop="var(--border-main)"
+        borderTop="var(--border)"
         bottom="0"
         flex={1}
         w="100%"
-        p="16px"
+        backgroundColor="white"
         maxW="var(--max-width)"
+        pb={`${keypadHeight === 0 ? iPhoneNotchSize() : 0}px`}
       >
-        <UserCommentInput user={userInfo} onSubmit={onSubmit} type="message" initialFocus />
+        <Box py={4} borderBottom="var(--border)" px={5}>
+          <UserCommentInput
+            replyName={null}
+            setReplyProps={null}
+            user={userInfo}
+            onSubmit={onSubmit}
+            type="message"
+            initialFocus
+          />
+        </Box>
       </Box>
     </>
   );

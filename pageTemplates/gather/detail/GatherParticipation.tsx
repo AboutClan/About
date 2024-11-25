@@ -1,10 +1,7 @@
 import { Box } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import Avatar from "../../../components/atoms/Avatar";
-import { prevPageUrlState } from "../../../recoils/navigationRecoils";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 
@@ -13,20 +10,11 @@ interface IGatherParticipation {
 }
 
 function GatherParticipation({ data }: IGatherParticipation) {
-  const router = useRouter();
-
-  const setPrevPageUrl = useSetRecoilState(prevPageUrlState);
-
   const organizer = data.user as IUserSummary;
   const status = data.status;
   const participantsCnt = data.participants.length;
 
   const isAdminOpen = data.isAdminOpen;
-
-  const onClickProfile = (user: IUserSummary) => {
-    setPrevPageUrl(router?.asPath);
-    router.push(`/profile/${user.uid}`);
-  };
 
   return (
     <>
@@ -48,9 +36,10 @@ function GatherParticipation({ data }: IGatherParticipation) {
         </Header>
         <Members>
           {!isAdminOpen ? (
-            <MemberItem key={organizer?.uid} onClick={() => onClickProfile(organizer)}>
+            <MemberItem key={organizer?.uid}>
               <Organizer>
                 <Avatar
+                  userId={organizer._id}
                   image={organizer.profileImage}
                   avatar={organizer.avatar}
                   uid={organizer.uid}
@@ -73,8 +62,9 @@ function GatherParticipation({ data }: IGatherParticipation) {
           {data?.participants.map(
             (who) =>
               who?.user && (
-                <MemberItem key={who?.user.uid} onClick={() => onClickProfile(who.user)}>
+                <MemberItem key={who?.user.uid}>
                   <Avatar
+                    userId={who.user._id}
                     image={who.user.profileImage}
                     avatar={who.user.avatar}
                     uid={who.user.uid}
@@ -185,6 +175,7 @@ const Layout = styled.div`
   flex-direction: column;
   background-color: white;
   padding-bottom: var(--gap-4);
+
   border: var(--border);
 `;
 

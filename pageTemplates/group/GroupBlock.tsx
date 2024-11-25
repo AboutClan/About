@@ -64,7 +64,7 @@ function GroupBlock({ group }: IGroupBlock) {
       if (participantCnt < min) {
         return {
           text: `개설까지 ${min - participantCnt}명 남음`,
-          color: "redTheme",
+          color: "red",
         };
       } else if (participantCnt >= max) {
         if (max !== 0) {
@@ -75,12 +75,12 @@ function GroupBlock({ group }: IGroupBlock) {
         }
         return {
           text: "모집중",
-          color: "mintTheme",
+          color: "mint",
         };
       } else {
         return {
           text: `마감까지 ${max - participantCnt}명 남음`,
-          color: "redTheme",
+          color: "red",
         };
       }
     } else if (status === "end") {

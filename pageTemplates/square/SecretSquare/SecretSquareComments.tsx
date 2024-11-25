@@ -1,22 +1,31 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
+import BottomCommentInput from "../../../components/atoms/BottomCommentInput";
 import Slide from "../../../components/layouts/PageSlide";
 import UserCommentBlock from "../../../components/molecules/UserCommentBlock";
-import UserCommentInput from "../../../components/molecules/UserCommentInput";
 import { SECRET_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
-import { useCommentMutation, useSubCommentMutation } from "../../../hooks/common/mutations";
+import {
+  SubCommentParamProps,
+  useCommentMutation,
+  useSubCommentMutation,
+} from "../../../hooks/common/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
+import { getCommentArr } from "../../../libs/comment/commentLib";
 import { UserCommentProps } from "../../../types/components/propTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
-
 interface SecretSquareCommentsProps {
   author: string;
   comments: UserCommentProps[];
   refetch: () => void;
+}
+
+export interface ReplyProps extends Omit<SubCommentParamProps, "comment"> {
+  replyName: string;
+  parentId?: string;
 }
 
 function SecretSquareComments({ author, comments, refetch }: SecretSquareCommentsProps) {
@@ -26,6 +35,8 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
   const squareId = router.query.id as string;
 
   const [commentArr, setCommentArr] = useState<UserCommentProps[]>(comments || []);
+  const [replyProps, setReplyProps] = useState<ReplyProps>();
+  
   useEffect(() => {
     setCommentArr(comments);
   }, [comments]);
@@ -51,6 +62,11 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
   };
 
   const onSubmit = async (value: string) => {
+    if (replyProps) {
+      writeSubComment({ comment: value, commentId: replyProps.commentId });
+      setCommentArr(getCommentArr(value, replyProps.commentId, commentArr, userInfo));
+      return;
+    }
     await writeComment({ comment: value });
     setCommentArr((old) => [...old, addNewComment(userInfo, value)]);
   };
@@ -58,7 +74,7 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
   const uniqueUsers = {};
   let uniqueIdCounter = 1;
   commentArr
-    .flatMap((item) => [
+    ?.flatMap((item) => [
       item.user,
       ...(Array.isArray(item.subComments) ? item.subComments.map((sub) => sub.user) : []),
     ])
@@ -73,11 +89,11 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
         }
       }
     });
-
+  
   return (
     <>
-      <Slide>
-        <Flex direction="column" pt="8px" px="16px" pb="20px">
+      <Slide isNoPadding>
+        <Flex direction="column" pt="8px" pb="20px">
           {commentArr?.map((item, idx) => {
             const commentProps = commentArr?.find((comment) => comment._id === item._id);
             return (
@@ -108,25 +124,20 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
                   })),
                 }}
                 setCommentArr={setCommentArr}
-                writeSubComment={writeSubComment}
+                hasAuthority={(item.user as unknown as string) !== userInfo._id}
+                setReplyProps={setReplyProps}
               />
             );
           })}
         </Flex>
       </Slide>
-      <Box
-        h="60px"
-        position="fixed"
-        borderTop="var(--border-main)"
-        bottom="0"
-        flex={1}
-        w="100%"
-        backgroundColor="white"
-        p="16px"
-        maxW="var(--max-width)"
-      >
-        <UserCommentInput user={SECRET_USER_SUMMARY} onSubmit={onSubmit} type="message" />
-      </Box>
+      <BottomCommentInput
+        onSubmit={onSubmit}
+        type="comment"
+        replyName={replyProps?.replyName}
+        setReplyProps={setReplyProps}
+        user={null}
+      />
     </>
   );
 }

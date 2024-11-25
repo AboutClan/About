@@ -1,30 +1,49 @@
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useQueryClient } from "react-query";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
+import { GROUP_STUDY } from "../../../constants/keys/queryKeys";
+import { useToast } from "../../../hooks/custom/CustomToast";
+import { useGroupWaitingMutation } from "../../../hooks/groupStudy/mutations";
 import ParticipateModal from "../../../pageTemplates/group/ParticipateModal";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { transferGroupDataState } from "../../../recoils/transferRecoils";
 
 function Participate() {
-  const group = useRecoilValue(transferGroupDataState);
+  const router = useRouter();
+  const toast = useToast();
+  const [group, setGroup] = useRecoilState(transferGroupDataState);
 
   const [questionText, setQuestionText] = useState("");
   const [isModal, setIsModal] = useState(false);
+  const { id } = useParams<{ id: string }>() || {};
+
+  const queryClient = useQueryClient();
+
+  const { mutate: sendRegisterForm } = useGroupWaitingMutation(group?.id, {
+    onSuccess() {
+      toast("success", "가입 신청이 완료되었습니다.");
+      setGroup(null);
+      queryClient.invalidateQueries([GROUP_STUDY, id]);
+      router.push(`/group/${id}`);
+    },
+  });
 
   const onClick = () => {
-    setIsModal(true);
+    sendRegisterForm({ answer: questionText, pointType: "point" });
   };
 
   return (
     <>
       <>
         <Header title="" />
-        <Slide>
+        <Slide isNoPadding>
           <RegisterLayout>
             <RegisterOverview>
               {group?.questionText ? (
@@ -57,7 +76,6 @@ function Participate() {
       </>
       {isModal && (
         <ParticipateModal
-          isFree={!questionText}
           answer={questionText}
           id={group.id}
           feeText={group.feeText}

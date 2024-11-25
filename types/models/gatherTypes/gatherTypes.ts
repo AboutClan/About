@@ -1,11 +1,11 @@
 import { Dayjs } from "dayjs";
 
 import { UserCommentProps } from "../../components/propTypes";
-import { CombinedLocation, Location } from "../../services/locationTypes";
-import { ITimeStamps } from "../../utils/timeAndDate";
+import { Location } from "../../services/locationTypes";
+import { TimeStampProps } from "../../utils/timeAndDate";
 import { IUserSummary } from "../userTypes/userInfoTypes";
 
-export interface IGather extends Omit<IGatherWriting, "date">, ITimeStamps {
+export interface IGather extends Omit<IGatherWriting, "date">, TimeStampProps {
   date: string;
   participants: IGatherParticipants[];
   id: number;
@@ -19,7 +19,7 @@ export interface IGather extends Omit<IGatherWriting, "date">, ITimeStamps {
 
 export interface IGatherWriting {
   type: IGatherType;
-  place: Location | CombinedLocation;
+  place: Location | "전체";
   genderCondition: boolean;
   title: string;
   content: string;
@@ -40,7 +40,7 @@ export interface IGatherWriting {
 export type GatherCategory = "전체" | "모집중" | "완료";
 export type IGatherType = { title: string; subtitle?: string };
 
-export type GatherStatus = "open" | "close" | "end" | "pending";
+export type GatherStatus = "open" | "close" | "end" | "pending" | "ready";
 
 export type IGatherLocation = {
   main: string;
@@ -61,7 +61,7 @@ export interface IGatherListItem {
 }
 export interface IGatherParticipants {
   user: IUserSummary;
-  phase: "first" | "second";
+  phase?: "first" | "second";
 }
 
 // export interface IGatherHeader {

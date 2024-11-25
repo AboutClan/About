@@ -28,7 +28,7 @@ function WritingStudyImage() {
 
   const onClickNext = () => {
     if (!imageProps?.mainImage || !imageProps?.coverImage) {
-      failToast("free", "내용을 작성해 주세요!", true);
+      failToast("free", "내용을 작성해 주세요!");
       return;
     }
     setStudyWriting((old) => ({
@@ -68,6 +68,7 @@ function WritingStudyImage() {
             selectedImageUrl={imageProps?.mainImage}
             imageTileArr={mainImageArr}
             size="md"
+            hasTextSkeleton={false}
           />
         </Box>
         <RegisterOverview>
@@ -80,6 +81,7 @@ function WritingStudyImage() {
             imageTileArr={coverImageArr}
             size="full"
             aspect={2}
+            hasTextSkeleton={false}
           />
         </Box>
       </RegisterLayout>

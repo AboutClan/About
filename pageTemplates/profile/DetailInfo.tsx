@@ -1,13 +1,13 @@
+import { Box } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
 import BlurredPart from "../../components/molecules/BlurredPart";
-import Chart from "../../components/organisms/chart/Chart";
 import { PLACE_TO_NAME } from "../../constants/serviceConstants/studyConstants/studyCafeNameConstants";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { birthToAge } from "../../utils/convertUtils/convertTypes";
 
-function DetailInfo({ user }: { user: IUser }) {
+function DetailInfo({ user, groups }: { user: IUser; groups: string[] }) {
   const { data: session } = useSession();
   const isGuest = session?.user.name === "guest";
 
@@ -42,19 +42,25 @@ function DetailInfo({ user }: { user: IUser }) {
             {user?.majors?.length ? <span>{user?.majors[0]?.detail}</span> : <span>--</span>}
           </ProfileItem>
           <ProfileItem>
-            <span>관심사</span>
-            <div>
-              {user?.interests?.first ? (
-                <Interests>
-                  <span>1. {user?.interests.first}</span>
-                  <span>
-                    {user?.interests.second && "2."} {user?.interests.second}
-                  </span>
-                </Interests>
-              ) : (
-                <span>--</span>
-              )}
-            </div>
+            <span>소모임</span>
+            <Box
+              flex={1}
+              fontWeight={600}
+              sx={{
+                display: "-webkit-box",
+                WebkitLineClamp: 2, // 최대 2줄
+                WebkitBoxOrient: "vertical",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+              }}
+            >
+              {groups?.map((group, idx) => (
+                <>
+                  <span>{group}</span>
+                  <span>{idx !== groups.length - 1 && ", "}</span>
+                </>
+              ))}
+            </Box>
           </ProfileItem>
           <ProfileItem>
             <span>즐겨찾기</span>
@@ -62,7 +68,7 @@ function DetailInfo({ user }: { user: IUser }) {
           </ProfileItem>
         </Profile>
       </BlurredPart>
-      <Chart type="study" user={user} />
+      {/* <Chart type="study" user={user} /> */}
     </Layout>
   );
 }
@@ -80,17 +86,6 @@ const Profile = styled.div`
   display: flex;
   flex-direction: column;
   line-height: 2.4;
-`;
-
-const Interests = styled.div`
-  display: flex;
-  flex-direction: column;
-  color: var(--gray-800);
-  font-weight: 600;
-
-  > span {
-    display: inline-block;
-  }
 `;
 
 const ProfileItem = styled.div`

@@ -8,6 +8,7 @@ import {
   getProviders,
   LiteralUnion,
   signIn,
+  signOut,
   useSession,
 } from "next-auth/react";
 import Image from "next/image";
@@ -34,6 +35,7 @@ const Login: NextPage<{
   const [isLoading, setIsLoading] = useState(false);
   const [isModal, setIsModal] = useState(false);
   const [isWaitingModal, setIsWaitingModal] = useState(false);
+  const [isLoginModal, setIsLoginModal] = useState(false);
 
   const { data: userInfo } = useUserInfoQuery({
     enabled: !!session,
@@ -68,6 +70,11 @@ const Login: NextPage<{
       setIsLoading(false);
       return;
     }
+
+    if (session?.user?.name === "guest") {
+      await signOut({ redirect: false });
+    }
+
     await signIn(provider, {
       callbackUrl: `${window.location.origin}/home`,
     });
@@ -80,76 +87,89 @@ const Login: NextPage<{
   };
 
   return (
-    <Flex direction="column" alignItems="center" height="100vh" overflow="hidden">
-      <Box position="relative" width="100%" height="100%">
-        <Image
-          src="/loginBackground.jpg"
-          alt="loginBackground"
-          layout="fill"
-          sizes="1624px"
-          objectFit="cover"
-        />
-      </Box>
-      <Flex
-        direction="column"
-        align="center"
-        position="fixed"
-        width="100%"
-        px="32px"
-        bottom="9%"
-        left="50%"
-        transform="translate(-50%,0)"
-      >
-        <Button
-          maxW="calc(var(--max-width) - 2 * 20px)"
-          size="lg"
-          fontSize="16px"
+    <>
+      <Flex direction="column" alignItems="center" height="100vh" overflow="hidden">
+        <Box position="relative" width="100%" height="100%">
+          <Image
+            src="/loginBackground.jpg"
+            alt="loginBackground"
+            layout="fill"
+            sizes="1624px"
+            objectFit="cover"
+          />
+        </Box>
+        <Flex
+          direction="column"
+          align="center"
+          position="fixed"
           width="100%"
-          backgroundColor="#FEE500"
-          borderRadius="4px"
-          isLoading={isLoading}
-          onClick={() => customSignin("member")}
-          mb="8px"
-          aspectRatio={2 / 1}
-          display="flex"
-          justifyContent="space-between"
-          leftIcon={<IconKakao />}
-          pr="32px"
+          px="32px"
+          bottom="9%"
+          left="50%"
+          transform="translate(-50%,0)"
         >
-          <span>카카오톡으로 시작하기</span>
-          <div />
-        </Button>
-        <Button
-          size="lg"
-          maxW="calc(var(--max-width) - 2 * 20px)"
-          fontSize="16px"
-          width="100%"
-          borderRadius="4px"
-          backgroundColor="var(--gray-200)"
-          onClick={() => setIsModal(true)}
-          mb="16px"
-          justifyContent="space-between"
-          leftIcon={<IconUser />}
-          pr="32px"
-        >
-          <span>게스트로 구경하기</span>
-          <div />
-        </Button>
-
-        <Link mt={1} href="https://open.kakao.com/o/sjDgVzmf" isExternal fontSize="13px">
-          <u
-            style={{
-              textUnderlineOffset: "4px",
-              color: "var(--gray-600)",
-              textDecorationColor: "var(--gray-600)",
-            }}
+          <Button
+            maxW="calc(var(--max-width) - 2 * 20px)"
+            size="lg"
+            fontSize="16px"
+            width="100%"
+            backgroundColor="#FEE500"
+            borderRadius="4px"
+            isLoading={isLoading}
+            onClick={() => customSignin("member")}
+            mb="8px"
+            aspectRatio={2 / 1}
+            display="flex"
+            justifyContent="space-between"
+            leftIcon={<IconKakao />}
+            pr="32px"
           >
-            관리자에게 문의하기
-          </u>
-        </Link>
-      </Flex>
-      <ForceLogoutDialog />
+            <span>카카오톡으로 5초만에 시작하기</span>
+            <div />
+          </Button>
+          <Button
+            size="lg"
+            maxW="calc(var(--max-width) - 2 * 20px)"
+            fontSize="16px"
+            width="100%"
+            borderRadius="4px"
+            backgroundColor="var(--gray-200)"
+            onClick={() => setIsModal(true)}
+            mb="8px"
+            justifyContent="space-between"
+            leftIcon={<IconUser />}
+            pr="32px"
+          >
+            <span>게스트로 구경하기</span>
+            <div />
+          </Button>
 
+          <Button variant="ghost" size="md" fontSize="13px" onClick={() => router.push("/loginId")}>
+            <u
+              style={{
+                fontWeight: "400",
+                textUnderlineOffset: "4px",
+                color: "var(--gray-600)",
+                textDecorationColor: "var(--gray-600)",
+              }}
+            >
+              다른 방법으로 로그인
+            </u>
+          </Button>
+          <Link mt={1} href="https://open.kakao.com/o/sjDgVzmf" isExternal fontSize="13px">
+            <u
+              style={{
+                textUnderlineOffset: "4px",
+                color: "var(--gray-600)",
+                textDecorationColor: "var(--gray-600)",
+              }}
+            >
+              관리자에게 문의하기
+            </u>
+          </Link>
+        </Flex>
+        <ForceLogoutDialog />
+      </Flex>
       {isModal && <GuestLoginModal setIsModal={setIsModal} customSignin={customSignin} />}
       {isWaitingModal && (
         <ModalLayout
@@ -160,7 +180,7 @@ const Login: NextPage<{
           가입 대기중입니다. <br /> 며칠 내에 카톡으로 연락드려요!
         </ModalLayout>
       )}
-    </Flex>
+    </>
   );
 };
 

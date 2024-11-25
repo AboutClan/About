@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import EveryTimeLogo from "../../../components/atoms/Icons/CustomIcons";
+import EveryTimeLogo from "../../../components/Icons/CustomIcons";
 
 function PromotionModalOverview() {
   return (
@@ -9,9 +9,7 @@ function PromotionModalOverview() {
       <Flex justify="center">
         <EveryTimeLogo />
       </Flex>
-      <Detail>
-        (한정)에브리타임에 홍보글을 작성해주시면 매주 두분께 올리브영 기프티콘을 드려요!
-      </Detail>
+      <Detail>에브리타임에 홍보글을 작성해주시면 매주 두분께 올리브영 기프티콘을 드려요!</Detail>
     </Layout>
   );
 }

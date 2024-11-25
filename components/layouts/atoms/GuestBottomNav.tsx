@@ -1,14 +1,17 @@
 import { Box, Button } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 import styled from "styled-components";
+
+import { iPhoneNotchSize } from "../../../utils/validationUtils";
 
 function GuestBottomNav() {
   const searchParams = useSearchParams();
   const newSearchparams = new URLSearchParams(searchParams);
   const router = useRouter();
 
-  const customSignin = () => {
+  const customSignin = async () => {
+    await signOut({ redirect: false });
     signIn("kakao", {
       callbackUrl: `${window.location.origin}/home`,
     });
@@ -43,7 +46,7 @@ function GuestBottomNav() {
 
 const Layout = styled.div`
   position: fixed;
-  bottom: 77px;
+  bottom: ${`${52 + iPhoneNotchSize()}px`};
   max-width: var(--max-width);
   background-color: white;
   height: 50px;
@@ -56,6 +59,7 @@ const Layout = styled.div`
   padding: 0 16px;
   color: var(--color-red);
   font-weight: 600;
+  border-top: var(--border);
 `;
 
 export default GuestBottomNav;

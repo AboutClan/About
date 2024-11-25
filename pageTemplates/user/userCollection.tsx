@@ -1,19 +1,36 @@
-import { Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
 
-import { AlphabetIcon } from "../../components/atoms/Icons/AlphabetIcon";
+import { AboutIcon } from "../../components/atoms/AboutIcons";
+import IconRowBlock from "../../components/atoms/blocks/IconRowBlock";
 import { useCollectionAlphabetQuery } from "../../hooks/user/sub/collection/queries";
-import UserCollectionAlphabetModal from "../../modals/user/collection/UserCollectionAlphabetModal";
+import UserCollectionModal from "../../modals/user/collection/UserCollectionAlphabetModal";
+import { Alphabet } from "../../types/models/collections";
+
+export const changeAlphabet = (alphabet: Alphabet) => {
+  switch (alphabet) {
+    case "A":
+      return "A";
+    case "B":
+      return "b";
+    case "O":
+      return "o";
+    case "U":
+      return "u";
+    case "T":
+      return "t";
+  }
+};
 
 export default function UserCollection() {
   const { data: session } = useSession();
 
   const isGuest = session?.user.name === "guest";
 
-  const [isAlphabetModal, setIsAlphabetModal] = useState(false);
+  const [isCollectionModal, setIsCollectionModal] = useState(false);
 
   const { data: alphabets } = useCollectionAlphabetQuery({
     enabled: !isGuest,
@@ -28,23 +45,24 @@ export default function UserCollection() {
           <i className="fa-solid fa-chevron-right" />
         </BlockItem>
         <AlphabetContainer>
-          <AlphabetIcon alphabet="A" isDuotone={!alphabetArr?.includes("A")} />
-          <AlphabetIcon alphabet="B" isDuotone={!alphabetArr?.includes("B")} />
-          <AlphabetIcon alphabet="O" isDuotone={!alphabetArr?.includes("O")} />
-          <AlphabetIcon alphabet="U" isDuotone={!alphabetArr?.includes("U")} />
-          <AlphabetIcon alphabet="T" isDuotone={!alphabetArr?.includes("T")} />
+          <AboutIcon alphabet="A" isActive={alphabetArr?.includes("A")} />
+          <AboutIcon alphabet="B" isActive={alphabetArr?.includes("B")} />
+          <AboutIcon alphabet="O" isActive={alphabetArr?.includes("O")} />
+          <AboutIcon alphabet="U" isActive={alphabetArr?.includes("U")} />
+          <AboutIcon alphabet="T" isActive={alphabetArr?.includes("T")} />
         </AlphabetContainer>
       </Link>
-      <AlphabetQNABtn onClick={() => setIsAlphabetModal(true)}>
-        <IconWrapper>
-          <i className="fa-duotone fa-stars fa-2x" style={{ color: "var(--color-mint)" }} />
-        </IconWrapper>
-        <AlphabetQNABtnContents>
-          <span>여러번 수집하면 보상이 더 올라가요!</span>
-          <span>컬렉션 수집 보상</span>
-        </AlphabetQNABtnContents>
-      </AlphabetQNABtn>
-      {isAlphabetModal && <UserCollectionAlphabetModal setIsModal={setIsAlphabetModal} />}
+      <Box mx={5}>
+        <IconRowBlock
+          leftIcon={
+            <i className="fa-duotone fa-stars fa-2x" style={{ color: "var(--color-mint)" }} />
+          }
+          func={() => setIsCollectionModal(true)}
+          mainText=" 컬렉션 수집 보상"
+          subText=" 여러번 수집하면 보상이 더 올라가요!"
+        />
+      </Box>
+      {isCollectionModal && <UserCollectionModal setIsModal={setIsCollectionModal} />}
     </Flex>
   );
 }
@@ -73,36 +91,5 @@ const AlphabetContainer = styled.div`
   align-items: center;
   > * {
     margin-right: 8px;
-  }
-`;
-
-const AlphabetQNABtn = styled.button`
-  margin: 0 16px;
-  width: inherit;
-  display: flex;
-  align-items: center;
-  background-color: var(--gray-200);
-
-  padding: var(--gap-3) var(--gap-4);
-  border-radius: var(--rounded-lg);
-  color: var(--color-font-h2);
-`;
-
-const IconWrapper = styled.div`
-  margin-right: var(--gap-3);
-`;
-
-const AlphabetQNABtnContents = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  > span:first-child {
-    font-size: 12px;
-    color: var(--gray-600);
-  }
-  > span:last-child {
-    font-weight: 600;
-    color: var(--gray-700);
-    font-size: 14px;
   }
 `;

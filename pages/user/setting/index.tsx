@@ -6,7 +6,7 @@ export default function Index() {
   return (
     <>
       <Header title="설정" url="/user" />
-      <Slide>
+      <Slide isNoPadding>
         <UserNavigation />
       </Slide>
     </>

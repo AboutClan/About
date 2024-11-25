@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import Avatar from "../../components/atoms/Avatar";
 import Skeleton from "../../components/atoms/skeleton/Skeleton";
+import { RankingNumIcon } from "../../components/Icons/RankingIcons";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { IMyRank } from "../../types/models/ranking";
 
@@ -20,14 +21,9 @@ function RankingOverview({ myRankInfo }: IRankingOverview) {
   return (
     <>
       <Layout>
-        <Flex flex={1} justify="center">
-          <Box mr="4px" fontSize="16px" alignSelf="flex-end">
-            랭킹:
-          </Box>
-          <Box w="48px" fontSize="18px" fontWeight={800}>
-            <Skeleton isLoaded={!!myRankInfo}>
-              {!myRankInfo?.value ? "NEW" : `${myRankInfo?.rankNum} 위`}
-            </Skeleton>
+        <Flex flex={1} flexDir="column" justify="center" align="center">
+          <Box fontSize="18px" fontWeight={800}>
+            {!myRankInfo?.value ? "NEW" : <RankingNumIcon num={myRankInfo?.rankNum} size="lg" />}
           </Box>
         </Flex>
         <ProfileContainer isGuest={isGuest}>
@@ -38,7 +34,9 @@ function RankingOverview({ myRankInfo }: IRankingOverview) {
                 avatar={userInfo.avatar}
                 uid={userInfo.uid}
                 size="lg"
+                userId={userInfo._id}
                 isPriority={true}
+                isLink={false}
               />
               <ProfileUserName>{userInfo?.name}</ProfileUserName>
             </ProfileWrapper>
@@ -49,15 +47,12 @@ function RankingOverview({ myRankInfo }: IRankingOverview) {
             </ProfileWrapper>
           ) : null}
         </ProfileContainer>{" "}
-        <Flex flex={1} fontSize="18px" justify="center">
-          <Box ml="4px" mr="12px" fontSize="16px" alignSelf="flex-end">
-            메달:
-          </Box>
-          <Box w="48px" fontWeight={800}>
+        <Flex flex={1} h="40px" align="center" fontSize="18px" justify="center">
+          <Box fontWeight={800}>
             <Skeleton isLoaded={!!myRankInfo}>
               <Flex>
                 <Box>
-                  <i className="fa-solid fa-medal fa-xl" style={{ color: "var(--color-gray)" }} />
+                  <i className="fa-solid fa-medal fa-2x" style={{ color: "var(--color-gray)" }} />
                 </Box>
               </Flex>
             </Skeleton>
@@ -71,8 +66,7 @@ const Layout = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 12px;
-  padding-top: 16px;
+  padding: 16px 20px;
 
   min-height: 121px;
 `;
@@ -80,7 +74,7 @@ const Layout = styled.div`
 const ProfileContainer = styled.div<{ isGuest: boolean }>`
   text-align: center;
 
-  flex: 0.65;
+  flex: 0.7;
 `;
 
 const ProfileWrapper = styled.div`
@@ -92,8 +86,7 @@ const ProfileWrapper = styled.div`
 const ProfileUserName = styled.span`
   display: inline-block;
   margin-top: 8px;
-  font-size: 14px;
-  font-weight: 600;
+  font-size: 12px;
 `;
 
 export default RankingOverview;

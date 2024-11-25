@@ -10,7 +10,7 @@ interface IPointScore {
 function PointScore({ myScore }: IPointScore) {
   return (
     <Layout>
-      <PointScoreBar myScore={myScore} />
+      <PointScoreBar />
       <PointScoreNavigation myScore={myScore} />
     </Layout>
   );

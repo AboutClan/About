@@ -41,12 +41,12 @@ function Phone() {
 
   return (
     <>
-      <ProgressHeader title="회원가입" value={90} />
+      <ProgressHeader title="회원가입" value={88} />
 
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>핸드폰 번호를 작성해 주세요</span>
-          <span>해당 번호로 연락을 드리니 정확하게 작성해 주세요.</span>
+          <span>입력하신 번호로 동아리 가입 승인 연락을 드리고 있어요!</span>
         </RegisterOverview>
         <Input
           value={value}

@@ -1,8 +1,9 @@
 import { ExternalLinkIcon } from "@chakra-ui/icons";
-import { Container, Heading, Link, List, ListItem, Text } from "@chakra-ui/react";
+import { Container, Heading, List, ListItem, Text } from "@chakra-ui/react";
 
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
+import ExternalLink from "../../../components/molecules/ExternalLink";
 
 function Policy() {
   return (
@@ -65,10 +66,10 @@ function Policy() {
               위해 서비스에서 각 사용자에게 발급하는 사용자의 식별정보(서비스 내 사용자 식별 ID,
               프로필 사진, 프로필 이름) 및 서비스 내 권한이 암호화된 문자열을 의미한다. 토큰의
               암호화 및 발급 절차는{" "}
-              <Link href="https://datatracker.ietf.org/doc/html/rfc7519">
+              <ExternalLink href="https://datatracker.ietf.org/doc/html/rfc7519">
                 JWT 표준
                 <ExternalLinkIcon mx="2px" />
-              </Link>
+              </ExternalLink>
               을 따른다.
             </ListItem>
             <ListItem>

@@ -32,7 +32,7 @@ function StudyLightAbsentModal({ setIsModal }: IModal) {
     main: {
       text: "불참",
       func: () => absentStudy(null),
-      isRedTheme: true,
+      isred: true,
     },
   };
 

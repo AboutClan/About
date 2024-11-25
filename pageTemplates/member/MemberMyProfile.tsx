@@ -18,6 +18,7 @@ function MemberMyProfile() {
           <Wrapper>
             <Profile>
               <Avatar
+                userId={userInfo._id}
                 image={userInfo.profileImage}
                 avatar={userInfo.avatar}
                 uid={userInfo.uid}

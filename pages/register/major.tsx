@@ -60,7 +60,7 @@ function Major() {
 
   return (
     <>
-      <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={60} />
+      <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={66} />
 
       <RegisterLayout>
         <RegisterOverview>
@@ -88,7 +88,7 @@ function Major() {
           </Section>
         ))}
       </RegisterLayout>
-      <BottomNav onClick={onClickNext} url="/register/interest" />
+      <BottomNav onClick={onClickNext} url="/register/comment" />
     </>
   );
 }

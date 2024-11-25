@@ -47,12 +47,16 @@ function Interest() {
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>관심 분야를 선택해 주세요</span>
-          <span>스터디에서 하고자 하는 관심 분야를 작성해 주세요.</span>
+          <span>관심 분야를 작성해 주세요.</span>
         </RegisterOverview>
         <Container>
           <Example>
             <span>예시</span>
-            <div>{INTEREST_DATA?.map((item, idx) => <span key={idx}>{item}</span>)}</div>
+            <div>
+              {INTEREST_DATA?.map((item, idx) => (
+                <span key={idx}>{item}</span>
+              ))}
+            </div>
           </Example>
           <Item>
             <span>첫번째 관심사</span>

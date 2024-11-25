@@ -106,7 +106,7 @@ function RegularGatherModal({ setIsModal, setIsRabbitRun }: IRegularGatherModal)
   //     </Button>
   //     <Button
   //       w="100%"
-  //       colorScheme="mintTheme"
+  //       colorScheme="mint"
   //       form="declaration"
   //       type="submit"
   //       size="lg"

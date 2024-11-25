@@ -34,7 +34,7 @@ function StudySubVoteModal({ subPlaces, setMyVote, setTimeModal, setIsModal }: I
     setIsModal(false);
   };
 
-  const { data: studyVoteArr } = useStudyVoteQuery(date, location, false, false, {
+  const { data: studyVoteArr } = useStudyVoteQuery(date, location, {
     enabled: !!location && !!date,
   });
   const studyVoteData = studyVoteArr?.[0]?.participations;

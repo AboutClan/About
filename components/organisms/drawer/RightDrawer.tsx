@@ -1,4 +1,4 @@
-import { Drawer, DrawerBody, DrawerContent, DrawerOverlay } from "@chakra-ui/react";
+import { Box, Drawer, DrawerBody, DrawerContent, DrawerOverlay } from "@chakra-ui/react";
 
 import Header from "../../layouts/Header";
 
@@ -7,9 +7,10 @@ interface RightUserDrawerProps {
   onClose: () => void;
   children: React.ReactNode;
   headerBtn?: React.ReactNode;
+  px?: boolean;
 }
 
-function RightDrawer({ title, onClose, children, headerBtn }: RightUserDrawerProps) {
+function RightDrawer({ title, onClose, children, headerBtn, px = true }: RightUserDrawerProps) {
   const handleClose = () => {
     onClose();
   };
@@ -27,7 +28,7 @@ function RightDrawer({ title, onClose, children, headerBtn }: RightUserDrawerPro
           >
             {headerBtn}
           </Header>
-          {children}
+          <Box px={px ? 5 : 0}>{children}</Box>
         </DrawerBody>
       </DrawerContent>
     </Drawer>

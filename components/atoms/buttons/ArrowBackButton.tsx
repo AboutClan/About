@@ -1,11 +1,20 @@
 import { useRouter } from "next/navigation";
-import styled from "styled-components";
+
+import { ShortArrowIcon } from "../../Icons/ArrowIcons";
+import ButtonWrapper from "../ButtonWrapper";
 
 interface IArrowBackButton {
+  defaultUrl?: string;
   url?: string;
   func?: () => void;
+  color?: "mint" | "white";
 }
-export default function ArrowBackButton({ url, func }: IArrowBackButton) {
+export default function ArrowBackButton({
+  url,
+  func,
+  defaultUrl,
+  color = "mint",
+}: IArrowBackButton) {
   const router = useRouter();
 
   const handleGoBack = () => {
@@ -14,20 +23,23 @@ export default function ArrowBackButton({ url, func }: IArrowBackButton) {
       return;
     }
     if (url) router.push(url);
-    else router.back();
+    else if (window.history.length > 1) router.back();
+    else router.push(defaultUrl);
   };
 
-  return <ArrowBackButtonUI onClick={handleGoBack} />;
+  return <ArrowBackButtonUI onClick={handleGoBack} color={color} />;
 }
 
-export function ArrowBackButtonUI({ onClick }: { onClick: () => void }) {
+export function ArrowBackButtonUI({
+  onClick,
+  color,
+}: {
+  onClick: () => void;
+  color: "mint" | "white";
+}) {
   return (
-    <Button onClick={onClick}>
-      <i className="fa-solid fa-chevron-left" />
-    </Button>
+    <ButtonWrapper onClick={onClick}>
+      <ShortArrowIcon dir="left" color={color} />
+    </ButtonWrapper>
   );
 }
-
-const Button = styled.button`
-  padding: 16px;
-`;

@@ -15,7 +15,7 @@ function PointLog() {
   const { data: session } = useSession();
   const { data: point } = usePointSystemQuery("point");
   const { data: pointLog } = usePointSystemLogQuery("point");
-
+  
   const filterLog = pointLog?.filter((item) => item.meta.value);
 
   const headerInfos = ["날짜", "내용", "점수"];
@@ -35,7 +35,7 @@ function PointLog() {
               <Flex justify="space-between" mb="16px">
                 <DiffTwoBlockCol subText="내 포인트" text={`${point || 0} POINT`} />
                 <Link href="/store">
-                  <Button colorScheme="mintTheme">스토어로 이동</Button>
+                  <Button colorScheme="mint">스토어로 이동</Button>
                 </Link>
               </Flex>
               <Box border="var(--border)" rounded="md" minHeight="calc(100vh - 176px)">
@@ -56,7 +56,7 @@ function PointLog() {
 const Layout = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 var(--gap-4);
+
   margin-top: var(--gap-5);
   font-weight: 600;
   min-height: 100dvh;

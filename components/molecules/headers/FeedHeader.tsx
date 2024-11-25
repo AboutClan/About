@@ -12,7 +12,13 @@ function FeedHeader({ writer = ABOUT_USER_SUMMARY, date }: IFeedHeader) {
   return (
     <Layout>
       <Profile>
-        <Avatar image={writer?.profileImage} avatar={writer?.avatar} uid={writer?.uid} size="smd" />
+        <Avatar
+          userId={writer._id}
+          image={writer?.profileImage}
+          avatar={writer?.avatar}
+          uid={writer?.uid}
+          size="smd"
+        />
         <div>
           <Writer>{writer.name}</Writer>
           <span>{date}</span>

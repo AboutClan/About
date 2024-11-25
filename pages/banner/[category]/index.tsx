@@ -24,7 +24,7 @@ function BannerDetailPage() {
           <Title>
             <div>
               <span>같이 카공하고 상품 받자!</span>
-              <Badge text="이벤트" colorScheme="mintTheme" size="lg" />
+              <Badge text="이벤트" colorScheme="mint" size="lg" />
             </div>
           </Title>
         </Layout>

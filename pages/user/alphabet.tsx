@@ -7,8 +7,8 @@ import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import Avatar from "../../components/atoms/Avatar";
-import { AlphabetIcon } from "../../components/atoms/Icons/AlphabetIcon";
 import { MainLoading } from "../../components/atoms/loaders/MainLoading";
+import { AlphabetIcon } from "../../components/Icons/AlphabetIcon";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import { BADGE_COLOR_MAPPINGS } from "../../constants/serviceConstants/badgeConstants";
@@ -126,6 +126,7 @@ function CollectionAlphabet() {
                   <ProfileWrapper onClick={() => onClickProfile(user)}>
                     <Avatar
                       size="md"
+                      userId={user._id}
                       image={user.profileImage}
                       avatar={user.avatar}
                       uid={user.uid}
@@ -195,7 +196,7 @@ function CollectionAlphabet() {
                   ) : (
                     <Button
                       size="xs"
-                      colorScheme="mintTheme"
+                      colorScheme="mint"
                       onClick={() => onClickChangeBtn(user, alphabets)}
                     >
                       교환 신청

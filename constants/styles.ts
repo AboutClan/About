@@ -1,5 +1,7 @@
 import { GatherStatus } from "../types/models/gatherTypes/gatherTypes";
 
+export const SUB_COLORS = ["var(--color-red)", "var(--color-orange)", "var(--color-blue)"];
+
 export const TABLE_COLORS = [
   "#FF8896",
   "#FEBC5A",
@@ -34,9 +36,12 @@ export const TABLE_STRING_COLORS_BG = {
 };
 
 export const SCHEME_TO_COLOR = {
+  badgeBrown: "#6B4226",
+  badgeOcean: "#1E90FF",
+  badgeMojito: "#006400",
   facebook: "#223B67",
   badgePink: "#FF69B4",
-  mintTheme: "#00c2b3",
+  badgeMint: "#00c2b3",
 };
 
 export const ICON_SIZE = {
@@ -52,6 +57,7 @@ export const STATUS_TP_COLOR: Record<GatherStatus, string> = {
   pending: "var(--color-red)",
   close: "var(--gray-500)",
   end: "var(--gray-500)",
+  ready: "purple",
 };
 
 export const COLOR_SCHEME_BG = {

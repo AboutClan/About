@@ -24,13 +24,18 @@ function GroupOrganizer({
   return (
     <Layout>
       <div>
-        <Avatar uid={organizer.uid} image={organizer.profileImage} size="sm" />
+        <Avatar
+          userId={organizer._id}
+          uid={organizer.uid}
+          image={organizer.profileImage}
+          size="sm"
+        />
         <Info>
           <Writer>{organizer.name}</Writer>
           <span>{writingDate}</span>
         </Info>
       </div>
-      <Badge colorScheme="redTheme" text={category} size="lg" />
+      <Badge colorScheme="red" text={category} size="lg" />
     </Layout>
   );
 }

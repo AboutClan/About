@@ -47,7 +47,6 @@ export const selectRandomWinners = (
 
   while (winners.size < winner) {
     const hashValue = hashStringToInt(seedStr, total);
-
     if (!winners.has(hashValue)) {
       winners.add(hashValue);
     }
@@ -59,7 +58,6 @@ export const selectRandomWinners = (
 
 export const detectDevice = () => {
   const ua = navigator.userAgent;
-
   // iPhone 감지
   if (/iPhone/i.test(ua)) {
     return "iPhone";
@@ -72,4 +70,26 @@ export const detectDevice = () => {
   else {
     return "PC";
   }
+};
+
+export const isNil = <T>(val: T | undefined | null): val is null | undefined => {
+  return val == null;
+};
+
+export const isEmpty = <T>(value: T | undefined | null): boolean => {
+  return (
+    isNil(value) ||
+    (Array.isArray(value) && value.length === 0) ||
+    (typeof value === "object" && Object.keys(value).length === 0)
+  );
+};
+
+export const iPhoneNotchSize = () => {
+  if (typeof navigator === "undefined") return 0;
+  const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
+  const ua = navigator.userAgent;
+  // iPhone 감지
+  if (/iPhone/i.test(ua) && isStandalone) {
+    return 34;
+  } else return 0;
 };

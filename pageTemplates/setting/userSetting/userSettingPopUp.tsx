@@ -3,69 +3,70 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import {
-  ALPHABET_POP_UP,
   ATTEND_POP_UP,
   FAQ_POP_UP,
   GATHER_JOIN_MEMBERS,
-  INSTAGRAM_POP_UP,
   PROMOTION_POP_UP,
   STUDY_ATTEND_MEMBERS,
-  SUGGEST_POP_UP,
-  USER_GUIDE_POP_UP,
 } from "../../../constants/keys/localStorage";
 import { useGatherQuery } from "../../../hooks/gather/queries";
-import EnthusiasticModal from "../../../modals/aboutHeader/EnthusiasticModal/EnthusiasticModal";
 import PointSystemsModal from "../../../modals/aboutHeader/pointSystemsModal/PointSystemsModal";
 import PromotionModal from "../../../modals/aboutHeader/promotionModal/PromotionModal";
-import AlphabetPopUp from "../../../modals/pop-up/AlphabetPopUp";
 import FAQPopUp from "../../../modals/pop-up/FAQPopUp";
-import InstaPopUp from "../../../modals/pop-up/InstaPopUp";
 import LastWeekAttendPopUp from "../../../modals/pop-up/LastWeekAttendPopUp";
 import LocationRegisterPopUp from "../../../modals/pop-up/LocationRegisterPopUp";
-import ManagerPopUp from "../../../modals/pop-up/ManagerPopUp";
-import SuggestPopUp from "../../../modals/pop-up/SuggestPopUp";
+import StudyChallengeModal from "../../../modals/pop-up/StudyChallengeModal";
+import { default as StudyPrefenceDrawer } from "../../../modals/pop-up/StudyPreferenceDrawer";
+import StudyPreferencePopUp from "../../../modals/pop-up/StudyPreferencePopUp";
 import { IUser, IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { checkAndSetLocalStorage } from "../../../utils/storageUtils";
 
 export type UserPopUp =
   | "lastWeekAttend"
-  | "suggest"
+  | "preference"
+  | "preferenceDrawer"
+  // | "suggest"
   | "promotion"
   | "userGuide"
   | "faq"
   // | "manager"
-  | "alphabet"
-  | "enthusiastic"
-  | "instagram"
-  | "registerLocation";
+  // | "alphabet"
+  // | "enthusiastic"
+  // | "instagram"
+  | "registerLocation"
+  | "studyChallenge";
 
 const MODAL_COMPONENTS = {
   faq: FAQPopUp,
   lastWeekAttend: LastWeekAttendPopUp,
-  suggest: SuggestPopUp,
+  // suggest: SuggestPopUp,
   promotion: PromotionModal,
   userGuide: PointSystemsModal,
-  alphabet: AlphabetPopUp,
-  enthusiastic: EnthusiasticModal,
-  manager: ManagerPopUp,
-  instagram: InstaPopUp,
+  // alphabet: AlphabetPopUp,
+  // enthusiastic: EnthusiasticModal,
+  // manager: ManagerPopUp,
+  // instagram: InstaPopUp,
   registerLocation: LocationRegisterPopUp,
+  studyChallenge: StudyChallengeModal,
 };
 
 interface UserSettingPopUpProps {
-  cnt: number;
   userInfo: IUser;
 }
 
-export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProps) {
+export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
   const { data: session } = useSession();
 
   const [modalTypes, setModalTypes] = useState<UserPopUp[]>([]);
   // const [recentMembers, setRecentMembers] = useState<IUserSummary[]>();
+  // const [drawerType, setDrawerType] = useState<"bottom" | "right">();
 
   const { data: gatherData } = useGatherQuery(-1);
 
+  // const studyRecordStr = localStorage.getItem(STUDY_RECORD);
+  // const studyRecord = JSON.parse(studyRecordStr);
   useEffect(() => {
+    return;
     if (!gatherData) return;
     const gatherJoin = JSON.parse(localStorage.getItem(GATHER_JOIN_MEMBERS)) || [];
     const filteredGather = gatherData.filter((obj) => {
@@ -116,19 +117,27 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
   }, [gatherData]);
 
   useEffect(() => {
-    let popUpCnt = cnt;
+    // const popUpCnt = cnt;
+
     if (!userInfo?.locationDetail) {
       setModalTypes((old) => [...old, "registerLocation"]);
-      if (popUpCnt++ === 2) return;
+      return;
+    } else if (
+      !checkAndSetLocalStorage("preference", 3) &&
+      (!userInfo?.studyPreference?.updatedAt ||
+        dayjs().diff(dayjs(userInfo?.studyPreference?.updatedAt), "day") > 30)
+    ) {
+      setModalTypes((old) => [...old, "preference"]);
+      return;
     }
 
-    if (!checkAndSetLocalStorage(ALPHABET_POP_UP, 15)) {
-      setModalTypes((old) => [...old, "alphabet"]);
-      if (popUpCnt++ === 2) return;
-    }
+    // if (!checkAndSetLocalStorage(ALPHABET_POP_UP, 15)) {
+    //   setModalTypes((old) => [...old, "alphabet"]);
+    //   return;
+    // }
     if (!checkAndSetLocalStorage(ATTEND_POP_UP, 7)) {
       setModalTypes((old) => [...old, "lastWeekAttend"]);
-      if (popUpCnt++ === 2) return;
+      return;
     }
     // if (!checkAndSetLocalStorage(ENTHUSIASTIC_POP_UP, 27)) {
     //   setModalTypes((old) => [...old, "enthusiastic"]);
@@ -136,25 +145,33 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
     // }
     if (!checkAndSetLocalStorage(FAQ_POP_UP, 21)) {
       setModalTypes((old) => [...old, "faq"]);
-      if (popUpCnt++ === 2) return;
+      return;
     }
 
     if (!checkAndSetLocalStorage(PROMOTION_POP_UP, 14)) {
       setModalTypes((old) => [...old, "promotion"]);
-      if (popUpCnt++ === 2) return;
+      return;
     }
-    if (!checkAndSetLocalStorage(SUGGEST_POP_UP, 29)) {
-      setModalTypes((old) => [...old, "suggest"]);
-      if (popUpCnt++ === 2) return;
+    if (userInfo?.weekStudyTargetHour === 0) {
+      setModalTypes((old) => [...old, "studyChallenge"]);
     }
-    if (!checkAndSetLocalStorage(USER_GUIDE_POP_UP, 30)) {
-      setModalTypes((old) => [...old, "userGuide"]);
-      if (popUpCnt++ === 2) return;
-    }
-    if (!checkAndSetLocalStorage(INSTAGRAM_POP_UP, 26) && !userInfo?.instagram) {
-      setModalTypes((old) => [...old, "instagram"]);
-      if (popUpCnt++ === 2) return;
-    }
+
+    // if (studyRecord && studyRecord?.date !== dayjsToStr(dayjs())) {
+    //   setDrawerType("bottom");
+    // }
+
+    // if (!checkAndSetLocalStorage(SUGGEST_POP_UP, 29)) {
+    //   setModalTypes((old) => [...old, "suggest"]);
+    //   if (popUpCnt++ === 2) return;
+    // }
+    // if (!checkAndSetLocalStorage(USER_GUIDE_POP_UP, 30)) {
+    //   setModalTypes((old) => [...old, "userGuide"]);
+    //   if (popUpCnt++ === 2) return;
+    // }
+    // if (!checkAndSetLocalStorage(INSTAGRAM_POP_UP, 26) && !userInfo?.instagram) {
+    //   setModalTypes((old) => [...old, "instagram"]);
+    //   if (popUpCnt++ === 2) return;
+    // }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -173,12 +190,73 @@ export default function UserSettingPopUp({ cnt, userInfo }: UserSettingPopUpProp
 
       {Object.entries(MODAL_COMPONENTS).map(([key, Component]) => {
         const type = key as UserPopUp;
+
         return (
           modalTypes.includes(type) && (
             <Component key={type} setIsModal={() => filterModalTypes(type)} />
           )
         );
       })}
+
+      {/* {drawerType === "bottom" && (
+        <BottomFlexDrawer
+          isDrawerUp
+          isOverlay
+          height={429}
+          isHideBottom
+          setIsModal={() => setDrawerType(null)}
+        >
+          <Box
+            py={3}
+            lineHeight="32px"
+            w="100%"
+            fontWeight="semibold"
+            fontSize="20px"
+            textAlign="start"
+          >
+            지난 스터디 결과가 도착했어요 <br /> 기록을 확인해볼까요?
+          </Box>
+          <Box p={5}>
+            <Image
+              src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/recordBook.png"
+              width={160}
+              height={160}
+              alt="studyResult"
+            />
+          </Box>
+
+          <Flex direction="column" mt="auto" w="100%">
+            <Link href={`/study/result?date=${studyRecord?.date}`} style={{ width: "100%" }}>
+              <Button w="full" size="lg" colorScheme="black" onClick={() => setDrawerType("right")}>
+                확인 하러가기
+              </Button>
+            </Link>
+            <Button
+              my={2}
+              h="24px"
+              color="gray.500"
+              fontWeight="semibold"
+              variant="ghost"
+              onClick={() => setDrawerType(null)}
+            >
+              무시하고 넘기기
+            </Button>
+          </Flex>
+        </BottomFlexDrawer>
+      )} */}
+      {modalTypes.includes("preferenceDrawer") && (
+        <StudyPrefenceDrawer
+          setIsModal={() => filterModalTypes("preferenceDrawer")}
+          handleClick={() => setModalTypes((old) => [...old, "registerLocation"])}
+        />
+      )}
+      {modalTypes.includes("preference") && (
+        <StudyPreferencePopUp
+          setIsModal={() => filterModalTypes("preference")}
+          handleClick={() => setModalTypes(["preferenceDrawer"])}
+        />
+      )}
+      {/* {drawerType === "right" && <RightDrawer>23</RightDrawer>} */}
     </>
   );
 }

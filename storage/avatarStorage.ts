@@ -34,6 +34,11 @@ export const SPECIAL_AVATAR = [
     image:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%85%B8%ED%8A%B8%EB%B6%81_100px_%ED%88%AC%EB%AA%85.png",
   },
+  {
+    name: "날쌘 펭귄",
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EB%B0%94%ED%83%80+%EC%95%84%EC%9D%B4%EC%BD%98/6c1fcde2-230a-44bc-9630-11483e0d025c+(1).jpg",
+  },
 ];
 export const SPECIAL_BG = [
   {

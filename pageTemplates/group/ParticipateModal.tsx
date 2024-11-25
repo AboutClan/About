@@ -5,14 +5,10 @@ import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import { PopOverIcon } from "../../components/atoms/Icons/PopOverIcon";
+import { PopOverIcon } from "../../components/Icons/PopOverIcon";
 import { GROUP_STUDY } from "../../constants/keys/queryKeys";
 import { useCompleteToast, useFailToast } from "../../hooks/custom/CustomToast";
-import {
-  useGroupParticipationMutation,
-  useGroupWaitingMutation,
-} from "../../hooks/groupStudy/mutations";
-import { usePointSystemMutation } from "../../hooks/user/mutations";
+import { useGroupWaitingMutation } from "../../hooks/groupStudy/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { IFooterOptions, ModalFooterTwo, ModalLayout } from "../../modals/Modals";
 import { transferGroupDataState } from "../../recoils/transferRecoils";
@@ -21,49 +17,30 @@ import { IModal } from "../../types/components/modalTypes";
 
 interface IParticipateModal extends IModal {
   id: number;
-  isFree: boolean;
+
   feeText: string;
   answer: string;
 }
 
-function ParticipateModal({ isFree, id, setIsModal, answer }: IParticipateModal) {
+function ParticipateModal({ id, setIsModal, answer }: IParticipateModal) {
   const router = useRouter();
   const failToast = useFailToast();
   const completeToast = useCompleteToast();
   const { data: userInfo } = useUserInfoQuery();
   const [selectBtn, setSelectBtn] = useState<"point" | "deposit">("point");
 
-  const { mutate: getPoint } = usePointSystemMutation("point");
-  const { mutate: getDeposit } = usePointSystemMutation("deposit");
-
   const setTransferGroup = useSetRecoilState(transferGroupDataState);
-
-  const chargePoint = () => {
-    if (selectBtn === "point") {
-      getPoint({ value: 30, message: "소모임 가입" });
-    }
-    if (selectBtn === "deposit") {
-      getDeposit({ value: -200, message: "소모임 가입" });
-    }
-  };
 
   const queryClient = useQueryClient();
 
   const resetCache = () => {
     setTransferGroup(null);
     queryClient.invalidateQueries([GROUP_STUDY, id]);
+    console.log(id);
     router.push(`/group/${id}`);
   };
 
-  const { mutate: participate } = useGroupParticipationMutation("post", id, {
-    onSuccess() {
-      if (isFree) chargePoint();
-      completeToast("free", "가입이 완료되었습니다.");
-      resetCache();
-    },
-  });
- 
-  const { mutate: sendRegisterForm } = useGroupWaitingMutation(id, {
+  const { mutate: sendRegisterForm, isLoading } = useGroupWaitingMutation(id, {
     onSuccess() {
       completeToast("free", "가입 신청이 완료되었습니다.");
       resetCache();
@@ -87,10 +64,7 @@ function ParticipateModal({ isFree, id, setIsModal, answer }: IParticipateModal)
         failToast("free", "보증금을 사용한 뒤에도 1000원 이상 보유해야 합니다.");
         return;
       }
-    }
-
-    if (isFree) participate();
-    else sendRegisterForm({ answer, pointType: selectBtn });
+    } else sendRegisterForm({ answer, pointType: selectBtn });
     setIsModal(false);
   };
 
@@ -104,6 +78,7 @@ function ParticipateModal({ isFree, id, setIsModal, answer }: IParticipateModal)
     main: {
       text: "가입 신청",
       func: onSubmit,
+      isLoading,
     },
     sub: {},
   };
@@ -146,13 +121,13 @@ function ParticipateModal({ isFree, id, setIsModal, answer }: IParticipateModal)
         <div>
           <Button
             onClick={() => setSelectBtn("point")}
-            colorScheme={selectBtn === "point" ? "redTheme" : "gray"}
+            colorScheme={selectBtn === "point" ? "red" : "gray"}
           >
             포인트 사용
           </Button>
           <Button
             onClick={() => setSelectBtn("deposit")}
-            colorScheme={selectBtn === "deposit" ? "redTheme" : "gray"}
+            colorScheme={selectBtn === "deposit" ? "red" : "gray"}
           >
             보증금 사용
           </Button>

@@ -1,12 +1,12 @@
 import { GROUP_STUDY_CATEGORY_ARR } from "../../../constants/contentsText/GroupStudyContents";
 import { UserCommentProps } from "../../components/propTypes";
 import { LocationFilterType } from "../../services/locationTypes";
-import { ITimeStamps } from "../../utils/timeAndDate";
+import { TimeStampProps } from "../../utils/timeAndDate";
 import { IUser, IUserSummary } from "../userTypes/userInfoTypes";
 
 export type GroupCategory = (typeof GROUP_STUDY_CATEGORY_ARR)[number];
 
-export type GroupStatus = "end" | "pending";
+export type GroupStatus = "pending" | "end" | "imminent" | "full" | "waiting";
 export interface IGroup extends IGroupWriting {
   createdAt: string;
   participants: GroupParicipantProps[];
@@ -18,12 +18,14 @@ export interface GroupParicipantProps {
   role: "member" | "manager" | "admin";
   attendCnt?: number;
   randomId?: number;
+  weekAttendance: boolean;
 }
 
-export interface IGroupWriting extends ITimeStamps {
+export interface IGroupWriting extends TimeStampProps {
   category: IGroupWritingCategory;
   challenge?: string;
   title: string;
+  meetingType: "offline" | "online" | "hybrid";
   content: string;
   rules: string[];
   status: GroupStatus;
@@ -34,6 +36,7 @@ export interface IGroupWriting extends ITimeStamps {
   gender: boolean;
   isFree: boolean;
   age: number[];
+  squareImage?: string;
   password: string;
   period: string;
   organizer: IUser;

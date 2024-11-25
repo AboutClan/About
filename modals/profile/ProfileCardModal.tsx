@@ -64,6 +64,7 @@ function ProfileCardModal({ setIsModal }: IModal) {
         <FriendList>
           {friends?.map((who) => (
             <Avatar
+              userId={who._id}
               image={who.profileImage}
               uid={who.uid}
               avatar={who.avatar}

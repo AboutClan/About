@@ -1,8 +1,6 @@
 import { Box, ListItem, UnorderedList } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import { POINT_SYSTEM_PLUS } from "../../../constants/serviceConstants/pointSystemConstants";
-
 function PointSystemsModalPoint() {
   return (
     <>
@@ -15,7 +13,7 @@ function PointSystemsModalPoint() {
         <Item>
           <Name>일일 출석</Name>
           <i className="fa-light fa-2x fa-badge-check" />
-          <Point isDoublePoint={true}>{POINT_SYSTEM_PLUS.DAILY_ATTEND.value} 포인트</Point>
+          <Point isDoublePoint={true}>{2} 포인트</Point>
         </Item>
         <Item>
           <Name>모임 참여</Name> <i className="fa-light fa-2x fa-party-horn" />
@@ -29,12 +27,12 @@ function PointSystemsModalPoint() {
         <Item>
           <Name>좋아요</Name>
           <i className="fa-light fa-2x fa-heart-circle" />
-          <Point>{POINT_SYSTEM_PLUS.LIKE.value} 포인트</Point>
+          <Point>{2} 포인트</Point>
         </Item>
         <Item>
           <Name>에타 홍보</Name>
           <i className="fa-light fa-2x fa-gift" />
-          <Point>{POINT_SYSTEM_PLUS.PROMOTION.value} 포인트</Point>
+          <Point>{2} 포인트</Point>
         </Item>
       </Layout>
       <UnorderedList mt="12px">

@@ -4,15 +4,14 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
-import { PopOverIcon } from "../../../components/atoms/Icons/PopOverIcon";
 import { Input } from "../../../components/atoms/Input";
+import { PopOverIcon } from "../../../components/Icons/PopOverIcon";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
 import GatherWritingConfirmModal from "../../../modals/gather/GatherWritingConfirmModal";
 import GatherWritingUserConditionModal from "../../../modals/gather/GatherWritingUserConditionModal";
-import GatherWritingConditionLocation from "../../../pageTemplates/gather/writing/condition/GatherWritingConditionLocation";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
@@ -28,8 +27,6 @@ export type GatherConditionType =
   | "manager"
   | "kakaoUrl"
   | "isApprove";
-
-export type CombinedLocation = "전체" | "수원/안양" | "양천/강남";
 
 function WritingCondition() {
   const [gatherContent, setGatherContent] = useRecoilState(sharedGatherWritingState);
@@ -47,13 +44,13 @@ function WritingCondition() {
 
   const [isMemberConditionModal, setIsMemberConditionModal] = useState(false);
   const [password, setPassword] = useState(gatherContent?.password);
-  const [location, setLocation] = useState<Location | CombinedLocation>(
+  const [location, setLocation] = useState<Location | "전체">(
     gatherContent?.place || session?.user.location,
   );
   const [kakaoUrl, setKakaoUrl] = useState<string>("");
   const [isConfirmModal, setIsConfirmModal] = useState(false);
 
-  const isManager = ["manager", "previliged"].includes(session?.user.role);
+  // const isManager = ["manager", "previliged"].includes(session?.user.role);
 
   const onClickNext = async () => {
     const gatherData: IGatherWriting = {
@@ -82,7 +79,7 @@ function WritingCondition() {
 
   const toggleSwitch = (e: ChangeEvent<HTMLInputElement>, type: GatherConditionType) => {
     const isChecked = e.target.checked;
-   
+
     if (type === "location" && isChecked) {
       setLocation(session?.user.location);
     }
@@ -127,11 +124,7 @@ function WritingCondition() {
               <Box ml="auto" mr="20px" fontSize="12px" color="var(--color-mint)">
                 {getMemberConditionText() || "기본값"}
               </Box>
-              <Button
-                colorScheme="mintTheme"
-                size="sm"
-                onClick={() => setIsMemberConditionModal(true)}
-              >
+              <Button colorScheme="mint" size="sm" onClick={() => setIsMemberConditionModal(true)}>
                 설정
               </Button>
             </Item>
@@ -148,12 +141,11 @@ function WritingCondition() {
               </Box>
               <Switch
                 mr="var(--gap-1)"
-                colorScheme="mintTheme"
+                colorScheme="mint"
                 isChecked={condition.location}
                 onChange={(e) => toggleSwitch(e, "location")}
               />
             </Item>
-            {!condition.location && <GatherWritingConditionLocation setLocation={setLocation} />}
 
             <Item>
               <Name>
@@ -168,7 +160,7 @@ function WritingCondition() {
               </Name>
               <Switch
                 mr="var(--gap-1)"
-                colorScheme="mintTheme"
+                colorScheme="mint"
                 isChecked={condition.isApprove}
                 onChange={(e) => toggleSwitch(e, "isApprove")}
               />
@@ -183,7 +175,7 @@ function WritingCondition() {
               </Name>
               <Switch
                 mr="var(--gap-1)"
-                colorScheme="mintTheme"
+                colorScheme="mint"
                 isChecked={condition.pre}
                 onChange={(e) => toggleSwitch(e, "pre")}
               />
@@ -198,7 +190,7 @@ function WritingCondition() {
               </Name>
               <Switch
                 mr="var(--gap-1)"
-                colorScheme="mintTheme"
+                colorScheme="mint"
                 isChecked={condition.kakaoUrl}
                 onChange={(e) => toggleSwitch(e, "kakaoUrl")}
               />
@@ -218,7 +210,7 @@ function WritingCondition() {
                 <Input size="sm" value={kakaoUrl} onChange={(e) => setKakaoUrl(e.target.value)} />
               </Flex>
             )}
-            {isManager && (
+            {/* {isManager && (
               <Item>
                 <Name>
                   <div>
@@ -232,12 +224,12 @@ function WritingCondition() {
                 </Name>
                 <Switch
                   mr="var(--gap-1)"
-                  colorScheme="mintTheme"
+                  colorScheme="mint"
                   isChecked={condition.manager}
                   onChange={(e) => toggleSwitch(e, "manager")}
                 />
               </Item>
-            )}
+            )} */}
           </Container>
         </RegisterLayout>
         <BottomNav onClick={() => onClickNext()} text="완료" />

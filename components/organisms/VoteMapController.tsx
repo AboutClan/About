@@ -210,7 +210,7 @@ export function PrecisionPopOver({ precision, setPrecision }) {
         <PopoverBody display="flex" p="var(--gap-2)">
           <Button
             as="div"
-            colorScheme={precision === 0 ? "mintTheme" : "gray"}
+            colorScheme={precision === 0 ? "mint" : "gray"}
             size="xs"
             mr="var(--gap-2)"
             onClick={() => setPrecision(0)}
@@ -218,7 +218,7 @@ export function PrecisionPopOver({ precision, setPrecision }) {
             0
           </Button>
           <Button
-            colorScheme={precision === 1 ? "mintTheme" : "gray"}
+            colorScheme={precision === 1 ? "mint" : "gray"}
             size="xs"
             as="div"
             mr="var(--gap-2)"
@@ -229,7 +229,7 @@ export function PrecisionPopOver({ precision, setPrecision }) {
           <Button
             onClick={() => setPrecision(2)}
             as="div"
-            colorScheme={precision === 2 ? "mintTheme" : "gray"}
+            colorScheme={precision === 2 ? "mint" : "gray"}
             size="xs"
           >
             2

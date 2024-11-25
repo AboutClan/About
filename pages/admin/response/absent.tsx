@@ -46,7 +46,7 @@ function AdminAbsent() {
                     <Button
                       ml="auto"
                       size="sm"
-                      colorScheme="mintTheme"
+                      colorScheme="mint"
                       onClick={() => onClick(uid, +fee)}
                     >
                       인정

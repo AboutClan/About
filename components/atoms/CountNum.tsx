@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import styled from "styled-components";
 
 import { useToast } from "../../hooks/custom/CustomToast";
@@ -34,10 +35,10 @@ function CountNum({ value, setValue, unit, min = 1, isSmall, maxValue }: ICountN
       >
         <i className="fa-regular fa-minus fa-sm" />
       </IconWrapper>
-      <Count>
+      <Box as="span" fontSize={isSmall ? "14px" : "20px"} mx={1}>
         {value}
         {unit}
-      </Count>
+      </Box>
       <IconWrapper isMinus={false} isVisible={true} isSmall={isSmall} onClick={onClickUpValue}>
         <i className="fa-regular fa-plus fa-sm" />
       </IconWrapper>
@@ -48,7 +49,7 @@ function CountNum({ value, setValue, unit, min = 1, isSmall, maxValue }: ICountN
 const Layout = styled.div<{ isSmall: boolean }>`
   display: flex;
   align-items: center;
-  font-size: ${(props) => (props.isSmall ? "14px" : "20px")};
+  font-size: ${(props) => (props.isSmall ? "14px" : "18px")};
 `;
 
 const IconWrapper = styled.button<{
@@ -64,7 +65,5 @@ const IconWrapper = styled.button<{
     !props.isMinus ? (props.isSmall ? "var(--gap-2)" : "var(--gap-4)") : 0};
   cursor: pointer;
 `;
-
-const Count = styled.span``;
 
 export default CountNum;

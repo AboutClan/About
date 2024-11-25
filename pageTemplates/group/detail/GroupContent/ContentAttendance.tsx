@@ -30,7 +30,7 @@ function ContentAttend({ group }: ContentAttendProps) {
   const topLineArr = ["이름", ...weekDay];
 
   const isNotMember =
-    group.organizer.uid !== uid && !group.participants.some((who) => who.user.uid === uid);
+    group.organizer.uid !== uid && !group.participants.some((who) => who.user?.uid === uid);
 
   const sortArr = (arr: IWeekRecord[]): IWeekRecord[] => {
     const temp: IWeekRecord[] = [];
@@ -115,7 +115,7 @@ function ContentAttend({ group }: ContentAttendProps) {
           <Button
             fontSize="15px"
             onClick={onClickAttend}
-            colorScheme="mintTheme"
+            colorScheme="mint"
             rightIcon={<i className="fa-regular fa-check-circle" />}
             disabled={isNotMember}
           >

@@ -3,16 +3,20 @@ import styled from "styled-components";
 import ProfileCommentCard, { IProfileCommentCard } from "../molecules/cards/ProfileCommentCard";
 interface IProfileCardColumn {
   userCardArr: IProfileCommentCard[];
+  changeComment?: (comment: string) => void;
+  hasCommentButton: boolean;
 }
-export default function ProfileCardColumn({ userCardArr }: IProfileCardColumn) {
+export default function ProfileCardColumn({ userCardArr, hasCommentButton }: IProfileCardColumn) {
   return (
     <Layout>
       {userCardArr.map((userCard, idx) => (
         <ProfileCommentCard
           key={idx}
+          hasCommentButton={hasCommentButton}
           user={userCard.user}
           comment={userCard?.comment}
-          setMemo={userCard?.setMemo}
+          memo={userCard?.memo}
+          changeComment={userCard?.changeComment}
           leftComponent={userCard?.leftComponent}
           rightComponent={userCard?.rightComponent}
         />

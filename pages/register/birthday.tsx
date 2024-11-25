@@ -1,11 +1,11 @@
 import "react-datepicker/dist/react-datepicker.css";
 
 import { Button } from "@chakra-ui/react";
-import ko from "date-fns/locale/ko";
+import KoreanLocale from "date-fns/locale/ko"; // 한국어 로케일 추가
 import dayjs from "dayjs";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
-import DatePicker from "react-datepicker";
+import DatePicker, { registerLocale } from "react-datepicker";
 import styled from "styled-components";
 
 import BottomNav from "../../components/layouts/BottomNav";
@@ -17,7 +17,8 @@ import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoT
 import { birthToAge } from "../../utils/convertUtils/convertTypes";
 import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
-dayjs.locale("ko");
+registerLocale("ko", KoreanLocale);
+
 function Birthday() {
   const searchParams = useSearchParams();
   const info: IUserRegisterFormWriting = getLocalStorageObj(REGISTER_INFO);
@@ -58,18 +59,18 @@ function Birthday() {
 
   return (
     <>
-      <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={40} />
+      <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={33} />
 
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>생년월일을 입력해 주세요</span>
-          <span>만 19세 ~ 만 26세의 인원만 가입할 수 있습니다!</span>
+          <span>만 19세 ~ 만 26세의 인원만 가입이 가능합니다!</span>
         </RegisterOverview>
         <DateContainer>
           <DateStr>{myBirth}</DateStr>
           <Button size="md" as="div" bgColor="white" border="var(--border-main)">
             <StyledDatePicker
-              locale={ko}
+              locale="ko"
               selected={startDate}
               onChange={(date) => setStartDate(date as Date)}
               dateFormat="연도 / 월 선택"
@@ -79,7 +80,7 @@ function Birthday() {
           </Button>
           <Button size="md" mt="10px" as="div" bgColor="white" border="var(--border-main)">
             <StyledDatePicker
-              locale={ko}
+              locale="ko"
               selected={startDate}
               onChange={(date) => setStartDate(date as Date)}
               dateFormat="날짜 선택"
@@ -99,7 +100,7 @@ function Birthday() {
           </Button>
         </DateContainer>
       </RegisterLayout>
-      <BottomNav onClick={onClickNext} url="/register/mbti" />
+      <BottomNav onClick={onClickNext} url="/register/location" />
     </>
   );
 }
@@ -126,9 +127,18 @@ const DateContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: apple;
+
+  .react-datepicker {
+    font-family: apple;
+  }
   .react-datepicker__header {
     font-size: 14px;
   }
+  .react-datepicker__month {
+    margin: 4px;
+  }
+
   .react-datepicker__month-text {
     width: 80px;
     height: 40px;
@@ -137,8 +147,7 @@ const DateContainer = styled.div`
   .react-datepicker__day-name {
     font-weight: 400;
     font-size: 12px;
-    margin: 4px 5.5px;
-    margin-top: 8px;
+    margin: 2px 4px;
   }
   .react-datepicker__day {
     font-weight: 400;

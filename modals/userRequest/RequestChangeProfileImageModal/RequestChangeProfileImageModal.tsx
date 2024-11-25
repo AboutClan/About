@@ -53,7 +53,7 @@ function RequestChangeProfileImageModal({ setIsModal }: IModal) {
       {pageNum === 0 ? (
         <ModalLayout title="프로필 변경" setIsModal={setIsModal}>
           <Container>
-            <Button colorScheme="mintTheme" size="lg" onClick={() => setPageNum(1)}>
+            <Button colorScheme="mint" size="lg" onClick={() => setPageNum(1)}>
               아바타 선택
             </Button>
             <Button mt="12px" size="lg" onClick={() => setPageNum(2)}>

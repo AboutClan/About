@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { useQuery } from "react-query";
 
-import { GATHER_CONTENT, GROUP_STUDY, GROUP_STUDY_ALL } from "../../constants/keys/queryKeys";
+import { GATHER_CONTENT, GROUP_STUDY } from "../../constants/keys/queryKeys";
 import { SERVER_URI } from "../../constants/system";
 import { IGatherSummary } from "../../pages/review";
 import { QueryOptions } from "../../types/hooks/reactTypes";
@@ -13,6 +13,23 @@ import {
   IGroupAttendance,
 } from "../../types/models/groupTypes/group";
 
+interface GroupShapShotProps {
+  online: IGroup[];
+  offline: IGroup[];
+  new: IGroup[];
+  waiting: IGroup[];
+}
+
+export const useGroupSnapshotQuery = (options?: QueryOptions<GroupShapShotProps>) =>
+  useQuery<GroupShapShotProps, AxiosError, GroupShapShotProps>(
+    [GROUP_STUDY, "snapshot"],
+    async () => {
+      const res = await axios.get<GroupShapShotProps>(`${SERVER_URI}/groupStudy/snapshot`, {});
+
+      return res.data;
+    },
+    options,
+  );
 export const useGroupQuery = (
   filter: GroupStatus,
   category: GroupCategory,
@@ -20,7 +37,7 @@ export const useGroupQuery = (
   options?: QueryOptions<IGroup[]>,
 ) =>
   useQuery<IGroup[], AxiosError, IGroup[]>(
-    [GROUP_STUDY_ALL, filter, category, cursor],
+    [GROUP_STUDY, filter, category, cursor],
     async () => {
       const res = await axios.get<IGroup[]>(`${SERVER_URI}/groupStudy`, {
         params: { filter, category, cursor },
@@ -30,11 +47,42 @@ export const useGroupQuery = (
     },
     options,
   );
+export const useGroupsMineQuery = (status: "pending" | "all", options?: QueryOptions<IGroup[]>) =>
+  useQuery<IGroup[], AxiosError, IGroup[]>(
+    [GROUP_STUDY, status],
+    async () => {
+      const res = await axios.get<IGroup[]>(`${SERVER_URI}/groupStudy/mine`, {
+        params: { status },
+      });
+      return res.data;
+    },
+    options,
+  );
+export const useGroupsTitleQuery = (
+  userId: string,
+  options?: QueryOptions<{ _id: string; title: string; category: { sub: string } }[]>,
+) =>
+  useQuery<
+    { _id: string; title: string; category: { sub: string } }[],
+    AxiosError,
+    { _id: string; title: string; category: { sub: string } }[]
+  >(
+    [GROUP_STUDY, userId],
+    async () => {
+      const res = await axios.get<{ _id: string; title: string; category: { sub: string } }[]>(
+        `${SERVER_URI}/groupStudy/profile/${userId}`,
+        {},
+      );
+      return res.data;
+    },
+    options,
+  );
 
 export const useGroupIdQuery = (groupStudyId?: string, options?: QueryOptions<IGroup>) =>
   useQuery<IGroup, AxiosError, IGroup>(
     [GROUP_STUDY, groupStudyId],
     async () => {
+     
       const res = await axios.get<IGroup>(`${SERVER_URI}/groupStudy`, {
         params: { groupStudyId },
       });

@@ -10,14 +10,14 @@ export type CommentParamProps<T> = T extends "post"
       commentId?: string;
     }
   : T extends "patch"
-    ? {
-        comment: string;
-        commentId: string;
-      }
-    : {
-        comment?: never;
-        commentId: string;
-      };
+  ? {
+      comment: string;
+      commentId: string;
+    }
+  : {
+      comment?: never;
+      commentId: string;
+    };
 
 interface CommentRequestProps {
   id?: string;
@@ -45,26 +45,11 @@ export const useCommentMutation = <T extends "post" | "patch" | "delete">(
     });
   }, options);
 
-export type SubCommentParamProps<T> = T extends "post"
-  ? {
-      comment: string;
-      commentId?: string;
-
-      subCommentId?: string;
-    }
-  : T extends "patch"
-    ? {
-        comment: string;
-        commentId: string;
-
-        subCommentId: string;
-      }
-    : {
-        comment?: never;
-        commentId: string;
-
-        subCommentId: string;
-      };
+export interface SubCommentParamProps {
+  comment?: string;
+  commentId?: string;
+  subCommentId?: string;
+}
 
 interface SubCommentRequestProps {
   comment?: string;
@@ -77,9 +62,9 @@ export const useSubCommentMutation = <T extends "post" | "patch" | "delete">(
   method: T,
   type: "gather" | "group" | "square" | "feed",
   id: string,
-  options?: MutationOptions<SubCommentParamProps<T>>,
+  options?: MutationOptions<SubCommentParamProps>,
 ) =>
-  useMutation<void, AxiosError, SubCommentParamProps<T>>((param) => {
+  useMutation<void, AxiosError, SubCommentParamProps>((param) => {
     const typeName = type === "group" ? "groupStudy" : type;
 
     return requestServer<SubCommentRequestProps>({

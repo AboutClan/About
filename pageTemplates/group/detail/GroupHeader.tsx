@@ -1,49 +1,36 @@
-import { Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import styled from "styled-components";
 
-import KakaoShareBtn from "../../../components/atoms/Icons/KakaoShareBtn";
+import AlertModal, { IAlertModalOptions } from "../../../components/AlertModal";
+import MenuButton, { MenuProps } from "../../../components/atoms/buttons/MenuButton";
 import Header from "../../../components/layouts/Header";
 import { GROUP_WRITING_STORE } from "../../../constants/keys/localStorage";
-import { GROUP_STUDY_ALL } from "../../../constants/keys/queryKeys";
-import { WEB_URL } from "../../../constants/system";
-import { useResetQueryData } from "../../../hooks/custom/CustomHooks";
+import { useResetGroupQuery } from "../../../hooks/custom/CustomHooks";
 import { useCompleteToast } from "../../../hooks/custom/CustomToast";
 import { useGroupParticipationMutation } from "../../../hooks/groupStudy/mutations";
 import { IGroup } from "../../../types/models/groupTypes/group";
 import { setLocalStorageObj } from "../../../utils/storageUtils";
-import BottomDrawer from "../../profile/BottomDrawer";
 
 interface IGroupHeader {
   group: IGroup;
 }
 
 function GroupHeader({ group }: IGroupHeader) {
+  const { data: session } = useSession();
+  const resetGroupQuery = useResetGroupQuery();
   const completeToast = useCompleteToast();
   const router = useRouter();
-
-  const organizer = group?.organizer;
-
-  const { data: session } = useSession();
+  const isAdmin = session?.user.uid === "2259633694" || group.organizer.uid === session?.user.uid;
+  const isMember =
+    session?.user.uid === "2259633694" ||
+    group.participants.some((par) => par.user?.uid === session?.user.uid);
 
   const [isSettigModal, setIsSettingModal] = useState(false);
 
-  const resetQueryData = useResetQueryData();
-
-  const onClick = () => {
-    setLocalStorageObj(GROUP_WRITING_STORE, {
-      ...group,
-    });
-    router.push(`/group/writing/main`);
-  };
-
   const movePage = async () => {
     completeToast("free", "탈퇴되었습니다.");
-    await resetQueryData([GROUP_STUDY_ALL], () => {
-      router.push("/group");
-    });
+    resetGroupQuery();
   };
 
   const { mutate } = useGroupParticipationMutation("delete", group?.id, {
@@ -54,58 +41,70 @@ function GroupHeader({ group }: IGroupHeader) {
     mutate();
   };
 
+  const menuArr: MenuProps[] = [
+    ...(isMember && !isAdmin
+      ? [
+          {
+            text: "소모임 탈퇴하기",
+            func: () => {
+              setIsSettingModal(true);
+            },
+          },
+        ]
+      : []),
+    ...(isAdmin
+      ? [
+          {
+            text: "신규 인원 초대 및 수락",
+            func: () => {
+              router.push(`/group/${group.id}/admin`);
+            },
+          },
+          {
+            text: "현재 참여중인 인원",
+            func: () => {
+              router.push(`/group/${group.id}/member`);
+            },
+          },
+          {
+            text: "모임 정보 수정",
+            func: () => {
+              setLocalStorageObj(GROUP_WRITING_STORE, {
+                ...group,
+              });
+              router.push(`/group/writing/main`);
+            },
+          },
+        ]
+      : []),
+    {
+      kakaoOptions: {
+        type: "study",
+        title: group.title,
+        subtitle: `${group.category.main} ・ ${group.category.sub}`,
+        img: group.image,
+        url: `/group/${group.id}`,
+      },
+    },
+  ];
+
+  const alertOptions: IAlertModalOptions = {
+    title: "소모임 탈퇴",
+    subTitle: "소모임을 탈퇴하시겠어요?",
+    text: "탈퇴",
+    func: handleQuit,
+  };
+
   return (
     <>
-      <Header title={group?.title} url="/group">
-        <Flex>
-          {session?.user.uid === organizer?.uid && (
-            <IconWrapper onClick={onClick}>
-              <i className="fa-light fa-pen-circle fa-xl" />
-            </IconWrapper>
-          )}
-          <Wrapper>
-            {group && (
-              <KakaoShareBtn
-                title={group.title}
-                subtitle={group.guide}
-                url={WEB_URL + `/group/${group.id}`}
-                img={group?.image}
-                type="gather"
-                temp
-              />
-            )}
-          </Wrapper>
-          <IconWrapper onClick={() => setIsSettingModal(true)}>
-            <i className="fa-light fa-gear fa-lg" />
-          </IconWrapper>
-        </Flex>
+      <Header title="모임 정보" isCenter defaultUrl="/group">
+        <MenuButton menuArr={menuArr} />
       </Header>
       {isSettigModal && (
-        <BottomDrawer type="group" onClose={() => setIsSettingModal(false)} onSubmit={handleQuit} />
+        <AlertModal options={alertOptions} setIsModal={setIsSettingModal} colorType="red" />
       )}
     </>
   );
 }
-
-const Wrapper = styled.div`
-  width: 26px;
-  height: 26px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  margin-left: 16px;
-`;
-
-const IconWrapper = styled.button`
-  width: 26px;
-  height: 26px;
-  display: flex;
-  padding: 8px;
-  justify-content: center;
-  align-items: center;
-  margin-left: var(--gap-3);
-  margin-left: 16px;
-`;
 
 export default GroupHeader;

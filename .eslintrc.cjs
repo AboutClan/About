@@ -11,6 +11,7 @@ module.exports = {
   ignorePatterns: [".eslintrc.cjs", "public", "*.config.ts"],
   plugins: ["simple-import-sort"],
   rules: {
+    "import/named": "off",
     "simple-import-sort/imports": "error", // import 순서
     "simple-import-sort/exports": "error", // export 순서
     "@typescript-eslint/naming-convention": [

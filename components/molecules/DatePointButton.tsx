@@ -46,8 +46,8 @@ function DatePointButton({ date, func, size = "md", isSelected }: DatePointButto
         justify="center"
         color={isSelected ? "white" : dayjsToStr(today) === date && "var(--color-mint)"}
         align="center"
-        w={size === "md" ? "30px" : "26px"}
-        h={size === "md" ? "30px" : "26px"}
+        w={size === "md" ? "36px" : "26px"}
+        h={size === "md" ? "36px" : "26px"}
         position="relative"
         zIndex={2}
       >
@@ -66,8 +66,7 @@ const Button = styled.button`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 42px;
-  padding: 0 6px;
+  text-align: center;
   font-weight: 500;
   font-size: 16px;
 `;

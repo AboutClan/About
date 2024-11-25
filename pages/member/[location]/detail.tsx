@@ -41,7 +41,13 @@ function MemberDetail() {
             return (
               <Item key={who.uid} onClick={() => onClickUser(who)}>
                 <ProfileWrapper>
-                  <Avatar image={who.profileImage} avatar={who.avatar} uid={who.uid} size="sm" />
+                  <Avatar
+                    userId={who._id}
+                    image={who.profileImage}
+                    avatar={who.avatar}
+                    uid={who.uid}
+                    size="sm"
+                  />
                 </ProfileWrapper>
                 <Info>
                   <Name>

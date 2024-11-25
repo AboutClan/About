@@ -4,10 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
+import Slide from "../../components/layouts/PageSlide";
 import {
-  IPostThumbnailCard,
-  PostThumbnailCard,
-} from "../../components/molecules/cards/PostThumbnailCard";
+  GatherThumbnailCard,
+  GatherThumbnailCardProps,
+} from "../../components/molecules/cards/GatherThumbnailCard";
 import { useGatherQuery } from "../../hooks/gather/queries";
 import { transferGatherDataState } from "../../recoils/transferRecoils";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
@@ -19,7 +20,7 @@ export default function GatherMain() {
   const searchParams = useSearchParams();
 
   const location = convertLocationLangTo(searchParams.get("location") as LocationEn, "kr");
-  const [cardDataArr, setCardDataArr] = useState<IPostThumbnailCard[]>();
+  const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>();
 
   const setTransferGatherData = useSetRecoilState(transferGatherDataState);
   const [gathers, setGathers] = useState<IGather[]>([]);
@@ -43,6 +44,7 @@ export default function GatherMain() {
         location
           ? gathers.filter((gather) => gather.place === "전체" || gather.place.includes(location))
           : gathers,
+        6,
         (gather: IGather) => setTransferGatherData(gather),
       ),
     );
@@ -70,24 +72,26 @@ export default function GatherMain() {
   }, []);
 
   return (
-    <Box m="0 16px" position="relative" minH="320px">
-      {cardDataArr?.length ? (
-        <>
-          {cardDataArr.map((cardData, idx) => (
-            <Box mb="12px" key={idx}>
-              <PostThumbnailCard postThumbnailCardProps={cardData} />
-            </Box>
-          ))}
-        </>
-      ) : (
-        <MainLoadingAbsolute />
-      )}
-      <div ref={loader} />
-      {isLoading && cardDataArr?.length ? (
-        <Box position="relative" mt="32px">
-          <MainLoadingAbsolute size="sm" />
-        </Box>
-      ) : undefined}
-    </Box>
+    <Slide>
+      <Box position="relative" minH="320px">
+        {cardDataArr?.length ? (
+          <>
+            {cardDataArr.map((cardData, idx) => (
+              <Box mb="12px" key={idx}>
+                <GatherThumbnailCard {...cardData} />
+              </Box>
+            ))}
+          </>
+        ) : (
+          <MainLoadingAbsolute />
+        )}
+        <div ref={loader} />
+        {isLoading && cardDataArr?.length ? (
+          <Box position="relative" mt="32px">
+            <MainLoadingAbsolute size="sm" />
+          </Box>
+        ) : undefined}
+      </Box>
+    </Slide>
   );
 }

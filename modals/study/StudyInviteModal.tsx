@@ -4,18 +4,21 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
+import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
 import { WEB_URL } from "../../constants/system";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
+import { StudyPlaceProps } from "../../types/models/studyTypes/studyDetails";
+import { PlaceInfoProps } from "../../types/models/utilTypes";
+import { isWebView } from "../../utils/appEnvUtils";
+import { getRandomIdx } from "../../utils/mathUtils";
+import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
 import { IFooterOptions, ModalLayout } from "../Modals";
+
 const kakaoAppKey = process.env.NEXT_PUBLIC_KAKAO_JS;
 
 interface IStudyInviteModal extends IModal {
-  place: {
-    locationDetail: string;
-    fullname: string;
-    image: string;
-  };
+  place: StudyPlaceProps | PlaceInfoProps;
 }
 
 function StudyInviteModal({ setIsModal, place }: IStudyInviteModal) {
@@ -27,10 +30,21 @@ function StudyInviteModal({ setIsModal, place }: IStudyInviteModal) {
 
   const [isRenderingCheck, setIsRenderingCheck] = useState(false);
 
-  const location = place.locationDetail;
+  const location = (place as StudyPlaceProps)?.locationDetail || (place as PlaceInfoProps)?.address;
+
+  const handleShareOnApp = () => {
+    if (!isWebView()) return;
+
+    nativeMethodUtils.share(url);
+  };
 
   useEffect(() => {
-    if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
+    if (
+      typeof window !== "undefined" &&
+      window.Kakao &&
+      !window.Kakao.isInitialized() &&
+      !isWebView()
+    ) {
       window.Kakao.init(kakaoAppKey);
     }
     setIsRenderingCheck(true);
@@ -38,14 +52,17 @@ function StudyInviteModal({ setIsModal, place }: IStudyInviteModal) {
 
   useEffect(() => {
     if (!isRenderingCheck) return;
-    if (window.Kakao) {
+
+    if (window.Kakao && !isWebView()) {
       const options = {
         container: "#kakao-share-button-invite",
         objectType: "location",
         content: {
           title: "같이 스터디 할래?",
-          description: place?.fullname,
-          imageUrl: place.image,
+          description: (place as StudyPlaceProps)?.fullname || (place as PlaceInfoProps)?.name,
+          imageUrl:
+            (place as StudyPlaceProps)?.coverImage ||
+            STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length)],
           link: {
             mobileWebUrl: url,
             webUrl: url,
@@ -66,7 +83,7 @@ function StudyInviteModal({ setIsModal, place }: IStudyInviteModal) {
 
       window.Kakao.Link.createDefaultButton(options);
     }
-  }, [isRenderingCheck, location, place?.fullname, randomNum, url]);
+  }, [isRenderingCheck, location, place, randomNum, url]);
 
   const footerOptions: IFooterOptions = {
     children: (
@@ -88,6 +105,7 @@ function StudyInviteModal({ setIsModal, place }: IStudyInviteModal) {
           fontSize="16px"
           disabled={false}
           id="kakao-share-button-invite"
+          onClick={handleShareOnApp}
         >
           친구초대
         </Button>

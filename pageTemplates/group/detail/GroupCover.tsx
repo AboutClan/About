@@ -1,5 +1,5 @@
+import { Box } from "@chakra-ui/react";
 import Image from "next/image";
-import styled from "styled-components";
 
 import { SQUARE_RANDOM_IMAGE } from "../../../assets/images/imageUrl";
 
@@ -9,7 +9,7 @@ interface IGroupCover {
 
 function GroupCover({ image }: IGroupCover) {
   return (
-    <Layout>
+    <Box aspectRatio={2 / 1} position="relative" mb={4}>
       <Image
         src={image || SQUARE_RANDOM_IMAGE[0]}
         fill={true}
@@ -17,14 +17,8 @@ function GroupCover({ image }: IGroupCover) {
         alt="study"
         priority={true}
       />
-    </Layout>
+    </Box>
   );
 }
-
-const Layout = styled.div`
-  position: relative;
-  width: 100%;
-  height: 200px;
-`;
 
 export default GroupCover;

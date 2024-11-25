@@ -3,7 +3,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Skeleton } from "@chakra-ui/react";
 import Image from "next/image";
 import SwiperCore from "swiper";
 import { Navigation, Pagination } from "swiper/modules";
@@ -27,6 +27,7 @@ interface IImageTileSlider {
   };
   selectedImageUrl?: string;
   aspect?: number;
+  hasTextSkeleton?: boolean;
 }
 
 function ImageBasicSlider({
@@ -35,6 +36,7 @@ function ImageBasicSlider({
   selectedImageUrl,
   firstItem,
   aspect = 1,
+  hasTextSkeleton = true,
 }: IImageTileSlider) {
   return (
     <Swiper slidesPerView={size === "sm" ? 4.5 : size === "md" ? 3.6 : 1} spaceBetween={20}>
@@ -75,36 +77,48 @@ function ImageBasicSlider({
           </Flex>
         </SwiperSlide>
       )}
-      {imageTileArr.map((imageTile, index) => (
+      {(imageTileArr || [1, 2, 3, 4]).map((imageTile, index) => (
         <SwiperSlide key={index}>
           <Flex direction="column" align="center">
-            <Box
+            <Skeleton
               w={size === "sm" ? "64px" : size === "md" ? "80px" : "100%"}
-              aspectRatio={aspect}
-              borderRadius="var(--rounded-lg)"
-              position="relative"
-              overflow="hidden"
-              rounded="md"
-              border={
-                imageTile.imageUrl === selectedImageUrl ? "var(--border-mint)" : "var(--border)"
-              }
-              bgColor="white"
-              onClick={imageTile.func}
-              as="button"
+              h={size === "sm" ? "64px" : size === "md" ? "80px" : "100%"}
+              isLoaded={!!imageTile?.imageUrl}
             >
-              <Image
-                src={imageTile.imageUrl}
-                alt="thumbnailImage"
-                fill={true}
-                sizes={size === "sm" ? "80px" : "360px"}
-              />
-            </Box>
-            {imageTile?.text && (
+              <Box
+                w={size === "sm" ? "64px" : size === "md" ? "80px" : "100%"}
+                aspectRatio={aspect}
+                borderRadius="var(--rounded-lg)"
+                position="relative"
+                overflow="hidden"
+                rounded="md"
+                border={
+                  imageTile.imageUrl === selectedImageUrl ? "var(--border-mint)" : "var(--border)"
+                }
+                bgColor="white"
+                onClick={imageTile.func}
+                as="button"
+              >
+                {imageTile?.imageUrl && (
+                  <Image
+                    src={imageTile.imageUrl}
+                    alt="thumbnailImage"
+                    fill={true}
+                    sizes={size === "sm" ? "80px" : "360px"}
+                  />
+                )}
+              </Box>
+            </Skeleton>
+            <Skeleton
+              w={imageTile?.text ? "72px" : "44px"}
+              h="18px"
+              mt={2}
+              isLoaded={!!imageTile?.text || !hasTextSkeleton}
+            >
               <Flex justify="center" w="72px">
                 <Box
                   textAlign="center"
                   fontSize="12px"
-                  mt="8px"
                   sx={{
                     display: "-webkit-box",
                     WebkitBoxOrient: "vertical",
@@ -112,10 +126,10 @@ function ImageBasicSlider({
                     overflow: "hidden",
                   }}
                 >
-                  {imageTile.text}
+                  {imageTile?.text}
                 </Box>
               </Flex>
-            )}
+            </Skeleton>
           </Flex>
         </SwiperSlide>
       ))}

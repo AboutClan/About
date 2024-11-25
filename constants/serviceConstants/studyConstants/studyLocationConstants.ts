@@ -202,6 +202,17 @@ export const LOCATION_TO_PLACE: LocationToPlace = {
     INC_송도캐슬파크점,
     INC_인천서구청점,
   ],
+  성동: [],
+  마포: [],
+  성남: [],
+  고양: [],
+  중구: [],
+  송파: [],
+  구로: [],
+  동작: [],
+  강북: [],
+  부천: [],
+  시흥: [],
 };
 
 export const PLACE_TO_LOCATION = createPlaceToLocationMap(LOCATION_TO_PLACE);

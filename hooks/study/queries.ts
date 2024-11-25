@@ -13,7 +13,12 @@ import {
 } from "../../constants/keys/queryKeys";
 import { SERVER_URI } from "../../constants/system";
 import { QueryOptions } from "../../types/hooks/reactTypes";
-import { IParticipation, IPlace, IStudy } from "../../types/models/studyTypes/studyDetails";
+import {
+  RealTimeInfoProps,
+  StudyDailyInfoProps,
+  StudyParticipationProps,
+  StudyPlaceProps,
+} from "../../types/models/studyTypes/studyDetails";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
 import { IArrivedData, VoteCntProps } from "../../types/models/studyTypes/studyRecords";
 import { Location } from "../../types/services/locationTypes";
@@ -22,12 +27,12 @@ import { dayjsToStr } from "../../utils/dateTimeUtils";
 export const useStudyPlacesQuery = (
   location: Location | "all",
   active?: "active" | "inactive",
-  options?: QueryOptions<IPlace[]>,
+  options?: QueryOptions<StudyPlaceProps[]>,
 ) =>
-  useQuery<IPlace[], AxiosError, IPlace[]>(
+  useQuery<StudyPlaceProps[], AxiosError, StudyPlaceProps[]>(
     [STUDY_PLACE, location, active],
     async () => {
-      const res = await axios.get<IPlace[]>(`${SERVER_URI}/place`, {
+      const res = await axios.get<StudyPlaceProps[]>(`${SERVER_URI}/place`, {
         params: {
           status: active,
         },
@@ -42,20 +47,16 @@ export const useStudyPlacesQuery = (
     options,
   );
 
-export interface StudyVoteProps {}
-
 export const useStudyVoteQuery = (
   date: string,
-  location: Location,
-  isBasic: boolean,
-  isTwoDay: boolean,
-  options?: QueryOptions<IStudy[]>,
+  location: Location | "전체",
+  options?: QueryOptions<StudyDailyInfoProps>,
 ) =>
-  useQuery<IStudy[], AxiosError, IStudy[]>(
-    [STUDY_VOTE, date, location, isBasic, isTwoDay],
+  useQuery<StudyDailyInfoProps, AxiosError, StudyDailyInfoProps>(
+    [STUDY_VOTE, date, location],
     async () => {
-      const res = await axios.get<IStudy[]>(`${SERVER_URI}/vote/${date}`, {
-        params: { location, isBasic, isTwoDay },
+      const res = await axios.get<StudyDailyInfoProps>(`${SERVER_URI}/vote/${date}`, {
+        params: { location },
       });
       return res.data;
     },
@@ -64,15 +65,19 @@ export const useStudyVoteQuery = (
 
 export const useStudyVoteOneQuery = (
   date: string,
-  id: string,
-  options?: QueryOptions<IParticipation>,
+  options?: QueryOptions<{ data: StudyParticipationProps | RealTimeInfoProps[]; rankNum: number }>,
 ) =>
-  useQuery<IParticipation, AxiosError, IParticipation>(
-    [STUDY_VOTE, date, id],
+  useQuery<
+    { data: StudyParticipationProps | RealTimeInfoProps[]; rankNum: number },
+    AxiosError,
+    { data: StudyParticipationProps | RealTimeInfoProps[]; rankNum: number }
+  >(
+    [STUDY_VOTE, date],
     async () => {
-      const res = await axios.get<IParticipation>(`${SERVER_URI}/vote/${date}/one`, {
-        params: { id },
-      });
+      const res = await axios.get<{
+        data: StudyParticipationProps | RealTimeInfoProps[];
+        rankNum: number;
+      }>(`${SERVER_URI}/vote/${date}/one`, {});
       return res.data;
     },
     options,

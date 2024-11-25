@@ -1,16 +1,15 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 
-import { StudyVoteMapActionType } from "../../../pages/vote";
 import { DispatchType } from "../../../types/hooks/reactTypes";
-import { IPlace } from "../../../types/models/studyTypes/studyDetails";
+import { StudyPlaceProps } from "../../../types/models/studyTypes/studyDetails";
 import { IStudyVoteWithPlace } from "../../../types/models/studyTypes/studyInterActions";
 
 interface VoteDrawerMainItemProps {
   voteCnt: number;
   favoritesCnt: number;
-  myVotePlace: IPlace;
+  myVotePlace: StudyPlaceProps;
   setMyVote: DispatchType<IStudyVoteWithPlace>;
-  setActionType: DispatchType<StudyVoteMapActionType>;
+  setActionType: DispatchType<"timeSelect">;
 }
 
 function VoteDrawerMainItem({
@@ -58,7 +57,7 @@ function VoteDrawerMainItem({
         fontSize="14px"
         aspectRatio={1}
         h="100%"
-        colorScheme="mintTheme"
+        colorScheme="mint"
         onClick={(e) => handleSubmit(e)}
       >
         <Flex direction="column" h="100%" py="8px" justify="space-between" align="center">

@@ -33,7 +33,7 @@ export default function UserOverview({ userInfo }: UserOverviewProps) {
   return (
     <>
       <Box
-        m="16px"
+        my={4}
         bgColor="white"
         p="16px"
         pt="12px"
@@ -53,6 +53,7 @@ export default function UserOverview({ userInfo }: UserOverviewProps) {
               avatar={userInfo?.avatar}
               image={userInfo.profileImage}
               uid={userInfo.uid}
+              userId={userInfo._id}
               size="xl"
               isLink={false}
             />

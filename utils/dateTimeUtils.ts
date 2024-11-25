@@ -10,6 +10,10 @@ export const dayjsToStr = (date: Dayjs) => date?.format("YYYY-MM-DD");
 
 export const dayjsToFormat = (date: Dayjs, text: string) => date.format(text);
 
+export const dayjsToTime = (date: Dayjs) => date.format("HH:mm");
+
+export const dayjsToKr = (date: Dayjs) => date.format("M월 D일");
+
 export const getToday = () => dayjs().startOf("day");
 
 export const createTimeArr = (startHour: number, endHour: number, offset = 0) => {
@@ -50,7 +54,7 @@ export const toDate = (raw: string | Date) => {
 export const getWeekNumber = (date: Dayjs) => {
   const startDay = date.startOf("month").day();
   const currentDate = date.date();
-  return Math.ceil((currentDate - startDay) / 7) + 2;
+  return Math.ceil((currentDate - startDay) / 7);
 };
 
 export const getDateDiff = (date: Dayjs) => {
@@ -73,7 +77,7 @@ export const getDateWeek = (date: Dayjs) => {
 export const getCalendarDates = (
   type: "week" | "month",
   selectedDate: Dayjs,
-  pointArr?: VoteCntProps[],
+  // pointArr?: VoteCntProps[],
 ) => {
   const calendar: VoteCntProps[] = [];
 
@@ -81,7 +85,7 @@ export const getCalendarDates = (
     const startDate = selectedDate.startOf("month");
     for (let i = 0; i < selectedDate.endOf("month").date(); i++) {
       const date = startDate.add(i, "day");
-      calendar.push({ date: dayjsToStr(date), value: pointArr ? pointArr?.[i].value : 0 });
+      calendar.push({ date: dayjsToStr(date), value: date.date() });
     }
   } else {
     const startOfMonth = selectedDate.startOf("month");
@@ -91,11 +95,10 @@ export const getCalendarDates = (
 
     let current = startCalendar;
     while (current.isBefore(endCalendar) || current.isSame(endCalendar)) {
-      const idx = current.diff(startOfMonth, "day");
       if (current.isBefore(startOfMonth) || current.isAfter(endOfMonth)) {
         calendar.push(null);
       } else {
-        calendar.push({ date: dayjsToStr(current), value: pointArr ? pointArr?.[idx]?.value : 0 });
+        calendar.push({ date: dayjsToStr(current), value: 0 });
       }
 
       current = current.add(1, "day");

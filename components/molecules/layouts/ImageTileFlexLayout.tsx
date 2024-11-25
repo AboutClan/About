@@ -4,28 +4,36 @@ import styled from "styled-components";
 
 export interface IImageTileData {
   imageUrl: string;
+  priority?: boolean;
   text: string;
   url?: string;
   func?: () => void;
   id?: string;
 }
 
-interface IImageTileGridLayout {
+interface IImageTileFlexLayout {
   imageDataArr: IImageTileData[];
   selectedId?: string[];
   selectedSubId?: string[];
 }
 export default function ImageTileFlexLayout({
   imageDataArr,
-
   selectedId,
   selectedSubId,
-}: IImageTileGridLayout) {
-  function ImageTileLayout({ url, text }: { url: string; text: string }) {
+}: IImageTileFlexLayout) {
+  function ImageTileLayout({
+    url,
+    text,
+    priority,
+  }: {
+    priority: boolean;
+    url: string;
+    text: string;
+  }) {
     return (
       <Flex direction="column" alignItems="center">
         <Box w="64px" h="64px" borderRadius="8px" overflow="hidden">
-          <Image width={64} height={64} src={url} alt="studyPlaceImage" />
+          <Image width={64} height={64} src={url} alt="studyPlaceImage" priority={priority} />
         </Box>
         <Box textAlign="center" mt="12px" whiteSpace="nowrap">
           {text}
@@ -33,7 +41,7 @@ export default function ImageTileFlexLayout({
       </Flex>
     );
   }
-
+  console.log(imageDataArr);
   return (
     <Flex overflow="auto" pb="12px">
       {imageDataArr.map((imageData, idx) => (
@@ -43,12 +51,16 @@ export default function ImageTileFlexLayout({
             selectedId?.includes(imageData?.id)
               ? "main"
               : selectedSubId?.includes(imageData?.id)
-                ? "sub"
-                : null
+              ? "sub"
+              : null
           }
           onClick={imageData.func}
         >
-          <ImageTileLayout url={imageData.imageUrl} text={imageData.text} />
+          <ImageTileLayout
+            url={imageData.imageUrl}
+            text={imageData.text}
+            priority={imageData?.priority}
+          />
         </Button>
       ))}
     </Flex>
@@ -60,8 +72,8 @@ const Button = styled.button<{ $isSelected: "main" | "sub" | null }>`
     props.$isSelected === "main"
       ? "var(--color-mint)"
       : props.$isSelected === "sub"
-        ? "var(--color-orange)"
-        : null};
+      ? "var(--color-orange)"
+      : null};
   color: ${(props) => (props.$isSelected ? "white" : "inherit")};
   border-radius: var(--rounded);
   margin-right: 12px;

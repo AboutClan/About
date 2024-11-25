@@ -68,7 +68,7 @@ export default function EventBadge() {
   return (
     <>
       <SectionBar title="배지를 해금하고 포인트를 받아봐요!" size="md" />
-      <Box py="16px" pl="16px">
+      <Box mb={2}>
         <BlockSlider blocks={BlocksComponents} slidesPerView={2.4} />
       </Box>
 

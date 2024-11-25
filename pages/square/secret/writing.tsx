@@ -124,7 +124,7 @@ function SquareWritingPage() {
           완료
         </Button>
       </Header>
-      <Slide>
+      <Slide isNoPadding>
         <VStack h="100%" px={4}>
           <FormProvider {...methods}>
             <Box as="form" w="100%" onSubmit={handleSubmit(onSubmit)} id="secret-square-form">

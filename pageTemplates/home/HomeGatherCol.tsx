@@ -1,29 +1,29 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
-import { IPostThumbnailCard } from "../../components/molecules/cards/PostThumbnailCard";
+import SectionFooterButton from "../../components/atoms/SectionFooterButton";
 import {
-  CardColumnLayout,
-  CardColumnLayoutSkeleton,
-} from "../../components/organisms/CardColumnLayout";
+  GatherThumbnailCard,
+  GatherThumbnailCardProps,
+} from "../../components/molecules/cards/GatherThumbnailCard";
+import { GatherThumbnailCardSkeleton } from "../../components/skeleton/GatherThumbnailCardSkeleton";
 import { useGatherQuery } from "../../hooks/gather/queries";
-import { slideDirectionState } from "../../recoils/navigationRecoils";
 import { transferGatherDataState } from "../../recoils/transferRecoils";
-import { ITextAndColorSchemes } from "../../types/components/propTypes";
-import { GatherStatus, IGather } from "../../types/models/gatherTypes/gatherTypes";
+import { IGather } from "../../types/models/gatherTypes/gatherTypes";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
+import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
+import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomImage } from "../../utils/imageUtils";
+dayjs().locale("ko");
 
 export default function HomeGatherCol() {
-  const searchParams = useSearchParams();
-  const location = searchParams.get("location");
+  const { data: session } = useSession();
 
-  const [cardDataArr, setCardDataArr] = useState<IPostThumbnailCard[]>([]);
+  const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>([]);
 
-  const setSlideDirection = useSetRecoilState(slideDirectionState);
   const setTransferGather = useSetRecoilState(transferGatherDataState);
 
   const { data: gathers } = useGatherQuery(-1);
@@ -33,69 +33,51 @@ export default function HomeGatherCol() {
     const handleNavigate = (gather: IGather) => {
       setTransferGather(gather);
     };
-    setCardDataArr(setGatherDataToCardCol(gathers, handleNavigate).slice(0, 3));
+    setCardDataArr(setGatherDataToCardCol(gathers.slice(0, 3), null, handleNavigate));
   }, [gathers]);
 
   return (
-    <Box mb="24px">
-      <Flex
-        mb="16px"
-        px="16px"
-        bgColor="white"
-        align="center"
-        h="58px"
-        fontWeight={600}
-        fontSize="18px"
-      >
-        ABOUT 모임
-      </Flex>
-      <Box px="16px">
-        {cardDataArr.length ? (
-          <CardColumnLayout
-            cardDataArr={cardDataArr}
-            url={`/gather?location=${location}`}
-            func={() => setSlideDirection("right")}
-          />
-        ) : (
-          <CardColumnLayoutSkeleton />
-        )}
-      </Box>
+    <Box my={4}>
+      {cardDataArr?.length ? (
+        <Flex direction="column">
+          {cardDataArr.map((cardData, idx) => (
+            <GatherThumbnailCard key={idx} {...cardData} />
+          ))}
+        </Flex>
+      ) : (
+        <Flex direction="column">
+          {[1, 2, 3].map((idx) => (
+            <GatherThumbnailCardSkeleton key={idx} />
+          ))}
+        </Flex>
+      )}{" "}
+      <SectionFooterButton
+        url={`/gather?location=${convertLocationLangTo(session?.user.location, "en")}`}
+      />
     </Box>
   );
 }
 
 export const setGatherDataToCardCol = (
   gathers: IGather[],
-  func: (gather: IGather) => void,
-): IPostThumbnailCard[] => {
-  const cardCol: IPostThumbnailCard[] = gathers.map((gather, idx) => ({
+  priorityNum: number,
+  func?: (gather: IGather) => void,
+): GatherThumbnailCardProps[] => {
+  const cardCol: GatherThumbnailCardProps[] = gathers.map((gather, idx) => ({
     title: gather.title,
-    subtitle:
-      gather.place + " · " + gather.type.title + " · " + dayjs(gather.date).format("M월 D일(ddd)"),
-    participants: [gather.user, ...gather.participants.map((par) => par.user)] as IUserSummary[],
-    url: `/gather/${gather.id}`,
-    func: func ? () => func(gather) : undefined,
-    image: {
-      url: gather.image || getRandomImage(),
-      priority: idx < 4,
+    status: gather.status,
+    category: gather.type.title,
+    date: dayjsToFormat(dayjs(gather.date).locale("ko"), "M.D(ddd) HH:mm"),
+    place: gather.location.main,
+    imageProps: {
+      image: gather.image || getRandomImage(),
+      priority: priorityNum ? idx <= priorityNum : idx < 3,
     },
-    badge: getGatherBadge(gather.status),
+    id: gather.id,
     maxCnt: gather.memberCnt.max,
-    type: "gather",
+    participants: [{ user: gather.user as IUserSummary, phase: "first" }, ...gather.participants],
+    func: func ? () => func(gather) : undefined,
   }));
 
   return cardCol;
-};
-
-const getGatherBadge = (gatherStatus: GatherStatus): ITextAndColorSchemes => {
-  switch (gatherStatus) {
-    case "open":
-      return { text: "모집 마감", colorScheme: "grayTheme" };
-    case "close":
-      return { text: "취소", colorScheme: "grayTheme" };
-    case "pending":
-      return { text: "모집중", colorScheme: "mintTheme" };
-    case "end":
-      return { text: "종료", colorScheme: "grayTheme" };
-  }
 };

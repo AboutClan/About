@@ -13,10 +13,16 @@ export default function InviteUserGroups({ users, inviteUser }: IInviteUserGroup
     <Grid mt="20px" templateColumns="repeat(3,1fr)" gap="12px">
       {users?.map((who, idx) => (
         <Flex key={idx} justify="center" align="center">
-          <Avatar image={who.profileImage} avatar={who.avatar} uid={who.uid} size="md" />
+          <Avatar
+            userId={who._id}
+            image={who.profileImage}
+            avatar={who.avatar}
+            uid={who.uid}
+            size="md"
+          />
           <Flex direction="column" ml="8px">
             <Box>{who.name}</Box>
-            <Button colorScheme="mintTheme" size="xs" onClick={() => inviteUser(who)}>
+            <Button colorScheme="mint" size="xs" onClick={() => inviteUser(who)}>
               초대
             </Button>
           </Flex>

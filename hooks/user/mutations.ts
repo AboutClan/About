@@ -66,7 +66,9 @@ type UserInfoFieldParam<T> = T extends "avatar"
               ? { comment: string }
               : T extends "locationDetail"
                 ? LocationDeatilProps
-                : null;
+                : T extends "weekStudyTargetHour"
+                  ? { hour: number }
+                  : null;
 
 export const useUserInfoFieldMutation = <
   T extends
@@ -77,7 +79,8 @@ export const useUserInfoFieldMutation = <
     | "belong"
     | "isPrivate"
     | "instagram"
-    | "locationDetail",
+    | "locationDetail"
+    | "weekStudyTargetHour",
 >(
   field: T,
   options?: MutationOptions<UserInfoFieldParam<T>>,
@@ -116,6 +119,13 @@ export const useAboutPointMutation = (options?: MutationOptions<IPointSystem>) =
       axios.patch(`${SERVER_URI}/user/score`, { score: value, message, sub }),
     ]);
   }, options);
+
+export const useScoreMutation = (options?: MutationOptions<IPointSystem>) =>
+  useMutation<void, AxiosError, IPointSystem>(
+    async ({ value, message, sub }) =>
+      await axios.patch(`${SERVER_URI}/user/score`, { score: value, message, sub }),
+    options,
+  );
 
 export const useUserUpdateProfileImageMutation = (options?: MutationOptions<void>) =>
   useMutation<void, AxiosError, void>(async () => {

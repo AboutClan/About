@@ -132,7 +132,7 @@ function GatherBottomNav({ data }: IGatherBottomNav) {
             w="100%"
             borderRadius="var(--rounded-lg)"
             disabled={!handleFunction}
-            colorScheme={handleFunction ? "mintTheme" : "blackAlpha"}
+            colorScheme={handleFunction ? "mint" : "blackAlpha"}
             onClick={handleFunction}
           >
             {text}

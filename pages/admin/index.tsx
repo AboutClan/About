@@ -39,7 +39,7 @@ function Admin() {
     <>
       <Layout>
         <Header title="관리자 페이지" url="/user/setting" />
-        <Slide>
+        <Slide isNoPadding>
           <UserLayout>
             <Navigation>
               <div>

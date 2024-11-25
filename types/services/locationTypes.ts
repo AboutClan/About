@@ -1,8 +1,12 @@
-export type Location = ActiveLocation | InactiveLocation;
+export type Location = ActiveLocation | "전체";
 
-export type ActiveLocation = "수원" | "양천" | "안양" | "강남" | "동대문" | "인천";
-
-export type InactiveLocation =
+export type ActiveLocation =
+  | "수원"
+  | "양천"
+  | "안양"
+  | "강남"
+  | "동대문"
+  | "인천"
   | "마포"
   | "성남"
   | "성동"
@@ -32,10 +36,9 @@ export type LocationEn =
   | "dongjak"
   | "gangbuk"
   | "buc"
-  | "sih";
-
-export type CombinedLocation = "전체" | "수원/안양" | "양천/강남" | ActiveLocation;
+  | "sih"
+  | "all";
 
 export type ActiveLocationAll = ActiveLocation | "전체";
 
-export type LocationFilterType = Location | CombinedLocation | "전체" | "보류";
+export type LocationFilterType = Location | "전체" | "보류";

@@ -2,9 +2,9 @@ import { Box, Flex, Switch } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-import Selector from "../../components/atoms/Selector";
+import Select from "../../components/atoms/Select";
 import { IUserRankings } from "../../libs/userEventLibs/userHelpers";
-import { RankingCategoryProp, RankingFilterOptionProps } from "../../pages/statistics";
+import { RankingCategoryProp, RankingFilterOptionProps } from "../../pages/ranking";
 import { DispatchType } from "../../types/hooks/reactTypes";
 
 interface IStatisticsFilterBar {
@@ -31,26 +31,33 @@ export default function StatisticsFilterBar({
 
   return (
     <Flex justify="space-between" p="12px 20px" mr="4px" align="center">
-      <Selector
+      <Select
         defaultValue={filterOption.category}
         options={categoryArr}
         setValue={setValue}
-        isBorder={true}
+        size="sm"
       />
-      <Flex align="center">
-        <Box color={!filterOption.isLocationFilter ? "var(--gray-500)" : "var(--gray-800)"}>
-          {session?.user.location}
+
+      <Flex align="center" fontSize="12px">
+        <Box
+          fontWeight={!filterOption.isLocationFilter ? "semibold" : "regular"}
+          color={filterOption.isLocationFilter ? "var(--gray-500)" : "mint"}
+        >
+          전체
         </Box>
         <Switch
           onChange={() =>
             setFilterOption((old) => ({ ...old, isLocationFilter: !old.isLocationFilter }))
           }
-          isChecked={!filterOption.isLocationFilter}
+          isChecked={filterOption.isLocationFilter}
           m="0 8px"
-          colorScheme="mintTheme"
+          colorScheme="mint"
         />
-        <Box color={filterOption.isLocationFilter ? "var(--gray-500)" : "var(--gray-800)"}>
-          전체
+        <Box
+          fontWeight={filterOption.isLocationFilter ? "semibold" : "regular"}
+          color={!filterOption.isLocationFilter ? "var(--gray-500)" : "mint"}
+        >
+          {session?.user.location}
         </Box>
       </Flex>
     </Flex>

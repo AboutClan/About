@@ -2,16 +2,15 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useQueryClient } from "react-query";
 
 import AlertModal, { IAlertModalOptions } from "../../../components/AlertModal";
 import { Input } from "../../../components/atoms/Input";
 import { MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
 import Selector from "../../../components/atoms/Selector";
 import InviteUserGroups from "../../../components/molecules/groups/InviteUserGroups";
-import { GROUP_STUDY_ALL } from "../../../constants/keys/queryKeys";
 import { LOCATION_ALL } from "../../../constants/location";
 import { useAdminUsersLocationControlQuery } from "../../../hooks/admin/quries";
+import { useResetGroupQuery } from "../../../hooks/custom/CustomHooks";
 import { useCompleteToast } from "../../../hooks/custom/CustomToast";
 import { useGroupWaitingStatusMutation } from "../../../hooks/groupStudy/mutations";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
@@ -40,12 +39,12 @@ export default function GroupAdminInvitation() {
     isLoading,
   } = useAdminUsersLocationControlQuery(value, null, false, { enabled: !!location });
 
-  const queryClient = useQueryClient();
+  const resetGroup = useResetGroupQuery();
 
   const { mutate: mutate2 } = useGroupWaitingStatusMutation(+id, {
     onSuccess() {
       completeToast("free", "가입되었습니다.");
-      queryClient.invalidateQueries([GROUP_STUDY_ALL]);
+      resetGroup();
       refetch();
     },
   });
@@ -71,6 +70,8 @@ export default function GroupAdminInvitation() {
     subTitle: `${inviteUser?.name}님을 초대합니다. 즉시 가입이 되기 때문에 해당 멤버와 사전 이야기가 된 경우에 이용해주세요!`,
     func: () => {
       mutate2({ status: "agree", userId: inviteUser._id });
+      setInviteUser(null);
+      resetGroup();
     },
     text: "초대",
   };

@@ -1,32 +1,63 @@
-import styled from "styled-components";
+import { Box, Button } from "@chakra-ui/react";
 
-import OutlineBadge from "../../atoms/badges/OutlineBadge";
+import { useTypeToast } from "../../../hooks/custom/CustomToast";
+import { CheckCircleIcon, XCircleIcon } from "../../Icons/CircleIcons";
+import { ImageIcon } from "../../Icons/ImageIcons";
+
 interface IAttendanceBadge {
   type: "attend" | "dismissed";
   time?: string;
+  setImageProps: () => void;
 }
 
-export default function AttendanceBadge({ type, time }: IAttendanceBadge) {
-  return (
-    <BadgeContainer time={time}>
-      <OutlineBadge
-        text={type === "attend" ? "출석" : "불참"}
-        colorScheme={type === "attend" ? "mintTheme" : "redTheme"}
-      />
+export default function AttendanceBadge({ type, time, setImageProps }: IAttendanceBadge) {
+  const toast = useTypeToast();
 
-      {time && <TimeText>{time}</TimeText>}
-    </BadgeContainer>
+  const onClickButton = () => {
+   
+    if (setImageProps) {
+    
+      setImageProps();
+    } else {
+      toast("not-yet");
+    }
+  };
+
+  return (
+    <Box my={1}>
+      <Button
+        variant="unstyled"
+        display="flex"
+        mb={1}
+        alignItems="center"
+        w="56px"
+        h="24px"
+        px="10px"
+        py={1}
+        borderRadius="8px"
+        color="white"
+        bg={type === "attend" ? "mint" : "red"}
+        onClick={onClickButton}
+      >
+        {type === "attend" ? (
+          setImageProps ? (
+            <ImageIcon />
+          ) : (
+            <CheckCircleIcon size="sm" isFill />
+          )
+        ) : (
+          <XCircleIcon size="sm" />
+        )}
+        <Box ml={1} fontSize="11px" lineHeight="16px" fontWeight="semibold">
+          {type === "attend" ? (setImageProps ? "인증" : "출석") : "불참"}
+        </Box>
+      </Button>
+
+      {time && (
+        <Box fontSize="11px" lineHeight="12px" color="gray.500" textAlign="center">
+          {time}
+        </Box>
+      )}
+    </Box>
   );
 }
-
-const BadgeContainer = styled.div<{ time?: string }>`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: ${({ time }) => (time ? "8px" : "0")};
-`;
-
-const TimeText = styled.span`
-  font-size: 10px; /* Equivalent to text-xxs */
-  color: var(--gray-600); /* Assuming text-gray-4 maps to this color */
-`;

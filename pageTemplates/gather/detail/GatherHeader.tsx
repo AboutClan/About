@@ -8,7 +8,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import { GATHER_SHARE_IMAGES } from "../../../assets/images/imageUrl";
-import KakaoShareBtn from "../../../components/atoms/Icons/KakaoShareBtn";
+import KakaoShareBtn from "../../../components/Icons/KakaoShareBtn";
 import Header from "../../../components/layouts/Header";
 import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import { WEB_URL } from "../../../constants/system";
@@ -37,12 +37,13 @@ function GatherHeader({ gatherData }: IGatherHeader) {
 
   return (
     <>
-      <Header title="">
+      <Header title="" defaultUrl="/gather">
         <Flex>
           <IconWrapper onClick={() => setDrawerType("kakaoShare")}>
             <i className="fa-light fa-share-nodes fa-lg" />
           </IconWrapper>
-          {(gatherData.user as IUserSummary)._id === session?.user.id && (
+          {((gatherData.user as IUserSummary)._id === session?.user.id ||
+            session?.user.uid === "2259633694") && (
             <IconWrapper>
               <Link href={`/gather/${gatherData.id}/setting`}>
                 <i className="fa-light fa-gear fa-lg" />
@@ -53,7 +54,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
       </Header>
       {drawerType === "kakaoShare" && (
         <RightDrawer title="이미지 공유" onClose={() => setDrawerType(null)}>
-          <Box p="16px">
+          <Box pb={20}>
             <Box fontSize="16px" mt="4px" mb="20px" fontWeight={600}>
               단톡방에 공유 할 이미지를 선택해 주세요!
             </Box>
@@ -65,7 +66,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
               ))}
             </Container>
           </Box>
-          <Box position="fixed" bottom="0" w="100%" p="16px">
+          <Box position="fixed" bottom="8px" w="90%" maxW="var(--view-max-width)">
             <KakaoShareBtn
               isFull
               title={title}

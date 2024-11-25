@@ -1,18 +1,27 @@
-import { useState } from "react";
+import { Button, Flex } from "@chakra-ui/react";
 
-import RuleIcon from "../../components/atoms/Icons/RuleIcon";
+import RuleIcon from "../../components/Icons/RuleIcon";
 import Header from "../../components/layouts/Header";
-import GatherRuleModal from "../../modals/gather/GatherRuleModal";
+import { useTypeToast } from "../../hooks/custom/CustomToast";
 
 function GatherHeader() {
-  const [isModal, setIsModal] = useState(false);
+  const typeToast = useTypeToast();
   return (
-    <>
-      <Header title="모임" url="/home?tab=gather">
-        <RuleIcon setIsModal={setIsModal} />
-      </Header>
-      {isModal && <GatherRuleModal setIsModal={setIsModal} />}
-    </>
+    <Header title="소셜링" isBack={false}>
+      <Flex>
+        <Button variant="unstyled" mr={4} onClick={() => typeToast("not-yet")}>
+          <i
+            className="fa-regular fa-magnifying-glass fa-xl"
+            style={{ color: "var(--gray-600)" }}
+          />
+        </Button>
+        <RuleIcon
+          setIsModal={() => {
+            typeToast("not-yet");
+          }}
+        />
+      </Flex>
+    </Header>
   );
 }
 

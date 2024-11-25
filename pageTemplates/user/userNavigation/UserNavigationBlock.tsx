@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
@@ -8,6 +9,7 @@ import TextDevider from "../../../components/atoms/devider/TextDevider";
 import { DESIGN_PAGE_USER_PERMISSION } from "../../../constants/storage/userPermissions";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import { DispatchString } from "../../../types/hooks/reactTypes";
+import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import { UserOverviewModal } from "./UserNavigation";
 
 interface IUserNavigationBlock {
@@ -82,6 +84,7 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
           <button onClick={() => onClickBlock("modal", "profile")}>프로필 공개 설정</button>
 
           <button onClick={() => onClickBlock("modal", "deposit")}>보증금 충전</button>
+          <button onClick={() => onClickBlock("modal", "mainPlace")}>주 활동장소 변경</button>
           <button onClick={() => onClickBlock("modal", "spaceSetting")}>스터디 프리셋 설정</button>
           <button onClick={() => onClickBlock("modal", "logout")}>로그아웃</button>
         </NavBlock>
@@ -100,6 +103,9 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
             아바타 아이콘 저작권
           </button>
           <button onClick={() => onClickBlock("modal", "secede")}>회원 탈퇴</button>
+          <button onClick={() => router.push(`/vote?location=suw&date=${dayjsToStr(dayjs())}`)}>
+            임시
+          </button>
         </NavBlock>
       </div>
       <div>

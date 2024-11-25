@@ -28,6 +28,7 @@ function NoticeChat({ chats }: NoticeChatProps) {
             <Flex p="16px" justify="space-between" align="center" borderBottom="var(--border)">
               <Flex flex={1}>
                 <Avatar
+                  userId={user._id}
                   size="md"
                   uid={user.uid}
                   avatar={user.avatar}

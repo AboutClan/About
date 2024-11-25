@@ -14,7 +14,7 @@ function ColorLabel({ text, color, colorText }: ColorLabelProps) {
   return (
     <Flex h="24px" align="center">
       <PointCircle color={!colorText ? color : null} colorText={colorText} />
-      <Box fontSize="12px" as="span" color={colorText || `var(--color-${color})`}>
+      <Box fontSize="10px" as="span" color={colorText || `var(--color-${color})`}>
         {text}
       </Box>
     </Flex>

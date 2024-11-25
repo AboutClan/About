@@ -8,7 +8,7 @@ import { prevPageUrlState } from "../../../../recoils/previousAtoms";
 import { IUser, IUserSummary } from "../../../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../../../utils/dateTimeUtils";
 import Avatar from "../../../atoms/Avatar";
-import HeartCircleIcon from "../../../atoms/Icons/HeartCircleIcon";
+import HeartCircleIcon from "../../../Icons/HeartCircleIcon";
 import { ImageContainer } from "../ImageSlider";
 
 interface IImageSliderMember {
@@ -41,7 +41,13 @@ function ImageSliderMember({ imageContainer }: IImageSliderMember) {
           <SwiperSlide key={index}>
             <MemberItem>
               <ProfileWrapper onClick={() => onClickUser(user)}>
-                <Avatar image={user.profileImage} avatar={user.avatar} uid={user.uid} size="sm" />
+                <Avatar
+                  userId={user._id}
+                  image={user.profileImage}
+                  avatar={user.avatar}
+                  uid={user.uid}
+                  size="sm"
+                />
               </ProfileWrapper>
               <span>{user?.name}</span>
               {isBirth && (

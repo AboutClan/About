@@ -6,9 +6,7 @@ import Avatar from "../../../components/atoms/Avatar";
 import UserBadge from "../../../components/atoms/badges/UserBadge";
 import { LIKE_HEART } from "../../../constants/keys/localStorage";
 import { NOTICE_HEART_LOG } from "../../../constants/keys/queryKeys";
-import { POINT_SYSTEM_PLUS } from "../../../constants/serviceConstants/pointSystemConstants";
 import { USER_ROLE } from "../../../constants/settingValue/role";
-import { useAdminPointMutation } from "../../../hooks/admin/mutation";
 import { useResetQueryData } from "../../../hooks/custom/CustomHooks";
 import { useCompleteToast, useErrorToast, useFailToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
@@ -51,7 +49,7 @@ function ProfileInfo({ user }: IProfileInfo) {
     onError: errorToast,
   });
 
-  const { mutate: sendAboutPoint } = useAdminPointMutation(user?.uid);
+  // const { mutate: sendAboutPoint } = useAdminPointMutation(user?.uid);
 
   // useStudyAttendRecordQuery(dayjs().subtract(4, "day"), dayjs().add(1, "day"), {
   //   enabled: !isGuest,
@@ -97,7 +95,6 @@ function ProfileInfo({ user }: IProfileInfo) {
       );
       return;
     }
-    sendAboutPoint(POINT_SYSTEM_PLUS.LIKE);
 
     localStorage.setItem(
       LIKE_HEART,
@@ -117,13 +114,19 @@ function ProfileInfo({ user }: IProfileInfo) {
     <>
       <Layout>
         <Profile>
-          <Avatar uid={user.uid} image={user.profileImage} avatar={user.avatar} size="xl" />
+          <Avatar
+            userId={user._id}
+            uid={user.uid}
+            image={user.profileImage}
+            avatar={user.avatar}
+            size="xl"
+          />
           <ProfileName>
             <div>
               <span>{user?.name || session?.user.name}</span>
               <UserBadge score={user?.score} uid={user?.uid} />
             </div>
-            <span>{!isGuest ? status : "게스트"}</span>
+            <span>{status || "게스트"}</span>
           </ProfileName>
           {user && user?.uid !== session?.user?.uid && (
             <>

@@ -64,11 +64,11 @@ export const usePointSystemLogQuery = (
     { ...options, staleTime: 0, cacheTime: 0 },
   );
 
-export const useUidToUserInfoQuery = (uid: string, options?: QueryOptions<IUser>) =>
+export const useUserIdToUserInfoQuery = (userId: string, options?: QueryOptions<IUser>) =>
   useQuery<IUser, AxiosError, IUser>(
-    [UID_TO_USER, uid],
+    [UID_TO_USER, userId],
     async () => {
-      const res = await axios.get<IUser>(`${SERVER_URI}/user/profile/${uid}`);
+      const res = await axios.get<IUser>(`${SERVER_URI}/user/profile/${userId}`);
       return res.data;
     },
     options,

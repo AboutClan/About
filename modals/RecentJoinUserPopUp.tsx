@@ -2,7 +2,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 import Avatar from "../components/atoms/Avatar";
-import HeartIcon from "../components/atoms/Icons/HeartIcon";
+import HeartIcon from "../components/Icons/HeartIcon";
 import { useToast } from "../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../hooks/user/queries";
 import { useInteractionMutation } from "../hooks/user/sub/interaction/mutations";
@@ -67,7 +67,7 @@ function RecentJoinUserPopUp({ users, setIsModal }: RecentJoinUserPopUpProps) {
             pl="4px"
           >
             <Flex align="center">
-              <Avatar uid={user.uid} avatar={user.avatar} image={user.profileImage} size="md" />
+              <Avatar userId={user._id } uid={user.uid} avatar={user.avatar} image={user.profileImage} size="md" />
               <Box ml="12px" fontSize="16px">
                 {user.name}
               </Box>
@@ -78,7 +78,7 @@ function RecentJoinUserPopUp({ users, setIsModal }: RecentJoinUserPopUpProps) {
               )}
             </Flex>
             <Flex>
-              <HeartIcon toUid={user.uid} size="md" />
+              <HeartIcon toUid={user.uid} />
             </Flex>
           </Flex>
         ))}

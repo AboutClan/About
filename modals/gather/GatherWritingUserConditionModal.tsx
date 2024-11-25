@@ -3,7 +3,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
-import { PopOverIcon } from "../../components/atoms/Icons/PopOverIcon";
+import { PopOverIcon } from "../../components/Icons/PopOverIcon";
 import { GROUP_WRITING_STORE } from "../../constants/keys/localStorage";
 import { GatherConditionType } from "../../pages/gather/writing/condition";
 import { GroupConditionType } from "../../pages/group/writing/condition";
@@ -36,7 +36,7 @@ function GatherWritingUserConditionModal({
 }: GatherWritingUserConditionModalProps) {
   const [gatherContent, setGatherContent] = useRecoilState(sharedGatherWritingState);
   const groupWriting: IGroupWriting = JSON.parse(localStorage.getItem(GROUP_WRITING_STORE));
-  
+
   const [memberCnt, setMemberCnt] = useState<IGatherMemberCnt>(
     gatherContent?.memberCnt ||
       groupWriting?.memberCnt || {
@@ -91,7 +91,7 @@ function GatherWritingUserConditionModal({
         </Name>
         <Switch
           mr="var(--gap-1)"
-          colorScheme="mintTheme"
+          colorScheme="mint"
           isChecked={isGenderCondition}
           onChange={(e) => toggleSwitch(e, "gender")}
         />
@@ -105,7 +105,7 @@ function GatherWritingUserConditionModal({
         </Name>
         <Switch
           mr="var(--gap-1)"
-          colorScheme="mintTheme"
+          colorScheme="mint"
           isChecked={isAgeCondition}
           onChange={(e) => toggleSwitch(e, "age")}
         />

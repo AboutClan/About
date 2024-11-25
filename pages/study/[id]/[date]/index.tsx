@@ -1,113 +1,125 @@
-import dayjs from "dayjs";
-import { useParams } from "next/navigation";
+import { Box } from "@chakra-ui/react";
+import { useParams, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import styled from "styled-components";
+import { useSetRecoilState } from "recoil";
 
-import Divider from "../../../../components/atoms/Divider";
+import { MainLoading } from "../../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../../components/layouts/PageSlide";
-import { ALL_스터디인증 } from "../../../../constants/serviceConstants/studyConstants/studyPlaceConstants";
-import { useStudyVoteOneQuery } from "../../../../hooks/study/queries";
-import { getStudyDateStatus } from "../../../../libs/study/date/getStudyDateStatus";
+import { useCurrentLocation } from "../../../../hooks/custom/CurrentLocationHook";
+import { useStudyVoteQuery } from "../../../../hooks/study/queries";
+import { convertMergePlaceToPlace } from "../../../../libs/study/convertMergePlaceToPlace";
+import {
+  convertStudyToParticipations,
+  getMyStudyInfo,
+  getMyStudyParticipation,
+} from "../../../../libs/study/getMyStudyMethods";
+import StudyInviteModal from "../../../../modals/study/StudyInviteModal";
+import StudyAddressMap from "../../../../pageTemplates/study/StudyAddressMap";
 import StudyCover from "../../../../pageTemplates/study/StudyCover";
 import StudyDateBar from "../../../../pageTemplates/study/StudyDateBar";
 import StudyHeader from "../../../../pageTemplates/study/StudyHeader";
+import StudyMembers from "../../../../pageTemplates/study/StudyMembers";
 import StudyNavigation from "../../../../pageTemplates/study/StudyNavigation";
 import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
-import StudyParticipants from "../../../../pageTemplates/study/StudyParticipants";
 import StudyTimeBoard from "../../../../pageTemplates/study/StudyTimeBoard";
-import {
-  myStudyState,
-  studyDateStatusState,
-  studyPairArrState,
-} from "../../../../recoils/studyRecoils";
-import { IParticipation } from "../../../../types/models/studyTypes/studyDetails";
-import { dayjsToStr } from "../../../../utils/dateTimeUtils";
+import { myStudyParticipationState } from "../../../../recoils/studyRecoils";
+import { LocationEn } from "../../../../types/services/locationTypes";
+import { convertLocationLangTo } from "../../../../utils/convertUtils/convertDatas";
+import { getDistanceFromLatLonInKm } from "../../../../utils/mathUtils";
 
 export default function Page() {
+  const searchParams = useSearchParams();
   const { data: session } = useSession();
+  const isGuest = session?.user.role === "guest";
   const { id, date } = useParams<{ id: string; date: string }>() || {};
+  const { currentLocation } = useCurrentLocation();
 
-  const [study, setStudy] = useState<IParticipation>();
-  const studyPairArr = useRecoilValue(studyPairArrState);
-  const setMyStudy = useSetRecoilState(myStudyState);
-  const [studyDateStatus, setStudyDateStatus] = useRecoilState(studyDateStatusState);
-  const findStudy = studyPairArr
-    ?.find((study) => dayjsToStr(dayjs(study.date)) === date)
-    .participations.find((par) => par.place._id === id);
+  const locationParam = searchParams.get("location") as LocationEn;
+  const setMyStudyParticipation = useSetRecoilState(myStudyParticipationState);
+  const [isInviteModal, setIsInviteModal] = useState(false);
 
-  const isPrivateStudy = id === ALL_스터디인증;
-  const { data: studyOne } = useStudyVoteOneQuery(date, id, {
-    enabled: !findStudy && !!date && !!id,
-  });
-
-  useEffect(() => {
-    if (!session) return;
-    const tempStudy = studyOne || findStudy;
-    if (!tempStudy) return;
-    setStudy(tempStudy);
-    const isMyStudy =
-      tempStudy.status !== "dismissed" &&
-      tempStudy.attendences.find((who) => who.user.uid === session.user.uid);
-    if (isMyStudy) setMyStudy(tempStudy);
-  }, [studyPairArr, studyOne, session]);
+  const { data: studyVoteData } = useStudyVoteQuery(
+    date,
+    convertLocationLangTo(locationParam, "kr"),
+    {
+      enabled: !!date && !!locationParam,
+    },
+  );
 
   useEffect(() => {
-    setStudyDateStatus(getStudyDateStatus(date));
-  }, [date]);
+    if (!studyVoteData) return;
+    const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session?.user.uid);
+    setMyStudyParticipation(findMyStudyParticipation);
+  }, [studyVoteData]);
 
-  const place = study?.place;
+  const mergeParticipations = convertStudyToParticipations(
+    studyVoteData,
+    convertLocationLangTo(locationParam, "kr"),
+    true,
+  );
+  const mergeParticipation = mergeParticipations?.find(
+    (participation) => participation.place._id === id,
+  );
 
-  const attendances =
-    studyDateStatus !== "not passed"
-      ? study?.attendences.filter((att) => att.firstChoice)
-      : study?.attendences;
+  const place = convertMergePlaceToPlace(mergeParticipation?.place);
+
+  const { name, address, coverImage, latitude, brand, longitude, time, type } = place || {};
+
+  const distance =
+    currentLocation &&
+    getDistanceFromLatLonInKm(currentLocation.lat, currentLocation.lon, latitude, longitude);
+  const members = mergeParticipation?.members;
+
+  const absences = studyVoteData?.participations.find((par) => par.place._id === id)?.absences;
 
   return (
-    <Layout>
-      {study && (
+    <>
+      {mergeParticipation ? (
         <>
-          <StudyHeader
-            brand={place.brand}
-            fullname={place.fullname}
-            locationDetail={place.location}
-            coverImage={place.coverImage}
-          />
-          <Slide>
-            <StudyCover
-              isPrivateStudy={isPrivateStudy}
-              imageUrl={place.coverImage}
-              brand={place.brand}
+          <StudyHeader brand={brand} name={name} address={address} coverImage={coverImage} />
+          <Box mb={5}>
+            <Slide isNoPadding>
+              <StudyCover coverImage={coverImage} />
+              <StudyOverview
+                place={{ ...place }}
+                distance={distance}
+                status={mergeParticipation.status}
+                time={time}
+              />
+            </Slide>
+            <Box h={2} bg="gray.100" />
+            <Slide>
+              <StudyAddressMap
+                name={name}
+                address={address}
+                latitude={latitude}
+                longitude={longitude}
+              />
+
+              <StudyDateBar date={date} memberCnt={members.length} />
+              <StudyTimeBoard members={members} />
+              <Box h="1px" bg="gray.100" my={4} />
+              <StudyMembers date={date} members={members} absences={absences} />
+            </Slide>
+          </Box>
+          {!isGuest && (
+            <StudyNavigation
+              studyVoteData={studyVoteData}
+              locationEn={locationParam}
+              date={date}
+              myStudyInfo={getMyStudyInfo(mergeParticipation, session?.user.uid)}
+              absences={mergeParticipation?.absences}
+              placeInfo={{ name, address, latitude, longitude }}
+              type={type}
+              status={mergeParticipation?.status}
             />
-            {!isPrivateStudy && (
-              <>
-                <StudyOverview
-                  title={place.fullname}
-                  locationDetail={place.locationDetail}
-                  time={place.time}
-                  participantsNum={attendances.length}
-                  coordinate={{
-                    lat: place.latitude,
-                    lng: place.longitude,
-                  }}
-                />
-                <Divider />
-              </>
-            )}
-            <StudyDateBar isPrivateStudy={isPrivateStudy} place={place} />
-            {!isPrivateStudy && (
-              <StudyTimeBoard participants={attendances} studyStatus={study.status} />
-            )}
-          </Slide>
-          <StudyParticipants participants={attendances} absences={study.absences} />
-          <StudyNavigation voteCnt={attendances?.length} studyStatus={study.status} />
+          )}
+          {isInviteModal && <StudyInviteModal setIsModal={setIsInviteModal} place={place} />}
         </>
+      ) : (
+        <MainLoading />
       )}
-    </Layout>
+    </>
   );
 }
-
-const Layout = styled.div`
-  padding-bottom: 161px;
-`;

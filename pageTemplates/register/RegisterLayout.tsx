@@ -25,7 +25,6 @@ function RegisterLayout({
 }
 
 const Layout = styled.div`
-  margin: 0 var(--gap-4);
   padding-bottom: 40px;
 `;
 

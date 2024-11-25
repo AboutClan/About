@@ -28,12 +28,12 @@ function WritingDate() {
 
   const onClickNext = () => {
     if (gatherList && !gatherList[0].text) {
-      failToast("free", "1차 모임 작성은 필수입니다!", true);
+      failToast("free", "1차 모임 작성은 필수입니다!");
       return;
     }
     const givenDay = dayjs(date);
     if (givenDay.isSame(dayjs(), "day") && givenDay.hour() === 14) {
-      failToast("free", "날짜/시간 선택을 확인해주세요!", true);
+      failToast("free", "날짜/시간 선택을 확인해주세요!");
       return;
     }
     setGatherWriting((old) => ({
