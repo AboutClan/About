@@ -14,7 +14,7 @@ import {
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import AlertModal from "../../../components/AlertModal";
 import { Badge } from "../../../components/atoms/badges/Badges";
@@ -24,8 +24,8 @@ import KakaoShareBtn from "../../../components/Icons/KakaoShareBtn";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import OrganizerBar from "../../../components/molecules/OrganizerBar";
+import { SECRET_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
-import { usePollState } from "../../../hooks/custom/usePollState";
 import {
   useDeleteLikeSecretSquareMutation,
   useDeleteSecretSquareMutation,
@@ -67,19 +67,17 @@ function SecretSquareDetailPage() {
       staleTime: Infinity,
     },
   );
+  const initialSelectedPollItems = new Set(pollStatus?.pollItems);
 
-  const {
-    selectedPollItems,
-    isModified,
-    isActiveRePollButton,
-    showRePollButton,
-    handlePoll,
-    isSelected,
-    hideRePollButton,
-    cancelPoll,
-  } = usePollState({
-    initialPollItems: pollStatus?.pollItems,
-  });
+  const [selectedPollItems, setSelectedPollItems] = useState<Set<string>>(new Set());
+  // calculate the difference btw poll and initialPoll
+  const isModified =
+    selectedPollItems.size !== initialSelectedPollItems.size ||
+    Array.from(selectedPollItems.keys()).some((id) => !initialSelectedPollItems.has(id)) ||
+    Array.from(initialSelectedPollItems.keys()).some((id) => !selectedPollItems.has(id));
+
+  const [showRePollButton, setShowRePollButton] = useState(false);
+  const [isActiveRePollButton, setIsActiveRePollButton] = useState(false);
 
   const { isOpen: isMenuOpen, onOpen: onMenuOpen, onClose: onMenuClose } = useDisclosure();
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -89,10 +87,22 @@ function SecretSquareDetailPage() {
 
   const failToast = useFailToast();
 
+  useEffect(() => {
+    if (pollStatus) {
+      setSelectedPollItems(new Set(pollStatus.pollItems));
+      if (pollStatus.pollItems.length !== 0) {
+        setShowRePollButton(true);
+        setIsActiveRePollButton(true);
+      } else {
+        setIsActiveRePollButton(false);
+      }
+    }
+  }, [pollStatus]);
+
   const handlePatchPoll = () => {
     if (!isModified) return;
 
-    mutatePoll({ user: session?.user.id, pollItems: selectedPollItems });
+    mutatePoll({ user: session?.user.id, pollItems: Array.from(selectedPollItems.keys()) });
   };
 
   const handleLikeSquare = () => {
@@ -135,74 +145,62 @@ function SecretSquareDetailPage() {
         />
       </Header>
       <>
-        <Slide>
-          <Flex py={4} direction="column" gap={2} as="section" bg="white" minH="326px">
+        <Slide isNoPadding>
+          <Flex px={4} py={4} direction="column" gap={2} as="section" bg="white" minH="326px">
             <Box minH="83px">
               {squareDetail && (
                 <>
-                  <Box mb={2} px={4}>
+                  <Box mb={2}>
                     <Badge text={`# ${squareDetail.category}`} colorScheme="grayTheme" size="md" />
                   </Box>
-                  <Box id="avatar-section">
+                  <section id="avatar-section">
                     <OrganizerBar
-                      avatar={
-                        <OrganizerBar.Avatar
-                          avatar={squareDetail.isAnonymous ? { bg: 7, type: 0 } : undefined}
-                          uid={squareDetail.isAnonymous ? "" : squareDetail.uid}
-                          image={squareDetail.isAnonymous ? "" : squareDetail.profileImage}
-                          isLink={!squareDetail.isAnonymous}
-                          size="md"
-                        />
-                      }
-                      name={squareDetail.isAnonymous ? "익명" : squareDetail.name}
+                      organizer={SECRET_USER_SUMMARY}
                       createdAt={squareDetail.createdAt}
-                      right={
+                    >
+                      {squareDetail.isMySquare && (
                         <>
-                          {squareDetail.isMySquare && (
-                            <>
-                              <Box as="button" type="button" onClick={onMenuOpen}>
-                                <i className="fa-regular fa-ellipsis fa-xl" />
-                              </Box>
-                              <Drawer placement="bottom" onClose={onMenuClose} isOpen={isMenuOpen}>
-                                <DrawerOverlay />
-                                <DrawerContent pt={3} pb={5}>
-                                  <DrawerBody>
-                                    <Box
-                                      fontSize="16px"
-                                      as="button"
-                                      w="100%"
-                                      color="var(--color-red)"
-                                      textAlign="center"
-                                      onClick={openAlertModal}
-                                    >
-                                      삭제
-                                    </Box>
-                                  </DrawerBody>
-                                </DrawerContent>
-                              </Drawer>
-                              {isAlertOpen && (
-                                <AlertModal
-                                  setIsModal={setIsAlertOpen}
-                                  options={{
-                                    title: "게시글을 삭제할까요?",
-                                    subTitle:
-                                      "게시글을 삭제하면 모든 데이터가 삭제되고 다시는 볼 수 없어요.",
-                                    func: handleDeleteSquare,
-                                    text: "삭제하기",
-                                  }}
-                                />
-                              )}
-                            </>
+                          <Box as="button" type="button" onClick={onMenuOpen}>
+                            <i className="fa-regular fa-ellipsis fa-xl" />
+                          </Box>
+                          <Drawer placement="bottom" onClose={onMenuClose} isOpen={isMenuOpen}>
+                            <DrawerOverlay />
+                            <DrawerContent pt={3} pb={5}>
+                              <DrawerBody>
+                                <Box
+                                  fontSize="16px"
+                                  as="button"
+                                  w="100%"
+                                  color="var(--color-red)"
+                                  textAlign="center"
+                                  onClick={openAlertModal}
+                                >
+                                  삭제
+                                </Box>
+                              </DrawerBody>
+                            </DrawerContent>
+                          </Drawer>
+                          {isAlertOpen && (
+                            <AlertModal
+                              setIsModal={setIsAlertOpen}
+                              options={{
+                                title: "게시글을 삭제할까요?",
+                                subTitle:
+                                  "게시글을 삭제하면 모든 데이터가 삭제되고 다시는 볼 수 없어요.",
+                                func: handleDeleteSquare,
+                                text: "삭제하기",
+                              }}
+                            />
                           )}
                         </>
-                      }
-                    />
-                  </Box>
+                      )}
+                    </OrganizerBar>
+                  </section>
                 </>
               )}
             </Box>
 
-            <Box id="content-section" as="section" position="relative" minH="120px" px={4}>
+            <section id="content-section" style={{ position: "relative", minHeight: "120px" }}>
               {squareDetail ? (
                 <>
                   <Text py="8px" as="h1" fontSize="xl" fontWeight={700}>
@@ -215,94 +213,117 @@ function SecretSquareDetailPage() {
               ) : (
                 <MainLoadingAbsolute size="sm" />
               )}
-            </Box>
+            </section>
             {squareDetail && (
               <>
                 {squareDetail.type === "poll" && (
-                  <Box as="section" id="poll-section" px={4} my={4}>
-                    <Box
-                      p={4}
-                      sx={{
-                        width: "100%",
-                        borderRadius: "var(--rounded-lg)",
-                        border: "var(--border-main)",
-                        background: "white",
-                      }}
-                    >
-                      <VStack as="ul" align="flex-start">
-                        <Text fontWeight={600} display="flex" mb="4px" gap={1} align="center">
-                          <Box as="span" display="flex" alignItems="center">
-                            <i className="fa-solid fa-check-to-slot" />
-                          </Box>
-                          <span>투표</span>
-                        </Text>
-                        {squareDetail.poll.pollItems.map(({ _id, name, count }) => {
-                          return (
-                            <PollItemButton
-                              key={_id}
-                              isChecked={isSelected(_id)}
-                              isDisabled={showRePollButton}
-                              name={name}
-                              count={count}
-                              onClick={() =>
-                                handlePoll({
-                                  canMultiple: squareDetail.poll.canMultiple,
-                                  pollItem: _id,
-                                })
+                  <Box
+                    as="section"
+                    id="poll-section"
+                    p={4}
+                    my={4}
+                    sx={{
+                      width: "100%",
+                      borderRadius: "var(--rounded-lg)",
+                      border: "var(--border-main)",
+                      background: "white",
+                    }}
+                  >
+                    <VStack as="ul" align="flex-start">
+                      <Text fontWeight={600} display="flex" mb="4px" gap={1} align="center">
+                        <Box as="span" display="flex" alignItems="center">
+                          <i className="fa-solid fa-check-to-slot" />
+                        </Box>
+                        <span>투표</span>
+                      </Text>
+                      {squareDetail.poll.pollItems.map(({ _id, name, count }) => {
+                        return (
+                          <PollItemButton
+                            key={_id}
+                            isChecked={selectedPollItems.has(_id)}
+                            isDisabled={showRePollButton}
+                            name={name}
+                            count={count}
+                            onClick={() => {
+                              const isChecked = selectedPollItems.has(_id);
+                              if (squareDetail.poll.canMultiple) {
+                                setSelectedPollItems((prev) => {
+                                  const cloned = new Set(prev);
+                                  if (isChecked) cloned.delete(_id);
+                                  else cloned.add(_id);
+                                  return cloned;
+                                });
+                              } else {
+                                setSelectedPollItems((prev) => {
+                                  const cloned = new Set(prev);
+                                  if (isChecked) {
+                                    cloned.delete(_id);
+                                  } else if (cloned.size !== 0) {
+                                    // if already checking other poll item
+                                    cloned.clear();
+                                    cloned.add(_id);
+                                  } else {
+                                    cloned.add(_id);
+                                  }
+                                  return cloned;
+                                });
                               }
-                            />
-                          );
-                        })}
+                            }}
+                          />
+                        );
+                      })}
 
-                        {showRePollButton ? (
+                      {showRePollButton ? (
+                        <Button
+                          type="button"
+                          rounded="lg"
+                          w="100%"
+                          colorScheme="gray"
+                          mt="8px"
+                          onClick={() => setShowRePollButton(false)}
+                        >
+                          <i
+                            className="fa-regular fa-rotate-right"
+                            style={{ marginRight: "4px" }}
+                          />
+                          다시 투표하기
+                        </Button>
+                      ) : (
+                        <ButtonGroup w="100%" mt="8px">
                           <Button
                             type="button"
                             rounded="lg"
                             w="100%"
-                            colorScheme="gray"
-                            mt="8px"
-                            onClick={hideRePollButton}
+                            colorScheme="mint"
+                            isDisabled={!isModified}
+                            isLoading={isPollLoading}
+                            onClick={handlePatchPoll}
                           >
-                            <i
-                              className="fa-regular fa-rotate-right"
-                              style={{ marginRight: "4px" }}
-                            />
-                            다시 투표하기
+                            투표하기
                           </Button>
-                        ) : (
-                          <ButtonGroup w="100%" mt="8px">
+                          {isActiveRePollButton && (
                             <Button
                               type="button"
                               rounded="lg"
                               w="100%"
-                              colorScheme="mintTheme"
-                              isDisabled={!isModified}
-                              isLoading={isPollLoading}
-                              onClick={handlePatchPoll}
+                              colorScheme="gray"
+                              onClick={() => {
+                                setShowRePollButton(true);
+                                setSelectedPollItems(new Set(pollStatus.pollItems));
+                              }}
                             >
-                              투표하기
+                              취소
                             </Button>
-                            {isActiveRePollButton && (
-                              <Button
-                                type="button"
-                                rounded="lg"
-                                w="100%"
-                                colorScheme="gray"
-                                onClick={cancelPoll}
-                              >
-                                취소
-                              </Button>
-                            )}
-                          </ButtonGroup>
-                        )}
-                      </VStack>
-                    </Box>
+                          )}
+                        </ButtonGroup>
+                      )}
+                    </VStack>
                   </Box>
                 )}
 
                 {squareDetail.images.length !== 0 && (
                   <section id="images-section">
-                    <VStack as="ul" mt="8px" px={4}>
+                    <VStack as="ul" mt="8px">
                       {squareDetail.images.map((src, index) => {
                         return (
                           <Box
@@ -330,11 +351,11 @@ function SecretSquareDetailPage() {
                   </section>
                 )}
 
-                <Flex color="var(--gray-600)" px={4} align="center" gap={1} fontSize="12px">
+                <Flex color="var(--gray-600)" align="center" gap={1} fontSize="12px">
                   <i className="fa-regular fa-eye" />
                   <span>{squareDetail.viewCount}명이 봤어요</span>
                 </Flex>
-                <Flex justify="space-between" mt="8px" px={4}>
+                <Flex justify="space-between" mt="8px">
                   <Button
                     type="button"
                     px="3"
@@ -358,6 +379,8 @@ function SecretSquareDetailPage() {
                     onClick={handleLikeSquare}
                     isDisabled={likeButtonDisabled}
                   >
+                    {/* <i className="fa-regular fa-thumbs-up" />
+                  <span>공감하기</span> */}
                     <i className="fa-light fa-thumbs-up" />
                     <span>{squareDetail.likeCount}</span>
                   </Button>
