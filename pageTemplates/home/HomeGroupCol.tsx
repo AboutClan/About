@@ -25,9 +25,9 @@ export default function HomeGroupCol({ threeGroups }: HomeGroupColProps) {
     <Box my={4}>
       {threeGroups?.length ? (
         <Flex direction="column">
-          {(threeGroups
+          {threeGroups
             .slice()
-            .reverse())
+            .reverse()
             .map((group, idx) => {
               const status =
                 group.status === "end"
@@ -44,7 +44,13 @@ export default function HomeGroupCol({ threeGroups }: HomeGroupColProps) {
               return (
                 <GroupThumbnailCard
                   key={idx}
-                  {...createGroupThumbnailProps(group, status, idx, () => setTransferGroup(group))}
+                  {...createGroupThumbnailProps(
+                    group,
+                    status,
+                    idx,
+                    () => setTransferGroup(group),
+                    false,
+                  )}
                 />
               );
             })}

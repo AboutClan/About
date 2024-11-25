@@ -33,7 +33,7 @@ export default function HomeGatherCol() {
     const handleNavigate = (gather: IGather) => {
       setTransferGather(gather);
     };
-    setCardDataArr(setGatherDataToCardCol(gathers.slice(0, 3), false, handleNavigate));
+    setCardDataArr(setGatherDataToCardCol(gathers.slice(0, 3), null, handleNavigate));
   }, [gathers]);
 
   return (
@@ -60,7 +60,7 @@ export default function HomeGatherCol() {
 
 export const setGatherDataToCardCol = (
   gathers: IGather[],
-  imagePriority: boolean,
+  priorityNum: number,
   func?: (gather: IGather) => void,
 ): GatherThumbnailCardProps[] => {
   const cardCol: GatherThumbnailCardProps[] = gathers.map((gather, idx) => ({
@@ -71,7 +71,7 @@ export const setGatherDataToCardCol = (
     place: gather.location.main,
     imageProps: {
       image: gather.image || getRandomImage(),
-      priority: imagePriority && idx < 4,
+      priority: priorityNum ? idx <= priorityNum : idx < 3,
     },
     id: gather.id,
     maxCnt: gather.memberCnt.max,

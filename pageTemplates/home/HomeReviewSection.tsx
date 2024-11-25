@@ -18,6 +18,7 @@ export default function HomeReviewSection() {
       imageUrl: feed.images[0],
       func: () => router.push(`/gather?category=all&tab=lounge&scroll=${feed.typeId}`),
       text: feed.text,
+      priority: false,
     }))
     .slice(0, 4);
 

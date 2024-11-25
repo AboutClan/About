@@ -11,6 +11,7 @@ export interface IImageTileData {
   url?: string;
   func?: () => void;
   id?: string;
+  priority?: boolean;
 }
 
 interface IImageTileGridLayout {
@@ -43,7 +44,7 @@ export default function ImageTileGridLayout({
               size={size}
               url={imageData.imageUrl}
               text={imageData.text}
-              isPriority={idx === 0}
+              isPriority={imageData?.priority}
               hasToggleHeart={hasToggleHeart}
               id={imageData?.id}
               selected={

@@ -46,8 +46,8 @@ function PlaceImage({
   }, [myPreferType]);
 
   const sizeLength =
-    size === "sm" ? "60px" : size === "md" ? "80px" : size === "lg" ? "100px" : null;
- 
+    size === "sm" ? "60px" : size === "md" ? "80px" : size === "lg" ? "100px" : "180px";
+
   const onClickHeart = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
     switch (myPreferType) {
       case "main":

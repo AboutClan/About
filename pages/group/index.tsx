@@ -233,8 +233,12 @@ function GroupPage() {
                     return (
                       <Box key={group.id} pb={3} mb={3} borderBottom="var(--border)">
                         <GroupThumbnailCard
-                          {...createGroupThumbnailProps(group, status, idx, () =>
-                            setTransdferGroupData(group),
+                          {...createGroupThumbnailProps(
+                            group,
+                            status,
+                            idx,
+                            () => setTransdferGroupData(group),
+                            true,
                           )}
                           // title={group.title}
                           // text={group.guide}
@@ -279,6 +283,7 @@ export const createGroupThumbnailProps = (
   status: "pending" | "end" | "ready" | "imminent" | "full" | "waiting",
   idx: number,
   func,
+  isPriority,
 ) => ({
   title: group.title,
   text: group.guide,
@@ -291,7 +296,7 @@ export const createGroupThumbnailProps = (
     image:
       group?.squareImage ||
       GATHER_RANDOM_IMAGE_ARR[getRandomIdx(GATHER_RANDOM_IMAGE_ARR.length - 1)],
-    isPriority: idx < 4,
+    isPriority: isPriority && idx < 4,
   },
   maxCnt: group.memberCnt.max,
   id: group.id,

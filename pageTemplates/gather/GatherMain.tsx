@@ -44,7 +44,7 @@ export default function GatherMain() {
         location
           ? gathers.filter((gather) => gather.place === "전체" || gather.place.includes(location))
           : gathers,
-        true,
+        6,
         (gather: IGather) => setTransferGatherData(gather),
       ),
     );
