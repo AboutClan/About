@@ -66,7 +66,7 @@ export default class MyDocument extends Document {
           <NextScript />
           <Script
             src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${NEXT_PUBLIC_NAVER_CLIENT_ID}`}
-            strategy="beforeInteractive"
+            strategy="lazyOnload"
           />
         </body>
       </Html>
