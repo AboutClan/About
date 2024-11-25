@@ -1,8 +1,5 @@
-import { useRouter } from "next/router";
-import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import { prevPageUrlState } from "../../recoils/previousAtoms";
 import { IUser, IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import Avatar from "../atoms/Avatar";
 
@@ -13,15 +10,8 @@ interface IUserItem {
 }
 
 export function UserItem({ user, children }: IUserItem) {
-  const router = useRouter();
-
-  const setBeforePage = useSetRecoilState(prevPageUrlState);
-  const onClickProfile = (user: IUserSummary) => {
-    setBeforePage(router?.asPath);
-    router.push(`/profile/${user.uid}`);
-  };
   return (
-    <MemberItem key={user.uid} onClick={() => onClickProfile(user)}>
+    <MemberItem key={user.uid}>
       <Avatar
         userId={user._id}
         image={user.profileImage}
