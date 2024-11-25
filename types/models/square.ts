@@ -4,7 +4,7 @@ import { TimeStampProps } from "../utils/timeAndDate";
 export type SecretSquareCategory = "일상" | "고민" | "정보" | "같이해요";
 export type SecretSquareCategoryWithAll = "전체" | SecretSquareCategory;
 
-interface BaseSecretSquareItem extends TimeStampProps {
+interface BaseSecretSquare extends TimeStampProps {
   _id: string;
   category: SecretSquareCategory;
   title: string;
@@ -14,9 +14,13 @@ interface BaseSecretSquareItem extends TimeStampProps {
   images: string[];
   author: string;
   comments: UserCommentProps[];
+  isAnonymous: boolean;
+  uid?: string;
+  name?: string;
+  profileImage?: string;
 }
 
-interface GeneralSecretSquareItem extends BaseSecretSquareItem {
+interface GeneralSecretSquare extends BaseSecretSquare {
   type: "general";
 }
 
@@ -26,7 +30,7 @@ interface PollItem {
   count: number;
 }
 
-interface PollSecretSquareItem extends BaseSecretSquareItem {
+interface PollSecretSquare extends BaseSecretSquare {
   type: "poll";
   poll: {
     pollItems: PollItem[];
@@ -36,7 +40,7 @@ interface PollSecretSquareItem extends BaseSecretSquareItem {
 
 export type SecretSquareType = "general" | "poll";
 
-export type SecretSquareItem = GeneralSecretSquareItem | PollSecretSquareItem;
+export type SecretSquareItem = GeneralSecretSquare | PollSecretSquare;
 
 export type SecretSquareFormData = {
   category: SecretSquareCategory;
@@ -44,4 +48,5 @@ export type SecretSquareFormData = {
   content: string;
   pollItems: { name: string }[];
   canMultiple: boolean;
+  isAnonymous: boolean;
 };

@@ -1,53 +1,44 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import React, { ComponentProps } from "react";
 import styled from "styled-components";
 
-import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import { getDateDiff } from "../../utils/dateTimeUtils";
 import Avatar from "../atoms/Avatar";
-import { AboutIcon } from "../Icons/AboutIcon";
 
 interface OrganizerBarProps {
+  avatar: React.ReactNode;
+  name: string;
   createdAt: string;
-  organizer: IUserSummary;
-  isAdminOpen?: boolean;
-  children?: React.ReactNode;
+  right?: React.ReactNode;
 }
 
-function OrganizerBar({ organizer, createdAt, children, isAdminOpen }: OrganizerBarProps) {
-  const isSecret = organizer.name === "익명";
-
+function OrganizerBar({ avatar, name, createdAt, right }: OrganizerBarProps) {
   return (
-    <Layout isSecret={isSecret}>
+    <Layout>
       <Box>
-        {isAdminOpen ? (
-          <AboutIcon size="md" />
-        ) : (
-          <Avatar
-            userId={organizer._id}
-            avatar={organizer.avatar}
-            uid={organizer.uid}
-            image={organizer.profileImage}
-            size="md"
-            isLink={!isSecret}
-          />
-        )}
+        {avatar}
         <Info>
-          <Box as="span">{isAdminOpen ? "어바웃" : organizer.name}</Box>
+          <Box as="span">{name}</Box>
           <span>{getDateDiff(dayjs(createdAt))}</span>
         </Info>
       </Box>
-      {children}
+      {right}
     </Layout>
   );
 }
 
-const Layout = styled.div<{ isSecret: boolean }>`
+type OrganizerBarAvatarProps = ComponentProps<typeof Avatar>;
+function OrganizerBarAvatar(props: OrganizerBarAvatarProps) {
+  return <Avatar {...props} />;
+}
+OrganizerBar.Avatar = OrganizerBarAvatar;
+
+const Layout = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: ${(props) =>
-    !props.isSecret ? "var(--gap-3) var(--gap-4)" : "var(--gap-1) 0 var(--gap-3) 0"};
+  padding: var(--gap-3) var(--gap-4);
   background-color: white;
   border-bottom: var(--border);
   > div:first-child {

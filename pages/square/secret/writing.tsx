@@ -1,4 +1,13 @@
-import { Box, Button, Flex, IconButton, Spacer, useDisclosure, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Checkbox,
+  Flex,
+  IconButton,
+  Spacer,
+  useDisclosure,
+  VStack,
+} from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
@@ -24,6 +33,7 @@ const defaultFormData: SecretSquareFormData = {
   content: "",
   pollItems: [{ name: "" }, { name: "" }],
   canMultiple: false,
+  isAnonymous: true,
 };
 
 function SquareWritingPage() {
@@ -62,7 +72,7 @@ function SquareWritingPage() {
 
   const onSubmit: SubmitHandler<SecretSquareFormData> = (data) => {
     const type = isPollType ? "poll" : "general";
-    const { category, title, content, pollItems, canMultiple } = data;
+    const { category, title, content, pollItems, canMultiple, isAnonymous } = data;
 
     const formData = new FormData();
 
@@ -78,6 +88,7 @@ function SquareWritingPage() {
     imageFormArr.forEach((imageBlob) => {
       formData.append("images", imageBlob);
     });
+    formData.append("isAnonymous", JSON.stringify(isAnonymous));
 
     createSecretSquareMutate(
       { formData },
@@ -216,22 +227,26 @@ function SquareWritingPage() {
         </VStack>
       </Slide>
       <WritingNavigation>
-        <ImageUploadButton
-          maxFiles={5}
-          setImageUrls={setImageArr}
-          setImageForms={setImageFormArr}
-        />
-        <Button
-          color="var(--gray-600)"
-          type="button"
-          onClick={openPollCreatorDrawer}
-          leftIcon={<i className="fa-regular fa-check-to-slot fa-lg" />}
-          variant="ghost"
-          size="sm"
-          border="none"
-        >
-          투표
-        </Button>
+        <div>
+          <ImageUploadButton
+            maxFiles={5}
+            setImageUrls={setImageArr}
+            setImageForms={setImageFormArr}
+          />
+          <Button
+            color="var(--gray-600)"
+            type="button"
+            onClick={openPollCreatorDrawer}
+            leftIcon={<i className="fa-regular fa-check-to-slot fa-lg" />}
+            variant="ghost"
+            size="sm"
+          >
+            투표
+          </Button>
+        </div>
+        <Checkbox {...register("isAnonymous")} colorScheme="mintTheme">
+          익명
+        </Checkbox>
       </WritingNavigation>
     </>
   );
