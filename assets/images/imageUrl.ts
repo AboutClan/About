@@ -28,11 +28,6 @@ export const SQUARE_RANDOM_IMAGE = [
   "https://user-images.githubusercontent.com/84257439/239726332-c03bf0bb-4df7-4b28-8c3f-0cde7dca0ed1.jpg",
 ];
 
-export const GATHER_RANDOM_MAIN = [
- 
- 
-];
-
 export const EVENT_BANNER_CALENDAR =
   "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/banner.webp";
 
