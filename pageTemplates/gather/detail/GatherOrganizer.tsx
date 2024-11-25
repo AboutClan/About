@@ -1,5 +1,4 @@
 import { Badge } from "../../../components/atoms/badges/Badges";
-import { AboutIcon } from "../../../components/atoms/Icons/AboutIcon";
 import OrganizerBar from "../../../components/molecules/OrganizerBar";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 
@@ -11,25 +10,11 @@ interface IGatherOrganizer {
 }
 
 function GatherOrganizer({ createdAt, organizer, isAdminOpen, category }: IGatherOrganizer) {
+  const isABOUT = isAdminOpen;
   return (
-    <OrganizerBar
-      avatar={
-        isAdminOpen ? (
-          <AboutIcon size="md" />
-        ) : (
-          <OrganizerBar.Avatar
-            avatar={organizer.avatar}
-            uid={organizer.uid}
-            image={organizer.profileImage}
-            isLink
-            size="md"
-          />
-        )
-      }
-      name={organizer.name}
-      createdAt={createdAt}
-      right={<Badge colorScheme="redTheme" text={category} size="lg" />}
-    />
+    <OrganizerBar organizer={organizer} createdAt={createdAt} isAdminOpen={isABOUT}>
+      <Badge colorScheme="red" text={category} size="lg" />
+    </OrganizerBar>
   );
 }
 
