@@ -24,7 +24,7 @@ function RegisterLocation() {
   const info: IUserRegisterFormWriting = JSON.parse(localStorage.getItem(REGISTER_INFO));
 
   const [errorMessage, setErrorMessage] = useState("");
-  const [location, setLocation] = useState<Location>(info?.location);
+  const [location, setLocation] = useState<Location | "기타">(info?.location);
 
   const [placeInfo, setPlaceInfo] = useState<KakaoLocationProps>({
     place_name: "",
@@ -43,7 +43,7 @@ function RegisterLocation() {
     if (!placeInfo) return;
 
     const getLocation = getLocationByCoordinates(+placeInfo.y, +placeInfo.x);
-    setLocation(getLocation as Location);
+    setLocation((getLocation as Location) || "기타");
   }, [placeInfo]);
 
   useEffect(() => {
@@ -101,7 +101,7 @@ function RegisterLocation() {
           />
           {location && (
             <Box ml="auto" w="max-content" mt={4} fontSize="12px" color="gray.600">
-              <b>{LOCATION_TO_FULLNAME[location]}</b> 지역으로 분류됩니다.
+              <b>{LOCATION_TO_FULLNAME[location] || "기타"}</b> 지역으로 분류됩니다.
             </Box>
           )}
         </Box>
