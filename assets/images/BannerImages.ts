@@ -7,10 +7,10 @@ interface BannerProps {
 export const MAIN_BANNER_IMAGE: BannerProps[] = [
   {
     image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/KakaoTalk_20241125_231707601.png",
-    category: "study",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/KakaoTalk_20241125_231716808.png",
+    category: "group",
+    url: "/group",
   },
-
   {
     image:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/KakaoTalk_20241126_191413319.png",
@@ -19,15 +19,14 @@ export const MAIN_BANNER_IMAGE: BannerProps[] = [
   },
   {
     image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/KakaoTalk_20241125_231646096.png",
-    category: "promotion",
-    url: "/promotion",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/KakaoTalk_20241126_191411054.png",
+    category: "study",
   },
   {
     image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/KakaoTalk_20241125_231716808.png",
-    category: "group",
-    url: "/group",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/KakaoTalk_20241125_231646096.png",
+    category: "promotion",
+    url: "/promotion",
   },
 ];
 
