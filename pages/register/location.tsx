@@ -40,7 +40,10 @@ function RegisterLocation() {
   });
 
   useEffect(() => {
-    if (!placeInfo?.place_name) return;
+    if (!placeInfo?.place_name) {
+      setLocation(null);
+      return;
+    }
     const getLocation = getLocationByCoordinates(+placeInfo.y, +placeInfo.x);
     setLocation((getLocation as Location) || "기타");
   }, [placeInfo]);
