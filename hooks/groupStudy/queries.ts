@@ -20,6 +20,16 @@ interface GroupShapShotProps {
   waiting: IGroup[];
 }
 
+export const useGroupOnlyStudyQuery = (options?: QueryOptions<{ study: IGroup[] }>) =>
+  useQuery<{ study: IGroup[] }, AxiosError, { study: IGroup[] }>(
+    [GROUP_STUDY, "study"],
+    async () => {
+      const res = await axios.get<{ study: IGroup[] }>(`${SERVER_URI}/groupStudy/study`, {});
+
+      return res.data;
+    },
+    options,
+  );
 export const useGroupSnapshotQuery = (options?: QueryOptions<GroupShapShotProps>) =>
   useQuery<GroupShapShotProps, AxiosError, GroupShapShotProps>(
     [GROUP_STUDY, "snapshot"],
@@ -82,7 +92,6 @@ export const useGroupIdQuery = (groupStudyId?: string, options?: QueryOptions<IG
   useQuery<IGroup, AxiosError, IGroup>(
     [GROUP_STUDY, groupStudyId],
     async () => {
-     
       const res = await axios.get<IGroup>(`${SERVER_URI}/groupStudy`, {
         params: { groupStudyId },
       });

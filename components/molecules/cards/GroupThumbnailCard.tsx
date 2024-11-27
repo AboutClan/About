@@ -19,7 +19,7 @@ const VOTER_SHOW_MAX = 4;
 export interface GroupThumbnailCardProps {
   title: string;
   text: string;
-  status: GroupStatus | "ready";
+  status: GroupStatus | "ready" | "study";
   category: IGroupWritingCategory;
   participants: (GroupParicipantProps | { user: IUserSummary })[];
   imageProps: {
@@ -44,7 +44,6 @@ export function GroupThumbnailCard({
   maxCnt,
   waitingCnt,
 }: GroupThumbnailCardProps) {
-
   const userAvatarArr = participants
     ?.filter((par) => par)
     .map((par) =>
@@ -61,6 +60,7 @@ export function GroupThumbnailCard({
     full: { text: "인원마감", colorScheme: "orange" },
     waiting: { text: "오픈대기중", colorScheme: "red" },
     pending: { text: "모집중", colorScheme: "mint" },
+    study: { text: "진행중", colorScheme: "mint" },
     end: { text: "종료", colorScheme: "gray" },
     ready: { text: "오픈 예정", colorScheme: "purple" },
   };
@@ -114,9 +114,24 @@ export function GroupThumbnailCard({
               </Flex>
             </Flex>
           </Flex>
-        ) : (
+        ) : category.main !== "시험기간" ? (
           <Box ml="auto" mr={1} h={4} fontSize="11px" color="purple" fontWeight="semibold">
             {waitingCnt + 3}명의 멤버가 오픈을 기다리고 있어요
+          </Box>
+        ) : (
+          <Box
+            ml="auto"
+            mr={1}
+            h={4}
+            fontSize="11px"
+            color={id === 140 ? "purple" : "mint"}
+            fontWeight="semibold"
+          >
+            {id === 138
+              ? "시험기간 한정 스터디 챌린지"
+              : id === 139
+              ? "11월 27일 ~ 12월 1일까지 진행(1차)"
+              : "11월 30일부터 매일 매일"}
           </Box>
         )}
       </Flex>
@@ -136,6 +151,7 @@ function PlaceImage(props: PlaceImageProps) {
       pos="relative"
       w="98px"
       h="98px"
+      border="var(--border)"
     >
       <Image
         {...props}

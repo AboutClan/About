@@ -230,6 +230,7 @@ function GroupPage() {
                         : group.memberCnt.min > group.participants.length
                         ? "waiting"
                         : group.status;
+
                     return (
                       <Box key={group.id} pb={3} mb={3} borderBottom="var(--border)">
                         <GroupThumbnailCard
@@ -280,14 +281,19 @@ function GroupPage() {
 
 export const createGroupThumbnailProps = (
   group: IGroup,
-  status: "pending" | "end" | "ready" | "imminent" | "full" | "waiting",
+  status: "pending" | "end" | "ready" | "imminent" | "full" | "waiting" | "study",
   idx: number,
   func,
   isPriority,
 ) => ({
   title: group.title,
   text: group.guide,
-  status: group.participants.length <= 1 ? "ready" : status,
+  status:
+    group.id !== 140 && group.status === "study"
+      ? "study"
+      : group.participants.length <= 1
+      ? "ready"
+      : status,
   category: group.category,
   participants: group.participants.map((user) =>
     group.isSecret ? { user: ABOUT_USER_SUMMARY } : user,
@@ -306,7 +312,6 @@ export const createGroupThumbnailProps = (
 
 const Layout = styled.div`
   min-height: 100vh;
-
   padding-bottom: 60px;
 `;
 

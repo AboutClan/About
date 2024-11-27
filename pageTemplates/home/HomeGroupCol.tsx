@@ -41,6 +41,7 @@ export default function HomeGroupCol({ threeGroups }: HomeGroupColProps) {
                   : group.memberCnt.min > group.participants.length
                   ? "waiting"
                   : group.status;
+              console.log(24, group);
               return (
                 <GroupThumbnailCard
                   key={idx}
