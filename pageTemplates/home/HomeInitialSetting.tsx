@@ -1,16 +1,15 @@
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 import { createGlobalStyle } from "styled-components";
 
-import { USER_GUIDE, USER_LOCATION } from "../../constants/keys/localStorage";
+import { USER_LOCATION } from "../../constants/keys/localStorage";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { usePushServiceInitialize } from "../../hooks/FcmManger/mutaion";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import UserSettingPopUp from "../../pageTemplates/setting/userSetting/userSettingPopUp";
 import { isPWA } from "../../utils/appEnvUtils";
-import { checkAndSetLocalStorage } from "../../utils/storageUtils";
 
 function HomeInitialSetting() {
   const { data: session } = useSession();
@@ -28,7 +27,6 @@ function HomeInitialSetting() {
 
   // const [isGuide, setIsGuide] = useState(false);
 
-  const [isGuestModal, setIsGuestModal] = useState(false);
   const { data: userInfo } = useUserInfoQuery({
     enabled: isGuest === false,
     onSuccess(data) {
@@ -66,10 +64,10 @@ function HomeInitialSetting() {
       localStorage.setItem(USER_LOCATION, "수원");
     }
 
-    if (isGuest && !checkAndSetLocalStorage(USER_GUIDE, 1)) {
-      setIsGuestModal(true);
-      // setIsGuide(true);
-    }
+    // if (isGuest && !checkAndSetLocalStorage(USER_GUIDE, 1)) {
+    //   setIsGuestModal(true);
+    //   // setIsGuide(true);
+    // }
 
     if (userInfo) {
       localStorage.setItem(USER_LOCATION, userInfo.location);
