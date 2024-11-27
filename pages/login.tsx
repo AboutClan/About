@@ -181,7 +181,7 @@ const Login: NextPage<{
             <Button
               variant="ghost"
               fontSize="12px"
-              size="md"
+              size="xs"
               fontWeight="medium"
               opacity={0.8}
               color="white"
