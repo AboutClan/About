@@ -1,5 +1,5 @@
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createGlobalStyle } from "styled-components";
 
@@ -8,7 +8,6 @@ import { useToast } from "../../hooks/custom/CustomToast";
 import { usePushServiceInitialize } from "../../hooks/FcmManger/mutaion";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
-import FAQPopUp from "../../modals/pop-up/FAQPopUp";
 import UserSettingPopUp from "../../pageTemplates/setting/userSetting/userSettingPopUp";
 import { isPWA } from "../../utils/appEnvUtils";
 import { checkAndSetLocalStorage } from "../../utils/storageUtils";
@@ -129,7 +128,6 @@ function HomeInitialSetting() {
   return (
     <>
       {userInfo && !isGuest && <UserSettingPopUp userInfo={userInfo} />}
-      {isGuestModal && <FAQPopUp setIsModal={setIsGuestModal} />}
       <GlobalStyle />
       {/* <Joyride
         hideCloseButton={true}
