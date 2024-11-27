@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -211,7 +211,7 @@ function GroupPage() {
           )}
           <Box minH="100dvh">
             {!groupStudies.length && isLoading ? (
-              <GroupSkeletonMain />
+              [1, 2, 3, 4, 5].map((num) => <GroupSkeletonMain key={num} />)
             ) : (
               <Flex direction="column" p={5}>
                 {groupStudies
