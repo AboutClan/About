@@ -63,7 +63,7 @@ export default function HomeGroupCol({ threeGroups, isStudy }: HomeGroupColProps
           )}
         </Flex>
       ) : (
-          [1, 2, 3].map((idx) => <GroupSkeletonMain key={idx} isStudy={isStudy} />)
+        [1, 2, 3].map((idx) => <GroupSkeletonMain key={idx} isStudy={isStudy} />)
       )}
     </Box>
   );

@@ -1,4 +1,4 @@
-import { Box, Flex, Skeleton } from "@chakra-ui/react";
+import { Box, Flex, Skeleton, SkeletonText } from "@chakra-ui/react";
 
 function GroupSkeletonMain({ isStudy = false }: { isStudy?: boolean }) {
   return (
@@ -12,7 +12,9 @@ function GroupSkeletonMain({ isStudy = false }: { isStudy?: boolean }) {
           <Skeleton w="56px" h={5} mr={1}></Skeleton>
         </Flex>
         <Skeleton h={6} w="140px" mb={1}></Skeleton>
-        <Skeleton h={6} w="full"></Skeleton>
+
+        <SkeletonText my={0.5} noOfLines={2} skeletonHeight={3}></SkeletonText>
+
         <Flex justify="space-between" mt={3}>
           <Skeleton w={isStudy ? 0 : "52px"} h={4}></Skeleton>
           <Skeleton w={isStudy ? "120px" : "36px"} h={4}></Skeleton>
