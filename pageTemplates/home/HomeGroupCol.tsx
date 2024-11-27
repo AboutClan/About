@@ -14,9 +14,10 @@ dayjs().locale("ko");
 
 interface HomeGroupColProps {
   threeGroups: IGroup[];
+  isStudy?: boolean;
 }
 
-export default function HomeGroupCol({ threeGroups }: HomeGroupColProps) {
+export default function HomeGroupCol({ threeGroups, isStudy }: HomeGroupColProps) {
   const { data: session } = useSession();
 
   const setTransferGroup = useSetRecoilState(transferGroupDataState);
@@ -41,7 +42,7 @@ export default function HomeGroupCol({ threeGroups }: HomeGroupColProps) {
                   : group.memberCnt.min > group.participants.length
                   ? "waiting"
                   : group.status;
-              console.log(24, group);
+
               return (
                 <GroupThumbnailCard
                   key={idx}
@@ -62,7 +63,7 @@ export default function HomeGroupCol({ threeGroups }: HomeGroupColProps) {
           )}
         </Flex>
       ) : (
-        [1, 2, 3].map((idx) => <GroupSkeletonMain key={idx} />)
+          [1, 2, 3].map((idx) => <GroupSkeletonMain key={idx} isStudy={isStudy} />)
       )}
     </Box>
   );

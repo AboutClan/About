@@ -8,7 +8,7 @@ import HomeGroupCol from "./HomeGroupCol";
 
 function HomeGroupStudySection() {
   const { data: data } = useGroupOnlyStudyQuery();
-  console.log(data);
+
   return (
     <>
       <Box my={5}>
@@ -17,7 +17,7 @@ function HomeGroupStudySection() {
             <ShortArrowIcon dir="right" />
           </ButtonWrapper>
         </SectionHeader>
-        <HomeGroupCol threeGroups={data?.study?.slice().reverse()} />
+        <HomeGroupCol threeGroups={data?.study?.slice().reverse()} isStudy />
       </Box>
     </>
   );
