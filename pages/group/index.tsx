@@ -209,11 +209,11 @@ function GroupPage() {
               />
             </Box>
           )}
-          <Box minH="100dvh">
+          <Box minH="100dvh" p={5}>
             {!groupStudies.length && isLoading ? (
               [1, 2, 3, 4, 5].map((num) => <GroupSkeletonMain key={num} />)
             ) : (
-              <Flex direction="column" p={5}>
+              <Flex direction="column">
                 {groupStudies
                   ?.slice()
                   ?.reverse()
