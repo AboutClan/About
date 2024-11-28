@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Avatar from "../../../components/atoms/Avatar";
 import Header from "../../../components/layouts/Header";
-import AdminLocationSelector from "../../../components/molecules/picker/AdminLocationSelector";
 import { useUserRegisterFormsQuery } from "../../../hooks/admin/quries";
 import CheckRegisterModal from "../../../modals/admin/checkRegisterModal/CheckRegisterModal";
 import { IUserRegisterForm } from "../../../types/models/userTypes/userInfoTypes";
@@ -16,7 +15,6 @@ function AdminRegister() {
   const [isModal, setIsModal] = useState(false);
   const [applicant, setApplicant] = useState<IUserRegisterForm>();
   const [isRefetch, setIsRefetch] = useState(false);
-  const [registerData, setRegisterData] = useState<IUserRegisterForm[]>([]);
 
   const { data: applyData, refetch } = useUserRegisterFormsQuery();
 
@@ -24,6 +22,8 @@ function AdminRegister() {
     setApplicant(who);
     setIsModal(true);
   };
+
+  useEffect(() => {}, []);
 
   useEffect(() => {
     if (isRefetch)
@@ -37,13 +37,13 @@ function AdminRegister() {
     <>
       <Header title="가입 신청 확인" url="/admin" />
       <Layout>
-        <AdminLocationSelector
+        {/* <AdminLocationSelector
           initialData={applyData}
           setRequestData={setRegisterData}
           type="register"
-        />
+        /> */}
         <Main>
-          {registerData?.map((who, idx) => (
+          {applyData?.map((who, idx) => (
             <Item key={idx}>
               <Avatar uid={who.uid} image={who.profileImage} size="md" />
               <Summary>

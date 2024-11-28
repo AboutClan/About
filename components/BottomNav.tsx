@@ -116,12 +116,6 @@ const navItems: INavButtonProps[] = [
     url: "/home",
   },
   {
-    activeIcon: <StudyIcon isActive />,
-    defaultIcon: <StudyIcon />,
-    text: "스터디",
-    url: "/studyPage",
-  },
-  {
     activeIcon: <ThunderIcon isActive />,
     defaultIcon: <ThunderIcon />,
     text: "소셜링",
@@ -132,6 +126,12 @@ const navItems: INavButtonProps[] = [
     defaultIcon: <CommunityIcon />,
     text: "소모임",
     url: "/group",
+  },
+  {
+    activeIcon: <StudyIcon isActive />,
+    defaultIcon: <StudyIcon />,
+    text: "스터디",
+    url: "/studyPage",
   },
   {
     activeIcon: <UserIcon size="md" isActive />,
