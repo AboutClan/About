@@ -2,8 +2,8 @@ import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import { Badge, Box, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -131,6 +131,12 @@ function GroupDetail() {
                   <Box my={4} fontSize="18px" fontWeight="bold" lineHeight="28px">
                     소개
                   </Box>
+                  {group.category.main === "시험기간" && (
+                    <Box fontSize="12px" mb={4} color="mint">
+                      ※ 해당 챌린지는 카톡방에서 진행됩니다. 관련 사항은 동아리 공지방을
+                      확인해주세요!
+                    </Box>
+                  )}
                   <Box
                     color="gray.600"
                     fontWeight="regular"
