@@ -27,7 +27,7 @@ export default function UserOverview({ userInfo }: UserOverviewProps) {
       typeToast("guest");
       return;
     }
-    router.push("/register/location?edit=on");
+    router.push("/register/name?edit=on");
   };
 
   return (
@@ -64,7 +64,7 @@ export default function UserOverview({ userInfo }: UserOverviewProps) {
         </UserInfoContainer>
         <Link
           href={{
-            href: "/register/location",
+            href: "/register/name",
             query: { edit: "on" },
           }}
         >

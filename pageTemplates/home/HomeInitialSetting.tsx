@@ -1,5 +1,5 @@
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { createGlobalStyle } from "styled-components";
 
@@ -31,7 +31,7 @@ function HomeInitialSetting() {
     enabled: isGuest === false,
     onSuccess(data) {
       if (data.role === "newUser") {
-        router.push("/register/location");
+        router.push("/register/name");
         return;
       }
       if (data.role === "waiting") {
