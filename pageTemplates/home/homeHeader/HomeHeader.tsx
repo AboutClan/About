@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
@@ -10,13 +10,12 @@ import ButtonWrapper from "../../../components/atoms/ButtonWrapper";
 import { CalendarCheckIcon, NoticeIcon } from "../../../components/Icons/SolidIcons";
 import Slide from "../../../components/layouts/PageSlide";
 import { AboutLogo } from "../../../components/services/AboutLogo";
-import { DAILY_CHECK_POP_UP, NOTICE_ALERT } from "../../../constants/keys/localStorage";
+import { DAILY_CHECK_POP_UP } from "../../../constants/keys/localStorage";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import DailyCheckModal from "../../../modals/aboutHeader/dailyCheckModal/DailyCheckModal";
 import PointSystemsModal from "../../../modals/aboutHeader/pointSystemsModal/PointSystemsModal";
 import LastWeekAttendPopUp from "../../../modals/pop-up/LastWeekAttendPopUp";
 import { renderHomeHeaderState } from "../../../recoils/renderRecoils";
-import { NOTICE_ARR } from "../../../storage/notice";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 
 export type HomeHeaderModalType = "rule" | "dailyCheck" | "pointGuide" | null;
@@ -32,22 +31,22 @@ function HomeHeader() {
 
   const todayDailyCheck = localStorage.getItem(DAILY_CHECK_POP_UP) === dayjsToStr(dayjs());
 
-  const [isNoticeAlert, setIsNoticeAlert] = useState(false);
+  // const [isNoticeAlert, setIsNoticeAlert] = useState(false);
 
   // const { data } = useNoticeActiveLogQuery(undefined, false);
 
   // const { data: recentChat } = useRecentChatQuery({ enabled: isGuest === false });
 
-  useEffect(() => {
-    // if (!data) return;
-    // const recentOne = data[0]?.message;
+  // useEffect(() => {
+  //   // if (!data) return;
+  //   // const recentOne = data[0]?.message;
 
-    const noticeCnt = localStorage.getItem(NOTICE_ALERT);
+  //   const noticeCnt = localStorage.getItem(NOTICE_ALERT);
 
-    if (NOTICE_ARR.length !== +noticeCnt) {
-      setIsNoticeAlert(true);
-    }
-  }, []);
+  //   if (NOTICE_ARR.length !== +noticeCnt) {
+  //     setIsNoticeAlert(true);
+  //   }
+  // }, []);
 
   return (
     <>
@@ -76,32 +75,32 @@ function HomeHeader() {
                   </Box>
                 </ButtonWrapper>
               </Box>
-              <ButtonWrapper url="/notice" size="sm">
-                <Box
-                  opacity={0.4}
-                  w="full"
-                  h="full"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    toast(
-                      "warning",
-                      "알림 페이지 기능 점검중! 주요 공지사항은 단톡방을 확인해 주세요!",
-                    );
-                  }}
-                >
-                  <NoticeIcon />
-                </Box>
-                <Box
-                  position="absolute"
-                  right="6px"
-                  top="5px"
-                  p="1px"
-                  bgColor="white"
-                  borderRadius="50%"
-                >
-                  <AlertCirclePoint isActive={isNoticeAlert} />
-                </Box>
-              </ButtonWrapper>
+              <Box
+                as="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  toast(
+                    "warning",
+                    "알림 페이지 기능 점검중! 주요 공지사항은 단톡방을 확인해 주세요!",
+                  );
+                }}
+              >
+                <ButtonWrapper size="sm">
+                  <Box opacity={0.4} w="full" h="full">
+                    <NoticeIcon />
+                  </Box>
+                  <Box
+                    position="absolute"
+                    right="6px"
+                    top="5px"
+                    p="1px"
+                    bgColor="white"
+                    borderRadius="50%"
+                  >
+                    <AlertCirclePoint isActive={false} />
+                  </Box>
+                </ButtonWrapper>
+              </Box>
             </Flex>
           </Layout>
         )}

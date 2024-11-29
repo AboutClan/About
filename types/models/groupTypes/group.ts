@@ -6,7 +6,7 @@ import { IUser, IUserSummary } from "../userTypes/userInfoTypes";
 
 export type GroupCategory = (typeof GROUP_STUDY_CATEGORY_ARR)[number];
 
-export type GroupStatus = "pending" | "end" | "imminent" | "full" | "waiting" | "study";
+export type GroupStatus = "pending" | "end" | "imminent" | "full" | "waiting" | "planned";
 export interface IGroup extends IGroupWriting {
   createdAt: string;
   participants: GroupParicipantProps[];
@@ -28,7 +28,7 @@ export interface IGroupWriting extends TimeStampProps {
   meetingType: "offline" | "online" | "hybrid";
   content: string;
   rules: string[];
-  status: GroupStatus | "study";
+  status: GroupStatus;
   guide: string;
   feeText: string;
   image?: string;

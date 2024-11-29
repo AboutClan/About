@@ -35,6 +35,8 @@ interface ICategory {
   sub: string | null;
 }
 
+type Status = "모집중" | "종료" | "시험 기간" | "오픈 예정";
+
 function GroupPage() {
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
@@ -47,7 +49,7 @@ function GroupPage() {
   const localStorageCursorNum = +localStorage.getItem(GROUP_CURSOR_NUM);
 
   const setTransdferGroupData = useSetRecoilState(transferGroupDataState);
-  const [status, setStatus] = useState<"모집중" | "종료">("모집중");
+  const [status, setStatus] = useState<Status>("모집중");
   const [groupStudies, setGroupStudies] = useState<IGroup[]>([]);
 
   const [cursor, setCursor] = useState(localStorageCursorNum);
@@ -126,9 +128,11 @@ function GroupPage() {
   }, []);
 
   useEffect(() => {
-    const statusToEn = {
+    const statusToEn: Record<Status, string> = {
       모집중: "pending",
       종료: "end",
+      "시험 기간": "study",
+      "오픈 예정": "expected",
     };
     newSearchParams.set("filter", statusToEn[status]);
     router.replace(`/group?${newSearchParams.toString()}`);
@@ -179,7 +183,7 @@ function GroupPage() {
                 size="sm"
                 isThick
                 defaultValue={status}
-                options={["모집중", "종료"]}
+                options={["모집중", "오픈 예정", "시험 기간", "종료"]}
                 setValue={setStatus}
               />
             </SectionHeader>
@@ -281,19 +285,14 @@ function GroupPage() {
 
 export const createGroupThumbnailProps = (
   group: IGroup,
-  status: "pending" | "end" | "ready" | "imminent" | "full" | "waiting" | "study",
+  status: "pending" | "end" | "ready" | "imminent" | "full" | "waiting" | "planned",
   idx: number,
   func,
   isPriority,
 ) => ({
   title: group.title,
   text: group.guide,
-  status:
-    group.id !== 140 && group.status === "study"
-      ? "study"
-      : group.participants.length <= 1
-      ? "ready"
-      : status,
+  status: group.status === "planned" ? "ready" : status,
   category: group.category,
   participants: group.participants.map((user) =>
     group.isSecret ? { user: ABOUT_USER_SUMMARY } : user,

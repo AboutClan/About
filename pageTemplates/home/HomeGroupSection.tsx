@@ -3,12 +3,14 @@ import { Box } from "@chakra-ui/react";
 import ButtonWrapper from "../../components/atoms/ButtonWrapper";
 import SectionHeader from "../../components/atoms/SectionHeader";
 import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
-import { useGroupSnapshotQuery } from "../../hooks/groupStudy/queries";
+import { GroupShapShotProps } from "../../hooks/groupStudy/queries";
 import HomeGroupCol from "./HomeGroupCol";
 
-function HomeGroupSection() {
-  const { data: data } = useGroupSnapshotQuery();
+interface HomeGroupSectionProps {
+  groups: GroupShapShotProps;
+}
 
+function HomeGroupSection({ groups }: HomeGroupSectionProps) {
   return (
     <>
       <Box my={5}>
@@ -17,7 +19,7 @@ function HomeGroupSection() {
             <ShortArrowIcon dir="right" />
           </ButtonWrapper>
         </SectionHeader>
-        <HomeGroupCol threeGroups={data?.offline} />
+        <HomeGroupCol threeGroups={groups?.offline} />
       </Box>
       <Box my={5}>
         <SectionHeader title="About 온라인 소모임" subTitle="Group">
@@ -25,7 +27,7 @@ function HomeGroupSection() {
             <ShortArrowIcon dir="right" />
           </ButtonWrapper>
         </SectionHeader>
-        <HomeGroupCol threeGroups={data?.online} />
+        <HomeGroupCol threeGroups={groups?.online} />
       </Box>
       <Box my={5}>
         <SectionHeader title="About 신규 소모임" subTitle="Group">
@@ -33,7 +35,7 @@ function HomeGroupSection() {
             <ShortArrowIcon dir="right" />
           </ButtonWrapper>
         </SectionHeader>
-        <HomeGroupCol threeGroups={data?.new.slice().reverse()} />
+        <HomeGroupCol threeGroups={groups?.new.slice().reverse()} />
       </Box>
       <Box my={5}>
         <SectionHeader title="About 오픈 예정 소모임" subTitle="Group">
@@ -41,7 +43,7 @@ function HomeGroupSection() {
             <ShortArrowIcon dir="right" />
           </ButtonWrapper>
         </SectionHeader>
-        <HomeGroupCol threeGroups={data?.waiting} />
+        <HomeGroupCol threeGroups={groups?.waiting} />
       </Box>
     </>
   );

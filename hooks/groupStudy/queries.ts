@@ -13,11 +13,12 @@ import {
   IGroupAttendance,
 } from "../../types/models/groupTypes/group";
 
-interface GroupShapShotProps {
+export interface GroupShapShotProps {
   online: IGroup[];
   offline: IGroup[];
   new: IGroup[];
   waiting: IGroup[];
+  study: IGroup[];
 }
 
 export const useGroupOnlyStudyQuery = (options?: QueryOptions<{ study: IGroup[] }>) =>

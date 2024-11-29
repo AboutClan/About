@@ -3,12 +3,14 @@ import { Box } from "@chakra-ui/react";
 import ButtonWrapper from "../../components/atoms/ButtonWrapper";
 import SectionHeader from "../../components/atoms/SectionHeader";
 import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
-import { useGroupOnlyStudyQuery } from "../../hooks/groupStudy/queries";
+import { GroupShapShotProps } from "../../hooks/groupStudy/queries";
 import HomeGroupCol from "./HomeGroupCol";
 
-function HomeGroupStudySection() {
-  const { data: data } = useGroupOnlyStudyQuery();
+interface HomeGroupStudySectionProps {
+  groups: GroupShapShotProps;
+}
 
+function HomeGroupStudySection({ groups }: HomeGroupStudySectionProps) {
   return (
     <>
       <Box my={5}>
@@ -17,7 +19,7 @@ function HomeGroupStudySection() {
             <ShortArrowIcon dir="right" />
           </ButtonWrapper>
         </SectionHeader>
-        <HomeGroupCol threeGroups={data?.study?.slice().reverse()} isStudy />
+        <HomeGroupCol threeGroups={groups?.study?.slice().reverse()} isStudy />
       </Box>
     </>
   );
