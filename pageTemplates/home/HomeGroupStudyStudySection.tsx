@@ -19,7 +19,10 @@ function HomeGroupStudySection({ groups }: HomeGroupStudySectionProps) {
             <ShortArrowIcon dir="right" />
           </ButtonWrapper>
         </SectionHeader>
-        <HomeGroupCol threeGroups={groups?.study?.slice().reverse()} isStudy />
+        <HomeGroupCol
+          threeGroups={groups?.study?.sort((a, _) => (a.status === "pending" ? 1 : -1))}
+          isStudy
+        />
       </Box>
     </>
   );

@@ -79,9 +79,10 @@ export function GroupThumbnailCard({
               {category?.sub}
             </Box>
           </Box>
-
           <Badge mr={1} size="lg" colorScheme={statusToBadgeProps[status].colorScheme}>
-            {statusToBadgeProps[status].text}
+            {status === "pending" && category.main === "시험기간"
+              ? "진행중"
+              : statusToBadgeProps[status].text}
           </Badge>
         </Flex>
         <Title>{title}</Title>
