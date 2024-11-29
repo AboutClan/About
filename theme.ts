@@ -252,10 +252,10 @@ const theme = extendTheme({
         },
         lg: {
           px: "8px !important",
-          py: "2px",
+          py: "3px",
           h: "20px",
           fontWeight: "bold",
-          fontSize: "11px",
+          fontSize: "10px",
 
           borderRadius: "4px",
         },
