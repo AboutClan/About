@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -26,7 +26,7 @@ import { useGroupQuery } from "../../hooks/groupStudy/queries";
 import GroupMine from "../../pageTemplates/group/GroupMine";
 import GroupSkeletonMain from "../../pageTemplates/group/GroupSkeletonMain";
 import { transferGroupDataState } from "../../recoils/transferRecoils";
-import { GroupCategory, IGroup } from "../../types/models/groupTypes/group";
+import { GroupCategory, GroupStatus, IGroup } from "../../types/models/groupTypes/group";
 import { shuffleArray } from "../../utils/convertUtils/convertDatas";
 import { getRandomIdx } from "../../utils/mathUtils";
 
@@ -231,8 +231,6 @@ function GroupPage() {
                         ? "full"
                         : group.memberCnt.max - 2 <= group.participants.length
                         ? "imminent"
-                        : group.memberCnt.min > group.participants.length
-                        ? "waiting"
                         : group.status;
 
                     return (
@@ -285,14 +283,14 @@ function GroupPage() {
 
 export const createGroupThumbnailProps = (
   group: IGroup,
-  status: "pending" | "end" | "ready" | "imminent" | "full" | "waiting" | "planned",
+  status: GroupStatus,
   idx: number,
   func,
   isPriority,
 ) => ({
   title: group.title,
   text: group.guide,
-  status: group.status === "planned" ? "ready" : status,
+  status: status,
   category: group.category,
   participants: group.participants.map((user) =>
     group.isSecret ? { user: ABOUT_USER_SUMMARY } : user,

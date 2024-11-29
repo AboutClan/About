@@ -33,6 +33,8 @@ export default function HomeGroupCol({ threeGroups, isStudy }: HomeGroupColProps
               const status =
                 group.status === "end"
                   ? "end"
+                  : group.status === "planned"
+                  ? "planned"
                   : group.memberCnt.max === 0
                   ? "pending"
                   : group.memberCnt.max <= group.participants.length
@@ -40,7 +42,7 @@ export default function HomeGroupCol({ threeGroups, isStudy }: HomeGroupColProps
                   : group.memberCnt.max - 2 <= group.participants.length
                   ? "imminent"
                   : group.memberCnt.min > group.participants.length
-                  ? "waiting"
+                  ? "planned"
                   : group.status;
 
               return (

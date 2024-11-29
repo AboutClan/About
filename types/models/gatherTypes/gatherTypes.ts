@@ -40,7 +40,7 @@ export interface IGatherWriting {
 export type GatherCategory = "전체" | "모집중" | "완료";
 export type IGatherType = { title: string; subtitle?: string };
 
-export type GatherStatus = "open" | "close" | "end" | "pending" | "ready";
+export type GatherStatus = "open" | "close" | "end" | "pending" | "planned";
 
 export type IGatherLocation = {
   main: string;
