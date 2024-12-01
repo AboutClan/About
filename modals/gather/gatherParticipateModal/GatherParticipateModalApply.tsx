@@ -26,12 +26,12 @@ function GatherParticipateModalApply({
     const myOld = birthToAge(userInfo.birth);
     const participantsCnt = gatherData.participants.length;
 
-    const places = gatherData.place.split("/");
+    // const places = gatherData.place.split("/");
 
-    if (places[0] !== "전체" && !places.includes(userInfo.location)) {
-      failToast("free", "참여할 수 없는 지역입니다.");
-      return;
-    }
+    // if (places[0] !== "전체" && !places.includes(userInfo.location)) {
+    //   failToast("free", "참여할 수 없는 지역입니다.");
+    //   return;
+    // }
 
     if ((gatherData.age[0] !== 19 && myOld < gatherData.age[0]) || myOld > gatherData.age[1]) {
       failToast("free", "나이 조건이 맞지 않습니다.");
