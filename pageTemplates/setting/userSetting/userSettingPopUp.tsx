@@ -119,8 +119,8 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
   useEffect(() => {
     // const popUpCnt = cnt;
 
-    if (userInfo?.locationDetail) {
-      setModalTypes((old) => [...old, "registerLocation"]);
+    if (!userInfo?.locationDetail) {
+      // setModalTypes((old) => [...old, "registerLocation"]);
       return;
     } else if (
       !checkAndSetLocalStorage("preference", 3) &&
