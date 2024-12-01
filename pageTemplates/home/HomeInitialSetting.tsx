@@ -120,7 +120,6 @@ function HomeInitialSetting() {
     <>
       {userInfo && !isGuest && <UserSettingPopUp userInfo={userInfo} />}
       {isGuestModal && <FAQPopUp setIsModal={setIsGuestModal} />}
-      <GlobalStyle />
       <Joyride
         hideCloseButton
         continuous
@@ -135,6 +134,7 @@ function HomeInitialSetting() {
             width: 320,
             zIndex: 1000,
             beaconSize: 0,
+            primaryColor: "var(--color-mint)",
           },
         }}
         spotlightPadding={5}
@@ -143,50 +143,5 @@ function HomeInitialSetting() {
     </>
   );
 }
-
-const GlobalStyle = createGlobalStyle`
-
-  .react-joyride__tooltip{
-    height:180px !important;
-    padding:16px !important;
- display:flex;
- flex-direction:column;
-    >div:nth-child(2){
-      margin-top:auto !important;
-      display:flex !important;
-      align-items:flex-end !important;
-    >div:first-child{
-      >button{
-      font-size:16px !important;
-      }
-
-    }
-      >button{
-        margin-left:var(--gap-2) !important;
-      padding:0 !important;
-        background-color:inherit !important;
-        :focus{
-          outline:none;
-        }
-        >div{
-          font-size:15px;
-          padding:4px 16px;
-        }
-      }
-    }
-  }
-  .react-joyride__beacon {
-    >span:first-child{
-      background-color:var(--color-mint) !important;
-
-    }
-    >span:last-child{
-    border-color:var(--color-mint) !important;
- background-color:var(--color-mint-light) !important;
-      
-    }
-   
-  }
-`;
 
 export default HomeInitialSetting;

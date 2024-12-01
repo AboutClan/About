@@ -11,20 +11,12 @@ const Content = styled.div`
   color: var(--gray-2);
 `;
 
-function BackButton() {
-  return (
-    <Button as="div" color="var(--color-mint)" borderColor="var(--color-mint)" variant="outline">
-      뒤로
-    </Button>
-  );
+function BackButton({ children }: PropsWithChildren) {
+  return <Button variant="outline">{children}</Button>;
 }
 
 function NextButton({ children }: PropsWithChildren) {
-  return (
-    <Button as="div" colorScheme="mint">
-      {children}
-    </Button>
-  );
+  return <Button>{children}</Button>;
 }
 
 export const STEPS_CONTENTS: Step[] = [
@@ -35,7 +27,6 @@ export const STEPS_CONTENTS: Step[] = [
     title: <Title>웹사이트 이용 가이드</Title>,
     locale: {
       skip: "나중에",
-      back: "뒤로",
       close: "닫기",
 
       next: <NextButton>보여주세요!</NextButton>,
@@ -48,9 +39,7 @@ export const STEPS_CONTENTS: Step[] = [
   {
     content: <Content>매일 출석체크, 알림 페이지가 있어요!</Content>,
     locale: {
-      back: <BackButton />,
-
-      close: "닫기",
+      back: <BackButton>뒤로</BackButton>,
       next: <NextButton>다음</NextButton>,
     },
     target: "[data-joyride-step='about_header']",
@@ -59,9 +48,7 @@ export const STEPS_CONTENTS: Step[] = [
   {
     content: <Content>스터디 랭킹을 확인할 수 있어요!</Content>,
     locale: {
-      back: <BackButton />,
-
-      close: "닫기",
+      back: <BackButton>뒤로</BackButton>,
       next: <NextButton>다음</NextButton>,
     },
     target: "[data-joyride-step='랭킹']",
@@ -74,9 +61,7 @@ export const STEPS_CONTENTS: Step[] = [
       </Content>
     ),
     locale: {
-      back: <BackButton />,
-
-      close: "닫기",
+      back: <BackButton>뒤로</BackButton>,
       next: <NextButton>다음</NextButton>,
     },
     target: "[data-joyride-step='스토어']",
@@ -85,9 +70,7 @@ export const STEPS_CONTENTS: Step[] = [
   {
     content: <Content>동아리 공식 행사, 이벤트를 확인해보세요!</Content>,
     locale: {
-      back: <BackButton />,
-
-      close: "닫기",
+      back: <BackButton>뒤로</BackButton>,
       next: <NextButton>다음</NextButton>,
     },
     target: "[data-joyride-step='캘린더']",
@@ -96,9 +79,7 @@ export const STEPS_CONTENTS: Step[] = [
   {
     content: <Content>익명 게시판에서 관심있는 주제로 동아리원과 소통해보세요!</Content>,
     locale: {
-      back: <BackButton />,
-
-      close: "닫기",
+      back: <BackButton>뒤로</BackButton>,
       next: <NextButton>다음</NextButton>,
     },
     target: "[data-joyride-step='게시판']",
@@ -107,9 +88,7 @@ export const STEPS_CONTENTS: Step[] = [
   {
     content: <Content>About 공식 디스코드 채널에 가입할 수 있어요!</Content>,
     locale: {
-      back: <BackButton />,
-
-      close: "닫기",
+      back: <BackButton>뒤로</BackButton>,
       next: <NextButton>다음</NextButton>,
     },
     target: "[data-joyride-step='디스코드']",
@@ -119,9 +98,7 @@ export const STEPS_CONTENTS: Step[] = [
   {
     content: <Content>동아리원들과의 번개 모임에 참여할 수 있어요!</Content>,
     locale: {
-      back: <BackButton />,
-
-      close: "닫기",
+      back: <BackButton>뒤로</BackButton>,
       next: <NextButton>다음</NextButton>,
     },
     target: "[data-joyride-step='gather-section']",
@@ -131,9 +108,7 @@ export const STEPS_CONTENTS: Step[] = [
   {
     content: <Content>동아리 모임 관련 리뷰를 확인할 수 있어요!</Content>,
     locale: {
-      back: <BackButton />,
-
-      close: "닫기",
+      back: <BackButton>뒤로</BackButton>,
       next: <NextButton>다음</NextButton>,
     },
     target: "[data-joyride-step='lounge-section']",
@@ -143,9 +118,7 @@ export const STEPS_CONTENTS: Step[] = [
   {
     content: <Content>동아리에서 열리는 오프라인 모임에 참여해보세요!</Content>,
     locale: {
-      back: <BackButton />,
-
-      close: "닫기",
+      back: <BackButton>뒤로</BackButton>,
       next: <NextButton>다음</NextButton>,
     },
     target: "[data-joyride-step='offline-group-section']",
@@ -154,9 +127,7 @@ export const STEPS_CONTENTS: Step[] = [
   {
     content: <Content>오프라인 모임 외 온라인 모임에 참여할 수 있어요!</Content>,
     locale: {
-      back: <BackButton />,
-
-      close: "닫기",
+      back: <BackButton>뒤로</BackButton>,
       next: <NextButton>다음</NextButton>,
     },
     target: "[data-joyride-step='online-group-section']",
@@ -165,9 +136,7 @@ export const STEPS_CONTENTS: Step[] = [
   {
     content: <Content>최근에 열린 소모임 활동에 참여해보세요!</Content>,
     locale: {
-      back: <BackButton />,
-
-      close: "닫기",
+      back: <BackButton>뒤로</BackButton>,
       next: <NextButton>다음</NextButton>,
     },
     target: "[data-joyride-step='new-group-section']",
@@ -176,9 +145,7 @@ export const STEPS_CONTENTS: Step[] = [
   {
     content: <Content>곧 열릴 소모임 활동을 확인해보세요!</Content>,
     locale: {
-      back: <BackButton />,
-
-      close: "닫기",
+      back: <BackButton>뒤로</BackButton>,
       next: <NextButton>다음</NextButton>,
     },
     target: "[data-joyride-step='opened-group-section']",
@@ -188,9 +155,7 @@ export const STEPS_CONTENTS: Step[] = [
   {
     content: <Content>About 메인 홈으로 이동할 수 있어요!</Content>,
     locale: {
-      back: <BackButton />,
-
-      close: "닫기",
+      back: <BackButton>뒤로</BackButton>,
       next: <NextButton>다음</NextButton>,
     },
     target: "[data-joyride-step='홈']",
@@ -199,9 +164,7 @@ export const STEPS_CONTENTS: Step[] = [
   {
     content: <Content>원하는 장소와 시간에서 함께 스터디 활동을 신청해요!</Content>,
     locale: {
-      back: <BackButton />,
-
-      close: "닫기",
+      back: <BackButton>뒤로</BackButton>,
       next: <NextButton>다음</NextButton>,
     },
     target: "[data-joyride-step='스터디']",
@@ -210,9 +173,7 @@ export const STEPS_CONTENTS: Step[] = [
   {
     content: <Content>About 메인 홈으로 이동할 수 있어요!</Content>,
     locale: {
-      back: <BackButton />,
-
-      close: "닫기",
+      back: <BackButton>뒤로</BackButton>,
       next: <NextButton>다음</NextButton>,
     },
     target: "[data-joyride-step='소셜링']",
@@ -221,9 +182,7 @@ export const STEPS_CONTENTS: Step[] = [
   {
     content: <Content>About 메인 홈으로 이동할 수 있어요!</Content>,
     locale: {
-      back: <BackButton />,
-
-      close: "닫기",
+      back: <BackButton>뒤로</BackButton>,
       next: <NextButton>다음</NextButton>,
     },
     target: "[data-joyride-step='소모임']",
@@ -232,9 +191,7 @@ export const STEPS_CONTENTS: Step[] = [
   {
     content: <Content>About 메인 홈으로 이동할 수 있어요!</Content>,
     locale: {
-      back: <BackButton />,
-
-      close: "닫기",
+      back: <BackButton>뒤로</BackButton>,
       next: <NextButton>다음</NextButton>,
     },
     target: "[data-joyride-step='내 정보']",
@@ -253,7 +210,7 @@ export const STEPS_CONTENTS: Step[] = [
     },
 
     locale: {
-      back: null,
+      back: <BackButton>뒤로</BackButton>,
       skip: null,
       last: <NextButton>확인</NextButton>,
     },
