@@ -36,7 +36,7 @@ function HomeInitialSetting() {
     enabled: isGuest === false,
     onSuccess(data) {
       if (data.role === "newUser") {
-        router.push("/register/location");
+        router.push("/register/name");
         return;
       }
       if (data.role === "waiting") {
