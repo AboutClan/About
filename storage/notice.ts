@@ -809,7 +809,7 @@ export const NOTICE_ARR: INoticeArr[] = [
     category: "event",
     content:
       "여름 방학 동안 번개 모임을 개설하면 활동비를 지원해요! 이는 모임장 개인에게 지급하는 거예요!",
-    date: "2023-07-08",
+    date: "2024-07-08",
   },
   {
     id: "103",
@@ -817,7 +817,7 @@ export const NOTICE_ARR: INoticeArr[] = [
     category: "main",
     content:
       "여태까지 동아리 홍보를 안하고 있었는데, 이제 계획했던 준비들이 거의 다 끝나가서 홍보와 확장을 시도합니다! 지역 또한 기존보다 3배 이상 확장되었습니다. 에타에 홍보글을 올릴때 마다 2000원과 매주 치킨 기프티콘을 드리니까 시간 될 때 한번씩 꼭 참여해주세요!",
-    date: "2023-07-08",
+    date: "2024-07-08",
   },
   {
     id: "104",
@@ -825,7 +825,7 @@ export const NOTICE_ARR: INoticeArr[] = [
     category: "sub",
     content:
       "배지는 코코아, 모히또, 슈팅스타 / 캐릭터는 삐약이, 펭귄 / 배경 3종이 추가 되었습니다.",
-    date: "2023-07-14",
+    date: "2024-07-14",
   },
   {
     id: "105",
@@ -833,7 +833,7 @@ export const NOTICE_ARR: INoticeArr[] = [
     category: "sub",
     content:
       "신규 스터디 장소가 추가되었습니다. 더 원하시는 곳 있으면 언제든 스터디 장소 등록을 해주세요! 신규 등록 장소는 각 지역 스터디 페이지에서 확인할 수 있습니다.",
-    date: "2023-07-30",
+    date: "2024-07-30",
   },
   {
     id: "106",
@@ -841,7 +841,7 @@ export const NOTICE_ARR: INoticeArr[] = [
     category: "event",
     content:
       "홍보 이벤트 당첨자가 발표되었습니다. 스토어 상품 추첨 결과가 발표되었습니다. 알파벳 수집 보상이 지급되었습니다.",
-    date: "2023-07-30",
+    date: "2024-07-30",
   },
   {
     id: "107",
@@ -849,7 +849,7 @@ export const NOTICE_ARR: INoticeArr[] = [
     category: "main",
     content:
       "라운지에는 모임 또는 소모임 리뷰나 피드가 올라오고, 좋아요나 댓글을 달 수 있습니다. 해당 컨텐츠에서도 많은 포인트를 획득할 수 있으니 자세한 내용은 해당 페이지에서 확인해주세요.",
-    date: "2023-07-30",
+    date: "2024-07-30",
   },
   {
     id: "108",
@@ -857,7 +857,7 @@ export const NOTICE_ARR: INoticeArr[] = [
     category: "main",
     content:
       "마이페이지에서 프로필을 비공개로 설정하면 친구로 등록된 인원만 프로필 열람이 가능해집니다. 또한 인스타 아이디를 프로필에 추가할 수 있습니다. 유저끼리 쪽지를 보낼 수 있는 기능이 출시되었습니다.",
-    date: "2023-07-30",
+    date: "2024-07-30",
   },
   {
     id: "109",
@@ -865,7 +865,7 @@ export const NOTICE_ARR: INoticeArr[] = [
     category: "update",
     content:
       "라운지에 이어 익명 커뮤니티가 출시되었습니다! 익명이 보장되니까 할 얘기가 있다면 부담없이 소통하세요!",
-    date: "2023-08-13",
+    date: "2024-08-13",
   },
   {
     id: "110",
@@ -873,7 +873,7 @@ export const NOTICE_ARR: INoticeArr[] = [
     category: "main",
     content:
       "이벤트 당첨자 발표, 커뮤니티 출시, 번개/소모임 개설 가이드. 상세 내용은 하단 링크 참조.",
-    date: "2023-08-13",
+    date: "2024-08-13",
     link: "https://mewing-sombrero-e36.notion.site/8-0eec96824f8e4ff09d6a66a27de9572f?pvs=25",
   },
   {
@@ -882,7 +882,7 @@ export const NOTICE_ARR: INoticeArr[] = [
     category: "main",
     content:
       "단톡방에서 공지한대로 지역 -> 동네 단위로 곧 한번 더 세분화가 될 예정입니다. 또한 앱 서비스도 리뉴얼을 진행중이니 확인해주세요! 마지막으로 한 달에 1회 스터디 참여는 '필수' 사항입니다!",
-    date: "2023-09-21",
+    date: "2024-09-21",
   },
   {
     id: "112",
@@ -890,7 +890,7 @@ export const NOTICE_ARR: INoticeArr[] = [
     category: "main",
     content:
       "베타 테스트를 위해 사전 출시합니다! 곧 어플 출시와 함께 정규 공지를 할 수 있도록 하겠습니다. 상세 내용은 단톡방을 확인해 주세요!",
-    date: "2023-10-18",
+    date: "2024-10-18",
   },
   {
     id: "113",
@@ -898,7 +898,7 @@ export const NOTICE_ARR: INoticeArr[] = [
     category: "event",
     content:
       "정규 스터디, 매칭된 스터디, 심지어 개인 스터디까지! 공부하고 인증만 하면 치킨을 드립니다!!",
-    date: "2023-10-19",
+    date: "2024-10-19",
   },
   {
     id: "114",
@@ -906,6 +906,6 @@ export const NOTICE_ARR: INoticeArr[] = [
     category: "event",
     content:
       "매일 매일!! 어떤 스터디든 상관없이 스터디 인증만 하면 랜덤으로 기프티콘을 보내드립니다!!",
-    date: "2023-10-19",
+    date: "2024-10-19",
   },
 ];

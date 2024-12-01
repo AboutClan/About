@@ -6,14 +6,12 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import SectionFooterButton from "../../../components/atoms/SectionFooterButton";
-import BlurredPart from "../../../components/molecules/BlurredPart";
 import {
   StudyThumbnailCard,
   StudyThumbnailCardProps,
 } from "../../../components/molecules/cards/StudyThumbnailCard";
 import { StudyThumbnailCardSkeleton } from "../../../components/skeleton/StudyThumbnailCardSkeleton";
 import { STUDY_CHECK_POP_UP, STUDY_VOTING_TABLE } from "../../../constants/keys/localStorage";
-import { LOCATION_RECRUITING, LOCATION_TO_FULLNAME } from "../../../constants/location";
 import {
   STUDY_DATE_START_HOUR,
   STUDY_RESULT_HOUR,
@@ -24,11 +22,7 @@ import { setStudyToThumbnailInfo } from "../../../libs/study/setStudyToThumbnail
 import { DispatchString } from "../../../types/hooks/reactTypes";
 import { StudyMergeParticipationProps } from "../../../types/models/studyTypes/studyDetails";
 import { StudyVotingSave } from "../../../types/models/studyTypes/studyInterActions";
-import {
-  ActiveLocation,
-  InactiveLocation,
-  LocationEn,
-} from "../../../types/services/locationTypes";
+import { ActiveLocation, LocationEn } from "../../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 
@@ -150,30 +144,20 @@ function StudyCardCol({ participations, date, setDate }: StudyCardColProps) {
           dragElastic={0.3}
           onDragEnd={(_, panInfo) => onDragEnd(panInfo)}
         >
-          <BlurredPart
-            text={
-              LOCATION_RECRUITING.includes(location as InactiveLocation)
-                ? `${LOCATION_TO_FULLNAME[location]} 오픈 준비중`
-                : ""
-            }
-            isBlur={LOCATION_RECRUITING.includes(location as InactiveLocation)}
-            size="lg"
-          >
-            {studyCardColData ? (
-              <Flex direction="column">
-                {studyCardColData.map((cardData, idx) => (
-                  <Box key={idx} mb={3}>
-                    <StudyThumbnailCard {...cardData} />
-                  </Box>
-                ))}
-                {studyCardColData.length >= 3 && (
-                  <SectionFooterButton url={`/studyList?location=${locationEn}&date=${date}`} />
-                )}
-              </Flex>
-            ) : (
-              [1, 2, 3].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)
-            )}
-          </BlurredPart>
+          {studyCardColData ? (
+            <Flex direction="column">
+              {studyCardColData.map((cardData, idx) => (
+                <Box key={idx} mb={3}>
+                  <StudyThumbnailCard {...cardData} />
+                </Box>
+              ))}
+              {studyCardColData.length >= 3 && (
+                <SectionFooterButton url={`/studyList?location=${locationEn}&date=${date}`} />
+              )}
+            </Flex>
+          ) : (
+            [1, 2, 3].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)
+          )}
         </motion.div>
       </AnimatePresence>
 

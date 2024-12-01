@@ -3,7 +3,6 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Joyride, { CallBackProps, STATUS } from "react-joyride";
-import { createGlobalStyle } from "styled-components";
 
 import { STEPS_CONTENTS } from "../../constants/contentsText/GuideContents";
 import { USER_GUIDE, USER_LOCATION } from "../../constants/keys/localStorage";

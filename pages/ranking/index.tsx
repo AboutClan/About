@@ -17,13 +17,13 @@ import StatisticsFilterBar from "../../pageTemplates/ranking/StatisticsFilterBar
 import StatisticsMine from "../../pageTemplates/ranking/StatisticsMine";
 import StatisticsTabNav from "../../pageTemplates/ranking/StatisticsTabNav";
 
-export type RankingCategoryProp = "주간 랭킹" | "월간 랭킹" | "스터디 랭킹" | "누적 랭킹";
+export type RankingCategoryProp = "월간 랭킹" | "스터디 랭킹" | "누적 랭킹";
 export type RankingCategorySource = "monthScore" | "cnt" | "score" | "weekStudyAccumulationMinutes";
 
-const CATEGORY_ARR: RankingCategoryProp[] = ["주간 랭킹", "월간 랭킹", "스터디 랭킹", "누적 랭킹"];
+const CATEGORY_ARR: RankingCategoryProp[] = ["월간 랭킹", "스터디 랭킹", "누적 랭킹"];
 
 const CATEGORY_SOURCE: { [key in RankingCategoryProp]: RankingCategorySource } = {
-  "주간 랭킹": "weekStudyAccumulationMinutes",
+  // "주간 랭킹": "weekStudyAccumulationMinutes",
   "월간 랭킹": "monthScore",
   "스터디 랭킹": "cnt",
   "누적 랭킹": "score",
@@ -89,7 +89,7 @@ function Ranking() {
       enabled: !!session,
     },
   );
-  console.log(24, usersAll);
+ 
 
   useEffect(() => {
     if (filterOptions.category === "스터디 랭킹" && !attendRecords) return;

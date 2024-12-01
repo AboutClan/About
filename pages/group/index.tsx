@@ -26,7 +26,7 @@ import { useGroupQuery } from "../../hooks/groupStudy/queries";
 import GroupMine from "../../pageTemplates/group/GroupMine";
 import GroupSkeletonMain from "../../pageTemplates/group/GroupSkeletonMain";
 import { transferGroupDataState } from "../../recoils/transferRecoils";
-import { GroupCategory, IGroup } from "../../types/models/groupTypes/group";
+import { GroupCategory, GroupStatus, IGroup } from "../../types/models/groupTypes/group";
 import { shuffleArray } from "../../utils/convertUtils/convertDatas";
 import { getRandomIdx } from "../../utils/mathUtils";
 
@@ -34,6 +34,8 @@ interface ICategory {
   main: GroupCategory;
   sub: string | null;
 }
+
+type Status = "모집중" | "종료" | "시험 기간" | "오픈 예정";
 
 function GroupPage() {
   const searchParams = useSearchParams();
@@ -47,7 +49,7 @@ function GroupPage() {
   const localStorageCursorNum = +localStorage.getItem(GROUP_CURSOR_NUM);
 
   const setTransdferGroupData = useSetRecoilState(transferGroupDataState);
-  const [status, setStatus] = useState<"모집중" | "종료">("모집중");
+  const [status, setStatus] = useState<Status>("모집중");
   const [groupStudies, setGroupStudies] = useState<IGroup[]>([]);
 
   const [cursor, setCursor] = useState(localStorageCursorNum);
@@ -126,9 +128,11 @@ function GroupPage() {
   }, []);
 
   useEffect(() => {
-    const statusToEn = {
+    const statusToEn: Record<Status, string> = {
       모집중: "pending",
       종료: "end",
+      "시험 기간": "study",
+      "오픈 예정": "expected",
     };
     newSearchParams.set("filter", statusToEn[status]);
     router.replace(`/group?${newSearchParams.toString()}`);
@@ -179,7 +183,7 @@ function GroupPage() {
                 size="sm"
                 isThick
                 defaultValue={status}
-                options={["모집중", "종료"]}
+                options={["모집중", "오픈 예정", "시험 기간", "종료"]}
                 setValue={setStatus}
               />
             </SectionHeader>
@@ -209,11 +213,11 @@ function GroupPage() {
               />
             </Box>
           )}
-          <Box minH="100dvh">
+          <Box minH="100dvh" p={5}>
             {!groupStudies.length && isLoading ? (
-              <GroupSkeletonMain />
+              [1, 2, 3, 4, 5].map((num) => <GroupSkeletonMain key={num} />)
             ) : (
-              <Flex direction="column" p={5}>
+              <Flex direction="column">
                 {groupStudies
                   ?.slice()
                   ?.reverse()
@@ -227,14 +231,17 @@ function GroupPage() {
                         ? "full"
                         : group.memberCnt.max - 2 <= group.participants.length
                         ? "imminent"
-                        : group.memberCnt.min > group.participants.length
-                        ? "waiting"
                         : group.status;
+
                     return (
                       <Box key={group.id} pb={3} mb={3} borderBottom="var(--border)">
                         <GroupThumbnailCard
-                          {...createGroupThumbnailProps(group, status, idx, () =>
-                            setTransdferGroupData(group),
+                          {...createGroupThumbnailProps(
+                            group,
+                            status,
+                            idx,
+                            () => setTransdferGroupData(group),
+                            true,
                           )}
                           // title={group.title}
                           // text={group.guide}
@@ -276,13 +283,14 @@ function GroupPage() {
 
 export const createGroupThumbnailProps = (
   group: IGroup,
-  status: "pending" | "end" | "ready" | "imminent" | "full" | "waiting",
+  status: GroupStatus,
   idx: number,
   func,
+  isPriority,
 ) => ({
   title: group.title,
   text: group.guide,
-  status: group.participants.length <= 1 ? "ready" : status,
+  status: status,
   category: group.category,
   participants: group.participants.map((user) =>
     group.isSecret ? { user: ABOUT_USER_SUMMARY } : user,
@@ -291,7 +299,7 @@ export const createGroupThumbnailProps = (
     image:
       group?.squareImage ||
       GATHER_RANDOM_IMAGE_ARR[getRandomIdx(GATHER_RANDOM_IMAGE_ARR.length - 1)],
-    isPriority: idx < 4,
+    isPriority: isPriority && idx < 4,
   },
   maxCnt: group.memberCnt.max,
   id: group.id,
@@ -301,7 +309,6 @@ export const createGroupThumbnailProps = (
 
 const Layout = styled.div`
   min-height: 100vh;
-
   padding-bottom: 60px;
 `;
 

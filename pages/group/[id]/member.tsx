@@ -33,7 +33,7 @@ export default function Member() {
   const transferGroup = useRecoilValue(transferGroupDataState);
 
   const { data: groupData } = useGroupIdQuery(id, { enabled: !!id && !transferGroup });
-  console.log(groupData);
+
   const [users, setUsers] = useState<GroupParicipantProps[]>([]);
 
   useEffect(() => {

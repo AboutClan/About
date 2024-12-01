@@ -39,12 +39,13 @@ function GroupDetail() {
   const [group, setTransferGroup] = useRecoilState(transferGroupDataState);
 
   const { data: groupData, refetch } = useGroupIdQuery(id, { enabled: !!id && !group });
- 
+
   useEffect(() => {
     if (groupData) {
       setTransferGroup(groupData);
     }
   }, [groupData]);
+
 
   // useEffect(() => {
   //   if (!group) return;
@@ -67,7 +68,6 @@ function GroupDetail() {
     refetch();
   };
 
-  
   return (
     <>
       {group && <GroupHeader group={group} />}
@@ -131,6 +131,12 @@ function GroupDetail() {
                   <Box my={4} fontSize="18px" fontWeight="bold" lineHeight="28px">
                     소개
                   </Box>
+                  {group.category.main === "시험기간" && (
+                    <Box fontSize="12px" mb={4} color="mint">
+                      ※ 해당 챌린지는 카톡방에서 진행됩니다. 관련 사항은 동아리 공지방을
+                      확인해주세요!
+                    </Box>
+                  )}
                   <Box
                     color="gray.600"
                     fontWeight="regular"
@@ -142,34 +148,38 @@ function GroupDetail() {
                   >
                     {group.content}
                   </Box>
-                  <Box mb={3} fontSize="14px" fontWeight="bold" lineHeight="20px">
-                    <UnorderedList>
-                      <ListItem>규칙</ListItem>
-                    </UnorderedList>
-                  </Box>
-                  <Box
-                    fontWeight="light"
-                    fontSize="12px"
-                    lineHeight="20px"
-                    bg="rgba(160, 174, 192, 0.08)"
-                    px={3}
-                    py={4}
-                    borderRadius="8px"
-                  >
-                    <UnorderedList>
-                      {group.rules.map((rule, idx) => (
-                        <ListItem key={idx}>{rule}</ListItem>
-                      ))}
-                    </UnorderedList>
-                  </Box>
-                  {group?.link && (
+                  {group.rules.length ? (
+                    <>
+                      <Box mb={3} fontSize="14px" fontWeight="bold" lineHeight="20px">
+                        <UnorderedList>
+                          <ListItem>규칙</ListItem>
+                        </UnorderedList>
+                      </Box>
+                      <Box
+                        fontWeight="light"
+                        fontSize="12px"
+                        lineHeight="20px"
+                        bg="rgba(160, 174, 192, 0.08)"
+                        px={3}
+                        py={4}
+                        borderRadius="8px"
+                      >
+                        <UnorderedList>
+                          {group.rules.map((rule, idx) => (
+                            <ListItem key={idx}>{rule}</ListItem>
+                          ))}
+                        </UnorderedList>
+                      </Box>
+                    </>
+                  ) : null}
+                  {group?.link ? (
                     <Box lineHeight="20px" mt={4} fontSize="13px">
                       <Box>
                         <b style={{ color: "var(--gray-800)" }}>단톡방 링크</b>(가입 후 입장)
                       </Box>
                       <BlurredLink isBlur={!isMember} url={group.link} />
                     </Box>
-                  )}
+                  ) : null}
                   <Flex mt={4}>
                     {group.hashTag?.split("#").map((tag, idx) =>
                       tag ? (
@@ -195,8 +205,12 @@ function GroupDetail() {
                 <ContentFeed group={group} />
               )}
               <Box h="1px" my={5} bg="gray.100" />
-              <GroupParticipation data={group} />
-              <GroupComments comments={group.comments} hasAutority={isMember} />
+              {group.category.main !== "시험기간" ? (
+                <>
+                  <GroupParticipation data={group} />
+                  <GroupComments comments={group.comments} hasAutority={isMember} />
+                </>
+              ) : null}
             </Flex>
           </>
         )}

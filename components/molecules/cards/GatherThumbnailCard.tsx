@@ -33,7 +33,7 @@ const STATUS_TO_BADGE_PROPS: Record<GatherStatus, { text: string; colorScheme: s
   close: { text: "취소", colorScheme: "gray" },
   pending: { text: "모집중", colorScheme: "mint" },
   end: { text: "종료", colorScheme: "gray" },
-  ready: { text: "오픈 예정", colorScheme: "purple" },
+  planned: { text: "오픈 예정", colorScheme: "purple" },
 };
 
 export function GatherThumbnailCard({

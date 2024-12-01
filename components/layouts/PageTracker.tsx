@@ -8,10 +8,10 @@ import { slideDirectionState } from "../../recoils/navigationRecoils";
 import { parseUrlToSegments } from "../../utils/stringUtils";
 
 const REGISTER_WRITING_SEQUENCE = {
-  location: 1,
-  name: 2,
-  gender: 3,
-  birthday: 4,
+  name: 1,
+  gender: 2,
+  birthday: 3,
+  location: 4,
   mbti: 5,
   major: 6,
   interest: 7,
@@ -73,7 +73,6 @@ function PageTracker() {
           break;
 
         case "study":
-        
           if (currentSegments?.[1] === "writing") {
             handleWritingPage(
               STUDY_WRITING_SEQUENCE,

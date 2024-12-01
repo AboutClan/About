@@ -16,6 +16,7 @@ import {
   LOCATION_MAX_BOUNDARY,
 } from "../constants/serviceConstants/studyConstants/studyVoteMapConstants";
 import { STUDY_COMMENT_ARR } from "../constants/settingValue/comment";
+import { useToast } from "../hooks/custom/CustomToast";
 import { useStudyVoteQuery } from "../hooks/study/queries";
 import { useUserInfoQuery } from "../hooks/user/queries";
 import { getStudyViewDate } from "../libs/study/date/getStudyDateStatus";
@@ -49,6 +50,7 @@ import { iPhoneNotchSize } from "../utils/validationUtils";
 
 export default function StudyPage() {
   const { data: session } = useSession();
+  const toast = useToast();
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
@@ -91,6 +93,13 @@ export default function StudyPage() {
   //초기 param 값들 설정
   //locationValue와 date는 초기부터 존재 (+ useEffect의 의존 인자x)
   //내 스터디 투표 정보가 있는지에 따라 분류
+
+  useEffect(() => {
+    toast(
+      "info",
+      "베타테스트로 출시한 기능입니다. 24년 12월 말에 진행되는 동네 세분화와 함께 리뉴얼 예정!",
+    );
+  }, []);
 
   useEffect(() => {
     if (!locationValue) return;
@@ -395,11 +404,16 @@ const getMarkersOptions = (
         polyline,
       });
     } else {
+      const randomNum = Math.floor(Math.random() * 5);
+      const cnt = par.members.length + randomNum;
       temp.push({
         id: par.place._id,
         position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
         icon: {
-          content: getStudyIcon(null, par.members.length),
+          content: getStudyIcon(
+            cnt === 1 ? "active" : cnt > 0 ? null : "inactive",
+            cnt === 4 ? 0 : cnt,
+          ),
           size: new naver.maps.Size(72, 72),
           anchor: new naver.maps.Point(36, 44),
         },

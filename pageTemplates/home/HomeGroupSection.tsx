@@ -3,12 +3,14 @@ import { Box } from "@chakra-ui/react";
 import ButtonWrapper from "../../components/atoms/ButtonWrapper";
 import SectionHeader from "../../components/atoms/SectionHeader";
 import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
-import { useGroupSnapshotQuery } from "../../hooks/groupStudy/queries";
+import { GroupShapShotProps } from "../../hooks/groupStudy/queries";
 import HomeGroupCol from "./HomeGroupCol";
 
-function HomeGroupSection() {
-  const { data: data } = useGroupSnapshotQuery();
+interface HomeGroupSectionProps {
+  groups: GroupShapShotProps;
+}
 
+function HomeGroupSection({ groups }: HomeGroupSectionProps) {
   return (
     <>
       <Box my={5}>
@@ -19,7 +21,7 @@ function HomeGroupSection() {
             </ButtonWrapper>
           </SectionHeader>
         </Box>
-        <HomeGroupCol threeGroups={data?.offline} />
+        <HomeGroupCol threeGroups={groups?.offline} />
       </Box>
       <Box my={5}>
         <Box data-joyride-step="online-group-section">
@@ -29,7 +31,7 @@ function HomeGroupSection() {
             </ButtonWrapper>
           </SectionHeader>
         </Box>
-        <HomeGroupCol threeGroups={data?.online} />
+        <HomeGroupCol threeGroups={groups?.online} />
       </Box>
       <Box my={5}>
         <Box data-joyride-step="new-group-section">
@@ -39,7 +41,7 @@ function HomeGroupSection() {
             </ButtonWrapper>
           </SectionHeader>
         </Box>
-        <HomeGroupCol threeGroups={data?.new.slice().reverse()} />
+        <HomeGroupCol threeGroups={groups?.new.slice().reverse()} />
       </Box>
       <Box my={5}>
         <Box data-joyride-step="opened-group-section">
@@ -49,7 +51,7 @@ function HomeGroupSection() {
             </ButtonWrapper>
           </SectionHeader>
         </Box>
-        <HomeGroupCol threeGroups={data?.waiting} />
+        <HomeGroupCol threeGroups={groups?.waiting} />
       </Box>
     </>
   );

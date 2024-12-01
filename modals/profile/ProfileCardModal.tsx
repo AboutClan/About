@@ -16,7 +16,7 @@ function ProfileCardModal({ setIsModal }: IModal) {
   });
 
   const onClickModify = () => {
-    router.push(`/register/location?edit=on`);
+    router.push(`/register/name?edit=on`);
   };
 
   const footerOptions: IFooterOptions = {

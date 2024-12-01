@@ -57,7 +57,7 @@ export const STATUS_TP_COLOR: Record<GatherStatus, string> = {
   pending: "var(--color-red)",
   close: "var(--gray-500)",
   end: "var(--gray-500)",
-  ready: "purple",
+  planned: "purple",
 };
 
 export const COLOR_SCHEME_BG = {

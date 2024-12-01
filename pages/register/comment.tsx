@@ -53,12 +53,12 @@ function Comment() {
 
   return (
     <>
-      <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={80} />
+      <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={77} />
 
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
-          <span>자기 소개 문장을 입력해 주세요</span>
-          <span>나를 소개하는 문장을 선택하거나 직접 입력해 주세요.</span>
+          <span>한 줄 코멘트를 입력해 주세요</span>
+          <span>유저 프로필에 노출되는 내용입니다!</span>
         </RegisterOverview>
         <Container>
           {MESSAGE_DATA?.map((item, idx) => (

@@ -9,6 +9,7 @@ function ApplySuccess() {
   const router = useRouter();
   return (
     <Layout>
+      <Box h="56px" position="fixed" top="0" w="full" bg="gray.100"></Box>
       <Content2>
         <Box>
           <i className="fa-solid fa-circle-check fa-5x" style={{ color: "var(--color-mint)" }} />

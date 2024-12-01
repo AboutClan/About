@@ -1,14 +1,15 @@
-import {
-  ActiveLocation,
-  InactiveLocation,
-  Location,
-  LocationEn,
-} from "../types/services/locationTypes";
+import { ActiveLocation, Location, LocationEn } from "../types/services/locationTypes";
 import { COLOR_TABLE } from "./colorConstants";
 
-export const LOCATION_OPEN: ActiveLocation[] = ["수원", "양천", "강남", "동대문", "인천", "안양"];
+export const PREV_LOCATION: ActiveLocation[] = ["수원", "양천", "강남", "동대문", "인천", "안양"];
 
-export const LOCATION_RECRUITING: InactiveLocation[] = [
+export const LOCATION_OPEN: ActiveLocation[] = [
+  "수원",
+  "양천",
+  "강남",
+  "동대문",
+  "인천",
+  "안양",
   "마포",
   "성남",
   "성동",
@@ -22,7 +23,7 @@ export const LOCATION_RECRUITING: InactiveLocation[] = [
   "시흥",
 ];
 
-export const LOCATION_ALL = [...LOCATION_OPEN, ...LOCATION_RECRUITING];
+export const LOCATION_ALL = [...LOCATION_OPEN, "전체"];
 
 export const LOCATION_TO_FULLNAME: Record<Location, string> = {
   수원: "수원시",
@@ -42,6 +43,7 @@ export const LOCATION_TO_FULLNAME: Record<Location, string> = {
   강북: "강북구 · 노원구",
   부천: "부천시",
   시흥: "시흥시 · 안산시",
+  전체: "전체",
 };
 
 export const LOCATION_OPEN_DATE = {
@@ -54,28 +56,6 @@ export const LOCATION_OPEN_DATE = {
 };
 
 export const RegisterLocation = [...LOCATION_ALL, "기타"];
-
-export const LOCATION_MEMBER_CNT: {
-  [key in Location]: { member: number; new: number };
-} = {
-  수원: { member: 137, new: 4 },
-  양천: { member: 61, new: 2 },
-  안양: { member: 23, new: 3 },
-  강남: { member: 53, new: 2 },
-  동대문: { member: 56, new: 2 },
-  마포: { member: 38, new: 2 },
-  인천: { member: 45, new: 3 },
-  성남: { member: 17, new: 3 },
-  성동: { member: 8, new: 1 },
-  고양: { member: 11, new: 3 },
-  중구: { member: 17, new: 2 },
-  송파: { member: 14, new: 4 },
-  구로: { member: 11, new: 1 },
-  동작: { member: 13, new: 4 },
-  강북: { member: 11, new: 3 },
-  부천: { member: 10, new: 2 },
-  시흥: { member: 13, new: 2 },
-};
 
 export const krToEnMapping: Record<Location, LocationEn> = {
   수원: "suw",
@@ -95,6 +75,7 @@ export const krToEnMapping: Record<Location, LocationEn> = {
   강북: "gangbuk",
   부천: "buc",
   시흥: "sih",
+  전체: "all",
 };
 
 export const enToKrMapping: Record<LocationEn, Location> = {
@@ -115,6 +96,7 @@ export const enToKrMapping: Record<LocationEn, Location> = {
   gangbuk: "강북",
   buc: "부천",
   sih: "시흥",
+  all: "전체",
 };
 
 export const LOCATION_TO_COLOR: Record<ActiveLocation, string> = {
@@ -124,4 +106,15 @@ export const LOCATION_TO_COLOR: Record<ActiveLocation, string> = {
   동대문: COLOR_TABLE[4],
   인천: COLOR_TABLE[2],
   안양: COLOR_TABLE[5],
+  성동: COLOR_TABLE[6],
+  마포: COLOR_TABLE[7],
+  성남: COLOR_TABLE[0],
+  고양: COLOR_TABLE[1],
+  중구: COLOR_TABLE[2],
+  송파: COLOR_TABLE[3],
+  구로: COLOR_TABLE[4],
+  동작: COLOR_TABLE[5],
+  강북: COLOR_TABLE[6],
+  부천: COLOR_TABLE[7],
+  시흥: COLOR_TABLE[2],
 };

@@ -55,7 +55,7 @@ function Name() {
 
   return (
     <>
-      <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={20} />
+      <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={11} />
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>이름을 입력해 주세요</span>

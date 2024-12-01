@@ -5,5 +5,5 @@ export const STATUS_TO_TEXT: Record<GatherStatus, string> = {
   pending: "모집중",
   close: "취소",
   end: "마감",
-  ready: "오픈 예정",
+  planned: "오픈 예정",
 };

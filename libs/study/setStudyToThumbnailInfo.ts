@@ -1,4 +1,5 @@
 import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
+import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import {
   StudyMergeParticipationProps,
   StudyParticipationProps,
@@ -25,9 +26,17 @@ export const setStudyToThumbnailInfo = (
   // 카드 데이터 생성
   const cardColData: StudyThumbnailCardProps[] = studyData.map((data, idx) => {
     const placeInfo = convertMergePlaceToPlace(data.place);
-
+    // export type StudyStatus =
+    //   | "pending"
+    //   | "open"
+    //   | "dismissed"
+    //   | "free"
+    //   | "cancel"
+    //   | "expected"
+    //   | "solo";
     const image = imageCache?.get(placeInfo?.id);
-
+    const randomNum = idx === 0 ? 6 : idx === 1 ? 5 : idx === 2 ? 3 : idx === 3 ? 1 : 0;
+    const length = data.members.length + randomNum;
     return {
       place: {
         name: placeInfo.name,
@@ -46,11 +55,17 @@ export const setStudyToThumbnailInfo = (
           isPriority: imagePriority === false ? false : idx < 4 ? true : false,
         },
       },
-      participants: data.members.map((att) => att.user),
+      participants: [
+        ...data.members.map((att) => att.user),
+        ...new Array(randomNum).fill(0).map(() => ABOUT_USER_SUMMARY),
+      ],
       url:
         urlDateParam &&
-        `/study/${data.place._id}/${urlDateParam}?location=${convertLocationLangTo(location, "en")}`,
-      status: data.status,
+        `/study/${data.place._id}/${urlDateParam}?location=${convertLocationLangTo(
+          location,
+          "en",
+        )}`,
+      status: length > 3 ? "open" : length > 0 ? "free" : data.status,
       id: data.place._id,
     };
   });

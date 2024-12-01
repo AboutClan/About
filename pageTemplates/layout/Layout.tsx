@@ -65,7 +65,7 @@ function Layout({ children }: ILayout) {
     if (status === "loading" || session === undefined) return;
     const role = session?.user.role;
     if (role === "newUser") {
-      router.push("/register/location");
+      router.push("/register/name");
       return;
     }
     if (role === "waiting") {

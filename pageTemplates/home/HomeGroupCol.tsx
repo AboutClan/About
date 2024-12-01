@@ -14,9 +14,10 @@ dayjs().locale("ko");
 
 interface HomeGroupColProps {
   threeGroups: IGroup[];
+  isStudy?: boolean;
 }
 
-export default function HomeGroupCol({ threeGroups }: HomeGroupColProps) {
+export default function HomeGroupCol({ threeGroups, isStudy }: HomeGroupColProps) {
   const { data: session } = useSession();
 
   const setTransferGroup = useSetRecoilState(transferGroupDataState);
@@ -25,13 +26,15 @@ export default function HomeGroupCol({ threeGroups }: HomeGroupColProps) {
     <Box my={4}>
       {threeGroups?.length ? (
         <Flex direction="column">
-          {(threeGroups
+          {threeGroups
             .slice()
-            .reverse())
+            .reverse()
             .map((group, idx) => {
               const status =
                 group.status === "end"
                   ? "end"
+                  : group.status === "planned"
+                  ? "planned"
                   : group.memberCnt.max === 0
                   ? "pending"
                   : group.memberCnt.max <= group.participants.length
@@ -39,12 +42,19 @@ export default function HomeGroupCol({ threeGroups }: HomeGroupColProps) {
                   : group.memberCnt.max - 2 <= group.participants.length
                   ? "imminent"
                   : group.memberCnt.min > group.participants.length
-                  ? "waiting"
+                  ? "planned"
                   : group.status;
+
               return (
                 <GroupThumbnailCard
                   key={idx}
-                  {...createGroupThumbnailProps(group, status, idx, () => setTransferGroup(group))}
+                  {...createGroupThumbnailProps(
+                    group,
+                    status,
+                    idx,
+                    () => setTransferGroup(group),
+                    false,
+                  )}
                 />
               );
             })}
@@ -55,7 +65,7 @@ export default function HomeGroupCol({ threeGroups }: HomeGroupColProps) {
           )}
         </Flex>
       ) : (
-        [1, 2, 3].map((idx) => <GroupSkeletonMain key={idx} />)
+        [1, 2, 3].map((idx) => <GroupSkeletonMain key={idx} isStudy={isStudy} />)
       )}
     </Box>
   );

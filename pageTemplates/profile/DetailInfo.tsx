@@ -3,7 +3,6 @@ import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
 import BlurredPart from "../../components/molecules/BlurredPart";
-import Chart from "../../components/organisms/chart/Chart";
 import { PLACE_TO_NAME } from "../../constants/serviceConstants/studyConstants/studyCafeNameConstants";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { birthToAge } from "../../utils/convertUtils/convertTypes";
@@ -69,7 +68,7 @@ function DetailInfo({ user, groups }: { user: IUser; groups: string[] }) {
           </ProfileItem>
         </Profile>
       </BlurredPart>
-      <Chart type="study" user={user} />
+      {/* <Chart type="study" user={user} /> */}
     </Layout>
   );
 }

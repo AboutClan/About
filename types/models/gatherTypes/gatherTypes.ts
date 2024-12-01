@@ -1,7 +1,7 @@
 import { Dayjs } from "dayjs";
 
 import { UserCommentProps } from "../../components/propTypes";
-import { CombinedLocation, Location } from "../../services/locationTypes";
+import { Location } from "../../services/locationTypes";
 import { TimeStampProps } from "../../utils/timeAndDate";
 import { IUserSummary } from "../userTypes/userInfoTypes";
 
@@ -19,7 +19,7 @@ export interface IGather extends Omit<IGatherWriting, "date">, TimeStampProps {
 
 export interface IGatherWriting {
   type: IGatherType;
-  place: Location | CombinedLocation;
+  place: Location | "전체";
   genderCondition: boolean;
   title: string;
   content: string;
@@ -40,7 +40,7 @@ export interface IGatherWriting {
 export type GatherCategory = "전체" | "모집중" | "완료";
 export type IGatherType = { title: string; subtitle?: string };
 
-export type GatherStatus = "open" | "close" | "end" | "pending" | "ready";
+export type GatherStatus = "open" | "close" | "end" | "pending" | "planned";
 
 export type IGatherLocation = {
   main: string;

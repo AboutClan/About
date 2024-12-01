@@ -79,12 +79,12 @@ function StudyControlButton({ setIsVoteDrawer, setIsDrawerUp, date }: StudyContr
           iconSpacing={1}
           leftIcon={<CheckCircleIcon size="sm" isFill={false} />}
           onClick={() => setIsStudyDrawer(true)}
-          isDisabled={!!isArrived}
+          isDisabled={!isArrived}
           _hover={{
             background: undefined,
           }}
         >
-          {isArrived ? "출석 완료" : "스터디"}
+          {!isArrived ? "출석 완료" : "스터디"}
         </Button>
       </Flex>
       {isStudyDrawer && (
