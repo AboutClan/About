@@ -18,7 +18,7 @@ const P = styled.p`
   background-color: var(--input-bg);
 `;
 
-export const OPEN_KAKAO_LINK = "https://open.kakao.com/o/sjDgVzmf";
+export const OPEN_KAKAO_LINK = "https://open.kakao.com/o/sapxSHGg";
 
 export const PROMOTION_TITLE = `✨동아리 하나로 스터디부터 취미, 소모임, 번개까지⁉️ 수도권 대학생 연합 동아리 ABOUT에서 하고 싶은 거 다 하자‼️`;
 

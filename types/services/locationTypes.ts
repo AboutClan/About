@@ -1,12 +1,8 @@
 export type Location = ActiveLocation | "전체";
 
-export type ActiveLocation =
-  | "수원"
-  | "양천"
-  | "안양"
-  | "강남"
-  | "동대문"
-  | "인천"
+export type ActiveLocation = "수원" | "양천" | "안양" | "강남" | "동대문" | "인천";
+
+export type ReadyLocation =
   | "마포"
   | "성남"
   | "성동"

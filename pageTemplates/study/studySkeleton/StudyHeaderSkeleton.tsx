@@ -11,13 +11,13 @@ function StudyHeaderSkeleton() {
           <Skeleton>temp</Skeleton>
         </Title>
       </div>
-      <div>{location && <i className="fa-solid fa-arrow-up-from-bracket fa-lg"  />}</div>
+      <div>{location && <i className="fa-solid fa-arrow-up-from-bracket fa-lg" />}</div>
     </Layout>
   );
 }
 
 const Layout = styled.div`
-  height: var(--header-height);
+  height: var(--header-h);
   padding: 0 var(--gap-4);
   display: flex;
   justify-content: space-between;

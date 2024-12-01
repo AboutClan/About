@@ -45,8 +45,8 @@ function Phone() {
 
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
-          <span>핸드폰 번호를 작성해 주세요</span>
-          <span>입력하신 번호로 동아리 가입 승인 연락을 드리고 있어요!</span>
+          <span>핸드폰 번호를 입력해 주세요</span>
+          <span>가입 승인 연락과 본인 확인에만 사용됩니다.</span>
         </RegisterOverview>
         <Input
           value={value}

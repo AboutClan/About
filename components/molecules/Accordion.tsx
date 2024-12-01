@@ -1,13 +1,15 @@
 import {
   Accordion as ChakraAccordion,
   AccordionButton,
-  AccordionIcon,
   AccordionItem,
   AccordionPanel,
+  Box,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import styled from "styled-components";
 
 import { OPEN_KAKAO_LINK } from "../../constants/contentsText/Private";
+import { ShortArrowIcon } from "../Icons/ArrowIcons";
 import ExternalLink from "./ExternalLink";
 
 export interface IAccordionContent {
@@ -22,38 +24,74 @@ interface IAccordion {
 }
 
 function Accordion({ contentArr, isFull, isQ = true }: IAccordion) {
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const handleAccordionChange = (index: number | null) => {
+    setSelectedIndex(index);
+  };
   return (
-    <ChakraAccordion allowToggle fontSize="13px">
+    <ChakraAccordion
+      allowToggle
+      fontSize="13px"
+      onChange={(index) => handleAccordionChange(index as number | null)}
+    >
       {contentArr?.map((item, idx) => {
         const content = item.content;
         return (
-          <AccordionItem key={idx}>
+          <AccordionItem
+            fontSize="14px"
+            fontWeight="regular"
+            lineHeight="20px"
+            key={idx}
+            borderTop="none"
+            borderBottom="var(--border)"
+          >
             <AccordionButton
-              _focus={{ outline: "none" }}
-              p="var(--gap-3) var(--gap-2)"
+              _focus={{ outline: "none", bg: "none", boxShadow: "none" }}
+              py={4}
+              px={0}
               display="flex"
               justifyContent="space-between"
-              fontSize="13px"
+              fontSize="14px"
+              borderTop="none"
             >
               <Container isFull={isFull}>
-                {isQ && <QIcon>Q.</QIcon>}
-                <Title>{item.title}</Title>
-              </Container>
-              <AccordionIcon />
-            </AccordionButton>
-            <AccordionPanel p="var(--gap-3) var(--gap-2)">
-              <Content isFull={isFull}>
-                {Array.isArray(content) ? (
-                  content.map((list, idx) => <li key={idx}>{list}</li>)
-                ) : (
-                  <p>
-                    {content}
-                    {content === "" && (
-                      <ExternalLink href={OPEN_KAKAO_LINK}>{OPEN_KAKAO_LINK}</ExternalLink>
-                    )}
-                  </p>
+                {isQ && (
+                  <Box mr={2} color="mint" fontWeight="extrabold">
+                    Q.
+                  </Box>
                 )}
-              </Content>
+                <Box fontWeight={idx === selectedIndex ? "bold" : "regular"}>{item.title}</Box>
+              </Container>
+              {/* <AccordionIcon /> */}
+              <Box opacity={idx === selectedIndex ? 1 : 0.2}>
+                <ShortArrowIcon
+                  dir={idx === selectedIndex ? "top" : "bottom"}
+                  size="md"
+                  color="gray"
+                />
+              </Box>
+            </AccordionButton>
+            <AccordionPanel
+              py={3}
+              px={5}
+              bg="rgba(0,194,179,0.02)"
+              borderRadius="12px"
+              border="1px solid rgba(0,194,179,0.08)"
+            >
+              {Array.isArray(content) ? (
+                content.map((list, idx) => <li key={idx}>{list}</li>)
+              ) : (
+                <Box as="p" fontSize="13px" lineHeight="20px " color="gray.700">
+                  <Box as="span" mr={2} color="mint" fontWeight="extrabold">
+                    A.
+                  </Box>
+                  <br />
+                  {content}
+                  {content === "" && (
+                    <ExternalLink href={OPEN_KAKAO_LINK}>{OPEN_KAKAO_LINK}</ExternalLink>
+                  )}
+                </Box>
+              )}
             </AccordionPanel>
           </AccordionItem>
         );
@@ -63,23 +101,9 @@ function Accordion({ contentArr, isFull, isQ = true }: IAccordion) {
 }
 
 const Container = styled.div<{ isFull: boolean }>`
-  margin: ${(props) => (props.isFull ? "0 var(--gap-2)" : 0)};
   display: flex;
   width: 100%;
   color: var(--gray-800);
-`;
-
-const QIcon = styled.span`
-  margin-right: var(--gap-2);
-`;
-
-const Title = styled.div`
-  width: 90%;
-  text-align: start;
-`;
-
-const Content = styled.div<{ isFull: boolean }>`
-  padding: ${(props) => props.isFull && "var(--gap-2)"};
 `;
 
 export default Accordion;

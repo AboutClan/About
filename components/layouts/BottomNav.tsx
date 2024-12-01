@@ -12,9 +12,10 @@ interface IBottomNav {
   url?: string;
   isSlide?: boolean;
   isLoading?: boolean;
+  isActive?: boolean;
 }
 
-function BottomNav({ onClick, text, url, isSlide = true, isLoading }: IBottomNav) {
+function BottomNav({ onClick, text, url, isSlide = true, isLoading, isActive = true }: IBottomNav) {
   const searchParams = useSearchParams();
   const params = searchParams.toString();
 
@@ -29,13 +30,15 @@ function BottomNav({ onClick, text, url, isSlide = true, isLoading }: IBottomNav
         width="calc(100% - 2*var(--gap-4))"
         size="lg"
         borderRadius="12px"
-        backgroundColor="var(--color-mint)"
+        backgroundColor={isActive ? "var(--color-mint)" : "gray.400"}
         color="white"
         fontSize="14px"
         isLoading={isLoading}
         fontWeight={700}
         onClick={onClick}
         _focus={{ backgroundColor: "var(--color-mint)", color: "white" }}
+        isDisabled={!isActive}
+        opacity={!isActive && "1 !important"}
       >
         {text || "다 음"}
       </Button>

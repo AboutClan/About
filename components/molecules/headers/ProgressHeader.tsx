@@ -9,7 +9,7 @@ export default function ProgressHeader({ value, title }: IProgressHeader) {
   return (
     <Slide isFixed={true}>
       <ProgressStatus value={value} />
-      <Header isSlide={false} title={title} />
+      <Header isBorder={false} isSlide={false} title={title} />
     </Slide>
   );
 }

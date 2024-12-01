@@ -1,6 +1,7 @@
 :root {
   --max-width: 428px;
 
+  --gray-900: #282828;
   --gray-800: #424242;
   --gray-700: #616161;
   --gray-600: #757575;
@@ -29,7 +30,6 @@
   --gap-2: 8px;
   --gap-1: 4px;
 
-  --header-height: 46px;
   --bottom-nav-height: 52px;
 
   --header-h: 56px;

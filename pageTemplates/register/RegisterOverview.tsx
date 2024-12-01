@@ -6,20 +6,23 @@ function RegisterOverview({ children }) {
 
 const Layout = styled.div`
   display: flex;
+
   flex-direction: column;
   line-height: 1.8;
-  margin-top: 40px;
-  margin-bottom: 20px;
+  margin-top: 20px;
+  margin-bottom: 40px;
   > span:last-child {
+    font-weight: light;
     font-size: 13px;
+    line-height: 20px;
     color: var(--gray-600);
   }
   > span:first-child {
-    font-size: 18px;
+    font-size: 24px;
     font-weight: bold;
-    line-height: 28px;
+    line-height: 36px;
     color: var(--gray-800);
-    margin-bottom: 4px;
+    margin-bottom: 8px;
   }
 `;
 

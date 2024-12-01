@@ -21,7 +21,7 @@ export interface IUser extends Omit<IUserRegisterForm, "location">, IUserSummary
   instagram?: string;
   isPrivate?: boolean;
   _id: string;
-  locationDetail: LocationDeatilProps;
+
   weekStudyTargetHour: number;
   weekStudyAccumulationMinutes: number;
 }
@@ -72,6 +72,7 @@ export interface IUserRegisterFormWriting {
   majors: { department: string; detail: string }[];
   comment: string;
   telephone: string;
+  locationDetail: LocationDeatilProps;
 }
 export interface IAvatar {
   type: number;

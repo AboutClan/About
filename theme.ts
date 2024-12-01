@@ -6,6 +6,19 @@ const theme = extendTheme({
       body: {
         color: "var(--gray-800)",
       },
+      li: {
+        position: "relative",
+        paddingLeft: "20px", // 마커와 텍스트 간의 간격
+        listStyleType: "none", // 기본 마커 제거
+        "&::before": {
+          content: '"•"', // 마커 심볼
+          position: "absolute",
+          left: "8px",
+          top: "50%",
+          transform: "translateY(-50%)", // 수직 중앙 정렬
+          fontSize: "12px", // 마커 크기
+        },
+      },
     },
   },
   semanticTokens: {
@@ -65,7 +78,7 @@ const theme = extendTheme({
       600: "#757575", // 명도 46% (유지)
       700: "#616161",
       800: "#424242",
-      900: "black",
+      900: "#282828",
     },
     black: {
       500: "#424242", // 명도 46% (유지)

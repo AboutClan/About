@@ -7,7 +7,6 @@ import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
 import SearchLocation from "../../components/organisms/SearchLocation";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
 import { LOCATION_TO_FULLNAME } from "../../constants/location";
-import { useUserInfoQuery } from "../../hooks/user/queries";
 import { getLocationByCoordinates } from "../../libs/study/getLocationByCoordinates";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
@@ -31,14 +30,6 @@ function RegisterLocation() {
     road_address_name: "",
   });
 
-  //회원 정보 수정일 경우
-  const { data: userInfo } = useUserInfoQuery({
-    enabled: isProfileEdit,
-    onError(err) {
-      console.error(err);
-    },
-  });
-
   useEffect(() => {
     if (!placeInfo?.place_name) {
       setLocation(null);
@@ -48,35 +39,22 @@ function RegisterLocation() {
     setLocation((getLocation as Location) || "기타");
   }, [placeInfo]);
 
-  useEffect(() => {
-    if (userInfo) {
-      const { location, name, mbti, birth, gender, interests, majors, comment, telephone } =
-        userInfo;
-      setLocalStorageObj(REGISTER_INFO, {
-        location,
-        name,
-        mbti,
-        birth,
-        gender,
-        interests,
-        majors,
-        comment,
-        telephone,
-      });
-
-      setLocation(userInfo.location);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isProfileEdit, userInfo]);
-
   const onClickNext = (e) => {
     if (location === null) {
       e.preventDefault();
       setErrorMessage("지역을 선택해 주세요.");
       return;
     }
-
-    setLocalStorageObj(REGISTER_INFO, { ...info, location });
+    const { place_name: placeName, y, x } = placeInfo;
+    setLocalStorageObj(REGISTER_INFO, {
+      ...info,
+      location,
+      locationDetail: {
+        text: placeName,
+        lat: +y,
+        lon: +x,
+      },
+    });
   };
 
   return (

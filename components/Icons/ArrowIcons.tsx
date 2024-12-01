@@ -1,12 +1,14 @@
 export function ShortArrowIcon({
   dir,
   color = "mint",
+  size = "sm",
 }: {
-  color?: "mint" | "white";
+  color?: "mint" | "white" | "gray" | "lightGray";
   dir: "right" | "bottom" | "top" | "left";
+  size: "sm" | "md" | "lg";
 }) {
-  const colorText = color === "mint" ? "#00C2B3" : "white";
-
+  const colorText = color === "mint" ? "#00C2B3" : color === "gray" ? "var(--gray-700)" : "white";
+  const width = size == "sm" ? 12 : size === "md" ? 16 : 20;
   return dir === "right" ? (
     <svg xmlns="http://www.w3.org/2000/svg" width="13" height="12" viewBox="0 0 13 12" fill="none">
       <path
@@ -17,7 +19,13 @@ export function ShortArrowIcon({
       />
     </svg>
   ) : dir === "bottom" ? (
-    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={width}
+      height={width}
+      viewBox="0 0 12 12"
+      fill="none"
+    >
       <path
         fillRule="evenodd"
         clipRule="evenodd"
@@ -26,7 +34,13 @@ export function ShortArrowIcon({
       />
     </svg>
   ) : dir === "left" ? (
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+    >
       <rect width="20" height="20" />
       <path
         fillRule="evenodd"
@@ -36,7 +50,13 @@ export function ShortArrowIcon({
       />
     </svg>
   ) : (
-    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={width}
+      height={width}
+      viewBox="0 0 12 12"
+      fill="none"
+    >
       <path
         fillRule="evenodd"
         clipRule="evenodd"
