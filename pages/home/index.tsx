@@ -19,7 +19,7 @@ function Home() {
         <HomeNav />
       </Slide>
       <Slide>
-        {/* <HomeGroupStudySection groups={data} /> */}
+        <HomeGroupStudySection groups={data} />
         <HomeGatherSection />
         <HomeReviewSection />
         <HomeGroupSection groups={data} />
