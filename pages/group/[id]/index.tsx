@@ -45,7 +45,7 @@ function GroupDetail() {
       setTransferGroup(groupData);
     }
   }, [groupData]);
-  console.log(group, groupData);
+
 
   // useEffect(() => {
   //   if (!group) return;

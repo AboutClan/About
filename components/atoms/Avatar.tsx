@@ -34,7 +34,7 @@ function AvatarComponent({
   isLink = true,
 }: IAvatar) {
   const hasAvatar = avatar !== undefined && avatar?.type !== null && avatar?.bg !== null;
-  console.log(userId);
+
   const [imageUrl, setImageUrl] = useState(
     !hasAvatar
       ? image

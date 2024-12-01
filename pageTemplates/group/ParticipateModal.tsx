@@ -36,7 +36,7 @@ function ParticipateModal({ id, setIsModal, answer }: IParticipateModal) {
   const resetCache = () => {
     setTransferGroup(null);
     queryClient.invalidateQueries([GROUP_STUDY, id]);
-    console.log(id);
+
     router.push(`/group/${id}`);
   };
 

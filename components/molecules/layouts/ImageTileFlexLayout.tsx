@@ -41,7 +41,7 @@ export default function ImageTileFlexLayout({
       </Flex>
     );
   }
-  console.log(imageDataArr);
+
   return (
     <Flex overflow="auto" pb="12px">
       {imageDataArr.map((imageData, idx) => (

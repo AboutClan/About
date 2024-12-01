@@ -20,7 +20,7 @@ function HomeGroupStudySection({ groups }: HomeGroupStudySectionProps) {
           </ButtonWrapper>
         </SectionHeader>
         <HomeGroupCol
-          threeGroups={groups?.study?.sort((a, _) => (a.status === "pending" ? 1 : -1))}
+          threeGroups={groups?.study?.sort((a) => (a.status === "pending" ? 1 : -1))}
           isStudy
         />
       </Box>

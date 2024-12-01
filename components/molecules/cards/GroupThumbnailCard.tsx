@@ -62,7 +62,7 @@ export function GroupThumbnailCard({
     end: { text: "종료", colorScheme: "gray" },
     planned: { text: "오픈 예정", colorScheme: "purple" },
   };
-  console.log(statusToBadgeProps?.[status], status);
+ 
   return (
     <CardLink href={`/group/${id}`} onClick={func}>
       <PlaceImage src={imageProps.image} priority={imageProps.isPriority} />

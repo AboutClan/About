@@ -1,7 +1,7 @@
 import { Box, Button } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Input } from "../components/atoms/Input";
 import ProgressHeader from "../components/molecules/headers/ProgressHeader";
@@ -36,13 +36,17 @@ function LoginId() {
     }
   };
 
+  useEffect(() => {
+    toast("info", "동아리원을 희망하시는 분은 카카오 로그인을 이용해주세요.");
+  }, []);
+
   return (
     <>
       <ProgressHeader title="로그인" value={100} />
       <RegisterLayout>
         <RegisterOverview>
           <span>외부인 로그인</span>
-          <span>동아리원을 희망하시는 분은 사용하지 말아주세요.</span>
+          <span>동아리원을 희망하시는 분은 카카오 로그인을 이용해주세요.</span>
         </RegisterOverview>
 
         <Box textAlign="start" mb={4}>
