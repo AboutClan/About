@@ -66,6 +66,7 @@ function Birthday() {
         bg="inherit"
         w="160px"
         size="md"
+        h="40px"
         onClick={onClick}
       >
         {value}
