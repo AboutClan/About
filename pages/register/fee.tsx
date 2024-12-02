@@ -98,7 +98,7 @@ function Fee() {
       <ProgressHeader title="회원 가입" value={100} />
       <RegisterLayout>
         <RegisterOverview>
-          <span>최종 가입 신청</span>
+          <span>최종 가입</span>
           <span>아래 내용 확인 후, 동아리 단톡방으로 참여 요청이 가능합니다.</span>
         </RegisterOverview>
         <TabNav
@@ -146,7 +146,7 @@ function Fee() {
                 </Flex>
               </Flex>
               <Box as="li" fontSize="12px" lineHeight="20px" mt="10px" color="gray.600">
-                위의 회비는 동아리 가입 완료 후 내야 할 금액입니다.
+                위의 회비는 동아리 가입 후 내야 할 금액입니다.
               </Box>
               <UnorderedList
                 mx={0}
@@ -160,7 +160,7 @@ function Fee() {
                 lineHeight="20px"
                 fontWeight="light"
               >
-                <ListItem>참여 요청까지 완료하시면 운영진이 별도 연락을 드립니다.</ListItem>
+                <ListItem>참여 요청까지 완료하시면 승인과 함께 별도 연락을 드립니다.</ListItem>
                 <ListItem>회비는 동아리 운영 및 이벤트 기금으로 사용됩니다.</ListItem>
                 <ListItem>남은 보증금은 탈퇴시 환급됩니다.</ListItem>
               </UnorderedList>
@@ -186,7 +186,7 @@ function Fee() {
                   flex={1}
                   my="auto"
                 >
-                  내용을 모두 확인하셨을까요?
+                  About 동아리 가입을 희망하시나요?
                 </Box>
                 <Button
                   as="div"
