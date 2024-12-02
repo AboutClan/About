@@ -39,7 +39,6 @@ function Fee() {
 
   const { mutate, isLoading } = useUserRegisterMutation({
     onSuccess() {
-      console.log(13);
       const getClosestLocation = (lat: number, lon: number): ActiveLocation => {
         let closestLocation: ActiveLocation = "수원";
         let minDistance = Number.MAX_VALUE;
@@ -76,12 +75,11 @@ function Fee() {
 
         return closestLocation;
       };
-      console.log(12);
+
       const findLocation = getClosestLocation(info.locationDetail.lat, info.locationDetail.lon);
-      console.log(13, findLocation, CONNECT_KAKAO[findLocation]);
 
       router.push(CONNECT_KAKAO[findLocation]);
-      console.log(52);
+
       setLocalStorageObj(REGISTER_INFO, null);
     },
     onError: errorToast,
