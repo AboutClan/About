@@ -23,25 +23,24 @@ function Comment() {
 
   const [index, setIndex] = useState<number>();
 
-  const InputIdx = MESSAGE_DATA?.length;
-
   useEffect(() => {
     if (!info?.comment) {
       console.log(24);
-      setIndex(InputIdx); // 마지막 input 선택
+      setIndex(0); // 마지막 input 선택
       inputRef.current?.focus(); // 포커싱
     }
   }, []);
 
   const onClickNext = (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    if ((index === null || index === 4) && value === "") {
+    console.log(index, value);
+    if ((index === null || index === 0) && value === "") {
       e.preventDefault();
       setErrorMessage("문장을 선택해 주세요.");
       return;
     }
 
     let tempComment = "";
-    if (index === InputIdx || index === null) tempComment = value;
+    if (index === 0 || index === null) tempComment = value;
     else tempComment = MESSAGE_DATA[index];
 
     setLocalStorageObj(REGISTER_INFO, { ...info, comment: tempComment });
@@ -53,13 +52,13 @@ function Comment() {
 
   const inputRef = useRef(null);
 
-  useEffect(() => {
-    if (!index && value !== "") {
-      setTimeout(() => {
-        inputRef.current?.focus();
-      }, 500);
-    }
-  }, [index, value]);
+  // useEffect(() => {
+  //   if (!index && value !== "") {
+  //     setTimeout(() => {
+  //       inputRef.current?.focus();
+  //     }, 500);
+  //   }
+  // }, [index, value]);
 
   return (
     <>
@@ -70,32 +69,32 @@ function Comment() {
           <span>한 줄 코멘트를 입력해 주세요</span>
           <span>유저 프로필에 노출되는 내용입니다!</span>
         </RegisterOverview>
-        <Container>
-          {MESSAGE_DATA?.map((item, idx) => (
-            <Item key={idx} onClick={() => setIndex(idx)} $isSelected={idx === index}>
-              {item}
-            </Item>
-          ))}
-        </Container>
-
-        <div onClick={() => setIndex(InputIdx)}>
+        <div onClick={() => setIndex(0)}>
           <Input
             bgColor="white"
             placeholder="직접 입력"
             ref={inputRef}
             onChange={(e) => setValue(e.target?.value)}
             value={value}
+            mb={3}
             h="48px"
             textAlign="center"
             fontSize="14px"
             focusBorderColor="#00c2b3"
-            border={index === 4 ? "var(--border-mint)" : "var(--border-main)"}
+            border={index === 0 ? "var(--border-mint)" : "var(--border-main)"}
             boxShadow="none !important"
             _placeholder={{
               color: "var(--gray-500)",
             }}
           />
         </div>
+        <Container>
+          {MESSAGE_DATA?.map((item, idx) => (
+            <Item key={idx} onClick={() => setIndex(idx + 1)} $isSelected={idx + 1 === index}>
+              {item}
+            </Item>
+          ))}
+        </Container>
       </RegisterLayout>
 
       <BottomNav onClick={onClickNext} url={!isProfileEdit && "/register/phone"} />
@@ -104,7 +103,6 @@ function Comment() {
 }
 
 const Container = styled.div`
-  margin-top: 40px;
   display: flex;
   flex-direction: column;
 `;
