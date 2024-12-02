@@ -185,6 +185,7 @@ const Login: NextPage<{
               fontWeight="medium"
               opacity={0.8}
               color="white"
+              _hover={{ bg: "none" }}
               onClick={() => router.push("/loginId")}
             >
               다른 방법으로 로그인

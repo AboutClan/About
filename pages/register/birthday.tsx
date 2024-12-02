@@ -57,10 +57,25 @@ function Birthday() {
 
   const myBirth = dayjs(startDate).format("YYYY년 M월 D일");
 
+  function CustomButton({ value, onClick }: { value: string; onClick?: () => void }) {
+    return (
+      <Button
+        _focus={{ bg: "var(--gray-800)" }}
+        _hover={{ bg: "var(--gray-800)" }}
+        color="white"
+        bg="inherit"
+        w="160px"
+        size="md"
+        onClick={onClick}
+      >
+        {value}
+      </Button>
+    );
+  }
+
   return (
     <>
       <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={33} />
-
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>생년월일을 입력해 주세요</span>
@@ -68,23 +83,46 @@ function Birthday() {
         </RegisterOverview>
         <DateContainer>
           <DateStr>{myBirth}</DateStr>
-          <Button size="md" as="div" bgColor="white" border="var(--border-main)">
+          <Button
+            borderRadius="8px"
+            size="md"
+            as="div"
+            bg="gray.800"
+            border="var(--border-main)"
+            _focus={{ bg: "var(--gray-800)" }}
+            _hover={{ bg: "var(--gray-800)" }}
+          >
             <StyledDatePicker
               locale="ko"
               selected={startDate}
-              onChange={(date) => setStartDate(date as Date)}
+              onChange={(date) => {
+                setStartDate(date as Date);
+              }}
               dateFormat="연도 / 월 선택"
               showMonthYearPicker
-              onFocus={(e) => e.target.blur()}
+              onFocus={(e) => {
+                e.target.blur();
+              }}
+              customInput={<CustomButton value="연도 / 월 선택" />}
             />
           </Button>
-          <Button size="md" mt="10px" as="div" bgColor="white" border="var(--border-main)">
+          <Button
+            size="md"
+            borderRadius="8px"
+            mt={3}
+            as="div"
+            bgColor="gray.800"
+            border="var(--border-main)"
+            _focus={{ bg: "var(--gray-800)" }}
+            _hover={{ bg: "var(--gray-800)" }}
+          >
             <StyledDatePicker
               locale="ko"
               selected={startDate}
               onChange={(date) => setStartDate(date as Date)}
               dateFormat="날짜 선택"
               onFocus={(e) => e.target.blur()}
+              customInput={<CustomButton value="날짜 선택" />}
               renderCustomHeader={({ date }) => (
                 <div
                   style={{
@@ -120,6 +158,7 @@ const StyledDatePicker = styled(DatePicker)`
 const DateStr = styled.div`
   font-size: 24px;
   margin: var(--gap-5) 0;
+  font-weight: bold;
 `;
 
 const DateContainer = styled.div`

@@ -34,6 +34,12 @@ function Name() {
   const [errorMessage, setErrorMessage] = useState("");
   const [value, setValue] = useState(info?.name || session?.user.name);
 
+  useEffect(() => {
+    if (!value) {
+      setValue(session?.user.name);
+    }
+  }, [session?.user.name]);
+
   const onClickNext = (e) => {
     if (value.length < 2 || value.length > 4) {
       setErrorMessage("글자수를 확인해주세요.");
