@@ -5,7 +5,7 @@ export function ShortArrowIcon({
 }: {
   color?: "mint" | "white" | "gray" | "lightGray";
   dir: "right" | "bottom" | "top" | "left";
-  size: "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg";
 }) {
   const colorText = color === "mint" ? "#00C2B3" : color === "gray" ? "var(--gray-700)" : "white";
   const width = size == "sm" ? 12 : size === "md" ? 16 : 20;
@@ -34,13 +34,7 @@ export function ShortArrowIcon({
       />
     </svg>
   ) : dir === "left" ? (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="20"
-      height="20"
-      viewBox="0 0 20 20"
-      fill="none"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
       <rect width="20" height="20" />
       <path
         fillRule="evenodd"

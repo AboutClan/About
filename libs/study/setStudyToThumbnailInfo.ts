@@ -5,7 +5,7 @@ import {
   StudyParticipationProps,
 } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
-import { ActiveLocation } from "../../types/services/locationTypes";
+import { Location } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
 import { convertMergePlaceToPlace } from "./convertMergePlaceToPlace";
@@ -16,7 +16,7 @@ export const setStudyToThumbnailInfo = (
   currentLocation: { lat: number; lon: number },
   urlDateParam: string | null,
   imagePriority: boolean,
-  location: ActiveLocation,
+  location: Location,
   votePlaceProps?: { main: string; sub: string[] },
   imageCache?: Map<string, string>,
   isNoCntMember?: boolean,

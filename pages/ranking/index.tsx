@@ -16,6 +16,7 @@ import RankingOverview from "../../pageTemplates/ranking/RankingOverview";
 import StatisticsFilterBar from "../../pageTemplates/ranking/StatisticsFilterBar";
 import StatisticsMine from "../../pageTemplates/ranking/StatisticsMine";
 import StatisticsTabNav from "../../pageTemplates/ranking/StatisticsTabNav";
+import { Location } from "../../types/services/locationTypes";
 
 export type RankingCategoryProp = "월간 랭킹" | "스터디 랭킹" | "누적 랭킹";
 export type RankingCategorySource = "monthScore" | "cnt" | "score" | "weekStudyAccumulationMinutes";
@@ -74,7 +75,7 @@ function Ranking() {
     dayjs(),
     false,
     true,
-    !filterOptions.isLocationFilter ? null : session?.user.location,
+    !filterOptions.isLocationFilter ? null : (session?.user.location as Location),
     {
       onError: () => typeToast("error"),
       enabled: filterOptions.category === "스터디 랭킹" && !!session,
@@ -89,7 +90,6 @@ function Ranking() {
       enabled: !!session,
     },
   );
- 
 
   useEffect(() => {
     if (filterOptions.category === "스터디 랭킹" && !attendRecords) return;

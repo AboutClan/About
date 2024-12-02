@@ -16,7 +16,7 @@ function HomeGroupStudySection({ groups }: HomeGroupStudySectionProps) {
       <Box my={5}>
         <SectionHeader title="About 시험기간 챌린지" subTitle="Study Challenge">
           <ButtonWrapper size="xs" url="/group">
-            <ShortArrowIcon dir="right" />
+            <ShortArrowIcon dir="right" size="sm" />
           </ButtonWrapper>
         </SectionHeader>
         <HomeGroupCol

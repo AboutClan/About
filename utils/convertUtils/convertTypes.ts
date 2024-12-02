@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 
 import { getStudyStandardDate } from "../../libs/study/date/getStudyStandardDate";
-import { ActiveLocation, LocationEn } from "../../types/services/locationTypes";
+import { Location, LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "./convertDatas";
 
 export const createUrlWithLocation = (url: string, locationParam: LocationEn) =>
@@ -12,7 +12,7 @@ dayjs.locale("ko");
 export const getUrlWithLocationAndDate = (
   locationParam: LocationEn,
   dateParam: string,
-  userLocation: ActiveLocation = "수원",
+  userLocation: Location = "수원",
 ) => {
   const location = locationParam || convertLocationLangTo(userLocation || "suw", "en");
 

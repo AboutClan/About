@@ -12,7 +12,7 @@ import { useAdminLocationActiveQuery } from "../../../hooks/admin/quries";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { IUserSummary, UserRole } from "../../../types/models/userTypes/userInfoTypes";
-import { ActiveLocation } from "../../../types/services/locationTypes";
+import { ActiveLocation, Location } from "../../../types/services/locationTypes";
 
 interface LocationActiveProps {}
 
@@ -67,7 +67,7 @@ function LocationActive({}: LocationActiveProps) {
     },
   });
 
-  const handleChangeLocation = (location: ActiveLocation) => {
+  const handleChangeLocation = (location: Location) => {
     if (location !== userInfo?.location) {
       toast("error", "권한이 없습니다.");
       return;

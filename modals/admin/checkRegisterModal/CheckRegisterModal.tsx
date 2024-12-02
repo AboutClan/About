@@ -87,8 +87,8 @@ function CheckRegisterModal({ setIsModal, applicant, setIsRefetch }: ICheckRegis
           {applicant?.majors[0]?.detail}
         </Item>
         <Item>
-          <b>관심사 </b>
-          {applicant?.interests?.first}
+          <b>상세 지역 </b>
+          {applicant?.locationDetail?.text}
         </Item>
         <Item>
           <b>연락처 </b>

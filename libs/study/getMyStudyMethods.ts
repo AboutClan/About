@@ -11,7 +11,7 @@ import { PlaceInfoProps } from "../../types/models/utilTypes";
 
 export const convertStudyToParticipations = (
   studyVoteData: StudyDailyInfoProps,
-  location: ActiveLocation,
+  location: Location,
   isAllRealTime: boolean,
 ): StudyMergeParticipationProps[] => {
   if (!studyVoteData || !location) return;
@@ -99,7 +99,7 @@ export const getRealTimeFilteredById = (
   return { ...findStudy, members: filtered };
 };
 
-import { ActiveLocation } from "../../types/services/locationTypes";
+import { Location } from "../../types/services/locationTypes";
 import { getLocationByCoordinates } from "./getLocationByCoordinates";
 
 export const getMyStudyInfo = (

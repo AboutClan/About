@@ -18,7 +18,7 @@ import { CoordinateProps } from "../../types/common";
 import { DispatchBoolean, DispatchString } from "../../types/hooks/reactTypes";
 import { StudyDailyInfoProps } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
-import { ActiveLocation } from "../../types/services/locationTypes";
+import { Location } from "../../types/services/locationTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
 import StudyPageDrawerFilterBar from "./studyPageDrawer/StudyPageDrawerFilterBar";
@@ -27,7 +27,7 @@ interface StudyPageDrawerProps {
   studyVoteData: StudyDailyInfoProps;
   date: string;
   setDate: DispatchString;
-  location: ActiveLocation;
+  location: Location;
   currentLocation: CoordinateProps;
   isDrawerUp: boolean;
   setIsDrawerUp: DispatchBoolean;

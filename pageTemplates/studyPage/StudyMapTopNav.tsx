@@ -10,10 +10,10 @@ import { getLocationByCoordinates } from "../../libs/study/getLocationByCoordina
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import { CoordinateProps } from "../../types/common";
 import { DispatchBoolean, DispatchType } from "../../types/hooks/reactTypes";
-import { ActiveLocation } from "../../types/services/locationTypes";
+import { ActiveLocation, Location } from "../../types/services/locationTypes";
 
 interface StudyMapTopNavProps {
-  location: ActiveLocation;
+  location: Location;
   setLocation: DispatchType<ActiveLocation>;
   setIsLocationFetch: DispatchBoolean;
   setCenterLocation: DispatchType<CoordinateProps>;

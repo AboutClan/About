@@ -3,14 +3,14 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 import { LOCATION_TO_FULLNAME } from "../../constants/location";
 import { DispatchType } from "../../types/hooks/reactTypes";
-import { ActiveLocation } from "../../types/services/locationTypes";
+import { ActiveLocation, Location } from "../../types/services/locationTypes";
 import { isLocationType } from "../../utils/validationUtils";
 import { ShortArrowIcon } from "../Icons/ArrowIcons";
 
 interface ISelect {
   defaultValue: string;
   options: string[];
-  setValue: DispatchType<string> | DispatchType<ActiveLocation>;
+  setValue: DispatchType<string> | DispatchType<Location>;
   isBorder?: boolean;
   type?: "location";
   size: "xs" | "sm" | "md" | "lg";
@@ -70,7 +70,7 @@ export default function Select({
           pointerEvents="none"
         >
           <Box>
-            <ShortArrowIcon dir="bottom" />
+            <ShortArrowIcon dir="bottom" size="sm" />
           </Box>
         </Flex>
       }

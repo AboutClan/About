@@ -17,7 +17,7 @@ function HomeGatherSection() {
           size="xs"
           url={`/gather?location=${convertLocationLangTo(session?.user.location, "en")}`}
         >
-          <ShortArrowIcon dir="right" />
+          <ShortArrowIcon size="sm" dir="right" />
         </ButtonWrapper>
       </SectionHeader>
       <HomeGatherCol />

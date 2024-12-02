@@ -23,7 +23,7 @@ import { getStudyViewDayjs } from "../../libs/study/date/getStudyDateStatus";
 import { getLocationByCoordinates } from "../../libs/study/getLocationByCoordinates";
 import { setStudyToThumbnailInfo } from "../../libs/study/setStudyToThumbnailInfo";
 import { IModal } from "../../types/components/modalTypes";
-import { ActiveLocation } from "../../types/services/locationTypes";
+import { Location } from "../../types/services/locationTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
 interface StudyPreferenceDrawerProps extends IModal {
@@ -34,11 +34,10 @@ function StudyPreferenceDrawer({ setIsModal, handleClick }: StudyPreferenceDrawe
   const { data: session } = useSession();
   const toast = useToast();
   const queryClient = useQueryClient();
-  const userLocation =
-    (localStorage.getItem(USER_LOCATION) as ActiveLocation) || session?.user.location;
+  const userLocation = (localStorage.getItem(USER_LOCATION) as Location) || session?.user.location;
 
   const resetStudy = useResetStudyQuery();
-  const [location, setLocation] = useState<ActiveLocation>(userLocation);
+  const [location, setLocation] = useState<Location>(userLocation);
 
   const [placeArr, setPlaceArr] = useState<StudyThumbnailCardProps[]>();
   const [pickPreferences, setPickPreferences] = useState<{
@@ -248,8 +247,8 @@ function StudyPreferenceDrawer({ setIsModal, handleClick }: StudyPreferenceDrawe
                   place.id === pickPreferences?.mainPlace
                     ? "main"
                     : pickPreferences?.subPlaceArr.includes(place.id)
-                      ? "second"
-                      : null
+                    ? "second"
+                    : null
                 }
               />
             </Box>

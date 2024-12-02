@@ -42,7 +42,7 @@ import {
   StudyStatus,
 } from "../types/models/studyTypes/studyDetails";
 import { PlaceInfoProps } from "../types/models/utilTypes";
-import { ActiveLocation, LocationEn } from "../types/services/locationTypes";
+import { ActiveLocation, Location, LocationEn } from "../types/services/locationTypes";
 import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
 import { dayjsToFormat } from "../utils/dateTimeUtils";
 import { getRandomIdx } from "../utils/mathUtils";
@@ -64,13 +64,10 @@ export default function StudyPage() {
     "kr",
   ) as ActiveLocation;
 
-  const userLocation =
-    (localStorage.getItem(USER_LOCATION) as ActiveLocation) || session?.user.location;
+  const userLocation = (localStorage.getItem(USER_LOCATION) as Location) || session?.user.location;
 
   const [date, setDate] = useState(dateParam || getStudyViewDate(dayjs()));
-  const [locationValue, setLocationValue] = useState<ActiveLocation>(
-    locationParamKr || userLocation,
-  );
+  const [locationValue, setLocationValue] = useState<Location>(locationParamKr || userLocation);
   const [mapOptions, setMapOptions] = useState<IMapOptions>();
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>();
   const [currentLocation, setCurrentLocation] = useState<CoordinateProps>();
@@ -499,7 +496,7 @@ const getMarkersOptions = (
 
 export const getMapOptions = (
   currentLocation: { lat: number; lon: number },
-  location: ActiveLocation,
+  location: Location,
   zoomValue?: number,
 ): IMapOptions | undefined => {
   if (typeof naver === "undefined") return undefined;
@@ -549,7 +546,7 @@ const getPolyline = (
 export const getDetailInfo = (
   studyVoteData: StudyDailyInfoProps,
   id: string,
-  location: ActiveLocation,
+  location: Location,
   myUid,
 ) => {
   const participation = studyVoteData.participations?.find((par) => par.place._id === id);

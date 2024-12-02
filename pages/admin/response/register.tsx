@@ -80,10 +80,7 @@ const Layout = styled.div`
   padding: 14px;
 `;
 
-const LocationFilter = styled.div`
-  display: flex;
-  justify-content: space-around;
-`;
+
 
 const Main = styled.main`
   display: flex;

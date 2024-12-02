@@ -34,7 +34,7 @@ import {
 import { IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
 import { IAvatar } from "../../types/models/userTypes/userInfoTypes";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
-import { ActiveLocation } from "../../types/services/locationTypes";
+import { Location } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 import { SubPlaceProps } from "../vote/VoteDrawer";
@@ -55,7 +55,7 @@ export interface StudyInfoProps {
     };
     text: string;
   };
-  location: ActiveLocation;
+  location: Location;
   memberStatus: "participation" | "notParticipation" | "attendance";
   isPrivate: boolean;
   firstUserUid: string;

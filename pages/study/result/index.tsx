@@ -211,7 +211,7 @@ function StudyResultPage() {
                   스터디 랭킹
                 </Box>
                 <Button variant="unstyled" onClick={() => router.push("/ranking")}>
-                  <ShortArrowIcon dir="right" />
+                  <ShortArrowIcon size="sm" dir="right" />
                 </Button>
               </Flex>
               <ProfileCommentCard

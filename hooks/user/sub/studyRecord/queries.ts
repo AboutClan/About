@@ -6,7 +6,7 @@ import { USER_ATTEND_RATE, USER_FINDPARTICIPATION } from "../../../../constants/
 import { SERVER_URI } from "../../../../constants/system";
 import { QueryOptions } from "../../../../types/hooks/reactTypes";
 import { IVoteRate } from "../../../../types/models/studyTypes/studyRecords";
-import { ActiveLocation } from "../../../../types/services/locationTypes";
+import { Location } from "../../../../types/services/locationTypes";
 import { IDayjsStartToEnd } from "../../../../types/utils/timeAndDate";
 import { dayjsToStr } from "../../../../utils/dateTimeUtils";
 
@@ -17,7 +17,7 @@ export const useUserAttendRateQuery = <T extends boolean>(
   endDay: Dayjs,
   isUserScope: T = true as T,
   summary: boolean,
-  location?: ActiveLocation,
+  location?: Location,
   options?: QueryOptions<UserAttendRateReturn<T>>,
 ) =>
   useQuery<UserAttendRateReturn<T>, AxiosError, UserAttendRateReturn<T>>(

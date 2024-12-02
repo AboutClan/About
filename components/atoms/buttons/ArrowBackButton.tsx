@@ -39,7 +39,7 @@ export function ArrowBackButtonUI({
 }) {
   return (
     <ButtonWrapper onClick={onClick}>
-      <ShortArrowIcon dir="left" color={color} />
+      <ShortArrowIcon size="lg" dir="left" color={color} />
     </ButtonWrapper>
   );
 }

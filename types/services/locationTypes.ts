@@ -1,4 +1,4 @@
-export type Location = ActiveLocation | "전체";
+export type Location = ActiveLocation | ReadyLocation;
 
 export type ActiveLocation = "수원" | "양천" | "안양" | "강남" | "동대문" | "인천";
 

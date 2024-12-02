@@ -3,7 +3,7 @@ import { COLOR_TABLE } from "./colorConstants";
 
 export const PREV_LOCATION: ActiveLocation[] = ["수원", "양천", "강남", "동대문", "인천", "안양"];
 
-export const LOCATION_OPEN: ActiveLocation[] = [
+export const LOCATION_OPEN: Location[] = [
   "수원",
   "양천",
   "강남",
@@ -25,7 +25,7 @@ export const LOCATION_OPEN: ActiveLocation[] = [
 
 export const LOCATION_ALL = [...LOCATION_OPEN, "전체"];
 
-export const LOCATION_TO_FULLNAME: Record<Location, string> = {
+export const LOCATION_TO_FULLNAME: Record<Location | "전체", string> = {
   수원: "수원시",
   양천: "양천구 · 영등포구",
   안양: "안양 인근 지역",
@@ -57,7 +57,7 @@ export const LOCATION_OPEN_DATE = {
 
 export const RegisterLocation = [...LOCATION_ALL, "기타"];
 
-export const krToEnMapping: Record<Location, LocationEn> = {
+export const krToEnMapping: Record<Location | "전체", LocationEn> = {
   수원: "suw",
   강남: "gan",
   동대문: "don",
@@ -78,7 +78,7 @@ export const krToEnMapping: Record<Location, LocationEn> = {
   전체: "all",
 };
 
-export const enToKrMapping: Record<LocationEn, Location> = {
+export const enToKrMapping: Record<LocationEn | "all", Location | "전체"> = {
   suw: "수원",
   gan: "강남",
   don: "동대문",
@@ -99,7 +99,7 @@ export const enToKrMapping: Record<LocationEn, Location> = {
   all: "전체",
 };
 
-export const LOCATION_TO_COLOR: Record<ActiveLocation, string> = {
+export const LOCATION_TO_COLOR: Record<Location, string> = {
   수원: COLOR_TABLE[0],
   양천: COLOR_TABLE[1],
   강남: COLOR_TABLE[3],

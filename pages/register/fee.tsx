@@ -9,7 +9,7 @@ import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
 import TabNav from "../../components/molecules/navs/TabNav";
 import { ACCORDION_CONTENT_FEE } from "../../constants/contentsText/accordionContents";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
-import { LOCATION_CENTER_DOT } from "../../constants/serviceConstants/studyConstants/studyVoteMapConstants";
+import { ACTIVE_LOCATION_CENTER_DOT } from "../../constants/serviceConstants/studyConstants/studyVoteMapConstants";
 import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
 import { useUserRegisterMutation } from "../../hooks/user/mutations";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
@@ -39,7 +39,8 @@ function Fee() {
 
   const { mutate, isLoading } = useUserRegisterMutation({
     onSuccess() {
-      function getClosestLocation(lat: number, lon: number): ActiveLocation {
+      console.log(13);
+      const getClosestLocation = (lat: number, lon: number): ActiveLocation => {
         let closestLocation: ActiveLocation = "수원";
         let minDistance = Number.MAX_VALUE;
 
@@ -64,8 +65,9 @@ function Fee() {
           return R * c; // km 거리
         };
 
-        for (const [location, coords] of Object.entries(LOCATION_CENTER_DOT)) {
+        for (const [location, coords] of Object.entries(ACTIVE_LOCATION_CENTER_DOT)) {
           const distance = calculateDistance(lat, lon, coords.latitude, coords.longitude);
+
           if (distance < minDistance) {
             minDistance = distance;
             closestLocation = location as ActiveLocation;
@@ -73,9 +75,13 @@ function Fee() {
         }
 
         return closestLocation;
-      }
+      };
+      console.log(12);
       const findLocation = getClosestLocation(info.locationDetail.lat, info.locationDetail.lon);
+      console.log(13, findLocation, CONNECT_KAKAO[findLocation]);
+
       router.push(CONNECT_KAKAO[findLocation]);
+      console.log(52);
       setLocalStorageObj(REGISTER_INFO, null);
     },
     onError: errorToast,

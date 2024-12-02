@@ -1,8 +1,20 @@
-import { ActiveLocation } from "../../../types/services/locationTypes";
+import { ActiveLocation, Location } from "../../../types/services/locationTypes";
+
+export const ACTIVE_LOCATION_CENTER_DOT: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key in ActiveLocation]: { latitude: number; longitude: number };
+} = {
+  수원: { latitude: 37.278992, longitude: 127.025727 },
+  안양: { latitude: 37.388896, longitude: 126.950088 },
+  양천: { latitude: 37.527588, longitude: 126.896441 },
+  강남: { latitude: 37.503744, longitude: 127.048898 },
+  동대문: { latitude: 37.58452, longitude: 127.041047 },
+  인천: { latitude: 37.428334, longitude: 126.674935 },
+};
 
 export const LOCATION_CENTER_DOT: {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key in ActiveLocation]: { latitude: number; longitude: number };
+  [key in Location]: { latitude: number; longitude: number };
 } = {
   수원: { latitude: 37.278992, longitude: 127.025727 },
   안양: { latitude: 37.388896, longitude: 126.950088 },
@@ -34,7 +46,7 @@ export const LOCATION_CENTER_DOT: {
 //   인천: new naver.maps.LatLng(37.58452, 127.041047),
 // };
 export const LOCATION_MAX_BOUNDARY: {
-  [key in ActiveLocation]: {
+  [key in Location]: {
     northeast: { latitude: number; longitude: number };
     southwest: { latitude: number; longitude: number };
   };

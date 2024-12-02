@@ -1,4 +1,4 @@
-import { ActiveLocation } from "../../../types/services/locationTypes";
+import { ActiveLocation, Location } from "../../../types/services/locationTypes";
 import {
   ANYANG_금정역,
   ANYANG_범계역,
@@ -94,7 +94,7 @@ import {
 } from "./studyPlaceConstants";
 
 type LocationToPlace = {
-  [key in ActiveLocation]: string[];
+  [key in Location]: string[];
 };
 
 export const LOCATION_TO_PLACE: LocationToPlace = {

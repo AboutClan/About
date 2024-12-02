@@ -12,7 +12,7 @@ import BottomFlexDrawer, {
   BottomFlexDrawerOptions,
 } from "../../components/organisms/drawer/BottomFlexDrawer";
 import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
-import { PREV_LOCATION } from "../../constants/location";
+import { LOCATION_OPEN } from "../../constants/location";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";
@@ -30,7 +30,7 @@ import {
   StudyPlaceProps,
 } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVoteTime, MyVoteProps } from "../../types/models/studyTypes/studyInterActions";
-import { ActiveLocation } from "../../types/services/locationTypes";
+import { Location } from "../../types/services/locationTypes";
 import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 import { getDistanceFromLatLonInKm, getRandomIdx } from "../../utils/mathUtils";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
@@ -44,7 +44,7 @@ export interface VoteDrawerItemProps {
 
 interface VoteDrawerProps extends IModal {
   studyVoteData: StudyDailyInfoProps;
-  location: ActiveLocation;
+  location: Location;
   date: string;
 
   setCenterLocation: DispatchType<{ lat: number; lon: number }>;
@@ -106,7 +106,7 @@ function VoteDrawer({
   );
 
   useEffect(() => {
-    if (PREV_LOCATION.includes(location)) return;
+    if (LOCATION_OPEN.includes(location)) return;
     setIsRightDrawer(true);
   }, [location]);
 
@@ -378,7 +378,7 @@ function VoteDrawer({
           setIsVoteDrawer={setIsVoteDrawer}
           date={date}
           setIsRightDrawer={setIsRightDrawer}
-          noLocation={!PREV_LOCATION.includes(location)}
+          noLocation={!LOCATION_OPEN.includes(location)}
         />
       )}
       {isTimeDrawer && (

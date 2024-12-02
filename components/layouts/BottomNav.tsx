@@ -38,7 +38,7 @@ function BottomNav({ onClick, text, url, isSlide = true, isLoading, isActive = t
         onClick={onClick}
         _focus={{ backgroundColor: "var(--color-mint)", color: "white" }}
         isDisabled={!isActive}
-        opacity={!isActive && "1 !important"}
+        opacity={!isActive &&"1 !important"}
       >
         {text || "다 음"}
       </Button>

@@ -1,6 +1,6 @@
 import { Input } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { MouseEvent, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import BottomNav from "../../components/layouts/BottomNav";
@@ -25,11 +25,21 @@ function Comment() {
 
   const InputIdx = MESSAGE_DATA?.length;
 
-  const onClickNext = () => {
-    if (index === null && value === "") {
+  useEffect(() => {
+    if (!info?.comment) {
+      console.log(24);
+      setIndex(InputIdx); // 마지막 input 선택
+      inputRef.current?.focus(); // 포커싱
+    }
+  }, []);
+
+  const onClickNext = (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    if ((index === null || index === 4) && value === "") {
+      e.preventDefault();
       setErrorMessage("문장을 선택해 주세요.");
       return;
     }
+
     let tempComment = "";
     if (index === InputIdx || index === null) tempComment = value;
     else tempComment = MESSAGE_DATA[index];
@@ -76,10 +86,11 @@ function Comment() {
             onChange={(e) => setValue(e.target?.value)}
             value={value}
             h="48px"
-            focusBorderColor="#00c2b3"
             textAlign="center"
             fontSize="14px"
-            border="var(--border-main)"
+            focusBorderColor="#00c2b3"
+            border={index === 4 ? "var(--border-mint)" : "var(--border-main)"}
+            boxShadow="none !important"
             _placeholder={{
               color: "var(--gray-500)",
             }}

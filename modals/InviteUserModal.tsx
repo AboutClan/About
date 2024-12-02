@@ -14,7 +14,7 @@ import { useTypeToast } from "../hooks/custom/CustomToast";
 import { useGatherParticipationMutation } from "../hooks/gather/mutations";
 import { IModal } from "../types/components/modalTypes";
 import { IUserSummary } from "../types/models/userTypes/userInfoTypes";
-import { ActiveLocation } from "../types/services/locationTypes";
+import { Location } from "../types/services/locationTypes";
 import { searchName } from "../utils/stringUtils";
 import { IFooterOptions, ModalLayout } from "./Modals";
 
@@ -25,7 +25,7 @@ export default function InviteUserModal({ setIsModal }: IInviteUserModal) {
   const { data: session } = useSession();
   const { id } = useParams<{ id: string }>() || {};
 
-  const [location, setLocation] = useState<ActiveLocation>(session?.user.location || "수원");
+  const [location, setLocation] = useState<Location>(session?.user.location || "수원");
   const [inviteUser, setInviteUser] = useState<IUserSummary>(null);
   const [users, setUsers] = useState<IUserSummary[]>(null);
   const [nameValue, setNameValue] = useState("");

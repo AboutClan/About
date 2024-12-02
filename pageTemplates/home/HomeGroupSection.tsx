@@ -16,7 +16,7 @@ function HomeGroupSection({ groups }: HomeGroupSectionProps) {
       <Box my={5}>
         <SectionHeader title="About 오프라인 소모임" subTitle="Group">
           <ButtonWrapper size="xs" url="/group">
-            <ShortArrowIcon dir="right" />
+            <ShortArrowIcon dir="right" size="sm" />
           </ButtonWrapper>
         </SectionHeader>
         <HomeGroupCol threeGroups={groups?.offline} />
@@ -24,7 +24,7 @@ function HomeGroupSection({ groups }: HomeGroupSectionProps) {
       <Box my={5}>
         <SectionHeader title="About 온라인 소모임" subTitle="Group">
           <ButtonWrapper size="xs" url="/group">
-            <ShortArrowIcon dir="right" />
+            <ShortArrowIcon dir="right" size="sm" />
           </ButtonWrapper>
         </SectionHeader>
         <HomeGroupCol threeGroups={groups?.online} />
@@ -32,7 +32,7 @@ function HomeGroupSection({ groups }: HomeGroupSectionProps) {
       <Box my={5}>
         <SectionHeader title="About 신규 소모임" subTitle="Group">
           <ButtonWrapper size="xs" url="/group">
-            <ShortArrowIcon dir="right" />
+            <ShortArrowIcon dir="right" size="sm" />
           </ButtonWrapper>
         </SectionHeader>
         <HomeGroupCol threeGroups={groups?.new.slice().reverse()} />
@@ -40,7 +40,7 @@ function HomeGroupSection({ groups }: HomeGroupSectionProps) {
       <Box my={5}>
         <SectionHeader title="About 오픈 예정 소모임" subTitle="Group">
           <ButtonWrapper size="xs" url="/group">
-            <ShortArrowIcon dir="right" />
+            <ShortArrowIcon dir="right" size="sm" />
           </ButtonWrapper>
         </SectionHeader>
         <HomeGroupCol threeGroups={groups?.waiting} />
