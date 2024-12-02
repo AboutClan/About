@@ -60,8 +60,8 @@ function Birthday() {
   function CustomButton({ value, onClick }: { value: string; onClick?: () => void }) {
     return (
       <Button
-        _focus={{ bg: "var(--gray-800)" }}
-        _hover={{ bg: "var(--gray-800)" }}
+        _focus={{ bg: "var(--gray-600)" }}
+        _hover={{ bg: "var(--gray-600)" }}
         color="white"
         bg="inherit"
         w="160px"
@@ -87,10 +87,10 @@ function Birthday() {
             borderRadius="8px"
             size="md"
             as="div"
-            bg="gray.800"
+            bg="gray.600"
             border="var(--border-main)"
-            _focus={{ bg: "var(--gray-800)" }}
-            _hover={{ bg: "var(--gray-800)" }}
+            _focus={{ bg: "var(--gray-600)" }}
+            _hover={{ bg: "var(--gray-600)" }}
           >
             <StyledDatePicker
               locale="ko"
@@ -111,10 +111,10 @@ function Birthday() {
             borderRadius="8px"
             mt={3}
             as="div"
-            bgColor="gray.800"
+            bgColor="gray.600"
             border="var(--border-main)"
-            _focus={{ bg: "var(--gray-800)" }}
-            _hover={{ bg: "var(--gray-800)" }}
+            _focus={{ bg: "var(--gray-600)" }}
+            _hover={{ bg: "var(--gray-600)" }}
           >
             <StyledDatePicker
               locale="ko"
