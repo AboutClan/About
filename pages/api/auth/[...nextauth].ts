@@ -108,14 +108,22 @@ export const authOptions: NextAuthOptions = {
         }
 
         await dbConnect();
-        await User.updateOne(
+        const findUser = await User.findOneAndUpdate(
           { uid: user.uid },
           {
             $set: {
               profileImage,
             },
           },
+          { new: false }, // 기존 데이터를 반환합니다.
         );
+
+        if (findUser) {
+          user.role = findUser.role;
+          user.location = findUser.location;
+          account.role = findUser.role;
+          account.location = findUser.location;
+        }
 
         return true;
       } catch (error) {
@@ -124,7 +132,7 @@ export const authOptions: NextAuthOptions = {
       }
     },
 
-    async session({ session, token, trigger }) {
+    async session({ session, token, user, trigger }) {
       if (trigger === "update") {
         return session;
       }
@@ -165,6 +173,7 @@ export const authOptions: NextAuthOptions = {
     },
 
     async jwt({ token, account, user, trigger }) {
+      console.log(2, token, account, user);
       try {
         if (trigger === "update" && token?.role) {
           token.role = "waiting";

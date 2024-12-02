@@ -222,7 +222,7 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
 const Message = styled.div`
   margin-top: 12px;
   padding: 12px 16px;
-  min-height: 48px;
+  min-height: 58px;
   border-radius: 8px;
   color: var(--gray-600);
   border: 1px solid var(--gray-100);
