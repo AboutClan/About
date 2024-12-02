@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
 
 import axios from "axios";
+import { signOut, useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
 import { useEffect, useMemo, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -65,7 +65,11 @@ function Layout({ children }: ILayout) {
     if (status === "loading" || session === undefined) return;
     const role = session?.user.role;
     if (role === "newUser") {
-      router.push("/register/name");
+      router.push("/login");
+      toast(
+        "info",
+        "접속 권한이 없습니다. 다시 로그인 해주세요! 반복되는 경우 관리자에게 문의 부탁드립니다.",
+      );
       return;
     }
     if (role === "waiting") {
@@ -75,7 +79,7 @@ function Layout({ children }: ILayout) {
     if (!session?.user?.location) {
       toast(
         "warning",
-        "접속 권한이 없습니다. 다시 로그인 해주세요! 반복되는 경우 관리자에게 문의 부탁드립니다!!",
+        "접속 권한이 없습니다. 다시 로그인 해주세요! 반복되는 경우 관리자에게 문의 부탁드립니다.",
       );
       signOut({ callbackUrl: `/login/?status=logout` });
     }
