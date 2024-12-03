@@ -732,6 +732,20 @@ export const EVENT_CONTENT_2024: Record<string, CalendarContentProps[]> = {
       type: "main",
       textPosition: "start",
     },
+    {
+      content: "새해 목표",
+      start: 30,
+      end: 30,
+      type: "event",
+      textPosition: "end",
+    },
+    {
+      content: "기록 이벤트",
+      start: 31,
+      end: 31,
+      type: "event",
+      textPosition: "start",
+    },
   ],
 };
 
