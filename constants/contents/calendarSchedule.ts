@@ -643,7 +643,7 @@ export const EVENT_CONTENT_2024: Record<string, CalendarContentProps[]> = {
       type: "event",
     },
     {
-      content: "동대문 스터디",
+      content: "동대문 카공",
       start: 3,
       end: 3,
       type: "schedule",

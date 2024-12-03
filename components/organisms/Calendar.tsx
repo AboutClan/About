@@ -166,6 +166,7 @@ function Calendar({ monthFirstDate, calendarContents }: CalendarProps) {
                       isLast={item?.isLast}
                       color={item?.color}
                       position={item?.textPosition}
+                      isTwoLine={item?.content.length > 8}
                     >
                       {item?.isFirst ? item?.content : "\u00A0"}
                     </EventBlock>
@@ -185,8 +186,9 @@ const EventBlock = styled.div<{
   isFirst: boolean;
   isLast: boolean;
   position: "start" | "end";
+  isTwoLine: boolean;
 }>`
-  font-size: 10px;
+  font-size: 9px;
   margin: ${(props) => !props.position && "0 1px"};
   margin-bottom: 2px;
 
@@ -196,7 +198,7 @@ const EventBlock = styled.div<{
   border-bottom-left-radius: ${(props) => props.position === "end" && "4px"};
   border-top-right-radius: ${(props) => props.position === "start" && "4px"};
   border-bottom-right-radius: ${(props) => props.position === "start" && "4px"};
-  white-space: pre;
+  white-space: ${(props) => (props.isTwoLine ? "pre-wrap" : "pre")};
   color: white;
   background-color: ${(props) => props.color};
   position: relative;

@@ -20,7 +20,7 @@ function CalendarPage() {
     <>
       <Header title="동아리 캘린더" />
       <Slide isNoPadding>
-        <Box px={1}>
+        <Box>
           <Flex align="center" justify="space-between" my={3} mr={3} ml={2}>
             <MonthNav monthNum={monthNum} changeMonth={setMonthFirstDate} />
             <ColorLabelRow props={SCHEDULE_CATEGORIES} />
