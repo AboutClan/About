@@ -138,8 +138,9 @@ function StudyPageDrawer({
                 dragElastic={0.3}
                 onDragEnd={(_, panInfo) => onDragEnd(panInfo)}
               >
-                {thumbnailCardInfoArr
-                  ? thumbnailCardInfoArr.map(({ participants, ...thumbnailCardInfo }, idx) => (
+                {thumbnailCardInfoArr ? (
+                  thumbnailCardInfoArr.length ? (
+                    thumbnailCardInfoArr.map(({ participants, ...thumbnailCardInfo }, idx) => (
                       <Box key={idx} mb={3}>
                         <StudyThumbnailCard
                           {...thumbnailCardInfo}
@@ -147,7 +148,15 @@ function StudyPageDrawer({
                         />
                       </Box>
                     ))
-                  : [1, 2, 3, 4, 5].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)}
+                  ) : (
+                    <Box fontSize="13px" color="gray.800" fontWeight="semibold" mt={5}>
+                      정규 스터디 오픈을 준비중인 지역입니다. 지도에서 직접 장소를 추가하거나,
+                      활성화 된 다른 지역을 이용해 주세요!
+                    </Box>
+                  )
+                ) : (
+                  [1, 2, 3, 4, 5].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)
+                )}
               </motion.div>
             </AnimatePresence>
           </Box>

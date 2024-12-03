@@ -49,7 +49,7 @@ export const useStudyPlacesQuery = (
 
 export const useStudyVoteQuery = (
   date: string,
-  location: Location | "전체",
+  location: Location | "전체" | "기타",
   options?: QueryOptions<StudyDailyInfoProps>,
 ) =>
   useQuery<StudyDailyInfoProps, AxiosError, StudyDailyInfoProps>(

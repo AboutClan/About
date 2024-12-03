@@ -64,10 +64,13 @@ export default function StudyPage() {
     "kr",
   ) as ActiveLocation;
 
-  const userLocation = (localStorage.getItem(USER_LOCATION) as Location) || session?.user.location;
+  const userLocation =
+    (localStorage.getItem(USER_LOCATION) as Location | "기타") || session?.user.location;
 
   const [date, setDate] = useState(dateParam || getStudyViewDate(dayjs()));
-  const [locationValue, setLocationValue] = useState<Location>(locationParamKr || userLocation);
+  const [locationValue, setLocationValue] = useState<Location>(
+    locationParamKr || userLocation === "기타" ? "수원" : userLocation,
+  );
   const [mapOptions, setMapOptions] = useState<IMapOptions>();
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>();
   const [currentLocation, setCurrentLocation] = useState<CoordinateProps>();
@@ -121,7 +124,8 @@ export default function StudyPage() {
         lon: lon,
       });
     } else {
-      const locationCenter = LOCATION_CENTER_DOT[userLocation];
+      console.log(userLocation);
+      const locationCenter = LOCATION_CENTER_DOT[userLocation === "기타" ? "수원" : userLocation];
 
       setCenterLocation({ lat: locationCenter.latitude, lon: locationCenter.longitude });
     }

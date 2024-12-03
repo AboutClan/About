@@ -196,7 +196,7 @@ const EventBlock = styled.div<{
   border-bottom-left-radius: ${(props) => props.position === "end" && "4px"};
   border-top-right-radius: ${(props) => props.position === "start" && "4px"};
   border-bottom-right-radius: ${(props) => props.position === "start" && "4px"};
-
+  white-space: pre;
   color: white;
   background-color: ${(props) => props.color};
   position: relative;
