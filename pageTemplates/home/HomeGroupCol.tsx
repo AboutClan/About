@@ -48,6 +48,7 @@ export default function HomeGroupCol({ threeGroups, isStudy }: HomeGroupColProps
               return (
                 <GroupThumbnailCard
                   key={idx}
+                  isBig={false}
                   {...createGroupThumbnailProps(
                     group,
                     status,

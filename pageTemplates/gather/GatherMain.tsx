@@ -29,7 +29,7 @@ export default function GatherMain() {
   const firstLoad = useRef(true);
 
   const { data: gatherData, isLoading } = useGatherQuery(cursor);
-
+  console.log(gatherData);
   useEffect(() => {
     if (gatherData) {
       setGathers((old) => [...old, ...gatherData]);

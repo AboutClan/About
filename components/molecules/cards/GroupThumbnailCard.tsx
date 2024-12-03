@@ -30,6 +30,7 @@ export interface GroupThumbnailCardProps {
   func: () => void;
   id: number;
   waitingCnt?: number;
+  isBig?: boolean;
 }
 
 export function GroupThumbnailCard({
@@ -43,6 +44,7 @@ export function GroupThumbnailCard({
   id,
   maxCnt,
   waitingCnt,
+  isBig = true,
 }: GroupThumbnailCardProps) {
   const userAvatarArr = participants
     ?.filter((par) => par)
@@ -85,7 +87,7 @@ export function GroupThumbnailCard({
               : statusToBadgeProps[status].text}
           </Badge>
         </Flex>
-        <Title>{title}</Title>
+        <Title isBig={isBig}>{title}</Title>
         <Subtitle lineNum={2}>{text}</Subtitle>
         {waitingCnt === null ? (
           <Flex alignItems="center" justify="space-between">
@@ -182,9 +184,9 @@ const CardLink = styled(Link)`
   }
 `;
 
-const Title = styled(SingleLineText)`
+const Title = styled(SingleLineText)<{ isBig: boolean }>`
   font-weight: 700;
-  font-size: 16px;
+  font-size: ${(props) => (props.isBig ? "16px" : "14px")};
   margin-bottom: 4px;
   line-height: 24px;
   color: var(--gray-800);
