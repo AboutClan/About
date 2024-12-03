@@ -119,17 +119,17 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
   useEffect(() => {
     // const popUpCnt = cnt;
 
-    if (!userInfo?.locationDetail) {
-      // setModalTypes((old) => [...old, "registerLocation"]);
-      return;
-    } else if (
-      !checkAndSetLocalStorage("preference", 3) &&
-      (!userInfo?.studyPreference?.updatedAt ||
-        dayjs().diff(dayjs(userInfo?.studyPreference?.updatedAt), "day") > 30)
-    ) {
-      setModalTypes((old) => [...old, "preference"]);
-      return;
-    }
+    // if (!userInfo?.locationDetail) {
+    //   // setModalTypes((old) => [...old, "registerLocation"]);
+    //   return;
+    // } else if (
+    //   !checkAndSetLocalStorage("preference", 3) &&
+    //   (!userInfo?.studyPreference?.updatedAt ||
+    //     dayjs().diff(dayjs(userInfo?.studyPreference?.updatedAt), "day") > 30)
+    // ) {
+    //   setModalTypes((old) => [...old, "preference"]);
+    //   return;
+    // }
 
     // if (!checkAndSetLocalStorage(ALPHABET_POP_UP, 15)) {
     //   setModalTypes((old) => [...old, "alphabet"]);
