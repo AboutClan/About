@@ -1,6 +1,6 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { Box, Flex } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -11,7 +11,6 @@ import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading"
 import SectionHeader from "../../components/atoms/SectionHeader";
 import Select from "../../components/atoms/Select";
 import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
-import StarTicketIcon from "../../components/Icons/StarTicketIcon";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import { GroupThumbnailCard } from "../../components/molecules/cards/GroupThumbnailCard";
@@ -170,8 +169,8 @@ function GroupPage() {
 
   return (
     <>
-      <Header title="소모임" url="/group" isBack={false} rightPadding={12}>
-        <Button
+      <Header title="소모임" url="/group" isBack={false}>
+        {/* <Button
           px={2}
           bg="inherit"
           fontSize="14px"
@@ -190,7 +189,7 @@ function GroupPage() {
           leftIcon={<StarTicketIcon color="blue" />}
         >
           2
-        </Button>
+        </Button> */}
       </Header>
       <Slide isNoPadding>
         <Layout>

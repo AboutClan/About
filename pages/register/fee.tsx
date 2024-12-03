@@ -11,7 +11,7 @@ import { ACCORDION_CONTENT_FEE } from "../../constants/contentsText/accordionCon
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
 import { ACTIVE_LOCATION_CENTER_DOT } from "../../constants/serviceConstants/studyConstants/studyVoteMapConstants";
 import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
-import { useUserRegisterMutation } from "../../hooks/user/mutations";
+import { useUserInfoFieldMutation, useUserRegisterMutation } from "../../hooks/user/mutations";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
@@ -37,8 +37,11 @@ function Fee() {
 
   const info: IUserRegisterFormWriting = getLocalStorageObj(REGISTER_INFO);
 
+  const { mutate: changeRole } = useUserInfoFieldMutation("role");
+
   const { mutate, isLoading } = useUserRegisterMutation({
     onSuccess() {
+      changeRole({ role: "waiting" });
       const getClosestLocation = (lat: number, lon: number): ActiveLocation => {
         let closestLocation: ActiveLocation = "수원";
         let minDistance = Number.MAX_VALUE;
