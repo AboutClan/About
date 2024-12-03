@@ -56,7 +56,7 @@ interface UserSettingPopUpProps {
 
 export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
   const { data: session } = useSession();
-
+  console.log(userInfo);
   const [modalTypes, setModalTypes] = useState<UserPopUp[]>([]);
   // const [recentMembers, setRecentMembers] = useState<IUserSummary[]>();
   // const [drawerType, setDrawerType] = useState<"bottom" | "right">();
@@ -152,9 +152,9 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
       setModalTypes((old) => [...old, "promotion"]);
       return;
     }
-    if (userInfo?.weekStudyTargetHour === 0) {
-      setModalTypes((old) => [...old, "studyChallenge"]);
-    }
+    // if (userInfo?.weekStudyTargetHour === 0) {
+    //   setModalTypes((old) => [...old, "studyChallenge"]);
+    // }
 
     // if (studyRecord && studyRecord?.date !== dayjsToStr(dayjs())) {
     //   setDrawerType("bottom");

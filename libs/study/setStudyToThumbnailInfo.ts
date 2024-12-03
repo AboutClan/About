@@ -1,5 +1,4 @@
 import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
-import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import {
   StudyMergeParticipationProps,
   StudyParticipationProps,
@@ -35,8 +34,7 @@ export const setStudyToThumbnailInfo = (
     //   | "expected"
     //   | "solo";
     const image = imageCache?.get(placeInfo?.id);
-    const randomNum = idx === 0 ? 6 : idx === 1 ? 5 : idx === 2 ? 3 : idx === 3 ? 1 : 0;
-    const length = data.members.length + randomNum;
+
     return {
       place: {
         name: placeInfo.name,
@@ -55,17 +53,15 @@ export const setStudyToThumbnailInfo = (
           isPriority: imagePriority === false ? false : idx < 4 ? true : false,
         },
       },
-      participants: [
-        ...data.members.map((att) => att.user),
-        ...new Array(randomNum).fill(0).map(() => ABOUT_USER_SUMMARY),
-      ],
+      participants: data.members.map((att) => att.user),
+
       url:
         urlDateParam &&
         `/study/${data.place._id}/${urlDateParam}?location=${convertLocationLangTo(
           location,
           "en",
         )}`,
-      status: length > 3 ? "open" : length > 0 ? "free" : data.status,
+      status: data.status,
       id: data.place._id,
     };
   });
