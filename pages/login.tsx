@@ -12,6 +12,7 @@ import {
   useSession,
 } from "next-auth/react";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
@@ -20,15 +21,29 @@ import { useUserInfoQuery } from "../hooks/user/queries";
 import ForceLogoutDialog from "../modals/login/ForceLogoutDialog";
 import GuestLoginModal from "../modals/login/GuestLoginModal";
 import { IFooterOptions, ModalLayout } from "../modals/Modals";
+import { ActiveLocation, LocationEn } from "../types/services/locationTypes";
+import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
+
+const CONNECT_KAKAO: Record<ActiveLocation, string> = {
+  수원: "https://invite.kakao.com/tc/rEr5kh1ZBG",
+  양천: "https://invite.kakao.com/tc/yIAT2FzbzP",
+  강남: "https://invite.kakao.com/tc/KIsYaxZPjO",
+  인천: "https://invite.kakao.com/tc/dcsm54c3g9",
+  동대문: "https://invite.kakao.com/tc/XQidbLsVOG",
+  안양: "https://invite.kakao.com/tc/rEr5kh1ZBG",
+};
 
 const Login: NextPage<{
   providers: Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider>;
 }> = ({ providers }) => {
+  const searchParams = useSearchParams();
   const router = useRouter();
   const { data: session } = useSession();
   const toast = useToast();
 
-  const status = router.query?.status;
+  const statusParam = searchParams.get("status");
+  const locationParam = searchParams.get("location") as LocationEn;
+
   const kakaoProvider = Object.values(providers).find((p) => p.id == "kakao");
 
   const [isModal, setIsModal] = useState(false);
@@ -40,7 +55,18 @@ const Login: NextPage<{
   });
 
   useEffect(() => {
-    switch (status) {
+    switch (statusParam) {
+      case "complete":
+        if (!locationParam) return;
+        const locationKr = convertLocationLangTo(locationParam, "kr");
+        if (!locationKr) return;
+        // newSearchParams.delete("status");
+        // newSearchParams.delete("location");
+        router.replace(`/login`);
+        setTimeout(() => {
+          router.push(CONNECT_KAKAO[locationKr]);
+        }, 0);
+        break;
       case "logout":
         toast("success", "로그아웃 되었습니다.");
         break;
@@ -51,7 +77,7 @@ const Login: NextPage<{
         toast("warning", "가입 대기중입니다.");
         break;
     }
-  }, [status]);
+  }, [statusParam]);
 
   const customSignin = async (type: "member" | "guest") => {
     setLoadingType(type);

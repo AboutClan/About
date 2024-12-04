@@ -16,16 +16,8 @@ import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
 import { ActiveLocation } from "../../types/services/locationTypes";
+import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
-
-const CONNECT_KAKAO: Record<ActiveLocation, string> = {
-  수원: "https://invite.kakao.com/tc/rEr5kh1ZBG",
-  양천: "https://invite.kakao.com/tc/yIAT2FzbzP",
-  강남: "https://invite.kakao.com/tc/KIsYaxZPjO",
-  인천: "https://invite.kakao.com/tc/dcsm54c3g9",
-  동대문: "https://invite.kakao.com/tc/XQidbLsVOG",
-  안양: "https://invite.kakao.com/tc/rEr5kh1ZBG",
-};
 
 function Fee() {
   const errorToast = useErrorToast();
@@ -80,8 +72,8 @@ function Fee() {
       };
 
       const findLocation = getClosestLocation(info.locationDetail.lat, info.locationDetail.lon);
-
-      router.push(CONNECT_KAKAO[findLocation]);
+      router.push(`/login?status=complete&location=${convertLocationLangTo(findLocation, "en")}`);
+      // router.push(CONNECT_KAKAO[findLocation]);
 
       setLocalStorageObj(REGISTER_INFO, null);
     },
