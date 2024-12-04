@@ -25,14 +25,14 @@ function Comment() {
 
   useEffect(() => {
     if (!info?.comment) {
-      console.log(24);
-      setIndex(0); // 마지막 input 선택
-      inputRef.current?.focus(); // 포커싱
+      setIndex(0);
+      setTimeout(() => {
+        inputRef.current?.focus(); // 포커싱
+      }, 500);
     }
   }, []);
 
   const onClickNext = (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    console.log(index, value);
     if ((index === null || index === 0) && value === "") {
       e.preventDefault();
       setErrorMessage("문장을 선택해 주세요.");
