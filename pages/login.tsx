@@ -85,7 +85,7 @@ const Login: NextPage<{
       return;
     }
 
-    if (userInfo?.role === "waiting") {
+    if (userInfo?.role === "waiting" || statusParam === "waiting") {
       setIsWaitingModal(true);
       setLoadingType(null);
       return;
