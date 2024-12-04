@@ -60,12 +60,8 @@ const Login: NextPage<{
         if (!locationParam) return;
         const locationKr = convertLocationLangTo(locationParam, "kr");
         if (!locationKr) return;
-        // newSearchParams.delete("status");
-        // newSearchParams.delete("location");
-        router.replace(`/login`);
-        setTimeout(() => {
-          router.push(CONNECT_KAKAO[locationKr]);
-        }, 0);
+        history.replaceState(null, "", "/login");
+        router.push(CONNECT_KAKAO[locationKr]);
         break;
       case "logout":
         toast("success", "로그아웃 되었습니다.");
