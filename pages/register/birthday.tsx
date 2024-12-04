@@ -85,6 +85,7 @@ function Birthday() {
         <DateContainer>
           <DateStr>{myBirth}</DateStr>
           <Button
+            mt={1}
             borderRadius="8px"
             size="md"
             as="div"
@@ -159,6 +160,7 @@ const StyledDatePicker = styled(DatePicker)`
 const DateStr = styled.div`
   font-size: 24px;
   margin: var(--gap-5) 0;
+  margin-top: 24px;
   font-weight: bold;
 `;
 
