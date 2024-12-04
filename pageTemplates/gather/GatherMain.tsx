@@ -1,5 +1,4 @@
 import { Box } from "@chakra-ui/react";
-import { useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -12,14 +11,9 @@ import {
 import { useGatherQuery } from "../../hooks/gather/queries";
 import { transferGatherDataState } from "../../recoils/transferRecoils";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
-import { LocationEn } from "../../types/services/locationTypes";
-import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { setGatherDataToCardCol } from "../home/HomeGatherCol";
 
 export default function GatherMain() {
-  const searchParams = useSearchParams();
-
-  const location = convertLocationLangTo(searchParams.get("location") as LocationEn, "kr");
   const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>();
 
   const setTransferGatherData = useSetRecoilState(transferGatherDataState);
@@ -29,7 +23,7 @@ export default function GatherMain() {
   const firstLoad = useRef(true);
 
   const { data: gatherData, isLoading } = useGatherQuery(cursor);
-  console.log(gatherData);
+
   useEffect(() => {
     if (gatherData) {
       setGathers((old) => [...old, ...gatherData]);
@@ -40,13 +34,7 @@ export default function GatherMain() {
   useEffect(() => {
     if (!gathers) return;
     setCardDataArr(
-      setGatherDataToCardCol(
-        location
-          ? gathers.filter((gather) => gather.place === "전체" || gather.place.includes(location))
-          : gathers,
-        6,
-        (gather: IGather) => setTransferGatherData(gather),
-      ),
+      setGatherDataToCardCol(gathers, 6, (gather: IGather) => setTransferGatherData(gather)),
     );
   }, [gathers, location]);
 
