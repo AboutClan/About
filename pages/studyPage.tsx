@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -405,16 +405,11 @@ const getMarkersOptions = (
         polyline,
       });
     } else {
-      const randomNum = Math.floor(Math.random() * 5);
-      const cnt = par.members.length + randomNum;
       temp.push({
         id: par.place._id,
         position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
         icon: {
-          content: getStudyIcon(
-            cnt === 1 ? "active" : cnt > 0 ? null : "inactive",
-            cnt === 4 ? 0 : cnt,
-          ),
+          content: getStudyIcon(null, par.members.length),
           size: new naver.maps.Size(72, 72),
           anchor: new naver.maps.Point(36, 44),
         },
