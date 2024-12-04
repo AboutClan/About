@@ -20,6 +20,7 @@ function BlurredLink({ isBlur, url }: BlurredLinkProps) {
 
 const CustomExternalLink = styled(ExternalLink)<{ isblur: "true" | "false" }>`
   pointer-events: ${({ isblur }) => (isblur === "true" ? "none" : "unset")};
+  user-select: ${({ isblur }) => (isblur === "true" ? "none" : "text")};
 `;
 
 export default BlurredLink;

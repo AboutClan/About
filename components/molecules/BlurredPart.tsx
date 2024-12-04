@@ -30,6 +30,8 @@ const Container = styled.div<{ isBlur?: boolean; size: "md" | "lg" }>`
 
 const Layout = styled.div<{ isBlur?: boolean }>`
   filter: ${(props) => props.isBlur && "blur(6px)"};
+  pointer-events: ${(props) => (props.isBlur ? "none" : "auto")}; /* 드래그 방지 */
+  user-select: ${(props) => (props.isBlur ? "none" : "auto")}; /* 복사 방지 */
 `;
 
 const Text = styled.div`
