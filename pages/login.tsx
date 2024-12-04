@@ -60,7 +60,7 @@ const Login: NextPage<{
         if (!locationParam) return;
         const locationKr = convertLocationLangTo(locationParam, "kr");
         if (!locationKr) return;
-        history.replaceState(null, "", "/login");
+        history.replaceState(null, "", "/login?status=waiting");
         router.push(CONNECT_KAKAO[locationKr]);
         break;
       case "logout":
