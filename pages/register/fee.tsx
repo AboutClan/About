@@ -19,12 +19,12 @@ import { ActiveLocation } from "../../types/services/locationTypes";
 import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
 const CONNECT_KAKAO: Record<ActiveLocation, string> = {
-  수원: "https://invite.kakao.com/tc/GiTGDAGMrG",
-  양천: "https://invite.kakao.com/tc/Pu05u6HhfY",
-  강남: "https://invite.kakao.com/tc/0Bhy3kTvYT",
-  인천: "https://invite.kakao.com/tc/TNYI4NWLFu",
-  동대문: "https://invite.kakao.com/tc/sFYgwCA3Dj",
-  안양: "https://invite.kakao.com/tc/GiTGDAGMrG",
+  수원: "https://invite.kakao.com/tc/rEr5kh1ZBG",
+  양천: "https://invite.kakao.com/tc/yIAT2FzbzP",
+  강남: "https://invite.kakao.com/tc/KIsYaxZPjO",
+  인천: "https://invite.kakao.com/tc/dcsm54c3g9",
+  동대문: "https://invite.kakao.com/tc/XQidbLsVOG",
+  안양: "https://invite.kakao.com/tc/rEr5kh1ZBG",
 };
 
 function Fee() {
