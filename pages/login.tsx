@@ -127,7 +127,7 @@ const Login: NextPage<{
           align="center"
           maxW="293px"
           w="68.5%"
-          top="44%"
+          top="42%"
           left="50%"
           transform="translate(-50%,-50%)"
         >
