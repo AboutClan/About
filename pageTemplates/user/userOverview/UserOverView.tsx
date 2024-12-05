@@ -57,7 +57,15 @@ export default function UserOverview({ userInfo }: UserOverviewProps) {
               size="xl"
               isLink={false}
             />
-            <IconWrapper onClick={() => setIsProfileModal(true)}>
+            <IconWrapper
+              onClick={() => {
+                if (isGuest) {
+                  typeToast("guest");
+                  return;
+                }
+                setIsProfileModal(true);
+              }}
+            >
               <CameraIcon />
             </IconWrapper>
           </UserImg>

@@ -124,7 +124,6 @@ export default function StudyPage() {
         lon: lon,
       });
     } else {
-      console.log(userLocation);
       const locationCenter = LOCATION_CENTER_DOT[userLocation === "기타" ? "수원" : userLocation];
 
       setCenterLocation({ lat: locationCenter.latitude, lon: locationCenter.longitude });

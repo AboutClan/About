@@ -1,4 +1,5 @@
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 
 import { USER_INFO } from "../../../constants/keys/queryKeys";
@@ -8,6 +9,8 @@ import { useUserInfoQuery } from "../../../hooks/user/queries";
 
 function UserOverviewComment() {
   const inputRef = useRef<HTMLInputElement>(null);
+  const { data: session } = useSession();
+  const isGuest = session?.user.role === "guest";
 
   const [value, setValue] = useState("");
   const [isFocused, setIsFocused] = useState(false);
@@ -78,6 +81,7 @@ function UserOverviewComment() {
         onChange={onWrite}
         focusBorderColor="#00c2b3"
         fontSize="13px"
+        isDisabled={isGuest}
       />
       <InputRightElement>
         <i

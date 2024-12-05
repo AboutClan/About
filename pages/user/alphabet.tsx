@@ -1,9 +1,7 @@
 import { Badge, Button } from "@chakra-ui/react";
 import { AxiosError } from "axios";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import Avatar from "../../components/atoms/Avatar";
@@ -20,7 +18,6 @@ import {
   useCollectionAlphabetQuery,
 } from "../../hooks/user/sub/collection/queries";
 import AlphabetChangeModal from "../../modals/user/collection/AlphabetChangeModal";
-import { prevPageUrlState } from "../../recoils/previousAtoms";
 import { Alphabet, ICollectionAlphabet } from "../../types/models/collections";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import { getUserBadge } from "../../utils/convertUtils/convertDatas";
@@ -30,10 +27,8 @@ const ALPHABET_COLLECTION: Alphabet[] = ["A", "B", "O", "U", "T"];
 function CollectionAlphabet() {
   const failToast = useFailToast();
   const completeToast = useCompleteToast();
-  const router = useRouter();
-  const { data: session } = useSession();
 
-  const setBeforePage = useSetRecoilState(prevPageUrlState);
+  const { data: session } = useSession();
 
   const { data: userInfo } = useUserInfoQuery();
 
@@ -80,11 +75,6 @@ function CollectionAlphabet() {
     setMembers(userAlphabetAll);
   }, [isLoading, session?.user?.uid, userAlphabetAll]);
 
-  const onClickProfile = (user: IUserSummary) => {
-    setBeforePage(router?.asPath);
-    router.push(`/profile/${user.uid}`);
-  };
-
   const onClickChangeBtn = (user: IUserSummary, alphabets: Alphabet[]) => {
     const myFriends = userInfo?.friend;
     if (!myFriends?.includes(user.uid)) {
@@ -104,7 +94,7 @@ function CollectionAlphabet() {
       <Header title="전체 수집 현황" />
 
       {!isLoading ? (
-        <Slide>
+        <Slide isNoPadding>
           <Members>
             {members?.map((who) => {
               if (!who?.user) return null;
@@ -123,7 +113,7 @@ function CollectionAlphabet() {
               });
               return (
                 <Item key={user.uid}>
-                  <ProfileWrapper onClick={() => onClickProfile(user)}>
+                  <ProfileWrapper>
                     <Avatar
                       size="md"
                       userId={user._id}

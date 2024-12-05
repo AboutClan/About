@@ -85,7 +85,7 @@ function Setting() {
     await mutate({ userId, status, text: status === "refuse" ? refuseText : null });
     setWaitingMembers((old) => old.filter((who) => who.user._id !== userId));
   };
-  console.log(24, gatherData, gatherData?.participants);
+
   return (
     <>
       <Header title="모임장 페이지" />
