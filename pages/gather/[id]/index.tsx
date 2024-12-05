@@ -36,9 +36,9 @@ function GatherDetail() {
       setGather(gatherData);
       setTransferGather(gatherData);
     } else if (transferGather) setGather(transferGather);
-    return () => {
-      setTransferGather(null);
-    };
+    // return () => {
+    //   setTransferGather(null);
+    // };
   }, [transferGather, gatherData]);
 
   const isMember =

@@ -85,7 +85,7 @@ function Setting() {
     await mutate({ userId, status, text: status === "refuse" ? refuseText : null });
     setWaitingMembers((old) => old.filter((who) => who.user._id !== userId));
   };
-
+  console.log(24, gatherData, gatherData?.participants);
   return (
     <>
       <Header title="모임장 페이지" />
@@ -105,7 +105,15 @@ function Setting() {
           />
         </Flex>
       </Slide>
-      {modalType === "inviteMember" && <InviteUserModal setIsModal={() => setModalType(null)} />}
+      {modalType === "inviteMember" && (
+        <InviteUserModal
+          prevUsers={[
+            // gatherData.user as IUserSummary,
+            ...gatherData.participants.map((par) => par.user),
+          ]}
+          setIsModal={() => setModalType(null)}
+        />
+      )}
       {modalType === "waitingMember" && (
         <RightDrawer title="신청중인 인원" onClose={() => setModalType(null)}>
           <Flex direction="column">

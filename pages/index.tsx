@@ -13,7 +13,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       redirect: {
         permanent: false,
-        destination: `/home?tab=recommendation`,
+        destination: `/home`,
       },
       props: {},
     };

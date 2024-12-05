@@ -18,21 +18,28 @@ import { Location } from "../types/services/locationTypes";
 import { searchName } from "../utils/stringUtils";
 import { IFooterOptions, ModalLayout } from "./Modals";
 
-interface IInviteUserModal extends IModal {}
+interface IInviteUserModal extends IModal {
+  prevUsers: IUserSummary[];
+}
 
-export default function InviteUserModal({ setIsModal }: IInviteUserModal) {
+export default function InviteUserModal({ setIsModal, prevUsers }: IInviteUserModal) {
   const typeToast = useTypeToast();
-  const { data: session } = useSession();
   const { id } = useParams<{ id: string }>() || {};
 
-  const [location, setLocation] = useState<Location>(session?.user.location || "수원");
+  const [location, setLocation] = useState<Location | "전체">("전체");
   const [inviteUser, setInviteUser] = useState<IUserSummary>(null);
   const [users, setUsers] = useState<IUserSummary[]>(null);
+  const [existUsers, setExistUsers] = useState<IUserSummary[]>(prevUsers);
   const [nameValue, setNameValue] = useState("");
 
-  const { data: usersAll, isLoading } = useAdminUsersLocationControlQuery(location, null, true, {
-    enabled: true,
-  });
+  const { data: usersAll, isLoading } = useAdminUsersLocationControlQuery(
+    location === "전체" ? null : location,
+    null,
+    true,
+    {
+      enabled: true,
+    },
+  );
 
   const queryClient = useQueryClient();
 
@@ -52,6 +59,7 @@ export default function InviteUserModal({ setIsModal }: IInviteUserModal) {
     if (!inviteUser) return;
     mutate({ phase: "first", userId: inviteUser._id });
     setUsers((old) => old.filter((who) => who.uid !== inviteUser.uid));
+    setExistUsers((old) => [...old, inviteUser]);
     setInviteUser(null);
   }, [inviteUser]);
 
@@ -62,6 +70,10 @@ export default function InviteUserModal({ setIsModal }: IInviteUserModal) {
   };
 
   const buttonOptionsArr = [
+    {
+      text: "전체",
+      func: () => setLocation("전체"),
+    },
     {
       text: "수원",
       func: () => setLocation("수원"),
@@ -108,7 +120,11 @@ export default function InviteUserModal({ setIsModal }: IInviteUserModal) {
         }}
       >
         {!isLoading ? (
-          <InviteUserGroups users={users} inviteUser={(who) => setInviteUser(who)} />
+          <InviteUserGroups
+            users={users}
+            inviteUser={(who) => setInviteUser(who)}
+            existUsers={existUsers}
+          />
         ) : (
           <MainLoadingAbsolute />
         )}
