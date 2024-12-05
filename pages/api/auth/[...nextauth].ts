@@ -20,6 +20,7 @@ const secret = process.env.NEXTAUTH_SECRET;
 
 export const authOptions: NextAuthOptions = {
   secret,
+  debug: true,
   providers: [
     CredentialsProvider({
       id: "guest",
