@@ -6,7 +6,7 @@ import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 interface IInviteUserGroups {
   users: IUserSummary[];
   inviteUser: (who: IUserSummary) => void;
-  existUsers: IUserSummary[];
+  existUsers?: IUserSummary[];
 }
 
 export default function InviteUserGroups({ users, inviteUser, existUsers }: IInviteUserGroups) {
