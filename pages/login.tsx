@@ -40,7 +40,7 @@ const Login: NextPage<{
   const router = useRouter();
   const { data: session } = useSession();
   const toast = useToast();
-
+  console.log(session);
   const statusParam = searchParams.get("status");
   const locationParam = searchParams.get("location") as LocationEn;
 
