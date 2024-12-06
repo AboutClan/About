@@ -215,7 +215,7 @@ const Login: NextPage<{
               opacity={0.8}
               color="white"
               _hover={{ bg: "none" }}
-              onClick={() => router.push("/loginId")}
+              onClick={() => customSignin("apple")}
             >
               다른 방법으로 로그인
             </Button>
