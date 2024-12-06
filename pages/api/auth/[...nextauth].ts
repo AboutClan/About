@@ -136,6 +136,33 @@ export const authOptions: NextAuthOptions = {
         if (account.provider === "kakao" || account.provider === "apple") {
           await dbConnect();
 
+          if (account && account.provider === "apple") {
+            const existingAccount = await Account.findOne({
+              provider: "apple",
+              providerAccountId: account.providerAccountId,
+            });
+
+            if (!existingAccount) {
+              await new Account({
+                provider: "apple",
+                providerAccountId: account.providerAccountId,
+                access_token: account.access_token || "",
+                refresh_token: account.refresh_token || "",
+                expires_at: account.expires_at || null,
+              }).save();
+            } else {
+              await Account.updateOne(
+                { provider: "apple", providerAccountId: account.providerAccountId },
+                {
+                  $set: {
+                    access_token: account.access_token || "",
+                    refresh_token: account.refresh_token || "",
+                    expires_at: account.expires_at || null,
+                  },
+                },
+              );
+            }
+          }
           const findUser = await User.findOneAndUpdate(
             { uid: user.uid },
             {
