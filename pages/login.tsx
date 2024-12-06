@@ -77,7 +77,7 @@ const Login: NextPage<{
 
   const customSignin = async (type: "member" | "guest" | "apple") => {
     setLoadingType(type);
-    const provider = type === "member" ? kakaoProvider.id : "guest";
+    const provider = type === "member" ? kakaoProvider.id : type === "apple" ? "apple" : "guest";
     if (provider === "guest") {
       setIsModal(false);
       await signIn(provider, { callbackUrl: `${window.location.origin}/home` });
