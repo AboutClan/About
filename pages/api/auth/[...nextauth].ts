@@ -145,6 +145,9 @@ export const authOptions: NextAuthOptions = {
                   "http://img1.kakaocdn.net/thumb/R110x110.q70/?fname=http://t1.kakaocdn.net/account_images/default_profile.jpeg",
               },
             },
+            {
+              upsert: true,
+            },
           );
 
           if (findUser) {
