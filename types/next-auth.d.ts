@@ -57,7 +57,10 @@ declare module "next-auth" {
     location: Location;
   }
   /** The OAuth profile returned from your provider */
-  interface Profile {}
+  interface Profile {
+    sub: string; // Apple User ID
+    email: string; // Apple User Email
+  }
 
   interface Session {
     token: JWT;

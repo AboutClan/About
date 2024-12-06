@@ -3,9 +3,11 @@
 import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
+import AppleProvider from "next-auth/providers/apple";
 import CredentialsProvider from "next-auth/providers/credentials";
 import KakaoProvider from "next-auth/providers/kakao";
 
+import jwt from "jsonwebtoken";
 import dbConnect from "../../../libs/backend/dbConnect";
 import clientPromise from "../../../libs/backend/mongodb";
 import { refreshAccessToken } from "../../../libs/backend/oauthUtils";
@@ -17,6 +19,23 @@ const secret = process.env.NEXTAUTH_SECRET;
 // if (!secret) {
 //   throw new Error("NEXTAUTH_SECRET 환경 변수가 설정되지 않았습니다.");
 // }
+
+const generateClientSecret = (): string => {
+  const privateKey = process.env.APPLE_PRIVATE_KEY.replace(/\\n/g, "\n"); // 환경변수에서 가져오기
+  const payload = {
+    iss: process.env.APPLE_TEAM_ID, // Apple Team ID
+    iat: Math.floor(Date.now() / 1000), // 현재 시간
+    exp: Math.floor(Date.now() / 1000) + 3600, // 1시간 유효
+    aud: "https://appleid.apple.com",
+    sub: process.env.APPLE_ID, // Service ID
+  };
+  const header = {
+    alg: "ES256",
+    kid: process.env.APPLE_KEY_ID, // Key ID
+  };
+
+  return jwt.sign(payload, privateKey, { algorithm: "ES256", header });
+};
 
 export const authOptions: NextAuthOptions = {
   secret,
@@ -32,7 +51,8 @@ export const authOptions: NextAuthOptions = {
           uid: "1234567890",
           name: "guest",
           role: "guest",
-          profileImage: "",
+          profileImage:
+            "http://img1.kakaocdn.net/thumb/R110x110.q70/?fname=http://t1.kakaocdn.net/account_images/default_profile.jpeg",
           isActive: true,
         };
 
@@ -77,6 +97,20 @@ export const authOptions: NextAuthOptions = {
         };
       },
     }),
+    AppleProvider({
+      clientId: process.env.APPLE_ID as string, // Service ID
+      clientSecret: generateClientSecret(), // JWT 생성 함수
+      profile: (profile) => ({
+        id: profile.sub, // Apple User ID
+        uid: profile.sub, // 동일 ID로 저장
+        name: profile.email, // 이메일 주소
+        email: profile.email, // 이메일 주소
+        role: "newUser",
+        isActive: false,
+        profileImage:
+          "http://img1.kakaocdn.net/thumb/R110x110.q70/?fname=http://t1.kakaocdn.net/account_images/default_profile.jpeg", // 기본 이미지 (필요시 수정 가능)
+      }),
+    }),
   ],
   adapter: MongoDBAdapter(clientPromise),
   session: {
@@ -93,37 +127,42 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ account, user, profile }) {
       try {
+        console.log("SignIn Debug:", { provider: account?.provider, user, account });
         if (account.provider === "guest") return true;
         if (account.provider === "credentials") return true;
-        if (!account.access_token) return false;
+        if (account.provider === "kakao" && !account.access_token) {
+          return false;
+        }
+        if (account.provider === "kakao" || account.provider === "apple") {
+          await dbConnect();
+
+          const findUser = await User.findOneAndUpdate(
+            { uid: user.uid },
+            {
+              $set: {
+                profileImage:
+                  user.profileImage ||
+                  "http://img1.kakaocdn.net/thumb/R110x110.q70/?fname=http://t1.kakaocdn.net/account_images/default_profile.jpeg",
+              },
+            },
+          );
+
+          if (findUser) {
+            user.role = findUser.role;
+            user.location = findUser.location;
+            account.role = findUser.role;
+            account.location = findUser.location;
+          }
+          return true;
+        }
 
         if (user) {
           account.role = user.role;
           account.location = user.location;
         }
 
-        const profileImage = profile.properties.thumbnail_image || profile.properties.profile_image;
-
         if (user.role === "waiting") {
           return "/login?status=waiting";
-        }
-
-        await dbConnect();
-        const findUser = await User.findOneAndUpdate(
-          { uid: user.uid },
-          {
-            $set: {
-              profileImage,
-            },
-          },
-          { new: false }, // 기존 데이터를 반환합니다.
-        );
-
-        if (findUser) {
-          user.role = findUser.role;
-          user.location = findUser.location;
-          account.role = findUser.role;
-          account.location = findUser.location;
         }
 
         return true;
@@ -174,13 +213,16 @@ export const authOptions: NextAuthOptions = {
     },
 
     async jwt({ token, account, user, trigger }) {
-      console.log(2, token, account, user);
+      console.log("JWT Debug:", { token, account, user });
+
       try {
+        // 특정 트리거로 토큰 업데이트
         if (trigger === "update" && token?.role) {
           token.role = "waiting";
           return token;
         }
 
+        // Guest 로그인 처리
         if (account && account.provider === "guest") {
           token = {
             id: "66f29811e0f0564ae35c52a4",
@@ -192,10 +234,10 @@ export const authOptions: NextAuthOptions = {
             profileImage: "",
             ...token,
           };
-
           return token;
         }
 
+        // Credentials 로그인 처리
         if (account && account.provider === "credentials") {
           token = {
             id: "66f29811e0f0564ae35c52a4",
@@ -207,10 +249,10 @@ export const authOptions: NextAuthOptions = {
             profileImage: "",
             ...token,
           };
-
           return token;
         }
 
+        // Kakao 로그인 처리
         if (account && account.provider === "kakao") {
           await Account.updateOne(
             { providerAccountId: account.providerAccountId },
@@ -241,6 +283,25 @@ export const authOptions: NextAuthOptions = {
           return newToken;
         }
 
+        // Apple 로그인 처리
+        if (account && account.provider === "apple") {
+          const newToken: JWT = {
+            accessToken: account.access_token || "", // Apple은 기본적으로 제공하지 않으므로 빈 문자열
+            refreshToken: account.refresh_token || "", // Apple의 refresh_token도 필요시 빈 값
+            accessTokenExpires: Date.now() + 1000 * 60 * 60, // 1시간 후 만료 (기본값 예시)
+            id: user.id,
+            uid: user.uid,
+            name: user.name,
+            profileImage: user.profileImage || "",
+            role: user.role || "newUser",
+            isActive: user.isActive || false,
+            location: user.location || null, // Location은 nullable로 설정
+          };
+
+          return newToken;
+        }
+
+        // Token 갱신 처리
         if (token.accessTokenExpires) {
           if (Date.now() < token.accessTokenExpires) {
             return token;
@@ -250,7 +311,7 @@ export const authOptions: NextAuthOptions = {
           return token;
         }
       } catch (error) {
-        console.error("jwt 콜백 에러:", error);
+        console.error("JWT 콜백 에러:", error);
         return token;
       }
     },

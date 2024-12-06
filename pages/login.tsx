@@ -48,7 +48,7 @@ const Login: NextPage<{
 
   const [isModal, setIsModal] = useState(false);
   const [isWaitingModal, setIsWaitingModal] = useState(false);
-  const [loadingType, setLoadingType] = useState<"member" | "guest">();
+  const [loadingType, setLoadingType] = useState<"member" | "guest" | "apple">();
 
   const { data: userInfo } = useUserInfoQuery({
     enabled: !!session,
@@ -75,7 +75,7 @@ const Login: NextPage<{
     }
   }, [statusParam]);
 
-  const customSignin = async (type: "member" | "guest") => {
+  const customSignin = async (type: "member" | "guest" | "apple") => {
     setLoadingType(type);
     const provider = type === "member" ? kakaoProvider.id : "guest";
     if (provider === "guest") {
@@ -113,6 +113,13 @@ const Login: NextPage<{
         bg="linear-gradient(0deg, rgba(40, 40, 40, 0.87) 0%, rgba(40, 40, 40, 0.54) 100%)"
         position="relative"
       >
+        <Button
+          position="fixed"
+          top="0"
+          left="0"
+          bg="transparent"
+          onClick={() => customSignin("apple")}
+        ></Button>
         <Image
           src="/background-clip.png"
           alt="loginBackground"
