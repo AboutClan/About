@@ -93,7 +93,6 @@ function Layout({ children }: ILayout) {
 
   const exitAppRef = useRef<boolean>(false);
   useEffect(() => {
-    console.log("pathname:", pathname);
     const handleMessage = (event: MessageEvent) => {
       if (typeof event.data !== "string") return;
 
