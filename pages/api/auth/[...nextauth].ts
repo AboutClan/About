@@ -221,6 +221,7 @@ export const authOptions: NextAuthOptions = {
     },
 
     async session({ session, token, user, trigger }) {
+      console.log("SESS", session, token, user);
       if (trigger === "update") {
         return session;
       }
