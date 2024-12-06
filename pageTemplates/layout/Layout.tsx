@@ -5,7 +5,7 @@ import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
 import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
@@ -21,6 +21,15 @@ import Seo from "./Seo";
 export const BASE_BOTTOM_NAV_SEGMENT = ["home", "studyPage", "gather", "user", "group"];
 export const NOT_PADDING_NAV_SEGMENT = ["login", "studyPage"];
 export const NOT_PADDING_BOTTOM_NAV_SEGMENT = ["vote", "ranking", "board"];
+
+const MAIN_PATHS = ["/home", "/gather", "/group", "/studyPage", "/user"];
+const EXIT_DELAY = 2000;
+
+interface BackActionMessage {
+  name: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
+}
 
 const GoogleAnalytics = dynamic(
   () => import("@next/third-parties/google").then((mod) => mod.GoogleAnalytics),
@@ -81,6 +90,47 @@ function Layout({ children }: ILayout) {
       signOut({ callbackUrl: `/login/?status=logout` });
     }
   }, [session]);
+
+  const exitAppRef = useRef<boolean>(false);
+  useEffect(() => {
+    console.log("pathname:", pathname);
+    const handleMessage = (event: MessageEvent) => {
+      if (typeof event.data !== "string") return;
+
+      try {
+        const data: BackActionMessage = JSON.parse(event.data);
+        if (data.name !== "backAction") return;
+
+        handleBackAction();
+      } catch (error) {
+        console.error("Failed to parse message data:", error);
+      }
+    };
+
+    const handleBackAction = () => {
+      if (MAIN_PATHS.includes(pathname)) {
+        if (exitAppRef.current) {
+          window.ReactNativeWebView?.postMessage("exitApp");
+          return;
+        }
+
+        exitAppRef.current = true;
+        toast("warning", "뒤로가기 버튼을 한 번 더 누르면 종료됩니다.");
+
+        setTimeout(() => {
+          exitAppRef.current = false;
+        }, EXIT_DELAY);
+      } else {
+        router.back();
+      }
+    };
+
+    document.addEventListener("message", handleMessage);
+
+    return () => {
+      document.removeEventListener("message", handleMessage);
+    };
+  }, [pathname]);
 
   return (
     <>
