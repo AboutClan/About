@@ -136,29 +136,34 @@ export const authOptions: NextAuthOptions = {
         if (account.provider === "kakao" || account.provider === "apple") {
           await dbConnect();
 
+          const providerAccountId = account.providerAccountId || user.uid;
+          const accessToken = account.access_token || "";
+          const refreshToken = account.refresh_token || "";
+          const tokenType = account.token_type || "Bearer";
+
           if (account && account.provider === "apple") {
             const existingAccount = await Account.findOne({
               provider: "apple",
-              providerAccountId: account.providerAccountId,
+              providerAccountId,
             });
 
             if (!existingAccount) {
               await new Account({
                 provider: "apple",
-                providerAccountId: account.providerAccountId,
-                access_token: account.access_token || "",
-                refresh_token: account.refresh_token || "",
+                providerAccountId,
+                access_token: accessToken,
+                refresh_token: refreshToken,
                 expires_at: account.expires_at || null,
-                token_type: "Bearer", // 추가
-                type: "oauth", // 추가
+                token_type: tokenType,
+                type: "oauth",
               }).save();
             } else {
               await Account.updateOne(
-                { provider: "apple", providerAccountId: account.providerAccountId },
+                { provider: "apple", providerAccountId },
                 {
                   $set: {
-                    access_token: account.access_token || "",
-                    refresh_token: account.refresh_token || "",
+                    access_token: accessToken,
+                    refresh_token: refreshToken,
                     expires_at: account.expires_at || null,
                   },
                 },
