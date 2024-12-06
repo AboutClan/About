@@ -40,6 +40,17 @@ const generateClientSecret = (): string => {
 export const authOptions: NextAuthOptions = {
   secret,
   debug: true,
+  cookies: {
+    pkceCodeVerifier: {
+      name: "next-auth.pkce.code_verifier",
+      options: {
+        httpOnly: true,
+        sameSite: "none",
+        path: "/",
+        secure: true,
+      },
+    },
+  },
   providers: [
     CredentialsProvider({
       id: "guest",
