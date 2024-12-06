@@ -149,6 +149,8 @@ export const authOptions: NextAuthOptions = {
                 access_token: account.access_token || "",
                 refresh_token: account.refresh_token || "",
                 expires_at: account.expires_at || null,
+                token_type: "Bearer", // 추가
+                type: "oauth", // 추가
               }).save();
             } else {
               await Account.updateOne(
