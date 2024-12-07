@@ -215,7 +215,7 @@ const Login: NextPage<{
               opacity={0.8}
               color="white"
               _hover={{ bg: "none" }}
-              onClick={() => customSignin("apple")}
+              onClick={() => toast("info", "기능 점검 중")}
             >
               다른 방법으로 로그인
             </Button>
