@@ -65,7 +65,7 @@ const HOME_RECOMMENDATION_ICON_ARR: HomeRecommendationItemProps[] = [
   },
   {
     iconImage:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%EC%87%BC%ED%95%912.png",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/store.png",
     title: "스토어",
     url: "/store",
     bgColor: "var(--color-mint)",
