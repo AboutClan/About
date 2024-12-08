@@ -147,45 +147,45 @@ export const authOptions: NextAuthOptions = {
         if (account.provider === "kakao" || account.provider === "apple") {
           await dbConnect();
 
-          const providerAccountId = account.providerAccountId || user.uid;
-          const accessToken = account.access_token || "";
-          const refreshToken = account.refresh_token || "";
-          const tokenType = account.token_type || "Bearer";
+          // const providerAccountId = account.providerAccountId || user.uid;
+          // const accessToken = account.access_token || "";
+          // const refreshToken = account.refresh_token || "";
+          // const tokenType = account.token_type || "Bearer";
 
-          if (account && account.provider === "apple") {
-            console.log(providerAccountId);
-            const existingAccount = await Account.findOne({
-              provider: "apple",
-              providerAccountId,
-            });
-            console.log(existingAccount, accessToken, refreshAccessToken, tokenType);
+          // if (account && account.provider === "apple") {
+          //   console.log(providerAccountId);
+          //   const existingAccount = await Account.findOne({
+          //     provider: "apple",
+          //     providerAccountId,
+          //   });
+          //   console.log(existingAccount, accessToken, refreshAccessToken, tokenType);
 
-            if (!existingAccount) {
-              console.log(1);
-              await new Account({
-                provider: "apple",
-                providerAccountId,
-                access_token: accessToken,
-                refresh_token: refreshToken,
-                expires_at: account.expires_at || null,
-                token_type: tokenType,
-                type: "oauth",
-              }).save();
-            } else {
-              console.log(2);
-              await Account.updateOne(
-                { provider: "apple", providerAccountId },
-                {
-                  $set: {
-                    access_token: accessToken,
-                    refresh_token: refreshToken,
-                    expires_at: account.expires_at || null,
-                  },
-                },
-              );
-            }
-          }
-          console.log("FINDUSER", user.uid);
+          //   if (!existingAccount) {
+          //     console.log(1);
+          //     await new Account({
+          //       provider: "apple",
+          //       providerAccountId,
+          //       access_token: accessToken,
+          //       refresh_token: refreshToken,
+          //       expires_at: account.expires_at || null,
+          //       token_type: tokenType,
+          //       type: "oauth",
+          //     }).save();
+          //   } else {
+          //     console.log(2);
+          //     await Account.updateOne(
+          //       { provider: "apple", providerAccountId },
+          //       {
+          //         $set: {
+          //           access_token: accessToken,
+          //           refresh_token: refreshToken,
+          //           expires_at: account.expires_at || null,
+          //         },
+          //       },
+          //     );
+          //   }
+          // }
+          // console.log("FINDUSER", user.uid);
           const findUser = await User.findOneAndUpdate(
             { uid: user.uid },
             {
