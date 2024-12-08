@@ -125,14 +125,14 @@ export function GroupThumbnailCard({
             mr={1}
             h={4}
             fontSize="11px"
-            color={id === 140 ? "purple" : "mint"}
+            color={id === 140 ? "mint" : "mint"}
             fontWeight="semibold"
           >
             {id === 138
               ? "시험기간 한정 스터디 챌린지"
               : id === 139
               ? "11월 3일 ~ 12월 9일까지 진행(2차)"
-              : "12월 9일 ~ 12월 15일"}
+              : "12월 7일 ~ 12월 15일"}
           </Box>
         )}
       </Flex>
