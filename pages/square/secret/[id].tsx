@@ -1,4 +1,5 @@
 import {
+  Badge,
   Box,
   Button,
   ButtonGroup,
@@ -17,7 +18,6 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import AlertModal from "../../../components/AlertModal";
-import { Badge } from "../../../components/atoms/badges/Badges";
 import Divider from "../../../components/atoms/Divider";
 import { MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
 import KakaoShareBtn from "../../../components/Icons/KakaoShareBtn";
@@ -151,7 +151,9 @@ function SecretSquareDetailPage() {
               {squareDetail && (
                 <>
                   <Box mb={2}>
-                    <Badge text={`# ${squareDetail.category}`} colorScheme="grayTheme" size="md" />
+                    <Badge colorScheme="grayTheme" size="md">
+                      {`# ${squareDetail.category}`}
+                    </Badge>
                   </Box>
                   <section id="avatar-section">
                     <OrganizerBar

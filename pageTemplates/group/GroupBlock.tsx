@@ -1,3 +1,4 @@
+import { Badge } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
@@ -5,7 +6,6 @@ import { MouseEvent } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import { Badge } from "../../components/atoms/badges/Badges";
 import { useFailToast } from "../../hooks/custom/CustomToast";
 import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { IGroup } from "../../types/models/groupTypes/group";
@@ -27,10 +27,10 @@ function GroupBlock({ group }: IGroupBlock) {
     그룹장: group.isSecret
       ? "비공개"
       : group.organizer.name === "이승주"
-        ? group.id === 72
-          ? "이승주"
-          : "어바웃"
-        : group.organizer.name,
+      ? group.id === 72
+        ? "이승주"
+        : "어바웃"
+      : group.organizer.name,
     인원: `${group.participants.length}/${
       group.memberCnt.max === 0 ? "자유" : group.memberCnt.max + "명"
     }`,
@@ -99,12 +99,9 @@ function GroupBlock({ group }: IGroupBlock) {
             <span>{group.category.main}</span>·<span>{group.category.sub}</span>
             {!group?.isFree && <i className="fa-regular fa-lock-key-hole" />}
           </div>
-          <Badge
-            text={getBadgeText().text}
-            colorScheme={getBadgeText().color}
-            type="outline"
-            size="md"
-          />
+          <Badge colorScheme={getBadgeText().color} variant="outline" size="md">
+            {getBadgeText().text}
+          </Badge>
         </Header>
         <Title>{group.title}</Title>
         <Info>

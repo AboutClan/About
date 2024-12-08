@@ -109,7 +109,7 @@ function GatherComments({ comments }: IGatherComments) {
 }
 
 const Layout = styled.div`
-  margin: var(--gap-5) var(--gap-4);
+  margin: var(--gap-5);
   display: flex;
   flex-direction: column;
   > span:first-child {

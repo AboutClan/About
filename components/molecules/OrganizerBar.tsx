@@ -47,7 +47,7 @@ const Layout = styled.div<{ isSecret: boolean }>`
   justify-content: space-between;
   align-items: center;
   padding: ${(props) =>
-    !props.isSecret ? "var(--gap-3) var(--gap-4)" : "var(--gap-1) 0 var(--gap-3) 0"};
+    !props.isSecret ? "var(--gap-3) var(--gap-5)" : "var(--gap-1) 0 var(--gap-3) 0"};
   background-color: white;
   border-bottom: var(--border);
   > div:first-child {

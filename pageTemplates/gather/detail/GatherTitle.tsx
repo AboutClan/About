@@ -1,6 +1,6 @@
+import { Badge } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import { Badge } from "../../../components/atoms/badges/Badges";
 import { STATUS_TO_TEXT } from "../../../constants/util/convert";
 import { GatherStatus } from "../../../types/models/gatherTypes/gatherTypes";
 
@@ -14,7 +14,9 @@ function GatherTitle({ status, title }: IGatherTitle) {
 
   return (
     <Layout status={status}>
-      <Badge text={STATUS_TO_TEXT[status]} colorScheme={color} size="lg" />
+      <Badge colorScheme={color} size="lg">
+        {STATUS_TO_TEXT[status]}
+      </Badge>
       <span>{title}</span>
     </Layout>
   );

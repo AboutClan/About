@@ -1,8 +1,8 @@
+import { Badge } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import styled from "styled-components";
 
 import Avatar from "../../../components/atoms/Avatar";
-import { Badge } from "../../../components/atoms/badges/Badges";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
 import { getDateDiff } from "../../../utils/dateTimeUtils";
 
@@ -35,7 +35,9 @@ function GroupOrganizer({
           <span>{writingDate}</span>
         </Info>
       </div>
-      <Badge colorScheme="red" text={category} size="lg" />
+      <Badge colorScheme="red" size="lg">
+        {category}
+      </Badge>
     </Layout>
   );
 }

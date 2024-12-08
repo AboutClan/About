@@ -1,4 +1,5 @@
-import { Badge } from "../../../components/atoms/badges/Badges";
+import { Badge } from "@chakra-ui/react";
+
 import OrganizerBar from "../../../components/molecules/OrganizerBar";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 
@@ -13,7 +14,9 @@ function GatherOrganizer({ createdAt, organizer, isAdminOpen, category }: IGathe
   const isABOUT = isAdminOpen;
   return (
     <OrganizerBar organizer={organizer} createdAt={createdAt} isAdminOpen={isABOUT}>
-      <Badge colorScheme="red" text={category} size="lg" />
+      <Badge colorScheme="red" size="lg">
+        {category}
+      </Badge>
     </OrganizerBar>
   );
 }
