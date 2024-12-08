@@ -153,12 +153,15 @@ export const authOptions: NextAuthOptions = {
           const tokenType = account.token_type || "Bearer";
 
           if (account && account.provider === "apple") {
+            console.log(providerAccountId);
             const existingAccount = await Account.findOne({
               provider: "apple",
               providerAccountId,
             });
+            console.log(existingAccount, accessToken, refreshAccessToken, tokenType);
 
             if (!existingAccount) {
+              console.log(1);
               await new Account({
                 provider: "apple",
                 providerAccountId,
@@ -169,6 +172,7 @@ export const authOptions: NextAuthOptions = {
                 type: "oauth",
               }).save();
             } else {
+              console.log(2);
               await Account.updateOne(
                 { provider: "apple", providerAccountId },
                 {
