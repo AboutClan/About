@@ -185,6 +185,7 @@ export const authOptions: NextAuthOptions = {
               );
             }
           }
+          console.log("FINDUSER", user.uid);
           const findUser = await User.findOneAndUpdate(
             { uid: user.uid },
             {
