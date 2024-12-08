@@ -40,7 +40,7 @@ const Login: NextPage<{
   const router = useRouter();
   const { data: session } = useSession();
   const toast = useToast();
-  console.log(session);
+
   const statusParam = searchParams.get("status");
   const locationParam = searchParams.get("location") as LocationEn;
 
@@ -113,7 +113,6 @@ const Login: NextPage<{
         bg="linear-gradient(0deg, rgba(40, 40, 40, 0.87) 0%, rgba(40, 40, 40, 0.54) 100%)"
         position="relative"
       >
-        <Button variant="ghost" position="fixed" top="0" left="0"></Button>
         <Button
           position="fixed"
           top="0"

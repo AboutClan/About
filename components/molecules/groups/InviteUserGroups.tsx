@@ -13,7 +13,11 @@ export default function InviteUserGroups({ users, inviteUser, existUsers }: IInv
   return (
     <Grid mt="20px" templateColumns="repeat(3,1fr)" gap="12px">
       {users?.map((who, idx) => {
-        const isMember = existUsers.map((user) => user.uid).includes(who.uid);
+        const isMember = existUsers
+          ?.map((user) => {
+            return user.uid;
+          })
+          .includes(who.uid);
         return (
           <Flex key={idx} justify="center" align="center">
             <Avatar
