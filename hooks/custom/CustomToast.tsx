@@ -44,7 +44,8 @@ type ToastType =
   | "not-yet"
   | "secret-avatar"
   | "vote"
-  | "omission";
+  | "omission"
+  | "inspection";
 
 export const useTypeToast = () => {
   const toast = useChakraToast();
@@ -74,6 +75,11 @@ const getTypeToToast = (
   subTitle?: string;
 } => {
   switch (type) {
+    case "inspection":
+      return {
+        status: "info",
+        title: "점검중인 기능입니다.",
+      };
     case "vote":
       return {
         status: "success",
