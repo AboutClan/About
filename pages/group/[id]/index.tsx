@@ -191,7 +191,7 @@ function GroupDetail() {
                           </>
                         )}
                       </Box>
-                      <BlurredLink isBlur={isOnlyView || !isMember} url={group.link} />
+                      <BlurredLink isBlur={!isOnlyView && !isMember} url={group.link} />
                     </Box>
                   ) : null}
                   <Flex mt={4}>
