@@ -12,6 +12,7 @@ import { useGatherQuery } from "../../hooks/gather/queries";
 import { transferGatherDataState } from "../../recoils/transferRecoils";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
 import { setGatherDataToCardCol } from "../home/HomeGatherCol";
+import GatherSkeletonMain from "./GatherSkeletonMain";
 
 export default function GatherMain() {
   const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>();
@@ -37,7 +38,7 @@ export default function GatherMain() {
       setGatherDataToCardCol(gathers, 6, (gather: IGather) => setTransferGatherData(gather)),
     );
   }, [gathers, location]);
- 
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -71,7 +72,13 @@ export default function GatherMain() {
             ))}
           </>
         ) : (
-          <MainLoadingAbsolute />
+          <>
+            {[1, 2, 3, 4, 5].map((cardData, idx) => (
+              <Box mb="12px" key={idx}>
+                <GatherSkeletonMain />
+              </Box>
+            ))}
+          </>
         )}
         <div ref={loader} />
         {isLoading && cardDataArr?.length ? (

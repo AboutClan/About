@@ -15,12 +15,14 @@ function GroupSkeletonMain({ isStudy = false }: { isStudy?: boolean }) {
 
         <Box my={1}>
           <Skeleton height="12px" width="100%" mb={1} />
-          <Skeleton height="12px" width="40%" />
+          <Skeleton height="12px" width={isStudy ? "80%" : "40%"} />
         </Box>
-        <Flex justify="space-between" mt={3} py={0.5}>
-          <Skeleton w={isStudy ? 0 : "52px"} h={3}></Skeleton>
-          <Skeleton w={isStudy ? "120px" : "36px"} h={3}></Skeleton>
-        </Flex>
+        {!isStudy ? (
+          <Flex justify="space-between" mt={3} py={0.5}>
+            <Skeleton w={isStudy ? 0 : "52px"} h={3}></Skeleton>
+            <Skeleton w={isStudy ? "120px" : "36px"} h={3}></Skeleton>
+          </Flex>
+        ) : null}
       </Flex>
     </Flex>
   );
