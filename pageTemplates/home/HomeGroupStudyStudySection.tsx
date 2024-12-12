@@ -14,13 +14,13 @@ function HomeGroupStudySection({ groups }: HomeGroupStudySectionProps) {
   return (
     <>
       <Box my={5}>
-        <SectionHeader title="About 시험기간 챌린지" subTitle="Study Challenge">
-          <ButtonWrapper size="xs" url="/group">
+        <SectionHeader title="About 신규 콘텐츠" subTitle="Winter season">
+          <ButtonWrapper size="xs" url="/group?filter=pending&category=10">
             <ShortArrowIcon dir="right" size="sm" />
           </ButtonWrapper>
         </SectionHeader>
         <HomeGroupCol
-          threeGroups={groups?.study?.sort((a) => (a.status === "pending" ? 1 : -1))}
+          threeGroups={groups?.contents?.sort((a) => (a.status === "pending" ? 1 : -1))}
           isStudy
         />
       </Box>

@@ -12,19 +12,27 @@ function UserProfile() {
   const { data: likeLogs } = useNoticeActiveLogQuery("like");
   const { data: userInfo } = useUserInfoQuery();
 
+
+
   const isGuest = session?.user.role === "guest";
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+  const handleClick = (
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    type: "like" | "friend",
+  ) => {
     if (isGuest) {
       e.preventDefault();
       typeToast("guest");
+    } else if (type === "friend") {
+      e.preventDefault();
+      typeToast("inspection");
     }
   };
 
   return (
     <>
       <Info>
-        <Link href="/user/friend" passHref onClick={handleClick}>
+        <Link href="/user/friend" passHref onClick={(e) => handleClick(e, "friend")}>
           <BlockItem>
             <span>
               내 친구{" "}
@@ -36,7 +44,7 @@ function UserProfile() {
             <i className="fa-solid fa-chevron-right" />
           </BlockItem>
         </Link>
-        <Link href="/user/like" passHref onClick={handleClick}>
+        <Link href="/user/like" passHref onClick={(e) => handleClick(e, "like")}>
           <BlockItem>
             <span>
               받은 좋아요{" "}

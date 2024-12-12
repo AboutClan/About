@@ -9,7 +9,7 @@ interface IGroupCover {
 
 function GroupCover({ image }: IGroupCover) {
   return (
-    <Box aspectRatio={2 / 1} position="relative" mb={4}>
+    <Box aspectRatio={2 / 1} position="relative">
       <Image
         src={image || SQUARE_RANDOM_IMAGE[0]}
         fill={true}

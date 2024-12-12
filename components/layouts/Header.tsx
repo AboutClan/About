@@ -39,7 +39,7 @@ export default function Header({
         rightPadding={rightPadding}
         isTransparent={isTransparent}
       >
-        <Flex align="center" position="relative" width="100%">
+        <Flex align="center" width="100%">
           {isBack && (
             <ArrowBackButton
               color={isTransparent ? "white" : "mint"}
@@ -92,6 +92,7 @@ const HeaderContainer = styled.header<{
   isTransparent: boolean;
 }>`
   background-color: ${(props) => (props.isTransparent ? "transparent" : "white")};
+
   height: var(--header-h);
   font-size: 16px;
   padding-right: ${(props) => props.rightPadding || 20}px;
@@ -103,4 +104,3 @@ const HeaderContainer = styled.header<{
   max-width: var(--max-width);
   margin: 0 auto;
 `;
-

@@ -116,6 +116,7 @@ export function GatherThumbnailCard({
 type PlaceImageProps = Omit<ComponentProps<typeof Image>, "alt" | "sizes" | "fill">;
 
 function PlaceImage(props: PlaceImageProps) {
+
   return (
     <Box
       aspectRatio={1 / 1}

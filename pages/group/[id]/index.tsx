@@ -40,12 +40,13 @@ function GroupDetail() {
 
   const { data: groupData, refetch } = useGroupIdQuery(id, { enabled: !!id && !group });
 
+  const isOnlyView = group?.category.main === "콘텐츠";
+
   useEffect(() => {
     if (groupData) {
       setTransferGroup(groupData);
     }
   }, [groupData]);
-
 
   // useEffect(() => {
   //   if (!group) return;
@@ -75,16 +76,18 @@ function GroupDetail() {
         {group && (
           <>
             <GroupCover image={belong ? GROUP_GATHERING_IMAGE : group?.image} />
-            <Flex direction="column" px={5} py={4}>
-              <Flex mb={4}>
-                <Badge mr={1} variant="subtle" size="lg" colorScheme="badgeMint">
-                  {group.category.main}
-                </Badge>
-                <Badge variant="subtle" size="lg">
-                  {group.category.sub}
-                </Badge>
-              </Flex>
-              {/* <GroupTitle
+            {!isOnlyView && (
+              <Flex direction="column" px={5} py={4}>
+                <Flex mb={4}>
+                  <Badge mr={1} variant="subtle" size="lg" colorScheme="badgeMint">
+                    {group.category.main}
+                  </Badge>
+                  <Badge variant="subtle" size="lg">
+                    {group.category.sub}
+                  </Badge>
+                </Flex>
+
+                {/* <GroupTitle
                 isAdmin={group.organizer.uid === session?.user.uid}
                 memberCnt={group.participants.length}
                 title={group.title}
@@ -93,39 +96,42 @@ function GroupDetail() {
                 maxCnt={group.memberCnt.max}
                 isWaiting={group.waiting.length !== 0}
               /> */}
-              <Box mb={4} fontSize="18px" fontWeight="bold" lineHeight="28px">
-                {group.title}
-              </Box>
-              <InfoBoxCol
-                infoBoxPropsArr={[
-                  {
-                    category: group.participants.length > 1 ? "개 설" : "개설 예정",
-                    text:
-                      group.participants.length > 1
-                        ? dayjsToFormat(dayjs(group.createdAt), "YYYY년 M월 D일")
-                        : "2024년 12월 22일",
-                  },
-                  { category: "가입 방식", text: group.isFree ? "자유 가입" : "승인제" },
-                  { category: "진행 방식", text: convertMeetingTypeToKr(group?.meetingType) },
-                  { category: "보증금", text: group.fee ? group.fee + "원" : "없음" },
-                ]}
-                size="md"
-              />
-            </Flex>
-            <Box mt={5} h={2} bg="gray.100" />
-            <Flex direction="column" mb={10}>
-              <Box px={5}>
-                <TabNav
-                  tabOptionsArr={TAB_LIST.map((category) => ({
-                    text: category,
-                    func: () => setCategory(category),
-                    flex: 1,
-                  }))}
-                  selected={category}
-                  isFullSize
-                  isBlack
+                <Box mb={4} fontSize="18px" fontWeight="bold" lineHeight="28px">
+                  {group.title}
+                </Box>
+                <InfoBoxCol
+                  infoBoxPropsArr={[
+                    {
+                      category: group.participants.length > 1 ? "개 설" : "개설 예정",
+                      text:
+                        group.participants.length > 1
+                          ? dayjsToFormat(dayjs(group.createdAt), "YYYY년 M월 D일")
+                          : "2024년 12월 22일",
+                    },
+                    { category: "가입 방식", text: group.isFree ? "자유 가입" : "승인제" },
+                    { category: "진행 방식", text: convertMeetingTypeToKr(group?.meetingType) },
+                    { category: "보증금", text: group.fee ? group.fee + "원" : "없음" },
+                  ]}
+                  size="md"
                 />
-              </Box>
+              </Flex>
+            )}
+            <Box mt={isOnlyView ? 0 : 5} h={2} bg="gray.100" />
+            <Flex direction="column" mb={10}>
+              {!isOnlyView && (
+                <Box px={5}>
+                  <TabNav
+                    tabOptionsArr={TAB_LIST.map((category) => ({
+                      text: category,
+                      func: () => setCategory(category),
+                      flex: 1,
+                    }))}
+                    selected={category}
+                    isFullSize
+                    isBlack
+                  />
+                </Box>
+              )}
               {category === "정 보" ? (
                 <Box px={5}>
                   <Box my={4} fontSize="18px" fontWeight="bold" lineHeight="28px">
@@ -175,7 +181,15 @@ function GroupDetail() {
                   {group?.link ? (
                     <Box lineHeight="20px" mt={4} fontSize="13px">
                       <Box>
-                        <b style={{ color: "var(--gray-800)" }}>단톡방 링크</b>(가입 후 입장)
+                        {isOnlyView ? (
+                          <>
+                            <b style={{ color: "var(--gray-800)" }}>상세 내용(노션 링크)</b>
+                          </>
+                        ) : (
+                          <>
+                            <b style={{ color: "var(--gray-800)" }}>단톡방 링크</b>(가입 후 입장)
+                          </>
+                        )}
                       </Box>
                       <BlurredLink isBlur={!isMember} url={group.link} />
                     </Box>
@@ -205,7 +219,7 @@ function GroupDetail() {
                 <ContentFeed group={group} />
               )}
               <Box h="1px" my={5} bg="gray.100" />
-              {group.category.main !== "시험기간" ? (
+              {!isOnlyView ? (
                 <>
                   <GroupParticipation data={group} />
                   <GroupComments comments={group.comments} hasAutority={isMember} />

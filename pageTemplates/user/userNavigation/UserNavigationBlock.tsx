@@ -25,7 +25,7 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
 
   const isGuest = session?.user.name === "guest";
   const role = session?.user.role;
-  const isAdmin = role === "previliged" || role === "manager";
+  const isAdmin = role === "previliged";
   const hasDesignAccess = DESIGN_PAGE_USER_PERMISSION.includes(session?.user.uid);
 
   //네비게이션 함수

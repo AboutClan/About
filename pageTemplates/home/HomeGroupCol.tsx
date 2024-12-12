@@ -54,7 +54,7 @@ export default function HomeGroupCol({ threeGroups, isStudy }: HomeGroupColProps
                     status,
                     idx,
                     () => setTransferGroup(group),
-                    false,
+                    group.category.main === "콘텐츠",
                   )}
                 />
               );

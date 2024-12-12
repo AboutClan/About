@@ -14,7 +14,7 @@ function UserInfo() {
   const { data: session } = useSession();
   const isGuest = session?.user.role === "guest";
 
-  const { data: user } = useUserInfoQuery({});
+  const { data: user } = useUserInfoQuery();
 
   const userInfo = isGuest
     ? {

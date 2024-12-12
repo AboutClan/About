@@ -13,6 +13,7 @@ export const GROUP_STUDY_CATEGORY_ARR = [
   "게임",
   "문화탐방",
   "피크닉",
+  "콘텐츠",
   "기타",
 ] as const;
 
@@ -36,6 +37,7 @@ export const GROUP_STUDY_SUB_CATEGORY: { [key in GroupCategory]: string[] } = {
   문화탐방: ["방탈출", "보드게임", "소그룹", "전시회/미술관", "카페", "영화"],
   운동: ["러닝", "운동 인증", "다이어트", "클라이밍"],
   피크닉: ["출사"],
+  콘텐츠: [],
   기타: ["편입준비", "공사", "수리 통계", "노래", "친목 모임"],
 };
 

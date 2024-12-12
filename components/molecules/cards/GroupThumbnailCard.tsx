@@ -82,7 +82,7 @@ export function GroupThumbnailCard({
             </Box>
           </Box>
           <Badge mr={1} size="lg" colorScheme={statusToBadgeProps[status].colorScheme}>
-            {status === "pending" && category.main === "시험기간"
+            {status === "pending" && category.main === "콘텐츠"
               ? "진행중"
               : statusToBadgeProps[status].text}
           </Badge>
@@ -115,26 +115,11 @@ export function GroupThumbnailCard({
               </Flex>
             </Flex>
           </Flex>
-        ) : category.main !== "시험기간" ? (
+        ) : category.main !== "콘텐츠" ? (
           <Box ml="auto" mr={1} h={4} fontSize="11px" color="purple" fontWeight="semibold">
             {waitingCnt + 3}명의 멤버가 오픈을 기다리고 있어요
           </Box>
-        ) : (
-          <Box
-            ml="auto"
-            mr={1}
-            h={4}
-            fontSize="11px"
-            color={id === 140 ? "mint" : "mint"}
-            fontWeight="semibold"
-          >
-            {id === 138
-              ? "시험기간 한정 스터디 챌린지"
-              : id === 139
-              ? "11월 3일 ~ 12월 9일까지 진행(2차)"
-              : "12월 7일 ~ 12월 15일"}
-          </Box>
-        )}
+        ) : null}
       </Flex>
     </CardLink>
   );

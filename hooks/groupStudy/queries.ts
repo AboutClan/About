@@ -18,7 +18,7 @@ export interface GroupShapShotProps {
   offline: IGroup[];
   new: IGroup[];
   waiting: IGroup[];
-  study: IGroup[];
+  contents: IGroup[];
 }
 
 export const useGroupOnlyStudyQuery = (options?: QueryOptions<{ study: IGroup[] }>) =>

@@ -57,7 +57,7 @@ const Container = styled.div``;
 const ItemContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: var(--gap-3) var(--gap-4);
+  padding: var(--gap-3) 0;
   padding-bottom: var(--gap-2);
   border-bottom: var(--border-main);
   font-size: 13px;

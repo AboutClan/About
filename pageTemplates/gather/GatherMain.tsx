@@ -37,7 +37,7 @@ export default function GatherMain() {
       setGatherDataToCardCol(gathers, 6, (gather: IGather) => setTransferGatherData(gather)),
     );
   }, [gathers, location]);
-
+ 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {

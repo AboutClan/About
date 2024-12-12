@@ -21,7 +21,7 @@ export default function HomeReviewSection() {
       priority: false,
     }))
     .slice(0, 4);
-
+ 
   return (
     <Box mb="20px">
       <SectionHeader title="About 라운지" subTitle="Lounge">

@@ -71,7 +71,7 @@ export const setGatherDataToCardCol = (
     place: gather.location.main,
     imageProps: {
       image: gather.image || getRandomImage(),
-      priority: priorityNum ? idx <= priorityNum : idx < 3,
+      isPriority: priorityNum ? idx <= priorityNum : idx < 3,
     },
     id: gather.id,
     maxCnt: gather.memberCnt.max,
