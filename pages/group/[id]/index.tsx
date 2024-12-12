@@ -2,8 +2,8 @@ import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import { Badge, Box, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -191,7 +191,7 @@ function GroupDetail() {
                           </>
                         )}
                       </Box>
-                      <BlurredLink isBlur={!isMember} url={group.link} />
+                      <BlurredLink isBlur={isOnlyView || !isMember} url={group.link} />
                     </Box>
                   ) : null}
                   <Flex mt={4}>
