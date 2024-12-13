@@ -96,6 +96,11 @@ export const EVENT_CONTENT_2023: Record<string, CalendarContentProps[]> = {
   ],
 };
 
+export const CALENDAR_IMAGES = [
+  "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8B%AC%EB%A0%A5/002.jpg",
+  "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8B%AC%EB%A0%A5/001.jpg",
+];
+
 export const EVENT_CONTENT_2024: Record<string, CalendarContentProps[]> = {
   6: [
     {
