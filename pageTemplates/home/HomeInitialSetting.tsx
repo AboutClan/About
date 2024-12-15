@@ -52,6 +52,15 @@ function HomeInitialSetting() {
   const isPWALogin = isPWA();
 
   useEffect(() => {
+    if (userInfo?.role === "newUser") {
+      router.push("/register/name");
+      return;
+    }
+
+    if (userInfo?.role === "waiting") {
+      router.push("/login?status=waiting");
+      return;
+    }
     if (userInfo?.role === "human") {
       if (isPWALogin) {
         setRole({ role: "member" });
