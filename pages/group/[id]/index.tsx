@@ -2,8 +2,8 @@ import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import { Badge, Box, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -231,7 +231,11 @@ function GroupDetail() {
       </Slide>
 
       {!group && <MainLoading />}
-      {group && category === "정 보" && !isMember && !isGuest ? (
+      {group &&
+      category === "정 보" &&
+      group.category.main !== "콘텐츠" &&
+      !isMember &&
+      !isGuest ? (
         <GroupBottomNav data={group} />
       ) : category === "피 드" && isMember ? (
         <WritingButton
