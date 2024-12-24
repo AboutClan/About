@@ -167,6 +167,13 @@ function VoteDrawer({
 
   useEffect(() => {
     if (!mergeParticipations || !location) return;
+
+    if (!mergeParticipations.length) {
+      toast("info", "준비중인 지역으로, 직접 입력으로만 신청이 가능합니다.");
+      setIsRightDrawer(true);
+      return;
+    }
+
     const newImageCache = new Map(imageCache);
 
     mergeParticipations.forEach((par) => {
@@ -190,6 +197,7 @@ function VoteDrawer({
       isFirstPage ? null : myVote,
       newImageCache,
     );
+
     setThumbnailCardinfoArr(getThumbnailCardInfoArr);
   }, [mergeParticipations, isFirstPage, currentLocation, myVote, location]);
 

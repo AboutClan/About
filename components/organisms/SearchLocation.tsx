@@ -28,7 +28,7 @@ function SearchLocation({
         isSmall={isSmall}
         placeHolder={placeHolder}
       />
-      {hasDetail && (
+      {hasDetail && placeInfo?.road_address_name && (
         <Box mt="20px">
           <Input
             color="var(--gray-500)"

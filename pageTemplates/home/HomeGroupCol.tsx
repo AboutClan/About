@@ -31,7 +31,9 @@ export default function HomeGroupCol({ threeGroups, isStudy }: HomeGroupColProps
             .reverse()
             .map((group, idx) => {
               const status =
-                group.status === "end"
+                group.id === 138
+                  ? "end"
+                  : group.status === "end"
                   ? "end"
                   : group.status === "planned"
                   ? "planned"

@@ -23,6 +23,7 @@ export const useToast = () => {
         status,
         duration: 3000,
         variant: "subtle",
+        colorScheme: status === "success" ? "mint" : undefined,
         containerStyle: {
           marginBottom: "76px",
         },
@@ -73,6 +74,7 @@ const getTypeToToast = (
   status: "success" | "error" | "warning" | "info";
   title: string;
   subTitle?: string;
+  colorScheme?: "mint";
 } => {
   switch (type) {
     case "inspection":
@@ -84,6 +86,7 @@ const getTypeToToast = (
       return {
         status: "success",
         title: "투표 완료",
+        colorScheme: "mint",
       };
     case "guest":
       return {
@@ -104,16 +107,19 @@ const getTypeToToast = (
       return {
         status: "success",
         title: "완료되었습니다",
+        colorScheme: "mint",
       };
     case "change":
       return {
         status: "success",
         title: "변경되었습니다",
+        colorScheme: "mint",
       };
     case "invite":
       return {
         status: "success",
         title: "초대가 완료되었습니다",
+        colorScheme: "mint",
       };
     case "not-yet":
       return {

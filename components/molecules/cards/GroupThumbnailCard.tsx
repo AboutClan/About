@@ -61,7 +61,7 @@ export function GroupThumbnailCard({
     imminent: { text: `마감까지 ${maxCnt - participants.length}명`, colorScheme: "red" },
     full: { text: "인원마감", colorScheme: "orange" },
     pending: { text: "모집중", colorScheme: "mint" },
-    end: { text: "종료", colorScheme: "gray" },
+    end: { text: "종료됨", colorScheme: "blue" },
     planned: { text: "오픈 예정", colorScheme: "purple" },
   };
 
