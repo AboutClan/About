@@ -2,8 +2,8 @@ import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { useState } from "react";
-import { MainLoadingAbsolute } from "../components/atoms/loaders/MainLoading";
 
+import { MainLoadingAbsolute } from "../components/atoms/loaders/MainLoading";
 import MonthNav from "../components/atoms/MonthNav";
 import Header from "../components/layouts/Header";
 import Slide from "../components/layouts/PageSlide";
