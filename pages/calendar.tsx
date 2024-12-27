@@ -2,6 +2,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { useState } from "react";
+import { MainLoadingAbsolute } from "../components/atoms/loaders/MainLoading";
 
 import MonthNav from "../components/atoms/MonthNav";
 import Header from "../components/layouts/Header";
@@ -11,8 +12,12 @@ import { CALENDAR_IMAGES } from "../constants/contents/calendarSchedule";
 function CalendarPage() {
   const [monthFirstDate, setMonthFirstDate] = useState(dayjs().startOf("month"));
   const monthNum = monthFirstDate.month();
-
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
   console.log(monthNum);
+  const handleImageLoad = () => {
+    setIsImageLoaded(true);
+    console.log("Image has been loaded");
+  };
   return (
     <>
       <Header title="동아리 캘린더" />
@@ -31,7 +36,9 @@ function CalendarPage() {
               fill
               sizes="500px"
               priority
+              onLoadingComplete={handleImageLoad}
             />
+            {!isImageLoaded && <MainLoadingAbsolute size="sm" />}
           </Box>
           {/* <Calendar monthFirstDate={monthFirstDate} calendarContents={calendarContents} /> */}
           {/* <Box p="16px" mt="8px" fontSize="18px" fontWeight={800}>
