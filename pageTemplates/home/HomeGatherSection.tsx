@@ -12,7 +12,7 @@ function HomeGatherSection() {
 
   return (
     <Box my={5}>
-      <SectionHeader title="About 번개 모임" subTitle="Meeting">
+      <SectionHeader title="About 번개 모임" subTitle="친구들과의 즐거운 만남">
         <ButtonWrapper
           size="xs"
           url={`/gather?location=${convertLocationLangTo(session?.user.location, "en")}`}

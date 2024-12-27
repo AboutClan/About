@@ -3,13 +3,8 @@ import { Box } from "@chakra-ui/react";
 import ButtonWrapper from "../../components/atoms/ButtonWrapper";
 import SectionHeader from "../../components/atoms/SectionHeader";
 import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
-import { GroupShapShotProps } from "../../hooks/groupStudy/queries";
 
-interface HomeGroupStudySectionProps {
-  groups: GroupShapShotProps;
-}
-
-function HomeGroupStudySection({ groups }: HomeGroupStudySectionProps) {
+function HomeGroupStudySection() {
   return (
     <>
       <Box my={5}>

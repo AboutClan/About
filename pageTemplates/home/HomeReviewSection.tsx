@@ -21,10 +21,10 @@ export default function HomeReviewSection() {
       priority: false,
     }))
     .slice(0, 4);
- 
+
   return (
     <Box mb="20px">
-      <SectionHeader title="About 라운지" subTitle="Lounge">
+      <SectionHeader title="About 라운지" subTitle="우리의 이야기">
         <ButtonWrapper size="xs" url="/gather?category=all">
           <ShortArrowIcon dir="right" />
         </ButtonWrapper>
