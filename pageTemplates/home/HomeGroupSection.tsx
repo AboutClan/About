@@ -15,7 +15,7 @@ function HomeGroupSection({ groups }: HomeGroupSectionProps) {
   return (
     <>
       <Box my={5}>
-        <SectionHeader title="About 취미 소모임" subTitle="같은 취미로 이어지는 만남">
+        <SectionHeader title="About 취미 소모임" subTitle="같은 취미로 이어지는 우리">
           <ButtonWrapper size="xs" url="/group">
             <ShortArrowIcon dir="right" size="sm" />
           </ButtonWrapper>
