@@ -2,12 +2,11 @@ import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import { Badge, Box, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
-import { GROUP_GATHERING_IMAGE } from "../../../assets/images/randomImages";
 import WritingButton from "../../../components/atoms/buttons/WritingButton";
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../components/layouts/PageSlide";
@@ -15,7 +14,6 @@ import BlurredLink from "../../../components/molecules/BlurredLink";
 import InfoBoxCol from "../../../components/molecules/InfoBoxCol";
 import TabNav from "../../../components/molecules/navs/TabNav";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
-import { checkGroupGathering } from "../../../libs/group/checkGroupGathering";
 import GroupBottomNav from "../../../pageTemplates/group/detail/GroupBottomNav";
 import GroupComments from "../../../pageTemplates/group/detail/GroupComment";
 import ContentFeed from "../../../pageTemplates/group/detail/GroupContent/ContentFeed";
@@ -56,8 +54,6 @@ function GroupDetail() {
   //     patchAttendance();
   // }, [group?.attendance?.firstDate]);
 
-  const belong = group && checkGroupGathering(group.hashTag);
-
   const isMember =
     group &&
     [group.organizer, ...group.participants.map((who) => who.user)].some(
@@ -75,7 +71,7 @@ function GroupDetail() {
       <Slide isNoPadding>
         {group && (
           <>
-            <GroupCover image={belong ? GROUP_GATHERING_IMAGE : group?.image} />
+            <GroupCover image={group?.image} />
             {!isOnlyView && (
               <Flex direction="column" px={5} py={4}>
                 <Flex mb={4}>

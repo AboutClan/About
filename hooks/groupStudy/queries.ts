@@ -14,11 +14,12 @@ import {
 } from "../../types/models/groupTypes/group";
 
 export interface GroupShapShotProps {
-  online: IGroup[];
-  offline: IGroup[];
+  hobby: IGroup[];
+  development: IGroup[];
+  study: IGroup[];
+  exam: IGroup[];
   new: IGroup[];
   waiting: IGroup[];
-  contents: IGroup[];
 }
 
 export const useGroupOnlyStudyQuery = (options?: QueryOptions<{ study: IGroup[] }>) =>

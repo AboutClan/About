@@ -4,7 +4,6 @@ import ButtonWrapper from "../../components/atoms/ButtonWrapper";
 import SectionHeader from "../../components/atoms/SectionHeader";
 import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
 import { GroupShapShotProps } from "../../hooks/groupStudy/queries";
-import HomeGroupCol from "./HomeGroupCol";
 
 interface HomeGroupStudySectionProps {
   groups: GroupShapShotProps;
@@ -19,10 +18,10 @@ function HomeGroupStudySection({ groups }: HomeGroupStudySectionProps) {
             <ShortArrowIcon dir="right" size="sm" />
           </ButtonWrapper>
         </SectionHeader>
-        <HomeGroupCol
+        {/* <HomeGroupCol
           threeGroups={groups?.contents?.sort((a) => (a.status === "pending" ? 1 : -1))}
           isStudy
-        />
+        /> */}
       </Box>
     </>
   );

@@ -116,7 +116,6 @@ export function GatherThumbnailCard({
 type PlaceImageProps = Omit<ComponentProps<typeof Image>, "alt" | "sizes" | "fill">;
 
 function PlaceImage(props: PlaceImageProps) {
-
   return (
     <Box
       aspectRatio={1 / 1}
@@ -155,9 +154,7 @@ const CardLink = styled(Link)`
     background-color: var(--gray-200);
   }
 
-  &:not(:last-of-type) {
-    margin-bottom: 16px;
-  }
+  margin-bottom: 16px;
 `;
 
 const Title = styled(SingleLineText)`

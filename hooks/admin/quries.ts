@@ -17,7 +17,7 @@ import { Location } from "../../types/services/locationTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
 export const useAdminUsersLocationControlQuery = <T extends boolean>(
-  location: Location,
+  location: Location | null,
   filterType?: RankingCategorySource,
   isSummary?: T,
   options?: QueryOptions<T extends true ? IUserSummary[] : IUser[]>,

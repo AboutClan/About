@@ -31,6 +31,7 @@ export interface GroupThumbnailCardProps {
   id: number;
   waitingCnt?: number;
   isBig?: boolean;
+  isBottomBorder?: boolean;
 }
 
 export function GroupThumbnailCard({
@@ -45,6 +46,7 @@ export function GroupThumbnailCard({
   maxCnt,
   waitingCnt,
   isBig = true,
+  isBottomBorder = true,
 }: GroupThumbnailCardProps) {
   const userAvatarArr = participants
     ?.filter((par) => par)
@@ -66,7 +68,7 @@ export function GroupThumbnailCard({
   };
 
   return (
-    <CardLink href={`/group/${id}`} onClick={func}>
+    <CardLink href={`/group/${id}`} onClick={func} bottom={isBottomBorder}>
       <PlaceImage src={imageProps.image} priority={imageProps.isPriority} />
       <Flex direction="column" ml="12px" flex={1}>
         <Flex my={1} justify="space-between" align="center">
@@ -117,7 +119,7 @@ export function GroupThumbnailCard({
           </Flex>
         ) : category.main !== "콘텐츠" ? (
           <Box ml="auto" mr={1} h={4} fontSize="11px" color="purple" fontWeight="semibold">
-            {waitingCnt + 3}명의 멤버가 오픈을 기다리고 있어요
+            {waitingCnt + 7}명의 멤버가 오픈을 기다리고 있어요
           </Box>
         ) : null}
       </Flex>
@@ -138,6 +140,7 @@ function PlaceImage(props: PlaceImageProps) {
       w="98px"
       h="98px"
       border="var(--border)"
+      bg="gray.100"
     >
       <Image
         {...props}
@@ -152,7 +155,7 @@ function PlaceImage(props: PlaceImageProps) {
   );
 }
 
-const CardLink = styled(Link)`
+const CardLink = styled(Link)<{ bottom: boolean }>`
   height: fit-content;
   display: flex;
 
@@ -165,6 +168,8 @@ const CardLink = styled(Link)`
   }
 
   &:not(:last-of-type) {
+    padding-bottom: 12px;
+    border-bottom: var(--border);
     margin-bottom: 16px;
   }
 `;

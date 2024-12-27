@@ -14,6 +14,7 @@ import { useResetGroupQuery } from "../../../hooks/custom/CustomHooks";
 import { useCompleteToast } from "../../../hooks/custom/CustomToast";
 import { useGroupWaitingStatusMutation } from "../../../hooks/groupStudy/mutations";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import { Location } from "../../../types/services/locationTypes";
 import { searchName } from "../../../utils/stringUtils";
 
 type UserType = "신규 가입자" | "전체";
@@ -23,7 +24,7 @@ export default function GroupAdminInvitation() {
   const { data: session } = useSession();
   const location = session?.user.location;
   const { id } = useParams<{ id: string }>() || {};
-  const [value, setValue] = useState(location);
+  const [value, setValue] = useState<Location | "전체">(location);
   const [userFilterValue, setUserFilterValue] = useState<UserType>("신규 가입자");
   const [filterUsers, setFilterUsers] = useState<IUserSummary[]>();
   const [inviteUser, setInviteUser] = useState<IUserSummary>(null);
@@ -37,7 +38,9 @@ export default function GroupAdminInvitation() {
     data: usersAll,
     refetch,
     isLoading,
-  } = useAdminUsersLocationControlQuery(value, null, false, { enabled: !!location });
+  } = useAdminUsersLocationControlQuery(value === "전체" ? null : value, null, false, {
+    enabled: !!location,
+  });
 
   const resetGroup = useResetGroupQuery();
 
@@ -51,6 +54,7 @@ export default function GroupAdminInvitation() {
 
   useEffect(() => {
     setFilterUsers(null);
+
     if (isLoading || !usersAll) return;
     if (nameValue) {
       setFilterUsers(searchName(usersAll, nameValue));
@@ -93,7 +97,7 @@ export default function GroupAdminInvitation() {
               onChange={(e) => setNameValue(e.target.value)}
             />
           </Box>
-          <Selector options={LOCATION_ALL} defaultValue={value} setValue={setValue} />
+          <Selector options={["전체", ...LOCATION_ALL]} defaultValue={value} setValue={setValue} />
         </Flex>
         <Box position="relative">
           {isLoading ? (
