@@ -91,6 +91,7 @@ function GroupComments({ comments, hasAutority }: IGroupComments) {
 
 const Layout = styled.div`
   display: flex;
+
   flex-direction: column;
   > span:first-child {
     font-weight: 700;

@@ -21,9 +21,13 @@ function GroupHeader({ group }: IGroupHeader) {
   const resetGroupQuery = useResetGroupQuery();
   const completeToast = useCompleteToast();
   const router = useRouter();
-  const isAdmin = session?.user.uid === "2259633694" || group.organizer.uid === session?.user.uid;
+  const isAdmin =
+    session?.user.uid === "2259633694" ||
+    session?.user.uid === "3224546232" ||
+    group.organizer.uid === session?.user.uid;
   const isMember =
     session?.user.uid === "2259633694" ||
+    session?.user.uid === "3224546232" ||
     group.participants.some((par) => par.user?.uid === session?.user.uid);
 
   const [isSettigModal, setIsSettingModal] = useState(false);

@@ -22,7 +22,6 @@ function CommentSection({
   setReplyProps,
 }: CommentSectionProps) {
   const { data: session } = useSession();
-  
 
   return (
     <>
@@ -36,17 +35,19 @@ function CommentSection({
       >
         댓글 <b>{commentArr?.length}개</b>
       </Box>
-      {commentArr.map((comment, idx) => (
-        <UserCommentBlock
-          key={idx}
-          type="group"
-          id={id}
-          commentProps={comment}
-          hasAuthority={session?.user.uid !== comment.user.uid && hasAuthority}
-          setReplyProps={setReplyProps}
-          setCommentArr={setCommentArr}
-        />
-      ))}
+      <Box px={5}>
+        {commentArr.map((comment, idx) => (
+          <UserCommentBlock
+            key={idx}
+            type="group"
+            id={id}
+            commentProps={comment}
+            hasAuthority={session?.user.uid !== comment.user.uid && hasAuthority}
+            setReplyProps={setReplyProps}
+            setCommentArr={setCommentArr}
+          />
+        ))}
+      </Box>
     </>
   );
 }

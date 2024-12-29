@@ -153,7 +153,7 @@ function GroupDetail() {
                   {group.rules.length ? (
                     <>
                       <Box mb={3} fontSize="14px" fontWeight="bold" lineHeight="20px">
-                        <UnorderedList>
+                        <UnorderedList ml="0">
                           <ListItem>규칙</ListItem>
                         </UnorderedList>
                       </Box>
@@ -162,7 +162,6 @@ function GroupDetail() {
                         fontSize="12px"
                         lineHeight="20px"
                         bg="rgba(160, 174, 192, 0.08)"
-                        px={3}
                         py={4}
                         borderRadius="8px"
                       >

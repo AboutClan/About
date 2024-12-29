@@ -74,10 +74,7 @@ function Layout({ children }: ILayout) {
     if (status === "loading" || session === undefined) return;
 
     if (!session?.user?.location) {
-      toast(
-        "warning",
-        "접속 권한이 없습니다. 다시 로그인 해주세요! 반복되는 경우 관리자에게 문의 부탁드립니다.",
-      );
+      toast("warning", "접속 권한이 없습니다. 반복되는 경우 관리자에게 문의 부탁드립니다.");
       signOut({ callbackUrl: `/login/?status=logout` });
     }
   }, [session]);

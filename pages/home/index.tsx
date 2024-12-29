@@ -21,8 +21,8 @@ function Home() {
       <Slide>
         {/* <HomeGroupStudySection groups={data} /> */}
         <HomeGatherSection />
-        <HomeGroupSection groups={data} />
         <HomeReviewSection />
+        <HomeGroupSection groups={data} />
       </Slide>
       {/* <Slide isNoPadding>
         <HomeStudySection />

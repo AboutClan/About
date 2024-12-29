@@ -19,26 +19,23 @@ function GuestBottomNav() {
 
   return (
     <Layout>
-      <span>게스트 로그인을 이용중입니다.</span>
+      <Box color="gray.500" fontSize="12px">
+        게스트 로그인을 이용중입니다.
+      </Box>
       <Box>
         <Button
-          bgColor="white"
-          size="xs"
           border="1px solid black"
-          borderColor="gray.800"
+          borderColor="mint"
+          color="mint"
+          borderRadius="4px"
+          size="sm"
           mr="8px"
-          borderRadius="4px"
-          onClick={() => customSignin()}
-        >
-          회원가입
-        </Button>
-        <Button
-          colorScheme="black"
-          borderRadius="4px"
-          size="xs"
           onClick={() => router.replace(`/home?${newSearchparams.toString()}&logout=on`)}
         >
           로그아웃
+        </Button>
+        <Button size="sm" colorScheme="mint" borderRadius="4px" onClick={() => customSignin()}>
+          동아리 가입 신청
         </Button>
       </Box>
     </Layout>
@@ -61,7 +58,7 @@ const Layout = styled.div`
   padding: 8px 20px;
 
   font-weight: 600;
-  border-top: var(--border);
+  border-top: var(--border-main);
 `;
 
 export default GuestBottomNav;
