@@ -14,13 +14,13 @@ function MonthNav({ monthNum, changeMonth }: MonthNavProps) {
   const handleMonthChange = (dir: "left" | "right") => {
     if (dir === "left") {
       if (monthNum === 10) {
-        toast("info", "달력이 존재하지 않습니다.");
+        toast("info", "달력 준비중");
         return;
       }
       changeMonth((old) => old.subtract(1, "month"));
     } else {
       if (monthNum === 11) {
-        toast("info", "달력이 존재하지 않습니다.");
+        toast("info", "달력 준비중");
         return;
       }
       changeMonth((old) => old.add(1, "month"));

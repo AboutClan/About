@@ -10,7 +10,9 @@ import Slide from "../components/layouts/PageSlide";
 import { CALENDAR_IMAGES } from "../constants/contents/calendarSchedule";
 
 function CalendarPage() {
-  const [monthFirstDate, setMonthFirstDate] = useState(dayjs().startOf("month"));
+  const [monthFirstDate, setMonthFirstDate] = useState(
+    dayjs().startOf("month").subtract(1, "month"),
+  );
   const monthNum = monthFirstDate.month();
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   console.log(monthNum);
