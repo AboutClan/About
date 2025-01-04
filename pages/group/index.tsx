@@ -35,11 +35,25 @@ interface ICategory {
   sub: string | null;
 }
 
-type Status = "모집중" | "종료" | "시험 기간" | "오픈 예정";
+type Status = "모집중" | "종료" | "오픈 예정";
+
+const statusToEn: Record<Status, string> = {
+  모집중: "pending",
+  종료: "end",
+  "오픈 예정": "expected",
+};
+const enToStatus: Record<string, Status> = Object.entries(statusToEn).reduce(
+  (acc, [key, value]) => {
+    acc[value] = key as Status; // key를 Status 타입으로 캐스팅
+    return acc;
+  },
+  {} as Record<string, Status>,
+);
 
 function GroupPage() {
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
+  const statusParam = searchParams.get("filter");
   const router = useRouter();
   const { data: session } = useSession();
   const isGuest = session?.user.role === "guest";
@@ -49,7 +63,7 @@ function GroupPage() {
   const localStorageCursorNum = +localStorage.getItem(GROUP_CURSOR_NUM);
 
   const setTransdferGroupData = useSetRecoilState(transferGroupDataState);
-  const [status, setStatus] = useState<Status>("모집중");
+  const [status, setStatus] = useState<Status>(statusParam ? enToStatus[statusParam] : "모집중");
   const [groupStudies, setGroupStudies] = useState<IGroup[]>([]);
 
   const [cursor, setCursor] = useState(localStorageCursorNum);
@@ -62,14 +76,14 @@ function GroupPage() {
   const firstLoad = useRef(true);
 
   const { data: groups, isLoading } = useGroupQuery(
-    status === "모집중" ? "pending" : "end",
+    status === "모집중" ? "pending" : status === "오픈 예정" ? "planned" : "end",
     category.main,
-    category.main === "전체" ? cursor : 0,
+    category.main === "전체" && status !== "오픈 예정" ? cursor : 0,
     {
       enabled: !!status,
     },
   );
-
+  console.log(groups);
   useEffect(() => {
     return () => {
       const localStorageCursorNumChange = !localStorageCursorNum
@@ -96,6 +110,7 @@ function GroupPage() {
     });
 
     if (!searchParams.get("filter")) {
+      console.log(24);
       newSearchParams.append("filter", "pending");
       newSearchParams.append("category", "0");
       router.replace(`/group?${newSearchParams.toString()}`);
@@ -128,12 +143,7 @@ function GroupPage() {
   }, []);
 
   useEffect(() => {
-    const statusToEn: Record<Status, string> = {
-      모집중: "pending",
-      종료: "end",
-      "시험 기간": "study",
-      "오픈 예정": "expected",
-    };
+    console.log(1, status);
     newSearchParams.set("filter", statusToEn[status]);
     router.replace(`/group?${newSearchParams.toString()}`);
   }, [status]);
@@ -142,13 +152,16 @@ function GroupPage() {
     if (!groups) return;
     firstLoad.current = false;
 
+    console.log(category);
     if (category.main === "전체") {
+      console.log(2, groups);
       const newArray = shuffleArray(groups);
       setGroupStudies((old) => [
         ...newArray.filter((item) => !old.some((existingItem) => existingItem.id === item.id)),
         ...old,
       ]);
     } else {
+      console.log(43);
       setGroupStudies(groups.filter((item) => !category.sub || item.category.sub === category.sub));
     }
   }, [groups, category.main, category.sub]);
@@ -204,7 +217,7 @@ function GroupPage() {
                 size="sm"
                 isThick
                 defaultValue={status}
-                options={["모집중", "오픈 예정", "시험 기간", "종료"]}
+                options={["모집중", "오픈 예정", "종료"]}
                 setValue={setStatus}
               />
             </SectionHeader>
@@ -311,7 +324,7 @@ export const createGroupThumbnailProps = (
 ) => ({
   title: group.title,
   text: group.guide,
-  status: status,
+  status: group.participants.length <= 2 ? "planned" : status,
   category: group.category,
   participants: group.participants.map((user) =>
     group.isSecret ? { user: ABOUT_USER_SUMMARY } : user,
