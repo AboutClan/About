@@ -15,9 +15,10 @@ dayjs().locale("ko");
 interface HomeGroupColProps {
   threeGroups: IGroup[];
   isStudy?: boolean;
+  isSmall: boolean;
 }
 
-export default function HomeGroupCol({ threeGroups, isStudy }: HomeGroupColProps) {
+export default function HomeGroupCol({ threeGroups, isStudy, isSmall }: HomeGroupColProps) {
   const { data: session } = useSession();
 
   const setTransferGroup = useSetRecoilState(transferGroupDataState);
@@ -59,6 +60,7 @@ export default function HomeGroupCol({ threeGroups, isStudy }: HomeGroupColProps
                     group.category.main === "콘텐츠",
                   )}
                   isBottomBorder={idx !== 2}
+                  isSmall={isSmall}
                 />
               );
             })}

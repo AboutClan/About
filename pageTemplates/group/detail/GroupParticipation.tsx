@@ -12,7 +12,7 @@ interface IGroupParticipation {
 
 function GroupParticipation({ data }: IGroupParticipation) {
   const isSecret = data?.isSecret;
- 
+
   const userCardArr: IProfileCommentCard[] = data.participants.map((par) => {
     if (isSecret) {
       return {
@@ -31,7 +31,6 @@ function GroupParticipation({ data }: IGroupParticipation) {
       ),
     };
   });
-
   return (
     <Layout>
       <Flex mb={4} fontSize="18px" lineHeight="28px">

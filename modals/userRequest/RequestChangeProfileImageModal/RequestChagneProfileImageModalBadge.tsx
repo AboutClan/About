@@ -55,7 +55,7 @@ function RequestChagneProfileImageModalBadge({ setIsModal }) {
       </Message>
       <Container>
         <Item isSelected={selectBadge === "딸기스무디"} onClick={() => onClick("딸기스무디")}>
-          <Badge fontSize={12} colorScheme="badgePink">
+          <Badge fontSize={12} colorScheme="pink">
             딸기스무디
           </Badge>
         </Item>
@@ -65,7 +65,7 @@ function RequestChagneProfileImageModalBadge({ setIsModal }) {
           </Badge>
         </Item>
         <Item isSelected={selectBadge === "코코아"} onClick={() => onClick("코코아")}>
-          <Badge fontSize={12} colorScheme="badgeBrown">
+          <Badge fontSize={12} colorScheme="yellow">
             코코아
           </Badge>
         </Item>

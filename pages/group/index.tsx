@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -35,7 +35,7 @@ interface ICategory {
   sub: string | null;
 }
 
-type Status = "모집중" | "종료" | "시험 기간" | "오픈 예정";
+type Status = "모집중" | "종료" | "시험 기간";
 
 function GroupPage() {
   const searchParams = useSearchParams();
@@ -132,7 +132,6 @@ function GroupPage() {
       모집중: "pending",
       종료: "end",
       "시험 기간": "study",
-      "오픈 예정": "expected",
     };
     newSearchParams.set("filter", statusToEn[status]);
     router.replace(`/group?${newSearchParams.toString()}`);

@@ -68,7 +68,7 @@ export function GroupThumbnailCard({
   };
 
   return (
-    <CardLink href={`/group/${id}`} onClick={func} bottom={isBottomBorder}>
+    <CardLink href={`/group/${id}`} onClick={func}>
       <PlaceImage src={imageProps.image} priority={imageProps.isPriority} />
       <Flex direction="column" ml="12px" flex={1}>
         <Flex my={1} justify="space-between" align="center">
@@ -155,7 +155,7 @@ function PlaceImage(props: PlaceImageProps) {
   );
 }
 
-const CardLink = styled(Link)<{ bottom: boolean }>`
+const CardLink = styled(Link)`
   height: fit-content;
   display: flex;
 
