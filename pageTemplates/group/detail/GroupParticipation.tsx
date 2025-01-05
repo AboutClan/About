@@ -12,7 +12,8 @@ interface IGroupParticipation {
 
 function GroupParticipation({ data }: IGroupParticipation) {
   const isSecret = data?.isSecret;
- 
+  const isPlanned = data?.participants.length <= 1;
+  const waitingCnt = data?.waiting.length;
   const userCardArr: IProfileCommentCard[] = data.participants.map((par) => {
     if (isSecret) {
       return {
@@ -36,10 +37,10 @@ function GroupParticipation({ data }: IGroupParticipation) {
     <Layout>
       <Flex mb={4} fontSize="18px" lineHeight="28px">
         <Box mr={2} fontWeight="bold">
-          참여중인 인원
+          {!isPlanned ? "참여중인 인원" : "참여 대기 인원"}
         </Box>
         <Box as="span" color="mint">
-          {data?.participants.length}
+          {!isPlanned ? data?.participants.length : waitingCnt + 7}
         </Box>
         <Box as="span" mx={1} color="gray.600">
           /

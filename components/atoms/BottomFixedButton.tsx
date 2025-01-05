@@ -5,9 +5,10 @@ import { iPhoneNotchSize } from "../../utils/validationUtils";
 interface BottomFixedButton {
   text: string;
   func: () => void;
+  color?: "mint" | "black";
 }
 
-function BottomFixedButton({ text, func }: BottomFixedButton) {
+function BottomFixedButton({ text, func, color = "mint" }: BottomFixedButton) {
   return (
     <Box w="full" position="fixed" py={2} px={5} bottom={`${iPhoneNotchSize()}px`}>
       <Button
@@ -16,7 +17,7 @@ function BottomFixedButton({ text, func }: BottomFixedButton) {
         maxW="var(--view-max-width)"
         borderRadius="12px"
         onClick={func}
-        colorScheme={func ? "mint" : "blackAlpha"}
+        colorScheme={func ? color : "blackAlpha"}
       >
         {text}
       </Button>

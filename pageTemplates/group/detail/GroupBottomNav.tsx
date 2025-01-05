@@ -46,7 +46,7 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
 
   const { mutate: sendRegisterForm } = useGroupWaitingMutation(+id, {
     onSuccess() {
-      toast("success", "참여 대기 완료! 오픈시 연락을 드립니다.");
+      toast("success", "대기 요청 완료! 이후 연락 예정.");
       setTransferGroup(null);
       queryClient.invalidateQueries([GROUP_STUDY, id]);
     },
@@ -89,7 +89,8 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
     }
     if (isFull) {
       return {
-        text: "모집 인원 마감",
+        text: "빈자리 생기면 참여 요청",
+        handleFunction: () => sendRegisterForm({ answer: "가입 대기 신청", pointType: "point" }),
       };
     }
     if (data?.participants.length <= 1) {
@@ -109,7 +110,11 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
 
   return (
     <>
-      <BottomFixedButton text={text} func={handleFunction} />
+      <BottomFixedButton
+        text={text}
+        func={handleFunction}
+        color={text === "빈자리 생기면 참여 요청" ? "black" : "mint"}
+      />
       {isModal && (
         <BottomFlexDrawer
           isDrawerUp
