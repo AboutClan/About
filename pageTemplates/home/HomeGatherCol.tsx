@@ -10,7 +10,6 @@ import {
   GatherThumbnailCardProps,
 } from "../../components/molecules/cards/GatherThumbnailCard";
 import { GatherThumbnailCardSkeleton } from "../../components/skeleton/GatherThumbnailCardSkeleton";
-import { useGatherQuery } from "../../hooks/gather/queries";
 import { transferGatherDataState } from "../../recoils/transferRecoils";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
@@ -19,14 +18,16 @@ import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomImage } from "../../utils/imageUtils";
 dayjs().locale("ko");
 
-export default function HomeGatherCol() {
+interface HomeGatherColProps {
+  gathers: IGather[];
+}
+
+export default function HomeGatherCol({ gathers }: HomeGatherColProps) {
   const { data: session } = useSession();
 
   const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>([]);
 
   const setTransferGather = useSetRecoilState(transferGatherDataState);
-
-  const { data: gathers } = useGatherQuery(-1);
 
   useEffect(() => {
     if (!gathers) return;
