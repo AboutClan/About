@@ -1,0 +1,46 @@
+version: 0.2
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/about
+  build:
+    commands:
+      - echo Building the Docker image...
+      - >
+        docker build
+        --build-arg EDGE_AWS_ACCESS_KEY_ID=$EDGE_AWS_ACCESS_KEY_ID
+        --build-arg EDGE_AWS_SECRET_ACCESS_KEY=$EDGE_AWS_SECRET_ACCESS_KEY
+        --build-arg EDGE_DISTRIBUTION_ID=$EDGE_DISTRIBUTION_ID
+        --build-arg EDGE_URL=$EDGE_URL
+        --build-arg KAKAO_CLIENT_ID=$KAKAO_CLIENT_ID
+        --build-arg KAKAO_CLIENT_SECRET=$KAKAO_CLIENT_SECRET
+        --build-arg MONGODB_URI=$MONGODB_URI
+        --build-arg NEXTAUTH_SECRET=$NEXTAUTH_SECRET
+        --build-arg NEXTAUTH_URL=$NEXTAUTH_URL
+        --build-arg NEXT_PUBLIC_GA_MEASUREMENT_ID=$NEXT_PUBLIC_GA_MEASUREMENT_ID
+        --build-arg NEXT_PUBLIC_KAKAO_CLIENT_ID=$NEXT_PUBLIC_KAKAO_CLIENT_ID
+        --build-arg NEXT_PUBLIC_KAKAO_JS=$NEXT_PUBLIC_KAKAO_JS
+        --build-arg NEXT_PUBLIC_KAKAO_JS_KEY=$NEXT_PUBLIC_KAKAO_JS_KEY
+        --build-arg NEXT_PUBLIC_NAVER_CLIENT_ID=$NEXT_PUBLIC_NAVER_CLIENT_ID
+        --build-arg NEXT_PUBLIC_NAVER_CLIENT_SECRET=$NEXT_PUBLIC_NAVER_CLIENT_SECRET
+        --build-arg NEXT_PUBLIC_PWA_KEY=$NEXT_PUBLIC_PWA_KEY
+        --build-arg NEXT_PUBLIC_SENTRY_DSN=$NEXT_PUBLIC_SENTRY_DSN
+        --build-arg NEXT_PUBLIC_SENTRY_ORGANIZATION=$NEXT_PUBLIC_SENTRY_ORGANIZATION
+        --build-arg NEXT_PUBLIC_SENTRY_PROJECT=$NEXT_PUBLIC_SENTRY_PROJECT
+        --build-arg NEXT_PUBLIC_SERVER_URI=$NEXT_PUBLIC_SERVER_URI
+        --build-arg SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
+        --build-arg APPLE_ID=$APPLE_ID
+        --build-arg APPLE_KEY_ID=$APPLE_KEY_ID
+        --build-arg APPLE_PRIVATE_KEY=$APPLE_PRIVATE_KEY
+        --build-arg APPLE_TEAM_ID=$APPLE_TEAM_ID
+        -t nest-app .
+      - docker tag nest-app 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/about
+  post_build:
+    commands:
+      - echo Pushing the Docker image to ECR...
+      - docker push 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/about
+artifacts:
+  files:
+    - appspec.yml
+    - scripts/** # EC2에서 실행할 스크립트 포함
