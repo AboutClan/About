@@ -4,9 +4,7 @@ import "swiper/css/navigation";
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
-import Slide from "../../components/layouts/PageSlide";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
-import HomeGatherCol from "./HomeGatherCol";
 
 function HomeRecommendationSection() {
   return (
@@ -18,9 +16,6 @@ function HomeRecommendationSection() {
 
         {/* <StudyCardCol participations={studyVoteData?.participations} date={dayjsToStr(dayjs())} /> */}
       </Box>
-      <Slide>
-        <HomeGatherCol />
-      </Slide>
     </>
   );
 }
