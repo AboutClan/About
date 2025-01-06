@@ -34,12 +34,11 @@ phases:
         --build-arg APPLE_KEY_ID=$APPLE_KEY_ID
         --build-arg APPLE_PRIVATE_KEY=$APPLE_PRIVATE_KEY
         --build-arg APPLE_TEAM_ID=$APPLE_TEAM_ID
-        -t nest-app .
-      - docker tag nest-app 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/about
+        -t 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/about/front:latest .
   post_build:
     commands:
       - echo Pushing the Docker image to ECR...
-      - docker push 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/about
+      - docker push 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/about/front:latest
 artifacts:
   files:
     - appspec.yml
