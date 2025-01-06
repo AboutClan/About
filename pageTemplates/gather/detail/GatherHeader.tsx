@@ -8,12 +8,14 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import { GATHER_SHARE_IMAGES } from "../../../assets/images/imageUrl";
+import { GATHER_RANDOM_IMAGE_ARR } from "../../../assets/images/randomImages";
 import KakaoShareBtn from "../../../components/Icons/KakaoShareBtn";
 import Header from "../../../components/layouts/Header";
 import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import { WEB_URL } from "../../../constants/system";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import { getRandomIdx } from "../../../utils/mathUtils";
 
 interface IGatherHeader {
   gatherData: IGather;
@@ -34,14 +36,23 @@ function GatherHeader({ gatherData }: IGatherHeader) {
   const onClickItem = (idx) => {
     setSelectedItem(idx);
   };
-
+  console.log(gatherData);
   return (
     <>
       <Header title="" defaultUrl="/gather">
         <Flex>
-          <IconWrapper onClick={() => setDrawerType("kakaoShare")}>
-            <i className="fa-light fa-share-nodes fa-lg" />
-          </IconWrapper>
+          <Box>
+            <KakaoShareBtn
+              type="gather"
+              img={
+                gatherData?.image ||
+                GATHER_RANDOM_IMAGE_ARR[getRandomIdx(GATHER_RANDOM_IMAGE_ARR.length - 1)]
+              }
+              title={gatherData.title}
+              subtitle={gatherData.content}
+              url="/"
+            />
+          </Box>
           {((gatherData.user as IUserSummary)._id === session?.user.id ||
             session?.user.uid === "2259633694") && (
             <IconWrapper>

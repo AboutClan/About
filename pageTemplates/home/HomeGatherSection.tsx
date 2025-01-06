@@ -11,6 +11,7 @@ function HomeGatherSection() {
   const { data: session } = useSession();
 
   return (
+    <>
     <Box my={5}>
       <SectionHeader title="About 번개 모임" subTitle="친구들과의 즐거운 만남">
         <ButtonWrapper
@@ -21,7 +22,7 @@ function HomeGatherSection() {
         </ButtonWrapper>
       </SectionHeader>
       <HomeGatherCol />
-    </Box>
+    </Box></>
   );
 }
 

@@ -2,9 +2,6 @@ import { Box, Button } from "@chakra-ui/react";
 import { useEffect } from "react";
 import styled from "styled-components";
 
-import { REVIEW_DATA } from "../../storage/Review";
-import { ShareIcon } from "./ShareIcon";
-
 const kakaoAppKey = process.env.NEXT_PUBLIC_KAKAO_JS;
 
 interface IKakaoShareBtn {
@@ -41,7 +38,7 @@ function KakaoShareBtn({
   }, []);
 
   useEffect(() => {
-    if (type === "gather" && !img) return;
+    if (!img) return;
 
     if (window.Kakao) {
       const options =
@@ -53,7 +50,7 @@ function KakaoShareBtn({
                 title,
                 description: subtitle,
                 imageUrl: img,
-                imageWidth: 800,
+                imageWidth: type === "gather" ? 400 : 800,
                 imageHeight: 400,
                 link: {
                   mobileWebUrl: url,
@@ -102,19 +99,7 @@ function KakaoShareBtn({
                 },
               },
             }
-          : {
-              container: "#kakao-share-button",
-              objectType: "feed",
-              content: {
-                title,
-                description: subtitle,
-                imageUrl: REVIEW_DATA[0]?.images[0],
-                link: {
-                  mobileWebUrl: url,
-                  webUrl: url,
-                },
-              },
-            };
+          : null;
 
       window.Kakao.Link.createDefaultButton(options);
     }
@@ -135,7 +120,9 @@ function KakaoShareBtn({
           카카오톡 공유
         </Button>
       ) : !isBig ? (
-        <ShareIcon />
+        <Box>
+          <i className="fa-light fa-share-nodes fa-lg" />
+        </Box>
       ) : (
         <Button as="div" colorScheme="mint" flex={1} size="lg" maxW="var( --view-max-width)">
           카카오톡으로 공유하기
