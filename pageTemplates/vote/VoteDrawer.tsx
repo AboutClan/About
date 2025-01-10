@@ -112,7 +112,8 @@ function VoteDrawer({
 
   //스터디 장소 자동 선택 알고리즘
   useEffect(() => {
-    if (preference === undefined || !studyVoteData) return;
+    if (!studyVoteData) return;
+
     // if (isFirstPage && !currentLocation) return;
     //기존에 존재하는 내 스터디 장소
 
@@ -122,6 +123,7 @@ function VoteDrawer({
         location,
         false,
       );
+      console.log(24, convertMergeParticipations);
       setMergeParticipations(convertMergeParticipations);
       const findMyStudy = convertMergeParticipations.find(
         (par) => par.place._id === myStudyParticipation?.place._id,
