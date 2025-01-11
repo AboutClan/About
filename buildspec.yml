@@ -9,7 +9,7 @@ phases:
   build:
     commands:
       - echo Building the Docker image...
-      - docker build --build-arg NEXT_PUBLIC_SERVER_URI=https://about-back.kro.kr --build-arg NEXT_PUBLIC_NEXTAUTH_URL=https://about-front.kro.kr -t next-app .
+      - docker build --build-arg NEXT_PUBLIC_SERVER_URI=https://about-back.kro.kr --build-arg NEXT_PUBLIC_NEXTAUTH_URL=https://about-front.kro.kr --build-arg NEXTAUTH_URL=https://about-front.kro.kr -t next-app .
       - docker tag next-app 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:latest
 
   post_build:
