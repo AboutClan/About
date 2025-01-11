@@ -3,7 +3,7 @@
 set -e  # 스크립트가 오류 발생 시 즉시 종료
 
 sudo chmod -R 775 /home/ubuntu/frontend
-cd /home/ubuntu/frontend
+sudo cd /home/ubuntu/frontend
 
 # ECR 로그인
 aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend
