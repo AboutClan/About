@@ -1,6 +1,6 @@
 #!/bin/bash
 cd /home/ubuntu/app
-aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/about
+aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend
 EDGE_AWS_ACCESS_KEY_ID=$(aws secretsmanager get-secret-value --secret-id about/frontend --query SecretString --output text | jq -r '.EDGE_AWS_ACCESS_KEY_ID')
 EDGE_AWS_SECRET_ACCESS_KEY=$(aws secretsmanager get-secret-value --secret-id about/frontend --query SecretString --output text | jq -r '.EDGE_AWS_SECRET_ACCESS_KEY')
 EDGE_DISTRIBUTION_ID=$(aws secretsmanager get-secret-value --secret-id about/frontend --query SecretString --output text | jq -r '.EDGE_DISTRIBUTION_ID')
@@ -30,7 +30,7 @@ APPLE_TEAM_ID=$(aws secretsmanager get-secret-value --secret-id about/frontend -
 docker pull 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:latest
 docker stop next-app || true
 docker rm next-app || true
-docker run -d \
+docker run -d --name next-app \
     -e EDGE_AWS_ACCESS_KEY_ID=$EDGE_AWS_ACCESS_KEY_ID \
     -e EDGE_AWS_SECRET_ACCESS_KEY=$EDGE_AWS_SECRET_ACCESS_KEY \
     -e EDGE_DISTRIBUTION_ID=$EDGE_DISTRIBUTION_ID \
@@ -56,4 +56,4 @@ docker run -d \
     -e APPLE_KEY_ID=$APPLE_KEY_ID \
     -e APPLE_PRIVATE_KEY=$APPLE_PRIVATE_KEY \
     -e APPLE_TEAM_ID=$APPLE_TEAM_ID \
-    --name next-app -p 3000:3000 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:latest 
+    -p 3000:3000 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:latest 

@@ -7,7 +7,8 @@ phases:
   build:
     commands:
       - echo Building the Docker image...
-      - docker build -t 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend/frontend:latest .
+      - docker build -t next-app .
+      - docker tag next-app 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend/frontend:latest
   post_build:
     commands:
       - echo Pushing the Docker image to ECR...
