@@ -13,8 +13,13 @@ RUN npm install -g npm@10.2.4 && npm install
 # 5. Copy all application files
 COPY . .
 
+ARG NEXT_PUBLIC_SERVER_URI
+ARG NEXTAUTH_URL
+
 # 6. Build the Next.js app
-RUN npm run build
+RUN NEXT_PUBLIC_SERVER_URI=$NEXT_PUBLIC_SERVER_URI \
+    NEXTAUTH_URL=$NEXTAUTH_URL \
+    npm run build
 
 # 7. Production image
 FROM node:20.11.0 AS production
