@@ -2,6 +2,7 @@
 
 set -e  # 스크립트가 오류 발생 시 즉시 종료
 
+sudo chmod -R 775 /home/ubuntu/frontend
 cd /home/ubuntu/frontend
 
 # ECR 로그인
