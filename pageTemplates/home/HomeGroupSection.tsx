@@ -11,7 +11,6 @@ interface HomeGroupSectionProps {
 }
 
 function HomeGroupSection({ groups }: HomeGroupSectionProps) {
-  console.log(2, groups);
   return (
     <>
       <Box my={5}>

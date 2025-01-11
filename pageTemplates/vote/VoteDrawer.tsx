@@ -123,7 +123,6 @@ function VoteDrawer({
         location,
         false,
       );
-      console.log(24, convertMergeParticipations);
       setMergeParticipations(convertMergeParticipations);
       const findMyStudy = convertMergeParticipations.find(
         (par) => par.place._id === myStudyParticipation?.place._id,
