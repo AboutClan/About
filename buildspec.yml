@@ -3,15 +3,15 @@ phases:
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/about
+      - aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend
   build:
     commands:
       - echo Building the Docker image...
-      - docker build -t 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/about/front:latest .
+      - docker build -t 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend/frontend:latest .
   post_build:
     commands:
       - echo Pushing the Docker image to ECR...
-      - docker push 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/about/front:latest
+      - docker push 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:latest
 artifacts:
   files:
     - appspec.yml
