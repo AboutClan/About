@@ -40,7 +40,7 @@ NEXT_PUBLIC_SERVER_URI=$(echo "$SECRETS" | jq -r '.NEXT_PUBLIC_SERVER_URI')
 SENTRY_AUTH_TOKEN=$(echo "$SECRETS" | jq -r '.SENTRY_AUTH_TOKEN')
 APPLE_ID=$(echo "$SECRETS" | jq -r '.APPLE_ID')
 APPLE_KEY_ID=$(echo "$SECRETS" | jq -r '.APPLE_KEY_ID')
-APPLE_PRIVATE_KEY=$(echo "$SECRETS" | jq -r '.APPLE_PRIVATE_KEY' | base64)
+APPLE_PRIVATE_KEY=$(echo "$SECRETS" | jq -r '.APPLE_PRIVATE_KEY' | sed ':a;N;$!ba;s/\n/\\n/g')
 APPLE_TEAM_ID=$(echo "$SECRETS" | jq -r '.APPLE_TEAM_ID')
 EOF
 
