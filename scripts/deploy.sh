@@ -4,6 +4,7 @@ set -e  # 오류 발생 시 즉시 종료
 
 # 디렉토리 권한 설정
 sudo chmod -R 775 /home/ubuntu/frontend
+sudo chown -R ubuntu:ubuntu /home/ubuntu/frontend
 
 # 디렉토리 이동
 cd /home/ubuntu/frontend
@@ -15,7 +16,7 @@ aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS
 SECRETS=$(aws secretsmanager get-secret-value --secret-id about/frontend --query SecretString --output text)
 
 # .env 파일 생성
-cat <<EOF > /home/ubuntu/frontend/.env
+sudo cat <<EOF > /home/ubuntu/frontend/.env
 EDGE_AWS_ACCESS_KEY_ID=$(echo "$SECRETS" | jq -r '.EDGE_AWS_ACCESS_KEY_ID')
 EDGE_AWS_SECRET_ACCESS_KEY=$(echo "$SECRETS" | jq -r '.EDGE_AWS_SECRET_ACCESS_KEY')
 EDGE_DISTRIBUTION_ID=$(echo "$SECRETS" | jq -r '.EDGE_DISTRIBUTION_ID')
