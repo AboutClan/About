@@ -3,3 +3,8 @@ node_modules
 .git
 Dockerfile
 README.md
+
+# 환경 파일
+.env
+.env.local
+.env.*.local
