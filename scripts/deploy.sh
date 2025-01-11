@@ -28,8 +28,8 @@ APPLE_PRIVATE_KEY=$(aws secretsmanager get-secret-value --secret-id about/fronte
 APPLE_TEAM_ID=$(aws secretsmanager get-secret-value --secret-id about/frontend --query SecretString --output text | jq -r '.APPLE_TEAM_ID')
 
 docker pull 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/about/front:latest
-docker stop nest-app || true
-docker rm nest-app || true
+docker stop next-app || true
+docker rm next-app || true
 docker run -d \
     -e EDGE_AWS_ACCESS_KEY_ID=$EDGE_AWS_ACCESS_KEY_ID \
     -e EDGE_AWS_SECRET_ACCESS_KEY=$EDGE_AWS_SECRET_ACCESS_KEY \
@@ -56,4 +56,4 @@ docker run -d \
     -e APPLE_KEY_ID=$APPLE_KEY_ID \
     -e APPLE_PRIVATE_KEY=$APPLE_PRIVATE_KEY \
     -e APPLE_TEAM_ID=$APPLE_TEAM_ID \
-    --name my-app -p 80:3001 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/about/front:latest 
+    --name next-app -p 3000:3000 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/about/front:latest 
