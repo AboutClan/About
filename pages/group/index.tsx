@@ -83,7 +83,6 @@ function GroupPage() {
       enabled: !!status,
     },
   );
-  console.log(groups);
   useEffect(() => {
     return () => {
       const localStorageCursorNumChange = !localStorageCursorNum
@@ -110,7 +109,6 @@ function GroupPage() {
     });
 
     if (!searchParams.get("filter")) {
-      console.log(24);
       newSearchParams.append("filter", "pending");
       newSearchParams.append("category", "0");
       router.replace(`/group?${newSearchParams.toString()}`);
@@ -143,7 +141,6 @@ function GroupPage() {
   }, []);
 
   useEffect(() => {
-    console.log(1, status);
     newSearchParams.set("filter", statusToEn[status]);
     router.replace(`/group?${newSearchParams.toString()}`);
   }, [status]);
@@ -152,16 +149,13 @@ function GroupPage() {
     if (!groups) return;
     firstLoad.current = false;
 
-    console.log(category);
     if (category.main === "전체") {
-      console.log(2, groups);
       const newArray = shuffleArray(groups);
       setGroupStudies((old) => [
         ...newArray.filter((item) => !old.some((existingItem) => existingItem.id === item.id)),
         ...old,
       ]);
     } else {
-      console.log(43);
       setGroupStudies(groups.filter((item) => !category.sub || item.category.sub === category.sub));
     }
   }, [groups, category.main, category.sub]);
