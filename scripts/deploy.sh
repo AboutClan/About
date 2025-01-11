@@ -27,7 +27,7 @@ APPLE_KEY_ID=$(aws secretsmanager get-secret-value --secret-id about/frontend --
 APPLE_PRIVATE_KEY=$(aws secretsmanager get-secret-value --secret-id about/frontend --query SecretString --output text | jq -r '.APPLE_PRIVATE_KEY')
 APPLE_TEAM_ID=$(aws secretsmanager get-secret-value --secret-id about/frontend --query SecretString --output text | jq -r '.APPLE_TEAM_ID')
 
-docker pull 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/about/front:latest
+docker pull 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:latest
 docker stop next-app || true
 docker rm next-app || true
 docker run -d \
@@ -56,4 +56,4 @@ docker run -d \
     -e APPLE_KEY_ID=$APPLE_KEY_ID \
     -e APPLE_PRIVATE_KEY=$APPLE_PRIVATE_KEY \
     -e APPLE_TEAM_ID=$APPLE_TEAM_ID \
-    --name next-app -p 3000:3000 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/about/front:latest 
+    --name next-app -p 3000:3000 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:latest 
