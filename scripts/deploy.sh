@@ -1,5 +1,5 @@
 #!/bin/bash
-cd /home/ubuntu/app
+cd /home/ubuntu/frontend
 aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend
 
 # SecretsManager에서 모든 값 가져오기
