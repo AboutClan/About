@@ -13,15 +13,8 @@ RUN npm install -g npm@10.2.4 && npm install
 # 5. Copy all application files
 COPY . .
 
-ARG NEXT_PUBLIC_SERVER_URI
-ARG NEXT_PUBLIC_NEXTAUTH_URL
-ARG NEXTAUTH_URL
-
 # 6. Build the Next.js app
-RUN NEXT_PUBLIC_SERVER_URI=$NEXT_PUBLIC_SERVER_URI \
-    NEXTAUTH_URL=$NEXTAUTH_URL \
-    NEXT_PUBLIC_NEXTAUTH_URL=$NEXT_PUBLIC_NEXTAUTH_URL \
-    npm run build
+RUN npm run build
 
 # 7. Production image
 FROM node:20.11.0 AS production
@@ -35,11 +28,6 @@ COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/node_modules ./node_modules
 
-# 10. Environment variable for production
-ENV NODE_ENV=production
-ENV NEXT_PUBLIC_SERVER_URI=$NEXT_PUBLIC_SERVER_URI
-ENV NEXTAUTH_URL=$NEXTAUTH_URL
-ENV NEXT_PUBLIC_NEXTAUTH_URL=$NEXT_PUBLIC_NEXTAUTH_URL
 # 11. Expose the port
 EXPOSE 3000
 
