@@ -13,7 +13,16 @@ const withPWA = require("next-pwa")({
 const baseNextConfig = {
   // output: "standalone",
   images: {
-    domains: ["about-front.kro.kr", "studyabout.herokuapp.com", "localhost:3000"],
+    domains: [
+      "about-front.kro.kr",
+      "studyabout.herokuapp.com",
+      "localhost:3000",
+      "studyabout.s3.ap-northeast-2.amazonaws.com",
+      "p.kakaocdn.net",
+      "user-images.githubusercontent.com",
+      "img1.kakaocdn.net",
+      "t1.kakaocdn.net",
+    ],
     remotePatterns: [
       {
         protocol: "https",
