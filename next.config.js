@@ -8,9 +8,18 @@ const withPWA = require("next-pwa")({
   disable: typeof window === "undefined" || !isProduction,
   sourcemap: !isProduction,
 });
-//2
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const baseNextConfig = {
+  env: {
+    NEXT_PUBLIC_KAKAO_CLIENT_ID: process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID,
+    NEXT_PUBLIC_KAKAO_JS_KEY: process.env.NEXT_PUBLIC_KAKAO_JS_KEY,
+    NEXT_PUBLIC_KAKAO_JS: process.env.NEXT_PUBLIC_KAKAO_JS,
+    NEXT_PUBLIC_PWA_KEY: process.env.NEXT_PUBLIC_PWA_KEY,
+    NEXT_PUBLIC_GA_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
+    NEXT_PUBLIC_SERVER_URI: process.env.NEXT_PUBLIC_SERVER_URI,
+    NEXT_PUBLIC_NEXTAUTH_URL: process.env.NEXT_PUBLIC_NEXTAUTH_URL,
+  },
   // output: "standalone",
   images: {
     unoptimized: true, // 이미지 최적화 비활성화
