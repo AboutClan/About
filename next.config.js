@@ -11,7 +11,9 @@ const withPWA = require("next-pwa")({
 //2
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const baseNextConfig = {
+  // output: "standalone",
   images: {
+    domains: ["about-front.kro.kr", "studyabout.herokuapp.com", "localhost:3000"],
     remotePatterns: [
       {
         protocol: "https",

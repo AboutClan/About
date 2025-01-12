@@ -37,7 +37,9 @@ COPY --from=builder /app/node_modules ./node_modules
 
 # 10. Environment variable for production
 ENV NODE_ENV=production
-
+ENV NEXT_PUBLIC_SERVER_URI=$NEXT_PUBLIC_SERVER_URI
+ENV NEXTAUTH_URL=$NEXTAUTH_URL
+ENV NEXT_PUBLIC_NEXTAUTH_URL=$NEXT_PUBLIC_NEXTAUTH_URL
 # 11. Expose the port
 EXPOSE 3000
 
