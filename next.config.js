@@ -13,12 +13,14 @@ const withPWA = require("next-pwa")({
 const baseNextConfig = {
   // output: "standalone",
   images: {
+    unoptimized: true, // 이미지 최적화 비활성화
     domains: [
       "about-front.kro.kr",
       "studyabout.herokuapp.com",
       "localhost:3000",
       "studyabout.s3.ap-northeast-2.amazonaws.com",
       "p.kakaocdn.net",
+      "k.kakaocdn.net",
       "user-images.githubusercontent.com",
       "img1.kakaocdn.net",
       "t1.kakaocdn.net",
