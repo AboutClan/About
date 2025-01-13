@@ -82,6 +82,10 @@ function GatherBottomNav({ data }: IGatherBottomNav) {
   }
 
   const getButtonSettings = (status: GatherStatus): IButtonSetting => {
+    return {
+      text: "모임 리뷰 쓰고 포인트 받기",
+      handleFunction: () => onClick("review"),
+    };
     switch (status) {
       case "open":
         if (feed?.length) {
