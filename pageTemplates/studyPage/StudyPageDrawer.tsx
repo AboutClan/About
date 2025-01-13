@@ -113,7 +113,7 @@ function StudyPageDrawer({
   const swipePower = (offset: number, velocity: number) => {
     return Math.abs(offset) * velocity;
   };
- 
+
   return (
     <BottomFlexDrawer
       isOverlay={false}

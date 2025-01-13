@@ -2,6 +2,7 @@ import { Box } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { useSetRecoilState } from "recoil";
 
 import WritingButton from "../../components/atoms/buttons/WritingButton";
 import Slide from "../../components/layouts/PageSlide";
@@ -10,6 +11,7 @@ import PageGuideModal from "../../modals/PageGuideModal";
 import GatherHeader from "../../pageTemplates/gather/GatherHeader";
 import GatherMain from "../../pageTemplates/gather/GatherMain";
 import SquareLoungeSection from "../../pageTemplates/square/SquareLoungeSection";
+import { transferGatherDataState } from "../../recoils/transferRecoils";
 import { checkAndSetLocalStorage } from "../../utils/storageUtils";
 
 function Gather() {
@@ -21,10 +23,12 @@ function Gather() {
 
   const isGuest = session?.user.role === "guest";
 
+  const setTrasnferGatherData = useSetRecoilState(transferGatherDataState);
   const [isModal, setIsModal] = useState(false);
   const [tab, setTab] = useState<"번개" | "라운지">("번개");
 
   useEffect(() => {
+    setTrasnferGatherData(null);
     if (!checkAndSetLocalStorage("gatherGuidePopUp", 21)) {
       setIsModal(true);
     }

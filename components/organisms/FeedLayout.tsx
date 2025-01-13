@@ -28,12 +28,12 @@ function FeedLayout({
   date,
   images,
   content,
-  likeUsers,
+  // likeUsers,
   summary,
-  likeCnt,
-  comments,
-  id,
-  refetch,
+  // likeCnt,
+  // comments,
+  // id,
+  // refetch,
   isAnonymous,
 }: FeedLayoutProps) {
   return (
