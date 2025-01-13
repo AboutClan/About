@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -95,10 +95,7 @@ export default function StudyPage() {
   //내 스터디 투표 정보가 있는지에 따라 분류
 
   useEffect(() => {
-    toast(
-      "info",
-      "베타테스트로 출시한 기능입니다. 24년 12월 말에 진행되는 동네 세분화와 함께 리뉴얼 예정!",
-    );
+    toast("info", "리뉴얼중인 기능입니다. 1월 말에서 2월초 사이 오픈 예정!");
   }, []);
 
   useEffect(() => {
