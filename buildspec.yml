@@ -1,0 +1,35 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend
+
+  build:
+    commands:
+      - echo Building the Docker image...
+      - |
+        docker build \
+        --build-arg NEXT_PUBLIC_KAKAO_CLIENT_ID=$NEXT_PUBLIC_KAKAO_CLIENT_ID \
+        --build-arg NEXT_PUBLIC_KAKAO_JS=$NEXT_PUBLIC_KAKAO_JS \
+        --build-arg NEXT_PUBLIC_NAVER_CLIENT_ID=$NEXT_PUBLIC_NAVER_CLIENT_ID \
+        --build-arg NEXT_PUBLIC_NAVER_CLIENT_SECRET=$NEXT_PUBLIC_NAVER_CLIENT_SECRET \
+        --build-arg NEXT_PUBLIC_KAKAO_JS_KEY=$NEXT_PUBLIC_KAKAO_JS_KEY \
+        --build-arg NEXT_PUBLIC_PWA_KEY=$NEXT_PUBLIC_PWA_KEY \
+        --build-arg NEXT_PUBLIC_GA_MEASUREMENT_ID=$NEXT_PUBLIC_GA_MEASUREMENT_ID \
+        --build-arg NEXT_PUBLIC_SERVER_URI=https://about-back.kro.kr \
+        --build-arg NEXT_PUBLIC_NEXTAUTH_URL=$NEXT_PUBLIC_NEXTAUTH_URL \
+        --build-arg NEXTAUTH_URL=https://about-front.kro.kr \
+        -t next-app .
+      - docker tag next-app 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:latest
+
+  post_build:
+    commands:
+      - echo Pushing the Docker image to ECR...
+      - docker push 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:latest
+
+artifacts:
+  files:
+    - appspec.yml
+    - scripts/**

@@ -99,8 +99,8 @@ export const sendResultMessage = async (
     object_type: "text",
     text: resultMessage,
     link: {
-      web_url: `${process.env.NEXTAUTH_URL}/result`,
-      mobile_web_url: `${process.env.NEXTAUTH_URL}/result`,
+      web_url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/result`,
+      mobile_web_url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/result`,
     },
     button_title: "결과 확인",
   });

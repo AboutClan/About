@@ -20,9 +20,11 @@ function Policy() {
           </Heading>
           <Text>
             본 약관은 Vote Helper 스터디 참여 투표 자동화 서비스(
-            <a href={process.env.NEXTAUTH_URL}>{`${process.env.NEXTAUTH_URL}`}</a>, 이하 &quot;Vote
-            Helper&quot;)이 제공하는 서비스의 이용과 관련하여 회원과 Vote Helper 사이의 권리·의무 및
-            책임사항, 기타 필요한 사항을 규정함을 목적으로 한다.
+            <a
+              href={process.env.NEXT_PUBLIC_NEXTAUTH_URL}
+            >{`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}`}</a>
+            , 이하 &quot;Vote Helper&quot;)이 제공하는 서비스의 이용과 관련하여 회원과 Vote Helper
+            사이의 권리·의무 및 책임사항, 기타 필요한 사항을 규정함을 목적으로 한다.
           </Text>
 
           <Heading as="h3" fontSize="lg" marginTop="10px">

@@ -53,11 +53,11 @@ export default class MyDocument extends Document {
           <link rel="manifest" href="/manifest.json" />
           <meta property="og:type" content="website" />
           <meta property="og:title" content="ABOUT" />
-          <meta property="og:url" content="https://studyabout.herokuapp.com" />
+          <meta property="og:url" content={process.env.NEXT_PUBLIC_NEXTAUTH_URL} />
           <meta property="og:description" content="대학생 스터디 동아리" />
           <meta property="og:image" content="/ogImage.jpg" />
           <meta property="og:locale" content="ko_KR" />
-          <meta property="og:site_name" content="https://studyabout.herokuapp.com" />
+          <meta property="og:site_name" content={process.env.NEXT_PUBLIC_NEXTAUTH_URL} />
           <meta charSet="utf-8" key="charset" />{" "}
           <Script src="https://kit.fontawesome.com/4071928605.js" crossOrigin="anonymous"></Script>
         </Head>
