@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/react";
-import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/dist/client/router";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
@@ -82,10 +82,6 @@ function GatherBottomNav({ data }: IGatherBottomNav) {
   }
 
   const getButtonSettings = (status: GatherStatus): IButtonSetting => {
-    return {
-      text: "모임 리뷰 쓰고 포인트 받기",
-      handleFunction: () => onClick("review"),
-    };
     switch (status) {
       case "open":
         if (feed?.length) {
