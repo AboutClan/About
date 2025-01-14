@@ -24,6 +24,17 @@ const baseNextConfig = {
         destination: "https://about-front.kro.kr/:path*",
         permanent: true,
       },
+      {
+        source: "/:path*",
+        has: [
+          {
+            type: "host",
+            value: "about-front.kro.kr",
+          },
+        ],
+        destination: "/:path*",
+        permanent: false, // 기존 요청 유지
+      },
     ];
   },
 
