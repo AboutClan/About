@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
 
-import { Global } from "@emotion/react";
 import axios from "axios";
 import { signOut, useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
@@ -14,7 +13,7 @@ import PageTracker from "../../components/layouts/PageTracker";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { parseUrlToSegments } from "../../utils/stringUtils";
-import { detectDevice, iPhoneNotchSize } from "../../utils/validationUtils";
+import { iPhoneNotchSize } from "../../utils/validationUtils";
 import BaseModal from "./BaseModal";
 import BaseScript from "./BaseScript";
 import Seo from "./Seo";
@@ -124,7 +123,7 @@ function Layout({ children }: ILayout) {
     <>
       <Seo title="ABOUT" />
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
-      {detectDevice() !== "PC" && (
+      {/* {detectDevice() !== "PC" && (
         <Global
           styles={{
             "*:hover": {
@@ -132,7 +131,7 @@ function Layout({ children }: ILayout) {
             },
           }}
         />
-      )}
+      )} */}
       {token && (
         <>
           <div
