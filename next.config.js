@@ -11,32 +11,32 @@ const withPWA = require("next-pwa")({
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const baseNextConfig = {
-  async redirects() {
-    return [
-      {
-        source: "/:path*",
-        has: [
-          {
-            type: "host",
-            value: "studyabout.herokuapp.com",
-          },
-        ],
-        destination: "https://about-front.kro.kr/:path*",
-        permanent: true,
-      },
-      {
-        source: "/:path*",
-        has: [
-          {
-            type: "host",
-            value: "about-front.kro.kr",
-          },
-        ],
-        destination: "/:path*",
-        permanent: false, // 기존 요청 유지
-      },
-    ];
-  },
+  // async redirects() {
+  //   return [
+  //     {
+  //       source: "/:path*",
+  //       has: [
+  //         {
+  //           type: "host",
+  //           value: "studyabout.herokuapp.com",
+  //         },
+  //       ],
+  //       destination: "https://about-front.kro.kr/:path*",
+  //       permanent: true,
+  //     },
+  //     {
+  //       source: "/:path*",
+  //       has: [
+  //         {
+  //           type: "host",
+  //           value: "about-front.kro.kr",
+  //         },
+  //       ],
+  //       destination: "/:path*",
+  //       permanent: false, // 기존 요청 유지
+  //     },
+  //   ];
+  // },
 
   env: {
     NEXT_PUBLIC_KAKAO_CLIENT_ID: process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID,
