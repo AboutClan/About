@@ -11,6 +11,16 @@ const withPWA = require("next-pwa")({
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const baseNextConfig = {
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        destination: "https://about-front.kro.kr/:path*",
+        permanent: true, // 301 리다이렉트
+      },
+    ];
+  },
+
   env: {
     NEXT_PUBLIC_KAKAO_CLIENT_ID: process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID,
     NEXT_PUBLIC_KAKAO_JS_KEY: process.env.NEXT_PUBLIC_KAKAO_JS_KEY,
