@@ -119,3 +119,16 @@ export const useTogglePlaceHeart = () => {
 
   return togglePlaceHeart;
 };
+
+export const useWindowWidth = () => {
+  const [width, setWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+
+    window.addEventListener("resize", handleResize); // resize 이벤트 추가
+    return () => window.removeEventListener("resize", handleResize); // 이벤트 정리
+  }, []);
+
+  return width;
+};

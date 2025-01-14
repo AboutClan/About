@@ -18,10 +18,14 @@ function Home() {
         <HomeBannerSlide />
         <HomeNav />
       </Slide>
+      <Slide isNoPadding>
+        <HomeGatherSection />
+      </Slide>
       <Slide>
         {/* <HomeGroupStudySection groups={data} /> */}
-        <HomeGatherSection />
         <HomeReviewSection />
+      </Slide>
+      <Slide isNoPadding>
         <HomeGroupSection groups={data} />
       </Slide>
       {/* <Slide isNoPadding>

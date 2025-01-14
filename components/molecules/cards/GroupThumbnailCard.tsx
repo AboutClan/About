@@ -31,7 +31,6 @@ export interface GroupThumbnailCardProps {
   id: number;
   waitingCnt?: number;
   isBig?: boolean;
-  isBottomBorder?: boolean;
 }
 
 export function GroupThumbnailCard({
@@ -46,7 +45,6 @@ export function GroupThumbnailCard({
   maxCnt,
   waitingCnt,
   isBig = true,
-  isBottomBorder = true,
 }: GroupThumbnailCardProps) {
   const userAvatarArr = participants
     ?.filter((par) => par)
@@ -68,10 +66,10 @@ export function GroupThumbnailCard({
   };
 
   return (
-    <CardLink href={`/group/${id}`} onClick={func} bottom={isBottomBorder}>
+    <CardLink href={`/group/${id}`} onClick={func}>
       <PlaceImage src={imageProps.image} priority={imageProps.isPriority} />
       <Flex direction="column" ml="12px" flex={1}>
-        <Flex my={1} justify="space-between" align="center">
+        <Flex mb={1} justify="space-between" align="center">
           <Box fontSize="11px" lineHeight="12px">
             <Box as="span" fontWeight="medium" lineHeight="12px" color="mint">
               {category?.main}
@@ -155,7 +153,7 @@ function PlaceImage(props: PlaceImageProps) {
   );
 }
 
-const CardLink = styled(Link)<{ bottom: boolean }>`
+const CardLink = styled(Link)`
   height: fit-content;
   display: flex;
 

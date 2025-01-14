@@ -2,7 +2,7 @@ import { Box, Flex, Skeleton } from "@chakra-ui/react";
 
 export function GatherThumbnailCardSkeleton() {
   return (
-    <Box pb={4} mb={4}>
+    <Box pb={4} mb={3}>
       <Box h="98px" border="var(--border)" borderRadius="12px" p="8px" bg="white">
         <Flex justify="space-between">
           {/* Image placeholder */}

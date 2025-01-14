@@ -7,7 +7,7 @@ import { useTypeToast } from "../../hooks/custom/CustomToast";
 function HomeNav() {
   const typeToast = useTypeToast();
   return (
-    <Flex mb={8}>
+    <Flex mb={3}>
       {HOME_RECOMMENDATION_ICON_ARR.map((item, idx) => (
         <Link
           href={item.url}

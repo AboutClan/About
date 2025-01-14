@@ -32,7 +32,6 @@ function GroupParticipation({ data }: IGroupParticipation) {
       ),
     };
   });
-
   return (
     <Layout>
       <Flex mb={4} fontSize="18px" lineHeight="28px">

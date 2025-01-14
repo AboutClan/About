@@ -73,13 +73,18 @@ export default function Member() {
     title: "유저 추방",
     subTitle: `${deleteUser?.user?.name || "외부인"}님을 해당 모임에서 추방합니다.`,
     func: async () => {
+      if (!deleteUser.user) {
+        toast("info", "외부인은 모두 제거됩니다. 인원에 맞게 다시 추가해주세요!");
+      }
       await mutate({ toUid: deleteUser?.user?._id, randomId: deleteUser?.randomId });
       if (belong) {
         handleBelong({ uid: deleteUser?.user?.uid, belong: null });
       }
       setGroup((old) => ({
         ...old,
-        participants: old.participants.filter((par) => par.user?.uid !== deleteUser.user.uid),
+        participants: old.participants.filter((par) =>
+          deleteUser.user ? par.user?.uid !== deleteUser.user.uid : !deleteUser.user,
+        ),
       }));
       setDeleteUser(null);
     },
@@ -96,7 +101,7 @@ export default function Member() {
       ),
     );
   };
-
+  console.log(users);
   return (
     <>
       <Header title="멤버 관리" />
@@ -106,42 +111,45 @@ export default function Member() {
             참여중인 멤버
           </Box>
           <Flex direction="column">
-            {users.map((who, idx) => (
-              <Box key={idx}>
-                <ProfileCommentCard
-                  user={who.user}
-                  comment={{
-                    text: `구성:${GROUP_STUDY_ROLE[who.role]} / 출석 횟수:${who.attendCnt}회`,
-                  }}
-                  rightComponent={
-                    <Flex align="center">
-                      {!who.weekAttendance ? (
+            {users
+              ?.slice()
+              ?.sort((a, b) => (!a.user || !b.user ? 1 : a.user.name > b.user.name ? 1 : -1))
+              .map((who, idx) => (
+                <Box key={idx}>
+                  <ProfileCommentCard
+                    user={who.user}
+                    comment={{
+                      text: `구성:${GROUP_STUDY_ROLE[who.role]} / 출석 횟수:${who.attendCnt}회`,
+                    }}
+                    rightComponent={
+                      <Flex align="center">
+                        {!who.weekAttendance ? (
+                          <Button
+                            onClick={() => onClickAttend(who.user._id)}
+                            colorScheme="mint"
+                            size="sm"
+                          >
+                            출석 체크
+                          </Button>
+                        ) : (
+                          <Box color="mint" mr={5}>
+                            <i className="fa-regular fa-check-circle fa-xl" />
+                          </Box>
+                        )}
                         <Button
-                          onClick={() => onClickAttend(who.user._id)}
-                          colorScheme="mint"
+                          isDisabled={who.user?.uid === session?.user.uid}
+                          onClick={() => setDeleteUser(who)}
+                          colorScheme="red"
                           size="sm"
+                          ml={3}
                         >
-                          출석 체크
+                          추방
                         </Button>
-                      ) : (
-                        <Box color="mint" mr={5}>
-                          <i className="fa-regular fa-check-circle fa-xl" />
-                        </Box>
-                      )}
-                      <Button
-                        isDisabled={who.user?.uid === session?.user.uid}
-                        onClick={() => setDeleteUser(who)}
-                        colorScheme="red"
-                        size="sm"
-                        ml={3}
-                      >
-                        추방
-                      </Button>
-                    </Flex>
-                  }
-                />
-              </Box>
-            ))}
+                      </Flex>
+                    }
+                  />
+                </Box>
+              ))}
           </Flex>
         </Box>
       </Slide>

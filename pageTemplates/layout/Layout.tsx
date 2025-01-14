@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
 
+import { Global } from "@emotion/react";
 import axios from "axios";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
@@ -13,7 +14,7 @@ import PageTracker from "../../components/layouts/PageTracker";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { parseUrlToSegments } from "../../utils/stringUtils";
-import { iPhoneNotchSize } from "../../utils/validationUtils";
+import { detectDevice, iPhoneNotchSize } from "../../utils/validationUtils";
 import BaseModal from "./BaseModal";
 import BaseScript from "./BaseScript";
 import Seo from "./Seo";
@@ -123,12 +124,21 @@ function Layout({ children }: ILayout) {
     <>
       <Seo title="ABOUT" />
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
+      {detectDevice() === "PC" && (
+        <Global
+          styles={{
+            "*:hover": {
+              background: "inherit !important",
+            },
+          }}
+        />
+      )}
       {token && (
         <>
           <div
             id="root-modal"
-            style={
-              NOT_PADDING_BOTTOM_NAV_SEGMENT.includes(currentSegment?.[0])
+            style={{
+              ...(NOT_PADDING_BOTTOM_NAV_SEGMENT.includes(currentSegment?.[0])
                 ? {
                     paddingTop: "56px",
                   }
@@ -136,10 +146,10 @@ function Layout({ children }: ILayout) {
                   !(currentSegment?.[0] === "store" && currentSegment?.[1])
                 ? {
                     paddingTop: "56px",
-                    paddingBottom: `calc(var(--bottom-nav-height) + ${iPhoneNotchSize()}px`,
+                    paddingBottom: `calc(var(--bottom-nav-height) + ${iPhoneNotchSize()}px)`,
                   }
-                : undefined
-            }
+                : {}),
+            }}
           >
             {children}
           </div>

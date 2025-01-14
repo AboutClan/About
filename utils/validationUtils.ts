@@ -57,6 +57,9 @@ export const selectRandomWinners = (
 };
 
 export const detectDevice = () => {
+  if (typeof navigator === "undefined") {
+    return null;
+  }
   const ua = navigator.userAgent;
   // iPhone 감지
   if (/iPhone/i.test(ua)) {

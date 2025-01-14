@@ -1,43 +1,36 @@
-import { Box } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
+import { AnimatePresence, motion } from "framer-motion";
 
-import ButtonWrapper from "../../components/atoms/ButtonWrapper";
-import SectionHeader from "../../components/atoms/SectionHeader";
-import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
+import SlideSectionCol from "../../components/molecules/SlideSectionCol";
+import { useWindowWidth } from "../../hooks/custom/CustomHooks";
 import { useGatherQuery } from "../../hooks/gather/queries";
-import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import HomeGatherCol from "./HomeGatherCol";
 
 function HomeGatherSection() {
-  const { data: session } = useSession();
-
   const { data: gathers } = useGatherQuery(-1);
 
+  const windowWidth = useWindowWidth(); // 현재 화면 너비 가져오기
+  const width = windowWidth - 70;
   return (
-    <>
-      <Box my={5}>
-        <SectionHeader title="About 번개 모임 1" subTitle="친구들과의 즐거운 만남">
-          <ButtonWrapper
-            size="xs"
-            url={`/gather?location=${convertLocationLangTo(session?.user.location, "en")}`}
-          >
-            <ShortArrowIcon size="sm" dir="right" />
-          </ButtonWrapper>
-        </SectionHeader>
-        <HomeGatherCol gathers={gathers?.slice(0, 3)} />
-      </Box>
-      <Box my={5}>
-        <SectionHeader title="About 번개 모임 2" subTitle="같은 관심사를 나누는 만남의 장">
-          <ButtonWrapper
-            size="xs"
-            url={`/gather?location=${convertLocationLangTo(session?.user.location, "en")}`}
-          >
-            <ShortArrowIcon size="sm" dir="right" />
-          </ButtonWrapper>
-        </SectionHeader>
-        <HomeGatherCol gathers={gathers?.slice(3)} />
-      </Box>
-    </>
+    <AnimatePresence initial={false}>
+      <motion.div
+        drag="x"
+        dragConstraints={{ left: -width, right: 0 }}
+        dragElastic={0.3}
+        style={{
+          marginLeft: "20px",
+          display: "flex",
+          width: "100%",
+          gap: "12px",
+        }}
+      >
+        <SlideSectionCol title="About 번개 모임" subTitle="친구들과의 즐거운 만남">
+          <HomeGatherCol gathers={gathers?.slice(0, 3)} />
+        </SlideSectionCol>
+        <SlideSectionCol title="About 번개 모임" subTitle="같은 관심사를 나누는 만남의 장">
+          <HomeGatherCol gathers={gathers?.slice(3)} />
+        </SlideSectionCol>
+      </motion.div>
+    </AnimatePresence>
   );
 }
 

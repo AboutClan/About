@@ -140,7 +140,7 @@ function PlaceImage(props: PlaceImageProps) {
 }
 
 const CardLink = styled(Link)`
-  height: fit-content;
+  height: 114px;
   display: flex;
   padding: 8px;
   padding-right: 12px;
@@ -154,7 +154,7 @@ const CardLink = styled(Link)`
     background-color: var(--gray-200);
   }
 
-  margin-bottom: 16px;
+  margin-bottom: 12px;
 `;
 
 const Title = styled(SingleLineText)`

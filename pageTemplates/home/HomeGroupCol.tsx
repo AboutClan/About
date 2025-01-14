@@ -58,7 +58,6 @@ export default function HomeGroupCol({ threeGroups, isStudy }: HomeGroupColProps
                     () => setTransferGroup(group),
                     group.category.main === "콘텐츠",
                   )}
-                  isBottomBorder={idx !== 2}
                 />
               );
             })}

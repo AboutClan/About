@@ -7,7 +7,7 @@ function GroupSkeletonMain({ isStudy = false }: { isStudy?: boolean }) {
         <Box w="96.6px" h="96.6px"></Box>
       </Skeleton>
       <Flex ml={3} w="full" direction="column">
-        <Flex justify="space-between" my={1} align="center" h={5}>
+        <Flex justify="space-between" mb={1} align="center" h={5}>
           <Skeleton w="70px" h={3}></Skeleton>
           <Skeleton w="56px" h={5} mr={1}></Skeleton>
         </Flex>
