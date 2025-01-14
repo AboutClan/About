@@ -15,8 +15,14 @@ const baseNextConfig = {
     return [
       {
         source: "/:path*",
+        has: [
+          {
+            type: "host",
+            value: "studyabout.herokuapp.com",
+          },
+        ],
         destination: "https://about-front.kro.kr/:path*",
-        permanent: true, // 301 리다이렉트
+        permanent: true,
       },
     ];
   },
