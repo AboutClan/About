@@ -2,10 +2,10 @@
 
 import { Global } from "@emotion/react";
 import axios from "axios";
+import { signOut, useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -124,7 +124,7 @@ function Layout({ children }: ILayout) {
     <>
       <Seo title="ABOUT" />
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
-      {detectDevice() === "PC" && (
+      {detectDevice() !== "PC" && (
         <Global
           styles={{
             "*:hover": {
