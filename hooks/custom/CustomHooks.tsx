@@ -130,5 +130,5 @@ export const useWindowWidth = () => {
     return () => window.removeEventListener("resize", handleResize); // 이벤트 정리
   }, []);
 
-  return width;
+  return width < 428 ? width : 428;
 };

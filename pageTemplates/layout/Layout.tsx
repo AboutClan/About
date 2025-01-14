@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
 
 import axios from "axios";
-import { signOut, useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
+import { signOut, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -13,7 +13,7 @@ import PageTracker from "../../components/layouts/PageTracker";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { parseUrlToSegments } from "../../utils/stringUtils";
-import { iPhoneNotchSize } from "../../utils/validationUtils";
+import { detectDevice, iPhoneNotchSize } from "../../utils/validationUtils";
 import BaseModal from "./BaseModal";
 import BaseScript from "./BaseScript";
 import Seo from "./Seo";
@@ -118,7 +118,7 @@ function Layout({ children }: ILayout) {
       document.removeEventListener("message", handleMessage);
     };
   }, [pathname]);
-
+  console.log(detectDevice());
   return (
     <>
       <Seo title="ABOUT" />
