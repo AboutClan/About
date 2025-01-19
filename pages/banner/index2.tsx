@@ -1,15 +1,15 @@
 import { Box } from "@chakra-ui/react";
 import Image from "next/image";
 
-import { BANNER_IMAGE } from "../../assets/images/BannerImages";
+import { GATHER_BANNER_IMAGE } from "../../assets/images/BannerImages";
 import Header from "../../components/layouts/Header";
 
 function BannerPage() {
   return (
     <>
-      <Header title="동아리 공지사항" />
-      {BANNER_IMAGE.map((banner, idx) => (
-        <Box w="100%" aspectRatio="4/5" key={idx} pos="relative" mb="12px">
+      <Header title="동아리 이벤트" />
+      {GATHER_BANNER_IMAGE.map((banner, idx) => (
+        <Box w="100%" aspectRatio="1/1" key={idx} pos="relative" mb="12px">
           <Image src={banner.image} fill={true} sizes="400px" alt="bannerImage" />
         </Box>
       ))}

@@ -75,16 +75,14 @@ function GroupComments({ comments, hasAutority }: IGroupComments) {
           />
         )}
       </Layout>
-      {hasAutority && (
-        <BottomCommentInput
-          onSubmit={onSubmit}
-          type="comment"
-          replyName={replyProps?.replyName}
-          setReplyProps={setReplyProps}
-          isFixed={false}
-          user={userInfo}
-        />
-      )}
+      <BottomCommentInput
+        onSubmit={onSubmit}
+        type="comment"
+        replyName={replyProps?.replyName}
+        setReplyProps={setReplyProps}
+        isFixed={false}
+        user={userInfo}
+      />
     </>
   );
 }
