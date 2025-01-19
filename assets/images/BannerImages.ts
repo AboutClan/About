@@ -7,32 +7,24 @@ interface BannerProps {
 export const MAIN_BANNER_IMAGE: BannerProps[] = [
   {
     image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%EB%93%9C%EB%89%B4%EC%8A%A4/KakaoTalk_20240914_144025091.webp",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/KakaoTalk_20241125_231716808.png",
     category: "group",
     url: "/group",
   },
   {
     image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%EB%93%9C%EB%89%B4%EC%8A%A4/KakaoTalk_20240914_144025091_01.webp",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/KakaoTalk_20241126_191413319.png",
     category: "store",
     url: "/store",
   },
-
   {
     image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%EB%93%9C%EB%89%B4%EC%8A%A4/ClipDown.App_472472809_1549854933083986_4745965664190781148_n.jpg",
-    category: "promotion",
-    url: "/promotion",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/KakaoTalk_20241126_191411054.png",
+    category: "study",
   },
   {
     image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%EB%93%9C%EB%89%B4%EC%8A%A4/ClipDown.App_472199605_1058007802746034_1131633964954235795_n.jpg",
-    category: "promotion",
-    url: "/promotion",
-  },
-  {
-    image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%EB%93%9C%EB%89%B4%EC%8A%A4/ClipDown.App_472622624_2082864342134211_7841959329337607585_n.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/KakaoTalk_20241125_231646096.png",
     category: "promotion",
     url: "/promotion",
   },
@@ -41,21 +33,15 @@ export const MAIN_BANNER_IMAGE: BannerProps[] = [
 export const GATHER_BANNER_IMAGE: BannerProps[] = [
   {
     image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%EB%93%9C%EB%89%B4%EC%8A%A4/ClipDown.App_470945249_1259462621998640_1854513385045917358_n.jpg",
-    category: "study",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/KakaoTalk_20241125_231746782.png",
+    category: "gather",
+    url: "/gather",
   },
   {
     image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%EB%93%9C%EB%89%B4%EC%8A%A4/ClipDown.App_470914390_413477871754263_8607681575468225608_n.jpg",
-    category: "promotion",
-    url: "/promotion",
-  },
-
-  {
-    image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%EB%93%9C%EB%89%B4%EC%8A%A4/ClipDown.App_471930047_1956906811467076_5218253358274483000_n.jpg",
-    category: "promotion",
-    url: "/promotion",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/KakaoTalk_20240708_164733650.png",
+    category: "mt",
+    url: "https://mewing-sombrero-e36.notion.site/MT-8a80cd27947c4d16a4dc04afca11693d",
   },
 ];
 export const CLUB_BANNER_IMAGE: BannerProps[] = [
@@ -66,4 +52,4 @@ export const CLUB_BANNER_IMAGE: BannerProps[] = [
   },
 ];
 
-export const BANNER_IMAGE = [...MAIN_BANNER_IMAGE];
+export const BANNER_IMAGE = [...MAIN_BANNER_IMAGE, ...GATHER_BANNER_IMAGE, ...CLUB_BANNER_IMAGE];
