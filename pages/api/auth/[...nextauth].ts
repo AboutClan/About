@@ -208,27 +208,29 @@ export const authOptions: NextAuthOptions = {
               providerAccountId: account.providerAccountId,
             });
 
-            await Account.findOneAndUpdate(
-              {
-                provider: "kakao",
-                providerAccountId: account.providerAccountId,
-              },
-              {
-                $setOnInsert: {
-                  userId: findUser._id, // 꼭 user._id를 연결해야 함
-                  provider: "kakao", // 필수 필드
+            if (!existingAccount) {
+              await Account.findOneAndUpdate(
+                {
+                  provider: "kakao",
                   providerAccountId: account.providerAccountId,
-                  type: "oauth", // 필수 필드
                 },
-                $set: {
-                  access_token: account.access_token,
-                  refresh_token: account.refresh_token,
-                  expires_at: account.expires_at,
-                  // ...
+                {
+                  $setOnInsert: {
+                    userId: findUser._id, // 꼭 user._id를 연결해야 함
+                    provider: "kakao", // 필수 필드
+                    providerAccountId: account.providerAccountId,
+                    type: "oauth", // 필수 필드
+                  },
+                  $set: {
+                    access_token: account.access_token,
+                    refresh_token: account.refresh_token,
+                    expires_at: account.expires_at,
+                    // ...
+                  },
                 },
-              },
-              { upsert: true, new: true },
-            );
+                { upsert: true, new: true },
+              );
+            }
           }
           return true;
         }
