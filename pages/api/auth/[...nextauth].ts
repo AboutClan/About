@@ -137,6 +137,45 @@ export const authOptions: NextAuthOptions = {
 
   callbacks: {
     async signIn({ account, user, profile }) {
+      if (account && account.provider === "kakao") {
+        const existingAccount = await Account.findOne({
+          provider: "kakao",
+          providerAccountId: account.providerAccountId,
+        });
+
+        if (!existingAccount) {
+          // 먼저, user._id (또는 user.id)를 가져옵니다.
+          // NextAuth에서 user.id는 일반 문자열일 수 있으므로,
+          // 실제 MongoDB _id를 찾아오려면 User 컬렉션에서 한 번 조회가 필요할 수 있음
+          const existingUser = await User.findOne({ uid: user.uid });
+
+          if (existingUser) {
+            // upsert 로직
+            await Account.findOneAndUpdate(
+              {
+                provider: "kakao",
+                providerAccountId: account.providerAccountId,
+              },
+              {
+                $setOnInsert: {
+                  userId: existingUser._id, // 꼭 user._id를 연결해야 함
+                  provider: "kakao", // 필수 필드
+                  providerAccountId: account.providerAccountId,
+                  type: "oauth", // 필수 필드
+                },
+                $set: {
+                  access_token: account.access_token,
+                  refresh_token: account.refresh_token,
+                  expires_at: account.expires_at,
+                  // ...
+                },
+              },
+              { upsert: true, new: true },
+            );
+          }
+        }
+      }
+
       try {
         console.log("SignIn Debug:", { provider: account?.provider, user, account });
         if (account.provider === "guest") return true;
