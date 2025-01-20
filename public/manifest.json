@@ -29,7 +29,7 @@
 
   "scope": "/",
   "short_name": "ABOUT",
-  "start_url": "https://studyabout.herokuapp.com/",
+  "start_url": "https://study-about.club.com/",
   "theme_color": "#ffffff",
   "icons": [
     {

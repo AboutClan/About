@@ -14,7 +14,7 @@ self.addEventListener("push", (event) => {
     vibrate: data?.vibrate,
     actions: data?.actions || [
       {
-        action: "https://studyabout.herokuapp.com/home",
+        action: "https://study-about.club/home",
         title: "ABOUT",
         icon: data.icon,
       },
