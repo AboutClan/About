@@ -305,7 +305,7 @@ export const authOptions: NextAuthOptions = {
 
         // Kakao 로그인 처리
         if (account && account.provider === "kakao") {
-          await Account.updateOne(
+          await Account.findOneAndUpdate(
             { providerAccountId: account.providerAccountId },
             {
               $set: {
@@ -316,6 +316,7 @@ export const authOptions: NextAuthOptions = {
                 location: account.location || user.location || "수원",
               },
             },
+            { upsert: true }, // 계정이 없으면 생성, 있으면 업데이트
           );
 
           const newToken: JWT = {
