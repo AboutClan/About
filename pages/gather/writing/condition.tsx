@@ -39,7 +39,7 @@ function WritingCondition() {
     location: gatherContent?.place ? gatherContent.place === session?.user.location : false,
     manager: true,
     kakaoUrl: false,
-    isApprove: false,
+    isApprove: true,
   });
 
   const [isMemberConditionModal, setIsMemberConditionModal] = useState(false);
@@ -57,7 +57,7 @@ function WritingCondition() {
       age: [19, 28],
       memberCnt: {
         min: 4,
-        max: 0,
+        max: 8,
       },
       ...gatherContent,
       preCnt: condition.pre ? 1 : 0,
