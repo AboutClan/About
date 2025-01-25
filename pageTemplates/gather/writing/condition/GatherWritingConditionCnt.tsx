@@ -14,7 +14,7 @@ interface IGatherWritingConditionCnt {
 
 function GatherWritingConditionCnt({ isMin, value, setMemberCnt }: IGatherWritingConditionCnt) {
   const [number, setNumber] = useState(value);
-
+  console.log(value);
   useEffect(() => {
     if (isMin) setMemberCnt((old) => ({ ...old, min: number }));
     else setMemberCnt((old) => ({ ...old, max: number }));
@@ -26,8 +26,8 @@ function GatherWritingConditionCnt({ isMin, value, setMemberCnt }: IGatherWritin
     const isChecked = e.target.checked;
 
     if (isChecked) {
-      setMemberCnt((old) => ({ ...old, max: 4 }));
-      setNumber(4);
+      setMemberCnt((old) => ({ ...old, max: 8 }));
+      setNumber(8);
     } else setMemberCnt((old) => ({ ...old, max: 0 }));
   };
 

@@ -41,7 +41,7 @@ function GatherWritingUserConditionModal({
     gatherContent?.memberCnt ||
       groupWriting?.memberCnt || {
         min: 4,
-        max: 0,
+        max: 8,
       },
   );
   const [age, setAge] = useState(gatherContent?.age || [19, 28]);

@@ -87,7 +87,7 @@ function WritingCondition() {
       return { ...old, [type]: isChecked };
     });
   };
-
+  console.log(gatherContent?.memberCnt);
   const getMemberConditionText = () => {
     const temp = [];
     if (condition.age) {
@@ -96,10 +96,11 @@ function WritingCondition() {
     if (condition.gender) {
       temp.push("성별");
     }
-    if (gatherContent?.memberCnt) {
+    if (gatherContent?.memberCnt?.max !== 0) {
       temp.push("인원");
     }
-    return String(temp) + " " + "제한";
+    if (temp.length) return String(temp) + " " + "제한";
+    return null;
   };
 
   return (
@@ -122,7 +123,7 @@ function WritingCondition() {
                 <span>참여 가능 조건</span>
               </Name>
               <Box ml="auto" mr="20px" fontSize="12px" color="var(--color-mint)">
-                {getMemberConditionText() || "기본값"}
+                {getMemberConditionText() || "제한 없음"}
               </Box>
               <Button colorScheme="mint" size="sm" onClick={() => setIsMemberConditionModal(true)}>
                 설정
