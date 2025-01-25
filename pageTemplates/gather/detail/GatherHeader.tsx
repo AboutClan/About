@@ -50,6 +50,12 @@ function GatherHeader({ gatherData }: IGatherHeader) {
               }
               title={gatherData.title}
               subtitle={gatherData.content}
+              date={gatherData.date}
+              extraCnt={
+                gatherData.memberCnt.max === 0
+                  ? null
+                  : gatherData.memberCnt.max - gatherData.memberCnt.min
+              }
               url="/"
             />
           </Box>

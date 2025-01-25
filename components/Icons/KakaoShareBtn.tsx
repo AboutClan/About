@@ -1,6 +1,9 @@
 import { Box, Button } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { useEffect } from "react";
 import styled from "styled-components";
+
+import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 const kakaoAppKey = process.env.NEXT_PUBLIC_KAKAO_JS;
 
@@ -15,6 +18,8 @@ interface IKakaoShareBtn {
   isFull?: boolean;
   temp?: boolean;
   isTemp?: boolean;
+  date?: string;
+  extraCnt?: number;
   variant?: "unstyled";
 }
 
@@ -30,6 +35,8 @@ function KakaoShareBtn({
   temp,
   isTemp,
   variant,
+  date,
+  extraCnt,
 }: IKakaoShareBtn) {
   useEffect(() => {
     if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
@@ -47,7 +54,7 @@ function KakaoShareBtn({
               container: "#kakao-share-button",
               objectType: "feed",
               content: {
-                title,
+                title: !date ? title : `${title} (${dayjsToFormat(dayjs(date), "M월 D일")})`,
                 description: subtitle,
                 imageUrl: img,
                 imageWidth: type === "gather" ? 400 : 800,
@@ -57,6 +64,15 @@ function KakaoShareBtn({
                   webUrl: url,
                 },
               },
+              buttons: [
+                {
+                  title: extraCnt && extraCnt < 4 ? `${extraCnt}자리 남음!` : `모임 확인하기`,
+                  link: {
+                    mobileWebUrl: url,
+                    webUrl: url,
+                  },
+                },
+              ],
             }
           : type === "study2"
           ? {
