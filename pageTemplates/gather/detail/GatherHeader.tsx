@@ -1,9 +1,9 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -54,7 +54,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
               extraCnt={
                 gatherData.memberCnt.max === 0
                   ? null
-                  : gatherData.memberCnt.max - gatherData.memberCnt.min
+                  : gatherData.memberCnt.max - gatherData.participants.length - 1
               }
               url="/"
             />
