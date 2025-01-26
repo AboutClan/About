@@ -7,7 +7,6 @@ import styled from "styled-components";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import { UserItem } from "../../../components/molecules/UserItem";
-import { useAdminPointSystemMutation } from "../../../hooks/admin/mutation";
 import { useResetGroupQuery } from "../../../hooks/custom/CustomHooks";
 import { useCompleteToast } from "../../../hooks/custom/CustomToast";
 import { useGroupWaitingStatusMutation } from "../../../hooks/groupStudy/mutations";
@@ -42,25 +41,14 @@ function Admin() {
     },
   });
 
-  const { mutate: getPoint } = useAdminPointSystemMutation();
-
   const onClick = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     status: "agree" | "refuse",
     user: IUser,
-    pointType?: "point" | "deposit",
   ) => {
-    const chargeFee = {
-      uid: user.uid,
-      type: pointType,
-      message: "소모임 가입",
-      value: pointType === "deposit" ? -group.fee || -200 : -group.fee * 0.15 || -30,
-    };
-
     e.stopPropagation();
     setDeletedUser((old) => [...old, user._id]);
     await mutate({ status, userId: user._id });
-    if (status === "agree") await getPoint(chargeFee);
   };
 
   return (
@@ -76,7 +64,7 @@ function Admin() {
                 <Item key={idx}>
                   <UserItem user={who.user}>
                     <Button
-                      onClick={(e) => onClick(e, "agree", who.user, who.pointType)}
+                      onClick={(e) => onClick(e, "agree", who.user)}
                       size="sm"
                       colorScheme="mint"
                       mr="var(--gap-2)"
