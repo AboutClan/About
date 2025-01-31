@@ -47,7 +47,7 @@ function HomeGroupSection({ groups }: HomeGroupSectionProps) {
         </motion.div>
       </AnimatePresence>
       <Flex direction="column" mx={5} mt={5}>
-        <SectionHeader title="About 시험 준비 스터디" subTitle="시험 성공의 지름길"></SectionHeader>
+        <SectionHeader title="About 시험 스터디" subTitle="시험 성공의 지름길"></SectionHeader>
         <HomeGroupCol threeGroups={groups?.exam} />
       </Flex>
       <Flex direction="column" mx={5} mt={5}>

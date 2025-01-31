@@ -1,18 +1,12 @@
 import { Box, Flex } from "@chakra-ui/react";
-import dayjs from "dayjs";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
 import styled from "styled-components";
 
-import { GATHER_SHARE_IMAGES } from "../../../assets/images/imageUrl";
 import { GATHER_RANDOM_IMAGE_ARR } from "../../../assets/images/randomImages";
 import KakaoShareBtn from "../../../components/Icons/KakaoShareBtn";
 import Header from "../../../components/layouts/Header";
-import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
-import { WEB_URL } from "../../../constants/system";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { getRandomIdx } from "../../../utils/mathUtils";
@@ -23,19 +17,20 @@ interface IGatherHeader {
 
 function GatherHeader({ gatherData }: IGatherHeader) {
   const router = useRouter();
+  console.log(2, router.asPath);
   const { data: session } = useSession();
 
-  const title = gatherData?.title;
-  const date = gatherData?.date;
-  const locationMain = gatherData?.location.main;
+  // const title = gatherData?.title;
+  // const date = gatherData?.date;
+  // const locationMain = gatherData?.location.main;
 
-  const [drawerType, setDrawerType] = useState<"kakaoShare">(null);
+  // const [drawerType, setDrawerType] = useState<"kakaoShare">(null);
 
-  const [selectedItem, setSelectedItem] = useState<number>();
+  // const [selectedItem, setSelectedItem] = useState<number>();
 
-  const onClickItem = (idx) => {
-    setSelectedItem(idx);
-  };
+  // const onClickItem = (idx) => {
+  //   setSelectedItem(idx);
+  // };
   console.log(gatherData);
   return (
     <>
@@ -56,7 +51,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
                   ? null
                   : gatherData.memberCnt.max - gatherData.participants.length - 1
               }
-              url="/"
+              url={"https://study-about.club" + router.asPath}
             />
           </Box>
           {((gatherData.user as IUserSummary)._id === session?.user.id ||
@@ -69,7 +64,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
           )}
         </Flex>
       </Header>
-      {drawerType === "kakaoShare" && (
+      {/* {drawerType === "kakaoShare" && (
         <RightDrawer title="이미지 공유" onClose={() => setDrawerType(null)}>
           <Box pb={20}>
             <Box fontSize="16px" mt="4px" mb="20px" fontWeight={600}>
@@ -89,7 +84,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
               title={title}
               subtitle={date === "미정" ? date : dayjs(date).format("M월 D일(dd)")}
               type="gather"
-              url={WEB_URL + router.asPath}
+              url={"https://study-about.club" + "/24"}
               location={locationMain}
               isBig={true}
               img={
@@ -98,7 +93,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
             />
           </Box>
         </RightDrawer>
-      )}
+      )} */}
     </>
   );
 }
@@ -112,25 +107,25 @@ const IconWrapper = styled.button`
   margin-left: 16px;
 `;
 
-const Container = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(3, 1fr);
-  width: 100%;
-  height: 100%;
-  gap: var(--gap-3);
-`;
+// const Container = styled.div`
+//   display: grid;
+//   grid-template-columns: repeat(2, 1fr);
+//   grid-template-rows: repeat(3, 1fr);
+//   width: 100%;
+//   height: 100%;
+//   gap: var(--gap-3);
+// `;
 
-const Item = styled.div<{ isSelected: boolean }>`
-  position: relative;
-  border: ${(props) => (props.isSelected ? "4px solid var(--color-mint)" : null)};
-  border-radius: var(--rounded-lg);
-  overflow: hidden;
-  width: 100%;
-  aspect-ratio: 2/1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
+// const Item = styled.div<{ isSelected: boolean }>`
+//   position: relative;
+//   border: ${(props) => (props.isSelected ? "4px solid var(--color-mint)" : null)};
+//   border-radius: var(--rounded-lg);
+//   overflow: hidden;
+//   width: 100%;
+//   aspect-ratio: 2/1;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+// `;
 
 export default GatherHeader;

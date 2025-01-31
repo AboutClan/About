@@ -31,6 +31,7 @@ export interface GroupThumbnailCardProps {
   id: number;
   waitingCnt?: number;
   isBig?: boolean;
+  isFree: boolean;
 }
 
 export function GroupThumbnailCard({
@@ -45,6 +46,7 @@ export function GroupThumbnailCard({
   maxCnt,
   waitingCnt,
   isBig = true,
+  isFree,
 }: GroupThumbnailCardProps) {
   const userAvatarArr = participants
     ?.filter((par) => par)
@@ -70,7 +72,17 @@ export function GroupThumbnailCard({
       <PlaceImage src={imageProps.image} priority={imageProps.isPriority} />
       <Flex direction="column" ml="12px" flex={1}>
         <Flex mb={1} justify="space-between" align="center">
-          <Box fontSize="11px" lineHeight="12px">
+          <Box
+            fontSize="11px"
+            lineHeight="12px"
+            mr={2}
+            sx={{
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: "1",
+              overflow: "hidden",
+            }}
+          >
             <Box as="span" fontWeight="medium" lineHeight="12px" color="mint">
               {category?.main}
             </Box>
@@ -79,6 +91,12 @@ export function GroupThumbnailCard({
             </Box>
             <Box as="span" color="gray.500" fontWeight="regular">
               {category?.sub}
+            </Box>{" "}
+            <Box as="span" fontWeight="regular" color="var(--gray-400)">
+              ・
+            </Box>
+            <Box as="span" color="gray.500" fontWeight="regular">
+              {isFree ? "자유 가입" : "승인제"}
             </Box>
           </Box>
           <Badge mr={1} size="lg" colorScheme={statusToBadgeProps[status].colorScheme}>

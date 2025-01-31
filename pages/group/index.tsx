@@ -333,6 +333,7 @@ export const createGroupThumbnailProps = (
   id: group.id,
   func,
   waitingCnt: group.participants.length <= 1 ? group.waiting.length : null,
+  isFree: group.isFree,
 });
 
 const Layout = styled.div`

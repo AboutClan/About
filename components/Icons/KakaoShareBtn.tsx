@@ -38,16 +38,17 @@ function KakaoShareBtn({
   date,
   extraCnt,
 }: IKakaoShareBtn) {
+  console.log(555, url);
   useEffect(() => {
     if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
       window.Kakao.init(kakaoAppKey);
     }
   }, []);
-
   useEffect(() => {
+    console.log(1, url);
     if (!img) return;
-
     if (window.Kakao) {
+      console.log(2, url);
       const options =
         type === "gather" || type === "study"
           ? {

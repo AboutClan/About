@@ -17,10 +17,11 @@ interface IGroupHeader {
 }
 
 function GroupHeader({ group }: IGroupHeader) {
+  const router = useRouter();
   const { data: session } = useSession();
   const resetGroupQuery = useResetGroupQuery();
   const completeToast = useCompleteToast();
-  const router = useRouter();
+
   const isAdmin =
     session?.user.uid === "2259633694" ||
     session?.user.uid === "3224546232" ||
@@ -87,7 +88,7 @@ function GroupHeader({ group }: IGroupHeader) {
         title: group.title,
         subtitle: `${group.category.main} ・ ${group.category.sub}`,
         img: group.image,
-        url: `/group/${group.id}`,
+        url: "https://study-about.club" + router.asPath,
       },
     },
   ];

@@ -5,7 +5,7 @@ import { GroupCategory } from "../../types/models/groupTypes/group";
 export const GROUP_STUDY_CATEGORY_ARR = [
   "전체",
   "취미",
-  "시험 준비 스터디",
+  "시험 스터디",
   "성장 스터디",
   "자기계발",
   "운동",
@@ -26,8 +26,8 @@ export const GROUP_STUDY_CATEGORY_ARR = [
 export const GROUP_STUDY_SUB_CATEGORY: { [key in GroupCategory]: string[] } = {
   전체: [],
   취미: ["보드게임", "방 탈출", "감상", "카페 탐방", "사진", "게임"],
-  "시험 준비 스터디": ["토익", "컴활", "코딩테스트"],
-  "성장 스터디": ["회화", "독서", "토론/이야기", "프로그래밍"],
+  "시험 스터디": ["토익", "컴활", "코딩테스트"],
+  "성장 스터디": ["회화", "독서", "말하기", "프로그래밍"],
 
   // 어학: ["토익", "오픽", "토플", "회화", "일본어"],
   // 자격증: ["컴활", "한국사", "정보처리기사"],
@@ -45,11 +45,11 @@ export const GROUP_STUDY_SUB_CATEGORY: { [key in GroupCategory]: string[] } = {
 };
 
 export const GROUP_STUDY_CATEGORY_ARR_ICONS = {
-  "시험 준비 스터디": (
+  "시험 스터디": (
     <i className="fa-regular fa-file-certificate" style={{ color: `${TABLE_COLORS[0]}` }} />
   ),
 
-  "지속 성장 스터디": (
+  "성장 스터디": (
     <i className="fa-regular fa-user-graduate" style={{ color: `${TABLE_COLORS[1]}` }} />
   ),
   자기계발: <i className="fa-regular fa-book-user" style={{ color: `${TABLE_COLORS[2]}` }} />,
