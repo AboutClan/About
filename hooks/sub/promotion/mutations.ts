@@ -6,5 +6,5 @@ import { MutationOptions } from "../../../types/hooks/reactTypes";
 
 export const usePromotionMutation = (options?: MutationOptions<string>) =>
   useMutation<void, AxiosError, string>(async (name: string) => {
-    await axios.post(`${SERVER_URI}/user/promotion`, { name });
+    await axios.post(`${SERVER_URI}/promotion`, { name });
   }, options);
