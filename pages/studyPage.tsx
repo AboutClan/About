@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -189,6 +189,15 @@ export default function StudyPage() {
   useEffect(() => {
     if (!isLocationRefetch) return;
     setIsLocationRefetch(false);
+
+    navigator.permissions.query({ name: "geolocation" }).then((result) => {
+      if (result.state === "denied") {
+        toast("warning", "장소 추천을 위해, 위치 권한을 허용해주세요.");
+      } else if (result.state === "prompt") {
+        toast("warning", "이 앱은 사용자의 위치 정보를 이용해 가까운 스터디 장소를 추천합니다.");
+      }
+    });
+
     navigator.geolocation.getCurrentPosition(
       function (position) {
         const lat = position.coords.latitude;
