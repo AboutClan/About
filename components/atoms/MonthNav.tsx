@@ -19,7 +19,7 @@ function MonthNav({ monthNum, changeMonth }: MonthNavProps) {
       }
       changeMonth((old) => old.subtract(1, "month"));
     } else {
-      if (monthNum === 11) {
+      if (monthNum === 0) {
         toast("info", "달력 준비중");
         return;
       }

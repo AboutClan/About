@@ -8,18 +8,20 @@ import MonthNav from "../components/atoms/MonthNav";
 import Header from "../components/layouts/Header";
 import Slide from "../components/layouts/PageSlide";
 import { CALENDAR_IMAGES } from "../constants/contents/calendarSchedule";
+import { dayjsToStr } from "../utils/dateTimeUtils";
 
 function CalendarPage() {
   const [monthFirstDate, setMonthFirstDate] = useState(
-    dayjs().startOf("month").subtract(2, "month"),
+    dayjs().startOf("month").subtract(1, "month"),
   );
   const monthNum = monthFirstDate.month();
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-  console.log(monthNum);
+
   const handleImageLoad = () => {
     setIsImageLoaded(true);
     console.log("Image has been loaded");
   };
+
   return (
     <>
       <Header title="동아리 캘린더" />
@@ -32,9 +34,7 @@ function CalendarPage() {
           <Box position="relative" aspectRatio={4 / 5}>
             <Image
               alt=""
-              src={
-                monthNum === 10 ? CALENDAR_IMAGES[0] : monthNum === 11 ? CALENDAR_IMAGES[1] : null
-              }
+              src={CALENDAR_IMAGES[dayjsToStr(dayjs(monthFirstDate))]}
               fill
               sizes="500px"
               priority

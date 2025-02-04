@@ -233,7 +233,7 @@ const Login: NextPage<{
               mb={3}
               fontWeight="semibold"
             >
-              <span>방문해서 동아리 구경하기</span>
+              <span>동아리 구경하기</span>
               <div />
             </Button>
 
