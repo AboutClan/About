@@ -23,6 +23,7 @@ import GuestLoginModal from "../modals/login/GuestLoginModal";
 import { IFooterOptions, ModalLayout } from "../modals/Modals";
 import { ActiveLocation, LocationEn } from "../types/services/locationTypes";
 import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
+import { detectDevice } from "../utils/validationUtils";
 
 const CONNECT_KAKAO: Record<ActiveLocation, string> = {
   수원: "https://invite.kakao.com/tc/rEr5kh1ZBG",
@@ -43,7 +44,7 @@ const Login: NextPage<{
 
   const statusParam = searchParams.get("status");
   const locationParam = searchParams.get("location") as LocationEn;
-
+  console.log(providers);
   const kakaoProvider = Object.values(providers).find((p) => p.id == "kakao");
 
   const [isModal, setIsModal] = useState(false);
@@ -189,6 +190,30 @@ const Login: NextPage<{
               <span>카카오톡으로 5초만에 시작하기</span>
               <div />
             </Button>
+            {detectDevice() !== "iPhone" && (
+              <Button
+                variant="unstyled"
+                maxW="calc(var(--max-width) - 2 * 20px)"
+                width="100%"
+                aspectRatio={7.42 / 1}
+                backgroundColor="white"
+                isLoading={loadingType === "apple"}
+                onClick={() => customSignin("apple")}
+                display="flex"
+                justifyContent="space-between"
+                leftIcon={<AppleIcon />}
+                pl="18px"
+                lineHeight="20px"
+                pr="32px"
+                fontSize="13px"
+                mb={3}
+                fontWeight="semibold"
+              >
+                <span>Sign in with Apple</span>
+                <div />
+              </Button>
+            )}
+
             <Button
               variant="unstyled"
               maxW="calc(var(--max-width) - 2 * 20px)"
@@ -205,14 +230,14 @@ const Login: NextPage<{
               lineHeight="20px"
               pr="32px"
               fontSize="13px"
-              mb={5}
+              mb={3}
               fontWeight="semibold"
             >
-              <span>게스트로 구경하기</span>
+              <span>방문해서 동아리 구경하기</span>
               <div />
             </Button>
 
-            <Button
+            {/* <Button
               variant="ghost"
               fontSize="12px"
               size="xs"
@@ -223,7 +248,7 @@ const Login: NextPage<{
               onClick={() => customSignin("apple")}
             >
               다른 방법으로 로그인
-            </Button>
+            </Button> */}
           </Flex>
           <ForceLogoutDialog />
         </Flex>
@@ -250,6 +275,11 @@ export const KakaoIcon = () => (
       d="M10.5 3C6.0815 3 2.5 5.77943 2.5 9.2074C2.5 11.3393 3.88525 13.2187 5.9947 14.3366L5.10715 17.5933C5.02873 17.8811 5.35638 18.1104 5.60798 17.9437L9.49856 15.3645C9.82688 15.3963 10.1605 15.4149 10.5 15.4149C14.9182 15.4149 18.5 12.6355 18.5 9.2074C18.5 5.77943 14.9182 3 10.5 3Z"
       fill="black"
     />
+  </svg>
+);
+export const AppleIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" width="21px" height="21px">
+    <path d="M 44.527344 34.75 C 43.449219 37.144531 42.929688 38.214844 41.542969 40.328125 C 39.601563 43.28125 36.863281 46.96875 33.480469 46.992188 C 30.46875 47.019531 29.691406 45.027344 25.601563 45.0625 C 21.515625 45.082031 20.664063 47.03125 17.648438 47 C 14.261719 46.96875 11.671875 43.648438 9.730469 40.699219 C 4.300781 32.429688 3.726563 22.734375 7.082031 17.578125 C 9.457031 13.921875 13.210938 11.773438 16.738281 11.773438 C 20.332031 11.773438 22.589844 13.746094 25.558594 13.746094 C 28.441406 13.746094 30.195313 11.769531 34.351563 11.769531 C 37.492188 11.769531 40.8125 13.480469 43.1875 16.433594 C 35.421875 20.691406 36.683594 31.78125 44.527344 34.75 Z M 31.195313 8.46875 C 32.707031 6.527344 33.855469 3.789063 33.4375 1 C 30.972656 1.167969 28.089844 2.742188 26.40625 4.78125 C 24.878906 6.640625 23.613281 9.398438 24.105469 12.066406 C 26.796875 12.152344 29.582031 10.546875 31.195313 8.46875 Z" />
   </svg>
 );
 
