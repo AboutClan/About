@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import RowButtonBlock from "../../../components/atoms/blocks/RowButtonBlock";
@@ -69,6 +69,12 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
         </div>
       )}
       <div>
+        <BlockName>계정</BlockName>
+        <NavBlock>
+          <button onClick={() => onClickBlock("modal", "secede")}>회원 탈퇴</button>
+        </NavBlock>
+      </div>
+      <div>
         <BlockName>신청</BlockName>
         <NavBlock>
           <button onClick={() => onClickBlock("modal", "suggest")}>건의하기</button>
@@ -102,7 +108,7 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
           <button onClick={() => onClickBlock("page", `/user/info/avatar`)}>
             아바타 아이콘 저작권
           </button>
-          <button onClick={() => onClickBlock("modal", "secede")}>회원 탈퇴</button>
+
           <button onClick={() => router.push(`/vote?location=suw&date=${dayjsToStr(dayjs())}`)}>
             임시
           </button>
