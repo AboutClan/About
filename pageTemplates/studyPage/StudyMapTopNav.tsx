@@ -1,9 +1,7 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { useRecoilValue } from "recoil";
 
 import CurrentLocationBtn from "../../components/atoms/CurrentLocationBtn";
-import Select from "../../components/atoms/Select";
-import { LOCATION_OPEN } from "../../constants/location";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { getLocationByCoordinates } from "../../libs/study/getLocationByCoordinates";
@@ -52,7 +50,7 @@ function StudyMapTopNav({
   return (
     <Flex w="100%" justify="space-between" p={5} position="absolute" top="0" left="0" zIndex={10}>
       <CurrentLocationBtn onClick={() => setIsLocationFetch(true)} />
-      <Flex>
+      {/* <Flex>
         <Button
           borderRadius="20px"
           size="md"
@@ -76,7 +74,7 @@ function StudyMapTopNav({
             isThick
           />
         </Box>
-      </Flex>
+      </Flex> */}
     </Flex>
   );
 }

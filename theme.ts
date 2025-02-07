@@ -7,7 +7,6 @@ const theme = extendTheme({
         color: "var(--gray-800)",
       },
 
-     
       li: {
         position: "relative",
         paddingLeft: "20px", // 마커와 텍스트 간의 간격
@@ -296,7 +295,7 @@ const theme = extendTheme({
         },
       },
     },
-
+  
     Button: {
       baseStyle: {
         borderRadius: "4px",

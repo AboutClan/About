@@ -62,7 +62,6 @@ function LocationSearch({
           placeholder={placeHolder || "장소를 검색해 보세요"}
           onChange={onChange}
           value={value}
-          icon={<i className="fa-solid fa-location-dot" />}
           isDisabled={!isActive}
         />
       </Wrapper>

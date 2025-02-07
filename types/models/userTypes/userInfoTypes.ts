@@ -21,7 +21,10 @@ export interface IUser extends Omit<IUserRegisterForm, "location">, IUserSummary
   instagram?: string;
   isPrivate?: boolean;
   _id: string;
-
+  ticket: {
+    gatherTicket: number;
+    groupStudyTicket: number;
+  };
   weekStudyTargetHour: number;
   weekStudyAccumulationMinutes: number;
 }

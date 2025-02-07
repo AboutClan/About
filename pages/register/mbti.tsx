@@ -8,6 +8,7 @@ import { MBTI } from "../../constants/contentsText/ProfileData";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
+import { DispatchString } from "../../types/hooks/reactTypes";
 import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
 import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
@@ -32,24 +33,36 @@ function Mbti() {
   return (
     <>
       <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={55} />
+      <MBTILayout mbti={mbti} setMbti={setMbti} errorMessage={errorMessage} />
 
-      <RegisterLayout errorMessage={errorMessage}>
-        <RegisterOverview>
-          <span>MBTI를 선택해 주세요</span>
-          <span>필수사항은 아니지만 활동 추천에 도움이 됩니다!</span>
-        </RegisterOverview>
-        <ButtonNav>
-          {MBTI?.map((item, idx) => (
-            <Button key={idx} $isSelected={mbti === item} onClick={() => setMbti(item)}>
-              {item}
-            </Button>
-          ))}
-        </ButtonNav>
-      </RegisterLayout>
       <BottomNav onClick={onClickNext} url="/register/major" />
     </>
   );
 }
+
+export const MBTILayout = ({
+  mbti,
+  setMbti,
+  errorMessage,
+}: {
+  mbti: string;
+  setMbti: DispatchString;
+  errorMessage: string;
+}) => (
+  <RegisterLayout errorMessage={errorMessage}>
+    <RegisterOverview>
+      <span>MBTI를 선택해 주세요</span>
+      <span>필수사항은 아니지만 활동 추천에 도움이 됩니다!</span>
+    </RegisterOverview>
+    <ButtonNav>
+      {MBTI?.map((item, idx) => (
+        <Button key={idx} $isSelected={mbti === item} onClick={() => setMbti(item)}>
+          {item}
+        </Button>
+      ))}
+    </ButtonNav>
+  </RegisterLayout>
+);
 
 const ButtonNav = styled.nav`
   margin-top: 40px;

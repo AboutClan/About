@@ -1,36 +1,42 @@
-import { AxiosError } from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { UseMutateFunction } from "react-query";
+import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
 import Avatar from "../../../components/atoms/Avatar";
 import ImageSlider from "../../../components/organisms/imageSlider/ImageSlider";
+import { USER_INFO } from "../../../constants/keys/queryKeys";
 import {
   SPECIAL_AVATAR_PERMISSION,
   SPECIAL_BG_PERMISSION,
 } from "../../../constants/serviceConstants/AvatarConstants";
-import { useFailToast } from "../../../hooks/custom/CustomToast";
+import { useErrorToast, useFailToast, useTypeToast } from "../../../hooks/custom/CustomToast";
+import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { SPECIAL_AVATAR, SPECIAL_BG } from "../../../storage/avatarStorage";
 import { IModal } from "../../../types/components/modalTypes";
-import { IAvatar } from "../../../types/models/userTypes/userInfoTypes";
 import { IFooterOptions, ModalLayout } from "../../Modals";
 
-interface ISpecialAvatarModal extends IModal {
-  setUserAvatar: UseMutateFunction<
-    void,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    AxiosError<unknown, any>,
-    IAvatar,
-    unknown
-  >;
-}
+interface ISpecialAvatarModal extends IModal {}
 
-function SpecialAvatarModal({ setIsModal, setUserAvatar }: ISpecialAvatarModal) {
+function SpecialAvatarModal({ setIsModal }: ISpecialAvatarModal) {
   const { data: session } = useSession();
   const failToast = useFailToast();
+
+  const typeToast = useTypeToast();
+  const errorToast = useErrorToast();
+
+  const queryClient = useQueryClient();
+
+  const { mutate: setUserAvatar } = useUserInfoFieldMutation("avatar", {
+    onSuccess() {
+      typeToast("change");
+      queryClient.invalidateQueries([USER_INFO]);
+      setIsModal(false);
+    },
+    onError: errorToast,
+  });
 
   const uid = session?.user.uid;
 
@@ -132,8 +138,8 @@ function SpecialAvatarModal({ setIsModal, setUserAvatar }: ISpecialAvatarModal) 
               {iconIdx < 100
                 ? "현재 프로필"
                 : iconIdx < 102
-                  ? "스토어 한정 구매"
-                  : "이벤트 한정 획득"}
+                ? "스토어 한정 구매"
+                : "이벤트 한정 획득"}
             </IconPoint>
           </IconWrapper>
         </AnimatePresence>

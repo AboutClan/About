@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -6,10 +6,9 @@ import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 
 import { STUDY_MAIN_IMAGES } from "../assets/images/studyMain";
+import ArrowBackButton from "../components/atoms/buttons/ArrowBackButton";
 import { MainLoadingAbsolute } from "../components/atoms/loaders/MainLoading";
-import Header from "../components/layouts/Header";
-import Slide from "../components/layouts/PageSlide";
-import InfoBoxCol from "../components/molecules/InfoBoxCol";
+import { DRAWER_MIN_HEIGHT } from "../components/organisms/drawer/BottomFlexDrawer";
 import VoteMap from "../components/organisms/VoteMap";
 import { USER_LOCATION } from "../constants/keys/localStorage";
 import {
@@ -29,9 +28,11 @@ import {
   getStudyIcon,
   getStudyVoteIcon,
 } from "../libs/study/getStudyVoteIcon";
+import StudyInFoDrawer, { StudyInfoProps } from "../pageTemplates/studyPage/StudyInfoDrawer";
 import StudyMapTopNav from "../pageTemplates/studyPage/StudyMapTopNav";
 import StudyPageDrawer from "../pageTemplates/studyPage/StudyPageDrawer";
 import StudyControlButton from "../pageTemplates/vote/StudyControlButton";
+import VoteDrawer from "../pageTemplates/vote/VoteDrawer";
 import { myStudyParticipationState } from "../recoils/studyRecoils";
 import { CoordinateProps, VotePlacesProps } from "../types/common";
 import { IMapOptions, IMarkerOptions } from "../types/externals/naverMapTypes";
@@ -45,6 +46,7 @@ import { ActiveLocation, Location, LocationEn } from "../types/services/location
 import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
 import { dayjsToFormat } from "../utils/dateTimeUtils";
 import { getRandomIdx } from "../utils/mathUtils";
+import { iPhoneNotchSize } from "../utils/validationUtils";
 
 export default function StudyPage() {
   const { data: session } = useSession();
@@ -54,7 +56,9 @@ export default function StudyPage() {
   const newSearchParams = new URLSearchParams(searchParams);
 
   const dateParam = searchParams.get("date");
-
+  const voteDrawerParam = searchParams.get("voteDrawer") as "up" | "down";
+  const drawerParam = searchParams.get("drawer") as "up" | "down";
+  const centerParam = searchParams.get("center") as "locationPlace" | "mainPlace" | "votePlace";
   const locationParamKr = convertLocationLangTo(
     searchParams.get("location") as LocationEn,
     "kr",
@@ -69,77 +73,117 @@ export default function StudyPage() {
   );
   const [mapOptions, setMapOptions] = useState<IMapOptions>();
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>();
-
   const [currentLocation, setCurrentLocation] = useState<CoordinateProps>();
   const [centerLocation, setCenterLocation] = useState<CoordinateProps>();
-
+  const [isVoteDrawer, setIsVoteDrawer] = useState(false);
   const [isLocationRefetch, setIsLocationRefetch] = useState(true);
-
   const [myVote, setMyVote] = useState<VotePlacesProps>({ main: null, sub: [] });
+  const [detailInfo, setDetailInfo] = useState<StudyInfoProps>();
   //이후 제거
-
-  const [isBigMap, setIsBigMap] = useState(false);
+  const [isVoteDrawerFirst, setIsVoteDrawerFirst] = useState(true);
 
   const [myStudyParticipation, setMyStudyParticipation] = useRecoilState(myStudyParticipationState);
+  const [isDrawerUp, setIsDrawerUp] = useState(drawerParam === "up" ? true : false);
 
   const { data: userInfo } = useUserInfoQuery();
   const { data: studyVoteData, isLoading } = useStudyVoteQuery(date, locationValue, {
     enabled: !!locationValue && !!date,
   });
 
+  //초기 param 값들 설정
+  //locationValue와 date는 초기부터 존재 (+ useEffect의 의존 인자x)
+  //내 스터디 투표 정보가 있는지에 따라 분류
+
+  useEffect(() => {
+    toast("info", "리뉴얼중인 기능입니다. 1월 말에서 2월초 사이 오픈 예정!");
+  }, []);
+
   useEffect(() => {
     if (!locationValue) return;
-
+    if (isDrawerUp) newSearchParams.set("drawer", "up");
+    else newSearchParams.set("drawer", "down");
+    newSearchParams.set("center", myStudyParticipation ? "votePlace" : "locationPlace");
     newSearchParams.set("location", `${convertLocationLangTo(locationValue, "en")}`);
     newSearchParams.set("date", `${getStudyViewDate(dayjs(date))}`);
 
     router.replace(`/studyPage?${newSearchParams.toString()}`);
 
-    // setCenterLocation();
+    if (myStudyParticipation) {
+      const lat = myStudyParticipation.place.latitude;
+      const lon = myStudyParticipation.place.longitude;
+      const changeLocation = getLocationByCoordinates(lat, lon);
+      if (changeLocation !== locationValue) {
+        setLocationValue(changeLocation as ActiveLocation);
+      }
+
+      setCenterLocation({
+        lat: lat,
+        lon: lon,
+      });
+    } else {
+      const locationCenter = LOCATION_CENTER_DOT[userLocation === "기타" ? "수원" : userLocation];
+
+      setCenterLocation({ lat: locationCenter.latitude, lon: locationCenter.longitude });
+    }
   }, [myStudyParticipation]);
+
+  useEffect(() => {
+    if (isDrawerUp) newSearchParams.set("drawer", "up");
+    else newSearchParams.set("drawer", "down");
+    router.replace(`/studyPage?${newSearchParams.toString()}`);
+  }, [isDrawerUp]);
 
   useEffect(() => {
     if (!studyVoteData || !session?.user.uid) return;
     let isChangeLocation = false;
+    if (!isVoteDrawer) {
+      const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
 
-    const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
+      if (findMyStudyParticipation && !myStudyParticipation) {
+        setMyStudyParticipation(findMyStudyParticipation);
+        const changeLocation = getLocationByCoordinates(
+          findMyStudyParticipation.place.latitude,
+          findMyStudyParticipation.place.longitude,
+        );
 
-    if (findMyStudyParticipation && !myStudyParticipation) {
-      setMyStudyParticipation(findMyStudyParticipation);
-      const changeLocation = getLocationByCoordinates(
-        findMyStudyParticipation.place.latitude,
-        findMyStudyParticipation.place.longitude,
-      );
+        if (!changeLocation) return;
 
-      if (!changeLocation) return;
-
-      if (changeLocation === locationValue) {
-        setCenterLocation({
-          lat: findMyStudyParticipation.place.latitude,
-          lon: findMyStudyParticipation.place.longitude,
-        });
-      } else if (changeLocation !== locationValue) {
-        isChangeLocation = true;
-        setLocationValue(changeLocation as ActiveLocation);
-        setCenterLocation({
-          lat: findMyStudyParticipation.place.latitude,
-          lon: findMyStudyParticipation.place.longitude,
-        });
+        if (changeLocation === locationValue) {
+          setCenterLocation({
+            lat: findMyStudyParticipation.place.latitude,
+            lon: findMyStudyParticipation.place.longitude,
+          });
+        } else if (centerParam === "votePlace" && changeLocation !== locationValue) {
+          isChangeLocation = true;
+          setLocationValue(changeLocation as ActiveLocation);
+          setCenterLocation({
+            lat: findMyStudyParticipation.place.latitude,
+            lon: findMyStudyParticipation.place.longitude,
+          });
+        }
+      } else {
+        if (locationValue) {
+          const centerCoordination = LOCATION_CENTER_DOT[locationValue];
+          setCenterLocation({
+            lat: centerCoordination.latitude,
+            lon: centerCoordination.longitude,
+          });
+        }
       }
-    } else {
-      if (locationValue) {
-        const centerCoordination = LOCATION_CENTER_DOT[locationValue];
-        setCenterLocation({
-          lat: centerCoordination.latitude,
-          lon: centerCoordination.longitude,
-        });
-      }
+      setIsVoteDrawerFirst(true);
     }
 
     if (!isChangeLocation) {
-      setMarkersOptions(getMarkersOptions(studyVoteData, currentLocation, null, null));
+      setMarkersOptions(
+        getMarkersOptions(
+          studyVoteData,
+          currentLocation,
+          isVoteDrawer ? myVote : null,
+          !isVoteDrawer ? isVoteDrawerFirst : null,
+        ),
+      );
     }
-  }, [studyVoteData, session?.user.uid, currentLocation, myVote]);
+  }, [studyVoteData, session?.user.uid, currentLocation, myVote, isVoteDrawer]);
 
   const isGPSInitialRender = useRef(true);
   useEffect(() => {
@@ -193,31 +237,46 @@ export default function StudyPage() {
   useEffect(() => {
     if (!centerLocation || !locationValue) return;
 
-    setMapOptions(getMapOptions(centerLocation, locationValue, 13));
-  }, [centerLocation, locationValue]);
+    if (isVoteDrawer) return;
+    setMapOptions(getMapOptions(centerLocation, locationValue, centerParam === "votePlace" && 13));
+    if (voteDrawerParam === "up") {
+      setIsDrawerUp(false);
+      setIsVoteDrawer(true);
+      newSearchParams.delete("voteDrawer");
+      router.replace(`/studyPage?${newSearchParams.toString()}`);
+    }
+  }, [centerLocation, locationValue, isVoteDrawer]);
+
+  const handleMarker = (id: string, type: "vote") => {
+    if (!id || !studyVoteData) return;
+
+    if (type === "vote") {
+      setMyVote((old) => {
+        if (old?.main === id) return { main: null, sub: [] };
+        else if (!old?.main) return { main: id, sub: [] };
+        else if (old?.sub.includes(id))
+          return { ...old, sub: old.sub.filter((place) => place !== id) };
+        else return { ...old, sub: [...old.sub, id] };
+      });
+
+      return;
+    }
+    const detailInfo = getDetailInfo(studyVoteData, id, locationValue, userInfo?.uid);
+    setDetailInfo(detailInfo);
+  };
 
   return (
     <>
-      <Header title="스터디" isBack={false}></Header>
-      <Slide>
-        <Flex direction="column" mt={5} mb={3}>
-          <Box color="gray.500" fontSize="12px" mb={1}>
-            동네 친구와 함께하는 카공 스터디
-          </Box>
-          <Box fontWeight="bold" fontSize="20px">
-            공부도 하고, 혜택도 받고!
-            <br />
-            가까운 친구들과 함께, 혼자서도 OK!
-          </Box>
-        </Flex>
-        <Box
-          position="relative"
-          height={180}
-          borderRadius="16px"
-          border="1px solid black"
-          borderColor="gray.200"
-          bg="gray.100"
-        >
+      <Box
+        position="relative"
+        height={
+          !isVoteDrawer
+            ? `calc(100vh - var(--bottom-nav-height) - ${DRAWER_MIN_HEIGHT + iPhoneNotchSize()}px)`
+            : `calc(100vh - 452px - ${iPhoneNotchSize()}px)`
+        }
+        overflow="hidden"
+      >
+        {!isVoteDrawer ? (
           <StudyMapTopNav
             location={locationValue}
             setLocation={(location) => {
@@ -233,72 +292,65 @@ export default function StudyPage() {
             setCenterLocation={setCenterLocation}
             setIsLocationFetch={setIsLocationRefetch}
           />
-
-          <VoteMap mapOptions={mapOptions} markersOptions={markersOptions} />
-          {isLoading && <MainLoadingAbsolute />}
-        </Box>
-        <StudyControlButton date={date} />
-        <StudyPageDrawer
-          studyVoteData={studyVoteData}
-          location={locationValue}
-          date={date}
-          setDate={setDate}
-          currentLocation={currentLocation}
+        ) : (
+          <Box position="fixed" zIndex={20} top="0" left="0">
+            <ArrowBackButton
+              func={() => {
+                setIsVoteDrawer(false);
+                setIsDrawerUp(false);
+              }}
+            />
+          </Box>
+        )}
+        <VoteMap
+          mapOptions={mapOptions}
+          markersOptions={markersOptions}
+          handleMarker={handleMarker}
+          resizeToggle={isVoteDrawer}
         />
+        {isLoading && <MainLoadingAbsolute />}
+      </Box>
+      <StudyControlButton
+        date={date}
+        setIsVoteDrawer={setIsVoteDrawer}
+        setIsDrawerUp={setIsDrawerUp}
+      />
+      <StudyPageDrawer
+        studyVoteData={studyVoteData}
+        location={locationValue}
+        date={date}
+        setDate={setDate}
+        currentLocation={currentLocation}
+        isDrawerUp={isDrawerUp}
+        setIsDrawerUp={setIsDrawerUp}
+      />
 
-        <Box p={4} pb={3} borderRadius="12px" border="var(--border)" borderColor="gray.200">
-          <Box mb={3} fontSize="14px" fontWeight="bold" lineHeight="20px" py={1}>
-            내 스터디 설정
-          </Box>
-          <InfoBoxCol
-            infoBoxPropsArr={[
-              { category: "활동 지역", text: "수원역" },
-              { category: "즐겨 찾기 장소", text: "아주대" },
-              { category: "서브 장소", text: "경기대, 수원시청" },
-            ]}
-            size="md"
-          />
-          <Flex
-            justify="center"
-            align="center"
-            fontSize="12px"
-            fontWeight="semibold"
-            mt={4}
-            borderRadius="12px"
-            bg="gray.800"
-            color="white"
-            h="44px"
-          >
-            설정하기
-          </Flex>
-        </Box>
-        <Box mt={5} p={4} pb={3} borderRadius="12px" border="var(--border)" borderColor="gray.200">
-          <Box mb={3} fontSize="14px" fontWeight="bold" lineHeight="20px" py={1}>
-            내 스터디 설정
-          </Box>
-          <InfoBoxCol
-            infoBoxPropsArr={[
-              { category: "이번 달 참여", text: "6회" },
-              { category: "누적 참여 시간", text: "16시간 20분" },
-              { category: "최근 만난 인원", rightChildren: <>24</> },
-            ]}
-            size="md"
-          />
-          <Flex
-            justify="center"
-            align="center"
-            fontSize="12px"
-            fontWeight="semibold"
-            mt={4}
-            borderRadius="12px"
-            bg="gray.800"
-            color="white"
-            h="44px"
-          >
-            확인하러 가기
-          </Flex>
-        </Box>
-      </Slide>
+      {isVoteDrawer && (
+        <VoteDrawer
+          currentLocation={currentLocation}
+          date={date}
+          location={locationValue}
+          setIsModal={() => {
+            setIsVoteDrawer(false);
+            setIsDrawerUp(false);
+          }}
+          studyVoteData={studyVoteData}
+          setCenterLocation={setCenterLocation}
+          myVote={myVote}
+          setMyVote={setMyVote}
+          isFirstPage={isVoteDrawerFirst}
+          setIsFirstPage={setIsVoteDrawerFirst}
+          setIsVoteDrawer={setIsVoteDrawer}
+        />
+      )}
+      {detailInfo && (
+        <StudyInFoDrawer
+          date={date}
+          detailInfo={detailInfo}
+          studyVoteData={studyVoteData}
+          setDetailInfo={setDetailInfo}
+        />
+      )}
     </>
   );
 }

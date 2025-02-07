@@ -3,24 +3,23 @@ import dayjs from "dayjs";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import SectionFooterButton from "../../components/atoms/SectionFooterButton";
 
 import {
   StudyThumbnailCard,
   StudyThumbnailCardProps,
 } from "../../components/molecules/cards/StudyThumbnailCard";
 import WeekSlideCalendar from "../../components/molecules/WeekSlideCalendar";
-import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
 import { StudyThumbnailCardSkeleton } from "../../components/skeleton/StudyThumbnailCardSkeleton";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { convertStudyToParticipations } from "../../libs/study/getMyStudyMethods";
 import { setStudyToThumbnailInfo } from "../../libs/study/setStudyToThumbnailInfo";
 import { CoordinateProps } from "../../types/common";
-import { DispatchBoolean, DispatchString } from "../../types/hooks/reactTypes";
+import { DispatchString } from "../../types/hooks/reactTypes";
 import { StudyDailyInfoProps } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
 import { Location } from "../../types/services/locationTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
-import { iPhoneNotchSize } from "../../utils/validationUtils";
 import StudyPageDrawerFilterBar from "./studyPageDrawer/StudyPageDrawerFilterBar";
 import StudyPageDrawerHeader from "./studyPageDrawer/StudyPageDrawerHeader";
 interface StudyPageDrawerProps {
@@ -29,8 +28,6 @@ interface StudyPageDrawerProps {
   setDate: DispatchString;
   location: Location;
   currentLocation: CoordinateProps;
-  isDrawerUp: boolean;
-  setIsDrawerUp: DispatchBoolean;
 }
 
 type SelectOption = "인원순" | "거리순" | "선호순";
@@ -41,8 +38,6 @@ function StudyPageDrawer({
   date,
   setDate,
   currentLocation,
-  isDrawerUp,
-  setIsDrawerUp,
 }: StudyPageDrawerProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -52,6 +47,8 @@ function StudyPageDrawer({
 
   const { data: userInfo } = useUserInfoQuery();
   const preference = userInfo?.studyPreference;
+
+  const isDateCompleted = false;
 
   useEffect(() => {
     if (!studyVoteData || !currentLocation) return;
@@ -81,11 +78,10 @@ function StudyPageDrawer({
     setThumbnailCardinfoArr(null);
     setDate(moveDate);
     newSearchParams.set("date", moveDate);
-    router.replace(`/studyPage?${newSearchParams.toString()}`);
+    router.replace(`/studyPage?${newSearchParams.toString()}`, { scroll: false });
   };
 
   const screenHeight = window.innerHeight;
-  const adjustedHeight = (screenHeight - 52 - iPhoneNotchSize()) * 0.9;
 
   const onDragEnd = (panInfo: PanInfo) => {
     const newDate = getNewDateBySwipe(panInfo, date as string);
@@ -115,32 +111,31 @@ function StudyPageDrawer({
   };
 
   return (
-    <BottomFlexDrawer
-      isOverlay={false}
-      height={adjustedHeight}
-      isDrawerUp={isDrawerUp}
-      setIsModal={setIsDrawerUp}
-    >
-      <Flex flexDir="column" w="100%" overflow="hidden">
-        <StudyPageDrawerHeader date={date} setDate={setDate} isDrawerUp={isDrawerUp} />
-        <Box overflow="hidden" display={isDrawerUp ? "block" : "none"}>
-          <WeekSlideCalendar selectedDate={date} func={handleSelectDate} />
-          <StudyPageDrawerFilterBar
-            selectOption={selectOption}
-            setSelectOption={setSelectOption}
-            placeCnt={thumbnailCardInfoArr?.length}
-          />
-          <Box overflowY="scroll" overscrollBehaviorY="contain" h={`${adjustedHeight - 210}px`}>
-            <AnimatePresence initial={false}>
-              <motion.div
-                drag="x"
-                dragConstraints={{ left: 0, right: 0 }}
-                dragElastic={0.3}
-                onDragEnd={(_, panInfo) => onDragEnd(panInfo)}
-              >
-                {thumbnailCardInfoArr ? (
-                  thumbnailCardInfoArr.length ? (
-                    thumbnailCardInfoArr.map(({ participants, ...thumbnailCardInfo }, idx) => (
+    <Flex flexDir="column" mt={5} mb={8}>
+      <StudyPageDrawerHeader date={date} setDate={setDate} />
+      <Box>
+        <WeekSlideCalendar selectedDate={date} func={handleSelectDate} />
+        <StudyPageDrawerFilterBar
+          isStudyCompleted={isDateCompleted}
+          selectOption={selectOption}
+          setSelectOption={setSelectOption}
+          placeCnt={thumbnailCardInfoArr?.length}
+          date={date}
+        />
+
+        <Box overflowY="scroll" overscrollBehaviorY="contain">
+          <AnimatePresence initial={false}>
+            <motion.div
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.3}
+              onDragEnd={(_, panInfo) => onDragEnd(panInfo)}
+            >
+              {thumbnailCardInfoArr ? (
+                thumbnailCardInfoArr.length ? (
+                  thumbnailCardInfoArr
+                    .slice(0, isDateCompleted ? 3 : 1)
+                    .map(({ participants, ...thumbnailCardInfo }, idx) => (
                       <Box key={idx} mb={3}>
                         <StudyThumbnailCard
                           {...thumbnailCardInfo}
@@ -148,21 +143,21 @@ function StudyPageDrawer({
                         />
                       </Box>
                     ))
-                  ) : (
-                    <Box fontSize="13px" color="gray.800" fontWeight="semibold" mt={5}>
-                      정규 스터디 오픈을 준비중인 지역입니다. 지도에서 직접 장소를 추가하거나,
-                      활성화 된 다른 지역을 이용해 주세요!
-                    </Box>
-                  )
                 ) : (
-                  [1, 2, 3, 4, 5].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)
-                )}
-              </motion.div>
-            </AnimatePresence>
-          </Box>
+                  <Box fontSize="13px" color="gray.800" fontWeight="semibold" mt={5}>
+                    정규 스터디 오픈을 준비중인 지역입니다. 지도에서 직접 장소를 추가하거나, 활성화
+                    된 다른 지역을 이용해 주세요!
+                  </Box>
+                )
+              ) : (
+                [1, 2, 3, 4, 5].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)
+              )}
+            </motion.div>
+            <SectionFooterButton url={``} />
+          </AnimatePresence>
         </Box>
-      </Flex>
-    </BottomFlexDrawer>
+      </Box>
+    </Flex>
   );
 }
 

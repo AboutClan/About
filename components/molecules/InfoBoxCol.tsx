@@ -2,7 +2,7 @@ import { Box, Flex } from "@chakra-ui/react";
 
 export interface InfoBoxProps {
   category: string;
-  text: string;
+  text?: string;
   color?: "mint" | "red";
   rightChildren?: React.ReactNode;
 }

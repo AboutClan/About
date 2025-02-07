@@ -1,4 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
+import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
 
@@ -6,56 +7,77 @@ import { useUserInfoQuery } from "../../hooks/user/queries";
 
 function UserPointBlock() {
   const { data: userInfo } = useUserInfoQuery();
-
+  console.log(userInfo);
   return (
     <Flex
-      my="16px"
-      p="16px 8px"
-      pb="8px"
+      my={5}
+      mx={5}
+      p={3}
       justify="space-around"
-      borderRadius="var(--rounded-lg)"
+      borderRadius="12px"
       border="var(--border-main)"
       bgColor="white"
     >
-      <Button>
-        <Link href="/user/score" style={{ width: "100%" }}>
-          <Box mb="12px" color="var(--color-red)">
-            <i className="fa-solid fa-star fa-xl" />
+      <Link href="/user/score" style={{ flex: 1 }}>
+        <Flex direction="column" align="center">
+          <Flex
+            justify="center"
+            align="center"
+            w="48px"
+            h="48px"
+            bg="rgba(160,174,192,0.08)"
+            borderRadius="50%"
+          >
+            <Image src="/ticket1.png" alt="ticket1" width={32} height={32} />
+          </Flex>
+          <Box mt={2} fontSize="16px" fontWeight="bold">
+            {userInfo?.ticket.gatherTicket || 0}
           </Box>
-          <Box fontSize="15px" fontWeight={600}>
-            {userInfo?.score || 0}점
+          <Box fontWeight="medium" fontSize="10px" color="var(--gray-500)" lineHeight="12px">
+            번개 참여권
           </Box>
-          <Box fontSize="13px" color="var(--gray-600)">
-            동아리 점수
+        </Flex>
+      </Link>
+      <Link href="/user/score" style={{ flex: 1 }}>
+        <Flex direction="column" align="center">
+          <Flex
+            justify="center"
+            align="center"
+            w="48px"
+            h="48px"
+            bg="rgba(107,175,255,0.08)"
+            borderRadius="50%"
+          >
+            <Image src="/ticket2.png" alt="ticket2" width={32} height={32} />
+          </Flex>
+          <Box mt={2} fontSize="16px" fontWeight="bold">
+            {userInfo?.ticket.groupStudyTicket || 0}
           </Box>
-        </Link>
-      </Button>
-      <Button>
-        <Link href="/user/point" style={{ width: "100%" }}>
-          <Box mb="12px" color="var(--color-orange)">
-            <i className="fa-solid fa-coins fa-xl" />
+          <Box fontWeight="medium" fontSize="10px" color="var(--gray-500)" lineHeight="12px">
+            소모임 참여권
           </Box>
-          <Box fontSize="15px" fontWeight={600}>
-            {userInfo?.point || 0} 코인
+        </Flex>
+      </Link>
+      <Link href="/user/score" style={{ flex: 1 }}>
+        <Flex direction="column" align="center">
+          <Flex
+            justify="center"
+            align="center"
+            w="48px"
+            h="48px"
+            bg="rgba(0,194,179,0.08)"
+            borderRadius="50%"
+          >
+            <Image src="/point.png" alt="ticket2" width={32} height={32} />
+          </Flex>
+          <Box mt={2} fontSize="16px" fontWeight="bold">
+            {userInfo?.point || 0}P
           </Box>
-          <Box fontSize="13px" color="var(--gray-600)">
+          <Box fontWeight="medium" fontSize="10px" color="var(--gray-500)" lineHeight="12px">
             포인트
           </Box>
-        </Link>
-      </Button>
-      <Button isLast>
-        <Link href="/user/deposit" style={{ width: "100%" }}>
-          <Box mb="12px" color="var(--color-blue)">
-            <i className="fa-solid fa-sack-dollar fa-xl" />
-          </Box>
-          <Box fontSize="15px" fontWeight={600}>
-            {userInfo?.deposit || 0}원
-          </Box>
-          <Box fontSize="13px" color="var(--gray-600)">
-            보증금
-          </Box>
-        </Link>
-      </Button>
+        </Flex>
+      </Link>
     </Flex>
   );
 }

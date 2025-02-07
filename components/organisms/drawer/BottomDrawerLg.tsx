@@ -119,7 +119,7 @@ const Layout = styled(motion.div)<{
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
   background-color: white;
-  z-index: 501;
+  z-index: 602;
   padding: ${(props) => (props.isxpadding === "true" ? "12px 20px" : "12px 0")};
   padding-bottom: ${(props) =>
     props.isxpadding === "true" && props?.paddingoptions?.bottom !== 0

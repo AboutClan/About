@@ -38,7 +38,13 @@ export default function ButtonGroups({
               mr={idx !== buttonOptionsArr.length - 1 ? "8px" : 0}
               variant={buttonOptions.text === currentValue ? undefined : "outline"}
               bgColor="white !important"
-              color={buttonOptions.text === currentValue ? "mint" : "gray.600"}
+              color={
+                buttonOptions.text === currentValue
+                  ? buttonOptions.color === "black"
+                    ? "gray.800"
+                    : "mint"
+                  : "gray.600"
+              }
               fontWeight={buttonOptions.text === currentValue ? "medium" : "regular"}
               size={size}
               h={size === "md" ? "32px" : undefined}
@@ -49,7 +55,9 @@ export default function ButtonGroups({
               border="1px solid var(--gray-200)"
               borderColor={
                 buttonOptions.text === currentValue
-                  ? "var(--color-mint) !important"
+                  ? buttonOptions.color === "black"
+                    ? "var(--gray-800)"
+                    : "var(--color-mint) !important"
                   : "var(--gray-200)"
               }
               {...(height && { h: `${height}px` })}
