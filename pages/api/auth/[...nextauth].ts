@@ -110,8 +110,8 @@ export const authOptions: NextAuthOptions = {
     }),
     AppleProvider({
       clientId: process.env.APPLE_ID as string, // Service ID
-      clientSecret: generateClientSecret(), // JWT 생성 함수
-      // clientSecret: (async () => generateClientSecret()) as unknown as string,
+      // clientSecret: generateClientSecret(), // JWT 생성 함수
+      clientSecret: (async () => generateClientSecret()) as unknown as string,
       profile: (profile) => ({
         id: profile.sub, // Apple User ID
         uid: profile.sub, // 동일 ID로 저장
