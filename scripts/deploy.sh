@@ -49,11 +49,8 @@ EOF
 docker pull 294951093594.dkr.ecr.ap-northeast-2.amazonaws.com/frontend:latest
 
 # 기존 컨테이너 중지 및 삭제
-if [ "$(docker ps -q -f name=next-app)" ]; then
-    echo "Stopping existing container..."
-    docker stop next-app
-    docker rm next-app
-fi
+docker stop next-app || true
+docker rm next-app || true
 
 # 새 컨테이너 실행
 docker run -d --name next-app \
