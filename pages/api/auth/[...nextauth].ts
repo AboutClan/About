@@ -158,7 +158,7 @@ export const authOptions: NextAuthOptions = {
               },
             },
           );
-
+          console.log("Debug2", findUser);
           if (findUser) {
             user.role = findUser.role;
             user.location = findUser.location;
