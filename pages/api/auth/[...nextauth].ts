@@ -166,20 +166,20 @@ export const authOptions: NextAuthOptions = {
             account.location = findUser.location;
 
             const existingAccount = await Account.findOne({
-              provider: "kakao",
+              provider: account.provider,
               providerAccountId: account.providerAccountId,
             });
 
             if (!existingAccount) {
               await Account.findOneAndUpdate(
                 {
-                  provider: "kakao",
+                  provider: account.provider,
                   providerAccountId: account.providerAccountId,
                 },
                 {
                   $setOnInsert: {
                     userId: findUser._id, // 꼭 user._id를 연결해야 함
-                    provider: "kakao", // 필수 필드
+                    provider: account.provider, // 필수 필드
                     providerAccountId: account.providerAccountId,
                     type: "oauth", // 필수 필드
                   },
