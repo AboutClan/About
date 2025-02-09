@@ -237,7 +237,7 @@ const Login: NextPage<{
               <div />
             </Button>
 
-            {/* <Button
+            <Button
               variant="ghost"
               fontSize="12px"
               size="xs"
@@ -245,10 +245,10 @@ const Login: NextPage<{
               opacity={0.8}
               color="white"
               _hover={{ bg: "none" }}
-              onClick={() => customSignin("apple")}
+              onClick={() => router.push("/loginId")}
             >
               다른 방법으로 로그인
-            </Button> */}
+            </Button>
           </Flex>
           <ForceLogoutDialog />
         </Flex>
