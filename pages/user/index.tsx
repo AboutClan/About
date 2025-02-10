@@ -6,7 +6,9 @@ import Slide from "../../components/layouts/PageSlide";
 import TabNav from "../../components/molecules/navs/TabNav";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import UserGatherSection from "../../pageTemplates/user/UserGatherSection";
-import UserHeader from "../../pageTemplates/user/userHeader";
+import UserGroupSection from "../../pageTemplates/user/UserGroupSection";
+import UserHeader from "../../pageTemplates/user/UserHeader2";
+import UserLogSection from "../../pageTemplates/user/UserLogSection";
 import UserProfileSection from "../../pageTemplates/user/UserProfileSection";
 
 function UserPage() {
@@ -41,8 +43,10 @@ function UserPage() {
                 <UserProfileSection user={user} />
               ) : section === "gather" ? (
                 <UserGatherSection />
+              ) : section === "group" ? (
+                <UserGroupSection />
               ) : (
-                <></>
+                <UserLogSection />
               )}
             </Slide>
           </>

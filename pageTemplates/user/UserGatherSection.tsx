@@ -1,7 +1,18 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useSetRecoilState } from "recoil";
+import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
+import {
+  GatherThumbnailCard,
+  GatherThumbnailCardProps,
+} from "../../components/molecules/cards/GatherThumbnailCard";
 import ButtonGroups from "../../components/molecules/groups/ButtonGroups";
+import { useGatherMyStatusQuery } from "../../hooks/gather/queries";
+import { transferGatherDataState } from "../../recoils/transferRecoils";
+import { IGather } from "../../types/models/gatherTypes/gatherTypes";
+import GatherSkeletonMain from "../gather/GatherSkeletonMain";
+import { setGatherDataToCardCol } from "../home/HomeGatherCol";
 
 interface UserGatherSectionProps {}
 
@@ -9,9 +20,65 @@ type GatherType = "참여중인 모임" | "종료된 모임" | "내가 개설한
 
 function UserGatherSection({}: UserGatherSectionProps) {
   const [gatherType, setGatherType] = useState<GatherType>("참여중인 모임");
+  const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>();
+  const setTransferGatherData = useSetRecoilState(transferGatherDataState);
+  const [gathers, setGathers] = useState<IGather[]>([]);
+  const [cursor, setCursor] = useState(0);
+  const loader = useRef<HTMLDivElement | null>(null);
+  const firstLoad = useRef(true);
+  console.log(gatherType);
+  const { data: gatherData, isLoading } = useGatherMyStatusQuery(
+    cursor,
+    gatherType === "참여중인 모임"
+      ? "isParticipating"
+      : gatherType === "종료된 모임"
+      ? "isEnded"
+      : "isOwner",
+  );
+  console.log(gatherData);
+
+  useEffect(() => {
+    setGathers([]);
+    setCursor(0);
+  }, [gatherType]);
+
+  useEffect(() => {
+    if (gatherData) {
+      setGathers((old) => [...old, ...gatherData]);
+      firstLoad.current = false;
+    }
+  }, [gatherData]);
+
+  useEffect(() => {
+    if (!gathers) return;
+    setCardDataArr(
+      setGatherDataToCardCol(gathers, 6, (gather: IGather) => setTransferGatherData(gather)),
+    );
+  }, [gathers, location]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !firstLoad.current) {
+          setCursor((prevCursor) => prevCursor + 1);
+        }
+      },
+      { threshold: 1.0 },
+    );
+
+    if (loader.current) {
+      observer.observe(loader.current);
+    }
+
+    return () => {
+      if (loader.current) {
+        observer.unobserve(loader.current);
+      }
+    };
+  }, []);
 
   return (
-    <Box mx={5}>
+    <Box mx={5} pb={10}>
       <Flex h="44px" bg="rgba(66,66,66,0.04)" mb={3}>
         <Button
           flex={1}
@@ -69,7 +136,7 @@ function UserGatherSection({}: UserGatherSectionProps) {
           받은 후기
         </Button>
       </Flex>
-      <Box py={2}>
+      <Box py={2} mb={3}>
         <ButtonGroups
           buttonOptionsArr={(
             ["참여중인 모임", "종료된 모임", "내가 개설한 모임"] as GatherType[]
@@ -85,6 +152,32 @@ function UserGatherSection({}: UserGatherSectionProps) {
           isEllipse
           size="md"
         />
+      </Box>
+
+      <Box position="relative" minH="320px">
+        {cardDataArr?.length ? (
+          <>
+            {cardDataArr.map((cardData, idx) => (
+              <Box mb="12px" key={idx}>
+                <GatherThumbnailCard {...cardData} />
+              </Box>
+            ))}
+          </>
+        ) : (
+          <>
+            {[1, 2, 3, 4, 5].map((cardData, idx) => (
+              <Box mb="12px" key={idx}>
+                <GatherSkeletonMain />
+              </Box>
+            ))}
+          </>
+        )}
+        <div ref={loader} />
+        {isLoading && cardDataArr?.length ? (
+          <Box position="relative" mt="32px">
+            <MainLoadingAbsolute size="sm" />
+          </Box>
+        ) : undefined}
       </Box>
     </Box>
   );

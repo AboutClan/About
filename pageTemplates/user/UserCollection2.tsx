@@ -9,7 +9,7 @@ import IconRowBlock from "../../components/atoms/blocks/IconRowBlock";
 import { useCollectionAlphabetQuery } from "../../hooks/user/sub/collection/queries";
 import UserCollectionModal from "../../modals/user/collection/UserCollectionAlphabetModal";
 import { Alphabet } from "../../types/models/collections";
-import { ArrowIcon } from "./userProfile";
+import { ArrowIcon } from "./UserProfile2";
 
 export const changeAlphabet = (alphabet: Alphabet) => {
   switch (alphabet) {

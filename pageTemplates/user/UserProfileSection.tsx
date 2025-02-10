@@ -1,4 +1,5 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import styled from "styled-components";
@@ -12,9 +13,9 @@ import RequestChangeProfileImageModalAvatar from "../../modals/userRequest/Reque
 import SpecialAvatarModal from "../../modals/userRequest/RequestChangeProfileImageModal/SpecialAvatarModal";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
-import UserCollection from "./userCollection";
+import UserCollection from "./UserCollection2";
 import UserPointBlock from "./UserPointBlock";
-import UserProfile from "./userProfile";
+import UserProfile from "./UserProfile2";
 
 interface UserProfileSectionProps {
   user: IUser;
@@ -25,6 +26,8 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
   const [isDrawer, setIsDrawer] = useState(false);
 
   const [modalType, setModalType] = useState<"avatar" | "badge" | "specialAvatar">();
+
+  const monthScore = user.monthScore;
 
   return (
     <>
@@ -80,15 +83,33 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
         <Box border="var(--border)" px={3} py={2} borderRadius="8px">
           <ProgressMark value={25} />
           <Flex
-            justify="center"
             align="center"
+            justify="center"
+            textAlign="center"
             mt={2}
             color="var(--color-gray)"
             fontSize="10px"
             fontWeight="semibold"
-            h="28px"
+            px={4}
+            py={3}
+            bg="rgba(66,66,66,0.02)"
+            borderRadius="8px"
           >
-            이번 달 점수가 부족합니다{" "}
+            {dayjs(user?.registerDate).diff(dayjs(), "month") === 0 ? (
+              <div>🎉About에 오신 것을 진심으로 환영해요🎉</div>
+            ) : monthScore >= 20 ? (
+              <Box>훌륭합니다! 다음 정산 때 추가 포인트를 획득할 예정이에요.</Box>
+            ) : monthScore >= 10 ? (
+              <div>월간 최소 점수 달성!</div>
+            ) : dayjs().date() <= 15 ? (
+              <div>🍒이번 달 활동도 파이팅🍒</div>
+            ) : monthScore < 2 ? (
+              <div>⚠️ 활동 점수가 많이 부족합니다! ⚠️</div>
+            ) : monthScore < 5 ? (
+              <div>⚠️ 활동 점수가 조금 부족해요! ⚠️</div>
+            ) : (
+              <div>🍒 활동 점수가 조금 부족해요. 🍒</div>
+            )}
           </Flex>
         </Box>
       </Box>
@@ -179,14 +200,14 @@ const CommentText = styled.span`
 `;
 
 const IconWrapper = styled.button`
-  width: 20px;
-  height: 20px;
+  width: 25px;
+  height: 25px;
   display: flex;
   justify-content: center;
   align-items: center;
   position: absolute;
-  right: 0px;
-  bottom: 0px;
+  right: -3px;
+  bottom: -3px;
   background-color: white;
   opacity: 0.96;
   border: 1px solid var(--gray-100);
@@ -197,7 +218,7 @@ export default UserProfileSection;
 
 function CameraIcon() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 12 12" fill="none">
       <path
         fill-rule="evenodd"
         clip-rule="evenodd"

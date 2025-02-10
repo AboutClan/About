@@ -42,6 +42,23 @@ export const useGroupSnapshotQuery = (options?: QueryOptions<GroupShapShotProps>
     },
     options,
   );
+
+export const useGroupMyStatusQuery = (
+  cursor?: number,
+  status?: "isParticipating" | "isEnded" | "isOwner",
+  options?: QueryOptions<IGroup[]>,
+) =>
+  useQuery<IGroup[], AxiosError>(
+    [GROUP_STUDY, "status", cursor, status],
+    async () => {
+      const res = await axios.get<IGroup[]>(`${SERVER_URI}/groupStudy/status`, {
+        params: { cursor, status },
+      });
+      return res.data;
+    },
+    options,
+  );
+
 export const useGroupQuery = (
   filter: GroupStatus,
   category: GroupCategory,

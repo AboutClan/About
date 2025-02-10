@@ -1,7 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
-import styled from "styled-components";
 
 import { useUserInfoQuery } from "../../hooks/user/queries";
 
@@ -14,7 +13,7 @@ function UserPointBlock() {
       mx={5}
       p={3}
       justify="space-around"
-      borderRadius="12px"
+      borderRadius="20px"
       border="var(--border-main)"
       bgColor="white"
     >
@@ -81,13 +80,5 @@ function UserPointBlock() {
     </Flex>
   );
 }
-
-const Button = styled.button<{ isLast?: boolean }>`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-right: ${(props) => (props?.isLast ? "none" : "var(--border-main)")};
-`;
 
 export default UserPointBlock;
