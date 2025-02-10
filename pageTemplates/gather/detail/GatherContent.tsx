@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import styled from "styled-components";
 
 import BlurredLink from "../../../components/molecules/BlurredLink";
@@ -14,7 +15,12 @@ function GatherContent({ isMember, kakaoUrl, content, gatherList }: IGather) {
   return (
     <Layout>
       <Content>{content}</Content>
-      {kakaoUrl && <BlurredLink url={kakaoUrl} isBlur={!isMember} />}
+      <Box px={5} py={4}>
+        <Box mb={2} color="gray.600">
+          톡방 링크(승인 후 공개)
+        </Box>
+        {kakaoUrl && <BlurredLink url={kakaoUrl} isBlur={!isMember} />}
+      </Box>
       <ListContainer>
         {gatherList?.map((item, idx) => (
           <ListBlock key={idx}>
