@@ -72,6 +72,11 @@
       "src": "/512.png",
       "type": "image/png",
       "sizes": "341x341"
+    },
+    {
+      "src": "/512.png",
+      "type": "image/png",
+      "sizes": "512x512"
     }
   ],
   "screenshots": [
