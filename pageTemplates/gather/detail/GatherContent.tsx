@@ -15,12 +15,14 @@ function GatherContent({ isMember, kakaoUrl, content, gatherList }: IGather) {
   return (
     <Layout>
       <Content>{content}</Content>
-      <Box px={5} py={4}>
-        <Box mb={2} color="gray.600">
-          톡방 링크(승인 후 공개)
+      {kakaoUrl && (
+        <Box px={5} py={4}>
+          <Box mb={2} color="gray.600">
+            톡방 링크(승인 후 공개)
+          </Box>
+          <BlurredLink url={kakaoUrl} isBlur={!isMember} />
         </Box>
-        {kakaoUrl && <BlurredLink url={kakaoUrl} isBlur={!isMember} />}
-      </Box>
+      )}
       <ListContainer>
         {gatherList?.map((item, idx) => (
           <ListBlock key={idx}>
