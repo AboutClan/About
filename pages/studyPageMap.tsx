@@ -8,6 +8,7 @@ import { useRecoilState } from "recoil";
 import { STUDY_MAIN_IMAGES } from "../assets/images/studyMain";
 import ArrowBackButton from "../components/atoms/buttons/ArrowBackButton";
 import { MainLoadingAbsolute } from "../components/atoms/loaders/MainLoading";
+import Header from "../components/layouts/Header";
 import { DRAWER_MIN_HEIGHT } from "../components/organisms/drawer/BottomFlexDrawer";
 import VoteMap from "../components/organisms/VoteMap";
 import { USER_LOCATION } from "../constants/keys/localStorage";
@@ -30,7 +31,6 @@ import {
 } from "../libs/study/getStudyVoteIcon";
 import StudyInFoDrawer, { StudyInfoProps } from "../pageTemplates/studyPage/StudyInfoDrawer";
 import StudyMapTopNav from "../pageTemplates/studyPage/StudyMapTopNav";
-import StudyPageDrawer from "../pageTemplates/studyPage/StudyPageDrawer";
 import StudyControlButton from "../pageTemplates/vote/StudyControlButton";
 import VoteDrawer from "../pageTemplates/vote/VoteDrawer";
 import { myStudyParticipationState } from "../recoils/studyRecoils";
@@ -47,6 +47,8 @@ import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
 import { dayjsToFormat } from "../utils/dateTimeUtils";
 import { getRandomIdx } from "../utils/mathUtils";
 import { iPhoneNotchSize } from "../utils/validationUtils";
+
+const NEXT_PUBLIC_NAVER_CLIENT_ID = process.env.NEXT_PUBLIC_NAVER_CLIENT_ID;
 
 export default function StudyPage() {
   const { data: session } = useSession();
@@ -106,7 +108,7 @@ export default function StudyPage() {
     newSearchParams.set("location", `${convertLocationLangTo(locationValue, "en")}`);
     newSearchParams.set("date", `${getStudyViewDate(dayjs(date))}`);
 
-    router.replace(`/studyPage?${newSearchParams.toString()}`);
+    router.replace(`/studyPageMap?${newSearchParams.toString()}`);
 
     if (myStudyParticipation) {
       const lat = myStudyParticipation.place.latitude;
@@ -130,7 +132,7 @@ export default function StudyPage() {
   useEffect(() => {
     if (isDrawerUp) newSearchParams.set("drawer", "up");
     else newSearchParams.set("drawer", "down");
-    router.replace(`/studyPage?${newSearchParams.toString()}`);
+    router.replace(`/studyPageMap?${newSearchParams.toString()}`);
   }, [isDrawerUp]);
 
   useEffect(() => {
@@ -235,15 +237,18 @@ export default function StudyPage() {
   //centerLocation이 없는 경우는 없다! 다 방지해야 됨
   //voteDrawerParam 처리가 적절한 위치인지는 모르겠으나 map 생성이 된 이후여야 해서 여기 배치함
   useEffect(() => {
+    console.log(centerLocation, locationValue, isVoteDrawer, centerParam);
     if (!centerLocation || !locationValue) return;
 
     if (isVoteDrawer) return;
-    setMapOptions(getMapOptions(centerLocation, locationValue, centerParam === "votePlace" && 13));
+    const options = getMapOptions(centerLocation, locationValue, 13);
+    setMapOptions(options);
+    console.log("options", options);
     if (voteDrawerParam === "up") {
       setIsDrawerUp(false);
       setIsVoteDrawer(true);
       newSearchParams.delete("voteDrawer");
-      router.replace(`/studyPage?${newSearchParams.toString()}`);
+      router.replace(`/studyPageMap?${newSearchParams.toString()}`);
     }
   }, [centerLocation, locationValue, isVoteDrawer]);
 
@@ -267,6 +272,7 @@ export default function StudyPage() {
 
   return (
     <>
+      <Header title="스터디 지도" />
       <Box
         position="relative"
         height={
@@ -287,7 +293,7 @@ export default function StudyPage() {
               );
 
               setLocationValue(location);
-              router.replace(`/studyPage?${newSearchParams.toString()}`);
+              router.replace(`/studyPageMap?${newSearchParams.toString()}`);
             }}
             setCenterLocation={setCenterLocation}
             setIsLocationFetch={setIsLocationRefetch}
@@ -313,15 +319,6 @@ export default function StudyPage() {
       <StudyControlButton
         date={date}
         setIsVoteDrawer={setIsVoteDrawer}
-        setIsDrawerUp={setIsDrawerUp}
-      />
-      <StudyPageDrawer
-        studyVoteData={studyVoteData}
-        location={locationValue}
-        date={date}
-        setDate={setDate}
-        currentLocation={currentLocation}
-        isDrawerUp={isDrawerUp}
         setIsDrawerUp={setIsDrawerUp}
       />
 
@@ -503,7 +500,9 @@ export const getMapOptions = (
   location: Location,
   zoomValue?: number,
 ): IMapOptions | undefined => {
+  console.log(123);
   if (typeof naver === "undefined") return undefined;
+  console.log(456);
   if (!currentLocation || !location) return;
   const locationBoundary = LOCATION_MAX_BOUNDARY[location];
 

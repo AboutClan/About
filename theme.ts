@@ -295,7 +295,7 @@ const theme = extendTheme({
         },
       },
     },
-  
+
     Button: {
       baseStyle: {
         borderRadius: "4px",

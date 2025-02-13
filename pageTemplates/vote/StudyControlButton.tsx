@@ -8,22 +8,30 @@ import { useRecoilValue } from "recoil";
 
 import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
 import { CalendarCheckIcon, ClockIcon } from "../../components/Icons/SolidIcons";
-import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
+import BottomFlexDrawer, {
+  BottomFlexDrawerOptions,
+} from "../../components/organisms/drawer/BottomFlexDrawer";
+import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
+import { useStudyParticipationMutation } from "../../hooks/study/mutations";
 import { getMyStudyInfo } from "../../libs/study/getMyStudyMethods";
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
+import { IStudyVoteTime, MyVoteProps } from "../../types/models/studyTypes/studyInterActions";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
 
 interface StudyControlButtonProps {
   date: string;
+  myVote: MyVoteProps;
 }
 
-function StudyControlButton({ date }: StudyControlButtonProps) {
+function StudyControlButton({ myVote, date }: StudyControlButtonProps) {
   const { data: session } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const [isStudyDrawer, setIsStudyDrawer] = useState(false);
+  const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
+  const [isTimeRullet, setIsTimeRullet] = useState(false);
 
   const myStudyParticipation = useRecoilValue(myStudyParticipationState);
   const myStudyInfo = getMyStudyInfo(myStudyParticipation, session?.user.uid);
@@ -31,8 +39,35 @@ function StudyControlButton({ date }: StudyControlButtonProps) {
 
   const isOpenStudy = myStudyParticipation?.status === "open";
 
+  const { mutate: patchAttend, isLoading } = useStudyParticipationMutation(dayjs(date), "post", {
+    onSuccess() {
+      //  handleSuccess();
+    },
+  });
+
+  const handleVote = () => {
+    if (!myVote?.main || !voteTime?.start || !voteTime?.end) {
+      // typeToast("omission");
+      return;
+    }
+    patchAttend({ place: myVote.main, subPlace: myVote?.sub, ...voteTime });
+  };
+
   const handleStudyVoteButton = () => {
     setIsStudyDrawer(false);
+    setIsTimeRullet(true);
+  };
+
+  const drawerOptions: BottomFlexDrawerOptions = {
+    header: {
+      title: "스터디 참여 시간 선택",
+      subTitle: "예상 시작 시간과 종료 시간을 선택해 주세요!",
+    },
+    footer: {
+      text: "신청 완료",
+      func: handleVote,
+      loading: isLoading,
+    },
   };
 
   return (
@@ -118,6 +153,14 @@ function StudyControlButton({ date }: StudyControlButtonProps) {
             </Button>
           </Link>
         </BottomFlexDrawer>
+      )}
+      {isTimeRullet && (
+        <StudyVoteTimeRulletDrawer
+          setVoteTime={setVoteTime}
+          drawerOptions={drawerOptions}
+          setIsModal={setIsTimeRullet}
+          zIndex={800}
+        />
       )}
     </>
   );

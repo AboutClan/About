@@ -204,7 +204,7 @@ export default function StudyPage() {
           <Box color="gray.500" fontSize="12px" mb={1}>
             동네 친구와 함께하는 카공 스터디
           </Box>
-          <Box fontWeight="bold" fontSize="20px">
+          <Box fontWeight="bold" fontSize="20px" lineHeight="32px">
             공부도 하고, 혜택도 받고!
             <br />
             가까운 친구들과 함께, 혼자서도 OK!
@@ -214,9 +214,11 @@ export default function StudyPage() {
           position="relative"
           height={180}
           borderRadius="16px"
+          overflow="hidden"
           border="1px solid black"
           borderColor="gray.200"
           bg="gray.100"
+          onClick={() => router.push("/studyPageMap")}
         >
           <StudyMapTopNav
             location={locationValue}
@@ -237,7 +239,6 @@ export default function StudyPage() {
           <VoteMap mapOptions={mapOptions} markersOptions={markersOptions} />
           {isLoading && <MainLoadingAbsolute />}
         </Box>
-        <StudyControlButton date={date} />
         <StudyPageDrawer
           studyVoteData={studyVoteData}
           location={locationValue}
@@ -299,6 +300,7 @@ export default function StudyPage() {
           </Flex>
         </Box>
       </Slide>
+      <StudyControlButton date={date} />
     </>
   );
 }
