@@ -24,13 +24,6 @@ function RequestChagneProfileImageModalBadge({ setIsModal }) {
     onError: errorToast,
   });
 
-  const onClick = (type: EventBadge) => {
-    if (selectBadge === type) {
-      setSelectBadge(null);
-      return;
-    }
-    setSelectBadge(type);
-  };
 
   const onApply = () => {
     sendRequest({
