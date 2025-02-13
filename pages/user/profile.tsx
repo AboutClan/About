@@ -4,11 +4,13 @@ import Avatar from "../../components/atoms/Avatar";
 import { Input } from "../../components/atoms/Input";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
+import RightDrawer from "../../components/organisms/drawer/RightDrawer";
 import SearchLocation from "../../components/organisms/SearchLocation";
 import { useUserInfoMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { KakaoLocationProps } from "../../types/externals/kakaoLocationSearch";
-
+import { MajorLayout } from "../register/major";
+import { MBTILayout } from "../register/mbti";
 interface ProfileProps {}
 
 function Profile({}: ProfileProps) {
@@ -20,12 +22,14 @@ function Profile({}: ProfileProps) {
       detail: string;
     }[]
   >();
+  const [errorMessage, setErrorMessage] = useState("");
   const [mbti, setMbti] = useState("");
   const [instagram, setInstagram] = useState("");
   const [placeInfo, setPlaceInfo] = useState<KakaoLocationProps>({
     place_name: "",
     road_address_name: "",
   });
+  const [drawerType, setDrawerType] = useState<"major" | "mbti">();
 
   const { mutate } = useUserInfoMutation();
 
@@ -97,6 +101,7 @@ function Profile({}: ProfileProps) {
               fontWeight="regular"
               fontSize="13px"
               lineHeight="20px"
+              onClick={() => setDrawerType("major")}
             >
               <Flex px={5} pr={4} w="full" justify="space-between">
                 <Box>{userInfo?.majors?.[0]?.detail}</Box>
@@ -117,6 +122,7 @@ function Profile({}: ProfileProps) {
               fontWeight="regular"
               fontSize="13px"
               lineHeight="20px"
+              onClick={() => setDrawerType("mbti")}
             >
               <Flex px={5} pr={4} w="full" justify="space-between">
                 <Box>{userInfo?.mbti}</Box>
@@ -135,6 +141,15 @@ function Profile({}: ProfileProps) {
           수정하기
         </Button>
       </Slide>
+      {drawerType && (
+        <RightDrawer title="프로필 수정" px={false} onClose={() => setDrawerType(null)}>
+          {drawerType === "mbti" ? (
+            <MBTILayout errorMessage={errorMessage} mbti={mbti} setMbti={setMbti} />
+          ) : (
+            <MajorLayout majors={majors} setMajors={setMajors} />
+          )}
+        </RightDrawer>
+      )}
     </>
   );
 }
