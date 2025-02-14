@@ -122,6 +122,7 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
 }
 
 const Layout = styled.div`
+  margin-top: 56px;
   display: flex;
   flex-direction: column;
   margin-bottom: var(--gap-5);

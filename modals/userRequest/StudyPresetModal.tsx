@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 
@@ -14,13 +14,14 @@ import { useStudyPreferenceMutation } from "../../hooks/study/mutations";
 import { useStudyPlacesQuery, useStudyPreferenceQuery } from "../../hooks/study/queries";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { selectStudyPlace } from "../../libs/study/selectStudyPlace";
+import { IModal } from "../../types/components/modalTypes";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 import { IConfirmContent } from "../common/ConfirmModal";
 import ConfirmModal2 from "../common/ConfirmModal2";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
-function StudyPresetModal() {
+function StudyPresetModal({ setIsModal }: IModal) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -45,7 +46,7 @@ function StudyPresetModal() {
     onSuccess(data) {
       if (data.length === 0) {
         toast("error", "등록 가능한 스터디 장소가 없습니다.");
-        onClose();
+        setIsModal(false);
       }
     },
   });
@@ -54,10 +55,10 @@ function StudyPresetModal() {
     studyPlaces?.length > 12
       ? "xxxl"
       : studyPlaces?.length > 8
-        ? "xxl"
-        : studyPlaces?.length > 4
-          ? "xl"
-          : "md";
+      ? "xxl"
+      : studyPlaces?.length > 4
+      ? "xl"
+      : "md";
 
   useEffect(() => {
     if (!studyPreference) return;
@@ -78,12 +79,12 @@ function StudyPresetModal() {
 
   const { mutate: getPoint } = usePointSystemMutation("point");
 
-  const onClose = () => {
-    newSearchParams.delete("preset");
-    const params = newSearchParams.toString();
+  // const onClose = () => {
+  //   newSearchParams.delete("preset");
+  //   const params = newSearchParams.toString();
 
-    router.replace(pathname + (params ? `?${newSearchParams.toString()}` : ""));
-  };
+  //   router.replace(pathname + (params ? `?${newSearchParams.toString()}` : ""));
+  // };
 
   const onSubmit = async () => {
     const savedPlaces: IStudyVotePlaces = {
@@ -98,8 +99,8 @@ function StudyPresetModal() {
       JSON.stringify({ prefer: savedPlaces, date: dayjsToStr(dayjs()) }),
     );
     await setStudyPreference(savedPlaces);
-    await getPoint({ value: 20, message: "스터디 장소 설정" });
-    onClose();
+    // await getPoint({ value: 20, message: "스터디 장소 설정" });
+    setIsModal(false);
   };
 
   const content: IConfirmContent = {
@@ -130,11 +131,7 @@ function StudyPresetModal() {
 
   return (
     <>
-      <ModalLayout
-        title="스터디 프리셋 설정"
-        footerOptions={footerOptions}
-        setIsModal={() => onClose()}
-      >
+      <ModalLayout title="스터디 프리셋 설정" footerOptions={footerOptions} setIsModal={setIsModal}>
         <Box
           h={
             size === "xxxl" ? "360px" : size === "xxl" ? "310px" : size === "xl" ? "200px" : "200px"

@@ -29,6 +29,7 @@ import {
   getStudyIcon,
   getStudyVoteIcon,
 } from "../libs/study/getStudyVoteIcon";
+import StudyPresetModal from "../modals/userRequest/StudyPresetModal";
 import StudyMapTopNav from "../pageTemplates/studyPage/StudyMapTopNav";
 import StudyPageDrawer from "../pageTemplates/studyPage/StudyPageDrawer";
 import StudyControlButton from "../pageTemplates/vote/StudyControlButton";
@@ -75,6 +76,8 @@ export default function StudyPage() {
 
   const [isLocationRefetch, setIsLocationRefetch] = useState(true);
 
+  const [modalType, setModalType] = useState<"preset">();
+
   const [myVote, setMyVote] = useState<VotePlacesProps>({ main: null, sub: [] });
   //이후 제거
 
@@ -86,7 +89,7 @@ export default function StudyPage() {
   const { data: studyVoteData, isLoading } = useStudyVoteQuery(date, locationValue, {
     enabled: !!locationValue && !!date,
   });
-  console.log(123, studyVoteData, locationValue, date);
+  console.log(123, userInfo);
 
   useEffect(() => {
     if (!locationValue) return;
@@ -260,9 +263,9 @@ export default function StudyPage() {
           </Box>
           <InfoBoxCol
             infoBoxPropsArr={[
-              { category: "활동 지역", text: "수원역" },
-              { category: "즐겨 찾기 장소", text: "아주대" },
-              { category: "서브 장소", text: "경기대, 수원시청" },
+              { category: "중심 활동지", text: userInfo?.locationDetail?.text },
+              { category: "즐겨 찾기 장소", text: userInfo?.studyPreference?.place || "미등록" },
+              { category: "서브 추천 장소", text: userInfo?.studyPreference?.place || "미등록" },
             ]}
             size="md"
           />
@@ -276,11 +279,20 @@ export default function StudyPage() {
             bg="gray.800"
             color="white"
             h="44px"
+            onClick={() => setModalType("preset")}
           >
             설정하기
           </Flex>
         </Box>
-        <Box mt={5} p={4} pb={3} borderRadius="12px" border="var(--border)" borderColor="gray.200">
+        <Box
+          mt={5}
+          mb={10}
+          p={4}
+          pb={3}
+          borderRadius="12px"
+          border="var(--border)"
+          borderColor="gray.200"
+        >
           <Box mb={3} fontSize="14px" fontWeight="bold" lineHeight="20px" py={1}>
             내 스터디 설정
           </Box>
@@ -308,6 +320,7 @@ export default function StudyPage() {
         </Box>
       </Slide>
       <StudyControlButton date={date} />
+      {modalType === "preset" && <StudyPresetModal setIsModal={() => setModalType(null)} />}
     </>
   );
 }

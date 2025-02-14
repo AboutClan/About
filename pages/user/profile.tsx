@@ -64,7 +64,7 @@ function Profile({}: ProfileProps) {
   const handleSubmit = () => {
     mutate({
       locationDetail: {
-        text: placeInfo?.road_address_name,
+        text: placeInfo?.place_name,
         lat: +placeInfo?.y,
         lon: +placeInfo?.x,
       },
