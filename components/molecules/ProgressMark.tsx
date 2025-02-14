@@ -11,8 +11,8 @@ function ProgressMark({ value }: ProgressMarkProps) {
     <Box fontSize="8px" color="gray.800">
       {!isMax ? (
         <Flex w="100%" fontWeight="medium" color="gray.800">
-          <Box ml="calc(33.3% - 14px)">경고</Box>
-          <Box ml="auto">추가 점수</Box>
+          <Box ml="calc(33.3% - 28px)">최소 조건</Box>
+          <Box ml="auto">추가 포인트</Box>
         </Flex>
       ) : (
         <Box textAlign="end" color="var(--color-mint)">

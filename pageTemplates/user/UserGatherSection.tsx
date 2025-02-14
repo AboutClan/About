@@ -1,4 +1,5 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
@@ -19,6 +20,7 @@ interface UserGatherSectionProps {}
 type GatherType = "참여중인 모임" | "종료된 모임" | "내가 개설한 모임";
 
 function UserGatherSection({}: UserGatherSectionProps) {
+  const router = useRouter();
   const [gatherType, setGatherType] = useState<GatherType>("참여중인 모임");
   const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>();
   const setTransferGatherData = useSetRecoilState(transferGatherDataState);
@@ -87,6 +89,7 @@ function UserGatherSection({}: UserGatherSectionProps) {
           fontWeight="semibold"
           lineHeight="16px"
           color="gray.700"
+          onClick={() => router.push("/user/review/gather/mine")}
           rightIcon={
             <Flex
               justify="center"
@@ -116,6 +119,7 @@ function UserGatherSection({}: UserGatherSectionProps) {
           fontWeight="semibold"
           lineHeight="16px"
           color="gray.700"
+          onClick={() => router.push("/user/review/gather/received")}
           rightIcon={
             <Flex
               justify="center"
@@ -163,7 +167,7 @@ function UserGatherSection({}: UserGatherSectionProps) {
               </Box>
             ))}
           </>
-        ) : (
+        ) : gatherType === "종료된 모임" ? (
           <>
             {[1, 2, 3, 4, 5].map((cardData, idx) => (
               <Box mb="12px" key={idx}>
@@ -171,6 +175,22 @@ function UserGatherSection({}: UserGatherSectionProps) {
               </Box>
             ))}
           </>
+        ) : (
+          <Flex
+            justify="center"
+            align="center"
+            fontSize="14px"
+            fontWeight="medium"
+            bg="gray.100"
+            px={3}
+            py={4}
+            minH="114px"
+            borderRadius="8px"
+            color="gray.600"
+            border="var(--border)"
+          >
+            현재 참여중인 모임이 없습니다.
+          </Flex>
         )}
         <div ref={loader} />
         {isLoading && cardDataArr?.length ? (

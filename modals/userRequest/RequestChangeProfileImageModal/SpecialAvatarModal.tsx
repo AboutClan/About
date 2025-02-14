@@ -191,8 +191,10 @@ const DownPart = styled.div`
 `;
 
 const IconPoint = styled.div`
-  margin-top: 12px;
   color: var(--color-mint);
+  font-size: 11px;
+  margin-top: 12px;
+  font-weight: 600;
 `;
 
 const variants = {

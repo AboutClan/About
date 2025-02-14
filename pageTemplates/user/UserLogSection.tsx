@@ -27,10 +27,20 @@ function UserLogSection({}: UserLogSectionProps) {
   console.log(logsData);
   return (
     <Box>
-      <Box px={5} borderBottom="var(--border)">
+      <Box px={5} mb={2} borderBottom="var(--border)">
         <TabNav tabOptionsArr={options} isFullSize isBlack />
       </Box>
-      <Box mt={3} px={5}>
+      <Box px={5}>
+        <Box py={3}>
+          <Box fontSize="11px">
+            {userInfo?.name.slice(1)}님의 보유{" "}
+            {tab === "score" ? "점수" : tab === "point" ? "포인트" : "보증금"}
+          </Box>
+          <Box fontSize="20px" fontWeight="semibold">
+            {userInfo?.[tab]}
+            {tab === "score" ? "점" : tab === "point" ? " Point" : "원"}
+          </Box>
+        </Box>
         <Box fontWeight="regular" fontSize="12px" lineHeight="16px" color="gray.400">
           Transaction History
         </Box>
@@ -39,7 +49,7 @@ function UserLogSection({}: UserLogSectionProps) {
             재화 사용 기록
           </Box>
           <Select
-            options={["시간 순", "테테"]}
+            options={["시간 순", "준비중"]}
             defaultValue="시간 순"
             setValue={setFilter}
             size="xs"
@@ -105,7 +115,7 @@ interface BlockProps {
 }
 
 const Block = ({ text, time, iconType, value, currentValue, type }: BlockProps) => {
-  const valueText = type === "point" ? "Point" : type === "score" ? "Score" : "원";
+  const valueText = type === "point" ? " Point" : type === "score" ? "점" : "원";
   return (
     <Flex px={5} mt={4} justify="space-between" align="center">
       <Flex
@@ -122,12 +132,12 @@ const Block = ({ text, time, iconType, value, currentValue, type }: BlockProps) 
           w="100%"
           h="100%"
           opacity={0.08}
-          bgColor={"red"}
+          bgColor={"var(--color-gray)"}
           borderRadius="50%"
         ></Box>
         <Image
           src={
-            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%ED%8A%B8%EB%A1%9C%ED%94%BC2.png"
+            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%EA%B9%83%EB%B0%9C2.png"
           }
           width={36}
           height={36}
@@ -144,13 +154,14 @@ const Block = ({ text, time, iconType, value, currentValue, type }: BlockProps) 
           {time}
         </Box>
       </Box>
-      <Box>
+      <Box textAlign="end">
         <Box mb={1} fontWeight="bold" fontSize="13px" lineHeight="20px" color="mint">
           {value > 0 && "+"}
           {value} {valueText}
         </Box>
         <Box color="gray.500" fontSize="11px" lineHeight="12px">
-          {currentValue} {valueText}
+          {currentValue}
+          {valueText}
         </Box>
       </Box>
     </Flex>

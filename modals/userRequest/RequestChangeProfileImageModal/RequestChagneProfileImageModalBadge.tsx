@@ -8,7 +8,6 @@ import {
 } from "../../../constants/serviceConstants/badgeConstants";
 import { useCompleteToast, useErrorToast } from "../../../hooks/custom/CustomToast";
 import { useUserRequestMutation } from "../../../hooks/user/sub/request/mutations";
-import { EventBadge } from "../../../types/models/userTypes/userInfoTypes";
 import { IFooterOptions, ModalLayout } from "../../Modals";
 function RequestChagneProfileImageModalBadge({ setIsModal }) {
   const { data: session } = useSession();
@@ -23,7 +22,6 @@ function RequestChagneProfileImageModalBadge({ setIsModal }) {
     },
     onError: errorToast,
   });
-
 
   const onApply = () => {
     sendRequest({
@@ -56,7 +54,10 @@ function RequestChagneProfileImageModalBadge({ setIsModal }) {
             border={selectBadge === badge ? "2px solid var(--color-mint)" : "var(--border)"}
             bg={selectBadge === badge ? "rgba(0,194,179,0.1)" : "white"}
             onClick={() => setSelectBadge(badge)}
+            position="relative"
             _hover={{ boxShadow: "none" }}
+            overflow="hidden"
+            isDisabled={badge !== "아메리카노"}
           >
             <Badge size="lg" variant="subtle" colorScheme={BADGE_COLOR_MAPPINGS[badge]}>
               {badge}

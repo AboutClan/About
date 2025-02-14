@@ -24,7 +24,7 @@ function UserCollectionModal({ setIsModal }: IModal) {
           <div>3회차 상품</div>
         </Item>
         <Item>
-          <div>배달의민족 10000원권</div>
+          <div>배달의민족 10000원</div>
           <div>4회차 상품</div>
         </Item>
         <Button

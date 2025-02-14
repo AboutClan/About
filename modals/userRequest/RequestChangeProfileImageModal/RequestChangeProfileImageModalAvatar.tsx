@@ -8,7 +8,7 @@ import Avatar from "../../../components/atoms/Avatar";
 import ImageSlider from "../../../components/organisms/imageSlider/ImageSlider";
 import { COLOR_TABLE_LIGHT } from "../../../constants/colorConstants";
 import { USER_INFO } from "../../../constants/keys/queryKeys";
-import { useErrorToast, useFailToast, useTypeToast } from "../../../hooks/custom/CustomToast";
+import { useErrorToast, useFailToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
 import { usePointSystemQuery } from "../../../hooks/user/queries";
 import { AVATAR_COST, AVATAR_IMAGE_ARR } from "../../../storage/avatarStorage";
@@ -20,7 +20,7 @@ function RequestChangeProfileImageModalAvatar({
   setIsModal,
 }: IRequestChangeProfileImageModalAvatar) {
   const { data: session } = useSession();
-  const typeToast = useTypeToast();
+
   const errorToast = useErrorToast();
   const failToast = useFailToast();
 
@@ -28,7 +28,6 @@ function RequestChangeProfileImageModalAvatar({
 
   const { mutate: setUserAvatar } = useUserInfoFieldMutation("avatar", {
     onSuccess() {
-      typeToast("change");
       queryClient.invalidateQueries([USER_INFO]);
       setIsModal(false);
     },
@@ -150,27 +149,30 @@ const DownPart = styled.div`
 
 const IconPoint = styled.div`
   color: var(--color-mint);
+  font-size: 11px;
+  margin-top: 12px;
+  font-weight: 600;
 `;
 
 const variants = {
   entry: (isBack: boolean) => ({
-    x: isBack ? -200 : 200,
+    x: isBack ? -100 : 100,
     opacity: 0,
-    scale: 0.5,
+    scale: 0.3,
   }),
   center: {
     x: 0,
     opacity: 1,
     scale: 1,
     transition: {
-      duration: 0.4,
+      duration: 0.3,
     },
   },
   exit: (isBack: boolean) => ({
-    x: isBack ? 200 : -200,
+    x: isBack ? 100 : -100,
     opacity: 0,
     scale: 0.5,
-    transition: { duration: 0.4 },
+    transition: { duration: 0.3 },
   }),
 };
 export default RequestChangeProfileImageModalAvatar;

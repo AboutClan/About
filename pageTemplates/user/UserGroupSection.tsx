@@ -1,4 +1,5 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
@@ -21,6 +22,7 @@ interface UserGroupSectionProps {}
 type GroupType = "참여중인 모임" | "종료된 모임" | "내가 개설한 모임";
 
 function UserGroupSection({}: UserGroupSectionProps) {
+  const router = useRouter();
   const [groupType, setGroupType] = useState<GroupType>("참여중인 모임");
   const [cardDataArr, setCardDataArr] = useState<GroupThumbnailCardProps[]>();
   const setTransferGroupData = useSetRecoilState(transferGroupDataState);
@@ -85,6 +87,7 @@ function UserGroupSection({}: UserGroupSectionProps) {
           fontWeight="semibold"
           lineHeight="16px"
           color="gray.700"
+          onClick={() => router.push("/user/review/group/mine")}
           rightIcon={
             <Flex
               justify="center"
@@ -109,6 +112,7 @@ function UserGroupSection({}: UserGroupSectionProps) {
         </Box>
         <Button
           flex={1}
+          onClick={() => router.push("/user/review/group/received")}
           variant="unstyled"
           fontSize="12px"
           fontWeight="semibold"
@@ -136,23 +140,23 @@ function UserGroupSection({}: UserGroupSectionProps) {
       </Flex>
       <Box py={2} mb={3}>
         <ButtonGroups
-          buttonOptionsArr={(
-            ["참여중인 모임", "종료된 모임", "내가 개설한 모임"] as GroupType[]
-          ).map((prop) => ({
-            icon: (
-              <CheckCircleIcon color={groupType === prop ? "black" : "gray"} size="sm" isFill />
-            ),
-            text: prop,
-            func: () => setGroupType(prop),
-            color: "black",
-          }))}
+          buttonOptionsArr={(["참여중인 모임", "내가 개설한 모임", "추천 모임"] as GroupType[]).map(
+            (prop) => ({
+              icon: (
+                <CheckCircleIcon color={groupType === prop ? "black" : "gray"} size="sm" isFill />
+              ),
+              text: prop,
+              func: () => setGroupType(prop),
+              color: "black",
+            }),
+          )}
           currentValue={groupType}
           isEllipse
           size="md"
         />
       </Box>
 
-      <Box minH="100dvh" p={5}>
+      <Box minH="100dvh">
         {!groups.length && isLoading ? (
           [1, 2, 3, 4, 5].map((num) => <GroupSkeletonMain key={num} />)
         ) : (
