@@ -15,10 +15,11 @@ import { useUserInfoQuery } from "../../hooks/user/queries";
 import { convertStudyToParticipations } from "../../libs/study/getMyStudyMethods";
 import { setStudyToThumbnailInfo } from "../../libs/study/setStudyToThumbnailInfo";
 import { CoordinateProps } from "../../types/common";
-import { DispatchString } from "../../types/hooks/reactTypes";
+import { DispatchString, DispatchType } from "../../types/hooks/reactTypes";
 import { StudyDailyInfoProps } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
 import { Location } from "../../types/services/locationTypes";
+import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 import StudyPageDrawerFilterBar from "./studyPageDrawer/StudyPageDrawerFilterBar";
 import StudyPageDrawerHeader from "./studyPageDrawer/StudyPageDrawerHeader";
@@ -27,6 +28,7 @@ interface StudyPageDrawerProps {
   date: string;
   setDate: DispatchString;
   location: Location;
+  setLocation: DispatchType<Location>;
   currentLocation: CoordinateProps;
 }
 
@@ -37,6 +39,7 @@ function StudyPageDrawer({
   location,
   date,
   setDate,
+  setLocation,
   currentLocation,
 }: StudyPageDrawerProps) {
   const router = useRouter();
@@ -45,18 +48,20 @@ function StudyPageDrawer({
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
   const [selectOption, setSelectOption] = useState<SelectOption>("인원순");
 
+  const lastStudyHours = dayjs(date).hour(9).startOf("hour").diff(dayjs(), "m");
+
   const { data: userInfo } = useUserInfoQuery();
   const preference = userInfo?.studyPreference;
-
-  const isDateCompleted = false;
-
+  console.log(13, studyVoteData);
   useEffect(() => {
     if (!studyVoteData || !currentLocation) return;
 
     const participations = convertStudyToParticipations(studyVoteData, location, false);
 
     const getThumbnailCardInfoArr = setStudyToThumbnailInfo(
-      participations,
+      lastStudyHours <= 0
+        ? participations.filter((par) => par.status === "free" || par.status === "open")
+        : participations,
       preference,
       currentLocation,
       date,
@@ -109,20 +114,29 @@ function StudyPageDrawer({
   const swipePower = (offset: number, velocity: number) => {
     return Math.abs(offset) * velocity;
   };
+  console.log(thumbnailCardInfoArr);
 
   return (
     <Flex flexDir="column" mt={5} mb={8}>
-      <StudyPageDrawerHeader date={date} setDate={setDate} />
+      <StudyPageDrawerHeader
+        date={date}
+        setDate={setDate}
+        location={location}
+        setLocation={setLocation}
+      />
       <Box>
         <WeekSlideCalendar selectedDate={date} func={handleSelectDate} />
-        <StudyPageDrawerFilterBar
-          isStudyCompleted={isDateCompleted}
-          selectOption={selectOption}
-          setSelectOption={setSelectOption}
-          placeCnt={thumbnailCardInfoArr?.length}
-          date={date}
-        />
-
+        {thumbnailCardInfoArr?.length ? (
+          <StudyPageDrawerFilterBar
+            selectOption={selectOption}
+            setSelectOption={setSelectOption}
+            placeCnt={thumbnailCardInfoArr?.filter((par) => par.participants.length > 0).length}
+            date={date}
+            lastStudyHours={lastStudyHours}
+          />
+        ) : (
+          <Box my={4} />
+        )}
         <Box overflowY="scroll" overscrollBehaviorY="contain">
           <AnimatePresence initial={false}>
             <motion.div
@@ -134,7 +148,7 @@ function StudyPageDrawer({
               {thumbnailCardInfoArr ? (
                 thumbnailCardInfoArr.length ? (
                   thumbnailCardInfoArr
-                    .slice(0, isDateCompleted ? 3 : 1)
+                    .slice(0, 3)
                     .map(({ participants, ...thumbnailCardInfo }, idx) => (
                       <Box key={idx} mb={3}>
                         <StudyThumbnailCard
@@ -144,16 +158,43 @@ function StudyPageDrawer({
                       </Box>
                     ))
                 ) : (
-                  <Box fontSize="13px" color="gray.800" fontWeight="semibold" mt={5}>
-                    정규 스터디 오픈을 준비중인 지역입니다. 지도에서 직접 장소를 추가하거나, 활성화
-                    된 다른 지역을 이용해 주세요!
-                  </Box>
+                  <Flex
+                    justify="center"
+                    align="center"
+                    fontSize="14px"
+                    fontWeight="medium"
+                    bg="gray.100"
+                    px={3}
+                    py={4}
+                    minH="114px"
+                    borderRadius="8px"
+                    color="gray.600"
+                    border="var(--border)"
+                  >
+                    {lastStudyHours > 0 ? (
+                      <>
+                        신규 지역으로 등록된 스터디 장소가 없습니다.
+                        <br />
+                        스터디 버튼을 눌러 새로운 장소를 추가해보세요!
+                      </>
+                    ) : (
+                      <>
+                        현재 진행중인 스터디가 없네요!
+                        <br />
+                        하지만 개인 스터디 신청을 통해서도 참여가 가능합니다!
+                      </>
+                    )}
+                  </Flex>
                 )
               ) : (
                 [1, 2, 3, 4, 5].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)
               )}
             </motion.div>
-            <SectionFooterButton url={``} />
+            {thumbnailCardInfoArr?.length && (
+              <SectionFooterButton
+                url={`/studyList?date=${date}&location=${convertLocationLangTo(location, "en")}`}
+              />
+            )}
           </AnimatePresence>
         </Box>
       </Box>

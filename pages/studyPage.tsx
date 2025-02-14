@@ -65,7 +65,7 @@ export default function StudyPage() {
 
   const [date, setDate] = useState(dateParam || getStudyViewDate(dayjs()));
   const [locationValue, setLocationValue] = useState<Location>(
-    locationParamKr || userLocation === "기타" ? "수원" : userLocation,
+    locationParamKr || userLocation === "기타" ? "강남" : userLocation,
   );
   const [mapOptions, setMapOptions] = useState<IMapOptions>();
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>();
@@ -86,6 +86,7 @@ export default function StudyPage() {
   const { data: studyVoteData, isLoading } = useStudyVoteQuery(date, locationValue, {
     enabled: !!locationValue && !!date,
   });
+  console.log(123, studyVoteData, locationValue, date);
 
   useEffect(() => {
     if (!locationValue) return;
@@ -97,6 +98,11 @@ export default function StudyPage() {
 
     // setCenterLocation();
   }, [myStudyParticipation]);
+
+  useEffect(() => {
+    newSearchParams.set("location", convertLocationLangTo(locationValue, "en"));
+    router.replace(`/studyPage?${newSearchParams.toString()}`, { scroll: false });
+  }, [locationValue]);
 
   useEffect(() => {
     if (!studyVoteData || !session?.user.uid) return;
@@ -242,6 +248,7 @@ export default function StudyPage() {
         <StudyPageDrawer
           studyVoteData={studyVoteData}
           location={locationValue}
+          setLocation={setLocationValue}
           date={date}
           setDate={setDate}
           currentLocation={currentLocation}
