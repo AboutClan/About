@@ -34,16 +34,18 @@ export const useFeedTypeQuery = (
     options,
   );
 export const useFeedCntQuery = (
-  selfType: "mine" | "receive",
-  feedType: "gather" | "group",
-  options?: QueryOptions<FeedProps[]>,
+  type: "gather" | "group",
+  options?: QueryOptions<{ writtenReviewCnt: number; reviewReceived }>,
 ) =>
-  useQuery<FeedProps[], AxiosError>(
-    [Feed, selfType, feedType],
+  useQuery<{ writtenReviewCnt: number; reviewReceived }, AxiosError>(
+    [Feed, type],
     async () => {
-      const res = await axios.get<FeedProps[]>(`${SERVER_URI}/feed/${selfType}`, {
-        params: { type: feedType },
-      });
+      const res = await axios.get<{ writtenReviewCnt: number; reviewReceived }>(
+        `${SERVER_URI}/feed/written`,
+        {
+          params: { type },
+        },
+      );
       return res.data;
     },
     options,

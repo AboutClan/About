@@ -10,6 +10,7 @@ import {
   GroupThumbnailCardProps,
 } from "../../components/molecules/cards/GroupThumbnailCard";
 import ButtonGroups from "../../components/molecules/groups/ButtonGroups";
+import { useFeedCntQuery } from "../../hooks/feed/queries";
 import { useGroupMyStatusQuery } from "../../hooks/groupStudy/queries";
 import { createGroupThumbnailProps } from "../../pages/group";
 import { transferGroupDataState } from "../../recoils/transferRecoils";
@@ -27,6 +28,9 @@ function UserGroupSection() {
   const [cursor, setCursor] = useState(0);
   const loader = useRef<HTMLDivElement | null>(null);
   const firstLoad = useRef(true);
+
+  const { data } = useFeedCntQuery("group");
+  console.log(24, data);
 
   const setTransdferGroupData = useSetRecoilState(transferGroupDataState);
   const { data: groupData, isLoading } = useGroupMyStatusQuery(
@@ -95,7 +99,7 @@ function UserGroupSection() {
               bg="var(--color-mint-light)"
               color="mint"
             >
-              1
+              {data?.writtenReviewCnt}
             </Flex>
           }
         >
@@ -125,7 +129,7 @@ function UserGroupSection() {
               bg="var(--color-mint-light)"
               color="mint"
             >
-              14
+              {data?.reviewReceived}
             </Flex>
           }
         >

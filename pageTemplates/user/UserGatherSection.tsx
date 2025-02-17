@@ -10,6 +10,7 @@ import {
   GatherThumbnailCardProps,
 } from "../../components/molecules/cards/GatherThumbnailCard";
 import ButtonGroups from "../../components/molecules/groups/ButtonGroups";
+import { useFeedCntQuery } from "../../hooks/feed/queries";
 import { useGatherMyStatusQuery } from "../../hooks/gather/queries";
 import { transferGatherDataState } from "../../recoils/transferRecoils";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
@@ -27,6 +28,9 @@ function UserGatherSection() {
   const [cursor, setCursor] = useState(0);
   const loader = useRef<HTMLDivElement | null>(null);
   const firstLoad = useRef(true);
+
+  const { data } = useFeedCntQuery("gather");
+  console.log(24, data);
 
   const { data: gatherData, isLoading } = useGatherMyStatusQuery(
     cursor,
@@ -101,7 +105,7 @@ function UserGatherSection() {
               bg="var(--color-mint-light)"
               color="mint"
             >
-              1
+              {data?.writtenReviewCnt}
             </Flex>
           }
         >
@@ -131,7 +135,7 @@ function UserGatherSection() {
               bg="var(--color-mint-light)"
               color="mint"
             >
-              14
+              {data?.reviewReceived}
             </Flex>
           }
         >
