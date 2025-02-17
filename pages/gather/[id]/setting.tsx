@@ -50,12 +50,12 @@ function Setting() {
 
   const { mutate } = useGatherWaitingStatusMutation(+id, {
     onSuccess() {
-      queryClient.invalidateQueries([GATHER_CONTENT, +id]);
+      queryClient.invalidateQueries([GATHER_CONTENT, id]);
       setGatherData(null);
       setIsRefuseModal(null);
     },
     onError() {
-      queryClient.invalidateQueries([GATHER_CONTENT, +id]);
+      queryClient.invalidateQueries([GATHER_CONTENT, id]);
       setGatherData(null);
       setIsRefuseModal(null);
     },

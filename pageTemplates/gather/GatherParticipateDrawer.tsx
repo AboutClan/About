@@ -44,6 +44,7 @@ function GatherParticipateDrawer({ data }: IGatherParticipateDrawer) {
   const [isExpirationModal, setIsExpirationModal] = useState(false);
   const [isFirstPage, setIsFirstPage] = useState(true);
   const [isModal, setIsModal] = useState(false);
+  const [isRegister, setIsRegister] = useState(false);
 
   console.log(isReviewDrawer, isExpirationModal);
 
@@ -155,8 +156,8 @@ function GatherParticipateDrawer({ data }: IGatherParticipateDrawer) {
               (womanCnt === 1 && manCnt >= 4) ||
               (womanCnt >= 2 && manCnt >= womanCnt * 2)
             ) {
+              setIsRegister(true);
               toast("error", "현재 멤버의 성별이 맞지 않습니다. 참여 대기 신청만 가능합니다.");
-              return;
             }
           }
           if (userInfo.gender === "여성") {
@@ -166,12 +167,12 @@ function GatherParticipateDrawer({ data }: IGatherParticipateDrawer) {
               (manCnt >= 2 && womanCnt >= manCnt * 2)
             ) {
               toast("error", "현재 멤버의 성별이 맞지 않습니다. 참여 대기 신청만 가능합니다.");
-              return;
+              setIsRegister(true);
             }
           }
         }
-        onClick("participate");
         setIsModal(true);
+        onClick("participate");
       },
     };
   };
@@ -188,7 +189,7 @@ function GatherParticipateDrawer({ data }: IGatherParticipateDrawer) {
   }, [data?.status]);
 
   const { text, handleFunction } = getButtonSettings();
-  console.log(231415, isModal);
+  console.log(231415, isModal, isFirstPage);
   return (
     <>
       <BottomFixedButton
@@ -237,7 +238,11 @@ function GatherParticipateDrawer({ data }: IGatherParticipateDrawer) {
                 size="lg"
                 colorScheme="black"
                 onClick={() =>
-                  data.isApprovalRequired ? onClick("participate") : onClick("register")
+                  isRegister
+                    ? onClick("register")
+                    : data.isApprovalRequired
+                    ? onClick("participate")
+                    : onClick("register")
                 }
               >
                 {!isFirstPage
@@ -253,7 +258,11 @@ function GatherParticipateDrawer({ data }: IGatherParticipateDrawer) {
                   size="lg"
                   colorScheme="black"
                   onClick={() =>
-                    data.isApprovalRequired ? onClick("participate") : onClick("register")
+                    isRegister
+                      ? onClick("register")
+                      : data.isApprovalRequired
+                      ? onClick("participate")
+                      : onClick("register")
                   }
                 >
                   {!isFirstPage

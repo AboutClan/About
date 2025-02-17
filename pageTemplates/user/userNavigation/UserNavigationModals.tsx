@@ -1,4 +1,4 @@
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -21,8 +21,6 @@ interface IUserNavigationModals {
 
 function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const isPresetModal = !!searchParams.get("preset");
   const [isModal, setIsModal] = useState<boolean>();
 
   const { data: userInfo } = useUserInfoQuery();

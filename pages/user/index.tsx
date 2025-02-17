@@ -3,7 +3,6 @@ import { useState } from "react";
 
 import Slide from "../../components/layouts/PageSlide";
 import TabNav from "../../components/molecules/navs/TabNav";
-import { useFeedCntQuery } from "../../hooks/feed/queries";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import UserGatherSection from "../../pageTemplates/user/UserGatherSection";
 import UserGroupSection from "../../pageTemplates/user/UserGroupSection";
@@ -13,7 +12,6 @@ import UserProfileSection from "../../pageTemplates/user/UserProfileSection";
 
 function UserPage() {
   const { data: user } = useUserInfoQuery();
-
 
   const [section, setSection] = useState<"profile" | "gather" | "group" | "billing">("profile");
 
