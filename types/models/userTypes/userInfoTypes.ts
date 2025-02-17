@@ -10,6 +10,9 @@ import { IStudyVotePlaces } from "../studyTypes/studyInterActions";
 export interface IUser extends Omit<IUserRegisterForm, "location">, IUserSummary {
   id: string;
   point: number;
+  badge: {
+    badgeIdx: number;
+  };
   role: UserRole;
   rest: IRest;
   deposit: number;

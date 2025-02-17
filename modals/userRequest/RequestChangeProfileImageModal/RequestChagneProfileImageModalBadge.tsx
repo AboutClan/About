@@ -14,7 +14,7 @@ function RequestChagneProfileImageModalBadge({ setIsModal }) {
   const completeToast = useCompleteToast();
   const errorToast = useErrorToast();
 
-  const [selectBadge, setSelectBadge] = useState<(typeof USER_BADGE_ARR)[number]>(null);
+  const [selectBadge, setSelectBadge] = useState<(typeof USER_BADGE_ARR)[number]>("아메리카노");
 
   const { mutate: sendRequest } = useUserRequestMutation({
     onSuccess() {
