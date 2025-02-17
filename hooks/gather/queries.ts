@@ -36,7 +36,7 @@ export const useGatherMyStatusQuery = (
 
 export const useGatherIDQuery = (gatherId: number, options?: QueryOptions<IGather>) =>
   useQuery<IGather, AxiosError, IGather>(
-    [GATHER_CONTENT, gatherId],
+    [GATHER_CONTENT, gatherId + ""],
     async () => {
       const res = await axios.get<IGather>(`${SERVER_URI}/gather`, {
         params: { gatherId },

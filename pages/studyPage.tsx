@@ -1,12 +1,14 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 
 import { STUDY_MAIN_IMAGES } from "../assets/images/studyMain";
+import IconRowBlock from "../components/atoms/blocks/IconRowBlock";
 import { MainLoadingAbsolute } from "../components/atoms/loaders/MainLoading";
+import RuleIcon from "../components/Icons/RuleIcon";
 import Header from "../components/layouts/Header";
 import Slide from "../components/layouts/PageSlide";
 import InfoBoxCol from "../components/molecules/InfoBoxCol";
@@ -17,7 +19,7 @@ import {
   LOCATION_MAX_BOUNDARY,
 } from "../constants/serviceConstants/studyConstants/studyVoteMapConstants";
 import { STUDY_COMMENT_ARR } from "../constants/settingValue/comment";
-import { useToast } from "../hooks/custom/CustomToast";
+import { useToast, useTypeToast } from "../hooks/custom/CustomToast";
 import { useStudyVoteQuery } from "../hooks/study/queries";
 import { useUserInfoQuery } from "../hooks/user/queries";
 import { getStudyViewDate } from "../libs/study/date/getStudyDateStatus";
@@ -53,7 +55,7 @@ export default function StudyPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
-
+  const typeToast = useTypeToast();
   const dateParam = searchParams.get("date");
 
   const locationParamKr = convertLocationLangTo(
@@ -80,8 +82,7 @@ export default function StudyPage() {
 
   const [myVote, setMyVote] = useState<VotePlacesProps>({ main: null, sub: [] });
   //이후 제거
-
-  const [isBigMap, setIsBigMap] = useState(false);
+  console.log(setMyVote);
 
   const [myStudyParticipation, setMyStudyParticipation] = useRecoilState(myStudyParticipationState);
 
@@ -89,7 +90,6 @@ export default function StudyPage() {
   const { data: studyVoteData, isLoading } = useStudyVoteQuery(date, locationValue, {
     enabled: !!locationValue && !!date,
   });
-  console.log(123, userInfo);
 
   useEffect(() => {
     if (!locationValue) return;
@@ -205,9 +205,21 @@ export default function StudyPage() {
     setMapOptions(getMapOptions(centerLocation, locationValue, 13));
   }, [centerLocation, locationValue]);
 
+  // const accumulationHour =
+  //   userInfo &&
+  //   `${Math.ceil(userInfo.weekStudyAccumulationMinutes / 60)}시간 ${
+  //     userInfo.weekStudyAccumulationMinutes % 60
+  //   }분`;
+
   return (
     <>
-      <Header title="스터디" isBack={false}></Header>
+      <Header title="스터디" isBack={false}>
+        <RuleIcon
+          setIsModal={() => {
+            typeToast("not-yet");
+          }}
+        />
+      </Header>
       <Slide>
         <Flex direction="column" mt={5} mb={3}>
           <Box color="gray.500" fontSize="12px" mb={1}>
@@ -243,6 +255,7 @@ export default function StudyPage() {
             }}
             setCenterLocation={setCenterLocation}
             setIsLocationFetch={setIsLocationRefetch}
+            isSmall
           />
 
           <VoteMap mapOptions={mapOptions} markersOptions={markersOptions} />
@@ -284,42 +297,35 @@ export default function StudyPage() {
             설정하기
           </Flex>
         </Box>
-        <Box
-          mt={5}
-          mb={10}
-          p={4}
-          pb={3}
-          borderRadius="12px"
-          border="var(--border)"
-          borderColor="gray.200"
-        >
+        <Box my={5} p={4} pb={3} borderRadius="12px" border="var(--border)" borderColor="gray.200">
           <Box mb={3} fontSize="14px" fontWeight="bold" lineHeight="20px" py={1}>
-            내 스터디 설정
+            내 스터디 참여 기록
           </Box>
           <InfoBoxCol
             infoBoxPropsArr={[
-              { category: "이번 달 참여", text: "6회" },
+              { category: "이번 달 참여 횟수", text: "6회" },
               { category: "누적 참여 시간", text: "16시간 20분" },
               { category: "최근 만난 인원", rightChildren: <>24</> },
             ]}
             size="md"
           />
-          <Flex
-            justify="center"
-            align="center"
-            fontSize="12px"
-            fontWeight="semibold"
-            mt={4}
-            borderRadius="12px"
-            bg="gray.800"
-            color="white"
-            h="44px"
-          >
-            확인하러 가기
-          </Flex>
         </Box>
+
+        <IconRowBlock
+          leftIcon={
+            <i
+              className="fa-duotone fa-magnifying-glass-plus fa-2x"
+              style={{ color: "var(--color-mint)" }}
+            />
+          }
+          func={() => router.push("/study/writing/place")}
+          mainText="신규 스터디 장소 추가"
+          subText="공부하기 좋은 카공 스팟을 함께 공유해요!"
+        />
       </Slide>
-      <StudyControlButton date={date} />
+      <Box mb={20} mt={5}>
+        <StudyControlButton date={date} setIsVoteDrawer={null} isVoting={null} />
+      </Box>
       {modalType === "preset" && <StudyPresetModal setIsModal={() => setModalType(null)} />}
     </>
   );

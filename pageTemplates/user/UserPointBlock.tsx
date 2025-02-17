@@ -2,11 +2,18 @@ import { Box, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 
 function UserPointBlock() {
   const { data: userInfo } = useUserInfoQuery();
-  console.log(userInfo);
+  const typeToast = useTypeToast();
+
+  const onClick = (e) => {
+    e.preventDefault();
+    typeToast("inspection");
+  };
+
   return (
     <Flex
       my={5}
@@ -17,7 +24,7 @@ function UserPointBlock() {
       border="var(--border-main)"
       bgColor="white"
     >
-      <Link href="/user/score" style={{ flex: 1 }}>
+      <Link onClick={onClick} href="/user/score" style={{ flex: 1 }}>
         <Flex direction="column" align="center">
           <Flex
             justify="center"
@@ -37,7 +44,7 @@ function UserPointBlock() {
           </Box>
         </Flex>
       </Link>
-      <Link href="/user/score" style={{ flex: 1 }}>
+      <Link onClick={onClick} href="/user/score" style={{ flex: 1 }}>
         <Flex direction="column" align="center">
           <Flex
             justify="center"
@@ -57,7 +64,7 @@ function UserPointBlock() {
           </Box>
         </Flex>
       </Link>
-      <Link href="/user/score" style={{ flex: 1 }}>
+      <Link href="/store" style={{ flex: 1 }}>
         <Flex direction="column" align="center">
           <Flex
             justify="center"

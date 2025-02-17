@@ -40,7 +40,7 @@ function Mbti() {
   );
 }
 
-export const MBTILayout = ({
+export function MBTILayout({
   mbti,
   setMbti,
   errorMessage,
@@ -48,8 +48,8 @@ export const MBTILayout = ({
   mbti: string;
   setMbti: DispatchString;
   errorMessage: string;
-}) => (
-  <RegisterLayout errorMessage={errorMessage}>
+}) {
+  return <RegisterLayout errorMessage={errorMessage}>
     <RegisterOverview>
       <span>MBTI를 선택해 주세요</span>
       <span>필수사항은 아니지만 활동 추천에 도움이 됩니다!</span>
@@ -62,7 +62,7 @@ export const MBTILayout = ({
       ))}
     </ButtonNav>
   </RegisterLayout>
-);
+}
 
 const ButtonNav = styled.nav`
   margin-top: 40px;

@@ -50,13 +50,13 @@ function Major() {
   );
 }
 
-export const MajorLayout = ({
+export function MajorLayout({
   majors,
   setMajors,
 }: {
   majors: { department: string; detail: string }[];
   setMajors: DispatchType<{ department: string; detail: string }[]>;
-}) => {
+}) {
   const toast = useToast();
 
   const onClickBtn = (department: string, detail: string) => {
@@ -105,7 +105,7 @@ export const MajorLayout = ({
       ))}
     </RegisterLayout>
   );
-};
+}
 
 const Section = styled.section`
   margin-bottom: var(--gap-4);

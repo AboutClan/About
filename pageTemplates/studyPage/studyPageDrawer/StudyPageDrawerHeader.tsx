@@ -2,8 +2,8 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import LocationSelector from "../../../components/atoms/LocationSelector";
 
+import LocationSelector from "../../../components/atoms/LocationSelector";
 import SectionHeader from "../../../components/atoms/SectionHeader";
 import { ShortArrowIcon } from "../../../components/Icons/ArrowIcons";
 import { LOCATION_ALL } from "../../../constants/location";
@@ -38,7 +38,7 @@ function StudyPageDrawerHeader({
     newSearchParams.set("date", newDate);
     router.replace(`/studyPage?${newSearchParams.toString()}`);
   };
-
+  console.log(navigateNextDay);
   return (
     <>
       <Box mb={4}>

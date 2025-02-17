@@ -387,7 +387,6 @@ function VoteDrawer({
           setIsVoteDrawer={setIsVoteDrawer}
           date={date}
           setIsRightDrawer={setIsRightDrawer}
-          noLocation={!LOCATION_OPEN.includes(location)}
         />
       )}
       {isTimeDrawer && (

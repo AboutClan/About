@@ -756,6 +756,17 @@ export const EVENT_CONTENT_2024: Record<string, CalendarContentProps[]> = {
   ],
 };
 
+export const EVENT_CONTENT_2025: Record<string, CalendarContentProps[]> = {
+  2: [
+    {
+      content: "취합 기간",
+      start: 18,
+      end: 18,
+      type: "main",
+      textPosition: "start",
+    },
+  ],
+};
 export const EVENT_ALWAYS = [
   {
     title: "[항시] 에타 홍보 이벤트",

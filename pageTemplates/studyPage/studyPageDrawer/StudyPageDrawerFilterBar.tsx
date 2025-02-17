@@ -20,8 +20,8 @@ function StudyPageDrawerFilterBar({
   date,
 }: StudyPageDrawerFilterBarProps) {
   const selectOptionArr = ["인원순", "거리순", "선호순"];
+  console.log(date);
 
-  console.log(lastStudyHours);
   return (
     <Flex justify="space-between" lineHeight="16px" my={4}>
       <Box fontSize="12px">

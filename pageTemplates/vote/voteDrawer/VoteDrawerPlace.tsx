@@ -21,15 +21,9 @@ interface PlaceDrawerProps {
   setIsRightDrawer: DispatchBoolean;
   setIsVoteDrawer: DispatchBoolean;
   date: string;
-  noLocation: boolean;
 }
 
-export function VoteDrawerPlace({
-  setIsRightDrawer,
-  setIsVoteDrawer,
-  date,
-  noLocation,
-}: PlaceDrawerProps) {
+export function VoteDrawerPlace({ setIsRightDrawer, setIsVoteDrawer, date }: PlaceDrawerProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
@@ -95,12 +89,8 @@ export function VoteDrawerPlace({
     <>
       <RightDrawer title="" onClose={() => setIsRightDrawer(false)}>
         <PageIntro
-          main={
-            noLocation
-              ? { first: "어디서 스터디를 진행하시나요?" }
-              : { first: "리스트에 없으신가요?", second: "스터디 장소를 알려주세요" }
-          }
-          sub="스터디를 진행할 장소를 입력해 보세요"
+          main={{ first: "어디에서 공부하실 예정인가요?" }}
+          sub="카공 할 장소를 입력해 주세요"
         />
         <Box>
           <SearchLocation placeInfo={placeInfo} setPlaceInfo={setPlaceInfo} />

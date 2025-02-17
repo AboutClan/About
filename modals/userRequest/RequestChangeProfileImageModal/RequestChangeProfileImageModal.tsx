@@ -68,12 +68,9 @@ function RequestChangeProfileImageModal({ setIsModal }: IModal) {
           </Container>
         </ModalLayout>
       ) : pageNum === 1 ? (
-        <RequestChangeProfileImageModalAvatar
-          setIsModal={setIsModal}
-          setUserAvatar={setUserAvatar}
-        />
+        <RequestChangeProfileImageModalAvatar setIsModal={setIsModal} />
       ) : pageNum === 2 ? (
-        <SpecialAvatarModal setIsModal={setIsModal} setUserAvatar={setUserAvatar} />
+        <SpecialAvatarModal setIsModal={setIsModal} />
       ) : (
         <RequestChagneProfileImageModalBadge setIsModal={setIsModal} />
       )}

@@ -16,8 +16,8 @@ import { dayjsToStr } from "../../utils/dateTimeUtils";
 type StudyParticipationParam<T> = T extends "post"
   ? IStudyVote
   : T extends "patch"
-    ? IStudyVoteTime
-    : void;
+  ? IStudyVoteTime
+  : void;
 
 export const useStudyParticipationMutation = <T extends "post" | "patch" | "delete">(
   voteDate: Dayjs,

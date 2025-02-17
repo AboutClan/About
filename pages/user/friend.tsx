@@ -26,7 +26,7 @@ function ProfileFriend() {
     setBeforePage(router?.asPath);
     router.push(`/profile/${user.uid}`);
   };
-  console.log(friends);
+  
   return (
     <>
       <Header title="내 친구 목록" url="/user" />

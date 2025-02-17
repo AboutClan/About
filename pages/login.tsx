@@ -44,7 +44,7 @@ const Login: NextPage<{
 
   const statusParam = searchParams.get("status");
   const locationParam = searchParams.get("location") as LocationEn;
-  console.log(providers);
+
   const kakaoProvider = Object.values(providers).find((p) => p.id == "kakao");
 
   const [isModal, setIsModal] = useState(false);

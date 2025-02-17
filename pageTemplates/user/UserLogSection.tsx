@@ -2,17 +2,16 @@ import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { useState } from "react";
+
 import Select from "../../components/atoms/Select";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import { usePointSystemLogQuery, useUserInfoQuery } from "../../hooks/user/queries";
 import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 
-interface UserLogSectionProps {}
-
-function UserLogSection({}: UserLogSectionProps) {
+function UserLogSection() {
   const [tab, setTab] = useState<"score" | "point" | "deposit">("score");
   const [filter, setFilter] = useState("시간 순");
-
+  console.log(filter);
   const { data: userInfo } = useUserInfoQuery();
 
   const { data: logsData } = usePointSystemLogQuery(tab);
@@ -24,7 +23,7 @@ function UserLogSection({}: UserLogSectionProps) {
   ];
 
   let stepDate: string;
-  console.log(logsData);
+
   return (
     <Box>
       <Box px={5} mb={2} borderBottom="var(--border)">
@@ -57,7 +56,7 @@ function UserLogSection({}: UserLogSectionProps) {
         </Flex>
       </Box>
       <Box>
-        {logsData?.map((log) => {
+        {logsData?.map((log, idx) => {
           const timeStamp = dayjs(log.timestamp);
           const timeStr = dayjsToStr(timeStamp);
 
@@ -74,6 +73,7 @@ function UserLogSection({}: UserLogSectionProps) {
                   lineHeight="12px"
                   color="gray.500"
                   px={5}
+                  key={idx}
                 >
                   {dayjsToFormat(dayjs(log.timestamp).locale("ko"), "M월 D일 (ddd)")}
                 </Box>
@@ -96,6 +96,7 @@ function UserLogSection({}: UserLogSectionProps) {
                 value={log.meta.value}
                 currentValue={userInfo?.[tab]}
                 type={tab}
+                key={idx}
               />
             );
           }
@@ -114,8 +115,9 @@ interface BlockProps {
   type: "score" | "point" | "deposit";
 }
 
-const Block = ({ text, time, iconType, value, currentValue, type }: BlockProps) => {
+function Block({ text, time, iconType, value, currentValue, type }: BlockProps) {
   const valueText = type === "point" ? " Point" : type === "score" ? "점" : "원";
+  console.log(iconType);
   return (
     <Flex px={5} mt={4} justify="space-between" align="center">
       <Flex
@@ -132,16 +134,14 @@ const Block = ({ text, time, iconType, value, currentValue, type }: BlockProps) 
           w="100%"
           h="100%"
           opacity={0.08}
-          bgColor={"var(--color-gray)"}
+          bgColor="var(--color-gray)"
           borderRadius="50%"
         ></Box>
         <Image
-          src={
-            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%EA%B9%83%EB%B0%9C2.png"
-          }
+          src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%EA%B9%83%EB%B0%9C2.png"
           width={36}
           height={36}
-          alt={"test"}
+          alt="test"
           priority
           style={{ width: "36px", height: "36px", objectFit: "contain" }}
         />
@@ -166,6 +166,6 @@ const Block = ({ text, time, iconType, value, currentValue, type }: BlockProps) 
       </Box>
     </Flex>
   );
-};
+}
 
 export default UserLogSection;

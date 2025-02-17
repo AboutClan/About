@@ -1,5 +1,4 @@
 import { Box } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 import Slide from "../../components/layouts/PageSlide";
@@ -12,9 +11,6 @@ import UserLogSection from "../../pageTemplates/user/UserLogSection";
 import UserProfileSection from "../../pageTemplates/user/UserProfileSection";
 
 function UserPage() {
-  const { data: session } = useSession();
-  const isGuest = session?.user.role === "guest";
-
   const { data: user } = useUserInfoQuery();
 
   const [section, setSection] = useState<"profile" | "gather" | "group" | "billing">("profile");
@@ -36,22 +32,22 @@ function UserPage() {
             isFullSize
           />
         </Box>
-        {user && (
-          <>
-            <Slide isNoPadding>
-              {section === "profile" ? (
-                <UserProfileSection user={user} />
-              ) : section === "gather" ? (
-                <UserGatherSection />
-              ) : section === "group" ? (
-                <UserGroupSection />
-              ) : (
-                <UserLogSection />
-              )}
-            </Slide>
-          </>
-        )}
       </Slide>
+      {user && (
+        <>
+          <Slide isNoPadding>
+            {section === "profile" ? (
+              <UserProfileSection user={user} />
+            ) : section === "gather" ? (
+              <UserGatherSection />
+            ) : section === "group" ? (
+              <UserGroupSection />
+            ) : (
+              <UserLogSection />
+            )}
+          </Slide>
+        </>
+      )}
     </>
   );
 }

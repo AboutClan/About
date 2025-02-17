@@ -1,7 +1,9 @@
-import { Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { useRecoilValue } from "recoil";
 
 import CurrentLocationBtn from "../../components/atoms/CurrentLocationBtn";
+import Select from "../../components/atoms/Select";
+import { LOCATION_ALL } from "../../constants/location";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { getLocationByCoordinates } from "../../libs/study/getLocationByCoordinates";
@@ -15,6 +17,7 @@ interface StudyMapTopNavProps {
   setLocation: DispatchType<ActiveLocation>;
   setIsLocationFetch: DispatchBoolean;
   setCenterLocation: DispatchType<CoordinateProps>;
+  isSmall: boolean;
 }
 
 function StudyMapTopNav({
@@ -22,6 +25,7 @@ function StudyMapTopNav({
   location,
   setLocation,
   setCenterLocation,
+  isSmall,
 }: StudyMapTopNavProps) {
   const toast = useToast();
   const { data: userInfo } = useUserInfoQuery();
@@ -50,31 +54,33 @@ function StudyMapTopNav({
   return (
     <Flex w="100%" justify="space-between" p={5} position="absolute" top="0" left="0" zIndex={10}>
       <CurrentLocationBtn onClick={() => setIsLocationFetch(true)} />
-      {/* <Flex>
-        <Button
-          borderRadius="20px"
-          size="md"
-          fontSize="11px"
-          fontWeight="semibold"
-          h="32px"
-          bg="white"
-          border="var(--border)"
-          borderColor="gray.200"
-          onClick={handleNavButton}
-        >
-          {myStudyParticipation ? "스터디 장소" : "주 활동 장소"}
-        </Button>
-        <Box ml={2}>
-          <Select
-            options={LOCATION_OPEN}
-            defaultValue={location}
-            setValue={setLocation}
-            type="location"
+      {!isSmall && (
+        <Flex>
+          <Button
+            borderRadius="20px"
             size="md"
-            isThick
-          />
-        </Box>
-      </Flex> */}
+            fontSize="11px"
+            fontWeight="semibold"
+            h="32px"
+            bg="white"
+            border="var(--border)"
+            borderColor="gray.200"
+            onClick={handleNavButton}
+          >
+            {myStudyParticipation ? "스터디 장소" : "주 활동 장소"}
+          </Button>
+          <Box ml={2}>
+            <Select
+              options={LOCATION_ALL}
+              defaultValue={location}
+              setValue={setLocation}
+              type="location"
+              size="md"
+              isThick
+            />
+          </Box>
+        </Flex>
+      )}
     </Flex>
   );
 }

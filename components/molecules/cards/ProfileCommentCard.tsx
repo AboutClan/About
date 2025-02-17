@@ -36,7 +36,7 @@ export default function ProfileCommentCard({
   const [isCommentModal, setIsCommentModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [text, setText] = useState(comment?.text || "");
-  console.log(24, text);
+ 
   const changeText = () => {
     changeComment(text);
     setIsEdit(false);

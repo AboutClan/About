@@ -1,4 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
+
 import { MainLoadingAbsolute } from "../../../../components/atoms/loaders/MainLoading";
 import FeedLayout, { FeedLayoutProps } from "../../../../components/organisms/FeedLayout";
 import { useFeedTypeQuery } from "../../../../hooks/feed/queries";
@@ -6,7 +7,7 @@ import { convertFeedToLayout } from "../../../../libs/convertFeedToLayout";
 
 function Review() {
   const { data } = useFeedTypeQuery("mine", "gather");
-  console.log(data);
+  console.log(24, data);
   return (
     <>
       {data ? (

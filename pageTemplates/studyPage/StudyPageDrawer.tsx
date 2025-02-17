@@ -1,10 +1,10 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import SectionFooterButton from "../../components/atoms/SectionFooterButton";
 
+import SectionFooterButton from "../../components/atoms/SectionFooterButton";
 import {
   StudyThumbnailCard,
   StudyThumbnailCardProps,
@@ -52,7 +52,7 @@ function StudyPageDrawer({
 
   const { data: userInfo } = useUserInfoQuery();
   const preference = userInfo?.studyPreference;
-  console.log(13, studyVoteData);
+
   useEffect(() => {
     if (!studyVoteData || !currentLocation) return;
 
@@ -86,7 +86,7 @@ function StudyPageDrawer({
     router.replace(`/studyPage?${newSearchParams.toString()}`, { scroll: false });
   };
 
-  const screenHeight = window.innerHeight;
+  // const screenHeight = window.innerHeight;
 
   const onDragEnd = (panInfo: PanInfo) => {
     const newDate = getNewDateBySwipe(panInfo, date as string);
@@ -114,7 +114,6 @@ function StudyPageDrawer({
   const swipePower = (offset: number, velocity: number) => {
     return Math.abs(offset) * velocity;
   };
-  console.log(thumbnailCardInfoArr);
 
   return (
     <Flex flexDir="column" mt={5} mb={8}>
@@ -172,11 +171,14 @@ function StudyPageDrawer({
                     border="var(--border)"
                   >
                     {lastStudyHours > 0 ? (
-                      <>
-                        신규 지역으로 등록된 스터디 장소가 없습니다.
+                      <Box>
+                        {location} 지역에 등록된 스터디 장소가 없습니다.
                         <br />
-                        스터디 버튼을 눌러 새로운 장소를 추가해보세요!
-                      </>
+                        아래 버튼을 눌러 새로운 장소를 등록해보세요!
+                        <Button borderRadius="8px" mt={4} colorScheme="mint" w="full">
+                          신규 스터디 장소 추가
+                        </Button>
+                      </Box>
                     ) : (
                       <>
                         현재 진행중인 스터디가 없네요!
@@ -187,7 +189,7 @@ function StudyPageDrawer({
                   </Flex>
                 )
               ) : (
-                [1, 2, 3, 4, 5].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)
+                [1, 2, 3].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)
               )}
             </motion.div>
             {thumbnailCardInfoArr?.length && (

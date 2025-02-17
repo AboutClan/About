@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -9,7 +9,6 @@ import { STUDY_MAIN_IMAGES } from "../assets/images/studyMain";
 import ArrowBackButton from "../components/atoms/buttons/ArrowBackButton";
 import { MainLoadingAbsolute } from "../components/atoms/loaders/MainLoading";
 import Header from "../components/layouts/Header";
-import { DRAWER_MIN_HEIGHT } from "../components/organisms/drawer/BottomFlexDrawer";
 import VoteMap from "../components/organisms/VoteMap";
 import { USER_LOCATION } from "../constants/keys/localStorage";
 import {
@@ -48,7 +47,7 @@ import { dayjsToFormat } from "../utils/dateTimeUtils";
 import { getRandomIdx } from "../utils/mathUtils";
 import { iPhoneNotchSize } from "../utils/validationUtils";
 
-const NEXT_PUBLIC_NAVER_CLIENT_ID = process.env.NEXT_PUBLIC_NAVER_CLIENT_ID;
+// const NEXT_PUBLIC_NAVER_CLIENT_ID = process.env.NEXT_PUBLIC_NAVER_CLIENT_ID;
 
 export default function StudyPage() {
   const { data: session } = useSession();
@@ -73,6 +72,7 @@ export default function StudyPage() {
   const [locationValue, setLocationValue] = useState<Location>(
     locationParamKr || userLocation === "기타" ? "수원" : userLocation,
   );
+  console.log(setDate);
   const [mapOptions, setMapOptions] = useState<IMapOptions>();
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>();
   const [currentLocation, setCurrentLocation] = useState<CoordinateProps>();
@@ -95,10 +95,6 @@ export default function StudyPage() {
   //초기 param 값들 설정
   //locationValue와 date는 초기부터 존재 (+ useEffect의 의존 인자x)
   //내 스터디 투표 정보가 있는지에 따라 분류
-
-  useEffect(() => {
-    toast("info", "리뉴얼중인 기능입니다. 1월 말에서 2월초 사이 오픈 예정!");
-  }, []);
 
   useEffect(() => {
     if (!locationValue) return;
@@ -237,13 +233,12 @@ export default function StudyPage() {
   //centerLocation이 없는 경우는 없다! 다 방지해야 됨
   //voteDrawerParam 처리가 적절한 위치인지는 모르겠으나 map 생성이 된 이후여야 해서 여기 배치함
   useEffect(() => {
-    console.log(centerLocation, locationValue, isVoteDrawer, centerParam);
     if (!centerLocation || !locationValue) return;
 
     if (isVoteDrawer) return;
     const options = getMapOptions(centerLocation, locationValue, 13);
     setMapOptions(options);
-    console.log("options", options);
+
     if (voteDrawerParam === "up") {
       setIsDrawerUp(false);
       setIsVoteDrawer(true);
@@ -277,7 +272,7 @@ export default function StudyPage() {
         position="relative"
         height={
           !isVoteDrawer
-            ? `calc(100vh - var(--bottom-nav-height) - ${DRAWER_MIN_HEIGHT + iPhoneNotchSize()}px)`
+            ? `calc(100vh - var(--bottom-nav-height) - ${iPhoneNotchSize()}px)`
             : `calc(100vh - 452px - ${iPhoneNotchSize()}px)`
         }
         overflow="hidden"
@@ -297,6 +292,7 @@ export default function StudyPage() {
             }}
             setCenterLocation={setCenterLocation}
             setIsLocationFetch={setIsLocationRefetch}
+            isSmall={false}
           />
         ) : (
           <Box position="fixed" zIndex={20} top="0" left="0">
@@ -316,11 +312,7 @@ export default function StudyPage() {
         />
         {isLoading && <MainLoadingAbsolute />}
       </Box>
-      <StudyControlButton
-        date={date}
-        setIsVoteDrawer={setIsVoteDrawer}
-        setIsDrawerUp={setIsDrawerUp}
-      />
+      <StudyControlButton date={date} setIsVoteDrawer={setIsVoteDrawer} isVoting={false} />
 
       {isVoteDrawer && (
         <VoteDrawer
@@ -500,9 +492,8 @@ export const getMapOptions = (
   location: Location,
   zoomValue?: number,
 ): IMapOptions | undefined => {
-  console.log(123);
   if (typeof naver === "undefined") return undefined;
-  console.log(456);
+
   if (!currentLocation || !location) return;
   const locationBoundary = LOCATION_MAX_BOUNDARY[location];
 

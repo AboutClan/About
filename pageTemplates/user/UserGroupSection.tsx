@@ -2,6 +2,7 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useSetRecoilState } from "recoil";
+
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
 import {
@@ -11,26 +12,21 @@ import {
 import ButtonGroups from "../../components/molecules/groups/ButtonGroups";
 import { useGroupMyStatusQuery } from "../../hooks/groupStudy/queries";
 import { createGroupThumbnailProps } from "../../pages/group";
-
 import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { IGroup } from "../../types/models/groupTypes/group";
-
 import GroupSkeletonMain from "../group/GroupSkeletonMain";
-
-interface UserGroupSectionProps {}
 
 type GroupType = "참여중인 모임" | "종료된 모임" | "내가 개설한 모임";
 
-function UserGroupSection({}: UserGroupSectionProps) {
+function UserGroupSection() {
   const router = useRouter();
   const [groupType, setGroupType] = useState<GroupType>("참여중인 모임");
   const [cardDataArr, setCardDataArr] = useState<GroupThumbnailCardProps[]>();
-  const setTransferGroupData = useSetRecoilState(transferGroupDataState);
+  console.log(setCardDataArr);
   const [groups, setGroups] = useState<IGroup[]>([]);
   const [cursor, setCursor] = useState(0);
   const loader = useRef<HTMLDivElement | null>(null);
   const firstLoad = useRef(true);
-  console.log(groupType);
 
   const setTransdferGroupData = useSetRecoilState(transferGroupDataState);
   const { data: groupData, isLoading } = useGroupMyStatusQuery(
@@ -41,7 +37,6 @@ function UserGroupSection({}: UserGroupSectionProps) {
       ? "isEnded"
       : "isOwner",
   );
-  console.log(groupData);
 
   useEffect(() => {
     setGroups([]);
@@ -55,7 +50,6 @@ function UserGroupSection({}: UserGroupSectionProps) {
     }
   }, [groupData, groupType]);
 
-  console.log(24, groups, groupData);
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {

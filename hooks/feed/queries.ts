@@ -33,6 +33,21 @@ export const useFeedTypeQuery = (
     },
     options,
   );
+export const useFeedCntQuery = (
+  selfType: "mine" | "receive",
+  feedType: "gather" | "group",
+  options?: QueryOptions<FeedProps[]>,
+) =>
+  useQuery<FeedProps[], AxiosError>(
+    [Feed, selfType, feedType],
+    async () => {
+      const res = await axios.get<FeedProps[]>(`${SERVER_URI}/feed/${selfType}`, {
+        params: { type: feedType },
+      });
+      return res.data;
+    },
+    options,
+  );
 
 export const useFeedsQuery = (
   type?: FeedType,

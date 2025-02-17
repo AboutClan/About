@@ -1,7 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 
@@ -12,7 +11,6 @@ import { STUDY_PREFERENCE, STUDY_PREFERENCE_LOCAL } from "../../constants/keys/q
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyPreferenceMutation } from "../../hooks/study/mutations";
 import { useStudyPlacesQuery, useStudyPreferenceQuery } from "../../hooks/study/queries";
-import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { selectStudyPlace } from "../../libs/study/selectStudyPlace";
 import { IModal } from "../../types/components/modalTypes";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
@@ -22,10 +20,6 @@ import ConfirmModal2 from "../common/ConfirmModal2";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 function StudyPresetModal({ setIsModal }: IModal) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const newSearchParams = new URLSearchParams(searchParams);
   const { data: session } = useSession();
   const toast = useToast();
   const typeToast = useTypeToast();
@@ -77,7 +71,7 @@ function StudyPresetModal({ setIsModal }: IModal) {
     },
   });
 
-  const { mutate: getPoint } = usePointSystemMutation("point");
+  // const { mutate: getPoint } = usePointSystemMutation("point");
 
   // const onClose = () => {
   //   newSearchParams.delete("preset");

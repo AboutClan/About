@@ -1,13 +1,13 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
+
 import Avatar from "../../components/atoms/Avatar";
 import UserBadge from "../../components/atoms/badges/UserBadge";
-
 import ProgressMark from "../../components/molecules/ProgressMark";
 import BottomDrawerLg from "../../components/organisms/drawer/BottomDrawerLg";
 import { USER_INFO } from "../../constants/keys/queryKeys";
@@ -16,7 +16,6 @@ import {
   useUserInfoFieldMutation,
   useUserUpdateProfileImageMutation,
 } from "../../hooks/user/mutations";
-import { useUserInfoQuery } from "../../hooks/user/queries";
 import RequestChagneProfileImageModalBadge from "../../modals/userRequest/RequestChangeProfileImageModal/RequestChagneProfileImageModalBadge";
 import RequestChangeProfileImageModalAvatar from "../../modals/userRequest/RequestChangeProfileImageModal/RequestChangeProfileImageModalAvatar";
 import SpecialAvatarModal from "../../modals/userRequest/RequestChangeProfileImageModal/SpecialAvatarModal";
@@ -90,7 +89,7 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
           </Flex>
         </Box>
         <Box border="var(--border)" px={3} py={2} borderRadius="8px">
-          <ProgressMark value={25} />
+          <ProgressMark value={monthScore / 30} />
           <Flex
             align="center"
             justify="center"
@@ -122,7 +121,7 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
           </Flex>
         </Box>
       </Box>
-      <UserPointBlock />{" "}
+      <UserPointBlock />
       <Box>
         <Box mb={4} mx={5} fontWeight="bold" fontSize="16px" lineHeight="24px">
           활동
@@ -137,11 +136,11 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
 
 interface ProfileCameraProps extends IModal {}
 
-export const ProfileCamera = ({ setIsModal }: ProfileCameraProps) => {
+export function ProfileCamera({ setIsModal }: ProfileCameraProps) {
   const { data: session } = useSession();
 
-  const { data: userInfo } = useUserInfoQuery();
-  console.log(userInfo);
+  // const { data: userInfo } = useUserInfoQuery();
+
   const typeToast = useTypeToast();
   const [modalType, setModalType] = useState<"avatar" | "badge" | "specialAvatar">();
   const queryClient = useQueryClient();
@@ -154,6 +153,8 @@ export const ProfileCamera = ({ setIsModal }: ProfileCameraProps) => {
   });
 
   const onClickKakao = () => {
+    typeToast("inspection");
+    return;
     if (session?.user?.role === "guest") {
       typeToast("guest");
       return;
@@ -245,7 +246,7 @@ export const ProfileCamera = ({ setIsModal }: ProfileCameraProps) => {
       )}
     </>
   );
-};
+}
 
 const CommentText = styled.span`
   display: -webkit-box;
@@ -274,7 +275,7 @@ const IconWrapper = styled.button`
 
 export default UserProfileSection;
 
-export const CameraIcon = ({ size }: { size?: "md" | "lg" }) => {
+export function CameraIcon({ size }: { size?: "md" | "lg" }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -297,4 +298,4 @@ export const CameraIcon = ({ size }: { size?: "md" | "lg" }) => {
       />
     </svg>
   );
-};
+}

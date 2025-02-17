@@ -2,6 +2,7 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useSetRecoilState } from "recoil";
+
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
 import {
@@ -15,11 +16,9 @@ import { IGather } from "../../types/models/gatherTypes/gatherTypes";
 import GatherSkeletonMain from "../gather/GatherSkeletonMain";
 import { setGatherDataToCardCol } from "../home/HomeGatherCol";
 
-interface UserGatherSectionProps {}
-
 type GatherType = "참여중인 모임" | "종료된 모임" | "내가 개설한 모임";
 
-function UserGatherSection({}: UserGatherSectionProps) {
+function UserGatherSection() {
   const router = useRouter();
   const [gatherType, setGatherType] = useState<GatherType>("참여중인 모임");
   const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>();
@@ -28,7 +27,7 @@ function UserGatherSection({}: UserGatherSectionProps) {
   const [cursor, setCursor] = useState(0);
   const loader = useRef<HTMLDivElement | null>(null);
   const firstLoad = useRef(true);
-  console.log(gatherType);
+
   const { data: gatherData, isLoading } = useGatherMyStatusQuery(
     cursor,
     gatherType === "참여중인 모임"
@@ -37,7 +36,6 @@ function UserGatherSection({}: UserGatherSectionProps) {
       ? "isEnded"
       : "isOwner",
   );
-  console.log(gatherData);
 
   useEffect(() => {
     setGathers([]);

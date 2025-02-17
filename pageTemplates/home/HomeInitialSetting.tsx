@@ -1,5 +1,5 @@
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { createGlobalStyle } from "styled-components";
 
@@ -134,7 +134,7 @@ function HomeInitialSetting() {
 
   return (
     <>
-      {userInfo && !isGuest && <UserSettingPopUp userInfo={userInfo} />}
+      {userInfo && !isGuest && <UserSettingPopUp />}
       <GlobalStyle />
       {/* <Joyride
         hideCloseButton={true}

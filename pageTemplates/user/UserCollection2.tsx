@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
 

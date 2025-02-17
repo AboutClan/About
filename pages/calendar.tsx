@@ -19,7 +19,7 @@ function CalendarPage() {
 
   const handleImageLoad = () => {
     setIsImageLoaded(true);
-    console.log("Image has been loaded");
+    
   };
 
   return (

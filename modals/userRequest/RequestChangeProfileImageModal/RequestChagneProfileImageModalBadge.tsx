@@ -46,9 +46,10 @@ function RequestChagneProfileImageModalBadge({ setIsModal }) {
         동아리 점수에 따라 새로운 배지가 오픈됩니다. 특정 이벤트에서만 얻을 수 있는{" "}
         <b>유니크 배지</b>도 존재합니다.
       </Box>
-      <Grid h="132px" overflow="auto" gridTemplateColumns={"repeat(3,1fr)"} gap={2} p={3}>
-        {USER_BADGE_ARR.map((badge) => (
+      <Grid h="132px" overflow="auto" gridTemplateColumns="repeat(3,1fr)" gap={2} p={3}>
+        {USER_BADGE_ARR.map((badge, idx) => (
           <Button
+            key={idx}
             h="44px"
             borderRadius="8px"
             border={selectBadge === badge ? "2px solid var(--color-mint)" : "var(--border)"}

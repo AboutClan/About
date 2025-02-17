@@ -17,7 +17,7 @@ interface IGatherHeader {
 
 function GatherHeader({ gatherData }: IGatherHeader) {
   const router = useRouter();
-  console.log(2, router.asPath);
+
   const { data: session } = useSession();
 
   // const title = gatherData?.title;
@@ -31,7 +31,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
   // const onClickItem = (idx) => {
   //   setSelectedItem(idx);
   // };
-  console.log(gatherData);
+ 
   return (
     <>
       <Header title="" defaultUrl="/gather">

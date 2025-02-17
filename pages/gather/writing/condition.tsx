@@ -87,7 +87,7 @@ function WritingCondition() {
       return { ...old, [type]: isChecked };
     });
   };
-  console.log(gatherContent?.memberCnt);
+  
   const getMemberConditionText = () => {
     const temp = [];
     if (condition.age) {

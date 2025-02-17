@@ -154,7 +154,7 @@ function StorePage() {
 
   return (
     <>
-      <Header title="포인트 스토어" url="/home">
+      <Header title="포인트 스토어" defaultUrl="/home">
         <RuleIcon setIsModal={setIsModal} />
       </Header>
       <Slide isNoPadding>

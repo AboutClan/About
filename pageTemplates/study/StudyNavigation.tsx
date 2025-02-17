@@ -92,7 +92,7 @@ function StudyNavigation({
       handleSuccess("cancel");
     },
   });
-  [];
+
   const { mutate: handleRealTimeCancel } = useRealTimeCancelMutation({
     onSuccess() {
       handleSuccess("cancel");

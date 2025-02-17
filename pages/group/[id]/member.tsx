@@ -101,7 +101,7 @@ export default function Member() {
       ),
     );
   };
-  console.log(users);
+  
   return (
     <>
       <Header title="멤버 관리" />

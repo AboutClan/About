@@ -12,7 +12,6 @@ import RequestRestCancelModal from "../../../modals/userRequest/RequestRestCance
 import RequestRestModal from "../../../modals/userRequest/RequestRestModal/RequestRestModal";
 import RequestSecedeModal from "../../../modals/userRequest/RequestSecedeModal";
 import RequestSuggestModal from "../../../modals/userRequest/RequestSuggestModal";
-import StudyPresetModal from "../../../modals/userRequest/StudyPresetModal";
 import { UserOverviewModal } from "./UserNavigation";
 
 interface IUserNavigationModals {
@@ -54,7 +53,6 @@ function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals
       {modalOpen === "deposit" && <RequestChargeDepositModal setIsModal={setIsModal} />}
 
       {modalOpen === "secede" && <RequestSecedeModal setIsModal={setIsModal} />}
-      {isPresetModal && <StudyPresetModal />}
 
       {modalOpen === "profile" && <RequestBirthModal setIsModal={setIsModal} />}
       {modalOpen === "mainPlace" && <LocationRegisterPopUp setIsModal={setIsModal} />}
