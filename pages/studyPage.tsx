@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -90,6 +90,10 @@ export default function StudyPage() {
   const { data: studyVoteData, isLoading } = useStudyVoteQuery(date, locationValue, {
     enabled: !!locationValue && !!date,
   });
+
+  useEffect(() => {
+    toast("info", "리뉴얼이 진행중인 페이지입니다. 3월 1일부터 이용 가능");
+  }, []);
 
   useEffect(() => {
     if (!locationValue) return;
@@ -305,7 +309,7 @@ export default function StudyPage() {
             infoBoxPropsArr={[
               { category: "이번 달 참여 횟수", text: "6회" },
               { category: "누적 참여 시간", text: "16시간 20분" },
-              { category: "최근 만난 인원", rightChildren: <>24</> },
+              { category: "최근 만난 인원", rightChildren: <></> },
             ]}
             size="md"
           />
