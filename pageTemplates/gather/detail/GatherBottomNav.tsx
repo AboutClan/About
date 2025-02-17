@@ -1,10 +1,8 @@
-import { Button } from "@chakra-ui/react";
 import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
-import styled from "styled-components";
 
 import Slide from "../../../components/layouts/PageSlide";
 import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
@@ -13,13 +11,13 @@ import { useFeedsQuery } from "../../../hooks/feed/queries";
 import { useGatherParticipationMutation } from "../../../hooks/gather/mutations";
 import GatherExpireModal from "../../../modals/gather/gatherExpireModal/GatherExpireModal";
 import GatherReviewDrawer from "../../../modals/gather/gatherExpireModal/GatherReviewDrawer";
-import GatherParticipateModal from "../../../modals/gather/gatherParticipateModal/GatherParticipateModal";
 import {
   transferFeedSummaryState,
   transferGatherDataState,
 } from "../../../recoils/transferRecoils";
 import { GatherStatus, IGather } from "../../../types/models/gatherTypes/gatherTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import GatherParticipateDrawer from "../GatherParticipateDrawer";
 interface IGatherBottomNav {
   data: IGather;
 }
@@ -43,7 +41,7 @@ function GatherBottomNav({ data }: IGatherBottomNav) {
   const [isReviewDrawer, setIsReviewDrawer] = useState(false);
   const gatherId = +router.query.id;
   const setTransferGather = useSetRecoilState(transferGatherDataState);
-
+  console.log(isParticipationModal);
   const { data: feed } = useFeedsQuery("gather", data?.id, null, true, {
     enabled: !!data?.id,
   });
@@ -121,27 +119,12 @@ function GatherBottomNav({ data }: IGatherBottomNav) {
   };
 
   const { text, handleFunction } = getButtonSettings(data?.status);
-
+  console.log(text, handleFunction);
   return (
     <>
       <Slide isFixed={true} posZero="top">
-        <Layout>
-          <Button
-            size="lg"
-            h="48px"
-            w="100%"
-            borderRadius="var(--rounded-lg)"
-            disabled={!handleFunction}
-            colorScheme={handleFunction ? "mint" : "blackAlpha"}
-            onClick={handleFunction}
-          >
-            {text}
-          </Button>
-        </Layout>
+        <GatherParticipateDrawer data={data} />
       </Slide>
-      {isParticipationModal && (
-        <GatherParticipateModal gather={data} setIsModal={setIsParticipationModal} />
-      )}
       {isExpirationModal && <GatherExpireModal gather={data} setIsModal={setIsExpirationModal} />}
       {isReviewDrawer && (
         <GatherReviewDrawer feed={feed?.[0]} isOpen onClose={() => setIsReviewDrawer(false)} />
@@ -149,15 +132,5 @@ function GatherBottomNav({ data }: IGatherBottomNav) {
     </>
   );
 }
-
-const Layout = styled.nav`
-  position: fixed;
-  left: 50%;
-  bottom: 0;
-  transform: translate(-50%, 0);
-  width: 100%;
-  max-width: 390px;
-  padding: var(--gap-4);
-`;
 
 export default GatherBottomNav;

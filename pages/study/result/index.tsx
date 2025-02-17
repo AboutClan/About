@@ -23,7 +23,7 @@ import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { useCollectionAlphabetQuery } from "../../../hooks/user/sub/collection/queries";
 import PointScoreBar from "../../../pageTemplates/point/pointScore/PointScoreBar";
 import StudyHeader from "../../../pageTemplates/study/StudyHeader";
-import { changeAlphabet } from "../../../pageTemplates/user/userCollection";
+import { changeAlphabet } from "../../../pageTemplates/user/UserCollection2";
 import {
   RealTimeInfoProps,
   StudyParticipationProps,

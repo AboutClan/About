@@ -20,6 +20,7 @@ export interface IProfileCommentCard {
   hasCommentButton?: boolean;
   comment?: MessageSimpleProps;
   changeComment?: (comment: string) => void;
+  size?: "md" | "lg";
 }
 
 export default function ProfileCommentCard({
@@ -35,7 +36,7 @@ export default function ProfileCommentCard({
   const [isCommentModal, setIsCommentModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [text, setText] = useState(comment?.text || "");
-
+ 
   const changeText = () => {
     changeComment(text);
     setIsEdit(false);

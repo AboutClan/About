@@ -5,7 +5,7 @@ import { iPhoneNotchSize } from "../../utils/validationUtils";
 interface BottomFixedButton {
   text: string;
   func: () => void;
-  color?: "mint" | "black";
+  color?: "mint" | "black" | "red";
 }
 
 function BottomFixedButton({ text, func, color = "mint" }: BottomFixedButton) {

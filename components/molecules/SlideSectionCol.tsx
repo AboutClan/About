@@ -12,7 +12,7 @@ interface SlideSectionColProps {
 function SlideSectionCol({ title, subTitle, children }: SlideSectionColProps) {
   const windowWidth = useWindowWidth(); // 현재 화면 너비 가져오기
   const width = windowWidth - 60;
-  console.log(width);
+
   return (
     <Flex flex={`0 0 ${width}px`} direction="column" mt={5}>
       <SectionHeader title={title} subTitle={subTitle} />

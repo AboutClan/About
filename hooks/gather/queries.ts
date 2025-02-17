@@ -18,10 +18,25 @@ export const useGatherQuery = (cursor?: number, options?: QueryOptions<IGather[]
     },
     options,
   );
+export const useGatherMyStatusQuery = (
+  cursor?: number,
+  status?: "isParticipating" | "isEnded" | "isOwner",
+  options?: QueryOptions<IGather[]>,
+) =>
+  useQuery<IGather[], AxiosError>(
+    [GATHER_CONTENT, "status", cursor, status],
+    async () => {
+      const res = await axios.get<IGather[]>(`${SERVER_URI}/gather/status`, {
+        params: { cursor, status },
+      });
+      return res.data;
+    },
+    options,
+  );
 
 export const useGatherIDQuery = (gatherId: number, options?: QueryOptions<IGather>) =>
   useQuery<IGather, AxiosError, IGather>(
-    [GATHER_CONTENT, gatherId],
+    [GATHER_CONTENT, gatherId + ""],
     async () => {
       const res = await axios.get<IGather>(`${SERVER_URI}/gather`, {
         params: { gatherId },

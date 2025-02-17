@@ -1,19 +1,20 @@
-import { Badge } from "@chakra-ui/react";
+import { Badge, Box, Button, Grid } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import styled from "styled-components";
 
+import {
+  BADGE_COLOR_MAPPINGS,
+  USER_BADGE_ARR,
+} from "../../../constants/serviceConstants/badgeConstants";
 import { useCompleteToast, useErrorToast } from "../../../hooks/custom/CustomToast";
 import { useUserRequestMutation } from "../../../hooks/user/sub/request/mutations";
-import { EventBadge } from "../../../types/models/userTypes/userInfoTypes";
 import { IFooterOptions, ModalLayout } from "../../Modals";
-
 function RequestChagneProfileImageModalBadge({ setIsModal }) {
   const { data: session } = useSession();
   const completeToast = useCompleteToast();
   const errorToast = useErrorToast();
 
-  const [selectBadge, setSelectBadge] = useState<EventBadge>(null);
+  const [selectBadge, setSelectBadge] = useState<(typeof USER_BADGE_ARR)[number]>(null);
 
   const { mutate: sendRequest } = useUserRequestMutation({
     onSuccess() {
@@ -21,14 +22,6 @@ function RequestChagneProfileImageModalBadge({ setIsModal }) {
     },
     onError: errorToast,
   });
-
-  const onClick = (type: EventBadge) => {
-    if (selectBadge === type) {
-      setSelectBadge(null);
-      return;
-    }
-    setSelectBadge(type);
-  };
 
   const onApply = () => {
     sendRequest({
@@ -42,65 +35,39 @@ function RequestChagneProfileImageModalBadge({ setIsModal }) {
 
   const footerOptions: IFooterOptions = {
     main: {
-      text: "변경 신청 / 해제 신청(미 선택)",
+      text: "변 경",
       func: onApply,
     },
   };
 
   return (
-    <ModalLayout footerOptions={footerOptions} title="배지 변경 신청" setIsModal={setIsModal}>
-      <Message>
-        이벤트 배지는 출석체크의 랜덤 보상에서 <b>1% 확률</b>로 흭득할 수 있습니다. 배지를 선택 후
-        신청을 완료하시면 관리자가 <b>보유 여부를 확인 후</b> 변경해드립니다.
-      </Message>
-      <Container>
-        <Item isSelected={selectBadge === "딸기스무디"} onClick={() => onClick("딸기스무디")}>
-          <Badge fontSize={12} colorScheme="pink">
-            딸기스무디
-          </Badge>
-        </Item>
-        <Item isSelected={selectBadge === "라벤더"} onClick={() => onClick("라벤더")}>
-          <Badge fontSize={12} colorScheme="facebook">
-            라벤더
-          </Badge>
-        </Item>
-        <Item isSelected={selectBadge === "코코아"} onClick={() => onClick("코코아")}>
-          <Badge fontSize={12} colorScheme="yellow">
-            코코아
-          </Badge>
-        </Item>
-      </Container>
+    <ModalLayout footerOptions={footerOptions} title="배지 변경" setIsModal={setIsModal}>
+      <Box as="p" mb={1} lineHeight="18px" fontSize="12px" color="gray.700">
+        동아리 점수에 따라 새로운 배지가 오픈됩니다. 특정 이벤트에서만 얻을 수 있는{" "}
+        <b>유니크 배지</b>도 존재합니다.
+      </Box>
+      <Grid h="132px" overflow="auto" gridTemplateColumns="repeat(3,1fr)" gap={2} p={3}>
+        {USER_BADGE_ARR.map((badge, idx) => (
+          <Button
+            key={idx}
+            h="44px"
+            borderRadius="8px"
+            border={selectBadge === badge ? "2px solid var(--color-mint)" : "var(--border)"}
+            bg={selectBadge === badge ? "rgba(0,194,179,0.1)" : "white"}
+            onClick={() => setSelectBadge(badge)}
+            position="relative"
+            _hover={{ boxShadow: "none" }}
+            overflow="hidden"
+            isDisabled={badge !== "아메리카노"}
+          >
+            <Badge size="lg" variant="subtle" colorScheme={BADGE_COLOR_MAPPINGS[badge]}>
+              {badge}
+            </Badge>
+          </Button>
+        ))}
+      </Grid>
     </ModalLayout>
   );
 }
-
-const Message = styled.div`
-  margin-bottom: 16px;
-
-  font-size: 12px;
-  color: var(--gray-600);
-  > b,
-  u {
-    color: var(--gray-800);
-  }
-`;
-
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  flex: 1;
-  justify-content: space-around;
-`;
-
-const Item = styled.div<{ isSelected: boolean }>`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex: 0.3;
-  padding: var(--gap-5) 0;
-
-  border: ${(props) => (props.isSelected ? "var(--border-mint)" : "var(--border)")};
-  border-radius: var(--rounded-lg);
-`;
 
 export default RequestChagneProfileImageModalBadge;

@@ -1,35 +1,38 @@
-import { AxiosError } from "axios";
 import { AnimatePresence, motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { UseMutateFunction } from "react-query";
+import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
 import Avatar from "../../../components/atoms/Avatar";
 import ImageSlider from "../../../components/organisms/imageSlider/ImageSlider";
 import { COLOR_TABLE_LIGHT } from "../../../constants/colorConstants";
-import { useFailToast } from "../../../hooks/custom/CustomToast";
+import { USER_INFO } from "../../../constants/keys/queryKeys";
+import { useErrorToast, useFailToast } from "../../../hooks/custom/CustomToast";
+import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
 import { usePointSystemQuery } from "../../../hooks/user/queries";
 import { AVATAR_COST, AVATAR_IMAGE_ARR } from "../../../storage/avatarStorage";
 import { IModal } from "../../../types/components/modalTypes";
-import { IAvatar } from "../../../types/models/userTypes/userInfoTypes";
 import { IFooterOptions, ModalLayout } from "../../Modals";
-interface IRequestChangeProfileImageModalAvatar extends IModal {
-  setUserAvatar: UseMutateFunction<
-    void,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    AxiosError<unknown, any>,
-    IAvatar,
-    unknown
-  >;
-}
+interface IRequestChangeProfileImageModalAvatar extends IModal {}
 
 function RequestChangeProfileImageModalAvatar({
   setIsModal,
-  setUserAvatar,
 }: IRequestChangeProfileImageModalAvatar) {
   const { data: session } = useSession();
+
+  const errorToast = useErrorToast();
   const failToast = useFailToast();
+
+  const queryClient = useQueryClient();
+
+  const { mutate: setUserAvatar } = useUserInfoFieldMutation("avatar", {
+    onSuccess() {
+      queryClient.invalidateQueries([USER_INFO]);
+      setIsModal(false);
+    },
+    onError: errorToast,
+  });
 
   const isGuest = session?.user.name === "guest";
 
@@ -146,27 +149,30 @@ const DownPart = styled.div`
 
 const IconPoint = styled.div`
   color: var(--color-mint);
+  font-size: 11px;
+  margin-top: 12px;
+  font-weight: 600;
 `;
 
 const variants = {
   entry: (isBack: boolean) => ({
-    x: isBack ? -200 : 200,
+    x: isBack ? -100 : 100,
     opacity: 0,
-    scale: 0.5,
+    scale: 0.3,
   }),
   center: {
     x: 0,
     opacity: 1,
     scale: 1,
     transition: {
-      duration: 0.4,
+      duration: 0.3,
     },
   },
   exit: (isBack: boolean) => ({
-    x: isBack ? 200 : -200,
+    x: isBack ? 100 : -100,
     opacity: 0,
     scale: 0.5,
-    transition: { duration: 0.4 },
+    transition: { duration: 0.3 },
   }),
 };
 export default RequestChangeProfileImageModalAvatar;

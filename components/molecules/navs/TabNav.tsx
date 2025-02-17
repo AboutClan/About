@@ -55,7 +55,7 @@ export default function TabNav({
               flexShrink="0 !important"
               fontSize="13px"
               fontWeight={index === idx ? 600 : 400}
-              p={!isMain ? "8px 20px" : "8px 16px"}
+              p={!isMain ? "8px 20px" : "8px 12px"}
               flex={isFullSize ? 1 : undefined}
               key={tab.text}
               color={tab.text === selected ? (isBlack ? "black" : "mint") : undefined}

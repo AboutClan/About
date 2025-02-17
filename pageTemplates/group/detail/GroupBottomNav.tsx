@@ -156,7 +156,7 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
             </Button>
             <Button
               my={2}
-              size="lg"
+              size="md"
               color="gray.700"
               fontWeight="semibold"
               variant="ghost"

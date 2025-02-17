@@ -14,7 +14,7 @@ function Like() {
     <>
       <Header title="좋아요 기록" />
       <Slide>
-        <Box minH="100dvh">
+        <Box minH="100dvh" mt="56px">
           {activeLogs ? (
             <Container>
               {activeLogs

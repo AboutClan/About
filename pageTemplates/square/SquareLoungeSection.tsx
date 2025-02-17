@@ -141,7 +141,7 @@ function SquareLoungeSection() {
             </Flex>
           )
         ) : (
-          <Box bg="pink" mt="180px" position="relative">
+          <Box mt="180px" position="relative">
             <MainLoadingAbsolute size="md" />
           </Box>
         )}

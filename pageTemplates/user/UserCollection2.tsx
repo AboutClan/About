@@ -9,6 +9,7 @@ import IconRowBlock from "../../components/atoms/blocks/IconRowBlock";
 import { useCollectionAlphabetQuery } from "../../hooks/user/sub/collection/queries";
 import UserCollectionModal from "../../modals/user/collection/UserCollectionAlphabetModal";
 import { Alphabet } from "../../types/models/collections";
+import { ArrowIcon } from "./UserProfile2";
 
 export const changeAlphabet = (alphabet: Alphabet) => {
   switch (alphabet) {
@@ -38,11 +39,11 @@ export default function UserCollection() {
   const alphabetArr = alphabets?.collects;
 
   return (
-    <Flex direction="column">
+    <Flex direction="column" mb={8}>
       <Link href="/user/alphabet">
         <BlockItem>
           <span>알파벳 컬렉션</span>
-          <i className="fa-solid fa-chevron-right" />
+          <ArrowIcon />
         </BlockItem>
         <AlphabetContainer>
           <AboutIcon alphabet="A" isActive={alphabetArr?.includes("A")} />
@@ -72,8 +73,8 @@ const BlockItem = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--gap-4);
-
+  padding: 12px 20px;
+  line-height: 20px;
   font-weight: 600;
   > span:first-child {
     > b {

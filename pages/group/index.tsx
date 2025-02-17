@@ -271,25 +271,7 @@ function GroupPage() {
                             () => setTransdferGroupData(group),
                             true,
                           )}
-                          // title={group.title}
-                          // text={group.guide}
-                          // status={group.participants.length <= 1 ? "ready" : status}
-                          // category={group.category}
-                          // participants={group.participants.map((user) =>
-                          //   group.isSecret ? { user: ABOUT_USER_SUMMARY } : user,
-                          // )}
-                          // imageProps={{
-                          //   image:
-                          //     group?.squareImage ||
-                          //     GATHER_RANDOM_IMAGE_ARR[
-                          //       getRandomIdx(GATHER_RANDOM_IMAGE_ARR.length - 1)
-                          //     ],
-                          //   isPriority: idx < 4,
-                          // }}
-                          // maxCnt={group.memberCnt.max}
-                          // id={group.id}
-                          // func={() => setTransdferGroupData(group)}
-                          // waitingCnt={group.participants.length <= 1 && group.waiting.length}
+                    
                         />
                       </Box>
                     );

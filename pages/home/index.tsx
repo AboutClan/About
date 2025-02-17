@@ -10,7 +10,7 @@ import HomeReviewSection from "../../pageTemplates/home/HomeReviewSection";
 
 function Home() {
   const { data: data } = useGroupSnapshotQuery();
-  console.log(data);
+
   return (
     <>
       <HomeInitialSetting />

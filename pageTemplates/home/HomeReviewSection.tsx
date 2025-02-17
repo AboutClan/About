@@ -39,8 +39,8 @@ export default function HomeReviewSection() {
           >
             {[1, 2, 3, 4].map((item) => (
               <GridItem key={item} w="full">
-                <Skeleton w="full" aspectRatio={1 / 1} bg="pink" borderRadius="12px"></Skeleton>
-                <Skeleton mt={2} h="16.5px" w="full" bg="pink">
+                <Skeleton w="full" aspectRatio={1 / 1} borderRadius="12px"></Skeleton>
+                <Skeleton mt={2} h="16.5px" w="full">
                   34
                 </Skeleton>
               </GridItem>

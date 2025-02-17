@@ -214,6 +214,7 @@ function CollectionAlphabet() {
 
 const Members = styled.div`
   margin: 0 var(--gap-4);
+  margin-top: 56px;
 `;
 
 const Item = styled.div`

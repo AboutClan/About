@@ -4,9 +4,7 @@ import { useEffect, useState } from "react";
 
 import {
   ATTEND_POP_UP,
-  FAQ_POP_UP,
   GATHER_JOIN_MEMBERS,
-  PROMOTION_POP_UP,
   STUDY_ATTEND_MEMBERS,
 } from "../../../constants/keys/localStorage";
 import { useGatherQuery } from "../../../hooks/gather/queries";
@@ -18,7 +16,7 @@ import LocationRegisterPopUp from "../../../modals/pop-up/LocationRegisterPopUp"
 import StudyChallengeModal from "../../../modals/pop-up/StudyChallengeModal";
 import { default as StudyPrefenceDrawer } from "../../../modals/pop-up/StudyPreferenceDrawer";
 import StudyPreferencePopUp from "../../../modals/pop-up/StudyPreferencePopUp";
-import { IUser, IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { checkAndSetLocalStorage } from "../../../utils/storageUtils";
 
 export type UserPopUp =
@@ -50,13 +48,9 @@ const MODAL_COMPONENTS = {
   studyChallenge: StudyChallengeModal,
 };
 
-interface UserSettingPopUpProps {
-  userInfo: IUser;
-}
-
-export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
+export default function UserSettingPopUp() {
   const { data: session } = useSession();
-  console.log(userInfo);
+
   const [modalTypes, setModalTypes] = useState<UserPopUp[]>([]);
   // const [recentMembers, setRecentMembers] = useState<IUserSummary[]>();
   // const [drawerType, setDrawerType] = useState<"bottom" | "right">();
@@ -143,15 +137,15 @@ export default function UserSettingPopUp({ userInfo }: UserSettingPopUpProps) {
     //   setModalTypes((old) => [...old, "enthusiastic"]);
     //   if (popUpCnt++ === 2) return;
     // }
-    if (!checkAndSetLocalStorage(FAQ_POP_UP, 21)) {
-      setModalTypes((old) => [...old, "faq"]);
-      return;
-    }
+    // if (!checkAndSetLocalStorage(FAQ_POP_UP, 21)) {
+    //   setModalTypes((old) => [...old, "faq"]);
+    //   return;
+    // }
 
-    if (!checkAndSetLocalStorage(PROMOTION_POP_UP, 14)) {
-      setModalTypes((old) => [...old, "promotion"]);
-      return;
-    }
+    // if (!checkAndSetLocalStorage(PROMOTION_POP_UP, 14)) {
+    //   setModalTypes((old) => [...old, "promotion"]);
+    //   return;
+    // }
     // if (userInfo?.weekStudyTargetHour === 0) {
     //   setModalTypes((old) => [...old, "studyChallenge"]);
     // }

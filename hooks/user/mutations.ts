@@ -39,10 +39,10 @@ export const useUserRegisterControlMutation = <T extends "post" | "delete">(
     options,
   );
 
-export const useUserInfoMutation = (options?: MutationOptions<IUser>) =>
-  useMutation<void, AxiosError, IUser>(
+export const useUserInfoMutation = (options?: MutationOptions<Partial<IUser>>) =>
+  useMutation<void, AxiosError, Partial<IUser>>(
     (param) =>
-      requestServer<IUser>({
+      requestServer<Partial<IUser>>({
         method: "post",
         url: `user/profile`,
         body: param,
@@ -53,22 +53,24 @@ export const useUserInfoMutation = (options?: MutationOptions<IUser>) =>
 type UserInfoFieldParam<T> = T extends "avatar"
   ? IAvatar
   : T extends "role"
-    ? { role: UserRole }
-    : T extends "rest"
-      ? { info: IApplyRest }
-      : T extends "belong"
-        ? { uid: string; belong: string }
-        : T extends "isPrivate"
-          ? { isPrivate: boolean }
-          : T extends "instagram"
-            ? { instagram: string }
-            : T extends "comment"
-              ? { comment: string }
-              : T extends "locationDetail"
-                ? LocationDeatilProps
-                : T extends "weekStudyTargetHour"
-                  ? { hour: number }
-                  : null;
+  ? { role: UserRole }
+  : T extends "rest"
+  ? { info: IApplyRest }
+  : T extends "belong"
+  ? { uid: string; belong: string }
+  : T extends "isPrivate"
+  ? { isPrivate: boolean }
+  : T extends "instagram"
+  ? { instagram: string }
+  : T extends "comment"
+  ? { comment: string }
+  : T extends "locationDetail"
+  ? LocationDeatilProps
+  : T extends "weekStudyTargetHour"
+  ? { hour: number }
+  : T extends "badge"
+  ? { badgeIdx: number }
+  : null;
 
 export const useUserInfoFieldMutation = <
   T extends
@@ -80,7 +82,8 @@ export const useUserInfoFieldMutation = <
     | "isPrivate"
     | "instagram"
     | "locationDetail"
-    | "weekStudyTargetHour",
+    | "weekStudyTargetHour"
+    | "badge",
 >(
   field: T,
   options?: MutationOptions<UserInfoFieldParam<T>>,

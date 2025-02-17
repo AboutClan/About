@@ -8,7 +8,7 @@ import { COLOR_TABLE_LIGHT } from "../../constants/colorConstants";
 import { AVATAR_IMAGE_ARR, SPECIAL_AVATAR, SPECIAL_BG } from "../../storage/avatarStorage";
 import { IAvatar as IAvatarProp } from "../../types/models/userTypes/userInfoTypes";
 
-type Size = "2xs" | "xs" | "sm" | "smd" | "mds" | "md" | "lg" | "xl";
+type Size = "2xs" | "xs" | "sm" | "smd" | "mds" | "md" | "lg" | "xl" | "slg" | "xxl";
 
 interface IAvatar {
   image?: string;
@@ -99,8 +99,12 @@ function AvatarComponent({
                     ? "48px"
                     : size === "lg"
                     ? "64px"
+                    : size === "slg"
+                    ? "60px"
                     : size === "xl"
                     ? "80px"
+                    : size === "xxl"
+                    ? "120px"
                     : "")
                 }
                 priority={isPriority}
@@ -192,6 +196,11 @@ const AvatarContainer = styled.div<{
             width: 48px; // w-11
             height: 48px; // h-11
           `;
+        case "slg":
+          return css`
+            width: 60px;
+            height: 60px;
+          `;
         case "lg":
           return css`
             width: 64px;
@@ -201,6 +210,11 @@ const AvatarContainer = styled.div<{
           return css`
             width: 80px; // w-20
             height: 80px; // h-20
+          `;
+        case "xxl":
+          return css`
+            width: 120px; // w-20
+            height: 120px; // h-20
           `;
         default:
           return css``;
@@ -249,6 +263,8 @@ const ImageContainer = styled.div<{
       ? "6px"
       : props.size === "lg"
       ? "6px"
+      : props.size === "xxl"
+      ? "12px"
       : "8px")};
 
   background: ${(props) => (props.isBgImage ? `center/cover no-repeat ${props.bg}` : props.bg)};

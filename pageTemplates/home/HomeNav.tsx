@@ -14,7 +14,7 @@ function HomeNav() {
           key={item.title}
           style={{ flex: 1, marginLeft: idx === 0 ? 0 : "8px" }}
           onClick={(e) => {
-            if (item.title === "랭킹" || item.title === "게시판") {
+            if (item.title === "게시판") {
               e.preventDefault();
               typeToast("inspection");
               return;

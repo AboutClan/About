@@ -52,16 +52,22 @@ export function StudyThumbnailCard({
     }));
 
   const studyStatus = status === "pending" && participantCnt >= 3 ? "expected" : status;
-
+  
   return (
     <CardLink href={url} onClick={func}>
       {participants ? (
         <>
           <PlaceImage size="md" imageProps={place.imageProps} hasToggleHeart id={id} />
           <Flex direction="column" ml={4} flex={1}>
-            <Badge mr="auto" colorScheme={STUDY_STATUS_TO_BADGE[studyStatus].colorScheme} size="md">
-              {STUDY_STATUS_TO_BADGE[studyStatus].text}
-            </Badge>
+            {studyStatus === "pending" ? null : (
+              <Badge
+                mr="auto"
+                colorScheme={STUDY_STATUS_TO_BADGE[studyStatus].colorScheme}
+                size="md"
+              >
+                {STUDY_STATUS_TO_BADGE[studyStatus].text}
+              </Badge>
+            )}
             <Title>{place.name}</Title>
             <Flex>
               <LocationDotIcon size="md" />
@@ -129,15 +135,17 @@ export function StudyThumbnailCard({
                 </Flex>
                 <Title>{place.name}</Title>{" "}
               </Box>
-              <Box>
-                <Badge
-                  mr="auto"
-                  colorScheme={STUDY_STATUS_TO_BADGE[studyStatus].colorScheme}
-                  size="md"
-                >
-                  {STUDY_STATUS_TO_BADGE[studyStatus].text}
-                </Badge>
-              </Box>
+              {studyStatus === "pending" ? null : (
+                <Box>
+                  <Badge
+                    mr="auto"
+                    colorScheme={STUDY_STATUS_TO_BADGE[studyStatus].colorScheme}
+                    size="md"
+                  >
+                    {STUDY_STATUS_TO_BADGE[studyStatus].text}
+                  </Badge>
+                </Box>
+              )}
             </Flex>
             <Subtitle>
               <Box>

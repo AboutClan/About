@@ -7,7 +7,7 @@ import {
 import { type ForwardedRef,forwardRef } from "react";
 
 type InputProps = ChakraInputProps & {
-  size?: "xs" | "sm" | "md";
+  size?: "xs" | "sm" | "md" | "lg";
   disabled?: boolean;
 };
 
@@ -19,12 +19,18 @@ export const Input = forwardRef(function Input(
     <ChakraInput
       ref={ref}
       focusBorderColor="#00c2b3"
+      {...(size === "lg" && {
+        height: "52px",
+        fontSize: "13px",
+        fontWeight: "regular",
+        lineHeight: "20px",
+      })}
       backgroundColor={size === "sm" ? "inherit" : "white"}
-      borderColor="var(--gray-300)"
+      borderColor="var(--gray-200)"
       size={size}
       border={size === "sm" ? "none" : undefined}
       borderBottom={size === "sm" && "1px solid var(--gray-200)"}
-      borderRadius={size === "sm" ? "none" : "4px"}
+      borderRadius={size === "lg" ? "8px" : size === "sm" ? "none" : "4px"}
       _focus={{
         outline: size === "sm" ? "none" : undefined,
         boxShadow: size === "sm" ? "none" : undefined,
@@ -35,11 +41,11 @@ export const Input = forwardRef(function Input(
 });
 
 interface InputGroupProps extends InputProps {
-  icon: React.ReactNode;
+  icon?: React.ReactNode;
 }
 
 export const InputGroup = forwardRef(function InputGroup(
-  { isDisabled, value, onChange, placeholder, disabled }: InputGroupProps,
+  { isDisabled, value, onChange, placeholder, disabled, icon }: InputGroupProps,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   return (
@@ -62,7 +68,12 @@ export const InputGroup = forwardRef(function InputGroup(
         _placeholder={{ color: "var(--gray-500)" }}
       />
       <InputRightElement h="100%" display="flex" pr="8px">
-        <i className="fa-solid fa-magnifying-glass fa-sm" style={{ color: "var(--color-mint)" }} />
+        {icon || (
+          <i
+            className="fa-solid fa-magnifying-glass fa-sm"
+            style={{ color: "var(--color-mint)" }}
+          />
+        )}
       </InputRightElement>
     </ChakraInputGroup>
   );

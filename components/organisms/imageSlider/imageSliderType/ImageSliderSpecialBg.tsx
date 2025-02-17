@@ -42,7 +42,7 @@ const AvatarColorItem = styled.div`
   height: 68px;
   border-radius: 50%;
   overflow: hidden;
-  background-color: pink;
+
   align-items: center;
   border: var(--border-main);
   /* > span {

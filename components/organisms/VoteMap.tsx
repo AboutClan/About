@@ -28,7 +28,7 @@ export default function VoteMap({
     polylines: [],
     infoWindow: [],
   });
- 
+
   useEffect(() => {
     if (!mapRef?.current || typeof naver === "undefined" || !mapOptions) return;
 

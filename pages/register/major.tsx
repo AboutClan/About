@@ -9,6 +9,7 @@ import { MAJORS_DATA } from "../../constants/contentsText/ProfileData";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
+import { DispatchType } from "../../types/hooks/reactTypes";
 import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
 function Major() {
@@ -18,7 +19,7 @@ function Major() {
 
   const info = getLocalStorageObj(REGISTER_INFO);
 
-  const [majors, setmajors] = useState<{ department: string; detail: string }[]>(
+  const [majors, setMajors] = useState<{ department: string; detail: string }[]>(
     info?.majors || [],
   );
 
@@ -39,9 +40,28 @@ function Major() {
     setLocalStorageObj(REGISTER_INFO, { ...info, majors });
   };
 
+  return (
+    <>
+      <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={66} />
+      <MajorLayout majors={majors} setMajors={setMajors} />
+
+      <BottomNav onClick={onClickNext} url="/register/comment" />
+    </>
+  );
+}
+
+export function MajorLayout({
+  majors,
+  setMajors,
+}: {
+  majors: { department: string; detail: string }[];
+  setMajors: DispatchType<{ department: string; detail: string }[]>;
+}) {
+  const toast = useToast();
+
   const onClickBtn = (department: string, detail: string) => {
     if (majors?.find((item) => item?.detail === detail)) {
-      setmajors((old) => old.filter((item) => item.detail !== detail));
+      setMajors((old) => old.filter((item) => item.detail !== detail));
       return;
     }
     if (majors.length >= 2) {
@@ -55,41 +75,35 @@ function Major() {
       });
       return;
     }
-    setmajors((old) => [...old, { department, detail }]);
+    setMajors((old) => [...old, { department, detail }]);
   };
-
   return (
-    <>
-      <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={66} />
-
-      <RegisterLayout>
-        <RegisterOverview>
-          <span>전공을 선택해 주세요</span>
-          <span>다중 선택도 가능해요!</span>
-        </RegisterOverview>
-        {MAJORS_DATA?.map((item, idx) => (
-          <Section key={idx}>
-            <SectionTitle>{item.department}</SectionTitle>
-            <SectionContent>
-              {item.details?.map((detail, idx) => (
-                <Content
-                  key={idx}
-                  $isSelected={Boolean(
-                    majors?.find(
-                      (majors) => majors.detail === detail && majors.department === item.department,
-                    ),
-                  )}
-                  onClick={() => onClickBtn(item.department, detail)}
-                >
-                  {detail}
-                </Content>
-              ))}
-            </SectionContent>
-          </Section>
-        ))}
-      </RegisterLayout>
-      <BottomNav onClick={onClickNext} url="/register/comment" />
-    </>
+    <RegisterLayout>
+      <RegisterOverview>
+        <span>전공을 선택해 주세요</span>
+        <span>다중 선택도 가능해요!</span>
+      </RegisterOverview>
+      {MAJORS_DATA?.map((item, idx) => (
+        <Section key={idx}>
+          <SectionTitle>{item.department}</SectionTitle>
+          <SectionContent>
+            {item.details?.map((detail, idx) => (
+              <Content
+                key={idx}
+                $isSelected={Boolean(
+                  majors?.find(
+                    (majors) => majors.detail === detail && majors.department === item.department,
+                  ),
+                )}
+                onClick={() => onClickBtn(item.department, detail)}
+              >
+                {detail}
+              </Content>
+            ))}
+          </SectionContent>
+        </Section>
+      ))}
+    </RegisterLayout>
   );
 }
 

@@ -61,7 +61,7 @@ export const setStudyToThumbnailInfo = (
           location,
           "en",
         )}`,
-      status: data.status,
+      status: data.status === "pending" && data.members.length > 1 ? "expected" : data.status,
       id: data.place._id,
     };
   });

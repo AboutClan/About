@@ -3,20 +3,28 @@ import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-import ButtonWrapper from "../../../components/atoms/ButtonWrapper";
+import LocationSelector from "../../../components/atoms/LocationSelector";
 import SectionHeader from "../../../components/atoms/SectionHeader";
 import { ShortArrowIcon } from "../../../components/Icons/ArrowIcons";
+import { LOCATION_ALL } from "../../../constants/location";
 import DateCalendarModal from "../../../modals/aboutHeader/DateCalendarModal";
-import { DispatchString } from "../../../types/hooks/reactTypes";
+import { DispatchString, DispatchType } from "../../../types/hooks/reactTypes";
+import { Location } from "../../../types/services/locationTypes";
 import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
 
 interface StudyPageDrawerHeaderProps {
   date: string;
   setDate: DispatchString;
-  isDrawerUp: boolean;
+  location: Location;
+  setLocation: DispatchType<Location>;
 }
 
-function StudyPageDrawerHeader({ date, setDate, isDrawerUp }: StudyPageDrawerHeaderProps) {
+function StudyPageDrawerHeader({
+  date,
+  setDate,
+  location,
+  setLocation,
+}: StudyPageDrawerHeaderProps) {
   const [isCalendarModal, setIsCalendarModal] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -30,7 +38,7 @@ function StudyPageDrawerHeader({ date, setDate, isDrawerUp }: StudyPageDrawerHea
     newSearchParams.set("date", newDate);
     router.replace(`/studyPage?${newSearchParams.toString()}`);
   };
-
+  console.log(navigateNextDay);
   return (
     <>
       <Box mb={4}>
@@ -48,13 +56,14 @@ function StudyPageDrawerHeader({ date, setDate, isDrawerUp }: StudyPageDrawerHea
               color="var(--color-mint)"
               onClick={() => setIsCalendarModal(true)}
             >
-              <ShortArrowIcon dir={isDrawerUp ? "bottom" : "top"} />
+              <ShortArrowIcon dir="bottom" />
             </Button>
-            {!isDrawerUp && (
-              <ButtonWrapper onClick={navigateNextDay} text="내일" size="xs">
-                <ShortArrowIcon dir="right" />
-              </ButtonWrapper>
-            )}
+
+            <LocationSelector
+              options={LOCATION_ALL}
+              defaultValue={location}
+              setValue={setLocation}
+            />
           </Flex>
         </SectionHeader>
       </Box>

@@ -46,7 +46,9 @@ type ToastType =
   | "secret-avatar"
   | "vote"
   | "omission"
-  | "inspection";
+  | "inspection"
+  | "participate"
+  | "apply";
 
 export const useTypeToast = () => {
   const toast = useChakraToast();
@@ -88,6 +90,12 @@ const getTypeToToast = (
         title: "투표 완료",
         colorScheme: "mint",
       };
+    case "apply":
+      return {
+        status: "success",
+        title: "신청 완료",
+        colorScheme: "mint",
+      };
     case "guest":
       return {
         status: "error",
@@ -95,7 +103,7 @@ const getTypeToToast = (
       };
     case "cancel":
       return {
-        status: "error",
+        status: "success",
         title: "취소되었습니다",
       };
     case "error":
@@ -119,6 +127,12 @@ const getTypeToToast = (
       return {
         status: "success",
         title: "초대가 완료되었습니다",
+        colorScheme: "mint",
+      };
+    case "participate":
+      return {
+        status: "success",
+        title: "참여 완료!",
         colorScheme: "mint",
       };
     case "not-yet":
