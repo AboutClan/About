@@ -41,7 +41,7 @@ function Birthday() {
   const onClickNext = (e) => {
     const age = birthToAge(dayjs(startDate).format("YYMMDD"));
 
-    if (age < 19 || age > 26) {
+    if (age > 26) {
       setErrorMessage("죄송합니다. 19 ~ 26세의 인원만 가입이 가능합니다.");
       e.preventDefault();
       return;
@@ -80,7 +80,7 @@ function Birthday() {
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>생년월일을 입력해 주세요</span>
-          <span>만 19세 ~ 만 26세의 인원만 가입이 가능합니다!</span>
+          <span>20살부터 20대 중후반까지 다양한 인원이 활동하고 있어요!</span>
         </RegisterOverview>
         <DateContainer>
           <DateStr>{myBirth}</DateStr>
