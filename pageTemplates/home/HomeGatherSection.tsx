@@ -26,10 +26,10 @@ function HomeGatherSection() {
           }}
         >
           <SlideSectionCol title="About 번개 모임" subTitle="친구들과의 즐거운 만남">
-            <HomeGatherCol gathers={gathers?.slice(0, 3)} />
+            <HomeGatherCol gathers={gathers?.slice(0, 3)} isPriority />
           </SlideSectionCol>
           <SlideSectionCol title="About 번개 모임" subTitle="같은 관심사를 나누는 만남의 장">
-            <HomeGatherCol gathers={gathers?.slice(3, 6)} />
+            <HomeGatherCol gathers={gathers?.slice(3, 6)} isPriority={false} />
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence>
@@ -46,10 +46,10 @@ function HomeGatherSection() {
           }}
         >
           <SlideSectionCol title="About 카공 스터디" subTitle="동네 친구와의 스터디">
-            <HomeGatherCol gathers={gathers?.slice(6, 9)} />
+            <HomeGatherCol gathers={gathers?.slice(6, 9)} isPriority={false} />
           </SlideSectionCol>
           <SlideSectionCol title="About 카공 스터디" subTitle="같이 공부해요">
-            <HomeGatherCol gathers={gathers?.slice(9)} />
+            <HomeGatherCol gathers={gathers?.slice(9)} isPriority={false} />
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence>

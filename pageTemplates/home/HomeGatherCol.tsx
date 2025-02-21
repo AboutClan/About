@@ -20,9 +20,10 @@ dayjs().locale("ko");
 
 interface HomeGatherColProps {
   gathers: IGather[];
+  isPriority: boolean;
 }
 
-export default function HomeGatherCol({ gathers }: HomeGatherColProps) {
+export default function HomeGatherCol({ gathers, isPriority }: HomeGatherColProps) {
   const { data: session } = useSession();
 
   const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>([]);
@@ -30,11 +31,12 @@ export default function HomeGatherCol({ gathers }: HomeGatherColProps) {
   const setTransferGather = useSetRecoilState(transferGatherDataState);
 
   useEffect(() => {
+    console.log(23, gathers);
     if (!gathers) return;
     const handleNavigate = (gather: IGather) => {
       setTransferGather(gather);
     };
-    setCardDataArr(setGatherDataToCardCol(gathers.slice(0, 3), null, handleNavigate));
+    setCardDataArr(setGatherDataToCardCol(gathers.slice(0, 3), isPriority, handleNavigate));
   }, [gathers]);
 
   return (
@@ -58,27 +60,33 @@ export default function HomeGatherCol({ gathers }: HomeGatherColProps) {
     </Box>
   );
 }
+const imageCache: { [key: string]: string } = {}; // 이미지 캐시 전역 변수
 
 export const setGatherDataToCardCol = (
   gathers: IGather[],
-  priorityNum: number,
+  isPriority: boolean,
   func?: (gather: IGather) => void,
 ): GatherThumbnailCardProps[] => {
-  const cardCol: GatherThumbnailCardProps[] = gathers.map((gather, idx) => ({
-    title: gather.title,
-    status: gather.status,
-    category: gather.type.title,
-    date: dayjsToFormat(dayjs(gather.date).locale("ko"), "M.D(ddd) HH:mm"),
-    place: gather.location.main,
-    imageProps: {
-      image: gather.image || getRandomImage(),
-      isPriority: priorityNum ? idx <= priorityNum : idx < 3,
-    },
-    id: gather.id,
-    maxCnt: gather.memberCnt.max,
-    participants: [{ user: gather.user as IUserSummary, phase: "first" }, ...gather.participants],
-    func: func ? () => func(gather) : undefined,
-  }));
+  const cardCol: GatherThumbnailCardProps[] = gathers.map((gather, idx) => {
+    if (!imageCache[gather.id]) {
+      imageCache[gather.id] = gather.image || getRandomImage();
+    }
+    return {
+      title: gather.title,
+      status: gather.status,
+      category: gather.type.title,
+      date: dayjsToFormat(dayjs(gather.date).locale("ko"), "M.D(ddd) HH:mm"),
+      place: gather.location.main,
+      imageProps: {
+        image: imageCache[gather.id], // 이미지를 캐싱하여 변경되지 않도록 함
+        isPriority: isPriority && idx < 6,
+      },
+      id: gather.id,
+      maxCnt: gather.memberCnt.max,
+      participants: [{ user: gather.user as IUserSummary, phase: "first" }, ...gather.participants],
+      func: func ? () => func(gather) : undefined,
+    };
+  });
 
   return cardCol;
 };
