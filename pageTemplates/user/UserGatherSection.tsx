@@ -56,7 +56,7 @@ function UserGatherSection() {
   useEffect(() => {
     if (!gathers) return;
     setCardDataArr(
-      setGatherDataToCardCol(gathers, 6, (gather: IGather) => setTransferGatherData(gather)),
+      setGatherDataToCardCol(gathers, true, (gather: IGather) => setTransferGatherData(gather)),
     );
   }, [gathers, location]);
 
