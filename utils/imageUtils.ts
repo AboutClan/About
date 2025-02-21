@@ -16,8 +16,8 @@ export const optimizeImage = (file: File): Promise<Blob> => {
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
 
-        const maxWidth = 600; // 최대 너비를 설정합니다.
-        const maxHeight = 600; // 최대 높이를 설정합니다.
+        const maxWidth = 1080; // 최대 너비를 설정합니다.
+        const maxHeight = 1080; // 최대 높이를 설정합니다.
         let width = img.width;
         let height = img.height;
 
@@ -42,7 +42,7 @@ export const optimizeImage = (file: File): Promise<Blob> => {
             resolve(blob);
           },
           "image/jpeg",
-          0.9, // 품질 설정 (0.0에서 1.0 사이)
+          0.8, // 품질 설정 (0.0에서 1.0 사이)
         );
       };
       img.onerror = (error) => {
@@ -72,7 +72,7 @@ const convertHeicToJpeg = async (file: File): Promise<Blob> => {
     return (await heic2any({
       blob: file,
       toType: "image/jpeg",
-      quality: 0.9,
+      quality: 0.8,
     })) as Blob;
   } catch (error) {
     if (error.code === 1) {

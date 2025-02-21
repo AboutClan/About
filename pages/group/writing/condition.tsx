@@ -4,7 +4,6 @@ import { ChangeEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { Input } from "../../../components/atoms/Input";
-import { PopOverIcon } from "../../../components/Icons/PopOverIcon";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
@@ -159,19 +158,6 @@ function WritingCondition() {
             <Button colorScheme="mint" size="sm" onClick={() => setIsMemberConditionModal(true)}>
               설정
             </Button>
-          </Item>
-          <Item>
-            <Name>
-              <i className="fa-regular fa-location-crosshairs" />
-              <span>지역 필터</span>
-              <PopOverIcon title="지역 필터" text="기본으로는 본인이 속한 지역으로 한정합니다." />
-            </Name>
-            <Switch
-              mr="var(--gap-1)"
-              colorScheme="mint"
-              isChecked={condition.location}
-              onChange={(e) => toggleSwitch(e, "location")}
-            />
           </Item>
           <Item>
             <Name>

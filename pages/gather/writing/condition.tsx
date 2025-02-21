@@ -87,7 +87,7 @@ function WritingCondition() {
       return { ...old, [type]: isChecked };
     });
   };
-  
+
   const getMemberConditionText = () => {
     const temp = [];
     if (condition.age) {
@@ -128,24 +128,6 @@ function WritingCondition() {
               <Button colorScheme="mint" size="sm" onClick={() => setIsMemberConditionModal(true)}>
                 설정
               </Button>
-            </Item>
-            <Item>
-              <Name>
-                <div>
-                  <i className="fa-solid fa-location-crosshairs" />
-                </div>
-                <span>지역 필터</span>
-                <PopOverIcon title="지역 필터" text="기본으로는 본인이 속한 지역으로 한정합니다." />
-              </Name>{" "}
-              <Box ml="auto" mr="32px" fontSize="12px" color="var(--color-mint)">
-                {condition.location && `${session?.user.location}만`}
-              </Box>
-              <Switch
-                mr="var(--gap-1)"
-                colorScheme="mint"
-                isChecked={condition.location}
-                onChange={(e) => toggleSwitch(e, "location")}
-              />
             </Item>
 
             <Item>

@@ -117,7 +117,7 @@ function FeedWritingPage() {
       </Header>
       <Slide>
         {summary && (
-          <Box p="16px">
+          <Box my={5}>
             <SummaryBlock
               url={summary.url}
               title={summary.title}
@@ -125,7 +125,7 @@ function FeedWritingPage() {
             />
           </Box>
         )}
-        <VStack h="100%" px={4}>
+        <VStack h="100%">
           <FormProvider {...methods}>
             <Box as="form" w="100%" onSubmit={handleSubmit(onSubmit)} id="secret-square-form">
               <Textarea

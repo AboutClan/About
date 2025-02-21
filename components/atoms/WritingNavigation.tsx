@@ -39,7 +39,8 @@ function WritingNavigation({ children }: WritingNavigationProps) {
         right={0}
         bgColor="white"
         borderTop="var(--border-main)"
-        p="8px"
+        py={2}
+        px={3}
       >
         {children}
       </Flex>

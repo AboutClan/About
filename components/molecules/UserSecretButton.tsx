@@ -1,4 +1,4 @@
-import { Button, ListItem, UnorderedList } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 import { useToast } from "../../hooks/custom/CustomToast";
@@ -68,12 +68,6 @@ function UserSecretButton({ isAnonymous, setIsAnonymous }: UserSecretButtonProps
             isChecked={condition.tag}
             onToggle={(checked) => handleToggle("tag", checked)}
           />
-          <UnorderedList pt="16px" px="4px">
-            <ListItem>익명은 50 point, 실명은 200 point가 적립됩니다.</ListItem>
-            <ListItem>
-              실명으로 작성하더라도 프로필을 비공개로 해두면 친구 외에는 신원 정보를 알 수 없습니다.
-            </ListItem>
-          </UnorderedList>
         </ModalLayout>
       )}
     </>
