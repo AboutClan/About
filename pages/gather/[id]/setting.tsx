@@ -13,7 +13,7 @@ import Slide from "../../../components/layouts/PageSlide";
 import ProfileCommentCard from "../../../components/molecules/cards/ProfileCommentCard";
 import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
-import { useTypeToast } from "../../../hooks/custom/CustomToast";
+import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import { useGatherWaitingStatusMutation } from "../../../hooks/gather/mutations";
 import InviteUserModal from "../../../modals/InviteUserModal";
 import { ModalLayout } from "../../../modals/Modals";
@@ -27,6 +27,7 @@ type ModalType = "inviteMember" | "waitingMember" | "removeMember";
 function Setting() {
   const { id } = useParams<{ id: string }>() || {};
 
+  const toast = useToast();
   const typeToast = useTypeToast();
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -55,6 +56,7 @@ function Setting() {
       setIsRefuseModal(null);
     },
     onError() {
+      toast("error", "상대가 보유중인 참여권이 없습니다.");
       queryClient.invalidateQueries([GATHER_CONTENT, id]);
       setGatherData(null);
       setIsRefuseModal(null);

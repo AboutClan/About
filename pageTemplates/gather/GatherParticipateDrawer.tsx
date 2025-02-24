@@ -17,6 +17,7 @@ import {
   useGatherWaitingMutation,
 } from "../../hooks/gather/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
+import GatherExpireModal from "../../modals/gather/gatherExpireModal/GatherExpireModal";
 import { transferFeedSummaryState, transferGatherDataState } from "../../recoils/transferRecoils";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
 import { IUser, IUserSummary } from "../../types/models/userTypes/userInfoTypes";
@@ -90,7 +91,10 @@ function GatherParticipateDrawer({ data }: IGatherParticipateDrawer) {
 
   const onClick = (type: ButtonType) => {
     if (type === "cancel") cancel();
-    if (type === "participate") setIsFirstPage(false);
+    if (type === "participate") {
+     
+      setIsFirstPage(false);
+    }
     if (type === "expire") setIsExpirationModal(true);
     if (type === "review") {
       router.push(`/feed/writing/gather?id=${data.id}`);
@@ -171,6 +175,10 @@ function GatherParticipateDrawer({ data }: IGatherParticipateDrawer) {
             }
           }
         }
+         if (userInfo?.ticket?.gatherTicket <= 0) {
+           toast("error", "보유한 번개 참여권이 없습니다.");
+           return;
+         }
         setIsModal(true);
         onClick("participate");
       },
@@ -197,6 +205,7 @@ function GatherParticipateDrawer({ data }: IGatherParticipateDrawer) {
         func={handleFunction}
         color={text === "참여 취소" ? "red" : text === "빈자리 생기면 참여 요청" ? "black" : "mint"}
       />
+      {isExpirationModal && <GatherExpireModal gather={data} setIsModal={setIsExpirationModal} />}
       {isModal &&
         (isFirstPage ? (
           <BottomFlexDrawer
