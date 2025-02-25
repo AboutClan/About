@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -83,6 +83,8 @@ function GroupPage() {
       enabled: !!status,
     },
   );
+
+  console.log(groups);
   useEffect(() => {
     return () => {
       const localStorageCursorNumChange = !localStorageCursorNum
@@ -90,6 +92,8 @@ function GroupPage() {
         : localStorageCursorNum === 1
         ? 2
         : localStorageCursorNum === 2
+        ? 3
+        : localStorageCursorNum === 3
         ? 0
         : localStorageCursorNum;
       localStorage.setItem(GROUP_CURSOR_NUM, localStorageCursorNumChange + "");
@@ -117,7 +121,8 @@ function GroupPage() {
       (entries) => {
         if (entries[0].isIntersecting && !firstLoad.current) {
           setCursor((prevCursor) => {
-            const nextCursor = prevCursor === 0 ? 1 : prevCursor === 1 ? 2 : 0;
+            const nextCursor =
+              prevCursor === 0 ? 1 : prevCursor === 1 ? 2 : prevCursor === 2 ? 3 : 0;
             if (nextCursor === localStorageCursorNum) {
               return prevCursor;
             }
@@ -271,7 +276,6 @@ function GroupPage() {
                             () => setTransdferGroupData(group),
                             true,
                           )}
-                    
                         />
                       </Box>
                     );
