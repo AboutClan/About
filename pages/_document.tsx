@@ -54,7 +54,7 @@ export default class MyDocument extends Document {
           <meta property="og:type" content="website" />
           <meta property="og:title" content="ABOUT" />
           <meta property="og:url" content={process.env.NEXT_PUBLIC_NEXTAUTH_URL} />
-          <meta property="og:description" content="대학생 스터디 동아리" />
+          <meta property="og:description" content="대학생 소모임 동아리" />
           <meta property="og:image" content="/ogImage.jpg" />
           <meta property="og:locale" content="ko_KR" />
           <meta property="og:site_name" content={process.env.NEXT_PUBLIC_NEXTAUTH_URL} />
