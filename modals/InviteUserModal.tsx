@@ -19,9 +19,10 @@ import { IFooterOptions, ModalLayout } from "./Modals";
 
 interface IInviteUserModal extends IModal {
   prevUsers: IUserSummary[];
+  filterUsers?: string[];
 }
 
-export default function InviteUserModal({ setIsModal, prevUsers }: IInviteUserModal) {
+export default function InviteUserModal({ setIsModal, prevUsers, filterUsers }: IInviteUserModal) {
   const typeToast = useTypeToast();
   const { id } = useParams<{ id: string }>() || {};
 
@@ -50,8 +51,13 @@ export default function InviteUserModal({ setIsModal, prevUsers }: IInviteUserMo
   });
 
   useEffect(() => {
-    if (nameValue) setUsers(searchName(usersAll, nameValue));
-    else setUsers(usersAll);
+    const filtered = filterUsers?.length
+      ? usersAll?.filter((user) => filterUsers.includes(user._id))
+      : usersAll;
+    console.log(42, filterUsers, filtered);
+
+    if (nameValue) setUsers(searchName(filtered, nameValue));
+    else setUsers(filtered);
   }, [nameValue, usersAll]);
 
   useEffect(() => {

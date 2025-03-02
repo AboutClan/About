@@ -15,6 +15,7 @@ import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import { useGatherWaitingStatusMutation } from "../../../hooks/gather/mutations";
+import { useGroupMyStatusQuery } from "../../../hooks/groupStudy/queries";
 import InviteUserModal from "../../../modals/InviteUserModal";
 import { ModalLayout } from "../../../modals/Modals";
 import { isGatherEditState } from "../../../recoils/checkAtoms";
@@ -45,6 +46,10 @@ function Setting() {
     }[]
   >([]);
 
+  const { data: groupData } = useGroupMyStatusQuery(0, "isOwner");
+
+  const [filterMembers, setFilterMembers] = useState<string[]>([]);
+
   useEffect(() => {
     setWaitingMembers(gatherData?.waiting);
   }, [gatherData]);
@@ -62,7 +67,7 @@ function Setting() {
       setIsRefuseModal(null);
     },
   });
-  const handleButtonClick = (type: "edit" | ModalType) => {
+  const handleButtonClick = (type: "edit" | ModalType | "groupStudy", user?: IUserSummary[]) => {
     switch (type) {
       case "edit":
         setGatherWriting({ ...gatherData, date: dayjs(gatherData.date) });
@@ -70,6 +75,11 @@ function Setting() {
         router.push("/gather/writing/category");
         break;
       case "inviteMember":
+        setModalType("inviteMember");
+        break;
+      case "groupStudy":
+        console.log(145, user);
+        setFilterMembers(user.map((who) => who?._id));
         setModalType("inviteMember");
         break;
 
@@ -87,7 +97,7 @@ function Setting() {
     await mutate({ userId, status, text: status === "refuse" ? refuseText : null });
     setWaitingMembers((old) => old.filter((who) => who.user._id !== userId));
   };
-
+  console.log(245, filterMembers);
   return (
     <>
       <Header title="모임장 페이지" />
@@ -97,6 +107,18 @@ function Setting() {
           <RowTextBlockButton text="모임 글 수정" onClick={() => handleButtonClick("edit")} />
           <TextDevider text="인원 관리" />
           <RowTextBlockButton text="인원 초대" onClick={() => handleButtonClick("inviteMember")} />
+          {groupData?.map((group, idx) => (
+            <RowTextBlockButton
+              key={idx}
+              text={`"${group.title}" 소모임 인원 초대`}
+              onClick={() =>
+                handleButtonClick(
+                  "groupStudy",
+                  group?.participants.map((par) => par.user),
+                )
+              }
+            />
+          ))}
           <RowTextBlockButton
             text="참여 대기 인원"
             onClick={() => handleButtonClick("waitingMember")}
@@ -114,6 +136,7 @@ function Setting() {
             ...gatherData.participants.map((par) => par.user),
           ]}
           setIsModal={() => setModalType(null)}
+          filterUsers={filterMembers}
         />
       )}
       {modalType === "waitingMember" && (
