@@ -24,21 +24,19 @@ export interface FeedLayoutProps {
 }
 
 function FeedLayout({
-  user,
   date,
   images,
   content,
   // likeUsers,
   summary,
-  // likeCnt,
-  // comments,
-  // id,
-  // refetch,
-  isAnonymous,
-}: FeedLayoutProps) {
+}: // likeCnt,
+// comments,
+// id,
+// refetch,
+FeedLayoutProps) {
   return (
     <Flex direction="column" border="var(--border)" pb={2}>
-      <FeedHeader writer={isAnonymous ? ABOUT_USER_SUMMARY : user} date={date} />
+      <FeedHeader writer={ABOUT_USER_SUMMARY} date={date} />
       <AspectRatio ratio={1}>
         <ImageSlider imageContainer={images} type="review" />
       </AspectRatio>

@@ -63,6 +63,18 @@ export const usePointSystemLogQuery = (
     },
     { ...options, staleTime: 0, cacheTime: 0 },
   );
+export const useTicketSystemLogQuery = (
+  category: "gather" | "groupStudy",
+  options?: QueryOptions<IPointLog[]>,
+) =>
+  useQuery<IPointLog[], AxiosError, IPointLog[]>(
+    [USER_POINT_SYSTEM, category, "log"],
+    async () => {
+      const res = await axios.get<IPointLog[]>(`${SERVER_URI}/log/ticket/${category}`);
+      return res.data;
+    },
+    { ...options, staleTime: 0, cacheTime: 0 },
+  );
 
 export const useUserIdToUserInfoQuery = (userId: string, options?: QueryOptions<IUser>) =>
   useQuery<IUser, AxiosError, IUser>(

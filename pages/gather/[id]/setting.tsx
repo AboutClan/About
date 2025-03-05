@@ -107,6 +107,10 @@ function Setting() {
           <RowTextBlockButton text="모임 글 수정" onClick={() => handleButtonClick("edit")} />
           <TextDevider text="인원 관리" />
           <RowTextBlockButton text="인원 초대" onClick={() => handleButtonClick("inviteMember")} />
+          <RowTextBlockButton
+            text="참여 대기 인원"
+            onClick={() => handleButtonClick("waitingMember")}
+          />
           {groupData?.map((group, idx) => (
             <RowTextBlockButton
               key={idx}
@@ -119,10 +123,6 @@ function Setting() {
               }
             />
           ))}
-          <RowTextBlockButton
-            text="참여 대기 인원"
-            onClick={() => handleButtonClick("waitingMember")}
-          />
           <RowTextBlockButton
             text="인원 내보내기"
             onClick={() => handleButtonClick("removeMember")}

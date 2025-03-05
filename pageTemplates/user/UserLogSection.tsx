@@ -23,7 +23,7 @@ function UserLogSection() {
   ];
 
   let stepDate: string;
-
+  console.log(24, logsData);
   return (
     <Box>
       <Box px={5} mb={2} borderBottom="var(--border)">
@@ -59,7 +59,7 @@ function UserLogSection() {
         {logsData?.map((log, idx) => {
           const timeStamp = dayjs(log.timestamp);
           const timeStr = dayjsToStr(timeStamp);
-
+          console.log(34, timeStamp);
           if (!stepDate || timeStr !== stepDate) {
             const isFirst = !stepDate;
             stepDate = timeStr;
@@ -79,7 +79,7 @@ function UserLogSection() {
                 </Box>
                 <Block
                   text={log.message}
-                  time={dayjsToFormat(dayjs(timeStr), "HH:mm")}
+                  time={dayjsToFormat(timeStamp, "HH:mm")}
                   iconType="store"
                   value={log.meta.value}
                   currentValue={userInfo?.[tab]}

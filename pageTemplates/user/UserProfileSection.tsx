@@ -89,7 +89,7 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
           </Flex>
         </Box>
         <Box border="var(--border)" px={3} py={2} borderRadius="8px">
-          <ProgressMark value={monthScore / 30} />
+          <ProgressMark value={(monthScore / 30) * 100} />
           <Flex
             align="center"
             justify="center"

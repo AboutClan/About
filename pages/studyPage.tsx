@@ -92,7 +92,7 @@ export default function StudyPage() {
   });
 
   useEffect(() => {
-    toast("info", "리뉴얼이 진행중인 페이지입니다. 3월 1일부터 이용 가능");
+    toast("info", "리뉴얼 진행중인 페이지입니다. 오픈을 기다려주세요!");
   }, []);
 
   useEffect(() => {
@@ -159,13 +159,13 @@ export default function StudyPage() {
     if (!isLocationRefetch) return;
     setIsLocationRefetch(false);
 
-    navigator.permissions.query({ name: "geolocation" }).then((result) => {
-      if (result.state === "denied") {
-        toast("warning", "장소 추천을 위해, 위치 권한을 허용해주세요.");
-      } else if (result.state === "prompt") {
-        toast("warning", "이 앱은 사용자의 위치 정보를 이용해 가까운 스터디 장소를 추천합니다.");
-      }
-    });
+    // navigator.permissions.query({ name: "geolocation" }).then((result) => {
+    //   if (result.state === "denied") {
+    //     toast("warning", "장소 추천을 위해, 위치 권한을 허용해주세요.");
+    //   } else if (result.state === "prompt") {
+    //     toast("warning", "이 앱은 사용자의 위치 정보를 이용해 가까운 스터디 장소를 추천합니다.");
+    //   }
+    // });
 
     navigator.geolocation.getCurrentPosition(
       function (position) {

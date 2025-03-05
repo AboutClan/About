@@ -1,5 +1,4 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
+import { Box, Flex } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -20,7 +19,6 @@ import GroupSkeletonMain from "../group/GroupSkeletonMain";
 type GroupType = "참여중인 모임" | "종료된 모임" | "내가 개설한 모임";
 
 function UserGroupSection() {
-  const router = useRouter();
   const [groupType, setGroupType] = useState<GroupType>("참여중인 모임");
   const [cardDataArr, setCardDataArr] = useState<GroupThumbnailCardProps[]>();
   console.log(setCardDataArr);
@@ -77,7 +75,7 @@ function UserGroupSection() {
 
   return (
     <Box mx={5} pb={10}>
-      <Flex h="44px" bg="rgba(66,66,66,0.04)" mb={3}>
+      {/* <Flex h="44px" bg="rgba(66,66,66,0.04)" mb={3}>
         <Button
           flex={1}
           variant="unstyled"
@@ -135,7 +133,7 @@ function UserGroupSection() {
         >
           받은 후기
         </Button>
-      </Flex>
+      </Flex> */}
       <Box py={2} mb={3}>
         <ButtonGroups
           buttonOptionsArr={(["참여중인 모임", "내가 개설한 모임", "추천 모임"] as GroupType[]).map(

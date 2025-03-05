@@ -4,19 +4,16 @@ import { Badge, Box, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 
-import WritingButton from "../../../components/atoms/buttons/WritingButton";
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../components/layouts/PageSlide";
 import BlurredLink from "../../../components/molecules/BlurredLink";
 import InfoBoxCol from "../../../components/molecules/InfoBoxCol";
-import TabNav from "../../../components/molecules/navs/TabNav";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
 import GroupBottomNav from "../../../pageTemplates/group/detail/GroupBottomNav";
 import GroupComments from "../../../pageTemplates/group/detail/GroupComment";
-import ContentFeed from "../../../pageTemplates/group/detail/GroupContent/ContentFeed";
 import GroupCover from "../../../pageTemplates/group/detail/GroupCover";
 import GroupHeader from "../../../pageTemplates/group/detail/GroupHeader";
 import GroupParticipation from "../../../pageTemplates/group/detail/GroupParticipation";
@@ -25,18 +22,15 @@ import { convertMeetingTypeToKr } from "../../../utils/convertUtils/convertText"
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
 export type GroupSectionCategory = "정 보" | "피 드";
-const TAB_LIST: GroupSectionCategory[] = ["정 보", "피 드"];
 
 function GroupDetail() {
   const { data: session } = useSession();
   const isGuest = session?.user.name === "guest";
   const { id } = useParams<{ id: string }>() || {};
 
-  const [category, setCategory] = useState<GroupSectionCategory>("정 보");
-
   const [group, setTransferGroup] = useRecoilState(transferGroupDataState);
 
-  const { data: groupData, refetch } = useGroupIdQuery(id, { enabled: !!id && !group });
+  const { data: groupData } = useGroupIdQuery(id, { enabled: !!id && !group });
 
   const isOnlyView = group?.category.main === "콘텐츠";
 
@@ -59,11 +53,6 @@ function GroupDetail() {
     [group.organizer, ...group.participants.map((who) => who.user)].some(
       (who) => who?.uid === session?.user.uid,
     );
-
-  const resetCache = () => {
-    setTransferGroup(null);
-    refetch();
-  };
 
   return (
     <>
@@ -114,105 +103,86 @@ function GroupDetail() {
             )}
             <Box mt={isOnlyView ? 0 : 5} h={2} bg="gray.100" />
             <Flex direction="column" mb={10}>
-              {!isOnlyView && (
-                <Box px={5}>
-                  <TabNav
-                    tabOptionsArr={TAB_LIST.map((category) => ({
-                      text: category,
-                      func: () => setCategory(category),
-                      flex: 1,
-                    }))}
-                    selected={category}
-                    isFullSize
-                    isBlack
-                  />
+              <Box px={5}>
+                <Box my={4} fontSize="18px" fontWeight="bold" lineHeight="28px">
+                  소개
                 </Box>
-              )}
-              {category === "정 보" ? (
-                <Box px={5}>
-                  <Box my={4} fontSize="18px" fontWeight="bold" lineHeight="28px">
-                    소개
+                {group.category.main === "시험기간" && (
+                  <Box fontSize="12px" mb={4} color="mint">
+                    ※ 해당 챌린지는 카톡방에서 진행됩니다. 관련 사항은 동아리 공지방을 확인해주세요!
                   </Box>
-                  {group.category.main === "시험기간" && (
-                    <Box fontSize="12px" mb={4} color="mint">
-                      ※ 해당 챌린지는 카톡방에서 진행됩니다. 관련 사항은 동아리 공지방을
-                      확인해주세요!
+                )}
+                <Box
+                  color="gray.600"
+                  fontWeight="regular"
+                  fontSize="12px"
+                  fontFamily="apple"
+                  whiteSpace="pre-wrap"
+                  mb={4}
+                >
+                  {group.content}
+                </Box>
+                {group.rules.length ? (
+                  <>
+                    <Box mb={3} fontSize="14px" fontWeight="bold" lineHeight="20px">
+                      <UnorderedList ml="0">
+                        <ListItem>규칙</ListItem>
+                      </UnorderedList>
                     </Box>
-                  )}
-                  <Box
-                    color="gray.600"
-                    fontWeight="regular"
-                    fontSize="12px"
-                    lineHeight="18px"
-                    fontFamily="apple"
-                    whiteSpace="pre-wrap"
-                    mb={4}
-                  >
-                    {group.content}
+                    <Box
+                      fontWeight="light"
+                      fontSize="12px"
+                      lineHeight="20px"
+                      bg="rgba(160, 174, 192, 0.08)"
+                      py={4}
+                      borderRadius="8px"
+                    >
+                      <UnorderedList>
+                        {group.rules.map((rule, idx) => (
+                          <ListItem key={idx}>{rule}</ListItem>
+                        ))}
+                      </UnorderedList>
+                    </Box>
+                  </>
+                ) : null}
+                {group?.link ? (
+                  <Box lineHeight="20px" mt={4} fontSize="13px">
+                    <Box>
+                      {isOnlyView ? (
+                        <>
+                          <b style={{ color: "var(--gray-800)" }}>상세 내용(노션 링크)</b>
+                        </>
+                      ) : (
+                        <>
+                          <b style={{ color: "var(--gray-800)" }}>단톡방 링크</b>(가입 후 입장)
+                        </>
+                      )}
+                    </Box>
+                    <BlurredLink isBlur={!isOnlyView && !isMember} url={group.link} />
                   </Box>
-                  {group.rules.length ? (
-                    <>
-                      <Box mb={3} fontSize="14px" fontWeight="bold" lineHeight="20px">
-                        <UnorderedList ml="0">
-                          <ListItem>규칙</ListItem>
-                        </UnorderedList>
-                      </Box>
+                ) : null}
+                <Flex mt={4}>
+                  {group.hashTag?.split("#").map((tag, idx) =>
+                    tag ? (
                       <Box
-                        fontWeight="light"
-                        fontSize="12px"
-                        lineHeight="20px"
-                        bg="rgba(160, 174, 192, 0.08)"
-                        py={4}
-                        borderRadius="8px"
+                        h={5}
+                        py={1}
+                        px={2}
+                        fontSize="10px"
+                        fontWeight="medium"
+                        color="gray.600"
+                        borderRadius="4px"
+                        bg="gray.100"
+                        mr={1}
+                        key={idx}
                       >
-                        <UnorderedList>
-                          {group.rules.map((rule, idx) => (
-                            <ListItem key={idx}>{rule}</ListItem>
-                          ))}
-                        </UnorderedList>
+                        #{tag}
                       </Box>
-                    </>
-                  ) : null}
-                  {group?.link ? (
-                    <Box lineHeight="20px" mt={4} fontSize="13px">
-                      <Box>
-                        {isOnlyView ? (
-                          <>
-                            <b style={{ color: "var(--gray-800)" }}>상세 내용(노션 링크)</b>
-                          </>
-                        ) : (
-                          <>
-                            <b style={{ color: "var(--gray-800)" }}>단톡방 링크</b>(가입 후 입장)
-                          </>
-                        )}
-                      </Box>
-                      <BlurredLink isBlur={!isOnlyView && !isMember} url={group.link} />
-                    </Box>
-                  ) : null}
-                  <Flex mt={4}>
-                    {group.hashTag?.split("#").map((tag, idx) =>
-                      tag ? (
-                        <Box
-                          h={5}
-                          py={1}
-                          px={2}
-                          fontSize="10px"
-                          fontWeight="medium"
-                          color="gray.600"
-                          borderRadius="4px"
-                          bg="gray.100"
-                          mr={1}
-                          key={idx}
-                        >
-                          #{tag}
-                        </Box>
-                      ) : null,
-                    )}
-                  </Flex>
-                </Box>
-              ) : (
-                <ContentFeed group={group} />
-              )}
+                    ) : null,
+                  )}
+                </Flex>
+              </Box>
+
               <Box h="1px" my={5} bg="gray.100" />
               {!isOnlyView ? (
                 <>
@@ -226,18 +196,8 @@ function GroupDetail() {
       </Slide>
 
       {!group && <MainLoading />}
-      {group &&
-      category === "정 보" &&
-      group.category.main !== "콘텐츠" &&
-      !isMember &&
-      !isGuest ? (
+      {group && group.category.main !== "콘텐츠" && !isMember && !isGuest ? (
         <GroupBottomNav data={group} />
-      ) : category === "피 드" && isMember ? (
-        <WritingButton
-          url={`/feed/writing/group?id=${id}`}
-          isBottomNav={false}
-          onClick={resetCache}
-        />
       ) : null}
     </>
   );

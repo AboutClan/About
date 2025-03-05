@@ -19,7 +19,7 @@ export const useFeedQuery = (id: string, options?: QueryOptions<FeedProps>) =>
   );
 
 export const useFeedTypeQuery = (
-  selfType: "mine" | "receive",
+  selfType: "mine" | "recieve",
   feedType: "gather" | "group",
   options?: QueryOptions<FeedProps[]>,
 ) =>

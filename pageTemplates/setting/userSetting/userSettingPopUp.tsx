@@ -2,11 +2,7 @@ import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-import {
-  ATTEND_POP_UP,
-  GATHER_JOIN_MEMBERS,
-  STUDY_ATTEND_MEMBERS,
-} from "../../../constants/keys/localStorage";
+import { GATHER_JOIN_MEMBERS, STUDY_ATTEND_MEMBERS } from "../../../constants/keys/localStorage";
 import { useGatherQuery } from "../../../hooks/gather/queries";
 import PointSystemsModal from "../../../modals/aboutHeader/pointSystemsModal/PointSystemsModal";
 import PromotionModal from "../../../modals/aboutHeader/promotionModal/PromotionModal";
@@ -17,7 +13,6 @@ import StudyChallengeModal from "../../../modals/pop-up/StudyChallengeModal";
 import { default as StudyPrefenceDrawer } from "../../../modals/pop-up/StudyPreferenceDrawer";
 import StudyPreferencePopUp from "../../../modals/pop-up/StudyPreferencePopUp";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
-import { checkAndSetLocalStorage } from "../../../utils/storageUtils";
 
 export type UserPopUp =
   | "lastWeekAttend"
@@ -112,7 +107,6 @@ export default function UserSettingPopUp() {
 
   useEffect(() => {
     // const popUpCnt = cnt;
-
     // if (!userInfo?.locationDetail) {
     //   // setModalTypes((old) => [...old, "registerLocation"]);
     //   return;
@@ -124,15 +118,14 @@ export default function UserSettingPopUp() {
     //   setModalTypes((old) => [...old, "preference"]);
     //   return;
     // }
-
     // if (!checkAndSetLocalStorage(ALPHABET_POP_UP, 15)) {
     //   setModalTypes((old) => [...old, "alphabet"]);
     //   return;
     // }
-    if (!checkAndSetLocalStorage(ATTEND_POP_UP, 7)) {
-      setModalTypes((old) => [...old, "lastWeekAttend"]);
-      return;
-    }
+    // if (!checkAndSetLocalStorage(ATTEND_POP_UP, 7)) {
+    //   setModalTypes((old) => [...old, "lastWeekAttend"]);
+    //   return;
+    // }
     // if (!checkAndSetLocalStorage(ENTHUSIASTIC_POP_UP, 27)) {
     //   setModalTypes((old) => [...old, "enthusiastic"]);
     //   if (popUpCnt++ === 2) return;
@@ -141,7 +134,6 @@ export default function UserSettingPopUp() {
     //   setModalTypes((old) => [...old, "faq"]);
     //   return;
     // }
-
     // if (!checkAndSetLocalStorage(PROMOTION_POP_UP, 14)) {
     //   setModalTypes((old) => [...old, "promotion"]);
     //   return;
@@ -149,11 +141,9 @@ export default function UserSettingPopUp() {
     // if (userInfo?.weekStudyTargetHour === 0) {
     //   setModalTypes((old) => [...old, "studyChallenge"]);
     // }
-
     // if (studyRecord && studyRecord?.date !== dayjsToStr(dayjs())) {
     //   setDrawerType("bottom");
     // }
-
     // if (!checkAndSetLocalStorage(SUGGEST_POP_UP, 29)) {
     //   setModalTypes((old) => [...old, "suggest"]);
     //   if (popUpCnt++ === 2) return;
