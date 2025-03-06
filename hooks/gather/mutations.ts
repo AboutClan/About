@@ -8,8 +8,8 @@ import { IGather, IGatherWriting } from "../../types/models/gatherTypes/gatherTy
 type GatherWritingParam<T> = T extends "post"
   ? { gather: IGatherWriting }
   : T extends "patch"
-    ? { gather: IGather }
-    : { gatherId: number };
+  ? { gather: IGather }
+  : { gatherId: number };
 
 /** gather info */
 export const useGatherWritingMutation = <T extends "post" | "patch" | "delete">(
@@ -46,6 +46,19 @@ export const useGatherParticipationMutation = <T extends "post" | "delete">(
       requestServer<IGatherParticipationRequest>({
         method,
         url: "gather/participate",
+        body: { gatherId, ...param },
+      }),
+    options,
+  );
+export const useGatherInviteMutation = (
+  gatherId: number,
+  options?: MutationOptions<{ phase: "first" | "second"; userId?: string }>,
+) =>
+  useMutation<void, AxiosError, { phase: "first" | "second"; userId?: string }>(
+    (param) =>
+      requestServer<IGatherParticipationRequest>({
+        method: "post",
+        url: "gather/invite",
         body: { gatherId, ...param },
       }),
     options,

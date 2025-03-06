@@ -10,7 +10,7 @@ import InviteUserGroups from "../components/molecules/groups/InviteUserGroups";
 import { GATHER_CONTENT } from "../constants/keys/queryKeys";
 import { useAdminUsersLocationControlQuery } from "../hooks/admin/quries";
 import { useTypeToast } from "../hooks/custom/CustomToast";
-import { useGatherParticipationMutation } from "../hooks/gather/mutations";
+import { useGatherInviteMutation } from "../hooks/gather/mutations";
 import { IModal } from "../types/components/modalTypes";
 import { IUserSummary } from "../types/models/userTypes/userInfoTypes";
 import { Location } from "../types/services/locationTypes";
@@ -43,7 +43,7 @@ export default function InviteUserModal({ setIsModal, prevUsers, filterUsers }: 
 
   const queryClient = useQueryClient();
 
-  const { mutate } = useGatherParticipationMutation("post", +id, {
+  const { mutate } = useGatherInviteMutation(+id, {
     onSuccess() {
       typeToast("invite");
       queryClient.invalidateQueries([GATHER_CONTENT]);

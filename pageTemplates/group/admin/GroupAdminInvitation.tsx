@@ -12,7 +12,7 @@ import { LOCATION_ALL } from "../../../constants/location";
 import { useAdminUsersLocationControlQuery } from "../../../hooks/admin/quries";
 import { useResetGroupQuery } from "../../../hooks/custom/CustomHooks";
 import { useCompleteToast } from "../../../hooks/custom/CustomToast";
-import { useGroupWaitingStatusMutation } from "../../../hooks/groupStudy/mutations";
+import { useGroupInviteMutation } from "../../../hooks/groupStudy/mutations";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { Location } from "../../../types/services/locationTypes";
 import { searchName } from "../../../utils/stringUtils";
@@ -44,7 +44,7 @@ export default function GroupAdminInvitation() {
 
   const resetGroup = useResetGroupQuery();
 
-  const { mutate: mutate2 } = useGroupWaitingStatusMutation(+id, {
+  const { mutate: mutate2 } = useGroupInviteMutation(id, {
     onSuccess() {
       completeToast("free", "가입되었습니다.");
       resetGroup();

@@ -175,6 +175,22 @@ export const useGroupWaitingStatusMutation = (
       }),
     options,
   );
+export const useGroupInviteMutation = (
+  id: string,
+  options?: MutationOptions<IWaitingStatusParam>,
+) =>
+  useMutation<void, AxiosError, IWaitingStatusParam>(
+    ({ userId }) =>
+      requestServer<{ id: string; userId: string }>({
+        method: "post",
+        url: "groupStudy/invite",
+        body: {
+          id,
+          userId,
+        },
+      }),
+    options,
+  );
 
 export const useGroupAttendancePatchMutation = (id: number, options?: MutationOptions<void>) =>
   useMutation<void, AxiosError, void>(
