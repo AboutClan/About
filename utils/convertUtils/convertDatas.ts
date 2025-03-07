@@ -1,3 +1,5 @@
+import * as CryptoJS from "crypto-js";
+
 import { enToKrMapping, krToEnMapping } from "../../constants/location";
 import {
   BADGE_SCORE_MAPPINGS,
@@ -14,6 +16,15 @@ import {
 } from "../../constants/storage/eventBadgeUser";
 import { UserBadge, UserRole } from "../../types/models/userTypes/userInfoTypes";
 import { ActiveLocation, Location, LocationEn } from "../../types/services/locationTypes";
+
+export const decodeByAES256 = (encodedTel: string) => {
+  const key = process.env.NEXT_PUBLIC_CRYPTO_KEY;
+  if (!key) return encodedTel;
+
+  const bytes = CryptoJS.AES.decrypt(encodedTel, key);
+  const originalText = bytes.toString(CryptoJS.enc.Utf8);
+  return originalText;
+};
 
 export const getUserBadge = (score: number, uid: string): UserBadge => {
   let badge: UserBadge = "아메리카노";
