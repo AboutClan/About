@@ -7,9 +7,16 @@ interface IInviteUserGroups {
   users: IUserSummary[];
   inviteUser: (who: IUserSummary) => void;
   existUsers?: IUserSummary[];
+  type?: "exile";
 }
 
-export default function InviteUserGroups({ users, inviteUser, existUsers }: IInviteUserGroups) {
+export default function InviteUserGroups({
+  users,
+  inviteUser,
+  existUsers,
+  type,
+}: IInviteUserGroups) {
+  console.log(2, type);
   return (
     <Grid mt="20px" templateColumns="repeat(3,1fr)" gap="12px">
       {users?.map((who, idx) => {
@@ -30,12 +37,12 @@ export default function InviteUserGroups({ users, inviteUser, existUsers }: IInv
             <Flex direction="column" ml="8px">
               <Box>{who.name}</Box>
               <Button
-                colorScheme={isMember ? "black" : "mint"}
+                colorScheme={isMember && type !== "exile" ? "black" : "mint"}
                 size="xs"
-                isDisabled={isMember}
+                isDisabled={isMember && type !== "exile"}
                 onClick={() => inviteUser(who)}
               >
-                {isMember ? "참여중" : "초대"}
+                {type === "exile" ? "추방" : isMember ? "참여중" : "초대"}
               </Button>
             </Flex>
           </Flex>

@@ -50,6 +50,21 @@ export const useGatherParticipationMutation = <T extends "post" | "delete">(
       }),
     options,
   );
+
+export const useGatherExileMutation = (
+  gatherId: number,
+  options?: MutationOptions<{ userId: string }>,
+) =>
+  useMutation<void, AxiosError, { userId: string }>(
+    (param) =>
+      requestServer<{ gatherId: number; userId: string }>({
+        method: "post",
+        url: "gather/exile",
+        body: { gatherId, ...param },
+      }),
+    options,
+  );
+
 export const useGatherInviteMutation = (
   gatherId: number,
   options?: MutationOptions<{ phase: "first" | "second"; userId?: string }>,

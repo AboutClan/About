@@ -14,8 +14,12 @@ import ProfileCommentCard from "../../../components/molecules/cards/ProfileComme
 import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
-import { useGatherWaitingStatusMutation } from "../../../hooks/gather/mutations";
+import {
+  useGatherStatusMutation,
+  useGatherWaitingStatusMutation,
+} from "../../../hooks/gather/mutations";
 import { useGroupMyStatusQuery } from "../../../hooks/groupStudy/queries";
+import ExileUserModal from "../../../modals/ExileUserModal2";
 import InviteUserModal from "../../../modals/InviteUserModal";
 import { ModalLayout } from "../../../modals/Modals";
 import { isGatherEditState } from "../../../recoils/checkAtoms";
@@ -23,7 +27,7 @@ import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
 import { transferGatherDataState } from "../../../recoils/transferRecoils";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 
-type ModalType = "inviteMember" | "waitingMember" | "removeMember";
+type ModalType = "inviteMember" | "waitingMember" | "removeMember" | "exile";
 
 function Setting() {
   const { id } = useParams<{ id: string }>() || {};
@@ -49,7 +53,7 @@ function Setting() {
   const { data: groupData } = useGroupMyStatusQuery(0, "isOwner");
 
   const [filterMembers, setFilterMembers] = useState<string[]>([]);
-
+  console.log(filterMembers);
   useEffect(() => {
     setWaitingMembers(gatherData?.waiting);
   }, [gatherData]);
@@ -67,8 +71,26 @@ function Setting() {
       setIsRefuseModal(null);
     },
   });
-  const handleButtonClick = (type: "edit" | ModalType | "groupStudy", user?: IUserSummary[]) => {
+
+  const { mutate: changeStatus } = useGatherStatusMutation(+id, {
+    onSuccess() {
+      toast("success", "모집중으로 변경되었습니다.");
+    },
+  });
+
+  const handleButtonClick = (
+    type: "edit" | ModalType | "groupStudy" | "exile" | "pending",
+    user?: IUserSummary[],
+  ) => {
     switch (type) {
+      case "pending":
+        changeStatus("pending");
+        break;
+      case "exile":
+        console.log(55);
+        setModalType("exile");
+        setFilterMembers(user.map((who) => who?._id));
+        break;
       case "edit":
         setGatherWriting({ ...gatherData, date: dayjs(gatherData.date) });
         setIsGatherEdit(true);
@@ -105,11 +127,26 @@ function Setting() {
         <Flex direction="column">
           <TextDevider text="모임 정보 변경" />
           <RowTextBlockButton text="모임 글 수정" onClick={() => handleButtonClick("edit")} />
+          {gatherData?.status !== "pending" && (
+            <RowTextBlockButton
+              text="모집중으로 상태 변경"
+              onClick={() => handleButtonClick("pending")}
+            />
+          )}
           <TextDevider text="인원 관리" />
-          <RowTextBlockButton text="인원 초대" onClick={() => handleButtonClick("inviteMember")} />
           <RowTextBlockButton
             text="참여 대기 인원"
             onClick={() => handleButtonClick("waitingMember")}
+          />
+          <RowTextBlockButton text="인원 초대" onClick={() => handleButtonClick("inviteMember")} />
+          <RowTextBlockButton
+            text="인원 내보내기"
+            onClick={() =>
+              handleButtonClick(
+                "exile",
+                gatherData.participants.map((par) => par.user),
+              )
+            }
           />
           {groupData?.map((group, idx) => (
             <RowTextBlockButton
@@ -129,6 +166,16 @@ function Setting() {
           />
         </Flex>
       </Slide>
+      {modalType === "exile" && (
+        <ExileUserModal
+          prevUsers={[
+            // gatherData.user as IUserSummary,
+            ...gatherData.participants.map((par) => par.user),
+          ]}
+          setIsModal={() => setModalType(null)}
+          filterUsers={filterMembers}
+        />
+      )}
       {modalType === "inviteMember" && (
         <InviteUserModal
           prevUsers={[

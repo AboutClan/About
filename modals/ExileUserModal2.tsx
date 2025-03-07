@@ -7,25 +7,24 @@ import { MainLoadingAbsolute } from "../components/atoms/loaders/MainLoading";
 import ButtonGroups from "../components/molecules/groups/ButtonGroups";
 import InviteUserGroups from "../components/molecules/groups/InviteUserGroups";
 import { useAdminUsersLocationControlQuery } from "../hooks/admin/quries";
-import { useTypeToast } from "../hooks/custom/CustomToast";
-import { useGatherInviteMutation } from "../hooks/gather/mutations";
+import { useToast } from "../hooks/custom/CustomToast";
+import { useGatherExileMutation } from "../hooks/gather/mutations";
 import { IModal } from "../types/components/modalTypes";
 import { IUserSummary } from "../types/models/userTypes/userInfoTypes";
 import { Location } from "../types/services/locationTypes";
 import { searchName } from "../utils/stringUtils";
 import { IFooterOptions, ModalLayout } from "./Modals";
 
-interface IInviteUserModal extends IModal {
+interface IExileUserModal extends IModal {
   prevUsers: IUserSummary[];
   filterUsers?: string[];
 }
 
-export default function InviteUserModal({ setIsModal, prevUsers, filterUsers }: IInviteUserModal) {
-  const typeToast = useTypeToast();
+export default function ExileUserModal({ setIsModal, prevUsers, filterUsers }: IExileUserModal) {
   const { id } = useParams<{ id: string }>() || {};
-
+  const toast = useToast();
   const [location, setLocation] = useState<Location | "전체">("전체");
-  const [inviteUser, setInviteUser] = useState<IUserSummary>(null);
+  const [exileUser, setExileUser] = useState<IUserSummary>(null);
   const [users, setUsers] = useState<IUserSummary[]>(null);
   const [existUsers, setExistUsers] = useState<IUserSummary[]>(prevUsers);
   const [nameValue, setNameValue] = useState("");
@@ -39,9 +38,9 @@ export default function InviteUserModal({ setIsModal, prevUsers, filterUsers }: 
     },
   );
 
-  const { mutate } = useGatherInviteMutation(+id, {
+  const { mutate } = useGatherExileMutation(+id, {
     onSuccess() {
-      typeToast("invite");
+      toast("success", "제외되었습니다.");
     },
   });
 
@@ -56,12 +55,12 @@ export default function InviteUserModal({ setIsModal, prevUsers, filterUsers }: 
   }, [nameValue, usersAll]);
 
   useEffect(() => {
-    if (!inviteUser) return;
-    mutate({ phase: "first", userId: inviteUser._id });
-    setUsers((old) => old.filter((who) => who.uid !== inviteUser.uid));
-    setExistUsers((old) => [...old, inviteUser]);
-    setInviteUser(null);
-  }, [inviteUser]);
+    if (!exileUser) return;
+    mutate({ userId: exileUser._id });
+    setUsers((old) => old.filter((who) => who.uid !== exileUser.uid));
+    setExistUsers((old) => [...old, exileUser]);
+    setExileUser(null);
+  }, [exileUser]);
 
   const footerOptions: IFooterOptions = {
     main: {
@@ -99,9 +98,9 @@ export default function InviteUserModal({ setIsModal, prevUsers, filterUsers }: 
       func: () => setLocation("인천"),
     },
   ];
-
+  console.log(123456);
   return (
-    <ModalLayout setIsModal={setIsModal} title="인원 초대" footerOptions={footerOptions}>
+    <ModalLayout setIsModal={setIsModal} title="인원 내보내기" footerOptions={footerOptions}>
       <ButtonGroups buttonOptionsArr={buttonOptionsArr} currentValue={location} />
       <Box mt="16px">
         <Input
@@ -122,8 +121,9 @@ export default function InviteUserModal({ setIsModal, prevUsers, filterUsers }: 
         {!isLoading ? (
           <InviteUserGroups
             users={users}
-            inviteUser={(who) => setInviteUser(who)}
+            inviteUser={(who) => setExileUser(who)}
             existUsers={existUsers}
+            type="exile"
           />
         ) : (
           <MainLoadingAbsolute />
