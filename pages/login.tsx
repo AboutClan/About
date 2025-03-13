@@ -26,12 +26,12 @@ import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
 import { detectDevice } from "../utils/validationUtils";
 
 const CONNECT_KAKAO: Record<ActiveLocation, string> = {
-  수원: "https://invite.kakao.com/tc/rEr5kh1ZBG",
-  양천: "https://invite.kakao.com/tc/yIAT2FzbzP",
-  강남: "https://invite.kakao.com/tc/KIsYaxZPjO",
-  인천: "https://invite.kakao.com/tc/dcsm54c3g9",
-  동대문: "https://invite.kakao.com/tc/XQidbLsVOG",
-  안양: "https://invite.kakao.com/tc/rEr5kh1ZBG",
+  수원: "https://invite.kakao.com/tc/9Qlvd0RcV6",
+  양천: "https://invite.kakao.com/tc/DRJTJPGrNh",
+  강남: "https://invite.kakao.com/tc/GB7I0nlNMC",
+  인천: "https://invite.kakao.com/tc/t3K81sB7pM",
+  동대문: "https://invite.kakao.com/tc/DqiCcLHarf",
+  안양: "https://invite.kakao.com/tc/9Qlvd0RcV6",
 };
 
 const Login: NextPage<{
