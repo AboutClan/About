@@ -84,7 +84,7 @@ function GroupPage() {
     },
   );
 
-  console.log(groups);
+ 
   useEffect(() => {
     return () => {
       const localStorageCursorNumChange = !localStorageCursorNum

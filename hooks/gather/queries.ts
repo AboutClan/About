@@ -7,12 +7,17 @@ import { IGatherSummary } from "../../pages/review";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
 
-export const useGatherQuery = (cursor?: number, options?: QueryOptions<IGather[]>) =>
+export const useGatherQuery = (
+  cursor?: number,
+  category?: "스터디" | "취미" | null,
+  sortBy?: "createdAt" | "date",
+  options?: QueryOptions<IGather[]>,
+) =>
   useQuery<IGather[], AxiosError>(
-    [GATHER_CONTENT, cursor],
+    [GATHER_CONTENT, category, sortBy, cursor],
     async () => {
       const res = await axios.get<IGather[]>(`${SERVER_URI}/gather`, {
-        params: { cursor },
+        params: { cursor, category, sortBy },
       });
       return res.data;
     },

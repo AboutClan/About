@@ -49,7 +49,7 @@ export default function InviteUserModal({ setIsModal, prevUsers, filterUsers }: 
     const filtered = filterUsers?.length
       ? usersAll?.filter((user) => filterUsers.includes(user._id))
       : usersAll;
-    console.log(42, filterUsers, filtered);
+   
 
     if (nameValue) setUsers(searchName(filtered, nameValue));
     else setUsers(filtered);

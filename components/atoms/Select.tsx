@@ -66,7 +66,7 @@ export default function Select({
           pr={size === "lg" && 4}
           ml="auto"
           align="center"
-          fontSize={size === "xs" ? "12px" : "12px"}
+          fontSize={size === "sm" ? "11px" : "12px"}
           pointerEvents="none"
         >
           <Box>
@@ -96,7 +96,7 @@ export default function Select({
       bgColor="white"
       fontSize={
         size === "sm"
-          ? "12px"
+          ? "11px"
           : size === "xs" && !isBorder
           ? "12px"
           : size === "xs" || size === "md"

@@ -30,7 +30,7 @@ function UserGatherSection() {
   const firstLoad = useRef(true);
 
   const { data } = useFeedCntQuery("gather");
-  console.log(24, data);
+
 
   const { data: gatherData, isLoading } = useGatherMyStatusQuery(
     cursor,

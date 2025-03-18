@@ -53,7 +53,7 @@ function Setting() {
   const { data: groupData } = useGroupMyStatusQuery(0, "isOwner");
 
   const [filterMembers, setFilterMembers] = useState<string[]>([]);
-  console.log(filterMembers);
+
   useEffect(() => {
     setWaitingMembers(gatherData?.waiting);
   }, [gatherData]);
@@ -87,7 +87,7 @@ function Setting() {
         changeStatus("pending");
         break;
       case "exile":
-        console.log(55);
+      
         setModalType("exile");
         setFilterMembers(user.map((who) => who?._id));
         break;
@@ -100,7 +100,7 @@ function Setting() {
         setModalType("inviteMember");
         break;
       case "groupStudy":
-        console.log(145, user);
+      
         setFilterMembers(user.map((who) => who?._id));
         setModalType("inviteMember");
         break;
@@ -119,7 +119,7 @@ function Setting() {
     await mutate({ userId, status, text: status === "refuse" ? refuseText : null });
     setWaitingMembers((old) => old.filter((who) => who.user._id !== userId));
   };
-  console.log(245, filterMembers);
+ 
   return (
     <>
       <Header title="모임장 페이지" />

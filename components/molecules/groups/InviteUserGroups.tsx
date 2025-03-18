@@ -16,7 +16,7 @@ export default function InviteUserGroups({
   existUsers,
   type,
 }: IInviteUserGroups) {
-  console.log(2, type);
+
   return (
     <Grid mt="20px" templateColumns="repeat(3,1fr)" gap="12px">
       {users?.map((who, idx) => {

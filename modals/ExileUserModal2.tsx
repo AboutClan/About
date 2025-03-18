@@ -48,7 +48,7 @@ export default function ExileUserModal({ setIsModal, prevUsers, filterUsers }: I
     const filtered = filterUsers?.length
       ? usersAll?.filter((user) => filterUsers.includes(user._id))
       : usersAll;
-    console.log(42, filterUsers, filtered);
+
 
     if (nameValue) setUsers(searchName(filtered, nameValue));
     else setUsers(filtered);
@@ -98,7 +98,7 @@ export default function ExileUserModal({ setIsModal, prevUsers, filterUsers }: I
       func: () => setLocation("인천"),
     },
   ];
-  console.log(123456);
+
   return (
     <ModalLayout setIsModal={setIsModal} title="인원 내보내기" footerOptions={footerOptions}>
       <ButtonGroups buttonOptionsArr={buttonOptionsArr} currentValue={location} />

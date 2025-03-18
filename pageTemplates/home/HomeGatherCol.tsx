@@ -31,7 +31,7 @@ export default function HomeGatherCol({ gathers, isPriority }: HomeGatherColProp
   const setTransferGather = useSetRecoilState(transferGatherDataState);
 
   useEffect(() => {
-    console.log(23, gathers);
+  
     if (!gathers) return;
     const handleNavigate = (gather: IGather) => {
       setTransferGather(gather);
