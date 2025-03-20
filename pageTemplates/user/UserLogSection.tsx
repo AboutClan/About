@@ -11,7 +11,7 @@ import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 function UserLogSection() {
   const [tab, setTab] = useState<"score" | "point" | "deposit">("score");
   const [filter, setFilter] = useState("시간 순");
-  console.log(filter);
+  console.log(filter, 2);
   const { data: userInfo } = useUserInfoQuery();
 
   const { data: logsData } = usePointSystemLogQuery(tab);
