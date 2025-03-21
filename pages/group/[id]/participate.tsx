@@ -9,7 +9,11 @@ import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import { GROUP_STUDY } from "../../../constants/keys/queryKeys";
 import { useToast } from "../../../hooks/custom/CustomToast";
-import { useGroupWaitingMutation } from "../../../hooks/groupStudy/mutations";
+import {
+  useGroupParticipationMutation,
+  useGroupWaitingMutation,
+} from "../../../hooks/groupStudy/mutations";
+import { useUserInfoQuery } from "../../../hooks/user/queries";
 import ParticipateModal from "../../../pageTemplates/group/ParticipateModal";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
@@ -24,7 +28,19 @@ function Participate() {
   const [isModal, setIsModal] = useState(false);
   const { id } = useParams<{ id: string }>() || {};
 
+  const { data: userInfo } = useUserInfoQuery();
+  console.log(userInfo);
+
   const queryClient = useQueryClient();
+
+  const { mutate } = useGroupParticipationMutation("post", group?.id, {
+    onSuccess() {
+      toast("success", "가입이 완료되었습니다.");
+      setGroup(null);
+      queryClient.invalidateQueries([GROUP_STUDY, id]);
+      router.push(`/group/${id}`);
+    },
+  });
 
   const { mutate: sendRegisterForm } = useGroupWaitingMutation(group?.id, {
     onSuccess() {
@@ -36,7 +52,12 @@ function Participate() {
   });
 
   const onClick = () => {
-    sendRegisterForm({ answer: questionText, pointType: "point" });
+    if (userInfo?.ticket?.groupStudyTicket < (group?.meetingType === "online" ? 1 : 2)) {
+      toast("warning", "보유중인 티켓이 부족합니다.");
+      return;
+    }
+    if (group?.questionText) sendRegisterForm({ answer: questionText, pointType: "point" });
+    else mutate();
   };
 
   return (
