@@ -1,6 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
+import { Fragment } from "react";
 
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
@@ -13,7 +14,7 @@ function GatherTicketLogSection() {
   const { data: logsData } = useTicketSystemLogQuery("gather");
 
   let stepDate: string;
-
+  console.log(logsData);
   return (
     <>
       <Header title="번개 참여권 사용 기록" />
@@ -29,8 +30,8 @@ function GatherTicketLogSection() {
           </Box>
           <Box>
             {logsData
+              ?.slice()
               ?.reverse()
-              .slice()
               .map((log, idx) => {
                 const timeStamp = dayjs(log.timestamp);
                 const timeStr = dayjsToStr(timeStamp);
@@ -39,7 +40,7 @@ function GatherTicketLogSection() {
                   const isFirst = !stepDate;
                   stepDate = timeStr;
                   return (
-                    <>
+                    <Fragment key={idx}>
                       <Box
                         mt={!isFirst && 5}
                         pt={5}
@@ -48,7 +49,6 @@ function GatherTicketLogSection() {
                         lineHeight="12px"
                         color="gray.500"
                         px={5}
-                        key={idx}
                       >
                         {dayjsToFormat(dayjs(log.timestamp).locale("ko"), "M월 D일 (ddd)")}
                       </Box>
@@ -58,7 +58,7 @@ function GatherTicketLogSection() {
                         iconType="store"
                         value={log.meta.value}
                       />
-                    </>
+                    </Fragment>
                   );
                 } else {
                   return (

@@ -1,16 +1,16 @@
 import { IStoreGift } from "../types/models/store";
 
 export const STORE_GIFT_ACTIVE: IStoreGift[] = [
-  {
-    image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EA%B0%90%EA%B7%A4.webp",
-    name: "제주 감귤",
-    brand: "수플린",
-    point: 110,
-    winner: 3,
-    max: 30,
-    giftId: 57,
-  },
+  // {
+  //   image:
+  //     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EA%B0%90%EA%B7%A4.webp",
+  //   name: "제주 감귤",
+  //   brand: "수플린",
+  //   point: 110,
+  //   winner: 3,
+  //   max: 30,
+  //   giftId: 57,
+  // },
   {
     image:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EC%B6%98%EC%8B%9D%EC%9D%B4+%EB%A8%B8%EA%B7%B8%EC%9E%94.webp",
