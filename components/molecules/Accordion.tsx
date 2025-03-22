@@ -60,7 +60,9 @@ function Accordion({ contentArr, isFull, isQ = true }: IAccordion) {
                     Q.
                   </Box>
                 )}
-                <Box fontWeight={idx === selectedIndex ? "bold" : "regular"}>{item.title}</Box>
+                <Box textAlign="start" fontWeight={idx === selectedIndex ? "bold" : "regular"}>
+                  {item.title}
+                </Box>
               </Container>
               {/* <AccordionIcon /> */}
               <Box opacity={idx === selectedIndex ? 1 : 0.2}>
