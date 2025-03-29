@@ -43,7 +43,7 @@ function GatherDetailInfo({
         <ItemText>방식</ItemText>
         <span>{isApprovalRequired ? "승인제" : "선착순"}</span>
       </Item>
-      {!isOrganizer && password && (
+      {isOrganizer && password && (
         <Item>
           <ItemText>암호</ItemText>
           <Secret>
