@@ -9,6 +9,7 @@ import styled from "styled-components";
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../components/layouts/PageSlide";
 import { useGatherIDQuery } from "../../../hooks/gather/queries";
+import { useUserInfoQuery } from "../../../hooks/user/queries";
 import GatherBottomNav from "../../../pageTemplates/gather/detail/GatherBottomNav";
 import GatherComments from "../../../pageTemplates/gather/detail/GatherComments";
 import GatherContent from "../../../pageTemplates/gather/detail/GatherContent";
@@ -40,6 +41,9 @@ function GatherDetail() {
     //   setTransferGather(null);
     // };
   }, [transferGather, gatherData]);
+
+  const { data: userInfo } = useUserInfoQuery();
+  console.log(userInfo);
 
   const isMember =
     (gather?.user as IUserSummary)?.uid === session?.user.uid ||

@@ -27,7 +27,7 @@ export const useGatherWritingMutation = <T extends "post" | "patch" | "delete">(
   );
 
 type GatherParticipationParam<T> = T extends "post"
-  ? { phase: "first" | "second"; userId?: string }
+  ? { phase: "first" | "second"; isFree?: boolean; userId?: string }
   : void;
 
 interface IGatherParticipationRequest {

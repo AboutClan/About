@@ -39,7 +39,7 @@ function WritingCondition() {
     location: gatherContent?.place ? gatherContent.place === session?.user.location : false,
     manager: true,
     kakaoUrl: false,
-    isApprove: true,
+    isApprove: false,
   });
 
   const [isMemberConditionModal, setIsMemberConditionModal] = useState(false);
