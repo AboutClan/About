@@ -87,7 +87,6 @@ function Setting() {
         changeStatus("pending");
         break;
       case "exile":
-      
         setModalType("exile");
         setFilterMembers(user.map((who) => who?._id));
         break;
@@ -100,7 +99,6 @@ function Setting() {
         setModalType("inviteMember");
         break;
       case "groupStudy":
-      
         setFilterMembers(user.map((who) => who?._id));
         setModalType("inviteMember");
         break;
@@ -119,7 +117,7 @@ function Setting() {
     await mutate({ userId, status, text: status === "refuse" ? refuseText : null });
     setWaitingMembers((old) => old.filter((who) => who.user._id !== userId));
   };
- 
+
   return (
     <>
       <Header title="모임장 페이지" />

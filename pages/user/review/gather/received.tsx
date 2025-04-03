@@ -9,7 +9,7 @@ import { convertFeedToLayout } from "../../../../libs/convertFeedToLayout";
 
 function Review() {
   const { data } = useFeedTypeQuery("recieve", "gather");
-  console.log(24, data);
+
   return (
     <>
       <Header title="내 후기" />

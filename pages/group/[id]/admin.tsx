@@ -36,7 +36,7 @@ function Admin() {
 
   const { mutate, isLoading } = useGroupWaitingStatusMutation(+id, {
     onSuccess() {
-      completeToast("free", "가입되었습니다.");
+      completeToast("free", "완료되었습니다.");
       resetGroup();
     },
   });

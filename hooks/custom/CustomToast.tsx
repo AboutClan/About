@@ -21,7 +21,7 @@ export const useToast = () => {
         title: title,
         description: subTitle,
         status,
-        duration: 3000,
+        duration: 2000,
         variant: "subtle",
         colorScheme: status === "success" ? "mint" : undefined,
         containerStyle: {
@@ -57,7 +57,7 @@ export const useTypeToast = () => {
     (type: ToastType) => {
       toast({
         ...getTypeToToast(type),
-        duration: 3000,
+        duration: 2000,
         variant: "subtle",
         containerStyle: {
           marginBottom: "76px",

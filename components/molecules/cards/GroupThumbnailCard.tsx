@@ -133,7 +133,7 @@ export function GroupThumbnailCard({
               </Flex>
             </Flex>
           </Flex>
-        ) : category.main !== "콘텐츠" ? (
+        ) : category?.main !== "콘텐츠" ? (
           <Box ml="auto" mr={1} h={4} fontSize="11px" color="purple" fontWeight="semibold">
             {waitingCnt + 7}명의 멤버가 오픈을 기다리고 있어요
           </Box>

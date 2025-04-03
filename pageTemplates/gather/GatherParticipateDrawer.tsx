@@ -46,7 +46,7 @@ function GatherParticipateDrawer({ data }: IGatherParticipateDrawer) {
   const [isModal, setIsModal] = useState(false);
   const [value, setValue] = useState("");
 
-  console.log(isReviewDrawer, isExpirationModal);
+  console.log(isReviewDrawer);
 
   const setTransferFeedSummary = useSetRecoilState(transferFeedSummaryState);
   const { mutate: participate } = useGatherParticipationMutation("post", +id, {
@@ -180,7 +180,6 @@ function GatherParticipateDrawer({ data }: IGatherParticipateDrawer) {
       },
     };
   };
-  console.log(51, isFirstPage);
 
   useEffect(() => {
     if (data?.status === "open" && (myGather || isParticipant)) {
@@ -200,7 +199,6 @@ function GatherParticipateDrawer({ data }: IGatherParticipateDrawer) {
     }
   }, [value]);
 
-  console.log(231415, isModal, isFirstPage);
   return (
     <>
       <BottomFixedButton
