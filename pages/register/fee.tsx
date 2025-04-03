@@ -133,7 +133,7 @@ function Fee() {
 
                 <Flex justify="space-between" lineHeight="16px">
                   <Box fontWeight="bold" color="gray.900" lineHeight="16px">
-                    총 회비
+                    총 입금 금액
                   </Box>
                   <Box fontWeight="semibold" color="mint">
                     = 5,000원
@@ -157,7 +157,7 @@ function Fee() {
               >
                 <ListItem>참여 요청까지 완료하시면 승인과 함께 별도 연락을 드립니다.</ListItem>
                 <ListItem>회비는 동아리 운영 및 이벤트 기금으로 사용됩니다.</ListItem>
-                <ListItem>남은 보증금은 탈퇴시 환급됩니다.</ListItem>
+                <ListItem>보증금은 언제든 환급이 가능합니다.</ListItem>
               </UnorderedList>
               <Flex
                 onClick={() => setIsChecked((old) => !old)}

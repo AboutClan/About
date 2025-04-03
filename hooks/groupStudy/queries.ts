@@ -37,7 +37,6 @@ export const useGroupSnapshotQuery = (options?: QueryOptions<GroupShapShotProps>
     [GROUP_STUDY, "snapshot"],
     async () => {
       const res = await axios.get<GroupShapShotProps>(`${SERVER_URI}/groupStudy/snapshot`, {});
-
       return res.data;
     },
     options,
