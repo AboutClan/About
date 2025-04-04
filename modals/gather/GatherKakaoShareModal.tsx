@@ -36,9 +36,7 @@ function GatherKakaoShareModal({ title, date, locationMain, setIsModal }: IGathe
         isFull
         title={title}
         subtitle={date === "미정" ? date : dayjs(date).format("M월 D일(dd)")}
-        type="gather"
         url={WEB_URL + router.asPath}
-        location={locationMain}
         isBig={true}
         img={
           adminImageUrl ||

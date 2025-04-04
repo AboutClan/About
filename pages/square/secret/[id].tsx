@@ -137,7 +137,6 @@ function SecretSquareDetailPage() {
     <>
       <Header title="">
         <KakaoShareBtn
-          type="secretSquare"
           title={squareDetail?.title}
           subtitle={squareDetail?.content}
           img="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/%EC%BB%A4%EB%AE%A4%EB%8B%88%ED%8B%B0.jpg"
