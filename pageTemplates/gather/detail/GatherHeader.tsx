@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
 import { GATHER_RANDOM_IMAGE_ARR } from "../../../assets/images/randomImages";
@@ -31,14 +31,13 @@ function GatherHeader({ gatherData }: IGatherHeader) {
   // const onClickItem = (idx) => {
   //   setSelectedItem(idx);
   // };
- 
+
   return (
     <>
       <Header title="" defaultUrl="/gather">
         <Flex>
           <Box>
             <KakaoShareBtn
-              type="gather"
               img={
                 gatherData?.image ||
                 GATHER_RANDOM_IMAGE_ARR[getRandomIdx(GATHER_RANDOM_IMAGE_ARR.length - 1)]
