@@ -72,7 +72,7 @@ export default function StudyPage() {
   const [locationValue, setLocationValue] = useState<Location>(
     locationParamKr || userLocation === "기타" ? "수원" : userLocation,
   );
-  console.log(setDate);
+ 
   const [mapOptions, setMapOptions] = useState<IMapOptions>();
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>();
   const [currentLocation, setCurrentLocation] = useState<CoordinateProps>();

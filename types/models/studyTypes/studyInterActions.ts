@@ -4,6 +4,13 @@ import { TimeStampProps } from "../../utils/timeAndDate";
 import { IUserSummary } from "../userTypes/userInfoTypes";
 import { StudyPlaceProps } from "./studyDetails";
 
+export interface StudyVoteProps {
+  latitude: number;
+  longitude: number;
+  start: Dayjs | string;
+  end: Dayjs | string;
+}
+
 export interface IStudyVote extends IStudyVotePlaces, IStudyVoteTime {
   memo?: string;
 }

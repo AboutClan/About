@@ -46,7 +46,6 @@ function GatherParticipateDrawer({ data }: IGatherParticipateDrawer) {
   const [isModal, setIsModal] = useState(false);
   const [value, setValue] = useState("");
 
-  console.log(isReviewDrawer);
 
   const setTransferFeedSummary = useSetRecoilState(transferFeedSummaryState);
   const { mutate: participate } = useGatherParticipationMutation("post", +id, {

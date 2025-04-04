@@ -11,7 +11,6 @@ function GroupStudyTicketLogSection() {
   const { data: userInfo } = useUserInfoQuery();
 
   const { data: logsData } = useTicketSystemLogQuery("groupStudy");
-
   let stepDate: string;
 
   return (

@@ -13,8 +13,6 @@ import { DispatchBoolean, DispatchType } from "../../types/hooks/reactTypes";
 import { ActiveLocation, Location } from "../../types/services/locationTypes";
 
 interface StudyMapTopNavProps {
-  location: Location;
-  setLocation: DispatchType<ActiveLocation>;
   setIsLocationFetch: DispatchBoolean;
   setCenterLocation: DispatchType<CoordinateProps>;
   isSmall: boolean;
@@ -22,8 +20,7 @@ interface StudyMapTopNavProps {
 
 function StudyMapTopNav({
   setIsLocationFetch,
-  location,
-  setLocation,
+
   setCenterLocation,
   isSmall,
 }: StudyMapTopNavProps) {
@@ -45,15 +42,15 @@ function StudyMapTopNav({
     };
     const changeLocation = getLocationByCoordinates(lat, lon) as ActiveLocation | null;
     if (changeLocation) {
-      setLocation(changeLocation as ActiveLocation);
 
       setCenterLocation({ lat, lon });
     }
   };
 
   return (
-    <Flex w="100%" justify="space-between" p={5} position="absolute" top="0" left="0" zIndex={10}>
+    <Flex w="100%" justify="space-between" p={4} position="absolute" top="0" left="0" zIndex={10}>
       <CurrentLocationBtn onClick={() => setIsLocationFetch(true)} />
+
       {!isSmall && (
         <Flex>
           <Button
@@ -69,16 +66,7 @@ function StudyMapTopNav({
           >
             {myStudyParticipation ? "스터디 장소" : "주 활동 장소"}
           </Button>
-          <Box ml={2}>
-            <Select
-              options={LOCATION_ALL}
-              defaultValue={location}
-              setValue={setLocation}
-              type="location"
-              size="md"
-              isThick
-            />
-          </Box>
+    
         </Flex>
       )}
     </Flex>

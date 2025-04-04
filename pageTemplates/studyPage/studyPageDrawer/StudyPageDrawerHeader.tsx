@@ -3,28 +3,18 @@ import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-import LocationSelector from "../../../components/atoms/LocationSelector";
 import SectionHeader from "../../../components/atoms/SectionHeader";
 import { ShortArrowIcon } from "../../../components/Icons/ArrowIcons";
-import { LOCATION_ALL } from "../../../constants/location";
 import DateCalendarModal from "../../../modals/aboutHeader/DateCalendarModal";
-import { DispatchString, DispatchType } from "../../../types/hooks/reactTypes";
-import { Location } from "../../../types/services/locationTypes";
+import { DispatchString } from "../../../types/hooks/reactTypes";
 import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
 
 interface StudyPageDrawerHeaderProps {
   date: string;
   setDate: DispatchString;
-  location: Location;
-  setLocation: DispatchType<Location>;
 }
 
-function StudyPageDrawerHeader({
-  date,
-  setDate,
-  location,
-  setLocation,
-}: StudyPageDrawerHeaderProps) {
+function StudyPageDrawerHeader({ date, setDate }: StudyPageDrawerHeaderProps) {
   const [isCalendarModal, setIsCalendarModal] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -38,7 +28,7 @@ function StudyPageDrawerHeader({
     newSearchParams.set("date", newDate);
     router.replace(`/studyPage?${newSearchParams.toString()}`);
   };
-  console.log(navigateNextDay);
+
   return (
     <>
       <Box mb={4}>
@@ -58,12 +48,6 @@ function StudyPageDrawerHeader({
             >
               <ShortArrowIcon dir="bottom" />
             </Button>
-
-            <LocationSelector
-              options={LOCATION_ALL}
-              defaultValue={location}
-              setValue={setLocation}
-            />
           </Flex>
         </SectionHeader>
       </Box>

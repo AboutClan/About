@@ -14,7 +14,6 @@ function GatherTicketLogSection() {
   const { data: logsData } = useTicketSystemLogQuery("gather");
 
   let stepDate: string;
-  console.log(logsData);
   return (
     <>
       <Header title="번개 참여권 사용 기록" />

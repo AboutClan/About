@@ -64,7 +64,7 @@ function Layout({ children }: ILayout) {
   const [isErrorModal, setIsErrorModal] = useState(false);
 
   useEffect(() => {
-    console.log(session);
+
     if (PUBLIC_SEGMENT.includes(segment)) return;
     if (!isBottomNavCondition && isGuest) {
       toast(

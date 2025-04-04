@@ -8,7 +8,7 @@ interface IGatherWritingConditionLocation {
 }
 
 function GatherWritingConditionLocation({ setLocation }: IGatherWritingConditionLocation) {
-  console.log(setLocation);
+
   // const [buttonType, setButtonType] = useState<Location>("전체");
 
   // useEffect(() => {

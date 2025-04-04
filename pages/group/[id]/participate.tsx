@@ -29,7 +29,7 @@ function Participate() {
   const { id } = useParams<{ id: string }>() || {};
 
   const { data: userInfo } = useUserInfoQuery();
-  console.log(userInfo);
+ 
 
   const queryClient = useQueryClient();
 
