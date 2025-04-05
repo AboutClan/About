@@ -25,6 +25,18 @@ export const useUserRegisterMutation = (options?: MutationOptions<IUserRegisterF
     options,
   );
 
+export const useUserTicketMutation = (
+  options?: MutationOptions<{ ticketNum: number; type: "gather" | "groupStudy" }>,
+) =>
+  useMutation<void, AxiosError, { ticketNum: number; type: "gather" | "groupStudy" }>(
+    (param) =>
+      requestServer<{ ticketNum: number; type: "gather" | "groupStudy" }>({
+        method: "post",
+        url: `user/ticket`,
+        body: param,
+      }),
+    options,
+  );
 export const useUserRegisterControlMutation = <T extends "post" | "delete">(
   method: T,
   options?: MutationOptions<string>,

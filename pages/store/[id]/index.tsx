@@ -73,7 +73,18 @@ function StoreItem() {
           />
         </Header>
         <Box w="full" h="full" position="absolute">
-          {storeGiftData && <Image fill alt="storeImageCover" sizes="800px" src={giftInfo.image} />}
+          {storeGiftData && (
+            <Image
+              fill
+              alt="storeImageCover"
+              sizes="800px"
+              src={giftInfo.image}
+              style={{
+                objectFit: "cover",
+                transform: giftInfo?.type === "ticket" ? "scale(0.3)" : "none",
+              }}
+            />
+          )}
         </Box>
       </Box>
 
@@ -94,7 +105,18 @@ function StoreItem() {
                 {giftInfo.name}
               </Box>
               <Box fontSize="13px" lineHeight="20px" mb={4}>
-                현재 전체 응모 횟수는 <b>&lsquo;{giftInfo.totalCnt}회&rsquo;</b>입니다.
+                현재 전체 응모 횟수는{" "}
+                <b>
+                  &lsquo;
+                  {giftInfo.totalCnt +
+                    (giftInfo?.name === "소모임 참여권"
+                      ? 13
+                      : giftInfo?.name === "번개 참여권"
+                      ? 2
+                      : 0)}
+                  회&rsquo;
+                </b>
+                입니다.
               </Box>
               <Box mb={4} fontWeight="extrabold" fontSize="16px" lineHeight="24px" color="mint">
                 {giftInfo.point} Point
@@ -139,29 +161,31 @@ function StoreItem() {
                 <Box fontWeight="medium">안내사항</Box>
               </Flex>
               <Box color="gray.600" lineHeight="16px" fontSize="12px">
-                당첨자는 중복되지 않습니다.
+                {!giftInfo?.type && "당첨자는 중복되지 않습니다."}
                 <br />
                 응모할 수 있는 최대 횟수는 개인 점수에 따라 달라집니다.
               </Box>
             </Flex>
           )}
           <Flex my={2} w="full" mt="auto">
-            <Button
-              colorScheme="black"
-              size="lg"
-              mr={3}
-              flex={1}
-              onClick={() => setModalType("member")}
-            >
-              참여 현황
-            </Button>
+            {!giftInfo?.type && (
+              <Button
+                colorScheme="black"
+                size="lg"
+                mr={3}
+                flex={1}
+                onClick={() => setModalType("member")}
+              >
+                참여 현황
+              </Button>
+            )}
             <Button
               onClick={() => setModalType(isResult ? "winner" : "vote")}
               size="lg"
               flex={1}
               colorScheme="mint"
             >
-              {isResult ? "당첨자 확인" : "응모하기"}
+              {giftInfo?.type ? "구매하기" : isResult ? "당첨자 확인" : "응모하기"}
             </Button>
           </Flex>
         </BottomFlexDrawer>

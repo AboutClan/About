@@ -12,7 +12,7 @@ function GatherTicketLogSection() {
   const { data: userInfo } = useUserInfoQuery();
 
   const { data: logsData } = useTicketSystemLogQuery("gather");
-
+  console.log(42, logsData);
   let stepDate: string;
   return (
     <>
