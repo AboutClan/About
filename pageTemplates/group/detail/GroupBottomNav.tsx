@@ -1,8 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
@@ -15,6 +15,7 @@ import {
   useGroupParticipationMutation,
   useGroupWaitingMutation,
 } from "../../../hooks/groupStudy/mutations";
+import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { transferGroupDataState } from "../../../recoils/transferRecoils";
 import { IGroup } from "../../../types/models/groupTypes/group";
 
@@ -31,6 +32,8 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
   const { id } = useParams<{ id: string }>() || {};
   const setTransferGroup = useSetRecoilState(transferGroupDataState);
 
+  const { data: userInfo } = useUserInfoQuery();
+
   const errorToast = useErrorToast();
   const { data: session } = useSession();
 
@@ -41,6 +44,9 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
       completeToast("free", "가입이 완료되었습니다.");
       setTransferGroup(null);
       queryClient.invalidateQueries([GROUP_STUDY, id]);
+    },
+    onError() {
+      toast("warning", "보유중인 티켓이 부족합니다.");
     },
   });
 
@@ -72,6 +78,12 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
 
   const onClick = (type: ButtonType) => {
     if (type === "cancel") cancel();
+    const myTicket = userInfo?.ticket?.groupStudyTicket;
+    if (myTicket < (data?.meetingType === "online" ? 1 : 2)) {
+      toast("warning", "보유중인 티켓이 부족합니다.");
+      return;
+    }
+
     if (type === "participate") router.push(`${url}/participate`);
     if (type === "register") participate();
   };

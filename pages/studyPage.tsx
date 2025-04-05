@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -13,11 +13,6 @@ import Header from "../components/layouts/Header";
 import Slide from "../components/layouts/PageSlide";
 import InfoBoxCol from "../components/molecules/InfoBoxCol";
 import VoteMap from "../components/organisms/VoteMap";
-import { USER_LOCATION } from "../constants/keys/localStorage";
-import {
-  LOCATION_CENTER_DOT,
-  LOCATION_MAX_BOUNDARY,
-} from "../constants/serviceConstants/studyConstants/studyVoteMapConstants";
 import { STUDY_COMMENT_ARR } from "../constants/settingValue/comment";
 import { useToast, useTypeToast } from "../hooks/custom/CustomToast";
 import { useStudyVoteQuery } from "../hooks/study/queries";
@@ -44,8 +39,7 @@ import {
   StudyStatus,
 } from "../types/models/studyTypes/studyDetails";
 import { PlaceInfoProps } from "../types/models/utilTypes";
-import { ActiveLocation, Location, LocationEn } from "../types/services/locationTypes";
-import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
+import { Location } from "../types/services/locationTypes";
 import { dayjsToFormat } from "../utils/dateTimeUtils";
 import { getRandomIdx } from "../utils/mathUtils";
 
@@ -58,18 +52,8 @@ export default function StudyPage() {
   const typeToast = useTypeToast();
   const dateParam = searchParams.get("date");
 
-  const locationParamKr = convertLocationLangTo(
-    searchParams.get("location") as LocationEn,
-    "kr",
-  ) as ActiveLocation;
-
-  const userLocation =
-    (localStorage.getItem(USER_LOCATION) as Location | "기타") || session?.user.location;
-
   const [date, setDate] = useState(dateParam || getStudyViewDate(dayjs()));
-  const [locationValue, setLocationValue] = useState<Location>(
-    locationParamKr || userLocation === "기타" ? "강남" : userLocation,
-  );
+
   const [mapOptions, setMapOptions] = useState<IMapOptions>();
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>();
 
@@ -79,41 +63,21 @@ export default function StudyPage() {
   const [isLocationRefetch, setIsLocationRefetch] = useState(true);
 
   const [modalType, setModalType] = useState<"preset">();
-
-  const [myVote, setMyVote] = useState<VotePlacesProps>({ main: null, sub: [] });
-  //이후 제거
-  console.log(setMyVote);
-
   const [myStudyParticipation, setMyStudyParticipation] = useRecoilState(myStudyParticipationState);
 
   const { data: userInfo } = useUserInfoQuery();
-  const { data: studyVoteData, isLoading } = useStudyVoteQuery(date, locationValue, {
-    enabled: !!locationValue && !!date,
+  const { data: studyVoteData, isLoading } = useStudyVoteQuery(date, {
+    enabled: !!date,
   });
+  console.log(23, studyVoteData);
 
   useEffect(() => {
-    toast("info", "리뉴얼 진행중인 페이지입니다. 오픈을 기다려주세요!");
-  }, []);
-
-  useEffect(() => {
-    if (!locationValue) return;
-
-    newSearchParams.set("location", `${convertLocationLangTo(locationValue, "en")}`);
     newSearchParams.set("date", `${getStudyViewDate(dayjs(date))}`);
-
     router.replace(`/studyPage?${newSearchParams.toString()}`);
-
-    // setCenterLocation();
-  }, [myStudyParticipation]);
-
-  useEffect(() => {
-    newSearchParams.set("location", convertLocationLangTo(locationValue, "en"));
-    router.replace(`/studyPage?${newSearchParams.toString()}`, { scroll: false });
-  }, [locationValue]);
+  }, [date]);
 
   useEffect(() => {
     if (!studyVoteData || !session?.user.uid) return;
-    let isChangeLocation = false;
 
     const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session.user.uid);
 
@@ -126,33 +90,21 @@ export default function StudyPage() {
 
       if (!changeLocation) return;
 
-      if (changeLocation === locationValue) {
+      if (changeLocation) {
         setCenterLocation({
           lat: findMyStudyParticipation.place.latitude,
           lon: findMyStudyParticipation.place.longitude,
         });
-      } else if (changeLocation !== locationValue) {
-        isChangeLocation = true;
-        setLocationValue(changeLocation as ActiveLocation);
+      } else {
         setCenterLocation({
-          lat: findMyStudyParticipation.place.latitude,
-          lon: findMyStudyParticipation.place.longitude,
-        });
-      }
-    } else {
-      if (locationValue) {
-        const centerCoordination = LOCATION_CENTER_DOT[locationValue];
-        setCenterLocation({
-          lat: centerCoordination.latitude,
-          lon: centerCoordination.longitude,
+          lat: currentLocation.lat,
+          lon: currentLocation.lon,
         });
       }
     }
 
-    if (!isChangeLocation) {
-      setMarkersOptions(getMarkersOptions(studyVoteData, currentLocation, null, null));
-    }
-  }, [studyVoteData, session?.user.uid, currentLocation, myVote]);
+    setMarkersOptions(getMarkersOptions(studyVoteData, currentLocation, null, null));
+  }, [studyVoteData, session?.user.uid, currentLocation]);
 
   const isGPSInitialRender = useRef(true);
   useEffect(() => {
@@ -172,26 +124,12 @@ export default function StudyPage() {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
         setCurrentLocation({ lat, lon });
-        const changeLocation = getLocationByCoordinates(lat, lon);
-        if (changeLocation) {
-          if (!isGPSInitialRender.current) {
-            setLocationValue(changeLocation as ActiveLocation);
-            setCenterLocation({ lat, lon });
-          }
-        } else if (!isGPSInitialRender.current) {
-          //원하는 시점에 동작하지 않아서 일단 비활성화. 이후 추가
-          // toast("warning", "활성화 된 지역에 있지 않습니다.");
-        }
       },
       function (error) {
         console.error("위치 정보를 가져오는 데 실패했습니다: ", error);
-        const locationCenter = LOCATION_CENTER_DOT[locationValue];
-        setCenterLocation({ lat: locationCenter.latitude, lon: locationCenter.longitude });
-        setCurrentLocation({ lat: locationCenter.latitude, lon: locationCenter.longitude });
       },
       {
         enableHighAccuracy: true, // 고정밀도 모드 활성화
-        timeout: 4000, // 4초 안에 위치를 가져오지 못하면 오류 발생
         maximumAge: 0, // 캐시된 위치 정보를 사용하지 않음
       },
     );
@@ -204,10 +142,10 @@ export default function StudyPage() {
   //centerLocation이 없는 경우는 없다! 다 방지해야 됨
   //voteDrawerParam 처리가 적절한 위치인지는 모르겠으나 map 생성이 된 이후여야 해서 여기 배치함
   useEffect(() => {
-    if (!centerLocation || !locationValue) return;
+    if (!centerLocation) return;
 
-    setMapOptions(getMapOptions(centerLocation, locationValue, 13));
-  }, [centerLocation, locationValue]);
+    setMapOptions(getMapOptions(centerLocation, 13));
+  }, [centerLocation]);
 
   // const accumulationHour =
   //   userInfo &&
@@ -246,17 +184,6 @@ export default function StudyPage() {
           onClick={() => router.push("/studyPageMap")}
         >
           <StudyMapTopNav
-            location={locationValue}
-            setLocation={(location) => {
-              newSearchParams.set("center", "locationPlace");
-              newSearchParams.set(
-                "location",
-                convertLocationLangTo(location as ActiveLocation, "en"),
-              );
-
-              setLocationValue(location);
-              router.replace(`/studyPage?${newSearchParams.toString()}`);
-            }}
             setCenterLocation={setCenterLocation}
             setIsLocationFetch={setIsLocationRefetch}
             isSmall
@@ -267,8 +194,8 @@ export default function StudyPage() {
         </Box>
         <StudyPageDrawer
           studyVoteData={studyVoteData}
-          location={locationValue}
-          setLocation={setLocationValue}
+     
+      
           date={date}
           setDate={setDate}
           currentLocation={currentLocation}
@@ -480,31 +407,29 @@ const getMarkersOptions = (
 
 export const getMapOptions = (
   currentLocation: { lat: number; lon: number },
-  location: Location,
   zoomValue?: number,
 ): IMapOptions | undefined => {
   if (typeof naver === "undefined") return undefined;
-  if (!currentLocation || !location) return;
-  const locationBoundary = LOCATION_MAX_BOUNDARY[location];
+  if (!currentLocation) return;
 
-  const bounds = locationBoundary
-    ? new naver.maps.LatLngBounds(
-        new naver.maps.LatLng(
-          locationBoundary.southwest.latitude,
-          locationBoundary.southwest.longitude,
-        ),
-        new naver.maps.LatLng(
-          locationBoundary.northeast.latitude,
-          locationBoundary.northeast.longitude,
-        ),
-      )
-    : undefined;
+  // const bounds = locationBoundary
+  //   ? new naver.maps.LatLngBounds(
+  //       new naver.maps.LatLng(
+  //         locationBoundary.southwest.latitude,
+  //         locationBoundary.southwest.longitude,
+  //       ),
+  //       new naver.maps.LatLng(
+  //         locationBoundary.northeast.latitude,
+  //         locationBoundary.northeast.longitude,
+  //       ),
+  //     )
+  //   : undefined;
 
   return {
     center: new naver.maps.LatLng(currentLocation.lat, currentLocation.lon),
     zoom: zoomValue || 13,
     minZoom: 11,
-    maxBounds: bounds,
+    // maxBounds: bounds,
     mapTypeControl: false,
     scaleControl: false,
     logoControl: false,

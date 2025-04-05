@@ -1,8 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 
@@ -12,7 +12,9 @@ import BottomFlexDrawer, {
 } from "../../components/organisms/drawer/BottomFlexDrawer";
 import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
+import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";
+import { useUserInfoQuery } from "../../hooks/user/queries";
 import { getMyStudyInfo } from "../../libs/study/getMyStudyMethods";
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import { DispatchBoolean } from "../../types/hooks/reactTypes";
@@ -29,6 +31,7 @@ interface StudyControlButtonProps {
 
 function StudyControlButton({ date, setIsVoteDrawer, isVoting }: StudyControlButtonProps) {
   const resetStudy = useResetStudyQuery();
+  const toast = useTypeToast();
   const { data: session } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -38,12 +41,14 @@ function StudyControlButton({ date, setIsVoteDrawer, isVoting }: StudyControlBut
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
   const [isTimeRullet, setIsTimeRullet] = useState(false);
   const [isRightDrawer, setIsRightDrawer] = useState(false);
-  console.log(voteTime);
+
   const myStudyParticipation = useRecoilValue(myStudyParticipationState);
   const myStudyInfo = getMyStudyInfo(myStudyParticipation, session?.user.uid);
   const isArrived = myStudyInfo?.attendanceInfo.arrived;
 
   const isOpenStudy = myStudyParticipation?.status === "open";
+
+  const { data: userInfo } = useUserInfoQuery();
 
   const myStudyStatus =
     lastStudyHours > 0
@@ -61,13 +66,24 @@ function StudyControlButton({ date, setIsVoteDrawer, isVoting }: StudyControlBut
       resetStudy();
     },
   });
-  // const { mutate: patchAttend, isLoading } = useStudyParticipationMutation(dayjs(date), "post", {
-  //   onSuccess() {
-  //     //  handleSuccess();
-  //   },
-  // });
+  const { mutate: voteStudy, isLoading } = useStudyParticipationMutation(dayjs(date), "post", {
+    onSuccess() {
+      toast("vote");
+      resetStudy();
+    },
+  });
+
 
   const handleVote = () => {
+    const { lat: latitude, lon: longitude } = { ...userInfo?.locationDetail };
+
+    voteStudy({
+      latitude,
+      longitude,
+      start: voteTime.start.toISOString(),
+      end: voteTime.end.toISOString(),
+    });
+   
     // if (!myVote?.main || !voteTime?.start || !voteTime?.end) {
     //   // typeToast("omission");
     //   return;
@@ -204,13 +220,13 @@ function StudyControlButton({ date, setIsVoteDrawer, isVoting }: StudyControlBut
             variant="unstyled"
             py={4}
             w="100%"
-            onClick={handleStudyVoteButton}
+            onClick={() => setIsRightDrawer(true)}
           >
             <Box w="20px" h="20px" mr={4} opacity={0.28}>
               <SelectIcon />
             </Box>
             <Box fontSize="13px" color="var(--gray-600)">
-              스터디 수동 신청
+              스터디 위치 직접 입력
             </Box>
           </Button>
           {myStudyStatus === "participating" && (

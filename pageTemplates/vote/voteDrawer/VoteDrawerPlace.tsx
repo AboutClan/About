@@ -40,7 +40,6 @@ export function VoteDrawerPlace({ setIsRightDrawer, setIsVoteDrawer, date }: Pla
   const { mutate, isLoading } = useRealtimeVoteMutation({
     onSuccess() {
       typeToast("vote");
-
       resetStudy();
       newSearchParams.set("center", "votePlace");
       router.push(`/studyPage?${newSearchParams.toString()}`);
@@ -62,6 +61,8 @@ export function VoteDrawerPlace({ setIsRightDrawer, setIsVoteDrawer, date }: Pla
     setIsTimeDrawer(true);
   };
   const handleSubmit = () => {
+   
+    return;
     mutate({
       place: {
         name: placeInfo.place_name,

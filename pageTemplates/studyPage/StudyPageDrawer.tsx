@@ -15,11 +15,9 @@ import { useUserInfoQuery } from "../../hooks/user/queries";
 import { convertStudyToParticipations } from "../../libs/study/getMyStudyMethods";
 import { setStudyToThumbnailInfo } from "../../libs/study/setStudyToThumbnailInfo";
 import { CoordinateProps } from "../../types/common";
-import { DispatchString, DispatchType } from "../../types/hooks/reactTypes";
+import { DispatchString } from "../../types/hooks/reactTypes";
 import { StudyDailyInfoProps } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
-import { Location } from "../../types/services/locationTypes";
-import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 import StudyPageDrawerFilterBar from "./studyPageDrawer/StudyPageDrawerFilterBar";
 import StudyPageDrawerHeader from "./studyPageDrawer/StudyPageDrawerHeader";
@@ -27,21 +25,13 @@ interface StudyPageDrawerProps {
   studyVoteData: StudyDailyInfoProps;
   date: string;
   setDate: DispatchString;
-  location: Location;
-  setLocation: DispatchType<Location>;
+
   currentLocation: CoordinateProps;
 }
 
 type SelectOption = "인원순" | "거리순" | "선호순";
 
-function StudyPageDrawer({
-  studyVoteData,
-  location,
-  date,
-  setDate,
-  setLocation,
-  currentLocation,
-}: StudyPageDrawerProps) {
+function StudyPageDrawer({ studyVoteData, date, setDate, currentLocation }: StudyPageDrawerProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
@@ -56,7 +46,7 @@ function StudyPageDrawer({
   useEffect(() => {
     if (!studyVoteData || !currentLocation) return;
 
-    const participations = convertStudyToParticipations(studyVoteData, location, false);
+    const participations = convertStudyToParticipations(studyVoteData, false);
 
     const getThumbnailCardInfoArr = setStudyToThumbnailInfo(
       lastStudyHours <= 0
@@ -66,7 +56,6 @@ function StudyPageDrawer({
       currentLocation,
       date,
       true,
-      location,
     );
     setThumbnailCardinfoArr(
       sortThumbnailCardInfoArr(selectOption, preference, getThumbnailCardInfoArr),
@@ -117,12 +106,7 @@ function StudyPageDrawer({
 
   return (
     <Flex flexDir="column" mt={5} mb={8}>
-      <StudyPageDrawerHeader
-        date={date}
-        setDate={setDate}
-        location={location}
-        setLocation={setLocation}
-      />
+      <StudyPageDrawerHeader date={date} setDate={setDate} />
       <Box>
         <WeekSlideCalendar selectedDate={date} func={handleSelectDate} />
         {thumbnailCardInfoArr?.length ? (
@@ -181,9 +165,9 @@ function StudyPageDrawer({
                       </Box>
                     ) : (
                       <>
-                        현재 진행중인 스터디가 없네요!
+                        현재 진행중인 스터디가 없습니다.
                         <br />
-                        하지만 개인 스터디 신청을 통해서도 참여가 가능합니다!
+                        하단의 개인 스터디 신청을 통해서 참여해 주세요!
                       </>
                     )}
                   </Flex>
@@ -193,9 +177,7 @@ function StudyPageDrawer({
               )}
             </motion.div>
             {thumbnailCardInfoArr?.length && (
-              <SectionFooterButton
-                url={`/studyList?date=${date}&location=${convertLocationLangTo(location, "en")}`}
-              />
+              <SectionFooterButton url={`/studyList?date=${date}`} />
             )}
           </AnimatePresence>
         </Box>

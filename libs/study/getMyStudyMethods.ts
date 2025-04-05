@@ -11,7 +11,6 @@ import { PlaceInfoProps } from "../../types/models/utilTypes";
 
 export const convertStudyToParticipations = (
   studyVoteData: StudyDailyInfoProps,
-  location: Location,
   isAllRealTime: boolean,
 ): StudyMergeParticipationProps[] => {
   if (!studyVoteData || !location) return;
@@ -22,8 +21,8 @@ export const convertStudyToParticipations = (
   }[] = [];
 
   studyVoteData.realTime.forEach((props) => {
-    const changeLocation = getLocationByCoordinates(props.place?.latitude, props.place?.longitude);
-    if (isAllRealTime || location === changeLocation) {
+  
+    if (isAllRealTime ) {
       const findParticipationIdx = temp.findIndex(
         (participation) => participation.place.name === props.place.name,
       );

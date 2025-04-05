@@ -21,14 +21,14 @@ type GroupType = "참여중인 모임" | "종료된 모임" | "내가 개설한 
 function UserGroupSection() {
   const [groupType, setGroupType] = useState<GroupType>("참여중인 모임");
   const [cardDataArr, setCardDataArr] = useState<GroupThumbnailCardProps[]>();
-  console.log(setCardDataArr);
+
   const [groups, setGroups] = useState<IGroup[]>([]);
   const [cursor, setCursor] = useState(0);
   const loader = useRef<HTMLDivElement | null>(null);
   const firstLoad = useRef(true);
 
   const { data } = useFeedCntQuery("group");
-  console.log(24, data);
+ 
 
   const setTransdferGroupData = useSetRecoilState(transferGroupDataState);
   const { data: groupData, isLoading } = useGroupMyStatusQuery(

@@ -47,17 +47,11 @@ export const useStudyPlacesQuery = (
     options,
   );
 
-export const useStudyVoteQuery = (
-  date: string,
-  location: Location | "전체" | "기타",
-  options?: QueryOptions<StudyDailyInfoProps>,
-) =>
+export const useStudyVoteQuery = (date: string, options?: QueryOptions<StudyDailyInfoProps>) =>
   useQuery<StudyDailyInfoProps, AxiosError, StudyDailyInfoProps>(
     [STUDY_VOTE, date, location],
     async () => {
-      const res = await axios.get<StudyDailyInfoProps>(`${SERVER_URI}/vote/${date}`, {
-        params: { location },
-      });
+      const res = await axios.get<StudyDailyInfoProps>(`${SERVER_URI}/vote2/${date}/one`);
       return res.data;
     },
     options,

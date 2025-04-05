@@ -4,8 +4,6 @@ import {
   StudyParticipationProps,
 } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
-import { Location } from "../../types/services/locationTypes";
-import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
 import { convertMergePlaceToPlace } from "./convertMergePlaceToPlace";
 
@@ -15,7 +13,6 @@ export const setStudyToThumbnailInfo = (
   currentLocation: { lat: number; lon: number },
   urlDateParam: string | null,
   imagePriority: boolean,
-  location: Location,
   votePlaceProps?: { main: string; sub: string[] },
   imageCache?: Map<string, string>,
   isNoCntMember?: boolean,
@@ -55,12 +52,7 @@ export const setStudyToThumbnailInfo = (
       },
       participants: data.members.map((att) => att.user),
 
-      url:
-        urlDateParam &&
-        `/study/${data.place._id}/${urlDateParam}?location=${convertLocationLangTo(
-          location,
-          "en",
-        )}`,
+      url: urlDateParam && `/study/${data.place._id}/${urlDateParam})}`,
       status: data.status === "pending" && data.members.length > 1 ? "expected" : data.status,
       id: data.place._id,
     };
