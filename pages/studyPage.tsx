@@ -41,7 +41,7 @@ export default function StudyPage() {
 
   const { currentLocation } = useUserCurrentLocation();
   const { data: userInfo } = useUserInfoQuery();
-  const { data: studyVoteData, isLoading } = useStudyVoteQuery("2024-12-29", {
+  const { data: studyVoteData, isLoading } = useStudyVoteQuery(date, {
     enabled: !!date,
   });
 
@@ -51,7 +51,13 @@ export default function StudyPage() {
    * 투표중이지 않고, 현재 위치 파악이 안된다면, locationDetail로.
    */
   useEffect(() => {
-    if (!studyVoteData || !session?.user?.id) return;
+    if (!studyVoteData || !session?.user?.id) {
+      if (isLoading === false) {
+        setMyVoteStatus("pending");
+      }
+      return;
+    }
+
     const userId = session.user.id;
     const { participations, results, realTimes } = studyVoteData;
 
@@ -74,7 +80,7 @@ export default function StudyPage() {
       return;
     }
     // 실시간 참여 확인
-    const realTimeResult = realTimes?.find((who) => who?.user?._id === userId);
+    const realTimeResult = realTimes?.userList.find((who) => who?.user?._id === userId);
     if (realTimeResult) {
       setMyVoteStatus("private");
       setCenterLocation({
@@ -83,26 +89,19 @@ export default function StudyPage() {
       });
       return;
     }
-
     if (currentLocation) {
       setCenterLocation(currentLocation);
     } else {
       const { lat, lon } = userInfo.locationDetail;
       setCenterLocation({ lat, lon });
     }
-
-    setMyVoteStatus(null);
-  }, [studyVoteData, session?.user.uid, currentLocation]);
-
-  // const accumulationHour =
-  //   userInfo &&
-  //   `${Math.ceil(userInfo.weekStudyAccumulationMinutes / 60)}시간 ${
-  //     userInfo.weekStudyAccumulationMinutes % 60
-  //   }분`;
+    if (studyVoteData?.participations) setMyVoteStatus("pending");
+    else setMyVoteStatus("todayPending");
+  }, [studyVoteData, session?.user.uid, currentLocation, isLoading]);
 
   const isExpireDate = dayjs(date).isBefore(dayjs().subtract(1, "day"));
 
-  console.log("studyVoteData", studyVoteData);
+  console.log("studyVoteData", studyVoteData, isLoading);
   console.log("myVoteStatus", myVoteStatus);
   console.log("23", isExpireDate);
 
@@ -128,7 +127,7 @@ export default function StudyPage() {
         <StudyPageRecordBlock />
         <StudyPageAddPlaceButton />
       </Slide>
-      {!isExpireDate && (
+      {!isExpireDate && myVoteStatus && (
         <Box mb={20} mt={5}>
           <StudyControlButton
             studyResults={studyVoteData ? convertStudyToMergeStudy(studyVoteData) : []}

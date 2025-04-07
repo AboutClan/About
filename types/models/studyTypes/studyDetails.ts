@@ -10,7 +10,7 @@ export interface StudyVoteDataProps {
   status: "before" | "after";
   participations?: StudyParticipationProps[];
   results: StudyResultProps[];
-  realTimes?: RealTimeMemberProps[];
+  realTimes?: { date: string; userList: RealTimeMemberProps[] };
 }
 
 export interface StudyParticipationProps {
@@ -34,8 +34,9 @@ export interface RealTimeMemberProps extends StudyMemberProps {
 export interface StudyMemberProps extends TimeStampProps {
   user: UserSimpleInfoProps;
   time: TimeRangeProps;
-  comment?: MessageSimpleProps;
+  commentInfo?: MessageSimpleProps;
   attendanceInfo?: StudyAttendanceInfoProps;
+  absenceInfo?: MessageSimpleProps;
 }
 
 export interface StudyMergeResultProps extends Omit<StudyResultProps, "place"> {
@@ -50,14 +51,14 @@ export interface StudyMemberProps extends TimeStampProps {
   user: UserSimpleInfoProps;
   time: TimeRangeProps;
   attendanceInfo?: StudyAttendanceInfoProps;
-  comment?: MessageSimpleProps;
-  absenceInfo?: MessageSimpleProps;
+  commentInfo?: MessageSimpleProps;
 }
 
 export interface StudyAttendanceInfoProps {
+  time: string;
+  memo: string;
+  type: "arrived" | "absenced";
   attendanceImage?: string;
-  arrived: string;
-  arrivedMessage: string;
 }
 
 export interface StudyAttendanceRequestProps {
@@ -68,16 +69,15 @@ export interface StudyAttendanceRequestProps {
   time: TimeRangeProps;
 }
 
-export type MyVoteStatus = "voting" | "open" | "private" | null;
+export type MyVoteStatus = "voting" | "open" | "private" | "pending" | "todayPending";
 
+export type StudyStatus = "open" | "free" | "recruiting" | "expected";
 ////
 
 export interface AbsenceInfoProps extends TimeStampProps {
   user: UserSimpleInfoProps;
   message: string;
 }
-
-export type StudyUserStatus = "pending" | "solo" | "open" | "completed" | "cancel";
 
 export interface RealTimeBasicVoteProps {
   place: PlaceInfoProps;
@@ -90,7 +90,7 @@ export interface RealTimeBasicVoteProps {
 export interface RealTimeBasicAttendanceProps {
   memo: string;
   image: string | Blob;
-  status: StudyUserStatus;
+  status: "solo";
 }
 export interface RealTimeDirectAttendanceProps
   extends RealTimeBasicAttendanceProps,
@@ -113,5 +113,3 @@ export interface StudyPlaceProps extends PlaceRegisterProps {
   _id: string;
   registerDate: string;
 }
-
-export type StudyStatus = "recruiting" | "open" | "free" | "solo";

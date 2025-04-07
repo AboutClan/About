@@ -55,6 +55,7 @@ function StudyPagePlaceSection({
       currentLocation,
       true,
     );
+
     setThumbnailCardinfoArr(sortThumbnailCardInfoArr(sortedOption, getThumbnailCardInfoArr));
   }, [studyVoteData, currentLocation, sortedOption]);
 
@@ -90,16 +91,14 @@ function StudyPagePlaceSection({
             >
               {thumbnailCardInfoArr ? (
                 thumbnailCardInfoArr.length ? (
-                  thumbnailCardInfoArr
-                    .slice(0, 3)
-                    .map(({ participants, ...thumbnailCardInfo }, idx) => (
-                      <Box key={idx} mb={3}>
-                        <StudyThumbnailCard
-                          {...thumbnailCardInfo}
-                          participantCnt={participants.length}
-                        />
-                      </Box>
-                    ))
+                  thumbnailCardInfoArr.slice(0, 3).map((thumbnailCardInfo, idx) => (
+                    <Box key={idx} mb={3}>
+                      <StudyThumbnailCard
+                        {...thumbnailCardInfo}
+                        participantCnt={thumbnailCardInfo.participants.length}
+                      />
+                    </Box>
+                  ))
                 ) : (
                   <Flex
                     justify="center"
@@ -116,9 +115,7 @@ function StudyPagePlaceSection({
                   >
                     {true ? (
                       <>
-                        {location} 지역에 등록된 스터디 장소가 없습니다.
-                        <br />
-                        아래 버튼을 눌러 새로운 장소를 등록해보세요!
+                        지역에 등록된 스터디 장소가 없습니다.
                         <Button borderRadius="8px" mt={4} colorScheme="mint" w="full">
                           신규 스터디 장소 추가
                         </Button>

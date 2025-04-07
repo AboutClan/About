@@ -34,7 +34,11 @@ function StudyPageMap({
     const options = getMapOptions(centerLocation, 13);
     setMapOptions(options);
     setMarkersOptions(
-      getMarkersOptions(studyVoteData.results, studyVoteData?.realTimes, coordinates),
+      getMarkersOptions(
+        studyVoteData.results,
+        studyVoteData?.realTimes?.userList || null,
+        coordinates,
+      ),
     );
   }, [studyVoteData, coordinates, centerLocation]);
 
