@@ -15,23 +15,27 @@ export const setStudyThumbnailCard = (
   currentLocation: CoordinatesProps,
   isThreeSize: boolean,
 ): StudyThumbnailCardProps[] => {
-  const participationThumbnailCard: StudyThumbnailCardProps = participations && {
-    place: {
-      name: "집계중",
-      branch: "테스트",
-      address: "집계중",
-      distance: 24,
-      imageProps: {
-        image:
-          "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%8E%98+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EB%9E%9C%EB%8D%A4/%EA%B7%B8%EB%A6%BC3.png",
-        isPriority: true,
-      },
-    },
-    participants: participations.map((par) => par.user),
-    url: "",
-    status: "recruiting",
-    id: "",
-  };
+  const participationThumbnailCard: StudyThumbnailCardProps[] = participations
+    ? [
+        {
+          place: {
+            name: "집계중",
+            branch: "테스트",
+            address: "집계중",
+            distance: 24,
+            imageProps: {
+              image:
+                "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%8E%98+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EB%9E%9C%EB%8D%A4/%EA%B7%B8%EB%A6%BC3.png",
+              isPriority: true,
+            },
+          },
+          participants: participations.map((par) => par.user),
+          url: "",
+          status: "recruiting",
+          id: "",
+        },
+      ]
+    : [];
 
   // 카드 데이터 생성
   const cardColData: StudyThumbnailCardProps[] = studyResults
@@ -66,7 +70,7 @@ export const setStudyThumbnailCard = (
       };
     });
 
-  return [participationThumbnailCard, ...cardColData];
+  return [...participationThumbnailCard, ...cardColData];
 };
 
 export const sortThumbnailCardInfoArr = (

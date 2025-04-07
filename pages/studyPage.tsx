@@ -1,13 +1,13 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import Slide from "../components/layouts/PageSlide";
 import { useUserCurrentLocation } from "../hooks/custom/CurrentLocationHook";
-import { useToast, useTypeToast } from "../hooks/custom/CustomToast";
 import { useStudyVoteQuery } from "../hooks/study/queries";
+import { useUserInfoQuery } from "../hooks/user/queries";
 import { getStudyViewDate } from "../libs/study/date/getStudyDateStatus";
 import StudyPageAddPlaceButton from "../pageTemplates/studyPage/StudyPageAddPlaceButton";
 import StudyPageCalendar from "../pageTemplates/studyPage/StudyPageCalendar";
@@ -22,11 +22,9 @@ import { CoordinatesProps } from "../types/common";
 
 export default function StudyPage() {
   const { data: session } = useSession();
-  const toast = useToast();
-  const router = useRouter();
+
   const searchParams = useSearchParams();
-  const newSearchParams = new URLSearchParams(searchParams);
-  const typeToast = useTypeToast();
+
   const dateParam = searchParams.get("date");
 
   //dateParam이 없는 경우, 저녁 9시 이전에는 당일/넘은 경우에는 내일 날짜를 보여줍니다.
@@ -40,19 +38,18 @@ export default function StudyPage() {
   // const [myStudyParticipation, setMyStudyParticipation] = useRecoilState(myStudyParticipationState);
 
   const { currentLocation: coordinates } = useUserCurrentLocation();
-
+  const { data: userInfo } = useUserInfoQuery();
   const { data: studyVoteData, isLoading } = useStudyVoteQuery("2024-12-29", {
     enabled: !!date,
   });
 
-  // useEffect(() => {
-  //   newSearchParams.set("date", `${getStudyViewDate(dayjs(date))}`);
-  //   router.replace(`/studyPage?${newSearchParams.toString()}`);
-  // }, [date]);
-
+  /** Center 기본값 설정
+   * 스터디 투표중인 경우, 투표중인 장소로.
+   * 투표중이지 않다면, 현재 위치로.
+   * 투표중이지 않고, 현재 위치 파악이 안된다면, locationDetail로.
+   */
   useEffect(() => {
     if (!studyVoteData || !session?.user?.id) return;
-
     const userId = session.user.id;
     const { participations, results, realTimes } = studyVoteData;
 
@@ -65,6 +62,7 @@ export default function StudyPage() {
     const studyResult = results?.find((who) =>
       who?.members.some((member) => member?.user._id === userId),
     );
+
     if (studyResult) {
       setMyVoteStatus("open");
       setCenterLocation({
@@ -83,7 +81,14 @@ export default function StudyPage() {
       });
       return;
     }
-    // 아무 경우도 아닐 때
+
+    if (coordinates) {
+      setCenterLocation(coordinates);
+    } else {
+      const { lat, lon } = userInfo.locationDetail;
+      setCenterLocation({ lat, lon });
+    }
+
     setMyVoteStatus(null);
   }, [studyVoteData, session?.user.uid, coordinates]);
 
@@ -92,13 +97,19 @@ export default function StudyPage() {
   //   `${Math.ceil(userInfo.weekStudyAccumulationMinutes / 60)}시간 ${
   //     userInfo.weekStudyAccumulationMinutes % 60
   //   }분`;
-  console.log(studyVoteData);
+
+  const isExpireDate = dayjs(date).isBefore(dayjs().subtract(1, "day"));
+
+  console.log("studyVoteData", studyVoteData);
+  console.log("myVoteStatus", myVoteStatus);
+
   return (
     <>
       <StudyPageHeader />
       <Slide>
         <StudyPageIntroBox />
         <StudyPageMap
+          centerLocation={centerLocation}
           studyVoteData={studyVoteData}
           coordinates={coordinates}
           setCenterLocation={setCenterLocation}
@@ -114,9 +125,11 @@ export default function StudyPage() {
         <StudyPageRecordBlock />
         <StudyPageAddPlaceButton />
       </Slide>
-      <Box mb={20} mt={5}>
-        <StudyControlButton date={date} setIsVoteDrawer={null} isVoting={null} />
-      </Box>
+      {!isExpireDate && (
+        <Box mb={20} mt={5}>
+          <StudyControlButton date={date} isVoting={null} />
+        </Box>
+      )}
     </>
   );
 }

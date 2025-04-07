@@ -34,7 +34,7 @@ import { Location } from "../../types/services/locationTypes";
 import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 import { getDistanceFromLatLonInKm, getRandomIdx } from "../../utils/mathUtils";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
-import VoteDrawerPlaceDrawer from "./voteDrawer/VoteDrawerPlace";
+import VoteDrawerPlaceDrawer from "./voteDrawer/StudyPlaceDrawer";
 export interface VoteDrawerItemProps {
   place: StudyPlaceProps;
   voteCnt: number;

@@ -92,8 +92,9 @@ export const getMapOptions = (
   zoomValue?: number,
 ): IMapOptions | undefined => {
   if (typeof naver === "undefined") return undefined;
+  console.log(52, currentLocation);
   if (!currentLocation) return;
-
+  console.log(12345);
   // const bounds = locationBoundary
   //   ? new naver.maps.LatLngBounds(
   //       new naver.maps.LatLng(

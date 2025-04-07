@@ -1,8 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 
@@ -10,28 +10,27 @@ import { CalendarCheckIcon } from "../../components/Icons/SolidIcons";
 import BottomFlexDrawer, {
   BottomFlexDrawerOptions,
 } from "../../components/organisms/drawer/BottomFlexDrawer";
+import StudyPlacePickerDrawer from "../../components/services/studyVote/StudyPlacePickerDrawer";
 import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
-import { useTypeToast } from "../../hooks/custom/CustomToast";
+import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { getMyStudyInfo } from "../../libs/study/getMyStudyMethods";
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
-import { DispatchBoolean } from "../../types/hooks/reactTypes";
-import { IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
+import { IStudyVoteTime, StudyVoteProps } from "../../types/models/studyTypes/studyInterActions";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
-import { VoteDrawerPlace } from "../vote/voteDrawer/VoteDrawerPlace";
+import { StudyPlaceDrawer } from "../vote/voteDrawer/StudyPlaceDrawer";
 
 interface StudyControlButtonProps {
   date: string;
-  setIsVoteDrawer: DispatchBoolean;
   isVoting: boolean;
 }
 
-function StudyControlButton({ date, setIsVoteDrawer, isVoting }: StudyControlButtonProps) {
+function StudyControlButton({ date, isVoting }: StudyControlButtonProps) {
   const resetStudy = useResetStudyQuery();
-  const toast = useTypeToast();
+  const toast = useToast();
   const { data: session } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -68,27 +67,26 @@ function StudyControlButton({ date, setIsVoteDrawer, isVoting }: StudyControlBut
   });
   const { mutate: voteStudy, isLoading } = useStudyParticipationMutation(dayjs(date), "post", {
     onSuccess() {
-      toast("vote");
+      toast("success", "신청이 완료되었습니다. 결과 매칭을 기다려주세요!");
       resetStudy();
     },
   });
 
-
-  const handleVote = () => {
+  const handleOneClickVote = () => {
     const { lat: latitude, lon: longitude } = { ...userInfo?.locationDetail };
-
-    voteStudy({
+    const voteData = {
       latitude,
       longitude,
       start: voteTime.start.toISOString(),
       end: voteTime.end.toISOString(),
-    });
-   
-    // if (!myVote?.main || !voteTime?.start || !voteTime?.end) {
-    //   // typeToast("omission");
-    //   return;
-    // }
-    // patchAttend({ place: myVote.main, subPlace: myVote?.sub, ...voteTime });
+    };
+    handleVote(voteData);
+  };
+
+  const handleVote = (voteData: StudyVoteProps) => {
+    voteStudy(voteData);
+    setIsTimeRullet(false);
+    setIsRightDrawer(false);
   };
 
   const onClickButton = () => {
@@ -107,31 +105,50 @@ function StudyControlButton({ date, setIsVoteDrawer, isVoting }: StudyControlBut
         handleCancel();
         return;
       case "todayPending":
-        setIsRightDrawer(true);
+        setIsStudyDrawer(true);
         return;
     }
   };
 
-  const handleStudyVoteButton = () => {
+  const handleStudyVoteBtn = (type: "oneClick" | "direct") => {
     setIsStudyDrawer(false);
-    if (setIsVoteDrawer) {
-      setIsVoteDrawer(true);
-      return;
-    }
-    setIsTimeRullet(true);
+    if (type === "oneClick") setIsTimeRullet(true);
+    else setIsRightDrawer(true);
   };
 
   const drawerOptions: BottomFlexDrawerOptions = {
     header: {
       title: "스터디 참여 시간 선택",
-      subTitle: "예상 시작 시간과 종료 시간을 선택해 주세요!",
+      subTitle: "예상 시작 시간과 종료 시간을 선택해 주세요",
     },
     footer: {
       text: "신청 완료",
-      func: handleVote,
+      func: handleOneClickVote,
       // loading: isLoading,
     },
   };
+
+  // const bottomDrawerOptions: BottomFlexDrawerOptions = {
+  //   header: {
+  //     title: dayjs(date).locale("ko").format("M월 D일 ddd요일"),
+  //     subTitle: "스터디 참여시간을 선택해주세요!",
+  //   },
+  //   footer: {
+  //     text: "참여 확정",
+  //     func: () => {
+  //       mutate({
+  //         place: {
+  //           name: placeInfo.place_name,
+  //           address: placeInfo.road_address_name,
+  //           latitude: +placeInfo.y,
+  //           longitude: +placeInfo.x,
+  //         },
+  //         time: { ...voteTime },
+  //       });
+  //     },
+  //     loading: isLoading,
+  //   },
+  // };
 
   return (
     <>
@@ -204,13 +221,13 @@ function StudyControlButton({ date, setIsVoteDrawer, isVoting }: StudyControlBut
             variant="unstyled"
             py={4}
             w="100%"
-            onClick={handleStudyVoteButton}
+            onClick={() => handleStudyVoteBtn("oneClick")}
           >
             <Box w="20px" h="20px" mr={4} opacity={0.28}>
               <CheckIcon />
             </Box>
             <Box fontSize="13px" color="var(--gray-600)">
-              원클릭 스터디 신청
+              {myStudyStatus === "todayPending" ? "진행중인 스터디 참여" : "원클릭 스터디 신청"}
             </Box>
           </Button>
           <Button
@@ -220,13 +237,13 @@ function StudyControlButton({ date, setIsVoteDrawer, isVoting }: StudyControlBut
             variant="unstyled"
             py={4}
             w="100%"
-            onClick={() => setIsRightDrawer(true)}
+            onClick={() => handleStudyVoteBtn("direct")}
           >
             <Box w="20px" h="20px" mr={4} opacity={0.28}>
               <SelectIcon />
             </Box>
             <Box fontSize="13px" color="var(--gray-600)">
-              스터디 위치 직접 입력
+              {myStudyStatus === "todayPending" ? "스터디 장소 직접 입력" : "출발 위치 직접 입력"}
             </Box>
           </Button>
           {myStudyStatus === "participating" && (
@@ -267,12 +284,14 @@ function StudyControlButton({ date, setIsVoteDrawer, isVoting }: StudyControlBut
         />
       )}
       {isRightDrawer && (
-        <VoteDrawerPlace
-          setIsVoteDrawer={setIsVoteDrawer}
+        <StudyPlaceDrawer
+          type={myStudyStatus === "todayPending" ? "realTime" : "vote"}
           date={date}
-          setIsRightDrawer={setIsRightDrawer}
+          handleStudyVote={handleVote}
+          onClose={() => setIsRightDrawer(false)}
         />
       )}
+      {<StudyPlacePickerDrawer />}
     </>
   );
 }

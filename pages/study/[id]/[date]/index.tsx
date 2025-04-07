@@ -10,7 +10,7 @@ import { useUserCurrentLocation } from "../../../../hooks/custom/CurrentLocation
 import { useStudyVoteQuery } from "../../../../hooks/study/queries";
 import { convertMergePlaceToPlace } from "../../../../libs/study/convertMergePlaceToPlace";
 import {
-  convertStudyToParticipations,
+ 
   getMyStudyInfo,
   getMyStudyParticipation,
 } from "../../../../libs/study/getMyStudyMethods";

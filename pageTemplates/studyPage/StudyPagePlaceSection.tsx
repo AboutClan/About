@@ -47,8 +47,9 @@ function StudyPagePlaceSection({
       setThumbnailCardinfoArr(null);
       return;
     }
-    const convertedRealTimes =
-      studyVoteData?.realTimes ? convertRealTimesToResultFormat(studyVoteData.realTimes) : [];
+    const convertedRealTimes = studyVoteData?.realTimes
+      ? convertRealTimesToResultFormat(studyVoteData.realTimes)
+      : [];
     const getThumbnailCardInfoArr = setStudyThumbnailCard(
       date,
       studyVoteData?.participations,
@@ -67,7 +68,7 @@ function StudyPagePlaceSection({
       router.replace(`/studyPage?${newSearchParams.toString()}`, { scroll: false });
     }
   };
-
+  console.log("thumb", thumbnailCardInfoArr);
   return (
     <Flex flexDir="column" mt={5} mb={8}>
       <Box>

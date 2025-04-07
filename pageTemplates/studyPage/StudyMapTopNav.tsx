@@ -38,7 +38,7 @@ function StudyMapTopNav({ handleLocationRefetch, isSmall }: StudyMapTopNavProps)
   };
 
   return (
-    <Flex w="100%" justify="space-between" p={4} position="absolute" top="0" left="0" zIndex={10}>
+    <Flex w="100%" justify="space-between" p={4} position="absolute" top="0" left="0" zIndex={5}>
       <CurrentLocationBtn onClick={handleLocationRefetch} />
 
       {!isSmall && (

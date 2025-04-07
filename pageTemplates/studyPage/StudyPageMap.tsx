@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import VoteMap from "../../components/organisms/VoteMap";
-import { getMarkersOptions } from "../../libs/study/setStudyMapOptions";
+import { getMapOptions, getMarkersOptions } from "../../libs/study/setStudyMapOptions";
 import { CoordinatesProps } from "../../types/common";
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
 import { DispatchType } from "../../types/hooks/reactTypes";
@@ -12,11 +12,17 @@ import StudyMapTopNav from "./StudyMapTopNav";
 
 interface StudyPageMapProps {
   studyVoteData: StudyVoteDataProps;
+  centerLocation: CoordinatesProps;
   coordinates: CoordinatesProps;
   setCenterLocation: DispatchType<CoordinatesProps>;
 }
 
-function StudyPageMap({ studyVoteData, coordinates, setCenterLocation }: StudyPageMapProps) {
+function StudyPageMap({
+  studyVoteData,
+  centerLocation,
+  coordinates,
+  setCenterLocation,
+}: StudyPageMapProps) {
   const router = useRouter();
 
   /* 네이버 지도와 마커 옵션 */
@@ -25,10 +31,12 @@ function StudyPageMap({ studyVoteData, coordinates, setCenterLocation }: StudyPa
 
   useEffect(() => {
     if (!studyVoteData) return;
+    const options = getMapOptions(centerLocation, 13);
+    setMapOptions(options);
     setMarkersOptions(
-      getMarkersOptions(studyVoteData.results, studyVoteData?.realTime, coordinates),
+      getMarkersOptions(studyVoteData.results, studyVoteData?.realTimes, coordinates),
     );
-  }, [studyVoteData, coordinates]);
+  }, [studyVoteData, coordinates, centerLocation]);
 
   return (
     <Box
