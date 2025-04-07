@@ -1,4 +1,4 @@
-export interface CoordinateProps {
+export interface CoordinatesProps {
   lat: number;
   lon: number;
 }

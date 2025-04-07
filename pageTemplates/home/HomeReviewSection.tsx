@@ -25,7 +25,7 @@ export default function HomeReviewSection() {
   return (
     <Box mt={5} mb={3}>
       <SectionHeader title="About 라운지" subTitle="우리의 이야기">
-        <ButtonWrapper size="xs" url="/gather?category=all">
+        <ButtonWrapper size="xs" url="/gather?category=all&tab=lounge">
           <ShortArrowIcon dir="right" />
         </ButtonWrapper>
       </SectionHeader>

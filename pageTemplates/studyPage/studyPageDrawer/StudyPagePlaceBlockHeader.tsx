@@ -9,12 +9,12 @@ import DateCalendarModal from "../../../modals/aboutHeader/DateCalendarModal";
 import { DispatchString } from "../../../types/hooks/reactTypes";
 import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
 
-interface StudyPageDrawerHeaderProps {
+interface StudyPagePlaceSectionHeaderProps {
   date: string;
   setDate: DispatchString;
 }
 
-function StudyPageDrawerHeader({ date, setDate }: StudyPageDrawerHeaderProps) {
+function StudyPagePlaceSectionHeader({ date, setDate }: StudyPagePlaceSectionHeaderProps) {
   const [isCalendarModal, setIsCalendarModal] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -58,4 +58,4 @@ function StudyPageDrawerHeader({ date, setDate }: StudyPageDrawerHeaderProps) {
   );
 }
 
-export default StudyPageDrawerHeader;
+export default StudyPagePlaceSectionHeader;

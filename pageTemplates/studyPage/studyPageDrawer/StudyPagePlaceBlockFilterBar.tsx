@@ -1,25 +1,27 @@
 import { Box, Flex } from "@chakra-ui/react";
+import dayjs from "dayjs";
 
 import Select from "../../../components/atoms/Select";
 import { DispatchType } from "../../../types/hooks/reactTypes";
 
-interface StudyPageDrawerFilterBarProps {
-  placeCnt: number;
+type SortedOption = "인원순" | "거리순" | "선호순";
 
-  selectOption: "인원순" | "거리순" | "선호순";
-  setSelectOption: DispatchType<"인원순" | "거리순" | "선호순">;
-  lastStudyHours: number;
+interface StudyPagePlaceSectionFilterBarProps {
+  placeCnt: number;
+  sortedOption: SortedOption;
+  setSortedOption: DispatchType<SortedOption>;
   date: string;
 }
 
-function StudyPageDrawerFilterBar({
+function StudyPagePlaceSectionFilterBar({
   placeCnt,
-  selectOption,
-  setSelectOption,
-  lastStudyHours,
+  sortedOption,
+  setSortedOption,
   date,
-}: StudyPageDrawerFilterBarProps) {
-  const selectOptionArr = ["인원순", "거리순", "선호순"];
+}: StudyPagePlaceSectionFilterBarProps) {
+  const sortedOptionArr: SortedOption[] = ["인원순", "거리순", "선호순"];
+
+  const lastStudyHours = dayjs(date).hour(9).startOf("hour").diff(dayjs(), "m");
 
   return (
     <Flex justify="space-between" lineHeight="16px" my={4}>
@@ -38,10 +40,10 @@ function StudyPageDrawerFilterBar({
       </Box>
       {lastStudyHours <= 0 ? (
         <Select
-          options={selectOptionArr}
-          defaultValue={selectOption}
+          options={sortedOptionArr}
+          defaultValue={sortedOption}
           size="xs"
-          setValue={setSelectOption}
+          setValue={setSortedOption}
           isBorder={false}
         />
       ) : (
@@ -58,4 +60,4 @@ function StudyPageDrawerFilterBar({
   );
 }
 
-export default StudyPageDrawerFilterBar;
+export default StudyPagePlaceSectionFilterBar;

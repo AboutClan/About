@@ -26,9 +26,9 @@ import { ModalLayout } from "../../modals/Modals";
 import StudyAbsentModal from "../../modals/study/StudyAbsentModal";
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import {
-  StudyDailyInfoProps,
   StudyMemberProps,
   StudyStatus,
+  StudyVoteDataProps,
 } from "../../types/models/studyTypes/studyDetails";
 import { IAbsence, IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
@@ -44,7 +44,7 @@ interface IStudyNavigation {
   type: "private" | "public" | null;
   status: StudyStatus;
   locationEn: LocationEn;
-  studyVoteData: StudyDailyInfoProps;
+  studyVoteData: StudyVoteDataProps;
 }
 
 export type StudyModalType = "timeSelect" | "placePicker";

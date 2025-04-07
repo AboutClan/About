@@ -33,12 +33,12 @@ import StudyMapTopNav from "../pageTemplates/studyPage/StudyMapTopNav";
 import StudyControlButton from "../pageTemplates/vote/StudyControlButton";
 import VoteDrawer from "../pageTemplates/vote/VoteDrawer";
 import { myStudyParticipationState } from "../recoils/studyRecoils";
-import { CoordinateProps, VotePlacesProps } from "../types/common";
+import { CoordinatesProps, VotePlacesProps } from "../types/common";
 import { IMapOptions, IMarkerOptions } from "../types/externals/naverMapTypes";
 import {
-  StudyDailyInfoProps,
   StudyPlaceProps,
   StudyStatus,
+  StudyVoteDataProps,
 } from "../types/models/studyTypes/studyDetails";
 import { PlaceInfoProps } from "../types/models/utilTypes";
 import { ActiveLocation, Location, LocationEn } from "../types/services/locationTypes";
@@ -72,11 +72,11 @@ export default function StudyPage() {
   const [locationValue, setLocationValue] = useState<Location>(
     locationParamKr || userLocation === "기타" ? "수원" : userLocation,
   );
- 
+
   const [mapOptions, setMapOptions] = useState<IMapOptions>();
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>();
-  const [currentLocation, setCurrentLocation] = useState<CoordinateProps>();
-  const [centerLocation, setCenterLocation] = useState<CoordinateProps>();
+  const [currentLocation, setCurrentLocation] = useState<CoordinatesProps>();
+  const [centerLocation, setCenterLocation] = useState<CoordinatesProps>();
   const [isVoteDrawer, setIsVoteDrawer] = useState(false);
   const [isLocationRefetch, setIsLocationRefetch] = useState(true);
   const [myVote, setMyVote] = useState<VotePlacesProps>({ main: null, sub: [] });
@@ -345,8 +345,8 @@ export default function StudyPage() {
 }
 
 const getMarkersOptions = (
-  studyVoteData: StudyDailyInfoProps,
-  currentLocation: CoordinateProps,
+  studyVoteData: StudyVoteDataProps,
+  currentLocation: CoordinatesProps,
   myVote: VotePlacesProps | null,
   onlyFirst: boolean,
 ): IMarkerOptions[] | undefined => {
@@ -538,7 +538,7 @@ const getPolyline = (
 };
 
 export const getDetailInfo = (
-  studyVoteData: StudyDailyInfoProps,
+  studyVoteData: StudyVoteDataProps,
   id: string,
   location: Location,
   myUid,

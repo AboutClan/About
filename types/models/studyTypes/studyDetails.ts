@@ -3,39 +3,53 @@ import { Dayjs } from "dayjs";
 import { ActiveLocation } from "../../services/locationTypes";
 import { TimeStampProps } from "../../utils/timeAndDate";
 import { MessageSimpleProps } from "../commonTypes";
-import { IUserSummary, UserSimpleInfoProps } from "../userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "../userTypes/userInfoTypes";
 import { PlaceInfoProps, TimeRangeProps } from "../utilTypes";
-import { IAbsence } from "./studyInterActions";
 
-export interface StudyDailyInfoProps {
+export interface StudyVoteDataProps {
   date: string;
-  participations: StudyParticipationProps[];
-  realTime: RealTimeInfoProps[];
+  status: "before" | "after";
+  participations?: StudyParticipationProps[];
+  results: StudyResultProps[];
+  realTimes?: RealTimeMemberProps[];
 }
 
 export interface StudyParticipationProps {
-  place: StudyPlaceProps;
-  status: StudyStatus;
-  members: StudyMemberProps[];
-  absences?: IAbsence[];
-}
-export interface RealTimeInfoProps extends TimeStampProps {
+  start: string;
+  end: string;
+  latitude: number;
+  longitude: number;
   user: UserSimpleInfoProps;
-  place: PlaceInfoProps;
-  status: StudyStatus;
-  attendanceInfo?: StudyAttendanceInfoProps;
-  comment?: MessageSimpleProps;
-  time: TimeRangeProps;
-  _id: string;
 }
 
-export interface StudyMergeParticipationProps extends Omit<StudyParticipationProps, "place"> {
+export interface StudyResultProps {
+  place: StudyPlaceProps;
+  members: StudyMemberProps[];
+}
+
+export interface RealTimeMemberProps extends StudyMemberProps {
+  place: PlaceInfoProps;
+  status: StudyStatus;
+}
+
+export interface StudyMemberProps extends TimeStampProps {
+  user: UserSimpleInfoProps;
+  time: TimeRangeProps;
+  comment?: MessageSimpleProps;
+  attendanceInfo?: StudyAttendanceInfoProps;
+}
+
+export interface StudyMergeResultProps extends Omit<StudyResultProps, "place"> {
   place: StudyPlaceProps | PlaceInfoProps;
+  status?: StudyStatus;
+}
+
+export interface StudyMergeParticipationProps extends StudyResultProps {
+  // place: StudyPlaceProps | PlaceInfoProps;
 }
 export interface StudyMemberProps extends TimeStampProps {
   user: UserSimpleInfoProps;
   time: TimeRangeProps;
-  isMainChoice?: boolean;
   attendanceInfo?: StudyAttendanceInfoProps;
   comment?: MessageSimpleProps;
   absenceInfo?: MessageSimpleProps;
@@ -60,20 +74,6 @@ export interface StudyAttendanceRequestProps {
 export interface AbsenceInfoProps extends TimeStampProps {
   user: UserSimpleInfoProps;
   message: string;
-}
-
-export interface IAttendance extends TimeStampProps {
-  user: IUserSummary;
-  time: {
-    start: Dayjs;
-    end: Dayjs;
-  };
-  createdAt: string;
-  imageUrl?: string;
-  arrived?: Date;
-  firstChoice: boolean;
-  memo: string;
-  comment: string;
 }
 
 export type StudyUserStatus = "pending" | "solo" | "open" | "completed" | "cancel";
@@ -115,11 +115,4 @@ export interface StudyPlaceProps extends PlaceRegisterProps {
   registerDate: string;
 }
 
-export type StudyStatus =
-  | "pending"
-  | "open"
-  | "dismissed"
-  | "free"
-  | "cancel"
-  | "expected"
-  | "solo";
+export type StudyStatus = "recruiting" | "open" | "free" | "solo";

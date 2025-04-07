@@ -1,42 +1,44 @@
-import styled from "styled-components";
+export const Temp = () => null;
 
-import { DispatchType } from "../../../../types/hooks/reactTypes";
-import { Location } from "../../../../types/services/locationTypes";
+// import styled from "styled-components";
 
-interface IGatherWritingConditionLocation {
-  setLocation: DispatchType<Location>;
-}
+// import { DispatchType } from "../../../../types/hooks/reactTypes";
+// import { Location } from "../../../../types/services/locationTypes";
 
-function GatherWritingConditionLocation({ setLocation }: IGatherWritingConditionLocation) {
+// interface IGatherWritingConditionLocation {
+//   setLocation: DispatchType<Location>;
+// }
 
-  // const [buttonType, setButtonType] = useState<Location>("전체");
+// function GatherWritingConditionLocation({ setLocation }: IGatherWritingConditionLocation) {
 
-  // useEffect(() => {
-  //   if (buttonType) setLocation(buttonType);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [buttonType]);
+//   // const [buttonType, setButtonType] = useState<Location>("전체");
 
-  return (
-    <Layout>
-      {/* {arr.map((item) => (
-        <Button
-          size="sm"
-          key={item}
-          colorScheme={buttonType === item ? "mint" : "gray"}
-          mr="var(--gap-2)"
-          onClick={() => setButtonType(item)}
-        >
-          {item}
-        </Button>
-      ))} */}
-    </Layout>
-  );
-}
+//   // useEffect(() => {
+//   //   if (buttonType) setLocation(buttonType);
+//   //   // eslint-disable-next-line react-hooks/exhaustive-deps
+//   // }, [buttonType]);
 
-const Layout = styled.div`
-  margin-top: var(--gap-3);
-  margin-bottom: 4px;
-  display: flex;
-`;
+//   return (
+//     <Layout>
+//       {/* {arr.map((item) => (
+//         <Button
+//           size="sm"
+//           key={item}
+//           colorScheme={buttonType === item ? "mint" : "gray"}
+//           mr="var(--gap-2)"
+//           onClick={() => setButtonType(item)}
+//         >
+//           {item}
+//         </Button>
+//       ))} */}
+//     </Layout>
+//   );
+// }
 
-export default GatherWritingConditionLocation;
+// const Layout = styled.div`
+//   margin-top: var(--gap-3);
+//   margin-bottom: 4px;
+//   display: flex;
+// `;
+
+// export default GatherWritingConditionLocation;

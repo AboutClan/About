@@ -9,7 +9,7 @@ function UserPointBlock() {
 
   return (
     <Flex
-      my={5}
+      mt={5}
       mx={5}
       p={3}
       justify="space-around"

@@ -16,9 +16,9 @@ import {
   STUDY_DATE_START_HOUR,
   STUDY_RESULT_HOUR,
 } from "../../../constants/serviceConstants/studyConstants/studyTimeConstant";
-import { useCurrentLocation } from "../../../hooks/custom/CurrentLocationHook";
+import { useUserCurrentLocation } from "../../../hooks/custom/CurrentLocationHook";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
-import { setStudyToThumbnailInfo } from "../../../libs/study/setStudyToThumbnailInfo";
+
 import { DispatchString } from "../../../types/hooks/reactTypes";
 import { StudyMergeParticipationProps } from "../../../types/models/studyTypes/studyDetails";
 import { StudyVotingSave } from "../../../types/models/studyTypes/studyInterActions";
@@ -48,14 +48,14 @@ function StudyCardCol({ participations, date, setDate }: StudyCardColProps) {
   const [studyCardColData, setStudyCardColData] = useState<StudyThumbnailCardProps[]>();
 
   const { data: userInfo } = useUserInfoQuery();
-  const { currentLocation } = useCurrentLocation();
+  const { currentLocation } = useUserCurrentLocation();
 
   useEffect(() => {
     if (!participations || !participations.length || currentLocation === undefined) {
       setStudyCardColData(null);
       return;
     }
-    const cardList = setStudyToThumbnailInfo(
+    const cardList = setStudyThumbnailCard(
       participations,
       userInfo?.studyPreference,
       currentLocation,

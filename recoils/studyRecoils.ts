@@ -11,7 +11,7 @@ export const myStudyParticipationState = atom<StudyMergeParticipationProps>({
 //   key: "MyStudyInfo",
 //   default: undefined,
 // });
-// export const myRealStudyInfoState = atom<RealTimeInfoProps>({
+// export const myRealStudyInfoState = atom<RealTimeMemberProps>({
 //   key: "MyRealStudyInfo",
 //   default: null,
 // });

@@ -27,9 +27,9 @@ import { ModalLayout } from "../../modals/Modals";
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import {
-  StudyDailyInfoProps,
   StudyPlaceProps,
   StudyStatus,
+  StudyVoteDataProps,
 } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
 import { IAvatar } from "../../types/models/userTypes/userInfoTypes";
@@ -65,7 +65,7 @@ interface StudyInFoDrawerProps {
   detailInfo: StudyInfoProps;
   setDetailInfo: DispatchType<StudyInfoProps>;
   date: string;
-  studyVoteData: StudyDailyInfoProps;
+  studyVoteData: StudyVoteDataProps;
 }
 
 function StudyInFoDrawer({ detailInfo, setDetailInfo, studyVoteData, date }: StudyInFoDrawerProps) {

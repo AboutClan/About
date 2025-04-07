@@ -18,16 +18,16 @@ import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { convertStudyToParticipations } from "../../libs/study/getMyStudyMethods";
-import { setStudyToThumbnailInfo } from "../../libs/study/setStudyToThumbnailInfo";
+import { setStudyThumbnailCard } from "../../libs/study/setStudyThumbnailCard";
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
-import { CoordinateProps } from "../../types/common";
+import { CoordinatesProps } from "../../types/common";
 import { IModal } from "../../types/components/modalTypes";
 import { DispatchBoolean, DispatchType } from "../../types/hooks/reactTypes";
 import {
-  StudyDailyInfoProps,
   StudyMergeParticipationProps,
   StudyParticipationProps,
   StudyPlaceProps,
+  StudyVoteDataProps,
 } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVoteTime, MyVoteProps } from "../../types/models/studyTypes/studyInterActions";
 import { Location } from "../../types/services/locationTypes";
@@ -43,7 +43,7 @@ export interface VoteDrawerItemProps {
 }
 
 interface VoteDrawerProps extends IModal {
-  studyVoteData: StudyDailyInfoProps;
+  studyVoteData: StudyVoteDataProps;
   location: Location;
   date: string;
 
@@ -53,7 +53,7 @@ interface VoteDrawerProps extends IModal {
   isFirstPage: boolean;
   setIsFirstPage: DispatchBoolean;
   setIsVoteDrawer: DispatchBoolean;
-  currentLocation: CoordinateProps;
+  currentLocation: CoordinatesProps;
 }
 
 export const DEFAULT_SUB_PLACE_CNT = 2;
@@ -186,7 +186,7 @@ function VoteDrawer({
     });
     setImageCache(newImageCache);
 
-    const getThumbnailCardInfoArr = setStudyToThumbnailInfo(
+    const getThumbnailCardInfoArr = setStudyThumbnailCard(
       mergeParticipations,
       preference,
       isFirstPage
@@ -416,7 +416,7 @@ export interface SubPlaceProps extends StudyParticipationProps {
 }
 
 export const sortByDistanceSub = (
-  studyVoteData: StudyDailyInfoProps,
+  studyVoteData: StudyVoteDataProps,
   mainPlace: StudyParticipationProps,
 ): SubPlaceProps[] => {
   const updatedParticipations = studyVoteData.participations.map((participation) => {
