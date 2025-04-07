@@ -8,6 +8,7 @@ import Slide from "../components/layouts/PageSlide";
 import { useUserCurrentLocation } from "../hooks/custom/CurrentLocationHook";
 import { useStudyVoteQuery } from "../hooks/study/queries";
 import { useUserInfoQuery } from "../hooks/user/queries";
+import { convertStudyToMergeStudy } from "../libs/study/convertStudyToMergeStudy";
 import { getStudyViewDate } from "../libs/study/date/getStudyDateStatus";
 import StudyPageAddPlaceButton from "../pageTemplates/studyPage/StudyPageAddPlaceButton";
 import StudyPageCalendar from "../pageTemplates/studyPage/StudyPageCalendar";
@@ -19,6 +20,7 @@ import StudyPageRecordBlock from "../pageTemplates/studyPage/StudyPageRecordBloc
 import StudyPageSettingBlock from "../pageTemplates/studyPage/StudyPageSettingBlock";
 import StudyControlButton from "../pageTemplates/vote/StudyControlButton";
 import { CoordinatesProps } from "../types/common";
+import { MyVoteStatus } from "../types/models/studyTypes/studyDetails";
 
 export default function StudyPage() {
   const { data: session } = useSession();
@@ -33,11 +35,11 @@ export default function StudyPage() {
   //중심 위치
   const [centerLocation, setCenterLocation] = useState<CoordinatesProps>(null);
 
-  const [myVoteStatus, setMyVoteStatus] = useState<"voting" | "open" | "private" | null>(null);
+  const [myVoteStatus, setMyVoteStatus] = useState<MyVoteStatus>(null);
 
   // const [myStudyParticipation, setMyStudyParticipation] = useRecoilState(myStudyParticipationState);
 
-  const { currentLocation: coordinates } = useUserCurrentLocation();
+  const { currentLocation } = useUserCurrentLocation();
   const { data: userInfo } = useUserInfoQuery();
   const { data: studyVoteData, isLoading } = useStudyVoteQuery("2024-12-29", {
     enabled: !!date,
@@ -82,15 +84,15 @@ export default function StudyPage() {
       return;
     }
 
-    if (coordinates) {
-      setCenterLocation(coordinates);
+    if (currentLocation) {
+      setCenterLocation(currentLocation);
     } else {
       const { lat, lon } = userInfo.locationDetail;
       setCenterLocation({ lat, lon });
     }
 
     setMyVoteStatus(null);
-  }, [studyVoteData, session?.user.uid, coordinates]);
+  }, [studyVoteData, session?.user.uid, currentLocation]);
 
   // const accumulationHour =
   //   userInfo &&
@@ -102,6 +104,7 @@ export default function StudyPage() {
 
   console.log("studyVoteData", studyVoteData);
   console.log("myVoteStatus", myVoteStatus);
+  console.log("23", isExpireDate);
 
   return (
     <>
@@ -111,7 +114,7 @@ export default function StudyPage() {
         <StudyPageMap
           centerLocation={centerLocation}
           studyVoteData={studyVoteData}
-          coordinates={coordinates}
+          coordinates={currentLocation}
           setCenterLocation={setCenterLocation}
         />
         <StudyPageCalendar date={date} setDate={setDate} />
@@ -119,7 +122,7 @@ export default function StudyPage() {
           studyVoteData={studyVoteData}
           date={date}
           setDate={setDate}
-          currentLocation={coordinates}
+          currentLocation={currentLocation}
         />
         <StudyPageSettingBlock />
         <StudyPageRecordBlock />
@@ -127,7 +130,12 @@ export default function StudyPage() {
       </Slide>
       {!isExpireDate && (
         <Box mb={20} mt={5}>
-          <StudyControlButton date={date} isVoting={null} />
+          <StudyControlButton
+            studyResults={studyVoteData ? convertStudyToMergeStudy(studyVoteData) : []}
+            date={date}
+            myVoteStatus={myVoteStatus}
+            currentLocation={currentLocation}
+          />
         </Box>
       )}
     </>

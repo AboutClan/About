@@ -4,6 +4,10 @@ export const getRandomImage = () => {
   const idx = Math.floor(Math.random() * GATHER_RANDOM_IMAGE_ARR.length);
   return GATHER_RANDOM_IMAGE_ARR[idx];
 };
+export const getRandomStudyImage = () => {
+  const idx = Math.floor(Math.random() * GATHER_RANDOM_IMAGE_ARR.length);
+  return GATHER_RANDOM_IMAGE_ARR[idx];
+};
 
 export const optimizeImage = (file: File): Promise<Blob> => {
   return new Promise((resolve, reject) => {

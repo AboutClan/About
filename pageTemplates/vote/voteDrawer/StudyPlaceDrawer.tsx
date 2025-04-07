@@ -100,7 +100,7 @@ export function StudyPlaceDrawer({ type, onClose, date, handleStudyVote }: Study
         </Box>
         <BottomNav
           isSlide={false}
-          text={type === "vote" ? "시간 선택" : "스터디 신청"}
+          text={type === "vote" ? "시간 선택" : "참여 확정"}
           onClick={handleBottomNav}
         />
       </RightDrawer>

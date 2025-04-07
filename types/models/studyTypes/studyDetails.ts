@@ -1,6 +1,5 @@
 import { Dayjs } from "dayjs";
 
-import { ActiveLocation } from "../../services/locationTypes";
 import { TimeStampProps } from "../../utils/timeAndDate";
 import { MessageSimpleProps } from "../commonTypes";
 import { UserSimpleInfoProps } from "../userTypes/userInfoTypes";
@@ -69,6 +68,8 @@ export interface StudyAttendanceRequestProps {
   time: TimeRangeProps;
 }
 
+export type MyVoteStatus = "voting" | "open" | "private" | null;
+
 ////
 
 export interface AbsenceInfoProps extends TimeStampProps {
@@ -102,7 +103,6 @@ export interface PlaceRegisterProps {
   image: string;
   longitude: number;
   latitude: number;
-  location: ActiveLocation;
   coverImage: string;
   locationDetail: string;
   mapURL: string;
@@ -110,7 +110,6 @@ export interface PlaceRegisterProps {
 }
 
 export interface StudyPlaceProps extends PlaceRegisterProps {
-  status: string;
   _id: string;
   registerDate: string;
 }

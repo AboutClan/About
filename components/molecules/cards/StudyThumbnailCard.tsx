@@ -24,6 +24,7 @@ export interface StudyThumbnailCardProps {
       image: string;
       isPriority?: boolean;
     };
+    _id: string;
   };
   participants?: UserSimpleInfoProps[];
   participantCnt?: number;
@@ -31,7 +32,6 @@ export interface StudyThumbnailCardProps {
   status: StudyStatus;
 
   func?: () => void;
-  id: string;
 }
 
 export function StudyThumbnailCard({
@@ -52,7 +52,7 @@ export function StudyThumbnailCard({
     }));
 
   const studyStatus = status === "pending" && participantCnt >= 3 ? "expected" : status;
-  
+
   return (
     <CardLink href={url} onClick={func}>
       {participants ? (

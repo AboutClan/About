@@ -28,11 +28,11 @@ export const setStudyThumbnailCard = (
                 "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%8E%98+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EB%9E%9C%EB%8D%A4/%EA%B7%B8%EB%A6%BC3.png",
               isPriority: true,
             },
+            _id: "",
           },
           participants: participations.map((par) => par.user),
           url: "",
           status: "recruiting",
-          id: "",
         },
       ]
     : [];
@@ -62,11 +62,11 @@ export const setStudyThumbnailCard = (
             image: placeInfo.image || getRandomImage(),
             isPriority: idx < 4,
           },
+          _id: data.place._id,
         },
         participants: data.members.map((att) => att.user),
         url: `/study/${data.place._id}/${date})}`,
         status: data?.status || "open",
-        id: data.place._id,
       };
     });
 

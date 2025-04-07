@@ -9,7 +9,7 @@ import {
   StudyThumbnailCardProps,
 } from "../../components/molecules/cards/StudyThumbnailCard";
 import { StudyThumbnailCardSkeleton } from "../../components/skeleton/StudyThumbnailCardSkeleton";
-import { convertRealTimesToResultFormat } from "../../libs/study/getMyStudyMethods";
+import { convertStudyToMergeStudy } from "../../libs/study/convertStudyToMergeStudy";
 import {
   setStudyThumbnailCard,
   sortThumbnailCardInfoArr,
@@ -47,13 +47,11 @@ function StudyPagePlaceSection({
       setThumbnailCardinfoArr(null);
       return;
     }
-    const convertedRealTimes = studyVoteData?.realTimes
-      ? convertRealTimesToResultFormat(studyVoteData.realTimes)
-      : [];
+
     const getThumbnailCardInfoArr = setStudyThumbnailCard(
       date,
       studyVoteData?.participations,
-      [...studyVoteData.results, ...convertedRealTimes],
+      convertStudyToMergeStudy(studyVoteData),
       currentLocation,
       true,
     );

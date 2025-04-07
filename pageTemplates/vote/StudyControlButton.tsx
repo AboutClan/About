@@ -18,6 +18,8 @@ import { useStudyParticipationMutation } from "../../hooks/study/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { getMyStudyInfo } from "../../libs/study/getMyStudyMethods";
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
+import { CoordinatesProps } from "../../types/common";
+import { MyVoteStatus, StudyMergeResultProps } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVoteTime, StudyVoteProps } from "../../types/models/studyTypes/studyInterActions";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
@@ -25,10 +27,17 @@ import { StudyPlaceDrawer } from "../vote/voteDrawer/StudyPlaceDrawer";
 
 interface StudyControlButtonProps {
   date: string;
-  isVoting: boolean;
+  myVoteStatus: MyVoteStatus;
+  studyResults: StudyMergeResultProps[];
+  currentLocation: CoordinatesProps;
 }
 
-function StudyControlButton({ date, isVoting }: StudyControlButtonProps) {
+function StudyControlButton({
+  date,
+  myVoteStatus,
+  studyResults,
+  currentLocation,
+}: StudyControlButtonProps) {
   const resetStudy = useResetStudyQuery();
   const toast = useToast();
   const { data: session } = useSession();
@@ -40,25 +49,13 @@ function StudyControlButton({ date, isVoting }: StudyControlButtonProps) {
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
   const [isTimeRullet, setIsTimeRullet] = useState(false);
   const [isRightDrawer, setIsRightDrawer] = useState(false);
+  const [isPlaceDrawer, setIsPlaceDrawer] = useState(false);
 
   const myStudyParticipation = useRecoilValue(myStudyParticipationState);
   const myStudyInfo = getMyStudyInfo(myStudyParticipation, session?.user.uid);
   const isArrived = myStudyInfo?.attendanceInfo.arrived;
 
-  const isOpenStudy = myStudyParticipation?.status === "open";
-
   const { data: userInfo } = useUserInfoQuery();
-
-  const myStudyStatus =
-    lastStudyHours > 0
-      ? isVoting
-        ? "voting"
-        : "notVoting"
-      : isArrived
-      ? "arrived"
-      : isVoting
-      ? "participating"
-      : "todayPending";
 
   const { mutate: handleCancel } = useStudyParticipationMutation(dayjs(date), "delete", {
     onSuccess() {
@@ -88,9 +85,9 @@ function StudyControlButton({ date, isVoting }: StudyControlButtonProps) {
     setIsTimeRullet(false);
     setIsRightDrawer(false);
   };
-
+  console.log(myVoteStatus);
   const onClickButton = () => {
-    switch (myStudyStatus) {
+    switch (myVoteStatus) {
       case "notVoting":
         setIsStudyDrawer(true);
         return;
@@ -110,9 +107,11 @@ function StudyControlButton({ date, isVoting }: StudyControlButtonProps) {
     }
   };
 
-  const handleStudyVoteBtn = (type: "oneClick" | "direct") => {
+  const handleStudyVoteBtn = (type: "oneClick" | "direct" | "placePick") => {
     setIsStudyDrawer(false);
-    if (type === "oneClick") setIsTimeRullet(true);
+    setIsPlaceDrawer(false);
+    if (type === "placePick") setIsPlaceDrawer(true);
+    else if (type === "oneClick") setIsTimeRullet(true);
     else setIsRightDrawer(true);
   };
 
@@ -122,7 +121,7 @@ function StudyControlButton({ date, isVoting }: StudyControlButtonProps) {
       subTitle: "예상 시작 시간과 종료 시간을 선택해 주세요",
     },
     footer: {
-      text: "신청 완료",
+      text: myVoteStatus === "todayPending" ? "참여 확정" : "신청 완료",
       func: handleOneClickVote,
       // loading: isLoading,
     },
@@ -170,20 +169,20 @@ function StudyControlButton({ date, isVoting }: StudyControlButtonProps) {
           lineHeight="24px"
           iconSpacing={1}
           colorScheme={
-            myStudyStatus === "voting"
+            myVoteStatus === "voting"
               ? ""
-              : myStudyStatus === "notVoting"
+              : myVoteStatus === null
               ? "mint"
-              : myStudyStatus === "todayPending"
+              : myVoteStatus === "private"
               ? "blue"
               : ""
           }
           rightIcon={
-            myStudyStatus === "voting" ? (
+            myVoteStatus === "voting" ? (
               <StudyUserIcon />
-            ) : myStudyStatus === "notVoting" ? (
+            ) : myVoteStatus === null ? (
               <StudyUserIcon />
-            ) : myStudyStatus === "todayPending" ? (
+            ) : myVoteStatus === "private" ? (
               <StudySoloIcon />
             ) : (
               <></>
@@ -195,11 +194,11 @@ function StudyControlButton({ date, isVoting }: StudyControlButtonProps) {
             background: undefined,
           }}
         >
-          {myStudyStatus === "voting"
+          {myVoteStatus === "voting"
             ? ""
-            : myStudyStatus === "notVoting"
+            : myVoteStatus === null
             ? "참여 신청"
-            : myStudyStatus === "todayPending"
+            : myVoteStatus === "private"
             ? "개인 스터디 신청"
             : ""}
         </Button>
@@ -221,13 +220,15 @@ function StudyControlButton({ date, isVoting }: StudyControlButtonProps) {
             variant="unstyled"
             py={4}
             w="100%"
-            onClick={() => handleStudyVoteBtn("oneClick")}
+            onClick={() =>
+              handleStudyVoteBtn(myVoteStatus === "private" ? "placePick" : "oneClick")
+            }
           >
             <Box w="20px" h="20px" mr={4} opacity={0.28}>
               <CheckIcon />
             </Box>
             <Box fontSize="13px" color="var(--gray-600)">
-              {myStudyStatus === "todayPending" ? "진행중인 스터디 참여" : "원클릭 스터디 신청"}
+              {myVoteStatus === "private" ? "진행중인 스터디 참여" : "원클릭 스터디 신청"}
             </Box>
           </Button>
           <Button
@@ -243,10 +244,10 @@ function StudyControlButton({ date, isVoting }: StudyControlButtonProps) {
               <SelectIcon />
             </Box>
             <Box fontSize="13px" color="var(--gray-600)">
-              {myStudyStatus === "todayPending" ? "스터디 장소 직접 입력" : "출발 위치 직접 입력"}
+              {myVoteStatus === "private" ? "스터디 장소 직접 입력" : "출발 위치 직접 입력"}
             </Box>
           </Button>
-          {myStudyStatus === "participating" && (
+          {myVoteStatus === "open" && (
             <Link
               href={
                 isOpenStudy
@@ -285,13 +286,21 @@ function StudyControlButton({ date, isVoting }: StudyControlButtonProps) {
       )}
       {isRightDrawer && (
         <StudyPlaceDrawer
-          type={myStudyStatus === "todayPending" ? "realTime" : "vote"}
+          type={myVoteStatus === "private" ? "realTime" : "vote"}
           date={date}
           handleStudyVote={handleVote}
           onClose={() => setIsRightDrawer(false)}
         />
       )}
-      {<StudyPlacePickerDrawer />}
+      {isPlaceDrawer && (
+        <StudyPlacePickerDrawer
+          date={date}
+          studyResults={studyResults}
+          currentLocation={currentLocation}
+          handlePickPlace={() => handleStudyVoteBtn("oneClick")}
+          setIsModal={setIsPlaceDrawer}
+        />
+      )}
     </>
   );
 }
