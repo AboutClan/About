@@ -1,46 +1,41 @@
 import {
-  RealTimeInfoProps,
-  StudyDailyInfoProps,
+  RealTimeMemberProps,
   StudyMemberProps,
   StudyMergeParticipationProps,
+  StudyMergeResultProps,
   StudyPlaceProps,
   StudyStatus,
+  StudyVoteDataProps,
 } from "../../types/models/studyTypes/studyDetails";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
 //participation은 study의 participations와 realTime을 모두 포함한다.
 
-export const convertStudyToParticipations = (
-  studyVoteData: StudyDailyInfoProps,
-  location: Location,
-  isAllRealTime: boolean,
-): StudyMergeParticipationProps[] => {
-  if (!studyVoteData || !location) return;
+export const convertRealTimesToResultFormat = (
+  studyRealTimeArr: RealTimeMemberProps[],
+): StudyMergeResultProps[] => {
   const temp: {
     place: PlaceInfoProps;
     status: StudyStatus;
-    members: RealTimeInfoProps[];
+    members: StudyMemberProps[];
   }[] = [];
 
-  studyVoteData.realTime.forEach((props) => {
-    const changeLocation = getLocationByCoordinates(props.place?.latitude, props.place?.longitude);
-    if (isAllRealTime || location === changeLocation) {
-      const findParticipationIdx = temp.findIndex(
-        (participation) => participation.place.name === props.place.name,
-      );
+  studyRealTimeArr.forEach((props) => {
+    const findParticipationIdx = temp.findIndex(
+      (participation) => participation.place.name === props.place.name,
+    );
 
-      if (findParticipationIdx !== -1) {
-        temp[findParticipationIdx].members.push(props);
-      } else {
-        temp.push({
-          place: props.place,
-          status: props.status,
-          members: [props],
-        });
-      }
+    if (findParticipationIdx !== -1) {
+      temp[findParticipationIdx].members.push(props);
+    } else {
+      temp.push({
+        status: props.status,
+        place: props.place,
+        members: [props],
+      });
     }
   });
 
-  return [...studyVoteData.participations, ...temp].sort((a, b) => {
+  return [...temp].sort((a, b) => {
     const aCnt = a.members.length;
     const bCnt = b.members.length;
     if (aCnt > bCnt) return -1;
@@ -50,7 +45,7 @@ export const convertStudyToParticipations = (
 };
 
 export const getStudyParticipationById = (
-  studyVoteData: StudyDailyInfoProps,
+  studyVoteData: StudyVoteDataProps,
   id: string,
 ): StudyMergeParticipationProps => {
   if (!studyVoteData) return;
@@ -64,21 +59,19 @@ export const getStudyParticipationById = (
 };
 
 export const getMyStudyParticipation = (
-  studyVoteData: StudyDailyInfoProps,
+  studyVoteData: StudyVoteDataProps,
   myUid: string,
 ): StudyMergeParticipationProps => {
   if (!studyVoteData) return;
 
-  const findMyParticipation = studyVoteData.participations?.find((participation) =>
-    participation.members.some((who) => who.user.uid === myUid),
-  );
+  const findMyParticipation = studyVoteData.participations?.find((who) => who?.userId === myUid);
   const myRealTimeFiltered = getMyRealTimeFiltered(studyVoteData.realTime, myUid);
 
   return findMyParticipation || myRealTimeFiltered;
 };
 
 export const getMyRealTimeFiltered = (
-  realTime: RealTimeInfoProps[],
+  realTime: RealTimeMemberProps[],
   myUid: string,
 ): StudyMergeParticipationProps => {
   if (!realTime || !myUid) return;
@@ -88,7 +81,7 @@ export const getMyRealTimeFiltered = (
   return { ...findMyStudy, members: filtered };
 };
 export const getRealTimeFilteredById = (
-  realTime: RealTimeInfoProps[],
+  realTime: RealTimeMemberProps[],
   placeId: string,
 ): StudyMergeParticipationProps => {
   if (!realTime || !placeId) return;
@@ -98,9 +91,6 @@ export const getRealTimeFilteredById = (
 
   return { ...findStudy, members: filtered };
 };
-
-import { Location } from "../../types/services/locationTypes";
-import { getLocationByCoordinates } from "./getLocationByCoordinates";
 
 export const getMyStudyInfo = (
   participation: StudyMergeParticipationProps,

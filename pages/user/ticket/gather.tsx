@@ -1,6 +1,7 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
+import Link from "next/link";
 import { Fragment } from "react";
 
 import Header from "../../../components/layouts/Header";
@@ -12,22 +13,29 @@ function GatherTicketLogSection() {
   const { data: userInfo } = useUserInfoQuery();
 
   const { data: logsData } = useTicketSystemLogQuery("gather");
-
+  console.log(42, logsData);
   let stepDate: string;
-  console.log(logsData);
   return (
     <>
       <Header title="번개 참여권 사용 기록" />
       <Slide isNoPadding>
         <Box mt="56px">
-          <Box px={5}>
+          <Flex px={5} justify="space-between" align="center">
             <Box py={4}>
               <Box fontSize="11px">{userInfo?.name.slice(1)}님의 보유 티켓</Box>
               <Box fontSize="20px" fontWeight="semibold">
                 {userInfo?.ticket?.gatherTicket}개
               </Box>
             </Box>
-          </Box>
+            <Link href="/store">
+              <Button colorScheme="mint" size="sm">
+                <div>포인트 스토어</div>
+                <div>
+                  <i className="fa-solid fa-chevron-right" />
+                </div>
+              </Button>
+            </Link>
+          </Flex>
           <Box>
             {logsData
               ?.slice()

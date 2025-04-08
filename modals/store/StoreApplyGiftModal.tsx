@@ -10,7 +10,7 @@ import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading"
 import { STORE_GIFT } from "../../constants/keys/queryKeys";
 import { useCompleteToast, useErrorToast, useFailToast } from "../../hooks/custom/CustomToast";
 import { useStoreMutation } from "../../hooks/sub/store/mutation";
-import { usePointSystemMutation } from "../../hooks/user/mutations";
+import { usePointSystemMutation, useUserTicketMutation } from "../../hooks/user/mutations";
 import { usePointSystemQuery, useUserInfoQuery } from "../../hooks/user/queries";
 import { getStoreMaxCnt } from "../../libs/getStoreMaxCnt";
 import { IGiftEntry } from "../../pages/store";
@@ -46,6 +46,14 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
     onError: errorToast,
   });
   const { mutate: getPoint } = usePointSystemMutation("point");
+  const { mutate } = useUserTicketMutation({
+    onSuccess() {
+      getPoint({ value: -totalCost, message: `${giftInfo.name} 구매` });
+      completeToast("free", "충전되었습니다.");
+      queryClient.invalidateQueries([STORE_GIFT]);
+      router.push("/store");
+    },
+  });
 
   const totalCost = giftInfo.point * value;
 
@@ -64,7 +72,6 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
     Math.floor(myPoint / totalCost),
     giftInfo.max - totalCnt,
   );
-  
 
   const onApply = () => {
     if (isGuest) {
@@ -81,26 +88,37 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
       return;
     }
 
-    const info: IStoreApplicant = {
-      name: session.user.name,
-      uid: session.user.uid,
-      cnt: value,
-      giftId: giftInfo.giftId,
-    };
+    if (giftInfo?.type) {
+      mutate({
+        ticketNum: value,
+        type: giftInfo?.name === "번개 참여권" ? "gather" : "groupStudy",
+      });
+    } else {
+      const info: IStoreApplicant = {
+        name: session.user.name,
+        uid: session.user.uid,
+        cnt: value,
+        giftId: giftInfo.giftId,
+      };
 
-    applyGift(info);
+      applyGift(info);
+    }
   };
 
   const footerOptions: IFooterOptions = {
     main: {
-      text: "응모하기",
+      text: giftInfo?.type ? "상품 구매" : "상품 응모",
       func: onApply,
       isLoading: isLoading2,
     },
   };
 
   return (
-    <ModalLayout title="상품 응모" footerOptions={footerOptions} setIsModal={setIsModal}>
+    <ModalLayout
+      title={giftInfo?.type ? "상품 구매" : "상품 응모"}
+      footerOptions={footerOptions}
+      setIsModal={setIsModal}
+    >
       <Box minH="124.5px">
         {!isLoading ? (
           <>

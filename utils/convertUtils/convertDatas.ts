@@ -3,7 +3,7 @@ import * as CryptoJS from "crypto-js";
 import { enToKrMapping, krToEnMapping } from "../../constants/location";
 import {
   BADGE_SCORE_MAPPINGS,
-  USER_SCORE_BADGE_ARR,
+  USER_SCORE_BADGE_ARR
 } from "../../constants/serviceConstants/badgeConstants";
 import {
   EVENT_BADGE_딸기스무디,
@@ -12,10 +12,29 @@ import {
   EVENT_BADGE_민트초코,
   EVENT_BADGE_슈팅스타,
   EVENT_BADGE_코코아,
-  MANAGER_BADGE,
+  MANAGER_BADGE
 } from "../../constants/storage/eventBadgeUser";
+import { StudyPlaceProps } from "../../types/models/studyTypes/studyDetails";
 import { UserBadge, UserRole } from "../../types/models/userTypes/userInfoTypes";
+import { PlaceInfoProps } from "../../types/models/utilTypes";
 import { ActiveLocation, Location, LocationEn } from "../../types/services/locationTypes";
+import { getRandomStudyImage } from "../imageUtils";
+
+export const convertPlaceToStudyPlace = (place: PlaceInfoProps): StudyPlaceProps => {
+  return {
+    fullname: place.name,
+    brand: "",
+    branch: "",
+    image: getRandomStudyImage(),
+    latitude: place.latitude,
+    longitude: place.longitude,
+    coverImage: "",
+    locationDetail: place.address,
+    mapURL: "",
+    registerDate: "",
+    _id: place._id,
+  };
+};
 
 export const decodeByAES256 = (encodedTel: string) => {
   const key = process.env.NEXT_PUBLIC_CRYPTO_KEY;

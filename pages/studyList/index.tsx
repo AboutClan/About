@@ -5,10 +5,10 @@ import { useSearchParams } from "next/navigation";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import { StudyThumbnailCard } from "../../components/molecules/cards/StudyThumbnailCard";
-import { useCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
+import { useUserCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { useUserInfoQuery } from "../../hooks/user/queries";
-import { setStudyToThumbnailInfo } from "../../libs/study/setStudyToThumbnailInfo";
+import { setStudyThumbnailCard } from "../../libs/study/setStudyThumbnailCard";
 import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
@@ -20,14 +20,14 @@ export default function StudyList() {
   const locationKr = convertLocationLangTo(location, "kr");
 
   const { data: userInfo } = useUserInfoQuery();
-  const { currentLocation } = useCurrentLocation();
+  const { currentLocation } = useUserCurrentLocation();
   const { data: studyVoteData } = useStudyVoteQuery(date, locationKr, {
     enabled: !!locationKr && !!date,
   });
 
   const participations = studyVoteData?.participations;
 
-  const thumbnailCardInfoArr = setStudyToThumbnailInfo(
+  const thumbnailCardInfoArr = setStudyThumbnailCard(
     participations,
     userInfo?.studyPreference,
     currentLocation,

@@ -6,11 +6,11 @@ import { useSetRecoilState } from "recoil";
 
 import { MainLoading } from "../../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../../components/layouts/PageSlide";
-import { useCurrentLocation } from "../../../../hooks/custom/CurrentLocationHook";
+import { useUserCurrentLocation } from "../../../../hooks/custom/CurrentLocationHook";
 import { useStudyVoteQuery } from "../../../../hooks/study/queries";
 import { convertMergePlaceToPlace } from "../../../../libs/study/convertMergePlaceToPlace";
 import {
-  convertStudyToParticipations,
+ 
   getMyStudyInfo,
   getMyStudyParticipation,
 } from "../../../../libs/study/getMyStudyMethods";
@@ -33,7 +33,7 @@ export default function Page() {
   const { data: session } = useSession();
   const isGuest = session?.user.role === "guest";
   const { id, date } = useParams<{ id: string; date: string }>() || {};
-  const { currentLocation } = useCurrentLocation();
+  const { currentLocation } = useUserCurrentLocation();
 
   const locationParam = searchParams.get("location") as LocationEn;
   const setMyStudyParticipation = useSetRecoilState(myStudyParticipationState);

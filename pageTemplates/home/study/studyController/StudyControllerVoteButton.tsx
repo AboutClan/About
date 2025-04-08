@@ -18,7 +18,7 @@ export default StudyControllerVoteButton;
 // } from "../../../../recoils/studyRecoils";
 // import { DispatchType } from "../../../../types/hooks/reactTypes";
 // import {
-//   RealTimeInfoProps,
+//   RealTimeMemberProps,
 //   StudyParticipationProps,
 // } from "../../../../types/models/studyTypes/studyDetails";
 // import { StudyDateStatus } from "../../../../types/models/studyTypes/studyInterActions";
@@ -92,7 +92,7 @@ export default StudyControllerVoteButton;
 // export const getStudyVoteButtonProps = (
 //   studyDateStatus: StudyDateStatus,
 //   myStudy: StudyParticipationProps | null,
-//   myRealStudy?: RealTimeInfoProps,
+//   myRealStudy?: RealTimeMemberProps,
 //   myUid?: string,
 // ): DateVoteButtonProps => {
 //   const isAttend = myStudy?.members.find((who) => who.user.uid === myUid)?.arrived;

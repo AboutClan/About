@@ -132,7 +132,7 @@ const getTypeToToast = (
     case "participate":
       return {
         status: "success",
-        title: "참여 완료!",
+        title: "참여가 완료되었습니다.",
         colorScheme: "mint",
       };
     case "not-yet":

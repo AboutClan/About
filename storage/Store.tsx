@@ -11,16 +11,6 @@ export const STORE_GIFT_ACTIVE: IStoreGift[] = [
   //   max: 30,
   //   giftId: 57,
   // },
-  {
-    image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EC%B6%98%EC%8B%9D%EC%9D%B4+%EB%A8%B8%EA%B7%B8%EC%9E%94.webp",
-    name: "춘식이 머그잔",
-    brand: "프렌즈리빙",
-    point: 65,
-    winner: 2,
-    max: 30,
-    giftId: 58,
-  },
 
   {
     image:
@@ -91,6 +81,16 @@ export const STORE_GIFT_ACTIVE: IStoreGift[] = [
     winner: 1,
     max: 30,
     giftId: 65,
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%8A%A4%ED%86%A0%EC%96%B4/%EC%B6%98%EC%8B%9D%EC%9D%B4+%EB%A8%B8%EA%B7%B8%EC%9E%94.webp",
+    name: "춘식이 머그잔",
+    brand: "프렌즈리빙",
+    point: 65,
+    winner: 2,
+    max: 30,
+    giftId: 58,
   },
   {
     image:
@@ -258,6 +258,7 @@ export const STORE_GIFT_ACTIVE: IStoreGift[] = [
   //   max: 5,
   //   giftId: 56,
   // },
+
   {
     image:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%ED%8E%AD%EA%B7%84+1.png",
@@ -267,6 +268,7 @@ export const STORE_GIFT_ACTIVE: IStoreGift[] = [
     winner: 5,
     max: 5,
     giftId: 54,
+    type: "about",
   },
   {
     image:
@@ -277,6 +279,7 @@ export const STORE_GIFT_ACTIVE: IStoreGift[] = [
     winner: 5,
     max: 5,
     giftId: 51,
+    type: "about",
   },
 
   {
@@ -288,6 +291,7 @@ export const STORE_GIFT_ACTIVE: IStoreGift[] = [
     winner: 5,
     max: 5,
     giftId: 53,
+    type: "about",
   },
   {
     image:
@@ -298,6 +302,27 @@ export const STORE_GIFT_ACTIVE: IStoreGift[] = [
     winner: 5,
     max: 5,
     giftId: 55,
+    type: "about",
+  },
+  {
+    image: "/ticket1.png",
+    name: "번개 참여권",
+    brand: "",
+    point: 100,
+    winner: 100,
+    max: 100,
+    giftId: 85,
+    type: "ticket",
+  },
+  {
+    image: "/ticket2.png",
+    name: "소모임 참여권",
+    brand: "",
+    point: 100,
+    winner: 100,
+    max: 100,
+    giftId: 86,
+    type: "ticket",
   },
 ];
 

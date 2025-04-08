@@ -2,9 +2,9 @@
 import mongoose, { Model, model, Schema } from "mongoose";
 
 import {
-  IAttendance,
-  StudyDailyInfoProps,
+  StudyMemberProp,
   StudyParticipationProps,
+  StudyVoteDataProps,
 } from "../types/models/studyTypes/studyDetails";
 import { IAbsence } from "../types/models/studyTypes/studyInterActions";
 import { IDayjsStartToEnd } from "../types/utils/timeAndDate";
@@ -23,7 +23,7 @@ const ParticipantTimeSchema: Schema<IDayjsStartToEnd> = new Schema(
   { _id: false },
 );
 
-const AttendenceSchema: Schema<IAttendance> = new Schema(
+const AttendenceSchema: Schema<StudyMemberProp> = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -76,11 +76,11 @@ const ParticipationSchema: Schema<StudyParticipationProps> = new Schema(
   { _id: false },
 );
 
-const VoteSchema: Schema<StudyDailyInfoProps> = new Schema({
+const VoteSchema: Schema<StudyVoteDataProps> = new Schema({
   date: Date,
   participations: [ParticipationSchema],
 });
 
 export const Vote =
-  (mongoose.models.Vote as Model<StudyDailyInfoProps, {}, {}, {}>) ||
-  model<StudyDailyInfoProps>("Vote", VoteSchema);
+  (mongoose.models.Vote as Model<StudyVoteDataProps, {}, {}, {}>) ||
+  model<StudyVoteDataProps>("Vote", VoteSchema);

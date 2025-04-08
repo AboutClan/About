@@ -7,14 +7,14 @@ import { MutationOptions } from "../../types/hooks/reactTypes";
 import { CollectionProps } from "../../types/models/collections";
 import { PlaceRegisterProps } from "../../types/models/studyTypes/studyDetails";
 import {
-  IStudyVote,
   IStudyVotePlaces,
   IStudyVoteTime,
+  StudyVoteProps,
 } from "../../types/models/studyTypes/studyInterActions";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
 type StudyParticipationParam<T> = T extends "post"
-  ? IStudyVote
+  ? StudyVoteProps
   : T extends "patch"
   ? IStudyVoteTime
   : void;
@@ -26,15 +26,15 @@ export const useStudyParticipationMutation = <T extends "post" | "patch" | "dele
 ) =>
   useMutation<void, AxiosError, StudyParticipationParam<T>>((param) => {
     const voteInfo = param;
-    if (method !== "delete") {
-      const updatedVoteInfo = voteInfo as IStudyVote | IStudyVoteTime;
-      const { start, end } = updatedVoteInfo;
-      updatedVoteInfo.start = voteDate.hour(start.hour()).minute(start.minute());
-      updatedVoteInfo.end = voteDate.hour(end.hour()).minute(end.minute());
-    }
+    // if (method !== "delete") {
+    //   const updatedVoteInfo = voteInfo as IStudyVote | IStudyVoteTime;
+    //   const { start, end } = updatedVoteInfo;
+    //   updatedVoteInfo.start = voteDate.hour(start.hour()).minute(start.minute());
+    //   updatedVoteInfo.end = voteDate.hour(end.hour()).minute(end.minute());
+    // }
     return requestServer<StudyParticipationParam<T>>({
       method,
-      url: `vote/${dayjsToStr(voteDate)}`,
+      url: `vote2/${dayjsToStr(voteDate)}`,
       body: voteInfo,
     });
   }, options);

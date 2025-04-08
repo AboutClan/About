@@ -25,7 +25,7 @@ import PointScoreBar from "../../../pageTemplates/point/pointScore/PointScoreBar
 import StudyHeader from "../../../pageTemplates/study/StudyHeader";
 import { changeAlphabet } from "../../../pageTemplates/user/UserCollection2";
 import {
-  RealTimeInfoProps,
+  RealTimeMemberProps,
   StudyParticipationProps,
 } from "../../../types/models/studyTypes/studyDetails";
 import { dayjsToFormat, dayjsToTime } from "../../../utils/dateTimeUtils";
@@ -47,7 +47,7 @@ function StudyResultPage() {
     enabled: !!dateParam,
   });
 
-  const findRealTime = studyVoteOne?.data?.[0] as RealTimeInfoProps;
+  const findRealTime = studyVoteOne?.data?.[0] as RealTimeMemberProps;
 
   const findParticipation = studyVoteOne?.data as StudyParticipationProps;
   const findParStudy = findParticipation?.members?.find((who) => who.user.uid === userInfo?.uid);
@@ -72,7 +72,7 @@ function StudyResultPage() {
   const getStudyTime = `${Math.floor(studyTime / 60)}시간 ${studyTime % 60}분`;
   const members =
     findParticipation?.members?.filter((who) => who.user.uid !== userInfo?.uid) ||
-    (studyVoteOne?.data as RealTimeInfoProps[])?.filter(
+    (studyVoteOne?.data as RealTimeMemberProps[])?.filter(
       (one) => one.place.name === findRealTime?.place.name && one.user.uid !== userInfo?.uid,
     );
 

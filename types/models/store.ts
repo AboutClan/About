@@ -1,6 +1,7 @@
 export interface IStoreGift {
   image: string;
   name: string;
+  type?: "about" | "ticket" | null;
   brand: string;
   point: number;
   winner: number;

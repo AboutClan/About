@@ -43,7 +43,7 @@ function GatherDetail() {
   }, [transferGather, gatherData]);
 
   const { data: userInfo } = useUserInfoQuery();
-  console.log(userInfo);
+
 
   const isMember =
     (gather?.user as IUserSummary)?.uid === session?.user.uid ||

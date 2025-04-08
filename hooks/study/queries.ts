@@ -14,10 +14,10 @@ import {
 import { SERVER_URI } from "../../constants/system";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import {
-  RealTimeInfoProps,
-  StudyDailyInfoProps,
+  RealTimeMemberProps,
   StudyParticipationProps,
   StudyPlaceProps,
+  StudyVoteDataProps,
 } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
 import { IArrivedData, VoteCntProps } from "../../types/models/studyTypes/studyRecords";
@@ -47,17 +47,11 @@ export const useStudyPlacesQuery = (
     options,
   );
 
-export const useStudyVoteQuery = (
-  date: string,
-  location: Location | "전체" | "기타",
-  options?: QueryOptions<StudyDailyInfoProps>,
-) =>
-  useQuery<StudyDailyInfoProps, AxiosError, StudyDailyInfoProps>(
-    [STUDY_VOTE, date, location],
+export const useStudyVoteQuery = (date: string, options?: QueryOptions<StudyVoteDataProps>) =>
+  useQuery<StudyVoteDataProps, AxiosError, StudyVoteDataProps>(
+    [STUDY_VOTE, date],
     async () => {
-      const res = await axios.get<StudyDailyInfoProps>(`${SERVER_URI}/vote/${date}`, {
-        params: { location },
-      });
+      const res = await axios.get<StudyVoteDataProps>(`${SERVER_URI}/vote2/${date}/info`);
       return res.data;
     },
     options,
@@ -65,17 +59,20 @@ export const useStudyVoteQuery = (
 
 export const useStudyVoteOneQuery = (
   date: string,
-  options?: QueryOptions<{ data: StudyParticipationProps | RealTimeInfoProps[]; rankNum: number }>,
+  options?: QueryOptions<{
+    data: StudyParticipationProps | RealTimeMemberProps[];
+    rankNum: number;
+  }>,
 ) =>
   useQuery<
-    { data: StudyParticipationProps | RealTimeInfoProps[]; rankNum: number },
+    { data: StudyParticipationProps | RealTimeMemberProps[]; rankNum: number },
     AxiosError,
-    { data: StudyParticipationProps | RealTimeInfoProps[]; rankNum: number }
+    { data: StudyParticipationProps | RealTimeMemberProps[]; rankNum: number }
   >(
     [STUDY_VOTE, date],
     async () => {
       const res = await axios.get<{
-        data: StudyParticipationProps | RealTimeInfoProps[];
+        data: StudyParticipationProps | RealTimeMemberProps[];
         rankNum: number;
       }>(`${SERVER_URI}/vote/${date}/one`, {});
       return res.data;

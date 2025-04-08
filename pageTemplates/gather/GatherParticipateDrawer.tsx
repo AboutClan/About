@@ -18,6 +18,7 @@ import {
 } from "../../hooks/gather/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import GatherExpireModal from "../../modals/gather/gatherExpireModal/GatherExpireModal";
+import GatherReviewDrawer from "../../modals/gather/gatherExpireModal/GatherReviewDrawer";
 import { transferFeedSummaryState, transferGatherDataState } from "../../recoils/transferRecoils";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
 import { IUser, IUserSummary } from "../../types/models/userTypes/userInfoTypes";
@@ -45,8 +46,6 @@ function GatherParticipateDrawer({ data }: IGatherParticipateDrawer) {
   const [isFirstPage, setIsFirstPage] = useState(true);
   const [isModal, setIsModal] = useState(false);
   const [value, setValue] = useState("");
-
-  console.log(isReviewDrawer);
 
   const setTransferFeedSummary = useSetRecoilState(transferFeedSummaryState);
   const { mutate: participate } = useGatherParticipationMutation("post", +id, {
@@ -330,6 +329,9 @@ function GatherParticipateDrawer({ data }: IGatherParticipateDrawer) {
             </>
           )}
         </BottomFlexDrawer>
+      )}
+      {isReviewDrawer && (
+        <GatherReviewDrawer feed={feed?.[0]} isOpen onClose={() => setIsReviewDrawer(false)} />
       )}
     </>
   );
