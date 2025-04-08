@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
 
 import axios from "axios";
+import { signOut, useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { signOut, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -79,7 +79,7 @@ function Layout({ children }: ILayout) {
       toast("warning", "접속 권한이 없습니다. 반복되는 경우 관리자에게 문의 부탁드립니다.");
       signOut({ callbackUrl: `/login/?status=logout` });
     }
-  }, [session]);
+  }, [session, status]);
 
   const exitAppRef = useRef<boolean>(false);
   useEffect(() => {
