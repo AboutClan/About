@@ -190,7 +190,7 @@ const Login: NextPage<{
               <span>카카오톡으로 5초만에 시작하기</span>
               <div />
             </Button>
-            {detectDevice() !== "iPhone" && (
+            {detectDevice() === "iPhone" && (
               <Button
                 variant="unstyled"
                 maxW="calc(var(--max-width) - 2 * 20px)"
