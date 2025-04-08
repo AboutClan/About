@@ -90,7 +90,7 @@ export interface RealTimeBasicVoteProps {
 export interface RealTimeBasicAttendanceProps {
   memo: string;
   image: string | Blob;
-  status: "solo";
+  status: "free" | "solo" | "cancel";
 }
 export interface RealTimeDirectAttendanceProps
   extends RealTimeBasicAttendanceProps,

@@ -19,9 +19,15 @@ function StudyPageSettingBlock({}: StudyPageSettingBlockProps) {
         </Box>
         <InfoBoxCol
           infoBoxPropsArr={[
-            { category: "중심 활동지", text: userInfo?.locationDetail?.text },
-            { category: "즐겨 찾기 장소", text: userInfo?.studyPreference?.place || "미등록" },
-            { category: "서브 추천 장소", text: userInfo?.studyPreference?.place || "미등록" },
+            { category: "스터디 매칭 기준 장소", text: userInfo?.locationDetail?.text },
+            {
+              category: "최근 참여한 스터디 장소",
+              text: userInfo?.studyPreference?.place || "없음",
+            },
+            {
+              category: "자주 참여한 스터디 장소",
+              text: userInfo?.studyPreference?.place || "없음",
+            },
           ]}
           size="md"
         />
@@ -37,7 +43,7 @@ function StudyPageSettingBlock({}: StudyPageSettingBlockProps) {
           h="44px"
           onClick={() => setIsModal(true)}
         >
-          설정하기
+          주 활동 장소 변경하기
         </Flex>
       </Box>
       {isModal && <StudyPresetModal setIsModal={setIsModal} />}

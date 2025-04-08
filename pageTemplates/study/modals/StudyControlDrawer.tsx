@@ -1,6 +1,7 @@
 import { Box, Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { CalendarCheckIcon } from "../../../components/Icons/SolidIcons";
 import {
@@ -15,11 +16,16 @@ import StudyPlacePickerDrawer from "../../../components/services/studyVote/Study
 import StudyVoteTimeRulletDrawer from "../../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
+import { useRealtimeVoteMutation } from "../../../hooks/realtime/mutations";
 import { useStudyParticipationMutation } from "../../../hooks/study/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { CoordinatesProps } from "../../../types/common";
 import { IModal } from "../../../types/components/modalTypes";
-import { MyVoteStatus, StudyMergeResultProps } from "../../../types/models/studyTypes/studyDetails";
+import {
+  MyVoteStatus,
+  RealTimeBasicVoteProps,
+  StudyMergeResultProps,
+} from "../../../types/models/studyTypes/studyDetails";
 import { IStudyVoteTime, StudyVoteProps } from "../../../types/models/studyTypes/studyInterActions";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import StudyPlaceDrawer from "../../vote/voteDrawer/StudyPlaceDrawer";
@@ -40,10 +46,18 @@ function StudyControlDrawer({
   isModal,
   setIsModal,
 }: StudyControlDrawerProps) {
+  const router = useRouter();
   const resetStudy = useResetStudyQuery();
   const toast = useToast();
 
   const { data: userInfo } = useUserInfoQuery();
+
+  const { mutate: participateRealTime } = useRealtimeVoteMutation({
+    onSuccess() {
+      toast("success", "참여가 완료되었습니다. 출석 인증도 잊지 마세요!");
+      resetStudy();
+    },
+  });
 
   const { mutate: voteStudy, isLoading } = useStudyParticipationMutation(dayjs(date), "post", {
     onSuccess() {
@@ -60,11 +74,16 @@ function StudyControlDrawer({
       start: voteTime.start.toISOString(),
       end: voteTime.end.toISOString(),
     };
-    handleVote(voteData);
+    handleVote(voteData, "vote");
   };
 
-  const handleVote = (voteData: StudyVoteProps) => {
-    voteStudy(voteData);
+  const handleVote = (
+    voteData: StudyVoteProps | RealTimeBasicVoteProps,
+    type: "vote" | "realTime",
+  ) => {
+    console.log(type, voteData);
+    if (type === "vote") voteStudy(voteData as StudyVoteProps);
+    else if (type === "realTime") participateRealTime(voteData as RealTimeBasicVoteProps);
     setIsTimeRullet(false);
     setIsRightDrawer(false);
   };
@@ -75,13 +94,18 @@ function StudyControlDrawer({
   const [isTimeRullet, setIsTimeRullet] = useState(false);
   const [isRightDrawer, setIsRightDrawer] = useState(false);
 
-  const handleStudyVoteBtn = (type: "oneClick" | "direct" | "placePick") => {
-    console.log(24, type);
+  const handleStudyVoteBtn = (type: "oneClick" | "direct" | "placePick" | "directAttend") => {
+    if (type === "placePick") {
+      if (!studyResults.length) {
+        toast("warning", "진행중인 스터디가 없습니다.");
+        return;
+      }
+      setIsPlaceDrawer(true);
+    } else if (type === "oneClick") setIsTimeRullet(true);
+    else if (type === "directAttend") router.push("/vote/attend/certification");
+    else if (type === "direct") setIsRightDrawer(true);
     setIsModal(false);
     setIsPlaceDrawer(false);
-    if (type === "placePick") setIsPlaceDrawer(true);
-    else if (type === "oneClick") setIsTimeRullet(true);
-    else setIsRightDrawer(true);
   };
 
   const drawerOptions: BottomFlexDrawerOptions = {
@@ -91,7 +115,7 @@ function StudyControlDrawer({
     },
     footer: {
       text: myVoteStatus === "todayPending" ? "참여 확정" : "신청 완료",
-      func: handleOneClickVote,
+      func: myVoteStatus === "todayPending" ? () => {} : handleOneClickVote,
       // loading: isLoading,
     },
   };
@@ -150,7 +174,7 @@ function StudyControlDrawer({
               variant="unstyled"
               py={4}
               w="100%"
-              onClick={() => handleStudyVoteBtn("direct")}
+              onClick={() => handleStudyVoteBtn("directAttend")}
             >
               <Box w="20px" h="20px" mr={4} opacity={0.28}>
                 <StudyUserCheckIcon />
@@ -203,7 +227,9 @@ function StudyControlDrawer({
         <StudyPlaceDrawer
           type={myVoteStatus === "todayPending" ? "realTime" : "vote"}
           date={date}
-          handleStudyVote={handleVote}
+          handleStudyVote={(voteData) =>
+            handleVote(voteData, myVoteStatus === "todayPending" ? "realTime" : "vote")
+          }
           onClose={() => setIsRightDrawer(false)}
         />
       )}

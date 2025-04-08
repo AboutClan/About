@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -88,8 +88,8 @@ export default function StudyPage() {
   const [isDrawerUp, setIsDrawerUp] = useState(drawerParam === "up" ? true : false);
 
   const { data: userInfo } = useUserInfoQuery();
-  const { data: studyVoteData, isLoading } = useStudyVoteQuery(date, locationValue, {
-    enabled: !!locationValue && !!date,
+  const { data: studyVoteData, isLoading } = useStudyVoteQuery(date, {
+    enabled: !!date,
   });
 
   //초기 param 값들 설정

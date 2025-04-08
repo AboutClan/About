@@ -57,13 +57,17 @@ export default function StudyPage() {
       }
       return;
     }
+    setCenterLocation(currentLocation);
 
     const userId = session.user.id;
     const { participations, results, realTimes } = studyVoteData;
 
+    const findMyParticipation = participations?.find((who) => who?.user?._id === userId);
     // 참여 여부 확인
-    if (participations?.some((who) => who?.user?._id === userId)) {
+    if (findMyParticipation) {
       setMyVoteStatus("voting");
+      const { latitude: lat, longitude: lon } = findMyParticipation;
+      setCenterLocation({ lat, lon });
       return;
     }
     // 결과 확인
@@ -80,7 +84,7 @@ export default function StudyPage() {
       return;
     }
     // 실시간 참여 확인
-    const realTimeResult = realTimes?.userList.find((who) => who?.user?._id === userId);
+    const realTimeResult = realTimes?.userList.find((who) => who?.user === userId);
     if (realTimeResult) {
       setMyVoteStatus("private");
       setCenterLocation({
@@ -89,6 +93,7 @@ export default function StudyPage() {
       });
       return;
     }
+
     if (currentLocation) {
       setCenterLocation(currentLocation);
     } else {
@@ -101,9 +106,8 @@ export default function StudyPage() {
 
   const isExpireDate = dayjs(date).isBefore(dayjs().subtract(1, "day"));
 
-  console.log("studyVoteData", studyVoteData, isLoading);
-  console.log("myVoteStatus", myVoteStatus);
-  console.log("23", isExpireDate);
+  console.log("studyVoteData:", studyVoteData);
+  console.log("myVoteStatus:", myVoteStatus);
 
   return (
     <>
@@ -113,7 +117,7 @@ export default function StudyPage() {
         <StudyPageMap
           centerLocation={centerLocation}
           studyVoteData={studyVoteData}
-          coordinates={currentLocation}
+          currentLocation={currentLocation}
           setCenterLocation={setCenterLocation}
         />
         <StudyPageCalendar date={date} setDate={setDate} />

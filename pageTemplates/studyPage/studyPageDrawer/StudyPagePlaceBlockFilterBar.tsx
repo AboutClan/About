@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import Select from "../../../components/atoms/Select";
 import { DispatchType } from "../../../types/hooks/reactTypes";
 
-type SortedOption = "인원순" | "거리순" | "선호순";
+type SortedOption = "인원순" | "거리순";
 
 interface StudyPagePlaceSectionFilterBarProps {
   placeCnt: number;
@@ -19,7 +19,7 @@ function StudyPagePlaceSectionFilterBar({
   setSortedOption,
   date,
 }: StudyPagePlaceSectionFilterBarProps) {
-  const sortedOptionArr: SortedOption[] = ["인원순", "거리순", "선호순"];
+  const sortedOptionArr: SortedOption[] = ["인원순", "거리순"];
 
   const lastStudyHours = dayjs(date).hour(9).startOf("hour").diff(dayjs(), "m");
 

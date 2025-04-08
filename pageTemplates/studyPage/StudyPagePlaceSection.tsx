@@ -108,12 +108,12 @@ function StudyPagePlaceSection({
                     bg="gray.100"
                     px={3}
                     py={4}
-                    minH="114px"
+                    minH="92px"
                     borderRadius="8px"
                     color="gray.600"
                     border="var(--border)"
                   >
-                    {true ? (
+                    {false ? (
                       <>
                         지역에 등록된 스터디 장소가 없습니다.
                         <Button borderRadius="8px" mt={4} colorScheme="mint" w="full">
@@ -134,7 +134,7 @@ function StudyPagePlaceSection({
               )}
             </motion.div>
             {thumbnailCardInfoArr?.length && (
-              <SectionFooterButton url={`/studyList?date=${date}`} />
+              <SectionFooterButton url={`/studyList?date=${date}`} key="sectionFooter" />
             )}
           </AnimatePresence>
         </Box>

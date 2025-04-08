@@ -12,13 +12,14 @@ import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useRealtimeVoteMutation } from "../../../hooks/realtime/mutations";
 import { KakaoLocationProps } from "../../../types/externals/kakaoLocationSearch";
+import { RealTimeBasicVoteProps } from "../../../types/models/studyTypes/studyDetails";
 import { IStudyVoteTime, StudyVoteProps } from "../../../types/models/studyTypes/studyInterActions";
 
 interface StudyPlaceDrawerProps {
   type: "vote" | "realTime";
   onClose: () => void;
   date: string;
-  handleStudyVote: (voteData: StudyVoteProps) => void;
+  handleStudyVote: (voteData: StudyVoteProps | RealTimeBasicVoteProps) => void;
 }
 
 export function StudyPlaceDrawer({ type, onClose, date, handleStudyVote }: StudyPlaceDrawerProps) {
@@ -58,12 +59,27 @@ export function StudyPlaceDrawer({ type, onClose, date, handleStudyVote }: Study
     footer: {
       text: type === "vote" ? "신청 완료" : "참여 확정",
       func: () => {
-        const voteData = {
-          latitude: +placeInfo.y,
-          longitude: +placeInfo.x,
-          start: voteTime.start.toISOString(),
-          end: voteTime.end.toISOString(),
-        };
+        const voteData: StudyVoteProps | RealTimeBasicVoteProps =
+          type === "vote"
+            ? {
+                latitude: +placeInfo.y,
+                longitude: +placeInfo.x,
+                start: voteTime.start.toISOString(),
+                end: voteTime.end.toISOString(),
+              }
+            : {
+                place: {
+                  latitude: +placeInfo.y,
+                  longitude: +placeInfo.x,
+                  name: placeInfo.place_name,
+                  address: placeInfo.road_address_name,
+                },
+                time: {
+                  start: voteTime.start.toISOString(),
+                  end: voteTime.end.toISOString(),
+                },
+              };
+
         handleStudyVote(voteData);
         // mutate({
         //   place: {

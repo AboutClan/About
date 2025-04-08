@@ -11,7 +11,7 @@ import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 function UserLogSection() {
   const [tab, setTab] = useState<"score" | "point" | "deposit">("score");
   const [filter, setFilter] = useState("시간 순");
-  console.log(filter, 2);
+
   const { data: userInfo } = useUserInfoQuery();
 
   const { data: logsData } = usePointSystemLogQuery(tab);
@@ -117,7 +117,7 @@ interface BlockProps {
 
 function Block({ text, time, iconType, value, currentValue, type }: BlockProps) {
   const valueText = type === "point" ? " Point" : type === "score" ? "점" : "원";
-  console.log(iconType);
+
   return (
     <Flex px={5} mt={4} justify="space-between" align="center">
       <Flex

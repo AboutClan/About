@@ -5,9 +5,9 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import {
-  StudyCheckIcon,
   StudySoloIcon,
   StudyUserCancleIcon,
+  StudyUserCheckIcon,
   StudyUserIcon,
 } from "../../components/Icons/StudyIcons";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
@@ -42,8 +42,6 @@ function StudyControlButton({
     },
   });
 
-  console.log(myVoteStatus);
-
   const onClickButton = () => {
     if (myVoteStatus === "todayPending" || myVoteStatus === "pending") {
       setIsStudyDrawer(true);
@@ -60,7 +58,7 @@ function StudyControlButton({
     <>
       <Flex
         position="fixed"
-        zIndex="400"
+        zIndex="800"
         fontSize="12px"
         lineHeight="24px"
         fontWeight={700}
@@ -121,10 +119,11 @@ const getButtonOptions = (
         rightIcon: <StudySoloIcon />,
         text: "개인 스터디 신청",
       };
+
     default:
       return {
         colorScheme: "orange",
-        rightIcon: <StudyCheckIcon />,
+        rightIcon: <StudyUserCheckIcon color="white" />,
         text: "출석 체크",
       };
   }

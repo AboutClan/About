@@ -43,7 +43,7 @@ export function StudyThumbnailCard({
   func = undefined,
   participantCnt,
 }: StudyThumbnailCardProps) {
-  console.log("par", participants);
+ 
   const userAvatarArr = participants.map((par) => ({
     image: par.profileImage,
     ...(par.avatar?.type !== null ? { avatar: par.avatar } : {}),
