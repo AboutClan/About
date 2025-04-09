@@ -121,7 +121,7 @@ function AvatarComponent({
                 alignItems="center"
                 h="100%"
               >
-                <Box w={2} h={2} textAlign="center">
+                <Box h={2} textAlign="center">
                   +{shadowAvatar}
                 </Box>
               </Flex>

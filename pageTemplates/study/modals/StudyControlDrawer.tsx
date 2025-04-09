@@ -185,7 +185,7 @@ function StudyControlDrawer({
               <StudySelectIcon />
             </Box>
             <Box fontSize="13px" color="var(--gray-600)">
-              {myVoteStatus === "todayPending" ? "스터디 장소 직접 입력" : "출발 위치 직접 입력"}
+              {myVoteStatus === "todayPending" ? "스터디 장소 직접 입력" : "출발지 직접 입력"}
             </Box>
           </Button>
           {myVoteStatus === "todayPending" && (

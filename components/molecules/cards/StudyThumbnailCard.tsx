@@ -10,6 +10,7 @@ import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTyp
 import { LocationDotIcon } from "../../Icons/LocationIcons";
 import { UserIcon } from "../../Icons/UserIcons";
 import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
+import PlaceAvatarImage from "../PlaceAvatarImage";
 import PlaceImage from "../PlaceImage";
 
 const VOTER_SHOW_MAX = 4;
@@ -31,8 +32,8 @@ export interface StudyThumbnailCardProps {
   participantCnt?: number;
   url: string;
   status: StudyStatus;
-
   func?: () => void;
+  isAvatarView: boolean;
 }
 
 export function StudyThumbnailCard({
@@ -42,141 +43,104 @@ export function StudyThumbnailCard({
   status,
   func = undefined,
   participantCnt,
+  isAvatarView,
 }: StudyThumbnailCardProps) {
- 
-  const userAvatarArr = participants.map((par) => ({
-    image: par.profileImage,
-    ...(par.avatar?.type !== null ? { avatar: par.avatar } : {}),
-  }));
-
+  console.log("par", participants);
+  const userAvatarArr = participants.map((par) => {
+    if (!par?.profileImage) console.log("WW", par);
+    return {
+      image: par.profileImage,
+      ...(par.avatar?.type !== null ? { avatar: par.avatar } : {}),
+    };
+  });
   return (
-    <CardLink href={url} onClick={func}>
-      {participants ? (
-        <>
+    <CardLink href={url} onClick={func} isBorderMain={status === "recruiting"}>
+      <>
+        {status === "recruiting" ? (
+          <PlaceAvatarImage size="md" imageProps={place.imageProps} />
+        ) : (
           <PlaceImage size="md" imageProps={place.imageProps} />
-          <Flex direction="column" ml={4} flex={1}>
-            <Badge mr="auto" colorScheme={STUDY_STATUS_TO_BADGE[status].colorScheme} size="md">
-              {STUDY_STATUS_TO_BADGE[status].text}
-            </Badge>
-            <Title>{place.name}</Title>
-            <Flex>
-              <LocationDotIcon size="md" />
-              <Subtitle>
+        )}
+        <Flex direction="column" ml={4} flex={1}>
+          <Flex justify="space-between">
+            <Box>
+              <Flex fontSize="10px" lineHeight="12px" color="gray.600">
+                <Box as="span">
+                  <LocationDotIcon size="md" />
+                </Box>
                 <Box as="span" ml={1} color="var(--gray-600)">
                   {place.branch}
                 </Box>
-                {place.distance && (
-                  <>
-                    <Box as="span" color="var(--gray-400)">
-                      ・
-                    </Box>
-                    <Box as="span" fontWeight={600} w="37px">
-                      {`${place.distance}KM`}
-                    </Box>
-                  </>
-                )}
-                <Box as="span" color="var(--gray-400)">
-                  ・
-                </Box>{" "}
-                <Box as="span">{place.address}</Box>
-              </Subtitle>
-            </Flex>
-            <Flex mt={3} alignItems="center" justify="space-between">
-              <AvatarGroupsOverwrap userAvatarArr={userAvatarArr} maxCnt={VOTER_SHOW_MAX} />
+              </Flex>
+              <Title>{place.name}</Title>{" "}
+            </Box>
+            <Box>
+              <Badge mr="auto" colorScheme={STUDY_STATUS_TO_BADGE[status].colorScheme} size="md">
+                {STUDY_STATUS_TO_BADGE[status].text}
+              </Badge>
+            </Box>
+          </Flex>
 
-              <Flex align="center" color="var(--gray-500)" h={4}>
-                <UserIcon size="sm" />
-                <Flex ml={1} fontSize="10px" align="center" fontWeight={500}>
-                  <Box
-                    fontWeight={600}
-                    as="span"
-                    color={
-                      participants.length >= STUDY_MAX_CNT
-                        ? "var(--color-red)"
-                        : "var(--color-gray)"
-                    }
-                  >
-                    {participants.length}
-                  </Box>
-                  <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
-                    /
-                  </Box>
-                  <Box as="span" color="var(--gray-500)" fontWeight={500}>
-                    {STUDY_MAX_CNT}
-                  </Box>
-                </Flex>
-              </Flex>
-            </Flex>
-          </Flex>
-        </>
-      ) : (
-        <>
-          <PlaceImage size="md" imageProps={place.imageProps} />
-          <Flex direction="column" ml={4} flex={1}>
-            <Flex justify="space-between">
-              <Box>
-                <Flex fontSize="10px" lineHeight="12px" color="gray.600">
-                  <Box as="span">
-                    <LocationDotIcon size="md" />
-                  </Box>
-                  <Box as="span" ml={1} color="var(--gray-600)">
-                    {place.branch}
-                  </Box>
-                </Flex>
-                <Title>{place.name}</Title>{" "}
+          <Subtitle>
+            <Box>
+              <Box as="span" fontWeight={600}>
+                {place.distance && `${place.distance}KM`}
               </Box>
-              <Box>
-                <Badge mr="auto" colorScheme={STUDY_STATUS_TO_BADGE[status].colorScheme} size="md">
-                  {STUDY_STATUS_TO_BADGE[status].text}
-                </Badge>
-              </Box>
-            </Flex>
-            <Subtitle>
-              <Box>
-                <Box as="span" fontWeight={600}>
-                  {place.distance && `${place.distance}KM`}
-                </Box>
+              {place.distance && (
                 <Box as="span" color="var(--gray-400)">
                   ・
-                </Box>{" "}
-                <Box as="span">{place.address}</Box>
-              </Box>
-            </Subtitle>
-            <Flex mt={3} alignItems="center" justify="space-between">
-              <Flex align="center" color="var(--gray-500)">
-                <UserIcon size="sm" />
-                <Flex lineHeight="12px" ml={1} fontSize="10px" align="center" fontWeight={500}>
-                  <Box
-                    fontWeight={600}
-                    as="span"
-                    color={
-                      participantCnt >= STUDY_MAX_CNT ? "var(--color-red)" : "var(--color-gray)"
-                    }
-                  >
-                    {participantCnt}
-                  </Box>
-                  <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
-                    /
-                  </Box>
-                  <Box as="span" color="var(--gray-500)" fontWeight={500}>
-                    {STUDY_MAX_CNT}
-                  </Box>
-                </Flex>
+                </Box>
+              )}
+              <Box as="span">{place.address}</Box>
+            </Box>
+          </Subtitle>
+
+          <Flex mb={1} mt="auto" alignItems="center" justify="space-between">
+            <Box>
+              <AvatarGroupsOverwrap
+                userAvatarArr={userAvatarArr}
+                maxCnt={status === "recruiting" ? 8 : VOTER_SHOW_MAX}
+              />
+            </Box>
+            <Flex align="center" color="var(--gray-500)">
+              <UserIcon size="sm" />
+              <Flex lineHeight="12px" ml={1} fontSize="10px" align="center" fontWeight={500}>
+                <Box
+                  fontWeight={600}
+                  as="span"
+                  color={
+                    participantCnt >= STUDY_MAX_CNT && status !== "recruiting"
+                      ? "var(--color-red)"
+                      : "var(--color-gray)"
+                  }
+                >
+                  {participantCnt}
+                </Box>
+                <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
+                  /
+                </Box>
+                <Box as="span" color="var(--gray-500)" fontWeight={500}>
+                  {status === "recruiting" ? (
+                    <i className="fa-regular fa-infinity" />
+                  ) : (
+                    STUDY_MAX_CNT
+                  )}
+                </Box>
               </Flex>
             </Flex>
           </Flex>
-        </>
-      )}
+        </Flex>
+      </>
     </CardLink>
   );
 }
 
-const CardLink = styled(Link)`
+const CardLink = styled(Link)<{ isBorderMain: boolean }>`
   height: fit-content;
   display: flex;
-  padding-right: 12px;
   padding-bottom: 12px;
-  border-bottom: var(--border);
+  padding-right: 0.5px;
+  border-bottom: ${(props) => (props.isBorderMain ? "var(--border-main)" : "var(--border)")};
   background-color: white;
   justify-content: space-between;
 

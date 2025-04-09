@@ -10,7 +10,7 @@ function HomeGatherSection() {
 
   const windowWidth = useWindowWidth(); // 현재 화면 너비 가져오기
   const width = windowWidth - 70;
- 
+
   return (
     <>
       <AnimatePresence initial={false}>
@@ -33,7 +33,7 @@ function HomeGatherSection() {
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence>
-      <AnimatePresence initial={false}>
+      {/* <AnimatePresence initial={false}>
         <motion.div
           drag="x"
           dragConstraints={{ left: -width, right: 0 }}
@@ -52,7 +52,7 @@ function HomeGatherSection() {
             <HomeGatherCol gathers={gathers?.slice(9)} isPriority={false} />
           </SlideSectionCol>
         </motion.div>
-      </AnimatePresence>
+      </AnimatePresence> */}
     </>
   );
 }

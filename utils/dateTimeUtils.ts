@@ -12,7 +12,7 @@ export const dayjsToFormat = (date: Dayjs, text: string) => date.format(text);
 
 export const dayjsToTime = (date: Dayjs) => date.format("HH:mm");
 
-export const dayjsToKr = (date: Dayjs) => date.format("M월 D일");
+export const dayjsToKr = (date: Dayjs) => date.locale("ko").format("M월 D일(ddd)");
 
 export const getToday = () => dayjs().startOf("day");
 

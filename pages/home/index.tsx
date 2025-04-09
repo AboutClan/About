@@ -1,13 +1,13 @@
 import Slide from "../../components/layouts/PageSlide";
 import { useGroupSnapshotQuery } from "../../hooks/groupStudy/queries";
 import HomeBannerSlide from "../../pageTemplates/home/HomeBannerSlide";
-import HomeFooter from "../../pageTemplates/home/HomeFooter";
 import HomeGatherSection from "../../pageTemplates/home/HomeGatherSection";
 import HomeGroupSection from "../../pageTemplates/home/HomeGroupSection";
 import HomeHeader from "../../pageTemplates/home/homeHeader/HomeHeader";
 import HomeInitialSetting from "../../pageTemplates/home/HomeInitialSetting";
 import HomeNav from "../../pageTemplates/home/HomeNav";
 import HomeReviewSection from "../../pageTemplates/home/HomeReviewSection";
+import HomeStudySection from "../../pageTemplates/home/HomeStudySection";
 
 function Home() {
   const { data: data } = useGroupSnapshotQuery();
@@ -21,6 +21,9 @@ function Home() {
         <HomeNav />
       </Slide>
       <Slide isNoPadding>
+        <HomeStudySection />
+      </Slide>
+      <Slide isNoPadding>
         <HomeGatherSection />
       </Slide>
       <Slide>
@@ -30,7 +33,7 @@ function Home() {
       <Slide isNoPadding>
         <HomeGroupSection groups={data} />
       </Slide>
-      <HomeFooter />
+      {/* <HomeFooter /> */}
       {/* <Slide isNoPadding>
         <HomeStudySection />
       </Slide> */}

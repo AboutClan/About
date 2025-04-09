@@ -96,13 +96,13 @@ export default function StudyPage() {
 
     if (currentLocation) {
       setCenterLocation(currentLocation);
-    } else {
+    } else if (userInfo) {
       const { lat, lon } = userInfo.locationDetail;
       setCenterLocation({ lat, lon });
     }
     if (studyVoteData?.participations) setMyVoteStatus("pending");
     else setMyVoteStatus("todayPending");
-  }, [studyVoteData, session?.user.uid, currentLocation, isLoading]);
+  }, [studyVoteData, session?.user.uid, currentLocation, isLoading, userInfo]);
 
   const isExpireDate = dayjs(date).isBefore(dayjs().subtract(1, "day"));
 
@@ -119,6 +119,7 @@ export default function StudyPage() {
           studyVoteData={studyVoteData}
           currentLocation={currentLocation}
           setCenterLocation={setCenterLocation}
+          date={date}
         />
         <StudyPageCalendar date={date} setDate={setDate} />
         <StudyPagePlaceSection

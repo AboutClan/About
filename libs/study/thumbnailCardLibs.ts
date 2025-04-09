@@ -19,13 +19,13 @@ export const setStudyThumbnailCard = (
     ? [
         {
           place: {
-            name: "집계중",
-            branch: "테스트",
-            address: "집계중",
-            distance: 24,
+            name: "스터디 신청 인원",
+            branch: "매칭 대기 중",
+            address: "거리를 고려해서 결과 발표",
+            distance: null,
             imageProps: {
               image:
-                "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%B9%B4%ED%8E%98+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EB%9E%9C%EB%8D%A4/%EA%B7%B8%EB%A6%BC3.png",
+                "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%85%B8%ED%8A%B8%EB%B6%81_100px_%ED%88%AC%EB%AA%85.png",
               isPriority: true,
             },
             _id: "",
@@ -33,6 +33,7 @@ export const setStudyThumbnailCard = (
           participants: participations.map((par) => par.user),
           url: "",
           status: "recruiting",
+          isAvatarView: true,
         },
       ]
     : [];
@@ -66,7 +67,8 @@ export const setStudyThumbnailCard = (
         },
         participants: data.members.map((att) => att.user),
         url: `/study/${data.place._id}/${date}`,
-        status: data?.status || "open",
+        status: participations ? "expected" : data?.status || "open",
+        isAvatarView: false,
       };
     });
 

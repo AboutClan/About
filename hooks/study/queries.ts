@@ -11,6 +11,7 @@ import {
   STUDY_VOTE,
   STUDY_VOTE_CNT,
 } from "../../constants/keys/queryKeys";
+import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import { SERVER_URI } from "../../constants/system";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import {
@@ -52,7 +53,16 @@ export const useStudyVoteQuery = (date: string, options?: QueryOptions<StudyVote
     [STUDY_VOTE, date],
     async () => {
       const res = await axios.get<StudyVoteDataProps>(`${SERVER_URI}/vote2/${date}/info`);
-      return res.data;
+      const temp = res.data;
+
+      return {
+        ...temp,
+        participations: temp.participations.map((par) => ({ ...par, user: ABOUT_USER_SUMMARY })),
+        results: temp.results.map((result) => ({
+          ...result,
+          members: result.members.map((who) => ({ ...who, user: ABOUT_USER_SUMMARY })),
+        })),
+      };
     },
     options,
   );

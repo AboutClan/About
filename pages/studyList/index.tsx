@@ -24,7 +24,7 @@ export default function StudyList() {
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
 
-  const { data: studyVoteData } = useStudyVoteQuery(date, {
+  const { data: studyVoteData } = useStudyVoteQuery("2024-12-29", {
     enabled: !!date,
   });
 
@@ -40,7 +40,7 @@ export default function StudyList() {
       studyVoteData?.participations,
       convertStudyToMergeStudy(studyVoteData),
       currentLocation,
-      true,
+      false,
     );
 
     setThumbnailCardinfoArr(sortThumbnailCardInfoArr("인원순", getThumbnailCardInfoArr));
