@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 
-import { STUDY_MAIN_IMAGES } from "../assets/images/studyMain";
 import ArrowBackButton from "../components/atoms/buttons/ArrowBackButton";
 import { MainLoadingAbsolute } from "../components/atoms/loaders/MainLoading";
 import Header from "../components/layouts/Header";
@@ -15,20 +14,18 @@ import {
   LOCATION_CENTER_DOT,
   LOCATION_MAX_BOUNDARY,
 } from "../constants/serviceConstants/studyConstants/studyVoteMapConstants";
-import { STUDY_COMMENT_ARR } from "../constants/settingValue/comment";
 import { useToast } from "../hooks/custom/CustomToast";
 import { useStudyVoteQuery } from "../hooks/study/queries";
 import { useUserInfoQuery } from "../hooks/user/queries";
 import { getStudyViewDate } from "../libs/study/date/getStudyDateStatus";
 import { getLocationByCoordinates } from "../libs/study/getLocationByCoordinates";
-import { getMyStudyParticipation, getRealTimeFilteredById } from "../libs/study/getMyStudyMethods";
-import { getStudyTime } from "../libs/study/getStudyTime";
+import { getMyStudyParticipation } from "../libs/study/getMyStudyMethods";
 import {
   getCurrentLocationIcon,
   getStudyIcon,
   getStudyVoteIcon,
 } from "../libs/study/getStudyVoteIcon";
-import StudyInFoDrawer, { StudyInfoProps } from "../pageTemplates/studyPage/StudyInfoDrawer";
+import StudyInfoDrawer, { StudyInfoProps } from "../pageTemplates/studyPage/StudyInfoDrawer";
 import StudyMapTopNav from "../pageTemplates/studyPage/StudyMapTopNav";
 import StudyControlButton from "../pageTemplates/vote/StudyControlButton";
 import VoteDrawer from "../pageTemplates/vote/VoteDrawer";
@@ -40,11 +37,8 @@ import {
   StudyStatus,
   StudyVoteDataProps,
 } from "../types/models/studyTypes/studyDetails";
-import { PlaceInfoProps } from "../types/models/utilTypes";
 import { ActiveLocation, Location, LocationEn } from "../types/services/locationTypes";
 import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
-import { dayjsToFormat } from "../utils/dateTimeUtils";
-import { getRandomIdx } from "../utils/mathUtils";
 import { iPhoneNotchSize } from "../utils/validationUtils";
 
 // const NEXT_PUBLIC_NAVER_CLIENT_ID = process.env.NEXT_PUBLIC_NAVER_CLIENT_ID;
@@ -333,7 +327,7 @@ export default function StudyPage() {
         />
       )}
       {detailInfo && (
-        <StudyInFoDrawer
+        <StudyInfoDrawer
           date={date}
           detailInfo={detailInfo}
           studyVoteData={studyVoteData}
@@ -534,65 +528,5 @@ const getPolyline = (
     strokeColor: isSecondSub ? "var(--gray-500)" : "var(--color-mint)",
     strokeOpacity: 0.5,
     strokeWeight: 3,
-  };
-};
-
-export const getDetailInfo = (
-  studyVoteData: StudyVoteDataProps,
-  id: string,
-  location: Location,
-  myUid,
-) => {
-  const participation = studyVoteData.participations?.find((par) => par.place._id === id);
-  const realTimeStudy = getRealTimeFilteredById(studyVoteData.realTime, id);
-
-  const findStudy = participation || realTimeStudy;
-
-  const sortedCommentUserArr = [...findStudy.members]?.sort((a, b) => {
-    const aTime = dayjs(a?.updatedAt);
-    const bTime = dayjs(b?.updatedAt);
-    if (aTime.isBefore(bTime)) return -1;
-    else if (aTime.isAfter(bTime)) return 1;
-    return 0;
-  });
-
-  const commentUser = sortedCommentUserArr?.[0]?.user;
-  const findMyInfo = findStudy?.members?.find((who) => who.user.uid === myUid);
-
-  return {
-    isPrivate: !!realTimeStudy,
-    place: findStudy?.place,
-    title: participation?.place.fullname || (realTimeStudy?.place as PlaceInfoProps)?.name,
-    id,
-    time: getStudyTime(findStudy?.members) || {
-      //수정 필요
-      start: dayjsToFormat(dayjs(), "HH:mm"),
-      end: dayjsToFormat(dayjs(), "HH:mm"),
-    },
-    participantCnt: findStudy?.members?.length,
-    image: participation
-      ? participation.place.image
-      : STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length)],
-    status: findStudy.status,
-    location: location,
-    comment: {
-      user: commentUser
-        ? {
-            uid: commentUser.uid,
-            avatar: commentUser.avatar,
-            image: commentUser.profileImage,
-          }
-        : null,
-      text:
-        sortedCommentUserArr?.[0]?.comment?.text ||
-        STUDY_COMMENT_ARR[getRandomIdx(STUDY_COMMENT_ARR.length - 1)],
-    },
-    firstUserUid: findStudy?.members?.[0]?.user?.uid,
-    memberStatus:
-      !findMyInfo || !findStudy?.members.some((who) => who.user.uid === myUid)
-        ? "notParticipation"
-        : findMyInfo?.attendanceInfo?.arrived
-        ? "attendance"
-        : ("participation" as "notParticipation" | "attendance" | "participation"),
   };
 };

@@ -1,6 +1,7 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
+import Link from "next/link";
 
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
@@ -18,14 +19,19 @@ function GroupStudyTicketLogSection() {
       <Header title="소모임 참여권 사용 기록" />
       <Slide isNoPadding>
         <Box mt="56px">
-          <Box px={5}>
+          <Flex px={5} justify="space-between" align="center">
             <Box py={4}>
               <Box fontSize="11px">{userInfo?.name.slice(1)}님의 보유 티켓</Box>
               <Box fontSize="20px" fontWeight="semibold">
                 {userInfo?.ticket?.gatherTicket}개
               </Box>
             </Box>
-          </Box>
+            <Link href="/store">
+              <Button colorScheme="mint" size="md">
+                <div>스토어로 이동하기</div>
+              </Button>
+            </Link>
+          </Flex>
           <Box>
             {logsData
               ?.reverse()

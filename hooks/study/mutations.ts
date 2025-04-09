@@ -39,6 +39,18 @@ export const useStudyParticipationMutation = <T extends "post" | "patch" | "dele
     });
   }, options);
 
+export const useStudyParticipateOneMutation = (
+  voteDate: Dayjs,
+  options?: MutationOptions<{ start: string; end: string; placeId: string }>,
+) =>
+  useMutation<void, AxiosError, { start: string; end: string; placeId: string }>((voteInfo) => {
+    return requestServer<{ start: string; end: string; placeId: string }>({
+      method: "post",
+      url: `vote2/${dayjsToStr(voteDate)}/participate`,
+      body: voteInfo,
+    });
+  }, options);
+
 interface IStudyQuickVoteParam {
   start: Dayjs;
   end: Dayjs;

@@ -65,7 +65,7 @@ export const setStudyThumbnailCard = (
           _id: data.place._id,
         },
         participants: data.members.map((att) => att.user),
-        url: `/study/${data.place._id}/${date})}`,
+        url: `/study/${data.place._id}/${date}`,
         status: data?.status || "open",
       };
     });

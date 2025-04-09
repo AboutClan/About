@@ -105,7 +105,6 @@ export interface PlaceRegisterProps {
   latitude: number;
   coverImage: string;
   locationDetail: string;
-  mapURL: string;
   time?: string;
 }
 

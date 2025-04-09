@@ -4,7 +4,22 @@ import { StudyPlaceProps } from "../../types/models/studyTypes/studyDetails";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
 import { getRandomIdx } from "../../utils/mathUtils";
 
-export const convertMergePlaceToPlace = (mergePlace: StudyPlaceProps | PlaceInfoProps) => {
+export interface MergePlaceInfoProps {
+  name: string;
+  branch: string;
+  brand: string;
+  address: string;
+  image: string;
+  coverImage: string;
+  time: string;
+  latitude: number;
+  longitude: number;
+  _id: string;
+}
+
+export const convertMergePlaceToPlace = (
+  mergePlace: StudyPlaceProps | PlaceInfoProps,
+): MergePlaceInfoProps => {
   if (!mergePlace) return;
   const studyPlace = mergePlace as StudyPlaceProps;
   const realTimePlace = mergePlace as PlaceInfoProps;
@@ -20,12 +35,12 @@ export const convertMergePlaceToPlace = (mergePlace: StudyPlaceProps | PlaceInfo
     latitude: studyPlace.latitude,
     longitude: studyPlace.longitude,
     time: studyPlace?.time || "unknown",
-    type: studyPlace?.fullname
-      ? "public"
-      : realTimePlace?.name
-        ? "private"
-        : (null as "public" | "private"),
+    // type: studyPlace?.fullname
+    //   ? "public"
+    //   : realTimePlace?.name
+    //   ? "private"
+    //   : (null as "public" | "private"),
 
-    id: studyPlace?._id || realTimePlace?._id,
+    _id: studyPlace?._id || realTimePlace?._id,
   };
 };

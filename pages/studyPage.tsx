@@ -41,7 +41,7 @@ export default function StudyPage() {
 
   const { currentLocation } = useUserCurrentLocation();
   const { data: userInfo } = useUserInfoQuery();
-  const { data: studyVoteData, isLoading } = useStudyVoteQuery(date, {
+  const { data: studyVoteData, isLoading } = useStudyVoteQuery("2024-12-29", {
     enabled: !!date,
   });
 

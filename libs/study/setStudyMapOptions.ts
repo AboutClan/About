@@ -1,11 +1,69 @@
+import dayjs from "dayjs";
+import { STUDY_COMMENT_ARR } from "../../constants/settingValue/comment";
+import { StudyInfoProps } from "../../pageTemplates/studyPage/StudyInfoDrawer";
 import { CoordinatesProps } from "../../types/common";
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
 import {
   RealTimeMemberProps,
+  StudyMergeResultProps,
+  StudyPlaceProps,
   StudyResultProps,
   StudyStatus,
 } from "../../types/models/studyTypes/studyDetails";
+import { dayjsToFormat } from "../../utils/dateTimeUtils";
+import { getRandomIdx } from "../../utils/mathUtils";
+import { convertMergePlaceToPlace } from "./convertMergePlaceToPlace";
+import { getStudyTime } from "./getStudyTime";
 import { getCurrentLocationIcon, getStudyIcon } from "./getStudyVoteIcon";
+
+export const getDetailInfo = (result: StudyMergeResultProps, myUid: string): StudyInfoProps => {
+  const members = result.members;
+
+  const sortedCommentUserArr = [...members]?.sort((a, b) => {
+    const aTime = dayjs(a?.updatedAt);
+    const bTime = dayjs(b?.updatedAt);
+    if (aTime.isBefore(bTime)) return -1;
+    else if (aTime.isAfter(bTime)) return 1;
+    return 0;
+  });
+
+  const commentUser = sortedCommentUserArr?.[0]?.user;
+  const findMyInfo = result?.members?.find((who) => who.user.uid === myUid);
+  const isPrivate = !(result?.place as StudyPlaceProps)?.fullname;
+
+  const place = convertMergePlaceToPlace(result.place);
+
+  return {
+    isPrivate,
+    place,
+    time: getStudyTime(result?.members) || {
+      //수정 필요
+      start: dayjsToFormat(dayjs(), "HH:mm"),
+      end: dayjsToFormat(dayjs(), "HH:mm"),
+    },
+    participantCnt: result?.members?.length,
+    status: result.status,
+    comment: {
+      user: commentUser
+        ? {
+            uid: commentUser.uid,
+            avatar: commentUser.avatar,
+            image: commentUser.profileImage,
+          }
+        : null,
+      text:
+        sortedCommentUserArr?.[0]?.commentInfo?.text ||
+        STUDY_COMMENT_ARR[getRandomIdx(STUDY_COMMENT_ARR.length - 1)],
+    },
+    firstUserUid: result?.members?.[0]?.user?.uid,
+    memberStatus:
+      !findMyInfo || !result?.members.some((who) => who.user.uid === myUid)
+        ? "notParticipation"
+        : findMyInfo?.attendanceInfo?.time
+        ? "attendance"
+        : ("participation" as "notParticipation" | "attendance" | "participation"),
+  };
+};
 
 export const getMarkersOptions = (
   studyResults: StudyResultProps[],

@@ -3,7 +3,6 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { useRecoilValue } from "recoil";
 
 import Avatar from "../../components/atoms/Avatar";
 import { Input } from "../../components/atoms/Input";
@@ -13,7 +12,6 @@ import NewTwoButtonRow from "../../components/molecules/NewTwoButtonRow";
 import BottomFlexDrawer, {
   BottomFlexDrawerOptions,
 } from "../../components/organisms/drawer/BottomFlexDrawer";
-import StudyPlacePickerDrawer from "../../components/services/studyVote/StudyPlacePickerDrawer";
 import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
@@ -23,30 +21,21 @@ import {
   useStudyParticipationMutation,
 } from "../../hooks/study/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
+import { MergePlaceInfoProps } from "../../libs/study/convertMergePlaceToPlace";
 import { ModalLayout } from "../../modals/Modals";
-import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import { DispatchType } from "../../types/hooks/reactTypes";
-import {
-  StudyPlaceProps,
-  StudyStatus,
-  StudyVoteDataProps,
-} from "../../types/models/studyTypes/studyDetails";
+import { StudyStatus } from "../../types/models/studyTypes/studyDetails";
 import { IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
 import { IAvatar } from "../../types/models/userTypes/userInfoTypes";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
-import { Location } from "../../types/services/locationTypes";
-import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
+import { StringTimeProps } from "../../types/utils/timeAndDate";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
-import { SubPlaceProps } from "../vote/VoteDrawer";
 
 export interface StudyInfoProps {
-  id: string;
-  place: StudyPlaceProps | PlaceInfoProps;
-  title: string;
-  time: { start: string; end: string };
+  place: MergePlaceInfoProps;
+  time: StringTimeProps;
   participantCnt: number;
   status: StudyStatus | "solo";
-  image: string;
   comment: {
     user: {
       image: string;
@@ -55,30 +44,31 @@ export interface StudyInfoProps {
     };
     text: string;
   };
-  location: Location;
   memberStatus: "participation" | "notParticipation" | "attendance";
   isPrivate: boolean;
   firstUserUid: string;
 }
 
-interface StudyInFoDrawerProps {
+interface StudyInfoDrawerProps {
   detailInfo: StudyInfoProps;
   setDetailInfo: DispatchType<StudyInfoProps>;
   date: string;
-  studyVoteData: StudyVoteDataProps;
+  isParticipating: boolean;
 }
 
-function StudyInFoDrawer({ detailInfo, setDetailInfo, studyVoteData, date }: StudyInFoDrawerProps) {
+function StudyInfoDrawer({
+  detailInfo,
+  setDetailInfo,
+  date,
+  isParticipating,
+}: StudyInfoDrawerProps) {
   const resetStudy = useResetStudyQuery();
   const searchParams = useSearchParams();
   const router = useRouter();
   const toast = useToast();
   const typeToast = useTypeToast();
 
-  const myStudyParticipation = useRecoilValue(myStudyParticipationState);
-
   const { data: userInfo } = useUserInfoQuery({ enabled: detailInfo.status === "solo" });
-  const [subArr, setSubArr] = useState<SubPlaceProps[]>([]);
 
   const { mutate: studyVote, isLoading: isLoading1 } = useStudyParticipationMutation(
     dayjs(),
@@ -89,7 +79,6 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo, studyVoteData, date }: Stu
       },
     },
   );
-
   const { mutate: realTimeStudyVote, isLoading: isLoading2 } = useRealtimeVoteMutation({
     onSuccess() {
       handleSuccess();
@@ -151,7 +140,7 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo, studyVoteData, date }: Stu
   };
 
   const onClickStudyVote = (voteTime: IStudyVoteTime) => {
-    if (myStudyParticipation) {
+    if (isParticipating) {
       setVoteTime(voteTime);
       setIsAlertModal(true);
       return;
@@ -162,8 +151,8 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo, studyVoteData, date }: Stu
   const handleVote = (time?: IStudyVoteTime) => {
     if (!detailInfo.isPrivate) {
       studyVote({
-        place: detailInfo?.id,
-        subPlace: subArr.map((sub) => sub.place._id),
+        latitude: detailInfo.place.latitude,
+        longitude: detailInfo.place.longitude,
         start: time?.start || voteTime?.start,
         end: time?.end || voteTime?.end,
       });
@@ -192,9 +181,6 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo, studyVoteData, date }: Stu
     },
   };
 
-  const findMyPickMainPlace = studyVoteData?.participations.find(
-    (par) => par.place._id === detailInfo.id,
-  );
   return (
     <>
       <BottomFlexDrawer
@@ -209,7 +195,7 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo, studyVoteData, date }: Stu
           <Flex justifyContent="space-between" mb={4}>
             <Flex direction="column">
               <Box fontSize="18px" fontWeight={600}>
-                {detailInfo.title}
+                {detailInfo.place.name}
               </Box>
               <Flex align="center" fontSize="11px">
                 <Box mr={1}>
@@ -239,7 +225,7 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo, studyVoteData, date }: Stu
               borderRadius="4px"
               overflow="hidden"
             >
-              <Image src={detailInfo.image} fill sizes="80px" alt="studyImage" />
+              <Image src={detailInfo.place.image} fill sizes="80px" alt="studyImage" />
             </Box>
           </Flex>
           <Box py={2}>
@@ -248,9 +234,7 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo, studyVoteData, date }: Stu
                 icon: (
                   <i className="fa-solid fa-circle-info" style={{ color: "var(--gray-400)" }} />
                 ),
-                url: `/study/${detailInfo.place._id}/${dayjsToStr(
-                  dayjs(date),
-                )}?location=${convertLocationLangTo(detailInfo.location, "en")}`,
+                url: `/study/${detailInfo.place._id}/${dayjsToStr(dayjs(date))}`,
                 children: "자세히 보기",
               }}
               rightProps={{
@@ -310,16 +294,6 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo, studyVoteData, date }: Stu
           zIndex={900}
         />
       )}
-      {modalType === "placeSelect" && (
-        <StudyPlacePickerDrawer
-          subArr={subArr}
-          setSubArr={setSubArr}
-          setModalType={setModalType}
-          id={detailInfo.id}
-          studyVoteData={studyVoteData}
-          findMyPickMainPlace={findMyPickMainPlace}
-        />
-      )}
 
       {isAlertMoal && (
         <StudyChangeAlertModal handleFunction={handleVote} setIsModal={setIsAlertModal} />
@@ -328,4 +302,4 @@ function StudyInFoDrawer({ detailInfo, setDetailInfo, studyVoteData, date }: Stu
   );
 }
 
-export default StudyInFoDrawer;
+export default StudyInfoDrawer;

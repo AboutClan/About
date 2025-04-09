@@ -28,11 +28,8 @@ function GatherTicketLogSection() {
               </Box>
             </Box>
             <Link href="/store">
-              <Button colorScheme="mint" size="sm">
-                <div>포인트 스토어</div>
-                <div>
-                  <i className="fa-solid fa-chevron-right" />
-                </div>
+              <Button colorScheme="mint" size="md">
+                <div>스토어로 이동하기</div>
               </Button>
             </Link>
           </Flex>

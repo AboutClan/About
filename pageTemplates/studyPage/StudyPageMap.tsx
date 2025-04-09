@@ -3,11 +3,19 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import VoteMap from "../../components/organisms/VoteMap";
-import { getMapOptions, getMarkersOptions } from "../../libs/study/setStudyMapOptions";
+import { useUserInfoQuery } from "../../hooks/user/queries";
+import { findStudyById } from "../../libs/study/convertStudyToMergeStudy";
+import {
+  getDetailInfo,
+  getMapOptions,
+  getMarkersOptions,
+} from "../../libs/study/setStudyMapOptions";
+
 import { CoordinatesProps } from "../../types/common";
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { StudyVoteDataProps } from "../../types/models/studyTypes/studyDetails";
+import StudyInfoDrawer, { StudyInfoProps } from "./StudyInfoDrawer";
 import StudyMapTopNav from "./StudyMapTopNav";
 
 interface StudyPageMapProps {
@@ -15,6 +23,7 @@ interface StudyPageMapProps {
   centerLocation: CoordinatesProps;
   currentLocation: CoordinatesProps;
   setCenterLocation: DispatchType<CoordinatesProps>;
+  date: string;
 }
 
 function StudyPageMap({
@@ -22,13 +31,17 @@ function StudyPageMap({
   centerLocation,
   currentLocation,
   setCenterLocation,
+  date,
 }: StudyPageMapProps) {
   const router = useRouter();
+
+  const { data: userInfo } = useUserInfoQuery();
 
   /* 네이버 지도와 마커 옵션 */
   const [mapOptions, setMapOptions] = useState<IMapOptions>(null);
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>(null);
   const [isMapExpansion, setIsMapExpansion] = useState(false);
+  const [detailInfo, setDetailInfo] = useState<StudyInfoProps>();
 
   useEffect(() => {
     if (!studyVoteData) return;
@@ -44,6 +57,15 @@ function StudyPageMap({
       ),
     );
   }, [studyVoteData, currentLocation, centerLocation]);
+
+  const handleMarker = (id: string, type: "vote") => {
+    if (!id || !studyVoteData) return;
+
+    const findStudy = studyVoteData && findStudyById(studyVoteData, id);
+
+    const detailInfo = getDetailInfo(findStudy, userInfo?.uid);
+    setDetailInfo(detailInfo);
+  };
 
   return (
     <>
@@ -71,6 +93,7 @@ function StudyPageMap({
           mapOptions={mapOptions}
           markersOptions={markersOptions}
           resizeToggle={isMapExpansion}
+          handleMarker={handleMarker}
         />
         {/* {!studyVoteData?.results && <MainLoadingAbsolute />} */}
       </Box>
@@ -88,6 +111,14 @@ function StudyPageMap({
         >
           <XIcon />
         </Button>
+      )}
+      {detailInfo && (
+        <StudyInfoDrawer
+          date={date}
+          detailInfo={detailInfo}
+          studyVoteData={studyVoteData}
+          setDetailInfo={setDetailInfo}
+        />
       )}
     </>
   );

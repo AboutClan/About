@@ -94,7 +94,7 @@ function Fee() {
       <RegisterLayout>
         <RegisterOverview>
           <span>최종 가입</span>
-          <span>아래 내용 확인 후, 동아리 단톡방으로 참여 요청이 가능합니다.</span>
+          <span>아래 내용 확인 후, 동아리 단톡방으로 참여 요청이 가능합니다!</span>
         </RegisterOverview>
         <TabNav
           isFullSize

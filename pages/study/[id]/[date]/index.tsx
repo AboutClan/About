@@ -1,120 +1,94 @@
 import { Box } from "@chakra-ui/react";
-import { useParams, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import { useSetRecoilState } from "recoil";
+import { useParams, useSearchParams } from "next/navigation";
+import { useState } from "react";
 
 import { MainLoading } from "../../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../../components/layouts/PageSlide";
 import { useUserCurrentLocation } from "../../../../hooks/custom/CurrentLocationHook";
 import { useStudyVoteQuery } from "../../../../hooks/study/queries";
 import { convertMergePlaceToPlace } from "../../../../libs/study/convertMergePlaceToPlace";
-import {
- 
-  getMyStudyInfo,
-  getMyStudyParticipation,
-} from "../../../../libs/study/getMyStudyMethods";
+import { findStudyById } from "../../../../libs/study/convertStudyToMergeStudy";
 import StudyInviteModal from "../../../../modals/study/StudyInviteModal";
 import StudyAddressMap from "../../../../pageTemplates/study/StudyAddressMap";
 import StudyCover from "../../../../pageTemplates/study/StudyCover";
 import StudyDateBar from "../../../../pageTemplates/study/StudyDateBar";
 import StudyHeader from "../../../../pageTemplates/study/StudyHeader";
 import StudyMembers from "../../../../pageTemplates/study/StudyMembers";
-import StudyNavigation from "../../../../pageTemplates/study/StudyNavigation";
 import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
 import StudyTimeBoard from "../../../../pageTemplates/study/StudyTimeBoard";
-import { myStudyParticipationState } from "../../../../recoils/studyRecoils";
-import { LocationEn } from "../../../../types/services/locationTypes";
-import { convertLocationLangTo } from "../../../../utils/convertUtils/convertDatas";
 import { getDistanceFromLatLonInKm } from "../../../../utils/mathUtils";
 
 export default function Page() {
-  const searchParams = useSearchParams();
   const { data: session } = useSession();
   const isGuest = session?.user.role === "guest";
+  const searchParams = useSearchParams();
   const { id, date } = useParams<{ id: string; date: string }>() || {};
   const { currentLocation } = useUserCurrentLocation();
 
-  const locationParam = searchParams.get("location") as LocationEn;
-  const setMyStudyParticipation = useSetRecoilState(myStudyParticipationState);
   const [isInviteModal, setIsInviteModal] = useState(false);
 
-  const { data: studyVoteData } = useStudyVoteQuery(
-    date,
-    convertLocationLangTo(locationParam, "kr"),
-    {
-      enabled: !!date && !!locationParam,
-    },
-  );
+  const { data: studyVoteData, isLoading } = useStudyVoteQuery("2024-12-29", {
+    enabled: !!date,
+  });
 
-  useEffect(() => {
-    if (!studyVoteData) return;
-    const findMyStudyParticipation = getMyStudyParticipation(studyVoteData, session?.user.uid);
-    setMyStudyParticipation(findMyStudyParticipation);
-  }, [studyVoteData]);
+  const findStudy = studyVoteData && findStudyById(studyVoteData, id);
 
-  const mergeParticipations = convertStudyToParticipations(
-    studyVoteData,
-    convertLocationLangTo(locationParam, "kr"),
-    true,
-  );
-  const mergeParticipation = mergeParticipations?.find(
-    (participation) => participation.place._id === id,
-  );
-
-  const place = convertMergePlaceToPlace(mergeParticipation?.place);
-
-  const { name, address, coverImage, latitude, brand, longitude, time, type } = place || {};
+  const placeInfo = convertMergePlaceToPlace(findStudy?.place);
 
   const distance =
     currentLocation &&
-    getDistanceFromLatLonInKm(currentLocation.lat, currentLocation.lon, latitude, longitude);
-  const members = mergeParticipation?.members;
+    getDistanceFromLatLonInKm(
+      currentLocation.lat,
+      currentLocation.lon,
+      placeInfo.latitude,
+      placeInfo.longitude,
+    );
+  const members = findStudy?.members;
 
-  const absences = studyVoteData?.participations.find((par) => par.place._id === id)?.absences;
+  // const absences = studyVoteData?.participations.find((par) => par.place._id === id)?.absences;
 
   return (
     <>
-      {mergeParticipation ? (
+      {findStudy ? (
         <>
-          <StudyHeader brand={brand} name={name} address={address} coverImage={coverImage} />
+          <StudyHeader date={date} placeInfo={placeInfo} />
           <Box mb={5}>
             <Slide isNoPadding>
-              <StudyCover coverImage={coverImage} />
+              <StudyCover coverImage={placeInfo.coverImage} />
               <StudyOverview
-                place={{ ...place }}
+                place={{ ...placeInfo }}
                 distance={distance}
-                status={mergeParticipation.status}
-                time={time}
+                status={"open"}
+                time={placeInfo.time}
               />
             </Slide>
             <Box h={2} bg="gray.100" />
             <Slide>
               <StudyAddressMap
-                name={name}
-                address={address}
-                latitude={latitude}
-                longitude={longitude}
+                name={placeInfo.name}
+                address={placeInfo.address}
+                latitude={placeInfo.latitude}
+                longitude={placeInfo.longitude}
               />
 
               <StudyDateBar date={date} memberCnt={members.length} />
               <StudyTimeBoard members={members} />
               <Box h="1px" bg="gray.100" my={4} />
-              <StudyMembers date={date} members={members} absences={absences} />
+              <StudyMembers date={date} members={members} absences={null} />
             </Slide>
           </Box>
-          {!isGuest && (
+          {/* {!isGuest && (
             <StudyNavigation
               studyVoteData={studyVoteData}
-              locationEn={locationParam}
               date={date}
               myStudyInfo={getMyStudyInfo(mergeParticipation, session?.user.uid)}
               absences={mergeParticipation?.absences}
-              placeInfo={{ name, address, latitude, longitude }}
+              placeInfo={placeInfo}
               type={type}
               status={mergeParticipation?.status}
             />
-          )}
+          )} */}
           {isInviteModal && <StudyInviteModal setIsModal={setIsInviteModal} place={place} />}
         </>
       ) : (

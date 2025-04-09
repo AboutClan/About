@@ -44,7 +44,6 @@ function Major() {
     <>
       <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={66} />
       <MajorLayout majors={majors} setMajors={setMajors} />
-
       <BottomNav onClick={onClickNext} url="/register/comment" />
     </>
   );
@@ -81,7 +80,7 @@ export function MajorLayout({
     <RegisterLayout>
       <RegisterOverview>
         <span>전공을 선택해 주세요</span>
-        <span>다중 선택도 가능해요!</span>
+        <span>활동 추천을 위한 것으로, 복수 선택도 가능해요!</span>
       </RegisterOverview>
       {MAJORS_DATA?.map((item, idx) => (
         <Section key={idx}>

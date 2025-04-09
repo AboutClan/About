@@ -34,8 +34,8 @@ function Gender() {
 
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
-          <span>성별을 입력해 주세요</span>
-          <span>오프라인 활동에서는 성비도 고려하고 있어요!</span>
+          <span>성별을 선택해 주세요</span>
+          <span>오프라인 활동에서는 성비도 고려하고 있습니다!</span>
         </RegisterOverview>
         <ButtonNav>
           <Button $isSelected={gender === "남성"} onClick={() => setGender("남성")}>

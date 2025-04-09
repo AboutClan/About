@@ -1,5 +1,9 @@
 import { Dayjs } from "dayjs";
 
+export interface StringTimeProps {
+  start: string;
+  end: string;
+}
 export interface TimeStampProps {
   createdAt?: string;
   updatedAt?: string;

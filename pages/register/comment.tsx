@@ -67,7 +67,7 @@ function Comment() {
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>한 줄 코멘트를 입력해 주세요</span>
-          <span>유저 프로필에 노출되는 내용입니다!</span>
+          <span>프로필에 노출되는 내용으로, 한 마디를 남겨주세요!</span>
         </RegisterOverview>
         <div onClick={() => setIndex(0)}>
           <Input

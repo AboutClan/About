@@ -46,7 +46,7 @@ function Phone() {
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>핸드폰 번호를 입력해 주세요</span>
-          <span>가입 승인 연락과 본인 확인에만 사용됩니다.</span>
+          <span>본인 확인 및 가입 승인을 위한 목적입니다.</span>
         </RegisterOverview>
         <Input
           value={value}

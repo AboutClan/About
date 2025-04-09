@@ -17,7 +17,10 @@ import StudyVoteTimeRulletDrawer from "../../../components/services/studyVote/St
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useRealtimeVoteMutation } from "../../../hooks/realtime/mutations";
-import { useStudyParticipationMutation } from "../../../hooks/study/mutations";
+import {
+  useStudyParticipateOneMutation,
+  useStudyParticipationMutation,
+} from "../../../hooks/study/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { CoordinatesProps } from "../../../types/common";
 import { IModal } from "../../../types/components/modalTypes";
@@ -51,6 +54,7 @@ function StudyControlDrawer({
   const toast = useToast();
 
   const { data: userInfo } = useUserInfoQuery();
+  const [selectedPlaceId, setSelectedPlaceId] = useState(null);
 
   const { mutate: participateRealTime } = useRealtimeVoteMutation({
     onSuccess() {
@@ -62,6 +66,13 @@ function StudyControlDrawer({
   const { mutate: voteStudy, isLoading } = useStudyParticipationMutation(dayjs(date), "post", {
     onSuccess() {
       toast("success", "신청이 완료되었습니다. 결과 매칭을 기다려주세요!");
+      resetStudy();
+    },
+  });
+
+  const { mutate: participateStudyOne } = useStudyParticipateOneMutation(dayjs(date), {
+    onSuccess() {
+      toast("success", "참여가 완료되었습니다. 출석 인증도 잊지 마세요!");
       resetStudy();
     },
   });
@@ -81,7 +92,7 @@ function StudyControlDrawer({
     voteData: StudyVoteProps | RealTimeBasicVoteProps,
     type: "vote" | "realTime",
   ) => {
-    console.log(type, voteData);
+    console.log(1234, type, voteData);
     if (type === "vote") voteStudy(voteData as StudyVoteProps);
     else if (type === "realTime") participateRealTime(voteData as RealTimeBasicVoteProps);
     setIsTimeRullet(false);
@@ -96,16 +107,18 @@ function StudyControlDrawer({
 
   const handleStudyVoteBtn = (type: "oneClick" | "direct" | "placePick" | "directAttend") => {
     if (type === "placePick") {
+      console.log("test");
       if (!studyResults.length) {
         toast("warning", "진행중인 스터디가 없습니다.");
         return;
       }
       setIsPlaceDrawer(true);
-    } else if (type === "oneClick") setIsTimeRullet(true);
-    else if (type === "directAttend") router.push("/vote/attend/certification");
+    } else if (type === "oneClick") {
+      setIsPlaceDrawer(false);
+      setIsTimeRullet(true);
+    } else if (type === "directAttend") router.push("/vote/attend/certification");
     else if (type === "direct") setIsRightDrawer(true);
     setIsModal(false);
-    setIsPlaceDrawer(false);
   };
 
   const drawerOptions: BottomFlexDrawerOptions = {
@@ -115,8 +128,17 @@ function StudyControlDrawer({
     },
     footer: {
       text: myVoteStatus === "todayPending" ? "참여 확정" : "신청 완료",
-      func: myVoteStatus === "todayPending" ? () => {} : handleOneClickVote,
-      // loading: isLoading,
+      func:
+        myVoteStatus === "todayPending"
+          ? () => {
+              participateStudyOne({
+                placeId: selectedPlaceId,
+                start: voteTime.start.toISOString(),
+                end: voteTime.end.toISOString(),
+              });
+              setIsTimeRullet(false);
+            }
+          : handleOneClickVote,
     },
   };
 
@@ -211,7 +233,10 @@ function StudyControlDrawer({
           date={date}
           studyResults={studyResults}
           currentLocation={currentLocation}
-          handlePickPlace={() => handleStudyVoteBtn("oneClick")}
+          handlePickPlace={(placeId: string) => {
+            setSelectedPlaceId(placeId);
+            handleStudyVoteBtn("oneClick");
+          }}
           setIsModal={setIsPlaceDrawer}
         />
       )}

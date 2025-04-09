@@ -117,7 +117,7 @@ const getButtonOptions = (
       return {
         colorScheme: "blue",
         rightIcon: <StudySoloIcon />,
-        text: "개인 스터디 신청",
+        text: "자유 스터디 신청",
       };
 
     default:

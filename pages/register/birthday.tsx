@@ -80,7 +80,7 @@ function Birthday() {
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>생년월일을 입력해 주세요</span>
-          <span>20살부터 20대 중후반까지 다양한 인원이 활동하고 있어요!</span>
+          <span>20대 초반부터 중후반까지, 많은 멤버들이 활동하고 있어요!</span>
         </RegisterOverview>
         <DateContainer>
           <DateStr>{myBirth}</DateStr>

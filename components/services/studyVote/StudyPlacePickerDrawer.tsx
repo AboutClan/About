@@ -10,7 +10,7 @@ import BottomFlexDrawer, { BottomFlexDrawerOptions } from "../../organisms/drawe
 
 interface StudyPlacePickerDrawerProps extends IModal {
   studyResults: StudyMergeResultProps[];
-  handlePickPlace: () => void;
+  handlePickPlace: (placeId: string) => void;
   currentLocation: CoordinatesProps;
   date: string;
 }
@@ -23,7 +23,7 @@ function StudyPlacePickerDrawer({
   date,
 }: StudyPlacePickerDrawerProps) {
   const [selectedPlaceId, setSelectedPlaceId] = useState<string>();
-
+  console.log(255);
   const drawerOptions2: BottomFlexDrawerOptions = {
     header: {
       title: "스터디 장소 투표",
@@ -31,7 +31,7 @@ function StudyPlacePickerDrawer({
     },
     footer: {
       text: "시간 선택",
-      func: handlePickPlace,
+      func: () => handlePickPlace(selectedPlaceId),
       // loading: isLoading1 || isLoading2,
     },
   };

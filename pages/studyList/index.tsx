@@ -1,40 +1,50 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
-import { StudyThumbnailCard } from "../../components/molecules/cards/StudyThumbnailCard";
+import {
+  StudyThumbnailCard,
+  StudyThumbnailCardProps,
+} from "../../components/molecules/cards/StudyThumbnailCard";
 import { useUserCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
-import { useUserInfoQuery } from "../../hooks/user/queries";
-import { setStudyThumbnailCard } from "../../libs/study/setStudyThumbnailCard";
-import { LocationEn } from "../../types/services/locationTypes";
-import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
+import { convertStudyToMergeStudy } from "../../libs/study/convertStudyToMergeStudy";
+
+import {
+  setStudyThumbnailCard,
+  sortThumbnailCardInfoArr,
+} from "../../libs/study/thumbnailCardLibs";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 export default function StudyList() {
+  const { currentLocation } = useUserCurrentLocation();
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
-  const location = searchParams.get("location") as LocationEn;
-  const locationKr = convertLocationLangTo(location, "kr");
 
-  const { data: userInfo } = useUserInfoQuery();
-  const { currentLocation } = useUserCurrentLocation();
-  const { data: studyVoteData } = useStudyVoteQuery(date, locationKr, {
-    enabled: !!locationKr && !!date,
+  const { data: studyVoteData } = useStudyVoteQuery(date, {
+    enabled: !!date,
   });
 
-  const participations = studyVoteData?.participations;
+  const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
 
-  const thumbnailCardInfoArr = setStudyThumbnailCard(
-    participations,
-    userInfo?.studyPreference,
-    currentLocation,
-    date,
-    true,
-    locationKr,
-  );
+  useEffect(() => {
+    if (!studyVoteData) {
+      setThumbnailCardinfoArr(null);
+      return;
+    }
+    const getThumbnailCardInfoArr = setStudyThumbnailCard(
+      date,
+      studyVoteData?.participations,
+      convertStudyToMergeStudy(studyVoteData),
+      currentLocation,
+      true,
+    );
+
+    setThumbnailCardinfoArr(sortThumbnailCardInfoArr("인원순", getThumbnailCardInfoArr));
+  }, [studyVoteData, currentLocation]);
 
   return (
     <>
