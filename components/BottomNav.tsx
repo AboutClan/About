@@ -1,14 +1,15 @@
 import { Box, Flex } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Link, { LinkProps } from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
+import dayjs from "dayjs";
 import { useHandleMove } from "../@natives/useHandleBottomNav";
 import { USER_LOCATION } from "../constants/keys/localStorage";
 import { useTypeToast } from "../hooks/custom/CustomToast";
-import { getStudyStandardDate } from "../libs/study/date/getStudyStandardDate";
+import { getStudyViewDate } from "../libs/study/date/getStudyDateStatus";
 import { slideDirectionState } from "../recoils/navigationRecoils";
 import { ActiveLocation } from "../types/services/locationTypes";
 import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
@@ -44,8 +45,8 @@ export default function BottomNav() {
       {navItems.map((item, idx) => {
         const getParams = (category: Category) => {
           switch (category) {
-            case "홈":
-              return `?location=${locationEn}&date=${getStudyStandardDate()}`;
+            case "스터디":
+              return `?date=${getStudyViewDate(dayjs())}`;
             case undefined:
               newSearchParams.append("write", "on");
               return pathname + "?" + newSearchParams.toString();

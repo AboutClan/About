@@ -6,6 +6,7 @@ import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes
 import {
   RealTimeMemberProps,
   StudyMergeResultProps,
+  StudyParticipationProps,
   StudyPlaceProps,
   StudyResultProps,
   StudyStatus,
@@ -70,6 +71,7 @@ export const getMarkersOptions = (
   studyRealTimes: RealTimeMemberProps[],
   currentLocation: CoordinatesProps,
   voteCoordinates: CoordinatesProps,
+  participations: StudyParticipationProps[],
 ): IMarkerOptions[] | undefined => {
   if (typeof naver === "undefined") return;
   const temp = [];
@@ -95,12 +97,34 @@ export const getMarkersOptions = (
     });
   }
   if (studyResults) {
+    console.log(studyResults);
     studyResults.forEach((par) => {
       temp.push({
         id: par.place._id,
         position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
         icon: {
-          content: getStudyIcon(null, par.members.length),
+          content: getStudyIcon("active", par.members.length, "orange"),
+          size: new naver.maps.Size(72, 72),
+          anchor: new naver.maps.Point(36, 44),
+        },
+      });
+      temp.push({
+        id: par.place._id,
+        position: new naver.maps.LatLng(par.center.lat, par.center.lon),
+        icon: {
+          content: getStudyIcon("inactive", par.members.length),
+          size: new naver.maps.Size(72, 72),
+          anchor: new naver.maps.Point(36, 44),
+        },
+      });
+    });
+  }
+  if (participations) {
+    participations.forEach((par) => {
+      temp.push({
+        position: new naver.maps.LatLng(par.latitude, par.longitude),
+        icon: {
+          content: getStudyIcon(null, 0),
           size: new naver.maps.Size(72, 72),
           anchor: new naver.maps.Point(36, 44),
         },
@@ -160,7 +184,6 @@ export const getMapOptions = (
   currentLocation: { lat: number; lon: number },
   zoomValue?: number,
 ): IMapOptions | undefined => {
-  console.log("11", typeof naver, currentLocation);
   if (typeof naver === "undefined") return undefined;
   if (!currentLocation) return;
 

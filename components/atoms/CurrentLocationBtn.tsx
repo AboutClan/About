@@ -17,7 +17,11 @@ function CurrentLocationBtn({ onClick, isBig }: CurrentLocationBtnProps) {
       size="sm"
       p="0"
       border="1px solid var(--gray-100)"
-      onClick={onClick}
+      onClick={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        onClick();
+      }}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"

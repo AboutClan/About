@@ -12,6 +12,10 @@ interface IVoteMap {
     lat: number;
     lng: number;
   };
+  circleCenter: {
+    lat: number;
+    lon: number;
+  };
 }
 
 export default function VoteMap({
@@ -20,7 +24,9 @@ export default function VoteMap({
   handleMarker,
   resizeToggle,
   centerValue,
+  circleCenter,
 }: IVoteMap) {
+  console.log(markersOptions);
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<naver.maps.Map | null>(null);
   const mapElementsRef = useRef({
@@ -104,6 +110,29 @@ export default function VoteMap({
     const map = mapInstanceRef.current;
     map.setCenter(new naver.maps.LatLng(centerValue.lat, centerValue.lng));
   }, [centerValue]);
+
+  useEffect(() => {
+    if (!circleCenter || !mapInstanceRef.current || typeof naver === "undefined") return;
+
+    // 기존 원이 있다면 제거 (한 개만 그릴 거라 가정)
+    if ((mapElementsRef.current as any).circle) {
+      (mapElementsRef.current as any).circle.setMap(null);
+    }
+
+    const circle = new naver.maps.Circle({
+      map: mapInstanceRef.current,
+      center: new naver.maps.LatLng(circleCenter.lat, circleCenter.lon),
+      radius: 5701,
+      strokeColor: "#0077ff",
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: "#aaccff",
+      fillOpacity: 0.35,
+    });
+
+    // 저장
+    (mapElementsRef.current as any).circle = circle;
+  }, [circleCenter]);
 
   return <Map ref={mapRef} id="map" />;
 }

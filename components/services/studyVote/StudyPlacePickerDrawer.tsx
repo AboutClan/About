@@ -23,7 +23,7 @@ function StudyPlacePickerDrawer({
   date,
 }: StudyPlacePickerDrawerProps) {
   const [selectedPlaceId, setSelectedPlaceId] = useState<string>();
-  console.log(255);
+
   const drawerOptions2: BottomFlexDrawerOptions = {
     header: {
       title: "스터디 장소 투표",

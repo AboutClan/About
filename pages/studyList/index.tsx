@@ -24,7 +24,7 @@ export default function StudyList() {
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
 
-  const { data: studyVoteData } = useStudyVoteQuery("2024-12-29", {
+  const { data: studyVoteData } = useStudyVoteQuery(date, {
     enabled: !!date,
   });
 

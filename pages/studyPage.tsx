@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import Slide from "../components/layouts/PageSlide";
@@ -9,7 +9,6 @@ import { useUserCurrentLocation } from "../hooks/custom/CurrentLocationHook";
 import { useStudyVoteQuery } from "../hooks/study/queries";
 import { useUserInfoQuery } from "../hooks/user/queries";
 import { convertStudyToMergeStudy } from "../libs/study/convertStudyToMergeStudy";
-import { getStudyViewDate } from "../libs/study/date/getStudyDateStatus";
 import StudyPageAddPlaceButton from "../pageTemplates/studyPage/StudyPageAddPlaceButton";
 import StudyPageCalendar from "../pageTemplates/studyPage/StudyPageCalendar";
 import StudyPageHeader from "../pageTemplates/studyPage/StudyPageHeader";
@@ -23,14 +22,13 @@ import { CoordinatesProps } from "../types/common";
 import { MyVoteStatus } from "../types/models/studyTypes/studyDetails";
 
 export default function StudyPage() {
+  const router = useRouter();
   const { data: session } = useSession();
 
   const searchParams = useSearchParams();
-
   const dateParam = searchParams.get("date");
 
-  //dateParam이 없는 경우, 저녁 9시 이전에는 당일/넘은 경우에는 내일 날짜를 보여줍니다.
-  const [date, setDate] = useState(dateParam || getStudyViewDate(dayjs()));
+  const [date, setDate] = useState<string>(null);
 
   //중심 위치
   const [centerLocation, setCenterLocation] = useState<CoordinatesProps>(null);
@@ -41,9 +39,15 @@ export default function StudyPage() {
 
   const { currentLocation } = useUserCurrentLocation();
   const { data: userInfo } = useUserInfoQuery();
-  const { data: studyVoteData, isLoading } = useStudyVoteQuery("2024-12-29", {
+  const { data: studyVoteData, isLoading } = useStudyVoteQuery(date, {
     enabled: !!date,
   });
+
+  //dateParam이 아예 없는 경우가 있을 수 있을까?
+  useEffect(() => {
+    if (!dateParam) return;
+    setDate(dateParam);
+  }, [dateParam]);
 
   /** Center 기본값 설정
    * 스터디 투표중인 경우, 투표중인 장소로.
@@ -107,7 +111,7 @@ export default function StudyPage() {
   const isExpireDate = dayjs(date).isBefore(dayjs().subtract(1, "day"));
 
   console.log("studyVoteData:", studyVoteData);
-  console.log("myVoteStatus:", myVoteStatus);
+
 
   return (
     <>

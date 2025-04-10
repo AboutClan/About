@@ -92,7 +92,7 @@ function StudyControlDrawer({
     voteData: StudyVoteProps | RealTimeBasicVoteProps,
     type: "vote" | "realTime",
   ) => {
-    console.log(1234, type, voteData);
+    
     if (type === "vote") voteStudy(voteData as StudyVoteProps);
     else if (type === "realTime") participateRealTime(voteData as RealTimeBasicVoteProps);
     setIsTimeRullet(false);
@@ -107,7 +107,7 @@ function StudyControlDrawer({
 
   const handleStudyVoteBtn = (type: "oneClick" | "direct" | "placePick" | "directAttend") => {
     if (type === "placePick") {
-      console.log("test");
+    
       if (!studyResults.length) {
         toast("warning", "진행중인 스터디가 없습니다.");
         return;
@@ -199,7 +199,7 @@ function StudyControlDrawer({
               onClick={() => handleStudyVoteBtn("directAttend")}
             >
               <Box w="20px" h="20px" mr={4} opacity={0.28}>
-                <StudyUserCheckIcon />
+                <StudyUserCheckIcon color="gray" />
               </Box>
               <Box fontSize="13px" color="var(--gray-600)">
                 실시간 개인 스터디 출석

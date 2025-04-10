@@ -54,6 +54,7 @@ function StudyPageMap({
         studyVoteData?.realTimes?.userList || null,
         currentLocation,
         studyVoteData?.participations ? centerLocation : null,
+        studyVoteData?.participations,
       ),
     );
   }, [studyVoteData, currentLocation, centerLocation]);
@@ -94,6 +95,7 @@ function StudyPageMap({
           markersOptions={markersOptions}
           resizeToggle={isMapExpansion}
           handleMarker={handleMarker}
+          circleCenter={studyVoteData?.results?.[0]?.center}
         />
         {/* {!studyVoteData?.results && <MainLoadingAbsolute />} */}
       </Box>

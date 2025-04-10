@@ -45,16 +45,16 @@ export function StudyThumbnailCard({
   participantCnt,
   isAvatarView,
 }: StudyThumbnailCardProps) {
-  console.log("par", participants);
+ 
   const userAvatarArr = participants.map((par) => {
-    if (!par?.profileImage) console.log("WW", par);
+  
     return {
       image: par.profileImage,
       ...(par.avatar?.type !== null ? { avatar: par.avatar } : {}),
     };
   });
   return (
-    <CardLink href={url} onClick={func} isBorderMain={status === "recruiting"}>
+    <CardLink href={url} onClick={func} isbordermain={status === "recruiting" ? "true" : "false"}>
       <>
         {status === "recruiting" ? (
           <PlaceAvatarImage size="md" imageProps={place.imageProps} />
@@ -135,12 +135,13 @@ export function StudyThumbnailCard({
   );
 }
 
-const CardLink = styled(Link)<{ isBorderMain: boolean }>`
+const CardLink = styled(Link)<{ isbordermain: "true" | "false" }>`
   height: fit-content;
   display: flex;
   padding-bottom: 12px;
   padding-right: 0.5px;
-  border-bottom: ${(props) => (props.isBorderMain ? "var(--border-main)" : "var(--border)")};
+  border-bottom: ${(props) =>
+    props.isbordermain === "true" ? "var(--border-main)" : "var(--border)"};
   background-color: white;
   justify-content: space-between;
 
