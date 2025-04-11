@@ -2,13 +2,13 @@ import { Dayjs } from "dayjs";
 
 import { TimeStampProps } from "../../utils/timeAndDate";
 import { IUserSummary } from "../userTypes/userInfoTypes";
-import { StudyPlaceProps } from "./studyDetails";
+import { StudyPlaceProps } from "./baseTypes";
 
 export interface StudyVoteProps {
   latitude: number;
   longitude: number;
-  start: Dayjs | string;
-  end: Dayjs | string;
+  start: Dayjs;
+  end: Dayjs;
 }
 
 export interface IStudyVote extends IStudyVotePlaces, IStudyVoteTime {

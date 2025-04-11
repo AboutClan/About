@@ -16,12 +16,11 @@ export const useToast = () => {
   const toast = useChakraToast();
 
   const showToast = useCallback(
-    (status: "success" | "error" | "warning" | "info", title: string, subTitle?: string) => {
+    (status: "success" | "error" | "warning" | "info", title: string, duration: number = 3000) => {
       toast({
         title: title,
-        description: subTitle,
         status,
-        duration: 2000,
+        duration: duration,
         variant: "subtle",
         colorScheme: status === "success" ? "mint" : undefined,
         containerStyle: {

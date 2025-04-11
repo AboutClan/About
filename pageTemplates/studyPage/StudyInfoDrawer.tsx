@@ -21,10 +21,11 @@ import {
   useStudyParticipationMutation,
 } from "../../hooks/study/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
-import { MergePlaceInfoProps } from "../../libs/study/convertMergePlaceToPlace";
+
 import { ModalLayout } from "../../modals/Modals";
 import { DispatchType } from "../../types/hooks/reactTypes";
-import { StudyStatus } from "../../types/models/studyTypes/studyDetails";
+import { StudyStatus } from "../../types/models/studyTypes/baseTypes";
+import { MergeStudyPlaceProps } from "../../types/models/studyTypes/derivedTypes";
 import { IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
 import { IAvatar } from "../../types/models/userTypes/userInfoTypes";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
@@ -32,7 +33,7 @@ import { StringTimeProps } from "../../types/utils/timeAndDate";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
 export interface StudyInfoProps {
-  place: MergePlaceInfoProps;
+  place: MergeStudyPlaceProps;
   time: StringTimeProps;
   participantCnt: number;
   status: StudyStatus | "solo";
@@ -53,15 +54,9 @@ interface StudyInfoDrawerProps {
   detailInfo: StudyInfoProps;
   setDetailInfo: DispatchType<StudyInfoProps>;
   date: string;
-  isParticipating: boolean;
 }
 
-function StudyInfoDrawer({
-  detailInfo,
-  setDetailInfo,
-  date,
-  isParticipating,
-}: StudyInfoDrawerProps) {
+function StudyInfoDrawer({ detailInfo, setDetailInfo, date }: StudyInfoDrawerProps) {
   const resetStudy = useResetStudyQuery();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -140,7 +135,7 @@ function StudyInfoDrawer({
   };
 
   const onClickStudyVote = (voteTime: IStudyVoteTime) => {
-    if (isParticipating) {
+    if (detailInfo.memberStatus === "participation") {
       setVoteTime(voteTime);
       setIsAlertModal(true);
       return;

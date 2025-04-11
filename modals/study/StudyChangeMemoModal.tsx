@@ -6,7 +6,7 @@ import { useRecoilValue } from "recoil";
 import Textarea from "../../components/atoms/Textarea";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useStudyAttendCheckMutation } from "../../hooks/study/mutations";
-import { getMyStudyInfo } from "../../libs/study/getMyStudyMethods";
+import { findMyStudyInfo } from "../../libs/study/studySelectors";
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import { IModal } from "../../types/components/modalTypes";
 import { IFooterOptions, ModalLayout } from "../Modals";
@@ -20,7 +20,7 @@ export default function StudyChangeMemoModal({ hasModalMemo, setIsModal }: IStud
   const [value, setValue] = useState<string>(hasModalMemo || "");
 
   const myStudyParticipation = useRecoilValue(myStudyParticipationState);
-  const myStudyInfo = getMyStudyInfo(myStudyParticipation, session?.user.uid);
+  const myStudyInfo = findMyStudyInfo(myStudyParticipation, session?.user.uid);
 
   const { mutate: changeStudyMemo, isLoading } = useStudyAttendCheckMutation({
     onSuccess() {

@@ -4,7 +4,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import { ModalLayout } from "../../../modals/Modals";
-import { MessageSimpleProps } from "../../../types/models/commonTypes";
+import { MessageProps } from "../../../types/models/commonTypes";
 import { IUserSummary, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import Avatar from "../../atoms/Avatar";
 import UserBadge from "../../atoms/badges/UserBadge";
@@ -18,7 +18,7 @@ export interface IProfileCommentCard {
   leftComponent?: React.ReactNode;
   rightComponent?: React.ReactNode;
   hasCommentButton?: boolean;
-  comment?: MessageSimpleProps;
+  comment?: MessageProps;
   changeComment?: (comment: string) => void;
   size?: "md" | "lg";
 }
@@ -36,7 +36,7 @@ export default function ProfileCommentCard({
   const [isCommentModal, setIsCommentModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [text, setText] = useState(comment?.text || "");
- 
+
   const changeText = () => {
     changeComment(text);
     setIsEdit(false);

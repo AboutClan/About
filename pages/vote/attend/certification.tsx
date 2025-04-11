@@ -1,6 +1,8 @@
 import { Box, Button } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 
 import AlertModal from "../../../components/AlertModal";
 import PageIntro from "../../../components/atoms/PageIntro";
@@ -11,30 +13,35 @@ import Slide from "../../../components/layouts/PageSlide";
 import ImageUploadInput from "../../../components/molecules/ImageUploadInput";
 import LocationSearch from "../../../components/organisms/location/LocationSearch";
 import { useToast } from "../../../hooks/custom/CustomToast";
-import { getLocationByCoordinates } from "../../../libs/study/getLocationByCoordinates";
-import { myStudyParticipationState } from "../../../recoils/studyRecoils";
+import { useStudyVoteQuery } from "../../../hooks/study/queries";
+import { checkMyStudyType, findMyStudyByUserId } from "../../../libs/study/studySelectors";
 import { transferStudyAttendanceState } from "../../../recoils/transferRecoils";
 import { KakaoLocationProps } from "../../../types/externals/kakaoLocationSearch";
-import { StudyPlaceProps } from "../../../types/models/studyTypes/studyDetails";
+import { StudyPlaceProps } from "../../../types/models/studyTypes/baseTypes";
 import { PlaceInfoProps } from "../../../types/models/utilTypes";
 
 function Certification() {
+  const { data: session } = useSession();
   const toast = useToast();
+  const searchParams = useSearchParams();
+  const date = searchParams.get("date");
+
+  const { data: studyVoteData } = useStudyVoteQuery(date, { enabled: !!date });
+
+  const findMyStudyResult = findMyStudyByUserId(studyVoteData, session?.user.id);
+  const myStudyType = checkMyStudyType(findMyStudyResult);
 
   const [image, setImage] = useState<Blob>();
   const [placeInfo, setPlaceInfo] = useState<KakaoLocationProps>({
     place_name: "",
     road_address_name: "",
   });
-
   const [isResetAlert, setIsResetAlert] = useState(false);
   const [isActive, setIsActive] = useState(true);
 
   const [studyAttendanceRequest, setStudyAttendanceRequest] = useRecoilState(
     transferStudyAttendanceState,
   );
-
-  const myStudyParticipation = useRecoilValue(myStudyParticipationState);
 
   useEffect(() => {
     if (studyAttendanceRequest) {
@@ -49,9 +56,9 @@ function Certification() {
   }, [studyAttendanceRequest]);
 
   useEffect(() => {
-    if (!myStudyParticipation) return;
-    const studyPlace = myStudyParticipation?.place as StudyPlaceProps;
-    const realTimePlace = myStudyParticipation?.place as PlaceInfoProps;
+    if (!findMyStudyResult) return;
+    const studyPlace = findMyStudyResult?.place as StudyPlaceProps;
+    const realTimePlace = findMyStudyResult?.place as PlaceInfoProps;
 
     setPlaceInfo((old) => ({
       ...old,
@@ -59,14 +66,14 @@ function Certification() {
       y: (studyPlace?.latitude || realTimePlace?.latitude) + "",
       road_address_name: studyPlace?.locationDetail || realTimePlace?.address,
       place_name:
-        (myStudyParticipation?.place as StudyPlaceProps)?.fullname ||
-        (myStudyParticipation?.place as PlaceInfoProps)?.name,
+        (findMyStudyResult?.place as StudyPlaceProps)?.fullname ||
+        (findMyStudyResult?.place as PlaceInfoProps)?.name,
     }));
 
     setIsActive(false);
 
     setIsActive(false);
-  }, [myStudyParticipation]);
+  }, [findMyStudyResult]);
 
   const handleBottomNav = (e) => {
     if (!image) {
@@ -76,14 +83,6 @@ function Certification() {
     }
     if (!placeInfo?.place_name) {
       toast("warning", "장소를 입력해 주세요");
-      e.preventDefault();
-      return;
-    }
-
-    const changeLocation = getLocationByCoordinates(+placeInfo?.y, +placeInfo?.x);
-
-    if (!changeLocation) {
-      toast("warning", "서비스중인 지역이 아닙니다.");
       e.preventDefault();
       return;
     }
@@ -101,7 +100,7 @@ function Certification() {
   };
 
   const handleResetButton = () => {
-    if (myStudyParticipation) {
+    if (findMyStudyResult) {
       setIsResetAlert(true);
       return;
     }

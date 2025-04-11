@@ -7,7 +7,8 @@ import { CollectionProps } from "../types/models/collections";
 import { IGather } from "../types/models/gatherTypes/gatherTypes";
 import { IGroup } from "../types/models/groupTypes/group";
 import { MemberGroup } from "../types/models/member";
-import { StudyAttendanceRequestProps } from "../types/models/studyTypes/studyDetails";
+import { RealTimesDirectAttendanceProps } from "../types/models/studyTypes/requestTypes";
+
 import { IUser } from "../types/models/userTypes/userInfoTypes";
 
 export const transferCollectionState = atom<CollectionProps>({
@@ -65,7 +66,7 @@ export const transferStoreGiftDataState = atom<ItransferStoreGiftData>({
   default: null,
 });
 
-export const transferStudyAttendanceState = atom<StudyAttendanceRequestProps>({
+export const transferStudyAttendanceState = atom<RealTimesDirectAttendanceProps>({
   key: "TransferStudyAttendance",
   default: null,
 });

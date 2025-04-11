@@ -1,4 +1,4 @@
-import { StudyParticipationProps } from "../../types/models/studyTypes/studyDetails";
+import { StudyParticipationProps } from "../../types/models/studyTypes/baseTypes";
 import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
 
 export const recommendTodayStudyPlace = (

@@ -9,7 +9,7 @@ import { useToast } from "../../../hooks/custom/CustomToast";
 import {
   StudyParticipationProps,
   StudyPlaceProps,
-} from "../../../types/models/studyTypes/studyDetails";
+} from "../../../types/models/studyTypes/baseTypes";
 
 interface IPlaceSelectorSub {
   places: StudyParticipationProps[];

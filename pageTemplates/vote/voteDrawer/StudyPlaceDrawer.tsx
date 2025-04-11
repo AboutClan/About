@@ -12,20 +12,20 @@ import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useRealtimeVoteMutation } from "../../../hooks/realtime/mutations";
 import { KakaoLocationProps } from "../../../types/externals/kakaoLocationSearch";
-import { RealTimeBasicVoteProps } from "../../../types/models/studyTypes/studyDetails";
+import { RealTimeVoteProps } from "../../../types/models/studyTypes/baseTypes";
 import { IStudyVoteTime, StudyVoteProps } from "../../../types/models/studyTypes/studyInterActions";
 
 interface StudyPlaceDrawerProps {
   type: "vote" | "realTime";
   onClose: () => void;
   date: string;
-  handleStudyVote: (voteData: StudyVoteProps | RealTimeBasicVoteProps) => void;
+  handleStudyVote: (voteData: StudyVoteProps | RealTimeVoteProps) => void;
 }
 
 export function StudyPlaceDrawer({ type, onClose, date, handleStudyVote }: StudyPlaceDrawerProps) {
   const resetStudy = useResetStudyQuery();
   const toast = useToast();
-
+  console.log("t", type);
   const [placeInfo, setPlaceInfo] = useState<KakaoLocationProps>({
     place_name: "",
     road_address_name: "",
@@ -59,13 +59,13 @@ export function StudyPlaceDrawer({ type, onClose, date, handleStudyVote }: Study
     footer: {
       text: type === "vote" ? "신청 완료" : "참여 확정",
       func: () => {
-        const voteData: StudyVoteProps | RealTimeBasicVoteProps =
+        const voteData: StudyVoteProps | RealTimeVoteProps =
           type === "vote"
             ? {
                 latitude: +placeInfo.y,
                 longitude: +placeInfo.x,
-                start: voteTime.start.toISOString(),
-                end: voteTime.end.toISOString(),
+                start: voteTime.start,
+                end: voteTime.end,
               }
             : {
                 place: {
@@ -75,8 +75,8 @@ export function StudyPlaceDrawer({ type, onClose, date, handleStudyVote }: Study
                   address: placeInfo.road_address_name,
                 },
                 time: {
-                  start: voteTime.start.toISOString(),
-                  end: voteTime.end.toISOString(),
+                  start: voteTime.start,
+                  end: voteTime.end,
                 },
               };
 
@@ -102,12 +102,12 @@ export function StudyPlaceDrawer({ type, onClose, date, handleStudyVote }: Study
           main={{
             first:
               type === "vote"
-                ? "스터디 직전 출발지를 입력해주세요."
+                ? "원하는 스터디 위치를 입력해주세요."
                 : "어디에서 공부하실 예정인가요?",
           }}
           sub={
             type === "vote"
-              ? "등록된 스터디 장소 중 가까운 곳으로 매칭됩니다."
+              ? "입력한 위치와 가까운 스터디 장소로 매칭됩니다."
               : "스터디 할 장소를 입력해 주세요"
           }
         />

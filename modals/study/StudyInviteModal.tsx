@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -8,7 +8,7 @@ import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
 import { WEB_URL } from "../../constants/system";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
-import { StudyPlaceProps } from "../../types/models/studyTypes/studyDetails";
+import { StudyPlaceProps } from "../../types/models/studyTypes/baseTypes";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
 import { isWebView } from "../../utils/appEnvUtils";
 import { getRandomIdx } from "../../utils/mathUtils";

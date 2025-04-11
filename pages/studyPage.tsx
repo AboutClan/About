@@ -8,7 +8,9 @@ import Slide from "../components/layouts/PageSlide";
 import { useUserCurrentLocation } from "../hooks/custom/CurrentLocationHook";
 import { useStudyVoteQuery } from "../hooks/study/queries";
 import { useUserInfoQuery } from "../hooks/user/queries";
-import { convertStudyToMergeStudy } from "../libs/study/convertStudyToMergeStudy";
+import { convertStudyToMergeStudy } from "../libs/study/studyConverters";
+
+import { findMyStudyByUserId } from "../libs/study/studySelectors";
 import StudyPageAddPlaceButton from "../pageTemplates/studyPage/StudyPageAddPlaceButton";
 import StudyPageCalendar from "../pageTemplates/studyPage/StudyPageCalendar";
 import StudyPageHeader from "../pageTemplates/studyPage/StudyPageHeader";
@@ -19,12 +21,12 @@ import StudyPageRecordBlock from "../pageTemplates/studyPage/StudyPageRecordBloc
 import StudyPageSettingBlock from "../pageTemplates/studyPage/StudyPageSettingBlock";
 import StudyControlButton from "../pageTemplates/vote/StudyControlButton";
 import { CoordinatesProps } from "../types/common";
-import { MyVoteStatus } from "../types/models/studyTypes/studyDetails";
+import { MyStudyStatus } from "../types/models/studyTypes/helperTypes";
 
 export default function StudyPage() {
   const router = useRouter();
   const { data: session } = useSession();
-
+  const userId = session?.user.id;
   const searchParams = useSearchParams();
   const dateParam = searchParams.get("date");
 
@@ -33,7 +35,7 @@ export default function StudyPage() {
   //중심 위치
   const [centerLocation, setCenterLocation] = useState<CoordinatesProps>(null);
 
-  const [myVoteStatus, setMyVoteStatus] = useState<MyVoteStatus>(null);
+  const [myVoteStatus, setMyVoteStatus] = useState<MyStudyStatus>(null);
 
   // const [myStudyParticipation, setMyStudyParticipation] = useRecoilState(myStudyParticipationState);
 
@@ -54,46 +56,29 @@ export default function StudyPage() {
    * 투표중이지 않다면, 현재 위치로.
    * 투표중이지 않고, 현재 위치 파악이 안된다면, locationDetail로.
    */
+
+  const findMyParticipation = studyVoteData?.participations?.find(
+    (who) => who?.user?._id === userId,
+  );
+
   useEffect(() => {
-    if (!studyVoteData || !session?.user?.id) {
-      if (isLoading === false) {
-        setMyVoteStatus("pending");
-      }
-      return;
-    }
+    if (!studyVoteData || !session?.user?.id) return;
+    const findMyStudyResult = findMyStudyByUserId(studyVoteData, session?.user.id);
+
     setCenterLocation(currentLocation);
 
-    const userId = session.user.id;
-    const { participations, results, realTimes } = studyVoteData;
-
-    const findMyParticipation = participations?.find((who) => who?.user?._id === userId);
-    // 참여 여부 확인
     if (findMyParticipation) {
       setMyVoteStatus("voting");
       const { latitude: lat, longitude: lon } = findMyParticipation;
       setCenterLocation({ lat, lon });
       return;
     }
-    // 결과 확인
-    const studyResult = results?.find((who) =>
-      who?.members.some((member) => member?.user._id === userId),
-    );
 
-    if (studyResult) {
-      setMyVoteStatus("open");
+    if (findMyStudyResult) {
+      setMyVoteStatus(findMyStudyResult.status === "open" ? "open" : "free");
       setCenterLocation({
-        lat: studyResult.place.latitude,
-        lon: studyResult.place.longitude,
-      });
-      return;
-    }
-    // 실시간 참여 확인
-    const realTimeResult = realTimes?.userList.find((who) => who?.user === userId);
-    if (realTimeResult) {
-      setMyVoteStatus("private");
-      setCenterLocation({
-        lat: realTimeResult.place.latitude,
-        lon: realTimeResult.place.longitude,
+        lat: findMyStudyResult.place.latitude,
+        lon: findMyStudyResult.place.longitude,
       });
       return;
     }
@@ -106,25 +91,32 @@ export default function StudyPage() {
     }
     if (studyVoteData?.participations) setMyVoteStatus("pending");
     else setMyVoteStatus("todayPending");
-  }, [studyVoteData, session?.user.uid, currentLocation, isLoading, userInfo]);
+  }, [studyVoteData, session, currentLocation, isLoading, userInfo]);
 
   const isExpireDate = dayjs(date).isBefore(dayjs().subtract(1, "day"));
 
-  console.log("studyVoteData:", studyVoteData);
-
+  console.log("studyVoteData:", studyVoteData, myVoteStatus);
 
   return (
     <>
       <StudyPageHeader />
       <Slide>
         <StudyPageIntroBox />
-        <StudyPageMap
-          centerLocation={centerLocation}
-          studyVoteData={studyVoteData}
-          currentLocation={currentLocation}
-          setCenterLocation={setCenterLocation}
-          date={date}
-        />
+      </Slide>
+      <StudyPageMap
+        centerLocation={centerLocation}
+        studyVoteData={studyVoteData}
+        currentLocation={currentLocation}
+        setCenterLocation={setCenterLocation}
+        date={date}
+        myVoteCoordinates={
+          findMyParticipation && {
+            lat: findMyParticipation.latitude,
+            lon: findMyParticipation.longitude,
+          }
+        }
+      />
+      <Slide>
         <StudyPageCalendar date={date} setDate={setDate} />
         <StudyPagePlaceSection
           studyVoteData={studyVoteData}

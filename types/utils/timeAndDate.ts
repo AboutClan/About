@@ -4,6 +4,12 @@ export interface StringTimeProps {
   start: string;
   end: string;
 }
+
+export interface DayjsTimeProps {
+  start: Dayjs;
+  end: Dayjs;
+}
+
 export interface TimeStampProps {
   createdAt?: string;
   updatedAt?: string;

@@ -2,7 +2,6 @@ import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import { useRecoilValue } from "recoil";
 
 import HighlightButton from "../../components/atoms/HighlightButton";
 import AttendanceBadge from "../../components/molecules/badge/AttendanceBadge";
@@ -12,20 +11,19 @@ import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useRealTimeCommentMutation } from "../../hooks/realtime/mutations";
 import { useStudyCommentMutation } from "../../hooks/study/mutations";
-import { checkStudyType } from "../../libs/study/getMyStudyMethods";
 import ImageZoomModal from "../../modals/ImageZoomModal";
 import StudyChangeMemoModal from "../../modals/study/StudyChangeMemoModal";
-import { myStudyParticipationState } from "../../recoils/studyRecoils";
-import { StudyMemberProps } from "../../types/models/studyTypes/studyDetails";
-import { IAbsence } from "../../types/models/studyTypes/studyInterActions";
+import { StudyMemberProps, StudyStatus } from "../../types/models/studyTypes/baseTypes";
+import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 interface IStudyMembers {
   date: string;
-  members: StudyMemberProps[];
-  absences: IAbsence[];
+  members: StudyMemberProps[] | { user: UserSimpleInfoProps }[];
+  status: StudyStatus | "recruiting";
 }
-export default function StudyMembers({ date, members, absences }: IStudyMembers) {
+
+export default function StudyMembers({ date, members, status }: IStudyMembers) {
   const { data: session } = useSession();
   const resetStudy = useResetStudyQuery();
   const typeToast = useTypeToast();
@@ -34,8 +32,6 @@ export default function StudyMembers({ date, members, absences }: IStudyMembers)
     image: string;
     toUid: string;
   }>();
-  const myStudyParticipation = useRecoilValue(myStudyParticipationState);
-  const studyType = checkStudyType(myStudyParticipation);
 
   const { mutate: setRealTimeComment } = useRealTimeCommentMutation({
     onSuccess: () => handleSuccessChange(),
@@ -43,7 +39,7 @@ export default function StudyMembers({ date, members, absences }: IStudyMembers)
   const { mutate: setVoteComment } = useStudyCommentMutation(date, {
     onSuccess: () => handleSuccessChange(),
   });
-
+  console.log(members);
   const isMyStudy = members?.some((who) => who.user.uid === session?.user.uid);
 
   const handleSuccessChange = () => {
@@ -52,19 +48,24 @@ export default function StudyMembers({ date, members, absences }: IStudyMembers)
   };
 
   const changeComment = (comment: string) => {
-    if (studyType === "study") {
+    if (status === "open") {
       setVoteComment(comment);
-    } else if (studyType === "realTime") setRealTimeComment(comment);
+    } else if (status === "free") setRealTimeComment(comment);
   };
 
   const userCardArr: IProfileCommentCard[] = members.map((member) => {
-    const obj = composeUserCardArr(
-      member,
-      absences?.find((who) => who.user.uid === member.user.uid),
-    );
+    const user = member.user;
+    if (status === "recruiting") {
+      return {
+        user: user,
+        memo: user.comment,
+      };
+    }
+    console.log("SSS", status);
+    const obj = composeUserCardArr(member);
 
     const rightComponentProps = obj.rightComponentProps;
-    const image = member?.attendanceInfo.attendanceImage;
+    const image = member?.attendance?.attendanceImage;
 
     return {
       ...obj,
@@ -83,7 +84,10 @@ export default function StudyMembers({ date, members, absences }: IStudyMembers)
     <>
       {userCardArr.length ? (
         <>
-          <ProfileCardColumn userCardArr={userCardArr} hasCommentButton />
+          <ProfileCardColumn
+            userCardArr={userCardArr}
+            hasCommentButton={status === "open" || status === "free"}
+          />
           {isMyStudy && (
             <Box pt={4} pb={2}>
               <HighlightButton text="친구 초대 +" func={() => typeToast("not-yet")} />
@@ -131,27 +135,26 @@ interface IReturnProps extends Omit<IProfileCommentCard, "rightComponent"> {
   };
 }
 
-const composeUserCardArr = (participant: StudyMemberProps, absence: IAbsence): IReturnProps => {
-  const attendanceInfo = participant?.attendanceInfo;
+const composeUserCardArr = (participant: StudyMemberProps): IReturnProps => {
+  console.log(participant);
+  const attendance = participant?.attendance;
 
-  const arrived = attendanceInfo.arrived
-    ? dayjsToFormat(dayjs(attendanceInfo.arrived), "HH:mm")
-    : null;
+  const type = attendance?.type;
+  const time = type ? dayjsToFormat(dayjs(attendance.time), "HH:mm") : null;
 
-  const memo = arrived ? attendanceInfo.arrivedMessage || "출석" : null;
+  const memo = time ? (attendance.memo || type === "arrived" ? "출석" : "불참") : null;
 
   const user = participant.user;
-
+  console.log(user);
   return {
     user: user,
-    memo: memo || (absence ? absence?.message || "불참" : null),
+    memo: memo || participant.user.comment,
     comment: participant?.comment,
-    rightComponentProps:
-      arrived || absence
-        ? {
-            type: arrived ? "attend" : "dismissed",
-            time: arrived || dayjsToFormat(dayjs(absence?.updatedAt), "HH:mm"),
-          }
-        : undefined,
+    rightComponentProps: attendance?.type
+      ? {
+          type: type === "arrived" ? "attend" : "dismissed",
+          time,
+        }
+      : undefined,
   };
 };

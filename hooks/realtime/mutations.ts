@@ -6,28 +6,39 @@ import { requestServer } from "../../libs/methodHelpers";
 import { MutationOptions } from "../../types/hooks/reactTypes";
 import { CollectionProps } from "../../types/models/collections";
 import {
-  RealTimeBasicAttendanceProps,
-  RealTimeBasicVoteProps,
+  RealTimeAttendanceProps,
+  RealTimeVoteProps,
   StudyStatus,
-} from "../../types/models/studyTypes/studyDetails";
+} from "../../types/models/studyTypes/baseTypes";
 import { IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
+import { PlaceInfoProps } from "../../types/models/utilTypes";
+import { StringTimeProps } from "../../types/utils/timeAndDate";
 
-export const useRealtimeVoteMutation = (options?: MutationOptions<RealTimeBasicVoteProps>) =>
-  useMutation<void, AxiosError, RealTimeBasicVoteProps>(
-    (param) =>
-      requestServer<RealTimeBasicVoteProps>({
-        method: "post",
-        url: `realtime/basicVote`,
-        body: param,
-      }),
-    options,
-  );
+interface RealTimeVoteRequestServerProps {
+  place: PlaceInfoProps;
+  time: StringTimeProps;
+}
+
+export const useRealtimeVoteMutation = (options?: MutationOptions<RealTimeVoteProps>) =>
+  useMutation<void, AxiosError, RealTimeVoteProps>((param) => {
+    const { start, end } = param.time;
+    const time = {
+      start: start.toISOString(),
+      end: end.toISOString(),
+    };
+    return requestServer<RealTimeVoteRequestServerProps>({
+      method: "post",
+      url: `realtime/basicVote`,
+      body: { ...param, time },
+    });
+  }, options);
+
 export const useRealTimeAttendMutation = (
-  options?: MutationOptions<RealTimeBasicAttendanceProps | FormData, CollectionProps>,
+  options?: MutationOptions<RealTimeAttendanceProps | FormData, CollectionProps>,
 ) =>
-  useMutation<CollectionProps, AxiosError, RealTimeBasicAttendanceProps | FormData>(
+  useMutation<CollectionProps, AxiosError, RealTimeAttendanceProps | FormData>(
     (param) =>
-      requestServer<RealTimeBasicAttendanceProps | FormData, CollectionProps>({
+      requestServer<RealTimeAttendanceProps | FormData, CollectionProps>({
         method: "post",
         url: `realtime/attendance`,
         body: param,

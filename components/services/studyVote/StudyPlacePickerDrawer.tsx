@@ -4,7 +4,7 @@ import { setStudyThumbnailCard } from "../../../libs/study/thumbnailCardLibs";
 
 import { CoordinatesProps } from "../../../types/common";
 import { IModal } from "../../../types/components/modalTypes";
-import { StudyMergeResultProps } from "../../../types/models/studyTypes/studyDetails";
+import { StudyMergeResultProps } from "../../../types/models/studyTypes/baseTypes";
 import PickerRowButton from "../../molecules/PickerRowButton";
 import BottomFlexDrawer, { BottomFlexDrawerOptions } from "../../organisms/drawer/BottomFlexDrawer";
 

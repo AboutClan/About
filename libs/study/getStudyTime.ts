@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 
-import { StudyMemberProps } from "../../types/models/studyTypes/studyDetails";
+import { StudyMemberProps } from "../../types/models/studyTypes/baseTypes";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 export const getStudyTime = (users: StudyMemberProps[]): { start: string; end: string } => {
@@ -16,6 +16,6 @@ export const getStudyTime = (users: StudyMemberProps[]): { start: string; end: s
     if (userStart.isBefore(startTime)) startTime = userStart;
     if (userEnd.isAfter(endTime)) endTime = userEnd;
   });
- 
+
   return { start: dayjsToFormat(startTime, "HH:mm"), end: dayjsToFormat(endTime, "HH:mm") };
 };

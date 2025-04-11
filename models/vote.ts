@@ -5,7 +5,7 @@ import {
   StudyMemberProp,
   StudyParticipationProps,
   StudyVoteDataProps,
-} from "../types/models/studyTypes/studyDetails";
+} from "../types/models/studyTypes/baseTypes";
 import { IAbsence } from "../types/models/studyTypes/studyInterActions";
 import { IDayjsStartToEnd } from "../types/utils/timeAndDate";
 

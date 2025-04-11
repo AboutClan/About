@@ -1,9 +1,9 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 import PageIntro from "../../../components/atoms/PageIntro";
 import ScreenOverlay from "../../../components/atoms/ScreenOverlay";
@@ -17,34 +17,38 @@ import Slide from "../../../components/layouts/PageSlide";
 import { STUDY_RECORD } from "../../../constants/keys/localStorage";
 import { POINT_SYSTEM_DEPOSIT } from "../../../constants/serviceConstants/pointSystemConstants";
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
-import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
+import { useToast } from "../../../hooks/custom/CustomToast";
+import { useMyStudyResult } from "../../../hooks/custom/StudyHooks";
 import { useImageUploadMutation } from "../../../hooks/image/mutations";
 import { useRealTimeAttendMutation } from "../../../hooks/realtime/mutations";
 import { useStudyAttendCheckMutation } from "../../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../../hooks/user/mutations";
-import { getMyStudyInfo } from "../../../libs/study/getMyStudyMethods";
+import { findMyStudyInfo } from "../../../libs/study/studySelectors";
 import { ModalLayout } from "../../../modals/Modals";
-import { myStudyParticipationState } from "../../../recoils/studyRecoils";
 import {
   transferCollectionState,
   transferStudyAttendanceState,
 } from "../../../recoils/transferRecoils";
 import { CollectionProps } from "../../../types/models/collections";
-import { StudyPlaceProps } from "../../../types/models/studyTypes/studyDetails";
 import { convertTimeStringToDayjs } from "../../../utils/convertUtils/convertTypes";
 import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
 
 function Configuration() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const newSearchParams = new URLSearchParams(searchParams);
   const { data: session } = useSession();
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const toast = useToast();
-  const typeToast = useTypeToast();
+
+  const date = searchParams.get("date");
+
   const resetStudy = useResetStudyQuery();
+  const myStudyResult = useMyStudyResult(dayjsToStr(dayjs()));
+
   const [endTime, setEndTime] = useState(
     dayjs().hour() < 21 ? dayjsToFormat(dayjs().startOf("hour").add(3, "hour"), "HH:mm") : "23:30",
   );
+
+  console.log("A", myStudyResult);
 
   const textareaRef = useRef(null);
   const [otherPermission, setOtherPermission] = useState<"허용" | "비허용">("허용");
@@ -55,16 +59,16 @@ function Configuration() {
   const [transferStudyAttendance, setTransferStudyAttendance] = useRecoilState(
     transferStudyAttendanceState,
   );
-  const setTransferCollection = useSetRecoilState(transferCollectionState);
+  const studyType = myStudyResult?.status;
 
-  const myStudyParticipation = useRecoilValue(myStudyParticipationState);
+  console.log(52, transferStudyAttendance);
+  const setTransferCollection = useSetRecoilState(transferCollectionState);
 
   const { mutate: getDeposit } = usePointSystemMutation("deposit");
   const { mutate: handleArrived, isLoading: isLoading1 } = useStudyAttendCheckMutation({
     onSuccess(data) {
       handleAttendSuccess(data.data);
     },
-    onError: () => typeToast("error"),
   });
 
   const { mutate: attendRealTimeStudy, isLoading: isLoading2 } = useRealTimeAttendMutation({
@@ -105,19 +109,14 @@ function Configuration() {
     resetStudy();
     setTransferStudyAttendance(null);
 
-    if (myStudyParticipation?.status === "open") {
-      const myStudyInfo = getMyStudyInfo(myStudyParticipation, session?.user.uid);
+    const myStudyInfo = findMyStudyInfo(myStudyResult, session?.user.id);
+
+    if (studyType === "open") {
       const isLate = dayjs().isAfter(dayjs(myStudyInfo?.time.end).add(1, "hour"));
       if (isLate) getDeposit(POINT_SYSTEM_DEPOSIT.STUDY_ATTEND_LATE);
-      toast("success", `출석 완료! 5 포인트가 적립되었습니다. ${isLate ? "하지만 지각..." : ""}`);
-    } else {
-      toast("success", `출석 완료! 5점을 획득했습니다`);
     }
-
-    newSearchParams.set("center", "votePlace");
-    newSearchParams.set("date", dayjsToStr(dayjs()));
-    newSearchParams.set("voteDrawer", "down");
-    router.push(`/studyPage?${newSearchParams.toString()}`);
+    toast("success", `출석이 완료되었습니다.`);
+    router.push(`/studyPage?date=${date}`);
   };
 
   const saveTogetherMembers = () => {
@@ -130,7 +129,6 @@ function Configuration() {
   const formData = new FormData();
 
   const handleSubmit = () => {
-    const isParticipationStudy = (myStudyParticipation?.place as StudyPlaceProps)?.fullname;
     if (attendMessage?.length < 1) {
       toast("warning", "출석 메세지를 남겨주세요");
       return;
@@ -138,9 +136,7 @@ function Configuration() {
 
     if (
       !transferStudyAttendance ||
-      (isParticipationStudy &&
-        (myStudyParticipation?.place as StudyPlaceProps)?.fullname ===
-          transferStudyAttendance?.place?.name)
+      (studyType === "open" && myStudyResult.place.name === transferStudyAttendance?.place?.name)
     ) {
       setIsChecking(true);
       handleArrived({ memo: attendMessage, endHour: convertTimeStringToDayjs(endTime) });
@@ -157,7 +153,7 @@ function Configuration() {
       formData.append("images", transferStudyAttendance?.image as Blob);
       formData.append(
         "place",
-        JSON.stringify(transferStudyAttendance?.place || myStudyParticipation?.place),
+        JSON.stringify(transferStudyAttendance?.place || myStudyResult?.place),
       );
       formData.append(
         "time",

@@ -1,7 +1,7 @@
 import UserTimeBoard, {
   ITimeBoardParticipant,
 } from "../../components/molecules/boards/userTimeBoard/UserTimeBoard";
-import { StudyMemberProps } from "../../types/models/studyTypes/studyDetails";
+import { StudyMemberProps } from "../../types/models/studyTypes/baseTypes";
 
 interface IStudyTimeBoard {
   members: StudyMemberProps[];

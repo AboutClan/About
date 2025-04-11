@@ -1,12 +1,10 @@
 import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
 import { CoordinatesProps } from "../../types/common";
-import {
-  StudyMergeResultProps,
-  StudyParticipationProps,
-} from "../../types/models/studyTypes/studyDetails";
+import { StudyParticipationProps } from "../../types/models/studyTypes/baseTypes";
+import { StudyMergeResultProps } from "../../types/models/studyTypes/derivedTypes";
 import { getRandomImage } from "../../utils/imageUtils";
 import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
-import { convertMergePlaceToPlace } from "./convertMergePlaceToPlace";
+import { convertMergePlaceToPlace } from "./studyConverters";
 
 export const setStudyThumbnailCard = (
   date: string,
@@ -19,9 +17,9 @@ export const setStudyThumbnailCard = (
     ? [
         {
           place: {
-            name: "스터디 신청 인원",
-            branch: "매칭 대기 중",
-            address: "거리를 고려해서 결과 발표",
+            name: "카공 스터디 자동 매칭",
+            branch: "위치 선정 중",
+            address: "가까운 인원들과 스터디 매칭을 진행 중입니다",
             distance: null,
             imageProps: {
               image:
@@ -31,9 +29,8 @@ export const setStudyThumbnailCard = (
             _id: "",
           },
           participants: participations.map((par) => par.user),
-          url: "",
+          url: `/study/participations/${date}`,
           status: "recruiting",
-          isAvatarView: true,
         },
       ]
     : [];
@@ -68,7 +65,6 @@ export const setStudyThumbnailCard = (
         participants: data.members.map((att) => att.user),
         url: `/study/${data.place._id}/${date}`,
         status: participations ? "expected" : data?.status || "open",
-        isAvatarView: false,
       };
     });
 

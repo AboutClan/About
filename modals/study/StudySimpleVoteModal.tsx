@@ -17,7 +17,7 @@ import { recommendTodayStudyPlace } from "../../libs/study/recommendTodayStudyPl
 import { selectStudyPlace } from "../../libs/study/selectStudyPlace";
 import { selectSubPlaceAuto } from "../../libs/study/selectSubPlaceAuto";
 import { IModal } from "../../types/components/modalTypes";
-import { StudyParticipationProps } from "../../types/models/studyTypes/studyDetails";
+import { StudyParticipationProps } from "../../types/models/studyTypes/baseTypes";
 import { IStudyVote } from "../../types/models/studyTypes/studyInterActions";
 import { LocationEn } from "../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";

@@ -1,8 +1,8 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import SectionFooterButton from "../../../components/atoms/SectionFooterButton";
@@ -20,7 +20,7 @@ import { useUserCurrentLocation } from "../../../hooks/custom/CurrentLocationHoo
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 
 import { DispatchString } from "../../../types/hooks/reactTypes";
-import { StudyMergeParticipationProps } from "../../../types/models/studyTypes/studyDetails";
+import { StudyMergeParticipationProps } from "../../../types/models/studyTypes/baseTypes";
 import { StudyVotingSave } from "../../../types/models/studyTypes/studyInterActions";
 import { ActiveLocation, LocationEn } from "../../../types/services/locationTypes";
 import { convertLocationLangTo } from "../../../utils/convertUtils/convertDatas";

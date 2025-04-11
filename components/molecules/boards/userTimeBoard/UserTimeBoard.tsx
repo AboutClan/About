@@ -27,7 +27,7 @@ export default function UserTimeBoard({ members }: ITimeBoard) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [blockWidth, setBlockWidth] = useState<number>(0);
   const [userBlocks, setUserBlocks] = useState<IUserTimeBlock[]>([]);
-  
+
   const calculateBlockWidth = () => {
     const screenWidth = window.innerWidth; // 현재 화면 가로 길이 가져오기
     const width = (screenWidth - 40) / STUDY_VOTE_HOUR_ARR.length; // 40px을 빼고 7로 나누기
@@ -47,7 +47,7 @@ export default function UserTimeBoard({ members }: ITimeBoard) {
 
     return () => observer.disconnect(); // 컴포넌트 언마운트 시 정리
   }, []);
-
+  console.log(blockWidth, userBlocks);
   useEffect(() => {
     const newUserBlocks = transformToUserBlocks(members);
     setUserBlocks(newUserBlocks);
@@ -65,7 +65,7 @@ export default function UserTimeBoard({ members }: ITimeBoard) {
           </Flex>
         ))}
       </Flex>
-      <Box position="absolute" mt="30px">
+      <Box position="absolute" mt="30px" w="full">
         <Box ref={containerRef}>
           {userBlocks.map((props, idx) => (
             <Box

@@ -3,7 +3,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import styled from "styled-components";
 
 import WeekSlideCalendar from "../../../../components/molecules/WeekSlideCalendar";
-import { StudyParticipationProps } from "../../../../types/models/studyTypes/studyDetails";
+import { StudyParticipationProps } from "../../../../types/models/studyTypes/baseTypes";
 import { dayjsToStr } from "../../../../utils/dateTimeUtils";
 
 interface StudyControllerProps {

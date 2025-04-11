@@ -2,7 +2,7 @@ import { Badge, Box } from "@chakra-ui/react";
 
 import InfoBoxCol, { InfoBoxProps } from "../../components/molecules/InfoBoxCol";
 import { STUDY_STATUS_TO_BADGE } from "../../constants/studyConstants";
-import { StudyStatus } from "../../types/models/studyTypes/studyDetails";
+import { StudyStatus } from "../../types/models/studyTypes/baseTypes";
 
 interface IStudyOverview {
   place: {
@@ -11,7 +11,7 @@ interface IStudyOverview {
     branch: string;
   };
   distance: number;
-  status: StudyStatus;
+  status: StudyStatus | "recruiting";
 
   time: string;
 }
@@ -23,10 +23,10 @@ function StudyOverview({
   time,
 }: IStudyOverview) {
   const { text: badgeText, colorScheme: badgeColorScheme } = STUDY_STATUS_TO_BADGE[status];
-
+  console.log(status);
   const infoBoxPropsArr: InfoBoxProps[] = [
     {
-      category: "영업 시간",
+      category: status === "recruiting" ? "매칭 시간" : "영업 시간",
       text: time !== "unknown" ? time : "정보 없음",
     },
     {
@@ -43,10 +43,14 @@ function StudyOverview({
             {badgeText}
           </Badge>
           <Box as="span">{branch}</Box>
-          <Box as="span" color="var(--gray-400)">
-            ・
-          </Box>
-          <Box as="span">{distance}KM</Box>
+          {distance && (
+            <>
+              <Box as="span" color="var(--gray-400)">
+                ・
+              </Box>
+              <Box as="span">{distance}KM</Box>
+            </>
+          )}
         </Box>
 
         <Box mt={1} mb={4} fontSize="20px" fontWeight="bold">

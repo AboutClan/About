@@ -27,7 +27,7 @@ import { changeAlphabet } from "../../../pageTemplates/user/UserCollection2";
 import {
   RealTimeMemberProps,
   StudyParticipationProps,
-} from "../../../types/models/studyTypes/studyDetails";
+} from "../../../types/models/studyTypes/baseTypes";
 import { dayjsToFormat, dayjsToTime } from "../../../utils/dateTimeUtils";
 import { getRandomIdx } from "../../../utils/mathUtils";
 function StudyResultPage() {
@@ -65,7 +65,7 @@ function StudyResultPage() {
     STUDY_STATUS_TO_BADGE[findRealTime?.status || findParticipation?.status] || {};
 
   const studyTime = dayjs(commonAttendanceInfo?.time.end).diff(
-    dayjs(commonAttendanceInfo?.attendanceInfo?.arrived),
+    dayjs(commonAttendanceInfo?.attendance?.arrived),
     "m",
   );
 
@@ -77,11 +77,11 @@ function StudyResultPage() {
     );
 
   const lateTime =
-    dayjs(commonAttendanceInfo?.attendanceInfo.arrived).diff(
+    dayjs(commonAttendanceInfo?.attendance.arrived).diff(
       dayjs(commonAttendanceInfo?.time?.start),
       "m",
     ) > 0
-      ? `${dayjs(commonAttendanceInfo?.attendanceInfo.arrived).diff(
+      ? `${dayjs(commonAttendanceInfo?.attendance.arrived).diff(
           dayjs(commonAttendanceInfo?.time?.start),
           "m",
         )}분 지각`
@@ -102,7 +102,7 @@ function StudyResultPage() {
     },
     {
       title: "출석 체크",
-      text: `${dayjsToTime(dayjs(commonAttendanceInfo.attendanceInfo.arrived))}(${lateTime})`,
+      text: `${dayjsToTime(dayjs(commonAttendanceInfo.attendance.arrived))}(${lateTime})`,
     },
     {
       title: "달성 시간",
@@ -125,7 +125,7 @@ function StudyResultPage() {
             <Box position="relative" w="full" aspectRatio={1 / 1}>
               <Image
                 src={
-                  commonAttendanceInfo.attendanceInfo?.attendanceImage ||
+                  commonAttendanceInfo.attendance?.attendanceImage ||
                   STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length)]
                 }
                 fill

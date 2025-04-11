@@ -3,7 +3,7 @@ import * as CryptoJS from "crypto-js";
 import { enToKrMapping, krToEnMapping } from "../../constants/location";
 import {
   BADGE_SCORE_MAPPINGS,
-  USER_SCORE_BADGE_ARR
+  USER_SCORE_BADGE_ARR,
 } from "../../constants/serviceConstants/badgeConstants";
 import {
   EVENT_BADGE_딸기스무디,
@@ -12,9 +12,9 @@ import {
   EVENT_BADGE_민트초코,
   EVENT_BADGE_슈팅스타,
   EVENT_BADGE_코코아,
-  MANAGER_BADGE
+  MANAGER_BADGE,
 } from "../../constants/storage/eventBadgeUser";
-import { StudyPlaceProps } from "../../types/models/studyTypes/studyDetails";
+import { StudyPlaceProps } from "../../types/models/studyTypes/baseTypes";
 import { UserBadge, UserRole } from "../../types/models/userTypes/userInfoTypes";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
 import { ActiveLocation, Location, LocationEn } from "../../types/services/locationTypes";

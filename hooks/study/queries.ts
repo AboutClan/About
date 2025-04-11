@@ -18,7 +18,7 @@ import {
   StudyParticipationProps,
   StudyPlaceProps,
   StudyVoteDataProps,
-} from "../../types/models/studyTypes/studyDetails";
+} from "../../types/models/studyTypes/baseTypes";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
 import { IArrivedData, VoteCntProps } from "../../types/models/studyTypes/studyRecords";
 import { Location } from "../../types/services/locationTypes";

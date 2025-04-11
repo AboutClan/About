@@ -10,14 +10,15 @@ import {
   StudyThumbnailCardProps,
 } from "../../components/molecules/cards/StudyThumbnailCard";
 import { StudyThumbnailCardSkeleton } from "../../components/skeleton/StudyThumbnailCardSkeleton";
-import { convertStudyToMergeStudy } from "../../libs/study/convertStudyToMergeStudy";
+import { convertStudyToMergeStudy } from "../../libs/study/studyConverters";
+
 import {
   setStudyThumbnailCard,
   sortThumbnailCardInfoArr,
 } from "../../libs/study/thumbnailCardLibs";
 import { CoordinatesProps } from "../../types/common";
 import { DispatchString } from "../../types/hooks/reactTypes";
-import { StudyVoteDataProps } from "../../types/models/studyTypes/studyDetails";
+import { StudyVoteDataProps } from "../../types/models/studyTypes/baseTypes";
 import { getNewDateBySwipe } from "../../utils/animateUtils";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 import StudyPagePlaceSectionFilterBar from "./studyPageDrawer/StudyPagePlaceBlockFilterBar";
@@ -69,7 +70,6 @@ function StudyPagePlaceSection({
       router.replace(`/studyPage?${newSearchParams.toString()}`, { scroll: false });
     }
   };
-  ;
   return (
     <Flex flexDir="column" mt={5} mb={8}>
       <Box>
@@ -95,10 +95,7 @@ function StudyPagePlaceSection({
                 thumbnailCardInfoArr.length ? (
                   thumbnailCardInfoArr.slice(0, 3).map((thumbnailCardInfo, idx) => (
                     <Box key={idx} mb={3}>
-                      <StudyThumbnailCard
-                        {...thumbnailCardInfo}
-                        participantCnt={thumbnailCardInfo.participants.length}
-                      />
+                      <StudyThumbnailCard {...thumbnailCardInfo} />
                     </Box>
                   ))
                 ) : (

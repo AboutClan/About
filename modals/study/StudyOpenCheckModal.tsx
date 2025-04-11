@@ -5,7 +5,7 @@ import { useState } from "react";
 import { ALL_스터디인증 } from "../../constants/serviceConstants/studyConstants/studyPlaceConstants";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
-import { StudyParticipationProps } from "../../types/models/studyTypes/studyDetails";
+import { StudyParticipationProps } from "../../types/models/studyTypes/baseTypes";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface StudyOpenCheckModalProps extends IModal {

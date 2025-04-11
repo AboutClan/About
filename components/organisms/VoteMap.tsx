@@ -26,13 +26,13 @@ export default function VoteMap({
   centerValue,
   circleCenter,
 }: IVoteMap) {
-  console.log(markersOptions);
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<naver.maps.Map | null>(null);
   const mapElementsRef = useRef({
     markers: [],
     polylines: [],
     infoWindow: [],
+    circle: null,
   });
 
   useEffect(() => {
@@ -55,12 +55,13 @@ export default function VoteMap({
       mapInstanceRef.current.setOptions(mapOptions);
     }
   }, [mapOptions]);
+
   useEffect(() => {
     if (!mapInstanceRef?.current || typeof naver === "undefined") return;
 
     naver.maps.Event.trigger(mapInstanceRef.current, "resize");
   }, [resizeToggle]);
-
+  console.log(mapElementsRef);
   useEffect(() => {
     const map = mapInstanceRef.current;
 
@@ -70,7 +71,12 @@ export default function VoteMap({
     mapElementsRef.current.markers.forEach((marker) => marker.setMap(null));
     mapElementsRef.current.polylines.forEach((polyline) => polyline.setMap(null));
     mapElementsRef.current.infoWindow.forEach((info) => info.close());
-    mapElementsRef.current = { markers: [], polylines: [], infoWindow: [] };
+    if (mapElementsRef.current.circle) {
+      mapElementsRef.current.circle.setMap(null);
+      mapElementsRef.current.circle = undefined;
+    }
+
+    mapElementsRef.current = { markers: [], polylines: [], infoWindow: [], circle: undefined };
     //새로운 옵션 적용
     markersOptions?.forEach((markerOptions) => {
       const marker = new naver.maps.Marker({
@@ -102,37 +108,28 @@ export default function VoteMap({
       });
       mapElementsRef.current.markers.push(marker);
     });
-  }, [markersOptions]);
-
+    console.log(123, circleCenter);
+    if (circleCenter) {
+      const circle = new naver.maps.Circle({
+        map: mapInstanceRef.current,
+        center: new naver.maps.LatLng(circleCenter.lat, circleCenter.lon),
+        radius: 4440,
+        strokeColor: "#007dfb",
+        strokeOpacity: 0.8,
+        strokeWeight: 1,
+        fillColor: "#007dfb",
+        fillOpacity: 0.1,
+      });
+      (mapElementsRef.current as any).circle = circle;
+    }
+  }, [markersOptions, circleCenter]);
+  console.log(mapElementsRef);
   useEffect(() => {
     if (!centerValue || !mapInstanceRef.current) return;
 
     const map = mapInstanceRef.current;
     map.setCenter(new naver.maps.LatLng(centerValue.lat, centerValue.lng));
   }, [centerValue]);
-
-  useEffect(() => {
-    if (!circleCenter || !mapInstanceRef.current || typeof naver === "undefined") return;
-
-    // 기존 원이 있다면 제거 (한 개만 그릴 거라 가정)
-    if ((mapElementsRef.current as any).circle) {
-      (mapElementsRef.current as any).circle.setMap(null);
-    }
-
-    const circle = new naver.maps.Circle({
-      map: mapInstanceRef.current,
-      center: new naver.maps.LatLng(circleCenter.lat, circleCenter.lon),
-      radius: 5701,
-      strokeColor: "#0077ff",
-      strokeOpacity: 0.8,
-      strokeWeight: 2,
-      fillColor: "#aaccff",
-      fillOpacity: 0.35,
-    });
-
-    // 저장
-    (mapElementsRef.current as any).circle = circle;
-  }, [circleCenter]);
 
   return <Map ref={mapRef} id="map" />;
 }

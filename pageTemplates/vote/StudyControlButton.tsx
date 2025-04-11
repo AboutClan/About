@@ -13,13 +13,15 @@ import {
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";
 import { CoordinatesProps } from "../../types/common";
-import { MyVoteStatus, StudyMergeResultProps } from "../../types/models/studyTypes/studyDetails";
+import { StudyMergeResultProps } from "../../types/models/studyTypes/derivedTypes";
+import { MyStudyStatus } from "../../types/models/studyTypes/helperTypes";
+
 import { iPhoneNotchSize } from "../../utils/validationUtils";
 import StudyControlDrawer from "../study/modals/StudyControlDrawer";
 
 interface StudyControlButtonProps {
   date: string;
-  myVoteStatus: MyVoteStatus;
+  myVoteStatus: MyStudyStatus;
   studyResults: StudyMergeResultProps[];
   currentLocation: CoordinatesProps;
 }
@@ -33,23 +35,40 @@ function StudyControlButton({
   const resetStudy = useResetStudyQuery();
   const { data: session } = useSession();
   const router = useRouter();
-
-  const [isStudyDrawer, setIsStudyDrawer] = useState(false);
+  console.log(myVoteStatus);
+  const [studyDrawerType, setStudyDrawerType] = useState<"free" | "vote">(null);
 
   const { mutate: handleCancel } = useStudyParticipationMutation(dayjs(date), "delete", {
     onSuccess() {
       resetStudy();
     },
   });
-
+  console.log(myVoteStatus);
   const onClickButton = () => {
-    if (myVoteStatus === "todayPending" || myVoteStatus === "pending") {
-      setIsStudyDrawer(true);
-    } else if (myVoteStatus === "voting") {
-      handleCancel();
-    } else {
-      router.push(`/vote/attend/configuration`);
+    switch (myVoteStatus) {
+      case "open":
+        break;
+      case "pending":
+        setStudyDrawerType("vote");
+        break;
+      case "todayPending":
+        setStudyDrawerType("free");
+        break;
+      case "free":
+        router.push(`/vote/attend/certification?date=${date}`);
+        break;
+      case "voting":
+        handleCancel();
+        break;
     }
+
+    // if (myVoteStatus === "todayPending" || myVoteStatus === "pending") {
+    //   setIsStudyDrawer(true);
+    // } else if (myVoteStatus === "voting") {
+    //   handleCancel();
+    // } else {
+    //   router.push(`/vote/attend/configuration`);
+    // }
   };
 
   const { colorScheme, rightIcon, text } = getButtonOptions(myVoteStatus);
@@ -84,21 +103,19 @@ function StudyControlButton({
           {text}
         </Button>
       </Flex>
-
       <StudyControlDrawer
-        myVoteStatus={myVoteStatus}
         date={date}
         studyResults={studyResults}
         currentLocation={currentLocation}
-        isModal={isStudyDrawer}
-        setIsModal={setIsStudyDrawer}
+        studyDrawerType={studyDrawerType}
+        onClose={() => setStudyDrawerType(null)}
       />
     </>
   );
 }
 
 const getButtonOptions = (
-  myVoteStatus: MyVoteStatus,
+  myVoteStatus: MyStudyStatus,
 ): { colorScheme: ThemeTypings["colorSchemes"]; rightIcon: JSX.Element; text: string } => {
   switch (myVoteStatus) {
     case "voting":

@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -12,7 +12,7 @@ import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useStudyAbsentMutation } from "../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
-import { getMyStudyInfo } from "../../libs/study/getMyStudyMethods";
+import { findMyStudyInfo } from "../../libs/study/studySelectors";
 import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import { IModal } from "../../types/components/modalTypes";
 import { IFooterOptions, ModalLayout } from "../Modals";
@@ -32,7 +32,7 @@ function StudyAbsentModal({ setIsModal }: StudyAbsentModalProps) {
   const { mutate: sendRequest } = useUserRequestMutation();
   const { mutate: getDeposit } = usePointSystemMutation("deposit");
 
-  const myStudyInfo = getMyStudyInfo(myStudyParticipation, session?.user.uid);
+  const myStudyInfo = findMyStudyInfo(myStudyParticipation, session?.user.uid);
   const startTime = myStudyInfo?.time?.start;
   const studyStatus = myStudyParticipation?.status;
 

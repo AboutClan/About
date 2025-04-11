@@ -2,7 +2,7 @@ import { Box, Flex } from "@chakra-ui/react";
 
 import { IInfoCard } from "../../components/atoms/InfoCard";
 import InfoCardColumn from "../../components/organisms/InfoCardColumn";
-import { StudyParticipationProps } from "../../types/models/studyTypes/studyDetails";
+import { StudyParticipationProps } from "../../types/models/studyTypes/baseTypes";
 
 interface StudyWaitingPlacesProps {
   studyWaitingPlaces: StudyParticipationProps[];

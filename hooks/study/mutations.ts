@@ -5,18 +5,19 @@ import { useMutation } from "react-query";
 import { requestServer } from "../../libs/methodHelpers";
 import { MutationOptions } from "../../types/hooks/reactTypes";
 import { CollectionProps } from "../../types/models/collections";
-import { PlaceRegisterProps } from "../../types/models/studyTypes/studyDetails";
+import { PlaceRegisterProps } from "../../types/models/studyTypes/baseTypes";
 import {
   IStudyVotePlaces,
   IStudyVoteTime,
   StudyVoteProps,
 } from "../../types/models/studyTypes/studyInterActions";
+import { StringTimeProps } from "../../types/utils/timeAndDate";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
 type StudyParticipationParam<T> = T extends "post"
   ? StudyVoteProps
   : T extends "patch"
-  ? IStudyVoteTime
+  ? StringTimeProps
   : void;
 
 export const useStudyParticipationMutation = <T extends "post" | "patch" | "delete">(
@@ -26,16 +27,22 @@ export const useStudyParticipationMutation = <T extends "post" | "patch" | "dele
 ) =>
   useMutation<void, AxiosError, StudyParticipationParam<T>>((param) => {
     const voteInfo = param;
-    // if (method !== "delete") {
-    //   const updatedVoteInfo = voteInfo as IStudyVote | IStudyVoteTime;
-    //   const { start, end } = updatedVoteInfo;
-    //   updatedVoteInfo.start = voteDate.hour(start.hour()).minute(start.minute());
-    //   updatedVoteInfo.end = voteDate.hour(end.hour()).minute(end.minute());
-    // }
+
+    if (method !== "delete") {
+      const updatedVoteInfo = voteInfo as StudyVoteProps | IStudyVoteTime;
+      const { start, end } = updatedVoteInfo;
+      const startStr = voteDate.hour(start.hour()).minute(start.minute()).toISOString();
+      const endStr = voteDate.hour(end.hour()).minute(end.minute()).toISOString();
+      return requestServer<StudyParticipationParam<T>>({
+        method,
+        url: `vote2/${dayjsToStr(voteDate)}`,
+        body: { ...voteInfo, start: startStr, end: endStr },
+      });
+    }
     return requestServer<StudyParticipationParam<T>>({
       method,
       url: `vote2/${dayjsToStr(voteDate)}`,
-      body: voteInfo,
+      body: { ...voteInfo },
     });
   }, options);
 

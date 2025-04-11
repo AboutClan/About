@@ -5,17 +5,16 @@ import { CoordinatesProps } from "../../types/common";
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
 import {
   RealTimeMemberProps,
-  StudyMergeResultProps,
-  StudyParticipationProps,
-  StudyPlaceProps,
   StudyResultProps,
   StudyStatus,
-} from "../../types/models/studyTypes/studyDetails";
+} from "../../types/models/studyTypes/baseTypes";
+import { StudyMergeResultProps } from "../../types/models/studyTypes/derivedTypes";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomIdx } from "../../utils/mathUtils";
-import { convertMergePlaceToPlace } from "./convertMergePlaceToPlace";
+
 import { getStudyTime } from "./getStudyTime";
 import { getCurrentLocationIcon, getStudyIcon } from "./getStudyVoteIcon";
+import { convertMergePlaceToPlace } from "./studyConverters";
 
 export const getDetailInfo = (result: StudyMergeResultProps, myUid: string): StudyInfoProps => {
   const members = result.members;
@@ -30,7 +29,7 @@ export const getDetailInfo = (result: StudyMergeResultProps, myUid: string): Stu
 
   const commentUser = sortedCommentUserArr?.[0]?.user;
   const findMyInfo = result?.members?.find((who) => who.user.uid === myUid);
-  const isPrivate = !(result?.place as StudyPlaceProps)?.fullname;
+  const isPrivate = result?.status !== "open";
 
   const place = convertMergePlaceToPlace(result.place);
 
@@ -53,25 +52,23 @@ export const getDetailInfo = (result: StudyMergeResultProps, myUid: string): Stu
           }
         : null,
       text:
-        sortedCommentUserArr?.[0]?.commentInfo?.text ||
+        sortedCommentUserArr?.[0]?.comment?.text ||
         STUDY_COMMENT_ARR[getRandomIdx(STUDY_COMMENT_ARR.length - 1)],
     },
     firstUserUid: result?.members?.[0]?.user?.uid,
     memberStatus:
       !findMyInfo || !result?.members.some((who) => who.user.uid === myUid)
         ? "notParticipation"
-        : findMyInfo?.attendanceInfo?.time
+        : findMyInfo?.attendance?.time
         ? "attendance"
         : ("participation" as "notParticipation" | "attendance" | "participation"),
   };
 };
-
 export const getMarkersOptions = (
   studyResults: StudyResultProps[],
   studyRealTimes: RealTimeMemberProps[],
   currentLocation: CoordinatesProps,
-  voteCoordinates: CoordinatesProps,
-  participations: StudyParticipationProps[],
+  myVoteCoordinates: CoordinatesProps,
 ): IMarkerOptions[] | undefined => {
   if (typeof naver === "undefined") return;
   const temp = [];
@@ -86,9 +83,10 @@ export const getMarkersOptions = (
       },
     });
   }
-  if (voteCoordinates) {
+
+  if (myVoteCoordinates) {
     temp.push({
-      position: new naver.maps.LatLng(voteCoordinates.lat, voteCoordinates.lon),
+      position: new naver.maps.LatLng(myVoteCoordinates.lat, myVoteCoordinates.lon),
       icon: {
         content: getStudyIcon("none", null, "orange"),
         size: new naver.maps.Size(72, 72),
@@ -96,41 +94,33 @@ export const getMarkersOptions = (
       },
     });
   }
+
   if (studyResults) {
-    console.log(studyResults);
     studyResults.forEach((par) => {
+      console.log("par", par);
       temp.push({
         id: par.place._id,
         position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
         icon: {
-          content: getStudyIcon("active", par.members.length, "orange"),
-          size: new naver.maps.Size(72, 72),
-          anchor: new naver.maps.Point(36, 44),
-        },
-      });
-      temp.push({
-        id: par.place._id,
-        position: new naver.maps.LatLng(par.center.lat, par.center.lon),
-        icon: {
-          content: getStudyIcon("inactive", par.members.length),
+          content: getStudyIcon(null, par.members.length),
           size: new naver.maps.Size(72, 72),
           anchor: new naver.maps.Point(36, 44),
         },
       });
     });
   }
-  if (participations) {
-    participations.forEach((par) => {
-      temp.push({
-        position: new naver.maps.LatLng(par.latitude, par.longitude),
-        icon: {
-          content: getStudyIcon(null, 0),
-          size: new naver.maps.Size(72, 72),
-          anchor: new naver.maps.Point(36, 44),
-        },
-      });
-    });
-  }
+  // if (participations) {
+  //   participations.forEach((par) => {
+  //     temp.push({
+  //       position: new naver.maps.LatLng(par.latitude, par.longitude),
+  //       icon: {
+  //         content: getStudyIcon(null, 0),
+  //         size: new naver.maps.Size(72, 72),
+  //         anchor: new naver.maps.Point(36, 44),
+  //       },
+  //     });
+  //   });
+  // }
 
   if (studyRealTimes) {
     const tempArr = [];

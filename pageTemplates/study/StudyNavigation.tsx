@@ -1,7 +1,7 @@
 import { Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useRecoilValue } from "recoil";
 
@@ -29,7 +29,7 @@ import {
   StudyMemberProps,
   StudyStatus,
   StudyVoteDataProps,
-} from "../../types/models/studyTypes/studyDetails";
+} from "../../types/models/studyTypes/baseTypes";
 import { IAbsence, IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
 import { LocationEn } from "../../types/services/locationTypes";
@@ -120,9 +120,9 @@ function StudyNavigation({
     },
   );
 
-  const myStudyStatus = getMyStudyStatus(myStudyInfo, absences, session?.user.uid, date);
+  const myStudyStatus2 = getMyStudyStatus(myStudyInfo, absences, session?.user.uid, date);
   const { text, type, colorScheme } =
-    getStudyNavigationProps(myStudyStatus, date === dayjsToStr(dayjs())) || {};
+    getStudyNavigationProps(myStudyStatus2, date === dayjsToStr(dayjs())) || {};
 
   const handleSuccess = (type: "vote" | "cancel" | "change") => {
     if (type === "vote") typeToast("vote");
@@ -134,10 +134,10 @@ function StudyNavigation({
 
   const handleNavButton = (type: "main" | "cancel" | "timeChange") => {
     if (type === "main") {
-      if (myStudyStatus === "pending") {
+      if (myStudyStatus2 === "pending") {
         if (dayjsToStr(dayjs()) === date) setModalType("timeSelect");
         else setModalType("placePicker");
-      } else if (myStudyStatus === "voting") {
+      } else if (myStudyStatus2 === "voting") {
         if (date === dayjsToStr(dayjs())) {
           router.push(
             `/vote/attend/${
@@ -149,7 +149,7 @@ function StudyNavigation({
     } else if (type === "timeChange") {
       setModalType("timeSelect");
     } else if (type == "cancel") {
-      if (myStudyInfo?.attendanceInfo.arrived) {
+      if (myStudyInfo?.attendance.arrived) {
         toast("warning", "이미 출석을 완료했습니다");
         return;
       }
@@ -323,7 +323,7 @@ const getMyStudyStatus = (
   date: string,
 ): UserStudyStatus => {
   if (!myUid) return undefined;
-  if (myStudyInfo?.attendanceInfo.arrived) return "attended";
+  if (myStudyInfo?.attendance.arrived) return "attended";
   else if (absences?.map((absence) => absence.user.uid).includes(myUid)) return "cancelled";
   else if (dayjs(date).endOf("day").isBefore(dayjs())) return "expired";
   else if (myStudyInfo) return "voting";
@@ -331,10 +331,10 @@ const getMyStudyStatus = (
 };
 
 const getStudyNavigationProps = (
-  myStudyStatus: UserStudyStatus,
+  myStudyStatus2: UserStudyStatus,
   isConfirmed: boolean,
 ): { type: "single" | "multi"; text: string; colorScheme: string } => {
-  switch (myStudyStatus) {
+  switch (myStudyStatus2) {
     case "voting":
       if (isConfirmed) return { text: "출석 체크", type: "multi", colorScheme: "mint" };
       return { text: "투표중", type: "multi", colorScheme: "mint" };

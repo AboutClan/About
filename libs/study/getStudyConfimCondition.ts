@@ -1,4 +1,4 @@
-import { StudyStatus } from "../../types/models/studyTypes/studyDetails";
+import { StudyStatus } from "../../types/models/studyTypes/baseTypes";
 import { StudyDateStatus } from "../../types/models/studyTypes/studyInterActions";
 import { getHour } from "../../utils/dateTimeUtils";
 

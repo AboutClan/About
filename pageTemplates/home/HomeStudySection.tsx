@@ -14,8 +14,9 @@ import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import { StudyThumbnailCardSkeleton } from "../../components/skeleton/StudyThumbnailCardSkeleton";
 import { useUserCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
-import { convertStudyToMergeStudy } from "../../libs/study/convertStudyToMergeStudy";
+
 import { getStudyViewDate } from "../../libs/study/date/getStudyDateStatus";
+import { convertStudyToMergeStudy } from "../../libs/study/studyConverters";
 import {
   setStudyThumbnailCard,
   sortThumbnailCardInfoArr,
@@ -69,7 +70,7 @@ function HomeStudySection() {
     <>
       <Box px={5} mt={5}>
         <SectionHeader title="About 카공 스터디" subTitle="동네 친구와의 열공 스터디">
-          <ButtonWrapper size="xs" url="/studyPage">
+          <ButtonWrapper size="xs" url={`/studyPage${getStudyViewDate(dayjs())}`}>
             <ShortArrowIcon dir="right" />
           </ButtonWrapper>
         </SectionHeader>
@@ -81,14 +82,11 @@ function HomeStudySection() {
         {thumbnailCardInfoArr
           ? thumbnailCardInfoArr.slice(0, 3).map((thumbnailCardInfo, idx) => (
               <Box key={idx} mb={3}>
-                <StudyThumbnailCard
-                  {...thumbnailCardInfo}
-                  participantCnt={thumbnailCardInfo.participants.length}
-                />
+                <StudyThumbnailCard {...thumbnailCardInfo} />
               </Box>
             ))
           : [1, 2, 3].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)}
-        <SectionFooterButton url="/studyPage" />
+        <SectionFooterButton url={`/studyPage${getStudyViewDate(dayjs())}`} />
       </Flex>
     </>
   );

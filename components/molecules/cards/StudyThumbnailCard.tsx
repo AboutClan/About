@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import { STUDY_STATUS_TO_BADGE } from "../../../constants/studyConstants";
 import { SingleLineText } from "../../../styles/layout/components";
-import { StudyStatus } from "../../../types/models/studyTypes/studyDetails";
+import { StudyStatus } from "../../../types/models/studyTypes/baseTypes";
 
 import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { LocationDotIcon } from "../../Icons/LocationIcons";
@@ -29,11 +29,10 @@ export interface StudyThumbnailCardProps {
     _id: string;
   };
   participants?: UserSimpleInfoProps[];
-  participantCnt?: number;
+
   url: string;
-  status: StudyStatus;
+  status: StudyStatus | "recruiting" | "expected";
   func?: () => void;
-  isAvatarView: boolean;
 }
 
 export function StudyThumbnailCard({
@@ -42,12 +41,8 @@ export function StudyThumbnailCard({
   url,
   status,
   func = undefined,
-  participantCnt,
-  isAvatarView,
 }: StudyThumbnailCardProps) {
- 
   const userAvatarArr = participants.map((par) => {
-  
     return {
       image: par.profileImage,
       ...(par.avatar?.type !== null ? { avatar: par.avatar } : {}),
@@ -109,12 +104,12 @@ export function StudyThumbnailCard({
                   fontWeight={600}
                   as="span"
                   color={
-                    participantCnt >= STUDY_MAX_CNT && status !== "recruiting"
+                    participants.length >= STUDY_MAX_CNT && status !== "recruiting"
                       ? "var(--color-red)"
                       : "var(--color-gray)"
                   }
                 >
-                  {participantCnt}
+                  {participants.length}
                 </Box>
                 <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
                   /

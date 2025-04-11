@@ -2,7 +2,7 @@ import { Select } from "@chakra-ui/react";
 import { ChangeEvent } from "react";
 
 import { DispatchType } from "../../types/hooks/reactTypes";
-import { StudyParticipationProps } from "../../types/models/studyTypes/studyDetails";
+import { StudyParticipationProps } from "../../types/models/studyTypes/baseTypes";
 
 interface IPlaceSelector {
   defaultValue: string;
