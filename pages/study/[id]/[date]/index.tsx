@@ -11,7 +11,7 @@ import Slide from "../../../../components/layouts/PageSlide";
 import { useUserCurrentLocation } from "../../../../hooks/custom/CurrentLocationHook";
 import { useStudyVoteQuery } from "../../../../hooks/study/queries";
 import { convertMergePlaceToPlace } from "../../../../libs/study/studyConverters";
-import { findStudyByPlaceId } from "../../../../libs/study/studySelectors";
+import { findMyStudyInfo, findStudyByPlaceId } from "../../../../libs/study/studySelectors";
 
 import StudyInviteModal from "../../../../modals/study/StudyInviteModal";
 import StudyAddressMap from "../../../../pageTemplates/study/StudyAddressMap";
@@ -19,6 +19,7 @@ import StudyCover from "../../../../pageTemplates/study/StudyCover";
 import StudyDateBar from "../../../../pageTemplates/study/StudyDateBar";
 import StudyHeader from "../../../../pageTemplates/study/StudyHeader";
 import StudyMembers from "../../../../pageTemplates/study/StudyMembers";
+import StudyNavigation from "../../../../pageTemplates/study/StudyNavigation";
 import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
 import StudyTimeBoard from "../../../../pageTemplates/study/StudyTimeBoard";
 import { StudyMemberProps } from "../../../../types/models/studyTypes/baseTypes";
@@ -32,7 +33,7 @@ export default function Page() {
   const searchParams = useSearchParams();
   const { id, date } = useParams<{ id: string; date: string }>() || {};
   const { currentLocation } = useUserCurrentLocation();
-  console.log(id);
+
   const [isInviteModal, setIsInviteModal] = useState(false);
 
   const isParticipationPage = id === "participations";
@@ -41,7 +42,6 @@ export default function Page() {
     enabled: !!date,
   });
   console.log(studyVoteData);
-
   const findStudy =
     studyVoteData && id !== "participations" && findStudyByPlaceId(studyVoteData, id);
 
@@ -123,17 +123,13 @@ export default function Page() {
               />
             </Slide>
           </Box>
-          {/* {!isGuest && (
+          {!isGuest && (
             <StudyNavigation
-              studyVoteData={studyVoteData}
               date={date}
-              myStudyInfo={findMyStudyInfo(mergeParticipation, session?.user.uid)}
-              absences={mergeParticipation?.absences}
-              placeInfo={placeInfo}
-              type={type}
-              status={mergeParticipation?.status}
+              myStudyInfo={findMyStudyInfo(findStudy, session?.user.id)}
+              status={findStudy?.status}
             />
-          )} */}
+          )}
           {isInviteModal && <StudyInviteModal setIsModal={setIsInviteModal} place={place} />}
         </>
       ) : (

@@ -11,7 +11,7 @@ import {
 } from "../../components/molecules/cards/StudyThumbnailCard";
 import { useUserCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
-import { convertStudyToMergeStudy } from "../../libs/study/convertStudyToMergeStudy";
+import { convertStudyToMergeStudy } from "../../libs/study/studyConverters";
 
 import {
   setStudyThumbnailCard,

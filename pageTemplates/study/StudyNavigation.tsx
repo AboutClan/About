@@ -1,9 +1,7 @@
 import { Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useRecoilValue } from "recoil";
 
 import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
 import IconTextColButton from "../../components/atoms/buttons/IconTextColButton";
@@ -11,77 +9,64 @@ import { XCircleIcon } from "../../components/Icons/CircleIcons";
 import { ClockIcon } from "../../components/Icons/ClockIcons";
 import Slide from "../../components/layouts/PageSlide";
 import { BottomFlexDrawerOptions } from "../../components/organisms/drawer/BottomFlexDrawer";
-import StudyPlacePickerDrawer from "../../components/services/studyVote/StudyPlacePickerDrawer";
 import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import {
   useRealTimeCancelMutation,
   useRealTimeTimeChangeMutation,
-  useRealtimeVoteMutation,
+  useRealtimeVoteMutation
 } from "../../hooks/realtime/mutations";
 import { useStudyParticipationMutation } from "../../hooks/study/mutations";
-import { convertMergePlaceToPlace } from "../../libs/study/convertMergePlaceToPlace";
+
 import { ModalLayout } from "../../modals/Modals";
 import StudyAbsentModal from "../../modals/study/StudyAbsentModal";
-import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import {
   StudyMemberProps,
-  StudyStatus,
-  StudyVoteDataProps,
+  StudyStatus
 } from "../../types/models/studyTypes/baseTypes";
 import { IAbsence, IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
-import { PlaceInfoProps } from "../../types/models/utilTypes";
-import { LocationEn } from "../../types/services/locationTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
-import { SubPlaceProps } from "../vote/VoteDrawer";
+
 interface IStudyNavigation {
   date: string;
   myStudyInfo: StudyMemberProps;
-  absences: IAbsence[];
-  placeInfo: PlaceInfoProps;
-  type: "private" | "public" | null;
   status: StudyStatus;
-  locationEn: LocationEn;
-  studyVoteData: StudyVoteDataProps;
 }
 
-export type StudyModalType = "timeSelect" | "placePicker";
 
-type UserStudyStatus = "pending" | "voting" | "attended" | "cancelled" | "expired";
 
 function StudyNavigation({
-  locationEn,
-  studyVoteData,
+
   myStudyInfo,
-  absences,
   status,
-  type: studyType,
+  date,
 }: IStudyNavigation) {
   const router = useRouter();
   const toast = useToast();
   const typeToast = useTypeToast();
-  const { data: session } = useSession();
-  const { id, date } = useParams<{ id: string; date: string }>() || {};
-  const searchParams = useSearchParams();
-
   const resetStudy = useResetStudyQuery();
 
-  // const isGuest = session?.user.name === "guest";
 
-  const [modalType, setModalType] = useState<StudyModalType>();
-  const [subArr, setSubArr] = useState<SubPlaceProps[]>([]);
+  const [isTimeRulletModal, setIsTimeRulletModal] = useState(false);
+
+
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
   const [isCancelModal, setIsCancelModal] = useState(false);
   const [isAbsentModal, setIsAbsentModal] = useState(false);
 
   const [alertModalInfo, setAlertModalInfo] = useState<IAlertModalOptions>();
 
-  const myStudyParticipation = useRecoilValue(myStudyParticipationState);
-  const findMyPickMainPlace = studyVoteData?.participations.find((par) => par.place._id === id);
-  const place = convertMergePlaceToPlace(findMyPickMainPlace?.place);
-
+  const { mutate: studyVote, isLoading: isLoading1 } = useStudyParticipationMutation(
+    dayjs(date),
+    "post",
+    {
+      onSuccess() {
+        handleSuccess("vote");
+      },
+    },
+  );
   const { mutate: handleTimeChange } = useStudyParticipationMutation(dayjs(date), "patch", {
     onSuccess() {
       handleSuccess("change");
@@ -96,7 +81,6 @@ function StudyNavigation({
   const { mutate: handleRealTimeCancel } = useRealTimeCancelMutation({
     onSuccess() {
       handleSuccess("cancel");
-      router.push(`/studyPage?${searchParams.toString()}`);
     },
   });
   const { mutate: handleRealTimeTimeChange } = useRealTimeTimeChangeMutation({
@@ -110,17 +94,26 @@ function StudyNavigation({
       handleSuccess("vote");
     },
   });
-  const { mutate: studyVote, isLoading: isLoading1 } = useStudyParticipationMutation(
-    dayjs(date),
-    "post",
-    {
-      onSuccess() {
-        handleSuccess("vote");
-      },
-    },
-  );
 
-  const myStudyStatus2 = getMyStudyStatus(myStudyInfo, absences, session?.user.uid, date);
+const getStudyNavigationProps = (
+  studyStatus:StudyStatus
+  isConfirmed: boolean,
+): { type: "single" | "multi"; text: string; colorScheme: string } => {
+  switch (myStudyStatus2) {
+    case "voting":
+      if (isConfirmed) return { text: "출석 체크", type: "multi", colorScheme: "mint" };
+      return { text: "투표중", type: "multi", colorScheme: "mint" };
+    case "attended":
+      return { text: "출석 완료", type: "multi", colorScheme: "black" };
+    case "canceled":
+      return { text: "당일 불참", type: "multi", colorScheme: "gray" };
+    case "pending":
+      return { text: "스터디 투표", type: "single", colorScheme: "mint" };
+    case "expired":
+      return { text: "기간 만료", type: "single", colorScheme: "gray" };
+  }
+};
+
   const { text, type, colorScheme } =
     getStudyNavigationProps(myStudyStatus2, date === dayjsToStr(dayjs())) || {};
 
@@ -286,16 +279,7 @@ function StudyNavigation({
           setIsModal={() => setAlertModalInfo(null)}
         />
       )}
-      {modalType === "placePicker" && (
-        <StudyPlacePickerDrawer
-          subArr={subArr}
-          setSubArr={setSubArr}
-          setModalType={setModalType}
-          id={id}
-          studyVoteData={studyVoteData}
-          findMyPickMainPlace={findMyPickMainPlace}
-        />
-      )}
+      
       {modalType === "timeSelect" && (
         <StudyVoteTimeRulletDrawer
           defaultVoteTime={
@@ -324,29 +308,12 @@ const getMyStudyStatus = (
 ): UserStudyStatus => {
   if (!myUid) return undefined;
   if (myStudyInfo?.attendance.arrived) return "attended";
-  else if (absences?.map((absence) => absence.user.uid).includes(myUid)) return "cancelled";
+  else if (absences?.map((absence) => absence.user.uid).includes(myUid)) return "canceled";
   else if (dayjs(date).endOf("day").isBefore(dayjs())) return "expired";
   else if (myStudyInfo) return "voting";
   else if (!myStudyInfo) return "pending";
 };
 
-const getStudyNavigationProps = (
-  myStudyStatus2: UserStudyStatus,
-  isConfirmed: boolean,
-): { type: "single" | "multi"; text: string; colorScheme: string } => {
-  switch (myStudyStatus2) {
-    case "voting":
-      if (isConfirmed) return { text: "출석 체크", type: "multi", colorScheme: "mint" };
-      return { text: "투표중", type: "multi", colorScheme: "mint" };
-    case "attended":
-      return { text: "출석 완료", type: "multi", colorScheme: "black" };
-    case "cancelled":
-      return { text: "당일 불참", type: "multi", colorScheme: "gray" };
-    case "pending":
-      return { text: "스터디 투표", type: "single", colorScheme: "mint" };
-    case "expired":
-      return { text: "기간 만료", type: "single", colorScheme: "gray" };
-  }
-};
+
 
 export default StudyNavigation;

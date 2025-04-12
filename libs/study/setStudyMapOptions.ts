@@ -97,7 +97,7 @@ export const getMarkersOptions = (
 
   if (studyResults) {
     studyResults.forEach((par) => {
-      console.log("par", par);
+    
       temp.push({
         id: par.place._id,
         position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),

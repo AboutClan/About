@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 
 import Slide from "../components/layouts/PageSlide";
 import { useUserCurrentLocation } from "../hooks/custom/CurrentLocationHook";
+import { useStudyResultDecideMutation } from "../hooks/study/mutations";
 import { useStudyVoteQuery } from "../hooks/study/queries";
 import { useUserInfoQuery } from "../hooks/user/queries";
 import { convertStudyToMergeStudy } from "../libs/study/studyConverters";
@@ -44,6 +45,14 @@ export default function StudyPage() {
   const { data: studyVoteData, isLoading } = useStudyVoteQuery(date, {
     enabled: !!date,
   });
+
+  const { mutate } = useStudyResultDecideMutation(date);
+
+  // useEffect(() => {
+  //   if (date) {
+  //     mutate();
+  //   }
+  // }, [date]);
 
   //dateParam이 아예 없는 경우가 있을 수 있을까?
   useEffect(() => {

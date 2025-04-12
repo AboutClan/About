@@ -39,7 +39,7 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
   const { mutate: setVoteComment } = useStudyCommentMutation(date, {
     onSuccess: () => handleSuccessChange(),
   });
-  console.log(members);
+
   const isMyStudy = members?.some((who) => who.user.uid === session?.user.uid);
 
   const handleSuccessChange = () => {
@@ -61,7 +61,7 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
         memo: user.comment,
       };
     }
-    console.log("SSS", status);
+
     const obj = composeUserCardArr(member);
 
     const rightComponentProps = obj.rightComponentProps;
@@ -74,7 +74,9 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
         <AttendanceBadge
           type={rightComponentProps.type}
           time={rightComponentProps.time}
-          setImageProps={() => setHasImageProps({ image, toUid: member.user.uid })}
+          setImageProps={
+            status === "open" ? null : () => setHasImageProps({ image, toUid: member.user.uid })
+          }
         />
       ) : null,
     };
@@ -136,7 +138,6 @@ interface IReturnProps extends Omit<IProfileCommentCard, "rightComponent"> {
 }
 
 const composeUserCardArr = (participant: StudyMemberProps): IReturnProps => {
-  console.log(participant);
   const attendance = participant?.attendance;
 
   const type = attendance?.type;
@@ -145,7 +146,7 @@ const composeUserCardArr = (participant: StudyMemberProps): IReturnProps => {
   const memo = time ? (attendance.memo || type === "arrived" ? "출석" : "불참") : null;
 
   const user = participant.user;
-  console.log(user);
+
   return {
     user: user,
     memo: memo || participant.user.comment,

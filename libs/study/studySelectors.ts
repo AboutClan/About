@@ -5,8 +5,6 @@ import { convertStudyToMergeStudy } from "./studyConverters";
 
 //내 스터디 결과 찾기
 
-
-
 export const findMyStudyByUserId = (
   studyVoteData: StudyVoteDataProps,
   userId: string,

@@ -85,14 +85,14 @@ export default function ProfileCommentCard({
         <ModalLayout
           footerOptions={{
             main: {
-              text: isEdit ? "변경" : "확인",
+              text: isEdit ? (comment?.text ? "변 경" : "입 력") : "확 인",
               func: isEdit ? changeText : closeModal,
             },
             ...(isEdit && { sub: { func: closeModal } }),
             isFull: false,
           }}
           setIsModal={setIsCommentModal}
-          title={`${user.name}님의 한줄 코멘트`}
+          title={`${user.name}님의 한 줄 코멘트`}
         >
           {!isEdit ? (
             <Box

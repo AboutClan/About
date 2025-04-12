@@ -61,7 +61,7 @@ export default function VoteMap({
 
     naver.maps.Event.trigger(mapInstanceRef.current, "resize");
   }, [resizeToggle]);
-  console.log(mapElementsRef);
+
   useEffect(() => {
     const map = mapInstanceRef.current;
 
@@ -108,7 +108,7 @@ export default function VoteMap({
       });
       mapElementsRef.current.markers.push(marker);
     });
-    console.log(123, circleCenter);
+   
     if (circleCenter) {
       const circle = new naver.maps.Circle({
         map: mapInstanceRef.current,
@@ -123,7 +123,7 @@ export default function VoteMap({
       (mapElementsRef.current as any).circle = circle;
     }
   }, [markersOptions, circleCenter]);
-  console.log(mapElementsRef);
+
   useEffect(() => {
     if (!centerValue || !mapInstanceRef.current) return;
 

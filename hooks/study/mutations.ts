@@ -89,14 +89,14 @@ export const useStudyOpenFreeMutation = (date: string, options?: MutationOptions
   );
 
 export const useStudyAttendCheckMutation = (
-  options?: MutationOptions<{ memo: string; endHour: Dayjs }, { data: CollectionProps }>,
+  options?: MutationOptions<{ memo: string; end: string }, CollectionProps>,
 ) =>
-  useMutation<{ data: CollectionProps }, AxiosError, { memo: string; endHour: Dayjs }>(
-    ({ memo, endHour }) =>
-      requestServer<{ memo: string; endHour: Dayjs }, { data: CollectionProps }>({
-        method: "patch",
-        url: `vote/${dayjsToStr(dayjs())}/arrived`,
-        body: { memo, endHour },
+  useMutation<CollectionProps, AxiosError, { memo: string; end: string }>(
+    ({ memo, end }) =>
+      requestServer<{ memo: string; end: string }, CollectionProps>({
+        method: "post",
+        url: `vote2/${dayjsToStr(dayjs())}/arrive`,
+        body: { memo, end },
       }),
     options,
   );
@@ -126,8 +126,8 @@ export const useStudyResultDecideMutation = (date: string, options?: MutationOpt
   useMutation<any, AxiosError, void>(
     () =>
       requestServer<void>({
-        method: "patch",
-        url: `admin/vote/${date}/status/confirm`,
+        method: "post",
+        url: `vote2/${date}/result`,
       }),
     options,
   );

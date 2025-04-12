@@ -67,7 +67,8 @@ function Configuration() {
   const { mutate: getDeposit } = usePointSystemMutation("deposit");
   const { mutate: handleArrived, isLoading: isLoading1 } = useStudyAttendCheckMutation({
     onSuccess(data) {
-      handleAttendSuccess(data.data);
+      console.log("date", data);
+      handleAttendSuccess(data);
     },
   });
 
@@ -104,6 +105,7 @@ function Configuration() {
   }, []);
 
   const handleAttendSuccess = (collection: CollectionProps) => {
+    console.log("w", collection);
     setTransferCollection({ alphabet: collection.alphabet, stamps: collection.stamps });
     saveTogetherMembers();
     resetStudy();
@@ -139,7 +141,7 @@ function Configuration() {
       (studyType === "open" && myStudyResult.place.name === transferStudyAttendance?.place?.name)
     ) {
       setIsChecking(true);
-      handleArrived({ memo: attendMessage, endHour: convertTimeStringToDayjs(endTime) });
+      handleArrived({ memo: attendMessage, end: convertTimeStringToDayjs(endTime).toISOString() });
       if (!transferStudyAttendance) return;
       formData.append("image", transferStudyAttendance.image);
       formData.append("path", "studyAttend");

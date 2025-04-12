@@ -47,6 +47,7 @@ function StudyControlButton({
   const onClickButton = () => {
     switch (myVoteStatus) {
       case "open":
+        router.push(`/vote/attend/configuration?date=${date}`);
         break;
       case "pending":
         setStudyDrawerType("vote");
