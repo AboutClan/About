@@ -30,6 +30,7 @@ export interface IUser extends Omit<IUserRegisterForm, "location">, IUserSummary
   };
   weekStudyTargetHour: number;
   weekStudyAccumulationMinutes: number;
+  isLocationSharingDenided: boolean;
 }
 
 export interface UserSimpleInfoProps {

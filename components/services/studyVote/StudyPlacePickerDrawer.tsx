@@ -1,10 +1,13 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useState } from "react";
-import { setStudyThumbnailCard } from "../../../libs/study/thumbnailCardLibs";
+import {
+  setStudyThumbnailCard,
+  sortThumbnailCardInfoArr,
+} from "../../../libs/study/thumbnailCardLibs";
 
 import { CoordinatesProps } from "../../../types/common";
 import { IModal } from "../../../types/components/modalTypes";
-import { StudyMergeResultProps } from "../../../types/models/studyTypes/baseTypes";
+import { StudyMergeResultProps } from "../../../types/models/studyTypes/derivedTypes";
 import PickerRowButton from "../../molecules/PickerRowButton";
 import BottomFlexDrawer, { BottomFlexDrawerOptions } from "../../organisms/drawer/BottomFlexDrawer";
 
@@ -38,6 +41,8 @@ function StudyPlacePickerDrawer({
 
   const thumbnailArr = setStudyThumbnailCard(date, null, studyResults, currentLocation, false);
 
+  const sortedThumbnailArr = sortThumbnailCardInfoArr("인원순", thumbnailArr);
+
   return (
     <>
       <BottomFlexDrawer
@@ -50,12 +55,13 @@ function StudyPlacePickerDrawer({
         drawerOptions={drawerOptions2}
       >
         <Flex w="full" direction="column" overflowY="scroll">
-          {thumbnailArr?.map((studyResult, idx) => {
+          {sortedThumbnailArr?.map((studyResult, idx) => {
             const id = studyResult.place._id;
             return (
               <Box key={idx} mb={2} w="full">
                 <PickerRowButton
                   {...studyResult}
+                  participantCnt={studyResult.participants.length}
                   onClick={() => setSelectedPlaceId((old) => (old === id ? null : id))}
                   isNoSelect={selectedPlaceId !== id}
                 />

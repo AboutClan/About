@@ -5,6 +5,7 @@ import { CoordinatesProps } from "../../types/common";
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
 import {
   RealTimeMemberProps,
+  StudyParticipationProps,
   StudyResultProps,
   StudyStatus,
 } from "../../types/models/studyTypes/baseTypes";
@@ -13,7 +14,7 @@ import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomIdx } from "../../utils/mathUtils";
 
 import { getStudyTime } from "./getStudyTime";
-import { getCurrentLocationIcon, getStudyIcon } from "./getStudyVoteIcon";
+import { getCurrentLocationIcon, getStudyIcon, getVoteLocationIcon } from "./getStudyVoteIcon";
 import { convertMergePlaceToPlace } from "./studyConverters";
 
 export const getDetailInfo = (result: StudyMergeResultProps, myUid: string): StudyInfoProps => {
@@ -69,10 +70,11 @@ export const getMarkersOptions = (
   studyRealTimes: RealTimeMemberProps[],
   currentLocation: CoordinatesProps,
   myVoteCoordinates: CoordinatesProps,
+  participations: StudyParticipationProps[],
 ): IMarkerOptions[] | undefined => {
   if (typeof naver === "undefined") return;
   const temp = [];
-
+  console.log(524, participations);
   if (currentLocation) {
     temp.push({
       position: new naver.maps.LatLng(currentLocation.lat, currentLocation.lon),
@@ -84,11 +86,24 @@ export const getMarkersOptions = (
     });
   }
 
+  if (participations) {
+    participations.forEach((par) => {
+      temp.push({
+        position: new naver.maps.LatLng(par.latitude, par.longitude),
+        icon: {
+          content: getStudyIcon("none", null),
+          size: new naver.maps.Size(72, 72),
+          anchor: new naver.maps.Point(36, 44),
+        },
+      });
+    });
+  }
+
   if (myVoteCoordinates) {
     temp.push({
       position: new naver.maps.LatLng(myVoteCoordinates.lat, myVoteCoordinates.lon),
       icon: {
-        content: getStudyIcon("none", null, "orange"),
+        content: getVoteLocationIcon(),
         size: new naver.maps.Size(72, 72),
         anchor: new naver.maps.Point(36, 44),
       },
@@ -97,12 +112,11 @@ export const getMarkersOptions = (
 
   if (studyResults) {
     studyResults.forEach((par) => {
-    
       temp.push({
         id: par.place._id,
         position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
         icon: {
-          content: getStudyIcon(null, par.members.length),
+          content: getStudyIcon(null, par.members.length, participations ? "orange" : null),
           size: new naver.maps.Size(72, 72),
           anchor: new naver.maps.Point(36, 44),
         },

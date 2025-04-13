@@ -13,7 +13,6 @@ import { useStudyVoteQuery } from "../../../../hooks/study/queries";
 import { convertMergePlaceToPlace } from "../../../../libs/study/studyConverters";
 import { findMyStudyByUserId, findStudyByPlaceId } from "../../../../libs/study/studySelectors";
 
-import StudyInviteModal from "../../../../modals/study/StudyInviteModal";
 import StudyAddressMap from "../../../../pageTemplates/study/StudyAddressMap";
 import StudyCover from "../../../../pageTemplates/study/StudyCover";
 import StudyDateBar from "../../../../pageTemplates/study/StudyDateBar";
@@ -81,7 +80,7 @@ export default function Page() {
     studyVoteData?.participations?.map((par) => ({
       user: par.user,
     }));
-
+  console.log(51, findStudy);
   // const absences = studyVoteData?.participations.find((par) => par.place._id === id)?.absences;
 
   return (
@@ -111,18 +110,20 @@ export default function Page() {
               )}
               <StudyDateBar
                 date={date}
-                memberCnt={members.length}
+                memberCnt={members?.length}
                 isParticipationPage={isParticipationPage}
               />
               {id !== "participations" && (
                 <StudyTimeBoard members={members as StudyMemberProps[]} />
               )}
               <Box h="1px" bg="gray.100" my={4} />
-              <StudyMembers
-                date={date}
-                members={members}
-                status={findStudy?.status || "recruiting"}
-              />
+              <Box pb={2}>
+                <StudyMembers
+                  date={date}
+                  members={members}
+                  status={findStudy?.status || "recruiting"}
+                />
+              </Box>
             </Slide>
           </Box>
           {findStudy && (
@@ -133,7 +134,7 @@ export default function Page() {
               id={id}
             />
           )}
-          {isInviteModal && <StudyInviteModal setIsModal={setIsInviteModal} place={place} />}
+          {/* {isInviteModal && <StudyInviteModal setIsModal={setIsInviteModal} place={place} />} */}
         </>
       ) : (
         <MainLoading />

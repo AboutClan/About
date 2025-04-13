@@ -3,10 +3,10 @@ import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-
 import AlertModal from "../../../components/AlertModal";
 import PageIntro from "../../../components/atoms/PageIntro";
 import SectionTitle from "../../../components/atoms/SectionTitle";
+
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
@@ -14,11 +14,9 @@ import ImageUploadInput from "../../../components/molecules/ImageUploadInput";
 import LocationSearch from "../../../components/organisms/location/LocationSearch";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useStudyVoteQuery } from "../../../hooks/study/queries";
-import { checkMyStudyType, findMyStudyByUserId } from "../../../libs/study/studySelectors";
+import { findMyStudyByUserId } from "../../../libs/study/studySelectors";
 import { transferStudyAttendanceState } from "../../../recoils/transferRecoils";
 import { KakaoLocationProps } from "../../../types/externals/kakaoLocationSearch";
-import { StudyPlaceProps } from "../../../types/models/studyTypes/baseTypes";
-import { PlaceInfoProps } from "../../../types/models/utilTypes";
 
 function Certification() {
   const { data: session } = useSession();
@@ -27,9 +25,6 @@ function Certification() {
   const date = searchParams.get("date");
 
   const { data: studyVoteData } = useStudyVoteQuery(date, { enabled: !!date });
-
-  const findMyStudyResult = findMyStudyByUserId(studyVoteData, session?.user.id);
-  const myStudyType = checkMyStudyType(findMyStudyResult);
 
   const [image, setImage] = useState<Blob>();
   const [placeInfo, setPlaceInfo] = useState<KakaoLocationProps>({
@@ -42,8 +37,10 @@ function Certification() {
   const [studyAttendanceRequest, setStudyAttendanceRequest] = useRecoilState(
     transferStudyAttendanceState,
   );
-
+  console.log(studyAttendanceRequest, date);
   useEffect(() => {
+    const findMyStudyResult = findMyStudyByUserId(studyVoteData, session?.user.id);
+
     if (studyAttendanceRequest) {
       const { name, latitude, longitude } = studyAttendanceRequest.place;
       setPlaceInfo({
@@ -52,28 +49,19 @@ function Certification() {
         y: latitude + "",
       });
       setImage(studyAttendanceRequest?.image);
+    } else if (findMyStudyResult) {
+      const studyPlace = findMyStudyResult?.place;
+
+      setPlaceInfo({
+        x: studyPlace.longitude + "",
+        y: studyPlace.latitude + "",
+        road_address_name: studyPlace.address,
+        place_name: studyPlace.name,
+      });
+
+      setIsActive(false);
     }
-  }, [studyAttendanceRequest]);
-
-  useEffect(() => {
-    if (!findMyStudyResult) return;
-    const studyPlace = findMyStudyResult?.place as StudyPlaceProps;
-    const realTimePlace = findMyStudyResult?.place as PlaceInfoProps;
-
-    setPlaceInfo((old) => ({
-      ...old,
-      x: (studyPlace?.longitude || realTimePlace?.longitude) + "",
-      y: (studyPlace?.latitude || realTimePlace?.latitude) + "",
-      road_address_name: studyPlace?.locationDetail || realTimePlace?.address,
-      place_name:
-        (findMyStudyResult?.place as StudyPlaceProps)?.fullname ||
-        (findMyStudyResult?.place as PlaceInfoProps)?.name,
-    }));
-
-    setIsActive(false);
-
-    setIsActive(false);
-  }, [findMyStudyResult]);
+  }, [studyAttendanceRequest, studyVoteData, session]);
 
   const handleBottomNav = (e) => {
     if (!image) {
@@ -100,10 +88,7 @@ function Certification() {
   };
 
   const handleResetButton = () => {
-    if (findMyStudyResult) {
-      setIsResetAlert(true);
-      return;
-    }
+    setIsResetAlert(true);
     setPlaceInfo({ place_name: "", road_address_name: "" });
     setIsActive(true);
   };

@@ -9,6 +9,7 @@ import PlaceImage from "./PlaceImage";
 export interface PickerRowButtonProps extends Partial<StudyThumbnailCardProps> {
   onClick: () => void;
   isNoSelect: boolean;
+  participantCnt: number;
 }
 
 function PickerRowButton({ onClick, place, participantCnt, isNoSelect }: PickerRowButtonProps) {

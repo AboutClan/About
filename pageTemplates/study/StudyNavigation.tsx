@@ -19,7 +19,7 @@ import { findMyStudyInfo } from "../../libs/study/studySelectors";
 import StudyAbsentModal from "../../modals/study/StudyAbsentModal";
 import { StudyMergeResultProps } from "../../types/models/studyTypes/derivedTypes";
 import { MyStudyStatus } from "../../types/models/studyTypes/helperTypes";
-import { IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
+import { DayjsTimeProps } from "../../types/utils/timeAndDate";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
 
 interface IStudyNavigation {
@@ -48,7 +48,7 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy }: IStudyNavigatio
   } = useStudyMutations(dayjs(date));
 
   const [isTimeRulletModal, setIsTimeRulletModal] = useState(false);
-  const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
+  const [voteTime, setVoteTime] = useState<DayjsTimeProps>();
   const [isAbsentModal, setIsAbsentModal] = useState(false);
   const [alertModalInfo, setAlertModalInfo] = useState<IAlertModalOptions>();
 
@@ -71,7 +71,7 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy }: IStudyNavigatio
       text: "출석 체크",
       type: "multi",
       colorScheme: "mint",
-      func: () => router.push(`vote/attend/certification?date=${date}&id=${id}`),
+      func: () => router.push(`/vote/attend/certification?date=${date}&id=${id}`),
     },
     todayPending: {
       text: "스터디 참여",
@@ -85,10 +85,25 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy }: IStudyNavigatio
         setIsTimeRulletModal(true);
       },
     },
-    arrived: { text: "출석 완료", type: "multi", colorScheme: "black" },
-    absenced: { text: "당일 불참", type: "multi", colorScheme: "gray" },
+    arrived: { text: "출석 완료", type: "single", colorScheme: "black" },
+    absenced: { text: "당일 불참", type: "single", colorScheme: "black" },
   };
   const navigationProps: NavigationProps = NAVIGATION_PROPS_MAPPING[myStudyStatus];
+
+  const handleAction = () => {
+    setIsTimeRulletModal(false);
+
+    if (!myStudyInfo) {
+      participate({ placeId: id, ...voteTime });
+      return;
+    }
+
+    if (myStudyStatus === "open") {
+      change(voteTime);
+    } else {
+      realTimeChange(voteTime);
+    }
+  };
 
   const drawerOptions: BottomFlexDrawerOptions = {
     header: {
@@ -97,11 +112,7 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy }: IStudyNavigatio
     },
     footer: {
       text: myStudyStatus === "open" || myStudyStatus === "free" ? "시간 변경" : "참여 완료",
-      func: myStudyInfo
-        ? myStudyStatus === "open"
-          ? () => change(voteTime)
-          : () => realTimeChange(voteTime)
-        : () => participate(voteTime),
+      func: handleAction,
     },
   };
 
@@ -144,12 +155,6 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy }: IStudyNavigatio
   //   }
   // };
 
-  const handleCancleStudy = () => {
-    if (checkAlreadyAttendance()) return;
-    if (myStudyStatus === "open") cancel();
-    else if (myStudyStatus === "free") realTimeCancel();
-  };
-
   const handleChangeTime = () => {
     if (checkAlreadyAttendance()) return;
     setIsTimeRulletModal(true);
@@ -165,44 +170,51 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy }: IStudyNavigatio
     }
     return false;
   };
-  console.log(24, isTimeRulletModal);
+
+  console.log(24, isTimeRulletModal, navigationProps);
   return (
     <>
       <Slide isFixed={true} posZero="top">
-        <Flex
-          borderTop="var(--border)"
-          align="center"
-          bg="white"
-          h={`${64 + iPhoneNotchSize()}px`}
-          pt={2}
-          pb={`${8 + iPhoneNotchSize()}px`}
-          px={5}
-        >
-          {navigationProps.type === "multi" && (
-            <>
-              <IconTextColButton
-                icon={<XCircleIcon size="md" />}
-                text="당일 불참"
-                func={() => setIsAbsentModal(true)}
-              />
-              <IconTextColButton icon={<ClockIcon />} text="시간 변경" func={handleChangeTime} />
-            </>
-          )}
-          <Button
-            size="lg"
-            flex={1}
-            colorScheme={navigationProps.colorScheme}
-            onClick={navigationProps?.func}
+        {navigationProps && (
+          <Flex
+            borderTop="var(--border)"
+            align="center"
+            bg="white"
+            h={`${64 + iPhoneNotchSize()}px`}
+            pt={2}
+            pb={`${8 + iPhoneNotchSize()}px`}
+            px={5}
           >
-            {navigationProps.text}
-          </Button>
-        </Flex>
+            {navigationProps.type === "multi" && (
+              <>
+                <IconTextColButton
+                  icon={<XCircleIcon size="md" />}
+                  text="당일 불참"
+                  func={() => setIsAbsentModal(true)}
+                />
+                <IconTextColButton icon={<ClockIcon />} text="시간 변경" func={handleChangeTime} />
+              </>
+            )}
+            <Button
+              size="lg"
+              flex={1}
+              colorScheme={navigationProps.colorScheme}
+              onClick={navigationProps?.func}
+            >
+              {navigationProps.text}
+            </Button>
+          </Flex>
+        )}
       </Slide>
 
       {isAbsentModal && (
         <StudyAbsentModal
-          studyType=""
-          handleAbsence={(message: string) => absence(message)}
+          studyType={myStudyStatus === "open" ? "voteStudy" : "realTimeStudy"}
+          myStudyInfo={myStudyInfo}
+          handleAbsence={(message: string) => {
+            absence(message);
+            setIsAbsentModal(false);
+          }}
           setIsModal={setIsAbsentModal}
         />
       )}

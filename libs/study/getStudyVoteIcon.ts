@@ -95,3 +95,17 @@ border-radius:50%;
 </div>
 
 `;
+
+export const getVoteLocationIcon = () => `
+<div style="
+width:16px;
+height:16px;
+background-color:var(--color-orange);
+border: 2px solid white;
+box-shadow: 0px 0px 12px 12px rgba(255, 165, 1, 0.2);
+border-radius:50%;
+">
+
+</div>
+
+`;

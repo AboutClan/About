@@ -119,8 +119,11 @@ function Configuration() {
       if (isLate) getDeposit(POINT_SYSTEM_DEPOSIT.STUDY_ATTEND_LATE);
     }
     toast("success", `출석이 완료되었습니다.`);
-    const idParam = id ? `&id=${id}` : null;
-    router.push(`/studyPage?date=${date}${idParam}`);
+    if (id) {
+      router.push(`/study/${id}/${date}`);
+    } else {
+      router.push(`/studyPage?date=${date}`);
+    }
   };
 
   const saveTogetherMembers = () => {

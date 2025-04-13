@@ -27,6 +27,7 @@ export const convertStudyToMergeStudy = (
     place: convertMergePlaceToPlace(result.place),
     status: (result as RealTimesToResultProps)?.status || "open",
   }));
+  console.log(123, mergedResult);
   return mergedResult;
 };
 
@@ -74,7 +75,7 @@ export const convertMergePlaceToPlace = (
   if (!mergePlace) return;
   const studyPlace = mergePlace as StudyPlaceProps;
   const realTimePlace = mergePlace as PlaceInfoProps;
-
+  console.log(14, studyPlace, realTimePlace);
   return {
     name: studyPlace?.fullname || realTimePlace?.name,
     branch: studyPlace?.branch || realTimePlace?.name.split(" ")?.[1] || "알수없음",

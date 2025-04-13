@@ -71,9 +71,9 @@ function StudyControlButton({
     //   router.push(`/vote/attend/configuration`);
     // }
   };
-
+  console.log(myVoteStatus);
   const { colorScheme, rightIcon, text } = getButtonOptions(myVoteStatus);
-
+  console.log("SS", studyDrawerType);
   return (
     <>
       <Flex
@@ -96,7 +96,7 @@ function StudyControlButton({
           colorScheme={colorScheme}
           rightIcon={rightIcon}
           onClick={onClickButton}
-          // isDisabled={!!isArrived}
+          isDisabled={myVoteStatus === "arrived" || myVoteStatus === "absenced"}
           _hover={{
             background: undefined,
           }}
@@ -125,6 +125,18 @@ const getButtonOptions = (
         rightIcon: <StudyUserCancleIcon />,
         text: "참여 취소",
       };
+    case "open":
+      return {
+        colorScheme: "orange",
+        rightIcon: <StudyUserCheckIcon color="white" />,
+        text: "출석 체크",
+      };
+    case "free":
+      return {
+        colorScheme: "orange",
+        rightIcon: <StudyUserCheckIcon color="white" />,
+        text: "출석 체크",
+      };
     case "pending":
       return {
         colorScheme: "mint",
@@ -137,12 +149,17 @@ const getButtonOptions = (
         rightIcon: <StudySoloIcon />,
         text: "자유 스터디 신청",
       };
-
-    default:
+    case "arrived":
       return {
         colorScheme: "orange",
         rightIcon: <StudyUserCheckIcon color="white" />,
-        text: "출석 체크",
+        text: "출석 완료",
+      };
+    case "absenced":
+      return {
+        colorScheme: "red",
+        rightIcon: <StudyUserCancleIcon />,
+        text: "당일 불참",
       };
   }
 };

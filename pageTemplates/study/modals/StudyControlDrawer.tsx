@@ -71,7 +71,7 @@ function StudyControlDrawer({
   const [selectedPlaceId, setSelectedPlaceId] = useState(null);
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
 
-  const [isTimeRullet, setIsTimeRullet] = useState(false);
+  const [timeRulletType, setTimeRulletType] = useState<"vote" | "participate" | "realTime">();
   const [isPlacePickDrawer, setIsPlacePickDrawer] = useState(false);
   const [rightDrawerType, setRightDrawerType] = useState<"realTime" | "vote">(null);
 
@@ -80,7 +80,7 @@ function StudyControlDrawer({
   ) => {
     switch (type) {
       case "selectTime":
-        setIsTimeRullet(true);
+        setTimeRulletType("vote");
         break;
       case "pickPlace":
         if (!studyResults.length) {
@@ -105,26 +105,26 @@ function StudyControlDrawer({
   ) => {
     if (type === "vote") voteStudy(voteData as StudyVoteProps);
     else if (type === "realTime") participateRealTime(voteData as RealTimeVoteProps);
-    setIsTimeRullet(false);
+    setTimeRulletType(null);
     setRightDrawerType(null);
   };
 
-  const drawerOptions: BottomFlexDrawerOptions = {
+  const timeRulletDrawerOptions: BottomFlexDrawerOptions = {
     header: {
       title: "스터디 참여 시간 선택",
       subTitle: "예상 시작 시간과 종료 시간을 선택해 주세요",
     },
     footer: {
-      text: studyDrawerType === "free" ? "참여 확정" : "신청 완료",
+      text: timeRulletType === "participate" ? "참여 확정" : "신청 완료",
       func:
-        studyDrawerType === "free"
+        timeRulletType === "participate"
           ? () => {
               participateStudyOne({
                 placeId: selectedPlaceId,
-                start: voteTime.start.toISOString(),
-                end: voteTime.end.toISOString(),
+                start: voteTime.start,
+                end: voteTime.end,
               });
-              setIsTimeRullet(false);
+              setTimeRulletType(null);
             }
           : () => {
               const { lat: latitude, lon: longitude } = { ...userInfo?.locationDetail };
@@ -235,16 +235,17 @@ function StudyControlDrawer({
           currentLocation={currentLocation}
           handlePickPlace={(placeId: string) => {
             setSelectedPlaceId(placeId);
-            setIsTimeRullet(true);
+            setTimeRulletType("participate");
+            setIsPlacePickDrawer(false);
           }}
           setIsModal={setIsPlacePickDrawer}
         />
       )}
-      {isTimeRullet && (
+      {timeRulletType && (
         <StudyVoteTimeRulletDrawer
           setVoteTime={setVoteTime}
-          drawerOptions={drawerOptions}
-          setIsModal={setIsTimeRullet}
+          drawerOptions={timeRulletDrawerOptions}
+          setIsModal={() => setTimeRulletType(null)}
           zIndex={800}
         />
       )}

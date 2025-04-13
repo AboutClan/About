@@ -18,7 +18,7 @@ export interface StudyParticipationProps {
   end: string;
   latitude: number;
   longitude: number;
-  user: UserSimpleInfoProps;
+  user: ParticipationUser;
 }
 
 export interface StudyResultProps {
@@ -53,3 +53,7 @@ export interface StudyPlaceProps extends PlaceRegisterProps {
 export type StudyStatus = "open" | RealTimesStatus;
 
 export type RealTimesStatus = "free" | "solo" | "cancel";
+
+interface ParticipationUser extends UserSimpleInfoProps {
+  isLocationSharingDenided?: boolean;
+}

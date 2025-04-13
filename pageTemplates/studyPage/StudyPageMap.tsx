@@ -58,13 +58,17 @@ function StudyPageMap({
         studyVoteData?.realTimes?.userList || null,
         currentLocation,
         myVoteCoordinates,
-        // studyVoteData?.participations,
+        studyVoteData?.participations.filter(
+          (who) =>
+            who?.user?.isLocationSharingDenided === true ||
+            userInfo?.friend.includes(who?.user.uid),
+        ),
       ),
     );
   }, [studyVoteData, currentLocation, centerLocation, isMapExpansion]);
-
+  console.log(33, studyVoteData?.participations?.[0]?.user);
   const handleMarker = (id: string, type: "vote") => {
-    if (!id || !studyVoteData) return;
+    if (!id || !studyVoteData || studyVoteData?.participations) return;
 
     const findStudy = studyVoteData && findStudyByPlaceId(studyVoteData, id);
 

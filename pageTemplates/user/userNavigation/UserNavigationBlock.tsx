@@ -1,6 +1,5 @@
-import dayjs from "dayjs";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import RowButtonBlock from "../../../components/atoms/blocks/RowButtonBlock";
@@ -9,7 +8,6 @@ import TextDevider from "../../../components/atoms/devider/TextDevider";
 import { DESIGN_PAGE_USER_PERMISSION } from "../../../constants/storage/userPermissions";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import { DispatchString } from "../../../types/hooks/reactTypes";
-import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import { UserOverviewModal } from "./UserNavigation";
 
 interface IUserNavigationBlock {
@@ -38,13 +36,6 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
       router.push(content);
     }
     if (type === "modal") {
-      if ((content as UserOverviewModal) === "levelUp") {
-        if (role !== "human") {
-          failToast("free", "신청가능한 등급이 없습니다.");
-          return;
-        }
-      }
-
       setModalOpen(content);
     }
   };
@@ -71,7 +62,12 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
       <div>
         <BlockName>계정</BlockName>
         <NavBlock>
-          <button onClick={() => onClickBlock("modal", "secede")}>회원 탈퇴</button>
+          <button onClick={() => onClickBlock("modal", "mainPlace")}>주 활동장소 변경</button>
+          <button onClick={() => onClickBlock("modal", "profile")}>프로필 공개 설정</button>
+          <button onClick={() => onClickBlock("modal", "isLocationSharingDenided")}>
+            스터디 위치 공개 설정
+          </button>
+          <button onClick={() => onClickBlock("modal", "deposit")}>보증금 충전</button>
         </NavBlock>
       </div>
       <div>
@@ -79,20 +75,7 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
         <NavBlock>
           <button onClick={() => onClickBlock("modal", "suggest")}>건의하기</button>
           <button onClick={() => onClickBlock("modal", "declaration")}>불편사항 신고</button>
-          <button onClick={() => onClickBlock("modal", "studyPlace")}>스터디 장소 추가 요청</button>
           <button onClick={() => onClickBlock("modal", "rest")}>휴식 신청 / 취소</button>
-          <button onClick={() => onClickBlock("modal", "levelUp")}>등업 신청</button>
-        </NavBlock>
-      </div>
-      <div>
-        <BlockName>기타 세팅</BlockName>
-        <NavBlock>
-          <button onClick={() => onClickBlock("modal", "profile")}>프로필 공개 설정</button>
-
-          <button onClick={() => onClickBlock("modal", "deposit")}>보증금 충전</button>
-          <button onClick={() => onClickBlock("modal", "mainPlace")}>주 활동장소 변경</button>
-          <button onClick={() => onClickBlock("modal", "spaceSetting")}>스터디 프리셋 설정</button>
-          <button onClick={() => onClickBlock("modal", "logout")}>로그아웃</button>
         </NavBlock>
       </div>
       <div>
@@ -105,17 +88,14 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
           <button onClick={() => onClickBlock("page", `/user/info/privacy`)}>
             개인정보 처리방침
           </button>
-          <button onClick={() => onClickBlock("page", `/user/info/avatar`)}>
-            아바타 아이콘 저작권
-          </button>
-
-          <button onClick={() => router.push(`/vote?location=suw&date=${dayjsToStr(dayjs())}`)}>
-            임시
-          </button>
         </NavBlock>
       </div>
       <div>
-        <BlockName />
+        <BlockName>탈퇴</BlockName>
+        <NavBlock>
+          <button onClick={() => onClickBlock("modal", "secede")}>회원 탈퇴</button>
+          <button onClick={() => onClickBlock("modal", "logout")}>로그아웃</button>
+        </NavBlock>
       </div>
     </Layout>
   );

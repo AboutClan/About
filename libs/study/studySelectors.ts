@@ -31,5 +31,6 @@ export const findStudyByPlaceId = (
 ): StudyMergeResultProps => {
   if (!studyVoteData || !placeId) return;
   const convertedResults = convertStudyToMergeStudy(studyVoteData);
+  console.log(24, convertedResults);
   return convertedResults.find((result) => result.place._id === placeId);
 };

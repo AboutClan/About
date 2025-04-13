@@ -7,12 +7,9 @@ import styled from "styled-components";
 
 import dayjs from "dayjs";
 import { useHandleMove } from "../@natives/useHandleBottomNav";
-import { USER_LOCATION } from "../constants/keys/localStorage";
 import { useTypeToast } from "../hooks/custom/CustomToast";
 import { getStudyViewDate } from "../libs/study/date/getStudyDateStatus";
 import { slideDirectionState } from "../recoils/navigationRecoils";
-import { ActiveLocation } from "../types/services/locationTypes";
-import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
 import { iPhoneNotchSize } from "../utils/validationUtils";
 import { CommunityIcon, HomeIcon, StudyIcon, ThunderIcon } from "./Icons/BottomNavIcons";
 import { UserIcon } from "./Icons/UserIcons";
@@ -36,9 +33,6 @@ export default function BottomNav() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
-  const userLocation =
-    (localStorage.getItem(USER_LOCATION) as ActiveLocation) || session?.user.location;
-  const locationEn = convertLocationLangTo(userLocation, "en");
 
   return (
     <Nav>
@@ -117,6 +111,12 @@ const navItems: INavButtonProps[] = [
     url: "/home",
   },
   {
+    activeIcon: <StudyIcon isActive />,
+    defaultIcon: <StudyIcon />,
+    text: "스터디",
+    url: "/studyPage",
+  },
+  {
     activeIcon: <ThunderIcon isActive />,
     defaultIcon: <ThunderIcon />,
     text: "소셜링",
@@ -127,12 +127,6 @@ const navItems: INavButtonProps[] = [
     defaultIcon: <CommunityIcon />,
     text: "소모임",
     url: "/group",
-  },
-  {
-    activeIcon: <StudyIcon isActive />,
-    defaultIcon: <StudyIcon />,
-    text: "스터디",
-    url: "/studyPage",
   },
   {
     activeIcon: <UserIcon size="md" isActive />,

@@ -49,13 +49,14 @@ export const useStudyVoteMutation = <T extends "post" | "patch" | "delete">(
 
 export const useStudyParticipateMutation = (
   voteDate: Dayjs,
-  options?: MutationOptions<{ start: string; end: string; placeId: string }>,
+  options?: MutationOptions<{ start: Dayjs; end: Dayjs; placeId: string }>,
 ) =>
-  useMutation<void, AxiosError, { start: string; end: string; placeId: string }>((voteInfo) => {
+  useMutation<void, AxiosError, { start: Dayjs; end: Dayjs; placeId: string }>((voteInfo) => {
+    const { start, end } = voteInfo;
     return requestServer<{ start: string; end: string; placeId: string }>({
       method: "post",
       url: `vote2/${dayjsToStr(voteDate)}/participate`,
-      body: voteInfo,
+      body: { ...voteInfo, start: start.toISOString(), end: end.toISOString() },
     });
   }, options);
 

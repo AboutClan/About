@@ -11,7 +11,7 @@ import { useStudyVoteQuery } from "../hooks/study/queries";
 import { useUserInfoQuery } from "../hooks/user/queries";
 import { convertStudyToMergeStudy } from "../libs/study/studyConverters";
 
-import { findMyStudyByUserId } from "../libs/study/studySelectors";
+import { findMyStudyByUserId, findMyStudyInfo } from "../libs/study/studySelectors";
 import StudyPageAddPlaceButton from "../pageTemplates/studyPage/StudyPageAddPlaceButton";
 import StudyPageCalendar from "../pageTemplates/studyPage/StudyPageCalendar";
 import StudyPageHeader from "../pageTemplates/studyPage/StudyPageHeader";
@@ -73,6 +73,7 @@ export default function StudyPage() {
   useEffect(() => {
     if (!studyVoteData || !session?.user?.id) return;
     const findMyStudyResult = findMyStudyByUserId(studyVoteData, session?.user.id);
+    const myStudyInfo = findMyStudyInfo(findMyStudyResult, session?.user.id);
 
     setCenterLocation(currentLocation);
 
@@ -84,7 +85,12 @@ export default function StudyPage() {
     }
 
     if (findMyStudyResult) {
-      setMyVoteStatus(findMyStudyResult.status === "open" ? "open" : "free");
+      const attendanceType = myStudyInfo?.attendance.type;
+      if (attendanceType) {
+        setMyVoteStatus(attendanceType);
+      } else {
+        setMyVoteStatus(findMyStudyResult.status === "open" ? "open" : "free");
+      }
       setCenterLocation({
         lat: findMyStudyResult.place.latitude,
         lon: findMyStudyResult.place.longitude,
