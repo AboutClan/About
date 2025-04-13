@@ -4,7 +4,6 @@ import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 
 import { GATHER_CONTENT, GROUP_STUDY, STUDY_VOTE, USER_INFO } from "../../constants/keys/queryKeys";
-
 import { transferGatherDataState, transferGroupDataState } from "../../recoils/transferRecoils";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
 import { useStudyPreferenceMutation } from "../study/mutations";

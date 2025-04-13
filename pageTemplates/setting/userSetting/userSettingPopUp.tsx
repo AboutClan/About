@@ -10,7 +10,6 @@ import FAQPopUp from "../../../modals/pop-up/FAQPopUp";
 import LastWeekAttendPopUp from "../../../modals/pop-up/LastWeekAttendPopUp";
 import LocationRegisterPopUp from "../../../modals/pop-up/LocationRegisterPopUp";
 import StudyChallengeModal from "../../../modals/pop-up/StudyChallengeModal";
-
 import StudyPreferencePopUp from "../../../modals/pop-up/StudyPreferencePopUp";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 
