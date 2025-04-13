@@ -1,6 +1,8 @@
 export function Temp() {
-  return null
+  return null;
 }
+
+export default Temp;
 
 // import { Badge, Box, Button, Flex, Grid, GridItem } from "@chakra-ui/react";
 // import dayjs from "dayjs";
