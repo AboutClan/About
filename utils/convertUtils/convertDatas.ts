@@ -30,7 +30,6 @@ export const convertPlaceToStudyPlace = (place: PlaceInfoProps): StudyPlaceProps
     longitude: place.longitude,
     coverImage: "",
     locationDetail: place.address,
-    mapURL: "",
     registerDate: "",
     _id: place._id,
   };

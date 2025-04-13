@@ -1,18 +1,15 @@
 import { Box, Button } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import Slide from "../../components/layouts/PageSlide";
 
+import Slide from "../../components/layouts/PageSlide";
 import VoteMap from "../../components/organisms/VoteMap";
 import { useUserInfoQuery } from "../../hooks/user/queries";
-
 import {
   getDetailInfo,
   getMapOptions,
   getMarkersOptions,
 } from "../../libs/study/setStudyMapOptions";
 import { findStudyByPlaceId } from "../../libs/study/studySelectors";
-
 import { CoordinatesProps } from "../../types/common";
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
 import { DispatchType } from "../../types/hooks/reactTypes";
@@ -37,8 +34,6 @@ function StudyPageMap({
   date,
   myVoteCoordinates,
 }: StudyPageMapProps) {
-  const router = useRouter();
-
   const { data: userInfo } = useUserInfoQuery();
 
   /* 네이버 지도와 마커 옵션 */
@@ -58,7 +53,7 @@ function StudyPageMap({
         studyVoteData?.realTimes?.userList || null,
         currentLocation,
         myVoteCoordinates,
-        studyVoteData?.participations.filter(
+        studyVoteData?.participations?.filter(
           (who) =>
             who?.user?.isLocationSharingDenided === true ||
             userInfo?.friend.includes(who?.user.uid),
@@ -66,10 +61,10 @@ function StudyPageMap({
       ),
     );
   }, [studyVoteData, currentLocation, centerLocation, isMapExpansion]);
-  console.log(33, studyVoteData?.participations?.[0]?.user);
+
   const handleMarker = (id: string, type: "vote") => {
     if (!id || !studyVoteData || studyVoteData?.participations) return;
-
+    console.log(type);
     const findStudy = studyVoteData && findStudyByPlaceId(studyVoteData, id);
 
     const detailInfo = getDetailInfo(findStudy, userInfo?.uid);
@@ -131,16 +126,18 @@ function StudyPageMap({
   );
 }
 
-const XIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    height="24px"
-    viewBox="0 -960 960 960"
-    width="24px"
-    fill="var(--gray-900)"
-  >
-    <path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z" />
-  </svg>
-);
+function XIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="24px"
+      viewBox="0 -960 960 960"
+      width="24px"
+      fill="var(--gray-900)"
+    >
+      <path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z" />
+    </svg>
+  );
+}
 
 export default StudyPageMap;

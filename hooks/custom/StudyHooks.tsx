@@ -1,18 +1,19 @@
 import { Dayjs } from "dayjs";
 import { useSession } from "next-auth/react";
+
 import { findMyStudyByUserId } from "../../libs/study/studySelectors";
 import { StudyMergeResultProps } from "../../types/models/studyTypes/derivedTypes";
 import {
-  useRealTimeCancelMutation,
+  useRealTimeStatusMutation,
   useRealTimeTimeChangeMutation,
   useRealtimeVoteMutation,
 } from "../realtime/mutations";
 import {
   useStudyAbsenceMutation,
   useStudyParticipateMutation,
+  useStudyResultTimeChangeMutation,
   useStudyVoteMutation,
 } from "../study/mutations";
-
 import { useStudyVoteQuery } from "../study/queries";
 import { useResetStudyQuery } from "./CustomHooks";
 import { useTypeToast } from "./CustomToast";
@@ -35,7 +36,7 @@ export const useStudyMutations = (date: Dayjs) => {
     },
   });
 
-  const { mutate: change } = useStudyVoteMutation(date, "patch", {
+  const { mutate: change } = useStudyResultTimeChangeMutation(date, {
     onSuccess: () => {
       typeToast("change");
       resetStudy();
@@ -58,7 +59,7 @@ export const useStudyMutations = (date: Dayjs) => {
 
   const { mutate: absence } = useStudyAbsenceMutation(date, {
     onSuccess: () => {
-      typeToast("participate");
+      typeToast("cancel");
       resetStudy();
     },
   });
@@ -77,7 +78,7 @@ export const useStudyMutations = (date: Dayjs) => {
     },
   });
 
-  const { mutate: realTimeCancel } = useRealTimeCancelMutation({
+  const { mutate: realTimeChangeStatus } = useRealTimeStatusMutation({
     onSuccess: () => {
       typeToast("cancel");
       resetStudy();
@@ -95,7 +96,7 @@ export const useStudyMutations = (date: Dayjs) => {
     realTimeStudy: {
       vote: realTimeVote,
       change: realTimeChange,
-      cancel: realTimeCancel,
+      cancel: realTimeChangeStatus,
     },
   };
 };

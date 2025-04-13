@@ -2,9 +2,7 @@ import RuleIcon from "../../components/Icons/RuleIcon";
 import Header from "../../components/layouts/Header";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 
-interface StudyPageHeaderProps {}
-
-function StudyPageHeader({}: StudyPageHeaderProps) {
+function StudyPageHeader() {
   const typeToast = useTypeToast();
   return (
     <Header title="스터디" isBack={false}>

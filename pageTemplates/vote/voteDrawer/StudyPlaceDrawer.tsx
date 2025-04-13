@@ -8,11 +8,9 @@ import { BottomFlexDrawerOptions } from "../../../components/organisms/drawer/Bo
 import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import SearchLocation from "../../../components/organisms/SearchLocation";
 import StudyVoteTimeRulletDrawer from "../../../components/services/studyVote/StudyVoteTimeRulletDrawer";
-import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
-import { useRealtimeVoteMutation } from "../../../hooks/realtime/mutations";
 import { KakaoLocationProps } from "../../../types/externals/kakaoLocationSearch";
-import { RealTimeVoteProps } from "../../../types/models/studyTypes/baseTypes";
+import { RealTimeVoteProps } from "../../../types/models/studyTypes/requestTypes";
 import { IStudyVoteTime, StudyVoteProps } from "../../../types/models/studyTypes/studyInterActions";
 
 interface StudyPlaceDrawerProps {
@@ -22,23 +20,15 @@ interface StudyPlaceDrawerProps {
   handleStudyVote: (voteData: StudyVoteProps | RealTimeVoteProps) => void;
 }
 
-export function StudyPlaceDrawer({ type, onClose, date, handleStudyVote }: StudyPlaceDrawerProps) {
-  const resetStudy = useResetStudyQuery();
+function StudyPlaceDrawer({ type, onClose, date, handleStudyVote }: StudyPlaceDrawerProps) {
   const toast = useToast();
-  console.log("t", type);
+
   const [placeInfo, setPlaceInfo] = useState<KakaoLocationProps>({
     place_name: "",
     road_address_name: "",
   });
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
   const [isTimeDrawer, setIsTimeDrawer] = useState(false);
-
-  const { mutate, isLoading } = useRealtimeVoteMutation({
-    onSuccess() {
-      toast("success", "참여가 완료되었습니다. 출석 인증도 잊지 마세요!");
-      resetStudy();
-    },
-  });
 
   const handleBottomNav = () => {
     if (!placeInfo?.place_name) {
@@ -91,7 +81,6 @@ export function StudyPlaceDrawer({ type, onClose, date, handleStudyVote }: Study
         //   time: { ...voteTime },
         // });
       },
-      loading: isLoading,
     },
   };
 

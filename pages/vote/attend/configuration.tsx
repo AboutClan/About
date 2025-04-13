@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
@@ -49,8 +49,6 @@ function Configuration() {
     dayjs().hour() < 21 ? dayjsToFormat(dayjs().startOf("hour").add(3, "hour"), "HH:mm") : "23:30",
   );
 
-  console.log("A", myStudyResult);
-
   const textareaRef = useRef(null);
   const [otherPermission, setOtherPermission] = useState<"허용" | "비허용">("허용");
   const [attendMessage, setAttendMessage] = useState("");
@@ -62,13 +60,11 @@ function Configuration() {
   );
   const studyType = myStudyResult?.status;
 
-  console.log(52, transferStudyAttendance);
   const setTransferCollection = useSetRecoilState(transferCollectionState);
 
   const { mutate: getDeposit } = usePointSystemMutation("deposit");
   const { mutate: handleArrived, isLoading: isLoading1 } = useStudyAttendCheckMutation({
     onSuccess(data) {
-      console.log("date", data);
       handleAttendSuccess(data);
     },
   });
@@ -106,7 +102,6 @@ function Configuration() {
   }, []);
 
   const handleAttendSuccess = (collection: CollectionProps) => {
-    console.log("w", collection);
     setTransferCollection({ alphabet: collection.alphabet, stamps: collection.stamps });
     saveTogetherMembers();
     resetStudy();
@@ -162,6 +157,7 @@ function Configuration() {
         "place",
         JSON.stringify(transferStudyAttendance?.place || myStudyResult?.place),
       );
+
       formData.append(
         "time",
         JSON.stringify({

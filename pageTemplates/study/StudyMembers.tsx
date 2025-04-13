@@ -12,7 +12,6 @@ import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useRealTimeCommentMutation } from "../../hooks/realtime/mutations";
 import { useStudyCommentMutation } from "../../hooks/study/mutations";
 import ImageZoomModal from "../../modals/ImageZoomModal";
-import StudyChangeMemoModal from "../../modals/study/StudyChangeMemoModal";
 import { StudyMemberProps, StudyStatus } from "../../types/models/studyTypes/baseTypes";
 import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
@@ -27,7 +26,7 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
   const { data: session } = useSession();
   const resetStudy = useResetStudyQuery();
   const typeToast = useTypeToast();
-  const [hasModalMemo, setHasModalMemo] = useState<string>();
+  // const [hasModalMemo, setHasModalMemo] = useState<string>();
   const [hasImageProps, setHasImageProps] = useState<{
     image: string;
     toUid: string;
@@ -120,12 +119,12 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
       {hasImageProps?.image && hasImageProps?.toUid && (
         <ImageZoomModal imageUrl={hasImageProps.image} setIsModal={() => setHasImageProps(null)} />
       )}
-      {hasModalMemo && (
+      {/* {hasModalMemo && (
         <StudyChangeMemoModal
           hasModalMemo={hasModalMemo}
           setIsModal={() => setHasModalMemo(null)}
         />
-      )}
+      )} */}
     </>
   );
 }
@@ -142,7 +141,7 @@ const composeUserCardArr = (participant: StudyMemberProps): IReturnProps => {
 
   const type = attendance?.type;
   const time = type ? dayjsToFormat(dayjs(attendance.time), "HH:mm") : null;
-  console.log(attendance);
+
   const memo = time ? attendance.memo || (type === "arrived" ? "출석" : "불참") : null;
 
   const user = participant.user;

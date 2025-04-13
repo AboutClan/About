@@ -1,8 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 
-interface StudyPageIntroBoxProps {}
-
-function StudyPageIntroBox({}: StudyPageIntroBoxProps) {
+function StudyPageIntroBox() {
   return (
     <Flex direction="column" mt={5} mb={3}>
       <Box color="gray.500" fontSize="12px" mb={1}>

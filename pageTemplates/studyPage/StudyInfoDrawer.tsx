@@ -18,7 +18,6 @@ import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useRealtimeVoteMutation } from "../../hooks/realtime/mutations";
 import { useStudyCommentMutation, useStudyVoteMutation } from "../../hooks/study/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
-
 import { ModalLayout } from "../../modals/Modals";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { StudyStatus } from "../../types/models/studyTypes/baseTypes";
@@ -117,7 +116,7 @@ function StudyInfoDrawer({ detailInfo, setDetailInfo, date }: StudyInfoDrawerPro
   };
 
   const handleSuccess = () => {
-    typeToast("vote");
+    // typeToast("vote");
     resetStudy();
     setModalType(null);
     setDetailInfo(null);

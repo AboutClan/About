@@ -11,7 +11,7 @@ import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 function UserLogSection() {
   const [tab, setTab] = useState<"score" | "point" | "deposit">("score");
   const [filter, setFilter] = useState("시간 순");
-
+  console.log(filter);
   const { data: userInfo } = useUserInfoQuery();
 
   const { data: logsData } = usePointSystemLogQuery(tab);
@@ -80,7 +80,6 @@ function UserLogSection() {
                 <Block
                   text={log.message}
                   time={dayjsToFormat(timeStamp, "HH:mm")}
-                  iconType="store"
                   value={log.meta.value}
                   currentValue={userInfo?.[tab]}
                   type={tab}
@@ -92,7 +91,6 @@ function UserLogSection() {
               <Block
                 text={log.message}
                 time={dayjsToFormat(timeStamp, "HH:mm")}
-                iconType="store"
                 value={log.meta.value}
                 currentValue={userInfo?.[tab]}
                 type={tab}
@@ -109,13 +107,12 @@ function UserLogSection() {
 interface BlockProps {
   text: string;
   time: string;
-  iconType: "store";
   value: number;
   currentValue: number;
   type: "score" | "point" | "deposit";
 }
 
-function Block({ text, time, iconType, value, currentValue, type }: BlockProps) {
+function Block({ text, time, value, currentValue, type }: BlockProps) {
   const valueText = type === "point" ? " Point" : type === "score" ? "점" : "원";
 
   return (

@@ -1,18 +1,17 @@
 import { useRouter } from "next/router";
-import MenuButton, { MenuProps } from "../../components/atoms/buttons/MenuButton";
 
+import MenuButton, { MenuProps } from "../../components/atoms/buttons/MenuButton";
 import Header from "../../components/layouts/Header";
 import { useToast } from "../../hooks/custom/CustomToast";
-import { MergeStudyPlaceProps } from "../../libs/study/convertMergePlaceToPlace";
+import { MergeStudyPlaceProps } from "../../types/models/studyTypes/derivedTypes";
+
 interface IStudyHeader {
-  date: string;
   placeInfo: MergeStudyPlaceProps;
 }
 
-function StudyHeader({ date, placeInfo }: IStudyHeader) {
+function StudyHeader({ placeInfo }: IStudyHeader) {
   const router = useRouter();
   const toast = useToast();
-  const onClick = () => {};
 
   const menuArr: MenuProps[] = [
     {

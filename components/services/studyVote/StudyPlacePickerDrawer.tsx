@@ -1,10 +1,10 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useState } from "react";
+
 import {
   setStudyThumbnailCard,
   sortThumbnailCardInfoArr,
 } from "../../../libs/study/thumbnailCardLibs";
-
 import { CoordinatesProps } from "../../../types/common";
 import { IModal } from "../../../types/components/modalTypes";
 import { StudyMergeResultProps } from "../../../types/models/studyTypes/derivedTypes";

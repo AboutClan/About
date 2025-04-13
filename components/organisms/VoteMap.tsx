@@ -108,7 +108,7 @@ export default function VoteMap({
       });
       mapElementsRef.current.markers.push(marker);
     });
-   
+
     if (circleCenter) {
       const circle = new naver.maps.Circle({
         map: mapInstanceRef.current,
@@ -120,7 +120,7 @@ export default function VoteMap({
         fillColor: "#007dfb",
         fillOpacity: 0.1,
       });
-      (mapElementsRef.current as any).circle = circle;
+      mapElementsRef.current.circle = circle;
     }
   }, [markersOptions, circleCenter]);
 

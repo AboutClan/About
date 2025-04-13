@@ -4,12 +4,8 @@ import { useSetRecoilState } from "recoil";
 
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
-import {
-  GroupThumbnailCard,
-  GroupThumbnailCardProps,
-} from "../../components/molecules/cards/GroupThumbnailCard";
+import { GroupThumbnailCard } from "../../components/molecules/cards/GroupThumbnailCard";
 import ButtonGroups from "../../components/molecules/groups/ButtonGroups";
-import { useFeedCntQuery } from "../../hooks/feed/queries";
 import { useGroupMyStatusQuery } from "../../hooks/groupStudy/queries";
 import { createGroupThumbnailProps } from "../../pages/group";
 import { transferGroupDataState } from "../../recoils/transferRecoils";
@@ -20,15 +16,11 @@ type GroupType = "참여중인 모임" | "종료된 모임" | "내가 개설한 
 
 function UserGroupSection() {
   const [groupType, setGroupType] = useState<GroupType>("참여중인 모임");
-  const [cardDataArr, setCardDataArr] = useState<GroupThumbnailCardProps[]>();
 
   const [groups, setGroups] = useState<IGroup[]>([]);
   const [cursor, setCursor] = useState(0);
   const loader = useRef<HTMLDivElement | null>(null);
   const firstLoad = useRef(true);
-
-  const { data } = useFeedCntQuery("group");
- 
 
   const setTransdferGroupData = useSetRecoilState(transferGroupDataState);
   const { data: groupData, isLoading } = useGroupMyStatusQuery(
@@ -189,7 +181,7 @@ function UserGroupSection() {
           </Flex>
         )}{" "}
         <div ref={loader} />
-        {isLoading && cardDataArr?.length ? (
+        {isLoading && groups?.length ? (
           <Box position="relative" mt="32px">
             <MainLoadingAbsolute size="sm" />
           </Box>

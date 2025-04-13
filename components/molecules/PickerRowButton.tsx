@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import { CheckCircleIcon } from "../Icons/CircleIcons";
 import { UserIcon } from "../Icons/UserIcons";
-import { StudyThumbnailCardProps, STUDY_MAX_CNT } from "./cards/StudyThumbnailCard";
+import { STUDY_MAX_CNT,StudyThumbnailCardProps } from "./cards/StudyThumbnailCard";
 import PlaceImage from "./PlaceImage";
 
 export interface PickerRowButtonProps extends Partial<StudyThumbnailCardProps> {
@@ -33,7 +33,7 @@ function PickerRowButton({ onClick, place, participantCnt, isNoSelect }: PickerR
         </Box>
         <Flex flex={1} mr={4} direction="column" alignItems="flex-start" minW={0} textAlign="left">
           <Title>{place.name}</Title>
-          <Subtitle fontsize={true ? 12 : 11}>
+          <Subtitle fontsize={12}>
             <Box as="span" fontWeight={600}>
               {place.distance && `${place.distance}KM`}
             </Box>
@@ -67,7 +67,7 @@ function PickerRowButton({ onClick, place, participantCnt, isNoSelect }: PickerR
             </Flex>
           </Flex>
         </Flex>
-        <PlaceImage size="sm" imageProps={place.imageProps} id={""} />
+        <PlaceImage size="sm" imageProps={place.imageProps} id="" />
       </Flex>
     </Button>
   );

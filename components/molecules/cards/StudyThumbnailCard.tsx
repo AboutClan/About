@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { STUDY_STATUS_TO_BADGE } from "../../../constants/studyConstants";
 import { SingleLineText } from "../../../styles/layout/components";
 import { StudyStatus } from "../../../types/models/studyTypes/baseTypes";
-
 import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { LocationDotIcon } from "../../Icons/LocationIcons";
 import { UserIcon } from "../../Icons/UserIcons";
@@ -42,6 +41,7 @@ export function StudyThumbnailCard({
   status,
   func = undefined,
 }: StudyThumbnailCardProps) {
+
   const userAvatarArr = participants.map((par) => {
     return {
       image: par.profileImage,

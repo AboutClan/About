@@ -57,7 +57,7 @@ function StudyAddressMap({ latitude, longitude, address, name }: StudyAddressMap
         </Box>
       </Flex>
       <Box aspectRatio={1.85 / 1} borderRadius="8px" overflow="hidden">
-        <VoteMap mapOptions={mapOptions} markersOptions={markersOptions} />
+        <VoteMap mapOptions={mapOptions} markersOptions={markersOptions} circleCenter={null} />
       </Box>
     </Box>
   );

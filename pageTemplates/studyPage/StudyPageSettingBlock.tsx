@@ -11,9 +11,7 @@ import { useUserInfoQuery } from "../../hooks/user/queries";
 import { RegisterLocationLayout } from "../../pages/register/location";
 import { KakaoLocationProps } from "../../types/externals/kakaoLocationSearch";
 
-interface StudyPageSettingBlockProps {}
-
-function StudyPageSettingBlock({}: StudyPageSettingBlockProps) {
+function StudyPageSettingBlock() {
   const typeToast = useTypeToast();
   const queryClient = useQueryClient();
   const { data: userInfo } = useUserInfoQuery();

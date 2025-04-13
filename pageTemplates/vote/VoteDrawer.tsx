@@ -1,4 +1,6 @@
-export const Temp = () => null;
+export function Temp() {
+  return null
+}
 
 // import { Box, Button, Flex } from "@chakra-ui/react";
 // import dayjs from "dayjs";

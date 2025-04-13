@@ -1,5 +1,5 @@
-export const StudyUserCancleIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+export function StudyUserCancleIcon() {
+  return <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
     <g opacity="0.8">
       <path
         fillRule="evenodd"
@@ -9,10 +9,10 @@ export const StudyUserCancleIcon = () => (
       />
     </g>
   </svg>
-);
+}
 
-export const StudyUserIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+export function StudyUserIcon() {
+  return <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
     <g opacity="0.8">
       <path
         fillRule="evenodd"
@@ -29,10 +29,10 @@ export const StudyUserIcon = () => (
       />
     </g>
   </svg>
-);
+}
 
-export const StudySoloIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+export function StudySoloIcon() {
+  return <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
     <g opacity="0.8">
       <path
         fillRule="evenodd"
@@ -42,10 +42,10 @@ export const StudySoloIcon = () => (
       />
     </g>
   </svg>
-);
+}
 
-export const StudyCheckIcon = () => (
-  <svg
+export function StudyCheckIcon() {
+  return <svg
     xmlns="http://www.w3.org/2000/svg"
     height="20px"
     viewBox="0 -960 960 960"
@@ -54,10 +54,10 @@ export const StudyCheckIcon = () => (
   >
     <path d="m429-438-60-59q-11-11-25-11t-25 11q-11 11-11 25.5t11 25.5l85 85q11 11 25 11t25-11l187-187q11-11 11-25.5T641-599q-11-11-25-11t-25 11L429-438Zm51 342q-79 0-149-30t-122.5-82.5Q156-261 126-331T96-480q0-80 30-149.5t82.5-122Q261-804 331-834t149-30q80 0 149.5 30t122 82.5Q804-699 834-629.5T864-480q0 79-30 149t-82.5 122.5Q699-156 629.5-126T480-96Z" />
   </svg>
-);
+}
 
-export const StudySelectIcon = () => (
-  <svg
+export function StudySelectIcon() {
+  return <svg
     xmlns="http://www.w3.org/2000/svg"
     height="20px"
     viewBox="0 -960 960 960"
@@ -66,10 +66,10 @@ export const StudySelectIcon = () => (
   >
     <path d="M480.28-96Q401-96 331-126t-122.5-82.5Q156-261 126-330.96t-30-149.5Q96-560 126-629.5q30-69.5 82.5-122T330.96-834q69.96-30 149.5-30t149.04 30q69.5 30 122 82.5T834-629.28q30 69.73 30 149Q864-401 834-331t-82.5 122.5Q699-156 629.28-126q-69.73 30-149 30ZM345-297l128-59q3.95-2 7.5-2t7.5 2l128 59q14 6 24-3t5-21L502-668q-6.33-15-22.17-15Q464-683 458-668L315-321q-5 12 5.69 21 10.7 9 24.31 3Z" />
   </svg>
-);
+}
 
-export const StudyUserCheckIcon = ({ color }: { color: "gray" | "white" }) => (
-  <svg
+export function StudyUserCheckIcon({ color }: { color: "gray" | "white" }) {
+  return <svg
     xmlns="http://www.w3.org/2000/svg"
     width={color === "white" ? "12px" : "20px"}
     height={color === "white" ? "12px" : "20px"}
@@ -78,4 +78,4 @@ export const StudyUserCheckIcon = ({ color }: { color: "gray" | "white" }) => (
   >
     <path d="M400-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160q-33 0-56.5-23.5T80-240v-32q0-33 17-62t47-44q51-26 115-44t141-18h26.5q12.5 0 25.5 2 20 2 26 21t-8 33l-17 17q-31 31-35 73t19 77q12 19 3.5 38T412-160H160Zm462-96 174-174q11-11 28-11t28 11q11 11 11 28t-11 28L650-172q-12 12-28 12t-28-12l-82-82q-11-11-11-28t11-28q11-11 28-11t28 11l54 54Z" />
   </svg>
-);
+}

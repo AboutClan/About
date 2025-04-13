@@ -1,4 +1,6 @@
-export const Temp = () => null;
+export function Temp() {
+  return null
+}
 
 // import styled from "styled-components";
 

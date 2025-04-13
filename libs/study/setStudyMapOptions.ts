@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+
 import { STUDY_COMMENT_ARR } from "../../constants/settingValue/comment";
 import { StudyInfoProps } from "../../pageTemplates/studyPage/StudyInfoDrawer";
 import { CoordinatesProps } from "../../types/common";
@@ -12,7 +13,6 @@ import {
 import { StudyMergeResultProps } from "../../types/models/studyTypes/derivedTypes";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomIdx } from "../../utils/mathUtils";
-
 import { getStudyTime } from "./getStudyTime";
 import { getCurrentLocationIcon, getStudyIcon, getVoteLocationIcon } from "./getStudyVoteIcon";
 import { convertMergePlaceToPlace } from "./studyConverters";
@@ -74,7 +74,7 @@ export const getMarkersOptions = (
 ): IMarkerOptions[] | undefined => {
   if (typeof naver === "undefined") return;
   const temp = [];
-  console.log(524, participations);
+
   if (currentLocation) {
     temp.push({
       position: new naver.maps.LatLng(currentLocation.lat, currentLocation.lon),

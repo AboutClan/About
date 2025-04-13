@@ -80,14 +80,14 @@ interface RegisterLocationLayoutProps {
   text?: string;
 }
 
-export const RegisterLocationLayout = ({
+export function RegisterLocationLayout({
   handleButton,
   url,
   placeInfo,
   setPlaceInfo,
   errorMessage,
   text,
-}: RegisterLocationLayoutProps) => {
+}: RegisterLocationLayoutProps) {
   return (
     <>
       <RegisterLayout errorMessage={errorMessage}>
@@ -107,6 +107,6 @@ export const RegisterLocationLayout = ({
       <BottomNav onClick={handleButton} url={url} text={text} />
     </>
   );
-};
+}
 
 export default RegisterLocation;

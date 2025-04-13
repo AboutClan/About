@@ -1,18 +1,16 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useParams, useSearchParams } from "next/navigation";
-import { useState } from "react";
+
 import { STUDY_COVER_IMAGES } from "../../../../assets/images/studyCover";
 import { STUDY_MAIN_IMAGES } from "../../../../assets/images/studyMain";
-
 import { MainLoading } from "../../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../../components/layouts/PageSlide";
 import { useUserCurrentLocation } from "../../../../hooks/custom/CurrentLocationHook";
 import { useStudyVoteQuery } from "../../../../hooks/study/queries";
 import { convertMergePlaceToPlace } from "../../../../libs/study/studyConverters";
 import { findMyStudyByUserId, findStudyByPlaceId } from "../../../../libs/study/studySelectors";
-
 import StudyAddressMap from "../../../../pageTemplates/study/StudyAddressMap";
 import StudyCover from "../../../../pageTemplates/study/StudyCover";
 import StudyDateBar from "../../../../pageTemplates/study/StudyDateBar";
@@ -28,25 +26,19 @@ import { getDistanceFromLatLonInKm, getRandomIdx } from "../../../../utils/mathU
 
 export default function Page() {
   const { data: session } = useSession();
-  const isGuest = session?.user.role === "guest";
-  const searchParams = useSearchParams();
   const { id, date } = useParams<{ id: string; date: string }>() || {};
   const { currentLocation } = useUserCurrentLocation();
 
-  const [isInviteModal, setIsInviteModal] = useState(false);
-
   const isParticipationPage = id === "participations";
 
-  const { data: studyVoteData, isLoading } = useStudyVoteQuery(date, {
+  const { data: studyVoteData } = useStudyVoteQuery(date, {
     enabled: !!date,
   });
-  console.log(studyVoteData);
+
   const findStudy =
     studyVoteData && id !== "participations" && findStudyByPlaceId(studyVoteData, id);
 
   const findMyStudy = findMyStudyByUserId(studyVoteData, session?.user.id);
-
-  const lastStudyHours = dayjs(date).hour(9).startOf("hour").diff(dayjs(), "m");
 
   const placeInfo = convertMergePlaceToPlace(findStudy?.place) || {
     name: "스터디 매칭 대기소",
@@ -59,11 +51,7 @@ export default function Page() {
     latitude: null,
     longitude: null,
     time: dayjsToFormat(dayjs(date), "M월 D일 오후 10시"),
-    // type: studyPlace?.fullname
-    //   ? "public"
-    //   : realTimePlace?.name
-    //   ? "private"
-    //   : (null as "public" | "private"),
+
     _id: null,
   };
 
@@ -80,14 +68,14 @@ export default function Page() {
     studyVoteData?.participations?.map((par) => ({
       user: par.user,
     }));
-  console.log(51, findStudy);
+
   // const absences = studyVoteData?.participations.find((par) => par.place._id === id)?.absences;
 
   return (
     <>
       {studyVoteData ? (
         <>
-          <StudyHeader date={date} placeInfo={placeInfo} />
+          <StudyHeader placeInfo={placeInfo} />
           <Box mb={5}>
             <Slide isNoPadding>
               <StudyCover coverImage={placeInfo.coverImage} />

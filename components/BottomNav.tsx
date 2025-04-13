@@ -1,11 +1,11 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
+import dayjs from "dayjs";
 import Link, { LinkProps } from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import dayjs from "dayjs";
 import { useHandleMove } from "../@natives/useHandleBottomNav";
 import { useTypeToast } from "../hooks/custom/CustomToast";
 import { getStudyViewDate } from "../libs/study/date/getStudyDateStatus";
@@ -29,7 +29,6 @@ interface INavButton extends INavButtonProps {
 type Category = "홈" | "스터디" | "소셜링" | "소모임" | "내 정보";
 
 export default function BottomNav() {
-  const { data: session } = useSession();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);

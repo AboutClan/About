@@ -1,40 +1,44 @@
-import { StudyParticipationProps } from "../../types/models/studyTypes/baseTypes";
-import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
+export function Temp() {
+  return null
+}
 
-export const recommendTodayStudyPlace = (
-  studyVoteData: StudyParticipationProps[],
-  myLocationDetail?: { lat: number; lon: number }, // Optional parameter
-) => {
-  if (!studyVoteData) return null;
-  const sortedArr = [...studyVoteData].sort((a, b) => {
-    const statusOrder = { open: 1, free: 2, dismissed: 3 };
+// import { StudyParticipationProps } from "../../types/models/studyTypes/baseTypes";
+// import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
 
-    // Compare based on status first
-    const statusDiff = statusOrder[a.status] - statusOrder[b.status];
-    if (statusDiff !== 0) {
-      return statusDiff; // If the status is different, prioritize by status
-    }
+// export const recommendTodayStudyPlace = (
+//   studyVoteData: StudyParticipationProps[],
+//   myLocationDetail?: { lat: number; lon: number }, // Optional parameter
+// ) => {
+//   if (!studyVoteData) return null;
+//   const sortedArr = [...studyVoteData].sort((a, b) => {
+//     const statusOrder = { open: 1, free: 2, dismissed: 3 };
 
-    // If location detail is available, sort by distance
-    if (myLocationDetail) {
-      const distance1 = getDistanceFromLatLonInKm(
-        myLocationDetail.lat,
-        myLocationDetail.lon,
-        a.place.latitude,
-        a.place.longitude,
-      );
-      const distance2 = getDistanceFromLatLonInKm(
-        myLocationDetail.lat,
-        myLocationDetail.lon,
-        b.place.latitude,
-        b.place.longitude,
-      );
-      return distance1 - distance2; // Sort by distance if status is the same
-    }
+//     // Compare based on status first
+//     const statusDiff = statusOrder[a.status] - statusOrder[b.status];
+//     if (statusDiff !== 0) {
+//       return statusDiff; // If the status is different, prioritize by status
+//     }
 
-    // If no location details, return 0 to keep the current order for same-status places
-    return 0;
-  });
+//     // If location detail is available, sort by distance
+//     if (myLocationDetail) {
+//       const distance1 = getDistanceFromLatLonInKm(
+//         myLocationDetail.lat,
+//         myLocationDetail.lon,
+//         a.place.latitude,
+//         a.place.longitude,
+//       );
+//       const distance2 = getDistanceFromLatLonInKm(
+//         myLocationDetail.lat,
+//         myLocationDetail.lon,
+//         b.place.latitude,
+//         b.place.longitude,
+//       );
+//       return distance1 - distance2; // Sort by distance if status is the same
+//     }
 
-  return sortedArr[0];
-};
+//     // If no location details, return 0 to keep the current order for same-status places
+//     return 0;
+//   });
+
+//   return sortedArr[0];
+// };

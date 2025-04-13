@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { CalendarCheckIcon } from "../../../components/Icons/SolidIcons";
+
 import {
   StudyCheckIcon,
   StudySelectIcon,
@@ -22,7 +22,6 @@ import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { CoordinatesProps } from "../../../types/common";
 import { StudyMergeResultProps } from "../../../types/models/studyTypes/derivedTypes";
 import { RealTimeVoteProps } from "../../../types/models/studyTypes/requestTypes";
-
 import { IStudyVoteTime, StudyVoteProps } from "../../../types/models/studyTypes/studyInterActions";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import StudyPlaceDrawer from "../../vote/voteDrawer/StudyPlaceDrawer";
@@ -139,7 +138,6 @@ function StudyControlDrawer({
     },
   };
 
-  console.log("S", studyDrawerType, rightDrawerType);
   return (
     <>
       {studyDrawerType && (
@@ -187,7 +185,7 @@ function StudyControlDrawer({
             </Box>
           </Button>
           {studyDrawerType === "free" && (
-            <Link href={`/vote/attend/certification`} style={{ width: "100%" }}>
+            <Link href={`/vote/attend/certification?date=${date}`} style={{ width: "100%" }}>
               <Button
                 h="52px"
                 display="flex"
@@ -202,26 +200,6 @@ function StudyControlDrawer({
                 </Box>
                 <Box fontSize="13px" color="var(--gray-600)">
                   실시간 개인 스터디 출석
-                </Box>
-              </Button>
-            </Link>
-          )}
-          {studyDrawerType === "open" && (
-            <Link href={`/vote/attend/certification`} style={{ width: "100%" }}>
-              <Button
-                h="52px"
-                display="flex"
-                justifyContent="flex-start"
-                variant="unstyled"
-                py={4}
-                w="100%"
-                isDisabled={date !== dayjsToStr(dayjs())}
-              >
-                <Box w="20px" h="20px" mr={4} opacity={0.28}>
-                  <CalendarCheckIcon />
-                </Box>
-                <Box fontSize="13px" color="var(--gray-600)">
-                  실시간 출석체크
                 </Box>
               </Button>
             </Link>

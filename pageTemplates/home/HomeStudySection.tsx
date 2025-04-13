@@ -14,7 +14,6 @@ import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import { StudyThumbnailCardSkeleton } from "../../components/skeleton/StudyThumbnailCardSkeleton";
 import { useUserCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
-
 import { getStudyViewDate } from "../../libs/study/date/getStudyDateStatus";
 import { convertStudyToMergeStudy } from "../../libs/study/studyConverters";
 import {

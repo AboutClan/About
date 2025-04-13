@@ -10,7 +10,7 @@ import FAQPopUp from "../../../modals/pop-up/FAQPopUp";
 import LastWeekAttendPopUp from "../../../modals/pop-up/LastWeekAttendPopUp";
 import LocationRegisterPopUp from "../../../modals/pop-up/LocationRegisterPopUp";
 import StudyChallengeModal from "../../../modals/pop-up/StudyChallengeModal";
-import { default as StudyPrefenceDrawer } from "../../../modals/pop-up/StudyPreferenceDrawer";
+
 import StudyPreferencePopUp from "../../../modals/pop-up/StudyPreferencePopUp";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 
@@ -228,12 +228,7 @@ export default function UserSettingPopUp() {
           </Flex>
         </BottomFlexDrawer>
       )} */}
-      {modalTypes.includes("preferenceDrawer") && (
-        <StudyPrefenceDrawer
-          setIsModal={() => filterModalTypes("preferenceDrawer")}
-          handleClick={() => setModalTypes((old) => [...old, "registerLocation"])}
-        />
-      )}
+
       {modalTypes.includes("preference") && (
         <StudyPreferencePopUp
           setIsModal={() => filterModalTypes("preference")}

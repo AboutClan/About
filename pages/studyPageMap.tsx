@@ -1,4 +1,6 @@
-export const Temp = () => null;
+export function Temp() {
+  return null
+}
 // import { Box } from "@chakra-ui/react";
 // import dayjs from "dayjs";
 // import { useSession } from "next-auth/react";

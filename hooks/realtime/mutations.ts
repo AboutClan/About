@@ -5,14 +5,13 @@ import { useMutation } from "react-query";
 import { requestServer } from "../../libs/methodHelpers";
 import { MutationOptions } from "../../types/hooks/reactTypes";
 import { CollectionProps } from "../../types/models/collections";
+import { StudyStatus } from "../../types/models/studyTypes/baseTypes";
 import {
   RealTimeAttendanceProps,
   RealTimeVoteProps,
-  StudyStatus,
-} from "../../types/models/studyTypes/baseTypes";
-import { IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
+} from "../../types/models/studyTypes/requestTypes";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
-import { StringTimeProps } from "../../types/utils/timeAndDate";
+import { DayjsTimeProps, StringTimeProps } from "../../types/utils/timeAndDate";
 
 interface RealTimeVoteRequestServerProps {
   place: PlaceInfoProps;
@@ -46,15 +45,15 @@ export const useRealTimeAttendMutation = (
     options,
   );
 
-export const useRealTimeTimeChangeMutation = (options?: MutationOptions<IStudyVoteTime>) =>
-  useMutation<void, AxiosError, IStudyVoteTime>(({ start, end }) => {
+export const useRealTimeTimeChangeMutation = (options?: MutationOptions<DayjsTimeProps>) =>
+  useMutation<void, AxiosError, DayjsTimeProps>(({ start, end }) => {
     const startHour = dayjs().hour(start.hour()).minute(start.minute());
     const endHour = dayjs().hour(end.hour()).minute(end.minute());
 
-    return requestServer<IStudyVoteTime>({
+    return requestServer<StringTimeProps>({
       method: "patch",
       url: `realtime/time`,
-      body: { start: startHour, end: endHour },
+      body: { start: startHour.toISOString(), end: endHour.toISOString() },
     });
   }, options);
 

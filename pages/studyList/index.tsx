@@ -12,7 +12,6 @@ import {
 import { useUserCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { convertStudyToMergeStudy } from "../../libs/study/studyConverters";
-
 import {
   setStudyThumbnailCard,
   sortThumbnailCardInfoArr,

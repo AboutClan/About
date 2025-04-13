@@ -1,13 +1,12 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 import SectionHeader from "../../../components/atoms/SectionHeader";
 import { ShortArrowIcon } from "../../../components/Icons/ArrowIcons";
 import DateCalendarModal from "../../../modals/aboutHeader/DateCalendarModal";
 import { DispatchString } from "../../../types/hooks/reactTypes";
-import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
+import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
 interface StudyPagePlaceSectionHeaderProps {
   date: string;
@@ -16,18 +15,7 @@ interface StudyPagePlaceSectionHeaderProps {
 
 function StudyPagePlaceSectionHeader({ date, setDate }: StudyPagePlaceSectionHeaderProps) {
   const [isCalendarModal, setIsCalendarModal] = useState(false);
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const newSearchParams = new URLSearchParams(searchParams);
-
   const englishDayjs = dayjs(date).locale("en");
-
-  const navigateNextDay = () => {
-    const newDate = dayjsToStr(dayjs(date).add(1, "day"));
-    setDate(newDate);
-    newSearchParams.set("date", newDate);
-    router.replace(`/studyPage?${newSearchParams.toString()}`);
-  };
 
   return (
     <>

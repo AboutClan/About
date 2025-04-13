@@ -1,6 +1,5 @@
 import { StudyMemberProps, StudyVoteDataProps } from "../../types/models/studyTypes/baseTypes";
 import { StudyMergeResultProps } from "../../types/models/studyTypes/derivedTypes";
-
 import { convertStudyToMergeStudy } from "./studyConverters";
 
 //내 스터디 결과 찾기
@@ -31,6 +30,6 @@ export const findStudyByPlaceId = (
 ): StudyMergeResultProps => {
   if (!studyVoteData || !placeId) return;
   const convertedResults = convertStudyToMergeStudy(studyVoteData);
-  console.log(24, convertedResults);
+
   return convertedResults.find((result) => result.place._id === placeId);
 };

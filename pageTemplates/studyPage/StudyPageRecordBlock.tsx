@@ -2,12 +2,7 @@ import { Box } from "@chakra-ui/react";
 
 import InfoBoxCol from "../../components/molecules/InfoBoxCol";
 
-interface StudyPageRecordBlockProps{
-    
-}
-
-function StudyPageRecordBlock({}:StudyPageRecordBlockProps){
-
+function StudyPageRecordBlock() {
   return (
     <Box my={5} p={4} pb={3} borderRadius="12px" border="var(--border)" borderColor="gray.200">
       <Box mb={3} fontSize="14px" fontWeight="bold" lineHeight="20px" py={1}>
@@ -25,4 +20,4 @@ function StudyPageRecordBlock({}:StudyPageRecordBlockProps){
   );
 }
 
-export default StudyPageRecordBlock
+export default StudyPageRecordBlock;

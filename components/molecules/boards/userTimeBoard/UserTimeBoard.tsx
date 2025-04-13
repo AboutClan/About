@@ -47,7 +47,7 @@ export default function UserTimeBoard({ members }: ITimeBoard) {
 
     return () => observer.disconnect(); // 컴포넌트 언마운트 시 정리
   }, []);
-  console.log(blockWidth, userBlocks);
+  
   useEffect(() => {
     const newUserBlocks = transformToUserBlocks(members);
     setUserBlocks(newUserBlocks);

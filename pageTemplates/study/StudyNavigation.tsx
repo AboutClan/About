@@ -1,7 +1,7 @@
 import { Button, Flex, ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
@@ -15,7 +15,6 @@ import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudyMutations } from "../../hooks/custom/StudyHooks";
 import { evaluateMyStudyStatus } from "../../libs/study/studyEvaluators";
 import { findMyStudyInfo } from "../../libs/study/studySelectors";
-
 import StudyAbsentModal from "../../modals/study/StudyAbsentModal";
 import { StudyMergeResultProps } from "../../types/models/studyTypes/derivedTypes";
 import { MyStudyStatus } from "../../types/models/studyTypes/helperTypes";
@@ -43,8 +42,8 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy }: IStudyNavigatio
   const { data: session } = useSession();
 
   const {
-    voteStudy: { participate, vote, change, absence },
-    realTimeStudy: { vote: realTimeVote, change: realTimeChange, cancel: realTimeCancel },
+    voteStudy: { participate, change, absence },
+    realTimeStudy: { change: realTimeChange, cancel: realTimeCancel },
   } = useStudyMutations(dayjs(date));
 
   const [isTimeRulletModal, setIsTimeRulletModal] = useState(false);
@@ -52,11 +51,10 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy }: IStudyNavigatio
   const [isAbsentModal, setIsAbsentModal] = useState(false);
   const [alertModalInfo, setAlertModalInfo] = useState<IAlertModalOptions>();
 
-  const status = findStudy?.status;
   const myStudyInfo = findMyStudyInfo(findStudy, session?.user.id);
 
   const myStudyStatus = evaluateMyStudyStatus(findStudy, session?.user.id, date);
-  console.log(myStudyStatus);
+
   const NAVIGATION_PROPS_MAPPING: Record<
     Exclude<MyStudyStatus, "voting" | "pending" | "expired">,
     NavigationProps
@@ -86,7 +84,7 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy }: IStudyNavigatio
       },
     },
     arrived: { text: "출석 완료", type: "single", colorScheme: "black" },
-    absenced: { text: "당일 불참", type: "single", colorScheme: "black" },
+    absenced: { text: "당일 불참", type: "single", colorScheme: "red" },
   };
   const navigationProps: NavigationProps = NAVIGATION_PROPS_MAPPING[myStudyStatus];
 
@@ -171,7 +169,6 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy }: IStudyNavigatio
     return false;
   };
 
-  console.log(24, isTimeRulletModal, navigationProps);
   return (
     <>
       <Slide isFixed={true} posZero="top">
@@ -200,6 +197,7 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy }: IStudyNavigatio
               flex={1}
               colorScheme={navigationProps.colorScheme}
               onClick={navigationProps?.func}
+              isDisabled={!navigationProps?.func}
             >
               {navigationProps.text}
             </Button>
@@ -211,8 +209,9 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy }: IStudyNavigatio
         <StudyAbsentModal
           studyType={myStudyStatus === "open" ? "voteStudy" : "realTimeStudy"}
           myStudyInfo={myStudyInfo}
-          handleAbsence={(message: string) => {
-            absence(message);
+          handleAbsence={(props) => {
+            if (myStudyStatus === "open") absence(props);
+            else realTimeCancel("cancel");
             setIsAbsentModal(false);
           }}
           setIsModal={setIsAbsentModal}

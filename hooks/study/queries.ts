@@ -38,10 +38,7 @@ export const useStudyPlacesQuery = (
         },
       });
 
-      const places = res.data.filter(
-        (place) =>
-          place.brand !== "자유 신청" && (location === "all" || place.location === location),
-      );
+      const places = res.data.filter((place) => place.brand !== "자유 신청" && location === "all");
       return places;
     },
     options,

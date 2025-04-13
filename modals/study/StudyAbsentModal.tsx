@@ -1,12 +1,9 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
 
 import Textarea from "../../components/atoms/Textarea";
-import { usePointSystemMutation } from "../../hooks/user/mutations";
-import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
 import { IModal } from "../../types/components/modalTypes";
 import { StudyMemberProps } from "../../types/models/studyTypes/baseTypes";
 import { StudyType } from "../../types/models/studyTypes/helperTypes";
@@ -14,7 +11,7 @@ import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface StudyAbsentModalProps extends IModal {
   studyType: StudyType;
-  handleAbsence: (message: string) => void;
+  handleAbsence: (props: { message: string; fee: number }) => void;
   myStudyInfo: StudyMemberProps;
 }
 
@@ -24,12 +21,7 @@ function StudyAbsentModal({
   handleAbsence,
   setIsModal,
 }: StudyAbsentModalProps) {
-  const { data: session } = useSession();
-
   const [value, setValue] = useState<string>("");
-
-  const { mutate: sendRequest } = useUserRequestMutation();
-  const { mutate: getDeposit } = usePointSystemMutation("deposit");
 
   // const { mutate: absentStudy } = useStudyAbsenceMutation(dayjs(date), {
   //   onSuccess: () => {
@@ -55,7 +47,7 @@ function StudyAbsentModal({
   const footerOptions: IFooterOptions = {
     main: {
       text: "불참",
-      func: () => handleAbsence(value),
+      func: () => handleAbsence({ message: value, fee: isLate ? -300 : -200 }),
     },
     sub: {
       text: "취소",
@@ -73,12 +65,12 @@ function StudyAbsentModal({
             </P>
           ) : isLate ? (
             <P>
-              스터디 시작 시간이 지났기 때문에, 벌금 <b>200원</b>이 부과됩니다. 특별한 사유가 있다면
+              스터디 시작 시간이 지났기 때문에, 벌금 <b>300원</b>이 부과됩니다. 특별한 사유가 있다면
               적어주세요!
             </P>
           ) : (
             <P>
-              당일 불참으로 벌금 <b>300원</b>이 부과됩니다. 참여 시간을 변경해 보는 건 어떨까요?
+              당일 불참으로 벌금 <b>200원</b>이 부과됩니다. 참여 시간을 변경해 보는 건 어떨까요?
             </P>
           )}
           <Box w="full">

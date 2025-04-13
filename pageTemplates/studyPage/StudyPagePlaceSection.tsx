@@ -11,7 +11,6 @@ import {
 } from "../../components/molecules/cards/StudyThumbnailCard";
 import { StudyThumbnailCardSkeleton } from "../../components/skeleton/StudyThumbnailCardSkeleton";
 import { convertStudyToMergeStudy } from "../../libs/study/studyConverters";
-
 import {
   setStudyThumbnailCard,
   sortThumbnailCardInfoArr,

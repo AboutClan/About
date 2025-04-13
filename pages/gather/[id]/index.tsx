@@ -9,7 +9,6 @@ import styled from "styled-components";
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../components/layouts/PageSlide";
 import { useGatherIDQuery } from "../../../hooks/gather/queries";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
 import GatherBottomNav from "../../../pageTemplates/gather/detail/GatherBottomNav";
 import GatherComments from "../../../pageTemplates/gather/detail/GatherComments";
 import GatherContent from "../../../pageTemplates/gather/detail/GatherContent";
@@ -31,7 +30,7 @@ function GatherDetail() {
 
   const [transferGather, setTransferGather] = useRecoilState(transferGatherDataState);
   const { data: gatherData } = useGatherIDQuery(+id, { enabled: !!id && !transferGather });
- 
+
   useEffect(() => {
     if (gatherData) {
       setGather(gatherData);
@@ -41,9 +40,6 @@ function GatherDetail() {
     //   setTransferGather(null);
     // };
   }, [transferGather, gatherData]);
-
-  const { data: userInfo } = useUserInfoQuery();
-
 
   const isMember =
     (gather?.user as IUserSummary)?.uid === session?.user.uid ||

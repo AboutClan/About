@@ -1,12 +1,11 @@
 import { Box, Button } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import AlertModal from "../../../components/AlertModal";
+
 import PageIntro from "../../../components/atoms/PageIntro";
 import SectionTitle from "../../../components/atoms/SectionTitle";
-
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
@@ -31,32 +30,33 @@ function Certification() {
     place_name: "",
     road_address_name: "",
   });
-  const [isResetAlert, setIsResetAlert] = useState(false);
   const [isActive, setIsActive] = useState(true);
 
   const [studyAttendanceRequest, setStudyAttendanceRequest] = useRecoilState(
     transferStudyAttendanceState,
   );
-  console.log(studyAttendanceRequest, date);
+
   useEffect(() => {
     const findMyStudyResult = findMyStudyByUserId(studyVoteData, session?.user.id);
 
     if (studyAttendanceRequest) {
-      const { name, latitude, longitude } = studyAttendanceRequest.place;
+      const { name, latitude, longitude, _id } = studyAttendanceRequest.place;
       setPlaceInfo({
         place_name: name,
         x: longitude + "",
         y: latitude + "",
+        _id,
       });
       setImage(studyAttendanceRequest?.image);
     } else if (findMyStudyResult) {
       const studyPlace = findMyStudyResult?.place;
-
+    
       setPlaceInfo({
         x: studyPlace.longitude + "",
         y: studyPlace.latitude + "",
         road_address_name: studyPlace.address,
         place_name: studyPlace.name,
+        _id: studyPlace._id,
       });
 
       setIsActive(false);
@@ -83,12 +83,12 @@ function Certification() {
         longitude: +placeInfo?.x,
         address: placeInfo?.road_address_name,
         name: placeInfo?.place_name,
+        _id: placeInfo?._id,
       },
     }));
   };
 
   const handleResetButton = () => {
-    setIsResetAlert(true);
     setPlaceInfo({ place_name: "", road_address_name: "" });
     setIsActive(true);
   };
@@ -125,20 +125,6 @@ function Certification() {
         </Slide>
       </Box>
       <BottomNav url="/vote/attend/configuration" onClick={handleBottomNav} />
-      {isResetAlert && (
-        <AlertModal
-          options={{
-            title: "스터디 장소 변경",
-            subTitle: "장소를 변경하는 경우 기존에 투표 장소는 취소됩니다.",
-            text: "변경합니다",
-            func: () => {
-              setPlaceInfo({ place_name: "", road_address_name: "" });
-              setIsActive(true);
-            },
-          }}
-          setIsModal={setIsResetAlert}
-        />
-      )}
     </>
   );
 }

@@ -8,7 +8,6 @@ import { IGather } from "../types/models/gatherTypes/gatherTypes";
 import { IGroup } from "../types/models/groupTypes/group";
 import { MemberGroup } from "../types/models/member";
 import { RealTimesDirectAttendanceProps } from "../types/models/studyTypes/requestTypes";
-
 import { IUser } from "../types/models/userTypes/userInfoTypes";
 
 export const transferCollectionState = atom<CollectionProps>({

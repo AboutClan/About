@@ -1,6 +1,5 @@
 import { Button, Flex, ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -15,7 +14,6 @@ import { useStudyVoteMutation } from "../../hooks/study/mutations";
 import { CoordinatesProps } from "../../types/common";
 import { StudyMergeResultProps } from "../../types/models/studyTypes/derivedTypes";
 import { MyStudyStatus } from "../../types/models/studyTypes/helperTypes";
-
 import { iPhoneNotchSize } from "../../utils/validationUtils";
 import StudyControlDrawer from "../study/modals/StudyControlDrawer";
 
@@ -33,9 +31,9 @@ function StudyControlButton({
   currentLocation,
 }: StudyControlButtonProps) {
   const resetStudy = useResetStudyQuery();
-  const { data: session } = useSession();
+
   const router = useRouter();
-  console.log(myVoteStatus);
+
   const [studyDrawerType, setStudyDrawerType] = useState<"free" | "vote">(null);
 
   const { mutate: handleCancel } = useStudyVoteMutation(dayjs(date), "delete", {
@@ -43,7 +41,7 @@ function StudyControlButton({
       resetStudy();
     },
   });
-  console.log(myVoteStatus);
+
   const onClickButton = () => {
     switch (myVoteStatus) {
       case "open":
@@ -71,9 +69,9 @@ function StudyControlButton({
     //   router.push(`/vote/attend/configuration`);
     // }
   };
-  console.log(myVoteStatus);
+
   const { colorScheme, rightIcon, text } = getButtonOptions(myVoteStatus);
-  console.log("SS", studyDrawerType);
+
   return (
     <>
       <Flex

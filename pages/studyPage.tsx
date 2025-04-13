@@ -1,16 +1,14 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import Slide from "../components/layouts/PageSlide";
 import { useUserCurrentLocation } from "../hooks/custom/CurrentLocationHook";
-import { useStudyResultDecideMutation } from "../hooks/study/mutations";
 import { useStudyVoteQuery } from "../hooks/study/queries";
 import { useUserInfoQuery } from "../hooks/user/queries";
 import { convertStudyToMergeStudy } from "../libs/study/studyConverters";
-
 import { findMyStudyByUserId, findMyStudyInfo } from "../libs/study/studySelectors";
 import StudyPageAddPlaceButton from "../pageTemplates/studyPage/StudyPageAddPlaceButton";
 import StudyPageCalendar from "../pageTemplates/studyPage/StudyPageCalendar";
@@ -25,7 +23,6 @@ import { CoordinatesProps } from "../types/common";
 import { MyStudyStatus } from "../types/models/studyTypes/helperTypes";
 
 export default function StudyPage() {
-  const router = useRouter();
   const { data: session } = useSession();
   const userId = session?.user.id;
   const searchParams = useSearchParams();
@@ -45,14 +42,6 @@ export default function StudyPage() {
   const { data: studyVoteData, isLoading } = useStudyVoteQuery(date, {
     enabled: !!date,
   });
-
-  const { mutate } = useStudyResultDecideMutation(date);
-
-  // useEffect(() => {
-  //   if (date) {
-  //     mutate();
-  //   }
-  // }, [date]);
 
   //dateParam이 아예 없는 경우가 있을 수 있을까?
   useEffect(() => {
@@ -79,6 +68,7 @@ export default function StudyPage() {
 
     if (findMyParticipation) {
       setMyVoteStatus("voting");
+
       const { latitude: lat, longitude: lon } = findMyParticipation;
       setCenterLocation({ lat, lon });
       return;
@@ -91,6 +81,7 @@ export default function StudyPage() {
       } else {
         setMyVoteStatus(findMyStudyResult.status === "open" ? "open" : "free");
       }
+
       setCenterLocation({
         lat: findMyStudyResult.place.latitude,
         lon: findMyStudyResult.place.longitude,
@@ -109,8 +100,6 @@ export default function StudyPage() {
   }, [studyVoteData, session, currentLocation, isLoading, userInfo]);
 
   const isExpireDate = dayjs(date).isBefore(dayjs().subtract(1, "day"));
-
-  console.log("studyVoteData:", studyVoteData, myVoteStatus);
 
   return (
     <>
