@@ -130,6 +130,7 @@ export default function Page() {
               date={date}
               findStudy={findStudy}
               hasOtherStudy={findMyStudy && findMyStudy.place._id !== findStudy.place._id}
+              id={id}
             />
           )}
           {isInviteModal && <StudyInviteModal setIsModal={setIsInviteModal} place={place} />}

@@ -12,13 +12,13 @@ import {
   IStudyVoteTime,
   StudyVoteProps,
 } from "../../types/models/studyTypes/studyInterActions";
-import { StringTimeProps } from "../../types/utils/timeAndDate";
+import { DayjsTimeProps } from "../../types/utils/timeAndDate";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
 type StudyVoteParam<T> = T extends "post"
   ? StudyVoteProps
   : T extends "patch"
-  ? StringTimeProps
+  ? DayjsTimeProps
   : void;
 
 export const useStudyVoteMutation = <T extends "post" | "patch" | "delete">(

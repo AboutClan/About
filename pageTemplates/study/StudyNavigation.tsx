@@ -26,6 +26,7 @@ interface IStudyNavigation {
   date: string;
   findStudy: StudyMergeResultProps;
   hasOtherStudy: boolean;
+  id: string;
 }
 
 interface NavigationProps {
@@ -35,7 +36,7 @@ interface NavigationProps {
   func?: () => void;
 }
 
-function StudyNavigation({ date, findStudy, hasOtherStudy }: IStudyNavigation) {
+function StudyNavigation({ id, date, findStudy, hasOtherStudy }: IStudyNavigation) {
   const router = useRouter();
   const toast = useToast();
 
@@ -64,13 +65,13 @@ function StudyNavigation({ date, findStudy, hasOtherStudy }: IStudyNavigation) {
       text: "출석 체크",
       type: "multi",
       colorScheme: "mint",
-      func: () => router.push(`/vote/attend/configuration?date=${date}`),
+      func: () => router.push(`/vote/attend/configuration?date=${date}&id=${id}`),
     },
     free: {
       text: "출석 체크",
       type: "multi",
       colorScheme: "mint",
-      func: () => router.push(`vote/attend/certification?date=${date}`),
+      func: () => router.push(`vote/attend/certification?date=${date}&id=${id}`),
     },
     todayPending: {
       text: "스터디 참여",
@@ -164,7 +165,7 @@ function StudyNavigation({ date, findStudy, hasOtherStudy }: IStudyNavigation) {
     }
     return false;
   };
-
+  console.log(24, isTimeRulletModal);
   return (
     <>
       <Slide isFixed={true} posZero="top">

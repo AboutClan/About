@@ -40,6 +40,7 @@ function Configuration() {
   const toast = useToast();
 
   const date = searchParams.get("date");
+  const id = searchParams.get("id");
 
   const resetStudy = useResetStudyQuery();
   const myStudyResult = useMyStudyResult(dayjsToStr(dayjs()));
@@ -118,7 +119,8 @@ function Configuration() {
       if (isLate) getDeposit(POINT_SYSTEM_DEPOSIT.STUDY_ATTEND_LATE);
     }
     toast("success", `출석이 완료되었습니다.`);
-    router.push(`/studyPage?date=${date}`);
+    const idParam = id ? `&id=${id}` : null;
+    router.push(`/studyPage?date=${date}${idParam}`);
   };
 
   const saveTogetherMembers = () => {
