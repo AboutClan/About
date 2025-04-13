@@ -38,16 +38,41 @@ type ToastType =
   | "guest"
   | "cancel"
   | "error"
-  | "success"
   | "change"
   | "invite"
-  | "not-yet"
-  | "secret-avatar"
-  | "vote"
-  | "omission"
   | "inspection"
   | "participate"
-  | "apply";
+  | "apply"
+  | "not-yet";
+
+type ToastConfig = {
+  title: string;
+  status?: "success" | "error" | "warning" | "info";
+  subTitle?: string;
+  colorScheme?: "mint";
+};
+
+const TOAST_MAP: Record<ToastType, ToastConfig> = {
+  apply: { title: "신청 완료" },
+  cancel: { title: "취소 완료" },
+  change: { title: "변경 완료" },
+  invite: { title: "초대 완료" },
+  participate: { title: "참여 완료" },
+  "not-yet": { title: "개발중인 기능", status: "info" },
+
+  inspection: {
+    title: "점검중인 기능",
+    status: "info",
+  },
+  guest: {
+    title: "게스트는 이용할 수 없는 기능입니다.",
+    status: "error",
+  },
+  error: {
+    title: "오류가 발생했습니다. 관리자에게 문의해주세요.",
+    status: "error",
+  },
+};
 
 export const useTypeToast = () => {
   const toast = useChakraToast();
@@ -55,9 +80,10 @@ export const useTypeToast = () => {
   const showToast = useCallback(
     (type: ToastType) => {
       toast({
-        ...getTypeToToast(type),
-        duration: 2000,
+        status: "success",
+        duration: 3000,
         variant: "subtle",
+        ...TOAST_MAP[type],
         containerStyle: {
           marginBottom: "76px",
         },
@@ -67,90 +93,6 @@ export const useTypeToast = () => {
   );
 
   return showToast;
-};
-
-const getTypeToToast = (
-  type: ToastType,
-): {
-  status: "success" | "error" | "warning" | "info";
-  title: string;
-  subTitle?: string;
-  colorScheme?: "mint";
-} => {
-  switch (type) {
-    case "inspection":
-      return {
-        status: "info",
-        title: "점검중인 기능입니다.",
-      };
-    case "vote":
-      return {
-        status: "success",
-        title: "투표 완료",
-        colorScheme: "mint",
-      };
-    case "apply":
-      return {
-        status: "success",
-        title: "신청 완료",
-        colorScheme: "mint",
-      };
-    case "guest":
-      return {
-        status: "error",
-        title: "게스트는 사용할 수 없는 기능입니다",
-      };
-    case "cancel":
-      return {
-        status: "success",
-        title: "취소되었습니다",
-      };
-    case "error":
-      return {
-        status: "error",
-        title: "오류가 발생했습니다. 관리자에게 문의해주세요!",
-      };
-    case "success":
-      return {
-        status: "success",
-        title: "완료되었습니다",
-        colorScheme: "mint",
-      };
-    case "change":
-      return {
-        status: "success",
-        title: "변경되었습니다",
-        colorScheme: "mint",
-      };
-    case "invite":
-      return {
-        status: "success",
-        title: "초대가 완료되었습니다",
-        colorScheme: "mint",
-      };
-    case "participate":
-      return {
-        status: "success",
-        title: "참여가 완료되었습니다.",
-        colorScheme: "mint",
-      };
-    case "not-yet":
-      return {
-        status: "warning",
-        title: "준비중입니다",
-      };
-    case "secret-avatar":
-      return {
-        status: "warning",
-        title: "비공개 프로필입니다",
-      };
-
-    case "omission":
-      return {
-        status: "error",
-        title: "누락된 정보가 있습니다",
-      };
-  }
 };
 
 export const useFailToast = () => {

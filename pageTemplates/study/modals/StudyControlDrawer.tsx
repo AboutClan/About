@@ -17,10 +17,7 @@ import StudyVoteTimeRulletDrawer from "../../../components/services/studyVote/St
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useRealtimeVoteMutation } from "../../../hooks/realtime/mutations";
-import {
-  useStudyParticipateOneMutation,
-  useStudyParticipationMutation,
-} from "../../../hooks/study/mutations";
+import { useStudyParticipateMutation, useStudyVoteMutation } from "../../../hooks/study/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { CoordinatesProps } from "../../../types/common";
 import { StudyMergeResultProps } from "../../../types/models/studyTypes/derivedTypes";
@@ -51,14 +48,14 @@ function StudyControlDrawer({
 
   const { data: userInfo } = useUserInfoQuery();
 
-  const { mutate: voteStudy } = useStudyParticipationMutation(dayjs(date), "post", {
+  const { mutate: voteStudy } = useStudyVoteMutation(dayjs(date), "post", {
     onSuccess() {
       toast("success", "신청이 완료되었습니다. 매칭 결과를 기다려주세요!");
       resetStudy();
     },
   });
 
-  const { mutate: participateStudyOne } = useStudyParticipateOneMutation(dayjs(date), {
+  const { mutate: participateStudyOne } = useStudyParticipateMutation(dayjs(date), {
     onSuccess() {
       toast("success", "참여가 완료되었습니다. 출석 인증도 잊지 마세요!");
       resetStudy();

@@ -16,8 +16,6 @@ export default function AttendanceBadge({ type, time, setImageProps }: IAttendan
   const onClickButton = () => {
     if (setImageProps) {
       setImageProps();
-    } else {
-      toast("not-yet");
     }
   };
 

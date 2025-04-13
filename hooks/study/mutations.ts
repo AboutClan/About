@@ -5,7 +5,8 @@ import { useMutation } from "react-query";
 import { requestServer } from "../../libs/methodHelpers";
 import { MutationOptions } from "../../types/hooks/reactTypes";
 import { CollectionProps } from "../../types/models/collections";
-import { PlaceRegisterProps } from "../../types/models/studyTypes/baseTypes";
+import { PlaceRegisterProps } from "../../types/models/studyTypes/entityTypes";
+
 import {
   IStudyVotePlaces,
   IStudyVoteTime,
@@ -14,18 +15,18 @@ import {
 import { StringTimeProps } from "../../types/utils/timeAndDate";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
-type StudyParticipationParam<T> = T extends "post"
+type StudyVoteParam<T> = T extends "post"
   ? StudyVoteProps
   : T extends "patch"
   ? StringTimeProps
   : void;
 
-export const useStudyParticipationMutation = <T extends "post" | "patch" | "delete">(
+export const useStudyVoteMutation = <T extends "post" | "patch" | "delete">(
   voteDate: Dayjs,
   method: T,
-  options?: MutationOptions<StudyParticipationParam<T>>,
+  options?: MutationOptions<StudyVoteParam<T>>,
 ) =>
-  useMutation<void, AxiosError, StudyParticipationParam<T>>((param) => {
+  useMutation<void, AxiosError, StudyVoteParam<T>>((param) => {
     const voteInfo = param;
 
     if (method !== "delete") {
@@ -33,20 +34,20 @@ export const useStudyParticipationMutation = <T extends "post" | "patch" | "dele
       const { start, end } = updatedVoteInfo;
       const startStr = voteDate.hour(start.hour()).minute(start.minute()).toISOString();
       const endStr = voteDate.hour(end.hour()).minute(end.minute()).toISOString();
-      return requestServer<StudyParticipationParam<T>>({
+      return requestServer<StudyVoteParam<T>>({
         method,
         url: `vote2/${dayjsToStr(voteDate)}`,
         body: { ...voteInfo, start: startStr, end: endStr },
       });
     }
-    return requestServer<StudyParticipationParam<T>>({
+    return requestServer<StudyVoteParam<T>>({
       method,
       url: `vote2/${dayjsToStr(voteDate)}`,
       body: { ...voteInfo },
     });
   }, options);
 
-export const useStudyParticipateOneMutation = (
+export const useStudyParticipateMutation = (
   voteDate: Dayjs,
   options?: MutationOptions<{ start: string; end: string; placeId: string }>,
 ) =>
@@ -101,12 +102,12 @@ export const useStudyAttendCheckMutation = (
     options,
   );
 
-export const useStudyAbsentMutation = (date: Dayjs, options?: MutationOptions<string>) =>
+export const useStudyAbsenceMutation = (date: Dayjs, options?: MutationOptions<string>) =>
   useMutation<void, AxiosError, string>(
     (message) =>
       requestServer<{ message: string }>({
         method: "post",
-        url: `vote/${dayjsToStr(date)}/absence`,
+        url: `vote2/${dayjsToStr(date)}/absence`,
         body: { message },
       }),
     options,

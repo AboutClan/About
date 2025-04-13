@@ -5,4 +5,7 @@ export type MyStudyStatus =
   | "pending"
   | "todayPending"
   | "arrived"
-  | "absenced";
+  | "absenced"
+  | "expired";
+
+export type StudyType = "voteStudy" | "realTimeStudy";

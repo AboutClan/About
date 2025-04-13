@@ -1,33 +1,26 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
-import { useParams } from "next/navigation";
 import { useState } from "react";
-import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 import Textarea from "../../components/atoms/Textarea";
-import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
-import { useTypeToast } from "../../hooks/custom/CustomToast";
-import { useStudyAbsentMutation } from "../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
 import { findMyStudyInfo } from "../../libs/study/studySelectors";
-import { myStudyParticipationState } from "../../recoils/studyRecoils";
 import { IModal } from "../../types/components/modalTypes";
+import { StudyType } from "../../types/models/studyTypes/helperTypes";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
-interface StudyAbsentModalProps extends IModal {}
+interface StudyAbsentModalProps extends IModal {
+  studyType: StudyType;
+  handleAbsence: (message: string) => void;
+}
 
-function StudyAbsentModal({ setIsModal }: StudyAbsentModalProps) {
-  const typeToast = useTypeToast();
-  const resetStudy = useResetStudyQuery();
+function StudyAbsentModal({ studyType, handleAbsence, setIsModal }: StudyAbsentModalProps) {
   const { data: session } = useSession();
-  const { date } = useParams<{ id: string; date: string }>();
 
   const [value, setValue] = useState<string>("");
-
-  const myStudyParticipation = useRecoilValue(myStudyParticipationState);
 
   const { mutate: sendRequest } = useUserRequestMutation();
   const { mutate: getDeposit } = usePointSystemMutation("deposit");
@@ -36,24 +29,24 @@ function StudyAbsentModal({ setIsModal }: StudyAbsentModalProps) {
   const startTime = myStudyInfo?.time?.start;
   const studyStatus = myStudyParticipation?.status;
 
-  const { mutate: absentStudy } = useStudyAbsentMutation(dayjs(date), {
-    onSuccess: () => {
-      typeToast("success");
-      let fee: { value: number; message: string };
-      if (studyStatus !== "open") fee = { value: 100, message: "개인 스터디 불참" };
-      else if (dayjs() < dayjs(startTime)) fee = { value: 300, message: "당일 스터디 불참" };
-      else fee = { value: 500, message: "늦은 스터디 불참" };
-      getDeposit(fee);
-      resetStudy();
-      sendRequest({
-        writer: session.user.name,
-        title: session.user.uid + `D${fee.value}`,
-        category: "불참",
-        content: value,
-      });
-    },
-    onError: () => typeToast("error"),
-  });
+  // const { mutate: absentStudy } = useStudyAbsenceMutation(dayjs(date), {
+  //   onSuccess: () => {
+  //     typeToast("success");
+  //     let fee: { value: number; message: string };
+  //     if (studyStatus !== "open") fee = { value: 100, message: "개인 스터디 불참" };
+  //     else if (dayjs() < dayjs(startTime)) fee = { value: 300, message: "당일 스터디 불참" };
+  //     else fee = { value: 500, message: "늦은 스터디 불참" };
+  //     getDeposit(fee);
+  //     resetStudy();
+  //     sendRequest({
+  //       writer: session.user.name,
+  //       title: session.user.uid + `D${fee.value}`,
+  //       category: "불참",
+  //       content: value,
+  //     });
+  //   },
+  //   onError: () => typeToast("error"),
+  // });
 
   const footerOptions: IFooterOptions = {
     main: {

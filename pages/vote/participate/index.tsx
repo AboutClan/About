@@ -22,7 +22,7 @@ export default Index;
 // import { LOCATION_OPEN } from "../../../constants/location";
 // import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 // import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
-// import { useStudyParticipationMutation } from "../../../hooks/study/mutations";
+// import { useStudyVoteMutation } from "../../../hooks/study/mutations";
 // import { useStudyVoteQuery } from "../../../hooks/study/queries";
 // import { myStudyParticipationState } from "../../../recoils/studyRecoils";
 // import { IStudyVoteTime } from "../../../types/models/studyTypes/studyInterActions";
@@ -55,7 +55,7 @@ export default Index;
 
 //   const participations = studyVoteData?.participations;
 
-//   const { mutate, isLoading } = useStudyParticipationMutation(dayjs(), "post", {
+//   const { mutate, isLoading } = useStudyVoteMutation(dayjs(), "post", {
 //     onSuccess() {
 //       typeToast("vote");
 //       resetStudy();

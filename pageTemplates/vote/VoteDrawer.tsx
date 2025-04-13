@@ -17,7 +17,7 @@ export const Temp = () => null;
 // import { LOCATION_OPEN } from "../../constants/location";
 // import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 // import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
-// import { useStudyParticipationMutation } from "../../hooks/study/mutations";
+// import { useStudyVoteMutation } from "../../hooks/study/mutations";
 // import { useUserInfoQuery } from "../../hooks/user/queries";
 // import { convertStudyToParticipations } from "../../libs/study/getMyStudyMethods";
 // import { setStudyThumbnailCard } from "../../libs/study/setStudyThumbnailCard";
@@ -93,7 +93,7 @@ export const Temp = () => null;
 //   const myStudyParticipation = useRecoilValue(myStudyParticipationState);
 
 //   const { data: userInfo } = useUserInfoQuery();
-//   const { mutate: patchAttend, isLoading } = useStudyParticipationMutation(dayjs(date), "post", {
+//   const { mutate: patchAttend, isLoading } = useStudyVoteMutation(dayjs(date), "post", {
 //     onSuccess() {
 //       handleSuccess();
 //     },

@@ -142,8 +142,8 @@ const composeUserCardArr = (participant: StudyMemberProps): IReturnProps => {
 
   const type = attendance?.type;
   const time = type ? dayjsToFormat(dayjs(attendance.time), "HH:mm") : null;
-
-  const memo = time ? (attendance.memo || type === "arrived" ? "출석" : "불참") : null;
+  console.log(attendance);
+  const memo = time ? attendance.memo || (type === "arrived" ? "출석" : "불참") : null;
 
   const user = participant.user;
 

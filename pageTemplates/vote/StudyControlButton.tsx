@@ -11,7 +11,7 @@ import {
   StudyUserIcon,
 } from "../../components/Icons/StudyIcons";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
-import { useStudyParticipationMutation } from "../../hooks/study/mutations";
+import { useStudyVoteMutation } from "../../hooks/study/mutations";
 import { CoordinatesProps } from "../../types/common";
 import { StudyMergeResultProps } from "../../types/models/studyTypes/derivedTypes";
 import { MyStudyStatus } from "../../types/models/studyTypes/helperTypes";
@@ -38,7 +38,7 @@ function StudyControlButton({
   console.log(myVoteStatus);
   const [studyDrawerType, setStudyDrawerType] = useState<"free" | "vote">(null);
 
-  const { mutate: handleCancel } = useStudyParticipationMutation(dayjs(date), "delete", {
+  const { mutate: handleCancel } = useStudyVoteMutation(dayjs(date), "delete", {
     onSuccess() {
       resetStudy();
     },

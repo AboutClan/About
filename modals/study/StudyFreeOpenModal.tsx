@@ -5,10 +5,7 @@ import { useState } from "react";
 import TimeSelector from "../../components/molecules/picker/TimeSelector";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useCompleteToast, useErrorToast, useFailToast } from "../../hooks/custom/CustomToast";
-import {
-  useStudyOpenFreeMutation,
-  useStudyParticipationMutation,
-} from "../../hooks/study/mutations";
+import { useStudyOpenFreeMutation, useStudyVoteMutation } from "../../hooks/study/mutations";
 import { IModal } from "../../types/components/modalTypes";
 import { ITimeStartToEnd } from "../../types/utils/timeAndDate";
 import { IFooterOptions, ModalLayout } from "../Modals";
@@ -37,16 +34,12 @@ function StudyFreeOpenModal({ setIsModal }: IStudyFreeOpenModal) {
     },
     onError: errorToast,
   });
-  const { mutate: patchAttend, isLoading: isLoading2 } = useStudyParticipationMutation(
-    dayjs(date),
-    "post",
-    {
-      onSuccess: () => {
-        resetStudy();
-      },
-      onError: errorToast,
+  const { mutate: patchAttend, isLoading: isLoading2 } = useStudyVoteMutation(dayjs(date), "post", {
+    onSuccess: () => {
+      resetStudy();
     },
-  );
+    onError: errorToast,
+  });
 
   const onSubmit = async () => {
     const start = dayjs(date).hour(time.start.hours).minute(time.start.minutes);

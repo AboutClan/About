@@ -9,7 +9,7 @@ import ImageTileGridLayout, {
 } from "../../components/molecules/layouts/ImageTitleGridLayout";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
-import { useStudyParticipationMutation } from "../../hooks/study/mutations";
+import { useStudyVoteMutation } from "../../hooks/study/mutations";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { getStudyDateStatus } from "../../libs/study/date/getStudyDateStatus";
@@ -54,15 +54,11 @@ function StudySimpleVoteModal({ studyVoteData, setIsModal }: StudySimpleVoteModa
     enabled: !isFirstPage && !!dateParam && !!location,
   });
 
-  const { mutate: patchAttend, isLoading } = useStudyParticipationMutation(
-    dayjs(dateParam),
-    "post",
-    {
-      onSuccess() {
-        handleSuccess();
-      },
+  const { mutate: patchAttend, isLoading } = useStudyVoteMutation(dayjs(dateParam), "post", {
+    onSuccess() {
+      handleSuccess();
     },
-  );
+  });
 
   const savedPrefer = userInfo?.studyPreference;
 

@@ -11,7 +11,7 @@ import Slide from "../../../../components/layouts/PageSlide";
 import { useUserCurrentLocation } from "../../../../hooks/custom/CurrentLocationHook";
 import { useStudyVoteQuery } from "../../../../hooks/study/queries";
 import { convertMergePlaceToPlace } from "../../../../libs/study/studyConverters";
-import { findMyStudyInfo, findStudyByPlaceId } from "../../../../libs/study/studySelectors";
+import { findMyStudyByUserId, findStudyByPlaceId } from "../../../../libs/study/studySelectors";
 
 import StudyInviteModal from "../../../../modals/study/StudyInviteModal";
 import StudyAddressMap from "../../../../pageTemplates/study/StudyAddressMap";
@@ -44,6 +44,8 @@ export default function Page() {
   console.log(studyVoteData);
   const findStudy =
     studyVoteData && id !== "participations" && findStudyByPlaceId(studyVoteData, id);
+
+  const findMyStudy = findMyStudyByUserId(studyVoteData, session?.user.id);
 
   const lastStudyHours = dayjs(date).hour(9).startOf("hour").diff(dayjs(), "m");
 
@@ -123,11 +125,11 @@ export default function Page() {
               />
             </Slide>
           </Box>
-          {!isGuest && (
+          {findStudy && (
             <StudyNavigation
               date={date}
-              myStudyInfo={findMyStudyInfo(findStudy, session?.user.id)}
-              status={findStudy?.status}
+              findStudy={findStudy}
+              hasOtherStudy={findMyStudy && findMyStudy.place._id !== findStudy.place._id}
             />
           )}
           {isInviteModal && <StudyInviteModal setIsModal={setIsInviteModal} place={place} />}

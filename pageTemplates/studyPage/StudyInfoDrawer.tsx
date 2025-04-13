@@ -16,10 +16,7 @@ import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/Study
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useRealtimeVoteMutation } from "../../hooks/realtime/mutations";
-import {
-  useStudyCommentMutation,
-  useStudyParticipationMutation,
-} from "../../hooks/study/mutations";
+import { useStudyCommentMutation, useStudyVoteMutation } from "../../hooks/study/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 
 import { ModalLayout } from "../../modals/Modals";
@@ -65,15 +62,11 @@ function StudyInfoDrawer({ detailInfo, setDetailInfo, date }: StudyInfoDrawerPro
 
   const { data: userInfo } = useUserInfoQuery({ enabled: detailInfo.status === "solo" });
 
-  const { mutate: studyVote, isLoading: isLoading1 } = useStudyParticipationMutation(
-    dayjs(),
-    "post",
-    {
-      onSuccess() {
-        handleSuccess();
-      },
+  const { mutate: studyVote, isLoading: isLoading1 } = useStudyVoteMutation(dayjs(), "post", {
+    onSuccess() {
+      handleSuccess();
     },
-  );
+  });
   const { mutate: realTimeStudyVote, isLoading: isLoading2 } = useRealtimeVoteMutation({
     onSuccess() {
       handleSuccess();

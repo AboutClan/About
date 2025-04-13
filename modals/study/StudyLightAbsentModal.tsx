@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { POINT_SYSTEM_DEPOSIT } from "../../constants/serviceConstants/pointSystemConstants";
 import { PLACE_TO_NAME } from "../../constants/serviceConstants/studyConstants/studyCafeNameConstants";
 import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";
-import { useStudyAbsentMutation } from "../../hooks/study/mutations";
+import { useStudyAbsenceMutation } from "../../hooks/study/mutations";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { IModal } from "../../types/components/modalTypes";
 import { IFooterOptions, ModalLayout } from "../Modals";
@@ -19,7 +19,7 @@ function StudyLightAbsentModal({ setIsModal }: IModal) {
   const isPrivate = PLACE_TO_NAME[placeId as string] === "자유신청";
 
   const { mutate: getDeposit } = usePointSystemMutation("deposit");
-  const { mutate: absentStudy } = useStudyAbsentMutation(voteDate, {
+  const { mutate: absentStudy } = useStudyAbsenceMutation(voteDate, {
     onSuccess: () => {
       const fee = POINT_SYSTEM_DEPOSIT.STUDY_PRIVATE_ABSENT;
       if (isPrivate) getDeposit(fee);
