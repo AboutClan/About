@@ -11,7 +11,6 @@ import { COLOR_TABLE_LIGHT } from "../../../constants/colorConstants";
 import { USER_INFO } from "../../../constants/keys/queryKeys";
 import { useErrorToast, useFailToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
-import { usePointSystemQuery } from "../../../hooks/user/queries";
 import { AVATAR_COST, AVATAR_IMAGE_ARR } from "../../../storage/avatarStorage";
 import { IModal } from "../../../types/components/modalTypes";
 import { IFooterOptions, ModalLayout } from "../../Modals";
@@ -51,7 +50,7 @@ function RequestChangeProfileImageModalAvatar({
   const [back, setBack] = useState(false);
   const [BG, setBG] = useState(0);
 
-  const { data: score } = usePointSystemQuery("score");
+  // const { data: score } = usePointSystemQuery("score");
 
   useEffect(() => {
     if (iconIdx === 0) setBack(false);
