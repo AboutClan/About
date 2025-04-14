@@ -229,7 +229,9 @@ function StudyInfoDrawer({ detailInfo, setDetailInfo, date, myStudy }: StudyInfo
                 icon: (
                   <i className="fa-solid fa-circle-info" style={{ color: "var(--gray-400)" }} />
                 ),
-                url: `/study/${detailInfo.place._id}/${dayjsToStr(dayjs(date))}`,
+                func: () => {
+                  router.push(`/study/${detailInfo.place._id}/${dayjsToStr(dayjs(date))}`);
+                },
                 children: "자세히 보기",
               }}
               rightProps={{
