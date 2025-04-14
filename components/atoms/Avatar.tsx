@@ -64,7 +64,7 @@ function AvatarComponent({
   const onError = () => {
     setImageUrl(AVATAR_IMAGES[0].image);
   };
-  console.log(avatar);
+  console.log(avatar, size);
   function AvatarComponent() {
     return (
       <AvatarContainer size={size} sizeLength={sizeLength}>
@@ -248,26 +248,6 @@ const ImageContainer = styled.div<{
   height: 100%;
   border-radius: 50%;
   overflow: hidden;
-
-  padding: ${(props) =>
-    props.hasType &&
-    (props.size === "2xs"
-      ? "1px"
-      : props.size === "xs"
-      ? "2px"
-      : props.size === "sm"
-      ? "3px"
-      : props.size === "smd"
-      ? "4px"
-      : props.size === "mds"
-      ? "5px"
-      : props.size === "md"
-      ? "6px"
-      : props.size === "lg"
-      ? "6px"
-      : props.size === "xxl"
-      ? "12px"
-      : "8px")};
 
   background: ${(props) => (props.isBgImage ? `center/cover no-repeat ${props.bg}` : props.bg)};
 `;
