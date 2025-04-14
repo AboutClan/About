@@ -1,4 +1,4 @@
-export const AVATAR_IMAGES = [
+export const AVATAR_IMAGES: { idx: number; image: string }[] = [
   {
     idx: 0,
     image:
@@ -149,9 +149,21 @@ export const AVATAR_IMAGES = [
     image:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%BA%90%EB%A6%AD%ED%84%B0/%EC%95%84%EB%B0%94%ED%83%80/%EB%B3%91%EC%95%84%EB%A6%AC3.png",
   },
-  { idx: 30, image: "" },
-  { idx: 31, image: "" },
-  { idx: 32, image: "" },
+  {
+    idx: 30,
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%BA%90%EB%A6%AD%ED%84%B0/%EC%95%84%EB%B0%94%ED%83%80/%EB%B3%B4%EB%9D%BC%ED%8E%AD%EA%B7%84_%EA%B8%B0%EB%B3%B8_%ED%88%AC%EB%AA%85.png",
+  },
+  {
+    idx: 31,
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%BA%90%EB%A6%AD%ED%84%B0/%EC%95%84%EB%B0%94%ED%83%80/%EB%B3%B4%EB%9D%BC%ED%8E%AD%EA%B7%84_%EC%BB%A4%ED%94%BC_%ED%88%AC%EB%AA%85.png",
+  },
+  {
+    idx: 32,
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%BA%90%EB%A6%AD%ED%84%B0/%EC%95%84%EB%B0%94%ED%83%80/%EB%B3%B4%EB%9D%BC%ED%8E%AD%EA%B7%843_%ED%88%AC%EB%AA%85.png",
+  },
   {
     idx: 33,
     image:
@@ -166,5 +178,10 @@ export const AVATAR_IMAGES = [
     idx: 35,
     image:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%BA%90%EB%A6%AD%ED%84%B0/%EC%95%84%EB%B0%94%ED%83%80/%EB%82%A8%ED%8E%AD%EA%B7%843.png",
+  },
+  {
+    idx: 36,
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%BA%90%EB%A6%AD%ED%84%B0/%EC%95%84%EB%B0%94%ED%83%80/%ED%98%B8%EB%9E%AD%EC%9D%B4.png",
   },
 ];

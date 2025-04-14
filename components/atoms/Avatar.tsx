@@ -4,8 +4,10 @@ import Link from "next/link";
 import { memo, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 
+import { AVATAR_BG_IMAGES } from "../../assets/images/avatarBgImages";
+import { AVATAR_IMAGES } from "../../assets/images/avatarImages";
 import { COLOR_TABLE_LIGHT } from "../../constants/colorConstants";
-import { AVATAR_IMAGE_ARR, SPECIAL_AVATAR, SPECIAL_BG } from "../../storage/avatarStorage";
+import { SPECIAL_AVATAR } from "../../storage/avatarStorage";
 import { IAvatar as IAvatarProp } from "../../types/models/userTypes/userInfoTypes";
 
 type Size = "2xs" | "xs" | "sm" | "smd" | "mds" | "md" | "lg" | "xl" | "slg" | "xxl";
@@ -40,7 +42,7 @@ function AvatarComponent({
       ? image
       : avatar.type >= 100
       ? SPECIAL_AVATAR[avatar.type - 100].image
-      : AVATAR_IMAGE_ARR[avatar.type],
+      : AVATAR_IMAGES[avatar.type].image,
   );
   const [bgImage, setBgImage] = useState<string | null>(null);
 
@@ -50,19 +52,19 @@ function AvatarComponent({
         ? image
         : avatar.type >= 100
         ? SPECIAL_AVATAR[avatar.type - 100].image
-        : AVATAR_IMAGE_ARR[avatar.type],
+        : AVATAR_IMAGES[avatar.type].image,
     );
     if (avatar?.bg >= 100) {
-      setBgImage(`url(${SPECIAL_BG[avatar?.bg - 100].image})`);
+      setBgImage(`url(${AVATAR_BG_IMAGES[avatar?.bg - 100].image})`);
     } else {
       setBgImage(null);
     }
   }, [image, avatar, uid]);
 
   const onError = () => {
-    setImageUrl(AVATAR_IMAGE_ARR[0]);
+    setImageUrl(AVATAR_IMAGES[0].image);
   };
-
+  console.log(avatar);
   function AvatarComponent() {
     return (
       <AvatarContainer size={size} sizeLength={sizeLength}>

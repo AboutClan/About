@@ -43,14 +43,14 @@ export const COLOR_TABLE = [
   "#CBD5E0",
 ];
 export const COLOR_TABLE_LIGHT = [
-  "#FEB2B2",
-  "#FBD38D",
-  "#FAF089",
-  "#9AE6B4",
-  "#81E6D9",
-  "#90CDF4",
-  "#9DECF9",
-  "#D6BCFA",
-  "#FBB6CE",
   "#E2E8F0",
+  "#FBB6CE",
+  "#D6BCFA",
+  "#9DECF9",
+  "#90CDF4",
+  "#81E6D9",
+  "#9AE6B4",
+  "#FAF089",
+  "#FBD38D",
+  "#FEB2B2",
 ];

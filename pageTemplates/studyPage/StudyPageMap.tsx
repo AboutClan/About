@@ -75,6 +75,7 @@ function StudyPageMap({
     <>
       <Slide>
         <Box
+          mb={5}
           position={isMapExpansion ? "fixed" : "relative"}
           top={0}
           left={0}

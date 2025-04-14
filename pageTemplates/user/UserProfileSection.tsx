@@ -142,7 +142,7 @@ export function ProfileCamera({ setIsModal }: ProfileCameraProps) {
   // const { data: userInfo } = useUserInfoQuery();
 
   const typeToast = useTypeToast();
-  const [modalType, setModalType] = useState<"avatar" | "badge" | "specialAvatar">();
+  const [modalType, setModalType] = useState<"dog" | "cat" | "badge" | "bg" | "special">();
   const queryClient = useQueryClient();
   const { mutate: updateProfile } = useUserUpdateProfileImageMutation();
   const { mutate: setUserAvatar } = useUserInfoFieldMutation("avatar", {
@@ -165,7 +165,7 @@ export function ProfileCamera({ setIsModal }: ProfileCameraProps) {
 
   return (
     <>
-      <BottomDrawerLg height={284 + iPhoneNotchSize()} setIsModal={setIsModal}>
+      <BottomDrawerLg height={372 + iPhoneNotchSize()} setIsModal={setIsModal}>
         <Flex w="full" direction="column" fontSize="14px" color="gray.600">
           <Button
             lineHeight="20px"
@@ -185,9 +185,9 @@ export function ProfileCamera({ setIsModal }: ProfileCameraProps) {
             borderBottom="var(--border)"
             fontWeight="regular"
             py={3}
-            onClick={() => setModalType("avatar")}
+            onClick={() => setModalType("dog")}
           >
-            기본 아바타 / 배경 선택
+            댕댕이 아바타 / 배경 선택
           </Button>
           <Button
             lineHeight="20px"
@@ -196,9 +196,31 @@ export function ProfileCamera({ setIsModal }: ProfileCameraProps) {
             borderBottom="var(--border)"
             fontWeight="regular"
             py={3}
-            onClick={() => setModalType("specialAvatar")}
+            onClick={() => setModalType("cat")}
           >
-            스페셜 아바타 / 배경 선택
+            똑냥이 아바타 / 배경 선택
+          </Button>
+          <Button
+            lineHeight="20px"
+            mx={10}
+            variant="unstyled"
+            borderBottom="var(--border)"
+            fontWeight="regular"
+            py={3}
+            onClick={() => setModalType("special")}
+          >
+            유니크 아바타 / 배경 선택
+          </Button>
+          <Button
+            lineHeight="20px"
+            mx={10}
+            variant="unstyled"
+            borderBottom="var(--border)"
+            fontWeight="regular"
+            py={3}
+            onClick={() => setModalType("bg")}
+          >
+            유니크 배경 선택
           </Button>
 
           <Button
@@ -228,15 +250,16 @@ export function ProfileCamera({ setIsModal }: ProfileCameraProps) {
           }}
         />
       )}
-      {modalType === "avatar" && (
+      {["dog", "cat", "special"].includes(modalType) && (
         <RequestChangeProfileImageModalAvatar
+          type={modalType as "dog" | "cat" | "special"}
           setIsModal={() => {
             setIsModal(false);
             setModalType(null);
           }}
         />
       )}
-      {modalType === "specialAvatar" && (
+      {modalType === "bg" && (
         <SpecialAvatarModal
           setIsModal={() => {
             setIsModal(false);

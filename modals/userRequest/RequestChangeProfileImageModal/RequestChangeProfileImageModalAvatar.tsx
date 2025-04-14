@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
+import { AVATAR_IMAGES } from "../../../assets/images/avatarImages";
 import Avatar from "../../../components/atoms/Avatar";
 import ImageSlider from "../../../components/organisms/imageSlider/ImageSlider";
 import { COLOR_TABLE_LIGHT } from "../../../constants/colorConstants";
@@ -14,9 +15,12 @@ import { usePointSystemQuery } from "../../../hooks/user/queries";
 import { AVATAR_COST, AVATAR_IMAGE_ARR } from "../../../storage/avatarStorage";
 import { IModal } from "../../../types/components/modalTypes";
 import { IFooterOptions, ModalLayout } from "../../Modals";
-interface IRequestChangeProfileImageModalAvatar extends IModal {}
+interface IRequestChangeProfileImageModalAvatar extends IModal {
+  type: "dog" | "cat" | "special";
+}
 
 function RequestChangeProfileImageModalAvatar({
+  type,
   setIsModal,
 }: IRequestChangeProfileImageModalAvatar) {
   const { data: session } = useSession();
@@ -36,6 +40,13 @@ function RequestChangeProfileImageModalAvatar({
 
   const isGuest = session?.user.name === "guest";
 
+  const avatarArr =
+    type === "dog"
+      ? AVATAR_IMAGES.slice(0, 12)
+      : type === "cat"
+      ? AVATAR_IMAGES.slice(12, 23)
+      : AVATAR_IMAGES.slice(24);
+
   const [iconIdx, setIconIdx] = useState(0);
   const [back, setBack] = useState(false);
   const [BG, setBG] = useState(0);
@@ -44,7 +55,7 @@ function RequestChangeProfileImageModalAvatar({
 
   useEffect(() => {
     if (iconIdx === 0) setBack(false);
-    if (iconIdx === AVATAR_IMAGE_ARR.length - 1) setBack(true);
+    if (iconIdx === avatarArr.length - 1) setBack(true);
   }, [iconIdx]);
 
   const handleMove = (type: "prev" | "next") => {
@@ -54,7 +65,7 @@ function RequestChangeProfileImageModalAvatar({
       setIconIdx(iconIdx - 1);
     }
     if (type === "next") {
-      if (iconIdx === AVATAR_IMAGE_ARR.length) return;
+      if (iconIdx === avatarArr.length) return;
       setBack(false);
       setIconIdx(iconIdx + 1);
     }
@@ -69,7 +80,7 @@ function RequestChangeProfileImageModalAvatar({
       failToast("free", "프로필 변경을 위한 점수가 부족해요!");
       return;
     }
-    setUserAvatar({ type: iconIdx, bg: BG });
+    setUserAvatar({ type: iconIdx + (type === "dog" ? 0 : type === "cat" ? 12 : 24), bg: BG });
     setIsModal(false);
   };
 
@@ -79,6 +90,8 @@ function RequestChangeProfileImageModalAvatar({
       func: onSubmit,
     },
   };
+  console.log(type);
+  const typeIdx = iconIdx + (type === "dog" ? 0 : type === "cat" ? 12 : 24);
 
   return (
     <ModalLayout title="아바타 프로필" footerOptions={footerOptions} setIsModal={setIsModal}>
@@ -95,7 +108,7 @@ function RequestChangeProfileImageModalAvatar({
             exit="exit"
             key={iconIdx}
           >
-            <Avatar avatar={{ type: iconIdx, bg: BG }} size="xl" />
+            <Avatar avatar={{ type: typeIdx, bg: BG }} size="xl" />
 
             <IconPoint>{AVATAR_COST[iconIdx]}점 달성</IconPoint>
           </IconWrapper>
