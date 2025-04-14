@@ -92,6 +92,7 @@ export const iPhoneNotchSize = () => {
   const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
   const ua = navigator.userAgent;
   // iPhone 감지
+
   if (/iPhone/i.test(ua) && isStandalone) {
     return 34;
   } else return 0;
