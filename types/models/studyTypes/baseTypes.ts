@@ -47,6 +47,9 @@ export interface RealTimeMemberProps extends StudyMemberProps {
 export interface StudyPlaceProps extends PlaceRegisterProps {
   _id: string;
   registerDate: string;
+  registrant: UserSimpleInfoProps;
+  status: "active" | "inactive";
+  prefCnt: number;
 }
 
 // | "recruiting" | "expected"

@@ -1,5 +1,4 @@
 import { Button, Flex } from "@chakra-ui/react";
-import Link from "next/link";
 import { JSXElementConstructor, ReactElement } from "react";
 
 interface NewTwoButtonRowProps {
@@ -7,7 +6,7 @@ interface NewTwoButtonRowProps {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     icon?: ReactElement<any, string | JSXElementConstructor<any>>;
     children?: React.ReactNode;
-    url: string;
+    func: () => void;
   };
   rightProps: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -22,9 +21,7 @@ function NewTwoButtonRow({ leftProps, rightProps }: NewTwoButtonRowProps) {
   return (
     <Flex>
       <Button
-        as={Link}
         size="lg"
-        href={leftProps.url}
         flex={1}
         h="48px"
         bgColor="white"
@@ -33,6 +30,7 @@ function NewTwoButtonRow({ leftProps, rightProps }: NewTwoButtonRowProps) {
         border="1px solid var(--gray-100)"
         leftIcon={leftProps?.icon}
         mr={2}
+        onClick={leftProps?.func}
       >
         {leftProps.children}
       </Button>

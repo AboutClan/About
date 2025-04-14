@@ -8,12 +8,14 @@ import {
   getDetailInfo,
   getMapOptions,
   getMarkersOptions,
+  getStudyPlaceMarkersOptions,
 } from "../../libs/study/setStudyMapOptions";
 import { findMyStudyByUserId, findStudyByPlaceId } from "../../libs/study/studySelectors";
 import { CoordinatesProps } from "../../types/common";
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
-import { DispatchType } from "../../types/hooks/reactTypes";
-import { StudyVoteDataProps } from "../../types/models/studyTypes/baseTypes";
+import { DispatchBoolean, DispatchType } from "../../types/hooks/reactTypes";
+import { StudyPlaceProps, StudyVoteDataProps } from "../../types/models/studyTypes/baseTypes";
+import PlaceInfoDrawer from "./PlaceInfoDrawer";
 import StudyInfoDrawer, { StudyInfoProps } from "./StudyInfoDrawer";
 import StudyMapTopNav from "./StudyMapTopNav";
 
@@ -24,6 +26,8 @@ interface StudyPageMapProps {
   setCenterLocation: DispatchType<CoordinatesProps>;
   date: string;
   myVoteCoordinates: CoordinatesProps;
+  placeData: StudyPlaceProps[];
+  setIsPlaceMap: DispatchBoolean;
 }
 
 function StudyPageMap({
@@ -33,6 +37,8 @@ function StudyPageMap({
   setCenterLocation,
   date,
   myVoteCoordinates,
+  placeData,
+  setIsPlaceMap,
 }: StudyPageMapProps) {
   const { data: userInfo } = useUserInfoQuery();
 
@@ -41,6 +47,7 @@ function StudyPageMap({
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>(null);
   const [isMapExpansion, setIsMapExpansion] = useState(false);
   const [detailInfo, setDetailInfo] = useState<StudyInfoProps>();
+  const [placeInfo, setPlaceInfo] = useState<StudyPlaceProps>(null);
 
   useEffect(() => {
     if (!studyVoteData) return;
@@ -48,22 +55,30 @@ function StudyPageMap({
     const options = getMapOptions(centerLocation, isMapExpansion ? 12 : 13);
     setMapOptions(options);
     setMarkersOptions(
-      getMarkersOptions(
-        studyVoteData.results,
-        studyVoteData?.realTimes?.userList || null,
-        currentLocation,
-        myVoteCoordinates,
-        studyVoteData?.participations?.filter(
-          (who) =>
-            who?.user?.isLocationSharingDenided === true ||
-            userInfo?.friend.includes(who?.user.uid),
-        ),
-      ),
+      !placeData
+        ? getMarkersOptions(
+            studyVoteData.results,
+            studyVoteData?.realTimes?.userList || null,
+            currentLocation,
+            myVoteCoordinates,
+            studyVoteData?.participations?.filter(
+              (who) =>
+                who?.user?.isLocationSharingDenided === true ||
+                userInfo?.friend.includes(who?.user.uid),
+            ),
+          )
+        : getStudyPlaceMarkersOptions(placeData),
     );
-  }, [studyVoteData, currentLocation, centerLocation, isMapExpansion]);
+    if (placeData) setIsMapExpansion(true);
+  }, [studyVoteData, currentLocation, centerLocation, isMapExpansion, placeData]);
 
-  const handleMarker = (id: string, type: "vote") => {
-    console.log(type);
+  const handleMarker = (id: string, type: "vote" | "place") => {
+    console.log(id, type);
+    if (type === "place") {
+      const findPlace = placeData?.find((place) => place._id === id);
+      setPlaceInfo(findPlace);
+      return;
+    }
     if (!id || !studyVoteData || studyVoteData?.participations) return;
     const findStudy = studyVoteData && findStudyByPlaceId(studyVoteData, id);
     const detailInfo = getDetailInfo(findStudy, userInfo?.uid);
@@ -115,7 +130,10 @@ function StudyPageMap({
             top="20px"
             left="20px"
             bg="white"
-            onClick={() => setIsMapExpansion(false)}
+            onClick={() => {
+              setIsMapExpansion(false);
+              setIsPlaceMap(false);
+            }}
           >
             <XIcon />
           </Button>
@@ -129,6 +147,7 @@ function StudyPageMap({
           myStudy={myStudy}
         />
       )}
+      {placeInfo && <PlaceInfoDrawer placeInfo={placeInfo} onClose={() => setPlaceInfo(null)} />}
     </>
   );
 }

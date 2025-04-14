@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 
 import { STUDY_COVER_IMAGES } from "../../../../assets/images/studyCover";
 import { STUDY_MAIN_IMAGES } from "../../../../assets/images/studyMain";
@@ -63,10 +63,14 @@ export default function Page() {
       placeInfo.latitude,
       placeInfo.longitude,
     );
+
+  console.log(studyVoteData);
   const members: StudyMemberProps[] | { user: UserSimpleInfoProps }[] =
     findStudy?.members ||
     studyVoteData?.participations?.map((par) => ({
       user: par.user,
+      lat: par.latitude,
+      lon: par.longitude,
     }));
 
   // const absences = studyVoteData?.participations.find((par) => par.place._id === id)?.absences;

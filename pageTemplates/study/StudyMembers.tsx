@@ -1,7 +1,7 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Badge, Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useState } from "react";
 
 import HighlightButton from "../../components/atoms/HighlightButton";
@@ -12,6 +12,7 @@ import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useRealTimeCommentMutation } from "../../hooks/realtime/mutations";
 import { useStudyCommentMutation } from "../../hooks/study/mutations";
+import { getLocationByCoordinates } from "../../libs/study/getLocationByCoordinates";
 import ImageZoomModal from "../../modals/ImageZoomModal";
 import { StudyMemberProps, StudyStatus } from "../../types/models/studyTypes/baseTypes";
 import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
@@ -52,21 +53,28 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
       setVoteComment(comment);
     } else if (status === "free") setRealTimeComment(comment);
   };
-
+  console.log(34, members);
   const userCardArr: IProfileCommentCard[] = members.map((member) => {
+    const location = getLocationByCoordinates(+member.lat, +member.lon);
+
     const user = member.user;
     if (status === "recruiting") {
       return {
         user: user,
         memo: user.comment,
+        rightComponent: (
+          <Badge variant="outline" colorScheme="mint">
+            {location}
+          </Badge>
+        ),
       };
     }
 
     const obj = composeUserCardArr(member);
-
+    console.log(member);
     const rightComponentProps = obj.rightComponentProps;
     const image = member?.attendance?.attendanceImage;
-
+    console.log(52, location);
     return {
       ...obj,
       changeComment,
@@ -93,7 +101,7 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
       ) : null,
     };
   });
-
+  console.log(24, userCardArr);
   return (
     <>
       {userCardArr.length ? (

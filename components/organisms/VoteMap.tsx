@@ -113,7 +113,7 @@ export default function VoteMap({
       const circle = new naver.maps.Circle({
         map: mapInstanceRef.current,
         center: new naver.maps.LatLng(circleCenter.lat, circleCenter.lon),
-        radius: 4440,
+        radius: 5550,
         strokeColor: "#007dfb",
         strokeOpacity: 0.8,
         strokeWeight: 1,

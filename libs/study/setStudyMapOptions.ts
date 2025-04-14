@@ -7,6 +7,7 @@ import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes
 import {
   RealTimeMemberProps,
   StudyParticipationProps,
+  StudyPlaceProps,
   StudyResultProps,
   StudyStatus,
 } from "../../types/models/studyTypes/baseTypes";
@@ -65,6 +66,29 @@ export const getDetailInfo = (result: StudyMergeResultProps, myUid: string): Stu
         : ("participation" as "notParticipation" | "attendance" | "participation"),
   };
 };
+export const getStudyPlaceMarkersOptions = (
+  placeData: StudyPlaceProps[],
+): IMarkerOptions[] | undefined => {
+  if (typeof naver === "undefined") return;
+  const temp = [];
+
+  if (placeData) {
+    placeData.forEach((place) => {
+      temp.push({
+        id: place._id,
+        type: "place",
+        position: new naver.maps.LatLng(place.latitude, place.longitude),
+        icon: {
+          content: getStudyIcon("none"),
+          size: new naver.maps.Size(72, 72),
+          anchor: new naver.maps.Point(36, 44),
+        },
+      });
+    });
+  }
+  return temp;
+};
+
 export const getMarkersOptions = (
   studyResults: StudyResultProps[],
   studyRealTimes: RealTimeMemberProps[],

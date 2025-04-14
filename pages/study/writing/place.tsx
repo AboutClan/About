@@ -45,7 +45,6 @@ function WritingStudyPlace() {
       locationDetail: placeInfo.road_address_name,
       latitude: +placeInfo.y,
       longitude: +placeInfo.x,
-      location,
     } as StudyWritingProps);
     router.push(`/study/writing/content`);
   };

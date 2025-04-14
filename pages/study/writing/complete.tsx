@@ -28,7 +28,6 @@ function WritingStudyComplete() {
   const onSubmit = () => {
     const { content, ...placeInfo } = studyWriting;
     mutate(placeInfo);
-    console.log(content);
   };
 
   const LIST_CONTENTS = [

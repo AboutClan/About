@@ -6,6 +6,7 @@ import { KakaoLocationProps } from "../../types/externals/kakaoLocationSearch";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 
 const API_URL = "https://dapi.kakao.com/v2/local/search/keyword.json";
+const API_LOCATION_URL = "https://dapi.kakao.com/v2/local/geo/coord2regioncode.json";
 const API_KEY = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID;
 
 export const useKakaoSearchQuery = (value: string, options?: QueryOptions<KakaoLocationProps[]>) =>
@@ -17,6 +18,38 @@ export const useKakaoSearchQuery = (value: string, options?: QueryOptions<KakaoL
         params: { query: value },
       });
       return res.data?.documents;
+    },
+    options,
+  );
+
+export const useKakaoMultipleLocationQuery = (
+  coords: { lat: number; lon: number; id: string }[],
+  options?: QueryOptions<{ id: string; region_2depth_name: string }[]>,
+) =>
+  useQuery<{ id: string; region_2depth_name: string }[], AxiosError>(
+    ["KAKAO_MULTI_SEARCH", coords],
+    async () => {
+      const results = await Promise.all(
+        coords.map(async ({ lat, lon, id }) => {
+          const res = await axios.get<{
+            documents: { region_type: string; region_2depth_name: string }[];
+          }>(API_LOCATION_URL, {
+            headers: { Authorization: `KakaoAK ${API_KEY}` },
+            params: {
+              x: lon,
+              y: lat,
+            },
+          });
+
+          const region = res.data.documents.find((doc) => doc.region_type === "B"); // 법정동 기준
+          return {
+            id,
+            region_2depth_name: region?.region_2depth_name || "알 수 없음",
+          };
+        }),
+      );
+
+      return results;
     },
     options,
   );

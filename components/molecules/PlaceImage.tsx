@@ -1,9 +1,10 @@
 import { Box, Button } from "@chakra-ui/react";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { MouseEvent, useEffect, useState } from "react";
 
 import { useTogglePlaceHeart } from "../../hooks/custom/CustomHooks";
+import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { HeartIcon } from "../Icons/HeartIcons";
 
@@ -28,6 +29,7 @@ function PlaceImage({
   isFull,
 }: PlaceHeartImageProps) {
   const { data: session } = useSession();
+  const typeToast = useTypeToast();
   const isGuest = session?.user.name === "guest";
 
   const { data: userInfo, isLoading: userLoading } = useUserInfoQuery({
@@ -49,6 +51,9 @@ function PlaceImage({
     size === "sm" ? "60px" : size === "md" ? "80px" : size === "lg" ? "100px" : "180px";
 
   const onClickHeart = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
+    typeToast("inspection");
+    return;
+
     switch (myPreferType) {
       case "main":
         setHeartType(null);

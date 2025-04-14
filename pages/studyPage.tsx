@@ -1,12 +1,12 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import Slide from "../components/layouts/PageSlide";
 import { useUserCurrentLocation } from "../hooks/custom/CurrentLocationHook";
-import { useStudyVoteQuery } from "../hooks/study/queries";
+import { useStudyPlacesQuery, useStudyVoteQuery } from "../hooks/study/queries";
 import { useUserInfoQuery } from "../hooks/user/queries";
 import { convertStudyToMergeStudy } from "../libs/study/studyConverters";
 import { findMyStudyByUserId, findMyStudyInfo } from "../libs/study/studySelectors";
@@ -34,6 +34,7 @@ export default function StudyPage() {
   const [centerLocation, setCenterLocation] = useState<CoordinatesProps>(null);
 
   const [myVoteStatus, setMyVoteStatus] = useState<MyStudyStatus>(null);
+  const [isPlaceMap, setIsPlaceMap] = useState(false);
 
   // const [myStudyParticipation, setMyStudyParticipation] = useRecoilState(myStudyParticipationState);
 
@@ -41,6 +42,9 @@ export default function StudyPage() {
   const { data: userInfo } = useUserInfoQuery();
   const { data: studyVoteData, isLoading } = useStudyVoteQuery(date, {
     enabled: !!date,
+  });
+  const { data: placeData } = useStudyPlacesQuery("all", null, {
+    enabled: !!isPlaceMap,
   });
 
   //dateParam이 아예 없는 경우가 있을 수 있을까?
@@ -100,6 +104,7 @@ export default function StudyPage() {
   }, [studyVoteData, session, currentLocation, isLoading, userInfo]);
 
   const isExpireDate = dayjs(date).isBefore(dayjs().subtract(1, "day"));
+  console.log(studyVoteData?.results);
 
   return (
     <>
@@ -119,6 +124,8 @@ export default function StudyPage() {
             lon: findMyParticipation.longitude,
           }
         }
+        placeData={isPlaceMap && placeData}
+        setIsPlaceMap={setIsPlaceMap}
       />
       <Slide>
         <StudyPageCalendar date={date} setDate={setDate} />
@@ -130,7 +137,7 @@ export default function StudyPage() {
         />
         <StudyPageSettingBlock />
         <StudyPageRecordBlock userInfo={userInfo} />
-        <StudyPageAddPlaceButton />
+        <StudyPageAddPlaceButton setIsPlaceMap={setIsPlaceMap} />
       </Slide>
       {!isExpireDate && myVoteStatus && (
         <Box mb={20} mt={5}>

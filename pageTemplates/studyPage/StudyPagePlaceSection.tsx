@@ -10,6 +10,7 @@ import {
   StudyThumbnailCardProps,
 } from "../../components/molecules/cards/StudyThumbnailCard";
 import { StudyThumbnailCardSkeleton } from "../../components/skeleton/StudyThumbnailCardSkeleton";
+import { useKakaoMultipleLocationQuery } from "../../hooks/external/queries";
 import { convertStudyToMergeStudy } from "../../libs/study/studyConverters";
 import {
   setStudyThumbnailCard,
@@ -43,6 +44,15 @@ function StudyPagePlaceSection({
 
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
   const [sortedOption, setSortedOption] = useState<SortedOption>("인원순");
+
+  const coords = studyVoteData?.results.map((result) => ({
+    lat: result?.center.lat,
+    lon: result?.center.lon,
+    id: result?.place._id,
+  }));
+  console.log(studyVoteData);
+  const { data, isLoading } = useKakaoMultipleLocationQuery(coords);
+  console.log(4, data?.[0].region_2depth_name);
 
   useEffect(() => {
     if (!studyVoteData) {

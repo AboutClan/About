@@ -6,3 +6,4 @@ export interface KakaoLocationProps {
   place_url?: string;
   _id?: string;
 }
+
