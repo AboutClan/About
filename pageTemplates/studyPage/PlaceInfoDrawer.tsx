@@ -1,14 +1,12 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
+
 import Avatar from "../../components/atoms/Avatar";
 import { LocationDotIcon } from "../../components/Icons/LocationIcons";
-
 import NewTwoButtonRow from "../../components/molecules/NewTwoButtonRow";
 import PlaceImage from "../../components/molecules/PlaceImage";
 import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
-import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
-import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
+import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { StudyPlaceProps } from "../../types/models/studyTypes/baseTypes";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
@@ -18,15 +16,7 @@ interface PlaceInfoDrawerProps {
 }
 
 function PlaceInfoDrawer({ placeInfo, onClose }: PlaceInfoDrawerProps) {
-  const resetStudy = useResetStudyQuery();
-  const searchParams = useSearchParams();
-  const router = useRouter();
   const typeToast = useTypeToast();
-  const toast = useToast();
-
-  const handleStudyActionButton = () => {};
-  console.log(123452, placeInfo);
-
   const user = placeInfo?.registrant;
   return (
     <>

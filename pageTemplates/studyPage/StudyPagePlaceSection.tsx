@@ -51,7 +51,7 @@ function StudyPagePlaceSection({
     id: result?.place._id,
   }));
   console.log(studyVoteData);
-  const { data, isLoading } = useKakaoMultipleLocationQuery(coords);
+  const { data } = useKakaoMultipleLocationQuery(coords);
   console.log(4, data?.[0].region_2depth_name);
 
   useEffect(() => {

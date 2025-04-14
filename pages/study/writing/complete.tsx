@@ -27,6 +27,7 @@ function WritingStudyComplete() {
 
   const onSubmit = () => {
     const { content, ...placeInfo } = studyWriting;
+    console.log(content);
     mutate(placeInfo);
   };
 

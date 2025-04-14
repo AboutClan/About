@@ -1,6 +1,6 @@
 import { Box, Button } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 import { MouseEvent, useEffect, useState } from "react";
 
 import { useTogglePlaceHeart } from "../../hooks/custom/CustomHooks";
