@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
@@ -188,7 +188,7 @@ function Configuration() {
           <Box my={5}>
             <Box mb={3}>
               <SectionTitle
-                text="다른 인원 참어 허용"
+                text="다른 인원 참여 허용"
                 isActive={!!transferStudyAttendance?.image}
               />
             </Box>
