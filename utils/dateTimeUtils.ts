@@ -111,3 +111,14 @@ export const getCalendarDates = (
 
   return calendar;
 };
+
+export const formatMinutesToTime = (totalMinutes: number): string => {
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  const hourPart = hours > 0 ? `${hours}시간` : "";
+  const minutePart = minutes > 0 ? `${minutes}분` : "";
+
+  if (!hourPart && !minutePart) return "0분";
+  return `${hourPart} ${minutePart}`.trim();
+};

@@ -129,7 +129,7 @@ export default function StudyPage() {
           currentLocation={currentLocation}
         />
         <StudyPageSettingBlock />
-        <StudyPageRecordBlock />
+        <StudyPageRecordBlock userInfo={userInfo} />
         <StudyPageAddPlaceButton />
       </Slide>
       {!isExpireDate && myVoteStatus && (

@@ -6,11 +6,15 @@ import { findMyStudyInfo } from "./studySelectors";
 
 export const evaluateMyStudyStatus = (
   findStudy: StudyMergeResultProps,
+
   userId: string,
   date: string,
-): Exclude<MyStudyStatus, "voting" | "pending"> => {
+): Exclude<MyStudyStatus, "voting"> => {
   if (dayjs(date).startOf("day").isBefore(dayjs().startOf("day"))) {
     return "expired";
+  }
+  if (!findStudy) {
+    return "pending";
   }
 
   const myStudyInfo = findMyStudyInfo(findStudy, userId);

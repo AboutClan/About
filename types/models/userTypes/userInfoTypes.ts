@@ -28,9 +28,13 @@ export interface IUser extends Omit<IUserRegisterForm, "location">, IUserSummary
     gatherTicket: number;
     groupStudyTicket: number;
   };
-  weekStudyTargetHour: number;
-  weekStudyAccumulationMinutes: number;
   isLocationSharingDenided: boolean;
+  studyRecord: {
+    accumulationMinutes: number;
+    accumulationCnt: number;
+    monthCnt: number;
+    monthMinutes: number;
+  };
 }
 
 export interface UserSimpleInfoProps {

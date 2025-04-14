@@ -13,6 +13,7 @@ import { BottomFlexDrawerOptions } from "../../components/organisms/drawer/Botto
 import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudyMutations } from "../../hooks/custom/StudyHooks";
+import { useUserInfoQuery } from "../../hooks/user/queries";
 import { evaluateMyStudyStatus } from "../../libs/study/studyEvaluators";
 import { findMyStudyInfo } from "../../libs/study/studySelectors";
 import StudyAbsentModal from "../../modals/study/StudyAbsentModal";
@@ -41,8 +42,10 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy }: IStudyNavigatio
 
   const { data: session } = useSession();
 
+  const { data: userInfo } = useUserInfoQuery();
+
   const {
-    voteStudy: { participate, change, absence },
+    voteStudy: { vote, participate, change, absence },
     realTimeStudy: { change: realTimeChange, cancel: realTimeCancel },
   } = useStudyMutations(dayjs(date));
 
@@ -56,9 +59,15 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy }: IStudyNavigatio
   const myStudyStatus = evaluateMyStudyStatus(findStudy, session?.user.id, date);
 
   const NAVIGATION_PROPS_MAPPING: Record<
-    Exclude<MyStudyStatus, "voting" | "pending" | "expired">,
+    Exclude<MyStudyStatus, "voting" | "expired">,
     NavigationProps
   > = {
+    pending: {
+      text: "참여 신청",
+      type: "single",
+      colorScheme: "mint",
+      func: () => setIsTimeRulletModal(true),
+    },
     open: {
       text: "출석 체크",
       type: "multi",
@@ -91,6 +100,18 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy }: IStudyNavigatio
   const handleAction = () => {
     setIsTimeRulletModal(false);
 
+    if (myStudyStatus === "pending") {
+      const { locationDetail } = userInfo;
+      vote({
+        latitude: locationDetail.lat,
+        longitude: locationDetail.lon,
+        start: voteTime.start,
+        end: voteTime.end,
+      });
+
+      return;
+    }
+
     if (!myStudyInfo) {
       participate({ placeId: id, ...voteTime });
       return;
@@ -102,14 +123,19 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy }: IStudyNavigatio
       realTimeChange(voteTime);
     }
   };
-
+  console.log(myStudyStatus);
   const drawerOptions: BottomFlexDrawerOptions = {
     header: {
       title: "스터디 참여 시간 선택",
       subTitle: "예상 시작 시간과 종료 시간을 선택해 주세요",
     },
     footer: {
-      text: myStudyStatus === "open" || myStudyStatus === "free" ? "시간 변경" : "참여 완료",
+      text:
+        myStudyStatus === "pending"
+          ? "신청 완료"
+          : myStudyStatus === "open" || myStudyStatus === "free"
+          ? "시간 변경"
+          : "참여 완료",
       func: handleAction,
     },
   };

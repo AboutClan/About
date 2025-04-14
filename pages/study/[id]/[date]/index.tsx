@@ -71,6 +71,8 @@ export default function Page() {
 
   // const absences = studyVoteData?.participations.find((par) => par.place._id === id)?.absences;
 
+  const myVoteInfo = studyVoteData?.participations.find((who) => who.user._id === session?.user.id);
+
   return (
     <>
       {studyVoteData ? (
@@ -114,7 +116,7 @@ export default function Page() {
               </Box>
             </Slide>
           </Box>
-          {findStudy && (
+          {(findStudy || (id === "participations" && !myVoteInfo)) && (
             <StudyNavigation
               date={date}
               findStudy={findStudy}

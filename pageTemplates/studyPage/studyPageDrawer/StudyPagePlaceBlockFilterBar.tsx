@@ -21,7 +21,7 @@ function StudyPagePlaceSectionFilterBar({
 }: StudyPagePlaceSectionFilterBarProps) {
   const sortedOptionArr: SortedOption[] = ["인원순", "거리순"];
 
-  const lastStudyHours = dayjs(date).hour(9).startOf("hour").diff(dayjs(), "m");
+  const lastStudyHours = dayjs(date).subtract(1, "day").hour(22).startOf("hour").diff(dayjs(), "m");
 
   return (
     <Flex justify="space-between" lineHeight="16px" my={4}>
