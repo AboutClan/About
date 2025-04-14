@@ -76,10 +76,10 @@ function RequestChangeProfileImageModalAvatar({
       failToast("guest");
       return;
     }
-    if (AVATAR_COST[iconIdx] > score) {
-      failToast("free", "프로필 변경을 위한 점수가 부족해요!");
-      return;
-    }
+    // if (AVATAR_COST[iconIdx] > score) {
+    //   failToast("free", "프로필 변경을 위한 점수가 부족해요!");
+    //   return;
+    // }
     setUserAvatar({ type: iconIdx + (type === "dog" ? 0 : type === "cat" ? 12 : 24), bg: BG });
     setIsModal(false);
   };
