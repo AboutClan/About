@@ -22,7 +22,7 @@ export const evaluateMyStudyStatus = (
   const myStudyInfo = findMyStudyInfo(findStudy, userId);
   console.log(findStudy, myStudyInfo, status);
   if (myStudyInfo) {
-    const type = myStudyInfo?.attendance.type;
+    const type = myStudyInfo?.attendance?.type;
     if (type) return type;
     else {
       return status === "open" ? "open" : "free";
