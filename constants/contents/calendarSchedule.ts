@@ -37,7 +37,7 @@ export const EVENT_CONTENT_2023: Record<string, CalendarContentProps[]> = {
       start: 29,
       end: 31,
       type: "event",
-      text: "진행 예정",
+      text: "매칭 예정",
     },
   ],
   11: [

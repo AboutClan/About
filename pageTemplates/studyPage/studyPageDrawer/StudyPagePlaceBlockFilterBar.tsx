@@ -26,7 +26,12 @@ function StudyPagePlaceSectionFilterBar({
   return (
     <Flex justify="space-between" lineHeight="16px" my={4}>
       <Flex fontSize="12px">
-        {lastStudyHours <= 0 ? (
+        {lastStudyHours <= 1440 ? (
+          <>
+            <Box mr={1}>진행된 스터디</Box>
+            <b>{placeCnt}개</b>
+          </>
+        ) : lastStudyHours <= 0 ? (
           <>
             <Box mr={1}>진행중인 스터디</Box>
             <b>{placeCnt}개</b>

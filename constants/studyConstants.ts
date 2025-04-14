@@ -9,7 +9,7 @@ export const STUDY_STATUS_TO_BADGE: Record<
   open: { text: "스터디 오픈", colorScheme: "red" },
   free: { text: "자유 스터디", colorScheme: "blue" },
   solo: { text: "개인 스터디", colorScheme: "blue" },
-  recruiting: { text: "신청자 모집중", colorScheme: "mint" },
-  expected: { text: "진행 예정", colorScheme: "purple" },
+  recruiting: { text: "모집중", colorScheme: "mint" },
+  expected: { text: "매칭 예정", colorScheme: "purple" },
   cancel: { text: "취소된 스터디", colorScheme: "gray" },
 };
