@@ -122,7 +122,7 @@ export default function Page() {
             <StudyNavigation
               date={date}
               findStudy={findStudy}
-              hasOtherStudy={findMyStudy && findMyStudy.place._id !== findStudy.place._id}
+              hasOtherStudy={findMyStudy && findMyStudy.place._id !== findStudy?.place?._id}
               id={id}
               isVoting={!!myVoteInfo}
             />
