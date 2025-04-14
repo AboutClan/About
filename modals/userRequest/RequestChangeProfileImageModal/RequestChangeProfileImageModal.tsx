@@ -13,7 +13,6 @@ import {
 import { IModal } from "../../../types/components/modalTypes";
 import { ModalLayout } from "../../Modals";
 import RequestChagneProfileImageModalBadge from "./RequestChagneProfileImageModalBadge";
-import RequestChangeProfileImageModalAvatar from "./RequestChangeProfileImageModalAvatar";
 import SpecialAvatarModal from "./SpecialAvatarModal";
 
 function RequestChangeProfileImageModal({ setIsModal }: IModal) {
@@ -67,9 +66,8 @@ function RequestChangeProfileImageModal({ setIsModal }: IModal) {
             </Button>
           </Container>
         </ModalLayout>
-      ) : pageNum === 1 ? (
-        <RequestChangeProfileImageModalAvatar setIsModal={setIsModal} />
-      ) : pageNum === 2 ? (
+      ) : pageNum === 1 ? null : // <RequestChangeProfileImageModalAvatar setIsModal={setIsModal} />
+      pageNum === 2 ? (
         <SpecialAvatarModal setIsModal={setIsModal} />
       ) : (
         <RequestChagneProfileImageModalBadge setIsModal={setIsModal} />
