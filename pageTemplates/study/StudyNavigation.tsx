@@ -44,10 +44,10 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy, isVoting }: IStud
   const { data: session } = useSession();
 
   const { data: userInfo } = useUserInfoQuery();
-  console.log(31, isVoting);
+  console.log(31, isVoting, findStudy);
   const {
     voteStudy: { vote, participate, change, absence, cancel },
-    realTimeStudy: { change: realTimeChange, cancel: realTimeCancel },
+    realTimeStudy: { vote: realTimeVote, change: realTimeChange, cancel: realTimeCancel },
   } = useStudyMutations(dayjs(date));
 
   const [isTimeRulletModal, setIsTimeRulletModal] = useState(false);
@@ -58,7 +58,7 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy, isVoting }: IStud
   const myStudyInfo = findMyStudyInfo(findStudy, session?.user.id);
 
   const myStudyStatus = evaluateMyStudyStatus(findStudy, session?.user.id, date, isVoting);
-
+  console.log(myStudyStatus);
   const NAVIGATION_PROPS_MAPPING: Record<Exclude<MyStudyStatus, "expired">, NavigationProps> = {
     pending: {
       text: "참여 신청",
@@ -117,6 +117,20 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy, isVoting }: IStud
     }
 
     if (!myStudyInfo) {
+      if (findStudy.status === "free") {
+        const place = findStudy.place;
+        realTimeVote({
+          place: {
+            latitude: place.latitude,
+            longitude: place.longitude,
+            name: place.name,
+            address: place.address,
+          },
+          time: voteTime,
+        });
+
+        return;
+      }
       participate({ placeId: id, ...voteTime });
       return;
     }
