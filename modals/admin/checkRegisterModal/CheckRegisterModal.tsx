@@ -62,7 +62,7 @@ function CheckRegisterModal({ setIsModal, applicant, setIsRefetch }: ICheckRegis
   return (
     <>
       <ModalLayout
-        title={applicant.name || "정보없음"}
+        title={applicant.name || "정보 없음"}
         setIsModal={setIsModal}
         footerOptions={footerOptions}
       >

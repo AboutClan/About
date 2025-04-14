@@ -69,7 +69,7 @@ function HomeStudySection() {
     <>
       <Box px={5} mt={5}>
         <SectionHeader title="About 카공 스터디" subTitle="동네 친구와의 열공 스터디">
-          <ButtonWrapper size="xs" url={`/studyPage${getStudyViewDate(dayjs())}`}>
+          <ButtonWrapper size="xs" url={`/studyPage?date=${date}`}>
             <ShortArrowIcon dir="right" />
           </ButtonWrapper>
         </SectionHeader>
@@ -85,7 +85,7 @@ function HomeStudySection() {
               </Box>
             ))
           : [1, 2, 3].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)}
-        <SectionFooterButton url={`/studyPage${getStudyViewDate(dayjs())}`} />
+        <SectionFooterButton url={`/studyList?date=${date}`} />
       </Flex>
     </>
   );

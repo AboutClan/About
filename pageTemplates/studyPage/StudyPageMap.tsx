@@ -9,7 +9,7 @@ import {
   getMapOptions,
   getMarkersOptions,
 } from "../../libs/study/setStudyMapOptions";
-import { findStudyByPlaceId } from "../../libs/study/studySelectors";
+import { findMyStudyByUserId, findStudyByPlaceId } from "../../libs/study/studySelectors";
 import { CoordinatesProps } from "../../types/common";
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
 import { DispatchType } from "../../types/hooks/reactTypes";
@@ -63,13 +63,14 @@ function StudyPageMap({
   }, [studyVoteData, currentLocation, centerLocation, isMapExpansion]);
 
   const handleMarker = (id: string, type: "vote") => {
-    if (!id || !studyVoteData || studyVoteData?.participations) return;
     console.log(type);
+    if (!id || !studyVoteData || studyVoteData?.participations) return;
     const findStudy = studyVoteData && findStudyByPlaceId(studyVoteData, id);
-
     const detailInfo = getDetailInfo(findStudy, userInfo?.uid);
     setDetailInfo(detailInfo);
   };
+
+  const myStudy = findMyStudyByUserId(studyVoteData, userInfo?._id);
 
   return (
     <>
@@ -121,7 +122,12 @@ function StudyPageMap({
         )}
       </Slide>
       {detailInfo && (
-        <StudyInfoDrawer date={date} detailInfo={detailInfo} setDetailInfo={setDetailInfo} />
+        <StudyInfoDrawer
+          date={date}
+          detailInfo={detailInfo}
+          setDetailInfo={setDetailInfo}
+          myStudy={myStudy}
+        />
       )}
     </>
   );

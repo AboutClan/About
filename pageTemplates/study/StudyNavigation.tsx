@@ -27,6 +27,7 @@ interface IStudyNavigation {
   findStudy: StudyMergeResultProps;
   hasOtherStudy: boolean;
   id: string;
+  isVoting: boolean;
 }
 
 interface NavigationProps {
@@ -36,16 +37,16 @@ interface NavigationProps {
   func?: () => void;
 }
 
-function StudyNavigation({ id, date, findStudy, hasOtherStudy }: IStudyNavigation) {
+function StudyNavigation({ id, date, findStudy, hasOtherStudy, isVoting }: IStudyNavigation) {
   const router = useRouter();
   const toast = useToast();
 
   const { data: session } = useSession();
 
   const { data: userInfo } = useUserInfoQuery();
-
+  console.log(31, isVoting);
   const {
-    voteStudy: { vote, participate, change, absence },
+    voteStudy: { vote, participate, change, absence, cancel },
     realTimeStudy: { change: realTimeChange, cancel: realTimeCancel },
   } = useStudyMutations(dayjs(date));
 
@@ -56,17 +57,20 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy }: IStudyNavigatio
 
   const myStudyInfo = findMyStudyInfo(findStudy, session?.user.id);
 
-  const myStudyStatus = evaluateMyStudyStatus(findStudy, session?.user.id, date);
+  const myStudyStatus = evaluateMyStudyStatus(findStudy, session?.user.id, date, isVoting);
 
-  const NAVIGATION_PROPS_MAPPING: Record<
-    Exclude<MyStudyStatus, "voting" | "expired">,
-    NavigationProps
-  > = {
+  const NAVIGATION_PROPS_MAPPING: Record<Exclude<MyStudyStatus, "expired">, NavigationProps> = {
     pending: {
       text: "참여 신청",
       type: "single",
       colorScheme: "mint",
       func: () => setIsTimeRulletModal(true),
+    },
+    voting: {
+      text: "참여 취소",
+      type: "single",
+      colorScheme: "red",
+      func: () => cancel(),
     },
     open: {
       text: "출석 체크",
@@ -92,7 +96,7 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy }: IStudyNavigatio
         setIsTimeRulletModal(true);
       },
     },
-    arrived: { text: "출석 완료", type: "single", colorScheme: "black" },
+    arrived: { text: "출석 완료", type: "multi", colorScheme: "black" },
     absenced: { text: "당일 불참", type: "single", colorScheme: "red" },
   };
   const navigationProps: NavigationProps = NAVIGATION_PROPS_MAPPING[myStudyStatus];
@@ -180,19 +184,7 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy }: IStudyNavigatio
   // };
 
   const handleChangeTime = () => {
-    if (checkAlreadyAttendance()) return;
     setIsTimeRulletModal(true);
-  };
-
-  const checkAlreadyAttendance = () => {
-    if (myStudyInfo?.attendance?.type === "arrived") {
-      toast("warning", "이미 출석을 완료했습니다.");
-      return true;
-    } else if (myStudyInfo?.attendance?.type === "absenced") {
-      toast("warning", "이미 불참 처리되었습니다.");
-      return true;
-    }
-    return false;
   };
 
   return (

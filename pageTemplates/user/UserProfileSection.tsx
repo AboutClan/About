@@ -122,7 +122,7 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
         </Box>
       </Box>
       <UserPointBlock />
-      <Box>
+      <Box mt={5}>
         <Box mb={4} mx={5} fontWeight="bold" fontSize="16px" lineHeight="24px">
           활동
         </Box>

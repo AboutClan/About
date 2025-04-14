@@ -118,12 +118,13 @@ export default function Page() {
               </Box>
             </Slide>
           </Box>
-          {(findStudy || (id === "participations" && !myVoteInfo)) && (
+          {(findStudy || id === "participations") && (
             <StudyNavigation
               date={date}
               findStudy={findStudy}
               hasOtherStudy={findMyStudy && findMyStudy.place._id !== findStudy.place._id}
               id={id}
+              isVoting={!!myVoteInfo}
             />
           )}
           {/* {isInviteModal && <StudyInviteModal setIsModal={setIsInviteModal} place={place} />} */}

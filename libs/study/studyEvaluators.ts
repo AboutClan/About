@@ -9,11 +9,15 @@ export const evaluateMyStudyStatus = (
 
   userId: string,
   date: string,
-): Exclude<MyStudyStatus, "voting"> => {
+  isVoting: boolean,
+): MyStudyStatus => {
+  console.log(findStudy, 52);
   if (dayjs(date).startOf("day").isBefore(dayjs().startOf("day"))) {
     return "expired";
   }
+
   if (!findStudy) {
+    if (isVoting) return "voting";
     return "pending";
   }
 

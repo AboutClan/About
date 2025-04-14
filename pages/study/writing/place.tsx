@@ -32,24 +32,21 @@ function WritingStudyPlace() {
       )
     ) {
       failToast("free", "장소를 선택해 주세요!");
-    return;
+      return;
     }
 
     const { fullname, brand, branch } = parsePlaceToStudyPlace(placeInfo.place_name);
-    setStudyWriting(
-      () =>
-        ({
-          ...studyWriting,
-          fullname,
-          brand,
-          branch,
-          mapURL: placeInfo.place_url,
-          locationDetail: placeInfo.road_address_name,
-          latitude: +placeInfo.y,
-          longitude: +placeInfo.x,
-          location,
-        } as StudyWritingProps),
-    );
+    setStudyWriting({
+      ...studyWriting,
+      fullname,
+      brand,
+      branch,
+      mapURL: placeInfo.place_url,
+      locationDetail: placeInfo.road_address_name,
+      latitude: +placeInfo.y,
+      longitude: +placeInfo.x,
+      location,
+    } as StudyWritingProps);
     router.push(`/study/writing/content`);
   };
 

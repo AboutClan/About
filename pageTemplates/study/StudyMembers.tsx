@@ -1,5 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 
@@ -70,13 +71,25 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
       ...obj,
       changeComment,
       rightComponent: rightComponentProps ? (
-        <AttendanceBadge
-          type={rightComponentProps.type}
-          time={rightComponentProps.time}
-          setImageProps={
-            status === "open" ? null : () => setHasImageProps({ image, toUid: member.user.uid })
-          }
-        />
+        image ? (
+          <>
+            <Box
+              position="relative"
+              w="48px"
+              h="48px"
+              borderRadius="4px"
+              overflow="hidden"
+              onClick={() => setHasImageProps({ image, toUid: member.user.uid })}
+            >
+              <Image src={image} fill alt="studyImage" />
+            </Box>
+            <Box mt={1} fontSize="11px" lineHeight="12px" color="gray.500" textAlign="center">
+              {rightComponentProps.time}
+            </Box>
+          </>
+        ) : (
+          <AttendanceBadge type={rightComponentProps.type} time={rightComponentProps.time} />
+        )
       ) : null,
     };
   });

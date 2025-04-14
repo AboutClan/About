@@ -1,24 +1,17 @@
 import { Box, Button } from "@chakra-ui/react";
 
 import { CheckCircleIcon, XCircleIcon } from "../../Icons/CircleIcons";
-import { ImageIcon } from "../../Icons/ImageIcons";
 
 interface IAttendanceBadge {
   type: "attend" | "dismissed";
   time?: string;
-  setImageProps: () => void;
 }
 
-export default function AttendanceBadge({ type, time, setImageProps }: IAttendanceBadge) {
-  const onClickButton = () => {
-    if (setImageProps) {
-      setImageProps();
-    }
-  };
-
+export default function AttendanceBadge({ type, time }: IAttendanceBadge) {
   return (
     <Box my={1}>
       <Button
+        as="div"
         variant="unstyled"
         display="flex"
         mb={1}
@@ -30,19 +23,10 @@ export default function AttendanceBadge({ type, time, setImageProps }: IAttendan
         borderRadius="8px"
         color="white"
         bg={type === "attend" ? "mint" : "red"}
-        onClick={onClickButton}
       >
-        {type === "attend" ? (
-          setImageProps ? (
-            <ImageIcon />
-          ) : (
-            <CheckCircleIcon size="sm" isFill />
-          )
-        ) : (
-          <XCircleIcon size="sm" />
-        )}
+        {type === "attend" ? <CheckCircleIcon size="sm" isFill /> : <XCircleIcon size="sm" />}
         <Box ml={1} fontSize="11px" lineHeight="16px" fontWeight="semibold">
-          {type === "attend" ? (setImageProps ? "인증" : "출석") : "불참"}
+          {type === "attend" ? "출석" : "불참"}
         </Box>
       </Button>
 

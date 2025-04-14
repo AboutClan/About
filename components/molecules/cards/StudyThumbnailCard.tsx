@@ -41,7 +41,6 @@ export function StudyThumbnailCard({
   status,
   func = undefined,
 }: StudyThumbnailCardProps) {
-
   const userAvatarArr = participants.map((par) => {
     return {
       image: par.profileImage,
@@ -59,7 +58,7 @@ export function StudyThumbnailCard({
         <Flex direction="column" ml={4} flex={1}>
           <Flex justify="space-between">
             <Box>
-              <Flex fontSize="10px" lineHeight="12px" color="gray.600">
+              <Flex fontSize="10px" align="center" lineHeight="12px" color="gray.600">
                 <Box as="span">
                   <LocationDotIcon size="md" />
                 </Box>

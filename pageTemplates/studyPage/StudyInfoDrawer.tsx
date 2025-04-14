@@ -21,7 +21,10 @@ import { useUserInfoQuery } from "../../hooks/user/queries";
 import { ModalLayout } from "../../modals/Modals";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { StudyStatus } from "../../types/models/studyTypes/baseTypes";
-import { MergeStudyPlaceProps } from "../../types/models/studyTypes/derivedTypes";
+import {
+  MergeStudyPlaceProps,
+  StudyMergeResultProps,
+} from "../../types/models/studyTypes/derivedTypes";
 import { IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
 import { IAvatar } from "../../types/models/userTypes/userInfoTypes";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
@@ -50,9 +53,10 @@ interface StudyInfoDrawerProps {
   detailInfo: StudyInfoProps;
   setDetailInfo: DispatchType<StudyInfoProps>;
   date: string;
+  myStudy: StudyMergeResultProps;
 }
 
-function StudyInfoDrawer({ detailInfo, setDetailInfo, date }: StudyInfoDrawerProps) {
+function StudyInfoDrawer({ detailInfo, setDetailInfo, date, myStudy }: StudyInfoDrawerProps) {
   const resetStudy = useResetStudyQuery();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -93,6 +97,10 @@ function StudyInfoDrawer({ detailInfo, setDetailInfo, date }: StudyInfoDrawerPro
       setIsCommentModal(true);
     }
     if (type === "vote") {
+      if (myStudy) {
+        toast("warning", "다른 스터디에 참여중입니다.");
+        return;
+      }
       if (detailInfo.status === "solo") {
         if (userInfo?.friend?.includes(detailInfo?.firstUserUid)) {
           setModalType("timeSelect");

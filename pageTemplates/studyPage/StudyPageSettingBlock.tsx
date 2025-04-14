@@ -50,11 +50,11 @@ function StudyPageSettingBlock() {
             { category: "스터디 매칭 기준 장소", text: userInfo?.locationDetail?.text },
             {
               category: "최근 참여한 스터디 장소",
-              text: userInfo?.studyPreference?.place || "없음",
+              text: userInfo?.studyPreference?.place || "정보 없음",
             },
             {
               category: "자주 참여한 스터디 장소",
-              text: userInfo?.studyPreference?.place || "없음",
+              text: userInfo?.studyPreference?.place || "정보 없음",
             },
           ]}
           size="md"
