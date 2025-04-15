@@ -39,9 +39,9 @@ function StudyPlacePickerDrawer({
     },
   };
 
-  const thumbnailArr = setStudyThumbnailCard(date, null, studyResults, currentLocation, false);
+  const thumbnailArr = setStudyThumbnailCard(date, null, studyResults, currentLocation);
 
-  const sortedThumbnailArr = sortThumbnailCardInfoArr("인원순", thumbnailArr);
+  const sortedThumbnailArr = sortThumbnailCardInfoArr("인원순", thumbnailArr, null);
 
   return (
     <>

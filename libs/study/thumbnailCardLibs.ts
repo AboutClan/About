@@ -73,7 +73,6 @@ export const sortThumbnailCardInfoArr = (
   arr: StudyThumbnailCardProps[],
   userId: string,
 ) => {
-  console.log(userId);
   return [...arr].sort((a, b) => {
     if (a.participants.some((par) => par._id === userId)) {
       return -1;

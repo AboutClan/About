@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import Header from "../../components/layouts/Header";
@@ -19,6 +20,7 @@ import {
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 export default function StudyList() {
+  const { data: session } = useSession();
   const { currentLocation } = useUserCurrentLocation();
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
@@ -39,11 +41,12 @@ export default function StudyList() {
       studyVoteData?.participations,
       convertStudyToMergeStudy(studyVoteData),
       currentLocation,
-      false,
     );
 
-    setThumbnailCardinfoArr(sortThumbnailCardInfoArr("인원순", getThumbnailCardInfoArr));
-  }, [studyVoteData, currentLocation]);
+    setThumbnailCardinfoArr(
+      sortThumbnailCardInfoArr("인원순", getThumbnailCardInfoArr, session?.user.id),
+    );
+  }, [studyVoteData, currentLocation, session]);
 
   return (
     <>
