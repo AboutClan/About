@@ -11,7 +11,6 @@ export const setStudyThumbnailCard = (
   participations: StudyParticipationProps[],
   studyResults: StudyMergeResultProps[],
   currentLocation: CoordinatesProps,
-  isThreeSize: boolean,
 ): StudyThumbnailCardProps[] => {
   const participationThumbnailCard: StudyThumbnailCardProps[] = participations
     ? [
@@ -36,37 +35,35 @@ export const setStudyThumbnailCard = (
     : [];
 
   // 카드 데이터 생성
-  const cardColData: StudyThumbnailCardProps[] = studyResults
-    .slice(0, isThreeSize ? (participations ? 2 : 3) : studyResults.length)
-    .map((data, idx) => {
-      const placeInfo = convertMergePlaceToPlace(data.place);
+  const cardColData: StudyThumbnailCardProps[] = studyResults.map((data, idx) => {
+    const placeInfo = convertMergePlaceToPlace(data.place);
 
-      // const image = imageCache?.get(placeInfo?.id);
+    // const image = imageCache?.get(placeInfo?.id);
 
-      return {
-        place: {
-          name: placeInfo.name,
-          branch: placeInfo.branch,
-          address: placeInfo.address,
-          distance: currentLocation
-            ? getDistanceFromLatLonInKm(
-                currentLocation.lat,
-                currentLocation.lon,
-                placeInfo.latitude,
-                placeInfo.longitude,
-              )
-            : undefined,
-          imageProps: {
-            image: placeInfo.image || getRandomImage(),
-            isPriority: idx < 4,
-          },
-          _id: data.place._id,
+    return {
+      place: {
+        name: placeInfo.name,
+        branch: placeInfo.branch,
+        address: placeInfo.address,
+        distance: currentLocation
+          ? getDistanceFromLatLonInKm(
+              currentLocation.lat,
+              currentLocation.lon,
+              placeInfo.latitude,
+              placeInfo.longitude,
+            )
+          : undefined,
+        imageProps: {
+          image: placeInfo.image || getRandomImage(),
+          isPriority: idx < 4,
         },
-        participants: data.members.map((att) => att.user),
-        url: `/study/${data.place._id}/${date}`,
-        status: participations ? "expected" : data?.status || "open",
-      };
-    });
+        _id: data.place._id,
+      },
+      participants: data.members.map((att) => att.user),
+      url: `/study/${data.place._id}/${date}`,
+      status: participations ? "expected" : data?.status || "open",
+    };
+  });
 
   return [...participationThumbnailCard, ...cardColData];
 };
@@ -74,8 +71,16 @@ export const setStudyThumbnailCard = (
 export const sortThumbnailCardInfoArr = (
   sortedOption: "거리순" | "인원순",
   arr: StudyThumbnailCardProps[],
+  userId: string,
 ) => {
+  console.log(userId);
   return [...arr].sort((a, b) => {
+    if (a.participants.some((par) => par._id === userId)) {
+      return -1;
+    }
+    if (b.participants.some((par) => par._id === userId)) {
+      return -1;
+    }
     if (sortedOption === "거리순") {
       if (a.place.distance > b.place.distance) return 1;
       else if (a.place.distance < b.place.distance) return -1;

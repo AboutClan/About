@@ -1,5 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import ButtonWrapper from "../../components/atoms/ButtonWrapper";
@@ -23,6 +24,7 @@ import {
 import { dayjsToKr, dayjsToStr } from "../../utils/dateTimeUtils";
 
 function HomeStudySection() {
+  const { data: session } = useSession();
   const { currentLocation } = useUserCurrentLocation();
 
   const [date, setDate] = useState(getStudyViewDate(dayjs()));
@@ -44,12 +46,13 @@ function HomeStudySection() {
       studyVoteData?.participations,
       convertStudyToMergeStudy(studyVoteData),
       currentLocation,
-      true,
     );
 
-    setThumbnailCardinfoArr(sortThumbnailCardInfoArr("인원순", getThumbnailCardInfoArr));
-  }, [studyVoteData, currentLocation]);
-  console.log(thumbnailCardInfoArr);
+    setThumbnailCardinfoArr(
+      sortThumbnailCardInfoArr("인원순", getThumbnailCardInfoArr, session?.user.id),
+    );
+  }, [studyVoteData, currentLocation, session]);
+
   const tabOptionsArr: ITabNavOptions[] = [
     {
       text: dayjsToKr(dayjs()),

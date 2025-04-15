@@ -2,6 +2,7 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import SectionFooterButton from "../../components/atoms/SectionFooterButton";
@@ -37,6 +38,7 @@ function StudyPagePlaceSection({
   setDate,
   currentLocation,
 }: StudyPagePlaceSectionProps) {
+  const { data: session } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
@@ -64,11 +66,12 @@ function StudyPagePlaceSection({
       studyVoteData?.participations,
       convertStudyToMergeStudy(studyVoteData),
       currentLocation,
-      true,
     );
 
-    setThumbnailCardinfoArr(sortThumbnailCardInfoArr(sortedOption, getThumbnailCardInfoArr));
-  }, [studyVoteData, currentLocation, sortedOption]);
+    setThumbnailCardinfoArr(
+      sortThumbnailCardInfoArr(sortedOption, getThumbnailCardInfoArr, session?.user.id),
+    );
+  }, [studyVoteData, currentLocation, sortedOption, session]);
 
   const onDragEnd = (panInfo: PanInfo) => {
     const newDate = getNewDateBySwipe(panInfo, date as string);
