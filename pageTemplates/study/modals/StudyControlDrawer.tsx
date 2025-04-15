@@ -183,7 +183,7 @@ function StudyControlDrawer({
               <StudySelectIcon />
             </Box>
             <Box fontSize="13px" color="var(--gray-600)">
-              {studyDrawerType === "free" ? "개인 스터디 참여 신청" : "원하는 위치에서 스터디 신청"}
+              {studyDrawerType === "free" ? "자유 스터디 개설 신청" : "원하는 위치에서 스터디 신청"}
             </Box>
           </Button>
           {studyDrawerType === "free" && (
@@ -201,7 +201,7 @@ function StudyControlDrawer({
                   <StudyUserCheckIcon color="gray" />
                 </Box>
                 <Box fontSize="13px" color="var(--gray-600)">
-                  실시간 개인 스터디 출석
+                  실시간 카공 스터디 인증
                 </Box>
               </Button>
             </Link>
