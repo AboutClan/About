@@ -1,7 +1,7 @@
 import { Button, Flex, ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import {
@@ -17,6 +17,7 @@ import StudyOpenCheckModal from "../../modals/study/StudyOpenCheckModal";
 import { CoordinatesProps } from "../../types/common";
 import { StudyMergeResultProps } from "../../types/models/studyTypes/derivedTypes";
 import { MyStudyStatus } from "../../types/models/studyTypes/helperTypes";
+import { dayjsToStr } from "../../utils/dateTimeUtils";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
 import StudyControlDrawer from "../study/modals/StudyControlDrawer";
 
@@ -52,6 +53,7 @@ function StudyControlButton({
   });
 
   useEffect(() => {
+    if (dayjsToStr(dayjs()) !== date) return;
     if (!unmatchedUsers || !session) return;
     if (unmatchedUsers?.includes(session?.user.id) && unmatchedPopupStorage !== date) {
       localStorage.setItem(UNMATCHED_POP_UP_STORAGE, date);
