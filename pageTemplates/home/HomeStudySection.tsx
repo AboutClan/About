@@ -49,7 +49,7 @@ function HomeStudySection() {
 
     setThumbnailCardinfoArr(sortThumbnailCardInfoArr("인원순", getThumbnailCardInfoArr));
   }, [studyVoteData, currentLocation]);
-
+  console.log(thumbnailCardInfoArr);
   const tabOptionsArr: ITabNavOptions[] = [
     {
       text: dayjsToKr(dayjs()),
