@@ -15,7 +15,7 @@ interface IVoteMap {
   circleCenter: {
     lat: number;
     lon: number;
-  };
+  }[];
 }
 
 export default function VoteMap({
@@ -109,10 +109,10 @@ export default function VoteMap({
       mapElementsRef.current.markers.push(marker);
     });
 
-    if (circleCenter) {
+    circleCenter?.forEach((circle2) => {
       const circle = new naver.maps.Circle({
         map: mapInstanceRef.current,
-        center: new naver.maps.LatLng(circleCenter.lat, circleCenter.lon),
+        center: new naver.maps.LatLng(circle2.lat, circle2.lon),
         radius: 5550,
         strokeColor: "#007dfb",
         strokeOpacity: 0.8,
@@ -121,7 +121,7 @@ export default function VoteMap({
         fillOpacity: 0.1,
       });
       mapElementsRef.current.circle = circle;
-    }
+    });
   }, [markersOptions, circleCenter]);
 
   useEffect(() => {

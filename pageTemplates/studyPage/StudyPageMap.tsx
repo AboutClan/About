@@ -133,7 +133,9 @@ function StudyPageMap({
             markersOptions={markersOptions}
             resizeToggle={isMapExpansion}
             handleMarker={handleMarker}
-            circleCenter={isMapExpansion ? studyVoteData?.results?.[0]?.center : null}
+            circleCenter={
+              isMapExpansion ? studyVoteData?.results?.map((props) => props?.center) : null
+            }
           />
           {/* {!studyVoteData?.results && <MainLoadingAbsolute />} */}
         </Box>
