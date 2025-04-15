@@ -6,7 +6,6 @@ import HomeGroupSection from "../../pageTemplates/home/HomeGroupSection";
 import HomeHeader from "../../pageTemplates/home/homeHeader/HomeHeader";
 import HomeInitialSetting from "../../pageTemplates/home/HomeInitialSetting";
 import HomeNav from "../../pageTemplates/home/HomeNav";
-import HomeReviewSection from "../../pageTemplates/home/HomeReviewSection";
 import HomeStudySection from "../../pageTemplates/home/HomeStudySection";
 
 function Home() {
@@ -26,13 +25,13 @@ function Home() {
       <Slide isNoPadding>
         <HomeGatherSection />
       </Slide>
-      <Slide>
-        {/* <HomeGroupStudySection groups={data} /> */}
+      {/* <Slide>
         <HomeReviewSection />
-      </Slide>
+      </Slide> */}
       <Slide isNoPadding>
         <HomeGroupSection groups={data} />
       </Slide>
+      {/* <HomeGroupStudySection groups={data} /> */}
       {/* <HomeFooter /> */}
       {/* <Slide isNoPadding>
         <HomeStudySection />
