@@ -18,7 +18,7 @@ export const setStudyThumbnailCard = (
           place: {
             name: "카공 스터디 자동 매칭",
             branch: "위치 선정 중",
-            address: "가까운 인원들과 스터디 매칭을 진행 중입니다",
+            address: "가까운 인원들과 스터디를 매칭하고 있어요",
             distance: null,
             imageProps: {
               image:
