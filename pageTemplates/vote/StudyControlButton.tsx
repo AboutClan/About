@@ -10,6 +10,7 @@ import {
   StudyUserIcon,
 } from "../../components/Icons/StudyIcons";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
+import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudyVoteMutation } from "../../hooks/study/mutations";
 import { CoordinatesProps } from "../../types/common";
 import { StudyMergeResultProps } from "../../types/models/studyTypes/derivedTypes";
@@ -30,6 +31,7 @@ function StudyControlButton({
   studyResults,
   currentLocation,
 }: StudyControlButtonProps) {
+  const toast = useToast();
   const resetStudy = useResetStudyQuery();
 
   const router = useRouter();
@@ -43,6 +45,10 @@ function StudyControlButton({
   });
 
   const onClickButton = () => {
+    if (dayjs().isBefore(dayjs(date))) {
+      toast("info", "00시 부터 사용 가능합니다.");
+      return;
+    }
     switch (myVoteStatus) {
       case "open":
         router.push(`/vote/attend/configuration?date=${date}`);
