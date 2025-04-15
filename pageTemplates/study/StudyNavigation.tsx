@@ -1,7 +1,7 @@
 import { Button, Flex, ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
@@ -20,7 +20,6 @@ import StudyAbsentModal from "../../modals/study/StudyAbsentModal";
 import { StudyMergeResultProps } from "../../types/models/studyTypes/derivedTypes";
 import { MyStudyStatus } from "../../types/models/studyTypes/helperTypes";
 import { DayjsTimeProps } from "../../types/utils/timeAndDate";
-import { iPhoneNotchSize } from "../../utils/validationUtils";
 
 interface IStudyNavigation {
   date: string;
@@ -209,9 +208,9 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy, isVoting }: IStud
             borderTop="var(--border)"
             align="center"
             bg="white"
-            h={`${64 + iPhoneNotchSize()}px`}
+            h={`calc(64px + env(safe-area-inset-bottom))`}
             pt={2}
-            pb={`${8 + iPhoneNotchSize()}px`}
+            pb={`calc(8px + env(safe-area-inset-bottom))`}
             px={5}
           >
             {navigationProps.type === "multi" && (
