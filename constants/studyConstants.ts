@@ -6,7 +6,7 @@ export const STUDY_STATUS_TO_BADGE: Record<
   StudyStatus | "recruiting" | "expected",
   { text: string; colorScheme: ThemeTypings["colorSchemes"] }
 > = {
-  open: { text: "스터디 오픈", colorScheme: "red" },
+  open: { text: "공식 스터디", colorScheme: "red" },
   free: { text: "자유 스터디", colorScheme: "blue" },
   solo: { text: "개인 스터디", colorScheme: "blue" },
   recruiting: { text: "모집중", colorScheme: "mint" },

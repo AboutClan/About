@@ -65,14 +65,14 @@ function PlaceInfoDrawer({ placeInfo, onClose }: PlaceInfoDrawerProps) {
                 func: () => {
                   typeToast("inspection");
                 },
-                children: "정보 수정 요청",
+                children: "상세 정보",
               }}
               rightProps={{
                 icon: <i className="fa-solid fa-comment-quote fa-flip-horizontal" />,
                 func: () => {
                   typeToast("inspection");
                 },
-                children: <div>네이버 후기</div>,
+                children: <div>멤버 리뷰</div>,
               }}
             />
           </Box>

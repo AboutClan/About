@@ -10,6 +10,7 @@ interface StudyPageRecordBlockProps {
 
 function StudyPageRecordBlock({ userInfo }: StudyPageRecordBlockProps) {
   const record = userInfo?.studyRecord;
+
   return (
     <Box my={5} p={4} pb={3} borderRadius="12px" border="var(--border)" borderColor="gray.200">
       <Box mb={3} fontSize="14px" fontWeight="bold" lineHeight="20px" py={1}>
@@ -17,7 +18,7 @@ function StudyPageRecordBlock({ userInfo }: StudyPageRecordBlockProps) {
       </Box>
       <InfoBoxCol
         infoBoxPropsArr={[
-          { category: "이번 달 참여 횟수", text: !record ? "기록 없음" : record.monthCnt + " 회" },
+          { category: "이번 달 참여 횟수", text: !record ? "기록 없음" : record.monthCnt + "회" },
           {
             category: "이번 달 참여 시간",
             text: !record ? "기록 없음" : formatMinutesToTime(record.monthMinutes),

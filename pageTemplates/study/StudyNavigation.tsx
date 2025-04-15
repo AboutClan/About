@@ -219,7 +219,18 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy, isVoting }: IStud
                 <IconTextColButton
                   icon={<XCircleIcon size="md" />}
                   text="당일 불참"
-                  func={() => setIsAbsentModal(true)}
+                  func={() => {
+                    if (myStudyStatus === "arrived" || myStudyStatus === "absenced") {
+                      toast(
+                        "info",
+                        myStudyStatus === "arrived"
+                          ? "이미 출석 처리되었습니다."
+                          : "이미 결석 처리되었습니다.",
+                      );
+                      return;
+                    }
+                    setIsAbsentModal(true);
+                  }}
                 />
                 <IconTextColButton icon={<ClockIcon />} text="시간 변경" func={handleChangeTime} />
               </>

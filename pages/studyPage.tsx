@@ -139,7 +139,7 @@ export default function StudyPage() {
         <StudyPageRecordBlock userInfo={userInfo} />
         <StudyPageAddPlaceButton setIsPlaceMap={setIsPlaceMap} />
       </Slide>
-      {!isExpireDate && myVoteStatus && (
+      {!isExpireDate && myVoteStatus && !isPlaceMap && (
         <Box mb={20} mt={5}>
           <StudyControlButton
             studyResults={studyVoteData ? convertStudyToMergeStudy(studyVoteData) : []}

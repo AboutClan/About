@@ -93,7 +93,7 @@ export function RegisterLocationLayout({
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>주 활동 장소를 입력해 주세요</span>
-          <span>스터디 매칭 및 모임 추천에 위한 것으로, 대략적으로 입력해 주세요!</span>
+          <span>스터디 매칭을 위한 것으로, 대략적으로만 입력해 주세요!</span>
         </RegisterOverview>
         <Box>
           <SearchLocation

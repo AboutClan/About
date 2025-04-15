@@ -165,7 +165,9 @@ function StudyControlDrawer({
               <StudyCheckIcon />
             </Box>
             <Box fontSize="13px" color="var(--gray-600)">
-              {studyDrawerType === "free" ? "진행중인 스터디 참여" : "원클릭 스터디 신청"}
+              {studyDrawerType === "free"
+                ? "진행중인 스터디 참여"
+                : "즐겨 찾는 위치에서 스터디 신청"}
             </Box>
           </Button>
           <Button
@@ -181,7 +183,7 @@ function StudyControlDrawer({
               <StudySelectIcon />
             </Box>
             <Box fontSize="13px" color="var(--gray-600)">
-              {studyDrawerType === "free" ? "스터디 장소 직접 입력" : "원하는 위치에서 매칭 신청"}
+              {studyDrawerType === "free" ? "개인 스터디 참여 신청" : "원하는 위치에서 스터디 신청"}
             </Box>
           </Button>
           {studyDrawerType === "free" && (

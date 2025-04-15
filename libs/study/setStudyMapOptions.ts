@@ -68,10 +68,11 @@ export const getDetailInfo = (result: StudyMergeResultProps, myUid: string): Stu
 };
 export const getStudyPlaceMarkersOptions = (
   placeData: StudyPlaceProps[],
+  selectedId: string,
 ): IMarkerOptions[] | undefined => {
   if (typeof naver === "undefined") return;
   const temp = [];
-
+  console.log(selectedId);
   if (placeData) {
     placeData.forEach((place) => {
       temp.push({
@@ -79,7 +80,8 @@ export const getStudyPlaceMarkersOptions = (
         type: "place",
         position: new naver.maps.LatLng(place.latitude, place.longitude),
         icon: {
-          content: getStudyIcon("none"),
+          content:
+            place._id === selectedId ? getStudyIcon("none", null, "orange") : getStudyIcon("none"),
           size: new naver.maps.Size(72, 72),
           anchor: new naver.maps.Point(36, 44),
         },
@@ -95,6 +97,7 @@ export const getMarkersOptions = (
   currentLocation: CoordinatesProps,
   myVoteCoordinates: CoordinatesProps,
   participations: StudyParticipationProps[],
+  selectedId: string,
 ): IMarkerOptions[] | undefined => {
   if (typeof naver === "undefined") return;
   const temp = [];
@@ -140,7 +143,11 @@ export const getMarkersOptions = (
         id: par.place._id,
         position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
         icon: {
-          content: getStudyIcon(null, par.members.length, participations ? "orange" : null),
+          content: getStudyIcon(
+            null,
+            par.members.length,
+            participations || selectedId === par.place._id ? "orange" : null,
+          ),
           size: new naver.maps.Size(72, 72),
           anchor: new naver.maps.Point(36, 44),
         },
@@ -197,7 +204,7 @@ export const getMarkersOptions = (
               ? getStudyIcon("inactive")
               : value.count === 1
               ? getStudyIcon("active")
-              : getStudyIcon(null, value.count), // count에 따라 content 값 설정
+              : getStudyIcon(null, value.count, selectedId === value.id ? "orange" : null), // count에 따라 content 값 설정
           size: new naver.maps.Size(72, 72),
           anchor: new naver.maps.Point(36, 44),
         },

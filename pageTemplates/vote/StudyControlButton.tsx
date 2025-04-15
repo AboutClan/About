@@ -145,7 +145,7 @@ const getButtonOptions = (
       return {
         colorScheme: "blue",
         rightIcon: <StudySoloIcon />,
-        text: "자유 스터디 신청",
+        text: "스터디 참여",
       };
     case "arrived":
       return {

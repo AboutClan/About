@@ -47,7 +47,7 @@ function StudyPageSettingBlock() {
         </Box>
         <InfoBoxCol
           infoBoxPropsArr={[
-            { category: "스터디 매칭 기준 장소", text: userInfo?.locationDetail?.text },
+            { category: "스터디 매칭 기준 위치", text: userInfo?.locationDetail?.text },
             {
               category: "최근 참여한 스터디 장소",
               text: userInfo?.studyPreference?.place || "정보 없음",
@@ -60,6 +60,8 @@ function StudyPageSettingBlock() {
           size="md"
         />
         <Flex
+          as="button"
+          w="full"
           justify="center"
           align="center"
           fontSize="12px"
@@ -71,7 +73,7 @@ function StudyPageSettingBlock() {
           h="44px"
           onClick={() => setIsModal(true)}
         >
-          주 활동 장소 변경하기
+          즐겨 찾는 위치 변경하기
         </Flex>
       </Box>
       {isModal && (

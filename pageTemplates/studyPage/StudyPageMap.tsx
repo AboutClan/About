@@ -48,11 +48,19 @@ function StudyPageMap({
   const [isMapExpansion, setIsMapExpansion] = useState(false);
   const [detailInfo, setDetailInfo] = useState<StudyInfoProps>();
   const [placeInfo, setPlaceInfo] = useState<StudyPlaceProps>(null);
-
+  console.log(15, mapOptions);
   useEffect(() => {
     if (!studyVoteData) return;
-
-    const options = getMapOptions(centerLocation, isMapExpansion ? 12 : 13);
+    console.log(25, placeData, detailInfo);
+    const options = getMapOptions(
+      placeInfo
+        ? { lat: placeInfo?.latitude, lon: placeInfo.longitude }
+        : detailInfo
+        ? { lat: detailInfo.place.latitude, lon: detailInfo.place.longitude }
+        : (mapOptions?.center?.x && { lat: mapOptions?.center?.x, lon: mapOptions?.center?.y }) ||
+          centerLocation,
+      isMapExpansion ? 12 : 13,
+    );
     setMapOptions(options);
     setMarkersOptions(
       !placeData
@@ -66,11 +74,20 @@ function StudyPageMap({
                 who?.user?.isLocationSharingDenided === true ||
                 userInfo?.friend.includes(who?.user.uid),
             ),
+            detailInfo?.place._id,
           )
-        : getStudyPlaceMarkersOptions(placeData),
+        : getStudyPlaceMarkersOptions(placeData, placeInfo?._id),
     );
     if (placeData) setIsMapExpansion(true);
-  }, [studyVoteData, currentLocation, centerLocation, isMapExpansion, placeData]);
+  }, [
+    studyVoteData,
+    currentLocation,
+    centerLocation,
+    isMapExpansion,
+    placeData,
+    placeInfo,
+    detailInfo,
+  ]);
 
   const handleMarker = (id: string, type: "vote" | "place") => {
     console.log(id, type);
