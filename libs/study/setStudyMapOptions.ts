@@ -72,7 +72,7 @@ export const getStudyPlaceMarkersOptions = (
 ): IMarkerOptions[] | undefined => {
   if (typeof naver === "undefined") return;
   const temp = [];
-  console.log(selectedId);
+
   if (placeData) {
     placeData.forEach((place) => {
       temp.push({

@@ -64,7 +64,7 @@ function AvatarComponent({
   const onError = () => {
     setImageUrl(AVATAR_IMAGES[0].image);
   };
-  console.log(avatar, size);
+
   function AvatarComponent() {
     return (
       <AvatarContainer size={size} sizeLength={sizeLength}>

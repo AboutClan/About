@@ -1,7 +1,7 @@
 import { Button, Flex, ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
@@ -43,7 +43,7 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy, isVoting }: IStud
   const { data: session } = useSession();
 
   const { data: userInfo } = useUserInfoQuery();
-  console.log(31, isVoting, findStudy);
+ 
   const {
     voteStudy: { vote, participate, change, absence, cancel },
     realTimeStudy: { vote: realTimeVote, change: realTimeChange, cancel: realTimeCancel },
@@ -57,7 +57,7 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy, isVoting }: IStud
   const myStudyInfo = findMyStudyInfo(findStudy, session?.user.id);
 
   const myStudyStatus = evaluateMyStudyStatus(findStudy, session?.user.id, date, isVoting);
-  console.log(myStudyStatus);
+
   const NAVIGATION_PROPS_MAPPING: Record<Exclude<MyStudyStatus, "expired">, NavigationProps> = {
     pending: {
       text: "참여 신청",
@@ -140,7 +140,7 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy, isVoting }: IStud
       realTimeChange(voteTime);
     }
   };
-  console.log(myStudyStatus);
+  
   const drawerOptions: BottomFlexDrawerOptions = {
     header: {
       title: "스터디 참여 시간 선택",
@@ -208,9 +208,9 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy, isVoting }: IStud
             borderTop="var(--border)"
             align="center"
             bg="white"
-            h={`calc(64px + env(safe-area-inset-bottom))`}
+            h="calc(64px + env(safe-area-inset-bottom))"
             pt={2}
-            pb={`calc(8px + env(safe-area-inset-bottom))`}
+            pb="calc(8px + env(safe-area-inset-bottom))"
             px={5}
           >
             {navigationProps.type === "multi" && (

@@ -64,7 +64,7 @@ export default function Page() {
       placeInfo.longitude,
     );
 
-  console.log(studyVoteData);
+
   const members: StudyMemberProps[] | { user: UserSimpleInfoProps }[] =
     findStudy?.members ||
     studyVoteData?.participations?.map((par) => ({

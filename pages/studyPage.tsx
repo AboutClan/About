@@ -47,6 +47,8 @@ export default function StudyPage() {
     enabled: !!isPlaceMap,
   });
 
+  console.log(studyVoteData);
+
   //dateParam이 아예 없는 경우가 있을 수 있을까?
   useEffect(() => {
     if (!dateParam) return;
@@ -104,7 +106,6 @@ export default function StudyPage() {
   }, [studyVoteData, session, currentLocation, isLoading, userInfo]);
 
   const isExpireDate = dayjs(date).isBefore(dayjs().subtract(1, "day"));
-  console.log(studyVoteData?.results);
 
   return (
     <>
@@ -146,6 +147,7 @@ export default function StudyPage() {
             date={date}
             myVoteStatus={myVoteStatus}
             currentLocation={currentLocation}
+            unmatchedUsers={studyVoteData?.unmatchedUsers}
           />
         </Box>
       )}

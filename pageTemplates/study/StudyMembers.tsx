@@ -53,7 +53,7 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
       setVoteComment(comment);
     } else if (status === "free") setRealTimeComment(comment);
   };
-  console.log(34, members);
+ 
   const userCardArr: IProfileCommentCard[] = members.map((member) => {
     const location = getLocationByCoordinates(+member.lat, +member.lon);
 
@@ -71,10 +71,10 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
     }
 
     const obj = composeUserCardArr(member);
-    console.log(member);
+    
     const rightComponentProps = obj.rightComponentProps;
     const image = member?.attendance?.attendanceImage;
-    console.log(52, location);
+
     return {
       ...obj,
       changeComment,
@@ -101,7 +101,7 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
       ) : null,
     };
   });
-  console.log(24, userCardArr);
+
   return (
     <>
       {userCardArr.length ? (

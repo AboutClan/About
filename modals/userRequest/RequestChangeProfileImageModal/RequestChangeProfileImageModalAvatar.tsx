@@ -89,7 +89,7 @@ function RequestChangeProfileImageModalAvatar({
       func: onSubmit,
     },
   };
-  console.log(type);
+ 
   const typeIdx = iconIdx + (type === "dog" ? 0 : type === "cat" ? 12 : 24);
 
   return (

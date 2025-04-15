@@ -11,6 +11,7 @@ export interface StudyVoteDataProps {
   participations?: StudyParticipationProps[];
   results: StudyResultProps[];
   realTimes?: StudyRealTimesProps;
+  unmatchedUsers?: string[];
 }
 
 export interface StudyParticipationProps {

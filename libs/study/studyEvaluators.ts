@@ -20,7 +20,7 @@ export const evaluateMyStudyStatus = (
   const status = findStudy?.status;
 
   const myStudyInfo = findMyStudyInfo(findStudy, userId);
-  console.log(findStudy, myStudyInfo, status);
+  
   if (myStudyInfo) {
     const type = myStudyInfo?.attendance?.type;
     if (type) return type;

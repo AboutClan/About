@@ -1,7 +1,8 @@
 import { Button, Flex, ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 import {
   StudySoloIcon,
@@ -12,17 +13,20 @@ import {
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudyVoteMutation } from "../../hooks/study/mutations";
+import StudyOpenCheckModal from "../../modals/study/StudyOpenCheckModal";
 import { CoordinatesProps } from "../../types/common";
 import { StudyMergeResultProps } from "../../types/models/studyTypes/derivedTypes";
 import { MyStudyStatus } from "../../types/models/studyTypes/helperTypes";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
 import StudyControlDrawer from "../study/modals/StudyControlDrawer";
 
+export const UNMATCHED_POP_UP_STORAGE = "unmatchedPopUpStorage";
 interface StudyControlButtonProps {
   date: string;
   myVoteStatus: MyStudyStatus;
   studyResults: StudyMergeResultProps[];
   currentLocation: CoordinatesProps;
+  unmatchedUsers: string[];
 }
 
 function StudyControlButton({
@@ -30,19 +34,30 @@ function StudyControlButton({
   myVoteStatus,
   studyResults,
   currentLocation,
+  unmatchedUsers,
 }: StudyControlButtonProps) {
   const toast = useToast();
   const resetStudy = useResetStudyQuery();
-
+  const { data: session } = useSession();
   const router = useRouter();
+  const unmatchedPopupStorage = localStorage.getItem(UNMATCHED_POP_UP_STORAGE);
 
   const [studyDrawerType, setStudyDrawerType] = useState<"free" | "vote">(null);
+  const [isModal, setIsModal] = useState(false);
 
   const { mutate: handleCancel } = useStudyVoteMutation(dayjs(date), "delete", {
     onSuccess() {
       resetStudy();
     },
   });
+
+  useEffect(() => {
+    if (!unmatchedUsers || !session) return;
+    if (unmatchedUsers?.includes(session?.user.id) && unmatchedPopupStorage !== date) {
+      localStorage.setItem(UNMATCHED_POP_UP_STORAGE, date);
+      setIsModal(true);
+    }
+  }, [session, unmatchedUsers, unmatchedPopupStorage]);
 
   const onClickButton = () => {
     if (dayjs().isBefore(dayjs(date))) {
@@ -115,6 +130,12 @@ function StudyControlButton({
         studyDrawerType={studyDrawerType}
         onClose={() => setStudyDrawerType(null)}
       />
+      {isModal && (
+        <StudyOpenCheckModal
+          setIsModal={setIsModal}
+          handleButton={() => setStudyDrawerType("free")}
+        />
+      )}
     </>
   );
 }

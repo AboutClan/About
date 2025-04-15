@@ -48,10 +48,10 @@ function StudyPageMap({
   const [isMapExpansion, setIsMapExpansion] = useState(false);
   const [detailInfo, setDetailInfo] = useState<StudyInfoProps>();
   const [placeInfo, setPlaceInfo] = useState<StudyPlaceProps>(null);
-  console.log(15, mapOptions);
+  
   useEffect(() => {
     if (!studyVoteData) return;
-    console.log(25, placeData, detailInfo);
+  
     const options = getMapOptions(
       placeInfo
         ? { lat: placeInfo?.latitude, lon: placeInfo.longitude }
@@ -90,7 +90,7 @@ function StudyPageMap({
   ]);
 
   const handleMarker = (id: string, type: "vote" | "place") => {
-    console.log(id, type);
+  
     if (type === "place") {
       const findPlace = placeData?.find((place) => place._id === id);
       setPlaceInfo(findPlace);
