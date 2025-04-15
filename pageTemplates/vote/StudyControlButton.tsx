@@ -59,7 +59,7 @@ function StudyControlButton({
       localStorage.setItem(UNMATCHED_POP_UP_STORAGE, date);
       setIsModal(true);
     }
-  }, [session, unmatchedUsers, unmatchedPopupStorage]);
+  }, [session, unmatchedUsers, unmatchedPopupStorage, date]);
 
   const onClickButton = () => {
     if (dayjs().isBefore(dayjs(date))) {
