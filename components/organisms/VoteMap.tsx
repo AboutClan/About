@@ -110,6 +110,7 @@ export default function VoteMap({
     });
 
     circleCenter?.forEach((circle2) => {
+      if (!circle2) return;
       const circle = new naver.maps.Circle({
         map: mapInstanceRef.current,
         center: new naver.maps.LatLng(circle2.lat, circle2.lon),
