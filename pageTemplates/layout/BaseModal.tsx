@@ -18,7 +18,9 @@ interface IBaseModal {
 export const LOGOUT_ALERT_OPTIONS: IAlertModalOptions = {
   title: "로그아웃",
   subTitle: "로그아웃 하시겠습니까?",
-  func: signOut,
+  func: () => {
+    signOut({ callbackUrl: `/login/?status=logout` });
+  },
   text: "로그아웃",
 };
 

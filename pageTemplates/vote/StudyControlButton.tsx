@@ -51,7 +51,7 @@ function StudyControlButton({
       resetStudy();
     },
   });
-
+  console.log(unmatchedUsers);
   useEffect(() => {
     if (dayjsToStr(dayjs()) !== date) return;
     if (!unmatchedUsers || !session) return;
