@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
 
 import { useCommentMutation, useSubCommentMutation } from "../../hooks/common/mutations";
@@ -224,7 +224,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
           <Flex direction="column">
             {likeUsers.map((who, idx) => (
               <Fragment key={idx}>
-                <ProfileCommentCard user={who} comment={{ text: who.comment }} />
+                <ProfileCommentCard user={who} comment={{ comment: who.comment }} />
               </Fragment>
             ))}
           </Flex>
