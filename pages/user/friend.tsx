@@ -26,7 +26,7 @@ function ProfileFriend() {
     setBeforePage(router?.asPath);
     router.push(`/profile/${user.uid}`);
   };
-  
+
   return (
     <>
       <Header title="내 친구 목록" url="/user" />
@@ -36,7 +36,7 @@ function ProfileFriend() {
             friends?.map((who) => {
               return (
                 <Item key={who.uid} onClick={() => onClickUser(who)}>
-                  <ProfileCommentCard user={who} comment={{ text: who.comment }} />
+                  <ProfileCommentCard user={who} comment={{ comment: who.comment }} />
                 </Item>
               );
             })

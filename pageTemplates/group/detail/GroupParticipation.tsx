@@ -18,13 +18,13 @@ function GroupParticipation({ data }: IGroupParticipation) {
     if (isSecret) {
       return {
         user: null,
-        comment: { text: "익명으로 진행되는 소모임입니다." },
+        comment: { comment: "익명으로 진행되는 소모임입니다." },
         rightComponent: <ParticipateTime isFirst={true}>비공개</ParticipateTime>,
       };
     }
     return {
       user: par.user,
-      comment: { text: par.user?.comment || "비공개 계정입니다." },
+      comment: { comment: par.user?.comment || "비공개 계정입니다." },
       rightComponent: (
         <>
           <ParticipateTime isFirst={true}>{GROUP_STUDY_ROLE[par.role]}</ParticipateTime>
