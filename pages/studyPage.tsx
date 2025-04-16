@@ -14,7 +14,7 @@ import StudyPageAddPlaceButton from "../pageTemplates/studyPage/StudyPageAddPlac
 import StudyPageCalendar from "../pageTemplates/studyPage/StudyPageCalendar";
 import StudyPageHeader from "../pageTemplates/studyPage/StudyPageHeader";
 import StudyPageIntroBox from "../pageTemplates/studyPage/StudyPageIntroBox";
-import StudyPageMap from "../pageTemplates/studyPage/StudyPageMap";
+import StudyPageMap from "../pageTemplates/studyPage/studyPageMap/StudyPageMap";
 import StudyPagePlaceSection from "../pageTemplates/studyPage/StudyPagePlaceSection";
 import StudyPageRecordBlock from "../pageTemplates/studyPage/StudyPageRecordBlock";
 import StudyPageSettingBlock from "../pageTemplates/studyPage/StudyPageSettingBlock";

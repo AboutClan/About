@@ -48,6 +48,7 @@ function StudyPageSettingBlock() {
     });
   };
   console.log(recentStudyRecord);
+  // const A = userInfo?.isLocationSharingDenided;
   return (
     <>
       <Box p={4} pb={3} borderRadius="12px" border="var(--border)" borderColor="gray.200">
@@ -56,7 +57,12 @@ function StudyPageSettingBlock() {
         </Box>
         <InfoBoxCol
           infoBoxPropsArr={[
-            { category: "스터디 매칭 기준 위치", text: userInfo?.locationDetail?.text },
+            {
+              category: `스터디 매칭 기준 위치 (${
+                userInfo?.isLocationSharingDenided ? "공개 상태" : "비공개 상태"
+              })`,
+              text: userInfo?.locationDetail?.text,
+            },
             {
               category: "최근 참여한 스터디 장소",
               text: recentStudyRecord ? recentStudyRecord?.place : "정보 없음",

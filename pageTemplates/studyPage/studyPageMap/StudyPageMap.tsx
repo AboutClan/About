@@ -1,23 +1,23 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-import Slide from "../../components/layouts/PageSlide";
-import VoteMap from "../../components/organisms/VoteMap";
-import { useUserInfoQuery } from "../../hooks/user/queries";
+import Slide from "../../../components/layouts/PageSlide";
+import VoteMap from "../../../components/organisms/VoteMap";
+import { useUserInfoQuery } from "../../../hooks/user/queries";
 import {
   getDetailInfo,
   getMapOptions,
   getMarkersOptions,
   getStudyPlaceMarkersOptions,
-} from "../../libs/study/setStudyMapOptions";
-import { findMyStudyByUserId, findStudyByPlaceId } from "../../libs/study/studySelectors";
-import { CoordinatesProps } from "../../types/common";
-import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
-import { DispatchBoolean, DispatchType } from "../../types/hooks/reactTypes";
-import { StudyPlaceProps, StudyVoteDataProps } from "../../types/models/studyTypes/baseTypes";
-import PlaceInfoDrawer from "./PlaceInfoDrawer";
-import StudyInfoDrawer, { StudyInfoProps } from "./StudyInfoDrawer";
-import StudyMapTopNav from "./StudyMapTopNav";
+} from "../../../libs/study/setStudyMapOptions";
+import { findMyStudyByUserId, findStudyByPlaceId } from "../../../libs/study/studySelectors";
+import { CoordinatesProps } from "../../../types/common";
+import { IMapOptions, IMarkerOptions } from "../../../types/externals/naverMapTypes";
+import { DispatchBoolean, DispatchType } from "../../../types/hooks/reactTypes";
+import { StudyPlaceProps, StudyVoteDataProps } from "../../../types/models/studyTypes/baseTypes";
+import PlaceInfoDrawer from "../PlaceInfoDrawer";
+import StudyInfoDrawer, { StudyInfoProps } from "../StudyInfoDrawer";
+import StudyMapTopNav from "./TopNav";
 
 interface StudyPageMapProps {
   studyVoteData: StudyVoteDataProps;
@@ -48,10 +48,10 @@ function StudyPageMap({
   const [isMapExpansion, setIsMapExpansion] = useState(false);
   const [detailInfo, setDetailInfo] = useState<StudyInfoProps>();
   const [placeInfo, setPlaceInfo] = useState<StudyPlaceProps>(null);
-  
+
   useEffect(() => {
     if (!studyVoteData) return;
-  
+
     const options = getMapOptions(
       placeInfo
         ? { lat: placeInfo?.latitude, lon: placeInfo.longitude }
@@ -90,7 +90,6 @@ function StudyPageMap({
   ]);
 
   const handleMarker = (id: string, type: "vote" | "place") => {
-  
     if (type === "place") {
       const findPlace = placeData?.find((place) => place._id === id);
       setPlaceInfo(findPlace);
@@ -126,8 +125,13 @@ function StudyPageMap({
             handleLocationRefetch={() =>
               currentLocation ? setCenterLocation(currentLocation) : null
             }
-            isRight={isMapExpansion}
+            isMapExpansion={isMapExpansion}
+            onClose={() => {
+              setIsMapExpansion(false);
+              setIsPlaceMap(false);
+            }}
           />
+
           <VoteMap
             mapOptions={mapOptions}
             markersOptions={markersOptions}
@@ -139,24 +143,6 @@ function StudyPageMap({
           />
           {/* {!studyVoteData?.results && <MainLoadingAbsolute />} */}
         </Box>
-        {isMapExpansion && (
-          <Button
-            p={0}
-            w="48px"
-            h="48px"
-            zIndex={700}
-            position="fixed"
-            top="20px"
-            left="20px"
-            bg="white"
-            onClick={() => {
-              setIsMapExpansion(false);
-              setIsPlaceMap(false);
-            }}
-          >
-            <XIcon />
-          </Button>
-        )}
       </Slide>
       {detailInfo && (
         <StudyInfoDrawer
@@ -171,18 +157,6 @@ function StudyPageMap({
   );
 }
 
-function XIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      height="24px"
-      viewBox="0 -960 960 960"
-      width="24px"
-      fill="var(--gray-900)"
-    >
-      <path d="M480-424 284-228q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536-480l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480-424Z" />
-    </svg>
-  );
-}
+
 
 export default StudyPageMap;
