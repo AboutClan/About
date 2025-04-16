@@ -101,7 +101,7 @@ export default function Member() {
       ),
     );
   };
-  
+
   return (
     <>
       <Header title="멤버 관리" />
@@ -119,7 +119,7 @@ export default function Member() {
                   <ProfileCommentCard
                     user={who.user}
                     comment={{
-                      text: `구성:${GROUP_STUDY_ROLE[who.role]} / 출석 횟수:${who.attendCnt}회`,
+                      comment: `구성:${GROUP_STUDY_ROLE[who.role]} / 출석 횟수:${who.attendCnt}회`,
                     }}
                     rightComponent={
                       <Flex align="center">

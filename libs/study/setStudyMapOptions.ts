@@ -54,7 +54,7 @@ export const getDetailInfo = (result: StudyMergeResultProps, myUid: string): Stu
           }
         : null,
       text:
-        sortedCommentUserArr?.[0]?.comment?.text ||
+        sortedCommentUserArr?.[0]?.comment?.comment ||
         STUDY_COMMENT_ARR[getRandomIdx(STUDY_COMMENT_ARR.length - 1)],
     },
     firstUserUid: result?.members?.[0]?.user?.uid,
