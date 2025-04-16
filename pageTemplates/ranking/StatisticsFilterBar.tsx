@@ -1,4 +1,4 @@
-import { Box, Flex, Switch } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
@@ -37,29 +37,6 @@ export default function StatisticsFilterBar({
         setValue={setValue}
         size="sm"
       />
-
-      <Flex align="center" fontSize="12px">
-        <Box
-          fontWeight={!filterOption.isLocationFilter ? "semibold" : "regular"}
-          color={filterOption.isLocationFilter ? "var(--gray-500)" : "mint"}
-        >
-          전체
-        </Box>
-        <Switch
-          onChange={() =>
-            setFilterOption((old) => ({ ...old, isLocationFilter: !old.isLocationFilter }))
-          }
-          isChecked={filterOption.isLocationFilter}
-          m="0 8px"
-          colorScheme="mint"
-        />
-        <Box
-          fontWeight={filterOption.isLocationFilter ? "semibold" : "regular"}
-          color={!filterOption.isLocationFilter ? "var(--gray-500)" : "mint"}
-        >
-          {session?.user.location}
-        </Box>
-      </Flex>
     </Flex>
   );
 }

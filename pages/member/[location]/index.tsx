@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
@@ -10,7 +10,7 @@ import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../components/layouts/PageSlide";
 import SectionBar from "../../../components/molecules/bars/SectionBar";
 import BlurredPart from "../../../components/molecules/BlurredPart";
-import { useAdminUsersLocationControlQuery } from "../../../hooks/admin/quries";
+import { useAllUserDataQuery } from "../../../hooks/admin/quries";
 import MemberHeader from "../../../pageTemplates/member/MemberHeader";
 import MemberRecommend from "../../../pageTemplates/member/MemberRecommend";
 import MemberSectionList from "../../../pageTemplates/member/MemberSectionList";
@@ -43,14 +43,9 @@ function Member() {
   const [groupedMembers, setgroupedMembers] = useState<IGroupedMembers>();
   const [locationMembers, setLocationMembers] = useState<IUser[]>();
 
-  const { data: usersAll, isLoading } = useAdminUsersLocationControlQuery(
-    location as Location,
-    null,
-    false,
-    {
-      enabled: !!location,
-    },
-  );
+  const { data: usersAll, isLoading } = useAllUserDataQuery(location as Location, null, false, {
+    enabled: !!location,
+  });
 
   //멤버 분류
   useEffect(() => {

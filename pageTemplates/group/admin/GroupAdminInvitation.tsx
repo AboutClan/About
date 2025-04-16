@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import AlertModal, { IAlertModalOptions } from "../../../components/AlertModal";
@@ -9,7 +9,7 @@ import { MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoadi
 import Selector from "../../../components/atoms/Selector";
 import InviteUserGroups from "../../../components/molecules/groups/InviteUserGroups";
 import { LOCATION_ALL } from "../../../constants/location";
-import { useAdminUsersLocationControlQuery } from "../../../hooks/admin/quries";
+import { useAllUserDataQuery } from "../../../hooks/admin/quries";
 import { useResetGroupQuery } from "../../../hooks/custom/CustomHooks";
 import { useCompleteToast } from "../../../hooks/custom/CustomToast";
 import { useGroupInviteMutation } from "../../../hooks/groupStudy/mutations";
@@ -38,7 +38,7 @@ export default function GroupAdminInvitation() {
     data: usersAll,
     refetch,
     isLoading,
-  } = useAdminUsersLocationControlQuery(value === "전체" ? null : value, null, false, {
+  } = useAllUserDataQuery(value === "전체" ? null : value, null, false, {
     enabled: !!location,
   });
 

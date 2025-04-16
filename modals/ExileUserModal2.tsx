@@ -6,7 +6,7 @@ import { Input } from "../components/atoms/Input";
 import { MainLoadingAbsolute } from "../components/atoms/loaders/MainLoading";
 import ButtonGroups from "../components/molecules/groups/ButtonGroups";
 import InviteUserGroups from "../components/molecules/groups/InviteUserGroups";
-import { useAdminUsersLocationControlQuery } from "../hooks/admin/quries";
+import { useAllUserDataQuery } from "../hooks/admin/quries";
 import { useToast } from "../hooks/custom/CustomToast";
 import { useGatherExileMutation } from "../hooks/gather/mutations";
 import { IModal } from "../types/components/modalTypes";
@@ -29,7 +29,7 @@ export default function ExileUserModal({ setIsModal, prevUsers, filterUsers }: I
   const [existUsers, setExistUsers] = useState<IUserSummary[]>(prevUsers);
   const [nameValue, setNameValue] = useState("");
 
-  const { data: usersAll, isLoading } = useAdminUsersLocationControlQuery(
+  const { data: usersAll, isLoading } = useAllUserDataQuery(
     location === "전체" ? null : location,
     null,
     true,
@@ -48,7 +48,6 @@ export default function ExileUserModal({ setIsModal, prevUsers, filterUsers }: I
     const filtered = filterUsers?.length
       ? usersAll?.filter((user) => filterUsers.includes(user._id))
       : usersAll;
-
 
     if (nameValue) setUsers(searchName(filtered, nameValue));
     else setUsers(filtered);

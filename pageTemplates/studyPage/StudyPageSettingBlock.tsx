@@ -48,7 +48,7 @@ function StudyPageSettingBlock() {
     });
   };
   console.log(recentStudyRecord);
-  // const A = userInfo?.isLocationSharingDenided;
+
   return (
     <>
       <Box p={4} pb={3} borderRadius="12px" border="var(--border)" borderColor="gray.200">
