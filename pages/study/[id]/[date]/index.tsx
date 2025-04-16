@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 
 import { STUDY_COVER_IMAGES } from "../../../../assets/images/studyCover";
 import { STUDY_MAIN_IMAGES } from "../../../../assets/images/studyMain";
@@ -50,7 +50,7 @@ export default function Page() {
 
     latitude: null,
     longitude: null,
-    time: dayjsToFormat(dayjs(date), "M월 D일 오후 10시"),
+    time: dayjsToFormat(dayjs(date), "M월 D일 오후 11시"),
 
     _id: null,
   };
