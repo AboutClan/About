@@ -1,5 +1,5 @@
 import { Button, Flex, ThemeTypings } from "@chakra-ui/react";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
@@ -43,7 +43,7 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy, isVoting }: IStud
   const { data: session } = useSession();
 
   const { data: userInfo } = useUserInfoQuery();
- 
+
   const {
     voteStudy: { vote, participate, change, absence, cancel },
     realTimeStudy: { vote: realTimeVote, change: realTimeChange, cancel: realTimeCancel },
@@ -140,7 +140,7 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy, isVoting }: IStud
       realTimeChange(voteTime);
     }
   };
-  
+
   const drawerOptions: BottomFlexDrawerOptions = {
     header: {
       title: "스터디 참여 시간 선택",
@@ -273,8 +273,8 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy, isVoting }: IStud
           defaultVoteTime={
             myStudyInfo
               ? {
-                  start: dayjs(myStudyInfo.time.start),
-                  end: dayjs(myStudyInfo.time.end),
+                  start: adjustTime30Minutes(dayjs(myStudyInfo.time.start)),
+                  end: adjustTime30Minutes(dayjs(myStudyInfo.time.end)),
                 }
               : null
           }
@@ -289,3 +289,9 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy, isVoting }: IStud
 }
 
 export default StudyNavigation;
+
+const adjustTime30Minutes = (time: Dayjs) => {
+  const ceiled = time.minute(Math.ceil(time.minute() / 30) * 30).second(0);
+  const adjusted = ceiled.minute() === 60 ? ceiled.add(1, "hour").minute(0) : ceiled;
+  return adjusted;
+};

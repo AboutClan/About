@@ -21,6 +21,7 @@ export default function StudyVoteTimeRulletDrawer({
   zIndex,
   defaultVoteTime,
 }: IStudyVoteTimeRulletDrawer) {
+  console.log(defaultVoteTime);
   return (
     <>
       <BottomFlexDrawer
@@ -65,6 +66,7 @@ export function StudyVoteTimeRullets({ defaultVoteTime, setVoteTime }: StudyVote
 
   useEffect(() => {
     if (defaultVoteTime) {
+      console.log(24, dayjsToTimeString(defaultVoteTime.start));
       const startIndex = startItemArr.findIndex(
         (time) =>
           dayjsToTimeString(parseTimeToDayjs(time)) === dayjsToTimeString(defaultVoteTime.start),
