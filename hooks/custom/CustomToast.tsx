@@ -61,7 +61,7 @@ const TOAST_MAP: Record<ToastType, ToastConfig> = {
   "not-yet": { title: "개발중인 기능", status: "info" },
 
   inspection: {
-    title: "점검중인 기능",
+    title: "점검중",
     status: "info",
   },
   guest: {

@@ -2,14 +2,16 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 
+import AvatarGroupsOverwrap from "../../components/molecules/groups/AvatarGroupsOverwrap";
 import InfoBoxCol from "../../components/molecules/InfoBoxCol";
 import RightDrawer from "../../components/organisms/drawer/RightDrawer";
-import { USER_INFO } from "../../constants/keys/queryKeys";
+import { STUDY_ATTEND_RECORD, USER_INFO } from "../../constants/keys/queryKeys";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { RegisterLocationLayout } from "../../pages/register/location";
 import { KakaoLocationProps } from "../../types/externals/kakaoLocationSearch";
+import { IAvatar } from "../../types/models/userTypes/userInfoTypes";
 
 function StudyPageSettingBlock() {
   const typeToast = useTypeToast();
@@ -19,6 +21,13 @@ function StudyPageSettingBlock() {
   const [placeInfo, setPlaceInfo] = useState<KakaoLocationProps>();
   const [errorMessage, setErrorMessage] = useState("");
   const [isModal, setIsModal] = useState(false);
+
+  const recentStudyAttendStorage = localStorage.getItem(STUDY_ATTEND_RECORD);
+  const recentStudyRecord: {
+    date: string;
+    place: string;
+    members: { image: string; avatar?: IAvatar }[];
+  } = recentStudyAttendStorage ? JSON.parse(recentStudyAttendStorage) : null;
 
   const { mutate: changeLocationDetail } = useUserInfoFieldMutation("locationDetail", {
     onSuccess() {
@@ -38,7 +47,7 @@ function StudyPageSettingBlock() {
       lat: +placeInfo.y,
     });
   };
-
+  console.log(recentStudyRecord);
   return (
     <>
       <Box p={4} pb={3} borderRadius="12px" border="var(--border)" borderColor="gray.200">
@@ -50,11 +59,18 @@ function StudyPageSettingBlock() {
             { category: "스터디 매칭 기준 위치", text: userInfo?.locationDetail?.text },
             {
               category: "최근 참여한 스터디 장소",
-              text: userInfo?.studyPreference?.place || "정보 없음",
+              text: recentStudyRecord ? recentStudyRecord?.place : "정보 없음",
             },
             {
-              category: "자주 참여한 스터디 장소",
-              text: userInfo?.studyPreference?.place || "정보 없음",
+              category: "최근 함께한 스터디 멤버",
+              rightChildren: recentStudyRecord ? (
+                <Box>
+                  <AvatarGroupsOverwrap userAvatarArr={recentStudyRecord?.members} maxCnt={4} />
+                </Box>
+              ) : (
+                "정보 없음"
+              ),
+              // text: userInfo?.studyPreference?.place || "정보 없음",
             },
           ]}
           size="md"

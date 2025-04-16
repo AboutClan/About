@@ -14,16 +14,13 @@ import Textarea from "../../../components/atoms/Textarea";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
-import { STUDY_RECORD } from "../../../constants/keys/localStorage";
-import { POINT_SYSTEM_DEPOSIT } from "../../../constants/serviceConstants/pointSystemConstants";
+import { STUDY_ATTEND_RECORD } from "../../../constants/keys/queryKeys";
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useMyStudyResult } from "../../../hooks/custom/StudyHooks";
 import { useImageUploadMutation } from "../../../hooks/image/mutations";
 import { useRealTimeAttendMutation } from "../../../hooks/realtime/mutations";
 import { useStudyAttendCheckMutation } from "../../../hooks/study/mutations";
-import { usePointSystemMutation } from "../../../hooks/user/mutations";
-import { findMyStudyInfo } from "../../../libs/study/studySelectors";
 import { ModalLayout } from "../../../modals/Modals";
 import {
   transferCollectionState,
@@ -60,9 +57,9 @@ function Configuration() {
   );
   const studyType = myStudyResult?.status;
 
+  console.log(13, myStudyResult);
   const setTransferCollection = useSetRecoilState(transferCollectionState);
 
-  const { mutate: getDeposit } = usePointSystemMutation("deposit");
   const { mutate: handleArrived, isLoading: isLoading1 } = useStudyAttendCheckMutation({
     onSuccess(data) {
       handleAttendSuccess(data);
@@ -106,13 +103,6 @@ function Configuration() {
     saveTogetherMembers();
     resetStudy();
     setTransferStudyAttendance(null);
-
-    const myStudyInfo = findMyStudyInfo(myStudyResult, session?.user.id);
-
-    if (studyType === "open") {
-      const isLate = dayjs().isAfter(dayjs(myStudyInfo?.time.end).add(1, "hour"));
-      if (isLate) getDeposit(POINT_SYSTEM_DEPOSIT.STUDY_ATTEND_LATE);
-    }
     toast("success", `출석이 완료되었습니다.`);
     if (id) {
       router.push(`/study/${id}/${date}`);
@@ -122,10 +112,20 @@ function Configuration() {
   };
 
   const saveTogetherMembers = () => {
+    const place = myStudyResult.place.name;
+    const members = myStudyResult.members
+      .filter((who) => who.user._id !== session?.user.id)
+      .map((member) => ({
+        image: member.user.profileImage,
+        avatar: member.user?.avatar,
+      }));
+
     const record = {
       date: dayjsToStr(dayjs()),
+      place,
+      members,
     };
-    localStorage.setItem(STUDY_RECORD, JSON.stringify(record));
+    localStorage.setItem(STUDY_ATTEND_RECORD, JSON.stringify(record));
   };
 
   const formData = new FormData();
@@ -146,9 +146,6 @@ function Configuration() {
       formData.append("image", transferStudyAttendance.image);
       formData.append("path", "studyAttend");
       imageUpload(formData);
-      setTimeout(() => {
-        setIsChecking(false);
-      }, 2000);
     } else {
       formData.append("memo", attendMessage);
       formData.append("status", otherPermission === "허용" ? "free" : "solo");

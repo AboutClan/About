@@ -1,5 +1,5 @@
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 import AlertModal, { IAlertModalOptions } from "../../../components/AlertModal";
@@ -101,7 +101,7 @@ function GroupHeader({ group }: IGroupHeader) {
 
   return (
     <>
-      <Header title="모임 정보" isCenter defaultUrl="/group">
+      <Header title="모임 정보" isCenter url="/group">
         <MenuButton menuArr={menuArr} />
       </Header>
       {isSettigModal && (

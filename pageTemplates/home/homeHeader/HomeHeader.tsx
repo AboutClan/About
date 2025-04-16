@@ -2,21 +2,24 @@ import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 
 import AlertCirclePoint from "../../../components/atoms/AlertCirclePoint";
-import ButtonWrapper from "../../../components/atoms/ButtonWrapper";
-import { CalendarCheckIcon, NoticeIcon } from "../../../components/Icons/SolidIcons";
+import {
+  BellModalButton,
+  CalendarCheckModalButton,
+} from "../../../components/atoms/buttons/ModalButtons";
 import Slide from "../../../components/layouts/PageSlide";
 import { AboutLogo } from "../../../components/services/AboutLogo";
-import { DAILY_CHECK_POP_UP } from "../../../constants/keys/localStorage";
+import { DAILY_CHECK_POP_UP, NOTICE_ALERT } from "../../../constants/keys/localStorage";
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import DailyCheckModal from "../../../modals/aboutHeader/dailyCheckModal/DailyCheckModal";
 import PointSystemsModal from "../../../modals/aboutHeader/pointSystemsModal/PointSystemsModal";
 import LastWeekAttendPopUp from "../../../modals/pop-up/LastWeekAttendPopUp";
 import { renderHomeHeaderState } from "../../../recoils/renderRecoils";
+import { NOTICE_ARR } from "../../../storage/notice";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 
 export type HomeHeaderModalType = "rule" | "dailyCheck" | "pointGuide" | null;
@@ -32,22 +35,22 @@ function HomeHeader() {
 
   const todayDailyCheck = localStorage.getItem(DAILY_CHECK_POP_UP) === dayjsToStr(dayjs());
 
-  // const [isNoticeAlert, setIsNoticeAlert] = useState(false);
+  const [isNoticeAlert, setIsNoticeAlert] = useState(false);
 
   // const { data } = useNoticeActiveLogQuery(undefined, false);
 
   // const { data: recentChat } = useRecentChatQuery({ enabled: isGuest === false });
 
-  // useEffect(() => {
-  //   // if (!data) return;
-  //   // const recentOne = data[0]?.message;
+  useEffect(() => {
+    // if (!data) return;
+    // const recentOne = data[0]?.message;
 
-  //   const noticeCnt = localStorage.getItem(NOTICE_ALERT);
-
-  //   if (NOTICE_ARR.length !== +noticeCnt) {
-  //     setIsNoticeAlert(true);
-  //   }
-  // }, []);
+    const noticeCnt = localStorage.getItem(NOTICE_ALERT);
+    console.log(1234, noticeCnt, NOTICE_ARR.length);
+    if (!noticeCnt || NOTICE_ARR.length + "" !== noticeCnt) {
+      setIsNoticeAlert(true);
+    }
+  }, []);
 
   return (
     <>
@@ -56,47 +59,36 @@ function HomeHeader() {
           <Layout>
             <AboutLogo />
             <Flex align="center">
-              <Box mr={1}>
-                <ButtonWrapper
-                  size="sm"
-                  onClick={isGuest ? () => typeToast("guest") : () => setModalType("dailyCheck")}
+              <Box mr={1} position="relative">
+                <CalendarCheckModalButton
+                  handleClick={
+                    isGuest ? () => typeToast("guest") : () => setModalType("dailyCheck")
+                  }
+                />
+                <Box
+                  position="absolute"
+                  right="3px"
+                  bottom="3px"
+                  p="1px"
+                  bgColor="white"
+                  borderRadius="50%"
                 >
-                  <Box w="20px" h="20px" opacity={0.4}>
-                    <CalendarCheckIcon />
-                  </Box>
-                  <Box
-                    position="absolute"
-                    right="4px"
-                    bottom="4px"
-                    p="1px"
-                    bgColor="white"
-                    borderRadius="50%"
-                  >
-                    <AlertCirclePoint isActive={!todayDailyCheck} />
-                  </Box>
-                </ButtonWrapper>
+                  <AlertCirclePoint isActive={!todayDailyCheck} />
+                </Box>
               </Box>
-              <Box
-                as="button"
-                onClick={() => {
-                  router.push("/notice");
-                }}
-              >
-                <ButtonWrapper size="sm">
-                  <Box opacity={0.4} w="full" h="full">
-                    <NoticeIcon />
-                  </Box>
-                  <Box
-                    position="absolute"
-                    right="6px"
-                    top="5px"
-                    p="1px"
-                    bgColor="white"
-                    borderRadius="50%"
-                  >
-                    <AlertCirclePoint isActive={false} />
-                  </Box>
-                </ButtonWrapper>
+
+              <Box position="relative">
+                <BellModalButton handleClick={() => router.push("/notice")} />
+                <Box
+                  position="absolute"
+                  right="4px"
+                  top="3px"
+                  p="1px"
+                  bgColor="white"
+                  borderRadius="50%"
+                >
+                  <AlertCirclePoint isActive={isNoticeAlert} />
+                </Box>
               </Box>
             </Flex>
           </Layout>

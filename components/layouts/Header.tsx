@@ -6,15 +6,14 @@ import Slide from "./PageSlide";
 interface IHeader {
   title: string;
   isBack?: boolean;
-  func?: () => void;
   url?: string;
   isSlide?: boolean;
   rightPadding?: number;
   isCenter?: boolean;
   isBorder?: boolean;
   children?: React.ReactNode;
-  defaultUrl?: string;
   isTransparent?: boolean;
+  func?: () => void;
 }
 
 export default function Header({
@@ -23,12 +22,11 @@ export default function Header({
   isSlide = true,
   url,
   rightPadding,
-  func,
   children,
   isCenter = true,
   isBorder = true,
-  defaultUrl,
   isTransparent,
+  func,
 }: IHeader) {
   function HeaderLayout() {
     return (
@@ -41,12 +39,7 @@ export default function Header({
       >
         <Flex align="center" width="100%">
           {isBack && (
-            <ArrowBackButton
-              color={isTransparent ? "white" : "mint"}
-              defaultUrl={defaultUrl}
-              url={url}
-              func={func}
-            />
+            <ArrowBackButton func={func} color={isTransparent ? "white" : "mint"} url={url} />
           )}
           {isCenter && (
             <Box
@@ -65,7 +58,9 @@ export default function Header({
               {title}
             </Box>
           )}
-          <Box ml="auto">{children}</Box>
+          <Flex ml="auto" align="center">
+            {children}
+          </Flex>
         </Flex>
       </HeaderContainer>
     );

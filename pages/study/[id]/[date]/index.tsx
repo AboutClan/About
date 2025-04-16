@@ -64,7 +64,6 @@ export default function Page() {
       placeInfo.longitude,
     );
 
-
   const members: StudyMemberProps[] | { user: UserSimpleInfoProps }[] =
     findStudy?.members ||
     studyVoteData?.participations?.map((par) => ({
@@ -78,7 +77,7 @@ export default function Page() {
   const myVoteInfo = studyVoteData?.participations?.find(
     (who) => who.user._id === session?.user.id,
   );
-
+  console.log("fd", findMyStudy);
   return (
     <>
       {studyVoteData ? (

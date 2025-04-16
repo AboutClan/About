@@ -64,7 +64,7 @@ function AvatarComponent({
   const onError = () => {
     setImageUrl(AVATAR_IMAGES[0].image);
   };
-
+  console.log(avatar, size);
   function AvatarComponent() {
     return (
       <AvatarContainer size={size} sizeLength={sizeLength}>
@@ -122,6 +122,7 @@ function AvatarComponent({
                 justify="center"
                 alignItems="center"
                 h="100%"
+                lineHeight="normal"
               >
                 <Box h={2} textAlign="center">
                   +{shadowAvatar}

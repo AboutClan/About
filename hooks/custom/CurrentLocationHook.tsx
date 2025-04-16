@@ -11,7 +11,7 @@ export function useUserCurrentLocation() {
   const toast = useToast();
   const [coordinate, setCoordinate] = useState<CoordinatesProps | null | undefined>(undefined);
   const locationAccessStorage = localStorage.getItem(LocationAccessStorage);
-  const todayDateStr = dayjsToStr(dayjs());
+  const todayDateStr = dayjsToStr(dayjs().date(0));
 
   useEffect(() => {
     let isMounted = true;

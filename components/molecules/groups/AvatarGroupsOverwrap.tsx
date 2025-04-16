@@ -45,6 +45,7 @@ export default function AvatarGroupsOverwrap({
 }
 const Participants = styled.div<{ size: string }>`
   display: flex;
+
   & > *:not(:first-child) {
     margin-left: ${(props) => (props.size === "2xs" ? "-4px" : "-6px")};
   }

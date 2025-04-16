@@ -1,5 +1,15 @@
 import dayjs from "dayjs";
 
+
+//스터디
+
+export const RECENT_STUDY_RECORD = {
+    
+}
+
+
+
+/** */
 export const MY_TODAY_STUDY_FIXED = "myTodayStudyFixed";
 
 //알림
