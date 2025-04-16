@@ -53,7 +53,7 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
       setVoteComment(comment);
     } else if (status === "free") setRealTimeComment(comment);
   };
- 
+  console.log(members);
   const userCardArr: IProfileCommentCard[] = members.map((member) => {
     const location = getLocationByCoordinates(+member.lat, +member.lon);
 
@@ -71,7 +71,7 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
     }
 
     const obj = composeUserCardArr(member);
-    
+
     const rightComponentProps = obj.rightComponentProps;
     const image = member?.attendance?.attendanceImage;
 

@@ -4,7 +4,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import { ModalLayout } from "../../../modals/Modals";
-import { MessageProps } from "../../../types/models/commonTypes";
+import { CommentProps } from "../../../types/models/commonTypes";
 import { IUserSummary, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import Avatar from "../../atoms/Avatar";
 import UserBadge from "../../atoms/badges/UserBadge";
@@ -18,7 +18,7 @@ export interface IProfileCommentCard {
   leftComponent?: React.ReactNode;
   rightComponent?: React.ReactNode;
   hasCommentButton?: boolean;
-  comment?: MessageProps;
+  comment?: CommentProps;
   changeComment?: (comment: string) => void;
   size?: "md" | "lg";
 }
@@ -35,7 +35,7 @@ export default function ProfileCommentCard({
   const { data: session } = useSession();
   const [isCommentModal, setIsCommentModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const [text, setText] = useState(comment?.text || "");
+  const [text, setText] = useState(comment?.comment || "");
 
   const changeText = () => {
     changeComment(text);
@@ -47,7 +47,7 @@ export default function ProfileCommentCard({
     setIsCommentModal(false);
     setIsEdit(false);
   };
-
+  console.log(comment);
   return (
     <>
       <Flex py={3} align="center" borderBottom="var(--border)">
@@ -85,7 +85,7 @@ export default function ProfileCommentCard({
         <ModalLayout
           footerOptions={{
             main: {
-              text: isEdit ? (comment?.text ? "변 경" : "입 력") : "확 인",
+              text: isEdit ? (comment?.comment ? "변 경" : "입 력") : "확 인",
               func: isEdit ? changeText : closeModal,
             },
             ...(isEdit && { sub: { func: closeModal } }),
@@ -104,7 +104,7 @@ export default function ProfileCommentCard({
               h="full"
               color="gray.500"
             >
-              {comment?.text || "미작성"}
+              {comment?.comment || "미작성"}
               {user.uid === session?.user.uid && (
                 <Button ml={2} variant="unstyled" color="mint" onClick={() => setIsEdit(true)}>
                   <i className="fa-solid fa-pen-to-square fa-sm" />
@@ -112,7 +112,7 @@ export default function ProfileCommentCard({
               )}
             </Box>
           ) : (
-            <Textarea defaultValue={comment?.text} onChange={(e) => setText(e.target.value)} />
+            <Textarea defaultValue={comment?.comment} onChange={(e) => setText(e.target.value)} />
           )}
         </ModalLayout>
       )}

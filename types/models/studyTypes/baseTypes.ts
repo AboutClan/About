@@ -1,6 +1,6 @@
 import { CoordinatesProps } from "../../common";
 import { StringTimeProps, TimeStampProps } from "../../utils/timeAndDate";
-import { MessageProps } from "../commonTypes";
+import { CommentProps } from "../commonTypes";
 import { UserSimpleInfoProps } from "../userTypes/userInfoTypes";
 import { PlaceInfoProps } from "../utilTypes";
 import { PlaceRegisterProps } from "./entityTypes";
@@ -37,7 +37,7 @@ export interface StudyMemberProps extends TimeStampProps {
   user: UserSimpleInfoProps;
   time: StringTimeProps;
   attendance?: StudyAttendanceProps;
-  comment?: MessageProps;
+  comment?: CommentProps;
 }
 
 export interface RealTimeMemberProps extends StudyMemberProps {
