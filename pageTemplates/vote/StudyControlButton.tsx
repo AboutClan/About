@@ -1,7 +1,7 @@
 import { Button, Flex, ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import {
@@ -62,10 +62,6 @@ function StudyControlButton({
   }, [session, unmatchedUsers, unmatchedPopupStorage, date]);
 
   const onClickButton = () => {
-    if (dayjs().isBefore(dayjs(date))) {
-      toast("info", "00시 부터 사용 가능합니다.");
-      return;
-    }
     switch (myVoteStatus) {
       case "open":
         router.push(`/vote/attend/configuration?date=${date}`);
@@ -74,6 +70,10 @@ function StudyControlButton({
         setStudyDrawerType("vote");
         break;
       case "todayPending":
+        if (dayjs().isBefore(dayjs(date))) {
+          toast("info", "00시 부터 사용 가능합니다.");
+          return;
+        }
         setStudyDrawerType("free");
         break;
       case "free":
