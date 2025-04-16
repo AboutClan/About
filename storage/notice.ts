@@ -962,6 +962,6 @@ export const NOTICE_ARR: INoticeArr[] = [
     category: "main",
     content:
       "오래 기다렸던 스터디 페이지가 다시 돌아왔습니다. 상세 내용은 톡방 공지사항을 확인해 주세요!",
-    date: "2025-04-14",
+    date: "2025-04-16",
   },
 ];
