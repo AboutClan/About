@@ -58,9 +58,10 @@ function StudyPageMap({
         : detailInfo
         ? { lat: detailInfo.place.latitude, lon: detailInfo.place.longitude }
         : (mapOptions?.center?.x && { lat: mapOptions?.center?.x, lon: mapOptions?.center?.y }) ||
-          centerLocation,
+          centerLocation || { lat: 37.5642135, lon: 127.0016985 },
       isMapExpansion ? 12 : 13,
     );
+
     setMapOptions(options);
     setMarkersOptions(
       !placeData
@@ -102,7 +103,7 @@ function StudyPageMap({
   };
 
   const myStudy = findMyStudyByUserId(studyVoteData, userInfo?._id);
-
+  console.log(123, placeData);
   return (
     <>
       <Slide>
@@ -138,7 +139,9 @@ function StudyPageMap({
             resizeToggle={isMapExpansion}
             handleMarker={handleMarker}
             circleCenter={
-              isMapExpansion ? studyVoteData?.results?.map((props) => props?.center) : null
+              isMapExpansion && !placeData
+                ? studyVoteData?.results?.map((props) => props?.center)
+                : null
             }
           />
           {/* {!studyVoteData?.results && <MainLoadingAbsolute />} */}
@@ -156,7 +159,5 @@ function StudyPageMap({
     </>
   );
 }
-
-
 
 export default StudyPageMap;
