@@ -39,7 +39,7 @@ function StudyPagePlaceSectionFilterBar({
         ) : (
           <Flex>
             <Box mr={1}>오픈 예정 스터디</Box>
-            <b>{placeCnt}개</b>
+            <b>{placeCnt - 1}개</b>
           </Flex>
         )}
       </Flex>

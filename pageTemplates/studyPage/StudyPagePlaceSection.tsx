@@ -81,6 +81,7 @@ function StudyPagePlaceSection({
       router.replace(`/studyPage?${newSearchParams.toString()}`, { scroll: false });
     }
   };
+  console.log(thumbnailCardInfoArr);
   return (
     <Flex flexDir="column" mt={5} mb={8}>
       <Box>
@@ -104,7 +105,7 @@ function StudyPagePlaceSection({
             >
               {thumbnailCardInfoArr ? (
                 thumbnailCardInfoArr.length ? (
-                  thumbnailCardInfoArr.slice(0, 3).map((thumbnailCardInfo, idx) => (
+                  thumbnailCardInfoArr.slice(0, 5).map((thumbnailCardInfo, idx) => (
                     <Box key={idx} mb={3}>
                       <StudyThumbnailCard {...thumbnailCardInfo} />
                     </Box>

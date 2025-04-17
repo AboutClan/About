@@ -74,12 +74,17 @@ export const sortThumbnailCardInfoArr = (
   userId: string,
 ) => {
   return [...arr].sort((a, b) => {
-    if (a.participants.some((par) => par._id === userId)) {
-      return -1;
-    }
-    if (b.participants.some((par) => par._id === userId)) {
-      return -1;
-    }
+    const aIsRecruiting = a.status === "recruiting";
+    const bIsRecruiting = b.status === "recruiting";
+
+    if (aIsRecruiting && !bIsRecruiting) return -1;
+    if (!aIsRecruiting && bIsRecruiting) return 1;
+
+    const aIsJoined = a.participants.some((par) => par._id === userId);
+    const bIsJoined = b.participants.some((par) => par._id === userId);
+
+    if (aIsJoined && !bIsJoined) return -1;
+    if (!aIsJoined && bIsJoined) return 1;
     if (sortedOption === "거리순") {
       if (a.place.distance > b.place.distance) return 1;
       else if (a.place.distance < b.place.distance) return -1;

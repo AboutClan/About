@@ -97,7 +97,7 @@ export default function StudyPage() {
 
     if (currentLocation) {
       setCenterLocation(currentLocation);
-    } else if (userInfo) {
+    } else if (userInfo?.locationDetail) {
       const { lat, lon } = userInfo.locationDetail;
       setCenterLocation({ lat, lon });
     }
