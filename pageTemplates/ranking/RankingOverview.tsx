@@ -3,7 +3,6 @@ import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
 import Avatar from "../../components/atoms/Avatar";
-import Skeleton from "../../components/atoms/skeleton/Skeleton";
 import { RankingNumIcon } from "../../components/Icons/RankingIcons";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 
@@ -51,13 +50,7 @@ function RankingOverview({ rank, value }: IRankingOverview) {
         </ProfileContainer>{" "}
         <Flex flex={1} h="40px" align="center" fontSize="18px" justify="center">
           <Box fontWeight={800}>
-            <Skeleton isLoaded={rank === undefined}>
-              <Flex>
-                <Box>
-                  <i className="fa-solid fa-medal fa-2x" style={{ color: "var(--color-gray)" }} />
-                </Box>
-              </Flex>
-            </Skeleton>
+            <i className="fa-solid fa-medal fa-2x" style={{ color: "var(--color-gray)" }} />
           </Box>
         </Flex>
       </Layout>
