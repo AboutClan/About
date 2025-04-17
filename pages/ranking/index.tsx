@@ -93,7 +93,7 @@ function Ranking() {
       });
     const findMyInfo = rankedUsers.find((who) => who.user._id === session?.user.id);
     setSortedUsers(rankedUsers);
-    setMyRanking({ rank: findMyInfo.rank, value: findMyInfo.value });
+    setMyRanking({ rank: findMyInfo?.rank, value: findMyInfo?.value });
 
     // const findIndex = sortedData.findIndex((user) => user._id === session?.user.id);
     // if (findIndex !== -1) {

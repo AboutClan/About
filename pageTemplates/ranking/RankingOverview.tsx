@@ -17,13 +17,13 @@ function RankingOverview({ rank, value }: IRankingOverview) {
   const isGuest = session?.user.name === "guest";
 
   const { data: userInfo } = useUserInfoQuery();
-  console.log(rank, value);
+
   return (
     <>
       <Layout>
         <Flex flex={1} flexDir="column" justify="center" align="center">
-          <Box fontSize="18px" fontWeight={800}>
-            {!value ? "NEW" : <RankingNumIcon num={rank} size="lg" />}
+          <Box fontSize="14px" fontWeight="bold">
+            {!value ? "순위권 외" : <RankingNumIcon num={rank} size="lg" />}
           </Box>
         </Flex>
         <ProfileContainer isGuest={isGuest}>
@@ -51,7 +51,7 @@ function RankingOverview({ rank, value }: IRankingOverview) {
         </ProfileContainer>{" "}
         <Flex flex={1} h="40px" align="center" fontSize="18px" justify="center">
           <Box fontWeight={800}>
-            <Skeleton isLoaded={!!rank}>
+            <Skeleton isLoaded={rank === undefined}>
               <Flex>
                 <Box>
                   <i className="fa-solid fa-medal fa-2x" style={{ color: "var(--color-gray)" }} />
