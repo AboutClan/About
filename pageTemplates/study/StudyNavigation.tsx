@@ -1,7 +1,7 @@
 import { Button, Flex, ThemeTypings } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
@@ -104,14 +104,12 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy, isVoting }: IStud
     setIsTimeRulletModal(false);
 
     if (myStudyStatus === "pending") {
-      const { locationDetail } = userInfo;
       vote({
-        latitude: locationDetail.lat,
-        longitude: locationDetail.lon,
+        latitude: findStudy.place.latitude,
+        longitude: findStudy.place.longitude,
         start: voteTime.start,
         end: voteTime.end,
       });
-
       return;
     }
 

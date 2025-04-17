@@ -11,6 +11,7 @@ import { SERVER_URI } from "../../constants/system";
 import { UserActiveInfoProps } from "../../pages/admin/response/locationActive";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import {
+  IUser,
   IUserRegisterForm,
   UserSimpleInfoProps,
   UserStudyRecordProps,
@@ -24,11 +25,16 @@ export interface UserStudyDataProps extends UserSimpleInfoProps {
   studyRecord: UserStudyRecordProps;
 }
 
-export const useAllUserDataQuery = (type: "study", options?: QueryOptions<UserStudyDataProps[]>) =>
-  useQuery<UserStudyDataProps[], AxiosError, UserStudyDataProps[]>(
-    ["allUserData"],
+type AllUserDataParam<T> = T extends "study" ? UserStudyDataProps[] : IUser[];
+
+export const useAllUserDataQuery = <T extends "study" | "null">(
+  type: "study",
+  options?: QueryOptions<AllUserDataParam<T>>,
+) =>
+  useQuery<AllUserDataParam<T>, AxiosError, AllUserDataParam<T>>(
+    ["allUserData", type],
     async () => {
-      const res = await axios.get<UserStudyDataProps[]>(`${SERVER_URI}/admin/user`, {
+      const res = await axios.get<AllUserDataParam<T>>(`${SERVER_URI}/admin/user`, {
         params: { type },
       });
       return res.data;

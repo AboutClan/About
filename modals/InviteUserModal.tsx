@@ -10,8 +10,9 @@ import { useAllUserDataQuery } from "../hooks/admin/quries";
 import { useTypeToast } from "../hooks/custom/CustomToast";
 import { useGatherInviteMutation } from "../hooks/gather/mutations";
 import { IModal } from "../types/components/modalTypes";
-import { IUserSummary } from "../types/models/userTypes/userInfoTypes";
+import { IUser, IUserSummary } from "../types/models/userTypes/userInfoTypes";
 import { Location } from "../types/services/locationTypes";
+import { searchName } from "../utils/stringUtils";
 import { IFooterOptions, ModalLayout } from "./Modals";
 
 interface IInviteUserModal extends IModal {
@@ -30,7 +31,7 @@ export default function InviteUserModal({ setIsModal, prevUsers, filterUsers }: 
   const [nameValue, setNameValue] = useState("");
 
   const { data: usersAll, isLoading } = useAllUserDataQuery(null);
-
+  console.log(24, usersAll);
   const { mutate } = useGatherInviteMutation(+id, {
     onSuccess() {
       typeToast("invite");
@@ -38,11 +39,11 @@ export default function InviteUserModal({ setIsModal, prevUsers, filterUsers }: 
   });
 
   useEffect(() => {
-    // const filtered = filterUsers?.length
-    //   ? usersAll?.filter((user) => filterUsers.includes(user._id))
-    //   : usersAll;
-    // if (nameValue) setUsers(searchName(filtered, nameValue));
-    // else setUsers(filtered);
+    const filtered = filterUsers?.length
+      ? usersAll?.filter((user) => filterUsers.includes(user._id))
+      : usersAll;
+    if (nameValue) setUsers(searchName(filtered as IUser[], nameValue));
+    else setUsers(filtered as IUser[]);
   }, [nameValue, usersAll]);
 
   useEffect(() => {
