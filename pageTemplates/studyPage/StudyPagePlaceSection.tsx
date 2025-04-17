@@ -72,7 +72,7 @@ function StudyPagePlaceSection({
       sortThumbnailCardInfoArr(sortedOption, getThumbnailCardInfoArr, session?.user.id),
     );
   }, [studyVoteData, currentLocation, sortedOption, session]);
-
+  console.log(24, thumbnailCardInfoArr);
   const onDragEnd = (panInfo: PanInfo) => {
     const newDate = getNewDateBySwipe(panInfo, date as string);
     if (newDate !== date) {
@@ -104,7 +104,7 @@ function StudyPagePlaceSection({
             >
               {thumbnailCardInfoArr ? (
                 thumbnailCardInfoArr.length ? (
-                  thumbnailCardInfoArr.slice(0, 3).map((thumbnailCardInfo, idx) => (
+                  thumbnailCardInfoArr.map((thumbnailCardInfo, idx) => (
                     <Box key={idx} mb={3}>
                       <StudyThumbnailCard {...thumbnailCardInfo} />
                     </Box>

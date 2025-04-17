@@ -92,7 +92,7 @@ function ExpansionIcon() {
   );
 }
 
-export const StudyIcon = ({ color }) => {
+export function StudyIcon({ color }) {
   return (
     <div>
       <svg
@@ -139,4 +139,4 @@ export const StudyIcon = ({ color }) => {
       </svg>
     </div>
   );
-};
+}

@@ -33,7 +33,6 @@ export default function InviteUserModal({ setIsModal, prevUsers, filterUsers }: 
   const { data: usersAll, isLoading } = useAllUserDataQuery(
     location === "전체" ? null : location,
     null,
-    true,
     {
       enabled: true,
     },
