@@ -13,7 +13,6 @@ import { BottomFlexDrawerOptions } from "../../components/organisms/drawer/Botto
 import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudyMutations } from "../../hooks/custom/StudyHooks";
-import { useUserInfoQuery } from "../../hooks/user/queries";
 import { evaluateMyStudyStatus } from "../../libs/study/studyEvaluators";
 import { findMyStudyInfo } from "../../libs/study/studySelectors";
 import StudyAbsentModal from "../../modals/study/StudyAbsentModal";
@@ -41,8 +40,6 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy, isVoting }: IStud
   const toast = useToast();
 
   const { data: session } = useSession();
-
-  const { data: userInfo } = useUserInfoQuery();
 
   const {
     voteStudy: { vote, participate, change, absence, cancel },
