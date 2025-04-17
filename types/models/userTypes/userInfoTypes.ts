@@ -29,12 +29,14 @@ export interface IUser extends Omit<IUserRegisterForm, "location">, IUserSummary
     groupStudyTicket: number;
   };
   isLocationSharingDenided: boolean;
-  studyRecord: {
-    accumulationMinutes: number;
-    accumulationCnt: number;
-    monthCnt: number;
-    monthMinutes: number;
-  };
+  studyRecord: UserStudyRecordProps;
+}
+
+export interface UserStudyRecordProps {
+  accumulationMinutes: number;
+  accumulationCnt: number;
+  monthCnt: number;
+  monthMinutes: number;
 }
 
 export interface UserSimpleInfoProps {

@@ -9,36 +9,33 @@ import {
 } from "../../constants/keys/queryKeys";
 import { SERVER_URI } from "../../constants/system";
 import { UserActiveInfoProps } from "../../pages/admin/response/locationActive";
-import { RankingCategorySource } from "../../pages/ranking";
 import { QueryOptions } from "../../types/hooks/reactTypes";
-import { IUser, IUserRegisterForm, IUserSummary } from "../../types/models/userTypes/userInfoTypes";
+import {
+  IUserRegisterForm,
+  UserSimpleInfoProps,
+  UserStudyRecordProps,
+} from "../../types/models/userTypes/userInfoTypes";
 import { IUserRequest, UserRequestCategory } from "../../types/models/userTypes/userRequestTypes";
 import { Location } from "../../types/services/locationTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
-export const useAdminUsersLocationControlQuery = <T extends boolean>(
-  location: Location | null,
-  filterType?: RankingCategorySource,
-  isSummary?: T,
-  options?: QueryOptions<T extends true ? IUserSummary[] : IUser[]>,
-) =>
-  useQuery<T extends true ? IUserSummary[] : IUser[], AxiosError>(
-    ["adminUserControl", location, isSummary, "monthScore"],
+export interface UserStudyDataProps extends UserSimpleInfoProps {
+  monthScore: number;
+  studyRecord: UserStudyRecordProps;
+}
+
+export const useAllUserDataQuery = (type: "study", options?: QueryOptions<UserStudyDataProps[]>) =>
+  useQuery<UserStudyDataProps[], AxiosError, UserStudyDataProps[]>(
+    ["allUserData"],
     async () => {
-      const res = await axios.get<T extends true ? IUserSummary[] : IUser[]>(
-        `${SERVER_URI}/admin/user`,
-        {
-          params: {
-            location,
-            isSummary,
-            filterType,
-          },
-        },
-      );
+      const res = await axios.get<UserStudyDataProps[]>(`${SERVER_URI}/admin/user`, {
+        params: { type },
+      });
       return res.data;
     },
     options,
   );
+
 export const useUserRequestQuery = (
   category: UserRequestCategory,
   options?: QueryOptions<IUserRequest[]>,

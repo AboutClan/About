@@ -11,6 +11,7 @@ export const setStudyThumbnailCard = (
   participations: StudyParticipationProps[],
   studyResults: StudyMergeResultProps[],
   currentLocation: CoordinatesProps,
+  isShort: boolean = false,
 ): StudyThumbnailCardProps[] => {
   const participationThumbnailCard: StudyThumbnailCardProps[] = participations
     ? [
@@ -65,7 +66,11 @@ export const setStudyThumbnailCard = (
     };
   });
 
-  return [...participationThumbnailCard, ...cardColData];
+  return [...participationThumbnailCard, ...cardColData].filter((props) =>
+    isShort
+      ? true
+      : props.status === "expected" || props.status === "recruiting" || props.status === "open",
+  );
 };
 
 export const sortThumbnailCardInfoArr = (

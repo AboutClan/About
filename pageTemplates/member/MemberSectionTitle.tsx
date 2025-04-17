@@ -1,69 +1,72 @@
-import { useSession } from "next-auth/react";
-import styled from "styled-components";
-
-import { SECTION_NAME } from "../../pages/member/[location]";
-import { MemberGroup } from "../../types/models/member";
-
-interface IMemberSectionTitle {
-  section: MemberGroup;
-  onClickSection?: (section: MemberGroup) => void;
+export default function Empty() {
+  return null;
 }
 
-const SECTION_TEXT = {
-  member: "정식 활동 멤버입니다",
-  human: "새싹 멤버 뉴비~!",
-  enthusiastic: "열심히 활동해봐요~!",
-  resting: "휴식중인 멤버입니다",
-  birth: "생일을 축하해요!",
-};
+// import { useSession } from "next-auth/react";
+// import styled from "styled-components";
 
-function MemberSectionTitle({ section, onClickSection }: IMemberSectionTitle) {
-  const { data: session } = useSession();
-  const isGuest = session?.user.name === "guest";
+// import { MemberGroup } from "../../types/models/member";
 
-  return (
-    <Layout>
-      <TitleWrapper>
-        <span>{SECTION_NAME[section]}</span>
-        <span>{SECTION_TEXT[section]}</span>
-      </TitleWrapper>
-      {section !== "birth" && section !== "enthusiastic" && (
-        <Button disabled={isGuest} onClick={() => onClickSection(section)}>
-          <span>더보기</span>
-          <i className="fa-solid fa-chevron-right fa-xs" />
-        </Button>
-      )}
-    </Layout>
-  );
-}
+// interface IMemberSectionTitle {
+//   section: MemberGroup;
+//   onClickSection?: (section: MemberGroup) => void;
+// }
 
-const Layout = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
+// const SECTION_TEXT = {
+//   member: "정식 활동 멤버입니다",
+//   human: "새싹 멤버 뉴비~!",
+//   enthusiastic: "열심히 활동해봐요~!",
+//   resting: "휴식중인 멤버입니다",
+//   birth: "생일을 축하해요!",
+// };
 
-const TitleWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+// function MemberSectionTitle({ section, onClickSection }: IMemberSectionTitle) {
+//   const { data: session } = useSession();
+//   const isGuest = session?.user.name === "guest";
 
-  > span:first-child {
-    color: var(--color-mint);
-    font-size: 12px;
-  }
-  > span:last-child {
-    font-weight: 600;
-    font-size: 14px;
-  }
-`;
+//   return (
+//     <Layout>
+//       <TitleWrapper>
+//         <span>{SECTION_NAME[section]}</span>
+//         <span>{SECTION_TEXT[section]}</span>
+//       </TitleWrapper>
+//       {section !== "birth" && section !== "enthusiastic" && (
+//         <Button disabled={isGuest} onClick={() => onClickSection(section)}>
+//           <span>더보기</span>
+//           <i className="fa-solid fa-chevron-right fa-xs" />
+//         </Button>
+//       )}
+//     </Layout>
+//   );
+// }
 
-const Button = styled.button`
-  align-self: flex-end;
-  color: var(--gray-600);
-  font-size: 12px;
-  > span {
-    margin-right: var(--gap-1);
-  }
-`;
+// const Layout = styled.div`
+//   display: flex;
+//   justify-content: space-between;
+//   align-items: center;
+// `;
 
-export default MemberSectionTitle;
+// const TitleWrapper = styled.div`
+//   display: flex;
+//   flex-direction: column;
+
+//   > span:first-child {
+//     color: var(--color-mint);
+//     font-size: 12px;
+//   }
+//   > span:last-child {
+//     font-weight: 600;
+//     font-size: 14px;
+//   }
+// `;
+
+// const Button = styled.button`
+//   align-self: flex-end;
+//   color: var(--gray-600);
+//   font-size: 12px;
+//   > span {
+//     margin-right: var(--gap-1);
+//   }
+// `;
+
+// export default MemberSectionTitle;

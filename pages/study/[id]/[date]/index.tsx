@@ -77,7 +77,7 @@ export default function Page() {
   const myVoteInfo = studyVoteData?.participations?.find(
     (who) => who.user._id === session?.user.id,
   );
-  console.log("fd", findMyStudy);
+ 
   return (
     <>
       {studyVoteData ? (

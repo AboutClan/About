@@ -4,29 +4,28 @@ import styled from "styled-components";
 
 import Header from "../../../components/layouts/Header";
 import { useUpdateProfileMutation } from "../../../hooks/admin/mutation";
-import { useAdminUsersLocationControlQuery } from "../../../hooks/admin/quries";
 import { IUser, UserRole } from "../../../types/models/userTypes/userInfoTypes";
 
 function AdminUserInfo() {
   const [admins, setAdmins] = useState<IUser[]>([]);
   const [members, setMembers] = useState<IUser[]>([]);
   const [filtered, setFiltered] = useState<IUser[]>([]);
+  console.log(setAdmins);
+  // useAllUserDataQuery(null, null, false, {
+  //   onSuccess(data) {
+  //     const tempAdmins = [];
+  //     const tempMembers = [];
 
-  useAdminUsersLocationControlQuery(null, null, false, {
-    onSuccess(data) {
-      const tempAdmins = [];
-      const tempMembers = [];
+  //     data.forEach((user) => {
+  //       if (user.role === "previliged") tempAdmins.push(user);
+  //       if (user.role === "member") tempMembers.push(user);
+  //     });
 
-      data.forEach((user) => {
-        if (user.role === "previliged") tempAdmins.push(user);
-        if (user.role === "member") tempMembers.push(user);
-      });
-
-      setAdmins(tempAdmins);
-      setMembers(tempMembers);
-      setFiltered(tempMembers);
-    },
-  });
+  //     setAdmins(tempAdmins);
+  //     setMembers(tempMembers);
+  //     setFiltered(tempMembers);
+  //   },
+  // });
 
   const [value, setValue] = useState<string>("");
 

@@ -6,24 +6,24 @@ import Avatar from "../../components/atoms/Avatar";
 import Skeleton from "../../components/atoms/skeleton/Skeleton";
 import { RankingNumIcon } from "../../components/Icons/RankingIcons";
 import { useUserInfoQuery } from "../../hooks/user/queries";
-import { IMyRank } from "../../types/models/ranking";
 
 interface IRankingOverview {
-  myRankInfo: IMyRank;
+  rank: number;
+  value: number;
 }
 
-function RankingOverview({ myRankInfo }: IRankingOverview) {
+function RankingOverview({ rank, value }: IRankingOverview) {
   const { data: session } = useSession();
   const isGuest = session?.user.name === "guest";
 
   const { data: userInfo } = useUserInfoQuery();
-
+  console.log(rank, value);
   return (
     <>
       <Layout>
         <Flex flex={1} flexDir="column" justify="center" align="center">
           <Box fontSize="18px" fontWeight={800}>
-            {!myRankInfo?.value ? "NEW" : <RankingNumIcon num={myRankInfo?.rankNum} size="lg" />}
+            {!value ? "NEW" : <RankingNumIcon num={rank} size="lg" />}
           </Box>
         </Flex>
         <ProfileContainer isGuest={isGuest}>
@@ -38,18 +38,20 @@ function RankingOverview({ myRankInfo }: IRankingOverview) {
                 isPriority={true}
                 isLink={false}
               />
-              <ProfileUserName>{userInfo?.name}</ProfileUserName>
+              <Box fontSize="12px" mt={2} fontWeight="semibold">
+                {userInfo?.uid === "2259633694" ? "비공개" : userInfo?.name}
+              </Box>
             </ProfileWrapper>
           ) : isGuest ? (
             <ProfileWrapper>
               <Avatar image="" avatar={{ type: 0, bg: 1 }} uid="" size="lg" isPriority={true} />
-              <ProfileUserName>게스트</ProfileUserName>
+              <Box>게스트</Box>
             </ProfileWrapper>
           ) : null}
         </ProfileContainer>{" "}
         <Flex flex={1} h="40px" align="center" fontSize="18px" justify="center">
           <Box fontWeight={800}>
-            <Skeleton isLoaded={!!myRankInfo}>
+            <Skeleton isLoaded={!!rank}>
               <Flex>
                 <Box>
                   <i className="fa-solid fa-medal fa-2x" style={{ color: "var(--color-gray)" }} />
@@ -74,19 +76,13 @@ const Layout = styled.div`
 const ProfileContainer = styled.div<{ isGuest: boolean }>`
   text-align: center;
 
-  flex: 0.7;
+  flex: 0.8;
 `;
 
 const ProfileWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-const ProfileUserName = styled.span`
-  display: inline-block;
-  margin-top: 8px;
-  font-size: 12px;
 `;
 
 export default RankingOverview;

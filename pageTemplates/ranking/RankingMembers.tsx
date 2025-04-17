@@ -4,35 +4,26 @@ import { useEffect } from "react";
 import styled from "styled-components";
 
 import Avatar from "../../components/atoms/Avatar";
-import UserBadge from "../../components/atoms/badges/UserBadge";
 import { RankingNumIcon } from "../../components/Icons/RankingIcons";
 import { RANKING_ANONYMOUS_USERS } from "../../constants/storage/anonymous";
-import { RankingUserProp } from "../../libs/userEventLibs/userHelpers";
-import { RankingCategorySource } from "../../pages/ranking";
-import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
+import { UserRankingProps } from "../../pages/ranking";
+import { formatMinutesToTime } from "../../utils/dateTimeUtils";
 
 interface IRankingMembers {
-  categorySource: RankingCategorySource;
-  rankingUsers: RankingUserProp[] | IUserSummary[];
-  isScore: boolean;
+  users: UserRankingProps[];
+  fieldName: "studyRecord" | "monthScore" | "score";
 }
 
-function RankingMembers({ categorySource, rankingUsers, isScore }: IRankingMembers) {
+function RankingMembers({ users, fieldName }: IRankingMembers) {
   const { data: session } = useSession();
-  const isGuest = session?.user.name === "guest";
-  let dupCnt = 0;
-  let value;
 
-  const uid = session?.user.uid;
   useEffect(() => {
-    if (uid && !isGuest) {
-      setTimeout(() => {
-        const element = document.getElementById(`ranking${uid}`);
-
-        element?.scrollIntoView({ behavior: "smooth" });
-      }, 500);
-    }
-  }, [isGuest, uid, rankingUsers]);
+    if (!session || session?.user.role === "guest" || !users) return;
+    setTimeout(() => {
+      const element = document.getElementById(`ranking${session?.user.id}`);
+      element?.scrollIntoView({ behavior: "smooth" });
+    }, 500);
+  }, [session, users]);
 
   return (
     <Box
@@ -46,16 +37,16 @@ function RankingMembers({ categorySource, rankingUsers, isScore }: IRankingMembe
         msOverflowStyle: "none",
       }}
     >
-      {(rankingUsers as RankingUserProp[])?.map((who, idx) => {
-        const whoValue = who[categorySource];
-        if (value === whoValue) dupCnt++;
-        else dupCnt = 0;
-        value = whoValue;
+      {users?.map((user, idx) => {
+        const who = user.user;
 
-        const rankNum = idx - dupCnt + 1;
-
+        const rankNum = idx + 1;
+        const value =
+          fieldName === "studyRecord"
+            ? `${formatMinutesToTime(who[fieldName].monthMinutes)}(${who[fieldName].monthCnt}회)`
+            : who[fieldName];
         return (
-          <Item key={idx} id={`ranking${who.uid}`}>
+          <Item key={idx} id={`ranking${who._id}`}>
             <Box mr="16px">
               {rankNum <= 10 ? <RankingNumIcon num={rankNum} /> : <Rank>{rankNum}위</Rank>}
             </Box>
@@ -74,13 +65,12 @@ function RankingMembers({ categorySource, rankingUsers, isScore }: IRankingMembe
               <RankingMine isMine={who.uid === session?.user.uid}>
                 {!RANKING_ANONYMOUS_USERS.includes(who?.uid) ? who.name : "비공개"}
               </RankingMine>
-              <UserBadge uid={who.uid} score={who.score} />
+              {/* <UserBadge uid={who.uid} score={who.score} /> */}
             </Name>
-            <Score>
-              {categorySource === "weekStudyAccumulationMinutes"
-                ? `${Math.floor(value / 60)}시간 ${value % 60}분`
-                : `${value}${isScore ? "점" : "회"}`}
-            </Score>
+            <Box fontSize="12px" fontWeight="semibold" color="gray.600">
+              {value}
+              {fieldName !== "studyRecord" && " 점"}
+            </Box>
           </Item>
         );
       })}
@@ -106,10 +96,6 @@ const Rank = styled.div`
   text-align: start;
   flex: 0.2;
   font-weight: 600;
-`;
-
-const Score = styled.div`
-  font-size: 13px;
 `;
 
 const RankingMine = styled.div<{ isMine?: boolean }>`

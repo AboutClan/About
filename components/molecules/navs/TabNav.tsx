@@ -60,6 +60,7 @@ export default function TabNav({
               key={tab.text}
               color={tab.text === selected ? (isBlack ? "black" : "mint") : undefined}
               onClick={tab.text !== selected ? tab.func : undefined}
+              whiteSpace="nowrap"
               _focus={{
                 outline: "none",
                 boxShadow: "none",

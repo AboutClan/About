@@ -6,13 +6,12 @@ import { Input } from "../components/atoms/Input";
 import { MainLoadingAbsolute } from "../components/atoms/loaders/MainLoading";
 import ButtonGroups from "../components/molecules/groups/ButtonGroups";
 import InviteUserGroups from "../components/molecules/groups/InviteUserGroups";
-import { useAdminUsersLocationControlQuery } from "../hooks/admin/quries";
+import { useAllUserDataQuery } from "../hooks/admin/quries";
 import { useTypeToast } from "../hooks/custom/CustomToast";
 import { useGatherInviteMutation } from "../hooks/gather/mutations";
 import { IModal } from "../types/components/modalTypes";
 import { IUserSummary } from "../types/models/userTypes/userInfoTypes";
 import { Location } from "../types/services/locationTypes";
-import { searchName } from "../utils/stringUtils";
 import { IFooterOptions, ModalLayout } from "./Modals";
 
 interface IInviteUserModal extends IModal {
@@ -23,21 +22,14 @@ interface IInviteUserModal extends IModal {
 export default function InviteUserModal({ setIsModal, prevUsers, filterUsers }: IInviteUserModal) {
   const typeToast = useTypeToast();
   const { id } = useParams<{ id: string }>() || {};
-
+  console.log(filterUsers);
   const [location, setLocation] = useState<Location | "전체">("전체");
   const [inviteUser, setInviteUser] = useState<IUserSummary>(null);
   const [users, setUsers] = useState<IUserSummary[]>(null);
   const [existUsers, setExistUsers] = useState<IUserSummary[]>(prevUsers);
   const [nameValue, setNameValue] = useState("");
 
-  const { data: usersAll, isLoading } = useAdminUsersLocationControlQuery(
-    location === "전체" ? null : location,
-    null,
-    true,
-    {
-      enabled: true,
-    },
-  );
+  const { data: usersAll, isLoading } = useAllUserDataQuery(null);
 
   const { mutate } = useGatherInviteMutation(+id, {
     onSuccess() {
@@ -46,13 +38,11 @@ export default function InviteUserModal({ setIsModal, prevUsers, filterUsers }: 
   });
 
   useEffect(() => {
-    const filtered = filterUsers?.length
-      ? usersAll?.filter((user) => filterUsers.includes(user._id))
-      : usersAll;
-   
-
-    if (nameValue) setUsers(searchName(filtered, nameValue));
-    else setUsers(filtered);
+    // const filtered = filterUsers?.length
+    //   ? usersAll?.filter((user) => filterUsers.includes(user._id))
+    //   : usersAll;
+    // if (nameValue) setUsers(searchName(filtered, nameValue));
+    // else setUsers(filtered);
   }, [nameValue, usersAll]);
 
   useEffect(() => {

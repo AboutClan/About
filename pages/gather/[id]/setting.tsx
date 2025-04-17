@@ -19,7 +19,6 @@ import {
   useGatherWaitingStatusMutation,
 } from "../../../hooks/gather/mutations";
 import { useGroupMyStatusQuery } from "../../../hooks/groupStudy/queries";
-import ExileUserModal from "../../../modals/ExileUserModal2";
 import InviteUserModal from "../../../modals/InviteUserModal";
 import { ModalLayout } from "../../../modals/Modals";
 import { isGatherEditState } from "../../../recoils/checkAtoms";
@@ -164,16 +163,7 @@ function Setting() {
           />
         </Flex>
       </Slide>
-      {modalType === "exile" && (
-        <ExileUserModal
-          prevUsers={[
-            // gatherData.user as IUserSummary,
-            ...gatherData.participants.map((par) => par.user),
-          ]}
-          setIsModal={() => setModalType(null)}
-          filterUsers={filterMembers}
-        />
-      )}
+
       {modalType === "inviteMember" && (
         <InviteUserModal
           prevUsers={[

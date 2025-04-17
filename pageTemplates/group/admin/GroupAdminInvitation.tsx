@@ -9,13 +9,12 @@ import { MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoadi
 import Selector from "../../../components/atoms/Selector";
 import InviteUserGroups from "../../../components/molecules/groups/InviteUserGroups";
 import { LOCATION_ALL } from "../../../constants/location";
-import { useAdminUsersLocationControlQuery } from "../../../hooks/admin/quries";
+import { useAllUserDataQuery } from "../../../hooks/admin/quries";
 import { useResetGroupQuery } from "../../../hooks/custom/CustomHooks";
 import { useCompleteToast } from "../../../hooks/custom/CustomToast";
 import { useGroupInviteMutation } from "../../../hooks/groupStudy/mutations";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { Location } from "../../../types/services/locationTypes";
-import { searchName } from "../../../utils/stringUtils";
 
 type UserType = "신규 가입자" | "전체";
 
@@ -34,13 +33,7 @@ export default function GroupAdminInvitation() {
     setValue(location);
   }, []);
 
-  const {
-    data: usersAll,
-    refetch,
-    isLoading,
-  } = useAdminUsersLocationControlQuery(value === "전체" ? null : value, null, false, {
-    enabled: !!location,
-  });
+  const { data: usersAll, refetch, isLoading } = useAllUserDataQuery(null);
 
   const resetGroup = useResetGroupQuery();
 
@@ -57,13 +50,13 @@ export default function GroupAdminInvitation() {
 
     if (isLoading || !usersAll) return;
     if (nameValue) {
-      setFilterUsers(searchName(usersAll, nameValue));
+      // setFilterUsers(searchName(usersAll, nameValue));
     } else {
-      setFilterUsers(
-        usersAll.filter((user) =>
-          user.isActive && userFilterValue === "전체" ? true : !user?.belong,
-        ),
-      );
+      // setFilterUsers(
+      //   usersAll.filter((user) =>
+      //     user.isActive && userFilterValue === "전체" ? true : !user?.belong,
+      //   ),
+      // );
     }
   }, [usersAll, nameValue]);
 

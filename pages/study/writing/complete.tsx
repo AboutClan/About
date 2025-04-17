@@ -26,8 +26,9 @@ function WritingStudyComplete() {
   });
 
   const onSubmit = () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { content, ...placeInfo } = studyWriting;
-    console.log(content);
+
     mutate(placeInfo);
   };
 
