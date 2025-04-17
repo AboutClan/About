@@ -1,8 +1,10 @@
 import { Box } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import Slide from "../../../components/layouts/PageSlide";
 import VoteMap from "../../../components/organisms/VoteMap";
+import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import {
   getDetailInfo,
@@ -40,7 +42,9 @@ function StudyPageMap({
   placeData,
   setIsPlaceMap,
 }: StudyPageMapProps) {
+  const { data: session } = useSession();
   const { data: userInfo } = useUserInfoQuery();
+  const typeToast = useTypeToast();
 
   /* 네이버 지도와 마커 옵션 */
   const [mapOptions, setMapOptions] = useState<IMapOptions>(null);
@@ -48,6 +52,8 @@ function StudyPageMap({
   const [isMapExpansion, setIsMapExpansion] = useState(false);
   const [detailInfo, setDetailInfo] = useState<StudyInfoProps>();
   const [placeInfo, setPlaceInfo] = useState<StudyPlaceProps>(null);
+
+  const isGuest = session?.user.role === "guest";
 
   useEffect(() => {
     if (!studyVoteData) return;
@@ -104,6 +110,15 @@ function StudyPageMap({
 
   const myStudy = findMyStudyByUserId(studyVoteData, userInfo?._id);
   console.log(123, placeData);
+
+  const handleMapClick = () => {
+    if (isGuest) {
+      typeToast("guest");
+      return;
+    }
+    if (!isMapExpansion) setIsMapExpansion(true);
+  };
+
   return (
     <>
       <Slide>
@@ -120,7 +135,7 @@ function StudyPageMap({
           border="1px solid black"
           borderColor="gray.200"
           bg="gray.100"
-          onClick={() => (!isMapExpansion ? setIsMapExpansion(true) : null)}
+          onClick={handleMapClick}
         >
           <StudyMapTopNav
             handleLocationRefetch={() =>

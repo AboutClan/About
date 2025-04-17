@@ -28,6 +28,7 @@ export default function Page() {
   const { data: session } = useSession();
   const { id, date } = useParams<{ id: string; date: string }>() || {};
   const { currentLocation } = useUserCurrentLocation();
+  const isGuest = session?.user.role === "guest";
 
   const isParticipationPage = id === "participations";
 
@@ -77,7 +78,7 @@ export default function Page() {
   const myVoteInfo = studyVoteData?.participations?.find(
     (who) => who.user._id === session?.user.id,
   );
- 
+
   return (
     <>
       {studyVoteData ? (
@@ -121,7 +122,7 @@ export default function Page() {
               </Box>
             </Slide>
           </Box>
-          {(findStudy || id === "participations") && (
+          {(findStudy || id === "participations") && !isGuest && (
             <StudyNavigation
               date={date}
               findStudy={findStudy}

@@ -27,6 +27,7 @@ export default function StudyPage() {
   const userId = session?.user.id;
   const searchParams = useSearchParams();
   const dateParam = searchParams.get("date");
+  const isGuest = session?.user.role === "guest";
 
   const [date, setDate] = useState<string>(null);
 
@@ -140,7 +141,7 @@ export default function StudyPage() {
         <StudyPageRecordBlock userInfo={userInfo} />
         <StudyPageAddPlaceButton setIsPlaceMap={setIsPlaceMap} />
       </Slide>
-      {!isExpireDate && myVoteStatus && !isPlaceMap && (
+      {!isExpireDate && myVoteStatus && !isPlaceMap && !isGuest && (
         <Box mb={20} mt={5}>
           <StudyControlButton
             studyResults={studyVoteData ? convertStudyToMergeStudy(studyVoteData) : []}

@@ -2,12 +2,10 @@ import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Link, { LinkProps } from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { useHandleMove } from "../@natives/useHandleBottomNav";
-import { useTypeToast } from "../hooks/custom/CustomToast";
 import { getStudyViewDate } from "../libs/study/date/getStudyDateStatus";
 import { slideDirectionState } from "../recoils/navigationRecoils";
 import { iPhoneNotchSize } from "../utils/validationUtils";
@@ -64,18 +62,10 @@ export default function BottomNav() {
 }
 
 function NavButton({ text, url, activeIcon, defaultIcon, isActive, idx }: INavButton) {
-  const { data: session } = useSession();
-  const typeToast = useTypeToast();
-  const isGuest = session?.user.role === "guest";
   const setSlideDirection = useSetRecoilState(slideDirectionState);
   const handleMove = useHandleMove(setSlideDirection);
 
-  const onClick = (e) => {
-    if (isGuest && text === "스터디") {
-      e.preventDefault();
-      typeToast("guest");
-      return;
-    }
+  const onClick = () => {
     handleMove();
   };
 
