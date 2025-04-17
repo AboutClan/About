@@ -15,16 +15,7 @@ import RankingOverview from "../../pageTemplates/ranking/RankingOverview";
 
 type RankingTab = "스터디 랭킹" | "활동 점수 랭킹" | "누적 랭킹";
 
-const CATEGORY_SOURCE: { [key in RankingCategoryProp]: RankingCategorySource } = {
-  "월간 랭킹": "monthScore",
-  "스터디 랭킹": "cnt",
-  "누적 랭킹": "score",
-};
 
-export interface RankingFilterOptionProps {
-  category: RankingCategoryProp;
-  isLocationFilter: boolean;
-}
 
 function Ranking() {
   const typeToast = useTypeToast();

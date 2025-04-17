@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import Slide from "../components/layouts/PageSlide";
@@ -97,7 +97,7 @@ export default function StudyPage() {
 
     if (currentLocation) {
       setCenterLocation(currentLocation);
-    } else if (userInfo) {
+    } else if (userInfo?.locationDetail) {
       const { lat, lon } = userInfo.locationDetail;
       setCenterLocation({ lat, lon });
     }
