@@ -5,14 +5,14 @@ export function RankingNumIcon({ num, size = "md" }: { num: number; size?: "md" 
     num === 1
       ? "red"
       : num === 2
-        ? "blue"
-        : num === 3
-          ? "green"
-          : num === 4
-            ? "orange"
-            : num === 5
-              ? "purple"
-              : "gray";
+      ? "blue"
+      : num === 3
+      ? "green"
+      : num === 4
+      ? "orange"
+      : num === 5
+      ? "purple"
+      : "gray";
 
   return (
     <Box
@@ -33,7 +33,7 @@ export function RankingNumIcon({ num, size = "md" }: { num: number; size?: "md" 
         textAlign="center"
         pb="6px"
       >
-        {num}등
+        {num}위
       </Flex>
       <Box position="absolute">
         <RankingIcon color={color} size={size} />
