@@ -16,9 +16,11 @@ import { useStudyMutations } from "../../hooks/custom/StudyHooks";
 import { evaluateMyStudyStatus } from "../../libs/study/studyEvaluators";
 import { findMyStudyInfo } from "../../libs/study/studySelectors";
 import StudyAbsentModal from "../../modals/study/StudyAbsentModal";
+import { StudyStatus } from "../../types/models/studyTypes/baseTypes";
 import { StudyMergeResultProps } from "../../types/models/studyTypes/derivedTypes";
 import { MyStudyStatus } from "../../types/models/studyTypes/helperTypes";
 import { DayjsTimeProps } from "../../types/utils/timeAndDate";
+import StudyControlDrawer from "./modals/StudyControlDrawer";
 
 interface IStudyNavigation {
   date: string;
@@ -26,6 +28,7 @@ interface IStudyNavigation {
   hasOtherStudy: boolean;
   id: string;
   isVoting: boolean;
+  pageType: StudyStatus | "recruiting" | "expected";
 }
 
 interface NavigationProps {
@@ -35,10 +38,17 @@ interface NavigationProps {
   func?: () => void;
 }
 
-function StudyNavigation({ id, date, findStudy, hasOtherStudy, isVoting }: IStudyNavigation) {
+function StudyNavigation({
+  id,
+  date,
+  findStudy,
+  hasOtherStudy,
+  isVoting,
+  pageType,
+}: IStudyNavigation) {
   const router = useRouter();
   const toast = useToast();
-
+  console.log(42, findStudy);
   const { data: session } = useSession();
 
   const {
@@ -47,20 +57,24 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy, isVoting }: IStud
   } = useStudyMutations(dayjs(date));
 
   const [isTimeRulletModal, setIsTimeRulletModal] = useState(false);
+  const [isVoteModal, setIsVoteModal] = useState(false);
   const [voteTime, setVoteTime] = useState<DayjsTimeProps>();
   const [isAbsentModal, setIsAbsentModal] = useState(false);
   const [alertModalInfo, setAlertModalInfo] = useState<IAlertModalOptions>();
 
   const myStudyInfo = findMyStudyInfo(findStudy, session?.user.id);
 
-  const myStudyStatus = evaluateMyStudyStatus(findStudy, session?.user.id, date, isVoting);
+  const myStudyStatus = evaluateMyStudyStatus(findStudy, session?.user.id, pageType, isVoting);
 
   const NAVIGATION_PROPS_MAPPING: Record<Exclude<MyStudyStatus, "expired">, NavigationProps> = {
     pending: {
       text: "참여 신청",
       type: "single",
       colorScheme: "mint",
-      func: () => setIsTimeRulletModal(true),
+      func: () => {
+        if (pageType === "recruiting") setIsVoteModal(true);
+        else if (pageType === "expected") setIsTimeRulletModal(true);
+      },
     },
     voting: {
       text: "참여 취소",
@@ -87,6 +101,12 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy, isVoting }: IStud
       func: () => {
         if (hasOtherStudy) {
           toast("warning", "다른 스터디에 참여중입니다.");
+          return;
+        }
+        if (
+          findStudy?.members.filter((member) => member?.attendance.type !== "absenced").length >= 8
+        ) {
+          toast("warning", "인원이 마감되었습니다.");
           return;
         }
         setIsTimeRulletModal(true);
@@ -241,6 +261,15 @@ function StudyNavigation({ id, date, findStudy, hasOtherStudy, isVoting }: IStud
           </Flex>
         )}
       </Slide>
+      {pageType === "recruiting" && (
+        <StudyControlDrawer
+          date={date}
+          studyDrawerType={isVoteModal ? "vote" : null}
+          onClose={() => setIsVoteModal(false)}
+          studyResults={null}
+          currentLocation={null}
+        />
+      )}
 
       {isAbsentModal && (
         <StudyAbsentModal

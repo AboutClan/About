@@ -148,7 +148,6 @@ function UserComment({
             avatar={user.avatar}
             image={user.profileImage}
             uid={user.uid}
-            isLink={false}
           />
         </Flex>
         <Flex w="full" direction="column" fontSize="12px" lineHeight={1.6} justify="space-around">

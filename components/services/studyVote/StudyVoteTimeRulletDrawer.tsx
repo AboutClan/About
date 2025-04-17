@@ -21,7 +21,7 @@ export default function StudyVoteTimeRulletDrawer({
   zIndex,
   defaultVoteTime,
 }: IStudyVoteTimeRulletDrawer) {
-
+  console.log(1234);
   return (
     <>
       <BottomFlexDrawer
@@ -66,7 +66,6 @@ export function StudyVoteTimeRullets({ defaultVoteTime, setVoteTime }: StudyVote
 
   useEffect(() => {
     if (defaultVoteTime) {
-     
       const startIndex = startItemArr.findIndex(
         (time) =>
           dayjsToTimeString(parseTimeToDayjs(time)) === dayjsToTimeString(defaultVoteTime.start),
@@ -85,11 +84,21 @@ export function StudyVoteTimeRullets({ defaultVoteTime, setVoteTime }: StudyVote
     }
   }, []);
 
+  // 시작 시간 변경 시 종료 시간을 최소 4칸 뒤로 강제 조정
   useEffect(() => {
-    if (rulletIndex.left + 4 > rulletIndex.right && rulletIndex.left + 4 < endTimeArr.length - 1) {
-      setRulletIndex((old) => ({ ...old, right: old.left + 4 }));
+    if (rulletIndex.left + 4 > rulletIndex.right) {
+      const newRight = Math.min(rulletIndex.left + 4, endTimeArr.length - 1);
+      setRulletIndex((old) => ({ ...old, right: newRight }));
     }
   }, [rulletIndex.left]);
+
+  // 종료 시간 변경 시 시작 시간보다 앞서지 않도록 강제 조정
+  useEffect(() => {
+    if (rulletIndex.right - 4 < rulletIndex.left) {
+      const newLeft = Math.max(rulletIndex.right - 4, 0);
+      setRulletIndex((old) => ({ ...old, left: newLeft }));
+    }
+  }, [rulletIndex.right]);
 
   useEffect(() => {
     setVoteTime({

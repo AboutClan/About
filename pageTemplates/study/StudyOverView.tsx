@@ -11,7 +11,7 @@ interface IStudyOverview {
     branch: string;
   };
   distance: number;
-  status: StudyStatus | "recruiting";
+  status: StudyStatus | "recruiting" | "expected";
 
   time: string;
 }
@@ -22,11 +22,11 @@ function StudyOverview({
   status,
   time,
 }: IStudyOverview) {
+  console.log(42, status);
   const { text: badgeText, colorScheme: badgeColorScheme } = STUDY_STATUS_TO_BADGE[status];
-
   const infoBoxPropsArr: InfoBoxProps[] = [
     {
-      category: status === "recruiting" ? "매칭 시간" : "영업 시간",
+      category: status === "recruiting" || status === "expected" ? "매칭 시간" : "영업 시간",
       text: time !== "unknown" ? time : "정보 없음",
     },
     {

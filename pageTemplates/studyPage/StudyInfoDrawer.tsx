@@ -93,6 +93,8 @@ function StudyInfoDrawer({ detailInfo, setDetailInfo, date, myStudy }: StudyInfo
   const [isAlertMoal, setIsAlertModal] = useState(false);
 
   const handleStudyActionButton = (type: "vote" | "comment" | "attend") => {
+    typeToast("inspection");
+    return;
     if (type === "comment") {
       setIsCommentModal(true);
     }

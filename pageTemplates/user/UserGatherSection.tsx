@@ -31,7 +31,6 @@ function UserGatherSection() {
 
   const { data } = useFeedCntQuery("gather");
 
-
   const { data: gatherData, isLoading } = useGatherMyStatusQuery(
     cursor,
     gatherType === "참여중인 모임"
@@ -40,6 +39,7 @@ function UserGatherSection() {
       ? "isEnded"
       : "isOwner",
   );
+  console.log(cursor, gatherType);
 
   useEffect(() => {
     setGathers([]);

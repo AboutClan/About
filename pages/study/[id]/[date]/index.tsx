@@ -36,9 +36,10 @@ export default function Page() {
     enabled: !!date,
   });
 
+  const isExpectedPage = !!(id !== "participations" && studyVoteData?.participations);
+
   const findStudy =
     studyVoteData && id !== "participations" && findStudyByPlaceId(studyVoteData, id);
-
   const findMyStudy = findMyStudyByUserId(studyVoteData, session?.user.id);
 
   const placeInfo = convertMergePlaceToPlace(findStudy?.place) || {
@@ -79,6 +80,9 @@ export default function Page() {
     (who) => who.user._id === session?.user.id,
   );
 
+  const status =
+    findStudy?.status || (isParticipationPage ? "recruiting" : isExpectedPage ? "expected" : null);
+  console.log(21, findStudy, studyVoteData, status);
   return (
     <>
       {studyVoteData ? (
@@ -90,7 +94,7 @@ export default function Page() {
               <StudyOverview
                 place={{ ...placeInfo }}
                 distance={distance}
-                status={findStudy?.status || "recruiting"}
+                status={status}
                 time={placeInfo.time}
               />
             </Slide>
@@ -129,6 +133,7 @@ export default function Page() {
               hasOtherStudy={findMyStudy && findMyStudy.place._id !== findStudy?.place?._id}
               id={id}
               isVoting={!!myVoteInfo}
+              pageType={status}
             />
           )}
           {/* {isInviteModal && <StudyInviteModal setIsModal={setIsInviteModal} place={place} />} */}

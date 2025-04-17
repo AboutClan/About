@@ -53,7 +53,6 @@ function StudyControlDrawer({
       resetStudy();
     },
   });
-
   const { mutate: participateStudyOne } = useStudyParticipateMutation(dayjs(date), {
     onSuccess() {
       toast("success", "참여가 완료되었습니다. 출석 인증도 잊지 마세요!");
@@ -77,6 +76,7 @@ function StudyControlDrawer({
   const handleStudyVoteBtn = (
     type: "selectTime" | "pickPlace" | "directInputPlace" | "directAttend",
   ) => {
+    console.log(24, type);
     switch (type) {
       case "selectTime":
         setTimeRulletType("vote");
@@ -95,6 +95,7 @@ function StudyControlDrawer({
         router.push(`/vote/attend/certification?date=${date}`);
         break;
     }
+
     onClose();
   };
 
@@ -118,6 +119,7 @@ function StudyControlDrawer({
       func:
         timeRulletType === "participate"
           ? () => {
+              console.log(123);
               participateStudyOne({
                 placeId: selectedPlaceId,
                 start: voteTime.start,
@@ -126,6 +128,10 @@ function StudyControlDrawer({
               setTimeRulletType(null);
             }
           : () => {
+              if (!userInfo?.locationDetail) {
+                toast("error", "스터디 기준 위치를 설정해 주세요!");
+                return;
+              }
               const { lat: latitude, lon: longitude } = { ...userInfo?.locationDetail };
               const voteData = {
                 latitude,
@@ -137,7 +143,7 @@ function StudyControlDrawer({
             },
     },
   };
-
+  console.log(345, timeRulletType);
   return (
     <>
       {studyDrawerType && (

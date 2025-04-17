@@ -1,37 +1,26 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import AlertModal, { IAlertModalOptions } from "../../../components/AlertModal";
 import { Input } from "../../../components/atoms/Input";
 import { MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
-import Selector from "../../../components/atoms/Selector";
 import InviteUserGroups from "../../../components/molecules/groups/InviteUserGroups";
-import { LOCATION_ALL } from "../../../constants/location";
 import { useAllUserDataQuery } from "../../../hooks/admin/quries";
 import { useResetGroupQuery } from "../../../hooks/custom/CustomHooks";
 import { useCompleteToast } from "../../../hooks/custom/CustomToast";
 import { useGroupInviteMutation } from "../../../hooks/groupStudy/mutations";
-import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
-import { Location } from "../../../types/services/locationTypes";
-
-type UserType = "신규 가입자" | "전체";
+import { IUser, IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import { searchName } from "../../../utils/stringUtils";
 
 export default function GroupAdminInvitation() {
   const completeToast = useCompleteToast();
   const { data: session } = useSession();
-  const location = session?.user.location;
   const { id } = useParams<{ id: string }>() || {};
-  const [value, setValue] = useState<Location | "전체">(location);
-  const [userFilterValue, setUserFilterValue] = useState<UserType>("신규 가입자");
   const [filterUsers, setFilterUsers] = useState<IUserSummary[]>();
   const [inviteUser, setInviteUser] = useState<IUserSummary>(null);
   const [nameValue, setNameValue] = useState("");
-
-  useEffect(() => {
-    setValue(location);
-  }, []);
 
   const { data: usersAll, refetch, isLoading } = useAllUserDataQuery(null);
 
@@ -50,17 +39,9 @@ export default function GroupAdminInvitation() {
 
     if (isLoading || !usersAll) return;
     if (nameValue) {
-      // setFilterUsers(searchName(usersAll, nameValue));
-    } else {
-      // setFilterUsers(
-      //   usersAll.filter((user) =>
-      //     user.isActive && userFilterValue === "전체" ? true : !user?.belong,
-      //   ),
-      // );
-    }
+      setFilterUsers(searchName(usersAll as IUser[], nameValue));
+    } else setFilterUsers(usersAll as IUser[]);
   }, [usersAll, nameValue]);
-
-  const USER_TYPE_ARR: UserType[] = ["신규 가입자", "전체"];
 
   const alertOptions: IAlertModalOptions = {
     title: "유저 초대",
@@ -77,11 +58,6 @@ export default function GroupAdminInvitation() {
     <>
       <Box mt="16px">
         <Flex justify="space-between" align="flex-end">
-          <Selector
-            options={USER_TYPE_ARR}
-            defaultValue={userFilterValue}
-            setValue={setUserFilterValue}
-          />
           <Box>
             <Input
               placeholder="이름 검색"
@@ -90,7 +66,7 @@ export default function GroupAdminInvitation() {
               onChange={(e) => setNameValue(e.target.value)}
             />
           </Box>
-          <Selector options={["전체", ...LOCATION_ALL]} defaultValue={value} setValue={setValue} />
+          {/* <Selector options={["전체", ...LOCATION_ALL]} defaultValue={value} setValue={setValue} /> */}
         </Flex>
         <Box position="relative">
           {isLoading ? (

@@ -25,7 +25,9 @@ export const convertStudyToMergeStudy = (
   const mergedResult = [...studyVoteData.results, ...convertedRealTimes].map((result) => ({
     ...result,
     place: convertMergePlaceToPlace(result.place),
-    status: (result as RealTimesToResultProps)?.status || "open",
+    status:
+      (result as RealTimesToResultProps)?.status ||
+      (!studyVoteData?.participations ? "open" : null),
   }));
 
   return mergedResult;

@@ -30,6 +30,7 @@ export const useStudyVoteMutation = <T extends "post" | "patch" | "delete">(
 
     if (method !== "delete") {
       const updatedVoteInfo = voteInfo as StudyVoteProps | IStudyVoteTime;
+
       const { start, end } = updatedVoteInfo;
       const startStr = voteDate.hour(start.hour()).minute(start.minute()).toISOString();
       const endStr = voteDate.hour(end.hour()).minute(end.minute()).toISOString();
