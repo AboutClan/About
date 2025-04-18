@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
@@ -57,7 +57,6 @@ function Configuration() {
   );
   const studyType = myStudyResult?.status;
 
-  console.log(13, myStudyResult);
   const setTransferCollection = useSetRecoilState(transferCollectionState);
 
   const { mutate: handleArrived, isLoading: isLoading1 } = useStudyAttendCheckMutation({
@@ -111,7 +110,7 @@ function Configuration() {
     resetStudy();
     setTransferStudyAttendance(null);
     toast("success", `출석이 완료되었습니다.`);
-    console.log(52, id, date);
+
     if (id) {
       router.push(`/study/${id}/${date}`);
     } else {
@@ -120,9 +119,8 @@ function Configuration() {
   };
 
   const saveTogetherMembers = () => {
-    console.log(15, myStudyResult);
     const place = myStudyResult?.place.name || transferStudyAttendance?.place.name;
-    console.log(16, place);
+
     const members = myStudyResult
       ? myStudyResult.members
           .filter((who) => who.user._id !== session?.user.id)
@@ -178,7 +176,7 @@ function Configuration() {
       attendRealTimeStudy(formData);
     }
   };
-  console.log(54, transferStudyAttendance);
+
   return (
     <>
       <Box minH="calc(100dvh - var(--header-h))" bgColor="white">
