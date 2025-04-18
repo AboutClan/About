@@ -3,15 +3,16 @@ import { Box, Flex } from "@chakra-ui/react";
 export interface InfoColOptions {
   left: string;
   right: string;
+  color?: "mint" | "red";
 }
 
 interface InfoColProps {
-  optionsArr: InfoColOptions[];
+  infoArr: InfoColOptions[];
   isMint?: boolean;
   isBig?: boolean;
 }
 
-function InfoCol({ optionsArr, isMint, isBig }: InfoColProps) {
+function InfoCol({ infoArr, isMint, isBig }: InfoColProps) {
   return (
     <Flex
       direction="column"
@@ -22,16 +23,16 @@ function InfoCol({ optionsArr, isMint, isBig }: InfoColProps) {
       py={2}
       bg="rgba(97,106,97,0.04)"
     >
-      {optionsArr.map(({ left, right }, idx) => (
+      {infoArr.map(({ left, right, color }, idx) => (
         <Flex
           key={idx}
           justify="space-between"
           fontSize="11px"
           py={isBig ? 2 : 1}
-          borderBottom={isBig && idx !== optionsArr.length - 1 ? "var(--border-main)" : null}
+          borderBottom={isBig && idx !== infoArr.length - 1 ? "var(--border-main)" : null}
         >
           <Box color="gray.600">{left}</Box>
-          <Box color={isMint ? "mint" : "gray.800"} fontWeight="medium">
+          <Box color={color || (isMint ? "mint" : "gray.800")} fontWeight="medium">
             {right}
           </Box>
         </Flex>

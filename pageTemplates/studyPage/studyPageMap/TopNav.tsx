@@ -6,9 +6,10 @@ interface TopNavProps {
   handleLocationRefetch: () => void;
   isMapExpansion: boolean;
   onClose: () => void;
+  isCafePlace: boolean;
 }
 
-function TopNav({ handleLocationRefetch, isMapExpansion, onClose }: TopNavProps) {
+function TopNav({ handleLocationRefetch, isMapExpansion, isCafePlace, onClose }: TopNavProps) {
   return (
     <>
       <Flex
@@ -23,7 +24,7 @@ function TopNav({ handleLocationRefetch, isMapExpansion, onClose }: TopNavProps)
         zIndex={700}
       >
         <CurrentLocationBtn onClick={handleLocationRefetch} isBig={isMapExpansion} />
-        {isMapExpansion && (
+        {isMapExpansion && !isCafePlace && (
           <Flex flex={0.8} align="center" h="32px" justify="space-around" px={4} borderRadius="4px">
             <Flex align="center" mr={2}>
               <StudyIcon color="mint" />

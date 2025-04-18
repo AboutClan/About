@@ -160,6 +160,7 @@ export function ModalLayout({
           display="flex"
           justifyContent="center"
           flexDir="column"
+          color="gray.700"
         >
           {children}
         </ChakraModalBody>

@@ -22,7 +22,7 @@ function StudyOverview({
   status,
   time,
 }: IStudyOverview) {
-  console.log(42, status);
+ 
   const { text: badgeText, colorScheme: badgeColorScheme } = STUDY_STATUS_TO_BADGE[status];
   const infoBoxPropsArr: InfoBoxProps[] = [
     {

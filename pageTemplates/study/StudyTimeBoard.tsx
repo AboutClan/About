@@ -8,7 +8,7 @@ interface IStudyTimeBoard {
 }
 export default function StudyTimeBoard({ members }: IStudyTimeBoard) {
   const timeBoardMembers: ITimeBoardParticipant[] = transformToTimeBoardProp(members);
-  console.log(25, timeBoardMembers);
+
   return <UserTimeBoard members={timeBoardMembers} />;
 }
 

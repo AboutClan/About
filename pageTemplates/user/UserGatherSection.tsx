@@ -39,7 +39,7 @@ function UserGatherSection() {
       ? "isEnded"
       : "isOwner",
   );
-  console.log(cursor, gatherType);
+ 
 
   useEffect(() => {
     setGathers([]);

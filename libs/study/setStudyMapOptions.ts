@@ -136,7 +136,7 @@ export const getMarkersOptions = (
       },
     });
   }
-  console.log(24, studyResults);
+
   if (studyResults) {
     studyResults.forEach((par) => {
       temp.push({

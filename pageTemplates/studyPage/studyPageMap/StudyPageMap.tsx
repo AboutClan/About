@@ -52,12 +52,12 @@ function StudyPageMap({
   const [isMapExpansion, setIsMapExpansion] = useState(false);
   const [detailInfo, setDetailInfo] = useState<StudyInfoProps>();
   const [placeInfo, setPlaceInfo] = useState<StudyPlaceProps>(null);
-
+ 
   const isGuest = session?.user.role === "guest";
 
   useEffect(() => {
     if (!studyVoteData) return;
-    console.log(2, centerLocation);
+    
     const options = getMapOptions(
       placeInfo
         ? { lat: placeInfo?.latitude, lon: placeInfo.longitude }
@@ -67,7 +67,7 @@ function StudyPageMap({
           centerLocation,
       isMapExpansion ? 12 : 13,
     );
-    console.log(13, options);
+   
 
     setMapOptions(options);
     setMarkersOptions(
@@ -110,7 +110,7 @@ function StudyPageMap({
   };
 
   const myStudy = findMyStudyByUserId(studyVoteData, userInfo?._id);
-  console.log(123, placeData);
+
 
   const handleMapClick = () => {
     if (isGuest) {
@@ -147,6 +147,7 @@ function StudyPageMap({
               setIsMapExpansion(false);
               setIsPlaceMap(false);
             }}
+            isCafePlace={!!placeData}
           />
 
           <VoteMap

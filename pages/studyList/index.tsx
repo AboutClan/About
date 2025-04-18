@@ -40,6 +40,7 @@ export default function StudyList() {
       date,
       studyVoteData?.participations,
       convertStudyToMergeStudy(studyVoteData),
+      studyVoteData?.realTimes.userList,
       currentLocation,
     );
 

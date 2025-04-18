@@ -47,7 +47,7 @@ function StudyPageSettingBlock() {
       lat: +placeInfo.y,
     });
   };
-  console.log(recentStudyRecord);
+
 
   return (
     <>
@@ -69,7 +69,7 @@ function StudyPageSettingBlock() {
             },
             {
               category: "최근 함께한 스터디 멤버",
-              rightChildren: recentStudyRecord ? (
+              rightChildren: recentStudyRecord?.members.length ? (
                 <Box>
                   <AvatarGroupsOverwrap userAvatarArr={recentStudyRecord?.members} maxCnt={4} />
                 </Box>

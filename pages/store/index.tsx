@@ -5,17 +5,15 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
-import InfoCol from "../../components/atoms/InfoCol";
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import Select from "../../components/atoms/Select";
 import { TrophyIcon } from "../../components/Icons/icons";
-import RuleIcon from "../../components/Icons/RuleIcon";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
+import PointGuideModalButton from "../../components/modalButtons/PointGuideModalButton";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import { useErrorToast } from "../../hooks/custom/CustomToast";
 import { useStoreGiftEntryQuery } from "../../hooks/sub/store/queries";
-import RuleModal from "../../modals/RuleModal";
 import { isPrevBooleanState } from "../../recoils/previousAtoms";
 import { transferStoreGiftDataState } from "../../recoils/transferRecoils";
 import { STORE_GIFT_ACTIVE, STORE_GIFT_INACTIVE } from "../../storage/Store";
@@ -40,7 +38,7 @@ function StorePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isPrevBoolean, setIsPrevBoolean] = useRecoilState(isPrevBooleanState);
   const [isShowActive, setIsShowActive] = useState(isPrevBoolean);
-  const [isModal, setIsModal] = useState(false);
+
   const [sortBy, setSortBy] = useState<"전체" | "스토어 상품" | "동아리 상품">("전체");
 
   const setTransferStoreGiftData = useSetRecoilState(transferStoreGiftDataState);
@@ -111,53 +109,10 @@ function StorePage() {
     },
   ];
 
-  const pointInfoArr: { left: string; right: string }[] = [
-    {
-      left: "스터디 사전 투표",
-      right: "+ 5 Point",
-    },
-    {
-      left: "스터디 출석체크",
-      right: "+ 5 Point",
-    },
-    {
-      left: "번개 모임 참여",
-      right: "+ 5 Point",
-    },
-    {
-      left: "일일 출석체크",
-      right: "+ 2 Point",
-    },
-    {
-      left: "건의하기",
-      right: "+ 5 Point",
-    },
-    {
-      left: "피드 좋아요 누르기",
-      right: "+ 2 Point",
-    },
-    {
-      left: "함께한 멤버 좋아요 보내기",
-      right: "+ 2 Point",
-    },
-    {
-      left: "피드(번개,소모임) 올리기",
-      right: "+ 100 Point",
-    },
-    {
-      left: "번개 모임 개설",
-      right: "+ 200 Point",
-    },
-    {
-      left: "동아리 홍보 글 올리기",
-      right: "+ 200 Point",
-    },
-  ];
-
   return (
     <>
       <Header title="포인트 스토어" url="/home">
-        <RuleIcon setIsModal={setIsModal} />
+        <PointGuideModalButton type="store" />
       </Header>
       <Slide isNoPadding>
         <Box minH="100dvh">
@@ -319,15 +274,6 @@ function StorePage() {
           </Box>
         </Box>
       </Slide>
-      {isModal && (
-        <RuleModal
-          title="포인트 스토어 가이드"
-          text="동아리 활동을 통해 포인트를 획득하고 상품에 응모해보세요. 다양한 상품이 기다리고 있어요!"
-          setIsModal={setIsModal}
-        >
-          <InfoCol optionsArr={pointInfoArr} isMint />
-        </RuleModal>
-      )}
     </>
   );
 }

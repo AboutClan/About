@@ -1,7 +1,8 @@
-import { Box, Button, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
+import InfoList from "../../components/atoms/lists/InfoList";
 import { CheckCircleIcon20 } from "../../components/Icons/CircleIcons";
 import BottomNav from "../../components/layouts/BottomNav";
 import Accordion from "../../components/molecules/Accordion";
@@ -143,22 +144,9 @@ function Fee() {
               <Box as="li" fontSize="12px" lineHeight="20px" mt="10px" color="gray.600">
                 위의 회비는 동아리 가입 후 내야 할 금액입니다.
               </Box>
-              <UnorderedList
-                mx={0}
-                my={5}
-                px={3}
-                py={4}
-                bg="gray.100"
-                border="1px solid var(--gray-200)"
-                borderRadius="8px"
-                fontSize="12px"
-                lineHeight="20px"
-                fontWeight="light"
-              >
-                <ListItem>참여 요청까지 완료하시면 승인과 함께 별도 연락을 드립니다.</ListItem>
-                <ListItem>회비는 동아리 운영 및 이벤트 기금으로 사용됩니다.</ListItem>
-                <ListItem>보증금은 언제든 환급이 가능합니다.</ListItem>
-              </UnorderedList>
+              <Box my={5}>
+                <InfoList items={INFO_ARR} />
+              </Box>
               <Flex
                 onClick={() => setIsChecked((old) => !old)}
                 as="button"
@@ -209,5 +197,11 @@ function Fee() {
     </>
   );
 }
+
+const INFO_ARR = [
+  "참여 요청까지 완료하시면 승인과 함께 별도 연락을 드립니다.",
+  "회비는 동아리 운영 및 이벤트 기금으로 사용됩니다.",
+  "보증금은 언제든 환급이 가능합니다.",
+];
 
 export default Fee;

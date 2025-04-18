@@ -1,6 +1,9 @@
 import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
 import { CoordinatesProps } from "../../types/common";
-import { StudyParticipationProps } from "../../types/models/studyTypes/baseTypes";
+import {
+  RealTimeMemberProps,
+  StudyParticipationProps,
+} from "../../types/models/studyTypes/baseTypes";
 import { StudyMergeResultProps } from "../../types/models/studyTypes/derivedTypes";
 import { getRandomImage } from "../../utils/imageUtils";
 import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
@@ -10,9 +13,10 @@ export const setStudyThumbnailCard = (
   date: string,
   participations: StudyParticipationProps[],
   studyResults: StudyMergeResultProps[],
+  realTimes: RealTimeMemberProps[],
   currentLocation: CoordinatesProps,
 ): StudyThumbnailCardProps[] => {
-  const participationThumbnailCard: StudyThumbnailCardProps[] = participations
+  const basicThumbnailCard: StudyThumbnailCardProps[] = participations
     ? [
         {
           place: {
@@ -32,40 +36,64 @@ export const setStudyThumbnailCard = (
           status: "recruiting",
         },
       ]
+    : realTimes
+    ? [
+        {
+          place: {
+            name: "개인 스터디 인증",
+            branch: "자유 카페",
+            address: "개인 공부 인증하고, 혜택 받아 가세요",
+            distance: null,
+            imageProps: {
+              image:
+                "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%BA%90%EB%A6%AD%ED%84%B0/%EC%95%84%EB%B0%94%ED%83%80/%EB%B3%91%EC%95%84%EB%A6%AC_%EC%B1%85.png",
+              isPriority: true,
+            },
+            _id: "",
+          },
+          participants: realTimes?.map((par) => par.user),
+          url: `/study/realTime/${date}`,
+          status: "solo",
+        },
+      ]
     : [];
 
   // 카드 데이터 생성
-  const cardColData: StudyThumbnailCardProps[] = studyResults.map((data, idx) => {
-    const placeInfo = convertMergePlaceToPlace(data.place);
+  const cardColData: StudyThumbnailCardProps[] = studyResults
+    .filter((result) => result.status !== "solo")
+    .map((data, idx) => {
+      const placeInfo = convertMergePlaceToPlace(data.place);
 
-    // const image = imageCache?.get(placeInfo?.id);
+      // const image = imageCache?.get(placeInfo?.id);
 
-    return {
-      place: {
-        name: placeInfo.name,
-        branch: placeInfo.branch,
-        address: placeInfo.address,
-        distance: currentLocation
-          ? getDistanceFromLatLonInKm(
-              currentLocation.lat,
-              currentLocation.lon,
-              placeInfo.latitude,
-              placeInfo.longitude,
-            )
-          : undefined,
-        imageProps: {
-          image: placeInfo.image || getRandomImage(),
-          isPriority: idx < 4,
+      return {
+        place: {
+          name: placeInfo.name,
+          branch: placeInfo.branch,
+          address: placeInfo.address,
+          distance: currentLocation
+            ? getDistanceFromLatLonInKm(
+                currentLocation.lat,
+                currentLocation.lon,
+                placeInfo.latitude,
+                placeInfo.longitude,
+              )
+            : undefined,
+          imageProps: {
+            image: placeInfo.image || getRandomImage(),
+            isPriority: idx < 4,
+          },
+          _id: data.place._id,
         },
-        _id: data.place._id,
-      },
-      participants: data.members.map((att) => att.user),
-      url: `/study/${data.place._id}/${date}`,
-      status: participations ? "expected" : data?.status || "open",
-    };
-  });
+        participants: data.members.map((att) => att.user),
+        url: `/study/${data.place._id}/${date}`,
+        status: participations ? "expected" : data?.status || "open",
+      };
+    });
 
-  return [...participationThumbnailCard, ...cardColData];
+  return participations
+    ? [...basicThumbnailCard, ...cardColData]
+    : [...cardColData, ...basicThumbnailCard];
 };
 
 export const sortThumbnailCardInfoArr = (
@@ -73,27 +101,30 @@ export const sortThumbnailCardInfoArr = (
   arr: StudyThumbnailCardProps[],
   userId: string,
 ) => {
+  const statusPriority = { recruiting: 1, join: 2, open: 3, solo: 4, free: 5 };
   return [...arr].sort((a, b) => {
-    const aIsRecruiting = a.status === "recruiting";
-    const bIsRecruiting = b.status === "recruiting";
+    const aPriority = statusPriority[a.status] || 99;
+    const bPriority = statusPriority[b.status] || 99;
 
-    if (aIsRecruiting && !bIsRecruiting) return -1;
-    if (!aIsRecruiting && bIsRecruiting) return 1;
+    if (aPriority !== bPriority) {
+      return aPriority - bPriority;
+    }
 
     const aIsJoined = a.participants.some((par) => par._id === userId);
     const bIsJoined = b.participants.some((par) => par._id === userId);
 
-    if (aIsJoined && !bIsJoined) return -1;
-    if (!aIsJoined && bIsJoined) return 1;
+    if (aIsJoined !== bIsJoined) {
+      return aIsJoined ? -1 : 1;
+    }
+
     if (sortedOption === "거리순") {
-      if (a.place.distance > b.place.distance) return 1;
-      else if (a.place.distance < b.place.distance) return -1;
-      else return 0;
+      return a.place.distance - b.place.distance;
     }
+
     if (sortedOption === "인원순") {
-      if (a.participants.length > b.participants.length) return -1;
-      if (a.participants.length < b.participants.length) return 1;
-      return 0;
+      return b.participants.length - a.participants.length;
     }
+
+    return 0;
   });
 };

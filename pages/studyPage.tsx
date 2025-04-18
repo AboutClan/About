@@ -48,7 +48,7 @@ export default function StudyPage() {
     enabled: !!isPlaceMap,
   });
 
-  console.log(studyVoteData);
+ 
 
   //dateParam이 아예 없는 경우가 있을 수 있을까?
   useEffect(() => {

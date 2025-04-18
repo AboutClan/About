@@ -46,7 +46,7 @@ function HomeHeader() {
     // const recentOne = data[0]?.message;
 
     const noticeCnt = localStorage.getItem(NOTICE_ALERT);
-    console.log(1234, noticeCnt, NOTICE_ARR.length);
+
     if (!noticeCnt || NOTICE_ARR.length + "" !== noticeCnt) {
       setIsNoticeAlert(true);
     }

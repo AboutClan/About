@@ -21,7 +21,7 @@ export default function StudyVoteTimeRulletDrawer({
   zIndex,
   defaultVoteTime,
 }: IStudyVoteTimeRulletDrawer) {
-  console.log(1234);
+ 
   return (
     <>
       <BottomFlexDrawer

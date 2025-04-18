@@ -46,15 +46,6 @@ function StudyPagePlaceSection({
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
   const [sortedOption, setSortedOption] = useState<SortedOption>("인원순");
 
-  // const coords = studyVoteData?.results.map((result) => ({
-  //   lat: result?.center?.lat,
-  //   lon: result?.center?.lon,
-  //   id: result?.place._id,
-  // }));
-  // console.log(studyVoteData);
-  // const { data } = useKakaoMultipleLocationQuery(coords);
-  // console.log(4, data?.[0].region_2depth_name);
-
   useEffect(() => {
     if (!studyVoteData) {
       setThumbnailCardinfoArr(null);
@@ -65,6 +56,7 @@ function StudyPagePlaceSection({
       date,
       studyVoteData?.participations,
       convertStudyToMergeStudy(studyVoteData),
+      studyVoteData?.realTimes?.userList,
       currentLocation,
     );
 
@@ -81,7 +73,7 @@ function StudyPagePlaceSection({
       router.replace(`/studyPage?${newSearchParams.toString()}`, { scroll: false });
     }
   };
-  console.log(thumbnailCardInfoArr);
+
   return (
     <Flex flexDir="column" mt={5} mb={8}>
       <Box>

@@ -31,6 +31,7 @@ export default function Page() {
   const isGuest = session?.user.role === "guest";
 
   const isParticipationPage = id === "participations";
+  const isRealTimePage = id === "realTime";
 
   const { data: studyVoteData } = useStudyVoteQuery(date, {
     enabled: !!date,
@@ -42,21 +43,37 @@ export default function Page() {
     studyVoteData && id !== "participations" && findStudyByPlaceId(studyVoteData, id);
   const findMyStudy = findMyStudyByUserId(studyVoteData, session?.user.id);
 
-  const placeInfo = convertMergePlaceToPlace(findStudy?.place) || {
-    name: "스터디 매칭 대기소",
-    branch: "About",
-    address: "위치 선정 중",
-    brand: "",
-    image: STUDY_MAIN_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
-    coverImage: STUDY_COVER_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
+  const placeInfo =
+    convertMergePlaceToPlace(findStudy?.place) || isParticipationPage
+      ? {
+          name: "스터디 매칭 대기소",
+          branch: "About",
+          address: "위치 선정 중",
+          brand: "",
+          image: STUDY_MAIN_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
+          coverImage: STUDY_COVER_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
 
-    latitude: null,
-    longitude: null,
-    time: dayjsToFormat(dayjs(date), "M월 D일 오후 11시"),
+          latitude: null,
+          longitude: null,
+          time: dayjsToFormat(dayjs(date), "M월 D일 오전 9시"),
 
-    _id: null,
-  };
+          _id: null,
+        }
+      : {
+          name: "개인 스터디 인증",
+          branch: "About",
+          address: "자유 카페 / 스터디 카페",
+          brand: "",
+          image: STUDY_MAIN_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
+          coverImage: STUDY_COVER_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
 
+          latitude: null,
+          longitude: null,
+          time: "하루 공부가 끝나는 순간까지",
+
+          _id: null,
+        };
+ 
   const distance =
     currentLocation &&
     getDistanceFromLatLonInKm(
@@ -68,11 +85,15 @@ export default function Page() {
 
   const members: StudyMemberProps[] | { user: UserSimpleInfoProps }[] =
     findStudy?.members ||
-    studyVoteData?.participations?.map((par) => ({
-      user: par.user,
-      lat: par.latitude,
-      lon: par.longitude,
-    }));
+    (isParticipationPage
+      ? studyVoteData?.participations?.map((par) => ({
+          user: par.user,
+          lat: par.latitude,
+          lon: par.longitude,
+        }))
+      : isRealTimePage
+      ? studyVoteData?.realTimes.userList
+      : null);
 
   // const absences = studyVoteData?.participations.find((par) => par.place._id === id)?.absences;
 
@@ -81,8 +102,15 @@ export default function Page() {
   );
 
   const status =
-    findStudy?.status || (isParticipationPage ? "recruiting" : isExpectedPage ? "expected" : null);
-  console.log(21, findStudy, studyVoteData, status);
+    findStudy?.status ||
+    (isParticipationPage
+      ? "recruiting"
+      : isExpectedPage
+      ? "expected"
+      : isRealTimePage
+      ? "solo"
+      : null);
+
   return (
     <>
       {studyVoteData ? (
@@ -100,7 +128,7 @@ export default function Page() {
             </Slide>
             <Box h={2} bg="gray.100" />
             <Slide>
-              {!isParticipationPage && (
+              {!isParticipationPage && !isRealTimePage && (
                 <StudyAddressMap
                   name={placeInfo.name}
                   address={placeInfo.address}
@@ -126,7 +154,7 @@ export default function Page() {
               </Box>
             </Slide>
           </Box>
-          {(findStudy || id === "participations") && !isGuest && (
+          {(findStudy || isParticipationPage || isRealTimePage) && !isGuest && (
             <StudyNavigation
               date={date}
               findStudy={findStudy}

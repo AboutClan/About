@@ -36,9 +36,8 @@ function Certification() {
     transferStudyAttendanceState,
   );
 
+  const findMyStudyResult = findMyStudyByUserId(studyVoteData, session?.user.id);
   useEffect(() => {
-    const findMyStudyResult = findMyStudyByUserId(studyVoteData, session?.user.id);
-
     if (studyAttendanceRequest) {
       const { name, latitude, longitude, _id } = studyAttendanceRequest.place;
       setPlaceInfo({
@@ -50,7 +49,7 @@ function Certification() {
       setImage(studyAttendanceRequest?.image);
     } else if (findMyStudyResult) {
       const studyPlace = findMyStudyResult?.place;
-    
+
       setPlaceInfo({
         x: studyPlace.longitude + "",
         y: studyPlace.latitude + "",
@@ -85,6 +84,7 @@ function Certification() {
         name: placeInfo?.place_name,
         _id: placeInfo?._id,
       },
+      status: findMyStudyResult?.status || "solo",
     }));
   };
 

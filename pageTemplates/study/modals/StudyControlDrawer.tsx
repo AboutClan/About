@@ -46,7 +46,7 @@ function StudyControlDrawer({
   const toast = useToast();
 
   const { data: userInfo } = useUserInfoQuery();
-
+  
   const { mutate: voteStudy } = useStudyVoteMutation(dayjs(date), "post", {
     onSuccess() {
       toast("success", "신청이 완료되었습니다. 매칭 결과를 기다려주세요!");
@@ -76,7 +76,7 @@ function StudyControlDrawer({
   const handleStudyVoteBtn = (
     type: "selectTime" | "pickPlace" | "directInputPlace" | "directAttend",
   ) => {
-    console.log(24, type);
+  
     switch (type) {
       case "selectTime":
         setTimeRulletType("vote");
@@ -119,7 +119,7 @@ function StudyControlDrawer({
       func:
         timeRulletType === "participate"
           ? () => {
-              console.log(123);
+             
               participateStudyOne({
                 placeId: selectedPlaceId,
                 start: voteTime.start,
@@ -140,10 +140,10 @@ function StudyControlDrawer({
                 end: voteTime.end,
               };
               handleStudyVote(voteData, "vote");
-            },
+            },  
     },
   };
-  console.log(345, timeRulletType);
+ 
   return (
     <>
       {studyDrawerType && (
@@ -153,29 +153,31 @@ function StudyControlDrawer({
           setIsModal={onClose}
           isHideBottom
           drawerOptions={{ footer: { text: "취소", func: onClose } }}
-          height={studyDrawerType === "free" ? 249 : 197}
+          height={studyDrawerType === "free" && studyResults?.length ? 249 : 197}
           zIndex={800}
         >
-          <Button
-            h="52px"
-            justifyContent="flex-start"
-            display="flex"
-            variant="unstyled"
-            py={4}
-            w="100%"
-            onClick={() =>
-              handleStudyVoteBtn(studyDrawerType === "free" ? "pickPlace" : "selectTime")
-            }
-          >
-            <Box w="20px" h="20px" mr={4} opacity={0.28}>
-              <StudyCheckIcon />
-            </Box>
-            <Box fontSize="13px" color="var(--gray-600)">
-              {studyDrawerType === "free"
-                ? "진행중인 스터디 참여"
-                : "즐겨 찾는 위치에서 스터디 신청"}
-            </Box>
-          </Button>
+          {(studyDrawerType !== "free" || studyResults?.length) && (
+            <Button
+              h="52px"
+              justifyContent="flex-start"
+              display="flex"
+              variant="unstyled"
+              py={4}
+              w="100%"
+              onClick={() =>
+                handleStudyVoteBtn(studyDrawerType === "free" ? "pickPlace" : "selectTime")
+              }
+            >
+              <Box w="20px" h="20px" mr={4} opacity={0.28}>
+                <StudyCheckIcon />
+              </Box>
+              <Box fontSize="13px" color="var(--gray-600)">
+                {studyDrawerType === "free"
+                  ? "진행중인 스터디 참여"
+                  : "즐겨 찾는 위치에서 스터디 신청"}
+              </Box>
+            </Button>
+          )}
           <Button
             h="52px"
             justifyContent="flex-start"
@@ -189,7 +191,7 @@ function StudyControlDrawer({
               <StudySelectIcon />
             </Box>
             <Box fontSize="13px" color="var(--gray-600)">
-              {studyDrawerType === "free" ? "자유 스터디 개설 신청" : "원하는 위치에서 스터디 신청"}
+              {studyDrawerType === "free" ? "일일 스터디 개설 신청" : "원하는 위치에서 스터디 신청"}
             </Box>
           </Button>
           {studyDrawerType === "free" && (
@@ -207,7 +209,7 @@ function StudyControlDrawer({
                   <StudyUserCheckIcon color="gray" />
                 </Box>
                 <Box fontSize="13px" color="var(--gray-600)">
-                  실시간 카공 스터디 인증
+                  실시간 개인 카공 인증
                 </Box>
               </Button>
             </Link>

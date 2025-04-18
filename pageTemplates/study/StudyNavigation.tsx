@@ -28,7 +28,7 @@ interface IStudyNavigation {
   hasOtherStudy: boolean;
   id: string;
   isVoting: boolean;
-  pageType: StudyStatus | "recruiting" | "expected";
+  pageType: StudyStatus | "recruiting" | "expected" | "solo";
 }
 
 interface NavigationProps {
@@ -48,7 +48,7 @@ function StudyNavigation({
 }: IStudyNavigation) {
   const router = useRouter();
   const toast = useToast();
-  console.log(42, findStudy);
+
   const { data: session } = useSession();
 
   const {
@@ -57,7 +57,7 @@ function StudyNavigation({
   } = useStudyMutations(dayjs(date));
 
   const [isTimeRulletModal, setIsTimeRulletModal] = useState(false);
-  const [isVoteModal, setIsVoteModal] = useState(false);
+  const [voteModalType, setVoteModalType] = useState<"vote" | "free">(null);
   const [voteTime, setVoteTime] = useState<DayjsTimeProps>();
   const [isAbsentModal, setIsAbsentModal] = useState(false);
   const [alertModalInfo, setAlertModalInfo] = useState<IAlertModalOptions>();
@@ -72,7 +72,7 @@ function StudyNavigation({
       type: "single",
       colorScheme: "mint",
       func: () => {
-        if (pageType === "recruiting") setIsVoteModal(true);
+        if (pageType === "recruiting") setVoteModalType("vote");
         else if (pageType === "expected") setIsTimeRulletModal(true);
       },
     },
@@ -99,6 +99,10 @@ function StudyNavigation({
       type: "single",
       colorScheme: "mint",
       func: () => {
+        if (pageType === "solo") {
+          setVoteModalType("free");
+          return;
+        }
         if (hasOtherStudy) {
           toast("warning", "다른 스터디에 참여중입니다.");
           return;
@@ -261,11 +265,11 @@ function StudyNavigation({
           </Flex>
         )}
       </Slide>
-      {pageType === "recruiting" && (
+      {(pageType === "recruiting" || pageType === "solo") && (
         <StudyControlDrawer
           date={date}
-          studyDrawerType={isVoteModal ? "vote" : null}
-          onClose={() => setIsVoteModal(false)}
+          studyDrawerType={voteModalType}
+          onClose={() => setVoteModalType(null)}
           studyResults={null}
           currentLocation={null}
         />

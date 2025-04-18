@@ -91,6 +91,13 @@ function Configuration() {
   }
 
   useEffect(() => {
+    if (!transferStudyAttendance) return;
+    if (transferStudyAttendance.status === "solo") {
+      setOtherPermission("비허용");
+    }
+  }, [transferStudyAttendance]);
+
+  useEffect(() => {
     if (textareaRef.current) {
       setTimeout(() => {
         textareaRef.current.focus();
@@ -104,6 +111,7 @@ function Configuration() {
     resetStudy();
     setTransferStudyAttendance(null);
     toast("success", `출석이 완료되었습니다.`);
+    console.log(52, id, date);
     if (id) {
       router.push(`/study/${id}/${date}`);
     } else {
@@ -112,13 +120,17 @@ function Configuration() {
   };
 
   const saveTogetherMembers = () => {
-    const place = myStudyResult.place.name;
-    const members = myStudyResult.members
-      .filter((who) => who.user._id !== session?.user.id)
-      .map((member) => ({
-        image: member.user.profileImage,
-        avatar: member.user?.avatar,
-      }));
+    console.log(15, myStudyResult);
+    const place = myStudyResult?.place.name || transferStudyAttendance?.place.name;
+    console.log(16, place);
+    const members = myStudyResult
+      ? myStudyResult.members
+          .filter((who) => who.user._id !== session?.user.id)
+          .map((member) => ({
+            image: member.user.profileImage,
+            avatar: member.user?.avatar,
+          }))
+      : [];
 
     const record = {
       date: dayjsToStr(dayjs()),
@@ -166,7 +178,7 @@ function Configuration() {
       attendRealTimeStudy(formData);
     }
   };
-
+  console.log(54, transferStudyAttendance);
   return (
     <>
       <Box minH="calc(100dvh - var(--header-h))" bgColor="white">
@@ -186,7 +198,7 @@ function Configuration() {
             <Box mb={3}>
               <SectionTitle
                 text="다른 인원 참여 허용"
-                isActive={!!transferStudyAttendance?.image}
+                isActive={transferStudyAttendance?.status === "free"}
               />
             </Box>
             <Select
@@ -194,7 +206,7 @@ function Configuration() {
               defaultValue={otherPermission}
               setValue={setOtherPermission}
               size="lg"
-              isActive={!!transferStudyAttendance?.image}
+              isActive={transferStudyAttendance?.status === "free"}
               isFullSize
             />
           </Box>

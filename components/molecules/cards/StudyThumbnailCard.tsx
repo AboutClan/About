@@ -50,7 +50,7 @@ export function StudyThumbnailCard({
   return (
     <CardLink href={url} onClick={func} isbordermain={status === "recruiting" ? "true" : "false"}>
       <>
-        {status === "recruiting" ? (
+        {status === "recruiting" || status === "solo" ? (
           <PlaceAvatarImage size="md" imageProps={place.imageProps} />
         ) : (
           <PlaceImage size="md" imageProps={place.imageProps} />

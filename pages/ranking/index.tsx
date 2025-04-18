@@ -35,8 +35,7 @@ function Ranking() {
   const { data: allUserData } = useAllUserDataQuery("study", {
     enabled: !!session,
   });
-  console.log(allUserData);
-
+  
   const fieldName =
     tab === "월간 스터디 기록"
       ? "studyRecord"

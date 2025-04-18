@@ -116,7 +116,7 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
 
         {scoreObj ? (
           <InfoCol
-            optionsArr={[
+            infoArr={[
               {
                 left: "이번 달 스터디 점수",
                 right: `${scoreObj.study} 점`,
@@ -212,7 +212,7 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
       </ModalLayout>
       {isPenaltyModal && (
         <ModalLayout title="동아리 활동 규정" footerOptions={{}} setIsModal={setIsPenaltyModal}>
-          <InfoCol optionsArr={optionArr} isMint isBig />
+          <InfoCol infoArr={optionArr} isMint isBig />
         </ModalLayout>
       )}
     </>

@@ -13,6 +13,7 @@ import Select from "../../components/atoms/Select";
 import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
+import InfoModalButton from "../../components/modalButtons/InfoModalButton";
 import { GroupThumbnailCard } from "../../components/molecules/cards/GroupThumbnailCard";
 import ButtonGroups from "../../components/molecules/groups/ButtonGroups";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
@@ -84,7 +85,6 @@ function GroupPage() {
     },
   );
 
- 
   useEffect(() => {
     return () => {
       const localStorageCursorNumChange = !localStorageCursorNum
@@ -182,26 +182,7 @@ function GroupPage() {
   return (
     <>
       <Header title="소모임" url="/group" isBack={false}>
-        {/* <Button
-          px={2}
-          bg="inherit"
-          fontSize="14px"
-          size="md"
-          iconSpacing={1.5}
-          leftIcon={<StarTicketIcon color="red" />}
-        >
-          2
-        </Button>
-        <Button
-          px={2}
-          bg="inherit"
-          fontSize="14px"
-          iconSpacing={1.5}
-          size="md"
-          leftIcon={<StarTicketIcon color="blue" />}
-        >
-          2
-        </Button> */}
+        <InfoModalButton type="group" />
       </Header>
       <Slide isNoPadding>
         <Layout>
