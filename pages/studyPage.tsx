@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import Slide from "../components/layouts/PageSlide";
@@ -101,7 +101,7 @@ export default function StudyPage() {
     } else if (userInfo?.locationDetail) {
       const { lat, lon } = userInfo.locationDetail;
       setCenterLocation({ lat, lon });
-    }
+    } else setCenterLocation({ lat: 37.5642135, lon: 127.0016985 });
     if (studyVoteData?.participations) setMyVoteStatus("pending");
     else setMyVoteStatus("todayPending");
   }, [studyVoteData, session, currentLocation, isLoading, userInfo]);

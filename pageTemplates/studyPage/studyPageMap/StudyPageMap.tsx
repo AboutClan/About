@@ -57,16 +57,17 @@ function StudyPageMap({
 
   useEffect(() => {
     if (!studyVoteData) return;
-
+    console.log(2, centerLocation);
     const options = getMapOptions(
       placeInfo
         ? { lat: placeInfo?.latitude, lon: placeInfo.longitude }
         : detailInfo
         ? { lat: detailInfo.place.latitude, lon: detailInfo.place.longitude }
         : (mapOptions?.center?.x && { lat: mapOptions?.center?.x, lon: mapOptions?.center?.y }) ||
-          centerLocation || { lat: 37.5642135, lon: 127.0016985 },
+          centerLocation,
       isMapExpansion ? 12 : 13,
     );
+    console.log(13, options);
 
     setMapOptions(options);
     setMarkersOptions(

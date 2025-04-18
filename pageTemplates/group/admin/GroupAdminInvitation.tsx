@@ -1,5 +1,4 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -16,7 +15,6 @@ import { searchName } from "../../../utils/stringUtils";
 
 export default function GroupAdminInvitation() {
   const completeToast = useCompleteToast();
-  const { data: session } = useSession();
   const { id } = useParams<{ id: string }>() || {};
   const [filterUsers, setFilterUsers] = useState<IUserSummary[]>();
   const [inviteUser, setInviteUser] = useState<IUserSummary>(null);
