@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -17,6 +18,7 @@ import { IGroupWriting } from "../../../types/models/groupTypes/group";
 import { setLocalStorageObj } from "../../../utils/storageUtils";
 function WritingStudyCategoryMain() {
   const failToast = useFailToast();
+  const router = useRouter();
 
   const groupWriting: IGroupWriting = JSON.parse(localStorage.getItem(GROUP_WRITING_STORE));
 
@@ -31,6 +33,7 @@ function WritingStudyCategoryMain() {
       ...groupWriting,
       category: { ...groupWriting?.category, main: category },
     });
+    router.push({ pathname: `/group/writing/sub`, query: router.query });
   };
 
   return (
@@ -56,7 +59,7 @@ function WritingStudyCategoryMain() {
         </ItemContainer>
       </RegisterLayout>
 
-      <BottomNav onClick={onClickNext} url="/group/writing/sub" />
+      <BottomNav onClick={onClickNext} />
     </>
   );
 }

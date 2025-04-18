@@ -10,8 +10,6 @@ import SwiperCore from "swiper";
 import { Autoplay, Pagination, Scrollbar } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { useTypeToast } from "../../../../hooks/custom/CustomToast";
-
 SwiperCore.use([Autoplay, Scrollbar]);
 
 export interface ImageBannerProp {
@@ -25,15 +23,12 @@ interface IImageSliderEventBanner {
 }
 
 function ImageSliderBanner({ imageArr, isLightBanner }: IImageSliderEventBanner) {
-  const typeToast = useTypeToast();
   const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const onClick = (url: string) => {
     if (url) {
       router.push(url);
-    } else {
-      typeToast("not-yet");
     }
   };
 

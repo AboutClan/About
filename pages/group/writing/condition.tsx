@@ -138,7 +138,7 @@ function WritingCondition() {
     <>
       <Slide isFixed={true}>
         <ProgressStatus value={100} />
-        <Header isSlide={false} title="" url="/group/writing/hashTag" />
+        <Header isSlide={false} title="" />
       </Slide>
       <RegisterLayout>
         <RegisterOverview>

@@ -16,6 +16,7 @@ import { IGatherType } from "../../../types/models/gatherTypes/gatherTypes";
 
 function WritingGatherCategory() {
   const router = useRouter();
+
   const failToast = useFailToast();
 
   const [gatherWriting, setGatherWriting] = useRecoilState(sharedGatherWritingState);
@@ -28,14 +29,14 @@ function WritingGatherCategory() {
       return;
     }
     setGatherWriting((old) => ({ ...old, type: IGatherType }));
-    router.push(`/gather/writing/content`);
+    router.push({ pathname: `/gather/writing/content`, query: router.query });
   };
 
   return (
     <>
       <Slide isFixed={true}>
         <ProgressStatus value={20} />
-        <Header isSlide={false} title="" url="/gather" />
+        <Header isSlide={false} title="" />
       </Slide>
       <RegisterLayout>
         <RegisterOverview>

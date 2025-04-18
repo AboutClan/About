@@ -24,10 +24,10 @@ function HomeGroupSection({ groups }: HomeGroupSectionProps) {
           style={{ marginLeft: "20px", display: "flex", width: "100%", gap: "12px" }}
         >
           <SlideSectionCol title="About 취미 소모임" subTitle="같은 취미로 이어지는 우리">
-            <HomeGroupCol threeGroups={groups?.hobby.slice(0, 3)} />
+            <HomeGroupCol threeGroups={groups?.hobby.slice(0, 3)} type="hobby" />
           </SlideSectionCol>
           <SlideSectionCol title="About 취미 소모임" subTitle="같은 취미로 이어지는 우리">
-            <HomeGroupCol threeGroups={groups?.hobby.slice(3)} />
+            <HomeGroupCol threeGroups={groups?.hobby.slice(3)} type="hobby" />
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence>
@@ -39,23 +39,23 @@ function HomeGroupSection({ groups }: HomeGroupSectionProps) {
           style={{ marginLeft: "20px", display: "flex", width: "100%", gap: "12px" }}
         >
           <SlideSectionCol title="About 성장 스터디" subTitle="함께 공부하며 만들어가는 성장">
-            <HomeGroupCol threeGroups={groups?.study} />
+            <HomeGroupCol threeGroups={groups?.study} type="study1" />
           </SlideSectionCol>
           <SlideSectionCol title="About 자기계발 소모임" subTitle="이번 주부터 갓생 시작">
-            <HomeGroupCol threeGroups={groups?.development} />
+            <HomeGroupCol threeGroups={groups?.development} type="self" />
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence>
       <Flex direction="column" mx={5} mt={5}>
         <SectionHeader title="About 시험 스터디" subTitle="시험 성공의 지름길"></SectionHeader>
-        <HomeGroupCol threeGroups={groups?.exam} />
+        <HomeGroupCol threeGroups={groups?.exam} type="study2" />
       </Flex>
       <Flex direction="column" mx={5} mt={5}>
         <SectionHeader
           title="About 오픈 예정 소모임"
           subTitle="새로운 만남을 준비 중"
         ></SectionHeader>
-        <HomeGroupCol threeGroups={groups?.waiting} />
+        <HomeGroupCol threeGroups={groups?.waiting} type="expected" />
       </Flex>
     </Box>
   );

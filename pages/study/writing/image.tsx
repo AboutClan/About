@@ -1,4 +1,5 @@
 import { Box } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
@@ -10,14 +11,16 @@ import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
 import ImageBasicSlider from "../../../components/organisms/sliders/ImageBasicSlider";
-import { useFailToast } from "../../../hooks/custom/CustomToast";
+import { useToast } from "../../../hooks/custom/CustomToast";
+import { useStudyAdditionMutation } from "../../../hooks/study/mutations";
+import { getStudyViewDate } from "../../../libs/study/date/getStudyDateStatus";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { sharedStudyWritingState } from "../../../recoils/sharedDataAtoms";
 
 function WritingStudyImage() {
   const router = useRouter();
-  const failToast = useFailToast();
+  const toast = useToast();
 
   const [studyWriting, setStudyWriting] = useRecoilState(sharedStudyWritingState);
 
@@ -26,17 +29,24 @@ function WritingStudyImage() {
     coverImage: studyWriting?.coverImage,
   });
 
+  const { mutate } = useStudyAdditionMutation({
+    onSuccess() {
+      setStudyWriting(null);
+      toast("success", "등록되었습니다.");
+      router.push(`/studyPage?date=${getStudyViewDate(dayjs())}`);
+    },
+  });
+
   const onClickNext = () => {
     if (!imageProps?.mainImage || !imageProps?.coverImage) {
-      failToast("free", "내용을 작성해 주세요!");
+      console.log(24, studyWriting);
+      toast("warning", "이미지를 선택해 주세요.");
       return;
     }
-    setStudyWriting((old) => ({
-      ...old,
-      image: imageProps.mainImage,
-      coverImage: imageProps.coverImage,
-    }));
-    router.push(`/study/writing/complete`);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { content, ...placeInfo } = studyWriting;
+
+    mutate({ ...placeInfo, image: imageProps.mainImage, coverImage: imageProps.coverImage });
   };
 
   const mainImageArr = STUDY_MAIN_IMAGES.map((item) => ({
@@ -55,8 +65,8 @@ function WritingStudyImage() {
   return (
     <>
       <Slide isFixed={true}>
-        <ProgressStatus value={75} />
-        <Header isSlide={false} title="" url="/study/writing/content" />
+        <ProgressStatus value={100} />
+        <Header isSlide={false} title="" />
       </Slide>
       <RegisterLayout>
         <RegisterOverview>
@@ -85,7 +95,7 @@ function WritingStudyImage() {
           />
         </Box>
       </RegisterLayout>
-      <BottomNav onClick={() => onClickNext()} />
+      <BottomNav text="완 료" onClick={() => onClickNext()} />
     </>
   );
 }

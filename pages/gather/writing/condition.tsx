@@ -108,7 +108,7 @@ function WritingCondition() {
       <>
         <Slide isFixed={true}>
           <ProgressStatus value={100} />
-          <Header isSlide={false} title="" url="/gather/writing/location" />
+          <Header isSlide={false} title="" />
         </Slide>
         <RegisterLayout>
           <RegisterOverview>

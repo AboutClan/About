@@ -1,6 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -13,7 +12,6 @@ import { GatherThumbnailCardSkeleton } from "../../components/skeleton/GatherThu
 import { transferGatherDataState } from "../../recoils/transferRecoils";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
-import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomImage } from "../../utils/imageUtils";
 dayjs().locale("ko");
@@ -24,14 +22,11 @@ interface HomeGatherColProps {
 }
 
 export default function HomeGatherCol({ gathers, isPriority }: HomeGatherColProps) {
-  const { data: session } = useSession();
-
   const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>([]);
 
   const setTransferGather = useSetRecoilState(transferGatherDataState);
 
   useEffect(() => {
-  
     if (!gathers) return;
     const handleNavigate = (gather: IGather) => {
       setTransferGather(gather);
@@ -54,9 +49,7 @@ export default function HomeGatherCol({ gathers, isPriority }: HomeGatherColProp
           ))}
         </Flex>
       )}{" "}
-      <SectionFooterButton
-        url={`/gather?location=${convertLocationLangTo(session?.user.location, "en")}`}
-      />
+      <SectionFooterButton url="/gather" />
     </Box>
   );
 }

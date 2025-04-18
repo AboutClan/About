@@ -92,7 +92,7 @@ function Setting() {
       case "edit":
         setGatherWriting({ ...gatherData, date: dayjs(gatherData.date) });
         setIsGatherEdit(true);
-        router.push("/gather/writing/category");
+        router.push(`/gather/writing/category?id=${id}`);
         break;
       case "inviteMember":
         setModalType("inviteMember");

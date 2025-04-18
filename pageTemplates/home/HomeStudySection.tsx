@@ -45,7 +45,7 @@ function HomeStudySection() {
       date,
       studyVoteData?.participations,
       convertStudyToMergeStudy(studyVoteData),
-      studyVoteData?.realTimes.userList,
+      studyVoteData?.realTimes?.userList,
       currentLocation,
     );
 

@@ -1,6 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useSetRecoilState } from "recoil";
 
 import SectionFooterButton from "../../components/atoms/SectionFooterButton";
@@ -8,19 +7,28 @@ import { GroupThumbnailCard } from "../../components/molecules/cards/GroupThumbn
 import { createGroupThumbnailProps } from "../../pages/group";
 import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { IGroup } from "../../types/models/groupTypes/group";
-import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import GroupSkeletonMain from "../group/GroupSkeletonMain";
 dayjs().locale("ko");
 
 interface HomeGroupColProps {
   threeGroups: IGroup[];
   isStudy?: boolean;
+  type: "hobby" | "study1" | "study2" | "expected" | "self";
 }
 
-export default function HomeGroupCol({ threeGroups, isStudy }: HomeGroupColProps) {
-  const { data: session } = useSession();
-
+export default function HomeGroupCol({ threeGroups, isStudy, type }: HomeGroupColProps) {
   const setTransferGroup = useSetRecoilState(transferGroupDataState);
+
+  const urlParam =
+    type === "hobby"
+      ? "category=1"
+      : type === "study1"
+      ? "category=3"
+      : type === "study2"
+      ? "category=2"
+      : type === "self"
+      ? "category=4"
+      : "filter=expected";
 
   return (
     <Box my={4}>
@@ -61,11 +69,7 @@ export default function HomeGroupCol({ threeGroups, isStudy }: HomeGroupColProps
                 />
               );
             })}
-          {threeGroups.length >= 3 && (
-            <SectionFooterButton
-              url={`/group?location=${convertLocationLangTo(session?.user.location, "en")}`}
-            />
-          )}
+          {threeGroups.length >= 3 && <SectionFooterButton url={`/group?${urlParam}`} />}
         </Flex>
       ) : (
         [1, 2, 3].map((idx) => <GroupSkeletonMain key={idx} isStudy={isStudy} />)

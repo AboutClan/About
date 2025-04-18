@@ -52,8 +52,8 @@ function WritingStudyPlace() {
   return (
     <>
       <Slide isFixed={true}>
-        <ProgressStatus value={25} />
-        <Header isSlide={false} title="" url="/home" />
+        <ProgressStatus value={33} />
+        <Header isSlide={false} title="" />
       </Slide>
       <RegisterLayout>
         <RegisterOverview>

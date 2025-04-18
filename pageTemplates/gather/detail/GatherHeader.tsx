@@ -34,7 +34,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
 
   return (
     <>
-      <Header title="" url="/gather">
+      <Header title="">
         <Flex>
           <Box>
             <KakaoShareBtn

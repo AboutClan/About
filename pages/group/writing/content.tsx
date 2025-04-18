@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -13,6 +14,7 @@ import { IGroupWriting } from "../../../types/models/groupTypes/group";
 import { setLocalStorageObj } from "../../../utils/storageUtils";
 
 function GroupWritingContent() {
+  const router = useRouter();
   const failToast = useFailToast();
 
   const groupWriting: IGroupWriting = JSON.parse(localStorage.getItem(GROUP_WRITING_STORE));
@@ -32,6 +34,7 @@ function GroupWritingContent() {
       rules: rules[0] === "" ? [] : rules,
       content,
     });
+    router.push({ pathname: `/group/writing/period`, query: router.query });
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>, idx: number) => {
@@ -55,7 +58,7 @@ function GroupWritingContent() {
     <>
       <Slide isFixed={true}>
         <ProgressStatus value={56} />
-        <Header isSlide={false} title="" url="/group/writing/guide" />
+        <Header isSlide={false} title="" />
       </Slide>
 
       <RegisterLayout>
@@ -89,7 +92,7 @@ function GroupWritingContent() {
         </Container>
       </RegisterLayout>
 
-      <BottomNav onClick={() => onClickNext()} url="/group/writing/period" />
+      <BottomNav onClick={() => onClickNext()} />
     </>
   );
 }

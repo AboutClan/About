@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -12,6 +13,7 @@ import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { IGroupWriting } from "../../../types/models/groupTypes/group";
 import { setLocalStorageObj } from "../../../utils/storageUtils";
 function GroupWritingContent() {
+  const router = useRouter();
   const groupWriting: IGroupWriting = JSON.parse(localStorage.getItem(GROUP_WRITING_STORE));
 
   const [period, setPeriod] = useState(groupWriting?.period || "주 1회");
@@ -21,6 +23,7 @@ function GroupWritingContent() {
       ...groupWriting,
       period,
     });
+    router.push({ pathname: `/group/writing/hashTag`, query: router.query });
   };
 
   const periodArr = [
@@ -41,7 +44,7 @@ function GroupWritingContent() {
     <>
       <Slide isFixed={true}>
         <ProgressStatus value={72} />
-        <Header isSlide={false} title="" url="/group/writing/content" />
+        <Header isSlide={false} title="" />
       </Slide>
       <RegisterLayout>
         <RegisterOverview>
@@ -57,7 +60,7 @@ function GroupWritingContent() {
           />
         </Container>
       </RegisterLayout>
-      <BottomNav onClick={() => onClickNext()} url="/group/writing/hashTag" />
+      <BottomNav onClick={() => onClickNext()} />
     </>
   );
 }

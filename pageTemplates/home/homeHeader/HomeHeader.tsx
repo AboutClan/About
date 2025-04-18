@@ -59,7 +59,7 @@ function HomeHeader() {
           <Layout>
             <AboutLogo />
             <Flex align="center">
-              <Box mr={1} position="relative">
+              <Box mr={2} position="relative">
                 <CalendarCheckModalButton
                   handleClick={
                     isGuest ? () => typeToast("guest") : () => setModalType("dailyCheck")

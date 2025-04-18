@@ -36,14 +36,14 @@ function WritingGatherContent() {
       title,
       content,
     }));
-    router.push(`/gather/writing/date`);
+    router.push({ pathname: `/gather/writing/date`, query: router.query });
   };
 
   return (
     <>
       <Slide isFixed={true}>
         <ProgressStatus value={40} />
-        <Header isSlide={false} title="" url="/gather/writing/category" />
+        <Header isSlide={false} title="" />
       </Slide>
       <RegisterLayout>
         <RegisterOverview>

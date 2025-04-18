@@ -1,5 +1,4 @@
-import { useRouter } from "next/router";
-import { useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 
 import TextBlock from "../../../components/atoms/TextBlock";
 import BottomNav from "../../../components/layouts/BottomNav";
@@ -13,14 +12,12 @@ import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { sharedStudyWritingState } from "../../../recoils/sharedDataAtoms";
 
 function WritingStudyComplete() {
-  const router = useRouter();
-
   const toast = useToast();
-  const studyWriting = useRecoilValue(sharedStudyWritingState);
+  const [studyWriting, setStudyWriting] = useRecoilState(sharedStudyWritingState);
 
   const { mutate } = useStudyAdditionMutation({
     onSuccess() {
-      router.push("/home");
+      setStudyWriting(null);
       toast("success", "추가 요청 완료! 며칠 이내에 신규 장소로 추가됩니다.");
     },
   });
@@ -43,7 +40,7 @@ function WritingStudyComplete() {
     <>
       <Slide isFixed={true}>
         <ProgressStatus value={100} />
-        <Header isSlide={false} title="" url="/study/writing/image" />
+        <Header isSlide={false} title="" />
       </Slide>
       <RegisterLayout>
         <RegisterOverview>

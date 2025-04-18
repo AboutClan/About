@@ -35,17 +35,18 @@ function WritingStudyCategorySub() {
       ...groupWriting,
       category: { ...groupWriting?.category, sub: category },
     });
+    router.push({ pathname: `/group/writing/guide`, query: router.query });
   };
 
   useEffect(() => {
-    if (!mainCategory) router.push("/group/writing/main");
+    if (!mainCategory) router.push({ pathname: `/group/writing/main`, query: router.query });
   }, [mainCategory]);
 
   return (
     <>
       <Slide isFixed={true}>
         <ProgressStatus value={28} />
-        <Header isSlide={false} title="" url="/group/writing/main" />
+        <Header isSlide={false} title="" />
       </Slide>
       <RegisterLayout>
         <RegisterOverview>
@@ -61,7 +62,7 @@ function WritingStudyCategorySub() {
         </ItemContainer>
       </RegisterLayout>
 
-      <BottomNav onClick={onClickNext} url="/group/writing/guide" />
+      <BottomNav onClick={onClickNext} />
     </>
   );
 }

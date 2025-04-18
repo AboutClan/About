@@ -77,7 +77,7 @@ function GroupHeader({ group }: IGroupHeader) {
               setLocalStorageObj(GROUP_WRITING_STORE, {
                 ...group,
               });
-              router.push(`/group/writing/main`);
+              router.push(`/group/writing/main?id=${group.id}`);
             },
           },
         ]
@@ -101,7 +101,7 @@ function GroupHeader({ group }: IGroupHeader) {
 
   return (
     <>
-      <Header title="모임 정보" isCenter url="/group">
+      <Header title="모임 정보" isCenter>
         <MenuButton menuArr={menuArr} />
       </Header>
       {isSettigModal && (

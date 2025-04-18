@@ -44,7 +44,8 @@ export default function Page() {
   const findMyStudy = findMyStudyByUserId(studyVoteData, session?.user.id);
 
   const placeInfo =
-    convertMergePlaceToPlace(findStudy?.place) || isParticipationPage
+    convertMergePlaceToPlace(findStudy?.place) ||
+    (isParticipationPage
       ? {
           name: "스터디 매칭 대기소",
           branch: "About",
@@ -72,8 +73,8 @@ export default function Page() {
           time: "하루 공부가 끝나는 순간까지",
 
           _id: null,
-        };
- 
+        });
+
   const distance =
     currentLocation &&
     getDistanceFromLatLonInKm(

@@ -37,14 +37,14 @@ function WritingGahterLocation() {
         sub: placeInfo.road_address_name,
       },
     }));
-    router.push(`/gather/writing/condition`);
+    router.push({ pathname: `/gather/writing/condition`, query: router.query });
   };
 
   return (
     <>
       <Slide isFixed={true}>
         <ProgressStatus value={80} />
-        <Header isSlide={false} title="" url="/gather/writing/date" />
+        <Header isSlide={false} title="" />
       </Slide>
       <RegisterLayout>
         <RegisterOverview>

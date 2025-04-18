@@ -41,14 +41,14 @@ function WritingDate() {
       date: dayjs(date),
       gatherList,
     }));
-    router.push(`/gather/writing/location`);
+    router.push({ pathname: `/gather/writing/location`, query: router.query });
   };
 
   return (
     <>
       <Slide isFixed={true}>
         <ProgressStatus value={60} />
-        <Header isSlide={false} title="" url="/gather/writing/content" />
+        <Header isSlide={false} title="" />
       </Slide>
       <RegisterLayout>
         <RegisterOverview>
