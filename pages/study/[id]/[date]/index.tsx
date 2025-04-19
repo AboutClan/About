@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 
 import { STUDY_COVER_IMAGES } from "../../../../assets/images/studyCover";
 import { STUDY_MAIN_IMAGES } from "../../../../assets/images/studyMain";
@@ -165,7 +165,7 @@ export default function Page() {
               id={id}
               isVoting={!!myVoteInfo || !!myRealTimeStudy}
               pageType={status}
-              isArrived={!!(myRealTimeStudy?.attendance.type === "arrived")}
+              isArrived={!!(myRealTimeStudy?.attendance?.type === "arrived")}
             />
           )}
           {/* {isInviteModal && <StudyInviteModal setIsModal={setIsInviteModal} place={place} />} */}
