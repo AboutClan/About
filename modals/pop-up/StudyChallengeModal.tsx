@@ -7,7 +7,7 @@ import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { IModal } from "../../types/components/modalTypes";
-import { dayjsToFormat, getWeekNumber } from "../../utils/dateTimeUtils";
+import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 function StudyChallengeModal({ setIsModal }: IModal) {
@@ -16,11 +16,11 @@ function StudyChallengeModal({ setIsModal }: IModal) {
 
   const today = dayjs().day() === 0 ? dayjs().add(1, "day") : dayjs();
 
-  const [targetTime, setTargetTime] = useState<number>(3);
+  const [targetTime, setTargetTime] = useState<number>(10);
 
-  const timeArr = [3, 4, 5, 6, 8, 10, 12, null];
+  const timeArr = [10, 15, 20, 25, 30, 40, 50, 60];
 
-  const { mutate, isLoading } = useUserInfoFieldMutation("weekStudyTargetHour", {
+  const { mutate, isLoading } = useUserInfoFieldMutation("monthStudyTarget", {
     onSuccess() {
       if (targetTime) {
         toast("success", "신청 완료! 이번주 공부 목표 달성을 응원합니다!");
@@ -32,7 +32,7 @@ function StudyChallengeModal({ setIsModal }: IModal) {
   });
 
   const handleSubmit = () => {
-    mutate({ hour: targetTime });
+    mutate({ monthStudyTarget: targetTime });
   };
 
   const infoBoxPropsArr: InfoBoxProps[] = [
@@ -41,13 +41,13 @@ function StudyChallengeModal({ setIsModal }: IModal) {
       text: `${userInfo?.deposit}원`,
     },
     {
-      category: "소모 금액",
-      text: targetTime ? "-1000원" : "0원",
+      category: "임시 보증금",
+      text: targetTime ? "- 1000원" : "0원",
       color: "red",
     },
     {
       category: "환급 금액",
-      text: targetTime ? `1000원 + ${targetTime * 10} POINT` : "0원",
+      text: `1000원 + ${targetTime * 10}원`,
       color: "mint",
     },
   ];
@@ -64,15 +64,14 @@ function StudyChallengeModal({ setIsModal }: IModal) {
   return (
     <>
       <ModalLayout
-        title={`${dayjsToFormat(today, `M월 ${getWeekNumber(dayjs().day() === 6 ? dayjs().add(1, "day") : dayjs())}주차 스터디 챌린지 신청`)}`}
+        title={`${dayjsToFormat(today, `M월 스터디 챌린지 신청`)}`}
         footerOptions={footerOptions}
         setIsModal={setIsModal}
-        headerOptions={{}}
       >
         <Box mb={4}>
-          이번주 <b>공부 목표 시간</b>을 정하고, 도전해 보세요!
+          <b>월간 공부 목표</b>를 정하고, 도전해 보세요!
           <br />
-          달성률에 따라 <b>추가 포인트</b>를 획득할 수 있습니다.
+          공부 습관도 만들고, 동기부여도 받을 수 있습니다.
         </Box>
         <Flex>
           <Flex direction="column" borderRight="var(--border)">
@@ -87,7 +86,7 @@ function StudyChallengeModal({ setIsModal }: IModal) {
               color="mint"
               fontSize="10px"
             >
-              주간 목표
+              월간 목표
             </Flex>
           </Flex>
           <Grid
@@ -117,9 +116,9 @@ function StudyChallengeModal({ setIsModal }: IModal) {
         <Box mt={3} py={2} borderTop="var(--border)" borderBottom="var(--border)">
           <InfoBoxCol infoBoxPropsArr={infoBoxPropsArr} />
         </Box>
-        <UnorderedList mt={3} fontSize="12px" color="gray.600" textAlign="start">
-          <ListItem>누적 시간은 카페 공부 시간 기준으로 측정됩니다.</ListItem>
-          <ListItem>실패하더라도 실패 정도에 따라 환급됩니다.</ListItem>
+        <UnorderedList mx={0} mt={3} fontSize="12px" color="gray.600" textAlign="start">
+          <ListItem>4월은 시범 기간으로, 금액이 차감되지 않습니다.</ListItem>
+          <ListItem>4월 달성자 중 추첨을 통해 상품을 지급합니다.</ListItem>
         </UnorderedList>
       </ModalLayout>{" "}
     </>

@@ -6,11 +6,8 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
-import {
-  GATHER_JOIN_MEMBERS,
-  STUDY_ATTEND_MEMBERS,
-  STUDY_RECORD,
-} from "../../../constants/keys/localStorage";
+import { GATHER_JOIN_MEMBERS, STUDY_ATTEND_MEMBERS } from "../../../constants/keys/localStorage";
+import { STUDY_ATTEND_RECORD } from "../../../constants/keys/queryKeys";
 import { useGatherQuery } from "../../../hooks/gather/queries";
 import PointSystemsModal from "../../../modals/aboutHeader/pointSystemsModal/PointSystemsModal";
 import PromotionModal from "../../../modals/aboutHeader/promotionModal/PromotionModal";
@@ -20,6 +17,7 @@ import LocationRegisterPopUp from "../../../modals/pop-up/LocationRegisterPopUp"
 import StudyChallengeModal from "../../../modals/pop-up/StudyChallengeModal";
 import StudyPreferencePopUp from "../../../modals/pop-up/StudyPreferencePopUp";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
 export type UserPopUp =
   | "lastWeekAttend"
@@ -54,15 +52,23 @@ export default function UserSettingPopUp() {
   const { data: session } = useSession();
 
   const [modalTypes, setModalTypes] = useState<UserPopUp[]>([]);
-  const [drawerType, setDrawerType] = useState(null);
+  const [drawerType, setDrawerType] = useState<"studyRecord">(null);
   console.log(drawerType);
   // const [recentMembers, setRecentMembers] = useState<IUserSummary[]>();
   // const [drawerType, setDrawerType] = useState<"bottom" | "right">();
 
   const { data: gatherData } = useGatherQuery(-1);
 
-  const studyRecordStr = localStorage.getItem(STUDY_RECORD);
+  const studyRecordStr = localStorage.getItem(STUDY_ATTEND_RECORD);
   const studyRecord = JSON.parse(studyRecordStr);
+
+  useEffect(() => {
+    if (studyRecord) {
+      setDrawerType("studyRecord");
+    }
+  }, [studyRecord]);
+
+  console.log(studyRecord);
   useEffect(() => {
     return;
     if (!gatherData) return;
@@ -191,7 +197,7 @@ export default function UserSettingPopUp() {
         );
       })}
 
-      {false && (
+      {drawerType === "studyRecord" && (
         <BottomFlexDrawer
           isDrawerUp
           isOverlay
@@ -207,7 +213,8 @@ export default function UserSettingPopUp() {
             fontSize="20px"
             textAlign="start"
           >
-            지난 스터디 결과가 도착했어요 <br /> 기록을 확인해볼까요?
+            {dayjsToFormat(dayjs(studyRecord?.date).locale("ko"), "M월 D일(ddd)")} 스터디 결과가
+            도착했어요. <br /> 기록을 확인해볼까요?
           </Box>
           <Box p={5}>
             <Image
@@ -220,7 +227,7 @@ export default function UserSettingPopUp() {
 
           <Flex direction="column" mt="auto" w="100%">
             <Link href={`/study/result?date=${studyRecord?.date}`} style={{ width: "100%" }}>
-              <Button w="full" size="lg" colorScheme="black" onClick={() => setDrawerType("right")}>
+              <Button as="div" w="full" size="lg" colorScheme="black">
                 확인 하러가기
               </Button>
             </Link>
@@ -230,7 +237,10 @@ export default function UserSettingPopUp() {
               color="gray.500"
               fontWeight="semibold"
               variant="ghost"
-              onClick={() => setDrawerType(null)}
+              onClick={() => {
+                setDrawerType(null);
+                localStorage.setItem(STUDY_ATTEND_RECORD, null);
+              }}
             >
               무시하고 넘기기
             </Button>

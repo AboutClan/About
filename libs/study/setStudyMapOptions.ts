@@ -15,7 +15,12 @@ import { StudyMergeResultProps } from "../../types/models/studyTypes/derivedType
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomIdx } from "../../utils/mathUtils";
 import { getStudyTime } from "./getStudyTime";
-import { getCurrentLocationIcon, getStudyIcon, getVoteLocationIcon } from "./getStudyVoteIcon";
+import {
+  getCurrentLocationIcon,
+  getStudyIcon,
+  getStudyIcon2,
+  getVoteLocationIcon,
+} from "./getStudyVoteIcon";
 import { convertMergePlaceToPlace } from "./studyConverters";
 
 export const getDetailInfo = (result: StudyMergeResultProps, myUid: string): StudyInfoProps => {
@@ -81,7 +86,9 @@ export const getStudyPlaceMarkersOptions = (
         position: new naver.maps.LatLng(place.latitude, place.longitude),
         icon: {
           content:
-            place._id === selectedId ? getStudyIcon("none", null, "orange") : getStudyIcon("none"),
+            place._id === selectedId
+              ? getStudyIcon2("none", null, "orange")
+              : getStudyIcon2("none"),
           size: new naver.maps.Size(72, 72),
           anchor: new naver.maps.Point(36, 44),
         },
@@ -225,7 +232,7 @@ export const getMapOptions = (
   return {
     center: new naver.maps.LatLng(currentLocation.lat, currentLocation.lon),
     zoom: zoomValue || 13,
-    minZoom: 11,
+    minZoom: 10,
     // maxBounds: bounds,
     mapTypeControl: false,
     scaleControl: false,

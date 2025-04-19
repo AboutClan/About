@@ -78,8 +78,8 @@ type UserInfoFieldParam<T> = T extends "avatar"
   ? { comment: string }
   : T extends "locationDetail"
   ? LocationDeatilProps
-  : T extends "weekStudyTargetHour"
-  ? { hour: number }
+  : T extends "monthStudyTarget"
+  ? { monthStudyTarget: number }
   : T extends "badge"
   ? { badgeIdx: number }
   : T extends "isLocationSharingDenided"
@@ -96,7 +96,7 @@ export const useUserInfoFieldMutation = <
     | "isPrivate"
     | "instagram"
     | "locationDetail"
-    | "weekStudyTargetHour"
+    | "monthStudyTarget"
     | "badge"
     | "isLocationSharingDenided",
 >(

@@ -71,7 +71,7 @@ export const useStudyVoteOneQuery = (
       const res = await axios.get<{
         data: StudyParticipationProps | RealTimeMemberProps[];
         rankNum: number;
-      }>(`${SERVER_URI}/vote/${date}/one`, {});
+      }>(`${SERVER_URI}/vote2/${date}/one`, {});
       return res.data;
     },
     options,
