@@ -15,6 +15,7 @@ export const setStudyThumbnailCard = (
   studyResults: StudyMergeResultProps[],
   realTimes: RealTimeMemberProps[],
   currentLocation: CoordinatesProps,
+  locationMapping: { branch: string; id: string }[],
 ): StudyThumbnailCardProps[] => {
   const basicThumbnailCard: StudyThumbnailCardProps[] = participations
     ? [
@@ -69,7 +70,7 @@ export const setStudyThumbnailCard = (
       return {
         place: {
           name: placeInfo.name,
-          branch: placeInfo.branch,
+          branch: locationMapping?.find((mapping) => mapping.id === placeInfo._id)?.branch,
           address: placeInfo.address,
           distance: currentLocation
             ? getDistanceFromLatLonInKm(

@@ -48,7 +48,6 @@ function StudyPageSettingBlock() {
     });
   };
 
-
   return (
     <>
       <Box p={4} pb={3} borderRadius="12px" border="var(--border)" borderColor="gray.200">
@@ -59,7 +58,7 @@ function StudyPageSettingBlock() {
           infoBoxPropsArr={[
             {
               category: `스터디 매칭 기준 위치 (${
-                userInfo?.isLocationSharingDenided ? "공개 상태" : "비공개 상태"
+                !userInfo?.isLocationSharingDenided ? "공개 상태" : "비공개 상태"
               })`,
               text: userInfo?.locationDetail?.text,
             },

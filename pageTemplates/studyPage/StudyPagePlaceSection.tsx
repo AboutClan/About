@@ -11,6 +11,7 @@ import {
   StudyThumbnailCardProps,
 } from "../../components/molecules/cards/StudyThumbnailCard";
 import { StudyThumbnailCardSkeleton } from "../../components/skeleton/StudyThumbnailCardSkeleton";
+import { useKakaoMultipleLocationQuery } from "../../hooks/external/queries";
 import { convertStudyToMergeStudy } from "../../libs/study/studyConverters";
 import {
   setStudyThumbnailCard,
@@ -45,6 +46,28 @@ function StudyPagePlaceSection({
 
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
   const [sortedOption, setSortedOption] = useState<SortedOption>("인원순");
+  const [locationMapping, setLocationMapping] = useState<{ branch: string; id: string }[]>();
+
+  const mergeStudy = studyVoteData && convertStudyToMergeStudy(studyVoteData);
+
+  useKakaoMultipleLocationQuery(
+    mergeStudy
+      ?.filter((data) => data?.status !== "solo")
+      .map((study) => ({
+        lat: study.place.latitude,
+        lon: study.place.longitude,
+        id: study.place._id,
+      })),
+    true,
+    {
+      enabled: !!mergeStudy,
+      onSuccess(data) {
+        setLocationMapping(data);
+      },
+    },
+  );
+
+  console.log(23, locationMapping);
 
   useEffect(() => {
     if (!studyVoteData) {
@@ -55,15 +78,16 @@ function StudyPagePlaceSection({
     const getThumbnailCardInfoArr = setStudyThumbnailCard(
       date,
       studyVoteData?.participations,
-      convertStudyToMergeStudy(studyVoteData),
+      mergeStudy,
       studyVoteData?.realTimes?.userList,
       currentLocation,
+      locationMapping,
     );
 
     setThumbnailCardinfoArr(
       sortThumbnailCardInfoArr(sortedOption, getThumbnailCardInfoArr, session?.user.id),
     );
-  }, [studyVoteData, currentLocation, sortedOption, session]);
+  }, [studyVoteData, currentLocation, sortedOption, session, locationMapping]);
 
   const onDragEnd = (panInfo: PanInfo) => {
     const newDate = getNewDateBySwipe(panInfo, date as string);

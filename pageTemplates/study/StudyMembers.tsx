@@ -10,9 +10,9 @@ import { IProfileCommentCard } from "../../components/molecules/cards/ProfileCom
 import ProfileCardColumn from "../../components/organisms/ProfileCardColumn";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
+import { useKakaoMultipleLocationQuery } from "../../hooks/external/queries";
 import { useRealTimeCommentMutation } from "../../hooks/realtime/mutations";
 import { useStudyCommentMutation } from "../../hooks/study/mutations";
-import { getLocationByCoordinates } from "../../libs/study/getLocationByCoordinates";
 import ImageZoomModal from "../../modals/ImageZoomModal";
 import { StudyMemberProps, StudyStatus } from "../../types/models/studyTypes/baseTypes";
 import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
@@ -33,7 +33,23 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
     image: string;
     toUid: string;
   }>();
-
+  const [locationMapping, setLocationMapping] = useState<{ branch: string; id: string }[]>();
+  console.log(25, members);
+  useKakaoMultipleLocationQuery(
+    members.map((member) => ({
+      lat: member.lat,
+      lon: member.lon,
+      id: member.user._id,
+    })),
+    false,
+    {
+      enabled: !!members,
+      onSuccess(data) {
+        setLocationMapping(data);
+      },
+    },
+  );
+  console.log(123, locationMapping);
   const { mutate: setRealTimeComment } = useRealTimeCommentMutation({
     onSuccess: () => handleSuccessChange(),
   });
@@ -55,18 +71,19 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
   };
 
   const userCardArr: IProfileCommentCard[] = members.map((member) => {
-    const location = getLocationByCoordinates(+member.lat, +member.lon);
-
+    console.log(member);
     const user = member.user;
     if (status === "recruiting") {
       return {
         user: user,
         memo: user.comment,
-        rightComponent: (
-          <Badge variant="outline" colorScheme="mint">
-            {location}
+        rightComponent: locationMapping ? (
+          <Badge colorScheme="mint" size="md">
+            {user.isLocationSharingDenided
+              ? "비공개"
+              : locationMapping?.find((mapping) => mapping?.id === user._id).branch}
           </Badge>
-        ),
+        ) : null,
       };
     }
 

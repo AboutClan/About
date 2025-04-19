@@ -24,15 +24,20 @@ export const useKakaoSearchQuery = (value: string, options?: QueryOptions<KakaoL
 
 export const useKakaoMultipleLocationQuery = (
   coords: { lat: number; lon: number; id: string }[],
-  options?: QueryOptions<{ id: string; region_2depth_name: string }[]>,
+  isFull: boolean,
+  options?: QueryOptions<{ id: string; branch: string }[]>,
 ) =>
-  useQuery<{ id: string; region_2depth_name: string }[], AxiosError>(
+  useQuery<{ id: string; branch: string }[], AxiosError>(
     ["KAKAO_MULTI_SEARCH", coords],
     async () => {
       const results = await Promise.all(
         coords.map(async ({ lat, lon, id }) => {
           const res = await axios.get<{
-            documents: { region_type: string; region_2depth_name: string }[];
+            documents: {
+              region_type: string;
+              region_2depth_name: string;
+              region_3depth_name: string;
+            }[];
           }>(API_LOCATION_URL, {
             headers: { Authorization: `KakaoAK ${API_KEY}` },
             params: {
@@ -40,11 +45,12 @@ export const useKakaoMultipleLocationQuery = (
               y: lat,
             },
           });
-
+          console.log(25, res.data);
           const region = res.data.documents.find((doc) => doc.region_type === "B"); // 법정동 기준
+          const addText = isFull ? " " + region?.region_3depth_name : "";
           return {
             id,
-            region_2depth_name: region?.region_2depth_name || "알 수 없음",
+            branch: region?.region_2depth_name + addText || "알 수 없음",
           };
         }),
       );
