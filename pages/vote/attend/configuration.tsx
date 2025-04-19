@@ -89,7 +89,7 @@ function Configuration() {
     currentDayjs = currentDayjs.add(30, "m");
   }
 
-  const isSoloPage = transferStudyAttendance.status === "solo";
+  const isSoloPage = transferStudyAttendance?.status === "solo";
   useEffect(() => {
     if (!transferStudyAttendance) return;
     if (isSoloPage) {
@@ -177,7 +177,7 @@ function Configuration() {
       attendRealTimeStudy(formData);
     }
   };
-
+  console.log(53, isSoloPage);
   return (
     <>
       <Box minH="calc(100dvh - var(--header-h))" bgColor="white">
@@ -202,17 +202,14 @@ function Configuration() {
           />
           <Box my={5}>
             <Box mb={3}>
-              <SectionTitle
-                text="다른 인원 참여 허용"
-                isActive={transferStudyAttendance?.status === "free"}
-              />
+              <SectionTitle text="다른 인원 참여 허용" isActive={false} />
             </Box>
             <Select
               options={["허용", "비허용"]}
               defaultValue={otherPermission}
               setValue={setOtherPermission}
               size="lg"
-              isActive={transferStudyAttendance?.status === "free"}
+              isActive={false}
               isFullSize
             />
           </Box>

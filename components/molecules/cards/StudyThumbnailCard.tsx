@@ -103,7 +103,9 @@ export function StudyThumbnailCard({
                   fontWeight={600}
                   as="span"
                   color={
-                    participants.length >= STUDY_MAX_CNT && status !== "recruiting"
+                    participants.length >= STUDY_MAX_CNT &&
+                    status !== "recruiting" &&
+                    status !== "solo"
                       ? "var(--color-red)"
                       : "var(--color-gray)"
                   }

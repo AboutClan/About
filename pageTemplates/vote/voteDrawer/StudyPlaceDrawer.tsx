@@ -44,7 +44,7 @@ function StudyPlaceDrawer({ type, onClose, date, handleStudyVote }: StudyPlaceDr
       subTitle:
         type === "vote"
           ? "예상 시작 시간과 종료 시간을 선택해 주세요"
-          : "스터디 참여시간을 선택해주세요!",
+          : "스터디 참여 시간을 선택해주세요!",
     },
     footer: {
       text: type === "vote" ? "신청 완료" : "참여 확정",
@@ -114,6 +114,7 @@ function StudyPlaceDrawer({ type, onClose, date, handleStudyVote }: StudyPlaceDr
           setVoteTime={setVoteTime}
           drawerOptions={drawerOptions}
           setIsModal={setIsTimeDrawer}
+          defaultVoteTime={type === "realTime" ? { start: dayjs(), end: dayjs() } : null}
         />
       )}
     </>

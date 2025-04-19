@@ -21,7 +21,6 @@ export default function StudyVoteTimeRulletDrawer({
   zIndex,
   defaultVoteTime,
 }: IStudyVoteTimeRulletDrawer) {
- 
   return (
     <>
       <BottomFlexDrawer
@@ -61,11 +60,21 @@ export function StudyVoteTimeRullets({ defaultVoteTime, setVoteTime }: StudyVote
   });
 
   const dayjsToTimeString = (time: Dayjs): string => {
-    return dayjs(time).format("HH:mm");
-  };
+    const hour = time.hour();
+    const minute = time.minute();
 
+    // 30분 단위로 반올림
+    const roundedMinutes = Math.round(minute / 30) * 30;
+    const adjustedTime = dayjs(time)
+      .hour(roundedMinutes === 60 ? hour + 1 : hour)
+      .minute(roundedMinutes === 60 ? 0 : roundedMinutes)
+      .second(0); // 필요하다면 초도 제거
+
+    return adjustedTime.format("HH:mm");
+  };
   useEffect(() => {
     if (defaultVoteTime) {
+      console.log(123, defaultVoteTime, dayjsToTimeString(defaultVoteTime.start));
       const startIndex = startItemArr.findIndex(
         (time) =>
           dayjsToTimeString(parseTimeToDayjs(time)) === dayjsToTimeString(defaultVoteTime.start),
@@ -74,31 +83,38 @@ export function StudyVoteTimeRullets({ defaultVoteTime, setVoteTime }: StudyVote
         (time) =>
           dayjsToTimeString(parseTimeToDayjs(time)) === dayjsToTimeString(defaultVoteTime.end),
       );
-
+      console.log(startIndex, endIndex);
       if (startIndex !== -1 && endIndex !== -1) {
+        const end = startIndex + 4 <= endIndex ? endIndex : startIndex + 4;
         setRulletIndex({
           left: startIndex,
-          right: endIndex,
+          right: end,
         });
       }
     }
   }, []);
 
-  // 시작 시간 변경 시 종료 시간을 최소 4칸 뒤로 강제 조정
   useEffect(() => {
-    if (rulletIndex.left + 4 > rulletIndex.right) {
-      const newRight = Math.min(rulletIndex.left + 4, endTimeArr.length - 1);
-      setRulletIndex((old) => ({ ...old, right: newRight }));
-    }
-  }, [rulletIndex.left]);
+    let newLeft = rulletIndex.left;
+    let newRight = rulletIndex.right;
+    let changed = false;
 
-  // 종료 시간 변경 시 시작 시간보다 앞서지 않도록 강제 조정
-  useEffect(() => {
-    if (rulletIndex.right - 4 < rulletIndex.left) {
-      const newLeft = Math.max(rulletIndex.right - 4, 0);
-      setRulletIndex((old) => ({ ...old, left: newLeft }));
+    // 시작 시간 변경 시 종료 시간 최소 4칸 뒤로
+    if (newLeft + 4 > newRight) {
+      newRight = Math.min(newLeft + 4, endTimeArr.length - 1);
+      changed = true;
     }
-  }, [rulletIndex.right]);
+
+    // 종료 시간 변경 시 시작 시간보다 앞서지 않게
+    if (newRight - 4 < newLeft) {
+      newLeft = Math.max(newRight - 4, 0);
+      changed = true;
+    }
+
+    if (changed) {
+      setRulletIndex({ left: newLeft, right: newRight });
+    }
+  }, [rulletIndex.left, rulletIndex.right]);
 
   useEffect(() => {
     setVoteTime({

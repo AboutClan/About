@@ -52,7 +52,6 @@ function StudyNavigation({
   const toast = useToast();
 
   const { data: session } = useSession();
-
   const {
     voteStudy: { vote, participate, change, absence, cancel },
     realTimeStudy: { vote: realTimeVote, change: realTimeChange, cancel: realTimeCancel },
@@ -67,7 +66,8 @@ function StudyNavigation({
   const myStudyInfo = findMyStudyInfo(findStudy, session?.user.id);
 
   const myStudyStatus = evaluateMyStudyStatus(findStudy, session?.user.id, pageType, isVoting);
- 
+  console.log(2424, isVoting, myStudyStatus);
+
   const NAVIGATION_PROPS_MAPPING: Record<Exclude<MyStudyStatus, "expired">, NavigationProps> = {
     pending: {
       text: "참여 신청",
@@ -99,6 +99,13 @@ function StudyNavigation({
     todayPending:
       pageType === "solo" && isArrived
         ? { text: "출석 완료", type: "single", colorScheme: "black" }
+        : pageType === "solo" && isVoting
+        ? {
+            text: "출석 체크",
+            type: "single",
+            colorScheme: "mint",
+            func: () => router.push(`/vote/attend/certification?date=${date}`),
+          }
         : {
             text: "스터디 참여",
             type: "single",
@@ -310,6 +317,8 @@ function StudyNavigation({
                   start: adjustTime30Minutes(dayjs(myStudyInfo.time.start)),
                   end: adjustTime30Minutes(dayjs(myStudyInfo.time.end)),
                 }
+              : findStudy?.status === "free"
+              ? { start: dayjs(), end: dayjs() }
               : null
           }
           zIndex={300}

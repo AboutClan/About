@@ -112,8 +112,8 @@ export default function Page() {
       ? "solo"
       : null);
 
-
-
+  const myRealTimeStudy = findMyStudy?.members.find((who) => who.user._id === session?.user.id);
+  console.log(54, myRealTimeStudy);
   return (
     <>
       {studyVoteData ? (
@@ -163,14 +163,9 @@ export default function Page() {
               findStudy={findStudy}
               hasOtherStudy={findMyStudy && findMyStudy.place._id !== findStudy?.place?._id}
               id={id}
-              isVoting={!!myVoteInfo}
+              isVoting={!!myVoteInfo || !!myRealTimeStudy}
               pageType={status}
-              isArrived={
-                !!(
-                  findMyStudy?.members.find((who) => who.user._id === session?.user.id)?.attendance
-                    .type === "arrived"
-                )
-              }
+              isArrived={!!(myRealTimeStudy?.attendance.type === "arrived")}
             />
           )}
           {/* {isInviteModal && <StudyInviteModal setIsModal={setIsInviteModal} place={place} />} */}

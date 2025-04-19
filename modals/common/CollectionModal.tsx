@@ -16,6 +16,7 @@ function CollectionModal({ collection, setIsModal }: ICollectionModal) {
   const footerOptions: IFooterOptions = {
     main: {},
   };
+  console.log(24, collection);
 
   return (
     <ModalLayout

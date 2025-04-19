@@ -47,7 +47,7 @@ export default function UserTimeBoard({ members }: ITimeBoard) {
 
     return () => observer.disconnect(); // 컴포넌트 언마운트 시 정리
   }, []);
-  
+
   useEffect(() => {
     const newUserBlocks = transformToUserBlocks(members);
     setUserBlocks(newUserBlocks);
@@ -86,7 +86,7 @@ export default function UserTimeBoard({ members }: ITimeBoard) {
               >
                 {props.name}
                 <br />
-                {props.start} - {props.startToEndInterval >= 3 && props.end}
+                {props.start} - {props.startToEndInterval >= 2 && props.end}
               </Box>
             </Box>
           ))}
