@@ -114,7 +114,7 @@ export function StudyThumbnailCard({
                   /
                 </Box>
                 <Box as="span" color="var(--gray-500)" fontWeight={500}>
-                  {status === "recruiting" ? (
+                  {status === "solo" || status === "recruiting" ? (
                     <i className="fa-regular fa-infinity" />
                   ) : (
                     STUDY_MAX_CNT
