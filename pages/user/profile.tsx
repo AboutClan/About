@@ -35,6 +35,7 @@ function Profile() {
 
   const [mbti, setMbti] = useState("");
   const [instagram, setInstagram] = useState("");
+  const [comment, setComment] = useState("");
   const [isDrawer, setIsDrawer] = useState(false);
   const [placeInfo, setPlaceInfo] = useState<KakaoLocationProps>({
     place_name: "",
@@ -59,6 +60,7 @@ function Profile() {
       y: userInfo?.locationDetail.lat + "",
     });
     setInstagram(userInfo?.instagram);
+    setComment(userInfo?.comment);
   }, [userInfo]);
 
   const handleSubmit = () => {
@@ -68,6 +70,7 @@ function Profile() {
         lat: +placeInfo?.y,
         lon: +placeInfo?.x,
       },
+      comment,
       majors,
       mbti,
       instagram,
@@ -112,7 +115,13 @@ function Profile() {
           </Box>
           <Box mb={4}>
             <Box fontSize="11px" fontWeight="medium" color="gray.600" mb={3}>
-              활동 지역
+              코멘트
+            </Box>
+            <Input size="lg" value={comment} onChange={(e) => setComment(e.target.value)} />
+          </Box>
+          <Box mb={4}>
+            <Box fontSize="11px" fontWeight="medium" color="gray.600" mb={3}>
+              주 활동 장소
             </Box>
             <SearchLocation
               placeInfo={placeInfo}

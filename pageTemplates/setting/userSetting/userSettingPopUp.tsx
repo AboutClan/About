@@ -1,8 +1,16 @@
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import Image from "next/image";
+import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-import { GATHER_JOIN_MEMBERS, STUDY_ATTEND_MEMBERS } from "../../../constants/keys/localStorage";
+import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
+import {
+  GATHER_JOIN_MEMBERS,
+  STUDY_ATTEND_MEMBERS,
+  STUDY_RECORD,
+} from "../../../constants/keys/localStorage";
 import { useGatherQuery } from "../../../hooks/gather/queries";
 import PointSystemsModal from "../../../modals/aboutHeader/pointSystemsModal/PointSystemsModal";
 import PromotionModal from "../../../modals/aboutHeader/promotionModal/PromotionModal";
@@ -46,13 +54,15 @@ export default function UserSettingPopUp() {
   const { data: session } = useSession();
 
   const [modalTypes, setModalTypes] = useState<UserPopUp[]>([]);
+  const [drawerType, setDrawerType] = useState(null);
+  console.log(drawerType);
   // const [recentMembers, setRecentMembers] = useState<IUserSummary[]>();
   // const [drawerType, setDrawerType] = useState<"bottom" | "right">();
 
   const { data: gatherData } = useGatherQuery(-1);
 
-  // const studyRecordStr = localStorage.getItem(STUDY_RECORD);
-  // const studyRecord = JSON.parse(studyRecordStr);
+  const studyRecordStr = localStorage.getItem(STUDY_RECORD);
+  const studyRecord = JSON.parse(studyRecordStr);
   useEffect(() => {
     return;
     if (!gatherData) return;
@@ -181,7 +191,7 @@ export default function UserSettingPopUp() {
         );
       })}
 
-      {/* {drawerType === "bottom" && (
+      {false && (
         <BottomFlexDrawer
           isDrawerUp
           isOverlay
@@ -226,7 +236,7 @@ export default function UserSettingPopUp() {
             </Button>
           </Flex>
         </BottomFlexDrawer>
-      )} */}
+      )}
 
       {modalTypes.includes("preference") && (
         <StudyPreferencePopUp
