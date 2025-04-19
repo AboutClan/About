@@ -89,9 +89,10 @@ function Configuration() {
     currentDayjs = currentDayjs.add(30, "m");
   }
 
+  const isSoloPage = transferStudyAttendance.status === "solo";
   useEffect(() => {
     if (!transferStudyAttendance) return;
-    if (transferStudyAttendance.status === "solo") {
+    if (isSoloPage) {
       setOtherPermission("비허용");
     }
   }, [transferStudyAttendance]);
@@ -182,15 +183,22 @@ function Configuration() {
       <Box minH="calc(100dvh - var(--header-h))" bgColor="white">
         <Header title="" isBorder={false} />
         <Slide>
-          <PageIntro main={{ first: "출석 인증하기" }} sub="스터디 출석을 인증해 보세요" />
+          <PageIntro
+            main={{ first: "출석 인증하기" }}
+            sub="스터디 출석에 필요한 정보를 입력해 주세요"
+          />
           <Box mb={3}>
-            <SectionTitle text="나의 인상착의" />
+            <SectionTitle text={isSoloPage ? "오늘의 공부 한마디" : "나의 인상착의"} />
           </Box>
           <Textarea
             value={attendMessage}
             onChange={(e) => setAttendMessage(e.target.value)}
             ref={textareaRef}
-            placeholder="나를 유추할 수 있는 정보를 기입해 보세요"
+            placeholder={
+              isSoloPage
+                ? "자유롭게 하고 싶은 말을 작성해 주세요"
+                : "나를 유추할 수 있는 정보를 기입해 주세요"
+            }
           />
           <Box my={5}>
             <Box mb={3}>

@@ -98,7 +98,7 @@ function Certification() {
       <Box minH="calc(100dvh - var(--header-h))" bgColor="white">
         <Header title="" isBorder={false} />
         <Slide>
-          <PageIntro main={{ first: "출석 인증하기" }} sub="스터디 출석을 인증해 보세요" />
+          <PageIntro main={{ first: "출석 인증하기" }} sub="공부 사진을 인증해 주세요" />
           <ImageUploadInput setImageUrl={setImage} />
           <Box mb={3}>
             <SectionTitle text="현재 장소" isActive={isActive}>

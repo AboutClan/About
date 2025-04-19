@@ -47,10 +47,10 @@ export default function ProfileCommentCard({
     setIsCommentModal(false);
     setIsEdit(false);
   };
- 
+
   return (
     <>
-      <Flex py={3} align="center" borderBottom="var(--border)">
+      <Flex py={3} h="74px" align="center" borderBottom="var(--border)">
         {leftComponent && <Box mr="16px">{leftComponent}</Box>}
         {user ? (
           <Avatar

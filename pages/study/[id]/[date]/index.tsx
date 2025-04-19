@@ -112,6 +112,8 @@ export default function Page() {
       ? "solo"
       : null);
 
+
+
   return (
     <>
       {studyVoteData ? (
@@ -142,7 +144,7 @@ export default function Page() {
                 memberCnt={members?.length}
                 isParticipationPage={isParticipationPage}
               />
-              {id !== "participations" && (
+              {id !== "participations" && !isRealTimePage && (
                 <StudyTimeBoard members={members as StudyMemberProps[]} />
               )}
               <Box h="1px" bg="gray.100" my={4} />
@@ -150,7 +152,7 @@ export default function Page() {
                 <StudyMembers
                   date={date}
                   members={members}
-                  status={findStudy?.status || "recruiting"}
+                  status={findStudy?.status || (isParticipationPage ? "recruiting" : "solo")}
                 />
               </Box>
             </Slide>
@@ -163,6 +165,12 @@ export default function Page() {
               id={id}
               isVoting={!!myVoteInfo}
               pageType={status}
+              isArrived={
+                !!(
+                  findMyStudy?.members.find((who) => who.user._id === session?.user.id)?.attendance
+                    .type === "arrived"
+                )
+              }
             />
           )}
           {/* {isInviteModal && <StudyInviteModal setIsModal={setIsInviteModal} place={place} />} */}

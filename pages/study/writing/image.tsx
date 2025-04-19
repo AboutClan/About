@@ -39,7 +39,7 @@ function WritingStudyImage() {
 
   const onClickNext = () => {
     if (!imageProps?.mainImage || !imageProps?.coverImage) {
-      console.log(24, studyWriting);
+      
       toast("warning", "이미지를 선택해 주세요.");
       return;
     }

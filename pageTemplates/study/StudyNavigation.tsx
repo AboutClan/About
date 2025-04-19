@@ -29,6 +29,7 @@ interface IStudyNavigation {
   id: string;
   isVoting: boolean;
   pageType: StudyStatus | "recruiting" | "expected" | "solo";
+  isArrived: boolean;
 }
 
 interface NavigationProps {
@@ -45,6 +46,7 @@ function StudyNavigation({
   hasOtherStudy,
   isVoting,
   pageType,
+  isArrived,
 }: IStudyNavigation) {
   const router = useRouter();
   const toast = useToast();
@@ -65,7 +67,7 @@ function StudyNavigation({
   const myStudyInfo = findMyStudyInfo(findStudy, session?.user.id);
 
   const myStudyStatus = evaluateMyStudyStatus(findStudy, session?.user.id, pageType, isVoting);
-
+ 
   const NAVIGATION_PROPS_MAPPING: Record<Exclude<MyStudyStatus, "expired">, NavigationProps> = {
     pending: {
       text: "참여 신청",
@@ -94,28 +96,32 @@ function StudyNavigation({
       colorScheme: "mint",
       func: () => router.push(`/vote/attend/certification?date=${date}&id=${id}`),
     },
-    todayPending: {
-      text: "스터디 참여",
-      type: "single",
-      colorScheme: "mint",
-      func: () => {
-        if (pageType === "solo") {
-          setVoteModalType("free");
-          return;
-        }
-        if (hasOtherStudy) {
-          toast("warning", "다른 스터디에 참여중입니다.");
-          return;
-        }
-        if (
-          findStudy?.members.filter((member) => member?.attendance.type !== "absenced").length >= 8
-        ) {
-          toast("warning", "인원이 마감되었습니다.");
-          return;
-        }
-        setIsTimeRulletModal(true);
-      },
-    },
+    todayPending:
+      pageType === "solo" && isArrived
+        ? { text: "출석 완료", type: "single", colorScheme: "black" }
+        : {
+            text: "스터디 참여",
+            type: "single",
+            colorScheme: "mint",
+            func: () => {
+              if (pageType === "solo") {
+                setVoteModalType("free");
+                return;
+              }
+              if (hasOtherStudy) {
+                toast("warning", "다른 스터디에 참여중입니다.");
+                return;
+              }
+              if (
+                findStudy?.members.filter((member) => member?.attendance.type !== "absenced")
+                  .length >= 8
+              ) {
+                toast("warning", "인원이 마감되었습니다.");
+                return;
+              }
+              setIsTimeRulletModal(true);
+            },
+          },
     arrived: { text: "출석 완료", type: "multi", colorScheme: "black" },
     absenced: { text: "당일 불참", type: "single", colorScheme: "red" },
   };
