@@ -45,10 +45,11 @@ function StudyResultPage() {
   const { data: studyVoteData } = useStudyVoteQuery(dateParam, {
     enabled: !!dateParam,
   });
-
   const myStudy = findMyStudyByUserId(studyVoteData, userInfo?._id);
   const myStudyInfo = findMyStudyInfo(myStudy, userInfo?._id);
+  const place = myStudy?.place;
 
+  console.log(myStudy);
   const alphabet =
     collectionInfo?.stamps === 0
       ? collectionInfo?.collects?.[collectionInfo?.collects?.length - 1]
@@ -118,6 +119,7 @@ function StudyResultPage() {
               <Image
                 src={
                   myStudyInfo.attendance?.attendanceImage ||
+                  place?.image ||
                   STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length)]
                 }
                 fill
@@ -126,7 +128,7 @@ function StudyResultPage() {
             </Box>
             <Flex mx={5} align="center" mt="30px" mb={4} justify="space-between">
               <Box fontWeight="bold" fontSize="20px" lineHeight="32px">
-                {dayjsToFormat(dayjs(dateParam).locale("ko"), "M월 D일(ddd) 스터디")}
+                {dayjsToFormat(dayjs(dateParam).locale("ko"), "M월 D일(ddd) 스터디 기록")}
               </Box>
               <Badge size="lg" colorScheme={badgeColorScheme}>
                 {badgeText}
@@ -288,11 +290,7 @@ function StudyResultPage() {
           </>
         )}
       </Slide>
-      <BottomNavButton
-        text="홈 화면으로 돌아가기"
-        color="black"
-        func={() => router.push("/home")}
-      />
+      <BottomNavButton text="카페 후기 작성하기" color="black" func={() => typeToast("not-yet")} />
     </>
   );
 }

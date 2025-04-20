@@ -1,8 +1,10 @@
 import { Box, Button, Flex, Grid, ListItem, UnorderedList } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useState } from "react";
+import { useQueryClient } from "react-query";
 
 import InfoBoxCol, { InfoBoxProps } from "../../components/molecules/InfoBoxCol";
+import { USER_INFO } from "../../constants/keys/queryKeys";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
@@ -20,19 +22,17 @@ function StudyChallengeModal({ setIsModal }: IModal) {
 
   const timeArr = [10, 15, 20, 25, 30, 40, 50, 60];
 
+  const queryClient = useQueryClient();
   const { mutate, isLoading } = useUserInfoFieldMutation("monthStudyTarget", {
     onSuccess() {
-      if (targetTime) {
-        toast("success", "신청 완료! 이번주 공부 목표 달성을 응원합니다!");
-      } else {
-        toast("success", "다음번엔 참여해 주세요!");
-      }
+      queryClient.invalidateQueries([USER_INFO]);
+      toast("success", "신청 완료! 공부 목표 달성을 응원합니다!");
       setIsModal(false);
     },
   });
 
   const handleSubmit = () => {
-    mutate({ monthStudyTarget: targetTime });
+    mutate({ monthStudyTarget: targetTime * 60 });
   };
 
   const infoBoxPropsArr: InfoBoxProps[] = [

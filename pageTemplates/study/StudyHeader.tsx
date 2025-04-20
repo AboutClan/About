@@ -32,7 +32,7 @@ function StudyHeader({ placeInfo }: IStudyHeader) {
 
   return (
     <>
-      <Header title={placeInfo.branch}>
+      <Header title={placeInfo.name}>
         <MenuButton menuArr={menuArr} />
       </Header>
       {/* {isModal && <BottomButtonColDrawer infoArr={infoArr} setIsModal={setIsModal} />} */}

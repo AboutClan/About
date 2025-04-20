@@ -1,7 +1,8 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { useState } from "react";
 
 import InfoBoxCol from "../../components/molecules/InfoBoxCol";
+import { useTypeToast } from "../../hooks/custom/CustomToast";
 import StudyChallengeModal from "../../modals/pop-up/StudyChallengeModal";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { formatMinutesToTime } from "../../utils/dateTimeUtils";
@@ -12,6 +13,7 @@ interface StudyPageRecordBlockProps {
 
 function StudyPageRecordBlock({ userInfo }: StudyPageRecordBlockProps) {
   const [isModal, setIsModal] = useState(false);
+  const typeToast = useTypeToast();
   const record = userInfo?.studyRecord;
 
   return (
@@ -24,11 +26,10 @@ function StudyPageRecordBlock({ userInfo }: StudyPageRecordBlockProps) {
           infoBoxPropsArr={[
             {
               category: "월간 목표 공부 시간",
-              text: !record
-                ? "기록 없음"
-                : userInfo?.monthStudyTarget
+              text: userInfo?.monthStudyTarget
                 ? formatMinutesToTime(userInfo.monthStudyTarget)
-                : "설정 안함",
+                : "--",
+              color: userInfo?.monthStudyTarget ? "mint" : null,
             },
             {
               category: "월간 참여 시간",
@@ -48,22 +49,20 @@ function StudyPageRecordBlock({ userInfo }: StudyPageRecordBlockProps) {
           ]}
           size="md"
         />
-        <Flex
-          as="button"
+        <Button
           w="full"
-          justify="center"
-          align="center"
           fontSize="12px"
           fontWeight="semibold"
           mt={4}
           borderRadius="12px"
-          bg="gray.800"
-          color="white"
+          colorScheme="black"
           h="44px"
-          onClick={() => setIsModal(true)}
+          onClick={() => (userInfo?.monthStudyTarget ? typeToast("not-yet") : setIsModal(true))}
         >
-          월간 스터디 챌린지 신청하기
-        </Flex>
+          {userInfo?.monthStudyTarget
+            ? "도전중인 멤버 한 눈에 보기"
+            : "월간 스터디 챌린지 신청하기"}
+        </Button>
       </Box>
       {isModal && <StudyChallengeModal setIsModal={setIsModal} />}
     </>
