@@ -34,7 +34,7 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
     toUid: string;
   }>();
   const [locationMapping, setLocationMapping] = useState<{ branch: string; id: string }[]>();
-  console.log(25, members);
+
   const { data: locationMappingData } = useKakaoMultipleLocationQuery(
     members.map((member) => ({
       lat: member.lat,
@@ -46,7 +46,6 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
       enabled: !!members,
     },
   );
-  console.log(32, locationMappingData);
 
   useEffect(() => {
     if (!locationMappingData) return;
@@ -75,7 +74,6 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
   };
 
   const userCardArr: IProfileCommentCard[] = members.map((member) => {
-    console.log(member);
     const user = member.user;
     if (status === "recruiting") {
       return {

@@ -1,5 +1,6 @@
 import { Box, Button } from "@chakra-ui/react";
 
+import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import { CheckCircleIcon, XCircleIcon } from "../../Icons/CircleIcons";
 
 interface IAttendanceBadge {
@@ -8,10 +9,11 @@ interface IAttendanceBadge {
 }
 
 export default function AttendanceBadge({ type, time }: IAttendanceBadge) {
+  const typeToast = useTypeToast();
   return (
     <Box my={1}>
       <Button
-        as="div"
+        onClick={() => typeToast("inspection")}
         variant="unstyled"
         display="flex"
         mb={1}
