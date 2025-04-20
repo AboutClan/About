@@ -47,6 +47,7 @@ function HomeStudySection() {
       convertStudyToMergeStudy(studyVoteData),
       studyVoteData?.realTimes?.userList,
       currentLocation,
+      null,
     );
 
     setThumbnailCardinfoArr(

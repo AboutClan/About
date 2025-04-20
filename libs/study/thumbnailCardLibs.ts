@@ -70,7 +70,10 @@ export const setStudyThumbnailCard = (
       return {
         place: {
           name: placeInfo.name,
-          branch: locationMapping?.find((mapping) => mapping.id === placeInfo._id)?.branch,
+          branch:
+            locationMapping === null
+              ? placeInfo?.branch
+              : locationMapping?.find((mapping) => mapping.id === placeInfo._id)?.branch,
           address: placeInfo.address,
           distance: currentLocation
             ? getDistanceFromLatLonInKm(

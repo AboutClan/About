@@ -81,7 +81,7 @@ function StudyPagePlaceSection({
       mergeStudy,
       studyVoteData?.realTimes?.userList,
       currentLocation,
-      locationMapping,
+      locationMapping || undefined,
     );
 
     setThumbnailCardinfoArr(

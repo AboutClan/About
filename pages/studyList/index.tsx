@@ -42,6 +42,7 @@ export default function StudyList() {
       convertStudyToMergeStudy(studyVoteData),
       studyVoteData?.realTimes?.userList,
       currentLocation,
+      null,
     );
 
     setThumbnailCardinfoArr(
