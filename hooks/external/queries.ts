@@ -28,7 +28,7 @@ export const useKakaoMultipleLocationQuery = (
   options?: QueryOptions<{ id: string; branch: string }[]>,
 ) =>
   useQuery<{ id: string; branch: string }[], AxiosError>(
-    ["KAKAO_MULTI_SEARCH", coords],
+    ["KAKAO_MULTI_SEARCH", coords, isFull],
     async () => {
       const results = await Promise.all(
         coords.map(async ({ lat, lon, id }) => {
@@ -48,13 +48,14 @@ export const useKakaoMultipleLocationQuery = (
           console.log(25, res.data);
           const region = res.data.documents.find((doc) => doc.region_type === "B"); // 법정동 기준
           const addText = isFull ? " " + region?.region_3depth_name : "";
+          console.log(5555, region?.region_2depth_name + addText);
           return {
             id,
             branch: region?.region_2depth_name + addText || "알 수 없음",
           };
         }),
       );
-
+      console.log(12, results);
       return results;
     },
     options,

@@ -42,12 +42,12 @@ function StudyChallengeModal({ setIsModal }: IModal) {
     },
     {
       category: "임시 보증금",
-      text: targetTime ? "- 1000원" : "0원",
+      text: "- 0원",
       color: "red",
     },
     {
       category: "환급 금액",
-      text: `1000원 + ${targetTime * 10}원`,
+      text: `0원 + ${targetTime * 10}원`,
       color: "mint",
     },
   ];
@@ -116,9 +116,9 @@ function StudyChallengeModal({ setIsModal }: IModal) {
         <Box mt={3} py={2} borderTop="var(--border)" borderBottom="var(--border)">
           <InfoBoxCol infoBoxPropsArr={infoBoxPropsArr} />
         </Box>
-        <UnorderedList mx={0} mt={3} fontSize="12px" color="gray.600" textAlign="start">
+        <UnorderedList mx={-1} mt={5} fontSize="12px" color="gray.600" textAlign="start">
           <ListItem>4월은 시범 기간으로, 금액이 차감되지 않습니다.</ListItem>
-          <ListItem>4월 달성자 중 추첨을 통해 상품을 지급합니다.</ListItem>
+          <ListItem>4월 목표 달성자 중 추첨을 통해 상품을 지급합니다.</ListItem>
         </UnorderedList>
       </ModalLayout>{" "}
     </>

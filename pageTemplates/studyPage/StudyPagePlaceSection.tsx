@@ -50,7 +50,7 @@ function StudyPagePlaceSection({
 
   const mergeStudy = studyVoteData && convertStudyToMergeStudy(studyVoteData);
 
-  useKakaoMultipleLocationQuery(
+  const { data: locationMappingData } = useKakaoMultipleLocationQuery(
     mergeStudy
       ?.filter((data) => data?.status !== "solo")
       .map((study) => ({
@@ -61,13 +61,15 @@ function StudyPagePlaceSection({
     true,
     {
       enabled: !!mergeStudy,
-      onSuccess(data) {
-        setLocationMapping(data);
-      },
     },
   );
+  useEffect(() => {
+    if (locationMappingData) {
+      setLocationMapping(locationMappingData);
+    }
+  }, [locationMappingData]);
 
-  console.log(23, locationMapping);
+  console.log(23, locationMapping, mergeStudy);
 
   useEffect(() => {
     if (!studyVoteData) {

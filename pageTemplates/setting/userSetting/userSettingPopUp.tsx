@@ -213,7 +213,7 @@ export default function UserSettingPopUp() {
             fontSize="20px"
             textAlign="start"
           >
-            {dayjsToFormat(dayjs(studyRecord?.date).locale("ko"), "M월 D일(ddd)")} 스터디 결과가
+            {dayjsToFormat(dayjs(studyRecord?.date).locale("ko"), "M월 D일(ddd)")} 스터디 기록이
             도착했어요. <br /> 기록을 확인해볼까요?
           </Box>
           <Box p={5}>

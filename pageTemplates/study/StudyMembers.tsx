@@ -2,7 +2,7 @@ import { Badge, Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import HighlightButton from "../../components/atoms/HighlightButton";
 import AttendanceBadge from "../../components/molecules/badge/AttendanceBadge";
@@ -35,7 +35,7 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
   }>();
   const [locationMapping, setLocationMapping] = useState<{ branch: string; id: string }[]>();
   console.log(25, members);
-  useKakaoMultipleLocationQuery(
+  const { data: locationMappingData } = useKakaoMultipleLocationQuery(
     members.map((member) => ({
       lat: member.lat,
       lon: member.lon,
@@ -44,11 +44,15 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
     false,
     {
       enabled: !!members,
-      onSuccess(data) {
-        setLocationMapping(data);
-      },
     },
   );
+  console.log(32, locationMappingData);
+
+  useEffect(() => {
+    if (!locationMappingData) return;
+    setLocationMapping(locationMappingData);
+  }, [locationMappingData]);
+
   console.log(123, locationMapping);
   const { mutate: setRealTimeComment } = useRealTimeCommentMutation({
     onSuccess: () => handleSuccessChange(),
