@@ -197,11 +197,11 @@ export default function UserSettingPopUp() {
         );
       })}
 
-      {drawerType === "studyRecord" && (
+      {drawerType !== "studyRecord" && (
         <BottomFlexDrawer
           isDrawerUp
           isOverlay
-          height={429}
+          height={412}
           isHideBottom
           setIsModal={() => setDrawerType(null)}
         >
@@ -225,7 +225,7 @@ export default function UserSettingPopUp() {
             />
           </Box>
 
-          <Flex direction="column" mt="auto" w="100%">
+          <Flex direction="column" mt="8px" w="100%" mb="auto">
             <Link href={`/study/result?date=${studyRecord?.date}`} style={{ width: "100%" }}>
               <Button as="div" w="full" size="lg" colorScheme="black">
                 확인 하러가기
