@@ -22,6 +22,7 @@ function HeartIcon({ toUid }: IHeartIcon) {
   const { mutate: sendHeart } = useInteractionMutation("like", "post", {
     onSuccess() {
       completeToast("free", "전송 완료!");
+      setIsShow(false);
     },
     onError: errorToast,
   });
@@ -36,9 +37,9 @@ function HeartIcon({ toUid }: IHeartIcon) {
       to: toUid,
       message: `${session?.user.name}님에게 좋아요를 받았어요!`,
     });
+    setIsShow(false);
 
     pushArrToLocalStorage(LIKE_HEART, toUid);
-    setIsShow(false);
   };
 
   return (

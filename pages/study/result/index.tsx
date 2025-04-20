@@ -102,9 +102,9 @@ function StudyResultPage() {
     myStudy && myStudy.members
       ? [...myStudy.members]
           .sort((a, b) => {
-            const aTime = dayjs(a.attendance.time).diff(a.time.start);
-            const bTime = dayjs(b.attendance.time).diff(b.time.start);
-            return bTime - aTime;
+            const aTime = dayjs(a.attendance.time).diff(a.time.end);
+            const bTime = dayjs(b.attendance.time).diff(b.time.end);
+            return aTime - bTime;
           })
           .findIndex((who) => who.user._id === userInfo?._id)
       : null;
