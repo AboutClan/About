@@ -52,7 +52,7 @@ function StudyPageSettingBlock() {
     <>
       <Box p={4} pb={3} borderRadius="12px" border="var(--border)" borderColor="gray.200">
         <Box mb={3} fontSize="14px" fontWeight="bold" lineHeight="20px" py={1}>
-          내 스터디 설정
+          내 스터디 정보
         </Box>
         <InfoBoxCol
           infoBoxPropsArr={[

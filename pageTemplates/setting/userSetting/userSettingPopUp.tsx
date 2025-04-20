@@ -197,7 +197,7 @@ export default function UserSettingPopUp() {
         );
       })}
 
-      {drawerType !== "studyRecord" && (
+      {drawerType === "studyRecord" && (
         <BottomFlexDrawer
           isDrawerUp
           isOverlay
