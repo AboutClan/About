@@ -48,6 +48,7 @@ function HomeStudySection() {
       studyVoteData?.realTimes?.userList,
       currentLocation,
       null,
+      session?.user.id,
     );
 
     setThumbnailCardinfoArr(

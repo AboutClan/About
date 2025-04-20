@@ -16,6 +16,7 @@ export const setStudyThumbnailCard = (
   realTimes: RealTimeMemberProps[],
   currentLocation: CoordinatesProps,
   locationMapping: { branch: string; id: string }[],
+  myId: string,
 ): StudyThumbnailCardProps[] => {
   const basicThumbnailCard: StudyThumbnailCardProps[] = participations
     ? [
@@ -35,6 +36,7 @@ export const setStudyThumbnailCard = (
           participants: participations.map((par) => par.user),
           url: `/study/participations/${date}`,
           status: "recruiting",
+          isMyStudy: false,
         },
       ]
     : realTimes
@@ -55,6 +57,7 @@ export const setStudyThumbnailCard = (
           participants: realTimes?.map((par) => par.user),
           url: `/study/realTime/${date}`,
           status: "solo",
+          isMyStudy: false,
         },
       ]
     : [];
@@ -64,6 +67,7 @@ export const setStudyThumbnailCard = (
     .filter((result) => result.status !== "solo")
     .map((data, idx) => {
       const placeInfo = convertMergePlaceToPlace(data.place);
+      const isMyStudy = data.members.map((member) => member.user._id).includes(myId);
 
       // const image = imageCache?.get(placeInfo?.id);
 
@@ -92,6 +96,7 @@ export const setStudyThumbnailCard = (
         participants: data.members.map((att) => att.user),
         url: `/study/${data.place._id}/${date}`,
         status: participations ? "expected" : data?.status || "open",
+        isMyStudy,
       };
     });
 

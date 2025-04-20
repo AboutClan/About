@@ -39,7 +39,15 @@ function StudyPlacePickerDrawer({
     },
   };
 
-  const thumbnailArr = setStudyThumbnailCard(date, null, studyResults, null, currentLocation, null);
+  const thumbnailArr = setStudyThumbnailCard(
+    date,
+    null,
+    studyResults,
+    null,
+    currentLocation,
+    null,
+    null,
+  );
 
   const sortedThumbnailArr = sortThumbnailCardInfoArr("인원순", thumbnailArr, null);
 

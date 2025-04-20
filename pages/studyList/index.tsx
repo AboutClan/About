@@ -43,6 +43,7 @@ export default function StudyList() {
       studyVoteData?.realTimes?.userList,
       currentLocation,
       null,
+      session?.user.id,
     );
 
     setThumbnailCardinfoArr(

@@ -84,6 +84,7 @@ function StudyPagePlaceSection({
       studyVoteData?.realTimes?.userList,
       currentLocation,
       locationMapping || undefined,
+      session?.user.id,
     );
 
     setThumbnailCardinfoArr(

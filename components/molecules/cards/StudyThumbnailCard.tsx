@@ -6,6 +6,7 @@ import { STUDY_STATUS_TO_BADGE } from "../../../constants/studyConstants";
 import { SingleLineText } from "../../../styles/layout/components";
 import { StudyStatus } from "../../../types/models/studyTypes/baseTypes";
 import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
+import { CheckCircleIcon } from "../../Icons/CircleIcons";
 import { LocationDotIcon } from "../../Icons/LocationIcons";
 import { UserIcon } from "../../Icons/UserIcons";
 import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
@@ -32,6 +33,7 @@ export interface StudyThumbnailCardProps {
   url: string;
   status: StudyStatus | "recruiting" | "expected";
   func?: () => void;
+  isMyStudy: boolean;
 }
 
 export function StudyThumbnailCard({
@@ -40,6 +42,7 @@ export function StudyThumbnailCard({
   url,
   status,
   func = undefined,
+  isMyStudy,
 }: StudyThumbnailCardProps) {
   const userAvatarArr = participants.map((par) => {
     return {
@@ -68,11 +71,16 @@ export function StudyThumbnailCard({
               </Flex>
               <Title>{place.name}</Title>{" "}
             </Box>
-            <Box>
+            <Flex align="center" mb="auto">
+              {isMyStudy && (
+                <Box mr={2}>
+                  <CheckCircleIcon color="mint" size="sm" isFill />
+                </Box>
+              )}
               <Badge mr="auto" colorScheme={STUDY_STATUS_TO_BADGE[status].colorScheme} size="md">
                 {STUDY_STATUS_TO_BADGE[status].text}
               </Badge>
-            </Box>
+            </Flex>
           </Flex>
 
           <Subtitle>
