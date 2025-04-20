@@ -52,12 +52,12 @@ function StudyPageMap({
   const [isMapExpansion, setIsMapExpansion] = useState(false);
   const [detailInfo, setDetailInfo] = useState<StudyInfoProps>();
   const [placeInfo, setPlaceInfo] = useState<StudyPlaceProps>(null);
- 
+
   const isGuest = session?.user.role === "guest";
 
   useEffect(() => {
     if (!studyVoteData) return;
-    
+
     const options = getMapOptions(
       placeInfo
         ? { lat: placeInfo?.latitude, lon: placeInfo.longitude }
@@ -67,7 +67,6 @@ function StudyPageMap({
           centerLocation,
       isMapExpansion ? 12 : 13,
     );
-   
 
     setMapOptions(options);
     setMarkersOptions(
@@ -79,7 +78,7 @@ function StudyPageMap({
             myVoteCoordinates,
             studyVoteData?.participations?.filter(
               (who) =>
-                who?.user?.isLocationSharingDenided === true ||
+                who?.user?.isLocationSharingDenided === false ||
                 userInfo?.friend.includes(who?.user.uid),
             ),
             detailInfo?.place._id,
@@ -110,7 +109,6 @@ function StudyPageMap({
   };
 
   const myStudy = findMyStudyByUserId(studyVoteData, userInfo?._id);
-
 
   const handleMapClick = () => {
     if (isGuest) {

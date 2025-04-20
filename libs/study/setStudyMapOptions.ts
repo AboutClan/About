@@ -182,23 +182,25 @@ export const getMarkersOptions = (
     >(); // fullname을 기준으로 그룹화할 Map 생성
 
     // 그룹화: fullname을 키로 하여 개수를 카운트하고 중복된 place 정보를 저장
-    studyRealTimes.forEach((par) => {
-      const fullname = par.place.name;
-      if (placeMap.has(fullname)) {
-        // 이미 fullname이 존재하면 개수를 증가시킴
-        const existing = placeMap.get(fullname);
-        existing.count += 1;
-      } else {
-        // 새롭게 fullname을 추가하며 초기 값 설정
-        placeMap.set(fullname, {
-          id: par.place._id,
-          position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
-          count: 1,
-          status: par.status,
-          name: par.place.name,
-        });
-      }
-    });
+    studyRealTimes
+      .filter((study) => study.status === "free")
+      .forEach((par) => {
+        const fullname = par.place.name;
+        if (placeMap.has(fullname)) {
+          // 이미 fullname이 존재하면 개수를 증가시킴
+          const existing = placeMap.get(fullname);
+          existing.count += 1;
+        } else {
+          // 새롭게 fullname을 추가하며 초기 값 설정
+          placeMap.set(fullname, {
+            id: par.place._id,
+            position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
+            count: 1,
+            status: par.status,
+            name: par.place.name,
+          });
+        }
+      });
 
     // 그룹화된 결과를 temp에 추가
     placeMap.forEach((value, fullname) => {

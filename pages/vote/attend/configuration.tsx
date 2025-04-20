@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
@@ -188,14 +188,16 @@ function Configuration() {
             sub="스터디 출석에 필요한 정보를 입력해 주세요"
           />
           <Box mb={3}>
-            <SectionTitle text={isSoloPage ? "오늘의 공부 한마디" : "나의 인상착의"} />
+            <SectionTitle
+              text={isSoloPage || transferStudyAttendance ? "오늘의 공부 한마디" : "나의 인상착의"}
+            />
           </Box>
           <Textarea
             value={attendMessage}
             onChange={(e) => setAttendMessage(e.target.value)}
             ref={textareaRef}
             placeholder={
-              isSoloPage
+              isSoloPage || transferStudyAttendance
                 ? "자유롭게 하고 싶은 말을 작성해 주세요"
                 : "나를 유추할 수 있는 정보를 기입해 주세요"
             }
