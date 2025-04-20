@@ -69,8 +69,7 @@ function StudyPagePlaceSection({
     }
   }, [locationMappingData]);
 
-  console.log(23, locationMapping, mergeStudy);
-
+ 
   useEffect(() => {
     if (!studyVoteData) {
       setThumbnailCardinfoArr(null);

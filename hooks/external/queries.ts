@@ -45,17 +45,17 @@ export const useKakaoMultipleLocationQuery = (
               y: lat,
             },
           });
-          console.log(25, res.data);
+          
           const region = res.data.documents.find((doc) => doc.region_type === "B"); // 법정동 기준
           const addText = isFull ? " " + region?.region_3depth_name : "";
-          console.log(5555, region?.region_2depth_name + addText);
+       
           return {
             id,
             branch: region?.region_2depth_name + addText || "알 수 없음",
           };
         }),
       );
-      console.log(12, results);
+    
       return results;
     },
     options,

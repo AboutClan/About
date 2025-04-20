@@ -1,4 +1,5 @@
 import { Box, Button } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 import InfoBoxCol from "../../components/molecules/InfoBoxCol";
@@ -12,6 +13,8 @@ interface StudyPageRecordBlockProps {
 }
 
 function StudyPageRecordBlock({ userInfo }: StudyPageRecordBlockProps) {
+  const { data: session } = useSession();
+  const isGuest = session?.user.role === "guest";
   const [isModal, setIsModal] = useState(false);
   const typeToast = useTypeToast();
   const record = userInfo?.studyRecord;
@@ -53,7 +56,14 @@ function StudyPageRecordBlock({ userInfo }: StudyPageRecordBlockProps) {
           borderRadius="12px"
           colorScheme="black"
           h="44px"
-          onClick={() => (userInfo?.monthStudyTarget ? typeToast("not-yet") : setIsModal(true))}
+          onClick={
+            isGuest
+              ? () => {
+                  typeToast("guest");
+                  return;
+                }
+              : () => (userInfo?.monthStudyTarget ? typeToast("not-yet") : setIsModal(true))
+          }
         >
           {userInfo?.monthStudyTarget
             ? "도전중인 멤버 한 눈에 보기"

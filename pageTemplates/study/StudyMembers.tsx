@@ -52,7 +52,7 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
     setLocationMapping(locationMappingData);
   }, [locationMappingData]);
 
-  console.log(123, locationMapping);
+
   const { mutate: setRealTimeComment } = useRealTimeCommentMutation({
     onSuccess: () => handleSuccessChange(),
   });

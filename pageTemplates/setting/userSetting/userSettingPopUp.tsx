@@ -53,7 +53,7 @@ export default function UserSettingPopUp() {
 
   const [modalTypes, setModalTypes] = useState<UserPopUp[]>([]);
   const [drawerType, setDrawerType] = useState<"studyRecord">(null);
-  console.log(drawerType);
+
   // const [recentMembers, setRecentMembers] = useState<IUserSummary[]>();
   // const [drawerType, setDrawerType] = useState<"bottom" | "right">();
 
@@ -68,7 +68,7 @@ export default function UserSettingPopUp() {
     }
   }, [studyRecord]);
 
-  console.log(studyRecord);
+
   useEffect(() => {
     return;
     if (!gatherData) return;

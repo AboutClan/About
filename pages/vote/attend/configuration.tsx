@@ -177,7 +177,7 @@ function Configuration() {
       attendRealTimeStudy(formData);
     }
   };
-  console.log(53, isSoloPage);
+ 
   return (
     <>
       <Box minH="calc(100dvh - var(--header-h))" bgColor="white">

@@ -6,6 +6,7 @@ import styled from "styled-components";
 
 import { AboutIcon } from "../../components/atoms/AboutIcons";
 import IconRowBlock from "../../components/atoms/blocks/IconRowBlock";
+import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useCollectionAlphabetQuery } from "../../hooks/user/sub/collection/queries";
 import UserCollectionModal from "../../modals/user/collection/UserCollectionAlphabetModal";
 import { Alphabet } from "../../types/models/collections";
@@ -28,7 +29,7 @@ export const changeAlphabet = (alphabet: Alphabet) => {
 
 export default function UserCollection() {
   const { data: session } = useSession();
-
+  const typeToast = useTypeToast();
   const isGuest = session?.user.name === "guest";
 
   const [isCollectionModal, setIsCollectionModal] = useState(false);
@@ -40,7 +41,18 @@ export default function UserCollection() {
 
   return (
     <Flex direction="column" mb={8}>
-      <Link href="/user/alphabet">
+      <Link
+        href="/user/alphabet"
+        onClick={
+          isGuest
+            ? (e) => {
+                typeToast("guest");
+                e.preventDefault();
+                e.stopPropagation();
+              }
+            : () => {}
+        }
+      >
         <BlockItem>
           <span>알파벳 컬렉션</span>
           <ArrowIcon />

@@ -31,6 +31,9 @@ interface UserProfileSectionProps {
 }
 
 function UserProfileSection({ user }: UserProfileSectionProps) {
+  const { data: session } = useSession();
+  const isGuest = session?.user.role === "guest";
+  const typeToast = useTypeToast();
   const router = useRouter();
 
   const [isDrawer, setIsDrawer] = useState(false);
@@ -52,10 +55,10 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
               />
               <IconWrapper
                 onClick={() => {
-                  //   if (isGuest) {
-                  //     // typeToast("guest");
-                  //     return;
-                  //   }
+                  if (isGuest) {
+                    typeToast("guest");
+                    return;
+                  }
                   setIsDrawer(true);
                   // setIsProfileModal(true);
                 }}
@@ -76,7 +79,13 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
             </Flex>
             <Box ml="auto">
               <Button
-                onClick={() => router.push("/user/profile")}
+                onClick={() => {
+                  if (isGuest) {
+                    typeToast("guest");
+                    return;
+                  }
+                  router.push("/user/profile");
+                }}
                 size="sm"
                 h="20px"
                 bg="gray.100"

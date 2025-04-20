@@ -49,7 +49,7 @@ function StudyResultPage() {
   const myStudyInfo = findMyStudyInfo(myStudy, userInfo?._id);
   const place = myStudy?.place;
 
-  console.log(myStudy);
+  
   const alphabet =
     collectionInfo?.stamps === 0
       ? collectionInfo?.collects?.[collectionInfo?.collects?.length - 1]

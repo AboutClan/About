@@ -78,6 +78,7 @@ interface RegisterLocationLayoutProps {
   setPlaceInfo: DispatchType<KakaoLocationProps>;
   errorMessage: string;
   text?: string;
+  isSlide?: boolean;
 }
 
 export function RegisterLocationLayout({
@@ -87,10 +88,11 @@ export function RegisterLocationLayout({
   setPlaceInfo,
   errorMessage,
   text,
+  isSlide = true,
 }: RegisterLocationLayoutProps) {
   return (
     <>
-      <RegisterLayout errorMessage={errorMessage}>
+      <RegisterLayout errorMessage={errorMessage} isSlide={isSlide}>
         <RegisterOverview>
           <span>주 활동 장소를 입력해 주세요</span>
           <span>스터디 매칭을 위한 것으로, 대략적으로만 입력해 주세요!</span>
@@ -104,7 +106,7 @@ export function RegisterLocationLayout({
           />
         </Box>
       </RegisterLayout>
-      <BottomNav onClick={handleButton} url={url} text={text} />
+      <BottomNav onClick={handleButton} url={url} text={text} isSlide={isSlide} />
     </>
   );
 }

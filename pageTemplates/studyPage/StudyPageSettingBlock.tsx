@@ -1,4 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 
@@ -14,9 +15,11 @@ import { KakaoLocationProps } from "../../types/externals/kakaoLocationSearch";
 import { IAvatar } from "../../types/models/userTypes/userInfoTypes";
 
 function StudyPageSettingBlock() {
+  const { data: session } = useSession();
   const typeToast = useTypeToast();
   const queryClient = useQueryClient();
   const { data: userInfo } = useUserInfoQuery();
+  const isGuest = session?.user.role === "guest";
 
   const [placeInfo, setPlaceInfo] = useState<KakaoLocationProps>();
   const [errorMessage, setErrorMessage] = useState("");
@@ -92,7 +95,13 @@ function StudyPageSettingBlock() {
           bg="gray.800"
           color="white"
           h="44px"
-          onClick={() => setIsModal(true)}
+          onClick={() => {
+            if (isGuest) {
+              typeToast("guest");
+              return;
+            }
+            setIsModal(true);
+          }}
         >
           즐겨 찾는 위치 변경하기
         </Flex>
@@ -105,6 +114,7 @@ function StudyPageSettingBlock() {
             setPlaceInfo={setPlaceInfo}
             text="변 경"
             errorMessage={errorMessage}
+            isSlide={false}
           />
         </RightDrawer>
       )}

@@ -1,11 +1,24 @@
 import { Box, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
+import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 
 function UserPointBlock() {
+  const { data: session } = useSession();
+  const isGuest = session?.user.role === "guest";
   const { data: userInfo } = useUserInfoQuery();
+  const typeToast = useTypeToast();
+
+  const handleGuestClick = (e) => {
+    if (isGuest) {
+      e.preventDefault();
+      e.stopPropagation();
+      typeToast("guest");
+    }
+  };
 
   return (
     <Flex
@@ -17,7 +30,7 @@ function UserPointBlock() {
       border="var(--border-main)"
       bgColor="white"
     >
-      <Link href="/user/ticket/gather" style={{ flex: 1 }}>
+      <Link href="/user/ticket/gather" onClick={handleGuestClick} style={{ flex: 1 }}>
         <Flex direction="column" align="center">
           <Flex
             justify="center"
@@ -37,7 +50,7 @@ function UserPointBlock() {
           </Box>
         </Flex>
       </Link>
-      <Link href="/user/ticket/groupStudy" style={{ flex: 1 }}>
+      <Link href="/user/ticket/groupStudy" onClick={handleGuestClick} style={{ flex: 1 }}>
         <Flex direction="column" align="center">
           <Flex
             justify="center"
@@ -57,7 +70,7 @@ function UserPointBlock() {
           </Box>
         </Flex>
       </Link>
-      <Link href="/store" style={{ flex: 1 }}>
+      <Link href="/store" onClick={handleGuestClick} style={{ flex: 1 }}>
         <Flex direction="column" align="center">
           <Flex
             justify="center"

@@ -209,7 +209,7 @@ const Login: NextPage<{
                 mb={3}
                 fontWeight="semibold"
               >
-                <span>Sign in with Apple</span>
+                <span>Apple로 시작하기</span>
                 <div />
               </Button>
             )}
@@ -233,7 +233,7 @@ const Login: NextPage<{
               mb={3}
               fontWeight="semibold"
             >
-              <span>동아리 구경하기</span>
+              <span>게스트로 구경하기</span>
               <div />
             </Button>
 

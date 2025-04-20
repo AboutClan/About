@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
@@ -7,20 +8,33 @@ import Slide from "../../components/layouts/PageSlide";
 function RegisterLayout({
   children,
   errorMessage,
+  isSlide = true,
 }: {
   children: ReactNode;
   errorMessage?: string;
+  isSlide?: boolean;
 }) {
   const { handleSubmit } = useForm();
 
   const onValid = () => {};
   return (
-    <Slide>
-      <Layout onSubmit={handleSubmit(onValid)}>
-        {children}
-        <Message>{errorMessage}</Message>
-      </Layout>
-    </Slide>
+    <>
+      {isSlide ? (
+        <Slide>
+          <Layout onSubmit={handleSubmit(onValid)}>
+            {children}
+            <Message>{errorMessage}</Message>
+          </Layout>
+        </Slide>
+      ) : (
+        <Box px={5}>
+          <Layout onSubmit={handleSubmit(onValid)}>
+            {children}
+            <Message>{errorMessage}</Message>
+          </Layout>
+        </Box>
+      )}
+    </>
   );
 }
 

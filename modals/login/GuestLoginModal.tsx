@@ -1,4 +1,3 @@
-import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
@@ -9,21 +8,21 @@ interface IGuestLoginModal extends IModal {
 function GuestLoginModal({ setIsModal, customSignin }: IGuestLoginModal) {
   const footerOptions: IFooterOptions = {
     main: {
-      text: "게스트 로그인",
+      text: "게스트로 계속하기",
       func: () => customSignin("guest"),
     },
     sub: {
-      text: "돌아가기",
+      text: "닫 기",
     },
   };
 
   return (
     <>
       <ModalLayout title="게스트 로그인" setIsModal={setIsModal} footerOptions={footerOptions}>
-        <ModalSubtitle>
-          게스트용 로그인은 제한된 기능만을 제공합니다. 동아리 회원은 카카오 로그인으로 접속해
-          주세요!
-        </ModalSubtitle>
+        <span>
+          <b>게스트 로그인</b>은 제한된 기능만을 제공합니다. 천천히 둘러보신 후, 활동을 희망하시면{" "}
+          <b>카카오 로그인</b>을 이용해 주세요!
+        </span>
       </ModalLayout>
     </>
   );

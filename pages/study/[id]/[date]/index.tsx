@@ -113,7 +113,7 @@ export default function Page() {
       : null);
 
   const myRealTimeStudy = findMyStudy?.members.find((who) => who.user._id === session?.user.id);
-  console.log(54, myRealTimeStudy);
+ 
   return (
     <>
       {studyVoteData ? (

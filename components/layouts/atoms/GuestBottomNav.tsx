@@ -19,23 +19,22 @@ function GuestBottomNav() {
 
   return (
     <Layout>
-      <Box color="gray.500" fontSize="12px">
-        게스트 로그인을 이용중입니다.
+      <Box fontSize="12px" color="gray.600">
+        게스트 모드를 이용중입니다.
       </Box>
       <Box>
         <Button
           border="1px solid black"
           borderColor="mint"
           color="mint"
-          borderRadius="4px"
           size="sm"
           mr="8px"
           onClick={() => router.replace(`/home?${newSearchparams.toString()}&logout=on`)}
         >
           로그아웃
         </Button>
-        <Button size="sm" colorScheme="mint" borderRadius="4px" onClick={() => customSignin()}>
-          동아리 가입 신청
+        <Button size="sm" colorScheme="mint" onClick={() => customSignin()}>
+          동아리 회원가입
         </Button>
       </Box>
     </Layout>

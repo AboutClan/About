@@ -66,7 +66,7 @@ function StudyNavigation({
   const myStudyInfo = findMyStudyInfo(findStudy, session?.user.id);
 
   const myStudyStatus = evaluateMyStudyStatus(findStudy, session?.user.id, pageType, isVoting);
-  console.log(2424, isVoting, myStudyStatus);
+
 
   const NAVIGATION_PROPS_MAPPING: Record<Exclude<MyStudyStatus, "expired">, NavigationProps> = {
     pending: {
