@@ -66,8 +66,7 @@ function Gather() {
           <TabNav tabOptionsArr={tabNavOptions} selected={tab} isFullSize />
         </Box>
       </Slide>
-      {/**임시 비활성화 */}
-      {/* <GatherLocationFilter /> */}
+
       {tab === "번개" ? <GatherMain /> : <SquareLoungeSection />}
       {!isGuest && <WritingButton url="/gather/writing/category" type="thunder" />}
       {isModal && (

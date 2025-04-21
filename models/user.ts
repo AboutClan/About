@@ -2,7 +2,7 @@
 
 import mongoose, { Model, model, Schema } from "mongoose";
 
-import { IAvatar, IRest, IUser } from "../types/models/userTypes/userInfoTypes";
+import { AvatarProps, IRest, IUser } from "../types/models/userTypes/userInfoTypes";
 
 export const restSchema: Schema<IRest> = new Schema({
   type: Schema.Types.String,
@@ -11,7 +11,7 @@ export const restSchema: Schema<IRest> = new Schema({
   content: Schema.Types.String,
 });
 
-export const avatarSchema: Schema<IAvatar> = new Schema({
+export const avatarSchema: Schema<AvatarProps> = new Schema({
   type: {
     type: Schema.Types.Number,
     default: 1,

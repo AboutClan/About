@@ -1,33 +1,28 @@
 import { Badge } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import { STATUS_TO_TEXT } from "../../../constants/util/convert";
-import { GatherStatus } from "../../../types/models/gatherTypes/gatherTypes";
-
 interface IGatherTitle {
   title: string;
-  status: GatherStatus;
+
+  category: string;
 }
 
-function GatherTitle({ status, title }: IGatherTitle) {
-  const color = status === "pending" ? "mint" : status === "open" ? "red" : null;
-
+function GatherTitle({ title, category }: IGatherTitle) {
   return (
-    <Layout status={status}>
-      <Badge colorScheme={color} size="lg">
-        {STATUS_TO_TEXT[status]}
+    <Layout>
+      <Badge variant="subtle" colorScheme="orange" size="lg">
+        {category}
       </Badge>
       <span>{title}</span>
     </Layout>
   );
 }
 
-const Layout = styled.div<{ status: GatherStatus }>`
-  padding: Var(--gap-4);
+const Layout = styled.div`
+  padding: 16px 20px;
   background-color: white;
-  color: var(--gray-800);
   font-size: 16px;
-  font-weight: 700;
+  font-weight: bold;
   border: var(--border);
   > span:last-child {
     margin-left: var(--gap-2);

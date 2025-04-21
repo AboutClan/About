@@ -76,8 +76,8 @@ function GatherComments({ comments }: IGatherComments) {
 
   return (
     <>
-      <Layout>
-        <span>할 얘기가 있다면 댓글을 남겨보세요</span>
+      <Box m={5} fontWeight="semibold" fontSize="16px">
+        <span>하고 싶은 말이 있다면 댓글을 남겨보세요!</span>
         <Comment>
           {!isGuest && userInfo && (
             <Box mr="8px" mt="20px" mb="12px">
@@ -103,19 +103,10 @@ function GatherComments({ comments }: IGatherComments) {
             ))}
           </section>
         </Comment>
-      </Layout>
+      </Box>
     </>
   );
 }
-
-const Layout = styled.div`
-  margin: var(--gap-5);
-  display: flex;
-  flex-direction: column;
-  > span:first-child {
-    font-weight: 700;
-  }
-`;
 
 const Comment = styled.div`
   display: flex;

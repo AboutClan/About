@@ -49,14 +49,7 @@ export default function UserOverview({ userInfo }: UserOverviewProps) {
             <UserOverviewComment />
           </UserInfo>
           <UserImg>
-            <Avatar
-              avatar={userInfo?.avatar}
-              image={userInfo.profileImage}
-              uid={userInfo.uid}
-              userId={userInfo._id}
-              size="xl"
-              isLink={false}
-            />
+            <Avatar user={userInfo} size="lg1" isLink={false} />
             <IconWrapper
               onClick={() => {
                 if (isGuest) {

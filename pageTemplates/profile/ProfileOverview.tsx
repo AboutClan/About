@@ -25,7 +25,6 @@ function ProfileOverview({ user }: IProfileOverview) {
 }
 
 const Layout = styled.div`
-  margin: 0 var(--gap-4);
   padding: var(--gap-3) 0;
   display: flex;
   flex-direction: column;

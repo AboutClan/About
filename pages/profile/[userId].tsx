@@ -4,8 +4,8 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
-import styled from "styled-components";
 
+import Divider from "../../components/atoms/Divider";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
@@ -41,7 +41,7 @@ function ProfilePage() {
     enabled: !!userId,
   });
 
-  const groups = data?.map((props) => props.category.sub);
+  const groups = data?.map((props) => props.title);
 
   useEffect(() => {
     if (user) setTransferUserName(user.name);
@@ -66,14 +66,14 @@ function ProfilePage() {
           <i className="fa-regular fa-ellipsis fa-lg" />
         </Button>
       </Header>
+      <Slide>
+        <ProfileOverview user={user as IUser} />
+      </Slide>
       <Slide isNoPadding>
-        <Container>
-          <Layout>
-            <ProfileOverview user={user as IUser} />
-            <HrDiv />
-            <DetailInfo user={user as IUser} groups={groups} />
-          </Layout>
-        </Container>
+        <Divider />
+      </Slide>
+      <Slide>
+        <DetailInfo user={user as IUser} groups={groups} />
       </Slide>
       {isDeclare && (
         <BottomDrawer
@@ -93,14 +93,4 @@ function ProfilePage() {
   );
 }
 
-const Container = styled.div`
-  background-color: white;
-`;
-
-const Layout = styled.div``;
-
-const HrDiv = styled.div`
-  background-color: var(--gray-200);
-  height: 10px;
-`;
 export default ProfilePage;

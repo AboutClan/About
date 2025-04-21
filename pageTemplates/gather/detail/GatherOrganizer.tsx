@@ -1,23 +1,27 @@
 import { Badge } from "@chakra-ui/react";
 
-import OrganizerBar from "../../../components/molecules/OrganizerBar";
+import PostAuthorCard from "../../../components/molecules/cards/PostAuthorCard";
+import { STATUS_TO_TEXT } from "../../../constants/util/convert";
+import { GatherStatus } from "../../../types/models/gatherTypes/gatherTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 
 interface IGatherOrganizer {
   createdAt: string;
   organizer: IUserSummary;
   isAdminOpen: boolean;
-  category: string;
+  status: GatherStatus;
 }
 
-function GatherOrganizer({ createdAt, organizer, isAdminOpen, category }: IGatherOrganizer) {
+function GatherOrganizer({ createdAt, organizer, isAdminOpen, status }: IGatherOrganizer) {
   const isABOUT = isAdminOpen;
+  const color = status === "pending" ? "mint" : status === "open" ? "red" : null;
+
   return (
-    <OrganizerBar organizer={organizer} createdAt={createdAt} isAdminOpen={isABOUT}>
-      <Badge colorScheme="red" size="lg">
-        {category}
+    <PostAuthorCard organizer={organizer} createdAt={createdAt} isAdminOpen={isABOUT}>
+      <Badge colorScheme={color} size="lg">
+        {STATUS_TO_TEXT[status]}
       </Badge>
-    </OrganizerBar>
+    </PostAuthorCard>
   );
 }
 

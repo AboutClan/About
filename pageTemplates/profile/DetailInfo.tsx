@@ -1,9 +1,7 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
-import styled from "styled-components";
 
 import BlurredPart from "../../components/molecules/BlurredPart";
-import { PLACE_TO_NAME } from "../../constants/serviceConstants/studyConstants/studyCafeNameConstants";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { birthToAge } from "../../utils/convertUtils/convertTypes";
 
@@ -13,35 +11,57 @@ function DetailInfo({ user, groups }: { user: IUser; groups: string[] }) {
 
   const isPrivate =
     user?.isPrivate && !user?.friend.includes(session?.user.uid) && user?.uid !== session?.user.uid;
+  console.log(user, groups);
+
+  const itemMapping: { category: string; text: string }[] = [
+    {
+      category: "나이",
+      text: birthToAge(user?.birth) + "",
+    },
+    {
+      category: "성별",
+      text: user?.gender,
+    },
+    {
+      category: "MBTI",
+      text: user?.mbti,
+    },
+    {
+      category: "전공",
+      text: user?.majors?.[0]?.detail,
+    },
+    {
+      category: "소모임",
+      text:
+        (groups?.[0] || "--") +
+        (groups?.[1] ? `, ${groups[1]}` : "") +
+        (groups?.[2] ? `, ${groups[2]}` : "") +
+        (groups?.[3] ? `...` : ""),
+    },
+    {
+      category: "Instagram",
+      text: user?.instagram,
+    },
+  ];
 
   return (
-    <Layout>
-      <BlurredPart
-        isBlur={isGuest || isPrivate}
-        text={isPrivate ? "프로필 비공개 (친구에게만 공개)" : undefined}
-      >
-        <Profile>
-          <ProfileItem>
-            <span>나이</span>
-            <span> {birthToAge(user?.birth)}</span>
-          </ProfileItem>
-          <ProfileItem>
-            <span>성별</span>
-            <span> {user?.gender}</span>
-          </ProfileItem>
-          <ProfileItem>
-            <span>MBTI</span>
-            {user?.mbti ? <span>{user?.mbti}</span> : <span>--</span>}
-          </ProfileItem>
-          <ProfileItem>
-            <span>지역</span>
-            <span> {user?.location}</span>
-          </ProfileItem>
-          <ProfileItem>
-            <span>전공</span>
-            {user?.majors?.length ? <span>{user?.majors[0]?.detail}</span> : <span>--</span>}
-          </ProfileItem>
-          <ProfileItem>
+    <BlurredPart
+      isBlur={isGuest || isPrivate}
+      text={isPrivate ? "프로필 비공개 (친구에게만 공개)" : undefined}
+    >
+      <Flex flexDir="column" py={3}>
+        {itemMapping.map((item, idx) => (
+          <Flex key={idx} fontWeight="semibold" py={2}>
+            <Box w="80px" color="gray.500">
+              {item.category}
+            </Box>
+            <Box flex={1} color="gray.800">
+              {item.text}
+            </Box>
+          </Flex>
+        ))}
+
+        {/* <ProfileItem>
             <span>소모임</span>
             <Box
               flex={1}
@@ -55,50 +75,16 @@ function DetailInfo({ user, groups }: { user: IUser; groups: string[] }) {
               }}
             >
               {groups?.map((group, idx) => (
-                <>
+                <Fragment key={idx}>
                   <span>{group}</span>
                   <span>{idx !== groups.length - 1 && ", "}</span>
-                </>
+                </Fragment>
               ))}
             </Box>
-          </ProfileItem>
-          <ProfileItem>
-            <span>즐겨찾기</span>
-            <span>{PLACE_TO_NAME[user?.studyPreference?.place] || "없음"}</span>
-          </ProfileItem>
-        </Profile>
-      </BlurredPart>
-      {/* <Chart type="study" user={user} /> */}
-    </Layout>
+          </ProfileItem> */}
+      </Flex>
+    </BlurredPart>
   );
 }
-
-const Layout = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin: 0 var(--gap-4);
-  padding: var(--gap-3) 0;
-`;
-
-const Profile = styled.div`
-  padding: 0 var(--gap-1);
-  margin-bottom: var(--gap-1);
-  display: flex;
-  flex-direction: column;
-  line-height: 2.4;
-`;
-
-const ProfileItem = styled.div`
-  display: flex;
-  > span:first-child {
-    display: inline-block;
-    width: 64px;
-    color: var(--gray-600);
-  }
-  > span:last-child {
-    color: var(--gray-800);
-    font-weight: 600;
-  }
-`;
 
 export default DetailInfo;

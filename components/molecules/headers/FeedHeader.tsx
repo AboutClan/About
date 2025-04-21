@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-import { ABOUT_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import Avatar from "../../atoms/Avatar";
 interface IFeedHeader {
@@ -8,17 +7,11 @@ interface IFeedHeader {
   date: string;
 }
 
-function FeedHeader({ writer = ABOUT_USER_SUMMARY, date }: IFeedHeader) {
+function FeedHeader({ writer, date }: IFeedHeader) {
   return (
     <Layout>
       <Profile>
-        <Avatar
-          userId={writer._id}
-          image={writer?.profileImage}
-          avatar={writer?.avatar}
-          uid={writer?.uid}
-          size="smd"
-        />
+        <Avatar user={writer} size="sm1" />
         <div>
           <Writer>{writer.name}</Writer>
           <span>{date}</span>

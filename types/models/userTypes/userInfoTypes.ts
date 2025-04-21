@@ -42,7 +42,7 @@ export interface UserStudyRecordProps {
 
 export interface UserSimpleInfoProps {
   name: string;
-  avatar: IAvatar;
+  avatar: AvatarProps;
   profileImage: string;
   _id: string;
   uid: string;
@@ -57,7 +57,7 @@ export interface LocationDeatilProps {
 }
 
 export interface IUserSummary {
-  avatar: IAvatar;
+  avatar: AvatarProps;
   birth: string;
   comment: string;
   isActive: boolean;
@@ -67,7 +67,7 @@ export interface IUserSummary {
   monthScore: number;
   score: number;
   uid: string;
-  _id?: string;
+  _id: string;
 }
 
 export interface IUserRegisterForm extends IUserRegisterFormWriting, TimeStampProps {
@@ -88,7 +88,7 @@ export interface IUserRegisterFormWriting {
   telephone: string;
   locationDetail: LocationDeatilProps;
 }
-export interface IAvatar {
+export interface AvatarProps {
   type: number;
   bg: number;
 }

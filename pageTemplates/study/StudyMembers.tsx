@@ -52,7 +52,6 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
     setLocationMapping(locationMappingData);
   }, [locationMappingData]);
 
-
   const { mutate: setRealTimeComment } = useRealTimeCommentMutation({
     onSuccess: () => handleSuccessChange(),
   });
@@ -75,15 +74,14 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
 
   const userCardArr: IProfileCommentCard[] = members.map((member) => {
     const user = member.user;
+    const badgeText = locationMapping?.find((mapping) => mapping?.id === user._id)?.branch;
     if (status === "recruiting") {
       return {
         user: user,
         memo: user.comment,
         rightComponent: locationMapping ? (
-          <Badge colorScheme="mint" size="md">
-            {user.isLocationSharingDenided
-              ? "비공개"
-              : locationMapping?.find((mapping) => mapping?.id === user._id).branch}
+          <Badge variant="subtle" colorScheme="blue" size="md">
+            {!badgeText ? "알 수 없음" : badgeText}
           </Badge>
         ) : null,
       };

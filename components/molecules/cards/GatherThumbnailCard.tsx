@@ -4,7 +4,6 @@ import Link from "next/link";
 import { ComponentProps } from "react";
 import styled from "styled-components";
 
-import { ABOUT_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
 import { SingleLineText } from "../../../styles/layout/components";
 import { GatherStatus, IGatherParticipants } from "../../../types/models/gatherTypes/gatherTypes";
 import { UserIcon } from "../../Icons/UserIcons";
@@ -49,17 +48,6 @@ export function GatherThumbnailCard({
   func,
   type = "gather",
 }: GatherThumbnailCardProps) {
-  const userAvatarArr = participants
-    ?.filter((par) => par)
-    .map((par) =>
-      par.user
-        ? {
-            image: par.user?.profileImage,
-            ...(par.user.avatar?.type !== null ? { avatar: par.user.avatar } : {}),
-          }
-        : { image: ABOUT_USER_SUMMARY.profileImage },
-    );
-
   return (
     <CardLink href={`/${type}/${id}`} onClick={func}>
       <PlaceImage src={imageProps.image} priority={imageProps.isPriority} />
@@ -84,7 +72,10 @@ export function GatherThumbnailCard({
         </Subtitle>
 
         <Flex mt={1} alignItems="center" justify="space-between">
-          <AvatarGroupsOverwrap userAvatarArr={userAvatarArr} maxCnt={VOTER_SHOW_MAX} />
+          <AvatarGroupsOverwrap
+            users={participants?.map((par) => par.user)}
+            maxCnt={VOTER_SHOW_MAX}
+          />
           <Flex align="center" color="var(--gray-500)">
             <UserIcon size="sm" />
             <Flex ml={1} fontSize="10px" align="center" fontWeight={500}>

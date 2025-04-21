@@ -18,6 +18,7 @@ interface PlaceInfoDrawerProps {
 function PlaceInfoDrawer({ placeInfo, onClose }: PlaceInfoDrawerProps) {
   const typeToast = useTypeToast();
   const user = placeInfo?.registrant;
+
   return (
     <>
       <BottomFlexDrawer
@@ -48,7 +49,7 @@ function PlaceInfoDrawer({ placeInfo, onClose }: PlaceInfoDrawerProps) {
                 등록일: {dayjsToFormat(dayjs(placeInfo?.registerDate), "YYYY년 M월 D일")}
               </Box>
               <Flex mt={2} align="center">
-                <Avatar {...user} size="xs" />
+                <Avatar user={user} size="xs1" />
                 <Box ml={1} fontSize="12px" color="var(--gray-600)">
                   {user?.name || "어바웃"}님 Pick
                 </Box>

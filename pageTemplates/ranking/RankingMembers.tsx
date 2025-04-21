@@ -52,12 +52,9 @@ function RankingMembers({ users, fieldName }: IRankingMembers) {
             </Box>
             <Name>
               <Avatar
-                userId={who._id}
-                image={who.profileImage}
-                avatar={who.avatar}
-                uid={who.uid}
+                user={user?.user}
                 sizeLength={40}
-                size="md"
+                size="sm1"
                 isPriority={idx < 6}
                 isLink={!RANKING_ANONYMOUS_USERS.includes(who?.uid)}
               />

@@ -1,6 +1,7 @@
 import { Button, Flex } from "@chakra-ui/react";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -8,7 +9,6 @@ import AlertModal, { IAlertModalOptions } from "../../../components/AlertModal";
 import { useCompleteToast, useFailToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import { useUserFriendMutation } from "../../../hooks/user/mutations";
 import { useInteractionMutation } from "../../../hooks/user/sub/interaction/mutations";
-import ProfileCardModal from "../../../modals/profile/ProfileCardModal";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
 
 interface IProfileRelation {
@@ -17,12 +17,13 @@ interface IProfileRelation {
 
 function ProfileRelation({ user }: IProfileRelation) {
   const failGuestToast = useFailToast();
+  const router = useRouter();
   const typeToast = useTypeToast();
   const completeToast = useCompleteToast();
   const { data: session } = useSession();
 
   const isGuest = session?.user.name === "guest";
-  const [modalType, setModalType] = useState<"requestFriend" | "cancelFriend" | "isMyProfile">();
+  const [modalType, setModalType] = useState<"requestFriend" | "cancelFriend">();
   const [isMyFriend, setIsMyFriend] = useState(false);
 
   const { mutate: requestFriend } = useInteractionMutation("friend", "post", {
@@ -51,7 +52,7 @@ function ProfileRelation({ user }: IProfileRelation) {
       failGuestToast("guest");
       return;
     }
-    setModalType("isMyProfile");
+    router.push("/user");
   };
 
   const alertModalOptions: IAlertModalOptions = {
@@ -142,12 +143,12 @@ function ProfileRelation({ user }: IProfileRelation) {
             )
           ) : (
             <Button onClick={onClickCard} size="sm">
-              내 프로필 카드
+              내 프로필 수정
             </Button>
           )}
         </Flex>
       </Layout>
-      {modalType === "isMyProfile" && <ProfileCardModal setIsModal={() => setModalType(null)} />}
+
       {modalType === "requestFriend" && (
         <AlertModal options={alertModalOptions} setIsModal={() => setModalType(null)} />
       )}

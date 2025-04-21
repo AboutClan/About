@@ -130,11 +130,6 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
     mutate(feedId);
   };
 
-  const userAvatarArr = heartProps?.users?.map((who) => ({
-    avatar: who?.avatar,
-    image: who.profileImage,
-  }));
-
   const addNewComment = (user: IUserSummary, comment: string): UserCommentProps => {
     return {
       user,
@@ -202,7 +197,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
         >
           {commentArr.length}
         </Button>
-        {userAvatarArr.length ? (
+        {heartProps.users.length ? (
           <Button
             size="sm"
             variant="ghost"
@@ -210,12 +205,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
             border="none"
             onClick={() => handleDrawerBtn("like")}
           >
-            <AvatarGroupsOverwrap
-              userAvatarArr={userAvatarArr}
-              userLength={heartProps.cnt}
-              maxCnt={6}
-              size="md"
-            />
+            <AvatarGroupsOverwrap users={heartProps.users} userLength={heartProps.cnt} maxCnt={6} />
           </Button>
         ) : null}
       </Flex>

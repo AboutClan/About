@@ -4,7 +4,6 @@ import Link from "next/link";
 import { ComponentProps } from "react";
 import styled from "styled-components";
 
-import { ABOUT_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
 import { SingleLineText } from "../../../styles/layout/components";
 import {
   GroupParicipantProps,
@@ -48,17 +47,6 @@ export function GroupThumbnailCard({
   isBig = true,
   isFree,
 }: GroupThumbnailCardProps) {
-  const userAvatarArr = participants
-    ?.filter((par) => par)
-    .map((par) =>
-      par.user
-        ? {
-            image: par.user?.profileImage,
-            ...(par.user.avatar?.type !== null ? { avatar: par.user.avatar } : {}),
-          }
-        : { image: ABOUT_USER_SUMMARY.profileImage },
-    );
-
   const statusToBadgeProps: Record<GroupStatus, { text: string; colorScheme: string }> = {
     imminent: { text: `마감까지 ${maxCnt - participants.length}명`, colorScheme: "red" },
     full: { text: "인원마감", colorScheme: "orange" },
@@ -109,7 +97,10 @@ export function GroupThumbnailCard({
         <Subtitle lineNum={2}>{text}</Subtitle>
         {waitingCnt === null ? (
           <Flex alignItems="center" justify="space-between">
-            <AvatarGroupsOverwrap userAvatarArr={userAvatarArr} maxCnt={VOTER_SHOW_MAX} />
+            <AvatarGroupsOverwrap
+              users={participants?.map((par) => par.user)}
+              maxCnt={VOTER_SHOW_MAX}
+            />
             <Flex align="center" color="var(--gray-500)">
               <UserIcon size="sm" />
               <Flex ml={1} fontSize="10px" align="center" fontWeight={500}>

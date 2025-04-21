@@ -2,41 +2,58 @@ import { Box, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { memo, useEffect, useState } from "react";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 import { AVATAR_BG_IMAGES } from "../../assets/images/avatarBgImages";
 import { AVATAR_IMAGES } from "../../assets/images/avatarImages";
 import { COLOR_TABLE_LIGHT } from "../../constants/colorConstants";
+import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import { SPECIAL_AVATAR } from "../../storage/avatarStorage";
-import { IAvatar as IAvatarProp } from "../../types/models/userTypes/userInfoTypes";
+import { AvatarProps } from "../../types/models/userTypes/userInfoTypes";
 
-type Size = "2xs" | "xs" | "sm" | "smd" | "mds" | "md" | "lg" | "xl" | "slg" | "xxl";
+// type Size = "2xs" | "xs" | "sm" | "smd" | "mds" | "md" | "lg" | "xl" | "slg" | "xxl";
+type Size = "xxs1" | "xs1" | "sm1" | "md1" | "lg1" | "xl1" | "xxl1";
 
+//xxs: 16
+//xs:32
+//sm : 40
+//md: 48
+//lg:60
+//xl:80
+//xxl:120
+
+const SIZE_MAPPING: Record<Size, number> = {
+  xxs1: 16,
+  xs1: 32,
+  sm1: 40,
+  md1: 48,
+  lg1: 60,
+  xl1: 72,
+  xxl1: 120,
+};
 interface IAvatar {
-  image?: string;
-  size: "2xs" | "md" | Size;
+  size: Size;
   sizeLength?: number;
-  avatar?: IAvatarProp;
-  uid?: string;
-  userId?: string;
   isPriority?: boolean;
   shadowAvatar?: number;
   isLink?: boolean;
+  user: {
+    avatar: AvatarProps;
+    _id?: string;
+    profileImage?: string;
+  };
 }
 
 function AvatarComponent({
-  image,
   size,
-  sizeLength,
-  avatar,
-  uid,
   isPriority,
-  userId,
   shadowAvatar,
   isLink = true,
+  user = ABOUT_USER_SUMMARY,
 }: IAvatar) {
+  const { avatar, _id: userId, profileImage: image } = user || {};
   const hasAvatar = avatar !== undefined && avatar?.type !== null && avatar?.bg !== null;
-
+  console.log(25, avatar, userId, image);
   const [imageUrl, setImageUrl] = useState(
     !hasAvatar
       ? image
@@ -59,7 +76,7 @@ function AvatarComponent({
     } else {
       setBgImage(null);
     }
-  }, [image, avatar, uid]);
+  }, [image, avatar]);
 
   const onError = () => {
     setImageUrl(AVATAR_IMAGES[0].image);
@@ -67,7 +84,7 @@ function AvatarComponent({
 
   function AvatarComponent() {
     return (
-      <AvatarContainer size={size} sizeLength={sizeLength}>
+      <AvatarContainer size={SIZE_MAPPING[size]}>
         <ImageContainer
           bg={
             (!shadowAvatar && bgImage) ||
@@ -76,7 +93,6 @@ function AvatarComponent({
               : hasAvatar && avatar.bg !== null && COLOR_TABLE_LIGHT[avatar.bg])
           }
           hasType={hasAvatar && avatar.type < 100}
-          size={size}
           color="var(--gray-500)"
           isBgImage={!!bgImage}
         >
@@ -85,30 +101,7 @@ function AvatarComponent({
               <Image
                 src={imageUrl}
                 fill={true}
-                sizes={
-                  `${sizeLength}px` ||
-                  (size === "2xs"
-                    ? "16px"
-                    : size === "xs"
-                    ? "24px"
-                    : size === "sm"
-                    ? "28px"
-                    : size === "smd"
-                    ? "32px"
-                    : size === "mds"
-                    ? "40px"
-                    : size === "md"
-                    ? "48px"
-                    : size === "lg"
-                    ? "64px"
-                    : size === "slg"
-                    ? "60px"
-                    : size === "xl"
-                    ? "80px"
-                    : size === "xxl"
-                    ? "120px"
-                    : "")
-                }
+                sizes="200px"
                 priority={isPriority}
                 alt="avatar"
                 onError={onError}
@@ -155,93 +148,20 @@ const Avatar = memo(AvatarComponent);
 export default Avatar;
 
 const AvatarContainer = styled.div<{
-  size: Size;
-  sizeLength?: number; // make sizeLength optional
+  size: number;
 }>`
   overflow: hidden;
   position: relative;
   border-radius: 50%;
   background-color: white;
-
-  ${(props) => {
-    const sizeStyles = (() => {
-      switch (props.size) {
-        case "2xs":
-          return css`
-            width: 16px;
-            height: 16px;
-            padding: 1px;
-          `;
-        case "xs":
-          return css`
-            width: 24px;
-            height: 24px;
-            padding: 2px;
-          `;
-        case "sm":
-          return css`
-            width: 28px; // w-7
-            height: 28px; // h-7
-            padding: 1.5px;
-          `;
-        case "smd":
-          return css`
-            width: 32px; // w-8
-            height: 32px; // h-8
-          `;
-        case "mds":
-          return css`
-            width: 40px;
-            height: 40px;
-          `;
-        case "md":
-          return css`
-            width: 48px; // w-11
-            height: 48px; // h-11
-          `;
-        case "slg":
-          return css`
-            width: 60px;
-            height: 60px;
-          `;
-        case "lg":
-          return css`
-            width: 64px;
-            height: 64px;
-          `;
-        case "xl":
-          return css`
-            width: 80px; // w-20
-            height: 80px; // h-20
-          `;
-        case "xxl":
-          return css`
-            width: 120px; // w-20
-            height: 120px; // h-20
-          `;
-        default:
-          return css``;
-      }
-    })();
-
-    const sizeLengthStyles = props.sizeLength
-      ? css`
-          width: ${props.sizeLength}px;
-          height: ${props.sizeLength}px;
-        `
-      : css``;
-
-    return css`
-      ${sizeStyles}
-      ${sizeLengthStyles}
-    `;
-  }}
+  width: ${(props) => `${props.size}px`};
+  height: ${(props) => `${props.size}px`};
+  padding: 1px;
 `;
 
 const ImageContainer = styled.div<{
   bg: string | null;
   hasType: boolean;
-  size: Size;
   isBgImage: boolean;
 }>`
   position: relative;

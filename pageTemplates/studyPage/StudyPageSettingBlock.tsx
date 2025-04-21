@@ -12,7 +12,7 @@ import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { RegisterLocationLayout } from "../../pages/register/location";
 import { KakaoLocationProps } from "../../types/externals/kakaoLocationSearch";
-import { IAvatar } from "../../types/models/userTypes/userInfoTypes";
+import { AvatarProps } from "../../types/models/userTypes/userInfoTypes";
 
 function StudyPageSettingBlock() {
   const { data: session } = useSession();
@@ -29,7 +29,7 @@ function StudyPageSettingBlock() {
   const recentStudyRecord: {
     date: string;
     place: string;
-    members: { image: string; avatar?: IAvatar }[];
+    members: { image: string; avatar?: AvatarProps }[];
   } = recentStudyAttendStorage ? JSON.parse(recentStudyAttendStorage) : null;
 
   const { mutate: changeLocationDetail } = useUserInfoFieldMutation("locationDetail", {
@@ -73,7 +73,13 @@ function StudyPageSettingBlock() {
               category: "최근 함께한 스터디 멤버",
               rightChildren: recentStudyRecord?.members.length ? (
                 <Box>
-                  <AvatarGroupsOverwrap userAvatarArr={recentStudyRecord?.members} maxCnt={4} />
+                  <AvatarGroupsOverwrap
+                    users={recentStudyRecord?.members.map((member) => ({
+                      avatar: member.avatar,
+                      profileImage: member.image,
+                    }))}
+                    maxCnt={4}
+                  />
                 </Box>
               ) : (
                 "정보 없음"

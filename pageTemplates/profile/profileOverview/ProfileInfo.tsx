@@ -1,3 +1,4 @@
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
@@ -6,14 +7,13 @@ import Avatar from "../../../components/atoms/Avatar";
 import UserBadge from "../../../components/atoms/badges/UserBadge";
 import { LIKE_HEART } from "../../../constants/keys/localStorage";
 import { NOTICE_HEART_LOG } from "../../../constants/keys/queryKeys";
-import { USER_ROLE } from "../../../constants/settingValue/role";
 import { useResetQueryData } from "../../../hooks/custom/CustomHooks";
 import { useCompleteToast, useErrorToast, useFailToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { useInteractionMutation } from "../../../hooks/user/sub/interaction/mutations";
 import { IInteractionLikeStorage, IInteractionSendLike } from "../../../types/globals/interaction";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
-import { dayjsToStr } from "../../../utils/dateTimeUtils";
+import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
 
 interface IProfileInfo {
   user: IUser;
@@ -30,7 +30,6 @@ function ProfileInfo({ user }: IProfileInfo) {
   // const [isConditionOk, setIsConditionOk] = useState(false);
   // const [isHeartLoading, setIsHeartLoading] = useState(true);
 
-  const status = USER_ROLE[user?.role];
   const storedLikeArr: IInteractionLikeStorage[] = JSON.parse(localStorage.getItem(LIKE_HEART));
 
   const isHeart =
@@ -112,69 +111,58 @@ function ProfileInfo({ user }: IProfileInfo) {
 
   return (
     <>
-      <Layout>
-        <Profile>
-          <Avatar
-            userId={user._id}
-            uid={user.uid}
-            image={user.profileImage}
-            avatar={user.avatar}
-            size="xl"
-          />
-          <ProfileName>
-            <div>
-              <span>{user?.name || session?.user.name}</span>
-              <UserBadge score={user?.score} uid={user?.uid} />
-            </div>
-            <span>{status || "게스트"}</span>
-          </ProfileName>
+      <Flex flexDir="column">
+        <Flex align="center">
+          <Avatar user={user} size="xl1" />
+          <Flex ml={2} direction="column">
+            <Flex>
+              <Box mr={1} fontSize="16px" fontWeight="bold">
+                {user?.name || session?.user.name}
+              </Box>
+              <Box>
+                <UserBadge score={user?.score} uid={user?.uid} />
+              </Box>
+            </Flex>
+            <Box fontSize="12px" color="gray.500">
+              {dayjsToFormat(dayjs(userInfo?.registerDate), "YYYY년 M월 d일 가입") || "게스트"}
+            </Box>
+          </Flex>
           {user && user?.uid !== session?.user?.uid && (
-            <>
+            <Box ml="auto">
               {isHeart ? (
                 <HeartWrapper onClick={onClickHeart}>
-                  <i className="fa-solid fa-heart fa-xl" style={{ color: "var(--color-red)" }} />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="var(--color-red)"
+                  >
+                    <path d="M480-147q-14 0-28.5-5T426-168l-69-63q-106-97-191.5-192.5T80-634q0-94 63-157t157-63q53 0 100 22.5t80 61.5q33-39 80-61.5T660-854q94 0 157 63t63 157q0 115-85 211T602-230l-68 62q-11 11-25.5 16t-28.5 5Z" />
+                  </svg>
                 </HeartWrapper>
               ) : (
                 <HeartWrapper onClick={onClickHeart}>
-                  <i className="fa-regular fa-heart fa-xl" />
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="24px"
+                    viewBox="0 -960 960 960"
+                    width="24px"
+                    fill="var(--gray-600)"
+                  >
+                    <path d="M480-147q-14 0-28.5-5T426-168l-69-63q-106-97-191.5-192.5T80-634q0-94 63-157t157-63q53 0 100 22.5t80 61.5q33-39 80-61.5T660-854q94 0 157 63t63 157q0 115-85 211T602-230l-68 62q-11 11-25.5 16t-28.5 5Zm-38-543q-29-41-62-62.5T300-774q-60 0-100 40t-40 100q0 52 37 110.5T285.5-410q51.5 55 106 103t88.5 79q34-31 88.5-79t106-103Q726-465 763-523.5T800-634q0-60-40-100t-100-40q-47 0-80 21.5T518-690q-7 10-17 15t-21 5q-11 0-21-5t-17-15Zm38 189Z" />
+                  </svg>
                 </HeartWrapper>
               )}
-            </>
+            </Box>
           )}
-        </Profile>
+        </Flex>
         <Comment>{user?.comment}</Comment>
-      </Layout>
+      </Flex>
     </>
   );
 }
 
-const Layout = styled.div``;
-const Profile = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const ProfileName = styled.div`
-  margin-left: var(--gap-3);
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  > div:first-child {
-    display: flex;
-    align-items: center;
-    > span:first-child {
-      font-size: 16px;
-      font-weight: 600;
-      margin-right: var(--gap-2);
-    }
-  }
-  > span:last-child {
-    font-size: 12px;
-    color: var(--gray-600);
-  }
-`;
 const HeartWrapper = styled.button`
   margin-right: var(--gap-1);
 `;

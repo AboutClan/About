@@ -1,40 +1,27 @@
 import styled from "styled-components";
 
-import { IAvatar } from "../../../types/models/userTypes/userInfoTypes";
+import { AvatarProps } from "../../../types/models/userTypes/userInfoTypes";
 import Avatar from "../../atoms/Avatar";
 
-interface IUserAvatar {
-  image: string;
-  avatar?: IAvatar;
-}
-
 interface IAvatarGroupsOverwrap {
-  userAvatarArr: IUserAvatar[];
+  users: { avatar: AvatarProps; _id?: string; profileImage?: string }[];
   userLength?: number;
   maxCnt: number;
-  size?: "sm" | "md";
 }
 
-export default function AvatarGroupsOverwrap({
-  userAvatarArr,
-  userLength,
-  maxCnt,
-  size = "sm",
-}: IAvatarGroupsOverwrap) {
+export default function AvatarGroupsOverwrap({ users, userLength, maxCnt }: IAvatarGroupsOverwrap) {
   return (
-    <Participants size={size === "sm" ? "2xs" : "xs"}>
-      {userAvatarArr.map((att, idx) => {
+    <Participants>
+      {users?.map((att, idx) => {
         return (
           idx < maxCnt && (
             <Avatar
               key={idx}
-              image={att.image}
-              avatar={att.avatar}
-              size={size === "sm" ? "2xs" : "xs"}
+              user={att}
+              size="xxs1"
               isLink={false}
               shadowAvatar={
-                idx === maxCnt - 1 &&
-                (userLength ? userLength - maxCnt : userAvatarArr.length - idx)
+                idx === maxCnt - 1 && (userLength ? userLength - maxCnt : users.length - idx)
               }
             />
           )
@@ -43,10 +30,10 @@ export default function AvatarGroupsOverwrap({
     </Participants>
   );
 }
-const Participants = styled.div<{ size: string }>`
+const Participants = styled.div`
   display: flex;
 
   & > *:not(:first-child) {
-    margin-left: ${(props) => (props.size === "2xs" ? "-4px" : "-6px")};
+    margin-left: -4px;
   }
 `;

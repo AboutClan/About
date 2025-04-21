@@ -41,13 +41,7 @@ function ImageSliderMember({ imageContainer }: IImageSliderMember) {
           <SwiperSlide key={index}>
             <MemberItem>
               <ProfileWrapper onClick={() => onClickUser(user)}>
-                <Avatar
-                  userId={user._id}
-                  image={user.profileImage}
-                  avatar={user.avatar}
-                  uid={user.uid}
-                  size="sm"
-                />
+                <Avatar user={user} size="sm1" />
               </ProfileWrapper>
               <span>{user?.name}</span>
               {isBirth && (

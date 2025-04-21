@@ -71,14 +71,7 @@ function UserCommentInput({
             w="46px"
             h="46px"
           >
-            <Avatar
-              isLink={false}
-              size="mds"
-              userId={user._id}
-              uid={user.uid}
-              avatar={user.avatar}
-              image={user.profileImage}
-            />
+            <Avatar isLink={false} size="sm1" user={user} />
           </Flex>
 
           <Flex flex={1}>

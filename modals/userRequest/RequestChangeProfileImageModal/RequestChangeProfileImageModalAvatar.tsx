@@ -89,7 +89,7 @@ function RequestChangeProfileImageModalAvatar({
       func: onSubmit,
     },
   };
- 
+
   const typeIdx = iconIdx + (type === "dog" ? 0 : type === "cat" ? 12 : 24);
 
   return (
@@ -107,7 +107,7 @@ function RequestChangeProfileImageModalAvatar({
             exit="exit"
             key={iconIdx}
           >
-            <Avatar avatar={{ type: typeIdx, bg: BG }} size="xl" />
+            <Avatar user={{ avatar: { type: typeIdx, bg: BG } }} size="xl1" />
 
             <IconPoint>{AVATAR_COST[iconIdx]}점 달성</IconPoint>
           </IconWrapper>

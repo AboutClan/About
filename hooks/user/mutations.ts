@@ -6,7 +6,7 @@ import { requestServer } from "../../libs/methodHelpers";
 import { IApplyRest } from "../../modals/userRequest/RequestRestModal/RequestRestModal";
 import { MutationOptions } from "../../types/hooks/reactTypes";
 import {
-  IAvatar,
+  AvatarProps,
   IUser,
   IUserRegisterFormWriting,
   LocationDeatilProps,
@@ -63,7 +63,7 @@ export const useUserInfoMutation = (options?: MutationOptions<Partial<IUser>>) =
   );
 
 type UserInfoFieldParam<T> = T extends "avatar"
-  ? IAvatar
+  ? AvatarProps
   : T extends "role"
   ? { role: UserRole }
   : T extends "rest"

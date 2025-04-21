@@ -114,13 +114,7 @@ function CollectionAlphabet() {
               return (
                 <Item key={user.uid}>
                   <ProfileWrapper>
-                    <Avatar
-                      size="md"
-                      userId={user._id}
-                      image={user.profileImage}
-                      avatar={user.avatar}
-                      uid={user.uid}
-                    />
+                    <Avatar size="md1" user={user} />
                   </ProfileWrapper>
                   <Info>
                     <Name>

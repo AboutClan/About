@@ -1,11 +1,14 @@
 import "dayjs/locale/ko";
 
+import { Box } from "@chakra-ui/react";
+import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import styled from "styled-components";
 
+import { GATHER_SHARE_IMAGES } from "../../../assets/images/imageUrl";
+import Divider from "../../../components/atoms/Divider";
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../components/layouts/PageSlide";
 import { useGatherIDQuery } from "../../../hooks/gather/queries";
@@ -14,12 +17,12 @@ import GatherComments from "../../../pageTemplates/gather/detail/GatherComments"
 import GatherContent from "../../../pageTemplates/gather/detail/GatherContent";
 import GatherDetailInfo from "../../../pageTemplates/gather/detail/GatherDetail";
 import GatherHeader from "../../../pageTemplates/gather/detail/GatherHeader";
-import GatherOrganizer from "../../../pageTemplates/gather/detail/GatherOrganizer";
 import GatherParticipation from "../../../pageTemplates/gather/detail/GatherParticipation";
 import GatherTitle from "../../../pageTemplates/gather/detail/GatherTitle";
 import { transferGatherDataState } from "../../../recoils/transferRecoils";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import { getRandomIdx } from "../../../utils/mathUtils";
 
 function GatherDetail() {
   const { data: session } = useSession();
@@ -50,25 +53,31 @@ function GatherDetail() {
       {gather ? (
         <>
           <GatherHeader gatherData={gather} />
+          <Box aspectRatio={2 / 1} position="relative">
+            <Image
+              src={
+                gather?.image || GATHER_SHARE_IMAGES[getRandomIdx(GATHER_SHARE_IMAGES.length - 1)]
+              }
+              fill={true}
+              sizes="400px"
+              alt="study"
+              priority={true}
+            />
+          </Box>
           <Slide isNoPadding>
-            <Layout>
-              <GatherOrganizer
-                createdAt={gather.createdAt}
-                organizer={gather.user as IUserSummary}
-                isAdminOpen={gather.isAdminOpen}
-                category={gather.type.title}
-              />
+            <Box paddingBottom="100px">
+              <GatherTitle title={gather.title} category={gather.type.title} />
               <GatherDetailInfo data={gather} />
-              <GatherTitle title={gather.title} status={gather.status} />
               <GatherContent
                 kakaoUrl={gather?.kakaoUrl}
                 content={gather.content}
                 gatherList={gather.gatherList}
                 isMember={isMember}
               />
+              <Divider />
               <GatherParticipation data={gather} />
               <GatherComments comments={gather.comments} />
-            </Layout>
+            </Box>
           </Slide>
           {!isGuest && <GatherBottomNav data={gather} />}
         </>
@@ -78,12 +87,5 @@ function GatherDetail() {
     </>
   );
 }
-
-const Layout = styled.div`
-  display: flex;
-  flex-direction: column;
-  background-color: var(--gray-100);
-  padding-bottom: 100px;
-`;
 
 export default GatherDetail;

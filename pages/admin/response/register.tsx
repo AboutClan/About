@@ -4,7 +4,6 @@ import { Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import Avatar from "../../../components/atoms/Avatar";
 import Header from "../../../components/layouts/Header";
 import { useUserRegisterFormsQuery } from "../../../hooks/admin/quries";
 import CheckRegisterModal from "../../../modals/admin/checkRegisterModal/CheckRegisterModal";
@@ -45,7 +44,7 @@ function AdminRegister() {
         <Main>
           {applyData?.map((who, idx) => (
             <Item key={idx}>
-              <Avatar uid={who.uid} image={who.profileImage} size="md" />
+              {/* <Avatar user={who} size="md1" /> */}
               <Summary>
                 <div>
                   <span>{who?.name}</span>
@@ -79,8 +78,6 @@ function AdminRegister() {
 const Layout = styled.div`
   padding: 14px;
 `;
-
-
 
 const Main = styled.main`
   display: flex;

@@ -16,7 +16,6 @@ export default function InviteUserGroups({
   existUsers,
   type,
 }: IInviteUserGroups) {
-
   return (
     <Grid mt="20px" templateColumns="repeat(3,1fr)" gap="12px">
       {users?.map((who, idx) => {
@@ -27,13 +26,7 @@ export default function InviteUserGroups({
           .includes(who.uid);
         return (
           <Flex key={idx} justify="center" align="center">
-            <Avatar
-              userId={who._id}
-              image={who.profileImage}
-              avatar={who.avatar}
-              uid={who.uid}
-              size="md"
-            />
+            <Avatar user={who} size="sm1" />
             <Flex direction="column" ml="8px">
               <Box>{who.name}</Box>
               <Button

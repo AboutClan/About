@@ -86,12 +86,7 @@ function Profile() {
             프로필 수정
           </Box>
           <Flex justify="center" mt={5} mb={4}>
-            <Avatar
-              uid={userInfo?.uid}
-              avatar={userInfo?.avatar}
-              image={userInfo?.profileImage}
-              size="xxl"
-            />
+            <Avatar user={userInfo} size="xxl1" />
             <Box position="relative">
               <IconWrapper
                 onClick={() => {

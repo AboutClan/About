@@ -29,7 +29,6 @@ export interface StudyThumbnailCardProps {
     _id: string;
   };
   participants?: UserSimpleInfoProps[];
-
   url: string;
   status: StudyStatus | "recruiting" | "expected";
   func?: () => void;
@@ -44,12 +43,6 @@ export function StudyThumbnailCard({
   func = undefined,
   isMyStudy,
 }: StudyThumbnailCardProps) {
-  const userAvatarArr = participants.map((par) => {
-    return {
-      image: par.profileImage,
-      ...(par.avatar?.type !== null ? { avatar: par.avatar } : {}),
-    };
-  });
   return (
     <CardLink href={url} onClick={func} isbordermain={status === "recruiting" ? "true" : "false"}>
       <>
@@ -100,7 +93,7 @@ export function StudyThumbnailCard({
           <Flex mb={1} mt="auto" alignItems="center" justify="space-between">
             <Box>
               <AvatarGroupsOverwrap
-                userAvatarArr={userAvatarArr}
+                users={participants}
                 maxCnt={status === "recruiting" ? 8 : VOTER_SHOW_MAX}
               />
             </Box>

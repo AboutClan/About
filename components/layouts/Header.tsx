@@ -87,7 +87,6 @@ const HeaderContainer = styled.header<{
   isTransparent: boolean;
 }>`
   background-color: ${(props) => (props.isTransparent ? "transparent" : "white")};
-
   height: var(--header-h);
   font-size: 16px;
   padding-right: ${(props) => props.rightPadding || 20}px;

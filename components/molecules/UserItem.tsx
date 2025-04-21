@@ -12,13 +12,7 @@ interface IUserItem {
 export function UserItem({ user, children }: IUserItem) {
   return (
     <MemberItem key={user.uid}>
-      <Avatar
-        userId={user._id}
-        image={user.profileImage}
-        avatar={user.avatar}
-        uid={user.uid}
-        size="sm"
-      />
+      <Avatar user={user} size="sm1" />
       <UserOverview>
         <span>{user?.name}</span>
         <div>{user.comment}</div>

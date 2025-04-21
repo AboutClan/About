@@ -8,7 +8,6 @@ import { CommentProps } from "../../../types/models/commonTypes";
 import { IUserSummary, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import Avatar from "../../atoms/Avatar";
 import UserBadge from "../../atoms/badges/UserBadge";
-import BasicAvatar from "../../atoms/BasicAvatar";
 import Textarea from "../../atoms/Textarea";
 import { ChatTalkIcon } from "../../Icons/chatIcons";
 
@@ -52,17 +51,8 @@ export default function ProfileCommentCard({
     <>
       <Flex py={3} h="74px" align="center" borderBottom="var(--border)">
         {leftComponent && <Box mr="16px">{leftComponent}</Box>}
-        {user ? (
-          <Avatar
-            userId={user._id}
-            image={user.profileImage}
-            size="md"
-            avatar={user.avatar}
-            uid={user.uid}
-          />
-        ) : (
-          <BasicAvatar />
-        )}
+        <Avatar user={user} size="md1" />
+
         <Flex direction="column" flex={0.95} justify="center" ml={3} my={1}>
           <Flex align="center" mb={memo || comment ? 1 : 0}>
             <Box lineHeight="20px" mr={1} fontWeight="semibold" fontSize="13px">

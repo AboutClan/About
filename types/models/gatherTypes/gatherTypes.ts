@@ -3,7 +3,7 @@ import { Dayjs } from "dayjs";
 import { UserCommentProps } from "../../components/propTypes";
 import { Location } from "../../services/locationTypes";
 import { TimeStampProps } from "../../utils/timeAndDate";
-import { IUserSummary } from "../userTypes/userInfoTypes";
+import { IUserSummary, UserSimpleInfoProps } from "../userTypes/userInfoTypes";
 
 export interface IGather extends Omit<IGatherWriting, "date">, TimeStampProps {
   date: string;
@@ -30,7 +30,7 @@ export interface IGatherWriting {
   password?: string;
   age: number[];
   preCnt?: number;
-  user: IUserSummary | string;
+  user: string | UserSimpleInfoProps;
   isAdminOpen?: boolean;
   image?: string;
   kakaoUrl?: string;

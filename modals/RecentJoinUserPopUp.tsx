@@ -67,7 +67,7 @@ function RecentJoinUserPopUp({ users, setIsModal }: RecentJoinUserPopUpProps) {
             pl="4px"
           >
             <Flex align="center">
-              <Avatar userId={user._id } uid={user.uid} avatar={user.avatar} image={user.profileImage} size="md" />
+              <Avatar user={user} size="md1" />
               <Box ml="12px" fontSize="16px">
                 {user.name}
               </Box>

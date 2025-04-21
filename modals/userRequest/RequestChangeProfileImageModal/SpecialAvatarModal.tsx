@@ -74,11 +74,13 @@ function SpecialAvatarModal({ setIsModal }: ISpecialAvatarModal) {
         <AnimatePresence>
           <IconWrapper variants={variants} initial="entry" animate="center" exit="exit">
             <Avatar
-              avatar={{
-                bg: BG,
-                type: userInfo?.avatar.type,
+              user={{
+                avatar: {
+                  bg: BG,
+                  type: userInfo?.avatar.type,
+                },
               }}
-              size="xl"
+              size="xl1"
             />
             <IconPoint>현재 프로필</IconPoint>
           </IconWrapper>

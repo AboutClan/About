@@ -28,22 +28,14 @@ function RankingOverview({ rank, value }: IRankingOverview) {
         <ProfileContainer isGuest={isGuest}>
           {userInfo ? (
             <ProfileWrapper>
-              <Avatar
-                image={userInfo.profileImage}
-                avatar={userInfo.avatar}
-                uid={userInfo.uid}
-                size="lg"
-                userId={userInfo._id}
-                isPriority={true}
-                isLink={false}
-              />
+              <Avatar user={userInfo} size="xl1" isPriority={true} isLink={false} />
               <Box fontSize="12px" mt={2} fontWeight="semibold">
                 {userInfo?.uid === "2259633694" ? "비공개" : userInfo?.name}
               </Box>
             </ProfileWrapper>
           ) : isGuest ? (
             <ProfileWrapper>
-              <Avatar image="" avatar={{ type: 0, bg: 1 }} uid="" size="lg" isPriority={true} />
+              <Avatar user={{ avatar: { type: 0, bg: 1 } }} size="xl1" isPriority={true} />
               <Box>게스트</Box>
             </ProfileWrapper>
           ) : null}

@@ -1,7 +1,8 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import styled from "styled-components";
 
 import BlurredLink from "../../../components/molecules/BlurredLink";
+import InfoBoxCol, { InfoBoxProps } from "../../../components/molecules/InfoBoxCol";
 import { IGatherListItem } from "../../../types/models/gatherTypes/gatherTypes";
 
 interface IGather {
@@ -12,8 +13,22 @@ interface IGather {
 }
 
 function GatherContent({ isMember, kakaoUrl, content, gatherList }: IGather) {
+  const firstItem = gatherList?.[0];
+  const secondItem = gatherList?.[1];
+
+  const infoBoxPropsArr: InfoBoxProps[] = [
+    {
+      category: `1차 참여(${firstItem?.text}):`,
+      text: `${firstItem.time.hours}:${firstItem.time.minutes || firstItem.time.minutes + "0"}`,
+    },
+    {
+      category: `2차 참여(${secondItem?.text}):`,
+      text: `${secondItem.time.hours}:${secondItem.time.minutes || secondItem.time.minutes + "0"}`,
+    },
+  ];
+
   return (
-    <Layout>
+    <Flex px={5} pt={4} pb={2} flexDir="column">
       <Content>{content}</Content>
       {kakaoUrl && (
         <Box px={5} py={4}>
@@ -23,51 +38,19 @@ function GatherContent({ isMember, kakaoUrl, content, gatherList }: IGather) {
           <BlurredLink url={kakaoUrl} isBlur={!isMember} />
         </Box>
       )}
-      <ListContainer>
-        {gatherList?.map((item, idx) => (
-          <ListBlock key={idx}>
-            <span>{idx + 1}차</span>
-            <span>{item.text}</span>
-            <span>
-              {item.time.hours}:{item.time.minutes || item.time.minutes + "0"}
-            </span>
-          </ListBlock>
-        ))}
-      </ListContainer>
-    </Layout>
+      <Box borderTop="var(--border)" mt={5}>
+        <InfoBoxCol infoBoxPropsArr={infoBoxPropsArr} highlightSide="right" />
+      </Box>
+    </Flex>
   );
 }
 
-const Layout = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-height: 140px;
-  border-bottom: 6px solid var(--gray-200);
-`;
 const Content = styled.pre`
   min-height: 100px;
   background-color: white;
-  padding: var(--gap-4);
   white-space: pre-wrap;
-  padding-bottom: var(--gap-4);
   font-family: apple;
-`;
-
-const ListContainer = styled.div`
-  padding: var(--gap-3) 16px;
-
-  background-color: var(--gray-100);
-  border: var(--border);
-`;
-
-const ListBlock = styled.div`
-  > span:first-child {
-    margin-right: var(--gap-3);
-    font-weight: 700;
-  }
-  > span:last-child {
-    margin-left: var(--gap-2);
-  }
+  color: var(--gray-800);
 `;
 
 export default GatherContent;

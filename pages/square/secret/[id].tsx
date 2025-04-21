@@ -23,7 +23,7 @@ import { MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoadi
 import KakaoShareBtn from "../../../components/Icons/KakaoShareBtn";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
-import OrganizerBar from "../../../components/molecules/OrganizerBar";
+import PostAuthorCard from "../../../components/molecules/cards/PostAuthorCard";
 import { SECRET_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import {
@@ -155,7 +155,7 @@ function SecretSquareDetailPage() {
                     </Badge>
                   </Box>
                   <section id="avatar-section">
-                    <OrganizerBar
+                    <PostAuthorCard
                       organizer={SECRET_USER_SUMMARY}
                       createdAt={squareDetail.createdAt}
                     >
@@ -195,7 +195,7 @@ function SecretSquareDetailPage() {
                           )}
                         </>
                       )}
-                    </OrganizerBar>
+                    </PostAuthorCard>
                   </section>
                 </>
               )}

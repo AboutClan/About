@@ -26,7 +26,7 @@ import {
   StudyMergeResultProps,
 } from "../../types/models/studyTypes/derivedTypes";
 import { IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
-import { IAvatar } from "../../types/models/userTypes/userInfoTypes";
+import { AvatarProps } from "../../types/models/userTypes/userInfoTypes";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
 import { StringTimeProps } from "../../types/utils/timeAndDate";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
@@ -40,7 +40,7 @@ export interface StudyInfoProps {
     user: {
       image: string;
       uid: string;
-      avatar: IAvatar;
+      avatar: AvatarProps;
     };
     text: string;
   };
@@ -185,7 +185,7 @@ function StudyInfoDrawer({ detailInfo, setDetailInfo, date, myStudy }: StudyInfo
         isOverlay
         isHideBottom
         zIndex={900}
-        height={185}
+        height={193}
         setIsModal={() => setDetailInfo(null)}
       >
         <Flex direction="column" w="100%">
@@ -209,7 +209,7 @@ function StudyInfoDrawer({ detailInfo, setDetailInfo, date, myStudy }: StudyInfo
                 </Box>
               </Flex>
               <Flex mt={2} align="center">
-                <Avatar {...detailInfo.comment.user} size="xs" />
+                <Avatar user={detailInfo.comment.user} size="xs1" />
                 <Box ml={1} fontSize="12px" color="var(--gray-600)">
                   {commentText}
                 </Box>
