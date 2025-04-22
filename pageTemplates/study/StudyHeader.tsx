@@ -8,7 +8,7 @@ import { MergeStudyPlaceProps } from "../../types/models/studyTypes/derivedTypes
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 interface IStudyHeader {
-  date: string;
+  date?: string;
   placeInfo: MergeStudyPlaceProps;
 }
 
