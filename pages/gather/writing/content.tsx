@@ -42,7 +42,7 @@ function WritingGatherContent() {
   return (
     <>
       <Slide isFixed={true}>
-        <ProgressStatus value={40} />
+        <ProgressStatus value={33} />
         <Header isSlide={false} title="" />
       </Slide>
       <RegisterLayout>

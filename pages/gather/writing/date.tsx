@@ -47,12 +47,12 @@ function WritingDate() {
   return (
     <>
       <Slide isFixed={true}>
-        <ProgressStatus value={60} />
+        <ProgressStatus value={50} />
         <Header isSlide={false} title="" />
       </Slide>
       <RegisterLayout>
         <RegisterOverview>
-          <span>날짜와 주제를 선택해 주세요.</span>
+          <span>날짜와 시간을 선택해 주세요.</span>
         </RegisterOverview>
         <GatherWritingDateDate date={date} setDate={setDate} gatherWriting={gatherWriting} />
         <GatherWritingDateSubject

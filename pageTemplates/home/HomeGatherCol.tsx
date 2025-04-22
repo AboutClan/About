@@ -61,6 +61,7 @@ export const setGatherDataToCardCol = (
   func?: (gather: IGather) => void,
 ): GatherThumbnailCardProps[] => {
   const cardCol: GatherThumbnailCardProps[] = gathers.map((gather, idx) => {
+    console.log(24, gather);
     if (!imageCache[gather.id]) {
       imageCache[gather.id] = gather.image || getRandomImage();
     }

@@ -1,12 +1,12 @@
-import { GATHER_RANDOM_IMAGE_ARR } from "../assets/images/randomImages";
+import { GATHER_MAIN_IMAGE } from "../assets/gather";
 
 export const getRandomImage = () => {
-  const idx = Math.floor(Math.random() * GATHER_RANDOM_IMAGE_ARR.length);
-  return GATHER_RANDOM_IMAGE_ARR[idx];
+  const idx = Math.floor(Math.random() * GATHER_MAIN_IMAGE.length);
+  return GATHER_MAIN_IMAGE[idx];
 };
 export const getRandomStudyImage = () => {
-  const idx = Math.floor(Math.random() * GATHER_RANDOM_IMAGE_ARR.length);
-  return GATHER_RANDOM_IMAGE_ARR[idx];
+  const idx = Math.floor(Math.random() * GATHER_MAIN_IMAGE.length);
+  return GATHER_MAIN_IMAGE[idx];
 };
 
 export const optimizeImage = (file: File): Promise<Blob> => {

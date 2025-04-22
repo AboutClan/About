@@ -35,7 +35,7 @@ function WritingGatherCategory() {
   return (
     <>
       <Slide isFixed={true}>
-        <ProgressStatus value={20} />
+        <ProgressStatus value={16} />
         <Header isSlide={false} title="" />
       </Slide>
       <RegisterLayout>

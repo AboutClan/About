@@ -27,6 +27,7 @@ const GATHER_WRITING_SEQUENCE = {
   date: 3,
   location: 4,
   condition: 5,
+  image: 6,
 };
 
 const GROUP_WRITING_SEQUENCE = {

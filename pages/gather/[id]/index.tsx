@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
-import { GATHER_SHARE_IMAGES } from "../../../assets/images/imageUrl";
+import { GATHER_COVER_IMAGE } from "../../../assets/gather";
 import Divider from "../../../components/atoms/Divider";
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../components/layouts/PageSlide";
@@ -39,9 +39,6 @@ function GatherDetail() {
       setGather(gatherData);
       setTransferGather(gatherData);
     } else if (transferGather) setGather(transferGather);
-    // return () => {
-    //   setTransferGather(null);
-    // };
   }, [transferGather, gatherData]);
 
   const isMember =
@@ -57,7 +54,8 @@ function GatherDetail() {
             <Box aspectRatio={2 / 1} position="relative">
               <Image
                 src={
-                  gather?.image || GATHER_SHARE_IMAGES[getRandomIdx(GATHER_SHARE_IMAGES.length - 1)]
+                  gather?.coverImage ||
+                  GATHER_COVER_IMAGE[getRandomIdx(GATHER_COVER_IMAGE.length - 1)]
                 }
                 fill={true}
                 sizes="400px"

@@ -43,12 +43,12 @@ function WritingGahterLocation() {
   return (
     <>
       <Slide isFixed={true}>
-        <ProgressStatus value={80} />
+        <ProgressStatus value={66} />
         <Header isSlide={false} title="" />
       </Slide>
       <RegisterLayout>
         <RegisterOverview>
-          <span>날짜와 장소를 선택해 주세요.</span>
+          <span>모임 장소를 입력해 주세요.</span>
         </RegisterOverview>
         <Location>
           <SearchLocation placeInfo={placeInfo} setPlaceInfo={setPlaceInfo} />

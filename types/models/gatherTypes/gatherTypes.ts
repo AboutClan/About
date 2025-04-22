@@ -33,6 +33,7 @@ export interface IGatherWriting {
   user: string | UserSimpleInfoProps;
   isAdminOpen?: boolean;
   image?: string;
+  coverImage?: string;
   kakaoUrl?: string;
   isApprovalRequired?: boolean;
 }

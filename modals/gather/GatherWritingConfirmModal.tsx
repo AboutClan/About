@@ -1,5 +1,6 @@
 /* eslint-disable */
 
+import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -32,8 +33,6 @@ function GatherWritingConfirmModal({ setIsModal, gatherData }: IGatherWritingCon
   const [isGatherEdit, setIsGatherEdit] = useRecoilState(isGatherEditState);
   const resetQueryData = useResetQueryData();
   const setGatherContent = useSetRecoilState(sharedGatherWritingState);
-
-
 
   const { mutate } = useGatherWritingMutation("post", {
     onSuccess() {
@@ -80,8 +79,9 @@ function GatherWritingConfirmModal({ setIsModal, gatherData }: IGatherWritingCon
           footerOptions={footerOptions}
         >
           <>
-            {isFirst ? "개설 내용을 확인해 주세요!" : "선택사항. 기본 랜덤 이미지로 설정됩니다."}
-
+            <Box mb={5}>
+              {isFirst ? "개설 내용을 확인해 주세요!" : "선택사항. 기본 랜덤 이미지로 설정됩니다."}
+            </Box>
             {isFirst ? (
               <Container>
                 <Item>
@@ -128,7 +128,8 @@ const Item = styled.div`
   display: flex;
   > span:first-child {
     display: inline-block;
-    width: 32px;  text-align: start;
+    width: 32px;
+    text-align: start;
     font-weight: 600;
     margin-right: var(--gap-2);
   }

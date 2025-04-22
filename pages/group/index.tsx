@@ -6,7 +6,7 @@ import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 // import RuleModal from "../../components/modals/RuleModal";
-import { GATHER_RANDOM_IMAGE_ARR } from "../../assets/images/randomImages";
+import { GATHER_MAIN_IMAGE } from "../../assets/gather";
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import SectionHeader from "../../components/atoms/SectionHeader";
 import Select from "../../components/atoms/Select";
@@ -291,9 +291,7 @@ export const createGroupThumbnailProps = (
     group.isSecret ? { user: ABOUT_USER_SUMMARY } : user,
   ),
   imageProps: {
-    image:
-      group?.squareImage ||
-      GATHER_RANDOM_IMAGE_ARR[getRandomIdx(GATHER_RANDOM_IMAGE_ARR.length - 1)],
+    image: group?.squareImage || GATHER_MAIN_IMAGE[getRandomIdx(GATHER_MAIN_IMAGE.length - 1)],
     isPriority: isPriority && idx < 4,
   },
   maxCnt: group.memberCnt.max,

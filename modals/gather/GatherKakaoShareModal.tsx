@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import styled from "styled-components";
 
-import { GATHER_SHARE_IMAGES } from "../../assets/images/imageUrl";
+import { GATHER_COVER_IMAGE } from "../../assets/images/imageUrl";
 import KakaoShareBtn from "../../components/Icons/KakaoShareBtn";
 import { WEB_URL } from "../../constants/system";
 import { ModalSubtitle } from "../../styles/layout/modal";
@@ -40,7 +40,7 @@ function GatherKakaoShareModal({ title, date, locationMain, setIsModal }: IGathe
         isBig={true}
         img={
           adminImageUrl ||
-          (selectedItem !== null ? GATHER_SHARE_IMAGES[selectedItem] : GATHER_SHARE_IMAGES[1])
+          (selectedItem !== null ? GATHER_COVER_IMAGE[selectedItem] : GATHER_COVER_IMAGE[1])
         }
       />
     ),
@@ -50,7 +50,7 @@ function GatherKakaoShareModal({ title, date, locationMain, setIsModal }: IGathe
     <ModalLayout footerOptions={footerOptions} title="공유 이미지 선택" setIsModal={setIsModal}>
       <ModalSubtitle>단톡방에 공유 할 이미지를 선택해 주세요!</ModalSubtitle>
       <Container>
-        {GATHER_SHARE_IMAGES.map((item, idx) => (
+        {GATHER_COVER_IMAGE.map((item, idx) => (
           <Item key={idx} onClick={() => onClickItem(idx)} isSelected={idx === selectedItem}>
             <Image src={item} fill={true} sizes="150px" alt="gatherShareImage" />
           </Item>

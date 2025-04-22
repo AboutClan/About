@@ -1,4 +1,5 @@
 import { Box, Button, Flex, Switch } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
@@ -10,13 +11,11 @@ import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
-import GatherWritingConfirmModal from "../../../modals/gather/GatherWritingConfirmModal";
 import GatherWritingUserConditionModal from "../../../modals/gather/GatherWritingUserConditionModal";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
 import { IGatherWriting } from "../../../types/models/gatherTypes/gatherTypes";
-import { Location } from "../../../types/services/locationTypes";
 import { randomPassword } from "../../../utils/validationUtils";
 
 export type GatherConditionType =
@@ -29,6 +28,7 @@ export type GatherConditionType =
   | "isApprove";
 
 function WritingCondition() {
+  const router = useRouter();
   const [gatherContent, setGatherContent] = useRecoilState(sharedGatherWritingState);
   const { data: session } = useSession();
 
@@ -44,11 +44,8 @@ function WritingCondition() {
 
   const [isMemberConditionModal, setIsMemberConditionModal] = useState(false);
   const [password, setPassword] = useState(gatherContent?.password);
-  const [location, setLocation] = useState<Location | "전체">(
-    gatherContent?.place || session?.user.location,
-  );
+
   const [kakaoUrl, setKakaoUrl] = useState<string>("");
-  const [isConfirmModal, setIsConfirmModal] = useState(false);
 
   // const isManager = ["manager", "previliged"].includes(session?.user.role);
 
@@ -64,13 +61,12 @@ function WritingCondition() {
       genderCondition: condition.gender,
       password,
       user: session?.user.id,
-      place: location || session?.user.location,
       isAdminOpen: !condition.manager,
       kakaoUrl,
       isApprovalRequired: condition.isApprove,
     };
     setGatherContent(gatherData);
-    setIsConfirmModal(true);
+    router.push("/gather/writing/image");
   };
 
   useEffect(() => {
@@ -79,10 +75,6 @@ function WritingCondition() {
 
   const toggleSwitch = (e: ChangeEvent<HTMLInputElement>, type: GatherConditionType) => {
     const isChecked = e.target.checked;
-
-    if (type === "location" && isChecked) {
-      setLocation(session?.user.location);
-    }
     setCondition((old) => {
       return { ...old, [type]: isChecked };
     });
@@ -107,7 +99,7 @@ function WritingCondition() {
     <>
       <>
         <Slide isFixed={true}>
-          <ProgressStatus value={100} />
+          <ProgressStatus value={83} />
           <Header isSlide={false} title="" />
         </Slide>
         <RegisterLayout>
@@ -149,21 +141,6 @@ function WritingCondition() {
               />
             </Item>
 
-            {/* <Item>
-              <Name>
-                <div>
-                  <i className="fa-solid fa-key" />
-                </div>
-                <span>암호키</span>
-              </Name>
-              <Switch
-                mr="var(--gap-1)"
-                colorScheme="mint"
-                isChecked={condition.pre}
-                onChange={(e) => toggleSwitch(e, "pre")}
-              />
-            </Item> */}
-
             <Item>
               <Name>
                 <div>
@@ -193,33 +170,11 @@ function WritingCondition() {
                 <Input size="sm" value={kakaoUrl} onChange={(e) => setKakaoUrl(e.target.value)} />
               </Flex>
             )}
-            {/* {isManager && (
-              <Item>
-                <Name>
-                  <div>
-                    <i className="fa-solid fa-user-police" />
-                  </div>
-                  <span>운영진 참여</span>
-                  <PopOverIcon
-                    title="운영진 기능"
-                    text="운영진에게만 표시되는 기능입니다. 본인의 참여 여부를 선택할 수 있습니다."
-                  />
-                </Name>
-                <Switch
-                  mr="var(--gap-1)"
-                  colorScheme="mint"
-                  isChecked={condition.manager}
-                  onChange={(e) => toggleSwitch(e, "manager")}
-                />
-              </Item>
-            )} */}
           </Container>
         </RegisterLayout>
-        <BottomNav onClick={() => onClickNext()} text="완료" />
+        <BottomNav onClick={() => onClickNext()} />
       </>
-      {isConfirmModal && (
-        <GatherWritingConfirmModal setIsModal={setIsConfirmModal} gatherData={gatherContent} />
-      )}
+
       {isMemberConditionModal && (
         <GatherWritingUserConditionModal
           type="gather"

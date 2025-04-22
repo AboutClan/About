@@ -48,6 +48,7 @@ function DailyCheckModal({ setIsModal }: IModal) {
     },
     onError() {
       toast("error", "이미 오늘의 출석체크를 완료했습니다.");
+      setIsModal(false);
     },
   });
 
@@ -65,7 +66,6 @@ function DailyCheckModal({ setIsModal }: IModal) {
 
     setDailyCheck();
   };
-  console.log(24, randomValue);
 
   const footerOptions: IFooterOptions = {
     main: {
@@ -102,7 +102,7 @@ function DailyCheckModal({ setIsModal }: IModal) {
                     color="var(--gray-600)"
                     p="8px 12px"
                   >
-                    현재 {userInfo?.name}님의 등급은 <b>{badge}</b>입니다.
+                    {userInfo?.name}님의 현재 등급은 <b>{badge}</b>입니다.
                   </Box>
                 </Box>
               </Flex>

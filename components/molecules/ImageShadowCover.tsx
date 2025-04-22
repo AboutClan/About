@@ -26,18 +26,20 @@ function ImageShadowCover({ text, color, size }: ImageShadowCoverProps) {
         zIndex={5}
         borderRadius="8px"
       >
-        <Box
+        <Flex
+          justify="center"
+          align="center"
           borderRadius="4px"
           color="white"
           bg={color}
           fontSize={size === "lg" ? "11px" : "8px"}
           w={size === "lg" ? "80px" : "40px"}
           fontWeight="semibold"
-          lineHeight={size === "lg" ? "20px" : "12px"}
+          lineHeight={size === "lg" ? "20px" : "24px"}
           textAlign="center"
         >
           {text}
-        </Box>
+        </Flex>
       </Box>
     </Flex>
   );
