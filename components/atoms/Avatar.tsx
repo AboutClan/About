@@ -8,7 +8,6 @@ import { AVATAR_BG_IMAGES } from "../../assets/images/avatarBgImages";
 import { AVATAR_IMAGES } from "../../assets/images/avatarImages";
 import { COLOR_TABLE_LIGHT } from "../../constants/colorConstants";
 import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
-import { SPECIAL_AVATAR } from "../../storage/avatarStorage";
 import { AvatarProps } from "../../types/models/userTypes/userInfoTypes";
 
 // type Size = "2xs" | "xs" | "sm" | "smd" | "mds" | "md" | "lg" | "xl" | "slg" | "xxl";
@@ -53,24 +52,12 @@ function AvatarComponent({
 }: IAvatar) {
   const { avatar, _id: userId, profileImage: image } = user || {};
   const hasAvatar = avatar !== undefined && avatar?.type !== null && avatar?.bg !== null;
- 
-  const [imageUrl, setImageUrl] = useState(
-    !hasAvatar
-      ? image
-      : avatar.type >= 100
-      ? SPECIAL_AVATAR[avatar.type - 100].image
-      : AVATAR_IMAGES[avatar.type].image,
-  );
+
+  const [imageUrl, setImageUrl] = useState(!hasAvatar ? image : AVATAR_IMAGES[avatar.type].image);
   const [bgImage, setBgImage] = useState<string | null>(null);
 
   useEffect(() => {
-    setImageUrl(
-      !hasAvatar
-        ? image
-        : avatar.type >= 100
-        ? SPECIAL_AVATAR[avatar.type - 100].image
-        : AVATAR_IMAGES[avatar.type].image,
-    );
+    setImageUrl(!hasAvatar ? image : AVATAR_IMAGES[avatar.type].image);
     if (avatar?.bg >= 100) {
       setBgImage(`url(${AVATAR_BG_IMAGES[avatar?.bg - 100].image})`);
     } else {
