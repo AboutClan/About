@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 
 import { STUDY_COVER_IMAGES } from "../../../../assets/images/studyCover";
 import { STUDY_MAIN_IMAGES } from "../../../../assets/images/studyMain";
@@ -113,12 +113,12 @@ export default function Page() {
       : null);
 
   const myRealTimeStudy = findMyStudy?.members.find((who) => who.user._id === session?.user.id);
- 
+
   return (
     <>
       {studyVoteData ? (
         <>
-          <StudyHeader placeInfo={placeInfo} />
+          <StudyHeader date={date} placeInfo={placeInfo} />
           <Box mb={5}>
             <Slide isNoPadding>
               <StudyCover coverImage={placeInfo.coverImage} />
