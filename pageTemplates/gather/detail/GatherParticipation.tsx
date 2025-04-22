@@ -45,7 +45,7 @@ function GatherParticipation({ data }: IGatherParticipation) {
       <Flex flexDir="column" px={5}>
         <ParticipationBar
           type={status as "open" | "pending"}
-          participantsCnt={participantsCnt}
+          participantsCnt={participantsCnt + 1}
           maxCnt={data?.memberCnt.max}
         />
         <ProfileCardColumn hasCommentButton={false} userCardArr={[organizerCard, ...userCardArr]} />

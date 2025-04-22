@@ -124,7 +124,7 @@ function ProfileInfo({ user }: IProfileInfo) {
               </Box>
             </Flex>
             <Box fontSize="12px" color="gray.500">
-              {dayjsToFormat(dayjs(userInfo?.registerDate), "YYYY년 M월 d일 가입") || "게스트"}
+              {dayjsToFormat(dayjs(user?.registerDate), "YYYY년 M월 d일 가입") || "게스트"}
             </Box>
           </Flex>
           {user && user?.uid !== session?.user?.uid && (

@@ -11,7 +11,7 @@ function DetailInfo({ user, groups }: { user: IUser; groups: string[] }) {
 
   const isPrivate =
     user?.isPrivate && !user?.friend.includes(session?.user.uid) && user?.uid !== session?.user.uid;
-  console.log(user, groups);
+ 
 
   const itemMapping: { category: string; text: string }[] = [
     {

@@ -24,25 +24,29 @@ function StoreGiftWinModal({ setIsModal, applicants, winCnt }: IStoreGiftWinModa
       text: "확인",
     },
   };
-
+ 
   return (
     <ModalLayout title="당첨자 발표" footerOptions={footerOptions} setIsModal={setIsModal}>
-      <Box mb={2} color="gray.700" lineHeight="20px">
-        당첨을 축하합니다.
+      <Box mb={4} color="gray.700" lineHeight="20px">
+        당첨을 축하합니다
       </Box>
       <Flex py={2} bg="gray.100" border="1px solid var(--gray-200)" borderRadius="8px">
-        {winners.map((num, idx) => (
-          <Box
-            flex={1}
-            color="mint"
-            fontSize="14px"
-            fontWeight="semibold"
-            lineHeight="20px"
-            key={idx}
-          >
-            {users[num]?.name?.[0]}*{users[num]?.name?.[2]}
-          </Box>
-        ))}
+        {winners.map((num, idx) => {
+          const name = users[num];
+          console.log(24, name);
+          return (
+            <Box
+              flex={1}
+              color="mint"
+              fontSize="14px"
+              fontWeight="semibold"
+              lineHeight="20px"
+              key={idx}
+            >
+              {name?.name?.[0]}*{name?.name?.[2]}
+            </Box>
+          );
+        })}
       </Flex>
     </ModalLayout>
   );

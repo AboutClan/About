@@ -9,10 +9,12 @@ function RegisterLayout({
   children,
   errorMessage,
   isSlide = true,
+  isNoPx = false,
 }: {
   children: ReactNode;
   errorMessage?: string;
   isSlide?: boolean;
+  isNoPx?: boolean;
 }) {
   const { handleSubmit } = useForm();
 
@@ -27,7 +29,7 @@ function RegisterLayout({
           </Layout>
         </Slide>
       ) : (
-        <Box px={5}>
+        <Box px={isNoPx ? 0 : 5}>
           <Layout onSubmit={handleSubmit(onValid)}>
             {children}
             <Message>{errorMessage}</Message>

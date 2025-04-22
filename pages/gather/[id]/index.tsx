@@ -53,18 +53,18 @@ function GatherDetail() {
       {gather ? (
         <>
           <GatherHeader gatherData={gather} />
-          <Box aspectRatio={2 / 1} position="relative">
-            <Image
-              src={
-                gather?.image || GATHER_SHARE_IMAGES[getRandomIdx(GATHER_SHARE_IMAGES.length - 1)]
-              }
-              fill={true}
-              sizes="400px"
-              alt="study"
-              priority={true}
-            />
-          </Box>
           <Slide isNoPadding>
+            <Box aspectRatio={2 / 1} position="relative">
+              <Image
+                src={
+                  gather?.image || GATHER_SHARE_IMAGES[getRandomIdx(GATHER_SHARE_IMAGES.length - 1)]
+                }
+                fill={true}
+                sizes="400px"
+                alt="study"
+                priority={true}
+              />
+            </Box>
             <Box paddingBottom="100px">
               <GatherTitle title={gather.title} category={gather.type.title} />
               <GatherDetailInfo data={gather} />

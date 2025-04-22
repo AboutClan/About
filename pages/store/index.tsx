@@ -11,6 +11,7 @@ import { TrophyIcon } from "../../components/Icons/icons";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import PointGuideModalButton from "../../components/modalButtons/PointGuideModalButton";
+import ImageShadowCover from "../../components/molecules/ImageShadowCover";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import { useErrorToast } from "../../hooks/custom/CustomToast";
 import { useStoreGiftEntryQuery } from "../../hooks/sub/store/queries";
@@ -195,35 +196,11 @@ function StorePage() {
                           />
 
                           {(!isShowActive || item.max <= item.totalCnt) && (
-                            <Flex
-                              bg="rgba(0,0,0,0.2)"
-                              justify="center"
-                              align="center"
-                              position="absolute"
-                              w="full"
-                              h="full"
-                              borderRadius="8px"
-                            >
-                              <Box
-                                p={1}
-                                border="1px solid var(--color-red)"
-                                borderColor={isMyWin ? "mint" : "red"}
-                                zIndex={5}
-                                borderRadius="8px"
-                              >
-                                <Box
-                                  borderRadius="4px"
-                                  color="white"
-                                  bg={!isMyWin ? "var(--color-red)" : "mint"}
-                                  fontSize="11px"
-                                  w="80px"
-                                  fontWeight="semibold"
-                                  lineHeight="20px"
-                                >
-                                  {!isMyWin ? "추첨 완료" : "당 첨"}
-                                </Box>
-                              </Box>
-                            </Flex>
+                            <ImageShadowCover
+                              color={isMyWin ? "mint" : "red"}
+                              text={isMyWin ? "당 첨" : "추첨 완료"}
+                              size="lg"
+                            />
                           )}
                         </Box>
                         <Flex mt={3} mb={2} justify="space-between" w="full">

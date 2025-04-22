@@ -7,7 +7,7 @@ import HomeGatherCol from "./HomeGatherCol";
 
 function HomeGatherSection() {
   const { data: gathers } = useGatherQuery(-1);
-
+  
   const windowWidth = useWindowWidth(); // 현재 화면 너비 가져오기
   const width = windowWidth - 70;
 

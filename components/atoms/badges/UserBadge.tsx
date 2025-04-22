@@ -9,7 +9,7 @@ interface IUserBadge {
 
 export default function UserBadge({ score, uid }: IUserBadge) {
   const badge = getUserBadge(score, uid);
-  console.log(25, score, badge);
+ 
   return (
     <Badge
       h="20px"

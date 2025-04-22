@@ -31,7 +31,7 @@ function GatherContent({ isMember, kakaoUrl, content, gatherList }: IGather) {
     <Flex px={5} pt={4} pb={2} flexDir="column">
       <Content>{content}</Content>
       {kakaoUrl && (
-        <Box px={5} py={4}>
+        <Box py={4}>
           <Box mb={2} color="gray.600">
             톡방 링크(승인 후 공개)
           </Box>

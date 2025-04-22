@@ -34,6 +34,7 @@ export default function GatherMain() {
     category,
     sortBy === "등록일순" ? "createdAt" : "date",
   );
+
   useEffect(() => {
     setGathers([]);
     setCursor(0);

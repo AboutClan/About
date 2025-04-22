@@ -48,6 +48,7 @@ function GatherParticipateDrawer({ data }: IGatherParticipateDrawer) {
   const [value, setValue] = useState("");
 
   const setTransferFeedSummary = useSetRecoilState(transferFeedSummaryState);
+
   const { mutate: participate } = useGatherParticipationMutation("post", +id, {
     onSuccess() {
       typeToast("participate");
@@ -70,6 +71,7 @@ function GatherParticipateDrawer({ data }: IGatherParticipateDrawer) {
     enabled: !!data?.id && data.status === "open",
   });
 
+  const isMax = data?.memberCnt.max !== 0 && data?.participants.length + 1 > data?.memberCnt.max;
   const myUid = session?.user.uid;
   const isParticipant = data?.participants.some((who) => who?.user && who.user.uid === myUid);
   const groupId = router.query.id;
@@ -97,16 +99,16 @@ function GatherParticipateDrawer({ data }: IGatherParticipateDrawer) {
       router.push(`/feed/writing/gather?id=${data.id}`);
     }
   };
-
+  console.log(34, feed?.length);
   const getButtonSettings = () => {
     switch (data?.status) {
       case "open":
-        if (feed?.length) {
-          return {
-            text: "모임 후기 도착! 확인하러 가기",
-            handleFunction: () => setIsReviewDrawer(true),
-          };
-        }
+        // if (feed?.length) {
+        //   return {
+        //     text: "모임 후기 도착! 확인하러 가기",
+        //     handleFunction: () => setIsReviewDrawer(true),
+        //   };
+        // }
 
         if (myGather || isParticipant) {
           return {
@@ -132,6 +134,14 @@ function GatherParticipateDrawer({ data }: IGatherParticipateDrawer) {
     if (isParticipant) {
       return { text: "참여 취소", handleFunction: () => onClick("cancel") };
     }
+
+    if (isMax) {
+      return {
+        text: "빈자리 생기면 참여 요청",
+        handleFunction: () => sendRegisterForm({ phase: "first" }),
+      };
+    }
+
     return {
       text: "참여하기",
       handleFunction: () => {

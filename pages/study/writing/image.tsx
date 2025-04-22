@@ -10,7 +10,7 @@ import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
-import ImageBasicSlider from "../../../components/organisms/sliders/ImageBasicSlider";
+import ImageBasicSlider2 from "../../../components/organisms/sliders/ImageBasicSlider2";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useStudyAdditionMutation } from "../../../hooks/study/mutations";
 import { getStudyViewDate } from "../../../libs/study/date/getStudyDateStatus";
@@ -39,7 +39,6 @@ function WritingStudyImage() {
 
   const onClickNext = () => {
     if (!imageProps?.mainImage || !imageProps?.coverImage) {
-      
       toast("warning", "이미지를 선택해 주세요.");
       return;
     }
@@ -68,32 +67,36 @@ function WritingStudyImage() {
         <ProgressStatus value={100} />
         <Header isSlide={false} title="" />
       </Slide>
-      <RegisterLayout>
-        <RegisterOverview>
-          <span>메인 이미지로 등록할 사진을 선택해 주세요!</span>
-        </RegisterOverview>
+      <RegisterLayout isNoPx isSlide={false}>
+        <Slide isNoPadding>
+          <Box px={5}>
+            <RegisterOverview isShort>
+              <span>메인 이미지 사진을 선택해 주세요!</span>
+            </RegisterOverview>
+          </Box>
+          <Box ml={5}>
+            <ImageBasicSlider2
+              selectedImageUrl={imageProps?.mainImage}
+              imageTileArr={mainImageArr}
+              hasTextSkeleton={false}
+              aspect={1}
+            />
+          </Box>
+          <Box px={5} mt={10}>
+            <RegisterOverview isShort>
+              <span>커버 이미지 사진을 선택해 주세요!</span>
+            </RegisterOverview>
+          </Box>
 
-        <Box p="12px 0" borderBottom="var(--border)">
-          <ImageBasicSlider
-            selectedImageUrl={imageProps?.mainImage}
-            imageTileArr={mainImageArr}
-            size="md"
-            hasTextSkeleton={false}
-          />
-        </Box>
-        <RegisterOverview>
-          <span>커버 이미지로 등록할 사진을 선택해 주세요!</span>
-        </RegisterOverview>
-
-        <Box borderBottom="var(--border)">
-          <ImageBasicSlider
-            selectedImageUrl={imageProps?.coverImage}
-            imageTileArr={coverImageArr}
-            size="full"
-            aspect={2}
-            hasTextSkeleton={false}
-          />
-        </Box>
+          <Box pl={5}>
+            <ImageBasicSlider2
+              selectedImageUrl={imageProps?.coverImage}
+              imageTileArr={coverImageArr}
+              aspect={2}
+              hasTextSkeleton={false}
+            />
+          </Box>
+        </Slide>
       </RegisterLayout>
       <BottomNav text="완 료" onClick={() => onClickNext()} />
     </>

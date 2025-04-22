@@ -1,4 +1,5 @@
 import { Box, Button } from "@chakra-ui/react";
+import { ko } from "date-fns/locale";
 import dayjs from "dayjs";
 import { forwardRef, useEffect } from "react";
 import DatePicker from "react-datepicker";
@@ -62,7 +63,7 @@ function GatherWritingDateDate({ date, setDate, gatherWriting }: IGatherWritingD
           <StyledDatePicker
             {...PICKER_DATE_AND_TIME}
             customInput={<CustomInput />}
-            locale={dayjs.locale("ko")}
+            locale={ko}
             onChange={(date) => setDate(date as Date)}
             selected={date}
             minTime={TIME_RANGE_MIN}
@@ -100,7 +101,7 @@ const Container = styled.div`
   .react-datepicker__day-name {
     font-weight: 400;
     font-size: 12px;
-    margin: 0px 5.5px;
+    margin: 0px 4.2px;
   }
   .react-datepicker__day {
     font-weight: 400;

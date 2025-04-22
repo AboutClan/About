@@ -53,7 +53,7 @@ function AvatarComponent({
 }: IAvatar) {
   const { avatar, _id: userId, profileImage: image } = user || {};
   const hasAvatar = avatar !== undefined && avatar?.type !== null && avatar?.bg !== null;
-  console.log(25, avatar, userId, image);
+ 
   const [imageUrl, setImageUrl] = useState(
     !hasAvatar
       ? image

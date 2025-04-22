@@ -46,7 +46,7 @@ function StudyControlDrawer({
   const toast = useToast();
 
   const { data: userInfo } = useUserInfoQuery();
-  
+
   const { mutate: voteStudy } = useStudyVoteMutation(dayjs(date), "post", {
     onSuccess() {
       toast("success", "신청이 완료되었습니다. 매칭 결과를 기다려주세요!");
@@ -76,7 +76,6 @@ function StudyControlDrawer({
   const handleStudyVoteBtn = (
     type: "selectTime" | "pickPlace" | "directInputPlace" | "directAttend",
   ) => {
-  
     switch (type) {
       case "selectTime":
         setTimeRulletType("vote");
@@ -119,7 +118,6 @@ function StudyControlDrawer({
       func:
         timeRulletType === "participate"
           ? () => {
-             
               participateStudyOne({
                 placeId: selectedPlaceId,
                 start: voteTime.start,
@@ -140,10 +138,10 @@ function StudyControlDrawer({
                 end: voteTime.end,
               };
               handleStudyVote(voteData, "vote");
-            },  
+            },
     },
   };
- 
+
   return (
     <>
       {studyDrawerType && (
@@ -156,7 +154,7 @@ function StudyControlDrawer({
           height={studyDrawerType === "free" && studyResults?.length ? 249 : 197}
           zIndex={800}
         >
-          {(studyDrawerType !== "free" || studyResults?.length) && (
+          {studyDrawerType !== "free" || studyResults?.length ? (
             <Button
               h="52px"
               justifyContent="flex-start"
@@ -177,7 +175,7 @@ function StudyControlDrawer({
                   : "즐겨 찾는 위치에서 스터디 신청"}
               </Box>
             </Button>
-          )}
+          ) : null}
           <Button
             h="52px"
             justifyContent="flex-start"

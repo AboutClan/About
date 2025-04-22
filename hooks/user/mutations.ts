@@ -155,11 +155,17 @@ export const useUserFriendMutation = (
   options?: MutationOptions<string>,
 ) =>
   useMutation<void, AxiosError, string>(
-    (param) =>
+    async (param) =>
       requestServer<{ toUid: string }>({
         method,
         url: `user/friend`,
         body: { toUid: param },
       }),
+    options,
+  );
+
+export const useUpdateAllUserMutation = (options?: MutationOptions<void>) =>
+  useMutation<void, AxiosError, void>(
+    async () => await axios.patch(`${SERVER_URI}/user/allUserInfo`),
     options,
   );

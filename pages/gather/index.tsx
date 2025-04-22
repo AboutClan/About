@@ -11,6 +11,7 @@ import PageGuideModal from "../../modals/PageGuideModal";
 import GatherHeader from "../../pageTemplates/gather/GatherHeader";
 import GatherMain from "../../pageTemplates/gather/GatherMain";
 import SquareLoungeSection from "../../pageTemplates/square/SquareLoungeSection";
+import { sharedGatherWritingState } from "../../recoils/sharedDataAtoms";
 import { transferGatherDataState } from "../../recoils/transferRecoils";
 import { checkAndSetLocalStorage } from "../../utils/storageUtils";
 
@@ -24,11 +25,13 @@ function Gather() {
   const isGuest = session?.user.role === "guest";
 
   const setTrasnferGatherData = useSetRecoilState(transferGatherDataState);
+  const setTransferGatherWriting = useSetRecoilState(sharedGatherWritingState);
   const [isModal, setIsModal] = useState(false);
   const [tab, setTab] = useState<"번개" | "라운지">("번개");
 
   useEffect(() => {
     setTrasnferGatherData(null);
+    setTransferGatherWriting(null);
     if (!checkAndSetLocalStorage("gatherGuidePopUp", 21)) {
       setIsModal(true);
     }
