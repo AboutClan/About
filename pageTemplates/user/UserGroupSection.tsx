@@ -147,7 +147,7 @@ function UserGroupSection() {
       <Box minH="100dvh">
         {!groups.length && isLoading ? (
           [1, 2, 3, 4, 5].map((num) => <GroupSkeletonMain key={num} />)
-        ) : (
+        ) : groups.length ? (
           <Flex direction="column">
             {groups
               ?.slice()
@@ -179,7 +179,23 @@ function UserGroupSection() {
                 );
               })}
           </Flex>
-        )}{" "}
+        ) : (
+          <Flex
+            justify="center"
+            align="center"
+            fontSize="14px"
+            fontWeight="medium"
+            bg="gray.100"
+            px={3}
+            py={4}
+            minH="114px"
+            borderRadius="8px"
+            color="gray.600"
+            border="var(--border)"
+          >
+            현재 참여중인 모임이 없습니다.
+          </Flex>
+        )}
         <div ref={loader} />
         {isLoading && groups?.length ? (
           <Box position="relative" mt="32px">

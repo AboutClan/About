@@ -1,4 +1,5 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useSetRecoilState } from "recoil";
@@ -39,7 +40,6 @@ function UserGatherSection() {
       ? "isEnded"
       : "isOwner",
   );
- 
 
   useEffect(() => {
     setGathers([]);
@@ -80,7 +80,7 @@ function UserGatherSection() {
       }
     };
   }, []);
-
+  console.log(cardDataArr);
   return (
     <Box mx={5} pb={10}>
       <Flex h="44px" bg="rgba(66,66,66,0.04)" mb={3}>
@@ -169,9 +169,9 @@ function UserGatherSection() {
               </Box>
             ))}
           </>
-        ) : gatherType === "종료된 모임" ? (
+        ) : dayjs().year() < 1000 ? (
           <>
-            {[1, 2, 3, 4, 5].map((cardData, idx) => (
+            {[1, 2, 3, 4, 5].map((_, idx) => (
               <Box mb="12px" key={idx}>
                 <GatherSkeletonMain />
               </Box>
