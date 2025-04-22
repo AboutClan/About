@@ -5,8 +5,8 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import styled from "styled-components";
+import { GATHER_COVER_IMAGE } from "../../assets/gather";
 
-import { GATHER_COVER_IMAGE } from "../../assets/images/imageUrl";
 import KakaoShareBtn from "../../components/Icons/KakaoShareBtn";
 import { WEB_URL } from "../../constants/system";
 import { ModalSubtitle } from "../../styles/layout/modal";
