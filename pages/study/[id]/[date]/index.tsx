@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 import { STUDY_COVER_IMAGES } from "../../../../assets/images/studyCover";
 import { STUDY_MAIN_IMAGES } from "../../../../assets/images/studyMain";
