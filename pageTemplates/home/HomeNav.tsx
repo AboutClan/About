@@ -14,6 +14,11 @@ function HomeNav() {
           key={item.title}
           style={{ flex: 1, marginLeft: idx === 0 ? 0 : "8px" }}
           onClick={(e) => {
+            if (item.title === "스토어") {
+              e.preventDefault();
+              typeToast("inspection");
+              return;
+            }
             if (item.title === "게시판") {
               e.preventDefault();
               typeToast("inspection");
