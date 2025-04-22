@@ -11,7 +11,7 @@ import { COLOR_TABLE_LIGHT } from "../../../constants/colorConstants";
 import { USER_INFO } from "../../../constants/keys/queryKeys";
 import { useErrorToast, useFailToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
-import { AVATAR_COST, AVATAR_IMAGE_ARR } from "../../../storage/avatarStorage";
+import { AVATAR_COST } from "../../../storage/avatarStorage";
 import { IModal } from "../../../types/components/modalTypes";
 import { IFooterOptions, ModalLayout } from "../../Modals";
 interface IRequestChangeProfileImageModalAvatar extends IModal {
@@ -113,7 +113,7 @@ function RequestChangeProfileImageModalAvatar({
           </IconWrapper>
         </AnimatePresence>
         <ArrowIcon isLeft={false} onClick={() => handleMove("next")}>
-          {iconIdx !== AVATAR_IMAGE_ARR.length - 1 && <i className="fa-solid fa-chevron-right" />}
+          {iconIdx !== AVATAR_IMAGES.length - 1 && <i className="fa-solid fa-chevron-right" />}
         </ArrowIcon>
       </UpPart>
       <DownPart>
