@@ -1,12 +1,13 @@
 import { Box } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
 import WritingButton from "../../components/atoms/buttons/WritingButton";
 import Slide from "../../components/layouts/PageSlide";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
+import { useTypeToast } from "../../hooks/custom/CustomToast";
 import PageGuideModal from "../../modals/PageGuideModal";
 import GatherHeader from "../../pageTemplates/gather/GatherHeader";
 import GatherMain from "../../pageTemplates/gather/GatherMain";
@@ -16,12 +17,12 @@ import { transferGatherDataState } from "../../recoils/transferRecoils";
 import { checkAndSetLocalStorage } from "../../utils/storageUtils";
 
 function Gather() {
+  const typeToast = useTypeToast();
   const router = useRouter();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
   const tabParam = searchParams.get("tab");
   const { data: session } = useSession();
-
   const isGuest = session?.user.role === "guest";
 
   const setTrasnferGatherData = useSetRecoilState(transferGatherDataState);
@@ -54,6 +55,8 @@ function Gather() {
     {
       text: "라운지",
       func: () => {
+        typeToast("inspection");
+        return;
         newSearchParams.set("tab", "lounge");
         router.replace("gather" + "?" + newSearchParams.toString());
         setTab("라운지");
