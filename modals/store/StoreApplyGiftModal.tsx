@@ -55,7 +55,7 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
     },
   });
 
-  const totalCost = giftInfo.point * value;
+  const totalCost = giftInfo.point * value * 10;
 
   const totalCnt = giftInfo.users.reduce((acc, cur) => {
     return acc + cur.cnt;

@@ -119,7 +119,7 @@ function StoreItem() {
                 입니다.
               </Box>
               <Box mb={4} fontWeight="extrabold" fontSize="16px" lineHeight="24px" color="mint">
-                {giftInfo.point} Point
+                {giftInfo.point * 10} Point
               </Box>
               <Flex
                 w="full"

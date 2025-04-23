@@ -239,7 +239,7 @@ function StorePage() {
                           fontSize="13px"
                           lineHeight="20px"
                         >
-                          {item.point} Point
+                          {item.point * 10} Point
                         </Box>
                       </Button>
                     );
