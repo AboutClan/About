@@ -121,7 +121,7 @@ export default function BottomFlexDrawer({
         )}
         {drawerHeight > 100 && children}
         {drawerOptions?.footer && drawerHeight > 100 && (
-          <Box py={2} w="100%" mt="auto" mb={`${iPhoneNotchSize()}px`}>
+          <Box py={2} w="100%" mt="auto" mb={`${iPhoneNotchSize() + 8}px`}>
             <Button
               w="100%"
               mt="auto"

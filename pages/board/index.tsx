@@ -14,7 +14,7 @@ function BoardPage() {
 
   return (
     <>
-      <Header title="게시판"></Header>
+      <Header title="커뮤니티"></Header>
       <Slide isNoPadding>
         <SquareSecretSection />
       </Slide>

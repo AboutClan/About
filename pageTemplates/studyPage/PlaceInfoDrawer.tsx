@@ -26,24 +26,35 @@ function PlaceInfoDrawer({ placeInfo, onClose }: PlaceInfoDrawerProps) {
         isOverlay
         isHideBottom
         zIndex={900}
-        height={210}
+        height={202}
         setIsModal={onClose}
       >
         <Flex direction="column" w="100%">
-          <Flex justifyContent="space-between" mb={4}>
-            <Flex direction="column">
+          <Flex justifyContent="space-between">
+            <Flex direction="column" mr={2}>
               <Box fontSize="18px" lineHeight="28px" fontWeight={600}>
                 {placeInfo.fullname}
               </Box>
               <Flex align="center" fontSize="11px" mt={1}>
-                <Box mr={1}>
+                <Box mr={1} as="span">
                   <LocationDotIcon size="md" />
                 </Box>
-                <Box color="var(--gray-600)">{placeInfo.locationDetail}</Box>
+                <Box
+                  color="var(--gray-600)"
+                  as="span"
+                  textOverflow="ellipsis"
+                  overflow="hidden"
+                  whiteSpace="nowrap"
+                  maxW="152px"
+                >
+                  {placeInfo.locationDetail}
+                </Box>
                 <Box as="span" color="var(--gray-400)">
                   ・
                 </Box>
-                <Box color="var(--color-blue)">좋아요 {placeInfo?.prefCnt}개</Box>
+                <Box color="var(--color-blue)" as="span">
+                  좋아요 {placeInfo?.prefCnt}개
+                </Box>
               </Flex>
               <Box mt={2} fontSize="11px" as="span" color="gray.500" lineHeight="12px">
                 등록일: {dayjsToFormat(dayjs(placeInfo?.registerDate), "YYYY년 M월 D일")}
@@ -55,7 +66,9 @@ function PlaceInfoDrawer({ placeInfo, onClose }: PlaceInfoDrawerProps) {
                 </Box>
               </Flex>
             </Flex>
-            <PlaceImage imageProps={{ image: placeInfo?.image }} size="lg" hasToggleHeart />
+            <Box>
+              <PlaceImage imageProps={{ image: placeInfo?.image }} size="lg" hasToggleHeart />
+            </Box>
           </Flex>
           <Box py={2}>
             <NewTwoButtonRow

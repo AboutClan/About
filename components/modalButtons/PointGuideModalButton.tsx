@@ -76,34 +76,38 @@ const POINT_GUIDE_MODAL_CONTENT: Record<
     infoArr: [
       {
         left: "스터디 매칭 신청",
-        right: "+ 50원",
+        right: "+ 50 Point",
       },
       {
         left: "개인 스터디 참여",
-        right: "+ 30원",
+        right: "+ 30 Point",
       },
       {
         left: "신규 카공 카페 등록",
-        right: "+ 100원",
+        right: "+ 100 Point",
+      },
+      {
+        left: "스터디 출석체크(알파벳)",
+        right: "+ 100 ~ 1,000 Point",
       },
       {
         left: "월간 스터디 랭킹 정산",
-        right: "+ 1000 ~ 5000원",
+        right: "+ 1000 ~ 5000 Point",
       },
 
       {
         left: "스터디 지각",
-        right: "- 50원",
+        right: "- 50 Point",
         color: "red",
       },
       {
         left: "스터디 당일 불참",
-        right: "- 500원",
+        right: "- 500 Point",
         color: "red",
       },
       {
         left: "스터디 당일 잠수",
-        right: "- 1000원",
+        right: "- 1000 Point",
         color: "red",
       },
     ],
