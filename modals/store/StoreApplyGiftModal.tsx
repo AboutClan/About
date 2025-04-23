@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
@@ -80,6 +80,10 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
     }
     if (myPoint < totalCost) {
       failToast("free", "보유중인 포인트가 부족해요!");
+      return;
+    }
+    if (myPoint - 3000 < totalCost) {
+      failToast("free", "최소 3,000원 이상을 보유하고 있어야 합니다.");
       return;
     }
 
