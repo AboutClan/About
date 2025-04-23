@@ -43,7 +43,7 @@ function DailyCheckModal({ setIsModal }: IModal) {
       const max = Math.ceil(10 + userInfo?.score / 10);
       const value = Math.floor(Math.random() * max) + 1;
       setRandomValue(value);
-      mutate({ value });
+      mutate({ value, message: "일일 출석체크 행운의 복권" });
       setIsFirstPage(false);
     },
     onError() {
