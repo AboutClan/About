@@ -17,7 +17,7 @@ import LocationRegisterPopUp from "../../../modals/pop-up/LocationRegisterPopUp"
 import StudyChallengeModal from "../../../modals/pop-up/StudyChallengeModal";
 import StudyPreferencePopUp from "../../../modals/pop-up/StudyPreferencePopUp";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
+import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
 
 export type UserPopUp =
   | "lastWeekAttend"
@@ -63,11 +63,10 @@ export default function UserSettingPopUp() {
   const studyRecord = JSON.parse(studyRecordStr);
 
   useEffect(() => {
-    if (studyRecord) {
+    if (studyRecord && studyRecord?.date !== dayjsToStr(dayjs())) {
       setDrawerType("studyRecord");
     }
   }, [studyRecord]);
-
 
   useEffect(() => {
     return;

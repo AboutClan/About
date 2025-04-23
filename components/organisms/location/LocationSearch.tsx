@@ -30,7 +30,7 @@ function LocationSearch({
   const { data } = useKakaoSearchQuery(value, {
     enabled: isActive && (value !== "" || !hasInitialValue),
   });
-  console.log(12, data);
+ 
   useEffect(() => {
     if (info) setValue(info?.place_name);
   }, [info]);

@@ -203,7 +203,9 @@ function UserComment({
               </>
             )}
             <Box mx={1} w="1px" h="6px" bg="gray.200" my="auto" />
-            <Box>{getDateDiff(dayjs(updatedAt))}</Box>
+            <Box color="gray.600" fontWeight="500">
+              {getDateDiff(dayjs(updatedAt))}
+            </Box>
           </Flex>
         </Flex>
       </Flex>

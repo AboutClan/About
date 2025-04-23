@@ -70,7 +70,7 @@ function UserPointBlock() {
           </Box>
         </Flex>
       </Link>
-      <Link href="/store" onClick={handleGuestClick} style={{ flex: 1 }}>
+      <Link href="/user/point" onClick={handleGuestClick} style={{ flex: 1 }}>
         <Flex direction="column" align="center">
           <Flex
             justify="center"

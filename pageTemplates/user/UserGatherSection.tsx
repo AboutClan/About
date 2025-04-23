@@ -1,6 +1,5 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -11,6 +10,7 @@ import {
   GatherThumbnailCardProps,
 } from "../../components/molecules/cards/GatherThumbnailCard";
 import ButtonGroups from "../../components/molecules/groups/ButtonGroups";
+import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useFeedCntQuery } from "../../hooks/feed/queries";
 import { useGatherMyStatusQuery } from "../../hooks/gather/queries";
 import { transferGatherDataState } from "../../recoils/transferRecoils";
@@ -21,7 +21,7 @@ import { setGatherDataToCardCol } from "../home/HomeGatherCol";
 type GatherType = "참여중인 모임" | "종료된 모임" | "내가 개설한 모임";
 
 function UserGatherSection() {
-  const router = useRouter();
+  const typeToast = useTypeToast();
   const [gatherType, setGatherType] = useState<GatherType>("참여중인 모임");
   const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>();
   const setTransferGatherData = useSetRecoilState(transferGatherDataState);
@@ -80,7 +80,7 @@ function UserGatherSection() {
       }
     };
   }, []);
-  console.log(cardDataArr);
+
   return (
     <Box mx={5} pb={10}>
       <Flex h="44px" bg="rgba(66,66,66,0.04)" mb={3}>
@@ -91,7 +91,7 @@ function UserGatherSection() {
           fontWeight="semibold"
           lineHeight="16px"
           color="gray.700"
-          onClick={() => router.push("/user/review/gather/mine")}
+          onClick={() => typeToast("inspection")}
           rightIcon={
             <Flex
               justify="center"
@@ -121,7 +121,7 @@ function UserGatherSection() {
           fontWeight="semibold"
           lineHeight="16px"
           color="gray.700"
-          onClick={() => router.push("/user/review/gather/received")}
+          onClick={() => typeToast("inspection")}
           rightIcon={
             <Flex
               justify="center"

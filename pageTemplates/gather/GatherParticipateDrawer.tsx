@@ -99,7 +99,7 @@ function GatherParticipateDrawer({ data }: IGatherParticipateDrawer) {
       router.push(`/feed/writing/gather?id=${data.id}`);
     }
   };
-  console.log(34, feed?.length);
+  
   const getButtonSettings = () => {
     switch (data?.status) {
       case "open":

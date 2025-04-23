@@ -17,7 +17,6 @@ function CollectionModal({ collection, setIsModal }: ICollectionModal) {
     main: {},
   };
 
-
   return (
     <ModalLayout
       title={collection?.alphabet ? "알파벳을 획득했어요!" : "출석 완료!"}

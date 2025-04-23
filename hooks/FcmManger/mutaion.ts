@@ -11,9 +11,12 @@ import { requestNotificationPermission } from "./utils";
 export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
   useEffect(() => {
     const initializePushService = async () => {
+      console.log(1234);
       if (isWebView()) {
+        console.log("isWebView");
         await initializeAppPushService(uid);
       } else {
+        console.log("noWeb");
         await initializePWAPushService();
       }
     };
@@ -52,11 +55,12 @@ const initializeAppPushService = async (uid?: string) => {
 const initializePWAPushService = async () => {
   try {
     const hasPermission = await requestNotificationPermission();
+    console.log(42, hasPermission);
     if (!hasPermission) return;
     const registration =
       (await navigator.serviceWorker.getRegistration()) ||
       (await navigator.serviceWorker.register("/worker.js", { scope: "/" }));
-
+    console.log("regist", registration);
     let subscription = await registration.pushManager.getSubscription();
     if (!subscription) {
       const publicVapidKey = process.env.NEXT_PUBLIC_PWA_KEY;
@@ -70,9 +74,11 @@ const initializePWAPushService = async () => {
     } else {
       console.log("Existing subscription found.");
     }
+    console.log("subs", subscription);
 
     // 서버에 구독 정보 전송
     const response = await registerPushServiceWithPWA(subscription);
+    console.log(1342, response);
     if (response) {
       console.log("Successfully registered push subscription with the server.");
     }

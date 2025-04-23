@@ -49,11 +49,12 @@ function GatherHeader({ gatherData }: IGatherHeader) {
 
   const { mutate } = useGatherWaitingStatusMutation(gatherData.id, {
     onSuccess() {
-      queryClient.invalidateQueries([GATHER_CONTENT, id]);
+      toast("success", "승인되었습니다.");
+      queryClient.refetchQueries([GATHER_CONTENT, id + ""]);
     },
     onError() {
       toast("error", "상대가 보유중인 참여권이 없습니다.");
-      queryClient.invalidateQueries([GATHER_CONTENT, id]);
+      queryClient.refetchQueries([GATHER_CONTENT, id + ""]);
     },
   });
 

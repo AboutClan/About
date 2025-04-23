@@ -49,19 +49,21 @@ function PointGuideModal({ type, onClose }: PointGuideModalProps) {
 }
 
 function PointGuideModalSubTitle({ type }: { type: PointGuideType }) {
-  return <Box mb={3}>
-    {type === "store" ? (
-      <>
-        동아리 활동을 통해 <b>포인트</b>를 획득할 수 있습니다.
-        <br /> <b>1포인트</b>는 <b>1원</b>과 동일한 가치를 가집니다.
-      </>
-    ) : (
-      <>
-        스터디에 참여하면 <b>포인트</b>를 획득할 수 있습니다.
-        <br /> 공부도 하고, 기록도 쌓고, 보상금도 받아가세요!
-      </>
-    )}
-  </Box>
+  return (
+    <Box mb={3}>
+      {type === "store" ? (
+        <>
+          동아리 활동을 통해 <b>포인트</b>를 획득할 수 있습니다.
+          <br /> <b>1포인트</b>는 <b>1원</b>과 동일한 가치를 가집니다.
+        </>
+      ) : (
+        <>
+          스터디에 참여하면 <b>포인트</b>를 획득할 수 있습니다.
+          <br /> 공부도 하고, 기록도 쌓고, 보상금도 받아가세요!
+        </>
+      )}
+    </Box>
+  );
 }
 
 const POINT_GUIDE_MODAL_CONTENT: Record<
@@ -112,44 +114,33 @@ const POINT_GUIDE_MODAL_CONTENT: Record<
       "동아리 활동을 통해 포인트를 획득할 수 있습니다. 1포인트는 1원과 동일한 가치를 가집니다.",
     infoArr: [
       {
-        left: "스터디 사전 투표",
-        right: "+ 5 Point",
-      },
-      {
-        left: "스터디 출석체크",
-        right: "+ 5 Point",
-      },
-      {
-        left: "번개 모임 참여",
-        right: "+ 5 Point",
-      },
-      {
         left: "일일 출석체크",
-        right: "+ 2 Point",
+        right: "+ 1 ~ 100 Point",
       },
       {
-        left: "건의하기",
-        right: "+ 5 Point",
+        left: "스터디 매칭 신청",
+        right: "+ 50 Point",
       },
       {
-        left: "피드 좋아요 누르기",
-        right: "+ 2 Point",
+        left: "스터디 출석체크(알파벳)",
+        right: "+ 100 ~ 1,000 Point",
       },
       {
-        left: "함께한 멤버 좋아요 보내기",
-        right: "+ 2 Point",
-      },
-      {
-        left: "피드(번개,소모임) 올리기",
+        left: "신규 카페 등록",
         right: "+ 100 Point",
       },
       {
-        left: "번개 모임 개설",
+        left: "소모임 리뷰 작성",
         right: "+ 200 Point",
       },
       {
-        left: "동아리 홍보 글 올리기",
-        right: "+ 200 Point",
+        left: "모임 후기 올리기",
+        right: "+ 2,000 Point",
+      },
+
+      {
+        left: "좋아요 받기",
+        right: "+ 2 Point",
       },
     ],
   },

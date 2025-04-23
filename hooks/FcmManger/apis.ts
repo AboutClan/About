@@ -32,7 +32,10 @@ export const registerPushServiceWithApp = async (deviceInfo: DeviceInfo) => {
 
 export const registerPushServiceWithPWA = async (subscription: PushSubscription) => {
   try {
-    const response = await axios.post(`${SERVER_URI}/webpush/subscribe`, subscription);
+    console.log("subscription", subscription);
+    const response = await axios.post(`${SERVER_URI}/webpush/subscribe`, {
+      subscription,
+    });
     return response.data;
   } catch (error) {
     return handleApiError(error, "subscribe push service on PWA");

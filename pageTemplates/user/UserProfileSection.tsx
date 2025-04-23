@@ -54,7 +54,6 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
                     return;
                   }
                   setIsDrawer(true);
-                  // setIsProfileModal(true);
                 }}
               >
                 <CameraIcon size="md" />

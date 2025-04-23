@@ -33,7 +33,7 @@ function StoreGiftWinModal({ setIsModal, applicants, winCnt }: IStoreGiftWinModa
       <Flex py={2} bg="gray.100" border="1px solid var(--gray-200)" borderRadius="8px">
         {winners.map((num, idx) => {
           const name = users[num];
-          console.log(24, name);
+       
           return (
             <Box
               flex={1}
