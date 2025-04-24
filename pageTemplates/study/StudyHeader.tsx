@@ -15,7 +15,7 @@ interface IStudyHeader {
 function StudyHeader({ placeInfo, date }: IStudyHeader) {
   const router = useRouter();
   const toast = useToast();
-
+  console.log(24, placeInfo);
   const menuArr: MenuProps[] = [
     {
       text: "장소 정보 수정 요청",
@@ -30,8 +30,8 @@ function StudyHeader({ placeInfo, date }: IStudyHeader) {
             ? `${dayjsToFormat(dayjs(date), "M월 D일 개인 스터디 인증")}`
             : placeInfo.name === "스터디 매칭 대기소"
             ? `${dayjsToFormat(dayjs(date), "M월 D일 카공 스터디 신청")}`
-            : `${dayjsToFormat(dayjs(date), `M월 D일 카공 스터디`)}`,
-        subtitle: placeInfo.address === "위치 선정 중" ? "스터디 멤버 모집중" : placeInfo.name,
+            : `${dayjsToFormat(dayjs(date), `M월 D일 카공 스터디: ${placeInfo.brand}`)}`,
+        subtitle: placeInfo.address === "위치 선정 중" ? "스터디 멤버 모집중" : placeInfo.address,
         img: placeInfo.image,
         url: "https://study-about.club" + router.asPath,
       },
