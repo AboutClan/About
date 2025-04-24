@@ -6,6 +6,7 @@ import HomeGroupSection from "../../pageTemplates/home/HomeGroupSection";
 import HomeHeader from "../../pageTemplates/home/homeHeader/HomeHeader";
 import HomeInitialSetting from "../../pageTemplates/home/HomeInitialSetting";
 import HomeNav from "../../pageTemplates/home/HomeNav";
+import HomeStudySection from "../../pageTemplates/home/HomeStudySection";
 
 function Home() {
   const { data: data } = useGroupSnapshotQuery();
@@ -18,9 +19,9 @@ function Home() {
         <HomeBannerSlide />
         <HomeNav />
       </Slide>
-      {/* <Slide isNoPadding>
+      <Slide isNoPadding>
         <HomeStudySection />
-      </Slide> */}
+      </Slide>
       <Slide isNoPadding>
         <HomeGatherSection />
       </Slide>
