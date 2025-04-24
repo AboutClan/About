@@ -3,11 +3,8 @@ import { useCallback, useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 
-import { GATHER_CONTENT, GROUP_STUDY, STUDY_VOTE, USER_INFO } from "../../constants/keys/queryKeys";
+import { GATHER_CONTENT, GROUP_STUDY, STUDY_VOTE } from "../../constants/keys/queryKeys";
 import { transferGatherDataState, transferGroupDataState } from "../../recoils/transferRecoils";
-import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
-import { useStudyPreferenceMutation } from "../study/mutations";
-import { useToast } from "./CustomToast";
 
 export const useToken = () => {
   const [token, setToken] = useState();
@@ -84,36 +81,34 @@ export const useResetGatherQuery = () => {
   return refetchWithDelay;
 };
 export const useTogglePlaceHeart = () => {
-  const queryClient = useQueryClient();
-  const toast = useToast();
+  return;
+  // const { mutate: patchStudyPreference, isLoading } = useStudyPreferenceMutation("patch", {
+  //   onSuccess() {
+  //     toast("success", "변경되었습니다.");
+  //     queryClient.refetchQueries([USER_INFO]);
+  //   },
+  // });
 
-  const { mutate: patchStudyPreference, isLoading } = useStudyPreferenceMutation("patch", {
-    onSuccess() {
-      toast("success", "변경되었습니다.");
-      queryClient.refetchQueries([USER_INFO]);
-    },
-  });
+  // const togglePlaceHeart = useCallback(
+  //   (e, preference: IStudyVotePlaces, id: string, userLoading) => {
+  //     if (isLoading || userLoading) return;
+  //     e.preventDefault();
+  //     const preferMain = preference?.place;
+  //     const preferenceType =
+  //       preference?.place === id
+  //         ? "main"
+  //         : preference?.subPlace?.includes(id)
+  //         ? "sub"
+  //         : preferMain
+  //         ? "sub"
+  //         : "main";
+  //     patchStudyPreference({ id, type: preferenceType });
+  //     queryClient.invalidateQueries([USER_INFO]);
+  //   },
+  //   [queryClient],
+  // );
 
-  const togglePlaceHeart = useCallback(
-    (e, preference: IStudyVotePlaces, id: string, userLoading) => {
-      if (isLoading || userLoading) return;
-      e.preventDefault();
-      const preferMain = preference?.place;
-      const preferenceType =
-        preference?.place === id
-          ? "main"
-          : preference?.subPlace?.includes(id)
-          ? "sub"
-          : preferMain
-          ? "sub"
-          : "main";
-      patchStudyPreference({ id, type: preferenceType });
-      queryClient.invalidateQueries([USER_INFO]);
-    },
-    [queryClient],
-  );
-
-  return togglePlaceHeart;
+  // return togglePlaceHeart;
 };
 
 export const useWindowWidth = () => {

@@ -96,5 +96,6 @@ export const convertMergePlaceToPlace = (
     //   : (null as "public" | "private"),
 
     _id: studyPlace?._id || realTimePlace?._id,
+    reviews: studyPlace?.reviews || [],
   };
 };

@@ -5,12 +5,8 @@ import { useMutation } from "react-query";
 import { requestServer } from "../../libs/methodHelpers";
 import { MutationOptions } from "../../types/hooks/reactTypes";
 import { CollectionProps } from "../../types/models/collections";
-import { PlaceRegisterProps } from "../../types/models/studyTypes/entityTypes";
-import {
-  IStudyVotePlaces,
-  IStudyVoteTime,
-  StudyVoteProps,
-} from "../../types/models/studyTypes/studyInterActions";
+import { PlaceRegisterProps, PlaceReviewProps } from "../../types/models/studyTypes/entityTypes";
+import { IStudyVoteTime, StudyVoteProps } from "../../types/models/studyTypes/studyInterActions";
 import { DayjsTimeProps, StringTimeProps } from "../../types/utils/timeAndDate";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
@@ -74,36 +70,6 @@ export const useStudyParticipateMutation = (
     });
   }, options);
 
-interface IStudyQuickVoteParam {
-  start: Dayjs;
-  end: Dayjs;
-}
-
-export const useStudyQuickVoteMutation = (
-  date: Dayjs,
-  options?: MutationOptions<IStudyQuickVoteParam>,
-) =>
-  useMutation<void, AxiosError, IStudyQuickVoteParam>(
-    ({ start, end }) =>
-      requestServer<IStudyQuickVoteParam>({
-        method: "post",
-        url: `vote/${dayjsToStr(date)}/quick`,
-        body: { start, end },
-      }),
-    options,
-  );
-
-export const useStudyOpenFreeMutation = (date: string, options?: MutationOptions<string>) =>
-  useMutation<void, AxiosError, string>(
-    (placeId) =>
-      requestServer<{ placeId: string }>({
-        method: "patch",
-        url: `vote/${date}/free`,
-        body: { placeId },
-      }),
-    options,
-  );
-
 export const useStudyAttendCheckMutation = (
   options?: MutationOptions<{ memo: string; end: string }, CollectionProps>,
 ) =>
@@ -130,47 +96,6 @@ export const useStudyAbsenceMutation = (
       }),
     options,
   );
-export const useDeleteMyVoteMutation = (date: Dayjs, options?: MutationOptions<void>) =>
-  useMutation<void, AxiosError, void>(
-    () =>
-      requestServer<void>({
-        method: "delete",
-        url: `vote/${dayjsToStr(date)}/mine`,
-      }),
-    options,
-  );
-
-export const useStudyResultDecideMutation = (date: string, options?: MutationOptions<void>) =>
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  useMutation<any, AxiosError, void>(
-    () =>
-      requestServer<void>({
-        method: "post",
-        url: `vote2/${date}/result`,
-      }),
-    options,
-  );
-
-type StudyPreferenceParam<T> = T extends "post"
-  ? IStudyVotePlaces
-  : {
-      id: string;
-      type: "main" | "sub";
-    };
-
-export const useStudyPreferenceMutation = <T extends "post" | "patch">(
-  method: T,
-  options?: MutationOptions<StudyPreferenceParam<T>>,
-) =>
-  useMutation<void, AxiosError, StudyPreferenceParam<T>>(
-    (param) =>
-      requestServer<StudyPreferenceParam<T>>({
-        method: method,
-        url: `user/preference`,
-        body: param,
-      }),
-    options,
-  );
 
 export const useStudyAdditionMutation = (options?: MutationOptions<PlaceRegisterProps>) =>
   useMutation<void, AxiosError, PlaceRegisterProps>(
@@ -179,6 +104,21 @@ export const useStudyAdditionMutation = (options?: MutationOptions<PlaceRegister
         method: "post",
         url: `place`,
         body: placeInfo,
+      }),
+    options,
+  );
+
+interface PlaceReviewRequestProps extends Omit<PlaceReviewProps, "user"> {
+  placeId: string;
+}
+
+export const usePlaceReviewMutation = (options?: MutationOptions<PlaceReviewRequestProps>) =>
+  useMutation<void, AxiosError, PlaceReviewRequestProps>(
+    (review) =>
+      requestServer<PlaceReviewRequestProps>({
+        method: "post",
+        url: `place/review`,
+        body: review,
       }),
     options,
   );
@@ -198,6 +138,7 @@ export const useStudyStatusMutation = (options?: MutationOptions<StudyStatusPara
       }),
     options,
   );
+
 export const useStudyCommentMutation = (date: string, options?: MutationOptions<string>) =>
   useMutation<void, AxiosError, string>(
     (params) =>

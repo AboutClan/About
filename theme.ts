@@ -275,6 +275,7 @@ const theme = extendTheme({
         },
       },
     },
+
     Toast: {
       variants: {
         leftAccent: (props) => {

@@ -15,7 +15,7 @@ interface IStudyHeader {
 function StudyHeader({ placeInfo, date }: IStudyHeader) {
   const router = useRouter();
   const toast = useToast();
-  console.log(24, placeInfo);
+
   const menuArr: MenuProps[] = [
     {
       text: "장소 정보 수정 요청",

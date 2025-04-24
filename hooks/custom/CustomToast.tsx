@@ -43,7 +43,8 @@ type ToastType =
   | "inspection"
   | "participate"
   | "apply"
-  | "not-yet";
+  | "not-yet"
+  | "register";
 
 type ToastConfig = {
   title: string;
@@ -58,6 +59,7 @@ const TOAST_MAP: Record<ToastType, ToastConfig> = {
   change: { title: "변경 완료" },
   invite: { title: "초대 완료" },
   participate: { title: "참여 완료" },
+  register: { title: "등록 완료" },
   "not-yet": { title: "개발중인 기능", status: "info" },
 
   inspection: {
@@ -84,6 +86,26 @@ export const useTypeToast = () => {
         duration: 3000,
         variant: "subtle",
         ...TOAST_MAP[type],
+        containerStyle: {
+          marginBottom: "76px",
+        },
+      });
+    },
+    [toast],
+  );
+
+  return showToast;
+};
+export const usePointToast = () => {
+  const toast = useChakraToast();
+
+  const showToast = useCallback(
+    (value: number) => {
+      toast({
+        status: "success",
+        duration: 3000,
+        variant: "subtle",
+        title: `${value} Point 획득!`,
         containerStyle: {
           marginBottom: "76px",
         },

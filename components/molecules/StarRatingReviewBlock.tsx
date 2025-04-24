@@ -18,7 +18,11 @@ function StarRatingReviewBlock({ rating, date, text, size, user }: StarRatingRev
   return (
     <Flex flexDir="column">
       <Flex align="center">
-        <Avatar user={user as UserSimpleInfoProps} size="xs1" />
+        <Avatar
+          user={user as UserSimpleInfoProps}
+          size="xs1"
+          isLink={user.name !== "어바웃" && user.name !== "익명"}
+        />
         <Flex h="30px" ml={2} flexDir="column" align="start">
           <Box fontSize="11px" color="gray.800">
             {user.name}

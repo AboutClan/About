@@ -3,7 +3,7 @@ import { StringTimeProps, TimeStampProps } from "../../utils/timeAndDate";
 import { CommentProps } from "../commonTypes";
 import { UserSimpleInfoProps } from "../userTypes/userInfoTypes";
 import { PlaceInfoProps } from "../utilTypes";
-import { PlaceRegisterProps } from "./entityTypes";
+import { PlaceRegisterProps, PlaceReviewProps } from "./entityTypes";
 import { StudyAttendanceProps } from "./requestTypes";
 
 export interface StudyVoteDataProps {
@@ -51,6 +51,7 @@ export interface StudyPlaceProps extends PlaceRegisterProps {
   registrant?: UserSimpleInfoProps;
   status?: "active" | "inactive";
   prefCnt?: number;
+  reviews: PlaceReviewProps[];
 }
 
 // | "recruiting" | "expected"

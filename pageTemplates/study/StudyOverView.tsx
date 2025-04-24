@@ -1,4 +1,5 @@
 import { Badge, Box, Button, Flex } from "@chakra-ui/react";
+import dayjs from "dayjs";
 
 import StarRating from "../../components/atoms/StarRating";
 import InfoBoxCol, { InfoBoxProps } from "../../components/molecules/InfoBoxCol";
@@ -7,12 +8,15 @@ import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstan
 import { STUDY_STATUS_TO_BADGE } from "../../constants/studyConstants";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { StudyStatus } from "../../types/models/studyTypes/baseTypes";
+import { PlaceReviewProps } from "../../types/models/studyTypes/entityTypes";
+import { dayjsToStr } from "../../utils/dateTimeUtils";
 
 interface IStudyOverview {
   place: {
     name: string;
     address: string;
     branch: string;
+    reviews?: PlaceReviewProps[];
   };
   distance: number;
   status: StudyStatus | "recruiting" | "expected";
@@ -21,7 +25,7 @@ interface IStudyOverview {
 }
 
 function StudyOverview({
-  place: { name, address, branch },
+  place: { name, address, branch, reviews },
   distance,
   status,
   time,
@@ -65,24 +69,37 @@ function StudyOverview({
               <StarRating rating={4.5} size="lg" />
             </Flex>
             <Flex flexDir="column" borderRadius="8px">
-              <Box pt={2} borderTop="var(--border)">
-                <StarRatingReviewBlock
-                  rating={5}
-                  text="여러분의 리뷰를 기다리고 있습니다."
-                  size="sm"
-                  user={ABOUT_USER_SUMMARY}
-                  date="2025-04-24"
-                />
-              </Box>
-              <Box pt={2} borderTop="var(--border)">
-                <StarRatingReviewBlock
-                  rating={4.5}
-                  text="자리마다 콘센트가 있고, 공간도 넓어서 공부하기 좋아요!"
-                  size="sm"
-                  date="2025-04-23"
-                  user={{ name: "비공개", avatar: { type: 0, bg: 0 } }}
-                />
-              </Box>
+              {[
+                ...reviews,
+                {
+                  rating: 5,
+                  review: "여러분의 리뷰를 기다리고 있습니다.",
+                  user: ABOUT_USER_SUMMARY,
+                  createdAt: dayjsToStr(dayjs()),
+                  isSecret: true,
+                },
+                {
+                  rating: 4.5,
+                  review: "자리마다 콘센트가 있고, 공간도 넓어서 공부하기 좋아요!",
+                  user: ABOUT_USER_SUMMARY,
+                  createdAt: dayjsToStr(dayjs()),
+                  isSecret: true,
+                },
+              ]
+                ?.slice(0, 2)
+                .map((review) => (
+                  <>
+                    <Box pt={2} borderTop="var(--border)">
+                      <StarRatingReviewBlock
+                        rating={review.rating}
+                        text={review.review}
+                        size="sm"
+                        user={review.isSecret ? { ...review.user, name: "익명" } : review.user}
+                        date={review.createdAt}
+                      />
+                    </Box>
+                  </>
+                ))}
 
               <Button
                 mb={1}

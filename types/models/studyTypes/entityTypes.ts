@@ -1,3 +1,6 @@
+import { TimeStampProps } from "../../utils/timeAndDate";
+import { UserSimpleInfoProps } from "../userTypes/userInfoTypes";
+
 export interface PlaceRegisterProps {
   fullname: string;
   brand: string;
@@ -8,4 +11,11 @@ export interface PlaceRegisterProps {
   coverImage: string;
   locationDetail: string;
   time?: string;
+}
+
+export interface PlaceReviewProps extends TimeStampProps {
+  user: UserSimpleInfoProps;
+  rating: number;
+  isSecret: boolean;
+  review: string;
 }
