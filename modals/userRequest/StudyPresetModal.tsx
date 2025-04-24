@@ -7,9 +7,8 @@ import { useQueryClient } from "react-query";
 import ImageTileGridLayout, {
   IImageTileData,
 } from "../../components/molecules/layouts/ImageTitleGridLayout";
-import { STUDY_PREFERENCE, STUDY_PREFERENCE_LOCAL } from "../../constants/keys/queryKeys";
+import { STUDY_PREFERENCE_LOCAL } from "../../constants/keys/queryKeys";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
-import { useStudyPreferenceMutation } from "../../hooks/study/mutations";
 import { useStudyPlacesQuery, useStudyPreferenceQuery } from "../../hooks/study/queries";
 import { selectStudyPlace } from "../../libs/study/selectStudyPlace";
 import { IModal } from "../../types/components/modalTypes";
@@ -64,13 +63,6 @@ function StudyPresetModal({ setIsModal }: IModal) {
 
   const queryClient = useQueryClient();
 
-  const { mutate: setStudyPreference } = useStudyPreferenceMutation("post", {
-    onSuccess() {
-      typeToast("change");
-      queryClient.refetchQueries([STUDY_PREFERENCE]);
-    },
-  });
-
   // const { mutate: getPoint } = usePointSystemMutation("point");
 
   // const onClose = () => {
@@ -92,7 +84,7 @@ function StudyPresetModal({ setIsModal }: IModal) {
       STUDY_PREFERENCE_LOCAL,
       JSON.stringify({ prefer: savedPlaces, date: dayjsToStr(dayjs()) }),
     );
-    await setStudyPreference(savedPlaces);
+
     // await getPoint({ value: 20, message: "스터디 장소 설정" });
     setIsModal(false);
   };

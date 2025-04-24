@@ -32,6 +32,7 @@ export const convertPlaceToStudyPlace = (place: PlaceInfoProps): StudyPlaceProps
     locationDetail: place.address,
     registerDate: "",
     _id: place._id,
+    reviews: null,
   };
 };
 
