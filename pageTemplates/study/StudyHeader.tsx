@@ -30,8 +30,8 @@ function StudyHeader({ placeInfo, date }: IStudyHeader) {
             ? `${dayjsToFormat(dayjs(date), "M월 D일 개인 스터디 인증")}`
             : placeInfo.name === "스터디 매칭 대기소"
             ? `${dayjsToFormat(dayjs(date), "M월 D일 카공 스터디 신청")}`
-            : placeInfo.name,
-        subtitle: placeInfo.address === "위치 선정 중" ? "스터디 멤버 모집중" : placeInfo.address,
+            : `${dayjsToFormat(dayjs(date), `M월 D일 카공 스터디`)}`,
+        subtitle: placeInfo.address === "위치 선정 중" ? "스터디 멤버 모집중" : placeInfo.name,
         img: placeInfo.image,
         url: "https://study-about.club" + router.asPath,
       },
