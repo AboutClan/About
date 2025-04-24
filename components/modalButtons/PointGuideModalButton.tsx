@@ -83,6 +83,10 @@ const POINT_GUIDE_MODAL_CONTENT: Record<
         right: "+ 30 Point",
       },
       {
+        left: "카페 후기 작성",
+        right: "+ 100 Point",
+      },
+      {
         left: "신규 카공 카페 등록",
         right: "+ 100 Point",
       },
@@ -128,6 +132,10 @@ const POINT_GUIDE_MODAL_CONTENT: Record<
       {
         left: "스터디 출석체크(알파벳)",
         right: "+ 100 ~ 1,000 Point",
+      },
+      {
+        left: "카페 후기 작성",
+        right: "+ 100 Point",
       },
       {
         left: "신규 카페 등록",
