@@ -2,7 +2,7 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { STUDY_COVER_IMAGES } from "../../../../assets/images/studyCover";
 import { STUDY_MAIN_IMAGES } from "../../../../assets/images/studyMain";
@@ -52,6 +52,7 @@ export default function Page() {
   });
 
   const [isReviewModal, setIsReviewModal] = useState(false);
+  const [isReviewButton, setIsReviewButton] = useState(false);
 
   const isExpectedPage = !!(id !== "participations" && studyVoteData?.participations);
 
@@ -133,7 +134,21 @@ export default function Page() {
       : null);
 
   const myRealTimeStudy = findMyStudy?.members.find((who) => who.user._id === session?.user.id);
-  
+
+  useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout>;
+
+    if (findStudy?.status === "open") {
+      timeoutId = setTimeout(() => {
+        setIsReviewButton(true);
+      }, 400);
+    }
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [findStudy]);
+
   return (
     <>
       {studyVoteData ? (
@@ -188,7 +203,7 @@ export default function Page() {
               isArrived={!!(myRealTimeStudy?.attendance?.type === "arrived")}
             />
           )}
-          {findStudy.status === "open" && (
+          {isReviewButton && (
             <Flex
               position="fixed"
               zIndex="800"
@@ -268,13 +283,15 @@ function RightReviewDrawer({ placeId, onClose }: { placeId: string; onClose: () 
 }
 
 function PencilIcon() {
-  return <svg
-    xmlns="http://www.w3.org/2000/svg"
-    height="12px"
-    viewBox="0 -960 960 960"
-    width="12px"
-    fill="white"
-  >
-    <path d="M168-121q-21 5-36.5-10.5T121-168l35-170 182 182-170 35Zm235-84L205-403l413-413q23-23 57-23t57 23l84 84q23 23 23 57t-23 57L403-205Z" />
-  </svg>
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="12px"
+      viewBox="0 -960 960 960"
+      width="12px"
+      fill="white"
+    >
+      <path d="M168-121q-21 5-36.5-10.5T121-168l35-170 182 182-170 35Zm235-84L205-403l413-413q23-23 57-23t57 23l84 84q23 23 23 57t-23 57L403-205Z" />
+    </svg>
+  );
 }

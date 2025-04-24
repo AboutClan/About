@@ -32,7 +32,7 @@ function PlaceImage({
   const typeToast = useTypeToast();
   const isGuest = session?.user.name === "guest";
 
-  const { data: userInfo, isLoading: userLoading } = useUserInfoQuery({
+  const { data: userInfo } = useUserInfoQuery({
     enabled: isGuest === false,
   });
   const preference = userInfo?.studyPreference;
@@ -65,7 +65,7 @@ function PlaceImage({
         if (preference?.place) setHeartType("sub");
         else setHeartType("main");
     }
-    toggleHeart(e, preference, id, userLoading);
+    toggleHeart(e, preference, id);
   };
 
   return (

@@ -2,13 +2,12 @@ import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useQueryClient } from "react-query";
 
 import ImageTileGridLayout, {
   IImageTileData,
 } from "../../components/molecules/layouts/ImageTitleGridLayout";
 import { STUDY_PREFERENCE_LOCAL } from "../../constants/keys/queryKeys";
-import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
+import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudyPlacesQuery, useStudyPreferenceQuery } from "../../hooks/study/queries";
 import { selectStudyPlace } from "../../libs/study/selectStudyPlace";
 import { IModal } from "../../types/components/modalTypes";
@@ -21,7 +20,6 @@ import { IFooterOptions, ModalLayout } from "../Modals";
 function StudyPresetModal({ setIsModal }: IModal) {
   const { data: session } = useSession();
   const toast = useToast();
-  const typeToast = useTypeToast();
 
   const [isConfirmModal, setIsConfirmModal] = useState(false);
 
@@ -60,8 +58,6 @@ function StudyPresetModal({ setIsModal }: IModal) {
       subPlace: studyPreference?.subPlace,
     });
   }, [studyPreference]);
-
-  const queryClient = useQueryClient();
 
   // const { mutate: getPoint } = usePointSystemMutation("point");
 

@@ -30,7 +30,7 @@ function PlaceAvatarImage({
   const { data: session } = useSession();
   const isGuest = session?.user.name === "guest";
 
-  const { data: userInfo, isLoading: userLoading } = useUserInfoQuery({
+  const { data: userInfo } = useUserInfoQuery({
     enabled: isGuest === false,
   });
   const preference = userInfo?.studyPreference;
@@ -60,7 +60,7 @@ function PlaceAvatarImage({
         if (preference?.place) setHeartType("sub");
         else setHeartType("main");
     }
-    toggleHeart(e, preference, id, userLoading);
+    toggleHeart(e, preference, id);
   };
 
   return (

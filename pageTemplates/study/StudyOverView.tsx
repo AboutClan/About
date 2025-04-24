@@ -62,7 +62,7 @@ function StudyOverview({
                 </>
               )}
             </Box>
-            <Flex align="center" mb={2}>
+            <Flex align="center" mb={3}>
               <Box mt={1} mr={2} fontSize="20px" fontWeight="bold">
                 {name}
               </Box>
