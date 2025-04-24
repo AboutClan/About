@@ -1,6 +1,7 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
+import PaymentConfirmationDrawer from "../../../components/drawers/PaymentConfirmationDrawer";
 
 import Slide from "../../../components/layouts/PageSlide";
 import { useFeedsQuery } from "../../../hooks/feed/queries";
@@ -22,11 +23,12 @@ function GatherBottomNav({ data }: IGatherBottomNav) {
   const setTransferFeedSummary = useSetRecoilState(transferFeedSummaryState);
 
   const [isReviewDrawer, setIsReviewDrawer] = useState(false);
+  const [isPaymentModal, setIsPaymentModal] = useState(false);
 
   const { data: feed } = useFeedsQuery("gather", data?.id, null, true, {
     enabled: !!data?.id,
   });
-
+  console.log(feed);
   useEffect(() => {
     if (data?.status === "open" && (myGather || isParticipant)) {
       setTransferFeedSummary({
@@ -46,6 +48,7 @@ function GatherBottomNav({ data }: IGatherBottomNav) {
       {isReviewDrawer && (
         <GatherReviewDrawer feed={feed?.[0]} isOpen onClose={() => setIsReviewDrawer(false)} />
       )}
+      {isPaymentModal && <PaymentConfirmationDrawer onClose={() => setIsPaymentModal(false)} />}
     </>
   );
 }

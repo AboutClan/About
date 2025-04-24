@@ -1,8 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import SectionFooterButton from "../../components/atoms/SectionFooterButton";
@@ -69,7 +69,6 @@ function StudyPagePlaceSection({
     }
   }, [locationMappingData]);
 
- 
   useEffect(() => {
     if (!studyVoteData) {
       setThumbnailCardinfoArr(null);
@@ -107,7 +106,7 @@ function StudyPagePlaceSection({
           <StudyPagePlaceSectionFilterBar
             sortedOption={sortedOption}
             setSortedOption={setSortedOption}
-            placeCnt={thumbnailCardInfoArr?.filter((par) => par.participants.length > 0).length}
+            placeCnt={thumbnailCardInfoArr?.length}
             date={date}
           />
         ) : (

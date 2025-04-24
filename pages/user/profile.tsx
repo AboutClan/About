@@ -5,10 +5,10 @@ import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
 import Avatar from "../../components/atoms/Avatar";
-import { Input } from "../../components/atoms/Input";
 import BottomNav from "../../components/layouts/BottomNav";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
+import LabeledInput from "../../components/molecules/LabeledInput";
 import RightDrawer from "../../components/organisms/drawer/RightDrawer";
 import SearchLocation from "../../components/organisms/SearchLocation";
 import { USER_INFO } from "../../constants/keys/queryKeys";
@@ -103,19 +103,17 @@ function Profile() {
             </Box>
           </Flex>
           <Box mb={4}>
-            <Box fontSize="11px" fontWeight="medium" color="gray.600" mb={3}>
-              이름
-            </Box>
-            <Input size="lg" value={userInfo?.name || ""} isDisabled />
+            <LabeledInput label="이름" value={userInfo?.name || ""} isDisabled />
           </Box>
           <Box mb={4}>
-            <Box fontSize="11px" fontWeight="medium" color="gray.600" mb={3}>
-              코멘트
-            </Box>
-            <Input size="lg" value={comment} onChange={(e) => setComment(e.target.value)} />
+            <LabeledInput
+              label="코멘트"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+            />
           </Box>
           <Box mb={4}>
-            <Box fontSize="11px" fontWeight="medium" color="gray.600" mb={3}>
+            <Box fontSize="11px" fontWeight="medium" color="gray.600" mb={2}>
               주 활동 장소
             </Box>
             <SearchLocation
@@ -124,9 +122,9 @@ function Profile() {
               hasDetail={false}
               placeHolder="ex) 당산역, 용산구, 사당동 등"
             />
-          </Box>{" "}
+          </Box>
           <Box mb={4}>
-            <Box fontSize="11px" fontWeight="medium" color="gray.600" mb={3}>
+            <Box fontSize="11px" fontWeight="medium" color="gray.600" mb={2}>
               전공
             </Box>
             <Button
@@ -147,7 +145,7 @@ function Profile() {
             </Button>
           </Box>
           <Box mb={4}>
-            <Box fontSize="11px" fontWeight="medium" color="gray.600" mb={3}>
+            <Box fontSize="11px" fontWeight="medium" color="gray.600" mb={2}>
               MBTI
             </Box>
             <Button
@@ -168,10 +166,11 @@ function Profile() {
             </Button>
           </Box>
           <Box mb={4}>
-            <Box fontSize="11px" fontWeight="medium" color="gray.600" mb={3}>
-              Instagram (친구만 공개)
-            </Box>
-            <Input size="lg" value={instagram} onChange={(e) => setInstagram(e.target.value)} />
+            <LabeledInput
+              label="Instagram (친구만 공개)"
+              value={instagram}
+              onChange={(e) => setInstagram(e.target.value)}
+            />
           </Box>
         </Box>
         <Button mt={5} size="lg" colorScheme="mint" w="full" onClick={handleSubmit}>

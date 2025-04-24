@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -55,8 +55,6 @@ function Gather() {
     {
       text: "라운지",
       func: () => {
-        typeToast("inspection");
-        return;
         newSearchParams.set("tab", "lounge");
         router.replace("gather" + "?" + newSearchParams.toString());
         setTab("라운지");

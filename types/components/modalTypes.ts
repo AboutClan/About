@@ -4,6 +4,10 @@ export interface IModal {
   setIsModal: DispatchBoolean;
 }
 
-export interface ModalProps{
+export interface ModalProps {
   handleClick: () => void;
+}
+
+export interface CloseProps {
+  onClose: () => void;
 }
