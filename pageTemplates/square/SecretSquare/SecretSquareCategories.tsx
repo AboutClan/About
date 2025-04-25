@@ -9,9 +9,9 @@ import { type SecretSquareCategoryWithAll } from "../../../types/models/square";
 const SECRET_SQUARE_CATEGORY: SecretSquareCategoryWithAll[] = [
   "전체",
   "일상",
-  "정보",
   "같이해요",
-  "고민",
+  "정보",
+  "질문",
 ];
 
 interface SecretSquareCategoryProps {
@@ -29,7 +29,7 @@ function SecretSquareCategories({
   }));
 
   return (
-    <Box p="12px 16px">
+    <Box py={3} px={5}>
       <ButtonGroups
         buttonOptionsArr={buttonOptionsArr}
         currentValue={`#${selectedCategory}`}

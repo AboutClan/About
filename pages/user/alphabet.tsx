@@ -88,7 +88,7 @@ function CollectionAlphabet() {
   const handleChangePromotion = () => {
     mutate2();
   };
-
+  console.log(isLoading, members);
   return (
     <>
       <Header title="전체 수집 현황" />

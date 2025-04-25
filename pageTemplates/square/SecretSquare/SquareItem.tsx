@@ -1,8 +1,7 @@
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
-import styled from "styled-components";
+import Link from "next/link";
 
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import type { SecretSquareCategory, SecretSquareType } from "../../../types/models/square";
@@ -37,128 +36,146 @@ export default function SquareItem({ item }: SquareItemProps) {
   };
 
   return (
-    <Layout href={`/square/secret/${item._id}`} onClick={onClick}>
-      <IconCategory category={item.category} />
-      <Text
-        fontSize="15px"
-        fontWeight={600}
-        sx={{
-          width: "240px",
-          display: "-webkit-box",
-          WebkitLineClamp: "1",
-          WebkitBoxOrient: "vertical",
-          overflow: "hidden",
-        }}
-      >
-        {item.title}
-      </Text>
-      <Flex justifyContent="space-between" gap={4}>
-        <Box
-          mt={1}
-          mb={2}
-          sx={{
-            color: "var(--font-h7)",
-            fontSize: "13px",
-            display: "-webkit-box",
-            WebkitLineClamp: "4",
-            WebkitBoxOrient: "vertical",
-            overflow: "hidden",
-          }}
+    <Link href={`/square/secret/${item._id}`} onClick={onClick}>
+      <Flex flexDir="column" borderBottom="var(--border)" px={5} py={3}>
+        <IconCategory category={item.category} />
+        <Text
+          fontSize="16px"
+          fontWeight="semibold"
+          sx={
+            item?.thumbnail
+              ? {
+                  width: "240px",
+                  display: "-webkit-box",
+                  WebkitLineClamp: "1",
+                  WebkitBoxOrient: "vertical",
+                  overflow: "hidden",
+                }
+              : undefined
+          }
         >
-          {item.type === "poll" && (
-            <i
-              className="fa-solid fa-check-to-slot"
-              style={{ color: "var(--gray-500)", marginRight: "8px" }}
-            />
-          )}
-          {item.content}
-        </Box>
-        {item.thumbnail && (
-          <Box position="relative" overflow="visible" mb="8px">
-            <Box
-              w="64px"
-              aspectRatio="1/1"
-              borderRadius="var(--rounded-lg)"
-              position="relative"
-              overflow="hidden"
-              rounded="md"
-              border="var(--border)"
-              bgColor="white"
-            >
-              <Image
-                src={item.thumbnail}
-                alt="thumbnailImage"
-                sizes="80px"
-                objectFit="cover"
-                objectPosition="center"
+          {item.title}
+        </Text>
+        <Flex justifyContent="space-between" gap={4}>
+          <Box
+            mt={1}
+            mb={2}
+            sx={{
+              color: "var(--gray-600)",
+              fontSize: "13px",
+              display: "-webkit-box",
+              WebkitLineClamp: "4",
+              WebkitBoxOrient: "vertical",
+              overflow: "hidden",
+            }}
+          >
+            {item.type === "poll" && (
+              <i
+                className="fa-solid fa-check-to-slot"
+                style={{ color: "var(--gray-500)", marginRight: "8px" }}
               />
+            )}
+            {item.content}
+          </Box>
+          {item.thumbnail && (
+            <Box position="relative" overflow="visible" mb="8px">
               <Box
-                py="2px"
-                color="white"
-                fontSize="10px"
-                pos="absolute"
-                bottom="0"
-                w="100%"
-                bgColor="black"
-                textAlign="center"
+                w="64px"
+                aspectRatio="1/1"
+                borderRadius="var(--rounded-lg)"
+                position="relative"
+                overflow="hidden"
+                rounded="md"
+                border="var(--border)"
+                bgColor="white"
               >
-                대표사진
+                <Image
+                  src={item.thumbnail}
+                  alt="thumbnailImage"
+                  sizes="80px"
+                  objectFit="cover"
+                  objectPosition="center"
+                />
+                <Box
+                  py="2px"
+                  color="white"
+                  fontSize="10px"
+                  pos="absolute"
+                  bottom="0"
+                  w="100%"
+                  bgColor="black"
+                  textAlign="center"
+                >
+                  대표사진
+                </Box>
               </Box>
             </Box>
-          </Box>
-        )}
-      </Flex>
-      <Flex fontSize="12px" color="var(--gray-600)" justify="space-between">
-        <Flex
-          sx={{
-            "& :after": {
-              height: "100%",
-              content: "'•'",
-              margin: "0 4px",
-              verticalAlign: "middle",
-              fontSize: "8px",
-            },
+          )}
+        </Flex>
+        <Flex fontSize="12px" color="var(--gray-600)" justify="space-between">
+          <Flex
+            sx={{
+              "& :after": {
+                height: "100%",
+                content: "'•'",
+                margin: "0 4px",
+                verticalAlign: "middle",
+                fontSize: "8px",
+              },
 
-            "& :last-child:after": {
-              content: "''",
-            },
-          }}
-        >
-          <span>{getDateDiff(dayjs(item.createdAt))}</span>
-          <span>조회 {item.viewCount}</span>
-        </Flex>
-        <Flex gap={3}>
-          <Flex gap={1} align="center">
-            <i className="fa-regular fa-thumbs-up" />
-            <span>{item.likeCount}</span>
+              "& :last-child:after": {
+                content: "''",
+              },
+            }}
+          >
+            <span>{getDateDiff(dayjs(item.createdAt))}</span>
+            <span>조회 {item.viewCount}</span>
           </Flex>
-          <Flex gap={1} align="center">
-            <i className="fa-regular fa-comment" />
-            <span>{item.commentsCount}</span>
+          <Flex gap={2} color="gray.500" align="center">
+            <Flex gap={1} align="center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="14px"
+                viewBox="0 -960 960 960"
+                width="14px"
+                fill="var(--gray-400)"
+              >
+                <path d="M840-640q32 0 56 24t24 56v80q0 7-1.5 15t-4.5 15L794-168q-9 20-30 34t-44 14H400q-33 0-56.5-23.5T320-200v-407q0-16 6.5-30.5T344-663l217-216q15-14 35.5-17t39.5 7q19 10 27.5 28t3.5 37l-45 184h218ZM160-120q-33 0-56.5-23.5T80-200v-360q0-33 23.5-56.5T160-640q33 0 56.5 23.5T240-560v360q0 33-23.5 56.5T160-120Z" />
+              </svg>
+              <span>{item.likeCount}</span>
+            </Flex>
+            <Flex gap={1} align="center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="14px"
+                viewBox="0 -960 960 960"
+                width="14px"
+                fill="var(--gray-400)"
+              >
+                <path d="m240-240-92 92q-19 19-43.5 8.5T80-177v-623q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240Zm40-160h240q17 0 28.5-11.5T560-440q0-17-11.5-28.5T520-480H280q-17 0-28.5 11.5T240-440q0 17 11.5 28.5T280-400Zm0-120h400q17 0 28.5-11.5T720-560q0-17-11.5-28.5T680-600H280q-17 0-28.5 11.5T240-560q0 17 11.5 28.5T280-520Zm0-120h400q17 0 28.5-11.5T720-680q0-17-11.5-28.5T680-720H280q-17 0-28.5 11.5T240-680q0 17 11.5 28.5T280-640Z" />
+              </svg>
+              <span>{item.commentsCount}</span>
+            </Flex>
           </Flex>
         </Flex>
       </Flex>
-    </Layout>
+    </Link>
   );
 }
 
 function IconCategory({ category }: { category: string }) {
-  return <IconLayout>#{category}</IconLayout>;
+  return (
+    <Box
+      bg="gray.100"
+      color="gray.600"
+      w="max-content"
+      fontWeight="regular"
+      fontSize="11px"
+      mb={1}
+      py={0.5}
+      px={1}
+    >
+      #{category}
+    </Box>
+  );
 }
-
-const Layout = styled(Link)`
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-  border-bottom: var(--border-main);
-  padding: 12px 16px;
-`;
-
-const IconLayout = styled.span`
-  background-color: var(--font-h6);
-  color: var(--gray-600);
-  font-size: 12px;
-  width: max-content;
-  text-align: center;
-  margin-bottom: 2px;
-`;

@@ -56,12 +56,12 @@ export const useFeedsQuery = (
   typeId?: number,
   cursor?: number,
   isRecent?: boolean,
-  options?: QueryOptions<FeedProps[]>,
+  options?: QueryOptions<FeedProps[] | FeedProps>,
 ) =>
-  useQuery<FeedProps[], AxiosError>(
+  useQuery<FeedProps[] | FeedProps, AxiosError>(
     [Feed + "s", type, typeId, cursor, isRecent],
     async () => {
-      const res = await axios.get<FeedProps[]>(`${SERVER_URI}/feed`, {
+      const res = await axios.get<FeedProps[] | FeedProps>(`${SERVER_URI}/feed`, {
         params: { type, typeId, cursor, isRecent: isRecent === undefined ? true : isRecent },
       });
       return res.data;

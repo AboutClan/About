@@ -94,7 +94,7 @@ export default function BottomFlexDrawer({
       setDrawerHeight(currentHeightRef.current); // 스와이프가 임계값보다 짧으면 원래 높이로 복원
     }
   };
-
+  console.log(24, drawerHeight);
   return (
     <>
       {isOverlay && <ScreenOverlay zIndex={zIndex} onClick={() => setIsModal(false)} />}
@@ -121,7 +121,7 @@ export default function BottomFlexDrawer({
         )}
         {drawerHeight > 100 && children}
         {drawerOptions?.footer && drawerHeight > 100 && (
-          <Box py={2} w="100%" mt="auto" mb={`${iPhoneNotchSize() + 8}px`}>
+          <Box py={2} w="100%" mt="auto" mb={`${iPhoneNotchSize()}px`}>
             <Button
               w="100%"
               mt="auto"

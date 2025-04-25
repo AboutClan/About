@@ -105,16 +105,17 @@ function SquareWritingPage() {
         <Button
           isDisabled={!watch().title || !watch().content}
           variant="ghost"
-          size="sm"
+          size="md"
           type="submit"
           form="secret-square-form"
           isLoading={isCreateSquareLoading}
+          px={3}
         >
           완료
         </Button>
       </Header>
       <Slide isNoPadding>
-        <VStack h="100%" px={4}>
+        <VStack h="100%" px={5}>
           <FormProvider {...methods}>
             <Box as="form" w="100%" onSubmit={handleSubmit(onSubmit)} id="secret-square-form">
               <SquareCategoryRadioGroup />

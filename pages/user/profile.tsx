@@ -55,7 +55,7 @@ function Profile() {
     setMajors(userInfo?.majors);
     setMbti(userInfo?.mbti);
     setPlaceInfo({
-      place_name: userInfo?.locationDetail.text,
+      place_name: userInfo?.locationDetail?.text || "",
       x: userInfo?.locationDetail.lon + "",
       y: userInfo?.locationDetail.lat + "",
     });

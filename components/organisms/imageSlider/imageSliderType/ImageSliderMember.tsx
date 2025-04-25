@@ -20,7 +20,7 @@ function ImageSliderMember({ imageContainer }: IImageSliderMember) {
   const setBeforePage = useSetRecoilState(prevPageUrlState);
 
   const onClickUser = (user: IUserSummary) => {
-    router.push(`/profile/${user.uid}`);
+    router.push(`/profile/${user._id}`);
     setBeforePage(router?.asPath);
   };
 

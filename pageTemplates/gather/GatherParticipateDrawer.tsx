@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
 import { useParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
@@ -20,6 +20,7 @@ import { useUserInfoQuery } from "../../hooks/user/queries";
 import GatherExpireModal from "../../modals/gather/gatherExpireModal/GatherExpireModal";
 import GatherReviewDrawer from "../../modals/gather/gatherExpireModal/GatherReviewDrawer";
 import { transferFeedSummaryState, transferGatherDataState } from "../../recoils/transferRecoils";
+import { FeedProps } from "../../types/models/feed";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
 import { IUser, IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import { birthToAge } from "../../utils/convertUtils/convertTypes";
@@ -71,6 +72,8 @@ function GatherParticipateDrawer({ data }: IGatherParticipateDrawer) {
     enabled: !!data?.id && data.status === "open",
   });
 
+  console.log(23, feed);
+
   const isMax = data?.memberCnt.max !== 0 && data?.participants.length + 1 > data?.memberCnt.max;
   const myUid = session?.user.uid;
   const isParticipant = data?.participants.some((who) => who?.user && who.user.uid === myUid);
@@ -99,21 +102,25 @@ function GatherParticipateDrawer({ data }: IGatherParticipateDrawer) {
       router.push(`/feed/writing/gather?id=${data.id}`);
     }
   };
-  
+
   const getButtonSettings = () => {
     switch (data?.status) {
       case "open":
-        // if (feed?.length) {
-        //   return {
-        //     text: "모임 후기 도착! 확인하러 가기",
-        //     handleFunction: () => setIsReviewDrawer(true),
-        //   };
-        // }
+        if (feed) {
+          return {
+            text: "모임 후기 도착! 확인하러 가기",
+            handleFunction: () => setIsReviewDrawer(true),
+          };
+        }
 
         if (myGather || isParticipant) {
           return {
             text: "모임 리뷰 쓰고 포인트 받기",
             handleFunction: () => onClick("review"),
+          };
+        } else if (data.status === "open") {
+          return {
+            text: "종료된 모임",
           };
         } else {
           return {
@@ -341,7 +348,11 @@ function GatherParticipateDrawer({ data }: IGatherParticipateDrawer) {
         </BottomFlexDrawer>
       )}
       {isReviewDrawer && (
-        <GatherReviewDrawer feed={feed?.[0]} isOpen onClose={() => setIsReviewDrawer(false)} />
+        <GatherReviewDrawer
+          feed={feed as FeedProps}
+          isOpen
+          onClose={() => setIsReviewDrawer(false)}
+        />
       )}
     </>
   );

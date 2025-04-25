@@ -1,7 +1,7 @@
 import { UserCommentProps } from "../components/propTypes";
 import { TimeStampProps } from "../utils/timeAndDate";
 
-export type SecretSquareCategory = "일상" | "고민" | "정보" | "같이해요";
+export type SecretSquareCategory = "일상" | "정보" | "질문" | "같이해요";
 export type SecretSquareCategoryWithAll = "전체" | SecretSquareCategory;
 
 interface BaseSecretSquareItem extends TimeStampProps {

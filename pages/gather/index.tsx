@@ -68,8 +68,12 @@ function Gather() {
           <TabNav tabOptionsArr={tabNavOptions} selected={tab} isFullSize />
         </Box>
       </Slide>
-      <Slide>{tab === "번개" ? <GatherMain /> : <SquareLoungeSection />}</Slide>
-      {!isGuest && <WritingButton url="/gather/writing/category" type="thunder" />}
+      <Slide isNoPadding={tab !== "번개"}>
+        {tab === "번개" ? <GatherMain /> : <SquareLoungeSection />}
+      </Slide>
+      {!isGuest && tab === "번개" && (
+        <WritingButton url="/gather/writing/category" type="thunder" />
+      )}
       {isModal && (
         <PageGuideModal title="번개 가이드" footerOptions={{}} setIsModal={setIsModal}>
           다양한 번개 모임에 참여해 보세요! 금방 마감될지도 모른다구요? 개설시에는 최대{" "}

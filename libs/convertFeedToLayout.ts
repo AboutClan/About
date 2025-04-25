@@ -5,6 +5,7 @@ import { FeedProps } from "../types/models/feed";
 import { dayjsToFormat } from "../utils/dateTimeUtils";
 
 export const convertFeedToLayout = (feed: FeedProps): FeedLayoutProps => {
+  console.log(1, feed);
   return {
     type: feed.type,
     user: feed.writer,
@@ -13,7 +14,7 @@ export const convertFeedToLayout = (feed: FeedProps): FeedLayoutProps => {
     content: feed.text,
     likeUsers: feed.like,
     likeCnt: feed?.likeCnt,
-    id: feed._id,
+    id: feed.typeId,
     comments: feed.comments,
     isAnonymous: feed.isAnonymous,
     summary: feed.type

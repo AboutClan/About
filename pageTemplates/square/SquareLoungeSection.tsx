@@ -52,7 +52,7 @@ function SquareLoungeSection() {
 
     setLoungeData((old) => {
       if (old?.length && !drawerParam) return [...old, ...(feeds as FeedProps[])];
-      else return feeds;
+      else return feeds as FeedProps[];
     });
   }, [feeds, categoryParam]);
 

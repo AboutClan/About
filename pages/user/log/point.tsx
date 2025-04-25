@@ -3,11 +3,11 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import { useState } from "react";
 
-import Select from "../../components/atoms/Select";
-import Header from "../../components/layouts/Header";
-import Slide from "../../components/layouts/PageSlide";
-import { usePointSystemLogQuery, useUserInfoQuery } from "../../hooks/user/queries";
-import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
+import Select from "../../../components/atoms/Select";
+import Header from "../../../components/layouts/Header";
+import Slide from "../../../components/layouts/PageSlide";
+import { usePointSystemLogQuery, useUserInfoQuery } from "../../../hooks/user/queries";
+import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
 
 function UserLogSection() {
   const { data: userInfo } = useUserInfoQuery();

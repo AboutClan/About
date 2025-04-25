@@ -167,7 +167,7 @@ function StoreItem() {
               </Box>
             </Flex>
           )}
-          <Flex my={2} w="full" mt="auto">
+          <Flex py={2} w="full" mt="auto">
             {!giftInfo?.type && (
               <Button
                 colorScheme="black"

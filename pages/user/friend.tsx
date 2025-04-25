@@ -24,7 +24,7 @@ function ProfileFriend() {
 
   const onClickUser = (user: IUserSummary) => {
     setBeforePage(router?.asPath);
-    router.push(`/profile/${user.uid}`);
+    router.push(`/profile/${user._id}`);
   };
 
   return (

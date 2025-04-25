@@ -6,7 +6,7 @@ export interface FeedProps
   extends Omit<WritingFormProps, "images" | "isAnonymous">,
     TimeStampProps {
   images: string[];
-  _id: string;
+  id: string;
   like: IUserSummary[];
   likeCnt: number;
   writer: IUserSummary;
