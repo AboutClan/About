@@ -1,5 +1,4 @@
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
@@ -17,7 +16,6 @@ interface IPromotionApplyModal extends IModal {
 }
 
 function PromotionApplyModal({ setIsModal, uniName }: IPromotionApplyModal) {
-  const { data: session } = useSession();
   const completeToast = useCompleteToast();
 
   const [contentType, setContentType] = useState<"cool" | "none">();
@@ -51,7 +49,7 @@ function PromotionApplyModal({ setIsModal, uniName }: IPromotionApplyModal) {
   };
 
   const handleApply = () => {
-    sendRequest({ category: "홍보", writer: session.user.name });
+    sendRequest({ category: "홍보" });
     mutate(uniName);
   };
   <>
@@ -82,13 +80,13 @@ function PromotionApplyModal({ setIsModal, uniName }: IPromotionApplyModal) {
         contentType === "none" || !contentType
           ? "게시완료"
           : contentType === "cool"
-            ? "확인"
-            : "다음에",
+          ? "확인"
+          : "다음에",
       func: !contentType
         ? onSubmit
         : contentType === "cool"
-          ? () => setIsModal(false)
-          : handleApply,
+        ? () => setIsModal(false)
+        : handleApply,
       isLoading,
     },
 
@@ -99,12 +97,12 @@ function PromotionApplyModal({ setIsModal, uniName }: IPromotionApplyModal) {
           },
         }
       : contentType === "cool"
-        ? undefined
-        : {
-            sub: {
-              text: "다음에",
-            },
-          }),
+      ? undefined
+      : {
+          sub: {
+            text: "다음에",
+          },
+        }),
   };
 
   return (

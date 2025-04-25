@@ -35,6 +35,7 @@ function SearchLocation({
             placeholder="상세 주소"
             value={placeInfo.road_address_name}
             onChange={(e) => setPlaceInfo((old) => ({ ...old, road_address_name: e.target.value }))}
+            isLine
             size="sm"
             fontSize="11px"
             _placeholder={{ color: "var(--gray-500)" }}

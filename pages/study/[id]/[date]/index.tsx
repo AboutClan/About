@@ -76,7 +76,6 @@ export default function Page() {
           latitude: null,
           longitude: null,
           time: dayjsToFormat(dayjs(date), "M월 D일 오전 9시"),
-
           _id: null,
           reviews: [],
         }
@@ -162,6 +161,7 @@ export default function Page() {
                 distance={distance}
                 status={status}
                 time={placeInfo.time}
+                isVoting={!!myVoteInfo || !!myRealTimeStudy}
               />
             </Slide>
             <Box h={2} bg="gray.100" />

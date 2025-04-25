@@ -40,7 +40,7 @@ function AdminSecede() {
                   <ItemHeader>
                     <Title>{item?.title}</Title>
                     <div>
-                      <span>{item.writer || "익명"}</span>
+                      <span>{"temp" || "익명"}</span>
                       <span>2022-08-14</span>
                     </div>
                   </ItemHeader>

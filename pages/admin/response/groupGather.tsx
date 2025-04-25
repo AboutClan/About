@@ -43,7 +43,7 @@ function AdminGroupGather() {
                   <Wrapper>
                     <ItemHeader>
                       <Title>
-                        {item.writer} {age} {mbti}
+                        temp {age} {mbti}
                       </Title>
                       <div>
                         <span>{dayjs(item.updatedAt).format("M월 D일")}</span>

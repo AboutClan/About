@@ -26,7 +26,6 @@ function ErrorUserInfoPopUp({ setIsModal }: IModal) {
     sendRequest({
       title: "유저 정보 에러",
       category: "건의",
-      writer: session.user.name,
       content: `에러 id: ${session.user.id}`,
     });
   };

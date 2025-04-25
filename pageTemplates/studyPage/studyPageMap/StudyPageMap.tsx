@@ -65,8 +65,9 @@ function StudyPageMap({
         ? { lat: detailInfo.place.latitude, lon: detailInfo.place.longitude }
         : (mapOptions?.center?.x && { lat: mapOptions?.center?.x, lon: mapOptions?.center?.y }) ||
           centerLocation,
-      isMapExpansion ? 12 : 13,
+      mapOptions?.zoom || (isMapExpansion ? 12 : 13),
     );
+    console.log(23, options);
 
     setMapOptions(options);
     setMarkersOptions(
@@ -96,7 +97,8 @@ function StudyPageMap({
     detailInfo,
   ]);
 
-  const handleMarker = (id: string, type: "vote" | "place") => {
+  const handleMarker = (id: string, type: "vote" | "place", currentZoom: number) => {
+    setMapOptions({ ...mapOptions, zoom: currentZoom });
     if (type === "place") {
       const findPlace = placeData?.find((place) => place._id === id);
       setPlaceInfo(findPlace);

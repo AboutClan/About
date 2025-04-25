@@ -70,7 +70,6 @@ function Dialog({ isOpen, onClose, setIsModal }: IDialog) {
   const handleSubmit = () => {
     const data: IUserRequest = {
       category: "건의",
-      writer: session?.user.name,
       title: "운영진 지원",
       content: session?.user?.uid as string,
     };

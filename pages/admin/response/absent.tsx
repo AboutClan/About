@@ -36,7 +36,7 @@ function AdminAbsent() {
                 <Item key={idx}>
                   <ItemHeader>
                     <div>
-                      <span>{item.writer || "익명"}</span>
+                      <span>{"temp" || "익명"}</span>
                       <span>2022-08-14</span>
                     </div>
                     <Content>{item.content}</Content>

@@ -30,7 +30,7 @@ function CommentEditModal({
   isSecret,
 }: CommentEditModalProps) {
   const [isFirst, setIsFirst] = useState(true);
- 
+
   const footerOptions: IFooterOptions = {
     main: {
       text: "변경",
@@ -61,7 +61,7 @@ function CommentEditModal({
           </>
         ) : (
           <>
-            <Input size="sm" value={text} onChange={(e) => setText(e.target.value)} />
+            <Input size="sm" isLine value={text} onChange={(e) => setText(e.target.value)} />
           </>
         )}
       </Container>

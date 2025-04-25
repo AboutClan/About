@@ -259,7 +259,7 @@ function WritingCondition() {
               >
                 URL
               </Box>
-              <Input size="sm" value={link} onChange={(e) => setLink(e.target.value)} />
+              <Input isLine size="sm" value={link} onChange={(e) => setLink(e.target.value)} />
             </Flex>
           )}
         </Container>

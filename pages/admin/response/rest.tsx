@@ -44,7 +44,7 @@ function AdminRest() {
                 <Item key={idx}>
                   <div>
                     <span>이름:</span>
-                    <span>{item.writer}</span>
+                    <span>temp</span>
                   </div>
                   <div>
                     <span>날짜:</span>

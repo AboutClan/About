@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -11,7 +11,6 @@ import { IModal } from "../../types/components/modalTypes";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 function RequestSecedeModal({ setIsModal }: IModal) {
-  const { data: session } = useSession();
   const completeToast = useCompleteToast();
   const failToast = useFailToast();
 
@@ -32,7 +31,6 @@ function RequestSecedeModal({ setIsModal }: IModal) {
     mutate({
       category: "탈퇴",
       content: value,
-      writer: session?.user.name,
     });
   };
 

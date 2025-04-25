@@ -23,7 +23,7 @@ interface IInviteUserModal extends IModal {
 export default function InviteUserModal({ setIsModal, prevUsers, filterUsers }: IInviteUserModal) {
   const typeToast = useTypeToast();
   const { id } = useParams<{ id: string }>() || {};
- 
+
   const [location, setLocation] = useState<Location | "전체">("전체");
   const [inviteUser, setInviteUser] = useState<IUserSummary>(null);
   const [users, setUsers] = useState<IUserSummary[]>(null);
@@ -31,7 +31,7 @@ export default function InviteUserModal({ setIsModal, prevUsers, filterUsers }: 
   const [nameValue, setNameValue] = useState("");
 
   const { data: usersAll, isLoading } = useAllUserDataQuery(null);
- 
+
   const { mutate } = useGatherInviteMutation(+id, {
     onSuccess() {
       typeToast("invite");
@@ -97,9 +97,10 @@ export default function InviteUserModal({ setIsModal, prevUsers, filterUsers }: 
       <Box mt="16px">
         <Input
           placeholder="이름 검색"
-          size="xs"
+          isLine
           value={nameValue}
           onChange={(e) => setNameValue(e.target.value)}
+          size="sm"
         />
       </Box>
       <Box

@@ -1,34 +1,12 @@
 export const COLOR_400_ARR = [
-  "red.400",
-  "orange.400",
-  "yellow.400",
-  "green.400",
-  "teal.400",
-  "blue.400",
-  "cyan.400",
-  "teal.400",
-  "purple.400",
-  "red.400",
-  "orange.400",
-  "yellow.400",
-  "green.400",
-  "teal.400",
-  "blue.400",
-  "cyan.400",
-  "teal.400",
-];
-
-export const COLOR_TABLE_STRONG = [
-  "#F56565",
-  "#ED8936",
-  "#ECC94B",
-  "#48BB78",
-  "#38B2AC",
-  "#4299E1",
-  "#0BC5EA",
-  "#9F7AEA",
-  "#ED64A6",
-  "#A0AEC0",
+  "#ff7070",
+  "#ff9f26",
+  "#f7c948",
+  "#4fb84f",
+  "#33e4a3",
+  "#36a5ff",
+  "#26c6da",
+  "#b33fc9",
 ];
 
 export const COLOR_TABLE = [

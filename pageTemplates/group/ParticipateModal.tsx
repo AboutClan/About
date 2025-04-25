@@ -92,18 +92,12 @@ function ParticipateModal({ id, setIsModal, answer }: IParticipateModal) {
         <Point>
           <span>보유 포인트:</span>
           <span>{userInfo?.point} 포인트</span>{" "}
-          <PopOverIcon
-            title="포인트"
-            text="포인트는 동아리 활동을 통해 여러 곳에서 획득할 수 있습니다. 포인트 가이드를 참고해주세요!"
-          />
+          <PopOverIcon text="포인트는 동아리 활동을 통해 여러 곳에서 획득할 수 있습니다. 포인트 가이드를 참고해주세요!" />
         </Point>
         <Point>
           <span>보유 보증금:</span>
           <span>{userInfo?.deposit}원</span>
-          <PopOverIcon
-            title="보증금"
-            text="0원이 되면 동아리 활동이 불가능하기에 1000원 이상 유지해야 합니다. 마이페이지에서 충전할 수 있습니다."
-          />
+          <PopOverIcon text="0원이 되면 동아리 활동이 불가능하기에 1000원 이상 유지해야 합니다. 마이페이지에서 충전할 수 있습니다." />
         </Point>
       </PointContainer>
       <PointContainer>

@@ -48,7 +48,8 @@ function WritingGahterLocation() {
       </Slide>
       <RegisterLayout>
         <RegisterOverview>
-          <span>모임 장소를 입력해 주세요.</span>
+          <span>어디서 모이나요?</span>
+          <span>모임 장소를 입력해 주세요</span>
         </RegisterOverview>
         <Location>
           <SearchLocation placeInfo={placeInfo} setPlaceInfo={setPlaceInfo} />

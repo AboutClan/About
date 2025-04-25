@@ -52,7 +52,8 @@ function WritingDate() {
       </Slide>
       <RegisterLayout>
         <RegisterOverview>
-          <span>날짜와 시간을 선택해 주세요.</span>
+          <span>언제 모임을 진행하나요?</span>
+          <span>날짜와 시간을 선택해 주세요</span>
         </RegisterOverview>
         <GatherWritingDateDate date={date} setDate={setDate} gatherWriting={gatherWriting} />
         <GatherWritingDateSubject

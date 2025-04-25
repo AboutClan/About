@@ -21,7 +21,7 @@ function AdminBadge() {
             .map((item, idx) => (
               <Item key={idx}>
                 <div>
-                  <span>{item?.writer}</span>
+                  <span>temp</span>
                   <span>{dayjs(item?.updatedAt).format("YYYY-MM-DD")}</span>
                 </div>
                 <span>

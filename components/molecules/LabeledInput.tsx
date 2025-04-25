@@ -1,4 +1,5 @@
-import { Text, type InputProps as ChakraInputProps } from "@chakra-ui/react";
+import { type InputProps as ChakraInputProps,Text } from "@chakra-ui/react";
+
 import { Input } from "../atoms/Input";
 
 interface LabelInputProps extends ChakraInputProps {

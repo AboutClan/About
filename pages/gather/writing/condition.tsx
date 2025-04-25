@@ -41,7 +41,7 @@ function WritingCondition() {
     kakaoUrl: false,
     isApprove: gatherContent?.isApprovalRequired || false,
   });
-
+  console.log(condition, gatherContent);
   const [isMemberConditionModal, setIsMemberConditionModal] = useState(false);
   const [password, setPassword] = useState(gatherContent?.password);
 
@@ -79,16 +79,21 @@ function WritingCondition() {
       return { ...old, [type]: isChecked };
     });
   };
-
+  console.log(2, gatherContent?.memberCnt?.max);
   const getMemberConditionText = () => {
     const temp = [];
-    if (condition.age) {
+    if (condition.age && (condition.age[0] !== 19 || condition.age[1] !== 28)) {
       temp.push("나이");
     }
     if (condition.gender) {
       temp.push("성별");
     }
-    if (gatherContent?.memberCnt?.max !== 0) {
+
+    if (
+      gatherContent?.memberCnt?.max !== undefined &&
+      gatherContent?.memberCnt?.max !== 0 &&
+      gatherContent?.memberCnt?.max !== 8
+    ) {
       temp.push("인원");
     }
     if (temp.length) return String(temp) + " " + "제한";
@@ -104,7 +109,8 @@ function WritingCondition() {
         </Slide>
         <RegisterLayout>
           <RegisterOverview>
-            <span>조건을 선택해 주세요.</span>
+            <span>어떤 인원과 함께하고 싶나요?</span>
+            <span>조건을 선택해 주세요</span>
           </RegisterOverview>
           <Container>
             <Item>
@@ -128,10 +134,7 @@ function WritingCondition() {
                   <i className="fa-solid fa-person-to-door" />
                 </div>
                 <span>참여 승인제 사용</span>
-                <PopOverIcon
-                  title="참여 승인제"
-                  text="선착순 참여가 아니라 모임장이 승인하는 방식으로 진행됩니다."
-                />
+                <PopOverIcon text="선착순 참여가 아니라 모임장이 승인하는 방식으로 진행됩니다." />
               </Name>
               <Switch
                 mr="var(--gap-1)"
@@ -146,7 +149,8 @@ function WritingCondition() {
                 <div>
                   <i className="fa-solid fa-comments" />
                 </div>
-                <span>오픈채팅방</span>
+                <span>오픈채팅방</span>{" "}
+                <PopOverIcon text="참여 멤버들은 해당 톡방으로 입장합니다. 운영진에게 개설을 요청해도 됩니다." />
               </Name>
               <Switch
                 mr="var(--gap-1)"
@@ -167,7 +171,12 @@ function WritingCondition() {
                 >
                   URL
                 </Box>
-                <Input size="sm" value={kakaoUrl} onChange={(e) => setKakaoUrl(e.target.value)} />
+                <Input
+                  size="sm"
+                  isLine
+                  value={kakaoUrl}
+                  onChange={(e) => setKakaoUrl(e.target.value)}
+                />
               </Flex>
             )}
           </Container>

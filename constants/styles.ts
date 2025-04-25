@@ -1,29 +1,3 @@
-import { GatherStatus } from "../types/models/gatherTypes/gatherTypes";
-
-export const SUB_COLORS = ["var(--color-red)", "var(--color-orange)", "var(--color-blue)"];
-
-export const TABLE_COLORS = [
-  "#FF8896",
-  "#FEBC5A",
-  "#6AC2A3",
-  "#71C3FF",
-  "#9E7CFF",
-  "#FFC1CC",
-  "#A6ABBF",
-  "#ADD8E6",
-  "#D7BCE8",
-  "#8ED081",
-  "#B0C4DE",
-  "#FF8896",
-  "#FEBC5A",
-  "#B5BDEB",
-  "#9E7CFF",
-  "#FFC1CC",
-  "#A6ABBF",
-  "#ADD8E6",
-  "#D7BCE8",
-  "#B0C4DE",
-];
 
 export const TABLE_STRONG_COLORS = ["#ff6b6b", "#FFA500", "#007BFF", "#20B2AA", "#BA55D3"];
 
@@ -50,19 +24,4 @@ export const ICON_SIZE = {
   md: 50,
   sm: 42,
   xs: 30,
-};
-
-export const STATUS_TP_COLOR: Record<GatherStatus, string> = {
-  open: "var(--color-mint)",
-  pending: "var(--color-red)",
-  close: "var(--gray-500)",
-  end: "var(--gray-500)",
-  planned: "purple",
-};
-
-export const COLOR_SCHEME_BG = {
-  "var(--color-mint)": "rgba(0, 194, 179, 0.1)",
-  "var(--color-red)": "rgba(255, 107, 107, 0.1)",
-  [TABLE_COLORS[1]]: "rgba(254, 188, 90, 0.1)",
-  [TABLE_COLORS[3]]: "rgba(113, 195, 255, 0.1)",
 };

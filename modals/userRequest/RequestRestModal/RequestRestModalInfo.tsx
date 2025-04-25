@@ -56,7 +56,7 @@ function RequestRestModalInfo({ onSubmit }: IRequestRestModalInfo) {
             <option value="일반">일반 휴식</option>
             <option value="특별">특별 휴식</option>
           </TypeSelect>
-          <PopOverIcon title="일반 휴식 / 특별 휴식" text={POPOVER_MESSAGE} />
+          <PopOverIcon text={POPOVER_MESSAGE} />
         </Item>
         <DateItem>
           <span>기간:</span>

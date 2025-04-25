@@ -1,4 +1,3 @@
-import { TABLE_COLORS } from "../../constants/styles";
 import { IRuleModalContent } from "../../modals/RuleModal";
 import { GroupCategory } from "../../types/models/groupTypes/group";
 
@@ -45,19 +44,16 @@ export const GROUP_STUDY_SUB_CATEGORY: { [key in GroupCategory]: string[] } = {
 };
 
 export const GROUP_STUDY_CATEGORY_ARR_ICONS = {
-  "시험 스터디": (
-    <i className="fa-regular fa-file-certificate" style={{ color: `${TABLE_COLORS[0]}` }} />
-  ),
-
-  "성장 스터디": (
-    <i className="fa-regular fa-user-graduate" style={{ color: `${TABLE_COLORS[1]}` }} />
-  ),
-  자기계발: <i className="fa-regular fa-book-user" style={{ color: `${TABLE_COLORS[2]}` }} />,
-
-  취미: <i className="fa-regular fa-champagne-glasses" style={{ color: `${TABLE_COLORS[3]}` }} />,
-  운동: <i className="fa-regular fa-person-running" style={{ color: `${TABLE_COLORS[4]}` }} />,
-
-  기타: <i className="fa-regular fa-atom" style={{ color: `${TABLE_COLORS[6]}` }} />,
+  // "시험 스터디": (
+  //   <i className="fa-regular fa-file-certificate" style={{ color: `${TABLE_COLORS[0]}` }} />
+  // ),
+  // "성장 스터디": (
+  //   <i className="fa-regular fa-user-graduate" style={{ color: `${TABLE_COLORS[1]}` }} />
+  // ),
+  // 자기계발: <i className="fa-regular fa-book-user" style={{ color: `${TABLE_COLORS[2]}` }} />,
+  // 취미: <i className="fa-regular fa-champagne-glasses" style={{ color: `${TABLE_COLORS[3]}` }} />,
+  // 운동: <i className="fa-regular fa-person-running" style={{ color: `${TABLE_COLORS[4]}` }} />,
+  // 기타: <i className="fa-regular fa-atom" style={{ color: `${TABLE_COLORS[6]}` }} />,
 };
 
 export const GROUP_STUDY_RULE_CONTENT: IRuleModalContent = {

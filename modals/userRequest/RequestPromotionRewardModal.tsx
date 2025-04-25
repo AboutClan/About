@@ -1,6 +1,5 @@
 import { Button } from "@chakra-ui/react";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -12,7 +11,6 @@ import { IModal } from "../../types/components/modalTypes";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 function RequestPromotionRewardModal({ setIsModal }: IModal) {
-  const { data: session } = useSession();
   const completeToast = useCompleteToast();
   const errorToast = useErrorToast();
 
@@ -26,7 +24,6 @@ function RequestPromotionRewardModal({ setIsModal }: IModal) {
   const onSubmit = () => {
     sendPromotionReward({
       category: "홍보",
-      writer: session.user.name,
     });
     setIsModal(false);
   };

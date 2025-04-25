@@ -20,7 +20,7 @@ function AdminPromotion() {
             .reverse()
             .map((item, idx) => (
               <Item key={idx}>
-                <span>{item?.writer}</span>
+                <span>temp</span>
                 <span>{dayjs(item?.updatedAt).format("YYYY-MM-DD")}</span>
               </Item>
             ))}

@@ -86,8 +86,8 @@ function GatherWritingUserConditionModal({
           <div>
             <i className="fa-solid fa-venus-mars" />
           </div>
-          <span>성별 고려</span>
-          <PopOverIcon title="성별 고려" text="성별 비율을 최대 2대1까지 제한합니다." />
+          <span>성비 고려</span>
+          <PopOverIcon text="성비를 최대 2대1까지로 제한합니다." />
         </Name>
         <Switch
           mr="var(--gap-1)"

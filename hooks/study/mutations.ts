@@ -1,8 +1,10 @@
 import { AxiosError } from "axios";
 import dayjs, { Dayjs } from "dayjs";
 import { useMutation } from "react-query";
+import { useSetRecoilState } from "recoil";
 
 import { requestServer } from "../../libs/methodHelpers";
+import { transferStudyVoteDateState } from "../../recoils/transferRecoils";
 import { MutationOptions } from "../../types/hooks/reactTypes";
 import { CollectionProps } from "../../types/models/collections";
 import { PlaceRegisterProps, PlaceReviewProps } from "../../types/models/studyTypes/entityTypes";
@@ -20,28 +22,41 @@ export const useStudyVoteMutation = <T extends "post" | "patch" | "delete">(
   voteDate: Dayjs,
   method: T,
   options?: MutationOptions<StudyVoteParam<T>>,
-) =>
-  useMutation<void, AxiosError, StudyVoteParam<T>>((param) => {
-    const voteInfo = param;
+) => {
+  const setTransferStudyVoteDate = useSetRecoilState(transferStudyVoteDateState);
 
-    if (method !== "delete") {
-      const updatedVoteInfo = voteInfo as StudyVoteProps | IStudyVoteTime;
+  return useMutation<void, AxiosError, StudyVoteParam<T>>(
+    (param) => {
+      const voteInfo = param;
 
-      const { start, end } = updatedVoteInfo;
-      const startStr = voteDate.hour(start.hour()).minute(start.minute()).toISOString();
-      const endStr = voteDate.hour(end.hour()).minute(end.minute()).toISOString();
+      if (method !== "delete") {
+        const updatedVoteInfo = voteInfo as StudyVoteProps | IStudyVoteTime;
+        const { start, end } = updatedVoteInfo;
+        const startStr = voteDate.hour(start.hour()).minute(start.minute()).toISOString();
+        const endStr = voteDate.hour(end.hour()).minute(end.minute()).toISOString();
+        return requestServer<StudyVoteParam<T>>({
+          method,
+          url: `vote2/${dayjsToStr(voteDate)}`,
+          body: { ...voteInfo, start: startStr, end: endStr },
+        });
+      }
       return requestServer<StudyVoteParam<T>>({
         method,
         url: `vote2/${dayjsToStr(voteDate)}`,
-        body: { ...voteInfo, start: startStr, end: endStr },
+        body: { ...voteInfo },
       });
-    }
-    return requestServer<StudyVoteParam<T>>({
-      method,
-      url: `vote2/${dayjsToStr(voteDate)}`,
-      body: { ...voteInfo },
-    });
-  }, options);
+    },
+    {
+      ...options,
+      onSuccess(data, variables, context) {
+        if (method === "post") setTransferStudyVoteDate(voteDate);
+        if (options?.onSuccess) {
+          options.onSuccess(data, variables, context);
+        }
+      },
+    },
+  );
+};
 
 export const useStudyResultTimeChangeMutation = (
   voteDate: Dayjs,

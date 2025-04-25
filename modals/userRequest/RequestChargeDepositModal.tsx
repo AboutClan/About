@@ -36,7 +36,6 @@ function RequestChargeDepositModal({ setIsModal }: IModal) {
   const onComplete = () => {
     const userRequestInfo: IUserRequest = {
       category: "충전",
-      writer: session.user.name,
     };
     sendRequest(userRequestInfo);
     getDeposit({ value: 2000, message: "보증금 충전" });

@@ -14,7 +14,6 @@ import styled from "styled-components";
 
 import { DECLARE_LIST } from "../../constants/contentsText/requestContents";
 import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";
-import { useUserInfoQuery } from "../../hooks/user/queries";
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
 import { DispatchString, DispatchType } from "../../types/hooks/reactTypes";
 import { IUser, IUserSummary } from "../../types/models/userTypes/userInfoTypes";
@@ -53,8 +52,6 @@ function DeclareDrawer({ userData, declareModal, setDeclareModal }: IDeclareDraw
 
   const title = declareModal === "declare" ? "신고하기" : "거리두기";
 
-  const { data: userInfo } = useUserInfoQuery();
-
   const { mutate: sendDeclaration } = useUserRequestMutation({
     onSuccess() {
       completeToast("success");
@@ -67,8 +64,6 @@ function DeclareDrawer({ userData, declareModal, setDeclareModal }: IDeclareDraw
   const onSubmit = () => {
     const data: IUserRequest = {
       category: "신고",
-      writer: `${userInfo?.name}-${userInfo?.uid}`,
-      location: userInfo?.location,
       title: `${userData?.name}-${userData?.uid}`,
       content: declareModal === "declare" ? DECLARE_LIST[declareIdx] : "거리두기",
     };

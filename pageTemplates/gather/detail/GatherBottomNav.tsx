@@ -1,8 +1,8 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
-import PaymentConfirmationDrawer from "../../../components/drawers/PaymentConfirmationDrawer";
 
+import PaymentConfirmationDrawer from "../../../components/drawers/PaymentConfirmationDrawer";
 import Slide from "../../../components/layouts/PageSlide";
 import { useFeedsQuery } from "../../../hooks/feed/queries";
 import GatherReviewDrawer from "../../../modals/gather/gatherExpireModal/GatherReviewDrawer";

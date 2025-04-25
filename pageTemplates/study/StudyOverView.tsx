@@ -2,6 +2,7 @@ import { Badge, Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
 import StarRating from "../../components/atoms/StarRating";
+import BlurredLink from "../../components/molecules/BlurredLink";
 import InfoBoxCol, { InfoBoxProps } from "../../components/molecules/InfoBoxCol";
 import StarRatingReviewBlock from "../../components/molecules/StarRatingReviewBlock";
 import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
@@ -14,21 +15,22 @@ import { dayjsToStr } from "../../utils/dateTimeUtils";
 interface IStudyOverview {
   place: {
     name: string;
-    address: string;
+
     branch: string;
     reviews?: PlaceReviewProps[];
   };
   distance: number;
   status: StudyStatus | "recruiting" | "expected";
-
+  isVoting: boolean;
   time: string;
 }
 
 function StudyOverview({
-  place: { name, address, branch, reviews },
+  place: { name, branch, reviews },
   distance,
   status,
   time,
+  isVoting,
 }: IStudyOverview) {
   const typeToast = useTypeToast();
   const { text: badgeText, colorScheme: badgeColorScheme } = STUDY_STATUS_TO_BADGE[status];
@@ -38,8 +40,9 @@ function StudyOverview({
       text: time !== "unknown" ? time : "정보 없음",
     },
     {
-      category: "장소",
-      text: address,
+      category: "오픈채팅방 링크",
+
+      rightChildren: <BlurredLink isBlur={!isVoting} url="https://open.kakao.com/o/g6Wc70sh" />,
     },
   ];
 

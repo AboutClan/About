@@ -23,8 +23,9 @@ function ValueBoxCol({ items }: ValueBoxColProps) {
       fontWeight="light"
     >
       <Box>
-        {items.map((item) => (
+        {items.map((item, idx) => (
           <Flex
+            key={idx}
             py={1}
             pt={item?.isFinal ? 2 : 1}
             pb={item?.isFinal ? 0 : 1}

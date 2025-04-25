@@ -14,7 +14,7 @@ function AdminSuggest() {
 
   const { data: data1 } = useUserRequestQuery("건의");
   const { data: data2, isLoading } = useUserRequestQuery("신고");
-  
+
   useEffect(() => {
     if (isLoading || !data1) return;
     const sortedData = [...data1, ...data2].sort((a, b) =>
@@ -47,7 +47,7 @@ function AdminSuggest() {
                   <ItemHeader>
                     <Title>{item?.title}</Title>
                     <div>
-                      <span>{item.writer || "익명"}</span>
+                      <span>{"temp" || "익명"}</span>
                       <span>{dayjs(item.updatedAt).format("M월 D일")}</span>
                     </div>
                   </ItemHeader>

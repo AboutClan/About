@@ -47,13 +47,14 @@ function WritingGatherContent() {
       </Slide>
       <RegisterLayout>
         <RegisterOverview>
-          <span>내용을 입력해 주세요.</span>
+          <span>어떤 활동을 하나요?</span>
+          <span>자유롭게 적어주세요</span>
         </RegisterOverview>
         <Container>
           <Input placeholder="제목" value={title} onChange={(e) => setTitle(e.target.value)} />
           <Box h="20px" />
           <Textarea
-            placeholder="소개글을 입력해 주세요"
+            placeholder="활동 내용을 입력해 주세요"
             value={content}
             onChange={(e) => setContent(e.target.value)}
             minHeight={200}

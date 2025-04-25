@@ -1,6 +1,6 @@
+import { Flex } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import { COLOR_SCHEME_BG, TABLE_COLORS } from "../../constants/styles";
 import { NoticeCategory } from "../../storage/notice";
 import { InteractionType } from "../../types/globals/interaction";
 
@@ -11,19 +11,19 @@ export function NoticeIcon({ type }: INoticeIcon) {
   const getColor = (type: NoticeCategory) => {
     switch (type) {
       case "main":
-        return "var(--color-red)";
+        return { color: "var(--color-red)", bg: "red.50" };
       case "sub":
-        return "var(--color-mint)";
+        return { color: "var(--color-mint)", bg: "mint.50" };
       case "event":
-        return TABLE_COLORS[1];
+        return { color: "var(--color-blue)", bg: "blue.50" };
       default:
-        return TABLE_COLORS[3];
+        return { color: "var(--color-gray)", bg: "gray.200" };
     }
   };
 
-  const color = getColor(type);
+  const { color, bg } = getColor(type);
   return (
-    <NoticeIconWrapper bg={COLOR_SCHEME_BG[color]}>
+    <Flex justify="center" align="center" w="44px" h="44px" borderRadius="50%" bg={bg}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="22"
@@ -51,19 +51,9 @@ export function NoticeIcon({ type }: INoticeIcon) {
         />
         <path d="M13.8911 2.22855V21.2906" stroke="#343943" />
       </svg>
-    </NoticeIconWrapper>
+    </Flex>
   );
 }
-
-const NoticeIconWrapper = styled.div<{ bg: string }>`
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background-color: ${(props) => props.bg};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 
 interface IActiveIcon {
   type: InteractionType;

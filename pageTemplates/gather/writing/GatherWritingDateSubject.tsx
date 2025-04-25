@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -75,64 +75,55 @@ function GatherWritingDateSubject({
   };
 
   return (
-    <Layout>
-      <TimeContent>
-        <span>1차 모임</span>
-
-        <Box flex={1}>
+    <Box mt={20}>
+      <Box as="label" fontSize="13px">
+        1차 모임
+      </Box>
+      <Flex align="center" mt={2} mb={4}>
+        <Box flex={1} mr={4}>
           <Input
             placeholder="ex) 보드게임"
             value={firstGather?.text}
             onChange={(e) => onChangeInput(e, "first")}
+            size="md"
           />
         </Box>
-        <Box h="40px" />
+
         <TimeSelectorUnit
           time={firstGather.time}
           setTime={(time) => setFirstGather((old) => ({ ...old, time }))}
           timeArr={TIME_SELECTOR_UNIT}
         />
-      </TimeContent>
-      <TimeContent>
-        <span>2차 모임</span>
-        <Box flex={1}>
+      </Flex>
+
+      <Box as="label" fontSize="13px">
+        2차 모임
+      </Box>
+      <Flex align="center" mt={2} mb={4}>
+        <Box flex={1} mr={4}>
           <Input
             placeholder="ex) 뒤풀이"
             value={secondGather?.text}
             onChange={(e) => onChangeInput(e, "second")}
+            size="md"
           />
         </Box>
-        <Box h="40px" />
         <TimeSelectorUnit
           time={secondGather?.time}
           setTime={(time) => setSecondGather((old) => ({ ...old, time }))}
           timeArr={TIME_SELECTOR_UNIT}
-          disabled={secondGather?.text === ""}
         />
-      </TimeContent>
+      </Flex>
+
       <Message>2차 모임이 없는 경우 &lsquo;늦참&rsquo;으로 설정해주세요!</Message>
-    </Layout>
+    </Box>
   );
 }
 
-const Layout = styled.div`
-  margin-top: 60px;
-`;
-
 const Message = styled.div`
   margin-top: var(--gap-5);
-  font-size: 13px;
+  font-size: 12px;
   color: var(--gray-500);
-`;
-const TimeContent = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: var(--gap-4);
-  > span:first-child {
-    font-size: 14px;
-    font-weight: 600;
-    margin-right: var(--gap-3);
-  }
 `;
 
 export default GatherWritingDateSubject;

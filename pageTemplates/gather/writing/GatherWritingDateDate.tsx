@@ -39,8 +39,14 @@ function GatherWritingDateDate({ date, setDate, gatherWriting }: IGatherWritingD
   const CustomInput = forwardRef<HTMLButtonElement, CustomInputProps>(({ value, onClick }, ref) => {
     const isDefault = value === dayjsToFormat(dayjs().hour(14).minute(0), "M월 D일 HH:mm");
     return (
-      <Button size="lg" colorScheme="gray" onClick={onClick} ref={ref} _focus={{ outline: "none" }}>
-        {!isDefault ? value : "날짜/시간 선택"}
+      <Button
+        size="lg"
+        colorScheme="black"
+        onClick={onClick}
+        ref={ref}
+        _focus={{ outline: "none" }}
+      >
+        {!isDefault ? value : "눌러서 날짜/시간 선택"}
       </Button>
     );
   });
@@ -78,7 +84,6 @@ function GatherWritingDateDate({ date, setDate, gatherWriting }: IGatherWritingD
           />
         </Box>
       </Container>
-      <Message>1차 모임 기준으로 선택해 주세요!</Message>
     </Layout>
   );
 }
@@ -130,9 +135,4 @@ const StyledDatePicker = styled(DatePicker)`
   margin-left: var(--gap-2);
 `;
 
-const Message = styled.div`
-  margin-top: var(--gap-5);
-  font-size: 13px;
-  color: var(--gray-500);
-`;
 export default GatherWritingDateDate;

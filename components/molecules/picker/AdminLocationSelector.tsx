@@ -24,7 +24,7 @@ function AdminLocationSelector({ initialData, setRequestData, type }: IAdminLoca
         ),
       );
     if (type === "request") {
-      setRequestData((initialData as IUserRequest[])?.filter((who) => who.location === category));
+      setRequestData(initialData as IUserRequest[]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [category, initialData, type]);

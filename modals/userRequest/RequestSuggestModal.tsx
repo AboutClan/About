@@ -10,7 +10,6 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
@@ -27,7 +26,6 @@ interface IRequestSuggestModal extends IModal {
 }
 
 function RequestSuggestModal({ type, setIsModal }: IRequestSuggestModal) {
-  const { data: session } = useSession();
   const failToast = useFailToast();
   const completeToast = useCompleteToast();
 
@@ -38,8 +36,6 @@ function RequestSuggestModal({ type, setIsModal }: IRequestSuggestModal) {
       content: "",
     },
   });
-
-  const location = session?.user.location;
 
   const { mutate } = usePointSystemMutation("point", {
     onSuccess() {
@@ -60,10 +56,8 @@ function RequestSuggestModal({ type, setIsModal }: IRequestSuggestModal) {
     const declarationInfo: IUserRequest = {
       category: type === "suggest" ? "건의" : "신고",
       title: data.title,
-      writer: isRealName ? session.user.name : "",
       content: data.content,
       date: dayjs(),
-      location,
     };
 
     await sendDeclaration(declarationInfo);

@@ -1,3 +1,4 @@
+import { Dayjs } from "dayjs";
 import { atom } from "recoil";
 
 import { SummaryBlockProps } from "../components/molecules/SummaryBlock";
@@ -13,6 +14,11 @@ import { IUser } from "../types/models/userTypes/userInfoTypes";
 
 export const transferCollectionState = atom<CollectionProps>({
   key: "transferCollection",
+  default: null,
+});
+
+export const transferStudyVoteDateState = atom<Dayjs>({
+  key: "transferStudyVoteCompleteState",
   default: null,
 });
 

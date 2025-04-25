@@ -54,9 +54,7 @@ function RegularGatherModal({ setIsModal, setIsRabbitRun }: IRegularGatherModal)
     return;
     const applyData: IUserRequest = {
       category: "조모임",
-      location: userInfo.location,
       title: userInfo.birth + "-" + userInfo.mbti,
-      writer: userInfo.name,
       content: data?.content || "",
     };
 

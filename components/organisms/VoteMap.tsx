@@ -6,7 +6,7 @@ import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes
 interface IVoteMap {
   mapOptions?: IMapOptions;
   markersOptions?: IMarkerOptions[];
-  handleMarker?: (id: string, type?: "vote") => void;
+  handleMarker?: (id: string, type?: "vote", currentZoom?: number) => void;
   resizeToggle?: boolean;
   centerValue?: {
     lat: number;
@@ -34,6 +34,8 @@ export default function VoteMap({
     infoWindow: [],
     circle: null,
   });
+
+  console.log(123, mapOptions);
 
   useEffect(() => {
     if (!mapRef?.current || typeof naver === "undefined" || !mapOptions) return;
@@ -103,7 +105,8 @@ export default function VoteMap({
 
       naver.maps.Event.addListener(marker, "click", () => {
         if (handleMarker) {
-          handleMarker(markerOptions.id, markerOptions?.type);
+          const currentZoom = map.getZoom();
+          handleMarker(markerOptions.id, markerOptions?.type, currentZoom);
         }
       });
       mapElementsRef.current.markers.push(marker);

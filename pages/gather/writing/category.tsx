@@ -1,7 +1,7 @@
+import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import styled from "styled-components";
 
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
@@ -21,14 +21,14 @@ function WritingGatherCategory() {
 
   const [gatherWriting, setGatherWriting] = useRecoilState(sharedGatherWritingState);
 
-  const [IGatherType, setIGatherType] = useState<IGatherType>(gatherWriting?.type);
+  const [gatherType, setGatherType] = useState<IGatherType>(gatherWriting?.type);
 
   const onClickNext = () => {
-    if (!IGatherType) {
+    if (!gatherType) {
       failToast("free", "주제를 선택해 주세요!");
       return;
     }
-    setGatherWriting((old) => ({ ...old, type: IGatherType }));
+    setGatherWriting((old) => ({ ...old, type: gatherType }));
     router.push({ pathname: `/gather/writing/content`, query: router.query });
   };
 
@@ -40,63 +40,41 @@ function WritingGatherCategory() {
       </Slide>
       <RegisterLayout>
         <RegisterOverview>
-          <span>주제를 선택해 주세요.</span>
+          <span>어떤 모임을 열고 싶나요?</span>
+          <span>자유롭게 주제를 선택해 주세요</span>
         </RegisterOverview>
-        <ItemContainer>
+        <Flex flexDir="column">
           {GATHER_TYPES.map((type, idx) => (
-            <Item
+            <Flex
               key={idx}
-              isSelected={type.title === IGatherType?.title}
-              onClick={() => setIGatherType(type)}
+              align="center"
+              p={4}
+              py={3}
+              border={
+                type.title === gatherType?.title ? "var(--border-mint)" : "var(--border-main)"
+              }
+              borderRadius="8px"
+              onClick={() => setGatherType(type)}
+              mb={2}
             >
-              <IconWrapper>{GatherCategoryIcons[idx]}</IconWrapper>
-              <Info>
-                <span>{type.title}</span>
-                <span>{type.subtitle}</span>
-              </Info>
-            </Item>
+              <Flex justify="center" align="center" w="20px" mr={5} fontSize="15px" color="red.400">
+                {GatherCategoryIcons[idx]}
+              </Flex>
+              <Flex flexDir="column">
+                <Box fontSize="14px" color="gray.800" fontWeight="semibold">
+                  {type.title}
+                </Box>
+                <Box fontSize="12px" color="gray.500">
+                  {type.subtitle}
+                </Box>
+              </Flex>
+            </Flex>
           ))}
-        </ItemContainer>
+        </Flex>
       </RegisterLayout>
       <BottomNav onClick={onClickNext} />
     </>
   );
 }
-
-const ItemContainer = styled.div`
-  margin-top: var(--gap-5);
-  display: flex;
-  flex-direction: column;
-`;
-
-const Item = styled.div<{ isSelected: boolean }>`
-  display: flex;
-  align-items: center;
-  background-color: white;
-  margin-bottom: var(--gap-2);
-  height: 60px;
-  border-radius: var(--rounded-lg);
-  border: ${(props) =>
-    props.isSelected ? "2px solid var(--color-mint)" : "1px solid var(--gray-200)"};
-`;
-
-const IconWrapper = styled.div`
-  width: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Info = styled.div`
-  display: flex;
-  flex-direction: column;
-  > span:first-child {
-    font-weight: 600;
-  }
-  > span:last-child {
-    color: var(--gray-600);
-    font-size: 12px;
-  }
-`;
 
 export default WritingGatherCategory;

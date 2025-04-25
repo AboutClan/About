@@ -59,7 +59,8 @@ export default function GroupAdminInvitation() {
           <Box>
             <Input
               placeholder="이름 검색"
-              size="xs"
+              isLine
+              size="sm"
               value={nameValue}
               onChange={(e) => setNameValue(e.target.value)}
             />

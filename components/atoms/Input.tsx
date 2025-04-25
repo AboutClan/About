@@ -7,33 +7,31 @@ import {
 import { type ForwardedRef,forwardRef } from "react";
 
 type InputProps = ChakraInputProps & {
-  size?: "xs" | "sm" | "md" | "lg";
+  size?: "sm" | "md" | "lg";
   disabled?: boolean;
+  isLine?: boolean;
 };
 
 export const Input = forwardRef(function Input(
-  { size = "md", ...inputProps }: InputProps,
+  { size = "lg", isLine, ...inputProps }: InputProps,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   return (
     <ChakraInput
       ref={ref}
       focusBorderColor="#00c2b3"
-      {...(size === "lg" && {
-        height: "52px",
-        fontSize: "13px",
-        fontWeight: "regular",
-        lineHeight: "20px",
-      })}
-      backgroundColor={size === "sm" ? "inherit" : "white"}
+      fontSize="13px"
+      height={size === "lg" ? "52px" : size === "md" ? "48px" : "32px"}
+      fontWeight="regular"
+      lineHeight="20px"
+      backgroundColor={isLine ? "inherit" : "white"}
       borderColor="var(--gray-200)"
-      size={size}
-      border={size === "sm" ? "none" : undefined}
-      borderBottom={size === "sm" && "1px solid var(--gray-200)"}
-      borderRadius={size === "lg" ? "8px" : size === "sm" ? "none" : "4px"}
+      border={isLine ? "none" : undefined}
+      borderBottom={isLine && "1px solid var(--gray-200)"}
+      borderRadius={isLine ? "none" : size === "lg" ? "8px" : "4px"}
       _focus={{
-        outline: size === "sm" ? "none" : undefined,
-        boxShadow: size === "sm" ? "none" : undefined,
+        outline: isLine ? "none" : undefined,
+        boxShadow: isLine ? "none" : undefined,
       }}
       {...inputProps}
     />
