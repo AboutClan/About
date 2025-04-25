@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -68,8 +68,7 @@ function Gather() {
           <TabNav tabOptionsArr={tabNavOptions} selected={tab} isFullSize />
         </Box>
       </Slide>
-
-      {tab === "번개" ? <GatherMain /> : <SquareLoungeSection />}
+      <Slide>{tab === "번개" ? <GatherMain /> : <SquareLoungeSection />}</Slide>
       {!isGuest && <WritingButton url="/gather/writing/category" type="thunder" />}
       {isModal && (
         <PageGuideModal title="번개 가이드" footerOptions={{}} setIsModal={setIsModal}>

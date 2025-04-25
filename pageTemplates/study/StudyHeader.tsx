@@ -27,10 +27,13 @@ function StudyHeader({ placeInfo, date }: IStudyHeader) {
       kakaoOptions: {
         title:
           placeInfo.name === "개인 스터디 인증"
-            ? `${dayjsToFormat(dayjs(date), "M월 D일 개인 스터디 인증")}`
+            ? `${dayjsToFormat(dayjs(date).locale("ko"), "M월 D일(ddd) 개인 스터디 인증")}`
             : placeInfo.name === "스터디 매칭 대기소"
-            ? `${dayjsToFormat(dayjs(date), "M월 D일 카공 스터디 신청")}`
-            : `${dayjsToFormat(dayjs(date), `M월 D일 카공 스터디: ${placeInfo.brand}`)}`,
+            ? `${dayjsToFormat(dayjs(date).locale("ko"), "M월 D일(ddd) 카공 스터디 신청")}`
+            : `${dayjsToFormat(
+                dayjs(date).locale("ko"),
+                `M월 D일(ddd) 카공 스터디: ${placeInfo.brand}`,
+              )}`,
         subtitle: placeInfo.address === "위치 선정 중" ? "스터디 멤버 모집중" : placeInfo.address,
         img: placeInfo.image,
         url: "https://study-about.club" + router.asPath,

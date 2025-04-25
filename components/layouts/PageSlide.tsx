@@ -37,7 +37,7 @@ function Slide({ children, isFixed, posZero, isNoPadding }: IPageLayout) {
         animate: "visible",
         custom: slideDirection,
         variants: variants,
-        transition: { duration: 0.5 },
+        transition: { duration: 0.4 },
       }
     : {};
 

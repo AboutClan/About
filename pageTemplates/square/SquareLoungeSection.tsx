@@ -6,6 +6,7 @@ import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading"
 import Select from "../../components/atoms/Select";
 import ButtonGroups, { ButtonOptionsProps } from "../../components/molecules/groups/ButtonGroups";
 import FeedLayout, { FeedLayoutProps } from "../../components/organisms/FeedLayout";
+import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useFeedsQuery } from "../../hooks/feed/queries";
 import { convertFeedToLayout } from "../../libs/convertFeedToLayout";
 import { FeedProps, FeedType } from "../../types/models/feed";
@@ -16,6 +17,7 @@ function SquareLoungeSection() {
   const newSearchParams = new URLSearchParams(searchParams);
   const categoryParam = searchParams.get("category") as FeedType | undefined;
   const drawerParam = searchParams.get("drawer");
+  const typeToast = useTypeToast();
 
   const [category, setCategory] = useState<FeedType | "all">();
   const [loungeData, setLoungeData] = useState<FeedProps[]>();
@@ -32,7 +34,7 @@ function SquareLoungeSection() {
     isLoading,
     refetch,
   } = useFeedsQuery(category === "all" ? null : category, null, cursor, subCategory === "최신순");
-  console.log(42, feeds);
+
   useEffect(() => {
     if (categoryParam) {
       setLoungeData(null);
@@ -100,6 +102,10 @@ function SquareLoungeSection() {
     return {
       text: `${textObj[category]}`,
       func: () => {
+        if (category === "group") {
+          typeToast("inspection");
+          return;
+        }
         newSearchParams.set("category", category);
         router.replace(`/gather?${newSearchParams}`);
         setCategory(category);
@@ -108,52 +114,54 @@ function SquareLoungeSection() {
   });
 
   return (
-    <Box pb="60px">
-      <Flex px={5} pt={1} pb={3} justify="space-between">
-        <ButtonGroups
-          buttonOptionsArr={buttonOptionsArr}
-          currentValue={`${textObj[category]}`}
-          size="sm"
-          isEllipse
-        />
-        <Select
-          defaultValue={subCategory}
-          options={["최신순", "예전순"]}
-          setValue={setSubCategory}
-          isBorder={false}
-          size="sm"
-        />
-      </Flex>
-      <Box minH="calc(100dvh - 162px)">
-        {loungeData ? (
-          loungeData?.length ? (
-            loungeData.map((feed, idx) => {
-              const feedProps: FeedLayoutProps = convertFeedToLayout(feed);
-              return (
-                <Box key={idx} id={`review${feed.typeId}`}>
-                  <FeedLayout {...feedProps} refetch={() => refetch()} />
-                </Box>
-              );
-            })
+    <>
+      <Box pb="60px">
+        <Flex px={5} pt={1} pb={3} justify="space-between">
+          <ButtonGroups
+            buttonOptionsArr={buttonOptionsArr}
+            currentValue={`${textObj[category]}`}
+            size="sm"
+            isEllipse
+          />
+          <Select
+            defaultValue={subCategory}
+            options={["최신순", "예전순"]}
+            setValue={setSubCategory}
+            isBorder={false}
+            size="sm"
+          />
+        </Flex>
+        <Box minH="calc(100dvh - 162px)">
+          {loungeData ? (
+            loungeData?.length ? (
+              loungeData.map((feed, idx) => {
+                const feedProps: FeedLayoutProps = convertFeedToLayout(feed);
+                return (
+                  <Box key={idx} id={`review${feed.typeId}`}>
+                    <FeedLayout {...feedProps} refetch={() => refetch()} />
+                  </Box>
+                );
+              })
+            ) : (
+              <Flex fontSize="18px" height="200px" justify="center" align="center">
+                게시된 피드가 없습니다.
+              </Flex>
+            )
           ) : (
-            <Flex fontSize="18px" height="200px" justify="center" align="center">
-              게시된 피드가 없습니다.
-            </Flex>
-          )
-        ) : (
-          <Box mt="180px" position="relative">
-            <MainLoadingAbsolute size="md" />
-          </Box>
-        )}
-      </Box>
-
-      <div ref={loader} />
-      {isLoading && loungeData?.length ? (
-        <Box position="relative" mt="32px" mb="40px">
-          <MainLoadingAbsolute size="sm" />
+            <Box mt="180px" position="relative">
+              <MainLoadingAbsolute size="md" />
+            </Box>
+          )}
         </Box>
-      ) : undefined}
-    </Box>
+
+        <div ref={loader} />
+        {isLoading && loungeData?.length ? (
+          <Box position="relative" mt="32px" mb="40px">
+            <MainLoadingAbsolute size="sm" />
+          </Box>
+        ) : undefined}
+      </Box>
+    </>
   );
 }
 

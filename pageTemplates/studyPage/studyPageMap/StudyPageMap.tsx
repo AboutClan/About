@@ -67,7 +67,6 @@ function StudyPageMap({
           centerLocation,
       mapOptions?.zoom || (isMapExpansion ? 12 : 13),
     );
-    console.log(23, options);
 
     setMapOptions(options);
     setMarkersOptions(
@@ -139,9 +138,9 @@ function StudyPageMap({
           onClick={handleMapClick}
         >
           <StudyMapTopNav
-            handleLocationRefetch={() =>
-              currentLocation ? setCenterLocation(currentLocation) : null
-            }
+            handleLocationRefetch={() => {
+              currentLocation ? setCenterLocation(currentLocation) : null;
+            }}
             isMapExpansion={isMapExpansion}
             onClose={() => {
               setIsMapExpansion(false);

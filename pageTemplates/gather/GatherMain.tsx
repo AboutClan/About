@@ -5,7 +5,6 @@ import { useSetRecoilState } from "recoil";
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import Select from "../../components/atoms/Select";
 import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
-import Slide from "../../components/layouts/PageSlide";
 import {
   GatherThumbnailCard,
   GatherThumbnailCardProps,
@@ -76,7 +75,7 @@ export default function GatherMain() {
   }, []);
 
   return (
-    <Slide>
+    <Box mb="50px">
       <Flex py={1} mb={2} justify="space-between" align="center">
         <ButtonGroups
           buttonOptionsArr={(["취미", "스터디"] as ("취미" | "스터디")[]).map((prop) => ({
@@ -117,11 +116,11 @@ export default function GatherMain() {
         )}
         <div ref={loader} />
         {isLoading && cardDataArr?.length ? (
-          <Box position="relative" mt="32px">
+          <Box position="relative" mt={5} >
             <MainLoadingAbsolute size="sm" />
           </Box>
         ) : undefined}
       </Box>
-    </Slide>
+    </Box>
   );
 }

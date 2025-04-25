@@ -142,6 +142,7 @@ function PageTracker() {
           }
 
           if (prevSegments[0] === "gather") {
+            console.log(3);
             if (currentSegments?.[2] === "setting") {
               setRightSlide();
             } else if (prevSegments?.[1]) {
