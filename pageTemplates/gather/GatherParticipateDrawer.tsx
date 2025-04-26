@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
@@ -71,8 +71,6 @@ function GatherParticipateDrawer({ data }: IGatherParticipateDrawer) {
   const { data: feed } = useFeedsQuery("gather", data?.id, null, true, {
     enabled: !!data?.id && data.status === "open",
   });
-
-  console.log(23, feed);
 
   const isMax = data?.memberCnt.max !== 0 && data?.participants.length + 1 > data?.memberCnt.max;
   const myUid = session?.user.uid;

@@ -1,5 +1,4 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import dayjs from "dayjs";
 import { useEffect, useRef, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -169,7 +168,7 @@ function UserGatherSection() {
               </Box>
             ))}
           </>
-        ) : dayjs().year() < 1000 ? (
+        ) : isLoading ? (
           <>
             {[1, 2, 3, 4, 5].map((_, idx) => (
               <Box mb="12px" key={idx}>

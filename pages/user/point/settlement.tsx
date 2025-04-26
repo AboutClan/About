@@ -1,5 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+
 import InfoList from "../../../components/atoms/lists/InfoList";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
@@ -13,6 +15,7 @@ import { useUserRequestMutation } from "../../../hooks/user/sub/request/mutation
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 
 function Settlement() {
+  const router = useRouter();
   const toast = useToast();
   const typeToast = useTypeToast();
   const [tab, setTab] = useState<"Point로 지급" | "계좌로 지급">("Point로 지급");
@@ -27,6 +30,7 @@ function Settlement() {
   const { mutate } = useUserRequestMutation({
     onSuccess() {
       typeToast("apply");
+      router.push("/user");
     },
   });
 
@@ -136,7 +140,7 @@ function Settlement() {
               <Flex direction="column">
                 <ValueBoxCol items={valueBoxColItems} />
                 <Box as="li" fontSize="12px" lineHeight="20px" mt="10px" color="gray.600">
-                  운영진 확인 후 최대 일주일 이내에 지급됩니다.
+                  번개 모임 지원금은 후기가 업로드되어 있어야 합니다.
                 </Box>
                 <Box my={5}>
                   <InfoList items={INFO_ARR} />
@@ -175,7 +179,7 @@ function Settlement() {
 const INFO_ARR = [
   "콘텐츠에 따라 최소 5,000원에서 최대 20,000원 지원합니다.",
   "3,000원은 후기 작성 Point로 즉시 지급됩니다.",
-  "번개 서포터즈 인원은 20%를 추가 지원받습니다.",
+  "번개 서포터즈 멤버는 20%를 추가 지원받습니다.",
 ];
 
 export default Settlement;

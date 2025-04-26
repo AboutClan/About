@@ -4,7 +4,6 @@ import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstan
 import { FeedComment } from "../../types/models/feed";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import ContentSummary from "../atoms/ContentSummary";
-import ContentHeartBar from "../molecules/ContentHeartBar";
 import FeedHeader from "../molecules/headers/FeedHeader";
 import SummaryBlock, { SummaryBlockProps } from "../molecules/SummaryBlock";
 import ImageSlider from "./imageSlider/ImageSlider";
@@ -35,6 +34,7 @@ function FeedLayout({
   id,
   refetch,
 }: FeedLayoutProps) {
+  console.log(likeUsers, likeCnt, comments, id, refetch);
   return (
     <Flex direction="column" border="var(--border)" pb={2}>
       <FeedHeader writer={ABOUT_USER_SUMMARY} date={date} />
@@ -51,13 +51,13 @@ function FeedLayout({
           {content && <ContentSummary text={content} />}
         </Box>
       </Box>
-      <ContentHeartBar
+      {/* <ContentHeartBar
         comments={comments}
         feedId={id}
         likeUsers={likeUsers}
         likeCnt={likeCnt}
         refetch={refetch}
-      />
+      /> */}
     </Flex>
   );
 }

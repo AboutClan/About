@@ -7,13 +7,14 @@ import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
 import { IImageTileData } from "../../components/molecules/layouts/ImageTileFlexLayout";
 import ImageTileGridLayout from "../../components/molecules/layouts/ImageTitleGridLayout";
 import { useFeedsQuery } from "../../hooks/feed/queries";
+import { FeedProps } from "../../types/models/feed";
 
 export default function HomeReviewSection() {
   const router = useRouter();
 
   const { data: feeds } = useFeedsQuery("gather", null, 0, true);
-  console.log(45, feeds);
-  const imageArr: IImageTileData[] = feeds
+
+  const imageArr: IImageTileData[] = (feeds as FeedProps[])
     ?.map((feed) => ({
       imageUrl: feed.images[0],
       func: () => router.push(`/gather?category=all&tab=lounge&scroll=${feed.typeId}`),

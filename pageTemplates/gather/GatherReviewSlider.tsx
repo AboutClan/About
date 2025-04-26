@@ -5,13 +5,14 @@ import ImageBasicSlider, {
   ImageTileProps,
 } from "../../components/organisms/sliders/ImageBasicSlider";
 import { useFeedsQuery } from "../../hooks/feed/queries";
+import { FeedProps } from "../../types/models/feed";
 
 export default function GatherReviewSlider() {
   const router = useRouter();
 
   const { data: feeds } = useFeedsQuery("gather", null, 0, true);
 
-  const imageArr: ImageTileProps[] = feeds?.map((feed) => ({
+  const imageArr: ImageTileProps[] = (feeds as FeedProps[])?.map((feed) => ({
     imageUrl: feed.images[0],
     func: () => router.push(`/square?tab=lounge&category=gather&scroll=${feed.typeId}`),
     text: feed.title,

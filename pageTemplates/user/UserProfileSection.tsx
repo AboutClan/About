@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
@@ -39,17 +39,6 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
   const [isDrawer, setIsDrawer] = useState(false);
 
   const monthScore = user.monthScore;
-
-  const twoButtonRowOptions = {
-    left: {
-      text: "정산 받기",
-      handleButton: () => {},
-    },
-    right: {
-      text: "충전하기",
-      handleButton: () => {},
-    },
-  };
 
   return (
     <>

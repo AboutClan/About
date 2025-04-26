@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import { type SecretSquareCategory } from "../../../../types/models/square";
 
-const SECRET_SQUARE_CATEGORY: SecretSquareCategory[] = ["일상", "고민", "정보", "같이해요"];
+const SECRET_SQUARE_CATEGORY: SecretSquareCategory[] = ["일상", "질문", "정보", "같이해요"];
 
 function SquareCategoryRadioGroup() {
   const { control } = useFormContext();

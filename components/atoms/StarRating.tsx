@@ -13,7 +13,7 @@ function StarRating({ rating, size }: StarRatingProps) {
       {[1, 2, 3, 4, 5].map((star) => {
         const starType =
           star <= rating ? "fill" : star > rating && star < rating + 1 ? "half" : "empty";
-        console.log(starType);
+      
         return (
           <Box key={star}>
             <StarIcon type={starType} size={size} />

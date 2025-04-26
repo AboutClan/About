@@ -196,13 +196,13 @@ function UserGroupSection() {
             현재 참여중인 모임이 없습니다.
           </Flex>
         )}
-        <div ref={loader} />
-        {isLoading && groups?.length ? (
-          <Box position="relative" mt="32px">
-            <MainLoadingAbsolute size="sm" />
-          </Box>
-        ) : undefined}
       </Box>
+      <div ref={loader} />
+      {isLoading && groups?.length ? (
+        <Box position="relative" mt="32px">
+          <MainLoadingAbsolute size="sm" />
+        </Box>
+      ) : undefined}
     </Box>
   );
 }

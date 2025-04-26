@@ -1,7 +1,7 @@
 import { Box, Flex, Image, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import type { SecretSquareCategory, SecretSquareType } from "../../../types/models/square";

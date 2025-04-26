@@ -57,7 +57,6 @@ function Uid() {
     );
   }, [chatInfo, userInfo]);
 
-  console.log(chatInfo, chats);
   useEffect(() => {
     // 스크롤을 맨 아래로 이동
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });

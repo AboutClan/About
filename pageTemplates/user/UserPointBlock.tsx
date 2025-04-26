@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
@@ -30,7 +30,7 @@ function UserPointBlock() {
               align="center"
               w="48px"
               h="48px"
-              bg="rgba(160,174,192,0.08)"
+              bg="RGBA(173, 50, 82,0.08)"
               borderRadius="50%"
             >
               <Image src="/ticket1.png" alt="ticket1" width={32} height={32} />
@@ -50,7 +50,7 @@ function UserPointBlock() {
               align="center"
               w="48px"
               h="48px"
-              bg="rgba(107,175,255,0.08)"
+              bg="RGBA(61, 111, 243,0.08)"
               borderRadius="50%"
             >
               <Image src="/ticket2.png" alt="ticket2" width={32} height={32} />
@@ -92,13 +92,13 @@ function UserPointBlock() {
               align="center"
               w="48px"
               h="48px"
-              bg="rgba(160,174,192,0.08)"
+              bg="RGBA(227, 175, 56,0.08)"
               borderRadius="50%"
             >
-              <Image src="/point.png" alt="ticket2" width={32} height={32} />
+              <Image src="/change.png" alt="ticket2" width={44} height={44} />
             </Flex>
-            <Box mt={2} fontSize="11px" fontWeight="bold">
-              포인트 정산 받기
+            <Box mt={2} color="gray.600" fontSize="11px" fontWeight="medium">
+              지원금 신청하기
             </Box>
           </Flex>
         </Link>
@@ -117,14 +117,14 @@ function UserPointBlock() {
               align="center"
               w="48px"
               h="48px"
-              bg="rgba(107,175,255,0.08)"
+              bg="RGBA(227, 175, 56,0.08)"
               borderRadius="50%"
             >
-              <Image src="/point.png" alt="ticket2" width={32} height={32} />
+              <Image src="/up.png" alt="ticket2" width={40} height={40} />
             </Flex>
 
-            <Box mt={2} fontSize="11px" fontWeight="bold">
-              포인트 충전 하기
+            <Box mt={2} color="gray.600" fontSize="11px" fontWeight="medium">
+              포인트 충전하기
             </Box>
           </Flex>
         </Link>
@@ -143,13 +143,13 @@ function UserPointBlock() {
               align="center"
               w="48px"
               h="48px"
-              bg="rgba(0,194,179,0.08)"
+              bg="RGBA(227, 175, 56,0.08)"
               borderRadius="50%"
             >
-              <Image src="/point.png" alt="ticket2" width={32} height={32} />
+              <Image src="/down.png" alt="ticket2" width={40} height={40} />
             </Flex>
-            <Box mt={2} fontSize="11px" fontWeight="bold">
-              포인트 출금 하기
+            <Box mt={2} color="gray.600" fontSize="11px" fontWeight="medium">
+              포인트 출금하기
             </Box>
           </Flex>
         </Link>

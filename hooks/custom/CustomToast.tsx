@@ -85,6 +85,7 @@ export const useTypeToast = () => {
         status: "success",
         duration: 3000,
         variant: "subtle",
+        colorScheme: TOAST_MAP[type]?.status ? undefined : "mint",
         ...TOAST_MAP[type],
         containerStyle: {
           marginBottom: "76px",
@@ -103,8 +104,10 @@ export const usePointToast = () => {
     (value: number) => {
       toast({
         status: "success",
+
         duration: 3000,
         variant: "subtle",
+        colorScheme: "mint",
         title: `${value} Point 획득!`,
         containerStyle: {
           marginBottom: "76px",

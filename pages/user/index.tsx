@@ -45,9 +45,9 @@ function UserPage() {
           />
         </Box>
       </Slide>
-      {user && (
-        <>
-          <Slide isNoPadding>
+      <Slide isNoPadding>
+        {user && (
+          <>
             {section === "profile" ? (
               <UserProfileSection user={user} />
             ) : section === "gather" ? (
@@ -57,9 +57,9 @@ function UserPage() {
             ) : (
               <UserLogSection />
             )}
-          </Slide>
-        </>
-      )}
+          </>
+        )}
+      </Slide>
     </>
   );
 }

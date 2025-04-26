@@ -41,7 +41,7 @@ function WritingCondition() {
     kakaoUrl: false,
     isApprove: gatherContent?.isApprovalRequired || false,
   });
-  console.log(condition, gatherContent);
+
   const [isMemberConditionModal, setIsMemberConditionModal] = useState(false);
   const [password, setPassword] = useState(gatherContent?.password);
 
@@ -79,7 +79,7 @@ function WritingCondition() {
       return { ...old, [type]: isChecked };
     });
   };
-  console.log(2, gatherContent?.memberCnt?.max);
+
   const getMemberConditionText = () => {
     const temp = [];
     if (condition.age && (condition.age[0] !== 19 || condition.age[1] !== 28)) {

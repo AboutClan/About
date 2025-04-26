@@ -35,8 +35,6 @@ export default function VoteMap({
     circle: null,
   });
 
-  console.log(123, mapOptions);
-
   useEffect(() => {
     if (!mapRef?.current || typeof naver === "undefined" || !mapOptions) return;
 

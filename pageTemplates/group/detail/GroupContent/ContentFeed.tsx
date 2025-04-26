@@ -7,6 +7,7 @@ import { MainLoadingAbsolute } from "../../../../components/atoms/loaders/MainLo
 import FeedLayout, { FeedLayoutProps } from "../../../../components/organisms/FeedLayout";
 import { useFeedsQuery } from "../../../../hooks/feed/queries";
 import { transferFeedSummaryState } from "../../../../recoils/transferRecoils";
+import { FeedProps } from "../../../../types/models/feed";
 import { IGroup } from "../../../../types/models/groupTypes/group";
 import { getDateDiff } from "../../../../utils/dateTimeUtils";
 
@@ -29,11 +30,13 @@ function ContentFeed({ group }: ContentFeedProps) {
     }
   }, [group]);
 
+  const feedArr = feeds as FeedProps[];
+
   return (
     <Box position="relative" minH="240px">
-      {feeds ? (
-        feeds?.length ? (
-          feeds.map((feed, idx) => {
+      {feedArr ? (
+        feedArr?.length ? (
+          feedArr.map((feed, idx) => {
             const feedProps: FeedLayoutProps = {
               user: feed.writer,
               type: feed.type,
@@ -42,7 +45,7 @@ function ContentFeed({ group }: ContentFeedProps) {
               content: feed.text,
               likeUsers: feed.like,
               likeCnt: feed?.likeCnt,
-              id: feed._id,
+              id: feed.typeId,
               comments: feed.comments,
               isAnonymous: feed.isAnonymous as boolean,
             };
