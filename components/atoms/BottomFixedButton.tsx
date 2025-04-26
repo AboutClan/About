@@ -11,7 +11,7 @@ interface BottomFixedButton {
 
 function BottomFixedButton({ text, func, color = "mint" }: BottomFixedButton) {
   return (
-    <Slide isFixed>
+    <Slide isFixed posZero="top">
       <Box w="full" position="fixed" py={2} px={5} bottom={`${iPhoneNotchSize()}px`}>
         <Button
           size="lg"

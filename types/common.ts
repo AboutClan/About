@@ -7,3 +7,7 @@ export interface VotePlacesProps {
   main: string;
   sub: string[];
 }
+
+export interface PointValueProps {
+  value: number;
+}

@@ -5,20 +5,20 @@ import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
-import { useToast } from "../../../hooks/custom/CustomToast";
+import { usePointToast } from "../../../hooks/custom/CustomToast";
 import { useStudyAdditionMutation } from "../../../hooks/study/mutations";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { sharedStudyWritingState } from "../../../recoils/sharedDataAtoms";
 
 function WritingStudyComplete() {
-  const toast = useToast();
+  const pointToast = usePointToast();
   const [studyWriting, setStudyWriting] = useRecoilState(sharedStudyWritingState);
 
   const { mutate } = useStudyAdditionMutation({
-    onSuccess() {
+    onSuccess(data) {
+      pointToast(data?.value);
       setStudyWriting(null);
-      toast("success", "추가 요청 완료! 며칠 이내에 신규 장소로 추가됩니다.");
     },
   });
 

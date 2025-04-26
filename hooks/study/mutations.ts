@@ -5,12 +5,14 @@ import { useSetRecoilState } from "recoil";
 
 import { requestServer } from "../../libs/methodHelpers";
 import { transferStudyVoteDateState } from "../../recoils/transferRecoils";
+import { PointValueProps } from "../../types/common";
 import { MutationOptions } from "../../types/hooks/reactTypes";
 import { CollectionProps } from "../../types/models/collections";
 import { PlaceRegisterProps, PlaceReviewProps } from "../../types/models/studyTypes/entityTypes";
 import { IStudyVoteTime, StudyVoteProps } from "../../types/models/studyTypes/studyInterActions";
 import { DayjsTimeProps, StringTimeProps } from "../../types/utils/timeAndDate";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
+import { usePointToast } from "../custom/CustomToast";
 
 type StudyVoteParam<T> = T extends "post"
   ? StudyVoteProps
@@ -21,11 +23,12 @@ type StudyVoteParam<T> = T extends "post"
 export const useStudyVoteMutation = <T extends "post" | "patch" | "delete">(
   voteDate: Dayjs,
   method: T,
-  options?: MutationOptions<StudyVoteParam<T>>,
+  options?: MutationOptions<StudyVoteParam<T>, PointValueProps | void>,
 ) => {
+  const pointToast = usePointToast();
   const setTransferStudyVoteDate = useSetRecoilState(transferStudyVoteDateState);
 
-  return useMutation<void, AxiosError, StudyVoteParam<T>>(
+  return useMutation<PointValueProps | void, AxiosError, StudyVoteParam<T>>(
     (param) => {
       const voteInfo = param;
 
@@ -40,7 +43,7 @@ export const useStudyVoteMutation = <T extends "post" | "patch" | "delete">(
           body: { ...voteInfo, start: startStr, end: endStr },
         });
       }
-      return requestServer<StudyVoteParam<T>>({
+      return requestServer<StudyVoteParam<T>, PointValueProps | void>({
         method,
         url: `vote2/${dayjsToStr(voteDate)}`,
         body: { ...voteInfo },
@@ -49,7 +52,10 @@ export const useStudyVoteMutation = <T extends "post" | "patch" | "delete">(
     {
       ...options,
       onSuccess(data, variables, context) {
-        if (method === "post") setTransferStudyVoteDate(voteDate);
+        if (method === "post") {
+          pointToast((data as PointValueProps)?.value);
+          setTransferStudyVoteDate(voteDate);
+        }
         if (options?.onSuccess) {
           options.onSuccess(data, variables, context);
         }
@@ -112,10 +118,12 @@ export const useStudyAbsenceMutation = (
     options,
   );
 
-export const useStudyAdditionMutation = (options?: MutationOptions<PlaceRegisterProps>) =>
-  useMutation<void, AxiosError, PlaceRegisterProps>(
+export const useStudyAdditionMutation = (
+  options?: MutationOptions<PlaceRegisterProps, PointValueProps>,
+) =>
+  useMutation<PointValueProps, AxiosError, PlaceRegisterProps>(
     (placeInfo) =>
-      requestServer<PlaceRegisterProps>({
+      requestServer<PlaceRegisterProps, PointValueProps>({
         method: "post",
         url: `place`,
         body: placeInfo,

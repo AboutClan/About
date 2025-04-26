@@ -8,7 +8,7 @@ import { AboutIcon } from "../../components/atoms/AboutIcons";
 import IconRowBlock from "../../components/atoms/blocks/IconRowBlock";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useCollectionAlphabetQuery } from "../../hooks/user/sub/collection/queries";
-import UserCollectionModal from "../../modals/user/collection/UserCollectionAlphabetModal";
+import { ModalLayout } from "../../modals/Modals";
 import { Alphabet } from "../../types/models/collections";
 import { ArrowIcon } from "./UserProfile2";
 
@@ -71,11 +71,16 @@ export default function UserCollection() {
             <i className="fa-duotone fa-stars fa-2x" style={{ color: "var(--color-mint)" }} />
           }
           func={() => setIsCollectionModal(true)}
-          mainText=" 컬렉션 수집 보상"
+          mainText=" 알파벳 수집 보상"
           subText=" 여러번 수집하면 보상이 더 올라가요!"
         />
       </Box>
-      {isCollectionModal && <UserCollectionModal setIsModal={setIsCollectionModal} />}
+      {isCollectionModal && (
+        <ModalLayout title="알파벳 수집 보상" footerOptions={{}} setIsModal={setIsCollectionModal}>
+          알파벳을 모두 모으면 100원에서 1,000원 사이의 랜덤 박스를 열 수 있어요! 랜덤 박스는 횟수가
+          누적될 수록 당첨금이 증가합니다!
+        </ModalLayout>
+      )}
     </Flex>
   );
 }

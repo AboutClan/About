@@ -28,7 +28,7 @@ export default function StudyVoteTimeRulletDrawer({
         isHideBottom
         isDrawerUp
         zIndex={zIndex || 5000}
-        height={400}
+        height={402}
         setIsModal={setIsModal}
         drawerOptions={drawerOptions}
       >
@@ -74,7 +74,6 @@ export function StudyVoteTimeRullets({ defaultVoteTime, setVoteTime }: StudyVote
   };
   useEffect(() => {
     if (defaultVoteTime) {
-     
       const startIndex = startItemArr.findIndex(
         (time) =>
           dayjsToTimeString(parseTimeToDayjs(time)) === dayjsToTimeString(defaultVoteTime.start),
@@ -83,7 +82,7 @@ export function StudyVoteTimeRullets({ defaultVoteTime, setVoteTime }: StudyVote
         (time) =>
           dayjsToTimeString(parseTimeToDayjs(time)) === dayjsToTimeString(defaultVoteTime.end),
       );
-     
+
       if (startIndex !== -1 && endIndex !== -1) {
         const end = startIndex + 4 <= endIndex ? endIndex : startIndex + 4;
         setRulletIndex({

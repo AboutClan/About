@@ -49,7 +49,6 @@ function StudyControlDrawer({
 
   const { mutate: voteStudy } = useStudyVoteMutation(dayjs(date), "post", {
     onSuccess() {
-      toast("success", "신청이 완료되었습니다. 매칭 결과를 기다려주세요!");
       resetStudy();
     },
   });
