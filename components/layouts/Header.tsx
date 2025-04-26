@@ -89,7 +89,7 @@ const HeaderContainer = styled.header<{
   background-color: ${(props) => (props.isTransparent ? "transparent" : "white")};
   height: var(--header-h);
   font-size: 16px;
-  padding-right: ${(props) => props.rightPadding || 20}px;
+  padding-right: ${(props) => props.rightPadding || 16}px;
   padding-left: ${(props) => (props.isBack ? "4px" : "20px")};
   display: flex;
   justify-content: space-between;
