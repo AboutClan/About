@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 
+import { GATHER_COVER_IMAGE } from "../../../assets/gather";
 import MenuButton, { MenuProps } from "../../../components/atoms/buttons/MenuButton";
 import Header from "../../../components/layouts/Header";
 import UserApprovalBoard from "../../../components/organisms/boards/UserApprovalBoard";
@@ -20,6 +21,7 @@ import { isGatherEditState } from "../../../recoils/checkAtoms";
 import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
 import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
+import { getRandomIdx } from "../../../utils/mathUtils";
 
 interface IGatherHeader {
   gatherData: IGather;
@@ -104,7 +106,8 @@ function GatherHeader({ gatherData }: IGatherHeader) {
       kakaoOptions: {
         title: gatherData.title,
         subtitle: gatherData?.content,
-        // img: gatherData?.squareImage,
+        img:
+          gatherData?.coverImage || GATHER_COVER_IMAGE[getRandomIdx(GATHER_COVER_IMAGE.length - 1)],
         url: "https://study-about.club" + router.asPath,
       },
     },

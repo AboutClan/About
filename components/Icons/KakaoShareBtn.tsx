@@ -42,6 +42,7 @@ function KakaoShareBtn({
 
   useEffect(() => {
     if (!window?.Kakao) return;
+
     const formattedDate = date ? ` (${dayjsToFormat(dayjs(date), "M월 D일")})` : "";
     const buttonTitle = extraCnt && extraCnt < 4 ? `${extraCnt}자리 남음!` : "모임 확인하기";
     const link = {
@@ -74,7 +75,9 @@ function KakaoShareBtn({
   return (
     <Layout id="kakao-share-button" isFull={isFull} temp={temp}>
       {variant === "unstyled" ? (
-        <Box>카카오톡으로 공유하기</Box>
+        <Box w="full" textAlign="start">
+          카카오톡으로 공유하기
+        </Box>
       ) : isTemp ? (
         <Button
           color="mint"
