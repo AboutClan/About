@@ -17,28 +17,28 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-import AlertModal from "../../../components/AlertModal";
-import Divider from "../../../components/atoms/Divider";
-import { MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
-import KakaoShareBtn from "../../../components/Icons/KakaoShareBtn";
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import PostAuthorCard from "../../../components/molecules/cards/PostAuthorCard";
-import { SECRET_USER_SUMMARY } from "../../../constants/serviceConstants/userConstants";
-import { useFailToast } from "../../../hooks/custom/CustomToast";
+import AlertModal from "../../components/AlertModal";
+import Divider from "../../components/atoms/Divider";
+import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
+import KakaoShareBtn from "../../components/Icons/KakaoShareBtn";
+import Header from "../../components/layouts/Header";
+import Slide from "../../components/layouts/PageSlide";
+import PostAuthorCard from "../../components/molecules/cards/PostAuthorCard";
+import { SECRET_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
+import { useFailToast } from "../../hooks/custom/CustomToast";
 import {
   useDeleteLikeSecretSquareMutation,
   useDeleteSecretSquareMutation,
   usePatchPollMutation,
   usePutLikeSecretSquareMutation,
-} from "../../../hooks/secretSquare/mutations";
+} from "../../hooks/secretSquare/mutations";
 import {
   useCurrentPollStatusQuery,
   useGetSquareDetailQuery,
   useLikeStatus,
-} from "../../../hooks/secretSquare/queries";
-import PollItemButton from "../../../pageTemplates/square/SecretSquare/PollItemButton";
-import SecretSquareComments from "../../../pageTemplates/square/SecretSquare/SecretSquareComments";
+} from "../../hooks/secretSquare/queries";
+import PollItemButton from "../../pageTemplates/community/PollItemButton";
+import SecretSquareComments from "../../pageTemplates/community/SecretSquareComments";
 
 function SecretSquareDetailPage() {
   const router = useRouter();
@@ -132,7 +132,7 @@ function SecretSquareDetailPage() {
       },
     );
   };
-
+  console.log(squareDetail);
   return (
     <>
       <Header title="">
@@ -144,16 +144,15 @@ function SecretSquareDetailPage() {
         />
       </Header>
       <>
-        <Slide isNoPadding>
-          <Flex px={4} py={4} direction="column" gap={2} as="section" bg="white" minH="326px">
+        <Slide>
+          <Flex py={4} direction="column" gap={2} as="section" bg="white" minH="326px">
             <Box minH="83px">
               {squareDetail && (
                 <>
-                  <Box mb={2}>
-                    <Badge colorScheme="grayTheme" size="md">
-                      {`# ${squareDetail.category}`}
-                    </Badge>
-                  </Box>
+                  <Badge colorScheme="gray" size="smd" w="max-content">
+                    {`# ${squareDetail?.category}`}
+                  </Badge>
+
                   <section id="avatar-section">
                     <PostAuthorCard
                       organizer={SECRET_USER_SUMMARY}
@@ -204,12 +203,12 @@ function SecretSquareDetailPage() {
             <section id="content-section" style={{ position: "relative", minHeight: "120px" }}>
               {squareDetail ? (
                 <>
-                  <Text py="8px" as="h1" fontSize="xl" fontWeight={700}>
+                  <Box fontSize="18px" fontWeight="bold">
                     {squareDetail.title}
-                  </Text>
-                  <Text mt={2} whiteSpace="break-spaces">
+                  </Box>
+                  <Box as="p" fontSize="14px" color="gray.800" mt={2} whiteSpace="break-spaces">
                     {squareDetail.content}
-                  </Text>
+                  </Box>
                 </>
               ) : (
                 <MainLoadingAbsolute size="sm" />
@@ -354,7 +353,7 @@ function SecretSquareDetailPage() {
 
                 <Flex color="var(--gray-600)" align="center" gap={1} fontSize="12px">
                   <i className="fa-regular fa-eye" />
-                  <span>{squareDetail.viewCount}명이 봤어요</span>
+                  <span>{squareDetail.viewers.length}명이 봤어요</span>
                 </Flex>
                 <Flex justify="space-between" mt="8px">
                   <Button

@@ -9,7 +9,7 @@ import {
   useSubCommentMutation,
 } from "../../hooks/common/mutations";
 import CommentEditModal from "../../modals/common/CommentEditModal";
-import { ReplyProps } from "../../pageTemplates/square/SecretSquare/SecretSquareComments";
+import { ReplyProps } from "../../pageTemplates/community/SecretSquareComments";
 import { UserCommentProps as CommentProps } from "../../types/components/propTypes";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { getDateDiff } from "../../utils/dateTimeUtils";

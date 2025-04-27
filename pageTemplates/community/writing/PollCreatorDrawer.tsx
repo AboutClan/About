@@ -15,9 +15,9 @@ import {
 } from "@chakra-ui/react";
 import { useFieldArray, useFormContext } from "react-hook-form";
 
-import { Input } from "../../../../components/atoms/Input";
-import { useInfoToast } from "../../../../hooks/custom/CustomToast";
-import { SecretSquareFormData } from "../../../../types/models/square";
+import { Input } from "../../../components/atoms/Input";
+import { useInfoToast } from "../../../hooks/custom/CustomToast";
+import { SecretSquareFormData } from "../../../types/models/square";
 
 interface PollCreatorDrawerProps {
   isOpen: boolean;

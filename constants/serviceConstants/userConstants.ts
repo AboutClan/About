@@ -40,8 +40,8 @@ export const SECRET_USER_SUMMARY: IUserSummary = {
   comment: "익명",
   score: 10000,
   avatar: {
-    type: 0,
-    bg: 7,
+    type: 2,
+    bg: 0,
   },
   location: "수원",
   monthScore: 30,

@@ -7,8 +7,8 @@ import {
   useSecretSquareListQuery,
 } from "../../hooks/secretSquare/queries";
 import { type SecretSquareCategoryWithAll } from "../../types/models/square";
-import SecretSquareCategories from "./SecretSquare/SecretSquareCategories";
-import SquareItem from "./SecretSquare/SquareItem";
+import SecretSquareCategories from "./SecretSquareCategories";
+import SquareItem from "./SquareItem";
 
 function SquareSecretSection() {
   const [category, setCategory] = useState<SecretSquareCategoryWithAll>("전체");

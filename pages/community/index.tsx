@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react";
 import WritingButton from "../../components/atoms/buttons/WritingButton";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
-import SquareSecretSection from "../../pageTemplates/square/SquareSecretSection";
+import SquareSecretSection from "../../pageTemplates/community/SquareSecretSection";
 
 function BoardPage() {
   const { data: session } = useSession();

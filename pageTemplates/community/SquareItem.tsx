@@ -1,11 +1,11 @@
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
+import { Badge, Box, Flex, Image, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
-import { useTypeToast } from "../../../hooks/custom/CustomToast";
-import type { SecretSquareCategory, SecretSquareType } from "../../../types/models/square";
-import { getDateDiff } from "../../../utils/dateTimeUtils";
+import { useTypeToast } from "../../hooks/custom/CustomToast";
+import type { SecretSquareCategory, SecretSquareType } from "../../types/models/square";
+import { getDateDiff } from "../../utils/dateTimeUtils";
 
 interface SquareItemProps {
   item: {
@@ -36,9 +36,11 @@ export default function SquareItem({ item }: SquareItemProps) {
   };
 
   return (
-    <Link href={`/square/secret/${item._id}`} onClick={onClick}>
+    <Link href={`/community/${item._id}`} onClick={onClick}>
       <Flex flexDir="column" borderBottom="var(--border)" px={5} py={3}>
-        <IconCategory category={item.category} />
+        <Badge mb={1} colorScheme="gray" size="smd" w="max-content">
+          {`# ${item?.category}`}
+        </Badge>
         <Text
           fontSize="16px"
           fontWeight="semibold"
@@ -160,22 +162,5 @@ export default function SquareItem({ item }: SquareItemProps) {
         </Flex>
       </Flex>
     </Link>
-  );
-}
-
-function IconCategory({ category }: { category: string }) {
-  return (
-    <Box
-      bg="gray.100"
-      color="gray.600"
-      w="max-content"
-      fontWeight="regular"
-      fontSize="11px"
-      mb={1}
-      py={0.5}
-      px={1}
-    >
-      #{category}
-    </Box>
   );
 }

@@ -3,20 +3,20 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 
-import { Input } from "../../../components/atoms/Input";
-import Textarea from "../../../components/atoms/Textarea";
-import WritingNavigation from "../../../components/atoms/WritingNavigation";
-import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
-import ImageUploadButton from "../../../components/molecules/ImageUploadButton";
+import { Input } from "../../components/atoms/Input";
+import Textarea from "../../components/atoms/Textarea";
+import WritingNavigation from "../../components/atoms/WritingNavigation";
+import Header from "../../components/layouts/Header";
+import Slide from "../../components/layouts/PageSlide";
+import ImageUploadButton from "../../components/molecules/ImageUploadButton";
 import ImageUploadSlider, {
   ImageUploadTileProps,
-} from "../../../components/organisms/sliders/ImageUploadSlider";
-import { useCompleteToast, useFailToast, useInfoToast } from "../../../hooks/custom/CustomToast";
-import { useCreateSecretSquareMutation } from "../../../hooks/secretSquare/mutations";
-import PollCreatorDrawer from "../../../pageTemplates/square/SecretSquare/writing/PollCreatorDrawer";
-import SquareCategoryRadioGroup from "../../../pageTemplates/square/SecretSquare/writing/SquareCategoryRadioGroup";
-import { SecretSquareFormData } from "../../../types/models/square";
+} from "../../components/organisms/sliders/ImageUploadSlider";
+import { useCompleteToast, useFailToast, useInfoToast } from "../../hooks/custom/CustomToast";
+import { useCreateSecretSquareMutation } from "../../hooks/secretSquare/mutations";
+import PollCreatorDrawer from "../../pageTemplates/community/writing/PollCreatorDrawer";
+import SquareCategoryRadioGroup from "../../pageTemplates/community/writing/SquareCategoryRadioGroup";
+import { SecretSquareFormData } from "../../types/models/square";
 
 const defaultFormData: SecretSquareFormData = {
   category: "일상",

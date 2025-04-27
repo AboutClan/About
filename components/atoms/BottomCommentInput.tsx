@@ -2,7 +2,7 @@ import { Box } from "@chakra-ui/react";
 
 import { SECRET_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import { useKeypadHeight } from "../../hooks/custom/useKeypadHeight";
-import { ReplyProps } from "../../pageTemplates/square/SecretSquare/SecretSquareComments";
+import { ReplyProps } from "../../pageTemplates/community/SecretSquareComments";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import { iPhoneNotchSize } from "../../utils/validationUtils";

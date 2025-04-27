@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 
-import { ReplyProps } from "../../pageTemplates/square/SecretSquare/SecretSquareComments";
+import { ReplyProps } from "../../pageTemplates/community/SecretSquareComments";
 import { UserCommentProps } from "../../types/components/propTypes";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import UserCommentBlock from "./UserCommentBlock";

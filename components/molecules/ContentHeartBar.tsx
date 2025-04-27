@@ -9,7 +9,7 @@ import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useFeedLikeMutation } from "../../hooks/feed/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { getCommentArr } from "../../libs/comment/commentLib";
-import { ReplyProps } from "../../pageTemplates/square/SecretSquare/SecretSquareComments";
+import { ReplyProps } from "../../pageTemplates/community/SecretSquareComments";
 import { UserCommentProps } from "../../types/components/propTypes";
 import { FeedComment } from "../../types/models/feed";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
@@ -126,7 +126,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
         };
       }
     });
-  
+
     mutate(feedId);
   };
 

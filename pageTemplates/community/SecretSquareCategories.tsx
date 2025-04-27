@@ -1,10 +1,8 @@
 import { Box } from "@chakra-ui/react";
 import { Dispatch, SetStateAction } from "react";
 
-import ButtonGroups, {
-  ButtonOptionsProps,
-} from "../../../components/molecules/groups/ButtonGroups";
-import { type SecretSquareCategoryWithAll } from "../../../types/models/square";
+import ButtonGroups, { ButtonOptionsProps } from "../../components/molecules/groups/ButtonGroups";
+import { type SecretSquareCategoryWithAll } from "../../types/models/square";
 
 const SECRET_SQUARE_CATEGORY: SecretSquareCategoryWithAll[] = [
   "전체",

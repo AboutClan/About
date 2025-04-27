@@ -18,7 +18,7 @@ function Settlement() {
   const router = useRouter();
   const toast = useToast();
   const typeToast = useTypeToast();
-  const [tab, setTab] = useState<"Point로 지급" | "계좌로 지급">("Point로 지급");
+  const [tab, setTab] = useState<"포인트로 지급" | "계좌이체로 지급">("포인트로 지급");
   const [isChecked, setIsChecked] = useState(false);
   const [isFirstPage, setIsFirstPage] = useState(true);
 
@@ -36,16 +36,20 @@ function Settlement() {
 
   const valueBoxColItems: ValueBoxColItemProps[] = [
     {
-      left: "기본 지원금(후기)",
-      right: "3,000 Point",
+      left: "기본 지원금(4명 기준)",
+      right: "+5,000 Point",
     },
     {
-      left: `추가 지원금${tab === "계좌로 지급" ? "(10% 수수료)" : ""}`,
-      right: tab === "Point로 지급" ? "2,000 - 20,000 Point" : "1,800원 - 18,000원",
+      left: `추가 인원 지원금${tab === "계좌이체로 지급" ? "(10% 수수료)" : ""}`,
+      right: tab === "포인트로 지급" ? "인 당 +1,000 Point" : "1,800원 - 18,000원",
+    },
+    {
+      left: `콘텐츠 추가 지원금${tab === "계좌이체로 지급" ? "(10% 수수료)" : ""}`,
+      right: tab === "포인트로 지급" ? "최대 20,000 Point" : "1,800원 - 18,000원",
     },
     {
       left: "총 금액",
-      right: tab === "Point로 지급" ? "= 5,000 - 23,000 Point" : "= 4,800원 - 21,000원",
+      right: tab === "포인트로 지급" ? "= 5,000 - 50,000 Point" : "= 4,800원 - 21,000원",
       isFinal: true,
     },
   ];
@@ -67,7 +71,7 @@ function Settlement() {
       toast("warning", "최종 확인을 체크해 주세요.");
       return;
     }
-    if (tab === "계좌로 지급" && !value4) {
+    if (tab === "계좌이체로 지급" && !value4) {
       toast("warning", "계좌번호를 입력해 주세요.");
       return;
     }
@@ -130,10 +134,10 @@ function Settlement() {
               isBlack
               tabOptionsArr={[
                 {
-                  text: "Point로 지급",
-                  func: () => setTab("Point로 지급"),
+                  text: "포인트로 지급",
+                  func: () => setTab("포인트로 지급"),
                 },
-                { text: "계좌로 지급", func: () => setTab("계좌로 지급") },
+                { text: "계좌이체로 지급", func: () => setTab("계좌이체로 지급") },
               ]}
             />{" "}
             <Box mt={5}>
@@ -145,7 +149,7 @@ function Settlement() {
                 <Box my={5}>
                   <InfoList items={INFO_ARR} />
                 </Box>
-                {tab === "계좌로 지급" && (
+                {tab === "계좌이체로 지급" && (
                   <Box mb={4}>
                     <LabeledInput
                       label="계좌 번호"
@@ -157,7 +161,7 @@ function Settlement() {
                 )}
                 <TextCheckButton
                   text={
-                    tab === "Point로 지급"
+                    tab === "포인트로 지급"
                       ? "지원금을 Point로 받으시겠어요?"
                       : "지원금을 계좌로 입금 받으시겠어요?"
                   }
@@ -177,9 +181,9 @@ function Settlement() {
   );
 }
 const INFO_ARR = [
-  "콘텐츠에 따라 최소 5,000원에서 최대 20,000원 지원합니다.",
   "3,000원은 후기 작성 Point로 즉시 지급됩니다.",
-  "번개 서포터즈 멤버는 20%를 추가 지원받습니다.",
+  "최대 일주일 이내에 요청하신 수단으로 지급됩니다.",
+  "번개 서포터즈는 10%를 추가 지원받습니다.",
 ];
 
 export default Settlement;

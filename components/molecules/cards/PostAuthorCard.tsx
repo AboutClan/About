@@ -16,7 +16,7 @@ interface PostAuthorCardProps {
 
 function PostAuthorCard({ organizer, createdAt, children, isAdminOpen }: PostAuthorCardProps) {
   return (
-    <Flex align="center" px={5} py={4} justify="space-between">
+    <Flex align="center" py={4} justify="space-between">
       <Flex align="center">
         {isAdminOpen ? <AboutIcon size="xs" /> : <Avatar user={organizer} size="sm1" />}
         <Box ml={2}>

@@ -2,10 +2,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { useTypeToast } from "../../hooks/custom/CustomToast";
-
 function HomeNav() {
-  const typeToast = useTypeToast();
   return (
     <Flex mb={3}>
       {HOME_RECOMMENDATION_ICON_ARR.map((item, idx) => (
@@ -13,13 +10,6 @@ function HomeNav() {
           href={item.url}
           key={item.title}
           style={{ flex: 1, marginLeft: idx === 0 ? 0 : "8px" }}
-          onClick={(e) => {
-            if (item.title === "게시판") {
-              e.preventDefault();
-              typeToast("inspection");
-              return;
-            }
-          }}
         >
           <Flex justify="space-between" direction="column" align="center">
             <Flex
@@ -90,8 +80,8 @@ const HOME_RECOMMENDATION_ICON_ARR: HomeRecommendationItemProps[] = [
   {
     iconImage:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%EA%B9%83%EB%B0%9C2.png",
-    title: "게시판",
-    url: "/board",
+    title: "커뮤니티",
+    url: "/community",
     bgColor: "var(--color-gray)",
   },
   {

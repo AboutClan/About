@@ -11,8 +11,7 @@ import { getCommentArr } from "../../../libs/comment/commentLib";
 import { UserCommentProps } from "../../../types/components/propTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
-import { ReplyProps } from "../../square/SecretSquare/SecretSquareComments";
-
+import { ReplyProps } from "../../community/SecretSquareComments";
 interface IGroupComments {
   comments: UserCommentProps[];
   hasAutority: boolean;

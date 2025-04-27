@@ -264,13 +264,20 @@ const theme = extendTheme({
           fontSize: "8px",
           borderRadius: "4px",
         },
+        smd: {
+          px: "4px !important",
+          py: "2px",
+          fontWeight: "regular",
+          fontSize: "11px",
+          borderRadius: "4px",
+        },
         lg: {
           px: "8px !important",
-          py: "3px",
+          py: "5px",
           h: "20px",
           fontWeight: "bold",
           fontSize: "10px",
-
+          lineHeight: "10px",
           borderRadius: "4px",
         },
       },

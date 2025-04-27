@@ -2,7 +2,7 @@ import { Button, Flex } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
-import { ReplyProps } from "../../pageTemplates/square/SecretSquare/SecretSquareComments";
+import { ReplyProps } from "../../pageTemplates/community/SecretSquareComments";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import Avatar from "../atoms/Avatar";
