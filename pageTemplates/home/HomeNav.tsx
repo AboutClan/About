@@ -13,9 +13,11 @@ function HomeNav() {
           key={item.title}
           style={{ flex: 1, marginLeft: idx === 0 ? 0 : "8px" }}
           onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            toast("info", "4월 30일 오픈!");
+            if (item.title === "커뮤니티") {
+              e.preventDefault();
+              e.stopPropagation();
+              toast("info", "4월 30일 오픈!");
+            }
           }}
         >
           <Flex justify="space-between" direction="column" align="center">
