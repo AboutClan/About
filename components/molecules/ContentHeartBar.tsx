@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { Fragment, useEffect, useState } from "react";
 
 import { useCommentMutation, useSubCommentMutation } from "../../hooks/common/mutations";
@@ -164,7 +164,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
     // urlSearchParams.append("drawer", type);
     // router.push(`/gather?${urlSearchParams.toString()}`);
   };
-
+  console.log(23, commentArr);
   return (
     <>
       <Flex align="center" px={3}>

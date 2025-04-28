@@ -4,21 +4,21 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import Textarea from "../../components/atoms/Textarea";
-import { useCompleteToast, useFailToast } from "../../hooks/custom/CustomToast";
+import { useFailToast, useToast } from "../../hooks/custom/CustomToast";
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 function RequestSecedeModal({ setIsModal }: IModal) {
-  const completeToast = useCompleteToast();
+  const toast = useToast();
   const failToast = useFailToast();
 
   const [value, setValue] = useState("");
 
   const { mutate } = useUserRequestMutation({
     onSuccess() {
-      completeToast("free", "탈퇴가 완료되었습니다.");
+      toast("success", "탈퇴가 완료되었습니다.");
       signOut({ callbackUrl: "/login" });
     },
     onError(err) {

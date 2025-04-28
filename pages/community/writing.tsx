@@ -12,7 +12,7 @@ import ImageUploadButton from "../../components/molecules/ImageUploadButton";
 import ImageUploadSlider, {
   ImageUploadTileProps,
 } from "../../components/organisms/sliders/ImageUploadSlider";
-import { useCompleteToast, useFailToast, useInfoToast } from "../../hooks/custom/CustomToast";
+import { useToast } from "../../hooks/custom/CustomToast";
 import { useCreateSecretSquareMutation } from "../../hooks/secretSquare/mutations";
 import PollCreatorDrawer from "../../pageTemplates/community/writing/PollCreatorDrawer";
 import SquareCategoryRadioGroup from "../../pageTemplates/community/writing/SquareCategoryRadioGroup";
@@ -28,6 +28,7 @@ const defaultFormData: SecretSquareFormData = {
 
 function SquareWritingPage() {
   const router = useRouter();
+  const toast = useToast();
 
   const methods = useForm<SecretSquareFormData>({
     defaultValues: defaultFormData,
@@ -48,13 +49,10 @@ function SquareWritingPage() {
 
   const { mutate: createSecretSquareMutate, isLoading: isCreateSquareLoading } =
     useCreateSecretSquareMutation();
-  const completeToast = useCompleteToast();
-  const infoToast = useInfoToast();
-  const failToast = useFailToast();
 
   const openPollCreatorDrawer = () => {
     if (isPollType) {
-      infoToast("free", "투표는 최대 1개 등록할 수 있습니다.");
+      toast("info", "투표는 최대 1개만 등록할 수 있습니다.");
       return;
     }
     onOpenPollCreatorDrawer();
@@ -83,11 +81,10 @@ function SquareWritingPage() {
       { formData },
       {
         onSuccess: ({ squareId }) => {
-          completeToast("free", "게시물 등록이 완료되었습니다.");
-          router.replace(`/square/secret/${squareId}`);
-        },
-        onError: () => {
-          failToast("error");
+          setTimeout(() => {
+            toast("success", "등록되었습니다.");
+          }, 200);
+          router.replace(`/community/${squareId}`);
         },
       },
     );
@@ -163,7 +160,7 @@ function SquareWritingPage() {
                 <Flex justifyContent="space-between" align="center" gap={2}>
                   <Flex align="center">
                     <i className="fa-solid fa-check-to-slot" />
-                    <Box as="span" ml="4px" fontWeight={600}>
+                    <Box as="span" ml={2} fontWeight={600}>
                       투표
                     </Box>
                   </Flex>

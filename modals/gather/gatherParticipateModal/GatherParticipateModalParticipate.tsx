@@ -3,7 +3,7 @@ import { useQueryClient } from "react-query";
 import { useRecoilState } from "recoil";
 
 import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
-import { useCompleteToast, useErrorToast } from "../../../hooks/custom/CustomToast";
+import { useErrorToast, useToast } from "../../../hooks/custom/CustomToast";
 import {
   useGatherParticipationMutation,
   useGatherWaitingMutation,
@@ -14,7 +14,7 @@ import { ModalBodyNavTwo } from "../../Modals";
 
 function GatherParticipateModalParticipate({ setIsModal }: IModal) {
   const queryClient = useQueryClient();
-  const completeToast = useCompleteToast();
+  const toast = useToast();
   const errorToast = useErrorToast();
   const [transferGather, setTransferGather] = useRecoilState(transferGatherDataState);
 
@@ -25,7 +25,7 @@ function GatherParticipateModalParticipate({ setIsModal }: IModal) {
     onSuccess() {
       queryClient.invalidateQueries([GATHER_CONTENT, gatherId]);
       setTransferGather(null);
-      completeToast("free", "참여가 완료되었습니다. 5 SCORE 획득 !");
+      toast("success", "참여가 완료되었습니다. 5 SCORE 획득 !");
     },
     onError: errorToast,
   });
@@ -33,7 +33,7 @@ function GatherParticipateModalParticipate({ setIsModal }: IModal) {
     onSuccess() {
       queryClient.invalidateQueries([GATHER_CONTENT, gatherId]);
       setTransferGather(null);
-      completeToast("free", "참여가 완료되었습니다. 5 SCORE 획득 !");
+      toast("success", "참여가 완료되었습니다. 5 SCORE 획득 !");
     },
     onError: errorToast,
   });

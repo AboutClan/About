@@ -10,7 +10,7 @@ import { useSetRecoilState } from "recoil";
 import BottomFixedButton from "../../../components/atoms/BottomFixedButton";
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
 import { GROUP_STUDY } from "../../../constants/keys/queryKeys";
-import { useCompleteToast, useErrorToast, useToast } from "../../../hooks/custom/CustomToast";
+import { useErrorToast, useToast } from "../../../hooks/custom/CustomToast";
 import {
   useGroupParticipationMutation,
   useGroupWaitingMutation,
@@ -27,8 +27,8 @@ type ButtonType = "cancel" | "participate" | "expire" | "register";
 
 function GroupBottomNav({ data }: IGroupBottomNav) {
   const router = useRouter();
+
   const toast = useToast();
-  const completeToast = useCompleteToast();
   const { id } = useParams<{ id: string }>() || {};
   const setTransferGroup = useSetRecoilState(transferGroupDataState);
 
@@ -41,7 +41,7 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
 
   const { mutate: participate } = useGroupParticipationMutation("post", +id, {
     onSuccess() {
-      completeToast("free", "가입이 완료되었습니다.");
+      toast("success", "가입이 완료되었습니다.");
       setTransferGroup(null);
       queryClient.invalidateQueries([GROUP_STUDY, id]);
     },
@@ -70,7 +70,7 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
   const queryClient = useQueryClient();
   const { mutate: cancel } = useGroupParticipationMutation("delete", +groupId, {
     onSuccess() {
-      completeToast("free", "참여 신청이 취소되었습니다.", true);
+      toast("success", "신청이 취소되었습니다.");
       queryClient.invalidateQueries([GROUP_STUDY, id]);
     },
     onError: errorToast,

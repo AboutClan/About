@@ -8,7 +8,7 @@ import styled from "styled-components";
 import CountNum from "../../components/atoms/CountNum";
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import { STORE_GIFT } from "../../constants/keys/queryKeys";
-import { useCompleteToast, useErrorToast, useFailToast } from "../../hooks/custom/CustomToast";
+import { useErrorToast, useFailToast, useToast } from "../../hooks/custom/CustomToast";
 import { useStoreMutation } from "../../hooks/sub/store/mutation";
 import { usePointSystemMutation, useUserTicketMutation } from "../../hooks/user/mutations";
 import { usePointSystemQuery, useUserInfoQuery } from "../../hooks/user/queries";
@@ -27,7 +27,7 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
   const queryClient = useQueryClient();
   const router = useRouter();
   const failToast = useFailToast();
-  const completeToast = useCompleteToast();
+  const toast = useToast();
   const errorToast = useErrorToast();
 
   const isGuest = session?.user.name === "guest";
@@ -39,7 +39,7 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
   const { mutate: applyGift, isLoading: isLoading2 } = useStoreMutation({
     onSuccess() {
       getPoint({ value: -totalCost, message: `${giftInfo.name} 응모` });
-      completeToast("free", "응모에 성공했어요! 당첨 발표일을 기다려주세요!");
+      toast("success", "응모에 성공했어요! 당첨 발표일을 기다려주세요!");
       queryClient.invalidateQueries([STORE_GIFT]);
       router.push("/store");
     },
@@ -49,7 +49,7 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
   const { mutate } = useUserTicketMutation({
     onSuccess() {
       getPoint({ value: -totalCost, message: `${giftInfo.name} 구매` });
-      completeToast("free", "충전되었습니다.");
+      toast("success", "충전되었습니다.");
       queryClient.invalidateQueries([STORE_GIFT]);
       router.push("/store");
     },

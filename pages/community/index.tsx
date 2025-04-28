@@ -18,7 +18,7 @@ function BoardPage() {
       <Slide isNoPadding>
         <SquareSecretSection />
       </Slide>
-      {!isGuest && <WritingButton isBottomNav={false} url="/square/secret/writing" />}
+      {!isGuest && <WritingButton isBottomNav={false} url="/community/writing" />}
       {/* {isRuleModal && <RuleModal content={SECRET_CONTENT} setIsModal={setIsRuleModal} />} */}
     </>
   );

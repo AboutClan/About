@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
 import { PopOverIcon } from "../../../components/Icons/PopOverIcon";
-import { useCompleteToast, useFailToast } from "../../../hooks/custom/CustomToast";
+import { useFailToast, useToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
 import { useUserRequestMutation } from "../../../hooks/user/sub/request/mutations";
 import { IModal } from "../../../types/components/modalTypes";
@@ -24,7 +24,7 @@ export interface IApplyRest {
 
 function RequestRestModal({ setIsModal }: IModal) {
   const { data: session } = useSession();
-  const completeToast = useCompleteToast();
+  const toast = useToast();
   const failToast = useFailToast();
 
   const { mutate: sendRestRequest } = useUserRequestMutation();
@@ -33,7 +33,7 @@ function RequestRestModal({ setIsModal }: IModal) {
   const { mutate: setRest } = useUserInfoFieldMutation("rest", {
     onSuccess() {
       setIsModal(false);
-      completeToast("apply");
+      toast("success", "apply");
     },
     onError(err) {
       console.error(err);

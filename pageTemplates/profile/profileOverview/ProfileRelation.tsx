@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import AlertModal, { IAlertModalOptions } from "../../../components/AlertModal";
-import { useCompleteToast, useFailToast, useTypeToast } from "../../../hooks/custom/CustomToast";
+import { useFailToast, useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import { useUserFriendMutation } from "../../../hooks/user/mutations";
 import { useInteractionMutation } from "../../../hooks/user/sub/interaction/mutations";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
@@ -19,7 +19,7 @@ function ProfileRelation({ user }: IProfileRelation) {
   const failGuestToast = useFailToast();
   const router = useRouter();
   const typeToast = useTypeToast();
-  const completeToast = useCompleteToast();
+  const toast = useToast();
   const { data: session } = useSession();
 
   const isGuest = session?.user.name === "guest";
@@ -28,14 +28,14 @@ function ProfileRelation({ user }: IProfileRelation) {
 
   const { mutate: requestFriend } = useInteractionMutation("friend", "post", {
     onSuccess() {
-      completeToast("free", "친구 요청이 전송되었습니다.");
+      toast("success", "친구 요청이 전송되었습니다.");
       setModalType(null);
     },
   });
 
   const { mutate: deleteFriend } = useUserFriendMutation("delete", {
     onSuccess() {
-      completeToast("free", "친구 목록에서 삭제되었습니다.");
+      toast("success", "친구 목록에서 삭제되었습니다.");
       setIsMyFriend(false);
       setModalType(null);
     },

@@ -1,6 +1,6 @@
 import { useSession } from "next-auth/react";
 
-import { useCompleteToast, useFailToast } from "../../hooks/custom/CustomToast";
+import { useFailToast, useToast } from "../../hooks/custom/CustomToast";
 import { useStudyArrivedCntQuery } from "../../hooks/study/queries";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { ModalSubtitle } from "../../styles/layout/modal";
@@ -9,7 +9,7 @@ import { IFooterOptions, ModalLayout } from "../Modals";
 
 function RequestLevelUpModal({ setIsModal }: IModal) {
   const { data: session } = useSession();
-  const completeToast = useCompleteToast();
+  const toast = useToast();
   const failToast = useFailToast();
 
   const { data: studyArrivedCnt, isLoading } = useStudyArrivedCntQuery(session?.user.uid, {
@@ -18,7 +18,7 @@ function RequestLevelUpModal({ setIsModal }: IModal) {
 
   const { mutate: setRole } = useUserInfoFieldMutation("role", {
     onSuccess() {
-      completeToast("free", "등업이 완료되었습니다.");
+      toast("success", "등업이 완료되었습니다.");
     },
   });
 

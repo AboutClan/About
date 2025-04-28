@@ -1,15 +1,14 @@
 import { Badge } from "@chakra-ui/react";
 
-import { BADGE_COLOR_MAPPINGS } from "../../../constants/serviceConstants/badgeConstants";
-import { getUserBadge } from "../../../utils/convertUtils/convertDatas";
+import {
+  BADGE_COLOR_MAPPINGS,
+  USER_BADGE_ARR,
+} from "../../../constants/serviceConstants/badgeConstants";
 interface IUserBadge {
-  score: number;
-  uid: string;
+  badgeIdx: number;
 }
 
-export default function UserBadge({ score, uid }: IUserBadge) {
-  const badge = getUserBadge(score, uid);
- 
+export default function UserBadge({ badgeIdx }: IUserBadge) {
   return (
     <Badge
       h="20px"
@@ -20,9 +19,9 @@ export default function UserBadge({ score, uid }: IUserBadge) {
       fontWeight="semibold"
       fontSize="9px"
       borderRadius="10px"
-      colorScheme={BADGE_COLOR_MAPPINGS[badge]}
+      colorScheme={BADGE_COLOR_MAPPINGS[USER_BADGE_ARR[badgeIdx]]}
     >
-      {badge}
+      {USER_BADGE_ARR[badgeIdx]}
     </Badge>
   );
 }

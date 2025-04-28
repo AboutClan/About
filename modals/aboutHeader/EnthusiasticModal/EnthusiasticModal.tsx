@@ -4,7 +4,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import AlertModal, { IAlertModalOptions } from "../../../components/AlertModal";
-import { useCompleteToast, useFailToast } from "../../../hooks/custom/CustomToast";
+import { useFailToast, useToast } from "../../../hooks/custom/CustomToast";
 import { useCounterQuery } from "../../../hooks/sub/counter/queries";
 import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
 import { ModalSubtitle } from "../../../styles/layout/modal";
@@ -22,7 +22,7 @@ const LOCATION_WIN = {
 
 function EnthusiasticModal({ setIsModal }: IEnthusiasticModal) {
   const { data: session } = useSession();
-  const completeToast = useCompleteToast();
+  const toast = useToast();
   const failToast = useFailToast();
   const location = session?.user.location;
   const [isConfirmModal, setIsConfirmModal] = useState(false);
@@ -33,7 +33,7 @@ function EnthusiasticModal({ setIsModal }: IEnthusiasticModal) {
 
   const { mutate } = useUserInfoFieldMutation("role", {
     onSuccess() {
-      completeToast("free", "이번 달 열공멤버가 되었습니다!");
+      toast("success", "이번 달 열공멤버가 되었습니다!");
       setIsModal(false);
     },
   });

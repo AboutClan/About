@@ -12,7 +12,7 @@ import { useSession } from "next-auth/react";
 import { useRef } from "react";
 import styled from "styled-components";
 
-import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";
+import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
 import { IModal } from "../../types/components/modalTypes";
 import { IUserRequest } from "../../types/models/userTypes/userRequestTypes";
@@ -58,11 +58,11 @@ interface IDialog extends IModal {
 
 function Dialog({ isOpen, onClose, setIsModal }: IDialog) {
   const { data: session } = useSession();
-  const completeToast = useCompleteToast();
+  const toast = useToast();
   const errorToast = useErrorToast();
   const { mutate } = useUserRequestMutation({
     onSuccess() {
-      completeToast("free", "지원이 완료되었습니다.");
+      toast("success", "지원이 완료되었습니다.");
       setIsModal(false);
     },
     onError: errorToast,

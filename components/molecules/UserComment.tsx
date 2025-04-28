@@ -140,7 +140,7 @@ function UserComment({
 
   return (
     <>
-      <Flex align="center" py={3} borderBottom="var(--border)">
+      <Flex px={5} align="center" py={3} borderBottom="var(--border)">
         <Flex justify="center" alignSelf="flex-start" mr={2}>
           <Avatar size="sm1" user={user} />
         </Flex>

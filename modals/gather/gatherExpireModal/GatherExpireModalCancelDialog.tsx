@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
 
-import { useCompleteToast, useErrorToast } from "../../../hooks/custom/CustomToast";
+import { useErrorToast, useToast } from "../../../hooks/custom/CustomToast";
 import { useGatherStatusMutation, useGatherWritingMutation } from "../../../hooks/gather/mutations";
 import { DispatchBoolean } from "../../../types/hooks/reactTypes";
 import { GatherExpireModalDialogType } from "./GatherExpireModal";
@@ -28,7 +28,7 @@ function GatherExpireModalCancelDialog({
   isNoMember,
   modal,
 }: IGatherExpireModalCancelDialog) {
-  const completeToast = useCompleteToast();
+  const toast = useToast();
   const errorToast = useErrorToast();
 
   const router = useRouter();
@@ -39,10 +39,10 @@ function GatherExpireModalCancelDialog({
   const onComplete = async (type: "delete" | "close") => {
     setIsComplete(true);
     if (type === "delete") {
-      completeToast("free", "모임이 삭제되었습니다.");
+      toast("success", "모임이 삭제되었습니다.");
       router.push(`/gather`);
     }
-    if (type === "close") completeToast("free", "모임이 취소되었습니다.");
+    if (type === "close") toast("success", "모임이 취소되었습니다.");
   };
 
   const { mutate: gatherDelete } = useGatherWritingMutation("delete", {

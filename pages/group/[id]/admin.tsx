@@ -8,7 +8,7 @@ import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import { UserItem } from "../../../components/molecules/UserItem";
 import { useResetGroupQuery } from "../../../hooks/custom/CustomHooks";
-import { useCompleteToast } from "../../../hooks/custom/CustomToast";
+import { useToast } from "../../../hooks/custom/CustomToast";
 import { useGroupWaitingStatusMutation } from "../../../hooks/groupStudy/mutations";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
 import InviteOuterModal from "../../../modals/groupStudy/InviteOuterModal";
@@ -18,7 +18,7 @@ import { IGroup } from "../../../types/models/groupTypes/group";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
 
 function Admin() {
-  const completeToast = useCompleteToast();
+  const toast = useToast();
   const { id } = useParams<{ id: string }>() || {};
 
   const [deletedUsers, setDeletedUser] = useState([]);
@@ -36,7 +36,7 @@ function Admin() {
 
   const { mutate, isLoading } = useGroupWaitingStatusMutation(+id, {
     onSuccess() {
-      completeToast("free", "완료되었습니다.");
+      toast("success", "완료되었습니다.");
       resetGroup();
     },
   });

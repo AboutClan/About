@@ -11,7 +11,7 @@ import Slide from "../../../components/layouts/PageSlide";
 import ProfileCommentCard from "../../../components/molecules/cards/ProfileCommentCard";
 import { GROUP_STUDY } from "../../../constants/keys/queryKeys";
 import { GROUP_STUDY_ROLE } from "../../../constants/settingValue/groupStudy";
-import { useCompleteToast, useToast } from "../../../hooks/custom/CustomToast";
+import { useToast } from "../../../hooks/custom/CustomToast";
 import {
   useGroupAttendUserMutation,
   useGroupExileUserMutation,
@@ -24,9 +24,9 @@ import { GroupParicipantProps, IGroup } from "../../../types/models/groupTypes/g
 
 export default function Member() {
   const { data: session } = useSession();
-  const completeToast = useCompleteToast();
-  const { id } = useParams<{ id: string }>() || {};
   const toast = useToast();
+  const { id } = useParams<{ id: string }>() || {};
+
   const [deleteUser, setDeleteUser] = useState<GroupParicipantProps>(null);
   const [group, setGroup] = useState<IGroup>();
 
@@ -51,7 +51,7 @@ export default function Member() {
   const { mutate } = useGroupExileUserMutation(+id, {
     onSuccess() {
       queryClient.invalidateQueries([GROUP_STUDY]);
-      completeToast("free", "추방되었습니다.");
+      toast("success", "추방되었습니다.");
     },
     onError(err) {
       console.error(err);

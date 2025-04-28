@@ -14,7 +14,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
-import { useCompleteToast, useFailToast } from "../../hooks/custom/CustomToast";
+import { useFailToast, useToast } from "../../hooks/custom/CustomToast";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
 import { IModal } from "../../types/components/modalTypes";
@@ -27,7 +27,7 @@ interface IRequestSuggestModal extends IModal {
 
 function RequestSuggestModal({ type, setIsModal }: IRequestSuggestModal) {
   const failToast = useFailToast();
-  const completeToast = useCompleteToast();
+  const toast = useToast();
 
   const [isRealName, setIsRealName] = useState(true);
   const { register, handleSubmit } = useForm({
@@ -39,7 +39,7 @@ function RequestSuggestModal({ type, setIsModal }: IRequestSuggestModal) {
 
   const { mutate } = usePointSystemMutation("point", {
     onSuccess() {
-      completeToast("free", "제출 완료! 10 point 획득!");
+      toast("success", "제출 완료! 10 point 획득!");
       setIsModal(false);
     },
   });

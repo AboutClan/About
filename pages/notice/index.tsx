@@ -1,5 +1,5 @@
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -26,7 +26,7 @@ function Notice() {
     enabled: isGuest === false,
   });
   const { data: chats } = useMyChatsQuery({ enabled: isGuest === false });
-
+  console.log(24, chats);
   const { data: recentChat } = useRecentChatQuery({ enabled: isGuest === false });
 
   useEffect(() => {

@@ -7,7 +7,7 @@ import styled from "styled-components";
 
 import { PopOverIcon } from "../../components/Icons/PopOverIcon";
 import { GROUP_STUDY } from "../../constants/keys/queryKeys";
-import { useCompleteToast, useFailToast } from "../../hooks/custom/CustomToast";
+import { useFailToast, useToast } from "../../hooks/custom/CustomToast";
 import { useGroupWaitingMutation } from "../../hooks/groupStudy/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { IFooterOptions, ModalFooterTwo, ModalLayout } from "../../modals/Modals";
@@ -25,7 +25,7 @@ interface IParticipateModal extends IModal {
 function ParticipateModal({ id, setIsModal, answer }: IParticipateModal) {
   const router = useRouter();
   const failToast = useFailToast();
-  const completeToast = useCompleteToast();
+  const toast = useToast();
   const { data: userInfo } = useUserInfoQuery();
   const [selectBtn, setSelectBtn] = useState<"point" | "deposit">("point");
 
@@ -42,7 +42,7 @@ function ParticipateModal({ id, setIsModal, answer }: IParticipateModal) {
 
   const { mutate: sendRegisterForm, isLoading } = useGroupWaitingMutation(id, {
     onSuccess() {
-      completeToast("free", "가입 신청이 완료되었습니다.");
+      toast("success", "가입 신청이 완료되었습니다.");
       resetCache();
     },
   });

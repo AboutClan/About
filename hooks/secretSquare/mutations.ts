@@ -1,7 +1,7 @@
+import { useRouter } from "next/navigation";
 import { useMutation, useQueryClient } from "react-query";
 
 import { requestServer } from "../../libs/methodHelpers";
-import { SecretSquareCategory } from "../../types/models/square";
 
 export const usePatchPollMutation = ({ squareId }: { squareId: string }) => {
   const queryClient = useQueryClient();
@@ -53,6 +53,7 @@ export const useCreateSecretSquareMutation = () => {
 };
 
 export const useDeleteSecretSquareMutation = ({ squareId }: { squareId: string }) => {
+  const router = useRouter();
   const queryClient = useQueryClient();
   return useMutation(
     () =>
@@ -61,14 +62,10 @@ export const useDeleteSecretSquareMutation = ({ squareId }: { squareId: string }
         url: `square/${squareId}`,
       }),
     {
-      onSuccess: (_, { category }: { category: SecretSquareCategory }) => {
+      onSuccess: () => {
         // HACK 전체 카테고리와 각 카테고리를 모두 invalidate 해야하는가? 개선의 여지가 있음
-        queryClient.invalidateQueries({
-          queryKey: ["secretSquare", { category: "전체" }],
-        });
-        queryClient.invalidateQueries({
-          queryKey: ["secretSquare", { category }],
-        });
+        queryClient.invalidateQueries({ queryKey: "secretSquare", exact: false });
+        router.replace("/community");
       },
     },
   );

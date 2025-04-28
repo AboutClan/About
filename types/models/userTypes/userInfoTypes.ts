@@ -1,7 +1,4 @@
-import {
-  USER_BADGE_ARR,
-  USER_EVENT_BADGE_ARR,
-} from "../../../constants/serviceConstants/badgeConstants";
+import { USER_BADGE_ARR } from "../../../constants/serviceConstants/badgeConstants";
 import { USER_ROLE } from "../../../constants/serviceConstants/userConstants";
 import { ActiveLocation, Location } from "../../services/locationTypes";
 import { TimeStampProps } from "../../utils/timeAndDate";
@@ -12,6 +9,7 @@ export interface IUser extends Omit<IUserRegisterForm, "location">, IUserSummary
   point: number;
   badge: {
     badgeIdx: number;
+    badgeList: string[];
   };
   role: UserRole;
   rest: IRest;
@@ -48,6 +46,10 @@ export interface UserSimpleInfoProps {
   uid: string;
   score: number;
   comment?: string;
+  badge: {
+    badgeIdx: number;
+    badgeList: string[];
+  };
 }
 
 export interface LocationDeatilProps {
@@ -66,6 +68,10 @@ export interface IUserSummary {
   profileImage: string;
   monthScore: number;
   score: number;
+  badge: {
+    badgeIdx: number;
+    badgeList: string[];
+  };
   uid: string;
   _id: string;
 }
@@ -103,4 +109,3 @@ export interface IRest {
 
 export type UserRole = (typeof USER_ROLE)[number];
 export type UserBadge = (typeof USER_BADGE_ARR)[number];
-export type EventBadge = (typeof USER_EVENT_BADGE_ARR)[number];

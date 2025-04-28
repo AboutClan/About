@@ -7,7 +7,7 @@ import MenuButton, { MenuProps } from "../../../components/atoms/buttons/MenuBut
 import Header from "../../../components/layouts/Header";
 import { GROUP_WRITING_STORE } from "../../../constants/keys/localStorage";
 import { useResetGroupQuery } from "../../../hooks/custom/CustomHooks";
-import { useCompleteToast } from "../../../hooks/custom/CustomToast";
+import { useToast } from "../../../hooks/custom/CustomToast";
 import { useGroupParticipationMutation } from "../../../hooks/groupStudy/mutations";
 import { IGroup } from "../../../types/models/groupTypes/group";
 import { setLocalStorageObj } from "../../../utils/storageUtils";
@@ -20,7 +20,7 @@ function GroupHeader({ group }: IGroupHeader) {
   const router = useRouter();
   const { data: session } = useSession();
   const resetGroupQuery = useResetGroupQuery();
-  const completeToast = useCompleteToast();
+  const toast = useToast();
 
   const isAdmin =
     session?.user.uid === "2259633694" ||
@@ -34,7 +34,7 @@ function GroupHeader({ group }: IGroupHeader) {
   const [isSettigModal, setIsSettingModal] = useState(false);
 
   const movePage = async () => {
-    completeToast("free", "탈퇴되었습니다.");
+    toast("success", "탈퇴되었습니다.");
     resetGroupQuery();
   };
 

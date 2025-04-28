@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
-import { useCompleteToast } from "../../hooks/custom/CustomToast";
+import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudyArrivedCntQuery } from "../../hooks/study/queries";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { ModalSubtitle } from "../../styles/layout/modal";
@@ -17,14 +17,14 @@ interface IRequestRestCancelModal extends IModal {
 
 function RequestRestCancelModal({ setIsModal, rest }: IRequestRestCancelModal) {
   const { data: session } = useSession();
-  const completeToast = useCompleteToast();
+  const toast = useToast();
 
   const { data: studyArrivedCnt } = useStudyArrivedCntQuery(session?.user.uid, {
     enabled: !!session,
   });
   const { mutate: setRole } = useUserInfoFieldMutation("role", {
     onSuccess() {
-      completeToast("free", "해제되었습니다.");
+      toast("success", "해제되었습니다.");
     },
   });
 

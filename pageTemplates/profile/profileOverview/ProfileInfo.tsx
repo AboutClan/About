@@ -8,7 +8,7 @@ import UserBadge from "../../../components/atoms/badges/UserBadge";
 import { LIKE_HEART } from "../../../constants/keys/localStorage";
 import { NOTICE_HEART_LOG } from "../../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../../hooks/custom/CustomHooks";
-import { useCompleteToast, useErrorToast, useFailToast } from "../../../hooks/custom/CustomToast";
+import { useErrorToast, useFailToast, useToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { useInteractionMutation } from "../../../hooks/user/sub/interaction/mutations";
 import { IInteractionLikeStorage, IInteractionSendLike } from "../../../types/globals/interaction";
@@ -19,7 +19,7 @@ interface IProfileInfo {
   user: IUser;
 }
 function ProfileInfo({ user }: IProfileInfo) {
-  const completeToast = useCompleteToast();
+  const toast = useToast();
   const failToast = useFailToast();
   const errorToast = useErrorToast();
   const { data: session } = useSession();
@@ -42,7 +42,7 @@ function ProfileInfo({ user }: IProfileInfo) {
 
   const { mutate: sendHeart } = useInteractionMutation("like", "post", {
     onSuccess() {
-      completeToast("free", "전송되었습니다!");
+      toast("success", "전송되었습니다!");
       resetQueryData([NOTICE_HEART_LOG]);
     },
     onError: errorToast,
@@ -120,7 +120,7 @@ function ProfileInfo({ user }: IProfileInfo) {
                 {user?.name || session?.user.name}
               </Box>
               <Box>
-                <UserBadge score={user?.score} uid={user?.uid} />
+                <UserBadge badgeIdx={user?.badge.badgeIdx} />
               </Box>
             </Flex>
             <Box fontSize="12px" color="gray.500">

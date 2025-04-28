@@ -44,7 +44,8 @@ type ToastType =
   | "participate"
   | "apply"
   | "not-yet"
-  | "register";
+  | "register"
+  | "empty";
 
 type ToastConfig = {
   title: string;
@@ -73,6 +74,10 @@ const TOAST_MAP: Record<ToastType, ToastConfig> = {
   error: {
     title: "오류가 발생했습니다. 관리자에게 문의해주세요.",
     status: "error",
+  },
+  empty: {
+    title: "누락된 항목이 존재합니다.",
+    status: "info",
   },
 };
 
@@ -151,54 +156,6 @@ export const useFailToast = () => {
   return showFailToast;
 };
 
-export type CompleteToast =
-  | "free"
-  | "content"
-  | "success"
-  | "studyVote"
-  | "apply"
-  | "change"
-  | "point";
-
-export const useCompleteToast = () => {
-  const toast = useChakraToast();
-  const showCompleteToast = useCallback(
-    (type: CompleteToast, sub?: string | number, isTop: boolean = false) => {
-      let text = "";
-      if (type === "free" || type === "content") text = sub as string;
-
-      if (type === "change") text = "변경되었습니다.";
-      if (type === "apply") text = "신청 완료!";
-      if (type === "success") text = "정상적으로 처리되었습니다.";
-      if (type === "studyVote") {
-        text = "투표 완료! 포인트가 적립되었습니다.";
-      }
-      if (type === "content")
-        toast({
-          title: "성공",
-          description: text,
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-          position: isTop ? "top" : "bottom",
-          variant: "subtle",
-        });
-      else
-        toast({
-          title: text,
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-          position: isTop ? "top" : "bottom",
-          variant: "subtle",
-        });
-    },
-    [toast],
-  );
-
-  return showCompleteToast;
-};
-
 export const useErrorToast = () => {
   const failToast = useFailToast();
   const handleError = (err: AxiosError) => {
@@ -219,26 +176,4 @@ export const useTypeErrorToast = () => {
       failToast("free", "스터디 정보를 가져올 수 없습니다. 관리자에게 문의해주세요!");
   };
   return handleError;
-};
-
-export const useInfoToast = () => {
-  const toast = useChakraToast();
-
-  const showFailToast = useCallback(
-    (type: FailToast, sub?: string, isTop: boolean = false) => {
-      let text = "";
-      if (type === "free") text = sub;
-
-      toast({
-        title: "알림",
-        description: text,
-        status: "info",
-        duration: 3000,
-        isClosable: true,
-        position: isTop ? "top" : "bottom",
-      });
-    },
-    [toast],
-  );
-  return showFailToast;
 };

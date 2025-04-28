@@ -10,7 +10,7 @@ import { AlphabetIcon } from "../../components/Icons/AlphabetIcon";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import { BADGE_COLOR_MAPPINGS } from "../../constants/serviceConstants/badgeConstants";
-import { useCompleteToast, useFailToast } from "../../hooks/custom/CustomToast";
+import { useFailToast, useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { useAlphabetCompletedMutation } from "../../hooks/user/sub/collection/mutations";
 import {
@@ -26,7 +26,7 @@ const ALPHABET_COLLECTION: Alphabet[] = ["A", "B", "O", "U", "T"];
 
 function CollectionAlphabet() {
   const failToast = useFailToast();
-  const completeToast = useCompleteToast();
+  const toast = useToast();
 
   const { data: session } = useSession();
 
@@ -36,7 +36,7 @@ function CollectionAlphabet() {
 
   const { mutate: mutate2, isLoading: completeLoading } = useAlphabetCompletedMutation({
     onSuccess() {
-      completeToast("free", "교환이 완료되었어요! 상품은 확인하는대로 보내드려요!");
+      toast("success", "교환이 완료되었어요! 상품은 확인하는대로 보내드려요!");
     },
     /* eslint-disable @typescript-eslint/no-explicit-any */
     onError(err: AxiosError<{ message: string }, any>) {
@@ -46,8 +46,8 @@ function CollectionAlphabet() {
       }
     },
   });
-
   const { data: userAlphabetAll, isLoading } = useCollectionAlphabetAllQuery();
+  console.log(userAlphabetAll);
 
   const [members, setMembers] = useState<ICollectionAlphabet[]>();
   const [isChangeModal, setIsChangeModal] = useState(false);

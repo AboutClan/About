@@ -10,7 +10,7 @@ interface BaseSecretSquareItem extends TimeStampProps {
   title: string;
   content: string;
   viewers: string[];
-  likeCount: number;
+  like: string[];
   images: string[];
   author: string;
   comments: UserCommentProps[];

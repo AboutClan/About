@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
 
 import axios from "axios";
+import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -74,10 +74,12 @@ function Layout({ children }: ILayout) {
     }
     if (status === "loading" || session === undefined) return;
 
-    // if (!session?.user?.location) {
-    //   toast("warning", "접속 권한이 없습니다. 반복되는 경우 관리자에게 문의 부탁드립니다.");
-    //   signOut({ callbackUrl: `/login/?status=logout` });
-    // }
+    if (!session?.user) {
+      toast(
+        "warning",
+        "계정 정보를 불러올 수 없습니다. 지속되는 경우 마이페이지에서 다시 로그인 해주세요!",
+      );
+    }
   }, [session, status]);
 
   const exitAppRef = useRef<boolean>(false);

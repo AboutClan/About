@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
-import { useCompleteToast } from "../../hooks/custom/CustomToast";
+import { useToast } from "../../hooks/custom/CustomToast";
 import { usePromotionMutation } from "../../hooks/sub/promotion/mutations";
 import { usePromotionQuery } from "../../hooks/sub/promotion/queries";
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
@@ -16,7 +16,7 @@ interface IPromotionApplyModal extends IModal {
 }
 
 function PromotionApplyModal({ setIsModal, uniName }: IPromotionApplyModal) {
-  const completeToast = useCompleteToast();
+  const toast = useToast();
 
   const [contentType, setContentType] = useState<"cool" | "none">();
   const [coolTime, setCoolTime] = useState<number>();
@@ -28,7 +28,7 @@ function PromotionApplyModal({ setIsModal, uniName }: IPromotionApplyModal) {
   const { mutate, isLoading } = usePromotionMutation({
     onSuccess() {
       queryClient.invalidateQueries("promotion");
-      completeToast("free", "포인트 지급 완료! 감사합니다!");
+      toast("success", "포인트 지급 완료! 감사합니다!");
       setIsModal(false);
     },
   });

@@ -2,7 +2,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import { AlphabetIcon } from "../../../components/Icons/AlphabetIcon";
-import { useCompleteToast, useFailToast } from "../../../hooks/custom/CustomToast";
+import { useFailToast, useToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { useInteractionMutation } from "../../../hooks/user/sub/interaction/mutations";
 import { IModal } from "../../../types/components/modalTypes";
@@ -22,13 +22,13 @@ function AlphabetChangeModal({
   opponentAlpabets,
 }: IAlphabetChangeModal) {
   const failToast = useFailToast();
-  const completeToast = useCompleteToast();
+  const toast = useToast();
 
   const { data: userInfo } = useUserInfoQuery();
 
   const { mutate: requestAlphabet } = useInteractionMutation("alphabet", "post", {
     onSuccess() {
-      completeToast("free", "요청을 전송했습니다.");
+      toast("success", "요청을 전송했습니다.");
       setIsModal(false);
     },
   });

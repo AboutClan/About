@@ -56,7 +56,7 @@ function SquareSecretSection() {
       }
     };
   }, []);
-
+  console.log(sqaures);
   return (
     <>
       <SecretSquareCategories category={category} setCategory={setCategory} />

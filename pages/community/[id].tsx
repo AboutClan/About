@@ -1,31 +1,18 @@
-import {
-  Badge,
-  Box,
-  Button,
-  ButtonGroup,
-  Drawer,
-  DrawerBody,
-  DrawerContent,
-  DrawerOverlay,
-  Flex,
-  Text,
-  useDisclosure,
-  VStack,
-} from "@chakra-ui/react";
+import { Badge, Box, Button, ButtonGroup, Flex, Text, VStack } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import AlertModal from "../../components/AlertModal";
+import MenuButton, { MenuProps } from "../../components/atoms/buttons/MenuButton";
 import Divider from "../../components/atoms/Divider";
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
-import KakaoShareBtn from "../../components/Icons/KakaoShareBtn";
+import ThumbIcon from "../../components/Icons/ThumbIcon";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import PostAuthorCard from "../../components/molecules/cards/PostAuthorCard";
 import { SECRET_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
-import { useFailToast } from "../../hooks/custom/CustomToast";
 import {
   useDeleteLikeSecretSquareMutation,
   useDeleteSecretSquareMutation,
@@ -44,6 +31,8 @@ function SecretSquareDetailPage() {
   const router = useRouter();
   const squareId = router.query.id as string;
   const { data: session } = useSession();
+  const [isDeleteModal, setIsDeleteModal] = useState(false);
+
   const { mutate: putLikeMutate, isLoading: isPutLikeLoading } = usePutLikeSecretSquareMutation({
     squareId,
   });
@@ -53,6 +42,7 @@ function SecretSquareDetailPage() {
     { squareId },
     { staleTime: Infinity, enabled: !!squareId },
   );
+  console.log(likeStatus);
   const { mutate: mutatePoll, isLoading: isPollLoading } = usePatchPollMutation({ squareId });
   const { mutate: deleteSquareMutate } = useDeleteSecretSquareMutation({ squareId });
   const {
@@ -79,13 +69,8 @@ function SecretSquareDetailPage() {
   const [showRePollButton, setShowRePollButton] = useState(false);
   const [isActiveRePollButton, setIsActiveRePollButton] = useState(false);
 
-  const { isOpen: isMenuOpen, onOpen: onMenuOpen, onClose: onMenuClose } = useDisclosure();
-  const [isAlertOpen, setIsAlertOpen] = useState(false);
-
   const likeButtonDisabled =
     isPutLikeLoading || isDeleteLikeLoading || isLikeStatusFetching || isSquareDetailFetching;
-
-  const failToast = useFailToast();
 
   useEffect(() => {
     if (pollStatus) {
@@ -114,38 +99,42 @@ function SecretSquareDetailPage() {
     }
   };
 
-  const openAlertModal = () => {
-    setIsAlertOpen(true);
-    onMenuClose();
-  };
-
   const handleDeleteSquare = () => {
-    deleteSquareMutate(
-      { category: squareDetail?.category },
-      {
-        onSuccess: () => {
-          router.replace("/square");
-        },
-        onError: () => {
-          failToast("error");
-        },
-      },
-    );
+    deleteSquareMutate();
   };
-  console.log(squareDetail);
+  console.log(squareDetail, session);
+
+  const menuArr: MenuProps[] = [
+    ...(squareDetail?.author === session?.user.id
+      ? [
+          {
+            text: "삭제하기",
+            func: () => {
+              setIsDeleteModal(true);
+            },
+          },
+        ]
+      : []),
+
+    {
+      kakaoOptions: {
+        title: squareDetail?.title,
+        subtitle: squareDetail?.content,
+        img: "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/%EC%BB%A4%EB%AE%A4%EB%8B%88%ED%8B%B0.jpg",
+
+        url: "https://study-about.club" + router.asPath,
+      },
+    },
+  ];
+
   return (
     <>
       <Header title="">
-        <KakaoShareBtn
-          title={squareDetail?.title}
-          subtitle={squareDetail?.content}
-          img="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/%EC%BB%A4%EB%AE%A4%EB%8B%88%ED%8B%B0.jpg"
-          url={`/square/secret/${squareId}`}
-        />
+        <MenuButton menuArr={menuArr} />
       </Header>
       <>
         <Slide>
-          <Flex py={4} direction="column" gap={2} as="section" bg="white" minH="326px">
+          <Flex py={4} direction="column" gap={1} as="section" bg="white" minH="326px">
             <Box minH="83px">
               {squareDetail && (
                 <>
@@ -157,44 +146,7 @@ function SecretSquareDetailPage() {
                     <PostAuthorCard
                       organizer={SECRET_USER_SUMMARY}
                       createdAt={squareDetail.createdAt}
-                    >
-                      {squareDetail.isMySquare && (
-                        <>
-                          <Box as="button" type="button" onClick={onMenuOpen}>
-                            <i className="fa-regular fa-ellipsis fa-xl" />
-                          </Box>
-                          <Drawer placement="bottom" onClose={onMenuClose} isOpen={isMenuOpen}>
-                            <DrawerOverlay />
-                            <DrawerContent pt={3} pb={5}>
-                              <DrawerBody>
-                                <Box
-                                  fontSize="16px"
-                                  as="button"
-                                  w="100%"
-                                  color="var(--color-red)"
-                                  textAlign="center"
-                                  onClick={openAlertModal}
-                                >
-                                  삭제
-                                </Box>
-                              </DrawerBody>
-                            </DrawerContent>
-                          </Drawer>
-                          {isAlertOpen && (
-                            <AlertModal
-                              setIsModal={setIsAlertOpen}
-                              options={{
-                                title: "게시글을 삭제할까요?",
-                                subTitle:
-                                  "게시글을 삭제하면 모든 데이터가 삭제되고 다시는 볼 수 없어요.",
-                                func: handleDeleteSquare,
-                                text: "삭제하기",
-                              }}
-                            />
-                          )}
-                        </>
-                      )}
-                    </PostAuthorCard>
+                    ></PostAuthorCard>
                   </section>
                 </>
               )}
@@ -323,11 +275,10 @@ function SecretSquareDetailPage() {
 
                 {squareDetail.images.length !== 0 && (
                   <section id="images-section">
-                    <VStack as="ul" mt="8px">
+                    <VStack mt="8px">
                       {squareDetail.images.map((src, index) => {
                         return (
                           <Box
-                            as="li"
                             w="100%"
                             borderRadius="var(--rounded-lg)"
                             listStyleType="none"
@@ -351,23 +302,30 @@ function SecretSquareDetailPage() {
                   </section>
                 )}
 
-                <Flex color="var(--gray-600)" align="center" gap={1} fontSize="12px">
-                  <i className="fa-regular fa-eye" />
+                <Flex color="var(--gray-600)" align="center" mt={4} gap={1} fontSize="12px">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    height="18px"
+                    viewBox="0 -960 960 960"
+                    width="18px"
+                    fill="var(--gray-500)"
+                  >
+                    <path d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-134 0-244.5-72T61-462q-5-9-7.5-18.5T51-500q0-10 2.5-19.5T61-538q64-118 174.5-190T480-800q134 0 244.5 72T899-538q5 9 7.5 18.5T909-500q0 10-2.5 19.5T899-462q-64 118-174.5 190T480-200Z" />
+                  </svg>
                   <span>{squareDetail.viewers.length}명이 봤어요</span>
                 </Flex>
-                <Flex justify="space-between" mt="8px">
+                <Flex justify="space-between" mt={3}>
                   <Button
                     type="button"
-                    px="3"
-                    py="1"
-                    maxW="fit-content"
                     backgroundColor="white"
                     border={likeStatus?.isLike ? "var(--border-mint-light)" : "var(--border-main)"}
                     rounded="full"
-                    color={likeStatus?.isLike ? "var(--color-mint)" : "var(--gray-700)"}
-                    gap={1}
+                    color={likeStatus?.isLike ? "var(--color-mint)" : "var(--gray-800)"}
+                    gap={2}
+                    h="36px"
+                    px={4}
                     fontWeight={400}
-                    size="sm"
+                    size="md"
                     sx={{
                       // hover state is NOT removed on mobile device.
                       // It could be confused for user so we remove the style of hover state.
@@ -377,19 +335,22 @@ function SecretSquareDetailPage() {
                       alignItems: "center",
                     }}
                     onClick={handleLikeSquare}
+                    fontSize="13px"
                     isDisabled={likeButtonDisabled}
                   >
                     {/* <i className="fa-regular fa-thumbs-up" />
                   <span>공감하기</span> */}
-                    <i className="fa-light fa-thumbs-up" />
-                    <span>{squareDetail.likeCount}</span>
+                    <Box>
+                      <ThumbIcon colorType={likeStatus?.isLike ? "mint" : "600"} />
+                    </Box>
+                    <Box>{squareDetail.like.length}</Box>
                   </Button>
                 </Flex>
               </>
             )}
           </Flex>
-          {squareDetail && <Divider />}
         </Slide>
+        <Slide isNoPadding>{squareDetail && <Divider />}</Slide>
 
         <Box as="section" bg="white">
           <SecretSquareComments
@@ -399,6 +360,17 @@ function SecretSquareDetailPage() {
           />
         </Box>
       </>
+      {isDeleteModal && (
+        <AlertModal
+          setIsModal={setIsDeleteModal}
+          options={{
+            title: "게시글을 삭제할까요?",
+            subTitle: "게시글을 삭제하면 모든 데이터가 삭제되고 다시는 볼 수 없어요.",
+            func: handleDeleteSquare,
+            text: "삭제하기",
+          }}
+        />
+      )}
     </>
   );
 }

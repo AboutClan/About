@@ -9,21 +9,15 @@ export const USER_SCORE_BADGE_ARR = [
   "에스프레소",
 ] as const;
 
-export const MANAGER_BADGE = "바닐라";
-
-export const USER_EVENT_BADGE_ARR = [
-  "라벤더",
-  "딸기스무디",
-  "민트초코",
-  "코코아",
-  "슈팅스타",
-  "모히또",
-] as const;
-
 export const USER_BADGE_ARR = [
   ...USER_SCORE_BADGE_ARR,
-  ...USER_EVENT_BADGE_ARR,
-  MANAGER_BADGE,
+  "라벤더",
+  "딸기스무디",
+  "코코아",
+  "모히또",
+  "민트초코",
+  "슈팅스타",
+  "바닐라",
 ] as const;
 
 export const BADGE_SCORE_MAPPINGS: {

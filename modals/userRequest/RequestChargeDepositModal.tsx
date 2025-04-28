@@ -6,7 +6,7 @@ import { CopyBtn } from "../../components/Icons/CopyIcon";
 import { ACCOUNT_SHORT } from "../../constants/contentsText/Private";
 import { USER_INFO } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
-import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";
+import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
 import { usePointSystemQuery } from "../../hooks/user/queries";
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
@@ -16,7 +16,7 @@ import { IFooterOptions, ModalLayout } from "../Modals";
 
 function RequestChargeDepositModal({ setIsModal }: IModal) {
   const { data: session } = useSession();
-  const completeToast = useCompleteToast();
+  const toast = useToast();
   const errorToast = useErrorToast();
 
   const [isFirst, setIsFirst] = useState(true);
@@ -27,7 +27,7 @@ function RequestChargeDepositModal({ setIsModal }: IModal) {
   const { mutate: sendRequest } = useUserRequestMutation();
   const { mutate: getDeposit } = usePointSystemMutation("deposit", {
     onSuccess() {
-      completeToast("success");
+      toast("success", "충전되었습니다.");
       resetQueryData([USER_INFO], () => setIsModal(false));
     },
     onError: errorToast,

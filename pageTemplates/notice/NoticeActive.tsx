@@ -6,7 +6,7 @@ import { AlphabetIcon } from "../../components/Icons/AlphabetIcon";
 import { ActiveIcon } from "../../components/Icons/NoticeIcons";
 import { NOTICE_ACTIVE_LOG } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
-import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";
+import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
 import { useUserFriendMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { useAlphabetMutation } from "../../hooks/user/sub/collection/mutations";
@@ -20,7 +20,7 @@ interface INoticeActive {
 }
 
 function NoticeActive({ activeLogs }: INoticeActive) {
-  const completeToast = useCompleteToast();
+  const toast = useToast();
   const errorToast = useErrorToast();
 
   let statusType: "approval" | "refusal" | "response";
@@ -35,16 +35,16 @@ function NoticeActive({ activeLogs }: INoticeActive) {
 
   const { mutate: interactionFriend } = useInteractionMutation("friend", "patch", {
     onSuccess() {
-      if (statusType === "approval") completeToast("free", "수락 완료 !");
-      if (statusType === "refusal") completeToast("free", "거절하였습니다.");
+      if (statusType === "approval") toast("success", "수락 완료 !");
+      if (statusType === "refusal") toast("success", "거절하였습니다.");
       statusType = null;
       resetQueryData([NOTICE_ACTIVE_LOG]);
     },
   });
   const { mutate: interactionAlphabet } = useInteractionMutation("alphabet", "patch", {
     onSuccess() {
-      if (statusType === "approval") completeToast("free", "수락 완료 !");
-      if (statusType === "refusal") completeToast("free", "거절하였습니다.");
+      if (statusType === "approval") toast("success", "수락 완료 !");
+      if (statusType === "refusal") toast("success", "거절하였습니다.");
       statusType = null;
       resetQueryData([NOTICE_ACTIVE_LOG]);
     },

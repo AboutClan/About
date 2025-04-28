@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
@@ -39,7 +39,7 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
   const [isDrawer, setIsDrawer] = useState(false);
 
   const monthScore = user.monthScore;
-
+  console.log("user", user);
   return (
     <>
       <Box borderBottom="var(--border)" px={5} pb={3}>
@@ -64,7 +64,7 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
                 <Box lineHeight="20px" mr={1} fontWeight="semibold" fontSize="13px">
                   {user?.name || "익명"}
                 </Box>
-                <UserBadge score={user?.score || 0} uid={user?.uid} />
+                <UserBadge badgeIdx={user?.badge.badgeIdx} />
               </Flex>
               <Flex lineHeight="18px" alignItems="center" color="gray.500" fontSize="12px">
                 <CommentText>{user?.comment}</CommentText>

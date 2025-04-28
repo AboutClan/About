@@ -44,7 +44,7 @@ export default function UserOverview({ userInfo }: UserOverviewProps) {
           <UserInfo>
             <UserProfile>
               <UserName>{userInfo?.name}</UserName>
-              <UserBadge uid={userInfo?.uid} score={userInfo?.score} />
+              <UserBadge badgeIdx={userInfo?.badge.badgeIdx} />
             </UserProfile>
             <UserOverviewComment />
           </UserInfo>

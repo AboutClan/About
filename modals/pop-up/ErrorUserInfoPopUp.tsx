@@ -1,6 +1,6 @@
 import { signOut, useSession } from "next-auth/react";
 
-import { useCompleteToast } from "../../hooks/custom/CustomToast";
+import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
@@ -8,11 +8,11 @@ import { IFooterOptions, ModalLayout } from "../Modals";
 
 function ErrorUserInfoPopUp({ setIsModal }: IModal) {
   const { data: session } = useSession();
-  const completeToast = useCompleteToast();
+  const toast = useToast();
 
   const { mutate: sendRequest } = useUserRequestMutation({
     onSuccess() {
-      completeToast("free", "전송이 완료되었습니다.");
+      toast("success", "전송이 완료되었습니다.");
       logout();
     },
   });

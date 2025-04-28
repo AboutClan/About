@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 import { GROUP_STUDY } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
-import { useCompleteToast } from "../../hooks/custom/CustomToast";
+import { useToast } from "../../hooks/custom/CustomToast";
 import { useGroupAttendMutation } from "../../hooks/groupStudy/mutations";
 import { IModal } from "../../types/components/modalTypes";
 import { dayjsToFormat, getDateWeek } from "../../utils/dateTimeUtils";
@@ -25,7 +25,7 @@ function AttendCheckModal({
   attendRecordSub,
   setIsModal,
 }: IAttendCheckModal) {
-  const completeToast = useCompleteToast();
+  const toast = useToast();
 
   const dateWeek = getDateWeek(dayjs());
 
@@ -36,7 +36,7 @@ function AttendCheckModal({
 
   const { mutate } = useGroupAttendMutation(id, {
     onSuccess() {
-      completeToast("free", "저장되었습니다.");
+      toast("success", "저장되었습니다.");
       resetQueryData([GROUP_STUDY]);
       setIsModal(false);
     },

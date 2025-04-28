@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import { useCompleteToast, useToast } from "../../hooks/custom/CustomToast";
+import { useToast } from "../../hooks/custom/CustomToast";
 
 interface ICopyBtn {
   size?: string;
@@ -9,14 +9,13 @@ interface ICopyBtn {
 }
 
 export function CopyBtn({ size, text }: ICopyBtn) {
-  const completeToast = useCompleteToast();
   const toast = useToast();
   if (!size) size = "sm";
 
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(text);
-      completeToast("free", "복사 완료");
+      toast("success", "복사 완료");
     } catch {
       toast("error", "복사에 실패했습니다. 관리자에게 문의해주세요.");
     }

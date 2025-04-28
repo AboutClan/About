@@ -21,7 +21,7 @@ const Textarea = forwardRef(function Textarea(
     <ChakraTextarea
       ref={ref}
       py={4}
-      px={5}
+      px={4}
       focusBorderColor="#00c2b3"
       minHeight={minHeight || "56px"}
       backgroundColor="white"

@@ -7,7 +7,7 @@ import SuccessScreen from "../../components/layouts/SuccessScreen";
 import { GROUP_WRITING_STORE } from "../../constants/keys/localStorage";
 import { GROUP_STUDY } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
-import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";
+import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
 import { useGroupWritingMutation } from "../../hooks/groupStudy/mutations";
 import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { ModalSubtitle } from "../../styles/layout/modal";
@@ -22,7 +22,7 @@ interface IGroupConfirmModal extends IModal {
 function GroupConfirmModal({ setIsModal, groupWriting }: IGroupConfirmModal) {
   const router = useRouter();
   const errorToast = useErrorToast();
-  const completeToast = useCompleteToast();
+  const toast = useToast();
 
   const [isSuccessScreen, setIsSuccessScreen] = useState(false);
 
@@ -48,7 +48,7 @@ function GroupConfirmModal({ setIsModal, groupWriting }: IGroupConfirmModal) {
     onSuccess() {
       resetLocalStorage();
 
-      completeToast("free", "수정되었습니다.");
+      toast("success", "수정되었습니다.");
       resetQueryData([GROUP_STUDY, groupWriting.id], () => {
         router.push(`/group/${groupWriting.id}`);
       });

@@ -46,7 +46,7 @@ export const useSecretSquareListQuery = (
     options,
   );
 
-type SecretSquareDetailResponse = { square: SecretSquareItem & { isMySquare: boolean } };
+type SecretSquareDetailResponse = { square: SecretSquareItem };
 
 export const useGetSquareDetailQuery = (
   { squareId }: { squareId: string },

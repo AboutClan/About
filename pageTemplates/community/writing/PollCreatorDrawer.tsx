@@ -3,7 +3,6 @@ import {
   Button,
   Drawer,
   DrawerBody,
-  DrawerCloseButton,
   DrawerContent,
   DrawerFooter,
   DrawerHeader,
@@ -16,8 +15,9 @@ import {
 import { useFieldArray, useFormContext } from "react-hook-form";
 
 import { Input } from "../../../components/atoms/Input";
-import { useInfoToast } from "../../../hooks/custom/CustomToast";
+import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import { SecretSquareFormData } from "../../../types/models/square";
+import { XIcon } from "../../studyPage/studyPageMap/TopNav";
 
 interface PollCreatorDrawerProps {
   isOpen: boolean;
@@ -29,6 +29,7 @@ const MIN_POLL_ITEMS_COUNT = 2;
 const MAX_POLL_ITEMS_COUNT = 5;
 
 export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawerProps) {
+  const typeToast = useTypeToast();
   const { control, register, trigger, resetField, getValues } =
     useFormContext<SecretSquareFormData>();
   const {
@@ -49,7 +50,6 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
       },
     },
   });
-  const infoToast = useInfoToast();
 
   const addPollItem = () => {
     append({ name: "" });
@@ -64,7 +64,7 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
   const handleCompletePollCreation = async () => {
     const isValid = await trigger("pollItems");
     if (!isValid) {
-      infoToast("free", "비어있는 항목이 있어요.");
+      typeToast("empty");
       return;
     }
     resetField("pollItems", { defaultValue: getValues("pollItems") });
@@ -76,9 +76,19 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
     <Drawer isOpen={isOpen} onClose={handleClose} size="full" placement="bottom">
       <DrawerOverlay />
       <DrawerContent>
-        <DrawerCloseButton size="lg" />
-        <DrawerHeader px="16px" h="var(--header-h)">
-          투표 만들기
+        <DrawerHeader
+          display="flex"
+          justifyContent="space-between"
+          fontSize="18px"
+          pl={5}
+          pr={3}
+          h="var(--header-h)"
+          alignItems="center"
+        >
+          <Box>투표 만들기</Box>
+          <Button variant="nostyle" px={2}>
+            <XIcon />
+          </Button>
         </DrawerHeader>
         <DrawerBody px="16px">
           <VStack spacing={4}>
@@ -92,19 +102,20 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
                     {...register(`pollItems.${index}.name`, {
                       setValueAs: (value) => value.trim(),
                     })}
+                    size="md"
                   />
                   {showRemovePollItemButton && (
                     <Box
-                      ml="4px"
+                      ml={2}
                       as="button"
                       type="button"
-                      color="var(--gray-500)"
+                      color="var(--gray-600)"
                       px={2}
                       onClick={() => {
                         remove(index);
                       }}
                     >
-                      <i className="fa-regular fa-circle-minus fa-xl" />
+                      <i className="fa-regular fa-circle-minus fa-lg" />
                     </Box>
                   )}
                 </Flex>

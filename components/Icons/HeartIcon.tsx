@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { LIKE_HEART } from "../../constants/keys/localStorage";
-import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";
+import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
 import { useInteractionMutation } from "../../hooks/user/sub/interaction/mutations";
 import { isHeartCheckLocalStorage, pushArrToLocalStorage } from "../../utils/storageUtils";
 import { HeartIcon as Heart } from "./HeartIcons";
@@ -14,14 +14,14 @@ interface IHeartIcon {
 
 function HeartIcon({ toUid }: IHeartIcon) {
   const { data: session } = useSession();
-  const completeToast = useCompleteToast();
+  const toast = useToast();
   const errorToast = useErrorToast();
 
   const [isShow, setIsShow] = useState(true);
 
   const { mutate: sendHeart } = useInteractionMutation("like", "post", {
     onSuccess() {
-      completeToast("free", "전송 완료!");
+      toast("success", "전송 완료!");
       setIsShow(false);
     },
     onError: errorToast,

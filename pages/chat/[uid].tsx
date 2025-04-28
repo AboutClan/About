@@ -77,7 +77,7 @@ function Uid() {
           </MenuList>
         </Menu>
       </Header>
-      <Slide>
+      <Slide isNoPadding>
         <Flex
           height="calc(100dvh - 118px)"
           overflow="scroll"
@@ -97,7 +97,7 @@ function Uid() {
                             {getDateDiff(dayjs(chat.createdAt))}
                           </Box>
                           <Box
-                            bg="var(--color-mint)"
+                            bg="var(--c  lor-mint)"
                             color="white"
                             maxW="280px"
                             p="6px 12px"

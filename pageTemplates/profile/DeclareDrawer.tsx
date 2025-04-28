@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { DECLARE_LIST } from "../../constants/contentsText/requestContents";
-import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";
+import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
 import { DispatchString, DispatchType } from "../../types/hooks/reactTypes";
 import { IUser, IUserSummary } from "../../types/models/userTypes/userInfoTypes";
@@ -32,7 +32,7 @@ interface IDeclareContent {
 }
 
 function DeclareDrawer({ userData, declareModal, setDeclareModal }: IDeclareDrawer) {
-  const completeToast = useCompleteToast();
+  const toast = useToast();
   const errorToast = useErrorToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -54,7 +54,7 @@ function DeclareDrawer({ userData, declareModal, setDeclareModal }: IDeclareDraw
 
   const { mutate: sendDeclaration } = useUserRequestMutation({
     onSuccess() {
-      completeToast("success");
+      toast("success", "완료되었습니다.");
       onClose();
       setDeclareModal(null);
     },

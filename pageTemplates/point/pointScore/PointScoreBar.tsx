@@ -33,7 +33,7 @@ function PointScoreBar({ hasQuestion = true }: IPointScoreBar) {
       <Layout>
         <Grade>
           <Flex align="center">
-            <UserBadge score={userInfo?.score || 0} uid={userInfo?.uid} />
+            <UserBadge badgeIdx={userInfo?.badge.badgeIdx} />
             <Box
               fontSize="10px"
               fontWeight="semibold"

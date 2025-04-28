@@ -3,7 +3,7 @@ import { useParams } from "next/navigation";
 import { useQueryClient } from "react-query";
 
 import { GROUP_STUDY } from "../../constants/keys/queryKeys";
-import { useCompleteToast } from "../../hooks/custom/CustomToast";
+import { useToast } from "../../hooks/custom/CustomToast";
 import { useGroupWaitingStatusMutation } from "../../hooks/groupStudy/mutations";
 import { IModal } from "../../types/components/modalTypes";
 import { IFooterOptions, ModalLayout } from "../Modals";
@@ -11,12 +11,12 @@ import { IFooterOptions, ModalLayout } from "../Modals";
 interface InviteOuterModalProps extends IModal {}
 
 function InviteOuterModal({ setIsModal }: InviteOuterModalProps) {
-  const completeToast = useCompleteToast();
+  const toast = useToast();
   const { id } = useParams<{ id: string }>() || {};
 
   const { mutate: mutate2, isLoading } = useGroupWaitingStatusMutation(+id, {
     onSuccess() {
-      completeToast("free", "가입되었습니다.");
+      toast("success", "가입되었습니다.");
       queryClient.invalidateQueries([GROUP_STUDY]);
     },
   });

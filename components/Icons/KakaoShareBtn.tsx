@@ -89,7 +89,7 @@ function KakaoShareBtn({
           카카오톡 공유
         </Button>
       ) : !isBig ? (
-        <Box>
+        <Box color="gray.700">
           <i className="fa-light fa-share-nodes fa-lg" />
         </Box>
       ) : (

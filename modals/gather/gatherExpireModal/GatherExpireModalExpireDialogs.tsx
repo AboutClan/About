@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
 import styled from "styled-components";
 
-import { useCompleteToast, useErrorToast } from "../../../hooks/custom/CustomToast";
+import { useErrorToast, useToast } from "../../../hooks/custom/CustomToast";
 import { useGatherStatusMutation } from "../../../hooks/gather/mutations";
 import { DispatchBoolean } from "../../../types/hooks/reactTypes";
 import { GatherExpireModalDialogType } from "./GatherExpireModal";
@@ -23,7 +23,7 @@ interface IGatherExpireModalExpireDialog {
 }
 
 function GatherExpireModalExpireDialog({ modal, setIsComplete }: IGatherExpireModalExpireDialog) {
-  const completeToast = useCompleteToast();
+  const toast = useToast();
   const errorToast = useErrorToast();
 
   const router = useRouter();
@@ -34,7 +34,7 @@ function GatherExpireModalExpireDialog({ modal, setIsComplete }: IGatherExpireMo
   const { mutate: statusOpen } = useGatherStatusMutation(gatherId, {
     onSuccess() {
       setIsComplete(true);
-      completeToast("free", "모임이 개설되었어요!");
+      toast("success", "모임이 개설되었어요!");
     },
     onError: errorToast,
   });

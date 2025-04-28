@@ -5,19 +5,19 @@ import styled from "styled-components";
 
 import { CopyBtn } from "../../components/Icons/CopyIcon";
 import { PROMOTION_TEXT,PromotionComponent } from "../../constants/contentsText/Private";
-import { useCompleteToast, useErrorToast } from "../../hooks/custom/CustomToast";
+import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
 import { IModal } from "../../types/components/modalTypes";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 function RequestPromotionRewardModal({ setIsModal }: IModal) {
-  const completeToast = useCompleteToast();
+  const toast = useToast();
   const errorToast = useErrorToast();
 
   const [isFirst, setIsFirst] = useState(true);
 
   const { mutate: sendPromotionReward } = useUserRequestMutation({
-    onSuccess: () => completeToast("free", "이벤트 응모 및 포인트 지급 완료!"),
+    onSuccess: () => toast("success", "이벤트 응모 및 포인트 지급 완료!"),
     onError: errorToast,
   });
 

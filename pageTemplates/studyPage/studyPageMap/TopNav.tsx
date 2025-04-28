@@ -65,7 +65,7 @@ function TopNav({ handleLocationRefetch, isMapExpansion, isCafePlace, onClose }:
 
 export default TopNav;
 
-function XIcon() {
+export function XIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

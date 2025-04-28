@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 import { RABBIT_RUN } from "../../../constants/keys/localStorage";
 import { useUserRequestQuery } from "../../../hooks/admin/quries";
-import { useCompleteToast, useErrorToast, useFailToast } from "../../../hooks/custom/CustomToast";
+import { useErrorToast, useFailToast, useToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { useUserRequestMutation } from "../../../hooks/user/sub/request/mutations";
 import { IModal } from "../../../types/components/modalTypes";
@@ -21,14 +21,14 @@ function RegularGatherModal({ setIsModal, setIsRabbitRun }: IRegularGatherModal)
   const { data: session } = useSession();
   const isGuest = session?.user.name === "guest";
   const failToast = useFailToast();
-  const completeToast = useCompleteToast();
+  const toast = useToast();
   const errorToast = useErrorToast();
   const { data: userInfo } = useUserInfoQuery({ enabled: isGuest === false });
   const { data: requestData, isLoading } = useUserRequestQuery("조모임");
 
   const { mutate } = useUserRequestMutation({
     onSuccess() {
-      completeToast("apply");
+      toast("success", "apply");
       setIsModal(false);
     },
     onError: errorToast,

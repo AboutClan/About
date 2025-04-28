@@ -8,13 +8,13 @@ import { MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoadi
 import InviteUserGroups from "../../../components/molecules/groups/InviteUserGroups";
 import { useAllUserDataQuery } from "../../../hooks/admin/quries";
 import { useResetGroupQuery } from "../../../hooks/custom/CustomHooks";
-import { useCompleteToast } from "../../../hooks/custom/CustomToast";
+import { useToast } from "../../../hooks/custom/CustomToast";
 import { useGroupInviteMutation } from "../../../hooks/groupStudy/mutations";
 import { IUser, IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { searchName } from "../../../utils/stringUtils";
 
 export default function GroupAdminInvitation() {
-  const completeToast = useCompleteToast();
+  const toast = useToast();
   const { id } = useParams<{ id: string }>() || {};
   const [filterUsers, setFilterUsers] = useState<IUserSummary[]>();
   const [inviteUser, setInviteUser] = useState<IUserSummary>(null);
@@ -26,7 +26,7 @@ export default function GroupAdminInvitation() {
 
   const { mutate: mutate2 } = useGroupInviteMutation(id, {
     onSuccess() {
-      completeToast("free", "가입되었습니다.");
+      toast("success", "가입되었습니다.");
       resetGroup();
       refetch();
     },
