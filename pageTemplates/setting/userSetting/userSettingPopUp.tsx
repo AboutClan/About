@@ -1,12 +1,16 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
-import { GATHER_JOIN_MEMBERS, STUDY_ATTEND_MEMBERS } from "../../../constants/keys/localStorage";
+import {
+  ATTEND_POP_UP,
+  GATHER_JOIN_MEMBERS,
+  STUDY_ATTEND_MEMBERS,
+} from "../../../constants/keys/localStorage";
 import { STUDY_ATTEND_RECORD } from "../../../constants/keys/queryKeys";
 import { useGatherQuery } from "../../../hooks/gather/queries";
 import PointSystemsModal from "../../../modals/aboutHeader/pointSystemsModal/PointSystemsModal";
@@ -18,6 +22,7 @@ import StudyChallengeModal from "../../../modals/pop-up/StudyChallengeModal";
 import StudyPreferencePopUp from "../../../modals/pop-up/StudyPreferencePopUp";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
+import { checkAndSetLocalStorage } from "../../../utils/storageUtils";
 
 export type UserPopUp =
   | "lastWeekAttend"
@@ -136,10 +141,10 @@ export default function UserSettingPopUp() {
     //   setModalTypes((old) => [...old, "alphabet"]);
     //   return;
     // }
-    // if (!checkAndSetLocalStorage(ATTEND_POP_UP, 7)) {
-    //   setModalTypes((old) => [...old, "lastWeekAttend"]);
-    //   return;
-    // }
+    if (!checkAndSetLocalStorage(ATTEND_POP_UP, 7)) {
+      setModalTypes((old) => [...old, "lastWeekAttend"]);
+      return;
+    }
     // if (!checkAndSetLocalStorage(ENTHUSIASTIC_POP_UP, 27)) {
     //   setModalTypes((old) => [...old, "enthusiastic"]);
     //   if (popUpCnt++ === 2) return;

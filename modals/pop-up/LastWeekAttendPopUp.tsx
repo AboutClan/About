@@ -98,7 +98,7 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
             {userInfo?.name} ({USER_ROLE?.[userInfo?.role]})
           </Box>
           <Box ml="auto">
-            <UserBadge badgeIdx={userInfo?.badge.badgeIdx} />
+            <UserBadge badgeIdx={userInfo?.badge?.badgeIdx} />
           </Box>
         </Flex>
         <Box my={3} h="1px" bg="gray.100" />

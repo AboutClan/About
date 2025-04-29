@@ -1,11 +1,7 @@
 import * as CryptoJS from "crypto-js";
 
 import { enToKrMapping, krToEnMapping } from "../../constants/location";
-import {
-  BADGE_SCORE_MAPPINGS,
-  USER_SCORE_BADGE_ARR,
-} from "../../constants/serviceConstants/badgeConstants";
-
+import { USER_SCORE_BADGE_ARR } from "../../constants/serviceConstants/badgeConstants";
 import { StudyPlaceProps } from "../../types/models/studyTypes/baseTypes";
 import { UserBadge, UserRole } from "../../types/models/userTypes/userInfoTypes";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
@@ -35,19 +31,6 @@ export const decodeByAES256 = (encodedTel: string) => {
   const bytes = CryptoJS.AES.decrypt(encodedTel, key);
   const originalText = bytes.toString(CryptoJS.enc.Utf8);
   return originalText;
-};
-
-export const getUserBadge = (score: number, uid: string): UserBadge => {
-  let badge: UserBadge = "아메리카노";
-
-  for (const [badgeName, minScore] of Object.entries(BADGE_SCORE_MAPPINGS)) {
-    if (score < minScore) {
-      return badge;
-    }
-    badge = badgeName as UserBadge;
-  }
-
-  return badge;
 };
 
 export const getNextBadge = (currentBadge: UserBadge): UserBadge => {

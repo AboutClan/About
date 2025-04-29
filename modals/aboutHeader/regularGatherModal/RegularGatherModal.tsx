@@ -28,7 +28,7 @@ function RegularGatherModal({ setIsModal, setIsRabbitRun }: IRegularGatherModal)
 
   const { mutate } = useUserRequestMutation({
     onSuccess() {
-      toast("success", "apply");
+      toast("success", "신청 완료");
       setIsModal(false);
     },
     onError: errorToast,

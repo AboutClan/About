@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
@@ -64,7 +64,7 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
                 <Box lineHeight="20px" mr={1} fontWeight="semibold" fontSize="13px">
                   {user?.name || "익명"}
                 </Box>
-                <UserBadge badgeIdx={user?.badge.badgeIdx} />
+                <UserBadge badgeIdx={user?.badge?.badgeIdx} />
               </Flex>
               <Flex lineHeight="18px" alignItems="center" color="gray.500" fontSize="12px">
                 <CommentText>{user?.comment}</CommentText>
@@ -170,7 +170,7 @@ export function ProfileCamera({ setIsModal }: ProfileCameraProps) {
   return (
     <>
       <BottomDrawerLg height={372 + iPhoneNotchSize()} setIsModal={setIsModal}>
-        <Flex w="full" direction="column" fontSize="14px" color="gray.600">
+        <Flex h="full" w="full" direction="column" fontSize="14px" color="gray.600">
           <Button
             lineHeight="20px"
             mx={10}
@@ -238,8 +238,14 @@ export function ProfileCamera({ setIsModal }: ProfileCameraProps) {
           >
             카카오 프로필 변경 / 업데이트
           </Button>
-          <Box h="64px" w="full" py={2}>
-            <Button w="full" colorScheme="mint" size="lg" onClick={() => setIsModal(false)}>
+          <Box mt="auto" w="full">
+            <Button
+              mt="auto"
+              w="full"
+              colorScheme="mint"
+              size="lg"
+              onClick={() => setIsModal(false)}
+            >
               닫 기
             </Button>
           </Box>

@@ -33,7 +33,7 @@ function RequestRestModal({ setIsModal }: IModal) {
   const { mutate: setRest } = useUserInfoFieldMutation("rest", {
     onSuccess() {
       setIsModal(false);
-      toast("success", "apply");
+      toast("success", "신청 완료");
     },
     onError(err) {
       console.error(err);

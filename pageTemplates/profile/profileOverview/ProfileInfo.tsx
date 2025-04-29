@@ -120,7 +120,7 @@ function ProfileInfo({ user }: IProfileInfo) {
                 {user?.name || session?.user.name}
               </Box>
               <Box>
-                <UserBadge badgeIdx={user?.badge.badgeIdx} />
+                <UserBadge badgeIdx={user?.badge?.badgeIdx} />
               </Box>
             </Flex>
             <Box fontSize="12px" color="gray.500">

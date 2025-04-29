@@ -48,7 +48,7 @@ export interface UserSimpleInfoProps {
   comment?: string;
   badge: {
     badgeIdx: number;
-    badgeList: string[];
+    badgeList?: string[];
   };
 }
 
@@ -70,7 +70,7 @@ export interface IUserSummary {
   score: number;
   badge: {
     badgeIdx: number;
-    badgeList: string[];
+    badgeList?: string[];
   };
   uid: string;
   _id: string;

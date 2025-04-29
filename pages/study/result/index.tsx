@@ -49,7 +49,6 @@ function StudyResultPage() {
   const myStudyInfo = findMyStudyInfo(myStudy, userInfo?._id);
   const place = myStudy?.place;
 
-  
   const alphabet =
     collectionInfo?.stamps === 0
       ? collectionInfo?.collects?.[collectionInfo?.collects?.length - 1]
@@ -108,7 +107,7 @@ function StudyResultPage() {
           })
           .findIndex((who) => who.user._id === userInfo?._id)
       : null;
-
+  console.log(2, myStudyInfo);
   return (
     <>
       {myStudy && <StudyHeader placeInfo={myStudy?.place} />}

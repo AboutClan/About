@@ -35,7 +35,7 @@ function FeedLayout({
   id,
   refetch,
 }: FeedLayoutProps) {
-  console.log(likeUsers, likeCnt, comments, id, refetch);
+
   return (
     <Flex direction="column" border="var(--border)" pb={2}>
       <FeedHeader writer={ABOUT_USER_SUMMARY} date={date} />

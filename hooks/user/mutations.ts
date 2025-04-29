@@ -1,6 +1,7 @@
 import axios, { AxiosError } from "axios";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 
+import { USER_INFO } from "../../constants/keys/queryKeys";
 import { SERVER_URI } from "../../constants/system";
 import { requestServer } from "../../libs/methodHelpers";
 import { IApplyRest } from "../../modals/userRequest/RequestRestModal/RequestRestModal";
@@ -102,16 +103,26 @@ export const useUserInfoFieldMutation = <
 >(
   field: T,
   options?: MutationOptions<UserInfoFieldParam<T>>,
-) =>
-  useMutation<void, AxiosError, UserInfoFieldParam<T>>(
+) => {
+  const queryClient = useQueryClient();
+  return useMutation<void, AxiosError, UserInfoFieldParam<T>>(
     (param) =>
       requestServer<UserInfoFieldParam<T>>({
         method: "patch",
         url: `user/${field}`,
         body: param,
       }),
-    options,
+    {
+      ...options,
+      onSuccess(data, variables, context) {
+        queryClient.invalidateQueries([USER_INFO]);
+        if (options?.onSuccess) {
+          options.onSuccess(data, variables, context);
+        }
+      },
+    },
   );
+};
 
 export const usePointSystemMutation = (
   field: "point" | "score" | "deposit",

@@ -1,5 +1,4 @@
 import Slide from "../../components/layouts/PageSlide";
-import EventBadge from "../../pageTemplates/event/EventBadge";
 import EventHeader from "../../pageTemplates/event/EventHeader";
 import EventMission from "../../pageTemplates/event/EventMission";
 import EventPoint from "../../pageTemplates/event/EventPoint";
@@ -14,7 +13,7 @@ export default function Index() {
         <EventMission />
         <EventStore />
         <EventPoint />
-        <EventBadge />
+
         <HomeWinRecordSection />
       </Slide>
     </>

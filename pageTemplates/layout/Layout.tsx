@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
 
 import axios from "axios";
-import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
+import { signOut, useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -75,6 +75,7 @@ function Layout({ children }: ILayout) {
     if (status === "loading" || session === undefined) return;
 
     if (!session?.user) {
+      signOut({ callbackUrl: "/login" });
       toast(
         "warning",
         "계정 정보를 불러올 수 없습니다. 지속되는 경우 마이페이지에서 다시 로그인 해주세요!",

@@ -42,7 +42,7 @@ function SecretSquareDetailPage() {
     { squareId },
     { staleTime: Infinity, enabled: !!squareId },
   );
-  console.log(likeStatus);
+
   const { mutate: mutatePoll, isLoading: isPollLoading } = usePatchPollMutation({ squareId });
   const { mutate: deleteSquareMutate } = useDeleteSecretSquareMutation({ squareId });
   const {
@@ -102,7 +102,6 @@ function SecretSquareDetailPage() {
   const handleDeleteSquare = () => {
     deleteSquareMutate();
   };
-  console.log(squareDetail, session);
 
   const menuArr: MenuProps[] = [
     ...(squareDetail?.author === session?.user.id

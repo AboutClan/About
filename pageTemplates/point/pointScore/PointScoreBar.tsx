@@ -8,10 +8,8 @@ import {
   BADGE_COLOR_MAPPINGS,
   BADGE_SCORE_MAPPINGS,
 } from "../../../constants/serviceConstants/badgeConstants";
-import { SCHEME_TO_COLOR } from "../../../constants/styles";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import BadgeInfoModal from "../../../modals/store/badgeInfoModal/BadgeInfoModal";
-import { getUserBadge } from "../../../utils/convertUtils/convertDatas";
 
 interface IPointScoreBar {
   hasQuestion?: boolean;
@@ -21,31 +19,40 @@ function PointScoreBar({ hasQuestion = true }: IPointScoreBar) {
   const { data: userInfo } = useUserInfoQuery();
 
   const [isBadgeModal, setIsBadgeModal] = useState(false);
-  const myScoreBadge = getUserBadge(userInfo?.score, userInfo?.uid);
-  const nextBadgeObj = (userInfo !== undefined &&
-    Object.entries(BADGE_SCORE_MAPPINGS).find(([, value]) => value > userInfo?.score)) || [
+
+  let badgeInfo = ["아메리카노", 0];
+
+  Object.entries(BADGE_SCORE_MAPPINGS)?.forEach((items) => {
+    if (items?.[1] > userInfo?.score) {
+      badgeInfo = items;
+    }
+  });
+
+  const currentBadgeObj = (userInfo !== undefined &&
+    Object.entries(BADGE_SCORE_MAPPINGS).findIndex(([, value]) => value > userInfo?.score)) || [
     "에스프레소",
     1000,
   ];
+  const nextBadgeObj = (userInfo !== undefined &&
+    Object.entries(BADGE_SCORE_MAPPINGS).findIndex(([, value]) => value > userInfo?.score)) || [
+    "에스프레소",
+    1000,
+  ];
+  const nextBadge = Object.entries(BADGE_SCORE_MAPPINGS)[nextBadgeObj as number];
 
   return (
     <>
       <Layout>
         <Grade>
           <Flex align="center">
-            <UserBadge badgeIdx={userInfo?.badge.badgeIdx} />
+            <UserBadge badgeIdx={userInfo?.badge?.badgeIdx} />
             <Box
               fontSize="10px"
               fontWeight="semibold"
               lineHeight="12px"
               ml={1}
               py={1}
-              color={
-                SCHEME_TO_COLOR[BADGE_COLOR_MAPPINGS[myScoreBadge]] ||
-                (BADGE_COLOR_MAPPINGS[myScoreBadge] !== "gray"
-                  ? BADGE_COLOR_MAPPINGS[myScoreBadge]
-                  : "var(--gray-600)")
-              }
+              color={BADGE_COLOR_MAPPINGS[badgeInfo[0]]}
             >
               {userInfo?.score}점
             </Box>
@@ -62,12 +69,12 @@ function PointScoreBar({ hasQuestion = true }: IPointScoreBar) {
                 mt="1px"
                 lineHeight="12px"
                 fontWeight="semibold"
-                color={BADGE_COLOR_MAPPINGS[nextBadgeObj[0]]}
+                color={BADGE_COLOR_MAPPINGS[nextBadge[0]]}
               >
-                {nextBadgeObj[1]}점
+                {nextBadge[1]}점
               </Box>
               <Box ml={1} h="20px">
-                <UserBadge score={nextBadgeObj[1]} uid="" />
+                <UserBadge badgeIdx={nextBadgeObj as number} />
               </Box>
             </div>
           )}

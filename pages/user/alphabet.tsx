@@ -1,15 +1,15 @@
-import { Badge, Button } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { AxiosError } from "axios";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import Avatar from "../../components/atoms/Avatar";
+import UserBadge from "../../components/atoms/badges/UserBadge";
 import { MainLoading } from "../../components/atoms/loaders/MainLoading";
 import { AlphabetIcon } from "../../components/Icons/AlphabetIcon";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
-import { BADGE_COLOR_MAPPINGS } from "../../constants/serviceConstants/badgeConstants";
 import { useFailToast, useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { useAlphabetCompletedMutation } from "../../hooks/user/sub/collection/mutations";
@@ -20,7 +20,6 @@ import {
 import AlphabetChangeModal from "../../modals/user/collection/AlphabetChangeModal";
 import { Alphabet, ICollectionAlphabet } from "../../types/models/collections";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
-import { getUserBadge } from "../../utils/convertUtils/convertDatas";
 
 const ALPHABET_COLLECTION: Alphabet[] = ["A", "B", "O", "U", "T"];
 
@@ -99,7 +98,7 @@ function CollectionAlphabet() {
             {members?.map((who) => {
               if (!who?.user) return null;
               const user = who.user;
-              const badge = getUserBadge(user.score, user.uid);
+
               const alphabets = who.collects;
               const alphabetsCnt = {
                 A: 0,
@@ -119,13 +118,7 @@ function CollectionAlphabet() {
                   <Info>
                     <Name>
                       <span>{user.name}</span>
-                      <Badge
-                        fontSize={10}
-                        colorScheme={BADGE_COLOR_MAPPINGS[badge]}
-                        ml="var(--gap-2)"
-                      >
-                        {badge}
-                      </Badge>
+                      <UserBadge badgeIdx={user?.badge?.badgeIdx} />
                     </Name>
                     <UserAlphabets>
                       <div>

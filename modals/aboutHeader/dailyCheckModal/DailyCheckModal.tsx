@@ -8,6 +8,7 @@ import { useSetRecoilState } from "recoil";
 import { AVATAR_BG_IMAGES } from "../../../assets/images/avatarBgImages";
 import { AVATAR_IMAGES } from "../../../assets/images/avatarImages";
 import Avatar from "../../../components/atoms/Avatar";
+import UserBadge from "../../../components/atoms/badges/UserBadge";
 import { CheckCircleBigIcon } from "../../../components/Icons/CircleIcons";
 import { DAILY_CHECK_POP_UP } from "../../../constants/keys/localStorage";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
@@ -16,7 +17,6 @@ import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { useDailyCheckMutation } from "../../../hooks/user/sub/dailyCheck/mutation";
 import { transferShowDailyCheckState } from "../../../recoils/transferRecoils";
 import { IModal } from "../../../types/components/modalTypes";
-import { getUserBadge } from "../../../utils/convertUtils/convertDatas";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import { getRandomIdx } from "../../../utils/mathUtils";
 import { IFooterOptions, ModalLayout } from "../../Modals";
@@ -74,7 +74,6 @@ function DailyCheckModal({ setIsModal }: IModal) {
     },
     isFull: true,
   };
-  const badge = userInfo && getUserBadge(userInfo?.score, userInfo?.uid);
 
   return (
     <>
@@ -102,7 +101,11 @@ function DailyCheckModal({ setIsModal }: IModal) {
                     color="var(--gray-600)"
                     p="8px 12px"
                   >
-                    {userInfo?.name}님의 현재 등급은 <b>{badge}</b>입니다.
+                    {userInfo?.name}님의 현재 등급은{" "}
+                    <b>
+                      <UserBadge badgeIdx={userInfo?.badge?.badgeIdx} />
+                    </b>
+                    입니다.
                   </Box>
                 </Box>
               </Flex>

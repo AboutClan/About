@@ -9,6 +9,7 @@ interface IUserBadge {
 }
 
 export default function UserBadge({ badgeIdx }: IUserBadge) {
+  const badge = badgeIdx ? USER_BADGE_ARR[badgeIdx] : "아메리카노";
   return (
     <Badge
       h="20px"
@@ -19,9 +20,9 @@ export default function UserBadge({ badgeIdx }: IUserBadge) {
       fontWeight="semibold"
       fontSize="9px"
       borderRadius="10px"
-      colorScheme={BADGE_COLOR_MAPPINGS[USER_BADGE_ARR[badgeIdx]]}
+      colorScheme={BADGE_COLOR_MAPPINGS[badge]}
     >
-      {USER_BADGE_ARR[badgeIdx]}
+      {badge}
     </Badge>
   );
 }

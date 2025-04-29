@@ -1,5 +1,4 @@
 import { Badge, Box, Button, Grid } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 import {
@@ -7,35 +6,27 @@ import {
   BADGE_SCORE_MAPPINGS,
   USER_BADGE_ARR,
 } from "../../../constants/serviceConstants/badgeConstants";
-import { useErrorToast, useToast } from "../../../hooks/custom/CustomToast";
+import { useTypeToast } from "../../../hooks/custom/CustomToast";
+import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
-import { useUserRequestMutation } from "../../../hooks/user/sub/request/mutations";
 import { IFooterOptions, ModalLayout } from "../../Modals";
 
 function RequestChagneProfileImageModalBadge({ setIsModal }) {
-  const { data: session } = useSession();
-  const toast = useToast();
-  const errorToast = useErrorToast();
-
+  const typeToast = useTypeToast();
   const [selectBadge, setSelectBadge] = useState<(typeof USER_BADGE_ARR)[number]>("아메리카노");
 
   const { data: userInfo } = useUserInfoQuery();
-  console.log(userInfo);
 
-  const { mutate: sendRequest } = useUserRequestMutation({
+  const { mutate: changeBadge } = useUserInfoFieldMutation("badge", {
     onSuccess() {
-      toast("success", "apply");
+      typeToast("change");
+      setIsModal(false);
     },
-    onError: errorToast,
   });
 
   const onApply = () => {
-    sendRequest({
-      category: "배지",
-      title: selectBadge ? `${selectBadge}로 변경 신청` : "배지 해제 신청",
-      content: session?.user?.uid as string,
-    });
-    setIsModal(false);
+    const findIdx = USER_BADGE_ARR.findIndex((badge) => badge === selectBadge);
+    changeBadge({ badgeIdx: findIdx });
   };
 
   const footerOptions: IFooterOptions = {
@@ -47,7 +38,7 @@ function RequestChagneProfileImageModalBadge({ setIsModal }) {
 
   const getBadgesByScore = (score: number): string[] => {
     return Object.entries(BADGE_SCORE_MAPPINGS)
-      .filter(([_, badgeScore]) => badgeScore <= score)
+      .filter(([, badgeScore]) => badgeScore <= score)
       .map(([badgeName]) => badgeName);
   };
 
@@ -55,7 +46,7 @@ function RequestChagneProfileImageModalBadge({ setIsModal }) {
 
   return (
     <ModalLayout footerOptions={footerOptions} title="배지 변경" setIsModal={setIsModal}>
-      <Box as="p" mb={1} lineHeight="18px" fontSize="12px" color="gray.700"> 
+      <Box as="p" mb={1} lineHeight="18px" fontSize="12px" color="gray.700">
         동아리 점수에 따라 새로운 배지가 오픈됩니다. 특정 이벤트에서만 얻을 수 있는{" "}
         <b>유니크 배지</b>도 존재합니다.
       </Box>
