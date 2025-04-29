@@ -28,11 +28,6 @@ function PointScoreBar({ hasQuestion = true }: IPointScoreBar) {
     }
   });
 
-  const currentBadgeObj = (userInfo !== undefined &&
-    Object.entries(BADGE_SCORE_MAPPINGS).findIndex(([, value]) => value > userInfo?.score)) || [
-    "에스프레소",
-    1000,
-  ];
   const nextBadgeObj = (userInfo !== undefined &&
     Object.entries(BADGE_SCORE_MAPPINGS).findIndex(([, value]) => value > userInfo?.score)) || [
     "에스프레소",
