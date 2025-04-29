@@ -85,6 +85,8 @@ type UserInfoFieldParam<T> = T extends "avatar"
   ? { badgeIdx: number }
   : T extends "isLocationSharingDenided"
   ? { isLocationSharingDenided: boolean }
+  : T extends "badgeList"
+  ? { badgeName: string }
   : null;
 
 export const useUserInfoFieldMutation = <
@@ -99,7 +101,8 @@ export const useUserInfoFieldMutation = <
     | "locationDetail"
     | "monthStudyTarget"
     | "badge"
-    | "isLocationSharingDenided",
+    | "isLocationSharingDenided"
+    | "badgeList",
 >(
   field: T,
   options?: MutationOptions<UserInfoFieldParam<T>>,

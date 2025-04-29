@@ -1,6 +1,6 @@
 import axios from "axios";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import Header from "../../components/layouts/Header";
@@ -46,6 +46,7 @@ function Admin() {
                 <BlockName>유저 응답</BlockName>
                 <NavBlock>
                   <button onClick={() => onClick(`register`)}>가입신청 확인</button>
+                  <button onClick={() => onClick(`badge`, false)}>유저에게 배지 부여</button>
                   <button onClick={() => onClick(`locationActive`)}>지역 활동 정보 확인</button>
                   <button onClick={() => onClick(`studyAddition`)}>
                     신규 스터디 장소 추가 요청
