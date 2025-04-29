@@ -1,4 +1,4 @@
-import { IUser } from "./userTypes/userInfoTypes";
+import { UserSimpleInfoProps } from "./userTypes/userInfoTypes";
 
 export interface SendChatProps {
   toUid: string;
@@ -13,5 +13,5 @@ export interface ChatProps {
 
 export interface MyChatsProps {
   content: ChatProps;
-  user: IUser;
+  user: UserSimpleInfoProps;
 }

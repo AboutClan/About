@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
-import { useMyChatsQuery, useRecentChatQuery } from "../../hooks/chat/queries";
+import { useMyChatsQuery } from "../../hooks/chat/queries";
 import { useNoticeActiveLogQuery } from "../../hooks/user/sub/interaction/queries";
 import NoticeActive from "../../pageTemplates/notice/NoticeActive";
 import NoticeChat from "../../pageTemplates/notice/NoticeChat";
@@ -27,7 +27,7 @@ function Notice() {
   });
   const { data: chats } = useMyChatsQuery({ enabled: isGuest === false });
   console.log(24, chats);
-  const { data: recentChat } = useRecentChatQuery({ enabled: isGuest === false });
+  // const { data: recentChat } = useRecentChatQuery({ enabled: isGuest === false });
 
   useEffect(() => {
     if (!type) router.replace(`/notice?type=notice`);
@@ -42,7 +42,8 @@ function Notice() {
           noticeType={noticeType}
           setNoticeType={setNoticeType}
           activeAlertCnt={activeLogs?.length}
-          recentChatId={recentChat}
+          recentChatId={null}
+          // recentChatId={recentChat?.contents}
         />
       </Slide>
       <Slide isNoPadding>

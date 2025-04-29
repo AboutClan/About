@@ -34,11 +34,11 @@ export const useMyChatsQuery = (options?: QueryOptions<MyChatsProps[]>) =>
     options,
   );
 
-export const useRecentChatQuery = (options?: QueryOptions<string>) =>
-  useQuery<string, AxiosError>(
+export const useRecentChatQuery = (options?: QueryOptions<{ contents: ChatProps[] }>) =>
+  useQuery<{ contents: ChatProps[] }, AxiosError>(
     ["recentChat"],
     async () => {
-      const res = await axios.get<string>(`${SERVER_URI}/chat/recent`);
+      const res = await axios.get<{ contents: ChatProps[] }>(`${SERVER_URI}/chat/recent`);
       return res.data;
     },
     options,

@@ -97,7 +97,7 @@ function Uid() {
                             {getDateDiff(dayjs(chat.createdAt))}
                           </Box>
                           <Box
-                            bg="var(--c  lor-mint)"
+                            bg="var(--color-mint)"
                             color="white"
                             maxW="280px"
                             p="6px 12px"

@@ -18,7 +18,7 @@ function NoticeNav({ noticeType, setNoticeType, activeAlertCnt, recentChatId }: 
   const router = useRouter();
   const [isActiveAlert, setIsActiveAlert] = useState(false);
   const [isChatAlert, setIsChatAlert] = useState(false);
-
+  console.log(43, recentChatId, isChatAlert);
   useEffect(() => {
     if (activeAlertCnt === undefined) return;
     if (+localStorage.getItem(NOTICE_ACTIVE_CNT) < activeAlertCnt) setIsActiveAlert(true);
@@ -26,6 +26,7 @@ function NoticeNav({ noticeType, setNoticeType, activeAlertCnt, recentChatId }: 
       localStorage.getItem(RECENT_CHAT_ID) &&
       localStorage.getItem(RECENT_CHAT_ID) !== recentChatId
     ) {
+      console.log(123, localStorage.getItem(RECENT_CHAT_ID));
       setIsChatAlert(true);
     }
     if (noticeType === "active") {
@@ -60,11 +61,11 @@ function NoticeNav({ noticeType, setNoticeType, activeAlertCnt, recentChatId }: 
       </Button>
       <Button isSelected={noticeType === "chat"} onClick={() => handleNavigate("chat")}>
         쪽지 알림
-        {isChatAlert && (
+        {/* {isChatAlert && (
           <IconWrapper>
             <NewAlertIcon size="sm" />
           </IconWrapper>
-        )}
+        )} */}
       </Button>
     </Layout>
   );
