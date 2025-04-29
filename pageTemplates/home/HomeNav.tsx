@@ -1,8 +1,10 @@
 import { Box, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useToast } from "../../hooks/custom/CustomToast";
 
 function HomeNav() {
+  const toast = useToast();
   return (
     <Flex mb={3}>
       {HOME_RECOMMENDATION_ICON_ARR.map((item, idx) => (
@@ -10,6 +12,13 @@ function HomeNav() {
           href={item.url}
           key={item.title}
           style={{ flex: 1, marginLeft: idx === 0 ? 0 : "8px" }}
+          onClick={(e) => {
+            if (item.title === "커뮤니티") {
+              e.preventDefault();
+              e.stopPropagation();
+              toast("info", "5월 초 오픈 예정");
+            }
+          }}
         >
           <Flex justify="space-between" direction="column" align="center">
             <Flex
