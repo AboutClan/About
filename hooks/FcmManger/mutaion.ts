@@ -11,7 +11,6 @@ import { requestNotificationPermission } from "./utils";
 export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
   useEffect(() => {
     const initializePushService = async () => {
-   
       if (isWebView()) {
         console.log("isWebView");
         await initializeAppPushService(uid);
