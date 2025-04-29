@@ -39,7 +39,12 @@ function StudyInviteModal({ setIsModal, place }: IStudyInviteModal) {
   };
 
   useEffect(() => {
-    if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
+    if (
+      typeof window !== "undefined" &&
+      window.Kakao &&
+      !window.Kakao.isInitialized() &&
+      !isWebView()
+    ) {
       window.Kakao.init(kakaoAppKey);
     }
     setIsRenderingCheck(true);
@@ -48,7 +53,7 @@ function StudyInviteModal({ setIsModal, place }: IStudyInviteModal) {
   useEffect(() => {
     if (!isRenderingCheck) return;
 
-    if (window.Kakao) {
+    if (window.Kakao && !isWebView()) {
       const options = {
         container: "#kakao-share-button-invite",
         objectType: "location",

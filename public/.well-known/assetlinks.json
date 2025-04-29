@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.about.studyaboutclubapp",
+      "sha256_cert_fingerprints": [
+        "EB:33:79:1A:13:34:33:00:57:88:67:93:09:D3:B9:EC:F6:E9:9C:A0:6E:64:6F:3A:16:2C:3F:1F:1F:BD:72:29"
+      ]
+    }
+  }
+]

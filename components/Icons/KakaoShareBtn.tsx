@@ -1,9 +1,11 @@
 import { Box, Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import styled from "styled-components";
 
+import { isWebView } from "../../utils/appEnvUtils";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
+import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
 
 const kakaoAppKey = process.env.NEXT_PUBLIC_KAKAO_JS;
 
@@ -34,14 +36,27 @@ function KakaoShareBtn({
   date,
   extraCnt,
 }: IKakaoShareBtn) {
+  const handleShareOnApp = useCallback(() => {
+    if (isWebView()) {
+      nativeMethodUtils.share(url);
+    }
+  }, [url]);
+
   useEffect(() => {
-    if (typeof window !== "undefined" && window.Kakao && !window.Kakao.isInitialized()) {
+    if (
+      typeof window !== "undefined" &&
+      window.Kakao &&
+      !window.Kakao.isInitialized() &&
+      !isWebView()
+    ) {
       window.Kakao.init(kakaoAppKey);
     }
   }, []);
 
   useEffect(() => {
-    if (!window?.Kakao) return;
+    if (isWebView() || !window.Kakao) {
+      return;
+    }
 
     const formattedDate = date ? ` (${dayjsToFormat(dayjs(date), "M월 D일")})` : "";
     const buttonTitle = extraCnt && extraCnt < 4 ? `${extraCnt}자리 남음!` : "모임 확인하기";
@@ -73,7 +88,7 @@ function KakaoShareBtn({
   }, [img, url, subtitle, title, date, extraCnt]);
 
   return (
-    <Layout id="kakao-share-button" isFull={isFull} temp={temp}>
+    <Layout id="kakao-share-button" isFull={isFull} temp={temp} onClick={handleShareOnApp}>
       {variant === "unstyled" ? (
         <Box w="full" textAlign="start">
           카카오톡으로 공유하기
