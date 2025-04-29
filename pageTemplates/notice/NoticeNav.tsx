@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { NewAlertIcon } from "../../components/Icons/AlertIcon";
-import { NOTICE_ACTIVE_CNT, RECENT_CHAT_ID } from "../../constants/keys/localStorage";
+import { NOTICE_ACTIVE_CNT, RECENT_CHAT } from "../../constants/keys/localStorage";
 import { NoticeType } from "../../pages/notice";
 import { DispatchType } from "../../types/hooks/reactTypes";
 
@@ -11,30 +11,27 @@ interface INoticeNav {
   noticeType: NoticeType;
   setNoticeType: DispatchType<NoticeType>;
   activeAlertCnt: number;
-  recentChatId: string;
+  recentChat: string;
 }
 
-function NoticeNav({ noticeType, setNoticeType, activeAlertCnt, recentChatId }: INoticeNav) {
+function NoticeNav({ noticeType, setNoticeType, activeAlertCnt, recentChat }: INoticeNav) {
   const router = useRouter();
   const [isActiveAlert, setIsActiveAlert] = useState(false);
   const [isChatAlert, setIsChatAlert] = useState(false);
-  console.log(43, recentChatId, isChatAlert);
+  console.log(localStorage.getItem(RECENT_CHAT));
   useEffect(() => {
     if (activeAlertCnt === undefined) return;
     if (+localStorage.getItem(NOTICE_ACTIVE_CNT) < activeAlertCnt) setIsActiveAlert(true);
-    if (
-      localStorage.getItem(RECENT_CHAT_ID) &&
-      localStorage.getItem(RECENT_CHAT_ID) !== recentChatId
-    ) {
-      console.log(123, localStorage.getItem(RECENT_CHAT_ID));
+    if (localStorage.getItem(RECENT_CHAT) !== recentChat) {
       setIsChatAlert(true);
+      console.log(32);
     }
     if (noticeType === "active") {
       localStorage.setItem(NOTICE_ACTIVE_CNT, `${activeAlertCnt}`);
       setIsActiveAlert(false);
     }
     if (noticeType === "chat") {
-      localStorage.setItem(RECENT_CHAT_ID, recentChatId);
+      localStorage.setItem(RECENT_CHAT, recentChat);
       setIsChatAlert(false);
     }
 
@@ -61,11 +58,11 @@ function NoticeNav({ noticeType, setNoticeType, activeAlertCnt, recentChatId }: 
       </Button>
       <Button isSelected={noticeType === "chat"} onClick={() => handleNavigate("chat")}>
         쪽지 알림
-        {/* {isChatAlert && (
+        {isChatAlert && (
           <IconWrapper>
             <NewAlertIcon size="sm" />
           </IconWrapper>
-        )} */}
+        )}
       </Button>
     </Layout>
   );

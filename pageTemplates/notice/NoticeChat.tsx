@@ -17,52 +17,39 @@ function NoticeChat({ chats }: NoticeChatProps) {
 
   return (
     <>
-      {chats
-        ?.slice()
-        .reverse()
-        .map((chat, idx) => {
-          const user = chat.user;
+      {chats?.map((chat, idx) => {
+        const user = chat.user;
 
-          return (
-            <Link
-              href={`/chat/${user._id}`}
-              key={idx}
-              onClick={() => setTransferUserName(user.name)}
-            >
-              <Flex
-                px={5}
-                py={3}
-                justify="space-between"
-                align="center"
-                borderBottom="var(--border)"
-              >
-                <Flex flex={1}>
-                  <Avatar user={user} size="sm1" isLink={false} />
-                  <Flex ml={4} direction="column" justify="space-around">
-                    <Box fontSize="13px" fontWeight={600}>
-                      {user.name}
-                    </Box>
-                    <Box
-                      color="var(--gray-500)"
-                      sx={{
-                        display: "-webkit-box",
-                        WebkitBoxOrient: "vertical",
-                        WebkitLineClamp: "1",
-                        overflow: "hidden",
-                      }}
-                      fontSize="12px"
-                    >
-                      {chat.content.content}
-                    </Box>
-                  </Flex>
+        return (
+          <Link href={`/chat/${user._id}`} key={idx} onClick={() => setTransferUserName(user.name)}>
+            <Flex px={5} py={3} justify="space-between" align="center" borderBottom="var(--border)">
+              <Flex flex={1}>
+                <Avatar user={user} size="sm1" isLink={false} />
+                <Flex ml={4} direction="column" justify="space-around">
+                  <Box fontSize="13px" fontWeight={600}>
+                    {user.name}
+                  </Box>
+                  <Box
+                    color="var(--gray-500)"
+                    sx={{
+                      display: "-webkit-box",
+                      WebkitBoxOrient: "vertical",
+                      WebkitLineClamp: "1",
+                      overflow: "hidden",
+                    }}
+                    fontSize="12px"
+                  >
+                    {chat.content.content}
+                  </Box>
                 </Flex>
-                <Box fontSize="12px" color="var(--gray-500)" ml={5}>
-                  {getDateDiff(dayjs(chat.content.createdAt))}
-                </Box>
               </Flex>
-            </Link>
-          );
-        })}
+              <Box fontSize="12px" color="var(--gray-500)" ml={5}>
+                {getDateDiff(dayjs(chat.content.createdAt))}
+              </Box>
+            </Flex>
+          </Link>
+        );
+      })}
     </>
   );
 }

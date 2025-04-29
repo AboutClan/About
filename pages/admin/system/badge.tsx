@@ -1,18 +1,18 @@
 import { Button, Flex } from "@chakra-ui/react";
 import { useState } from "react";
+
 import { Input } from "../../../components/atoms/Input";
 import Header from "../../../components/layouts/Header";
-import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
 
 function Badge() {
   const [uid, setUid] = useState("");
   const [value, setValue] = useState("");
 
-  const { mutate } = useUserInfoFieldMutation("badgeList");
+  // const { mutate } = useUserInfoFieldMutation("badgeList");
 
-    const onSubmit = () => {
-      
-  }
+  //   const onSubmit = () => {
+
+  // }
 
   return (
     <>

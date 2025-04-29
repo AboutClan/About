@@ -4,7 +4,7 @@ import { ModalProps } from "../../../types/components/modalTypes";
 
 export function CalendarCheckModalButton({ handleClick }: ModalProps) {
   return (
-    <Button onClick={handleClick} variant="unstyled" w={7} h={7} display="flex">
+    <Button onClick={handleClick} variant="unstyled" w={8} h={8} display="flex">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="21"
@@ -25,7 +25,7 @@ export function CalendarCheckModalButton({ handleClick }: ModalProps) {
 
 export function BellModalButton({ handleClick }: ModalProps) {
   return (
-    <Button onClick={handleClick} variant="unstyled" w={7} h={7} display="flex">
+    <Button onClick={handleClick} variant="unstyled" w={8} h={8} display="flex">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="20"
@@ -41,6 +41,3 @@ export function BellModalButton({ handleClick }: ModalProps) {
     </Button>
   );
 }
-
-
-

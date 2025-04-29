@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
 import Divider from "../../components/atoms/Divider";
+import { EllipsisIcon } from "../../components/Icons/DotIcons";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
@@ -58,12 +59,26 @@ function ProfilePage() {
 
   return (
     <>
-      <Header title="" rightPadding={8}>
-        <Button px="12px" size="md" variant="ghost" onClick={() => handleDrawer("chat")}>
+      <Header title="" rightPadding={16}>
+        <Button
+          mr={2}
+          display="flex"
+          w={8}
+          h={8}
+          variant="unstyled"
+          onClick={() => handleDrawer("chat")}
+        >
           <i className="fa-regular fa-paper-plane fa-lg" />
         </Button>
-        <Button px="12px" size="md" variant="ghost" onClick={() => handleDrawer("declare")}>
-          <i className="fa-regular fa-ellipsis fa-lg" />
+        <Button
+          display="flex"
+          w={8}
+          h={8}
+          size="md"
+          variant="unstyled"
+          onClick={() => handleDrawer("declare")}
+        >
+          <EllipsisIcon size="lg" color="dark" />
         </Button>
       </Header>
       <Slide>

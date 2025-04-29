@@ -1,13 +1,8 @@
 import dayjs from "dayjs";
 
-
 //스터디
 
-export const RECENT_STUDY_RECORD = {
-    
-}
-
-
+export const RECENT_STUDY_RECORD = {};
 
 /** */
 export const MY_TODAY_STUDY_FIXED = "myTodayStudyFixed";
@@ -39,7 +34,7 @@ export const ENTHUSIASTIC_POP_UP = "enthusiasticPopUp";
 export const INSTAGRAM_POP_UP = "instagramPopUp";
 //체크
 export const RABBIT_RUN = "rabbitRun";
-export const RECENT_CHAT_ID = "recentChatId";
+export const RECENT_CHAT = "recentChat";
 
 export const REGISTER_INFO = "registerInfo";
 export const GROUP_WRITING_STORE = "groupWritingStore";

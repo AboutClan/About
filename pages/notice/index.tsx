@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -27,12 +28,17 @@ function Notice() {
   });
   const { data: chats } = useMyChatsQuery({ enabled: isGuest === false });
   console.log(24, chats);
-  // const { data: recentChat } = useRecentChatQuery({ enabled: isGuest === false });
 
   useEffect(() => {
     if (!type) router.replace(`/notice?type=notice`);
     setNoticeType(type);
   }, [type]);
+
+  const chatArr = chats?.sort((a, b) =>
+    dayjs(a.content.createdAt).isBefore(dayjs(b.content.createdAt)) ? 1 : -1,
+  );
+  const recentChat = chatArr?.[0]?.content?.content;
+  console.log(12, recentChat);
 
   return (
     <>
@@ -42,8 +48,7 @@ function Notice() {
           noticeType={noticeType}
           setNoticeType={setNoticeType}
           activeAlertCnt={activeLogs?.length}
-          recentChatId={null}
-          // recentChatId={recentChat?.contents}
+          recentChat={recentChat}
         />
       </Slide>
       <Slide isNoPadding>
@@ -53,7 +58,7 @@ function Notice() {
           ) : noticeType === "active" ? (
             <NoticeActive activeLogs={activeLogs} />
           ) : (
-            <NoticeChat chats={chats} />
+            <NoticeChat chats={chatArr} />
           )}
         </Container>
       </Slide>

@@ -13,7 +13,12 @@ import {
 } from "../../../components/atoms/buttons/ModalButtons";
 import Slide from "../../../components/layouts/PageSlide";
 import { AboutLogo } from "../../../components/services/AboutLogo";
-import { DAILY_CHECK_POP_UP, NOTICE_ALERT } from "../../../constants/keys/localStorage";
+import {
+  DAILY_CHECK_POP_UP,
+  NOTICE_ALERT,
+  RECENT_CHAT,
+} from "../../../constants/keys/localStorage";
+import { useMyChatsQuery } from "../../../hooks/chat/queries";
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import DailyCheckModal from "../../../modals/aboutHeader/dailyCheckModal/DailyCheckModal";
 import PointSystemsModal from "../../../modals/aboutHeader/pointSystemsModal/PointSystemsModal";
@@ -41,16 +46,26 @@ function HomeHeader() {
 
   // const { data: recentChat } = useRecentChatQuery({ enabled: isGuest === false });
 
+  const { data: chats } = useMyChatsQuery({ enabled: isGuest === false });
+
   useEffect(() => {
     // if (!data) return;
     // const recentOne = data[0]?.message;
 
     const noticeCnt = localStorage.getItem(NOTICE_ALERT);
+    const recentChatStorage = localStorage.getItem(RECENT_CHAT);
+    const chatArr = chats?.sort((a, b) =>
+      dayjs(a.content.createdAt).isBefore(dayjs(b.content.createdAt)) ? 1 : -1,
+    );
+    const recentChat = chatArr?.[0]?.content?.content;
+    if (recentChat !== recentChatStorage) {
+      setIsNoticeAlert(true);
+    }
 
     if (!noticeCnt || NOTICE_ARR.length + "" !== noticeCnt) {
       setIsNoticeAlert(true);
     }
-  }, []);
+  }, [chats]);
 
   return (
     <>
@@ -67,8 +82,8 @@ function HomeHeader() {
                 />
                 <Box
                   position="absolute"
-                  right="3px"
-                  bottom="3px"
+                  right="4px"
+                  bottom="4px"
                   p="1px"
                   bgColor="white"
                   borderRadius="50%"
@@ -81,8 +96,8 @@ function HomeHeader() {
                 <BellModalButton handleClick={() => router.push("/notice")} />
                 <Box
                   position="absolute"
-                  right="4px"
-                  top="3px"
+                  right="6px"
+                  top="4px"
                   p="1px"
                   bgColor="white"
                   borderRadius="50%"

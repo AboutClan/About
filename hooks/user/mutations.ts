@@ -127,6 +127,17 @@ export const useUserInfoFieldMutation = <
   );
 };
 
+export const useAddBadgeListMutation = (
+  options?: MutationOptions<{ uid: string; badgeName: string }>,
+) =>
+  useMutation<void, AxiosError, { uid: string; badgeName: string }>((param) => {
+    return requestServer<{ uid: string }>({
+      method: "post",
+      url: `user/badgeList`,
+      body: param,
+    });
+  }, options);
+
 export const usePointSystemMutation = (
   field: "point" | "score" | "deposit",
   options?: MutationOptions<IPointSystem>,

@@ -59,14 +59,21 @@ function Uid() {
 
   useEffect(() => {
     // 스크롤을 맨 아래로 이동
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+
+    if (chats) {
+      const timer = setTimeout(() => {
+        bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+      }, 300);
+
+      return () => clearTimeout(timer);
+    }
   }, [chats]);
 
   const opponent = chatInfo?.opponent;
 
   return (
     <>
-      <Header title={`${userName || "ㅇㅇ"}님과의 메세지`} rightPadding={4}>
+      <Header title={`${userName || opponent?.name}님과의 메세지`} rightPadding={4}>
         <Menu>
           <MenuButton variant="ghost" size="md" as={Button}>
             <i className="fa-regular fa-ellipsis fa-lg" />
@@ -89,11 +96,12 @@ function Uid() {
             {!isLoading ? (
               <>
                 {chats.map((chat, idx) => {
+                  console.log(31, chat);
                   return (
                     <Box key={idx} mb="16px">
                       {chat.isMine ? (
                         <Flex ml="auto" w="max-content">
-                          <Box alignSelf="end" fontSize="10px" color="var(--gray-600)" mr="8px">
+                          <Box alignSelf="end" fontSize="10px" color="var(--gray-500)" mr="8px">
                             {getDateDiff(dayjs(chat.createdAt))}
                           </Box>
                           <Box
@@ -103,6 +111,8 @@ function Uid() {
                             p="6px 12px"
                             borderRadius="var(--rounded-lg)"
                             borderTopRightRadius="none"
+                            fontSize="12px"
+                            fontWeight="light"
                           >
                             {chat.message}
                           </Box>
@@ -112,12 +122,12 @@ function Uid() {
                           <Box>
                             <Avatar size="sm1" user={opponent} />
                           </Box>
-                          <Flex ml="8px" direction="column" color="var(--gray-800)">
-                            <Box as="span" fontSize="13px">
+                          <Flex ml="8px" direction="column">
+                            <Box as="span" fontSize="10px" color="gray.700">
                               {opponent.name}
                             </Box>
                             <Box
-                              mt="4px"
+                              mt={0.5}
                               w="max-content"
                               maxW="200px"
                               bg="var(--gray-100)"
@@ -125,11 +135,13 @@ function Uid() {
                               p="6px 12px"
                               borderRadius="var(--rounded-lg)"
                               borderTopLeftRadius="none"
+                              fontSize="12px"
+                              fontWeight="light"
                             >
                               {chat.message}
                             </Box>
                           </Flex>
-                          <Box alignSelf="end" fontSize="10px" color="var(--gray-600)" ml="8px">
+                          <Box alignSelf="end" fontSize="10px" color="var(--gray-500)" ml="8px">
                             {getDateDiff(dayjs(chat.createdAt))}
                           </Box>
                         </Flex>

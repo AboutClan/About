@@ -47,6 +47,7 @@ function StorePage() {
   const { data: storeGiftEntries } = useStoreGiftEntryQuery({
     onError: errorToast,
   });
+  console.log(32, storeGiftEntries);
 
   useEffect(() => {
     setIsPrevBoolean(isShowActive);

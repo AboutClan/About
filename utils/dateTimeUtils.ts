@@ -59,9 +59,10 @@ export const getWeekNumber = (date: Dayjs) => {
 
 export const getDateDiff = (date: Dayjs) => {
   const daysDiff = dayjs().diff(date, "day");
-
+  console.log(daysDiff);
   if (daysDiff < 1) {
     const hoursDiff = dayjs().diff(date, "hour");
+    console.log(5, hoursDiff);
     if (hoursDiff < 1) return "방금 전";
     return `${dayjs().diff(date, "hours")}시간 전`;
   }

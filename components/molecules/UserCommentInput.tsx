@@ -68,8 +68,8 @@ function UserCommentInput({
             p="3px"
             borderRadius="50%"
             border="1px solid var(--color-mint)"
-            w="46px"
-            h="46px"
+            w="44px"
+            h="44px"
           >
             <Avatar isLink={false} size="sm1" user={user} />
           </Flex>

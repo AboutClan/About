@@ -5,9 +5,6 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 
-import { AVATAR_BG_IMAGES } from "../../../assets/images/avatarBgImages";
-import { AVATAR_IMAGES } from "../../../assets/images/avatarImages";
-import Avatar from "../../../components/atoms/Avatar";
 import UserBadge from "../../../components/atoms/badges/UserBadge";
 import { CheckCircleBigIcon } from "../../../components/Icons/CircleIcons";
 import { DAILY_CHECK_POP_UP } from "../../../constants/keys/localStorage";
@@ -30,8 +27,6 @@ function DailyCheckModal({ setIsModal }: IModal) {
   const [isFirstPage, setIsFirstPage] = useState(true);
   const [randomValue, setRandomValue] = useState<number>();
   const [randomNum] = useState(() => getRandomIdx(DAILY_FORTUNES.length - 1));
-  const [randomAvatarNum] = useState(() => getRandomIdx(AVATAR_IMAGES.length - 1));
-  const [randomBgNum] = useState(() => getRandomIdx(AVATAR_BG_IMAGES.length - 1));
 
   const setShowDailyCheck = useSetRecoilState(transferShowDailyCheckState);
 
@@ -132,12 +127,12 @@ function DailyCheckModal({ setIsModal }: IModal) {
                 {DAILY_FORTUNES[randomNum][0]},
                 <br />
                 {DAILY_FORTUNES[randomNum][1]}
-                <Box position="absolute" top="0px" left="-15px" transform="translate(0,-50%)">
+                {/* <Box position="absolute" top="0px" left="-15px" transform="translate(0,-50%)">
                   <Avatar
                     user={{ avatar: { type: randomAvatarNum, bg: randomBgNum + 100 } }}
                     size="xs1"
                   />
-                </Box>
+                </Box> */}
               </Box>
             </motion.div>
           )}
