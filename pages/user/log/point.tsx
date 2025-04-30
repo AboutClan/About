@@ -16,7 +16,6 @@ function UserLogSection() {
 
   const [filter, setFilter] = useState();
   console.log(filter);
-
   let stepDate: string;
 
   return (

@@ -14,7 +14,8 @@ export type UserRequestCategory =
   | "배지"
   | "조모임"
   | "장소 추가"
-  | "지원금";
+  | "지원금"
+  | "출금";
 
 export interface IUserRequest extends TimeStampProps {
   category: UserRequestCategory;

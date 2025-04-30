@@ -10,7 +10,7 @@ function Privacy() {
     <>
       <Header title="개인정보 취급방침" />
       <Slide>
-        <Container mt="var(--gap-4)">
+        <Container mt={20}>
           <Text marginBottom="10px">
             Vote Helper 스터디 참여 투표 자동화 서비스(이하 Vote Helper)는 이용자의 동의를 기반으로
             개인정보를 수집·이용 및 제공하고 있으며, 이용자의 권리(개인정보 자기결정권)를 적극적으로

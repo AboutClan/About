@@ -63,9 +63,10 @@ export const useDeleteSecretSquareMutation = ({ squareId }: { squareId: string }
       }),
     {
       onSuccess: () => {
+       
         // HACK 전체 카테고리와 각 카테고리를 모두 invalidate 해야하는가? 개선의 여지가 있음
-        queryClient.invalidateQueries({ queryKey: "secretSquare", exact: false });
-        router.replace("/community");
+        queryClient.refetchQueries({ queryKey: "secretSquare", exact: false });
+        router.push("/community");
       },
     },
   );

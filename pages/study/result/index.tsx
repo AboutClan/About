@@ -107,7 +107,7 @@ function StudyResultPage() {
           })
           .findIndex((who) => who.user._id === userInfo?._id)
       : null;
-  console.log(2, myStudyInfo);
+
   return (
     <>
       {myStudy && <StudyHeader placeInfo={myStudy?.place} />}

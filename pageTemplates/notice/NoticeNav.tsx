@@ -18,13 +18,13 @@ function NoticeNav({ noticeType, setNoticeType, activeAlertCnt, recentChat }: IN
   const router = useRouter();
   const [isActiveAlert, setIsActiveAlert] = useState(false);
   const [isChatAlert, setIsChatAlert] = useState(false);
-  console.log(localStorage.getItem(RECENT_CHAT));
+
   useEffect(() => {
     if (activeAlertCnt === undefined) return;
     if (+localStorage.getItem(NOTICE_ACTIVE_CNT) < activeAlertCnt) setIsActiveAlert(true);
     if (localStorage.getItem(RECENT_CHAT) !== recentChat) {
       setIsChatAlert(true);
-      console.log(32);
+    
     }
     if (noticeType === "active") {
       localStorage.setItem(NOTICE_ACTIVE_CNT, `${activeAlertCnt}`);

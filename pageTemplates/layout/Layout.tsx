@@ -64,7 +64,13 @@ function Layout({ children }: ILayout) {
   const [isErrorModal, setIsErrorModal] = useState(false);
 
   useEffect(() => {
-    if (PUBLIC_SEGMENT.includes(segment)) return;
+    if (
+      PUBLIC_SEGMENT.includes(segment) ||
+      pathname === "/user/info/policy" ||
+      pathname === "/user/info/privacy"
+    ) {
+      return;
+    }
     if (!isBottomNavCondition && isGuest) {
       toast(
         "info",

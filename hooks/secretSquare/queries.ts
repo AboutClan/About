@@ -31,6 +31,7 @@ export const useSecretSquareListQuery = (
   useQuery<SecretSquareListResponse, AxiosError, SecretSquareListResponse>(
     ["secretSquare", { category, cursor }],
     async () => {
+     
       const searchParams = new URLSearchParams();
       if (category !== "전체") {
         searchParams.set("category", category);

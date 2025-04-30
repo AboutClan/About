@@ -39,7 +39,7 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
   const [isDrawer, setIsDrawer] = useState(false);
 
   const monthScore = user.monthScore;
-  console.log("user", user);
+
   return (
     <>
       <Box borderBottom="var(--border)" px={5} pb={3}>

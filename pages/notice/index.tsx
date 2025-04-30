@@ -27,7 +27,7 @@ function Notice() {
     enabled: isGuest === false,
   });
   const { data: chats } = useMyChatsQuery({ enabled: isGuest === false });
-  console.log(24, chats);
+  
 
   useEffect(() => {
     if (!type) router.replace(`/notice?type=notice`);
@@ -38,7 +38,6 @@ function Notice() {
     dayjs(a.content.createdAt).isBefore(dayjs(b.content.createdAt)) ? 1 : -1,
   );
   const recentChat = chatArr?.[0]?.content?.content;
-  console.log(12, recentChat);
 
   return (
     <>
