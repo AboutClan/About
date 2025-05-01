@@ -50,9 +50,7 @@ function GroupDetail() {
 
   const isMember =
     group &&
-    [group.organizer, ...group.participants.map((who) => who.user)].some(
-      (who) => who?.uid === session?.user.uid,
-    );
+    [...group.participants.map((who) => who.user)].some((who) => who?.uid === session?.user.uid);
 
   return (
     <>
@@ -196,9 +194,7 @@ function GroupDetail() {
       </Slide>
 
       {!group && <MainLoading />}
-      {group && group.category.main !== "콘텐츠" && !isMember && !isGuest ? (
-        <GroupBottomNav data={group} />
-      ) : null}
+      {group && !isMember && !isGuest ? <GroupBottomNav data={group} /> : null}
     </>
   );
 }

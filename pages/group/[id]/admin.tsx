@@ -11,7 +11,6 @@ import { useResetGroupQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useGroupWaitingStatusMutation } from "../../../hooks/groupStudy/mutations";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
-import InviteOuterModal from "../../../modals/groupStudy/InviteOuterModal";
 import GroupAdminInvitation from "../../../pageTemplates/group/admin/GroupAdminInvitation";
 import { transferGroupDataState } from "../../../recoils/transferRecoils";
 import { IGroup } from "../../../types/models/groupTypes/group";
@@ -23,7 +22,7 @@ function Admin() {
 
   const [deletedUsers, setDeletedUser] = useState([]);
   const [group, setGroup] = useState<IGroup>();
-  const [isOuterModal, setIsOuterModal] = useState(false);
+
   const transferGroup = useRecoilValue(transferGroupDataState);
   const resetGroup = useResetGroupQuery();
 
@@ -88,14 +87,10 @@ function Admin() {
           </Container>
           <Title>
             <Box>유저 초대</Box>
-            <Button onClick={() => setIsOuterModal(true)} size="xs" colorScheme="mint">
-              외부 인원 초대
-            </Button>
           </Title>
           <GroupAdminInvitation />
         </Layout>
       </Slide>
-      {isOuterModal && <InviteOuterModal setIsModal={setIsOuterModal} />}
     </>
   );
 }

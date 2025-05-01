@@ -61,6 +61,7 @@ const initializePWAPushService = async () => {
       (await navigator.serviceWorker.register("/worker.js", { scope: "/" }));
     console.log("regist", registration);
     let subscription = await registration.pushManager.getSubscription();
+    console.log("SUB", subscription);
     if (!subscription) {
       const publicVapidKey = process.env.NEXT_PUBLIC_PWA_KEY;
       if (!publicVapidKey) throw new Error("Missing NEXT_PUBLIC_PWA_KEY");
