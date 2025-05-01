@@ -95,6 +95,7 @@ function DailyCheckModal({ setIsModal }: IModal) {
                     bgColor="var(--gray-100)"
                     color="var(--gray-600)"
                     p="8px 12px"
+                    mt={1}
                   >
                     {userInfo?.name}님의 현재 등급은{" "}
                     <b>

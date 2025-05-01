@@ -76,11 +76,11 @@ function GatherComments({ comments }: IGatherComments) {
 
   return (
     <>
-      <Box m={5} fontWeight="semibold" fontSize="16px">
-        <span>하고 싶은 말이 있다면 댓글을 남겨보세요!</span>
+      <Box my={5} fontWeight="semibold" fontSize="16px">
+        <Box mx={5}>하고 싶은 말이 있다면 댓글을 남겨보세요!</Box>
         <Comment>
           {!isGuest && userInfo && (
-            <Box mr="8px" mt="20px" mb="12px">
+            <Box mr="8px" mt={5} mb={3} px={5}>
               <UserCommentInput
                 user={userInfo}
                 replyName={replyProps?.replyName}

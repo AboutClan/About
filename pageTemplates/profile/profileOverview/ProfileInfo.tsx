@@ -172,7 +172,6 @@ const Comment = styled.div`
   margin-top: var(--gap-3);
   color: var(--gray-800);
   font-size: 12px;
-  font-weight: 600;
 `;
 
 export default ProfileInfo;

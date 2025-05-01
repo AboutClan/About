@@ -4,12 +4,13 @@ import ProgressStatus from "../ProgressStatus";
 interface IProgressHeader {
   value: number;
   title: string;
+  url?: string;
 }
-export default function ProgressHeader({ value, title }: IProgressHeader) {
+export default function ProgressHeader({ value, title, url }: IProgressHeader) {
   return (
     <Slide isFixed={true}>
       <ProgressStatus value={value} />
-      <Header isBorder={false} isSlide={false} title={title} />
+      <Header url={url} isBorder={false} isSlide={false} title={title} />
     </Slide>
   );
 }

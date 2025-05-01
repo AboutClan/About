@@ -103,7 +103,7 @@ export const useAdminStudyRecordQuery = (
 
 export const usePushQuery = (uid: string, options?: QueryOptions<void>) =>
   useQuery<void, AxiosError, void>(
-    ["pushMessage"],
+    ["pushMessage", uid],
     async () => {
       const res = await axios.get<void>(`${SERVER_URI}/webpush/notification/${uid}`);
       return res.data;
