@@ -28,14 +28,14 @@ function Ranking() {
   const [myRanking, setMyRanking] = useState<RankingProps>();
   const [sortedUsers, setSortedUsers] = useState<UserRankingProps[]>();
 
-  const [tab, setTab] = useState<RankingTab>("월간 스터디 기록");
+  const [tab, setTab] = useState<RankingTab>("월간 동아리 점수");
 
   const [isLoading, setIsLoading] = useState(false);
 
   const { data: allUserData } = useAllUserDataQuery("study", {
     enabled: !!session,
   });
-  
+
   const fieldName =
     tab === "월간 스터디 기록"
       ? "studyRecord"
@@ -107,12 +107,12 @@ function Ranking() {
 
   const tabOptionsArr: { text: RankingTab; func: () => void }[] = [
     {
-      text: "월간 스터디 기록",
-      func: () => setTab("월간 스터디 기록"),
-    },
-    {
       text: "월간 동아리 점수",
       func: () => setTab("월간 동아리 점수"),
+    },
+    {
+      text: "월간 스터디 기록",
+      func: () => setTab("월간 스터디 기록"),
     },
     {
       text: "동아리 누적 랭킹",

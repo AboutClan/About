@@ -32,13 +32,15 @@ function FeedLayout({
   likeCnt,
   summary,
   comments,
+  isAnonymous,
   id,
+  user,
   refetch,
 }: FeedLayoutProps) {
-
+  console.log(user, isAnonymous);
   return (
     <Flex direction="column" border="var(--border)" pb={2}>
-      <FeedHeader writer={ABOUT_USER_SUMMARY} date={date} />
+      <FeedHeader writer={isAnonymous ? ABOUT_USER_SUMMARY : user} date={date} />
       <AspectRatio ratio={1}>
         <ImageSlider imageContainer={images} type="review" />
       </AspectRatio>

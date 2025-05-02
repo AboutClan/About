@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
 import { GATHER_COVER_IMAGE, GATHER_MAIN_IMAGE } from "../../../assets/gather";
@@ -14,6 +14,11 @@ import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
 import { IGatherWriting } from "../../../types/models/gatherTypes/gatherTypes";
 
+interface ImageProps {
+  imageUrl: string;
+  func: () => void;
+}
+
 function GatherWritingImagePage() {
   const [gatherContent, setGatherContent] = useRecoilState(sharedGatherWritingState);
   const [isConfirmModal, setIsConfirmModal] = useState(false);
@@ -21,6 +26,19 @@ function GatherWritingImagePage() {
     mainImage: gatherContent?.image,
     coverImage: gatherContent?.coverImage,
   });
+  const [imageArr, setImageArr] = useState<{ main: ImageProps[]; cover: ImageProps[] }>({
+    main: [],
+    cover: [],
+  });
+
+  function shuffleArray(array: ImageProps[]) {
+    const result = [...array]; // 원본 배열을 복사
+    for (let i = result.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1)); // 0 이상 i 이하의 랜덤 인덱스
+      [result[i], result[j]] = [result[j], result[i]]; // 요소 교환
+    }
+    return result;
+  }
 
   const mainImageArr = GATHER_MAIN_IMAGE.map((item) => ({
     imageUrl: item,
@@ -34,6 +52,10 @@ function GatherWritingImagePage() {
       setImageProps((old) => ({ ...old, coverImage: item }));
     },
   }));
+
+  useEffect(() => {
+    setImageArr({ main: shuffleArray(mainImageArr), cover: shuffleArray(coverImageArr) });
+  }, []);
 
   const onClickNext = async () => {
     const gatherData: IGatherWriting = {
@@ -61,7 +83,7 @@ function GatherWritingImagePage() {
           <Box ml={5}>
             <ImageBasicSlider2
               selectedImageUrl={imageProps?.mainImage}
-              imageTileArr={mainImageArr}
+              imageTileArr={imageArr.main}
               hasTextSkeleton={false}
               aspect={1}
             />
@@ -74,7 +96,7 @@ function GatherWritingImagePage() {
           <Box pl={5}>
             <ImageBasicSlider2
               selectedImageUrl={imageProps?.coverImage}
-              imageTileArr={coverImageArr}
+              imageTileArr={imageArr.cover}
               aspect={2}
               hasTextSkeleton={false}
             />

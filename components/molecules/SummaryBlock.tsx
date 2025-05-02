@@ -5,6 +5,7 @@ export interface SummaryBlockProps {
   url: string;
   title: string;
   text: string;
+  writer?: string;
 }
 
 function SummaryBlock({ url, title, text }: SummaryBlockProps) {

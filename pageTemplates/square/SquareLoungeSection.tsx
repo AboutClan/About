@@ -112,7 +112,7 @@ function SquareLoungeSection() {
       },
     };
   });
-
+  console.log(loungeData);
   return (
     <>
       <Box pb="60px">

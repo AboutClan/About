@@ -1,14 +1,15 @@
 import { Box, Button, VStack } from "@chakra-ui/react";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useRecoilValue } from "recoil";
 
+import InfoList from "../../../components/atoms/lists/InfoList";
 import Textarea from "../../../components/atoms/Textarea";
 import WritingNavigation from "../../../components/atoms/WritingNavigation";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
-import SuccessScreen from "../../../components/layouts/SuccessScreen";
 import ImageUploadButton from "../../../components/molecules/ImageUploadButton";
 import SummaryBlock from "../../../components/molecules/SummaryBlock";
 import UserSecretButton from "../../../components/molecules/UserSecretButton";
@@ -19,14 +20,20 @@ import { useToast } from "../../../hooks/custom/CustomToast";
 import { useFeedMutation } from "../../../hooks/feed/mutations";
 import { useGatherIDQuery } from "../../../hooks/gather/queries";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
+import { usePointSystemMutation } from "../../../hooks/user/mutations";
 import { convertSummaryText } from "../../../libs/convertFeedToLayout";
+import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import {
   TransferFeedSummaryProps,
   transferFeedSummaryState,
 } from "../../../recoils/transferRecoils";
+import { IUser } from "../../../types/models/userTypes/userInfoTypes";
 import { appendFormData } from "../../../utils/formDataUtils";
 
 function FeedWritingPage() {
+  const { data: session } = useSession();
+  const router = useRouter();
+  console.log(2, session);
   const toast = useToast();
   const searchParams = useSearchParams();
   const { category } = useParams<{ category: "gather" | "group" }>() || {};
@@ -38,7 +45,7 @@ function FeedWritingPage() {
   const { register, handleSubmit, watch } = methods;
 
   const transferFeedSummary = useRecoilValue(transferFeedSummaryState);
-  const [isSuccessScreen, setIsSuccessScreen] = useState(false);
+
   const [summary, setSummary] = useState<TransferFeedSummaryProps>();
   const [imageArr, setImageArr] = useState<string[]>([]);
   const [imageFormArr, setImageFormArr] = useState<Blob[]>([]);
@@ -50,10 +57,32 @@ function FeedWritingPage() {
   const { data: gather } = useGatherIDQuery(+id, {
     enabled: category === "gather" && !!id && !transferFeedSummary,
   });
+  console.log(123, gather);
 
+  const { mutate: updatePoint } = usePointSystemMutation("point");
   const { mutate, isLoading } = useFeedMutation({
     onSuccess() {
-      setIsSuccessScreen(true);
+      if (
+        session?.user.id === transferFeedSummary?.writer ||
+        session?.user.id === (gather?.user as IUser)?._id
+      ) {
+        if (isAnonymous) {
+          updatePoint({ value: 1000, message: "번개 개설 선 지원금" });
+          toast("success", "1,000 Point가 지급되었습니다.");
+        } else {
+          updatePoint({ value: 3000, message: "번개 개설 선 지원금" });
+          toast("success", "3,000 Point가 지급되었습니다.");
+        }
+      } else {
+        if (isAnonymous) {
+          updatePoint({ value: 500, message: "모임 후기 지원금" });
+          toast("success", "500 Point가 지급되었습니다.");
+        } else {
+          updatePoint({ value: 1000, message: "모임 후기 지원금" });
+          toast("success", "1,000 Point가 지급되었습니다.");
+        }
+      }
+      router.push(`/gather/${id}`);
     },
   });
 
@@ -76,7 +105,7 @@ function FeedWritingPage() {
   }, [transferFeedSummary, group]);
 
   const formData = new FormData();
-
+  console.log(isAnonymous);
   const onSubmit: SubmitHandler<{ content: string }> = ({ content }) => {
     if (!imageFormArr?.length) {
       toast("warning", "최소 한장 이상의 사진이 필요합니다.");
@@ -116,6 +145,10 @@ function FeedWritingPage() {
         </Button>
       </Header>
       <Slide>
+        <RegisterOverview>
+          <span>리뷰 쓰고, 지원금 받자!</span>
+          <span>리뷰 작성 후, 마이페이지에서 신청 가능!</span>
+        </RegisterOverview>
         {summary && (
           <Box my={5}>
             <SummaryBlock
@@ -145,6 +178,9 @@ function FeedWritingPage() {
             </Box>
           </FormProvider>
         </VStack>
+        <Box mt={10}>
+          <InfoList items={INFO_ARR} />
+        </Box>
       </Slide>
       <WritingNavigation>
         <ImageUploadButton
@@ -154,16 +190,14 @@ function FeedWritingPage() {
         />
         <UserSecretButton isAnonymous={isAnonymous} setIsAnonymous={setIsAnonymous} />
       </WritingNavigation>
-      {isSuccessScreen && (
-        <SuccessScreen url={`/${category}/${id}`}>
-          <>
-            <span>피드가 올라갔습니다!</span>
-            <div>피드는 해당 페이지 또는 라운지에서 확인이 가능해요!</div>
-          </>
-        </SuccessScreen>
-      )}
     </>
   );
 }
+
+const INFO_ARR = [
+  "후기를 작성 후 마이페이지에서 지원금 신청이 가능합니다.",
+  "실명은 3,000 Point, 익명은 1,000 Point를 사전 지급합니다.",
+  "모임장이 없거나 운영진인 경우 다른 인원도 작성할 수 있습니다.",
+];
 
 export default FeedWritingPage;

@@ -34,7 +34,7 @@ function GatherExpireModalCancelDialog({ isNoMember, modal }: IGatherExpireModal
   const gatherId = +router.query.id;
 
   const onComplete = async (type: "delete" | "close") => {
-    queryClient.invalidateQueries({ queryKey: [GATHER_CONTENT], exact: false });
+    queryClient.removeQueries({ queryKey: [GATHER_CONTENT], exact: false });
 
     if (type === "delete") {
       toast("success", "모임이 삭제되었습니다.");
