@@ -4,15 +4,16 @@ import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useQueryClient } from "react-query";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-import SuccessScreen from "../../components/layouts/SuccessScreen";
 import ImageUploadInput from "../../components/molecules/ImageUploadInput";
 import { GATHER_CONTENT } from "../../constants/keys/queryKeys";
-import { useResetQueryData } from "../../hooks/custom/CustomHooks";
-import { useErrorToast } from "../../hooks/custom/CustomToast";
+
+import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
 import { useGatherWritingMutation } from "../../hooks/gather/mutations";
+import { useGatherQuery } from "../../hooks/gather/queries";
 import { isGatherEditState } from "../../recoils/checkAtoms";
 import { sharedGatherWritingState } from "../../recoils/sharedDataAtoms";
 import { IModal } from "../../types/components/modalTypes";
@@ -26,31 +27,35 @@ interface IGatherWritingConfirmModal extends IModal {
 function GatherWritingConfirmModal({ setIsModal, gatherData }: IGatherWritingConfirmModal) {
   const router = useRouter();
   const errorToast = useErrorToast();
+  const queryClient = useQueryClient();
+  const toast = useToast();
 
   const [isFirst, setIsFirst] = useState(true);
   const [imageUrl, setImageUrl] = useState();
-  const [isSuccessScreen, setIsSuccessScreen] = useState(false);
+
   const [isGatherEdit, setIsGatherEdit] = useRecoilState(isGatherEditState);
-  const resetQueryData = useResetQueryData();
+
+  const { data: gatherData2, isLoading } = useGatherQuery(0, null, "createdAt");
   const setGatherContent = useSetRecoilState(sharedGatherWritingState);
 
   const { mutate } = useGatherWritingMutation("post", {
-    onSuccess() {
-      resetQueryData([GATHER_CONTENT]);
-      setTimeout(() => {
-        setGatherContent(null);
-      }, 200);
-      setIsSuccessScreen(true);
+    onSuccess(data) {
+      console.log(35, data);
+      console.log(24, gatherData2);
+
+      queryClient.refetchQueries({ queryKey: [GATHER_CONTENT], exact: false });
+      setGatherContent(null);
+      router.push(`/gather/${(data as unknown as { gatherId: number })?.gatherId}`);
+      toast("success", "모임이 등록되었어요!");
     },
     onError: errorToast,
   });
   const { mutate: updateGather } = useGatherWritingMutation("patch", {
     onSuccess() {
-      resetQueryData([GATHER_CONTENT]);
-      setTimeout(() => {
-        setGatherContent(null);
-        router.push(`/gather/${(gatherData as IGather).id}`);
-      }, 400);
+      queryClient.refetchQueries({ queryKey: [GATHER_CONTENT], exact: false });
+      setGatherContent(null);
+      router.push(`/gather/${(gatherData as IGather).id}`);
+      toast("success", "내용이 변경되었어요!");
     },
     onError: errorToast,
   });
@@ -104,14 +109,6 @@ function GatherWritingConfirmModal({ setIsModal, gatherData }: IGatherWritingCon
             )}
           </>
         </ModalLayout>
-      )}
-      {isSuccessScreen && (
-        <SuccessScreen url="/gather">
-          <>
-            <span>모임 개최 성공</span>
-            <div>모임 게시글을 단톡방에 공유해 주세요!</div>
-          </>
-        </SuccessScreen>
       )}
     </>
   );

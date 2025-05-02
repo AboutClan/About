@@ -50,7 +50,7 @@ function SuccessScreen({ children, url }: ISuccessScreen) {
 
 const Layout = styled.div`
   width: 100vw;
-  max-width: 390px;
+  max-width: var(--max-width);
   height: 100%;
   left: 50%;
   top: 0;
@@ -70,21 +70,21 @@ const Icon = styled.div`
 `;
 
 const Content = styled.div`
-  margin-top: 16px;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
 
   > span:first-child {
     color: var(--gray-800);
-    font-weight: 600;
-    font-size: 22px;
+    font-weight: 800;
+    font-size: 24px;
   }
   > *:last-child {
-    margin-top: 12px;
+    margin-top: 8px;
     text-align: center;
-    font-size: 17px;
-    color: var(--gray-600);
+    font-size: 16px;
+    color: var(--gray-500);
   }
 `;
 

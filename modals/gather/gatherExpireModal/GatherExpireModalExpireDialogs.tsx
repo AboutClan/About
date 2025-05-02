@@ -10,21 +10,22 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
+import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
+import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
 import { useErrorToast, useToast } from "../../../hooks/custom/CustomToast";
 import { useGatherStatusMutation } from "../../../hooks/gather/mutations";
-import { DispatchBoolean } from "../../../types/hooks/reactTypes";
 import { GatherExpireModalDialogType } from "./GatherExpireModal";
 
 interface IGatherExpireModalExpireDialog {
   modal: GatherExpireModalDialogType;
-  setIsComplete: DispatchBoolean;
 }
 
-function GatherExpireModalExpireDialog({ modal, setIsComplete }: IGatherExpireModalExpireDialog) {
+function GatherExpireModalExpireDialog({ modal }: IGatherExpireModalExpireDialog) {
   const toast = useToast();
   const errorToast = useErrorToast();
+  const queryClient = useQueryClient();
 
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -33,8 +34,8 @@ function GatherExpireModalExpireDialog({ modal, setIsComplete }: IGatherExpireMo
 
   const { mutate: statusOpen } = useGatherStatusMutation(gatherId, {
     onSuccess() {
-      setIsComplete(true);
-      toast("success", "모임이 개설되었어요!");
+      queryClient.invalidateQueries({ queryKey: [GATHER_CONTENT], exact: false });
+      toast("success", "모임이 확정되었어요!");
     },
     onError: errorToast,
   });

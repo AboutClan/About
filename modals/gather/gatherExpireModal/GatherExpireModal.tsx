@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
-import { useResetQueryData } from "../../../hooks/custom/CustomHooks";
 import { IModal } from "../../../types/components/modalTypes";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
 import { ModalBodyNavTwo, ModalLayout } from "../../Modals";
@@ -15,16 +13,7 @@ interface GatherExpireModalProps extends IModal {
 }
 
 function GatherExpireModal({ setIsModal, gather }: GatherExpireModalProps) {
-  const resetQueryData = useResetQueryData();
   const [modal, setModal] = useState<GatherExpireModalDialogType>();
-  const [isComplete, setIsComplete] = useState(false);
-
-  useEffect(() => {
-    if (!isComplete) return;
-    resetQueryData([GATHER_CONTENT]);
-    setIsModal(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isComplete]);
 
   return (
     <>
@@ -36,12 +25,8 @@ function GatherExpireModal({ setIsModal, gather }: GatherExpireModalProps) {
           onClickBottom={() => setModal("cancel")}
         />
       </ModalLayout>
-      <GatherExpireModalExpireDialog setIsComplete={setIsComplete} modal={modal} />
-      <GatherExpireModalCancelDialog
-        setIsComplete={setIsComplete}
-        modal={modal}
-        isNoMember={gather.participants.length === 0}
-      />
+      <GatherExpireModalExpireDialog modal={modal} />
+      <GatherExpireModalCancelDialog modal={modal} isNoMember={gather.participants.length === 0} />
     </>
   );
 }

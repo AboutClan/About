@@ -72,6 +72,7 @@ function ImageBasicSlider2({ imageTileArr, selectedImageUrl, aspect = 1 }: IImag
                     alt="thumbnailImage"
                     fill={true}
                     sizes="80px"
+                    priority={index <= (aspect === 1 ? 7 : 4)}
                   />
                 )}
               </Box>

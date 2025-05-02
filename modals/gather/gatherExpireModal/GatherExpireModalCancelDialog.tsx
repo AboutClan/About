@@ -10,25 +10,22 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useRef } from "react";
+import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
+import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
 import { useErrorToast, useToast } from "../../../hooks/custom/CustomToast";
 import { useGatherStatusMutation, useGatherWritingMutation } from "../../../hooks/gather/mutations";
-import { DispatchBoolean } from "../../../types/hooks/reactTypes";
 import { GatherExpireModalDialogType } from "./GatherExpireModal";
 
 interface IGatherExpireModalCancelDialog {
-  setIsComplete: DispatchBoolean;
   modal: GatherExpireModalDialogType;
   isNoMember: boolean;
 }
 
-function GatherExpireModalCancelDialog({
-  setIsComplete,
-  isNoMember,
-  modal,
-}: IGatherExpireModalCancelDialog) {
+function GatherExpireModalCancelDialog({ isNoMember, modal }: IGatherExpireModalCancelDialog) {
   const toast = useToast();
+  const queryClient = useQueryClient();
   const errorToast = useErrorToast();
 
   const router = useRouter();
@@ -37,7 +34,8 @@ function GatherExpireModalCancelDialog({
   const gatherId = +router.query.id;
 
   const onComplete = async (type: "delete" | "close") => {
-    setIsComplete(true);
+    queryClient.invalidateQueries({ queryKey: [GATHER_CONTENT], exact: false });
+
     if (type === "delete") {
       toast("success", "모임이 삭제되었습니다.");
       router.push(`/gather`);
@@ -74,17 +72,17 @@ function GatherExpireModalCancelDialog({
             </AlertDialogHeader>
             <AlertDialogBody>
               {isNoMember ? (
-                <span>참여자가 없어 게시글이 완전히 삭제됩니다.</span>
+                <span>참여자가 없어 모임이 완전히 삭제됩니다.</span>
               ) : (
-                <span>참여자가 있어 게시글이 취소 상태로 변경됩니다.</span>
+                <span>참여자가 있어 모임이 취소 상태로 변경됩니다.</span>
               )}
             </AlertDialogBody>
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onClose}>
-                취소
+                닫기
               </Button>
               <Button colorScheme="mint" onClick={onCancel} ml="var(--gap-2)">
-                모집취소
+                모임 취소
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>

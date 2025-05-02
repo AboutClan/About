@@ -49,7 +49,7 @@ function GroupConfirmModal({ setIsModal, groupWriting }: IGroupConfirmModal) {
       resetLocalStorage();
 
       toast("success", "수정되었습니다.");
-      resetQueryData([GROUP_STUDY, groupWriting.id], () => {
+      resetQueryData([GROUP_STUDY], () => {
         router.push(`/group/${groupWriting.id}`);
       });
     },

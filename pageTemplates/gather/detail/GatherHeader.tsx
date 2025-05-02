@@ -119,7 +119,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
 
   return (
     <>
-      <Header title="모임 정보">
+      <Header title="모임 정보" url="/gather">
         <MenuButton menuArr={menuArr} />
       </Header>
       {modalType === "waitingMember" && (

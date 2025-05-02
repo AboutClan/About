@@ -23,6 +23,7 @@ function UserCommentBlock({
   hasAuthority = true,
   setCommentArr,
 }: UserCommentBlockProps) {
+  console.log(24, commentProps);
   return (
     <>
       <UserComment
@@ -56,7 +57,7 @@ function UserCommentBlock({
             setCommentArr={setCommentArr}
             parentId={commentProps._id}
             likeList={sub.likeList}
-            isAuthor={sub.user.name === "익명(글쓴이)"}
+            isAuthor={sub?.user?.name === "익명(글쓴이)"}
           />
         </Box>
       ))}

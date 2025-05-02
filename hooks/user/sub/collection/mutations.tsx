@@ -9,7 +9,7 @@ import { Alphabet } from "../../../../types/models/collections";
 import { useResetQueryData } from "../../../custom/CustomHooks";
 
 export const useAlphabetStampMutation = (options?: MutationOptions<void, string>) => {
-  const resetQueryData = useResetQueryData();
+  const queryClient = useQueryClient();
   return useMutation<string, AxiosError, void>(
     async () =>
       requestServer<void, string>({
@@ -19,7 +19,7 @@ export const useAlphabetStampMutation = (options?: MutationOptions<void, string>
     {
       ...options,
       onSuccess() {
-        resetQueryData(COLLECTION_ALPHABET);
+        queryClient.invalidateQueries([COLLECTION_ALPHABET]);
       },
     },
   );
@@ -43,7 +43,7 @@ export const useAlphabetMutation = <T extends "get" | "change">(
     {
       ...options,
       onSuccess() {
-        resetQueryData(COLLECTION_ALPHABET);
+        resetQueryData([COLLECTION_ALPHABET]);
       },
     },
   );

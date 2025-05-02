@@ -34,6 +34,7 @@ export default function GatherMain() {
     sortBy === "등록일순" ? "createdAt" : "date",
   );
 
+  console.log(24, gatherData, gathers, cursor);
   useEffect(() => {
     setGathers([]);
     setCursor(0);
@@ -116,7 +117,7 @@ export default function GatherMain() {
         )}
         <div ref={loader} />
         {isLoading && cardDataArr?.length ? (
-          <Box position="relative" mt={5} >
+          <Box position="relative" mt={5}>
             <MainLoadingAbsolute size="sm" />
           </Box>
         ) : undefined}

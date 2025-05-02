@@ -26,15 +26,13 @@ export const useResetQueryData = () => {
   const queryClient = useQueryClient();
 
   const refetchWithDelay = useCallback(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (key: any | any[], func?: () => void) => {
-      queryClient.invalidateQueries(key);
-
+    (key: string[], func?: () => void) => {
+      console.log(55, { queryKey: key, exact: false });
+      queryClient.refetchQueries({ queryKey: key, exact: false });
       if (func) func();
     },
     [queryClient],
   );
-
   return refetchWithDelay;
 };
 export const useResetStudyQuery = () => {

@@ -44,7 +44,7 @@ function GatherDetail() {
   const isMember =
     (gather?.user as IUserSummary)?.uid === session?.user.uid ||
     gather?.participants.some((who) => who?.user.uid === session?.user.uid);
-
+  console.log(gatherData);
   return (
     <>
       {gather ? (
