@@ -1,14 +1,8 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import AlertModal, { IAlertModalOptions } from "../../../components/AlertModal";
-import { useFailToast, useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
-import { useUserFriendMutation } from "../../../hooks/user/mutations";
-import { useInteractionMutation } from "../../../hooks/user/sub/interaction/mutations";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
 
 interface IProfileRelation {
@@ -16,63 +10,7 @@ interface IProfileRelation {
 }
 
 function ProfileRelation({ user }: IProfileRelation) {
-  const failGuestToast = useFailToast();
-  const router = useRouter();
-  const typeToast = useTypeToast();
-  const toast = useToast();
   const { data: session } = useSession();
-
-  const isGuest = session?.user.name === "guest";
-  const [modalType, setModalType] = useState<"requestFriend" | "cancelFriend">();
-  const [isMyFriend, setIsMyFriend] = useState(false);
-
-  const { mutate: requestFriend } = useInteractionMutation("friend", "post", {
-    onSuccess() {
-      toast("success", "친구 요청이 전송되었습니다.");
-      setModalType(null);
-    },
-  });
-
-  const { mutate: deleteFriend } = useUserFriendMutation("delete", {
-    onSuccess() {
-      toast("success", "친구 목록에서 삭제되었습니다.");
-      setIsMyFriend(false);
-      setModalType(null);
-    },
-  });
-
-  useEffect(() => {
-    if (user?.friend?.some((who) => who === session?.user?.uid)) {
-      setIsMyFriend(true);
-    }
-  }, [session?.user?.uid, user?.friend]);
-
-  const onClickCard = () => {
-    if (isGuest) {
-      failGuestToast("guest");
-      return;
-    }
-    router.push("/user");
-  };
-
-  const alertModalOptions: IAlertModalOptions = {
-    title: "친구 요청",
-    subTitle: "친구 요청을 보내시겠습니까?",
-    func: () => {
-      requestFriend({
-        toUid: user?.uid,
-        message: `${session?.user?.name}님의 친구추가 요청`,
-      });
-    },
-    text: "전송",
-  };
-
-  const cancelAlertModalOptions: IAlertModalOptions = {
-    title: "친구 삭제",
-    subTitle: "친구 목록에서 삭제하시겠습니까?",
-    func: () => deleteFriend(user.uid),
-    text: "전송",
-  };
 
   const isPrivate =
     user?.isPrivate && !user?.friend.includes(session?.user.uid) && user?.uid !== session?.user.uid;
@@ -113,48 +51,8 @@ function ProfileRelation({ user }: IProfileRelation) {
               </Link>
             </>
           )}
-
-          {user && user?.uid !== session?.user?.uid ? (
-            !isMyFriend ? (
-              <Button
-                backgroundColor="var(--color-mint)"
-                color="white"
-                size="sm"
-                onClick={() => {
-                  if (isGuest) {
-                    typeToast("guest");
-                    return;
-                  }
-                  setModalType("requestFriend");
-                }}
-              >
-                친구 요청
-              </Button>
-            ) : (
-              <Button
-                variant="outline"
-                color="var(--color-mint)"
-                borderColor="var(--color-mint)"
-                size="sm"
-                onClick={() => setModalType("cancelFriend")}
-              >
-                친구 취소
-              </Button>
-            )
-          ) : (
-            <Button onClick={onClickCard} size="sm">
-              내 프로필 수정
-            </Button>
-          )}
         </Flex>
       </Layout>
-
-      {modalType === "requestFriend" && (
-        <AlertModal options={alertModalOptions} setIsModal={() => setModalType(null)} />
-      )}
-      {modalType === "cancelFriend" && (
-        <AlertModal options={cancelAlertModalOptions} setIsModal={() => setModalType(null)} />
-      )}
     </>
   );
 }

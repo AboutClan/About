@@ -58,11 +58,14 @@ function HomeHeader() {
       dayjs(a.content.createdAt).isBefore(dayjs(b.content.createdAt)) ? 1 : -1,
     );
     const recentChat = chatArr?.[0]?.content?.content;
-    if (recentChat !== recentChatStorage) {
+    if (recentChat && recentChat !== recentChatStorage) {
+      console.log(32, recentChat, recentChatStorage);
       setIsNoticeAlert(true);
+      console.log(1);
     }
 
     if (!noticeCnt || NOTICE_ARR.length + "" !== noticeCnt) {
+      console.log(2);
       setIsNoticeAlert(true);
     }
   }, [chats]);

@@ -43,21 +43,23 @@ function UserGatherSection() {
   useEffect(() => {
     setGathers([]);
     setCursor(0);
+    setCardDataArr([]);
   }, [gatherType]);
 
   useEffect(() => {
-    if (gatherData) {
+    if (gatherData?.length) {
       setGathers((old) => [...old, ...gatherData]);
       firstLoad.current = false;
     }
-  }, [gatherData]);
+  }, [gatherData, cursor]);
 
   useEffect(() => {
-    if (!gathers) return;
+    if (!gathers?.length) return;
+
     setCardDataArr(
       setGatherDataToCardCol(gathers, true, (gather: IGather) => setTransferGatherData(gather)),
     );
-  }, [gathers, location]);
+  }, [gathers]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -104,7 +106,7 @@ function UserGatherSection() {
               bg="var(--color-mint-light)"
               color="mint"
             >
-              {data?.writtenReviewCnt}
+              {data?.writtenReviewCnt || 0}
             </Flex>
           }
         >
@@ -134,7 +136,7 @@ function UserGatherSection() {
               bg="var(--color-mint-light)"
               color="mint"
             >
-              {data?.reviewReceived}
+              {data?.reviewReceived || 0}
             </Flex>
           }
         >

@@ -10,7 +10,13 @@ export function ShortArrowIcon({
   const colorText = color === "mint" ? "#00C2B3" : color === "gray" ? "var(--gray-700)" : "white";
   const width = size == "sm" ? 12 : size === "md" ? 16 : 20;
   return dir === "right" ? (
-    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="12" viewBox="0 0 13 12" fill="none">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={`${width + 1}px`}
+      height={`${width}px`}
+      viewBox="0 0 13 12"
+      fill="none"
+    >
       <path
         fillRule="evenodd"
         clipRule="evenodd"
