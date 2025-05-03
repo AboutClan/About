@@ -15,6 +15,7 @@ import { useFeedsQuery } from "../../../hooks/feed/queries";
 import {
   useGatherParticipationMutation,
   useGatherWaitingMutation,
+  useGatherWaitingStatusMutation,
 } from "../../../hooks/gather/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import GatherExpireModal from "../../../modals/gather/gatherExpireModal/GatherExpireModal";
@@ -68,6 +69,17 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
       setTransferGather(null);
       queryClient.invalidateQueries([GATHER_CONTENT, id]);
       setIsModal(false);
+    },
+  });
+
+  const { mutate } = useGatherWaitingStatusMutation(+id, {
+    onSuccess() {
+      toast("success", "취소되었습니다.");
+      queryClient.refetchQueries([GATHER_CONTENT, id + ""]);
+    },
+    onError() {
+      toast("error", "상대가 보유중인 참여권이 없습니다.");
+      queryClient.refetchQueries([GATHER_CONTENT, id + ""]);
     },
   });
 
@@ -219,11 +231,41 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
 
   return (
     <>
-      <BottomFixedButton
-        text={text}
-        func={handleFunction}
-        color={text === "참여 취소" ? "red" : text === "빈자리 생기면 참여 요청" ? "black" : "mint"}
-      />
+      {text !== "참여 승인을 기다리고 있습니다." ? (
+        <BottomFixedButton
+          text={text}
+          func={handleFunction}
+          color={
+            text === "참여 취소" ? "red" : text === "빈자리 생기면 참여 요청" ? "black" : "mint"
+          }
+        />
+      ) : (
+        <Flex
+          position="fixed"
+          bottom={0}
+          w="full"
+          borderTop="var(--border)"
+          align="center"
+          bg="gray.200"
+          h="calc(64px + env(safe-area-inset-bottom))"
+          pt={2}
+          pb="calc(8px + env(safe-area-inset-bottom))"
+          px={5}
+        >
+          <Box flex={1} fontSize="14px" fontWeight="semibold" color="gray.600">
+            모임장의 참여 승인을 기다리고 있습니다.
+          </Box>
+          <Button
+            size="lg"
+            colorScheme="red"
+            onClick={() => {
+              mutate({ userId: session?.user.id, status: "refuse", text: null });
+            }}
+          >
+            신청 취소
+          </Button>
+        </Flex>
+      )}
       {isExpirationModal && <GatherExpireModal gather={data} setIsModal={setIsExpirationModal} />}
       {isModal && (
         <BottomFlexDrawer

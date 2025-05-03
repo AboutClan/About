@@ -1,6 +1,5 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { Dayjs } from "dayjs";
-import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { useRecoilState, useRecoilValue } from "recoil";
@@ -87,16 +86,14 @@ function StudyLinkModal({ date, onClose }: { date: Dayjs; onClose: () => void })
       }}
       setIsModal={onClose}
     >
-      <Box mb={4} color="gray.700" lineHeight="20px">
+      <Box mb={5} fontSize="22px" fontWeight="bold" color="mint">
+        + 50 Point
+      </Box>
+      <Box color="gray.700" lineHeight="20px">
         <b>{dayjsToFormat(date.locale("ko"), "M월 D일(ddd)")}</b> 스터디 신청이 완료되었습니다.
         <br />
-        소통을 위해 아래 오픈채팅방으로 입장해 주세요!
+        매칭이 성공되면 스터디 톡방도 입장해 주세요!
       </Box>
-      <Flex px={4} py={3} bg="gray.100" border="1px solid var(--gray-200)" borderRadius="8px">
-        <Link style={{ fontWeight: 500 }} href="https://open.kakao.com/o/g6Wc70sh">
-          https://open.kakao.com/o/g6Wc70sh
-        </Link>
-      </Flex>
     </ModalLayout>
   );
 }
