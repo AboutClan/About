@@ -40,8 +40,8 @@ function GatherWritingConfirmModal({ setIsModal, gatherData }: IGatherWritingCon
 
   const { mutate } = useGatherWritingMutation("post", {
     onSuccess(data) {
-      console.log(35, data);
-      console.log(24, gatherData2);
+   
+
 
       queryClient.refetchQueries({ queryKey: [GATHER_CONTENT], exact: false });
       setGatherContent(null);

@@ -12,7 +12,7 @@ interface GatherReviewDrawerProps {
 }
 
 function GatherReviewDrawer({ feed, isOpen, onClose }: GatherReviewDrawerProps) {
-  console.log(feed);
+
   const handleClose = () => {
     onClose();
   };

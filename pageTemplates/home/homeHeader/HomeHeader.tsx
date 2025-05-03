@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -12,6 +12,7 @@ import {
   CalendarCheckModalButton,
 } from "../../../components/atoms/buttons/ModalButtons";
 import Slide from "../../../components/layouts/PageSlide";
+import MonthlyScoreModal from "../../../components/modals/PopUpModals/MonthlyScoreModal";
 import { AboutLogo } from "../../../components/services/AboutLogo";
 import {
   DAILY_CHECK_POP_UP,
@@ -22,7 +23,6 @@ import { useMyChatsQuery } from "../../../hooks/chat/queries";
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import DailyCheckModal from "../../../modals/aboutHeader/dailyCheckModal/DailyCheckModal";
 import PointSystemsModal from "../../../modals/aboutHeader/pointSystemsModal/PointSystemsModal";
-import LastWeekAttendPopUp from "../../../modals/pop-up/LastWeekAttendPopUp";
 import { renderHomeHeaderState } from "../../../recoils/renderRecoils";
 import { NOTICE_ARR } from "../../../storage/notice";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
@@ -59,13 +59,10 @@ function HomeHeader() {
     );
     const recentChat = chatArr?.[0]?.content?.content;
     if (recentChat && recentChat !== recentChatStorage) {
-      console.log(32, recentChat, recentChatStorage);
       setIsNoticeAlert(true);
-      console.log(1);
     }
 
     if (!noticeCnt || NOTICE_ARR.length + "" !== noticeCnt) {
-      console.log(2);
       setIsNoticeAlert(true);
     }
   }, [chats]);
@@ -112,7 +109,7 @@ function HomeHeader() {
           </Layout>
         )}
       </Slide>
-      {modalType === "pointGuide" && <LastWeekAttendPopUp setIsModal={() => setModalType(null)} />}
+      {modalType === "pointGuide" && <MonthlyScoreModal setIsModal={() => setModalType(null)} />}
       {modalType === "dailyCheck" && <DailyCheckModal setIsModal={() => setModalType(null)} />}
       {modalType === "rule" && <PointSystemsModal setIsModal={() => setModalType(null)} />}
     </>

@@ -17,7 +17,7 @@ import { RankingNumIcon } from "../../../components/Icons/RankingIcons";
 import { StarIcon } from "../../../components/Icons/StarIcons";
 import Slide from "../../../components/layouts/PageSlide";
 import ProfileCommentCard from "../../../components/molecules/cards/ProfileCommentCard";
-import { STUDY_ATTEND_RECORD } from "../../../constants/keys/queryKeys";
+import { STUDY_RECORD_MODAL_AT } from "../../../constants/keys/queryKeys";
 import { STUDY_STATUS_TO_BADGE } from "../../../constants/studyConstants";
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import { useStudyVoteQuery } from "../../../hooks/study/queries";
@@ -39,7 +39,7 @@ function StudyResultPage() {
   const { data: collectionInfo } = useCollectionAlphabetQuery();
 
   useEffect(() => {
-    localStorage.setItem(STUDY_ATTEND_RECORD, null);
+    localStorage.setItem(STUDY_RECORD_MODAL_AT, null);
   }, []);
 
   const { data: studyVoteData } = useStudyVoteQuery(dateParam, {

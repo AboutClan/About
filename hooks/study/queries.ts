@@ -4,9 +4,9 @@ import { useQuery } from "react-query";
 
 import {
   STUDY_ARRIVED_CNT,
-  STUDY_ATTEND_RECORD,
   STUDY_PLACE,
   STUDY_PREFERENCE,
+  STUDY_RECORD_MODAL_AT,
   STUDY_START_TIME,
   STUDY_VOTE,
   STUDY_VOTE_CNT,
@@ -108,7 +108,7 @@ export const useStudyAttendRecordQuery = (
   options?: QueryOptions<IArrivedData[]>,
 ) =>
   useQuery(
-    [STUDY_ATTEND_RECORD, dayjsToStr(startDay), dayjsToStr(endDay)],
+    [STUDY_RECORD_MODAL_AT, dayjsToStr(startDay), dayjsToStr(endDay)],
     async () => {
       const res = await axios.get<IArrivedData[]>(`${SERVER_URI}/vote/arrived`, {
         params: {

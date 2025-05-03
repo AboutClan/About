@@ -6,7 +6,7 @@ import { useQueryClient } from "react-query";
 import AvatarGroupsOverwrap from "../../components/molecules/groups/AvatarGroupsOverwrap";
 import InfoBoxCol from "../../components/molecules/InfoBoxCol";
 import RightDrawer from "../../components/organisms/drawer/RightDrawer";
-import { STUDY_ATTEND_RECORD, USER_INFO } from "../../constants/keys/queryKeys";
+import { STUDY_RECORD_MODAL_AT, USER_INFO } from "../../constants/keys/queryKeys";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
@@ -25,7 +25,7 @@ function StudyPageSettingBlock() {
   const [errorMessage, setErrorMessage] = useState("");
   const [isModal, setIsModal] = useState(false);
 
-  const recentStudyAttendStorage = localStorage.getItem(STUDY_ATTEND_RECORD);
+  const recentStudyAttendStorage = localStorage.getItem(STUDY_RECORD_MODAL_AT);
   const recentStudyRecord: {
     date: string;
     place: string;

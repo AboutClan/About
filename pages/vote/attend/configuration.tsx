@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
@@ -14,7 +14,7 @@ import Textarea from "../../../components/atoms/Textarea";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
-import { STUDY_ATTEND_RECORD } from "../../../constants/keys/queryKeys";
+import { STUDY_RECORD_MODAL_AT } from "../../../constants/keys/queryKeys";
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useMyStudyResult } from "../../../hooks/custom/StudyHooks";
@@ -136,7 +136,7 @@ function Configuration() {
       place,
       members,
     };
-    localStorage.setItem(STUDY_ATTEND_RECORD, JSON.stringify(record));
+    localStorage.setItem(STUDY_RECORD_MODAL_AT, JSON.stringify(record));
   };
 
   const formData = new FormData();
@@ -177,7 +177,7 @@ function Configuration() {
       attendRealTimeStudy(formData);
     }
   };
- 
+
   return (
     <>
       <Box minH="calc(100dvh - var(--header-h))" bgColor="white">

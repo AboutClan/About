@@ -1,12 +1,12 @@
 import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
 
+import { IFooterOptions } from "../../modals/Modals";
+import PageGuideModal from "../../modals/PageGuideModal";
 import { prevPageUrlState } from "../../recoils/navigationRecoils";
-import { IModal } from "../../types/components/modalTypes";
-import { IFooterOptions } from "../Modals";
-import PageGuideModal from "../PageGuideModal";
+import { CloseProps } from "../../types/components/modalTypes";
 
-function FAQPopUp({ setIsModal }: IModal) {
+function FAQModal({ onClose }: CloseProps) {
   const router = useRouter();
   const setPrevPageUrl = useSetRecoilState(prevPageUrlState);
 
@@ -25,7 +25,7 @@ function FAQPopUp({ setIsModal }: IModal) {
   };
 
   return (
-    <PageGuideModal title="뉴비 가이드" footerOptions={footerOptions} setIsModal={setIsModal}>
+    <PageGuideModal title="뉴비 가이드" footerOptions={footerOptions} setIsModal={onClose}>
       아직도 이걸 몰라?! 당신은 뉴비군요?!
       <br />
       궁금한 거 있으면 보고 가 ~!
@@ -33,4 +33,4 @@ function FAQPopUp({ setIsModal }: IModal) {
   );
 }
 
-export default FAQPopUp;
+export default FAQModal;

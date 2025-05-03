@@ -19,7 +19,7 @@ export const useGatherQuery = (
       const res = await axios.get<IGather[]>(`${SERVER_URI}/gather`, {
         params: { cursor, category, sortBy },
       });
-      console.log(33);
+   
       return res.data;
     },
     options,

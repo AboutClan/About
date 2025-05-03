@@ -37,7 +37,7 @@ function FeedLayout({
   user,
   refetch,
 }: FeedLayoutProps) {
-  console.log(user, isAnonymous);
+
   return (
     <Flex direction="column" border="var(--border)" pb={2}>
       <FeedHeader writer={isAnonymous ? ABOUT_USER_SUMMARY : user} date={date} />

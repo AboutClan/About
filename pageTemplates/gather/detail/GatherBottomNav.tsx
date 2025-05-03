@@ -86,7 +86,7 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
   const { data: feed } = useFeedsQuery("gather", data?.id, null, true, {
     enabled: !!data?.id && data.status === "open",
   });
-  console.log(5, feed);
+
   const isMax = data?.memberCnt.max !== 0 && data?.participants.length + 1 > data?.memberCnt.max;
   const myUid = session?.user.uid;
   const isParticipant = data?.participants.some((who) => who?.user && who.user.uid === myUid);
@@ -209,7 +209,7 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
       },
     };
   };
-  console.log(24, data);
+ 
   useEffect(() => {
     if (data?.status === "open" && (myGather || isParticipant)) {
       setTransferFeedSummary({

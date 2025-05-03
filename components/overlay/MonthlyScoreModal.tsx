@@ -4,18 +4,18 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import styled from "styled-components";
 
-import Avatar from "../../components/atoms/Avatar";
-import UserBadge from "../../components/atoms/badges/UserBadge";
-import InfoCol, { InfoColOptions } from "../../components/atoms/InfoCol";
-import InfoColSkeleton from "../../components/atoms/InfoColSkeleton";
-import ProgressMark from "../../components/molecules/ProgressMark";
 import { USER_ROLE } from "../../constants/settingValue/role";
 import { usePointSystemLogQuery, useUserInfoQuery } from "../../hooks/user/queries";
-import { IModal } from "../../types/components/modalTypes";
+import { IFooterOptions, ModalLayout } from "../../modals/Modals";
+import { CloseProps } from "../../types/components/modalTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
-import { IFooterOptions, ModalLayout } from "../Modals";
+import Avatar from "../atoms/Avatar";
+import UserBadge from "../atoms/badges/UserBadge";
+import InfoCol, { InfoColOptions } from "../atoms/InfoCol";
+import InfoColSkeleton from "../atoms/InfoColSkeleton";
+import ProgressMark from "../molecules/ProgressMark";
 
-function LastWeekAttendPopUp({ setIsModal }: IModal) {
+function MonthlyScoreModal({ onClose }: CloseProps) {
   const router = useRouter();
   const { data: userInfo } = useUserInfoQuery();
 
@@ -84,7 +84,7 @@ function LastWeekAttendPopUp({ setIsModal }: IModal) {
       <ModalLayout
         title={`${dayjs().month() + 1}월 활동 점수표`}
         footerOptions={footerOptions}
-        setIsModal={setIsModal}
+        setIsModal={onClose}
       >
         <Flex align="center">
           <Avatar user={userInfo} size="xl1" />
@@ -224,4 +224,4 @@ const Message = styled.div`
   background-color: var(--gray-100);
 `;
 
-export default LastWeekAttendPopUp;
+export default MonthlyScoreModal;

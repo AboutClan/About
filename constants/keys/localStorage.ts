@@ -1,5 +1,9 @@
 import dayjs from "dayjs";
 
+export const MONTHLY_SCORE_MODAL_AT = "monthlyScoreModalAt";
+export const FAQ_MODAL_AT = "FAQModalAt";
+export const STUDY_RECORD_MODAL_AT = "studyRecordModalAt";
+
 //스터디
 
 export const RECENT_STUDY_RECORD = {};
@@ -21,10 +25,10 @@ export const GATHER_INTRO_MODAL = "gatherIntro";
 export const USER_GUIDE_POP_UP = "userGuidePopUp";
 export const SUGGEST_POP_UP = "suggestPopUp";
 export const STUDY_SPACE_POP_UP = "studyPopUp";
-export const ATTEND_POP_UP = "attendRecordPopUp3" + dayjs().startOf("week").day();
+export const MONTHLY_SCORE_MODAL_AT = "attendRecordPopUp3" + dayjs().startOf("week").day();
 export const PROMOTION_POP_UP = "promotionPopUp";
 export const DAILY_CHECK_POP_UP = "attendCheckPopUp";
-export const FAQ_POP_UP = "faqPopUp";
+export const FAQ_MODAL_AT = "faqPopUp";
 export const MANAGER_POP_UP = "managerPopUp";
 export const ALPHABET_POP_UP = "alphabetPopUp";
 export const MEMBER_MASKING_POP_UP = "memberMaskingPopUp";
