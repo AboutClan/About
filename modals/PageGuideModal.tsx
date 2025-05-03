@@ -32,8 +32,10 @@ const Wrapper = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
-  margin-top: 4px;
-  margin-bottom: 24px;
+  background-color: rgba(255, 204, 34, 0.1);
+  padding: 16px 0;
+  margin-bottom: 20px;
+  border-radius: 8px;
   justify-content: center;
 `;
 

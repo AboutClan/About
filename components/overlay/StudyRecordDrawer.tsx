@@ -8,12 +8,10 @@ import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import BottomFlexDrawer from "../organisms/drawer/BottomFlexDrawer";
 
 export interface StudyRecordDrawerProps extends CloseProps {
-  studyRecord?: {
-    date: string;
-  };
+  date: string;
 }
 
-function StudyRecordDrawer({ studyRecord, onClose }: StudyRecordDrawerProps) {
+function StudyRecordDrawer({ date, onClose }: StudyRecordDrawerProps) {
   return (
     <BottomFlexDrawer isDrawerUp isOverlay height={412} isHideBottom setIsModal={onClose}>
       <Box
@@ -24,8 +22,8 @@ function StudyRecordDrawer({ studyRecord, onClose }: StudyRecordDrawerProps) {
         fontSize="20px"
         textAlign="start"
       >
-        {dayjsToFormat(dayjs(studyRecord?.date).locale("ko"), "M월 D일(ddd)")} 스터디 기록이
-        도착했어요. <br /> 기록을 확인해볼까요?
+        {dayjsToFormat(dayjs(date).locale("ko"), "M월 D일(ddd)")} 스터디 기록이 도착했어요. <br />{" "}
+        기록을 확인해볼까요?
       </Box>
       <Box p={5}>
         <Image
@@ -37,7 +35,7 @@ function StudyRecordDrawer({ studyRecord, onClose }: StudyRecordDrawerProps) {
       </Box>
 
       <Flex direction="column" mt="8px" w="100%" mb="auto">
-        <Link href={`/study/result?date=${studyRecord?.date}`} style={{ width: "100%" }}>
+        <Link href={`/study/result?date=${date}`} style={{ width: "100%" }}>
           <Button as="div" w="full" size="lg" colorScheme="black">
             확인 하러가기
           </Button>

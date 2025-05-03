@@ -95,17 +95,17 @@ export default function UserSettingPopUp() {
 
     if (studyRecord && studyRecord?.date !== dayjsToStr(dayjs())) {
       setPopUpType((old) => [...old, "studyRecord"]);
-      popUpCnt++;
+      if (++popUpCnt < 2) return;
     }
 
     if (!checkAndSetLocalStorage(MONTHLY_SCORE_MODAL_AT, 10)) {
       setPopUpType((old) => [...old, "monthlyScore"]);
-      return;
+      if (++popUpCnt < 2) return;
     }
 
     if (!checkAndSetLocalStorage(FAQ_MODAL_AT, 20)) {
       setPopUpType((old) => [...old, "faq"]);
-      return;
+      if (++popUpCnt < 2) return;
     }
   }, []);
 
@@ -120,9 +120,7 @@ export default function UserSettingPopUp() {
         const props =
           type === "studyRecord"
             ? {
-                studyRecord: {
-                  date: "2024-02-02",
-                },
+                date: studyRecord?.date,
               }
             : {};
         return (

@@ -1,4 +1,4 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -48,10 +48,6 @@ function MonthlyScoreModal({ onClose }: CloseProps) {
 
   const footerOptions: IFooterOptions = {
     main: {},
-    sub: {
-      text: "기록 보기",
-      func: () => router.push("/user/score"),
-    },
     isFull: true,
   };
 
@@ -138,21 +134,7 @@ function MonthlyScoreModal({ onClose }: CloseProps) {
             ]}
           />
         )}
-        <Button
-          variant="unstyled"
-          bg="gray.800"
-          borderRadius="20px"
-          color="white"
-          px={3}
-          fontSize="10px"
-          mx="auto"
-          py={2}
-          w="max-content"
-          mt={3}
-          onClick={() => setIsPenaltyModal(true)}
-        >
-          동아리 활동 규정
-        </Button>
+
         <Message>
           {totalScore >= 0 &&
             (dayjs(userInfo?.registerDate).diff(dayjs(), "month") === 0 ? (

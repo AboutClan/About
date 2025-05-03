@@ -12,7 +12,6 @@ import {
   CalendarCheckModalButton,
 } from "../../../components/atoms/buttons/ModalButtons";
 import Slide from "../../../components/layouts/PageSlide";
-import MonthlyScoreModal from "../../../components/modals/PopUpModals/MonthlyScoreModal";
 import { AboutLogo } from "../../../components/services/AboutLogo";
 import {
   DAILY_CHECK_POP_UP,
@@ -22,7 +21,6 @@ import {
 import { useMyChatsQuery } from "../../../hooks/chat/queries";
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import DailyCheckModal from "../../../modals/aboutHeader/dailyCheckModal/DailyCheckModal";
-import PointSystemsModal from "../../../modals/aboutHeader/pointSystemsModal/PointSystemsModal";
 import { renderHomeHeaderState } from "../../../recoils/renderRecoils";
 import { NOTICE_ARR } from "../../../storage/notice";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
@@ -34,8 +32,7 @@ function HomeHeader() {
   const typeToast = useTypeToast();
   const { data: session } = useSession();
   const isGuest = session ? session.user.name === "guest" : false;
-  const [modalType, setModalType] = useState<HomeHeaderModalType>(null);
-
+  const [isModal, setIsModal] = useState(false);
   const renderHomeHeader = useRecoilValue(renderHomeHeaderState);
 
   const todayDailyCheck = localStorage.getItem(DAILY_CHECK_POP_UP) === dayjsToStr(dayjs());
@@ -76,9 +73,7 @@ function HomeHeader() {
             <Flex align="center">
               <Box mr={2} position="relative">
                 <CalendarCheckModalButton
-                  handleClick={
-                    isGuest ? () => typeToast("guest") : () => setModalType("dailyCheck")
-                  }
+                  handleClick={isGuest ? () => typeToast("guest") : () => setIsModal(false)}
                 />
                 <Box
                   position="absolute"
@@ -109,9 +104,8 @@ function HomeHeader() {
           </Layout>
         )}
       </Slide>
-      {modalType === "pointGuide" && <MonthlyScoreModal setIsModal={() => setModalType(null)} />}
-      {modalType === "dailyCheck" && <DailyCheckModal setIsModal={() => setModalType(null)} />}
-      {modalType === "rule" && <PointSystemsModal setIsModal={() => setModalType(null)} />}
+
+      {isModal && <DailyCheckModal setIsModal={setIsModal} />}
     </>
   );
 }

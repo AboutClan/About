@@ -26,9 +26,9 @@ function FAQModal({ onClose }: CloseProps) {
 
   return (
     <PageGuideModal title="뉴비 가이드" footerOptions={footerOptions} setIsModal={onClose}>
-      아직도 이걸 몰라?! 당신은 뉴비군요?!
+      당신만 몰랐던 <b>About 꿀팁 모음.zip</b>
       <br />
-      궁금한 거 있으면 보고 가 ~!
+      FAQ에서 모든 궁금증 해결!
     </PageGuideModal>
   );
 }
