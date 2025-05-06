@@ -22,7 +22,6 @@ export const BASE_BOTTOM_NAV_SEGMENT = ["home", "gather", "user", "studyPage", "
 export const NOT_PADDING_NAV_SEGMENT = ["login"];
 export const NOT_PADDING_BOTTOM_NAV_SEGMENT = ["vote", "ranking", "board", "studyPageMap"];
 
-const MAIN_PATHS = ["/home", "/gather", "/group", "/studyPage", "/user"];
 const EXIT_DELAY = 2000;
 
 interface BackActionMessage {
@@ -105,7 +104,7 @@ function Layout({ children }: ILayout) {
     };
 
     const handleBackAction = () => {
-      if (MAIN_PATHS.includes(pathname)) {
+      if (BASE_BOTTOM_NAV_SEGMENT.includes(segment)) {
         if (exitAppRef.current) {
           window.ReactNativeWebView?.postMessage("exitApp");
           return;
@@ -152,13 +151,13 @@ function Layout({ children }: ILayout) {
                     paddingTop: "56px",
                   }
                 : !NOT_PADDING_NAV_SEGMENT.includes(currentSegment?.[0]) &&
-                  !(currentSegment?.[0] === "store" && currentSegment?.[1]) &&
-                  !(currentSegment?.[0] === "user" && currentSegment?.[1])
-                ? {
-                    paddingTop: "56px",
-                    paddingBottom: `calc(var(--bottom-nav-height) + ${iPhoneNotchSize()}px)`,
-                  }
-                : {}),
+                    !(currentSegment?.[0] === "store" && currentSegment?.[1]) &&
+                    !(currentSegment?.[0] === "user" && currentSegment?.[1])
+                  ? {
+                      paddingTop: "56px",
+                      paddingBottom: `calc(var(--bottom-nav-height) + ${iPhoneNotchSize()}px)`,
+                    }
+                  : {}),
             }}
           >
             {children}
