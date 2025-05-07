@@ -5,17 +5,12 @@ import { ComponentType, useEffect, useState } from "react";
 import FAQModal from "../../../components/overlay/FAQModal";
 import MonthlyScoreModal from "../../../components/overlay/MonthlyScoreModal";
 import StudyRecordDrawer from "../../../components/overlay/StudyRecordDrawer";
-import {
-  GATHER_JOIN_MEMBERS,
-  MONTHLY_SCORE_MODAL_AT,
-  STUDY_ATTEND_MEMBERS,
-} from "../../../constants/keys/localStorage";
+import { GATHER_JOIN_MEMBERS, STUDY_ATTEND_MEMBERS } from "../../../constants/keys/localStorage";
 import { STUDY_RECORD_MODAL_AT } from "../../../constants/keys/queryKeys";
 import { useGatherQuery } from "../../../hooks/gather/queries";
 import { CloseProps } from "../../../types/components/modalTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
-import { checkAndSetLocalStorage } from "../../../utils/storageUtils";
 
 export type PopUpType = "studyRecord" | "faq" | "monthlyScore";
 
@@ -94,12 +89,10 @@ export default function UserSettingPopUp() {
       setPopUpType((old) => [...old, "studyRecord"]);
       if (++popUpCnt < 2) return;
     }
-
-    if (!checkAndSetLocalStorage(MONTHLY_SCORE_MODAL_AT, 10)) {
-      setPopUpType((old) => [...old, "monthlyScore"]);
-      if (++popUpCnt < 2) return;
-    }
-
+    // if (!checkAndSetLocalStorage(MONTHLY_SCORE_MODAL_AT, 10)) {
+    //   setPopUpType((old) => [...old, "monthlyScore"]);
+    //   if (++popUpCnt < 2) return;
+    // }
     // if (!checkAndSetLocalStorage(FAQ_MODAL_AT, 20)) {
     //   setPopUpType((old) => [...old, "faq"]);
     //   if (++popUpCnt < 2) return;
