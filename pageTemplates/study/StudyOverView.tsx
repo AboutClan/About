@@ -40,9 +40,13 @@ function StudyOverview({
       text: time !== "unknown" ? time : "정보 없음",
     },
     {
-      category: "오픈채팅방 링크",
-
-      rightChildren: <BlurredLink isBlur={!isVoting} url="https://open.kakao.com/o/g6Wc70sh" />,
+      category: status === "solo" || status === "free" ? "영업 장소" : "오픈채팅방 링크",
+      rightChildren:
+        status === "solo" || status === "free" ? (
+          "자유 카페 / 스터디 카페"
+        ) : (
+          <BlurredLink isBlur={!isVoting} url="https://open.kakao.com/o/g6Wc70sh" />
+        ),
     },
   ];
 

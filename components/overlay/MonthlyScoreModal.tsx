@@ -1,6 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -16,7 +15,6 @@ import InfoColSkeleton from "../atoms/InfoColSkeleton";
 import ProgressMark from "../molecules/ProgressMark";
 
 function MonthlyScoreModal({ onClose }: CloseProps) {
-  const router = useRouter();
   const { data: userInfo } = useUserInfoQuery();
 
   const { data } = usePointSystemLogQuery("score");

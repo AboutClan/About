@@ -30,6 +30,10 @@ function HomeInitialSetting() {
   const { data: userInfo } = useUserInfoQuery({
     enabled: isGuest === false,
     onSuccess(data) {
+      if (!data.isActive === false) {
+        toast("warning", "비활성화된 계정입니다. 새로 가입 신청해 주세요.");
+        router.push("/register/name");
+      }
       if (data.role === "newUser") {
         router.push("/register/name");
         return;
@@ -136,6 +140,7 @@ function HomeInitialSetting() {
     <>
       {userInfo && !isGuest && <UserSettingPopUp />}
       <GlobalStyle />
+
       {/* <Joyride
         hideCloseButton={true}
         callback={handleJoyrideCallback}

@@ -161,7 +161,7 @@ function UserGatherSection() {
         />
       </Box>
 
-      <Box position="relative" minH="320px">
+      <Box position="relative" minH="600px">
         {cardDataArr?.length ? (
           <>
             {cardDataArr.map((cardData, idx) => (
@@ -195,13 +195,13 @@ function UserGatherSection() {
             현재 참여중인 모임이 없습니다.
           </Flex>
         )}
-        <div ref={loader} />
-        {isLoading && cardDataArr?.length ? (
-          <Box position="relative" mt="32px">
-            <MainLoadingAbsolute size="sm" />
-          </Box>
-        ) : undefined}
       </Box>
+      <div ref={loader} />
+      {isLoading && cardDataArr?.length ? (
+        <Box position="relative" mt="32px">
+          <MainLoadingAbsolute size="sm" />
+        </Box>
+      ) : undefined}
     </Box>
   );
 }

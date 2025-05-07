@@ -46,6 +46,7 @@ function ProfilePage() {
   const { data } = useGroupsTitleQuery(userId, {
     enabled: !!userId,
   });
+  console.log(user);
 
   const [isMyFriend, setIsMyFriend] = useState(false);
 

@@ -1,12 +1,11 @@
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { ComponentType, useEffect, useState } from "react";
+
 import FAQModal from "../../../components/overlay/FAQModal";
 import MonthlyScoreModal from "../../../components/overlay/MonthlyScoreModal";
-
 import StudyRecordDrawer from "../../../components/overlay/StudyRecordDrawer";
 import {
-  FAQ_MODAL_AT,
   GATHER_JOIN_MEMBERS,
   MONTHLY_SCORE_MODAL_AT,
   STUDY_ATTEND_MEMBERS,
@@ -32,8 +31,6 @@ export default function UserSettingPopUp() {
   const { data: session } = useSession();
 
   const [popUpType, setPopUpType] = useState<PopUpType[]>([]);
-
-  const [recentMembers, setRecentMembers] = useState<IUserSummary[]>();
 
   const { data: gatherData } = useGatherQuery(-1);
 
@@ -103,10 +100,10 @@ export default function UserSettingPopUp() {
       if (++popUpCnt < 2) return;
     }
 
-    if (!checkAndSetLocalStorage(FAQ_MODAL_AT, 20)) {
-      setPopUpType((old) => [...old, "faq"]);
-      if (++popUpCnt < 2) return;
-    }
+    // if (!checkAndSetLocalStorage(FAQ_MODAL_AT, 20)) {
+    //   setPopUpType((old) => [...old, "faq"]);
+    //   if (++popUpCnt < 2) return;
+    // }
   }, []);
 
   const filterPopUpType = (type: PopUpType) => {

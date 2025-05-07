@@ -80,13 +80,14 @@ function Layout({ children }: ILayout) {
     }
     if (status === "loading" || session === undefined) return;
 
-    if (!session?.user) {
-      router.push("/login");
-      toast(
-        "warning",
-        "계정 정보를 불러올 수 없습니다. 지속되는 경우 마이페이지에서 다시 로그인 해주세요!",
-      );
-    }
+    /**아이폰 로그인 등 오류 */
+    // if (!session?.user) {
+    //   router.push("/login");
+    //   toast(
+    //     "warning",
+    //     "계정 정보를 불러올 수 없습니다. 지속되는 경우 마이페이지에서 다시 로그인 해주세요!",
+    //   );
+    // }
   }, [session, status]);
 
   const exitAppRef = useRef<boolean>(false);

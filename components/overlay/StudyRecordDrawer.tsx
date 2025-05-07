@@ -2,6 +2,7 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
+
 import { STUDY_RECORD_MODAL_AT } from "../../constants/keys/queryKeys";
 import { CloseProps } from "../../types/components/modalTypes";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
