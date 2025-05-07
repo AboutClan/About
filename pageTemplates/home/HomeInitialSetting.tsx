@@ -1,5 +1,5 @@
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { createGlobalStyle } from "styled-components";
 
@@ -30,7 +30,7 @@ function HomeInitialSetting() {
   const { data: userInfo } = useUserInfoQuery({
     enabled: isGuest === false,
     onSuccess(data) {
-      if (!data.isActive === false) {
+      if (data.isActive === false) {
         toast("warning", "비활성화된 계정입니다. 새로 가입 신청해 주세요.");
         router.push("/register/name");
       }
