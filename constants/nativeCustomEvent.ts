@@ -7,4 +7,5 @@ export const NATIVE_CUSTOM_EVENTS = {
   SHARE: "share",
   FOREGROUND_FCM: "foregroundFcm",
   GET_DEVICE_INFO: "getDeviceInfo",
+  EXIT_APP: "exitApp",
 } as const;
