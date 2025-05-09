@@ -12,6 +12,7 @@ import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
 import PageTracker from "../../components/layouts/PageTracker";
 import { useToken } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
+import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
 import { parseUrlToSegments } from "../../utils/stringUtils";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
 import BaseModal from "./BaseModal";
@@ -107,7 +108,7 @@ function Layout({ children }: ILayout) {
     const handleBackAction = () => {
       if (BASE_BOTTOM_NAV_SEGMENT.includes(segment)) {
         if (exitAppRef.current) {
-          window.ReactNativeWebView?.postMessage("exitApp");
+          nativeMethodUtils.exitApp();
           return;
         }
 
