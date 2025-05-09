@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
 
 import axios from "axios";
+import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -51,7 +51,7 @@ function Layout({ children }: ILayout) {
   const PUBLIC_SEGMENT = ["register", "login"];
 
   const { data: session, status } = useSession();
-
+  console.log("session", session);
   const currentSegment = parseUrlToSegments(pathname);
   const isBottomNavCondition = useMemo(
     () => BASE_BOTTOM_NAV_SEGMENT.includes(currentSegment?.[0]) && !currentSegment?.[1],
@@ -152,13 +152,13 @@ function Layout({ children }: ILayout) {
                     paddingTop: "56px",
                   }
                 : !NOT_PADDING_NAV_SEGMENT.includes(currentSegment?.[0]) &&
-                    !(currentSegment?.[0] === "store" && currentSegment?.[1]) &&
-                    !(currentSegment?.[0] === "user" && currentSegment?.[1])
-                  ? {
-                      paddingTop: "56px",
-                      paddingBottom: `calc(var(--bottom-nav-height) + ${iPhoneNotchSize()}px)`,
-                    }
-                  : {}),
+                  !(currentSegment?.[0] === "store" && currentSegment?.[1]) &&
+                  !(currentSegment?.[0] === "user" && currentSegment?.[1])
+                ? {
+                    paddingTop: "56px",
+                    paddingBottom: `calc(var(--bottom-nav-height) + ${iPhoneNotchSize()}px)`,
+                  }
+                : {}),
             }}
           >
             {children}
