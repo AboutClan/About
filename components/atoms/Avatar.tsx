@@ -51,7 +51,14 @@ function AvatarComponent({
   user = ABOUT_USER_SUMMARY,
 }: IAvatar) {
   const { avatar, _id: userId, profileImage } = user || {};
-  const image = profileImage;
+
+  const image =
+    typeof profileImage === "string"
+      ? profileImage.startsWith("http://")
+        ? profileImage.replace("http://", "https://")
+        : profileImage
+      : undefined;
+
   const hasAvatar = avatar !== undefined && avatar?.type !== null && avatar?.bg !== null;
 
   const [imageUrl, setImageUrl] = useState(!hasAvatar ? image : AVATAR_IMAGES[avatar.type].image);
