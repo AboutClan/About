@@ -51,9 +51,11 @@ function AvatarComponent({
   user = ABOUT_USER_SUMMARY,
 }: IAvatar) {
   const { avatar, _id: userId, profileImage } = user || {};
-  const image = profileImage.startsWith("http://")
-    ? profileImage.replace("http://", "https://")
-    : profileImage;
+  const image = profileImage
+    ? profileImage.startsWith("http://")
+      ? profileImage.replace("http://", "https://")
+      : profileImage
+    : null;
 
   const hasAvatar = avatar !== undefined && avatar?.type !== null && avatar?.bg !== null;
 
