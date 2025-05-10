@@ -1,10 +1,10 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
 
 import axios from "axios";
-import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -52,7 +52,6 @@ function Layout({ children }: ILayout) {
   const PUBLIC_SEGMENT = ["register", "login"];
 
   const { data: session, status } = useSession();
-  console.log("session", session);
   const currentSegment = parseUrlToSegments(pathname);
   const isBottomNavCondition = useMemo(
     () => BASE_BOTTOM_NAV_SEGMENT.includes(currentSegment?.[0]) && !currentSegment?.[1],
@@ -106,7 +105,7 @@ function Layout({ children }: ILayout) {
     };
 
     const handleBackAction = () => {
-      if (BASE_BOTTOM_NAV_SEGMENT.includes(segment)) {
+      if (BASE_BOTTOM_NAV_SEGMENT.map((item) => "/" + item).includes(pathname)) {
         if (exitAppRef.current) {
           nativeMethodUtils.exitApp();
           return;
