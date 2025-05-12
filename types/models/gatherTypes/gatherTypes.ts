@@ -63,6 +63,7 @@ export interface IGatherListItem {
 export interface IGatherParticipants {
   user: IUserSummary;
   phase?: "first" | "second";
+  reviewed?: boolean;
 }
 
 // export interface IGatherHeader {

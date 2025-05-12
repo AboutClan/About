@@ -189,6 +189,29 @@ export const useUserFriendMutation = (
     options,
   );
 
+export type UserRating = "great" | "good" | "soso" | "block";
+export interface UserReviewProps {
+  toUid: string;
+  rating: string;
+  message?: string;
+}
+
+interface UserReviewRequestProps {
+  infos: UserReviewProps[];
+  gatherId: string;
+}
+
+export const useUserReviewMutation = (options?: MutationOptions<UserReviewRequestProps>) =>
+  useMutation<void, AxiosError, UserReviewRequestProps>(
+    async (param) =>
+      requestServer<UserReviewRequestProps>({
+        method: "post",
+        url: `notice/temperature`,
+        body: param,
+      }),
+    options,
+  );
+
 export const useUpdateAllUserMutation = (options?: MutationOptions<void>) =>
   useMutation<void, AxiosError, void>(
     async () => await axios.patch(`${SERVER_URI}/user/allUserInfo`),

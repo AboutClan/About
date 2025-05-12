@@ -41,6 +41,7 @@ interface IAvatar {
     _id?: string;
     profileImage?: string;
   };
+  isSquare?: boolean;
 }
 
 function AvatarComponent({
@@ -49,6 +50,7 @@ function AvatarComponent({
   shadowAvatar,
   isLink = true,
   user = ABOUT_USER_SUMMARY,
+  isSquare,
 }: IAvatar) {
   const { avatar, _id: userId, profileImage } = user || {};
 
@@ -65,6 +67,7 @@ function AvatarComponent({
   const [bgImage, setBgImage] = useState<string | null>(null);
 
   useEffect(() => {
+    console.log(24, hasAvatar, avatar);
     setImageUrl(!hasAvatar ? image : AVATAR_IMAGES[avatar.type].image);
     if (avatar?.bg >= 100) {
       setBgImage(`url(${AVATAR_BG_IMAGES[avatar?.bg - 100].image})`);
@@ -74,22 +77,27 @@ function AvatarComponent({
   }, [image, avatar]);
 
   const onError = () => {
+    console.log(13);
     setImageUrl(AVATAR_IMAGES[0].image);
   };
+  console.log(24, imageUrl);
 
   function AvatarComponent() {
     return (
-      <AvatarContainer size={SIZE_MAPPING[size]}>
+      <AvatarContainer size={SIZE_MAPPING[size]} isSquare={isSquare}>
         <ImageContainer
           bg={
             (!shadowAvatar && bgImage) ||
             (shadowAvatar
               ? "var(--gray-200)"
+              : avatar?.bg === -1
+              ? "mint"
               : hasAvatar && avatar.bg !== null && COLOR_TABLE_LIGHT[avatar.bg])
           }
           hasType={hasAvatar && avatar.type < 100}
           color="var(--gray-500)"
           isBgImage={!!bgImage}
+          isSquare={isSquare}
         >
           <Box w="100%" h="100%" pos="relative">
             {!shadowAvatar ? (
@@ -144,10 +152,11 @@ export default Avatar;
 
 const AvatarContainer = styled.div<{
   size: number;
+  isSquare: boolean;
 }>`
   overflow: hidden;
   position: relative;
-  border-radius: 50%;
+  border-radius: ${(props) => (props.isSquare ? "12px" : "50%")};
   background-color: white;
   width: ${(props) => `${props.size}px`};
   height: ${(props) => `${props.size}px`};
@@ -158,11 +167,12 @@ const ImageContainer = styled.div<{
   bg: string | null;
   hasType: boolean;
   isBgImage: boolean;
+  isSquare: boolean;
 }>`
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: 50%;
+  border-radius: ${(props) => (props.isSquare ? "12px" : "50%")};
   overflow: hidden;
 
   background: ${(props) => (props.isBgImage ? `center/cover no-repeat ${props.bg}` : props.bg)};

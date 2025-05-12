@@ -1,15 +1,14 @@
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { ComponentType, useEffect, useState } from "react";
 
 import FAQModal from "../../../components/overlay/FAQModal";
 import MonthlyScoreModal from "../../../components/overlay/MonthlyScoreModal";
 import StudyRecordDrawer from "../../../components/overlay/StudyRecordDrawer";
-import { GATHER_JOIN_MEMBERS, STUDY_ATTEND_MEMBERS } from "../../../constants/keys/localStorage";
 import { STUDY_RECORD_MODAL_AT } from "../../../constants/keys/queryKeys";
-import { useGatherQuery } from "../../../hooks/gather/queries";
+import { useGatherReviewOneQuery } from "../../../hooks/gather/queries";
 import { CloseProps } from "../../../types/components/modalTypes";
-import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 
 export type PopUpType = "studyRecord" | "faq" | "monthlyScore";
@@ -24,63 +23,22 @@ const MODAL_COMPONENTS: Record<PopUpType, ComponentType<PopUpProps>> = {
 
 export default function UserSettingPopUp() {
   const { data: session } = useSession();
+  const router = useRouter();
 
   const [popUpType, setPopUpType] = useState<PopUpType[]>([]);
 
-  const { data: gatherData } = useGatherQuery(-1);
+  const { data } = useGatherReviewOneQuery();
+  console.log(24, data);
 
   const studyRecordStr = localStorage.getItem(STUDY_RECORD_MODAL_AT);
   const studyRecord = JSON.parse(studyRecordStr);
 
   useEffect(() => {
-    if (!gatherData) return;
-    const gatherJoin = JSON.parse(localStorage.getItem(GATHER_JOIN_MEMBERS)) || [];
-    const filteredGather = gatherData.filter((obj) => {
-      const isJoined = gatherJoin.includes(obj.id);
-      const isWithinDateRange =
-        dayjs(obj.date).isAfter(dayjs().subtract(7, "day")) &&
-        dayjs(obj.date).isBefore(dayjs(), "dates");
-
-      const isParticipant = obj.participants.some((who) => who.user.uid === session?.user.uid);
-      const isUser = (obj.user as IUserSummary).uid === session?.user.uid;
-
-      return !isJoined && isWithinDateRange && (isParticipant || isUser);
-    });
-
-    const temp = gatherJoin;
-    filteredGather.forEach((obj) => {
-      temp.push(obj.id);
-    });
-
-    temp.sort((a, b) => a - b);
-    if (temp.length >= 5) {
-      temp.shift();
+    if (!data || !session) return;
+    if (!data.participants.find((par) => par.user._id === session.user.id)?.reviewed) {
+      router.push("/home/gatherReview");
     }
-
-    const sortedStudyMembers = JSON.parse(localStorage.getItem(STUDY_ATTEND_MEMBERS)) || [];
-
-    let firstData;
-    sortedStudyMembers.forEach((obj) => {
-      if (dayjs(obj.date).isBefore(dayjs(), "dates")) {
-        if (!firstData) {
-          firstData = obj;
-        } else if (dayjs(obj.date).isAfter(firstData.date)) {
-          firstData = obj;
-        }
-      }
-    });
-
-    const filtered = sortedStudyMembers.filter(
-      (obj) => !dayjs(obj.date).isBefore(dayjs(), "dates"),
-    );
-
-    localStorage.setItem(GATHER_JOIN_MEMBERS, JSON.stringify(temp));
-    localStorage.setItem(STUDY_ATTEND_MEMBERS, JSON.stringify(filtered));
-
-    // const gatherMembers = filteredGather.flatMap((obj) => obj.participants.map((who) => who.user));
-
-    // setRecentMembers([...gatherMembers, ...(firstData ? firstData.members : [])]);
-  }, [gatherData]);
+  }, [data, session]);
 
   useEffect(() => {
     let popUpCnt = 0;
@@ -89,6 +47,7 @@ export default function UserSettingPopUp() {
       setPopUpType((old) => [...old, "studyRecord"]);
       if (++popUpCnt < 2) return;
     }
+
     // if (!checkAndSetLocalStorage(MONTHLY_SCORE_MODAL_AT, 10)) {
     //   setPopUpType((old) => [...old, "monthlyScore"]);
     //   if (++popUpCnt < 2) return;

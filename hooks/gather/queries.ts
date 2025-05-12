@@ -19,7 +19,7 @@ export const useGatherQuery = (
       const res = await axios.get<IGather[]>(`${SERVER_URI}/gather`, {
         params: { cursor, category, sortBy },
       });
-   
+
       return res.data;
     },
     options,
@@ -66,6 +66,16 @@ export const useGatherAllSummaryQuery = (options?: QueryOptions<IGatherSummary[]
         place: item.place,
       }));
       return data;
+    },
+    options,
+  );
+
+export const useGatherReviewOneQuery = (options?: QueryOptions<IGather>) =>
+  useQuery<IGather, AxiosError, IGather>(
+    [GATHER_CONTENT, "review"],
+    async () => {
+      const res = await axios.get<IGather>(`${SERVER_URI}/gather/review`);
+      return res.data;
     },
     options,
   );
