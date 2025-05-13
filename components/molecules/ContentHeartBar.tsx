@@ -45,7 +45,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const [replyProps, setReplyProps] = useState<ReplyProps>();
 
-  const { mutate } = useFeedLikeMutation({
+  const { mutate, isLoading } = useFeedLikeMutation({
     onSuccess() {
       refetch();
     },
@@ -75,17 +75,27 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
     setCommentArr(comments);
   }, [comments]);
 
-  const { mutate: writeComment } = useCommentMutation("post", "feed", feedId, {
-    onSuccess() {
-      onCompleted();
+  const { mutate: writeComment, isLoading: isLoading2 } = useCommentMutation(
+    "post",
+    "feed",
+    feedId,
+    {
+      onSuccess() {
+        onCompleted();
+      },
     },
-  });
+  );
 
-  const { mutate: writeSubComment } = useSubCommentMutation("post", "feed", feedId, {
-    onSuccess() {
-      onCompleted();
+  const { mutate: writeSubComment, isLoading: isLoading3 } = useSubCommentMutation(
+    "post",
+    "feed",
+    feedId,
+    {
+      onSuccess() {
+        onCompleted();
+      },
     },
-  });
+  );
 
   const onCompleted = () => {
     refetch();
@@ -107,6 +117,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
   }, [drawerType]);
 
   const onClickHeart = () => {
+    if (isLoading) return;
     if (isGuest) {
       typeToast("guest");
       return;
@@ -139,6 +150,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
   };
 
   const onSubmit = async (value: string) => {
+    if (isLoading2 || isLoading3) return;
     if (replyProps) {
       writeSubComment({ comment: value, commentId: replyProps.commentId });
       setCommentArr(getCommentArr(value, replyProps.commentId, commentArr, userInfo));
@@ -164,7 +176,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
     // urlSearchParams.append("drawer", type);
     // router.push(`/gather?${urlSearchParams.toString()}`);
   };
- 
+  console.log(24, commentArr);
   return (
     <>
       <Flex align="center" px={3}>
@@ -232,7 +244,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
                 key={idx}
                 type="feed"
                 id={feedId}
-                commentProps={commentArr?.find((comment) => comment._id === item._id)}
+                commentProps={item}
                 setCommentArr={setCommentArr}
                 setReplyProps={setReplyProps}
                 hasAuthority={(item.user as IUserSummary).uid !== userInfo?.uid}

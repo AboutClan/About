@@ -29,7 +29,6 @@ function Participate() {
   const { id } = useParams<{ id: string }>() || {};
 
   const { data: userInfo } = useUserInfoQuery();
- 
 
   const queryClient = useQueryClient();
 
@@ -42,7 +41,7 @@ function Participate() {
     },
   });
 
-  const { mutate: sendRegisterForm } = useGroupWaitingMutation(group?.id, {
+  const { mutate: sendRegisterForm, isLoading } = useGroupWaitingMutation(group?.id, {
     onSuccess() {
       toast("success", "가입 신청이 완료되었습니다.");
       setGroup(null);
@@ -93,7 +92,7 @@ function Participate() {
             </Container>
           </RegisterLayout>
         </Slide>
-        <BottomNav text="가입 신청" onClick={onClick} />
+        <BottomNav text="가입 신청" onClick={onClick} isLoading={isLoading} />
       </>
       {isModal && (
         <ParticipateModal

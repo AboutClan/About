@@ -97,24 +97,26 @@ export default function GatherMain() {
           setValue={setSortBy}
         />
       </Flex>
-      <Box position="relative" minH="320px">
-        {cardDataArr?.length ? (
-          <>
-            {cardDataArr.map((cardData, idx) => (
-              <Box mb="12px" key={idx}>
-                <GatherThumbnailCard {...cardData} />
-              </Box>
-            ))}
-          </>
-        ) : (
-          <>
-            {[1, 2, 3, 4, 5].map((cardData, idx) => (
-              <Box mb="12px" key={idx}>
-                <GatherSkeletonMain />
-              </Box>
-            ))}
-          </>
-        )}
+      <Box position="relative">
+        <Box minH="1000px">
+          {cardDataArr?.length ? (
+            <>
+              {cardDataArr.map((cardData, idx) => (
+                <Box mb="12px" key={idx}>
+                  <GatherThumbnailCard {...cardData} />
+                </Box>
+              ))}
+            </>
+          ) : (
+            <>
+              {[1, 2, 3, 4, 5].map((_, idx) => (
+                <Box mb="12px" key={idx}>
+                  <GatherSkeletonMain />
+                </Box>
+              ))}
+            </>
+          )}
+        </Box>
         <div ref={loader} />
         {isLoading && cardDataArr?.length ? (
           <Box position="relative" mt={5}>

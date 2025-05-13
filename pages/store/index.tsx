@@ -100,12 +100,20 @@ function StorePage() {
       text: "현재 상품",
       func: () => {
         setIsShowActive(true);
+        setIsLoading(true);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 200);
       },
     },
     {
       text: "지난 상품",
       func: () => {
         setIsShowActive(false);
+        setIsLoading(true);
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 200);
       },
     },
   ];

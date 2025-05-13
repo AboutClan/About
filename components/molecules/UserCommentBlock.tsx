@@ -23,7 +23,7 @@ function UserCommentBlock({
   hasAuthority = true,
   setCommentArr,
 }: UserCommentBlockProps) {
-
+  console.log(5, commentProps);
   return (
     <>
       <UserComment

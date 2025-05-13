@@ -31,7 +31,7 @@ function HomeInitialSetting() {
     enabled: isGuest === false,
     onSuccess(data) {
       if (data.isActive === false) {
-        toast("warning", "비활성화된 계정입니다. 새로 가입 신청해 주세요.");
+        toast("warning", "가입된 멤버가 아닙니다. 새로 가입 신청해 주세요.");
         router.push("/register/name");
       }
       if (data.role === "newUser") {

@@ -47,7 +47,7 @@ function Admin() {
   ) => {
     e.stopPropagation();
     setDeletedUser((old) => [...old, user._id]);
-    await mutate({ status, userId: user._id });
+    mutate({ status, userId: user._id });
   };
 
   return (

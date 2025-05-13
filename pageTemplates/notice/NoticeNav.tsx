@@ -22,9 +22,8 @@ function NoticeNav({ noticeType, setNoticeType, activeAlertCnt, recentChat }: IN
   useEffect(() => {
     if (activeAlertCnt === undefined) return;
     if (+localStorage.getItem(NOTICE_ACTIVE_CNT) < activeAlertCnt) setIsActiveAlert(true);
-    if (localStorage.getItem(RECENT_CHAT) !== recentChat) {
+    if (recentChat && localStorage.getItem(RECENT_CHAT) !== recentChat) {
       setIsChatAlert(true);
-    
     }
     if (noticeType === "active") {
       localStorage.setItem(NOTICE_ACTIVE_CNT, `${activeAlertCnt}`);

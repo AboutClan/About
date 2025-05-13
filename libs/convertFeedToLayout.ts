@@ -1,13 +1,14 @@
 import dayjs from "dayjs";
 
 import { FeedLayoutProps } from "../components/organisms/FeedLayout";
+import { ABOUT_USER_SUMMARY } from "../constants/serviceConstants/userConstants";
 import { FeedProps } from "../types/models/feed";
 import { dayjsToFormat } from "../utils/dateTimeUtils";
 
 export const convertFeedToLayout = (feed: FeedProps): FeedLayoutProps => {
   return {
     type: feed.type,
-    user: feed.writer,
+    user: feed?.writer || ABOUT_USER_SUMMARY,
     date: dayjsToFormat(dayjs(feed.createdAt), "YYYY년 M월 D일"),
     images: feed.images,
     content: feed.text,

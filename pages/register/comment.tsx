@@ -24,13 +24,19 @@ function Comment() {
   const [index, setIndex] = useState<number>();
 
   useEffect(() => {
-    if (!info?.comment) {
+    const comment = info?.comment;
+
+    const findIdx = MESSAGE_DATA.findIndex((message) => message === comment);
+
+    if (findIdx === -1) {
       setIndex(0);
       setTimeout(() => {
         inputRef.current?.focus(); // 포커싱
       }, 500);
+    } else {
+      setIndex(findIdx + 1);
     }
-  }, []);
+  }, [info]);
 
   const onClickNext = (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if ((index === null || index === 0) && value === "") {

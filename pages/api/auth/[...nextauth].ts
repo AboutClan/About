@@ -258,6 +258,8 @@ export const authOptions: NextAuthOptions = {
       console.log("JWT Debug:", { token, account, user });
 
       try {
+        const now = Date.now();
+
         // 특정 트리거로 토큰 업데이트
         if (trigger === "update" && token?.role) {
           token.role = "waiting";
@@ -328,6 +330,20 @@ export const authOptions: NextAuthOptions = {
 
         // Apple 로그인 처리
         if (account && account.provider === "apple") {
+          await Account.findOneAndUpdate(
+            { providerAccountId: account.providerAccountId },
+            {
+              $set: {
+                access_token: account.access_token,
+                refresh_token: account.refresh_token,
+                expires_at: account.expires_at,
+                refresh_token_expires_in: account.refresh_token_expires_in,
+                location: account.location || user.location || "수원",
+              },
+            },
+            { upsert: true }, // 계정이 없으면 생성, 있으면 업데이트
+          );
+
           const newToken: JWT = {
             accessToken: account.access_token || "", // Apple은 기본적으로 제공하지 않으므로 빈 문자열
             refreshToken: account.refresh_token || "", // Apple의 refresh_token도 필요시 빈 값
