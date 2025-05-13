@@ -4,6 +4,7 @@ import { JWT } from "next-auth/jwt";
 
 import { Account } from "../../models/account";
 import { User } from "../../models/user";
+import { generateClientSecret } from "../../pages/api/auth/[...nextauth]";
 
 interface IKakaoProfileInfo {
   name: string;
@@ -27,55 +28,86 @@ export const getRefreshedAccessToken = async (uid: string) => {
 
 export const refreshAccessToken = async (token: JWT) => {
   try {
-    const url =
-      "https://kauth.kakao.com/oauth/token?" +
-      new URLSearchParams({
-        client_id: process.env.KAKAO_CLIENT_ID as string,
-        client_secret: process.env.KAKAO_CLIENT_SECRET as string,
+    if (token.provider === "kakao") {
+      const url =
+        "https://kauth.kakao.com/oauth/token?" +
+        new URLSearchParams({
+          client_id: process.env.KAKAO_CLIENT_ID as string,
+          client_secret: process.env.KAKAO_CLIENT_SECRET as string,
+          grant_type: "refresh_token",
+          refresh_token: token.refreshToken as string,
+        });
+
+      const response = await axios.post(url, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+        },
+      });
+
+      const refreshedTokens = response.data;
+
+      if (response.status !== 200) throw refreshedTokens;
+
+      const updateFields = Object.assign(
+        {},
+        refreshedTokens.access_token && { access_token: refreshedTokens.access_token },
+        refreshedTokens.refresh_token && { refresh_token: refreshedTokens.refresh_token },
+        refreshedTokens.expires_in && { expires_at: refreshedTokens.expires_in },
+        refreshedTokens.refresh_token_expires_in && {
+          refresh_token_expires_in: refreshedTokens.refresh_token_expires_in,
+        },
+      );
+
+      await Account.updateMany({ providerAccountId: token.uid.toString() }, { $set: updateFields });
+
+      return {
+        ...token,
+        accessToken: refreshedTokens.access_token,
+        accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
+        refreshToken: refreshedTokens.refresh_token ?? token.refreshToken,
+      };
+    } else if (token.provider === "apple") {
+      const clientSecret = generateClientSecret();
+      const params = new URLSearchParams({
+        client_id: process.env.APPLE_ID as string,
+        client_secret: clientSecret,
         grant_type: "refresh_token",
         refresh_token: token.refreshToken as string,
       });
-    const response = await axios.post(url, {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-      },
-    });
 
-    const refreshedTokens = response.data;
+      const response = await axios.post("https://appleid.apple.com/auth/token", params, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      });
 
-    if (response.status !== 200) {
-      throw refreshedTokens;
+      const refreshedTokens = response.data;
+
+      if (response.status !== 200) throw refreshedTokens;
+
+      await Account.updateMany(
+        { providerAccountId: token.uid.toString() },
+        {
+          $set: {
+            access_token: refreshedTokens.access_token,
+            refresh_token: refreshedTokens.refresh_token || token.refreshToken,
+          },
+        },
+      );
+
+      return {
+        ...token,
+        accessToken: refreshedTokens.access_token,
+        accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
+        refreshToken: refreshedTokens.refresh_token ?? token.refreshToken,
+      };
+    } else {
+      // 기타 Provider 처리 필요 시 추가
+      return { ...token, error: "UnsupportedProvider" };
     }
-
-    const updateFields = Object.assign(
-      {},
-      refreshedTokens.access_token && {
-        access_token: refreshedTokens.access_token,
-      },
-      refreshedTokens.refresh_token && {
-        refresh_token: refreshedTokens.refresh_token,
-      },
-      refreshedTokens.expires_in && { expires_at: refreshedTokens.expires_in },
-      refreshedTokens.refresh_token_expires_in && {
-        refresh_token_expires_in: refreshedTokens.refresh_token_expires_in,
-      },
-    );
-
-    await Account.updateMany({ providerAccountId: token.uid.toString() }, { $set: updateFields });
-
-    return {
-      ...token,
-      accessToken: refreshedTokens.access_token,
-      accessTokenExpires: Date.now() + refreshedTokens.expires_at * 1000,
-      refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
-    };
   } catch (error) {
     console.error(error);
-
-    return {
-      ...token,
-      error: "RefreshAccessTokenError",
-    };
+    return { ...token, error: "RefreshAccessTokenError" };
   }
 };
 

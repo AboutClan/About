@@ -20,7 +20,7 @@ const secret = process.env.NEXTAUTH_SECRET;
 //   throw new Error("NEXTAUTH_SECRET 환경 변수가 설정되지 않았습니다.");
 // }
 
-const generateClientSecret = (): string => {
+export const generateClientSecret = (): string => {
   const privateKey = process.env.APPLE_PRIVATE_KEY.replace(/\\n/g, "\n"); // 환경변수에서 가져오기
   const payload = {
     iss: process.env.APPLE_TEAM_ID, // Apple Team ID
@@ -335,7 +335,7 @@ export const authOptions: NextAuthOptions = {
             {
               $set: {
                 access_token: account.access_token,
-                refresh_token: account.refresh_token,
+                refresh_token: account.refresh_token || token.refresh_token,
                 expires_at: account.expires_at,
                 refresh_token_expires_in: account.refresh_token_expires_in,
                 location: account.location || user.location || "수원",
@@ -346,8 +346,10 @@ export const authOptions: NextAuthOptions = {
 
           const newToken: JWT = {
             accessToken: account.access_token || "", // Apple은 기본적으로 제공하지 않으므로 빈 문자열
-            refreshToken: account.refresh_token || "", // Apple의 refresh_token도 필요시 빈 값
-            accessTokenExpires: Date.now() + 1000 * 60 * 60, // 1시간 후 만료 (기본값 예시)
+            refreshToken: account.refresh_token || (token.refresh_token as string) || "", // Apple의 refresh_token도 필요시 빈 값
+            accessTokenExpires: account.expires_at
+              ? account.expires_at * 1000
+              : Date.now() + 1000 * 60 * 60, // 1시간 후 만료 (기본값 예시)
             id: user.id,
             uid: user.uid,
             name: user.name,
