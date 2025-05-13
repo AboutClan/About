@@ -12,7 +12,7 @@ import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { IGroup } from "../../types/models/groupTypes/group";
 import GroupSkeletonMain from "../group/GroupSkeletonMain";
 
-type GroupType = "참여중인 모임" | "종료된 모임" | "내가 개설한 모임";
+type GroupType = "참여중인 모임" | "내가 개설한 모임";
 
 function UserGroupSection() {
   const [groupType, setGroupType] = useState<GroupType>("참여중인 모임");
@@ -25,11 +25,7 @@ function UserGroupSection() {
   const setTransdferGroupData = useSetRecoilState(transferGroupDataState);
   const { data: groupData, isLoading } = useGroupMyStatusQuery(
     cursor,
-    groupType === "참여중인 모임"
-      ? "isParticipating"
-      : groupType === "종료된 모임"
-      ? "isEnded"
-      : "isOwner",
+    groupType === "참여중인 모임" ? "isParticipating" : "isOwner",
   );
 
   useEffect(() => {
@@ -128,16 +124,14 @@ function UserGroupSection() {
       </Flex> */}
       <Box py={2} mb={3}>
         <ButtonGroups
-          buttonOptionsArr={(["참여중인 모임", "내가 개설한 모임", "추천 모임"] as GroupType[]).map(
-            (prop) => ({
-              icon: (
-                <CheckCircleIcon color={groupType === prop ? "black" : "gray"} size="sm" isFill />
-              ),
-              text: prop,
-              func: () => setGroupType(prop),
-              color: "black",
-            }),
-          )}
+          buttonOptionsArr={(["참여중인 모임", "내가 개설한 모임"] as GroupType[]).map((prop) => ({
+            icon: (
+              <CheckCircleIcon color={groupType === prop ? "black" : "gray"} size="sm" isFill />
+            ),
+            text: prop,
+            func: () => setGroupType(prop),
+            color: "black",
+          }))}
           currentValue={groupType}
           isEllipse
           size="md"
@@ -193,7 +187,9 @@ function UserGroupSection() {
             color="gray.600"
             border="var(--border)"
           >
-            현재 참여중인 모임이 없습니다.
+            {groupType === "참여중인 모임"
+              ? " 현재 참여중인 모임이 없습니다."
+              : "개설한 모임이 없습니다."}
           </Flex>
         )}
       </Box>

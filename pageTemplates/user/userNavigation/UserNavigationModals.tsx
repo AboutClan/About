@@ -90,6 +90,7 @@ function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals
       {modalOpen === "mainPlace" && (
         <RightDrawer title="활동 장소 변경" px={false} onClose={() => setIsModal(false)}>
           <RegisterLocationLayout
+            isSlide={false}
             handleButton={handleButton}
             placeInfo={placeInfo}
             setPlaceInfo={setPlaceInfo}

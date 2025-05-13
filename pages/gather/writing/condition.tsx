@@ -11,6 +11,7 @@ import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
+import { useToast } from "../../../hooks/custom/CustomToast";
 import GatherWritingUserConditionModal from "../../../modals/gather/GatherWritingUserConditionModal";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
@@ -28,6 +29,7 @@ export type GatherConditionType =
   | "isApprove";
 
 function WritingCondition() {
+  const toast = useToast();
   const router = useRouter();
   const [gatherContent, setGatherContent] = useRecoilState(sharedGatherWritingState);
   const { data: session } = useSession();
@@ -38,7 +40,7 @@ function WritingCondition() {
     pre: gatherContent?.preCnt ? true : false,
     location: gatherContent?.place ? gatherContent.place === session?.user.location : false,
     manager: true,
-    kakaoUrl: false,
+    kakaoUrl: true,
     isApprove: gatherContent?.isApprovalRequired || false,
   });
 
@@ -49,7 +51,12 @@ function WritingCondition() {
 
   // const isManager = ["manager", "previliged"].includes(session?.user.role);
 
-  const onClickNext = async () => {
+  const onClickNext = () => {
+    if (condition.kakaoUrl && !kakaoUrl) {
+      toast("error", "입장 가능한 오픈채팅방 링크를 입력해 주세요.");
+      return;
+    }
+
     const gatherData: IGatherWriting = {
       age: [19, 28],
       memberCnt: {

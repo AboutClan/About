@@ -24,7 +24,7 @@ function Profile() {
   const router = useRouter();
   const toast = useToast();
   const { data: userInfo } = useUserInfoQuery();
-
+  console.log(24, userInfo);
   const queryClient = useQueryClient();
   const [majors, setMajors] = useState<
     {
@@ -56,8 +56,8 @@ function Profile() {
     setMbti(userInfo?.mbti);
     setPlaceInfo({
       place_name: userInfo?.locationDetail?.text || "",
-      x: userInfo?.locationDetail.lon + "",
-      y: userInfo?.locationDetail.lat + "",
+      x: userInfo?.locationDetail?.lon + "",
+      y: userInfo?.locationDetail?.lat + "",
     });
     setInstagram(userInfo?.instagram);
     setComment(userInfo?.comment);
@@ -173,7 +173,7 @@ function Profile() {
             />
           </Box>
         </Box>
-        <Button mt={5} size="lg" colorScheme="mint" w="full" onClick={handleSubmit}>
+        <Button mt={5} mb={5} size="lg" colorScheme="mint" w="full" onClick={handleSubmit}>
           수정하기
         </Button>
       </Slide>

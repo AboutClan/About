@@ -24,6 +24,7 @@ function UserPage() {
       typeToast("guest");
       return;
     }
+
     setSection(type);
   };
 

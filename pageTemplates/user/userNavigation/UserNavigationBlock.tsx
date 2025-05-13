@@ -70,14 +70,14 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
           <button onClick={() => onClickBlock("modal", "deposit")}>보증금 충전</button>
         </NavBlock>
       </div>
-      <div>
+      {/* <div>
         <BlockName>신청</BlockName>
         <NavBlock>
           <button onClick={() => onClickBlock("modal", "suggest")}>건의하기</button>
           <button onClick={() => onClickBlock("modal", "declaration")}>불편사항 신고</button>
           <button onClick={() => onClickBlock("modal", "rest")}>휴식 신청 / 취소</button>
         </NavBlock>
-      </div>
+      </div> */}
       <div>
         <BlockName>안내</BlockName>
         <NavBlock>

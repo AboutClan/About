@@ -23,6 +23,7 @@ function UserLogSection() {
   ];
 
   let stepDate: string;
+  let stepValue = userInfo?.[tab];
 
   return (
     <Box>
@@ -63,7 +64,8 @@ function UserLogSection() {
           if (!stepDate || timeStr !== stepDate) {
             const isFirst = !stepDate;
             stepDate = timeStr;
-            return (
+
+            const block = (
               <>
                 <Box
                   mt={!isFirst && 5}
@@ -81,22 +83,26 @@ function UserLogSection() {
                   text={log.message}
                   time={dayjsToFormat(timeStamp, "HH:mm")}
                   value={log.meta.value}
-                  currentValue={userInfo?.[tab]}
+                  currentValue={stepValue}
                   type={tab}
                 />
               </>
             );
+            stepValue -= log.meta.value;
+            return block;
           } else {
-            return (
+            const block = (
               <Block
                 text={log.message}
                 time={dayjsToFormat(timeStamp, "HH:mm")}
                 value={log.meta.value}
-                currentValue={userInfo?.[tab]}
+                currentValue={stepValue}
                 type={tab}
                 key={idx}
               />
             );
+            stepValue -= log.meta.value;
+            return block;
           }
         })}
       </Box>

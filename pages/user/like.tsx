@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import styled from "styled-components";
 
@@ -16,33 +16,51 @@ function Like() {
       <Slide>
         <Box minH="100dvh" mt="56px">
           {activeLogs ? (
-            <Container>
-              {activeLogs
-                ?.slice()
-                ?.reverse()
-                ?.map((item, idx) => {
-                  const type = item.type;
-                  const [name, message] = item.message.split("님");
+            !activeLogs.length ? (
+              <Flex
+                justify="center"
+                align="center"
+                fontSize="14px"
+                fontWeight="medium"
+                bg="gray.100"
+                px={3}
+                py={4}
+                minH="114px"
+                borderRadius="8px"
+                color="gray.600"
+                border="var(--border)"
+              >
+                받은 좋아요가 없습니다.
+              </Flex>
+            ) : (
+              <Container>
+                {activeLogs
+                  ?.slice()
+                  ?.reverse()
+                  ?.map((item, idx) => {
+                    const type = item.type;
+                    const [name, message] = item.message.split("님");
 
-                  return (
-                    <ItemContainer key={idx}>
-                      <span>{dayjsToFormat(dayjs(item.createdAt), "YYYY년 M월 D일")}</span>
-                      <Item>
-                        <IconWrapper>
-                          <i
-                            className="fa-regular fa-circle-heart fa-xl"
-                            style={{ color: "var(--color-red)" }}
-                          />
-                        </IconWrapper>
-                        <Name>{name}</Name>
-                        <Content>
-                          님{message} {type === "like" && <Point>+2 point</Point>}
-                        </Content>
-                      </Item>
-                    </ItemContainer>
-                  );
-                })}
-            </Container>
+                    return (
+                      <ItemContainer key={idx}>
+                        <span>{dayjsToFormat(dayjs(item.createdAt), "YYYY년 M월 D일")}</span>
+                        <Item>
+                          <IconWrapper>
+                            <i
+                              className="fa-regular fa-circle-heart fa-xl"
+                              style={{ color: "var(--color-red)" }}
+                            />
+                          </IconWrapper>
+                          <Name>{name}</Name>
+                          <Content>
+                            님{message} {type === "like" && <Point>+2 point</Point>}
+                          </Content>
+                        </Item>
+                      </ItemContainer>
+                    );
+                  })}
+              </Container>
+            )
           ) : (
             <MainLoading />
           )}

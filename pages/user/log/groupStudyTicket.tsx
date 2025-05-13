@@ -23,7 +23,7 @@ function GroupStudyTicketLogSection() {
             <Box py={4}>
               <Box fontSize="11px">{userInfo?.name.slice(1)}님의 보유 티켓</Box>
               <Box fontSize="20px" fontWeight="semibold">
-                {userInfo?.ticket?.gatherTicket}개
+                {userInfo?.ticket?.groupStudyTicket}개
               </Box>
             </Box>
             <Link href="/store">

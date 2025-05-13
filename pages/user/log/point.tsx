@@ -18,6 +18,8 @@ function UserLogSection() {
   console.log(filter);
   let stepDate: string;
 
+  let stepValue: number = userInfo?.point;
+
   return (
     <>
       <Header title="포인트 기록" />
@@ -46,7 +48,8 @@ function UserLogSection() {
             if (!stepDate || timeStr !== stepDate) {
               const isFirst = !stepDate;
               stepDate = timeStr;
-              return (
+
+              const block = (
                 <>
                   <Box
                     mt={!isFirst && 5}
@@ -64,22 +67,27 @@ function UserLogSection() {
                     text={log.message}
                     time={dayjsToFormat(timeStamp, "HH:mm")}
                     value={log.meta.value}
-                    currentValue={userInfo?.point}
+                    currentValue={stepValue}
                     type="point"
                   />
                 </>
               );
+
+              stepValue -= log.meta.value;
+              return block;
             } else {
-              return (
+              const block = (
                 <Block
                   text={log.message}
                   time={dayjsToFormat(timeStamp, "HH:mm")}
                   value={log.meta.value}
-                  currentValue={userInfo?.point}
+                  currentValue={stepValue} // 감소 전 값 전달
                   type="point"
                   key={idx}
                 />
               );
+              stepValue -= log.meta.value;
+              return block;
             }
           })}
         </Box>
@@ -98,7 +106,7 @@ interface BlockProps {
 
 function Block({ text, time, value, currentValue, type }: BlockProps) {
   const valueText = type === "point" ? " Point" : type === "score" ? "점" : "원";
-
+  console.log(145, currentValue);
   return (
     <Flex px={5} mt={4} justify="space-between" align="center">
       <Flex

@@ -192,7 +192,11 @@ function UserGatherSection() {
             color="gray.600"
             border="var(--border)"
           >
-            현재 참여중인 모임이 없습니다.
+            {gatherType === "참여중인 모임"
+              ? " 현재 참여중인 모임이 없습니다."
+              : gatherType === "종료된 모임"
+              ? "과거 참여한 모임이 없습니다."
+              : "개설한 모임이 없습니다."}
           </Flex>
         )}
       </Box>
