@@ -55,7 +55,7 @@ export function PopOverIcon({
             )}
           </Box>
           {rightText && (
-            <Box ml={1} lineHeight="20px" fontSize="11px" color="var(--color-gray)">
+            <Box ml={1} lineHeight="20px" mt="1px" fontSize="10px" color="var(--color-gray)">
               {rightText}
             </Box>
           )}

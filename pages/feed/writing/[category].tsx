@@ -33,7 +33,7 @@ import { appendFormData } from "../../../utils/formDataUtils";
 function FeedWritingPage() {
   const { data: session } = useSession();
   const router = useRouter();
-  console.log(2, session);
+ 
   const toast = useToast();
   const searchParams = useSearchParams();
   const { category } = useParams<{ category: "gather" | "group" }>() || {};
@@ -57,7 +57,6 @@ function FeedWritingPage() {
   const { data: gather } = useGatherIDQuery(+id, {
     enabled: category === "gather" && !!id && !transferFeedSummary,
   });
-  console.log(123, gather);
 
   const { mutate: updatePoint } = usePointSystemMutation("point");
   const { mutate, isLoading } = useFeedMutation({

@@ -1,13 +1,10 @@
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { ComponentType, useEffect, useState } from "react";
 
 import FAQModal from "../../../components/overlay/FAQModal";
 import MonthlyScoreModal from "../../../components/overlay/MonthlyScoreModal";
 import StudyRecordDrawer from "../../../components/overlay/StudyRecordDrawer";
 import { STUDY_RECORD_MODAL_AT } from "../../../constants/keys/queryKeys";
-import { useGatherReviewOneQuery } from "../../../hooks/gather/queries";
 import { CloseProps } from "../../../types/components/modalTypes";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 
@@ -22,23 +19,22 @@ const MODAL_COMPONENTS: Record<PopUpType, ComponentType<PopUpProps>> = {
 };
 
 export default function UserSettingPopUp() {
-  const { data: session } = useSession();
-  const router = useRouter();
+  // const { data: session } = useSession();
+  // const router = useRouter();
 
   const [popUpType, setPopUpType] = useState<PopUpType[]>([]);
 
-  const { data } = useGatherReviewOneQuery();
-  console.log(24, data);
+  // const { data } = useGatherReviewOneQuery();
 
   const studyRecordStr = localStorage.getItem(STUDY_RECORD_MODAL_AT);
   const studyRecord = JSON.parse(studyRecordStr);
 
-  useEffect(() => {
-    if (!data || !session) return;
-    if (!data.participants.find((par) => par.user._id === session.user.id)?.reviewed) {
-      router.push("/home/gatherReview");
-    }
-  }, [data, session]);
+  // useEffect(() => {
+  //   if (!data || !session) return;
+  //   if (!data.participants.find((par) => par.user._id === session.user.id)?.reviewed) {
+  //     router.push("/home/gatherReview");
+  //   }
+  // }, [data, session]);
 
   useEffect(() => {
     let popUpCnt = 0;

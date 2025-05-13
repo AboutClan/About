@@ -48,7 +48,7 @@ export const ACCORDION_CONTENT_FEE: IAccordionContent[] = [
 
 export const ACCORDION_CONTENT_FAQ: IAccordionContent[] = [
   {
-    title: "[동아리] 저희 About은요!",
+    title: "About은 어떤 곳인가요?",
     content:
       "About은 같은 관심사를 가진 대학생들이 함께 교류하며, 가치있는 경험을 만들어 가는 것을 목표로 하는 동아리입니다. 스터디, 취미 활동, 친목 활동, 취업 준비, 네트워킹 등 대학생활의 모든 순간을 함께 나누는 모임이 되는 것을 목표로 하고 있습니다.",
   },

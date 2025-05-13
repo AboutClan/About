@@ -67,7 +67,6 @@ function AvatarComponent({
   const [bgImage, setBgImage] = useState<string | null>(null);
 
   useEffect(() => {
-    console.log(24, hasAvatar, avatar);
     setImageUrl(!hasAvatar ? image : AVATAR_IMAGES[avatar.type].image);
     if (avatar?.bg >= 100) {
       setBgImage(`url(${AVATAR_BG_IMAGES[avatar?.bg - 100].image})`);
@@ -77,10 +76,8 @@ function AvatarComponent({
   }, [image, avatar]);
 
   const onError = () => {
-    console.log(13);
     setImageUrl(AVATAR_IMAGES[0].image);
   };
-  console.log(24, imageUrl);
 
   function AvatarComponent() {
     return (

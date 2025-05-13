@@ -27,7 +27,6 @@ export const useResetQueryData = () => {
 
   const refetchWithDelay = useCallback(
     (key: string[], func?: () => void) => {
-      console.log(55, { queryKey: key, exact: false });
       queryClient.refetchQueries({ queryKey: key, exact: false });
       if (func) func();
     },
