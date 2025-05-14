@@ -1,6 +1,7 @@
 import { Box, Button, Flex, Grid, GridItem, Stack } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { GATHER_MAIN_IMAGE } from "../../assets/gather";
@@ -11,6 +12,8 @@ import { PopOverIcon } from "../../components/Icons/PopOverIcon";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import ProfileCommentCard from "../../components/molecules/cards/ProfileCommentCard";
+import { GATHER_REVIEW_ID } from "../../constants/keys/localStorage";
+import { useToast } from "../../hooks/custom/CustomToast";
 import { useGatherReviewOneQuery } from "../../hooks/gather/queries";
 import { UserRating, UserReviewProps, useUserReviewMutation } from "../../hooks/user/mutations";
 import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
@@ -18,9 +21,17 @@ import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomIdx } from "../../utils/mathUtils";
 
 function GatherReview() {
+  const toast = useToast();
+  const router = useRouter();
   const { data: gather } = useGatherReviewOneQuery();
 
-  const { mutate } = useUserReviewMutation();
+  const { mutate } = useUserReviewMutation({
+    onSuccess() {
+      toast("success", "리뷰가 완료되었습니다.");
+      router.push("/home");
+      localStorage.setItem(GATHER_REVIEW_ID, gather.id + "");
+    },
+  });
 
   const [userReviewArr, setUserReviewArr] = useState<UserReviewProps[]>([]);
 

@@ -5,7 +5,8 @@ import styled from "styled-components";
 
 import Avatar from "../../../components/atoms/Avatar";
 import UserBadge from "../../../components/atoms/badges/UserBadge";
-import { useTypeToast } from "../../../hooks/custom/CustomToast";
+import { PopOverIcon } from "../../../components/Icons/PopOverIcon";
+import { useToast } from "../../../hooks/custom/CustomToast";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
@@ -13,7 +14,7 @@ interface IProfileInfo {
   user: IUser;
 }
 function ProfileInfo({ user }: IProfileInfo) {
-  const typeToast = useTypeToast();
+  const toast = useToast();
   const { data: session } = useSession();
 
   return (
@@ -34,24 +35,33 @@ function ProfileInfo({ user }: IProfileInfo) {
               {dayjsToFormat(dayjs(user?.registerDate), "YYYY년 M월 d일 가입") || "게스트"}
             </Box>
           </Flex>
-          {user && user?.uid !== session?.user?.uid && (
-            <Button
-              ml="auto"
-              px={2.5}
-              size="sm"
-              fontSize="14px"
-              bg="green.50"
-              color="green.500"
-              lineHeight="22px"
-              fontWeight={500}
-              borderRadius="full"
-              onClick={() => {
-                typeToast("not-yet");
-              }}
-            >
-              36.5°C
-            </Button>
-          )}
+          <Flex flexDir="column" ml="auto" mt={4} align="center">
+            {user && user?.uid !== session?.user?.uid && (
+              <Button
+                ml={2}
+                px={2.5}
+                size="sm"
+                fontSize="14px"
+                bg="green.50"
+                color="green.500"
+                lineHeight="22px"
+                fontWeight={500}
+                borderRadius="full"
+                onClick={() => {
+                  toast("info", "아직 해당 멤버의 집계된 데이터가 없습니다.");
+                }}
+              >
+                36.5°C
+              </Button>
+            )}
+            <PopOverIcon
+              size="xs"
+              marginDir="right"
+              maxWidth={200}
+              rightText="매너 온도란?"
+              text="매너 온도는 그 사람의 모임 후기를 알 수 있는 지표예요. 매너 온도는 매월 1일에, 전전 달 15일부터 전 달 15일까지의 평가가 한 번에 반영됩니다."
+            />
+          </Flex>
         </Flex>
         <Comment>{user?.comment}</Comment>
       </Flex>

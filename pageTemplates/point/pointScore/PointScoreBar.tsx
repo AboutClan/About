@@ -28,12 +28,13 @@ function PointScoreBar({ hasQuestion = true }: IPointScoreBar) {
     }
   });
 
-  const nextBadgeObj = (userInfo !== undefined &&
-    Object.entries(BADGE_SCORE_MAPPINGS).findIndex(([, value]) => value > userInfo?.score)) || [
-    "에스프레소",
-    1000,
-  ];
-  const nextBadge = Object.entries(BADGE_SCORE_MAPPINGS)[nextBadgeObj as number];
+  const nextBadgeObj =
+    userInfo !== undefined &&
+    Object.entries(BADGE_SCORE_MAPPINGS).findIndex(([, value]) => value > userInfo?.score);
+  const nextBadge =
+    Object.entries(BADGE_SCORE_MAPPINGS)[
+      nextBadgeObj === -1 ? Object.entries(BADGE_SCORE_MAPPINGS).length - 1 : nextBadgeObj
+    ];
 
   return (
     <>

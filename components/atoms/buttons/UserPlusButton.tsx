@@ -52,6 +52,9 @@ function UserPlusButton({ toUid, isMyFriend }: UserPlusButtonProps) {
         h={5}
         variant="unstyled"
         bg={friendButtonType === "pending" ? "mint" : null}
+        onClick={() =>
+          friendButtonType !== "friend" && friendButtonType !== "pending" ? setIsModal(true) : null
+        }
       >
         {friendButtonType === "friend" ? null : friendButtonType === "pending" ? (
           <CheckCircleIcon size="sm" isFill />

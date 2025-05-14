@@ -1,4 +1,4 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useState } from "react";
 import styled from "styled-components";
@@ -11,8 +11,8 @@ import { dayjsToStr } from "../../utils/dateTimeUtils";
 import Avatar from "../atoms/Avatar";
 import UserBadge from "../atoms/badges/UserBadge";
 import InfoCol, { InfoColOptions } from "../atoms/InfoCol";
-import InfoColSkeleton from "../atoms/InfoColSkeleton";
 import ProgressMark from "../molecules/ProgressMark";
+import ValueBoxCol, { ValueBoxColItemProps } from "../molecules/ValueBoxCol";
 
 function MonthlyScoreModal({ onClose }: CloseProps) {
   const { data: userInfo } = useUserInfoQuery();
@@ -24,7 +24,7 @@ function MonthlyScoreModal({ onClose }: CloseProps) {
     (obj) =>
       dayjsToStr(dayjs(obj.timestamp).startOf("month")) === dayjsToStr(dayjs().startOf("month")),
   );
-
+  console.log(userInfo);
   const scoreObj = filteredData?.reduce(
     (acc, cur) => {
       const value = cur.meta.value;
@@ -53,24 +53,48 @@ function MonthlyScoreModal({ onClose }: CloseProps) {
 
   const optionArr: InfoColOptions[] = [
     {
-      left: "20점 이상",
-      right: "열활멤버 추가 포인트",
+      left: "번개 모임 개설",
+      right: "+ 10점",
     },
     {
-      left: "10점 이상",
-      right: "월간 참여 조건 충족",
+      left: "번개 모임 참여",
+      right: "+ 5점",
     },
     {
-      left: "5점 ~ 9점",
-      right: "보증금 500원 차감",
+      left: "사전 스터디 투표",
+      right: "+ 3점",
     },
     {
-      left: "2점 ~ 4점",
-      right: "보증금 1000원 차감",
+      left: "공식 스터디 출석",
+      right: "+ 5점",
     },
     {
-      left: "0점",
-      right: "보증금 1000원 차감 및 활동 경고",
+      left: "개인 스터디 출석",
+      right: "+ 2점",
+    },
+    {
+      left: "소모임 주간 출석",
+      right: "+ 2점",
+    },
+  ];
+
+  const valueArr: ValueBoxColItemProps[] = scoreObj && [
+    {
+      left: "이번 달 스터디 점수",
+      right: `${scoreObj.study} 점`,
+    },
+    {
+      left: "이번 달 모임 점수",
+      right: `${scoreObj.group + scoreObj.gather} 점`,
+    },
+    {
+      left: "기타 추가 점수",
+      right: `${userInfo.monthScore - totalScore} 점`,
+    },
+    {
+      left: "최종 월간 점수",
+      right: `= ${userInfo.monthScore} 점`,
+      isFinal: true,
     },
   ];
   return (
@@ -81,7 +105,7 @@ function MonthlyScoreModal({ onClose }: CloseProps) {
         setIsModal={onClose}
       >
         <Flex align="center">
-          <Avatar user={userInfo} size="xl1" />
+          <Avatar user={userInfo} size="md1" />
           <Box
             ml={2}
             lineHeight="16px"
@@ -98,87 +122,67 @@ function MonthlyScoreModal({ onClose }: CloseProps) {
         <Box my={3} h="1px" bg="gray.100" />
 
         <Box mb={3}>
-          <ProgressMark value={userInfo?.monthScore} />
+          <ProgressMark value={(userInfo?.monthScore / 30) * 100} />
         </Box>
+        {scoreObj && <ValueBoxCol items={valueArr} />}
 
-        {scoreObj ? (
-          <InfoCol
-            infoArr={[
-              {
-                left: "이번 달 스터디 점수",
-                right: `${scoreObj.study} 점`,
-              },
-              {
-                left: "이번 달 소모임 점수",
-                right: `${scoreObj.group} 점`,
-              },
-              {
-                left: "이번 달 번개 점수",
-                right: `${scoreObj.gather} 점`,
-              },
-              {
-                left: "기타 추가 점수",
-                right: `${userInfo.monthScore - totalScore} 점`,
-              },
-            ]}
-          />
-        ) : (
-          <InfoColSkeleton
-            leftArr={[
-              "이번 달 동아리 점수",
-              "이번 달 스터디 점수",
-              "이번 달 모임 점수",
-              "이번 달에 받은 좋아요",
-            ]}
-          />
-        )}
-
+        <Button
+          variant="unstyled"
+          bg="gray.800"
+          borderRadius="20px"
+          color="white"
+          px={3}
+          fontSize="10px"
+          mx="auto"
+          py={2}
+          w="max-content"
+          mt={3}
+          onClick={() => setIsPenaltyModal(true)}
+        >
+          월간 점수 가이드
+        </Button>
         <Message>
           {totalScore >= 0 &&
             (dayjs(userInfo?.registerDate).diff(dayjs(), "month") === 0 ? (
               <div>
                 🎉About에 오신 것을 진심으로 환영해요🎉
                 <br />
-                앞으로 같이 즐겁게 활동해봐요~!
+                앞으로 잘 부탁드려요~!
               </div>
-            ) : monthScore >= 20 ? (
+            ) : monthScore >= 30 ? (
               <Box>
-                🏆 열정적인 활동가시군요! 🏆 <br />
-                다음 정산 때 추가 포인트를 획득할 예정이에요.
-                <br /> 앞으로도 멋진 활동 기대할게요! 💪✨
+                🏆 About 열활멤버 🏆 <br />
+                다음 정산 때 추가 포인트를 획득합니다!
               </Box>
             ) : monthScore >= 10 ? (
               <div>
-                🎉잘하고 있어요!!🎉
+                🏆 잘 하고 있는데요 🏆
                 <br />
-                월간 목표 점수를 달성했습니다!
-                <br /> 계속해서 좋은 활동 이어나가 봐요! 😊
+                {30 - monthScore}점만 더 채우면 추가 포인트 획득!
               </div>
             ) : dayjs().date() <= 15 ? (
               <div>
-                🍒이번 달도 파이팅🍒
+                🏆 이번 달도 파이팅 🏆
                 <br />
-                이번 달 활동 점수 미리 미리 채우기!
+                월간 활동 점수 미리 채우기!
               </div>
             ) : monthScore < 2 ? (
               <div>
-                ⚠️ 활동 점수가 많이 부족합니다! ⚠️
+                ⚠️ 활동 점수가 많이 부족합니다 ⚠️
                 <br />
-                월말 정산 때 벌금과 경고 조치가 있을 수 있으니,
-                <br /> 꼭 활동에 미리 참여해 주시면 감사합니다!
+                월간 정산 때 포인트가 차감될 수 있으니 분발해 주세요!
               </div>
             ) : monthScore < 5 ? (
               <div>
                 ⚠️ 활동 점수가 조금 부족해요! ⚠️
                 <br />
-                월말 정산 때 벌금이 발생할 수 있으니 <br /> 조금만 더 분발해 주세요!
+                월간 정산 때 포인트가 차감될 수 있으니 분발해 주세요!
               </div>
             ) : (
               <div>
-                🍒 최소 활동 점수가 조금 부족해요. 🍒
+                🍒 활동 점수가 조금 부족해요. 🍒
                 <br />
-                월말 정산 시 벌금이 발생할 수 있으니,
-                <br /> 조금만 더 파이팅 해봐요!
+                월간 정산 때 포인트가 차감될 수 있으니 분발해 주세요!
               </div>
             ))}
         </Message>

@@ -12,7 +12,7 @@ export interface StudyRecordDrawerProps extends CloseProps {
   date: string;
 }
 
-function StudyRecordDrawer({ date, onClose }: StudyRecordDrawerProps) {
+function StudyRecordDrawer({ date = "2025-05-13", onClose }: StudyRecordDrawerProps) {
   return (
     <BottomFlexDrawer isDrawerUp isOverlay height={412} isHideBottom setIsModal={onClose}>
       <Box
