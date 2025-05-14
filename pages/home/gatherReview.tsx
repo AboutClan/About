@@ -131,7 +131,10 @@ function GatherReview() {
           <Flex justify="space-between" align="center" fontSize="18px" fontWeight="bold" mx={5}>
             <Box>함께 참여한 인원</Box>
             <Box>
-              <PopOverIcon text="매너 온도란" rightText="멤버 후기는?" />
+              <PopOverIcon
+                text="매너 온도는 그 사람의 모임 후기를 알 수 있는 지표예요. 매너 온도는 매월 1일에, 전전 달 15일부터 전 달 15일까지의 평가가 한 번에 반영됩니다."
+                rightText="매너 온도란?"
+              />
             </Box>
           </Flex>
           <Box mb={10} mx={5}>
