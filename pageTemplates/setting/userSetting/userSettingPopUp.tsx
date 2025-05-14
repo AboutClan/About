@@ -41,6 +41,7 @@ export default function UserSettingPopUp() {
   useEffect(() => {
     if (data === undefined || !session) return;
     if (
+      data &&
       data.id + "" !== localStorage.getItem(GATHER_REVIEW_ID) &&
       !data.participants.find((par) => par.user._id === session.user.id)?.reviewed
     ) {
