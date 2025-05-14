@@ -2,7 +2,7 @@ import { Box, Button, Flex, Grid, GridItem, Stack } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { GATHER_MAIN_IMAGE } from "../../assets/gather";
 import Avatar from "../../components/atoms/Avatar";
@@ -25,11 +25,14 @@ function GatherReview() {
   const router = useRouter();
   const { data: gather } = useGatherReviewOneQuery();
 
+  useEffect(() => {
+    localStorage.setItem(GATHER_REVIEW_ID, gather.id + "");
+  }, []);
+
   const { mutate } = useUserReviewMutation({
     onSuccess() {
       toast("success", "리뷰가 완료되었습니다.");
       router.push("/home");
-      localStorage.setItem(GATHER_REVIEW_ID, gather.id + "");
     },
   });
 

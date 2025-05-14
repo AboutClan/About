@@ -39,32 +39,30 @@ export default function UserSettingPopUp() {
   const studyRecord = JSON.parse(studyRecordStr);
 
   useEffect(() => {
-    if (!data || !session) return;
+    if (data === undefined || !session) return;
     if (
       data.id + "" !== localStorage.getItem(GATHER_REVIEW_ID) &&
       !data.participants.find((par) => par.user._id === session.user.id)?.reviewed
     ) {
       router.push("/home/gatherReview");
+    } else {
+      let popUpCnt = 0;
+
+      if (studyRecord && studyRecord?.date !== dayjsToStr(dayjs())) {
+        setPopUpType((old) => [...old, "studyRecord"]);
+        if (++popUpCnt < 2) return;
+      }
+
+      if (!checkAndSetLocalStorage(MONTHLY_SCORE_MODAL_AT, 10)) {
+        setPopUpType((old) => [...old, "monthlyScore"]);
+        if (++popUpCnt < 2) return;
+      }
+      if (!checkAndSetLocalStorage(FAQ_MODAL_AT, 20)) {
+        setPopUpType((old) => [...old, "faq"]);
+        if (++popUpCnt < 2) return;
+      }
     }
   }, [data, session]);
-
-  useEffect(() => {
-    let popUpCnt = 0;
-
-    if (studyRecord && studyRecord?.date !== dayjsToStr(dayjs())) {
-      setPopUpType((old) => [...old, "studyRecord"]);
-      if (++popUpCnt < 2) return;
-    }
-
-    if (!checkAndSetLocalStorage(MONTHLY_SCORE_MODAL_AT, 10)) {
-      setPopUpType((old) => [...old, "monthlyScore"]);
-      if (++popUpCnt < 2) return;
-    }
-    if (!checkAndSetLocalStorage(FAQ_MODAL_AT, 20)) {
-      setPopUpType((old) => [...old, "faq"]);
-      if (++popUpCnt < 2) return;
-    }
-  }, []);
 
   const filterPopUpType = (type: PopUpType) => {
     setPopUpType((popUps) => popUps.filter((popUp) => popUp !== type));

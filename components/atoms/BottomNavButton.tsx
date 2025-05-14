@@ -13,7 +13,6 @@ function BottomNavButton({ text, func, color }: BottomNavButtonProps) {
   return (
     <Slide isFixed={true} posZero="top">
       <Box
-        borderTop="var(--border)"
         px={5}
         w="full"
         pt={2}
