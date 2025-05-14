@@ -16,6 +16,7 @@ import { GATHER_REVIEW_ID } from "../../constants/keys/localStorage";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useGatherReviewOneQuery } from "../../hooks/gather/queries";
 import { UserRating, UserReviewProps, useUserReviewMutation } from "../../hooks/user/mutations";
+import { useUserInfoQuery } from "../../hooks/user/queries";
 import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomIdx } from "../../utils/mathUtils";
@@ -24,6 +25,7 @@ function GatherReview() {
   const toast = useToast();
   const router = useRouter();
   const { data: gather } = useGatherReviewOneQuery();
+  const { data: userInfo } = useUserInfoQuery();
 
   useEffect(() => {
     localStorage.setItem(GATHER_REVIEW_ID, gather.id + "");
@@ -138,16 +140,18 @@ function GatherReview() {
             </Box>
           </Flex>
           <Box mb={10} mx={5}>
-            {[gather.user, ...gather.participants.map((par) => par.user)].map((member, idx) => {
-              const user = member as UserSimpleInfoProps;
-              return (
-                <Stack pt={1} pb={3} borderBottom="var(--border)" key={idx}>
-                  <ProfileCommentCard
-                    user={user}
-                    memo={user.comment}
-                    rightComponent={
-                      <Flex>
-                        {/* {user._id !== userInfo?._id && (
+            {[gather.user, ...gather.participants.map((par) => par.user)]
+              .filter((who) => (who as UserSimpleInfoProps)._id !== userInfo?._id)
+              .map((member, idx) => {
+                const user = member as UserSimpleInfoProps;
+                return (
+                  <Stack pt={1} pb={3} borderBottom="var(--border)" key={idx}>
+                    <ProfileCommentCard
+                      user={user}
+                      memo={user.comment}
+                      rightComponent={
+                        <Flex>
+                          {/* {user._id !== userInfo?._id && (
                         <Button
                           mr={1}
                           borderRadius="50%"
@@ -161,52 +165,52 @@ function GatherReview() {
                           <HeartIcon toUid={user.uid} />
                         </Button>
                       )} */}
-                        <UserPlusButton isMyFriend={null} toUid={user.uid} />
-                      </Flex>
-                    }
-                  />
-                  <Flex justify="space-between">
-                    {avatarArr.map((props, idx) => {
-                      const isChecked =
-                        userReviewArr.find((props) => props.toUid === user.uid)?.rating ===
-                        props.rating;
+                          <UserPlusButton isMyFriend={null} toUid={user.uid} />
+                        </Flex>
+                      }
+                    />
+                    <Flex justify="space-between">
+                      {avatarArr.map((props, idx) => {
+                        const isChecked =
+                          userReviewArr.find((props) => props.toUid === user.uid)?.rating ===
+                          props.rating;
 
-                      const handleClick = () => {
-                        setUserReviewArr((old) => old.filter((who) => who.toUid !== user.uid));
-                        setUserReviewArr((old) => [
-                          ...old,
-                          { toUid: user.uid, rating: props.rating },
-                        ]);
-                      };
+                        const handleClick = () => {
+                          setUserReviewArr((old) => old.filter((who) => who.toUid !== user.uid));
+                          setUserReviewArr((old) => [
+                            ...old,
+                            { toUid: user.uid, rating: props.rating },
+                          ]);
+                        };
 
-                      return (
-                        <Button
-                          key={idx}
-                          opacity={isChecked ? 1 : 0.5}
-                          w="72px"
-                          h="100px"
-                          variant="nostyle"
-                          display="flex"
-                          flexDir="column"
-                          onClick={handleClick}
-                        >
-                          <Avatar
-                            isSquare
-                            user={{ avatar: { type: props.type, bg: isChecked ? props.bg : 0 } }}
-                            size="xl1"
-                            isLink={false}
-                          />
+                        return (
+                          <Button
+                            key={idx}
+                            opacity={isChecked ? 1 : 0.5}
+                            w="72px"
+                            h="100px"
+                            variant="nostyle"
+                            display="flex"
+                            flexDir="column"
+                            onClick={handleClick}
+                          >
+                            <Avatar
+                              isSquare
+                              user={{ avatar: { type: props.type, bg: isChecked ? props.bg : 0 } }}
+                              size="xl1"
+                              isLink={false}
+                            />
 
-                          <Box mt={3} fontSize="13px" fontWeight="semibold" color="gray.700">
-                            {props.text}
-                          </Box>
-                        </Button>
-                      );
-                    })}
-                  </Flex>
-                </Stack>
-              );
-            })}
+                            <Box mt={3} fontSize="13px" fontWeight="semibold" color="gray.700">
+                              {props.text}
+                            </Box>
+                          </Button>
+                        );
+                      })}
+                    </Flex>
+                  </Stack>
+                );
+              })}
           </Box>
         </Slide>
       )}
