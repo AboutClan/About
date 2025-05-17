@@ -1,16 +1,12 @@
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { ComponentType, useEffect, useState } from "react";
 
 import FAQModal from "../../../components/overlay/FAQModal";
 import MonthlyScoreModal from "../../../components/overlay/MonthlyScoreModal";
 import StudyRecordDrawer from "../../../components/overlay/StudyRecordDrawer";
-import {
-  FAQ_MODAL_AT,
-  GATHER_REVIEW_ID,
-  MONTHLY_SCORE_MODAL_AT,
-} from "../../../constants/keys/localStorage";
+import { FAQ_MODAL_AT, GATHER_REVIEW_ID } from "../../../constants/keys/localStorage";
 import { STUDY_RECORD_MODAL_AT } from "../../../constants/keys/queryKeys";
 import { useGatherReviewOneQuery } from "../../../hooks/gather/queries";
 import { CloseProps } from "../../../types/components/modalTypes";
@@ -54,10 +50,10 @@ export default function UserSettingPopUp() {
         if (++popUpCnt < 2) return;
       }
 
-      if (!checkAndSetLocalStorage(MONTHLY_SCORE_MODAL_AT, 10)) {
-        setPopUpType((old) => [...old, "monthlyScore"]);
-        if (++popUpCnt < 2) return;
-      }
+      // if (!checkAndSetLocalStorage(MONTHLY_SCORE_MODAL_AT, 10)) {
+      //   setPopUpType((old) => [...old, "monthlyScore"]);
+      //   if (++popUpCnt < 2) return;
+      // }
       if (!checkAndSetLocalStorage(FAQ_MODAL_AT, 20)) {
         setPopUpType((old) => [...old, "faq"]);
         if (++popUpCnt < 2) return;
