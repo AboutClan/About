@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
@@ -105,6 +105,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
     {
       kakaoOptions: {
         title: gatherData.title,
+        date: gatherData.date,
         subtitle: gatherData?.content,
         img:
           gatherData?.coverImage || GATHER_COVER_IMAGE[getRandomIdx(GATHER_COVER_IMAGE.length - 1)],
