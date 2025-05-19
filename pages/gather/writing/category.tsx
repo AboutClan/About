@@ -41,7 +41,7 @@ function WritingGatherCategory() {
       <RegisterLayout>
         <RegisterOverview>
           <span>어떤 모임을 열고 싶나요?</span>
-          <span>자유롭게 주제를 선택해 주세요</span>
+          <span>주제에 맞는 카테고리를 선택해 주세요</span>
         </RegisterOverview>
         <Flex flexDir="column">
           {GATHER_TYPES.map((type, idx) => (

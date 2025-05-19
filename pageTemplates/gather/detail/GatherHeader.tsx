@@ -1,11 +1,11 @@
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 
-import { GATHER_COVER_IMAGE } from "../../../assets/gather";
+import { GATHER_COVER_IMAGE_ARR } from "../../../assets/gather";
 import MenuButton, { MenuProps } from "../../../components/atoms/buttons/MenuButton";
 import Header from "../../../components/layouts/Header";
 import UserApprovalBoard from "../../../components/organisms/boards/UserApprovalBoard";
@@ -21,7 +21,7 @@ import { isGatherEditState } from "../../../recoils/checkAtoms";
 import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
 import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
-import { getRandomIdx } from "../../../utils/mathUtils";
+import { getRandomImage } from "../../../utils/imageUtils";
 
 interface IGatherHeader {
   gatherData: IGather;
@@ -41,7 +41,8 @@ function GatherHeader({ gatherData }: IGatherHeader) {
 
   const isAdmin =
     (gatherData?.user as UserSimpleInfoProps)._id === session?.user.id ||
-    session?.user.uid === "2259633694";
+    session?.user.uid === "2259633694" ||
+    session?.user.uid === "3224546232";
 
   const { mutate: changeStatus } = useGatherStatusMutation(+gatherData.id, {
     onSuccess() {
@@ -51,7 +52,6 @@ function GatherHeader({ gatherData }: IGatherHeader) {
 
   const { mutate } = useGatherWaitingStatusMutation(gatherData.id, {
     onSuccess() {
-      toast("success", "승인되었습니다.");
       queryClient.refetchQueries([GATHER_CONTENT, id + ""]);
     },
     onError() {
@@ -107,8 +107,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
         title: gatherData.title,
         date: gatherData.date,
         subtitle: gatherData?.content,
-        img:
-          gatherData?.coverImage || GATHER_COVER_IMAGE[getRandomIdx(GATHER_COVER_IMAGE.length - 1)],
+        img: gatherData?.coverImage || getRandomImage(GATHER_COVER_IMAGE_ARR["공통"]),
         url: "https://study-about.club" + router.asPath,
       },
     },
@@ -116,6 +115,9 @@ function GatherHeader({ gatherData }: IGatherHeader) {
 
   const handleUserStatus = async (userId: string, status: "agree" | "refuse") => {
     await mutate({ userId, status, text: null });
+
+    if (status === "agree") toast("success", "승인되었습니다.");
+    else if (status === "refuse") toast("success", "거절했습니다.");
   };
 
   return (

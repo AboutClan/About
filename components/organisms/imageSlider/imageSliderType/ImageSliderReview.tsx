@@ -12,6 +12,7 @@ interface IImageSliderReview {
 }
 
 function ImageSliderReview({ imageContainer }: IImageSliderReview) {
+  console.log(14, imageContainer);
   return (
     <Swiper
       // lazy={true}

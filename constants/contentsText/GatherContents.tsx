@@ -1,17 +1,30 @@
 import { COLOR_400_ARR } from "../colorConstants";
 
+export type GatherCategoryMain =
+  | "푸드"
+  | "취미"
+  | "소셜 게임"
+  | "문화 · 예술"
+  | "친목"
+  | "스터디"
+  | "자기계발"
+  | "운동"
+  | "파티"
+  | "힐링 나들이"
+  | "기타";
+
 //모임 카테고리
-export const GATHER_TYPES = [
+export const GATHER_TYPES: { title: GatherCategoryMain; subtitle: string }[] = [
   { title: "푸드", subtitle: "맛집탐방 · 디저트 등" },
   { title: "취미", subtitle: "사진 · 음악 · 요리 등" },
   { title: "소셜 게임", subtitle: "보드게임 · 방 탈출 · 액티비티 게임 등" },
   { title: "문화 · 예술", subtitle: "영화 · 연극 · 전시 · 팝업 스토어 등" },
-  { title: "친목", subtitle: "술자리 · 또래 친구" },
   { title: "스터디", subtitle: "카공 · 영어 · 시험 준비 · 자격증 등" },
-  { title: "자기계발", subtitle: "독서 · 습관 · 스피치 등" },
   { title: "운동", subtitle: "산책 · 러닝 · 클라이밍 · 헬스 등 " },
+  { title: "친목", subtitle: "술자리 · 또래 친구" },
+  { title: "힐링 나들이", subtitle: "여행 · 피크닉 · 놀이공원 등" },
   { title: "파티", subtitle: "파티룸 · 컨셉 파티 · 소셜 파티 등" },
-  { title: "힐링", subtitle: "여행 · 피크닉 · 놀이공원 등" },
+  { title: "자기계발", subtitle: "독서 · 습관 · 스피치 등" },
   { title: "기타", subtitle: "그 외" },
   // { title: "취미", subtitle: "보드게임 · 방탈출 · 볼링" },
   // { title: "맛집 탐방", subtitle: "맛집투어 · 카페 · 디저트" },

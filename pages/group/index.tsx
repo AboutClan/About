@@ -5,8 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
-// import RuleModal from "../../components/modals/RuleModal";
-import { GATHER_MAIN_IMAGE } from "../../assets/gather";
+import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import SectionHeader from "../../components/atoms/SectionHeader";
 import Select from "../../components/atoms/Select";
@@ -29,7 +28,7 @@ import GroupSkeletonMain from "../../pageTemplates/group/GroupSkeletonMain";
 import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { GroupCategory, GroupStatus, IGroup } from "../../types/models/groupTypes/group";
 import { shuffleArray } from "../../utils/convertUtils/convertDatas";
-import { getRandomIdx } from "../../utils/mathUtils";
+import { getRandomImage } from "../../utils/imageUtils";
 
 interface ICategory {
   main: GroupCategory;
@@ -181,7 +180,7 @@ function GroupPage() {
 
   return (
     <>
-      <Header title="소모임" url="/group" isBack={false}>
+      <Header title="소모임" isBack={false}>
         <InfoModalButton type="group" />
       </Header>
       <Slide isNoPadding>
@@ -291,7 +290,7 @@ export const createGroupThumbnailProps = (
     group.isSecret ? { user: ABOUT_USER_SUMMARY } : user,
   ),
   imageProps: {
-    image: group?.squareImage || GATHER_MAIN_IMAGE[getRandomIdx(GATHER_MAIN_IMAGE.length - 1)],
+    image: group?.squareImage || getRandomImage(GATHER_MAIN_IMAGE_ARR["공통"]),
     isPriority: isPriority && idx < 4,
   },
   maxCnt: group.memberCnt.max,

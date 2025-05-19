@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
+import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
 import SectionFooterButton from "../../components/atoms/SectionFooterButton";
 import {
   GatherThumbnailCard,
@@ -61,9 +62,8 @@ export const setGatherDataToCardCol = (
   func?: (gather: IGather) => void,
 ): GatherThumbnailCardProps[] => {
   const cardCol: GatherThumbnailCardProps[] = gathers.map((gather, idx) => {
-  
     if (!imageCache[gather.id]) {
-      imageCache[gather.id] = gather.image || getRandomImage();
+      imageCache[gather.id] = gather.image || getRandomImage(GATHER_MAIN_IMAGE_ARR["공통"]);
     }
     return {
       title: gather.title,

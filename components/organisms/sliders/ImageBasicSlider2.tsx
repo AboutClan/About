@@ -37,16 +37,16 @@ function ImageBasicSlider2({ imageTileArr, selectedImageUrl, aspect = 1 }: IImag
       doubleMap[doubleMap.length - 1].push(image);
     }
   });
-
+  console.log(doubleMap);
   return (
-    <Swiper slidesPerView={aspect === 1 ? 4.2 : 2.2}>
+    <Swiper slidesPerView={aspect === 1 ? 3.6 : 1.8}>
       {doubleMap?.map((imageTile, index) => (
         <SwiperSlide key={index}>
           <Flex direction="column" align="center">
             <Skeleton
               position="relative"
-              mb={1}
-              h="80px"
+              mb={2}
+              h="98px"
               aspectRatio={aspect}
               isLoaded={!!imageTile[0]?.imageUrl}
             >
@@ -71,8 +71,8 @@ function ImageBasicSlider2({ imageTileArr, selectedImageUrl, aspect = 1 }: IImag
                     src={imageTile[0].imageUrl}
                     alt="thumbnailImage"
                     fill={true}
-                    sizes="80px"
-                    priority={index <= (aspect === 1 ? 7 : 4)}
+                    sizes="98px"
+                    priority={index <= (aspect === 1 ? 3 : 1)}
                   />
                 )}
               </Box>
@@ -84,7 +84,7 @@ function ImageBasicSlider2({ imageTileArr, selectedImageUrl, aspect = 1 }: IImag
               <Skeleton
                 position="relative"
                 aspectRatio={aspect}
-                h="80px"
+                h="98px"
                 isLoaded={!!imageTile?.[1]?.imageUrl}
               >
                 <Box
@@ -108,7 +108,8 @@ function ImageBasicSlider2({ imageTileArr, selectedImageUrl, aspect = 1 }: IImag
                       src={imageTile?.[1]?.imageUrl}
                       alt="thumbnailImage"
                       fill={true}
-                      sizes="80px"
+                      sizes="98px"
+                      priority={index <= (aspect === 1 ? 3 : 1)}
                     />
                   )}
                 </Box>{" "}

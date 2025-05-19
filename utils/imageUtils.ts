@@ -1,13 +1,7 @@
-import { GATHER_MAIN_IMAGE } from "../assets/gather";
+import { getRandomIdx } from "./mathUtils";
 
-export const getRandomImage = () => {
-  const idx = Math.floor(Math.random() * GATHER_MAIN_IMAGE.length);
-  return GATHER_MAIN_IMAGE[idx];
-};
-export const getRandomStudyImage = () => {
-  const idx = Math.floor(Math.random() * GATHER_MAIN_IMAGE.length);
-  return GATHER_MAIN_IMAGE[idx];
-};
+export const getRandomImage = (imageArr: string[]) =>
+  imageArr.length ? imageArr[getRandomIdx(imageArr.length - 1)] : null;
 
 export const optimizeImage = (file: File): Promise<Blob> => {
   return new Promise((resolve, reject) => {

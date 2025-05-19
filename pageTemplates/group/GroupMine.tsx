@@ -3,6 +3,7 @@ import Link from "next/link";
 import { MouseEvent, useMemo } from "react";
 import { useSetRecoilState } from "recoil";
 
+import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
 import { PlusIcon } from "../../components/Icons/MathIcons";
 import ImageTileSlider, { IImageTile } from "../../components/organisms/sliders/ImageTileSlider";
 import { useToast } from "../../hooks/custom/CustomToast";
@@ -22,7 +23,7 @@ function GroupMine() {
         ?.filter((group) => group.status !== "end")
         .sort(() => Math.random() - 0.5)
         .map((group) => ({
-          imageUrl: group?.squareImage || getRandomImage(),
+          imageUrl: group?.squareImage || getRandomImage(GATHER_MAIN_IMAGE_ARR["공통"]),
           text: group.title,
           url: `/group/${group.id}`,
           func: () => setGroup(group),

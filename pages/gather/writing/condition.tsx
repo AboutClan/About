@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Switch } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
@@ -47,10 +47,10 @@ function WritingCondition() {
   const [isMemberConditionModal, setIsMemberConditionModal] = useState(false);
   const [password, setPassword] = useState(gatherContent?.password);
 
-  const [kakaoUrl, setKakaoUrl] = useState<string>("");
+  const [kakaoUrl, setKakaoUrl] = useState<string>(gatherContent?.kakaoUrl || "");
 
   // const isManager = ["manager", "previliged"].includes(session?.user.role);
-
+  console.log(gatherContent?.kakaoUrl);
   const onClickNext = () => {
     if (condition.kakaoUrl && !kakaoUrl) {
       toast("error", "입장 가능한 오픈채팅방 링크를 입력해 주세요.");
@@ -73,7 +73,7 @@ function WritingCondition() {
       isApprovalRequired: condition.isApprove,
     };
     setGatherContent(gatherData);
-    router.push("/gather/writing/image");
+    router.push({ pathname: `/gather/writing/image`, query: router.query });
   };
 
   useEffect(() => {

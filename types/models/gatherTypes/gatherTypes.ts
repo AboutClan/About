@@ -1,5 +1,6 @@
 import { Dayjs } from "dayjs";
 
+import { GatherCategoryMain } from "../../../constants/contentsText/GatherContents";
 import { UserCommentProps } from "../../components/propTypes";
 import { Location } from "../../services/locationTypes";
 import { TimeStampProps } from "../../utils/timeAndDate";
@@ -39,7 +40,7 @@ export interface IGatherWriting {
 }
 
 export type GatherCategory = "전체" | "모집중" | "완료";
-export type IGatherType = { title: string; subtitle?: string };
+export type IGatherType = { title: GatherCategoryMain; subtitle?: string };
 
 export type GatherStatus = "open" | "close" | "end" | "pending" | "planned";
 

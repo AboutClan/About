@@ -1,7 +1,7 @@
 import { Badge, Box, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
-import { ComponentProps } from "react";
+import { ComponentProps, useState } from "react";
 import styled from "styled-components";
 
 import { SingleLineText } from "../../../styles/layout/components";
@@ -107,6 +107,7 @@ export function GatherThumbnailCard({
 type PlaceImageProps = Omit<ComponentProps<typeof Image>, "alt" | "sizes" | "fill">;
 
 function PlaceImage(props: PlaceImageProps) {
+  const [imgSrc, setImgSrc] = useState(props?.src || "");
   return (
     <Box
       aspectRatio={1 / 1}
@@ -119,9 +120,15 @@ function PlaceImage(props: PlaceImageProps) {
     >
       <Image
         {...props}
+        src={imgSrc}
         alt="thumbnailImage"
         sizes="98px"
         fill
+        onError={() =>
+          setImgSrc(
+            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/choosing-perfect-movie.jpg",
+          )
+        }
         style={{
           objectFit: "cover",
         }}

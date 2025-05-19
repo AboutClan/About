@@ -2,12 +2,13 @@ import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
-import { GATHER_COVER_IMAGE, GATHER_MAIN_IMAGE } from "../../../assets/gather";
+import { GATHER_COVER_IMAGE_ARR, GATHER_MAIN_IMAGE_ARR } from "../../../assets/gather";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
 import ImageBasicSlider2 from "../../../components/organisms/sliders/ImageBasicSlider2";
+import { GatherCategoryMain } from "../../../constants/contentsText/GatherContents";
 import GatherWritingConfirmModal from "../../../modals/gather/GatherWritingConfirmModal";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
@@ -31,6 +32,8 @@ function GatherWritingImagePage() {
     cover: [],
   });
 
+  const category: GatherCategoryMain = gatherContent?.type.title;
+
   function shuffleArray(array: ImageProps[]) {
     const result = [...array]; // 원본 배열을 복사
     for (let i = result.length - 1; i > 0; i--) {
@@ -40,13 +43,19 @@ function GatherWritingImagePage() {
     return result;
   }
 
-  const mainImageArr = GATHER_MAIN_IMAGE.map((item) => ({
+  const mainImageArr = [
+    ...(category ? GATHER_MAIN_IMAGE_ARR[category] : []),
+    ...GATHER_MAIN_IMAGE_ARR["공통"],
+  ].map((item) => ({
     imageUrl: item,
     func: () => {
       setImageProps((old) => ({ ...old, mainImage: item }));
     },
   }));
-  const coverImageArr = GATHER_COVER_IMAGE.map((item) => ({
+  const coverImageArr = [
+    ...(category ? GATHER_COVER_IMAGE_ARR[category] : []),
+    ...GATHER_COVER_IMAGE_ARR["공통"],
+  ].map((item) => ({
     imageUrl: item,
     func: () => {
       setImageProps((old) => ({ ...old, coverImage: item }));

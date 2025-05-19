@@ -46,7 +46,7 @@ function ProfilePage() {
   const { data } = useGroupsTitleQuery(userId, {
     enabled: !!userId,
   });
- 
+
   const [isMyFriend, setIsMyFriend] = useState(false);
 
   const { mutate: requestFriend } = useInteractionMutation("friend", "post", {
@@ -104,7 +104,7 @@ function ProfilePage() {
 
   return (
     <>
-      <Header title="" rightPadding={16}>
+      <Header title="">
         <Button
           mr={1.5}
           display="flex"

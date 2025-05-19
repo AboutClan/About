@@ -9,7 +9,6 @@ interface IHeader {
   url?: string;
   isSlide?: boolean;
   rightPadding?: number;
-  isCenter?: boolean;
   isBorder?: boolean;
   children?: React.ReactNode;
   isTransparent?: boolean;
@@ -21,48 +20,41 @@ export default function Header({
   title,
   isSlide = true,
   url,
-  rightPadding,
+
   children,
-  isCenter = true,
   isBorder = true,
   isTransparent,
   func,
+  rightPadding,
 }: IHeader) {
+  console.log(rightPadding);
   function HeaderLayout() {
     return (
       <HeaderContainer
         isBack={isBack}
-        isCenter={isCenter}
         isBorder={!isTransparent && isBorder}
-        rightPadding={rightPadding}
         isTransparent={isTransparent}
       >
-        <Flex align="center" width="100%">
+        <Box w="130px" pl={1}>
           {isBack && (
             <ArrowBackButton func={func} color={isTransparent ? "white" : "mint"} url={url} />
           )}
-          {isCenter && (
-            <Box
-              fontWeight="bold"
-              position="absolute"
-              left="50%"
-              transform="translateX(-50%)"
-              fontSize="16px"
-              textAlign="center"
-              whiteSpace="nowrap"
-            >
-              {title}
-            </Box>
-          )}
-          {!isCenter && (
-            <Box ml={isBack && 1} fontWeight={700}>
-              {title}
-            </Box>
-          )}
-          <Flex ml="auto" align="center">
+        </Box>
+        <Box
+          flex={1}
+          mx="auto"
+          fontWeight="bold"
+          fontSize="16px"
+          textAlign="center"
+          whiteSpace="nowrap"
+        >
+          {title}
+        </Box>
+        <Box w="130px">
+          <Flex mr={4} justify="flex-end" align="center">
             {children}
           </Flex>
-        </Flex>
+        </Box>
       </HeaderContainer>
     );
   }
@@ -83,15 +75,13 @@ export default function Header({
 const HeaderContainer = styled.header<{
   isBorder?: boolean;
   isBack?: boolean;
-  isCenter?: boolean;
-  rightPadding: number;
+
   isTransparent: boolean;
 }>`
   background-color: ${(props) => (props.isTransparent ? "transparent" : "white")};
   height: var(--header-h);
   font-size: 16px;
-  padding-right: ${(props) => props.rightPadding || 16}px;
-  padding-left: ${(props) => (props.isBack ? "4px" : "20px")};
+
   display: flex;
   justify-content: space-between;
   align-items: center;

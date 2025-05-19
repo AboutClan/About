@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { GATHER_MAIN_IMAGE } from "../../assets/gather";
+import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
 import Avatar from "../../components/atoms/Avatar";
 import BottomNavButton from "../../components/atoms/BottomNavButton";
 import UserPlusButton from "../../components/atoms/buttons/UserPlusButton";
@@ -19,7 +19,7 @@ import { UserRating, UserReviewProps, useUserReviewMutation } from "../../hooks/
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
-import { getRandomIdx } from "../../utils/mathUtils";
+import { getRandomImage } from "../../utils/imageUtils";
 
 function GatherReview() {
   const toast = useToast();
@@ -103,7 +103,7 @@ function GatherReview() {
         <Slide isNoPadding>
           <Box position="relative" w="full" aspectRatio={1 / 1}>
             <Image
-              src={gather?.image || GATHER_MAIN_IMAGE[getRandomIdx(GATHER_MAIN_IMAGE.length)]}
+              src={gather?.image || getRandomImage(GATHER_MAIN_IMAGE_ARR["공통"])}
               fill
               alt="studyRecordImage"
             />

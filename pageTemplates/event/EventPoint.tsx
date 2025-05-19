@@ -1,8 +1,6 @@
 import { AspectRatio, Box, Flex } from "@chakra-ui/react";
-import Image from "next/image";
 import Link from "next/link";
 
-import { EVENT_BANNER_PROMOTION } from "../../assets/images/imageUrl";
 import ArrowTextButton from "../../components/atoms/buttons/ArrowTextButton";
 import SectionBar from "../../components/molecules/bars/SectionBar";
 
@@ -11,7 +9,7 @@ export default function EventPoint() {
     <>
       <Link href="/promotion">
         <AspectRatio position="relative" ratio={4 / 1}>
-          <Image src={EVENT_BANNER_PROMOTION} fill={true} sizes="400px" alt="eventBanner" />
+          {/* <Image src={EVENT_BANNER_PROMOTION} fill={true} sizes="400px" alt="eventBanner" /> */}
         </AspectRatio>
       </Link>
       <SectionBar title="다양한 포인트 획득처" size="md" />

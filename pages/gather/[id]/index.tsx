@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
-import { GATHER_COVER_IMAGE } from "../../../assets/gather";
+import { GATHER_COVER_IMAGE_ARR } from "../../../assets/gather";
 import Divider from "../../../components/atoms/Divider";
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../components/layouts/PageSlide";
@@ -22,7 +22,7 @@ import GatherTitle from "../../../pageTemplates/gather/detail/GatherTitle";
 import { transferGatherDataState } from "../../../recoils/transferRecoils";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
-import { getRandomIdx } from "../../../utils/mathUtils";
+import { getRandomImage } from "../../../utils/imageUtils";
 
 function GatherDetail() {
   const { data: session } = useSession();
@@ -53,10 +53,7 @@ function GatherDetail() {
           <Slide isNoPadding>
             <Box aspectRatio={2 / 1} position="relative">
               <Image
-                src={
-                  gather?.coverImage ||
-                  GATHER_COVER_IMAGE[getRandomIdx(GATHER_COVER_IMAGE.length - 1)]
-                }
+                src={gather?.image || getRandomImage(GATHER_COVER_IMAGE_ARR["공통"])}
                 fill={true}
                 sizes="400px"
                 alt="study"

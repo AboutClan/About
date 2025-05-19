@@ -36,16 +36,26 @@ function GatherComments({ comments }: IGatherComments) {
 
   const { data: userInfo } = useUserInfoQuery();
 
-  const { mutate: writeComment } = useCommentMutation("post", "gather", gatherId, {
-    onSuccess() {
-      onCompleted();
+  const { mutate: writeComment, isLoading: isLoading1 } = useCommentMutation(
+    "post",
+    "gather",
+    gatherId,
+    {
+      onSuccess() {
+        onCompleted();
+      },
     },
-  });
-  const { mutate: writeSubComment } = useSubCommentMutation("post", "gather", gatherId, {
-    onSuccess() {
-      onCompleted();
+  );
+  const { mutate: writeSubComment, isLoading: isLoading2 } = useSubCommentMutation(
+    "post",
+    "gather",
+    gatherId,
+    {
+      onSuccess() {
+        onCompleted();
+      },
     },
-  });
+  );
 
   const onCompleted = () => {
     setTransferGather(null);
@@ -65,6 +75,7 @@ function GatherComments({ comments }: IGatherComments) {
   };
 
   const onSubmit = async (value: string) => {
+    if (isLoading1 || isLoading2) return;
     if (replyProps) {
       setCommentArr(getCommentArr(value, replyProps.commentId, commentArr, userInfo));
       writeSubComment({ comment: value, commentId: replyProps.commentId });
@@ -73,7 +84,7 @@ function GatherComments({ comments }: IGatherComments) {
     await writeComment({ comment: value });
     setCommentArr((old) => [...old, addNewComment(userInfo, value)]);
   };
-
+  console.log(commentArr);
   return (
     <>
       <Box my={5} fontWeight="semibold" fontSize="16px">
@@ -95,7 +106,7 @@ function GatherComments({ comments }: IGatherComments) {
                 key={idx}
                 type="gather"
                 id={gatherId}
-                commentProps={commentArr?.find((comment) => comment._id === item._id)}
+                commentProps={item}
                 setCommentArr={setCommentArr}
                 setReplyProps={setReplyProps}
                 hasAuthority={!isGuest}

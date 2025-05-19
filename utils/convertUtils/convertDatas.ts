@@ -1,19 +1,20 @@
 import * as CryptoJS from "crypto-js";
 
+import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
 import { enToKrMapping, krToEnMapping } from "../../constants/location";
 import { USER_SCORE_BADGE_ARR } from "../../constants/serviceConstants/badgeConstants";
 import { StudyPlaceProps } from "../../types/models/studyTypes/baseTypes";
 import { UserBadge, UserRole } from "../../types/models/userTypes/userInfoTypes";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
 import { ActiveLocation, Location, LocationEn } from "../../types/services/locationTypes";
-import { getRandomStudyImage } from "../imageUtils";
+import { getRandomImage } from "../imageUtils";
 
 export const convertPlaceToStudyPlace = (place: PlaceInfoProps): StudyPlaceProps => {
   return {
     fullname: place.name,
     brand: "",
     branch: "",
-    image: getRandomStudyImage(),
+    image: getRandomImage(STUDY_MAIN_IMAGES),
     latitude: place.latitude,
     longitude: place.longitude,
     coverImage: "",

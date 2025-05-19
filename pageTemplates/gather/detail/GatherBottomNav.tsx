@@ -200,16 +200,13 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
             }
           }
         }
-        if (userInfo?.ticket?.gatherTicket <= 0) {
-          toast("error", "보유한 번개 참여권이 없습니다.");
-          return;
-        }
+
         setIsModal(true);
         onClick("participate");
       },
     };
   };
- 
+
   useEffect(() => {
     if (data?.status === "open" && (myGather || isParticipant)) {
       setTransferFeedSummary({
@@ -228,6 +225,15 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
       participate({ phase: "first", isFree: true });
     }
   }, [value]);
+
+  const handleParticipate = (type: "participate" | "apply", phase: "first" | "second") => {
+    if (userInfo?.ticket?.gatherTicket <= 0) {
+      toast("error", "보유한 번개 참여권이 없습니다.");
+      return;
+    }
+    if (type === "participate") participate({ phase });
+    else if (type === "apply") sendRegisterForm({ phase });
+  };
 
   return (
     <>
@@ -287,10 +293,8 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
                 variant="unstyled"
                 py={4}
                 w="100%"
-                onClick={
-                  data?.isApprovalRequired
-                    ? () => sendRegisterForm({ phase: "first" })
-                    : () => participate({ phase: "first", isFree: data?.type.title === "스터디" })
+                onClick={() =>
+                  handleParticipate(data?.isApprovalRequired ? "apply" : "participate", "first")
                 }
               >
                 <Flex justify="center" align="center" w="20px" h="20px" mr={4} opacity={0.28}>
@@ -315,10 +319,8 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
                 variant="unstyled"
                 py={4}
                 w="100%"
-                onClick={
-                  data?.isApprovalRequired
-                    ? () => sendRegisterForm({ phase: "second" })
-                    : () => participate({ phase: "second", isFree: data?.type.title === "스터디" })
+                onClick={() =>
+                  handleParticipate(data?.isApprovalRequired ? "apply" : "participate", "second")
                 }
               >
                 <Flex justify="center" align="center" w="20px" h="20px" mr={4} opacity={0.28}>

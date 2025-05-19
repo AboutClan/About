@@ -29,7 +29,7 @@ function GatherWritingConfirmModal({ setIsModal, gatherData }: IGatherWritingCon
   const errorToast = useErrorToast();
   const queryClient = useQueryClient();
   const toast = useToast();
-
+  console.log(gatherData);
   const [isFirst, setIsFirst] = useState(true);
   const [imageUrl, setImageUrl] = useState();
 
@@ -40,9 +40,6 @@ function GatherWritingConfirmModal({ setIsModal, gatherData }: IGatherWritingCon
 
   const { mutate } = useGatherWritingMutation("post", {
     onSuccess(data) {
-   
-
-
       queryClient.refetchQueries({ queryKey: [GATHER_CONTENT], exact: false });
       setGatherContent(null);
       router.push(`/gather/${(data as unknown as { gatherId: number })?.gatherId}`);

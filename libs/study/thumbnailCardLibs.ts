@@ -1,3 +1,4 @@
+import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
 import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
 import { CoordinatesProps } from "../../types/common";
 import {
@@ -88,7 +89,7 @@ export const setStudyThumbnailCard = (
               )
             : undefined,
           imageProps: {
-            image: placeInfo.image || getRandomImage(),
+            image: placeInfo.image || getRandomImage(GATHER_MAIN_IMAGE_ARR["스터디"]),
             isPriority: idx < 4,
           },
           _id: data.place._id,

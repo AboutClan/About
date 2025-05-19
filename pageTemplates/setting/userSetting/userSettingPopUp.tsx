@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { ComponentType, useEffect, useState } from "react";
 
 import FAQModal from "../../../components/overlay/FAQModal";
@@ -30,7 +30,7 @@ export default function UserSettingPopUp() {
   const [popUpType, setPopUpType] = useState<PopUpType[]>([]);
 
   const { data } = useGatherReviewOneQuery();
-
+  console.log(2, data);
   const studyRecordStr = localStorage.getItem(STUDY_RECORD_MODAL_AT);
   const studyRecord = JSON.parse(studyRecordStr);
 

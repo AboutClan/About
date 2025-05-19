@@ -16,22 +16,24 @@ function RightDrawer({ title, onClose, children, headerBtn, px = true }: RightUs
   };
 
   return (
-    <Drawer isOpen onClose={handleClose} size="full" placement="right">
-      <DrawerOverlay />
-      <DrawerContent>
-        <DrawerBody p="0" mx="auto" w="100%" maxW="var(--max-width)">
-          <Header
-            title={title}
-            isSlide={false}
-            func={onClose}
-            rightPadding={headerBtn ? 4 : undefined}
-          >
-            {headerBtn}
-          </Header>
-          <Box px={px ? 5 : 0}>{children}</Box>
-        </DrawerBody>
-      </DrawerContent>
-    </Drawer>
+    <>
+      <Drawer isOpen onClose={handleClose} size="full" placement="right">
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerBody p="0" mx="auto" w="100%" maxW="var(--max-width)">
+            <Header
+              title={title}
+              isSlide={false}
+              func={onClose}
+              rightPadding={headerBtn ? 4 : undefined}
+            >
+              {headerBtn}
+            </Header>
+            <Box px={px ? 5 : 0}>{children}</Box>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    </>
   );
 }
 
