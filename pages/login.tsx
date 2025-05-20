@@ -56,12 +56,6 @@ const Login: NextPage<{
   });
 
   useEffect(() => {
-    if (window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID);
-    }
-  }, []);
-
-  useEffect(() => {
     switch (statusParam) {
       case "complete":
         if (!locationParam) return;
@@ -100,17 +94,6 @@ const Login: NextPage<{
 
     if (session?.user?.name === "guest") {
       await signOut({ redirect: false });
-    }
-
-    if (provider === "kakao") {
-      if (!window.Kakao.isInitialized()) {
-        window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID);
-      }
-      window.Kakao.Auth.authorize({
-        redirectUri: "https://study-about.club/api/auth/callback/kakao", // 반드시 등록된 값!
-        throughTalk: true,
-      });
-      return;
     }
 
     await signIn(provider, {
