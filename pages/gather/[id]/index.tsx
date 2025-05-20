@@ -53,7 +53,7 @@ function GatherDetail() {
           <Slide isNoPadding>
             <Box aspectRatio={2 / 1} position="relative">
               <Image
-                src={gather?.image || getRandomImage(GATHER_COVER_IMAGE_ARR["공통"])}
+                src={gather?.coverImage || getRandomImage(GATHER_COVER_IMAGE_ARR["공통"])}
                 fill={true}
                 sizes="400px"
                 alt="study"
