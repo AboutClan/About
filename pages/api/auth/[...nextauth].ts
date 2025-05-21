@@ -12,6 +12,7 @@ import clientPromise from "../../../libs/backend/mongodb";
 import { refreshAccessToken } from "../../../libs/backend/oauthUtils";
 import { Account } from "../../../models/account";
 import { User } from "../../../models/user";
+import { ActiveLocation } from "../../../types/services/locationTypes";
 
 const secret = process.env.NEXTAUTH_SECRET;
 
@@ -25,6 +26,7 @@ const GUEST_USER = {
   role: "guest",
   isActive: false,
   profileImage: "",
+  location: "수원" as ActiveLocation,
 };
 
 const MEMBER_GUEST_USER = {
@@ -194,6 +196,7 @@ export const authOptions: NextAuthOptions = {
           role: token.role,
           isActive: token.isActive,
           profileImage: token.profileImage,
+          location: "수원",
         };
       }
       return session;
