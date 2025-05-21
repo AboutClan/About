@@ -1,6 +1,5 @@
 import { DefaultSession } from "next-auth";
 
-import { Location } from "./services/locationTypes";
 declare module "next-auth/jwt" {
   // JWT 토큰의 타입을 확장합니다.
   interface JWT {
@@ -13,7 +12,6 @@ declare module "next-auth/jwt" {
     profileImage?: string;
     role?: UserRole;
     isActive?: boolean;
-    location?: Location;
   }
 }
 
@@ -44,7 +42,6 @@ declare module "next-auth" {
     isActive: boolean;
     uid: string;
     profileImage: string;
-    location?: Location;
   }
   /**
    * Usually contains information about the provider being used
@@ -54,7 +51,6 @@ declare module "next-auth" {
     accessToken: string;
     refreshToken: string;
     accessTokenExpires: number;
-    location: Location;
   }
   /** The OAuth profile returned from your provider */
   interface Profile {
@@ -71,7 +67,7 @@ declare module "next-auth" {
       role: UserRole;
       isActive: boolean;
       profileImage: string;
-      location: Location;
+
       /** The user's postal address. */
     } & DefaultSession["user"];
   }
