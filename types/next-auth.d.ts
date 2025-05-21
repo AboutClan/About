@@ -72,6 +72,7 @@ declare module "next-auth" {
       isActive: boolean;
       profileImage: string;
       location: Location;
+
       /** The user's postal address. */
     } & DefaultSession["user"];
   }

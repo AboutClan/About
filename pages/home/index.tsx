@@ -1,3 +1,5 @@
+import { useSession } from "next-auth/react";
+
 import Slide from "../../components/layouts/PageSlide";
 import { useGroupSnapshotQuery } from "../../hooks/groupStudy/queries";
 import HomeBannerSlide from "../../pageTemplates/home/HomeBannerSlide";

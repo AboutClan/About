@@ -2,11 +2,10 @@ import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
-import RowButtonBlock from "../../../components/atoms/blocks/RowButtonBlock";
 import RowTextBlockButton from "../../../components/atoms/buttons/RowTextBlockButton";
 import TextDevider from "../../../components/atoms/devider/TextDevider";
-import { DESIGN_PAGE_USER_PERMISSION } from "../../../constants/storage/userPermissions";
-import { useFailToast } from "../../../hooks/custom/CustomToast";
+import { useFailToast, useTypeToast } from "../../../hooks/custom/CustomToast";
+import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { DispatchString } from "../../../types/hooks/reactTypes";
 import { UserOverviewModal } from "./UserNavigation";
 
@@ -17,14 +16,15 @@ interface IUserNavigationBlock {
 type ContentByType<T extends "page" | "modal"> = T extends "page" ? string : UserOverviewModal;
 
 function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
+  const typeToast = useTypeToast();
   const { data: session } = useSession();
   const router = useRouter();
   const failToast = useFailToast();
 
+  const { data: userInfo } = useUserInfoQuery();
+
   const isGuest = session?.user.name === "guest";
-  const role = session?.user.role;
-  const isAdmin = role === "previliged";
-  const hasDesignAccess = DESIGN_PAGE_USER_PERMISSION.includes(session?.user.uid);
+  const isAdmin = userInfo?.role === "previliged";
 
   //네비게이션 함수
   const onClickBlock = <T extends "page" | "modal">(type: T, content: ContentByType<T>): void => {
@@ -42,7 +42,7 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
 
   return (
     <Layout>
-      {(isAdmin || hasDesignAccess) && (
+      {isAdmin && (
         <div>
           <TextDevider text="관리자" />
           {isAdmin && (
@@ -51,33 +51,29 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
                 text="관리자 페이지"
                 onClick={() => onClickBlock("page", "/admin")}
               />
-              <NavBlock>
-                <button onClick={() => onClickBlock("page", "/admin/test")}>테스트</button>
-              </NavBlock>
             </>
           )}
-          {hasDesignAccess && <RowButtonBlock url="/designs" text="디자인 페이지" />}
         </div>
       )}
       <div>
         <BlockName>계정</BlockName>
         <NavBlock>
-          <button onClick={() => onClickBlock("modal", "mainPlace")}>주 활동장소 변경</button>
           <button onClick={() => onClickBlock("modal", "profile")}>프로필 공개 설정</button>
           <button onClick={() => onClickBlock("modal", "isLocationSharingDenided")}>
             스터디 위치 공개 설정
           </button>
-          <button onClick={() => onClickBlock("modal", "deposit")}>보증금 충전</button>
+          <button onClick={() => onClickBlock("modal", "mainPlace")}>주 활동 장소 변경</button>
+          <button onClick={() => onClickBlock("modal", "coupon")}>쿠폰 입력</button>
         </NavBlock>
       </div>
-      {/* <div>
+      <div>
         <BlockName>신청</BlockName>
         <NavBlock>
           <button onClick={() => onClickBlock("modal", "suggest")}>건의하기</button>
           <button onClick={() => onClickBlock("modal", "declaration")}>불편사항 신고</button>
-          <button onClick={() => onClickBlock("modal", "rest")}>휴식 신청 / 취소</button>
+          <button onClick={() => typeToast("inspection")}>휴식 신청</button>
         </NavBlock>
-      </div> */}
+      </div>
       <div>
         <BlockName>안내</BlockName>
         <NavBlock>
@@ -91,7 +87,7 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
         </NavBlock>
       </div>
       <div>
-        <BlockName>탈퇴</BlockName>
+        <BlockName>기타</BlockName>
         <NavBlock>
           <button onClick={() => onClickBlock("modal", "secede")}>회원 탈퇴</button>
           <button onClick={() => onClickBlock("modal", "logout")}>로그아웃</button>

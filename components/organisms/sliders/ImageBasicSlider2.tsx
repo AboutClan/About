@@ -37,7 +37,7 @@ function ImageBasicSlider2({ imageTileArr, selectedImageUrl, aspect = 1 }: IImag
       doubleMap[doubleMap.length - 1].push(image);
     }
   });
-  console.log(doubleMap);
+
   return (
     <Swiper slidesPerView={aspect === 1 ? 3.6 : 1.8}>
       {doubleMap?.map((imageTile, index) => (

@@ -7,6 +7,7 @@ interface ITwoButtonNav {
   onClickLeft: () => void;
   onClickRight: () => void;
   size?: "md" | "lg";
+  isDisabled?: boolean;
 }
 
 function TwoButtonNav({
@@ -15,6 +16,7 @@ function TwoButtonNav({
   isLoading,
   onClickLeft,
   onClickRight,
+  isDisabled = false,
 }: ITwoButtonNav) {
   return (
     <Flex w="full">
@@ -41,7 +43,7 @@ function TwoButtonNav({
         onClick={onClickRight}
         borderRadius="8px"
         isLoading={isLoading}
-        disabled={false}
+        isDisabled={isDisabled}
       >
         {rightText}
       </Button>

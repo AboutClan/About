@@ -176,7 +176,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
     // urlSearchParams.append("drawer", type);
     // router.push(`/gather?${urlSearchParams.toString()}`);
   };
-  console.log(24, commentArr);
+
   return (
     <>
       <Flex align="center" px={3}>

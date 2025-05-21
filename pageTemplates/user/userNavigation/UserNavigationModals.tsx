@@ -1,12 +1,16 @@
+import { Box, Button } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
+import Divider from "../../../components/atoms/Divider";
+import { Input } from "../../../components/atoms/Input";
+import InfoList from "../../../components/atoms/lists/InfoList";
 import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import { USER_INFO } from "../../../constants/keys/queryKeys";
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
-import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
+import { usePointSystemMutation, useUserInfoFieldMutation } from "../../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import RequestBirthModal from "../../../modals/userRequest/RequestBirthModal";
 import RequestChargeDepositModal from "../../../modals/userRequest/RequestChargeDepositModal";
@@ -30,6 +34,12 @@ function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals
   const [isModal, setIsModal] = useState<boolean>();
   const typeToast = useTypeToast();
   const { data: userInfo } = useUserInfoQuery();
+
+  const { mutate } = usePointSystemMutation("point");
+
+  const handleCoupon = () => {
+    mutate({ value: 2000, message: "", sub: "coupon" });
+  };
 
   useEffect(() => {
     if (modalOpen === "spaceSetting") {
@@ -85,6 +95,27 @@ function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals
       {modalOpen === "profile" && <RequestBirthModal type="profile" setIsModal={setIsModal} />}
       {modalOpen === "isLocationSharingDenided" && (
         <RequestBirthModal type="location" setIsModal={setIsModal} />
+      )}
+      {modalOpen === "coupon" && (
+        <RightDrawer title="쿠폰 입력" onClose={() => setIsModal(false)}>
+          <Box mt={5}>
+            <Input placeholder="쿠폰 번호를 입력해 주세요." />
+          </Box>
+          <Button mt={5} colorScheme="mint" w="full">
+            사용하기
+          </Button>
+          <Box py={10}>
+            <Divider />
+          </Box>
+          <InfoList
+            items={[
+              "같은 쿠폰은 계정 당 1회만 사용 가능합니다.",
+              "유효기간이 지난 쿠폰은 사용하실 수 없습니다.",
+              "부정한 방법으로 획득한 쿠폰은 회수될 수 있습니다.",
+              "쿠폰으로 지급된 포인트는 환급받을 수 없습니다.",
+            ]}
+          />
+        </RightDrawer>
       )}
 
       {modalOpen === "mainPlace" && (

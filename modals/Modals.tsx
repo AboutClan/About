@@ -26,6 +26,7 @@ export interface IFooterOptions {
     func?: () => void;
     isred?: boolean;
     isLoading?: boolean;
+    isDisabled?: boolean;
   };
   sub?: {
     text?: string;
@@ -205,6 +206,7 @@ export function ModalLayout({
                 onClickLeft={subFunc}
                 onClickRight={func}
                 isLoading={main?.isLoading}
+                isDisabled={main?.isDisabled}
               />
             ) : (
               <>

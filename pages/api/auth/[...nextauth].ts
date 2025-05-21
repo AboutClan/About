@@ -131,7 +131,11 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ account, user }) {
       try {
-        if (["guest", "credentials"].includes(account.provider)) return true;
+      
+        if (["guest", "credentials"].includes(account.provider)) {
+         
+          return true;
+        }
         if (["kakao", "apple"].includes(account.provider)) {
           await dbConnect();
         }
@@ -185,6 +189,7 @@ export const authOptions: NextAuthOptions = {
     },
 
     async session({ session, token, user, trigger }) {
+    
       if (trigger === "update") return session;
       if (session.user.name === "게스트") session.user = MEMBER_GUEST_USER;
       else if (session.user.name === "guest") session.user = GUEST_USER;
@@ -199,10 +204,12 @@ export const authOptions: NextAuthOptions = {
           location: "수원",
         };
       }
+   
       return session;
     },
 
     async jwt({ token, account, user, trigger }) {
+  
       try {
         if (trigger === "update") {
           token.role = "waiting";
@@ -222,7 +229,7 @@ export const authOptions: NextAuthOptions = {
                 {
                   $set: {
                     access_token: account.access_token,
-                    refresh_token: account.refresh_token || token.refresh_token,
+                    refresh_token: account.refresh_token ?? token.refresh_token,
                     expires_at: account.expires_at,
                     refresh_token_expires_in: account.refresh_token_expires_in,
                   },
@@ -233,7 +240,7 @@ export const authOptions: NextAuthOptions = {
             return {
               accessToken: account.access_token || "",
               refreshToken: account.refresh_token || token.refresh_token || "",
-              accessTokenExpires: (account.expires_at || 3600) * 1000 + Date.now(),
+              accessTokenExpires: (account.expires_at ?? Math.floor(Date.now() / 1000)) * 1000,
               id: user.id,
               uid: user.uid,
               name: user.name,
@@ -242,9 +249,13 @@ export const authOptions: NextAuthOptions = {
               isActive: user.isActive || false,
             };
         }
-        return token.accessTokenExpires && Date.now() < token.accessTokenExpires
-          ? token
-          : refreshAccessToken(token);
+        try {
+          return token.accessTokenExpires && Date.now() < token.accessTokenExpires
+            ? token
+            : await refreshAccessToken(token, account?.provider);
+        } catch (e) {
+          return { ...token, error: "RefreshAccessTokenError" };
+        }
       } catch (error) {
         console.error("JWT 콜백 에러:", error);
         return token;

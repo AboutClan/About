@@ -32,13 +32,13 @@ export const useStudyPlacesQuery = (
   useQuery<StudyPlaceProps[], AxiosError, StudyPlaceProps[]>(
     [STUDY_PLACE, location, active],
     async () => {
-      console.log(515151);
+  
       const res = await axios.get<StudyPlaceProps[]>(`${SERVER_URI}/place`, {
         params: {
           status: active,
         },
       });
-      console.log(3535, res.data);
+ 
       const places = res.data.filter((place) => place.brand !== "자유 신청" && location === "all");
       return places;
     },

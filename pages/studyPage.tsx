@@ -105,7 +105,7 @@ export default function StudyPage() {
   }, [studyVoteData, session, currentLocation, isLoading, userInfo]);
 
   const isExpireDate = dayjs(date).isBefore(dayjs().subtract(1, "day"));
-  console.log(124, isPlaceMap, placeData);
+ 
   return (
     <>
       <StudyPageHeader />
