@@ -50,19 +50,28 @@ export const usePointSystemQuery = (
 
 export const usePointSystemLogQuery = (
   category: "score" | "point" | "deposit",
-  isUserScope: boolean = true,
+  scopeQuery?: "all",
   options?: QueryOptions<IPointLog[]>,
 ) =>
   useQuery<IPointLog[], AxiosError, IPointLog[]>(
-    [USER_POINT_SYSTEM, category, isUserScope, "log"],
+    [USER_POINT_SYSTEM, category, scopeQuery, "log"],
     async () => {
-      const scopeQuery = isUserScope ? "" : "all";
-
       const res = await axios.get<IPointLog[]>(`${SERVER_URI}/log/${category}/${scopeQuery}`);
       return res.data;
     },
     { ...options, staleTime: 0, cacheTime: 0 },
   );
+
+export const usePointCuoponLogQuery = (options?: QueryOptions<boolean>) =>
+  useQuery<boolean, AxiosError, boolean>(
+    ["pointLog", "coupon"],
+    async () => {
+      const res = await axios.get<boolean>(`${SERVER_URI}/log/point/coupon`);
+      return res.data;
+    },
+    { ...options, staleTime: 0, cacheTime: 0 },
+  );
+
 export const useTicketSystemLogQuery = (
   category: "gather" | "groupStudy",
   options?: QueryOptions<IPointLog[]>,

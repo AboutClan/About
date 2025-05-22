@@ -66,7 +66,8 @@ function Layout({ children }: ILayout) {
     if (
       PUBLIC_SEGMENT.includes(segment) ||
       pathname === "/user/info/policy" ||
-      pathname === "/user/info/privacy"
+      pathname === "/user/info/privacy" ||
+      pathname === "/faq"
     ) {
       return;
     }
@@ -78,8 +79,7 @@ function Layout({ children }: ILayout) {
       return;
     }
     if (status === "loading" || session === undefined) return;
-
-    /**아이폰 로그인 등 오류 */
+    console.log(session);
     // if (!session?.user) {
     //   router.push("/login");
     //   toast(

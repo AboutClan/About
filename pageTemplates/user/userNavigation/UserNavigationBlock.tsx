@@ -1,5 +1,7 @@
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 import styled from "styled-components";
 
 import RowTextBlockButton from "../../../components/atoms/buttons/RowTextBlockButton";
@@ -16,15 +18,23 @@ interface IUserNavigationBlock {
 type ContentByType<T extends "page" | "modal"> = T extends "page" ? string : UserOverviewModal;
 
 function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
+  const searchParams = useSearchParams();
   const typeToast = useTypeToast();
   const { data: session } = useSession();
   const router = useRouter();
   const failToast = useFailToast();
+  const couponParams = searchParams.get("coupon");
 
   const { data: userInfo } = useUserInfoQuery();
 
   const isGuest = session?.user.name === "guest";
   const isAdmin = userInfo?.role === "previliged";
+
+  useEffect(() => {
+    if (couponParams === "on") {
+      setModalOpen("coupon");
+    }
+  }, [couponParams]);
 
   //네비게이션 함수
   const onClickBlock = <T extends "page" | "modal">(type: T, content: ContentByType<T>): void => {

@@ -61,25 +61,27 @@ function InfoModal({ type, onClose }: InfoModalProps) {
 }
 
 function InfoModalSubTitle({ type }: { type: InfoType }) {
-  return <Box mb={3}>
-    {type === "study" ? (
-      <>
-        <b>동네 친구</b>와 함께하는 <b>카공 스터디 !</b>
-        <br /> 공부도 하고, 기록도 쌓고, 상품도 받아가세요!
-      </>
-    ) : type === "gather" ? (
-      <>
-        하고 싶은 활동을, 또래 친구들과, 원하는 순간에.
-        <br /> 자유롭게 즐길 수 있는 <b>About 소셜링</b>
-      </>
-    ) : (
-      <>
-        같은 관심사를 가진 친구들과 함께하는
-        <br />
-        하나의 작은 동아리, <b>About 소모임</b>
-      </>
-    )}
-  </Box>
+  return (
+    <Box mb={3}>
+      {type === "study" ? (
+        <>
+          <b>동네 친구</b>와 함께하는 <b>카공 스터디 !</b>
+          <br /> 공부도 하고, 기록도 쌓고, 상품도 받아가세요!
+        </>
+      ) : type === "gather" ? (
+        <>
+          하고 싶은 활동을, 또래 친구들과, 원하는 순간에.
+          <br /> 자유롭게 즐길 수 있는 <b>About 소셜링</b>
+        </>
+      ) : (
+        <>
+          같은 관심사를 가진 친구들과 함께하는
+          <br />
+          하나의 작은 동아리, <b>About 소모임</b>
+        </>
+      )}
+    </Box>
+  );
 }
 
 const INFO_MODAL_CONTENTS: Record<InfoType, { title: string; items: string[] }> = {
@@ -95,7 +97,7 @@ const INFO_MODAL_CONTENTS: Record<InfoType, { title: string; items: string[] }> 
     title: "소셜링 가이드",
     items: [
       "주제, 인원, 나이 등을 설정할 수 있습니다.",
-      "모임장은 최대 15,000원을 지원 받습니다.",
+      "모임장은 최대 50,000원을 지원 받습니다.",
       "모임 참여에는 번개 참여권이 소모됩니다.",
     ],
   },

@@ -43,9 +43,11 @@ function HomeInitialSetting() {
         return;
       }
     },
+    onError() {
+      toast("warning", "로그인 정보가 없습니다.");
+      router.push("/login");
+    },
   });
-
-  // const setRenderHomeHeaderState = useSetRecoilState(renderHomeHeaderState);
 
   const { mutate: setRole } = useUserInfoFieldMutation("role", {
     onSuccess() {

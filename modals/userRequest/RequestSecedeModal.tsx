@@ -1,7 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { signOut } from "next-auth/react";
 import { useState } from "react";
-import styled from "styled-components";
 
 import InfoList from "../../components/atoms/lists/InfoList";
 import Textarea from "../../components/atoms/Textarea";
@@ -62,12 +61,5 @@ function RequestSecedeModal({ setIsModal }: IModal) {
     </ModalLayout>
   );
 }
-
-const Message = styled.div`
-  margin-top: var(--gap-4);
-  font-size: 14px;
-  text-align: center;
-  font-weight: 600;
-`;
 
 export default RequestSecedeModal;

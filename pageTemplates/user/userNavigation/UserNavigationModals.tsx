@@ -9,9 +9,9 @@ import { Input } from "../../../components/atoms/Input";
 import InfoList from "../../../components/atoms/lists/InfoList";
 import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import { USER_INFO } from "../../../constants/keys/queryKeys";
-import { useTypeToast } from "../../../hooks/custom/CustomToast";
+import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import { usePointSystemMutation, useUserInfoFieldMutation } from "../../../hooks/user/mutations";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
+import { usePointCuoponLogQuery, useUserInfoQuery } from "../../../hooks/user/queries";
 import RequestBirthModal from "../../../modals/userRequest/RequestBirthModal";
 import RequestChargeDepositModal from "../../../modals/userRequest/RequestChargeDepositModal";
 import RequestLevelUpModal from "../../../modals/userRequest/RequestLevelUpModal";
@@ -29,16 +29,39 @@ interface IUserNavigationModals {
   setModalOpen: React.Dispatch<UserOverviewModal>;
 }
 
+const CUOPON_VALUE = "196643625581";
+
 function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals) {
   const router = useRouter();
   const [isModal, setIsModal] = useState<boolean>();
+  const toast = useToast();
   const typeToast = useTypeToast();
   const { data: userInfo } = useUserInfoQuery();
 
-  const { mutate } = usePointSystemMutation("point");
+  const { data } = usePointCuoponLogQuery();
+  console.log(24, data);
+
+  const queryClient = useQueryClient();
+  const { mutate } = usePointSystemMutation("point", {
+    onSuccess() {
+      queryClient.refetchQueries(["pointLog", "coupon"]);
+      toast("success", "3,000 Point가 충전되었습니다!");
+      setModalOpen(null);
+    },
+  });
+
+  const [value, setValue] = useState("");
 
   const handleCoupon = () => {
-    mutate({ value: 2000, message: "", sub: "coupon" });
+    if (!value) {
+      toast("warning", "쿠폰 번호를 입력해 주세요.");
+    } else if (value !== CUOPON_VALUE) {
+      toast("warning", "유효하지 않은 쿠폰입니다.");
+    } else {
+      if (data) {
+        toast("warning", "이미 사용한 쿠폰입니다.");
+      } else mutate({ value: 3000, message: "카카오톡 채널 추가 쿠폰", sub: "coupon" });
+    }
   };
 
   useEffect(() => {
@@ -54,7 +77,6 @@ function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  const queryClient = useQueryClient();
   const { mutate: changeLocationDetail } = useUserInfoFieldMutation("locationDetail", {
     onSuccess() {
       typeToast("change");
@@ -99,9 +121,13 @@ function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals
       {modalOpen === "coupon" && (
         <RightDrawer title="쿠폰 입력" onClose={() => setIsModal(false)}>
           <Box mt={5}>
-            <Input placeholder="쿠폰 번호를 입력해 주세요." />
+            <Input
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              placeholder="쿠폰 번호를 입력해 주세요."
+            />
           </Box>
-          <Button mt={5} colorScheme="mint" w="full">
+          <Button mt={5} colorScheme="mint" w="full" onClick={handleCoupon}>
             사용하기
           </Button>
           <Box py={10}>
