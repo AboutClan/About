@@ -17,7 +17,7 @@ function HomeNav() {
             if (item.title === "커뮤니티") {
               e.preventDefault();
               e.stopPropagation();
-              toast("info", "5월 초 오픈 예정");
+              toast("info", "5월 중 오픈 예정");
             }
           }}
         >

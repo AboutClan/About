@@ -50,6 +50,7 @@ export const useUserRequestQuery = (
     [USER_REQUEST, category],
     async () => {
       const res = await axios.get<IUserRequest[]>(`${SERVER_URI}/request`);
+
       const filterData = res.data.filter((item) => item.category === category);
       return filterData;
     },
