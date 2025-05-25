@@ -47,7 +47,7 @@ function UserCommentInput({
     } else if (textareaRef.current) {
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
-  }, [text, user]);
+  }, [text, user, initialFocus]);
 
   const onClick = () => {
     onSubmit(text);

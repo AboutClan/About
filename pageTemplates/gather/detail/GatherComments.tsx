@@ -76,8 +76,7 @@ function GatherComments({ comments }: IGatherComments) {
 
   const onSubmit = async (value: string) => {
     if (isLoading1 || isLoading2) return;
-    console.log(24, replyProps, value);
-    return;
+
     if (replyProps) {
       setCommentArr(getCommentArr(value, replyProps.commentId, commentArr, userInfo));
       writeSubComment({ comment: value, commentId: replyProps.commentId });

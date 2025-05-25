@@ -191,8 +191,6 @@ function UserComment({
                   color="var(--gray-600)"
                   fontWeight={500}
                   onClick={() => {
-                    console.log(1234, commentId, user.name, parentId);
-                    return;
                     setReplyProps({
                       replyName: user.name,
                       commentId,
