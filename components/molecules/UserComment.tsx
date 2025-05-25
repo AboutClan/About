@@ -190,13 +190,15 @@ function UserComment({
                   variant="ghost"
                   color="var(--gray-600)"
                   fontWeight={500}
-                  onClick={() =>
+                  onClick={() => {
+                    console.log(1234, commentId, user.name, parentId);
+                    return;
                     setReplyProps({
                       replyName: user.name,
                       commentId,
                       parentId,
-                    })
-                  }
+                    });
+                  }}
                 >
                   답글 달기
                 </Button>

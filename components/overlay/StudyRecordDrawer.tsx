@@ -5,14 +5,14 @@ import Link from "next/link";
 
 import { STUDY_RECORD_MODAL_AT } from "../../constants/keys/queryKeys";
 import { CloseProps } from "../../types/components/modalTypes";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
+import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 import BottomFlexDrawer from "../organisms/drawer/BottomFlexDrawer";
 
 export interface StudyRecordDrawerProps extends CloseProps {
   date: string;
 }
 
-function StudyRecordDrawer({ date = "2025-05-13", onClose }: StudyRecordDrawerProps) {
+function StudyRecordDrawer({ date = dayjsToStr(dayjs()), onClose }: StudyRecordDrawerProps) {
   return (
     <BottomFlexDrawer isDrawerUp isOverlay height={412} isHideBottom setIsModal={onClose}>
       <Box

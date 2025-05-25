@@ -69,7 +69,7 @@ function PageTracker() {
 
       switch (curFirstSegment) {
         case "home":
-          if (prevSegments[0] !== "vote") setLeftSlide();
+          if (prevSegments[0] !== "vote" && currentSegments?.[1] !== "gatherReview") setLeftSlide();
 
           break;
 
@@ -142,7 +142,6 @@ function PageTracker() {
           }
 
           if (prevSegments[0] === "gather") {
-       
             if (currentSegments?.[2] === "setting") {
               setRightSlide();
             } else if (prevSegments?.[1]) {

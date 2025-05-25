@@ -74,7 +74,7 @@ export function PopOverIcon({
         mr={marginDir === "right" && "var(--gap-2)"}
         fontSize="12px"
         _focus={{ outline: "none", boxShadow: "none" }}
-        width={maxWidth ? `${maxWidth}px` : size === "xs" ? "120px" : "max-content"}
+        width={maxWidth ? `${maxWidth}px` : size === "xs" ? "120px" : "240px"}
       >
         <PopoverBody
           fontSize="11px"

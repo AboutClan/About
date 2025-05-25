@@ -10,7 +10,7 @@ function HomeGatherSection() {
 
   const windowWidth = useWindowWidth(); // 현재 화면 너비 가져오기
   const width = windowWidth - 70;
-  console.log(54, gathers);
+ 
   return (
     <>
       <AnimatePresence initial={false}>

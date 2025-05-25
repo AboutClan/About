@@ -29,7 +29,7 @@ function GatherWritingConfirmModal({ setIsModal, gatherData }: IGatherWritingCon
   const errorToast = useErrorToast();
   const queryClient = useQueryClient();
   const toast = useToast();
-  console.log(gatherData);
+
   const [isFirst, setIsFirst] = useState(true);
   const [imageUrl, setImageUrl] = useState();
 

@@ -39,43 +39,18 @@
     },
 
     {
-      "src": "/144.png",
-      "type": "image/png",
-      "sizes": "96x96"
-    },
-    {
-      "src": "/152.png",
-      "type": "image/png",
-      "sizes": "101x101"
-    },
-    {
-      "src": "/167.png",
-      "type": "image/png",
-      "sizes": "111x111"
-    },
-    {
-      "src": "/180.png",
-      "type": "image/png",
-      "sizes": "120x120"
-    },
-    {
-      "src": "/192.png",
-      "type": "image/png",
-      "sizes": "128x128"
-    },
-    {
-      "src": "/256.png",
-      "type": "image/png",
+      "src": "/256.jpg",
+      "type": "image/jpg",
       "sizes": "171x171"
     },
     {
-      "src": "/512.png",
-      "type": "image/png",
+      "src": "/512.jpg",
+      "type": "image/jpg",
       "sizes": "341x341"
     },
     {
-      "src": "/512.png",
-      "type": "image/png",
+      "src": "/512.jpg",
+      "type": "image/jpg",
       "sizes": "512x512"
     }
   ],

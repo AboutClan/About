@@ -1,19 +1,19 @@
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { ComponentType, useEffect, useState } from "react";
 
 import FAQModal from "../../../components/overlay/FAQModal";
+import GatherRecordDrawer from "../../../components/overlay/GatherRecordDrawer";
 import MonthlyScoreModal from "../../../components/overlay/MonthlyScoreModal";
 import StudyRecordDrawer from "../../../components/overlay/StudyRecordDrawer";
-import { FAQ_MODAL_AT, GATHER_REVIEW_ID } from "../../../constants/keys/localStorage";
+import { FAQ_MODAL_AT } from "../../../constants/keys/localStorage";
 import { STUDY_RECORD_MODAL_AT } from "../../../constants/keys/queryKeys";
 import { useGatherReviewOneQuery } from "../../../hooks/gather/queries";
 import { CloseProps } from "../../../types/components/modalTypes";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import { checkAndSetLocalStorage } from "../../../utils/storageUtils";
 
-export type PopUpType = "studyRecord" | "faq" | "monthlyScore";
+export type PopUpType = "studyRecord" | "faq" | "monthlyScore" | "gatherReview";
 
 interface PopUpProps extends CloseProps {}
 
@@ -21,43 +21,40 @@ const MODAL_COMPONENTS: Record<PopUpType, ComponentType<PopUpProps>> = {
   studyRecord: StudyRecordDrawer,
   faq: FAQModal,
   monthlyScore: MonthlyScoreModal,
+  gatherReview: GatherRecordDrawer,
 };
 
 export default function UserSettingPopUp() {
   const { data: session } = useSession();
-  const router = useRouter();
 
   const [popUpType, setPopUpType] = useState<PopUpType[]>([]);
 
   const { data } = useGatherReviewOneQuery();
-  console.log(2, data);
+
   const studyRecordStr = localStorage.getItem(STUDY_RECORD_MODAL_AT);
   const studyRecord = JSON.parse(studyRecordStr);
 
   useEffect(() => {
     if (data === undefined || !session) return;
-    if (
-      data &&
-      data.id + "" !== localStorage.getItem(GATHER_REVIEW_ID) &&
-      !data.participants.find((par) => par.user._id === session.user.id)?.reviewed
-    ) {
-      router.push("/home/gatherReview");
-    } else {
-      let popUpCnt = 0;
 
-      if (studyRecord && studyRecord?.date !== dayjsToStr(dayjs())) {
-        setPopUpType((old) => [...old, "studyRecord"]);
-        if (++popUpCnt < 2) return;
-      }
+    let popUpCnt = 0;
+    if (data) {
+      setPopUpType((old) => [...old, "gatherReview"]);
+      if (++popUpCnt < 2) return;
+    }
 
-      // if (!checkAndSetLocalStorage(MONTHLY_SCORE_MODAL_AT, 10)) {
-      //   setPopUpType((old) => [...old, "monthlyScore"]);
-      //   if (++popUpCnt < 2) return;
-      // }
-      if (!checkAndSetLocalStorage(FAQ_MODAL_AT, 20)) {
-        setPopUpType((old) => [...old, "faq"]);
-        if (++popUpCnt < 2) return;
-      }
+    if (studyRecord && studyRecord?.date !== dayjsToStr(dayjs())) {
+      setPopUpType((old) => [...old, "studyRecord"]);
+      if (++popUpCnt < 2) return;
+    }
+
+    // if (!checkAndSetLocalStorage(MONTHLY_SCORE_MODAL_AT, 10)) {
+    //   setPopUpType((old) => [...old, "monthlyScore"]);
+    //   if (++popUpCnt < 2) return;
+    // }
+    if (!checkAndSetLocalStorage(FAQ_MODAL_AT, 20)) {
+      setPopUpType((old) => [...old, "faq"]);
+      if (++popUpCnt < 2) return;
     }
   }, [data, session]);
 
@@ -74,6 +71,8 @@ export default function UserSettingPopUp() {
             ? {
                 date: studyRecord?.date,
               }
+            : type === "gatherReview"
+            ? { date: data?.date, id: data?.id }
             : {};
         return (
           popUpType.includes(type) && (

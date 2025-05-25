@@ -85,7 +85,7 @@ function StudyPageMap({
           )
         : getStudyPlaceMarkersOptions(placeData, placeInfo?._id),
     );
-    console.log(333, placeData);
+   
     if (placeData) setIsMapExpansion(true);
   }, [
     studyVoteData,
@@ -119,7 +119,7 @@ function StudyPageMap({
     }
     if (!isMapExpansion) setIsMapExpansion(true);
   };
-  console.log(24, isMapExpansion);
+
   return (
     <>
       <Slide>

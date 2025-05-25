@@ -2,7 +2,8 @@ import { Box, Button, Flex, Grid, GridItem, Stack } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useQueryClient } from "react-query";
 
 import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
 import Avatar from "../../components/atoms/Avatar";
@@ -12,7 +13,7 @@ import { PopOverIcon } from "../../components/Icons/PopOverIcon";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import ProfileCommentCard from "../../components/molecules/cards/ProfileCommentCard";
-import { GATHER_REVIEW_ID } from "../../constants/keys/localStorage";
+import { GATHER_CONTENT } from "../../constants/keys/queryKeys";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useGatherReviewOneQuery } from "../../hooks/gather/queries";
 import { UserRating, UserReviewProps, useUserReviewMutation } from "../../hooks/user/mutations";
@@ -26,13 +27,11 @@ function GatherReview() {
   const router = useRouter();
   const { data: gather } = useGatherReviewOneQuery();
   const { data: userInfo } = useUserInfoQuery();
-
-  useEffect(() => {
-    localStorage.setItem(GATHER_REVIEW_ID, gather.id + "");
-  }, []);
+  const queryClient = useQueryClient();
 
   const { mutate } = useUserReviewMutation({
     onSuccess() {
+      queryClient.resetQueries([GATHER_CONTENT, "review"]);
       toast("success", "리뷰가 완료되었습니다.");
       router.push("/home");
     },
@@ -71,7 +70,7 @@ function GatherReview() {
     {
       type: 12,
       bg: 0,
-      text: "그저 그래요😑",
+      text: "그냥 그래요😑",
       rating: "soso",
     },
     {
@@ -176,11 +175,17 @@ function GatherReview() {
                           props.rating;
 
                         const handleClick = () => {
+                          const isSameVote = userReviewArr.some(
+                            (who) => who.toUid === user.uid && who.rating === props.rating,
+                          );
+
                           setUserReviewArr((old) => old.filter((who) => who.toUid !== user.uid));
-                          setUserReviewArr((old) => [
-                            ...old,
-                            { toUid: user.uid, rating: props.rating },
-                          ]);
+                          if (!isSameVote) {
+                            setUserReviewArr((old) => [
+                              ...old,
+                              { toUid: user.uid, rating: props.rating },
+                            ]);
+                          }
                         };
 
                         return (

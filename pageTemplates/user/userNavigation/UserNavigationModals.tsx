@@ -39,7 +39,6 @@ function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals
   const { data: userInfo } = useUserInfoQuery();
 
   const { data } = usePointCuoponLogQuery();
-  console.log(24, data);
 
   const queryClient = useQueryClient();
   const { mutate } = usePointSystemMutation("point", {
