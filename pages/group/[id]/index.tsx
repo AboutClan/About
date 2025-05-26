@@ -2,6 +2,7 @@ import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import { Badge, Box, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
@@ -31,7 +32,7 @@ function GroupDetail() {
   const [group, setTransferGroup] = useRecoilState(transferGroupDataState);
 
   const { data: groupData } = useGroupIdQuery(id, { enabled: !!id && !group });
-
+  console.log(2, groupData?.notionUrl);
   const isOnlyView = group?.category.main === "콘텐츠";
 
   useEffect(() => {
@@ -120,10 +121,29 @@ function GroupDetail() {
                 >
                   {group.content}
                 </Box>
-                {group.rules.length ? (
+                {group?.notionUrl ? (
                   <>
                     <Box mb={3} fontSize="14px" fontWeight="bold" lineHeight="20px">
-                      <UnorderedList ml="0">
+                      <UnorderedList ml={-1.5}>
+                        <ListItem>활동 기록</ListItem>
+                      </UnorderedList>
+                    </Box>
+                    <Box
+                      fontWeight="light"
+                      fontSize="12px"
+                      lineHeight="20px"
+                      bg="rgba(160, 174, 192, 0.08)"
+                      py={4}
+                      px={3}
+                      borderRadius="8px"
+                    >
+                      <Link href={group?.notionUrl}>{group?.notionUrl}</Link>
+                    </Box>
+                  </>
+                ) : group.rules.length ? (
+                  <>
+                    <Box mb={3} fontSize="14px" fontWeight="bold" lineHeight="20px">
+                      <UnorderedList ml={-1.5}>
                         <ListItem>규칙</ListItem>
                       </UnorderedList>
                     </Box>

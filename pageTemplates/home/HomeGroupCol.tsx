@@ -5,6 +5,7 @@ import { useSetRecoilState } from "recoil";
 import SectionFooterButton from "../../components/atoms/SectionFooterButton";
 import { GroupThumbnailCard } from "../../components/molecules/cards/GroupThumbnailCard";
 import { createGroupThumbnailProps } from "../../pages/group";
+import { backUrlState } from "../../recoils/navigationRecoils";
 import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { IGroup } from "../../types/models/groupTypes/group";
 import GroupSkeletonMain from "../group/GroupSkeletonMain";
@@ -18,6 +19,12 @@ interface HomeGroupColProps {
 
 export default function HomeGroupCol({ threeGroups, isStudy, type }: HomeGroupColProps) {
   const setTransferGroup = useSetRecoilState(transferGroupDataState);
+  const setBackUrlState = useSetRecoilState(backUrlState);
+
+  const handleClick = (group: IGroup) => {
+    setTransferGroup(group);
+    setBackUrlState("/home");
+  };
 
   const urlParam =
     type === "hobby"
@@ -63,7 +70,7 @@ export default function HomeGroupCol({ threeGroups, isStudy, type }: HomeGroupCo
                     group,
                     status,
                     idx,
-                    () => setTransferGroup(group),
+                    () => handleClick(group),
                     false,
                   )}
                 />

@@ -11,6 +11,7 @@ export interface IGroup extends IGroupWriting {
   createdAt: string;
   participants: GroupParicipantProps[];
   comments: UserCommentProps[];
+  notionUrl?: string;
 }
 
 export interface GroupParicipantProps {

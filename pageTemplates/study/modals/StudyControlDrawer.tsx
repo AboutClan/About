@@ -46,7 +46,7 @@ function StudyControlDrawer({
   const toast = useToast();
 
   const { data: userInfo } = useUserInfoQuery();
-
+  console.log(userInfo);
   const { mutate: voteStudy } = useStudyVoteMutation(dayjs(date), "post", {
     onSuccess() {
       resetStudy();
@@ -141,6 +141,8 @@ function StudyControlDrawer({
     },
   };
 
+  const locationDetatilText = userInfo?.locationDetail?.text;
+
   return (
     <>
       {studyDrawerType && (
@@ -171,6 +173,12 @@ function StudyControlDrawer({
               <Box fontSize="13px" color="var(--gray-600)">
                 {studyDrawerType === "free"
                   ? "진행중인 스터디 참여"
+                  : locationDetatilText
+                  ? `[${
+                      locationDetatilText.length > 10
+                        ? locationDetatilText.slice(0, 10) + "..."
+                        : locationDetatilText
+                    }] 기준 스터디 신청`
                   : "즐겨 찾는 위치에서 스터디 신청"}
               </Box>
             </Button>
@@ -188,7 +196,7 @@ function StudyControlDrawer({
               <StudySelectIcon />
             </Box>
             <Box fontSize="13px" color="var(--gray-600)">
-              {studyDrawerType === "free" ? "일일 스터디 개설 신청" : "원하는 위치에서 스터디 신청"}
+              {studyDrawerType === "free" ? "일일 스터디 개설 신청" : "스터디 기준 위치 직접 입력"}
             </Box>
           </Button>
           {studyDrawerType === "free" && (

@@ -20,10 +20,10 @@ import { GatherExpireModalDialogType } from "./GatherExpireModal";
 
 interface IGatherExpireModalCancelDialog {
   modal: GatherExpireModalDialogType;
-  isNoMember: boolean;
+  memberCnt: number;
 }
 
-function GatherExpireModalCancelDialog({ isNoMember, modal }: IGatherExpireModalCancelDialog) {
+function GatherExpireModalCancelDialog({ memberCnt, modal }: IGatherExpireModalCancelDialog) {
   const toast = useToast();
   const queryClient = useQueryClient();
   const errorToast = useErrorToast();
@@ -58,7 +58,7 @@ function GatherExpireModalCancelDialog({ isNoMember, modal }: IGatherExpireModal
   }, [modal]);
 
   const onCancel = () => {
-    if (isNoMember) gatherDelete({ gatherId });
+    if (memberCnt <= 3) gatherDelete({ gatherId });
     else statusClose("close");
   };
 
@@ -71,8 +71,8 @@ function GatherExpireModalCancelDialog({ isNoMember, modal }: IGatherExpireModal
               모집을 취소하시겠습니까?
             </AlertDialogHeader>
             <AlertDialogBody>
-              {isNoMember ? (
-                <span>참여자가 없어 모임이 완전히 삭제됩니다.</span>
+              {memberCnt <= 3 ? (
+                <span>참여자가 적어 모임이 완전히 삭제됩니다.</span>
               ) : (
                 <span>참여자가 있어 모임이 취소 상태로 변경됩니다.</span>
               )}

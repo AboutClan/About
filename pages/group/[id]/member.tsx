@@ -41,7 +41,7 @@ export default function Member() {
       setUsers(group.participants);
     }
   }, [group]);
-
+  console.log(groupData);
   useEffect(() => {
     if (transferGroup) setGroup(transferGroup);
     else if (groupData) setGroup(groupData);
