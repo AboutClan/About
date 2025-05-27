@@ -79,7 +79,7 @@ function Layout({ children }: ILayout) {
       return;
     }
     if (status === "loading" || session === undefined) return;
-    console.log(session);
+
     // if (!session?.user) {
     //   router.push("/login");
     //   toast(

@@ -67,7 +67,7 @@ export default function SquareItem({ item }: SquareItemProps) {
               color: "var(--gray-600)",
               fontSize: "13px",
               display: "-webkit-box",
-              WebkitLineClamp: "4",
+              WebkitLineClamp: "2",
               WebkitBoxOrient: "vertical",
               overflow: "hidden",
             }}

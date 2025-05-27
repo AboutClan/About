@@ -85,7 +85,7 @@ function GatherComments({ comments }: IGatherComments) {
     await writeComment({ comment: value });
     setCommentArr((old) => [...old, addNewComment(userInfo, value)]);
   };
-  console.log(commentArr);
+
   return (
     <>
       <Box my={5} fontWeight="semibold" fontSize="16px">

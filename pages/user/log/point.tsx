@@ -106,7 +106,7 @@ interface BlockProps {
 
 function Block({ text, time, value, currentValue, type }: BlockProps) {
   const valueText = type === "point" ? " Point" : type === "score" ? "점" : "원";
-  console.log(145, currentValue);
+
   return (
     <Flex px={5} mt={4} justify="space-between" align="center">
       <Flex

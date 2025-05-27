@@ -17,10 +17,11 @@ export const usePatchPollMutation = ({ squareId }: { squareId: string }) => {
       }),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries({
+        queryClient.resetQueries({ queryKey: "secretSquare", exact: false });
+        queryClient.resetQueries({
           queryKey: ["secretSquare", { squareId }],
         });
-        queryClient.invalidateQueries({
+        queryClient.resetQueries({
           queryKey: ["secretSquare", "currentPollStatus", { squareId }],
         });
       },
@@ -41,10 +42,11 @@ export const useCreateSecretSquareMutation = () => {
       onSuccess: (_, { formData }) => {
         const category = formData.get("category");
         // HACK 전체 카테고리와 각 카테고리를 모두 invalidate 해야하는가? 개선의 여지가 있음
-        queryClient.invalidateQueries({
+        queryClient.resetQueries({ queryKey: "secretSquare", exact: false });
+        queryClient.resetQueries({
           queryKey: ["secretSquare", { category: "전체" }],
         });
-        queryClient.invalidateQueries({
+        queryClient.resetQueries({
           queryKey: ["secretSquare", { category }],
         });
       },
@@ -63,9 +65,8 @@ export const useDeleteSecretSquareMutation = ({ squareId }: { squareId: string }
       }),
     {
       onSuccess: () => {
-       
         // HACK 전체 카테고리와 각 카테고리를 모두 invalidate 해야하는가? 개선의 여지가 있음
-        queryClient.refetchQueries({ queryKey: "secretSquare", exact: false });
+        queryClient.resetQueries({ queryKey: "secretSquare", exact: false });
         router.push("/community");
       },
     },
@@ -82,8 +83,9 @@ export const usePutLikeSecretSquareMutation = ({ squareId }: { squareId: string 
       }),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["secretSquare", { squareId }] });
-        queryClient.invalidateQueries({ queryKey: ["secretSquare", "isLike", { squareId }] });
+        queryClient.resetQueries({ queryKey: "secretSquare", exact: false });
+        queryClient.resetQueries({ queryKey: ["secretSquare", { squareId }] });
+        queryClient.resetQueries({ queryKey: ["secretSquare", "isLike", { squareId }] });
       },
     },
   );
@@ -100,8 +102,9 @@ export const useDeleteLikeSecretSquareMutation = ({ squareId }: { squareId: stri
       }),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ["secretSquare", { squareId }] });
-        queryClient.invalidateQueries({ queryKey: ["secretSquare", "isLike", { squareId }] });
+        queryClient.resetQueries({ queryKey: "secretSquare", exact: false });
+        queryClient.resetQueries({ queryKey: ["secretSquare", { squareId }] });
+        queryClient.resetQueries({ queryKey: ["secretSquare", "isLike", { squareId }] });
       },
     },
   );

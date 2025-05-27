@@ -50,7 +50,7 @@ function WritingCondition() {
   const [kakaoUrl, setKakaoUrl] = useState<string>(gatherContent?.kakaoUrl || "");
 
   // const isManager = ["manager", "previliged"].includes(session?.user.role);
-  console.log(gatherContent?.kakaoUrl);
+
   const onClickNext = () => {
     if (condition.kakaoUrl && !kakaoUrl) {
       toast("error", "입장 가능한 오픈채팅방 링크를 입력해 주세요.");

@@ -2,9 +2,9 @@ import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import { Badge, Box, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 
@@ -31,7 +31,7 @@ function GroupDetail() {
   const [group, setTransferGroup] = useRecoilState(transferGroupDataState);
 
   const { data: groupData } = useGroupIdQuery(id, { enabled: !!id && !group });
-  console.log(2, groupData?.notionUrl);
+
   const isOnlyView = group?.category.main === "콘텐츠";
 
   useEffect(() => {

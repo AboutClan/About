@@ -46,7 +46,7 @@ function StudyControlDrawer({
   const toast = useToast();
 
   const { data: userInfo } = useUserInfoQuery();
-  console.log(userInfo);
+
   const { mutate: voteStudy } = useStudyVoteMutation(dayjs(date), "post", {
     onSuccess() {
       resetStudy();

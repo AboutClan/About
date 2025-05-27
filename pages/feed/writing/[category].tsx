@@ -33,7 +33,7 @@ import { appendFormData } from "../../../utils/formDataUtils";
 function FeedWritingPage() {
   const { data: session } = useSession();
   const router = useRouter();
- 
+
   const toast = useToast();
   const searchParams = useSearchParams();
   const { category } = useParams<{ category: "gather" | "group" }>() || {};
@@ -104,7 +104,7 @@ function FeedWritingPage() {
   }, [transferFeedSummary, group]);
 
   const formData = new FormData();
-  console.log(isAnonymous);
+
   const onSubmit: SubmitHandler<{ content: string }> = ({ content }) => {
     if (!imageFormArr?.length) {
       toast("warning", "최소 한장 이상의 사진이 필요합니다.");

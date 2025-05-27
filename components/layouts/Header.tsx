@@ -20,7 +20,6 @@ export default function Header({
   title,
   isSlide = true,
   url,
-
   children,
   isBorder = true,
   isTransparent,

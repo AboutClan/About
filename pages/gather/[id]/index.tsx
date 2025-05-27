@@ -33,7 +33,7 @@ function GatherDetail() {
 
   const [transferGather, setTransferGather] = useRecoilState(transferGatherDataState);
   const { data: gatherData } = useGatherIDQuery(+id, { enabled: !!id && !transferGather });
-  console.log(34, gatherData);
+
   useEffect(() => {
     if (gatherData) {
       setGather(gatherData);
@@ -44,7 +44,7 @@ function GatherDetail() {
   const isMember =
     (gather?.user as IUserSummary)?.uid === session?.user.uid ||
     gather?.participants.some((who) => who?.user.uid === session?.user.uid);
-  console.log(gatherData, gather?.coverImage);
+
   return (
     <>
       {gather ? (

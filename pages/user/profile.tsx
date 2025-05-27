@@ -24,7 +24,7 @@ function Profile() {
   const router = useRouter();
   const toast = useToast();
   const { data: userInfo } = useUserInfoQuery();
-  console.log(24, userInfo);
+
   const queryClient = useQueryClient();
   const [majors, setMajors] = useState<
     {
