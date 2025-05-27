@@ -35,7 +35,7 @@ function CommentSection({
       >
         댓글 <b>{commentArr?.length}개</b>
       </Box>
-      <Box px={5}>
+      <Box>
         {commentArr.map((comment, idx) => (
           <UserCommentBlock
             key={idx}

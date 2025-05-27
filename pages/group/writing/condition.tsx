@@ -57,8 +57,6 @@ function WritingCondition() {
     link: !!groupWriting?.link || false,
   });
 
-  const [challenge, setChallenge] = useState("");
-
   const [fee, setFee] = useState(groupWriting?.fee || "1000");
   const [feeText, setFeeText] = useState(groupWriting?.feeText || "기본 참여비");
 
@@ -93,7 +91,7 @@ function WritingCondition() {
       organizer: userInfo,
       questionText: condition.isAgree ? question || "어떤 목적으로 가입을 희망하시나요?" : "",
       isSecret: condition.isSecret,
-      challenge,
+      challenge: "",
     };
 
     setLocalStorageObj(GROUP_WRITING_STORE, {
@@ -173,27 +171,8 @@ function WritingCondition() {
           </Item>
           <Item>
             <Name>
-              <i className="fa-regular fa-bell-on" />
-              <span>챌린지</span>
-            </Name>
-            <Switch
-              mr="var(--gap-1)"
-              colorScheme="mint"
-              isChecked={condition.challenge}
-              onChange={(e) => toggleSwitch(e, "challenge")}
-            />
-          </Item>
-          {condition.challenge && (
-            <ChallengeText
-              value={challenge}
-              onChange={(e) => setChallenge(e.target.value)}
-              placeholder="2월까지 모든 인증 성공시 +5000원"
-            />
-          )}
-          <Item>
-            <Name>
               <i className="fa-regular fa-dollar-sign" />
-              <span>참여비</span>
+              <span>보증금</span>
             </Name>
             <Switch
               mr="var(--gap-1)"
@@ -205,7 +184,7 @@ function WritingCondition() {
           {condition.fee && (
             <Fee>
               <div>
-                <span>참여비: </span>
+                <span>보증금: </span>
                 <input value={fee} onChange={(e) => setFee(e.target.value)} placeholder="2000" />
               </div>
 
@@ -232,7 +211,7 @@ function WritingCondition() {
               isChecked={condition.isSecret}
               onChange={(e) => toggleSwitch(e, "isSecret")}
             />
-          </Item>{" "}
+          </Item>
           <Item>
             <Name>
               <div>
@@ -294,15 +273,6 @@ function WritingCondition() {
     </>
   );
 }
-
-const ChallengeText = styled.textarea`
-  margin-top: var(--gap-4);
-  width: 100%;
-  padding: 4px 8px;
-  :focus {
-    outline-color: var(--gray-800);
-  }
-`;
 
 const Fee = styled.div`
   padding: var(--gap-3) 0;

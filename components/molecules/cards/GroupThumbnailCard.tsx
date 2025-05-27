@@ -53,6 +53,7 @@ export function GroupThumbnailCard({
     pending: { text: "모집중", colorScheme: "mint" },
     end: { text: "종료됨", colorScheme: "blue" },
     planned: { text: "오픈 예정", colorScheme: "purple" },
+    resting: { text: "휴식중", colorScheme: "blue" },
   };
 
   return (

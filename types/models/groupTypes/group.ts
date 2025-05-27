@@ -6,7 +6,7 @@ import { IUser, IUserSummary } from "../userTypes/userInfoTypes";
 
 export type GroupCategory = (typeof GROUP_STUDY_CATEGORY_ARR)[number];
 
-export type GroupStatus = "pending" | "end" | "imminent" | "full" | "planned";
+export type GroupStatus = "pending" | "end" | "imminent" | "full" | "planned" | "resting";
 export interface IGroup extends IGroupWriting {
   createdAt: string;
   participants: GroupParicipantProps[];

@@ -19,7 +19,6 @@ import GroupCover from "../../../pageTemplates/group/detail/GroupCover";
 import GroupHeader from "../../../pageTemplates/group/detail/GroupHeader";
 import GroupParticipation from "../../../pageTemplates/group/detail/GroupParticipation";
 import { transferGroupDataState } from "../../../recoils/transferRecoils";
-import { convertMeetingTypeToKr } from "../../../utils/convertUtils/convertText";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
 export type GroupSectionCategory = "정 보" | "피 드";
@@ -93,8 +92,13 @@ function GroupDetail() {
                           : "2024년 12월 22일",
                     },
                     { category: "가입 방식", text: group.isFree ? "자유 가입" : "승인제" },
-                    { category: "진행 방식", text: convertMeetingTypeToKr(group?.meetingType) },
                     { category: "보증금", text: group.fee ? group.fee + "원" : "없음" },
+                    {
+                      category: "활동 톡방",
+                      rightChildren: (
+                        <BlurredLink isBlur={!isMember} url="https://open.kakao.com/o/g6Wc70sh" />
+                      ),
+                    },
                   ]}
                   size="md"
                 />
@@ -106,11 +110,15 @@ function GroupDetail() {
                 <Box my={4} fontSize="18px" fontWeight="bold" lineHeight="28px">
                   소개
                 </Box>
-                {group.category.main === "시험기간" && (
+                {group.category.main === "시험기간" ? (
                   <Box fontSize="12px" mb={4} color="mint">
                     ※ 해당 챌린지는 카톡방에서 진행됩니다. 관련 사항은 동아리 공지방을 확인해주세요!
                   </Box>
-                )}
+                ) : group.status === "resting" ? (
+                  <Box fontSize="12px" mb={4} color="mint">
+                    ※ 현재 휴식중인 소모임입니다. 방학 중 활동 예정!
+                  </Box>
+                ) : null}
                 <Box
                   color="gray.600"
                   fontWeight="regular"
@@ -122,10 +130,15 @@ function GroupDetail() {
                   {group.content}
                 </Box>
                 {group?.notionUrl ? (
-                  <>
-                    <Box mb={3} fontSize="14px" fontWeight="bold" lineHeight="20px">
+                  <Box my={5}>
+                    <Link href={group.notionUrl}>
+                      <Box as="u" fontWeight={600} fontSize="12px" color="mint">
+                        &gt;&gt; 활동 기록 보러가기
+                      </Box>
+                    </Link>
+                    {/* <Box mb={3} fontSize="14px" fontWeight="bold" lineHeight="20px">
                       <UnorderedList ml={-1.5}>
-                        <ListItem>활동 기록</ListItem>
+                        <ListItem>활동 기록 보기</ListItem>
                       </UnorderedList>
                     </Box>
                     <Box
@@ -138,8 +151,8 @@ function GroupDetail() {
                       borderRadius="8px"
                     >
                       <Link href={group?.notionUrl}>{group?.notionUrl}</Link>
-                    </Box>
-                  </>
+                    </Box> */}
+                  </Box>
                 ) : group.rules.length ? (
                   <>
                     <Box mb={3} fontSize="14px" fontWeight="bold" lineHeight="20px">
@@ -163,23 +176,8 @@ function GroupDetail() {
                     </Box>
                   </>
                 ) : null}
-                {group?.link ? (
-                  <Box lineHeight="20px" mt={4} fontSize="13px">
-                    <Box>
-                      {isOnlyView ? (
-                        <>
-                          <b style={{ color: "var(--gray-800)" }}>상세 내용(노션 링크)</b>
-                        </>
-                      ) : (
-                        <>
-                          <b style={{ color: "var(--gray-800)" }}>단톡방 링크</b>(가입 후 입장)
-                        </>
-                      )}
-                    </Box>
-                    <BlurredLink isBlur={!isOnlyView && !isMember} url={group.link} />
-                  </Box>
-                ) : null}
-                <Flex mt={4}>
+
+                <Flex mt={5}>
                   {group.hashTag?.split("#").map((tag, idx) =>
                     tag ? (
                       <Box
