@@ -1,4 +1,5 @@
 import { Box, Button } from "@chakra-ui/react";
+import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
@@ -52,6 +53,11 @@ function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals
   const [value, setValue] = useState("");
 
   const handleCoupon = () => {
+    if (!userInfo) {
+      toast("warning", "로그인 후 쿠픈 등록이 가능합니다.");
+      signOut({ callbackUrl: `/login` });
+      return;
+    }
     if (!value) {
       toast("warning", "쿠폰 번호를 입력해 주세요.");
     } else if (value !== CUOPON_VALUE) {
@@ -137,6 +143,7 @@ function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals
               "같은 쿠폰은 계정 당 1회만 사용 가능합니다.",
               "유효기간이 지난 쿠폰은 사용하실 수 없습니다.",
               "부정한 방법으로 획득한 쿠폰은 회수될 수 있습니다.",
+              "기존에 보유한 포인트가 먼저 사용됩니다.",
               "쿠폰으로 지급된 포인트는 환급받을 수 없습니다.",
             ]}
           />
