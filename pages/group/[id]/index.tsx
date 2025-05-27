@@ -2,9 +2,9 @@ import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import { Badge, Box, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 
@@ -95,9 +95,7 @@ function GroupDetail() {
                     { category: "보증금", text: group.fee ? group.fee + "원" : "없음" },
                     {
                       category: "활동 톡방",
-                      rightChildren: (
-                        <BlurredLink isBlur={!isMember} url="https://open.kakao.com/o/g6Wc70sh" />
-                      ),
+                      rightChildren: <BlurredLink isBlur={!isMember} url={group?.link} />,
                     },
                   ]}
                   size="md"
