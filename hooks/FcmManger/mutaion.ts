@@ -4,18 +4,22 @@ import { isWebView } from "../../utils/appEnvUtils";
 import { urlBase64ToUint8Array } from "../../utils/convertUtils/convertBase64";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
 import { isEmpty, isNil } from "../../utils/validationUtils";
+import { useToast } from "../custom/CustomToast";
 import { registerPushServiceWithApp, registerPushServiceWithPWA } from "./apis";
 import { DeviceInfo } from "./types";
 import { requestNotificationPermission } from "./utils";
 
 export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
+  const toast = useToast();
   useEffect(() => {
     if (!uid) return;
     const initializePushService = async () => {
       if (isWebView()) {
+        toast("info", "어플로 접속중입니다.");
         console.log("isWebView");
         await initializeAppPushService(uid);
       } else {
+        toast("info", "어플 접속을 권장합니다.");
         console.log("noWeb");
         await initializePWAPushService();
       }
