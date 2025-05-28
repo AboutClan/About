@@ -18,7 +18,7 @@ export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
         toast("info", "Start");
 
         try {
-          const deviceInfo = await waitForDeviceInfo(uid);
+          await waitForDeviceInfo(uid);
           toast("info", "✅ 받은 토큰: " + (isAndroid() ? "android" : isIOS() ? "ios" : "web"));
         } catch (e) {
           toast("error", "❌ 오류 발생22: " + e?.message);
