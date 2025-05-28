@@ -21,7 +21,7 @@ export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
           const deviceInfo = await waitForDeviceInfo(uid);
           toast("info", "✅ 받은 토큰: " + deviceInfo.fcmToken + deviceInfo?.platform);
         } catch (e) {
-          toast("error", "❌ 오류 발생: " + e?.message);
+          toast("error", "❌ 오류 발생22: " + e?.message);
         }
       } else {
         console.log("noWeb");
