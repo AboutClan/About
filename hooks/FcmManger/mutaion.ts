@@ -10,16 +10,13 @@ import { DeviceInfo } from "./types";
 import { requestNotificationPermission } from "./utils";
 
 export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
-  const toast = useToast();
   useEffect(() => {
     if (!uid) return;
     const initializePushService = async () => {
       if (isWebView()) {
-        toast("info", "어플로 접속중입니다.");
         console.log("isWebView");
         await initializeAppPushService(uid);
       } else {
-        toast("info", "어플 접속을 권장합니다.");
         console.log("noWeb");
         await initializePWAPushService();
       }
@@ -30,6 +27,7 @@ export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
 };
 
 const initializeAppPushService = async (uid?: string) => {
+  const toast = useToast();
   const handleDeviceInfo = async (event: MessageEvent) => {
     try {
       const { data } = event;
@@ -37,7 +35,7 @@ const initializeAppPushService = async (uid?: string) => {
 
       const deviceInfo: DeviceInfo = JSON.parse(data);
       if (isNil(uid) || isEmpty(deviceInfo)) return;
-
+      toast("info", deviceInfo.fcmToken, deviceInfo.deviceId);
       await registerPushServiceWithApp({
         uid,
         fcmToken: deviceInfo.fcmToken,
