@@ -17,7 +17,28 @@ export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
       if (isWebView()) {
         toast("info", "어플로 접속중입니다.");
         console.log("isWebView");
-        await initializeAppPushService(uid);
+
+        const handleDeviceInfo = async (event: MessageEvent) => {
+          try {
+            const { data } = event;
+            if (typeof data !== "string" || !data.includes("deviceInfo")) return;
+
+            const deviceInfo: DeviceInfo = JSON.parse(data);
+            toast("info", deviceInfo.fcmToken + deviceInfo.uid);
+            if (isNil(uid) || isEmpty(deviceInfo)) return;
+            toast("info", deviceInfo.fcmToken + deviceInfo.uid);
+            await registerPushServiceWithApp({
+              uid,
+              fcmToken: deviceInfo.fcmToken,
+              platform: deviceInfo.platform,
+            });
+          } catch (error) {
+            console.error("Error handling device info:", error);
+          }
+        };
+
+        window.addEventListener("message", handleDeviceInfo);
+        nativeMethodUtils.getDeviceInfo();
       } else {
         console.log("noWeb");
         await initializePWAPushService();
@@ -28,32 +49,32 @@ export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
   }, [uid]);
 };
 
-const initializeAppPushService = async (uid?: string) => {
-  const handleDeviceInfo = async (event: MessageEvent) => {
-    try {
-      const { data } = event;
-      if (typeof data !== "string" || !data.includes("deviceInfo")) return;
+// const initializeAppPushService = async (uid?: string) => {
+//   const handleDeviceInfo = async (event: MessageEvent) => {
+//     try {
+//       const { data } = event;
+//       if (typeof data !== "string" || !data.includes("deviceInfo")) return;
 
-      const deviceInfo: DeviceInfo = JSON.parse(data);
-      if (isNil(uid) || isEmpty(deviceInfo)) return;
+//       const deviceInfo: DeviceInfo = JSON.parse(data);
+//       if (isNil(uid) || isEmpty(deviceInfo)) return;
 
-      await registerPushServiceWithApp({
-        uid,
-        fcmToken: deviceInfo.fcmToken,
-        platform: deviceInfo.platform,
-      });
-    } catch (error) {
-      console.error("Error handling device info:", error);
-    }
-  };
+//       await registerPushServiceWithApp({
+//         uid,
+//         fcmToken: deviceInfo.fcmToken,
+//         platform: deviceInfo.platform,
+//       });
+//     } catch (error) {
+//       console.error("Error handling device info:", error);
+//     }
+//   };
 
-  window.addEventListener("message", handleDeviceInfo);
-  nativeMethodUtils.getDeviceInfo();
+//   window.addEventListener("message", handleDeviceInfo);
+//   nativeMethodUtils.getDeviceInfo();
 
-  return () => {
-    window.removeEventListener("message", handleDeviceInfo);
-  };
-};
+//   return () => {
+//     window.removeEventListener("message", handleDeviceInfo);
+//   };
+// };
 
 const initializePWAPushService = async () => {
   try {
