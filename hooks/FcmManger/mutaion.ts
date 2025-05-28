@@ -16,8 +16,13 @@ export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
       if (isWebView()) {
         console.log("isWebView");
         toast("info", "Start");
-        const deviceInfo = await waitForDeviceInfo(uid);
-        toast("info", "W", deviceInfo?.fcmToken + deviceInfo?.platform);
+
+        try {
+          const deviceInfo = await waitForDeviceInfo(uid);
+          toast("info", "✅ 받은 토큰: " + deviceInfo.fcmToken + deviceInfo?.platform);
+        } catch (e) {
+          toast("error", "❌ 오류 발생: " + e?.message);
+        }
       } else {
         console.log("noWeb");
         await initializePWAPushService();
