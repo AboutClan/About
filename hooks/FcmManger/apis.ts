@@ -21,7 +21,7 @@ export const registerPushServiceWithApp = async (deviceInfo: DeviceInfo) => {
   try {
     const response = await requestServer({
       method: "post",
-      url: "fcm/register-token",
+      url: "fcm/token",
       body: deviceInfo,
     });
     return response;
