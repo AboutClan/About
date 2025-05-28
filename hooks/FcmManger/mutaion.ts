@@ -15,8 +15,9 @@ export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
     const initializePushService = async () => {
       if (isWebView()) {
         console.log("isWebView");
+        toast("info", "Start");
         const deviceInfo = await waitForDeviceInfo(uid);
-        await toast("info", deviceInfo?.fcmToken + deviceInfo?.platform);
+        toast("info", "W", deviceInfo?.fcmToken + deviceInfo?.platform);
       } else {
         console.log("noWeb");
         await initializePWAPushService();
