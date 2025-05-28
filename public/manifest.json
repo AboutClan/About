@@ -13,7 +13,7 @@
       "description": "어바웃 테스트",
       "icons": [
         {
-          "src": "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/ALogo.png",
+          "src": "/images/96.png",
           "type": "image/png",
           "sizes": "96x96"
         }
@@ -29,41 +29,37 @@
 
   "scope": "/",
   "short_name": "ABOUT",
-  "start_url": "https://study-about.club.com/",
+  "start_url": "/home",
   "theme_color": "#ffffff",
   "icons": [
     {
-      "src": "/ogImage.png",
+      "src": "/images/ogImage.jpg",
+      "type": "image/jpg",
+      "sizes": "1260x630"
+    },
+    {
+      "src": "/images/256.png",
       "type": "image/png",
-      "sizes": "977x498"
+      "sizes": "256x256"
     },
 
     {
-      "src": "/256.jpg",
-      "type": "image/jpg",
-      "sizes": "171x171"
-    },
-    {
-      "src": "/512.jpg",
-      "type": "image/jpg",
-      "sizes": "341x341"
-    },
-    {
-      "src": "/512.jpg",
+      "src": "/images/512.jpg",
       "type": "image/jpg",
       "sizes": "512x512"
     }
   ],
   "screenshots": [
     {
-      "src": "/그림1.png",
-      "sizes": "951x584",
-      "type": "image/png"
+      "src": "/images/ogImage.jpg",
+      "type": "image/jpg",
+      "sizes": "1260x630"
     },
     {
-      "src": "/그림1.png",
-      "sizes": "951x584",
-      "type": "image/png"
+      "src": "/images/ogImage.jpg",
+      "type": "image/jpg",
+      "sizes": "1260x630",
+      "form_factor": "wide"
     }
   ],
   "lang": "ko"
