@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { isWebView } from "../../utils/appEnvUtils";
+import { isAndroid, isIOS, isWebView } from "../../utils/appEnvUtils";
 import { urlBase64ToUint8Array } from "../../utils/convertUtils/convertBase64";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
 import { useToast } from "../custom/CustomToast";
@@ -19,7 +19,7 @@ export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
 
         try {
           const deviceInfo = await waitForDeviceInfo(uid);
-          toast("info", "✅ 받은 토큰: " + deviceInfo?.platform);
+          toast("info", "✅ 받은 토큰: " + (isAndroid() ? "android" : isIOS() ? "ios" : "web"));
         } catch (e) {
           toast("error", "❌ 오류 발생22: " + e?.message);
         }
@@ -46,7 +46,7 @@ const waitForDeviceInfo = (uid?: string): Promise<DeviceInfo> => {
         await registerPushServiceWithApp({
           uid,
           fcmToken: deviceInfo.fcmToken,
-          platform: deviceInfo?.platform || "android",
+          platform: deviceInfo?.platform || (isAndroid() ? "android" : isIOS() ? "ios" : "web"),
         });
 
         resolve(deviceInfo); // ✅ deviceInfo 반환 가능
