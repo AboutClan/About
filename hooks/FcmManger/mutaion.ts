@@ -35,6 +35,7 @@ export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
 
 const waitForDeviceInfo = (uid?: string): Promise<DeviceInfo> => {
   return new Promise((resolve, reject) => {
+    console.log(uid);
     const handleDeviceInfo = async (event: MessageEvent) => {
       try {
         const data = typeof event.data === "string" ? JSON.parse(event.data) : event.data;
