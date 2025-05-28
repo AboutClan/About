@@ -15,12 +15,13 @@ export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
     if (!uid) return;
     const initializePushService = async () => {
       if (isWebView()) {
-        toast("info", "어플로 접속중입니다.");
+        // toast("info", "어플로 접속중입니다.");
         console.log("isWebView");
 
         const handleDeviceInfo = async (event: MessageEvent) => {
           try {
             const { data } = event;
+            toast("info", data?.deviceInfo);
             if (typeof data !== "string" || !data.includes("deviceInfo")) return;
 
             const deviceInfo: DeviceInfo = JSON.parse(data);
