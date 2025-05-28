@@ -11,7 +11,7 @@ export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
   useEffect(() => {
     if (!uid) return;
     const initializePushService = async () => {
-      if (!isWebView()) {
+      if (isWebView()) {
         console.log("isWebView");
         await initializeAppPushService(uid);
       } else {
