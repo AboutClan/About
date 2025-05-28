@@ -46,10 +46,10 @@ function HomeGroupSection({ groups }: HomeGroupSectionProps) {
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence>
-      <Flex direction="column" mx={5} mt={5}>
+      {/* <Flex direction="column" mx={5} mt={5}>
         <SectionHeader title="About 시험 스터디" subTitle="시험 성공의 지름길"></SectionHeader>
         <HomeGroupCol threeGroups={groups?.exam} type="study2" />
-      </Flex>
+      </Flex> */}
       <Flex direction="column" mx={5} mt={5}>
         <SectionHeader
           title="About 오픈 예정 소모임"

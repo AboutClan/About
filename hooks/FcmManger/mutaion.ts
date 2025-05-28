@@ -1,46 +1,56 @@
 import { useEffect } from "react";
 
+import { isWebView } from "../../utils/appEnvUtils";
 import { urlBase64ToUint8Array } from "../../utils/convertUtils/convertBase64";
-import { registerPushServiceWithPWA } from "./apis";
+import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
+import { isEmpty, isNil } from "../../utils/validationUtils";
+import { registerPushServiceWithApp, registerPushServiceWithPWA } from "./apis";
+import { DeviceInfo } from "./types";
 import { requestNotificationPermission } from "./utils";
 
 export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
   useEffect(() => {
     if (!uid) return;
     const initializePushService = async () => {
-      await initializePWAPushService();
+      if (isWebView()) {
+        console.log("isWebView");
+        await initializeAppPushService(uid);
+      } else {
+        console.log("noWeb");
+        await initializePWAPushService();
+      }
     };
 
     initializePushService();
   }, [uid]);
 };
 
-// const initializeAppPushService = async (uid?: string) => {
-//   const handleDeviceInfo = async (event: MessageEvent) => {
-//     try {
-//       const { data } = event;
-//       if (typeof data !== "string" || !data.includes("deviceInfo")) return;
+const initializeAppPushService = async (uid?: string) => {
+  const handleDeviceInfo = async (event: MessageEvent) => {
+    try {
+      const { data } = event;
+      if (typeof data !== "string" || !data.includes("deviceInfo")) return;
 
-//       const deviceInfo: DeviceInfo = JSON.parse(data);
-//       if (isNil(uid) || isEmpty(deviceInfo)) return;
+      const deviceInfo: DeviceInfo = JSON.parse(data);
+      if (isNil(uid) || isEmpty(deviceInfo)) return;
 
-//       await registerPushServiceWithApp({
-//         uid,
-//         fcmToken: deviceInfo.fcmToken,
-//         deviceId: deviceInfo.deviceId,
-//       });
-//     } catch (error) {
-//       console.error("Error handling device info:", error);
-//     }
-//   };
+      await registerPushServiceWithApp({
+        uid,
+        fcmToken: deviceInfo.fcmToken,
+        deviceId: deviceInfo.deviceId,
+      });
+    } catch (error) {
+      console.error("Error handling device info:", error);
+    }
+  };
 
-//   window.addEventListener("message", handleDeviceInfo);
-//   nativeMethodUtils.getDeviceInfo();
+  window.addEventListener("message", handleDeviceInfo);
+  nativeMethodUtils.getDeviceInfo();
 
-//   return () => {
-//     window.removeEventListener("message", handleDeviceInfo);
-//   };
-// };
+  return () => {
+    window.removeEventListener("message", handleDeviceInfo);
+  };
+};
 
 const initializePWAPushService = async () => {
   try {
