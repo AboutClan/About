@@ -15,6 +15,7 @@ export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
     const initializePushService = async () => {
       if (isWebView()) {
         console.log("isWebView");
+        await toast("info", "app start");
         const deviceInfo = await waitForDeviceInfo(uid);
         await toast("info", deviceInfo?.fcmToken + deviceInfo?.platform);
       } else {
