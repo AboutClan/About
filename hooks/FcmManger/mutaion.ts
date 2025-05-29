@@ -17,6 +17,9 @@ export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
         toast("info", "어플로 접속중입니다.");
         console.log("isWebView");
         await initializeAppPushService(uid);
+        if (uid === "2259633694") {
+          toast("info", "WHO ARE YOU?");
+        }
       } else {
         console.log("noWeb");
         await initializePWAPushService();
