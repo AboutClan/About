@@ -4,15 +4,18 @@ import { isWebView } from "../../utils/appEnvUtils";
 import { urlBase64ToUint8Array } from "../../utils/convertUtils/convertBase64";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
 import { isEmpty, isNil } from "../../utils/validationUtils";
+import { useToast } from "../custom/CustomToast";
 import { registerPushServiceWithApp, registerPushServiceWithPWA } from "./apis";
 import { DeviceInfo } from "./types";
 import { requestNotificationPermission } from "./utils";
 
 export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
+  const toast = useToast();
   useEffect(() => {
     if (!uid) return;
     const initializePushService = async () => {
       if (isWebView()) {
+        toast("info", "어플로 접속중입니다.");
         console.log("isWebView");
         await initializeAppPushService(uid);
       } else {
@@ -29,7 +32,7 @@ const initializeAppPushService = async (uid?: string) => {
   const handleDeviceInfo = async (event: MessageEvent) => {
     try {
       const { data } = event;
-      if (typeof data !== "string" || !data.includes("deviceInfo")) return;
+      if (!data.includes("deviceInfo")) return;
 
       const deviceInfo: DeviceInfo = JSON.parse(data);
       if (isNil(uid) || isEmpty(deviceInfo)) return;
