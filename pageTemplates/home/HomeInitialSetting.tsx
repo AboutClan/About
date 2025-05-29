@@ -1,5 +1,5 @@
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { createGlobalStyle } from "styled-components";
 
@@ -9,11 +9,11 @@ import { usePushServiceInitialize } from "../../hooks/FcmManger/mutaion";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import UserSettingPopUp from "../../pageTemplates/setting/userSetting/userSettingPopUp";
-import { isPWA, isWebView } from "../../utils/appEnvUtils";
+import { isPWA } from "../../utils/appEnvUtils";
 
 function HomeInitialSetting() {
   const { data: session } = useSession();
-  console.log(24, isWebView());
+
   usePushServiceInitialize({
     uid: session?.user?.uid,
   });
