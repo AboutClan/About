@@ -18,7 +18,10 @@ export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
         console.log("isWebView");
         const A = await initializeAppPushService(uid);
         if (uid === "2259633694") {
-          toast("info", A?.platform);
+          toast("info", A?.fcmToken + A?.uid + A?.platform);
+          if (!A) {
+            toast("error", "경고!");
+          }
         }
       } else {
         console.log("noWeb");
@@ -35,7 +38,7 @@ export const initializeAppPushService = (uid?: string): Promise<DeviceInfo | nul
     const handleDeviceInfo = async (event: MessageEvent) => {
       try {
         const { data } = event;
-        if (typeof data !== "string" || !data.includes("deviceInfo")) return;
+        // if (typeof data !== "string" || !data.includes("deviceInfo")) return;
 
         const deviceInfo: DeviceInfo = JSON.parse(data);
         if (!uid || !deviceInfo?.fcmToken) {
