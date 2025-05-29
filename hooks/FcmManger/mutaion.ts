@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { isWebView } from "../../utils/appEnvUtils";
 import { urlBase64ToUint8Array } from "../../utils/convertUtils/convertBase64";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
-import { isEmpty, isNil } from "../../utils/validationUtils";
 import { useToast } from "../custom/CustomToast";
 import { registerPushServiceWithApp, registerPushServiceWithPWA } from "./apis";
 import { DeviceInfo } from "./types";
@@ -32,10 +31,10 @@ const initializeAppPushService = async (uid?: string) => {
   const handleDeviceInfo = async (event: MessageEvent) => {
     try {
       const { data } = event;
-      if (!data.includes("deviceInfo")) return;
+      // if (!data.includes("deviceInfo")) return;
 
       const deviceInfo: DeviceInfo = JSON.parse(data);
-      if (isNil(uid) || isEmpty(deviceInfo)) return;
+      // if (isNil(uid) || isEmpty(deviceInfo)) return;
 
       await registerPushServiceWithApp({
         uid,
