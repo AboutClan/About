@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
@@ -92,7 +92,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
           ...(gatherData?.status !== "pending"
             ? [
                 {
-                  text: "모임중으로 상태 변경",
+                  text: "모집중으로 상태 변경",
                   func: () => {
                     changeStatus("pending");
                   },
