@@ -9,10 +9,7 @@ const getUserAgent = () => {
   return window.navigator.userAgent;
 };
 
-export const isWebView = () => getUserAgent().includes("AboutClubApp");
-
-export const isAndroid = () => getUserAgent().includes("Android");
-
-export const isIOS = () => getUserAgent().includes("iPhone") || getUserAgent().includes("iPad");
-
-export const isPWA = () => window.matchMedia?.("(display-mode: standalone)")?.matches ?? false;
+export const isWebView = () => RegExp(APP_USER_AGENT).test(getUserAgent());
+export const isAndroid = () => RegExp(ANDROID).test(getUserAgent());
+export const isIOS = () => RegExp(IOS).test(getUserAgent());
+export const isPWA = () => window.matchMedia("(display-mode: standalone)").matches;

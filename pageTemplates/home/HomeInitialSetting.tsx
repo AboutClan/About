@@ -9,11 +9,11 @@ import { usePushServiceInitialize } from "../../hooks/FcmManger/mutaion";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import UserSettingPopUp from "../../pageTemplates/setting/userSetting/userSettingPopUp";
-import { isPWA } from "../../utils/appEnvUtils";
+import { isPWA, isWebView } from "../../utils/appEnvUtils";
 
 function HomeInitialSetting() {
   const { data: session } = useSession();
-
+  console.log(24, isWebView());
   usePushServiceInitialize({
     uid: session?.user?.uid,
   });

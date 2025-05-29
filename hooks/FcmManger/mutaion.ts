@@ -1,28 +1,20 @@
 import { useEffect } from "react";
 
-import { isAndroid, isIOS, isWebView } from "../../utils/appEnvUtils";
+import { isWebView } from "../../utils/appEnvUtils";
 import { urlBase64ToUint8Array } from "../../utils/convertUtils/convertBase64";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
-import { useToast } from "../custom/CustomToast";
+import { isEmpty, isNil } from "../../utils/validationUtils";
 import { registerPushServiceWithApp, registerPushServiceWithPWA } from "./apis";
 import { DeviceInfo } from "./types";
 import { requestNotificationPermission } from "./utils";
 
 export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
-  const toast = useToast();
   useEffect(() => {
     if (!uid) return;
     const initializePushService = async () => {
       if (isWebView()) {
         console.log("isWebView");
-        toast("info", "Start");
-
-        try {
-          await waitForDeviceInfo(uid);
-          toast("info", "✅ 받은 토큰: " + (isAndroid() ? "android" : isIOS() ? "ios" : "web"));
-        } catch (e) {
-          toast("error", "❌ 오류 발생22: " + e?.message);
-        }
+        await initializeAppPushService(uid);
       } else {
         console.log("noWeb");
         await initializePWAPushService();
@@ -33,34 +25,31 @@ export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
   }, [uid]);
 };
 
-const waitForDeviceInfo = (uid?: string): Promise<DeviceInfo> => {
-  return new Promise((resolve, reject) => {
-    console.log(uid);
-    const handleDeviceInfo = async (event: MessageEvent) => {
-      try {
-        const data = typeof event.data === "string" ? JSON.parse(event.data) : event.data;
-        if (data.name !== "deviceInfo") return;
+const initializeAppPushService = async (uid?: string) => {
+  const handleDeviceInfo = async (event: MessageEvent) => {
+    try {
+      const { data } = event;
+      if (typeof data !== "string" || !data.includes("deviceInfo")) return;
 
-        const deviceInfo = data;
+      const deviceInfo: DeviceInfo = JSON.parse(data);
+      if (isNil(uid) || isEmpty(deviceInfo)) return;
 
-        await registerPushServiceWithApp({
-          uid,
-          fcmToken: deviceInfo.fcmToken,
-          platform: deviceInfo?.platform || (isAndroid() ? "android" : isIOS() ? "ios" : "web"),
-        });
+      await registerPushServiceWithApp({
+        uid,
+        fcmToken: deviceInfo.fcmToken,
+        platform: "android",
+      });
+    } catch (error) {
+      console.error("Error handling device info:", error);
+    }
+  };
 
-        resolve(deviceInfo); // ✅ deviceInfo 반환 가능
-        window.removeEventListener("message", handleDeviceInfo);
-      } catch (e) {
-        reject(e);
-        window.removeEventListener("message", handleDeviceInfo);
-      }
-    };
+  window.addEventListener("message", handleDeviceInfo);
+  nativeMethodUtils.getDeviceInfo();
 
-    window.addEventListener("message", handleDeviceInfo);
-    document.addEventListener("message", handleDeviceInfo);
-    nativeMethodUtils.getDeviceInfo();
-  });
+  return () => {
+    window.removeEventListener("message", handleDeviceInfo);
+  };
 };
 
 const initializePWAPushService = async () => {
