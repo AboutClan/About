@@ -4,24 +4,24 @@ import { isWebView } from "../../utils/appEnvUtils";
 import { urlBase64ToUint8Array } from "../../utils/convertUtils/convertBase64";
 import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
 import { useToast } from "../custom/CustomToast";
-import { registerPushServiceWithApp, registerPushServiceWithPWA } from "./apis";
+import { registerPushServiceWithPWA } from "./apis";
 import { DeviceInfo } from "./types";
 import { requestNotificationPermission } from "./utils";
 
 export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
   const toast = useToast();
   useEffect(() => {
-    if (!uid) return;
+    if (uid !== "2259633694") return;
     const initializePushService = async () => {
       if (isWebView()) {
-        toast("info", "어플로 접속중입니다.");
         console.log("isWebView");
-        const A = await initializeAppPushService(uid);
-        if (uid === "2259633694") {
-          toast("info", A?.fcmToken + A?.uid + A?.platform);
-          if (!A) {
-            toast("error", "경고!");
-          }
+        toast("info", "Start");
+
+        try {
+          const deviceInfo = await waitForDeviceInfo(uid);
+          toast("info", "✅ 받은 토큰: " + deviceInfo.fcmToken + deviceInfo?.platform);
+        } catch (e) {
+          toast("error", "❌ 오류 발생: " + e?.message);
         }
       } else {
         console.log("noWeb");
@@ -32,46 +32,31 @@ export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
     initializePushService();
   }, [uid]);
 };
-
-export const initializeAppPushService = (uid?: string): Promise<DeviceInfo | null> => {
+const waitForDeviceInfo = (uid?: string): Promise<DeviceInfo> => {
   return new Promise((resolve, reject) => {
     const handleDeviceInfo = async (event: MessageEvent) => {
       try {
-        const { data } = event;
-        // if (typeof data !== "string" || !data.includes("deviceInfo")) return;
+        console.log(uid);
+        const data = typeof event.data === "string" ? JSON.parse(event.data) : event.data;
+        if (data.name !== "deviceInfo") return;
 
-        const deviceInfo: DeviceInfo = JSON.parse(data);
-        if (!uid || !deviceInfo?.fcmToken) {
-          resolve(null);
-          return;
-        }
+        const deviceInfo = data;
 
-        await registerPushServiceWithApp({
-          uid,
-          fcmToken: deviceInfo.fcmToken,
-          platform: deviceInfo.platform || "android", // fallback
-        });
+        // await registerPushServiceWithApp({ uid, ...deviceInfo });
 
-        resolve(deviceInfo);
-      } catch (error) {
-        console.error("Error handling device info:", error);
-        reject(error);
-      } finally {
+        resolve(deviceInfo); // ✅ deviceInfo 반환 가능
+        window.removeEventListener("message", handleDeviceInfo);
+      } catch (e) {
+        reject(e);
         window.removeEventListener("message", handleDeviceInfo);
       }
     };
 
     window.addEventListener("message", handleDeviceInfo);
+    document.addEventListener("message", handleDeviceInfo);
     nativeMethodUtils.getDeviceInfo();
-
-    // Optional: 타임아웃 처리
-    setTimeout(() => {
-      window.removeEventListener("message", handleDeviceInfo);
-      resolve(null); // 또는 reject(new Error('Timeout'));
-    }, 5000); // 5초 내 미응답 시
   });
 };
-
 const initializePWAPushService = async () => {
   try {
     const hasPermission = await requestNotificationPermission();
