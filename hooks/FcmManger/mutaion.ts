@@ -16,9 +16,9 @@ export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
       if (isWebView()) {
         toast("info", "어플로 접속중입니다.");
         console.log("isWebView");
-        await initializeAppPushService(uid);
+        const A = await initializeAppPushService(uid);
         if (uid === "2259633694") {
-          toast("info", "WHO ARE YOU?");
+          toast("info", A?.platform);
         }
       } else {
         console.log("noWeb");
@@ -30,31 +30,43 @@ export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
   }, [uid]);
 };
 
-const initializeAppPushService = async (uid?: string) => {
-  const handleDeviceInfo = async (event: MessageEvent) => {
-    try {
-      const { data } = event;
-      // if (!data.includes("deviceInfo")) return;
+export const initializeAppPushService = (uid?: string): Promise<DeviceInfo | null> => {
+  return new Promise((resolve, reject) => {
+    const handleDeviceInfo = async (event: MessageEvent) => {
+      try {
+        const { data } = event;
+        if (typeof data !== "string" || !data.includes("deviceInfo")) return;
 
-      const deviceInfo: DeviceInfo = JSON.parse(data);
-      // if (isNil(uid) || isEmpty(deviceInfo)) return;
+        const deviceInfo: DeviceInfo = JSON.parse(data);
+        if (!uid || !deviceInfo?.fcmToken) {
+          resolve(null);
+          return;
+        }
 
-      await registerPushServiceWithApp({
-        uid,
-        fcmToken: deviceInfo.fcmToken,
-        platform: "android",
-      });
-    } catch (error) {
-      console.error("Error handling device info:", error);
-    }
-  };
+        await registerPushServiceWithApp({
+          uid,
+          fcmToken: deviceInfo.fcmToken,
+          platform: deviceInfo.platform || "android", // fallback
+        });
 
-  window.addEventListener("message", handleDeviceInfo);
-  nativeMethodUtils.getDeviceInfo();
+        resolve(deviceInfo);
+      } catch (error) {
+        console.error("Error handling device info:", error);
+        reject(error);
+      } finally {
+        window.removeEventListener("message", handleDeviceInfo);
+      }
+    };
 
-  return () => {
-    window.removeEventListener("message", handleDeviceInfo);
-  };
+    window.addEventListener("message", handleDeviceInfo);
+    nativeMethodUtils.getDeviceInfo();
+
+    // Optional: 타임아웃 처리
+    setTimeout(() => {
+      window.removeEventListener("message", handleDeviceInfo);
+      resolve(null); // 또는 reject(new Error('Timeout'));
+    }, 5000); // 5초 내 미응답 시
+  });
 };
 
 const initializePWAPushService = async () => {
