@@ -11,7 +11,7 @@ import { requestNotificationPermission } from "./utils";
 export const usePushServiceInitialize = ({ uid }: { uid?: string }) => {
   const toast = useToast();
   useEffect(() => {
-    if (uid !== "2259633694") return;
+    if (uid !== "2259633694" && uid !== "2283035576") return;
     const initializePushService = async () => {
       if (isWebView()) {
         console.log("isWebView");

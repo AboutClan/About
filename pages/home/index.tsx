@@ -1,4 +1,5 @@
 import Slide from "../../components/layouts/PageSlide";
+import { useSendFCMTestQuery } from "../../hooks/FcmManger/mutations";
 import { useGroupSnapshotQuery } from "../../hooks/groupStudy/queries";
 import HomeBannerSlide from "../../pageTemplates/home/HomeBannerSlide";
 import HomeGatherSection from "../../pageTemplates/home/HomeGatherSection";
@@ -11,8 +12,8 @@ import HomeReviewSection from "../../pageTemplates/home/HomeReviewSection";
 function Home() {
   const { data: data } = useGroupSnapshotQuery();
 
-  // const { data: data2 } = useSendFCMTestQuery();
-  // console.log(23, data2);
+  const { data: data2 } = useSendFCMTestQuery();
+  console.log(23, data2);
 
   return (
     <>
