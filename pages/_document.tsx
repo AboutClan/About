@@ -55,10 +55,10 @@ export default class MyDocument extends Document {
           <meta property="og:title" content="ABOUT" />
           <meta property="og:url" content={process.env.NEXT_PUBLIC_NEXTAUTH_URL} />
           <meta property="og:description" content="대학생 소모임 동아리" />
-          <meta property="og:image" content="/ogImage.jpg" />
+          <meta property="og:image" content="/images/thumbnail.jpg" />
           <meta property="og:locale" content="ko_KR" />
           <meta property="og:site_name" content={process.env.NEXT_PUBLIC_NEXTAUTH_URL} />
-          <meta charSet="utf-8" key="charset" />{" "}
+          <meta charSet="utf-8" key="charset" />
           <Script src="https://kit.fontawesome.com/4071928605.js" crossOrigin="anonymous"></Script>
         </Head>
         <body>
