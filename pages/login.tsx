@@ -148,7 +148,7 @@ const Login: NextPage<{
             <Image src="/About.png" alt="main-logo" fill />
           </Box>
           <Box mb={6} fontWeight="bold" fontSize="14px" lineHeight="20px" color="gray.100">
-            대학생들의 스터디 동아리
+            20대를 위한 모임 플랫폼
           </Box>
           <Box w="58.7%" position="relative" aspectRatio={5 / 4}>
             <Image src="/main.png" alt="main-icon" fill />
@@ -237,18 +237,9 @@ const Login: NextPage<{
               <div />
             </Button>
 
-            <Button
-              variant="ghost"
-              fontSize="12px"
-              size="xs"
-              fontWeight="medium"
-              opacity={0.8}
-              color="white"
-              _hover={{ bg: "none" }}
-              onClick={() => router.push("/loginId")}
-            >
-              다른 방법으로 로그인
-            </Button>
+            <Box mt={0} as="u" fontSize="12px" fontWeight="medium" opacity={0.8} color="white">
+              동아리 가입은 '카카오 로그인'만 가능합니다.
+            </Box>
           </Flex>
           <ForceLogoutDialog />
         </Flex>
