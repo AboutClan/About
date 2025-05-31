@@ -1,5 +1,5 @@
 export const GROUP_STUDY_ROLE = {
-  admin: "그룹장",
+  admin: "모임장",
   member: "멤버",
   manager: "운영진",
   outsider: "외부인",

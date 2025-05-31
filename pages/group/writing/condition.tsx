@@ -73,7 +73,7 @@ function WritingCondition() {
     if (condition.isAgree) setIsQuestionModal(true);
     else setIsQuestionModal(false);
   }, [condition.isAgree]);
-
+  console.log(25, groupWriting?.organizer);
   const onClickNext = async () => {
     const groupData: IGroupWriting = {
       age: [19, 28],
@@ -88,7 +88,7 @@ function WritingCondition() {
       location: location || userInfo?.location,
       link,
       gender: condition.gender,
-      organizer: userInfo,
+      organizer: groupWriting?.organizer || userInfo,
       questionText: condition.isAgree ? question || "어떤 목적으로 가입을 희망하시나요?" : "",
       isSecret: condition.isSecret,
       challenge: "",

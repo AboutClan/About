@@ -57,6 +57,9 @@ function GroupConfirmModal({ setIsModal, groupWriting }: IGroupConfirmModal) {
   });
 
   const onSubmit = () => {
+    // console.log(groupWriting);
+
+    // return;
     if (groupWriting?.id) {
       updateGroup({ groupStudy: groupWriting as IGroup });
     } else mutate({ groupStudy: groupWriting });

@@ -123,39 +123,16 @@ function GroupDetail() {
                   fontSize="12px"
                   fontFamily="apple"
                   whiteSpace="pre-wrap"
+                  lineHeight="18px"
                   mb={4}
                 >
                   {group.content}
-                </Box>
-                {group?.notionUrl ? (
-                  <Box my={5}>
-                    <Link href={group.notionUrl}>
-                      <Box as="u" fontWeight={600} fontSize="12px" color="mint">
-                        &gt;&gt; 활동 기록 보러가기
-                      </Box>
-                    </Link>
-                    {/* <Box mb={3} fontSize="14px" fontWeight="bold" lineHeight="20px">
-                      <UnorderedList ml={-1.5}>
-                        <ListItem>활동 기록 보기</ListItem>
-                      </UnorderedList>
-                    </Box>
-                    <Box
-                      fontWeight="light"
-                      fontSize="12px"
-                      lineHeight="20px"
-                      bg="rgba(160, 174, 192, 0.08)"
-                      py={4}
-                      px={3}
-                      borderRadius="8px"
-                    >
-                      <Link href={group?.notionUrl}>{group?.notionUrl}</Link>
-                    </Box> */}
-                  </Box>
-                ) : group.rules.length ? (
+                </Box>{" "}
+                {group.rules.length ? (
                   <>
                     <Box mb={3} fontSize="14px" fontWeight="bold" lineHeight="20px">
                       <UnorderedList ml={-1.5}>
-                        <ListItem>규칙</ListItem>
+                        <ListItem>규 칙</ListItem>
                       </UnorderedList>
                     </Box>
                     <Box
@@ -165,6 +142,7 @@ function GroupDetail() {
                       bg="rgba(160, 174, 192, 0.08)"
                       py={4}
                       borderRadius="8px"
+                      mb={5}
                     >
                       <UnorderedList>
                         {group.rules.map((rule, idx) => (
@@ -174,7 +152,16 @@ function GroupDetail() {
                     </Box>
                   </>
                 ) : null}
-
+                {group?.notionUrl ? (
+                  <Box fontSize="13px" lineHeight="20px">
+                    <Link
+                      style={{ fontWeight: "600", color: "var(--color-blue)" }}
+                      href={group.notionUrl}
+                    >
+                      <u>&gt;&gt; 활동 기록 보러가기</u>
+                    </Link>
+                  </Box>
+                ) : null}
                 <Flex mt={5}>
                   {group.hashTag?.split("#").map((tag, idx) =>
                     tag ? (

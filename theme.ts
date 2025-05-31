@@ -17,7 +17,7 @@ const theme = extendTheme({
           left: "8px",
           top: "50%",
           transform: "translateY(-50%)", // 수직 중앙 정렬
-          fontSize: "12px", // 마커 크기
+          fontSize: "8px", // 마커 크기
         },
       },
     },
