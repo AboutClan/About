@@ -42,7 +42,7 @@ function ProfilePage() {
   const { data: user } = useUserIdToUserInfoQuery(userId as string, {
     enabled: !!userId,
   });
-
+  console.log(user);
   const { data } = useGroupsTitleQuery(userId, {
     enabled: !!userId,
   });

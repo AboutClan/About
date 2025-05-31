@@ -1,7 +1,9 @@
 import { Box, Flex } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
+import BlurredPart from "../../components/molecules/BlurredPart";
 import {
   SecretSquareListResponse,
   useSecretSquareListQuery,
@@ -11,10 +13,12 @@ import SecretSquareCategories from "./SecretSquareCategories";
 import SquareItem from "./SquareItem";
 
 function SquareSecretSection() {
+  const { data: session } = useSession();
   const [category, setCategory] = useState<SecretSquareCategoryWithAll>("전체");
   const [cursor, setCursor] = useState(0);
   const [sqaures, setSqaures] = useState<SecretSquareListResponse["squareList"]>([]);
 
+  const isGuest = session?.user.role === "guest";
   const loader = useRef<HTMLDivElement | null>(null);
   const firstLoad = useRef(true);
 
@@ -68,7 +72,9 @@ function SquareSecretSection() {
         ) : (
           <>
             {sqaures.map((squareItem) => (
-              <SquareItem key={squareItem._id} item={squareItem} />
+              <BlurredPart key={squareItem._id} isBlur={!!isGuest}>
+                <SquareItem item={squareItem} />
+              </BlurredPart>
             ))}
           </>
         )}

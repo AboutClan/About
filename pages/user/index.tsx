@@ -24,6 +24,10 @@ function UserPage() {
       typeToast("guest");
       return;
     }
+    if (type === "billing") {
+      typeToast("inspection");
+      return;
+    }
 
     setSection(type);
   };

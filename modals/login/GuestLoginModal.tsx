@@ -8,7 +8,7 @@ interface IGuestLoginModal extends IModal {
 function GuestLoginModal({ setIsModal, customSignin }: IGuestLoginModal) {
   const footerOptions: IFooterOptions = {
     main: {
-      text: "게스트로 계속하기",
+      text: "게스트로 구경하기",
       func: () => customSignin("guest"),
     },
     sub: {
@@ -20,7 +20,7 @@ function GuestLoginModal({ setIsModal, customSignin }: IGuestLoginModal) {
     <>
       <ModalLayout title="게스트 로그인" setIsModal={setIsModal} footerOptions={footerOptions}>
         <span>
-          <b>게스트 로그인</b>은 제한된 기능만을 제공합니다. 천천히 둘러보신 후, 활동을 희망하시면{" "}
+          <b>게스트 로그인</b>은 일부 제한된 기능만 제공합니다. 천천히 둘러보신 후, 가입 신청은{" "}
           <b>카카오 로그인</b>을 이용해 주세요!
         </span>
       </ModalLayout>
