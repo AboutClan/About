@@ -4,7 +4,6 @@ import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
 import Avatar from "../../../components/atoms/Avatar";
-import UserBadge from "../../../components/atoms/badges/UserBadge";
 import { PopOverIcon } from "../../../components/Icons/PopOverIcon";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
@@ -17,6 +16,16 @@ function ProfileInfo({ user }: IProfileInfo) {
   const toast = useToast();
   const { data: session } = useSession();
 
+  const getTemperatureColor = (temp: number): { color: string; bg: string } => {
+    if (temp <= 35.5) return { color: "gray.500", bg: "gray.50" };
+    if (temp < 36.5) return { color: "blue.500", bg: "blue.50" };
+    if (temp <= 38) return { color: "green.500", bg: "green.50" };
+    if (temp <= 40) return { color: "orange.500", bg: "orange.50" };
+    return { color: "red.500", bg: "red.50" };
+  };
+
+  const { color, bg } = getTemperatureColor(user?.temperature?.temperature);
+
   return (
     <>
       <Flex flexDir="column">
@@ -27,40 +36,43 @@ function ProfileInfo({ user }: IProfileInfo) {
               <Box mr={1} fontSize="16px" fontWeight="bold">
                 {user?.name || session?.user.name}
               </Box>
-              <Box>
-                <UserBadge badgeIdx={user?.badge?.badgeIdx} />
-              </Box>
             </Flex>
             <Box fontSize="12px" color="gray.500">
               {dayjsToFormat(dayjs(user?.registerDate), "YYYY년 M월 d일 가입") || "게스트"}
             </Box>
           </Flex>
-          <Flex flexDir="column" ml="auto" mt={4} align="center">
+          <Flex flexDir="column" ml="auto" mt={4} justify="center" align="center">
             {user && user?.uid !== session?.user?.uid && (
               <Button
-                ml={2}
                 px={2.5}
                 size="sm"
                 fontSize="14px"
-                bg="green.50"
-                color="green.500"
+                bg={bg}
+                color={color}
                 lineHeight="22px"
                 fontWeight={500}
                 borderRadius="full"
                 onClick={() => {
-                  toast("info", "아직 해당 멤버의 집계된 데이터가 없습니다.");
+                  toast("info", "상세 정보 확인은 준비중입니다.");
                 }}
               >
-                36.5°C
+                {`${
+                  Number.isInteger(user?.temperature?.temperature)
+                    ? `${user.temperature.temperature}.0`
+                    : user?.temperature?.temperature || "36.5"
+                }°C`}
               </Button>
             )}
-            <PopOverIcon
-              size="xs"
-              marginDir="right"
-              maxWidth={200}
-              rightText="소셜링 온도란?"
-              text="소셜링 온도는 그 사람의 모임 후기를 알 수 있는 지표예요. 소셜링 온도는 매월 1일에, 전전 달 15일부터 전 달 15일까지의 평가가 한 번에 반영됩니다."
-            />
+            <Box mr={1.5}>
+              <PopOverIcon
+                marginDir="right"
+                maxWidth={200}
+                type="info"
+                size="xs"
+                rightText={`${user?.temperature?.cnt}명의 평가 반영`}
+                text="소셜링 온도는 모임 종료 후 참여자들의 익명 리뷰를 바탕으로 산정되는 멤버 후기 지표입니다. 소셜링 온도가 높을수록 모임 승인률이 올라가고, 다양한 혜택을 받을 수 있습니다."
+              />
+            </Box>
           </Flex>
         </Flex>
         <Comment>{user?.comment}</Comment>

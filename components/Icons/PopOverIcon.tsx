@@ -25,8 +25,8 @@ export function PopOverIcon({
             {type === "info" ? (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="14px"
-                height="14px"
+                width={size === "xs" ? "10px" : "14px"}
+                height={size === "xs" ? "10px" : "14px"}
                 viewBox="0 0 20 20"
                 fill="none"
               >

@@ -29,6 +29,11 @@ export interface IUser extends Omit<IUserRegisterForm, "location">, IUserSummary
   isLocationSharingDenided: boolean;
   studyRecord: UserStudyRecordProps;
   monthStudyTarget: number;
+  temperature: {
+    temperature: number;
+    cnt: number;
+    sum?: number;
+  };
 }
 
 export interface UserStudyRecordProps {
