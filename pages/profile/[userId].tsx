@@ -114,7 +114,7 @@ function ProfilePage() {
           color="gray.800"
           onClick={() => setModalType(isMyFriend ? "remove" : "add")}
         >
-          {isMyFriend ? (
+          {session?.user.id === userId ? null : isMyFriend ? (
             <i className="fa-regular fa-user-check fa-lg" style={{ color: "var(--gray-500)" }} />
           ) : (
             <i className="fa-regular fa-user-plus fa-lg" />

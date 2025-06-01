@@ -16,7 +16,8 @@ function ProfileInfo({ user }: IProfileInfo) {
   const toast = useToast();
   const { data: session } = useSession();
 
-  const getTemperatureColor = (temp: number): { color: string; bg: string } => {
+  const getTemperatureColor = (temp: number, cnt: number): { color: string; bg: string } => {
+    if (temp < 36.5 && cnt <= 2) return { color: "green.500", bg: "green.50" };
     if (temp <= 35.5) return { color: "gray.500", bg: "gray.50" };
     if (temp < 36.5) return { color: "blue.500", bg: "blue.50" };
     if (temp <= 38) return { color: "green.500", bg: "green.50" };
@@ -24,7 +25,7 @@ function ProfileInfo({ user }: IProfileInfo) {
     return { color: "red.500", bg: "red.50" };
   };
 
-  const { color, bg } = getTemperatureColor(user?.temperature?.temperature);
+  const { color, bg } = getTemperatureColor(user?.temperature?.temperature, user?.temperature?.cnt);
 
   return (
     <>
@@ -42,27 +43,28 @@ function ProfileInfo({ user }: IProfileInfo) {
             </Box>
           </Flex>
           <Flex flexDir="column" ml="auto" mt={4} justify="center" align="center">
-            {user && user?.uid !== session?.user?.uid && (
-              <Button
-                px={2.5}
-                size="sm"
-                fontSize="14px"
-                bg={bg}
-                color={color}
-                lineHeight="22px"
-                fontWeight={500}
-                borderRadius="full"
-                onClick={() => {
-                  toast("info", "상세 정보 확인은 준비중입니다.");
-                }}
-              >
-                {`${
-                  Number.isInteger(user?.temperature?.temperature)
-                    ? `${user.temperature.temperature}.0`
-                    : user?.temperature?.temperature || "36.5"
-                }°C`}
-              </Button>
-            )}
+            <Button
+              px={2.5}
+              size="sm"
+              fontSize="14px"
+              bg={bg}
+              color={color}
+              lineHeight="22px"
+              fontWeight={500}
+              borderRadius="full"
+              onClick={() => {
+                toast("info", "상세 정보 확인은 준비중입니다.");
+              }}
+            >
+              {`${
+                user?.temperature?.temperature < 36.5 && user?.temperature?.cnt <= 2
+                  ? "36.5"
+                  : Number.isInteger(user?.temperature?.temperature)
+                  ? `${user.temperature.temperature}.0`
+                  : user?.temperature?.temperature || "36.5"
+              }°C`}
+            </Button>
+
             <Box mr={1.5}>
               <PopOverIcon
                 marginDir="right"

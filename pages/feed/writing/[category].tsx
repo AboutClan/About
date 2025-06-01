@@ -1,6 +1,5 @@
 import { Box, Button, VStack } from "@chakra-ui/react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { useRecoilValue } from "recoil";
@@ -27,11 +26,9 @@ import {
   TransferFeedSummaryProps,
   transferFeedSummaryState,
 } from "../../../recoils/transferRecoils";
-import { IUser } from "../../../types/models/userTypes/userInfoTypes";
 import { appendFormData } from "../../../utils/formDataUtils";
 
 function FeedWritingPage() {
-  const { data: session } = useSession();
   const router = useRouter();
 
   const toast = useToast();
@@ -61,26 +58,14 @@ function FeedWritingPage() {
   const { mutate: updatePoint } = usePointSystemMutation("point");
   const { mutate, isLoading } = useFeedMutation({
     onSuccess() {
-      if (
-        session?.user.id === transferFeedSummary?.writer ||
-        session?.user.id === (gather?.user as IUser)?._id
-      ) {
-        if (isAnonymous) {
-          updatePoint({ value: 1000, message: "번개 개설 선 지원금" });
-          toast("success", "1,000 Point가 지급되었습니다.");
-        } else {
-          updatePoint({ value: 3000, message: "번개 개설 선 지원금" });
-          toast("success", "3,000 Point가 지급되었습니다.");
-        }
+      if (isAnonymous) {
+        updatePoint({ value: 1000, message: "번개 후기 실명 지원금" });
+        toast("success", "1,000 Point가 지급되었습니다.");
       } else {
-        if (isAnonymous) {
-          updatePoint({ value: 500, message: "모임 후기 지원금" });
-          toast("success", "500 Point가 지급되었습니다.");
-        } else {
-          updatePoint({ value: 1000, message: "모임 후기 지원금" });
-          toast("success", "1,000 Point가 지급되었습니다.");
-        }
+        updatePoint({ value: 200, message: "번개 후기 익명 지원금" });
+        toast("success", "200 Point가 지급되었습니다.");
       }
+
       router.push(`/gather/${id}`);
     },
   });
@@ -194,8 +179,8 @@ function FeedWritingPage() {
 }
 
 const INFO_ARR = [
-  "후기를 작성 후 마이페이지에서 지원금 신청이 가능합니다.",
-  "실명은 3,000 Point, 익명은 1,000 Point를 사전 지급합니다.",
+  "모임장은 후기 작성 후 마이페이지에서 지원금 신청이 가능합니다.",
+  "실명은 1,000 Point, 익명은 200 Point가 즉시 지급합니다.",
   "모임장이 없거나 운영진인 경우 다른 인원도 작성할 수 있습니다.",
 ];
 
