@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Switch } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
