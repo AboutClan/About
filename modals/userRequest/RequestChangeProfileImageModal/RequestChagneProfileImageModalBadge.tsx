@@ -1,6 +1,6 @@
 import { Badge, Box, Button, Grid } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   BADGE_COLOR_MAPPINGS,
@@ -13,13 +13,15 @@ import { IFooterOptions, ModalLayout } from "../../Modals";
 
 function RequestChagneProfileImageModalBadge({ setIsModal }) {
   const typeToast = useTypeToast();
-  const [selectBadge, setSelectBadge] = useState<(typeof USER_BADGE_ARR)[number]>("대학생");
+  const [selectBadge, setSelectBadge] = useState<(typeof USER_BADGE_ARR)[number]>(null);
 
   const { data: userInfo } = useUserInfoQuery();
 
-  //   useEffect(() => {
-  //   if(userInfo?.ba)
-  // },[userInfo])
+  useEffect(() => {
+    if (userInfo?.badge?.badgeIdx) {
+      setSelectBadge(USER_BADGE_ARR[userInfo?.badge?.badgeIdx]);
+    }
+  }, [userInfo]);
 
   const { mutate: changeBadge } = useUserInfoFieldMutation("badge", {
     onSuccess() {
@@ -46,7 +48,7 @@ function RequestChagneProfileImageModalBadge({ setIsModal }) {
         원하는 배지를 선택해 착용할 수 있습니다. 특정 조건에서만 획득할 수 있는 <b>유니크 배지</b>도
         존재합니다.
       </Box>
-      <Grid h="210px" overflow="auto" gridTemplateColumns="repeat(3,1fr)" gap={2} p={3}>
+      <Grid h="140px" overflow="auto" gridTemplateColumns="repeat(3,1fr)" gap={2} p={3}>
         {USER_BADGE_ARR.map((badge, idx) => {
           const hasBadge =
             userInfo?.badge.badgeList.includes(badge) ||
@@ -58,7 +60,7 @@ function RequestChagneProfileImageModalBadge({ setIsModal }) {
               h="44px"
               borderRadius="8px"
               border={selectBadge === badge ? "2px solid var(--color-mint)" : "var(--border-main)"}
-              bg={selectBadge === badge ? "rgba(0,194,179,0.1)" : hasBadge ? "white" : "white"}
+              bg={selectBadge === badge ? "rgba(0,194,179,0.1)" : hasBadge ? "white" : "gray.300"}
               onClick={() => setSelectBadge(badge)}
               position="relative"
               _hover={{ boxShadow: "none" }}
