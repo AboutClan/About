@@ -17,9 +17,9 @@ export const BADGE_COLOR_MAPPINGS: {
   [key in (typeof USER_BADGE_ARR)[number]]: string;
 } = {
   뉴비: "yellow",
-  대학생: "orange",
+  대학생: "teal",
   휴학생: "blue",
-  졸업생: "teal",
+  졸업생: "orange",
   열공러: "purple",
   칠가이: "badgeBrown",
   공주: "badgePink",
