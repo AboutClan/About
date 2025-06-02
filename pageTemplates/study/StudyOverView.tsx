@@ -49,7 +49,7 @@ function StudyOverview({
         ),
     },
   ];
-
+  console.log(54, reviews);
   return (
     <>
       <Box mx={5} mt={4}>
@@ -77,7 +77,7 @@ function StudyOverview({
             </Flex>
             <Flex flexDir="column" borderRadius="8px">
               {[
-                ...reviews,
+                ...reviews?.filter((review) => !!review?.user?.name),
                 {
                   rating: 5,
                   review: "여러분의 리뷰를 기다리고 있습니다.",

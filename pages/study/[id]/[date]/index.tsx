@@ -50,7 +50,7 @@ export default function Page() {
   const { data: studyVoteData } = useStudyVoteQuery(date, {
     enabled: !!date,
   });
-
+  console.log(studyVoteData);
   const [isReviewModal, setIsReviewModal] = useState(false);
   const [isReviewButton, setIsReviewButton] = useState(false);
 
@@ -236,7 +236,9 @@ export default function Page() {
                   background: undefined,
                 }}
               >
-                {findMyStudy?.place?.reviews.some((review) => review.user._id === session?.user.id)
+                {findMyStudy?.place?.reviews.some(
+                  (review) => review?.user?._id === session?.user.id,
+                )
                   ? "작성 완료"
                   : "카페 리뷰"}
               </Button>
