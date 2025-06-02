@@ -9,7 +9,7 @@ interface IUserBadge {
 }
 
 export default function UserBadge({ badgeIdx }: IUserBadge) {
-  const badge = badgeIdx ? USER_BADGE_ARR[badgeIdx] : "아메리카노";
+  const badge = badgeIdx ? USER_BADGE_ARR[badgeIdx] : "뉴비";
   return (
     <Badge
       h="20px"
