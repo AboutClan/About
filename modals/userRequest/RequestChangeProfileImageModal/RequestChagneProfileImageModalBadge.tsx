@@ -63,7 +63,7 @@ function RequestChagneProfileImageModalBadge({ setIsModal }) {
               position="relative"
               _hover={{ boxShadow: "none" }}
               overflow="hidden"
-              // isDisabled={!hasBadge}
+              isDisabled={!hasBadge}
               opacity={1}
             >
               <Badge size="lg" variant="subtle" colorScheme={BADGE_COLOR_MAPPINGS[badge]}>
