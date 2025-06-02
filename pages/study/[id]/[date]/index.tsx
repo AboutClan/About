@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { STUDY_COVER_IMAGES } from "../../../../assets/images/studyCover";
@@ -227,7 +227,7 @@ export default function Page() {
                   !(
                     myStudy?.attendance?.type === "arrived" &&
                     !findMyStudy?.place?.reviews.some(
-                      (review) => review.user._id === session?.user.id,
+                      (review) => review?.user?._id === session?.user.id,
                     )
                   )
                 }
