@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Switch } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
@@ -157,7 +157,7 @@ function WritingCondition() {
                   <i className="fa-solid fa-comments" />
                 </div>
                 <span>오픈채팅방</span>{" "}
-                <PopOverIcon text="참여 멤버들은 해당 톡방으로 입장합니다. 운영진에게 개설을 요청해도 됩니다." />
+                <PopOverIcon text="참여 멤버들이 해당 톡방으로 입장합니다." />
               </Name>
               <Switch
                 mr="var(--gap-1)"
