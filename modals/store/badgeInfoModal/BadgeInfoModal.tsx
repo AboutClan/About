@@ -5,7 +5,7 @@ import { IFooterOptions, IHeaderOptions, ModalLayout } from "../../Modals";
 import BadgeInfoModalFirstInfo from "./BadgeInfoModalFirstInfo";
 import BadgeInfoModalSecondInfo from "./BadgeInfoModalSecondInfo";
 
-function BadgeInfoModal({ setIsModal }: IModal) {
+function BadgeInfoModal2({ setIsModal }: IModal) {
   const [page, setPage] = useState(0);
 
   const onClick = () => {
@@ -39,4 +39,4 @@ function BadgeInfoModal({ setIsModal }: IModal) {
   );
 }
 
-export default BadgeInfoModal;
+export default BadgeInfoModal2;

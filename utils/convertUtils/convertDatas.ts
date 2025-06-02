@@ -2,7 +2,7 @@ import * as CryptoJS from "crypto-js";
 
 import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
 import { enToKrMapping, krToEnMapping } from "../../constants/location";
-import { USER_SCORE_BADGE_ARR } from "../../constants/serviceConstants/badgeConstants";
+import { USER_BADGE_ARR } from "../../constants/serviceConstants/badgeConstants";
 import { StudyPlaceProps } from "../../types/models/studyTypes/baseTypes";
 import { UserBadge, UserRole } from "../../types/models/userTypes/userInfoTypes";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
@@ -35,11 +35,11 @@ export const decodeByAES256 = (encodedTel: string) => {
 };
 
 export const getNextBadge = (currentBadge: UserBadge): UserBadge => {
-  const idx = USER_SCORE_BADGE_ARR.indexOf(currentBadge as (typeof USER_SCORE_BADGE_ARR)[number]);
-  if (idx === -1 || idx === USER_SCORE_BADGE_ARR.length - 1) {
+  const idx = USER_BADGE_ARR.indexOf(currentBadge as (typeof USER_BADGE_ARR)[number]);
+  if (idx === -1 || idx === USER_BADGE_ARR.length - 1) {
     return null;
-  } else if (idx < USER_SCORE_BADGE_ARR.length - 1) {
-    return USER_SCORE_BADGE_ARR[idx + 1];
+  } else if (idx < USER_BADGE_ARR.length - 1) {
+    return USER_BADGE_ARR[idx + 1];
   }
 };
 

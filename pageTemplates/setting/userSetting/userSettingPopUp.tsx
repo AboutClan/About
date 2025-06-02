@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { ComponentType, useEffect, useState } from "react";
 
@@ -10,7 +9,6 @@ import { FAQ_MODAL_AT } from "../../../constants/keys/localStorage";
 import { STUDY_RECORD_MODAL_AT } from "../../../constants/keys/queryKeys";
 import { useGatherReviewOneQuery } from "../../../hooks/gather/queries";
 import { CloseProps } from "../../../types/components/modalTypes";
-import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import { checkAndSetLocalStorage } from "../../../utils/storageUtils";
 
 export type PopUpType = "studyRecord" | "faq" | "monthlyScore" | "gatherReview";
@@ -43,10 +41,10 @@ export default function UserSettingPopUp() {
       if (++popUpCnt < 2) return;
     }
 
-    if (studyRecord && studyRecord?.date !== dayjsToStr(dayjs())) {
-      setPopUpType((old) => [...old, "studyRecord"]);
-      if (++popUpCnt < 2) return;
-    }
+    // if (studyRecord && studyRecord?.date !== dayjsToStr(dayjs())) {
+    //   setPopUpType((old) => [...old, "studyRecord"]);
+    //   if (++popUpCnt < 2) return;
+    // }
 
     // if (!checkAndSetLocalStorage(MONTHLY_SCORE_MODAL_AT, 10)) {
     //   setPopUpType((old) => [...old, "monthlyScore"]);

@@ -1,15 +1,9 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useState } from "react";
 import styled from "styled-components";
 
 import UserBadge from "../../../components/atoms/badges/UserBadge";
 import ProgressBar from "../../../components/atoms/ProgressBar";
-import {
-  BADGE_COLOR_MAPPINGS,
-  BADGE_SCORE_MAPPINGS,
-} from "../../../constants/serviceConstants/badgeConstants";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
-import BadgeInfoModal from "../../../modals/store/badgeInfoModal/BadgeInfoModal";
 
 interface IPointScoreBar {
   hasQuestion?: boolean;
@@ -17,24 +11,24 @@ interface IPointScoreBar {
 
 function PointScoreBar({ hasQuestion = true }: IPointScoreBar) {
   const { data: userInfo } = useUserInfoQuery();
+  console.log(hasQuestion);
+  // const [isBadgeModal, setIsBadgeModal] = useState(false);
 
-  const [isBadgeModal, setIsBadgeModal] = useState(false);
+  // let badgeInfo = ["아메리카노", 0];
 
-  let badgeInfo = ["아메리카노", 0];
+  // Object.entries(BADGE_SCORE_MAPPINGS)?.forEach((items) => {
+  //   if (items?.[1] > userInfo?.score) {
+  //     badgeInfo = items;
+  //   }
+  // });
 
-  Object.entries(BADGE_SCORE_MAPPINGS)?.forEach((items) => {
-    if (items?.[1] > userInfo?.score) {
-      badgeInfo = items;
-    }
-  });
-
-  const nextBadgeObj =
-    userInfo !== undefined &&
-    Object.entries(BADGE_SCORE_MAPPINGS).findIndex(([, value]) => value > userInfo?.score);
-  const nextBadge =
-    Object.entries(BADGE_SCORE_MAPPINGS)[
-      nextBadgeObj === -1 ? Object.entries(BADGE_SCORE_MAPPINGS).length - 1 : nextBadgeObj
-    ];
+  // const nextBadgeObj =
+  //   userInfo !== undefined &&
+  //   Object.entries(BADGE_SCORE_MAPPINGS).findIndex(([, value]) => value > userInfo?.score);
+  // const nextBadge =
+  //   Object.entries(BADGE_SCORE_MAPPINGS)[
+  //     nextBadgeObj === -1 ? Object.entries(BADGE_SCORE_MAPPINGS).length - 1 : nextBadgeObj
+  //   ];
 
   return (
     <>
@@ -48,17 +42,17 @@ function PointScoreBar({ hasQuestion = true }: IPointScoreBar) {
               lineHeight="12px"
               ml={1}
               py={1}
-              color={BADGE_COLOR_MAPPINGS[badgeInfo[0]]}
+              // color={BADGE_COLOR_MAPPINGS[badgeInfo[0]]}
             >
               {userInfo?.score}점
             </Box>
-            {hasQuestion && (
+            {/* {hasQuestion && (
               <Box ml={1} fontSize="12px" color="gray.500" onClick={() => setIsBadgeModal(true)}>
                 <i className="fa-regular fa-question-circle fa-sm " />
               </Box>
-            )}
+            )} */}
           </Flex>
-          {nextBadgeObj && (
+          {/* {nextBadgeObj && (
             <div>
               <Box
                 fontSize="10px"
@@ -73,7 +67,7 @@ function PointScoreBar({ hasQuestion = true }: IPointScoreBar) {
                 <UserBadge badgeIdx={nextBadgeObj as number} />
               </Box>
             </div>
-          )}
+          )} */}
         </Grade>{" "}
         <Flex w="100%">
           <Box ml="0" h="8px" borderLeft="1px solid var(--gray-200)" w="1px" />
@@ -82,7 +76,8 @@ function PointScoreBar({ hasQuestion = true }: IPointScoreBar) {
           <Box ml="auto" h="8px" borderRight="1.5px solid var(--gray-200)" w="1px"></Box>
         </Flex>
         <ProgressBar
-          value={(1 - (nextBadgeObj[1] - userInfo?.score) / nextBadgeObj[1]) * 100}
+          // value={(1 - (nextBadgeObj[1] - userInfo?.score) / nextBadgeObj[1]) * 100}
+          value={10}
           colorScheme="mint"
           hasStripe={true}
           size="sm"
@@ -95,7 +90,7 @@ function PointScoreBar({ hasQuestion = true }: IPointScoreBar) {
         </Flex>
       </Layout>
 
-      {isBadgeModal && <BadgeInfoModal setIsModal={setIsBadgeModal} />}
+      {/* {isBadgeModal && <BadgeInfoModal setIsModal={setIsBadgeModal} />} */}
     </>
   );
 }

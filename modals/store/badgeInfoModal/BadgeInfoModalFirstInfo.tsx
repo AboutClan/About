@@ -1,15 +1,12 @@
 import { Badge } from "@chakra-ui/react";
 import styled from "styled-components";
 
-import {
-  BADGE_COLOR_MAPPINGS,
-  BADGE_INFO,
-} from "../../../constants/serviceConstants/badgeConstants";
+import { BADGE_COLOR_MAPPINGS } from "../../../constants/serviceConstants/badgeConstants";
 
 function BadgeInfoModalFirstInfo() {
   return (
     <Layout>
-      {BADGE_INFO.map(({ badge, minScore }, idx) => {
+      {[].map(({ badge, minScore }, idx) => {
         return (
           <Item key={idx}>
             <div>

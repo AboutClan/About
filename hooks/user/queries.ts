@@ -56,7 +56,9 @@ export const usePointSystemLogQuery = (
   useQuery<IPointLog[], AxiosError, IPointLog[]>(
     [USER_POINT_SYSTEM, category, scopeQuery, "log"],
     async () => {
-      const res = await axios.get<IPointLog[]>(`${SERVER_URI}/log/${category}/${scopeQuery}`);
+      const res = await axios.get<IPointLog[]>(
+        `${SERVER_URI}/log/${category}${scopeQuery ? `/${scopeQuery}` : ""}`,
+      );
       return res.data;
     },
     { ...options, staleTime: 0, cacheTime: 0 },

@@ -128,10 +128,10 @@ export const useUserInfoFieldMutation = <
 };
 
 export const useAddBadgeListMutation = (
-  options?: MutationOptions<{ uid: string; badgeName: string }>,
+  options?: MutationOptions<{ userId: string; badgeName: string }>,
 ) =>
-  useMutation<void, AxiosError, { uid: string; badgeName: string }>((param) => {
-    return requestServer<{ uid: string }>({
+  useMutation<void, AxiosError, { userId: string; badgeName: string }>((param) => {
+    return requestServer<{ userId: string }>({
       method: "post",
       url: `user/badgeList`,
       body: param,

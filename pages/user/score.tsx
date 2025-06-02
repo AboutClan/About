@@ -8,7 +8,6 @@ import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import SummaryTable from "../../components/organisms/tables/SummaryTable";
 import { usePointSystemLogQuery, usePointSystemQuery } from "../../hooks/user/queries";
-import PointScoreBar from "../../pageTemplates/point/pointScore/PointScoreBar";
 
 function ScoreLog() {
   const { data: session } = useSession();
@@ -33,7 +32,7 @@ function ScoreLog() {
           {!isGuest &&
             (score && scoreLog ? (
               <>
-                <PointScoreBar />
+                {/* <PointScoreBar /> */}
                 {/* <EventBadge /> */}
                 <Box mt={3} border="var(--border)" rounded="md" minHeight="calc(100vh - 176px)">
                   <SummaryTable headerInfos={headerInfos} tableInfosArr={tableInfosArr} size="lg" />

@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-import PointScoreBar from "./pointScore/PointScoreBar";
 import PointScoreNavigation from "./pointScore/PointScoreNavigation";
 
 interface IPointScore {
@@ -10,7 +9,7 @@ interface IPointScore {
 function PointScore({ myScore }: IPointScore) {
   return (
     <Layout>
-      <PointScoreBar />
+      {/* <PointScoreBar /> */}
       <PointScoreNavigation myScore={myScore} />
     </Layout>
   );
