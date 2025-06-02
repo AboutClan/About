@@ -17,7 +17,7 @@ export const BADGE_COLOR_MAPPINGS: {
   [key in (typeof USER_BADGE_ARR)[number]]: string;
 } = {
   뉴비: "yellow",
-  대학생: "teal",
+  대학생: "green",
   휴학생: "blue",
   졸업생: "orange",
   열공러: "purple",
