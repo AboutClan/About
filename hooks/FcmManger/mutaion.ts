@@ -37,7 +37,7 @@ const waitForDeviceInfo = (uid?: string): Promise<DeviceInfo> => {
         await registerPushServiceWithApp({
           uid,
           fcmToken: deviceInfo.fcmToken,
-          platform: deviceInfo?.platform || "android",
+          platform: deviceInfo?.platform || "web",
         });
 
         resolve(deviceInfo); // ✅ deviceInfo 반환 가능
