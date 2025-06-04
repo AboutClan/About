@@ -23,7 +23,7 @@ interface GeneralSecretSquareItem extends BaseSecretSquareItem {
 interface PollItem {
   _id: string;
   name: string;
-  count: number;
+  users: string[];
 }
 
 interface PollSecretSquareItem extends BaseSecretSquareItem {

@@ -1,7 +1,7 @@
 import { Badge, Box, Button, ButtonGroup, Flex, Text, VStack } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import AlertModal from "../../components/AlertModal";
@@ -86,7 +86,6 @@ function SecretSquareDetailPage() {
 
   const handlePatchPoll = () => {
     if (!isModified) return;
-
     mutatePoll({ user: session?.user.id, pollItems: Array.from(selectedPollItems.keys()) });
   };
 
@@ -125,7 +124,7 @@ function SecretSquareDetailPage() {
       },
     },
   ];
-
+  console.log(squareDetail);
   return (
     <>
       <Header title="">
@@ -187,14 +186,14 @@ function SecretSquareDetailPage() {
                         </Box>
                         <span>투표</span>
                       </Text>
-                      {squareDetail.poll.pollItems.map(({ _id, name, count }) => {
+                      {squareDetail.poll.pollItems.map(({ _id, name, users }) => {
                         return (
                           <PollItemButton
                             key={_id}
                             isChecked={selectedPollItems.has(_id)}
                             isDisabled={showRePollButton}
                             name={name}
-                            count={count}
+                            count={users?.length || 0}
                             onClick={() => {
                               const isChecked = selectedPollItems.has(_id);
                               if (squareDetail.poll.canMultiple) {
