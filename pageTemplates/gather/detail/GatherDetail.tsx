@@ -47,7 +47,7 @@ function GatherDetailInfo({
         </Item>
         {isOrganizer && password && (
           <Item>
-            <ItemText>암호</ItemText>
+            <ItemText>초대코드</ItemText>
             <Secret>
               <span>{password}</span>
               <CopyBtn text={password} />

@@ -22,16 +22,16 @@ function GatherParticipateModalPassword({
 
   const onApply = () => {
     if (password === gatherData?.password) setPageNum(2);
-    else failToast("free", "암호가 일치하지 않습니다.");
+    else failToast("free", "초대 코드가 일치하지 않습니다.");
   };
 
   return (
     <>
-      <CodeText>전달 받은 암호 네자리를 입력해 주세요.</CodeText>
+      <CodeText>전달 받은 초대코드 네자리를 입력해 주세요.</CodeText>
       <Container>
         <i className="fa-solid fa-unlock" style={{ color: "var(--gray-500)" }} />
         <Input
-          placeholder="암호 입력"
+          placeholder="초대코드 입력"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />

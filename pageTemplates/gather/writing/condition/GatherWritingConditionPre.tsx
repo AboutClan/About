@@ -18,7 +18,7 @@ function GatherWritingConditionPre({ preCnt, setPreCnt, password }: IGatherWriti
         <CountNum value={preCnt} setValue={setPreCnt} unit="명" isSmall={true} />
       </PreMember>
       <div>
-        <span>암호키</span>
+        <span>초대코드</span>
         <Button size="sm" disabled colorScheme="blackAlpha" mr="8px">
           {password}
         </Button>
