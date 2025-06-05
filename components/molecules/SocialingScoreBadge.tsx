@@ -42,8 +42,8 @@ function SocialingScoreBadge({ user, size = "md" }: SocialingScoreBadgeProps) {
         }°C`}
         {size === "sm" && (
           <Flex
-            w={4}
-            h={4}
+            w="17px"
+            h="17px"
             position="absolute"
             top="-6px"
             right="-6px"

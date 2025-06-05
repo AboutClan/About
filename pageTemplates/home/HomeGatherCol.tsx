@@ -75,6 +75,7 @@ export const setGatherDataToCardCol = (
         image: imageCache[gather.id], // 이미지를 캐싱하여 변경되지 않도록 함
         isPriority: isPriority && idx < 6,
       },
+
       id: gather.id,
       maxCnt: gather.memberCnt.max,
       participants: [{ user: gather.user as IUserSummary, phase: "first" }, ...gather.participants],

@@ -38,7 +38,7 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
   useEffect(() => {
     if (data === undefined || !session) return;
 
-    let popUpCnt = 0;
+    const popUpCnt = 0;
     console.log(popUpCnt);
     if (data) {
       setPopUpType((old) => [...old, "gatherReview"]);
