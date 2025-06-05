@@ -1,4 +1,4 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 
@@ -36,7 +36,7 @@ function SelfIntroduceModal({ onClose }: SelfIntroduceModal) {
           toast("info", "조금만 더 적어주세요!");
           return;
         }
-        if (text.length >= 93) {
+        if (text.length >= 90) {
           toast("info", "네줄 이하로 작성해주세요!");
           return;
         }
@@ -66,7 +66,16 @@ function SelfIntroduceModal({ onClose }: SelfIntroduceModal) {
           value={text}
           onChange={(e) => setText(e.target.value)}
         />
-        <Box fontSize="12px" mt={5} bg="gray.100" w="full" px={4} py={3} borderRadius="12px">
+        <Flex ml="auto" mt={1} w="max-content" fontSize="12px" color="gray.500">
+          <Box
+            color={text.length >= 90 ? "red" : text.length < 40 ? "gray.500" : "gray.800"}
+            mr={1}
+          >
+            {text.length}
+          </Box>{" "}
+          / {text.length >= 90 ? "최대 90자" : "최소 40자"}
+        </Flex>
+        <Box fontSize="12px" mt={4} bg="gray.100" w="full" px={4} py={3} borderRadius="12px">
           ex. 같이 있으면 편하다는 말 많이 듣고, 처음 본 사람이랑도 금방 어울리는 편입니다🙂
           리액션도 많이 하고, 어색하면 먼저 나서기도 해요!
         </Box>
