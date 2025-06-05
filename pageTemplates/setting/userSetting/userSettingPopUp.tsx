@@ -38,14 +38,14 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
   useEffect(() => {
     if (data === undefined || !session) return;
 
-    const popUpCnt = 0;
+    let popUpCnt = 0;
     console.log(popUpCnt);
     if (data) {
       setPopUpType((old) => [...old, "gatherReview"]);
       return;
     }
 
-    if (user?.introduceText && !checkAndSetLocalStorage(SELF_INTRODUCE_AT, 7)) {
+    if (!user?.introduceText && !checkAndSetLocalStorage(SELF_INTRODUCE_AT, 7)) {
       setPopUpType((old) => [...old, "introduce"]);
       return;
     }
