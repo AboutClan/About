@@ -56,6 +56,11 @@ export interface UserSimpleInfoProps {
     badgeIdx: number;
     badgeList?: string[];
   };
+  temperature: {
+    temperature: number;
+    cnt: number;
+    sum?: number;
+  };
 }
 
 export interface LocationDeatilProps {
@@ -80,6 +85,11 @@ export interface IUserSummary {
   };
   uid: string;
   _id: string;
+  temperature: {
+    temperature: number;
+    cnt: number;
+    sum?: number;
+  };
 }
 
 export interface IUserRegisterForm extends IUserRegisterFormWriting, TimeStampProps {

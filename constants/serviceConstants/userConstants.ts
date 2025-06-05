@@ -32,6 +32,10 @@ export const ABOUT_USER_SUMMARY: IUserSummary = {
   badge: {
     badgeIdx: 10,
   },
+  temperature: {
+    temperature: 36.5,
+    cnt: 0,
+  },
 };
 export const SECRET_USER_SUMMARY: IUserSummary = {
   _id: "",
@@ -50,5 +54,9 @@ export const SECRET_USER_SUMMARY: IUserSummary = {
   monthScore: 30,
   badge: {
     badgeIdx: 10,
+  },
+  temperature: {
+    temperature: 36.5,
+    cnt: 0,
   },
 };

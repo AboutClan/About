@@ -1,10 +1,10 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 
-import { IUser } from "../../types/models/userTypes/userInfoTypes";
+import { IUserSummary, UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 import { PopOverIcon } from "../Icons/PopOverIcon";
 
 interface SocialingScoreBadgeProps {
-  user: IUser;
+  user: UserSimpleInfoProps | IUserSummary;
   size: "sm" | "md";
 }
 

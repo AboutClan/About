@@ -5,7 +5,11 @@ import { IProfileCommentCard } from "../../../components/molecules/cards/Profile
 import SocialingScoreBadge from "../../../components/molecules/SocialingScoreBadge";
 import ProfileCardColumn from "../../../components/organisms/ProfileCardColumn";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
-import { IUser } from "../../../types/models/userTypes/userInfoTypes";
+import {
+  IUser,
+  IUserSummary,
+  UserSimpleInfoProps,
+} from "../../../types/models/userTypes/userInfoTypes";
 
 interface IGatherParticipation {
   data: IGather;
@@ -19,7 +23,7 @@ function GatherParticipation({ data }: IGatherParticipation) {
     user: data?.user as IUser,
     memo: (data?.user as IUser).comment,
     rightComponent: (
-      <SocialingScoreBadge user={data?.user} size="sm" />
+      <SocialingScoreBadge user={data?.user as UserSimpleInfoProps} size="sm" />
       // <Box>
       //   <Badge variant="subtle" size="lg" colorScheme="mint">
       //     모임장
@@ -32,7 +36,7 @@ function GatherParticipation({ data }: IGatherParticipation) {
     (par) => ({
       user: par.user,
       memo: par.user.comment,
-      rightComponent: <SocialingScoreBadge user={par?.user} size="sm" />,
+      rightComponent: <SocialingScoreBadge user={par?.user as IUserSummary} size="sm" />,
     }),
   );
 
