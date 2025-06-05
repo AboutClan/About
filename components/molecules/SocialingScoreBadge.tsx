@@ -1,4 +1,4 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 
 import { IUserSummary, UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 import { PopOverIcon } from "../Icons/PopOverIcon";
@@ -56,9 +56,9 @@ function SocialingScoreBadge({ user, size = "md" }: SocialingScoreBadgeProps) {
             bg="gray.200"
             borderRadius="full"
           >
-            <Box h={2} textAlign="center">
+            <Text lineHeight="1" textAlign="center">
               {user?.temperature?.cnt}명
-            </Box>
+            </Text>
           </Flex>
         )}
       </Button>
