@@ -58,7 +58,7 @@ function SelfIntroduceModal({ onClose }: SelfIntroduceModal) {
         자기소개 입력하면 <b>2,000 Point</b> 즉시 지급!
         <br /> 모든 멤버 필수 사항이며, 프로필에 공개됩니다.
       </Box>
-      <Box h="228px" mt={4}>
+      <Box mt={4}>
         <Textarea
           h="96px"
           fontSize="12px"

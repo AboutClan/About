@@ -45,7 +45,7 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
       return;
     }
 
-    if (!user?.introduceText && !checkAndSetLocalStorage(SELF_INTRODUCE_AT, 7)) {
+    if (user?.introduceText && !checkAndSetLocalStorage(SELF_INTRODUCE_AT, 7)) {
       setPopUpType((old) => [...old, "introduce"]);
       return;
     }
