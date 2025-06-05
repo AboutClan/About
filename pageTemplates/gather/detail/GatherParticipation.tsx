@@ -1,7 +1,8 @@
-import { Badge, Box, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 
 import ParticipationBar from "../../../components/atoms/bars/ParticipationBar";
 import { IProfileCommentCard } from "../../../components/molecules/cards/ProfileCommentCard";
+import SocialingScoreBadge from "../../../components/molecules/SocialingScoreBadge";
 import ProfileCardColumn from "../../../components/organisms/ProfileCardColumn";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
@@ -13,16 +14,17 @@ interface IGatherParticipation {
 function GatherParticipation({ data }: IGatherParticipation) {
   const status = data.status;
   const participantsCnt = data.participants.length;
-
+  console.log(data);
   const organizerCard = {
     user: data?.user as IUser,
     memo: (data?.user as IUser).comment,
     rightComponent: (
-      <Box>
-        <Badge variant="subtle" size="lg" colorScheme="mint">
-          모임장
-        </Badge>
-      </Box>
+      <SocialingScoreBadge user={data?.user} size="sm" />
+      // <Box>
+      //   <Badge variant="subtle" size="lg" colorScheme="mint">
+      //     모임장
+      //   </Badge>
+      // </Box>
     ),
   };
 
@@ -30,13 +32,7 @@ function GatherParticipation({ data }: IGatherParticipation) {
     (par) => ({
       user: par.user,
       memo: par.user.comment,
-      rightComponent: (
-        <Box>
-          <Badge variant="subtle" size="lg" colorScheme="blue">
-            {par.phase === "first" ? 1 : 2}차 참여
-          </Badge>
-        </Box>
-      ),
+      rightComponent: <SocialingScoreBadge user={par?.user} size="sm" />,
     }),
   );
 

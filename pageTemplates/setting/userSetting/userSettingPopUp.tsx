@@ -4,14 +4,16 @@ import { ComponentType, useEffect, useState } from "react";
 import FAQModal from "../../../components/overlay/FAQModal";
 import GatherRecordDrawer from "../../../components/overlay/GatherRecordDrawer";
 import MonthlyScoreModal from "../../../components/overlay/MonthlyScoreModal";
+import SelfIntroduceModal from "../../../components/overlay/SelfIntroduceModal";
 import StudyRecordDrawer from "../../../components/overlay/StudyRecordDrawer";
-import { FAQ_MODAL_AT } from "../../../constants/keys/localStorage";
+import { FAQ_MODAL_AT, SELF_INTRODUCE_AT } from "../../../constants/keys/localStorage";
 import { STUDY_RECORD_MODAL_AT } from "../../../constants/keys/queryKeys";
 import { useGatherReviewOneQuery } from "../../../hooks/gather/queries";
 import { CloseProps } from "../../../types/components/modalTypes";
+import { IUser } from "../../../types/models/userTypes/userInfoTypes";
 import { checkAndSetLocalStorage } from "../../../utils/storageUtils";
 
-export type PopUpType = "studyRecord" | "faq" | "monthlyScore" | "gatherReview";
+export type PopUpType = "studyRecord" | "faq" | "monthlyScore" | "gatherReview" | "introduce";
 
 interface PopUpProps extends CloseProps {}
 
@@ -20,9 +22,10 @@ const MODAL_COMPONENTS: Record<PopUpType, ComponentType<PopUpProps>> = {
   faq: FAQModal,
   monthlyScore: MonthlyScoreModal,
   gatherReview: GatherRecordDrawer,
+  introduce: SelfIntroduceModal,
 };
 
-export default function UserSettingPopUp() {
+export default function UserSettingPopUp({ user }: { user: IUser }) {
   const { data: session } = useSession();
 
   const [popUpType, setPopUpType] = useState<PopUpType[]>([]);
@@ -35,10 +38,16 @@ export default function UserSettingPopUp() {
   useEffect(() => {
     if (data === undefined || !session) return;
 
-    let popUpCnt = 0;
+    const popUpCnt = 0;
+    console.log(popUpCnt);
     if (data) {
       setPopUpType((old) => [...old, "gatherReview"]);
-      if (++popUpCnt < 2) return;
+      return;
+    }
+
+    if (!user?.introduceText && !checkAndSetLocalStorage(SELF_INTRODUCE_AT, 7)) {
+      setPopUpType((old) => [...old, "introduce"]);
+      return;
     }
 
     // if (studyRecord && studyRecord?.date !== dayjsToStr(dayjs())) {
@@ -52,9 +61,9 @@ export default function UserSettingPopUp() {
     // }
     if (!checkAndSetLocalStorage(FAQ_MODAL_AT, 20)) {
       setPopUpType((old) => [...old, "faq"]);
-      if (++popUpCnt < 2) return;
+      return;
     }
-  }, [data, session]);
+  }, [data, session, user]);
 
   const filterPopUpType = (type: PopUpType) => {
     setPopUpType((popUps) => popUps.filter((popUp) => popUp !== type));

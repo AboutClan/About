@@ -1,6 +1,6 @@
 import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
-import { Badge, Box, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
+import { Badge, Box, Flex, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -124,7 +124,7 @@ function GroupDetail() {
                   fontFamily="apple"
                   whiteSpace="pre-wrap"
                   lineHeight="18px"
-                  mb={4}
+                  mb={5}
                 >
                   {group.content}
                 </Box>{" "}
@@ -132,7 +132,16 @@ function GroupDetail() {
                   <>
                     <Box mb={3} fontSize="14px" fontWeight="bold" lineHeight="20px">
                       <UnorderedList ml={-1.5}>
-                        <ListItem>규 칙</ListItem>
+                        <ListItem
+                          className="colored-bullet"
+                          sx={{
+                            "::marker": {
+                              color: "blue", // 원하는 색상
+                            },
+                          }}
+                        >
+                          <Text lineHeight="20px">규 칙</Text>
+                        </ListItem>
                       </UnorderedList>
                     </Box>
                     <Box
@@ -146,7 +155,9 @@ function GroupDetail() {
                     >
                       <UnorderedList>
                         {group.rules.map((rule, idx) => (
-                          <ListItem key={idx}>{rule}</ListItem>
+                          <ListItem key={idx}>
+                            <Text lineHeight="20px">{rule}</Text>
+                          </ListItem>
                         ))}
                       </UnorderedList>
                     </Box>

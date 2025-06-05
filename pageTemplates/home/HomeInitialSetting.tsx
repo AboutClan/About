@@ -140,7 +140,7 @@ function HomeInitialSetting() {
 
   return (
     <>
-      {userInfo && !isGuest && <UserSettingPopUp />}
+      {userInfo && !isGuest && <UserSettingPopUp user={userInfo} />}
       <GlobalStyle />
 
       {/* <Joyride

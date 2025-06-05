@@ -25,10 +25,10 @@ function FAQModal({ onClose }: CloseProps) {
   };
 
   return (
-    <PageGuideModal title="뉴비 가이드" footerOptions={footerOptions} setIsModal={onClose}>
-      당신만 몰랐던 <b>About 꿀팁 모음.zip</b>
+    <PageGuideModal title="자주 묻는 질문" footerOptions={footerOptions} setIsModal={onClose}>
+      당신만 몰랐던 <b>About 자주 묻는 질문!</b>
       <br />
-      FAQ에서 모든 궁금증 해결!
+      About의 모든 궁금증 해결!
     </PageGuideModal>
   );
 }

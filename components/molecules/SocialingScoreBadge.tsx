@@ -1,0 +1,83 @@
+import { Box, Button, Flex } from "@chakra-ui/react";
+
+import { IUser } from "../../types/models/userTypes/userInfoTypes";
+import { PopOverIcon } from "../Icons/PopOverIcon";
+
+interface SocialingScoreBadgeProps {
+  user: IUser;
+  size: "sm" | "md";
+}
+
+function SocialingScoreBadge({ user, size = "md" }: SocialingScoreBadgeProps) {
+  const getTemperatureColor = (temp: number, cnt: number): { color: string; bg: string } => {
+    if (temp < 36.5 && cnt <= 2) return { color: "green.500", bg: "green.50" };
+    if (temp <= 35.5) return { color: "gray.500", bg: "gray.50" };
+    if (temp < 36.5) return { color: "blue.500", bg: "blue.50" };
+    if (temp <= 38) return { color: "green.500", bg: "green.50" };
+    if (temp <= 40) return { color: "orange.500", bg: "orange.50" };
+    return { color: "red.500", bg: "red.50" };
+  };
+  const { color, bg } = getTemperatureColor(user?.temperature?.temperature, user?.temperature?.cnt);
+
+  return (
+    <Flex flexDir="column" mr={size === "sm" ? 1 : -1} justify="center" align="center">
+      <Button
+        as="div"
+        w={size === "sm" ? "52px" : "60px"}
+        size="sm"
+        fontSize={size === "sm" ? "12px" : "14px"}
+        bg={bg}
+        color={color}
+        lineHeight="22px"
+        fontWeight={500}
+        borderRadius="full"
+        position="relative"
+      >
+        {`${
+          user?.temperature?.temperature < 36.5 && user?.temperature?.cnt <= 2
+            ? "36.5"
+            : Number.isInteger(user?.temperature?.temperature)
+            ? `${user.temperature.temperature}.0`
+            : user?.temperature?.temperature || "36.5"
+        }°C`}
+        {size === "sm" && (
+          <Flex
+            w={4}
+            h={4}
+            position="absolute"
+            top="-6px"
+            right="-6px"
+            fontSize="6px"
+            color="var(--gray-500)"
+            fontWeight={600}
+            justify="center"
+            alignItems="center"
+            lineHeight="normal"
+            border="var(--border)"
+            bg="gray.200"
+            borderRadius="full"
+          >
+            <Box h={2} textAlign="center">
+              {user?.temperature?.cnt}명
+            </Box>
+          </Flex>
+        )}
+      </Button>
+
+      {size === "md" && (
+        <Box mr={1.5}>
+          <PopOverIcon
+            marginDir="right"
+            maxWidth={200}
+            type="info"
+            size="xs"
+            rightText={`${user?.temperature?.cnt}명의 평가 반영`}
+            text="소셜링 온도는 모임 종료 후 참여자들의 익명 리뷰를 바탕으로 산정되는 멤버 후기 지표입니다. 소셜링 온도가 높을수록 모임 승인률이 올라가고, 다양한 혜택을 받을 수 있습니다."
+          />
+        </Box>
+      )}
+    </Flex>
+  );
+}
+
+export default SocialingScoreBadge;

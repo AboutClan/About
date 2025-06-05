@@ -142,10 +142,10 @@ function ProfilePage() {
         </Button>
       </Header>
       <Slide>
-        <ProfileOverview user={user as IUser} />
+        <ProfileOverview user={user as IUser} groupCnt={groups?.length} />
       </Slide>
       <Slide isNoPadding>
-        <Divider />
+        <Divider type={200} />
       </Slide>
       <Slide>
         <DetailInfo user={user as IUser} groups={groups} />

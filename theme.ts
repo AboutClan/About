@@ -11,14 +11,21 @@ const theme = extendTheme({
         position: "relative",
         paddingLeft: "20px", // 마커와 텍스트 간의 간격
         listStyleType: "none", // 기본 마커 제거
+
         "&::before": {
           content: '"•"', // 마커 심볼
           position: "absolute",
           left: "8px",
           top: "50%",
           transform: "translateY(-50%)", // 수직 중앙 정렬
-          fontSize: "8px", // 마커 크기
+          fontSize: "10px", // 마커 크기
+          fontWeight: "800",
+          display: "inline-block",
+          lineHeight: "20px",
         },
+      },
+      ".colored-bullet::before": {
+        color: "#7F1728",
       },
     },
   },

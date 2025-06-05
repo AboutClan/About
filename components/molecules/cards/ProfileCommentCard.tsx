@@ -58,7 +58,9 @@ export default function ProfileCommentCard({
             <Box lineHeight="20px" mr={1} fontWeight="semibold" fontSize="13px">
               {user?.name || "익명"}
             </Box>
+
             <UserBadge badgeIdx={user?.badge?.badgeIdx} />
+
             {hasCommentButton && (
               <Button ml={1} variant="unstyled" onClick={() => setIsCommentModal(true)}>
                 <ChatTalkIcon isActive={!!comment} />

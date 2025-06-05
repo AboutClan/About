@@ -34,6 +34,7 @@ export interface IUser extends Omit<IUserRegisterForm, "location">, IUserSummary
     cnt: number;
     sum?: number;
   };
+  introduceText?: string;
 }
 
 export interface UserStudyRecordProps {

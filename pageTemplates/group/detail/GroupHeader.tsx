@@ -60,7 +60,7 @@ function GroupHeader({ group }: IGroupHeader) {
     ...(isAdmin
       ? [
           {
-            text: "신규 인원 초대 및 수락",
+            text: "신청 인원 확인",
             func: () => {
               router.push(`/group/${group.id}/admin`);
             },

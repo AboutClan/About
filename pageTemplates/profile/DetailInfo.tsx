@@ -11,7 +11,6 @@ function DetailInfo({ user, groups }: { user: IUser; groups: string[] }) {
 
   const isPrivate =
     user?.isPrivate && !user?.friend.includes(session?.user.uid) && user?.uid !== session?.user.uid;
- 
 
   const itemMapping: { category: string; text: string }[] = [
     {
@@ -39,8 +38,8 @@ function DetailInfo({ user, groups }: { user: IUser; groups: string[] }) {
         (groups?.[3] ? `...` : ""),
     },
     {
-      category: "Instagram",
-      text: user?.instagram,
+      category: "활동지",
+      text: user?.isLocationSharingDenided ? "비공개" : user?.locationDetail?.text,
     },
   ];
 
@@ -51,11 +50,18 @@ function DetailInfo({ user, groups }: { user: IUser; groups: string[] }) {
     >
       <Flex flexDir="column" py={3}>
         {itemMapping.map((item, idx) => (
-          <Flex key={idx} fontWeight="semibold" py={2}>
-            <Box w="80px" color="gray.500">
+          <Flex key={idx} fontSize="13px" fontWeight="semibold" py={2}>
+            <Box w="64px" color="gray.500">
               {item.category}
             </Box>
-            <Box flex={1} color="gray.800">
+
+            <Box
+              flex={1}
+              color="gray.800"
+              whiteSpace="nowrap"
+              overflow="hidden"
+              textOverflow="ellipsis"
+            >
               {item.text}
             </Box>
           </Flex>
