@@ -49,7 +49,6 @@ function SocialingScoreBadge({ user, size = "md" }: SocialingScoreBadgeProps) {
             right="-6px"
             fontSize="6px"
             color="var(--gray-500)"
-            fontWeight={500}
             justify="center"
             alignItems="center"
             lineHeight="normal"
