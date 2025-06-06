@@ -45,7 +45,7 @@ function GatherWritingUserConditionModal({
       },
   );
   const [age, setAge] = useState(gatherContent?.age || [19, 28]);
-
+  console.log(setMemberCnt);
   useEffect(() => {
     if (type === "gather") setGatherContent({ ...gatherContent, age, memberCnt });
     if (type === "group") {
@@ -64,22 +64,9 @@ function GatherWritingUserConditionModal({
           <div>
             <i className="fa-solid fa-user-group" />
           </div>
-          <span>최소 인원</span>
-        </Name>
-        <GatherWritingConditionCnt isMin={true} value={memberCnt.min} setMemberCnt={setMemberCnt} />
-      </Item>
-      <Item>
-        <Name>
-          <div>
-            <i className="fa-solid fa-user-group" />
-          </div>
           <span>최대 인원</span>
         </Name>
-        <GatherWritingConditionCnt
-          isMin={false}
-          value={memberCnt.max}
-          setMemberCnt={setMemberCnt}
-        />
+        <GatherWritingConditionCnt value={memberCnt.max} />
       </Item>
       <Item>
         <Name>

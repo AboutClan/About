@@ -87,7 +87,7 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
     enabled: !!data?.id && data.status === "open",
   });
 
-  const isMax = data?.memberCnt.max !== 0 && data?.participants.length + 1 > data?.memberCnt.max;
+  const isMax = data?.memberCnt.max !== 0 && data?.participants.length + 1 >= data?.memberCnt.max;
   const myUid = session?.user.uid;
   const isParticipant = data?.participants.some((who) => who?.user && who.user.uid === myUid);
   const groupId = router.query.id;

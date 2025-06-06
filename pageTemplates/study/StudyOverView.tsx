@@ -49,7 +49,7 @@ function StudyOverview({
         ),
     },
   ];
-  console.log(54, reviews);
+ 
   return (
     <>
       <Box mx={5} mt={4}>

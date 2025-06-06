@@ -50,7 +50,7 @@ export default function Page() {
   const { data: studyVoteData } = useStudyVoteQuery(date, {
     enabled: !!date,
   });
-  console.log(studyVoteData);
+
   const [isReviewModal, setIsReviewModal] = useState(false);
   const [isReviewButton, setIsReviewButton] = useState(false);
 

@@ -73,7 +73,7 @@ function WritingCondition() {
     if (condition.isAgree) setIsQuestionModal(true);
     else setIsQuestionModal(false);
   }, [condition.isAgree]);
-  console.log(25, groupWriting?.organizer);
+
   const onClickNext = async () => {
     const groupData: IGroupWriting = {
       age: [19, 28],

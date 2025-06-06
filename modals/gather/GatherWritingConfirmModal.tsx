@@ -58,6 +58,8 @@ function GatherWritingConfirmModal({ setIsModal, gatherData }: IGatherWritingCon
   });
 
   const onSubmit = () => {
+    console.log(12, gatherData);
+
     if (!isGatherEdit) {
       mutate({ gather: gatherData as IGatherWriting });
     } else {

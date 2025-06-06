@@ -38,6 +38,7 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
   const searchParams = useSearchParams();
   const drawerType = searchParams.get("drawer");
 
+  const [isHeartLoading, setIsHeartLoading] = useState(false);
   const [keyboardHeight, setKeyboardHeight] = useState(0);
   const [modalType, setModalType] = useState<"like" | "comment">(null);
   const [heartProps, setHeartProps] = useState({ isMine: false, users: likeUsers, cnt: likeCnt });
@@ -48,6 +49,9 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
   const { mutate, isLoading } = useFeedLikeMutation({
     onSuccess() {
       refetch();
+    },
+    onSettled() {
+      setIsHeartLoading(false);
     },
   });
 
@@ -117,7 +121,8 @@ function ContentHeartBar({ feedId, likeUsers, likeCnt, comments, refetch }: Cont
   }, [drawerType]);
 
   const onClickHeart = () => {
-    if (isLoading) return;
+    if (isLoading || isHeartLoading) return;
+    setIsHeartLoading(true);
     if (isGuest) {
       typeToast("guest");
       return;

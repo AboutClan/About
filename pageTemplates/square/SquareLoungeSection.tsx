@@ -34,7 +34,7 @@ function SquareLoungeSection() {
     isLoading,
     refetch,
   } = useFeedsQuery(category === "all" ? null : category, null, cursor, subCategory === "최신순");
-
+  console.log(feeds, category, cursor, subCategory);
   useEffect(() => {
     if (categoryParam) {
       setLoungeData(null);
@@ -80,14 +80,16 @@ function SquareLoungeSection() {
       const element = document.getElementById(`review${scrollId}`);
 
       if (element) {
-        window.scrollTo({
-          top: element.offsetTop,
-          behavior: "smooth",
-        });
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
       }
-    }
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+      const timeout = setTimeout(() => {
+        newSearchParams.delete("scroll");
+        router.replace(`/gather?${newSearchParams}`, { scroll: false });
+      }, 500);
+
+      return () => clearTimeout(timeout);
+    }
   }, [scrollId, loungeData]);
 
   const textObj: Record<FeedType | "all", string> = {

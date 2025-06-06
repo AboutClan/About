@@ -62,16 +62,10 @@ function GatherReview() {
 
   const avatarArr: { type: number; text: string; rating: UserRating; bg: number }[] = [
     {
-      type: 28,
-      bg: 7,
-      text: "별로예요🫤",
-      rating: "block",
-    },
-    {
-      type: 12,
-      bg: 0,
-      text: "그냥 그래요😑",
-      rating: "soso",
+      type: 20,
+      bg: 1,
+      text: "최고에요😘",
+      rating: "great",
     },
     {
       type: 11,
@@ -80,10 +74,16 @@ function GatherReview() {
       rating: "good",
     },
     {
-      type: 20,
-      bg: 1,
-      text: "최고예요😘",
-      rating: "great",
+      type: 12,
+      bg: 0,
+      text: "그냥 그래요😑",
+      rating: "soso",
+    },
+    {
+      type: 28,
+      bg: 7,
+      text: "불편해요🫤",
+      rating: "block",
     },
   ];
 
