@@ -80,6 +80,7 @@ export const setGatherDataToCardCol = (
       maxCnt: gather.memberCnt.max,
       participants: [{ user: gather.user as IUserSummary, phase: "first" }, ...gather.participants],
       func: func ? () => func(gather) : undefined,
+      age: gather.age,
     };
   });
 

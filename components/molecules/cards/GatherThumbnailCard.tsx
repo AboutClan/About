@@ -25,6 +25,7 @@ export interface GatherThumbnailCardProps {
   maxCnt: number;
   id: number;
   func?: () => void;
+  age: number[];
 }
 
 const STATUS_TO_BADGE_PROPS: Record<GatherStatus, { text: string; colorScheme: string }> = {
@@ -47,18 +48,26 @@ export function GatherThumbnailCard({
   maxCnt,
   func,
   type = "gather",
+  age,
 }: GatherThumbnailCardProps) {
   return (
     <CardLink href={`/${type}/${id}`} onClick={func}>
       <PlaceImage src={imageProps.image} priority={imageProps.isPriority} />
       <Flex direction="column" ml="12px" flex={1}>
-        <Flex>
-          <Badge mr={1} size="md" colorScheme={STATUS_TO_BADGE_PROPS[status].colorScheme}>
-            {STATUS_TO_BADGE_PROPS[status].text}
-          </Badge>
-          <Badge size="md" colorScheme="gray" color="var(--gray-600)">
-            {category}
-          </Badge>
+        <Flex justify="space-between">
+          <Flex>
+            <Badge mr={1} size="md" colorScheme={STATUS_TO_BADGE_PROPS[status].colorScheme}>
+              {STATUS_TO_BADGE_PROPS[status].text}
+            </Badge>
+            <Badge size="md" colorScheme="gray" color="var(--gray-600)">
+              {category}
+            </Badge>
+          </Flex>
+          {(age[0] !== 19 || age[1] !== 28) && (
+            <Badge size="md" variant="subtle" colorScheme="blue">
+              만 {age[0]} ~ {age[1]}세
+            </Badge>
+          )}
         </Flex>
         <Title>{title}</Title>
         <Subtitle>
