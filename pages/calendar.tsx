@@ -12,7 +12,7 @@ import { dayjsToStr } from "../utils/dateTimeUtils";
 
 function CalendarPage() {
   const [monthFirstDate, setMonthFirstDate] = useState(
-    dayjs().startOf("month").subtract(1, "month"),
+    dayjs().startOf("month").subtract(2, "month"),
   );
   const monthNum = monthFirstDate.month();
   const [isImageLoaded, setIsImageLoaded] = useState(false);

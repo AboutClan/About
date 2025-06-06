@@ -81,7 +81,11 @@ function AvatarComponent({
 
   function AvatarComponent() {
     return (
-      <AvatarContainer size={SIZE_MAPPING[size]} isSquare={isSquare}>
+      <AvatarContainer
+        size={SIZE_MAPPING[size]}
+        isSquare={isSquare}
+        isShadowAvatar={!!shadowAvatar}
+      >
         <ImageContainer
           bg={
             (!shadowAvatar && bgImage) ||
@@ -150,6 +154,7 @@ export default Avatar;
 const AvatarContainer = styled.div<{
   size: number;
   isSquare: boolean;
+  isShadowAvatar: boolean;
 }>`
   overflow: hidden;
   position: relative;
@@ -157,7 +162,7 @@ const AvatarContainer = styled.div<{
   background-color: white;
   width: ${(props) => `${props.size}px`};
   height: ${(props) => `${props.size}px`};
-  padding: 1px;
+  padding: ${(props) => (props.isShadowAvatar ? 0 : "1px")};
 `;
 
 const ImageContainer = styled.div<{

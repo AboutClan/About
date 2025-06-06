@@ -15,7 +15,7 @@ function DetailInfo({ user, groups }: { user: IUser; groups: string[] }) {
   const itemMapping: { category: string; text: string }[] = [
     {
       category: "나이",
-      text: birthToAge(user?.birth) + "",
+      text: "만" + " " + birthToAge(user?.birth) + "세",
     },
     {
       category: "성별",
