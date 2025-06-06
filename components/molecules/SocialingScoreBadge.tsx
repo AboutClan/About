@@ -51,10 +51,10 @@ function SocialingScoreBadge({ user, size = "md" }: SocialingScoreBadgeProps) {
             color="var(--gray-500)"
             justify="center"
             alignItems="center"
-            lineHeight="normal"
             border="var(--border)"
             bg="gray.200"
             borderRadius="full"
+            lineHeight="1"
           >
             <Text lineHeight="1" textAlign="center">
               {user?.temperature?.cnt || 0}명

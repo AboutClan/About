@@ -119,9 +119,9 @@ function AvatarComponent({
                 justify="center"
                 alignItems="center"
                 h="100%"
-                lineHeight="normal"
+                lineHeight="1"
               >
-                <Box h={2} textAlign="center">
+                <Box h={2} lineHeight="1" textAlign="center" display="inline-block">
                   +{shadowAvatar}
                 </Box>
               </Flex>
