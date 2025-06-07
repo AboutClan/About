@@ -70,7 +70,7 @@ export const useResetGatherQuery = () => {
   const refetchWithDelay = useCallback(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     () => {
-      queryClient.invalidateQueries({ queryKey: [GATHER_CONTENT], exact: false });
+      queryClient.resetQueries({ queryKey: [GATHER_CONTENT], exact: false });
       setTransferGatherData(null);
     },
     [queryClient],

@@ -14,7 +14,7 @@ export function ShortArrowIcon({
       xmlns="http://www.w3.org/2000/svg"
       width={`${width + 1}px`}
       height={`${width}px`}
-      viewBox="0 0 13 12"
+      viewBox="0 0 12 12"
       fill="none"
     >
       <path

@@ -75,7 +75,7 @@ function HomeStudySection() {
     <>
       <Box px={5} mt={5}>
         <SectionHeader title="About 카공 스터디" subTitle="동네 친구와의 열공 스터디">
-          <ButtonWrapper size="xs" url={`/studyPage?date=${date}`}>
+          <ButtonWrapper size="sm" url={`/studyPage?date=${date}`}>
             <ShortArrowIcon dir="right" />
           </ButtonWrapper>
         </SectionHeader>

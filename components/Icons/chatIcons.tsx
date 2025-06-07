@@ -5,7 +5,7 @@ export function ChatTalkIcon({ isActive }: { isActive: boolean }) {
         width="20"
         height="20"
         rx="10"
-        fill="#A0AEC0"
+        fill="#8e9ab0"
         fillOpacity={isActive ? "0.64" : "0.32"}
       />
       <g clipPath="url(#clip0_2234_1923)">

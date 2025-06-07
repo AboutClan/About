@@ -102,7 +102,7 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
     if (isFull) {
       return {
         text: "빈자리 생기면 참여 요청",
-        handleFunction: () => sendRegisterForm({ answer: "가입 대기 신청", pointType: "point" }),
+        handleFunction: () => setIsModal(true),
       };
     }
     if (data?.participants.length <= 1) {

@@ -114,7 +114,9 @@ const Layout = styled.header`
   height: var(--header-h);
   font-size: 20px;
   background-color: white;
-  padding: 0 16px;
+
+  padding-left: 20px;
+  padding-right: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;

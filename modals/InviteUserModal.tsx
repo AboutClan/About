@@ -4,14 +4,13 @@ import { useEffect, useState } from "react";
 
 import { Input } from "../components/atoms/Input";
 import { MainLoadingAbsolute } from "../components/atoms/loaders/MainLoading";
-import ButtonGroups from "../components/molecules/groups/ButtonGroups";
 import InviteUserGroups from "../components/molecules/groups/InviteUserGroups";
 import { useAllUserDataQuery } from "../hooks/admin/quries";
+import { useResetGatherQuery } from "../hooks/custom/CustomHooks";
 import { useTypeToast } from "../hooks/custom/CustomToast";
 import { useGatherInviteMutation } from "../hooks/gather/mutations";
 import { IModal } from "../types/components/modalTypes";
 import { IUser, IUserSummary } from "../types/models/userTypes/userInfoTypes";
-import { Location } from "../types/services/locationTypes";
 import { searchName } from "../utils/stringUtils";
 import { IFooterOptions, ModalLayout } from "./Modals";
 
@@ -23,8 +22,8 @@ interface IInviteUserModal extends IModal {
 export default function InviteUserModal({ setIsModal, prevUsers, filterUsers }: IInviteUserModal) {
   const typeToast = useTypeToast();
   const { id } = useParams<{ id: string }>() || {};
+  const resetQuery = useResetGatherQuery();
 
-  const [location, setLocation] = useState<Location | "전체">("전체");
   const [inviteUser, setInviteUser] = useState<IUserSummary>(null);
   const [users, setUsers] = useState<IUserSummary[]>(null);
   const [existUsers, setExistUsers] = useState<IUserSummary[]>(prevUsers);
@@ -34,6 +33,7 @@ export default function InviteUserModal({ setIsModal, prevUsers, filterUsers }: 
 
   const { mutate } = useGatherInviteMutation(+id, {
     onSuccess() {
+      resetQuery();
       typeToast("invite");
     },
   });
@@ -60,40 +60,8 @@ export default function InviteUserModal({ setIsModal, prevUsers, filterUsers }: 
     },
   };
 
-  const buttonOptionsArr = [
-    {
-      text: "전체",
-      func: () => setLocation("전체"),
-    },
-    {
-      text: "수원",
-      func: () => setLocation("수원"),
-    },
-    {
-      text: "양천",
-      func: () => setLocation("양천"),
-    },
-    {
-      text: "강남",
-      func: () => setLocation("강남"),
-    },
-    {
-      text: "안양",
-      func: () => setLocation("안양"),
-    },
-    {
-      text: "동대문",
-      func: () => setLocation("동대문"),
-    },
-    {
-      text: "인천",
-      func: () => setLocation("인천"),
-    },
-  ];
-
   return (
     <ModalLayout setIsModal={setIsModal} title="인원 초대" footerOptions={footerOptions}>
-      <ButtonGroups buttonOptionsArr={buttonOptionsArr} currentValue={location} />
       <Box mt="16px">
         <Input
           placeholder="이름 검색"
