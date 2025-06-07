@@ -1,6 +1,7 @@
 import { Dayjs } from "dayjs";
 
 import { TimeStampProps } from "../../utils/timeAndDate";
+import { IUser } from "./userInfoTypes";
 
 export type UserRequestCategory =
   | "건의"
@@ -23,6 +24,7 @@ export interface IUserRequest extends TimeStampProps {
   date?: Dayjs;
   content?: string;
   rest?: { type: "일반" | "특별"; start: Dayjs; end: Dayjs };
+  writer?: IUser;
 }
 
 export type DeclareRequest = "distance" | "declare";

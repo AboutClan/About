@@ -23,6 +23,22 @@ function AdminSuggest() {
 
     setInitialData(sortedData);
   }, [data1, data2, isLoading]);
+  console.log(suggestData?.slice().reverse());
+  const seen = new Set();
+  const A = suggestData
+    ?.slice()
+    .reverse()
+    ?.filter((data) => {
+      if (!data?.title.includes("-")) return false;
+
+      const key = `${data.title}-${data.writer}`;
+      if (seen.has(key)) return false;
+
+      seen.add(key);
+      return true;
+    })
+    .map((b) => b.title.slice(0, 3));
+  console.log(54, A);
 
   return (
     <>
@@ -47,7 +63,7 @@ function AdminSuggest() {
                   <ItemHeader>
                     <Title>{item?.title}</Title>
                     <div>
-                      <span>{"temp" || "익명"}</span>
+                      <span>{item?.writer?.name}</span>
                       <span>{dayjs(item.updatedAt).format("M월 D일")}</span>
                     </div>
                   </ItemHeader>

@@ -163,6 +163,7 @@ function StudyControlDrawer({
               variant="unstyled"
               py={4}
               w="100%"
+              lineHeight="20px"
               onClick={() =>
                 handleStudyVoteBtn(studyDrawerType === "free" ? "pickPlace" : "selectTime")
               }
@@ -191,6 +192,7 @@ function StudyControlDrawer({
             py={4}
             w="100%"
             onClick={() => handleStudyVoteBtn("directInputPlace")}
+            lineHeight="20px"
           >
             <Box w="20px" h="20px" mr={4} opacity={0.28}>
               <StudySelectIcon />
@@ -209,6 +211,7 @@ function StudyControlDrawer({
                 py={4}
                 w="100%"
                 isDisabled={date !== dayjsToStr(dayjs())}
+                lineHeight="20px"
               >
                 <Box w="20px" h="20px" mr={4} opacity={0.28}>
                   <StudyUserCheckIcon color="gray" />

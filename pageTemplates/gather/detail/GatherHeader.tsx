@@ -71,19 +71,19 @@ function GatherHeader({ gatherData }: IGatherHeader) {
     ...(isAdmin
       ? [
           {
+            text: "신청 인원 확인",
+            icon: <MemberCheckIcon />,
+            func: () => {
+              setModalType("waitingMember");
+            },
+          },
+          {
             text: "모임 정보 수정",
             icon: <EditIcon />,
             func: () => {
               setGatherWriting({ ...gatherData, date: dayjs(gatherData.date) });
               setIsGatherEdit(true);
               router.push(`/gather/writing/category?id=${gatherData.id}`);
-            },
-          },
-          {
-            text: "신청 인원 확인",
-            icon: <MemberCheckIcon />,
-            func: () => {
-              setModalType("waitingMember");
             },
           },
           {

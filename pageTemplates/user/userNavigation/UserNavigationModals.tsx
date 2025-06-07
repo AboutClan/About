@@ -48,6 +48,7 @@ function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals
       toast("success", "3,000 Point가 지급되었습니다!");
       setModalOpen(null);
     },
+    
   });
 
   const [value, setValue] = useState("");
