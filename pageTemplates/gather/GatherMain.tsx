@@ -48,9 +48,7 @@ export default function GatherMain() {
 
   useEffect(() => {
     if (!gathers) return;
-    setCardDataArr(
-      setGatherDataToCardCol(gathers, true, (gather: IGather) => setTransferGatherData(gather)),
-    );
+    setCardDataArr(setGatherDataToCardCol(gathers, true));
   }, [gathers]);
 
   useEffect(() => {
