@@ -1,11 +1,11 @@
 import { useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 import { Input } from "../../components/atoms/Input";
 import BottomNav from "../../components/layouts/BottomNav";
 import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
+import { useUserKakaoInfoQuery } from "../../hooks/user/queries";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
@@ -14,31 +14,35 @@ import { checkIsKorean } from "../../utils/validationUtils";
 
 function Name() {
   const searchParams = useSearchParams();
-
-  const { data: session } = useSession();
+  const isProfileEdit = !!searchParams.get("edit");
 
   const info: IUserRegisterFormWriting = getLocalStorageObj(REGISTER_INFO);
 
+  const { data } = useUserKakaoInfoQuery();
+
   const inputRef = useRef(null);
 
+  const [errorMessage, setErrorMessage] = useState("");
+  const [value, setValue] = useState<string>(info?.name ?? "");
+
   useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout>;
     if (inputRef.current) {
-      setTimeout(() => {
-        inputRef.current.focus();
+      timeoutId = setTimeout(() => {
+        inputRef.current?.focus();
       }, 500);
     }
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
   }, []);
 
-  const isProfileEdit = !!searchParams.get("edit");
-
-  const [errorMessage, setErrorMessage] = useState("");
-  const [value, setValue] = useState(info?.name || session?.user.name);
-
   useEffect(() => {
-    if (!value) {
-      setValue(session?.user.name);
-    }
-  }, [session?.user.name]);
+    if (!data || info?.name) return;
+    setValue(data?.name || "");
+  }, [data]);
 
   const onClickNext = (e) => {
     if (value.length < 2 || value.length > 4) {
@@ -65,7 +69,7 @@ function Name() {
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>이름을 입력해 주세요</span>
-          <span>실명으로 작성해 주세요! (닉네임 x)</span>
+          <span>실명으로 작성해 주세요!</span>
         </RegisterOverview>
         <Input
           ref={inputRef}

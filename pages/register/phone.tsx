@@ -1,18 +1,37 @@
+import { KakaoProfile } from "next-auth/providers/kakao";
 import { useEffect, useRef, useState } from "react";
 
 import { Input } from "../../components/atoms/Input";
 import BottomNav from "../../components/layouts/BottomNav";
 import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
+import { useUserKakaoInfoQuery } from "../../hooks/user/queries";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
+import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
 import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
 function Phone() {
-  const info = getLocalStorageObj(REGISTER_INFO);
+  const info: IUserRegisterFormWriting = getLocalStorageObj(REGISTER_INFO);
 
+  const { data, type } = useUserKakaoInfoQuery();
+
+  const inputRef = useRef(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [value, setValue] = useState(info?.telephone || "");
+
+  const formatKoreanPhoneNumber = (phone: string): string => {
+    const cleaned = phone.replace("+82", "0").replace(/\s+/g, "");
+    const digits = cleaned.replace(/-/g, "");
+    return digits.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+  };
+
+  useEffect(() => {
+    if (info?.telephone || !data) return;
+    if (type === "kakao") {
+      setValue(formatKoreanPhoneNumber((data as KakaoProfile["kakao_account"]).phone_number));
+    }
+  }, [data]);
 
   const phoneRegex = /^010-\d{4}-\d{4}$/;
 
@@ -31,8 +50,6 @@ function Phone() {
     setLocalStorageObj(REGISTER_INFO, { ...info, telephone: value });
   };
 
-  const inputRef = useRef(null);
-
   useEffect(() => {
     setTimeout(() => {
       inputRef?.current?.focus();
@@ -42,7 +59,6 @@ function Phone() {
   return (
     <>
       <ProgressHeader title="회원가입" value={88} />
-
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>핸드폰 번호를 입력해 주세요</span>

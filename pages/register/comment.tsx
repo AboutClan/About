@@ -13,30 +13,34 @@ import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils
 
 function Comment() {
   const searchParams = useSearchParams();
+  const isProfileEdit = !!searchParams.get("edit");
   const router = useRouter();
 
   const info = getLocalStorageObj(REGISTER_INFO);
 
-  const isProfileEdit = !!searchParams.get("edit");
+  const inputRef = useRef(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [value, setValue] = useState(info?.comment || "");
-
   const [index, setIndex] = useState<number>();
 
   useEffect(() => {
     const comment = info?.comment;
-
+    let timeoutId: ReturnType<typeof setTimeout>;
     const findIdx = MESSAGE_DATA.findIndex((message) => message === comment);
-
     if (findIdx === -1) {
       setIndex(0);
-      setTimeout(() => {
-        inputRef.current?.focus(); // 포커싱
+      timeoutId = setTimeout(() => {
+        inputRef.current?.focus();
       }, 500);
     } else {
       setIndex(findIdx + 1);
     }
-  }, [info]);
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, []);
 
   const onClickNext = (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if ((index === null || index === 0) && value === "") {
@@ -47,7 +51,7 @@ function Comment() {
 
     let tempComment = "";
     if (index === 0 || index === null) tempComment = value;
-    else tempComment = MESSAGE_DATA[index];
+    else tempComment = MESSAGE_DATA[index - 1];
 
     setLocalStorageObj(REGISTER_INFO, { ...info, comment: tempComment });
 
@@ -55,16 +59,6 @@ function Comment() {
       router.push("/register/instagram");
     } else router.push(`/register/phone`);
   };
-
-  const inputRef = useRef(null);
-
-  // useEffect(() => {
-  //   if (!index && value !== "") {
-  //     setTimeout(() => {
-  //       inputRef.current?.focus();
-  //     }, 500);
-  //   }
-  // }, [index, value]);
 
   return (
     <>

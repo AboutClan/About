@@ -1,4 +1,5 @@
 import { DefaultSession } from "next-auth";
+import { KakaoProfile } from "next-auth/providers/kakao";
 
 import { Location } from "./services/locationTypes";
 declare module "next-auth/jwt" {
@@ -31,15 +32,45 @@ declare module "next-auth" {
    * The shape of the user object returned in the OAuth providers' `profile` callback,
    * or the second parameter of the `session` callback, when using a database.
    */
-  interface Profile {
-    properties: {
-      nickname: string;
-      thumbnail_image: string;
-      profile_image: string;
-    };
-  }
 
-  interface User {
+  // interface Profile {
+  //   properties: {
+  //     nickname: string;
+  //     thumbnail_image: string;
+  //     profile_image: string;
+  //   };
+  //   kakao_account: {
+  //     profile: {
+  //       nickname: string;
+  //       thumbnail_image_url: string;
+  //       profile_image_url: string;
+  //       is_default_image: boolean;
+  //       is_default_nickname: boolean;
+  //     };
+  //     name_needs_agreement: boolean;
+  //     name?: string;
+
+  //     has_phone_number: boolean;
+  //     phone_number_needs_agreement: boolean;
+  //     phone_number?: string;
+
+  //     has_birthyear: boolean;
+  //     birthyear_needs_agreement: boolean;
+  //     birthyear?: string;
+
+  //     has_birthday: boolean;
+  //     birthday_needs_agreement: boolean;
+  //     birthday?: string; // MMDD 형식
+  //     birthday_type?: "SOLAR" | "LUNAR";
+  //     is_leap_month?: boolean;
+
+  //     has_gender: boolean;
+  //     gender_needs_agreement: boolean;
+  //     gender?: "male" | "female";
+  //   };
+  // }
+
+  interface User extends KakaoProfile {
     role: Role;
     isActive: boolean;
     uid: string;

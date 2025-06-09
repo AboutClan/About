@@ -1,23 +1,39 @@
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import BottomNav from "../../components/layouts/BottomNav";
 import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
+import { useUserKakaoInfoQuery } from "../../hooks/user/queries";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
-import { setLocalStorageObj } from "../../utils/storageUtils";
+import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
 function Gender() {
   const searchParams = useSearchParams();
-  const info: IUserRegisterFormWriting = JSON.parse(localStorage.getItem(REGISTER_INFO));
-
   const isProfileEdit = !!searchParams.get("edit");
+
+  const info: IUserRegisterFormWriting = getLocalStorageObj(REGISTER_INFO);
+
+  const { data, type } = useUserKakaoInfoQuery();
 
   const [errorMessage, setErrorMessage] = useState("");
   const [gender, setGender] = useState(info?.gender);
+
+  useEffect(() => {
+    if (info?.gender || !data) return;
+    setGender(
+      type === "kakao"
+        ? data.gender === "male"
+          ? "남성"
+          : data.gender === "female"
+          ? "여성"
+          : "남성"
+        : (data.gender as "남성" | "여성"),
+    );
+  }, [data, type]);
 
   const onClickNext = (e) => {
     if (!gender) {

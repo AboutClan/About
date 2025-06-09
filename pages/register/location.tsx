@@ -1,43 +1,30 @@
 import { Box } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
-import { MouseEvent, useEffect, useState } from "react";
+import { MouseEvent, useState } from "react";
 
 import BottomNav from "../../components/layouts/BottomNav";
 import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
 import SearchLocation from "../../components/organisms/SearchLocation";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
-import { getLocationByCoordinates } from "../../libs/study/getLocationByCoordinates";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 import { KakaoLocationProps } from "../../types/externals/kakaoLocationSearch";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
-import { Location } from "../../types/services/locationTypes";
-import { setLocalStorageObj } from "../../utils/storageUtils";
+import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
 function RegisterLocation() {
   const searchParams = useSearchParams();
-
   const isProfileEdit = !!searchParams.get("edit");
 
-  const info: IUserRegisterFormWriting = JSON.parse(localStorage.getItem(REGISTER_INFO));
+  const info: IUserRegisterFormWriting = getLocalStorageObj(REGISTER_INFO);
 
   const [errorMessage, setErrorMessage] = useState("");
-  const [location, setLocation] = useState<Location | "기타">(info?.location);
 
   const [placeInfo, setPlaceInfo] = useState<KakaoLocationProps>({
     place_name: "",
     road_address_name: "",
   });
-
-  useEffect(() => {
-    if (!placeInfo?.place_name) {
-      setLocation(null);
-      return;
-    }
-    const getLocation = getLocationByCoordinates(+placeInfo.y, +placeInfo.x);
-    setLocation((getLocation as Location) || "기타");
-  }, [placeInfo]);
 
   const onClickNext = (e?: MouseEvent<HTMLButtonElement, MouseEvent>) => {
     if (!placeInfo?.place_name) {
@@ -48,7 +35,7 @@ function RegisterLocation() {
     const { place_name: placeName, y, x } = placeInfo;
     setLocalStorageObj(REGISTER_INFO, {
       ...info,
-      location,
+      location: "기타",
       locationDetail: {
         text: placeName,
         lat: +y,

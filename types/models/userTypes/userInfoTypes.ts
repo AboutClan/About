@@ -1,3 +1,5 @@
+import { KakaoProfile } from "next-auth/providers/kakao";
+
 import { USER_BADGE_ARR } from "../../../constants/serviceConstants/badgeConstants";
 import { USER_ROLE } from "../../../constants/serviceConstants/userConstants";
 import { ActiveLocation, Location } from "../../services/locationTypes";
@@ -35,6 +37,7 @@ export interface IUser extends Omit<IUserRegisterForm, "location">, IUserSummary
     sum?: number;
   };
   introduceText?: string;
+  kakao_account: KakaoProfile["kakao_account"];
 }
 
 export interface UserStudyRecordProps {

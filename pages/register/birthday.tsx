@@ -1,19 +1,21 @@
 import "react-datepicker/dist/react-datepicker.css";
 
-import { Button } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import KoreanLocale from "date-fns/locale/ko"; // 한국어 로케일 추가
 import dayjs from "dayjs";
 import { useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { KakaoProfile } from "next-auth/providers/kakao";
+import { forwardRef, useEffect, useState } from "react";
 import DatePicker, { registerLocale } from "react-datepicker";
 import styled from "styled-components";
 
 import BottomNav from "../../components/layouts/BottomNav";
 import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
+import { useUserKakaoInfoQuery } from "../../hooks/user/queries";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
-import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
+import { IUser, IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
 import { birthToAge } from "../../utils/convertUtils/convertTypes";
 import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
@@ -21,27 +23,40 @@ registerLocale("ko", KoreanLocale);
 
 function Birthday() {
   const searchParams = useSearchParams();
+  const isProfileEdit = !!searchParams.get("edit");
   const info: IUserRegisterFormWriting = getLocalStorageObj(REGISTER_INFO);
 
+  const getBirth = (birth: string) => {
+    const defaultBirth =
+      Number(birth?.slice(0, 2)) < 50 ? "20" + birth : birth ? "19" + birth : null;
+    return new Date(
+      +defaultBirth?.slice(0, 4),
+      +defaultBirth?.slice(4, 6) - 1,
+      +defaultBirth?.slice(6),
+    );
+  };
+
+  const { data, type } = useUserKakaoInfoQuery();
+
   const [errorMessage, setErrorMessage] = useState("");
+  const [birthday, setBirthday] = useState(getBirth(info?.birth || "010101"));
 
-  const initialDate = new Date(2000, 0, 1);
-
-  const birth = info?.birth;
-
-  const defaultBirth =
-    birth && Number(birth?.slice(0, 2)) < 50 ? "20" + birth : birth ? "19" + birth : null;
-
-  const defaultBirthDate =
-    defaultBirth &&
-    new Date(+defaultBirth?.slice(0, 4), +defaultBirth?.slice(4, 6) - 1, +defaultBirth?.slice(6));
-  const isProfileEdit = !!searchParams.get("edit");
-  const [startDate, setStartDate] = useState(defaultBirthDate || initialDate);
+  useEffect(() => {
+    if (info?.birth || !data) return;
+    if (type === "kakao") {
+      const birth =
+        (data as KakaoProfile["kakao_account"]).birthyear.slice(2) +
+        (data as KakaoProfile["kakao_account"]).birthday;
+      setBirthday(getBirth(birth));
+    } else {
+      setBirthday(getBirth((data as IUser).birth));
+    }
+  }, [data]);
 
   const onClickNext = (e) => {
-    const age = birthToAge(dayjs(startDate).format("YYMMDD"));
+    const age = birthToAge(dayjs(birthday).format("YYMMDD"));
 
-    if (dayjs(startDate).year() > dayjs().year() - 19) {
+    if (dayjs(birthday).year() > dayjs().year() - 19) {
       setErrorMessage("죄송합니다. 만 19 ~ 28세의 인원만 가입이 가능합니다.");
       e.preventDefault();
       return;
@@ -53,32 +68,33 @@ function Birthday() {
       return;
     }
 
-    if (dayjs(startDate)) {
-      setLocalStorageObj(REGISTER_INFO, {
-        ...info,
-        birth: dayjs(startDate).format("YYMMDD"),
-      });
-    }
+    setLocalStorageObj(REGISTER_INFO, {
+      ...info,
+      birth: dayjs(birthday).format("YYMMDD"),
+    });
   };
 
-  const myBirth = dayjs(startDate).format("YYYY년 M월 D일");
+  const myBirth = dayjs(birthday).format("YYYY년 M월 D일");
 
-  function CustomButton({ value, onClick }: { value: string; onClick?: () => void }) {
-    return (
-      <Button
-        _focus={{ bg: "var(--gray-600)" }}
-        _hover={{ bg: "var(--gray-600)" }}
-        color="white"
-        bg="inherit"
-        w="160px"
-        size="md"
-        h="40px"
-        onClick={onClick}
-      >
-        {value}
-      </Button>
-    );
-  }
+  const CustomButton = forwardRef<HTMLButtonElement, { value: string; onClick?: () => void }>(
+    ({ value, onClick }, ref) => {
+      return (
+        <Button
+          ref={ref}
+          _focus={{ bg: "inherit" }}
+          _hover={{ bg: "inherit" }}
+          color="white"
+          bg="inherit"
+          size="md"
+          onClick={onClick}
+          w="160px"
+        >
+          {value}
+        </Button>
+      );
+    },
+  );
+  CustomButton.displayName = "CustomButton";
 
   return (
     <>
@@ -89,24 +105,34 @@ function Birthday() {
           <span>20대 초반부터 중후반까지, 많은 멤버들이 활동하고 있어요!</span>
         </RegisterOverview>
         <DateContainer>
-          <DateStr>{myBirth}</DateStr>
+          <Box
+            borderBottom="1.5px solid var(--gray-500)"
+            px={5}
+            pb={0.5}
+            fontSize="28px"
+            mb={6}
+            fontWeight="bold"
+          >
+            {myBirth}
+          </Box>
           <Button
             mt={1}
+            px={0}
             borderRadius="8px"
             size="md"
             as="div"
-            bg="gray.600"
+            bg="gray.800"
             border="var(--border-main)"
-            _focus={{ bg: "var(--gray-600)" }}
-            _hover={{ bg: "var(--gray-600)" }}
+            _focus={{ bg: "var(--gray-500)" }}
+            _hover={{ bg: "var(--gray-500)" }}
           >
             <StyledDatePicker
               locale="ko"
-              selected={startDate}
+              selected={birthday}
               onChange={(date) => {
-                setStartDate(date as Date);
+                setBirthday(date as Date);
               }}
-              dateFormat="연도 / 월 선택"
+              dateFormat="출생연도 / 월 선택"
               showMonthYearPicker
               onFocus={(e) => {
                 e.target.blur();
@@ -117,17 +143,19 @@ function Birthday() {
           <Button
             size="md"
             borderRadius="8px"
+            px={0}
             mt={3}
             as="div"
-            bgColor="gray.600"
+            w="160px"
+            bgColor="gray.800"
             border="var(--border-main)"
-            _focus={{ bg: "var(--gray-600)" }}
-            _hover={{ bg: "var(--gray-600)" }}
+            _focus={{ bg: "var(--gray-500)" }}
+            _hover={{ bg: "var(--gray-500)" }}
           >
             <StyledDatePicker
               locale="ko"
-              selected={startDate}
-              onChange={(date) => setStartDate(date as Date)}
+              selected={birthday}
+              onChange={(date) => setBirthday(date as Date)}
               dateFormat="날짜 선택"
               onFocus={(e) => e.target.blur()}
               customInput={<CustomButton value="날짜 선택" />}
@@ -155,19 +183,11 @@ const StyledDatePicker = styled(DatePicker)`
   text-align: center;
   background-color: inherit;
   font-size: 16px;
-  width: 160px;
   text-align: center;
   font-size: 13px;
   font-weight: 600;
   color: var(--gray-700);
   outline: none;
-`;
-
-const DateStr = styled.div`
-  font-size: 24px;
-  margin: var(--gap-5) 0;
-  margin-top: 24px;
-  font-weight: bold;
 `;
 
 const DateContainer = styled.div`

@@ -4,7 +4,7 @@ import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 import NextAuth, { NextAuthOptions } from "next-auth";
 import AppleProvider from "next-auth/providers/apple";
 import CredentialsProvider from "next-auth/providers/credentials";
-import KakaoProvider from "next-auth/providers/kakao";
+import KakaoProvider, { KakaoProfile } from "next-auth/providers/kakao";
 
 import jwt from "jsonwebtoken";
 import dbConnect from "../../../libs/backend/dbConnect";
@@ -91,20 +91,22 @@ export const authOptions: NextAuthOptions = {
     KakaoProvider({
       clientId: process.env.KAKAO_CLIENT_ID as string,
       clientSecret: process.env.KAKAO_CLIENT_SECRET as string,
-      profile: (profile) => ({
-        id: profile.id.toString(),
-        uid: profile.id.toString(),
-        name: profile.properties.nickname,
-        role: "newUser",
-        profileImage: profile.properties.thumbnail_image || profile.properties.profile_image,
-        isActive: false,
-        email: profile.id.toString(),
-      }),
+      profile: (profile: KakaoProfile) => {
+        const profileData = {
+          ...profile,
+          role: "newUser",
+          profileImage: profile.properties.thumbnail_image || profile.properties.profile_image,
+          uid: profile.id.toString(),
+          id: profile.id.toString(),
+          isActive: false,
+        };
+        console.log("p", profileData);
+        return profileData;
+      },
     }),
     AppleProvider({
       clientId: process.env.APPLE_ID as string, // Service ID
       clientSecret: generateClientSecret(), // JWT 생성 함수
-      // clientSecret: process.env.APPLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
       profile: (profile) => ({
         id: profile.sub, // Apple User ID
         uid: profile.sub, // 동일 ID로 저장
@@ -131,9 +133,8 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ account, user }) {
       try {
-      
+        console.log(55555, account, user);
         if (["guest", "credentials"].includes(account.provider)) {
-         
           return true;
         }
         if (["kakao", "apple"].includes(account.provider)) {
@@ -189,7 +190,7 @@ export const authOptions: NextAuthOptions = {
     },
 
     async session({ session, token, user, trigger }) {
-    
+      console.log(session, token, user);
       if (trigger === "update") return session;
       if (session.user.name === "게스트") session.user = MEMBER_GUEST_USER;
       else if (session.user.name === "guest") session.user = GUEST_USER;
@@ -204,12 +205,11 @@ export const authOptions: NextAuthOptions = {
           location: "수원",
         };
       }
-   
+
       return session;
     },
 
     async jwt({ token, account, user, trigger }) {
-  
       try {
         if (trigger === "update") {
           token.role = "waiting";
