@@ -65,7 +65,7 @@ function Name() {
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>이름을 입력해 주세요</span>
-          <span>실명으로 작성해 주세요!</span>
+          <span>실명으로 작성해 주세요! (닉네임 x)</span>
         </RegisterOverview>
         <Input
           ref={inputRef}

@@ -117,13 +117,16 @@ function ProfilePage() {
     <>
       <Header title="">
         <HStack spacing={3}>
-          <ButtonWrapper onClick={() => handleDrawer("chat")}>
-            <SendIcon />
-          </ButtonWrapper>
-          <ButtonWrapper onClick={() => setModalType(isMyFriend ? "remove" : "add")}>
-            {session?.user.id === userId ? null : isMyFriend ? <UserCheckIcon /> : <UserPlusIcon />}
-          </ButtonWrapper>
-
+          {session?.user.id !== userId && (
+            <>
+              <ButtonWrapper onClick={() => handleDrawer("chat")}>
+                <SendIcon />
+              </ButtonWrapper>
+              <ButtonWrapper onClick={() => setModalType(isMyFriend ? "remove" : "add")}>
+                {isMyFriend ? <UserCheckIcon /> : <UserPlusIcon />}
+              </ButtonWrapper>
+            </>
+          )}
           <ButtonWrapper onClick={() => setModalType("declare")}>
             <BanIcon />
           </ButtonWrapper>

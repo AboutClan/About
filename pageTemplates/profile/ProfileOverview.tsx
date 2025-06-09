@@ -23,7 +23,7 @@ function ProfileOverview({ user, groupCnt }: IProfileOverview) {
   const { data: session } = useSession();
   const [isIntroduce, setIsIntroduce] = useState(false);
   const isFriend = user?.friend.includes(session?.user.uid);
-  console.log(user?.temperature);
+
   return (
     <Flex flexDir="column" my={4}>
       {user ? (

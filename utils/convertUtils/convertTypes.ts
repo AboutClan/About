@@ -25,13 +25,20 @@ export const getUrlWithLocationAndDate = (
 // 생년월일 to 만 나이
 export const birthToAge = (birth: string) => {
   if (!birth) return;
-  const yearSlice = birth?.slice(0, 2);
-  const birthYear = +yearSlice < 50 ? "20" + yearSlice : "19" + yearSlice;
-  const currentYear = dayjs().year();
-  const birthDate = dayjs(birth.slice(2, 4) + "-" + birth.slice(4)).year(dayjs().year());
-  const age = currentYear - +birthYear;
-  if (birthDate < dayjs()) return age;
-  else return age - 1;
+
+  const yearSlice = birth.slice(0, 2); // '01'
+  const birthYear = +yearSlice < 50 ? 2000 + +yearSlice : 1900 + +yearSlice; // 2001
+
+  const current = dayjs();
+  const currentYear = current.year(); // 2025
+
+  const month = parseInt(birth.slice(2, 4), 10) - 1; // 0-based month
+  const date = parseInt(birth.slice(4, 6), 10);
+
+  const birthDateThisYear = dayjs().set("year", currentYear).set("month", month).set("date", date);
+  const age = currentYear - birthYear;
+
+  return birthDateThisYear.isAfter(current.startOf("day")) ? age - 1 : age;
 };
 
 //생년월일 to Dayjs
