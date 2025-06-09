@@ -18,18 +18,11 @@ interface IGatherParticipation {
 function GatherParticipation({ data }: IGatherParticipation) {
   const status = data.status;
   const participantsCnt = data.participants.length;
-
+  console.log(data);
   const organizerCard = {
     user: data?.user as IUser,
     memo: (data?.user as IUser).comment,
-    rightComponent: (
-      <SocialingScoreBadge user={data?.user as UserSimpleInfoProps} size="sm" />
-      // <Box>
-      //   <Badge variant="subtle" size="lg" colorScheme="mint">
-      //     모임장
-      //   </Badge>
-      // </Box>
-    ),
+    rightComponent: <SocialingScoreBadge user={data?.user as UserSimpleInfoProps} size="sm" />,
   };
 
   const userCardArr: IProfileCommentCard[] = (data?.participants ? [...data.participants] : []).map(

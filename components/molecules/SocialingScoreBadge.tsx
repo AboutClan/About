@@ -36,9 +36,9 @@ function SocialingScoreBadge({ user, size = "md" }: SocialingScoreBadgeProps) {
         {`${
           user?.temperature?.temperature < 36.5 && user?.temperature?.cnt <= 2
             ? "36.5"
-            : Number.isInteger(user?.temperature?.temperature)
-            ? `${user.temperature.temperature}.0`
-            : user?.temperature?.temperature || "36.5"
+            : typeof user?.temperature?.temperature === "number"
+            ? user.temperature.temperature.toFixed(1)
+            : "36.5"
         }°C`}
         {size === "sm" && (
           <Flex
@@ -57,7 +57,7 @@ function SocialingScoreBadge({ user, size = "md" }: SocialingScoreBadgeProps) {
             lineHeight="1"
           >
             <Text lineHeight="1" textAlign="center">
-              {user?.temperature?.cnt || 0}명
+              {Math.round(user?.temperature?.cnt ?? 0)}명
             </Text>
           </Flex>
         )}
