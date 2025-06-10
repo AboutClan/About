@@ -5,12 +5,8 @@ import Link from "next/link";
 function HomeNav() {
   return (
     <Flex mb={3}>
-      {HOME_RECOMMENDATION_ICON_ARR.map((item, idx) => (
-        <Link
-          href={item.url}
-          key={item.title}
-          style={{ flex: 1, marginLeft: idx === 0 ? 0 : "8px" }}
-        >
+      {HOME_RECOMMENDATION_ICON_ARR.map((item, idx) => {
+        const content = (
           <Flex justify="space-between" direction="column" align="center">
             <Flex
               justify="center"
@@ -28,7 +24,7 @@ function HomeNav() {
                 opacity={0.08}
                 bgColor={item.bgColor}
                 borderRadius="50%"
-              ></Box>
+              />
               <Image
                 src={item.iconImage}
                 width={36}
@@ -42,8 +38,26 @@ function HomeNav() {
               {item.title}
             </Box>
           </Flex>
-        </Link>
-      ))}
+        );
+
+        const style = { flex: 1, marginLeft: idx === 0 ? 0 : "8px" };
+
+        return item.isExternalLink ? (
+          <a
+            href={item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            key={item.title}
+            style={style}
+          >
+            {content}
+          </a>
+        ) : (
+          <Link href={item.url} key={item.title} style={style}>
+            {content}
+          </Link>
+        );
+      })}
     </Flex>
   );
 }
@@ -53,6 +67,7 @@ interface HomeRecommendationItemProps {
   title: string;
   url: string;
   bgColor: string;
+  isExternalLink?: boolean;
 }
 
 const HOME_RECOMMENDATION_ICON_ARR: HomeRecommendationItemProps[] = [
@@ -63,7 +78,6 @@ const HOME_RECOMMENDATION_ICON_ARR: HomeRecommendationItemProps[] = [
     url: "/community",
     bgColor: "var(--color-red)",
   },
-
   {
     iconImage:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/store.png",
@@ -75,7 +89,7 @@ const HOME_RECOMMENDATION_ICON_ARR: HomeRecommendationItemProps[] = [
     iconImage:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%EB%8B%AC%EB%A0%A52.png",
     title: "캘린더",
-    url: `/calendar`,
+    url: "/calendar",
     bgColor: "var(--color-orange)",
   },
   {
@@ -91,6 +105,7 @@ const HOME_RECOMMENDATION_ICON_ARR: HomeRecommendationItemProps[] = [
     title: "디스코드",
     url: "https://discord.gg/dDu2kg2uez",
     bgColor: "var(--color-blue)",
+    isExternalLink: true,
   },
 ];
 
