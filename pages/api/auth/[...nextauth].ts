@@ -100,7 +100,7 @@ export const authOptions: NextAuthOptions = {
           id: profile.id.toString(),
           isActive: false,
         };
-        console.log("p", profileData);
+
         return profileData;
       },
     }),
@@ -190,7 +190,6 @@ export const authOptions: NextAuthOptions = {
     },
 
     async session({ session, token, user, trigger }) {
-      console.log(23, session, token, user);
       if (trigger === "update") return session;
       if (session.user.name === "게스트") session.user = MEMBER_GUEST_USER;
       else if (session.user.name === "guest") session.user = GUEST_USER;
@@ -210,7 +209,6 @@ export const authOptions: NextAuthOptions = {
     },
 
     async jwt({ token, account, user, trigger }) {
-      console.log(15);
       try {
         if (trigger === "update") {
           token.role = "waiting";
