@@ -26,20 +26,6 @@ function Name() {
   const [value, setValue] = useState<string>(info?.name ?? "");
 
   useEffect(() => {
-    let timeoutId: ReturnType<typeof setTimeout>;
-    if (inputRef.current) {
-      timeoutId = setTimeout(() => {
-        inputRef.current?.focus();
-      }, 500);
-    }
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
     if (!data || info?.name) return;
     setValue(data?.name || "");
   }, [data]);

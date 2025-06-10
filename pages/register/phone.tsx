@@ -50,12 +50,6 @@ function Phone() {
     setLocalStorageObj(REGISTER_INFO, { ...info, telephone: value });
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      inputRef?.current?.focus();
-    }, 500);
-  }, []);
-
   return (
     <>
       <ProgressHeader title="회원가입" value={88} />
