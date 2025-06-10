@@ -1,4 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -8,17 +9,15 @@ import Accordion from "../../components/molecules/Accordion";
 import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
 import TabNav from "../../components/molecules/navs/TabNav";
 import TextCheckButton from "../../components/molecules/TextCheckButton";
-import ValueBoxCol, { ValueBoxColItemProps } from "../../components/molecules/ValueBoxCol";
-import { ACCORDION_CONTENT_FEE } from "../../constants/contentsText/accordionContents";
+import ValueBoxCol2, { ValueBoxCol2ItemProps } from "../../components/molecules/ValueBoxCol2";
+import { ACCORDION_CONTENT_FAQ } from "../../constants/contentsText/accordionContents";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
-import { ACTIVE_LOCATION_CENTER_DOT } from "../../constants/serviceConstants/studyConstants/studyVoteMapConstants";
 import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation, useUserRegisterMutation } from "../../hooks/user/mutations";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
-import { ActiveLocation } from "../../types/services/locationTypes";
-import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
+import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
 function Fee() {
@@ -36,48 +35,15 @@ function Fee() {
   const { mutate, isLoading } = useUserRegisterMutation({
     onSuccess() {
       changeRole({ role: "waiting" });
-      const getClosestLocation = (lat: number, lon: number): ActiveLocation => {
-        let closestLocation: ActiveLocation = "수원";
-        let minDistance = Number.MAX_VALUE;
-
-        const toRadians = (degree: number) => (degree * Math.PI) / 180;
-
-        const calculateDistance = (
-          lat1: number,
-          lon1: number,
-          lat2: number,
-          lon2: number,
-        ): number => {
-          const R = 6371; // 지구의 반지름(km)
-          const dLat = toRadians(lat2 - lat1);
-          const dLon = toRadians(lon2 - lon1);
-          const a =
-            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(toRadians(lat1)) *
-              Math.cos(toRadians(lat2)) *
-              Math.sin(dLon / 2) *
-              Math.sin(dLon / 2);
-          const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-          return R * c; // km 거리
-        };
-
-        for (const [location, coords] of Object.entries(ACTIVE_LOCATION_CENTER_DOT)) {
-          const distance = calculateDistance(lat, lon, coords.latitude, coords.longitude);
-
-          if (distance < minDistance) {
-            minDistance = distance;
-            closestLocation = location as ActiveLocation;
-          }
-        }
-
-        return closestLocation;
-      };
-
-      const findLocation = getClosestLocation(info.locationDetail.lat, info.locationDetail.lon);
-      router.push(`/login?status=complete&location=${convertLocationLangTo(findLocation, "en")}`);
-      // router.push(CONNECT_KAKAO[findLocation]);
 
       setLocalStorageObj(REGISTER_INFO, null);
+
+      toast("success", "카카오 채널로 이동합니다.");
+      router.push("/login");
+
+      setTimeout(() => {
+        window.location.href = `https://pf.kakao.com/_SaWXn/chat`;
+      }, 500);
     },
     onError: errorToast,
   });
@@ -90,18 +56,23 @@ function Fee() {
     mutate(info);
   };
 
-  const valueBoxColItems: ValueBoxColItemProps[] = [
+  const eventDay = dayjs().add(1, "weeks").day(7);
+
+  const valueBoxColItems: ValueBoxCol2ItemProps[] = [
     {
-      left: "가입비",
-      right: "2,000원",
+      left: `가입비`,
+      right: "10,000원",
+      lineThroughText: "15,000원",
+      leftSub: `(${dayjsToFormat(eventDay, "방학 중 인상 예정")})`,
     },
     {
-      left: "보증금 (환급 가능)",
-      right: "3,000원",
+      left: "보증금",
+      right: "10,000원",
+      leftSub: "(상시 환급 가능)",
     },
     {
       left: "총 금액",
-      right: "= 5,000원",
+      right: "= 20,000원 (보증금 포함)",
       isFinal: true,
     },
   ];
@@ -111,8 +82,8 @@ function Fee() {
       <ProgressHeader title="회원 가입" value={100} />
       <RegisterLayout>
         <RegisterOverview>
-          <span>최종 가입</span>
-          <span>아래 내용 확인 후, 동아리 단톡방으로 참여 요청이 가능합니다!</span>
+          <span>최종 가입 신청</span>
+          <span>아래 내용을 확인하신 후, 가입 신청을 완료할 수 있습니다.</span>
         </RegisterOverview>
         <TabNav
           isFullSize
@@ -128,28 +99,31 @@ function Fee() {
         <Box mt={5}>
           {tab === "신청 안내" ? (
             <Flex direction="column">
-              <ValueBoxCol items={valueBoxColItems} />
-              <Box as="li" fontSize="12px" lineHeight="20px" mt="10px" color="gray.600">
-                위의 회비는 동아리 가입 후 내야 할 금액입니다.
+              <ValueBoxCol2 items={valueBoxColItems} />
+              <Box as="li" fontSize="12px" lineHeight="20px" mt={3} color="gray.600">
+                보증금은 다양한 활동에 사용할 수 있고, 탈퇴 시 환급됩니다.
               </Box>
-              <Box my={5}>
+              <Box mt={8} mb={5}>
+                <Box ml={0.5} fontSize="14px" mb={2} fontWeight="semibold">
+                  Q) 신청 완료 후에는 어떻게 하나요?
+                </Box>
                 <InfoList items={INFO_ARR} />
               </Box>
               <TextCheckButton
-                text="About 동아리 가입을 희망하시나요?"
+                text="위 내용을 확인했고, 가입을 진행합니다."
                 isChecked={isChecked}
                 toggleCheck={() => setIsChecked((old) => !old)}
               />
             </Flex>
           ) : (
-            <Accordion contentArr={ACCORDION_CONTENT_FEE} />
+            <Accordion contentArr={ACCORDION_CONTENT_FAQ} />
           )}
         </Box>
       </RegisterLayout>
       <BottomNav
         isLoading={isLoading}
         onClick={onClickNext}
-        text="동아리 팀 채팅방 참여 요청"
+        text="가입 신청 완료"
         isActive={isChecked}
       />
     </>
@@ -157,9 +131,9 @@ function Fee() {
 }
 
 const INFO_ARR = [
-  "보증금은 일부 활동의 정산 목적으로, 상시 환급이 가능합니다.",
-  "가입비는 동아리 운영 및 이벤트 진행비로 활용됩니다.",
-  "참여 요청을 완료하시면, 하루 이틀 내 별도 연락을 드립니다.",
+  "신청을 완료하면 About 카카오 채널로 이동됩니다.",
+  "카카오 채널에서 [신청 완료] 버튼을 눌러주세요 !",
+  "입금까지 완료하시면 바로 동아리 활동을 시작할 수 있습니다.",
 ];
 
 export default Fee;

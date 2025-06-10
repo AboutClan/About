@@ -46,7 +46,7 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
         <Box>
           <Flex py={3} align="center">
             <Box position="relative">
-              <Avatar size="xl1" user={user} />
+              <Avatar size="lg1" user={user} />
               <IconWrapper
                 onClick={() => {
                   if (isGuest) {

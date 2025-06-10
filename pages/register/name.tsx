@@ -19,7 +19,7 @@ function Name() {
   const info: IUserRegisterFormWriting = getLocalStorageObj(REGISTER_INFO);
 
   const { data } = useUserKakaoInfoQuery();
-
+  console.log(1, data);
   const inputRef = useRef(null);
 
   const [errorMessage, setErrorMessage] = useState("");

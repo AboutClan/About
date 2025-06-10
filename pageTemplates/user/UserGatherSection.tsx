@@ -1,6 +1,5 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
-import { useSetRecoilState } from "recoil";
 
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
@@ -12,7 +11,6 @@ import ButtonGroups from "../../components/molecules/groups/ButtonGroups";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useFeedCntQuery } from "../../hooks/feed/queries";
 import { useGatherMyStatusQuery } from "../../hooks/gather/queries";
-import { transferGatherDataState } from "../../recoils/transferRecoils";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
 import GatherSkeletonMain from "../gather/GatherSkeletonMain";
 import { setGatherDataToCardCol } from "../home/HomeGatherCol";
@@ -23,7 +21,6 @@ function UserGatherSection() {
   const typeToast = useTypeToast();
   const [gatherType, setGatherType] = useState<GatherType>("참여중인 모임");
   const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>();
-  const setTransferGatherData = useSetRecoilState(transferGatherDataState);
   const [gathers, setGathers] = useState<IGather[]>([]);
   const [cursor, setCursor] = useState(0);
   const loader = useRef<HTMLDivElement | null>(null);

@@ -1,9 +1,8 @@
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { createGlobalStyle } from "styled-components";
 
-import { USER_LOCATION } from "../../constants/keys/localStorage";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { usePushServiceInitialize } from "../../hooks/FcmManger/mutaion";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
@@ -31,7 +30,7 @@ function HomeInitialSetting() {
     enabled: isGuest === false,
     onSuccess(data) {
       if (data.isActive === false) {
-        toast("warning", "가입된 멤버가 아닙니다. 새로 가입 신청해 주세요.");
+        toast("warning", "가입된 멤버가 아닙니다. 가입 신청을 진행해 주세요!");
         router.push("/register/name");
       }
       if (data.role === "newUser") {
@@ -73,24 +72,6 @@ function HomeInitialSetting() {
       }
     }
   }, [userInfo?.role]);
-
-  useEffect(() => {
-    if (isGuest) {
-      localStorage.setItem(USER_LOCATION, "수원");
-    }
-
-    // if (isGuest && !checkAndSetLocalStorage(USER_GUIDE, 1)) {
-    //   setIsGuestModal(true);
-    //   // setIsGuide(true);
-    // }
-
-    if (userInfo) {
-      localStorage.setItem(USER_LOCATION, userInfo.location);
-      // if (dayjs().diff(dayjs(userInfo?.registerDate)) <= 7) {
-      //   if (!checkAndSetLocalStorage(USER_GUIDE, 3)) setIsGuide(true);
-      // } else if (!checkAndSetLocalStorage(USER_GUIDE, 14)) setIsGuide(true);
-    }
-  }, [isGuest, userInfo]);
 
   useEffect(() => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

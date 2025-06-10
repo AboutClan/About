@@ -13,7 +13,7 @@ export const useUserKakaoInfoQuery = (): {
   type: "kakao" | "user";
 } => {
   const { data: userInfo } = useUserInfoQuery();
-
+  console.log(2, userInfo);
   if (!userInfo) return { data: null, type: null };
 
   return {

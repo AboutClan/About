@@ -2,7 +2,6 @@ import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import { Badge, Box, Flex, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
@@ -165,16 +164,14 @@ function GroupDetail() {
                 ) : null}
                 {group?.notionUrl ? (
                   <Box fontSize="13px" lineHeight="20px">
-                    <Link
-                      style={{ fontWeight: "600", color: "var(--color-blue)" }}
+                    <a
                       href={group.notionUrl}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        window.open(group.notionUrl, "_blank");
-                      }}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ fontWeight: "600", color: "var(--color-blue)" }}
                     >
                       <u>&gt;&gt; 활동 기록 보러가기</u>
-                    </Link>
+                    </a>
                   </Box>
                 ) : null}
                 <Flex mt={5}>

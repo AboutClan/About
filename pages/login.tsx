@@ -54,6 +54,7 @@ const Login: NextPage<{
   const { data: userInfo } = useUserInfoQuery({
     enabled: !!session,
   });
+  console.log(12, userInfo);
 
   useEffect(() => {
     switch (statusParam) {
@@ -86,16 +87,21 @@ const Login: NextPage<{
       return;
     }
 
+    if (session?.user?.name === "guest") {
+      await signOut({ redirect: false });
+    }
+
+    if (statusParam === "access") {
+      await signIn(provider, {
+        callbackUrl: `${window.location.origin}/register/access`,
+      });
+      return;
+    }
     if (userInfo?.role === "waiting" || statusParam === "waiting") {
       setIsWaitingModal(true);
       setLoadingType(null);
       return;
     }
-
-    if (session?.user?.name === "guest") {
-      await signOut({ redirect: false });
-    }
-
     await signIn(provider, {
       callbackUrl: `${window.location.origin}/home`,
     });
@@ -104,7 +110,12 @@ const Login: NextPage<{
   };
 
   const waitingFooterOptions: IFooterOptions = {
-    main: {},
+    main: {
+      text: "카카오 채널로 이동하기",
+      func: () => {
+        window.location.href = `https://pf.kakao.com/_SaWXn/chat`;
+      },
+    },
   };
 
   return (
@@ -251,7 +262,10 @@ const Login: NextPage<{
           setIsModal={setIsWaitingModal}
           footerOptions={waitingFooterOptions}
         >
-          가입 대기중입니다. <br /> 며칠 내에 카톡으로 연락드려요!
+          가입 대기중입니다. <br />
+          <Box>
+            <b>카카오 채널</b>을 통해 가입을 완료해 주세요!
+          </Box>
         </ModalLayout>
       )}
     </>

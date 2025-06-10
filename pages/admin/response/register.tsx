@@ -22,8 +22,6 @@ function AdminRegister() {
     setIsModal(true);
   };
 
-  useEffect(() => {}, []);
-
   useEffect(() => {
     if (isRefetch)
       setTimeout(() => {

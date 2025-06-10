@@ -53,8 +53,6 @@ export const STUDY_ATTEND_MEMBERS = "studyAttendMembers";
 
 export const GATHER_JOIN_MEMBERS = "gatherJoinMembers";
 
-export const USER_LOCATION = "userLocation";
-
 //스터디 출석
 export const STUDY_ATTEND_INFO = "studyAttendInfo";
 

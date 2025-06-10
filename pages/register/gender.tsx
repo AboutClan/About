@@ -20,7 +20,7 @@ function Gender() {
   const { data, type } = useUserKakaoInfoQuery();
 
   const [errorMessage, setErrorMessage] = useState("");
-  const [gender, setGender] = useState(info?.gender);
+  const [gender, setGender] = useState<"남성" | "여성" | null>(info?.gender || null);
 
   useEffect(() => {
     if (info?.gender || !data) return;
@@ -30,8 +30,8 @@ function Gender() {
           ? "남성"
           : data.gender === "female"
           ? "여성"
-          : "남성"
-        : (data.gender as "남성" | "여성"),
+          : null
+        : (data?.gender as "남성" | "여성") || null,
     );
   }, [data, type]);
 

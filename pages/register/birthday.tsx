@@ -44,12 +44,13 @@ function Birthday() {
   useEffect(() => {
     if (info?.birth || !data) return;
     if (type === "kakao") {
-      const birth =
-        (data as KakaoProfile["kakao_account"]).birthyear.slice(2) +
-        (data as KakaoProfile["kakao_account"]).birthday;
-      setBirthday(getBirth(birth));
+      const kakaoData = data as KakaoProfile["kakao_account"];
+      if (kakaoData?.birthday && kakaoData?.birthyear) {
+        const birth = kakaoData.birthyear.slice(2) + kakaoData.birthday;
+        setBirthday(getBirth(birth));
+      }
     } else {
-      setBirthday(getBirth((data as IUser).birth));
+      setBirthday(getBirth((data as IUser)?.birth || "010101"));
     }
   }, [data]);
 

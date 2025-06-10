@@ -13,8 +13,9 @@ function TextCheckButton({ text, isChecked, toggleCheck }: TextCheckButtonProps)
     <Flex
       onClick={toggleCheck}
       as="button"
-      border="1px solid var(--gray-100)"
+      border="var(--border)"
       borderRadius="16px"
+      boxShadow="0px 2px 12px rgba(0, 0, 0, 0.04)"
       px={4}
       py={3}
       justify="space-between"
@@ -28,7 +29,7 @@ function TextCheckButton({ text, isChecked, toggleCheck }: TextCheckButtonProps)
         color="gray.900"
         fontSize="13px"
         textAlign="start"
-        ml={1}
+        ml={2}
         flex={1}
         my="auto"
       >

@@ -96,8 +96,8 @@ export const authOptions: NextAuthOptions = {
           ...profile,
           role: "newUser",
           profileImage: profile.properties.thumbnail_image || profile.properties.profile_image,
-          uid: profile.id.toString(),
-          id: profile.id.toString(),
+          uid: "213" || profile.id.toString(),
+          id: "213" || profile.id.toString(),
           isActive: false,
         };
         console.log("p", profileData);
@@ -180,7 +180,7 @@ export const authOptions: NextAuthOptions = {
             }
           }
 
-          return user.role === "waiting" ? "/login?status=waiting" : true;
+          return true;
         }
         return true;
       } catch (error) {
@@ -190,7 +190,7 @@ export const authOptions: NextAuthOptions = {
     },
 
     async session({ session, token, user, trigger }) {
-      console.log(session, token, user);
+      console.log(23, session, token, user);
       if (trigger === "update") return session;
       if (session.user.name === "게스트") session.user = MEMBER_GUEST_USER;
       else if (session.user.name === "guest") session.user = GUEST_USER;
@@ -210,6 +210,7 @@ export const authOptions: NextAuthOptions = {
     },
 
     async jwt({ token, account, user, trigger }) {
+      console.log(15);
       try {
         if (trigger === "update") {
           token.role = "waiting";

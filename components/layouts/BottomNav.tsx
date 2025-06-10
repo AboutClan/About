@@ -13,9 +13,18 @@ interface IBottomNav {
   isSlide?: boolean;
   isLoading?: boolean;
   isActive?: boolean;
+  isExternalLink?: boolean;
 }
 
-function BottomNav({ onClick, text, url, isSlide = true, isLoading, isActive = true }: IBottomNav) {
+function BottomNav({
+  onClick,
+  text,
+  url,
+  isSlide = true,
+  isLoading,
+  isActive = true,
+  isExternalLink,
+}: IBottomNav) {
   const searchParams = useSearchParams();
   const params = searchParams.toString();
 
@@ -38,7 +47,7 @@ function BottomNav({ onClick, text, url, isSlide = true, isLoading, isActive = t
         onClick={onClick}
         _focus={{ backgroundColor: "var(--color-mint)", color: "white" }}
         isDisabled={!isActive}
-        opacity={!isActive &&"1 !important"}
+        opacity={!isActive && "1 !important"}
       >
         {text || "다 음"}
       </Button>
@@ -59,11 +68,20 @@ function BottomNav({ onClick, text, url, isSlide = true, isLoading, isActive = t
         </Slide>
       ) : (
         <>
-          {" "}
           {url ? (
-            <Link href={url + (params ? `?${params}` : "")}>
-              <BottomButton />
-            </Link>
+            isExternalLink ? (
+              <a
+                href={url + (params ? `?${params}` : "")}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <BottomButton />
+              </a>
+            ) : (
+              <Link href={url + (params ? `?${params}` : "")}>
+                <BottomButton />
+              </Link>
+            )
           ) : (
             <BottomButton />
           )}
