@@ -96,8 +96,8 @@ export const authOptions: NextAuthOptions = {
           ...profile,
           role: "newUser",
           profileImage: profile.properties.thumbnail_image || profile.properties.profile_image,
-          uid: "213" || profile.id.toString(),
-          id: "213" || profile.id.toString(),
+          uid: profile.id.toString(),
+          id: profile.id.toString(),
           isActive: false,
         };
         console.log("p", profileData);
