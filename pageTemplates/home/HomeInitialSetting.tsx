@@ -1,5 +1,5 @@
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { createGlobalStyle } from "styled-components";
 
@@ -30,7 +30,7 @@ function HomeInitialSetting() {
     enabled: isGuest === false,
     onSuccess(data) {
       if (data.isActive === false) {
-        toast("warning", "가입된 멤버가 아닙니다. 가입 신청을 진행해 주세요!");
+        toast("warning", "신규 가입 페이지로 이동합니다.");
         router.push("/register/name");
       }
       if (data.role === "newUser") {
