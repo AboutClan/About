@@ -1,6 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
-import { useSetRecoilState } from "recoil";
 
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import Select from "../../components/atoms/Select";
@@ -11,7 +10,6 @@ import {
 } from "../../components/molecules/cards/GatherThumbnailCard";
 import ButtonGroups from "../../components/molecules/groups/ButtonGroups";
 import { useGatherQuery } from "../../hooks/gather/queries";
-import { transferGatherDataState } from "../../recoils/transferRecoils";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
 import { setGatherDataToCardCol } from "../home/HomeGatherCol";
 import GatherSkeletonMain from "./GatherSkeletonMain";
@@ -19,7 +17,6 @@ import GatherSkeletonMain from "./GatherSkeletonMain";
 export default function GatherMain() {
   const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>();
 
-  const setTransferGatherData = useSetRecoilState(transferGatherDataState);
   const [gathers, setGathers] = useState<IGather[]>([]);
   const [cursor, setCursor] = useState(0);
   const loader = useRef<HTMLDivElement | null>(null);
