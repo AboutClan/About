@@ -198,7 +198,7 @@ function ProfilePage() {
                 }}
                 lineHeight="20px"
               >
-                <Box w="20px" h="20px" mr={4} opacity={0.28}>
+                <Box w="20px" h="20px" mr={4}>
                   <OneIcon />
                 </Box>
                 <Box fontSize="13px" color="var(--color-red)">
@@ -219,7 +219,7 @@ function ProfilePage() {
                 }}
                 lineHeight="20px"
               >
-                <Box w="20px" h="20px" mr={4} opacity={0.28}>
+                <Box w="20px" h="20px" mr={4}>
                   <TwoIcon />
                 </Box>
                 <Box fontSize="13px" color="var(--color-red)">
@@ -308,28 +308,28 @@ function BanIcon() {
   );
 }
 
-function OneIcon() {
+export function OneIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       height="20px"
       viewBox="0 -960 960 960"
       width="20px"
-      fill="#1f1f1f"
+      fill="var(--color-gray)"
     >
       <path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm-20-520v280q0 17 11.5 28.5T500-280q17 0 28.5-11.5T540-320v-320q0-17-11.5-28.5T500-680h-80q-17 0-28.5 11.5T380-640q0 17 11.5 28.5T420-600h40Z" />
     </svg>
   );
 }
 
-function TwoIcon() {
+export function TwoIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       height="20px"
       viewBox="0 -960 960 960"
       width="20px"
-      fill="#1f1f1f"
+      fill="var(--color-gray)"
     >
       <path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm80-200q17 0 28.5-11.5T600-320q0-17-11.5-28.5T560-360H440v-80h80q33 0 56.5-23.5T600-520v-80q0-33-23.5-56.5T520-680H400q-17 0-28.5 11.5T360-640q0 17 11.5 28.5T400-600h120v80h-80q-33 0-56.5 23.5T360-440v120q0 17 11.5 28.5T400-280h160Z" />
     </svg>

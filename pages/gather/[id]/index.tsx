@@ -4,8 +4,6 @@ import { Box } from "@chakra-ui/react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
 
 import { GATHER_COVER_IMAGE_ARR } from "../../../assets/gather";
 import Divider from "../../../components/atoms/Divider";
@@ -19,8 +17,6 @@ import GatherDetailInfo from "../../../pageTemplates/gather/detail/GatherDetail"
 import GatherHeader from "../../../pageTemplates/gather/detail/GatherHeader";
 import GatherParticipation from "../../../pageTemplates/gather/detail/GatherParticipation";
 import GatherTitle from "../../../pageTemplates/gather/detail/GatherTitle";
-import { transferGatherDataState } from "../../../recoils/transferRecoils";
-import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { getRandomImage } from "../../../utils/imageUtils";
 
@@ -29,17 +25,7 @@ function GatherDetail() {
   const { id } = useParams<{ id: string }>() || {};
   const isGuest = session?.user.name === "guest";
 
-  const [gather, setGather] = useState<IGather>();
-
-  const [transferGather, setTransferGather] = useRecoilState(transferGatherDataState);
-  const { data: gatherData } = useGatherIDQuery(+id, { enabled: !!id && !transferGather });
-
-  useEffect(() => {
-    if (gatherData) {
-      setGather(gatherData);
-      setTransferGather(gatherData);
-    } else if (transferGather) setGather(transferGather);
-  }, [transferGather, gatherData]);
+  const { data: gather } = useGatherIDQuery(+id, { enabled: !!id });
 
   const isMember =
     (gather?.user as IUserSummary)?.uid === session?.user.uid ||

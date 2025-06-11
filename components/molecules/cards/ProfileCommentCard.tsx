@@ -20,6 +20,7 @@ export interface IProfileCommentCard {
   comment?: CommentProps;
   changeComment?: (comment: string) => void;
   size?: "md" | "lg";
+  isNoBorder?: boolean;
 }
 
 export default function ProfileCommentCard({
@@ -30,6 +31,7 @@ export default function ProfileCommentCard({
   changeComment,
   hasCommentButton,
   comment,
+  isNoBorder,
 }: IProfileCommentCard) {
   const { data: session } = useSession();
   const [isCommentModal, setIsCommentModal] = useState(false);
@@ -49,7 +51,7 @@ export default function ProfileCommentCard({
 
   return (
     <>
-      <Flex py={3} h="74px" align="center" borderBottom="var(--border)">
+      <Flex py={3} h="74px" align="center" {...(!isNoBorder && { borderBottom: "var(--border)" })}>
         {leftComponent && <Box mr="16px">{leftComponent}</Box>}
         <Avatar user={user} size="md1" />
 
