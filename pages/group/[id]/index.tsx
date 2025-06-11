@@ -88,7 +88,7 @@ function GroupDetail() {
                       text:
                         group.participants.length > 1
                           ? dayjsToFormat(dayjs(group.createdAt), "YYYY년 M월 D일")
-                          : "2024년 12월 22일",
+                          : "2025년 중",
                     },
                     { category: "가입 방식", text: group.isFree ? "자유 가입" : "승인제" },
                     { category: "보증금", text: group.fee ? group.fee + "원" : "없음" },

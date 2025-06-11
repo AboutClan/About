@@ -27,7 +27,7 @@ function Notice() {
     enabled: isGuest === false,
   });
   const { data: chats } = useMyChatsQuery({ enabled: isGuest === false });
-  
+  console.log(53, chats);
 
   useEffect(() => {
     if (!type) router.replace(`/notice?type=notice`);
