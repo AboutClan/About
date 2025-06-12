@@ -11,4 +11,5 @@ export const USER_ROLE: Record<UserRole, string> = {
   waiting: "대기 인원",
   enthusiastic: "열활 멤버",
   support: "서포터즈",
+  block: "정지멤버",
 };
