@@ -57,6 +57,14 @@ function HomeInitialSetting() {
   const isPWALogin = isPWA();
 
   useEffect(() => {
+    if (!userInfo?.role) return;
+
+    if (userInfo?.role === "block") {
+      router.push("/login");
+      toast("error", "활동이 영구 정지된 멤버입니다.");
+      return;
+    }
+
     if (userInfo?.role === "newUser") {
       router.push("/register/name");
       return;

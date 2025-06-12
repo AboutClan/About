@@ -1,7 +1,8 @@
 export const MONTHLY_SCORE_MODAL_AT = "monthlyScoreModalAt";
 export const FAQ_MODAL_AT = "FAQModalAt";
 export const STUDY_RECORD_MODAL_AT = "studyRecordModalAt";
-export const SELF_INTRODUCE_AT="selfIntroduceAt"
+export const SELF_INTRODUCE_AT = "selfIntroduceAt";
+export const GATHER_WRITING_INFO = "gatherWritingInfo";
 
 //스터디
 

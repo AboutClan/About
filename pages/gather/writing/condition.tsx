@@ -11,12 +11,14 @@ import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
+import { GATHER_WRITING_INFO } from "../../../constants/keys/localStorage";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import GatherWritingConditionAgeRange from "../../../pageTemplates/gather/writing/condition/GatherWritingConditionAgeRange";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
 import { IGatherWriting } from "../../../types/models/gatherTypes/gatherTypes";
+import { getLocalStorageObj, setLocalStorageObj } from "../../../utils/storageUtils";
 
 export type GatherConditionType =
   | "gender"
@@ -46,6 +48,20 @@ function WritingCondition() {
   const [age, setAge] = useState(gatherContent?.age || [19, 28]);
   const [maxCnt, setMaxCnt] = useState(gatherContent?.memberCnt?.max || 8);
 
+  const info = getLocalStorageObj(GATHER_WRITING_INFO);
+
+  useEffect(() => {
+    if (gatherContent?.title) {
+      setLocalStorageObj(GATHER_WRITING_INFO, gatherContent);
+    }
+  }, [gatherContent]);
+
+  useEffect(() => {
+    if (!gatherContent?.title) {
+      setGatherContent(info);
+    }
+  }, [gatherContent]);
+
   useEffect(() => {
     setGatherContent({ ...gatherContent, age, memberCnt: { min: 4, max: maxCnt } });
   }, [age, maxCnt]);
@@ -68,6 +84,7 @@ function WritingCondition() {
       kakaoUrl,
       isApprovalRequired: condition.isApprove,
     };
+
     setGatherContent(gatherData);
     router.push({ pathname: `/gather/writing/image`, query: router.query });
   };

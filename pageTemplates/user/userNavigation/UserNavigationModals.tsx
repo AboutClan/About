@@ -45,10 +45,9 @@ function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals
   const { mutate } = usePointSystemMutation("point", {
     onSuccess() {
       queryClient.refetchQueries(["pointLog", "coupon"]);
-      toast("success", "3,000 Point가 지급되었습니다!");
+      toast("success", "2,000 Point가 지급되었습니다!");
       setModalOpen(null);
     },
-    
   });
 
   const [value, setValue] = useState("");
@@ -66,7 +65,7 @@ function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals
     } else {
       if (data) {
         toast("warning", "이미 사용한 쿠폰입니다.");
-      } else mutate({ value: 3000, message: "카카오톡 채널 추가 쿠폰", sub: "coupon" });
+      } else mutate({ value: 2000, message: "카카오톡 채널 추가 쿠폰", sub: "coupon" });
     }
   };
 

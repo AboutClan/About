@@ -9,7 +9,7 @@ interface IUserBadge {
 }
 
 export default function UserBadge({ badgeIdx }: IUserBadge) {
-  const badge = badgeIdx ? USER_BADGE_ARR[badgeIdx] : "뉴비";
+  const badge = badgeIdx === -1 ? "정지멤버" : badgeIdx ? USER_BADGE_ARR[badgeIdx] : "뉴비";
   return (
     <Badge
       h="20px"
@@ -20,7 +20,7 @@ export default function UserBadge({ badgeIdx }: IUserBadge) {
       fontWeight="semibold"
       fontSize="9px"
       borderRadius="10px"
-      colorScheme={BADGE_COLOR_MAPPINGS[badge]}
+      colorScheme={badgeIdx === -1 ? "blackAlpha" : BADGE_COLOR_MAPPINGS[badge]}
     >
       {badge}
     </Badge>
