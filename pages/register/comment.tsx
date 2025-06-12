@@ -20,7 +20,7 @@ function Comment() {
 
   const inputRef = useRef(null);
   const [errorMessage, setErrorMessage] = useState("");
-  const [value, setValue] = useState(info?.comment || "");
+  const [value, setValue] = useState("");
   const [index, setIndex] = useState<number>();
 
   useEffect(() => {
@@ -29,6 +29,7 @@ function Comment() {
     const findIdx = MESSAGE_DATA.findIndex((message) => message === comment);
     if (findIdx === -1) {
       setIndex(0);
+      setValue(comment);
       timeoutId = setTimeout(() => {
         inputRef.current?.focus();
       }, 500);
