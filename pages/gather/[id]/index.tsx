@@ -1,9 +1,9 @@
 import "dayjs/locale/ko";
 
 import { Box } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 
 import { GATHER_COVER_IMAGE_ARR } from "../../../assets/gather";
 import Divider from "../../../components/atoms/Divider";
@@ -14,6 +14,7 @@ import GatherBottomNav from "../../../pageTemplates/gather/detail/GatherBottomNa
 import GatherComments from "../../../pageTemplates/gather/detail/GatherComments";
 import GatherContent from "../../../pageTemplates/gather/detail/GatherContent";
 import GatherDetailInfo from "../../../pageTemplates/gather/detail/GatherDetail";
+import GatherGuide from "../../../pageTemplates/gather/detail/GatherGuide";
 import GatherHeader from "../../../pageTemplates/gather/detail/GatherHeader";
 import GatherParticipation from "../../../pageTemplates/gather/detail/GatherParticipation";
 import GatherTitle from "../../../pageTemplates/gather/detail/GatherTitle";
@@ -57,6 +58,7 @@ function GatherDetail() {
               />
               <Divider />
               <GatherParticipation data={gather} />
+              <GatherGuide />
               <GatherComments comments={gather.comments} />
             </Box>
           </Slide>

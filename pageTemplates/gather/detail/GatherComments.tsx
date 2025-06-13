@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter } from "next/dist/client/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/dist/client/router";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
@@ -88,8 +88,8 @@ function GatherComments({ comments }: IGatherComments) {
 
   return (
     <>
-      <Box my={5} fontWeight="semibold" fontSize="16px">
-        <Box mx={5}>하고 싶은 말이 있다면 댓글을 남겨보세요!</Box>
+      <Box my={5} mt={10} fontWeight="semibold" fontSize="16px">
+        <Box mx={5}>궁금한점이 있다면 댓글을 남겨보세요!</Box>
         <Comment>
           {!isGuest && userInfo && (
             <Box mr="8px" mt={5} mb={3} px={5}>

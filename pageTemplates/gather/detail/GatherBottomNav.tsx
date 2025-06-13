@@ -1,10 +1,12 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
 import { useParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
+import AlertModal from "../../../components/AlertModal";
 
 import BottomFixedButton from "../../../components/atoms/BottomFixedButton";
 import { Input } from "../../../components/atoms/Input";
@@ -51,19 +53,24 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
   const [isFirstPage, setIsFirstPage] = useState(true);
   const [isModal, setIsModal] = useState(false);
   const [value, setValue] = useState("");
+  const [isCancelModal, setIsCancelModal] = useState(false);
 
   const setTransferFeedSummary = useSetRecoilState(transferFeedSummaryState);
 
-  const { mutate: participate } = useGatherParticipationMutation("post", +id, {
-    onSuccess() {
-      typeToast("participate");
-      setTransferGather(null);
-      queryClient.invalidateQueries([GATHER_CONTENT, id]);
-      setIsModal(false);
+  const { mutate: participate, isLoading: isLoading1 } = useGatherParticipationMutation(
+    "post",
+    +id,
+    {
+      onSuccess() {
+        typeToast("participate");
+        setTransferGather(null);
+        queryClient.invalidateQueries([GATHER_CONTENT, id]);
+        setIsModal(false);
+      },
     },
-  });
+  );
 
-  const { mutate: sendRegisterForm } = useGatherWaitingMutation(+id, {
+  const { mutate: sendRegisterForm, isLoading: isLoading2 } = useGatherWaitingMutation(+id, {
     onSuccess() {
       typeToast("apply");
       setTransferGather(null);
@@ -94,7 +101,8 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
 
   const queryClient = useQueryClient();
   const { mutate: cancel } = useGatherParticipationMutation("delete", +groupId, {
-    onSuccess() {
+    onSuccess(data) {
+      console.log(234, data);
       typeToast("cancel");
       setTransferGather(null);
       queryClient.invalidateQueries([GATHER_CONTENT, id]);
@@ -227,6 +235,7 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
   }, [value]);
 
   const handleParticipate = (type: "participate" | "apply", phase: "first" | "second") => {
+    if (isLoading1 || isLoading2) return;
     if (userInfo?.ticket?.gatherTicket <= 0) {
       toast("error", "보유한 번개 참여권이 없습니다.");
       return;
@@ -235,12 +244,14 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
     else if (type === "apply") sendRegisterForm({ phase });
   };
 
+  const diffDate = dayjs(data.date).startOf("d").diff(dayjs().startOf("d"), "d");
+
   return (
     <>
       {text !== "참여 승인을 기다리고 있습니다." ? (
         <BottomFixedButton
           text={text}
-          func={handleFunction}
+          func={text === "참여 취소" ? () => setIsCancelModal(true) : handleFunction}
           color={
             text === "참여 취소" ? "red" : text === "빈자리 생기면 참여 요청" ? "black" : "mint"
           }
@@ -399,6 +410,24 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
           isOpen
           onClose={() => setIsReviewDrawer(false)}
         />
+      )}
+      {isCancelModal && (
+        <AlertModal
+          options={{
+            title: "참여 취소",
+            text: "취소합니다",
+            defaultText: "닫기",
+            func: () => handleFunction(),
+          }}
+          setIsModal={setIsCancelModal}
+        >
+          참여를 취소하시겠어요?
+          {diffDate < 2 && <br />}
+          {diffDate < 2 &&
+            (diffDate === 1
+              ? "모임 하루 전으로 1,000 Point만 반환됩니다."
+              : "모임 당일로 보증금이 반환되지 않습니다.")}
+        </AlertModal>
       )}
     </>
   );

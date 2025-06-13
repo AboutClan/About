@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -134,7 +134,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
 
   return (
     <>
-      <Header title="모임 정보">
+      <Header title="모임 정보" url="/gather">
         <MenuButton menuArr={menuArr} />
       </Header>
       {modalType === "waitingMember" && (

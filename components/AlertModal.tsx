@@ -25,6 +25,7 @@ interface IAlertModal extends IModal {
   options: IAlertModalOptions;
   colorType?: "mint" | "red";
   isLoading?: boolean;
+  children: React.ReactNode;
 }
 
 export default function AlertModal({
@@ -32,6 +33,7 @@ export default function AlertModal({
   options: { title, subTitle, func, subFunc, text = "취소합니다", defaultText },
   isLoading,
   colorType = "mint",
+  children,
 }: IAlertModal) {
   const cancelRef = React.useRef();
 
@@ -56,11 +58,11 @@ export default function AlertModal({
       >
         <AlertDialogOverlay />
         <AlertDialogContent maxWidth="300px" mx="16px" zIndex={2000}>
-          <AlertDialogHeader p="16px" fontSize="18px">
+          <AlertDialogHeader px={5} fontSize="16px">
             {title}
           </AlertDialogHeader>
           <AlertDialogCloseButton />
-          <AlertDialogBody p="0 16px">{subTitle}</AlertDialogBody>
+          <AlertDialogBody p="0 16px">{subTitle || children}</AlertDialogBody>
           <AlertDialogFooter p="16px">
             <Button onClick={subFunc ? subFunc : () => setIsModal(false)}>
               {defaultText || "취소"}
