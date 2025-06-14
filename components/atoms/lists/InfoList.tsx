@@ -2,9 +2,10 @@ import { ListItem, UnorderedList } from "@chakra-ui/react";
 
 interface InfoListProps {
   items: string[];
+  isLight?: boolean;
 }
 
-function InfoList({ items }: InfoListProps) {
+function InfoList({ items, isLight }: InfoListProps) {
   return (
     <UnorderedList
       mx={0}
@@ -19,6 +20,7 @@ function InfoList({ items }: InfoListProps) {
       lineHeight="20px"
       fontWeight="light"
       whiteSpace="nowrap"
+      color={isLight ? "gray.600" : "gray.800"}
     >
       {items.map((item, idx) => (
         <ListItem key={idx} textAlign="start">

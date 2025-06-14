@@ -19,6 +19,7 @@ function GatherGuide({}: GatherGuideProps) {
           "노쇼 패널티: 하루 전 취소 1000원 반환. 당일 취소는 미반환.",
           "모인 벌금은 모임장에게 자동 지급됩니다.",
         ]}
+        isLight
       />
     </Box>
   );
