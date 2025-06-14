@@ -54,12 +54,17 @@ function Friend() {
   const [isChecked, setIsChecked] = useState(false);
 
   useEffect(() => {
-    if (session === undefined) return;
+    if (session === undefined || !data) return;
     if (!session?.user.uid) {
       toast("error", "계정 확인을 위해 다시 로그인해주세요.");
       router.push("/login?status=friend");
     }
-  }, [session]);
+
+    if (data.role !== "human" && data.role !== "member") {
+      toast("error", "동아리 가입 확정 이후에 입력할 수 있습니다.");
+      router.push("/login");
+    }
+  }, [session, data]);
 
   const onClickNext = () => {
     if (dayjs(data?.registerDate).isBefore(dayjs().subtract(3, "d"))) {
