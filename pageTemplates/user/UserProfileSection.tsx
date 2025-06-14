@@ -1,6 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
@@ -36,8 +36,6 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
   const router = useRouter();
 
   const [isDrawer, setIsDrawer] = useState(false);
-
-  const monthScore = user.monthScore;
 
   return (
     <>
@@ -91,17 +89,17 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
         </Box>
 
         <Box px={5} py={2} borderRadius="20px" border="var(--border-main)" bgColor="white">
-          <Flex direction="column" fontSize={"12px"}>
+          <Flex direction="column" fontSize="12px">
             <Flex
               justify="space-between"
               py={2}
-              borderBottom={"var(--border)"}
+              borderBottom="var(--border)"
               align="center"
-              lineHeight={"18px"}
+              lineHeight="18px"
             >
-              <Box color={"gray.500"}>소셜링 온도</Box>
+              <Box color="gray.500">소셜링 온도</Box>
               <Flex align="center">
-                <Box fontWeight={"medium"} as="span">
+                <Box fontWeight="medium" as="span">
                   {getTemperature(user)}
                 </Box>
               </Flex>
@@ -109,21 +107,21 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
             <Flex
               justify="space-between"
               py={2}
-              borderBottom={"var(--border)"}
+              borderBottom="var(--border)"
               align="center"
-              lineHeight={"18px"}
+              lineHeight="18px"
             >
-              <Box color={"gray.500"}>이번 달 점수</Box>
+              <Box color="gray.500">이번 달 점수</Box>
               <Flex align="center">
-                <Box fontWeight={"medium"} as="span">
+                <Box fontWeight="medium" as="span">
                   {user.monthScore} {user.monthScore < 10 ? "/ 10" : "점"}
                 </Box>
               </Flex>
             </Flex>
-            <Flex justify="space-between" py={2} align="center" lineHeight={"18px"}>
-              <Box color={"gray.500"}>현재 상태</Box>
+            <Flex justify="space-between" py={2} align="center" lineHeight="18px">
+              <Box color="gray.500">현재 상태</Box>
               <Flex align="center">
-                <Box fontWeight={"medium"} as="span">
+                <Box fontWeight="medium" as="span">
                   활동중
                 </Box>
               </Flex>

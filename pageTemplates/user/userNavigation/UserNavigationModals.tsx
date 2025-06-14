@@ -1,6 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";

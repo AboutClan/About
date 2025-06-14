@@ -1,7 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useState } from "react";
-import styled from "styled-components";
 
 import { USER_ROLE } from "../../constants/settingValue/role";
 import { usePointSystemLogQuery, useUserInfoQuery } from "../../hooks/user/queries";
@@ -149,17 +148,5 @@ function MonthlyScoreModal({ onClose }: CloseProps) {
     </>
   );
 }
-
-const Message = styled.div`
-  margin-top: 12px;
-  padding: 12px 16px;
-  min-height: 58px;
-  border-radius: 8px;
-  color: var(--gray-600);
-  border: 1px solid var(--gray-100);
-  font-size: 11px;
-  font-weight: medium;
-  background-color: var(--gray-100);
-`;
 
 export default MonthlyScoreModal;
