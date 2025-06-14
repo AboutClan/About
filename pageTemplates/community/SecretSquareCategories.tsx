@@ -2,26 +2,40 @@ import { Box } from "@chakra-ui/react";
 import { Dispatch, SetStateAction } from "react";
 
 import ButtonGroups, { ButtonOptionsProps } from "../../components/molecules/groups/ButtonGroups";
-import { type SecretSquareCategoryWithAll } from "../../types/models/square";
+import {
+  InfoSquareCategoryWithAll,
+  type SecretSquareCategoryWithAll,
+} from "../../types/models/square";
 
 const SECRET_SQUARE_CATEGORY: SecretSquareCategoryWithAll[] = [
   "전체",
   "일상",
-  "같이해요",
-  "정보",
+  "고민",
   "질문",
+  "기타",
+];
+const INFO_SQUARE_CATEGORY: InfoSquareCategoryWithAll[] = [
+  "전체",
+  "팀원 모집",
+  "정보",
+  "홍보",
+  "기타",
 ];
 
 interface SecretSquareCategoryProps {
-  category: SecretSquareCategoryWithAll;
-  setCategory: Dispatch<SetStateAction<SecretSquareCategoryWithAll>>;
+  category: string;
+  setCategory: Dispatch<SetStateAction<string>>;
+  type: "secret" | "info";
 }
 
 function SecretSquareCategories({
   category: selectedCategory,
   setCategory,
+  type,
 }: SecretSquareCategoryProps) {
-  const buttonOptionsArr: ButtonOptionsProps[] = SECRET_SQUARE_CATEGORY.map((category) => ({
+  const buttonOptionsArr: ButtonOptionsProps[] = (
+    type === "secret" ? SECRET_SQUARE_CATEGORY : INFO_SQUARE_CATEGORY
+  ).map((category) => ({
     text: `#${category}`,
     func: () => setCategory(category),
   }));

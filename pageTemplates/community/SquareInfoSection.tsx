@@ -63,7 +63,7 @@ function SquareSecretSection() {
 
   return (
     <>
-      <SecretSquareCategories type="secret" category={category} setCategory={setCategory} />
+      <SecretSquareCategories type="info" category={category} setCategory={setCategory} />
       <Box pb="80px">
         {sqaures && sqaures.length === 0 && data ? (
           <Flex fontSize="18px" height="200px" justify="center" align="center">
