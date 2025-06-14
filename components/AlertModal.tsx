@@ -1,6 +1,6 @@
 import React from "react";
-import { ModalLayout } from "../modals/Modals";
 
+import { ModalLayout } from "../modals/Modals";
 import { IModal } from "../types/components/modalTypes";
 
 export interface IAlertModalOptions {

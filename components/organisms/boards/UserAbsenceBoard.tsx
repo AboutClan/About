@@ -30,7 +30,7 @@ function UserAbsenceBoard({ users, handleDelete }: UserAbsenceBoardProps) {
                   colorScheme="red"
                   onClick={() => setDeleteUserId(user.user._id)}
                 >
-                  불참했어요
+                  불참 멤버 체크
                 </Button>
               </Flex>
             }

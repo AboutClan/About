@@ -179,9 +179,9 @@ function FeedWritingPage() {
 }
 
 const INFO_ARR = [
-  "모임장은 후기 작성 후 마이페이지에서 지원금 신청이 가능합니다.",
+  "모임장은 후기 작성 후 지원금 신청이 가능합니다.",
   "실명은 1,000 Point, 익명은 200 Point가 즉시 지급합니다.",
-  "모임장이 없거나 운영진인 경우 다른 인원도 작성할 수 있습니다.",
+  "모임장이 운영진인 경우 다른 인원도 작성할 수 있습니다.",
 ];
 
 export default FeedWritingPage;

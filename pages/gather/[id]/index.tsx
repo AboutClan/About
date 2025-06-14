@@ -1,9 +1,9 @@
 import "dayjs/locale/ko";
 
 import { Box } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 import { GATHER_COVER_IMAGE_ARR } from "../../../assets/gather";
 import Divider from "../../../components/atoms/Divider";

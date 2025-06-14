@@ -1,8 +1,5 @@
-import { useEffect } from "react";
-
 import Slide from "../../components/layouts/PageSlide";
 import { useGroupSnapshotQuery } from "../../hooks/groupStudy/queries";
-import { useUpdateAllUserMutation } from "../../hooks/user/mutations";
 import HomeBannerSlide from "../../pageTemplates/home/HomeBannerSlide";
 import HomeGatherSection from "../../pageTemplates/home/HomeGatherSection";
 import HomeGroupSection from "../../pageTemplates/home/HomeGroupSection";
@@ -13,7 +10,6 @@ import HomeReviewSection from "../../pageTemplates/home/HomeReviewSection";
 
 function Home() {
   const { data: data } = useGroupSnapshotQuery();
-
 
   return (
     <>
