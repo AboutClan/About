@@ -9,8 +9,8 @@ function ProgressMark({ value }: ProgressMarkProps) {
     <Box fontSize="8px" color="gray.800">
       {value !== 100 ? (
         <Flex w="100%" fontWeight="medium" color="gray.800">
-          <Box ml="calc(33.3% - 28px)">최소 점수</Box>
-          <Box ml="auto">추가 포인트</Box>
+          <Box ml="0">시작 점수</Box>
+          <Box ml="auto">월간 최소 점수</Box>
         </Flex>
       ) : (
         <Box textAlign="end" color="var(--color-mint)">
@@ -20,17 +20,15 @@ function ProgressMark({ value }: ProgressMarkProps) {
 
       <Flex w="100%" mt={1}>
         <Box ml="0" h="8px" borderLeft="1px solid var(--gray-200)" w="1px" />
-        <Box ml="calc(33.3%)" h="8px" borderLeft="1px solid var(--gray-200)" w="1px" />
-        <Box ml="calc(33.3%)" h="8px" borderLeft="1px solid var(--gray-200)" w="1px" />
+        <Box ml="calc(50%)" h="8px" borderLeft="1px solid var(--gray-200)" w="1px" />
         <Box ml="auto" h="8px" borderRight="1.5px solid var(--gray-200)" w="1px"></Box>
       </Flex>
       <Progress h="8px" value={value} colorScheme="mint" />
 
       <Flex lineHeight="12px" fontSize="10px" mt="8px" color="gray.500" fontWeight="medium">
         <Box>0</Box>
-        <Box ml="calc(33.3% - 9px)">10</Box>
-        <Box ml="calc(33.3% - 7px )">20</Box>
-        <Box ml="auto">30</Box>
+        <Box ml="calc(50% - 7px)">5</Box>
+        <Box ml="auto">10</Box>
       </Flex>
     </Box>
   );

@@ -8,6 +8,16 @@ interface SocialingScoreBadgeProps {
   size: "sm" | "md";
 }
 
+export const getTemperature = (user: UserSimpleInfoProps | IUserSummary) => {
+  return `${
+    user?.temperature?.temperature < 36.5 && user?.temperature?.cnt <= 2
+      ? "36.5"
+      : typeof user?.temperature?.temperature === "number"
+      ? user.temperature.temperature.toFixed(1)
+      : "36.5"
+  }°C`;
+};
+
 function SocialingScoreBadge({ user, size = "md" }: SocialingScoreBadgeProps) {
   const getTemperatureColor = (temp: number, cnt: number): { color: string; bg: string } => {
     if (!temp || (temp < 36.5 && cnt <= 2)) return { color: "green.500", bg: "green.50" };
@@ -33,13 +43,7 @@ function SocialingScoreBadge({ user, size = "md" }: SocialingScoreBadgeProps) {
         borderRadius="full"
         position="relative"
       >
-        {`${
-          user?.temperature?.temperature < 36.5 && user?.temperature?.cnt <= 2
-            ? "36.5"
-            : typeof user?.temperature?.temperature === "number"
-            ? user.temperature.temperature.toFixed(1)
-            : "36.5"
-        }°C`}
+        {getTemperature(user)}
         {size === "sm" && (
           <Flex
             w="18px"

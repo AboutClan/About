@@ -1,6 +1,6 @@
+import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import styled from "styled-components";
 
@@ -66,18 +66,24 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
         </div>
       )}
       <div>
-        <BlockName>계정</BlockName>
+        <BlockName>계정 설정</BlockName>
         <NavBlock>
           <button onClick={() => onClickBlock("modal", "profile")}>프로필 공개 설정</button>
           <button onClick={() => onClickBlock("modal", "isLocationSharingDenided")}>
             스터디 위치 공개 설정
           </button>
           <button onClick={() => onClickBlock("modal", "mainPlace")}>주 활동 장소 변경</button>
+        </NavBlock>
+      </div>
+      <div>
+        <BlockName>프로모션</BlockName>
+        <NavBlock>
+          <button onClick={() => onClickBlock("modal", "friend")}>친구 초대</button>
           <button onClick={() => onClickBlock("modal", "coupon")}>쿠폰 입력</button>
         </NavBlock>
       </div>
       <div>
-        <BlockName>신청</BlockName>
+        <BlockName>문의 및 요청</BlockName>
         <NavBlock>
           <button onClick={() => onClickBlock("modal", "suggest")}>건의하기</button>
           <button onClick={() => onClickBlock("modal", "declaration")}>불편사항 신고</button>
@@ -85,7 +91,7 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
         </NavBlock>
       </div>
       <div>
-        <BlockName>안내</BlockName>
+        <BlockName>이용 안내</BlockName>
         <NavBlock>
           <button onClick={() => onClickBlock("page", `/faq`)}>자주 묻는 질문</button>
           <button onClick={() => onClickBlock("page", `/user/info/policy`)}>
@@ -97,7 +103,7 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
         </NavBlock>
       </div>
       <div>
-        <BlockName>기타</BlockName>
+        <BlockName>계정 관리</BlockName>
         <NavBlock>
           <button onClick={() => onClickBlock("modal", "secede")}>회원 탈퇴</button>
           <button onClick={() => onClickBlock("modal", "logout")}>로그아웃</button>
@@ -115,8 +121,8 @@ const Layout = styled.div`
 `;
 
 const BlockName = styled.div`
-  padding: var(--gap-2) var(--gap-4);
-  font-size: 14px;
+  padding: 8px 12px;
+  font-size: 12px;
   background-color: var(--gray-200);
   font-weight: 600;
   display: flex;
@@ -126,9 +132,9 @@ const BlockName = styled.div`
 const NavBlock = styled.div`
   display: flex;
   flex-direction: column;
-
+  font-size: 13px;
   > button {
-    padding: var(--gap-4) var(--gap-4);
+    padding: var(--gap-4) 20px;
     text-align: start;
     border-bottom: var(--border);
   }

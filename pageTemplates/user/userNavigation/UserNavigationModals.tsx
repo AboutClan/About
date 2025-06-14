@@ -1,6 +1,6 @@
-import { Box, Button } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
@@ -8,11 +8,13 @@ import styled from "styled-components";
 import Divider from "../../../components/atoms/Divider";
 import { Input } from "../../../components/atoms/Input";
 import InfoList from "../../../components/atoms/lists/InfoList";
+import { CopyBtn } from "../../../components/Icons/CopyIcon";
 import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import { USER_INFO } from "../../../constants/keys/queryKeys";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import { usePointSystemMutation, useUserInfoFieldMutation } from "../../../hooks/user/mutations";
 import { usePointCuoponLogQuery, useUserInfoQuery } from "../../../hooks/user/queries";
+import { ModalLayout } from "../../../modals/Modals";
 import RequestBirthModal from "../../../modals/userRequest/RequestBirthModal";
 import RequestChargeDepositModal from "../../../modals/userRequest/RequestChargeDepositModal";
 import RequestLevelUpModal from "../../../modals/userRequest/RequestLevelUpModal";
@@ -120,6 +122,37 @@ function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals
       {modalOpen === "secede" && <RequestSecedeModal setIsModal={setIsModal} />}
 
       {modalOpen === "profile" && <RequestBirthModal type="profile" setIsModal={setIsModal} />}
+      {modalOpen === "friend" && (
+        <ModalLayout title="친구 초대" footerOptions={{ main: {} }} setIsModal={setIsModal}>
+          친구에게 아래 코드를 전달해 주세요!
+          <br />{" "}
+          <Box>
+            카카오 채널에서 <b>[친구 초대]</b> 메뉴를 누르시면,
+          </Box>
+          <Box>
+            두 분 모두에게 <b>3,000 Point</b>가 지급됩니다.
+          </Box>
+          <Flex
+            mt={4}
+            align="center"
+            justify="center"
+            w="full"
+            px={5}
+            py={3}
+            borderRadius="8px"
+            textAlign="center"
+            fontSize="14px"
+            borderColor="gray.200"
+            bg="gray.100"
+            color="gray.600"
+          >
+            <Box mr={3} as="span" fontWeight="semibold">
+              {userInfo?.uid}
+            </Box>
+            <CopyBtn text={userInfo?.uid} />
+          </Flex>
+        </ModalLayout>
+      )}
       {modalOpen === "isLocationSharingDenided" && (
         <RequestBirthModal type="location" setIsModal={setIsModal} />
       )}

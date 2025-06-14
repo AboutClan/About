@@ -1,8 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
 import { useParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
@@ -377,7 +377,7 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
           ) : (
             <>
               <Box lineHeight="32px" mr="auto" mt={3} mb={1} fontSize="20px" fontWeight="semibold">
-                초대코드를 입력해 주세요.
+                초대 코드를 입력해 주세요.
               </Box>
               <Box mr="auto" color="gray.500" fontSize="13px" lineHeight="20px">
                 사전에 얘기 된 인원은 자유 참여가 가능합니다. (직접 요청 금지)

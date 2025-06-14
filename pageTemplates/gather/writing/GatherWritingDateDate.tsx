@@ -6,8 +6,8 @@ import DatePicker from "react-datepicker";
 import styled from "styled-components";
 
 import {
-  PICKER_DATE_AND_TIME,
   PickerDateAndTimeHeader,
+  PICKER_DATE_AND_TIME,
 } from "../../../components/molecules/picker/DatePickerOptions";
 import { DispatchType } from "../../../types/hooks/reactTypes";
 import { IGatherWriting } from "../../../types/models/gatherTypes/gatherTypes";
@@ -61,7 +61,7 @@ function GatherWritingDateDate({ date, setDate, gatherWriting }: IGatherWritingD
     setDate(currentDate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gatherWriting]);
-
+  console.log(123, date);
   return (
     <Layout>
       <Container>
@@ -70,7 +70,10 @@ function GatherWritingDateDate({ date, setDate, gatherWriting }: IGatherWritingD
             {...PICKER_DATE_AND_TIME}
             customInput={<CustomInput />}
             locale={ko}
-            onChange={(date) => setDate(date as Date)}
+            onChange={(date) => {
+              const convertedDate = dayjs(date).hour(14);
+              setDate(convertedDate.toDate());
+            }}
             selected={date}
             minTime={TIME_RANGE_MIN}
             maxTime={TIME_RAGNE_MAX}

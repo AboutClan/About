@@ -6,7 +6,11 @@ import GatherRecordDrawer from "../../../components/overlay/GatherRecordDrawer";
 import MonthlyScoreModal from "../../../components/overlay/MonthlyScoreModal";
 import SelfIntroduceModal from "../../../components/overlay/SelfIntroduceModal";
 import StudyRecordDrawer from "../../../components/overlay/StudyRecordDrawer";
-import { FAQ_MODAL_AT, SELF_INTRODUCE_AT } from "../../../constants/keys/localStorage";
+import {
+  FAQ_MODAL_AT,
+  MONTHLY_SCORE_MODAL_AT,
+  SELF_INTRODUCE_AT,
+} from "../../../constants/keys/localStorage";
 import { STUDY_RECORD_MODAL_AT } from "../../../constants/keys/queryKeys";
 import { useGatherReviewOneQuery } from "../../../hooks/gather/queries";
 import { CloseProps } from "../../../types/components/modalTypes";
@@ -55,10 +59,10 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
     //   if (++popUpCnt < 2) return;
     // }
 
-    // if (!checkAndSetLocalStorage(MONTHLY_SCORE_MODAL_AT, 10)) {
-    //   setPopUpType((old) => [...old, "monthlyScore"]);
-    //   if (++popUpCnt < 2) return;
-    // }
+    if (!checkAndSetLocalStorage(MONTHLY_SCORE_MODAL_AT, 10)) {
+      setPopUpType((old) => [...old, "monthlyScore"]);
+      return;
+    }
     if (!checkAndSetLocalStorage(FAQ_MODAL_AT, 20)) {
       setPopUpType((old) => [...old, "faq"]);
       return;

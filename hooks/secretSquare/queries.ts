@@ -24,7 +24,7 @@ export type SecretSquareListResponse = {
     createdAt: string;
   }[];
 };
-export const useSecretSquareListQuery = (
+export const  useSecretSquareListQuery = (
   { category, cursor }: { category: SecretSquareCategoryWithAll; cursor: number },
   options?: QueryOptions<SecretSquareListResponse>,
 ) =>

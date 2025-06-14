@@ -17,22 +17,22 @@ import ValueBoxCol, { ValueBoxColItemProps } from "../molecules/ValueBoxCol";
 function MonthlyScoreModal({ onClose }: CloseProps) {
   const { data: userInfo } = useUserInfoQuery();
 
-  const { data } = usePointSystemLogQuery("score");
+  const { data } = usePointSystemLogQuery("score", "all");
   const [isPenaltyModal, setIsPenaltyModal] = useState(false);
 
   const filteredData = data?.filter(
     (obj) =>
       dayjsToStr(dayjs(obj.timestamp).startOf("month")) === dayjsToStr(dayjs().startOf("month")),
   );
-
+  console.log(15, data, filteredData);
   const scoreObj = filteredData?.reduce(
     (acc, cur) => {
       const value = cur.meta.value;
       if (cur.message.includes("번개 모임 참여 취소")) {
         return { ...acc, gather: acc.gather - value };
-      } else if (cur.message.includes("번개 모임 참여" || "번개 모임 개설")) {
+      } else if (cur.message.includes("번개 모임 참여") || cur.message.includes("번개 모임 개설")) {
         return { ...acc, gather: acc.gather + value };
-      } else if (cur.message.includes("스터디 출석")) {
+      } else if (cur.message.includes("스터디")) {
         return { ...acc, study: acc.study + value };
       } else if (cur.message.includes("소모임 주간 출석")) {
         return { ...acc, study: acc.group + value };
@@ -48,8 +48,6 @@ function MonthlyScoreModal({ onClose }: CloseProps) {
     main: {},
     isFull: true,
   };
-
-  const monthScore = userInfo?.monthScore;
 
   const optionArr: InfoColOptions[] = [
     {
@@ -104,88 +102,44 @@ function MonthlyScoreModal({ onClose }: CloseProps) {
         footerOptions={footerOptions}
         setIsModal={onClose}
       >
-        <Flex align="center">
-          <Avatar user={userInfo} size="md1" />
-          <Box
-            ml={2}
-            lineHeight="16px"
-            fontSize="12px"
-            fontWeight="semibold"
-            color="var(--gray-800)"
+        <Box minH="318px">
+          <Flex align="center">
+            <Avatar user={userInfo} size="md1" />
+            <Box
+              ml={2}
+              lineHeight="16px"
+              fontSize="12px"
+              fontWeight="semibold"
+              color="var(--gray-800)"
+            >
+              {userInfo?.name} ({USER_ROLE?.[userInfo?.role]})
+            </Box>
+            <Box ml="auto">
+              <UserBadge badgeIdx={userInfo?.badge?.badgeIdx} />
+            </Box>
+          </Flex>
+          <Box my={3} h="1px" bg="gray.100" />
+
+          <Box mb={3}>
+            <ProgressMark value={(userInfo?.monthScore / 30) * 100} />
+          </Box>
+          <Box minH="130px">{scoreObj && <ValueBoxCol items={valueArr} />}</Box>
+          <Button
+            variant="unstyled"
+            bg="gray.800"
+            borderRadius="20px"
+            color="white"
+            px={3}
+            fontSize="10px"
+            mx="auto"
+            py={2}
+            w="max-content"
+            mt={5}
+            onClick={() => setIsPenaltyModal(true)}
           >
-            {userInfo?.name} ({USER_ROLE?.[userInfo?.role]})
-          </Box>
-          <Box ml="auto">
-            <UserBadge badgeIdx={userInfo?.badge?.badgeIdx} />
-          </Box>
-        </Flex>
-        <Box my={3} h="1px" bg="gray.100" />
-
-        <Box mb={3}>
-          <ProgressMark value={(userInfo?.monthScore / 30) * 100} />
+            월간 점수 가이드
+          </Button>
         </Box>
-        {scoreObj && <ValueBoxCol items={valueArr} />}
-
-        <Button
-          variant="unstyled"
-          bg="gray.800"
-          borderRadius="20px"
-          color="white"
-          px={3}
-          fontSize="10px"
-          mx="auto"
-          py={2}
-          w="max-content"
-          mt={3}
-          onClick={() => setIsPenaltyModal(true)}
-        >
-          월간 점수 가이드
-        </Button>
-        <Message>
-          {totalScore >= 0 &&
-            (dayjs(userInfo?.registerDate).diff(dayjs(), "month") === 0 ? (
-              <div>
-                🎉About에 오신 것을 진심으로 환영해요🎉
-                <br />
-                앞으로 잘 부탁드려요~!
-              </div>
-            ) : monthScore >= 30 ? (
-              <Box>
-                🏆 About 열활멤버 🏆 <br />
-                다음 정산 때 추가 포인트를 획득합니다!
-              </Box>
-            ) : monthScore >= 10 ? (
-              <div>
-                🏆 잘 하고 있는데요 🏆
-                <br />
-                {30 - monthScore}점만 더 채우면 추가 포인트 획득!
-              </div>
-            ) : dayjs().date() <= 15 ? (
-              <div>
-                🏆 이번 달도 파이팅 🏆
-                <br />
-                월간 활동 점수 미리 채우기!
-              </div>
-            ) : monthScore < 2 ? (
-              <div>
-                ⚠️ 활동 점수가 많이 부족합니다 ⚠️
-                <br />
-                월간 정산 때 포인트가 차감될 수 있으니 분발해 주세요!
-              </div>
-            ) : monthScore < 5 ? (
-              <div>
-                ⚠️ 활동 점수가 조금 부족해요! ⚠️
-                <br />
-                월간 정산 때 포인트가 차감될 수 있으니 분발해 주세요!
-              </div>
-            ) : (
-              <div>
-                🍒 활동 점수가 조금 부족해요. 🍒
-                <br />
-                월간 정산 때 포인트가 차감될 수 있으니 분발해 주세요!
-              </div>
-            ))}
-        </Message>
       </ModalLayout>
       {isPenaltyModal && (
         <ModalLayout title="동아리 활동 규정" footerOptions={{}} setIsModal={setIsPenaltyModal}>

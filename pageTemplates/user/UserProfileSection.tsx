@@ -1,14 +1,13 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
 import Avatar from "../../components/atoms/Avatar";
 import UserBadge from "../../components/atoms/badges/UserBadge";
-import ProgressMark from "../../components/molecules/ProgressMark";
+import { getTemperature } from "../../components/molecules/SocialingScoreBadge";
 import BottomDrawerLg from "../../components/organisms/drawer/BottomDrawerLg";
 import { USER_INFO } from "../../constants/keys/queryKeys";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
@@ -42,7 +41,7 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
 
   return (
     <>
-      <Box borderBottom="var(--border)" px={5} pb={3}>
+      <Box borderBottom="var(--border)" px={5} pb={5}>
         <Box>
           <Flex py={3} align="center">
             <Box position="relative">
@@ -90,36 +89,45 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
             </Box>
           </Flex>
         </Box>
-        <Box border="var(--border)" px={3} py={2} borderRadius="8px">
-          <ProgressMark value={(monthScore / 30) * 100} />
-          <Flex
-            align="center"
-            justify="center"
-            textAlign="center"
-            mt={2}
-            color="var(--color-gray)"
-            fontSize="10px"
-            fontWeight="semibold"
-            px={4}
-            py={3}
-            bg="rgba(66,66,66,0.02)"
-            borderRadius="8px"
-          >
-            {dayjs(user?.registerDate).diff(dayjs(), "month") === 0 ? (
-              <div>🎉About에 오신 것을 진심으로 환영해요🎉</div>
-            ) : monthScore >= 20 ? (
-              <Box>잘 하고 있어요! 다음 정산 때 추가 포인트를 획득합니다.</Box>
-            ) : monthScore >= 10 ? (
-              <div>월간 최소 점수에 달성했어요! 하지만 조금 더...?</div>
-            ) : dayjs().date() < 15 ? (
-              <div>🍒 이번 달 활동도 파이팅 🍒</div>
-            ) : monthScore < 2 ? (
-              <div>⚠️ 활동 점수가 많이 부족합니다! ⚠️</div>
-            ) : monthScore < 5 ? (
-              <div>⚠️ 활동 점수가 조금 부족해요! ⚠️</div>
-            ) : (
-              <div>🍒 활동 점수가 조금 부족해요! 🍒</div>
-            )}
+
+        <Box px={5} py={2} borderRadius="20px" border="var(--border-main)" bgColor="white">
+          <Flex direction="column" fontSize={"12px"}>
+            <Flex
+              justify="space-between"
+              py={2}
+              borderBottom={"var(--border)"}
+              align="center"
+              lineHeight={"18px"}
+            >
+              <Box color={"gray.500"}>소셜링 온도</Box>
+              <Flex align="center">
+                <Box fontWeight={"medium"} as="span">
+                  {getTemperature(user)}
+                </Box>
+              </Flex>
+            </Flex>
+            <Flex
+              justify="space-between"
+              py={2}
+              borderBottom={"var(--border)"}
+              align="center"
+              lineHeight={"18px"}
+            >
+              <Box color={"gray.500"}>이번 달 점수</Box>
+              <Flex align="center">
+                <Box fontWeight={"medium"} as="span">
+                  {user.monthScore} {user.monthScore < 10 ? "/ 10" : "점"}
+                </Box>
+              </Flex>
+            </Flex>
+            <Flex justify="space-between" py={2} align="center" lineHeight={"18px"}>
+              <Box color={"gray.500"}>현재 상태</Box>
+              <Flex align="center">
+                <Box fontWeight={"medium"} as="span">
+                  활동중
+                </Box>
+              </Flex>
+            </Flex>
           </Flex>
         </Box>
       </Box>
@@ -302,7 +310,7 @@ const IconWrapper = styled.button`
   bottom: -3px;
   background-color: white;
   opacity: 0.96;
-  border: 1px solid var(--gray-100);
+  border: 1px solid var(--gray-200);
   border-radius: 50%;
 `;
 

@@ -17,7 +17,8 @@ export type UserOverviewModal =
   | "profile"
   | "mainPlace"
   | "isLocationSharingDenided"
-  | "coupon";
+  | "coupon"
+  | "friend";
 
 function UserNavigation() {
   const [modalOpen, setModalOpen] = useState<UserOverviewModal>();

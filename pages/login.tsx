@@ -21,18 +21,7 @@ import { useUserInfoQuery } from "../hooks/user/queries";
 import ForceLogoutDialog from "../modals/login/ForceLogoutDialog";
 import GuestLoginModal from "../modals/login/GuestLoginModal";
 import { IFooterOptions, ModalLayout } from "../modals/Modals";
-import { ActiveLocation, LocationEn } from "../types/services/locationTypes";
-import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
 import { detectDevice } from "../utils/validationUtils";
-
-const CONNECT_KAKAO: Record<ActiveLocation, string> = {
-  수원: "https://invite.kakao.com/tc/9Qlvd0RcV6",
-  양천: "https://invite.kakao.com/tc/DRJTJPGrNh",
-  강남: "https://invite.kakao.com/tc/GB7I0nlNMC",
-  인천: "https://invite.kakao.com/tc/t3K81sB7pM",
-  동대문: "https://invite.kakao.com/tc/DqiCcLHarf",
-  안양: "https://invite.kakao.com/tc/9Qlvd0RcV6",
-};
 
 const Login: NextPage<{
   providers: Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider>;
@@ -43,7 +32,6 @@ const Login: NextPage<{
   const toast = useToast();
 
   const statusParam = searchParams.get("status");
-  const locationParam = searchParams.get("location") as LocationEn;
 
   const kakaoProvider = Object.values(providers).find((p) => p.id == "kakao");
 
@@ -58,13 +46,6 @@ const Login: NextPage<{
 
   useEffect(() => {
     switch (statusParam) {
-      case "complete":
-        if (!locationParam) return;
-        const locationKr = convertLocationLangTo(locationParam, "kr");
-        if (!locationKr) return;
-        history.replaceState(null, "", "/login?status=waiting");
-        router.push(CONNECT_KAKAO[locationKr]);
-        break;
       case "logout":
         toast("success", "로그아웃 되었습니다.");
         break;
@@ -94,6 +75,12 @@ const Login: NextPage<{
     if (statusParam === "access") {
       await signIn(provider, {
         callbackUrl: `${window.location.origin}/register/access`,
+      });
+      return;
+    }
+    if (statusParam === "friend") {
+      await signIn(provider, {
+        callbackUrl: `${window.location.origin}/register/friend`,
       });
       return;
     }

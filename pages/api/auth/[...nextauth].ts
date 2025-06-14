@@ -197,7 +197,7 @@ export const authOptions: NextAuthOptions = {
         session.user = {
           id: token.id,
           uid: token.uid,
-          name: token.name,
+          name: token.name ?? "ㅇㅇㅇ",
           role: token.role,
           isActive: token.isActive,
           profileImage: token.profileImage,
@@ -240,12 +240,12 @@ export const authOptions: NextAuthOptions = {
               accessToken: account.access_token || "",
               refreshToken: account.refresh_token || token.refresh_token || "",
               accessTokenExpires: (account.expires_at ?? Math.floor(Date.now() / 1000)) * 1000,
-              id: user.id,
-              uid: user.uid,
-              name: user.name,
-              profileImage: user.profileImage || "",
-              role: user.role || "newUser",
-              isActive: user.isActive || false,
+              id: user.id ?? token.id,
+              uid: user.uid ?? token.uid,
+              name: user.name ?? token.name ?? "",
+              profileImage: user.profileImage ?? token.profileImage ?? "",
+              role: user.role ?? token.role ?? "newUser",
+              isActive: user.isActive ?? token.isActive ?? false,
             };
         }
         try {

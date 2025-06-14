@@ -35,7 +35,7 @@ function GatherRecordDrawer({ id, date = dayjsToStr(dayjs()), onClose }: GatherR
         fontSize="20px"
         textAlign="start"
       >
-        {dayjsToFormat(dayjs(date).locale("ko"), "M월 D일(ddd)")} 모임의 평가표가 도착했어요. <br />{" "}
+        {dayjsToFormat(dayjs(date).locale("ko"), "M월 D일(ddd)")} 모임 평가표가 도착했어요. <br />{" "}
         멤버 리뷰를 남겨주세요!
       </Box>
       <Box p={5}>

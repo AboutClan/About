@@ -73,6 +73,11 @@ export const usePointSystemLogQuery = (
     async () => {
       const res = await axios.get<IPointLog[]>(
         `${SERVER_URI}/log/${category}${scopeQuery ? `/${scopeQuery}` : ""}`,
+        {
+          params: {
+            scope: scopeQuery === "all" ? "month" : null,
+          },
+        },
       );
       return res.data;
     },

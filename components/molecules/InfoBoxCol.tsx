@@ -34,6 +34,7 @@ function InfoBoxCol({ infoBoxPropsArr, size = "sm", highlightSide = "right" }: I
                 fontWeight={highlightSide === "right" ? "regular" : "medium"}
                 color={highlightSide === "right" ? props?.color || "gray.800" : "gray.600"}
                 as="span"
+                
               >
                 {props.text}
               </Box>
