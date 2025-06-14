@@ -7,12 +7,14 @@ import { useSetRecoilState } from "recoil";
 import { GATHER_COVER_IMAGE_ARR } from "../../../assets/gather";
 import MenuButton, { MenuProps } from "../../../components/atoms/buttons/MenuButton";
 import Header from "../../../components/layouts/Header";
+import UserAbsenceBoard from "../../../components/organisms/boards/UserAbsenceBoard";
 import UserApprovalBoard from "../../../components/organisms/boards/UserApprovalBoard";
 import UserDeleteBoard from "../../../components/organisms/boards/UserDeleteBoard";
 import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import { useResetGatherQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import {
+  useGatherAbsenceCheckMutation,
   useGatherParticipationMutation,
   useGatherStatusMutation,
   useGatherWaitingStatusMutation,
@@ -27,7 +29,7 @@ import { getRandomImage } from "../../../utils/imageUtils";
 interface IGatherHeader {
   gatherData: IGather;
 }
-type ModalType = "inviteMember" | "waitingMember" | "removeMember" | "exile";
+type ModalType = "inviteMember" | "waitingMember" | "removeMember" | "exile" | "absence";
 
 function GatherHeader({ gatherData }: IGatherHeader) {
   const router = useRouter();
@@ -44,6 +46,8 @@ function GatherHeader({ gatherData }: IGatherHeader) {
     (gatherData?.user as UserSimpleInfoProps)._id === session?.user.id ||
     session?.user.uid === "2259633694" ||
     session?.user.uid === "3224546232";
+
+  const { mutate: absenceCheck } = useGatherAbsenceCheckMutation(+gatherData.id);
 
   const { mutate: changeStatus } = useGatherStatusMutation(+gatherData.id, {
     onSuccess() {
@@ -70,13 +74,21 @@ function GatherHeader({ gatherData }: IGatherHeader) {
   const menuArr: MenuProps[] = [
     ...(isAdmin
       ? [
-          {
-            text: "신청 인원 확인",
-            icon: <MemberCheckIcon />,
-            func: () => {
-              setModalType("waitingMember");
-            },
-          },
+          gatherData?.status === "pending"
+            ? {
+                text: "신청 인원 확인",
+                icon: <MemberCheckIcon />,
+                func: () => {
+                  setModalType("waitingMember");
+                },
+              }
+            : {
+                text: "불참 인원 체크",
+                icon: <MemberCheckIcon />,
+                func: () => {
+                  setModalType("absence");
+                },
+              },
           {
             text: "모임 정보 수정",
             icon: <EditIcon />,
@@ -163,6 +175,18 @@ function GatherHeader({ gatherData }: IGatherHeader) {
               text: who.user.comment,
             }))}
             handleDelete={(userId) => deleteUser({ userId })}
+          />
+        </RightDrawer>
+      )}
+      {modalType === "absence" && (
+        <RightDrawer title="불참 체크" onClose={() => setModalType(null)}>
+          <UserAbsenceBoard
+            users={gatherData.participants.map((who) => ({
+              user: who.user,
+              text: who.user.comment,
+              isAbsence: who?.absence,
+            }))}
+            handleDelete={(userId) => absenceCheck({ userId })}
           />
         </RightDrawer>
       )}

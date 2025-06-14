@@ -1,20 +1,11 @@
-import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogCloseButton,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
-  Button,
-} from "@chakra-ui/react";
 import React from "react";
+import { ModalLayout } from "../modals/Modals";
 
 import { IModal } from "../types/components/modalTypes";
 
 export interface IAlertModalOptions {
   title: string;
-  subTitle: string;
+  subTitle?: string;
   func: () => void;
   subFunc?: () => void;
   text?: string;
@@ -25,21 +16,17 @@ interface IAlertModal extends IModal {
   options: IAlertModalOptions;
   colorType?: "mint" | "red";
   isLoading?: boolean;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export default function AlertModal({
   setIsModal,
   options: { title, subTitle, func, subFunc, text = "취소합니다", defaultText },
   isLoading,
-  colorType = "mint",
   children,
 }: IAlertModal) {
-  const cancelRef = React.useRef();
-
   const handleProcess = async () => {
     func();
-
     if (isLoading) {
       setTimeout(() => {
         setIsModal(false);
@@ -49,30 +36,17 @@ export default function AlertModal({
 
   return (
     <>
-      <AlertDialog
-        motionPreset="slideInBottom"
-        leastDestructiveRef={cancelRef}
-        onClose={() => setIsModal(false)}
-        isOpen={true}
-        isCentered
+      <ModalLayout
+        title={title}
+        footerOptions={{
+          main: { text, func: handleProcess },
+          sub: { text: defaultText || "취소", func: subFunc ? subFunc : () => setIsModal(false) },
+          colorType: "red",
+        }}
+        setIsModal={setIsModal}
       >
-        <AlertDialogOverlay />
-        <AlertDialogContent maxWidth="300px" mx="16px" zIndex={2000}>
-          <AlertDialogHeader px={5} fontSize="16px">
-            {title}
-          </AlertDialogHeader>
-          <AlertDialogCloseButton />
-          <AlertDialogBody p="0 16px">{subTitle || children}</AlertDialogBody>
-          <AlertDialogFooter p="16px">
-            <Button onClick={subFunc ? subFunc : () => setIsModal(false)}>
-              {defaultText || "취소"}
-            </Button>
-            <Button isLoading={isLoading} onClick={handleProcess} colorScheme={colorType} ml="12px">
-              {text}
-            </Button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+        {subTitle || children}
+      </ModalLayout>
     </>
   );
 }

@@ -101,8 +101,8 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
 
   const queryClient = useQueryClient();
   const { mutate: cancel } = useGatherParticipationMutation("delete", +groupId, {
-    onSuccess(data) {
-      console.log(234, data);
+    onSuccess() {
+      setIsCancelModal(false);
       typeToast("cancel");
       setTransferGather(null);
       queryClient.invalidateQueries([GATHER_CONTENT, id]);
@@ -273,7 +273,7 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
             모임장의 참여 승인을 기다리고 있습니다.
           </Box>
           <Button
-            size="lg"
+            size="md"
             colorScheme="red"
             onClick={() => {
               mutate({ userId: session?.user.id, status: "refuse", text: null });
@@ -423,10 +423,20 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
         >
           참여를 취소하시겠어요?
           {diffDate < 2 && <br />}
-          {diffDate < 2 &&
-            (diffDate === 1
-              ? "모임 하루 전으로 1,000 Point만 반환됩니다."
-              : "모임 당일로 보증금이 반환되지 않습니다.")}
+          <Box>
+            {diffDate < 2 &&
+              (diffDate === 1 ? (
+                <>
+                  모임 하루 전으로{" "}
+                  <Box as="b" color="red">
+                    1,000 Point
+                  </Box>
+                  만 반환됩니다.
+                </>
+              ) : (
+                "모임 당일로 보증금이 반환되지 않습니다."
+              ))}
+          </Box>
         </AlertModal>
       )}
     </>

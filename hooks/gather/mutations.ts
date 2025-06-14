@@ -149,3 +149,19 @@ export const useGatherStatusMutation = (gatherId: number, options?: MutationOpti
       }),
     options,
   );
+export const useGatherAbsenceCheckMutation = (
+  gatherId: number,
+  options?: MutationOptions<{ userId: string }>,
+) =>
+  useMutation<void, AxiosError, { userId: string }>(
+    ({ userId }) =>
+      requestServer<{ gatherId: string; userId: string }>({
+        method: "post",
+        url: "gather/absence",
+        body: {
+          gatherId: gatherId + "",
+          userId,
+        },
+      }),
+    options,
+  );

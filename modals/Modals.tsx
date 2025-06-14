@@ -34,6 +34,7 @@ export interface IFooterOptions {
   };
   isFull?: boolean;
   children?: React.ReactNode;
+  colorType?: "red" | "mint";
 }
 
 interface IModalLayout extends IModal {
@@ -70,7 +71,7 @@ export function ModalLayout({
 }: IModalLayout) {
   const onClose = () => setIsModal(false);
 
-  const { main, sub, isFull = true } = footerOptions || {};
+  const { main, sub, isFull = true, colorType = "mint" } = footerOptions || {};
   const { text = "확 인", func = onClose } = main || {};
   const { text: subText = "취 소", func: subFunc = onClose } = sub || {};
   const [modalTop, setModalTop] = useState("0%");
@@ -207,6 +208,7 @@ export function ModalLayout({
                 onClickRight={func}
                 isLoading={main?.isLoading}
                 isDisabled={main?.isDisabled}
+                colorType={colorType}
               />
             ) : (
               <>

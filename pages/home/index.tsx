@@ -14,10 +14,6 @@ import HomeReviewSection from "../../pageTemplates/home/HomeReviewSection";
 function Home() {
   const { data: data } = useGroupSnapshotQuery();
 
-  const { mutate } = useUpdateAllUserMutation();
-  useEffect(() => {
-    mutate();
-  }, []);
 
   return (
     <>

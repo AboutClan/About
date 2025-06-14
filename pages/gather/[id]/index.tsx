@@ -18,7 +18,7 @@ import GatherGuide from "../../../pageTemplates/gather/detail/GatherGuide";
 import GatherHeader from "../../../pageTemplates/gather/detail/GatherHeader";
 import GatherParticipation from "../../../pageTemplates/gather/detail/GatherParticipation";
 import GatherTitle from "../../../pageTemplates/gather/detail/GatherTitle";
-import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import { IUserSummary, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { getRandomImage } from "../../../utils/imageUtils";
 
 function GatherDetail() {
@@ -58,7 +58,7 @@ function GatherDetail() {
               />
               <Divider />
               <GatherParticipation data={gather} />
-              <GatherGuide />
+              <GatherGuide isAdmin={(gather?.user as UserSimpleInfoProps)?._id===session?.user.id } />
               <GatherComments comments={gather.comments} />
             </Box>
           </Slide>

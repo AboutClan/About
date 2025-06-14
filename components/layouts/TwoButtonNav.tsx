@@ -8,6 +8,7 @@ interface ITwoButtonNav {
   onClickRight: () => void;
   size?: "md" | "lg";
   isDisabled?: boolean;
+  colorType?: "mint" | "red";
 }
 
 function TwoButtonNav({
@@ -17,15 +18,17 @@ function TwoButtonNav({
   onClickLeft,
   onClickRight,
   isDisabled = false,
+  colorType = "mint",
 }: ITwoButtonNav) {
   return (
     <Flex w="full">
       <Button
-        color="mint"
+        color={colorType}
         w="full"
         h="40px"
         border="1px solid var(--color-mint)"
         borderRadius="8px"
+        borderColor={colorType}
         onClick={onClickLeft}
         fontSize="12px"
         fontWeight="bold"
@@ -35,7 +38,7 @@ function TwoButtonNav({
         {leftText}
       </Button>
       <Button
-        colorScheme="mint"
+        colorScheme={colorType}
         w="full"
         fontSize="12px"
         fontWeight="bold"
