@@ -58,7 +58,7 @@ const imageCache: { [key: string]: string } = {}; // 이미지 캐시 전역 변
 export const setGatherDataToCardCol = (
   gathers: IGather[],
   isPriority: boolean,
-  func: () => void,
+  func?: () => void,
 ): GatherThumbnailCardProps[] => {
   const cardCol: GatherThumbnailCardProps[] = gathers.map((gather, idx) => {
     if (!imageCache[gather.id]) {

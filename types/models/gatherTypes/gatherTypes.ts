@@ -65,7 +65,7 @@ export interface IGatherParticipants {
   user: IUserSummary;
   phase?: "first" | "second";
   reviewed?: boolean;
-  absence: boolean;
+  absence?: boolean;
 }
 
 // export interface IGatherHeader {

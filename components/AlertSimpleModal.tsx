@@ -15,7 +15,7 @@ import { IModal } from "../types/components/modalTypes";
 import KakaoShareBtn from "./Icons/KakaoShareBtn";
 export interface IAlertSimpleModalOptions {
   title: string;
-  subTitle: string;
+  subTitle?: string;
   text?: string; // eslint-disable-next-line @typescript-eslint/no-explicit-any
   kakaoOption?: any;
 }
