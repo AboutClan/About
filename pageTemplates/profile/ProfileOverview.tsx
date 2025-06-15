@@ -1,6 +1,5 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
@@ -120,7 +119,11 @@ function ProfileOverview({ user, groupCnt }: IProfileOverview) {
             >
               {true && (
                 <>
-                  <Link href={`https://www.instagram.com/${user.instagram}`}>
+                  <a
+                    href={`https://www.instagram.com/${user.instagram}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <Flex
                       justify="center"
                       align="center"
@@ -131,7 +134,7 @@ function ProfileOverview({ user, groupCnt }: IProfileOverview) {
                     >
                       <InstagramIcon />
                     </Flex>
-                  </Link>
+                  </a>
                 </>
               )}
             </Flex>

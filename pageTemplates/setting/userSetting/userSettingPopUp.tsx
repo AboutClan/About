@@ -1,14 +1,17 @@
+import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { ComponentType, useEffect, useState } from "react";
 
 import FAQModal from "../../../components/overlay/FAQModal";
 import GatherRecordDrawer from "../../../components/overlay/GatherRecordDrawer";
 import MonthlyScoreModal from "../../../components/overlay/MonthlyScoreModal";
+import NewMemberModal from "../../../components/overlay/NewMemberModal";
 import SelfIntroduceModal from "../../../components/overlay/SelfIntroduceModal";
 import StudyRecordDrawer from "../../../components/overlay/StudyRecordDrawer";
 import {
   FAQ_MODAL_AT,
   MONTHLY_SCORE_MODAL_AT,
+  NEW_MEMBER_MODAL_AT,
   SELF_INTRODUCE_AT,
 } from "../../../constants/keys/localStorage";
 import { STUDY_RECORD_MODAL_AT } from "../../../constants/keys/queryKeys";
@@ -17,7 +20,13 @@ import { CloseProps } from "../../../types/components/modalTypes";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
 import { checkAndSetLocalStorage } from "../../../utils/storageUtils";
 
-export type PopUpType = "studyRecord" | "faq" | "monthlyScore" | "gatherReview" | "introduce";
+export type PopUpType =
+  | "studyRecord"
+  | "faq"
+  | "monthlyScore"
+  | "gatherReview"
+  | "introduce"
+  | "newMember";
 
 interface PopUpProps extends CloseProps {}
 
@@ -27,6 +36,7 @@ const MODAL_COMPONENTS: Record<PopUpType, ComponentType<PopUpProps>> = {
   monthlyScore: MonthlyScoreModal,
   gatherReview: GatherRecordDrawer,
   introduce: SelfIntroduceModal,
+  newMember: NewMemberModal,
 };
 
 export default function UserSettingPopUp({ user }: { user: IUser }) {
@@ -42,18 +52,21 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
   useEffect(() => {
     if (data === undefined || !session) return;
 
-    const popUpCnt = 0;
-    console.log(popUpCnt);
+    if (
+      dayjs(user.registerDate).diff(dayjs(), "d") >= -10 &&
+      !checkAndSetLocalStorage(NEW_MEMBER_MODAL_AT, 3)
+    ) {
+      setPopUpType((old) => [...old, "newMember"]);
+      return;
+    }
     if (data) {
       setPopUpType((old) => [...old, "gatherReview"]);
       return;
     }
-
     if (!user?.introduceText && !checkAndSetLocalStorage(SELF_INTRODUCE_AT, 7)) {
       setPopUpType((old) => [...old, "introduce"]);
       return;
     }
-
     // if (studyRecord && studyRecord?.date !== dayjsToStr(dayjs())) {
     //   setPopUpType((old) => [...old, "studyRecord"]);
     //   if (++popUpCnt < 2) return;
