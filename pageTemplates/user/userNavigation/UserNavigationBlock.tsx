@@ -6,7 +6,7 @@ import styled from "styled-components";
 
 import RowTextBlockButton from "../../../components/atoms/buttons/RowTextBlockButton";
 import TextDevider from "../../../components/atoms/devider/TextDevider";
-import { useFailToast, useTypeToast } from "../../../hooks/custom/CustomToast";
+import { useFailToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { DispatchString } from "../../../types/hooks/reactTypes";
 import { UserOverviewModal } from "./UserNavigation";
@@ -19,7 +19,6 @@ type ContentByType<T extends "page" | "modal"> = T extends "page" ? string : Use
 
 function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
   const searchParams = useSearchParams();
-  const typeToast = useTypeToast();
   const { data: session } = useSession();
   const router = useRouter();
   const failToast = useFailToast();
@@ -87,7 +86,9 @@ function UserNavigationBlock({ setModalOpen }: IUserNavigationBlock) {
         <NavBlock>
           <button onClick={() => onClickBlock("modal", "suggest")}>건의하기</button>
           <button onClick={() => onClickBlock("modal", "declaration")}>불편사항 신고</button>
-          <button onClick={() => typeToast("inspection")}>휴식 신청</button>
+          <button onClick={() => onClickBlock("modal", "rest")}>
+            {userInfo?.role === "resting" ? "휴식 해제" : "휴식 신청"}
+          </button>
         </NavBlock>
       </div>
       <div>
