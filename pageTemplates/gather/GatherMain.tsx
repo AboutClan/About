@@ -14,6 +14,8 @@ import { IGather } from "../../types/models/gatherTypes/gatherTypes";
 import { setGatherDataToCardCol } from "../home/HomeGatherCol";
 import GatherSkeletonMain from "./GatherSkeletonMain";
 
+type SortedType = "최신 개설 순" | "일정 빠른 순" | "기본순";
+
 export default function GatherMain() {
   const [cardDataArr, setCardDataArr] = useState<GatherThumbnailCardProps[]>();
 
@@ -23,12 +25,12 @@ export default function GatherMain() {
   const firstLoad = useRef(true);
 
   const [category, setCategory] = useState<"취미" | "스터디" | null>(null);
-  const [sortBy, setSortBy] = useState<"날짜순" | "등록일순">("등록일순");
+  const [sortBy, setSortBy] = useState<SortedType>("기본순");
 
   const { data: gatherData, isLoading } = useGatherQuery(
     cursor,
     category,
-    sortBy === "등록일순" ? "createdAt" : "date",
+    sortBy === "기본순" ? "basic" : sortBy === "최신 개설 순" ? "createdAt" : "date",
   );
 
   useEffect(() => {
@@ -87,7 +89,7 @@ export default function GatherMain() {
           size="sm"
           isThick
           defaultValue={sortBy}
-          options={["등록일순", "날짜순"]}
+          options={["기본순", "최신 개설 순", "일정 빠른 순"] as SortedType[]}
           setValue={setSortBy}
         />
       </Flex>
