@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import SlideSectionCol from "../../components/molecules/SlideSectionCol";
 import { useWindowWidth } from "../../hooks/custom/CustomHooks";
 import { useGatherQuery } from "../../hooks/gather/queries";
+import { shuffleArray } from "../../utils/convertUtils/convertDatas";
 import HomeGatherCol from "./HomeGatherCol";
 
 function HomeGatherSection() {
@@ -46,10 +47,10 @@ function HomeGatherSection() {
           }}
         >
           <SlideSectionCol title="About 마감 임박 모임" subTitle="곧 마감! 마지막 기회">
-            <HomeGatherCol gathers={gathers?.slice(6, 9)} isPriority={false} />
+            <HomeGatherCol gathers={shuffleArray(gathers?.slice(6, 9))} isPriority={false} />
           </SlideSectionCol>
           <SlideSectionCol title="About 마감 임박 모임" subTitle="지금 아니면 늦어요!">
-            <HomeGatherCol gathers={gathers?.slice(9)} isPriority={false} />
+            <HomeGatherCol gathers={shuffleArray(gathers?.slice(9))} isPriority={false} />
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence>
