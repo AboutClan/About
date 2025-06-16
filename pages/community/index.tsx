@@ -1,8 +1,11 @@
 import { useSession } from "next-auth/react";
+import { useState } from "react";
 
 import WritingButton from "../../components/atoms/buttons/WritingButton";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
+import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
+import SquareInfoSection from "../../pageTemplates/community/SquareInfoSection";
 import SquareSecretSection from "../../pageTemplates/community/SquareSecretSection";
 
 function BoardPage() {
@@ -10,15 +13,28 @@ function BoardPage() {
 
   const isGuest = session?.user.name === "guest";
 
+  const [tab, setTab] = useState<"정보 게시판" | "익명 게시판">("정보 게시판");
+
   // const [isRuleModal, setIsRuleModal] = useState(false);
+
+  const tabOptions: ITabNavOptions[] = [
+    {
+      text: "정보 게시판",
+      func: () => setTab("정보 게시판"),
+    },
+    { text: "익명 게시판", func: () => setTab("익명 게시판") },
+  ];
 
   return (
     <>
       <Header title="커뮤니티" url="/home"></Header>
       <Slide isNoPadding>
-        <SquareSecretSection />
+        <TabNav tabOptionsArr={tabOptions} isFullSize />
+        {tab === "정보 게시판" ? <SquareInfoSection /> : <SquareSecretSection />}
       </Slide>
-      {!isGuest && <WritingButton isBottomNav={false} url="/community/writing" />}
+      {!isGuest && tab !== "정보 게시판" && (
+        <WritingButton isBottomNav={false} url="/community/writing" />
+      )}
       {/* {isRuleModal && <RuleModal content={SECRET_CONTENT} setIsModal={setIsRuleModal} />} */}
     </>
   );
