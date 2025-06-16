@@ -70,7 +70,7 @@ function StudyInfoDrawer({ detailInfo, setDetailInfo, date, myStudy }: StudyInfo
       handleSuccess();
     },
   });
-  const { mutate: realTimeStudyVote, isLoading: isLoading2 } = useRealtimeVoteMutation({
+  const { mutate: realTimeStudyVote, isLoading: isLoading2 } = useRealtimeVoteMutation(date, {
     onSuccess() {
       handleSuccess();
     },

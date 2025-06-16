@@ -69,7 +69,7 @@ function StudyPlaceDrawer({ type, onClose, date, handleStudyVote }: StudyPlaceDr
                   end: voteTime.end,
                 },
               };
-
+      
         handleStudyVote(voteData);
         // mutate({
         //   place: {

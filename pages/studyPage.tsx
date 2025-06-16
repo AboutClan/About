@@ -47,7 +47,7 @@ export default function StudyPage() {
   const { data: placeData } = useStudyPlacesQuery("all", null, {
     enabled: !!isPlaceMap,
   });
-
+  console.log(24, studyVoteData);
   //dateParam이 아예 없는 경우가 있을 수 있을까?
   useEffect(() => {
     if (!dateParam) return;
@@ -105,7 +105,7 @@ export default function StudyPage() {
   }, [studyVoteData, session, currentLocation, isLoading, userInfo]);
 
   const isExpireDate = dayjs(date).isBefore(dayjs().subtract(1, "day"));
- 
+
   return (
     <>
       <StudyPageHeader />

@@ -58,7 +58,7 @@ function StudyControlDrawer({
       resetStudy();
     },
   });
-  const { mutate: participateRealTime } = useRealtimeVoteMutation({
+  const { mutate: participateRealTime } = useRealtimeVoteMutation(date, {
     onSuccess() {
       toast("success", "참여가 완료되었습니다. 출석 인증도 잊지 마세요!");
       resetStudy();

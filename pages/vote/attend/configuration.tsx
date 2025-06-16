@@ -65,7 +65,7 @@ function Configuration() {
     },
   });
 
-  const { mutate: attendRealTimeStudy, isLoading: isLoading2 } = useRealTimeAttendMutation({
+  const { mutate: attendRealTimeStudy, isLoading: isLoading2 } = useRealTimeAttendMutation(date, {
     onSuccess(data) {
       handleAttendSuccess(data);
     },

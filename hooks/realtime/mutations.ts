@@ -18,34 +18,40 @@ interface RealTimeVoteRequestServerProps {
   time: StringTimeProps;
 }
 
-export const useRealtimeVoteMutation = (options?: MutationOptions<RealTimeVoteProps>) =>
+export const useRealtimeVoteMutation = (
+  date: string,
+  options?: MutationOptions<RealTimeVoteProps>,
+) =>
   useMutation<void, AxiosError, RealTimeVoteProps>((param) => {
     const { start, end } = param.time;
     const time = {
       start: start.toISOString(),
       end: end.toISOString(),
     };
+
     return requestServer<RealTimeVoteRequestServerProps>({
       method: "post",
-      url: `realtime/basicVote`,
+      url: `realtime/${date}/basicVote`,
       body: { ...param, time },
     });
   }, options);
 
 export const useRealTimeAttendMutation = (
+  date: string,
   options?: MutationOptions<RealTimeAttendanceProps | FormData, CollectionProps>,
 ) =>
-  useMutation<CollectionProps, AxiosError, RealTimeAttendanceProps | FormData>(
-    (param) =>
-      requestServer<RealTimeAttendanceProps | FormData, CollectionProps>({
-        method: "post",
-        url: `realtime/attendance`,
-        body: param,
-      }),
-    options,
-  );
+  useMutation<CollectionProps, AxiosError, RealTimeAttendanceProps | FormData>((param) => {
+    return requestServer<RealTimeAttendanceProps | FormData, CollectionProps>({
+      method: "post",
+      url: `realtime/${date}/attendance`,
+      body: param,
+    });
+  }, options);
 
-export const useRealTimeTimeChangeMutation = (options?: MutationOptions<DayjsTimeProps>) =>
+export const useRealTimeTimeChangeMutation = (
+  date: string,
+  options?: MutationOptions<DayjsTimeProps>,
+) =>
   useMutation<void, AxiosError, DayjsTimeProps>(({ start, end }) => {
     const startHour = dayjs().hour(start.hour()).minute(start.minute());
     const endHour = dayjs().hour(end.hour()).minute(end.minute());
@@ -57,7 +63,7 @@ export const useRealTimeTimeChangeMutation = (options?: MutationOptions<DayjsTim
     });
   }, options);
 
-export const useRealTimeCommentMutation = (options?: MutationOptions<string>) =>
+export const useRealTimeCommentMutation = (date: string, options?: MutationOptions<string>) =>
   useMutation<void, AxiosError, string>(
     (params) =>
       requestServer<{ comment: string }>({
@@ -67,7 +73,7 @@ export const useRealTimeCommentMutation = (options?: MutationOptions<string>) =>
       }),
     options,
   );
-export const useRealTimeCancelMutation = (options?: MutationOptions<void>) =>
+export const useRealTimeCancelMutation = (date: string, options?: MutationOptions<void>) =>
   useMutation<void, AxiosError, void>(
     () =>
       requestServer<void>({
@@ -77,7 +83,7 @@ export const useRealTimeCancelMutation = (options?: MutationOptions<void>) =>
     options,
   );
 
-export const useRealTimeStatusMutation = (options?: MutationOptions<StudyStatus>) =>
+export const useRealTimeStatusMutation = (date: string, options?: MutationOptions<StudyStatus>) =>
   useMutation<void, AxiosError, StudyStatus>(
     (params) =>
       requestServer<{ status: StudyStatus }>({

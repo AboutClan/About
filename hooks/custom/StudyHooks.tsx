@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 
 import { findMyStudyByUserId } from "../../libs/study/studySelectors";
 import { StudyMergeResultProps } from "../../types/models/studyTypes/derivedTypes";
+import { dayjsToStr } from "../../utils/dateTimeUtils";
 import {
   useRealTimeStatusMutation,
   useRealTimeTimeChangeMutation,
@@ -64,21 +65,21 @@ export const useStudyMutations = (date: Dayjs) => {
     },
   });
 
-  const { mutate: realTimeVote } = useRealtimeVoteMutation({
+  const { mutate: realTimeVote } = useRealtimeVoteMutation(dayjsToStr(date), {
     onSuccess: () => {
       typeToast("participate");
       resetStudy();
     },
   });
 
-  const { mutate: realTimeChange } = useRealTimeTimeChangeMutation({
+  const { mutate: realTimeChange } = useRealTimeTimeChangeMutation(dayjsToStr(date), {
     onSuccess: () => {
       typeToast("change");
       resetStudy();
     },
   });
 
-  const { mutate: realTimeChangeStatus } = useRealTimeStatusMutation({
+  const { mutate: realTimeChangeStatus } = useRealTimeStatusMutation(dayjsToStr(date), {
     onSuccess: () => {
       typeToast("cancel");
       resetStudy();

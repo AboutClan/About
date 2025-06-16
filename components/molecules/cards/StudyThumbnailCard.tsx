@@ -43,6 +43,7 @@ export function StudyThumbnailCard({
   func = undefined,
   isMyStudy,
 }: StudyThumbnailCardProps) {
+  console.log(124, status);
   return (
     <CardLink href={url} onClick={func} isbordermain={status === "recruiting" ? "true" : "false"}>
       <>
