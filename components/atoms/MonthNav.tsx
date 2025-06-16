@@ -1,5 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 
 import { useToast } from "../../hooks/custom/CustomToast";
 import { DispatchType } from "../../types/hooks/reactTypes";
@@ -19,7 +19,7 @@ function MonthNav({ monthNum, changeMonth }: MonthNavProps) {
       }
       changeMonth((old) => old.subtract(1, "month"));
     } else {
-      if (monthNum === 3) {
+      if (monthNum === dayjs().month() - 1) {
         toast("info", "달력 준비중");
         return;
       }
