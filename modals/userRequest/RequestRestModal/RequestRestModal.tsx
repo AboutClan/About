@@ -1,10 +1,12 @@
+import { Box, Flex, ListItem, UnorderedList } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
-import { useSession } from "next-auth/react";
-import { useForm } from "react-hook-form";
+import { useState } from "react";
+
 // import "react-date-range/dist/styles.css"; // main css file
 // import "react-date-range/dist/theme/default.css"; // theme css file
-import styled from "styled-components";
-
+import { Input } from "../../../components/atoms/Input";
+import Select from "../../../components/atoms/Select";
+import Textarea from "../../../components/atoms/Textarea";
 import { PopOverIcon } from "../../../components/Icons/PopOverIcon";
 import { useFailToast, useToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
@@ -12,24 +14,24 @@ import { useUserRequestMutation } from "../../../hooks/user/sub/request/mutation
 import { IModal } from "../../../types/components/modalTypes";
 import { IUserRequest } from "../../../types/models/userTypes/userRequestTypes";
 import { IFooterOptions, ModalLayout } from "../../Modals";
-const POPOVER_MESSAGE =
-  "일반 휴식은 기본 분기별로 1회, 최대 한달까지만 가능합니다. 추가적으로 휴식 기간이 필요한 경우 보증금 500원 차감과 함께 신청됩니다. 특별 휴식은 기간에 상관없이 휴식이 가능하나, 인정될만한 특수한 사정이 있는 경우에만 관리자 동의하에 가능합니다.";
 
 export interface IApplyRest {
-  type: "일반" | "특별";
+  type: "일반" | "특별" | string;
   startDate: string | Dayjs;
   endDate: string | Dayjs;
   content: string;
 }
 
 function RequestRestModal({ setIsModal }: IModal) {
-  const { data: session } = useSession();
   const toast = useToast();
   const failToast = useFailToast();
 
+  const [value, setValue] = useState<"일반 휴식" | "특별 휴식">("일반 휴식");
+  const [date, setDate] = useState("");
+  const [text, setText] = useState("");
+
   const { mutate: sendRestRequest } = useUserRequestMutation();
 
-  const { mutate: setRole } = useUserInfoFieldMutation("role");
   const { mutate: setRest } = useUserInfoFieldMutation("rest", {
     onSuccess() {
       setIsModal(false);
@@ -41,59 +43,42 @@ function RequestRestModal({ setIsModal }: IModal) {
     },
   });
 
-  const onSubmit = (data: IApplyRest) => {
-    if (!data.endDate) {
-      failToast("free", "종료 일정을 선택해주세요.");
+  const handleSubmit = () => {
+    if (!date || !text) {
+      toast("error", "누락된 항목이 있습니다.");
       return;
     }
+    if (dayjs(date).isBefore(dayjs())) {
+      toast("error", "날짜를 확인해 주세요.");
+      return;
+    }
+    if (value === "일반 휴식" && dayjs(date).diff(dayjs(), "d") > 31) {
+      toast("error", "일반 휴식은 최대 한 달까지만 가능합니다.");
+      return;
+    }
+
     const restInfo = {
-      type: data.type,
-      startDate: data.startDate,
-      endDate: data.endDate,
-      content: data.content,
+      type: value === "일반 휴식" ? "일반" : "특별",
+      startDate: dayjs().toString(),
+      endDate: dayjs(date).toString(),
+      content: text,
     };
-    const requestData: IUserRequest = {
-      category: "휴식",
-      content: data.type + " / " + data.startDate + " ~ " + data.endDate + " / " + data.content,
-    };
-    setRole({ role: "resting" });
-    sendRestRequest(requestData);
-    setRest({ info: restInfo });
-  };
 
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<IApplyRest>({
-    defaultValues: {
-      type: "일반",
-      startDate: dayjs().format("YYYY-MM-DD"),
-      endDate: "",
-      content: "",
-    },
-  });
-
-  const option = watch("type");
-  const startDate = watch("startDate");
-  const getEndDateRange = (type: "min" | "max") => {
-    if (option === "특별" || !startDate) return;
-    const start = new Date(startDate as string);
-    const min = start.toISOString().split("T")[0];
-    const max = start.setMonth(start.getMonth() + 1);
-    if (type === "min") return { value: min, message: "기간을 확인해주세요!" };
-    if (type === "max")
-      return {
-        value: max,
-        message: "일반 휴식은 최대 한달까지만 가능합니다! ",
+    if (value === "특별 휴식") {
+      const requestData: IUserRequest = {
+        category: "휴식",
+        content: dayjs(date).format("YYYY-MM-DD") + " / " + text,
       };
+      sendRestRequest(requestData);
+    }
+
+    setRest({ info: restInfo });
   };
 
   const footerOptions: IFooterOptions = {
     main: {
-      text: "제출",
-      func: handleSubmit(onSubmit),
+      text: "신청",
+      func: handleSubmit,
     },
     sub: {
       text: "취소",
@@ -102,100 +87,57 @@ function RequestRestModal({ setIsModal }: IModal) {
 
   return (
     <ModalLayout title="휴식 신청" footerOptions={footerOptions} setIsModal={setIsModal}>
-      <Form onSubmit={handleSubmit(onSubmit)} id="rest">
-        <Item>
-          <span>이름:</span>
-          <span>{session?.user.name}</span>
-        </Item>
-        <Item>
-          <span>타입:</span>
-          <TypeSelect {...register("type")}>
-            <option value="일반">일반 휴식</option>
-            <option value="특별">특별 휴식</option>
-          </TypeSelect>
-          <PopOverIcon text={POPOVER_MESSAGE} />
-        </Item>
-        <DateItem>
-          <span>기간:</span>
-          <DateInput type="date" {...register("startDate")} />
-          <DateInput
-            type="date"
-            {...register("endDate", {
-              min: getEndDateRange("min"),
-              max: getEndDateRange("max"),
-            })}
-          />
-        </DateItem>
-        <Item>
-          <Reason>사유:</Reason>
-          <Textarea {...register("content")}></Textarea>
-        </Item>
-      </Form>
-      <ErrorMessage>{errors?.endDate?.message}</ErrorMessage>
+      <Box>
+        <Flex align="center" mb={2}>
+          <Box mr={2}>유형:</Box>
+          <Flex>
+            <Select
+              defaultValue={value}
+              options={["일반 휴식", "특별 휴식"]}
+              setValue={setValue}
+              size="sm"
+            />
+            <PopOverIcon text="일반 휴식은 해당 달만 가능합니다. 특별 휴식은 기간이 상관없으나, 사유가 명확해야 승인됩니다." />
+          </Flex>
+        </Flex>
+        <Flex align="center" lineHeight="20px">
+          <Box mr={2}>기간:</Box>
+          <Box>
+            <Input
+              type="date"
+              size="sm"
+              fontSize="11px"
+              borderRadius="8px"
+              h="28px"
+              px={2}
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+            />
+          </Box>
+        </Flex>
+        <Flex lineHeight="20px" mt={2} mb={5}>
+          <Box mr={2}>사유:</Box>
+          <Box flex={1}>
+            <Textarea
+              size="sm"
+              fontSize="11px"
+              borderRadius="8px"
+              h="28px"
+              px={2}
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            />
+          </Box>
+        </Flex>
+
+        <UnorderedList textAlign="start" ml={0} fontSize="12px">
+          <ListItem>휴식 신청은 매월 1일부터 10일까지 가능합니다.</ListItem>
+          <ListItem>휴식 기간 동안은 월간 패널티가 면제됩니다.</ListItem>
+          <ListItem>휴식 기간 동안은 모든 활동이 제한됩니다.</ListItem>
+        </UnorderedList>
+      </Box>
     </ModalLayout>
   );
 }
-const Form = styled.form`
-  height: 100%;
 
-  display: flex;
-
-  flex-direction: column;
-
-  > div:last-child {
-    flex: 1;
-  }
-`;
-const Item = styled.div`
-  display: flex;
-  margin-bottom: var(--gap-3);
-  align-items: center;
-  > span:first-child {
-    width: 15%;
-    font-weight: 600;
-  }
-  > input,
-  select {
-    padding: var(--gap-1);
-  }
-`;
-
-const DateItem = styled(Item)`
-  > input {
-    flex: 0.5;
-  }
-  > input:nth-child(2) {
-    margin-right: var(--gap-3);
-  }
-`;
-
-const DateInput = styled.input`
-  padding: var(--gap-1);
-  background-color: var(--input-bg);
-  border-radius: var(--rounded-lg);
-`;
-
-const ErrorMessage = styled.div`
-  font-size: 11px;
-  height: 16px;
-  color: var(--color-red);
-`;
-
-const TypeSelect = styled.select`
-  background-color: var(--input-bg);
-  border-radius: var(--rounded-lg);
-  margin-right: var(--gap-3);
-`;
-
-const Reason = styled.span`
-  margin-bottom: auto;
-`;
-
-const Textarea = styled.textarea`
-  padding: var(--gap-2);
-  flex: 1;
-  height: 100%;
-  background-color: var(--gray-200);
-  border-radius: var(--rounded-lg);
-`;
 export default RequestRestModal;

@@ -31,8 +31,12 @@ const Login: NextPage<{
   const { data: session } = useSession();
   const toast = useToast();
 
+  const visibleWidth = window.innerWidth;
+  const visibleHeight = window.innerHeight;
   const statusParam = searchParams.get("status");
 
+  const ratio = visibleHeight / visibleWidth;
+  console.log(33, visibleWidth, visibleHeight, ratio);
   const kakaoProvider = Object.values(providers).find((p) => p.id == "kakao");
 
   const [isModal, setIsModal] = useState(false);
@@ -164,9 +168,11 @@ const Login: NextPage<{
             left="50%"
             transform="translate(-50%,0)"
           >
-            <Box mb={5} color="white" fontSize="12px" lineHeight="16px" opacity={0.6}>
-              Sign up with Social Networks
-            </Box>
+            {ratio >= 1.9 && (
+              <Box mb={5} color="white" fontSize="12px" lineHeight="16px" opacity={0.6}>
+                Sign up with Social Networks
+              </Box>
+            )}
             <Button
               variant="unstyled"
               maxW="calc(var(--max-width) - 2 * 20px)"

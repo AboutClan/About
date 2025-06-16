@@ -1,11 +1,11 @@
+import { Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
+import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
+import { USER_INFO } from "../../constants/keys/queryKeys";
 import { useToast } from "../../hooks/custom/CustomToast";
-import { useStudyArrivedCntQuery } from "../../hooks/study/queries";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
-import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
 import { IRest } from "../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
@@ -16,22 +16,20 @@ interface IRequestRestCancelModal extends IModal {
 }
 
 function RequestRestCancelModal({ setIsModal, rest }: IRequestRestCancelModal) {
-  const { data: session } = useSession();
   const toast = useToast();
 
-  const { data: studyArrivedCnt } = useStudyArrivedCntQuery(session?.user.uid, {
-    enabled: !!session,
-  });
+  const queryClient = useQueryClient();
+
   const { mutate: setRole } = useUserInfoFieldMutation("role", {
     onSuccess() {
       toast("success", "해제되었습니다.");
+      queryClient.refetchQueries([USER_INFO]);
+      setIsModal(false);
     },
   });
 
   const onClick = () => {
-    if (studyArrivedCnt >= 2) setRole({ role: "member" });
-    else setRole({ role: "human" });
-    setIsModal(false);
+    setRole({ role: "human" });
   };
 
   const footerOptions: IFooterOptions = {
@@ -44,8 +42,8 @@ function RequestRestCancelModal({ setIsModal, rest }: IRequestRestCancelModal) {
 
   return (
     <ModalLayout title="휴식 해제" footerOptions={footerOptions} setIsModal={setIsModal}>
-      <ModalSubtitle>휴식 상태를 해제하시겠어요?</ModalSubtitle>
-      <Container>
+      휴식 상태를 해제하겠어요?
+      <Flex flexDir="column" align="start" mt={5} lineHeight={1.8}>
         <Item>
           <span>휴식 타입:</span>
           <span>{rest?.type}휴식</span>
@@ -53,29 +51,17 @@ function RequestRestCancelModal({ setIsModal, rest }: IRequestRestCancelModal) {
         <Item>
           <span>휴식 기간:</span>
           <span>
-            {dayjsToFormat(dayjs(rest?.startDate), "MM월 D일")} ~{" "}
-            {dayjsToFormat(dayjs(rest?.endDate), "MM월 D일")}
+            {dayjsToFormat(dayjs(rest?.startDate), "M월 D일")} ~{" "}
+            {dayjsToFormat(dayjs(rest?.endDate), "M월 D일")}
           </span>
         </Item>
-        <Item>
-          <span>신청 횟수:</span>
-          <span>{rest?.restCnt}회</span>
-        </Item>
-        <Item>
-          <span>누적 날짜:</span>
-          <span>{rest?.cumulativeSum}일</span>
-        </Item>
-      </Container>
+      </Flex>
     </ModalLayout>
   );
 }
 
-const Container = styled.div`
-  line-height: 1.7;
-`;
-
 const Item = styled.div`
-  font-size: 12px;
+  font-size: 13px;
 
   > span:first-child {
     font-weight: 600;

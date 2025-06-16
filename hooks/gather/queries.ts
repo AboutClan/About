@@ -10,7 +10,7 @@ import { IGather } from "../../types/models/gatherTypes/gatherTypes";
 export const useGatherQuery = (
   cursor?: number,
   category?: "스터디" | "취미" | null,
-  sortBy?: "createdAt" | "date",
+  sortBy?: "createdAt" | "date" | "basic",
   options?: QueryOptions<IGather[]>,
 ) =>
   useQuery<IGather[], AxiosError>(

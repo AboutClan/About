@@ -82,8 +82,8 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
       failToast("free", "보유중인 포인트가 부족해요!");
       return;
     }
-    if (myPoint - 3000 < totalCost) {
-      failToast("free", "최소 3,000원 이상을 보유하고 있어야 합니다.");
+    if (myPoint - 5000 < totalCost) {
+      failToast("free", "구매 후 보유 포인트가 5,000원 이상이어야 합니다.");
       return;
     }
 

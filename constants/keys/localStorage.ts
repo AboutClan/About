@@ -3,6 +3,8 @@ export const FAQ_MODAL_AT = "FAQModalAt";
 export const STUDY_RECORD_MODAL_AT = "studyRecordModalAt";
 export const SELF_INTRODUCE_AT = "selfIntroduceAt";
 export const GATHER_WRITING_INFO = "gatherWritingInfo";
+export const TEAM_CHAT_MODAL_AT = "teamChatModalAt";
+export const NEW_MEMBER_MODAL_AT = "newMemberModalAt";
 
 //스터디
 

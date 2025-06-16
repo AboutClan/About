@@ -21,7 +21,7 @@ function HomeNav() {
                 position="absolute"
                 w="100%"
                 h="100%"
-                opacity={0.08}
+                opacity={item.title === "게시판" ? 0.12 : 0.08}
                 bgColor={item.bgColor}
                 borderRadius="50%"
               />
@@ -73,10 +73,10 @@ interface HomeRecommendationItemProps {
 const HOME_RECOMMENDATION_ICON_ARR: HomeRecommendationItemProps[] = [
   {
     iconImage:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%EA%B9%83%EB%B0%9C2.png",
-    title: "커뮤니티",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/twoChat.png",
+    title: "게시판",
     url: "/community",
-    bgColor: "var(--color-red)",
+    bgColor: "var(--color-gray)",
   },
   {
     iconImage:

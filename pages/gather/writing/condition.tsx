@@ -19,7 +19,7 @@ import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
 import { IGatherWriting } from "../../../types/models/gatherTypes/gatherTypes";
 import { getLocalStorageObj, setLocalStorageObj } from "../../../utils/storageUtils";
-
+import { randomPassword } from "../../../utils/validationUtils";
 export type GatherConditionType =
   | "gender"
   | "age"
@@ -83,6 +83,7 @@ function WritingCondition() {
       user: session?.user.id,
       kakaoUrl,
       isApprovalRequired: condition.isApprove,
+      password: randomPassword(),
     };
 
     setGatherContent(gatherData);
@@ -154,7 +155,6 @@ function WritingCondition() {
                   <PopOverIcon text="성비를 최대 2대1까지로 제한합니다." />
                 </Flex>
               </Flex>
-
               <Switch
                 mr="var(--gap-1)"
                 colorScheme="mint"

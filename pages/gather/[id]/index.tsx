@@ -58,7 +58,9 @@ function GatherDetail() {
               />
               <Divider />
               <GatherParticipation data={gather} />
-              <GatherGuide isAdmin={(gather?.user as UserSimpleInfoProps)?._id===session?.user.id } />
+              <GatherGuide
+                isAdmin={(gather?.user as UserSimpleInfoProps)?._id === session?.user.id}
+              />
               <GatherComments comments={gather.comments} />
             </Box>
           </Slide>
