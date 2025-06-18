@@ -11,9 +11,7 @@ import { CALENDAR_IMAGES } from "../constants/contents/calendarSchedule";
 import { dayjsToStr } from "../utils/dateTimeUtils";
 
 function CalendarPage() {
-  const [monthFirstDate, setMonthFirstDate] = useState(
-    dayjs().startOf("month").subtract(1, "month"),
-  );
+  const [monthFirstDate, setMonthFirstDate] = useState(dayjs().startOf("month"));
   const monthNum = monthFirstDate.month();
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
