@@ -7,8 +7,8 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 
+import { useKakaoShare } from "../../../hooks/custom/KakaoShareHook2";
 import { SettingIcon } from "../../../pageTemplates/user/UserHeader2";
-import KakaoShareBtn from "../../Icons/KakaoShareBtn";
 
 export interface MenuProps {
   icon?: React.ReactNode;
@@ -23,6 +23,7 @@ interface MenuButtonProps {
 }
 
 function MenuButton({ menuArr }: MenuButtonProps) {
+  const { shareToKakao } = useKakaoShare();
   return (
     <Menu>
       {({ isOpen }) => (
@@ -42,9 +43,8 @@ function MenuButton({ menuArr }: MenuButtonProps) {
           <MenuList fontSize="14px" borderWidth="2px" borderColor="gray.200">
             {menuArr.map((menu) => (
               <MenuItem
-                as={menu?.kakaoOptions ? "div" : "button"}
                 key={menu?.text || "kakao"}
-                onClick={menu?.func}
+                onClick={menu?.kakaoOptions ? () => shareToKakao(menu.kakaoOptions) : menu?.func}
                 bg="white"
                 iconSpacing={2}
                 py={2.5}
@@ -53,7 +53,7 @@ function MenuButton({ menuArr }: MenuButtonProps) {
                   : menu?.icon && { icon: <>{menu.icon}</> })}
               >
                 {menu?.text}
-                {menu?.kakaoOptions && <KakaoShareBtn variant="unstyled" {...menu.kakaoOptions} />}
+                {menu?.kakaoOptions && "카카오톡으로 공유하기"}
               </MenuItem>
             ))}
           </MenuList>

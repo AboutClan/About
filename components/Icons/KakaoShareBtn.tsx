@@ -49,6 +49,7 @@ function KakaoShareBtn({
       !window.Kakao.isInitialized() &&
       !isWebView()
     ) {
+      console.log(51);
       window.Kakao.init(kakaoAppKey);
     }
   }, []);
@@ -95,6 +96,7 @@ function KakaoShareBtn({
         </Box>
       ) : isTemp ? (
         <Button
+          as="div"
           color="mint"
           bg="white"
           border="1px solid var(--color-mint)"
@@ -116,10 +118,11 @@ function KakaoShareBtn({
   );
 }
 
-const Layout = styled.button<{ isFull: boolean; temp: boolean }>`
+const Layout = styled.div<{ isFull: boolean; temp: boolean }>`
   width: ${(props) => (props.isFull ? "100%" : "undefined")};
   display: flex;
   width: 100%;
+  background-color: pink;
 `;
 
 export default KakaoShareBtn;
