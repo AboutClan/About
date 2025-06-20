@@ -12,6 +12,7 @@ export const GATHER_MAIN_IMAGE_ARR: Record<GatherCategoryMain | "공통", string
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/vibrant-night-food-truck-festival-urban-setting.jpg",
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EA%B7%B8%EB%A6%BC22.jpg",
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EA%B7%B8%EB%A6%BC7.jpg",
+    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EB%AA%A8%EC%9E%84%2B-%2B%EB%9E%9C%EB%8D%A4%2B3.jpg",
   ],
 
   기타: [],
@@ -45,7 +46,10 @@ export const GATHER_MAIN_IMAGE_ARR: Record<GatherCategoryMain | "공통", string
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EA%B7%B8%EB%A6%BC9.jpg",
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%86%8C%EB%AA%A8%EC%9E%84/%EC%A0%95%EC%82%AC%EA%B0%81%ED%98%95/%EB%8F%85%EC%84%9C+%EC%A0%95%EC%82%AC.webp",
   ],
-  말하기: [],
+  말하기: [
+    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%86%8C%EB%AA%A8%EC%9E%84/%EC%8A%A4%ED%94%BC%EC%B9%98%EC%A0%95%EC%82%AC%EA%B0%81%ED%98%95.jpg",
+    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%86%8C%EB%AA%A8%EC%9E%84/%EC%A0%95%EC%82%AC%EA%B0%81%ED%98%95/%ED%86%A0%EB%A1%A0+-+%EB%A9%94%EC%9D%B8.jpg",
+  ],
   친목: [
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EB%AA%A8%EC%9E%84-%2B%EB%9E%9C%EB%8D%A4%2B5.jpg",
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/qwe.webp",
@@ -56,6 +60,7 @@ export const GATHER_MAIN_IMAGE_ARR: Record<GatherCategoryMain | "공통", string
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/ggg.webp",
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/vibrant-night-food-truck-festival-urban-setting.jpg",
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EA%B7%B8%EB%A6%BC22.jpg",
+    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EB%AA%A8%EC%9E%84%2B-%2B%EB%9E%9C%EB%8D%A4%2B3.jpg",
   ],
   파티: [
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EB%AA%A8%EC%9E%84-%2B%EB%9E%9C%EB%8D%A4%2B5.jpg",
@@ -70,7 +75,7 @@ export const GATHER_MAIN_IMAGE_ARR: Record<GatherCategoryMain | "공통", string
   ],
   힐링: [
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/22428842-2ba4-4535-b86e-b49bc780e678.jpg",
-    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/22428842-2ba4-4535-b86e-b49bc780e678.jpg",
+
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/f.webp",
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/tw1.webp",
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/low-angle-view-firework-display-night.jpg",
@@ -78,11 +83,10 @@ export const GATHER_MAIN_IMAGE_ARR: Record<GatherCategoryMain | "공통", string
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EA%B7%B8%EB%A6%BC11.jpg",
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/freepik__assistant__49652.png",
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EA%B7%B8%EB%A6%BC6.jpg",
-    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/tw1.webp",
   ],
   공통: [
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EB%AA%A8%EC%9E%84+-+%EB%9E%9C%EB%8D%A4+%EC%9D%B4%EB%AF%B8%EC%A7%80.jpg",
-    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EB%AA%A8%EC%9E%84%2B-%2B%EB%9E%9C%EB%8D%A4%2B3.jpg",
+
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/choosing-perfect-movie.jpg",
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EA%B7%B8%EB%A6%BC18.jpg",
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EA%B7%B8%EB%A6%BC20.jpg",
@@ -107,7 +111,10 @@ export const GATHER_COVER_IMAGE_ARR: Record<GatherCategoryMain | "공통", strin
   ],
 
   기타: [],
-  말하기: [],
+  말하기: [
+    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%86%8C%EB%AA%A8%EC%9E%84/%EC%8A%A4%ED%94%BC%EC%B9%98%EC%A7%81%EC%82%AC.jpg",
+    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%86%8C%EB%AA%A8%EC%9E%84/%EB%A9%94%EC%9D%B8%EC%BB%A4%EB%B2%84/%ED%86%A0%EB%A1%A0.jpg",
+  ],
   감상: [
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EA%B3%B5%EC%9C%A0+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EC%98%81%ED%99%94.jpg",
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EA%B3%B5%EC%9C%A0+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EC%98%81%ED%99%94.jpg",
@@ -139,6 +146,7 @@ export const GATHER_COVER_IMAGE_ARR: Record<GatherCategoryMain | "공통", strin
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EA%B3%B5%EC%9C%A0+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EB%85%B8%ED%8A%B8%EB%B6%81+%EC%B9%B4%EA%B3%B5.jpg",
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/6857256.jpg",
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EA%B3%B5%EC%9C%A0+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EA%B7%B8%EB%A6%BC16.jpg",
+    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EA%B3%B5%EC%9C%A0+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EA%B7%B8%EB%A6%BC4.jpg",
   ],
   친목: [
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EA%B3%B5%EC%9C%A0+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EA%B7%B8%EB%A6%BC3+(2).jpg",
@@ -157,13 +165,11 @@ export const GATHER_COVER_IMAGE_ARR: Record<GatherCategoryMain | "공통", strin
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EA%B3%B5%EC%9C%A0+%EC%9D%B4%EB%AF%B8%EC%A7%80/tourist-holding-camera-outdoors.jpg",
   ],
   공통: [
-    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EA%B3%B5%EC%9C%A0+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EA%B7%B8%EB%A6%BC4.jpg",
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EA%B3%B5%EC%9C%A0+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EC%9D%91.jpg",
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EA%B3%B5%EC%9C%A0+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EC%B9%9C%EA%B5%AC%EC%B0%BE%EC%95%84.jpg",
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/top-view-cup-coffee-with-wafer-rolls-coffee-beans-sack-laptop-wooden-board-white-background.jpg",
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EB%A9%94%EC%9D%B8+%EC%9D%B4%EB%AF%B8%EC%A7%80/guitar-headphones-music-sheets-wooden-surface-top-view.jpg",
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EA%B3%B5%EC%9C%A0+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EA%B7%B8%EB%A6%BC19.jpg",
     "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EA%B3%B5%EC%9C%A0+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EA%B7%B8%EB%A6%BC21.jpg",
-    "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%AA%A8%EC%9E%84+%EA%B3%B5%EC%9C%A0+%EC%9D%B4%EB%AF%B8%EC%A7%80/%EA%B7%B8%EB%A6%BC11.jpg",
   ],
 };

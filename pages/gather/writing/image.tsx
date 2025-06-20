@@ -32,7 +32,7 @@ function GatherWritingImagePage() {
     cover: [],
   });
 
-  const category: GatherCategoryMain = gatherContent?.type.title || "운동";
+  const category: GatherCategoryMain = gatherContent?.type.title || "힐링";
 
   function shuffleArray(array: ImageProps[]) {
     const result = [...array]; // 원본 배열을 복사

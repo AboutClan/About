@@ -26,21 +26,6 @@ export const GATHER_TYPES: { title: GatherCategoryMain; subtitle: string }[] = [
   { title: "자기계발", subtitle: "독서 · 습관 · 라이프스타일 등" },
   { title: "말하기", subtitle: "토론 · 스피치 · 토크 등" },
   { title: "기타", subtitle: "그 외" },
-  /**
-   * 취미 1: 푸드, 감상, 소셜 게임
-   * 스터디: 스터디
-   * 자기계발:
-   */
-
-  // { title: "취미", subtitle: "보드게임 · 방탈출 · 볼링" },
-  // { title: "맛집 탐방", subtitle: "맛집투어 · 카페 · 디저트" },
-  // { title: "스터디", subtitle: "카공 · 스터디카페 · 도서관" },
-  // { title: "술 번개", subtitle: "친목 & 술자리" },
-  // { title: "운동", subtitle: "러닝 · 산책 · 클라이밍 · 헬스" },
-  // { title: "문화·예술", subtitle: "영화 · 전시 · 연극 · 뮤지컬" },
-  // { title: "게임", subtitle: "PC · 모바일 · 콘솔" },
-  // { title: "힐링", subtitle: "피크닉 · 캠핑 · 드라이브" },
-  // { title: "기타", subtitle: "" },
 ];
 
 export const GatherCategoryIcons = [
