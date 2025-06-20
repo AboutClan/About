@@ -61,7 +61,7 @@ function GatherWritingDateDate({ date, setDate, gatherWriting }: IGatherWritingD
     setDate(currentDate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gatherWriting]);
-  console.log(123, date);
+ 
   return (
     <Layout>
       <Container>
@@ -71,7 +71,7 @@ function GatherWritingDateDate({ date, setDate, gatherWriting }: IGatherWritingD
             customInput={<CustomInput />}
             locale={ko}
             onChange={(date) => {
-              const convertedDate = dayjs(date).hour(14);
+              const convertedDate = dayjs(date);
               setDate(convertedDate.toDate());
             }}
             selected={date}

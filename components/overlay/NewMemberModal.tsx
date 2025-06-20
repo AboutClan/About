@@ -1,7 +1,6 @@
 import { Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 
 import { NEW_MEMBER_MODAL_AT } from "../../constants/keys/localStorage";
 import { ModalLayout } from "../../modals/Modals";
@@ -10,10 +9,9 @@ import { CloseProps } from "../../types/components/modalTypes";
 interface NewMemberModalProps extends CloseProps {}
 
 function NewMemberModal({ onClose }: NewMemberModalProps) {
-  const router = useRouter();
-
   const handleClick = () => {
-    localStorage.setItem(NEW_MEMBER_MODAL_AT, dayjs().add(10, "day").format("YYYYMMDD"));
+    window.open("https://invite.kakao.com/tc/HOmUdQMjSs", "_blank");
+    localStorage.setItem(NEW_MEMBER_MODAL_AT, dayjs().add(9, "day").format("YYYYMMDD"));
   };
 
   return (
@@ -24,7 +22,6 @@ function NewMemberModal({ onClose }: NewMemberModalProps) {
           text: "팀 채팅방 입장",
           func: () => {
             handleClick();
-            router.push("https://invite.kakao.com/tc/HOmUdQMjSs");
           },
         },
         sub: { text: "다음에" },

@@ -28,8 +28,8 @@ function GroupDetail() {
   const { id } = useParams<{ id: string }>() || {};
 
   const [group, setTransferGroup] = useRecoilState(transferGroupDataState);
-
   const { data: groupData } = useGroupIdQuery(id, { enabled: !!id && !group });
+  console.log(15, groupData);
 
   const isOnlyView = group?.category.main === "콘텐츠";
 

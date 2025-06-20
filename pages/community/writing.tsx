@@ -73,6 +73,7 @@ function SquareWritingPage() {
     formData.append("title", title);
     formData.append("type", type);
     formData.append("content", content);
+    formData.append("squareType", content);
     imageFormArr.forEach((imageBlob) => {
       formData.append("images", imageBlob);
     });
