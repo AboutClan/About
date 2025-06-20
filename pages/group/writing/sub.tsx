@@ -6,10 +6,6 @@ import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
-import {
-  GROUP_STUDY_CATEGORY_ARR_ICONS,
-  GROUP_STUDY_SUB_CATEGORY,
-} from "../../../constants/contentsText/GroupStudyContents";
 import { GROUP_WRITING_STORE } from "../../../constants/keys/localStorage";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
@@ -25,7 +21,7 @@ function WritingStudyCategorySub() {
   const mainCategory = groupWriting?.category?.main;
 
   const [category, setCategory] = useState<string>(groupWriting?.category?.sub);
-
+  console.log(setCategory);
   const onClickNext = () => {
     if (!category) {
       failToast("free", "주제를 선택해 주세요!");
@@ -53,12 +49,12 @@ function WritingStudyCategorySub() {
           <span>주제를 선택해 주세요.</span>
         </RegisterOverview>
         <ItemContainer>
-          {GROUP_STUDY_SUB_CATEGORY?.[mainCategory]?.map((type, idx) => (
+          {/* {GROUP_STUDY_SUB_CATEGORY?.[mainCategory]?.map((type, idx) => (
             <Item key={idx} isSelected={type === category} onClick={() => setCategory(type)}>
               <IconWrapper>{GROUP_STUDY_CATEGORY_ARR_ICONS[mainCategory]}</IconWrapper>
               <Info>{type}</Info>
             </Item>
-          ))}
+          ))} */}
         </ItemContainer>
       </RegisterLayout>
 
@@ -73,34 +69,34 @@ const ItemContainer = styled.div`
   flex-direction: column;
 `;
 
-const Item = styled.div<{ isSelected: boolean }>`
-  display: flex;
-  background-color: white;
-  align-items: center;
-  margin-bottom: var(--gap-2);
-  height: 60px;
-  border-radius: var(--rounded-lg);
-  border: ${(props) => (props.isSelected ? "2px solid var(--color-mint)" : "var(--border)")};
-`;
+// const Item = styled.div<{ isSelected: boolean }>`
+//   display: flex;
+//   background-color: white;
+//   align-items: center;
+//   margin-bottom: var(--gap-2);
+//   height: 60px;
+//   border-radius: var(--rounded-lg);
+//   border: ${(props) => (props.isSelected ? "2px solid var(--color-mint)" : "var(--border)")};
+// `;
 
-const IconWrapper = styled.div`
-  font-size: 18px;
-  width: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+// const IconWrapper = styled.div`
+//   font-size: 18px;
+//   width: 60px;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+// `;
 
-const Info = styled.div`
-  display: flex;
-  flex-direction: column;
-  > span:first-child {
-    font-weight: 600;
-  }
-  > span:last-child {
-    color: var(--gray-600);
-    font-size: 12px;
-  }
-`;
+// const Info = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   > span:first-child {
+//     font-weight: 600;
+//   }
+//   > span:last-child {
+//     color: var(--gray-600);
+//     font-size: 12px;
+//   }
+// `;
 
 export default WritingStudyCategorySub;
