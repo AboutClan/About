@@ -1,15 +1,16 @@
+import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useState } from "react";
-import styled from "styled-components";
+import { useEffect, useRef, useState } from "react";
 
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
 import {
-  GROUP_STUDY_CATEGORY_ARR,
-  GROUP_STUDY_CATEGORY_ARR_ICONS,
-} from "../../../constants/contentsText/GroupStudyContents";
+  GATHER_TYPES,
+  GatherCategoryIcons,
+  GatherCategoryMain,
+} from "../../../constants/contentsText/GatherContents";
 import { GROUP_WRITING_STORE } from "../../../constants/keys/localStorage";
 import { useFailToast } from "../../../hooks/custom/CustomToast";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
@@ -19,10 +20,20 @@ import { setLocalStorageObj } from "../../../utils/storageUtils";
 function WritingStudyCategoryMain() {
   const failToast = useFailToast();
   const router = useRouter();
-
+  const refs = useRef<(HTMLDivElement | null)[]>([]);
   const groupWriting: IGroupWriting = JSON.parse(localStorage.getItem(GROUP_WRITING_STORE));
 
-  const [category, setCategory] = useState<string>(groupWriting?.category?.main);
+  const [category, setCategory] = useState<GatherCategoryMain>(groupWriting?.category?.main);
+
+  useEffect(() => {
+    if (category) {
+      const idx = GATHER_TYPES.findIndex((type) => type.title === category);
+      const target = refs.current[idx];
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+  }, [category]);
 
   const onClickNext = () => {
     if (!category) {
@@ -33,7 +44,7 @@ function WritingStudyCategoryMain() {
       ...groupWriting,
       category: { ...groupWriting?.category, main: category },
     });
-    router.push({ pathname: `/group/writing/sub`, query: router.query });
+    router.push({ pathname: `/group/writing/guide`, query: router.query });
   };
 
   return (
@@ -47,58 +58,38 @@ function WritingStudyCategoryMain() {
         <RegisterOverview>
           <span>주제를 선택해 주세요.</span>
         </RegisterOverview>
-        <ItemContainer>
-          {GROUP_STUDY_CATEGORY_ARR.map((type, idx) =>
-            type !== "전체" ? (
-              <Item key={idx} isSelected={type === category} onClick={() => setCategory(type)}>
-                <IconWrapper>{GROUP_STUDY_CATEGORY_ARR_ICONS[type]}</IconWrapper>
-                <Info>{type}</Info>
-              </Item>
-            ) : null,
-          )}
-        </ItemContainer>
+        <Flex flexDir="column">
+          {GATHER_TYPES.map((type, idx) => (
+            <Flex
+              key={idx}
+              align="center"
+              ref={(el) => (refs.current[idx] = el)}
+              p={4}
+              py={3}
+              border={type.title === category ? "var(--border-mint)" : "var(--border-main)"}
+              borderRadius="8px"
+              onClick={() => setCategory(type.title)}
+              mb={2}
+            >
+              <Flex justify="center" align="center" w="20px" mr={5} fontSize="15px" color="red.400">
+                {GatherCategoryIcons[idx]}
+              </Flex>
+              <Flex flexDir="column">
+                <Box fontSize="14px" color="gray.800" fontWeight="semibold">
+                  {type.title}
+                </Box>
+                <Box fontSize="12px" color="gray.500">
+                  {type.subtitle}
+                </Box>
+              </Flex>
+            </Flex>
+          ))}
+        </Flex>
       </RegisterLayout>
 
       <BottomNav onClick={onClickNext} />
     </>
   );
 }
-
-const ItemContainer = styled.div`
-  margin-top: var(--gap-5);
-  display: flex;
-  flex-direction: column;
-`;
-
-const Item = styled.div<{ isSelected: boolean }>`
-  display: flex;
-  align-items: center;
-  margin-bottom: var(--gap-2);
-  height: 60px;
-  background-color: white;
-  border-radius: var(--rounded-lg);
-
-  border: ${(props) => (props.isSelected ? "2px solid var(--color-mint)" : "var(--border)")};
-`;
-
-const IconWrapper = styled.div`
-  font-size: 18px;
-  width: 60px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const Info = styled.div`
-  display: flex;
-  flex-direction: column;
-  > span:first-child {
-    font-weight: 600;
-  }
-  > span:last-child {
-    color: var(--gray-600);
-    font-size: 12px;
-  }
-`;
 
 export default WritingStudyCategoryMain;

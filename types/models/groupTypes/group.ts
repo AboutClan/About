@@ -1,10 +1,8 @@
-import { GROUP_STUDY_CATEGORY_ARR } from "../../../constants/contentsText/GroupStudyContents";
+import { GatherCategoryMain } from "../../../constants/contentsText/GatherContents";
 import { UserCommentProps } from "../../components/propTypes";
 import { LocationFilterType } from "../../services/locationTypes";
 import { TimeStampProps } from "../../utils/timeAndDate";
 import { IUser, IUserSummary } from "../userTypes/userInfoTypes";
-
-export type GroupCategory = (typeof GROUP_STUDY_CATEGORY_ARR)[number];
 
 export type GroupStatus = "pending" | "end" | "imminent" | "full" | "planned" | "resting";
 export interface IGroup extends IGroupWriting {
@@ -60,7 +58,7 @@ export interface IGroupWriting extends TimeStampProps {
 }
 
 export interface IGroupWritingCategory {
-  main: string;
+  main: GatherCategoryMain;
   sub: string;
 }
 export interface IWeekRecord {

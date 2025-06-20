@@ -17,6 +17,7 @@ import { checkAndSetLocalStorage } from "../../utils/storageUtils";
 
 function Gather() {
   const router = useRouter();
+
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
   const tabParam = searchParams.get("tab");

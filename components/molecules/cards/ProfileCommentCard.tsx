@@ -10,6 +10,7 @@ import Avatar from "../../atoms/Avatar";
 import UserBadge from "../../atoms/badges/UserBadge";
 import Textarea from "../../atoms/Textarea";
 import { ChatTalkIcon } from "../../Icons/chatIcons";
+import { CrownIcon } from "../../Icons/icons";
 
 export interface IProfileCommentCard {
   user: UserSimpleInfoProps | IUserSummary;
@@ -21,6 +22,7 @@ export interface IProfileCommentCard {
   changeComment?: (comment: string) => void;
   size?: "md" | "lg";
   isNoBorder?: boolean;
+  crownType?: "main" | "sub";
 }
 
 export default function ProfileCommentCard({
@@ -32,6 +34,7 @@ export default function ProfileCommentCard({
   hasCommentButton,
   comment,
   isNoBorder,
+  crownType,
 }: IProfileCommentCard) {
   const { data: session } = useSession();
   const [isCommentModal, setIsCommentModal] = useState(false);
@@ -48,7 +51,7 @@ export default function ProfileCommentCard({
     setIsCommentModal(false);
     setIsEdit(false);
   };
-
+  console.log(35, crownType);
   return (
     <>
       <Flex py={3} h="74px" align="center" {...(!isNoBorder && { borderBottom: "var(--border)" })}>
@@ -60,9 +63,13 @@ export default function ProfileCommentCard({
             <Box lineHeight="20px" mr={1} fontWeight="semibold" fontSize="13px">
               {user?.name || "익명"}
             </Box>
-
             <UserBadge badgeIdx={user?.badge?.badgeIdx} />
 
+            {crownType && (
+              <Flex justify="center" align="center" ml={1}>
+                <CrownIcon color={crownType === "main" ? "yellow" : "gray"} />
+              </Flex>
+            )}
             {hasCommentButton && (
               <Button ml={1} variant="unstyled" onClick={() => setIsCommentModal(true)}>
                 <ChatTalkIcon isActive={!!comment} />

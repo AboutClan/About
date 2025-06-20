@@ -259,7 +259,7 @@ function WritingCondition() {
       />
       {isConfirmModal && (
         <GroupConfirmModal setIsModal={setIsConfirmModal} groupWriting={groupWriting} />
-      )}{" "}
+      )}
       {isMemberConditionModal && (
         <GatherWritingUserConditionModal
           type="group"

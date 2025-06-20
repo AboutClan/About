@@ -33,7 +33,7 @@ function GroupMine() {
   );
 
   const handleClick = (e: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>) => {
-    toast("info", "소모임 개설을 위해서는 운영진에게 문의주세요!");
+    toast("info", "소모임 개설은 About 카카오 채널로 문의주세요!");
     e.stopPropagation();
     e.preventDefault();
   };

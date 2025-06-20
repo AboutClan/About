@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 
+import WritingButton from "../../../components/atoms/buttons/WritingButton";
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../components/layouts/PageSlide";
 import BlurredLink from "../../../components/molecules/BlurredLink";
@@ -29,9 +30,6 @@ function GroupDetail() {
 
   const [group, setTransferGroup] = useRecoilState(transferGroupDataState);
   const { data: groupData } = useGroupIdQuery(id, { enabled: !!id && !group });
-  console.log(15, groupData);
-
-  const isOnlyView = group?.category.main === "콘텐츠";
 
   useEffect(() => {
     if (groupData) {
@@ -58,18 +56,18 @@ function GroupDetail() {
         {group && (
           <>
             <GroupCover image={group?.image} />
-            {!isOnlyView && (
-              <Flex direction="column" px={5} py={4}>
-                <Flex mb={4}>
-                  <Badge mr={1} variant="subtle" size="lg" colorScheme="badgeMint">
-                    {group.category.main}
-                  </Badge>
-                  <Badge variant="subtle" size="lg">
-                    {group.category.sub}
-                  </Badge>
-                </Flex>
 
-                {/* <GroupTitle
+            <Flex direction="column" px={5} py={4}>
+              <Flex mb={4}>
+                <Badge mr={1} variant="subtle" size="lg" colorScheme="badgeMint">
+                  {group.category.main}
+                </Badge>
+                <Badge variant="subtle" size="lg">
+                  {group.category.sub}
+                </Badge>
+              </Flex>
+
+              {/* <GroupTitle
                 isAdmin={group.organizer.uid === session?.user.uid}
                 memberCnt={group.participants.length}
                 title={group.title}
@@ -78,51 +76,45 @@ function GroupDetail() {
                 maxCnt={group.memberCnt.max}
                 isWaiting={group.waiting.length !== 0}
               /> */}
-                <Box mb={4} fontSize="18px" fontWeight="bold" lineHeight="28px">
-                  {group.title}
-                </Box>
-                <InfoBoxCol
-                  infoBoxPropsArr={[
-                    {
-                      category: group.participants.length > 1 ? "개 설" : "개설 예정",
-                      text:
-                        group.participants.length > 1
-                          ? dayjsToFormat(dayjs(group.createdAt), "YYYY년 M월 D일")
-                          : "2025년 중",
-                    },
-                    { category: "가입 방식", text: group.isFree ? "자유 가입" : "승인제" },
-                    { category: "보증금", text: group.fee ? group.fee + "원" : "없음" },
-                    {
-                      category: "활동 톡방",
-                      rightChildren: <BlurredLink isBlur={!isMember} url={group?.link} />,
-                    },
-                  ]}
-                  size="md"
-                />
-              </Flex>
-            )}
-            <Box mt={isOnlyView ? 0 : 5} h={2} bg="gray.100" />
+              <Box mb={4} fontSize="18px" fontWeight="bold" lineHeight="28px">
+                {group.title}
+              </Box>
+              <InfoBoxCol
+                infoBoxPropsArr={[
+                  {
+                    category: group.participants.length > 1 ? "개 설" : "개설 예정",
+                    text:
+                      group.participants.length > 1
+                        ? dayjsToFormat(dayjs(group.createdAt), "YYYY년 M월 D일")
+                        : "2025년 중",
+                  },
+                  { category: "가입 방식", text: group.isFree ? "자유 가입" : "승인제" },
+                  { category: "보증금", text: group.fee ? group.fee + "원" : "없음" },
+                  {
+                    category: "활동 톡방",
+                    rightChildren: <BlurredLink isBlur={!isMember} url={group?.link} />,
+                  },
+                ]}
+                size="md"
+              />
+            </Flex>
+
             <Flex direction="column" mb={10}>
               <Box px={5}>
                 <Box my={4} fontSize="18px" fontWeight="bold" lineHeight="28px">
-                  소개
+                  모임 소개
                 </Box>
-                {group.category.main === "시험기간" ? (
-                  <Box fontSize="12px" mb={4} color="mint">
-                    ※ 해당 챌린지는 카톡방에서 진행됩니다. 관련 사항은 동아리 공지방을 확인해주세요!
-                  </Box>
-                ) : group.status === "resting" ? (
+                {group.status === "resting" ? (
                   <Box fontSize="12px" mb={4} color="mint">
                     ※ 현재 휴식중인 소모임입니다. 방학 중 활동 예정!
                   </Box>
                 ) : null}
                 <Box
-                  color="gray.600"
+                  color="gray.800"
                   fontWeight="regular"
-                  fontSize="12px"
+                  fontSize="14px"
                   fontFamily="apple"
                   whiteSpace="pre-wrap"
-                  lineHeight="18px"
                   mb={5}
                 >
                   {group.content}
@@ -197,16 +189,18 @@ function GroupDetail() {
               </Box>
 
               <Box h="1px" my={5} bg="gray.100" />
-              {!isOnlyView ? (
-                <>
-                  <GroupParticipation data={group} />
-                  <GroupComments comments={group.comments} hasAutority={isMember} />
-                </>
-              ) : null}
+
+              <GroupParticipation data={group} />
+              <GroupComments comments={group.comments} hasAutority={isMember} />
             </Flex>
           </>
         )}
       </Slide>
+      <WritingButton
+          url={`/gather/writing/category?groupId=${group?.id}`}
+          type="thunder"
+          isBottomNav={false}
+        />
 
       {!group && <MainLoading />}
       {group && !isMember && !isGuest ? <GroupBottomNav data={group} /> : null}

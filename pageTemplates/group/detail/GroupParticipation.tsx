@@ -2,6 +2,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import styled from "styled-components";
 
 import { IProfileCommentCard } from "../../../components/molecules/cards/ProfileCommentCard";
+import SocialingScoreBadge from "../../../components/molecules/SocialingScoreBadge";
 import ProfileCardColumn from "../../../components/organisms/ProfileCardColumn";
 import { GROUP_STUDY_ROLE } from "../../../constants/settingValue/groupStudy";
 import { IGroup } from "../../../types/models/groupTypes/group";
@@ -15,6 +16,8 @@ function GroupParticipation({ data }: IGroupParticipation) {
   const isPlanned = data?.participants.length <= 1;
   const waitingCnt = data?.waiting.length;
   const userCardArr: IProfileCommentCard[] = data.participants.map((par) => {
+    const roleText = GROUP_STUDY_ROLE[par.role];
+
     if (isSecret) {
       return {
         user: null,
@@ -25,9 +28,10 @@ function GroupParticipation({ data }: IGroupParticipation) {
     return {
       user: par.user,
       comment: { comment: par.user?.comment || "비공개 계정입니다." },
+      crownType: roleText === "소모임장" ? "main" : roleText === "운영진" ? "sub" : null,
       rightComponent: (
         <>
-          <ParticipateTime isFirst={true}>{GROUP_STUDY_ROLE[par.role]}</ParticipateTime>
+          <SocialingScoreBadge user={par.user} size="sm" />
         </>
       ),
     };

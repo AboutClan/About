@@ -9,31 +9,21 @@ import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import SectionHeader from "../../components/atoms/SectionHeader";
 import Select from "../../components/atoms/Select";
-import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import InfoModalButton from "../../components/modalButtons/InfoModalButton";
 import { GroupThumbnailCard } from "../../components/molecules/cards/GroupThumbnailCard";
-import ButtonGroups from "../../components/molecules/groups/ButtonGroups";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
-import {
-  GROUP_STUDY_CATEGORY_ARR,
-  GROUP_STUDY_SUB_CATEGORY,
-} from "../../constants/contentsText/GroupStudyContents";
+import { GatherCategoryMain } from "../../constants/contentsText/GatherContents";
 import { GROUP_CURSOR_NUM, GROUP_WRITING_STORE } from "../../constants/keys/localStorage";
 import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import { useGroupQuery } from "../../hooks/groupStudy/queries";
 import GroupMine from "../../pageTemplates/group/GroupMine";
 import GroupSkeletonMain from "../../pageTemplates/group/GroupSkeletonMain";
 import { transferGroupDataState } from "../../recoils/transferRecoils";
-import { GroupCategory, GroupStatus, IGroup } from "../../types/models/groupTypes/group";
+import { GroupStatus, IGroup } from "../../types/models/groupTypes/group";
 import { shuffleArray } from "../../utils/convertUtils/convertDatas";
 import { getRandomImage } from "../../utils/imageUtils";
-
-interface ICategory {
-  main: GroupCategory;
-  sub: string | null;
-}
 
 type Status = "모집중" | "종료" | "오픈 예정";
 
@@ -49,6 +39,8 @@ const enToStatus: Record<string, Status> = Object.entries(statusToEn).reduce(
   },
   {} as Record<string, Status>,
 );
+
+/** cursor 수동으로 관리하고 있음. */
 
 function GroupPage() {
   const searchParams = useSearchParams();
@@ -67,23 +59,35 @@ function GroupPage() {
   const [groupStudies, setGroupStudies] = useState<IGroup[]>([]);
 
   const [cursor, setCursor] = useState(localStorageCursorNum);
-  const [category, setCategory] = useState<ICategory>({
-    main: GROUP_STUDY_CATEGORY_ARR[categoryIdx] || "전체",
-    sub: null,
-  });
+  const [category, setCategory] = useState<GatherCategoryMain | "전체">("전체");
 
   const loader = useRef<HTMLDivElement | null>(null);
   const firstLoad = useRef(true);
 
   const { data: groups, isLoading } = useGroupQuery(
     status === "모집중" ? "pending" : status === "오픈 예정" ? "planned" : "end",
-    category.main,
-    category.main === "전체" && status !== "오픈 예정" ? cursor : 0,
+    category,
+    category === "전체" && status !== "오픈 예정" ? cursor : 0,
     {
       enabled: !!status,
     },
   );
 
+  const categoryArr = [
+    { title: "전체" },
+    { title: "스터디" },
+    { title: "자기계발" },
+    { title: "감상" },
+    { title: "소셜 게임" },
+    { title: "운동" },
+    { title: "말하기" },
+    { title: "푸드" },
+    { title: "힐링" },
+    { title: "친목" },
+    { title: "파티" },
+  ];
+
+  console.log(54, category, cursor, groups, localStorageCursorNum);
   useEffect(() => {
     return () => {
       const localStorageCursorNumChange = !localStorageCursorNum
@@ -102,14 +106,11 @@ function GroupPage() {
   useEffect(() => {
     setCursor(localStorageCursorNum);
     setGroupStudies([]);
-  }, [status, category.main]);
+  }, [status, category]);
 
   useEffect(() => {
     localStorage.setItem(GROUP_WRITING_STORE, null);
-    setCategory({
-      main: categoryIdx !== null ? GROUP_STUDY_CATEGORY_ARR[categoryIdx] : "전체",
-      sub: null,
-    });
+    setCategory(categoryIdx !== null ? categoryArr[categoryIdx].title : "전체");
 
     if (!searchParams.get("filter")) {
       newSearchParams.append("filter", "pending");
@@ -121,7 +122,15 @@ function GroupPage() {
         if (entries[0].isIntersecting && !firstLoad.current) {
           setCursor((prevCursor) => {
             const nextCursor =
-              prevCursor === 0 ? 1 : prevCursor === 1 ? 2 : prevCursor === 2 ? 3 : 0;
+              prevCursor === 0
+                ? 1
+                : prevCursor === 1
+                ? 2
+                : prevCursor === 2
+                ? 3
+                : prevCursor === 3
+                ? 4
+                : 0;
             if (nextCursor === localStorageCursorNum) {
               return prevCursor;
             }
@@ -153,28 +162,25 @@ function GroupPage() {
     if (!groups) return;
     firstLoad.current = false;
 
-    if (category.main === "전체") {
+    if (category === "전체") {
       const newArray = shuffleArray(groups);
       setGroupStudies((old) => [
         ...newArray.filter((item) => !old.some((existingItem) => existingItem.id === item.id)),
         ...old,
       ]);
     } else {
-      setGroupStudies(groups.filter((item) => !category.sub || item.category.sub === category.sub));
+      setGroupStudies(groups);
     }
-  }, [groups, category.main, category.sub]);
+  }, [groups, category, category]);
 
-  const mainTabOptionsArr: ITabNavOptions[] = GROUP_STUDY_CATEGORY_ARR.map((category, idx) => ({
-    text: category,
+  const mainTabOptionsArr: ITabNavOptions[] = categoryArr?.map((category, idx) => ({
+    text: category.title,
     func: () => {
       newSearchParams.set("category", idx + "");
       router.replace(`/group?${newSearchParams.toString()}`, {
         scroll: false,
       });
-      setCategory({
-        main: GROUP_STUDY_CATEGORY_ARR[idx],
-        sub: null,
-      });
+      setCategory(categoryArr[idx].title as GatherCategoryMain);
     },
   }));
 
@@ -202,30 +208,9 @@ function GroupPage() {
             </SectionHeader>
           </Box>
           <Box borderBottom="var(--border)" px={5} mb={2}>
-            <TabNav isBlack selected={category.main} tabOptionsArr={mainTabOptionsArr} isMain />
+            <TabNav isBlack selected={category} tabOptionsArr={mainTabOptionsArr} isMain />
           </Box>
 
-          {category.main !== "전체" && (
-            <Box px={5} py={3}>
-              <ButtonGroups
-                buttonOptionsArr={GROUP_STUDY_SUB_CATEGORY[category.main].map((prop) => ({
-                  icon: (
-                    <CheckCircleIcon
-                      color={category.sub === prop ? "mint" : "gray"}
-                      size="sm"
-                      isFill
-                    />
-                  ),
-                  text: prop,
-                  func: () =>
-                    setCategory((old) => ({ ...old, sub: old.sub === prop ? null : prop })),
-                }))}
-                currentValue={category.sub}
-                isEllipse
-                size="md"
-              />
-            </Box>
-          )}
           <Box minH="100dvh" p={5}>
             {!groupStudies.length && isLoading ? (
               [1, 2, 3, 4, 5].map((num) => <GroupSkeletonMain key={num} />)

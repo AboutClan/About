@@ -75,12 +75,7 @@ export function GroupThumbnailCard({
             <Box as="span" fontWeight="medium" lineHeight="12px" color="mint">
               {category?.main}
             </Box>
-            <Box as="span" fontWeight="regular" color="var(--gray-400)">
-              ・
-            </Box>
-            <Box as="span" color="gray.500" fontWeight="regular">
-              {category?.sub}
-            </Box>{" "}
+
             <Box as="span" fontWeight="regular" color="var(--gray-400)">
               ・
             </Box>
@@ -89,9 +84,7 @@ export function GroupThumbnailCard({
             </Box>
           </Box>
           <Badge mr={1} size="lg" colorScheme={statusToBadgeProps[status].colorScheme}>
-            {status === "pending" && category.main === "콘텐츠"
-              ? "진행중"
-              : statusToBadgeProps[status].text}
+            {status === "pending" ? "진행중" : statusToBadgeProps[status].text}
           </Badge>
         </Flex>
         <Title isBig={isBig}>{title}</Title>
@@ -125,10 +118,6 @@ export function GroupThumbnailCard({
               </Flex>
             </Flex>
           </Flex>
-        ) : category?.main !== "콘텐츠" ? (
-          <Box ml="auto" mr={1} h={4} fontSize="11px" color="purple" fontWeight="semibold">
-            {waitingCnt + 7}명의 멤버가 오픈을 기다리고 있어요
-          </Box>
         ) : null}
       </Flex>
     </CardLink>

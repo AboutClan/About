@@ -23,6 +23,7 @@ function GatherParticipation({ data }: IGatherParticipation) {
     user: data?.user as IUser,
     memo: (data?.user as IUser).comment,
     rightComponent: <SocialingScoreBadge user={data?.user as UserSimpleInfoProps} size="sm" />,
+    crownType: "main" as const,
   };
 
   const userCardArr: IProfileCommentCard[] = (data?.participants ? [...data.participants] : []).map(
