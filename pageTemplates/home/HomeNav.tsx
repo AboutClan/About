@@ -2,6 +2,8 @@ import { Box, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 
+import ExternalLink from "../../components/molecules/ExternalLink";
+
 function HomeNav() {
   return (
     <Flex mb={3}>
@@ -43,15 +45,9 @@ function HomeNav() {
         const style = { flex: 1, marginLeft: idx === 0 ? 0 : "8px" };
 
         return item.isExternalLink ? (
-          <a
-            href={item.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            key={item.title}
-            style={style}
-          >
+          <ExternalLink href={item.url} key={item.title} style={style}>
             {content}
-          </a>
+          </ExternalLink>
         ) : (
           <Link href={item.url} key={item.title} style={style}>
             {content}
