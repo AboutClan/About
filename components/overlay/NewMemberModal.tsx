@@ -10,7 +10,7 @@ interface NewMemberModalProps extends CloseProps {}
 
 function NewMemberModal({ onClose }: NewMemberModalProps) {
   const handleClick = () => {
-    window.location.href = "https://invite.kakao.com/tc/HOmUdQMjSs";
+    window.open("https://invite.kakao.com/tc/HOmUdQMjSs", "_blank");
     localStorage.setItem(NEW_MEMBER_MODAL_AT, dayjs().add(9, "day").format("YYYYMMDD"));
   };
 
