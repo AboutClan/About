@@ -4,8 +4,7 @@ import { Badge, Box, Flex, ListItem, Text, UnorderedList } from "@chakra-ui/reac
 import dayjs from "dayjs";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 
 import WritingButton from "../../../components/atoms/buttons/WritingButton";
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
@@ -19,7 +18,6 @@ import GroupCover from "../../../pageTemplates/group/detail/GroupCover";
 import GroupHeader from "../../../pageTemplates/group/detail/GroupHeader";
 import GroupParticipation from "../../../pageTemplates/group/detail/GroupParticipation";
 import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
-import { transferGroupDataState } from "../../../recoils/transferRecoils";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
 export type GroupSectionCategory = "정 보" | "피 드";
@@ -29,24 +27,9 @@ function GroupDetail() {
   const isGuest = session?.user.name === "guest";
   const { id } = useParams<{ id: string }>() || {};
 
-  const [group, setTransferGroup] = useRecoilState(transferGroupDataState);
   const setGatherWriting = useSetRecoilState(sharedGatherWritingState);
 
-  const { data: groupData } = useGroupIdQuery(id, { enabled: !!id && !group });
-
-  useEffect(() => {
-    if (groupData) {
-      setTransferGroup(groupData);
-    }
-  }, [groupData]);
-
-  // useEffect(() => {
-  //   if (!group) return;
-  //   const firstDate = group.attendance.firstDate;
-  //   if (!firstDate) return;
-  //   if (firstDate !== dayjsToStr(dayjs().subtract(1, "day").startOf("week").add(1, "day")))
-  //     patchAttendance();
-  // }, [group?.attendance?.firstDate]);
+  const { data: group } = useGroupIdQuery(id, { enabled: !!id });
 
   const findMyInfo =
     group?.participants && group.participants.find((who) => who?.user?._id === session?.user?.id);
@@ -66,22 +49,21 @@ function GroupDetail() {
   return (
     <>
       {group && <GroupHeader group={group} />}
-      <Slide isNoPadding>
-        {group && (
-          <>
-            <GroupCover image={group?.image} />
+      {group && (
+        <Slide isNoPadding>
+          <GroupCover image={group?.image} />
 
-            <Flex direction="column" px={5} py={4}>
-              <Flex mb={4}>
-                <Badge mr={1} variant="subtle" size="lg" colorScheme="badgeMint">
-                  {group.category.main}
-                </Badge>
-                <Badge variant="subtle" size="lg">
-                  {group.category.sub}
-                </Badge>
-              </Flex>
+          <Flex direction="column" px={5} py={4}>
+            <Flex mb={4}>
+              <Badge mr={1} variant="subtle" size="lg" colorScheme="badgeMint">
+                {group.category.main}
+              </Badge>
+              <Badge variant="subtle" size="lg">
+                {group.category.sub}
+              </Badge>
+            </Flex>
 
-              {/* <GroupTitle
+            {/* <GroupTitle
                 isAdmin={group.organizer.uid === session?.user.uid}
                 memberCnt={group.participants.length}
                 title={group.title}
@@ -90,126 +72,125 @@ function GroupDetail() {
                 maxCnt={group.memberCnt.max}
                 isWaiting={group.waiting.length !== 0}
               /> */}
-              <Box mb={4} fontSize="18px" fontWeight="bold" lineHeight="28px">
-                {group.title}
-              </Box>
-              <InfoBoxCol
-                infoBoxPropsArr={[
-                  {
-                    category: group.participants.length > 1 ? "개 설" : "개설 예정",
-                    text:
-                      group.participants.length > 1
-                        ? dayjsToFormat(dayjs(group.createdAt), "YYYY년 M월 D일")
-                        : "2025년 중",
-                  },
-                  { category: "가입 방식", text: group.isFree ? "자유 가입" : "승인제" },
-                  { category: "보증금", text: group.fee ? group.fee + "원" : "없음" },
-                  {
-                    category: "활동 톡방",
-                    rightChildren: <BlurredLink isBlur={!findMyInfo} url={group?.link} />,
-                  },
-                ]}
-                size="md"
-              />
-            </Flex>
+            <Box mb={4} fontSize="18px" fontWeight="bold" lineHeight="28px">
+              {group.title}
+            </Box>
+            <InfoBoxCol
+              infoBoxPropsArr={[
+                {
+                  category: group.participants.length > 1 ? "개 설" : "개설 예정",
+                  text:
+                    group.participants.length > 1
+                      ? dayjsToFormat(dayjs(group.createdAt), "YYYY년 M월 D일")
+                      : "2025년 중",
+                },
+                { category: "가입 방식", text: group.isFree ? "자유 가입" : "승인제" },
+                { category: "보증금", text: group.fee ? group.fee + "원" : "없음" },
+                {
+                  category: "활동 톡방",
+                  rightChildren: <BlurredLink isBlur={!findMyInfo} url={group?.link} />,
+                },
+              ]}
+              size="md"
+            />
+          </Flex>
 
-            <Flex direction="column" mb={10}>
-              <Box px={5}>
-                <Box my={4} fontSize="18px" fontWeight="bold" lineHeight="28px">
-                  모임 소개
+          <Flex direction="column" mb={10}>
+            <Box px={5}>
+              <Box my={4} fontSize="18px" fontWeight="bold" lineHeight="28px">
+                모임 소개
+              </Box>
+              {group.status === "resting" ? (
+                <Box fontSize="12px" mb={4} color="mint">
+                  ※ 현재 휴식중인 소모임입니다. 방학 중 활동 예정!
                 </Box>
-                {group.status === "resting" ? (
-                  <Box fontSize="12px" mb={4} color="mint">
-                    ※ 현재 휴식중인 소모임입니다. 방학 중 활동 예정!
-                  </Box>
-                ) : null}
-                <Box
-                  color="gray.800"
-                  fontWeight="regular"
-                  fontSize="14px"
-                  fontFamily="apple"
-                  whiteSpace="pre-wrap"
-                  mb={5}
-                >
-                  {group.content}
-                </Box>{" "}
-                {group.rules.length ? (
-                  <>
-                    <Box mb={3} fontSize="14px" fontWeight="bold" lineHeight="20px">
-                      <UnorderedList ml={-1.5}>
-                        <ListItem
-                          className="colored-bullet"
-                          sx={{
-                            "::marker": {
-                              color: "blue", // 원하는 색상
-                            },
-                          }}
-                        >
-                          <Text lineHeight="20px">규 칙</Text>
-                        </ListItem>
-                      </UnorderedList>
-                    </Box>
-                    <Box
-                      fontWeight="light"
-                      fontSize="12px"
-                      lineHeight="20px"
-                      bg="rgba(160, 174, 192, 0.08)"
-                      py={4}
-                      borderRadius="8px"
-                      mb={5}
-                    >
-                      <UnorderedList>
-                        {group.rules.map((rule, idx) => (
-                          <ListItem key={idx}>
-                            <Text lineHeight="20px">{rule}</Text>
-                          </ListItem>
-                        ))}
-                      </UnorderedList>
-                    </Box>
-                  </>
-                ) : null}
-                {group?.notionUrl ? (
-                  <Box fontSize="13px" lineHeight="20px">
-                    <a
-                      href={group.notionUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ fontWeight: "600", color: "var(--color-blue)" }}
-                    >
-                      <u>&gt;&gt; 활동 기록 보러가기</u>
-                    </a>
-                  </Box>
-                ) : null}
-                <Flex mt={5}>
-                  {group.hashTag?.split("#").map((tag, idx) =>
-                    tag ? (
-                      <Box
-                        h={5}
-                        py={1}
-                        px={2}
-                        fontSize="10px"
-                        fontWeight="medium"
-                        color="gray.600"
-                        borderRadius="4px"
-                        bg="gray.100"
-                        mr={1}
-                        key={idx}
+              ) : null}
+              <Box
+                color="gray.800"
+                fontWeight="regular"
+                fontSize="14px"
+                fontFamily="apple"
+                whiteSpace="pre-wrap"
+                mb={5}
+              >
+                {group.content}
+              </Box>{" "}
+              {group.rules.length ? (
+                <>
+                  <Box mb={3} fontSize="14px" fontWeight="bold" lineHeight="20px">
+                    <UnorderedList ml={-1.5}>
+                      <ListItem
+                        className="colored-bullet"
+                        sx={{
+                          "::marker": {
+                            color: "blue", // 원하는 색상
+                          },
+                        }}
                       >
-                        #{tag}
-                      </Box>
-                    ) : null,
-                  )}
-                </Flex>
-              </Box>
+                        <Text lineHeight="20px">규 칙</Text>
+                      </ListItem>
+                    </UnorderedList>
+                  </Box>
+                  <Box
+                    fontWeight="light"
+                    fontSize="12px"
+                    lineHeight="20px"
+                    bg="rgba(160, 174, 192, 0.08)"
+                    py={4}
+                    borderRadius="8px"
+                    mb={5}
+                  >
+                    <UnorderedList>
+                      {group.rules.map((rule, idx) => (
+                        <ListItem key={idx}>
+                          <Text lineHeight="20px">{rule}</Text>
+                        </ListItem>
+                      ))}
+                    </UnorderedList>
+                  </Box>
+                </>
+              ) : null}
+              {group?.notionUrl ? (
+                <Box fontSize="13px" lineHeight="20px">
+                  <a
+                    href={group.notionUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ fontWeight: "600", color: "var(--color-blue)" }}
+                  >
+                    <u>&gt;&gt; 활동 기록 보러가기</u>
+                  </a>
+                </Box>
+              ) : null}
+              <Flex mt={5}>
+                {group.hashTag?.split("#").map((tag, idx) =>
+                  tag ? (
+                    <Box
+                      h={5}
+                      py={1}
+                      px={2}
+                      fontSize="10px"
+                      fontWeight="medium"
+                      color="gray.600"
+                      borderRadius="4px"
+                      bg="gray.100"
+                      mr={1}
+                      key={idx}
+                    >
+                      #{tag}
+                    </Box>
+                  ) : null,
+                )}
+              </Flex>
+            </Box>
 
-              <Box h="1px" my={5} bg="gray.100" />
+            <Box h="1px" my={5} bg="gray.100" />
 
-              <GroupParticipation data={group} />
-              <GroupComments comments={group.comments} hasAutority={!!findMyInfo} />
-            </Flex>
-          </>
-        )}
-      </Slide>
+            <GroupParticipation data={group} />
+            <GroupComments comments={group.comments} hasAutority={!!findMyInfo} />
+          </Flex>
+        </Slide>
+      )}
       {isAdmin && (
         <WritingButton
           url={`/gather/writing/category?groupId=${group?.id}`}

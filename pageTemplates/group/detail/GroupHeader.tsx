@@ -26,11 +26,11 @@ function GroupHeader({ group }: IGroupHeader) {
   const isAdmin =
     session?.user.uid === "2259633694" ||
     session?.user.uid === "3224546232" ||
-    group.organizer.uid === session?.user.uid;
+    group?.organizer.uid === session?.user.uid;
   const isMember =
     session?.user.uid === "2259633694" ||
     session?.user.uid === "3224546232" ||
-    group.participants.some((par) => par.user?.uid === session?.user.uid);
+    group?.participants.some((par) => par.user?.uid === session?.user.uid);
 
   const [isSettigModal, setIsSettingModal] = useState(false);
 
@@ -47,55 +47,57 @@ function GroupHeader({ group }: IGroupHeader) {
     mutate();
   };
 
-  const menuArr: MenuProps[] = [
-    ...(isMember && !isAdmin
-      ? [
-          {
-            text: "소모임 탈퇴하기",
-            icon: <MemberOutIcon />,
-            func: () => {
-              setIsSettingModal(true);
-            },
+  const menuArr: MenuProps[] = group
+    ? [
+        ...(isMember && !isAdmin
+          ? [
+              {
+                text: "소모임 탈퇴하기",
+                icon: <MemberOutIcon />,
+                func: () => {
+                  setIsSettingModal(true);
+                },
+              },
+            ]
+          : []),
+        ...(isAdmin
+          ? [
+              {
+                text: "모임 정보 수정",
+                icon: <EditIcon />,
+                func: () => {
+                  setLocalStorageObj(GROUP_WRITING_STORE, {
+                    ...group,
+                  });
+                  router.push(`/group/writing/main?id=${group.id}`);
+                },
+              },
+              {
+                text: "신청 인원 확인",
+                icon: <MemberCheckIcon />,
+                func: () => {
+                  router.push(`/group/${group.id}/admin`);
+                },
+              },
+              {
+                text: "인원 내보내기",
+                icon: <MemberMinusIcon />,
+                func: () => {
+                  router.push(`/group/${group.id}/member`);
+                },
+              },
+            ]
+          : []),
+        {
+          kakaoOptions: {
+            title: group?.title,
+            subtitle: group?.guide,
+            img: group?.squareImage,
+            url: "https://study-about.club" + router.asPath,
           },
-        ]
-      : []),
-    ...(isAdmin
-      ? [
-          {
-            text: "모임 정보 수정",
-            icon: <EditIcon />,
-            func: () => {
-              setLocalStorageObj(GROUP_WRITING_STORE, {
-                ...group,
-              });
-              router.push(`/group/writing/main?id=${group.id}`);
-            },
-          },
-          {
-            text: "신청 인원 확인",
-            icon: <MemberCheckIcon />,
-            func: () => {
-              router.push(`/group/${group.id}/admin`);
-            },
-          },
-          {
-            text: "인원 내보내기",
-            icon: <MemberMinusIcon />,
-            func: () => {
-              router.push(`/group/${group.id}/member`);
-            },
-          },
-        ]
-      : []),
-    {
-      kakaoOptions: {
-        title: group.title,
-        subtitle: group?.guide,
-        img: group?.squareImage,
-        url: "https://study-about.club" + router.asPath,
-      },
-    },
-  ];
+        },
+      ]
+    : [];
 
   const alertOptions: IAlertModalOptions = {
     title: "소모임 탈퇴",
