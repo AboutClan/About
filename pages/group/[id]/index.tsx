@@ -10,6 +10,7 @@ import WritingButton from "../../../components/atoms/buttons/WritingButton";
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../components/layouts/PageSlide";
 import BlurredLink from "../../../components/molecules/BlurredLink";
+import ExternalLink from "../../../components/molecules/ExternalLink";
 import InfoBoxCol from "../../../components/molecules/InfoBoxCol";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
 import GroupBottomNav from "../../../pageTemplates/group/detail/GroupBottomNav";
@@ -152,14 +153,12 @@ function GroupDetail() {
               ) : null}
               {group?.notionUrl ? (
                 <Box fontSize="13px" lineHeight="20px">
-                  <a
+                  <ExternalLink
                     href={group.notionUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
                     style={{ fontWeight: "600", color: "var(--color-blue)" }}
                   >
                     <u>&gt;&gt; 활동 기록 보러가기</u>
-                  </a>
+                  </ExternalLink>
                 </Box>
               ) : null}
               <Flex mt={5}>

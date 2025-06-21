@@ -21,6 +21,7 @@ import { useUserInfoQuery } from "../hooks/user/queries";
 import ForceLogoutDialog from "../modals/login/ForceLogoutDialog";
 import GuestLoginModal from "../modals/login/GuestLoginModal";
 import { IFooterOptions, ModalLayout } from "../modals/Modals";
+import { navigateExternalLink } from "../utils/navigateUtils";
 import { detectDevice } from "../utils/validationUtils";
 
 const Login: NextPage<{
@@ -104,7 +105,7 @@ const Login: NextPage<{
     main: {
       text: "카카오 채널로 이동하기",
       func: () => {
-        window.location.href = `https://pf.kakao.com/_SaWXn/chat`;
+        navigateExternalLink(`https://pf.kakao.com/_SaWXn/chat`);
       },
     },
   };

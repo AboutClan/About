@@ -18,6 +18,7 @@ import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
+import { navigateExternalLink } from "../../utils/navigateUtils";
 import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
 function Fee() {
@@ -42,7 +43,7 @@ function Fee() {
       router.push("/login");
 
       setTimeout(() => {
-        window.location.href = `https://pf.kakao.com/_SaWXn/chat`;
+        navigateExternalLink("https://pf.kakao.com/_SaWXn/chat");
       }, 500);
     },
     onError: errorToast,
