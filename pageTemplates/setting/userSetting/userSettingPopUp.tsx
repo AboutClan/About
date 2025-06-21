@@ -52,7 +52,7 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
   useEffect(() => {
     if (data === undefined || !session) return;
     if (
-      user?.name !== "이승주" ||
+      user?.name === "이승주" ||
       (dayjs(user.registerDate).diff(dayjs(), "d") >= -14 &&
         !checkAndSetLocalStorage(NEW_MEMBER_MODAL_AT, 3))
     ) {
