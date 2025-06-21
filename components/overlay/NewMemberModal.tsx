@@ -5,12 +5,19 @@ import Image from "next/image";
 import { NEW_MEMBER_MODAL_AT } from "../../constants/keys/localStorage";
 import { ModalLayout } from "../../modals/Modals";
 import { CloseProps } from "../../types/components/modalTypes";
+import { isWebView } from "../../utils/appEnvUtils";
+import { nativeMethodUtils } from "../../utils/nativeMethodUtils";
 
 interface NewMemberModalProps extends CloseProps {}
 
 function NewMemberModal({ onClose }: NewMemberModalProps) {
   const handleClick = () => {
-    window.open("https://invite.kakao.com/tc/HOmUdQMjSs", "_blank");
+    const url = "https://invite.kakao.com/tc/HOmUdQMjSs";
+    if (isWebView()) {
+      nativeMethodUtils.openExternalLink(url);
+    } else {
+      window.open(url, "_blank");
+    }
     localStorage.setItem(NEW_MEMBER_MODAL_AT, dayjs().add(9, "day").format("YYYYMMDD"));
   };
 
