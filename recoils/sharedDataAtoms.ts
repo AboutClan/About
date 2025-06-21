@@ -8,7 +8,7 @@ export const sharedStudyWritingState = atom<StudyWritingProps>({
   key: "sharedStudyWritingState",
   default: null,
 });
-export const sharedGatherWritingState = atom<IGatherWriting>({
+export const sharedGatherWritingState = atom<Partial<IGatherWriting>>({
   key: "sharedGatherWritingState",
   default: null,
 });

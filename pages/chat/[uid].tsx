@@ -96,7 +96,6 @@ function Uid() {
             {!isLoading ? (
               <>
                 {chats.map((chat, idx) => {
-              
                   return (
                     <Box key={idx} mb="16px">
                       {chat.isMine ? (

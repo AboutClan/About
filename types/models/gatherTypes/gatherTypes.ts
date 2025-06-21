@@ -37,9 +37,10 @@ export interface IGatherWriting {
   coverImage?: string;
   kakaoUrl?: string;
   isApprovalRequired?: boolean;
+  category: { category: GatherCategory; id: string };
 }
 
-export type GatherCategory = "전체" | "모집중" | "완료";
+export type GatherCategory = "gather" | "event" | "group";
 export type IGatherType = { title: GatherCategoryMain; subtitle?: string };
 
 export type GatherStatus = "open" | "close" | "end" | "pending" | "planned";

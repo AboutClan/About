@@ -72,7 +72,7 @@ function WritingCondition() {
       return;
     }
 
-    const gatherData: IGatherWriting = {
+    const gatherData: Partial<IGatherWriting> = {
       age: [19, 28],
       memberCnt: {
         min: 4,

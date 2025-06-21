@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 
 import BottomNav from "../../../components/layouts/BottomNav";
@@ -16,12 +16,21 @@ import { IGatherType } from "../../../types/models/gatherTypes/gatherTypes";
 
 function WritingGatherCategory() {
   const router = useRouter();
-
+  const refs = useRef<(HTMLDivElement | null)[]>([]);
   const failToast = useFailToast();
 
   const [gatherWriting, setGatherWriting] = useRecoilState(sharedGatherWritingState);
-
   const [gatherType, setGatherType] = useState<IGatherType>(gatherWriting?.type);
+
+  useEffect(() => {
+    if (gatherType) {
+      const idx = GATHER_TYPES.findIndex((type) => type.title === gatherType.title);
+      const target = refs.current[idx];
+      if (target) {
+        target.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+  }, [gatherType]);
 
   const onClickNext = () => {
     if (!gatherType) {
@@ -48,6 +57,7 @@ function WritingGatherCategory() {
             <Flex
               key={idx}
               align="center"
+              ref={(el) => (refs.current[idx] = el)}
               p={4}
               py={3}
               border={

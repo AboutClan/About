@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 import WritingButton from "../../../components/atoms/buttons/WritingButton";
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
@@ -18,6 +18,7 @@ import GroupComments from "../../../pageTemplates/group/detail/GroupComment";
 import GroupCover from "../../../pageTemplates/group/detail/GroupCover";
 import GroupHeader from "../../../pageTemplates/group/detail/GroupHeader";
 import GroupParticipation from "../../../pageTemplates/group/detail/GroupParticipation";
+import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
 import { transferGroupDataState } from "../../../recoils/transferRecoils";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
@@ -29,6 +30,8 @@ function GroupDetail() {
   const { id } = useParams<{ id: string }>() || {};
 
   const [group, setTransferGroup] = useRecoilState(transferGroupDataState);
+  const setGatherWriting = useSetRecoilState(sharedGatherWritingState);
+
   const { data: groupData } = useGroupIdQuery(id, { enabled: !!id && !group });
 
   useEffect(() => {
@@ -49,6 +52,17 @@ function GroupDetail() {
     group?.participants && group.participants.find((who) => who?.user?._id === session?.user?.id);
 
   const isAdmin = findMyInfo?.role === "admin" || findMyInfo?.role === "manager";
+
+  const handleGatheringButton = () => {
+    setGatherWriting({
+      type: { title: group.category.main, subtitle: "" },
+      category: "group",
+      title: `[${group.title}] 오픈 번개`,
+      content: `[${group.title}]에서 진행하는 번개입니다! 관심있는 분들 모두 환영합니다 :)`,
+      image: `${group.squareImage}`,
+      coverImage: `${group.image}`,
+    });
+  };
   console.log(isAdmin);
   return (
     <>
@@ -197,11 +211,12 @@ function GroupDetail() {
           </>
         )}
       </Slide>
-      {false && (
+      {isAdmin && (
         <WritingButton
           url={`/gather/writing/category?groupId=${group?.id}`}
           type="thunder"
           isBottomNav={false}
+          onClick={handleGatheringButton}
         />
       )}
       {!group && <MainLoading />}

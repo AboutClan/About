@@ -21,7 +21,7 @@ import { IGather, IGatherWriting } from "../../types/models/gatherTypes/gatherTy
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface IGatherWritingConfirmModal extends IModal {
-  gatherData: IGatherWriting | IGather;
+  gatherData: Partial<IGatherWriting | IGather>;
 }
 
 function GatherWritingConfirmModal({ setIsModal, gatherData }: IGatherWritingConfirmModal) {
@@ -35,7 +35,7 @@ function GatherWritingConfirmModal({ setIsModal, gatherData }: IGatherWritingCon
 
   const [isGatherEdit, setIsGatherEdit] = useRecoilState(isGatherEditState);
 
-  const { data: gatherData2, isLoading } = useGatherQuery(0, null, "createdAt");
+  // const { data: gatherData2, isLoading } = useGatherQuery(0, null, "createdAt");
   const setGatherContent = useSetRecoilState(sharedGatherWritingState);
 
   const { mutate } = useGatherWritingMutation("post", {

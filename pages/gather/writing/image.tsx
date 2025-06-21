@@ -1,4 +1,5 @@
 import { Box } from "@chakra-ui/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -21,6 +22,7 @@ interface ImageProps {
 }
 
 function GatherWritingImagePage() {
+  const searchParams = useSearchParams();
   const [gatherContent, setGatherContent] = useRecoilState(sharedGatherWritingState);
   const [isConfirmModal, setIsConfirmModal] = useState(false);
   const [imageProps, setImageProps] = useState<{ mainImage: string; coverImage: string }>({
@@ -32,6 +34,7 @@ function GatherWritingImagePage() {
     cover: [],
   });
 
+  const groupId = searchParams.get("groupId");
   const category: GatherCategoryMain = gatherContent?.type.title || "힐링";
 
   function shuffleArray(array: ImageProps[]) {
@@ -63,14 +66,35 @@ function GatherWritingImagePage() {
   }));
 
   useEffect(() => {
-    setImageArr({ main: shuffleArray(mainImageArr), cover: shuffleArray(coverImageArr) });
+    setImageArr({
+      main: (groupId && gatherContent?.image
+        ? [
+            {
+              imageUrl: gatherContent.image,
+              func: () => setImageProps((old) => ({ ...old, mainImage: gatherContent.image })),
+            },
+          ]
+        : []
+      ).concat(shuffleArray(mainImageArr)),
+      cover: (groupId && gatherContent?.coverImage
+        ? [
+            {
+              imageUrl: gatherContent.coverImage,
+              func: () =>
+                setImageProps((old) => ({ ...old, coverImage: gatherContent.coverImage })),
+            },
+          ]
+        : []
+      ).concat(shuffleArray(coverImageArr)),
+    });
   }, []);
 
   const onClickNext = async () => {
-    const gatherData: IGatherWriting = {
+    const gatherData: Partial<IGatherWriting> = {
       ...gatherContent,
       image: imageProps.mainImage,
       coverImage: imageProps.coverImage,
+      // category: { category: (groupId ? "group" : "gather") as GatherCategory, id: groupId },
     };
     setGatherContent(gatherData);
     setIsConfirmModal(true);
