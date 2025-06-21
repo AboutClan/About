@@ -24,7 +24,7 @@ TIME_RAGNE_MAX.setMinutes(0);
 interface IGatherWritingDateDate {
   date: Date;
   setDate: DispatchType<Date>;
-  gatherWriting: IGatherWriting;
+  gatherWriting: Partial<IGatherWriting>;
 }
 
 function GatherWritingDateDate({ date, setDate, gatherWriting }: IGatherWritingDateDate) {
@@ -61,7 +61,7 @@ function GatherWritingDateDate({ date, setDate, gatherWriting }: IGatherWritingD
     setDate(currentDate);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gatherWriting]);
- 
+
   return (
     <Layout>
       <Container>

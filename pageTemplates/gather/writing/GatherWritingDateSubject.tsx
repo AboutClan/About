@@ -11,7 +11,7 @@ import { IGatherListItem, IGatherWriting } from "../../../types/models/gatherTyp
 import { ITime } from "../../../types/utils/timeAndDate";
 
 interface IGatherWritingDateSubject {
-  gatherWriting: IGatherWriting;
+  gatherWriting: Partial<IGatherWriting>;
   setGatherList: DispatchType<IGatherListItem[]>;
   date: Date;
 }

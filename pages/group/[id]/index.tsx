@@ -56,7 +56,6 @@ function GroupDetail() {
   const handleGatheringButton = () => {
     setGatherWriting({
       type: { title: group.category.main, subtitle: "" },
-      category: "group",
       title: `[${group.title}] 오픈 번개`,
       content: `[${group.title}]에서 진행하는 번개입니다! 관심있는 분들 모두 환영합니다 :)`,
       image: `${group.squareImage}`,
