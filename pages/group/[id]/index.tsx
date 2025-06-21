@@ -2,8 +2,8 @@ import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import { Badge, Box, Flex, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 
@@ -45,10 +45,11 @@ function GroupDetail() {
   //     patchAttendance();
   // }, [group?.attendance?.firstDate]);
 
-  const isMember =
-    group &&
-    [...group.participants.map((who) => who.user)].some((who) => who?.uid === session?.user.uid);
+  const findMyInfo =
+    group?.participants && group.participants.find((who) => who?.user?._id === session?.user?.id);
 
+  const isAdmin = findMyInfo?.role === "admin" || findMyInfo?.role === "manager";
+  console.log(isAdmin);
   return (
     <>
       {group && <GroupHeader group={group} />}
@@ -92,7 +93,7 @@ function GroupDetail() {
                   { category: "보증금", text: group.fee ? group.fee + "원" : "없음" },
                   {
                     category: "활동 톡방",
-                    rightChildren: <BlurredLink isBlur={!isMember} url={group?.link} />,
+                    rightChildren: <BlurredLink isBlur={!findMyInfo} url={group?.link} />,
                   },
                 ]}
                 size="md"
@@ -191,7 +192,7 @@ function GroupDetail() {
               <Box h="1px" my={5} bg="gray.100" />
 
               <GroupParticipation data={group} />
-              <GroupComments comments={group.comments} hasAutority={isMember} />
+              <GroupComments comments={group.comments} hasAutority={!!findMyInfo} />
             </Flex>
           </>
         )}
@@ -204,7 +205,7 @@ function GroupDetail() {
         />
       )}
       {!group && <MainLoading />}
-      {group && !isMember && !isGuest ? <GroupBottomNav data={group} /> : null}
+      {group && !findMyInfo && !isGuest ? <GroupBottomNav data={group} /> : null}
     </>
   );
 }
