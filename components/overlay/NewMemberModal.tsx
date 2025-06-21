@@ -13,7 +13,7 @@ function NewMemberModal({ onClose }: NewMemberModalProps) {
   const handleClick = () => {
     const url = "https://invite.kakao.com/tc/HOmUdQMjSs";
     navigateExternalLink(url);
-    localStorage.setItem(NEW_MEMBER_MODAL_AT, dayjs().add(9, "day").format("YYYYMMDD"));
+    localStorage.setItem(NEW_MEMBER_MODAL_AT, dayjs().add(10, "day").format("YYYYMMDD"));
   };
 
   return (
