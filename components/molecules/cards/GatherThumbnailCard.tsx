@@ -50,6 +50,10 @@ export function GatherThumbnailCard({
   type = "gather",
   age,
 }: GatherThumbnailCardProps) {
+  const participantsMember = participants.filter(
+    (par) => par.user._id !== "65df1ddcd73ecfd250b42c89",
+  );
+
   return (
     <CardLink href={`/${type}/${id}`} onClick={func}>
       <PlaceImage src={imageProps.image} priority={imageProps.isPriority} />
@@ -82,9 +86,7 @@ export function GatherThumbnailCard({
 
         <Flex mt={1} alignItems="center" justify="space-between">
           <AvatarGroupsOverwrap
-            users={participants
-              ?.map((par) => par.user)
-              .filter((user) => user._id !== "65df1ddcd73ecfd250b42c89")}
+            users={participantsMember?.map((par) => par.user)}
             maxCnt={VOTER_SHOW_MAX}
           />
           <Flex align="center" color="var(--gray-500)">
@@ -94,12 +96,12 @@ export function GatherThumbnailCard({
                 fontWeight={600}
                 as="span"
                 color={
-                  maxCnt !== 0 && participants.length >= maxCnt
+                  maxCnt !== 0 && participantsMember.length >= maxCnt
                     ? "var(--color-red)"
                     : "var(--color-gray)"
                 }
               >
-                {participants.length}
+                {participantsMember.length}
               </Box>
               <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
                 /
