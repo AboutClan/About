@@ -6,7 +6,7 @@ import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 interface IInviteUserGroups {
   users: IUserSummary[];
   inviteUser: (who: IUserSummary) => void;
-  existUsers?: IUserSummary[];
+  existUsers?: string[];
   type?: "exile";
 }
 
@@ -19,16 +19,12 @@ export default function InviteUserGroups({
   return (
     <Grid mt="20px" templateColumns="repeat(3,1fr)" gap="12px">
       {users?.map((who, idx) => {
-        const isMember = existUsers
-          ?.map((user) => {
-            return user.uid;
-          })
-          .includes(who.uid);
+        const isMember = existUsers.includes(who._id);
         return (
-          <Flex key={idx} justify="center" align="center">
+          <Flex h="48px" key={idx} justify="center" align="center">
             <Avatar user={who} size="sm1" />
-            <Flex direction="column" ml="8px">
-              <Box>{who.name}</Box>
+            <Flex direction="column" justify="space-between" ml={2} align="center">
+              <Box fontSize="13px">{who.name}</Box>
               <Button
                 colorScheme={isMember && type !== "exile" ? "black" : "mint"}
                 size="xs"

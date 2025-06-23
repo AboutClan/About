@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -10,6 +10,7 @@ import Header from "../../../components/layouts/Header";
 import UserAbsenceBoard from "../../../components/organisms/boards/UserAbsenceBoard";
 import UserApprovalBoard from "../../../components/organisms/boards/UserApprovalBoard";
 import UserDeleteBoard from "../../../components/organisms/boards/UserDeleteBoard";
+import UserInviteBoard from "../../../components/organisms/boards/UserInviteBoard";
 import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import { useResetGatherQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
@@ -19,7 +20,6 @@ import {
   useGatherStatusMutation,
   useGatherWaitingStatusMutation,
 } from "../../../hooks/gather/mutations";
-import InviteUserModal from "../../../modals/InviteUserModal";
 import { isGatherEditState } from "../../../recoils/checkAtoms";
 import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
@@ -99,7 +99,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
             },
           },
           {
-            text: "신규 인원 초대",
+            text: "인원 초대",
             icon: <MemberInviteIcon />,
             func: () => {
               setModalType("inviteMember");
@@ -161,11 +161,15 @@ function GatherHeader({ gatherData }: IGatherHeader) {
           />
         </RightDrawer>
       )}
+
       {modalType === "inviteMember" && (
-        <InviteUserModal
-          prevUsers={[...gatherData.participants.map((par) => par.user)]}
-          setIsModal={() => setModalType(null)}
-        />
+        <RightDrawer title="인원 초대" onClose={() => setModalType(null)}>
+          <UserInviteBoard
+            gatherId={gatherData.id + ""}
+            groupId={gatherData?.groupId}
+            members={gatherData.participants.map((who) => who.user._id)}
+          />
+        </RightDrawer>
       )}
       {modalType === "removeMember" && (
         <RightDrawer title="참여중인 인원" onClose={() => setModalType(null)}>
