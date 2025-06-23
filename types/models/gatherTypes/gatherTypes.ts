@@ -10,6 +10,7 @@ export interface IGather extends Omit<IGatherWriting, "date">, TimeStampProps {
   id: number;
   status: GatherStatus;
   comments: UserCommentProps[];
+
   waiting: {
     user: IUserSummary;
     phase: "first" | "second";
@@ -37,6 +38,7 @@ export interface IGatherWriting {
   isApprovalRequired?: boolean;
   category?: GatherCategory;
   groupId?: string;
+  postImage?: string;
 }
 
 export type GatherCategory = "gather" | "event" | "group";

@@ -1,4 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
+import Image from "next/image";
 import styled from "styled-components";
 
 import BlurredLink from "../../../components/molecules/BlurredLink";
@@ -10,9 +11,10 @@ interface IGather {
   kakaoUrl: string;
   content: string;
   gatherList: IGatherListItem[];
+  postImage: string;
 }
 
-function GatherContent({ isMember, kakaoUrl, content, gatherList }: IGather) {
+function GatherContent({ isMember, kakaoUrl, content, gatherList, postImage }: IGather) {
   const firstItem = gatherList?.[0];
   const secondItem = gatherList?.[1];
 
@@ -38,9 +40,15 @@ function GatherContent({ isMember, kakaoUrl, content, gatherList }: IGather) {
           <BlurredLink url={kakaoUrl} isBlur={!isMember} />
         </Box>
       )}
-      <Box borderTop="var(--border)" mt={5}>
-        <InfoBoxCol infoBoxPropsArr={infoBoxPropsArr} highlightSide="right" />
-      </Box>
+      {postImage ? (
+        <Box mt={5} pos="relative" w="full" aspectRatio={1 / 1}>
+          <Image src={postImage} alt="postImage" fill />
+        </Box>
+      ) : (
+        <Box borderTop="var(--border)" mt={5}>
+          <InfoBoxCol infoBoxPropsArr={infoBoxPropsArr} highlightSide="right" />
+        </Box>
+      )}
     </Flex>
   );
 }

@@ -31,7 +31,7 @@ function GatherDetail() {
   const isMember =
     (gather?.user as IUserSummary)?.uid === session?.user.uid ||
     gather?.participants.some((who) => who?.user.uid === session?.user.uid);
-
+  const postImage = gather?.postImage;
   return (
     <>
       {gather ? (
@@ -55,6 +55,7 @@ function GatherDetail() {
                 content={gather.content}
                 gatherList={gather.gatherList}
                 isMember={isMember}
+                postImage={postImage}
               />
               <Divider />
               <GatherParticipation data={gather} />
