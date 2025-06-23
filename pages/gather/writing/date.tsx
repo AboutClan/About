@@ -38,7 +38,7 @@ function WritingDate() {
     }
     setGatherWriting((old) => ({
       ...old,
-      date: dayjs(date).toString(),
+      date: dayjs(date).toISOString(),
       gatherList,
     }));
     router.push({ pathname: `/gather/writing/location`, query: router.query });
