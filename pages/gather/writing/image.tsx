@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useQueryClient } from "react-query";
 import { useRecoilState } from "recoil";
 
 import { GATHER_COVER_IMAGE_ARR, GATHER_MAIN_IMAGE_ARR } from "../../../assets/gather";
@@ -10,11 +11,18 @@ import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
 import ImageBasicSlider2 from "../../../components/organisms/sliders/ImageBasicSlider2";
 import { GatherCategoryMain } from "../../../constants/contentsText/GatherContents";
+import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
+import { useErrorToast, useToast } from "../../../hooks/custom/CustomToast";
+import { useGatherWritingMutation } from "../../../hooks/gather/mutations";
 import GatherWritingConfirmModal from "../../../modals/gather/GatherWritingConfirmModal";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
-import { IGatherWriting } from "../../../types/models/gatherTypes/gatherTypes";
+import {
+  GatherCategory,
+  IGather,
+  IGatherWriting,
+} from "../../../types/models/gatherTypes/gatherTypes";
 
 interface ImageProps {
   imageUrl: string;
@@ -22,6 +30,10 @@ interface ImageProps {
 }
 
 function GatherWritingImagePage() {
+  const router = useRouter();
+  const toast = useToast();
+  const errorToast = useErrorToast();
+  const queryClient = useQueryClient();
   const searchParams = useSearchParams();
   const [gatherContent, setGatherContent] = useRecoilState(sharedGatherWritingState);
   const [isConfirmModal, setIsConfirmModal] = useState(false);
@@ -75,7 +87,9 @@ function GatherWritingImagePage() {
             },
           ]
         : []
-      ).concat(shuffleArray(mainImageArr)),
+      ).concat(
+        shuffleArray(mainImageArr.filter((image) => image.imageUrl !== gatherContent?.image)),
+      ),
       cover: (groupId && gatherContent?.coverImage
         ? [
             {
@@ -85,7 +99,9 @@ function GatherWritingImagePage() {
             },
           ]
         : []
-      ).concat(shuffleArray(coverImageArr)),
+      ).concat(
+        shuffleArray(coverImageArr.filter((image) => image.imageUrl !== gatherContent?.coverImage)),
+      ),
     });
   }, []);
 
@@ -99,6 +115,27 @@ function GatherWritingImagePage() {
     setGatherContent(gatherData);
     setIsConfirmModal(true);
   };
+
+  const { mutate: createGather } = useGatherWritingMutation("post", {
+    onSuccess(data) {
+      queryClient.refetchQueries({ queryKey: [GATHER_CONTENT], exact: false });
+      setGatherContent(null);
+      router.push(`/gather/${(data as unknown as { gatherId: number })?.gatherId}`);
+      toast("success", "모임이 등록되었어요!");
+      setIsConfirmModal(false);
+    },
+    onError: errorToast,
+  });
+  const { mutate: updateGather } = useGatherWritingMutation("patch", {
+    onSuccess() {
+      queryClient.refetchQueries({ queryKey: [GATHER_CONTENT], exact: false });
+      setGatherContent(null);
+      router.push(`/gather/${(gatherContent as IGather).id}`);
+      toast("success", "내용이 변경되었어요!");
+      setIsConfirmModal(false);
+    },
+    onError: errorToast,
+  });
 
   return (
     <>
@@ -138,7 +175,15 @@ function GatherWritingImagePage() {
       </RegisterLayout>
       <BottomNav onClick={() => onClickNext()} text="완료" />
       {isConfirmModal && (
-        <GatherWritingConfirmModal setIsModal={setIsConfirmModal} gatherData={gatherContent} />
+        <GatherWritingConfirmModal
+          createGather={(data) => createGather(data)}
+          updateGather={(data) => updateGather(data)}
+          setIsModal={setIsConfirmModal}
+          gatherData={{
+            ...gatherContent,
+            ...(groupId ? { category: "group" as GatherCategory, groupId } : {}),
+          }}
+        />
       )}
     </>
   );

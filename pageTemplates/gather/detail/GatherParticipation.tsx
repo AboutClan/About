@@ -34,15 +34,20 @@ function GatherParticipation({ data }: IGatherParticipation) {
     }),
   );
 
+  const isAdminOpen = (data?.user as IUser)?._id === "65df1ddcd73ecfd250b42c89";
+
   return (
     <>
       <Flex flexDir="column" px={5}>
         <ParticipationBar
           type={status as "open" | "pending"}
-          participantsCnt={participantsCnt + 1}
+          participantsCnt={participantsCnt + (isAdminOpen ? 0 : 1)}
           maxCnt={data?.memberCnt.max}
         />
-        <ProfileCardColumn hasCommentButton={false} userCardArr={[organizerCard, ...userCardArr]} />
+        <ProfileCardColumn
+          hasCommentButton={false}
+          userCardArr={[...(!isAdminOpen ? [organizerCard] : []), ...userCardArr]}
+        />
       </Flex>
     </>
   );

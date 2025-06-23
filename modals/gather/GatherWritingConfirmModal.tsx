@@ -1,19 +1,13 @@
 /* eslint-disable */
 
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter } from "next/router";
 import { useState } from "react";
-import { useQueryClient } from "react-query";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import ImageUploadInput from "../../components/molecules/ImageUploadInput";
-import { GATHER_CONTENT } from "../../constants/keys/queryKeys";
 
-import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
-import { useGatherWritingMutation } from "../../hooks/gather/mutations";
-import { useGatherQuery } from "../../hooks/gather/queries";
 import { isGatherEditState } from "../../recoils/checkAtoms";
 import { sharedGatherWritingState } from "../../recoils/sharedDataAtoms";
 import { IModal } from "../../types/components/modalTypes";
@@ -21,15 +15,17 @@ import { IGather, IGatherWriting } from "../../types/models/gatherTypes/gatherTy
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface IGatherWritingConfirmModal extends IModal {
-  gatherData: Partial<IGatherWriting | IGather>;
+  gatherData: Partial<IGatherWriting> | Partial<IGather>;
+  createGather: ({ gather }: { gather: IGatherWriting }) => void;
+  updateGather: ({ gather }: { gather: IGather }) => void;
 }
 
-function GatherWritingConfirmModal({ setIsModal, gatherData }: IGatherWritingConfirmModal) {
-  const router = useRouter();
-  const errorToast = useErrorToast();
-  const queryClient = useQueryClient();
-  const toast = useToast();
-
+function GatherWritingConfirmModal({
+  setIsModal,
+  gatherData,
+  createGather,
+  updateGather,
+}: IGatherWritingConfirmModal) {
   const [isFirst, setIsFirst] = useState(true);
   const [imageUrl, setImageUrl] = useState();
 
@@ -38,30 +34,11 @@ function GatherWritingConfirmModal({ setIsModal, gatherData }: IGatherWritingCon
   // const { data: gatherData2, isLoading } = useGatherQuery(0, null, "createdAt");
   const setGatherContent = useSetRecoilState(sharedGatherWritingState);
 
-  const { mutate } = useGatherWritingMutation("post", {
-    onSuccess(data) {
-      queryClient.refetchQueries({ queryKey: [GATHER_CONTENT], exact: false });
-      setGatherContent(null);
-      router.push(`/gather/${(data as unknown as { gatherId: number })?.gatherId}`);
-      toast("success", "모임이 등록되었어요!");
-    },
-    onError: errorToast,
-  });
-  const { mutate: updateGather } = useGatherWritingMutation("patch", {
-    onSuccess() {
-      queryClient.refetchQueries({ queryKey: [GATHER_CONTENT], exact: false });
-      setGatherContent(null);
-      router.push(`/gather/${(gatherData as IGather).id}`);
-      toast("success", "내용이 변경되었어요!");
-    },
-    onError: errorToast,
-  });
-
   const onSubmit = () => {
     console.log(12, gatherData);
 
     if (!isGatherEdit) {
-      mutate({ gather: gatherData as IGatherWriting });
+      createGather({ gather: gatherData as IGatherWriting });
     } else {
       updateGather({ gather: gatherData as IGather });
     }
@@ -87,20 +64,56 @@ function GatherWritingConfirmModal({ setIsModal, gatherData }: IGatherWritingCon
               {isFirst ? "개설 내용을 확인해 주세요!" : "선택사항. 기본 랜덤 이미지로 설정됩니다."}
             </Box>
             {isFirst ? (
-              <Container>
-                <Item>
-                  <span>제목:</span>
-                  <span>{gatherData?.title}</span>
-                </Item>
-                <Item>
-                  <span>날짜:</span>
-                  <span>{dayjs(gatherData.date).format("M월 D일, H시 m분")}</span>
-                </Item>
-                <Item>
-                  <span>주제:</span>
-                  <span>{gatherData.type.subtitle || "기타"}</span>
-                </Item>
-              </Container>
+              <Flex flexDir="column" lineHeight={2.2}>
+                <Flex>
+                  <Box fontWeight="semibold" mr={2}>
+                    제목:
+                  </Box>
+                  <Box
+                    textAlign="start"
+                    flex={1}
+                    textOverflow="ellipsis"
+                    whiteSpace="nowrap"
+                    overflow="hidden"
+                  >
+                    {gatherData?.title}
+                  </Box>
+                </Flex>
+                <Flex>
+                  <Box fontWeight="semibold" mr={2}>
+                    날짜:
+                  </Box>
+                  <Box
+                    textAlign="start"
+                    flex={1}
+                    textOverflow="ellipsis"
+                    whiteSpace="nowrap"
+                    overflow="hidden"
+                  >
+                    {dayjs(gatherData.date).format("M월 D일, H시 mm분")}
+                  </Box>
+                </Flex>
+                <Flex>
+                  <Box fontWeight="semibold" mr={2}>
+                    내용:
+                  </Box>
+                  <Box
+                    mt="5px"
+                    alignSelf="flex-end"
+                    textAlign="start"
+                    lineHeight={1.5}
+                    flex={1}
+                    overflow="hidden"
+                    display="-webkit-box"
+                    sx={{
+                      WebkitLineClamp: 3,
+                      WebkitBoxOrient: "vertical",
+                    }}
+                  >
+                    {gatherData.content}
+                  </Box>
+                </Flex>
+              </Flex>
             ) : (
               <>
                 <ImageUploadInput setImageUrl={setImageUrl} />

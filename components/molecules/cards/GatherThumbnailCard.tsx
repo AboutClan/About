@@ -82,7 +82,9 @@ export function GatherThumbnailCard({
 
         <Flex mt={1} alignItems="center" justify="space-between">
           <AvatarGroupsOverwrap
-            users={participants?.map((par) => par.user)}
+            users={participants
+              ?.map((par) => par.user)
+              .filter((user) => user._id !== "65df1ddcd73ecfd250b42c89")}
             maxCnt={VOTER_SHOW_MAX}
           />
           <Flex align="center" color="var(--gray-500)">

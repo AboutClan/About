@@ -1,5 +1,3 @@
-import { Dayjs } from "dayjs";
-
 import { GatherCategoryMain } from "../../../constants/contentsText/GatherContents";
 import { UserCommentProps } from "../../components/propTypes";
 import { Location } from "../../services/locationTypes";
@@ -25,7 +23,7 @@ export interface IGatherWriting {
   title: string;
   content: string;
   gatherList: IGatherListItem[];
-  date: Dayjs;
+  date: string;
   location: IGatherLocation;
   memberCnt: IGatherMemberCnt;
   password?: string;
@@ -37,7 +35,8 @@ export interface IGatherWriting {
   coverImage?: string;
   kakaoUrl?: string;
   isApprovalRequired?: boolean;
-  category: { category: GatherCategory; id: string };
+  category?: GatherCategory;
+  groupId?: string;
 }
 
 export type GatherCategory = "gather" | "event" | "group";

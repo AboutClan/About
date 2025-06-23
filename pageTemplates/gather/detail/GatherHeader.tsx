@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -93,7 +93,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
             text: "모임 정보 수정",
             icon: <EditIcon />,
             func: () => {
-              setGatherWriting({ ...gatherData, date: dayjs(gatherData.date) });
+              setGatherWriting({ ...gatherData, date: dayjs(gatherData.date).toString() });
               setIsGatherEdit(true);
               router.push(`/gather/writing/category?id=${gatherData.id}`);
             },
