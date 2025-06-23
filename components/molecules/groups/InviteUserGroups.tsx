@@ -19,7 +19,7 @@ export default function InviteUserGroups({
   return (
     <Grid mt="20px" templateColumns="repeat(3,1fr)" gap="12px">
       {users?.map((who, idx) => {
-        const isMember = existUsers.includes(who._id);
+        const isMember = existUsers?.includes(who._id);
         return (
           <Flex h="48px" key={idx} justify="center" align="center">
             <Avatar user={who} size="sm1" />

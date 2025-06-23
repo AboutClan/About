@@ -1,21 +1,17 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 import { MouseEvent, useMemo } from "react";
-import { useSetRecoilState } from "recoil";
 
 import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
 import { PlusIcon } from "../../components/Icons/MathIcons";
 import ImageTileSlider, { IImageTile } from "../../components/organisms/sliders/ImageTileSlider";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useGroupsMineQuery } from "../../hooks/groupStudy/queries";
-import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { getRandomImage } from "../../utils/imageUtils";
 
 function GroupMine() {
   const { data } = useGroupsMineQuery("pending");
   const toast = useToast();
-
-  const setGroup = useSetRecoilState(transferGroupDataState);
 
   const imageTileArr: IImageTile[] = useMemo(
     () =>
@@ -26,10 +22,9 @@ function GroupMine() {
           imageUrl: group?.squareImage || getRandomImage(GATHER_MAIN_IMAGE_ARR["공통"]),
           text: group.title,
           url: `/group/${group.id}`,
-          func: () => setGroup(group),
           type: "circle",
         })),
-    [data, setGroup],
+    [data],
   );
 
   const handleClick = (e: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>) => {

@@ -3,7 +3,6 @@ import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
-import { useRecoilValue } from "recoil";
 
 import AlertModal, { IAlertModalOptions } from "../../../components/AlertModal";
 import Header from "../../../components/layouts/Header";
@@ -19,8 +18,7 @@ import {
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
 import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
 import { checkGroupGathering } from "../../../libs/group/checkGroupGathering";
-import { transferGroupDataState } from "../../../recoils/transferRecoils";
-import { GroupParicipantProps, IGroup } from "../../../types/models/groupTypes/group";
+import { GroupParicipantProps } from "../../../types/models/groupTypes/group";
 
 export default function Member() {
   const { data: session } = useSession();
@@ -28,31 +26,24 @@ export default function Member() {
   const { id } = useParams<{ id: string }>() || {};
 
   const [deleteUser, setDeleteUser] = useState<GroupParicipantProps>(null);
-  const [group, setGroup] = useState<IGroup>();
 
-  const transferGroup = useRecoilValue(transferGroupDataState);
-
-  const { data: groupData } = useGroupIdQuery(id, { enabled: !!id && !transferGroup });
+  const { data: groupData } = useGroupIdQuery(id, { enabled: !!id });
 
   const [users, setUsers] = useState<GroupParicipantProps[]>([]);
 
   useEffect(() => {
-    if (group) {
-      setUsers(group.participants);
+    if (groupData) {
+      setUsers(groupData.participants);
     }
-  }, [group]);
-
-  useEffect(() => {
-    if (transferGroup) setGroup(transferGroup);
-    else if (groupData) setGroup(groupData);
-  }, [transferGroup, groupData]);
+  }, [groupData]);
 
   const queryClient = useQueryClient();
   const { mutate } = useGroupExileUserMutation(+id, {
     onSuccess() {
       queryClient.invalidateQueries([GROUP_STUDY]);
       toast("success", "추방되었습니다.");
-      setUsers((old) => old.filter((who) => who.user._id !== deleteUser.user._id));
+      console.log(123, users);
+      setUsers((old) => old.filter((who) => who.user?._id !== deleteUser.user._id));
     },
     onError(err) {
       console.error(err);
@@ -68,7 +59,7 @@ export default function Member() {
   const { mutate: handleBelong } = useUserInfoFieldMutation("belong", {
     onSuccess() {},
   });
-  const belong = group && checkGroupGathering(group.hashTag);
+  const belong = groupData && checkGroupGathering(groupData.hashTag);
 
   const alertOptions: IAlertModalOptions = {
     title: "유저 추방",
@@ -81,12 +72,12 @@ export default function Member() {
       if (belong) {
         handleBelong({ uid: deleteUser?.user?.uid, belong: null });
       }
-      setGroup((old) => ({
-        ...old,
-        participants: old.participants.filter((par) =>
-          deleteUser.user ? par.user?.uid !== deleteUser.user.uid : !deleteUser.user,
-        ),
-      }));
+      // setUsers((old) => ({
+      //   ...old,
+      //   participants: old.participants.filter((par) =>
+      //     deleteUser.user ? par.user?.uid !== deleteUser.user.uid : !deleteUser.user,
+      //   ),
+      // }));
       setDeleteUser(null);
     },
     text: "추방",

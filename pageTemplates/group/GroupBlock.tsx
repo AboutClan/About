@@ -3,11 +3,9 @@ import dayjs from "dayjs";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { MouseEvent } from "react";
-import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { useFailToast } from "../../hooks/custom/CustomToast";
-import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { IGroup } from "../../types/models/groupTypes/group";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
@@ -21,7 +19,6 @@ function GroupBlock({ group }: IGroupBlock) {
   const infoArrText = ["그룹장", "인원", "조건", "참여금", "진행", "개설"];
 
   const isGuest = session?.user.name === "guest";
-  const setGroup = useSetRecoilState(transferGroupDataState);
 
   const groupInfo = {
     그룹장: group.isSecret
@@ -50,8 +47,6 @@ function GroupBlock({ group }: IGroupBlock) {
       failToast("guest");
       return;
     }
-
-    setGroup(group);
   };
 
   const getBadgeText = () => {

@@ -6,7 +6,6 @@ import SectionFooterButton from "../../components/atoms/SectionFooterButton";
 import { GroupThumbnailCard } from "../../components/molecules/cards/GroupThumbnailCard";
 import { createGroupThumbnailProps } from "../../pages/group";
 import { backUrlState } from "../../recoils/navigationRecoils";
-import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { IGroup } from "../../types/models/groupTypes/group";
 import GroupSkeletonMain from "../group/GroupSkeletonMain";
 dayjs().locale("ko");
@@ -18,11 +17,9 @@ interface HomeGroupColProps {
 }
 
 export default function HomeGroupCol({ threeGroups, isStudy, type }: HomeGroupColProps) {
-  const setTransferGroup = useSetRecoilState(transferGroupDataState);
   const setBackUrlState = useSetRecoilState(backUrlState);
 
-  const handleClick = (group: IGroup) => {
-    setTransferGroup(group);
+  const handleClick = () => {
     setBackUrlState("/home");
   };
 
@@ -66,13 +63,7 @@ export default function HomeGroupCol({ threeGroups, isStudy, type }: HomeGroupCo
                 <GroupThumbnailCard
                   key={idx}
                   isBig={false}
-                  {...createGroupThumbnailProps(
-                    group,
-                    status,
-                    idx,
-                    () => handleClick(group),
-                    false,
-                  )}
+                  {...createGroupThumbnailProps(group, status, idx, () => handleClick(), false)}
                 />
               );
             })}

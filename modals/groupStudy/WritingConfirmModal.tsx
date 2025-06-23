@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import SuccessScreen from "../../components/layouts/SuccessScreen";
@@ -9,7 +8,6 @@ import { GROUP_STUDY } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
 import { useErrorToast, useToast } from "../../hooks/custom/CustomToast";
 import { useGroupWritingMutation } from "../../hooks/groupStudy/mutations";
-import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
 import { IGroup, IGroupWriting } from "../../types/models/groupTypes/group";
@@ -26,13 +24,10 @@ function GroupConfirmModal({ setIsModal, groupWriting }: IGroupConfirmModal) {
 
   const [isSuccessScreen, setIsSuccessScreen] = useState(false);
 
-  const setTransferGroup = useSetRecoilState(transferGroupDataState);
-
   const resetQueryData = useResetQueryData();
 
   const resetLocalStorage = () => {
     localStorage.setItem(GROUP_WRITING_STORE, null);
-    setTransferGroup(null);
   };
 
   const { mutate } = useGroupWritingMutation("post", {

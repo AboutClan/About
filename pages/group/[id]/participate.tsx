@@ -1,7 +1,6 @@
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
-import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 import BottomNav from "../../../components/layouts/BottomNav";
@@ -13,38 +12,38 @@ import {
   useGroupParticipationMutation,
   useGroupWaitingMutation,
 } from "../../../hooks/groupStudy/mutations";
+import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import ParticipateModal from "../../../pageTemplates/group/ParticipateModal";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-import { transferGroupDataState } from "../../../recoils/transferRecoils";
 
 function Participate() {
   const router = useRouter();
   const toast = useToast();
-  const [group, setGroup] = useRecoilState(transferGroupDataState);
 
   const [questionText, setQuestionText] = useState("");
   const [isModal, setIsModal] = useState(false);
   const { id } = useParams<{ id: string }>() || {};
 
+  const { data: group } = useGroupIdQuery(id, { enabled: !!id });
   const { data: userInfo } = useUserInfoQuery();
 
   const queryClient = useQueryClient();
 
-  const { mutate } = useGroupParticipationMutation("post", group?.id, {
+  const { mutate } = useGroupParticipationMutation("post", +id, {
     onSuccess() {
       toast("success", "가입이 완료되었습니다.");
-      setGroup(null);
+
       queryClient.invalidateQueries([GROUP_STUDY, id]);
       router.push(`/group/${id}`);
     },
   });
 
-  const { mutate: sendRegisterForm, isLoading } = useGroupWaitingMutation(group?.id, {
+  const { mutate: sendRegisterForm, isLoading } = useGroupWaitingMutation(+id, {
     onSuccess() {
       toast("success", "가입 신청이 완료되었습니다.");
-      setGroup(null);
+
       queryClient.invalidateQueries([GROUP_STUDY, id]);
       router.push(`/group/${id}`);
     },

@@ -8,6 +8,7 @@ interface IGatherTitle {
 }
 
 function GatherTitle({ title, category, isEvent }: IGatherTitle) {
+  console.log(51, isEvent);
   return (
     <Layout>
       <Badge variant="subtle" colorScheme="orange" size="lg">

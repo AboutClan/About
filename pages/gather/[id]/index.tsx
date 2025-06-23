@@ -32,6 +32,7 @@ function GatherDetail() {
     (gather?.user as IUserSummary)?.uid === session?.user.uid ||
     gather?.participants.some((who) => who?.user.uid === session?.user.uid);
   const postImage = gather?.postImage;
+  console.log(44, gather);
   return (
     <>
       {gather ? (

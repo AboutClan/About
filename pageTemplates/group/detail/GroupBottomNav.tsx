@@ -5,7 +5,6 @@ import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
-import { useSetRecoilState } from "recoil";
 
 import BottomFixedButton from "../../../components/atoms/BottomFixedButton";
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
@@ -16,7 +15,6 @@ import {
   useGroupWaitingMutation,
 } from "../../../hooks/groupStudy/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
-import { transferGroupDataState } from "../../../recoils/transferRecoils";
 import { IGroup } from "../../../types/models/groupTypes/group";
 
 interface IGroupBottomNav {
@@ -30,7 +28,6 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
 
   const toast = useToast();
   const { id } = useParams<{ id: string }>() || {};
-  const setTransferGroup = useSetRecoilState(transferGroupDataState);
 
   const { data: userInfo } = useUserInfoQuery();
 
@@ -42,7 +39,7 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
   const { mutate: participate } = useGroupParticipationMutation("post", +id, {
     onSuccess() {
       toast("success", "가입이 완료되었습니다.");
-      setTransferGroup(null);
+
       queryClient.invalidateQueries([GROUP_STUDY, id]);
     },
     onError() {
@@ -53,7 +50,7 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
   const { mutate: sendRegisterForm } = useGroupWaitingMutation(+id, {
     onSuccess() {
       toast("success", "대기 요청 완료! 이후 연락 예정.");
-      setTransferGroup(null);
+
       queryClient.invalidateQueries([GROUP_STUDY, id]);
     },
   });

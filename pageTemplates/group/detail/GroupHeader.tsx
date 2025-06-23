@@ -34,17 +34,16 @@ function GroupHeader({ group }: IGroupHeader) {
 
   const [isSettigModal, setIsSettingModal] = useState(false);
 
-  const movePage = async () => {
-    toast("success", "탈퇴되었습니다.");
-    resetGroupQuery();
-  };
-
   const { mutate } = useGroupParticipationMutation("delete", group?.id, {
-    onSuccess: movePage,
+    onSuccess: () => {
+      toast("success", "탈퇴되었습니다.");
+      resetGroupQuery();
+    },
   });
 
   const handleQuit = () => {
     mutate();
+    setIsSettingModal(false);
   };
 
   const menuArr: MenuProps[] = group

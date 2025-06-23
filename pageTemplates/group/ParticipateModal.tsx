@@ -2,7 +2,6 @@ import { Button } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
-import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { PopOverIcon } from "../../components/Icons/PopOverIcon";
@@ -11,7 +10,6 @@ import { useFailToast, useToast } from "../../hooks/custom/CustomToast";
 import { useGroupWaitingMutation } from "../../hooks/groupStudy/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { IFooterOptions, ModalFooterTwo, ModalLayout } from "../../modals/Modals";
-import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { ModalSubtitle } from "../../styles/layout/modal";
 import { IModal } from "../../types/components/modalTypes";
 
@@ -29,12 +27,9 @@ function ParticipateModal({ id, setIsModal, answer }: IParticipateModal) {
   const { data: userInfo } = useUserInfoQuery();
   const [selectBtn, setSelectBtn] = useState<"point" | "deposit">("point");
 
-  const setTransferGroup = useSetRecoilState(transferGroupDataState);
-
   const queryClient = useQueryClient();
 
   const resetCache = () => {
-    setTransferGroup(null);
     queryClient.invalidateQueries([GROUP_STUDY, id]);
 
     router.push(`/group/${id}`);

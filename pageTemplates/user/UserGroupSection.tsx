@@ -1,6 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
-import { useSetRecoilState } from "recoil";
 
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
@@ -8,7 +7,6 @@ import { GroupThumbnailCard } from "../../components/molecules/cards/GroupThumbn
 import ButtonGroups from "../../components/molecules/groups/ButtonGroups";
 import { useGroupMyStatusQuery } from "../../hooks/groupStudy/queries";
 import { createGroupThumbnailProps } from "../../pages/group";
-import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { IGroup } from "../../types/models/groupTypes/group";
 import GroupSkeletonMain from "../group/GroupSkeletonMain";
 
@@ -22,7 +20,6 @@ function UserGroupSection() {
   const loader = useRef<HTMLDivElement | null>(null);
   const firstLoad = useRef(true);
 
-  const setTransdferGroupData = useSetRecoilState(transferGroupDataState);
   const { data: groupData, isLoading } = useGroupMyStatusQuery(
     cursor,
     groupType === "참여중인 모임" ? "isParticipating" : "isOwner",
@@ -161,13 +158,7 @@ function UserGroupSection() {
                 return (
                   <Box key={group.id} pb={3} mb={3} borderBottom="var(--border)">
                     <GroupThumbnailCard
-                      {...createGroupThumbnailProps(
-                        group,
-                        status,
-                        idx,
-                        () => setTransdferGroupData(group),
-                        true,
-                      )}
+                      {...createGroupThumbnailProps(group, status, idx, null, true)}
                     />
                   </Box>
                 );

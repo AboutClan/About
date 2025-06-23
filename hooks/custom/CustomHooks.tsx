@@ -4,7 +4,7 @@ import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 
 import { GATHER_CONTENT, GROUP_STUDY, STUDY_VOTE, USER_INFO } from "../../constants/keys/queryKeys";
-import { transferGatherDataState, transferGroupDataState } from "../../recoils/transferRecoils";
+import { transferGatherDataState } from "../../recoils/transferRecoils";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
 
 export const useToken = () => {
@@ -50,13 +50,10 @@ export const useResetStudyQuery = () => {
 export const useResetGroupQuery = () => {
   const queryClient = useQueryClient();
 
-  const setTransferGroupData = useSetRecoilState(transferGroupDataState);
-
   const refetchWithDelay = useCallback(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     () => {
       queryClient.invalidateQueries({ queryKey: [GROUP_STUDY], exact: false });
-      setTransferGroupData(null);
     },
     [queryClient],
   );

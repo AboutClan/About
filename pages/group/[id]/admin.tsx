@@ -1,7 +1,6 @@
 import { Box, Button } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useState } from "react";
 import styled from "styled-components";
 
 import Header from "../../../components/layouts/Header";
@@ -12,8 +11,6 @@ import { useToast } from "../../../hooks/custom/CustomToast";
 import { useGroupWaitingStatusMutation } from "../../../hooks/groupStudy/mutations";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
 import GroupAdminInvitation from "../../../pageTemplates/group/admin/GroupAdminInvitation";
-import { transferGroupDataState } from "../../../recoils/transferRecoils";
-import { IGroup } from "../../../types/models/groupTypes/group";
 import { IUser } from "../../../types/models/userTypes/userInfoTypes";
 
 function Admin() {
@@ -21,17 +18,10 @@ function Admin() {
   const { id } = useParams<{ id: string }>() || {};
 
   const [deletedUsers, setDeletedUser] = useState([]);
-  const [group, setGroup] = useState<IGroup>();
 
-  const transferGroup = useRecoilValue(transferGroupDataState);
   const resetGroup = useResetGroupQuery();
 
-  const { data: groupData } = useGroupIdQuery(id, { enabled: !!id && !transferGroup });
-
-  useEffect(() => {
-    if (transferGroup) setGroup(transferGroup);
-    else if (groupData) setGroup(groupData);
-  }, [transferGroup, groupData]);
+  const { data: group } = useGroupIdQuery(id, { enabled: !!id });
 
   const { mutate, isLoading } = useGroupWaitingStatusMutation(+id, {
     onSuccess() {

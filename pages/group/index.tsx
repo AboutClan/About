@@ -2,7 +2,6 @@ import { Box, Flex } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
-import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
@@ -20,7 +19,6 @@ import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstan
 import { useGroupQuery } from "../../hooks/groupStudy/queries";
 import GroupMine from "../../pageTemplates/group/GroupMine";
 import GroupSkeletonMain from "../../pageTemplates/group/GroupSkeletonMain";
-import { transferGroupDataState } from "../../recoils/transferRecoils";
 import { GroupStatus, IGroup } from "../../types/models/groupTypes/group";
 import { shuffleArray } from "../../utils/convertUtils/convertDatas";
 import { getRandomImage } from "../../utils/imageUtils";
@@ -54,7 +52,6 @@ function GroupPage() {
 
   const localStorageCursorNum = +localStorage.getItem(GROUP_CURSOR_NUM);
 
-  const setTransdferGroupData = useSetRecoilState(transferGroupDataState);
   const [status, setStatus] = useState<Status>(statusParam ? enToStatus[statusParam] : "모집중");
   const [groupStudies, setGroupStudies] = useState<IGroup[]>([]);
 
@@ -234,13 +231,7 @@ function GroupPage() {
                     return (
                       <Box key={group.id} pb={3} mb={3} borderBottom="var(--border)">
                         <GroupThumbnailCard
-                          {...createGroupThumbnailProps(
-                            group,
-                            status,
-                            idx,
-                            () => setTransdferGroupData(group),
-                            true,
-                          )}
+                          {...createGroupThumbnailProps(group, status, idx, null, true)}
                         />
                       </Box>
                     );
