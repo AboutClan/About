@@ -81,6 +81,7 @@ export const setGatherDataToCardCol = (
 
       age: gather.age,
       func,
+      isEvent: !!gather?.postImage,
     };
   });
 

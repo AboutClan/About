@@ -26,6 +26,7 @@ export interface GatherThumbnailCardProps {
   id: number;
   func?: () => void;
   age: number[];
+  isEvent: boolean;
 }
 
 const STATUS_TO_BADGE_PROPS: Record<GatherStatus, { text: string; colorScheme: string }> = {
@@ -49,6 +50,7 @@ export function GatherThumbnailCard({
   func,
   type = "gather",
   age,
+  isEvent,
 }: GatherThumbnailCardProps) {
   const participantsMember = participants.filter(
     (par) => par.user._id !== "65df1ddcd73ecfd250b42c89",
@@ -60,12 +62,18 @@ export function GatherThumbnailCard({
       <Flex direction="column" ml="12px" flex={1}>
         <Flex justify="space-between">
           <Flex>
-            <Badge mr={1} size="md" colorScheme={STATUS_TO_BADGE_PROPS[status].colorScheme}>
-              {STATUS_TO_BADGE_PROPS[status].text}
+            <Badge
+              mr={1}
+              size="md"
+              colorScheme={isEvent ? "yellow" : STATUS_TO_BADGE_PROPS[status].colorScheme}
+            >
+              {isEvent ? "이벤트" : STATUS_TO_BADGE_PROPS[status].text}
             </Badge>
-            <Badge size="md" colorScheme="gray" color="var(--gray-600)">
-              {category}
-            </Badge>
+            {!isEvent && (
+              <Badge size="md" colorScheme="gray" color="var(--gray-600)">
+                {category}
+              </Badge>
+            )}
           </Flex>
           {(age[0] !== 19 || age[1] !== 28) && (
             <Badge size="md" variant="subtle" colorScheme="blue">
@@ -75,13 +83,21 @@ export function GatherThumbnailCard({
         </Flex>
         <Title>{title}</Title>
         <Subtitle>
-          <Box as="span">{date}</Box>
-          <Box as="span" color="var(--gray-400)">
-            ・
-          </Box>
-          <Box as="span" fontWeight={600}>
-            {place}
-          </Box>
+          {!isEvent ? (
+            <>
+              <Box as="span">{date}</Box>
+              <Box as="span" color="var(--gray-400)">
+                ・
+              </Box>
+              <Box as="span" fontWeight={600}>
+                {place}
+              </Box>
+            </>
+          ) : (
+            <Box as="span" fontWeight={600}>
+              About 이벤트 챌린지
+            </Box>
+          )}
         </Subtitle>
 
         <Flex mt={1} alignItems="center" justify="space-between">

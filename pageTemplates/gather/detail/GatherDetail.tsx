@@ -12,10 +12,12 @@ dayjs.locale("ko");
 
 interface IGatherDetailInfo {
   data: IGather;
+  isEvent: boolean;
 }
 
 function GatherDetailInfo({
   data: { location, date, age, user, password, genderCondition, isApprovalRequired },
+  isEvent,
 }: IGatherDetailInfo) {
   const { data: session } = useSession();
   const isOrganizer = (user as IUserSummary)?.uid === session?.user?.uid;
@@ -24,14 +26,16 @@ function GatherDetailInfo({
   return (
     <Box px={5} py={3} bg="gray.100" fontSize="13px">
       <Flex px={4} py={2} direction="column" bg="white" border="var(--border)" borderRadius="4px">
-        <FirstItem isOpen={isSubLocation} onClick={() => setIsSubLocation(true)}>
-          <ItemText>장소</ItemText>
-          <span>{location.main}</span>
-          <i className="fa-solid fa-chevron-down fa-2xs" />
-        </FirstItem>
+        {!isEvent && (
+          <FirstItem isOpen={isSubLocation} onClick={() => setIsSubLocation(true)}>
+            <ItemText>장소</ItemText>
+            <span>{location.main}</span>
+            <i className="fa-solid fa-chevron-down fa-2xs" />
+          </FirstItem>
+        )}
         {isSubLocation && <LocationSub>{location.sub}</LocationSub>}
         <Item>
-          <ItemText>날짜</ItemText>
+          <ItemText>종료 날짜</ItemText>
           <span>{date === "미정" ? date : dayjsToFormat(dayjs(date), "M.D(ddd) HH:mm")}</span>
         </Item>
         <Item>

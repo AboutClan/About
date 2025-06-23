@@ -1,9 +1,9 @@
 import "dayjs/locale/ko";
 
 import { Box } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 
 import { GATHER_COVER_IMAGE_ARR } from "../../../assets/gather";
 import Divider from "../../../components/atoms/Divider";
@@ -48,8 +48,12 @@ function GatherDetail() {
               />
             </Box>
             <Box paddingBottom="100px">
-              <GatherTitle title={gather.title} category={gather.type.title} />
-              <GatherDetailInfo data={gather} />
+              <GatherTitle
+                title={gather.title}
+                category={gather.type.title}
+                isEvent={!!gather?.postImage}
+              />
+              <GatherDetailInfo data={gather} isEvent={!!gather?.postImage} />
               <GatherContent
                 kakaoUrl={gather?.kakaoUrl}
                 content={gather.content}

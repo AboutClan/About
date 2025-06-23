@@ -3,15 +3,15 @@ import styled from "styled-components";
 
 interface IGatherTitle {
   title: string;
-
+  isEvent: boolean;
   category: string;
 }
 
-function GatherTitle({ title, category }: IGatherTitle) {
+function GatherTitle({ title, category, isEvent }: IGatherTitle) {
   return (
     <Layout>
       <Badge variant="subtle" colorScheme="orange" size="lg">
-        {category}
+        {isEvent ? "이벤트" : category}
       </Badge>
       <span>{title}</span>
     </Layout>
