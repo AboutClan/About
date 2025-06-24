@@ -8,7 +8,7 @@ import { useQueryClient } from "react-query";
 
 import BottomFixedButton from "../../../components/atoms/BottomFixedButton";
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
-import { GROUP_STUDY } from "../../../constants/keys/queryKeys";
+import { GROUP_STUDY, USER_INFO } from "../../../constants/keys/queryKeys";
 import { useErrorToast, useToast } from "../../../hooks/custom/CustomToast";
 import {
   useGroupParticipationMutation,
@@ -39,7 +39,7 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
   const { mutate: participate } = useGroupParticipationMutation("post", +id, {
     onSuccess() {
       toast("success", "가입이 완료되었습니다.");
-
+      queryClient.invalidateQueries([USER_INFO]);
       queryClient.invalidateQueries([GROUP_STUDY, id]);
     },
     onError() {
@@ -128,12 +128,13 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
         <BottomFlexDrawer
           isDrawerUp
           isOverlay
-          height={429}
+          height={443}
           isHideBottom
           setIsModal={() => setIsModal(false)}
         >
           <Box
             py={3}
+            pb={2}
             lineHeight="32px"
             w="100%"
             fontWeight="semibold"
@@ -145,6 +146,10 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
               : "즉시 가입이 가능한 소모임이에요."}
             <br /> {data.questionText ? "참여를 희망하시나요?" : "활동을 시작해볼까요?"}
           </Box>
+          <Box color="gray.500" mr="auto" fontSize="12px" fontWeight={600}>
+            {data?.meetingType === "online" ? "온라인" : "오프라인"} 활동 소모임으로,{" "}
+            <b>참여권 {data?.meetingType === "online" ? 1 : 2}개가 소모됩니다.</b>
+          </Box>
           <Box p={5}>
             <Image
               src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/freepik__background__12597-removebg-preview.png"
@@ -153,7 +158,6 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
               alt="studyResult"
             />
           </Box>
-
           <Flex direction="column" mt="auto" w="100%">
             <Button
               w="full"

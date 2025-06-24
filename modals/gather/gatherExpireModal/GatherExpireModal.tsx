@@ -25,8 +25,12 @@ function GatherExpireModal({ setIsModal, gather }: GatherExpireModalProps) {
           onClickBottom={() => setModal("cancel")}
         />
       </ModalLayout>
-      <GatherExpireModalExpireDialog modal={modal} />
-      <GatherExpireModalCancelDialog modal={modal} memberCnt={gather.participants.length} />
+      <GatherExpireModalExpireDialog modal={modal} setIsModal={setIsModal} />
+      <GatherExpireModalCancelDialog
+        modal={modal}
+        memberCnt={gather.participants.length}
+        setIsModal={setIsModal}
+      />
     </>
   );
 }

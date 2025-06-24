@@ -16,14 +16,19 @@ import styled from "styled-components";
 import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
 import { useErrorToast, useToast } from "../../../hooks/custom/CustomToast";
 import { useGatherStatusMutation, useGatherWritingMutation } from "../../../hooks/gather/mutations";
+import { IModal } from "../../../types/components/modalTypes";
 import { GatherExpireModalDialogType } from "./GatherExpireModal";
 
-interface IGatherExpireModalCancelDialog {
+interface IGatherExpireModalCancelDialog extends IModal {
   modal: GatherExpireModalDialogType;
   memberCnt: number;
 }
 
-function GatherExpireModalCancelDialog({ memberCnt, modal }: IGatherExpireModalCancelDialog) {
+function GatherExpireModalCancelDialog({
+  memberCnt,
+  modal,
+  setIsModal,
+}: IGatherExpireModalCancelDialog) {
   const toast = useToast();
   const queryClient = useQueryClient();
   const errorToast = useErrorToast();
@@ -41,6 +46,7 @@ function GatherExpireModalCancelDialog({ memberCnt, modal }: IGatherExpireModalC
       router.push(`/gather`);
     }
     if (type === "close") toast("success", "모임이 취소되었습니다.");
+    setIsModal(false);
   };
 
   const { mutate: gatherDelete } = useGatherWritingMutation("delete", {

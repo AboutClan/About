@@ -1,18 +1,26 @@
+import { Box } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
+import { CopyBtn } from "../../../components/Icons/CopyIcon";
 import Header from "../../../components/layouts/Header";
 import AdminLocationSelector from "../../../components/molecules/picker/AdminLocationSelector";
 import { useUserRequestQuery } from "../../../hooks/admin/quries";
+import { usePointCuoponLogQuery } from "../../../hooks/user/queries";
 import { IUserRequest } from "../../../types/models/userTypes/userRequestTypes";
+import { dayjsToStr } from "../../../utils/dateTimeUtils";
 
 function AdminSecede() {
   const [initialData, setInitialData] = useState<IUserRequest[]>();
   const [suggestData, setSuggestData] = useState<IUserRequest[]>();
 
   const { data, isLoading } = useUserRequestQuery("탈퇴");
+  const { data: data2 } = usePointCuoponLogQuery("all");
+  console.log(24, data2);
 
+  console.log(data);
   useEffect(() => {
     if (data) setInitialData(data);
   }, [data]);
@@ -38,13 +46,27 @@ function AdminSecede() {
               <Item key={idx}>
                 <Wrapper>
                   <ItemHeader>
-                    <Title>{item?.title}</Title>
-                    <div>
-                      <span>{"temp" || "익명"}</span>
-                      <span>2022-08-14</span>
-                    </div>
+                    <Title>
+                      <div>
+                        <span>{item?.writer?.name} / </span>
+                        <span>
+                          쿠폰:{" "}
+                          {data2?.map((data) => data?.meta?.uid).includes(item?.writer?.uid)
+                            ? "o"
+                            : "x"}{" "}
+                          /{" "}
+                        </span>
+                        <span>{item?.writer?.registerDate} / </span>
+                        <span>소개: {item?.writer?.introduceText ? "o" : "x"} / </span>
+                        <span>{item?.writer?.point} /</span>
+                        <span>{dayjsToStr(dayjs(item?.createdAt))}</span>
+                      </div>
+                    </Title>
                   </ItemHeader>
-                  <Content>{item.content}</Content>
+                  <Content>
+                    <CopyBtn text={item.content} />
+                    <Box ml={2}>{item.content}</Box>
+                  </Content>
                 </Wrapper>
               </Item>
             ))}

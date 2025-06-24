@@ -47,6 +47,7 @@ function RequestSecedeModal({ setIsModal }: IModal) {
       </Box>
       <InfoList
         items={[
+          "이벤트로 획득한 포인트는 환불되지 않습니다.",
           "멤버님의 모든 활동 정보가 삭제됩니다.",
           "포인트를 환급받을 계좌번호를 남겨주세요.",
           "재가입시 가입비를 다시 지불해야 합니다.",

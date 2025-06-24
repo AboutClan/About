@@ -94,6 +94,7 @@ export const authOptions: NextAuthOptions = {
       profile: (profile: KakaoProfile) => {
         const profileData = {
           ...profile,
+          name: profile.kakao_account.name|| profile.properties.nickname,
           role: "newUser",
           profileImage: profile.properties.thumbnail_image || profile.properties.profile_image,
           uid: profile.id.toString(),
@@ -133,7 +134,6 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async signIn({ account, user }) {
       try {
-        console.log(55555, account, user);
         if (["guest", "credentials"].includes(account.provider)) {
           return true;
         }
@@ -150,6 +150,9 @@ export const authOptions: NextAuthOptions = {
           if (findUser) {
             user.role = findUser.role;
             account.role = findUser.role;
+            user.name = findUser.name ?? user.name;
+            user.uid = findUser.uid ?? user.uid;
+            user.id = findUser.id ?? user.id;
 
             const existingAccount = await Account.findOne({
               provider: account.provider,

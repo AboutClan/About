@@ -52,6 +52,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
   const { mutate: changeStatus } = useGatherStatusMutation(+gatherData.id, {
     onSuccess() {
       typeToast("change");
+      resetQuery();
     },
   });
 

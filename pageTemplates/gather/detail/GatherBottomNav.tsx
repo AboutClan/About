@@ -47,7 +47,7 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
   const { data: session } = useSession();
 
   const { data: userInfo } = useUserInfoQuery();
-  const myGather = (data.user as IUserSummary).uid === userInfo?.uid;
+  const myGather = (data.user as IUserSummary).uid === userInfo?.uid || userInfo?.name === "어바웃";
   const [isReviewDrawer, setIsReviewDrawer] = useState(false);
   const [isExpirationModal, setIsExpirationModal] = useState(false);
   const [isFirstPage, setIsFirstPage] = useState(true);
@@ -102,9 +102,11 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
   const queryClient = useQueryClient();
   const { mutate: cancel } = useGatherParticipationMutation("delete", +groupId, {
     onSuccess() {
+      setIsModal(false);
       setIsCancelModal(false);
+      setIsExpirationModal(false);
       typeToast("cancel");
-      setTransferGather(null);
+
       queryClient.invalidateQueries([GATHER_CONTENT, id]);
     },
   });
@@ -154,7 +156,8 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
           text: "취소된 모임입니다.",
         };
     }
-    if (data?.waiting.some((who) => who.user._id === session?.user.id)) {
+
+    if (data?.waiting.some((who) => who?.user?._id === session?.user.id)) {
       return { text: "참여 승인을 기다리고 있습니다." };
     }
 
@@ -283,7 +286,16 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
           </Button>
         </Flex>
       )}
-      {isExpirationModal && <GatherExpireModal gather={data} setIsModal={setIsExpirationModal} />}
+      {isExpirationModal && (
+        <GatherExpireModal
+          gather={data}
+          setIsModal={() => {
+            setIsExpirationModal(false);
+            setIsModal(false);
+            setIsCancelModal(false);
+          }}
+        />
+      )}
       {isModal && (
         <BottomFlexDrawer
           isOverlay

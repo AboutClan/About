@@ -84,11 +84,18 @@ export const usePointSystemLogQuery = (
     { ...options, staleTime: 0, cacheTime: 0 },
   );
 
-export const usePointCuoponLogQuery = (options?: QueryOptions<boolean>) =>
-  useQuery<boolean, AxiosError, boolean>(
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const usePointCuoponLogQuery = (scope?: "all", options?: QueryOptions<any | any[]>) =>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useQuery<any | any[], AxiosError, any | any[]>(
     ["pointLog", "coupon"],
     async () => {
-      const res = await axios.get<boolean>(`${SERVER_URI}/log/point/coupon`);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const res = await axios.get<any | any[]>(`${SERVER_URI}/log/point/coupon`, {
+        params: {
+          scope,
+        },
+      });
       return res.data;
     },
     { ...options, staleTime: 0, cacheTime: 0 },

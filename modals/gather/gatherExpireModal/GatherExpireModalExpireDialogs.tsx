@@ -16,13 +16,14 @@ import styled from "styled-components";
 import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
 import { useErrorToast, useToast } from "../../../hooks/custom/CustomToast";
 import { useGatherStatusMutation } from "../../../hooks/gather/mutations";
+import { IModal } from "../../../types/components/modalTypes";
 import { GatherExpireModalDialogType } from "./GatherExpireModal";
 
-interface IGatherExpireModalExpireDialog {
+interface IGatherExpireModalExpireDialog extends IModal {
   modal: GatherExpireModalDialogType;
 }
 
-function GatherExpireModalExpireDialog({ modal }: IGatherExpireModalExpireDialog) {
+function GatherExpireModalExpireDialog({ modal, setIsModal }: IGatherExpireModalExpireDialog) {
   const toast = useToast();
   const errorToast = useErrorToast();
   const queryClient = useQueryClient();
@@ -34,6 +35,7 @@ function GatherExpireModalExpireDialog({ modal }: IGatherExpireModalExpireDialog
 
   const { mutate: statusOpen } = useGatherStatusMutation(gatherId, {
     onSuccess() {
+      setIsModal(false);
       queryClient.invalidateQueries({ queryKey: [GATHER_CONTENT], exact: false });
       toast("success", "모임이 확정되었어요!");
     },

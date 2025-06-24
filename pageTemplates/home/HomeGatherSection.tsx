@@ -67,10 +67,10 @@ function HomeGatherSection() {
           }}
         >
           <SlideSectionCol title="About 인기 최고 모임" subTitle="최근 가장 핫한 모임이에요!">
-            <HomeGatherCol gathers={gathers?.slice(12, 15)} isPriority={false} />
+            <HomeGatherCol gathers={shuffleArray(gathers?.slice(12, 15))} isPriority={false} />
           </SlideSectionCol>
           <SlideSectionCol title="About 인기 최고 모임" subTitle="요즘 제일 주목받는 모임이에요!">
-            <HomeGatherCol gathers={gathers?.slice(15)} isPriority={false} />
+            <HomeGatherCol gathers={shuffleArray(gathers?.slice(15))} isPriority={false} />
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence>
