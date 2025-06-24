@@ -5,19 +5,19 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import { CopyBtn } from "../../../components/Icons/CopyIcon";
-import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
+import { GatherCategory, IGather } from "../../../types/models/gatherTypes/gatherTypes";
 import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 dayjs.locale("ko");
 
 interface IGatherDetailInfo {
   data: IGather;
-  isEvent: boolean;
+  gatherType: GatherCategory;
 }
 
 function GatherDetailInfo({
   data: { location, date, age, user, password, genderCondition, isApprovalRequired },
-  isEvent,
+  gatherType,
 }: IGatherDetailInfo) {
   const { data: session } = useSession();
   const isOrganizer = (user as IUserSummary)?.uid === session?.user?.uid;
@@ -26,7 +26,7 @@ function GatherDetailInfo({
   return (
     <Box px={5} py={3} bg="gray.100" fontSize="13px">
       <Flex px={4} py={2} direction="column" bg="white" border="var(--border)" borderRadius="4px">
-        {!isEvent && (
+        {gatherType !== "event" && (
           <FirstItem isOpen={isSubLocation} onClick={() => setIsSubLocation(true)}>
             <ItemText>장소</ItemText>
             <span>{location.main}</span>
@@ -34,10 +34,17 @@ function GatherDetailInfo({
           </FirstItem>
         )}
         {isSubLocation && <LocationSub>{location.sub}</LocationSub>}
-        <Item>
-          <ItemText>종료 날짜</ItemText>
-          <span>{date === "미정" ? date : dayjsToFormat(dayjs(date), "M.D(ddd) HH:mm")}</span>
-        </Item>
+        {gatherType === "event" ? (
+          <Item>
+            <ItemText>종료 날짜</ItemText>
+            <span>{date === "미정" ? date : dayjsToFormat(dayjs(date), "M.D(ddd) HH:mm")}</span>
+          </Item>
+        ) : (
+          <Item>
+            <ItemText>날짜</ItemText>
+            <span>{date === "미정" ? date : dayjsToFormat(dayjs(date), "M.D(ddd) HH:mm")}</span>
+          </Item>
+        )}
         <Item>
           <ItemText>나이</ItemText>
           <span>

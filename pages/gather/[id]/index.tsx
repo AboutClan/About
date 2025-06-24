@@ -54,7 +54,7 @@ function GatherDetail() {
                 category={gather.type.title}
                 isEvent={!!gather?.postImage}
               />
-              <GatherDetailInfo data={gather} isEvent={!!gather?.postImage} />
+              <GatherDetailInfo data={gather} gatherType={gather.category} />
               <GatherContent
                 kakaoUrl={gather?.kakaoUrl}
                 content={gather.content}

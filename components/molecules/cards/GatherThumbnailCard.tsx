@@ -5,13 +5,16 @@ import { ComponentProps, useState } from "react";
 import styled from "styled-components";
 
 import { SingleLineText } from "../../../styles/layout/components";
-import { GatherStatus, IGatherParticipants } from "../../../types/models/gatherTypes/gatherTypes";
+import {
+  GatherCategory,
+  GatherStatus,
+  IGatherParticipants,
+} from "../../../types/models/gatherTypes/gatherTypes";
 import { UserIcon } from "../../Icons/UserIcons";
 import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
 
 const VOTER_SHOW_MAX = 4;
 export interface GatherThumbnailCardProps {
-  type?: "gather" | "group";
   title: string;
   status: string;
   category: string;
@@ -26,7 +29,7 @@ export interface GatherThumbnailCardProps {
   id: number;
   func?: () => void;
   age: number[];
-  isEvent: boolean;
+  gatherType: GatherCategory;
 }
 
 const STATUS_TO_BADGE_PROPS: Record<GatherStatus, { text: string; colorScheme: string }> = {
@@ -48,16 +51,16 @@ export function GatherThumbnailCard({
   id,
   maxCnt,
   func,
-  type = "gather",
+
   age,
-  isEvent,
+  gatherType,
 }: GatherThumbnailCardProps) {
   const participantsMember = participants.filter(
     (par) => par.user._id !== "65df1ddcd73ecfd250b42c89",
   );
 
   return (
-    <CardLink href={`/${type}/${id}`} onClick={func}>
+    <CardLink href={`/${"gather"}/${id}`} onClick={func}>
       <PlaceImage src={imageProps.image} priority={imageProps.isPriority} />
       <Flex direction="column" ml="12px" flex={1}>
         <Flex justify="space-between">
@@ -65,11 +68,17 @@ export function GatherThumbnailCard({
             <Badge
               mr={1}
               size="md"
-              colorScheme={isEvent ? "yellow" : STATUS_TO_BADGE_PROPS[status].colorScheme}
+              colorScheme={
+                gatherType !== "gather" ? "yellow" : STATUS_TO_BADGE_PROPS[status].colorScheme
+              }
             >
-              {isEvent ? "이벤트" : STATUS_TO_BADGE_PROPS[status].text}
+              {gatherType === "event"
+                ? "이벤트"
+                : gatherType === "official"
+                ? "공식 행사"
+                : STATUS_TO_BADGE_PROPS[status].text}
             </Badge>
-            {!isEvent && (
+            {gatherType === "gather" && (
               <Badge size="md" colorScheme="gray" color="var(--gray-600)">
                 {category}
               </Badge>
@@ -83,7 +92,7 @@ export function GatherThumbnailCard({
         </Flex>
         <Title>{title}</Title>
         <Subtitle>
-          {!isEvent ? (
+          {gatherType !== "event" ? (
             <>
               <Box as="span">{date}</Box>
               <Box as="span" color="var(--gray-400)">

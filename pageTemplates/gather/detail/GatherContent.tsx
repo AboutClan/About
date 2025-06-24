@@ -41,8 +41,16 @@ function GatherContent({ isMember, kakaoUrl, content, gatherList, postImage }: I
         </Box>
       )}
       {postImage ? (
-        <Box mt={5} pos="relative" w="full" aspectRatio={1 / 1}>
-          <Image src={postImage} alt="postImage" fill />
+        <Box mt={5} position="relative" w="fit-content">
+          <Image
+            src={postImage}
+            alt="postImage"
+            width={0}
+            height={0}
+            sizes="100vw"
+            style={{ width: "auto", height: "auto" }}
+            unoptimized
+          />
         </Box>
       ) : (
         <Box borderTop="var(--border)" mt={5}>
