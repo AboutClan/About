@@ -24,6 +24,19 @@ export const useGatherQuery = (
     },
     options,
   );
+
+export const useGatherGroupQuery = (id: string, options?: QueryOptions<IGather[]>) =>
+  useQuery<IGather[], AxiosError>(
+    [GATHER_CONTENT, "group", id],
+    async () => {
+      const res = await axios.get<IGather[]>(`${SERVER_URI}/gather/group`, {
+        params: { type: "group", groupId: id },
+      });
+      return res.data;
+    },
+    options,
+  );
+
 export const useGatherMyStatusQuery = (
   cursor?: number,
   status?: "isParticipating" | "isEnded" | "isOwner",

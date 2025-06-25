@@ -384,8 +384,8 @@ const theme = extendTheme({
       baseStyle: (props) => ({
         tab: {
           _selected: {
-            color: props.colorScheme === "mint" ? "mint.500" : "black.500", // 활성화된 탭 텍스트 색상
-            borderColor: props.colorScheme === "mint" ? "mint.500" : "black.500", // 활성화된 탭 하단 테두리 색상
+            color: props.colorScheme === "mint" ? "mint.500" : "gray.800", // 활성화된 탭 텍스트 색상
+            borderColor: props.colorScheme === "mint" ? "mint.500" : "gray.800", // 활성화된 탭 하단 테두리 색상
             fontWeight: "semibold",
           },
         },
