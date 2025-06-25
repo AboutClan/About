@@ -49,7 +49,7 @@ function GroupDetail() {
       coverImage: `${group.image}`,
     });
   };
-  console.log(isAdmin);
+ 
   return (
     <>
       {group && <GroupHeader group={group} />}

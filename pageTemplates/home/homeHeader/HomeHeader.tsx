@@ -20,7 +20,7 @@ import {
 } from "../../../constants/keys/localStorage";
 import { useMyChatsQuery } from "../../../hooks/chat/queries";
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
-import DailyCheckModal from "../../../modals/aboutHeader/dailyCheckModal/DailyCheckModal";
+import DailyCheckModal from "../../../modals/InstagramCheckModal";
 import { renderHomeHeaderState } from "../../../recoils/renderRecoils";
 import { NOTICE_ARR } from "../../../storage/notice";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";

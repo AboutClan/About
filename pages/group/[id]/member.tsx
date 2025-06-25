@@ -42,7 +42,7 @@ export default function Member() {
     onSuccess() {
       queryClient.invalidateQueries([GROUP_STUDY]);
       toast("success", "추방되었습니다.");
-      console.log(123, users);
+   
       setUsers((old) => old.filter((who) => who.user?._id !== deleteUser.user._id));
     },
     onError(err) {

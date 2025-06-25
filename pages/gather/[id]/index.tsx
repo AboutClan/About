@@ -32,7 +32,7 @@ function GatherDetail() {
     (gather?.user as IUserSummary)?.uid === session?.user.uid ||
     gather?.participants.some((who) => who?.user.uid === session?.user.uid);
   const postImage = gather?.postImage;
-  console.log(44, gather);
+
   return (
     <>
       {gather ? (
@@ -50,9 +50,9 @@ function GatherDetail() {
             </Box>
             <Box paddingBottom="100px">
               <GatherTitle
+                type={gather.category}
                 title={gather.title}
                 category={gather.type.title}
-                isEvent={!!gather?.postImage}
               />
               <GatherDetailInfo data={gather} gatherType={gather.category} />
               <GatherContent

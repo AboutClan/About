@@ -6,7 +6,6 @@ import { SERVER_URI } from "../../constants/system";
 import { IGatherSummary } from "../../pages/review";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
-import { getPerformanceTime } from "../../utils/mathUtils";
 
 export const useGatherQuery = (
   cursor?: number,
@@ -17,13 +16,10 @@ export const useGatherQuery = (
   useQuery<IGather[], AxiosError>(
     [GATHER_CONTENT, category, sortBy, cursor],
     async () => {
-      const a = getPerformanceTime();
       const res = await axios.get<IGather[]>(`${SERVER_URI}/gather`, {
         params: { cursor, category, sortBy },
       });
 
-      const b = getPerformanceTime();
-      console.log(b - a);
       return res.data;
     },
     options,

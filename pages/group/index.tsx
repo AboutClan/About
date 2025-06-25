@@ -84,7 +84,6 @@ function GroupPage() {
     { title: "파티" },
   ];
 
-  console.log(54, category, cursor, groups, localStorageCursorNum);
   useEffect(() => {
     return () => {
       const localStorageCursorNumChange = !localStorageCursorNum

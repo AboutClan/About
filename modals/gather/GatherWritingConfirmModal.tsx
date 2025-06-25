@@ -3,13 +3,12 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useState } from "react";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 import ImageUploadInput from "../../components/molecules/ImageUploadInput";
 
 import { isGatherEditState } from "../../recoils/checkAtoms";
-import { sharedGatherWritingState } from "../../recoils/sharedDataAtoms";
 import { IModal } from "../../types/components/modalTypes";
 import { IGather, IGatherWriting } from "../../types/models/gatherTypes/gatherTypes";
 import { IFooterOptions, ModalLayout } from "../Modals";
@@ -32,11 +31,8 @@ function GatherWritingConfirmModal({
   const [isGatherEdit, setIsGatherEdit] = useRecoilState(isGatherEditState);
 
   // const { data: gatherData2, isLoading } = useGatherQuery(0, null, "createdAt");
-  const setGatherContent = useSetRecoilState(sharedGatherWritingState);
 
   const onSubmit = () => {
-    console.log(12, gatherData);
-
     if (!isGatherEdit) {
       createGather({ gather: gatherData as IGatherWriting });
     } else {

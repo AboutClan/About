@@ -10,7 +10,7 @@ interface IAvatarGroupsOverwrap {
 }
 
 export default function AvatarGroupsOverwrap({ users, userLength, maxCnt }: IAvatarGroupsOverwrap) {
-  console.log(53, users);
+ 
   return (
     <Participants>
       {users?.map((att, idx) => {

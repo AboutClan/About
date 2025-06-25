@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { AxiosError } from "axios";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -46,7 +46,7 @@ function CollectionAlphabet() {
     },
   });
   const { data: userAlphabetAll, isLoading } = useCollectionAlphabetAllQuery();
-
+  console.log(1234, userAlphabetAll);
   const [members, setMembers] = useState<ICollectionAlphabet[]>();
   const [isChangeModal, setIsChangeModal] = useState(false);
   const [hasAlphabetAll, setHasAlphabetAll] = useState(false);
@@ -55,23 +55,35 @@ function CollectionAlphabet() {
     alphabets: Alphabet[];
   }>();
 
+  const friends = userInfo?.friend;
   useEffect(() => {
-    if (isLoading) return;
+    if (isLoading || !userInfo) return;
     const findItem = userAlphabetAll.find((who) => who?.user?.uid === session?.user.uid);
 
     if (ALPHABET_COLLECTION.every((item) => findItem?.collects.includes(item))) {
       setHasAlphabetAll(true);
     }
+    const myUid = userInfo.uid;
 
     if (findItem) {
       userAlphabetAll.sort((a, b) => {
-        if (a?.user?.uid === session?.user?.uid) return -1;
-        if (b?.user?.uid === session?.user?.uid) return 1;
-        return 0;
+        const isMeA = a?.user?.uid === myUid;
+        const isMeB = b?.user?.uid === myUid;
+
+        if (isMeA) return -1; // 내가 최우선
+        if (isMeB) return 1;
+
+        const isFriendA = friends.includes(a?.user?.uid);
+        const isFriendB = friends.includes(b?.user?.uid);
+
+        if (isFriendA && !isFriendB) return -1; // 친구가 우선
+        if (!isFriendA && isFriendB) return 1;
+
+        return Math.random() - 0.5; // 그 외는 랜덤
       });
     }
     setMembers(userAlphabetAll);
-  }, [isLoading, session?.user?.uid, userAlphabetAll]);
+  }, [isLoading, userInfo, userAlphabetAll]);
 
   const onClickChangeBtn = (user: IUserSummary, alphabets: Alphabet[]) => {
     const myFriends = userInfo?.friend;
@@ -116,14 +128,15 @@ function CollectionAlphabet() {
                   </ProfileWrapper>
                   <Info>
                     <Name>
-                      <span>{user.name}</span>
+                      <Box as="span" mr={1}>
+                        {user.name}
+                      </Box>
                       <UserBadge badgeIdx={user?.badge?.badgeIdx} />
                     </Name>
                     <UserAlphabets>
                       <div>
                         <AlphabetIcon alphabet="A" isDuotone={!alphabets?.includes("A")} />
                         <i className="fa-solid fa-x" />
-
                         <AlphabetCnt hasAlphabet={alphabetsCnt.A !== 0}>
                           {alphabetsCnt.A}
                         </AlphabetCnt>
@@ -159,23 +172,26 @@ function CollectionAlphabet() {
                     </UserAlphabets>
                   </Info>
 
-                  {who.user.uid === session?.user?.uid ? (
+                  {who.user.uid === userInfo?.uid ? (
                     <Button
-                      colorScheme="telegram"
+                      colorScheme="mint"
                       size="xs"
-                      disabled={!hasAlphabetAll}
+                      isDisabled={!hasAlphabetAll}
                       isLoading={completeLoading}
                       onClick={() => handleChangePromotion()}
+                      fontSize="10px"
                     >
                       상품 교환
                     </Button>
                   ) : (
                     <Button
+                      fontSize="10px"
                       size="xs"
-                      colorScheme="mint"
+                      colorScheme={friends?.includes(who.user.uid) ? "orange" : "gray"}
                       onClick={() => onClickChangeBtn(user, alphabets)}
+                      isDisabled={!friends?.includes(who.user.uid)}
                     >
-                      교환 신청
+                      {friends?.includes(who.user.uid) ? "교환 신청" : "교환 불가"}
                     </Button>
                   )}
                 </Item>
@@ -199,7 +215,7 @@ function CollectionAlphabet() {
 }
 
 const Members = styled.div`
-  margin: 0 var(--gap-4);
+  margin: 0 var(--gap-5);
   margin-top: 56px;
 `;
 
@@ -232,12 +248,12 @@ const Name = styled.div`
 const UserAlphabets = styled.div`
   display: flex;
   justify-content: center;
-  font-size: 8px;
+  font-size: 6px;
   align-items: center;
   > div {
     display: flex;
     align-items: center;
-    margin-right: var(--gap-2);
+    margin-right: var(--gap-3);
 
     > *:nth-child(2) {
       margin: 0 var(--gap-1);

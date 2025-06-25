@@ -23,7 +23,7 @@ function MonthlyScoreModal({ onClose }: CloseProps) {
     (obj) =>
       dayjsToStr(dayjs(obj.timestamp).startOf("month")) === dayjsToStr(dayjs().startOf("month")),
   );
-  console.log(15, data, filteredData);
+
   const scoreObj = filteredData?.reduce(
     (acc, cur) => {
       const value = cur.meta.value;

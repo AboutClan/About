@@ -1,8 +1,9 @@
+import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 import styled from "styled-components";
 
 import { AlphabetIcon } from "../../../components/Icons/AlphabetIcon";
-import { useFailToast, useToast } from "../../../hooks/custom/CustomToast";
+import { useToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { useInteractionMutation } from "../../../hooks/user/sub/interaction/mutations";
 import { IModal } from "../../../types/components/modalTypes";
@@ -21,7 +22,6 @@ function AlphabetChangeModal({
   toUid,
   opponentAlpabets,
 }: IAlphabetChangeModal) {
-  const failToast = useFailToast();
   const toast = useToast();
 
   const { data: userInfo } = useUserInfoQuery();
@@ -46,7 +46,7 @@ function AlphabetChangeModal({
         : "해당 알파벳을 보유하고 있지 않습니다.";
 
     if (!alphabets.includes(alphabet)) {
-      failToast("free", failMessage);
+      toast("warning", failMessage);
       return;
     }
 
@@ -58,7 +58,7 @@ function AlphabetChangeModal({
 
   const handleAlphabetChange = () => {
     if (!selectedAlphabet.mine || !selectedAlphabet.opponent) {
-      failToast("free", "교환 할 알파벳을 선택해주세요.");
+      toast("warning", "교환 할 알파벳을 선택해주세요.");
       return;
     }
     requestAlphabet({
@@ -78,19 +78,9 @@ function AlphabetChangeModal({
 
   return (
     <ModalLayout title="알파벳 교환 신청" footerOptions={footerOptions} setIsModal={setIsModal}>
-      <SectionTitle>상대 보유</SectionTitle>
-      <AlphabetContainer>
-        {ABOUT.map((alphabet) => (
-          <AlphabetBtn
-            isSelected={alphabet === selectedAlphabet?.opponent}
-            key={alphabet}
-            onClick={() => onClickAlphabet("opponent", alphabet)}
-          >
-            <AlphabetIcon alphabet={alphabet} isDuotone={!opponentAlpabets?.includes(alphabet)} />
-          </AlphabetBtn>
-        ))}
-      </AlphabetContainer>
-      <SectionTitle style={{ marginTop: "16px" }}>내 보유</SectionTitle>
+      <Box fontSize="12px" mr="auto" color="gray.600">
+        내가 보유중인 알파벳
+      </Box>
       <AlphabetContainer>
         {ABOUT.map((alphabet) => (
           <AlphabetBtn
@@ -102,14 +92,23 @@ function AlphabetChangeModal({
           </AlphabetBtn>
         ))}
       </AlphabetContainer>
+      <Box fontSize="12px" mr="auto" color="gray.600" mt={5}>
+        상대가 보유중인 알파벳
+      </Box>
+      <AlphabetContainer>
+        {ABOUT.map((alphabet) => (
+          <AlphabetBtn
+            isSelected={alphabet === selectedAlphabet?.opponent}
+            key={alphabet}
+            onClick={() => onClickAlphabet("opponent", alphabet)}
+          >
+            <AlphabetIcon alphabet={alphabet} isDuotone={!opponentAlpabets?.includes(alphabet)} />
+          </AlphabetBtn>
+        ))}
+      </AlphabetContainer>
     </ModalLayout>
   );
 }
-
-const SectionTitle = styled.div`
-  font-size: 13px;
-  font-weight: 600;
-`;
 
 const AlphabetContainer = styled.div`
   margin-top: var(--gap-2);

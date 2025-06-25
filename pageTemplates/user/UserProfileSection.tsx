@@ -7,7 +7,6 @@ import styled from "styled-components";
 
 import Avatar from "../../components/atoms/Avatar";
 import UserBadge from "../../components/atoms/badges/UserBadge";
-import { getTemperature } from "../../components/molecules/SocialingScoreBadge";
 import BottomDrawerLg from "../../components/organisms/drawer/BottomDrawerLg";
 import { USER_INFO } from "../../constants/keys/queryKeys";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
@@ -38,8 +37,8 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
   const [isDrawer, setIsDrawer] = useState(false);
 
   return (
-    <>
-      <Box borderBottom="var(--border)" px={5} pb={5}>
+    <Box mb={5}>
+      <Box borderBottom="var(--border)" px={5} pb={3}>
         <Box>
           <Flex py={3} align="center">
             <Box position="relative">
@@ -88,7 +87,7 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
           </Flex>
         </Box>
 
-        <Box px={5} py={2} borderRadius="20px" border="var(--border-main)" bgColor="white">
+        {/* <Box px={5} py={2} borderRadius="20px" border="var(--border-main)" bgColor="white">
           <Flex direction="column" fontSize="12px">
             <Flex
               justify="space-between"
@@ -127,20 +126,23 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
               </Flex>
             </Flex>
           </Flex>
-        </Box>
+        </Box> */}
       </Box>
 
       <UserPointBlock />
 
       <Box mt={5}>
-        <Box mb={4} mx={5} fontWeight="bold" fontSize="16px" lineHeight="24px">
+        <Box borderBottom="var(--border)">
+          <UserCollection />
+        </Box>
+
+        <Box mb={1} mt={4} mx={5} fontWeight="bold" fontSize="16px" lineHeight="24px">
           활동
         </Box>
         <UserProfile />
-        <UserCollection />
       </Box>
       {isDrawer && <ProfileCamera setIsModal={setIsDrawer} />}
-    </>
+    </Box>
   );
 }
 

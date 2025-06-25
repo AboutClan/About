@@ -6,7 +6,6 @@ import { SERVER_URI } from "../../../../constants/system";
 import { requestServer } from "../../../../libs/methodHelpers";
 import { MutationOptions } from "../../../../types/hooks/reactTypes";
 import { Alphabet } from "../../../../types/models/collections";
-import { useResetQueryData } from "../../../custom/CustomHooks";
 
 export const useAlphabetStampMutation = (options?: MutationOptions<void, string>) => {
   const queryClient = useQueryClient();
@@ -30,22 +29,20 @@ type CollectionAlphabetParam<T> = T extends "get"
 
 export const useAlphabetMutation = <T extends "get" | "change">(
   type: T,
-  options?: MutationOptions<CollectionAlphabetParam<T>>,
+  options?: MutationOptions<CollectionAlphabetParam<T>, { alphabet: "A" | "B" | "O" | "U" | "T" }>,
 ) => {
-  const resetQueryData = useResetQueryData();
-  return useMutation<void, AxiosError, CollectionAlphabetParam<T>>(
-    async (param) =>
-      requestServer<CollectionAlphabetParam<T>>({
+  return useMutation<
+    { alphabet: "A" | "B" | "O" | "U" | "T" },
+    AxiosError,
+    CollectionAlphabetParam<T>
+  >(
+    (param) =>
+      requestServer<CollectionAlphabetParam<T>, { alphabet: "A" | "B" | "O" | "U" | "T" }>({
         method: "patch",
         url: `collection/alphabet${type === "change" ? "/change" : ""}`,
         body: param,
       }),
-    {
-      ...options,
-      onSuccess() {
-        resetQueryData([COLLECTION_ALPHABET]);
-      },
-    },
+    options,
   );
 };
 export const useA = (options?: MutationOptions<void>) => {

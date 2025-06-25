@@ -1,14 +1,11 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
 import styled from "styled-components";
 
 import { AboutIcon } from "../../components/atoms/AboutIcons";
-import IconRowBlock from "../../components/atoms/blocks/IconRowBlock";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useCollectionAlphabetQuery } from "../../hooks/user/sub/collection/queries";
-import { ModalLayout } from "../../modals/Modals";
 import { Alphabet } from "../../types/models/collections";
 import { ArrowIcon } from "./UserProfile2";
 
@@ -32,15 +29,13 @@ export default function UserCollection() {
   const typeToast = useTypeToast();
   const isGuest = session?.user.name === "guest";
 
-  const [isCollectionModal, setIsCollectionModal] = useState(false);
-
   const { data: alphabets } = useCollectionAlphabetQuery({
     enabled: !isGuest,
   });
   const alphabetArr = alphabets?.collects;
 
   return (
-    <Flex direction="column" mb={8}>
+    <Flex direction="column">
       <Link
         href="/user/alphabet"
         onClick={
@@ -65,7 +60,7 @@ export default function UserCollection() {
           <AboutIcon alphabet="T" isActive={alphabetArr?.includes("T")} />
         </AlphabetContainer>
       </Link>
-      <Box mx={5}>
+      {/* <Box mx={5}>
         <IconRowBlock
           leftIcon={
             <i className="fa-duotone fa-stars fa-2x" style={{ color: "var(--color-mint)" }} />
@@ -80,7 +75,7 @@ export default function UserCollection() {
           알파벳을 모두 모으면 100원에서 1,000원 사이의 랜덤 박스를 열 수 있어요! 랜덤 박스는 횟수가
           누적될 수록 당첨금이 증가합니다!
         </ModalLayout>
-      )}
+      )} */}
     </Flex>
   );
 }
@@ -102,7 +97,7 @@ const BlockItem = styled.div`
 
 const AlphabetContainer = styled.div`
   padding-top: 16px;
-  padding-bottom: 32px;
+  padding-bottom: 20px;
   display: flex;
   justify-content: center;
   font-size: 24px;

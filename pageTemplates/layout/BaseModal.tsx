@@ -44,6 +44,7 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
   const [transferStudyVoteDate, setTransferStudyVoteDate] = useRecoilState(
     transferStudyVoteDateState,
   );
+  console.log(15, transferCollection);
 
   const dailyCheckWin = useRecoilValue(transferDailyCheckWinState);
 

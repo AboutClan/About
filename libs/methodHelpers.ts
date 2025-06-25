@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 import { SERVER_URI } from "../constants/system";
 
@@ -20,8 +20,10 @@ export const requestServer = async <T, M = void>({
       const res = await axios.post<M>(`${SERVER_URI}/${url}`, body);
       return res.data;
     }
-    case "patch":
-      return axios.patch(`${SERVER_URI}/${url}`, body);
+    case "patch": {
+      const res = await axios.patch<M, AxiosResponse<M>, T>(`${SERVER_URI}/${url}`, body);
+      return res.data;
+    }
     case "delete":
       return axios.delete(`${SERVER_URI}/${url}`, { data: body });
     case "put":

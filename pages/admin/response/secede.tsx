@@ -18,9 +18,9 @@ function AdminSecede() {
 
   const { data, isLoading } = useUserRequestQuery("탈퇴");
   const { data: data2 } = usePointCuoponLogQuery("all");
-  console.log(24, data2);
+ 
 
-  console.log(data);
+
   useEffect(() => {
     if (data) setInitialData(data);
   }, [data]);

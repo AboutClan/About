@@ -49,7 +49,7 @@ function KakaoShareBtn({
       !window.Kakao.isInitialized() &&
       !isWebView()
     ) {
-      console.log(51);
+     
       window.Kakao.init(kakaoAppKey);
     }
   }, []);

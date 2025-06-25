@@ -37,7 +37,7 @@ const Login: NextPage<{
   const statusParam = searchParams.get("status");
 
   const ratio = visibleHeight / visibleWidth;
-  console.log(33, visibleWidth, visibleHeight, ratio);
+
   const kakaoProvider = Object.values(providers).find((p) => p.id == "kakao");
 
   const [isModal, setIsModal] = useState(false);
@@ -47,7 +47,7 @@ const Login: NextPage<{
   const { data: userInfo } = useUserInfoQuery({
     enabled: !!session,
   });
-  console.log(12, userInfo);
+ 
 
   useEffect(() => {
     switch (statusParam) {

@@ -124,7 +124,7 @@ function SecretSquareDetailPage() {
       },
     },
   ];
-  console.log(squareDetail);
+ 
   return (
     <>
       <Header title="">

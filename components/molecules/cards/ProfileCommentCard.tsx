@@ -51,7 +51,7 @@ export default function ProfileCommentCard({
     setIsCommentModal(false);
     setIsEdit(false);
   };
-  console.log(35, crownType);
+ 
   return (
     <>
       <Flex py={3} h="74px" align="center" {...(!isNoBorder && { borderBottom: "var(--border)" })}>

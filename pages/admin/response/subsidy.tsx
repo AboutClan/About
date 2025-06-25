@@ -37,7 +37,6 @@ function AdminRegister() {
   }, [isRefetch, refetch]);
 
   const handleClick = (type: "point" | "cash") => {
-    console.log(type, 22, toUid, pointValue);
 
     const message =
       type === "point"

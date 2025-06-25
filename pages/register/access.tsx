@@ -13,7 +13,6 @@ import { ValueBoxCol2ItemProps } from "../../components/molecules/ValueBoxCol2";
 import { USER_INFO } from "../../constants/keys/queryKeys";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserRegisterControlMutation } from "../../hooks/user/mutations";
-import { useUserInfoQuery } from "../../hooks/user/queries";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 
@@ -24,10 +23,8 @@ function Access() {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const { data } = useUserInfoQuery();
-
   const [isChecked, setIsChecked] = useState(false);
-  console.log(12, data, session);
+
   useEffect(() => {
     if (session === undefined) return;
 
