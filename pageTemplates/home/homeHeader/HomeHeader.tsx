@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
@@ -20,7 +20,7 @@ import {
 } from "../../../constants/keys/localStorage";
 import { useMyChatsQuery } from "../../../hooks/chat/queries";
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
-import DailyCheckModal from "../../../modals/InstagramCheckModal";
+import DailyCheckModal from "../../../modals/aboutHeader/dailyCheckModal/DailyCheckModal";
 import { renderHomeHeaderState } from "../../../recoils/renderRecoils";
 import { NOTICE_ARR } from "../../../storage/notice";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
