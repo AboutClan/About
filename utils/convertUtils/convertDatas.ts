@@ -28,7 +28,6 @@ export const convertPlaceToStudyPlace = (place: PlaceInfoProps): StudyPlaceProps
 export const decodeByAES256 = (encodedTel: string) => {
   const key = process.env.NEXT_PUBLIC_CRYPTO_KEY;
   if (!key) return encodedTel;
-
   const bytes = CryptoJS.AES.decrypt(encodedTel, key);
   const originalText = bytes.toString(CryptoJS.enc.Utf8);
   return originalText;

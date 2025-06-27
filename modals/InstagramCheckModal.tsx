@@ -75,10 +75,11 @@ function InstagramCheckModal({ setIsModal }: IModal) {
           <Image src="/star.png" width={72} height={72} alt="star" />
 
           <Box textAlign="center" my={3} mt={4}>
-            동아리 활동에 참여하고, 인스타그램 스토리에 <b>@about._.20s</b>를 태그해서 올려주세요!
+            About 활동에 참여하고, 인스타 스토리에 <b>@about._.20s</b>를 태그해서 올려주세요!
             <br />
-            매번 <b>알파벳</b>을 획득할 수 있습니다😉 <br />
-            ABOUT을 모두 모으면 <b>스타벅스 기프티콘</b> 지급!
+            <b>알파벳</b>을 획득할 수 있습니다😉 <br />
+            <b style={{ color: "var(--color-mint)" }}>[ABOUT]</b> 완성 시{" "}
+            <b style={{ color: "var(--color-purple)" }}>베스킨라빈스 기프티콘</b> 지급!
           </Box>
           <Box
             fontSize="10px"

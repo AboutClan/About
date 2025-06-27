@@ -1,11 +1,16 @@
 import { Flex } from "@chakra-ui/react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
 import { AboutIcon } from "../../components/atoms/AboutIcons";
+import { COLLECTION_ALPHABET } from "../../constants/keys/queryKeys";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
+import { useAlphabetMutation } from "../../hooks/user/sub/collection/mutations";
 import { useCollectionAlphabetQuery } from "../../hooks/user/sub/collection/queries";
+import { getRandomAlphabet } from "../../libs/userEventLibs/collection";
 import { Alphabet } from "../../types/models/collections";
 import { ArrowIcon } from "./UserProfile2";
 
@@ -28,10 +33,27 @@ export default function UserCollection() {
   const { data: session } = useSession();
   const typeToast = useTypeToast();
   const isGuest = session?.user.name === "guest";
+  const queryClient = useQueryClient();
+
+  const { mutate } = useAlphabetMutation("get", {
+    onSuccess() {
+      queryClient.refetchQueries([COLLECTION_ALPHABET]);
+    },
+  });
 
   const { data: alphabets } = useCollectionAlphabetQuery({
     enabled: !isGuest,
+    onError() {},
   });
+
+  useEffect(() => {
+    if (alphabets === undefined) return;
+    if (!alphabets) {
+      mutate({ alphabet: getRandomAlphabet(100) });
+    }
+  }, [alphabets]);
+
+  console.log(342, alphabets);
   const alphabetArr = alphabets?.collects;
 
   return (
