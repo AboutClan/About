@@ -4,6 +4,8 @@ import { Box } from "@chakra-ui/react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useEffect } from "react";
+import { useSetRecoilState } from "recoil";
 
 import { GATHER_COVER_IMAGE_ARR } from "../../../assets/gather";
 import Divider from "../../../components/atoms/Divider";
@@ -18,6 +20,7 @@ import GatherGuide from "../../../pageTemplates/gather/detail/GatherGuide";
 import GatherHeader from "../../../pageTemplates/gather/detail/GatherHeader";
 import GatherParticipation from "../../../pageTemplates/gather/detail/GatherParticipation";
 import GatherTitle from "../../../pageTemplates/gather/detail/GatherTitle";
+import { isScrollAutoState } from "../../../recoils/navigationRecoils";
 import { IUserSummary, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { getRandomImage } from "../../../utils/imageUtils";
 
@@ -26,12 +29,18 @@ function GatherDetail() {
   const { id } = useParams<{ id: string }>() || {};
   const isGuest = session?.user.name === "guest";
 
+  const setIsScrollAuto = useSetRecoilState(isScrollAutoState);
+
   const { data: gather } = useGatherIDQuery(+id, { enabled: !!id });
 
   const isMember =
     (gather?.user as IUserSummary)?.uid === session?.user.uid ||
     gather?.participants.some((who) => who?.user.uid === session?.user.uid);
   const postImage = gather?.postImage;
+
+  useEffect(() => {
+    setIsScrollAuto(true);
+  }, []);
 
   return (
     <>

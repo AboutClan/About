@@ -7,6 +7,11 @@ export const backUrlState = atom({
   default: null,
 });
 
+export const isScrollAutoState = atom({
+  key: "isScrollAuto",
+  default: false,
+});
+
 export const prevPageUrlState = atom({
   key: "PrevPageUrl",
   default: null,

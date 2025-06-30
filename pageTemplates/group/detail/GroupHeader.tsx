@@ -79,7 +79,7 @@ function GroupHeader({ group }: IGroupHeader) {
                 },
               },
               {
-                text: "인원 내보내기",
+                text: "인원 정리",
                 icon: <MemberMinusIcon />,
                 func: () => {
                   router.push(`/group/${group.id}/member`);

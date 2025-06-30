@@ -1,4 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { useEffect, useRef, useState } from "react";
 
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
@@ -30,9 +31,9 @@ export default function GatherMain() {
   const { data: gatherData, isLoading } = useGatherQuery(
     cursor,
     category,
-    sortBy === "기본순" ? "basic" : sortBy === "최신 개설 순" ? "createdAt" : "date",
+    sortBy === "기본순" ? "createdAt" : sortBy === "최신 개설 순" ? "createdAt" : "date",
   );
-
+  console.log(34, gatherData);
   useEffect(() => {
     setGathers([]);
     setCursor(0);
@@ -47,7 +48,20 @@ export default function GatherMain() {
 
   useEffect(() => {
     if (!gathers) return;
-    setCardDataArr(setGatherDataToCardCol(gathers, true));
+    const temp =
+      sortBy === "기본순"
+        ? (() => {
+            const pending = gathers
+              .filter((g) => g.status === "pending")
+              .sort((a, b) => dayjs(a.date).valueOf() - dayjs(b.date).valueOf());
+
+            const others = gathers.filter((g) => g.status !== "pending");
+
+            return [...pending, ...others];
+          })()
+        : gathers;
+
+    setCardDataArr(setGatherDataToCardCol(temp, true));
   }, [gathers]);
 
   useEffect(() => {

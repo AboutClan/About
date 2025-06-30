@@ -15,27 +15,37 @@ function GroupParticipation({ data }: IGroupParticipation) {
   const isSecret = data?.isSecret;
   const isPlanned = data?.participants.length <= 1;
   const waitingCnt = data?.waiting.length;
-  const userCardArr: IProfileCommentCard[] = data.participants.map((par) => {
-    const roleText = GROUP_STUDY_ROLE[par.role];
+  const userCardArr: IProfileCommentCard[] = data.participants
+    .map((par) => {
+      const roleText = GROUP_STUDY_ROLE[par.role];
 
-    if (isSecret) {
+      if (isSecret) {
+        return {
+          user: null,
+          comment: { comment: "익명으로 진행되는 소모임입니다." },
+          rightComponent: <ParticipateTime isFirst={true}>비공개</ParticipateTime>,
+        };
+      }
       return {
-        user: null,
-        comment: { comment: "익명으로 진행되는 소모임입니다." },
-        rightComponent: <ParticipateTime isFirst={true}>비공개</ParticipateTime>,
+        user: par.user,
+        comment: { comment: par.user?.comment || "비공개 계정입니다." },
+        crownType: (roleText === "소모임장" ? "main" : roleText === "운영진" ? "sub" : null) as
+          | "main"
+          | "sub"
+          | null,
+        rightComponent: (
+          <>
+            <SocialingScoreBadge user={par.user} size="sm" />
+          </>
+        ),
       };
-    }
-    return {
-      user: par.user,
-      comment: { comment: par.user?.comment || "비공개 계정입니다." },
-      crownType: roleText === "소모임장" ? "main" : roleText === "운영진" ? "sub" : null,
-      rightComponent: (
-        <>
-          <SocialingScoreBadge user={par.user} size="sm" />
-        </>
-      ),
-    };
-  });
+    })
+    .sort((a, b) => {
+      const rank = { main: 0, sub: 1, none: 2 };
+      const aRank = rank[a.crownType as "main" | "sub"] ?? 2;
+      const bRank = rank[b.crownType as "main" | "sub"] ?? 2;
+      return aRank - bRank;
+    });
   return (
     <Layout>
       <Flex mb={4} fontSize="18px" lineHeight="28px">

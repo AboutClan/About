@@ -164,13 +164,17 @@ function GroupDetail() {
                       borderRadius="8px"
                       mb={5}
                     >
-                      <UnorderedList>
-                        {group.rules.map((rule, idx) => (
-                          <ListItem key={idx}>
-                            <Text lineHeight="20px">{rule}</Text>
-                          </ListItem>
-                        ))}
-                      </UnorderedList>
+                      {group.rules.length === 1 ? (
+                        <Box px={4}>※ {group.rules[0]}</Box>
+                      ) : (
+                        <UnorderedList>
+                          {group.rules.map((rule, idx) => (
+                            <ListItem key={idx}>
+                              <Text lineHeight="20px">{rule}</Text>
+                            </ListItem>
+                          ))}
+                        </UnorderedList>
+                      )}
                     </Box>
                   </>
                 ) : null}

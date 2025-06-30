@@ -23,7 +23,7 @@ function GroupConfirmModal({ setIsModal, groupWriting }: IGroupConfirmModal) {
   const toast = useToast();
 
   const [isSuccessScreen, setIsSuccessScreen] = useState(false);
-
+  console.log(setIsSuccessScreen);
   const resetQueryData = useResetQueryData();
 
   const resetLocalStorage = () => {
@@ -32,9 +32,9 @@ function GroupConfirmModal({ setIsModal, groupWriting }: IGroupConfirmModal) {
 
   const { mutate } = useGroupWritingMutation("post", {
     onSuccess() {
-      resetQueryData([GROUP_STUDY]);
-      resetLocalStorage();
-      setIsSuccessScreen(true);
+      // resetQueryData([GROUP_STUDY]);
+      // resetLocalStorage();
+      // setIsSuccessScreen(true);
     },
     onError: errorToast,
   });

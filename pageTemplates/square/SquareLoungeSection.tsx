@@ -34,7 +34,7 @@ function SquareLoungeSection() {
     isLoading,
     refetch,
   } = useFeedsQuery(category === "all" ? null : category, null, cursor, subCategory === "최신순");
- 
+
   useEffect(() => {
     if (categoryParam) {
       setLoungeData(null);
