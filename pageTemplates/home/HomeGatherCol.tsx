@@ -82,7 +82,7 @@ export const setGatherDataToCardCol = (
 
       age: gather.age,
       func,
-      gatherType: gather.category === "event" ? "event" : gather?.postImage ? "official" : "gather",
+      gatherType: gather.category,
     };
   });
 
