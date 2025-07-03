@@ -34,7 +34,7 @@ function UserInviteBoard({ gatherId, members, groupId }: UserInviteBoardProps) {
 
   const { data: usersAll, isLoading } = useAllUserDataQuery(null);
   const { data: group, isLoading: isLoading2 } = useGroupIdQuery(groupId, { enabled: !!groupId });
- 
+
   const { mutate } = useGatherInviteMutation(+gatherId, {
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: [GATHER_CONTENT], exact: false });
@@ -89,13 +89,24 @@ function UserInviteBoard({ gatherId, members, groupId }: UserInviteBoardProps) {
       >
         {!isLoading && !isLoading2 && users ? (
           <InviteUserGroups
-            users={users.filter((user) =>
-              filter !== "소모임 멤버"
-                ? user
-                : [group.organizer, ...group.participants.map((par) => par.user._id)].includes(
-                    user._id,
-                  ),
-            )}
+            users={users
+              .filter((user) =>
+                filter !== "소모임 멤버"
+                  ? user
+                  : [...group.participants.map((par) => par.user._id)].includes(user._id),
+              )
+              .sort((a, b) => {
+                if (filter === "소모임 멤버") {
+                  const aInGroup = members.includes(a._id);
+                  const bInGroup = members.includes(b._id);
+                  if (aInGroup && !bInGroup) return -1;
+                  if (!aInGroup && bInGroup) return 1;
+                  // 둘 다 포함되거나 둘 다 미포함인 경우 이름으로 정렬
+                }
+
+                // 이름 기준 내림차순
+                return a.name > b.name ? 1 : -1;
+              })}
             inviteUser={(who) => setInviteUser(who)}
             existUsers={existUsers}
           />
