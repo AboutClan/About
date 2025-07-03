@@ -2,13 +2,13 @@ import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import { Badge, Box, Flex, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 
 import WritingButton from "../../../components/atoms/buttons/WritingButton";
-import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
+import { MainLoading, MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../components/layouts/PageSlide";
 import BlurredLink from "../../../components/molecules/BlurredLink";
 import { GatherThumbnailCard } from "../../../components/molecules/cards/GatherThumbnailCard";
@@ -38,7 +38,9 @@ function GroupDetail() {
   const [tab, setTab] = useState<GroupSectionCategory>("정 보");
   const { data: group } = useGroupIdQuery(id, { enabled: !!id });
 
-  const { data: gathers } = useGatherGroupQuery(id, { enabled: tab === "피 드" && !!id });
+  const { data: gathers, isLoading } = useGatherGroupQuery(id, {
+    enabled: tab === "피 드" && !!id,
+  });
   console.log(3, gathers);
   const findMyInfo =
     group?.participants && group.participants.find((who) => who?.user?._id === session?.user?.id);
@@ -223,6 +225,10 @@ function GroupDetail() {
                     <GatherThumbnailCard {...cardData} />
                   </Box>
                 ))
+              ) : isLoading ? (
+                <Box mt="48px" pos="relative">
+                  <MainLoadingAbsolute size="sm" />
+                </Box>
               ) : (
                 <Box color="gray.600" mb={40} as="p" fontSize="14px" mt={20} textAlign="center">
                   아직 업로드 된 피드가 없습니다.
@@ -241,7 +247,7 @@ function GroupDetail() {
         />
       )}
       {!group && <MainLoading />}
-      {group && !findMyInfo && !isGuest ? <GroupBottomNav data={group} /> : null}
+      {!group && !findMyInfo && !isGuest ? <GroupBottomNav data={group} /> : null}
     </>
   );
 }

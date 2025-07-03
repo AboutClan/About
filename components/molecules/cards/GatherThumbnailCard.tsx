@@ -69,7 +69,9 @@ export function GatherThumbnailCard({
               mr={1}
               size="md"
               colorScheme={
-                gatherType !== "gather" ? "yellow" : STATUS_TO_BADGE_PROPS[status].colorScheme
+                gatherType === "event" || gatherType === "official"
+                  ? "yellow"
+                  : STATUS_TO_BADGE_PROPS[status].colorScheme
               }
             >
               {gatherType === "event"
