@@ -5,6 +5,7 @@ import SectionHeader from "../../components/atoms/SectionHeader";
 import SlideSectionCol from "../../components/molecules/SlideSectionCol";
 import { useWindowWidth } from "../../hooks/custom/CustomHooks";
 import { useGroupSnapshotQuery } from "../../hooks/groupStudy/queries";
+import { shuffleArray } from "../../utils/convertUtils/convertDatas";
 import HomeGroupCol from "./HomeGroupCol";
 
 function HomeGroupSection() {
@@ -12,7 +13,7 @@ function HomeGroupSection() {
 
   const windowWidth = useWindowWidth(); // 현재 화면 너비 가져오기
   const width = windowWidth - 70;
-  
+
   return (
     <Box mb={10}>
       <AnimatePresence initial={false}>
@@ -75,7 +76,7 @@ function HomeGroupSection() {
           title="About 오픈 예정 소모임"
           subTitle="새로운 만남을 준비 중"
         ></SectionHeader>
-        <HomeGroupCol threeGroups={groups?.waiting} type="expected" />
+        <HomeGroupCol threeGroups={shuffleArray(groups?.waiting.slice(0, 3))} type="expected" />
       </Flex>
     </Box>
   );
