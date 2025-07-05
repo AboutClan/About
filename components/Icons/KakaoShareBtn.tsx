@@ -49,7 +49,6 @@ function KakaoShareBtn({
       !window.Kakao.isInitialized() &&
       !isWebView()
     ) {
-     
       window.Kakao.init(kakaoAppKey);
     }
   }, []);
@@ -74,7 +73,7 @@ function KakaoShareBtn({
         description: subtitle,
         imageUrl: img,
         imageWidth: 400,
-        imageHeight: 400,
+        imageHeight: 200,
         link,
       },
       buttons: [
