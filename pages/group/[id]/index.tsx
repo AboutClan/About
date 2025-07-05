@@ -2,9 +2,9 @@ import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import { Badge, Box, Flex, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
 import WritingButton from "../../../components/atoms/buttons/WritingButton";
@@ -15,6 +15,7 @@ import { GatherThumbnailCard } from "../../../components/molecules/cards/GatherT
 import ExternalLink from "../../../components/molecules/ExternalLink";
 import InfoBoxCol from "../../../components/molecules/InfoBoxCol";
 import TabNav from "../../../components/molecules/navs/TabNav";
+import { useToast } from "../../../hooks/custom/CustomToast";
 import { useGatherGroupQuery } from "../../../hooks/gather/queries";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
 import GroupBottomNav from "../../../pageTemplates/group/detail/GroupBottomNav";
@@ -30,6 +31,8 @@ export type GroupSectionCategory = "정 보" | "피 드";
 
 function GroupDetail() {
   const { data: session } = useSession();
+  const router = useRouter();
+  const toast = useToast();
   const isGuest = session?.user.name === "guest";
   const { id } = useParams<{ id: string }>() || {};
 
@@ -41,7 +44,15 @@ function GroupDetail() {
   const { data: gathers, isLoading } = useGatherGroupQuery(id, {
     enabled: tab === "피 드" && !!id,
   });
-  console.log(3, gathers);
+
+  useEffect(() => {
+    if (session === undefined) return;
+    if (!session?.user.uid) {
+      toast("warning", "로그인 정보가 없습니다. 다시 로그인해주세요!");
+      router.push(`/login?status=before&page=group/${id}`);
+    }
+  }, [session]);
+
   const findMyInfo =
     group?.participants && group.participants.find((who) => who?.user?._id === session?.user?.id);
 

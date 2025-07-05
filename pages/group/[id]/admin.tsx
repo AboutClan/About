@@ -45,8 +45,14 @@ function Admin() {
       <Header title="관리자 페이지" />
       <Slide isNoPadding>
         <Layout>
-          <Title>가입 신청</Title>
-          <Question>가입 질문: {group?.questionText} </Question>
+          <Box mb={20}>
+            <Title>가입 신청</Title>
+            {group?.waiting?.length ? (
+              <Question>가입 질문: {group?.questionText} </Question>
+            ) : (
+              <Box>신청중인 멤버가 없습니다.</Box>
+            )}
+          </Box>
           <Container>
             {group?.waiting?.map((who, idx) =>
               deletedUsers.includes(who.user._id) && !isLoading ? null : (
@@ -76,7 +82,7 @@ function Admin() {
             )}
           </Container>
           <Title>
-            <Box>유저 초대</Box>
+            <Box>신규 인원 초대</Box>
           </Title>
           <GroupAdminInvitation />
         </Layout>

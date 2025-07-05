@@ -35,7 +35,8 @@ const Login: NextPage<{
   const visibleWidth = window.innerWidth;
   const visibleHeight = window.innerHeight;
   const statusParam = searchParams.get("status");
-
+  const pageParam = searchParams.get("page");
+  console.log(statusParam, pageParam);
   const ratio = visibleHeight / visibleWidth;
 
   const kakaoProvider = Object.values(providers).find((p) => p.id == "kakao");
@@ -47,7 +48,6 @@ const Login: NextPage<{
   const { data: userInfo } = useUserInfoQuery({
     enabled: !!session,
   });
- 
 
   useEffect(() => {
     switch (statusParam) {
@@ -77,6 +77,12 @@ const Login: NextPage<{
       await signOut({ redirect: false });
     }
 
+    if (statusParam === "before") {
+      await signIn(provider, {
+        callbackUrl: `${window.location.origin}/${pageParam}`,
+      });
+      return;
+    }
     if (statusParam === "access") {
       await signIn(provider, {
         callbackUrl: `${window.location.origin}/register/access`,

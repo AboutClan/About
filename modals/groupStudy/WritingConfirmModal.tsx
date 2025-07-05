@@ -32,9 +32,9 @@ function GroupConfirmModal({ setIsModal, groupWriting }: IGroupConfirmModal) {
 
   const { mutate } = useGroupWritingMutation("post", {
     onSuccess() {
-      // resetQueryData([GROUP_STUDY]);
-      // resetLocalStorage();
-      // setIsSuccessScreen(true);
+      resetQueryData([GROUP_STUDY]);
+      resetLocalStorage();
+      setIsSuccessScreen(true);
     },
     onError: errorToast,
   });

@@ -28,9 +28,10 @@ function GroupMine() {
   );
 
   const handleClick = (e: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>) => {
+    console.log(e);
     toast("info", "소모임 개설은 About 카카오 채널로 문의주세요!");
-    e.stopPropagation();
-    e.preventDefault();
+    // e.stopPropagation();
+    // e.preventDefault();
   };
 
   return (
