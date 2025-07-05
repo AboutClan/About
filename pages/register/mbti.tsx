@@ -1,4 +1,3 @@
-import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -13,7 +12,6 @@ import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoT
 import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
 function Mbti() {
- 
   const info: IUserRegisterFormWriting = getLocalStorageObj(REGISTER_INFO);
 
   const [errorMessage, setErrorMessage] = useState("");
@@ -31,7 +29,7 @@ function Mbti() {
 
   return (
     <>
-      <ProgressHeader title={"회원가입 "} value={50} />
+      <ProgressHeader title="회원가입 " value={50} />
       <MBTILayout mbti={mbti} setMbti={setMbti} errorMessage={errorMessage} />
 
       <BottomNav onClick={onClickNext} url="/register/major" />

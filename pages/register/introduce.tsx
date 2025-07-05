@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { MouseEvent, useState } from "react";
-import Textarea from "../../components/atoms/Textarea";
 
+import Textarea from "../../components/atoms/Textarea";
 import BottomNav from "../../components/layouts/BottomNav";
 import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
@@ -32,7 +32,7 @@ function Comment() {
 
   return (
     <>
-      <ProgressHeader title={"회원가입"} value={80} />
+      <ProgressHeader title="회원가입" value={80} />
 
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
@@ -71,7 +71,7 @@ function Comment() {
         </Box>
       </RegisterLayout>
 
-      <BottomNav onClick={onClickNext} url={"/register/phone"} />
+      <BottomNav onClick={onClickNext} url="/register/phone" />
     </>
   );
 }

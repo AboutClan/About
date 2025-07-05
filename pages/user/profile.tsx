@@ -5,6 +5,7 @@ import { useQueryClient } from "react-query";
 import styled from "styled-components";
 
 import Avatar from "../../components/atoms/Avatar";
+import Textarea from "../../components/atoms/Textarea";
 import BottomNav from "../../components/layouts/BottomNav";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
@@ -37,6 +38,7 @@ function Profile() {
   const [instagram, setInstagram] = useState("");
   const [comment, setComment] = useState("");
   const [isDrawer, setIsDrawer] = useState(false);
+  const [text, setText] = useState("");
   const [placeInfo, setPlaceInfo] = useState<KakaoLocationProps>({
     place_name: "",
     road_address_name: "",
@@ -61,6 +63,7 @@ function Profile() {
     });
     setInstagram(userInfo?.instagram);
     setComment(userInfo?.comment);
+    setText(userInfo?.introduceText);
   }, [userInfo]);
 
   const handleSubmit = () => {
@@ -74,6 +77,7 @@ function Profile() {
       majors,
       mbti,
       instagram,
+      introduceText: text,
     });
   };
 
@@ -164,6 +168,26 @@ function Profile() {
                 <RightArrowIcon />
               </Flex>
             </Button>
+          </Box>
+          <Box mb={4}>
+            <Box fontSize="11px" fontWeight="medium" color="gray.600" mb={2}>
+              자기소개
+            </Box>
+            <Textarea
+              h="96px"
+              placeholder="나는 어떤 사람인가요? 사람들과 어울릴 때의 성격이나 대화 스타일을 적어주세요!"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            />
+            <Flex ml="auto" mt={1} w="max-content" fontSize="12px" color="gray.500">
+              <Box
+                color={text.length >= 90 ? "red" : text.length < 40 ? "gray.500" : "gray.800"}
+                mr={1}
+              >
+                {text.length}
+              </Box>{" "}
+              / {text.length >= 90 ? "최대 90자" : "최소 40자"}
+            </Flex>
           </Box>
           <Box mb={4}>
             <LabeledInput

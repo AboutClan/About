@@ -24,7 +24,7 @@ function Comment() {
     const findIdx = MESSAGE_DATA.findIndex((message) => message === comment);
     if (findIdx === -1) {
       setIndex(0);
-      setValue(comment);
+      setValue(comment ?? "");
       timeoutId = setTimeout(() => {
         inputRef.current?.focus();
       }, 500);
@@ -54,7 +54,7 @@ function Comment() {
 
   return (
     <>
-      <ProgressHeader title={"회원가입"} value={70} />
+      <ProgressHeader title="회원가입" value={70} />
 
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
@@ -89,7 +89,7 @@ function Comment() {
         </Container>
       </RegisterLayout>
 
-      <BottomNav onClick={onClickNext} url={"/register/introduce"} />
+      <BottomNav onClick={onClickNext} url="/register/introduce" />
     </>
   );
 }

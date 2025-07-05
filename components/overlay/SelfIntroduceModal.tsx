@@ -4,7 +4,7 @@ import { useQueryClient } from "react-query";
 
 import { USER_INFO } from "../../constants/keys/queryKeys";
 import { useToast } from "../../hooks/custom/CustomToast";
-import { usePointSystemMutation, useUserInfoMutation } from "../../hooks/user/mutations";
+import { useUserInfoMutation } from "../../hooks/user/mutations";
 import { IFooterOptions, ModalLayout } from "../../modals/Modals";
 import { CloseProps } from "../../types/components/modalTypes";
 import Textarea from "../atoms/Textarea";
@@ -18,11 +18,8 @@ function SelfIntroduceModal({ onClose }: SelfIntroduceModal) {
 
   const queryClient = useQueryClient();
 
-  const { mutate: updatePoint } = usePointSystemMutation("point");
   const { mutate } = useUserInfoMutation({
     onSuccess() {
-      updatePoint({ value: 1000, message: "자기소개 입력" });
-      toast("success", "1,000 Point가 지급되었습니다.");
       queryClient.invalidateQueries([USER_INFO]);
       onClose();
     },
@@ -54,10 +51,7 @@ function SelfIntroduceModal({ onClose }: SelfIntroduceModal) {
 
   return (
     <ModalLayout title="자기소개 등록" footerOptions={footerOptions} setIsModal={onClose}>
-      <Box>
-        자기소개 입력하면 <b>2,000 Point</b> 즉시 지급!
-        <br /> 모든 멤버 필수 사항이며, 프로필에 공개됩니다.
-      </Box>
+      <Box>자기소개를 작성해 주세요. 필수사항입니다 !</Box>
       <Box mt={4}>
         <Textarea
           h="96px"

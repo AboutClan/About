@@ -1,4 +1,3 @@
-import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -12,7 +11,6 @@ import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoT
 import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
 function Gender() {
-
   const info: IUserRegisterFormWriting = getLocalStorageObj(REGISTER_INFO);
 
   const { data, type } = useUserKakaoInfoQuery();
@@ -44,7 +42,7 @@ function Gender() {
 
   return (
     <>
-      <ProgressHeader value={20} title={"회원가입"} />
+      <ProgressHeader value={20} title="회원가입" />
 
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>

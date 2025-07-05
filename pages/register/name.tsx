@@ -47,7 +47,7 @@ function Name() {
 
   return (
     <>
-      <ProgressHeader title={"회원가입"} value={10} url="/login" />
+      <ProgressHeader title="회원가입" value={10} url="/login" />
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>이름을 입력해 주세요</span>

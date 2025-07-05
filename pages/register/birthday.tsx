@@ -4,7 +4,6 @@ import { Box, Button } from "@chakra-ui/react";
 import KoreanLocale from "date-fns/locale/ko"; // 한국어 로케일 추가
 import dayjs from "dayjs";
 import { KakaoProfile } from "next-auth/providers/kakao";
-import { useSearchParams } from "next/navigation";
 import { forwardRef, useEffect, useState } from "react";
 import DatePicker, { registerLocale } from "react-datepicker";
 import styled from "styled-components";
@@ -22,7 +21,6 @@ import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils
 registerLocale("ko", KoreanLocale);
 
 function Birthday() {
-
   const info: IUserRegisterFormWriting = getLocalStorageObj(REGISTER_INFO);
 
   const getBirth = (birth: string) => {
@@ -98,7 +96,7 @@ function Birthday() {
 
   return (
     <>
-      <ProgressHeader title={"회원가입"} value={30} />
+      <ProgressHeader title="회원가입" value={30} />
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>생년월일을 입력해 주세요</span>

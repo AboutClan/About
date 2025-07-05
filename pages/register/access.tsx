@@ -60,7 +60,7 @@ function Access() {
       right: "2,000원",
     },
     {
-      left: "가입 후 자기소개 작성",
+      left: "About 인스타 팔로우",
       right: "1,000원",
     },
     {

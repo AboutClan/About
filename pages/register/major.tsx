@@ -1,5 +1,4 @@
 import { useToast } from "@chakra-ui/react";
-import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -40,7 +39,7 @@ function Major() {
 
   return (
     <>
-      <ProgressHeader title={"회원가입"} value={60} />
+      <ProgressHeader title="회원가입" value={60} />
       <MajorLayout majors={majors} setMajors={setMajors} />
       <BottomNav onClick={onClickNext} url="/register/comment" />
     </>

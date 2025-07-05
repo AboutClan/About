@@ -1,5 +1,4 @@
 import { Box } from "@chakra-ui/react";
-import { useSearchParams } from "next/navigation";
 import { MouseEvent, useState } from "react";
 
 import BottomNav from "../../components/layouts/BottomNav";
@@ -14,7 +13,6 @@ import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoT
 import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
 function RegisterLocation() {
-
   const info: IUserRegisterFormWriting = getLocalStorageObj(REGISTER_INFO);
 
   const [errorMessage, setErrorMessage] = useState("");
@@ -44,7 +42,7 @@ function RegisterLocation() {
 
   return (
     <>
-      <ProgressHeader title={"회원가입"} value={40} />
+      <ProgressHeader title="회원가입" value={40} />
       <RegisterLocationLayout
         handleButton={onClickNext}
         url="/register/mbti"
