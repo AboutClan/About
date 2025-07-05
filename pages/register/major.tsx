@@ -14,8 +14,6 @@ import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils
 
 function Major() {
   const toast = useToast();
-  const searchParams = useSearchParams();
-  const isProfileEdit = !!searchParams.get("edit");
 
   const info = getLocalStorageObj(REGISTER_INFO);
 
@@ -42,7 +40,7 @@ function Major() {
 
   return (
     <>
-      <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={66} />
+      <ProgressHeader title={"회원가입"} value={60} />
       <MajorLayout majors={majors} setMajors={setMajors} />
       <BottomNav onClick={onClickNext} url="/register/comment" />
     </>

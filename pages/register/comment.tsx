@@ -1,5 +1,4 @@
 import { Input } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { MouseEvent, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
@@ -12,10 +11,6 @@ import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
 import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
 function Comment() {
-  const searchParams = useSearchParams();
-  const isProfileEdit = !!searchParams.get("edit");
-  const router = useRouter();
-
   const info = getLocalStorageObj(REGISTER_INFO);
 
   const inputRef = useRef(null);
@@ -55,15 +50,11 @@ function Comment() {
     else tempComment = MESSAGE_DATA[index - 1];
 
     setLocalStorageObj(REGISTER_INFO, { ...info, comment: tempComment });
-
-    if (isProfileEdit) {
-      router.push("/register/instagram");
-    } else router.push(`/register/phone`);
   };
 
   return (
     <>
-      <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={77} />
+      <ProgressHeader title={"회원가입"} value={70} />
 
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
@@ -98,7 +89,7 @@ function Comment() {
         </Container>
       </RegisterLayout>
 
-      <BottomNav onClick={onClickNext} url={!isProfileEdit && "/register/phone"} />
+      <BottomNav onClick={onClickNext} url={"/register/introduce"} />
     </>
   );
 }

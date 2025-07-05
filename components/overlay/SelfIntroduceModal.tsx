@@ -21,8 +21,8 @@ function SelfIntroduceModal({ onClose }: SelfIntroduceModal) {
   const { mutate: updatePoint } = usePointSystemMutation("point");
   const { mutate } = useUserInfoMutation({
     onSuccess() {
-      updatePoint({ value: 2000, message: "자기소개 입력" });
-      toast("success", "2,000 Point가 지급되었습니다.");
+      updatePoint({ value: 1000, message: "자기소개 입력" });
+      toast("success", "1,000 Point가 지급되었습니다.");
       queryClient.invalidateQueries([USER_INFO]);
       onClose();
     },

@@ -13,13 +13,12 @@ import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoT
 import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
 function Mbti() {
-  const searchParams = useSearchParams();
+ 
   const info: IUserRegisterFormWriting = getLocalStorageObj(REGISTER_INFO);
 
   const [errorMessage, setErrorMessage] = useState("");
 
   const [mbti, setMbti] = useState(info?.mbti);
-  const isProfileEdit = !!searchParams.get("edit");
 
   const onClickNext = (e) => {
     if (!mbti) {
@@ -32,7 +31,7 @@ function Mbti() {
 
   return (
     <>
-      <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={55} />
+      <ProgressHeader title={"회원가입 "} value={50} />
       <MBTILayout mbti={mbti} setMbti={setMbti} errorMessage={errorMessage} />
 
       <BottomNav onClick={onClickNext} url="/register/major" />

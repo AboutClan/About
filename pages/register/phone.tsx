@@ -52,7 +52,7 @@ function Phone() {
 
   return (
     <>
-      <ProgressHeader title="회원가입" value={88} />
+      <ProgressHeader title="회원가입" value={90} />
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>핸드폰 번호를 입력해 주세요</span>

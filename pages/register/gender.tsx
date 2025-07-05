@@ -12,8 +12,6 @@ import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoT
 import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
 
 function Gender() {
-  const searchParams = useSearchParams();
-  const isProfileEdit = !!searchParams.get("edit");
 
   const info: IUserRegisterFormWriting = getLocalStorageObj(REGISTER_INFO);
 
@@ -46,7 +44,7 @@ function Gender() {
 
   return (
     <>
-      <ProgressHeader value={22} title={!isProfileEdit ? "회원가입" : "프로필 수정"} />
+      <ProgressHeader value={20} title={"회원가입"} />
 
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>

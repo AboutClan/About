@@ -16,9 +16,9 @@ const REGISTER_WRITING_SEQUENCE = {
   major: 6,
   interest: 7,
   comment: 8,
-  instagram: 9,
-  phone: 9,
-  fee: 10,
+  introduce: 9,
+  phone: 10,
+  fee: 11,
 };
 
 const GATHER_WRITING_SEQUENCE = {

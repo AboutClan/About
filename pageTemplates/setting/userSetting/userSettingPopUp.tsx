@@ -62,7 +62,7 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
       setPopUpType((old) => [...old, "gatherReview"]);
       return;
     }
-    if (!user?.introduceText && !checkAndSetLocalStorage(SELF_INTRODUCE_AT, 7)) {
+    if (!user?.introduceText && checkAndSetLocalStorage(SELF_INTRODUCE_AT, 7)) {
       setPopUpType((old) => [...old, "introduce"]);
       return;
     }

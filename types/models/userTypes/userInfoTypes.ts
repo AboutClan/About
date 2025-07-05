@@ -36,7 +36,7 @@ export interface IUser extends Omit<IUserRegisterForm, "location">, IUserSummary
     cnt: number;
     sum?: number;
   };
-  introduceText?: string;
+
   kakao_account: KakaoProfile["kakao_account"];
 }
 
@@ -112,6 +112,7 @@ export interface IUserRegisterFormWriting {
   comment: string;
   telephone: string;
   locationDetail: LocationDeatilProps;
+  introduceText?: string;
 }
 export interface AvatarProps {
   type: number;

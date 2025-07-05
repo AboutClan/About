@@ -1,4 +1,3 @@
-import { useSearchParams } from "next/navigation";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 import { Input } from "../../components/atoms/Input";
@@ -13,9 +12,6 @@ import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils
 import { checkIsKorean } from "../../utils/validationUtils";
 
 function Name() {
-  const searchParams = useSearchParams();
-  const isProfileEdit = !!searchParams.get("edit");
-
   const info: IUserRegisterFormWriting = getLocalStorageObj(REGISTER_INFO);
 
   const { data } = useUserKakaoInfoQuery();
@@ -51,7 +47,7 @@ function Name() {
 
   return (
     <>
-      <ProgressHeader title={!isProfileEdit ? "회원가입" : "프로필 수정"} value={11} url="/login" />
+      <ProgressHeader title={"회원가입"} value={10} url="/login" />
       <RegisterLayout errorMessage={errorMessage}>
         <RegisterOverview>
           <span>이름을 입력해 주세요</span>
@@ -62,7 +58,6 @@ function Name() {
           value={value}
           onChange={onChange}
           placeholder="이름을 입력해주세요."
-          disabled={isProfileEdit}
         />
       </RegisterLayout>
       <BottomNav onClick={onClickNext} url="/register/gender" />
