@@ -182,8 +182,8 @@ function Settlement() {
 }
 const INFO_ARR = [
   "최대 일주일 이내에 요청하신 수단으로 지급됩니다.",
+  "콘텐츠가 없는 모임은 지원 대상이 아닙니다.",
   "현금 수령시 10%의 수수료가 차감됩니다.",
-  "번개 서포터즈는 10%를 추가 지원받습니다.",
 ];
 
 export default Settlement;
