@@ -12,6 +12,10 @@ function HomeGatherSection() {
   const windowWidth = useWindowWidth(); // 현재 화면 너비 가져오기
   const width = windowWidth - 70;
 
+  const firstData = gathers?.slice(0, 6);
+  const secondData = shuffleArray(gathers?.slice(6, 12));
+  const thirdData = shuffleArray(gathers?.slice(12, 18));
+  console.log(54, gathers);
   return (
     <>
       <AnimatePresence initial={false}>
@@ -27,10 +31,10 @@ function HomeGatherSection() {
           }}
         >
           <SlideSectionCol title="About 번개 모임" subTitle="친구들과의 즐거운 만남">
-            <HomeGatherCol gathers={gathers?.slice(0, 3)} isPriority />
+            <HomeGatherCol gathers={firstData?.slice(0, 3)} isPriority />
           </SlideSectionCol>
           <SlideSectionCol title="About 번개 모임" subTitle="같은 관심사를 나누는 만남의 장">
-            <HomeGatherCol gathers={gathers?.slice(3, 6)} isPriority={false} />
+            <HomeGatherCol gathers={firstData?.slice(3, 6)} isPriority={false} />
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence>
@@ -47,10 +51,10 @@ function HomeGatherSection() {
           }}
         >
           <SlideSectionCol title="About 마감 임박 모임" subTitle="곧 마감! 마지막 기회">
-            <HomeGatherCol gathers={shuffleArray(gathers?.slice(6, 9))} isPriority={false} />
+            <HomeGatherCol gathers={shuffleArray(secondData?.slice(0, 3))} isPriority={false} />
           </SlideSectionCol>
           <SlideSectionCol title="About 마감 임박 모임" subTitle="지금 아니면 늦어요!">
-            <HomeGatherCol gathers={shuffleArray(gathers?.slice(9))} isPriority={false} />
+            <HomeGatherCol gathers={shuffleArray(secondData?.slice(3, 6))} isPriority={false} />
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence>
@@ -67,10 +71,10 @@ function HomeGatherSection() {
           }}
         >
           <SlideSectionCol title="About 인기 최고 모임" subTitle="최근 가장 핫한 모임이에요!">
-            <HomeGatherCol gathers={shuffleArray(gathers?.slice(12, 15))} isPriority={false} />
+            <HomeGatherCol gathers={shuffleArray(thirdData?.slice(0, 3))} isPriority={false} />
           </SlideSectionCol>
           <SlideSectionCol title="About 인기 최고 모임" subTitle="요즘 제일 주목받는 모임이에요!">
-            <HomeGatherCol gathers={shuffleArray(gathers?.slice(15))} isPriority={false} />
+            <HomeGatherCol gathers={shuffleArray(thirdData?.slice(3, 6))} isPriority={false} />
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence>
