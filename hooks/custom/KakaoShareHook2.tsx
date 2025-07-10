@@ -44,7 +44,7 @@ export function useKakaoShare() {
         description: subtitle,
         imageUrl: img,
         imageWidth: 400,
-        imageHeight: 400,
+        imageHeight: 200,
         link: {
           mobileWebUrl: url,
           webUrl: url,
