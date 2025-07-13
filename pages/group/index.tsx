@@ -217,14 +217,8 @@ function GroupPage() {
                   ?.reverse()
                   ?.map((group, idx) => {
                     const status =
-                      group.status === "end"
-                        ? "end"
-                        : group.memberCnt.max === 0
-                        ? "pending"
-                        : group.memberCnt.max <= group.participants.length
+                      group.memberCnt.max !== 0 && group.memberCnt.max <= group.participants.length
                         ? "full"
-                        : group.memberCnt.max - 2 <= group.participants.length
-                        ? "imminent"
                         : group.status;
 
                     return (

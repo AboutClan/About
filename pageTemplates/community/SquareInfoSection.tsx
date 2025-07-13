@@ -56,8 +56,8 @@ function SquareSecretSection() {
       <SecretSquareCategories type="info" category="전체" setCategory={() => {}} />
       <Box pb="80px">
         <Box as="p" fontSize="18px" mt={20} textAlign="center">
-          여름 시즌을 위한 &apos;팀원 모집&apos; / &apos;정보&apos; / &apos;홍보&apos; 등
-          <br /> <b>7월 12일(토) 오픈!</b>
+          여름 시즌 &apos;팀원 모집&apos; / &apos;정보&apos; / &apos;홍보&apos; 등
+          <br /> <b>7월 28일(월) 오픈!</b>
         </Box>
         {/* {sqaures && sqaures.length === 0 && data ? (
           <Flex fontSize="18px" height="200px" justify="center" align="center">
