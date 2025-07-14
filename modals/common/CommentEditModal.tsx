@@ -51,8 +51,8 @@ function CommentEditModal({
       footerOptions={isFirst ? null : footerOptions}
       setIsModal={setIsModal}
       paddingOptions={{
-        header: 5,
-        footer: 5,
+        header: isFirst ? 0 : 5,
+        footer: isFirst ? 0 : 5,
       }}
     >
       <Container>
