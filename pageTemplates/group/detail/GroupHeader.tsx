@@ -91,7 +91,7 @@ function GroupHeader({ group }: IGroupHeader) {
           kakaoOptions: {
             title: group?.title,
             subtitle: group?.guide,
-            img: group?.squareImage,
+            img: group?.image,
             url: "https://study-about.club" + router.asPath,
           },
         },
