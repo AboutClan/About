@@ -2,8 +2,8 @@ import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import { Badge, Box, Flex, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -139,7 +139,7 @@ function GroupDetail() {
                 </Box>
                 {group.status === "resting" ? (
                   <Box fontSize="12px" mb={4} color="mint">
-                    ※ 현재 휴식중인 소모임입니다. 방학 중 활동 예정!
+                    ※ 현재 휴식중인 소모임입니다. 곧 활동 예정!
                   </Box>
                 ) : null}
                 <Box
