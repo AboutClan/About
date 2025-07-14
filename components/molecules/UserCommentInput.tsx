@@ -63,6 +63,7 @@ function UserCommentInput({
       {user && (
         <>
           <Flex
+            alignSelf="flex-start"
             justify="center"
             align="center"
             p="3px"

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 
-import { Input } from "../../components/atoms/Input";
+import Textarea from "../../components/atoms/Textarea";
 import { CommentParamProps, SubCommentParamProps } from "../../hooks/common/mutations";
 import { IModal } from "../../types/components/modalTypes";
 import { UserCommentProps } from "../../types/components/propTypes";
@@ -51,8 +51,8 @@ function CommentEditModal({
       footerOptions={isFirst ? null : footerOptions}
       setIsModal={setIsModal}
       paddingOptions={{
-        header: 0,
-        footer: 0,
+        header: 5,
+        footer: 5,
       }}
     >
       <Container>
@@ -63,7 +63,7 @@ function CommentEditModal({
           </>
         ) : (
           <>
-            <Input size="sm" isLine value={text} onChange={(e) => setText(e.target.value)} />
+            <Textarea size="md" value={text} onChange={(e) => setText(e.target.value)} />
           </>
         )}
       </Container>
