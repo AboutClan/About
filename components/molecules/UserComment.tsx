@@ -28,6 +28,7 @@ interface UserCommentProps extends Omit<CommentProps, "_id"> {
   likeList: string[];
   isAuthor: boolean;
   hasAuthority: boolean;
+  hasDeleteBtn?: boolean;
 }
 
 function UserComment({
@@ -44,6 +45,7 @@ function UserComment({
   pageId,
   likeList,
   hasAuthority,
+  hasDeleteBtn = true,
 }: UserCommentProps) {
   const { data: session } = useSession();
 
@@ -180,7 +182,7 @@ function UserComment({
             >
               좋아요 {likeArr.length}개
             </Button>
-            {!isReComment && hasAuthority && (
+            {!isReComment && hasAuthority && hasDeleteBtn && (
               <>
                 <Box mx={1} w="1px" h="6px" bg="gray.200" my="auto" />
                 <Button
@@ -225,6 +227,7 @@ function UserComment({
           }
           subCommentId={isReComment ? commentId : undefined}
           isSecret={isSecret}
+          hasDeleteBtn={hasDeleteBtn}
         />
       )}
     </>

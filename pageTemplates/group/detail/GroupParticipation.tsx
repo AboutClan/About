@@ -89,7 +89,7 @@ const Layout = styled.div`
   flex-direction: column;
   background-color: white;
 
-  padding-bottom: var(--gap-4);
+  padding-bottom: 20px;
 `;
 
 export default GroupParticipation;

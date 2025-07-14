@@ -6,6 +6,7 @@ import styled from "styled-components";
 import BottomCommentInput from "../../../components/atoms/BottomCommentInput";
 import CommentSection from "../../../components/molecules/CommentSection";
 import { useCommentMutation, useSubCommentMutation } from "../../../hooks/common/mutations";
+import { useToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { getCommentArr } from "../../../libs/comment/commentLib";
 import { UserCommentProps } from "../../../types/components/propTypes";
@@ -18,6 +19,7 @@ interface IGroupComments {
 }
 
 function GroupComments({ comments, hasAutority }: IGroupComments) {
+  const toast = useToast();
   const router = useRouter();
 
   const groupId = router.query.id as string;
@@ -28,11 +30,15 @@ function GroupComments({ comments, hasAutority }: IGroupComments) {
   const { data: userInfo } = useUserInfoQuery();
 
   const { mutate: writeComment } = useCommentMutation("post", "group", groupId, {
-    onSuccess() {},
+    onSuccess() {
+      toast("success", "포인트가 적립되었습니다.");
+    },
   });
   const { mutate: writeSubComment } = useSubCommentMutation("post", "group", groupId, {
     onSuccess() {},
   });
+
+  const hasMyReview = comments?.some((comment) => comment?.user._id === userInfo?._id);
 
   useEffect(() => {
     setCommentArr(comments);
@@ -71,17 +77,22 @@ function GroupComments({ comments, hasAutority }: IGroupComments) {
             setCommentArr={setCommentArr}
             id={groupId}
             hasAuthority={hasAutority}
+            hasMyReview={hasMyReview}
+            
           />
         )}
       </Layout>
-      <BottomCommentInput
-        onSubmit={onSubmit}
-        type="comment"
-        replyName={replyProps?.replyName}
-        setReplyProps={setReplyProps}
-        isFixed={false}
-        user={userInfo}
-      />
+      {!hasMyReview && (
+        <BottomCommentInput
+          onSubmit={onSubmit}
+          type="review"
+          replyName={replyProps?.replyName}
+          setReplyProps={setReplyProps}
+          isFixed={false}
+          user={userInfo}
+          
+        />
+      )}
     </>
   );
 }

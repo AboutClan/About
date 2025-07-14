@@ -11,7 +11,7 @@ import UserCommentInput from "../molecules/UserCommentInput";
 interface BottomCommentInputProps {
   isFixed?: boolean;
   onSubmit: (value: string) => void;
-  type?: "comment" | "message";
+  type?: "comment" | "message" | "review";
   replyName: string;
   user: IUserSummary;
   setReplyProps: DispatchType<ReplyProps>;

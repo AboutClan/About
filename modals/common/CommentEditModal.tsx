@@ -17,6 +17,7 @@ interface CommentEditModalProps extends IModal {
   handleEdit: (param: CommentParamProps<"patch"> | SubCommentParamProps) => void;
   handleDelete: (param: CommentParamProps<"delete"> | SubCommentParamProps) => void;
   isSecret?: boolean;
+  hasDeleteBtn?: boolean;
 }
 
 function CommentEditModal({
@@ -28,6 +29,7 @@ function CommentEditModal({
   handleDelete,
   handleEdit,
   isSecret,
+  hasDeleteBtn = true,
 }: CommentEditModalProps) {
   const [isFirst, setIsFirst] = useState(true);
 
@@ -57,7 +59,7 @@ function CommentEditModal({
         {isFirst ? (
           <>
             {!isSecret && <button onClick={() => setIsFirst(false)}>수정하기</button>}
-            <button onClick={() => handleDelete({ commentId })}>삭제하기</button>
+            {hasDeleteBtn && <button onClick={() => handleDelete({ commentId })}>삭제하기</button>}
           </>
         ) : (
           <>

@@ -29,9 +29,13 @@ function WritingStudyCategoryMain() {
     if (category) {
       const idx = GATHER_TYPES.findIndex((type) => type.title === category);
       const target = refs.current[idx];
-      if (target) {
-        target.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
+      const timeout = setTimeout(() => {
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 300);
+
+      return () => clearTimeout(timeout);
     }
   }, [category]);
 

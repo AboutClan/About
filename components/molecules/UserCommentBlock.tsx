@@ -13,6 +13,7 @@ interface UserCommentBlockProps {
 
   setReplyProps: DispatchType<ReplyProps>;
   hasAuthority: boolean;
+  hasDeleteBtn?: boolean;
 }
 
 function UserCommentBlock({
@@ -22,6 +23,7 @@ function UserCommentBlock({
   setReplyProps,
   hasAuthority = true,
   setCommentArr,
+  hasDeleteBtn = true,
 }: UserCommentBlockProps) {
   return (
     <>
@@ -38,6 +40,7 @@ function UserCommentBlock({
         setReplyProps={setReplyProps}
         isSecret={type === "square"}
         likeList={commentProps.likeList}
+        hasDeleteBtn={hasDeleteBtn}
         isAuthor={commentProps.user.name === "익명(글쓴이)"}
       />
       {commentProps?.subComments?.map((sub, idx2) => (
@@ -54,6 +57,7 @@ function UserCommentBlock({
             pageId={id}
             commentId={sub._id}
             setCommentArr={setCommentArr}
+            hasDeleteBtn={hasDeleteBtn}
             parentId={commentProps._id}
             likeList={sub.likeList}
             isAuthor={sub?.user?.name === "익명(글쓴이)"}

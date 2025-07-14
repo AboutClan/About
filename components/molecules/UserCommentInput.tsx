@@ -8,7 +8,7 @@ import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import Avatar from "../atoms/Avatar";
 
 interface UserCommentInputProps {
-  type?: "comment" | "message";
+  type?: "comment" | "message" | "review";
   onSubmit: (value: string) => void;
   user: IUserSummary;
   initialFocus?: boolean;
@@ -76,7 +76,13 @@ function UserCommentInput({
 
           <Flex flex={1}>
             <MyTextArea
-              placeholder={type === "comment" ? "댓글을 입력하세요..." : "메세지 입력"}
+              placeholder={
+                type === "comment"
+                  ? "댓글을 입력하세요..."
+                  : type === "review"
+                  ? "모임 리뷰를 작성해 주세요."
+                  : "메세지 입력"
+              }
               ref={textareaRef}
               value={text}
               onChange={handleChange}
