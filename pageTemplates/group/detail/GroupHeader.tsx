@@ -1,5 +1,5 @@
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 import AlertModal, { IAlertModalOptions } from "../../../components/AlertModal";
@@ -79,7 +79,7 @@ function GroupHeader({ group }: IGroupHeader) {
                 },
               },
               {
-                text: "인원 내보내기",
+                text: "참여 인원 관리",
                 icon: <MemberMinusIcon />,
                 func: () => {
                   router.push(`/group/${group.id}/member`);

@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -107,7 +107,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
             },
           },
           {
-            text: "인원 내보내기",
+            text: "참여 인원 관리",
             icon: <MemberMinusIcon />,
             func: () => {
               setModalType("removeMember");
