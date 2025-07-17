@@ -52,7 +52,7 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
   useEffect(() => {
     if (data === undefined || !session) return;
     if (
-      dayjs(user.registerDate).diff(dayjs(), "d") >= -20 &&
+      dayjs(user.registerDate).diff(dayjs(), "d") >= -30 &&
       !checkAndSetLocalStorage(NEW_MEMBER_MODAL_AT, 3)
     ) {
       setPopUpType((old) => [...old, "newMember"]);
