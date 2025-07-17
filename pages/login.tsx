@@ -89,6 +89,12 @@ const Login: NextPage<{
       });
       return;
     }
+    if (statusParam === "kakao") {
+      await signIn(provider, {
+        callbackUrl: `${window.location.origin}/accessKakao`,
+      });
+      return;
+    }
     if (statusParam === "friend") {
       await signIn(provider, {
         callbackUrl: `${window.location.origin}/register/friend`,
