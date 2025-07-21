@@ -24,7 +24,7 @@ export function CheckCircleIcon({
   isFill,
 }: {
   size: "sm" | "md" | "lg";
-  color?: "mint" | "orange" | "gray" | "black";
+  color?: "mint" | "orange" | "gray" | "black" | "white";
   isFill: boolean;
 }) {
   return size === "sm" ? (
@@ -153,4 +153,3 @@ export function XCircleIcon({ size }: { size: "sm" | "md" }) {
     </svg>
   );
 }
-

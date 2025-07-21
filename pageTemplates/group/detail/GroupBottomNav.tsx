@@ -147,8 +147,7 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
             <br /> {data.questionText ? "참여를 희망하시나요?" : "활동을 시작해볼까요?"}
           </Box>
           <Box color="gray.500" mr="auto" fontSize="12px" fontWeight={600}>
-            {data?.meetingType === "online" ? "온라인" : "오프라인"} 활동 소모임으로,{" "}
-            <b>참여권 {data?.meetingType === "online" ? 1 : 2}개가 소모됩니다.</b>
+            매월 <b>참여권 {data.requiredTicket}장</b>이 소모됩니다.
           </Box>
           <Box p={5}>
             <Image

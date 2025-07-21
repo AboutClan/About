@@ -8,7 +8,8 @@ import { useQueryClient } from "react-query";
 import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
 import Avatar from "../../components/atoms/Avatar";
 import BottomNavButton from "../../components/atoms/BottomNavButton";
-import UserPlusButton from "../../components/atoms/buttons/UserPlusButton";
+import Textarea from "../../components/atoms/Textarea";
+import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
 import { PopOverIcon } from "../../components/Icons/PopOverIcon";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
@@ -143,6 +144,19 @@ function GatherReview() {
               .filter((who) => (who as UserSimpleInfoProps)._id !== userInfo?._id)
               .map((member, idx) => {
                 const user = member as UserSimpleInfoProps;
+                const findMyInfo = userReviewArr.find((props) => props.toUid === user.uid);
+                const myRating = findMyInfo?.rating;
+
+                const handleClick = (rating: UserRating | null) => {
+                  const isSameVote =
+                    userReviewArr.some((who) => who.toUid === user.uid && who.rating === rating) ||
+                    rating === null;
+
+                  setUserReviewArr((old) => old.filter((who) => who.toUid !== user.uid));
+                  if (!isSameVote) {
+                    setUserReviewArr((old) => [...old, { toUid: user.uid, rating: rating }]);
+                  }
+                };
                 return (
                   <Stack pt={1} pb={3} borderBottom="var(--border)" key={idx}>
                     <ProfileCommentCard
@@ -164,29 +178,27 @@ function GatherReview() {
                           <HeartIcon toUid={user.uid} />
                         </Button>
                       )} */}
-                          <UserPlusButton isMyFriend={null} toUid={user.uid} />
+                          {/* <UserPlusButton isMyFriend={null} toUid={user.uid} /> */}
+                          <Button
+                            size="sm"
+                            leftIcon={
+                              <CheckCircleIcon
+                                size="sm"
+                                color={myRating ? "gray" : "white"}
+                                isFill
+                              />
+                            }
+                            colorScheme={myRating ? "gray" : "mint"}
+                            onClick={() => handleClick(null)}
+                          >
+                            PASS
+                          </Button>
                         </Flex>
                       }
                     />
                     <Flex justify="space-between">
                       {avatarArr.map((props, idx) => {
-                        const isChecked =
-                          userReviewArr.find((props) => props.toUid === user.uid)?.rating ===
-                          props.rating;
-
-                        const handleClick = () => {
-                          const isSameVote = userReviewArr.some(
-                            (who) => who.toUid === user.uid && who.rating === props.rating,
-                          );
-
-                          setUserReviewArr((old) => old.filter((who) => who.toUid !== user.uid));
-                          if (!isSameVote) {
-                            setUserReviewArr((old) => [
-                              ...old,
-                              { toUid: user.uid, rating: props.rating },
-                            ]);
-                          }
-                        };
+                        const isChecked = myRating === props.rating;
 
                         return (
                           <Button
@@ -197,7 +209,7 @@ function GatherReview() {
                             variant="nostyle"
                             display="flex"
                             flexDir="column"
-                            onClick={handleClick}
+                            onClick={() => handleClick(props.rating)}
                           >
                             <Avatar
                               isSquare
@@ -213,6 +225,23 @@ function GatherReview() {
                         );
                       })}
                     </Flex>
+                    {myRating === "great" && (
+                      <Box my={3}>
+                        <Textarea
+                          value={findMyInfo?.message}
+                          onChange={(e) => {
+                            const newMessage = e.target.value;
+                            setUserReviewArr((prev) =>
+                              prev.map((item, i) =>
+                                i === idx ? { ...item, message: newMessage } : item,
+                              ),
+                            );
+                          }}
+                          placeholder="상대에게 익명 후기를 보낼 수 있어요! 따뜻한 말 한마디가 그 사람의 받은 후기에 차곡차곡 쌓입니다 :)"
+                          minH="80px"
+                        />
+                      </Box>
+                    )}
                   </Stack>
                 );
               })}

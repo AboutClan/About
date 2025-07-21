@@ -5,6 +5,7 @@ export interface InfoBoxProps {
   text?: string;
   color?: "mint" | "red";
   rightChildren?: React.ReactNode;
+  leftChildren?: React.ReactNode;
 }
 
 interface InfoBoxColProps {
@@ -28,13 +29,17 @@ function InfoBoxCol({ infoBoxPropsArr, size = "sm", highlightSide = "right" }: I
             align="center"
             lineHeight={size === "sm" ? "18px" : "20px"}
           >
-            <Box color={highlightSide === "right" ? "gray.500" : "gray.800"}>{props.category}</Box>
+            <Flex align="center">
+              <Box color={highlightSide === "right" ? "gray.500" : "gray.800"}>
+                {props.category}
+              </Box>
+              <Box>{props?.leftChildren}</Box>
+            </Flex>
             <Flex align="center">
               <Box
                 fontWeight={highlightSide === "right" ? "regular" : "medium"}
                 color={highlightSide === "right" ? props?.color || "gray.800" : "gray.600"}
                 as="span"
-                
               >
                 {props.text}
               </Box>

@@ -21,6 +21,7 @@ import { IModal } from "../../types/components/modalTypes";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
 import UserCollection from "./UserCollection2";
+import UserMyGroupSection from "./UserMyGroupSection";
 import UserPointBlock from "./UserPointBlock";
 import UserProfile from "./UserProfile2";
 
@@ -130,8 +131,8 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
       </Box>
 
       <UserPointBlock />
-
-      <Box mt={5}>
+      <UserMyGroupSection user={user} />
+      <Box mt={3}>
         <Box borderBottom="var(--border)">
           <UserCollection />
         </Box>

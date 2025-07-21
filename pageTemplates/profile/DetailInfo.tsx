@@ -1,6 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 
+import InfoList from "../../components/atoms/lists/InfoList";
 import BlurredPart from "../../components/molecules/BlurredPart";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { birthToAge } from "../../utils/convertUtils/convertTypes";
@@ -12,7 +13,7 @@ function DetailInfo({ user, groups }: { user: IUser; groups: string[] }) {
   const isPrivate =
     user?.isPrivate && !user?.friend.includes(session?.user.uid) && user?.uid !== session?.user.uid;
 
-  const itemMapping: { category: string; text: string }[] = [
+  const itemMapping: { category: string; text?: string; texts?: string[] }[] = [
     {
       category: "나이",
       text: "만" + " " + birthToAge(user?.birth) + "세",
@@ -31,15 +32,12 @@ function DetailInfo({ user, groups }: { user: IUser; groups: string[] }) {
     },
     {
       category: "소모임",
-      text:
-        (groups?.[0] || "--") +
-        (groups?.[1] ? `, ${groups[1]}` : "") +
-        (groups?.[2] ? `, ${groups[2]}` : "") +
-        (groups?.[3] ? `...` : ""),
-    },
-    {
-      category: "활동지",
-      text: user?.isLocationSharingDenided ? "비공개" : user?.locationDetail?.text,
+      // text:
+      //   (groups?.[0] || "--") +
+      //   (groups?.[1] ? `, ${groups[1]}` : "") +
+      //   (groups?.[2] ? `, ${groups[2]}` : "") +
+      //   (groups?.[3] ? `...` : ""),
+      texts: groups,
     },
   ];
 
@@ -54,16 +52,19 @@ function DetailInfo({ user, groups }: { user: IUser; groups: string[] }) {
             <Box w="64px" color="gray.500">
               {item.category}
             </Box>
-
-            <Box
-              flex={1}
-              color="gray.800"
-              whiteSpace="nowrap"
-              overflow="hidden"
-              textOverflow="ellipsis"
-            >
-              {item.text}
-            </Box>
+            {item?.text ? (
+              <Box
+                flex={1}
+                color="gray.800"
+                whiteSpace="nowrap"
+                overflow="hidden"
+                textOverflow="ellipsis"
+              >
+                {item.text}
+              </Box>
+            ) : item?.texts ? (
+              <InfoList items={item?.texts?.slice(0, 5)} isSmall />
+            ) : null}
           </Flex>
         ))}
 

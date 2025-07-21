@@ -10,6 +10,7 @@ export interface IGroup extends IGroupWriting {
   participants: GroupParicipantProps[];
   comments: UserCommentProps[];
   notionUrl?: string;
+  requiredTicket: number;
 }
 
 export interface GroupParicipantProps {

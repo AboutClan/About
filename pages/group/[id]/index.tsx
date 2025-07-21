@@ -40,7 +40,7 @@ function GroupDetail() {
 
   const [tab, setTab] = useState<GroupSectionCategory>("정 보");
   const { data: group } = useGroupIdQuery(id, { enabled: !!id });
-
+  console.log(group);
   const { data: gathers, isLoading } = useGatherGroupQuery(id, {
     enabled: tab === "피 드" && !!id,
   });
@@ -80,7 +80,6 @@ function GroupDetail() {
         <Slide isNoPadding>
           <Box mb={10}>
             <GroupCover image={group?.image} />
-
             <Flex direction="column" px={5} py={4}>
               <Flex mb={4}>
                 <Badge mr={1} variant="subtle" size="lg" colorScheme="badgeMint">
@@ -90,7 +89,6 @@ function GroupDetail() {
                   {group.category.sub}
                 </Badge>
               </Flex>
-
               {/* <GroupTitle
                 isAdmin={group.organizer.uid === session?.user.uid}
                 memberCnt={group.participants.length}
@@ -112,7 +110,13 @@ function GroupDetail() {
                         ? dayjsToFormat(dayjs(group.createdAt), "YYYY년 M월 D일")
                         : "2025년 중",
                   },
-                  { category: "가입 방식", text: group.isFree ? "자유 가입" : "승인제" },
+                  {
+                    category: "가입 방식 / 소요 티켓",
+                    text:
+                      (group.isFree ? "자유 가입" : "승인제") +
+                      " / " +
+                      (group?.requiredTicket ? group.requiredTicket + " 장" : "없음"),
+                  },
                   { category: "보증금", text: group.fee ? group.fee + "원" : "없음" },
                   {
                     category: "활동 톡방",

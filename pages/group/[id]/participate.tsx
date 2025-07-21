@@ -1,8 +1,9 @@
+import { Box, Flex } from "@chakra-ui/react";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
-import styled from "styled-components";
 
+import Textarea from "../../../components/atoms/Textarea";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
@@ -22,7 +23,8 @@ function Participate() {
   const router = useRouter();
   const toast = useToast();
 
-  const [questionText, setQuestionText] = useState("");
+  const [textArr, setTextArr] = useState<string[]>([]);
+
   const [isModal, setIsModal] = useState(false);
   const { id } = useParams<{ id: string }>() || {};
 
@@ -54,7 +56,7 @@ function Participate() {
       toast("warning", "보유중인 티켓이 부족합니다.");
       return;
     }
-    if (group?.questionText) sendRegisterForm({ answer: questionText, pointType: "point" });
+    if (group?.questionText) sendRegisterForm({ answer: textArr[0], pointType: "point" });
     else mutate();
   };
 
@@ -67,8 +69,8 @@ function Participate() {
             <RegisterOverview>
               {group?.questionText ? (
                 <>
-                  <span>모임장의 승인이 필요한 모임입니다!</span>
-                  <span>모임장이 설정한 질문에 답변해주세요.</span>
+                  <span>모임장 승인이 필요한 모임입니다.</span>
+                  <span>아래 질문에 답변해 주세요!</span>
                 </>
               ) : (
                 <>
@@ -77,25 +79,32 @@ function Participate() {
                 </>
               )}
             </RegisterOverview>
-            <Container>
-              {group?.questionText && (
-                <Item>
-                  <Title>Q&#41; {group?.questionText}</Title>
-                  <AnswerText
-                    placeholder="부담없이 작성해주세요!"
-                    value={questionText}
-                    onChange={(e) => setQuestionText(e.target.value)}
-                  />
-                </Item>
-              )}
-            </Container>
+            {[1, 2].map((_, idx) => (
+              <Flex flexDir="column" mb={5} key={idx}>
+                <Box mb={3} fontSize="14px">
+                  Q&#41; {group?.questionText}
+                </Box>
+                <Textarea
+                  minH="80px"
+                  onChange={(e) => {
+                    setTextArr((old) => {
+                      const copy = [...old];
+                      copy[idx] = e.target.value;
+                      return copy;
+                    });
+                  }}
+                  value={textArr[idx]}
+                  placeholder="답변을 작성해 주세요."
+                />
+              </Flex>
+            ))}
           </RegisterLayout>
         </Slide>
         <BottomNav text="가입 신청" onClick={onClick} isLoading={isLoading} />
       </>
       {isModal && (
         <ParticipateModal
-          answer={questionText}
+          answer={textArr[0]}
           id={group.id}
           feeText={group.feeText}
           setIsModal={setIsModal}
@@ -104,28 +113,5 @@ function Participate() {
     </>
   );
 }
-
-const Container = styled.div`
-  margin-top: var(--gap-5);
-`;
-
-const Item = styled.div``;
-
-const AnswerText = styled.textarea`
-  border-radius: var(--rounded);
-
-  border: var(--border);
-  width: 100%;
-  padding: var(--gap-2);
-
-  :focus {
-    outline-color: var(--gray-800);
-  }
-`;
-
-const Title = styled.div`
-  font-size: 15px;
-  margin-bottom: var(--gap-4);
-`;
 
 export default Participate;

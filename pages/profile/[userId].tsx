@@ -15,7 +15,7 @@ import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useGroupsTitleQuery } from "../../hooks/groupStudy/queries";
 import { useUserFriendMutation } from "../../hooks/user/mutations";
-import { useUserIdToUserInfoQuery } from "../../hooks/user/queries";
+import { useUserIdToUserInfoQuery, useUserReviewQuery } from "../../hooks/user/queries";
 import { useInteractionMutation } from "../../hooks/user/sub/interaction/mutations";
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
 import DetailInfo from "../../pageTemplates/profile/DetailInfo";
@@ -40,9 +40,16 @@ function ProfilePage() {
     enabled: !!userId,
   });
 
+  console.log(15, user);
   const { data } = useGroupsTitleQuery(userId, {
     enabled: !!userId,
   });
+
+  const { data: data34 } = useUserReviewQuery(user?.uid, {
+    enabled: !!user?.uid,
+  });
+
+  console.log(52, data34);
 
   const [isMyFriend, setIsMyFriend] = useState(false);
   const [isFirstPage, setIsFirstPage] = useState(true);
@@ -125,11 +132,11 @@ function ProfilePage() {
               <ButtonWrapper onClick={() => setModalType(isMyFriend ? "remove" : "add")}>
                 {isMyFriend ? <UserCheckIcon /> : <UserPlusIcon />}
               </ButtonWrapper>
+              <ButtonWrapper onClick={() => setModalType("declare")}>
+                <BanIcon />
+              </ButtonWrapper>
             </>
           )}
-          <ButtonWrapper onClick={() => setModalType("declare")}>
-            <BanIcon />
-          </ButtonWrapper>
         </HStack>
       </Header>
       <Slide>
@@ -141,6 +148,7 @@ function ProfilePage() {
       <Slide>
         <DetailInfo user={user as IUser} groups={groups} />
       </Slide>
+
       {modalType === "declare" && (
         <BottomFlexDrawer
           isOverlay

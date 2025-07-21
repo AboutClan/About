@@ -192,7 +192,7 @@ export const useUserFriendMutation = (
 export type UserRating = "great" | "good" | "soso" | "block";
 export interface UserReviewProps {
   toUid: string;
-  rating: string;
+  rating: UserRating;
   message?: string;
 }
 

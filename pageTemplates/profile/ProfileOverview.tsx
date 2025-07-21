@@ -47,25 +47,23 @@ function ProfileOverview({ user, groupCnt }: IProfileOverview) {
                 <SocialingScoreBadge user={user} size="md" />
               </Box>
             </Flex>
-            {session?.user.id !== user?._id && (
-              <Button
-                borderRadius="full"
-                leftIcon={<ChatIcon />}
-                border="var(--border)"
-                mt={3}
-                w="max-content"
-                size="sm"
-                onClick={() => {
-                  if (!user?.introduceText) {
-                    toast("info", "상대가 자기소개를 입력하지 않았어요!");
-                    return;
-                  }
-                  setIsIntroduce((old) => !old);
-                }}
-              >
-                {isIntroduce ? "자기소개 닫기" : "자기소개 보기"}
-              </Button>
-            )}
+            <Button
+              borderRadius="full"
+              leftIcon={<ChatIcon />}
+              border="var(--border)"
+              mt={3}
+              w="max-content"
+              size="sm"
+              onClick={() => {
+                if (!user?.introduceText) {
+                  toast("info", "상대가 자기소개를 입력하지 않았어요!");
+                  return;
+                }
+                setIsIntroduce((old) => !old);
+              }}
+            >
+              {isIntroduce ? "자기소개 닫기" : "자기소개 보기"}
+            </Button>
             {isIntroduce && (
               <Box
                 mt={3}
