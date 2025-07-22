@@ -7,7 +7,7 @@ import styled from "styled-components";
 import Avatar from "../../components/atoms/Avatar";
 import UserBadge from "../../components/atoms/badges/UserBadge";
 import SocialingScoreBadge from "../../components/molecules/SocialingScoreBadge";
-import { useToast } from "../../hooks/custom/CustomToast";
+import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import ProfileOverviewSkeleton from "./skeleton/ProfileOverviewSkeleton";
@@ -19,10 +19,11 @@ interface IProfileOverview {
 
 function ProfileOverview({ user, groupCnt }: IProfileOverview) {
   const toast = useToast();
+  const typeToast = useTypeToast();
   const { data: session } = useSession();
   const [isIntroduce, setIsIntroduce] = useState(false);
   const isFriend = user?.friend.includes(session?.user.uid);
-
+  const isGuest = session ? session.user.name === "guest" : false;
   return (
     <Flex flexDir="column" my={4}>
       {user ? (
@@ -55,6 +56,10 @@ function ProfileOverview({ user, groupCnt }: IProfileOverview) {
               w="max-content"
               size="sm"
               onClick={() => {
+                if (isGuest) {
+                  typeToast("guest");
+                  return;
+                }
                 if (!user?.introduceText) {
                   toast("info", "상대가 자기소개를 입력하지 않았어요!");
                   return;

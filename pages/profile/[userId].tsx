@@ -129,7 +129,15 @@ function ProfilePage() {
               <ButtonWrapper onClick={() => handleDrawer("chat")}>
                 <SendIcon />
               </ButtonWrapper>
-              <ButtonWrapper onClick={() => setModalType(isMyFriend ? "remove" : "add")}>
+              <ButtonWrapper
+                onClick={() => {
+                  if (isGuest) {
+                    typeToast("guest");
+                    return;
+                  }
+                  setModalType(isMyFriend ? "remove" : "add");
+                }}
+              >
                 {isMyFriend ? <UserCheckIcon /> : <UserPlusIcon />}
               </ButtonWrapper>
               <ButtonWrapper onClick={() => setModalType("declare")}>

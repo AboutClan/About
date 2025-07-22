@@ -38,7 +38,7 @@ function UserMyGroupSection({ user }: UserMyGroupSectionProps) {
             },
             {
               category: "월간 소모임 참여권 차감 예정",
-              text: `- ${ticketSum} 장`,
+              text: !groupData ? "" : ticketSum ? `- ${ticketSum} 장` : "없음",
               color: ticketSum > groupStudyTicket ? "red" : null,
               leftChildren: (
                 <PopOverIcon text="소모임 참여를 위해서는 모임마다 최소 0개에서 최대 2개의 참여권이 필요합니다." />

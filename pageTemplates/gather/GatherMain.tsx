@@ -31,9 +31,9 @@ export default function GatherMain() {
   const { data: gatherData, isLoading } = useGatherQuery(
     cursor,
     category,
-    sortBy === "기본순" ? "createdAt" : sortBy === "최신 개설 순" ? "createdAt" : "date",
+    sortBy === "기본순" ? "basic" : sortBy === "최신 개설 순" ? "createdAt" : "date",
   );
-  console.log(34, gatherData);
+
   useEffect(() => {
     setGathers([]);
     setCursor(0);

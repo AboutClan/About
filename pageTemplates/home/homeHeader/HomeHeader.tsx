@@ -88,7 +88,9 @@ function HomeHeader() {
               </Box>
 
               <Box position="relative">
-                <BellModalButton handleClick={() => router.push("/notice")} />
+                <BellModalButton
+                  handleClick={isGuest ? () => typeToast("guest") : () => router.push("/notice")}
+                />
                 <Box
                   position="absolute"
                   right="6px"

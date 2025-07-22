@@ -62,9 +62,11 @@ function DetailInfo({ user, groups }: { user: IUser; groups: string[] }) {
               >
                 {item.text}
               </Box>
-            ) : item?.texts ? (
+            ) : item?.texts?.length ? (
               <InfoList items={item?.texts?.slice(0, 5)} isSmall />
-            ) : null}
+            ) : (
+              "없음"
+            )}
           </Flex>
         ))}
 
