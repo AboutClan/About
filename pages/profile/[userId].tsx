@@ -172,7 +172,7 @@ function ProfilePage() {
         </Box>
         <Flex flexDir="column" minH="80px">
           {reviewArr?.map((item, idx) => (
-            <Flex px={5} align="center" py={3} borderBottom="var(--border)">
+            <Flex key={idx} px={5} align="center" py={3} borderBottom="var(--border)">
               <Flex justify="center" alignSelf="flex-start" mr={2}>
                 <Avatar user={{ avatar: { type: 15, bg: 0 } }} size="sm1" isLink={false} />
               </Flex>
