@@ -36,7 +36,7 @@ export const useUserReviewQuery = (uid: string, options?: QueryOptions<IUser>) =
   useQuery<IUser, AxiosError, IUser>(
     [USER_INFO, uid, "review"],
     async () => {
-      const res = await axios.get<IUser>(`${SERVER_URI}/temperature/mine?uid=${uid}`);
+      const res = await axios.get<IUser>(`${SERVER_URI}/notice/temperature/mine?uid=${uid}`);
       return res.data;
     },
     options,

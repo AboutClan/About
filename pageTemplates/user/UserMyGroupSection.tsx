@@ -14,7 +14,9 @@ function UserMyGroupSection({ user }: UserMyGroupSectionProps) {
 
   const ticketSum = groupData?.reduce((acc, cur) => acc + cur.requiredTicket, 0);
 
-  const { gatherTicket, groupStudyTicket } = getUserMonthTicket(user?.temperature.temperature);
+  const { gatherTicket, groupStudyTicket } = getUserMonthTicket(
+    user?.temperature?.temperature || 36.5,
+  );
 
   return (
     <Box mx={5} mt={3}>
@@ -27,7 +29,7 @@ function UserMyGroupSection({ user }: UserMyGroupSectionProps) {
             },
             {
               category: "내 소셜링 온도",
-              text: `${user?.temperature.temperature}°C`,
+              text: `${user?.temperature?.temperature || 36.5}°C`,
             },
             {
               category: "월간 번개/소모임 참여권 충전",
