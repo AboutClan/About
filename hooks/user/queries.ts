@@ -32,11 +32,19 @@ export const useUserInfoQuery = (options?: QueryOptions<IUser>) =>
     },
     options,
   );
-export const useUserReviewQuery = (uid: string, options?: QueryOptions<IUser>) =>
-  useQuery<IUser, AxiosError, IUser>(
+
+interface ReviewMember {
+  message: string;
+  createdAt: string;
+}
+
+export const useUserReviewQuery = (uid: string, options?: QueryOptions<ReviewMember[]>) =>
+  useQuery<ReviewMember[], AxiosError, ReviewMember[]>(
     [USER_INFO, uid, "review"],
     async () => {
-      const res = await axios.get<IUser>(`${SERVER_URI}/notice/temperature/mine?uid=${uid}`);
+      const res = await axios.get<ReviewMember[]>(
+        `${SERVER_URI}/notice/temperature/mine?uid=${uid}`,
+      );
       return res.data;
     },
     options,

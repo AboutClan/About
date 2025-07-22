@@ -1,3 +1,4 @@
+import { Box, Flex } from "@chakra-ui/react";
 import styled from "styled-components";
 
 import Skeleton from "../../../components/atoms/skeleton/Skeleton";
@@ -6,24 +7,38 @@ function ProfileOverviewSkeleton() {
   return (
     <>
       <Top>
-        <Profile>
-          <ProfileIcon>
-            <Skeleton>temp</Skeleton>
-          </ProfileIcon>
-          <ProfileInfo>
-            <div>
-              <span>
-                <Skeleton>temp</Skeleton>
-              </span>
-              <Badge>
-                <Skeleton>temp</Skeleton>
-              </Badge>
-            </div>
-            <Status>
+        <Flex justify="space-between" align="center">
+          <Profile>
+            <ProfileIcon>
               <Skeleton>temp</Skeleton>
-            </Status>
-          </ProfileInfo>
-        </Profile>
+            </ProfileIcon>
+            <ProfileInfo>
+              <div>
+                <Box w="42px" h="24px">
+                  <Skeleton>temp</Skeleton>
+                </Box>
+                <Badge>
+                  <Skeleton>temp</Skeleton>
+                </Badge>
+              </div>
+              <Status>
+                <Skeleton>temp</Skeleton>
+              </Status>
+            </ProfileInfo>
+          </Profile>
+
+          <Flex flexDir="column">
+            <Box w="60px" h="28px" mb={1}>
+              <Skeleton>temp</Skeleton>
+            </Box>
+            <Box w="60px" h="12px">
+              <Skeleton>temp</Skeleton>
+            </Box>
+          </Flex>
+        </Flex>
+        <Box w="100px" h="28px" mt="13px" borderRadius="full" overflow="hidden">
+          <Skeleton>temp</Skeleton>
+        </Box>
         <Comment>
           <Skeleton>temp</Skeleton>
         </Comment>
@@ -43,15 +58,12 @@ function ProfileOverviewSkeleton() {
             </span>
           </RelationItem>
           <RelationItem>
-            <span>활동</span>
+            <span>소모임</span>
             <span>
               <Skeleton>0</Skeleton>
             </span>
           </RelationItem>
         </div>
-        <Button>
-          <Skeleton>temp</Skeleton>
-        </Button>
       </Bottom>
     </>
   );
@@ -59,49 +71,46 @@ function ProfileOverviewSkeleton() {
 
 const Status = styled.span`
   margin-top: 2px;
-  width: 48px;
-  height: 16px;
+  width: 93px;
+  height: 15px;
 `;
 
 const Top = styled.div``;
 
-const Button = styled.div`
-  width: 70px;
-  height: 26px;
-`;
 const Bottom = styled.div`
   display: flex;
-  margin-top: 20px;
+  margin-top: 18px;
   align-items: center;
   justify-content: space-between;
+
   > div:first-child {
     display: flex;
   }
 `;
 
 const RelationItem = styled.div`
-  width: max-content;
-  padding: 0 var(--gap-2);
-
+  margin-right: 16px;
+  text-align: center;
+  margin-top: 4px;
   display: flex;
-  flex-direction: column;
-  line-height: 2;
   align-items: center;
+  flex-direction: column;
+
   > span:first-child {
-    font-size: 12px;
+    font-size: 10px;
+    color: var(--gray-600);
+    font-weight: light;
+    margin-bottom: 8px;
   }
   > span:last-child {
-    display: inline-block;
-
-    text-align: center;
-    width: 20px;
-    font-size: 12px;
+    width: 16px;
+    font-size: 10px;
     font-weight: 600;
   }
 `;
 const ProfileIcon = styled.div`
-  width: 80px;
-  height: 80px;
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
   overflow: hidden;
 `;
@@ -112,8 +121,9 @@ const Profile = styled.div`
 `;
 
 const Badge = styled.div`
-  width: 64px;
-  height: 20px;
+  width: 47px;
+  margin-left: 4px;
+  height: 18px;
 `;
 
 const ProfileInfo = styled.div`
@@ -140,12 +150,12 @@ const ProfileInfo = styled.div`
 `;
 
 const Comment = styled.div`
-  margin-left: var(--gap-1);
-  margin-top: var(--gap-3);
+  margin-top: var(--gap-4);
   color: var(--gray-800);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
-  width: 140px;
+  width: 100px;
+  height: 18px;
 `;
 
 export default ProfileOverviewSkeleton;

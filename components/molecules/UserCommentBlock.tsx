@@ -32,7 +32,7 @@ function UserCommentBlock({
         isReComment={false}
         hasAuthority={hasAuthority}
         user={commentProps.user}
-        updatedAt={commentProps.updatedAt}
+        updatedAt={commentProps.updatedAt || commentProps?.createdAt}
         comment={commentProps.comment}
         pageId={id}
         commentId={commentProps._id}
@@ -52,7 +52,7 @@ function UserCommentBlock({
             isSecret={type === "square"}
             setReplyProps={null}
             user={sub.user}
-            updatedAt={sub.updatedAt}
+            updatedAt={sub.updatedAt || sub?.createdAt}
             comment={sub.comment}
             pageId={id}
             commentId={sub._id}

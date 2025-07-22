@@ -1,4 +1,5 @@
-import { Box, Button, HStack } from "@chakra-ui/react";
+import { Box, Button, Flex, HStack } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
@@ -6,9 +7,12 @@ import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
 import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
+import Avatar from "../../components/atoms/Avatar";
 import ButtonWrapper from "../../components/atoms/ButtonWrapper";
 import Divider from "../../components/atoms/Divider";
+import SectionHeader from "../../components/atoms/SectionHeader";
 import Textarea from "../../components/atoms/Textarea";
+import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
@@ -23,6 +27,7 @@ import ProfileOverview from "../../pageTemplates/profile/ProfileOverview";
 import { transferUserName } from "../../recoils/transferRecoils";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { IUserRequest } from "../../types/models/userTypes/userRequestTypes";
+import { getDateDiff } from "../../utils/dateTimeUtils";
 
 function ProfilePage() {
   const { data: session } = useSession();
@@ -45,12 +50,11 @@ function ProfilePage() {
     enabled: !!userId,
   });
 
-  const { data: data34 } = useUserReviewQuery(user?.uid, {
+  const { data: reviewArr } = useUserReviewQuery(user?.uid, {
     enabled: !!user?.uid,
   });
 
-  console.log(52, data34);
-
+  console.log(5, reviewArr);
   const [isMyFriend, setIsMyFriend] = useState(false);
   const [isFirstPage, setIsFirstPage] = useState(true);
   const [declareType, setDeclareType] = useState<"distance" | "block">(null);
@@ -156,7 +160,47 @@ function ProfilePage() {
       <Slide>
         <DetailInfo user={user as IUser} groups={groups} />
       </Slide>
+      <Slide isNoPadding>
+        <Divider type={200} />
 
+        <Box mx={5} my={4}>
+          <SectionHeader title={`받은 모임 후기 ${reviewArr?.length || ""}`} size="sm" subTitle="">
+            <ButtonWrapper size="sm" onClick={() => typeToast("not-yet")}>
+              <ShortArrowIcon dir="right" />
+            </ButtonWrapper>
+          </SectionHeader>
+        </Box>
+        <Flex flexDir="column" minH="80px">
+          {reviewArr?.map((item, idx) => (
+            <Flex px={5} align="center" py={3} borderBottom="var(--border)">
+              <Flex justify="center" alignSelf="flex-start" mr={2}>
+                <Avatar user={{ avatar: { type: 15, bg: 0 } }} size="sm1" isLink={false} />
+              </Flex>
+              <Flex
+                w="full"
+                direction="column"
+                fontSize="12px"
+                lineHeight={1.6}
+                justify="space-around"
+              >
+                <Flex w="full" justify="space-between" mb={1}>
+                  <Box fontWeight="bold" fontSize="13px" lineHeight="20px" color="gray.800">
+                    익명 {idx + 1}
+                  </Box>
+                </Flex>
+                <Box mb={2} as="p" fontWeight="light" fontSize="12px" lineHeight="18px">
+                  {item.message}
+                </Box>{" "}
+                <Flex h="16px" align="center" fontSize="10px" color="gray.600">
+                  <Box color="gray.600" fontWeight="500">
+                    {getDateDiff(dayjs(item.createdAt))}
+                  </Box>
+                </Flex>
+              </Flex>
+            </Flex>
+          ))}
+        </Flex>
+      </Slide>
       {modalType === "declare" && (
         <BottomFlexDrawer
           isOverlay
