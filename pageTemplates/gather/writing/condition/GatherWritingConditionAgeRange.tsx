@@ -11,11 +11,9 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { DispatchType } from "../../../../types/hooks/reactTypes";
-
 interface IGatherWritingConditionAgeRange {
   age: number[];
-  setAge: DispatchType<number[]>;
+  setAge: (ageRange: number[]) => void;
 }
 
 export type GatherAgeSection =

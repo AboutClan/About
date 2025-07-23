@@ -1,22 +1,23 @@
-import { Box, Button, Flex, Switch } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
-import { ChangeEvent, useEffect, useState } from "react";
-import styled from "styled-components";
+import { Box, Button, Flex } from "@chakra-ui/react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
-import { Input } from "../../../components/atoms/Input";
+import Textarea from "../../../components/atoms/Textarea";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
+import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
+import WritingConditionLayout, {
+  WritingConditionProps,
+} from "../../../components/organisms/WritingConditionLayout";
 import { GROUP_WRITING_STORE } from "../../../constants/keys/localStorage";
+import { useToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
-import GatherWritingUserConditionModal from "../../../modals/gather/GatherWritingUserConditionModal";
 import GroupConfirmModal from "../../../modals/groupStudy/WritingConfirmModal";
-import QuestionBottomDrawer from "../../../pageTemplates/group/writing/QuestionBottomDrawer";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { IGroupWriting } from "../../../types/models/groupTypes/group";
-import { Location, LocationFilterType } from "../../../types/services/locationTypes";
 import { setLocalStorageObj } from "../../../utils/storageUtils";
 
 export type GroupConditionType =
@@ -32,104 +33,97 @@ export type GroupConditionType =
 
 function WritingCondition() {
   const groupWriting: IGroupWriting = JSON.parse(localStorage.getItem(GROUP_WRITING_STORE));
-
-  const { data: session } = useSession();
+  const searchParams = useSearchParams();
+  const isEdit = searchParams.get("edit");
+  const toast = useToast();
 
   const { data: userInfo } = useUserInfoQuery();
 
-  const [condition, setCondition] = useState({
-    gender: groupWriting?.gender || false,
-    age: !groupWriting?.age
-      ? false
-      : groupWriting.age[0] === 19 && groupWriting.age[1] === 28
-      ? false
-      : true,
-    isAgree: groupWriting?.isFree !== undefined ? !groupWriting?.isFree : true,
-    location:
-      groupWriting?.location !== undefined ? groupWriting?.location === userInfo?.location : false,
-    challenge: groupWriting?.challenge ? true : false,
-    fee:
-      groupWriting?.fee !== undefined
-        ? groupWriting?.fee !== 200 && groupWriting?.fee !== 0
-        : false,
+  const defaultCondition: WritingConditionProps = {
+    memberMaxCnt: groupWriting?.memberCnt?.max ?? 4,
+    isGenderCondition: groupWriting?.gender ?? false,
+    age: groupWriting?.age ?? [19, 28],
+    kakaoUrl: groupWriting?.link ?? null,
+    isApprovalRequired: groupWriting?.isFree === undefined ? false : !groupWriting?.isFree,
+    fee: groupWriting?.fee ?? 0,
+    questionText: groupWriting?.questionText ?? [""],
+  };
 
-    isSecret: groupWriting?.isSecret || false,
-    link: !!groupWriting?.link || false,
-  });
-
-  const [fee, setFee] = useState(groupWriting?.fee || "1000");
-  const [feeText, setFeeText] = useState(groupWriting?.feeText || "기본 참여비");
-
-  const [question, setQuestion] = useState(groupWriting?.questionText || "");
-  const [location, setLocation] = useState<Location | LocationFilterType>(
-    groupWriting?.location || userInfo?.location,
-  );
-  const [isConfirmModal, setIsConfirmModal] = useState(false);
-  const [isMemberConditionModal, setIsMemberConditionModal] = useState(false);
+  const [conditions, setConditions] = useState<WritingConditionProps>(defaultCondition);
   const [isQuestionModal, setIsQuestionModal] = useState(false);
-  const [link, setLink] = useState(groupWriting?.link || "");
 
   useEffect(() => {
-    if (condition.isAgree) setIsQuestionModal(true);
-    else setIsQuestionModal(false);
-  }, [condition.isAgree]);
+    if (conditions.isApprovalRequired) {
+      if (isEdit) {
+        setConditions((old) => ({ ...old, questionText: groupWriting.questionText }));
+      }
+      setIsQuestionModal(true);
+    } else {
+      setConditions((old) => ({ ...old, questionText: [""] }));
+    }
+  }, [conditions.isApprovalRequired]);
+
+  useEffect(() => {
+    if (isQuestionModal) return;
+    if (conditions.questionText.length && conditions.questionText[0] !== "") {
+      setConditions((old) => ({ ...old, isApprovalRequired: true }));
+    } else {
+      setConditions((old) => ({ ...old, isApprovalRequired: false }));
+    }
+  }, [isQuestionModal]);
+
+  // const [condition, setCondition] = useState({
+  //   isAgree: groupWriting?.isFree !== undefined ? !groupWriting?.isFree : true,
+  //   location:
+  //     groupWriting?.location !== undefined ? groupWriting?.location === userInfo?.location : false,
+  //   challenge: groupWriting?.challenge ? true : false,
+  //   fee:
+  //     groupWriting?.fee !== undefined
+  //       ? groupWriting?.fee !== 200 && groupWriting?.fee !== 0
+  //       : false,
+
+  //   isSecret: groupWriting?.isSecret || false,
+  //   link: !!groupWriting?.link || false,
+  // });
+
+  // const [fee, setFee] = useState(groupWriting?.fee || "1000");
+  // const [feeText, setFeeText] = useState(groupWriting?.feeText || "기본 참여비");
+
+  // const [question, setQuestion] = useState(groupWriting?.questionText || "");
+  // const [location, setLocation] = useState<Location | LocationFilterType>(
+  //   groupWriting?.location || userInfo?.location,
+  // );
+  // const [link, setLink] = useState(groupWriting?.link || "");
+  const [isConfirmModal, setIsConfirmModal] = useState(false);
+
+  // useEffect(() => {
+  //   if (condition.isAgree) setIsQuestionModal(true);
+  //   else setIsQuestionModal(false);
+  // }, [condition.isAgree]);
 
   const onClickNext = async () => {
     const groupData: IGroupWriting = {
-      age: [19, 28],
-      memberCnt: {
-        min: 4,
-        max: 0,
-      },
       ...groupWriting,
-      fee: condition.fee ? +fee : 0,
-      feeText,
-      isFree: !condition.isAgree,
-      location: location || userInfo?.location,
-      link,
-      gender: condition.gender,
+
+      age: conditions.age,
+      memberCnt: {
+        min: 0,
+        max: conditions.memberMaxCnt,
+      },
+      fee: conditions.fee,
+
+      isFree: !conditions.isApprovalRequired,
+
+      link: conditions.kakaoUrl,
+      gender: conditions.isGenderCondition,
       organizer: groupWriting?.organizer || userInfo,
-      questionText: condition.isAgree ? question || "어떤 목적으로 가입을 희망하시나요?" : "",
-      isSecret: condition.isSecret,
-      challenge: "",
+      questionText: conditions.questionText.filter((text) => text.length > 0),
     };
 
     setLocalStorageObj(GROUP_WRITING_STORE, {
       ...groupData,
     });
     setIsConfirmModal(true);
-  };
-
-  const toggleSwitch = (e: ChangeEvent<HTMLInputElement>, type: GroupConditionType) => {
-    const isChecked = e.target.checked;
-
-    if (type === "isSecret") {
-      setCondition((old) => {
-        return { ...old, [type]: isChecked, kakaoUrl: true };
-      });
-    }
-
-    if (type === "location" && isChecked) {
-      setLocation(session?.user.location);
-    }
-    setCondition((old) => {
-      return { ...old, [type]: isChecked };
-    });
-  };
-
-  const getMemberConditionText = () => {
-    const temp = [];
-    if (condition.age) {
-      temp.push("나이");
-    }
-    if (condition.gender) {
-      temp.push("성별");
-    }
-    if (groupWriting?.memberCnt?.max) {
-      temp.push("인원");
-    }
-    if (temp.length) return String(temp) + " " + "제한";
-    return null;
   };
 
   return (
@@ -140,9 +134,11 @@ function WritingCondition() {
       </Slide>
       <RegisterLayout>
         <RegisterOverview>
-          <span>조건을 선택해 주세요.</span>
+          <span>어떤 인원과 함께하고 싶나요?</span>
+          <span>조건을 선택해 주세요</span>
         </RegisterOverview>
-        <Container>
+        <WritingConditionLayout conditions={conditions} setConditions={setConditions} />
+        {/* <Container>
           <Item>
             <Name>
               <div>
@@ -241,82 +237,95 @@ function WritingCondition() {
               <Input isLine size="sm" value={link} onChange={(e) => setLink(e.target.value)} />
             </Flex>
           )}
-        </Container>
+        </Container> */}
       </RegisterLayout>
       <BottomNav onClick={() => onClickNext()} text="완료" />
-      <QuestionBottomDrawer
-        isModal={isQuestionModal}
+      {isQuestionModal && (
+        <RightDrawer
+          title="가입 질문"
+          onClose={() => {
+            setConditions((old) => ({ ...old, questionText: [""] }));
+            setIsQuestionModal(false);
+          }}
+        >
+          {conditions.questionText.map((text, idx) => (
+            <Flex flexDir="column" mb={5} key={idx}>
+              <Box fontWeight="semibold" my={2} fontSize="16px">
+                질문 {idx + 1}
+              </Box>
+              <Textarea
+                minH="48px"
+                onChange={(e) => {
+                  setConditions((old) => {
+                    const texts = old.questionText;
+                    texts[idx] = e.target.value;
+                    return { ...old, questionText: texts };
+                  });
+                  // setTextArr((old) => {
+                  //   const copy = [...old];
+                  //   copy[idx] = e.target.value;
+                  //   return copy;
+                  // });
+                }}
+                value={conditions.questionText[idx]}
+                placeholder="질문을 작성해 주세요."
+              />
+            </Flex>
+          ))}
+          <Flex>
+            <Button
+              ml="auto"
+              colorScheme="red"
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                if (conditions.questionText.length <= 1) {
+                  toast("warning", "승인제 모임은 최소 1개 이상의 질문지가 필요합니다.");
+                  return;
+                }
+                setConditions((old) => ({ ...old, questionText: old.questionText.slice(0, -1) }));
+              }}
+            >
+              질문 삭제
+            </Button>
+            <Button
+              ml={2}
+              colorScheme="mint"
+              size="sm"
+              onClick={() => {
+                if (conditions.questionText.length >= 3) {
+                  toast("warning", "질문은 최대 3개까지 가능합니다.");
+                  return;
+                }
+                setConditions((old) => ({ ...old, questionText: [...old.questionText, ""] }));
+              }}
+            >
+              질문 추가
+            </Button>
+          </Flex>
+          <BottomNav text="저 장" onClick={() => setIsQuestionModal(false)} isSlide={false} />
+        </RightDrawer>
+      )}
+      {/* <QuestionBottomDrawer
+        isModal={true || isQuestionModal}
         setIsModal={() => {
           setIsQuestionModal(false);
-          setCondition((old) => ({ ...old, isAgree: false }));
+          // setCondition((old) => ({ ...old, isAgree: false }));
         }}
         onClickRight={() => {
-          setCondition((old) => ({ ...old, isAgree: true }));
+          // setCondition((old) => ({ ...old, isAgree: true }));
           setIsQuestionModal(false);
         }}
-        question={question}
-        setQuestion={setQuestion}
-      />
+        question={conditions?.questionText}
+        setQuestion={(texts: string[]) => {
+          setConditions((old) => ({ ...old, questionText: texts }));
+        }}
+      /> */}
       {isConfirmModal && (
         <GroupConfirmModal setIsModal={setIsConfirmModal} groupWriting={groupWriting} />
-      )}
-      {isMemberConditionModal && (
-        <GatherWritingUserConditionModal
-          type="group"
-          setIsModal={setIsMemberConditionModal}
-          gatherContent={groupWriting}
-          isGenderCondition={condition.gender}
-          isAgeCondition={condition.age}
-          toggleSwitch={toggleSwitch}
-        />
       )}
     </>
   );
 }
-
-const Fee = styled.div`
-  padding: var(--gap-3) 0;
-  > div {
-    margin-bottom: var(--gap-3);
-    > input {
-      width: 60px;
-      padding: var(--gap-1) var(--gap-2);
-      border-radius: var(--rounded);
-      border: var(--border);
-      :focus {
-        outline-color: var(--gray-800);
-      }
-    }
-  }
-  > div:last-child {
-    > input {
-      width: 280px;
-    }
-  }
-`;
-
-const Name = styled.div`
-  display: flex;
-  align-items: center;
-  > span {
-    margin-left: var(--gap-2);
-  }
-  > svg {
-    width: 16px;
-  }
-`;
-
-const Container = styled.div`
-  font-size: 14px;
-  margin-top: var(--gap-5);
-`;
-
-const Item = styled.div`
-  display: flex;
-  justify-content: space-between;
-  padding: var(--gap-4) 0;
-  align-items: center;
-  border-bottom: var(--border);
-`;
 
 export default WritingCondition;

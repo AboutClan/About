@@ -73,19 +73,19 @@ function GroupConfirmModal({ setIsModal, groupWriting }: IGroupConfirmModal) {
           setIsModal={setIsModal}
           footerOptions={footerOptions}
         >
-          <ModalSubtitle>개설 내용을 확인해 주세요!</ModalSubtitle>
+          <ModalSubtitle>내용을 확인해 주세요!</ModalSubtitle>
           <Container>
             <Item>
               <span>제목:</span>
               <span>{groupWriting?.title}</span>
             </Item>
             <Item>
-              <span>날짜:</span>
-              <span>{groupWriting?.category?.sub}</span>
+              <span>주제:</span>
+              <span>{groupWriting.category.main}</span>
             </Item>
             <Item>
-              <span>주제:</span>
-              <span>{groupWriting.guide}</span>
+              <span>소개:</span>
+              <span>{groupWriting?.guide}</span>
             </Item>
           </Container>
         </ModalLayout>
@@ -94,7 +94,7 @@ function GroupConfirmModal({ setIsModal, groupWriting }: IGroupConfirmModal) {
         <SuccessScreen url="/group">
           <>
             <span>소모임 개설 성공</span>
-            <div>소모임 오픈 소식을 단톡방에 공유해 주세요!</div>
+            <div>운영진이 연락을 드릴테니, 기다려 주세요!</div>
           </>
         </SuccessScreen>
       )}

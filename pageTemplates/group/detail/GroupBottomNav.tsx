@@ -76,7 +76,7 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
   const onClick = (type: ButtonType) => {
     if (type === "cancel") cancel();
     const myTicket = userInfo?.ticket?.groupStudyTicket;
-    if (myTicket < (data?.meetingType === "online" ? 1 : 2)) {
+    if (myTicket < data?.requiredTicket) {
       toast("warning", "보유중인 티켓이 부족합니다.");
       return;
     }
@@ -86,6 +86,9 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
   };
 
   const getButtonSettings = () => {
+    return {
+      text: "7/24(목) 임시 기능 점검 중",
+    };
     if (isPending) {
       if (data?.participants.length <= 1) {
         return {
@@ -105,13 +108,13 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
     if (data?.participants.length <= 1) {
       return {
         text: "참여 대기 신청",
-        handleFunction: () => sendRegisterForm({ answer: "참여 대기 신청", pointType: "point" }),
+        handleFunction: () => sendRegisterForm({ answer: ["참여 대기 신청"], pointType: "point" }),
       };
     }
 
     return {
       text: "가입 신청",
-      handleFunction: data.fee ? () => onClick("participate") : () => setIsModal(true),
+      handleFunction: !data?.isFree ? () => onClick("participate") : () => setIsModal(true),
     };
   };
 

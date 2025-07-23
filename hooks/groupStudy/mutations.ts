@@ -123,7 +123,7 @@ export const useGroupStatusMutation = (GroupId: number, options?: MutationOption
   );
 
 interface IGroupWaitingParam {
-  answer: string;
+  answer: string[];
   pointType: "point" | "deposit";
 }
 
@@ -135,7 +135,7 @@ export const useGroupWaitingMutation = (
     ({ answer, pointType }) =>
       requestServer<{
         id: number;
-        answer: string;
+        answer: string[];
         pointType: "point" | "deposit";
       }>({
         method: "post",

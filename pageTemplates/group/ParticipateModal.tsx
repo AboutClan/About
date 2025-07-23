@@ -17,7 +17,7 @@ interface IParticipateModal extends IModal {
   id: number;
 
   feeText: string;
-  answer: string;
+  answer: string[];
 }
 
 function ParticipateModal({ id, setIsModal, answer }: IParticipateModal) {

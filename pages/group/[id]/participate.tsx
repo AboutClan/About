@@ -6,7 +6,6 @@ import { useQueryClient } from "react-query";
 import Textarea from "../../../components/atoms/Textarea";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
-import Slide from "../../../components/layouts/PageSlide";
 import { GROUP_STUDY } from "../../../constants/keys/queryKeys";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import {
@@ -52,11 +51,11 @@ function Participate() {
   });
 
   const onClick = () => {
-    if (userInfo?.ticket?.groupStudyTicket < (group?.meetingType === "online" ? 1 : 2)) {
+    if (userInfo?.ticket?.groupStudyTicket < group?.requiredTicket) {
       toast("warning", "보유중인 티켓이 부족합니다.");
       return;
     }
-    if (group?.questionText) sendRegisterForm({ answer: textArr[0], pointType: "point" });
+    if (group?.questionText) sendRegisterForm({ answer: textArr, pointType: "point" });
     else mutate();
   };
 
@@ -64,47 +63,45 @@ function Participate() {
     <>
       <>
         <Header title="" />
-        <Slide isNoPadding>
-          <RegisterLayout>
-            <RegisterOverview>
-              {group?.questionText ? (
-                <>
-                  <span>모임장 승인이 필요한 모임입니다.</span>
-                  <span>아래 질문에 답변해 주세요!</span>
-                </>
-              ) : (
-                <>
-                  <span>자유 가입으로 설정된 모임입니다!</span>
-                  <span>바로 가입이 가능해요.</span>
-                </>
-              )}
-            </RegisterOverview>
-            {[1, 2].map((_, idx) => (
-              <Flex flexDir="column" mb={5} key={idx}>
-                <Box mb={3} fontSize="14px">
-                  Q&#41; {group?.questionText}
-                </Box>
-                <Textarea
-                  minH="80px"
-                  onChange={(e) => {
-                    setTextArr((old) => {
-                      const copy = [...old];
-                      copy[idx] = e.target.value;
-                      return copy;
-                    });
-                  }}
-                  value={textArr[idx]}
-                  placeholder="답변을 작성해 주세요."
-                />
-              </Flex>
-            ))}
-          </RegisterLayout>
-        </Slide>
+        <RegisterLayout>
+          <RegisterOverview>
+            {group?.questionText ? (
+              <>
+                <span>모임장 승인이 필요한 모임입니다.</span>
+                <span>아래 질문에 답변해 주세요!</span>
+              </>
+            ) : (
+              <>
+                <span>자유 가입으로 설정된 모임입니다!</span>
+                <span>바로 가입이 가능해요.</span>
+              </>
+            )}
+          </RegisterOverview>
+          {group.questionText.map((text, idx) => (
+            <Flex flexDir="column" mb={5} key={idx}>
+              <Box mb={3} fontSize="14px">
+                Q&#41; {text}
+              </Box>
+              <Textarea
+                minH="80px"
+                onChange={(e) => {
+                  setTextArr((old) => {
+                    const copy = [...old];
+                    copy[idx] = e.target.value;
+                    return copy;
+                  });
+                }}
+                value={textArr[idx]}
+                placeholder="답변을 작성해 주세요."
+              />
+            </Flex>
+          ))}
+        </RegisterLayout>
         <BottomNav text="가입 신청" onClick={onClick} isLoading={isLoading} />
       </>
       {isModal && (
         <ParticipateModal
-          answer={textArr[0]}
+          answer={textArr}
           id={group.id}
           feeText={group.feeText}
           setIsModal={setIsModal}

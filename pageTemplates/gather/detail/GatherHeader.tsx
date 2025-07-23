@@ -96,7 +96,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
             func: () => {
               setGatherWriting({ ...gatherData, date: dayjs(gatherData.date).toString() });
               setIsGatherEdit(true);
-              router.push(`/gather/writing/category?id=${gatherData.id}`);
+              router.push(`/gather/writing/category?id=${gatherData.id}&edit=on`);
             },
           },
           {

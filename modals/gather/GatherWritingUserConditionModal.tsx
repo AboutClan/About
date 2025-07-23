@@ -4,8 +4,8 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { PopOverIcon } from "../../components/Icons/PopOverIcon";
+import { ConditionType } from "../../components/organisms/WritingConditionLayout";
 import { GROUP_WRITING_STORE } from "../../constants/keys/localStorage";
-import { GatherConditionType } from "../../pages/gather/writing/condition";
 import { GroupConditionType } from "../../pages/group/writing/condition";
 import GatherWritingConditionAgeRange from "../../pageTemplates/gather/writing/condition/GatherWritingConditionAgeRange";
 import GatherWritingConditionCnt from "../../pageTemplates/gather/writing/condition/GatherWritingConditionCnt";
@@ -23,7 +23,7 @@ interface GatherWritingUserConditionModalProps extends IModal {
   type: "gather" | "group";
   toggleSwitch: (
     e: ChangeEvent<HTMLInputElement>,
-    type: GatherConditionType | GroupConditionType,
+    type: ConditionType | GroupConditionType,
   ) => void;
 }
 

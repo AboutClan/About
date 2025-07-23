@@ -17,6 +17,7 @@ interface IGatherWritingConfirmModal extends IModal {
   gatherData: Partial<IGatherWriting> | Partial<IGather>;
   createGather: ({ gather }: { gather: IGatherWriting }) => void;
   updateGather: ({ gather }: { gather: IGather }) => void;
+  isEdit: boolean;
 }
 
 function GatherWritingConfirmModal({
@@ -24,6 +25,7 @@ function GatherWritingConfirmModal({
   gatherData,
   createGather,
   updateGather,
+  isEdit,
 }: IGatherWritingConfirmModal) {
   const [isFirst, setIsFirst] = useState(true);
   const [imageUrl, setImageUrl] = useState();
@@ -42,7 +44,7 @@ function GatherWritingConfirmModal({
 
   const footerOptions: IFooterOptions = {
     main: {
-      text: isGatherEdit ? "모임 수정" : isFirst ? "모임 개설" : "모임 개설",
+      text: isEdit ? "모임 수정" : isFirst ? "모임 개설" : "모임 개설",
       func: isFirst ? onSubmit : onSubmit,
     },
   };
@@ -94,8 +96,7 @@ function GatherWritingConfirmModal({
                     내용:
                   </Box>
                   <Box
-                    mt="5px"
-                    alignSelf="flex-end"
+                    mt="4px"
                     textAlign="start"
                     lineHeight={1.5}
                     flex={1}

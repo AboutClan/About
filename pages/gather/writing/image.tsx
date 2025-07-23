@@ -49,6 +49,8 @@ function GatherWritingImagePage() {
   const groupId = searchParams.get("groupId");
   const category: GatherCategoryMain = gatherContent?.type.title || "힐링";
 
+  const isEdit = searchParams.get("edit");
+
   function shuffleArray(array: ImageProps[]) {
     const result = [...array]; // 원본 배열을 복사
     for (let i = result.length - 1; i > 0; i--) {
@@ -116,7 +118,7 @@ function GatherWritingImagePage() {
     setIsConfirmModal(true);
   };
 
-  const { mutate: createGather } = useGatherWritingMutation("post", {
+  const { mutate: createGather, isLoading: isLoading1 } = useGatherWritingMutation("post", {
     onSuccess(data) {
       queryClient.refetchQueries({ queryKey: [GATHER_CONTENT], exact: false });
       setGatherContent(null);
@@ -126,7 +128,7 @@ function GatherWritingImagePage() {
     },
     onError: errorToast,
   });
-  const { mutate: updateGather } = useGatherWritingMutation("patch", {
+  const { mutate: updateGather, isLoading: isLoading2 } = useGatherWritingMutation("patch", {
     onSuccess() {
       queryClient.refetchQueries({ queryKey: [GATHER_CONTENT], exact: false });
       setGatherContent(null);
@@ -173,7 +175,7 @@ function GatherWritingImagePage() {
           </Box>
         </Slide>
       </RegisterLayout>
-      <BottomNav onClick={() => onClickNext()} text="완료" />
+      <BottomNav onClick={() => onClickNext()} text="완료" isLoading={isLoading1 || isLoading2} />
       {isConfirmModal && (
         <GatherWritingConfirmModal
           createGather={(data) => createGather(data)}
@@ -183,6 +185,7 @@ function GatherWritingImagePage() {
             ...gatherContent,
             ...(groupId ? { category: "group" as GatherCategory, groupId } : {}),
           }}
+          isEdit={!!isEdit}
         />
       )}
     </>

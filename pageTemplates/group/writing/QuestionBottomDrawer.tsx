@@ -42,7 +42,7 @@ function QuestionBottomDrawer({
   };
 
   return (
-    <Drawer placement="bottom" onClose={onClose} isOpen={isOpen}>
+    <Drawer placement="right" onClose={onClose} isOpen={isOpen}>
       <DrawerOverlay />
       <DrawerContent borderTopRadius="var(--rounded-lg)">
         <DrawerBody display="flex" flexDir="column" p="var(--gap-4) var(--gap-4)">

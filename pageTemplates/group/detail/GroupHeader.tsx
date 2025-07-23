@@ -68,7 +68,7 @@ function GroupHeader({ group }: IGroupHeader) {
                   setLocalStorageObj(GROUP_WRITING_STORE, {
                     ...group,
                   });
-                  router.push(`/group/writing/main?id=${group.id}`);
+                  router.push(`/group/writing/main?id=${group.id}&edit=on`);
                 },
               },
               {

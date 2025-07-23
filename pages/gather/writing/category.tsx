@@ -26,9 +26,14 @@ function WritingGatherCategory() {
     if (gatherType) {
       const idx = GATHER_TYPES.findIndex((type) => type.title === gatherType.title);
       const target = refs.current[idx];
-      if (target) {
-        target.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
+
+      const timeout = setTimeout(() => {
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 300);
+
+      return () => clearTimeout(timeout);
     }
   }, [gatherType]);
 
