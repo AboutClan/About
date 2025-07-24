@@ -72,7 +72,7 @@ function GroupDetail() {
   };
 
   const gatherData = gathers && setGatherDataToCardCol(gathers, true);
-  
+
   return (
     <>
       {group && <GroupHeader group={group} />}

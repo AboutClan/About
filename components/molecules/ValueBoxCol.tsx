@@ -4,6 +4,7 @@ export interface ValueBoxColItemProps {
   left: string;
   right: string;
   isFinal?: boolean;
+  color?: "red";
 }
 
 interface ValueBoxColProps {
@@ -38,7 +39,7 @@ function ValueBoxCol({ items }: ValueBoxColProps) {
             </Box>
             <Box
               fontWeight={item?.isFinal ? "semibold" : "regular"}
-              color={item?.isFinal ? "mint" : "gray.600"}
+              color={item?.color === "red" ? "red" : item?.isFinal ? "mint" : "gray.600"}
             >
               {item.right}
             </Box>

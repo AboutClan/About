@@ -16,9 +16,10 @@ export interface IGroup extends IGroupWriting {
 export interface GroupParicipantProps {
   user: IUserSummary;
   role: "member" | "manager" | "admin";
-  attendCnt?: number;
   randomId?: number;
-  weekAttendance: boolean;
+  deposit: number;
+  lastMonthAttendance: boolean;
+  monthAttendance: boolean;
 }
 
 export interface IGroupWriting extends TimeStampProps {

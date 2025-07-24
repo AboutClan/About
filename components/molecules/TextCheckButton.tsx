@@ -19,6 +19,7 @@ function TextCheckButton({ text, isChecked, toggleCheck }: TextCheckButtonProps)
       px={4}
       py={3}
       justify="space-between"
+      w="full"
     >
       <Box my="auto">
         <CheckCircleIcon20 color={isChecked ? "mint" : "gray"} />

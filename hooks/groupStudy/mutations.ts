@@ -77,30 +77,6 @@ export const useGroupAttendUserMutation = (
     options,
   );
 
-interface IUserGroupAttendRequest extends IAttendMutationParam {
-  id: number;
-}
-
-interface IAttendMutationParam {
-  weekRecord: string[];
-  weekRecordSub?: string[];
-  type: "this" | "last";
-}
-
-export const useGroupAttendMutation = (
-  id: number,
-  options?: MutationOptions<IAttendMutationParam>,
-) =>
-  useMutation<void, AxiosError, IAttendMutationParam>(
-    ({ weekRecord, type, weekRecordSub }) =>
-      requestServer<IUserGroupAttendRequest>({
-        method: "patch",
-        url: "groupStudy/attendance",
-        body: { id, weekRecord, type, weekRecordSub },
-      }),
-    options,
-  );
-
 type Status = "pending" | "open" | "close" | "end";
 
 interface IGroupStatusRequest {
@@ -187,6 +163,41 @@ export const useGroupInviteMutation = (
         body: {
           id,
           userId,
+        },
+      }),
+    options,
+  );
+
+export const useGroupDepositMutation = (
+  id: string,
+  options?: MutationOptions<{ deposit: number }>,
+) =>
+  useMutation<void, AxiosError, { deposit: number }>(
+    ({ deposit }) =>
+      requestServer<{ id: string; deposit: number }>({
+        method: "post",
+        url: "groupStudy/deposit",
+        body: {
+          id,
+          deposit,
+        },
+      }),
+    options,
+  );
+
+export const useGroupMonthAttendMutation = (
+  groupId: string,
+  options?: MutationOptions<{ userId: string }>,
+) =>
+  useMutation<void, AxiosError, { userId: string }>(
+    ({ userId }) =>
+      requestServer<{ groupId: string; userId: string; last: boolean }>({
+        method: "post",
+        url: "groupStudy/monthAttend",
+        body: {
+          groupId,
+          userId,
+          last: false,
         },
       }),
     options,

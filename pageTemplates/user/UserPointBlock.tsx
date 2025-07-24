@@ -128,15 +128,7 @@ function UserPointBlock() {
               </Box>
             </Flex>
           </Link>
-          <Link
-            href="/user/log/point"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              typeToast("inspection");
-            }}
-            style={{ flex: 1 }}
-          >
+          <Link href="/user/point/charge" style={{ flex: 1 }}>
             <Flex direction="column" align="center">
               <Flex
                 justify="center"

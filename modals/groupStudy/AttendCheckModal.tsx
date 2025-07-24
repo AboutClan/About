@@ -3,10 +3,9 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import styled from "styled-components";
 
-import { GROUP_STUDY } from "../../constants/keys/queryKeys";
 import { useResetQueryData } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
-import { useGroupAttendMutation } from "../../hooks/groupStudy/mutations";
+
 import { IModal } from "../../types/components/modalTypes";
 import { dayjsToFormat, getDateWeek } from "../../utils/dateTimeUtils";
 import { IFooterOptions, ModalLayout } from "../Modals";
@@ -34,14 +33,6 @@ function AttendCheckModal({
 
   const resetQueryData = useResetQueryData();
 
-  const { mutate } = useGroupAttendMutation(id, {
-    onSuccess() {
-      toast("success", "저장되었습니다.");
-      resetQueryData([GROUP_STUDY]);
-      setIsModal(false);
-    },
-  });
-
   const dayArr = [];
   for (let i = 0; i < 7; i++) {
     const firstDay = dayjs().startOf("week").add(1, "day");
@@ -63,7 +54,7 @@ function AttendCheckModal({
   };
 
   const onSubmit = () => {
-    mutate({ weekRecord: myAttend, type, weekRecordSub: mySubAttend });
+    // mutate({ weekRecord: myAttend, type, weekRecordSub: mySubAttend });
   };
 
   const footerOptions: IFooterOptions = {

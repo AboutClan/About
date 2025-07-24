@@ -6,13 +6,24 @@ import { useToast } from "../../hooks/custom/CustomToast";
 interface ICountNum {
   value: number;
   setValue: (newValue: number) => void;
-  unit?: "명";
+  unit?: "명" | "원";
   min?: number;
   isSmall?: boolean;
   maxValue?: number;
+  stepValue?: number;
+  size?: "lg" | "md";
 }
 
-function CountNum({ value, setValue, unit, min = 1, isSmall, maxValue }: ICountNum) {
+function CountNum({
+  value,
+  setValue,
+  unit,
+  min = 1,
+  isSmall,
+  maxValue,
+  stepValue = 1,
+  size = "md",
+}: ICountNum) {
   const toast = useToast();
 
   const onClickUpValue = () => {
@@ -20,7 +31,7 @@ function CountNum({ value, setValue, unit, min = 1, isSmall, maxValue }: ICountN
       toast("warning", "최대 개수입니다.");
       return;
     }
-    setValue(value + 1);
+    setValue(value + stepValue);
   };
 
   return (
@@ -30,11 +41,11 @@ function CountNum({ value, setValue, unit, min = 1, isSmall, maxValue }: ICountN
         isVisible={value > min}
         disabled={value <= min}
         isSmall={isSmall}
-        onClick={() => setValue(value - 1)}
+        onClick={() => setValue(value - stepValue)}
       >
         <MinusIcon />
       </IconWrapper>
-      <Box as="span" fontSize={isSmall ? "14px" : "20px"} mx={1}>
+      <Box as="span" fontSize={isSmall ? "14px" : size === "md" ? "20px" : "24px"} mx={1}>
         {value}
         {unit}
       </Box>
