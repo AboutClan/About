@@ -1,6 +1,6 @@
 import { AspectRatio, Box, Flex } from "@chakra-ui/react";
 
-import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
+import { SECRET_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import { FeedComment } from "../../types/models/feed";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import ContentSummary from "../atoms/ContentSummary";
@@ -39,7 +39,7 @@ function FeedLayout({
 }: FeedLayoutProps) {
   return (
     <Flex direction="column" border="var(--border)" pb={2}>
-      <FeedHeader writer={isAnonymous ? ABOUT_USER_SUMMARY : user} date={date} />
+      <FeedHeader writer={isAnonymous ? SECRET_USER_SUMMARY : user} date={date} />
       <AspectRatio ratio={1}>
         <ImageSlider imageContainer={images} type="review" />
       </AspectRatio>

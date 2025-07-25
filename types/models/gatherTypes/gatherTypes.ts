@@ -75,3 +75,18 @@ export interface IGatherParticipants {
 //   date: Dayjs | string | "미정";
 //   locationMain: string;
 // }
+
+export interface GatherRequestWritingProps {
+  title: string;
+  content: string;
+  isAnonymous: boolean;
+}
+
+export interface GatherRequestProps extends GatherRequestWritingProps, TimeStampProps {
+  writer: UserSimpleInfoProps;
+  like: string[];
+  pirze: number;
+
+  status: "pending" | "completed";
+  _id: string;
+}

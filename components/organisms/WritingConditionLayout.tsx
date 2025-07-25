@@ -43,7 +43,8 @@ function WritingConditionLayout({ conditions, setConditions }: WritingConditionL
   };
 
   useEffect(() => {
-    if (!feeText.length) {
+    console.log(53, feeText);
+    if (!feeText.length || conditions?.fee === undefined) {
       return;
     }
     if (!isNumeric(feeText)) {
@@ -170,7 +171,7 @@ function WritingConditionLayout({ conditions, setConditions }: WritingConditionL
           />
         </RowBlock>
       )}
-      {conditions?.fee !== 0 && (
+      {conditions?.fee !== 0 && conditions?.fee !== undefined && (
         <Flex align="center" mr="4px">
           <Box
             fontSize="12px"

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { iPhoneNotchSize } from "../../../utils/validationUtils";
 
 interface IWritingIcon {
-  url: string;
+  url?: string;
   isBottomNav?: boolean;
   onClick?: () => void;
   type?: "thunder";
@@ -12,15 +12,27 @@ interface IWritingIcon {
 
 function WritingButton({ url, type, isBottomNav = true, onClick }: IWritingIcon) {
   return (
-    <Link href={url} onClick={onClick}>
-      <Layout isBottomNav={isBottomNav}>
-        {type === "thunder" ? (
-          <i className="fa-light fa-bolt-lightning fa-lg" style={{ color: "white" }} />
-        ) : (
-          <i className="fa-light fa-pen-line fa-lg" style={{ color: "white" }} />
-        )}
-      </Layout>
-    </Link>
+    <>
+      {url ? (
+        <Link href={url} onClick={onClick}>
+          <Layout isBottomNav={isBottomNav}>
+            {type === "thunder" ? (
+              <i className="fa-light fa-bolt-lightning fa-lg" style={{ color: "white" }} />
+            ) : (
+              <i className="fa-light fa-pen-line fa-lg" style={{ color: "white" }} />
+            )}
+          </Layout>
+        </Link>
+      ) : (
+        <Layout isBottomNav={isBottomNav}>
+          {type === "thunder" ? (
+            <i className="fa-light fa-bolt-lightning fa-lg" style={{ color: "white" }} />
+          ) : (
+            <i className="fa-light fa-pen-line fa-lg" style={{ color: "white" }} />
+          )}
+        </Layout>
+      )}
+    </>
   );
 }
 

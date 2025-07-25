@@ -3,7 +3,11 @@ import { useMutation } from "react-query";
 
 import { requestServer } from "../../libs/methodHelpers";
 import { MutationOptions } from "../../types/hooks/reactTypes";
-import { IGather, IGatherWriting } from "../../types/models/gatherTypes/gatherTypes";
+import {
+  GatherRequestWritingProps,
+  IGather,
+  IGatherWriting,
+} from "../../types/models/gatherTypes/gatherTypes";
 
 type GatherWritingParam<T> = T extends "post"
   ? { gather: IGatherWriting }
@@ -162,6 +166,27 @@ export const useGatherAbsenceCheckMutation = (
           gatherId: gatherId + "",
           userId,
         },
+      }),
+    options,
+  );
+
+export const useGatherRequestMutation = (options?: MutationOptions<GatherRequestWritingProps>) =>
+  useMutation<void, AxiosError, GatherRequestWritingProps>(
+    (param) =>
+      requestServer<GatherRequestWritingProps>({
+        method: "post",
+        url: "gatherRequest",
+        body: param,
+      }),
+    options,
+  );
+export const useGatherRequestLikeMutation = (options?: MutationOptions<{ grId: string }>) =>
+  useMutation<void, AxiosError, { grId: string }>(
+    (param) =>
+      requestServer<{ grId: string }>({
+        method: "post",
+        url: "gatherRequest/like",
+        body: param,
       }),
     options,
   );

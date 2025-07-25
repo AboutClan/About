@@ -5,7 +5,7 @@ import { GATHER_CONTENT } from "../../constants/keys/queryKeys";
 import { SERVER_URI } from "../../constants/system";
 import { IGatherSummary } from "../../pages/review";
 import { QueryOptions } from "../../types/hooks/reactTypes";
-import { IGather } from "../../types/models/gatherTypes/gatherTypes";
+import { GatherRequestProps, IGather } from "../../types/models/gatherTypes/gatherTypes";
 
 export const useGatherQuery = (
   cursor?: number,
@@ -88,6 +88,15 @@ export const useGatherReviewOneQuery = (options?: QueryOptions<IGather>) =>
     [GATHER_CONTENT, "review"],
     async () => {
       const res = await axios.get<IGather>(`${SERVER_URI}/gather/review`);
+      return res.data;
+    },
+    options,
+  );
+export const useGatherRequestQuery = (options?: QueryOptions<GatherRequestProps[]>) =>
+  useQuery<GatherRequestProps[], AxiosError, GatherRequestProps[]>(
+    ["gatherRequest"],
+    async () => {
+      const res = await axios.get<GatherRequestProps[]>(`${SERVER_URI}/gatherRequest`);
       return res.data;
     },
     options,
