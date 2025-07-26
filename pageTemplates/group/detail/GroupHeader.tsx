@@ -81,7 +81,7 @@ function GroupHeader({ group }: IGroupHeader) {
 
   const menuArr: MenuProps[] = group
     ? [
-        ...(isMember && !isAdmin
+        ...(isMember && group.fee
           ? [
               {
                 text: findMyInfo?.deposit
