@@ -1,7 +1,7 @@
 import { Badge, Box, Flex, Image, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 import Avatar from "../../components/atoms/Avatar";
 import ThumbIcon from "../../components/Icons/ThumbIcon";
@@ -126,7 +126,7 @@ export default function SquareItem({ item, isSecret = true }: SquareItemProps) {
           <Flex>
             {!isSecret && <Avatar size="xxs1" user={item?.author as UserSimpleInfoProps} />}
             <Flex
-              ml={1}
+              ml={isSecret ? 0 : 1}
               sx={{
                 "& :after": {
                   height: "100%",
