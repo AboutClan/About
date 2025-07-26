@@ -87,56 +87,13 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
             </Box>
           </Flex>
         </Box>
-
-        {/* <Box px={5} py={2} borderRadius="20px" border="var(--border-main)" bgColor="white">
-          <Flex direction="column" fontSize="12px">
-            <Flex
-              justify="space-between"
-              py={2}
-              borderBottom="var(--border)"
-              align="center"
-              lineHeight="18px"
-            >
-              <Box color="gray.500">소셜링 온도</Box>
-              <Flex align="center">
-                <Box fontWeight="medium" as="span">
-                  {getTemperature(user)}
-                </Box>
-              </Flex>
-            </Flex>
-            <Flex
-              justify="space-between"
-              py={2}
-              borderBottom="var(--border)"
-              align="center"
-              lineHeight="18px"
-            >
-              <Box color="gray.500">이번 달 점수</Box>
-              <Flex align="center">
-                <Box fontWeight="medium" as="span">
-                  {user.monthScore} {user.monthScore < 10 ? "/ 10" : "점"}
-                </Box>
-              </Flex>
-            </Flex>
-            <Flex justify="space-between" py={2} align="center" lineHeight="18px">
-              <Box color="gray.500">현재 상태</Box>
-              <Flex align="center">
-                <Box fontWeight="medium" as="span">
-                  활동중
-                </Box>
-              </Flex>
-            </Flex>
-          </Flex>
-        </Box> */}
       </Box>
-
       <UserPointBlock />
       <UserMyGroupSection user={user} />
       <Box mt={3}>
         <Box borderBottom="var(--border)">
           <UserCollection />
         </Box>
-
         <Box mb={1} mt={4} mx={5} fontWeight="bold" fontSize="16px" lineHeight="24px">
           활동
         </Box>

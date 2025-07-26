@@ -27,7 +27,7 @@ const MemberItem = styled.div`
   display: flex;
   align-items: center;
 
-  border-bottom: var(--border);
+  /* border-bottom: var(--border); */
 `;
 
 const UserOverview = styled.div`

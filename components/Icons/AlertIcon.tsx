@@ -19,7 +19,7 @@ const XAlertIconLayout = styled.div`
 `;
 
 interface INewAlertIcon {
-  size?: "sm" | "lg";
+  size?: "sm" |"md"| "lg";
 }
 
 export function NewAlertIcon({ size = "lg" }: INewAlertIcon) {

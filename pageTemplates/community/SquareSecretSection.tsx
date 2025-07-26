@@ -23,7 +23,7 @@ function SquareSecretSection() {
   const firstLoad = useRef(true);
 
   const { data, isLoading } = useSecretSquareListQuery(
-    { category, cursor },
+    { category: category === "전체" ? "secretAll" : category, cursor },
     {
       enabled: (!!category && cursor === 0 && firstLoad.current) || cursor !== 0,
     },

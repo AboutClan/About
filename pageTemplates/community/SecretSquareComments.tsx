@@ -18,9 +18,10 @@ import { UserCommentProps } from "../../types/components/propTypes";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 interface SecretSquareCommentsProps {
-  author: string;
+  author: string | IUserSummary;
   comments: UserCommentProps[];
   refetch: () => void;
+  isSecret: boolean;
 }
 
 export interface ReplyProps extends Omit<SubCommentParamProps, "comment"> {
@@ -28,7 +29,7 @@ export interface ReplyProps extends Omit<SubCommentParamProps, "comment"> {
   parentId?: string;
 }
 
-function SecretSquareComments({ author, comments, refetch }: SecretSquareCommentsProps) {
+function SecretSquareComments({ author, comments, refetch, isSecret }: SecretSquareCommentsProps) {
   const router = useRouter();
   const { data: userInfo } = useUserInfoQuery();
 
@@ -103,28 +104,32 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
                 id={squareId}
                 commentProps={{
                   ...commentProps,
-                  user: {
-                    ...SECRET_USER_SUMMARY,
-                    name:
-                      uniqueUsers[item.user as unknown as string] === -1
-                        ? "익명(글쓴이)"
-                        : `익명 ${uniqueUsers[item.user as unknown as string] || ""}`,
-                    _id: item.user as unknown as string,
-                  },
+                  user: !isSecret
+                    ? (author as IUserSummary)
+                    : {
+                        ...SECRET_USER_SUMMARY,
+                        name:
+                          uniqueUsers[item.user as unknown as string] === -1
+                            ? "익명(글쓴이)"
+                            : `익명 ${uniqueUsers[item.user as unknown as string] || ""}`,
+                        _id: item.user as unknown as string,
+                      },
                   subComments: (commentProps.subComments || []).map((sub) => ({
                     ...sub,
-                    user: {
-                      ...SECRET_USER_SUMMARY,
-                      name:
-                        uniqueUsers[sub.user as unknown as string] === -1
-                          ? "익명(글쓴이)"
-                          : `익명 ${uniqueUsers[sub.user as unknown as string] || ""}`,
-                      _id: sub.user as unknown as string,
-                    },
+                    user: !isSecret
+                      ? (author as IUserSummary)
+                      : {
+                          ...SECRET_USER_SUMMARY,
+                          name:
+                            uniqueUsers[sub.user as unknown as string] === -1
+                              ? "익명(글쓴이)"
+                              : `익명 ${uniqueUsers[sub.user as unknown as string] || ""}`,
+                          _id: sub.user as unknown as string,
+                        },
                   })),
                 }}
                 setCommentArr={setCommentArr}
-                hasAuthority={(item.user as unknown as string) !== userInfo._id}
+                hasAuthority={(item.user as unknown as string) !== userInfo?._id}
                 setReplyProps={setReplyProps}
               />
             );
@@ -136,7 +141,7 @@ function SecretSquareComments({ author, comments, refetch }: SecretSquareComment
         type="comment"
         replyName={replyProps?.replyName}
         setReplyProps={setReplyProps}
-        user={null}
+        user={author as IUserSummary}
       />
     </>
   );

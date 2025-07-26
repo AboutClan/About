@@ -3,9 +3,11 @@ import dayjs from "dayjs";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 
+import Avatar from "../../components/atoms/Avatar";
 import ThumbIcon from "../../components/Icons/ThumbIcon";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import type { SecretSquareCategory, SecretSquareType } from "../../types/models/square";
+import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 import { getDateDiff } from "../../utils/dateTimeUtils";
 
 interface SquareItemProps {
@@ -20,10 +22,12 @@ interface SquareItemProps {
     likeCount: number;
     commentsCount: number;
     createdAt: string;
+    author: string | UserSimpleInfoProps;
   };
+  isSecret: boolean;
 }
 
-export default function SquareItem({ item }: SquareItemProps) {
+export default function SquareItem({ item, isSecret = true }: SquareItemProps) {
   const { data: session } = useSession();
   const typeToast = useTypeToast();
   const isGuest = session?.user.name === "guest";
@@ -37,7 +41,10 @@ export default function SquareItem({ item }: SquareItemProps) {
   };
 
   return (
-    <Link href={`/community/${item._id}`} onClick={onClick}>
+    <Link
+      href={`/community/${item._id}?type=${isSecret ? "anonymous" : "blindness"}`}
+      onClick={onClick}
+    >
       <Flex flexDir="column" borderBottom="var(--border)" px={5} py={3}>
         <Badge mb={1} colorScheme="gray" size="smd" w="max-content">
           {`# ${item?.category}`}
@@ -116,28 +123,32 @@ export default function SquareItem({ item }: SquareItemProps) {
           )}
         </Flex>
         <Flex fontSize="12px" color="var(--gray-600)" justify="space-between">
-          <Flex
-            sx={{
-              "& :after": {
-                height: "100%",
-                content: "'•'",
-                margin: "0 4px",
-                verticalAlign: "middle",
-                fontSize: "8px",
-              },
+          <Flex>
+            {!isSecret && <Avatar size="xxs1" user={item?.author as UserSimpleInfoProps} />}
+            <Flex
+              ml={1}
+              sx={{
+                "& :after": {
+                  height: "100%",
+                  content: "'•'",
+                  margin: "0 4px",
+                  verticalAlign: "middle",
+                  fontSize: "8px",
+                },
 
-              "& :last-child:after": {
-                content: "''",
-              },
-            }}
-          >
-            <span>{getDateDiff(dayjs(item.createdAt))}</span>
-            <span>조회 {item.viewCount}</span>
+                "& :last-child:after": {
+                  content: "''",
+                },
+              }}
+            >
+              <span>{getDateDiff(dayjs(item.createdAt))}</span>
+              <span>조회 {item.viewCount + (item.title === "정보 게시판 출시 안내" ? 25 : 0)}</span>
+            </Flex>
           </Flex>
           <Flex gap={2} color="gray.500" align="center">
             <Flex gap={1} align="center">
               <ThumbIcon colorType="400" />
-              <span>{item.likeCount}</span>
+              <span>{item.likeCount + (item.title === "정보 게시판 출시 안내" ? 4 : 0)}</span>
             </Flex>
             <Flex gap={1} align="center">
               <svg

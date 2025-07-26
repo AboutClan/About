@@ -25,6 +25,7 @@ function UserCommentBlock({
   setCommentArr,
   hasDeleteBtn = true,
 }: UserCommentBlockProps) {
+  console.log(5, commentProps);
   return (
     <>
       <UserComment

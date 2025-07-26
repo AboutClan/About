@@ -1,7 +1,8 @@
 import { Box, Flex, Switch, Text } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 
 import WritingButton from "../../components/atoms/buttons/WritingButton";
@@ -9,6 +10,7 @@ import { Input } from "../../components/atoms/Input";
 import Textarea from "../../components/atoms/Textarea";
 import Slide from "../../components/layouts/PageSlide";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
+import { useToast } from "../../hooks/custom/CustomToast";
 import { useGatherRequestMutation } from "../../hooks/gather/mutations";
 import { ModalLayout } from "../../modals/Modals";
 import PageGuideModal from "../../modals/PageGuideModal";
@@ -78,7 +80,7 @@ function Gather() {
 
   return (
     <>
-      <GatherHeader />
+      <GatherHeader tab={tab} />
       <Slide isNoPadding>
         <Box fontSize="16px" mb={3} bgColor="white" borderBottom="var(--border)" px={5}>
           <TabNav tabOptionsArr={tabNavOptions} selected={tab} />
@@ -110,14 +112,25 @@ function Gather() {
   );
 }
 
-const GatherPickModal = ({ setIsModal }: IModal) => {
+function GatherPickModal({ setIsModal }: IModal) {
+  const toast = useToast();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [isAnonymous, setIsAnonymous] = useState(false);
+  const [isAnonymous, setIsAnonymous] = useState(true);
+  const queryClient = useQueryClient();
 
-  const { mutate } = useGatherRequestMutation();
+  const { mutate, isLoading } = useGatherRequestMutation({
+    onSuccess() {
+      queryClient.refetchQueries(["gatherRequest"]);
+      setIsModal(false);
+    },
+  });
 
   const handleSubmit = () => {
+    if (!title || !content) {
+      toast("warning", "내용을 작성해 주세요.");
+    }
+
     mutate({
       title,
       content,
@@ -128,7 +141,7 @@ const GatherPickModal = ({ setIsModal }: IModal) => {
   return (
     <ModalLayout
       title="이런 번개 열어주세요!"
-      // footerOptions={{ main: { text: "완 료", func: handleSubmit } }}
+      footerOptions={{ main: { text: "완 료", func: handleSubmit, isLoading } }}
       setIsModal={setIsModal}
     >
       <Input
@@ -144,7 +157,7 @@ const GatherPickModal = ({ setIsModal }: IModal) => {
         onChange={(e) => setContent(e.target.value)}
         placeholder="하고 싶은 말을 남겨주세요."
         px={3}
-        h="64px"
+        h="80px"
       />
       <Flex align="center" justify="space-between">
         <Flex>
@@ -154,17 +167,15 @@ const GatherPickModal = ({ setIsModal }: IModal) => {
           <Switch
             colorScheme="mint"
             isChecked={isAnonymous}
-            onChange={(e) => setIsAnonymous((old) => !old)}
+            onChange={() => setIsAnonymous((old) => !old)}
           />
         </Flex>
-        {isAnonymous && (
-          <Box lineHeight="20px" fontSize="12px" color="mint">
-            - 100 Point
-          </Box>
-        )}
+        <Box lineHeight="20px" fontSize="12px" color="mint">
+          {isAnonymous ? "- 100 Point" : "실명 무료"}
+        </Box>
       </Flex>
     </ModalLayout>
   );
-};
+}
 
 export default Gather;

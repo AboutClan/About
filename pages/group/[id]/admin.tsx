@@ -1,4 +1,4 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Flex, Switch, Text } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import styled from "styled-components";
@@ -18,6 +18,7 @@ function Admin() {
   const { id } = useParams<{ id: string }>() || {};
 
   const [deletedUsers, setDeletedUser] = useState([]);
+  const [isInviteTab, setIsInviteTab] = useState(false);
 
   const resetGroup = useResetGroupQuery();
 
@@ -39,22 +40,15 @@ function Admin() {
     setDeletedUser((old) => [...old, user._id]);
     mutate({ status, userId: user._id });
   };
-
+  console.log(group);
   return (
     <>
       <Header title="관리자 페이지" />
-      <Slide isNoPadding>
-        <Layout>
-          <Box mb={20}>
-            <Title>가입 신청</Title>
-            {group?.waiting?.length ? (
-              <Question>가입 질문: {group?.questionText} </Question>
-            ) : (
-              <Box>신청중인 멤버가 없습니다.</Box>
-            )}
-          </Box>
-          <Container>
-            {group?.waiting?.map((who, idx) =>
+      <Slide>
+        <Title>신청 인원</Title>
+        <Container>
+          {group?.waiting?.length ? (
+            group?.waiting?.map((who, idx) =>
               deletedUsers.includes(who.user._id) && !isLoading ? null : (
                 <Item key={idx}>
                   <UserItem user={who.user}>
@@ -76,24 +70,41 @@ function Admin() {
                       거절
                     </Button>
                   </UserItem>
-                  {who?.answer && <Content>{who.answer}</Content>}
+                  <Text mt={3} mb={1} color="gray.600" fontSize="12px">
+                    [신청자 답변]
+                  </Text>
+                  <Box bg="gray.100" borderRadius="8px" px={3} py={3}>
+                    {group.questionText.map((text, idx) => (
+                      <Flex flexDir="column" mt={idx !== 0 ? 3 : 0} key={idx}>
+                        <Box mb={1} fontSize="13px">
+                          Q&#41; {text}
+                        </Box>
+                        <Box color="gray.600" fontSize="13px">
+                          A&#41; {who?.answer?.[idx]}
+                        </Box>
+                      </Flex>
+                    ))}
+                  </Box>
                 </Item>
               ),
-            )}
-          </Container>
-          <Title>
-            <Box>신규 인원 초대</Box>
-          </Title>
-          <GroupAdminInvitation />
-        </Layout>
+            )
+          ) : (
+            <Box>신청중인 인원이 없습니다.</Box>
+          )}
+        </Container>
+        <Title>
+          <Box>신규 인원 초대</Box>
+          <Switch
+            colorScheme="mint"
+            onChange={(e) => setIsInviteTab(e.target.checked)}
+            isChecked={isInviteTab}
+          />
+        </Title>
+        {isInviteTab && <GroupAdminInvitation />}
       </Slide>
     </>
   );
 }
-
-const Layout = styled.div`
-  padding: var(--gap-4);
-`;
 
 const Title = styled.div`
   display: flex;
@@ -104,20 +115,10 @@ const Title = styled.div`
   padding: var(--gap-2) 0;
 `;
 
-const Question = styled.div`
-  padding: var(--gap-3) 0;
-  font-size: 16px;
-`;
-
 const Container = styled.div`
-  margin-bottom: var(--gap-5);
+  margin-bottom: 80px;
 `;
 
 const Item = styled.div``;
-
-const Content = styled.div`
-  font-size: 14px;
-  padding: var(--gap-3);
-`;
 
 export default Admin;

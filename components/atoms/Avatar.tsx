@@ -134,7 +134,7 @@ function AvatarComponent({
 
   return (
     <>
-      {!isLink || !userId ? (
+      {!isLink || size === "xxs1" || !userId ? (
         <Box>
           <AvatarComponent />
         </Box>

@@ -2,6 +2,7 @@ import { Box, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 
+import { NewAlertIcon } from "../../components/Icons/AlertIcon";
 import ExternalLink from "../../components/molecules/ExternalLink";
 
 function HomeNav() {
@@ -35,6 +36,11 @@ function HomeNav() {
                 priority
                 style={{ width: "36px", height: "36px", objectFit: "contain" }}
               />
+              {item.title === "게시판" && (
+                <Box pos="absolute" bottom="-1px" right="-1px">
+                  <NewAlertIcon size="md" />
+                </Box>
+              )}
             </Flex>
             <Box fontSize="11px" color="black">
               {item.title}
@@ -71,7 +77,7 @@ const HOME_RECOMMENDATION_ICON_ARR: HomeRecommendationItemProps[] = [
     iconImage:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/twoChat.png",
     title: "게시판",
-    url: "/community",
+    url: "/community?type=info",
     bgColor: "var(--color-gray)",
   },
   {

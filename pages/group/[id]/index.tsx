@@ -2,8 +2,8 @@ import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import { Badge, Box, Flex, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 

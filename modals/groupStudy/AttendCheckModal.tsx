@@ -3,9 +3,6 @@ import dayjs from "dayjs";
 import { useState } from "react";
 import styled from "styled-components";
 
-import { useResetQueryData } from "../../hooks/custom/CustomHooks";
-import { useToast } from "../../hooks/custom/CustomToast";
-
 import { IModal } from "../../types/components/modalTypes";
 import { dayjsToFormat, getDateWeek } from "../../utils/dateTimeUtils";
 import { IFooterOptions, ModalLayout } from "../Modals";
@@ -17,21 +14,11 @@ interface IAttendCheckModal extends IModal {
   type: "this" | "last";
 }
 
-function AttendCheckModal({
-  type,
-  id,
-  attendRecord,
-  attendRecordSub,
-  setIsModal,
-}: IAttendCheckModal) {
-  const toast = useToast();
-
+function AttendCheckModal({ attendRecord, attendRecordSub, setIsModal }: IAttendCheckModal) {
   const dateWeek = getDateWeek(dayjs());
 
   const [myAttend, setMyAttend] = useState<string[]>(attendRecord);
   const [mySubAttend, setMySubAttend] = useState<string[]>(attendRecordSub);
-
-  const resetQueryData = useResetQueryData();
 
   const dayArr = [];
   for (let i = 0; i < 7; i++) {

@@ -33,7 +33,9 @@ function UserMyGroupSection({ user }: UserMyGroupSectionProps) {
             },
             {
               category: "월간 번개/소모임 참여권 충전",
-              text: `${gatherTicket} 장 / ${groupStudyTicket} 장`,
+              text: `${gatherTicket + (user?.gender === "여성" ? 1 : 0)} 장 / ${
+                groupStudyTicket + (user?.gender === "여성" ? 2 : 0)
+              } 장`,
               leftChildren: (
                 <PopOverIcon text="참여권은 매월 초기화되며, 소셜링 온도가 높을수록 많은 참여권이 지급됩니다." />
               ),

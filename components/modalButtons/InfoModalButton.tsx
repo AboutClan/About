@@ -5,7 +5,7 @@ import { ModalLayout } from "../../modals/Modals";
 import IconButton from "../atoms/buttons/IconButton";
 import InfoList from "../atoms/lists/InfoList";
 
-type InfoType = "study" | "gather" | "group";
+type InfoType = "study" | "gather" | "group" | "gatherRequest";
 
 interface InfoModalButtonProps {
   type: InfoType;
@@ -73,11 +73,17 @@ function InfoModalSubTitle({ type }: { type: InfoType }) {
           하고 싶은 활동을, 또래 친구들과, 원하는 순간에.
           <br /> 자유롭게 즐길 수 있는 <b>About 소셜링</b>
         </>
-      ) : (
+      ) : type === "group" ? (
         <>
           같은 관심사를 가진 친구들과 함께하는
           <br />
           하나의 작은 동아리, <b>About 소모임</b>
+        </>
+      ) : (
+        <>
+          “이런 번개 누가 좀 열어줬으면...”
+          <br />
+          생각만 했던 순간들! 이제 직접 요청해 봐요!
         </>
       )}
     </Box>
@@ -99,6 +105,14 @@ const INFO_MODAL_CONTENTS: Record<InfoType, { title: string; items: string[] }> 
       "주제, 인원, 나이 등을 설정할 수 있습니다.",
       "모임장은 최대 30,000원을 지원 받습니다.",
       "모임 참여에는 번개 참여권이 소모됩니다.",
+    ],
+  },
+  gatherRequest: {
+    title: "번개 PICK 가이드",
+    items: [
+      "관심 있는 번개에 관심 등록을 해보세요!",
+      "50 Point를 추가하고, 알림을 받을 수 있어요.",
+      "번개 PICK 개설자는 리워드를 획득합니다.",
     ],
   },
   group: {

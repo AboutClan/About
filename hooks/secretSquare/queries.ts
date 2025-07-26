@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import { SERVER_URI } from "../../constants/system";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import type {
+  InfoSquareCategoryWithAll,
   SecretSquareCategory,
   SecretSquareCategoryWithAll,
   SecretSquareItem,
@@ -22,16 +23,27 @@ export type SecretSquareListResponse = {
     likeCount: number;
     commentsCount: number;
     createdAt: string;
+    author: string;
   }[];
 };
-export const  useSecretSquareListQuery = (
-  { category, cursor }: { category: SecretSquareCategoryWithAll; cursor: number },
+export const useSecretSquareListQuery = (
+  {
+    category,
+    cursor,
+  }: {
+    category:
+      | SecretSquareCategoryWithAll
+      | InfoSquareCategoryWithAll
+      | "normalAll"
+      | "secretAll"
+      | "기타2";
+    cursor: number;
+  },
   options?: QueryOptions<SecretSquareListResponse>,
 ) =>
   useQuery<SecretSquareListResponse, AxiosError, SecretSquareListResponse>(
     ["secretSquare", { category, cursor }],
     async () => {
-     
       const searchParams = new URLSearchParams();
       if (category !== "전체") {
         searchParams.set("category", category);
@@ -42,6 +54,7 @@ export const  useSecretSquareListQuery = (
           params: { cursor },
         },
       );
+      console.log(7, res.data);
       return res.data;
     },
     options,

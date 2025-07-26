@@ -1,5 +1,6 @@
 import { Badge, Box, Button, ButtonGroup, Flex, Text, VStack } from "@chakra-ui/react";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -26,12 +27,16 @@ import {
 } from "../../hooks/secretSquare/queries";
 import PollItemButton from "../../pageTemplates/community/PollItemButton";
 import SecretSquareComments from "../../pageTemplates/community/SecretSquareComments";
+import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
 
 function SecretSquareDetailPage() {
+  const searchParams = useSearchParams();
   const router = useRouter();
   const squareId = router.query.id as string;
   const { data: session } = useSession();
   const [isDeleteModal, setIsDeleteModal] = useState(false);
+  const typeParams = searchParams.get("type");
+  const isSecret = typeParams === "anonymous";
 
   const { mutate: putLikeMutate, isLoading: isPutLikeLoading } = usePutLikeSecretSquareMutation({
     squareId,
@@ -91,6 +96,7 @@ function SecretSquareDetailPage() {
 
   const handleLikeSquare = () => {
     if (!likeStatus) return;
+
     if (likeStatus.isLike) {
       deleteLikeMutate();
     } else {
@@ -103,9 +109,11 @@ function SecretSquareDetailPage() {
   };
 
   const menuArr: MenuProps[] = [
-    ...(squareDetail?.author === session?.user.id
+    ...((isSecret ? squareDetail?.author : (squareDetail?.author as IUserSummary)?._id) ===
+    session?.user.id
       ? [
           {
+            icon: <DeleteIcon />,
             text: "삭제하기",
             func: () => {
               setIsDeleteModal(true);
@@ -124,7 +132,7 @@ function SecretSquareDetailPage() {
       },
     },
   ];
- 
+  console.log(44, squareDetail);
   return (
     <>
       <Header title="">
@@ -142,7 +150,9 @@ function SecretSquareDetailPage() {
 
                   <section id="avatar-section">
                     <PostAuthorCard
-                      organizer={SECRET_USER_SUMMARY}
+                      organizer={
+                        isSecret ? SECRET_USER_SUMMARY : (squareDetail.author as IUserSummary)
+                      }
                       createdAt={squareDetail.createdAt}
                     ></PostAuthorCard>
                   </section>
@@ -310,7 +320,11 @@ function SecretSquareDetailPage() {
                   >
                     <path d="M480-320q75 0 127.5-52.5T660-500q0-75-52.5-127.5T480-680q-75 0-127.5 52.5T300-500q0 75 52.5 127.5T480-320Zm0-72q-45 0-76.5-31.5T372-500q0-45 31.5-76.5T480-608q45 0 76.5 31.5T588-500q0 45-31.5 76.5T480-392Zm0 192q-134 0-244.5-72T61-462q-5-9-7.5-18.5T51-500q0-10 2.5-19.5T61-538q64-118 174.5-190T480-800q134 0 244.5 72T899-538q5 9 7.5 18.5T909-500q0 10-2.5 19.5T899-462q-64 118-174.5 190T480-200Z" />
                   </svg>
-                  <span>{squareDetail.viewers.length}명이 봤어요</span>
+                  <span>
+                    {squareDetail.viewers.length +
+                      (squareDetail.title === "정보 게시판 출시 안내" ? 25 : 0)}
+                    명이 봤어요
+                  </span>
                 </Flex>
                 <Flex justify="space-between" mt={3}>
                   <Button
@@ -341,7 +355,10 @@ function SecretSquareDetailPage() {
                     <Box>
                       <ThumbIcon colorType={likeStatus?.isLike ? "mint" : "600"} />
                     </Box>
-                    <Box>{squareDetail.like.length}</Box>
+                    <Box>
+                      {squareDetail.like.length +
+                        (squareDetail.title === "정보 게시판 출시 안내" ? 4 : 0)}
+                    </Box>
                   </Button>
                 </Flex>
               </>
@@ -350,13 +367,16 @@ function SecretSquareDetailPage() {
         </Slide>
         <Slide isNoPadding>{squareDetail && <Divider />}</Slide>
 
-        <Box as="section" bg="white">
-          <SecretSquareComments
-            author={squareDetail?.author}
-            comments={squareDetail?.comments}
-            refetch={refetch}
-          />
-        </Box>
+        {squareDetail && (
+          <Box as="section" bg="white">
+            <SecretSquareComments
+              author={squareDetail?.author}
+              comments={squareDetail?.comments}
+              refetch={refetch}
+              isSecret={isSecret}
+            />
+          </Box>
+        )}
       </>
       {isDeleteModal && (
         <AlertModal
@@ -371,6 +391,18 @@ function SecretSquareDetailPage() {
       )}
     </>
   );
+}
+
+function DeleteIcon() {
+  return <svg
+    xmlns="http://www.w3.org/2000/svg"
+    height="16px"
+    viewBox="0 -960 960 960"
+    width="16px"
+    fill="var(--color-gray)"
+  >
+    <path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm80-160h80v-360h-80v360Zm160 0h80v-360h-80v360Z" />
+  </svg>
 }
 
 export default SecretSquareDetailPage;

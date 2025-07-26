@@ -1,5 +1,6 @@
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import WritingButton from "../../components/atoms/buttons/WritingButton";
 import Header from "../../components/layouts/Header";
@@ -9,6 +10,10 @@ import SquareInfoSection from "../../pageTemplates/community/SquareInfoSection";
 import SquareSecretSection from "../../pageTemplates/community/SquareSecretSection";
 
 function BoardPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const newSearchParams = new URLSearchParams(searchParams);
+  const typeParams = searchParams.get("type") as "info" | "anonymous";
   const { data: session } = useSession();
 
   const isGuest = session?.user.name === "guest";
@@ -16,24 +21,45 @@ function BoardPage() {
   const [tab, setTab] = useState<"정보 게시판" | "익명 게시판">("정보 게시판");
 
   // const [isRuleModal, setIsRuleModal] = useState(false);
+  console.log(typeParams);
+
+  useEffect(() => {
+    console.log(34, typeParams);
+    if (typeParams === "info") setTab("정보 게시판");
+    if (typeParams === "anonymous") setTab("익명 게시판");
+  }, [typeParams]);
 
   const tabOptions: ITabNavOptions[] = [
     {
       text: "정보 게시판",
-      func: () => setTab("정보 게시판"),
+      func: () => {
+        newSearchParams.set("type", "info");
+        router.replace(`/community?${newSearchParams.toString()}`);
+        setTab("정보 게시판");
+      },
     },
-    { text: "익명 게시판", func: () => setTab("익명 게시판") },
+    {
+      text: "익명 게시판",
+      func: () => {
+        newSearchParams.set("type", "anonymous");
+        router.replace(`/community?${newSearchParams.toString()}`);
+        setTab("익명 게시판");
+      },
+    },
   ];
 
   return (
     <>
       <Header title="커뮤니티" url="/home"></Header>
       <Slide isNoPadding>
-        <TabNav tabOptionsArr={tabOptions} isFullSize />
+        <TabNav tabOptionsArr={tabOptions} selected={tab} isFullSize />
         {tab === "정보 게시판" ? <SquareInfoSection /> : <SquareSecretSection />}
       </Slide>
-      {!isGuest && tab !== "정보 게시판" && (
-        <WritingButton isBottomNav={false} url="/community/writing" />
+      {!isGuest && (
+        <WritingButton
+          isBottomNav={false}
+          url={`/community/writing?type=${tab === "익명 게시판" ? "anonymous" : "info"}`}
+        />
       )}
       {/* {isRuleModal && <RuleModal content={SECRET_CONTENT} setIsModal={setIsRuleModal} />} */}
     </>

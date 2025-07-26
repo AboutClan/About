@@ -1,5 +1,6 @@
 import { UserCommentProps } from "../components/propTypes";
 import { TimeStampProps } from "../utils/timeAndDate";
+import { IUserSummary } from "./userTypes/userInfoTypes";
 
 export type SecretSquareCategory = "일상" | "질문" | "고민" | "기타";
 export type InfoSquareCategory = "정보" | "팀원 모집" | "홍보" | "기타";
@@ -14,7 +15,7 @@ interface BaseSecretSquareItem extends TimeStampProps {
   viewers: string[];
   like: string[];
   images: string[];
-  author: string;
+  author: string | IUserSummary;
   comments: UserCommentProps[];
 }
 
@@ -41,7 +42,7 @@ export type SecretSquareType = "general" | "poll";
 export type SecretSquareItem = GeneralSecretSquareItem | PollSecretSquareItem;
 
 export type SecretSquareFormData = {
-  category: SecretSquareCategory;
+  category: SecretSquareCategory|InfoSquareCategory;
   title: string;
   content: string;
   pollItems: { name: string }[];

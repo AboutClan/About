@@ -24,7 +24,7 @@ function WritingButton({ url, type, isBottomNav = true, onClick }: IWritingIcon)
           </Layout>
         </Link>
       ) : (
-        <Layout isBottomNav={isBottomNav}>
+        <Layout isBottomNav={isBottomNav} onClick={onClick}>
           {type === "thunder" ? (
             <i className="fa-light fa-bolt-lightning fa-lg" style={{ color: "white" }} />
           ) : (

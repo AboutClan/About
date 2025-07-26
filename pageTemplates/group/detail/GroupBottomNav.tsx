@@ -86,9 +86,6 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
   };
 
   const getButtonSettings = () => {
-    return {
-      text: "7/24(목) 임시 기능 점검 중",
-    };
     if (isPending) {
       if (data?.participants.length <= 1) {
         return {
@@ -144,7 +141,7 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
             fontSize="20px"
             textAlign="start"
           >
-            {data.questionText
+            {!data.isFree
               ? "모임장의 승인이 필요한 소모임이에요."
               : "즉시 가입이 가능한 소모임이에요."}
             <br /> {data.questionText ? "참여를 희망하시나요?" : "활동을 시작해볼까요?"}
@@ -165,9 +162,9 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
               w="full"
               size="lg"
               colorScheme="black"
-              onClick={() => (data.questionText ? onClick("participate") : onClick("register"))}
+              onClick={() => (!data.isFree ? onClick("participate") : onClick("register"))}
             >
-              {data.questionText ? "가입 신청하기" : "가입하기"}
+              {!data.isFree ? "가입 신청하기" : "가입하기"}
             </Button>
             <Button
               my={2}

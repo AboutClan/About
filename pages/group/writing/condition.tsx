@@ -51,11 +51,15 @@ function WritingCondition() {
 
   const [conditions, setConditions] = useState<WritingConditionProps>(defaultCondition);
   const [isQuestionModal, setIsQuestionModal] = useState(false);
-
+  console.log(23, conditions);
   useEffect(() => {
     if (conditions.isApprovalRequired) {
       if (isEdit) {
-        setConditions((old) => ({ ...old, questionText: groupWriting.questionText }));
+        console.log(1234, groupWriting.questionText);
+        setConditions((old) => ({
+          ...old,
+          questionText: groupWriting.questionText.length ? groupWriting.questionText : [""],
+        }));
       }
       setIsQuestionModal(true);
     } else {
@@ -72,34 +76,7 @@ function WritingCondition() {
     }
   }, [isQuestionModal]);
 
-  // const [condition, setCondition] = useState({
-  //   isAgree: groupWriting?.isFree !== undefined ? !groupWriting?.isFree : true,
-  //   location:
-  //     groupWriting?.location !== undefined ? groupWriting?.location === userInfo?.location : false,
-  //   challenge: groupWriting?.challenge ? true : false,
-  //   fee:
-  //     groupWriting?.fee !== undefined
-  //       ? groupWriting?.fee !== 200 && groupWriting?.fee !== 0
-  //       : false,
-
-  //   isSecret: groupWriting?.isSecret || false,
-  //   link: !!groupWriting?.link || false,
-  // });
-
-  // const [fee, setFee] = useState(groupWriting?.fee || "1000");
-  // const [feeText, setFeeText] = useState(groupWriting?.feeText || "기본 참여비");
-
-  // const [question, setQuestion] = useState(groupWriting?.questionText || "");
-  // const [location, setLocation] = useState<Location | LocationFilterType>(
-  //   groupWriting?.location || userInfo?.location,
-  // );
-  // const [link, setLink] = useState(groupWriting?.link || "");
   const [isConfirmModal, setIsConfirmModal] = useState(false);
-
-  // useEffect(() => {
-  //   if (condition.isAgree) setIsQuestionModal(true);
-  //   else setIsQuestionModal(false);
-  // }, [condition.isAgree]);
 
   const onClickNext = async () => {
     const groupData: IGroupWriting = {
@@ -138,106 +115,6 @@ function WritingCondition() {
           <span>조건을 선택해 주세요</span>
         </RegisterOverview>
         <WritingConditionLayout conditions={conditions} setConditions={setConditions} />
-        {/* <Container>
-          <Item>
-            <Name>
-              <div>
-                <i className="fa-solid fa-user-lock" />
-              </div>
-              <span>참여 가능 조건</span>
-            </Name>
-            <Box ml="auto" mr="20px" fontSize="12px" color="var(--color-mint)">
-              {getMemberConditionText() || "기본값"}
-            </Box>
-            <Button colorScheme="mint" size="sm" onClick={() => setIsMemberConditionModal(true)}>
-              설정
-            </Button>
-          </Item>
-          <Item>
-            <Name>
-              <i className="fa-regular fa-person-to-door" />
-              <span>승인제 사용</span>
-            </Name>
-            <Switch
-              mr="var(--gap-1)"
-              colorScheme="mint"
-              isChecked={condition.isAgree}
-              onChange={(e) => toggleSwitch(e, "isAgree")}
-            />
-          </Item>
-          <Item>
-            <Name>
-              <i className="fa-regular fa-dollar-sign" />
-              <span>보증금</span>
-            </Name>
-            <Switch
-              mr="var(--gap-1)"
-              colorScheme="mint"
-              isChecked={condition.fee}
-              onChange={(e) => toggleSwitch(e, "fee")}
-            />
-          </Item>
-          {condition.fee && (
-            <Fee>
-              <div>
-                <span>보증금: </span>
-                <input value={fee} onChange={(e) => setFee(e.target.value)} placeholder="2000" />
-              </div>
-
-              <div>
-                <span>사용처: </span>
-                <input
-                  value={feeText}
-                  onChange={(e) => setFeeText(e.target.value)}
-                  placeholder="출석에 대한 벌금"
-                />
-              </div>
-            </Fee>
-          )}
-          <Item>
-            <Name>
-              <div>
-                <i className="fa-regular fa-user-secret" />
-              </div>
-              <span>익명으로 진행</span>
-            </Name>
-            <Switch
-              mr="var(--gap-1)"
-              colorScheme="mint"
-              isChecked={condition.isSecret}
-              onChange={(e) => toggleSwitch(e, "isSecret")}
-            />
-          </Item>
-          <Item>
-            <Name>
-              <div>
-                <i className="fa-regular fa-comments" />
-              </div>
-              <span>오픈채팅방</span>
-            </Name>
-            <Switch
-              mr="var(--gap-1)"
-              colorScheme="mint"
-              isChecked={condition.link}
-              onChange={(e) => toggleSwitch(e, "link")}
-            />
-          </Item>{" "}
-          {condition.link && (
-            <Flex align="center" mr="4px">
-              <Box
-                fontSize="12px"
-                bgColor="var(--gray-500)"
-                color="white"
-                p="2px 6px"
-                borderRadius="4px"
-                mr="8px"
-              >
-                URL
-              </Box>
-              <Input isLine size="sm" value={link} onChange={(e) => setLink(e.target.value)} />
-            </Flex>
-          )}
-        </Container> */}
       </RegisterLayout>
       <BottomNav onClick={() => onClickNext()} text="완료" />
       {isQuestionModal && (

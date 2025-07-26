@@ -1,4 +1,5 @@
 import { Box, Button, Flex, IconButton, Spacer, useDisclosure, VStack } from "@chakra-ui/react";
+import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
@@ -29,9 +30,15 @@ const defaultFormData: SecretSquareFormData = {
 function SquareWritingPage() {
   const router = useRouter();
   const toast = useToast();
+  const searchParams = useSearchParams();
+  const typeParams = searchParams.get("type");
+  const isSecret = typeParams === "anonymous";
 
   const methods = useForm<SecretSquareFormData>({
-    defaultValues: defaultFormData,
+    defaultValues: {
+      ...defaultFormData,
+      category: isSecret ? "일상" : "정보",
+    },
   });
   const { register, handleSubmit, watch, getValues, resetField } = methods;
 
@@ -59,12 +66,12 @@ function SquareWritingPage() {
   };
 
   const onSubmit: SubmitHandler<SecretSquareFormData> = (data) => {
-    const type = isPollType ? "poll" : "general";
+    const type = isPollType ? "poll2" : "info";
     const { category, title, content, pollItems, canMultiple } = data;
 
     const formData = new FormData();
 
-    if (type === "poll") {
+    if (type === "poll2") {
       formData.append("pollItems", JSON.stringify(pollItems));
       formData.append("canMultiple", JSON.stringify(canMultiple));
     }
@@ -85,7 +92,7 @@ function SquareWritingPage() {
           setTimeout(() => {
             toast("success", "등록되었습니다.");
           }, 200);
-          router.replace(`/community/${squareId}`);
+          router.replace(`/community/${squareId}?type=${isSecret ? "anonymous" : "info"}`);
         },
       },
     );
@@ -116,7 +123,7 @@ function SquareWritingPage() {
         <VStack h="100%" px={5}>
           <FormProvider {...methods}>
             <Box as="form" w="100%" onSubmit={handleSubmit(onSubmit)} id="secret-square-form">
-              <SquareCategoryRadioGroup />
+              <SquareCategoryRadioGroup type={isSecret ? "secret" : "info"} />
               <Input
                 placeholder="제목을 입력해주세요"
                 {...register("title", {
