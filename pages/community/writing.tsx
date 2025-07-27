@@ -66,7 +66,14 @@ function SquareWritingPage() {
   };
 
   const onSubmit: SubmitHandler<SecretSquareFormData> = (data) => {
-    const type = isPollType ? "poll2" : "info";
+    let type = "general";
+    if (isSecret) {
+      if (isPollType) type = "poll";
+      else type = "general";
+    } else {
+      if (isPollType) type = "poll2";
+      else type = "info";
+    }
     const { category, title, content, pollItems, canMultiple } = data;
 
     const formData = new FormData();
