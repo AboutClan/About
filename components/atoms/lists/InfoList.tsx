@@ -26,7 +26,13 @@ function InfoList({ items, isLight, isSmall = false }: InfoListProps) {
       w={isSmall ? "full" : "inherit"}
     >
       {items.map((item, idx) => (
-        <ListItem key={idx} textAlign="start">
+        <ListItem
+          key={idx}
+          textAlign="start"
+          color={
+            item === "입금하지 않고 누르는 경우, 동아리에서 영구 제명됩니다." ? "red" : "inherit"
+          }
+        >
           {item}
         </ListItem>
       ))}

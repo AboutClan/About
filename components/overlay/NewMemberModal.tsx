@@ -11,8 +11,7 @@ interface NewMemberModalProps extends CloseProps {}
 
 function NewMemberModal({ onClose }: NewMemberModalProps) {
   const handleClick = () => {
-    const url = "https://invite.kakao.com/tc/HOmUdQMjSs";
-    navigateExternalLink(url);
+    navigateExternalLink("https://pf.kakao.com/_SaWXn/109551233");
     localStorage.setItem(NEW_MEMBER_MODAL_AT, dayjs().add(12, "day").format("YYYYMMDD"));
   };
 
@@ -21,12 +20,12 @@ function NewMemberModal({ onClose }: NewMemberModalProps) {
       title="신규 인원 가이드"
       footerOptions={{
         main: {
-          text: "팀 채팅방 입장",
+          text: "신규 인원 가이드",
           func: () => {
             handleClick();
           },
         },
-        sub: { text: "다음에" },
+        sub: { text: "닫기" },
       }}
       setIsModal={onClose}
     >
@@ -39,11 +38,9 @@ function NewMemberModal({ onClose }: NewMemberModalProps) {
         />
       </Flex>
       <p>
-        About 멤버가 되신 걸 환영합니다! 활동을 시작하시기 전에, <b>[자주 묻는 질문]</b>을 꼭 확인해
-        주세요!
-        <br />
-        <br /> 또한 <b>About 팀 채팅방</b>에서 여러 동아리 행사를 안내하고 있으니, 아래 링크로
-        입장해 주세요!
+        About 멤버가 되신 걸 환영합니다! <br />
+        활동을 시작하시기 전에,
+        <br /> <b>[신규 인원 가이드]</b>을 꼭 확인해 주세요!
       </p>
     </ModalLayout>
   );

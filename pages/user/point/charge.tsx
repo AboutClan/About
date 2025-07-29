@@ -20,7 +20,7 @@ import { useUserRequestMutation } from "../../../hooks/user/sub/request/mutation
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
-const ACCOUNT_TEXT = "우리은행 1002364221277 (어바웃)";
+export const ACCOUNT_TEXT = "우리은행 1002364221277 (어바웃)";
 
 function Charge() {
   const router = useRouter();

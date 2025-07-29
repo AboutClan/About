@@ -47,6 +47,7 @@ interface IModalLayout extends IModal {
   paddingOptions?: IPaddingOptions;
   isInputFocus?: boolean;
   isCloseButton?: boolean;
+  isDark?: boolean;
 }
 
 export interface IPaddingOptions {
@@ -68,8 +69,9 @@ export function ModalLayout({
   paddingOptions,
   isInputFocus,
   isCloseButton = true,
+  isDark,
 }: IModalLayout) {
-  const onClose = () => setIsModal(false);
+  const onClose = setIsModal ? () => setIsModal(false) : null;
 
   const { main, sub, isFull = true, colorType = "mint" } = footerOptions || {};
   const { text = "확 인", func = onClose } = main || {};
@@ -95,7 +97,7 @@ export function ModalLayout({
 
   return (
     <Modal isOpen={true} onClose={onClose} initialFocusRef={initialRef}>
-      <ModalOverlay />
+      <ModalOverlay bg={isDark ? "blackAlpha.700" : "blackAlpha.600"} />
       <ModalContent
         w="300px"
         top={modalTop}
