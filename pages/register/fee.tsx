@@ -120,7 +120,7 @@ function Fee() {
         text="가입 신청 완료"
         isActive={isChecked}
       />
-      {!isModal && (
+      {isModal && (
         <ModalLayout
           isDark
           title="가입 신청 완료"
