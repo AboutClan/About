@@ -53,7 +53,8 @@ export default function Select({
   const adjustWidth = () => {
     if (selectRef.current) {
       const textLength = selectRef.current.selectedOptions[0].text.length;
-      const addSize = size === "xs" ? 44 : size === "sm" ? 48 : size === "md" ? 60 : 0;
+      const addSize =
+        size === "xs" ? 44 : size === "sm" ? 48 : size === "md" ? 60 : size === "lg" ? 72 : 0;
       selectRef.current.style.width = `${textLength * 6.5 + addSize}px`;
     }
   };
@@ -66,11 +67,11 @@ export default function Select({
           pr={size === "lg" && 4}
           ml="auto"
           align="center"
-          fontSize={size === "sm" ? "11px" : "12px"}
+          fontSize={size === "lg" ? "15px" : size === "sm" ? "11px" : "12px"}
           pointerEvents="none"
         >
           <Box>
-            <ShortArrowIcon dir="bottom" size="sm" />
+            <ShortArrowIcon dir="bottom" size="md" color="black" />
           </Box>
         </Flex>
       }
@@ -95,7 +96,9 @@ export default function Select({
       borderColor="var(--gray-200)"
       bgColor="white"
       fontSize={
-        size === "sm"
+        size === "lg"
+          ? "14px"
+          : size === "sm"
           ? "11px"
           : size === "xs" && !isBorder
           ? "12px"
@@ -128,8 +131,8 @@ export default function Select({
           ? "12px"
           : size === "md"
           ? "16px"
-          : "20px", // padding-left
-        paddingInlineEnd: size === "sm" ? "4px" : !isEllipse ? "16px" : "20px", // padding-right (아이콘 오른쪽에 여유 공간)
+          : "20px",
+        paddingInlineEnd: size === "sm" ? "4px" : !isEllipse ? "16px" : "20px",
         paddingBottom: 0,
       }}
       _focus={{

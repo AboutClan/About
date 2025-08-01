@@ -24,6 +24,9 @@ function RankingOverview({ rank, value }: IRankingOverview) {
           <Box fontSize="14px" fontWeight="bold">
             {!value ? "순위권 외" : <RankingNumIcon num={rank} size="lg" />}
           </Box>
+          <Box fontSize="10px" mt={1} color="gray.600">
+            5위 상품까지 단 10점!
+          </Box>
         </Flex>
         <ProfileContainer isGuest={isGuest}>
           {userInfo ? (
@@ -40,9 +43,12 @@ function RankingOverview({ rank, value }: IRankingOverview) {
             </ProfileWrapper>
           ) : null}
         </ProfileContainer>{" "}
-        <Flex flex={1} h="40px" align="center" fontSize="18px" justify="center">
+        <Flex flex={1} h="40px" flexDir="column" align="center" fontSize="18px" justify="center">
           <Box fontWeight={800}>
-            <i className="fa-solid fa-medal fa-2x" style={{ color: "var(--color-gray)" }} />
+            <i className="fa-solid fa-medal fa-2x" style={{ color: "var(--color-yellow)" }} />
+          </Box>{" "}
+          <Box fontSize="10px" mt={1} color="gray.600">
+            지난 시즌 실버 3위
           </Box>
         </Flex>
       </Layout>

@@ -1,6 +1,6 @@
 import { Box, Button, Flex, ListItem, Text, UnorderedList } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 import AlertModal, { IAlertModalOptions } from "../../../components/AlertModal";
@@ -43,8 +43,8 @@ function GroupHeader({ group }: IGroupHeader) {
   const { data: userInfo } = useUserInfoQuery();
 
   const isAdmin =
-    session?.user.uid === "2259633694" ||
-    session?.user.uid === "3224546232" ||
+    // session?.user.uid === "2259633694" ||
+    // session?.user.uid === "3224546232" ||
     group?.organizer.uid === session?.user.uid;
   const isMember =
     session?.user.uid === "2259633694" ||

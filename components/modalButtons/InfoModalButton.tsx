@@ -5,7 +5,7 @@ import { ModalLayout } from "../../modals/Modals";
 import IconButton from "../atoms/buttons/IconButton";
 import InfoList from "../atoms/lists/InfoList";
 
-type InfoType = "study" | "gather" | "group" | "gatherRequest";
+type InfoType = "study" | "gather" | "group" | "gatherRequest" | "ranking";
 
 interface InfoModalButtonProps {
   type: InfoType;
@@ -79,6 +79,12 @@ function InfoModalSubTitle({ type }: { type: InfoType }) {
           <br />
           하나의 작은 동아리, <b>About 소모임</b>
         </>
+      ) : type === "ranking" ? (
+        <>
+          활동하면 할수록 점수가 쌓이고
+          <br />
+          랭킹에 오르면 <b>푸짐한 상품</b>이 기다려요!
+        </>
       ) : (
         <>
           “이런 번개 누가 좀 열어줬으면...”
@@ -91,6 +97,14 @@ function InfoModalSubTitle({ type }: { type: InfoType }) {
 }
 
 const INFO_MODAL_CONTENTS: Record<InfoType, { title: string; items: string[] }> = {
+  ranking: {
+    title: "랭킹 가이드",
+    items: [
+      "매달 활동 점수가 정산돼요.",
+      "점수에 따라 등급과 랭킹이 매겨져요.",
+      "랭킹권에 들면 다양한 보상을 드려요!",
+    ],
+  },
   study: {
     title: "스터디 가이드",
     items: [

@@ -36,7 +36,7 @@ export interface IUser extends Omit<IUserRegisterForm, "location">, IUserSummary
     cnt: number;
     sum?: number;
   };
-
+  rank: "gold" | "silver" | "bronze";
   kakao_account: KakaoProfile["kakao_account"];
 }
 

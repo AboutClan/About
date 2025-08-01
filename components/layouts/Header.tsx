@@ -21,7 +21,7 @@ export default function Header({
   isSlide = true,
   url,
   children,
-  isBorder = true,
+  isBorder = false,
   isTransparent,
   func,
   rightPadding,

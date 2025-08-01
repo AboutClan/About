@@ -18,7 +18,7 @@ function MonthlyScoreModal({ onClose }: CloseProps) {
 
   const { data } = usePointSystemLogQuery("score", "all");
   const [isPenaltyModal, setIsPenaltyModal] = useState(false);
-
+  console.log(24, data);
   const filteredData = data?.filter(
     (obj) =>
       dayjsToStr(dayjs(obj.timestamp).startOf("month")) === dayjsToStr(dayjs().startOf("month")),

@@ -6,8 +6,11 @@ import HomeHeader from "../../pageTemplates/home/homeHeader/HomeHeader";
 import HomeInitialSetting from "../../pageTemplates/home/HomeInitialSetting";
 import HomeNav from "../../pageTemplates/home/HomeNav";
 import HomeReviewSection from "../../pageTemplates/home/HomeReviewSection";
+import { decodeByAES256 } from "../../utils/convertUtils/convertDatas";
 
 function Home() {
+  const A = decodeByAES256("U2FsdGVkX1+Ap0MiERxdKvLQMWxpHUAoM7DO/s4MYdU=");
+  console.log(1234, A);
   return (
     <>
       <HomeInitialSetting />

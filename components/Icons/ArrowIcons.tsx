@@ -3,11 +3,18 @@ export function ShortArrowIcon({
   color = "mint",
   size = "sm",
 }: {
-  color?: "mint" | "white" | "gray" | "lightGray";
+  color?: "mint" | "white" | "gray" | "lightGray" | "black";
   dir: "right" | "bottom" | "top" | "left";
   size?: "sm" | "md" | "lg";
 }) {
-  const colorText = color === "mint" ? "#00C2B3" : color === "gray" ? "var(--gray-700)" : "white";
+  const colorText =
+    color === "mint"
+      ? "#00C2B3"
+      : color === "gray"
+      ? "var(--gray-700)"
+      : color === "black"
+      ? "var(--gray-800)"
+      : "white";
   const width = size == "sm" ? 12 : size === "md" ? 16 : 20;
   return dir === "right" ? (
     <svg

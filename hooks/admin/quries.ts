@@ -23,12 +23,13 @@ import { dayjsToStr } from "../../utils/dateTimeUtils";
 export interface UserStudyDataProps extends UserSimpleInfoProps {
   monthScore: number;
   studyRecord: UserStudyRecordProps;
+  rank: "bronze" | "silver" | "gold";
 }
 
 type AllUserDataParam<T> = T extends "study" ? UserStudyDataProps[] : IUser[];
 
 export const useAllUserDataQuery = <T extends "study" | "null">(
-  type: "study",
+  type: "study" | "temperature" | "monthScore",
   options?: QueryOptions<AllUserDataParam<T>>,
 ) =>
   useQuery<AllUserDataParam<T>, AxiosError, AllUserDataParam<T>>(

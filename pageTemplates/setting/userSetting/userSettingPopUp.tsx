@@ -10,7 +10,6 @@ import SelfIntroduceModal from "../../../components/overlay/SelfIntroduceModal";
 import StudyRecordDrawer from "../../../components/overlay/StudyRecordDrawer";
 import {
   FAQ_MODAL_AT,
-  MONTHLY_SCORE_MODAL_AT,
   NEW_MEMBER_MODAL_AT,
   SELF_INTRODUCE_AT,
 } from "../../../constants/keys/localStorage";
@@ -71,10 +70,10 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
     //   if (++popUpCnt < 2) return;
     // }
 
-    if (!checkAndSetLocalStorage(MONTHLY_SCORE_MODAL_AT, 10)) {
-      setPopUpType((old) => [...old, "monthlyScore"]);
-      return;
-    }
+    // if (!checkAndSetLocalStorage(MONTHLY_SCORE_MODAL_AT, 10)) {
+    //   setPopUpType((old) => [...old, "monthlyScore"]);
+    //   return;
+    // }
     if (!checkAndSetLocalStorage(FAQ_MODAL_AT, 20)) {
       setPopUpType((old) => [...old, "faq"]);
       return;
