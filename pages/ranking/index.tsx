@@ -55,23 +55,21 @@ function Ranking() {
   const { data: allUserData } = useAllUserDataQuery(fieldName, {
     enabled: !!session && !!fieldName,
   });
+  console.log(322, allUserData, sortedUsers);
 
   useEffect(() => {
-    if (!userInfo) return;
-    setMedal(userInfo?.rank === "gold" ? "골드" : userInfo?.rank === "silver" ? "실버" : "브론즈");
-  }, [userInfo]);
+    setSortedUsers(null);
 
-  useEffect(() => {
     setIsLoading(true);
     const timeout = setTimeout(() => {
       setIsLoading(false);
-    }, 1000);
+    }, 200);
     return () => clearTimeout(timeout);
   }, [tab]);
 
   useEffect(() => {
     if (!allUserData || !session || tab === "스터디 랭킹") return;
-
+    console.log(78, allUserData);
     const sortUserByTab = (users: UserStudyDataProps[], tab: RankingTab) => {
       const temp = [...users];
 
@@ -132,8 +130,7 @@ function Ranking() {
     if (tab === "월간 활동 랭킹") {
       temp = [...rankedUsers].filter((user) => RANK_MAP[user.user.rank] === medal);
     }
-    console.log(3, rankedUsers, temp, medal);
-    console.log(findMyInfo, 23);
+    console.log("WOW");
     setSortedUsers(temp);
     {
       tab === "월간 활동 랭킹" &&
@@ -144,24 +141,38 @@ function Ranking() {
   const tabOptionsArr: { text: RankingTab; func: () => void }[] = [
     {
       text: "월간 활동 랭킹",
-      func: () => setTab("월간 활동 랭킹"),
+      func: () => {
+        setTab("월간 활동 랭킹");
+        setSortedUsers(null);
+      },
     },
     {
       text: "인기 랭킹",
-      func: () => setTab("인기 랭킹"),
+      func: () => {
+        setTab("인기 랭킹");
+        setSortedUsers(null);
+      },
     },
     {
       text: "스터디 랭킹",
       func: () => {
         setTab("스터디 랭킹");
+        setSortedUsers(null);
         typeToast("not-yet");
       },
     },
   ];
-
+  console.log(477, myRanking);
   useEffect(() => {
-    if (tab !== "월간 활동 랭킹" || !myRanking || !sortedUsers?.length || myRanking?.rank === 1)
+    if (
+      tab !== "월간 활동 랭킹" ||
+      !myRanking?.rank ||
+      !sortedUsers?.length ||
+      myRanking?.rank === 1
+    ) {
       return;
+    }
+    console.log(5555, myRanking);
     const getCommentText = (
       myRanking: RankingProps,
       users: UserRankingProps[],
@@ -184,7 +195,7 @@ function Ranking() {
     };
     setCommentText(getCommentText(myRanking, sortedUsers));
   }, [myRanking, sortedUsers, tab]);
-
+  console.log(777, userInfo);
   return (
     <>
       <Header title="랭킹">
@@ -222,13 +233,19 @@ function Ranking() {
                 내 랭킹
               </Box>
               <Flex align="center">
-                {myRanking && (
+                {myRanking?.rank ? (
                   <>
                     <Box fontSize="16px" lineHeight="24px" mr={1} fontWeight="bold">
                       {RANK_MAP[userInfo?.rank]} {myRanking.rank}위
                     </Box>
                     <Box color="mint" fontSize="13px" mt="1px" lineHeight="18px" fontWeight="bold">
                       {myRanking.value}점
+                    </Box>
+                  </>
+                ) : (
+                  <>
+                    <Box fontSize="16px" fontWeight="bold">
+                      --
                     </Box>
                   </>
                 )}
@@ -250,7 +267,7 @@ function Ranking() {
                 지난 시즌
               </Box>
               <Box fontSize="16px" fontWeight="bold">
-                브론즈 10위
+                {userInfo?.score <= 10 ? "순위권 외" : "브론즈 10위"}
               </Box>
             </Flex>
             <Box>
