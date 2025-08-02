@@ -210,7 +210,7 @@ function Ranking() {
           </Box>
           <Box fontSize="12px" color="gray.600" mt={1}>
             {!myRanking?.rank ? (
-              "순위권 미 진입"
+              "첫 활동으로 랭킹에 도전해보세요!"
             ) : myRanking?.rank === 1 ? (
               "랭킹 1위 달성을 축하합니다."
             ) : (
