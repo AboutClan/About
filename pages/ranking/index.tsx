@@ -55,7 +55,6 @@ function Ranking() {
   const { data: allUserData } = useAllUserDataQuery(fieldName, {
     enabled: !!session && !!fieldName,
   });
-  console.log(322, allUserData, sortedUsers);
 
   useEffect(() => {
     setSortedUsers(null);
@@ -69,7 +68,7 @@ function Ranking() {
 
   useEffect(() => {
     if (!allUserData || !session || tab === "스터디 랭킹") return;
-    console.log(78, allUserData);
+
     const sortUserByTab = (users: UserStudyDataProps[], tab: RankingTab) => {
       const temp = [...users];
 
@@ -130,7 +129,7 @@ function Ranking() {
     if (tab === "월간 활동 랭킹") {
       temp = [...rankedUsers].filter((user) => RANK_MAP[user.user.rank] === medal);
     }
-    console.log("WOW");
+
     setSortedUsers(temp);
     {
       tab === "월간 활동 랭킹" &&
@@ -162,7 +161,7 @@ function Ranking() {
       },
     },
   ];
-  console.log(477, myRanking);
+
   useEffect(() => {
     if (
       tab !== "월간 활동 랭킹" ||
@@ -172,7 +171,7 @@ function Ranking() {
     ) {
       return;
     }
-    console.log(5555, myRanking);
+
     const getCommentText = (
       myRanking: RankingProps,
       users: UserRankingProps[],
@@ -195,7 +194,7 @@ function Ranking() {
     };
     setCommentText(getCommentText(myRanking, sortedUsers));
   }, [myRanking, sortedUsers, tab]);
-  console.log(777, userInfo);
+
   return (
     <>
       <Header title="랭킹">
@@ -333,7 +332,7 @@ function Ranking() {
           </Flex>
         ) : tab === "인기 랭킹" ? (
           <Flex h="52px" align="center" mx={5} color="gray.500" fontSize="12px">
-            ※ 인기 랭킹은 상위 50명까지만 보여집니다.
+            ※ 인기 랭킹은 상위 100명까지만 보여집니다.
           </Flex>
         ) : (
           <Flex h="52px" align="center" mx={5} color="gray.500" fontSize="12px">
