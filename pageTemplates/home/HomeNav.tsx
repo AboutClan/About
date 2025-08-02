@@ -36,7 +36,7 @@ function HomeNav() {
                 priority
                 style={{ width: "36px", height: "36px", objectFit: "contain" }}
               />
-              {item.title === "게시판" && (
+              {item.title === "랭킹" && (
                 <Box pos="absolute" bottom="-1px" right="-1px">
                   <NewAlertIcon size="md" />
                 </Box>

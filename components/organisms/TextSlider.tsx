@@ -2,35 +2,27 @@ import "swiper/css/autoplay";
 import "swiper/css/pagination";
 
 import { Box, Flex } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import styled from "styled-components";
 import SwiperCore from "swiper";
 import { Autoplay, Pagination, Scrollbar } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+
 import { ShortArrowIcon } from "../Icons/ArrowIcons";
 
 SwiperCore.use([Autoplay, Scrollbar]);
 
-export interface textProps {
+export interface TextProps {
   name: string;
   gift: string;
 }
 
 interface IImageSliderEventBanner {
-  textArr: textProps[];
-  isLightBanner?: boolean;
+  textArr: TextProps[];
 }
 
-function TextSlider({ textArr, isLightBanner }: IImageSliderEventBanner) {
-  const router = useRouter();
+function TextSlider({ textArr }: IImageSliderEventBanner) {
   const [currentSlide, setCurrentSlide] = useState(0);
-
-  const onClick = (url: string) => {
-    if (url) {
-      router.push(url);
-    }
-  };
 
   return (
     <StyledSwiper
@@ -47,10 +39,10 @@ function TextSlider({ textArr, isLightBanner }: IImageSliderEventBanner) {
       }}
       slidesPerView={1}
       onSlideChange={(swiper) => setCurrentSlide(swiper.activeIndex)}
-      // autoplay={{
-      //   delay: 3000,
-      //   disableOnInteraction: true,
-      // }}
+      autoplay={{
+        delay: 3000,
+        disableOnInteraction: true,
+      }}
     >
       {textArr.map((item, index) => (
         <SwiperSlide key={index}>

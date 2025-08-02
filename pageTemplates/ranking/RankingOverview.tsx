@@ -22,7 +22,7 @@ function RankingOverview({ rank, value }: IRankingOverview) {
       <Layout>
         <Flex flex={1} flexDir="column" justify="center" align="center">
           <Box fontSize="14px" fontWeight="bold">
-            {!value ? "순위권 외" : <RankingNumIcon num={rank} size="lg" />}
+            {!value ? "순위권 외" : <RankingNumIcon num={rank} />}
           </Box>
           <Box fontSize="10px" mt={1} color="gray.600">
             5위 상품까지 단 10점!

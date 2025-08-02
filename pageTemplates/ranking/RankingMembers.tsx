@@ -1,10 +1,10 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
-import styled from "styled-components";
 
 import Avatar from "../../components/atoms/Avatar";
 import { RankingNumIcon } from "../../components/Icons/RankingIcons";
+import SocialingScoreBadge from "../../components/molecules/SocialingScoreBadge";
 import { RANKING_ANONYMOUS_USERS } from "../../constants/storage/anonymous";
 import { ModalLayout } from "../../modals/Modals";
 import { RANK_MAP, UserRankingProps } from "../../pages/ranking";
@@ -25,6 +25,13 @@ const GIFT_MAP = {
   ],
   silver: ["+ 5,000 Point", "+ 3,000 Point", "+ 2,000 Point", "+ 1,000 Point", "+ 1,000 Point"],
   bronze: ["+ 3,000 Point", "+ 2,000 Point", "+ 1,000 Point", "+ 1,000 Point", "+ 1,000 Point"],
+  temperature: [
+    "올리브영 10,000원권",
+    "스타벅스 기프티콘",
+    "스타벅스 기프티콘",
+    "베스킨라빈스 기프티콘",
+    "베스킨라빈스 기프티콘",
+  ],
 };
 
 function RankingMembers({ users, fieldName }: IRankingMembers) {
@@ -34,7 +41,7 @@ function RankingMembers({ users, fieldName }: IRankingMembers) {
 
   const onClickGift = (type: "gold" | "silver" | "bronze" | "temperature", idx: number) => {
     setGiftContent({
-      title: `${RANK_MAP[type]} 랭킹 ${idx + 1}위 상품`,
+      title: `${type === "temperature" ? "인기" : RANK_MAP[type]} 랭킹 ${idx + 1}위 상품`,
       text: `${GIFT_MAP[type][idx]}`,
     });
   };
@@ -47,6 +54,8 @@ function RankingMembers({ users, fieldName }: IRankingMembers) {
         const value =
           fieldName === "study"
             ? `${formatMinutesToTime(who[fieldName].monthMinutes)}(${who[fieldName].monthCnt}회)`
+            : fieldName === "temperature"
+            ? who.temperature.temperature
             : who[fieldName];
         return (
           <Flex px={3} py={1} pr={5} align="center" key={idx} id={`ranking${who._id}`}>
@@ -70,11 +79,22 @@ function RankingMembers({ users, fieldName }: IRankingMembers) {
               </Box>
             </Flex>
             <Flex align="center">
-              <Box fontSize="14px" mt="2px" lineHeight="20px" mr={2} fontWeight="bold">
-                {value}
-                {fieldName !== "study" && "점"}
-              </Box>
-              <Button onClick={() => onClickGift(user.user.rank, idx)} variant="unstyled">
+              {fieldName === "monthScore" ? (
+                <Box fontSize="14px" mt="2px" lineHeight="20px" mr={2} fontWeight="bold">
+                  {value}
+                  {fieldName === "monthScore" ? "점" : "°C"}
+                </Box>
+              ) : (
+                <Box mt="2px" mr={2}>
+                  <SocialingScoreBadge user={who} size="sm" />
+                </Box>
+              )}
+              <Button
+                onClick={() =>
+                  onClickGift(fieldName === "monthScore" ? user.user.rank : "temperature", idx)
+                }
+                variant="unstyled"
+              >
                 {idx < 5 && <GiftIcon />}
               </Button>
             </Flex>
@@ -94,8 +114,8 @@ function RankingMembers({ users, fieldName }: IRankingMembers) {
   );
 }
 
-const GiftIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="19" viewBox="0 0 18 19" fill="none">
+function GiftIcon() {
+  return <svg xmlns="http://www.w3.org/2000/svg" width="18" height="19" viewBox="0 0 18 19" fill="none">
     <g clip-path="url(#clip0_4007_11)">
       <path
         d="M3.94995 5.27854C5.26723 5.27493 6.59147 5.26808 7.90618 5.29442L7.93547 5.33771L7.9406 18.9525C5.92441 18.9522 3.87527 19.0297 1.84699 18.9865C1.57277 18.9518 1.05765 18.5669 1.05765 18.2851V9.42764C0.549851 9.49403 0.134677 9.31075 0.0420506 8.78688C0.0991644 7.90222 -0.0670514 6.8469 0.0325316 5.98209C0.075367 5.61047 0.370089 5.32076 0.746454 5.27854C1.6665 5.17572 2.98305 5.28107 3.94995 5.27854Z"
@@ -124,12 +144,6 @@ const GiftIcon = () => (
       </clipPath>
     </defs>
   </svg>
-);
-
-const Rank = styled.div`
-  text-align: start;
-  flex: 0.2;
-  font-weight: 600;
-`;
+}
 
 export default RankingMembers;
