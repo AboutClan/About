@@ -209,7 +209,9 @@ function Ranking() {
             {userInfo?.name}
           </Box>
           <Box fontSize="12px" color="gray.600" mt={1}>
-            {myRanking?.rank === 1 ? (
+            {!myRanking?.rank ? (
+              "순위권 미 진입"
+            ) : myRanking?.rank === 1 ? (
               "랭킹 1위 달성을 축하합니다."
             ) : (
               <>
