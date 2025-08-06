@@ -141,7 +141,11 @@ function GatherReview() {
           </Flex>
           <Box mb={10} mx={5}>
             {[gather.user, ...gather.participants.map((par) => par.user)]
-              .filter((who) => (who as UserSimpleInfoProps)._id !== userInfo?._id)
+              .filter(
+                (who) =>
+                  (who as UserSimpleInfoProps)._id !== userInfo?._id &&
+                  (who as UserSimpleInfoProps).uid !== "3224546232",
+              )
               .map((member, idx) => {
                 const user = member as UserSimpleInfoProps;
                 const findMyInfo = userReviewArr.find((props) => props.toUid === user.uid);
