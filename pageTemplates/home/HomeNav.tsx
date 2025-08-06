@@ -37,8 +37,8 @@ function HomeNav() {
                 style={{ width: "36px", height: "36px", objectFit: "contain" }}
               />
               {item.title === "랭킹" && (
-                <Box pos="absolute" bottom="-1px" right="-1px">
-                  <NewAlertIcon size="md" />
+                <Box pos="absolute" bottom="0px" right="0px">
+                  <NewAlertIcon />
                 </Box>
               )}
             </Flex>

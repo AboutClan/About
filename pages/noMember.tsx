@@ -1,16 +1,11 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
 
-import { XAlertIcon } from "../components/Icons/AlertIcon";
-
 function NoMember() {
   const router = useRouter();
 
   return (
     <Layout>
-      <Icon>
-        <XAlertIcon />
-      </Icon>
       <Content>
         <span>접근 권한이 없어요!</span>
         <span style={{ textAlign: "center" }}>
@@ -33,14 +28,6 @@ const Layout = styled.div`
   z-index: 2000;
   position: fixed;
   background-color: white;
-`;
-
-const Icon = styled.div`
-  position: absolute;
-  top: 25%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: var(--color-mint);
 `;
 
 const Content = styled.div`

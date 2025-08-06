@@ -41,6 +41,7 @@ function Ranking() {
   const [myRanking, setMyRanking] = useState<RankingProps>();
   const [sortedUsers, setSortedUsers] = useState<UserRankingProps[]>();
   const [commentText, setCommentText] = useState<{ first: string; value: number }>();
+  const [users2, setUsers2] = useState<UserRankingProps[]>();
 
   const [tab, setTab] = useState<RankingTab>("월간 활동 랭킹");
   const [medal, setMedal] = useState<MedalType>("골드");
@@ -53,7 +54,7 @@ function Ranking() {
     tab === "스터디 랭킹" ? "study" : tab === "월간 활동 랭킹" ? "monthScore" : "temperature";
 
   const { data: allUserData } = useAllUserDataQuery(fieldName, {
-    enabled: !!session && !!fieldName,
+    enabled: !!fieldName,
   });
 
   useEffect(() => {
@@ -112,7 +113,7 @@ function Ranking() {
             : fieldName === "temperature"
             ? data.temperature.temperature
             : data.studyRecord.monthMinutes;
-        console.log(13, value, fieldName);
+
         if (!valueToRank.has(value)) {
           valueToRank.set(value, currentRank);
         }
@@ -125,9 +126,9 @@ function Ranking() {
         };
       });
     const findMyInfo = rankedUsers.find((who) => who.user._id === session?.user.id);
-    let temp = [...rankedUsers];
+    const temp = [...rankedUsers];
     if (tab === "월간 활동 랭킹") {
-      temp = [...rankedUsers].filter((user) => RANK_MAP[user.user.rank] === medal);
+      setUsers2([...rankedUsers].filter((user) => RANK_MAP[user.user.rank] === medal));
     }
 
     setSortedUsers(temp);
@@ -177,7 +178,7 @@ function Ranking() {
       users: UserRankingProps[],
     ): { first: string; value: number } => {
       const myRankNum = myRanking.rank;
-
+      console.log(54, myRankNum, users, users?.[myRankNum - 2]);
       const diffValue = users[myRankNum - 2].value - myRanking.value;
 
       if (myRankNum <= 5) {
@@ -193,7 +194,7 @@ function Ranking() {
       }
     };
     setCommentText(getCommentText(myRanking, sortedUsers));
-  }, [myRanking, sortedUsers, tab]);
+  }, [myRanking, allUserData, tab]);
 
   return (
     <>
@@ -203,20 +204,24 @@ function Ranking() {
       </Header>
       <Slide isNoPadding>
         <Flex flexDir="column" align="center" mx="auto" mt={2} mb={6}>
-          <Avatar user={userInfo} size="xl2" />
-          <Box mt={2} fontSize="15px" fontWeight="bold">
+          <Box h="80px">{userInfo && <Avatar user={userInfo} size="xl2" />}</Box>
+          <Box mt={2} fontSize="15px" fontWeight="bold" h="22.5px">
             {userInfo?.name}
           </Box>
-          <Box fontSize="12px" color="gray.600" mt={1}>
-            {!myRanking?.rank ? (
-              "첫 활동으로 랭킹에 도전해보세요!"
-            ) : myRanking?.rank === 1 ? (
-              "랭킹 1위 달성을 축하합니다."
-            ) : (
-              <>
-                {commentText?.first} <b>{commentText?.value}점</b> 남았어요
-              </>
-            )}
+          <Box h="18px">
+            {myRanking ? (
+              <Box fontSize="12px" color="gray.600" mt={1}>
+                {!myRanking?.rank ? (
+                  "첫 활동으로 랭킹에 도전해보세요!"
+                ) : myRanking?.rank === 1 ? (
+                  "랭킹 1위 달성을 축하합니다."
+                ) : (
+                  <>
+                    {commentText?.first} <b>{commentText?.value}점</b> 남았어요
+                  </>
+                )}
+              </Box>
+            ) : null}
           </Box>
         </Flex>
         <Flex mx={5} mb={2}>
@@ -231,7 +236,7 @@ function Ranking() {
           >
             <Flex flexDir="column" align="flex-start">
               <Box color="gray.600" fontSize="12px">
-                내 랭킹
+                현재 랭킹
               </Box>
               <Flex align="center">
                 {myRanking?.rank ? (
@@ -239,9 +244,9 @@ function Ranking() {
                     <Box fontSize="16px" lineHeight="24px" mr={1} fontWeight="bold">
                       {RANK_MAP[userInfo?.rank]} {myRanking.rank}위
                     </Box>
-                    <Box color="mint" fontSize="13px" mt="1px" lineHeight="18px" fontWeight="bold">
+                    {/* <Box color="mint" fontSize="13px" mt="1px" lineHeight="18px" fontWeight="bold">
                       {myRanking.value}점
-                    </Box>
+                    </Box> */}
                   </>
                 ) : (
                   <>
@@ -344,8 +349,11 @@ function Ranking() {
         ) : (
           <Box>
             <>
-              {sortedUsers && !isLoading ? (
-                <RankingMembers users={sortedUsers} fieldName={fieldName} />
+              {tab !== "월간 활동 랭킹" || (sortedUsers && !isLoading) ? (
+                <RankingMembers
+                  users={tab === "월간 활동 랭킹" ? users2 : sortedUsers}
+                  fieldName={fieldName}
+                />
               ) : (
                 <Box pos="relative" mt="80px">
                   <MainLoadingAbsolute size="sm" />
