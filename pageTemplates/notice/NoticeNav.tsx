@@ -51,7 +51,7 @@ function NoticeNav({ noticeType, setNoticeType, activeAlertCnt, recentChat }: IN
         활동 알림
         {isActiveAlert && (
           <IconWrapper>
-            <NewAlertIcon size="sm" />
+            <NewAlertIcon />
           </IconWrapper>
         )}
       </Button>
@@ -59,7 +59,7 @@ function NoticeNav({ noticeType, setNoticeType, activeAlertCnt, recentChat }: IN
         쪽지 알림
         {isChatAlert && (
           <IconWrapper>
-            <NewAlertIcon size="sm" />
+            <NewAlertIcon />
           </IconWrapper>
         )}
       </Button>
