@@ -18,7 +18,7 @@ interface IGatherParticipation {
 function GatherParticipation({ data }: IGatherParticipation) {
   const status = data.status;
   const participantsCnt = data.participants.length;
- 
+
   const organizerCard = {
     user: data?.user as IUser,
     memo: (data?.user as IUser).comment,
@@ -35,7 +35,7 @@ function GatherParticipation({ data }: IGatherParticipation) {
   );
 
   const isAdminOpen = (data?.user as IUser)?._id === "65df1ddcd73ecfd250b42c89";
-
+  
   return (
     <>
       <Flex flexDir="column" px={5}>

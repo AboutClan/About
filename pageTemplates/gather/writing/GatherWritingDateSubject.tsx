@@ -26,7 +26,7 @@ function GatherWritingDateSubject({
   date,
 }: IGatherWritingDateSubject) {
   const [firstGather, setFirstGather] = useState<IGatherSubject>({
-    text: gatherWriting?.gatherList?.[0]?.text || "",
+    text: gatherWriting?.gatherList?.[0]?.text || "정시 참여",
     time: { hours: 14, minutes: 0 },
   });
   const [secondGather, setSecondGather] = useState<IGatherSubject>({

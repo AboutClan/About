@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import styled from "styled-components";
 
 import { CopyBtn } from "../../../components/Icons/CopyIcon";
@@ -29,8 +29,16 @@ function GatherDetailInfo({
         {gatherType !== "event" && (
           <FirstItem isOpen={isSubLocation} onClick={() => setIsSubLocation(true)}>
             <ItemText>장소</ItemText>
-            <span>{location.main}</span>
-            <i className="fa-solid fa-chevron-down fa-2xs" />
+            <>
+              {location.main ? (
+                <Fragment>
+                  <span>{location.main}</span>
+                  <i className="fa-solid fa-chevron-down fa-2xs" />
+                </Fragment>
+              ) : (
+                "온라인 진행"
+              )}
+            </>
           </FirstItem>
         )}
         {isSubLocation && <LocationSub>{location.sub}</LocationSub>}

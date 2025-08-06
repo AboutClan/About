@@ -118,11 +118,7 @@ export function StudyThumbnailCard({
                   /
                 </Box>
                 <Box as="span" color="var(--gray-500)" fontWeight={500}>
-                  {status === "solo" || status === "recruiting" ? (
-                    <i className="fa-regular fa-infinity" />
-                  ) : (
-                    STUDY_MAX_CNT
-                  )}
+                  {status === "solo" || status === "recruiting" ? <InfinityIcon /> : STUDY_MAX_CNT}
                 </Box>
               </Flex>
             </Flex>
@@ -131,6 +127,18 @@ export function StudyThumbnailCard({
       </>
     </CardLink>
   );
+}
+
+export function InfinityIcon() {
+  return <svg
+    xmlns="http://www.w3.org/2000/svg"
+    height="12px"
+    viewBox="0 -960 960 960"
+    width="12px"
+    fill="var(--gray-500)"
+  >
+    <path d="M220-260q-92 0-156-64T0-480q0-92 64-156t156-64q37 0 71 13t61 37l68 62-60 54-62-56q-16-14-36-22t-42-8q-58 0-99 41t-41 99q0 58 41 99t99 41q22 0 42-8t36-22l310-280q27-24 61-37t71-13q92 0 156 64t64 156q0 92-64 156t-156 64q-37 0-71-13t-61-37l-68-62 60-54 62 56q16 14 36 22t42 8q58 0 99-41t41-99q0-58-41-99t-99-41q-22 0-42 8t-36 22L352-310q-27 24-61 37t-71 13Z" />
+  </svg>
 }
 
 const CardLink = styled(Link)<{ isbordermain: "true" | "false" }>`

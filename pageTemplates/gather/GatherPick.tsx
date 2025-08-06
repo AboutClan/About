@@ -92,7 +92,7 @@ function GatherPick() {
                     <Box>
                       <MoneyBagIcon />
                     </Box>
-                    <Box as="b" ml={1} mt={0.5}>
+                    <Box as="b" ml={1} mt={0.5} color="gray.800">
                       {(5000 + item.like.length * 50).toLocaleString()}원
                     </Box>
                   </Flex>
@@ -101,10 +101,9 @@ function GatherPick() {
                   <Button
                     flex={1}
                     border="var(--border)"
-                    // colorScheme="mint"
-                    color="mint"
+                    color="var(--gray-800)"
                     bg="white"
-                    borderColor="mint"
+                    borderColor="var(--gray-800)"
                     borderRadius="12px"
                     onClick={() => handleLikeButton(item._id)}
                   >
@@ -114,13 +113,15 @@ function GatherPick() {
                   <Button
                     w="42px"
                     h="42px"
-                    colorScheme="mint"
+                    bgColor="var(--gray-800)"
                     ml={2}
                     borderRadius="full"
                     border="var(--border-main)"
                     onClick={() => router.push("/gather/writing/category")}
                   >
-                    <i className="fa-light fa-bolt-lightning fa-lg" style={{ color: "white" }} />
+                    <Box>
+                      <ThunderIcon />
+                    </Box>
                   </Button>
                 </Flex>
               </Flex>
@@ -134,6 +135,18 @@ function GatherPick() {
       </ModalLayout> */}
     </Box>
   );
+}
+
+function ThunderIcon() {
+  return <svg
+    xmlns="http://www.w3.org/2000/svg"
+    height="16px"
+    viewBox="0 -960 960 960"
+    width="16px"
+    fill="white"
+  >
+    <path d="m440-380-237-30q-25-3-32.5-27t10.5-41l409-392q5-5 12-7.5t19-2.5q20 0 30.5 17t.5 35L520-580l237 30q25 3 32.5 27T779-482L370-90q-5 5-12 7.5T339-80q-20 0-30.5-17t-.5-35l132-248Z" />
+  </svg>
 }
 
 function ClockIcon() {
@@ -157,7 +170,7 @@ function Heart2Icon() {
       height="16px"
       viewBox="0 -960 960 960"
       width="16px"
-      fill="var(--color-mint)"
+      fill="var(--gray-800)"
     >
       <path d="M480-147q-14 0-28.5-5T426-168l-69-63q-106-97-191.5-192.5T80-634q0-94 63-157t157-63q53 0 100 22.5t80 61.5q33-39 80-61.5T660-854q94 0 157 63t63 157q0 115-85 211T602-230l-68 62q-11 11-25.5 16t-28.5 5Z" />
     </svg>
@@ -171,7 +184,7 @@ function HeartIcon() {
       height="16px"
       viewBox="0 -960 960 960"
       width="16px"
-      fill="var(--color-mint)"
+      fill="var(--gray-800)"
     >
       <path d="M480-147q-14 0-28.5-5T426-168l-69-63q-106-97-191.5-192.5T80-634q0-94 63-157t157-63q53 0 100 22.5t80 61.5q33-39 80-61.5T660-854q94 0 157 63t63 157q0 115-85 211T602-230l-68 62q-11 11-25.5 16t-28.5 5Zm-38-543q-29-41-62-62.5T300-774q-60 0-100 40t-40 100q0 52 37 110.5T285.5-410q51.5 55 106 103t88.5 79q34-31 88.5-79t106-103Q726-465 763-523.5T800-634q0-60-40-100t-100-40q-47 0-80 21.5T518-690q-7 10-17 15t-21 5q-11 0-21-5t-17-15Zm38 189Z" />
     </svg>
@@ -185,7 +198,7 @@ function MoneyBagIcon() {
       height="16px"
       viewBox="0 -960 960 960"
       width="16px"
-      fill="var(--color-mint)"
+      fill="var(--gray-800)"
     >
       <path d="M480-320q-33 0-56.5-23.5T400-400q0-33 23.5-56.5T480-480q33 0 56.5 23.5T560-400q0 33-23.5 56.5T480-320ZM295-680h370l51-102q10-20-1.5-39T680-840H280q-23 0-34.5 19t-1.5 39l51 102Zm41 560h288q90 0 153-62.5T840-336q0-38-13-74t-37-65L686-600H274L170-475q-24 29-37 65t-13 74q0 91 62.5 153.5T336-120Z" />
     </svg>

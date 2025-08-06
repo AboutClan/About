@@ -2,7 +2,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-import WritingButton from "../../components/atoms/buttons/WritingButton";
+import ControlButton from "../../components/ControlButton";
+import { Writing2Icon } from "../../components/Icons/ControlButtonIcon";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
@@ -56,10 +57,14 @@ function BoardPage() {
         {tab === "정보 게시판" ? <SquareInfoSection /> : <SquareSecretSection />}
       </Slide>
       {!isGuest && (
-        <WritingButton
-          isBottomNav={false}
-          url={`/community/writing?type=${tab === "익명 게시판" ? "anonymous" : "info"}`}
+        <ControlButton
+          text="글쓰기"
+          rightIcon={<Writing2Icon />}
+          handleClick={() => {
+            router.push(`/community/writing?type=${tab === "익명 게시판" ? "anonymous" : "info"}`);
+          }}
         />
+     
       )}
       {/* {isRuleModal && <RuleModal content={SECRET_CONTENT} setIsModal={setIsRuleModal} />} */}
     </>

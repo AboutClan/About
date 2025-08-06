@@ -25,7 +25,7 @@ function IconRowBlock({ leftIcon, func, mainText, subText }: IconRowBlockProps) 
         {leftIcon}
       </Flex>
       <Box>
-        <Box mb={1} fontWeight="bold" color="gray.700" fontSize="13px" lineHeight="20px">
+        <Box mb={1} fontWeight="bold" color="gray.800" fontSize="13px" lineHeight="20px">
           {mainText}
         </Box>
         <Box color="gray.600" fontSize="11px" lineHeight="12px" fontWeight="medium">

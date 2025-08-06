@@ -8,7 +8,7 @@ import {
   StudyCheckIcon,
   StudySelectIcon,
   StudyUserCheckIcon,
-} from "../../../components/Icons/StudyIcons";
+} from "../../../components/Icons/ControlButtonIcon";
 import BottomFlexDrawer, {
   BottomFlexDrawerOptions,
 } from "../../../components/organisms/drawer/BottomFlexDrawer";

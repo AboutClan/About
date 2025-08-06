@@ -12,6 +12,7 @@ import {
 } from "../../../types/models/gatherTypes/gatherTypes";
 import { UserIcon } from "../../Icons/UserIcons";
 import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
+import { InfinityIcon } from "./StudyThumbnailCard";
 
 const VOTER_SHOW_MAX = 4;
 export interface GatherThumbnailCardProps {
@@ -134,7 +135,7 @@ export function GatherThumbnailCard({
                 /
               </Box>
               <Box as="span" color="var(--gray-500)" fontWeight={500}>
-                {maxCnt === 0 ? <i className="fa-regular fa-infinity" /> : maxCnt}
+                {maxCnt === 0 ? <InfinityIcon /> : maxCnt}
               </Box>
             </Flex>
           </Flex>

@@ -86,7 +86,7 @@ export default function PollCreatorDrawer({ isOpen, onClose }: PollCreatorDrawer
           alignItems="center"
         >
           <Box>투표 만들기</Box>
-          <Button variant="nostyle" px={2}>
+          <Button variant="nostyle" px={2} onClick={handleClose}>
             <XIcon />
           </Button>
         </DrawerHeader>

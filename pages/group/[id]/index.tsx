@@ -7,8 +7,8 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
-import WritingButton from "../../../components/atoms/buttons/WritingButton";
 import { MainLoading, MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
+import ControlButton from "../../../components/ControlButton";
 import Slide from "../../../components/layouts/PageSlide";
 import BlurredLink from "../../../components/molecules/BlurredLink";
 import { GatherThumbnailCard } from "../../../components/molecules/cards/GatherThumbnailCard";
@@ -24,8 +24,10 @@ import GroupCover from "../../../pageTemplates/group/detail/GroupCover";
 import GroupHeader from "../../../pageTemplates/group/detail/GroupHeader";
 import GroupParticipation from "../../../pageTemplates/group/detail/GroupParticipation";
 import { setGatherDataToCardCol } from "../../../pageTemplates/home/HomeGatherCol";
+import { backUrlState } from "../../../recoils/navigationRecoils";
 import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
+import { ThunderIcon } from "../../gather";
 
 export type GroupSectionCategory = "정 보" | "피 드";
 
@@ -33,6 +35,7 @@ function GroupDetail() {
   const { data: session } = useSession();
   const router = useRouter();
   const toast = useToast();
+  const setBackUrl = useSetRecoilState(backUrlState);
   const isGuest = session?.user.name === "guest";
   const { id } = useParams<{ id: string }>() || {};
 
@@ -70,9 +73,14 @@ function GroupDetail() {
       image: `${group.squareImage}`,
       coverImage: `${group.image}`,
     });
+    router.push(`/gather/writing/category?groupId=${group?.id}`);
   };
 
-  const gatherData = gathers && setGatherDataToCardCol(gathers, true);
+  const gatherData =
+    gathers &&
+    setGatherDataToCardCol(gathers, true, () => {
+      setBackUrl(`/group/${id}`);
+    });
 
   return (
     <>
@@ -259,11 +267,10 @@ function GroupDetail() {
         </Slide>
       )}
       {isAdmin && (
-        <WritingButton
-          url={`/gather/writing/category?groupId=${group?.id}`}
-          type="thunder"
-          isBottomNav={false}
-          onClick={handleGatheringButton}
+        <ControlButton
+          rightIcon={<ThunderIcon />}
+          text="모임 개설"
+          handleClick={handleGatheringButton}
         />
       )}
       {!group && <MainLoading />}

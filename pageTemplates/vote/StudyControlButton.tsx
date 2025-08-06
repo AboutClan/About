@@ -1,15 +1,16 @@
-import { Button, Flex, ThemeTypings } from "@chakra-ui/react";
+import { ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
+import ControlButton from "../../components/ControlButton";
 import {
   StudySoloIcon,
   StudyUserCancleIcon,
   StudyUserCheckIcon,
   StudyUserIcon,
-} from "../../components/Icons/StudyIcons";
+} from "../../components/Icons/ControlButtonIcon";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudyVoteMutation } from "../../hooks/study/mutations";
@@ -18,7 +19,6 @@ import { CoordinatesProps } from "../../types/common";
 import { StudyMergeResultProps } from "../../types/models/studyTypes/derivedTypes";
 import { MyStudyStatus } from "../../types/models/studyTypes/helperTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
-import { iPhoneNotchSize } from "../../utils/validationUtils";
 import StudyControlDrawer from "../study/modals/StudyControlDrawer";
 
 export const UNMATCHED_POP_UP_STORAGE = "unmatchedPopUpStorage";
@@ -97,34 +97,15 @@ function StudyControlButton({
 
   return (
     <>
-      <Flex
-        position="fixed"
-        zIndex="800"
-        fontSize="12px"
-        lineHeight="24px"
-        fontWeight={700}
-        bottom={`calc(var(--bottom-nav-height) + ${iPhoneNotchSize() + 12}px)`}
-        right="20px"
-      >
-        <Button
-          fontSize="12px"
-          h="40px"
-          color="white"
-          px={4}
-          borderRadius="20px"
-          lineHeight="24px"
-          iconSpacing={1}
-          colorScheme={colorScheme}
-          rightIcon={rightIcon}
-          onClick={onClickButton}
-          isDisabled={myVoteStatus === "arrived" || myVoteStatus === "absenced"}
-          _hover={{
-            background: undefined,
-          }}
-        >
-          {text}
-        </Button>
-      </Flex>
+      <ControlButton
+        colorScheme={colorScheme}
+        text={text}
+        isDisabled={myVoteStatus === "arrived" || myVoteStatus === "absenced"}
+        rightIcon={rightIcon}
+        handleClick={onClickButton}
+        hasBottomNav
+      />
+
       <StudyControlDrawer
         date={date}
         studyResults={studyResults}

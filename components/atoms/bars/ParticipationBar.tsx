@@ -10,7 +10,7 @@ function ParticipationBar({ type, participantsCnt, maxCnt = 8 }: ParticipationBa
   return (
     <Flex align="center" py={4} fontSize="16px" fontWeight="semibold" borderBottom="var(--border)">
       <span>{type === "open" ? "참여 인원" : "참여중인 인원"}</span>
-      <Box as="span" ml={2} color="mint">
+      <Box as="span" ml={2} color={participantsCnt <= maxCnt ? "mint" : "red"}>
         {participantsCnt}
       </Box>
       <Box as="span" mx={1} color="gray.600">
