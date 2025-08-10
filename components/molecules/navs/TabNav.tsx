@@ -11,6 +11,7 @@ interface ITabNav {
   isMain?: boolean;
   isFullSize?: boolean;
   isBlack?: boolean;
+  size?: "md" | "lg";
 }
 
 export default function TabNav({
@@ -20,6 +21,7 @@ export default function TabNav({
   isMain = false,
   isFullSize,
   isBlack,
+  size = "md",
 }: ITabNav) {
   const idx = tabOptionsArr.findIndex((tab) => tab.text === selected);
 
@@ -27,9 +29,9 @@ export default function TabNav({
     <>
       <Tabs
         index={selected ? idx : undefined}
-        color="var(--gray-500)"
+        color={size === "md" ? "var(--gray-500)" : "var(--color-gray)"}
         colorScheme={!isBlack ? "mint" : "black"}
-        bgColor="white"
+        bgColor={"white"}
         height="44px"
       >
         <TabList
@@ -53,8 +55,8 @@ export default function TabNav({
             <Tab
               display="flex"
               flexShrink="0 !important"
-              fontSize="13px"
-              fontWeight={index === idx ? 600 : 400}
+              fontSize={size === "md" ? "13px" : "16px"}
+              fontWeight={index === idx ? (size === "md" ? 600 : 800) : size === "md" ? 400 : 800}
               p={!isMain ? "8px 20px" : "8px 12px"}
               flex={isFullSize ? 1 : undefined}
               key={tab.text}

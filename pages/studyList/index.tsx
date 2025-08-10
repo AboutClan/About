@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import Header from "../../components/layouts/Header";
@@ -12,7 +12,7 @@ import {
 } from "../../components/molecules/cards/StudyThumbnailCard";
 import { useUserCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
-import { convertStudyToMergeStudy } from "../../libs/study/studyConverters";
+import { setStudyWeekData } from "../../libs/study/studyConverters";
 import {
   setStudyThumbnailCard,
   sortThumbnailCardInfoArr,
@@ -39,7 +39,7 @@ export default function StudyList() {
     const getThumbnailCardInfoArr = setStudyThumbnailCard(
       date,
       studyVoteData?.participations,
-      convertStudyToMergeStudy(studyVoteData),
+      setStudyWeekData(studyVoteData),
       studyVoteData?.realTimes?.userList,
       currentLocation,
       null,

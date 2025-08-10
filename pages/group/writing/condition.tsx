@@ -51,11 +51,11 @@ function WritingCondition() {
 
   const [conditions, setConditions] = useState<WritingConditionProps>(defaultCondition);
   const [isQuestionModal, setIsQuestionModal] = useState(false);
-  console.log(23, conditions);
+
   useEffect(() => {
     if (conditions.isApprovalRequired) {
       if (isEdit) {
-        console.log(1234, groupWriting.questionText);
+       
         setConditions((old) => ({
           ...old,
           questionText: groupWriting.questionText.length ? groupWriting.questionText : [""],

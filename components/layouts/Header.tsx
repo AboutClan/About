@@ -26,7 +26,7 @@ export default function Header({
   func,
   rightPadding,
 }: IHeader) {
-  console.log(rightPadding);
+ 
   function HeaderLayout() {
     return (
       <HeaderContainer

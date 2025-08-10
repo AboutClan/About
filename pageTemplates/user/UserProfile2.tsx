@@ -19,7 +19,7 @@ function UserProfile() {
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
     type: "like" | "friend",
   ) => {
-    console.log(type);
+   
     if (isGuest) {
       e.preventDefault();
       typeToast("guest");

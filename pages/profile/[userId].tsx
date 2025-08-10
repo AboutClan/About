@@ -45,7 +45,7 @@ function ProfilePage() {
     enabled: !!userId,
   });
 
-  console.log(15, user);
+ 
   const { data } = useGroupsTitleQuery(userId, {
     enabled: !!userId,
   });
@@ -54,7 +54,7 @@ function ProfilePage() {
     enabled: !!user?.uid,
   });
 
-  console.log(5, reviewArr);
+
   const [isMyFriend, setIsMyFriend] = useState(false);
   const [isFirstPage, setIsFirstPage] = useState(true);
   const [declareType, setDeclareType] = useState<"distance" | "block">(null);

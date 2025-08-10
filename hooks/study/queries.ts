@@ -15,6 +15,7 @@ import { SERVER_URI } from "../../constants/system";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import {
   RealTimeMemberProps,
+  StudyOneDayProps,
   StudyParticipationProps,
   StudyPlaceProps,
   StudyVoteDataProps,
@@ -24,6 +25,18 @@ import { IArrivedData, VoteCntProps } from "../../types/models/studyTypes/studyR
 import { Location } from "../../types/services/locationTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
+export const useStudyWeekQuery = (options?: QueryOptions<StudyOneDayProps[]>) =>
+  useQuery<StudyOneDayProps[], AxiosError, StudyOneDayProps[]>(
+    [STUDY_PLACE],
+    async () => {
+      const res = await axios.get<StudyOneDayProps[]>(`${SERVER_URI}/vote2/week`, {
+        params: {},
+      });
+      return res.data;
+    },
+    options,
+  );
+
 export const useStudyPlacesQuery = (
   location: Location | "all",
   active?: "active" | "inactive",
@@ -32,13 +45,12 @@ export const useStudyPlacesQuery = (
   useQuery<StudyPlaceProps[], AxiosError, StudyPlaceProps[]>(
     [STUDY_PLACE, location, active],
     async () => {
-  
       const res = await axios.get<StudyPlaceProps[]>(`${SERVER_URI}/place`, {
         params: {
           status: active,
         },
       });
- 
+
       const places = res.data.filter((place) => place.brand !== "자유 신청" && location === "all");
       return places;
     },

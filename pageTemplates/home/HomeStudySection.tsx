@@ -16,7 +16,7 @@ import { StudyThumbnailCardSkeleton } from "../../components/skeleton/StudyThumb
 import { useUserCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
 import { getStudyViewDate } from "../../libs/study/date/getStudyDateStatus";
-import { convertStudyToMergeStudy } from "../../libs/study/studyConverters";
+import { setStudyWeekData } from "../../libs/study/studyConverters";
 import {
   setStudyThumbnailCard,
   sortThumbnailCardInfoArr,
@@ -44,7 +44,7 @@ function HomeStudySection() {
     const getThumbnailCardInfoArr = setStudyThumbnailCard(
       date,
       studyVoteData?.participations,
-      convertStudyToMergeStudy(studyVoteData),
+      setStudyWeekData(studyVoteData),
       studyVoteData?.realTimes?.userList,
       currentLocation,
       null,

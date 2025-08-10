@@ -11,7 +11,7 @@ interface IPointScoreBar {
 
 function PointScoreBar({ hasQuestion = true }: IPointScoreBar) {
   const { data: userInfo } = useUserInfoQuery();
-  console.log(hasQuestion);
+ 
   // const [isBadgeModal, setIsBadgeModal] = useState(false);
 
   // let badgeInfo = ["아메리카노", 0];

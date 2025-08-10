@@ -43,7 +43,7 @@ function GroupDetail() {
 
   const [tab, setTab] = useState<GroupSectionCategory>("정 보");
   const { data: group } = useGroupIdQuery(id, { enabled: !!id });
-  console.log(group);
+
   const { data: gathers, isLoading } = useGatherGroupQuery(id, {
     enabled: tab === "피 드" && !!id,
   });

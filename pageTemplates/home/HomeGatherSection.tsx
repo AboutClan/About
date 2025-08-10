@@ -15,7 +15,7 @@ function HomeGatherSection() {
   const firstData = gathers?.slice(0, 6);
   const secondData = shuffleArray(gathers?.slice(6, 12));
   const thirdData = shuffleArray(gathers?.slice(12, 18));
-  console.log(54, gathers);
+ 
   return (
     <>
       <AnimatePresence initial={false}>

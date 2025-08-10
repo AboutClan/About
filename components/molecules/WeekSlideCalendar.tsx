@@ -23,7 +23,7 @@ function WeekSlideCalendar({ selectedDate, func }: CalendarProps) {
     if (selectedIdx !== -1 && containerRef.current) {
       const selectedElement = dateRefs.current[selectedIdx];
       if (selectedElement) {
-        containerRef.current.scrollLeft = selectedElement.clientWidth * (selectedIdx - 2);
+        containerRef.current.scrollLeft = selectedElement.clientWidth * (selectedIdx - 1);
       }
     }
   }, [calendarArr, selectedDate]);

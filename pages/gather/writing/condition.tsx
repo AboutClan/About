@@ -38,7 +38,7 @@ function WritingCondition() {
 
   const [conditions, setConditions] = useState<WritingConditionProps>(defaultCondition);
 
-  console.log(124, gatherContent, conditions);
+
 
   useEffect(() => {
     if (gatherContent?.title) {

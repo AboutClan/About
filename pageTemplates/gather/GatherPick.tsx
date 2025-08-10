@@ -21,7 +21,7 @@ function GatherPick() {
 
   const { mutate } = useGatherRequestLikeMutation({
     onSuccess(data) {
-      console.log(11, data);
+    
       if ((data as unknown) === "add") {
         toast("success", "관심 번개가 개설되면 알림을 보내드릴게요!");
         updatePoint({ value: -50, message: "관심 번개 등록" });

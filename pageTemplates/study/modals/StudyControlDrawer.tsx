@@ -30,7 +30,7 @@ interface StudyControlDrawerProps {
   date: string;
   studyResults: StudyMergeResultProps[];
   currentLocation: CoordinatesProps;
-  studyDrawerType: "free" | "vote";
+
   onClose: () => void;
 }
 
@@ -38,7 +38,7 @@ function StudyControlDrawer({
   date,
   studyResults,
   currentLocation,
-  studyDrawerType,
+
   onClose,
 }: StudyControlDrawerProps) {
   const router = useRouter();
@@ -50,18 +50,22 @@ function StudyControlDrawer({
   const { mutate: voteStudy } = useStudyVoteMutation(dayjs(date), "post", {
     onSuccess() {
       resetStudy();
+      onClose();
     },
   });
   const { mutate: participateStudyOne } = useStudyParticipateMutation(dayjs(date), {
     onSuccess() {
       toast("success", "참여가 완료되었습니다. 출석 인증도 잊지 마세요!");
       resetStudy();
+      onClose();
     },
   });
   const { mutate: participateRealTime } = useRealtimeVoteMutation(date, {
     onSuccess() {
-      toast("success", "참여가 완료되었습니다. 출석 인증도 잊지 마세요!");
+      // toast("success", "참여가 완료되었습니다. 출석 인증도 잊지 마세요!");
+      toast("success", "스터디가 개설되었습니다.");
       resetStudy();
+      onClose();
     },
   });
 
@@ -87,14 +91,14 @@ function StudyControlDrawer({
         setIsPlacePickDrawer(true);
         break;
       case "directInputPlace":
-        setRightDrawerType(studyDrawerType === "free" ? "realTime" : "vote");
+        setRightDrawerType("realTime");
         break;
       case "directAttend":
         router.push(`/vote/attend/certification?date=${date}`);
         break;
     }
 
-    onClose();
+    // onClose();
   };
 
   const handleStudyVote = (
@@ -102,7 +106,7 @@ function StudyControlDrawer({
     type: "vote" | "realTime",
   ) => {
     if (type === "vote") voteStudy(voteData as StudyVoteProps);
-    else if (type === "realTime") participateRealTime(voteData as RealTimeVoteProps);
+    else participateRealTime(voteData as RealTimeVoteProps);
     setTimeRulletType(null);
     setRightDrawerType(null);
   };
@@ -130,6 +134,7 @@ function StudyControlDrawer({
                 return;
               }
               const { lat: latitude, lon: longitude } = { ...userInfo?.locationDetail };
+              console.log("WE", latitude, longitude, voteTime);
               const voteData = {
                 latitude,
                 longitude,
@@ -142,88 +147,74 @@ function StudyControlDrawer({
   };
 
   const locationDetatilText = userInfo?.locationDetail?.text;
-
+  console.log(timeRulletType, "WOW", rightDrawerType, isPlacePickDrawer);
   return (
     <>
-      {studyDrawerType && (
-        <BottomFlexDrawer
-          isOverlay
-          isDrawerUp
-          setIsModal={onClose}
-          isHideBottom
-          drawerOptions={{ footer: { text: "취소", func: onClose } }}
-          height={studyDrawerType === "free" && studyResults?.length ? 249 : 197}
-          zIndex={800}
+      <BottomFlexDrawer
+        isOverlay
+        isDrawerUp
+        setIsModal={onClose}
+        isHideBottom
+        drawerOptions={{ footer: { text: "취소", func: onClose } }}
+        height={249}
+        zIndex={800}
+      >
+        <Button
+          h="52px"
+          justifyContent="flex-start"
+          display="flex"
+          variant="unstyled"
+          py={4}
+          w="100%"
+          lineHeight="20px"
+          onClick={() => handleStudyVoteBtn("selectTime")}
         >
-          {studyDrawerType !== "free" || studyResults?.length ? (
-            <Button
-              h="52px"
-              justifyContent="flex-start"
-              display="flex"
-              variant="unstyled"
-              py={4}
-              w="100%"
-              lineHeight="20px"
-              onClick={() =>
-                handleStudyVoteBtn(studyDrawerType === "free" ? "pickPlace" : "selectTime")
-              }
-            >
-              <Box w="20px" h="20px" mr={4} opacity={0.28}>
-                <StudyCheckIcon />
-              </Box>
-              <Box fontSize="13px" color="var(--gray-600)">
-                {studyDrawerType === "free"
-                  ? "진행중인 스터디 참여"
-                  : locationDetatilText
-                  ? `[${
-                      locationDetatilText.length > 10
-                        ? locationDetatilText.slice(0, 10) + "..."
-                        : locationDetatilText
-                    }] 기준 스터디 신청`
-                  : "즐겨 찾는 위치에서 스터디 신청"}
-              </Box>
-            </Button>
-          ) : null}
+          <Box w="20px" h="20px" mr={4} opacity={0.28}>
+            <StudyCheckIcon />
+          </Box>
+          <Box fontSize="13px" color="var(--gray-600)" fontWeight="500">
+            스터디 신청
+          </Box>
+        </Button>
+        <Button
+          h="52px"
+          justifyContent="flex-start"
+          display="flex"
+          variant="unstyled"
+          py={4}
+          w="100%"
+          onClick={() => handleStudyVoteBtn("directInputPlace")}
+          lineHeight="20px"
+        >
+          <Box w="20px" h="20px" mr={4} opacity={0.28}>
+            <StudySelectIcon />
+          </Box>
+          <Box fontSize="13px" color="var(--gray-600)" fontWeight="500">
+            스터디 개설
+          </Box>
+        </Button>
+
+        <Link href={`/vote/attend/certification?date=${date}`} style={{ width: "100%" }}>
           <Button
             h="52px"
-            justifyContent="flex-start"
             display="flex"
+            justifyContent="flex-start"
             variant="unstyled"
             py={4}
             w="100%"
-            onClick={() => handleStudyVoteBtn("directInputPlace")}
+            isDisabled={date !== dayjsToStr(dayjs())}
             lineHeight="20px"
           >
             <Box w="20px" h="20px" mr={4} opacity={0.28}>
-              <StudySelectIcon />
+              <StudyUserCheckIcon color="gray" />
             </Box>
-            <Box fontSize="13px" color="var(--gray-600)">
-              {studyDrawerType === "free" ? "일일 스터디 개설 신청" : "스터디 기준 위치 직접 입력"}
+            <Box fontSize="13px" color="var(--gray-600)" fontWeight={500}>
+              실시간 공부 인증
             </Box>
           </Button>
-          {studyDrawerType === "free" && (
-            <Link href={`/vote/attend/certification?date=${date}`} style={{ width: "100%" }}>
-              <Button
-                h="52px"
-                display="flex"
-                justifyContent="flex-start"
-                variant="unstyled"
-                py={4}
-                w="100%"
-                isDisabled={date !== dayjsToStr(dayjs())}
-                lineHeight="20px"
-              >
-                <Box w="20px" h="20px" mr={4} opacity={0.28}>
-                  <StudyUserCheckIcon color="gray" />
-                </Box>
-                <Box fontSize="13px" color="var(--gray-600)">
-                  실시간 개인 카공 인증
-                </Box>
-              </Button>
-            </Link>
-          )}
-        </BottomFlexDrawer>
-      )}
+        </Link>
+      </BottomFlexDrawer>
+
       {isPlacePickDrawer && (
         <StudyPlacePickerDrawer
           date={date}
@@ -247,7 +238,6 @@ function StudyControlDrawer({
       )}
       {rightDrawerType && (
         <StudyPlaceDrawer
-          type={rightDrawerType}
           date={date}
           handleStudyVote={(voteData) => handleStudyVote(voteData, rightDrawerType)}
           onClose={() => setRightDrawerType(null)}

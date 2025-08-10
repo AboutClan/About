@@ -1,5 +1,18 @@
-import { StudyResultProps, StudyStatus } from "./baseTypes";
+import { RealTimesToResultProps } from "../../../libs/study/studyConverters";
+import {
+  RealTimeMemberProps,
+  StudyParticipationProps,
+  StudyResultProps,
+  StudyStatus,
+} from "./baseTypes";
 import { PlaceReviewProps } from "./entityTypes";
+
+export interface StudySetProps {
+  participations: StudyParticipationProps[];
+  soloRealTimes: RealTimeMemberProps[];
+  openRealTimes: { date: string; study: RealTimesToResultProps }[];
+  results: { date: string; study: StudyResultProps }[];
+}
 
 export interface StudyMergeResultProps extends Omit<StudyResultProps, "place"> {
   place: MergeStudyPlaceProps;

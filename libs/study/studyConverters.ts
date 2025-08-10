@@ -4,41 +4,53 @@ import {
   RealTimeMemberProps,
   RealTimesStatus,
   StudyMemberProps,
+  StudyOneDayProps,
   StudyPlaceProps,
   StudyResultProps,
   StudyStatus,
-  StudyVoteDataProps,
 } from "../../types/models/studyTypes/baseTypes";
-import {
-  MergeStudyPlaceProps,
-  StudyMergeResultProps,
-} from "../../types/models/studyTypes/derivedTypes";
+import { MergeStudyPlaceProps, StudySetProps } from "../../types/models/studyTypes/derivedTypes";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
 import { getRandomIdx } from "../../utils/mathUtils";
 
-export const convertStudyToMergeStudy = (
-  studyVoteData: StudyVoteDataProps,
-): StudyMergeResultProps[] => {
-  const convertedRealTimes = studyVoteData?.realTimes
-    ? convertRealTimesToMergeResult(studyVoteData.realTimes.userList)
-    : [];
-  const mergedResult = [...studyVoteData.results, ...convertedRealTimes].map((result) => ({
-    ...result,
-    place: convertMergePlaceToPlace(result.place),
-    status:
-      (result as RealTimesToResultProps)?.status ||
-      (!studyVoteData?.participations ? "open" : null),
-  }));
+export const setStudyWeekData = (studyWeekData: StudyOneDayProps[] = []): StudySetProps => {
+  return studyWeekData.reduce<StudySetProps>(
+    (acc, oneDay) => {
+      const { date, participations = [], realTimes, results = [] } = oneDay;
+      // 1) 참여 내역
+      acc.participations.push(...participations);
+      // 2) 실시간: solo / open 한 번에 분리
+      if (realTimes?.userList?.length) {
+        const { soloUsers, openUsers } = realTimes.userList.reduce(
+          (b, u) => {
+            if (u.status === "solo") b.soloUsers.push(u);
+            else b.openUsers.push(u);
+            return b;
+          },
+          {
+            soloUsers: [] as typeof realTimes.userList,
+            openUsers: [] as typeof realTimes.userList,
+          },
+        );
+        acc.soloRealTimes.push(...soloUsers);
+        const openGroups = setRealTimesGroup(openUsers);
+        acc.openRealTimes.push(...openGroups.map((study) => ({ date, study })));
+      }
+      // 3) 결과
+      acc.results.push(...results.map((study) => ({ date, study })));
 
-  return mergedResult;
+      return acc;
+    },
+    { participations: [], soloRealTimes: [], openRealTimes: [], results: [] },
+  );
 };
 
-interface RealTimesToResultProps extends Omit<StudyResultProps, "place"> {
+export interface RealTimesToResultProps extends Omit<StudyResultProps, "place"> {
   place: PlaceInfoProps;
   status?: StudyStatus;
 }
 
-export const convertRealTimesToMergeResult = (
+export const setRealTimesGroup = (
   studyRealTimeArr: RealTimeMemberProps[],
 ): RealTimesToResultProps[] => {
   if (!studyRealTimeArr) return;

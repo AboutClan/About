@@ -1,8 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import SectionFooterButton from "../../components/atoms/SectionFooterButton";
@@ -11,66 +11,57 @@ import {
   StudyThumbnailCardProps,
 } from "../../components/molecules/cards/StudyThumbnailCard";
 import { StudyThumbnailCardSkeleton } from "../../components/skeleton/StudyThumbnailCardSkeleton";
-import { useKakaoMultipleLocationQuery } from "../../hooks/external/queries";
-import { convertStudyToMergeStudy } from "../../libs/study/studyConverters";
+import { useUserCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
 import {
   setStudyThumbnailCard,
   sortThumbnailCardInfoArr,
 } from "../../libs/study/thumbnailCardLibs";
-import { CoordinatesProps } from "../../types/common";
 import { DispatchString } from "../../types/hooks/reactTypes";
-import { StudyVoteDataProps } from "../../types/models/studyTypes/baseTypes";
+import { StudySetProps } from "../../types/models/studyTypes/derivedTypes";
 import { getNewDateBySwipe } from "../../utils/animateUtils";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 import StudyPagePlaceSectionFilterBar from "./studyPageDrawer/StudyPagePlaceBlockFilterBar";
 
 interface StudyPagePlaceSectionProps {
-  studyVoteData: StudyVoteDataProps;
+  studySet: StudySetProps;
   date: string;
   setDate: DispatchString;
-  currentLocation: CoordinatesProps;
 }
 
 type SortedOption = "인원순" | "거리순";
 
-function StudyPagePlaceSection({
-  studyVoteData,
-  date,
-  setDate,
-  currentLocation,
-}: StudyPagePlaceSectionProps) {
+function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectionProps) {
   const { data: session } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const newSearchParams = new URLSearchParams(searchParams);
+
+  const { currentLocation } = useUserCurrentLocation();
 
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
   const [sortedOption, setSortedOption] = useState<SortedOption>("인원순");
   const [locationMapping, setLocationMapping] = useState<{ branch: string; id: string }[]>();
 
-  const mergeStudy = studyVoteData && convertStudyToMergeStudy(studyVoteData);
-
-  const { data: locationMappingData } = useKakaoMultipleLocationQuery(
-    mergeStudy
-      ?.filter((data) => data?.status !== "solo")
-      .map((study) => ({
-        lat: study.place.latitude,
-        lon: study.place.longitude,
-        id: study.place._id,
-      })),
-    true,
-    {
-      enabled: !!mergeStudy,
-    },
-  );
-  useEffect(() => {
-    if (locationMappingData) {
-      setLocationMapping(locationMappingData);
-    }
-  }, [locationMappingData]);
+  // const { data: locationMappingData } = useKakaoMultipleLocationQuery(
+  //   mergeStudy
+  //     ?.filter((data) => data?.status !== "solo")
+  //     .map((study) => ({
+  //       lat: study.place.latitude,
+  //       lon: study.place.longitude,
+  //       id: study.place._id,
+  //     })),
+  //   true,
+  //   {
+  //     enabled: !!mergeStudy,
+  //   },
+  // );
+  // useEffect(() => {
+  //   if (locationMappingData) {
+  //     setLocationMapping(locationMappingData);
+  //   }
+  // }, [locationMappingData]);
 
   useEffect(() => {
-    if (!studyVoteData) {
+    if (!studySet) {
       setThumbnailCardinfoArr(null);
       return;
     }

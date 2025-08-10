@@ -6,6 +6,12 @@ import { PlaceInfoProps } from "../utilTypes";
 import { PlaceRegisterProps, PlaceReviewProps } from "./entityTypes";
 import { StudyAttendanceProps } from "./requestTypes";
 
+export interface StudyOneDayProps {
+  date: string;
+  results: StudyResultProps[];
+  participations: StudyParticipationProps[];
+  realTimes: StudyRealTimesProps;
+}
 export interface StudyVoteDataProps {
   date: string;
   participations?: StudyParticipationProps[];

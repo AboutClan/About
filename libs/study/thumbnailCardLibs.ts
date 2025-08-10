@@ -1,20 +1,14 @@
 import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
 import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
 import { CoordinatesProps } from "../../types/common";
-import {
-  RealTimeMemberProps,
-  StudyParticipationProps,
-} from "../../types/models/studyTypes/baseTypes";
-import { StudyMergeResultProps } from "../../types/models/studyTypes/derivedTypes";
+import { StudySetProps } from "../../types/models/studyTypes/derivedTypes";
 import { getRandomImage } from "../../utils/imageUtils";
 import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
 import { convertMergePlaceToPlace } from "./studyConverters";
 
 export const setStudyThumbnailCard = (
   date: string,
-  participations: StudyParticipationProps[],
-  studyResults: StudyMergeResultProps[],
-  realTimes: RealTimeMemberProps[],
+  studySet: StudySetProps,
   currentLocation: CoordinatesProps,
   locationMapping: { branch: string; id: string }[],
   myId: string,

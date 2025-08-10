@@ -34,7 +34,7 @@ export type ConditionType =
   | "fee";
 
 function WritingConditionLayout({ conditions, setConditions }: WritingConditionLayoutProps) {
-  console.log("conditions", conditions);
+
   const toast = useToast();
   const [feeText, setFeeText] = useState(conditions.fee + "");
 
@@ -43,7 +43,7 @@ function WritingConditionLayout({ conditions, setConditions }: WritingConditionL
   };
 
   useEffect(() => {
-    console.log(53, feeText);
+  
     if (!feeText.length || conditions?.fee === undefined) {
       return;
     }
