@@ -1,7 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import dayjs from "dayjs";
-import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { STUDY_COVER_IMAGES } from "../../../../assets/images/studyCover";
@@ -14,7 +13,7 @@ import { useUserCurrentLocation } from "../../../../hooks/custom/CurrentLocation
 import { useResetStudyQuery } from "../../../../hooks/custom/CustomHooks";
 import { usePointToast } from "../../../../hooks/custom/CustomToast";
 import { usePlaceReviewMutation } from "../../../../hooks/study/mutations";
-import { useStudyVoteQuery } from "../../../../hooks/study/queries";
+import { useStudyVoteQuery, useStudyWeekQuery } from "../../../../hooks/study/queries";
 import { usePointSystemMutation } from "../../../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../../../hooks/user/queries";
 import { convertMergePlaceToPlace } from "../../../../libs/study/studyConverters";
@@ -28,15 +27,19 @@ import StudyCover from "../../../../pageTemplates/study/StudyCover";
 import StudyDateBar from "../../../../pageTemplates/study/StudyDateBar";
 import StudyHeader from "../../../../pageTemplates/study/StudyHeader";
 import StudyMembers from "../../../../pageTemplates/study/StudyMembers";
-import StudyNavigation from "../../../../pageTemplates/study/StudyNavigation";
 import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
 import StudyTimeBoard from "../../../../pageTemplates/study/StudyTimeBoard";
-import { StudyMemberProps } from "../../../../types/models/studyTypes/baseTypes";
+import { CoordinatesProps } from "../../../../types/common";
+import { ParticipationUser, StudyMemberProps } from "../../../../types/models/studyTypes/baseTypes";
 import { PlaceReviewProps } from "../../../../types/models/studyTypes/entityTypes";
-import { UserSimpleInfoProps } from "../../../../types/models/userTypes/userInfoTypes";
-import { dayjsToFormat } from "../../../../utils/dateTimeUtils";
 import { getDistanceFromLatLonInKm, getRandomIdx } from "../../../../utils/mathUtils";
 import { iPhoneNotchSize } from "../../../../utils/validationUtils";
+
+export interface StudyParticipationUserProps {
+  date: string[];
+  user: ParticipationUser;
+  coordinates: CoordinatesProps;
+}
 
 export default function Page() {
   const { data: session } = useSession();
@@ -45,19 +48,22 @@ export default function Page() {
   const isGuest = session?.user.role === "guest";
 
   const isParticipationPage = id === "participations";
-  const isRealTimePage = id === "realTime";
+  const isRealTimePage = id === "soloRealTimes";
 
   const { data: studyVoteData } = useStudyVoteQuery(date, {
-    enabled: !!date,
+    enabled: !!date && !isParticipationPage,
   });
+
+  const { data: weekData } = useStudyWeekQuery(date, { enabled: !!date && !!isParticipationPage });
+
+  const isExpectedPage = !!(id !== "participations" && studyVoteData?.participations);
 
   const [isReviewModal, setIsReviewModal] = useState(false);
   const [isReviewButton, setIsReviewButton] = useState(false);
 
-  const isExpectedPage = !!(id !== "participations" && studyVoteData?.participations);
-
   const findStudy =
     studyVoteData && id !== "participations" && findStudyByPlaceId(studyVoteData, id);
+  console.log("findStudy", studyVoteData, weekData, findStudy);
   const findMyStudy = findMyStudyByUserId(studyVoteData, session?.user.id);
 
   const myStudy = findMyStudyInfo(findStudy, session?.user.id);
@@ -66,7 +72,7 @@ export default function Page() {
     convertMergePlaceToPlace(findStudy?.place) ||
     (isParticipationPage
       ? {
-          name: "스터디 매칭 대기소",
+          name: "스터디 매칭 대기실",
           branch: "About",
           address: "위치 선정 중",
           brand: "",
@@ -75,7 +81,7 @@ export default function Page() {
 
           latitude: null,
           longitude: null,
-          time: dayjsToFormat(dayjs(date), "M월 D일 오전 9시"),
+          time: "당일 오전 9시",
           _id: null,
           reviews: [],
         }
@@ -104,18 +110,41 @@ export default function Page() {
       placeInfo.longitude,
     );
 
-  const members: StudyMemberProps[] | { user: UserSimpleInfoProps }[] =
-    findStudy?.members ||
-    (isParticipationPage
-      ? studyVoteData?.participations?.map((par) => ({
-          user: par.user,
-          lat: par.latitude,
-          lon: par.longitude,
-        }))
-      : isRealTimePage
-      ? studyVoteData?.realTimes.userList
-      : null);
+  const participationMap = new Map();
 
+  weekData?.forEach((data) => {
+    if (data?.participations) {
+      data.participations.forEach((par) => {
+        const userId = par.user._id;
+        if (participationMap.has(userId)) {
+          // 이미 있으면 날짜만 추가
+          participationMap.get(userId).date.push(data.date);
+        } else {
+          // 새로 추가
+          participationMap.set(userId, {
+            date: [data.date],
+            user: par.user,
+            coordinates: { lat: par.latitude, lon: par.longitude },
+          });
+        }
+      });
+    }
+  });
+  const participations: StudyParticipationUserProps[] = Array.from(participationMap.values());
+  console.log(77, participations);
+
+  const members: StudyMemberProps[] | StudyParticipationUserProps[] =
+    findStudy?.members || participations;
+  // (isParticipationPage
+  //   ? studyVoteData?.participations?.map((par) => ({
+  //       user: par.user,
+  //       lat: par.latitude,
+  //       lon: par.longitude,
+  //     }))
+  //   : isRealTimePage
+  //   ? studyVoteData?.realTimes.userList
+  //   : null);
+  console.log(54, members);
   // const absences = studyVoteData?.participations.find((par) => par.place._id === id)?.absences;
 
   const myVoteInfo = studyVoteData?.participations?.find(
@@ -150,7 +179,7 @@ export default function Page() {
 
   return (
     <>
-      {studyVoteData ? (
+      {studyVoteData || weekData ? (
         <>
           <StudyHeader date={date} placeInfo={placeInfo} />
           <Box mb={5}>
@@ -192,7 +221,7 @@ export default function Page() {
               </Box>
             </Slide>
           </Box>
-          {(findStudy || isParticipationPage || isRealTimePage) && !isGuest && (
+          {/* {(findStudy || isParticipationPage || isRealTimePage) && !isGuest && (
             <StudyNavigation
               date={date}
               findStudy={findStudy}
@@ -202,7 +231,7 @@ export default function Page() {
               pageType={status}
               isArrived={!!(myRealTimeStudy?.attendance?.type === "arrived")}
             />
-          )}
+          )} */}
           {isReviewButton && (
             <Flex
               position="fixed"

@@ -3,7 +3,6 @@ import "dayjs/locale/ko";
 import dayjs, { Dayjs } from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 
-import { VoteCntProps } from "../types/models/studyTypes/studyRecords";
 dayjs.extend(weekday);
 
 export const dayjsToStr = (date: Dayjs) => date?.format("YYYY-MM-DD");
@@ -75,18 +74,22 @@ export const getDateWeek = (date: Dayjs) => {
   return Math.floor(differenceInDays / 7) + 1;
 };
 
-export const getCalendarDates = (
-  type: "week" | "month",
-  selectedDate: Dayjs,
-  // pointArr?: VoteCntProps[],
-) => {
-  const calendar: VoteCntProps[] = [];
+export interface CalendarDateProps {
+  date: string;
+  isDisabled: boolean;
+}
+
+export const getCalendarDates = (type: "week" | "month", selectedDate: Dayjs) => {
+  const calendar: CalendarDateProps[] = [];
 
   if (type === "week") {
     const startDate = selectedDate.startOf("month");
     for (let i = 0; i < selectedDate.endOf("month").date(); i++) {
       const date = startDate.add(i, "day");
-      calendar.push({ date: dayjsToStr(date), value: date.date() });
+      calendar.push({
+        date: dayjsToStr(date),
+        isDisabled: dayjs().add(6, "day").isAfter(date) ? false : true,
+      });
     }
   } else {
     const startOfMonth = selectedDate.startOf("month");
@@ -99,7 +102,10 @@ export const getCalendarDates = (
       if (current.isBefore(startOfMonth) || current.isAfter(endOfMonth)) {
         calendar.push(null);
       } else {
-        calendar.push({ date: dayjsToStr(current), value: 0 });
+        calendar.push({
+          date: dayjsToStr(current),
+          isDisabled: dayjs().add(6, "day").isAfter(current) ? false : true,
+        });
       }
 
       current = current.add(1, "day");

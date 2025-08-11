@@ -23,18 +23,15 @@ import StudyControlDrawer from "../study/modals/StudyControlDrawer";
 export const UNMATCHED_POP_UP_STORAGE = "unmatchedPopUpStorage";
 interface StudyControlButtonProps {
   date: string;
-  myVoteStatus: MyStudyStatus;
-  studyResults: StudyMergeResultProps[];
-  currentLocation: CoordinatesProps;
-  unmatchedUsers: string[];
+  // myVoteStatus: MyStudyStatus;
+  // studyResults: StudyMergeResultProps[];
+  // currentLocation: CoordinatesProps;
+  // unmatchedUsers: string[];
 }
 
 function StudyControlButton({
   date,
-  myVoteStatus,
-  studyResults,
-  currentLocation,
-  unmatchedUsers,
+
 }: StudyControlButtonProps) {
   const toast = useToast();
   const resetStudy = useResetStudyQuery();
@@ -50,14 +47,14 @@ function StudyControlButton({
     },
   });
 
-  useEffect(() => {
-    if (dayjsToStr(dayjs()) !== date) return;
-    if (!unmatchedUsers || !session) return;
-    if (unmatchedUsers?.includes(session?.user.id) && unmatchedPopupStorage !== date) {
-      localStorage.setItem(UNMATCHED_POP_UP_STORAGE, date);
-      setIsModal(true);
-    }
-  }, [session, unmatchedUsers, unmatchedPopupStorage, date]);
+  // useEffect(() => {
+  //   if (dayjsToStr(dayjs()) !== date) return;
+  //   if (!unmatchedUsers || !session) return;
+  //   if (unmatchedUsers?.includes(session?.user.id) && unmatchedPopupStorage !== date) {
+  //     localStorage.setItem(UNMATCHED_POP_UP_STORAGE, date);
+  //     setIsModal(true);
+  //   }
+  // }, [session, unmatchedUsers, unmatchedPopupStorage, date]);
 
   const onClickButton = () => {
     setIsModal(true);
@@ -99,7 +96,7 @@ function StudyControlButton({
       <ControlButton
         colorScheme={"black"}
         text={"스터디"}
-        isDisabled={myVoteStatus === "arrived" || myVoteStatus === "absenced"}
+        // isDisabled={myVoteStatus === "arrived" || myVoteStatus === "absenced"}
         rightIcon={<CheckIcon />}
         handleClick={onClickButton}
         hasBottomNav
@@ -107,8 +104,8 @@ function StudyControlButton({
       {isModal && (
         <StudyControlDrawer
           date={date}
-          studyResults={studyResults}
-          currentLocation={currentLocation}
+          // studyResults={studyResults}
+          // currentLocation={currentLocation}
           onClose={() => setIsModal(false)}
         />
       )}

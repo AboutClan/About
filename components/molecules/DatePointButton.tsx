@@ -1,20 +1,26 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import styled from "styled-components";
 
 import { dayjsToStr, getToday } from "../../utils/dateTimeUtils";
 
 export interface DatePointButtonProps {
   date: string;
-  value: number;
+
   func: () => void;
   size?: "sm" | "md";
   isSelected?: boolean;
   pointType?: "mint";
   weekend?: "sat" | "sun";
+  isDisabled: boolean;
 }
 
-function DatePointButton({ date, func, size = "md", isSelected }: DatePointButtonProps) {
+function DatePointButton({
+  date,
+  func,
+  size = "md",
+  isSelected,
+  isDisabled,
+}: DatePointButtonProps) {
   const today = getToday();
 
   function TodayCircle({ date }: { date: number }) {
@@ -32,6 +38,7 @@ function DatePointButton({ date, func, size = "md", isSelected }: DatePointButto
         bgColor="var(--color-mint)"
         zIndex={1}
         color="white"
+        fontWeight={500}
       >
         {date}
       </Flex>
@@ -41,7 +48,16 @@ function DatePointButton({ date, func, size = "md", isSelected }: DatePointButto
   const dateNum = dayjs(date).date();
 
   return (
-    <Button onClick={func}>
+    <Button
+      variant="unstyled"
+      display="flex"
+      flexDir="column"
+      alignItems="center"
+      fontWeight={400}
+      fontSize="13px"
+      onClick={func}
+      isDisabled={isDisabled}
+    >
       <Flex
         justify="center"
         color={isSelected ? "white" : dayjsToStr(today) === date && "var(--color-mint)"}
@@ -61,14 +77,5 @@ function DatePointButton({ date, func, size = "md", isSelected }: DatePointButto
     </Button>
   );
 }
-
-const Button = styled.button`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  font-weight: 500;
-  font-size: 16px;
-`;
 
 export default DatePointButton;

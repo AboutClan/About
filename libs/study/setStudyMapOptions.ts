@@ -99,11 +99,11 @@ export const getStudyPlaceMarkersOptions = (
 };
 
 export const getMarkersOptions = (
-  studyResults: StudyResultProps[],
-  studyRealTimes: RealTimeMemberProps[],
+  // studyResults: StudyResultProps[],
+  // studyRealTimes: RealTimeMemberProps[],
   currentLocation: CoordinatesProps,
   myVoteCoordinates: CoordinatesProps,
-  participations: StudyParticipationProps[],
+  // participations: StudyParticipationProps[],
   selectedId: string,
 ): IMarkerOptions[] | undefined => {
   if (typeof naver === "undefined") return;

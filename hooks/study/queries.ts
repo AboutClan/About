@@ -9,7 +9,7 @@ import {
   STUDY_RECORD_MODAL_AT,
   STUDY_START_TIME,
   STUDY_VOTE,
-  STUDY_VOTE_CNT,
+  STUDY_VOTE_CNT
 } from "../../constants/keys/queryKeys";
 import { SERVER_URI } from "../../constants/system";
 import { QueryOptions } from "../../types/hooks/reactTypes";
@@ -18,20 +18,18 @@ import {
   StudyOneDayProps,
   StudyParticipationProps,
   StudyPlaceProps,
-  StudyVoteDataProps,
+  StudyVoteDataProps
 } from "../../types/models/studyTypes/baseTypes";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
 import { IArrivedData, VoteCntProps } from "../../types/models/studyTypes/studyRecords";
 import { Location } from "../../types/services/locationTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
-export const useStudyWeekQuery = (options?: QueryOptions<StudyOneDayProps[]>) =>
+export const useStudyWeekQuery = (date, options?: QueryOptions<StudyOneDayProps[]>) =>
   useQuery<StudyOneDayProps[], AxiosError, StudyOneDayProps[]>(
-    [STUDY_PLACE],
+    [date, STUDY_PLACE, "week"],
     async () => {
-      const res = await axios.get<StudyOneDayProps[]>(`${SERVER_URI}/vote2/week`, {
-        params: {},
-      });
+      const res = await axios.get<StudyOneDayProps[]>(`${SERVER_URI}/vote2/${date}/week`);
       return res.data;
     },
     options,

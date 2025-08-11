@@ -12,15 +12,12 @@ import {
 import BottomFlexDrawer, {
   BottomFlexDrawerOptions,
 } from "../../../components/organisms/drawer/BottomFlexDrawer";
-import StudyPlacePickerDrawer from "../../../components/services/studyVote/StudyPlacePickerDrawer";
 import StudyVoteTimeRulletDrawer from "../../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useRealtimeVoteMutation } from "../../../hooks/realtime/mutations";
 import { useStudyParticipateMutation, useStudyVoteMutation } from "../../../hooks/study/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
-import { CoordinatesProps } from "../../../types/common";
-import { StudyMergeResultProps } from "../../../types/models/studyTypes/derivedTypes";
 import { RealTimeVoteProps } from "../../../types/models/studyTypes/requestTypes";
 import { IStudyVoteTime, StudyVoteProps } from "../../../types/models/studyTypes/studyInterActions";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
@@ -28,16 +25,12 @@ import StudyPlaceDrawer from "../../vote/voteDrawer/StudyPlaceDrawer";
 
 interface StudyControlDrawerProps {
   date: string;
-  studyResults: StudyMergeResultProps[];
-  currentLocation: CoordinatesProps;
 
   onClose: () => void;
 }
 
 function StudyControlDrawer({
   date,
-  studyResults,
-  currentLocation,
 
   onClose,
 }: StudyControlDrawerProps) {
@@ -83,13 +76,13 @@ function StudyControlDrawer({
       case "selectTime":
         setTimeRulletType("vote");
         break;
-      case "pickPlace":
-        if (!studyResults.length) {
-          toast("warning", "진행중인 스터디가 없습니다.", 1000);
-          return;
-        }
-        setIsPlacePickDrawer(true);
-        break;
+      // case "pickPlace":
+      //   if (!studyResults.length) {
+      //     toast("warning", "진행중인 스터디가 없습니다.", 1000);
+      //     return;
+      //   }
+      //   setIsPlacePickDrawer(true);
+      //   break;
       case "directInputPlace":
         setRightDrawerType("realTime");
         break;
@@ -215,7 +208,7 @@ function StudyControlDrawer({
         </Link>
       </BottomFlexDrawer>
 
-      {isPlacePickDrawer && (
+      {/* {isPlacePickDrawer && (
         <StudyPlacePickerDrawer
           date={date}
           studyResults={studyResults}
@@ -227,7 +220,7 @@ function StudyControlDrawer({
           }}
           setIsModal={setIsPlacePickDrawer}
         />
-      )}
+      )} */}
       {timeRulletType && (
         <StudyVoteTimeRulletDrawer
           setVoteTime={setVoteTime}

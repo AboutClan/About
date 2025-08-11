@@ -1,7 +1,7 @@
 import { Badge, Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 import HighlightButton from "../../components/atoms/HighlightButton";
@@ -14,13 +14,13 @@ import { useKakaoMultipleLocationQuery } from "../../hooks/external/queries";
 import { useRealTimeCommentMutation } from "../../hooks/realtime/mutations";
 import { useStudyCommentMutation } from "../../hooks/study/mutations";
 import ImageZoomModal from "../../modals/ImageZoomModal";
+import { StudyParticipationUserProps } from "../../pages/study/[id]/[date]";
 import { StudyMemberProps, StudyStatus } from "../../types/models/studyTypes/baseTypes";
-import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 interface IStudyMembers {
   date: string;
-  members: StudyMemberProps[] | { user: UserSimpleInfoProps }[];
+  members: StudyMemberProps[] | StudyParticipationUserProps[];
   status: StudyStatus | "recruiting";
 }
 
@@ -52,7 +52,7 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
     setLocationMapping(locationMappingData);
   }, [locationMappingData]);
 
-  const { mutate: setRealTimeComment } = useRealTimeCommentMutation(date,{
+  const { mutate: setRealTimeComment } = useRealTimeCommentMutation(date, {
     onSuccess: () => handleSuccessChange(),
   });
   const { mutate: setVoteComment } = useStudyCommentMutation(date, {
@@ -76,14 +76,24 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
     const user = member.user;
     const badgeText = locationMapping?.find((mapping) => mapping?.id === user._id)?.branch;
     if (status === "recruiting") {
+      let month = dayjs(member.date[0]).month();
       return {
         user: user,
         memo: user.comment,
-        rightComponent: locationMapping ? (
+        rightComponent: (
           <Badge variant="subtle" colorScheme="blue" size="md">
-            {!badgeText ? "알 수 없음" : badgeText}
+            {/* {!badgeText ? "알 수 없음" : badgeText} */}
+            {member.date.map((date, idx) => {
+              const newMonth = dayjs(date).month();
+              if (month !== newMonth && idx !== 0) {
+                month = newMonth;
+                return dayjsToFormat(dayjs(date), "M월 D일");
+              }
+              if (idx === 0) return dayjsToFormat(dayjs(date), "M월 D일");
+              else return dayjsToFormat(dayjs(date), ", D일");
+            })}
           </Badge>
-        ) : null,
+        ),
       };
     }
 

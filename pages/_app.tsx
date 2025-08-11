@@ -1,13 +1,16 @@
-import "../styles/globals.css";
-import "../styles/variable.css";
-
 import { ChakraProvider } from "@chakra-ui/react";
+import dayjs from "dayjs";
+import "dayjs/locale/ko";
+import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
-import { SessionProvider } from "next-auth/react";
 import { useState } from "react";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 import { RecoilRoot } from "recoil";
+import "../styles/globals.css";
+import "../styles/variable.css";
+
+dayjs.locale("ko");
 
 import Layout from "../pageTemplates/layout/Layout";
 import theme from "../theme";

@@ -4,13 +4,12 @@ import dayjs from "dayjs";
 import Select from "../../../components/atoms/Select";
 import { PopOverIcon } from "../../../components/Icons/PopOverIcon";
 import { DispatchType } from "../../../types/hooks/reactTypes";
-
-type SortedOption = "인원순" | "거리순";
+import { StudySortedOption } from "../StudyPagePlaceSection";
 
 interface StudyPagePlaceSectionFilterBarProps {
   placeCnt: number;
-  sortedOption: SortedOption;
-  setSortedOption: DispatchType<SortedOption>;
+  sortedOption: StudySortedOption;
+  setSortedOption: DispatchType<StudySortedOption>;
   date: string;
 }
 
@@ -20,29 +19,15 @@ function StudyPagePlaceSectionFilterBar({
   setSortedOption,
   date,
 }: StudyPagePlaceSectionFilterBarProps) {
-  const sortedOptionArr: SortedOption[] = ["인원순", "거리순"];
+  const sortedOptionArr: StudySortedOption[] = ["날짜순", "거리순", "인원순"];
 
   const lastStudyHours = dayjs(date).hour(9).startOf("hour").diff(dayjs(), "m");
 
   return (
     <Flex justify="space-between" lineHeight="16px" my={4}>
       <Flex fontSize="12px">
-        {lastStudyHours <= -1440 ? (
-          <>
-            <Box mr={1}>진행된 스터디</Box>
-            <b>{placeCnt}개</b>
-          </>
-        ) : lastStudyHours <= 0 ? (
-          <>
-            <Box mr={1}>진행중인 스터디</Box>
-            <b>{placeCnt}개</b>
-          </>
-        ) : (
-          <Flex>
-            <Box mr={1}>오픈 예정 스터디</Box>
-            <b>{placeCnt - 1}개</b>
-          </Flex>
-        )}
+        <Box mr={1}>개설된 스터디</Box>
+        <b>{placeCnt}개</b>
       </Flex>
       {lastStudyHours <= 0 ? (
         <Select

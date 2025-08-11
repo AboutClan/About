@@ -1,8 +1,8 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
 import { useSession } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import SectionFooterButton from "../../components/atoms/SectionFooterButton";
@@ -28,22 +28,20 @@ interface StudyPagePlaceSectionProps {
   setDate: DispatchString;
 }
 
-type SortedOption = "인원순" | "거리순";
+export type StudySortedOption = "날짜순" | "인원순" | "거리순";
 
 function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectionProps) {
   const { data: session } = useSession();
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const { currentLocation } = useUserCurrentLocation();
 
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
-  const [sortedOption, setSortedOption] = useState<SortedOption>("인원순");
+  const [sortedOption, setSortedOption] = useState<StudySortedOption>("날짜순");
   const [locationMapping, setLocationMapping] = useState<{ branch: string; id: string }[]>();
 
   // const { data: locationMappingData } = useKakaoMultipleLocationQuery(
-  //   mergeStudy
-  //     ?.filter((data) => data?.status !== "solo")
+  //   studySet
   //     .map((study) => ({
   //       lat: study.place.latitude,
   //       lon: study.place.longitude,
@@ -68,30 +66,28 @@ function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectio
 
     const getThumbnailCardInfoArr = setStudyThumbnailCard(
       date,
-      studyVoteData?.participations,
-      mergeStudy,
-      studyVoteData?.realTimes?.userList,
+      studySet,
       currentLocation,
       locationMapping || undefined,
-      session?.user.id,
+      date === dayjsToStr(dayjs()) ? session?.user.id : null,
     );
 
     setThumbnailCardinfoArr(
       sortThumbnailCardInfoArr(sortedOption, getThumbnailCardInfoArr, session?.user.id),
     );
-  }, [studyVoteData, currentLocation, sortedOption, session, locationMapping]);
+  }, [studySet, currentLocation, sortedOption, session, locationMapping]);
 
   const onDragEnd = (panInfo: PanInfo) => {
     const newDate = getNewDateBySwipe(panInfo, date as string);
     if (newDate !== date) {
       setDate(newDate);
-      newSearchParams.set("date", newDate);
-      router.replace(`/studyPage?${newSearchParams.toString()}`, { scroll: false });
+      // newSearchParams.set("date", newDate);
+      // router.replace(`/studyPage?${newSearchParams.toString()}`, { scroll: false });
     }
   };
 
   return (
-    <Flex flexDir="column" mt={5} mb={8}>
+    <Flex flexDir="column" mb={8}>
       <Box>
         {thumbnailCardInfoArr?.length ? (
           <StudyPagePlaceSectionFilterBar
@@ -111,48 +107,13 @@ function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectio
               dragElastic={0.3}
               onDragEnd={(_, panInfo) => onDragEnd(panInfo)}
             >
-              {thumbnailCardInfoArr ? (
-                thumbnailCardInfoArr.length ? (
-                  thumbnailCardInfoArr.slice(0, 5).map((thumbnailCardInfo, idx) => (
+              {thumbnailCardInfoArr?.length
+                ? thumbnailCardInfoArr.slice(0, 6).map((thumbnailCardInfo, idx) => (
                     <Box key={idx} mb={3}>
                       <StudyThumbnailCard {...thumbnailCardInfo} />
                     </Box>
                   ))
-                ) : (
-                  <Flex
-                    justify="center"
-                    align="center"
-                    fontSize="14px"
-                    fontWeight="medium"
-                    bg="gray.100"
-                    px={3}
-                    py={4}
-                    minH="92px"
-                    borderRadius="8px"
-                    color="gray.600"
-                    border="var(--border)"
-                  >
-                    {studyVoteData?.participations ? (
-                      <>
-                        지역에 등록된 스터디 장소가 없습니다.
-                        <Button borderRadius="8px" mt={4} colorScheme="mint" w="full">
-                          신규 스터디 장소 추가
-                        </Button>
-                      </>
-                    ) : date === dayjsToStr(dayjs()) ? (
-                      <>
-                        현재 진행중인 스터디가 없습니다.
-                        <br />
-                        하단의 개인 스터디 신청을 통해서 참여해 주세요!
-                      </>
-                    ) : (
-                      <>저장된 스터디 기록이 없습니다.</>
-                    )}
-                  </Flex>
-                )
-              ) : (
-                [1, 2, 3].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)
-              )}
+                : [1, 2, 3].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)}
             </motion.div>
             {thumbnailCardInfoArr?.length && (
               <SectionFooterButton url={`/studyList?date=${date}`} key="sectionFooter" />

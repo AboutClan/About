@@ -4,21 +4,16 @@ import { useEffect, useState } from "react";
 
 import Slide from "../../../components/layouts/PageSlide";
 import VoteMap from "../../../components/organisms/VoteMap";
+import { useUserCurrentLocation } from "../../../hooks/custom/CurrentLocationHook";
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
+import { useStudyPlacesQuery } from "../../../hooks/study/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
-import {
-  getDetailInfo,
-  getMapOptions,
-  getMarkersOptions,
-  getStudyPlaceMarkersOptions,
-} from "../../../libs/study/setStudyMapOptions";
-import { findMyStudyByUserId, findStudyByPlaceId } from "../../../libs/study/studySelectors";
+import { getMapOptions, getStudyPlaceMarkersOptions } from "../../../libs/study/setStudyMapOptions";
 import { CoordinatesProps } from "../../../types/common";
 import { IMapOptions, IMarkerOptions } from "../../../types/externals/naverMapTypes";
 import { DispatchBoolean, DispatchType } from "../../../types/hooks/reactTypes";
 import { StudyPlaceProps, StudyVoteDataProps } from "../../../types/models/studyTypes/baseTypes";
 import PlaceInfoDrawer from "../PlaceInfoDrawer";
-import StudyInfoDrawer, { StudyInfoProps } from "../StudyInfoDrawer";
 import StudyMapTopNav from "./TopNav";
 
 interface StudyPageMapProps {
@@ -32,85 +27,61 @@ interface StudyPageMapProps {
   setIsPlaceMap: DispatchBoolean;
 }
 
-function StudyPageMap({
-  studyVoteData,
-  centerLocation,
-  currentLocation,
-  setCenterLocation,
-  date,
-  myVoteCoordinates,
-  placeData,
-  setIsPlaceMap,
-}: StudyPageMapProps) {
+function StudyPageMap({}: // studyVoteData,
+// centerLocation,
+// currentLocation,
+// setCenterLocation,
+// date,
+// myVoteCoordinates,
+// placeData,
+// setIsPlaceMap,
+StudyPageMapProps) {
   const { data: session } = useSession();
   const { data: userInfo } = useUserInfoQuery();
   const typeToast = useTypeToast();
+  const isGuest = session?.user.role === "guest";
+  const { currentLocation } = useUserCurrentLocation();
 
   /* 네이버 지도와 마커 옵션 */
   const [mapOptions, setMapOptions] = useState<IMapOptions>(null);
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>(null);
   const [isMapExpansion, setIsMapExpansion] = useState(false);
-  const [detailInfo, setDetailInfo] = useState<StudyInfoProps>();
+
   const [placeInfo, setPlaceInfo] = useState<StudyPlaceProps>(null);
 
-  const isGuest = session?.user.role === "guest";
+  const { data: placeData } = useStudyPlacesQuery("all", null);
 
   useEffect(() => {
-    if (!studyVoteData) return;
+    // if (!studyVoteData) return;
 
     const options = getMapOptions(
       placeInfo
         ? { lat: placeInfo?.latitude, lon: placeInfo.longitude }
-        : detailInfo
-        ? { lat: detailInfo.place.latitude, lon: detailInfo.place.longitude }
         : (mapOptions?.center?.x && { lat: mapOptions?.center?.x, lon: mapOptions?.center?.y }) ||
-          centerLocation,
+            currentLocation,
       mapOptions?.zoom || (isMapExpansion ? 12 : 13),
     );
 
     setMapOptions(options);
-    setMarkersOptions(
-      !placeData
-        ? getMarkersOptions(
-            studyVoteData.results,
-            studyVoteData?.realTimes?.userList || null,
-            currentLocation,
-            myVoteCoordinates,
-            studyVoteData?.participations?.filter(
-              (who) =>
-                who?.user?.isLocationSharingDenided === false ||
-                userInfo?.friend.includes(who?.user.uid),
-            ),
-            detailInfo?.place._id,
-          )
-        : getStudyPlaceMarkersOptions(placeData, placeInfo?._id),
-    );
-   
-    if (placeData) setIsMapExpansion(true);
-  }, [
-    studyVoteData,
-    currentLocation,
-    centerLocation,
-    isMapExpansion,
-    placeData,
-    placeInfo,
-    detailInfo,
-  ]);
+    setMarkersOptions(getStudyPlaceMarkersOptions(placeData, placeInfo?._id));
 
-  const handleMarker = (id: string, type: "vote" | "place", currentZoom: number) => {
+    // if (placeData) setIsMapExpansion(true);
+  }, [currentLocation, isMapExpansion, placeData, placeInfo]);
+
+  const handleMarker = (id: string, currentZoom: number) => {
     setMapOptions({ ...mapOptions, zoom: currentZoom });
-    if (type === "place") {
-      const findPlace = placeData?.find((place) => place._id === id);
-      setPlaceInfo(findPlace);
-      return;
-    }
-    if (!id || !studyVoteData || studyVoteData?.participations) return;
-    const findStudy = studyVoteData && findStudyByPlaceId(studyVoteData, id);
-    const detailInfo = getDetailInfo(findStudy, userInfo?.uid);
-    setDetailInfo(detailInfo);
+
+    const findPlace = placeData?.find((place) => place._id === id);
+    setPlaceInfo(findPlace);
+    return;
+
+    // if (!id || !studyVoteData || studyVoteData?.participations) return;
+    // const findStudy = studyVoteData && findStudyByPlaceId(studyVoteData, id);
+    // const detailInfo = getDetailInfo(findStudy, userInfo?.uid);
+    // setDetailInfo(detailInfo);
   };
 
-  const myStudy = findMyStudyByUserId(studyVoteData, userInfo?._id);
+  // const myStudy = findMyStudyByUserId(studyVoteData, userInfo?._id);
 
   const handleMapClick = () => {
     if (isGuest) {
@@ -140,12 +111,16 @@ function StudyPageMap({
         >
           <StudyMapTopNav
             handleLocationRefetch={() => {
-              currentLocation ? setCenterLocation(currentLocation) : null;
+              currentLocation
+                ? setMapOptions((old) => ({
+                    ...old,
+                    center: new naver.maps.LatLng(currentLocation.lat, currentLocation.lon),
+                  }))
+                : null;
             }}
             isMapExpansion={isMapExpansion}
             onClose={() => {
               setIsMapExpansion(false);
-              setIsPlaceMap(false);
             }}
             isCafePlace={!!placeData}
           />
@@ -155,23 +130,23 @@ function StudyPageMap({
             markersOptions={markersOptions}
             resizeToggle={isMapExpansion}
             handleMarker={handleMarker}
-            circleCenter={
-              isMapExpansion && !placeData
-                ? studyVoteData?.results?.map((props) => props?.center)
-                : null
-            }
+            // circleCenter={
+            //   isMapExpansion && !placeData
+            //     ? studyVoteData?.results?.map((props) => props?.center)
+            //     : null
+            // }
           />
           {/* {!studyVoteData?.results && <MainLoadingAbsolute />} */}
         </Box>
       </Slide>
-      {detailInfo && (
+      {/* {detailInfo && (
         <StudyInfoDrawer
           date={date}
           detailInfo={detailInfo}
           setDetailInfo={setDetailInfo}
           myStudy={myStudy}
         />
-      )}
+      )} */}
       {placeInfo && <PlaceInfoDrawer placeInfo={placeInfo} onClose={() => setPlaceInfo(null)} />}
     </>
   );

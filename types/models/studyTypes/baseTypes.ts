@@ -65,6 +65,6 @@ export type StudyStatus = "open" | RealTimesStatus;
 
 export type RealTimesStatus = "free" | "solo" | "cancel";
 
-interface ParticipationUser extends UserSimpleInfoProps {
+export interface ParticipationUser extends UserSimpleInfoProps {
   isLocationSharingDenided?: boolean;
 }

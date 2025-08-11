@@ -1,24 +1,25 @@
-import "swiper/css";
-
+import { Box, Flex, ModalHeader } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
+import type { Swiper as SwiperType } from "swiper";
+import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 
+import IconButton from "../../components/atoms/buttons/IconButton";
 import Calendar from "../../components/molecules/MonthCalendar";
-import { useStudyDailyVoteCntQuery } from "../../hooks/study/queries";
 import { handleChangeDate } from "../../pageTemplates/home/study/studyController/StudyController";
 import { IModal } from "../../types/components/modalTypes";
 import { DispatchString } from "../../types/hooks/reactTypes";
-import { ActiveLocation } from "../../types/services/locationTypes";
-import { convertLocationLangTo } from "../../utils/convertUtils/convertDatas";
 import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 import { IFooterOptions, IPaddingOptions, ModalLayout } from "../Modals";
 
 interface DateCalendarModalProps extends IModal {
-  date: string;
+  date: string; // YYYY-MM-DD
   setDate: DispatchString;
 }
+
+const INITIAL_SLIDE = 4; // 현재-4 ~ 현재+1 중 "현재" 위치
 
 function DateCalendarModal({
   date: selectedDate,
@@ -27,112 +28,143 @@ function DateCalendarModal({
 }: DateCalendarModalProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const newSearchParams = new URLSearchParams(searchParams);
+  const newSearchParams = useMemo(() => new URLSearchParams(searchParams), [searchParams]);
 
-  const location = searchParams.get("location");
-
+  // 표기 기준 월 & 실제 선택 날짜
+  const [standardDate, setStandardDate] = useState(dayjs(selectedDate));
   const [date, setDate] = useState(dayjs(selectedDate));
-  const [calendarArr, setCalendarArr] = useState([
-    date.subtract(3, "month"),
-    date.subtract(2, "month"),
-    date.subtract(1, "month"),
-    date,
-    date.add(1, "month"),
-    date.add(2, "month"),
-    date.add(3, "month"),
-  ]);
 
-  const [initialLoad, setInitialLoad] = useState(true);
-  const [pageIdx, setPageIdx] = useState(3);
-
-  const { data: voteCntArr } = useStudyDailyVoteCntQuery(
-    convertLocationLangTo(location as ActiveLocation, "kr"),
-    calendarArr[pageIdx].startOf("month"),
-    calendarArr[pageIdx].endOf("month"),
-    {
-      enabled: !!location,
-    },
+  // 현재 기준 6개월(현재-4 ~ 현재+1)
+  const monthArr = useMemo(
+    () =>
+      Array.from({ length: 6 }, (_, i) =>
+        dayjsToStr(dayjs().clone().subtract(4, "month").add(i, "month")),
+      ),
+    [],
   );
 
-  const onClick = (dateStr: string) => {
+  const [initialLoad, setInitialLoad] = useState(true);
+  const [activeIdx, setActiveIdx] = useState(INITIAL_SLIDE);
+
+  // Swiper 제어용 ref
+  const swiperRef = useRef<SwiperType | null>(null);
+
+  const onDayClick = useCallback((dateStr: string) => {
     setDate(dayjs(dateStr));
-  };
+  }, []);
 
-  const handleSliderChange = (swiper) => {
-    setPageIdx(swiper.realIndex);
-    if (initialLoad) {
-      setInitialLoad(false);
-      return;
-    }
-
-    if (swiper.activeIndex < swiper.previousIndex) {
-      if (!calendarArr.map((day) => day.month()).includes(date.subtract(2, "month").month())) {
-        setCalendarArr((old) => [date.subtract(2, "month"), ...old]);
+  const handleSliderChange = useCallback(
+    (sw: SwiperType) => {
+      if (initialLoad) {
+        setInitialLoad(false);
+        return;
       }
-    }
-    if (swiper.activeIndex > swiper.previousIndex) {
-      if (!calendarArr.map((day) => day.month()).includes(date.add(2, "month").month())) {
-        setCalendarArr((old) => [...old, date.add(2, "month")]);
-      }
-    }
-  };
+      const idx = sw.activeIndex;
+      setActiveIdx(idx);
+      setStandardDate(dayjs(monthArr[idx]));
+    },
+    [initialLoad, monthArr],
+  );
 
-  const moveDate = () => {
-    if (selectedDate === dayjsToStr(date)) {
+  const moveDate = useCallback(() => {
+    const picked = dayjsToStr(date);
+    if (selectedDate === picked) {
       setIsModal(false);
       return;
     }
-
     const newDate = handleChangeDate(date, "date", date.date());
-
     changeDate(newDate);
-
     newSearchParams.set("date", newDate);
     router.replace(`/studyPage?${newSearchParams.toString()}`, { scroll: false });
     setIsModal(false);
-  };
+  }, [changeDate, date, newSearchParams, router, selectedDate, setIsModal]);
 
-  const footerOptions: IFooterOptions = {
-    main: {
-      text: "날짜 이동",
-      func: moveDate,
-    },
-  };
+  const goPrev = useCallback(() => swiperRef.current?.slidePrev(), []);
+  const goNext = useCallback(() => swiperRef.current?.slideNext(), []);
 
-  const paddingOptions: IPaddingOptions = {
-    footer: 0,
-  };
+  const footerOptions: IFooterOptions = { main: { text: "날짜 이동", func: moveDate } };
+  const paddingOptions: IPaddingOptions = { footer: 0 };
+
+  const Header = () => (
+    <ModalHeader
+      fontWeight={700}
+      px={6}
+      pt={4}
+      pb={3}
+      fontSize="16px"
+      color="var(--gray-800)"
+      textAlign="center"
+    >
+      <Flex justify="space-between" align="center">
+        <IconButton onClick={goPrev} isDisabled={activeIdx === 0} aria-label="이전 달">
+          <LeftIcon />
+        </IconButton>
+        <Box pt="2px" lineHeight="32px" fontWeight={500}>
+          {dayjsToFormat(standardDate, "YYYY년 M월")}
+        </Box>
+        <IconButton
+          onClick={goNext}
+          isDisabled={activeIdx === monthArr.length - 1}
+          aria-label="다음 달"
+        >
+          <RightIcon />
+        </IconButton>
+      </Flex>
+    </ModalHeader>
+  );
 
   return (
     <ModalLayout
+      headerOptions={{ children: <Header /> }}
       footerOptions={footerOptions}
       paddingOptions={paddingOptions}
-      title={dayjsToFormat(calendarArr[pageIdx], "YYYY년 M월")}
       setIsModal={setIsModal}
+      isCloseButton={false}
     >
       <Swiper
-        style={{
-          width: "100%",
-          height: "auto",
-        }}
+        style={{ width: "100%", height: "auto" }}
         slidesPerView={1}
-        spaceBetween="40px"
-        initialSlide={pageIdx}
+        spaceBetween={40}
+        initialSlide={INITIAL_SLIDE}
+        onSwiper={(sw) => {
+          swiperRef.current = sw;
+          setActiveIdx(sw.activeIndex);
+          setStandardDate(dayjs(monthArr[sw.activeIndex]));
+        }}
         onSlideChange={handleSliderChange}
       >
-        {calendarArr.map((cal, idx) => (
-          <SwiperSlide key={idx}>
-            <Calendar
-              standardDate={cal}
-              selectedDate={date}
-              voteCntArr={voteCntArr}
-              func={onClick}
-            />
+        {monthArr.map((cal, idx) => (
+          <SwiperSlide key={cal}>
+            <Calendar standardDate={cal} selectedDate={dayjsToStr(date)} func={onDayClick} />
           </SwiperSlide>
         ))}
       </Swiper>
     </ModalLayout>
   );
 }
+
+const LeftIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    height="20"
+    viewBox="0 -960 960 960"
+    width="20"
+    fill="var(--gray-500)"
+  >
+    <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" />
+  </svg>
+);
+
+const RightIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    height="20"
+    viewBox="0 -960 960 960"
+    width="20"
+    fill="var(--gray-500)"
+  >
+    <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" />
+  </svg>
+);
 
 export default DateCalendarModal;

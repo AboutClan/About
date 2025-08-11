@@ -26,3 +26,4 @@ export interface VoteCntProps {
   value: number;
   totalValue?: number;
 }
+
