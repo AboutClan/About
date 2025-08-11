@@ -1,5 +1,5 @@
 export function Temp() {
-  return null
+  return null;
 }
 
 // import { Box, Button, Flex } from "@chakra-ui/react";
@@ -38,7 +38,7 @@ export function Temp() {
 // import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 // import { getDistanceFromLatLonInKm, getRandomIdx } from "../../utils/mathUtils";
 // import { iPhoneNotchSize } from "../../utils/validationUtils";
-// import VoteDrawerPlaceDrawer from "./voteDrawer/StudyPlaceDrawer";
+// import VoteDrawerPlaceDrawer from "./voteDrawer/StudyOpenDrawer";
 // export interface VoteDrawerItemProps {
 //   place: StudyPlaceProps;
 //   voteCnt: number;

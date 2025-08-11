@@ -8,19 +8,31 @@ import { BottomFlexDrawerOptions } from "../../../components/organisms/drawer/Bo
 import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import SearchLocation from "../../../components/organisms/SearchLocation";
 import StudyVoteTimeRulletDrawer from "../../../components/services/studyVote/StudyVoteTimeRulletDrawer";
+import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
+import { useRealtimeVoteMutation } from "../../../hooks/realtime/mutations";
 import { KakaoLocationProps } from "../../../types/externals/kakaoLocationSearch";
 import { RealTimeVoteProps } from "../../../types/models/studyTypes/requestTypes";
-import { IStudyVoteTime, StudyVoteProps } from "../../../types/models/studyTypes/studyInterActions";
+import { IStudyVoteTime } from "../../../types/models/studyTypes/studyInterActions";
 
 interface StudyPlaceDrawerProps {
   onClose: () => void;
-  date: string;
-  handleStudyVote: (voteData: StudyVoteProps | RealTimeVoteProps) => void;
+  // date: string;
+  // handleStudyVote: (voteData: StudyVoteProps | RealTimeVoteProps) => void;
 }
 
-function StudyPlaceDrawer({ onClose, date, handleStudyVote }: StudyPlaceDrawerProps) {
+function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
+  const resetStudy = useResetStudyQuery();
   const toast = useToast();
+
+  const { mutate: handleStudyVote } = useRealtimeVoteMutation(date, {
+    onSuccess() {
+      // toast("success", "참여가 완료되었습니다. 출석 인증도 잊지 마세요!");
+      toast("success", "스터디가 개설되었습니다.");
+      resetStudy();
+      onClose();
+    },
+  });
 
   const [placeInfo, setPlaceInfo] = useState<KakaoLocationProps>({
     place_name: "",
@@ -114,4 +126,4 @@ function StudyPlaceDrawer({ onClose, date, handleStudyVote }: StudyPlaceDrawerPr
   );
 }
 
-export default StudyPlaceDrawer;
+export default StudyOpenDrawer;
