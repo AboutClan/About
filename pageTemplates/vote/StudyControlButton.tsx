@@ -2,7 +2,7 @@ import { ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import ControlButton from "../../components/ControlButton";
 import {
@@ -14,10 +14,7 @@ import {
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudyVoteMutation } from "../../hooks/study/mutations";
-import { CoordinatesProps } from "../../types/common";
-import { StudyMergeResultProps } from "../../types/models/studyTypes/derivedTypes";
 import { MyStudyStatus } from "../../types/models/studyTypes/helperTypes";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
 import StudyControlDrawer from "../study/modals/StudyControlDrawer";
 
 export const UNMATCHED_POP_UP_STORAGE = "unmatchedPopUpStorage";
@@ -29,10 +26,7 @@ interface StudyControlButtonProps {
   // unmatchedUsers: string[];
 }
 
-function StudyControlButton({
-  date,
-
-}: StudyControlButtonProps) {
+function StudyControlButton({ date }: StudyControlButtonProps) {
   const toast = useToast();
   const resetStudy = useResetStudyQuery();
   const { data: session } = useSession();
@@ -103,7 +97,6 @@ function StudyControlButton({
       />
       {isModal && (
         <StudyControlDrawer
-          date={date}
           // studyResults={studyResults}
           // currentLocation={currentLocation}
           onClose={() => setIsModal(false)}

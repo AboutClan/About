@@ -45,7 +45,7 @@ export const setStudyWeekData = (studyWeekData: StudyOneDayProps[] = []): StudyS
     (acc, oneDay) => {
       const { date, participations = [], realTimes, results = [] } = oneDay;
       // 1) 참여 내역
-      acc.participations.push(...participations);
+      acc.participations.push(...participations.map((par) => ({ date: oneDay.date, study: par })));
       // 2) 실시간: solo / open 한 번에 분리
       if (realTimes?.userList?.length) {
         const { soloUsers, openUsers } = realTimes.userList.reduce(

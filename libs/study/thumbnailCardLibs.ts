@@ -34,7 +34,7 @@ export const setStudyThumbnailCard = (
             _id: "",
           },
           participants: Array.from(
-            new Map(participations.map((par) => [par.user._id, par.user])).values(),
+            new Map(participations.map((par) => [par.study.user._id, par.study.user])).values(),
           ),
           url: `/study/participations/${date}`,
           status: "recruiting",

@@ -95,21 +95,13 @@ function DateCalendarModal({
       color="var(--gray-800)"
       textAlign="center"
     >
-      <Flex justify="space-between" align="center">
-        <IconButton onClick={goPrev} isDisabled={activeIdx === 0} aria-label="이전 달">
-          <LeftIcon />
-        </IconButton>
-        <Box pt="2px" lineHeight="32px" fontWeight={500}>
-          {dayjsToFormat(standardDate, "YYYY년 M월")}
-        </Box>
-        <IconButton
-          onClick={goNext}
-          isDisabled={activeIdx === monthArr.length - 1}
-          aria-label="다음 달"
-        >
-          <RightIcon />
-        </IconButton>
-      </Flex>
+      <CalendarHeader
+        leftDisabled={activeIdx === 0}
+        rightDisabled={activeIdx === monthArr.length - 1}
+        goPrev={goPrev}
+        goNext={goNext}
+        date={dayjsToStr(standardDate)}
+      />
     </ModalHeader>
   );
 
@@ -135,13 +127,41 @@ function DateCalendarModal({
       >
         {monthArr.map((cal, idx) => (
           <SwiperSlide key={cal}>
-            <Calendar standardDate={cal} selectedDate={dayjsToStr(date)} func={onDayClick} />
+            <Calendar standardDate={cal} selectedDates={[dayjsToStr(date)]} func={onDayClick} />
           </SwiperSlide>
         ))}
       </Swiper>
     </ModalLayout>
   );
 }
+
+export const CalendarHeader = ({
+  goPrev,
+  goNext,
+  leftDisabled,
+  rightDisabled,
+  date,
+}: {
+  goPrev: () => void;
+  goNext: () => void;
+  leftDisabled: boolean;
+  rightDisabled: boolean;
+  date: string;
+}) => {
+  return (
+    <Flex justify="space-between" align="center">
+      <IconButton onClick={goPrev} isDisabled={leftDisabled} aria-label="이전 달">
+        <LeftIcon />
+      </IconButton>
+      <Box pt="2px" fontWeight={500}>
+        {dayjsToFormat(dayjs(date), "YYYY년 M월")}
+      </Box>
+      <IconButton onClick={goNext} isDisabled={rightDisabled} aria-label="다음 달">
+        <RightIcon />
+      </IconButton>
+    </Flex>
+  );
+};
 
 const LeftIcon = () => (
   <svg

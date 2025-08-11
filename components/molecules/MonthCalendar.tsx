@@ -5,15 +5,31 @@ import { dayjsToStr, getCalendarDates } from "../../utils/dateTimeUtils";
 import DatePointButton from "./DatePointButton";
 
 interface CalendarProps {
-  selectedDate: string;
   standardDate: string;
+  selectedDates: string[];
   func: (date: string) => void;
+  passedDisabled?: boolean;
+  mintDateArr: string[];
+
 }
 
 const DAY = ["일", "월", "화", "수", "목", "금", "토"];
 
-function MonthCalendar({ standardDate, selectedDate, func }: CalendarProps) {
-  const calendarArr = getCalendarDates("month", dayjs(standardDate));
+function MonthCalendar({
+  standardDate,
+  selectedDates,
+  func,
+  passedDisabled,
+  mintDateArr,
+  
+}: CalendarProps) {
+  const calendarArr = getCalendarDates(
+    "month",
+    dayjs(standardDate),
+    passedDisabled,
+    mintDateArr,
+   
+  );
 
   return (
     <>
@@ -39,15 +55,16 @@ function MonthCalendar({ standardDate, selectedDate, func }: CalendarProps) {
       <Grid templateColumns="repeat(7,1fr)" rowGap="6px" color="gray.800">
         {calendarArr.map((item, idx) => {
           return (
-            <Box key={idx}>
+            <Flex justify="center" key={idx}>
               <DatePointButton
                 date={item ? dayjsToStr(dayjs(item.date)) : null}
                 func={item ? () => func(dayjsToStr(dayjs(item.date))) : null}
-                isSelected={item && dayjsToStr(dayjs(item.date)) === selectedDate}
+                isSelected={item && selectedDates.includes(dayjsToStr(dayjs(item.date)))}
                 pointType="mint"
-                isDisabled={item?.isDisabled}
+                isDisabled={item?.isDisabled || item?.isMint}
+                isMint={item?.isMint}
               />
-            </Box>
+            </Flex>
           );
         })}
       </Grid>

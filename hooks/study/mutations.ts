@@ -20,6 +20,25 @@ type StudyVoteParam<T> = T extends "post"
   ? DayjsTimeProps
   : void;
 
+export const useStudyVoteArrMutation = (
+  dates: string[],
+  options?: MutationOptions<StudyVoteProps>,
+) =>
+  useMutation<void, AxiosError, StudyVoteProps>((voteInfo) => {
+    const { start, end } = voteInfo;
+    return requestServer<{
+      start: string;
+      end: string;
+      latitude: number;
+      longitude: number;
+      dates: string[];
+    }>({
+      method: "post",
+      url: `vote2/${dates?.[0]}/dateArr`,
+      body: { ...voteInfo, start: start.toISOString(), end: end.toISOString(), dates },
+    });
+  }, options);
+
 export const useStudyVoteMutation = <T extends "post" | "patch" | "delete">(
   voteDate: Dayjs,
   method: T,

@@ -77,9 +77,15 @@ export const getDateWeek = (date: Dayjs) => {
 export interface CalendarDateProps {
   date: string;
   isDisabled: boolean;
+  isMint: boolean;
 }
 
-export const getCalendarDates = (type: "week" | "month", selectedDate: Dayjs) => {
+export const getCalendarDates = (
+  type: "week" | "month",
+  selectedDate: Dayjs,
+  passedDisabled: boolean,
+  mintDateArr: string[],
+) => {
   const calendar: CalendarDateProps[] = [];
 
   if (type === "week") {
@@ -89,6 +95,7 @@ export const getCalendarDates = (type: "week" | "month", selectedDate: Dayjs) =>
       calendar.push({
         date: dayjsToStr(date),
         isDisabled: dayjs().add(6, "day").isAfter(date) ? false : true,
+        isMint: false,
       });
     }
   } else {
@@ -104,7 +111,13 @@ export const getCalendarDates = (type: "week" | "month", selectedDate: Dayjs) =>
       } else {
         calendar.push({
           date: dayjsToStr(current),
-          isDisabled: dayjs().add(6, "day").isAfter(current) ? false : true,
+          isDisabled: dayjs().add(6, "day").isAfter(current)
+            ? passedDisabled && dayjs().subtract(1, "day").isAfter(current)
+              ? true
+              : false
+            : true,
+
+          isMint: mintDateArr.includes(dayjsToStr(current)),
         });
       }
 

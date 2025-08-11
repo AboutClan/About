@@ -5,16 +5,16 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import Slide from "../components/layouts/PageSlide";
-import { useStudyVoteQuery, useStudyWeekQuery } from "../hooks/study/queries";
+import { useStudySetQuery } from "../hooks/custom/StudyHooks";
+import { useStudyVoteQuery } from "../hooks/study/queries";
 import { useUserInfoQuery } from "../hooks/user/queries";
-import { setStudyOneDayData, setStudyWeekData } from "../libs/study/studyConverters";
+import { setStudyOneDayData } from "../libs/study/studyConverters";
 import StudyPageCalendar from "../pageTemplates/studyPage/StudyPageCalendar";
 import StudyPageHeader from "../pageTemplates/studyPage/StudyPageHeader";
 import StudyPageMap from "../pageTemplates/studyPage/studyPageMap/StudyPageMap";
 import StudyPagePlaceSection from "../pageTemplates/studyPage/StudyPagePlaceSection";
 import StudyPageRecordBlock from "../pageTemplates/studyPage/StudyPageRecordBlock";
 import StudyControlButton from "../pageTemplates/vote/StudyControlButton";
-import { StudySetProps } from "../types/models/studyTypes/derivedTypes";
 export default function StudyPage() {
   const router = useRouter();
   const { data: session } = useSession();
@@ -25,18 +25,19 @@ export default function StudyPage() {
 
   const [tab, setTab] = useState<"스터디 참여" | "카공 지도">("스터디 참여");
   const [date, setDate] = useState<string>(null);
-  const [studySet, setStudySet] = useState<StudySetProps>();
 
-  const isPassedDate = date ? dayjs(date).isBefore(dayjs(), "day") : false;
+  const todayStart = dayjs().startOf("day");
+  const dateStart = date ? dayjs(date).startOf("day") : null;
+
+  const isPassedDate = !!dateStart && dateStart.isBefore(todayStart);
 
   const { data: userInfo } = useUserInfoQuery();
+  const { studySet } = useStudySetQuery(date, !!date && !isPassedDate);
 
-  const { data: weekData } = useStudyWeekQuery(date, { enabled: !isPassedDate && !!date });
-  const { data: oneDayData } = useStudyVoteQuery(date, {
-    enabled: !!isPassedDate,
+  const { data: passedStudyData } = useStudyVoteQuery(date, {
+    enabled: !!date && !!isPassedDate,
   });
 
-  console.log("wee", weekData, isPassedDate);
   useEffect(() => {
     if (!dateParam || dateParam === date) return;
     setDate(dateParam);
@@ -44,25 +45,11 @@ export default function StudyPage() {
 
   useEffect(() => {
     if (!date || dateParam === date) return;
-    setStudySet(null);
+
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.set("date", date);
     router.replace(`/studyPage?${newSearchParams.toString()}`, { scroll: false });
   }, [date]);
-
-  useEffect(() => {
-    if (!weekData || isPassedDate) return;
-
-    const mergedStudyWeekData = setStudyWeekData(weekData);
-    setStudySet(mergedStudyWeekData);
-  }, [weekData]);
-
-  useEffect(() => {
-    if (!oneDayData || !isPassedDate) return;
-
-    const mergedStudyWeekData = setStudyOneDayData(oneDayData);
-    setStudySet(mergedStudyWeekData);
-  }, [oneDayData]);
 
   console.log("studySet", studySet);
 
@@ -143,7 +130,11 @@ export default function StudyPage() {
         {tab === "스터디 참여" ? (
           <>
             <StudyPageCalendar date={date} setDate={setDate} />
-            <StudyPagePlaceSection studySet={studySet} date={date} setDate={setDate} />
+            <StudyPagePlaceSection
+              studySet={isPassedDate ? setStudyOneDayData(passedStudyData) : studySet}
+              date={date}
+              setDate={setDate}
+            />
             {/* <StudyPageSettingBlock /> */}
             <StudyPageRecordBlock userInfo={userInfo} />
             {/* <StudyPageAddPlaceButton setIsPlaceMap={setIsPlaceMap} /> */}
@@ -155,6 +146,7 @@ export default function StudyPage() {
       {!isGuest && (
         <Box mb={20} mt={5}>
           <StudyControlButton
+      
             // studyResults={!studyVoteData ? setStudyWeekData(studyVoteData) : []}
             date={date}
             // myVoteStatus={myVoteStatus}

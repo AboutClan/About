@@ -10,6 +10,8 @@ import {
 } from "../../../components/Icons/ControlButtonIcon";
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
 import { useToast } from "../../../hooks/custom/CustomToast";
+import { useStudySetQuery } from "../../../hooks/custom/StudyHooks";
+import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import StudyApplyDrawer from "../../vote/voteDrawer/StudyApplyDrawer";
 import StudyOpenDrawer from "../../vote/voteDrawer/StudyOpenDrawer";
@@ -24,7 +26,8 @@ function StudyControlDrawer({ onClose }: StudyControlDrawerProps) {
   const router = useRouter();
   const toast = useToast();
 
-  // const { data: userInfo } = useUserInfoQuery();
+
+  const { data: userInfo } = useUserInfoQuery();
 
   // const [selectedPlaceId, setSelectedPlaceId] = useState(null);
   // const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
@@ -135,6 +138,12 @@ function StudyControlDrawer({ onClose }: StudyControlDrawerProps) {
     },
   ];
 
+  const defaultDates = [];
+
+  // studySet.participations.filter((par) => par.user._id === userInfo?._id).forEach((study) => {
+
+  // })
+
   return (
     <>
       <BottomFlexDrawer
@@ -188,7 +197,12 @@ function StudyControlDrawer({ onClose }: StudyControlDrawerProps) {
         </Link> */}
       </BottomFlexDrawer>
 
-      {drawerType === "apply" && <StudyApplyDrawer onClose={() => setDrawerType(null)} />}
+      {drawerType === "apply" && (
+        <StudyApplyDrawer
+         
+          onClose={() => setDrawerType(null)}
+        />
+      )}
       {drawerType === "open" && <StudyOpenDrawer onClose={() => setDrawerType(null)} />}
       {/* {timeRulletType && (
         <StudyVoteTimeRulletDrawer

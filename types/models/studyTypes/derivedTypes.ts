@@ -8,7 +8,7 @@ import {
 import { PlaceReviewProps } from "./entityTypes";
 
 export interface StudySetProps {
-  participations: StudyParticipationProps[];
+  participations: { date: string; study: StudyParticipationProps }[];
   soloRealTimes: RealTimeMemberProps[];
   openRealTimes: { date: string; study: RealTimesToResultProps }[];
   results: { date: string; study: StudyResultProps }[];
