@@ -127,7 +127,12 @@ function DateCalendarModal({
       >
         {monthArr.map((cal, idx) => (
           <SwiperSlide key={cal}>
-            <Calendar standardDate={cal} selectedDates={[dayjsToStr(date)]} func={onDayClick} />
+            <Calendar
+              standardDate={cal}
+              selectedDates={[dayjsToStr(date)]}
+              func={onDayClick}
+              mintDateArr={[dayjsToStr(dayjs())]}
+            />
           </SwiperSlide>
         ))}
       </Swiper>

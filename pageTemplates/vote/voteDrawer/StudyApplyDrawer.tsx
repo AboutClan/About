@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import PageIntro from "../../../components/atoms/PageIntro";
 import BottomNav from "../../../components/layouts/BottomNav";
@@ -14,19 +14,28 @@ import { useStudySetQuery } from "../../../hooks/custom/StudyHooks";
 import { useStudyVoteArrMutation } from "../../../hooks/study/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { CalendarHeader } from "../../../modals/aboutHeader/DateCalendarModal";
+import { CoordinatesProps } from "../../../types/common";
 import { IStudyVoteTime } from "../../../types/models/studyTypes/studyInterActions";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 
 interface StudyDateDrawerProps {
   onClose: () => void;
+  defaultDate?: string;
+  defaultCoordinates: CoordinatesProps;
+  canChange?: boolean;
   // date: string;
   // handleStudyVote: (voteData: StudyVoteProps | RealTimeVoteProps) => void;
 }
 
-function StudyApplyDrawer({ onClose }: StudyDateDrawerProps) {
+function StudyApplyDrawer({
+  onClose,
+  defaultDate,
+  defaultCoordinates,
+  canChange = false,
+}: StudyDateDrawerProps) {
   const toast = useToast();
   const resetStudy = useResetStudyQuery();
-  const [selectedDates, setSelectedDates] = useState<string[]>([]);
+  const [selectedDates, setSelectedDates] = useState<string[]>(defaultDate ? [defaultDate] : []);
 
   const { data: userInfo } = useUserInfoQuery();
   const { studySet } = useStudySetQuery(dayjsToStr(dayjs()), true);
@@ -36,6 +45,11 @@ function StudyApplyDrawer({ onClose }: StudyDateDrawerProps) {
     studySet.participations
       .filter((par) => par.study.user._id === userInfo?._id)
       .map((par) => par.date);
+
+  useEffect(() => {
+    if (!canChange) return;
+    setSelectedDates((old) => [...old, ...defaultDates]);
+  }, [canChange]);
 
   // useEffect(() => {
   //   if (!defaultDates) return;
@@ -88,8 +102,8 @@ function StudyApplyDrawer({ onClose }: StudyDateDrawerProps) {
       text: "신청 완료",
       func: () => {
         voteDateArr({
-          latitude: userInfo.locationDetail.lat,
-          longitude: userInfo.locationDetail.lon,
+          latitude: defaultCoordinates ? defaultCoordinates.lat : userInfo.locationDetail.lat,
+          longitude: defaultCoordinates ? defaultCoordinates.lon : userInfo.locationDetail.lon,
           start: voteTime.start,
           end: voteTime.end,
         });
@@ -122,15 +136,26 @@ function StudyApplyDrawer({ onClose }: StudyDateDrawerProps) {
           selectedDates={selectedDates}
           func={handleClickDate}
           passedDisabled
-          mintDateArr={defaultDates}
+          mintDateArr={canChange ? [] : defaultDates}
         />
-        <Box as="li" fontSize="12px" lineHeight="20px" mt={3} color="gray.600">
-          <Box as="span" color="mint">
-            민트색
-          </Box>{" "}
-          날짜는 이미 신청중인 스터디입니다.
-        </Box>
-        <BottomNav isSlide={false} text={"스터디 개설"} onClick={handleBottomNav} />
+        {canChange ? (
+          <Box as="li" fontSize="12px" lineHeight="20px" mt={3} color="gray.600">
+            스터디를 취소하는 경우
+            <Box as="span" color="mint">
+              민트색
+            </Box>{" "}
+            날짜를 해제해 주세요.
+          </Box>
+        ) : (
+          <Box as="li" fontSize="12px" lineHeight="20px" mt={3} color="gray.600">
+            <Box as="span" color="mint">
+              민트색
+            </Box>{" "}
+            날짜는 이미 신청중인 스터디입니다.
+          </Box>
+        )}
+
+        <BottomNav isSlide={false} text={"다 음"} onClick={handleBottomNav} />
       </RightDrawer>
       {isTimeDrawer && (
         <StudyVoteTimeRulletDrawer

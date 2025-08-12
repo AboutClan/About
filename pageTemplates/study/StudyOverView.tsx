@@ -8,52 +8,54 @@ import StarRatingReviewBlock from "../../components/molecules/StarRatingReviewBl
 import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import { STUDY_STATUS_TO_BADGE } from "../../constants/studyConstants";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
-import { StudyStatus } from "../../types/models/studyTypes/baseTypes";
+import { StudyTypeStatus } from "../../pages/study/[id]/[date]";
 import { PlaceReviewProps } from "../../types/models/studyTypes/entityTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
 interface IStudyOverview {
-  place: {
+  placeInfo: {
     name: string;
-
     branch: string;
     reviews?: PlaceReviewProps[];
   };
   distance: number;
-  status: StudyStatus | "recruiting" | "expected";
+  studyType: StudyTypeStatus;
+
   isVoting: boolean;
   time: string;
 }
 
 function StudyOverview({
-  place: { name, branch, reviews },
+  placeInfo: { name, branch, reviews },
   distance,
-  status,
+  studyType,
   time,
-  isVoting,
 }: IStudyOverview) {
   const typeToast = useTypeToast();
-  const { text: badgeText, colorScheme: badgeColorScheme } = STUDY_STATUS_TO_BADGE[status];
+  const { text: badgeText, colorScheme: badgeColorScheme } = STUDY_STATUS_TO_BADGE[studyType];
   const infoBoxPropsArr: InfoBoxProps[] = [
     {
-      category: status === "recruiting" || status === "expected" ? "매칭 시간" : "영업 시간",
+      category:
+        studyType === "participations" || studyType === "expectedResult"
+          ? "매칭 시간"
+          : "영업 시간",
       text: time !== "unknown" ? time : "정보 없음",
     },
     {
-      category: status === "solo" || status === "free" ? "영업 장소" : "오픈채팅방 링크",
+      category: studyType === "soloRealTimes" ? "공부 장소" : "오픈채팅방 링크",
       rightChildren:
-        status === "solo" || status === "free" ? (
+        studyType === "soloRealTimes" ? (
           "자유 카페 / 스터디 카페"
         ) : (
-          <BlurredLink isBlur={!isVoting} url="https://open.kakao.com/o/g6Wc70sh" />
+          <BlurredLink isBlur={true} url="https://open.kakao.com/o/g6Wc70sh" />
         ),
     },
   ];
- 
+
   return (
     <>
       <Box mx={5} mt={4}>
-        {status === "open" || status === "expected" ? (
+        {true ? (
           <>
             <Box color="var(--gray-500)" fontSize="12px">
               <Badge mr={2} size="lg" colorScheme={badgeColorScheme}>

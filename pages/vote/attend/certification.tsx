@@ -1,6 +1,6 @@
 import { Box, Button } from "@chakra-ui/react";
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -22,6 +22,7 @@ function Certification() {
   const toast = useToast();
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
+  const type = searchParams.get("type");
 
   const { data: studyVoteData } = useStudyVoteQuery(date, { enabled: !!date });
 
@@ -98,7 +99,10 @@ function Certification() {
       <Box minH="calc(100dvh - var(--header-h))" bgColor="white">
         <Header title="" isBorder={false} />
         <Slide>
-          <PageIntro main={{ first: "출석 인증하기" }} sub="공부 사진을 인증해 주세요" />
+          <PageIntro
+            main={{ first: type === "solo" ? "개인 스터디 인증" : "출석 인증하기" }}
+            sub="공부 사진을 인증해 주세요"
+          />
           <ImageUploadInput setImageUrl={setImage} />
           <Box mb={3}>
             <SectionTitle text="현재 장소" isActive={isActive}>

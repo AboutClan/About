@@ -3,14 +3,9 @@ import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import {
-  StudyCheckIcon,
-  StudySelectIcon,
-  StudyUserCheckIcon,
-} from "../../../components/Icons/ControlButtonIcon";
+import { StudyUserCheckIcon } from "../../../components/Icons/ControlButtonIcon";
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
 import { useToast } from "../../../hooks/custom/CustomToast";
-import { useStudySetQuery } from "../../../hooks/custom/StudyHooks";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import StudyApplyDrawer from "../../vote/voteDrawer/StudyApplyDrawer";
@@ -25,7 +20,6 @@ interface StudyControlDrawerProps {
 function StudyControlDrawer({ onClose }: StudyControlDrawerProps) {
   const router = useRouter();
   const toast = useToast();
-
 
   const { data: userInfo } = useUserInfoQuery();
 
@@ -117,14 +111,14 @@ function StudyControlDrawer({ onClose }: StudyControlDrawerProps) {
   }[] = [
     {
       text: "스터디 신청",
-      icon: <StudyCheckIcon />,
+      icon: <StudyApplyIcon />,
       func: () => {
         setDrawerType("apply");
       },
     },
     {
       text: "스터디 개설",
-      icon: <StudySelectIcon />,
+      icon: <StudyOpenIcon />,
       func: () => {
         setDrawerType("open");
       },
@@ -133,7 +127,7 @@ function StudyControlDrawer({ onClose }: StudyControlDrawerProps) {
       text: " 실시간 공부 인증",
       icon: <StudyUserCheckIcon color="gray" />,
       func: () => {
-        router.push(`/vote/attend/certification?date=${dayjsToStr(dayjs())}`);
+        router.push(`/vote/attend/certification?date=${dayjsToStr(dayjs())}&type=solo`);
       },
     },
   ];
@@ -197,12 +191,7 @@ function StudyControlDrawer({ onClose }: StudyControlDrawerProps) {
         </Link> */}
       </BottomFlexDrawer>
 
-      {drawerType === "apply" && (
-        <StudyApplyDrawer
-         
-          onClose={() => setDrawerType(null)}
-        />
-      )}
+      {drawerType === "apply" && <StudyApplyDrawer onClose={() => setDrawerType(null)} />}
       {drawerType === "open" && <StudyOpenDrawer onClose={() => setDrawerType(null)} />}
       {/* {timeRulletType && (
         <StudyVoteTimeRulletDrawer
@@ -228,5 +217,29 @@ function StudyControlDrawer({ onClose }: StudyControlDrawerProps) {
     </>
   );
 }
+
+const StudyApplyIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    height="20px"
+    viewBox="0 -960 960 960"
+    width="20px"
+    fill="#424242"
+  >
+    <path d="M480-160q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q74 0 126 17t112 52q11 6 16.5 14t5.5 21v418q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-481q15 5 29.5 11t28.5 14q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59Zm140-240v-440l120-40v440l-120 40Z" />
+  </svg>
+);
+
+const StudyOpenIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    height="20px"
+    viewBox="0 -960 960 960"
+    width="20px"
+    fill="#424242"
+  >
+    <path d="M238-200q-100-5-149-42T40-349q0-65 53.5-105.5T242-503q39-3 58.5-12.5T320-542q0-26-29.5-39T193-600l7-80q103 8 151.5 41.5T400-542q0 53-38.5 83T248-423q-64 5-96 23.5T120-349q0 35 28 50.5t94 18.5l-4 80Zm317-30L390-395l345-345q20-20 47.5-20t47.5 20l70 70q20 20 20 47.5T900-575L555-230Zm-196 70q-17 4-30-9t-9-30l31-151 158 158-150 32Z" />
+  </svg>
+);
 
 export default StudyControlDrawer;

@@ -107,54 +107,54 @@ function StudyControlButton({ date }: StudyControlButtonProps) {
   );
 }
 
-const getButtonOptions = (
-  myVoteStatus: MyStudyStatus,
-): { colorScheme: ThemeTypings["colorSchemes"]; rightIcon: JSX.Element; text: string } => {
-  switch (myVoteStatus) {
-    case "voting":
-      return {
-        colorScheme: "red",
-        rightIcon: <StudyUserCancleIcon />,
-        text: "참여 취소",
-      };
-    case "open":
-      return {
-        colorScheme: "orange",
-        rightIcon: <StudyUserCheckIcon color="white" />,
-        text: "출석 체크",
-      };
-    case "free":
-      return {
-        colorScheme: "orange",
-        rightIcon: <StudyUserCheckIcon color="white" />,
-        text: "출석 체크",
-      };
-    case "pending":
-      return {
-        colorScheme: "mint",
-        rightIcon: <StudyUserIcon />,
-        text: "참여 신청",
-      };
-    case "todayPending":
-      return {
-        colorScheme: "blue",
-        rightIcon: <StudySoloIcon />,
-        text: "스터디 참여",
-      };
-    case "arrived":
-      return {
-        colorScheme: "orange",
-        rightIcon: <StudyUserCheckIcon color="white" />,
-        text: "출석 완료",
-      };
-    case "absenced":
-      return {
-        colorScheme: "red",
-        rightIcon: <StudyUserCancleIcon />,
-        text: "당일 불참",
-      };
-  }
-};
+// const getButtonOptions = (
+//   myVoteStatus: MyStudyStatus,
+// ): { colorScheme: ThemeTypings["colorSchemes"]; rightIcon: JSX.Element; text: string } => {
+//   switch (myVoteStatus) {
+//     case "voting":
+//       return {
+//         colorScheme: "red",
+//         rightIcon: <StudyUserCancleIcon />,
+//         text: "참여 취소",
+//       };
+//     case "open":
+//       return {
+//         colorScheme: "orange",
+//         rightIcon: <StudyUserCheckIcon color="white" />,
+//         text: "출석 체크",
+//       };
+//     case "free":
+//       return {
+//         colorScheme: "orange",
+//         rightIcon: <StudyUserCheckIcon color="white" />,
+//         text: "출석 체크",
+//       };
+//     case "pending":
+//       return {
+//         colorScheme: "mint",
+//         rightIcon: <StudyUserIcon />,
+//         text: "참여 신청",
+//       };
+//     case "todayPending":
+//       return {
+//         colorScheme: "blue",
+//         rightIcon: <StudySoloIcon />,
+//         text: "스터디 참여",
+//       };
+//     case "arrived":
+//       return {
+//         colorScheme: "orange",
+//         rightIcon: <StudyUserCheckIcon color="white" />,
+//         text: "출석 완료",
+//       };
+//     case "absenced":
+//       return {
+//         colorScheme: "red",
+//         rightIcon: <StudyUserCancleIcon />,
+//         text: "당일 불참",
+//       };
+//   }
+// };
 
 const CheckIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">

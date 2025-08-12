@@ -5,15 +5,16 @@ import {
   RealTimesStatus,
   StudyMemberProps,
   StudyOneDayProps,
-  StudyPlaceProps,
+  StudyParticipationProps,
   StudyResultProps,
-  StudyStatus,
+  StudyStatus as StudyStatus2,
   StudyVoteDataProps,
 } from "../../types/models/studyTypes/baseTypes";
 import {
   MergeStudyPlaceProps,
   StudyMergeResultProps,
   StudySetProps,
+  StudyStatus,
 } from "../../types/models/studyTypes/derivedTypes";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
 import { getRandomIdx } from "../../utils/mathUtils";
@@ -26,7 +27,7 @@ export const convertStudyToMergeStudy = (
     : [];
   const mergedResult = [...studyVoteData.results, ...convertedRealTimes].map((result) => ({
     ...result,
-    place: convertMergePlaceToPlace(result.place),
+    place: convertStudyToPlaceInfo(result.place),
     status:
       (result as RealTimesToResultProps)?.status ||
       (!studyVoteData?.participations ? "open" : null),
@@ -37,7 +38,7 @@ export const convertStudyToMergeStudy = (
 
 export interface RealTimesToResultProps extends Omit<StudyResultProps, "place"> {
   place: PlaceInfoProps;
-  status?: StudyStatus;
+  status?: StudyStatus2;
 }
 
 export const setStudyWeekData = (studyWeekData: StudyOneDayProps[] = []): StudySetProps => {
@@ -59,7 +60,7 @@ export const setStudyWeekData = (studyWeekData: StudyOneDayProps[] = []): StudyS
             openUsers: [] as typeof realTimes.userList,
           },
         );
-        acc.soloRealTimes.push(...soloUsers);
+        acc.soloRealTimes.push(...soloUsers.map((study) => ({ date, study })));
         const openGroups = setRealTimesGroup(openUsers);
         acc.openRealTimes.push(...openGroups.map((study) => ({ date, study })));
       }
@@ -83,7 +84,7 @@ export const setStudyOneDayData = (studyOneData: StudyVoteDataProps): StudySetPr
   });
   studyOneData.realTimes.userList.forEach((user) => {
     if (user.status === "solo") {
-      studySet["soloRealTimes"].push(user);
+      studySet["soloRealTimes"].push({ date: studyOneData.date, study: user });
     }
   });
 
@@ -127,7 +128,7 @@ export const setStudyOneDayData = (studyOneData: StudyVoteDataProps): StudySetPr
 
 export interface RealTimesToResultProps extends Omit<StudyResultProps, "place"> {
   place: PlaceInfoProps;
-  status?: StudyStatus;
+  status?: StudyStatus2;
 }
 
 export const setRealTimesGroup = (
@@ -163,12 +164,46 @@ export const setRealTimesGroup = (
   });
 };
 
-export const convertMergePlaceToPlace = (
-  mergePlace: StudyPlaceProps | PlaceInfoProps,
+const STUDY_WAITING_INFO = {
+  name: "스터디 매칭 대기실",
+  branch: "About",
+  address: "위치 선정 중",
+  brand: "",
+  image: STUDY_MAIN_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
+  coverImage: STUDY_COVER_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
+  latitude: null,
+  longitude: null,
+  time: "당일 오전 9시",
+  _id: null,
+  reviews: [],
+};
+
+const STUDY_SOLO_INFO = {
+  name: "개인 스터디 인증",
+  branch: "About",
+  address: "자유 카페 / 스터디 카페",
+  brand: "",
+  image: STUDY_MAIN_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
+  coverImage: STUDY_COVER_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
+
+  latitude: null,
+  longitude: null,
+  time: "하루 공부가 끝나는 순간까지",
+
+  _id: null,
+  reviews: [],
+};
+
+export const convertStudyToPlaceInfo = (
+  study: StudyParticipationProps | RealTimeMemberProps | RealTimesToResultProps | StudyResultProps,
+  studyStatus: StudyStatus,
 ): MergeStudyPlaceProps => {
-  if (!mergePlace) return;
-  const studyPlace = mergePlace as StudyPlaceProps;
-  const realTimePlace = mergePlace as PlaceInfoProps;
+  if (studyStatus === "soloRealTimes") return STUDY_SOLO_INFO;
+  else if (studyStatus === "participations") return STUDY_WAITING_INFO;
+  if (!study) return;
+
+  const studyPlace = (study as StudyResultProps).place;
+  const realTimePlace = (study as RealTimeMemberProps).place;
 
   return {
     name: studyPlace?.fullname || realTimePlace?.name,

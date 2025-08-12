@@ -69,6 +69,7 @@ export function GatherThumbnailCard({
             <Badge
               mr={1}
               size="md"
+              variant="solid"
               colorScheme={
                 gatherType === "event" || gatherType === "official"
                   ? "yellow"

@@ -2,29 +2,26 @@ import { Badge, Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import HighlightButton from "../../components/atoms/HighlightButton";
 import AttendanceBadge from "../../components/molecules/badge/AttendanceBadge";
 import { IProfileCommentCard } from "../../components/molecules/cards/ProfileCommentCard";
 import ProfileCardColumn from "../../components/organisms/ProfileCardColumn";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
-import { useKakaoMultipleLocationQuery } from "../../hooks/external/queries";
 import { useRealTimeCommentMutation } from "../../hooks/realtime/mutations";
 import { useStudyCommentMutation } from "../../hooks/study/mutations";
 import ImageZoomModal from "../../modals/ImageZoomModal";
 import { StudyParticipationUserProps } from "../../pages/study/[id]/[date]";
-import { StudyMemberProps, StudyStatus } from "../../types/models/studyTypes/baseTypes";
+import { StudyMemberProps } from "../../types/models/studyTypes/baseTypes";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 interface IStudyMembers {
   date: string;
   members: StudyMemberProps[] | StudyParticipationUserProps[];
-  status: StudyStatus | "recruiting";
 }
 
-export default function StudyMembers({ date, members, status }: IStudyMembers) {
+export default function StudyMembers({ date, members }: IStudyMembers) {
   const { data: session } = useSession();
   const resetStudy = useResetStudyQuery();
   const typeToast = useTypeToast();
@@ -35,22 +32,22 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
   }>();
   const [locationMapping, setLocationMapping] = useState<{ branch: string; id: string }[]>();
 
-  const { data: locationMappingData } = useKakaoMultipleLocationQuery(
-    members.map((member) => ({
-      lat: member.lat,
-      lon: member.lon,
-      id: member.user._id,
-    })),
-    false,
-    {
-      enabled: !!members,
-    },
-  );
+  // const { data: locationMappingData } = useKakaoMultipleLocationQuery(
+  //   members.map((member) => ({
+  //     lat: member.lat,
+  //     lon: member.lon,
+  //     id: member.user._id,
+  //   })),
+  //   false,
+  //   {
+  //     enabled: !!members,
+  //   },
+  // );
 
-  useEffect(() => {
-    if (!locationMappingData) return;
-    setLocationMapping(locationMappingData);
-  }, [locationMappingData]);
+  // useEffect(() => {
+  //   if (!locationMappingData) return;
+  //   setLocationMapping(locationMappingData);
+  // }, [locationMappingData]);
 
   const { mutate: setRealTimeComment } = useRealTimeCommentMutation(date, {
     onSuccess: () => handleSuccessChange(),
@@ -74,7 +71,7 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
 
   const userCardArr: IProfileCommentCard[] = members.map((member) => {
     const user = member.user;
-    const badgeText = locationMapping?.find((mapping) => mapping?.id === user._id)?.branch;
+    // const badgeText = locationMapping?.find((mapping) => mapping?.id === user._id)?.branch;
     if (status === "recruiting") {
       let month = dayjs(member.date[0]).month();
       return {
@@ -137,11 +134,11 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
             userCardArr={userCardArr}
             hasCommentButton={status === "open" || status === "free"}
           />
-          {isMyStudy && (
+          {/* {isMyStudy && (
             <Box pt={4} pb={2}>
               <HighlightButton text="친구 초대 +" func={() => typeToast("not-yet")} />
             </Box>
-          )}
+          )} */}
         </>
       ) : (
         <Flex

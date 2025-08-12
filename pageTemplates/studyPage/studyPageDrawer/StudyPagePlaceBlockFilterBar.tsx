@@ -44,7 +44,7 @@ function StudyPagePlaceSectionFilterBar({
             type="info"
           />
           <Box as="span" mr="2px" ml={1}>
-            매칭까지 남은 시간:
+          매칭까지 남은 시간:
           </Box>
           <Box as="span" fontWeight="semibold">
             {Math.floor(lastStudyHours / 60)}시간 {Math.floor(lastStudyHours % 60)}분

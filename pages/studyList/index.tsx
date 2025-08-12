@@ -11,45 +11,47 @@ import {
   StudyThumbnailCardProps,
 } from "../../components/molecules/cards/StudyThumbnailCard";
 import { useUserCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
+import { useStudySetQuery } from "../../hooks/custom/StudyHooks";
 import { useStudyVoteQuery } from "../../hooks/study/queries";
-import { setStudyWeekData } from "../../libs/study/studyConverters";
 import {
   setStudyThumbnailCard,
   sortThumbnailCardInfoArr,
 } from "../../libs/study/thumbnailCardLibs";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
+import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 
 export default function StudyList() {
   const { data: session } = useSession();
   const { currentLocation } = useUserCurrentLocation();
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
+  const todayStart = dayjs().startOf("day");
+  const dateStart = date ? dayjs(date).startOf("day") : null;
+
+  const isPassedDate = !!dateStart && dateStart.isBefore(todayStart);
 
   const { data: studyVoteData } = useStudyVoteQuery(date, {
     enabled: !!date,
   });
 
+  const { studySet } = useStudySetQuery(date, !!date && !isPassedDate);
+
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
 
   useEffect(() => {
-    if (!studyVoteData) {
+    if (!studySet) {
       setThumbnailCardinfoArr(null);
       return;
     }
     const getThumbnailCardInfoArr = setStudyThumbnailCard(
       date,
-      studyVoteData?.participations,
-      setStudyWeekData(studyVoteData),
-      studyVoteData?.realTimes?.userList,
-      currentLocation,
-      null,
-      session?.user.id,
+      studySet,
+      date === dayjsToStr(dayjs()) ? session?.user.id : null,
     );
 
     setThumbnailCardinfoArr(
       sortThumbnailCardInfoArr("인원순", getThumbnailCardInfoArr, session?.user.id),
     );
-  }, [studyVoteData, currentLocation, session]);
+  }, [studySet, currentLocation, session]);
 
   return (
     <>

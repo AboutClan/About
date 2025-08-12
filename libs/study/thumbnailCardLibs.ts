@@ -1,7 +1,6 @@
 import dayjs from "dayjs";
 import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
 import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
-import { CoordinatesProps } from "../../types/common";
 import { StudyResultProps } from "../../types/models/studyTypes/baseTypes";
 import { StudySetProps } from "../../types/models/studyTypes/derivedTypes";
 import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
@@ -11,8 +10,7 @@ import { RealTimesToResultProps } from "./studyConverters";
 export const setStudyThumbnailCard = (
   date: string,
   studySet: StudySetProps,
-  currentLocation: CoordinatesProps,
-  locationMapping: { branch: string; id: string }[],
+
   myId: string,
 ): StudyThumbnailCardProps[] => {
   const { participations, openRealTimes, soloRealTimes, results } = studySet;
@@ -36,8 +34,8 @@ export const setStudyThumbnailCard = (
           participants: Array.from(
             new Map(participations.map((par) => [par.study.user._id, par.study.user])).values(),
           ),
-          url: `/study/participations/${date}`,
-          status: "recruiting",
+          url: `/study/participations/${date}?type=participations`,
+          status: "participations",
           isMyStudy: false,
         },
       ]
@@ -56,9 +54,9 @@ export const setStudyThumbnailCard = (
             },
             _id: "",
           },
-          participants: soloRealTimes?.map((par) => par.user),
-          url: `/study/realTime/${date}`,
-          status: "solo",
+          participants: soloRealTimes?.map((par) => par.study.user),
+          url: `/study/realTime/${date}?type=soloRealTimes`,
+          status: "soloRealTimes",
           isMyStudy: false,
         },
       ]
@@ -104,8 +102,8 @@ export const setStudyThumbnailCard = (
           _id: placeInfo._id,
         },
         participants: study1.members.map((att) => att.user),
-        url: `/study/${placeInfo._id}/${data.date}`,
-        status: study1.status,
+        url: `/study/${placeInfo._id}/${data.date}?type=openRealTimes`,
+        status: "openRealTimes",
         isMyStudy: study1.members.map((member) => member.user._id).includes(myId),
       };
     } else {
@@ -125,8 +123,10 @@ export const setStudyThumbnailCard = (
           _id: placeInfo._id,
         },
         participants: study2.members.map((att) => att.user),
-        url: `/study/${placeInfo._id}/${data.date}`,
-        status: data.date === dayjsToStr(dayjs()) ? "open" : "expected",
+        url: `/study/${placeInfo._id}/${data.date}?type=${
+          data.date === dayjsToStr(dayjs()) ? "voteResult" : "expectedResult"
+        }`,
+        status: data.date === dayjsToStr(dayjs()) ? "voteResult" : "expectedResult",
         isMyStudy: study2.members.map((member) => member.user._id).includes(myId),
       };
     }

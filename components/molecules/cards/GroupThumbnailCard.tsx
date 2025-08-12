@@ -84,7 +84,12 @@ export function GroupThumbnailCard({
               {isFree ? "자유 가입" : "승인제"}
             </Box>
           </Box>
-          <Badge mr={1} size="lg" colorScheme={statusToBadgeProps[status].colorScheme}>
+          <Badge
+            mr={1}
+            size="lg"
+            variant="solid"
+            colorScheme={statusToBadgeProps[status].colorScheme}
+          >
             {status === "pending" ? "활동중" : statusToBadgeProps[status].text}
           </Badge>
         </Flex>

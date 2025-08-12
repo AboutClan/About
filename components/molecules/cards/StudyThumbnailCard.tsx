@@ -3,8 +3,8 @@ import Link from "next/link";
 import styled from "styled-components";
 
 import { STUDY_STATUS_TO_BADGE } from "../../../constants/studyConstants";
+import { StudyTypeStatus } from "../../../pages/study/[id]/[date]";
 import { SingleLineText } from "../../../styles/layout/components";
-import { StudyStatus } from "../../../types/models/studyTypes/baseTypes";
 import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { CheckCircleIcon } from "../../Icons/CircleIcons";
 import { LocationDotIcon } from "../../Icons/LocationIcons";
@@ -30,7 +30,7 @@ export interface StudyThumbnailCardProps {
   };
   participants?: UserSimpleInfoProps[];
   url: string;
-  status: StudyStatus | "recruiting" | "expected";
+  status: StudyTypeStatus;
   func?: () => void;
   isMyStudy: boolean;
 }

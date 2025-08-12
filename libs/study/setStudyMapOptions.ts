@@ -4,13 +4,7 @@ import { STUDY_COMMENT_ARR } from "../../constants/settingValue/comment";
 import { StudyInfoProps } from "../../pageTemplates/studyPage/StudyInfoDrawer";
 import { CoordinatesProps } from "../../types/common";
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
-import {
-  RealTimeMemberProps,
-  StudyParticipationProps,
-  StudyPlaceProps,
-  StudyResultProps,
-  StudyStatus,
-} from "../../types/models/studyTypes/baseTypes";
+import { StudyPlaceProps, StudyStatus } from "../../types/models/studyTypes/baseTypes";
 import { StudyMergeResultProps } from "../../types/models/studyTypes/derivedTypes";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomIdx } from "../../utils/mathUtils";
@@ -21,7 +15,7 @@ import {
   getStudyIcon2,
   getVoteLocationIcon,
 } from "./getStudyVoteIcon";
-import { convertMergePlaceToPlace } from "./studyConverters";
+import { convertStudyToPlaceInfo } from "./studyConverters";
 
 export const getDetailInfo = (result: StudyMergeResultProps, myUid: string): StudyInfoProps => {
   const members = result.members;
@@ -38,7 +32,7 @@ export const getDetailInfo = (result: StudyMergeResultProps, myUid: string): Stu
   const findMyInfo = result?.members?.find((who) => who.user.uid === myUid);
   const isPrivate = result?.status !== "open";
 
-  const place = convertMergePlaceToPlace(result.place);
+  const place = convertStudyToPlaceInfo(result.place);
 
   return {
     isPrivate,

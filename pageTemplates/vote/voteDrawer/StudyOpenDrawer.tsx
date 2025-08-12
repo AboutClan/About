@@ -64,7 +64,7 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
       subTitle: "예상 시작 시간과 종료 시간을 선택해 주세요",
     },
     footer: {
-      text: "스터디 개설",
+      text: "개설 완료",
       func: () => {
         const voteData: RealTimeVoteProps = {
           place: {

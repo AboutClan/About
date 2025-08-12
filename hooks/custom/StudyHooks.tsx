@@ -7,6 +7,7 @@ import { findMyStudyByUserId } from "../../libs/study/studySelectors";
 import { StudyMergeResultProps, StudySetProps } from "../../types/models/studyTypes/derivedTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 import {
+  useRealTimeCancelMutation,
   useRealTimeStatusMutation,
   useRealTimeTimeChangeMutation,
   useRealtimeVoteMutation,
@@ -100,6 +101,12 @@ export const useStudyMutations = (date: Dayjs) => {
       resetStudy();
     },
   });
+  const { mutate: realTimeCancel } = useRealTimeCancelMutation(dayjsToStr(date), {
+    onSuccess: () => {
+      typeToast("cancel");
+      resetStudy();
+    },
+  });
 
   return {
     voteStudy: {
@@ -112,7 +119,7 @@ export const useStudyMutations = (date: Dayjs) => {
     realTimeStudy: {
       vote: realTimeVote,
       change: realTimeChange,
-      cancel: realTimeChangeStatus,
+      cancel: realTimeCancel,
     },
   };
 };

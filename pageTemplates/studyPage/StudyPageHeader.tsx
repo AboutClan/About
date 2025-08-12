@@ -1,6 +1,6 @@
 import { Box, Button, chakra, Flex, HTMLChakraProps, shouldForwardProp } from "@chakra-ui/react";
 import { isValidMotionProp, motion, MotionProps } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import IconButton from "../../components/atoms/buttons/IconButton";
 
@@ -11,6 +11,7 @@ import RightDrawer from "../../components/organisms/drawer/RightDrawer";
 import { USER_INFO } from "../../constants/keys/queryKeys";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
+import { useUserInfoQuery } from "../../hooks/user/queries";
 import { RegisterLocationLayout } from "../../pages/register/location";
 import { KakaoLocationProps } from "../../types/externals/kakaoLocationSearch";
 import { DispatchType } from "../../types/hooks/reactTypes";
@@ -26,9 +27,17 @@ function StudyPageHeader({ tab, setTab }: StudyPageHeaderProps) {
   const typeToast = useTypeToast();
   const [modalType, setModalType] = useState<"point" | "location">();
 
+  const { data: userInfo } = useUserInfoQuery();
+
   const [placeInfo, setPlaceInfo] = useState<KakaoLocationProps>();
   const [errorMessage, setErrorMessage] = useState("");
 
+  const location = userInfo?.locationDetail;
+  useEffect(() => {
+    if (!location) return;
+    setPlaceInfo({ place_name: location.text, x: location.lon + "", y: location.lat + "" });
+  }, [location]);
+  console.log(24, userInfo);
   const { mutate: changeLocationDetail } = useUserInfoFieldMutation("locationDetail", {
     onSuccess() {
       typeToast("change");
@@ -95,7 +104,7 @@ function StudyPageHeader({ tab, setTab }: StudyPageHeaderProps) {
             <PointGuideModalButton type="study" />
           </Flex> */}
             <Box position="relative">
-              <IconButton onClick={() => setModalType(null)}>
+              <IconButton onClick={() => setModalType("location")}>
                 <LocationIcon />
               </IconButton>
 

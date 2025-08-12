@@ -67,15 +67,13 @@ function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectio
     const getThumbnailCardInfoArr = setStudyThumbnailCard(
       date,
       studySet,
-      currentLocation,
-      locationMapping || undefined,
       date === dayjsToStr(dayjs()) ? session?.user.id : null,
     );
 
     setThumbnailCardinfoArr(
       sortThumbnailCardInfoArr(sortedOption, getThumbnailCardInfoArr, session?.user.id),
     );
-  }, [studySet, currentLocation, sortedOption, session, locationMapping]);
+  }, [studySet, sortedOption, session]);
 
   const onDragEnd = (panInfo: PanInfo) => {
     const newDate = getNewDateBySwipe(panInfo, date as string);

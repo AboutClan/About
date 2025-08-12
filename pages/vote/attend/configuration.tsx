@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
@@ -38,6 +38,7 @@ function Configuration() {
 
   const date = searchParams.get("date");
   const id = searchParams.get("id");
+  const type = searchParams.get("type");
 
   const resetStudy = useResetStudyQuery();
   const myStudyResult = useMyStudyResult(dayjsToStr(dayjs()));
@@ -89,7 +90,7 @@ function Configuration() {
     currentDayjs = currentDayjs.add(30, "m");
   }
 
-  const isSoloPage = transferStudyAttendance?.status === "solo";
+  const isSoloPage = type === "solo";
   useEffect(() => {
     if (!transferStudyAttendance) return;
     if (isSoloPage) {
@@ -143,7 +144,8 @@ function Configuration() {
 
   const handleSubmit = () => {
     if (attendMessage?.length < 1) {
-      toast("warning", "출석 메세지를 남겨주세요");
+      if (type === "solo") toast("warning", "오늘의 한마디를 남겨주세요!");
+      else toast("warning", "출석 메세지를 남겨주세요");
       return;
     }
 
@@ -184,8 +186,8 @@ function Configuration() {
         <Header title="" isBorder={false} />
         <Slide>
           <PageIntro
-            main={{ first: "출석 인증하기" }}
-            sub="스터디 출석에 필요한 정보를 입력해 주세요"
+            main={{ first: type === "solo" ? "개인 스터디 인증" : "출석 인증하기" }}
+            sub={`${type === "solo" ? "인증" : "출석"}에 필요한 정보를 입력해 주세요`}
           />
           <Box mb={3}>
             <SectionTitle
@@ -230,7 +232,7 @@ function Configuration() {
         </Slide>
       </Box>
       <BottomNav
-        text="출 석"
+        text={type === "solo" ? "인증 완료" : "출석 완료"}
         onClick={handleSubmit}
         isLoading={isLoading1 || isLoading2 || isLoading3}
       />

@@ -1,10 +1,9 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useParams, useSearchParams } from "next/navigation";
+import { useState } from "react";
 
-import { STUDY_COVER_IMAGES } from "../../../../assets/images/studyCover";
-import { STUDY_MAIN_IMAGES } from "../../../../assets/images/studyMain";
 import { MainLoading } from "../../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../../components/layouts/PageSlide";
 import RightDrawer from "../../../../components/organisms/drawer/RightDrawer";
@@ -12,132 +11,114 @@ import StarRatingForm from "../../../../components/organisms/StarRatingForm";
 import { useUserCurrentLocation } from "../../../../hooks/custom/CurrentLocationHook";
 import { useResetStudyQuery } from "../../../../hooks/custom/CustomHooks";
 import { usePointToast } from "../../../../hooks/custom/CustomToast";
+import { useStudySetQuery } from "../../../../hooks/custom/StudyHooks";
 import { usePlaceReviewMutation } from "../../../../hooks/study/mutations";
-import { useStudyVoteQuery, useStudyWeekQuery } from "../../../../hooks/study/queries";
+import { useStudyVoteQuery } from "../../../../hooks/study/queries";
 import { usePointSystemMutation } from "../../../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../../../hooks/user/queries";
-import { convertMergePlaceToPlace } from "../../../../libs/study/studyConverters";
 import {
-  findMyStudyByUserId,
-  findMyStudyInfo,
-  findStudyByPlaceId,
-} from "../../../../libs/study/studySelectors";
+  convertStudyToPlaceInfo,
+  RealTimesToResultProps,
+} from "../../../../libs/study/studyConverters";
 import StudyAddressMap from "../../../../pageTemplates/study/StudyAddressMap";
 import StudyCover from "../../../../pageTemplates/study/StudyCover";
 import StudyDateBar from "../../../../pageTemplates/study/StudyDateBar";
 import StudyHeader from "../../../../pageTemplates/study/StudyHeader";
 import StudyMembers from "../../../../pageTemplates/study/StudyMembers";
+import StudyNavigation from "../../../../pageTemplates/study/StudyNavigation";
 import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
 import StudyTimeBoard from "../../../../pageTemplates/study/StudyTimeBoard";
 import { CoordinatesProps } from "../../../../types/common";
-import { ParticipationUser, StudyMemberProps } from "../../../../types/models/studyTypes/baseTypes";
+import {
+  ParticipationUser,
+  StudyMemberProps,
+  StudyResultProps,
+} from "../../../../types/models/studyTypes/baseTypes";
+import { StudySetProps, StudyStatus } from "../../../../types/models/studyTypes/derivedTypes";
 import { PlaceReviewProps } from "../../../../types/models/studyTypes/entityTypes";
-import { getDistanceFromLatLonInKm, getRandomIdx } from "../../../../utils/mathUtils";
+import { IUser } from "../../../../types/models/userTypes/userInfoTypes";
 import { iPhoneNotchSize } from "../../../../utils/validationUtils";
-
 export interface StudyParticipationUserProps {
   date: string[];
   user: ParticipationUser;
   coordinates: CoordinatesProps;
 }
 
+export type StudyTypeStatus =
+  | "participations"
+  | "soloRealTimes"
+  | "openRealTimes"
+  | "expectedResult"
+  | "voteResult";
+
+export type StudyType = "participations" | "soloRealTimes" | "openRealTimes" | "results";
+
+export type StudySetItem = StudySetProps[keyof StudySetProps][number];
+
 export default function Page() {
   const { data: session } = useSession();
+  const searchParams = useSearchParams();
   const { id, date } = useParams<{ id: string; date: string }>() || {};
   const { currentLocation } = useUserCurrentLocation();
   const isGuest = session?.user.role === "guest";
+  const type = searchParams.get("type") as StudyTypeStatus;
 
-  const isParticipationPage = id === "participations";
-  const isRealTimePage = id === "soloRealTimes";
+  const todayStart = dayjs().startOf("day");
+  const dateStart = date ? dayjs(date).startOf("day") : null;
 
+  const isPassedDate = !!dateStart && dateStart.isBefore(todayStart);
+
+  const { data: userInfo } = useUserInfoQuery();
   const { data: studyVoteData } = useStudyVoteQuery(date, {
-    enabled: !!date && !isParticipationPage,
+    enabled: !!date && !!isPassedDate,
   });
 
-  const { data: weekData } = useStudyWeekQuery(date, { enabled: !!date && !!isParticipationPage });
+  const { studySet } = useStudySetQuery(date, !!date && !isPassedDate);
 
-  const isExpectedPage = !!(id !== "participations" && studyVoteData?.participations);
+  const studyType: StudyStatus =
+    type === "expectedResult" || type === "voteResult" ? "results" : type;
+
+  const studyData: StudySetItem[] = studySet && studySet[studyType];
+  console.log(55, studyData);
+  // const isExpectedPage = !!(id !== "participations" && studyVoteData?.participations);
 
   const [isReviewModal, setIsReviewModal] = useState(false);
   const [isReviewButton, setIsReviewButton] = useState(false);
 
-  const findStudy =
-    studyVoteData && id !== "participations" && findStudyByPlaceId(studyVoteData, id);
-  console.log("findStudy", studyVoteData, weekData, findStudy);
-  const findMyStudy = findMyStudyByUserId(studyVoteData, session?.user.id);
+  const findStudyArr =
+    studyType === "results" || studyType === "openRealTimes"
+      ? (studyData?.filter((study) => study.date === date) as (
+          | { date: string; study: RealTimesToResultProps }
+          | { date: string; study: StudyResultProps }
+        )[])
+      : null;
 
-  const myStudy = findMyStudyInfo(findStudy, session?.user.id);
+  const findStudy = findStudyArr?.find((study) => study?.study?.place._id === id)?.study;
 
-  const placeInfo =
-    convertMergePlaceToPlace(findStudy?.place) ||
-    (isParticipationPage
-      ? {
-          name: "스터디 매칭 대기실",
-          branch: "About",
-          address: "위치 선정 중",
-          brand: "",
-          image: STUDY_MAIN_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
-          coverImage: STUDY_COVER_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
+  // const findMyStudy = findMyStudyByUserId(studyVoteData, session?.user.id);
 
-          latitude: null,
-          longitude: null,
-          time: "당일 오전 9시",
-          _id: null,
-          reviews: [],
-        }
-      : {
-          name: "개인 스터디 인증",
-          branch: "About",
-          address: "자유 카페 / 스터디 카페",
-          brand: "",
-          image: STUDY_MAIN_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
-          coverImage: STUDY_COVER_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
+  // const myStudy = findMyStudyInfo(findStudy, session?.user.id);
 
-          latitude: null,
-          longitude: null,
-          time: "하루 공부가 끝나는 순간까지",
+  const placeInfo = convertStudyToPlaceInfo(findStudy, studyType);
 
-          _id: null,
-          reviews: [],
-        });
-
-  const distance =
-    currentLocation &&
-    getDistanceFromLatLonInKm(
-      currentLocation.lat,
-      currentLocation.lon,
-      placeInfo.latitude,
-      placeInfo.longitude,
-    );
-
-  const participationMap = new Map();
-
-  weekData?.forEach((data) => {
-    if (data?.participations) {
-      data.participations.forEach((par) => {
-        const userId = par.user._id;
-        if (participationMap.has(userId)) {
-          // 이미 있으면 날짜만 추가
-          participationMap.get(userId).date.push(data.date);
-        } else {
-          // 새로 추가
-          participationMap.set(userId, {
-            date: [data.date],
-            user: par.user,
-            coordinates: { lat: par.latitude, lon: par.longitude },
-          });
-        }
-      });
+  const members: StudyMemberProps[] | StudyParticipationUserProps[] = (() => {
+    switch (studyType) {
+      case "openRealTimes":
+      case "results":
+        return (findStudy as RealTimesToResultProps | StudyResultProps)?.members ?? [];
+      case "participations":
+        return getParticipationMembers(studyData as StudySetProps["participations"]);
+      case "soloRealTimes":
+        return (studyData as StudySetProps["soloRealTimes"]).map((s) => s.study);
+      default:
+        return [];
     }
-  });
-  const participations: StudyParticipationUserProps[] = Array.from(participationMap.values());
-  console.log(77, participations);
+  })();
 
-  const members: StudyMemberProps[] | StudyParticipationUserProps[] =
-    findStudy?.members || participations;
   // (isParticipationPage
-  //   ? studyVoteData?.participations?.map((par) => ({
-  //       user: par.user,
+  //   ? studyVoteDat.map((par) => ({
+
+  //       user: p. .user,
   //       lat: par.latitude,
   //       lon: par.longitude,
   //     }))
@@ -147,55 +128,57 @@ export default function Page() {
   console.log(54, members);
   // const absences = studyVoteData?.participations.find((par) => par.place._id === id)?.absences;
 
-  const myVoteInfo = studyVoteData?.participations?.find(
-    (who) => who.user._id === session?.user.id,
-  );
+  // const myVoteInfo = studyVoteData?.participations?.find(
+  //   (who) => who.user._id === session?.user.id,
+  // );
 
-  const status =
-    findStudy?.status ||
-    (isParticipationPage
-      ? "recruiting"
-      : isExpectedPage
-      ? "expected"
-      : isRealTimePage
-      ? "solo"
-      : null);
+  // const status =
+  //   findStudy?.status ||
+  //   (isParticipationPage
+  //     ? "recruiting"
+  //     : isExpectedPage
+  //     ? "expected"
+  //     : isRealTimePage
+  //     ? "solo"
+  //     : null);
 
-  const myRealTimeStudy = findMyStudy?.members.find((who) => who.user._id === session?.user.id);
+  // const myRealTimeStudy = findMyStudy?.members.find((who) => who.user._id === session?.user.id);
 
-  useEffect(() => {
-    let timeoutId: ReturnType<typeof setTimeout>;
+  // useEffect(() => {
+  //   let timeoutId: ReturnType<typeof setTimeout>;
 
-    if (findStudy?.status === "open") {
-      timeoutId = setTimeout(() => {
-        setIsReviewButton(true);
-      }, 400);
-    }
+  //   if (findStudy?.status === "open") {
+  //     timeoutId = setTimeout(() => {
+  //       setIsReviewButton(true);
+  //     }, 400);
+  //   }
 
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [findStudy]);
+  //   return () => {
+  //     clearTimeout(timeoutId);
+  //   };
+  // }, [findStudy]);
 
   return (
     <>
-      {studyVoteData || weekData ? (
+      {studyVoteData || studySet ? (
         <>
           <StudyHeader date={date} placeInfo={placeInfo} />
           <Box mb={5}>
             <Slide isNoPadding>
               <StudyCover coverImage={placeInfo.coverImage} />
+
               <StudyOverview
-                place={{ ...placeInfo }}
-                distance={distance}
-                status={status}
+                placeInfo={{ ...placeInfo }}
+                studyType={type}
+                // distance={distance}
+                // status={status}
                 time={placeInfo.time}
-                isVoting={!!myVoteInfo || !!myRealTimeStudy}
+                // isVoting={!!myVoteInfo || !!myRealTimeStudy}
               />
             </Slide>
             <Box h={2} bg="gray.100" />
             <Slide>
-              {!isParticipationPage && !isRealTimePage && (
+              {studyType !== "participations" && studyType !== "soloRealTimes" && (
                 <StudyAddressMap
                   name={placeInfo.name}
                   address={placeInfo.address}
@@ -206,32 +189,30 @@ export default function Page() {
               <StudyDateBar
                 date={date}
                 memberCnt={members?.length}
-                isParticipationPage={isParticipationPage}
+                isParticipationPage={studyType === "participations"}
               />
-              {id !== "participations" && !isRealTimePage && (
+              {studyType !== "participations" && studyType !== "soloRealTimes" && (
                 <StudyTimeBoard members={members as StudyMemberProps[]} />
               )}
               <Box h="1px" bg="gray.100" my={4} />
               <Box pb={2}>
-                <StudyMembers
-                  date={date}
-                  members={members}
-                  status={findStudy?.status || (isParticipationPage ? "recruiting" : "solo")}
-                />
+                <StudyMembers date={date} members={members} />
               </Box>
             </Slide>
           </Box>
-          {/* {(findStudy || isParticipationPage || isRealTimePage) && !isGuest && (
-            <StudyNavigation
+          {!isGuest && (
+            <StudyNavigationComponent
               date={date}
-              findStudy={findStudy}
-              hasOtherStudy={findMyStudy && findMyStudy.place._id !== findStudy?.place?._id}
+              type={type}
               id={id}
-              isVoting={!!myVoteInfo || !!myRealTimeStudy}
-              pageType={status}
-              isArrived={!!(myRealTimeStudy?.attendance?.type === "arrived")}
+              members={members}
+              findStudyArr={findStudyArr}
+              userInfo={userInfo}
+              defaultCoordinates={
+                placeInfo ? { lat: placeInfo.latitude, lon: placeInfo.longitude } : null
+              }
             />
-          )} */}
+          )}
           {isReviewButton && (
             <Flex
               position="fixed"
@@ -252,24 +233,24 @@ export default function Page() {
                 iconSpacing={1}
                 colorScheme="black"
                 rightIcon={<PencilIcon />}
-                isDisabled={
-                  !(
-                    myStudy?.attendance?.type === "arrived" &&
-                    !findMyStudy?.place?.reviews.some(
-                      (review) => review?.user?._id === session?.user.id,
-                    )
-                  )
-                }
+                // isDisabled={
+                //   !(
+                //     myStudy?.attendance?.type === "arrived" &&
+                //     !findMyStudy?.place?.reviews.some(
+                //       (review) => review?.user?._id === session?.user.id,
+                //     )
+                //   )
+                // }
                 onClick={() => setIsReviewModal(true)}
                 _hover={{
                   background: undefined,
                 }}
               >
-                {findMyStudy?.place?.reviews.some(
+                {/* {findMyStudy?.place?.reviews.some(
                   (review) => review?.user?._id === session?.user.id,
                 )
                   ? "작성 완료"
-                  : "카페 리뷰"}
+                  : "카페 리뷰"} */}
               </Button>
             </Flex>
           )}
@@ -284,6 +265,81 @@ export default function Page() {
     </>
   );
 }
+
+const StudyNavigationComponent = ({
+  date,
+  type,
+  members,
+  userInfo,
+  id,
+  findStudyArr,
+  defaultCoordinates,
+}: {
+  date: string;
+  type: StudyTypeStatus;
+  id: string;
+  members: (StudyMemberProps | StudyParticipationUserProps)[];
+  userInfo: IUser;
+  defaultCoordinates: CoordinatesProps;
+  findStudyArr: (
+    | {
+        date: string;
+        study: RealTimesToResultProps;
+      }
+    | {
+        date: string;
+        study: StudyResultProps;
+      }
+  )[];
+}) => {
+  const myStudyArr = findStudyArr?.filter((study) =>
+    study.study.members.some((member) => member.user._id === userInfo?._id),
+  );
+
+  const findMyStudy = members?.find(
+    (member: StudyMemberProps | StudyParticipationUserProps) => member.user._id === userInfo?._id,
+  );
+  const myAttendance = (findMyStudy as StudyMemberProps)?.attendance?.type || "participation";
+
+  if (myAttendance === "arrived" || myAttendance === "absenced") return;
+
+  return (
+    <StudyNavigation
+      date={date}
+      studyType={type}
+      myStatus={!findMyStudy ? "pending" : "participation"}
+      hasOtherStudy={findMyStudy ? false : myStudyArr?.length ? true : false}
+      defaultCoordinates={defaultCoordinates}
+      // hasOtherStudy={findMyStudy && findMyStudy.place._id !== findStudy?.place?._id}
+      id={id}
+      // isVoting={!!myVoteInfo || !!myRealTimeStudy}
+      // pageType={status}
+      // isArrived={!!(myRealTimeStudy?.attendance?.type === "arrived")}
+    />
+  );
+};
+
+const getParticipationMembers = (
+  participations: StudySetProps["participations"],
+): StudyParticipationUserProps[] => {
+  const participationMap = new Map();
+  participations?.forEach((data) => {
+    if (data) {
+      const par = data.study;
+      const userId = par.user._id;
+      if (participationMap.has(userId)) {
+        participationMap.get(userId).date.push(data.date);
+      } else {
+        participationMap.set(userId, {
+          date: [data.date],
+          user: par.user,
+          coordinates: { lat: par.latitude, lon: par.longitude },
+        });
+      }
+    }
+  });
+  return Array.from(participationMap.values());
+};
 
 function RightReviewDrawer({ placeId, onClose }: { placeId: string; onClose: () => void }) {
   const resetStudy = useResetStudyQuery();
