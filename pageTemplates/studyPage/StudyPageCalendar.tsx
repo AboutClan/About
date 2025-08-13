@@ -1,5 +1,5 @@
+import { Box } from "@chakra-ui/react";
 import { useRouter, useSearchParams } from "next/navigation";
-
 import WeekSlideCalendar from "../../components/molecules/WeekSlideCalendar";
 import { DispatchString } from "../../types/hooks/reactTypes";
 import StudyPagePlaceSectionHeader from "./studyPageDrawer/StudyPagePlaceBlockHeader";
@@ -22,10 +22,10 @@ function StudyPageCalendar({ date, setDate }: StudyPageCalendarProps) {
   };
 
   return (
-    <>
-      <StudyPagePlaceSectionHeader date={date} setDate={setDate} />{" "}
+    <Box mt={5}>
+      <StudyPagePlaceSectionHeader date={date} setDate={setDate} />
       <WeekSlideCalendar selectedDate={date} func={handleSelectDate} />
-    </>
+    </Box>
   );
 }
 

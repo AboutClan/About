@@ -73,6 +73,8 @@ export const setStudyWeekData = (studyWeekData: StudyOneDayProps[] = []): StudyS
   );
 };
 export const setStudyOneDayData = (studyOneData: StudyVoteDataProps): StudySetProps => {
+  if (!studyOneData) return;
+
   const studySet: StudySetProps = {
     participations: [],
     soloRealTimes: [],

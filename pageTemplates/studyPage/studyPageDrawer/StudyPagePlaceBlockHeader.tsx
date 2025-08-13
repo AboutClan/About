@@ -20,10 +20,7 @@ function StudyPagePlaceSectionHeader({ date, setDate }: StudyPagePlaceSectionHea
   return (
     <>
       <Box mb={4}>
-        <SectionHeader
-          title={dayjsToFormat(dayjs(date), "YYYY년 M월 D일")}
-          subTitle={dayjsToFormat(englishDayjs, "MMMM")}
-        >
+        <SectionHeader title={dayjsToFormat(dayjs(date), "YYYY년 M월 D일")} subTitle={null}>
           <Flex flex={1} ml={1.5} justify="space-between" align="center">
             <Button
               display="flex"

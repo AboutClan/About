@@ -10,8 +10,10 @@ import { useStudyVoteQuery } from "../hooks/study/queries";
 import { useUserInfoQuery } from "../hooks/user/queries";
 import { setStudyOneDayData } from "../libs/study/studyConverters";
 import StudyPageCalendar from "../pageTemplates/studyPage/StudyPageCalendar";
+import StudyPageChallenge from "../pageTemplates/studyPage/StudyPageChallenge";
 import StudyPageHeader from "../pageTemplates/studyPage/StudyPageHeader";
 import StudyPageMap from "../pageTemplates/studyPage/studyPageMap/StudyPageMap";
+import StudyPageNav from "../pageTemplates/studyPage/StudyPageNav";
 import StudyPagePlaceSection from "../pageTemplates/studyPage/StudyPagePlaceSection";
 import StudyPageRecordBlock from "../pageTemplates/studyPage/StudyPageRecordBlock";
 import StudyControlButton from "../pageTemplates/vote/StudyControlButton";
@@ -38,6 +40,7 @@ export default function StudyPage() {
     enabled: !!date && !!isPassedDate,
   });
 
+  console.log(53, dateStart, todayStart, passedStudyData, isPassedDate);
   useEffect(() => {
     if (!dateParam || dateParam === date) return;
     setDate(dateParam);
@@ -45,7 +48,6 @@ export default function StudyPage() {
 
   useEffect(() => {
     if (!date || dateParam === date) return;
-
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.set("date", date);
     router.replace(`/studyPage?${newSearchParams.toString()}`, { scroll: false });
@@ -105,10 +107,17 @@ export default function StudyPage() {
 
   return (
     <>
-      <StudyPageHeader tab={tab} setTab={setTab} />
-
-      <Box h="28px" />
+      <StudyPageHeader />
+      {/* <Box h="28px" /> */}
+      <Slide isNoPadding>
+        <StudyPageNav tab={tab} setTab={setTab} />
+      </Slide>
       <Slide>
+        <Box>
+          {/* <StudyPage
+            <TopBar locationDetail={userInfo?.locationDetail} /> */}
+        </Box>
+
         {/* <Slide>
         <StudyPageIntroBox />
       </Slide>
@@ -136,6 +145,7 @@ export default function StudyPage() {
               setDate={setDate}
             />
             {/* <StudyPageSettingBlock /> */}
+            <StudyPageChallenge />
             <StudyPageRecordBlock userInfo={userInfo} />
             {/* <StudyPageAddPlaceButton setIsPlaceMap={setIsPlaceMap} /> */}
           </>
@@ -146,7 +156,6 @@ export default function StudyPage() {
       {!isGuest && (
         <Box mb={20} mt={5}>
           <StudyControlButton
-      
             // studyResults={!studyVoteData ? setStudyWeekData(studyVoteData) : []}
             date={date}
             // myVoteStatus={myVoteStatus}

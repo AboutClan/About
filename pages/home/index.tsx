@@ -6,10 +6,8 @@ import HomeHeader from "../../pageTemplates/home/homeHeader/HomeHeader";
 import HomeInitialSetting from "../../pageTemplates/home/HomeInitialSetting";
 import HomeNav from "../../pageTemplates/home/HomeNav";
 import HomeReviewSection from "../../pageTemplates/home/HomeReviewSection";
-import { decodeByAES256 } from "../../utils/convertUtils/convertDatas";
 
 function Home() {
-
   return (
     <>
       <HomeInitialSetting />
