@@ -58,7 +58,7 @@ function HomeGatherSection() {
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence>
-      <AnimatePresence initial={false}>
+      {/* <AnimatePresence initial={false}>
         <motion.div
           drag="x"
           dragConstraints={{ left: -width, right: 0 }}
@@ -77,7 +77,7 @@ function HomeGatherSection() {
             <HomeGatherCol gathers={shuffleArray(thirdData?.slice(3, 6))} isPriority={false} />
           </SlideSectionCol>
         </motion.div>
-      </AnimatePresence>
+      </AnimatePresence> */}
     </>
   );
 }
