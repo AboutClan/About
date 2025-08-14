@@ -11,6 +11,7 @@ import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { RegisterLocationLayout } from "../../pages/register/location";
 import { KakaoLocationProps } from "../../types/externals/kakaoLocationSearch";
+import StudyPageBenefitDrawer from "./StudyPageBenefitDrawer";
 
 export type StudyTab = "스터디 참여" | "카공 지도";
 interface StudyPageHeaderProps {}
@@ -74,15 +75,16 @@ function StudyPageHeader() {
             <Flex
               ml="-1px"
               p={1}
+              px={1.5}
               justify="center"
               align="center"
               h={5}
-              bg="var(--gray-200)"
-              fontSize="8px"
+              bg=" rgba(160, 174, 192, 0.2)"
+              fontSize="10px"
               borderRadius="6px"
               color="gray.800"
             >
-              매칭 기준 - 강남구
+              설정 위치 - {locationTextArr?.[0]}
             </Flex>
           </Flex>
 
@@ -131,13 +133,7 @@ function StudyPageHeader() {
           </Flex>
         </Flex>
       </Slide>
-      {modalType === "point" && (
-        <RightDrawer
-          title="스터디 혜택"
-          px={false}
-          onClose={() => setModalType(null)}
-        ></RightDrawer>
-      )}
+      {modalType === "point" && <StudyPageBenefitDrawer onClose={() => setModalType(null)} />}
       {modalType === "location" && (
         <RightDrawer title="활동 장소 변경" px={false} onClose={() => setModalType(null)}>
           <RegisterLocationLayout

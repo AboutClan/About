@@ -15,7 +15,6 @@ import StudyPageHeader from "../pageTemplates/studyPage/StudyPageHeader";
 import StudyPageMap from "../pageTemplates/studyPage/studyPageMap/StudyPageMap";
 import StudyPageNav from "../pageTemplates/studyPage/StudyPageNav";
 import StudyPagePlaceSection from "../pageTemplates/studyPage/StudyPagePlaceSection";
-import StudyPageRecordBlock from "../pageTemplates/studyPage/StudyPageRecordBlock";
 import StudyControlButton from "../pageTemplates/vote/StudyControlButton";
 export default function StudyPage() {
   const router = useRouter();
@@ -118,24 +117,6 @@ export default function StudyPage() {
             <TopBar locationDetail={userInfo?.locationDetail} /> */}
         </Box>
 
-        {/* <Slide>
-        <StudyPageIntroBox />
-      </Slide>
-      <StudyPageMap
-        centerLocation={centerLocation}
-        studyVoteData={studyVoteData}
-        currentLocation={currentLocation}
-        setCenterLocation={setCenterLocation}
-        date={date}
-        myVoteCoordinates={
-          findMyParticipation && {
-            lat: findMyParticipation.latitude,
-            lon: findMyParticipation.longitude,
-          }
-        }
-        placeData={isPlaceMap && placeData}
-        setIsPlaceMap={setIsPlaceMap}
-      /> */}
         {tab === "스터디 참여" ? (
           <>
             <StudyPageCalendar date={date} setDate={setDate} />
@@ -146,7 +127,7 @@ export default function StudyPage() {
             />
             {/* <StudyPageSettingBlock /> */}
             <StudyPageChallenge />
-            <StudyPageRecordBlock userInfo={userInfo} />
+            {/* <StudyPageRecordBlock userInfo={userInfo} /> */}
             {/* <StudyPageAddPlaceButton setIsPlaceMap={setIsPlaceMap} /> */}
           </>
         ) : (

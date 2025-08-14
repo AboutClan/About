@@ -44,17 +44,17 @@ function StudyPageChallenge({}: StudyPageChallengeProps) {
           flex={1}
           px={4}
           py={5}
-          border="var(--bo`rder-main)"
+          border="var(--border-main)"
           borderRadius="8px"
         >
-          <Box fontSize="18px" lineHeight="26px" color="mint" fontWeight="bold">
+          <Box fontSize="18px" lineHeight="26px" fontWeight="bold">
             87시간 20분
           </Box>
           <Box fontSize="13px" lineHeight="18px" color="gray.500" fontWeight="medium">
-            월간 참여 시간
+            목표 공부 시간
           </Box>
-          <Flex mt={2} flexDir="column" flex={1} justify="center" bg="yellow">
-            <Button bg="black" variant="ghost" size="sm" border="none">
+          <Flex mt={2} flexDir="column" flex={1} justify="center">
+            <Button variant="ghost" size="sm" border="none">
               <Flex>
                 <Box fontSize="11px" fontWeight="medium" lineHeight="14px">
                   수정하기
@@ -64,6 +64,15 @@ function StudyPageChallenge({}: StudyPageChallengeProps) {
             </Button>
           </Flex>
         </Flex>
+      </Flex>
+      <Flex flexDir="column" align="center" mt={2} px={4} py={5} border="var(--border-main)">
+        <Flex align="center" h={10}></Flex>
+        <Box mt={3} mb={4}>
+          --명이 함께 도전중이에요!
+        </Box>
+        <Button w="full" borderRadius="8px" colorScheme="black">
+          챌린지 도전하기
+        </Button>
       </Flex>
     </>
   );

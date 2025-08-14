@@ -6,8 +6,8 @@ export const STUDY_STATUS_TO_BADGE: Record<
   { text: string; colorScheme: ThemeTypings["colorSchemes"] }
 > = {
   voteResult: { text: "공식 스터디", colorScheme: "red" },
-  openRealTimes: { text: "모임장 스터디", colorScheme: "blue" },
-  soloRealTimes: { text: "개인 스터디", colorScheme: "purple" },
-  participations: { text: "스터디 모집중", colorScheme: "mint" },
-  expectedResult: { text: "자동 매칭 스터디", colorScheme: "purple" },
+  openRealTimes: { text: "진행중", colorScheme: "blue" },
+  soloRealTimes: { text: "스터디 인증", colorScheme: "mint" },
+  participations: { text: "스터디 매칭", colorScheme: "mint" },
+  expectedResult: { text: "개설 예정", colorScheme: "purple" },
 };
