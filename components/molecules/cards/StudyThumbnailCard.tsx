@@ -44,9 +44,13 @@ export function StudyThumbnailCard({
   isMyStudy,
 }: StudyThumbnailCardProps) {
   return (
-    <CardLink href={url} onClick={func} isbordermain={status === "recruiting" ? "true" : "false"}>
+    <CardLink
+      href={url}
+      onClick={func}
+      isbordermain={status === "participations" ? "true" : "false"}
+    >
       <>
-        {status === "recruiting" || status === "solo" ? (
+        {status === "participations" || status === "soloRealTimes" ? (
           <PlaceAvatarImage size="md" imageProps={place.imageProps} />
         ) : (
           <PlaceImage size="md" imageProps={place.imageProps} />
@@ -58,7 +62,7 @@ export function StudyThumbnailCard({
                 <Box as="span">
                   <LocationDotIcon size="md" />
                 </Box>
-                <Box as="span" ml={1} color="var(--gray-600)">
+                <Box as="span" ml={1} mt="0.5px" color="var(--gray-600)">
                   {place.branch}
                 </Box>
               </Flex>
@@ -92,10 +96,7 @@ export function StudyThumbnailCard({
 
           <Flex mb={1} mt="auto" alignItems="center" justify="space-between">
             <Box>
-              <AvatarGroupsOverwrap
-                users={participants}
-                maxCnt={status === "recruiting" ? 8 : VOTER_SHOW_MAX}
-              />
+              <AvatarGroupsOverwrap users={participants} maxCnt={status ? 8 : VOTER_SHOW_MAX} />
             </Box>
             <Flex align="center" color="var(--gray-500)">
               <UserIcon size="sm" />
@@ -105,8 +106,8 @@ export function StudyThumbnailCard({
                   as="span"
                   color={
                     participants.length >= STUDY_MAX_CNT &&
-                    status !== "recruiting" &&
-                    status !== "solo"
+                    status !== "participations" &&
+                    status !== "soloRealTimes"
                       ? "var(--color-red)"
                       : "var(--color-gray)"
                   }
@@ -117,7 +118,13 @@ export function StudyThumbnailCard({
                   /
                 </Box>
                 <Box as="span" color="var(--gray-500)" fontWeight={500}>
-                  {status === "solo" || status === "recruiting" ? <InfinityIcon /> : STUDY_MAX_CNT}
+                  {status === "soloRealTimes" || status === "participations" ? (
+                    <Box mb="1px">
+                      <InfinityIcon />
+                    </Box>
+                  ) : (
+                    STUDY_MAX_CNT
+                  )}
                 </Box>
               </Flex>
             </Flex>

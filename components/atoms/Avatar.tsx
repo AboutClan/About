@@ -11,7 +11,7 @@ import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstan
 import { AvatarProps } from "../../types/models/userTypes/userInfoTypes";
 
 // type Size = "2xs" | "xs" | "sm" | "smd" | "mds" | "md" | "lg" | "xl" | "slg" | "xxl";
-type Size = "xxs1" | "xs1" | "sm1" | "md1" | "lg1" | "xl1" |"xl2"| "xxl1";
+type Size = "xxs1" | "xs1" | "sm1" | "md1" | "lg1" | "xl1" | "xl2" | "xxl1";
 
 //xxs: 16
 //xs:32
@@ -28,7 +28,7 @@ const SIZE_MAPPING: Record<Size, number> = {
   md1: 48,
   lg1: 60,
   xl1: 72,
-  xl2:80,
+  xl2: 80,
   xxl1: 120,
 };
 interface IAvatar {
@@ -120,9 +120,8 @@ function AvatarComponent({
                 justify="center"
                 alignItems="center"
                 h="100%"
-                lineHeight="1"
               >
-                <Box h={2} lineHeight="1" textAlign="center" display="inline-block">
+                <Box h={2} textAlign="center" display="inline-block">
                   +{shadowAvatar}
                 </Box>
               </Flex>

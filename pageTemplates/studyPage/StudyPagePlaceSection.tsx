@@ -11,7 +11,6 @@ import {
   StudyThumbnailCardProps,
 } from "../../components/molecules/cards/StudyThumbnailCard";
 import { StudyThumbnailCardSkeleton } from "../../components/skeleton/StudyThumbnailCardSkeleton";
-import { useUserCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
 import {
   setStudyThumbnailCard,
   sortThumbnailCardInfoArr,
@@ -34,29 +33,8 @@ function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectio
   const { data: session } = useSession();
   const router = useRouter();
 
-  const { currentLocation } = useUserCurrentLocation();
-
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
   const [sortedOption, setSortedOption] = useState<StudySortedOption>("날짜순");
-  const [locationMapping, setLocationMapping] = useState<{ branch: string; id: string }[]>();
-
-  // const { data: locationMappingData } = useKakaoMultipleLocationQuery(
-  //   studySet
-  //     .map((study) => ({
-  //       lat: study.place.latitude,
-  //       lon: study.place.longitude,
-  //       id: study.place._id,
-  //     })),
-  //   true,
-  //   {
-  //     enabled: !!mergeStudy,
-  //   },
-  // );
-  // useEffect(() => {
-  //   if (locationMappingData) {
-  //     setLocationMapping(locationMappingData);
-  //   }
-  // }, [locationMappingData]);
 
   useEffect(() => {
     if (!studySet) {

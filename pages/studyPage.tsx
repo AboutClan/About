@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 import Slide from "../components/layouts/PageSlide";
 import { useStudySetQuery } from "../hooks/custom/StudyHooks";
 import { useStudyVoteQuery } from "../hooks/study/queries";
-import { useUserInfoQuery } from "../hooks/user/queries";
 import { setStudyOneDayData } from "../libs/study/studyConverters";
 import StudyPageCalendar from "../pageTemplates/studyPage/StudyPageCalendar";
 import StudyPageChallenge from "../pageTemplates/studyPage/StudyPageChallenge";
@@ -32,14 +31,12 @@ export default function StudyPage() {
 
   const isPassedDate = !!dateStart && dateStart.isBefore(todayStart);
 
-  const { data: userInfo } = useUserInfoQuery();
   const { studySet } = useStudySetQuery(date, !!date && !isPassedDate);
 
   const { data: passedStudyData } = useStudyVoteQuery(date, {
     enabled: !!date && !!isPassedDate,
   });
 
-  console.log(53, dateStart, todayStart, passedStudyData, isPassedDate);
   useEffect(() => {
     if (!dateParam || dateParam === date) return;
     setDate(dateParam);
@@ -52,71 +49,13 @@ export default function StudyPage() {
     router.replace(`/studyPage?${newSearchParams.toString()}`, { scroll: false });
   }, [date]);
 
-  console.log("studySet", studySet);
-
-  /** Center 기본값 설정
-   * 스터디 투표중인 경우, 투표중인 장소로.
-   * 투표중이지 않다면, 현재 위치로.
-   * 투표중이지 않고, 현재 위치 파악이 안된다면, locationDetail로.
-   */
-
-  // const findMyParticipation = studyVoteData?.participations?.find(
-  //   (who) => who?.user?._id === userInfo?._id,
-  // );
-
-  // useEffect(() => {
-  //   if (!studyVoteData || !session?.user?.id) return;
-  //   const findMyStudyResult = findMyStudyByUserId(studyVoteData, session?.user.id);
-  //   const myStudyInfo = findMyStudyInfo(findMyStudyResult, session?.user.id);
-
-  //   setCenterLocation(currentLocation);
-
-  //   if (findMyParticipation) {
-  //     setMyVoteStatus("voting");
-
-  //     const { latitude: lat, longitude: lon } = findMyParticipation;
-  //     setCenterLocation({ lat, lon });
-  //     return;
-  //   }
-
-  //   if (findMyStudyResult) {
-  //     const attendanceType = myStudyInfo?.attendance.type;
-  //     if (attendanceType) {
-  //       setMyVoteStatus(attendanceType);
-  //     } else {
-  //       setMyVoteStatus(findMyStudyResult.status === "open" ? "open" : "free");
-  //     }
-
-  //     setCenterLocation({
-  //       lat: findMyStudyResult.place.latitude,
-  //       lon: findMyStudyResult.place.longitude,
-  //     });
-  //     return;
-  //   }
-
-  //   if (currentLocation) {
-  //     setCenterLocation(currentLocation);
-  //   } else if (userInfo?.locationDetail) {
-  //     const { lat, lon } = userInfo.locationDetail;
-  //     setCenterLocation({ lat, lon });
-  //   } else setCenterLocation({ lat: 37.5642135, lon: 127.0016985 });
-  //   if (studyVoteData?.participations) setMyVoteStatus("pending");
-  //   else setMyVoteStatus("todayPending");
-  // }, [studyVoteData, session, currentLocation, isLoading, userInfo]);
-
   return (
     <>
       <StudyPageHeader />
-      {/* <Box h="28px" /> */}
       <Slide isNoPadding>
         <StudyPageNav tab={tab} setTab={setTab} />
       </Slide>
       <Slide>
-        <Box>
-          {/* <StudyPage
-            <TopBar locationDetail={userInfo?.locationDetail} /> */}
-        </Box>
-
         {tab === "스터디 참여" ? (
           <>
             <StudyPageCalendar date={date} setDate={setDate} />

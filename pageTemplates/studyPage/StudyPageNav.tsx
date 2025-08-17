@@ -12,14 +12,14 @@ interface StudyPageNavProps {
 function StudyPageNav({ tab, setTab }: StudyPageNavProps) {
   return (
     <>
-      <Flex borderBottom="var(--border)" px={5}>
+      <Flex borderBottom="var(--border)" px={5} mt={1}>
         <TabNav
           tabOptionsArr={[
             { text: "스터디 참여", func: () => setTab("스터디 참여") },
             { text: "카공 지도", func: () => setTab("카공 지도") },
           ]}
           isBlack
-          size="lg"
+          size="xl"
           isMain
         />
       </Flex>

@@ -4,7 +4,7 @@ import Avatar from "../../components/atoms/Avatar";
 import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
 import InfoBoxCol from "../../components/molecules/InfoBoxCol";
 import RightDrawer from "../../components/organisms/drawer/RightDrawer";
-import { usePointSystemLogQuery, useUserInfoQuery } from "../../hooks/user/queries";
+import { usePointPlusLogQuery, useUserInfoQuery } from "../../hooks/user/queries";
 
 interface StudyPageBenefitDrawerProps {
   onClose: () => void;
@@ -13,8 +13,8 @@ interface StudyPageBenefitDrawerProps {
 function StudyPageBenefitDrawer({ onClose }: StudyPageBenefitDrawerProps) {
   const { data: userInfo } = useUserInfoQuery();
 
-  const { data: logs } = usePointSystemLogQuery("point");
-
+  const { data: logs } = usePointPlusLogQuery();
+  console.log(24, logs);
   const [isBenefit, setIsBenefit] = useState(false);
 
   return (
@@ -53,6 +53,7 @@ function StudyPageBenefitDrawer({ onClose }: StudyPageBenefitDrawerProps) {
       </Box>
       <Box
         fontSize="13px"
+        mb={5}
         w="full"
         py={1.5}
         as="button"

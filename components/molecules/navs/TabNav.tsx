@@ -11,7 +11,7 @@ interface ITabNav {
   isMain?: boolean;
   isFullSize?: boolean;
   isBlack?: boolean;
-  size?: "md" | "lg";
+  size?: "md" | "lg" | "xl";
 }
 
 export default function TabNav({
@@ -55,7 +55,7 @@ export default function TabNav({
             <Tab
               display="flex"
               flexShrink="0 !important"
-              fontSize={size === "md" ? "13px" : "16px"}
+              fontSize={size === "md" ? "13px" : size === "xl" ? "18px" : "16px"}
               fontWeight={index === idx ? (size === "md" ? 600 : 800) : size === "md" ? 400 : 800}
               p={!isMain ? "8px 20px" : "8px 12px"}
               flex={isFullSize ? 1 : undefined}

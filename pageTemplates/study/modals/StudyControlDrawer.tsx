@@ -14,10 +14,11 @@ import StudyOpenDrawer from "../../vote/voteDrawer/StudyOpenDrawer";
 type DrawerType = "apply" | "open";
 
 interface StudyControlDrawerProps {
+  date: string;
   onClose: () => void;
 }
 
-function StudyControlDrawer({ onClose }: StudyControlDrawerProps) {
+function StudyControlDrawer({ date, onClose }: StudyControlDrawerProps) {
   const router = useRouter();
   const toast = useToast();
 
@@ -127,7 +128,7 @@ function StudyControlDrawer({ onClose }: StudyControlDrawerProps) {
       text: " 실시간 공부 인증",
       icon: <StudyUserCheckIcon color="gray" />,
       func: () => {
-        router.push(`/vote/attend/certification?date=${dayjsToStr(dayjs())}&type=solo`);
+        router.push(`/vote/attend/certification?date=${dayjsToStr(dayjs())}&type=soloRealTimes`);
       },
     },
   ];
@@ -191,8 +192,23 @@ function StudyControlDrawer({ onClose }: StudyControlDrawerProps) {
         </Link> */}
       </BottomFlexDrawer>
 
-      {drawerType === "apply" && <StudyApplyDrawer onClose={() => setDrawerType(null)} />}
-      {drawerType === "open" && <StudyOpenDrawer onClose={() => setDrawerType(null)} />}
+      {drawerType === "apply" && (
+        <StudyApplyDrawer
+          defaultDate={date}
+          onClose={() => {
+            setDrawerType(null);
+            onClose();
+          }}
+        />
+      )}
+      {drawerType === "open" && (
+        <StudyOpenDrawer
+          onClose={() => {
+            setDrawerType(null);
+            onClose();
+          }}
+        />
+      )}
       {/* {timeRulletType && (
         <StudyVoteTimeRulletDrawer
           setVoteTime={setVoteTime}

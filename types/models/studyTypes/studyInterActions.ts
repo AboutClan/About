@@ -7,6 +7,7 @@ import { StudyPlaceProps } from "./baseTypes";
 export interface StudyVoteProps {
   latitude: number;
   longitude: number;
+  locationDetail: string;
   start: Dayjs;
   end: Dayjs;
 }

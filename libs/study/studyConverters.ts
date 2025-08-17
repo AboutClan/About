@@ -21,13 +21,14 @@ import { getRandomIdx } from "../../utils/mathUtils";
 
 export const convertStudyToMergeStudy = (
   studyVoteData: StudyVoteDataProps,
+  studyStatus: StudyStatus,
 ): StudyMergeResultProps[] => {
   const convertedRealTimes = studyVoteData?.realTimes
     ? convertRealTimesToMergeResult(studyVoteData.realTimes.userList)
     : [];
   const mergedResult = [...studyVoteData.results, ...convertedRealTimes].map((result) => ({
     ...result,
-    place: convertStudyToPlaceInfo(result.place),
+    place: convertStudyToPlaceInfo(result.place, studyStatus),
     status:
       (result as RealTimesToResultProps)?.status ||
       (!studyVoteData?.participations ? "open" : null),
@@ -167,7 +168,7 @@ export const setRealTimesGroup = (
 };
 
 const STUDY_WAITING_INFO = {
-  name: "스터디 매칭 대기실",
+  name: "스터디 매칭 라운지",
   branch: "About",
   address: "위치 선정 중",
   brand: "",
@@ -181,9 +182,9 @@ const STUDY_WAITING_INFO = {
 };
 
 const STUDY_SOLO_INFO = {
-  name: "개인 스터디 인증",
+  name: "실시간 공부 인증",
   branch: "About",
-  address: "자유 카페 / 스터디 카페",
+  address: "자유 카페 / 자유 공간",
   brand: "",
   image: STUDY_MAIN_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
   coverImage: STUDY_COVER_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
@@ -218,11 +219,6 @@ export const convertStudyToPlaceInfo = (
     latitude: studyPlace.latitude,
     longitude: studyPlace.longitude,
     time: studyPlace?.time || "unknown",
-    // type: studyPlace?.fullname
-    //   ? "public"
-    //   : realTimePlace?.name
-    //   ? "private"
-    //   : (null as "public" | "private"),
 
     _id: studyPlace?._id || realTimePlace?._id,
     reviews: studyPlace?.reviews || [],

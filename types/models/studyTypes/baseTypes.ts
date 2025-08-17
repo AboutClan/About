@@ -63,7 +63,7 @@ export interface StudyPlaceProps extends PlaceRegisterProps {
 // | "recruiting" | "expected"
 export type StudyStatus = "open" | RealTimesStatus;
 
-export type RealTimesStatus = "free" | "solo" | "cancel";
+export type RealTimesStatus = "free" | "solo" | "cancel" | "open";
 
 export interface ParticipationUser extends UserSimpleInfoProps {
   isLocationSharingDenided?: boolean;

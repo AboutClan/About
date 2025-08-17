@@ -55,11 +55,11 @@ type ToastConfig = {
 };
 
 const TOAST_MAP: Record<ToastType, ToastConfig> = {
-  apply: { title: "신청 완료" },
+  apply: { title: "신청 완료!" },
   cancel: { title: "취소 완료" },
   change: { title: "변경 완료" },
   invite: { title: "초대 완료" },
-  participate: { title: "참여 완료" },
+  participate: { title: "참여가 완료되었습니다." },
   register: { title: "등록 완료" },
   "not-yet": { title: "개발중인 기능", status: "info" },
 

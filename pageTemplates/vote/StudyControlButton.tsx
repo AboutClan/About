@@ -97,6 +97,7 @@ function StudyControlButton({ date }: StudyControlButtonProps) {
       />
       {isModal && (
         <StudyControlDrawer
+          date={date}
           // studyResults={studyResults}
           // currentLocation={currentLocation}
           onClose={() => setIsModal(false)}

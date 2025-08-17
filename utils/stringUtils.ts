@@ -11,6 +11,11 @@ export const findParentheses = (text: string) => {
   }
 };
 
+export const getLocationSimpleText = (locationText: string) => {
+  const locationArr = locationText.split(" ");
+  return locationArr[0] + " " + locationArr?.[1];
+};
+
 export const parseUrlToSegments = (url) => {
   if (!url) return null;
   const queryStartIndex = url.indexOf("?");

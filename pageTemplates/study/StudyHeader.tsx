@@ -17,12 +17,12 @@ function StudyHeader({ placeInfo, date }: IStudyHeader) {
   const toast = useToast();
 
   const menuArr: MenuProps[] = [
-    {
-      text: "장소 정보 수정 요청",
-      func: () => {
-        toast("warning", "준비중인 기능입니다.");
-      },
-    },
+    // {
+    //   text: "장소 정보 수정 요청",
+    //   func: () => {
+    //     toast("warning", "준비중인 기능입니다.");
+    //   },
+    // },
     {
       kakaoOptions: {
         title:

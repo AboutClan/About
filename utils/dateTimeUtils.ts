@@ -112,7 +112,10 @@ export const getCalendarDates = (
         calendar.push({
           date: dayjsToStr(current),
           isDisabled: dayjs().add(6, "day").isAfter(current)
-            ? passedDisabled && dayjs().subtract(1, "day").isAfter(current)
+            ? passedDisabled &&
+              dayjs()
+                .subtract(dayjs().hour() >= 9 ? 0 : 1, "day")
+                .isAfter(current)
               ? true
               : false
             : true,

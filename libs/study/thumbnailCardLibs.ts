@@ -17,12 +17,31 @@ export const setStudyThumbnailCard = (
   const isPassedDate = date ? dayjs(date).isBefore(dayjs(), "day") : false;
 
   const basicThumbnailCard: StudyThumbnailCardProps[] = [];
-
+  if (soloRealTimes && date === dayjsToStr(dayjs())) {
+    basicThumbnailCard.push({
+      place: {
+        name: "실시간 공부 인증",
+        branch: "자유 장소",
+        address: "공부 인증하고, 다양한 혜택 받아가세요!",
+        date: "",
+        imageProps: {
+          image:
+            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%BA%90%EB%A6%AD%ED%84%B0/%EC%95%84%EB%B0%94%ED%83%80/%EB%B3%91%EC%95%84%EB%A6%AC_%EC%B1%85.png",
+          isPriority: true,
+        },
+        _id: "",
+      },
+      participants: soloRealTimes?.map((par) => par.study.user),
+      url: `/study/realTime/${date}?type=soloRealTimes`,
+      status: "soloRealTimes",
+      isMyStudy: false,
+    });
+  }
   if (!isPassedDate) {
     basicThumbnailCard.push({
       place: {
-        name: "카공 스터디 라운지",
-        branch: "위치 선정 중",
+        name: "스터디 매칭 라운지",
+        branch: "위치 선정 중...",
         address: "가까운 인원들과 스터디를 매칭하고 있어요",
         date: "",
         imageProps: {
@@ -37,26 +56,6 @@ export const setStudyThumbnailCard = (
       ),
       url: `/study/participations/${date}?type=participations`,
       status: "participations",
-      isMyStudy: false,
-    });
-  }
-  if (soloRealTimes) {
-    basicThumbnailCard.push({
-      place: {
-        name: "개인 스터디 인증",
-        branch: "자유 카페",
-        address: "개인 공부 인증하고, 다양한 혜택 받아가세요!",
-        date: "",
-        imageProps: {
-          image:
-            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%BA%90%EB%A6%AD%ED%84%B0/%EC%95%84%EB%B0%94%ED%83%80/%EB%B3%91%EC%95%84%EB%A6%AC_%EC%B1%85.png",
-          isPriority: true,
-        },
-        _id: "",
-      },
-      participants: soloRealTimes?.map((par) => par.study.user),
-      url: `/study/realTime/${date}?type=soloRealTimes`,
-      status: "soloRealTimes",
       isMyStudy: false,
     });
   }

@@ -78,7 +78,7 @@ export const useRealTimeCancelMutation = (date: string, options?: MutationOption
     () =>
       requestServer<void>({
         method: "delete",
-        url: `realtime/cancel`,
+        url: `realtime/${date}/cancel`,
       }),
     options,
   );

@@ -14,14 +14,16 @@ import { useStudyCommentMutation } from "../../hooks/study/mutations";
 import ImageZoomModal from "../../modals/ImageZoomModal";
 import { StudyParticipationUserProps } from "../../pages/study/[id]/[date]";
 import { StudyMemberProps } from "../../types/models/studyTypes/baseTypes";
+import { StudyStatus } from "../../types/models/studyTypes/derivedTypes";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 interface IStudyMembers {
   date: string;
-  members: StudyMemberProps[] | StudyParticipationUserProps[];
+  members: (StudyMemberProps | StudyParticipationUserProps)[];
+  studyType: StudyStatus;
 }
 
-export default function StudyMembers({ date, members }: IStudyMembers) {
+export default function StudyMembers({ studyType, date, members }: IStudyMembers) {
   const { data: session } = useSession();
   const resetStudy = useResetStudyQuery();
   const typeToast = useTypeToast();
@@ -31,7 +33,7 @@ export default function StudyMembers({ date, members }: IStudyMembers) {
     toUid: string;
   }>();
   const [locationMapping, setLocationMapping] = useState<{ branch: string; id: string }[]>();
-
+  console.log(55, studyType, members);
   // const { data: locationMappingData } = useKakaoMultipleLocationQuery(
   //   members.map((member) => ({
   //     lat: member.lat,
@@ -72,15 +74,16 @@ export default function StudyMembers({ date, members }: IStudyMembers) {
   const userCardArr: IProfileCommentCard[] = members.map((member) => {
     const user = member.user;
     // const badgeText = locationMapping?.find((mapping) => mapping?.id === user._id)?.branch;
-    if (status === "recruiting") {
-      let month = dayjs(member.date[0]).month();
+    if (studyType === "participations") {
+      const participant = member as StudyParticipationUserProps;
+      let month = dayjs(participant.date[0]).month();
       return {
         user: user,
-        memo: user.comment,
+        memo: "서울 강남구",
         rightComponent: (
           <Badge variant="subtle" colorScheme="blue" size="md">
             {/* {!badgeText ? "알 수 없음" : badgeText} */}
-            {member.date.map((date, idx) => {
+            {participant.date.map((date, idx) => {
               const newMonth = dayjs(date).month();
               if (month !== newMonth && idx !== 0) {
                 month = newMonth;
@@ -92,38 +95,37 @@ export default function StudyMembers({ date, members }: IStudyMembers) {
           </Badge>
         ),
       };
+    } else {
+      const participant = member as StudyMemberProps;
+      const obj = composeUserCardArr(participant);
+      const rightComponentProps = obj.rightComponentProps;
+      const image = participant?.attendance?.attendanceImage;
+      return {
+        ...obj,
+        changeComment,
+        rightComponent: rightComponentProps ? (
+          image ? (
+            <>
+              <Box
+                position="relative"
+                w="48px"
+                h="48px"
+                borderRadius="4px"
+                overflow="hidden"
+                onClick={() => setHasImageProps({ image, toUid: participant.user.uid })}
+              >
+                <Image src={image} fill alt="studyImage" />
+              </Box>
+              <Box mt={1} fontSize="11px" lineHeight="12px" color="gray.500" textAlign="center">
+                {rightComponentProps.time}
+              </Box>
+            </>
+          ) : (
+            <AttendanceBadge type={rightComponentProps.type} time={rightComponentProps.time} />
+          )
+        ) : null,
+      };
     }
-
-    const obj = composeUserCardArr(member);
-
-    const rightComponentProps = obj.rightComponentProps;
-    const image = member?.attendance?.attendanceImage;
-
-    return {
-      ...obj,
-      changeComment,
-      rightComponent: rightComponentProps ? (
-        image ? (
-          <>
-            <Box
-              position="relative"
-              w="48px"
-              h="48px"
-              borderRadius="4px"
-              overflow="hidden"
-              onClick={() => setHasImageProps({ image, toUid: member.user.uid })}
-            >
-              <Image src={image} fill alt="studyImage" />
-            </Box>
-            <Box mt={1} fontSize="11px" lineHeight="12px" color="gray.500" textAlign="center">
-              {rightComponentProps.time}
-            </Box>
-          </>
-        ) : (
-          <AttendanceBadge type={rightComponentProps.type} time={rightComponentProps.time} />
-        )
-      ) : null,
-    };
   });
 
   return (
@@ -144,20 +146,12 @@ export default function StudyMembers({ date, members }: IStudyMembers) {
         <Flex
           align="center"
           justify="center"
-          h="200"
+          h="200px"
           color="var(--gray-600)"
           fontSize="16px"
           textAlign="center"
         >
-          <Box as="p" lineHeight="1.8">
-            현재 참여중인 멤버가 없습니다.
-            <br />
-            지금 신청하면{" "}
-            <Box as="b" color="var(--color-mint)">
-              10 POINT
-            </Box>{" "}
-            추가 획득!
-          </Box>
+          <Box as="p">현재 참여중인 멤버가 없습니다.</Box>
         </Flex>
       )}
 

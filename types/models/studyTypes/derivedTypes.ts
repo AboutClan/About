@@ -9,11 +9,32 @@ import { PlaceReviewProps } from "./entityTypes";
 
 export type StudyStatus = "participations" | "soloRealTimes" | "openRealTimes" | "results";
 
+
+
 export interface StudySetProps {
-  participations: { date: string; study: StudyParticipationProps }[];
-  soloRealTimes: { date: string; study: RealTimeMemberProps }[];
-  openRealTimes: { date: string; study: RealTimesToResultProps }[];
-  results: { date: string; study: StudyResultProps }[];
+  participations: StudyParticipationsSet[];
+  soloRealTimes: StudySoloRealTimesSet[];
+  openRealTimes: StudyOpenRealTimesSet[];
+  results: StudyResultsSet[];
+}
+
+export interface StudyParticipationsSet {
+  date: string;
+  study: StudyParticipationProps;
+}
+
+export interface StudySoloRealTimesSet {
+  date: string;
+  study: RealTimeMemberProps;
+}
+export interface StudyOpenRealTimesSet {
+  date: string;
+  study: RealTimesToResultProps;
+}
+
+export interface StudyResultsSet {
+  date: string;
+  study: StudyResultProps;
 }
 
 export interface StudyMergeResultProps extends Omit<StudyResultProps, "place"> {
