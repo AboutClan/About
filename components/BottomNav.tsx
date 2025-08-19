@@ -6,6 +6,7 @@ import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
 import { useHandleMove } from "../@natives/useHandleBottomNav";
+import { useToast } from "../hooks/custom/CustomToast";
 import { getStudyViewDate } from "../libs/study/date/getStudyDateStatus";
 import { slideDirectionState } from "../recoils/navigationRecoils";
 import { iPhoneNotchSize } from "../utils/validationUtils";
@@ -62,10 +63,17 @@ export default function BottomNav() {
 }
 
 function NavButton({ text, url, activeIcon, defaultIcon, isActive, idx }: INavButton) {
+  const toast = useToast();
   const setSlideDirection = useSetRecoilState(slideDirectionState);
   const handleMove = useHandleMove(setSlideDirection);
 
-  const onClick = () => {
+  const onClick = (e) => {
+    if (text === "스터디") {
+      e.preventDefault();
+      e.stopPropagation();
+      toast("info", "8월 20일 ~ 8월 21일 리뉴얼 진행중!");
+      return;
+    }
     handleMove();
   };
 
