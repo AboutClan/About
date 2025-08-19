@@ -34,7 +34,7 @@ IVoteMap) {
     infoWindow: [],
     circle: null,
   });
-  console.log(1234567, markersOptions);
+
   useEffect(() => {
     if (!mapRef?.current || typeof naver === "undefined" || !mapOptions) return;
 

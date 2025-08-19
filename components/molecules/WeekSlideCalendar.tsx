@@ -15,7 +15,7 @@ function WeekSlideCalendar({ selectedDate, func }: CalendarProps) {
   const dateRefs: React.MutableRefObject<(HTMLDivElement | null)[]> = useRef([]);
   const containerRef = useRef<HTMLDivElement>();
   const calendarArr = getCalendarDates("week", dayjs(selectedDate));
-  console.log(12, calendarArr);
+ 
   useEffect(() => {
     if (!calendarArr || !selectedDate) return;
     const selectedIdx = calendarArr.findIndex((obj) => obj.date === selectedDate);

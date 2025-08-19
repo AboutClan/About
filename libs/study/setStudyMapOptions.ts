@@ -89,7 +89,7 @@ export const getStudyPlaceMarkersOptions = (
       });
     });
   }
-  console.log(123, temp);
+ 
   return temp;
 };
 
