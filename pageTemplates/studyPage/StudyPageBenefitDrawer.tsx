@@ -1,5 +1,6 @@
 import { Box, Collapse, Flex } from "@chakra-ui/react";
 import { useState } from "react";
+
 import Avatar from "../../components/atoms/Avatar";
 import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
 import InfoBoxCol from "../../components/molecules/InfoBoxCol";
@@ -80,7 +81,7 @@ function StudyPageBenefitDrawer({ onClose }: StudyPageBenefitDrawerProps) {
             <br />
             매번{" "}
             <Box as="b" color="inherit">
-              100 ~ 500원
+              200 ~ 500원
             </Box>{" "}
             적립
           </Box>

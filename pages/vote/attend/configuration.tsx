@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
@@ -22,6 +22,7 @@ import { useRealTimeAttendMutation } from "../../../hooks/realtime/mutations";
 import { useStudyAttendCheckMutation } from "../../../hooks/study/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { ModalLayout } from "../../../modals/Modals";
+import { StudySetItem } from "../../../pages/study/[id]/[date]/index";
 import {
   transferCollectionState,
   transferStudyAttendanceState,
@@ -33,10 +34,8 @@ import {
   StudySoloRealTimesSet,
   StudyStatus,
 } from "../../../types/models/studyTypes/derivedTypes";
-import { dayjsToFormat } from "../../../utils/dateTimeUtils";
-
-import { StudySetItem } from "../../../pages/study/[id]/[date]/index";
 import { convertTimeStringToDayjs } from "../../../utils/convertUtils/convertTypes";
+import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
 function Configuration() {
   const { data: session } = useSession();

@@ -6,7 +6,6 @@ import { useSetRecoilState } from "recoil";
 import { GATHER_CONTENT, GROUP_STUDY, STUDY_VOTE, USER_INFO } from "../../constants/keys/queryKeys";
 import { transferGatherDataState } from "../../recoils/transferRecoils";
 import { IStudyVotePlaces } from "../../types/models/studyTypes/studyInterActions";
-import { useStudyWeekQuery } from "../study/queries";
 
 export const useToken = () => {
   const [token, setToken] = useState();
@@ -22,8 +21,6 @@ export const useToken = () => {
 
   return token;
 };
-
-
 
 export const useResetQueryData = () => {
   const queryClient = useQueryClient();

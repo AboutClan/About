@@ -1,14 +1,13 @@
 import dayjs, { Dayjs } from "dayjs";
 import { useSession } from "next-auth/react";
 import { useMemo } from "react";
-import { setStudyWeekData } from "../../libs/study/studyConverters";
 
+import { setStudyWeekData } from "../../libs/study/studyConverters";
 import { findMyStudyByUserId } from "../../libs/study/studySelectors";
 import { StudyMergeResultProps, StudySetProps } from "../../types/models/studyTypes/derivedTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 import {
   useRealTimeCancelMutation,
-  useRealTimeStatusMutation,
   useRealTimeTimeChangeMutation,
   useRealtimeVoteMutation,
 } from "../realtime/mutations";
@@ -20,7 +19,7 @@ import {
 } from "../study/mutations";
 import { useStudyVoteQuery, useStudyWeekQuery } from "../study/queries";
 import { useResetStudyQuery } from "./CustomHooks";
-import { useToast, useTypeToast } from "./CustomToast";
+import { useTypeToast } from "./CustomToast";
 
 export const useStudySetQuery = (date: string, isEnabled: boolean): { studySet: StudySetProps } => {
   const { data } = useStudyWeekQuery({ enabled: isEnabled });
@@ -43,7 +42,6 @@ export const useMyStudyResult = (date: string): StudyMergeResultProps => {
 };
 
 export const useStudyMutations = (date: Dayjs) => {
-
   const typeToast = useTypeToast();
   const resetStudy = useResetStudyQuery();
 
@@ -102,18 +100,18 @@ export const useStudyMutations = (date: Dayjs) => {
     },
   );
 
-  const { mutate: realTimeChangeStatus } = useRealTimeStatusMutation(dayjsToStr(date), {
-    onSuccess: () => {
-      typeToast("cancel");
-      resetStudy();
-    },
-  });
+  // const { mutate: realTimeChangeStatus } = useRealTimeStatusMutation(dayjsToStr(date), {
+  //   onSuccess: () => {
+  //     typeToast("cancel");
+  //     resetStudy();
+  //   },
+  // });
   const { mutate: realTimeCancel, isLoading: isLoading8 } = useRealTimeCancelMutation(
     dayjsToStr(date),
     {
       onSuccess: () => {
         typeToast("cancel");
-       
+
         resetStudy();
       },
     },

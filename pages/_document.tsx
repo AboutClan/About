@@ -10,7 +10,6 @@ import Script from "next/script";
 import { Fragment } from "react";
 import { ServerStyleSheet } from "styled-components";
 
-const NEXT_PUBLIC_NAVER_CLIENT_ID = process.env.NEXT_PUBLIC_NAVER_CLIENT_ID;
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext): Promise<DocumentInitialProps> {
     const sheet = new ServerStyleSheet();
@@ -67,10 +66,19 @@ export default class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
+
           <Script
-            src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${NEXT_PUBLIC_NAVER_CLIENT_ID}`}
+            src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_AI_CLIENT_ID}&submodules=geocoder`}
+            strategy="beforeInteractive"
+          ></Script>
+
+          {/* <Script
+            src={`https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}&submodules=geocoder`}
             strategy="beforeInteractive"
           />
+          <Script
+            src={`https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${process.env.NEXT_PUBLIC_NAVER_CLIENT_ID}&submodules=geocoder`}
+          ></Script> */}
         </body>
       </Html>
     );

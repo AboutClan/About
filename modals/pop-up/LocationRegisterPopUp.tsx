@@ -7,16 +7,16 @@ import { USER_INFO } from "../../constants/keys/queryKeys";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { IModal } from "../../types/components/modalTypes";
-import { KakaoLocationProps } from "../../types/externals/kakaoLocationSearch";
+import { NaverLocationProps } from "../../types/externals/kakaoLocationSearch";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface LocationRegisterPopUp extends IModal {}
 
 function LocationRegisterPopUp({ setIsModal }: LocationRegisterPopUp) {
   const toast = useToast();
-  const [placeInfo, setPlaceInfo] = useState<KakaoLocationProps>({
-    place_name: "",
-    road_address_name: "",
+  const [placeInfo, setPlaceInfo] = useState<NaverLocationProps>({
+    title: "",
+    address: "",
   });
 
   const queryClient = useQueryClient();
@@ -35,7 +35,7 @@ function LocationRegisterPopUp({ setIsModal }: LocationRegisterPopUp) {
     main: {
       text: "활동 장소 입력",
       func: () => {
-        const { place_name: placeName, y, x } = placeInfo;
+        const { title: placeName, y, x } = placeInfo;
         if (!placeName || !y || !x) {
           toast("error", "누락된 항목이 있습니다.");
           return;

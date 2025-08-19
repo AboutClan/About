@@ -24,9 +24,7 @@ export default function Header({
   isBorder = false,
   isTransparent,
   func,
-  rightPadding,
 }: IHeader) {
- 
   function HeaderLayout() {
     return (
       <HeaderContainer

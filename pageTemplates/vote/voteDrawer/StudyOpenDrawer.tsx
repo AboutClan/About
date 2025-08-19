@@ -13,7 +13,7 @@ import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useRealtimeVoteMutation } from "../../../hooks/realtime/mutations";
 import { CalendarHeader } from "../../../modals/aboutHeader/DateCalendarModal";
-import { KakaoLocationProps } from "../../../types/externals/kakaoLocationSearch";
+import { NaverLocationProps } from "../../../types/externals/kakaoLocationSearch";
 import { RealTimeVoteProps } from "../../../types/models/studyTypes/requestTypes";
 import { IStudyVoteTime } from "../../../types/models/studyTypes/studyInterActions";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
@@ -39,9 +39,9 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
   });
 
   const [isFirstPage, setIsFirstPage] = useState(true);
-  const [placeInfo, setPlaceInfo] = useState<KakaoLocationProps>({
-    place_name: "",
-    road_address_name: "",
+  const [placeInfo, setPlaceInfo] = useState<NaverLocationProps>({
+    title: "",
+    address: "",
   });
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
   const [isTimeDrawer, setIsTimeDrawer] = useState(false);
@@ -50,7 +50,7 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
   const handleBottomNav = () => {
     if (isFirstPage) setIsFirstPage(false);
     else {
-      if (!placeInfo?.place_name) {
+      if (!placeInfo?.title) {
         toast("warning", "장소를 입력해 주세요");
         return;
       }
@@ -70,8 +70,8 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
           place: {
             latitude: +placeInfo.y,
             longitude: +placeInfo.x,
-            name: placeInfo.place_name,
-            address: placeInfo.road_address_name,
+            name: placeInfo.title,
+            address: placeInfo.address,
           },
           time: {
             start: voteTime.start,

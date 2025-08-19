@@ -31,7 +31,7 @@ export default function TabNav({
         index={selected ? idx : undefined}
         color={size === "md" ? "var(--gray-500)" : "var(--color-gray)"}
         colorScheme={!isBlack ? "mint" : "black"}
-        bgColor={"white"}
+        bgColor="white"
         height="44px"
       >
         <TabList

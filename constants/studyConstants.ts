@@ -1,4 +1,5 @@
 import { ThemeTypings } from "@chakra-ui/system";
+
 import { StudyTypeStatus } from "../pages/study/[id]/[date]";
 
 export const STUDY_STATUS_TO_BADGE: Record<

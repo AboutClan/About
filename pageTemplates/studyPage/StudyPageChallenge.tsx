@@ -1,10 +1,18 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+
 import SectionHeader from "../../components/atoms/SectionHeader";
 import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
+import AvatarGroupsOverwrap from "../../components/molecules/groups/AvatarGroupsOverwrap";
+import { useToast } from "../../hooks/custom/CustomToast";
+import { useUserInfoQuery } from "../../hooks/user/queries";
 
 interface StudyPageChallengeProps {}
 
 function StudyPageChallenge({}: StudyPageChallengeProps) {
+  const toast = useToast();
+  const { data: userInfo } = useUserInfoQuery();
+  console.log(userInfo);
+
   return (
     <>
       <SectionHeader title="챌린지에 도전하고 상품 받아가세요!" subTitle="스터디 챌린지" />
@@ -20,7 +28,7 @@ function StudyPageChallenge({}: StudyPageChallengeProps) {
           borderRadius="8px"
         >
           <Box fontSize="18px" lineHeight="26px" color="mint" fontWeight="bold">
-            87시간 20분
+            0시간 0분
           </Box>
           <Box fontSize="13px" lineHeight="18px" color="gray.500" fontWeight="medium">
             월간 참여 시간
@@ -35,7 +43,7 @@ function StudyPageChallenge({}: StudyPageChallengeProps) {
             px={3}
             py={1.5}
           >
-            참여 이전 상태
+            시작 전
           </Box>
         </Flex>
         <Flex
@@ -48,13 +56,18 @@ function StudyPageChallenge({}: StudyPageChallengeProps) {
           borderRadius="8px"
         >
           <Box fontSize="18px" lineHeight="26px" fontWeight="bold">
-            87시간 20분
+            0시간 0분
           </Box>
           <Box fontSize="13px" lineHeight="18px" color="gray.500" fontWeight="medium">
             목표 공부 시간
           </Box>
           <Flex mt={2} flexDir="column" flex={1} justify="center">
-            <Button variant="ghost" size="sm" border="none">
+            <Button
+              variant="ghost"
+              size="sm"
+              border="none"
+              onClick={() => toast("info", "스터디 챌린지 오픈을 기다려주세요!")}
+            >
               <Flex>
                 <Box fontSize="11px" fontWeight="medium" lineHeight="14px">
                   수정하기
@@ -66,11 +79,26 @@ function StudyPageChallenge({}: StudyPageChallengeProps) {
         </Flex>
       </Flex>
       <Flex flexDir="column" align="center" mt={2} px={4} py={5} border="var(--border-main)">
-        <Flex align="center" h={10}></Flex>
+        <Flex align="center" h={10}>
+          <AvatarGroupsOverwrap
+            users={[
+              { avatar: { type: 15, bg: 7 } },
+              { avatar: { type: 7, bg: 3 } },
+              { avatar: { type: 13, bg: 0 } },
+            ]}
+            maxCnt={4}
+            size="lg"
+          />
+        </Flex>
         <Box mt={3} mb={4}>
           --명이 함께 도전중이에요!
         </Box>
-        <Button w="full" borderRadius="8px" colorScheme="black">
+        <Button
+          w="full"
+          borderRadius="8px"
+          colorScheme="black"
+          onClick={() => toast("info", "스터디 챌린지 오픈을 기다려주세요!")}
+        >
           챌린지 도전하기
         </Button>
       </Flex>

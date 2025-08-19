@@ -55,8 +55,7 @@ export interface StudyPlaceProps extends PlaceRegisterProps {
   _id: string;
   registerDate: string;
   registrant?: UserSimpleInfoProps;
-  status?: "active" | "inactive";
-  prefCnt?: number;
+  prefCnt: number;
   reviews: PlaceReviewProps[];
 }
 

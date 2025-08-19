@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useParams, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 import { MainLoading } from "../../../../components/atoms/loaders/MainLoading";
@@ -233,7 +233,7 @@ export default function Page() {
   );
 }
 
-const StudyNavigationComponent = ({
+function StudyNavigationComponent({
   date,
   type,
 
@@ -256,7 +256,7 @@ const StudyNavigationComponent = ({
   };
   findMyStudy: StudyMemberProps | StudyParticipationUserProps;
   myStudyArr: (StudyOpenRealTimesSet | StudyResultsSet)[];
-}) => {
+}) {
   const myAttendance = (findMyStudy as StudyMemberProps)?.attendance?.type || "participation";
 
   if (myAttendance === "arrived" || myAttendance === "absenced") return;
@@ -276,7 +276,7 @@ const StudyNavigationComponent = ({
       // isArrived={!!(myRealTimeStudy?.attendance?.type === "arrived")}
     />
   );
-};
+}
 
 const getParticipationMembers = (
   participations: StudySetProps["participations"],

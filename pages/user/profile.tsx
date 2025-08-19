@@ -17,7 +17,7 @@ import { useToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { CameraIcon, ProfileCamera } from "../../pageTemplates/user/UserProfileSection";
-import { KakaoLocationProps } from "../../types/externals/kakaoLocationSearch";
+import { NaverLocationProps } from "../../types/externals/kakaoLocationSearch";
 import { MajorLayout } from "../register/major";
 import { MBTILayout } from "../register/mbti";
 
@@ -39,9 +39,9 @@ function Profile() {
   const [comment, setComment] = useState("");
   const [isDrawer, setIsDrawer] = useState(false);
   const [text, setText] = useState("");
-  const [placeInfo, setPlaceInfo] = useState<KakaoLocationProps>({
-    place_name: "",
-    road_address_name: "",
+  const [placeInfo, setPlaceInfo] = useState<NaverLocationProps>({
+    title: "",
+    address: "",
   });
   const [drawerType, setDrawerType] = useState<"major" | "mbti">();
 
@@ -57,7 +57,7 @@ function Profile() {
     setMajors(userInfo?.majors);
     setMbti(userInfo?.mbti);
     setPlaceInfo({
-      place_name: userInfo?.locationDetail?.text || "",
+      title: userInfo?.locationDetail?.text || "",
       x: userInfo?.locationDetail?.lon + "",
       y: userInfo?.locationDetail?.lat + "",
     });
@@ -69,7 +69,7 @@ function Profile() {
   const handleSubmit = () => {
     mutate({
       locationDetail: {
-        text: placeInfo?.place_name,
+        text: placeInfo?.title,
         lat: +placeInfo?.y,
         lon: +placeInfo?.x,
       },

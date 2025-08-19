@@ -9,11 +9,11 @@ import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
 import SearchLocation from "../../../components/organisms/SearchLocation";
 import { useToast } from "../../../hooks/custom/CustomToast";
+import { NaverLocationProps } from "../../../hooks/external/queries";
 import { ModalLayout } from "../../../modals/Modals";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
-import { KakaoLocationProps } from "../../../types/externals/kakaoLocationSearch";
 
 function WritingGahterLocation() {
   const router = useRouter();
@@ -22,21 +22,25 @@ function WritingGahterLocation() {
   const [gatherWriting, setGatherWriting] = useRecoilState(sharedGatherWritingState);
   const [isModal, setIsModal] = useState(false);
 
-  const [placeInfo, setPlaceInfo] = useState<KakaoLocationProps>({
-    place_name: gatherWriting?.location?.main || "",
-    road_address_name: gatherWriting?.location?.sub || "",
+  const [placeInfo, setPlaceInfo] = useState<NaverLocationProps>({
+    title: gatherWriting?.location?.main || "",
+    address: gatherWriting?.location?.sub || "",
+    latitude: null,
+    longitude: null,
   });
 
+
+  
   const onClickNext = () => {
-    if (!placeInfo?.place_name) {
+    if (!placeInfo?.title) {
       setIsModal(true);
       return;
     }
     setGatherWriting((old) => ({
       ...old,
       location: {
-        main: placeInfo.place_name,
-        sub: placeInfo.road_address_name,
+        main: placeInfo.title,
+        sub: placeInfo.address,
       },
     }));
     router.push({ pathname: `/gather/writing/condition`, query: router.query });

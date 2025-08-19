@@ -1,11 +1,8 @@
 import { Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
-import { getToday } from "../../utils/dateTimeUtils";
-
 export interface DatePointButtonProps {
   date: string;
-
   func: () => void;
   size?: "sm" | "md";
   isSelected?: boolean;
@@ -23,8 +20,6 @@ function DatePointButton({
   isDisabled,
   isMint,
 }: DatePointButtonProps) {
-  const today = getToday();
-
   function TodayCircle({ date }: { date: number }) {
     return (
       <Flex

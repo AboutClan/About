@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { signOut } from "next-auth/react";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { signOut } from "next-auth/react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
@@ -10,7 +10,11 @@ import DailyCheckWinModal from "../../modals/aboutHeader/dailyCheckModal/DailyCh
 import CollectionModal from "../../modals/common/CollectionModal";
 import WriteDrawer from "../../modals/home/writeDrawer";
 import ErrorUserInfoPopUp from "../../modals/pop-up/ErrorUserInfoPopUp";
-import { transferCollectionState, transferDailyCheckWinState, transferStudyRewardState } from "../../recoils/transferRecoils";
+import {
+  transferCollectionState,
+  transferDailyCheckWinState,
+  transferStudyRewardState,
+} from "../../recoils/transferRecoils";
 import { DispatchBoolean } from "../../types/hooks/reactTypes";
 interface IBaseModal {
   isGuest: boolean;
@@ -85,30 +89,24 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
             fontSize="20px"
             textAlign="start"
           >
-            {true
-              ? "모임장의 승인이 필요한 소모임이에요."
-              : "즉시 가입이 가능한 소모임이에요."}
-            <br />23}
+            스터디 출석 완료!
+            <br />
+            <b>{transferStudyReward} Point</b>가 적립되었습니다.
           </Box>
           <Box color="gray.500" mr="auto" fontSize="12px" fontWeight={600}>
-            매월 <b>참여권 {2}장</b>이 소모됩니다.
+            스터디에 참여하면 매번 포인트를 획득할 수 있어요!
           </Box>
           <Box p={5}>
-            <Image
-              src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/freepik__background__12597-removebg-preview.png"
-              width={160}
-              height={160}
-              alt="studyResult"
-            />
+            <Image src="/32.png" alt="studyReward" width={160} height={160} />
           </Box>
           <Flex direction="column" mt="auto" w="100%">
             <Button
               w="full"
               size="lg"
               colorScheme="black"
-              onClick={() => {}}
+              onClick={() => () => setTransferStudyReward(null)}
             >
-              {!true ? "가입 신청하기" : "가입하기"}
+              다른 날짜 스터디도 신청하기
             </Button>
             <Button
               my={2}

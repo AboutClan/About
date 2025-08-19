@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+
 import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
 import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
 import { StudyResultProps } from "../../types/models/studyTypes/baseTypes";
@@ -17,7 +18,7 @@ export const setStudyThumbnailCard = (
   const isPassedDate = date ? dayjs(date).isBefore(dayjs(), "day") : false;
 
   const basicThumbnailCard: StudyThumbnailCardProps[] = [];
-  if (soloRealTimes && date === dayjsToStr(dayjs())) {
+  if (soloRealTimes && dayjs(date).startOf("day").isBefore(dayjs())) {
     basicThumbnailCard.push({
       place: {
         name: "실시간 공부 인증",

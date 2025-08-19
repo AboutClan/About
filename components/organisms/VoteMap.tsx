@@ -24,8 +24,8 @@ export default function VoteMap({
   handleMarker,
   resizeToggle,
   centerValue,
-  // circleCenter,
-}: IVoteMap) {
+}: // circleCenter,
+IVoteMap) {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<naver.maps.Map | null>(null);
   const mapElementsRef = useRef({
@@ -34,7 +34,7 @@ export default function VoteMap({
     infoWindow: [],
     circle: null,
   });
-
+  console.log(1234567, markersOptions);
   useEffect(() => {
     if (!mapRef?.current || typeof naver === "undefined" || !mapOptions) return;
 

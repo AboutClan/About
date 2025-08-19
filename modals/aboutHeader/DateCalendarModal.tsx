@@ -1,9 +1,10 @@
+import "swiper/css";
+
 import { Box, Flex, ModalHeader } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useMemo, useRef, useState } from "react";
 import type { Swiper as SwiperType } from "swiper";
-import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import IconButton from "../../components/atoms/buttons/IconButton";
@@ -85,8 +86,8 @@ function DateCalendarModal({
   const footerOptions: IFooterOptions = { main: { text: "날짜 이동", func: moveDate } };
   const paddingOptions: IPaddingOptions = { footer: 0 };
 
-  const Header = () => (
-    <ModalHeader
+  function Header() {
+  return <ModalHeader
       fontWeight={700}
       px={6}
       pt={4}
@@ -103,7 +104,7 @@ function DateCalendarModal({
         date={dayjsToStr(standardDate)}
       />
     </ModalHeader>
-  );
+}
 
   return (
     <ModalLayout
@@ -140,7 +141,7 @@ function DateCalendarModal({
   );
 }
 
-export const CalendarHeader = ({
+export function CalendarHeader({
   goPrev,
   goNext,
   leftDisabled,
@@ -152,7 +153,7 @@ export const CalendarHeader = ({
   leftDisabled: boolean;
   rightDisabled: boolean;
   date: string;
-}) => {
+}) {
   return (
     <Flex justify="space-between" align="center">
       <IconButton onClick={goPrev} isDisabled={leftDisabled} aria-label="이전 달">
@@ -166,10 +167,10 @@ export const CalendarHeader = ({
       </IconButton>
     </Flex>
   );
-};
+}
 
-const LeftIcon = () => (
-  <svg
+function LeftIcon() {
+  return <svg
     xmlns="http://www.w3.org/2000/svg"
     height="20"
     viewBox="0 -960 960 960"
@@ -178,10 +179,10 @@ const LeftIcon = () => (
   >
     <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" />
   </svg>
-);
+}
 
-const RightIcon = () => (
-  <svg
+function RightIcon() {
+  return <svg
     xmlns="http://www.w3.org/2000/svg"
     height="20"
     viewBox="0 -960 960 960"
@@ -190,6 +191,6 @@ const RightIcon = () => (
   >
     <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" />
   </svg>
-);
+}
 
 export default DateCalendarModal;

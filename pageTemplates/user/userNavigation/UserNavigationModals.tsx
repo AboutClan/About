@@ -24,7 +24,7 @@ import RequestRestModal from "../../../modals/userRequest/RequestRestModal/Reque
 import RequestSecedeModal from "../../../modals/userRequest/RequestSecedeModal";
 import RequestSuggestModal from "../../../modals/userRequest/RequestSuggestModal";
 import { RegisterLocationLayout } from "../../../pages/register/location";
-import { KakaoLocationProps } from "../../../types/externals/kakaoLocationSearch";
+import { NaverLocationProps } from "../../../types/externals/kakaoLocationSearch";
 import { UserOverviewModal } from "./UserNavigation";
 
 interface IUserNavigationModals {
@@ -80,7 +80,7 @@ function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals
     if (isModal === false) setModalOpen(null);
   }, [modalOpen, isModal]);
 
-  const [placeInfo, setPlaceInfo] = useState<KakaoLocationProps>();
+  const [placeInfo, setPlaceInfo] = useState<NaverLocationProps>();
 
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -97,7 +97,7 @@ function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals
       return;
     }
     changeLocationDetail({
-      text: placeInfo.place_name,
+      text: placeInfo.title,
       lon: +placeInfo.x,
       lat: +placeInfo.y,
     });

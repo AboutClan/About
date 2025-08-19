@@ -16,7 +16,7 @@ function CurrentLocationBtn({ onClick, isBig }: CurrentLocationBtnProps) {
       h={size}
       size="sm"
       p="0"
-      border="1px solid var(--gray-100)"
+      border="var(--border-main)"
       onClick={(e) => {
         e.preventDefault();
         e.stopPropagation();

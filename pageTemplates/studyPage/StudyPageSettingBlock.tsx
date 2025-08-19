@@ -11,7 +11,7 @@ import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { RegisterLocationLayout } from "../../pages/register/location";
-import { KakaoLocationProps } from "../../types/externals/kakaoLocationSearch";
+import { NaverLocationProps } from "../../types/externals/kakaoLocationSearch";
 import { AvatarProps } from "../../types/models/userTypes/userInfoTypes";
 
 function StudyPageSettingBlock() {
@@ -21,7 +21,7 @@ function StudyPageSettingBlock() {
   const { data: userInfo } = useUserInfoQuery();
   const isGuest = session?.user.role === "guest";
 
-  const [placeInfo, setPlaceInfo] = useState<KakaoLocationProps>();
+  const [placeInfo, setPlaceInfo] = useState<NaverLocationProps>();
   const [errorMessage, setErrorMessage] = useState("");
   const [isModal, setIsModal] = useState(false);
 
@@ -45,7 +45,7 @@ function StudyPageSettingBlock() {
       return;
     }
     changeLocationDetail({
-      text: placeInfo.place_name,
+      text: placeInfo.title,
       lon: +placeInfo.x,
       lat: +placeInfo.y,
     });

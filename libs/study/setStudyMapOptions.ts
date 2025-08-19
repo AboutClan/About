@@ -77,7 +77,7 @@ export const getStudyPlaceMarkersOptions = (
       temp.push({
         id: place._id,
         type: "place",
-        position: new naver.maps.LatLng(place.latitude, place.longitude),
+        position: new naver.maps.LatLng(place.location.latitude, place.location.longitude),
         icon: {
           content:
             place._id === selectedId
@@ -89,6 +89,7 @@ export const getStudyPlaceMarkersOptions = (
       });
     });
   }
+  console.log(123, temp);
   return temp;
 };
 

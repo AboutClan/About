@@ -141,7 +141,7 @@ function StudyApplyDrawer({
           main={{
             first: "스터디 희망 날짜를 선택해 주세요.",
           }}
-          sub={"여러 날짜를 한번에 신청할 수도 있습니다."}
+          sub="여러 날짜를 한번에 신청할 수도 있습니다."
         />
         <Box fontSize="20px" mb={4} pb={4} px={2} borderBottom="var(--border)">
           <CalendarHeader
@@ -180,7 +180,7 @@ function StudyApplyDrawer({
           최대 일주일 이내의 스터디만 신청할 수 있습니다.
         </Box>
 
-        <BottomNav isSlide={false} text={"다 음"} onClick={handleBottomNav} />
+        <BottomNav isSlide={false} text="다 음" onClick={handleBottomNav} />
       </RightDrawer>
       {isTimeDrawer && (
         <StudyVoteTimeRulletDrawer

@@ -1,25 +1,18 @@
-import { ThemeTypings } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import ControlButton from "../../components/ControlButton";
-import {
-  StudySoloIcon,
-  StudyUserCancleIcon,
-  StudyUserCheckIcon,
-  StudyUserIcon,
-} from "../../components/Icons/ControlButtonIcon";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudyVoteMutation } from "../../hooks/study/mutations";
-import { MyStudyStatus } from "../../types/models/studyTypes/helperTypes";
 import StudyControlDrawer from "../study/modals/StudyControlDrawer";
 
 export const UNMATCHED_POP_UP_STORAGE = "unmatchedPopUpStorage";
 interface StudyControlButtonProps {
   date: string;
+
   // myVoteStatus: MyStudyStatus;
   // studyResults: StudyMergeResultProps[];
   // currentLocation: CoordinatesProps;
@@ -27,10 +20,15 @@ interface StudyControlButtonProps {
 }
 
 function StudyControlButton({ date }: StudyControlButtonProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const newSearchParams = new URLSearchParams(searchParams);
+  const drawerParam = searchParams.get("drawer");
   const toast = useToast();
   const resetStudy = useResetStudyQuery();
+
   const { data: session } = useSession();
-  const router = useRouter();
+
   const unmatchedPopupStorage = localStorage.getItem(UNMATCHED_POP_UP_STORAGE);
 
   const [isModal, setIsModal] = useState(false);
@@ -40,6 +38,14 @@ function StudyControlButton({ date }: StudyControlButtonProps) {
       resetStudy();
     },
   });
+
+  useEffect(() => {
+    if (drawerParam === "on") {
+      setIsModal(true);
+      newSearchParams.delete("drawer");
+      router.replace(`/studyPage?${newSearchParams.toString()}`);
+    }
+  }, [drawerParam]);
 
   // useEffect(() => {
   //   if (dayjsToStr(dayjs()) !== date) return;
@@ -88,8 +94,8 @@ function StudyControlButton({ date }: StudyControlButtonProps) {
   return (
     <>
       <ControlButton
-        colorScheme={"black"}
-        text={"스터디"}
+        colorScheme="black"
+        text="스터디"
         // isDisabled={myVoteStatus === "arrived" || myVoteStatus === "absenced"}
         rightIcon={<CheckIcon />}
         handleClick={onClickButton}
@@ -157,8 +163,8 @@ function StudyControlButton({ date }: StudyControlButtonProps) {
 //   }
 // };
 
-const CheckIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
+function CheckIcon() {
+  return <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12" fill="none">
     <g clipPath="url(#clip0_2105_2224)">
       <path
         fillRule="evenodd"
@@ -177,6 +183,6 @@ const CheckIcon = () => (
       </clipPath>
     </defs>
   </svg>
-);
+}
 
 export default StudyControlButton;

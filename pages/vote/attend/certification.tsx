@@ -13,9 +13,9 @@ import ImageUploadInput from "../../../components/molecules/ImageUploadInput";
 import LocationSearch from "../../../components/organisms/location/LocationSearch";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useStudySetQuery } from "../../../hooks/custom/StudyHooks";
+import { NaverLocationProps } from "../../../hooks/external/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { transferStudyAttendanceState } from "../../../recoils/transferRecoils";
-import { KakaoLocationProps } from "../../../types/externals/kakaoLocationSearch";
 
 function Certification() {
   const { data: session } = useSession();
@@ -29,27 +29,29 @@ function Certification() {
   const { studySet } = useStudySetQuery(date, !!date && type === "soloRealTimes");
 
   const [image, setImage] = useState<Blob>();
-  const [placeInfo, setPlaceInfo] = useState<KakaoLocationProps>({
-    place_name: "",
-    road_address_name: "",
+  const [placeInfo, setPlaceInfo] = useState<NaverLocationProps>({
+    title: "",
+    address: "",
+    lat: null,
+    lng: null,
   });
   const [isActive, setIsActive] = useState(true);
 
   const [studyAttendanceRequest, setStudyAttendanceRequest] = useRecoilState(
     transferStudyAttendanceState,
   );
-
+  console.log(1234, studyAttendanceRequest);
   useEffect(() => {
     if (studyAttendanceRequest) {
-      const { name, latitude, longitude, _id } = studyAttendanceRequest.place;
+      const { name, latitude, longitude, address } = studyAttendanceRequest.place;
       setPlaceInfo({
-        place_name: name,
-        x: longitude + "",
-        y: latitude + "",
-        _id,
+        title: name,
+        lng: longitude,
+        lat: latitude,
+        address,
       });
       setImage(studyAttendanceRequest?.image);
-    } else if (type === "soloRealTimes") {
+    } else if (type === "soloRealTimes" && studySet) {
       const findMyStudyResult = studySet["soloRealTimes"]?.find(
         (par) => par.study.user._id === userInfo?._id,
       );
@@ -57,15 +59,13 @@ function Certification() {
       if (findMyStudyResult) {
         const studyPlace = findMyStudyResult.study.place;
         setPlaceInfo({
-          x: studyPlace.longitude + "",
-          y: studyPlace.latitude + "",
-          road_address_name: studyPlace.address,
-          place_name: studyPlace.name,
-          _id: studyPlace._id,
+          lng: studyPlace.longitude,
+          lat: studyPlace.latitude,
+          address: studyPlace.address,
+          title: studyPlace.name,
         });
+        setIsActive(false);
       }
-
-      setIsActive(false);
     }
   }, [studyAttendanceRequest, studySet, userInfo]);
 
@@ -75,7 +75,7 @@ function Certification() {
       e.preventDefault();
       return;
     }
-    if (!placeInfo?.place_name) {
+    if (!placeInfo?.title) {
       toast("warning", "장소를 입력해 주세요");
       e.preventDefault();
       return;
@@ -85,17 +85,16 @@ function Certification() {
       ...old,
       image,
       place: {
-        latitude: +placeInfo?.y,
-        longitude: +placeInfo?.x,
-        address: placeInfo?.road_address_name,
-        name: placeInfo?.place_name,
-        _id: placeInfo?._id,
+        latitude: placeInfo?.lat,
+        longitude: placeInfo?.lng,
+        address: placeInfo?.address,
+        name: placeInfo?.title,
       },
     }));
   };
 
   const handleResetButton = () => {
-    setPlaceInfo({ place_name: "", road_address_name: "" });
+    setPlaceInfo({ title: "", address: "", lat: null, lng: null });
     setIsActive(true);
   };
 
