@@ -10,7 +10,7 @@ interface CalendarProps {
   func: (date: string) => void;
   passedDisabled?: boolean;
   mintDateArr: string[];
-
+  isTodayInclude: boolean;
 }
 
 const DAY = ["일", "월", "화", "수", "목", "금", "토"];
@@ -21,14 +21,14 @@ function MonthCalendar({
   func,
   passedDisabled,
   mintDateArr,
-  
+  isTodayInclude,
 }: CalendarProps) {
   const calendarArr = getCalendarDates(
     "month",
     dayjs(standardDate),
     passedDisabled,
     mintDateArr,
-   
+    isTodayInclude,
   );
 
   return (

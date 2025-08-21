@@ -31,7 +31,7 @@ function StudyPageHeader() {
     if (!location) return;
     setPlaceInfo({ title: location.text, x: location.lon + "", y: location.lat + "" });
   }, [location]);
-  console.log(24, userInfo);
+
   const { mutate: changeLocationDetail } = useUserInfoFieldMutation("locationDetail", {
     onSuccess() {
       typeToast("change");

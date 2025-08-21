@@ -54,7 +54,7 @@ export const useSecretSquareListQuery = (
           params: { cursor },
         },
       );
-      console.log(7, res.data);
+    
       return res.data;
     },
     options,

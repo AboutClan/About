@@ -13,9 +13,13 @@ import StudyVoteTimeRulletDrawer from "../../components/services/studyVote/Study
 import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudyMutations } from "../../hooks/custom/StudyHooks";
 import { useUserInfoQuery } from "../../hooks/user/queries";
-import { StudyParticipationUserProps, StudyTypeStatus } from "../../pages/study/[id]/[date]";
-import { StudyMemberProps } from "../../types/models/studyTypes/baseTypes";
-import { StudyOpenRealTimesSet, StudyResultsSet } from "../../types/models/studyTypes/derivedTypes";
+import StudyAbsentModal from "../../modals/study/StudyAbsentModal";
+import { StudyParticipationUserProps } from "../../pages/study/[id]/[date]";
+import { StudyConfirmedMemberProps } from "../../types/models/studyTypes/study-entity.types";
+import {
+  StudyOpenRealTimesSet,
+  StudyResultsSet,
+} from "../../types/models/studyTypes/study-set.types";
 // import { MyStudyStatus } from "../../types/models/studyTypes/helperTypes";
 import { DayjsTimeProps } from "../../types/utils/timeAndDate";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
@@ -32,9 +36,12 @@ interface IStudyNavigation {
     name: string;
     locationDetail: string;
   };
-  findMyStudy: StudyMemberProps | StudyParticipationUserProps;
+  findMyStudy: StudyConfirmedMemberProps | StudyParticipationUserProps;
   myStudyArr: (StudyOpenRealTimesSet | StudyResultsSet)[];
 }
+
+type MyStatus = "participation" | "pending";
+type StudyTypeStatus = "participations" | "pending" | "openRealTimes" | "open" | "soloRealTimes";
 
 interface NavigationProps {
   type: "single" | "multi";
@@ -42,8 +49,6 @@ interface NavigationProps {
   colorScheme: ThemeTypings["colorSchemes"];
   func?: () => void;
 }
-
-type myStatus = "participation" | "pending";
 
 type DirectAction = "openRealTimesVote" | "dailyVote" | "timeChange";
 
@@ -86,11 +91,11 @@ function StudyNavigation({
   // const myStudyInfo = findMyStudyInfo(findStudy, session?.user.id);
 
   // const myStudyStatus = evaluateMyStudyStatus(findStudy, session?.user.id, pageType, isVoting);
-  console.log(53, findMyStudy, myStudyArr, 52);
-  const getNavigationProps = (studyType: StudyTypeStatus, myStatus: myStatus): NavigationProps => {
+
+  const getNavigationProps = (studyType: StudyTypeStatus, myStatus: MyStatus): NavigationProps => {
     switch (studyType) {
       case "participations":
-      case "expectedResult":
+      case "pending":
         if (myStatus === "pending") {
           return {
             text: "스터디 신청",
@@ -121,6 +126,16 @@ function StudyNavigation({
             },
           };
         } else if (myStatus === "participation") {
+          if (date === dayjsToStr(dayjs())) {
+            return {
+              text: "출석 체크",
+              type: "multi",
+              colorScheme: "mint",
+              func: () =>
+                router.push(`/vote/attend/configuration?date=${date}&id=${id}&type=openRealTimes`),
+            };
+          }
+
           if (myStudyArr?.[0]?.study?.members?.[0].user._id === userInfo?._id) {
             return {
               text: "개설 취소",
@@ -146,7 +161,6 @@ function StudyNavigation({
               },
             };
           }
-
           return {
             text: "참여 취소",
             type: "single",
@@ -156,7 +170,7 @@ function StudyNavigation({
             },
           };
         }
-      case "voteResult":
+      case "open":
         if (myStatus === "pending") {
           if (hasOtherStudy) {
             toast("info", "다른 스터디에 참여중입니다");
@@ -175,7 +189,8 @@ function StudyNavigation({
             text: "출석 체크",
             type: "multi",
             colorScheme: "mint",
-            func: () => router.push(`/vote/attend/configuration?date=${date}&id=${id}`),
+            func: () =>
+              router.push(`/vote/attend/configuration?date=${date}&id=${id}&type=results`),
           };
         }
       case "soloRealTimes":
@@ -204,7 +219,7 @@ function StudyNavigation({
   };
 
   const handleDirectAction = (drawerType: DirectAction) => {
-    console.log(drawerType, locationInfo, voteTime);
+    
     // setIsTimeRulletModal(false);
 
     switch (drawerType) {
@@ -226,10 +241,11 @@ function StudyNavigation({
             address: locationInfo.locationDetail,
           },
           time: voteTime,
+          status: "participation",
         });
         break;
       case "timeChange":
-        if (studyType === "voteResult") {
+        if (studyType === "open") {
           change(voteTime);
         } else {
           realTimeChange(voteTime);
@@ -367,19 +383,21 @@ function StudyNavigation({
         />
       )} */}
 
-      {/* {isAbsentModal && (
+      {isAbsentModal && (
         <StudyAbsentModal
-          studyType={myStudyStatus === "open" ? "voteStudy" : "realTimeStudy"}
-          myStudyInfo={myStudyInfo}
+          times={(findMyStudy as StudyConfirmedMemberProps).time}
+          // studyType={myStudyStatus === "open" ? "voteStudy" : "realTimeStudy"}
+          // myStudyInfo={myStudyInfo}
           handleAbsence={(props) => {
-            if (myStudyStatus === "open") absence(props);
-            else realTimeCancel("cancel");
+            if (studyType === "open") absence(props);
+            else {
+            }
+
             setIsAbsentModal(false);
           }}
           setIsModal={setIsAbsentModal}
         />
-      )} */}
-
+      )}
       {alertModalInfo && (
         <AlertModal
           options={alertModalInfo}
@@ -387,7 +405,6 @@ function StudyNavigation({
           setIsModal={() => setAlertModalInfo(null)}
         />
       )}
-
       {(drawerType === "openRealTimesVote" ||
         drawerType === "dailyVote" ||
         drawerType === "timeChange") && (
@@ -395,8 +412,12 @@ function StudyNavigation({
           defaultVoteTime={
             drawerType === "timeChange"
               ? {
-                  start: adjustTime30Minutes(dayjs((findMyStudy as StudyMemberProps).time.start)),
-                  end: adjustTime30Minutes(dayjs((findMyStudy as StudyMemberProps).time.end)),
+                  start: adjustTime30Minutes(
+                    dayjs((findMyStudy as StudyConfirmedMemberProps).time.start),
+                  ),
+                  end: adjustTime30Minutes(
+                    dayjs((findMyStudy as StudyConfirmedMemberProps).time.end),
+                  ),
                 }
               : drawerType === "dailyVote"
               ? { start: dayjs(), end: dayjs() }

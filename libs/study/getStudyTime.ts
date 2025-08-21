@@ -1,9 +1,11 @@
 import dayjs from "dayjs";
 
-import { StudyMemberProps } from "../../types/models/studyTypes/baseTypes";
+import { StudyConfirmedMemberProps } from "../../types/models/studyTypes/study-entity.types";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
-export const getStudyTime = (users: StudyMemberProps[]): { start: string; end: string } => {
+export const getStudyTime = (
+  users: StudyConfirmedMemberProps[],
+): { start: string; end: string } => {
   if (!users) return null;
   let startTime = dayjs();
   let endTime = dayjs();

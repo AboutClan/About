@@ -49,7 +49,7 @@ export const NAVER_GEOCODE = "NAVER_GEOCODE";
 //     [NAVER_GEOCODE, value],
 //     async () => {
 //       if (!value) return [];
-//       console.log(2222, value);
+
 //       const res = await axios.get<NaverGeocodeResponse>(`/api/geocode`, {
 //         params: { query: value },
 //       });

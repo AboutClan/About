@@ -1,7 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { AnimatePresence, motion, PanInfo } from "framer-motion";
-import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
@@ -16,7 +15,7 @@ import {
   sortThumbnailCardInfoArr,
 } from "../../libs/study/thumbnailCardLibs";
 import { DispatchString } from "../../types/hooks/reactTypes";
-import { StudySetProps } from "../../types/models/studyTypes/derivedTypes";
+import { StudySetProps } from "../../types/models/studyTypes/study-set.types";
 import { getNewDateBySwipe } from "../../utils/animateUtils";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 import StudyPagePlaceSectionFilterBar from "./studyPageDrawer/StudyPagePlaceBlockFilterBar";
@@ -31,12 +30,16 @@ export type StudySortedOption = "날짜순" | "인원순" | "거리순";
 
 function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectionProps) {
   const { data: session } = useSession();
-  const router = useRouter();
 
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
   const [sortedOption, setSortedOption] = useState<StudySortedOption>("날짜순");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 300);
     if (!studySet) {
       setThumbnailCardinfoArr(null);
       return;
@@ -51,7 +54,8 @@ function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectio
     setThumbnailCardinfoArr(
       sortThumbnailCardInfoArr(sortedOption, getThumbnailCardInfoArr, session?.user.id),
     );
-  }, [studySet, sortedOption, session]);
+    return () => clearTimeout(timer);
+  }, [studySet, sortedOption, session, date]);
 
   const onDragEnd = (panInfo: PanInfo) => {
     const newDate = getNewDateBySwipe(panInfo, date as string);
@@ -83,7 +87,7 @@ function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectio
               dragElastic={0.3}
               onDragEnd={(_, panInfo) => onDragEnd(panInfo)}
             >
-              {thumbnailCardInfoArr?.length
+              {thumbnailCardInfoArr?.length && !isLoading
                 ? thumbnailCardInfoArr.slice(0, 6).map((thumbnailCardInfo, idx) => (
                     <Box key={idx} mb={3}>
                       <StudyThumbnailCard {...thumbnailCardInfo} />

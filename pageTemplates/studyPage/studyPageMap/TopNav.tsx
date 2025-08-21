@@ -82,7 +82,7 @@ function TopNav({
             color={filterType === "main" ? "white" : "inherit"}
             onClick={(e) => handleFilter(e, "main")}
           >
-            인기
+            추천
           </Flex>
           <Flex
             as="button"

@@ -13,7 +13,7 @@ function Comment() {
   const info = getLocalStorageObj(REGISTER_INFO);
 
   const [errorMessage, setErrorMessage] = useState("");
-  console.log(info);
+ 
   const [text, setText] = useState(info?.introduceText || "");
 
   const onClickNext = (e: MouseEvent<HTMLButtonElement, MouseEvent>) => {

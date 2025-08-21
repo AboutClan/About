@@ -40,7 +40,7 @@ function Certification() {
   const [studyAttendanceRequest, setStudyAttendanceRequest] = useRecoilState(
     transferStudyAttendanceState,
   );
-  console.log(1234, studyAttendanceRequest);
+ 
   useEffect(() => {
     if (studyAttendanceRequest) {
       const { name, latitude, longitude, address } = studyAttendanceRequest.place;

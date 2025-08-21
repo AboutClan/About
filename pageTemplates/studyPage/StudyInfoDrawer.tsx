@@ -20,11 +20,11 @@ import { useStudyCommentMutation, useStudyVoteMutation } from "../../hooks/study
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { ModalLayout } from "../../modals/Modals";
 import { DispatchType } from "../../types/hooks/reactTypes";
-import { StudyStatus } from "../../types/models/studyTypes/baseTypes";
+import { StudyType } from "../../types/models/studyTypes/study-entity.types";
 import {
   MergeStudyPlaceProps,
   StudyMergeResultProps,
-} from "../../types/models/studyTypes/derivedTypes";
+} from "../../types/models/studyTypes/study-set.types";
 import { IStudyVoteTime } from "../../types/models/studyTypes/studyInterActions";
 import { AvatarProps } from "../../types/models/userTypes/userInfoTypes";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
@@ -35,7 +35,7 @@ export interface StudyInfoProps {
   place: MergeStudyPlaceProps;
   time: StringTimeProps;
   participantCnt: number;
-  status: StudyStatus | "solo";
+  status: StudyType | "solo";
   comment: {
     user: {
       image: string;

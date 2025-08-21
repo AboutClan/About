@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
@@ -22,7 +22,6 @@ import { useRealTimeAttendMutation } from "../../../hooks/realtime/mutations";
 import { useStudyAttendCheckMutation } from "../../../hooks/study/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { ModalLayout } from "../../../modals/Modals";
-import { StudySetItem } from "../../../pages/study/[id]/[date]/index";
 import {
   transferCollectionState,
   transferStudyAttendanceState,
@@ -32,8 +31,8 @@ import {
   StudyOpenRealTimesSet,
   StudyResultsSet,
   StudySoloRealTimesSet,
-  StudyStatus,
-} from "../../../types/models/studyTypes/derivedTypes";
+  StudyType,
+} from "../../../types/models/studyTypes/study-set.types";
 import { convertTimeStringToDayjs } from "../../../utils/convertUtils/convertTypes";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
@@ -45,14 +44,14 @@ function Configuration() {
 
   const date = searchParams.get("date");
   const id = searchParams.get("id");
-  const type = searchParams.get("type") as Exclude<StudyStatus, "participations">;
+  const type = searchParams.get("type") as Exclude<StudyType, "participations">;
   const isSoloRealTimesPage = type === "soloRealTimes";
 
   const resetStudy = useResetStudyQuery();
 
   const { data: userInfo } = useUserInfoQuery();
 
-  const { studySet } = useStudySetQuery(date, !!date && isSoloRealTimesPage);
+  const { studySet } = useStudySetQuery(date, !!date);
 
   const studyData: StudySetItem[] = studySet && studySet[type];
 
@@ -63,7 +62,7 @@ function Configuration() {
   )[];
 
   const findStudy = findStudyArr?.find((study) => study?.study?.place._id === id)?.study;
-
+  
   const [endTime, setEndTime] = useState(
     dayjs().hour() < 21 ? dayjsToFormat(dayjs().startOf("hour").add(3, "hour"), "HH:mm") : "23:30",
   );
@@ -163,7 +162,7 @@ function Configuration() {
         return;
       }
       formData.append("memo", attendMessage);
-      formData.append("status", otherPermission === "허용" ? "free" : "solo");
+      formData.append("status", "solo");
       formData.append("images", transferStudyAttendance?.image as Blob);
       formData.append("place", JSON.stringify(transferStudyAttendance?.place));
       formData.append(
@@ -173,12 +172,9 @@ function Configuration() {
           end: convertTimeStringToDayjs(endTime).toISOString(),
         }),
       );
-
       attendRealTimeStudy(formData);
     } else if (type === "openRealTimes") {
       formData.append("memo", attendMessage);
-      formData.append("status", "open");
-
       formData.append("place", JSON.stringify(findStudy.place));
 
       formData.append(

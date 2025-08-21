@@ -4,7 +4,10 @@ import { useMemo } from "react";
 
 import { setStudyWeekData } from "../../libs/study/studyConverters";
 import { findMyStudyByUserId } from "../../libs/study/studySelectors";
-import { StudyMergeResultProps, StudySetProps } from "../../types/models/studyTypes/derivedTypes";
+import {
+  StudyMergeResultProps,
+  StudySetProps,
+} from "../../types/models/studyTypes/study-set.types";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 import {
   useRealTimeCancelMutation,
@@ -17,26 +20,26 @@ import {
   useStudyResultTimeChangeMutation,
   useStudyVoteMutation,
 } from "../study/mutations";
-import { useStudyVoteQuery, useStudyWeekQuery } from "../study/queries";
+import { useStudyPassedDayQuery,  } from "../study/queries";
 import { useResetStudyQuery } from "./CustomHooks";
 import { useTypeToast } from "./CustomToast";
 
-export const useStudySetQuery = (date: string, isEnabled: boolean): { studySet: StudySetProps } => {
-  const { data } = useStudyWeekQuery({ enabled: isEnabled });
+// export const useStudySetQuery = (date: string, isEnabled: boolean): { studySet: StudySetProps } => {
+//   const { data } = useStudyWeekQuery({ enabled: isEnabled });
 
-  const studySet = useMemo(() => {
-    if (!isEnabled || !data) return null;
-    const dateStart = dayjs(date).startOf("day");
-    const filtered = data.filter((d) => !dayjs(d.date).startOf("day").isBefore(dateStart));
-    return setStudyWeekData(filtered) ?? null; // 참조 안정화
-  }, [isEnabled, date, data]);
+//   const studySet = useMemo(() => {
+//     if (!isEnabled || !data) return null;
+//     const dateStart = dayjs(date).startOf("day");
+//     const filtered = data.filter((d) => !dayjs(d.date).startOf("day").isBefore(dateStart));
+//     return setStudyWeekData(filtered) ?? null; // 참조 안정화
+//   }, [isEnabled, date, data]);
 
-  return { studySet }; // 동일 참조 유지
-};
+// //   return { studySet }; // 동일 참조 유지
+// // };
 
 export const useMyStudyResult = (date: string): StudyMergeResultProps => {
   const { data: session } = useSession();
-  const { data: studyVoteData } = useStudyVoteQuery(date, { enabled: !!date });
+  const { data: studyVoteData } = useStudyPassedDayQuery(date, { enabled: !!date });
   const findMyStudyResult = findMyStudyByUserId(studyVoteData, session?.user.id);
   return findMyStudyResult;
 };

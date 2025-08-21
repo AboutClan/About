@@ -21,7 +21,6 @@ function GatherPick() {
 
   const { mutate } = useGatherRequestLikeMutation({
     onSuccess(data) {
-    
       if ((data as unknown) === "add") {
         toast("success", "관심 번개가 개설되면 알림을 보내드릴게요!");
         updatePoint({ value: -50, message: "관심 번개 등록" });
@@ -93,7 +92,7 @@ function GatherPick() {
                       <MoneyBagIcon />
                     </Box>
                     <Box as="b" ml={1} mt={0.5} color="gray.800">
-                      {(5000 + item.like.length * 50).toLocaleString()}원
+                      {(5000 + item.like.length * 100).toLocaleString()}원
                     </Box>
                   </Flex>
                 </Flex>
@@ -138,15 +137,17 @@ function GatherPick() {
 }
 
 function ThunderIcon() {
-  return <svg
-    xmlns="http://www.w3.org/2000/svg"
-    height="16px"
-    viewBox="0 -960 960 960"
-    width="16px"
-    fill="white"
-  >
-    <path d="m440-380-237-30q-25-3-32.5-27t10.5-41l409-392q5-5 12-7.5t19-2.5q20 0 30.5 17t.5 35L520-580l237 30q25 3 32.5 27T779-482L370-90q-5 5-12 7.5T339-80q-20 0-30.5-17t-.5-35l132-248Z" />
-  </svg>
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="16px"
+      viewBox="0 -960 960 960"
+      width="16px"
+      fill="white"
+    >
+      <path d="m440-380-237-30q-25-3-32.5-27t10.5-41l409-392q5-5 12-7.5t19-2.5q20 0 30.5 17t.5 35L520-580l237 30q25 3 32.5 27T779-482L370-90q-5 5-12 7.5T339-80q-20 0-30.5-17t-.5-35l132-248Z" />
+    </svg>
+  );
 }
 
 function ClockIcon() {

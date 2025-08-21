@@ -3,7 +3,7 @@ import * as CryptoJS from "crypto-js";
 import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
 import { enToKrMapping, krToEnMapping } from "../../constants/location";
 import { USER_BADGE_ARR } from "../../constants/serviceConstants/badgeConstants";
-import { StudyPlaceProps } from "../../types/models/studyTypes/baseTypes";
+import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
 import { UserBadge, UserRole } from "../../types/models/userTypes/userInfoTypes";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
 import { ActiveLocation, Location, LocationEn } from "../../types/services/locationTypes";

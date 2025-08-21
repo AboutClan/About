@@ -7,6 +7,7 @@ interface NewTwoButtonRowProps {
     icon?: ReactElement<any, string | JSXElementConstructor<any>>;
     children?: React.ReactNode;
     func: () => void;
+  
   };
   rightProps: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -24,10 +25,12 @@ function NewTwoButtonRow({ leftProps, rightProps }: NewTwoButtonRowProps) {
         size="lg"
         flex={1}
         h="48px"
-        bgColor="white"
+        bgColor={"white"}
+        color={"mint"}
         borderRadius="12px"
         boxShadow=" 0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
         border="1px solid var(--gray-100)"
+        borderColor="mint"
         leftIcon={leftProps?.icon}
         mr={2}
         onClick={leftProps?.func}

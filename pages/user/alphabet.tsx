@@ -46,7 +46,7 @@ function CollectionAlphabet() {
     },
   });
   const { data: userAlphabetAll, isLoading } = useCollectionAlphabetAllQuery();
-  console.log(1234, userAlphabetAll);
+  
   const [members, setMembers] = useState<ICollectionAlphabet[]>();
   const [isChangeModal, setIsChangeModal] = useState(false);
   const [hasAlphabetAll, setHasAlphabetAll] = useState(false);

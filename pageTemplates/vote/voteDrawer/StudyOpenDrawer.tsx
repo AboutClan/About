@@ -11,12 +11,16 @@ import SearchLocation from "../../../components/organisms/SearchLocation";
 import StudyVoteTimeRulletDrawer from "../../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
+import { NaverLocationProps } from "../../../hooks/external/queries";
 import { useRealtimeVoteMutation } from "../../../hooks/realtime/mutations";
+import { useStudyPlacesQuery } from "../../../hooks/study/queries";
 import { CalendarHeader } from "../../../modals/aboutHeader/DateCalendarModal";
-import { NaverLocationProps } from "../../../types/externals/kakaoLocationSearch";
+import { StudyPlaceProps } from "../../../types/models/studyTypes/study-entity.types";
+
 import { RealTimeVoteProps } from "../../../types/models/studyTypes/requestTypes";
 import { IStudyVoteTime } from "../../../types/models/studyTypes/studyInterActions";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
+import StudyPageMap from "../../studyPage/studyPageMap/StudyPageMap";
 
 interface StudyPlaceDrawerProps {
   onClose: () => void;
@@ -29,6 +33,9 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
   const toast = useToast();
 
   const [selectedDate, setSelectedDate] = useState<string>();
+  const [isMapOpen, setIsMapOpen] = useState(false);
+
+  useStudyPlacesQuery("main");
 
   const { mutate: handleStudyVote } = useRealtimeVoteMutation(selectedDate, {
     onSuccess() {
@@ -42,6 +49,8 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
   const [placeInfo, setPlaceInfo] = useState<NaverLocationProps>({
     title: "",
     address: "",
+    latitude: null,
+    longitude: null,
   });
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
   const [isTimeDrawer, setIsTimeDrawer] = useState(false);
@@ -68,8 +77,8 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
       func: () => {
         const voteData: RealTimeVoteProps = {
           place: {
-            latitude: +placeInfo.y,
-            longitude: +placeInfo.x,
+            latitude: placeInfo.latitude,
+            longitude: placeInfo.longitude,
             name: placeInfo.title,
             address: placeInfo.address,
           },
@@ -77,6 +86,7 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
             start: voteTime.start,
             end: voteTime.end,
           },
+          status: "open",
         };
 
         handleStudyVote(voteData);
@@ -92,6 +102,16 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
         return date;
       }
     });
+  };
+
+  const handleVotePick = (place: StudyPlaceProps) => {
+    setPlaceInfo({
+      title: place.title,
+      latitude: place.location.latitude,
+      longitude: place.location.longitude,
+      address: place.location.address,
+    });
+    setIsMapOpen(false);
   };
 
   return (
@@ -120,6 +140,7 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
               func={handleClickDate}
               passedDisabled
               mintDateArr={[]}
+              isTodayInclude
             />{" "}
             <Box as="li" fontSize="12px" lineHeight="20px" mt={3} color="gray.600">
               최대 일주일 이내의 스터디만 개설할 수 있습니다.
@@ -131,7 +152,7 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
               <SearchLocation placeInfo={placeInfo} setPlaceInfo={setPlaceInfo} hasDetail={false} />
             </Box>
 
-            <Flex w="full" mt={4} align="center">
+            <Flex w="full" mt={4} align="center" as="button" onClick={() => setIsMapOpen(true)}>
               <Badge colorScheme="mint" size="lg" mr={2}>
                 TIP
               </Badge>
@@ -154,6 +175,14 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
           onClick={handleBottomNav}
         />
       </RightDrawer>
+      {isMapOpen && (
+        <StudyPageMap
+          handleVotePick={handleVotePick}
+          isDefaultOpen
+          onClose={() => setIsMapOpen(false)}
+        />
+      )}
+
       {isTimeDrawer && (
         <StudyVoteTimeRulletDrawer
           setVoteTime={setVoteTime}

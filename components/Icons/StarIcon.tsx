@@ -5,9 +5,10 @@ export function StarIcon({
   size: tempSize,
 }: {
   type: "fill" | "empty" | "half";
-  size: "sm" | "lg" | "xl";
+  size: "sm" | "md" | "lg" | "xl";
 }) {
-  const size = tempSize === "sm" ? "12px" : tempSize === "lg" ? "20px" : "28px";
+  const size =
+    tempSize === "sm" ? "12px" : tempSize === "md" ? "16px" : tempSize === "lg" ? "20px" : "28px";
   return type === "empty" ? (
     <svg
       xmlns="http://www.w3.org/2000/svg"

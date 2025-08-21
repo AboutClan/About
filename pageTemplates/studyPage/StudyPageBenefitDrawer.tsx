@@ -15,7 +15,7 @@ function StudyPageBenefitDrawer({ onClose }: StudyPageBenefitDrawerProps) {
   const { data: userInfo } = useUserInfoQuery();
 
   const { data: logs } = usePointPlusLogQuery();
-  console.log(24, logs);
+
   const [isBenefit, setIsBenefit] = useState(false);
 
   return (

@@ -33,7 +33,7 @@ export default function GatherMain() {
     category,
     sortBy === "기본순" ? "basic" : sortBy === "최신 개설 순" ? "createdAt" : "date",
   );
-  console.log(cursor);
+ 
   useEffect(() => {
     setGathers([]);
     setCursor(0);

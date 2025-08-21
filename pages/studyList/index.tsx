@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import Header from "../../components/layouts/Header";
@@ -12,7 +12,7 @@ import {
 } from "../../components/molecules/cards/StudyThumbnailCard";
 import { useUserCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
 import { useStudySetQuery } from "../../hooks/custom/StudyHooks";
-import { useStudyVoteQuery } from "../../hooks/study/queries";
+import { useStudyPassedDayQuery } from "../../hooks/study/queries";
 import {
   setStudyThumbnailCard,
   sortThumbnailCardInfoArr,
@@ -29,7 +29,7 @@ export default function StudyList() {
 
   const isPassedDate = !!dateStart && dateStart.isBefore(todayStart);
 
-  const { data: studyVoteData } = useStudyVoteQuery(date, {
+  const { data: studyVoteData } = useStudyPassedDayQuery(date, {
     enabled: !!date,
   });
 

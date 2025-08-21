@@ -11,7 +11,7 @@ interface StudyPageChallengeProps {}
 function StudyPageChallenge({}: StudyPageChallengeProps) {
   const toast = useToast();
   const { data: userInfo } = useUserInfoQuery();
-  console.log(userInfo);
+
 
   return (
     <>

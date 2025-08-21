@@ -1,10 +1,10 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import Link from "next/link";
 
 import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
 import { LocationDotIcon, LocationDotIconHTML } from "../../components/Icons/LocationIcons";
 import VoteMap from "../../components/organisms/VoteMap";
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
+import { navigateExternalLink } from "../../utils/navigateUtils";
 interface StudyAddressMapProps {
   latitude: number;
   longitude: number;
@@ -44,11 +44,15 @@ function StudyAddressMap({ latitude, longitude, address, name }: StudyAddressMap
         <Box fontWeight="bold" fontSize="18px">
           길찾기
         </Box>
-        <Link href={`https://map.naver.com/v5/search/${address}`}>
-          <Button variant="unstyled">
-            <ShortArrowIcon dir="right" />
-          </Button>
-        </Link>
+
+        <Button
+          variant="unstyled"
+          onClick={() => {
+            navigateExternalLink(`https://map.naver.com/p/search/${name}`);
+          }}
+        >
+          <ShortArrowIcon dir="right" />
+        </Button>
       </Flex>
       <Flex mb={4} align="center" fontSize="12px">
         <LocationDotIcon size="md" />

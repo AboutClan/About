@@ -1,7 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import { useSetRecoilState } from "recoil";
 
 import PageIntro from "../../../components/atoms/PageIntro";
 import BottomNav from "../../../components/layouts/BottomNav";
@@ -16,7 +15,6 @@ import { useStudyVoteArrMutation } from "../../../hooks/study/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { CalendarHeader } from "../../../modals/aboutHeader/DateCalendarModal";
 import { ModalLayout } from "../../../modals/Modals";
-import { transferStudyVoteDateState } from "../../../recoils/transferRecoils";
 import { IStudyVoteTime } from "../../../types/models/studyTypes/studyInterActions";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import { getLocationSimpleText } from "../../../utils/stringUtils";
@@ -45,8 +43,6 @@ function StudyApplyDrawer({
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
   const [isModal, setIsModal] = useState(false);
 
-  const transferStudyVoteDate = useSetRecoilState(transferStudyVoteDateState);
-
   const { data: userInfo } = useUserInfoQuery();
   const { studySet } = useStudySetQuery(dayjsToStr(dayjs()), true);
 
@@ -55,7 +51,7 @@ function StudyApplyDrawer({
     studySet.participations
       .filter((par) => par.study.user._id === userInfo?._id)
       .map((par) => par.date);
-  console.log(54, defaultDates, canChange);
+
   useEffect(() => {
     if (!canChange) {
       if (!defaultDates.includes(defaultDate) && defaultDate) {
@@ -68,7 +64,7 @@ function StudyApplyDrawer({
   //   if (!defaultDates) return;
   //   setSelectedDates(defaultDates);
   // }, [studySet]);
-  console.log(32, selectedDates);
+
   const { mutate: voteDateArr } = useStudyVoteArrMutation(selectedDates, {
     onSuccess() {
       toast("success", "스터디 신청이 완료되었습니다.");
@@ -133,7 +129,6 @@ function StudyApplyDrawer({
     },
   };
 
-  console.log(1234, selectedDates);
   return (
     <>
       <RightDrawer title="" onClose={onClose}>

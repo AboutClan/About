@@ -5,26 +5,27 @@ import StarRating from "../../components/atoms/StarRating";
 import InfoBoxCol, { InfoBoxProps } from "../../components/molecules/InfoBoxCol";
 import StarRatingReviewBlock from "../../components/molecules/StarRatingReviewBlock";
 import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
-import { STUDY_STATUS_TO_BADGE } from "../../constants/studyConstants";
+
 import { useUserCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
-import { StudyTypeStatus } from "../../pages/study/[id]/[date]";
-import { MergeStudyPlaceProps } from "../../types/models/studyTypes/derivedTypes";
+import { getStudyBadge } from "../../libs/study/studyHelpers";
+import { StudyPlaceProps, StudyStatus } from "../../types/models/studyTypes/study-entity.types";
+
 import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
 
 interface IStudyOverview {
-  placeInfo: MergeStudyPlaceProps;
-  studyType: StudyTypeStatus;
+  placeInfo: StudyPlaceProps;
+  studyStatus: StudyStatus;
   isVoting: boolean;
   time: string;
   date: string;
 }
 
-function StudyOverview({ placeInfo, date, studyType, time, isVoting }: IStudyOverview) {
+function StudyOverview({ placeInfo, date, studyStatus, time, isVoting }: IStudyOverview) {
   const { currentLocation } = useUserCurrentLocation();
   const typeToast = useTypeToast();
-  const { text: badgeText, colorScheme: badgeColorScheme } = STUDY_STATUS_TO_BADGE[studyType];
+  const { text: badgeText, colorScheme: badgeColorScheme } = getStudyBadge[studyStatus];
 
   const { branch, name, reviews } = placeInfo;
 
@@ -34,33 +35,33 @@ function StudyOverview({ placeInfo, date, studyType, time, isVoting }: IStudyOve
     currentLocation?.lat,
     currentLocation?.lon,
   );
-  console.log(24, distance);
+  
   const infoBoxPropsArr: InfoBoxProps[] = [
     {
       category:
-        studyType === "participations"
+        studyStatus === "participations"
           ? "매칭 시간"
-          : studyType === "expectedResult"
+          : studyStatus === "pending"
           ? "확정 시간"
           : "영업 시간",
       text:
         time !== "unknown"
           ? time
-          : studyType === "expectedResult"
+          : studyStatus === "pending"
           ? dayjsToFormat(dayjs(date), "M월 D일(ddd) 오전 9시")
           : "정보 없음",
     },
     {
       category:
-        studyType === "soloRealTimes"
+        studyStatus === "soloRealTimes"
           ? "공부 장소"
-          : studyType === "participations"
+          : studyStatus === "participations"
           ? "매칭 기준"
           : "확정 기준",
       rightChildren:
-        studyType === "soloRealTimes"
+        studyStatus === "soloRealTimes"
           ? "자유 카페 / 자유 공간"
-          : studyType === "expectedResult"
+          : studyStatus === "pending"
           ? "3명 이상의 멤버 참여"
           : "30분 이내 거리 + 3명 이상의 멤버 참여",
       // <BlurredLink isBlur={!isVoting} url="https://open.kakao.com/o/g6Wc70sh" />
@@ -70,7 +71,7 @@ function StudyOverview({ placeInfo, date, studyType, time, isVoting }: IStudyOve
   return (
     <>
       <Box mx={5} mt={4}>
-        {studyType === "openRealTimes" || studyType === "voteResult" ? (
+        {studyStatus === "openRealTimes" || studyStatus === "open" ? (
           <>
             <Box color="var(--gray-500)" fontSize="12px">
               <Badge mr={2} size="lg" colorScheme={badgeColorScheme}>

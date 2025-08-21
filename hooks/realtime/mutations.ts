@@ -5,11 +5,11 @@ import { useMutation } from "react-query";
 import { requestServer } from "../../libs/methodHelpers";
 import { MutationOptions } from "../../types/hooks/reactTypes";
 import { CollectionProps } from "../../types/models/collections";
-import { StudyStatus } from "../../types/models/studyTypes/baseTypes";
 import {
   RealTimeAttendanceProps,
   RealTimeVoteProps,
 } from "../../types/models/studyTypes/requestTypes";
+import { StudyType } from "../../types/models/studyTypes/study-entity.types";
 import { PlaceInfoProps } from "../../types/models/utilTypes";
 import { DayjsTimeProps, StringTimeProps } from "../../types/utils/timeAndDate";
 
@@ -58,7 +58,7 @@ export const useRealTimeTimeChangeMutation = (
 
     return requestServer<StringTimeProps>({
       method: "patch",
-      url: `realtime/time`,
+      url: `realtime/${date}/time`,
       body: { start: startHour.toISOString(), end: endHour.toISOString() },
     });
   }, options);
@@ -83,10 +83,10 @@ export const useRealTimeCancelMutation = (date: string, options?: MutationOption
     options,
   );
 
-export const useRealTimeStatusMutation = (date: string, options?: MutationOptions<StudyStatus>) =>
-  useMutation<void, AxiosError, StudyStatus>(
+export const useRealTimeStatusMutation = (date: string, options?: MutationOptions<StudyType>) =>
+  useMutation<void, AxiosError, StudyType>(
     (params) =>
-      requestServer<{ status: StudyStatus }>({
+      requestServer<{ status: StudyType }>({
         method: "patch",
         url: `realtime/status`,
         body: { status: params },

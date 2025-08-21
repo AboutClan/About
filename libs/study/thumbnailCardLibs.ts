@@ -2,23 +2,34 @@ import dayjs from "dayjs";
 
 import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
 import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
-import { StudyResultProps } from "../../types/models/studyTypes/baseTypes";
-import { StudySetProps } from "../../types/models/studyTypes/derivedTypes";
-import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
+import { StudyConfirmedProps } from "../../types/models/studyTypes/study-entity.types";
+import { StudySetProps } from "../../types/models/studyTypes/study-set.types";
+import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomImage } from "../../utils/imageUtils";
-import { RealTimesToResultProps } from "./studyConverters";
+
+const placeImageCache = new Map<string, string>();
+
+// function getCachedStudyImage(placeId: string, fallbackPool: string[]): string {
+//   const cached = placeImageCache.get(placeId);
+//   if (cached) return cached;
+
+//   const picked = getRandomImage(fallbackPool);
+//   placeImageCache.set(placeId, picked);
+//   return picked;
+// }
 
 export const setStudyThumbnailCard = (
   date: string,
   studySet: StudySetProps,
-
   myId: string,
 ): StudyThumbnailCardProps[] => {
   const { participations, openRealTimes, soloRealTimes, results } = studySet;
-  const isPassedDate = date ? dayjs(date).isBefore(dayjs(), "day") : false;
 
+  const isPassedDate = dayjs(date).startOf("day").isBefore(dayjs().startOf("day"));
+  const isFutureDate = dayjs(date).startOf("day").isAfter(dayjs().startOf("day"));
+ 
   const basicThumbnailCard: StudyThumbnailCardProps[] = [];
-  if (soloRealTimes && dayjs(date).startOf("day").isBefore(dayjs())) {
+  if (soloRealTimes && !isFutureDate) {
     basicThumbnailCard.push({
       place: {
         name: "실시간 공부 인증",
@@ -26,15 +37,14 @@ export const setStudyThumbnailCard = (
         address: "공부 인증하고, 다양한 혜택 받아가세요!",
         date: "",
         imageProps: {
-          image:
-            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%BA%90%EB%A6%AD%ED%84%B0/%EC%95%84%EB%B0%94%ED%83%80/%EB%B3%91%EC%95%84%EB%A6%AC_%EC%B1%85.png",
+          image: "/a1.png",
           isPriority: true,
         },
         _id: "",
       },
-      participants: soloRealTimes?.map((par) => par.study.user),
+      participants: soloRealTimes?.flatMap((par) => par.study.members.map((member) => member.user)),
       url: `/study/realTime/${date}?type=soloRealTimes`,
-      status: "soloRealTimes",
+      studyType: "soloRealTimes",
       isMyStudy: false,
     });
   }
@@ -46,8 +56,7 @@ export const setStudyThumbnailCard = (
         address: "가까운 인원들과 스터디를 매칭하고 있어요",
         date: "",
         imageProps: {
-          image:
-            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/%EB%85%B8%ED%8A%B8%EB%B6%81_100px_%ED%88%AC%EB%AA%85.png",
+          image: "/a4.png",
           isPriority: true,
         },
         _id: "",
@@ -56,7 +65,7 @@ export const setStudyThumbnailCard = (
         new Map(participations.map((par) => [par.study.user._id, par.study.user])).values(),
       ),
       url: `/study/participations/${date}?type=participations`,
-      status: "participations",
+      studyType: "participations",
       isMyStudy: false,
     });
   }
@@ -81,39 +90,41 @@ export const setStudyThumbnailCard = (
     const study = data.study;
 
     if (hasStatus(study)) {
-      const study1 = study as RealTimesToResultProps;
-      const placeInfo = study1.place;
-
-      const textArr = placeInfo.address.split(" ");
+      const placeInfo = study.place;
+    
+      const textArr = placeInfo.location?.address.split(" ");
       return {
         place: {
-          name: placeInfo.name,
+          name: placeInfo.title + "3",
           branch: textArr?.[0] + " " + textArr?.[1],
           // locationMapping === null
           //   ? placeInfo?.branch
           //   : locationMapping?.find((mapping) => mapping.id === placeInfo._id)?.branch,
-          address: placeInfo.address,
+          address: placeInfo.location?.address,
           date: dayjsToFormat(dayjs(data.date).locale("ko"), "M.D(ddd)"),
           imageProps: {
-            image: getRandomImage(GATHER_MAIN_IMAGE_ARR["스터디"]),
+            image: placeInfo.image || getRandomImage(GATHER_MAIN_IMAGE_ARR["스터디"]),
+            // getCachedStudyImage(placeInfo._id, GATHER_MAIN_IMAGE_ARR["스터디"]),
             isPriority: idx < 4,
           },
           _id: placeInfo._id,
         },
-        participants: study1.members.map((att) => att.user),
+        participants: study.members.map((att) => att.user),
         url: `/study/${placeInfo._id}/${data.date}?type=openRealTimes`,
-        status: "openRealTimes",
-        isMyStudy: study1.members.map((member) => member.user._id).includes(myId),
+        studyType: "openRealTimes",
+        isMyStudy: study.members.map((member) => member.user._id).includes(myId),
       };
     } else {
-      const study2 = study as StudyResultProps;
+      const study2 = study as StudyConfirmedProps;
       const placeInfo = study2.place;
-      console.log(52, study2);
+
+      const addressArr = placeInfo.location.address.split(" ");
+
       return {
         place: {
-          name: placeInfo.fullname,
-          branch: placeInfo.branch || "23",
-          address: placeInfo.locationDetail,
+          name: placeInfo.title,
+          branch: addressArr?.[0] + " " + addressArr?.[1],
+          address: placeInfo.location.address,
           date: dayjsToFormat(dayjs(data.date).locale("ko"), "M.D(ddd)"),
           imageProps: {
             image: placeInfo.image || getRandomImage(GATHER_MAIN_IMAGE_ARR["스터디"]),
@@ -123,9 +134,11 @@ export const setStudyThumbnailCard = (
         },
         participants: study2.members.map((att) => att.user),
         url: `/study/${placeInfo._id}/${data.date}?type=${
-          data.date === dayjsToStr(dayjs()) ? "voteResult" : "expectedResult"
+          dayjs(data.date).startOf("day").isBefore(dayjs()) ? "open" : "pending"
         }`,
-        status: data.date === dayjsToStr(dayjs()) ? "voteResult" : "expectedResult",
+        studyType: dayjs(data.date).startOf("day").isBefore(dayjs())
+          ? "results"
+          : "expectedResults",
         isMyStudy: study2.members.map((member) => member.user._id).includes(myId),
       };
     }
@@ -156,9 +169,9 @@ export const sortThumbnailCardInfoArr = (
       return aIsJoined ? -1 : 1;
     }
 
-    if (sortedOption === "거리순") {
-      return a.place.distance - b.place.distance;
-    }
+    // if (sortedOption === "거리순") {
+    //   return a.place.distance - b.place.distance;
+    // }
 
     if (sortedOption === "인원순") {
       return b.participants.length - a.participants.length;

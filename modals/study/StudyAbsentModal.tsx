@@ -5,23 +5,30 @@ import styled from "styled-components";
 
 import Textarea from "../../components/atoms/Textarea";
 import { IModal } from "../../types/components/modalTypes";
-import { StudyMemberProps } from "../../types/models/studyTypes/baseTypes";
-import { StudyType } from "../../types/models/studyTypes/helperTypes";
+import { StringTimeProps } from "../../types/utils/timeAndDate";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface StudyAbsentModalProps extends IModal {
-  studyType: StudyType;
-  handleAbsence: (props: { message: string; fee: number }) => void;
-  myStudyInfo: StudyMemberProps;
+  times: StringTimeProps;
+  handleAbsence: (absence: { message: string; fee: number }) => void;
+
+  // studyType: StudyType;
+  // handleAbsence: (props: { message: string; fee: number }) => void;
+  // myStudyInfo: StudyConfirmedMemberProps;
 }
 
 function StudyAbsentModal({
-  studyType,
-  myStudyInfo,
+  times,
   handleAbsence,
+  // studyType,
+  // myStudyInfo,
+  // handleAbsence,
   setIsModal,
 }: StudyAbsentModalProps) {
   const [value, setValue] = useState<string>("");
+
+  const startTimeBefore = dayjs(times.start);
+  const startTime = dayjs().hour(startTimeBefore.hour()).minute(startTimeBefore.minute());
 
   // const { mutate: absentStudy } = useStudyAbsenceMutation(dayjs(date), {
   //   onSuccess: () => {
@@ -42,7 +49,7 @@ function StudyAbsentModal({
   //   onError: () => typeToast("error"),
   // });
 
-  const isLate = dayjs(myStudyInfo?.time.start).isBefore(dayjs().subtract(1, "hour"));
+  const isLate = dayjs().isAfter(startTime.add(1, "hour"));
 
   const footerOptions: IFooterOptions = {
     main: {
@@ -57,30 +64,28 @@ function StudyAbsentModal({
   return (
     <>
       <ModalLayout title="당일 불참" footerOptions={footerOptions} setIsModal={setIsModal}>
-        <Body>
-          {studyType === "realTimeStudy" ? (
-            <P>
-              개인 스터디 불참도 벌금 <b>100원</b>이 부과됩니다. <br />
-              시간을 변경해 보는 것은 어떨까요?
-            </P>
-          ) : isLate ? (
-            <P>
-              스터디 시작 시간이 지났기 때문에, 벌금 <b>300원</b>이 부과됩니다. 특별한 사유가 있다면
-              적어주세요!
-            </P>
-          ) : (
-            <P>
-              당일 불참으로 벌금 <b>200원</b>이 부과됩니다. 참여 시간을 변경해 보는 건 어떨까요?
-            </P>
-          )}
+        <>
+          <Box as="p" mb={3}>
+            {isLate ? (
+              <>
+                스터디 시작 시간이 지났기 때문에, 벌금 <b>1,000원</b>이 부과됩니다. 특별한 사유가
+                있다면 적어주세요!
+              </>
+            ) : (
+              <>
+                당일 불참으로 벌금 <b>500원</b>이 발생합니다.
+                <br /> 참여 시간을 변경해 보는 건 어떨까요?
+              </>
+            )}
+          </Box>
           <Box w="full">
             <Textarea
               value={value}
-              placeholder="불참 사유를 적어주세요"
+              placeholder="불참 사유를 적어주시면, 벌금이 완화될 수 있습니다."
               onChange={(e) => setValue(e.target.value)}
             />
           </Box>
-        </Body>
+        </>
       </ModalLayout>
     </>
   );

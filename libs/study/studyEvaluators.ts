@@ -1,12 +1,12 @@
-import { StudyStatus } from "../../types/models/studyTypes/baseTypes";
-import { StudyMergeResultProps } from "../../types/models/studyTypes/derivedTypes";
 import { MyStudyStatus } from "../../types/models/studyTypes/helperTypes";
+import { StudyType } from "../../types/models/studyTypes/study-entity.types";
+import { StudyMergeResultProps } from "../../types/models/studyTypes/study-set.types";
 import { findMyStudyInfo } from "./studySelectors";
 
 export const evaluateMyStudyStatus = (
   findStudy: StudyMergeResultProps,
   userId: string,
-  pageType: StudyStatus | "recruiting" | "expected",
+  pageType: StudyType | "recruiting" | "expected",
   isVoting: boolean,
 ): MyStudyStatus => {
   // if (dayjs(date).startOf("day").isBefore(dayjs().startOf("day"))) {

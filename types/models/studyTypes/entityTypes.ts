@@ -12,7 +12,7 @@ export interface PlaceProps extends PlaceRegisterProps {
 }
 export interface PlaceRegisterProps {
   title: string;
-  status: PlaceStatus;
+  status?: PlaceStatus;
   location: {
     latitude: number;
     longitude: number;

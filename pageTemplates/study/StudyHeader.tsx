@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import MenuButton, { MenuProps } from "../../components/atoms/buttons/MenuButton";
 import Header from "../../components/layouts/Header";
 import { useToast } from "../../hooks/custom/CustomToast";
-import { MergeStudyPlaceProps } from "../../types/models/studyTypes/derivedTypes";
+import { MergeStudyPlaceProps } from "../../types/models/studyTypes/study-set.types";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 interface IStudyHeader {

@@ -20,7 +20,7 @@ export default Temp;
 //   LOCATION_MAX_BOUNDARY,
 // } from "../constants/serviceConstants/studyConstants/studyVoteMapConstants";
 // import { useToast } from "../hooks/custom/CustomToast";
-// import { useStudyVoteQuery } from "../hooks/study/queries";
+// import { useStudyPassedDayQuery } from "../hooks/study/queries";
 // import { useUserInfoQuery } from "../hooks/user/queries";
 // import { getStudyViewDate } from "../libs/study/date/getStudyDateStatus";
 // import { getLocationByCoordinates } from "../libs/study/getLocationByCoordinates";
@@ -39,8 +39,8 @@ export default Temp;
 // import { IMapOptions, IMarkerOptions } from "../types/externals/naverMapTypes";
 // import {
 //   StudyPlaceProps,
-//   StudyStatus,
-//   StudyVoteDataProps,
+//   StudyType,
+//   StudyOneDayProps,
 // } from "../types/models/studyTypes/baseTypes";
 // import { ActiveLocation, Location, LocationEn } from "../types/services/locationTypes";
 // import { convertLocationLangTo } from "../utils/convertUtils/convertDatas";
@@ -87,7 +87,7 @@ export default Temp;
 //   const [isDrawerUp, setIsDrawerUp] = useState(drawerParam === "up" ? true : false);
 
 //   const { data: userInfo } = useUserInfoQuery();
-//   const { data: studyVoteData, isLoading } = useStudyVoteQuery(date, {
+//   const { data: studyVoteData, isLoading } = useStudyPassedDayQuery(date, {
 //     enabled: !!date,
 //   });
 
@@ -344,7 +344,7 @@ export default Temp;
 // }
 
 // const getMarkersOptions = (
-//   studyVoteData: StudyVoteDataProps,
+//   studyVoteData: StudyOneDayProps,
 //   currentLocation: CoordinatesProps,
 //   myVote: VotePlacesProps | null,
 //   onlyFirst: boolean,
@@ -415,7 +415,7 @@ export default Temp;
 //   const tempArr = [];
 //   const placeMap = new Map<
 //     string,
-//     { id: string; position: naver.maps.LatLng; name: string; count: number; status: StudyStatus }
+//     { id: string; position: naver.maps.LatLng; name: string; count: number; status: StudyType }
 //   >(); // fullname을 기준으로 그룹화할 Map 생성
 
 //   // 그룹화: fullname을 키로 하여 개수를 카운트하고 중복된 place 정보를 저장

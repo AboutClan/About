@@ -1,11 +1,14 @@
-import { StudyMemberProps, StudyVoteDataProps } from "../../types/models/studyTypes/baseTypes";
-import { StudyMergeResultProps } from "../../types/models/studyTypes/derivedTypes";
-import { convertStudyToMergeStudy, setStudyWeekData } from "./studyConverters";
+import {
+  StudyConfirmedMemberProps,
+  StudyOneDayProps,
+} from "../../types/models/studyTypes/study-entity.types";
+import { StudyMergeResultProps } from "../../types/models/studyTypes/study-set.types";
+import { convertStudyToMergeStudy } from "./studyConverters";
 
 //내 스터디 결과 찾기
 
 export const findMyStudyByUserId = (
-  studyVoteData: StudyVoteDataProps,
+  studyVoteData: StudyOneDayProps,
   userId: string,
 ): StudyMergeResultProps => {
   if (!studyVoteData || !userId) return;
@@ -19,13 +22,13 @@ export const findMyStudyByUserId = (
 export const findMyStudyInfo = (
   studyResult: StudyMergeResultProps,
   userId: string,
-): StudyMemberProps => {
+): StudyConfirmedMemberProps => {
   if (!studyResult) return;
   return studyResult.members.find((member) => member.user._id === userId);
 };
 
 export const findStudyByPlaceId = (
-  studyVoteData: StudyVoteDataProps,
+  studyVoteData: StudyOneDayProps,
   placeId: string,
 ): StudyMergeResultProps => {
   if (!studyVoteData || !placeId) return;

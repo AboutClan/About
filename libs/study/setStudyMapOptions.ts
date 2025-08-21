@@ -4,8 +4,8 @@ import { STUDY_COMMENT_ARR } from "../../constants/settingValue/comment";
 import { StudyInfoProps } from "../../pageTemplates/studyPage/StudyInfoDrawer";
 import { CoordinatesProps } from "../../types/common";
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
-import { StudyPlaceProps, StudyStatus } from "../../types/models/studyTypes/baseTypes";
-import { StudyMergeResultProps } from "../../types/models/studyTypes/derivedTypes";
+import { StudyPlaceProps, StudyType } from "../../types/models/studyTypes/study-entity.types";
+import { StudyMergeResultProps } from "../../types/models/studyTypes/study-set.types";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomIdx } from "../../utils/mathUtils";
 import { getStudyTime } from "./getStudyTime";
@@ -89,12 +89,12 @@ export const getStudyPlaceMarkersOptions = (
       });
     });
   }
- 
+
   return temp;
 };
 
 export const getMarkersOptions = (
-  // studyResults: StudyResultProps[],
+  // studyResults: StudyConfirmedProps[],
   // studyRealTimes: RealTimeMemberProps[],
   currentLocation: CoordinatesProps,
   myVoteCoordinates: CoordinatesProps,
@@ -173,7 +173,7 @@ export const getMarkersOptions = (
     const tempArr = [];
     const placeMap = new Map<
       string,
-      { id: string; position: naver.maps.LatLng; name: string; count: number; status: StudyStatus }
+      { id: string; position: naver.maps.LatLng; name: string; count: number; status: StudyType }
     >(); // fullname을 기준으로 그룹화할 Map 생성
 
     // 그룹화: fullname을 키로 하여 개수를 카운트하고 중복된 place 정보를 저장

@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 
 import { DispatchType } from "../../../types/hooks/reactTypes";
-import { StudyPlaceProps } from "../../../types/models/studyTypes/baseTypes";
+import { StudyPlaceProps } from "../../../types/models/studyTypes/study-entity.types";
 import { IStudyVoteWithPlace } from "../../../types/models/studyTypes/studyInterActions";
 
 interface VoteDrawerMainItemProps {

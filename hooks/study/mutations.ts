@@ -154,6 +154,19 @@ interface PlaceReviewRequestProps extends Omit<PlaceReviewProps, "user"> {
   placeId: string;
 }
 
+export const usePlaceLocationMutation = (
+  options?: MutationOptions<{ placeId: string; location: any }>,
+) =>
+  useMutation<void, AxiosError, { placeId: string; location: any }>(
+    (review) =>
+      requestServer<{ placeId: string; location: any }>({
+        method: "patch",
+        url: `place/location`,
+        body: review,
+      }),
+    options,
+  );
+
 export const usePlaceReviewMutation = (options?: MutationOptions<PlaceReviewRequestProps>) =>
   useMutation<void, AxiosError, PlaceReviewRequestProps>(
     (review) =>

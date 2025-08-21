@@ -1,7 +1,7 @@
 import { Badge, Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useState } from "react";
 
 import AttendanceBadge from "../../components/molecules/badge/AttendanceBadge";
@@ -13,14 +13,14 @@ import { useRealTimeCommentMutation } from "../../hooks/realtime/mutations";
 import { useStudyCommentMutation } from "../../hooks/study/mutations";
 import ImageZoomModal from "../../modals/ImageZoomModal";
 import { StudyParticipationUserProps } from "../../pages/study/[id]/[date]";
-import { StudyMemberProps } from "../../types/models/studyTypes/baseTypes";
-import { StudyStatus } from "../../types/models/studyTypes/derivedTypes";
+import { StudyConfirmedMemberProps } from "../../types/models/studyTypes/study-entity.types";
+import { StudyType } from "../../types/models/studyTypes/study-set.types";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 interface IStudyMembers {
   date: string;
-  members: (StudyMemberProps | StudyParticipationUserProps)[];
-  studyType: StudyStatus;
+  members: (StudyConfirmedMemberProps | StudyParticipationUserProps)[];
+  studyType: StudyType;
 }
 
 export default function StudyMembers({ studyType, date, members }: IStudyMembers) {
@@ -33,7 +33,7 @@ export default function StudyMembers({ studyType, date, members }: IStudyMembers
     toUid: string;
   }>();
   const [locationMapping, setLocationMapping] = useState<{ branch: string; id: string }[]>();
-  console.log(55, studyType, members);
+
   // const { data: locationMappingData } = useKakaoMultipleLocationQuery(
   //   members.map((member) => ({
   //     lat: member.lat,
@@ -96,7 +96,7 @@ export default function StudyMembers({ studyType, date, members }: IStudyMembers
         ),
       };
     } else {
-      const participant = member as StudyMemberProps;
+      const participant = member as StudyConfirmedMemberProps;
       const obj = composeUserCardArr(participant);
       const rightComponentProps = obj.rightComponentProps;
       const image = participant?.attendance?.attendanceImage;
@@ -175,7 +175,7 @@ interface IReturnProps extends Omit<IProfileCommentCard, "rightComponent"> {
   };
 }
 
-const composeUserCardArr = (participant: StudyMemberProps): IReturnProps => {
+const composeUserCardArr = (participant: StudyConfirmedMemberProps): IReturnProps => {
   const attendance = participant?.attendance;
 
   const type = attendance?.type;

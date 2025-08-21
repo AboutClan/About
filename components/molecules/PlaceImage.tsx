@@ -1,6 +1,6 @@
 import { Box, Button } from "@chakra-ui/react";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { MouseEvent, useEffect, useState } from "react";
 
 import { useTogglePlaceHeart } from "../../hooks/custom/CustomHooks";
@@ -122,7 +122,7 @@ function PlaceImage({
             left: "-12px", // 터치 영역을 왼쪽으로 12px 확장
             right: "-12px", // 터치 영역을 오른쪽으로 12px 확장
             zIndex: -1, // 부모 요소의 뒤쪽에 배치
-            backgroundColor: "rgba(0, 0, 255, 0.3)", // 반투명 파란색 배경으로 시각화
+
             borderRadius: "50%", // 둥근 모서리 효과를 위해 설정, 필요에 따라 제거 가능
             pointerEvents: "none", // 이벤트가 부모 요소로 전달되도록 설정
           }}

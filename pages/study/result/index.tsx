@@ -18,9 +18,8 @@ import { StarIcon } from "../../../components/Icons/StarIcons";
 import Slide from "../../../components/layouts/PageSlide";
 import ProfileCommentCard from "../../../components/molecules/cards/ProfileCommentCard";
 import { STUDY_RECORD_MODAL_AT } from "../../../constants/keys/queryKeys";
-import { STUDY_STATUS_TO_BADGE } from "../../../constants/studyConstants";
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
-import { useStudyVoteQuery } from "../../../hooks/study/queries";
+import { useStudyPassedDayQuery } from "../../../hooks/study/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { useCollectionAlphabetQuery } from "../../../hooks/user/sub/collection/queries";
 import { findMyStudyByUserId, findMyStudyInfo } from "../../../libs/study/studySelectors";
@@ -42,7 +41,7 @@ function StudyResultPage() {
     localStorage.setItem(STUDY_RECORD_MODAL_AT, null);
   }, []);
 
-  const { data: studyVoteData } = useStudyVoteQuery(dateParam, {
+  const { data: studyVoteData } = useStudyPassedDayQuery(dateParam, {
     enabled: !!dateParam,
   });
   const myStudy = findMyStudyByUserId(studyVoteData, userInfo?._id);

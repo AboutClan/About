@@ -1,16 +1,15 @@
 import { Badge, Box, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 import styled from "styled-components";
+import { getStudyBadge } from "../../../libs/study/studyHelpers";
 
-import { STUDY_STATUS_TO_BADGE } from "../../../constants/studyConstants";
-import { StudyTypeStatus } from "../../../pages/study/[id]/[date]";
 import { SingleLineText } from "../../../styles/layout/components";
+import { StudyPageType } from "../../../types/models/studyTypes/study-set.types";
 import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { CheckCircleIcon } from "../../Icons/CircleIcons";
 import { LocationDotIcon } from "../../Icons/LocationIcons";
 import { UserIcon } from "../../Icons/UserIcons";
 import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
-import PlaceAvatarImage from "../PlaceAvatarImage";
 import PlaceImage from "../PlaceImage";
 
 const VOTER_SHOW_MAX = 4;
@@ -30,7 +29,7 @@ export interface StudyThumbnailCardProps {
   };
   participants?: UserSimpleInfoProps[];
   url: string;
-  status: StudyTypeStatus;
+  studyType: StudyPageType;
   func?: () => void;
   isMyStudy: boolean;
 }
@@ -39,22 +38,20 @@ export function StudyThumbnailCard({
   place,
   participants,
   url,
-  status,
+  studyType,
   func = undefined,
   isMyStudy,
 }: StudyThumbnailCardProps) {
+ 
   return (
     <CardLink
       href={url}
       onClick={func}
-      isbordermain={status === "participations" ? "true" : "false"}
+      isbordermain={studyType === "participations" ? "false" : "false"}
     >
       <>
-        {status === "participations" || status === "soloRealTimes" ? (
-          <PlaceAvatarImage size="md" imageProps={place.imageProps} />
-        ) : (
-          <PlaceImage size="md" imageProps={place.imageProps} />
-        )}
+        <PlaceImage size="md" imageProps={place.imageProps} />
+
         <Flex direction="column" ml={4} flex={1}>
           <Flex justify="space-between">
             <Box>
@@ -74,14 +71,14 @@ export function StudyThumbnailCard({
                   <CheckCircleIcon color="mint" size="sm" isFill />
                 </Box>
               )}
-              <Badge mr="auto" colorScheme={STUDY_STATUS_TO_BADGE[status].colorScheme} size="md">
-                {STUDY_STATUS_TO_BADGE[status].text}
+              <Badge mr="auto" colorScheme={getStudyBadge(studyType).colorScheme} size="md">
+                {getStudyBadge(studyType).text}
               </Badge>
             </Flex>
           </Flex>
 
           <Subtitle>
-            <Box>
+            <Flex>
               <Box as="span" fontWeight={600}>
                 {place.date}
               </Box>
@@ -90,8 +87,25 @@ export function StudyThumbnailCard({
                   ・
                 </Box>
               )}
-              <Box as="span">{place.address}</Box>
-            </Box>
+              <Box
+                as="span"
+                textOverflow="ellipsis"
+                whiteSpace="wrap"
+                maxW={
+                  place.branch === "자유 장소" || place.branch === "위치 선정 중..."
+                    ? "100%"
+                    : "60%"
+                }
+                overflow="hidden"
+                display="-webkit-box"
+                sx={{
+                  WebkitLineClamp: 1,
+                  WebkitBoxOrient: "vertical",
+                }}
+              >
+                {place.address}
+              </Box>
+            </Flex>
           </Subtitle>
 
           <Flex mb={1} mt="auto" alignItems="center" justify="space-between">
@@ -106,8 +120,8 @@ export function StudyThumbnailCard({
                   as="span"
                   color={
                     participants.length >= STUDY_MAX_CNT &&
-                    status !== "participations" &&
-                    status !== "soloRealTimes"
+                    status !== "participation" &&
+                    status !== "solo"
                       ? "var(--color-red)"
                       : "var(--color-gray)"
                   }
@@ -118,7 +132,7 @@ export function StudyThumbnailCard({
                   /
                 </Box>
                 <Box as="span" color="var(--gray-500)" fontWeight={500}>
-                  {status === "soloRealTimes" || status === "participations" ? (
+                  {status === "solo" || status === "participation" ? (
                     <Box mb="1px">
                       <InfinityIcon />
                     </Box>

@@ -3,14 +3,14 @@ import dayjs from "dayjs";
 
 import { PlusIcon } from "../../components/Icons/MathIcons";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
-import { StudyStatus } from "../../types/models/studyTypes/derivedTypes";
+import { StudyType } from "../../types/models/studyTypes/study-set.types";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 interface IStudyDateBar {
   date: string;
   memberCnt: number;
 
-  studyType: StudyStatus;
+  studyType: StudyType;
 }
 function StudyDateBar({ date, memberCnt, studyType }: IStudyDateBar) {
   const typeToast = useTypeToast();

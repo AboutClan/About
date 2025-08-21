@@ -23,7 +23,7 @@ function GroupConfirmModal({ setIsModal, groupWriting }: IGroupConfirmModal) {
   const toast = useToast();
 
   const [isSuccessScreen, setIsSuccessScreen] = useState(false);
-  console.log(setIsSuccessScreen);
+ 
   const resetQueryData = useResetQueryData();
 
   const resetLocalStorage = () => {

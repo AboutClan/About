@@ -5,6 +5,8 @@ import weekday from "dayjs/plugin/weekday";
 
 dayjs.extend(weekday);
 
+export const getTodayStr = () => dayjsToStr(dayjs());
+
 export const dayjsToStr = (date: Dayjs) => date?.format("YYYY-MM-DD");
 
 export const dayjsToFormat = (date: Dayjs, text: string) => date.format(text);
@@ -85,6 +87,7 @@ export const getCalendarDates = (
   selectedDate: Dayjs,
   passedDisabled: boolean,
   mintDateArr: string[],
+  isTodayInclude: boolean,
 ) => {
   const calendar: CalendarDateProps[] = [];
 
@@ -114,7 +117,7 @@ export const getCalendarDates = (
           isDisabled: dayjs().add(6, "day").isAfter(current)
             ? passedDisabled &&
               dayjs()
-                .subtract(dayjs().hour() >= 9 ? 0 : 1, "day")
+                .subtract(dayjs().hour() >= 9 ? (isTodayInclude ? 1 : 0) : 1, "day")
                 .isAfter(current)
               ? true
               : false

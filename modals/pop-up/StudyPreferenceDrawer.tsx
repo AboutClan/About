@@ -1,5 +1,5 @@
 export function Temp() {
-  return null
+  return null;
 }
 // import { Box, Button, Flex } from "@chakra-ui/react";
 // import dayjs from "dayjs";
@@ -20,7 +20,7 @@ export function Temp() {
 // import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 // import { useToast } from "../../hooks/custom/CustomToast";
 // import { useStudyPreferenceMutation } from "../../hooks/study/mutations";
-// import { useStudyVoteQuery } from "../../hooks/study/queries";
+// import { useStudyPassedDayQuery } from "../../hooks/study/queries";
 // import { useUserInfoQuery } from "../../hooks/user/queries";
 // import { getStudyViewDayjs } from "../../libs/study/date/getStudyDateStatus";
 // import { getLocationByCoordinates } from "../../libs/study/getLocationByCoordinates";
@@ -73,7 +73,7 @@ export function Temp() {
 //   const preference = userInfo?.studyPreference;
 //   const userLocationDetail = userInfo.locationDetail;
 
-//   const { data: studyVoteData } = useStudyVoteQuery(
+//   const { data: studyVoteData } = useStudyPassedDayQuery(
 //     dayjsToStr(getStudyViewDayjs(dayjs())),
 //     location,
 //     {

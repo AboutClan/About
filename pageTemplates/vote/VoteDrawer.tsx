@@ -31,7 +31,7 @@ export function Temp() {
 //   StudyMergeParticipationProps,
 //   StudyParticipationProps,
 //   StudyPlaceProps,
-//   StudyVoteDataProps,
+//   StudyOneDayProps,
 // } from "../../types/models/studyTypes/studyDetails";
 // import { IStudyVoteTime, MyVoteProps } from "../../types/models/studyTypes/studyInterActions";
 // import { Location } from "../../types/services/locationTypes";
@@ -47,7 +47,7 @@ export function Temp() {
 // }
 
 // interface VoteDrawerProps extends IModal {
-//   studyVoteData: StudyVoteDataProps;
+//   studyVoteData: StudyOneDayProps;
 //   location: Location;
 //   date: string;
 
@@ -420,7 +420,7 @@ export function Temp() {
 // }
 
 // export const sortByDistanceSub = (
-//   studyVoteData: StudyVoteDataProps,
+//   studyVoteData: StudyOneDayProps,
 //   mainPlace: StudyParticipationProps,
 // ): SubPlaceProps[] => {
 //   const updatedParticipations = studyVoteData.participations.map((participation) => {
