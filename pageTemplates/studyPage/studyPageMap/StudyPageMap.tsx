@@ -75,7 +75,7 @@ function StudyPageMap({ isDefaultOpen = false, onClose, handleVotePick }: StudyP
     setMapOptions({ ...mapOptions, zoom: currentZoom });
 
     const findPlace = placeData?.find((place) => place._id === id);
-  
+
     setPlaceInfo(findPlace);
     return;
 
@@ -114,7 +114,7 @@ function StudyPageMap({ isDefaultOpen = false, onClose, handleVotePick }: StudyP
           mx={!isMapExpansion ? 5 : 0}
           top={0}
           left={0}
-          zIndex={isDefaultOpen ? 1500 : "auto"}
+          zIndex={isDefaultOpen ? 1500 : isMapExpansion ? 1000 : "auto"}
           {...(!isMapExpansion ? { aspectRatio: 1 / 1, height: "inherit" } : { height: "100dvh" })}
           w={isMapExpansion ? "full" : "auto"}
           borderRadius={isMapExpansion ? "0" : "16px"}

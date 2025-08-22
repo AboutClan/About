@@ -3,7 +3,6 @@ import "swiper/css/pagination";
 
 import { Box } from "@chakra-ui/react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import styled from "styled-components";
 import SwiperCore from "swiper";
@@ -13,7 +12,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 SwiperCore.use([Autoplay, Scrollbar]);
 
 export interface ImageBannerProp {
-  url: string;
+  func: () => void;
   imageUrl: string;
 }
 
@@ -23,14 +22,7 @@ interface IImageSliderEventBanner {
 }
 
 function ImageSliderBanner({ imageArr, isLightBanner }: IImageSliderEventBanner) {
-  const router = useRouter();
   const [currentSlide, setCurrentSlide] = useState(0);
-
-  const onClick = (url: string) => {
-    if (url) {
-      router.push(url);
-    }
-  };
 
   return (
     <StyledSwiper
@@ -47,13 +39,13 @@ function ImageSliderBanner({ imageArr, isLightBanner }: IImageSliderEventBanner)
       slidesPerView={1}
       onSlideChange={(swiper) => setCurrentSlide(swiper.activeIndex)}
       autoplay={{
-        delay: 3000,
+        delay: 5000,
         disableOnInteraction: true,
       }}
     >
       {imageArr.map((item, index) => (
         <SwiperSlide key={index}>
-          <Box onClick={() => onClick(item?.url)}>
+          <Box onClick={item.func}>
             <Box position="relative" aspectRatio={isLightBanner ? "4/1" : "2.1/1"}>
               <Image
                 src={item.imageUrl}

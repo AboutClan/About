@@ -25,8 +25,8 @@ function NewTwoButtonRow({ leftProps, rightProps }: NewTwoButtonRowProps) {
         size="lg"
         flex={1}
         h="48px"
-        bgColor={"white"}
-        color={"mint"}
+        bgColor="white"
+        color="mint"
         borderRadius="12px"
         boxShadow=" 0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
         border="1px solid var(--gray-100)"

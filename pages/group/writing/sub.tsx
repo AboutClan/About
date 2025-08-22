@@ -21,7 +21,7 @@ function WritingStudyCategorySub() {
   const mainCategory = groupWriting?.category?.main;
 
   const [category, setCategory] = useState<string>(groupWriting?.category?.sub);
-  console.log(setCategory);
+
   const onClickNext = () => {
     if (!category) {
       failToast("free", "주제를 선택해 주세요!");

@@ -3,19 +3,18 @@ import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
 import {
   InitialParticipationsProps,
   InitialRealTimesProps,
+  InitialStudyPassedDayProps,
+  InitialStudyPassedDayUserProps,
   StudySetInitialDataProps,
 } from "../../hooks/study/queries";
 import {
   StudyConfirmedProps,
   StudyParticipationProps,
-  StudyStatus,
 } from "../../types/models/studyTypes/study-entity.types";
 import {
-  StudyOneDayProps,
+  StudyParticipationsSetProps,
   StudySetProps,
-  StudyType,
 } from "../../types/models/studyTypes/study-set.types";
-import { PlaceInfoProps } from "../../types/models/utilTypes";
 import { getRandomIdx } from "../../utils/mathUtils";
 
 // export const convertStudyToMergeStudy = (
@@ -39,21 +38,12 @@ import { getRandomIdx } from "../../utils/mathUtils";
 export const setStudyWeekData = (
   initialStudySet: StudySetInitialDataProps[] = [],
 ): StudySetProps => {
-  const studySet = initialStudySet.map((data) =>
-    data?.participations
-      ? {
-          ...data,
-          participations: data?.participations.map((par) => convertParticipation(par)),
-        }
-      : data,
-  );
-  
-  return studySet.reduce<StudySetProps>(
+  return initialStudySet.reduce<StudySetProps>(
     (acc, oneDay) => {
       const { date, participations = [], realTimes, results = [] } = oneDay;
-      // 1) 참여 내역
-      acc.participations.push(...participations.map((par) => ({ date: oneDay.date, study: par })));
-      // 2) 실시간: solo / open 한 번에 분리
+
+      acc.participations.push({ date, study: convertParticipations(participations) });
+
       if (realTimes?.length) {
         const { soloUsers, openUsers } = realTimes.reduce(
           (b, u) => {
@@ -72,13 +62,8 @@ export const setStudyWeekData = (
             date,
             study: {
               place: {
-                title: user.location.name,
-                location: {
-                  latitude: user.location.latitude,
-                  longitude: user.location.longitude,
-                  address: user.location.address,
-                },
-                _id: user.location._id,
+                location: user.place.location,
+                _id: user.place.location._id,
               },
               members: [
                 {
@@ -101,6 +86,7 @@ export const setStudyWeekData = (
             },
           })),
         );
+
         const openGroups = setRealTimesGroup(openUsers);
         acc.openRealTimes.push(
           ...openGroups.map((group) => ({
@@ -109,7 +95,7 @@ export const setStudyWeekData = (
           })),
         );
       }
-      // 3) 결과
+
       acc.results.push(...results.map((study) => ({ date, study })));
 
       return acc;
@@ -117,43 +103,69 @@ export const setStudyWeekData = (
     { participations: [], soloRealTimes: [], openRealTimes: [], results: [] },
   );
 };
-export const setStudyOneDayData = (studyOneData: StudyOneDayProps, date: string): StudySetProps => {
-  if (!studyOneData) return;
-
+export const setStudyOneDayData = (
+  studyOneData: InitialStudyPassedDayProps,
+  date: string,
+): StudySetProps => {
   const studySet: StudySetProps = {
-    participations: [],
+    participations: null,
     soloRealTimes: [],
     openRealTimes: [],
     results: [],
   };
-  
+
   studyOneData.results.forEach((result) => {
     studySet["results"].push({ date: date, study: result });
   });
   studyOneData.realTimes.userList.forEach((user) => {
     if (user.status === "solo") {
-      studySet["soloRealTimes"].push({ date: studyOneData.date, study: user });
+      studySet["soloRealTimes"].push({
+        date,
+        study: {
+          place: {
+            location: user.place.location,
+            _id: user.place.location._id,
+          },
+          members: [
+            {
+              user: user.user,
+              time: user.time,
+              // attendance: {
+              //   time: user?.atte,
+              //   memo: user?.memo,
+              //   type: (user?.arrived ? "arrived" : user?.absence ? "absenced" : undefined) as
+              //     | "arrived"
+              //     | "absenced",
+              //   attendanceImage: "",
+              // },
+              // comment: {
+              //   comment: user?.comment,
+              // },
+            },
+          ],
+          status: user.status,
+        },
+      });
     }
   });
 
-  const realTimesGroup = setRealTimesGroup(
+  const realTimesGroup = setPassedDayRealTimesGroup(
     studyOneData.realTimes.userList.filter((user) => user.status !== "solo"),
   );
   realTimesGroup.forEach((group) => {
-    studySet["openRealTimes"].push({ date: studyOneData.date, study: group });
+    studySet["openRealTimes"].push({ date, study: group });
   });
 
   return studySet;
+  // return studySet.reduce<StudySetProps>(
   //   (acc, oneDay) => {
-  //     const { date, participations = [], realTimes, results = [] } = oneDay;
-  //     // 1) 참여 내역
-  //     acc.participations.push(...participations);
-  //     // 2) 실시간: solo / open 한 번에 분리
+  //     const { realTimes, results = [] } = oneDay;
+
   //     if (realTimes?.userList?.length) {
-  //       const { soloUsers, openUsers } = realTimes.userList.reduce(
+  //       const { soloUsers, openUsers } = realTimes.userList?.reduce(
   //         (b, u) => {
-  //           if (u.status === "solo") b.soloUsers.push(u);
-  //           else b.openUsers.push(u);
+  //           if (u.status === "solo") b.soloUsers?.push(u);
+  //           else b.openUsers?.push(u);
   //           return b;
   //         },
   //         {
@@ -161,9 +173,43 @@ export const setStudyOneDayData = (studyOneData: StudyOneDayProps, date: string)
   //           openUsers: [] as typeof realTimes.userList,
   //         },
   //       );
-  //       acc.soloRealTimes.push(...soloUsers);
-  //       const openGroups = setRealTimesGroup(openUsers);
-  //       acc.openRealTimes.push(...openGroups.map((study) => ({ date, study })));
+
+  //       acc.soloRealTimes.push(
+  //         ...soloUsers.map((user) => ({
+  //           date,
+  //           study: {
+  //             place: {
+  //               location: user.place.location,
+  //               _id: user.place.location._id,
+  //             },
+  //             members: [
+  //               {
+  //                 user: user.user,
+  //                 time: user.time,
+  //                 // attendance: {
+  //                 //   time: user?.atte,
+  //                 //   memo: user?.memo,
+  //                 //   type: (user?.arrived ? "arrived" : user?.absence ? "absenced" : undefined) as
+  //                 //     | "arrived"
+  //                 //     | "absenced",
+  //                 //   attendanceImage: "",
+  //                 // },
+  //                 // comment: {
+  //                 //   comment: user?.comment,
+  //                 // },
+  //               },
+  //             ],
+  //             status: user.status,
+  //           },
+  //         })),
+  //       );
+  //       const openGroups = setPassedDayRealTimesGroup(openUsers);
+  //       acc.openRealTimes.push(
+  //         ...openGroups.map((group) => ({
+  //           date: oneDay.date,
+  //           study: group,
+  //         })),
+  //       );
   //     }
   //     // 3) 결과
   //     acc.results.push(...results.map((study) => ({ date, study })));
@@ -174,11 +220,68 @@ export const setStudyOneDayData = (studyOneData: StudyOneDayProps, date: string)
   // );
 };
 
-export interface RealTimesToResultProps extends Omit<StudyConfirmedProps, "place"> {
-  place: PlaceInfoProps;
-  status?: StudyStatus2;
-}
+export const setPassedDayRealTimesGroup = (
+  studyRealTimeArr: InitialStudyPassedDayUserProps[],
+): StudyConfirmedProps[] => {
+  if (!studyRealTimeArr) return;
+  const temp: StudyConfirmedProps[] = [];
 
+  studyRealTimeArr.forEach((props) => {
+    const findParticipationIdx = temp.findIndex(
+      (participation) => participation.place._id === props.place.location._id,
+    );
+
+    if (findParticipationIdx !== -1) {
+      temp[findParticipationIdx].members.push({
+        user: props.user,
+        time: props.time,
+        // attendance: {
+        //   time: props?.arrived,
+        //   memo: props?.memo,
+        //   type: (props?.arrived ? "arrived" : props?.absence ? "absenced" : undefined) as
+        //     | "arrived"
+        //     | "absenced",
+        //   attendanceImage: "",
+        // },
+        // comment: {
+        //   comment: props?.comment,
+        // },
+      });
+    } else {
+      temp.push({
+        status: props.status,
+        place: {
+          location: props.place.location,
+          _id: props.place.location._id,
+        },
+        members: [
+          {
+            user: props.user,
+            time: props.time,
+            // attendance: {
+            //   time: props?.arrived,
+            //   memo: props?.memo,
+            //   type: (props?.arrived ? "arrived" : props?.absence ? "absenced" : undefined) as
+            //     | "arrived"
+            //     | "absenced",
+            //   attendanceImage: "",
+            // },
+            // comment: {
+            //   comment: props?.comment,
+            // },
+          },
+        ],
+      });
+    }
+  });
+  return [...temp].sort((a, b) => {
+    const aCnt = a.members.length;
+    const bCnt = b.members.length;
+    if (aCnt > bCnt) return -1;
+    else if (aCnt < bCnt) return 1;
+    return 0;
+  });
+};
 export const setRealTimesGroup = (
   studyRealTimeArr: InitialRealTimesProps[],
 ): StudyConfirmedProps[] => {
@@ -187,7 +290,7 @@ export const setRealTimesGroup = (
 
   studyRealTimeArr.forEach((props) => {
     const findParticipationIdx = temp.findIndex(
-      (participation) => participation.place._id === props.location._id,
+      (participation) => participation.place._id === props.place.location._id,
     );
 
     if (findParticipationIdx !== -1) {
@@ -210,13 +313,8 @@ export const setRealTimesGroup = (
       temp.push({
         status: props.status,
         place: {
-          title: props.location.name,
-          location: {
-            latitude: props.location.latitude,
-            longitude: props.location.longitude,
-            address: props.location.address,
-          },
-          _id: props.location._id,
+          location: props.place.location,
+          _id: props.place.location._id,
         },
         members: [
           {
@@ -277,83 +375,132 @@ const STUDY_SOLO_INFO = {
   reviews: [],
 };
 
-export const convertStudyToPlaceInfo = (
-  study:
-    | StudyParticipationProps
-    | RealTimeMemberProps
-    | RealTimesToResultProps
-    | StudyConfirmedProps,
-  studyStatus: StudyType,
-): MergeStudyPlaceProps => {
-  if (studyStatus === "soloRealTimes") return STUDY_SOLO_INFO;
-  else if (studyStatus === "participations") return STUDY_WAITING_INFO;
-  if (!study) return;
-  
-  const studyPlace = (study as StudyConfirmedProps).place;
-  const realTimePlace = (study as RealTimeMemberProps).place;
+// export const convertStudyToPlaceInfo = (
+//   study:
+//     | StudyParticipationProps
+//     | RealTimeMemberProps
+//     | RealTimesToResultProps
+//     | StudyConfirmedProps,
+//   studyStatus: StudyType,
+// ): MergeStudyPlaceProps => {
+//   if (studyStatus === "soloRealTimes") return STUDY_SOLO_INFO;
+//   else if (studyStatus === "participations") return STUDY_WAITING_INFO;
+//   if (!study) return;
 
-  return {
-    name: studyPlace?.title || realTimePlace?.name,
-    // branch: studyPlace?.branch || realTimePlace?.name.split(" ")?.[1] || "정보 없음",
-    // brand: studyPlace?.brand || realTimePlace?.name.split(" ")?.[0] || "",
-    image: studyPlace?.image || STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length - 1)],
-    coverImage:
-      studyPlace?.coverImage || STUDY_COVER_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
-    location: studyPlace?.location || realTimePlace,
-    // time: studyPlace?.time || "unknown",
+//   const studyPlace = (study as StudyConfirmedProps).place;
+//   const realTimePlace = (study as RealTimeMemberProps).place;
 
-    _id: studyPlace?._id || realTimePlace?._id,
-    reviews: studyPlace?.reviews || [],
-  };
-};
+//   return {
+//     name: studyPlace?.title || realTimePlace?.name,
+//     // branch: studyPlace?.branch || realTimePlace?.name.split(" ")?.[1] || "정보 없음",
+//     // brand: studyPlace?.brand || realTimePlace?.name.split(" ")?.[0] || "",
+//     image: studyPlace?.image || STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length - 1)],
+//     coverImage:
+//       studyPlace?.coverImage || STUDY_COVER_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
+//     location: studyPlace?.location || realTimePlace,
+//     // time: studyPlace?.time || "unknown",
 
-export const convertRealTimesToMergeResult = (
-  studyRealTimeArr: RealTimeMemberProps[],
-): RealTimesToResultProps[] => {
-  if (!studyRealTimeArr) return;
-  const temp: {
-    place: PlaceInfoProps;
-    status: StudyStatus;
-    members: StudyConfirmedMemberProps[];
-  }[] = [];
-  studyRealTimeArr.forEach((props) => {
-    const findParticipationIdx = temp.findIndex(
-      (participation) => participation.place.name === props.place.name,
-    );
+//     _id: studyPlace?._id || realTimePlace?._id,
+//     reviews: studyPlace?.reviews || [],
+//   };
+// };
 
-    if (findParticipationIdx !== -1) {
-      temp[findParticipationIdx].members.push(props);
-    } else {
-      temp.push({
-        status: props.status,
-        place: props.place,
-        members: [props],
-      });
-    }
-  });
-  return [...temp].sort((a, b) => {
-    const aCnt = a.members.length;
-    const bCnt = b.members.length;
-    if (aCnt > bCnt) return -1;
-    else if (aCnt < bCnt) return 1;
-    return 0;
-  });
-};
+// export const convertRealTimesToMergeResult = (
+//   studyRealTimeArr: RealTimeMemberProps[],
+// ): RealTimesToResultProps[] => {
+//   if (!studyRealTimeArr) return;
+//   const temp: {
+//     place: PlaceInfoProps;
+//     status: StudyStatus;
+//     members: StudyConfirmedMemberProps[];
+//   }[] = [];
+//   studyRealTimeArr.forEach((props) => {
+//     const findParticipationIdx = temp.findIndex(
+//       (participation) => participation.place.name === props.place.name,
+//     );
 
-const convertParticipation = (
-  participation: InitialParticipationsProps,
-): StudyParticipationProps => {
-  return {
-    user: participation.user,
+//     if (findParticipationIdx !== -1) {
+//       temp[findParticipationIdx].members.push(props);
+//     } else {
+//       temp.push({
+//         status: props.status,
+//         place: props.place,
+//         members: [props],
+//       });
+//     }
+//   });
+//   return [...temp].sort((a, b) => {
+//     const aCnt = a.members.length;
+//     const bCnt = b.members.length;
+//     if (aCnt > bCnt) return -1;
+//     else if (aCnt < bCnt) return 1;
+//     return 0;
+//   });
+// };
+
+const convertParticipations = (
+  participations: InitialParticipationsProps[],
+): StudyParticipationProps[] => {
+  return participations.map((par) => ({
+    ...par,
     location: {
-      latitude: participation.latitude,
-      longitude: participation.longitude,
-      address: participation.locationDetail,
+      latitude: par.latitude,
+      longitude: par.longitude,
+      address: par.locationDetail,
     },
     times: {
-      start: participation.start,
-      end: participation.end,
+      start: par.start,
+      end: par.end,
     },
-    isBeforeResult: participation.isBeforeResult,
-  };
+  }));
 };
+
+export const shortenParticipations = (
+  participations: StudyParticipationsSetProps[],
+): StudyParticipationProps[] => {
+  const participationMap = new Map();
+
+  participations?.forEach((par) => {
+    par.study.forEach((study) => {
+      const userId = study.user._id;
+      if (participationMap.has(userId)) {
+        participationMap.get(userId).dates.push(par.date);
+      } else {
+        participationMap.set(userId, {
+          ...study,
+          location: study.location,
+          dates: [par.date],
+        });
+      }
+    });
+  });
+  return Array.from(participationMap.values()) as StudyParticipationProps[];
+};
+
+// const convertParticipations = (
+//   participations: { date: string; study: InitialParticipationsProps }[],
+//   date: string,
+// ): StudyParticipationProps[] => {
+//   const participationMap = new Map();
+//   console.log(125, participations);
+//   participations?.forEach((par) => {
+//     console.log(777, par);
+//     if (par && dayjs(par.date).startOf("day").isAfter(dayjs(date).subtract(1, "day"))) {
+//       const userId = par.study.user._id;
+//       if (participationMap.has(userId)) {
+//         participationMap.get(userId).dates.push(par.date);
+//       } else {
+//         participationMap.set(userId, {
+//           ...par.study,
+//           location: {
+//             latitude: par.study.latitude,
+//             longitude: par.study.longitude,
+//             address: par.study.locationDetail,
+//           },
+//           dates: [par.date],
+//         });
+//       }
+//     }
+//   });
+//   return Array.from(participationMap.values()) as StudyParticipationProps[];
+// };

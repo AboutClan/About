@@ -1,7 +1,7 @@
 import { Badge, Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 import AttendanceBadge from "../../components/molecules/badge/AttendanceBadge";
@@ -12,14 +12,17 @@ import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useRealTimeCommentMutation } from "../../hooks/realtime/mutations";
 import { useStudyCommentMutation } from "../../hooks/study/mutations";
 import ImageZoomModal from "../../modals/ImageZoomModal";
-import { StudyParticipationUserProps } from "../../pages/study/[id]/[date]";
-import { StudyConfirmedMemberProps } from "../../types/models/studyTypes/study-entity.types";
+import {
+  StudyConfirmedMemberProps,
+  StudyParticipationProps,
+} from "../../types/models/studyTypes/study-entity.types";
 import { StudyType } from "../../types/models/studyTypes/study-set.types";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
+import { getPlaceBranch } from "../../utils/stringUtils";
 
 interface IStudyMembers {
   date: string;
-  members: (StudyConfirmedMemberProps | StudyParticipationUserProps)[];
+  members: StudyConfirmedMemberProps[] | StudyParticipationProps[];
   studyType: StudyType;
 }
 
@@ -71,19 +74,20 @@ export default function StudyMembers({ studyType, date, members }: IStudyMembers
     } else if (status === "free") setRealTimeComment(comment);
   };
 
-  const userCardArr: IProfileCommentCard[] = members.map((member) => {
+  const userCardArr: IProfileCommentCard[] = members?.map((member) => {
     const user = member.user;
     // const badgeText = locationMapping?.find((mapping) => mapping?.id === user._id)?.branch;
     if (studyType === "participations") {
-      const participant = member as StudyParticipationUserProps;
-      let month = dayjs(participant.date[0]).month();
+      const participant = member as StudyParticipationProps;
+     
+      let month = dayjs(participant.dates[0]).month();
       return {
         user: user,
-        memo: "서울 강남구",
+        memo: getPlaceBranch(participant.location.address),
         rightComponent: (
           <Badge variant="subtle" colorScheme="blue" size="md">
             {/* {!badgeText ? "알 수 없음" : badgeText} */}
-            {participant.date.map((date, idx) => {
+            {participant.dates.map((date, idx) => {
               const newMonth = dayjs(date).month();
               if (month !== newMonth && idx !== 0) {
                 month = newMonth;

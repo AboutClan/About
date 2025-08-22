@@ -4,57 +4,65 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import Textarea from "../../components/atoms/Textarea";
+import { useRealTimeAbsenceMutation } from "../../hooks/realtime/mutations";
+import { useStudyAbsenceMutation } from "../../hooks/study/mutations";
 import { IModal } from "../../types/components/modalTypes";
 import { StringTimeProps } from "../../types/utils/timeAndDate";
+import { getTodayStr } from "../../utils/dateTimeUtils";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface StudyAbsentModalProps extends IModal {
+  type: "study" | "realTimes";
   times: StringTimeProps;
-  handleAbsence: (absence: { message: string; fee: number }) => void;
 
   // studyType: StudyType;
   // handleAbsence: (props: { message: string; fee: number }) => void;
   // myStudyInfo: StudyConfirmedMemberProps;
 }
 
-function StudyAbsentModal({
-  times,
-  handleAbsence,
-  // studyType,
-  // myStudyInfo,
-  // handleAbsence,
-  setIsModal,
-}: StudyAbsentModalProps) {
+function StudyAbsentModal({ times, type, setIsModal }: StudyAbsentModalProps) {
   const [value, setValue] = useState<string>("");
 
   const startTimeBefore = dayjs(times.start);
   const startTime = dayjs().hour(startTimeBefore.hour()).minute(startTimeBefore.minute());
 
-  // const { mutate: absentStudy } = useStudyAbsenceMutation(dayjs(date), {
-  //   onSuccess: () => {
-  //     typeToast("success");
-  //     let fee: { value: number; message: string };
-  //     if (studyStatus !== "open") fee = { value: 100, message: "개인 스터디 불참" };
-  //     else if (dayjs() < dayjs(startTime)) fee = { value: 300, message: "당일 스터디 불참" };
-  //     else fee = { value: 500, message: "늦은 스터디 불참" };
-  //     getDeposit(fee);
-  //     resetStudy();
-  //     sendRequest({
-  //       writer: session.user.name,
-  //       title: session.user.uid + `D${fee.value}`,
-  //       category: "불참",
-  //       content: value,
-  //     });
-  //   },
-  //   onError: () => typeToast("error"),
-  // });
+  const { mutate: absentRealTimes } = useRealTimeAbsenceMutation(getTodayStr(), {
+    onSuccess(data) {
+      handleSuccess(data);
+    },
+  });
+
+  const { mutate: absentStudy } = useStudyAbsenceMutation(getTodayStr(), {
+    onSuccess: (data) => {
+      handleSuccess(data);
+    },
+  });
+
+  const handleSuccess = (data) => {
+    // typeToast("success");
+    // let fee: { value: number; message: string };
+    // if (studyStatus !== "open") fee = { value: 100, message: "개인 스터디 불참" };
+    // else if (dayjs() < dayjs(startTime)) fee = { value: 300, message: "당일 스터디 불참" };
+    // else fee = { value: 500, message: "늦은 스터디 불참" };
+    // getDeposit(fee);
+    // resetStudy();
+    // sendRequest({
+    //   writer: session.user.name,
+    //   title: session.user.uid + `D${fee.value}`,
+    //   category: "불참",
+    //   content: value,
+    // });
+  };
 
   const isLate = dayjs().isAfter(startTime.add(1, "hour"));
 
   const footerOptions: IFooterOptions = {
     main: {
       text: "불참",
-      func: () => handleAbsence({ message: value, fee: isLate ? -300 : -200 }),
+      func: () => {
+        if (type === "study") absentStudy();
+        else absentRealTimes();
+      },
     },
     sub: {
       text: "취소",

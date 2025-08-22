@@ -32,7 +32,7 @@ function DatePointButton({
         top="50%"
         left="50%"
         transform="translate(-50%,-50%)"
-        bgColor="var(--color-mint)"
+        bgColor="gray.800"
         zIndex={1}
         color="white"
         fontWeight={500}

@@ -14,11 +14,11 @@ import { useToast } from "../../hooks/custom/CustomToast";
 import { useStudyMutations } from "../../hooks/custom/StudyHooks";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import StudyAbsentModal from "../../modals/study/StudyAbsentModal";
-import { StudyParticipationUserProps } from "../../pages/study/[id]/[date]";
+import { LocationProps } from "../../types/common";
 import { StudyConfirmedMemberProps } from "../../types/models/studyTypes/study-entity.types";
 import {
-  StudyOpenRealTimesSet,
-  StudyResultsSet,
+  StudyParticipationsSetProps,
+  StudyType,
 } from "../../types/models/studyTypes/study-set.types";
 // import { MyStudyStatus } from "../../types/models/studyTypes/helperTypes";
 import { DayjsTimeProps } from "../../types/utils/timeAndDate";
@@ -26,18 +26,12 @@ import { dayjsToStr } from "../../utils/dateTimeUtils";
 import StudyApplyDrawer from "../vote/voteDrawer/StudyApplyDrawer";
 
 interface IStudyNavigation {
+  myStudyInfo: StudyParticipationsSetProps | StudyConfirmedMemberProps;
   date: string;
   hasOtherStudy: boolean;
   id: string;
-  studyType: StudyTypeStatus;
-  locationInfo: {
-    lat: number;
-    lon: number;
-    name: string;
-    locationDetail: string;
-  };
-  findMyStudy: StudyConfirmedMemberProps | StudyParticipationUserProps;
-  myStudyArr: (StudyOpenRealTimesSet | StudyResultsSet)[];
+  studyType: StudyType;
+  location: LocationProps;
 }
 
 type MyStatus = "participation" | "pending";
@@ -55,19 +49,13 @@ type DirectAction = "openRealTimesVote" | "dailyVote" | "timeChange";
 function StudyNavigation({
   id,
   date,
-  findMyStudy,
+  myStudyInfo,
   hasOtherStudy,
-  locationInfo,
-  myStudyArr,
-  // isVoting,
-  // pageType,
-  // isArrived,
+  location,
   studyType,
 }: IStudyNavigation) {
   const router = useRouter();
   const toast = useToast();
-
-  // const { data: session } = useSession();
 
   const { data: userInfo } = useUserInfoQuery();
   const {
@@ -86,16 +74,15 @@ function StudyNavigation({
     "apply" | "applyChange" | "realTimesVote" | DirectAction
   >(null);
 
-  const myStatus = !findMyStudy ? "pending" : "participation";
+  const myStatus = !myStudyInfo ? "pending" : "participation";
 
   // const myStudyInfo = findMyStudyInfo(findStudy, session?.user.id);
 
   // const myStudyStatus = evaluateMyStudyStatus(findStudy, session?.user.id, pageType, isVoting);
 
-  const getNavigationProps = (studyType: StudyTypeStatus, myStatus: MyStatus): NavigationProps => {
+  const getNavigationProps = (studyType: StudyType, myStatus: MyStatus): NavigationProps => {
     switch (studyType) {
       case "participations":
-      case "pending":
         if (myStatus === "pending") {
           return {
             text: "스터디 신청",
@@ -136,7 +123,7 @@ function StudyNavigation({
             };
           }
 
-          if (myStudyArr?.[0]?.study?.members?.[0].user._id === userInfo?._id) {
+          if ((myStudyInfo as StudyConfirmedMemberProps).user._id === userInfo?._id) {
             return {
               text: "개설 취소",
               type: "single",
@@ -170,7 +157,7 @@ function StudyNavigation({
             },
           };
         }
-      case "open":
+      case "results":
         if (myStatus === "pending") {
           if (hasOtherStudy) {
             toast("info", "다른 스터디에 참여중입니다");
@@ -219,7 +206,6 @@ function StudyNavigation({
   };
 
   const handleDirectAction = (drawerType: DirectAction) => {
-    
     // setIsTimeRulletModal(false);
 
     switch (drawerType) {
@@ -234,18 +220,13 @@ function StudyNavigation({
         break;
       case "openRealTimesVote":
         realTimesVote({
-          place: {
-            latitude: locationInfo.lat,
-            longitude: locationInfo.lon,
-            name: locationInfo.name,
-            address: locationInfo.locationDetail,
-          },
+          place: location,
           time: voteTime,
           status: "participation",
         });
         break;
       case "timeChange":
-        if (studyType === "open") {
+        if (studyType === "results") {
           change(voteTime);
         } else {
           realTimeChange(voteTime);
@@ -351,7 +332,7 @@ function StudyNavigation({
                   icon={<ClockIcon />}
                   text="시간 변경"
                   func={() => {
-                    if (!findMyStudy || studyType === "participations") {
+                    if (!myStudyInfo || studyType === "participations") {
                       toast("error", "참여 정보를 찾을 수 없습니다.");
                       return;
                     }
@@ -385,16 +366,11 @@ function StudyNavigation({
 
       {isAbsentModal && (
         <StudyAbsentModal
-          times={(findMyStudy as StudyConfirmedMemberProps).time}
+          type={studyType === "results" ? "study" : "realTimes"}
+          times={(myStudyInfo as StudyConfirmedMemberProps).time}
           // studyType={myStudyStatus === "open" ? "voteStudy" : "realTimeStudy"}
           // myStudyInfo={myStudyInfo}
-          handleAbsence={(props) => {
-            if (studyType === "open") absence(props);
-            else {
-            }
 
-            setIsAbsentModal(false);
-          }}
           setIsModal={setIsAbsentModal}
         />
       )}
@@ -413,10 +389,10 @@ function StudyNavigation({
             drawerType === "timeChange"
               ? {
                   start: adjustTime30Minutes(
-                    dayjs((findMyStudy as StudyConfirmedMemberProps).time.start),
+                    dayjs((myStudyInfo as StudyConfirmedMemberProps).time.start),
                   ),
                   end: adjustTime30Minutes(
-                    dayjs((findMyStudy as StudyConfirmedMemberProps).time.end),
+                    dayjs((myStudyInfo as StudyConfirmedMemberProps).time.end),
                   ),
                 }
               : drawerType === "dailyVote"
@@ -433,7 +409,7 @@ function StudyNavigation({
         <StudyApplyDrawer
           onClose={() => setDrawerType(null)}
           defaultDate={date}
-          defaultCoordinates={locationInfo}
+          location={location}
           canChange={drawerType === "applyChange"}
         />
       )}

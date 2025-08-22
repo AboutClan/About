@@ -1,7 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { KakaoProfile } from "next-auth/providers/kakao";
 import { useQuery } from "react-query";
-
 import { UID_TO_USER, USER_INFO, USER_POINT_SYSTEM } from "../../constants/keys/queryKeys";
 import { SERVER_URI } from "../../constants/system";
 import { QueryOptions } from "../../types/hooks/reactTypes";
@@ -117,6 +116,7 @@ export const usePointCuoponLogQuery = (scope?: "all", options?: QueryOptions<any
     },
     { ...options, staleTime: 0, cacheTime: 0 },
   );
+
 export const usePointPlusLogQuery = (options?: QueryOptions<any | any[]>) =>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useQuery<any | any[], AxiosError, any | any[]>(

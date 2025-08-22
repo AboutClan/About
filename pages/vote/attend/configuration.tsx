@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
@@ -16,10 +16,10 @@ import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
-import { useStudySetQuery } from "../../../hooks/custom/StudyHooks";
 import { useImageUploadMutation } from "../../../hooks/image/mutations";
 import { useRealTimeAttendMutation } from "../../../hooks/realtime/mutations";
 import { useStudyAttendCheckMutation } from "../../../hooks/study/mutations";
+import { useStudySetQuery } from "../../../hooks/study/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { ModalLayout } from "../../../modals/Modals";
 import {
@@ -28,9 +28,7 @@ import {
 } from "../../../recoils/transferRecoils";
 import { CollectionProps } from "../../../types/models/collections";
 import {
-  StudyOpenRealTimesSet,
-  StudyResultsSet,
-  StudySoloRealTimesSet,
+  StudyConfirmedSetProps,
   StudyType,
 } from "../../../types/models/studyTypes/study-set.types";
 import { convertTimeStringToDayjs } from "../../../utils/convertUtils/convertTypes";
@@ -51,18 +49,14 @@ function Configuration() {
 
   const { data: userInfo } = useUserInfoQuery();
 
-  const { studySet } = useStudySetQuery(date, !!date);
+  const { data: studySet } = useStudySetQuery(date, { enabled: !!date });
 
-  const studyData: StudySetItem[] = studySet && studySet[type];
+  const studyData = studySet && studySet[type];
 
-  const findStudyArr = studyData?.filter((study) => study.date === date) as (
-    | StudyOpenRealTimesSet
-    | StudyResultsSet
-    | StudySoloRealTimesSet
-  )[];
+  const confirmedSet = studyData as StudyConfirmedSetProps[];
 
-  const findStudy = findStudyArr?.find((study) => study?.study?.place._id === id)?.study;
-  
+  const findStudy = confirmedSet?.find((set) => set.study.place._id === id)?.study;
+
   const [endTime, setEndTime] = useState(
     dayjs().hour() < 21 ? dayjsToFormat(dayjs().startOf("hour").add(3, "hour"), "HH:mm") : "23:30",
   );
@@ -88,6 +82,7 @@ function Configuration() {
 
   const { mutate: attendRealTimeStudy, isLoading: isLoading2 } = useRealTimeAttendMutation(date, {
     onSuccess(data) {
+      return;
       handleAttendSuccess(data);
     },
   });
@@ -154,6 +149,8 @@ function Configuration() {
     }
 
     if (isSoloRealTimesPage) {
+      console.log(transferStudyAttendance);
+
       if (!transferStudyAttendance?.image) {
         toast("warning", "인증 사진이 누락되었습니다.");
         return;

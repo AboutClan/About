@@ -12,12 +12,11 @@ import {
   STUDY_VOTE_CNT,
 } from "../../constants/keys/queryKeys";
 import { SERVER_URI } from "../../constants/system";
-import { setStudyWeekData } from "../../libs/study/studyConverters";
+import { setStudyOneDayData, setStudyWeekData } from "../../libs/study/studyConverters";
 import { LocationProps, TimeRangeProps } from "../../types/common";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import {
   RealTimesStudyStatus,
-  StudyParticipationProps,
   StudyPlaceProps,
 } from "../../types/models/studyTypes/study-entity.types";
 import { StudySetProps } from "../../types/models/studyTypes/study-set.types";
@@ -47,7 +46,9 @@ export interface InitialRealTimesProps {
   user: UserSimpleInfoProps;
   time: TimeRangeProps;
   status: RealTimesStudyStatus;
-  location: LocationProps;
+  place: {
+    location: LocationProps;
+  };
   absence?: boolean;
   arrived?: string;
   image?: string;
@@ -65,29 +66,48 @@ export const useStudySetQuery = (date: string, options?: StudyWeekQueryOptions) 
     [STUDY_VOTE, "week"],
     async () => {
       const { data } = await axios.get<StudySetInitialDataProps[]>(`${SERVER_URI}/vote2/week`);
+      console.log("initial", data);
       return data; // 캐시에 원본 저장
     },
     {
       select: (data) => {
-     
         const dateStart = dayjs(date).startOf("day");
         const filtered = data.filter((d) => !dayjs(d.date).startOf("day").isBefore(dateStart));
-        return setStudyWeekData(filtered);
+        const returnData = setStudyWeekData(filtered);
+
+        return returnData;
       },
       ...options,
     },
   );
 
-interface InitialStudyPassedDayProps{
-  realTimes: {}
-  }
+export interface InitialStudyPassedDayProps {
+  realTimes: {
+    userList: InitialStudyPassedDayUserProps[];
+  };
+  results: any;
+}
 
-export const useStudyPassedDayQuery = (date: string, options?: QueryOptions<any>) =>
-  useQuery<any, AxiosError, any>(
+export interface InitialStudyPassedDayUserProps {
+  attendance: {
+    type: any;
+  };
+  place: StudyPlaceProps;
+  comment: any;
+  status: RealTimesStudyStatus;
+  time: TimeRangeProps;
+  user: UserSimpleInfoProps;
+}
+
+export const useStudyPassedDayQuery = (date: string, options?: QueryOptions<StudySetProps>) =>
+  useQuery<StudySetProps, AxiosError, StudySetProps>(
     [STUDY_VOTE, date],
     async () => {
-      const res = await axios.get<any>(`${SERVER_URI}/vote2/${date}/info`);
-      return res.data;
+      const { data } = await axios.get<InitialStudyPassedDayProps>(
+        `${SERVER_URI}/vote2/${date}/info`,
+      );
+
+      return setStudyOneDayData(data, date);
     },
     options,
   );
@@ -110,28 +130,28 @@ export const useStudyPlacesQuery = (
     options,
   );
 
-export const useStudyVoteOneQuery = (
-  date: string,
-  options?: QueryOptions<{
-    data: StudyParticipationProps | any[];
-    rankNum: number;
-  }>,
-) =>
-  useQuery<
-    { data: StudyParticipationProps | any[]; rankNum: number },
-    AxiosError,
-    { data: StudyParticipationProps | any[]; rankNum: number }
-  >(
-    [STUDY_VOTE, date, "one"],
-    async () => {
-      const res = await axios.get<{
-        data: StudyParticipationProps | any[];
-        rankNum: number;
-      }>(`${SERVER_URI}/vote2/${date}/one`, {});
-      return res.data;
-    },
-    options,
-  );
+// export const useStudyVoteOneQuery = (
+//   date: string,
+//   options?: QueryOptions<{
+//     data: StudyParticipationProps;
+//     rankNum: number;
+//   }>,
+// ) =>
+//   useQuery<
+//     { data: StudyParticipationProps; rankNum: number },
+//     AxiosError,
+//     { data: StudyParticipationProps; rankNum: number }
+//   >(
+//     [STUDY_VOTE, date, "one"],
+//     async () => {
+//       const res = await axios.get<{
+//         data: StudyParticipationProps | any[];
+//         rankNum: number;
+//       }>(`${SERVER_URI}/vote2/${date}/one`, {});
+//       return res.data;
+//     },
+//     options,
+//   );
 
 interface IStudyStartTimeData {
   place_id: string;

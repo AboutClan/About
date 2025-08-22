@@ -8,13 +8,15 @@ import MonthCalendar from "../../../components/molecules/MonthCalendar";
 import { BottomFlexDrawerOptions } from "../../../components/organisms/drawer/BottomFlexDrawer";
 import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import StudyVoteTimeRulletDrawer from "../../../components/services/studyVote/StudyVoteTimeRulletDrawer";
+import { STUDY_RESULT_HOUR } from "../../../constants/serviceConstants/studyConstants/studyTimeConstant";
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
-import { useStudySetQuery } from "../../../hooks/custom/StudyHooks";
 import { useStudyVoteArrMutation } from "../../../hooks/study/mutations";
+import { useStudySetQuery } from "../../../hooks/study/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { CalendarHeader } from "../../../modals/aboutHeader/DateCalendarModal";
 import { ModalLayout } from "../../../modals/Modals";
+import { LocationProps } from "../../../types/common";
 import { IStudyVoteTime } from "../../../types/models/studyTypes/studyInterActions";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import { getLocationSimpleText } from "../../../utils/stringUtils";
@@ -22,11 +24,7 @@ import { getLocationSimpleText } from "../../../utils/stringUtils";
 interface StudyDateDrawerProps {
   onClose: () => void;
   defaultDate?: string;
-  defaultCoordinates: {
-    lat: number;
-    lon: number;
-    locationDetail: string;
-  };
+  location?: LocationProps;
   canChange?: boolean;
   // date: string;
   // handleStudyVote: (voteData: StudyVoteProps | RealTimeVoteProps) => void;
@@ -35,7 +33,7 @@ interface StudyDateDrawerProps {
 function StudyApplyDrawer({
   onClose,
   defaultDate,
-  defaultCoordinates,
+  location,
   canChange = false,
 }: StudyDateDrawerProps) {
   const toast = useToast();
@@ -44,18 +42,22 @@ function StudyApplyDrawer({
   const [isModal, setIsModal] = useState(false);
 
   const { data: userInfo } = useUserInfoQuery();
-  const { studySet } = useStudySetQuery(dayjsToStr(dayjs()), true);
+  const { data: studySet } = useStudySetQuery(dayjsToStr(dayjs()));
 
   const defaultDates =
     studySet &&
     studySet.participations
-      .filter((par) => par.study.user._id === userInfo?._id)
+      .filter((par) => par.study.some((study) => study.user._id === userInfo?._id))
       .map((par) => par.date);
 
   useEffect(() => {
     if (!canChange) {
-      if (!defaultDates.includes(defaultDate) && defaultDate) {
-        setSelectedDates([defaultDate]);
+      const date =
+        dayjs().hour() < STUDY_RESULT_HOUR
+          ? defaultDate
+          : dayjsToStr(dayjs(defaultDate).add(1, "day"));
+      if (!defaultDates.includes(date) && date) {
+        setSelectedDates([date]);
       }
     } else setSelectedDates((old) => [...old, ...defaultDates]);
   }, [defaultDate, canChange]);
@@ -65,7 +67,7 @@ function StudyApplyDrawer({
   //   setSelectedDates(defaultDates);
   // }, [studySet]);
 
-  const { mutate: voteDateArr } = useStudyVoteArrMutation(selectedDates, {
+  const { mutate: voteDateArr, isLoading } = useStudyVoteArrMutation(selectedDates, {
     onSuccess() {
       toast("success", "스터디 신청이 완료되었습니다.");
       resetStudy();
@@ -117,15 +119,16 @@ function StudyApplyDrawer({
       text: "신청 완료",
       func: () => {
         voteDateArr({
-          locationDetail: defaultCoordinates
-            ? defaultCoordinates.locationDetail
+          locationDetail: location
+            ? location.address
             : getLocationSimpleText(userInfo.locationDetail.text),
-          latitude: defaultCoordinates ? defaultCoordinates.lat : userInfo.locationDetail.lat,
-          longitude: defaultCoordinates ? defaultCoordinates.lon : userInfo.locationDetail.lon,
+          latitude: location ? location.latitude : userInfo.locationDetail.lat,
+          longitude: location ? location.longitude : userInfo.locationDetail.lon,
           start: voteTime.start,
           end: voteTime.end,
         });
       },
+      loading: isLoading,
     },
   };
 
@@ -154,14 +157,11 @@ function StudyApplyDrawer({
           func={handleClickDate}
           passedDisabled
           mintDateArr={canChange ? [] : defaultDates}
+          isTodayInclude={dayjs().hour() < STUDY_RESULT_HOUR ? true : false}
         />
         {canChange ? (
           <Box as="li" fontSize="12px" lineHeight="20px" mt={3} color="gray.600">
-            스터디를 취소하는 경우{" "}
-            <Box as="span" color="mint">
-              민트색
-            </Box>{" "}
-            날짜를 해제해 주세요.
+            스터디를 취소하는 경우 선택된 날짜를 해제해 주세요.
           </Box>
         ) : !canChange && defaultDates.length ? (
           <Box as="li" fontSize="12px" lineHeight="20px" mt={3} color="gray.600">

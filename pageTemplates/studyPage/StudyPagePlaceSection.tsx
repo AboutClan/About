@@ -44,13 +44,11 @@ function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectio
       setThumbnailCardinfoArr(null);
       return;
     }
-
     const getThumbnailCardInfoArr = setStudyThumbnailCard(
       date,
       studySet,
       date === dayjsToStr(dayjs()) ? session?.user.id : null,
     );
-
     setThumbnailCardinfoArr(
       sortThumbnailCardInfoArr(sortedOption, getThumbnailCardInfoArr, session?.user.id),
     );
@@ -61,11 +59,9 @@ function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectio
     const newDate = getNewDateBySwipe(panInfo, date as string);
     if (newDate !== date) {
       setDate(newDate);
-      // newSearchParams.set("date", newDate);
-      // router.replace(`/studyPage?${newSearchParams.toString()}`, { scroll: false });
     }
   };
-
+  console.log("STUDY_SET", studySet);
   return (
     <Flex flexDir="column" mb={8}>
       <Box>

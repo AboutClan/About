@@ -1,5 +1,11 @@
 import { IUser, IUserSummary } from "../types/models/userTypes/userInfoTypes";
 
+export const getPlaceBranch = (text: string) => {
+  if (!text) return "";
+  const textArr = text.split(" ");
+  return textArr[0] + " " + textArr?.[1];
+};
+
 export const findParentheses = (text: string) => {
   const regex = /\(.*?\)/g; // 'g' 플래그를 추가하여 모든 일치 항목을 찾습니다.
   const found = text.match(regex);

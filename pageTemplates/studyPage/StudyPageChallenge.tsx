@@ -4,14 +4,9 @@ import SectionHeader from "../../components/atoms/SectionHeader";
 import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
 import AvatarGroupsOverwrap from "../../components/molecules/groups/AvatarGroupsOverwrap";
 import { useToast } from "../../hooks/custom/CustomToast";
-import { useUserInfoQuery } from "../../hooks/user/queries";
 
-interface StudyPageChallengeProps {}
-
-function StudyPageChallenge({}: StudyPageChallengeProps) {
+function StudyPageChallenge() {
   const toast = useToast();
-  const { data: userInfo } = useUserInfoQuery();
-
 
   return (
     <>

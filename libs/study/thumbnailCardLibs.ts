@@ -6,6 +6,7 @@ import { StudyConfirmedProps } from "../../types/models/studyTypes/study-entity.
 import { StudySetProps } from "../../types/models/studyTypes/study-set.types";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomImage } from "../../utils/imageUtils";
+import { shortenParticipations } from "./studyConverters";
 
 const placeImageCache = new Map<string, string>();
 
@@ -27,7 +28,7 @@ export const setStudyThumbnailCard = (
 
   const isPassedDate = dayjs(date).startOf("day").isBefore(dayjs().startOf("day"));
   const isFutureDate = dayjs(date).startOf("day").isAfter(dayjs().startOf("day"));
- 
+
   const basicThumbnailCard: StudyThumbnailCardProps[] = [];
   if (soloRealTimes && !isFutureDate) {
     basicThumbnailCard.push({
@@ -37,7 +38,8 @@ export const setStudyThumbnailCard = (
         address: "공부 인증하고, 다양한 혜택 받아가세요!",
         date: "",
         imageProps: {
-          image: "/a1.png",
+          image:
+            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/2.%EC%8B%A4%EC%8B%9C%EA%B0%84+%EA%B3%B5%EB%B6%80+%EC%9D%B8%EC%A6%9D.png",
           isPriority: true,
         },
         _id: "",
@@ -56,14 +58,13 @@ export const setStudyThumbnailCard = (
         address: "가까운 인원들과 스터디를 매칭하고 있어요",
         date: "",
         imageProps: {
-          image: "/a4.png",
+          image:
+            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/1.%EC%8A%A4%ED%84%B0%EB%94%94+%EB%A7%A4%EC%B9%AD+%EB%9D%BC%EC%9A%B4%EC%A7%80_%EC%B1%85ver.png",
           isPriority: true,
         },
         _id: "",
       },
-      participants: Array.from(
-        new Map(participations.map((par) => [par.study.user._id, par.study.user])).values(),
-      ),
+      participants: shortenParticipations(participations).map((par) => par.user),
       url: `/study/participations/${date}?type=participations`,
       studyType: "participations",
       isMyStudy: false,
@@ -91,11 +92,11 @@ export const setStudyThumbnailCard = (
 
     if (hasStatus(study)) {
       const placeInfo = study.place;
-    
+
       const textArr = placeInfo.location?.address.split(" ");
       return {
         place: {
-          name: placeInfo.title + "3",
+          name: placeInfo.location.name,
           branch: textArr?.[0] + " " + textArr?.[1],
           // locationMapping === null
           //   ? placeInfo?.branch
@@ -122,7 +123,7 @@ export const setStudyThumbnailCard = (
 
       return {
         place: {
-          name: placeInfo.title,
+          name: placeInfo.location.name,
           branch: addressArr?.[0] + " " + addressArr?.[1],
           address: placeInfo.location.address,
           date: dayjsToFormat(dayjs(data.date).locale("ko"), "M.D(ddd)"),
@@ -133,13 +134,10 @@ export const setStudyThumbnailCard = (
           _id: placeInfo._id,
         },
         participants: study2.members.map((att) => att.user),
-        url: `/study/${placeInfo._id}/${data.date}?type=${
-          dayjs(data.date).startOf("day").isBefore(dayjs()) ? "open" : "pending"
-        }`,
-        studyType: dayjs(data.date).startOf("day").isBefore(dayjs())
-          ? "results"
-          : "expectedResults",
+        url: `/study/${placeInfo._id}/${data.date}?type=results`,
+        studyType: "results",
         isMyStudy: study2.members.map((member) => member.user._id).includes(myId),
+        isFutureDate: dayjs(data.date).hour(9).isAfter(dayjs()),
       };
     }
   });
@@ -153,13 +151,13 @@ export const sortThumbnailCardInfoArr = (
   userId: string,
 ) => {
   if (sortedOption === "날짜순") return arr;
-  const statusPriority = { recruiting: 1, join: 2, open: 3, solo: 4, free: 5 };
+
   return [...arr].sort((a, b) => {
-    const aPriority = statusPriority[a.status] || 99;
-    const bPriority = statusPriority[b.status] || 99;
+    const aPriority = a.studyType === "results";
+    const bPriority = b.studyType === "openRealTimes";
 
     if (aPriority !== bPriority) {
-      return aPriority - bPriority;
+      return aPriority ? -1 : 1;
     }
 
     const aIsJoined = a.participants.some((par) => par._id === userId);

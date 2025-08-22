@@ -7,10 +7,11 @@ import Slide from "../../components/layouts/PageSlide";
 import RightDrawer from "../../components/organisms/drawer/RightDrawer";
 import { USER_INFO } from "../../constants/keys/queryKeys";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
+import { NaverLocationProps } from "../../hooks/external/queries";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { RegisterLocationLayout } from "../../pages/register/location";
-import { NaverLocationProps } from "../../types/externals/kakaoLocationSearch";
+
 import StudyPageBenefitDrawer from "./StudyPageBenefitDrawer";
 
 export type StudyTab = "스터디 참여" | "카공 지도";
@@ -29,7 +30,7 @@ function StudyPageHeader() {
   const location = userInfo?.locationDetail;
   useEffect(() => {
     if (!location) return;
-    setPlaceInfo({ title: location.text, x: location.lon + "", y: location.lat + "" });
+    setPlaceInfo({ address: location.text, latitude: location.lat, longitude: location.lon });
   }, [location]);
 
   const { mutate: changeLocationDetail } = useUserInfoFieldMutation("locationDetail", {
@@ -47,8 +48,8 @@ function StudyPageHeader() {
     }
     changeLocationDetail({
       text: placeInfo.title,
-      lon: +placeInfo.x,
-      lat: +placeInfo.y,
+      lon: placeInfo.longitude,
+      lat: placeInfo.latitude,
     });
   };
 
@@ -151,18 +152,22 @@ function StudyPageHeader() {
 }
 
 function LocationIcon() {
-  return <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-    <path
-      d="M12 1.5C16.9629 1.5 21 5.46722 21 10.3779C21 13.4321 19.2117 16.4464 17.3164 18.6406C16.3573 19.751 15.3393 20.6888 14.4414 21.3555C13.9931 21.6883 13.5618 21.9632 13.1729 22.1582C12.8084 22.341 12.392 22.5 12 22.5C11.608 22.5 11.1917 22.341 10.8271 22.1582C10.4382 21.9632 10.0069 21.6883 9.55859 21.3555C8.66066 20.6888 7.64269 19.751 6.68359 18.6406C4.78828 16.4464 3 13.4321 3 10.3779C3.00001 5.46723 7.03708 1.50002 12 1.5ZM12 6.87793C10.2958 6.87797 8.91406 8.25395 8.91406 9.95117C8.91412 11.6483 10.2959 13.0244 12 13.0244C13.7042 13.0244 15.0859 11.6484 15.0859 9.95117C15.0859 8.25392 13.7042 6.87793 12 6.87793Z"
-      fill="var(--color-gray)"
-    />
-  </svg>
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M12 1.5C16.9629 1.5 21 5.46722 21 10.3779C21 13.4321 19.2117 16.4464 17.3164 18.6406C16.3573 19.751 15.3393 20.6888 14.4414 21.3555C13.9931 21.6883 13.5618 21.9632 13.1729 22.1582C12.8084 22.341 12.392 22.5 12 22.5C11.608 22.5 11.1917 22.341 10.8271 22.1582C10.4382 21.9632 10.0069 21.6883 9.55859 21.3555C8.66066 20.6888 7.64269 19.751 6.68359 18.6406C4.78828 16.4464 3 13.4321 3 10.3779C3.00001 5.46723 7.03708 1.50002 12 1.5ZM12 6.87793C10.2958 6.87797 8.91406 8.25395 8.91406 9.95117C8.91412 11.6483 10.2959 13.0244 12 13.0244C13.7042 13.0244 15.0859 11.6484 15.0859 9.95117C15.0859 8.25392 13.7042 6.87793 12 6.87793Z"
+        fill="var(--color-gray)"
+      />
+    </svg>
+  );
 }
 
 function TriangeIcon() {
-  return <svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
-    <path d="M5.96244e-08 5L5.25 0.669872L5.25 9.33013L5.96244e-08 5Z" fill="var(--gray-200)" />
-  </svg>
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
+      <path d="M5.96244e-08 5L5.25 0.669872L5.25 9.33013L5.96244e-08 5Z" fill="var(--gray-200)" />
+    </svg>
+  );
 }
 
 export default StudyPageHeader;

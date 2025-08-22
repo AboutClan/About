@@ -4,10 +4,10 @@ export interface TimeRangeProps {
 }
 
 export interface LocationProps {
+  name?: string;
   latitude: number;
   longitude: number;
   address: string;
-  name?: string;
   _id?: string;
 }
 

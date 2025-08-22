@@ -2,24 +2,23 @@ import axios, { AxiosError } from "axios";
 import { useQuery } from "react-query";
 
 import { KAKAO_SEARCH } from "../../constants/keys/queryKeys";
+import { LocationProps } from "../../types/common";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 
 const API_URL = "https://dapi.kakao.com/v2/local/search/keyword.json";
 const API_LOCATION_URL = "https://dapi.kakao.com/v2/local/geo/coord2regioncode.json";
 const API_KEY = process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID;
 
-export interface NaverLocationProps {
-  title: string;
+export interface NaverLocationProps extends LocationProps {
+  title?: string;
   link?: string;
   category?: string;
   description?: string;
   telephone?: string;
-  address: string;
+
   roadAddress?: string;
   mapx?: string;
   mapy?: string;
-  latitude: number;
-  longitude: number;
 }
 
 export interface NaverLocalResponse {

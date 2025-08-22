@@ -15,7 +15,6 @@ interface StudyPagePlaceSectionHeaderProps {
 
 function StudyPagePlaceSectionHeader({ date, setDate }: StudyPagePlaceSectionHeaderProps) {
   const [isCalendarModal, setIsCalendarModal] = useState(false);
-  const englishDayjs = dayjs(date).locale("en");
 
   return (
     <>

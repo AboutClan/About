@@ -14,10 +14,11 @@ import RightDrawer from "../../components/organisms/drawer/RightDrawer";
 import SearchLocation from "../../components/organisms/SearchLocation";
 import { USER_INFO } from "../../constants/keys/queryKeys";
 import { useToast } from "../../hooks/custom/CustomToast";
+import { NaverLocationProps } from "../../hooks/external/queries";
 import { useUserInfoMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { CameraIcon, ProfileCamera } from "../../pageTemplates/user/UserProfileSection";
-import { NaverLocationProps } from "../../types/externals/kakaoLocationSearch";
+
 import { MajorLayout } from "../register/major";
 import { MBTILayout } from "../register/mbti";
 
@@ -40,8 +41,10 @@ function Profile() {
   const [isDrawer, setIsDrawer] = useState(false);
   const [text, setText] = useState("");
   const [placeInfo, setPlaceInfo] = useState<NaverLocationProps>({
-    title: "",
+    name: "",
     address: "",
+    latitude: null,
+    longitude: null,
   });
   const [drawerType, setDrawerType] = useState<"major" | "mbti">();
 
@@ -57,9 +60,9 @@ function Profile() {
     setMajors(userInfo?.majors);
     setMbti(userInfo?.mbti);
     setPlaceInfo({
-      title: userInfo?.locationDetail?.text || "",
-      x: userInfo?.locationDetail?.lon + "",
-      y: userInfo?.locationDetail?.lat + "",
+      address: userInfo?.locationDetail?.text || "",
+      longitude: userInfo?.locationDetail?.lon,
+      latitude: userInfo?.locationDetail?.lat,
     });
     setInstagram(userInfo?.instagram);
     setComment(userInfo?.comment);
@@ -69,9 +72,9 @@ function Profile() {
   const handleSubmit = () => {
     mutate({
       locationDetail: {
-        text: placeInfo?.title,
-        lat: +placeInfo?.y,
-        lon: +placeInfo?.x,
+        text: placeInfo?.address,
+        lat: placeInfo?.latitude,
+        lon: placeInfo?.longitude,
       },
       comment,
       majors,

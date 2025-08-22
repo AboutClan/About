@@ -3,16 +3,16 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
 import { LocationDotIcon, LocationDotIconHTML } from "../../components/Icons/LocationIcons";
 import VoteMap from "../../components/organisms/VoteMap";
+import { LocationProps } from "../../types/common";
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
 import { navigateExternalLink } from "../../utils/navigateUtils";
 interface StudyAddressMapProps {
-  latitude: number;
-  longitude: number;
-  address: string;
-  name: string;
+  location: LocationProps;
 }
 
-function StudyAddressMap({ latitude, longitude, address, name }: StudyAddressMapProps) {
+function StudyAddressMap({
+  location: { latitude, longitude, address, name },
+}: StudyAddressMapProps) {
   const mapOptions: IMapOptions = {
     center: new naver.maps.LatLng(latitude, longitude),
     zoom: 15,
@@ -61,7 +61,7 @@ function StudyAddressMap({ latitude, longitude, address, name }: StudyAddressMap
         </Box>
       </Flex>
       <Box aspectRatio={1.85 / 1} borderRadius="8px" overflow="hidden">
-        <VoteMap mapOptions={mapOptions} markersOptions={markersOptions} circleCenter={null} />
+        <VoteMap mapOptions={mapOptions} markersOptions={markersOptions} />
       </Box>
     </Box>
   );

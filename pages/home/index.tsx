@@ -6,17 +6,22 @@ import HomeHeader from "../../pageTemplates/home/homeHeader/HomeHeader";
 import HomeInitialSetting from "../../pageTemplates/home/HomeInitialSetting";
 import HomeNav from "../../pageTemplates/home/HomeNav";
 import HomeReviewSection from "../../pageTemplates/home/HomeReviewSection";
+import HomeStudySection from "../../pageTemplates/home/HomeStudySection";
 
 function Home() {
   return (
     <>
       <HomeInitialSetting />
       <HomeHeader />
-      <Slide>
+      <Slide isNoPadding>
         <HomeBannerSlide />
+      </Slide>
+      <Slide>
         <HomeNav />
       </Slide>
-      <Slide isNoPadding>{/* <HomeStudySection /> */}</Slide>
+      <Slide isNoPadding>
+        <HomeStudySection />
+      </Slide>
       <Slide isNoPadding>
         <HomeGatherSection />
       </Slide>

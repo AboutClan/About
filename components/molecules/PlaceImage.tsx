@@ -2,8 +2,6 @@ import { Box, Button } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { MouseEvent, useEffect, useState } from "react";
-
-import { useTogglePlaceHeart } from "../../hooks/custom/CustomHooks";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { HeartIcon } from "../Icons/HeartIcons";
@@ -39,7 +37,7 @@ function PlaceImage({
   const myPreferType =
     preference?.place === id ? "main" : preference?.subPlace?.includes(id) ? "sub" : null;
 
-  const toggleHeart = useTogglePlaceHeart();
+  // const toggleHeart = useTogglePlaceHeart();
 
   const [heartType, setHeartType] = useState<"main" | "sub" | null>();
 
@@ -65,7 +63,7 @@ function PlaceImage({
         if (preference?.place) setHeartType("sub");
         else setHeartType("main");
     }
-    toggleHeart(e, preference, id);
+    // toggleHeart(e, preference, id);
   };
 
   return (

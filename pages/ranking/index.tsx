@@ -178,7 +178,7 @@ function Ranking() {
       users: UserRankingProps[],
     ): { first: string; value: number } => {
       const myRankNum = myRanking.rank;
-    
+
       const diffValue = users[myRankNum - 2].value - myRanking.value;
 
       if (myRankNum <= 5) {
@@ -384,8 +384,8 @@ function TrophyIcon() {
           y2="36"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFAB04" />
-          <stop offset="1" stop-color="#FFE6B4" />
+          <stop stopColor="#FFAB04" />
+          <stop offset="1" stopColor="#FFE6B4" />
         </linearGradient>
       </defs>
     </svg>
@@ -417,8 +417,8 @@ function TrophyIcon() {
 //         y2="39.0003"
 //         gradientUnits="userSpaceOnUse"
 //       >
-//         <stop stop-color="#FFAB04" />
-//         <stop offset="1" stop-color="#FFE6B4" />
+//         <stop stopColor="#FFAB04" />
+//         <stop offset="1" stopColor="#FFE6B4" />
 //       </linearGradient>
 //       <linearGradient
 //         id="paint1_linear_2026_443"
@@ -428,8 +428,8 @@ function TrophyIcon() {
 //         y2="18.0541"
 //         gradientUnits="userSpaceOnUse"
 //       >
-//         <stop stop-color="#00C2B3" />
-//         <stop offset="1" stop-color="#00A79A" />
+//         <stop stopColor="#00C2B3" />
+//         <stop offset="1" stopColor="#00A79A" />
 //       </linearGradient>
 //       <clipPath id="clip0_2026_443">
 //         <rect width="30" height="38" fill="white" transform="translate(5 1)" />
@@ -463,8 +463,8 @@ function TrophyIcon() {
 //         y2="39.0003"
 //         gradientUnits="userSpaceOnUse"
 //       >
-//         <stop stop-color="#ADB5BD" />
-//         <stop offset="1" stop-color="#D3D3D3" />
+//         <stop stopColor="#ADB5BD" />
+//         <stop offset="1" stopColor="#D3D3D3" />
 //       </linearGradient>
 //       <linearGradient
 //         id="paint1_linear_2026_534"
@@ -474,8 +474,8 @@ function TrophyIcon() {
 //         y2="18.0541"
 //         gradientUnits="userSpaceOnUse"
 //       >
-//         <stop stop-color="#00C2B3" />
-//         <stop offset="1" stop-color="#00A79A" />
+//         <stop stopColor="#00C2B3" />
+//         <stop offset="1" stopColor="#00A79A" />
 //       </linearGradient>
 //       <clipPath id="clip0_2026_534">
 //         <rect width="30" height="38" fill="white" transform="translate(5 1)" />
@@ -510,8 +510,8 @@ function BronzeMedalIcon() {
           y2="39.0003"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#985948" />
-          <stop offset="1" stop-color="#A17800" />
+          <stop stopColor="#985948" />
+          <stop offset="1" stopColor="#A17800" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_2026_540"
@@ -521,8 +521,8 @@ function BronzeMedalIcon() {
           y2="18.0541"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#00C2B3" />
-          <stop offset="1" stop-color="#00A79A" />
+          <stop stopColor="#00C2B3" />
+          <stop offset="1" stopColor="#00A79A" />
         </linearGradient>
         <clipPath id="clip0_2026_540">
           <rect width="30" height="38" fill="white" transform="translate(5 1)" />

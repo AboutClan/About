@@ -4,7 +4,6 @@ import { StudyConfirmedProps, StudyParticipationProps } from "./study-entity.typ
  * Collection of two types of study sets
  */
 export type StudyType = "participations" | "soloRealTimes" | "openRealTimes" | "results";
-export type StudyPageType = StudyType | "expectedResults";
 
 type StudyValueMap = {
   [K in StudyType]: K extends "participations"
@@ -13,7 +12,6 @@ type StudyValueMap = {
 };
 
 export type StudySetProps = { [K in keyof StudyValueMap]: StudyValueMap[K][] };
-export type StudyOneDayProps = StudyValueMap;
 
 /**
  * study entry types
@@ -21,9 +19,9 @@ export type StudyOneDayProps = StudyValueMap;
 
 export type StudySetEntry = StudySetProps[keyof StudySetProps][number];
 
-interface StudyParticipationsSetProps {
+export interface StudyParticipationsSetProps {
   date: string;
-  study: StudyParticipationProps;
+  study: StudyParticipationProps[];
 }
 
 export interface StudyConfirmedSetProps {

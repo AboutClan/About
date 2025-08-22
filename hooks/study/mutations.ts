@@ -124,15 +124,15 @@ export const useStudyAttendCheckMutation = (
   );
 
 export const useStudyAbsenceMutation = (
-  date: Dayjs,
-  options?: MutationOptions<{ message: string; fee: number }>,
+  date: string,
+  options?: MutationOptions<{ message: string }>,
 ) =>
-  useMutation<void, AxiosError, { message: string; fee: number }>(
-    ({ message, fee }) =>
-      requestServer<{ message: string; fee: number }>({
+  useMutation<void, AxiosError, { message: string }>(
+    ({ message }) =>
+      requestServer<{ message: string }>({
         method: "post",
-        url: `vote2/${dayjsToStr(date)}/absence`,
-        body: { message, fee },
+        url: `vote2/${date}/absence`,
+        body: { message },
       }),
     options,
   );
@@ -154,18 +154,18 @@ interface PlaceReviewRequestProps extends Omit<PlaceReviewProps, "user"> {
   placeId: string;
 }
 
-export const usePlaceLocationMutation = (
-  options?: MutationOptions<{ placeId: string; location: any }>,
-) =>
-  useMutation<void, AxiosError, { placeId: string; location: any }>(
-    (review) =>
-      requestServer<{ placeId: string; location: any }>({
-        method: "patch",
-        url: `place/location`,
-        body: review,
-      }),
-    options,
-  );
+// export const usePlaceLocationMutation = (
+//   options?: MutationOptions<{ placeId: string; location: any }>,
+// ) =>
+//   useMutation<void, AxiosError, { placeId: string; location: any }>(
+//     (review) =>
+//       requestServer<{ placeId: string; location: any }>({
+//         method: "patch",
+//         url: `place/location`,
+//         body: review,
+//       }),
+//     options,
+//   );
 
 export const usePlaceReviewMutation = (options?: MutationOptions<PlaceReviewRequestProps>) =>
   useMutation<void, AxiosError, PlaceReviewRequestProps>(

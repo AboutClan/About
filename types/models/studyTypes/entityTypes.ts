@@ -1,3 +1,4 @@
+import { LocationProps } from "../../common";
 import { TimeStampProps } from "../../utils/timeAndDate";
 import { UserSimpleInfoProps } from "../userTypes/userInfoTypes";
 
@@ -11,13 +12,8 @@ export interface PlaceProps extends PlaceRegisterProps {
   registrant: UserSimpleInfoProps;
 }
 export interface PlaceRegisterProps {
-  title: string;
   status?: PlaceStatus;
-  location: {
-    latitude: number;
-    longitude: number;
-    address: string;
-  };
+  location: LocationProps;
 }
 
 export interface PlaceReviewProps extends TimeStampProps {

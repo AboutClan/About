@@ -6,11 +6,10 @@ import { DispatchType } from "../../types/hooks/reactTypes";
 export type StudyTab = "스터디 참여" | "카공 지도";
 
 interface StudyPageNavProps {
-  tab: StudyTab;
   setTab: DispatchType<StudyTab>;
 }
 
-function StudyPageNav({ tab, setTab }: StudyPageNavProps) {
+function StudyPageNav({ setTab }: StudyPageNavProps) {
   return (
     <>
       <Flex borderBottom="var(--border)" px={5} mt={1}>

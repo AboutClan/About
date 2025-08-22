@@ -29,7 +29,7 @@ function LocationSearch({
   isActive = true,
   placeHolder,
 }: ISearchLocation) {
-  const [value, setValue] = useState(info?.title || "");
+  const [value, setValue] = useState(info.name || "");
   const [results, setResults] = useState<NaverLocationProps[]>([]);
 
   const { data } = useNaverLocalQuery(value, {
@@ -37,12 +37,12 @@ function LocationSearch({
   });
 
   useEffect(() => {
-    if (info) setValue(info?.title);
+    if (info) setValue(info?.name);
   }, [info]);
 
   useEffect(() => {
     if (!data) return;
-    if (value === info?.title) {
+    if (value === info?.name) {
       setResults([]);
     } else setResults(data);
   }, [data]);
@@ -51,7 +51,7 @@ function LocationSearch({
     const placeName = searchInfo.title;
     setValue(placeName);
     const { latitude, longitude } = mapxyToLatLng(searchInfo.mapx, searchInfo.mapy);
-    setInfo({ ...searchInfo, latitude, longitude });
+    setInfo({ ...searchInfo, name: placeName, latitude, longitude });
     setResults([]);
   };
 

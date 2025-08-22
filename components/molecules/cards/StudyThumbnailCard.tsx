@@ -1,10 +1,10 @@
 import { Badge, Box, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 import styled from "styled-components";
-import { getStudyBadge } from "../../../libs/study/studyHelpers";
 
+import { getStudyBadge } from "../../../libs/study/studyHelpers";
 import { SingleLineText } from "../../../styles/layout/components";
-import { StudyPageType } from "../../../types/models/studyTypes/study-set.types";
+import { StudyType } from "../../../types/models/studyTypes/study-set.types";
 import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { CheckCircleIcon } from "../../Icons/CircleIcons";
 import { LocationDotIcon } from "../../Icons/LocationIcons";
@@ -29,9 +29,10 @@ export interface StudyThumbnailCardProps {
   };
   participants?: UserSimpleInfoProps[];
   url: string;
-  studyType: StudyPageType;
+  studyType: StudyType;
   func?: () => void;
   isMyStudy: boolean;
+  isFutureDate?: boolean;
 }
 
 export function StudyThumbnailCard({
@@ -41,8 +42,8 @@ export function StudyThumbnailCard({
   studyType,
   func = undefined,
   isMyStudy,
+  isFutureDate,
 }: StudyThumbnailCardProps) {
- 
   return (
     <CardLink
       href={url}
@@ -71,8 +72,12 @@ export function StudyThumbnailCard({
                   <CheckCircleIcon color="mint" size="sm" isFill />
                 </Box>
               )}
-              <Badge mr="auto" colorScheme={getStudyBadge(studyType).colorScheme} size="md">
-                {getStudyBadge(studyType).text}
+              <Badge
+                mr="auto"
+                colorScheme={getStudyBadge(studyType, isFutureDate).colorScheme}
+                size="md"
+              >
+                {getStudyBadge(studyType, isFutureDate).text}
               </Badge>
             </Flex>
           </Flex>

@@ -1,7 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-
 import ButtonWrapper from "../../components/atoms/ButtonWrapper";
 import SectionFooterButton from "../../components/atoms/SectionFooterButton";
 import SectionHeader from "../../components/atoms/SectionHeader";
@@ -12,7 +11,7 @@ import {
 } from "../../components/molecules/cards/StudyThumbnailCard";
 import TabNav, { ITabNavOptions } from "../../components/molecules/navs/TabNav";
 import { StudyThumbnailCardSkeleton } from "../../components/skeleton/StudyThumbnailCardSkeleton";
-import { useStudySetQuery } from "../../hooks/custom/StudyHooks";
+import { useStudySetQuery } from "../../hooks/study/queries";
 import {
   setStudyThumbnailCard,
   sortThumbnailCardInfoArr,
@@ -22,7 +21,7 @@ import { dayjsToStr } from "../../utils/dateTimeUtils";
 type StudyTab = "오늘 날짜 스터디" | "진행 예정 스터디";
 
 function HomeStudySection() {
-  const { studySet } = useStudySetQuery(dayjsToStr(dayjs()), true);
+  const { data: studySet } = useStudySetQuery(dayjsToStr(dayjs()));
 
   const [tab, setTab] = useState<StudyTab>("오늘 날짜 스터디");
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
@@ -53,7 +52,7 @@ function HomeStudySection() {
 
   return (
     <>
-      <Box px={5} mt={5}>
+      <Box px={5} mt={8}>
         <SectionHeader title="About 카공 스터디" subTitle="동네 친구와의 열공 스터디">
           <ButtonWrapper size="sm" url={`/studyPage?date=${dayjsToStr(dayjs())}`}>
             <ShortArrowIcon dir="right" />

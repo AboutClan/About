@@ -1,5 +1,4 @@
 import { Box, Button } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
@@ -12,13 +11,12 @@ import Slide from "../../../components/layouts/PageSlide";
 import ImageUploadInput from "../../../components/molecules/ImageUploadInput";
 import LocationSearch from "../../../components/organisms/location/LocationSearch";
 import { useToast } from "../../../hooks/custom/CustomToast";
-import { useStudySetQuery } from "../../../hooks/custom/StudyHooks";
 import { NaverLocationProps } from "../../../hooks/external/queries";
+import { useStudySetQuery } from "../../../hooks/study/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { transferStudyAttendanceState } from "../../../recoils/transferRecoils";
 
 function Certification() {
-  const { data: session } = useSession();
   const toast = useToast();
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
@@ -26,44 +24,35 @@ function Certification() {
 
   const { data: userInfo } = useUserInfoQuery();
 
-  const { studySet } = useStudySetQuery(date, !!date && type === "soloRealTimes");
+  const { data: studySet } = useStudySetQuery(date, {
+    enabled: !!date && type === "soloRealTimes",
+  });
 
   const [image, setImage] = useState<Blob>();
   const [placeInfo, setPlaceInfo] = useState<NaverLocationProps>({
-    title: "",
+    name: "",
     address: "",
-    lat: null,
-    lng: null,
+    latitude: null,
+    longitude: null,
   });
   const [isActive, setIsActive] = useState(true);
 
   const [studyAttendanceRequest, setStudyAttendanceRequest] = useRecoilState(
     transferStudyAttendanceState,
   );
- 
+
   useEffect(() => {
     if (studyAttendanceRequest) {
-      const { name, latitude, longitude, address } = studyAttendanceRequest.place;
-      setPlaceInfo({
-        title: name,
-        lng: longitude,
-        lat: latitude,
-        address,
-      });
+      setPlaceInfo(studyAttendanceRequest.place);
       setImage(studyAttendanceRequest?.image);
     } else if (type === "soloRealTimes" && studySet) {
-      const findMyStudyResult = studySet["soloRealTimes"]?.find(
-        (par) => par.study.user._id === userInfo?._id,
+      const findMyStudyResult = studySet["soloRealTimes"]?.find((par) =>
+        par.study.members.some((member) => member.user._id === userInfo?._id),
       );
 
       if (findMyStudyResult) {
-        const studyPlace = findMyStudyResult.study.place;
-        setPlaceInfo({
-          lng: studyPlace.longitude,
-          lat: studyPlace.latitude,
-          address: studyPlace.address,
-          title: studyPlace.name,
-        });
+        const location = findMyStudyResult.study.place.location;
+        setPlaceInfo(location);
         setIsActive(false);
       }
     }
@@ -85,8 +74,8 @@ function Certification() {
       ...old,
       image,
       place: {
-        latitude: placeInfo?.lat,
-        longitude: placeInfo?.lng,
+        latitude: placeInfo?.latitude,
+        longitude: placeInfo?.longitude,
         address: placeInfo?.address,
         name: placeInfo?.title,
       },
@@ -94,7 +83,7 @@ function Certification() {
   };
 
   const handleResetButton = () => {
-    setPlaceInfo({ title: "", address: "", lat: null, lng: null });
+    setPlaceInfo({ title: "", address: "", latitude: null, longitude: null });
     setIsActive(true);
   };
 

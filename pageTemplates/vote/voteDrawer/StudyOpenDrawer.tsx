@@ -15,9 +15,8 @@ import { NaverLocationProps } from "../../../hooks/external/queries";
 import { useRealtimeVoteMutation } from "../../../hooks/realtime/mutations";
 import { useStudyPlacesQuery } from "../../../hooks/study/queries";
 import { CalendarHeader } from "../../../modals/aboutHeader/DateCalendarModal";
-import { StudyPlaceProps } from "../../../types/models/studyTypes/study-entity.types";
-
 import { RealTimeVoteProps } from "../../../types/models/studyTypes/requestTypes";
+import { StudyPlaceProps } from "../../../types/models/studyTypes/study-entity.types";
 import { IStudyVoteTime } from "../../../types/models/studyTypes/studyInterActions";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import StudyPageMap from "../../studyPage/studyPageMap/StudyPageMap";
@@ -37,7 +36,7 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
 
   useStudyPlacesQuery("main");
 
-  const { mutate: handleStudyVote } = useRealtimeVoteMutation(selectedDate, {
+  const { mutate: handleStudyVote, isLoading } = useRealtimeVoteMutation(selectedDate, {
     onSuccess() {
       toast("success", "스터디가 개설되었습니다.");
       resetStudy();
@@ -47,7 +46,7 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
 
   const [isFirstPage, setIsFirstPage] = useState(true);
   const [placeInfo, setPlaceInfo] = useState<NaverLocationProps>({
-    title: "",
+    name: "",
     address: "",
     latitude: null,
     longitude: null,
@@ -59,7 +58,7 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
   const handleBottomNav = () => {
     if (isFirstPage) setIsFirstPage(false);
     else {
-      if (!placeInfo?.title) {
+      if (!placeInfo?.name) {
         toast("warning", "장소를 입력해 주세요");
         return;
       }
@@ -76,12 +75,7 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
       text: "개설 완료",
       func: () => {
         const voteData: RealTimeVoteProps = {
-          place: {
-            latitude: placeInfo.latitude,
-            longitude: placeInfo.longitude,
-            name: placeInfo.title,
-            address: placeInfo.address,
-          },
+          place: placeInfo,
           time: {
             start: voteTime.start,
             end: voteTime.end,
@@ -91,6 +85,7 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
 
         handleStudyVote(voteData);
       },
+      loading: isLoading,
     },
   };
 
@@ -105,12 +100,8 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
   };
 
   const handleVotePick = (place: StudyPlaceProps) => {
-    setPlaceInfo({
-      title: place.title,
-      latitude: place.location.latitude,
-      longitude: place.location.longitude,
-      address: place.location.address,
-    });
+    const { name, latitude, longitude, address } = place.location;
+    setPlaceInfo({ name, latitude, longitude, address });
     setIsMapOpen(false);
   };
 

@@ -3,13 +3,10 @@ import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-
 import IconRowBlock from "../components/atoms/blocks/IconRowBlock";
 import Slide from "../components/layouts/PageSlide";
 import { useTypeToast } from "../hooks/custom/CustomToast";
-
 import { useStudyPassedDayQuery, useStudySetQuery } from "../hooks/study/queries";
-import { setStudyOneDayData } from "../libs/study/studyConverters";
 import StudyPageCalendar from "../pageTemplates/studyPage/StudyPageCalendar";
 import StudyPageChallenge from "../pageTemplates/studyPage/StudyPageChallenge";
 import StudyPageHeader from "../pageTemplates/studyPage/StudyPageHeader";
@@ -34,7 +31,7 @@ export default function StudyPage() {
   const isPassedDate = !!date && dayjs(date).startOf("day").isBefore(dayjs().startOf("day"));
 
   const { data: studySet } = useStudySetQuery(date, { enabled: !!date && !isPassedDate });
-  console.log("studySet", studySet);
+
   const { data: passedStudyData } = useStudyPassedDayQuery(date, {
     enabled: !!date && !!isPassedDate,
   });
@@ -55,14 +52,14 @@ export default function StudyPage() {
     <>
       <StudyPageHeader />
       <Slide isNoPadding>
-        <StudyPageNav tab={tab} setTab={setTab} />
+        <StudyPageNav setTab={setTab} />
       </Slide>
       <>
         {tab === "스터디 참여" ? (
           <Slide>
             <StudyPageCalendar date={date} setDate={setDate} />
             <StudyPagePlaceSection
-              studySet={isPassedDate ? setStudyOneDayData(passedStudyData, date) : studySet}
+              studySet={isPassedDate ? passedStudyData : studySet}
               date={date}
               setDate={setDate}
             />

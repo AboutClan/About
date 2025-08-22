@@ -92,7 +92,7 @@ function GatherPick() {
                       <MoneyBagIcon />
                     </Box>
                     <Box as="b" ml={1} mt={0.5} color="gray.800">
-                      {(5000 + item.like.length * 100).toLocaleString()}원
+                      {(5000 + item.like.length * 150).toLocaleString()}원
                     </Box>
                   </Flex>
                 </Flex>

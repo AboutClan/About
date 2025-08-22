@@ -14,6 +14,7 @@ export interface StudyParticipationProps {
   times: TimeRangeProps;
   location: LocationProps;
   isBeforeResult: boolean;
+  dates?: string[];
 }
 
 export interface StudyConfirmedProps {
