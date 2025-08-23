@@ -2,8 +2,7 @@ import dayjs from "dayjs";
 
 import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
 import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
-import { StudyConfirmedProps } from "../../types/models/studyTypes/study-entity.types";
-import { StudySetProps } from "../../types/models/studyTypes/study-set.types";
+import { StudySetProps, StudyType } from "../../types/models/studyTypes/study-set.types";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomImage } from "../../utils/imageUtils";
 import { shortenParticipations } from "./studyConverters";
@@ -73,7 +72,17 @@ export const setStudyThumbnailCard = (
 
   const hasStatus = (x: any) => x?.status != null || x?.study?.status != null;
 
-  const merged = [...openRealTimes, ...results].sort((a, b) => {
+  const temp1 = [...openRealTimes].map((real) => ({
+    ...real,
+    study: { ...real.study, status: "openRealTimes" as StudyType },
+  }));
+
+  const temp2 = [...results].map((result) => ({
+    ...result,
+    study: { ...result.study, status: "results" as StudyType },
+  }));
+
+  const merged = [...temp1, ...temp2].sort((a, b) => {
     const da = dayjs(a.date);
     const db = dayjs(b.date);
     if (da.isBefore(db)) return -1;
@@ -85,61 +94,32 @@ export const setStudyThumbnailCard = (
     if (aHas === bHas) return 0;
     return aHas ? 1 : -1;
   });
-
+  console.log(544, merged);
   // 카드 데이터 생성
   const cardColData: StudyThumbnailCardProps[] = merged.map((data, idx) => {
     const study = data.study;
+    const placeInfo = study.place;
+    const textArr = placeInfo.location?.address.split(" ");
+    console.log(15, placeInfo);
+    return {
+      place: {
+        name: placeInfo.location.name,
+        branch: textArr?.[0] + " " + textArr?.[1],
+        address: placeInfo.location?.address,
+        date: dayjsToFormat(dayjs(data.date).locale("ko"), "M.D(ddd)"),
+        imageProps: {
+          image: placeInfo.image || getRandomImage(GATHER_MAIN_IMAGE_ARR["스터디"]),
 
-    if (hasStatus(study)) {
-      const placeInfo = study.place;
-
-      const textArr = placeInfo.location?.address.split(" ");
-      return {
-        place: {
-          name: placeInfo.location.name,
-          branch: textArr?.[0] + " " + textArr?.[1],
-          // locationMapping === null
-          //   ? placeInfo?.branch
-          //   : locationMapping?.find((mapping) => mapping.id === placeInfo._id)?.branch,
-          address: placeInfo.location?.address,
-          date: dayjsToFormat(dayjs(data.date).locale("ko"), "M.D(ddd)"),
-          imageProps: {
-            image: placeInfo.image || getRandomImage(GATHER_MAIN_IMAGE_ARR["스터디"]),
-            // getCachedStudyImage(placeInfo._id, GATHER_MAIN_IMAGE_ARR["스터디"]),
-            isPriority: idx < 4,
-          },
-          _id: placeInfo._id,
+          isPriority: idx < 4,
         },
-        participants: study.members.map((att) => att.user),
-        url: `/study/${placeInfo._id}/${data.date}?type=openRealTimes`,
-        studyType: "openRealTimes",
-        isMyStudy: study.members.map((member) => member.user._id).includes(myId),
-      };
-    } else {
-      const study2 = study as StudyConfirmedProps;
-      const placeInfo = study2.place;
-
-      const addressArr = placeInfo.location.address.split(" ");
-
-      return {
-        place: {
-          name: placeInfo.location.name,
-          branch: addressArr?.[0] + " " + addressArr?.[1],
-          address: placeInfo.location.address,
-          date: dayjsToFormat(dayjs(data.date).locale("ko"), "M.D(ddd)"),
-          imageProps: {
-            image: placeInfo.image || getRandomImage(GATHER_MAIN_IMAGE_ARR["스터디"]),
-            isPriority: idx < 4,
-          },
-          _id: placeInfo._id,
-        },
-        participants: study2.members.map((att) => att.user),
-        url: `/study/${placeInfo._id}/${data.date}?type=results`,
-        studyType: "results",
-        isMyStudy: study2.members.map((member) => member.user._id).includes(myId),
-        isFutureDate: dayjs(data.date).hour(9).isAfter(dayjs()),
-      };
-    }
+        _id: placeInfo._id,
+      },
+      participants: study.members.map((att) => att.user),
+      url: `/study/${placeInfo._id}/${data.date}?type=${data.study.status}`,
+      studyType: data.study.status,
+      isMyStudy: study.members.map((member) => member.user._id).includes(myId),
+      isFutureDate: dayjs(data.date).hour(9).isAfter(dayjs()),
+    };
   });
 
   return [...basicThumbnailCard, ...cardColData];

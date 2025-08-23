@@ -68,7 +68,7 @@ export const useStudyMutations = (date: Dayjs) => {
     },
   });
 
-  const { mutate: absence, isLoading: isLoading5 } = useStudyAbsenceMutation(date, {
+  const { mutate: absence, isLoading: isLoading5 } = useStudyAbsenceMutation(dayjsToStr(date), {
     onSuccess: () => {
       typeToast("cancel");
       resetStudy();

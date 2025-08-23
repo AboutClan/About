@@ -1,6 +1,7 @@
 import { Badge, Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useState } from "react";
+import { useSetRecoilState } from "recoil";
 
 import PageIntro from "../../../components/atoms/PageIntro";
 import BottomNav from "../../../components/layouts/BottomNav";
@@ -15,6 +16,7 @@ import { NaverLocationProps } from "../../../hooks/external/queries";
 import { useRealtimeVoteMutation } from "../../../hooks/realtime/mutations";
 import { useStudyPlacesQuery } from "../../../hooks/study/queries";
 import { CalendarHeader } from "../../../modals/aboutHeader/DateCalendarModal";
+import { transferStudyRewardState } from "../../../recoils/transferRecoils";
 import { RealTimeVoteProps } from "../../../types/models/studyTypes/requestTypes";
 import { StudyPlaceProps } from "../../../types/models/studyTypes/study-entity.types";
 import { IStudyVoteTime } from "../../../types/models/studyTypes/studyInterActions";
@@ -33,11 +35,13 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
 
   const [selectedDate, setSelectedDate] = useState<string>();
   const [isMapOpen, setIsMapOpen] = useState(false);
+  const setTransferStudyReward = useSetRecoilState(transferStudyRewardState);
 
   useStudyPlacesQuery("main");
 
   const { mutate: handleStudyVote, isLoading } = useRealtimeVoteMutation(selectedDate, {
-    onSuccess() {
+    onSuccess(data) {
+      setTransferStudyReward(data);
       toast("success", "스터디가 개설되었습니다.");
       resetStudy();
       onClose();

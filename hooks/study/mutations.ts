@@ -70,15 +70,6 @@ export const useStudyVoteMutation = <T extends "post" | "patch" | "delete">(
     },
     {
       ...options,
-      onSuccess(data, variables, context) {
-        if (method === "post") {
-          pointToast((data as PointValueProps)?.value);
-          setTransferStudyVoteDate(voteDate);
-        }
-        if (options?.onSuccess) {
-          options.onSuccess(data, variables, context);
-        }
-      },
     },
   );
 };

@@ -28,7 +28,7 @@ export interface StudyConfirmedProps {
  */
 
 export type StudyStatus = RealTimesStudyStatus | VoteStudyStatus;
-export type VoteStudyStatus = "open" | "pending";
+export type VoteStudyStatus = "open" | "expected";
 export type RealTimesStudyStatus = "open" | "participation" | "solo";
 
 /**

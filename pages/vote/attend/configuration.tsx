@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
@@ -23,10 +23,10 @@ import { useStudySetQuery } from "../../../hooks/study/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { ModalLayout } from "../../../modals/Modals";
 import {
-  transferCollectionState,
   transferStudyAttendanceState,
+  transferStudyRewardState,
 } from "../../../recoils/transferRecoils";
-import { CollectionProps } from "../../../types/models/collections";
+import { PointInfoProps } from "../../../types/common";
 import {
   StudyConfirmedSetProps,
   StudyType,
@@ -50,7 +50,7 @@ function Configuration() {
   const { data: userInfo } = useUserInfoQuery();
 
   const { data: studySet } = useStudySetQuery(date, { enabled: !!date });
-
+  console.log(35, studySet);
   const studyData = studySet && studySet[type];
 
   const confirmedSet = studyData as StudyConfirmedSetProps[];
@@ -61,8 +61,9 @@ function Configuration() {
     dayjs().hour() < 21 ? dayjsToFormat(dayjs().startOf("hour").add(3, "hour"), "HH:mm") : "23:30",
   );
 
+  const setTransferStudyReward = useSetRecoilState(transferStudyRewardState);
   const textareaRef = useRef(null);
-  const [otherPermission, setOtherPermission] = useState<"허용" | "비허용">("허용");
+
   const [attendMessage, setAttendMessage] = useState("");
   const [isChecking, setIsChecking] = useState(false);
   const [stampCnt, setStampCnt] = useState<number>();
@@ -72,8 +73,6 @@ function Configuration() {
   );
   // const studyType = myStudyResult?.status;
 
-  const setTransferCollection = useSetRecoilState(transferCollectionState);
-
   const { mutate: handleArrived, isLoading: isLoading1 } = useStudyAttendCheckMutation({
     onSuccess(data) {
       handleAttendSuccess(data);
@@ -82,7 +81,6 @@ function Configuration() {
 
   const { mutate: attendRealTimeStudy, isLoading: isLoading2 } = useRealTimeAttendMutation(date, {
     onSuccess(data) {
-      return;
       handleAttendSuccess(data);
     },
   });
@@ -120,18 +118,16 @@ function Configuration() {
     }
   }, []);
 
-  const handleAttendSuccess = (collection: CollectionProps) => {
-    setTransferCollection({ alphabet: collection.alphabet, stamps: collection.stamps });
-
+  const handleAttendSuccess = (data: PointInfoProps) => {
     resetStudy();
     setTransferStudyAttendance(null);
-
+    setTimeout(() => {
+      setTransferStudyReward(data);
+    }, 500);
     if (id) {
       router.push(`/study/${id}/${date}?type=${type}`);
-      toast("success", `출석 완료!`);
     } else {
       router.push(`/study/realTimes/${date}?type=${type}`);
-      toast("success", `인증 완료!`);
     }
   };
 

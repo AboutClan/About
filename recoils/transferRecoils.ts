@@ -4,6 +4,7 @@ import { atom } from "recoil";
 import { SummaryBlockProps } from "../components/molecules/SummaryBlock";
 import { IDailyCheckWinList } from "../constants/serviceConstants/dailyCheckConstatns";
 import { IGiftEntry } from "../pages/store";
+import { PointInfoProps } from "../types/common";
 import { CollectionProps } from "../types/models/collections";
 import { IGather } from "../types/models/gatherTypes/gatherTypes";
 import { IGroup } from "../types/models/groupTypes/group";
@@ -11,7 +12,7 @@ import { MemberGroup } from "../types/models/member";
 import { RealTimesDirectAttendanceProps } from "../types/models/studyTypes/requestTypes";
 import { IUser } from "../types/models/userTypes/userInfoTypes";
 
-export const transferStudyRewardState = atom<number>({
+export const transferStudyRewardState = atom<PointInfoProps>({
   key: "StudyReward",
   default: null,
 });

@@ -75,7 +75,7 @@ export default function Page() {
 
   const members =
     studyType !== "participations" ? findStudy?.members : shortenParticipations(participationsSet);
-
+  
   const placeInfo = findStudy?.place;
 
   // const findStudyArr = getTodayStudyArr(studyType, studyPassedData, studySet, date);
@@ -141,6 +141,7 @@ export default function Page() {
               hasOtherStudy={hasOtherStudy}
               studyType={studyType}
               location={placeInfo?.location}
+              findStudy={findStudy}
             />
             // <StudyNavigationComponent
             //   date={date}

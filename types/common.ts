@@ -1,3 +1,8 @@
+export interface PointInfoProps {
+  point: number;
+  message: string;
+}
+
 export interface TimeRangeProps {
   start: string;
   end: string;

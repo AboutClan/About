@@ -27,7 +27,7 @@ function StudyOverview({ placeInfo, date, studyType }: IStudyOverview) {
     studyType,
     dayjs(date).startOf("day").isAfter(dayjs()),
   );
-
+  console.log(52, studyType);
   const distance = getDistanceFromLatLonInKm(
     placeInfo?.location.latitude,
     placeInfo?.location.longitude,
@@ -37,10 +37,17 @@ function StudyOverview({ placeInfo, date, studyType }: IStudyOverview) {
 
   const infoBoxPropsArr: InfoBoxProps[] = [
     {
-      category: studyType === "participations" ? "매칭 시간" : "확정 시간",
+      category:
+        studyType === "participations"
+          ? "매칭 시간"
+          : studyType === "soloRealTimes"
+          ? "영업 시간"
+          : "확정 시간",
       text:
         studyType === "participations"
           ? dayjsToFormat(dayjs(date), "M월 D일(ddd) 오전 9시")
+          : studyType === "soloRealTimes"
+          ? "하루 공부가 끝나는 순간까지"
           : "정보 없음",
     },
     {
@@ -139,19 +146,33 @@ function StudyOverview({ placeInfo, date, studyType }: IStudyOverview) {
               <Badge mr={2} size="lg" colorScheme={badgeColorScheme}>
                 {badgeText}
               </Badge>
-              <Box as="span">{getPlaceBranch(placeInfo?.location.address || "스터디 매칭")}</Box>
-              {distance && (
+              {studyType !== "participations" && studyType !== "soloRealTimes" && (
                 <>
-                  <Box as="span" color="var(--gray-400)">
-                    ・
+                  <Box as="span">
+                    {studyType === "participations"
+                      ? "스터디 매칭"
+                      : studyType === "soloRealTimes"
+                      ? "공부 인증"
+                      : getPlaceBranch(placeInfo?.location.address)}
                   </Box>
-                  <Box as="span">{distance}KM</Box>
+                  {distance && (
+                    <>
+                      <Box as="span" color="var(--gray-400)">
+                        ・
+                      </Box>
+                      <Box as="span">{distance}KM</Box>
+                    </>
+                  )}
                 </>
               )}
             </Box>
 
             <Box mt={1} mb={4} mr={2} fontSize="20px" fontWeight="bold">
-              {placeInfo?.location.name || "스터디 매칭 대기소"}
+              {studyType === "participations"
+                ? "스터디 매칭 라운지"
+                : studyType === "soloRealTimes"
+                ? "실시간 공부 인증"
+                : placeInfo?.location.name}
             </Box>
 
             <InfoBoxCol infoBoxPropsArr={infoBoxPropsArr} />

@@ -13,7 +13,7 @@ import {
 } from "../../constants/keys/queryKeys";
 import { SERVER_URI } from "../../constants/system";
 import { setStudyOneDayData, setStudyWeekData } from "../../libs/study/studyConverters";
-import { LocationProps, TimeRangeProps } from "../../types/common";
+import { CoordinatesProps, LocationProps, TimeRangeProps } from "../../types/common";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import {
   RealTimesStudyStatus,
@@ -29,7 +29,12 @@ export interface StudySetInitialDataProps {
   date: string;
   realTimes: InitialRealTimesProps[];
   participations: InitialParticipationsProps[];
-  results: any[];
+  results: {
+    center?: CoordinatesProps;
+    members: { time: TimeRangeProps; user: UserSimpleInfoProps }[];
+    place: StudyPlaceProps;
+  }[];
+  status: "expected" | "open";
 }
 
 export interface InitialParticipationsProps {
@@ -61,21 +66,37 @@ type StudyWeekQueryOptions = Omit<
   "queryKey" | "queryFn" | "select"
 >;
 
+const __studyWeekDerivedCache = new WeakMap<
+  StudySetInitialDataProps[], // 서버 원본 배열 "참조" 키
+  Map<string, StudySetProps> // dateKey별 결과 저장
+>();
+
 export const useStudySetQuery = (date: string, options?: StudyWeekQueryOptions) =>
   useQuery<StudySetInitialDataProps[], AxiosError, StudySetProps>(
     [STUDY_VOTE, "week"],
     async () => {
       const { data } = await axios.get<StudySetInitialDataProps[]>(`${SERVER_URI}/vote2/week`);
-      console.log("initial", data);
-      return data; // 캐시에 원본 저장
+      console.log("INITIAL", data);
+      return data;
     },
     {
       select: (data) => {
+        let byDate = __studyWeekDerivedCache.get(data);
+        if (!byDate) {
+          byDate = new Map();
+          __studyWeekDerivedCache.set(data, byDate);
+        }
+        const cached = byDate.get(date);
+        if (cached) return cached;
+
+        // 4) 미스 시: 계산해서 캐싱 후 반환
         const dateStart = dayjs(date).startOf("day");
         const filtered = data.filter((d) => !dayjs(d.date).startOf("day").isBefore(dateStart));
-        const returnData = setStudyWeekData(filtered);
+        const result = setStudyWeekData(filtered);
 
-        return returnData;
+        byDate.set(date, result);
+
+        return result;
       },
       ...options,
     },

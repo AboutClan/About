@@ -88,6 +88,7 @@ export const setStudyWeekData = (
         );
 
         const openGroups = setRealTimesGroup(openUsers);
+
         acc.openRealTimes.push(
           ...openGroups.map((group) => ({
             date: oneDay.date,
@@ -96,7 +97,16 @@ export const setStudyWeekData = (
         );
       }
 
-      acc.results.push(...results.map((study) => ({ date, study })));
+      acc.results.push(
+        ...results.map((result) => ({
+          date,
+          study: {
+            place: result.place,
+            members: result.members,
+            status: oneDay.status,
+          },
+        })),
+      );
 
       return acc;
     },
@@ -462,6 +472,7 @@ export const shortenParticipations = (
 
   participations?.forEach((par) => {
     par.study.forEach((study) => {
+      if (!study?.user) console.log(study, 5);
       const userId = study.user._id;
       if (participationMap.has(userId)) {
         participationMap.get(userId).dates.push(par.date);

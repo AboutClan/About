@@ -1,7 +1,7 @@
 import { Button, Flex, ThemeTypings } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
 import IconTextColButton from "../../components/atoms/buttons/IconTextColButton";
@@ -15,27 +15,29 @@ import { useStudyMutations } from "../../hooks/custom/StudyHooks";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import StudyAbsentModal from "../../modals/study/StudyAbsentModal";
 import { LocationProps } from "../../types/common";
-import { StudyConfirmedMemberProps } from "../../types/models/studyTypes/study-entity.types";
 import {
-  StudyParticipationsSetProps,
-  StudyType,
-} from "../../types/models/studyTypes/study-set.types";
+  StudyConfirmedMemberProps,
+  StudyConfirmedProps,
+  StudyParticipationProps,
+} from "../../types/models/studyTypes/study-entity.types";
+import { StudyType } from "../../types/models/studyTypes/study-set.types";
 // import { MyStudyStatus } from "../../types/models/studyTypes/helperTypes";
 import { DayjsTimeProps } from "../../types/utils/timeAndDate";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 import StudyApplyDrawer from "../vote/voteDrawer/StudyApplyDrawer";
 
 interface IStudyNavigation {
-  myStudyInfo: StudyParticipationsSetProps | StudyConfirmedMemberProps;
+  myStudyInfo: StudyConfirmedMemberProps | StudyParticipationProps[];
   date: string;
   hasOtherStudy: boolean;
   id: string;
   studyType: StudyType;
   location: LocationProps;
+
+  findStudy: StudyConfirmedProps;
 }
 
 type MyStatus = "participation" | "pending";
-type StudyTypeStatus = "participations" | "pending" | "openRealTimes" | "open" | "soloRealTimes";
 
 interface NavigationProps {
   type: "single" | "multi";
@@ -44,7 +46,7 @@ interface NavigationProps {
   func?: () => void;
 }
 
-type DirectAction = "openRealTimesVote" | "dailyVote" | "timeChange";
+type DirectAction = "openRealTimesVote" | "dailyVote" | "timeChange" | "expectedVote";
 
 function StudyNavigation({
   id,
@@ -53,8 +55,13 @@ function StudyNavigation({
   hasOtherStudy,
   location,
   studyType,
+  findStudy,
 }: IStudyNavigation) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const newSearchParams = new URLSearchParams(searchParams);
+  const drawerTypeParam = searchParams.get("drawer") as "apply";
+  const pathname = usePathname();
   const toast = useToast();
 
   const { data: userInfo } = useUserInfoQuery();
@@ -63,6 +70,8 @@ function StudyNavigation({
     realTimeStudy: { vote: realTimesVote, change: realTimeChange, cancel: realTimeCancel },
     isLoading,
   } = useStudyMutations(dayjs(date));
+
+  const resultStatus = findStudy?.status;
 
   const [isTimeRulletModal, setIsTimeRulletModal] = useState(false);
   const [voteModalType, setVoteModalType] = useState<"vote" | "free">(null);
@@ -75,6 +84,15 @@ function StudyNavigation({
   >(null);
 
   const myStatus = !myStudyInfo ? "pending" : "participation";
+
+  useEffect(() => {
+    if (drawerTypeParam === "apply") {
+      setDrawerType("apply");
+      // newSearchParams.delete("drawer");
+      // const params = newSearchParams.toString();
+      // router.replace(pathname + params ? `?${params}` : "");
+    }
+  }, [drawerTypeParam]);
 
   // const myStudyInfo = findMyStudyInfo(findStudy, session?.user.id);
 
@@ -168,10 +186,22 @@ function StudyNavigation({
             type: "single",
             colorScheme: "mint",
             func: () => {
-              setDrawerType("dailyVote");
+              if (resultStatus === "expected") {
+                setDrawerType("expectedVote");
+              } else setDrawerType("dailyVote");
             },
           };
         } else if (myStatus === "participation") {
+          if (resultStatus === "expected") {
+            return {
+              text: "참여 날짜 변경/취소",
+              type: "single",
+              colorScheme: "mint",
+              func: () => {
+                setDrawerType("applyChange");
+              },
+            };
+          }
           return {
             text: "출석 체크",
             type: "multi",
@@ -187,14 +217,14 @@ function StudyNavigation({
             return;
           }
           return {
-            text: "실시간 공부 인증",
+            text: "공부 인증",
             type: "single",
             colorScheme: "mint",
             func: () => router.push(`/vote/attend/certification?date=${date}&type=soloRealTimes`),
           };
         } else if (myStatus === "participation") {
           return {
-            text: "실시간 공부 인증",
+            text: "공부 인증",
             type: "single",
             colorScheme: "mint",
             func: () => router.push(`/vote/attend/configuration?date=${date}&type=soloRealTimes`),
@@ -217,6 +247,15 @@ function StudyNavigation({
         //   start: voteTime.start,
         //   end: voteTime.end,
         // });
+        break;
+      case "expectedVote":
+        vote({
+          latitude: findStudy.place.location.latitude,
+          longitude: findStudy.place.location.longitude,
+          locationDetail: findStudy.place.location.address,
+          start: voteTime.start,
+          end: voteTime.end,
+        });
         break;
       case "openRealTimesVote":
         realTimesVote({
@@ -245,7 +284,7 @@ function StudyNavigation({
       text:
         drawerType === "timeChange"
           ? "시간 변경"
-          : drawerType === "openRealTimesVote"
+          : drawerType === "openRealTimesVote" || drawerType === "expectedVote"
           ? "신청 완료"
           : "참여 완료",
       func: () => handleDirectAction(drawerType as DirectAction),
@@ -383,6 +422,7 @@ function StudyNavigation({
       )}
       {(drawerType === "openRealTimesVote" ||
         drawerType === "dailyVote" ||
+        drawerType === "expectedVote" ||
         drawerType === "timeChange") && (
         <StudyVoteTimeRulletDrawer
           defaultVoteTime={

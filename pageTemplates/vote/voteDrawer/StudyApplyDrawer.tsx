@@ -10,7 +10,7 @@ import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import StudyVoteTimeRulletDrawer from "../../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { STUDY_RESULT_HOUR } from "../../../constants/serviceConstants/studyConstants/studyTimeConstant";
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
-import { useToast } from "../../../hooks/custom/CustomToast";
+import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import { useStudyVoteArrMutation } from "../../../hooks/study/mutations";
 import { useStudySetQuery } from "../../../hooks/study/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
@@ -37,6 +37,7 @@ function StudyApplyDrawer({
   canChange = false,
 }: StudyDateDrawerProps) {
   const toast = useToast();
+  const typeToast = useTypeToast();
   const resetStudy = useResetStudyQuery();
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
   const [isModal, setIsModal] = useState(false);
@@ -69,7 +70,15 @@ function StudyApplyDrawer({
 
   const { mutate: voteDateArr, isLoading } = useStudyVoteArrMutation(selectedDates, {
     onSuccess() {
-      toast("success", "스터디 신청이 완료되었습니다.");
+      if (selectedDates.length) {
+        if (canChange) {
+          toast("success", "스터디 변경 완료!");
+        } else {
+          toast("success", "스터디 신청 완료!");
+        }
+      } else {
+        toast("success", "스터디 취소 완료!");
+      }
       resetStudy();
       onClose();
     },
@@ -192,11 +201,20 @@ function StudyApplyDrawer({
           footerOptions={{
             main: {
               text: "취소할게요",
-              func: () => {
-                async () => {
-                  await setSelectedDates([]);
-                };
+              func: async () => {
+                await setSelectedDates([]);
+
+                await voteDateArr({
+                  locationDetail: location
+                    ? location.address
+                    : getLocationSimpleText(userInfo.locationDetail.text),
+                  latitude: location ? location.latitude : userInfo.locationDetail.lat,
+                  longitude: location ? location.longitude : userInfo.locationDetail.lon,
+                  start: dayjs(),
+                  end: dayjs(),
+                });
               },
+              isLoading,
             },
             sub: {
               text: "닫 기",

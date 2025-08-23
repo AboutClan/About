@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { signOut } from "next-auth/react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
@@ -46,11 +46,18 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
   // );
 
   const dailyCheckWin = useRecoilValue(transferDailyCheckWinState);
-
+  console.log(25, transferStudyReward);
   const cancelLogout = () => {
     newSearchParams.delete("logout");
     const params = newSearchParams.toString();
-    router.replace(pathname + params ? `?${params}` : "");
+    router.replace(pathname + (params ? `?${params}` : ""));
+  };
+
+  const voteOtherStudy = () => {
+    newSearchParams.set("drawer", "apply");
+    const params = newSearchParams.toString();
+    setTransferStudyReward(null);
+    router.replace(pathname + (params ? `?${params}` : ""));
   };
 
   return (
@@ -91,7 +98,7 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
           >
             스터디 출석 완료!
             <br />
-            <b>{transferStudyReward} Point</b>가 적립되었습니다.
+            <b>{transferStudyReward.point} Point</b>가 적립되었습니다.
           </Box>
           <Box color="gray.500" mr="auto" fontSize="12px" fontWeight={600}>
             스터디에 참여하면 매번 포인트를 획득할 수 있어요!
@@ -100,12 +107,7 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
             <Image src="/32.png" alt="studyReward" width={160} height={160} />
           </Box>
           <Flex direction="column" mt="auto" w="100%">
-            <Button
-              w="full"
-              size="lg"
-              colorScheme="black"
-              onClick={() => () => setTransferStudyReward(null)}
-            >
+            <Button w="full" size="lg" colorScheme="black" onClick={voteOtherStudy}>
               다른 날짜 스터디도 신청하기
             </Button>
             <Button
@@ -114,7 +116,9 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
               color="gray.700"
               fontWeight="semibold"
               variant="ghost"
-              onClick={() => {}}
+              onClick={() => {
+                setTransferStudyReward(null);
+              }}
             >
               다음에 할게요
             </Button>

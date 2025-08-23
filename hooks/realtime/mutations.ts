@@ -3,9 +3,8 @@ import dayjs from "dayjs";
 import { useMutation } from "react-query";
 
 import { requestServer } from "../../libs/methodHelpers";
-import { LocationProps } from "../../types/common";
+import { LocationProps, PointInfoProps } from "../../types/common";
 import { MutationOptions } from "../../types/hooks/reactTypes";
-import { CollectionProps } from "../../types/models/collections";
 import {
   RealTimeAttendanceProps,
   RealTimeVoteProps,
@@ -20,16 +19,16 @@ interface RealTimeVoteRequestServerProps {
 
 export const useRealtimeVoteMutation = (
   date: string,
-  options?: MutationOptions<RealTimeVoteProps>,
+  options?: MutationOptions<RealTimeVoteProps, PointInfoProps>,
 ) =>
-  useMutation<void, AxiosError, RealTimeVoteProps>((param) => {
+  useMutation<PointInfoProps, AxiosError, RealTimeVoteProps>((param) => {
     const { start, end } = param.time;
     const time = {
       start: start.toISOString(),
       end: end.toISOString(),
     };
 
-    return requestServer<RealTimeVoteRequestServerProps>({
+    return requestServer<RealTimeVoteRequestServerProps, PointInfoProps>({
       method: "post",
       url: `realtime/${date}/basicVote`,
       body: { ...param, time },
@@ -38,10 +37,10 @@ export const useRealtimeVoteMutation = (
 
 export const useRealTimeAttendMutation = (
   date: string,
-  options?: MutationOptions<RealTimeAttendanceProps | FormData, CollectionProps>,
+  options?: MutationOptions<RealTimeAttendanceProps | FormData, PointInfoProps>,
 ) =>
-  useMutation<CollectionProps, AxiosError, RealTimeAttendanceProps | FormData>((param) => {
-    return requestServer<RealTimeAttendanceProps | FormData, CollectionProps>({
+  useMutation<PointInfoProps, AxiosError, RealTimeAttendanceProps | FormData>((param) => {
+    return requestServer<RealTimeAttendanceProps | FormData, PointInfoProps>({
       method: "post",
       url: `realtime/${date}/attendance`,
       body: param,
