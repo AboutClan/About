@@ -1,5 +1,5 @@
 import { Box, Collapse, Flex } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Avatar from "../../components/atoms/Avatar";
 import { ShortArrowIcon } from "../../components/Icons/ArrowIcons";
@@ -7,6 +7,14 @@ import InfoBoxCol from "../../components/molecules/InfoBoxCol";
 import RightDrawer from "../../components/organisms/drawer/RightDrawer";
 import { usePointPlusLogQuery, useUserInfoQuery } from "../../hooks/user/queries";
 
+type BenefitName = "study" | "event" | "host" | "etc";
+
+const BENEFIT_MAPPING = {
+  study: "스터디",
+  event: "이벤트",
+  host: "모임 개설",
+  etc: "기타",
+};
 interface StudyPageBenefitDrawerProps {
   onClose: () => void;
 }
@@ -15,9 +23,41 @@ function StudyPageBenefitDrawer({ onClose }: StudyPageBenefitDrawerProps) {
   const { data: userInfo } = useUserInfoQuery();
 
   const { data: logs } = usePointPlusLogQuery();
-
+  console.log(logs);
   const [isBenefit, setIsBenefit] = useState(false);
+  const [totalValue, setTotalValue] = useState(0);
+  const [benefitProps, setBenefitProps] = useState<Record<BenefitName, number>>({
+    study: 0,
+    event: 0,
+    host: 0,
+    etc: 0,
+  });
 
+  const benefitArr: { category: string; text: string }[] = (
+    Object.entries(benefitProps) as [BenefitName, number][]
+  ).map(([name, value]) => ({
+    category: BENEFIT_MAPPING[name],
+    text: value.toLocaleString() + "원",
+  }));
+
+  useEffect(() => {
+    if (!logs?.length) return;
+    console.log(88, logs);
+    const temp = benefitProps;
+    logs.forEach((log) => {
+      const sub = log.meta.sub;
+      const value = log.meta.value;
+      if (["study", "event", "host"].includes(sub)) {
+        temp[sub] += value;
+      } else {
+        temp["etc"] += value;
+      }
+
+      setTotalValue((old) => (old += value));
+    });
+    setBenefitProps(temp);
+  }, [logs]);
+  console.log(53, benefitArr);
   return (
     <RightDrawer title="스터디 혜택" px={false} onClose={onClose}>
       <Flex px={5} h="120px" justify="space-between" py={3}>
@@ -32,7 +72,7 @@ function StudyPageBenefitDrawer({ onClose }: StudyPageBenefitDrawerProps) {
         <Flex flexDir="column" justify="flex-end">
           <Box as="span" color="mint" fontSize="16px" fontWeight="extrabold">
             <Box as="span" fontSize="28px">
-              2400
+              {totalValue}
             </Box>{" "}
             원
           </Box>
@@ -40,15 +80,8 @@ function StudyPageBenefitDrawer({ onClose }: StudyPageBenefitDrawerProps) {
       </Flex>
       <Box px={5} borderTop="var(--border)" pb={1}>
         <Collapse in={isBenefit} animateOpacity unmountOnExit>
-          <Box px={5} borderTop="var(--border)">
-            <InfoBoxCol
-              infoBoxPropsArr={[
-                { category: "52525", text: "22442" },
-                { category: "52525", text: "22442" },
-                { category: "52525", text: "22442" },
-                { category: "52525", text: "22442" },
-              ]}
-            />
+          <Box px={5} mb={1} borderTop="var(--border)">
+            <InfoBoxCol infoBoxPropsArr={benefitArr} />
           </Box>
         </Collapse>
       </Box>

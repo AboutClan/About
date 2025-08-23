@@ -19,7 +19,7 @@ function InfoBoxCol({ infoBoxPropsArr, size = "sm", highlightSide = "right" }: I
     <Flex direction="column" fontSize={size === "sm" ? "12px" : "13px"}>
       {infoBoxPropsArr.map((props, idx) => {
         const isNotLast = idx !== infoBoxPropsArr.length - 1;
-
+  
         return (
           <Flex
             justify="space-between"

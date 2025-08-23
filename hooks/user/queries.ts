@@ -117,13 +117,17 @@ export const usePointCuoponLogQuery = (scope?: "all", options?: QueryOptions<any
     { ...options, staleTime: 0, cacheTime: 0 },
   );
 
-export const usePointPlusLogQuery = (options?: QueryOptions<any | any[]>) =>
+export interface PointPlusProps {
+  o;
+}
+
+export const usePointPlusLogQuery = (options?: QueryOptions<IPointLog[]>) =>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  useQuery<any | any[], AxiosError, any | any[]>(
+  useQuery<IPointLog[], AxiosError, IPointLog[]>(
     ["pointLog", "plus"],
     async () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const res = await axios.get<any | any[]>(`${SERVER_URI}/log/point/total`);
+      const res = await axios.get<IPointLog[]>(`${SERVER_URI}/log/point/total`);
       return res.data;
     },
     { ...options, staleTime: 0, cacheTime: 0 },

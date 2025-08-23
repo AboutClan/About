@@ -39,7 +39,7 @@ function ImageSliderBanner({ imageArr, isLightBanner }: IImageSliderEventBanner)
       slidesPerView={1}
       onSlideChange={(swiper) => setCurrentSlide(swiper.activeIndex)}
       autoplay={{
-        delay: 5000,
+        delay: 4000,
         disableOnInteraction: true,
       }}
     >

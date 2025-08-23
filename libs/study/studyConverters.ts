@@ -123,7 +123,7 @@ export const setStudyOneDayData = (
     openRealTimes: [],
     results: [],
   };
-
+  console.log(studyOneData);
   studyOneData.results.forEach((result) => {
     studySet["results"].push({ date: date, study: result });
   });
