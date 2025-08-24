@@ -61,7 +61,7 @@ function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectio
       setDate(newDate);
     }
   };
-  console.log("STUDY_SET", studySet);
+
   return (
     <Flex flexDir="column" mb={8}>
       <Box>

@@ -1,7 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { signOut } from "next-auth/react";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { signOut } from "next-auth/react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
@@ -134,28 +134,5 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
     </>
   );
 }
-
-// function StudyLinkModal({ date, onClose }: { date: Dayjs; onClose: () => void }) {
-//   return (
-//     <ModalLayout
-//       title="신청 완료"
-//       footerOptions={{
-//         main: {
-//           text: "확인",
-//         },
-//       }}
-//       setIsModal={onClose}
-//     >
-//       <Box mb={5} fontSize="22px" fontWeight="bold" color="mint">
-//         + 50 Point
-//       </Box>
-//       <Box color="gray.700" lineHeight="20px">
-//         <b>{dayjsToFormat(date.locale("ko"), "M월 D일(ddd)")}</b> 스터디 신청이 완료되었습니다.
-//         <br />
-//         매칭이 성공되면 스터디 톡방도 입장해 주세요!
-//       </Box>
-//     </ModalLayout>
-//   );
-// }
 
 export default BaseModal;

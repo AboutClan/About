@@ -34,6 +34,7 @@ export interface StudySetInitialDataProps {
     members: { time: TimeRangeProps; user: UserSimpleInfoProps }[];
     place: StudyPlaceProps;
   }[];
+  unmatchedUsers: UserSimpleInfoProps[];
   status: "expected" | "open";
 }
 
@@ -58,7 +59,7 @@ export interface InitialRealTimesProps {
     time: string;
     type: "arrived" | "absenced";
   };
-  comment?: string;
+  comment?: { text: string };
 }
 
 type StudyWeekQueryOptions = Omit<
@@ -66,7 +67,7 @@ type StudyWeekQueryOptions = Omit<
   "queryKey" | "queryFn" | "select"
 >;
 
-const __studyWeekDerivedCache = new WeakMap<
+const studyWeekCacheMap = new WeakMap<
   StudySetInitialDataProps[], // 서버 원본 배열 "참조" 키
   Map<string, StudySetProps> // dateKey별 결과 저장
 >();
@@ -81,10 +82,11 @@ export const useStudySetQuery = (date: string, options?: StudyWeekQueryOptions) 
     },
     {
       select: (data) => {
-        let byDate = __studyWeekDerivedCache.get(data);
+        if (dayjs(date).startOf("day").isBefore(dayjs().startOf("day"))) return null;
+        let byDate = studyWeekCacheMap.get(data);
         if (!byDate) {
           byDate = new Map();
-          __studyWeekDerivedCache.set(data, byDate);
+          studyWeekCacheMap.set(data, byDate);
         }
         const cached = byDate.get(date);
         if (cached) return cached;

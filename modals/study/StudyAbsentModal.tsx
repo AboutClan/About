@@ -4,69 +4,69 @@ import { useState } from "react";
 import styled from "styled-components";
 
 import Textarea from "../../components/atoms/Textarea";
+import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
+import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useRealTimeAbsenceMutation } from "../../hooks/realtime/mutations";
 import { useStudyAbsenceMutation } from "../../hooks/study/mutations";
+import { useUserInfoQuery } from "../../hooks/user/queries";
+import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
 import { IModal } from "../../types/components/modalTypes";
-import { StringTimeProps } from "../../types/utils/timeAndDate";
 import { getTodayStr } from "../../utils/dateTimeUtils";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface StudyAbsentModalProps extends IModal {
   type: "study" | "realTimes";
-  times: StringTimeProps;
-
-  // studyType: StudyType;
-  // handleAbsence: (props: { message: string; fee: number }) => void;
-  // myStudyInfo: StudyConfirmedMemberProps;
 }
 
-function StudyAbsentModal({ times, type, setIsModal }: StudyAbsentModalProps) {
+function StudyAbsentModal({ type, setIsModal }: StudyAbsentModalProps) {
+  const typeToast = useTypeToast();
+  const resetStudy = useResetStudyQuery();
+
   const [value, setValue] = useState<string>("");
 
-  const startTimeBefore = dayjs(times.start);
-  const startTime = dayjs().hour(startTimeBefore.hour()).minute(startTimeBefore.minute());
+  const { data: userInfo } = useUserInfoQuery();
 
-  const { mutate: absentRealTimes } = useRealTimeAbsenceMutation(getTodayStr(), {
-    onSuccess(data) {
-      handleSuccess(data);
+  const { mutate: sendRequest } = useUserRequestMutation();
+
+  const { mutate: absentRealTimes, isLoading: isLoading1 } = useRealTimeAbsenceMutation(
+    getTodayStr(),
+    {
+      onSuccess(data) {
+        handleSuccess(data);
+      },
     },
-  });
+  );
 
-  const { mutate: absentStudy } = useStudyAbsenceMutation(getTodayStr(), {
+  const { mutate: absentStudy, isLoading: isLoading2 } = useStudyAbsenceMutation(getTodayStr(), {
     onSuccess: (data) => {
       handleSuccess(data);
     },
   });
 
   const handleSuccess = (data) => {
-    // typeToast("success");
-    // let fee: { value: number; message: string };
-    // if (studyStatus !== "open") fee = { value: 100, message: "개인 스터디 불참" };
-    // else if (dayjs() < dayjs(startTime)) fee = { value: 300, message: "당일 스터디 불참" };
-    // else fee = { value: 500, message: "늦은 스터디 불참" };
-    // getDeposit(fee);
-    // resetStudy();
-    // sendRequest({
-    //   writer: session.user.name,
-    //   title: session.user.uid + `D${fee.value}`,
-    //   category: "불참",
-    //   content: value,
-    // });
+    typeToast("cancel");
+    resetStudy();
+    sendRequest({
+      title: userInfo.name,
+      category: "불참",
+      content: value,
+    });
+    setIsModal(false);
   };
-
-  const isLate = dayjs().isAfter(startTime.add(1, "hour"));
 
   const footerOptions: IFooterOptions = {
     main: {
       text: "불참",
       func: () => {
-        if (type === "study") absentStudy();
+        if (type === "study") absentStudy({ message: value });
         else absentRealTimes();
       },
+      isLoading: isLoading1 || isLoading2,
     },
     sub: {
       text: "취소",
     },
+    colorType: "red",
   };
 
   return (
@@ -74,14 +74,22 @@ function StudyAbsentModal({ times, type, setIsModal }: StudyAbsentModalProps) {
       <ModalLayout title="당일 불참" footerOptions={footerOptions} setIsModal={setIsModal}>
         <>
           <Box as="p" mb={3}>
-            {isLate ? (
+            {dayjs().hour() >= 13 ? (
               <>
-                스터디 시작 시간이 지났기 때문에, 벌금 <b>1,000원</b>이 부과됩니다. 특별한 사유가
-                있다면 적어주세요!
+                당일 노쇼로 벌금{" "}
+                <Box as="b" color="red">
+                  1,000원
+                </Box>
+                이 발생합니다.
+                <br /> 참여 시간을 변경해 보는 건 어떨까요?
               </>
             ) : (
               <>
-                당일 불참으로 벌금 <b>500원</b>이 발생합니다.
+                당일 불참으로 벌금{" "}
+                <Box as="b" color="red">
+                  500원
+                </Box>
+                이 발생합니다.
                 <br /> 참여 시간을 변경해 보는 건 어떨까요?
               </>
             )}

@@ -1,18 +1,14 @@
 import { AxiosError } from "axios";
 import dayjs, { Dayjs } from "dayjs";
 import { useMutation } from "react-query";
-import { useSetRecoilState } from "recoil";
 
 import { requestServer } from "../../libs/methodHelpers";
-import { transferStudyVoteDateState } from "../../recoils/transferRecoils";
-import { PointValueProps } from "../../types/common";
+import { PointInfoProps, PointValueProps } from "../../types/common";
 import { MutationOptions } from "../../types/hooks/reactTypes";
-import { CollectionProps } from "../../types/models/collections";
 import { PlaceRegisterProps, PlaceReviewProps } from "../../types/models/studyTypes/entityTypes";
 import { IStudyVoteTime, StudyVoteProps } from "../../types/models/studyTypes/studyInterActions";
 import { DayjsTimeProps, StringTimeProps } from "../../types/utils/timeAndDate";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
-import { usePointToast } from "../custom/CustomToast";
 
 type StudyVoteParam<T> = T extends "post"
   ? StudyVoteProps
@@ -44,9 +40,6 @@ export const useStudyVoteMutation = <T extends "post" | "patch" | "delete">(
   method: T,
   options?: MutationOptions<StudyVoteParam<T>, PointValueProps | void>,
 ) => {
-  const pointToast = usePointToast();
-  const setTransferStudyVoteDate = useSetRecoilState(transferStudyVoteDateState);
-
   return useMutation<PointValueProps | void, AxiosError, StudyVoteParam<T>>(
     (param) => {
       const voteInfo = param;
@@ -102,11 +95,11 @@ export const useStudyParticipateMutation = (
   }, options);
 
 export const useStudyAttendCheckMutation = (
-  options?: MutationOptions<{ memo: string; end: string }, CollectionProps>,
+  options?: MutationOptions<{ memo: string; end: string }, PointInfoProps>,
 ) =>
-  useMutation<CollectionProps, AxiosError, { memo: string; end: string }>(
+  useMutation<PointInfoProps, AxiosError, { memo: string; end: string }>(
     ({ memo, end }) =>
-      requestServer<{ memo: string; end: string }, CollectionProps>({
+      requestServer<{ memo: string; end: string }, PointInfoProps>({
         method: "post",
         url: `vote2/${dayjsToStr(dayjs())}/arrive`,
         body: { memo, end },

@@ -11,7 +11,6 @@ import { NaverLocationProps } from "../../hooks/external/queries";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { RegisterLocationLayout } from "../../pages/register/location";
-
 import StudyPageBenefitDrawer from "./StudyPageBenefitDrawer";
 
 export type StudyTab = "스터디 참여" | "카공 지도";

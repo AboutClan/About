@@ -72,7 +72,7 @@ function StudyNavigation({
   } = useStudyMutations(dayjs(date));
 
   const resultStatus = findStudy?.status;
-  console.log(5, myStudyInfo, myStudyStatus, findStudy);
+
   const [isTimeRulletModal, setIsTimeRulletModal] = useState(false);
   const [voteModalType, setVoteModalType] = useState<"vote" | "free">(null);
   const [voteTime, setVoteTime] = useState<DayjsTimeProps>();
@@ -95,11 +95,16 @@ function StudyNavigation({
   // const myStudyInfo = findMyStudyInfo(findStudy, session?.user.id);
 
   // const myStudyStatus = evaluateMyStudyStatus(findStudy, session?.user.id, pageType, isVoting);
-  console.log(53, myStudyInfo);
+
   const getNavigationProps = (studyType: StudyType, myStatus: MyStudyStatus): NavigationProps => {
-    if ((myStudyInfo as StudyConfirmedMemberProps)?.attendance?.type) {
+    if (
+      (myStudyInfo as StudyConfirmedMemberProps)?.attendance?.type ||
+      dayjs(date).startOf("day").isBefore(dayjs().startOf("day"))
+    ) {
+      console.log(44);
       return null;
     }
+    console.log(123, studyType, myStatus);
     switch (studyType) {
       case "participations":
         if (myStatus === "pending") {
@@ -344,7 +349,7 @@ function StudyNavigation({
   };
 
   const navigationProps = getNavigationProps(studyType, myStudyStatus);
-  console.log(52, drawerType);
+
   return (
     <>
       <Slide isFixed={true} posZero="top">
@@ -415,7 +420,6 @@ function StudyNavigation({
       {isAbsentModal && (
         <StudyAbsentModal
           type={studyType === "results" ? "study" : "realTimes"}
-          times={(myStudyInfo as StudyConfirmedMemberProps).time}
           // studyType={myStudyStatus === "open" ? "voteStudy" : "realTimeStudy"}
           // myStudyInfo={myStudyInfo}
 

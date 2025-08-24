@@ -1,12 +1,8 @@
-import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import ControlButton from "../../components/ControlButton";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
-import { useToast } from "../../hooks/custom/CustomToast";
-import { useStudyVoteMutation } from "../../hooks/study/mutations";
 import StudyControlDrawer from "../study/modals/StudyControlDrawer";
 
 export const UNMATCHED_POP_UP_STORAGE = "unmatchedPopUpStorage";
@@ -24,20 +20,9 @@ function StudyControlButton({ date }: StudyControlButtonProps) {
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
   const drawerParam = searchParams.get("drawer");
-  const toast = useToast();
   const resetStudy = useResetStudyQuery();
 
-  const { data: session } = useSession();
-
-  const unmatchedPopupStorage = localStorage.getItem(UNMATCHED_POP_UP_STORAGE);
-
   const [isModal, setIsModal] = useState(false);
-
-  const { mutate: handleCancel } = useStudyVoteMutation(dayjs(date), "delete", {
-    onSuccess() {
-      resetStudy();
-    },
-  });
 
   useEffect(() => {
     if (drawerParam === "on" || drawerParam === "apply") {

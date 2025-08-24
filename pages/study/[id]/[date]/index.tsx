@@ -1,6 +1,8 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import Image from "next/image";
 import { useParams, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 import { STUDY_COVER_IMAGES } from "../../../../assets/images/studyCover";
 import { MainLoading } from "../../../../components/atoms/loaders/MainLoading";
@@ -16,6 +18,7 @@ import { usePointSystemMutation } from "../../../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../../../hooks/user/queries";
 import { shortenParticipations } from "../../../../libs/study/studyConverters";
 import { getMyStudyDateArr } from "../../../../libs/study/studyHelpers";
+import { ModalLayout } from "../../../../modals/Modals";
 import StudyAddressMap from "../../../../pageTemplates/study/StudyAddressMap";
 import StudyCover from "../../../../pageTemplates/study/StudyCover";
 import StudyDateBar from "../../../../pageTemplates/study/StudyDateBar";
@@ -35,6 +38,7 @@ import {
   StudyType,
 } from "../../../../types/models/studyTypes/study-set.types";
 import { getRandomImage } from "../../../../utils/imageUtils";
+import { navigateExternalLink } from "../../../../utils/navigateUtils";
 
 export default function Page() {
   const searchParams = useSearchParams();
@@ -48,6 +52,8 @@ export default function Page() {
   const { data: studyPassedData } = useStudyPassedDayQuery(date, {
     enabled: !!isPassedDate,
   });
+  console.log(24, studyPassedData);
+  const [modalType, setModalType] = useState<"studyLink">();
 
   const studyData = isPassedDate
     ? studyPassedData && studyPassedData[studyType]
@@ -93,35 +99,18 @@ export default function Page() {
 
   const placeInfo = findStudy?.place;
 
-  // const findStudyArr = getTodayStudyArr(studyType, studyPassedData, studySet, date);
+  useEffect(() => {
+    if (
+      myStudyStatus === "pending" ||
+      studyType === "soloRealTimes" ||
+      studyType === "participations"
+    )
+      return;
+    const hasLink = localStorage.getItem("studyLink");
+    if (hasLink === date) return;
+    setModalType("studyLink");
+  }, [myStudyStatus]);
 
-  // const findStudy = findStudyArr?.find((study) => study?.study? place._id === id)?.study;
-
-  // const placeInfo = convertStudyToPlaceInfo(findStudy, studyType);
-
-  // const members: (StudyConfirmedMemberProps | StudyParticipationUserProps)[] = (() => {
-  //   switch (studyType) {
-  //     case "openRealTimes":
-  //     case "results":
-  //       return (findStudy as RealTimesToResultProps | StudyConfirmedProps)?.members ?? [];
-  //     case "participations":
-  //       return getParticipationMembers(studyTypeData as StudySetProps["participations"]);
-  //     case "soloRealTimes":
-  //       return (studyTypeData as StudySetProps["soloRealTimes"])?.map((s) => s.study);
-  //     default:
-  //       return [];
-  //   }
-  // })();
-  // const myStudyArr = findStudyArr?.filter((study) =>
-  //   study.study.members.some((member) => member.user._id === userInfo?._id),
-  // );
-
-  // const findMyStudy = members?.find(
-  //   (member: StudyConfirmedMemberProps | StudyParticipationUserProps) =>
-  //     member.user._id === userInfo?._id,
-  // );
-
-  console.log(1234, findStudy, studyData, myStudyInfo, members);
   return (
     <>
       {studyPassedData || studySet ? (
@@ -165,24 +154,6 @@ export default function Page() {
               location={placeInfo?.location}
               findStudy={findStudy}
             />
-            // <StudyNavigationComponent
-            //   date={date}
-            //   type={type}
-            //   id={id}
-            //   findMyStudy={findMyStudy}
-            //   myStudyArr={myStudyArr}
-            //   hasOtherStudy={findMyStudy ? false : myStudyArr?.length ? true : false}
-            //   locationInfo={
-            //     placeInfo?.latitude
-            //       ? {
-            //           lat: placeInfo.latitude,
-            //           lon: placeInfo.longitude,
-            //           locationDetail: placeInfo.address,
-            //           name: placeInfo.name,
-            //         }
-            //       : null
-            //   }
-            // />
           )}
           {/* {isReviewButton && <StudyReviewButton />} */}
 
@@ -191,55 +162,12 @@ export default function Page() {
       ) : (
         <MainLoading />
       )}
+      {modalType === "studyLink" && (
+        <StudyLinkModal date={date} onClose={() => setModalType(null)} />
+      )}
     </>
   );
 }
-
-// function StudyNavigationComponent({
-//   date,
-//   type,
-
-//   hasOtherStudy,
-//   id,
-//   findMyStudy,
-//   locationInfo,
-//   myStudyArr,
-// }: {
-//   date: string;
-//   type: StudyTypeStatus;
-//   hasOtherStudy: boolean;
-//   id: string;
-
-//   locationInfo: {
-//     lat: number;
-//     lon: number;
-//     locationDetail: string;
-//     name: string;
-//   };
-//   findMyStudy: StudyConfirmedMemberProps | StudyParticipationUserProps;
-//   myStudyArr: (StudyOpenRealTimesSet | StudyResultsSet)[];
-// }) {
-//   const myAttendance =
-//     (findMyStudy as StudyConfirmedMemberProps)?.attendance?.type || "participation";
-
-//   if (myAttendance === "arrived" || myAttendance === "absenced") return;
-
-//   return (
-//     <StudyNavigation
-//       date={date}
-//       studyType={type}
-//       hasOtherStudy={hasOtherStudy}
-//       locationInfo={locationInfo}
-//       findMyStudy={findMyStudy}
-//       myStudyArr={myStudyArr}
-//       // hasOtherStudy={findMyStudy && findMyStudy.place._id !== findStudy?.place?._id}
-//       id={id}
-//       // isVoting={!!myVoteInfo || !!myRealTimeStudy}
-//       // pageType={status}
-//       // isArrived={!!(myRealTimeStudy?.attendance?.type === "arrived")}
-//     />
-//   );
-// }
 
 function RightReviewDrawer({ placeId, onClose }: { placeId: string; onClose: () => void }) {
   const resetStudy = useResetStudyQuery();
@@ -269,47 +197,42 @@ function RightReviewDrawer({ placeId, onClose }: { placeId: string; onClose: () 
   );
 }
 
-// function getTodayStudyArr(
-//   studyType: StudyPageType,
-//   studyPassedData: StudySetProps,
-//   studySet: StudySetProps,
-//   date: string,
-// ): StudySetEntry[] {
-//   if (studyPassedData) {
-//     if (studyType === "results")
-//       return studyPassedData studyPassedData.results?.map((result) => ({ date, study: result }));
-//     else {
-//       //  const { soloUsers, openUsers } = studyPassedData.realTimes.userList.reduce(
-//       //     (b, u) => {
-//       //       if (u.status === "solo") b.soloUsers.push(u);
-//       //       else b.openUsers.push(u);
-//       //       return b;
-//       //     },
-//       //     {
-//       //       soloUsers: [] as RealTimeMemberProps[],
-//       //       openUsers: [] as RealTimeMemberProps[],
-//       //     },
-//       // );
-//       // if (studyType === "openRealTimes") {
-//       //   return openUsers.map((user)=>({date,study:user}))
-//       // }
-//       //   acc.soloRealTimes.push(...soloUsers.map((study) => ({ date, study })));
-//       //   const openGroups = setRealTimesGroup(openUsers);
-//       //   acc.openRealTimes.push(...openGroups.map((study) => ({ date, study })));
-//     }
-//     if (studyType === "openRealTimes")
-//       return studyPassedData.realTimes.userList.filter((user) => user.status !== "solo");
-
-//     // return studyType === "results"
-//     //   ? studyPassedData.results?.map((result) => ({ date, study: result }))
-//     //   :studyType==="openRealTimes"? studyPassedData.realTimes.;
-//   }
-
-//   if (studySet) {
-//     // studySet["participations"];
-//     const studyTypeData: StudySetEntry[] = studySet && studySet[studyType];
-//     return studyTypeData?.filter((s) => s.date === date);
-//   }
-
-//   return null;
-// }
+function StudyLinkModal({ date, onClose }: { date: string; onClose: () => void }) {
+  return (
+    <ModalLayout
+      title="스터디 매칭 성공!"
+      footerOptions={{
+        main: {
+          text: "입 장",
+          func: () => {
+            navigateExternalLink("https://open.kakao.com/o/gCRegnOh");
+            localStorage.setItem("studyLink", date);
+            onClose();
+          },
+        },
+        sub: {
+          text: "생 략",
+          func: () => {
+            localStorage.setItem("studyLink", date);
+            onClose();
+          },
+        },
+      }}
+      setIsModal={onClose}
+    >
+      <Flex justify="center" mb={5}>
+        <Image
+          width={64}
+          height={64}
+          alt="studyRecord"
+          src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/falling-star-3d-icon.png"
+        />
+      </Flex>
+      <p>
+        스터디 매칭에 성공했어요! <br />
+        원활한 스터디 진행을 위해, <br />
+        <b>[스터디 단톡방]</b>에 입장해 주세요!
+      </p>
+    </ModalLayout>
+  );
+}

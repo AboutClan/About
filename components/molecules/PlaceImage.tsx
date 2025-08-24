@@ -2,6 +2,7 @@ import { Box, Button } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { MouseEvent, useEffect, useState } from "react";
+
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { HeartIcon } from "../Icons/HeartIcons";
@@ -50,6 +51,7 @@ function PlaceImage({
 
   const onClickHeart = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
     typeToast("inspection");
+    console.log(e);
     return;
 
     switch (myPreferType) {

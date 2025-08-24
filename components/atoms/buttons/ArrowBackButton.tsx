@@ -13,7 +13,7 @@ interface IArrowBackButton {
 export default function ArrowBackButton({ url, func, color = "mint" }: IArrowBackButton) {
   const router = useRouter();
   const [backUrl, setBackUrl] = useRecoilState(backUrlState);
-  console.log(82, backUrl);
+
   const handleGoBack = () => {
     if (func) {
       func();

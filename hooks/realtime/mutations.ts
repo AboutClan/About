@@ -71,7 +71,7 @@ export const useRealTimeCommentMutation = (date: string, options?: MutationOptio
     (params) =>
       requestServer<{ comment: string }>({
         method: "patch",
-        url: `realtime/comment`,
+        url: `realtime/${date}/comment`,
         body: { comment: params },
       }),
     options,

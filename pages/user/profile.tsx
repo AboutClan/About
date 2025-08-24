@@ -18,7 +18,6 @@ import { NaverLocationProps } from "../../hooks/external/queries";
 import { useUserInfoMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { CameraIcon, ProfileCamera } from "../../pageTemplates/user/UserProfileSection";
-
 import { MajorLayout } from "../register/major";
 import { MBTILayout } from "../register/mbti";
 

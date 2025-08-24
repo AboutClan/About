@@ -1,7 +1,7 @@
 import { Badge, Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 import AttendanceBadge from "../../components/molecules/badge/AttendanceBadge";
@@ -51,9 +51,10 @@ export default function StudyMembers({ studyType, date, members }: IStudyMembers
   };
 
   const changeComment = (comment: string) => {
-    if (status === "open") {
+    if (studyType === "results") {
       setVoteComment(comment);
-    } else if (status === "free") setRealTimeComment(comment);
+    } else if (studyType === "openRealTimes" || studyType === "soloRealTimes")
+      setRealTimeComment(comment);
   };
 
   const userCardArr: IProfileCommentCard[] = members?.map((member) => {
@@ -120,7 +121,7 @@ export default function StudyMembers({ studyType, date, members }: IStudyMembers
         <>
           <ProfileCardColumn
             userCardArr={userCardArr}
-            hasCommentButton={status === "open" || status === "free"}
+            hasCommentButton={studyType !== "participations"}
           />
           {/* {isMyStudy && (
             <Box pt={4} pb={2}>

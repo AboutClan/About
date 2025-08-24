@@ -1,8 +1,9 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+
 import IconRowBlock from "../components/atoms/blocks/IconRowBlock";
 import Slide from "../components/layouts/PageSlide";
 import { useTypeToast } from "../hooks/custom/CustomToast";
@@ -35,7 +36,7 @@ export default function StudyPage() {
   const { data: passedStudyData } = useStudyPassedDayQuery(date, {
     enabled: !!date && !!isPassedDate,
   });
-
+  console.log(24, studySet, passedStudyData);
   useEffect(() => {
     if (!dateParam || dateParam === date) return;
     setDate(dateParam);

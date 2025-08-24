@@ -1,5 +1,3 @@
-import { STUDY_COVER_IMAGES } from "../../assets/images/studyCover";
-import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
 import {
   InitialParticipationsProps,
   InitialRealTimesProps,
@@ -15,7 +13,6 @@ import {
   StudyParticipationsSetProps,
   StudySetProps,
 } from "../../types/models/studyTypes/study-set.types";
-import { getRandomIdx } from "../../utils/mathUtils";
 
 // export const convertStudyToMergeStudy = (
 //   studyVoteData: StudyOneDayProps,
@@ -71,7 +68,7 @@ export const setStudyWeekData = (
                   time: user.time,
                   attendance: user.attendance,
                   comment: {
-                    comment: user?.comment,
+                    comment: user?.comment?.text,
                   },
                 },
               ],
@@ -290,7 +287,7 @@ export const setRealTimesGroup = (
 ): StudyConfirmedProps[] => {
   if (!studyRealTimeArr) return;
   const temp: StudyConfirmedProps[] = [];
-  console.log(54, studyRealTimeArr);
+
   studyRealTimeArr.forEach((props) => {
     const _id = props.place?._id || props.place.location._id;
     const findParticipationIdx = temp.findIndex((participation) => participation.place._id === _id);
@@ -301,7 +298,7 @@ export const setRealTimesGroup = (
         time: props.time,
         attendance: props.attendance,
         comment: {
-          comment: props?.comment,
+          comment: props?.comment?.text,
         },
       });
     } else {
@@ -317,7 +314,7 @@ export const setRealTimesGroup = (
             time: props.time,
             attendance: props.attendance,
             comment: {
-              comment: props?.comment,
+              comment: props?.comment?.text,
             },
           },
         ],
@@ -331,36 +328,6 @@ export const setRealTimesGroup = (
     else if (aCnt < bCnt) return 1;
     return 0;
   });
-};
-
-const STUDY_WAITING_INFO = {
-  name: "스터디 매칭 라운지",
-  branch: "About",
-  address: "위치 선정 중",
-  brand: "",
-  image: STUDY_MAIN_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
-  coverImage: STUDY_COVER_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
-  latitude: null,
-  longitude: null,
-  time: "당일 오전 9시",
-  _id: null,
-  reviews: [],
-};
-
-const STUDY_SOLO_INFO = {
-  name: "실시간 공부 인증",
-  branch: "About",
-  address: "자유 카페 / 자유 공간",
-  brand: "",
-  image: STUDY_MAIN_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
-  coverImage: STUDY_COVER_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
-
-  latitude: null,
-  longitude: null,
-  time: "하루 공부가 끝나는 순간까지",
-
-  _id: null,
-  reviews: [],
 };
 
 // export const convertStudyToPlaceInfo = (
@@ -450,7 +417,6 @@ export const shortenParticipations = (
 
   participations?.forEach((par) => {
     par.study.forEach((study) => {
-      if (!study?.user) console.log(study, 5);
       const userId = study.user._id;
       if (participationMap.has(userId)) {
         participationMap.get(userId).dates.push(par.date);

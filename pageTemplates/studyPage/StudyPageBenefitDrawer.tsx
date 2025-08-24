@@ -23,7 +23,7 @@ function StudyPageBenefitDrawer({ onClose }: StudyPageBenefitDrawerProps) {
   const { data: userInfo } = useUserInfoQuery();
 
   const { data: logs } = usePointPlusLogQuery();
-
+  console.log(34, logs);
   const [isBenefit, setIsBenefit] = useState(false);
   const [totalValue, setTotalValue] = useState(0);
   const [benefitProps, setBenefitProps] = useState<Record<BenefitName, number>>({
@@ -49,6 +49,8 @@ function StudyPageBenefitDrawer({ onClose }: StudyPageBenefitDrawerProps) {
       const value = log.meta.value;
       if (["study", "event", "host"].includes(sub)) {
         temp[sub] += value;
+      } else if (sub === "coupon") {
+        temp["event"] += value;
       } else {
         temp["etc"] += value;
       }

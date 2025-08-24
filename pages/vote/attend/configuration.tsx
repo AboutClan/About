@@ -1,6 +1,5 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
@@ -16,11 +15,9 @@ import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
-import { useImageUploadMutation } from "../../../hooks/image/mutations";
 import { useRealTimeAttendMutation } from "../../../hooks/realtime/mutations";
 import { useStudyAttendCheckMutation } from "../../../hooks/study/mutations";
 import { useStudySetQuery } from "../../../hooks/study/queries";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { ModalLayout } from "../../../modals/Modals";
 import {
   transferStudyAttendanceState,
@@ -35,7 +32,6 @@ import { convertTimeStringToDayjs } from "../../../utils/convertUtils/convertTyp
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
 function Configuration() {
-  const { data: session } = useSession();
   const searchParams = useSearchParams();
   const router = useRouter();
   const toast = useToast();
@@ -46,8 +42,6 @@ function Configuration() {
   const isSoloRealTimesPage = type === "soloRealTimes";
 
   const resetStudy = useResetStudyQuery();
-
-  const { data: userInfo } = useUserInfoQuery();
 
   const { data: studySet } = useStudySetQuery(date, { enabled: !!date });
 
@@ -81,21 +75,19 @@ function Configuration() {
 
   const { mutate: attendRealTimeStudy, isLoading: isLoading2 } = useRealTimeAttendMutation(date, {
     onSuccess(data) {
-      console.log(data);
-      return;
       handleAttendSuccess(data);
     },
   });
 
-  const { mutate: imageUpload, isLoading: isLoading3 } = useImageUploadMutation({
-    onSuccess() {
-      resetStudy();
-    },
-    onError(err) {
-      console.error(err);
-      toast("error", "이미지 업로드에 실패했습니다.");
-    },
-  });
+  // const { mutate: imageUpload, isLoading: isLoading3 } = useImageUploadMutation({
+  //   onSuccess() {
+  //     resetStudy();
+  //   },
+  //   onError(err) {
+  //     console.error(err);
+  //     toast("error", "이미지 업로드에 실패했습니다.");
+  //   },
+  // });
 
   let currentDayjs = dayjs().startOf("hour");
   const timeOptions = [];
