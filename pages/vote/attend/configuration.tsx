@@ -50,7 +50,7 @@ function Configuration() {
   const { data: userInfo } = useUserInfoQuery();
 
   const { data: studySet } = useStudySetQuery(date, { enabled: !!date });
-  console.log(35, studySet);
+
   const studyData = studySet && studySet[type];
 
   const confirmedSet = studyData as StudyConfirmedSetProps[];
@@ -81,6 +81,8 @@ function Configuration() {
 
   const { mutate: attendRealTimeStudy, isLoading: isLoading2 } = useRealTimeAttendMutation(date, {
     onSuccess(data) {
+      console.log(data);
+      return;
       handleAttendSuccess(data);
     },
   });
@@ -145,8 +147,6 @@ function Configuration() {
     }
 
     if (isSoloRealTimesPage) {
-      console.log(transferStudyAttendance);
-
       if (!transferStudyAttendance?.image) {
         toast("warning", "인증 사진이 누락되었습니다.");
         return;
@@ -165,10 +165,11 @@ function Configuration() {
           end: convertTimeStringToDayjs(endTime).toISOString(),
         }),
       );
+
       attendRealTimeStudy(formData);
     } else if (type === "openRealTimes") {
       formData.append("memo", attendMessage);
-      formData.append("place", JSON.stringify(findStudy.place));
+      formData.append("place", JSON.stringify(findStudy.place.location));
 
       formData.append(
         "time",
@@ -177,6 +178,8 @@ function Configuration() {
           end: convertTimeStringToDayjs(endTime).toISOString(),
         }),
       );
+      console.log(attendMessage, findStudy.place);
+
       attendRealTimeStudy(formData);
     } else {
       setIsChecking(true);

@@ -77,7 +77,7 @@ export function StudyVoteTimeRullets({ defaultVoteTime, setVoteTime }: StudyVote
   };
   useEffect(() => {
     if (defaultVoteTime) {
-     
+      return;
       const startIndex = startItemArr.findIndex((time) => {
         return (
           dayjsToTimeString(parseTimeToDayjs(time)) === dayjsToTimeString(defaultVoteTime.start)
@@ -115,14 +115,11 @@ export function StudyVoteTimeRullets({ defaultVoteTime, setVoteTime }: StudyVote
     }
 
     if (changed) {
-      
-
       setRulletIndex({ left: newLeft, right: newRight });
     }
   }, [rulletIndex.left, rulletIndex.right]);
 
   useEffect(() => {
-   
     setVoteTime({
       start: parseTimeToDayjs(startItemArr[rulletIndex.left]),
       end: parseTimeToDayjs(endTimeArr[rulletIndex.right]),

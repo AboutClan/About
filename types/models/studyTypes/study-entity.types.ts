@@ -11,9 +11,9 @@ import { StudyAttendanceProps } from "./requestTypes";
 
 export interface StudyParticipationProps {
   user: UserSimpleInfoProps;
-  times: TimeRangeProps;
   location: LocationProps;
   isBeforeResult: boolean;
+  times: TimeRangeProps;
   dates?: string[];
 }
 
@@ -30,6 +30,7 @@ export interface StudyConfirmedProps {
 export type StudyStatus = RealTimesStudyStatus | VoteStudyStatus;
 export type VoteStudyStatus = "open" | "expected";
 export type RealTimesStudyStatus = "open" | "participation" | "solo";
+export type MyStudyStatus = "pending" | "participation" | "otherParticipation";
 
 /**
  * study member (participation 제외)
@@ -37,7 +38,7 @@ export type RealTimesStudyStatus = "open" | "participation" | "solo";
 
 export interface StudyConfirmedMemberProps extends TimeStampProps {
   user: UserSimpleInfoProps;
-  time: StringTimeProps;
+  time?: StringTimeProps;
   attendance?: StudyAttendanceProps;
   comment?: CommentProps;
 }

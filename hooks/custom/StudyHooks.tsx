@@ -1,4 +1,5 @@
 import { Dayjs } from "dayjs";
+import { useRouter } from "next/navigation";
 
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 import {
@@ -37,6 +38,7 @@ import { useTypeToast } from "./CustomToast";
 // };
 
 export const useStudyMutations = (date: Dayjs) => {
+  const router = useRouter();
   const typeToast = useTypeToast();
   const resetStudy = useResetStudyQuery();
 

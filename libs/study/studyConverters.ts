@@ -69,14 +69,7 @@ export const setStudyWeekData = (
                 {
                   user: user.user,
                   time: user.time,
-                  attendance: {
-                    time: user?.arrived,
-                    memo: user?.memo,
-                    type: (user?.arrived ? "arrived" : user?.absence ? "absenced" : undefined) as
-                      | "arrived"
-                      | "absenced",
-                    attendanceImage: "",
-                  },
+                  attendance: user.attendance,
                   comment: {
                     comment: user?.comment,
                   },
@@ -103,7 +96,7 @@ export const setStudyWeekData = (
           study: {
             place: result.place,
             members: result.members,
-            status: oneDay.status,
+            status: "open" || oneDay.status,
           },
         })),
       );
@@ -123,7 +116,7 @@ export const setStudyOneDayData = (
     openRealTimes: [],
     results: [],
   };
-  console.log(studyOneData);
+
   studyOneData.results.forEach((result) => {
     studySet["results"].push({ date: date, study: result });
   });
@@ -297,24 +290,16 @@ export const setRealTimesGroup = (
 ): StudyConfirmedProps[] => {
   if (!studyRealTimeArr) return;
   const temp: StudyConfirmedProps[] = [];
-
+  console.log(54, studyRealTimeArr);
   studyRealTimeArr.forEach((props) => {
-    const findParticipationIdx = temp.findIndex(
-      (participation) => participation.place._id === props.place.location._id,
-    );
+    const _id = props.place?._id || props.place.location._id;
+    const findParticipationIdx = temp.findIndex((participation) => participation.place._id === _id);
 
     if (findParticipationIdx !== -1) {
       temp[findParticipationIdx].members.push({
         user: props.user,
         time: props.time,
-        attendance: {
-          time: props?.arrived,
-          memo: props?.memo,
-          type: (props?.arrived ? "arrived" : props?.absence ? "absenced" : undefined) as
-            | "arrived"
-            | "absenced",
-          attendanceImage: "",
-        },
+        attendance: props.attendance,
         comment: {
           comment: props?.comment,
         },
@@ -324,20 +309,13 @@ export const setRealTimesGroup = (
         status: props.status,
         place: {
           location: props.place.location,
-          _id: props.place.location._id,
+          _id,
         },
         members: [
           {
             user: props.user,
             time: props.time,
-            attendance: {
-              time: props?.arrived,
-              memo: props?.memo,
-              type: (props?.arrived ? "arrived" : props?.absence ? "absenced" : undefined) as
-                | "arrived"
-                | "absenced",
-              attendanceImage: "",
-            },
+            attendance: props.attendance,
             comment: {
               comment: props?.comment,
             },

@@ -177,7 +177,7 @@ function StudyApplyDrawer({
             <Box as="span" color="mint">
               민트색
             </Box>{" "}
-            숫자는 이미 신청중인 스터디입니다.
+            숫자는 이미 참여중인 스터디 날짜입니다.
           </Box>
         ) : null}
         <Box as="li" fontSize="12px" lineHeight="20px" mt={3} color="gray.600">

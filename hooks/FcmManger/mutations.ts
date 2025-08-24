@@ -17,6 +17,19 @@ interface SendNotificationProps {
   };
 }
 
+export const useSendNotificationAllMutation = (
+  options?: MutationOptions<{ title: string; description: string }>,
+) =>
+  useMutation<void, AxiosError, { title: string; description: string }>(
+    (params) =>
+      requestServer<{ title: string; description: string }>({
+        method: "post",
+        url: "webpush/sendNotification",
+        body: params,
+      }),
+    options,
+  );
+
 export const useSendNotificationMutation = (options?: MutationOptions<SendNotificationProps>) =>
   useMutation<void, AxiosError, SendNotificationProps>(
     (params) =>

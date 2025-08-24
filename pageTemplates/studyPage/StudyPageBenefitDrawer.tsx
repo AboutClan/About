@@ -23,7 +23,7 @@ function StudyPageBenefitDrawer({ onClose }: StudyPageBenefitDrawerProps) {
   const { data: userInfo } = useUserInfoQuery();
 
   const { data: logs } = usePointPlusLogQuery();
-  console.log(logs);
+
   const [isBenefit, setIsBenefit] = useState(false);
   const [totalValue, setTotalValue] = useState(0);
   const [benefitProps, setBenefitProps] = useState<Record<BenefitName, number>>({
@@ -42,7 +42,7 @@ function StudyPageBenefitDrawer({ onClose }: StudyPageBenefitDrawerProps) {
 
   useEffect(() => {
     if (!logs?.length) return;
-    console.log(88, logs);
+
     const temp = benefitProps;
     logs.forEach((log) => {
       const sub = log.meta.sub;
@@ -57,7 +57,7 @@ function StudyPageBenefitDrawer({ onClose }: StudyPageBenefitDrawerProps) {
     });
     setBenefitProps(temp);
   }, [logs]);
-  console.log(53, benefitArr);
+
   return (
     <RightDrawer title="스터디 혜택" px={false} onClose={onClose}>
       <Flex px={5} h="120px" justify="space-between" py={3}>

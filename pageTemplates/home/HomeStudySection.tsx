@@ -1,6 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import { useSetRecoilState } from "recoil";
 import ButtonWrapper from "../../components/atoms/ButtonWrapper";
 import SectionFooterButton from "../../components/atoms/SectionFooterButton";
 import SectionHeader from "../../components/atoms/SectionHeader";
@@ -16,12 +17,14 @@ import {
   setStudyThumbnailCard,
   sortThumbnailCardInfoArr,
 } from "../../libs/study/thumbnailCardLibs";
+import { backUrlState } from "../../recoils/navigationRecoils";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 
 type StudyTab = "오늘 날짜 스터디" | "진행 예정 스터디";
 
 function HomeStudySection() {
   const { data: studySet } = useStudySetQuery(dayjsToStr(dayjs()));
+  const setBackUrl = useSetRecoilState(backUrlState);
 
   const [tab, setTab] = useState<StudyTab>("오늘 날짜 스터디");
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
@@ -31,7 +34,9 @@ function HomeStudySection() {
       setThumbnailCardinfoArr(null);
       return;
     }
-    const getThumbnailCardInfoArr = setStudyThumbnailCard(dayjsToStr(dayjs()), studySet, null);
+    const getThumbnailCardInfoArr = setStudyThumbnailCard(dayjsToStr(dayjs()), studySet, null, () =>
+      setBackUrl("/home"),
+    );
     setThumbnailCardinfoArr(sortThumbnailCardInfoArr("날짜순", getThumbnailCardInfoArr, null));
   }, [studySet]);
 

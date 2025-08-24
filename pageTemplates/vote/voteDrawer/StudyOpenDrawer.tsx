@@ -1,5 +1,6 @@
 import { Badge, Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -14,7 +15,9 @@ import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { NaverLocationProps } from "../../../hooks/external/queries";
 import { useRealtimeVoteMutation } from "../../../hooks/realtime/mutations";
-import { useStudyPlacesQuery } from "../../../hooks/study/queries";
+import { useStudyPlacesQuery, useStudySetQuery } from "../../../hooks/study/queries";
+import { useUserInfoQuery } from "../../../hooks/user/queries";
+import { getMyStudyDateArr } from "../../../libs/study/studyHelpers";
 import { CalendarHeader } from "../../../modals/aboutHeader/DateCalendarModal";
 import { transferStudyRewardState } from "../../../recoils/transferRecoils";
 import { RealTimeVoteProps } from "../../../types/models/studyTypes/requestTypes";
@@ -30,6 +33,7 @@ interface StudyPlaceDrawerProps {
 }
 
 function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
+  const router = useRouter();
   const resetStudy = useResetStudyQuery();
   const toast = useToast();
 
@@ -37,12 +41,18 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
   const [isMapOpen, setIsMapOpen] = useState(false);
   const setTransferStudyReward = useSetRecoilState(transferStudyRewardState);
 
+  const { data: userInfo } = useUserInfoQuery();
+  const { data: studySet } = useStudySetQuery(dayjsToStr(dayjs()));
+
+  const myStudyDateArr = getMyStudyDateArr(studySet, userInfo?._id);
+
   useStudyPlacesQuery("main");
 
   const { mutate: handleStudyVote, isLoading } = useRealtimeVoteMutation(selectedDate, {
     onSuccess(data) {
-      setTransferStudyReward(data);
-      toast("success", "스터디가 개설되었습니다.");
+      setTimeout(() => {
+        setTransferStudyReward(data);
+      }, 500);
       resetStudy();
       onClose();
     },
@@ -134,9 +144,17 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
               selectedDates={[selectedDate]}
               func={handleClickDate}
               passedDisabled
-              mintDateArr={[]}
+              mintDateArr={myStudyDateArr?.map((study) => study.date)}
               isTodayInclude
-            />{" "}
+            />
+            {myStudyDateArr?.length && (
+              <Box as="li" fontSize="12px" lineHeight="20px" mt={3} color="gray.600">
+                <Box as="span" color="mint">
+                  민트색
+                </Box>{" "}
+                숫자는 이미 참여중인 스터디 날짜입니다.
+              </Box>
+            )}
             <Box as="li" fontSize="12px" lineHeight="20px" mt={3} color="gray.600">
               최대 일주일 이내의 스터디만 개설할 수 있습니다.
             </Box>

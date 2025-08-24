@@ -1,6 +1,6 @@
 import axios from "axios";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import Header from "../../components/layouts/Header";
@@ -52,6 +52,7 @@ function Admin() {
                   <button onClick={() => onClick(`studyAddition`)}>
                     신규 스터디 장소 추가 요청
                   </button>
+                  <button onClick={() => onClick(`notice`, false)}>전체 공지 작성하기</button>
                   <button onClick={() => onClick(`attend`)}>출석 당첨자 확인</button>
                   <button onClick={() => onClick(`groupGather`)}>조모임 신청 확인</button>
                   <button onClick={() => onClick(`suggest`)}>건의사항 확인</button>

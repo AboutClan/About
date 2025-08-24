@@ -46,7 +46,7 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
   // );
 
   const dailyCheckWin = useRecoilValue(transferDailyCheckWinState);
-  console.log(25, transferStudyReward);
+
   const cancelLogout = () => {
     newSearchParams.delete("logout");
     const params = newSearchParams.toString();
@@ -59,7 +59,7 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
     setTransferStudyReward(null);
     router.replace(pathname + (params ? `?${params}` : ""));
   };
-
+  console.log(transferStudyReward);
   return (
     <>
       {!!dailyCheckWin && <DailyCheckWinModal />}
@@ -96,7 +96,13 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
             fontSize="20px"
             textAlign="start"
           >
-            스터디 출석 완료!
+            {transferStudyReward.message?.split(" ")[0] === "개인" ? "공부" : "스터디"}{" "}
+            {transferStudyReward.message === "스터디 개설"
+              ? "개설"
+              : transferStudyReward.message?.split(" ")[0] === "개인"
+              ? "인증"
+              : "출석"}{" "}
+            완료!
             <br />
             <b>{transferStudyReward.point} Point</b>가 적립되었습니다.
           </Box>

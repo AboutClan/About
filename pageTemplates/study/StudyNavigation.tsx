@@ -16,6 +16,7 @@ import { useUserInfoQuery } from "../../hooks/user/queries";
 import StudyAbsentModal from "../../modals/study/StudyAbsentModal";
 import { LocationProps } from "../../types/common";
 import {
+  MyStudyStatus,
   StudyConfirmedMemberProps,
   StudyConfirmedProps,
   StudyParticipationProps,
@@ -29,11 +30,10 @@ import StudyApplyDrawer from "../vote/voteDrawer/StudyApplyDrawer";
 interface IStudyNavigation {
   myStudyInfo: StudyConfirmedMemberProps | StudyParticipationProps[];
   date: string;
-  hasOtherStudy: boolean;
   id: string;
   studyType: StudyType;
   location: LocationProps;
-
+  myStudyStatus: MyStudyStatus;
   findStudy: StudyConfirmedProps;
 }
 
@@ -52,7 +52,7 @@ function StudyNavigation({
   id,
   date,
   myStudyInfo,
-  hasOtherStudy,
+  myStudyStatus,
   location,
   studyType,
   findStudy,
@@ -72,7 +72,7 @@ function StudyNavigation({
   } = useStudyMutations(dayjs(date));
 
   const resultStatus = findStudy?.status;
-
+  console.log(5, myStudyInfo, myStudyStatus, findStudy);
   const [isTimeRulletModal, setIsTimeRulletModal] = useState(false);
   const [voteModalType, setVoteModalType] = useState<"vote" | "free">(null);
   const [voteTime, setVoteTime] = useState<DayjsTimeProps>();
@@ -82,8 +82,6 @@ function StudyNavigation({
   const [drawerType, setDrawerType] = useState<
     "apply" | "applyChange" | "realTimesVote" | DirectAction
   >(null);
-
-  const myStatus = !myStudyInfo ? "pending" : "participation";
 
   useEffect(() => {
     if (drawerTypeParam === "apply") {
@@ -97,8 +95,11 @@ function StudyNavigation({
   // const myStudyInfo = findMyStudyInfo(findStudy, session?.user.id);
 
   // const myStudyStatus = evaluateMyStudyStatus(findStudy, session?.user.id, pageType, isVoting);
-
-  const getNavigationProps = (studyType: StudyType, myStatus: MyStatus): NavigationProps => {
+  console.log(53, myStudyInfo);
+  const getNavigationProps = (studyType: StudyType, myStatus: MyStudyStatus): NavigationProps => {
+    if ((myStudyInfo as StudyConfirmedMemberProps)?.attendance?.type) {
+      return null;
+    }
     switch (studyType) {
       case "participations":
         if (myStatus === "pending") {
@@ -141,7 +142,7 @@ function StudyNavigation({
             };
           }
 
-          if ((myStudyInfo as StudyConfirmedMemberProps).user._id === userInfo?._id) {
+          if (findStudy?.members?.[0]?.user._id === userInfo?._id) {
             return {
               text: "개설 취소",
               type: "single",
@@ -160,7 +161,9 @@ function StudyNavigation({
                   defaultText: "닫 기",
                   func: () => {
                     realTimeCancel();
-                    router.push(`/studyPage?date=${dayjsToStr(dayjs())}`);
+                    setTimeout(() => {
+                      router.push(`/studyPage?date=${dayjsToStr(dayjs())}`);
+                    }, 300);
                   },
                 });
               },
@@ -177,9 +180,12 @@ function StudyNavigation({
         }
       case "results":
         if (myStatus === "pending") {
-          if (hasOtherStudy) {
-            toast("info", "다른 스터디에 참여중입니다");
-            return;
+          if (myStudyStatus === "otherParticipation") {
+            return {
+              text: "다른 스터디에 참여중입니다",
+              type: "single",
+              colorScheme: "black",
+            };
           }
           return {
             text: "스터디 참여",
@@ -212,9 +218,12 @@ function StudyNavigation({
         }
       case "soloRealTimes":
         if (myStatus === "pending") {
-          if (hasOtherStudy) {
-            toast("info", "다른 스터디에 참여중입니다");
-            return;
+          if (myStudyStatus === "otherParticipation") {
+            return {
+              text: "다른 스터디에 참여중입니다",
+              type: "single",
+              colorScheme: "black",
+            };
           }
           return {
             text: "공부 인증",
@@ -334,8 +343,8 @@ function StudyNavigation({
     setIsTimeRulletModal(true);
   };
 
-  const navigationProps = getNavigationProps(studyType, myStatus);
-
+  const navigationProps = getNavigationProps(studyType, myStudyStatus);
+  console.log(52, drawerType);
   return (
     <>
       <Slide isFixed={true} posZero="top">
@@ -436,7 +445,7 @@ function StudyNavigation({
                   ),
                 }
               : drawerType === "dailyVote"
-              ? { start: dayjs(), end: dayjs() }
+              ? null
               : null
           }
           zIndex={300}

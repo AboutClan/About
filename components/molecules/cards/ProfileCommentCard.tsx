@@ -51,10 +51,10 @@ export default function ProfileCommentCard({
     setIsCommentModal(false);
     setIsEdit(false);
   };
- 
+
   return (
     <>
-      <Flex py={3} h="74px" align="center" {...(!isNoBorder && { borderBottom: "var(--border)" })}>
+      <Flex py={2.5} align="center" {...(!isNoBorder && { borderBottom: "var(--border)" })}>
         {leftComponent && <Box mr="16px">{leftComponent}</Box>}
         <Avatar user={user} size="md1" />
 

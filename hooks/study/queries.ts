@@ -13,7 +13,7 @@ import {
 } from "../../constants/keys/queryKeys";
 import { SERVER_URI } from "../../constants/system";
 import { setStudyOneDayData, setStudyWeekData } from "../../libs/study/studyConverters";
-import { CoordinatesProps, LocationProps, TimeRangeProps } from "../../types/common";
+import { CoordinatesProps, TimeRangeProps } from "../../types/common";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import {
   RealTimesStudyStatus,
@@ -51,13 +51,13 @@ export interface InitialRealTimesProps {
   user: UserSimpleInfoProps;
   time: TimeRangeProps;
   status: RealTimesStudyStatus;
-  place: {
-    location: LocationProps;
+  place: StudyPlaceProps;
+  attendance: {
+    attendanceImage: string;
+    memo: string;
+    time: string;
+    type: "arrived" | "absenced";
   };
-  absence?: boolean;
-  arrived?: string;
-  image?: string;
-  memo?: string;
   comment?: string;
 }
 

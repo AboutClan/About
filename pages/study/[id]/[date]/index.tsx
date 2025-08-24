@@ -15,6 +15,7 @@ import { useStudyPassedDayQuery, useStudySetQuery } from "../../../../hooks/stud
 import { usePointSystemMutation } from "../../../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../../../hooks/user/queries";
 import { shortenParticipations } from "../../../../libs/study/studyConverters";
+import { getMyStudyDateArr } from "../../../../libs/study/studyHelpers";
 import StudyAddressMap from "../../../../pageTemplates/study/StudyAddressMap";
 import StudyCover from "../../../../pageTemplates/study/StudyCover";
 import StudyDateBar from "../../../../pageTemplates/study/StudyDateBar";
@@ -24,7 +25,10 @@ import StudyNavigation from "../../../../pageTemplates/study/StudyNavigation";
 import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
 import StudyTimeBoard from "../../../../pageTemplates/study/StudyTimeBoard";
 import { PlaceReviewProps } from "../../../../types/models/studyTypes/entityTypes";
-import { StudyConfirmedMemberProps } from "../../../../types/models/studyTypes/study-entity.types";
+import {
+  MyStudyStatus,
+  StudyConfirmedMemberProps,
+} from "../../../../types/models/studyTypes/study-entity.types";
 import {
   StudyConfirmedSetProps,
   StudyParticipationsSetProps,
@@ -58,24 +62,35 @@ export default function Page() {
     confirmedSet?.find((set) => set.study.place._id === id)?.study;
 
   const myStudyInfo =
-    studyType !== "participations"
+    studyType === "soloRealTimes"
+      ? studySet?.soloRealTimes
+          ?.flatMap((solo) => solo.study)
+          ?.flatMap((a) => a.members)
+          ?.find((solo) => solo.user._id === userInfo?._id)
+      : studyType !== "participations"
       ? findStudy?.members.find((member) => member.user._id === userInfo?._id)
       : participationsSet
           ?.find((par) => par.study.some((study) => study.user._id === userInfo?._id))
           ?.study?.filter((who) => who.user._id === userInfo?._id);
-  const hasOtherStudy =
-    !myStudyInfo &&
-    (["participations", "openRealTimes", "results"] as StudyType[]).some((key) =>
-      (studySet?.[key] as StudyConfirmedSetProps[])?.some(
-        (set) =>
-          set.date === date &&
-          set.study.members?.some((member) => member?.user._id === userInfo?.id),
-      ),
-    );
+
+  const myStudyArr = getMyStudyDateArr(studySet, userInfo?._id);
+
+  const findTodayStudy = myStudyArr?.find((myStudy) => myStudy.date === date);
+  const myStudyStatus: MyStudyStatus = !findTodayStudy
+    ? "pending"
+    : findTodayStudy?.type === studyType
+    ? "participation"
+    : "otherParticipation";
 
   const members =
-    studyType !== "participations" ? findStudy?.members : shortenParticipations(participationsSet);
-  
+    studyType === "participations"
+      ? shortenParticipations(participationsSet)
+      : studyType === "soloRealTimes"
+      ? (studyData as StudyConfirmedSetProps[])?.map((study) => ({
+          ...study.study.members[0],
+        }))
+      : findStudy?.members;
+
   const placeInfo = findStudy?.place;
 
   // const findStudyArr = getTodayStudyArr(studyType, studyPassedData, studySet, date);
@@ -106,6 +121,7 @@ export default function Page() {
   //     member.user._id === userInfo?._id,
   // );
 
+  console.log(1234, findStudy, studyData, myStudyInfo, members);
   return (
     <>
       {studyPassedData || studySet ? (
@@ -114,7 +130,13 @@ export default function Page() {
           <Box mb={5}>
             <Slide isNoPadding>
               <StudyCover
-                coverImage={placeInfo?.coverImage || getRandomImage(STUDY_COVER_IMAGES)}
+                coverImage={
+                  studyType === "soloRealTimes"
+                    ? "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/2.%EC%8B%A4%EC%8B%9C%EA%B0%84-%EA%B3%B5%EB%B6%80-%EC%9D%B8%EC%A6%9D.png"
+                    : studyType === "participations"
+                    ? "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/1.%EC%8A%A4%ED%84%B0%EB%94%94-%EB%A7%A4%EC%B9%AD-%EB%9D%BC%EC%9A%B4%EC%A7%80.png"
+                    : placeInfo?.coverImage || getRandomImage(STUDY_COVER_IMAGES)
+                }
               />
               <StudyOverview date={date} placeInfo={placeInfo} studyType={studyType} />
             </Slide>
@@ -138,7 +160,7 @@ export default function Page() {
               myStudyInfo={myStudyInfo}
               date={date}
               id={id}
-              hasOtherStudy={hasOtherStudy}
+              myStudyStatus={myStudyStatus}
               studyType={studyType}
               location={placeInfo?.location}
               findStudy={findStudy}

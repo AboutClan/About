@@ -22,6 +22,7 @@ export const setStudyThumbnailCard = (
   date: string,
   studySet: StudySetProps,
   myId: string,
+  func: () => void,
 ): StudyThumbnailCardProps[] => {
   const { participations, openRealTimes, soloRealTimes, results } = studySet;
 
@@ -47,6 +48,7 @@ export const setStudyThumbnailCard = (
       url: `/study/realTime/${date}?type=soloRealTimes`,
       studyType: "soloRealTimes",
       isMyStudy: false,
+      func,
     });
   }
   if (!isPassedDate) {
@@ -67,6 +69,7 @@ export const setStudyThumbnailCard = (
       url: `/study/participations/${date}?type=participations`,
       studyType: "participations",
       isMyStudy: false,
+      func,
     });
   }
 
@@ -94,13 +97,13 @@ export const setStudyThumbnailCard = (
     if (aHas === bHas) return 0;
     return aHas ? 1 : -1;
   });
-  console.log(544, merged);
+
   // 카드 데이터 생성
   const cardColData: StudyThumbnailCardProps[] = merged.map((data, idx) => {
     const study = data.study;
     const placeInfo = study.place;
     const textArr = placeInfo.location?.address.split(" ");
-    console.log(15, placeInfo);
+
     return {
       place: {
         name: placeInfo.location.name,
@@ -119,6 +122,7 @@ export const setStudyThumbnailCard = (
       studyType: data.study.status,
       isMyStudy: study.members.map((member) => member.user._id).includes(myId),
       isFutureDate: dayjs(data.date).hour(9).isAfter(dayjs()),
+      func,
     };
   });
 

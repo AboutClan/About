@@ -1,7 +1,7 @@
 import { Badge, Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 import { useState } from "react";
 
 import AttendanceBadge from "../../components/molecules/badge/AttendanceBadge";
@@ -35,24 +35,6 @@ export default function StudyMembers({ studyType, date, members }: IStudyMembers
     image: string;
     toUid: string;
   }>();
-  const [locationMapping, setLocationMapping] = useState<{ branch: string; id: string }[]>();
-
-  // const { data: locationMappingData } = useKakaoMultipleLocationQuery(
-  //   members.map((member) => ({
-  //     lat: member.lat,
-  //     lon: member.lon,
-  //     id: member.user._id,
-  //   })),
-  //   false,
-  //   {
-  //     enabled: !!members,
-  //   },
-  // );
-
-  // useEffect(() => {
-  //   if (!locationMappingData) return;
-  //   setLocationMapping(locationMappingData);
-  // }, [locationMappingData]);
 
   const { mutate: setRealTimeComment } = useRealTimeCommentMutation(date, {
     onSuccess: () => handleSuccessChange(),
@@ -79,7 +61,7 @@ export default function StudyMembers({ studyType, date, members }: IStudyMembers
     // const badgeText = locationMapping?.find((mapping) => mapping?.id === user._id)?.branch;
     if (studyType === "participations") {
       const participant = member as StudyParticipationProps;
-     
+
       let month = dayjs(participant.dates[0]).month();
       return {
         user: user,

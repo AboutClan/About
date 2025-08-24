@@ -125,8 +125,8 @@ export function StudyThumbnailCard({
                   as="span"
                   color={
                     participants.length >= STUDY_MAX_CNT &&
-                    status !== "participation" &&
-                    status !== "solo"
+                    studyType !== "participations" &&
+                    studyType !== "soloRealTimes"
                       ? "var(--color-red)"
                       : "var(--color-gray)"
                   }
@@ -137,7 +137,7 @@ export function StudyThumbnailCard({
                   /
                 </Box>
                 <Box as="span" color="var(--gray-500)" fontWeight={500}>
-                  {status === "solo" || status === "participation" ? (
+                  {studyType === "soloRealTimes" || studyType === "participations" ? (
                     <Box mb="1px">
                       <InfinityIcon />
                     </Box>

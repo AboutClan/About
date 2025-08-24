@@ -17,18 +17,22 @@ interface RealTimeVoteRequestServerProps {
   time: StringTimeProps;
 }
 
+interface RealTimesVoteReturnProps extends PointInfoProps {
+  _id: string;
+}
+
 export const useRealtimeVoteMutation = (
   date: string,
-  options?: MutationOptions<RealTimeVoteProps, PointInfoProps>,
+  options?: MutationOptions<RealTimeVoteProps, RealTimesVoteReturnProps>,
 ) =>
-  useMutation<PointInfoProps, AxiosError, RealTimeVoteProps>((param) => {
+  useMutation<RealTimesVoteReturnProps, AxiosError, RealTimeVoteProps>((param) => {
     const { start, end } = param.time;
     const time = {
       start: start.toISOString(),
       end: end.toISOString(),
     };
 
-    return requestServer<RealTimeVoteRequestServerProps, PointInfoProps>({
+    return requestServer<RealTimeVoteRequestServerProps, RealTimesVoteReturnProps>({
       method: "post",
       url: `realtime/${date}/basicVote`,
       body: { ...param, time },
