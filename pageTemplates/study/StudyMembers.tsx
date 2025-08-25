@@ -1,7 +1,6 @@
 import { Badge, Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 import AttendanceBadge from "../../components/molecules/badge/AttendanceBadge";
@@ -27,7 +26,6 @@ interface IStudyMembers {
 }
 
 export default function StudyMembers({ studyType, date, members }: IStudyMembers) {
-  const { data: session } = useSession();
   const resetStudy = useResetStudyQuery();
   const typeToast = useTypeToast();
   // const [hasModalMemo, setHasModalMemo] = useState<string>();
@@ -42,8 +40,6 @@ export default function StudyMembers({ studyType, date, members }: IStudyMembers
   const { mutate: setVoteComment } = useStudyCommentMutation(date, {
     onSuccess: () => handleSuccessChange(),
   });
-
-  const isMyStudy = members?.some((who) => who.user.uid === session?.user.uid);
 
   const handleSuccessChange = () => {
     typeToast("change");

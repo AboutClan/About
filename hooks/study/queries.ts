@@ -77,7 +77,7 @@ export const useStudySetQuery = (date: string, options?: StudyWeekQueryOptions) 
     [STUDY_VOTE, "week"],
     async () => {
       const { data } = await axios.get<StudySetInitialDataProps[]>(`${SERVER_URI}/vote2/week`);
-      console.log("INITIAL", data);
+
       return data;
     },
     {
@@ -108,15 +108,22 @@ export interface InitialStudyPassedDayProps {
   realTimes: {
     userList: InitialStudyPassedDayUserProps[];
   };
-  results: any;
+  results: {
+    center?: CoordinatesProps;
+    members: { time: TimeRangeProps; user: UserSimpleInfoProps }[];
+    place: StudyPlaceProps;
+  }[];
 }
 
 export interface InitialStudyPassedDayUserProps {
   attendance: {
-    type: any;
+    attendanceImage: string;
+    memo: string;
+    time: string;
+    type: "arrived" | "absenced";
   };
   place: StudyPlaceProps;
-  comment: any;
+  comment?: { text: string };
   status: RealTimesStudyStatus;
   time: TimeRangeProps;
   user: UserSimpleInfoProps;
@@ -129,7 +136,7 @@ export const useStudyPassedDayQuery = (date: string, options?: QueryOptions<Stud
       const { data } = await axios.get<InitialStudyPassedDayProps>(
         `${SERVER_URI}/vote2/${date}/info`,
       );
-
+      console.log("INITIAL2", data);
       return setStudyOneDayData(data, date);
     },
     options,

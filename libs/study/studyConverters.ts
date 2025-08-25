@@ -58,10 +58,7 @@ export const setStudyWeekData = (
           ...soloUsers.map((user) => ({
             date,
             study: {
-              place: {
-                location: user.place.location,
-                _id: user.place.location._id,
-              },
+              place: user.place,
               members: [
                 {
                   user: user.user,
@@ -115,7 +112,7 @@ export const setStudyOneDayData = (
   };
 
   studyOneData.results.forEach((result) => {
-    studySet["results"].push({ date: date, study: result });
+    studySet["results"].push({ date: date, study: { ...result, status: "open" } });
   });
   studyOneData.realTimes.userList.forEach((user) => {
     if (user.status === "solo") {
@@ -130,6 +127,10 @@ export const setStudyOneDayData = (
             {
               user: user.user,
               time: user.time,
+              attendance: user.attendance,
+              comment: {
+                comment: user?.comment?.text,
+              },
               // attendance: {
               //   time: user?.atte,
               //   memo: user?.memo,
@@ -235,6 +236,10 @@ export const setPassedDayRealTimesGroup = (
       temp[findParticipationIdx].members.push({
         user: props.user,
         time: props.time,
+        attendance: props.attendance,
+        comment: {
+          comment: props?.comment?.text,
+        },
         // attendance: {
         //   time: props?.arrived,
         //   memo: props?.memo,
@@ -252,12 +257,17 @@ export const setPassedDayRealTimesGroup = (
         status: props.status,
         place: {
           location: props.place.location,
-          _id: props.place.location._id,
+          _id: props.place._id || props.place.location._id,
         },
         members: [
           {
             user: props.user,
             time: props.time,
+            attendance: props.attendance,
+            comment: {
+              comment: props?.comment?.text,
+            },
+
             // attendance: {
             //   time: props?.arrived,
             //   memo: props?.memo,
@@ -304,10 +314,7 @@ export const setRealTimesGroup = (
     } else {
       temp.push({
         status: props.status,
-        place: {
-          location: props.place.location,
-          _id,
-        },
+        place: { ...props.place, _id: props.place._id || props.place.location._id },
         members: [
           {
             user: props.user,
@@ -437,9 +444,9 @@ export const shortenParticipations = (
 //   date: string,
 // ): StudyParticipationProps[] => {
 //   const participationMap = new Map();
-//   console.log(125, participations);
+
 //   participations?.forEach((par) => {
-//     console.log(777, par);
+
 //     if (par && dayjs(par.date).startOf("day").isAfter(dayjs(date).subtract(1, "day"))) {
 //       const userId = par.study.user._id;
 //       if (participationMap.has(userId)) {

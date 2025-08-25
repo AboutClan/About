@@ -240,7 +240,7 @@ function Configuration() {
       <BottomNav
         text={isSoloRealTimesPage ? "인증 완료" : "출석 완료"}
         onClick={handleSubmit}
-        isLoading={isLoading1 || isLoading2 || isLoading3}
+        isLoading={isLoading1 || isLoading2}
       />
       {isChecking && (
         <>

@@ -27,7 +27,7 @@ function StudyOverview({ placeInfo, date, studyType }: IStudyOverview) {
     studyType,
     dayjs(date).startOf("day").isAfter(dayjs()),
   );
-
+  console.log(123, placeInfo);
   const distance = getDistanceFromLatLonInKm(
     placeInfo?.location.latitude,
     placeInfo?.location.longitude,
@@ -90,7 +90,7 @@ function StudyOverview({ placeInfo, date, studyType }: IStudyOverview) {
               <Box mt={1} mr={2} fontSize="20px" fontWeight="bold">
                 {placeInfo.location.name}
               </Box>
-              <StarRating rating={4.5} size="lg" />
+              <StarRating rating={placeInfo?.rating || 4} size="lg" />
             </Flex>
             <Flex flexDir="column" borderRadius="8px">
               {[
@@ -111,18 +111,16 @@ function StudyOverview({ placeInfo, date, studyType }: IStudyOverview) {
                 },
               ]
                 ?.slice(0, 2)
-                .map((review) => (
-                  <>
-                    <Box pt={2} borderTop="var(--border)">
-                      <StarRatingReviewBlock
-                        rating={review.rating}
-                        text={review.review}
-                        size="sm"
-                        user={review.isSecret ? { ...review.user, name: "익명" } : review.user}
-                        date={review.createdAt}
-                      />
-                    </Box>
-                  </>
+                .map((review, idx) => (
+                  <Box key={idx} pt={2} borderTop="var(--border)">
+                    <StarRatingReviewBlock
+                      rating={review.rating}
+                      text={review.review}
+                      size="sm"
+                      user={review.isSecret ? { ...review.user, name: "익명" } : review.user}
+                      date={review.createdAt}
+                    />
+                  </Box>
                 ))}
 
               <Button

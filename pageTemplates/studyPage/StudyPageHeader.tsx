@@ -1,4 +1,5 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 
@@ -11,12 +12,15 @@ import { NaverLocationProps } from "../../hooks/external/queries";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { RegisterLocationLayout } from "../../pages/register/location";
+import { getTodayStr } from "../../utils/dateTimeUtils";
 import StudyPageBenefitDrawer from "./StudyPageBenefitDrawer";
 
 export type StudyTab = "스터디 참여" | "카공 지도";
-interface StudyPageHeaderProps {}
 
 function StudyPageHeader() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const drawerParam = searchParams.get("drawer");
   const queryClient = useQueryClient();
   const typeToast = useTypeToast();
   const [modalType, setModalType] = useState<"point" | "location">();
@@ -31,6 +35,13 @@ function StudyPageHeader() {
     if (!location) return;
     setPlaceInfo({ address: location.text, latitude: location.lat, longitude: location.lon });
   }, [location]);
+
+  useEffect(() => {
+    if (drawerParam === "study") {
+      setModalType("point");
+      router.replace(`/studyPage?date=${getTodayStr()}`);
+    }
+  }, [drawerParam]);
 
   const { mutate: changeLocationDetail } = useUserInfoFieldMutation("locationDetail", {
     onSuccess() {

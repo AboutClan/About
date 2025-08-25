@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     });
     const data = await r.json();
     return res.status(r.status).json(data);
-  } catch (e: any) {
+  } catch (e) {
     return res.status(500).json({ message: "proxy error", detail: e?.message });
   }
 }

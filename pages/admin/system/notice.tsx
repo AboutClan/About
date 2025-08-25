@@ -3,11 +3,9 @@ import { useState } from "react";
 
 import { Input } from "../../../components/atoms/Input";
 import Header from "../../../components/layouts/Header";
-import { useToast } from "../../../hooks/custom/CustomToast";
 import { useSendNotificationAllMutation } from "../../../hooks/FcmManger/mutations";
 
 function Notice() {
-  const toast = useToast();
   const [title, setTitle] = useState("");
   const [text, setText] = useState("");
 

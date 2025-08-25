@@ -3,12 +3,13 @@ import { useRouter } from "next/navigation";
 
 import { MAIN_BANNER_IMAGE } from "../../assets/images/BannerImages";
 import ImageSliderBanner from "../../components/organisms/imageSlider/imageSliderType/ImageSliderBanner";
+import { getTodayStr } from "../../utils/dateTimeUtils";
 import { navigateExternalLink } from "../../utils/navigateUtils";
 
 function HomeBannerSlide() {
   const router = useRouter();
   const imageArr = MAIN_BANNER_IMAGE.map((banner) => {
-    const handleClick = (category: "main" | "groupAdmin" | "faq" | "friendInvite") => {
+    const handleClick = (category: "main" | "groupAdmin" | "faq" | "friendInvite" | "study") => {
       if (category === "main") return;
       else if (category === "groupAdmin") {
         navigateExternalLink(
@@ -18,6 +19,8 @@ function HomeBannerSlide() {
         router.push(`https://study-about.club/faq`);
       } else if (category === "friendInvite") {
         navigateExternalLink("https://pf.kakao.com/_SaWXn/chat");
+      } else if (category == "study") {
+        router.push(`/studyPage?date=${getTodayStr()}&drawer=study`);
       }
     };
 

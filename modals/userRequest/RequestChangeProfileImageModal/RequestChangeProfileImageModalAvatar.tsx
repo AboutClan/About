@@ -160,13 +160,6 @@ const DownPart = styled.div`
   border-bottom: var(--border);
 `;
 
-const IconPoint = styled.div`
-  color: var(--color-mint);
-  font-size: 11px;
-  margin-top: 12px;
-  font-weight: 600;
-`;
-
 const variants = {
   entry: (isBack: boolean) => ({
     x: isBack ? -100 : 100,

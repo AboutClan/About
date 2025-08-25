@@ -36,7 +36,7 @@ export default function StudyPage() {
   const { data: passedStudyData } = useStudyPassedDayQuery(date, {
     enabled: !!date && !!isPassedDate,
   });
-  console.log(24, studySet, passedStudyData);
+ 
   useEffect(() => {
     if (!dateParam || dateParam === date) return;
     setDate(dateParam);

@@ -1,7 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useState } from "react";
-import styled from "styled-components";
 
 import Textarea from "../../components/atoms/Textarea";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
@@ -31,19 +30,19 @@ function StudyAbsentModal({ type, setIsModal }: StudyAbsentModalProps) {
   const { mutate: absentRealTimes, isLoading: isLoading1 } = useRealTimeAbsenceMutation(
     getTodayStr(),
     {
-      onSuccess(data) {
-        handleSuccess(data);
+      onSuccess() {
+        handleSuccess();
       },
     },
   );
 
   const { mutate: absentStudy, isLoading: isLoading2 } = useStudyAbsenceMutation(getTodayStr(), {
-    onSuccess: (data) => {
-      handleSuccess(data);
+    onSuccess: () => {
+      handleSuccess();
     },
   });
 
-  const handleSuccess = (data) => {
+  const handleSuccess = () => {
     typeToast("cancel");
     resetStudy();
     sendRequest({
@@ -106,15 +105,5 @@ function StudyAbsentModal({ type, setIsModal }: StudyAbsentModalProps) {
     </>
   );
 }
-
-const Body = styled.div`
-  width: 100%;
-  flex: 1;
-  text-align: start;
-`;
-
-const P = styled.p`
-  margin-bottom: 12px;
-`;
 
 export default StudyAbsentModal;

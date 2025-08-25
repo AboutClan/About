@@ -87,24 +87,26 @@ function DateCalendarModal({
   const paddingOptions: IPaddingOptions = { footer: 0 };
 
   function Header() {
-  return <ModalHeader
-      fontWeight={700}
-      px={6}
-      pt={4}
-      pb={3}
-      fontSize="16px"
-      color="var(--gray-800)"
-      textAlign="center"
-    >
-      <CalendarHeader
-        leftDisabled={activeIdx === 0}
-        rightDisabled={activeIdx === monthArr.length - 1}
-        goPrev={goPrev}
-        goNext={goNext}
-        date={dayjsToStr(standardDate)}
-      />
-    </ModalHeader>
-}
+    return (
+      <ModalHeader
+        fontWeight={700}
+        px={6}
+        pt={4}
+        pb={3}
+        fontSize="16px"
+        color="var(--gray-800)"
+        textAlign="center"
+      >
+        <CalendarHeader
+          leftDisabled={activeIdx === 0}
+          rightDisabled={activeIdx === monthArr.length - 1}
+          goPrev={goPrev}
+          goNext={goNext}
+          date={dayjsToStr(standardDate)}
+        />
+      </ModalHeader>
+    );
+  }
 
   return (
     <ModalLayout
@@ -126,13 +128,14 @@ function DateCalendarModal({
         }}
         onSlideChange={handleSliderChange}
       >
-        {monthArr.map((cal, idx) => (
+        {monthArr.map((cal) => (
           <SwiperSlide key={cal}>
             <Calendar
               standardDate={cal}
               selectedDates={[dayjsToStr(date)]}
               func={onDayClick}
               mintDateArr={[dayjsToStr(dayjs())]}
+              isTodayInclude
             />
           </SwiperSlide>
         ))}
@@ -170,27 +173,31 @@ export function CalendarHeader({
 }
 
 function LeftIcon() {
-  return <svg
-    xmlns="http://www.w3.org/2000/svg"
-    height="20"
-    viewBox="0 -960 960 960"
-    width="20"
-    fill="var(--gray-500)"
-  >
-    <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" />
-  </svg>
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="20"
+      viewBox="0 -960 960 960"
+      width="20"
+      fill="var(--gray-500)"
+    >
+      <path d="M560-240 320-480l240-240 56 56-184 184 184 184-56 56Z" />
+    </svg>
+  );
 }
 
 function RightIcon() {
-  return <svg
-    xmlns="http://www.w3.org/2000/svg"
-    height="20"
-    viewBox="0 -960 960 960"
-    width="20"
-    fill="var(--gray-500)"
-  >
-    <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" />
-  </svg>
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="20"
+      viewBox="0 -960 960 960"
+      width="20"
+      fill="var(--gray-500)"
+    >
+      <path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z" />
+    </svg>
+  );
 }
 
 export default DateCalendarModal;

@@ -43,8 +43,11 @@ function WritingStudyPlace() {
       return;
     }
 
-    const { latitude, longitude, address } = placeInfo;
-    mutate({ title: placeInfo.title, location: { latitude, longitude, address }, status: "sub" });
+    const { latitude, longitude, address, title } = placeInfo;
+    mutate({
+      location: { name: title, latitude, longitude, address },
+      status: "inactive",
+    });
 
     return;
     // setStudyWriting({

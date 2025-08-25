@@ -10,7 +10,7 @@ function AdminUserInfo() {
   const [admins, setAdmins] = useState<IUser[]>([]);
   const [members, setMembers] = useState<IUser[]>([]);
   const [filtered, setFiltered] = useState<IUser[]>([]);
- 
+  console.log(setAdmins);
   // useAllUserDataQuery(null, null, false, {
   //   onSuccess(data) {
   //     const tempAdmins = [];

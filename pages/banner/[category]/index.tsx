@@ -3,14 +3,14 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import styled from "styled-components";
 
-import { BANNER_IMAGE } from "../../../assets/images/BannerImages";
+import { MAIN_BANNER_IMAGE } from "../../../assets/images/BannerImages";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 
 function BannerDetailPage() {
   const { category } = useParams<{ category }>() || {};
 
-  const banner = BANNER_IMAGE.find((item) => item.category === category);
+  const banner = MAIN_BANNER_IMAGE.find((item) => item.category === category);
 
   return (
     <>

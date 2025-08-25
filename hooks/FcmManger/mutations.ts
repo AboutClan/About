@@ -24,7 +24,7 @@ export const useSendNotificationAllMutation = (
     (params) =>
       requestServer<{ title: string; description: string }>({
         method: "post",
-        url: "webpush/sendNotification",
+        url: "fcm/sendNotification/all",
         body: params,
       }),
     options,

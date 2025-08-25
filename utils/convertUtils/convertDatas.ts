@@ -1,29 +1,9 @@
 import * as CryptoJS from "crypto-js";
 
-import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
 import { enToKrMapping, krToEnMapping } from "../../constants/location";
 import { USER_BADGE_ARR } from "../../constants/serviceConstants/badgeConstants";
-import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
 import { UserBadge, UserRole } from "../../types/models/userTypes/userInfoTypes";
-import { PlaceInfoProps } from "../../types/models/utilTypes";
 import { ActiveLocation, Location, LocationEn } from "../../types/services/locationTypes";
-import { getRandomImage } from "../imageUtils";
-
-export const convertPlaceToStudyPlace = (place: PlaceInfoProps): StudyPlaceProps => {
-  return {
-    fullname: place.name,
-    brand: "",
-    branch: "",
-    image: getRandomImage(STUDY_MAIN_IMAGES),
-    latitude: place.latitude,
-    longitude: place.longitude,
-    coverImage: "",
-    locationDetail: place.address,
-    registerDate: "",
-    _id: place._id,
-    reviews: null,
-  };
-};
 
 export const decodeByAES256 = (encodedTel: string) => {
   const key = process.env.NEXT_PUBLIC_CRYPTO_KEY;

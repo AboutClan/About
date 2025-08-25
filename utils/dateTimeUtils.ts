@@ -85,9 +85,9 @@ export interface CalendarDateProps {
 export const getCalendarDates = (
   type: "week" | "month",
   selectedDate: Dayjs,
-  passedDisabled: boolean,
-  mintDateArr: string[],
-  isTodayInclude: boolean,
+  passedDisabled?: boolean,
+  mintDateArr?: string[],
+  isTodayInclude?: boolean,
 ) => {
   const calendar: CalendarDateProps[] = [];
 

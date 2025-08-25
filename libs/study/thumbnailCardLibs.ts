@@ -7,8 +7,6 @@ import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomImage } from "../../utils/imageUtils";
 import { shortenParticipations } from "./studyConverters";
 
-const placeImageCache = new Map<string, string>();
-
 // function getCachedStudyImage(placeId: string, fallbackPool: string[]): string {
 //   const cached = placeImageCache.get(placeId);
 //   if (cached) return cached;
@@ -22,7 +20,7 @@ export const setStudyThumbnailCard = (
   date: string,
   studySet: StudySetProps,
   myId: string,
-  func: () => void,
+  func?: () => void,
 ): StudyThumbnailCardProps[] => {
   const { participations, openRealTimes, soloRealTimes, results } = studySet;
 
@@ -73,7 +71,7 @@ export const setStudyThumbnailCard = (
     });
   }
 
-  const hasStatus = (x: any) => x?.status != null || x?.study?.status != null;
+  const hasStatus = (x) => x?.status != null || x?.study?.status != null;
 
   const temp1 = [...openRealTimes].map((real) => ({
     ...real,
@@ -100,6 +98,7 @@ export const setStudyThumbnailCard = (
 
   // 카드 데이터 생성
   const cardColData: StudyThumbnailCardProps[] = merged.map((data, idx) => {
+    console.log(42, data);
     const study = data.study;
     const placeInfo = study.place;
     const textArr = placeInfo.location?.address.split(" ");

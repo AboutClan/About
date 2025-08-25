@@ -7,6 +7,7 @@ interface IStudyTimeBoard {
   members: StudyConfirmedMemberProps[];
 }
 export default function StudyTimeBoard({ members }: IStudyTimeBoard) {
+  console.log(25, members);
   const timeBoardMembers: ITimeBoardParticipant[] = transformToTimeBoardProp(members);
 
   return <UserTimeBoard members={timeBoardMembers} />;

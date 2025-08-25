@@ -3,31 +3,28 @@ import dayjs from "dayjs";
 import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
-import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Header from "../../../components/layouts/Header";
-import { useUserRequestQuery } from "../../../hooks/admin/quries";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useStudyStatusMutation } from "../../../hooks/study/mutations";
-import { useStudyPlacesQuery } from "../../../hooks/study/queries";
 
 function StudyAddition() {
   const toast = useToast();
   const { data: session } = useSession();
-  const { data: requestData, isLoading } = useUserRequestQuery("장소 추가");
+  // const { data: requestData, isLoading } = useUserRequestQuery("장소 추가");
 
-  const { data: placeData } = useStudyPlacesQuery("all", "inactive");
+  // const { data: placeData } = useStudyPlacesQuery("all");
 
-  const mergedData =
-    requestData &&
-    placeData &&
-    requestData
-      .map((data) => {
-        const findItem = placeData?.find((place) => place.fullname === data.title);
-        if (findItem) {
-          return { ...data, id: findItem._id };
-        }
-      })
-      .filter((obj) => obj);
+  const mergedData = null;
+  // requestData &&
+  // placeData &&
+  // requestData
+  //   .map((data) => {
+  //     const findItem = placeData?.find((place) => place.fullname === data.title);
+  //     if (findItem) {
+  //       return { ...data, id: findItem._id };
+  //     }
+  //   })
+  //   .filter((obj) => obj);
 
   const { mutate } = useStudyStatusMutation({
     onSuccess() {
@@ -46,30 +43,27 @@ function StudyAddition() {
   return (
     <>
       <Header title="스터디 장소 추가 요청" url="/admin" />
-      {isLoading ? (
-        <MainLoading />
-      ) : (
-        <Layout>
-          {mergedData
-            ?.slice()
-            .reverse()
-            .map((item, idx) => (
-              <Item key={idx}>
-                <Wrapper>
-                  <ItemHeader>
-                    <span>{"temp" || "익명"}</span>
-                    <span>{dayjs(item.updatedAt).format("M월 D일 H시 m분")}</span>
-                  </ItemHeader>
-                  <Box>장소: {item.title}</Box>
-                  <Content>{item.content}</Content>
-                </Wrapper>
-                <Button mx="20px" onClick={() => onClick(item.id)} colorScheme="mint">
-                  승인
-                </Button>
-              </Item>
-            ))}
-        </Layout>
-      )}
+
+      <Layout>
+        {mergedData
+          ?.slice()
+          .reverse()
+          .map((item, idx) => (
+            <Item key={idx}>
+              <Wrapper>
+                <ItemHeader>
+                  <span>{"temp" || "익명"}</span>
+                  <span>{dayjs(item.updatedAt).format("M월 D일 H시 m분")}</span>
+                </ItemHeader>
+                <Box>장소: {item.title}</Box>
+                <Content>{item.content}</Content>
+              </Wrapper>
+              <Button mx="20px" onClick={() => onClick(item.id)} colorScheme="mint">
+                승인
+              </Button>
+            </Item>
+          ))}
+      </Layout>
     </>
   );
 }

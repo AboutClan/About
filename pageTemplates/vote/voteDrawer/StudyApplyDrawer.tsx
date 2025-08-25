@@ -10,7 +10,7 @@ import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import StudyVoteTimeRulletDrawer from "../../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { STUDY_RESULT_HOUR } from "../../../constants/serviceConstants/studyConstants/studyTimeConstant";
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
-import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
+import { useToast } from "../../../hooks/custom/CustomToast";
 import { useStudyVoteArrMutation } from "../../../hooks/study/mutations";
 import { useStudySetQuery } from "../../../hooks/study/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
@@ -37,7 +37,7 @@ function StudyApplyDrawer({
   canChange = false,
 }: StudyDateDrawerProps) {
   const toast = useToast();
-  const typeToast = useTypeToast();
+
   const resetStudy = useResetStudyQuery();
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
   const [isModal, setIsModal] = useState(false);

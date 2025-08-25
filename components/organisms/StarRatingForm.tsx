@@ -92,5 +92,5 @@ export default ReviewForm;
 
 const INFO_ARR = [
   "실명은 100 Point, 익명은 30 Point가 적립됩니다.",
-  "작성된 리뷰는 이후 스터디 장소 결정에 도움이 됩니다.",
+  "솔직한 리뷰는 더 좋은 스터디 장소를 결정하는 힘이 됩니다.",
 ];

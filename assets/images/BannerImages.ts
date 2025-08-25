@@ -1,13 +1,18 @@
 interface BannerProps {
   image: string;
-  category: "main" | "groupAdmin" | "faq" | "faq" | "friendInvite";
+  category: "main" | "groupAdmin" | "study" | "faq" | "friendInvite";
 }
 
 export const MAIN_BANNER_IMAGE: BannerProps[] = [
   {
     image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/KakaoTalk_20250821_002801482.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/KakaoTalk_20250826_012837956.jpg",
     category: "main",
+  },
+  {
+    image:
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/KakaoTalk_20250826_012731233.jpg",
+    category: "study",
   },
   {
     image:
@@ -16,12 +21,12 @@ export const MAIN_BANNER_IMAGE: BannerProps[] = [
   },
   {
     image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/KakaoTalk_20250803_202951083.png",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/KakaoTalk_20250826_012830570.jpg",
     category: "faq",
   },
   {
     image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88/KakaoTalk_20250822_012024069.jpg",
+      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/KakaoTalk_20250826_012759924.jpg",
     category: "friendInvite",
   },
 ];

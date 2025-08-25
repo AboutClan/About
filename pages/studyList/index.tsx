@@ -43,7 +43,7 @@ export default function StudyList() {
     }
     const getThumbnailCardInfoArr = setStudyThumbnailCard(
       date,
-      studySet,
+      studySet || passedStudyData,
       date === dayjsToStr(dayjs()) ? session?.user.id : null,
     );
     setThumbnailCardinfoArr(

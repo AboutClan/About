@@ -1,6 +1,6 @@
 import { Button, Flex, ThemeTypings } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
@@ -37,8 +37,6 @@ interface IStudyNavigation {
   findStudy: StudyConfirmedProps;
 }
 
-type MyStatus = "participation" | "pending";
-
 interface NavigationProps {
   type: "single" | "multi";
   text: string;
@@ -59,22 +57,19 @@ function StudyNavigation({
 }: IStudyNavigation) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const newSearchParams = new URLSearchParams(searchParams);
   const drawerTypeParam = searchParams.get("drawer") as "apply";
-  const pathname = usePathname();
+
   const toast = useToast();
 
   const { data: userInfo } = useUserInfoQuery();
   const {
-    voteStudy: { vote, participate, change, absence, cancel },
+    voteStudy: { vote, participate, change },
     realTimeStudy: { vote: realTimesVote, change: realTimeChange, cancel: realTimeCancel },
     isLoading,
   } = useStudyMutations(dayjs(date));
 
   const resultStatus = findStudy?.status;
 
-  const [isTimeRulletModal, setIsTimeRulletModal] = useState(false);
-  const [voteModalType, setVoteModalType] = useState<"vote" | "free">(null);
   const [voteTime, setVoteTime] = useState<DayjsTimeProps>();
   const [isAbsentModal, setIsAbsentModal] = useState(false);
   const [alertModalInfo, setAlertModalInfo] = useState<IAlertModalOptions>();
@@ -86,9 +81,6 @@ function StudyNavigation({
   useEffect(() => {
     if (drawerTypeParam === "apply") {
       setDrawerType("apply");
-      // newSearchParams.delete("drawer");
-      // const params = newSearchParams.toString();
-      // router.replace(pathname + params ? `?${params}` : "");
     }
   }, [drawerTypeParam]);
 
@@ -101,10 +93,9 @@ function StudyNavigation({
       (myStudyInfo as StudyConfirmedMemberProps)?.attendance?.type ||
       dayjs(date).startOf("day").isBefore(dayjs().startOf("day"))
     ) {
-      console.log(44);
       return null;
     }
-    console.log(123, studyType, myStatus);
+
     switch (studyType) {
       case "participations":
         if (myStatus === "pending") {
@@ -126,6 +117,7 @@ function StudyNavigation({
             },
           };
         }
+        break;
       case "openRealTimes":
         if (myStatus === "pending") {
           return {
@@ -183,6 +175,7 @@ function StudyNavigation({
             },
           };
         }
+        break;
       case "results":
         if (myStatus === "pending") {
           if (myStudyStatus === "otherParticipation") {
@@ -221,6 +214,7 @@ function StudyNavigation({
               router.push(`/vote/attend/configuration?date=${date}&id=${id}&type=results`),
           };
         }
+        break;
       case "soloRealTimes":
         if (myStatus === "pending") {
           if (myStudyStatus === "otherParticipation") {
@@ -244,14 +238,13 @@ function StudyNavigation({
             func: () => router.push(`/vote/attend/configuration?date=${date}&type=soloRealTimes`),
           };
         }
+        break;
       default:
         break;
     }
   };
 
   const handleDirectAction = (drawerType: DirectAction) => {
-    // setIsTimeRulletModal(false);
-
     switch (drawerType) {
       case "dailyVote":
         participate({ placeId: id, ...voteTime });
@@ -343,10 +336,6 @@ function StudyNavigation({
   //     });
   //   }
   // };
-
-  const handleChangeTime = () => {
-    setIsTimeRulletModal(true);
-  };
 
   const navigationProps = getNavigationProps(studyType, myStudyStatus);
 

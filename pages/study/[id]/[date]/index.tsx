@@ -7,15 +7,8 @@ import { useEffect, useState } from "react";
 import { STUDY_COVER_IMAGES } from "../../../../assets/images/studyCover";
 import { MainLoading } from "../../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../../components/layouts/PageSlide";
-import RightDrawer from "../../../../components/organisms/drawer/RightDrawer";
-import StarRatingForm from "../../../../components/organisms/StarRatingForm";
-import { useResetStudyQuery } from "../../../../hooks/custom/CustomHooks";
-import { usePointToast } from "../../../../hooks/custom/CustomToast";
 import { useUserInfo } from "../../../../hooks/custom/UserHooks";
-import { usePlaceReviewMutation } from "../../../../hooks/study/mutations";
 import { useStudyPassedDayQuery, useStudySetQuery } from "../../../../hooks/study/queries";
-import { usePointSystemMutation } from "../../../../hooks/user/mutations";
-import { useUserInfoQuery } from "../../../../hooks/user/queries";
 import { shortenParticipations } from "../../../../libs/study/studyConverters";
 import { getMyStudyDateArr } from "../../../../libs/study/studyHelpers";
 import { ModalLayout } from "../../../../modals/Modals";
@@ -26,8 +19,8 @@ import StudyHeader from "../../../../pageTemplates/study/StudyHeader";
 import StudyMembers from "../../../../pageTemplates/study/StudyMembers";
 import StudyNavigation from "../../../../pageTemplates/study/StudyNavigation";
 import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
+import StudyReviewButton from "../../../../pageTemplates/study/StudyReviewButton";
 import StudyTimeBoard from "../../../../pageTemplates/study/StudyTimeBoard";
-import { PlaceReviewProps } from "../../../../types/models/studyTypes/entityTypes";
 import {
   MyStudyStatus,
   StudyConfirmedMemberProps,
@@ -37,6 +30,7 @@ import {
   StudyParticipationsSetProps,
   StudyType,
 } from "../../../../types/models/studyTypes/study-set.types";
+import { dayjsToStr } from "../../../../utils/dateTimeUtils";
 import { getRandomImage } from "../../../../utils/imageUtils";
 import { navigateExternalLink } from "../../../../utils/navigateUtils";
 
@@ -52,13 +46,13 @@ export default function Page() {
   const { data: studyPassedData } = useStudyPassedDayQuery(date, {
     enabled: !!isPassedDate,
   });
-  console.log(24, studyPassedData);
-  const [modalType, setModalType] = useState<"studyLink">();
+
+  const [modalType, setModalType] = useState<"studyLink" | "review">();
 
   const studyData = isPassedDate
     ? studyPassedData && studyPassedData[studyType]
     : studySet && studySet[studyType];
-
+  console.log("set", studySet);
   const participationsSet =
     studyType === "participations" && (studyData as StudyParticipationsSetProps[]);
   const confirmedSet = studyType !== "participations" && (studyData as StudyConfirmedSetProps[]);
@@ -82,6 +76,7 @@ export default function Page() {
   const myStudyArr = getMyStudyDateArr(studySet, userInfo?._id);
 
   const findTodayStudy = myStudyArr?.find((myStudy) => myStudy.date === date);
+
   const myStudyStatus: MyStudyStatus = !findTodayStudy
     ? "pending"
     : findTodayStudy?.type === studyType
@@ -96,20 +91,23 @@ export default function Page() {
           ...study.study.members[0],
         }))
       : findStudy?.members;
-
   const placeInfo = findStudy?.place;
+  console.log(9, studyData, placeInfo);
 
   useEffect(() => {
     if (
       myStudyStatus === "pending" ||
       studyType === "soloRealTimes" ||
-      studyType === "participations"
+      studyType === "participations" ||
+      date !== dayjsToStr(dayjs())
     )
       return;
     const hasLink = localStorage.getItem("studyLink");
     if (hasLink === date) return;
     setModalType("studyLink");
   }, [myStudyStatus]);
+
+  const isMyReview = placeInfo?.reviews?.some((review) => review.user._id === userInfo?._id);
 
   return (
     <>
@@ -155,8 +153,14 @@ export default function Page() {
               findStudy={findStudy}
             />
           )}
-          {/* {isReviewButton && <StudyReviewButton />} */}
-
+          {!isMyReview &&
+            date === dayjsToStr(dayjs()) &&
+            (studyType === "openRealTimes" || studyType === "results") && (
+              <StudyReviewButton
+                placeId={placeInfo?._id}
+                myStudyInfo={myStudyInfo as StudyConfirmedMemberProps}
+              />
+            )}
           {/* {isInviteModal && <StudyInviteModal setIsModal={setIsInviteModal} place={place} />} */}
         </>
       ) : (
@@ -166,34 +170,6 @@ export default function Page() {
         <StudyLinkModal date={date} onClose={() => setModalType(null)} />
       )}
     </>
-  );
-}
-
-function RightReviewDrawer({ placeId, onClose }: { placeId: string; onClose: () => void }) {
-  const resetStudy = useResetStudyQuery();
-  const pointToast = usePointToast();
-  const { data: userInfo } = useUserInfoQuery();
-
-  const { mutate: updatePoint } = usePointSystemMutation("point");
-  const { mutate } = usePlaceReviewMutation({
-    onSuccess() {
-      resetStudy();
-      onClose();
-    },
-  });
-
-  const handleSubmit = (data: PlaceReviewProps) => {
-    mutate({ ...data, placeId });
-    updatePoint({ value: data.isSecret ? 30 : 100, message: "카페 리뷰 작성" });
-    pointToast(data.isSecret ? 30 : 100);
-  };
-
-  return (
-    <RightDrawer title="카페 후기" onClose={onClose}>
-      <Box mt={5}>
-        <StarRatingForm user={userInfo} onSubmit={handleSubmit} />
-      </Box>
-    </RightDrawer>
   );
 }
 

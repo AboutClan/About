@@ -1,6 +1,5 @@
 import { Badge, Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -33,7 +32,6 @@ interface StudyPlaceDrawerProps {
 }
 
 function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
-  const router = useRouter();
   const resetStudy = useResetStudyQuery();
   const toast = useToast();
 
