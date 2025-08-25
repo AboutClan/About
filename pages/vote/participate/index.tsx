@@ -23,7 +23,7 @@ export default Index;
 // import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 // import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 // import { useStudyVoteMutation } from "../../../hooks/study/mutations";
-// import { useStudyVoteQuery } from "../../../hooks/study/queries";
+// import { useStudyPassedDayQuery } from "../../../hooks/study/queries";
 // import { myStudyParticipationState } from "../../../recoils/studyRecoils";
 // import { IStudyVoteTime } from "../../../types/models/studyTypes/studyInterActions";
 // import { Location, LocationEn } from "../../../types/services/locationTypes";
@@ -49,7 +49,7 @@ export default Index;
 
 //   const myStudyParticipation = useRecoilValue(myStudyParticipationState);
 
-//   const { data: studyVoteData } = useStudyVoteQuery(dateParam, location, {
+//   const { data: studyVoteData } = useStudyPassedDayQuery(dateParam, location, {
 //     enabled: !!dateParam && !!location,
 //   });
 

@@ -23,7 +23,7 @@ function ControlButton({
   return (
     <Flex
       position="fixed"
-      zIndex="800"
+      zIndex="50"
       fontSize="12px"
       lineHeight="24px"
       fontWeight="bold"

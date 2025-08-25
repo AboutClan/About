@@ -34,7 +34,7 @@ function UserInviteBoard({ gatherId, members, groupId }: UserInviteBoardProps) {
 
   const { data: usersAll, isLoading } = useAllUserDataQuery(null);
   const { data: group, isLoading: isLoading2 } = useGroupIdQuery(groupId, { enabled: !!groupId });
-  console.log(35, group);
+ 
   const { mutate } = useGatherInviteMutation(+gatherId, {
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: [GATHER_CONTENT], exact: false });
@@ -55,7 +55,7 @@ function UserInviteBoard({ gatherId, members, groupId }: UserInviteBoardProps) {
     setExistUsers((old) => [...old, inviteUser._id]);
     setInviteUser(null);
   }, [inviteUser]);
-  console.log(1234, users);
+
   return (
     <>
       <Flex mt={5}>

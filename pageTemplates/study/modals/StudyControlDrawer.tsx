@@ -1,259 +1,135 @@
 import { Box, Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import {
-  StudyCheckIcon,
-  StudySelectIcon,
-  StudyUserCheckIcon,
-} from "../../../components/Icons/ControlButtonIcon";
-import BottomFlexDrawer, {
-  BottomFlexDrawerOptions,
-} from "../../../components/organisms/drawer/BottomFlexDrawer";
-import StudyPlacePickerDrawer from "../../../components/services/studyVote/StudyPlacePickerDrawer";
-import StudyVoteTimeRulletDrawer from "../../../components/services/studyVote/StudyVoteTimeRulletDrawer";
-import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
-import { useToast } from "../../../hooks/custom/CustomToast";
-import { useRealtimeVoteMutation } from "../../../hooks/realtime/mutations";
-import { useStudyParticipateMutation, useStudyVoteMutation } from "../../../hooks/study/mutations";
-import { useUserInfoQuery } from "../../../hooks/user/queries";
-import { CoordinatesProps } from "../../../types/common";
-import { StudyMergeResultProps } from "../../../types/models/studyTypes/derivedTypes";
-import { RealTimeVoteProps } from "../../../types/models/studyTypes/requestTypes";
-import { IStudyVoteTime, StudyVoteProps } from "../../../types/models/studyTypes/studyInterActions";
+import { StudyUserCheckIcon } from "../../../components/Icons/ControlButtonIcon";
+import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
-import StudyPlaceDrawer from "../../vote/voteDrawer/StudyPlaceDrawer";
+import StudyApplyDrawer from "../../vote/voteDrawer/StudyApplyDrawer";
+import StudyOpenDrawer from "../../vote/voteDrawer/StudyOpenDrawer";
+
+type DrawerType = "apply" | "open";
 
 interface StudyControlDrawerProps {
   date: string;
-  studyResults: StudyMergeResultProps[];
-  currentLocation: CoordinatesProps;
-  studyDrawerType: "free" | "vote";
   onClose: () => void;
 }
 
-function StudyControlDrawer({
-  date,
-  studyResults,
-  currentLocation,
-  studyDrawerType,
-  onClose,
-}: StudyControlDrawerProps) {
+function StudyControlDrawer({ date, onClose }: StudyControlDrawerProps) {
   const router = useRouter();
-  const resetStudy = useResetStudyQuery();
-  const toast = useToast();
 
-  const { data: userInfo } = useUserInfoQuery();
+  const [drawerType, setDrawerType] = useState<DrawerType>(null);
 
-  const { mutate: voteStudy } = useStudyVoteMutation(dayjs(date), "post", {
-    onSuccess() {
-      resetStudy();
+  const buttonProps: {
+    text: string;
+    icon: JSX.Element;
+    func: () => void;
+    isDisabled?: boolean;
+  }[] = [
+    {
+      text: "스터디 신청",
+      icon: <StudyApplyIcon />,
+      func: () => {
+        setDrawerType("apply");
+      },
     },
-  });
-  const { mutate: participateStudyOne } = useStudyParticipateMutation(dayjs(date), {
-    onSuccess() {
-      toast("success", "참여가 완료되었습니다. 출석 인증도 잊지 마세요!");
-      resetStudy();
+    {
+      text: "스터디 개설",
+      icon: <StudyOpenIcon />,
+      func: () => {
+        setDrawerType("open");
+      },
     },
-  });
-  const { mutate: participateRealTime } = useRealtimeVoteMutation(date, {
-    onSuccess() {
-      toast("success", "참여가 완료되었습니다. 출석 인증도 잊지 마세요!");
-      resetStudy();
+    {
+      text: " 실시간 공부 인증",
+      icon: <StudyUserCheckIcon color="gray" />,
+      func: () => {
+        router.push(`/vote/attend/certification?date=${dayjsToStr(dayjs())}&type=soloRealTimes`);
+      },
     },
-  });
-
-  const [selectedPlaceId, setSelectedPlaceId] = useState(null);
-  const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
-
-  const [timeRulletType, setTimeRulletType] = useState<"vote" | "participate" | "realTime">();
-  const [isPlacePickDrawer, setIsPlacePickDrawer] = useState(false);
-  const [rightDrawerType, setRightDrawerType] = useState<"realTime" | "vote">(null);
-
-  const handleStudyVoteBtn = (
-    type: "selectTime" | "pickPlace" | "directInputPlace" | "directAttend",
-  ) => {
-    switch (type) {
-      case "selectTime":
-        setTimeRulletType("vote");
-        break;
-      case "pickPlace":
-        if (!studyResults.length) {
-          toast("warning", "진행중인 스터디가 없습니다.", 1000);
-          return;
-        }
-        setIsPlacePickDrawer(true);
-        break;
-      case "directInputPlace":
-        setRightDrawerType(studyDrawerType === "free" ? "realTime" : "vote");
-        break;
-      case "directAttend":
-        router.push(`/vote/attend/certification?date=${date}`);
-        break;
-    }
-
-    onClose();
-  };
-
-  const handleStudyVote = (
-    voteData: StudyVoteProps | RealTimeVoteProps,
-    type: "vote" | "realTime",
-  ) => {
-    if (type === "vote") voteStudy(voteData as StudyVoteProps);
-    else if (type === "realTime") participateRealTime(voteData as RealTimeVoteProps);
-    setTimeRulletType(null);
-    setRightDrawerType(null);
-  };
-
-  const timeRulletDrawerOptions: BottomFlexDrawerOptions = {
-    header: {
-      title: "스터디 참여 시간 선택",
-      subTitle: "예상 시작 시간과 종료 시간을 선택해 주세요",
-    },
-    footer: {
-      text: timeRulletType === "participate" ? "참여 확정" : "신청 완료",
-      func:
-        timeRulletType === "participate"
-          ? () => {
-              participateStudyOne({
-                placeId: selectedPlaceId,
-                start: voteTime.start,
-                end: voteTime.end,
-              });
-              setTimeRulletType(null);
-            }
-          : () => {
-              if (!userInfo?.locationDetail) {
-                toast("error", "스터디 기준 위치를 설정해 주세요!");
-                return;
-              }
-              const { lat: latitude, lon: longitude } = { ...userInfo?.locationDetail };
-              const voteData = {
-                latitude,
-                longitude,
-                start: voteTime.start,
-                end: voteTime.end,
-              };
-              handleStudyVote(voteData, "vote");
-            },
-    },
-  };
-
-  const locationDetatilText = userInfo?.locationDetail?.text;
+  ];
 
   return (
     <>
-      {studyDrawerType && (
-        <BottomFlexDrawer
-          isOverlay
-          isDrawerUp
-          setIsModal={onClose}
-          isHideBottom
-          drawerOptions={{ footer: { text: "취소", func: onClose } }}
-          height={studyDrawerType === "free" && studyResults?.length ? 249 : 197}
-          zIndex={800}
-        >
-          {studyDrawerType !== "free" || studyResults?.length ? (
-            <Button
-              h="52px"
-              justifyContent="flex-start"
-              display="flex"
-              variant="unstyled"
-              py={4}
-              w="100%"
-              lineHeight="20px"
-              onClick={() =>
-                handleStudyVoteBtn(studyDrawerType === "free" ? "pickPlace" : "selectTime")
-              }
-            >
-              <Box w="20px" h="20px" mr={4} opacity={0.28}>
-                <StudyCheckIcon />
-              </Box>
-              <Box fontSize="13px" color="var(--gray-600)">
-                {studyDrawerType === "free"
-                  ? "진행중인 스터디 참여"
-                  : locationDetatilText
-                  ? `[${
-                      locationDetatilText.length > 10
-                        ? locationDetatilText.slice(0, 10) + "..."
-                        : locationDetatilText
-                    }] 기준 스터디 신청`
-                  : "즐겨 찾는 위치에서 스터디 신청"}
-              </Box>
-            </Button>
-          ) : null}
+      <BottomFlexDrawer
+        isOverlay
+        isDrawerUp
+        setIsModal={onClose}
+        isHideBottom
+        drawerOptions={{ footer: { text: "취소", func: onClose } }}
+        height={249}
+        zIndex={800}
+      >
+        {buttonProps.map((props, idx) => (
           <Button
+            key={idx}
             h="52px"
             justifyContent="flex-start"
             display="flex"
             variant="unstyled"
             py={4}
             w="100%"
-            onClick={() => handleStudyVoteBtn("directInputPlace")}
             lineHeight="20px"
+            onClick={props.func}
+            isDisabled={props?.isDisabled}
           >
             <Box w="20px" h="20px" mr={4} opacity={0.28}>
-              <StudySelectIcon />
+              {props.icon}
             </Box>
-            <Box fontSize="13px" color="var(--gray-600)">
-              {studyDrawerType === "free" ? "일일 스터디 개설 신청" : "스터디 기준 위치 직접 입력"}
+            <Box fontSize="13px" color="var(--gray-600)" fontWeight="500">
+              {props.text}
             </Box>
           </Button>
-          {studyDrawerType === "free" && (
-            <Link href={`/vote/attend/certification?date=${date}`} style={{ width: "100%" }}>
-              <Button
-                h="52px"
-                display="flex"
-                justifyContent="flex-start"
-                variant="unstyled"
-                py={4}
-                w="100%"
-                isDisabled={date !== dayjsToStr(dayjs())}
-                lineHeight="20px"
-              >
-                <Box w="20px" h="20px" mr={4} opacity={0.28}>
-                  <StudyUserCheckIcon color="gray" />
-                </Box>
-                <Box fontSize="13px" color="var(--gray-600)">
-                  실시간 개인 카공 인증
-                </Box>
-              </Button>
-            </Link>
-          )}
-        </BottomFlexDrawer>
-      )}
-      {isPlacePickDrawer && (
-        <StudyPlacePickerDrawer
-          date={date}
-          studyResults={studyResults}
-          currentLocation={currentLocation}
-          handlePickPlace={(placeId: string) => {
-            setSelectedPlaceId(placeId);
-            setTimeRulletType("participate");
-            setIsPlacePickDrawer(false);
+        ))}
+      </BottomFlexDrawer>
+
+      {drawerType === "apply" && (
+        <StudyApplyDrawer
+          defaultDate={date}
+          onClose={() => {
+            setDrawerType(null);
+            onClose();
           }}
-          setIsModal={setIsPlacePickDrawer}
         />
       )}
-      {timeRulletType && (
-        <StudyVoteTimeRulletDrawer
-          setVoteTime={setVoteTime}
-          drawerOptions={timeRulletDrawerOptions}
-          setIsModal={() => setTimeRulletType(null)}
-          zIndex={800}
-        />
-      )}
-      {rightDrawerType && (
-        <StudyPlaceDrawer
-          type={rightDrawerType}
-          date={date}
-          handleStudyVote={(voteData) => handleStudyVote(voteData, rightDrawerType)}
-          onClose={() => setRightDrawerType(null)}
+      {drawerType === "open" && (
+        <StudyOpenDrawer
+          onClose={() => {
+            setDrawerType(null);
+            onClose();
+          }}
         />
       )}
     </>
+  );
+}
+
+function StudyApplyIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="20px"
+      viewBox="0 -960 960 960"
+      width="20px"
+      fill="#424242"
+    >
+      <path d="M480-160q-48-38-104-59t-116-21q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q74 0 126 17t112 52q11 6 16.5 14t5.5 21v418q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-481q15 5 29.5 11t28.5 14q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-60 0-116 21t-104 59Zm140-240v-440l120-40v440l-120 40Z" />
+    </svg>
+  );
+}
+
+function StudyOpenIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="20px"
+      viewBox="0 -960 960 960"
+      width="20px"
+      fill="#424242"
+    >
+      <path d="M238-200q-100-5-149-42T40-349q0-65 53.5-105.5T242-503q39-3 58.5-12.5T320-542q0-26-29.5-39T193-600l7-80q103 8 151.5 41.5T400-542q0 53-38.5 83T248-423q-64 5-96 23.5T120-349q0 35 28 50.5t94 18.5l-4 80Zm317-30L390-395l345-345q20-20 47.5-20t47.5 20l70 70q20 20 20 47.5T900-575L555-230Zm-196 70q-17 4-30-9t-9-30l31-151 158 158-150 32Z" />
+    </svg>
   );
 }
 

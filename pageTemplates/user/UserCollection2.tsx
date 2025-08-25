@@ -53,7 +53,7 @@ export default function UserCollection() {
     }
   }, [alphabets]);
 
-  console.log(342, alphabets);
+
   const alphabetArr = alphabets?.collects;
 
   return (

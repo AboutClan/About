@@ -44,7 +44,10 @@ interface StudyVoteTimeRulletsProps {
 }
 
 export function StudyVoteTimeRullets({ defaultVoteTime, setVoteTime }: StudyVoteTimeRulletsProps) {
-  const startItemArr = createTimeArr(STUDY_VOTE_HOUR_ARR[0], STUDY_VOTE_HOUR_ARR[11]);
+  const startItemArr = createTimeArr(
+    STUDY_VOTE_HOUR_ARR[0],
+    STUDY_VOTE_HOUR_ARR[STUDY_VOTE_HOUR_ARR.length - 3],
+  );
 
   const endTimeArr = createTimeArr(
     STUDY_VOTE_HOUR_ARR[2],
@@ -74,14 +77,15 @@ export function StudyVoteTimeRullets({ defaultVoteTime, setVoteTime }: StudyVote
   };
   useEffect(() => {
     if (defaultVoteTime) {
-      const startIndex = startItemArr.findIndex(
-        (time) =>
-          dayjsToTimeString(parseTimeToDayjs(time)) === dayjsToTimeString(defaultVoteTime.start),
-      );
-      const endIndex = endTimeArr.findIndex(
-        (time) =>
-          dayjsToTimeString(parseTimeToDayjs(time)) === dayjsToTimeString(defaultVoteTime.end),
-      );
+      return;
+      const startIndex = startItemArr.findIndex((time) => {
+        return (
+          dayjsToTimeString(parseTimeToDayjs(time)) === dayjsToTimeString(defaultVoteTime.start)
+        );
+      });
+      const endIndex = endTimeArr.findIndex((time) => {
+        return dayjsToTimeString(parseTimeToDayjs(time)) === dayjsToTimeString(defaultVoteTime.end);
+      });
 
       if (startIndex !== -1 && endIndex !== -1) {
         const end = startIndex + 4 <= endIndex ? endIndex : startIndex + 4;

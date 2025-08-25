@@ -49,7 +49,11 @@ const baseNextConfig = {
   },
   // output: "standalone",
   images: {
-    unoptimized: true, // 이미지 최적화 비활성화
+    unoptimized: false,
+
+    // 2) 최신 포맷으로 자동 변환 (용량↓)
+    formats: ["image/avif", "image/webp"],
+
     domains: [
       "about-front.kro.kr",
       "studyabout.herokuapp.com",
@@ -113,8 +117,8 @@ const baseNextConfig = {
         pathname: "/**", // 모든 경로 허용
       },
     ],
-    deviceSizes: [320, 420, 768, 1024, 1200, 1600, 1920],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    deviceSizes: [320, 450], // 반응형은 모바일 maxW까지만
+    imageSizes: [16, 32, 40, 48, 60, 72, 80, 120, 240, 300, 360, 450, 600],
   },
 
   compiler: {

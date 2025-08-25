@@ -12,6 +12,13 @@ export const getDistributionArr = (winList: IDailyCheckWinList[], size: number) 
   return arr;
 };
 
+export const getLowBiasedRandom = (min: number, max: number) => {
+  const biasStrength = 12;
+  const u = Math.random();
+  const v = Math.pow(u, biasStrength);
+  return Math.floor(min + (max - min) * v);
+};
+
 export const getPerformanceTime = () => {
   return performance.now() / 1000;
 };

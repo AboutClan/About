@@ -6,12 +6,12 @@ import styled from "styled-components";
 
 import { AVATAR_IMAGES } from "../../../assets/images/avatarImages";
 import Avatar from "../../../components/atoms/Avatar";
+import { ShortArrowIcon } from "../../../components/Icons/ArrowIcons";
 import ImageSlider from "../../../components/organisms/imageSlider/ImageSlider";
 import { COLOR_TABLE_LIGHT } from "../../../constants/colorConstants";
 import { USER_INFO } from "../../../constants/keys/queryKeys";
 import { useErrorToast, useFailToast } from "../../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
-import { AVATAR_COST } from "../../../storage/avatarStorage";
 import { IModal } from "../../../types/components/modalTypes";
 import { IFooterOptions, ModalLayout } from "../../Modals";
 interface IRequestChangeProfileImageModalAvatar extends IModal {
@@ -96,7 +96,7 @@ function RequestChangeProfileImageModalAvatar({
     <ModalLayout title="아바타 프로필" footerOptions={footerOptions} setIsModal={setIsModal}>
       <UpPart>
         <ArrowIcon isLeft={true} onClick={() => handleMove("prev")}>
-          {iconIdx !== 0 && <i className="fa-solid fa-chevron-left" />}
+          {iconIdx !== 0 && <ShortArrowIcon dir="left" color="black" size="lg" />}
         </ArrowIcon>
         <AnimatePresence>
           <IconWrapper
@@ -108,12 +108,13 @@ function RequestChangeProfileImageModalAvatar({
             key={iconIdx}
           >
             <Avatar user={{ avatar: { type: typeIdx, bg: BG } }} size="xl1" />
-
-            <IconPoint>{AVATAR_COST[iconIdx]}점 달성</IconPoint>
+            {/* <IconPoint>{AVATAR_COST[iconIdx]}점 달성</IconPoint> */}
           </IconWrapper>
         </AnimatePresence>
         <ArrowIcon isLeft={false} onClick={() => handleMove("next")}>
-          {iconIdx !== AVATAR_IMAGES.length - 1 && <i className="fa-solid fa-chevron-right" />}
+          {iconIdx !== AVATAR_IMAGES.length - 1 && (
+            <ShortArrowIcon dir="right" size="lg" color="gray" />
+          )}
         </ArrowIcon>
       </UpPart>
       <DownPart>
@@ -157,13 +158,6 @@ const DownPart = styled.div`
   margin-top: var(--gap-3);
   border-top: var(--border);
   border-bottom: var(--border);
-`;
-
-const IconPoint = styled.div`
-  color: var(--color-mint);
-  font-size: 11px;
-  margin-top: 12px;
-  font-weight: 600;
 `;
 
 const variants = {

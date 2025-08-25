@@ -1,64 +1,330 @@
-import { STUDY_COVER_IMAGES } from "../../assets/images/studyCover";
-import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
 import {
-  RealTimeMemberProps,
-  RealTimesStatus,
-  StudyMemberProps,
-  StudyPlaceProps,
-  StudyResultProps,
-  StudyStatus,
-  StudyVoteDataProps,
-} from "../../types/models/studyTypes/baseTypes";
+  InitialParticipationsProps,
+  InitialRealTimesProps,
+  InitialStudyPassedDayProps,
+  InitialStudyPassedDayUserProps,
+  StudySetInitialDataProps,
+} from "../../hooks/study/queries";
 import {
-  MergeStudyPlaceProps,
-  StudyMergeResultProps,
-} from "../../types/models/studyTypes/derivedTypes";
-import { PlaceInfoProps } from "../../types/models/utilTypes";
-import { getRandomIdx } from "../../utils/mathUtils";
+  StudyConfirmedProps,
+  StudyParticipationProps,
+} from "../../types/models/studyTypes/study-entity.types";
+import {
+  StudyParticipationsSetProps,
+  StudySetProps,
+} from "../../types/models/studyTypes/study-set.types";
 
-export const convertStudyToMergeStudy = (
-  studyVoteData: StudyVoteDataProps,
-): StudyMergeResultProps[] => {
-  const convertedRealTimes = studyVoteData?.realTimes
-    ? convertRealTimesToMergeResult(studyVoteData.realTimes.userList)
-    : [];
-  const mergedResult = [...studyVoteData.results, ...convertedRealTimes].map((result) => ({
-    ...result,
-    place: convertMergePlaceToPlace(result.place),
-    status:
-      (result as RealTimesToResultProps)?.status ||
-      (!studyVoteData?.participations ? "open" : null),
-  }));
+// export const convertStudyToMergeStudy = (
+//   studyVoteData: StudyOneDayProps,
+//   studyStatus: StudyType,
+// ): StudyMergeResultProps[] => {
+//   const convertedRealTimes = studyVoteData?.realTimes
+//     ? convertRealTimesToMergeResult(studyVoteData.realTimes.userList)
+//     : [];
+//   const mergedResult = [...studyVoteData.results, ...convertedRealTimes].map((result) => ({
+//     ...result,
+//     place: convertStudyToPlaceInfo(result.place, studyStatus),
+//     status:
+//       (result as RealTimesToResultProps)?.status ||
+//       (!studyVoteData?.participations ? "open" : null),
+//   }));
 
-  return mergedResult;
+//   return mergedResult;
+// };
+
+export const setStudyWeekData = (
+  initialStudySet: StudySetInitialDataProps[] = [],
+): StudySetProps => {
+  return initialStudySet.reduce<StudySetProps>(
+    (acc, oneDay) => {
+      const { date, participations = [], realTimes, results = [] } = oneDay;
+
+      acc.participations.push({ date, study: convertParticipations(participations) });
+
+      if (realTimes?.length) {
+        const { soloUsers, openUsers } = realTimes.reduce(
+          (b, u) => {
+            if (u.status === "solo") b.soloUsers.push(u);
+            else b.openUsers.push(u);
+            return b;
+          },
+          {
+            soloUsers: [] as typeof realTimes,
+            openUsers: [] as typeof realTimes,
+          },
+        );
+
+        acc.soloRealTimes.push(
+          ...soloUsers.map((user) => ({
+            date,
+            study: {
+              place: user.place,
+              members: [
+                {
+                  user: user.user,
+                  time: user.time,
+                  attendance: user.attendance,
+                  comment: {
+                    comment: user?.comment?.text,
+                  },
+                },
+              ],
+              status: user.status,
+            },
+          })),
+        );
+
+        const openGroups = setRealTimesGroup(openUsers);
+
+        acc.openRealTimes.push(
+          ...openGroups.map((group) => ({
+            date: oneDay.date,
+            study: group,
+          })),
+        );
+      }
+
+      acc.results.push(
+        ...results.map((result) => ({
+          date,
+          study: {
+            place: result.place,
+            members: result.members,
+            status: "open" || oneDay.status,
+          },
+        })),
+      );
+
+      return acc;
+    },
+    { participations: [], soloRealTimes: [], openRealTimes: [], results: [] },
+  );
+};
+export const setStudyOneDayData = (
+  studyOneData: InitialStudyPassedDayProps,
+  date: string,
+): StudySetProps => {
+  const studySet: StudySetProps = {
+    participations: null,
+    soloRealTimes: [],
+    openRealTimes: [],
+    results: [],
+  };
+
+  studyOneData.results.forEach((result) => {
+    studySet["results"].push({ date: date, study: { ...result, status: "open" } });
+  });
+  studyOneData.realTimes.userList.forEach((user) => {
+    if (user.status === "solo") {
+      studySet["soloRealTimes"].push({
+        date,
+        study: {
+          place: {
+            location: user.place.location,
+            _id: user.place.location._id,
+          },
+          members: [
+            {
+              user: user.user,
+              time: user.time,
+              attendance: user.attendance,
+              comment: {
+                comment: user?.comment?.text,
+              },
+              // attendance: {
+              //   time: user?.atte,
+              //   memo: user?.memo,
+              //   type: (user?.arrived ? "arrived" : user?.absence ? "absenced" : undefined) as
+              //     | "arrived"
+              //     | "absenced",
+              //   attendanceImage: "",
+              // },
+              // comment: {
+              //   comment: user?.comment,
+              // },
+            },
+          ],
+          status: user.status,
+        },
+      });
+    }
+  });
+
+  const realTimesGroup = setPassedDayRealTimesGroup(
+    studyOneData.realTimes.userList.filter((user) => user.status !== "solo"),
+  );
+  realTimesGroup.forEach((group) => {
+    studySet["openRealTimes"].push({ date, study: group });
+  });
+
+  return studySet;
+  // return studySet.reduce<StudySetProps>(
+  //   (acc, oneDay) => {
+  //     const { realTimes, results = [] } = oneDay;
+
+  //     if (realTimes?.userList?.length) {
+  //       const { soloUsers, openUsers } = realTimes.userList?.reduce(
+  //         (b, u) => {
+  //           if (u.status === "solo") b.soloUsers?.push(u);
+  //           else b.openUsers?.push(u);
+  //           return b;
+  //         },
+  //         {
+  //           soloUsers: [] as typeof realTimes.userList,
+  //           openUsers: [] as typeof realTimes.userList,
+  //         },
+  //       );
+
+  //       acc.soloRealTimes.push(
+  //         ...soloUsers.map((user) => ({
+  //           date,
+  //           study: {
+  //             place: {
+  //               location: user.place.location,
+  //               _id: user.place.location._id,
+  //             },
+  //             members: [
+  //               {
+  //                 user: user.user,
+  //                 time: user.time,
+  //                 // attendance: {
+  //                 //   time: user?.atte,
+  //                 //   memo: user?.memo,
+  //                 //   type: (user?.arrived ? "arrived" : user?.absence ? "absenced" : undefined) as
+  //                 //     | "arrived"
+  //                 //     | "absenced",
+  //                 //   attendanceImage: "",
+  //                 // },
+  //                 // comment: {
+  //                 //   comment: user?.comment,
+  //                 // },
+  //               },
+  //             ],
+  //             status: user.status,
+  //           },
+  //         })),
+  //       );
+  //       const openGroups = setPassedDayRealTimesGroup(openUsers);
+  //       acc.openRealTimes.push(
+  //         ...openGroups.map((group) => ({
+  //           date: oneDay.date,
+  //           study: group,
+  //         })),
+  //       );
+  //     }
+  //     // 3) 결과
+  //     acc.results.push(...results.map((study) => ({ date, study })));
+
+  //     return acc;
+  //   },
+  //   { participations: [], soloRealTimes: [], openRealTimes: [], results: [] },
+  // );
 };
 
-interface RealTimesToResultProps extends Omit<StudyResultProps, "place"> {
-  place: PlaceInfoProps;
-  status?: StudyStatus;
-}
-
-export const convertRealTimesToMergeResult = (
-  studyRealTimeArr: RealTimeMemberProps[],
-): RealTimesToResultProps[] => {
+export const setPassedDayRealTimesGroup = (
+  studyRealTimeArr: InitialStudyPassedDayUserProps[],
+): StudyConfirmedProps[] => {
   if (!studyRealTimeArr) return;
-  const temp: {
-    place: PlaceInfoProps;
-    status: RealTimesStatus;
-    members: StudyMemberProps[];
-  }[] = [];
+  const temp: StudyConfirmedProps[] = [];
+
   studyRealTimeArr.forEach((props) => {
     const findParticipationIdx = temp.findIndex(
-      (participation) => participation.place.name === props.place.name,
+      (participation) => participation.place._id === props.place.location._id,
     );
 
     if (findParticipationIdx !== -1) {
-      temp[findParticipationIdx].members.push(props);
+      temp[findParticipationIdx].members.push({
+        user: props.user,
+        time: props.time,
+        attendance: props.attendance,
+        comment: {
+          comment: props?.comment?.text,
+        },
+        // attendance: {
+        //   time: props?.arrived,
+        //   memo: props?.memo,
+        //   type: (props?.arrived ? "arrived" : props?.absence ? "absenced" : undefined) as
+        //     | "arrived"
+        //     | "absenced",
+        //   attendanceImage: "",
+        // },
+        // comment: {
+        //   comment: props?.comment,
+        // },
+      });
     } else {
       temp.push({
         status: props.status,
-        place: props.place,
-        members: [props],
+        place: {
+          location: props.place.location,
+          _id: props.place._id || props.place.location._id,
+        },
+        members: [
+          {
+            user: props.user,
+            time: props.time,
+            attendance: props.attendance,
+            comment: {
+              comment: props?.comment?.text,
+            },
+
+            // attendance: {
+            //   time: props?.arrived,
+            //   memo: props?.memo,
+            //   type: (props?.arrived ? "arrived" : props?.absence ? "absenced" : undefined) as
+            //     | "arrived"
+            //     | "absenced",
+            //   attendanceImage: "",
+            // },
+            // comment: {
+            //   comment: props?.comment,
+            // },
+          },
+        ],
+      });
+    }
+  });
+  return [...temp].sort((a, b) => {
+    const aCnt = a.members.length;
+    const bCnt = b.members.length;
+    if (aCnt > bCnt) return -1;
+    else if (aCnt < bCnt) return 1;
+    return 0;
+  });
+};
+export const setRealTimesGroup = (
+  studyRealTimeArr: InitialRealTimesProps[],
+): StudyConfirmedProps[] => {
+  if (!studyRealTimeArr) return;
+  const temp: StudyConfirmedProps[] = [];
+
+  studyRealTimeArr.forEach((props) => {
+    const _id = props.place?._id || props.place.location._id;
+    const findParticipationIdx = temp.findIndex((participation) => participation.place._id === _id);
+
+    if (findParticipationIdx !== -1) {
+      temp[findParticipationIdx].members.push({
+        user: props.user,
+        time: props.time,
+        attendance: props.attendance,
+        comment: {
+          comment: props?.comment?.text,
+        },
+      });
+    } else {
+      temp.push({
+        status: props.status,
+        place: { ...props.place, _id: props.place._id || props.place.location._id },
+        members: [
+          {
+            user: props.user,
+            time: props.time,
+            attendance: props.attendance,
+            comment: {
+              comment: props?.comment?.text,
+            },
+          },
+        ],
       });
     }
   });
@@ -71,31 +337,132 @@ export const convertRealTimesToMergeResult = (
   });
 };
 
-export const convertMergePlaceToPlace = (
-  mergePlace: StudyPlaceProps | PlaceInfoProps,
-): MergeStudyPlaceProps => {
-  if (!mergePlace) return;
-  const studyPlace = mergePlace as StudyPlaceProps;
-  const realTimePlace = mergePlace as PlaceInfoProps;
+// export const convertStudyToPlaceInfo = (
+//   study:
+//     | StudyParticipationProps
+//     | RealTimeMemberProps
+//     | RealTimesToResultProps
+//     | StudyConfirmedProps,
+//   studyStatus: StudyType,
+// ): MergeStudyPlaceProps => {
+//   if (studyStatus === "soloRealTimes") return STUDY_SOLO_INFO;
+//   else if (studyStatus === "participations") return STUDY_WAITING_INFO;
+//   if (!study) return;
 
-  return {
-    name: studyPlace?.fullname || realTimePlace?.name,
-    branch: studyPlace?.branch || realTimePlace?.name.split(" ")?.[1] || "정보 없음",
-    address: studyPlace?.locationDetail || realTimePlace?.address,
-    brand: studyPlace?.brand || realTimePlace?.name.split(" ")?.[0] || "",
-    image: studyPlace?.image || STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length - 1)],
-    coverImage:
-      studyPlace?.coverImage || STUDY_COVER_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
-    latitude: studyPlace.latitude,
-    longitude: studyPlace.longitude,
-    time: studyPlace?.time || "unknown",
-    // type: studyPlace?.fullname
-    //   ? "public"
-    //   : realTimePlace?.name
-    //   ? "private"
-    //   : (null as "public" | "private"),
+//   const studyPlace = (study as StudyConfirmedProps).place;
+//   const realTimePlace = (study as RealTimeMemberProps).place;
 
-    _id: studyPlace?._id || realTimePlace?._id,
-    reviews: studyPlace?.reviews || [],
-  };
+//   return {
+//     name: studyPlace?.title || realTimePlace?.name,
+//     // branch: studyPlace?.branch || realTimePlace?.name.split(" ")?.[1] || "정보 없음",
+//     // brand: studyPlace?.brand || realTimePlace?.name.split(" ")?.[0] || "",
+//     image: studyPlace?.image || STUDY_MAIN_IMAGES[getRandomIdx(STUDY_MAIN_IMAGES.length - 1)],
+//     coverImage:
+//       studyPlace?.coverImage || STUDY_COVER_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
+//     location: studyPlace?.location || realTimePlace,
+//     // time: studyPlace?.time || "unknown",
+
+//     _id: studyPlace?._id || realTimePlace?._id,
+//     reviews: studyPlace?.reviews || [],
+//   };
+// };
+
+// export const convertRealTimesToMergeResult = (
+//   studyRealTimeArr: RealTimeMemberProps[],
+// ): RealTimesToResultProps[] => {
+//   if (!studyRealTimeArr) return;
+//   const temp: {
+//     place: PlaceInfoProps;
+//     status: StudyStatus;
+//     members: StudyConfirmedMemberProps[];
+//   }[] = [];
+//   studyRealTimeArr.forEach((props) => {
+//     const findParticipationIdx = temp.findIndex(
+//       (participation) => participation.place.name === props.place.name,
+//     );
+
+//     if (findParticipationIdx !== -1) {
+//       temp[findParticipationIdx].members.push(props);
+//     } else {
+//       temp.push({
+//         status: props.status,
+//         place: props.place,
+//         members: [props],
+//       });
+//     }
+//   });
+//   return [...temp].sort((a, b) => {
+//     const aCnt = a.members.length;
+//     const bCnt = b.members.length;
+//     if (aCnt > bCnt) return -1;
+//     else if (aCnt < bCnt) return 1;
+//     return 0;
+//   });
+// };
+
+const convertParticipations = (
+  participations: InitialParticipationsProps[],
+): StudyParticipationProps[] => {
+  return participations.map((par) => ({
+    ...par,
+    location: {
+      latitude: par.latitude,
+      longitude: par.longitude,
+      address: par.locationDetail,
+    },
+    times: {
+      start: par.start,
+      end: par.end,
+    },
+  }));
 };
+
+export const shortenParticipations = (
+  participations: StudyParticipationsSetProps[],
+): StudyParticipationProps[] => {
+  const participationMap = new Map();
+
+  participations?.forEach((par) => {
+    par.study.forEach((study) => {
+      const userId = study.user._id;
+      if (participationMap.has(userId)) {
+        participationMap.get(userId).dates.push(par.date);
+      } else {
+        participationMap.set(userId, {
+          ...study,
+          location: study.location,
+          dates: [par.date],
+        });
+      }
+    });
+  });
+  return Array.from(participationMap.values()) as StudyParticipationProps[];
+};
+
+// const convertParticipations = (
+//   participations: { date: string; study: InitialParticipationsProps }[],
+//   date: string,
+// ): StudyParticipationProps[] => {
+//   const participationMap = new Map();
+
+//   participations?.forEach((par) => {
+
+//     if (par && dayjs(par.date).startOf("day").isAfter(dayjs(date).subtract(1, "day"))) {
+//       const userId = par.study.user._id;
+//       if (participationMap.has(userId)) {
+//         participationMap.get(userId).dates.push(par.date);
+//       } else {
+//         participationMap.set(userId, {
+//           ...par.study,
+//           location: {
+//             latitude: par.study.latitude,
+//             longitude: par.study.longitude,
+//             address: par.study.locationDetail,
+//           },
+//           dates: [par.date],
+//         });
+//       }
+//     }
+//   });
+//   return Array.from(participationMap.values()) as StudyParticipationProps[];
+// };

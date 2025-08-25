@@ -178,7 +178,7 @@ function Ranking() {
       users: UserRankingProps[],
     ): { first: string; value: number } => {
       const myRankNum = myRanking.rank;
-      console.log(54, myRankNum, users, users?.[myRankNum - 2]);
+
       const diffValue = users[myRankNum - 2].value - myRanking.value;
 
       if (myRankNum <= 5) {
@@ -384,8 +384,8 @@ function TrophyIcon() {
           y2="36"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFAB04" />
-          <stop offset="1" stop-color="#FFE6B4" />
+          <stop stopColor="#FFAB04" />
+          <stop offset="1" stopColor="#FFE6B4" />
         </linearGradient>
       </defs>
     </svg>
@@ -394,7 +394,7 @@ function TrophyIcon() {
 
 // const GoldMedalIcon = (
 //   <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
-//     <g clip-path="url(#clip0_2026_443)">
+//     <g clipPath="url(#clip0_2026_443)">
 //       <path
 //         d="M13.9787 16.7793C13.9817 16.7839 14.0525 16.7701 14.0812 16.8154C14.3238 17.191 14.5813 17.5589 14.7993 17.9497V20.7486C15.9431 20.0855 17.2064 19.5802 18.5246 19.3817C20.0469 19.1522 21.5738 19.2998 23.0294 19.7797C23.7942 20.0321 24.5297 20.3756 25.2108 20.8V17.9502C25.3724 17.8164 25.8176 17.0215 25.9807 16.7798C26.35 17.1136 26.5921 17.6999 26.6413 18.1853C26.7588 19.3461 26.5582 20.656 26.6583 21.8325C31.0262 25.8084 30.9631 32.5512 26.5721 36.4747C22.6022 40.0216 16.5529 39.8074 12.8492 35.9912C8.91831 31.9415 9.17322 25.5856 13.3016 21.7816C13.496 20.142 12.8236 18.1406 13.9787 16.7793Z"
 //         fill="url(#paint0_linear_2026_443)"
@@ -417,8 +417,8 @@ function TrophyIcon() {
 //         y2="39.0003"
 //         gradientUnits="userSpaceOnUse"
 //       >
-//         <stop stop-color="#FFAB04" />
-//         <stop offset="1" stop-color="#FFE6B4" />
+//         <stop stopColor="#FFAB04" />
+//         <stop offset="1" stopColor="#FFE6B4" />
 //       </linearGradient>
 //       <linearGradient
 //         id="paint1_linear_2026_443"
@@ -428,8 +428,8 @@ function TrophyIcon() {
 //         y2="18.0541"
 //         gradientUnits="userSpaceOnUse"
 //       >
-//         <stop stop-color="#00C2B3" />
-//         <stop offset="1" stop-color="#00A79A" />
+//         <stop stopColor="#00C2B3" />
+//         <stop offset="1" stopColor="#00A79A" />
 //       </linearGradient>
 //       <clipPath id="clip0_2026_443">
 //         <rect width="30" height="38" fill="white" transform="translate(5 1)" />
@@ -440,7 +440,7 @@ function TrophyIcon() {
 
 // const SilverMedalIcon = () => (
 //   <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
-//     <g clip-path="url(#clip0_2026_534)">
+//     <g clipPath="url(#clip0_2026_534)">
 //       <path
 //         d="M13.9787 16.7793C13.9817 16.7839 14.0525 16.7701 14.0812 16.8154C14.3238 17.191 14.5813 17.5589 14.7993 17.9497V20.7486C15.9431 20.0855 17.2064 19.5802 18.5246 19.3817C20.0469 19.1522 21.5738 19.2998 23.0294 19.7797C23.7942 20.0321 24.5297 20.3756 25.2108 20.8V17.9502C25.3724 17.8164 25.8176 17.0215 25.9807 16.7798C26.35 17.1136 26.5921 17.6999 26.6413 18.1853C26.7588 19.3461 26.5582 20.656 26.6583 21.8325C31.0262 25.8084 30.9631 32.5512 26.5721 36.4747C22.6022 40.0216 16.5529 39.8074 12.8492 35.9912C8.91831 31.9415 9.17322 25.5856 13.3016 21.7816C13.496 20.142 12.8236 18.1406 13.9787 16.7793Z"
 //         fill="url(#paint0_linear_2026_534)"
@@ -463,8 +463,8 @@ function TrophyIcon() {
 //         y2="39.0003"
 //         gradientUnits="userSpaceOnUse"
 //       >
-//         <stop stop-color="#ADB5BD" />
-//         <stop offset="1" stop-color="#D3D3D3" />
+//         <stop stopColor="#ADB5BD" />
+//         <stop offset="1" stopColor="#D3D3D3" />
 //       </linearGradient>
 //       <linearGradient
 //         id="paint1_linear_2026_534"
@@ -474,8 +474,8 @@ function TrophyIcon() {
 //         y2="18.0541"
 //         gradientUnits="userSpaceOnUse"
 //       >
-//         <stop stop-color="#00C2B3" />
-//         <stop offset="1" stop-color="#00A79A" />
+//         <stop stopColor="#00C2B3" />
+//         <stop offset="1" stopColor="#00A79A" />
 //       </linearGradient>
 //       <clipPath id="clip0_2026_534">
 //         <rect width="30" height="38" fill="white" transform="translate(5 1)" />
@@ -487,7 +487,7 @@ function TrophyIcon() {
 function BronzeMedalIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40" fill="none">
-      <g clip-path="url(#clip0_2026_540)">
+      <g clipPath="url(#clip0_2026_540)">
         <path
           d="M13.9787 16.7793C13.9817 16.7839 14.0525 16.7701 14.0812 16.8154C14.3238 17.191 14.5813 17.5589 14.7993 17.9497V20.7486C15.9431 20.0855 17.2064 19.5802 18.5246 19.3817C20.0469 19.1522 21.5738 19.2998 23.0294 19.7797C23.7942 20.0321 24.5297 20.3756 25.2108 20.8V17.9502C25.3724 17.8164 25.8176 17.0215 25.9807 16.7798C26.35 17.1136 26.5921 17.6999 26.6413 18.1853C26.7588 19.3461 26.5582 20.656 26.6583 21.8325C31.0262 25.8084 30.9631 32.5512 26.5721 36.4747C22.6022 40.0216 16.5529 39.8074 12.8492 35.9912C8.91831 31.9415 9.17322 25.5856 13.3016 21.7816C13.496 20.142 12.8236 18.1406 13.9787 16.7793Z"
           fill="url(#paint0_linear_2026_540)"
@@ -510,8 +510,8 @@ function BronzeMedalIcon() {
           y2="39.0003"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#985948" />
-          <stop offset="1" stop-color="#A17800" />
+          <stop stopColor="#985948" />
+          <stop offset="1" stopColor="#A17800" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_2026_540"
@@ -521,8 +521,8 @@ function BronzeMedalIcon() {
           y2="18.0541"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#00C2B3" />
-          <stop offset="1" stop-color="#00A79A" />
+          <stop stopColor="#00C2B3" />
+          <stop offset="1" stopColor="#00A79A" />
         </linearGradient>
         <clipPath id="clip0_2026_540">
           <rect width="30" height="38" fill="white" transform="translate(5 1)" />

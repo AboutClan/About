@@ -6,16 +6,16 @@ import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes
 interface IVoteMap {
   mapOptions?: IMapOptions;
   markersOptions?: IMarkerOptions[];
-  handleMarker?: (id: string, type?: "vote", currentZoom?: number) => void;
+  handleMarker?: (id: string, currentZoom?: number) => void;
   resizeToggle?: boolean;
   centerValue?: {
     lat: number;
     lng: number;
   };
-  circleCenter: {
-    lat: number;
-    lon: number;
-  }[];
+  // circleCenter: {
+  //   lat: number;
+  //   lon: number;
+  // }[];
 }
 
 export default function VoteMap({
@@ -24,8 +24,8 @@ export default function VoteMap({
   handleMarker,
   resizeToggle,
   centerValue,
-  circleCenter,
-}: IVoteMap) {
+}: // circleCenter,
+IVoteMap) {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<naver.maps.Map | null>(null);
   const mapElementsRef = useRef({
@@ -104,27 +104,27 @@ export default function VoteMap({
       naver.maps.Event.addListener(marker, "click", () => {
         if (handleMarker) {
           const currentZoom = map.getZoom();
-          handleMarker(markerOptions.id, markerOptions?.type, currentZoom);
+          handleMarker(markerOptions.id, currentZoom);
         }
       });
       mapElementsRef.current.markers.push(marker);
     });
 
-    circleCenter?.forEach((circle2) => {
-      if (!circle2) return;
-      const circle = new naver.maps.Circle({
-        map: mapInstanceRef.current,
-        center: new naver.maps.LatLng(circle2.lat, circle2.lon),
-        radius: 5550,
-        strokeColor: "#007dfb",
-        strokeOpacity: 0.8,
-        strokeWeight: 1,
-        fillColor: "#007dfb",
-        fillOpacity: 0.1,
-      });
-      mapElementsRef.current.circle = circle;
-    });
-  }, [markersOptions, circleCenter]);
+    // circleCenter?.forEach((circle2) => {
+    //   if (!circle2) return;
+    //   const circle = new naver.maps.Circle({
+    //     map: mapInstanceRef.current,
+    //     center: new naver.maps.LatLng(circle2.lat, circle2.lon),
+    //     radius: 5550,
+    //     strokeColor: "#007dfb",
+    //     strokeOpacity: 0.8,
+    //     strokeWeight: 1,
+    //     fillColor: "#007dfb",
+    //     fillOpacity: 0.1,
+    //   });
+    //   mapElementsRef.current.circle = circle;
+    // });
+  }, [markersOptions]);
 
   useEffect(() => {
     if (!centerValue || !mapInstanceRef.current) return;

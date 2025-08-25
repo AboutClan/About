@@ -114,6 +114,8 @@ function GatherWritingImagePage() {
       coverImage: imageProps.coverImage,
       // category: { category: (groupId ? "group" : "gather") as GatherCategory, id: groupId },
     };
+  
+    return;
     setGatherContent(gatherData);
     setIsConfirmModal(true);
   };

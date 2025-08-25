@@ -1,5 +1,5 @@
 export function Temp() {
-  return null
+  return null;
 }
 
 // import { Box, Button, Flex } from "@chakra-ui/react";
@@ -31,14 +31,14 @@ export function Temp() {
 //   StudyMergeParticipationProps,
 //   StudyParticipationProps,
 //   StudyPlaceProps,
-//   StudyVoteDataProps,
+//   StudyOneDayProps,
 // } from "../../types/models/studyTypes/studyDetails";
 // import { IStudyVoteTime, MyVoteProps } from "../../types/models/studyTypes/studyInterActions";
 // import { Location } from "../../types/services/locationTypes";
 // import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 // import { getDistanceFromLatLonInKm, getRandomIdx } from "../../utils/mathUtils";
 // import { iPhoneNotchSize } from "../../utils/validationUtils";
-// import VoteDrawerPlaceDrawer from "./voteDrawer/StudyPlaceDrawer";
+// import VoteDrawerPlaceDrawer from "./voteDrawer/StudyOpenDrawer";
 // export interface VoteDrawerItemProps {
 //   place: StudyPlaceProps;
 //   voteCnt: number;
@@ -47,7 +47,7 @@ export function Temp() {
 // }
 
 // interface VoteDrawerProps extends IModal {
-//   studyVoteData: StudyVoteDataProps;
+//   studyVoteData: StudyOneDayProps;
 //   location: Location;
 //   date: string;
 
@@ -420,7 +420,7 @@ export function Temp() {
 // }
 
 // export const sortByDistanceSub = (
-//   studyVoteData: StudyVoteDataProps,
+//   studyVoteData: StudyOneDayProps,
 //   mainPlace: StudyParticipationProps,
 // ): SubPlaceProps[] => {
 //   const updatedParticipations = studyVoteData.participations.map((participation) => {

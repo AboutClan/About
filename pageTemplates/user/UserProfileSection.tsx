@@ -36,7 +36,7 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
   const router = useRouter();
 
   const [isDrawer, setIsDrawer] = useState(false);
-  console.log(user);
+
   return (
     <Box mb={10}>
       <Box borderBottom="var(--border)" px={5} pb={3}>

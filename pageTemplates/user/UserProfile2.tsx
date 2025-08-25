@@ -15,11 +15,7 @@ function UserProfile() {
 
   const isGuest = session?.user.role === "guest";
 
-  const handleClick = (
-    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-    type: "like" | "friend",
-  ) => {
-    console.log(type);
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     if (isGuest) {
       e.preventDefault();
       typeToast("guest");
@@ -28,7 +24,7 @@ function UserProfile() {
 
   return (
     <Flex direction="column">
-      <Link href="/user/friend" passHref onClick={(e) => handleClick(e, "friend")}>
+      <Link href="/user/friend" passHref onClick={(e) => handleClick(e)}>
         <BlockItem>
           <span>
             내 친구 <b>{userInfo?.friend.length || 0}명</b>
@@ -36,7 +32,7 @@ function UserProfile() {
           <ArrowIcon />
         </BlockItem>
       </Link>
-      <Link href="/user/like" passHref onClick={(e) => handleClick(e, "like")}>
+      <Link href="/user/like" passHref onClick={(e) => handleClick(e)}>
         <BlockItem>
           <span>
             받은 좋아요 <b>{likeLogs?.length || 0}개</b>

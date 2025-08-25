@@ -1,31 +1,31 @@
 import { Badge, Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
-import HighlightButton from "../../components/atoms/HighlightButton";
 import AttendanceBadge from "../../components/molecules/badge/AttendanceBadge";
 import { IProfileCommentCard } from "../../components/molecules/cards/ProfileCommentCard";
 import ProfileCardColumn from "../../components/organisms/ProfileCardColumn";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
-import { useKakaoMultipleLocationQuery } from "../../hooks/external/queries";
 import { useRealTimeCommentMutation } from "../../hooks/realtime/mutations";
 import { useStudyCommentMutation } from "../../hooks/study/mutations";
 import ImageZoomModal from "../../modals/ImageZoomModal";
-import { StudyMemberProps, StudyStatus } from "../../types/models/studyTypes/baseTypes";
-import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
+import {
+  StudyConfirmedMemberProps,
+  StudyParticipationProps,
+} from "../../types/models/studyTypes/study-entity.types";
+import { StudyType } from "../../types/models/studyTypes/study-set.types";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
+import { getPlaceBranch } from "../../utils/stringUtils";
 
 interface IStudyMembers {
   date: string;
-  members: StudyMemberProps[] | { user: UserSimpleInfoProps }[];
-  status: StudyStatus | "recruiting";
+  members: StudyConfirmedMemberProps[] | StudyParticipationProps[];
+  studyType: StudyType;
 }
 
-export default function StudyMembers({ date, members, status }: IStudyMembers) {
-  const { data: session } = useSession();
+export default function StudyMembers({ studyType, date, members }: IStudyMembers) {
   const resetStudy = useResetStudyQuery();
   const typeToast = useTypeToast();
   // const [hasModalMemo, setHasModalMemo] = useState<string>();
@@ -33,33 +33,13 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
     image: string;
     toUid: string;
   }>();
-  const [locationMapping, setLocationMapping] = useState<{ branch: string; id: string }[]>();
 
-  const { data: locationMappingData } = useKakaoMultipleLocationQuery(
-    members.map((member) => ({
-      lat: member.lat,
-      lon: member.lon,
-      id: member.user._id,
-    })),
-    false,
-    {
-      enabled: !!members,
-    },
-  );
-
-  useEffect(() => {
-    if (!locationMappingData) return;
-    setLocationMapping(locationMappingData);
-  }, [locationMappingData]);
-
-  const { mutate: setRealTimeComment } = useRealTimeCommentMutation(date,{
+  const { mutate: setRealTimeComment } = useRealTimeCommentMutation(date, {
     onSuccess: () => handleSuccessChange(),
   });
   const { mutate: setVoteComment } = useStudyCommentMutation(date, {
     onSuccess: () => handleSuccessChange(),
   });
-
-  const isMyStudy = members?.some((who) => who.user.uid === session?.user.uid);
 
   const handleSuccessChange = () => {
     typeToast("change");
@@ -67,56 +47,68 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
   };
 
   const changeComment = (comment: string) => {
-    if (status === "open") {
+    if (studyType === "results") {
       setVoteComment(comment);
-    } else if (status === "free") setRealTimeComment(comment);
+    } else if (studyType === "openRealTimes" || studyType === "soloRealTimes")
+      setRealTimeComment(comment);
   };
 
-  const userCardArr: IProfileCommentCard[] = members.map((member) => {
+  const userCardArr: IProfileCommentCard[] = members?.map((member) => {
     const user = member.user;
-    const badgeText = locationMapping?.find((mapping) => mapping?.id === user._id)?.branch;
-    if (status === "recruiting") {
+    // const badgeText = locationMapping?.find((mapping) => mapping?.id === user._id)?.branch;
+    if (studyType === "participations") {
+      const participant = member as StudyParticipationProps;
+
+      let month = dayjs(participant.dates[0]).month();
       return {
         user: user,
-        memo: user.comment,
-        rightComponent: locationMapping ? (
+        memo: getPlaceBranch(participant.location.address),
+        rightComponent: (
           <Badge variant="subtle" colorScheme="blue" size="md">
-            {!badgeText ? "알 수 없음" : badgeText}
+            {/* {!badgeText ? "알 수 없음" : badgeText} */}
+            {participant.dates.map((date, idx) => {
+              const newMonth = dayjs(date).month();
+              if (month !== newMonth && idx !== 0) {
+                month = newMonth;
+                return dayjsToFormat(dayjs(date), "M월 D일");
+              }
+              if (idx === 0) return dayjsToFormat(dayjs(date), "M월 D일");
+              else return dayjsToFormat(dayjs(date), ", D일");
+            })}
           </Badge>
+        ),
+      };
+    } else {
+      const participant = member as StudyConfirmedMemberProps;
+      const obj = composeUserCardArr(participant);
+      const rightComponentProps = obj.rightComponentProps;
+      const image = participant?.attendance?.attendanceImage;
+      return {
+        ...obj,
+        changeComment,
+        rightComponent: rightComponentProps ? (
+          image ? (
+            <>
+              <Box
+                position="relative"
+                w="48px"
+                h="48px"
+                borderRadius="4px"
+                overflow="hidden"
+                onClick={() => setHasImageProps({ image, toUid: participant.user.uid })}
+              >
+                <Image src={image} fill alt="studyImage" />
+              </Box>
+              <Box mt={1} fontSize="11px" lineHeight="12px" color="gray.500" textAlign="center">
+                {rightComponentProps.time}
+              </Box>
+            </>
+          ) : (
+            <AttendanceBadge type={rightComponentProps.type} time={rightComponentProps.time} />
+          )
         ) : null,
       };
     }
-
-    const obj = composeUserCardArr(member);
-
-    const rightComponentProps = obj.rightComponentProps;
-    const image = member?.attendance?.attendanceImage;
-
-    return {
-      ...obj,
-      changeComment,
-      rightComponent: rightComponentProps ? (
-        image ? (
-          <>
-            <Box
-              position="relative"
-              w="48px"
-              h="48px"
-              borderRadius="4px"
-              overflow="hidden"
-              onClick={() => setHasImageProps({ image, toUid: member.user.uid })}
-            >
-              <Image src={image} fill alt="studyImage" />
-            </Box>
-            <Box mt={1} fontSize="11px" lineHeight="12px" color="gray.500" textAlign="center">
-              {rightComponentProps.time}
-            </Box>
-          </>
-        ) : (
-          <AttendanceBadge type={rightComponentProps.type} time={rightComponentProps.time} />
-        )
-      ) : null,
-    };
   });
 
   return (
@@ -125,32 +117,24 @@ export default function StudyMembers({ date, members, status }: IStudyMembers) {
         <>
           <ProfileCardColumn
             userCardArr={userCardArr}
-            hasCommentButton={status === "open" || status === "free"}
+            hasCommentButton={studyType !== "participations"}
           />
-          {isMyStudy && (
+          {/* {isMyStudy && (
             <Box pt={4} pb={2}>
               <HighlightButton text="친구 초대 +" func={() => typeToast("not-yet")} />
             </Box>
-          )}
+          )} */}
         </>
       ) : (
         <Flex
           align="center"
           justify="center"
-          h="200"
+          h="200px"
           color="var(--gray-600)"
           fontSize="16px"
           textAlign="center"
         >
-          <Box as="p" lineHeight="1.8">
-            현재 참여중인 멤버가 없습니다.
-            <br />
-            지금 신청하면{" "}
-            <Box as="b" color="var(--color-mint)">
-              10 POINT
-            </Box>{" "}
-            추가 획득!
-          </Box>
+          <Box as="p">현재 참여중인 멤버가 없습니다.</Box>
         </Flex>
       )}
 
@@ -174,7 +158,7 @@ interface IReturnProps extends Omit<IProfileCommentCard, "rightComponent"> {
   };
 }
 
-const composeUserCardArr = (participant: StudyMemberProps): IReturnProps => {
+const composeUserCardArr = (participant: StudyConfirmedMemberProps): IReturnProps => {
   const attendance = participant?.attendance;
 
   const type = attendance?.type;

@@ -1,16 +1,19 @@
+import { LocationProps } from "../../common";
 import { TimeStampProps } from "../../utils/timeAndDate";
 import { UserSimpleInfoProps } from "../userTypes/userInfoTypes";
 
+export type PlaceStatus = "main" | "sub" | "inactive";
+export interface PlaceProps extends PlaceRegisterProps {
+  _id: string;
+  registerDate: string;
+  prefCnt: number;
+  reviews?: PlaceReviewProps[];
+  rating?: number;
+  registrant: UserSimpleInfoProps;
+}
 export interface PlaceRegisterProps {
-  fullname: string;
-  brand: string;
-  branch: string;
-  image: string;
-  longitude: number;
-  latitude: number;
-  coverImage: string;
-  locationDetail: string;
-  time?: string;
+  status?: PlaceStatus;
+  location: LocationProps;
 }
 
 export interface PlaceReviewProps extends TimeStampProps {

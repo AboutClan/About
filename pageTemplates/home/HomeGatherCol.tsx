@@ -60,7 +60,7 @@ export const setGatherDataToCardCol = (
   isPriority: boolean,
   func?: () => void,
 ): GatherThumbnailCardProps[] => {
-  console.log(gathers);
+ 
   const cardCol: GatherThumbnailCardProps[] = gathers.map((gather, idx) => {
     if (!imageCache[gather.id]) {
       imageCache[gather.id] = gather.image || getRandomImage(GATHER_MAIN_IMAGE_ARR["공통"]);

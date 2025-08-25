@@ -1,28 +1,17 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams } from "next/navigation";
-import { useSession } from "next-auth/react";
+import Image from "next/image";
+import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { STUDY_COVER_IMAGES } from "../../../../assets/images/studyCover";
-import { STUDY_MAIN_IMAGES } from "../../../../assets/images/studyMain";
 import { MainLoading } from "../../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../../components/layouts/PageSlide";
-import RightDrawer from "../../../../components/organisms/drawer/RightDrawer";
-import StarRatingForm from "../../../../components/organisms/StarRatingForm";
-import { useUserCurrentLocation } from "../../../../hooks/custom/CurrentLocationHook";
-import { useResetStudyQuery } from "../../../../hooks/custom/CustomHooks";
-import { usePointToast } from "../../../../hooks/custom/CustomToast";
-import { usePlaceReviewMutation } from "../../../../hooks/study/mutations";
-import { useStudyVoteQuery } from "../../../../hooks/study/queries";
-import { usePointSystemMutation } from "../../../../hooks/user/mutations";
-import { useUserInfoQuery } from "../../../../hooks/user/queries";
-import { convertMergePlaceToPlace } from "../../../../libs/study/studyConverters";
-import {
-  findMyStudyByUserId,
-  findMyStudyInfo,
-  findStudyByPlaceId,
-} from "../../../../libs/study/studySelectors";
+import { useUserInfo } from "../../../../hooks/custom/UserHooks";
+import { useStudyPassedDayQuery, useStudySetQuery } from "../../../../hooks/study/queries";
+import { shortenParticipations } from "../../../../libs/study/studyConverters";
+import { getMyStudyDateArr } from "../../../../libs/study/studyHelpers";
+import { ModalLayout } from "../../../../modals/Modals";
 import StudyAddressMap from "../../../../pageTemplates/study/StudyAddressMap";
 import StudyCover from "../../../../pageTemplates/study/StudyCover";
 import StudyDateBar from "../../../../pageTemplates/study/StudyDateBar";
@@ -30,270 +19,196 @@ import StudyHeader from "../../../../pageTemplates/study/StudyHeader";
 import StudyMembers from "../../../../pageTemplates/study/StudyMembers";
 import StudyNavigation from "../../../../pageTemplates/study/StudyNavigation";
 import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
+import StudyReviewButton from "../../../../pageTemplates/study/StudyReviewButton";
 import StudyTimeBoard from "../../../../pageTemplates/study/StudyTimeBoard";
-import { StudyMemberProps } from "../../../../types/models/studyTypes/baseTypes";
-import { PlaceReviewProps } from "../../../../types/models/studyTypes/entityTypes";
-import { UserSimpleInfoProps } from "../../../../types/models/userTypes/userInfoTypes";
-import { dayjsToFormat } from "../../../../utils/dateTimeUtils";
-import { getDistanceFromLatLonInKm, getRandomIdx } from "../../../../utils/mathUtils";
-import { iPhoneNotchSize } from "../../../../utils/validationUtils";
+import {
+  MyStudyStatus,
+  StudyConfirmedMemberProps,
+} from "../../../../types/models/studyTypes/study-entity.types";
+import {
+  StudyConfirmedSetProps,
+  StudyParticipationsSetProps,
+  StudyType,
+} from "../../../../types/models/studyTypes/study-set.types";
+import { dayjsToStr } from "../../../../utils/dateTimeUtils";
+import { getRandomImage } from "../../../../utils/imageUtils";
+import { navigateExternalLink } from "../../../../utils/navigateUtils";
 
 export default function Page() {
-  const { data: session } = useSession();
+  const searchParams = useSearchParams();
   const { id, date } = useParams<{ id: string; date: string }>() || {};
-  const { currentLocation } = useUserCurrentLocation();
-  const isGuest = session?.user.role === "guest";
+  const userInfo = useUserInfo();
+  const isPassedDate = !!date && dayjs(date).startOf("day").isBefore(dayjs().startOf("day"));
 
-  const isParticipationPage = id === "participations";
-  const isRealTimePage = id === "realTime";
+  const studyType = searchParams.get("type") as StudyType;
 
-  const { data: studyVoteData } = useStudyVoteQuery(date, {
-    enabled: !!date,
+  const { data: studySet } = useStudySetQuery(date, { enabled: !!date && !isPassedDate });
+  const { data: studyPassedData } = useStudyPassedDayQuery(date, {
+    enabled: !!isPassedDate,
   });
 
-  const [isReviewModal, setIsReviewModal] = useState(false);
-  const [isReviewButton, setIsReviewButton] = useState(false);
+  const [modalType, setModalType] = useState<"studyLink" | "review">();
 
-  const isExpectedPage = !!(id !== "participations" && studyVoteData?.participations);
+  const studyData = isPassedDate
+    ? studyPassedData && studyPassedData[studyType]
+    : studySet && studySet[studyType];
+  console.log("set", studySet);
+  const participationsSet =
+    studyType === "participations" && (studyData as StudyParticipationsSetProps[]);
+  const confirmedSet = studyType !== "participations" && (studyData as StudyConfirmedSetProps[]);
 
   const findStudy =
-    studyVoteData && id !== "participations" && findStudyByPlaceId(studyVoteData, id);
-  const findMyStudy = findMyStudyByUserId(studyVoteData, session?.user.id);
+    studyType !== "participations" &&
+    confirmedSet?.find((set) => set.study.place._id === id)?.study;
 
-  const myStudy = findMyStudyInfo(findStudy, session?.user.id);
+  const myStudyInfo =
+    studyType === "soloRealTimes"
+      ? studySet?.soloRealTimes
+          ?.flatMap((solo) => solo.study)
+          ?.flatMap((a) => a.members)
+          ?.find((solo) => solo.user._id === userInfo?._id)
+      : studyType !== "participations"
+      ? findStudy?.members.find((member) => member.user._id === userInfo?._id)
+      : participationsSet
+          ?.find((par) => par.study.some((study) => study.user._id === userInfo?._id))
+          ?.study?.filter((who) => who.user._id === userInfo?._id);
 
-  const placeInfo =
-    convertMergePlaceToPlace(findStudy?.place) ||
-    (isParticipationPage
-      ? {
-          name: "스터디 매칭 대기소",
-          branch: "About",
-          address: "위치 선정 중",
-          brand: "",
-          image: STUDY_MAIN_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
-          coverImage: STUDY_COVER_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
+  const myStudyArr = getMyStudyDateArr(studySet, userInfo?._id);
 
-          latitude: null,
-          longitude: null,
-          time: dayjsToFormat(dayjs(date), "M월 D일 오전 9시"),
-          _id: null,
-          reviews: [],
-        }
-      : {
-          name: "개인 스터디 인증",
-          branch: "About",
-          address: "자유 카페 / 스터디 카페",
-          brand: "",
-          image: STUDY_MAIN_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
-          coverImage: STUDY_COVER_IMAGES[getRandomIdx(STUDY_COVER_IMAGES.length - 1)],
+  const findTodayStudy = myStudyArr?.find((myStudy) => myStudy.date === date);
 
-          latitude: null,
-          longitude: null,
-          time: "하루 공부가 끝나는 순간까지",
+  const myStudyStatus: MyStudyStatus = !findTodayStudy
+    ? "pending"
+    : findTodayStudy?.type === studyType
+    ? "participation"
+    : "otherParticipation";
 
-          _id: null,
-          reviews: [],
-        });
-
-  const distance =
-    currentLocation &&
-    getDistanceFromLatLonInKm(
-      currentLocation.lat,
-      currentLocation.lon,
-      placeInfo.latitude,
-      placeInfo.longitude,
-    );
-
-  const members: StudyMemberProps[] | { user: UserSimpleInfoProps }[] =
-    findStudy?.members ||
-    (isParticipationPage
-      ? studyVoteData?.participations?.map((par) => ({
-          user: par.user,
-          lat: par.latitude,
-          lon: par.longitude,
+  const members =
+    studyType === "participations"
+      ? shortenParticipations(participationsSet)
+      : studyType === "soloRealTimes"
+      ? (studyData as StudyConfirmedSetProps[])?.map((study) => ({
+          ...study.study.members[0],
         }))
-      : isRealTimePage
-      ? studyVoteData?.realTimes.userList
-      : null);
-
-  // const absences = studyVoteData?.participations.find((par) => par.place._id === id)?.absences;
-
-  const myVoteInfo = studyVoteData?.participations?.find(
-    (who) => who.user._id === session?.user.id,
-  );
-
-  const status =
-    findStudy?.status ||
-    (isParticipationPage
-      ? "recruiting"
-      : isExpectedPage
-      ? "expected"
-      : isRealTimePage
-      ? "solo"
-      : null);
-
-  const myRealTimeStudy = findMyStudy?.members.find((who) => who.user._id === session?.user.id);
+      : findStudy?.members;
+  const placeInfo = findStudy?.place;
+  console.log(9, studyData, placeInfo);
 
   useEffect(() => {
-    let timeoutId: ReturnType<typeof setTimeout>;
+    if (
+      myStudyStatus === "pending" ||
+      studyType === "soloRealTimes" ||
+      studyType === "participations" ||
+      date !== dayjsToStr(dayjs())
+    )
+      return;
+    const hasLink = localStorage.getItem("studyLink");
+    if (hasLink === date) return;
+    setModalType("studyLink");
+  }, [myStudyStatus]);
 
-    if (findStudy?.status === "open") {
-      timeoutId = setTimeout(() => {
-        setIsReviewButton(true);
-      }, 400);
-    }
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [findStudy]);
+  const isMyReview = placeInfo?.reviews?.some((review) => review.user._id === userInfo?._id);
 
   return (
     <>
-      {studyVoteData ? (
+      {studyPassedData || studySet ? (
         <>
           <StudyHeader date={date} placeInfo={placeInfo} />
           <Box mb={5}>
             <Slide isNoPadding>
-              <StudyCover coverImage={placeInfo.coverImage} />
-              <StudyOverview
-                place={{ ...placeInfo }}
-                distance={distance}
-                status={status}
-                time={placeInfo.time}
-                isVoting={!!myVoteInfo || !!myRealTimeStudy}
+              <StudyCover
+                coverImage={
+                  studyType === "soloRealTimes"
+                    ? "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/2.%EC%8B%A4%EC%8B%9C%EA%B0%84-%EA%B3%B5%EB%B6%80-%EC%9D%B8%EC%A6%9D.png"
+                    : studyType === "participations"
+                    ? "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/1.%EC%8A%A4%ED%84%B0%EB%94%94-%EB%A7%A4%EC%B9%AD-%EB%9D%BC%EC%9A%B4%EC%A7%80.png"
+                    : placeInfo?.coverImage || getRandomImage(STUDY_COVER_IMAGES)
+                }
               />
+              <StudyOverview date={date} placeInfo={placeInfo} studyType={studyType} />
             </Slide>
             <Box h={2} bg="gray.100" />
             <Slide>
-              {!isParticipationPage && !isRealTimePage && (
-                <StudyAddressMap
-                  name={placeInfo.name}
-                  address={placeInfo.address}
-                  latitude={placeInfo.latitude}
-                  longitude={placeInfo.longitude}
-                />
+              {studyType !== "participations" && studyType !== "soloRealTimes" && (
+                <StudyAddressMap location={placeInfo.location} />
               )}
-              <StudyDateBar
-                date={date}
-                memberCnt={members?.length}
-                isParticipationPage={isParticipationPage}
-              />
-              {id !== "participations" && !isRealTimePage && (
-                <StudyTimeBoard members={members as StudyMemberProps[]} />
+              <StudyDateBar date={date} memberCnt={members?.length} studyType={studyType} />
+              {studyType !== "participations" && studyType !== "soloRealTimes" && (
+                <StudyTimeBoard members={members as StudyConfirmedMemberProps[]} />
               )}
               <Box h="1px" bg="gray.100" my={4} />
               <Box pb={2}>
-                <StudyMembers
-                  date={date}
-                  members={members}
-                  status={findStudy?.status || (isParticipationPage ? "recruiting" : "solo")}
-                />
+                <StudyMembers date={date} members={members || []} studyType={studyType} />
               </Box>
             </Slide>
           </Box>
-          {(findStudy || isParticipationPage || isRealTimePage) && !isGuest && (
+          {userInfo?.role !== "guest" && (
             <StudyNavigation
+              myStudyInfo={myStudyInfo}
               date={date}
-              findStudy={findStudy}
-              hasOtherStudy={findMyStudy && findMyStudy.place._id !== findStudy?.place?._id}
               id={id}
-              isVoting={!!myVoteInfo || !!myRealTimeStudy}
-              pageType={status}
-              isArrived={!!(myRealTimeStudy?.attendance?.type === "arrived")}
+              myStudyStatus={myStudyStatus}
+              studyType={studyType}
+              location={placeInfo?.location}
+              findStudy={findStudy}
             />
           )}
-          {isReviewButton && (
-            <Flex
-              position="fixed"
-              zIndex="800"
-              fontSize="12px"
-              lineHeight="24px"
-              fontWeight={700}
-              bottom={`calc(var(--bottom-nav-height) + ${iPhoneNotchSize() + 20}px)`}
-              right="20px"
-            >
-              <Button
-                fontSize="12px"
-                h="40px"
-                color="white"
-                px={4}
-                borderRadius="20px"
-                lineHeight="24px"
-                iconSpacing={1}
-                colorScheme="black"
-                rightIcon={<PencilIcon />}
-                isDisabled={
-                  !(
-                    myStudy?.attendance?.type === "arrived" &&
-                    !findMyStudy?.place?.reviews.some(
-                      (review) => review?.user?._id === session?.user.id,
-                    )
-                  )
-                }
-                onClick={() => setIsReviewModal(true)}
-                _hover={{
-                  background: undefined,
-                }}
-              >
-                {findMyStudy?.place?.reviews.some(
-                  (review) => review?.user?._id === session?.user.id,
-                )
-                  ? "작성 완료"
-                  : "카페 리뷰"}
-              </Button>
-            </Flex>
-          )}
-          {isReviewModal && (
-            <RightReviewDrawer placeId={placeInfo._id} onClose={() => setIsReviewModal(false)} />
-          )}
+          {!isMyReview &&
+            date === dayjsToStr(dayjs()) &&
+            (studyType === "openRealTimes" || studyType === "results") && (
+              <StudyReviewButton
+                placeId={placeInfo?._id}
+                myStudyInfo={myStudyInfo as StudyConfirmedMemberProps}
+              />
+            )}
           {/* {isInviteModal && <StudyInviteModal setIsModal={setIsInviteModal} place={place} />} */}
         </>
       ) : (
         <MainLoading />
       )}
+      {modalType === "studyLink" && (
+        <StudyLinkModal date={date} onClose={() => setModalType(null)} />
+      )}
     </>
   );
 }
 
-function RightReviewDrawer({ placeId, onClose }: { placeId: string; onClose: () => void }) {
-  const resetStudy = useResetStudyQuery();
-  const pointToast = usePointToast();
-  const { data: userInfo } = useUserInfoQuery();
-
-  const { mutate: updatePoint } = usePointSystemMutation("point");
-  const { mutate } = usePlaceReviewMutation({
-    onSuccess() {
-      resetStudy();
-      onClose();
-    },
-  });
-
-  const handleSubmit = (data: PlaceReviewProps) => {
-    mutate({ ...data, placeId });
-    updatePoint({ value: data.isSecret ? 30 : 100, message: "카페 리뷰 작성" });
-    pointToast(data.isSecret ? 30 : 100);
-  };
-
+function StudyLinkModal({ date, onClose }: { date: string; onClose: () => void }) {
   return (
-    <RightDrawer title="카페 후기" onClose={onClose}>
-      <Box mt={5}>
-        <StarRatingForm user={userInfo} onSubmit={handleSubmit} />
-      </Box>
-    </RightDrawer>
-  );
-}
-
-function PencilIcon() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      height="12px"
-      viewBox="0 -960 960 960"
-      width="12px"
-      fill="white"
+    <ModalLayout
+      title="스터디 매칭 성공!"
+      footerOptions={{
+        main: {
+          text: "입 장",
+          func: () => {
+            navigateExternalLink("https://open.kakao.com/o/gCRegnOh");
+            localStorage.setItem("studyLink", date);
+            onClose();
+          },
+        },
+        sub: {
+          text: "생 략",
+          func: () => {
+            localStorage.setItem("studyLink", date);
+            onClose();
+          },
+        },
+      }}
+      setIsModal={onClose}
     >
-      <path d="M168-121q-21 5-36.5-10.5T121-168l35-170 182 182-170 35Zm235-84L205-403l413-413q23-23 57-23t57 23l84 84q23 23 23 57t-23 57L403-205Z" />
-    </svg>
+      <Flex justify="center" mb={5}>
+        <Image
+          width={64}
+          height={64}
+          alt="studyRecord"
+          src="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/falling-star-3d-icon.png"
+        />
+      </Flex>
+      <p>
+        스터디 매칭에 성공했어요! <br />
+        원활한 스터디 진행을 위해, <br />
+        <b>[스터디 단톡방]</b>에 입장해 주세요!
+      </p>
+    </ModalLayout>
   );
 }

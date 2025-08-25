@@ -1,6 +1,5 @@
 import { Box, Button } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
@@ -12,23 +11,29 @@ import Slide from "../../../components/layouts/PageSlide";
 import ImageUploadInput from "../../../components/molecules/ImageUploadInput";
 import LocationSearch from "../../../components/organisms/location/LocationSearch";
 import { useToast } from "../../../hooks/custom/CustomToast";
-import { useStudyVoteQuery } from "../../../hooks/study/queries";
-import { findMyStudyByUserId } from "../../../libs/study/studySelectors";
+import { NaverLocationProps } from "../../../hooks/external/queries";
+import { useStudySetQuery } from "../../../hooks/study/queries";
+import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { transferStudyAttendanceState } from "../../../recoils/transferRecoils";
-import { KakaoLocationProps } from "../../../types/externals/kakaoLocationSearch";
 
 function Certification() {
-  const { data: session } = useSession();
   const toast = useToast();
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
+  const type = searchParams.get("type") as "soloRealTimes";
 
-  const { data: studyVoteData } = useStudyVoteQuery(date, { enabled: !!date });
+  const { data: userInfo } = useUserInfoQuery();
+
+  const { data: studySet } = useStudySetQuery(date, {
+    enabled: !!date && type === "soloRealTimes",
+  });
 
   const [image, setImage] = useState<Blob>();
-  const [placeInfo, setPlaceInfo] = useState<KakaoLocationProps>({
-    place_name: "",
-    road_address_name: "",
+  const [placeInfo, setPlaceInfo] = useState<NaverLocationProps>({
+    name: "",
+    address: "",
+    latitude: null,
+    longitude: null,
   });
   const [isActive, setIsActive] = useState(true);
 
@@ -36,31 +41,22 @@ function Certification() {
     transferStudyAttendanceState,
   );
 
-  const findMyStudyResult = findMyStudyByUserId(studyVoteData, session?.user.id);
   useEffect(() => {
     if (studyAttendanceRequest) {
-      const { name, latitude, longitude, _id } = studyAttendanceRequest.place;
-      setPlaceInfo({
-        place_name: name,
-        x: longitude + "",
-        y: latitude + "",
-        _id,
-      });
+      setPlaceInfo(studyAttendanceRequest.place);
       setImage(studyAttendanceRequest?.image);
-    } else if (findMyStudyResult) {
-      const studyPlace = findMyStudyResult?.place;
+    } else if (type === "soloRealTimes" && studySet) {
+      const findMyStudyResult = studySet["soloRealTimes"]?.find((par) =>
+        par.study.members.some((member) => member.user._id === userInfo?._id),
+      );
 
-      setPlaceInfo({
-        x: studyPlace.longitude + "",
-        y: studyPlace.latitude + "",
-        road_address_name: studyPlace.address,
-        place_name: studyPlace.name,
-        _id: studyPlace._id,
-      });
-
-      setIsActive(false);
+      if (findMyStudyResult) {
+        const location = findMyStudyResult.study.place.location;
+        setPlaceInfo(location);
+        setIsActive(false);
+      }
     }
-  }, [studyAttendanceRequest, studyVoteData, session]);
+  }, [studyAttendanceRequest, studySet, userInfo]);
 
   const handleBottomNav = (e) => {
     if (!image) {
@@ -68,7 +64,7 @@ function Certification() {
       e.preventDefault();
       return;
     }
-    if (!placeInfo?.place_name) {
+    if (!placeInfo?.title) {
       toast("warning", "장소를 입력해 주세요");
       e.preventDefault();
       return;
@@ -78,18 +74,16 @@ function Certification() {
       ...old,
       image,
       place: {
-        latitude: +placeInfo?.y,
-        longitude: +placeInfo?.x,
-        address: placeInfo?.road_address_name,
-        name: placeInfo?.place_name,
-        _id: placeInfo?._id,
+        latitude: placeInfo?.latitude,
+        longitude: placeInfo?.longitude,
+        address: placeInfo?.address,
+        name: placeInfo?.title,
       },
-      status: findMyStudyResult?.status || "solo",
     }));
   };
 
   const handleResetButton = () => {
-    setPlaceInfo({ place_name: "", road_address_name: "" });
+    setPlaceInfo({ title: "", address: "", latitude: null, longitude: null });
     setIsActive(true);
   };
 
@@ -98,7 +92,10 @@ function Certification() {
       <Box minH="calc(100dvh - var(--header-h))" bgColor="white">
         <Header title="" isBorder={false} />
         <Slide>
-          <PageIntro main={{ first: "출석 인증하기" }} sub="공부 사진을 인증해 주세요" />
+          <PageIntro
+            main={{ first: type === "soloRealTimes" ? "개인 스터디 인증" : "출석 인증하기" }}
+            sub="공부 사진을 인증해 주세요"
+          />
           <ImageUploadInput setImageUrl={setImage} />
           <Box mb={3}>
             <SectionTitle text="현재 장소" isActive={isActive}>

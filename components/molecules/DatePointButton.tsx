@@ -1,22 +1,25 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import styled from "styled-components";
-
-import { dayjsToStr, getToday } from "../../utils/dateTimeUtils";
 
 export interface DatePointButtonProps {
   date: string;
-  value: number;
   func: () => void;
   size?: "sm" | "md";
   isSelected?: boolean;
   pointType?: "mint";
   weekend?: "sat" | "sun";
+  isDisabled: boolean;
+  isMint: boolean;
 }
 
-function DatePointButton({ date, func, size = "md", isSelected }: DatePointButtonProps) {
-  const today = getToday();
-
+function DatePointButton({
+  date,
+  func,
+  size = "md",
+  isSelected,
+  isDisabled,
+  isMint,
+}: DatePointButtonProps) {
   function TodayCircle({ date }: { date: number }) {
     return (
       <Flex
@@ -29,9 +32,10 @@ function DatePointButton({ date, func, size = "md", isSelected }: DatePointButto
         top="50%"
         left="50%"
         transform="translate(-50%,-50%)"
-        bgColor="var(--color-mint)"
+        bgColor="gray.800"
         zIndex={1}
         color="white"
+        fontWeight={500}
       >
         {date}
       </Flex>
@@ -41,10 +45,19 @@ function DatePointButton({ date, func, size = "md", isSelected }: DatePointButto
   const dateNum = dayjs(date).date();
 
   return (
-    <Button onClick={func}>
+    <Button
+      variant="unstyled"
+      display="flex"
+      flexDir="column"
+      alignItems="center"
+      fontWeight={400}
+      fontSize="13px"
+      onClick={func}
+      isDisabled={isDisabled}
+    >
       <Flex
         justify="center"
-        color={isSelected ? "white" : dayjsToStr(today) === date && "var(--color-mint)"}
+        color={isSelected ? "white" : isMint && "var(--color-mint)"}
         align="center"
         w={size === "md" ? "36px" : "26px"}
         h={size === "md" ? "36px" : "26px"}
@@ -53,22 +66,8 @@ function DatePointButton({ date, func, size = "md", isSelected }: DatePointButto
       >
         {!date ? null : !isSelected ? dateNum : <TodayCircle date={dateNum} />}
       </Flex>
-      <Flex justify="center">
-        {date === dayjsToStr(today) && (
-          <Box fontSize="10px" mt="4px" color="var(--color-mint)"></Box>
-        )}
-      </Flex>
     </Button>
   );
 }
-
-const Button = styled.button`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  font-weight: 500;
-  font-size: 16px;
-`;
 
 export default DatePointButton;

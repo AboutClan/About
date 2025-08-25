@@ -2,15 +2,14 @@ import { Badge, Box, Flex } from "@chakra-ui/react";
 import Link from "next/link";
 import styled from "styled-components";
 
-import { STUDY_STATUS_TO_BADGE } from "../../../constants/studyConstants";
+import { getStudyBadge } from "../../../libs/study/studyHelpers";
 import { SingleLineText } from "../../../styles/layout/components";
-import { StudyStatus } from "../../../types/models/studyTypes/baseTypes";
+import { StudyType } from "../../../types/models/studyTypes/study-set.types";
 import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { CheckCircleIcon } from "../../Icons/CircleIcons";
 import { LocationDotIcon } from "../../Icons/LocationIcons";
 import { UserIcon } from "../../Icons/UserIcons";
 import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
-import PlaceAvatarImage from "../PlaceAvatarImage";
 import PlaceImage from "../PlaceImage";
 
 const VOTER_SHOW_MAX = 4;
@@ -21,7 +20,7 @@ export interface StudyThumbnailCardProps {
     name: string;
     branch: string;
     address: string;
-    distance: number;
+    date: string;
     imageProps: {
       image: string;
       isPriority?: boolean;
@@ -30,28 +29,30 @@ export interface StudyThumbnailCardProps {
   };
   participants?: UserSimpleInfoProps[];
   url: string;
-  status: StudyStatus | "recruiting" | "expected";
+  studyType: StudyType;
   func?: () => void;
   isMyStudy: boolean;
+  isFutureDate?: boolean;
 }
 
 export function StudyThumbnailCard({
   place,
   participants,
   url,
-  status,
+  studyType,
   func = undefined,
   isMyStudy,
+  isFutureDate,
 }: StudyThumbnailCardProps) {
-  console.log(124, status);
   return (
-    <CardLink href={url} onClick={func} isbordermain={status === "recruiting" ? "true" : "false"}>
+    <CardLink
+      href={url}
+      onClick={func}
+      isbordermain={studyType === "participations" ? "false" : "false"}
+    >
       <>
-        {status === "recruiting" || status === "solo" ? (
-          <PlaceAvatarImage size="md" imageProps={place.imageProps} />
-        ) : (
-          <PlaceImage size="md" imageProps={place.imageProps} />
-        )}
+        <PlaceImage size="md" imageProps={place.imageProps} />
+
         <Flex direction="column" ml={4} flex={1}>
           <Flex justify="space-between">
             <Box>
@@ -59,7 +60,7 @@ export function StudyThumbnailCard({
                 <Box as="span">
                   <LocationDotIcon size="md" />
                 </Box>
-                <Box as="span" ml={1} color="var(--gray-600)">
+                <Box as="span" ml={1} mt="0.5px" color="var(--gray-600)">
                   {place.branch}
                 </Box>
               </Flex>
@@ -71,32 +72,50 @@ export function StudyThumbnailCard({
                   <CheckCircleIcon color="mint" size="sm" isFill />
                 </Box>
               )}
-              <Badge mr="auto" colorScheme={STUDY_STATUS_TO_BADGE[status].colorScheme} size="md">
-                {STUDY_STATUS_TO_BADGE[status].text}
+              <Badge
+                mr="auto"
+                colorScheme={getStudyBadge(studyType, isFutureDate).colorScheme}
+                size="md"
+              >
+                {getStudyBadge(studyType, isFutureDate).text}
               </Badge>
             </Flex>
           </Flex>
 
           <Subtitle>
-            <Box>
+            <Flex>
               <Box as="span" fontWeight={600}>
-                {place.distance && `${place.distance}KM`}
+                {place.date}
               </Box>
-              {place.distance && (
+              {place.date && (
                 <Box as="span" color="var(--gray-400)">
                   ・
                 </Box>
               )}
-              <Box as="span">{place.address}</Box>
-            </Box>
+              <Box
+                as="span"
+                textOverflow="ellipsis"
+                whiteSpace="wrap"
+                maxW={
+                  place.branch === "자유 장소" || place.branch === "위치 선정 중..."
+                    ? "100%"
+                    : "60%"
+                }
+                overflow="hidden"
+                display="-webkit-box"
+                sx={{
+                  WebkitLineClamp: 1,
+                  WebkitBoxOrient: "vertical",
+                }}
+              >
+                {place.address}
+              </Box>
+            </Flex>
           </Subtitle>
 
           <Flex mb={1} mt="auto" alignItems="center" justify="space-between">
             <Box>
-              <AvatarGroupsOverwrap
-                users={participants}
-                maxCnt={status === "recruiting" ? 8 : VOTER_SHOW_MAX}
-              />
+              <AvatarGroupsOverwrap users={participants} maxCnt={status ? 8 : VOTER_SHOW_MAX} />
             </Box>
             <Flex align="center" color="var(--gray-500)">
               <UserIcon size="sm" />
@@ -106,8 +125,8 @@ export function StudyThumbnailCard({
                   as="span"
                   color={
                     participants.length >= STUDY_MAX_CNT &&
-                    status !== "recruiting" &&
-                    status !== "solo"
+                    studyType !== "participations" &&
+                    studyType !== "soloRealTimes"
                       ? "var(--color-red)"
                       : "var(--color-gray)"
                   }
@@ -118,7 +137,13 @@ export function StudyThumbnailCard({
                   /
                 </Box>
                 <Box as="span" color="var(--gray-500)" fontWeight={500}>
-                  {status === "solo" || status === "recruiting" ? <InfinityIcon /> : STUDY_MAX_CNT}
+                  {studyType === "soloRealTimes" || studyType === "participations" ? (
+                    <Box mb="1px">
+                      <InfinityIcon />
+                    </Box>
+                  ) : (
+                    STUDY_MAX_CNT
+                  )}
                 </Box>
               </Flex>
             </Flex>
@@ -130,15 +155,17 @@ export function StudyThumbnailCard({
 }
 
 export function InfinityIcon() {
-  return <svg
-    xmlns="http://www.w3.org/2000/svg"
-    height="12px"
-    viewBox="0 -960 960 960"
-    width="12px"
-    fill="var(--gray-500)"
-  >
-    <path d="M220-260q-92 0-156-64T0-480q0-92 64-156t156-64q37 0 71 13t61 37l68 62-60 54-62-56q-16-14-36-22t-42-8q-58 0-99 41t-41 99q0 58 41 99t99 41q22 0 42-8t36-22l310-280q27-24 61-37t71-13q92 0 156 64t64 156q0 92-64 156t-156 64q-37 0-71-13t-61-37l-68-62 60-54 62 56q16 14 36 22t42 8q58 0 99-41t41-99q0-58-41-99t-99-41q-22 0-42 8t-36 22L352-310q-27 24-61 37t-71 13Z" />
-  </svg>
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="12px"
+      viewBox="0 -960 960 960"
+      width="12px"
+      fill="var(--gray-500)"
+    >
+      <path d="M220-260q-92 0-156-64T0-480q0-92 64-156t156-64q37 0 71 13t61 37l68 62-60 54-62-56q-16-14-36-22t-42-8q-58 0-99 41t-41 99q0 58 41 99t99 41q22 0 42-8t36-22l310-280q27-24 61-37t71-13q92 0 156 64t64 156q0 92-64 156t-156 64q-37 0-71-13t-61-37l-68-62 60-54 62 56q16 14 36 22t42 8q58 0 99-41t41-99q0-58-41-99t-99-41q-22 0-42 8t-36 22L352-310q-27 24-61 37t-71 13Z" />
+    </svg>
+  );
 }
 
 const CardLink = styled(Link)<{ isbordermain: "true" | "false" }>`

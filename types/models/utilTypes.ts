@@ -3,10 +3,3 @@ export interface TimeRangeProps {
   end: string;
 }
 
-export interface PlaceInfoProps {
-  latitude: number;
-  longitude: number;
-  name: string;
-  address: string;
-  _id?: string;
-}

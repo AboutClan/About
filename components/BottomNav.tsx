@@ -7,8 +7,8 @@ import styled from "styled-components";
 
 import { useHandleMove } from "../@natives/useHandleBottomNav";
 import { useToast } from "../hooks/custom/CustomToast";
-import { getStudyViewDate } from "../libs/study/date/getStudyDateStatus";
 import { slideDirectionState } from "../recoils/navigationRecoils";
+import { dayjsToStr } from "../utils/dateTimeUtils";
 import { iPhoneNotchSize } from "../utils/validationUtils";
 import { CommunityIcon, HomeIcon, StudyIcon, ThunderIcon } from "./Icons/BottomNavIcons";
 import { UserIcon } from "./Icons/UserIcons";
@@ -38,7 +38,7 @@ export default function BottomNav() {
         const getParams = (category: Category) => {
           switch (category) {
             case "스터디":
-              return `?date=${getStudyViewDate(dayjs())}`;
+              return `?date=${dayjsToStr(dayjs())}`;
             case undefined:
               newSearchParams.append("write", "on");
               return pathname + "?" + newSearchParams.toString();

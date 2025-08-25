@@ -2,19 +2,24 @@ import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import { useKakaoSearchQuery } from "../../../hooks/external/queries";
-import { KakaoLocationProps } from "../../../types/externals/kakaoLocationSearch";
+import { NaverLocationProps, useNaverLocalQuery } from "../../../hooks/external/queries";
 import { DispatchType } from "../../../types/hooks/reactTypes";
 import { InputGroup } from "../../atoms/Input";
 
 interface ISearchLocation {
-  info: KakaoLocationProps;
-  setInfo: DispatchType<KakaoLocationProps>;
+  info: NaverLocationProps;
+  setInfo: DispatchType<NaverLocationProps>;
   isSmall?: boolean;
   hasInitialValue?: boolean;
   isActive?: boolean;
   placeHolder?: string;
 }
+
+const mapxyToLatLng = (mapx: string | number, mapy: string | number) => {
+  const lng = Number(mapx) / 1e7; // x → 경도
+  const lat = Number(mapy) / 1e7; // y → 위도
+  return { latitude: Number(lat.toFixed(6)), longitude: Number(lng.toFixed(6)) };
+};
 
 function LocationSearch({
   info,
@@ -24,29 +29,29 @@ function LocationSearch({
   isActive = true,
   placeHolder,
 }: ISearchLocation) {
-  const [value, setValue] = useState(info?.place_name || "");
-  const [results, setResults] = useState<KakaoLocationProps[]>([]);
+  const [value, setValue] = useState(info.name || "");
+  const [results, setResults] = useState<NaverLocationProps[]>([]);
 
-  const { data } = useKakaoSearchQuery(value, {
+  const { data } = useNaverLocalQuery(value, {
     enabled: isActive && (value !== "" || !hasInitialValue),
   });
 
   useEffect(() => {
-    if (info) setValue(info?.place_name);
+    if (info) setValue(info?.name);
   }, [info]);
 
   useEffect(() => {
     if (!data) return;
-    if (value === info?.place_name) {
-      setInfo(data?.[0]);
+    if (value === info?.name) {
       setResults([]);
     } else setResults(data);
   }, [data]);
 
-  const onClickItem = (searchInfo: KakaoLocationProps) => {
-    const placeName = searchInfo.place_name;
+  const onClickItem = (searchInfo: NaverLocationProps) => {
+    const placeName = searchInfo.title;
     setValue(placeName);
-    setInfo(searchInfo);
+    const { latitude, longitude } = mapxyToLatLng(searchInfo.mapx, searchInfo.mapy);
+    setInfo({ ...searchInfo, name: placeName, latitude, longitude });
     setResults([]);
   };
 
@@ -72,9 +77,9 @@ function LocationSearch({
             {results.map((result, idx) => {
               return (
                 <Item key={idx} onClick={() => onClickItem(result)}>
-                  <Box fontSize="13px">{result.place_name}</Box>
+                  <Box fontSize="13px">{result.title}</Box>
                   <Box color="var(--gray-500)" fontSize="11px">
-                    {result.road_address_name}
+                    {result.address}
                   </Box>
                 </Item>
               );

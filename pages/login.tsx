@@ -36,7 +36,7 @@ const Login: NextPage<{
   const visibleHeight = window.innerHeight;
   const statusParam = searchParams.get("status");
   const pageParam = searchParams.get("page");
-  console.log(statusParam, pageParam);
+ 
   const ratio = visibleHeight / visibleWidth;
 
   const kakaoProvider = Object.values(providers).find((p) => p.id == "kakao");

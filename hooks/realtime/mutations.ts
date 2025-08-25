@@ -3,33 +3,36 @@ import dayjs from "dayjs";
 import { useMutation } from "react-query";
 
 import { requestServer } from "../../libs/methodHelpers";
+import { LocationProps, PointInfoProps } from "../../types/common";
 import { MutationOptions } from "../../types/hooks/reactTypes";
-import { CollectionProps } from "../../types/models/collections";
-import { StudyStatus } from "../../types/models/studyTypes/baseTypes";
 import {
   RealTimeAttendanceProps,
   RealTimeVoteProps,
 } from "../../types/models/studyTypes/requestTypes";
-import { PlaceInfoProps } from "../../types/models/utilTypes";
+import { RealTimesStudyStatus } from "../../types/models/studyTypes/study-entity.types";
 import { DayjsTimeProps, StringTimeProps } from "../../types/utils/timeAndDate";
 
 interface RealTimeVoteRequestServerProps {
-  place: PlaceInfoProps;
+  place: LocationProps;
   time: StringTimeProps;
+}
+
+interface RealTimesVoteReturnProps extends PointInfoProps {
+  _id: string;
 }
 
 export const useRealtimeVoteMutation = (
   date: string,
-  options?: MutationOptions<RealTimeVoteProps>,
+  options?: MutationOptions<RealTimeVoteProps, RealTimesVoteReturnProps>,
 ) =>
-  useMutation<void, AxiosError, RealTimeVoteProps>((param) => {
+  useMutation<RealTimesVoteReturnProps, AxiosError, RealTimeVoteProps>((param) => {
     const { start, end } = param.time;
     const time = {
       start: start.toISOString(),
       end: end.toISOString(),
     };
 
-    return requestServer<RealTimeVoteRequestServerProps>({
+    return requestServer<RealTimeVoteRequestServerProps, RealTimesVoteReturnProps>({
       method: "post",
       url: `realtime/${date}/basicVote`,
       body: { ...param, time },
@@ -38,10 +41,10 @@ export const useRealtimeVoteMutation = (
 
 export const useRealTimeAttendMutation = (
   date: string,
-  options?: MutationOptions<RealTimeAttendanceProps | FormData, CollectionProps>,
+  options?: MutationOptions<RealTimeAttendanceProps | FormData, PointInfoProps>,
 ) =>
-  useMutation<CollectionProps, AxiosError, RealTimeAttendanceProps | FormData>((param) => {
-    return requestServer<RealTimeAttendanceProps | FormData, CollectionProps>({
+  useMutation<PointInfoProps, AxiosError, RealTimeAttendanceProps | FormData>((param) => {
+    return requestServer<RealTimeAttendanceProps | FormData, PointInfoProps>({
       method: "post",
       url: `realtime/${date}/attendance`,
       body: param,
@@ -58,7 +61,7 @@ export const useRealTimeTimeChangeMutation = (
 
     return requestServer<StringTimeProps>({
       method: "patch",
-      url: `realtime/time`,
+      url: `realtime/${date}/time`,
       body: { start: startHour.toISOString(), end: endHour.toISOString() },
     });
   }, options);
@@ -68,7 +71,7 @@ export const useRealTimeCommentMutation = (date: string, options?: MutationOptio
     (params) =>
       requestServer<{ comment: string }>({
         method: "patch",
-        url: `realtime/comment`,
+        url: `realtime/${date}/comment`,
         body: { comment: params },
       }),
     options,
@@ -78,15 +81,27 @@ export const useRealTimeCancelMutation = (date: string, options?: MutationOption
     () =>
       requestServer<void>({
         method: "delete",
-        url: `realtime/cancel`,
+        url: `realtime/${date}/cancel`,
+      }),
+    options,
+  );
+export const useRealTimeAbsenceMutation = (date: string, options?: MutationOptions<void>) =>
+  useMutation<void, AxiosError, void>(
+    () =>
+      requestServer<void>({
+        method: "patch",
+        url: `realtime/${date}/absence`,
       }),
     options,
   );
 
-export const useRealTimeStatusMutation = (date: string, options?: MutationOptions<StudyStatus>) =>
-  useMutation<void, AxiosError, StudyStatus>(
+export const useRealTimeStatusMutation = (
+  date: string,
+  options?: MutationOptions<RealTimesStudyStatus>,
+) =>
+  useMutation<void, AxiosError, RealTimesStudyStatus>(
     (params) =>
-      requestServer<{ status: StudyStatus }>({
+      requestServer<{ status: RealTimesStudyStatus }>({
         method: "patch",
         url: `realtime/status`,
         body: { status: params },

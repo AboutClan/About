@@ -1,5 +1,11 @@
 import { IUser, IUserSummary } from "../types/models/userTypes/userInfoTypes";
 
+export const getPlaceBranch = (text: string) => {
+  if (!text) return "";
+  const textArr = text.split(" ");
+  return textArr[0] + " " + textArr?.[1];
+};
+
 export const findParentheses = (text: string) => {
   const regex = /\(.*?\)/g; // 'g' 플래그를 추가하여 모든 일치 항목을 찾습니다.
   const found = text.match(regex);
@@ -9,6 +15,11 @@ export const findParentheses = (text: string) => {
   } else {
     return null; // 일치하는 결과가 없을 경우의 메시지
   }
+};
+
+export const getLocationSimpleText = (locationText: string) => {
+  const locationArr = locationText.split(" ");
+  return locationArr[0] + " " + locationArr?.[1];
 };
 
 export const parseUrlToSegments = (url) => {

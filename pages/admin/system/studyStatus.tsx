@@ -1,8 +1,8 @@
-function StudyStatus() {
+function StudyType() {
   return <></>;
 }
 
-export default StudyStatus;
+export default StudyType;
 
 // /* eslint-disable */
 
@@ -30,18 +30,18 @@ export default StudyStatus;
 // import styled from "styled-components";
 
 // import Header from "../../../components/layouts/Header";
-// import { useStudyVoteQuery } from "../../../hooks/study/queries";
-// import { StudyStatus } from "../../../types/models/studyTypes/studyDetails";
+// import { useStudyPassedDayQuery } from "../../../hooks/study/queries";
+// import { StudyType } from "../../../types/models/studyTypes/studyDetails";
 // import { dayjsToStr } from "../../../utils/dateTimeUtils";
 
 // const LOCATION = ["SUWAN", "YANG"];
 
 // function AdminStudyStatus() {
 //   const [date, setDate] = useState(dayjs());
-//   const { data: SUWAN } = useStudyVoteQuery(dayjsToStr(date), "수원");
-//   const { data: YANG } = useStudyVoteQuery(dayjsToStr(date), "양천");
+//   const { data: SUWAN } = useStudyPassedDayQuery(dayjsToStr(date), "수원");
+//   const { data: YANG } = useStudyPassedDayQuery(dayjsToStr(date), "양천");
 
-//   const handleStatus = (type: StudyStatus) => {};
+//   const handleStatus = (type: StudyType) => {};
 
 //   return (
 //     <>

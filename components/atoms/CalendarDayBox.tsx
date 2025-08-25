@@ -7,12 +7,13 @@ import { dayjsToFormat } from "../../utils/dateTimeUtils";
 
 interface CalendarDayBoxProps {
   date: string;
-  value: number;
+
   func: (date: string) => void;
   selectedDate: string;
+  isDisabled: boolean;
 }
 
-function CalendarDayBox({ date, value, func, selectedDate }: CalendarDayBoxProps) {
+function CalendarDayBox({ date, func, selectedDate, isDisabled }: CalendarDayBoxProps) {
   const dayjsDate = dayjs(date);
   const isSelected = date === selectedDate;
   return (
@@ -27,10 +28,11 @@ function CalendarDayBox({ date, value, func, selectedDate }: CalendarDayBoxProps
       alignItems="center"
       borderRadius={isSelected ? "12px" : 0}
       bgColor={isSelected ? "var(--color-mint)" : "inherit"}
-      opacity={
-        isSelected ? 1 : dayjs(date).isBefore(dayjs(selectedDate)) ? "0.4" : "var(--gray-800)"
-      }
+      // opacity={
+      //   isSelected ? 1 : dayjs(date).isBefore(dayjs(selectedDate)) ? "0.4" : "var(--gray-800)"
+      // }
       onClick={() => func(date)}
+      isDisabled={isDisabled}
     >
       <Box
         px="6px"
@@ -41,16 +43,16 @@ function CalendarDayBox({ date, value, func, selectedDate }: CalendarDayBoxProps
           isSelected
             ? "white"
             : dayjsDate.day() === 0
-              ? "var(--color-red)"
-              : dayjsDate.day() === 6
-                ? "var(--color-blue)"
-                : "var(--gray-500)"
+            ? "var(--color-red)"
+            : dayjsDate.day() === 6
+            ? "var(--color-blue)"
+            : "var(--gray-500)"
         }
       >
         {dayjsToFormat(dayjsDate, "ddd")}
       </Box>
       <Box fontSize="13px" fontWeight={500} color={isSelected ? "white" : "var(--gray-800)"}>
-        {value}
+        {dayjsDate.locale("ko").date()}
       </Box>
       {/* <DatePointButton
         date={dayjsToStr(dayjsDate)}

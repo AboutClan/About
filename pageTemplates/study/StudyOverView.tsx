@@ -2,64 +2,81 @@ import { Badge, Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
 import StarRating from "../../components/atoms/StarRating";
-import BlurredLink from "../../components/molecules/BlurredLink";
 import InfoBoxCol, { InfoBoxProps } from "../../components/molecules/InfoBoxCol";
 import StarRatingReviewBlock from "../../components/molecules/StarRatingReviewBlock";
 import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
-import { STUDY_STATUS_TO_BADGE } from "../../constants/studyConstants";
+import { useUserCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
-import { StudyStatus } from "../../types/models/studyTypes/baseTypes";
-import { PlaceReviewProps } from "../../types/models/studyTypes/entityTypes";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
+import { getStudyBadge } from "../../libs/study/studyHelpers";
+import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
+import { StudyType } from "../../types/models/studyTypes/study-set.types";
+import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
+import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
+import { getPlaceBranch } from "../../utils/stringUtils";
 
 interface IStudyOverview {
-  place: {
-    name: string;
-
-    branch: string;
-    reviews?: PlaceReviewProps[];
-  };
-  distance: number;
-  status: StudyStatus | "recruiting" | "expected";
-  isVoting: boolean;
-  time: string;
+  placeInfo: StudyPlaceProps;
+  studyType: StudyType;
+  date: string;
 }
 
-function StudyOverview({
-  place: { name, branch, reviews },
-  distance,
-  status,
-  time,
-  isVoting,
-}: IStudyOverview) {
+function StudyOverview({ placeInfo, date, studyType }: IStudyOverview) {
+  const { currentLocation } = useUserCurrentLocation();
   const typeToast = useTypeToast();
-  const { text: badgeText, colorScheme: badgeColorScheme } = STUDY_STATUS_TO_BADGE[status];
+  const { text: badgeText, colorScheme: badgeColorScheme } = getStudyBadge(
+    studyType,
+    dayjs(date).startOf("day").isAfter(dayjs()),
+  );
+  console.log(123, placeInfo);
+  const distance = getDistanceFromLatLonInKm(
+    placeInfo?.location.latitude,
+    placeInfo?.location.longitude,
+    currentLocation?.lat,
+    currentLocation?.lon,
+  );
+
   const infoBoxPropsArr: InfoBoxProps[] = [
     {
-      category: status === "recruiting" || status === "expected" ? "매칭 시간" : "영업 시간",
-      text: time !== "unknown" ? time : "정보 없음",
+      category:
+        studyType === "participations"
+          ? "매칭 시간"
+          : studyType === "soloRealTimes"
+          ? "영업 시간"
+          : "확정 시간",
+      text:
+        studyType === "participations"
+          ? dayjsToFormat(dayjs(date), "M월 D일(ddd) 오전 9시")
+          : studyType === "soloRealTimes"
+          ? "하루 공부가 끝나는 순간까지"
+          : "정보 없음",
     },
     {
-      category: status === "solo" || status === "free" ? "영업 장소" : "오픈채팅방 링크",
+      category:
+        studyType === "soloRealTimes"
+          ? "공부 장소"
+          : studyType === "participations"
+          ? "매칭 기준"
+          : "확정 기준",
       rightChildren:
-        status === "solo" || status === "free" ? (
-          "자유 카페 / 스터디 카페"
-        ) : (
-          <BlurredLink isBlur={!isVoting} url="https://open.kakao.com/o/g6Wc70sh" />
-        ),
+        studyType === "soloRealTimes"
+          ? "자유 카페 / 자유 공간"
+          : studyType === "participations"
+          ? "3명 이상의 멤버 참여"
+          : "30분 이내 거리 + 3명 이상의 멤버 참여",
+      // <BlurredLink isBlur={!isVoting} url="https://open.kakao.com/o/g6Wc70sh" />
     },
   ];
- 
+
   return (
     <>
       <Box mx={5} mt={4}>
-        {status === "open" || status === "expected" ? (
+        {studyType !== "participations" && studyType !== "soloRealTimes" ? (
           <>
             <Box color="var(--gray-500)" fontSize="12px">
               <Badge mr={2} size="lg" colorScheme={badgeColorScheme}>
                 {badgeText}
               </Badge>
-              <Box as="span">{branch}</Box>
+              <Box as="span">{getPlaceBranch(placeInfo.location.address)}</Box>
               {distance && (
                 <>
                   <Box as="span" color="var(--gray-400)">
@@ -71,13 +88,13 @@ function StudyOverview({
             </Box>
             <Flex align="center" mb={3}>
               <Box mt={1} mr={2} fontSize="20px" fontWeight="bold">
-                {name}
+                {placeInfo.location.name}
               </Box>
-              <StarRating rating={4.5} size="lg" />
+              <StarRating rating={placeInfo?.rating || 4} size="lg" />
             </Flex>
             <Flex flexDir="column" borderRadius="8px">
               {[
-                ...(reviews ?? []).filter((review) => !!review?.user?.name),
+                ...(placeInfo?.reviews ?? []).filter((review) => !!review?.user?.name),
                 {
                   rating: 5,
                   review: "여러분의 리뷰를 기다리고 있습니다.",
@@ -94,18 +111,16 @@ function StudyOverview({
                 },
               ]
                 ?.slice(0, 2)
-                .map((review) => (
-                  <>
-                    <Box pt={2} borderTop="var(--border)">
-                      <StarRatingReviewBlock
-                        rating={review.rating}
-                        text={review.review}
-                        size="sm"
-                        user={review.isSecret ? { ...review.user, name: "익명" } : review.user}
-                        date={review.createdAt}
-                      />
-                    </Box>
-                  </>
+                .map((review, idx) => (
+                  <Box key={idx} pt={2} borderTop="var(--border)">
+                    <StarRatingReviewBlock
+                      rating={review.rating}
+                      text={review.review}
+                      size="sm"
+                      user={review.isSecret ? { ...review.user, name: "익명" } : review.user}
+                      date={review.createdAt}
+                    />
+                  </Box>
                 ))}
 
               <Button
@@ -129,19 +144,33 @@ function StudyOverview({
               <Badge mr={2} size="lg" colorScheme={badgeColorScheme}>
                 {badgeText}
               </Badge>
-              <Box as="span">{branch}</Box>
-              {distance && (
+              {studyType !== "participations" && studyType !== "soloRealTimes" && (
                 <>
-                  <Box as="span" color="var(--gray-400)">
-                    ・
+                  <Box as="span">
+                    {studyType === "participations"
+                      ? "스터디 매칭"
+                      : studyType === "soloRealTimes"
+                      ? "공부 인증"
+                      : getPlaceBranch(placeInfo?.location.address)}
                   </Box>
-                  <Box as="span">{distance}KM</Box>
+                  {distance && (
+                    <>
+                      <Box as="span" color="var(--gray-400)">
+                        ・
+                      </Box>
+                      <Box as="span">{distance}KM</Box>
+                    </>
+                  )}
                 </>
               )}
             </Box>
 
             <Box mt={1} mb={4} mr={2} fontSize="20px" fontWeight="bold">
-              {name}
+              {studyType === "participations"
+                ? "스터디 매칭 라운지"
+                : studyType === "soloRealTimes"
+                ? "실시간 공부 인증"
+                : placeInfo?.location.name}
             </Box>
 
             <InfoBoxCol infoBoxPropsArr={infoBoxPropsArr} />

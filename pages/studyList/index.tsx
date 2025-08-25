@@ -11,50 +11,49 @@ import {
   StudyThumbnailCardProps,
 } from "../../components/molecules/cards/StudyThumbnailCard";
 import { useUserCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
-import { useStudyVoteQuery } from "../../hooks/study/queries";
-import { convertStudyToMergeStudy } from "../../libs/study/studyConverters";
+import { useStudyPassedDayQuery, useStudySetQuery } from "../../hooks/study/queries";
 import {
   setStudyThumbnailCard,
   sortThumbnailCardInfoArr,
 } from "../../libs/study/thumbnailCardLibs";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
+import { dayjsToFormat, dayjsToStr } from "../../utils/dateTimeUtils";
 
 export default function StudyList() {
   const { data: session } = useSession();
   const { currentLocation } = useUserCurrentLocation();
   const searchParams = useSearchParams();
   const date = searchParams.get("date");
+  const todayStart = dayjs().startOf("day");
+  const dateStart = date ? dayjs(date).startOf("day") : null;
 
-  const { data: studyVoteData } = useStudyVoteQuery(date, {
-    enabled: !!date,
+  const isPassedDate = !!dateStart && dateStart.isBefore(todayStart);
+
+  const { data: passedStudyData } = useStudyPassedDayQuery(date, {
+    enabled: !!date && !!isPassedDate,
   });
+
+  const { data: studySet } = useStudySetQuery(date, { enabled: !!date && !isPassedDate });
 
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
 
   useEffect(() => {
-    if (!studyVoteData) {
+    if (!studySet) {
       setThumbnailCardinfoArr(null);
       return;
     }
     const getThumbnailCardInfoArr = setStudyThumbnailCard(
       date,
-      studyVoteData?.participations,
-      convertStudyToMergeStudy(studyVoteData),
-      studyVoteData?.realTimes?.userList,
-      currentLocation,
-      null,
-      session?.user.id,
+      studySet || passedStudyData,
+      date === dayjsToStr(dayjs()) ? session?.user.id : null,
     );
-
     setThumbnailCardinfoArr(
-      sortThumbnailCardInfoArr("인원순", getThumbnailCardInfoArr, session?.user.id),
+      sortThumbnailCardInfoArr("날짜순", getThumbnailCardInfoArr, session?.user.id),
     );
-  }, [studyVoteData, currentLocation, session]);
+  }, [studySet, currentLocation, session]);
 
   return (
     <>
       <Header title={dayjsToFormat(dayjs(date), "M월 D일 스터디")} />
-
       <Slide>
         <Box mt={3}>
           {thumbnailCardInfoArr?.map((thumbnailCardInfo, idx) => (

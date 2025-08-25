@@ -19,6 +19,7 @@ export function useUserCurrentLocation() {
     const handleSuccess = (position: GeolocationPosition) => {
       if (!isMounted) return;
       const { latitude: lat, longitude: lon } = position.coords;
+
       setCoordinate({ lat, lon });
     };
 

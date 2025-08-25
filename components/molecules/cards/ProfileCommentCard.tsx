@@ -1,8 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 import styled from "styled-components";
 
+import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { ModalLayout } from "../../../modals/Modals";
 import { CommentProps } from "../../../types/models/commonTypes";
 import { IUserSummary, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
@@ -36,10 +36,11 @@ export default function ProfileCommentCard({
   isNoBorder,
   crownType,
 }: IProfileCommentCard) {
-  const { data: session } = useSession();
   const [isCommentModal, setIsCommentModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [text, setText] = useState(comment?.comment || "");
+
+  const { data: userInfo } = useUserInfoQuery();
 
   const changeText = () => {
     changeComment(text);
@@ -51,10 +52,10 @@ export default function ProfileCommentCard({
     setIsCommentModal(false);
     setIsEdit(false);
   };
- 
+
   return (
     <>
-      <Flex py={3} h="74px" align="center" {...(!isNoBorder && { borderBottom: "var(--border)" })}>
+      <Flex py={2.5} align="center" {...(!isNoBorder && { borderBottom: "var(--border)" })}>
         {leftComponent && <Box mr="16px">{leftComponent}</Box>}
         <Avatar user={user} size="md1" />
 
@@ -106,9 +107,11 @@ export default function ProfileCommentCard({
               color="gray.500"
             >
               {comment?.comment || "미작성"}
-              {user.uid === session?.user.uid && (
-                <Button ml={2} variant="unstyled" color="mint" onClick={() => setIsEdit(true)}>
-                  <i className="fa-solid fa-pen-to-square fa-sm" />
+              {user.uid === userInfo?.uid && (
+                <Button ml={2} variant="unstyled" onClick={() => setIsEdit(true)}>
+                  <Box mb="2px">
+                    <EditIcon />
+                  </Box>
                 </Button>
               )}
             </Box>
@@ -134,3 +137,15 @@ const CommentText = styled.span`
 const RightComponentContainer = styled.div`
   margin-left: auto;
 `;
+
+function EditIcon() {
+  return <svg
+    xmlns="http://www.w3.org/2000/svg"
+    height="14px"
+    viewBox="0 -960 960 960"
+    width="14px"
+    fill="var(--color-mint)"
+  >
+    <path d="M120-120v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm584-528 56-56-56-56-56 56 56 56Z" />
+  </svg>
+}

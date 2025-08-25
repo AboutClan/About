@@ -1,18 +1,14 @@
 import { AxiosError } from "axios";
 import dayjs, { Dayjs } from "dayjs";
 import { useMutation } from "react-query";
-import { useSetRecoilState } from "recoil";
 
 import { requestServer } from "../../libs/methodHelpers";
-import { transferStudyVoteDateState } from "../../recoils/transferRecoils";
-import { PointValueProps } from "../../types/common";
+import { PointInfoProps, PointValueProps } from "../../types/common";
 import { MutationOptions } from "../../types/hooks/reactTypes";
-import { CollectionProps } from "../../types/models/collections";
 import { PlaceRegisterProps, PlaceReviewProps } from "../../types/models/studyTypes/entityTypes";
 import { IStudyVoteTime, StudyVoteProps } from "../../types/models/studyTypes/studyInterActions";
 import { DayjsTimeProps, StringTimeProps } from "../../types/utils/timeAndDate";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
-import { usePointToast } from "../custom/CustomToast";
 
 type StudyVoteParam<T> = T extends "post"
   ? StudyVoteProps
@@ -20,14 +16,30 @@ type StudyVoteParam<T> = T extends "post"
   ? DayjsTimeProps
   : void;
 
+export const useStudyVoteArrMutation = (
+  dates: string[],
+  options?: MutationOptions<StudyVoteProps>,
+) =>
+  useMutation<void, AxiosError, StudyVoteProps>((voteInfo) => {
+    const { start, end } = voteInfo;
+    return requestServer<{
+      start: string;
+      end: string;
+      latitude: number;
+      longitude: number;
+      dates: string[];
+    }>({
+      method: "post",
+      url: `vote2/${dates?.[0]}/dateArr`,
+      body: { ...voteInfo, start: start.toISOString(), end: end.toISOString(), dates },
+    });
+  }, options);
+
 export const useStudyVoteMutation = <T extends "post" | "patch" | "delete">(
   voteDate: Dayjs,
   method: T,
   options?: MutationOptions<StudyVoteParam<T>, PointValueProps | void>,
 ) => {
-  const pointToast = usePointToast();
-  const setTransferStudyVoteDate = useSetRecoilState(transferStudyVoteDateState);
-
   return useMutation<PointValueProps | void, AxiosError, StudyVoteParam<T>>(
     (param) => {
       const voteInfo = param;
@@ -51,15 +63,6 @@ export const useStudyVoteMutation = <T extends "post" | "patch" | "delete">(
     },
     {
       ...options,
-      onSuccess(data, variables, context) {
-        if (method === "post") {
-          pointToast((data as PointValueProps)?.value);
-          setTransferStudyVoteDate(voteDate);
-        }
-        if (options?.onSuccess) {
-          options.onSuccess(data, variables, context);
-        }
-      },
     },
   );
 };
@@ -92,11 +95,11 @@ export const useStudyParticipateMutation = (
   }, options);
 
 export const useStudyAttendCheckMutation = (
-  options?: MutationOptions<{ memo: string; end: string }, CollectionProps>,
+  options?: MutationOptions<{ memo: string; end: string }, PointInfoProps>,
 ) =>
-  useMutation<CollectionProps, AxiosError, { memo: string; end: string }>(
+  useMutation<PointInfoProps, AxiosError, { memo: string; end: string }>(
     ({ memo, end }) =>
-      requestServer<{ memo: string; end: string }, CollectionProps>({
+      requestServer<{ memo: string; end: string }, PointInfoProps>({
         method: "post",
         url: `vote2/${dayjsToStr(dayjs())}/arrive`,
         body: { memo, end },
@@ -105,15 +108,15 @@ export const useStudyAttendCheckMutation = (
   );
 
 export const useStudyAbsenceMutation = (
-  date: Dayjs,
-  options?: MutationOptions<{ message: string; fee: number }>,
+  date: string,
+  options?: MutationOptions<{ message: string }>,
 ) =>
-  useMutation<void, AxiosError, { message: string; fee: number }>(
-    ({ message, fee }) =>
-      requestServer<{ message: string; fee: number }>({
+  useMutation<void, AxiosError, { message: string }>(
+    ({ message }) =>
+      requestServer<{ message: string }>({
         method: "post",
-        url: `vote2/${dayjsToStr(date)}/absence`,
-        body: { message, fee },
+        url: `vote2/${date}/absence`,
+        body: { message },
       }),
     options,
   );
@@ -134,6 +137,19 @@ export const useStudyAdditionMutation = (
 interface PlaceReviewRequestProps extends Omit<PlaceReviewProps, "user"> {
   placeId: string;
 }
+
+// export const usePlaceLocationMutation = (
+//   options?: MutationOptions<{ placeId: string; location: any }>,
+// ) =>
+//   useMutation<void, AxiosError, { placeId: string; location: any }>(
+//     (review) =>
+//       requestServer<{ placeId: string; location: any }>({
+//         method: "patch",
+//         url: `place/location`,
+//         body: review,
+//       }),
+//     options,
+//   );
 
 export const usePlaceReviewMutation = (options?: MutationOptions<PlaceReviewRequestProps>) =>
   useMutation<void, AxiosError, PlaceReviewRequestProps>(

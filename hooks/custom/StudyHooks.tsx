@@ -1,11 +1,9 @@
 import { Dayjs } from "dayjs";
-import { useSession } from "next-auth/react";
 
-import { findMyStudyByUserId } from "../../libs/study/studySelectors";
-import { StudyMergeResultProps } from "../../types/models/studyTypes/derivedTypes";
 import { dayjsToStr } from "../../utils/dateTimeUtils";
 import {
-  useRealTimeStatusMutation,
+  useRealTimeAbsenceMutation,
+  useRealTimeCancelMutation,
   useRealTimeTimeChangeMutation,
   useRealtimeVoteMutation,
 } from "../realtime/mutations";
@@ -15,76 +13,113 @@ import {
   useStudyResultTimeChangeMutation,
   useStudyVoteMutation,
 } from "../study/mutations";
-import { useStudyVoteQuery } from "../study/queries";
 import { useResetStudyQuery } from "./CustomHooks";
 import { useTypeToast } from "./CustomToast";
 
-export const useMyStudyResult = (date: string): StudyMergeResultProps => {
-  const { data: session } = useSession();
-  const { data: studyVoteData } = useStudyVoteQuery(date, { enabled: !!date });
-  const findMyStudyResult = findMyStudyByUserId(studyVoteData, session?.user.id);
-  return findMyStudyResult;
-};
+// export const useStudySetQuery = (date: string, isEnabled: boolean): { studySet: StudySetProps } => {
+//   const { data } = useStudyWeekQuery({ enabled: isEnabled });
+
+//   const studySet = useMemo(() => {
+//     if (!isEnabled || !data) return null;
+//     const dateStart = dayjs(date).startOf("day");
+//     const filtered = data.filter((d) => !dayjs(d.date).startOf("day").isBefore(dateStart));
+//     return setStudyWeekData(filtered) ?? null; // 참조 안정화
+//   }, [isEnabled, date, data]);
+
+// //   return { studySet }; // 동일 참조 유지
+// // };
+
+// export const useMyStudyResult = (date: string): StudyMergeResultProps => {
+//   const { data: session } = useSession();
+//   const { data: studyVoteData } = useStudyPassedDayQuery(date, { enabled: !!date });
+//   const findMyStudyResult = findMyStudyByUserId(studyVoteData, session?.user.id);
+//   return findMyStudyResult;
+// };
 
 export const useStudyMutations = (date: Dayjs) => {
   const typeToast = useTypeToast();
   const resetStudy = useResetStudyQuery();
 
-  const { mutate: vote } = useStudyVoteMutation(date, "post", {
+  const { mutate: vote, isLoading: isLoading1 } = useStudyVoteMutation(date, "post", {
     onSuccess: () => {
       typeToast("apply");
       resetStudy();
     },
   });
 
-  const { mutate: change } = useStudyResultTimeChangeMutation(date, {
+  const { mutate: change, isLoading: isLoading2 } = useStudyResultTimeChangeMutation(date, {
     onSuccess: () => {
       typeToast("change");
       resetStudy();
     },
   });
 
-  const { mutate: cancel } = useStudyVoteMutation(date, "delete", {
+  const { mutate: cancel, isLoading: isLoading3 } = useStudyVoteMutation(date, "delete", {
     onSuccess: () => {
       typeToast("cancel");
       resetStudy();
     },
   });
 
-  const { mutate: participate } = useStudyParticipateMutation(date, {
+  const { mutate: participate, isLoading: isLoading4 } = useStudyParticipateMutation(date, {
     onSuccess: () => {
       typeToast("participate");
       resetStudy();
     },
   });
 
-  const { mutate: absence } = useStudyAbsenceMutation(date, {
+  const { mutate: absence, isLoading: isLoading5 } = useStudyAbsenceMutation(dayjsToStr(date), {
     onSuccess: () => {
       typeToast("cancel");
       resetStudy();
     },
   });
 
-  const { mutate: realTimeVote } = useRealtimeVoteMutation(dayjsToStr(date), {
-    onSuccess: () => {
-      typeToast("participate");
-      resetStudy();
+  const { mutate: realTimeVote, isLoading: isLoading6 } = useRealtimeVoteMutation(
+    dayjsToStr(date),
+    {
+      onSuccess: () => {
+        typeToast("participate");
+        resetStudy();
+      },
     },
-  });
+  );
 
-  const { mutate: realTimeChange } = useRealTimeTimeChangeMutation(dayjsToStr(date), {
-    onSuccess: () => {
-      typeToast("change");
-      resetStudy();
+  const { mutate: realTimeChange, isLoading: isLoading7 } = useRealTimeTimeChangeMutation(
+    dayjsToStr(date),
+    {
+      onSuccess: () => {
+        typeToast("change");
+        resetStudy();
+      },
     },
-  });
+  );
+  const { mutate: realTimeAbsence, isLoading: isLoading9 } = useRealTimeAbsenceMutation(
+    dayjsToStr(date),
+    {
+      onSuccess: () => {
+        typeToast("cancel");
+        resetStudy();
+      },
+    },
+  );
 
-  const { mutate: realTimeChangeStatus } = useRealTimeStatusMutation(dayjsToStr(date), {
-    onSuccess: () => {
-      typeToast("cancel");
-      resetStudy();
+  // const { mutate: realTimeChangeStatus } = useRealTimeStatusMutation(dayjsToStr(date), {
+  //   onSuccess: () => {
+  //     typeToast("cancel");
+  //     resetStudy();
+  //   },
+  // });
+  const { mutate: realTimeCancel, isLoading: isLoading8 } = useRealTimeCancelMutation(
+    dayjsToStr(date),
+    {
+      onSuccess: () => {
+        typeToast("cancel");
+
+        resetStudy();
+      },
     },
-  });
+  );
 
   return {
     voteStudy: {
@@ -97,7 +132,18 @@ export const useStudyMutations = (date: Dayjs) => {
     realTimeStudy: {
       vote: realTimeVote,
       change: realTimeChange,
-      cancel: realTimeChangeStatus,
+      cancel: realTimeCancel,
+      absence: realTimeAbsence,
     },
+    isLoading:
+      isLoading1 ||
+      isLoading2 ||
+      isLoading3 ||
+      isLoading4 ||
+      isLoading5 ||
+      isLoading6 ||
+      isLoading7 ||
+      isLoading8 ||
+      isLoading9,
   };
 };

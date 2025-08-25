@@ -50,6 +50,7 @@ export default function UserTimeBoard({ members }: ITimeBoard) {
 
   useEffect(() => {
     const newUserBlocks = transformToUserBlocks(members);
+
     setUserBlocks(newUserBlocks);
   }, [members]);
 

@@ -36,16 +36,16 @@ function WritingStudyImage() {
       router.push(`/studyPage?date=${getStudyViewDate(dayjs())}`);
     },
   });
-
+  console.log(mutate);
   const onClickNext = () => {
     if (!imageProps?.mainImage || !imageProps?.coverImage) {
       toast("warning", "이미지를 선택해 주세요.");
       return;
     }
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { content, ...placeInfo } = studyWriting;
+    // const { content,  } = studyWriting;
 
-    mutate({ ...placeInfo, image: imageProps.mainImage, coverImage: imageProps.coverImage });
+    // mutate({ ...placeInfo, image: imageProps.mainImage, coverImage: imageProps.coverImage });
   };
 
   const mainImageArr = STUDY_MAIN_IMAGES.map((item) => ({

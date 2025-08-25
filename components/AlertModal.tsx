@@ -10,6 +10,7 @@ export interface IAlertModalOptions {
   subFunc?: () => void;
   text?: string;
   defaultText?: string;
+  children2?: React.ReactNode;
 }
 
 interface IAlertModal extends IModal {
@@ -21,7 +22,7 @@ interface IAlertModal extends IModal {
 
 export default function AlertModal({
   setIsModal,
-  options: { title, subTitle, func, subFunc, text = "취소합니다", defaultText },
+  options: { title, subTitle, func, subFunc, text = "취소합니다", defaultText, children2 },
   isLoading,
   children,
 }: IAlertModal) {
@@ -45,7 +46,7 @@ export default function AlertModal({
         }}
         setIsModal={setIsModal}
       >
-        {subTitle || children}
+        {children2 || subTitle || children}
       </ModalLayout>
     </>
   );

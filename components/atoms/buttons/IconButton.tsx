@@ -3,8 +3,9 @@ import { Button } from "@chakra-ui/react";
 interface IIconButton {
   onClick?: () => void;
   children: React.ReactNode;
+  isDisabled?: boolean;
 }
-export default function IconButton({ children, onClick }: IIconButton) {
+export default function IconButton({ children, onClick, isDisabled }: IIconButton) {
   return (
     <Button
       w="32px"
@@ -14,6 +15,7 @@ export default function IconButton({ children, onClick }: IIconButton) {
       alignContent="center"
       variant="unstyled"
       position="relative"
+      isDisabled={isDisabled}
       onClick={onClick}
     >
       {children}

@@ -2,136 +2,122 @@ import { Box } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-import Slide from "../../../components/layouts/PageSlide";
+import { MainLoading, MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
+import ScreenOverlay from "../../../components/atoms/ScreenOverlay";
 import VoteMap from "../../../components/organisms/VoteMap";
+import { useUserCurrentLocation } from "../../../hooks/custom/CurrentLocationHook";
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
+import { useStudyPlacesQuery } from "../../../hooks/study/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
-import {
-  getDetailInfo,
-  getMapOptions,
-  getMarkersOptions,
-  getStudyPlaceMarkersOptions,
-} from "../../../libs/study/setStudyMapOptions";
-import { findMyStudyByUserId, findStudyByPlaceId } from "../../../libs/study/studySelectors";
-import { CoordinatesProps } from "../../../types/common";
+import { getMapOptions, getStudyPlaceMarkersOptions } from "../../../libs/study/setStudyMapOptions";
 import { IMapOptions, IMarkerOptions } from "../../../types/externals/naverMapTypes";
-import { DispatchBoolean, DispatchType } from "../../../types/hooks/reactTypes";
-import { StudyPlaceProps, StudyVoteDataProps } from "../../../types/models/studyTypes/baseTypes";
+import { StudyPlaceProps } from "../../../types/models/studyTypes/study-entity.types";
+import { detectDevice } from "../../../utils/validationUtils";
 import PlaceInfoDrawer from "../PlaceInfoDrawer";
-import StudyInfoDrawer, { StudyInfoProps } from "../StudyInfoDrawer";
 import StudyMapTopNav from "./TopNav";
 
 interface StudyPageMapProps {
-  studyVoteData: StudyVoteDataProps;
-  centerLocation: CoordinatesProps;
-  currentLocation: CoordinatesProps;
-  setCenterLocation: DispatchType<CoordinatesProps>;
-  date: string;
-  myVoteCoordinates: CoordinatesProps;
-  placeData: StudyPlaceProps[];
-  setIsPlaceMap: DispatchBoolean;
+  isDefaultOpen?: boolean;
+  handleVotePick?: (place: StudyPlaceProps) => void;
+  onClose?: () => void;
 }
 
-function StudyPageMap({
-  studyVoteData,
-  centerLocation,
-  currentLocation,
-  setCenterLocation,
-  date,
-  myVoteCoordinates,
-  placeData,
-  setIsPlaceMap,
-}: StudyPageMapProps) {
+function StudyPageMap({ isDefaultOpen = false, onClose, handleVotePick }: StudyPageMapProps) {
   const { data: session } = useSession();
   const { data: userInfo } = useUserInfoQuery();
   const typeToast = useTypeToast();
+  const isGuest = session?.user.role === "guest";
+  const { currentLocation } = useUserCurrentLocation();
 
   /* 네이버 지도와 마커 옵션 */
   const [mapOptions, setMapOptions] = useState<IMapOptions>(null);
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>(null);
   const [isMapExpansion, setIsMapExpansion] = useState(false);
-  const [detailInfo, setDetailInfo] = useState<StudyInfoProps>();
-  const [placeInfo, setPlaceInfo] = useState<StudyPlaceProps>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const isGuest = session?.user.role === "guest";
+  const [placeInfo, setPlaceInfo] = useState<StudyPlaceProps>(null);
+  const [filterType, setFilterType] = useState<"main" | "all">("main");
+
+  const { data: placeData, isLoading: isLoading2 } = useStudyPlacesQuery(filterType, null);
+
+  const isPC = detectDevice() === "PC" && userInfo?.locationDetail?.lat;
 
   useEffect(() => {
-    if (!studyVoteData) return;
+    if (isDefaultOpen) {
+      setIsMapExpansion(true);
+    }
+  }, [isDefaultOpen]);
 
+  useEffect(() => {
     const options = getMapOptions(
-      placeInfo
-        ? { lat: placeInfo?.latitude, lon: placeInfo.longitude }
-        : detailInfo
-        ? { lat: detailInfo.place.latitude, lon: detailInfo.place.longitude }
-        : (mapOptions?.center?.x && { lat: mapOptions?.center?.x, lon: mapOptions?.center?.y }) ||
-          centerLocation,
-      mapOptions?.zoom || (isMapExpansion ? 12 : 13),
+      isPC
+        ? { lat: userInfo.locationDetail.lat, lon: userInfo.locationDetail.lon }
+        : currentLocation,
+      isMapExpansion ? 12 : 13,
     );
-
     setMapOptions(options);
-    setMarkersOptions(
-      !placeData
-        ? getMarkersOptions(
-            studyVoteData.results,
-            studyVoteData?.realTimes?.userList || null,
-            currentLocation,
-            myVoteCoordinates,
-            studyVoteData?.participations?.filter(
-              (who) =>
-                who?.user?.isLocationSharingDenided === false ||
-                userInfo?.friend.includes(who?.user.uid),
-            ),
-            detailInfo?.place._id,
-          )
-        : getStudyPlaceMarkersOptions(placeData, placeInfo?._id),
-    );
-   
-    if (placeData) setIsMapExpansion(true);
-  }, [
-    studyVoteData,
-    currentLocation,
-    centerLocation,
-    isMapExpansion,
-    placeData,
-    placeInfo,
-    detailInfo,
-  ]);
+  }, [userInfo, currentLocation]);
 
-  const handleMarker = (id: string, type: "vote" | "place", currentZoom: number) => {
-    setMapOptions({ ...mapOptions, zoom: currentZoom });
-    if (type === "place") {
-      const findPlace = placeData?.find((place) => place._id === id);
-      setPlaceInfo(findPlace);
+  useEffect(() => {
+    if (!placeInfo) {
+      setMarkersOptions(getStudyPlaceMarkersOptions(placeData, null));
       return;
     }
-    if (!id || !studyVoteData || studyVoteData?.participations) return;
-    const findStudy = studyVoteData && findStudyByPlaceId(studyVoteData, id);
-    const detailInfo = getDetailInfo(findStudy, userInfo?.uid);
-    setDetailInfo(detailInfo);
+    const options = getMapOptions(
+      { lat: placeInfo.location.latitude, lon: placeInfo.location.longitude },
+      mapOptions?.zoom || (isMapExpansion ? 12 : 13),
+    );
+    setMapOptions(options);
+    setMarkersOptions(getStudyPlaceMarkersOptions(placeData, placeInfo._id));
+  }, [placeInfo, placeData]);
+
+  const handleMarker = (id: string, currentZoom: number) => {
+    setMapOptions({ ...mapOptions, zoom: currentZoom });
+
+    const findPlace = placeData?.find((place) => place._id === id);
+
+    setPlaceInfo(findPlace);
+    return;
+
+    // if (!id || !studyVoteData || studyVoteData?.participations) return;
+    // const findStudy = studyVoteData && findStudyByPlaceId(studyVoteData, id);
+    // const detailInfo = getDetailInfo(findStudy, userInfo?.uid);
+    // setDetailInfo(detailInfo);
   };
 
-  const myStudy = findMyStudyByUserId(studyVoteData, userInfo?._id);
+  // const myStudy = findMyStudyByUserId(studyVoteData, userInfo?._id);
+
+  useEffect(() => {
+    if (!isMapExpansion) return;
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [isMapExpansion]);
 
   const handleMapClick = () => {
     if (isGuest) {
       typeToast("guest");
       return;
     }
-    if (!isMapExpansion) setIsMapExpansion(true);
+    if (!isMapExpansion) {
+      setIsMapExpansion(true);
+    }
   };
 
   return (
     <>
-      <Slide>
+      <>
         <Box
-          mb={5}
           position={isMapExpansion ? "fixed" : "relative"}
+          mx={!isMapExpansion ? 5 : 0}
           top={0}
           left={0}
-          zIndex={700}
-          height={isMapExpansion ? "100dvh" : 180}
-          w="full"
-          borderRadius="16px"
+          zIndex={isDefaultOpen ? 1500 : isMapExpansion ? 1000 : "auto"}
+          {...(!isMapExpansion ? { aspectRatio: 1 / 1, height: "inherit" } : { height: "100dvh" })}
+          w={isMapExpansion ? "full" : "auto"}
+          borderRadius={isMapExpansion ? "0" : "16px"}
           overflow="hidden"
           border="1px solid black"
           borderColor="gray.200"
@@ -140,14 +126,31 @@ function StudyPageMap({
         >
           <StudyMapTopNav
             handleLocationRefetch={() => {
-              currentLocation ? setCenterLocation(currentLocation) : null;
+              isPC
+                ? setMapOptions((old) => ({
+                    ...old,
+                    center: new naver.maps.LatLng(
+                      userInfo.locationDetail.lat,
+                      userInfo.locationDetail.lon,
+                    ),
+                  }))
+                : currentLocation
+                ? setMapOptions((old) => ({
+                    ...old,
+                    center: new naver.maps.LatLng(currentLocation.lat, currentLocation.lon),
+                  }))
+                : null;
             }}
             isMapExpansion={isMapExpansion}
             onClose={() => {
               setIsMapExpansion(false);
-              setIsPlaceMap(false);
+              if (onClose) {
+                onClose();
+              }
             }}
             isCafePlace={!!placeData}
+            filterType={filterType}
+            setFilterType={setFilterType}
           />
 
           <VoteMap
@@ -155,24 +158,37 @@ function StudyPageMap({
             markersOptions={markersOptions}
             resizeToggle={isMapExpansion}
             handleMarker={handleMarker}
-            circleCenter={
-              isMapExpansion && !placeData
-                ? studyVoteData?.results?.map((props) => props?.center)
-                : null
-            }
+            // circleCenter={
+            //   isMapExpansion && !placeData
+            //     ? studyVoteData?.results?.map((props) => props?.center)
+            //     : null
+            // }
           />
           {/* {!studyVoteData?.results && <MainLoadingAbsolute />} */}
-        </Box>
-      </Slide>
-      {detailInfo && (
+          {isLoading2 && <MainLoadingAbsolute size="sm" />}
+        </Box>{" "}
+      </>
+      {/* {detailInfo && (
         <StudyInfoDrawer
           date={date}
           detailInfo={detailInfo}
           setDetailInfo={setDetailInfo}
           myStudy={myStudy}
         />
+      )} */}
+      {placeInfo && (
+        <PlaceInfoDrawer
+          handleVotePick={isDefaultOpen ? () => handleVotePick(placeInfo) : undefined}
+          placeInfo={placeInfo}
+          onClose={() => setPlaceInfo(null)}
+        />
       )}
-      {placeInfo && <PlaceInfoDrawer placeInfo={placeInfo} onClose={() => setPlaceInfo(null)} />}
+      {isLoading && (
+        <>
+          <ScreenOverlay zIndex={2000} />
+          <MainLoading />
+        </>
+      )}
     </>
   );
 }

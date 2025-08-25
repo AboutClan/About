@@ -3,7 +3,6 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { MouseEvent, useEffect, useState } from "react";
 
-import { useTogglePlaceHeart } from "../../hooks/custom/CustomHooks";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { HeartIcon } from "../Icons/HeartIcons";
@@ -39,7 +38,7 @@ function PlaceImage({
   const myPreferType =
     preference?.place === id ? "main" : preference?.subPlace?.includes(id) ? "sub" : null;
 
-  const toggleHeart = useTogglePlaceHeart();
+  // const toggleHeart = useTogglePlaceHeart();
 
   const [heartType, setHeartType] = useState<"main" | "sub" | null>();
 
@@ -52,6 +51,7 @@ function PlaceImage({
 
   const onClickHeart = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
     typeToast("inspection");
+    console.log(e);
     return;
 
     switch (myPreferType) {
@@ -65,7 +65,7 @@ function PlaceImage({
         if (preference?.place) setHeartType("sub");
         else setHeartType("main");
     }
-    toggleHeart(e, preference, id);
+    // toggleHeart(e, preference, id);
   };
 
   return (
@@ -122,7 +122,7 @@ function PlaceImage({
             left: "-12px", // 터치 영역을 왼쪽으로 12px 확장
             right: "-12px", // 터치 영역을 오른쪽으로 12px 확장
             zIndex: -1, // 부모 요소의 뒤쪽에 배치
-            backgroundColor: "rgba(0, 0, 255, 0.3)", // 반투명 파란색 배경으로 시각화
+
             borderRadius: "50%", // 둥근 모서리 효과를 위해 설정, 필요에 따라 제거 가능
             pointerEvents: "none", // 이벤트가 부모 요소로 전달되도록 설정
           }}

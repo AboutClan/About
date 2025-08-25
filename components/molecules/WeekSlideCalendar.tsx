@@ -15,7 +15,7 @@ function WeekSlideCalendar({ selectedDate, func }: CalendarProps) {
   const dateRefs: React.MutableRefObject<(HTMLDivElement | null)[]> = useRef([]);
   const containerRef = useRef<HTMLDivElement>();
   const calendarArr = getCalendarDates("week", dayjs(selectedDate));
-
+ 
   useEffect(() => {
     if (!calendarArr || !selectedDate) return;
     const selectedIdx = calendarArr.findIndex((obj) => obj.date === selectedDate);
@@ -23,7 +23,7 @@ function WeekSlideCalendar({ selectedDate, func }: CalendarProps) {
     if (selectedIdx !== -1 && containerRef.current) {
       const selectedElement = dateRefs.current[selectedIdx];
       if (selectedElement) {
-        containerRef.current.scrollLeft = selectedElement.clientWidth * (selectedIdx - 2);
+        containerRef.current.scrollLeft = selectedElement.clientWidth * (selectedIdx - 1);
       }
     }
   }, [calendarArr, selectedDate]);
@@ -62,8 +62,8 @@ function WeekSlideCalendar({ selectedDate, func }: CalendarProps) {
             ref={(el) => (dateRefs.current[idx] = el)}
           >
             <CalendarDayBox
+              isDisabled={item.isDisabled}
               date={item.date}
-              value={item.value}
               selectedDate={selectedDate}
               func={func}
             />

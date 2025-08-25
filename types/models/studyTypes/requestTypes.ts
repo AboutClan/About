@@ -1,6 +1,6 @@
+import { LocationProps } from "../../common";
 import { DayjsTimeProps, StringTimeProps } from "../../utils/timeAndDate";
-import { PlaceInfoProps } from "../utilTypes";
-import { RealTimesStatus } from "./baseTypes";
+import { StudyStatus } from "./study-entity.types";
 
 export interface StudyAttendanceProps {
   time: string;
@@ -10,21 +10,22 @@ export interface StudyAttendanceProps {
 }
 
 export interface RealTimeVoteProps {
-  place: PlaceInfoProps;
+  place: LocationProps;
   time: DayjsTimeProps;
+  status: StudyStatus;
 }
 
 export interface RealTimeAttendanceProps {
   memo: string;
   image: string | Blob;
-  status: RealTimesStatus;
+  status: StudyStatus;
 }
 
 export interface RealTimesDirectAttendanceProps {
   image?: Blob;
-  place?: PlaceInfoProps;
+  place?: LocationProps;
   arrivedMessage: string;
-  status: RealTimesStatus;
+  status: StudyStatus;
   time: StringTimeProps;
 }
 

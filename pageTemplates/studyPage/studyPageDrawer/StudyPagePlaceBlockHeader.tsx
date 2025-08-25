@@ -15,15 +15,11 @@ interface StudyPagePlaceSectionHeaderProps {
 
 function StudyPagePlaceSectionHeader({ date, setDate }: StudyPagePlaceSectionHeaderProps) {
   const [isCalendarModal, setIsCalendarModal] = useState(false);
-  const englishDayjs = dayjs(date).locale("en");
 
   return (
     <>
       <Box mb={4}>
-        <SectionHeader
-          title={dayjsToFormat(dayjs(date), "YYYY년 M월 D일")}
-          subTitle={dayjsToFormat(englishDayjs, "MMMM")}
-        >
+        <SectionHeader title={dayjsToFormat(dayjs(date), "YYYY년 M월 D일")} subTitle={null}>
           <Flex flex={1} ml={1.5} justify="space-between" align="center">
             <Button
               display="flex"

@@ -22,10 +22,10 @@ function BoardPage() {
   const [tab, setTab] = useState<"정보 게시판" | "익명 게시판">("정보 게시판");
 
   // const [isRuleModal, setIsRuleModal] = useState(false);
-  console.log(typeParams);
+
 
   useEffect(() => {
-    console.log(34, typeParams);
+  
     if (typeParams === "info") setTab("정보 게시판");
     if (typeParams === "anonymous") setTab("익명 게시판");
   }, [typeParams]);

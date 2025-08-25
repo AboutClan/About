@@ -37,7 +37,7 @@ const GIFT_MAP = {
 function RankingMembers({ users, fieldName }: IRankingMembers) {
   const { data: session } = useSession();
   const [giftContent, setGiftContent] = useState<{ title: string; text: string }>();
-  console.log(5555, users);
+
 
   const onClickGift = (type: "gold" | "silver" | "bronze" | "temperature", idx: number) => {
     setGiftContent({
@@ -49,9 +49,7 @@ function RankingMembers({ users, fieldName }: IRankingMembers) {
   return (
     <>
       {users?.map((user, idx) => {
-        if (!user.user?.temperature) {
-          console.log(user.user, "23");
-        }
+      
         const who = user.user;
         const rankNum = idx + 1;
         const value =
@@ -120,7 +118,7 @@ function RankingMembers({ users, fieldName }: IRankingMembers) {
 function GiftIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="19" viewBox="0 0 18 19" fill="none">
-      <g clip-path="url(#clip0_4007_11)">
+      <g clipPath="url(#clip0_4007_11)">
         <path
           d="M3.94995 5.27854C5.26723 5.27493 6.59147 5.26808 7.90618 5.29442L7.93547 5.33771L7.9406 18.9525C5.92441 18.9522 3.87527 19.0297 1.84699 18.9865C1.57277 18.9518 1.05765 18.5669 1.05765 18.2851V9.42764C0.549851 9.49403 0.134677 9.31075 0.0420506 8.78688C0.0991644 7.90222 -0.0670514 6.8469 0.0325316 5.98209C0.075367 5.61047 0.370089 5.32076 0.746454 5.27854C1.6665 5.17572 2.98305 5.28107 3.94995 5.27854Z"
           fill="var(--color-yellow)"

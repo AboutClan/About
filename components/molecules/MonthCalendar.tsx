@@ -1,51 +1,70 @@
 import { Box, Flex, Grid } from "@chakra-ui/react";
-import dayjs, { Dayjs } from "dayjs";
+import dayjs from "dayjs";
 
-import { VoteCntProps } from "../../types/models/studyTypes/studyRecords";
 import { dayjsToStr, getCalendarDates } from "../../utils/dateTimeUtils";
 import DatePointButton from "./DatePointButton";
 
 interface CalendarProps {
-  voteCntArr: VoteCntProps[];
-  selectedDate: Dayjs;
-  standardDate: Dayjs;
+  standardDate: string;
+  selectedDates: string[];
   func: (date: string) => void;
+  passedDisabled?: boolean;
+  mintDateArr: string[];
+  isTodayInclude: boolean;
 }
 
 const DAY = ["일", "월", "화", "수", "목", "금", "토"];
 
-function MonthCalendar({ standardDate, selectedDate, func }: CalendarProps) {
-  const calendarArr = getCalendarDates("month", standardDate);
- 
+function MonthCalendar({
+  standardDate,
+  selectedDates,
+  func,
+  passedDisabled,
+  mintDateArr,
+  isTodayInclude,
+}: CalendarProps) {
+  const calendarArr = getCalendarDates(
+    "month",
+    dayjs(standardDate),
+    passedDisabled,
+    mintDateArr,
+    isTodayInclude,
+  );
+
   return (
     <>
       <Flex mb="12px">
         {DAY.map((day) => (
           <Box
+            fontSize="13px"
             flex={1}
             textAlign="center"
             key={day}
             color={
-              day === "일" ? "var(--color-red)" : day === "토" ? "var(--color-blue)" : "inherit"
+              day === "일"
+                ? "var(--color-red)"
+                : day === "토"
+                ? "var(--color-blue)"
+                : "var(--gray-800)"
             }
           >
             {day}
           </Box>
         ))}
       </Flex>
-      <Grid templateColumns="repeat(7,1fr)" rowGap="6px">
+      <Grid templateColumns="repeat(7,1fr)" rowGap="6px" color="gray.800">
         {calendarArr.map((item, idx) => {
-         
           return (
-            <Box key={idx}>
+            <Flex justify="center" key={idx}>
               <DatePointButton
                 date={item ? dayjsToStr(dayjs(item.date)) : null}
-                value={item ? item.value : null}
                 func={item ? () => func(dayjsToStr(dayjs(item.date))) : null}
-                isSelected={item && dayjsToStr(dayjs(item.date)) === dayjsToStr(selectedDate)}
+                isSelected={item && selectedDates.includes(dayjsToStr(dayjs(item.date)))}
                 pointType="mint"
+                isDisabled={item?.isDisabled || item?.isMint}
+                isMint={item?.isMint}
               />
-            </Box>
+            </Flex>
           );
         })}
       </Grid>

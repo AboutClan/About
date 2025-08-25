@@ -1,85 +1,86 @@
-import { Box, Flex } from "@chakra-ui/react";
-import { useState } from "react";
+// import { Box, Flex } from "@chakra-ui/react";
+// import { useState } from "react";
 
-import {
-  setStudyThumbnailCard,
-  sortThumbnailCardInfoArr,
-} from "../../../libs/study/thumbnailCardLibs";
-import { CoordinatesProps } from "../../../types/common";
-import { IModal } from "../../../types/components/modalTypes";
-import { StudyMergeResultProps } from "../../../types/models/studyTypes/derivedTypes";
-import PickerRowButton from "../../molecules/PickerRowButton";
-import BottomFlexDrawer, { BottomFlexDrawerOptions } from "../../organisms/drawer/BottomFlexDrawer";
+// import {
+//   setStudyThumbnailCard,
+//   sortThumbnailCardInfoArr,
+// } from "../../../libs/study/thumbnailCardLibs";
+// import { CoordinatesProps } from "../../../types/common";
+// import { IModal } from "../../../types/components/modalTypes";
 
-interface StudyPlacePickerDrawerProps extends IModal {
-  studyResults: StudyMergeResultProps[];
-  handlePickPlace: (placeId: string) => void;
-  currentLocation: CoordinatesProps;
-  date: string;
-}
+// import PickerRowButton from "../../molecules/PickerRowButton";
+// import BottomFlexDrawer, { BottomFlexDrawerOptions } from "../../organisms/drawer/BottomFlexDrawer";
 
-function StudyPlacePickerDrawer({
-  studyResults,
-  setIsModal,
-  handlePickPlace,
-  currentLocation,
-  date,
-}: StudyPlacePickerDrawerProps) {
-  const [selectedPlaceId, setSelectedPlaceId] = useState<string>();
+// interface StudyPlacePickerDrawerProps extends IModal {
+//   studyResults: StudyMergeResultProps[];
+//   handlePickPlace: (placeId: string) => void;
+//   currentLocation: CoordinatesProps;
+//   date: string;
+// }
 
-  const drawerOptions2: BottomFlexDrawerOptions = {
-    header: {
-      title: "스터디 장소 투표",
-      subTitle: "참여 가능한 스터디 장소를 모두 선택해 주세요¡",
-    },
-    footer: {
-      text: "시간 선택",
-      func: () => handlePickPlace(selectedPlaceId),
-      // loading: isLoading1 || isLoading2,
-    },
-  };
+// function StudyPlacePickerDrawer({
+//   studyResults,
+//   setIsModal,
+//   handlePickPlace,
+//   currentLocation,
+//   date,
+// }: StudyPlacePickerDrawerProps) {
+//   const [selectedPlaceId, setSelectedPlaceId] = useState<string>();
 
-  const thumbnailArr = setStudyThumbnailCard(
-    date,
-    null,
-    studyResults,
-    null,
-    currentLocation,
-    null,
-    null,
-  );
+//   const drawerOptions2: BottomFlexDrawerOptions = {
+//     header: {
+//       title: "스터디 장소 투표",
+//       subTitle: "참여 가능한 스터디 장소를 모두 선택해 주세요¡",
+//     },
+//     footer: {
+//       text: "시간 선택",
+//       func: () => handlePickPlace(selectedPlaceId),
+//       // loading: isLoading1 || isLoading2,
+//     },
+//   };
 
-  const sortedThumbnailArr = sortThumbnailCardInfoArr("인원순", thumbnailArr, null);
+//   const thumbnailArr = setStudyThumbnailCard(
+//     date,
+//     null,
+//     studyResults,
+//     null,
+//     currentLocation,
+//     null,
+//     null,
+//   );
 
-  return (
-    <>
-      <BottomFlexDrawer
-        isOverlay
-        isHideBottom
-        isDrawerUp
-        zIndex={5000}
-        height={410}
-        setIsModal={setIsModal}
-        drawerOptions={drawerOptions2}
-      >
-        <Flex w="full" direction="column" overflowY="scroll">
-          {sortedThumbnailArr?.map((studyResult, idx) => {
-            const id = studyResult.place._id;
-            return (
-              <Box key={idx} mb={2} w="full">
-                <PickerRowButton
-                  {...studyResult}
-                  participantCnt={studyResult.participants.length}
-                  onClick={() => setSelectedPlaceId((old) => (old === id ? null : id))}
-                  isNoSelect={selectedPlaceId !== id}
-                />
-              </Box>
-            );
-          })}
-        </Flex>
-      </BottomFlexDrawer>
-    </>
-  );
-}
+//   const sortedThumbnailArr = sortThumbnailCardInfoArr("인원순", thumbnailArr, null);
 
-export default StudyPlacePickerDrawer;
+//   return (
+//     <>
+//       <BottomFlexDrawer
+//         isOverlay
+//         isHideBottom
+//         isDrawerUp
+//         zIndex={5000}
+//         height={410}
+//         setIsModal={setIsModal}
+//         drawerOptions={drawerOptions2}
+//       >
+//         <Flex w="full" direction="column" overflowY="scroll">
+//           {sortedThumbnailArr?.map((studyResult, idx) => {
+//             const id = studyResult.place._id;
+//             return (
+//               <Box key={idx} mb={2} w="full">
+//                 <PickerRowButton
+//                   {...studyResult}
+//                   participantCnt={studyResult.participants.length}
+//                   onClick={() => setSelectedPlaceId((old) => (old === id ? null : id))}
+//                   isNoSelect={selectedPlaceId !== id}
+//                 />
+//               </Box>
+//             );
+//           })}
+//         </Flex>
+//       </BottomFlexDrawer>
+//     </>
+//   );
+// }
+
+// export default StudyPlacePickerDrawer;
+export {};

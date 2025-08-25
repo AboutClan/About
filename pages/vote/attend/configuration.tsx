@@ -1,7 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
@@ -14,40 +13,51 @@ import Textarea from "../../../components/atoms/Textarea";
 import BottomNav from "../../../components/layouts/BottomNav";
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
-import { STUDY_RECORD_MODAL_AT } from "../../../constants/keys/queryKeys";
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
-import { useMyStudyResult } from "../../../hooks/custom/StudyHooks";
-import { useImageUploadMutation } from "../../../hooks/image/mutations";
 import { useRealTimeAttendMutation } from "../../../hooks/realtime/mutations";
 import { useStudyAttendCheckMutation } from "../../../hooks/study/mutations";
+import { useStudySetQuery } from "../../../hooks/study/queries";
 import { ModalLayout } from "../../../modals/Modals";
 import {
-  transferCollectionState,
   transferStudyAttendanceState,
+  transferStudyRewardState,
 } from "../../../recoils/transferRecoils";
-import { CollectionProps } from "../../../types/models/collections";
+import { PointInfoProps } from "../../../types/common";
+import {
+  StudyConfirmedSetProps,
+  StudyType,
+} from "../../../types/models/studyTypes/study-set.types";
 import { convertTimeStringToDayjs } from "../../../utils/convertUtils/convertTypes";
-import { dayjsToFormat, dayjsToStr } from "../../../utils/dateTimeUtils";
+import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
 function Configuration() {
-  const { data: session } = useSession();
   const searchParams = useSearchParams();
   const router = useRouter();
   const toast = useToast();
 
   const date = searchParams.get("date");
   const id = searchParams.get("id");
+  const type = searchParams.get("type") as Exclude<StudyType, "participations">;
+  const isSoloRealTimesPage = type === "soloRealTimes";
 
   const resetStudy = useResetStudyQuery();
-  const myStudyResult = useMyStudyResult(dayjsToStr(dayjs()));
+
+  const { data: studySet } = useStudySetQuery(date, { enabled: !!date });
+
+  const studyData = studySet && studySet[type];
+
+  const confirmedSet = studyData as StudyConfirmedSetProps[];
+
+  const findStudy = confirmedSet?.find((set) => set.study.place._id === id)?.study;
 
   const [endTime, setEndTime] = useState(
     dayjs().hour() < 21 ? dayjsToFormat(dayjs().startOf("hour").add(3, "hour"), "HH:mm") : "23:30",
   );
 
+  const setTransferStudyReward = useSetRecoilState(transferStudyRewardState);
   const textareaRef = useRef(null);
-  const [otherPermission, setOtherPermission] = useState<"허용" | "비허용">("허용");
+
   const [attendMessage, setAttendMessage] = useState("");
   const [isChecking, setIsChecking] = useState(false);
   const [stampCnt, setStampCnt] = useState<number>();
@@ -55,9 +65,7 @@ function Configuration() {
   const [transferStudyAttendance, setTransferStudyAttendance] = useRecoilState(
     transferStudyAttendanceState,
   );
-  const studyType = myStudyResult?.status;
-
-  const setTransferCollection = useSetRecoilState(transferCollectionState);
+  // const studyType = myStudyResult?.status;
 
   const { mutate: handleArrived, isLoading: isLoading1 } = useStudyAttendCheckMutation({
     onSuccess(data) {
@@ -71,15 +79,15 @@ function Configuration() {
     },
   });
 
-  const { mutate: imageUpload, isLoading: isLoading3 } = useImageUploadMutation({
-    onSuccess() {
-      resetStudy();
-    },
-    onError(err) {
-      console.error(err);
-      toast("error", "이미지 업로드에 실패했습니다.");
-    },
-  });
+  // const { mutate: imageUpload, isLoading: isLoading3 } = useImageUploadMutation({
+  //   onSuccess() {
+  //     resetStudy();
+  //   },
+  //   onError(err) {
+  //     console.error(err);
+  //     toast("error", "이미지 업로드에 실패했습니다.");
+  //   },
+  // });
 
   let currentDayjs = dayjs().startOf("hour");
   const timeOptions = [];
@@ -89,13 +97,12 @@ function Configuration() {
     currentDayjs = currentDayjs.add(30, "m");
   }
 
-  const isSoloPage = transferStudyAttendance?.status === "solo";
-  useEffect(() => {
-    if (!transferStudyAttendance) return;
-    if (isSoloPage) {
-      setOtherPermission("비허용");
-    }
-  }, [transferStudyAttendance]);
+  // useEffect(() => {
+  //   if (!transferStudyAttendance) return;
+  //   if (isSoloPage) {
+  //     setOtherPermission("비허용");
+  //   }
+  // }, [transferStudyAttendance]);
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -105,67 +112,44 @@ function Configuration() {
     }
   }, []);
 
-  const handleAttendSuccess = (collection: CollectionProps) => {
-    setTransferCollection({ alphabet: collection.alphabet, stamps: collection.stamps });
-    saveTogetherMembers();
+  const handleAttendSuccess = (data: PointInfoProps) => {
     resetStudy();
     setTransferStudyAttendance(null);
-    toast("success", `출석이 완료되었습니다.`);
-
+    setTimeout(() => {
+      setTransferStudyReward(data);
+    }, 500);
     if (id) {
-      router.push(`/study/${id}/${date}`);
+      router.push(`/study/${id}/${date}?type=${type}`);
     } else {
-      router.push(`/studyPage?date=${date}`);
+      router.push(`/study/realTimes/${date}?type=${type}`);
     }
-  };
-
-  const saveTogetherMembers = () => {
-    const place = myStudyResult?.place.name || transferStudyAttendance?.place.name;
-
-    const members = myStudyResult
-      ? myStudyResult.members
-          .filter((who) => who.user._id !== session?.user.id)
-          .map((member) => ({
-            image: member.user.profileImage,
-            avatar: member.user?.avatar,
-          }))
-      : [];
-
-    const record = {
-      date: dayjsToStr(dayjs()),
-      place,
-      members,
-    };
-    localStorage.setItem(STUDY_RECORD_MODAL_AT, JSON.stringify(record));
   };
 
   const formData = new FormData();
 
   const handleSubmit = () => {
     if (attendMessage?.length < 1) {
-      toast("warning", "출석 메세지를 남겨주세요");
+      if (isSoloRealTimesPage) toast("warning", "오늘의 한마디를 남겨주세요!");
+      else toast("warning", "출석 메세지를 남겨주세요");
+      return;
+    }
+    if (!isSoloRealTimesPage && !findStudy) {
+      toast("warning", "참여중인 스터디를 찾을 수 없습니다.");
       return;
     }
 
-    if (
-      !transferStudyAttendance ||
-      (studyType === "open" && myStudyResult.place.name === transferStudyAttendance?.place?.name)
-    ) {
-      setIsChecking(true);
-      handleArrived({ memo: attendMessage, end: convertTimeStringToDayjs(endTime).toISOString() });
-      if (!transferStudyAttendance) return;
-      formData.append("image", transferStudyAttendance.image);
-      formData.append("path", "studyAttend");
-      imageUpload(formData);
-    } else {
+    if (isSoloRealTimesPage) {
+      if (!transferStudyAttendance?.image) {
+        toast("warning", "인증 사진이 누락되었습니다.");
+        return;
+      } else if (!transferStudyAttendance?.place) {
+        toast("warning", "스터디 장소가 입력되지 않았습니다.");
+        return;
+      }
       formData.append("memo", attendMessage);
-      formData.append("status", otherPermission === "허용" ? "free" : "solo");
+      formData.append("status", "solo");
       formData.append("images", transferStudyAttendance?.image as Blob);
-      formData.append(
-        "place",
-        JSON.stringify(transferStudyAttendance?.place || myStudyResult?.place),
-      );
-
+      formData.append("place", JSON.stringify(transferStudyAttendance?.place));
       formData.append(
         "time",
         JSON.stringify({
@@ -175,6 +159,26 @@ function Configuration() {
       );
 
       attendRealTimeStudy(formData);
+    } else if (type === "openRealTimes") {
+      formData.append("memo", attendMessage);
+      formData.append("place", JSON.stringify(findStudy.place.location));
+
+      formData.append(
+        "time",
+        JSON.stringify({
+          start: dayjs().toISOString(),
+          end: convertTimeStringToDayjs(endTime).toISOString(),
+        }),
+      );
+      console.log(attendMessage, findStudy.place);
+
+      attendRealTimeStudy(formData);
+    } else {
+      setIsChecking(true);
+      handleArrived({
+        memo: attendMessage,
+        end: convertTimeStringToDayjs(endTime).toISOString(),
+      });
     }
   };
 
@@ -184,38 +188,10 @@ function Configuration() {
         <Header title="" isBorder={false} />
         <Slide>
           <PageIntro
-            main={{ first: "출석 인증하기" }}
-            sub="스터디 출석에 필요한 정보를 입력해 주세요"
+            main={{ first: isSoloRealTimesPage ? "개인 스터디 인증" : "출석 인증하기" }}
+            sub={`${isSoloRealTimesPage ? "인증" : "출석"}에 필요한 정보를 입력해 주세요`}
           />
-          <Box mb={3}>
-            <SectionTitle
-              text={isSoloPage || transferStudyAttendance ? "오늘의 공부 한마디" : "나의 인상착의"}
-            />
-          </Box>
-          <Textarea
-            value={attendMessage}
-            onChange={(e) => setAttendMessage(e.target.value)}
-            ref={textareaRef}
-            placeholder={
-              isSoloPage || transferStudyAttendance
-                ? "자유롭게 하고 싶은 말을 작성해 주세요"
-                : "나를 유추할 수 있는 정보를 기입해 주세요"
-            }
-          />
-          <Box my={5}>
-            <Box mb={3}>
-              <SectionTitle text="다른 인원 참여 허용" isActive={false} />
-            </Box>
-            <Select
-              options={["허용", "비허용"]}
-              defaultValue={otherPermission}
-              setValue={setOtherPermission}
-              size="lg"
-              isActive={false}
-              isFullSize
-            />
-          </Box>
-          <Box>
+          <Box mb={5}>
             <Box mb={3}>
               <SectionTitle text="예상 종료 시간" />
             </Box>
@@ -227,12 +203,44 @@ function Configuration() {
               setValue={setEndTime}
             />
           </Box>
+          <Box mb={3}>
+            <SectionTitle
+              text={
+                isSoloRealTimesPage || transferStudyAttendance
+                  ? "오늘의 공부 한마디"
+                  : "나의 인상착의"
+              }
+            />
+          </Box>
+          <Textarea
+            value={attendMessage}
+            onChange={(e) => setAttendMessage(e.target.value)}
+            ref={textareaRef}
+            placeholder={
+              isSoloRealTimesPage || transferStudyAttendance
+                ? "자유롭게 하고 싶은 말을 작성해 주세요"
+                : "나를 유추할 수 있는 정보를 기입해 주세요"
+            }
+          />
+          {/* <Box my={5}>
+            <Box mb={3}>
+              <SectionTitle text="다른 인원 참여 허용" isActive={false} />
+            </Box>
+            <Select
+              options={["허용", "비허용"]}
+              defaultValue={otherPermission}
+              setValue={setOtherPermission}
+              size="lg"
+              isActive={false}
+              isFullSize
+            />
+          </Box> */}
         </Slide>
       </Box>
       <BottomNav
-        text="출 석"
+        text={isSoloRealTimesPage ? "인증 완료" : "출석 완료"}
         onClick={handleSubmit}
-        isLoading={isLoading1 || isLoading2 || isLoading3}
+        isLoading={isLoading1 || isLoading2}
       />
       {isChecking && (
         <>

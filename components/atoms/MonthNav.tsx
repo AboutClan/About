@@ -26,7 +26,7 @@ function MonthNav({ monthNum, changeMonth }: MonthNavProps) {
       changeMonth((old) => old.add(1, "month"));
     }
   };
-  console.log(monthNum);
+
   return (
     <Flex align="center" fontSize="20px" fontWeight={800} alignItems="center">
       <Box as="button" px={1} onClick={() => handleMonthChange("left")}>

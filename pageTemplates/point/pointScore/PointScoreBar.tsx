@@ -5,13 +5,9 @@ import UserBadge from "../../../components/atoms/badges/UserBadge";
 import ProgressBar from "../../../components/atoms/ProgressBar";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 
-interface IPointScoreBar {
-  hasQuestion?: boolean;
-}
-
-function PointScoreBar({ hasQuestion = true }: IPointScoreBar) {
+function PointScoreBar() {
   const { data: userInfo } = useUserInfoQuery();
-  console.log(hasQuestion);
+
   // const [isBadgeModal, setIsBadgeModal] = useState(false);
 
   // let badgeInfo = ["아메리카노", 0];

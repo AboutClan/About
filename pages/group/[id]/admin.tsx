@@ -40,7 +40,7 @@ function Admin() {
     setDeletedUser((old) => [...old, user._id]);
     mutate({ status, userId: user._id });
   };
-  console.log(group);
+ 
   return (
     <>
       <Header title="관리자 페이지" />

@@ -1,15 +1,35 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import { MouseEvent } from "react";
 
 import CurrentLocationBtn from "../../../components/atoms/CurrentLocationBtn";
+import { DispatchType } from "../../../types/hooks/reactTypes";
 
 interface TopNavProps {
   handleLocationRefetch: () => void;
   isMapExpansion: boolean;
   onClose: () => void;
   isCafePlace: boolean;
+  filterType: "main" | "all";
+  setFilterType: DispatchType<"main" | "all">;
 }
 
-function TopNav({ handleLocationRefetch, isMapExpansion, isCafePlace, onClose }: TopNavProps) {
+function TopNav({
+  handleLocationRefetch,
+  isMapExpansion,
+  isCafePlace,
+  onClose,
+  filterType,
+  setFilterType,
+}: TopNavProps) {
+  const handleFilter = (
+    e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
+    type: "main" | "all",
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setFilterType(type);
+  };
+
   return (
     <>
       <Flex
@@ -40,6 +60,45 @@ function TopNav({ handleLocationRefetch, isMapExpansion, isCafePlace, onClose }:
             </Flex>
           </Flex>
         )}
+        <Box
+          fontSize={isMapExpansion ? "15px" : "10px"}
+          h={isMapExpansion ? "48px" : "32px"}
+          display="flex"
+          bg="gray.100"
+          borderRadius="full"
+          p="2px"
+          border="var(--border-main)"
+          boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
+        >
+          <Flex
+            as="button"
+            align="center"
+            flex="1"
+            textAlign="center"
+            px={isMapExpansion ? 6 : 4}
+            borderRadius="full"
+            fontWeight="600"
+            bg={filterType === "main" ? "gray.900" : "white"}
+            color={filterType === "main" ? "white" : "inherit"}
+            onClick={(e) => handleFilter(e, "main")}
+          >
+            추천
+          </Flex>
+          <Flex
+            as="button"
+            align="center"
+            flex="1"
+            textAlign="center"
+            px={isMapExpansion ? 6 : 4}
+            borderRadius="full"
+            fontWeight="600"
+            bg={filterType === "main" ? "white" : "gray.900"}
+            color={filterType !== "main" ? "white" : "inherit"}
+            onClick={(e) => handleFilter(e, "all")}
+          >
+            전체
+          </Flex>
+        </Box>
         {!isMapExpansion ? (
           <Button
             borderRadius="4px"
@@ -49,7 +108,7 @@ function TopNav({ handleLocationRefetch, isMapExpansion, isCafePlace, onClose }:
             h="32px"
             size="sm"
             p="0"
-            border="1px solid var(--gray-100)"
+            border="var(--border-main)"
           >
             <ExpansionIcon />
           </Button>

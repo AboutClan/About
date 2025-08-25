@@ -37,7 +37,7 @@ interface PointGuideModalProps {
   onClose: () => void;
 }
 
-function PointGuideModal({ type, onClose }: PointGuideModalProps) {
+export function PointGuideModal({ type, onClose }: PointGuideModalProps) {
   const content = POINT_GUIDE_MODAL_CONTENT[type];
 
   return (
@@ -58,7 +58,7 @@ function PointGuideModalSubTitle({ type }: { type: PointGuideType }) {
         </>
       ) : (
         <>
-          스터디에 참여하면 <b>포인트</b>를 획득할 수 있습니다.
+          스터디 참여하면 <b>포인트</b>를 준다고?!
           <br /> 공부도 하고, 기록도 쌓고, 보상금도 받아가세요!
         </>
       )}
@@ -99,21 +99,21 @@ const POINT_GUIDE_MODAL_CONTENT: Record<
         right: "+ 1000 ~ 5000 Point",
       },
 
-      {
-        left: "스터디 지각",
-        right: "- 50 Point",
-        color: "red",
-      },
-      {
-        left: "스터디 당일 불참",
-        right: "- 500 Point",
-        color: "red",
-      },
-      {
-        left: "스터디 당일 잠수",
-        right: "- 1000 Point",
-        color: "red",
-      },
+      // {
+      //   left: "스터디 지각",
+      //   right: "- 50 Point",
+      //   color: "red",
+      // },
+      // {
+      //   left: "스터디 당일 불참",
+      //   right: "- 500 Point",
+      //   color: "red",
+      // },
+      // {
+      //   left: "스터디 당일 잠수",
+      //   right: "- 1000 Point",
+      //   color: "red",
+      // },
     ],
   },
   store: {

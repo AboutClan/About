@@ -2,7 +2,6 @@ import { Box, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { NewAlertIcon } from "../../components/Icons/AlertIcon";
 import ExternalLink from "../../components/molecules/ExternalLink";
 
 function HomeNav() {
@@ -36,11 +35,6 @@ function HomeNav() {
                 priority
                 style={{ width: "36px", height: "36px", objectFit: "contain" }}
               />
-              {item.title === "랭킹" && (
-                <Box pos="absolute" bottom="0px" right="0px">
-                  <NewAlertIcon />
-                </Box>
-              )}
             </Flex>
             <Box fontSize="11px" color="black">
               {item.title}
