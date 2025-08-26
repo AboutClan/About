@@ -55,8 +55,7 @@ const baseNextConfig = {
     formats: ["image/avif", "image/webp"],
 
     domains: [
-      "about-front.kro.kr",
-      "studyabout.herokuapp.com",
+      "study-about.club",
       "localhost:3000",
       "studyabout.s3.ap-northeast-2.amazonaws.com",
       "p.kakaocdn.net",
