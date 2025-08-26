@@ -46,6 +46,7 @@ const baseNextConfig = {
     NEXT_PUBLIC_GA_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
     NEXT_PUBLIC_SERVER_URI: process.env.NEXT_PUBLIC_SERVER_URI,
     NEXT_PUBLIC_NEXTAUTH_URL: process.env.NEXT_PUBLIC_NEXTAUTH_URL,
+    NEXT_PUBLIC_NAVER_AI_CLIENT_ID: process.env.NEXT_PUBLIC_NAVER_AI_CLIENT_ID,
   },
   // output: "standalone",
   images: {

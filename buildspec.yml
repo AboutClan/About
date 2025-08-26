@@ -11,6 +11,7 @@ phases:
       - echo Building the Docker image...
       - |
         docker build \
+        --build-arg NEXT_PUBLIC_NAVER_AI_CLIENT_ID=$NEXT_PUBLIC_NAVER_AI_CLIENT_ID \
         --build-arg NEXT_PUBLIC_KAKAO_CLIENT_ID=$NEXT_PUBLIC_KAKAO_CLIENT_ID \
         --build-arg NEXT_PUBLIC_KAKAO_JS=$NEXT_PUBLIC_KAKAO_JS \
         --build-arg NEXT_PUBLIC_NAVER_CLIENT_ID=$NEXT_PUBLIC_NAVER_CLIENT_ID \
