@@ -126,7 +126,7 @@ function Configuration() {
   };
 
   const formData = new FormData();
-
+  console.log(5, isSoloRealTimesPage);
   const handleSubmit = () => {
     if (attendMessage?.length < 1) {
       if (isSoloRealTimesPage) toast("warning", "오늘의 한마디를 남겨주세요!");

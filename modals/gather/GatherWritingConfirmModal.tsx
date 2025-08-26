@@ -4,7 +4,6 @@ import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
-import styled from "styled-components";
 
 import ImageUploadInput from "../../components/molecules/ImageUploadInput";
 
@@ -122,31 +121,5 @@ function GatherWritingConfirmModal({
     </>
   );
 }
-
-const Container = styled.div`
-  line-height: 2;
-  font-size: 13px;
-  text-align: start;
-`;
-
-const Item = styled.div`
-  width: 100%;
-  display: flex;
-  > span:first-child {
-    display: inline-block;
-    width: 32px;
-    text-align: start;
-    font-weight: 600;
-    margin-right: var(--gap-2);
-  }
-  > span:last-child {
-    flex: 1;
-    text-align: start;
-    display: inline-block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-`;
 
 export default GatherWritingConfirmModal;

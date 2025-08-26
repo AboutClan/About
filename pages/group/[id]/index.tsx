@@ -274,7 +274,7 @@ function GroupDetail() {
         />
       )}
       {!group && <MainLoading />}
-      {group && !findMyInfo && !isGuest ? <GroupBottomNav data={group} /> : null}
+      {group && !findMyInfo && !isGuest && !isAdmin ? <GroupBottomNav data={group} /> : null}
     </>
   );
 }
