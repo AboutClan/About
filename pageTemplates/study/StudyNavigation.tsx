@@ -35,6 +35,7 @@ interface IStudyNavigation {
   location: LocationProps;
   myStudyStatus: MyStudyStatus;
   findStudy: StudyConfirmedProps;
+  tempCheck: boolean;
 }
 
 interface NavigationProps {
@@ -54,6 +55,7 @@ function StudyNavigation({
   location,
   studyType,
   findStudy,
+  tempCheck,
 }: IStudyNavigation) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -98,7 +100,7 @@ function StudyNavigation({
 
     switch (studyType) {
       case "participations":
-        if (myStatus === "pending") {
+        if (myStatus === "pending" || tempCheck) {
           return {
             text: "스터디 신청",
             type: "single",

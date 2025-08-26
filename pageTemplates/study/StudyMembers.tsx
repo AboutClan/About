@@ -1,10 +1,12 @@
 import { Badge, Box, Flex } from "@chakra-ui/react";
+import axios from "axios";
 import dayjs from "dayjs";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import AttendanceBadge from "../../components/molecules/badge/AttendanceBadge";
 import { IProfileCommentCard } from "../../components/molecules/cards/ProfileCommentCard";
+import { mapxyToLatLng } from "../../components/organisms/location/LocationSearch";
 import ProfileCardColumn from "../../components/organisms/ProfileCardColumn";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
@@ -25,7 +27,7 @@ interface IStudyMembers {
   studyType: StudyType;
 }
 
-export default function StudyMembers({ studyType, date, members }: IStudyMembers) {
+export default function StudyMembers({ studyType, date, members: temp }: IStudyMembers) {
   const resetStudy = useResetStudyQuery();
   const typeToast = useTypeToast();
   // const [hasModalMemo, setHasModalMemo] = useState<string>();
@@ -33,6 +35,39 @@ export default function StudyMembers({ studyType, date, members }: IStudyMembers
     image: string;
     toUid: string;
   }>();
+  const [members, setMembers] = useState<StudyConfirmedMemberProps[] | StudyParticipationProps[]>();
+
+  useEffect(() => {
+    if (!temp || !temp.length) return;
+    if (studyType !== "participations") setMembers(temp);
+    else {
+      const controller = new AbortController();
+      const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+      const temp2 = [];
+      (async () => {
+        for (const p2 of temp) {
+          const p = p2 as StudyParticipationProps;
+          const q = p.location.address?.trim();
+          if (!q) continue;
+
+          const res = await axios.get("/api/naver-local", {
+            params: { q },
+            signal: controller.signal,
+          });
+          const first = res.data.items?.[0];
+          if (first) {
+            const { latitude, longitude } = mapxyToLatLng(first.mapx, first.mapy);
+            const location = { latitude, longitude, address: first.address };
+            temp2.push({ ...p, location });
+          }
+          // 업스트림/백엔드 보호
+          await wait(250);
+        }
+        setMembers(temp2);
+      })();
+      return () => controller.abort();
+    }
+  }, [temp]);
 
   const { mutate: setRealTimeComment } = useRealTimeCommentMutation(date, {
     onSuccess: () => handleSuccessChange(),
@@ -113,7 +148,7 @@ export default function StudyMembers({ studyType, date, members }: IStudyMembers
 
   return (
     <>
-      {userCardArr.length ? (
+      {userCardArr?.length ? (
         <>
           <ProfileCardColumn
             userCardArr={userCardArr}

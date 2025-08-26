@@ -15,7 +15,7 @@ interface ISearchLocation {
   placeHolder?: string;
 }
 
-const mapxyToLatLng = (mapx: string | number, mapy: string | number) => {
+export const mapxyToLatLng = (mapx: string | number, mapy: string | number) => {
   const lng = Number(mapx) / 1e7; // x → 경도
   const lat = Number(mapy) / 1e7; // y → 위도
   return { latitude: Number(lat.toFixed(6)), longitude: Number(lng.toFixed(6)) };

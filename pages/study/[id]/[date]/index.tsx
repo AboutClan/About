@@ -92,7 +92,6 @@ export default function Page() {
         }))
       : findStudy?.members;
   const placeInfo = findStudy?.place;
-  console.log(9, studyData, placeInfo);
 
   useEffect(() => {
     if (
@@ -108,7 +107,7 @@ export default function Page() {
   }, [myStudyStatus]);
 
   const isMyReview = placeInfo?.reviews?.some((review) => review.user._id === userInfo?._id);
-
+  console.log(22, members);
   return (
     <>
       {studyPassedData || studySet ? (
@@ -151,6 +150,10 @@ export default function Page() {
               studyType={studyType}
               location={placeInfo?.location}
               findStudy={findStudy}
+              tempCheck={
+                !members?.some((member) => member.user._id === userInfo._id) &&
+                studyType === "participations"
+              }
             />
           )}
           {!isMyReview &&
