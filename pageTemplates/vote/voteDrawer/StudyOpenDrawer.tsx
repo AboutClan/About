@@ -145,14 +145,14 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
               mintDateArr={myStudyDateArr?.map((study) => study.date)}
               isTodayInclude
             />
-            {myStudyDateArr?.length && (
+            {myStudyDateArr?.length ? (
               <Box as="li" fontSize="12px" lineHeight="20px" mt={3} color="gray.600">
                 <Box as="span" color="mint">
                   민트색
                 </Box>{" "}
                 숫자는 이미 참여중인 스터디 날짜입니다.
               </Box>
-            )}
+            ) : null}
             <Box as="li" fontSize="12px" lineHeight="20px" mt={3} color="gray.600">
               최대 일주일 이내의 스터디만 개설할 수 있습니다.
             </Box>
