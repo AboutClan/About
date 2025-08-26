@@ -65,7 +65,7 @@ function NavButton({ text, url, activeIcon, defaultIcon, isActive, idx }: INavBu
   const setSlideDirection = useSetRecoilState(slideDirectionState);
   const handleMove = useHandleMove(setSlideDirection);
 
-  const onClick = (e) => {
+  const onClick = () => {
     handleMove();
   };
 
