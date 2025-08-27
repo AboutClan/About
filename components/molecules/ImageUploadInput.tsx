@@ -28,23 +28,32 @@ export default function ImageUploadInput({ setImageUrl: changeImage }: IImageUpl
   };
 
   const handleBtnClick = () => {
-    fileInputRef.current.click();
+    const el = fileInputRef.current;
+    if (!el) return;
+    el.value = ""; // 동일 파일 재선택 허용
+
+    // ✅ TS 안전 가드
+    if ("showPicker" in el && typeof el.showPicker === "function") {
+      el.showPicker();
+    } else {
+      el.click();
+    }
   };
 
   return (
     <>
       <Input
-        display="none"
+        sx={{ position: "absolute", opacity: 0, width: "1px", height: "1px" }}
         ref={fileInputRef}
         id="studyAttendImage"
         type="file"
-        accept="image/*"
+        accept="image/*;capture=camera" // 안드로이드 카메라 우선 힌트
+        capture="environment" // 후면 카메라 힌트
         name="image"
-        capture
+        multiple={false} // 단일 파일만
+        inputMode="none" // 모바일 키보드 노출 방지 힌트
+        aria-hidden="true" // 보조공학 노출 최소화
         onChange={handleImageChange}
-        onClick={(e) => {
-          (e.currentTarget as HTMLInputElement).value = "";
-        }}
       />
       <Flex mb={5} justify="center">
         {!imageUrl ? (
