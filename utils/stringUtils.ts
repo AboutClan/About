@@ -3,7 +3,7 @@ import { IUser, IUserSummary } from "../types/models/userTypes/userInfoTypes";
 export const getPlaceBranch = (text: string) => {
   if (!text) return "";
   const textArr = text.split(" ");
-  return textArr[0] + " " + textArr?.[1];
+  return textArr[0] + " " + (textArr?.[1] || "");
 };
 
 export const findParentheses = (text: string) => {

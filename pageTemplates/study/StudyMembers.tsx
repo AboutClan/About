@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
+import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import AttendanceBadge from "../../components/molecules/badge/AttendanceBadge";
 import { IProfileCommentCard } from "../../components/molecules/cards/ProfileCommentCard";
 import { mapxyToLatLng } from "../../components/organisms/location/LocationSearch";
@@ -55,10 +56,20 @@ export default function StudyMembers({ studyType, date, members: temp }: IStudyM
             signal: controller.signal,
           });
           const first = res.data.items?.[0];
+          console.log(53, first);
           if (first) {
             const { latitude, longitude } = mapxyToLatLng(first.mapx, first.mapy);
             const location = { latitude, longitude, address: first.address };
             temp2.push({ ...p, location });
+          } else {
+            temp2.push({
+              ...p,
+              location: {
+                latitude: p.location.latitude,
+                longitude: p.location.longitude,
+                address: "미정",
+              },
+            });
           }
           // 업스트림/백엔드 보호
           await wait(250);
@@ -87,7 +98,7 @@ export default function StudyMembers({ studyType, date, members: temp }: IStudyM
     } else if (studyType === "openRealTimes" || studyType === "soloRealTimes")
       setRealTimeComment(comment);
   };
-
+  console.log(temp, members);
   const userCardArr: IProfileCommentCard[] = members?.map((member) => {
     const user = member.user;
     // const badgeText = locationMapping?.find((mapping) => mapping?.id === user._id)?.branch;
@@ -154,12 +165,11 @@ export default function StudyMembers({ studyType, date, members: temp }: IStudyM
             userCardArr={userCardArr}
             hasCommentButton={studyType !== "participations"}
           />
-          {/* {isMyStudy && (
-            <Box pt={4} pb={2}>
-              <HighlightButton text="친구 초대 +" func={() => typeToast("not-yet")} />
-            </Box>
-          )} */}
         </>
+      ) : temp?.length ? (
+        <Box position="relative" mt="100px" bottom="0" left="50%" transform="translate(-50%,-50%)">
+          <MainLoadingAbsolute size="sm" />
+        </Box>
       ) : (
         <Flex
           align="center"

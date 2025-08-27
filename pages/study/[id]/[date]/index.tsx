@@ -136,7 +136,7 @@ export default function Page() {
                 <StudyTimeBoard members={members as StudyConfirmedMemberProps[]} />
               )}
               <Box h="1px" bg="gray.100" my={4} />
-              <Box pb={2}>
+              <Box pb={2} pos="relative">
                 <StudyMembers date={date} members={members || []} studyType={studyType} />
               </Box>
             </Slide>
