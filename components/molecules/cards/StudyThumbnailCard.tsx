@@ -138,7 +138,7 @@ export function StudyThumbnailCard({
                 </Box>
                 <Box as="span" color="var(--gray-500)" fontWeight={500}>
                   {studyType === "soloRealTimes" || studyType === "participations" ? (
-                    <Box mb="1px">
+                    <Box>
                       <InfinityIcon />
                     </Box>
                   ) : (
