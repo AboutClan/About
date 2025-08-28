@@ -40,7 +40,6 @@ export default function ImageUploadInput({ setImageUrl: changeImage }: IImageUpl
         type="file"
         accept="image/*"
         name="image"
-        capture
         onChange={handleImageChange}
       />
       <Flex mb={5} justify="center">
