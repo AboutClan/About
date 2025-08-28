@@ -1,6 +1,7 @@
 import { Box, Flex, Input } from "@chakra-ui/react";
 import Image from "next/image";
 import { useRef, useState } from "react";
+import { useToast } from "../../hooks/custom/CustomToast";
 
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { processFile } from "../../utils/imageUtils";
@@ -11,6 +12,7 @@ interface IImageUploadInput {
 }
 
 export default function ImageUploadInput({ setImageUrl: changeImage }: IImageUploadInput) {
+  const toast = useToast();
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -18,10 +20,12 @@ export default function ImageUploadInput({ setImageUrl: changeImage }: IImageUpl
     const file = e.target.files?.[0];
     if (file) {
       try {
+        toast("info", "임시 점검중");
         const image = await processFile(file);
         setImageUrl(image.url);
         changeImage(image.blob);
       } catch (error) {
+        toast("info", "임시 점검중!");
         console.error("Error processing image", error);
       }
     }
