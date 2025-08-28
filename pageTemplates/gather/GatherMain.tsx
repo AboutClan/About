@@ -33,7 +33,7 @@ export default function GatherMain() {
     category,
     sortBy === "기본순" ? "basic" : sortBy === "최신 개설 순" ? "createdAt" : "date",
   );
- 
+
   useEffect(() => {
     setGathers([]);
     setCursor(0);
@@ -45,7 +45,7 @@ export default function GatherMain() {
       firstLoad.current = false;
     }
   }, [gatherData]);
-
+  console.log(2, gathers);
   useEffect(() => {
     if (!gathers) return;
     const temp =
