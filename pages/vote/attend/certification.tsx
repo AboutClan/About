@@ -95,7 +95,7 @@ function Certification() {
     if (isFocus && keypadHeight) {
       window.scrollBy({ top: keypadHeight, behavior: "smooth" });
     }
-  }, [isFocus]);
+  }, [isFocus, keypadHeight]);
 
   return (
     <>
