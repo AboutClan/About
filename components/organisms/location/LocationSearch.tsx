@@ -39,6 +39,8 @@ function LocationSearch({
   const layoutRef = useRef<HTMLDivElement>(null);
   const anchorRef = useRef<HTMLDivElement>(null);
 
+  const [isFocused, setIsFocused] = useState(false);
+
   useEffect(() => {
     if (info) setValue(info?.name);
   }, [info]);
@@ -65,15 +67,15 @@ function LocationSearch({
     const onResize = () => {
       const keyboard = Math.max(0, window.innerHeight - (vv.height + vv.offsetTop));
       layoutRef.current?.style.setProperty("--kb", `${keyboard}px`);
-      if (document.activeElement && anchorRef.current) {
+      if (isFocused && anchorRef.current) {
         anchorRef.current.scrollIntoView({ block: "center", behavior: "smooth" });
       }
     };
 
     vv.addEventListener("resize", onResize);
     vv.addEventListener("scroll", onResize);
-
-    onResize();
+    const keyboard = Math.max(0, window.innerHeight - (vv.height + vv.offsetTop));
+    layoutRef.current?.style.setProperty("--kb", `${keyboard}px`);
     return () => {
       vv.removeEventListener("resize", onResize);
       vv.removeEventListener("scroll", onResize);
@@ -81,12 +83,15 @@ function LocationSearch({
   }, []);
 
   const onFocus = () => {
+    setIsFocused(true);
     requestAnimationFrame(() => {
       setTimeout(() => {
         anchorRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
       }, 0);
     });
   };
+
+  const onBlur = () => setIsFocused(false);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -98,6 +103,7 @@ function LocationSearch({
         <InputGroup
           as="textarea"
           onFocus={onFocus}
+          onBlur={onBlur}
           placeholder={placeHolder || "장소를 검색해 보세요"}
           onChange={onChange}
           value={value}
