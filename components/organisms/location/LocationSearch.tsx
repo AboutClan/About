@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { NaverLocationProps, useNaverLocalQuery } from "../../../hooks/external/queries";
@@ -15,7 +15,7 @@ interface ISearchLocation {
   placeHolder?: string;
 }
 
-export const mapxyToLatLng = (mapx: string | number, mapy: string | number) => {
+const mapxyToLatLng = (mapx: string | number, mapy: string | number) => {
   const lng = Number(mapx) / 1e7; // x → 경도
   const lat = Number(mapy) / 1e7; // y → 위도
   return { latitude: Number(lat.toFixed(6)), longitude: Number(lng.toFixed(6)) };
@@ -29,24 +29,20 @@ function LocationSearch({
   isActive = true,
   placeHolder,
 }: ISearchLocation) {
-  const [value, setValue] = useState(info.name || "");
+  const [value, setValue] = useState(info?.title || "");
   const [results, setResults] = useState<NaverLocationProps[]>([]);
-  const layoutRef = useRef<HTMLDivElement>(null);
-  const kbRef = useRef(0);
 
   const { data } = useNaverLocalQuery(value, {
     enabled: isActive && (value !== "" || !hasInitialValue),
   });
 
-  const [isFocused, setIsFocused] = useState(false);
-
   useEffect(() => {
-    if (info) setValue(info?.name);
+    if (info) setValue(info?.title);
   }, [info]);
 
   useEffect(() => {
     if (!data) return;
-    if (value === info?.name) {
+    if (value === info?.title) {
       setResults([]);
     } else setResults(data);
   }, [data]);
@@ -55,45 +51,19 @@ function LocationSearch({
     const placeName = searchInfo.title;
     setValue(placeName);
     const { latitude, longitude } = mapxyToLatLng(searchInfo.mapx, searchInfo.mapy);
-    setInfo({ ...searchInfo, name: placeName, latitude, longitude });
+    setInfo({ ...searchInfo, latitude, longitude });
     setResults([]);
   };
 
-  useEffect(() => {
-    const vv = window.visualViewport;
-    if (!vv) return;
-
-    const update = () => {
-      const kb = Math.max(0, window.innerHeight - (vv.height + vv.offsetTop));
-      layoutRef.current?.style.setProperty("--kb", `${kb}px`);
-
-      // ✅ 증가분(Δ)만큼 아래로 스크롤
-      const delta = Math.max(0, kb - kbRef.current);
-      if (delta > 0 && isFocused && layoutRef.current) {
-        layoutRef.current.scrollTop += delta;
-      }
-      kbRef.current = kb;
-    };
-
-    vv.addEventListener("resize", update);
-    vv.addEventListener("scroll", update);
-    update(); // 초기 1회
-
-    return () => {
-      vv.removeEventListener("resize", update);
-      vv.removeEventListener("scroll", update);
-    };
-  }, [isFocused]);
-
-  const onFocus = () => setIsFocused(true);
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value);
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setValue(value);
+  };
 
   return (
-    <Layout ref={layoutRef}>
+    <Layout>
       <Wrapper>
         <InputGroup
-          as="textarea"
-          onFocus={onFocus}
           placeholder={placeHolder || "장소를 검색해 보세요"}
           onChange={onChange}
           value={value}
@@ -125,11 +95,6 @@ const Layout = styled.div`
   background-color: inherit;
   display: flex;
   flex-direction: column;
-  min-height: 100dvh;
-  overflow: auto;
-  /* ✅ 키보드 높이만큼 바닥 여백 확보 */
-  padding-bottom: calc(var(--kb, 0px) + env(safe-area-inset-bottom));
-  scroll-padding-bottom: calc(var(--kb, 0px) + env(safe-area-inset-bottom));
 `;
 
 const Wrapper = styled.div`
