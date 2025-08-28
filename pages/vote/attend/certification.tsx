@@ -87,10 +87,11 @@ function Certification() {
     setPlaceInfo({ title: "", address: "", latitude: null, longitude: null });
     setIsActive(true);
   };
-  const keypadHeight = useKeypadHeight();
+  const keypadHeight = useKeypadHeight() || 300;
   const [isFocus, setIsFocus] = useState(false);
 
   useEffect(() => {
+    toast("info", keypadHeight);
     if (isFocus && keypadHeight) {
       window.scrollBy({ top: keypadHeight, behavior: "smooth" });
     }
