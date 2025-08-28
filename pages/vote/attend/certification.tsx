@@ -92,13 +92,13 @@ function Certification() {
 
   useEffect(() => {
     if (isFocus && keypadHeight !== 0) {
-      window.scrollBy({ top: 100, behavior: "smooth" });
+      window.scrollBy({ top: 130, behavior: "smooth" });
     }
   }, [isFocus, keypadHeight]);
 
   return (
     <>
-      <Box bgColor="white" mb={isFocus ? `${100}px` : 0} minH="calc(100dvh - var(--header-h))">
+      <Box bgColor="white" mb={isFocus ? `${130}px` : 0} minH="calc(100dvh - var(--header-h))">
         <Header title="" isBorder={false} />
         <Slide>
           <PageIntro
