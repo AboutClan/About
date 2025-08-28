@@ -11,6 +11,7 @@ import Slide from "../../../components/layouts/PageSlide";
 import ImageUploadInput from "../../../components/molecules/ImageUploadInput";
 import LocationSearch from "../../../components/organisms/location/LocationSearch";
 import { useToast } from "../../../hooks/custom/CustomToast";
+import { useKeypadHeight } from "../../../hooks/custom/useKeypadHeight";
 import { NaverLocationProps } from "../../../hooks/external/queries";
 import { useStudySetQuery } from "../../../hooks/study/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
@@ -86,10 +87,22 @@ function Certification() {
     setPlaceInfo({ title: "", address: "", latitude: null, longitude: null });
     setIsActive(true);
   };
+  const keypadHeight = useKeypadHeight();
+  const [isFocus, setIsFocus] = useState(false);
+
+  useEffect(() => {
+    if (isFocus && keypadHeight) {
+      window.scrollBy({ top: keypadHeight, behavior: "smooth" });
+    }
+  }, [isFocus]);
 
   return (
     <>
-      <Box minH="calc(100dvh - var(--header-h))" bgColor="white">
+      <Box
+        bgColor="white"
+        mb={isFocus ? `${keypadHeight}px` : 0}
+        minH="calc(100dvh - var(--header-h))"
+      >
         <Header title="" isBorder={false} />
         <Slide>
           <PageIntro
@@ -118,6 +131,7 @@ function Certification() {
             setInfo={setPlaceInfo}
             isActive={isActive}
             hasInitialValue
+            setIsFocus={setIsFocus}
           />
         </Slide>
       </Box>

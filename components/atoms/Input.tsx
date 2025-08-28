@@ -43,7 +43,7 @@ interface InputGroupProps extends InputProps {
 }
 
 export const InputGroup = forwardRef(function InputGroup(
-  { isDisabled, value, onChange, placeholder, disabled, icon }: InputGroupProps,
+  { isDisabled, value, onChange, placeholder, disabled, icon, ...props }: InputGroupProps,
   ref: ForwardedRef<HTMLInputElement>,
 ) {
   return (
@@ -64,6 +64,7 @@ export const InputGroup = forwardRef(function InputGroup(
         border="1px solid var(--gray-200)"
         borderRadius="12px"
         _placeholder={{ color: "var(--gray-500)" }}
+        {...props}
       />
       <InputRightElement h="100%" display="flex" pr="8px">
         {icon || (

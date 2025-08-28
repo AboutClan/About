@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { NaverLocationProps, useNaverLocalQuery } from "../../../hooks/external/queries";
-import { DispatchType } from "../../../types/hooks/reactTypes";
+import { DispatchBoolean, DispatchType } from "../../../types/hooks/reactTypes";
 import { InputGroup } from "../../atoms/Input";
 
 interface ISearchLocation {
@@ -13,6 +13,7 @@ interface ISearchLocation {
   hasInitialValue?: boolean;
   isActive?: boolean;
   placeHolder?: string;
+  setIsFocus: DispatchBoolean;
 }
 
 const mapxyToLatLng = (mapx: string | number, mapy: string | number) => {
@@ -28,6 +29,7 @@ function LocationSearch({
   hasInitialValue,
   isActive = true,
   placeHolder,
+  setIsFocus,
 }: ISearchLocation) {
   const [value, setValue] = useState(info?.title || "");
   const [results, setResults] = useState<NaverLocationProps[]>([]);
@@ -68,6 +70,8 @@ function LocationSearch({
           onChange={onChange}
           value={value}
           isDisabled={!isActive}
+          onFocus={() => setIsFocus(true)}
+          onBlur={() => setIsFocus(false)}
         />
       </Wrapper>
 
