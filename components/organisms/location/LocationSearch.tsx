@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import { NaverLocationProps, useNaverLocalQuery } from "../../../hooks/external/queries";
@@ -36,6 +36,9 @@ function LocationSearch({
     enabled: isActive && (value !== "" || !hasInitialValue),
   });
 
+  const layoutRef = useRef<HTMLDivElement>(null);
+  const anchorRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (info) setValue(info?.name);
   }, [info]);
@@ -55,15 +58,46 @@ function LocationSearch({
     setResults([]);
   };
 
+  useEffect(() => {
+    const vv = window.visualViewport;
+    if (!vv) return;
+
+    const onResize = () => {
+      const keyboard = Math.max(0, window.innerHeight - (vv.height + vv.offsetTop));
+      layoutRef.current?.style.setProperty("--kb", `${keyboard}px`);
+
+      // 입력 중엔 앵커를 중앙으로 보이게
+      if (document.activeElement && anchorRef.current) {
+        anchorRef.current.scrollIntoView({ block: "center", behavior: "smooth" });
+      }
+    };
+
+    vv.addEventListener("resize", onResize);
+    vv.addEventListener("scroll", onResize);
+    return () => {
+      vv.removeEventListener("resize", onResize);
+      vv.removeEventListener("scroll", onResize);
+    };
+  }, []);
+
+  const onFocus = () => {
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        anchorRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
+      }, 0);
+    });
+  };
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setValue(value);
+    setValue(e.target.value);
   };
 
   return (
     <Layout>
       <Wrapper>
         <InputGroup
+          as="textarea"
+          onFocus={onFocus}
           placeholder={placeHolder || "장소를 검색해 보세요"}
           onChange={onChange}
           value={value}
