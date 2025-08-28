@@ -4,7 +4,6 @@ import styled from "styled-components";
 
 import { NaverLocationProps, useNaverLocalQuery } from "../../../hooks/external/queries";
 import { DispatchType } from "../../../types/hooks/reactTypes";
-import { iPhoneNotchSize } from "../../../utils/validationUtils";
 import { InputGroup } from "../../atoms/Input";
 
 interface ISearchLocation {
