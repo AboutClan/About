@@ -91,7 +91,7 @@ function Certification() {
   const [isFocus, setIsFocus] = useState(false);
 
   useEffect(() => {
-    toast("info", keypadHeight);
+    toast("info", keypadHeight + "");
     if (isFocus && keypadHeight) {
       window.scrollBy({ top: keypadHeight, behavior: "smooth" });
     }
