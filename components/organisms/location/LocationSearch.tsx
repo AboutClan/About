@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import { NaverLocationProps, useNaverLocalQuery } from "../../../hooks/external/queries";
 import { DispatchType } from "../../../types/hooks/reactTypes";
+import { iPhoneNotchSize } from "../../../utils/validationUtils";
 import { InputGroup } from "../../atoms/Input";
 
 interface ISearchLocation {
@@ -65,8 +66,6 @@ function LocationSearch({
     const onResize = () => {
       const keyboard = Math.max(0, window.innerHeight - (vv.height + vv.offsetTop));
       layoutRef.current?.style.setProperty("--kb", `${keyboard}px`);
-
-      // 입력 중엔 앵커를 중앙으로 보이게
       if (document.activeElement && anchorRef.current) {
         anchorRef.current.scrollIntoView({ block: "center", behavior: "smooth" });
       }
@@ -74,6 +73,8 @@ function LocationSearch({
 
     vv.addEventListener("resize", onResize);
     vv.addEventListener("scroll", onResize);
+
+    onResize();
     return () => {
       vv.removeEventListener("resize", onResize);
       vv.removeEventListener("scroll", onResize);
@@ -93,8 +94,8 @@ function LocationSearch({
   };
 
   return (
-    <Layout>
-      <Wrapper>
+    <Layout ref={layoutRef}>
+      <Wrapper ref={anchorRef}>
         <InputGroup
           as="textarea"
           onFocus={onFocus}
@@ -129,6 +130,11 @@ const Layout = styled.div`
   background-color: inherit;
   display: flex;
   flex-direction: column;
+  min-height: 100dvh;
+  overflow: auto;
+  /* ✅ 키보드 높이만큼 바닥 여백 확보 */
+  padding-bottom: calc(var(--kb, 0px) + env(safe-area-inset-bottom));
+  scroll-padding-bottom: calc(var(--kb, 0px) + env(safe-area-inset-bottom));
 `;
 
 const Wrapper = styled.div`
