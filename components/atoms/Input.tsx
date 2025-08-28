@@ -1,10 +1,10 @@
 import {
   Input as ChakraInput,
   InputGroup as ChakraInputGroup,
-  InputRightElement,
   type InputProps as ChakraInputProps,
+  InputRightElement,
 } from "@chakra-ui/react";
-import { forwardRef, type ForwardedRef } from "react";
+import { type ForwardedRef,forwardRef } from "react";
 
 type InputProps = ChakraInputProps & {
   size?: "sm" | "md" | "lg";
