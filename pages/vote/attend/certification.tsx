@@ -87,7 +87,7 @@ function Certification() {
     setPlaceInfo({ title: "", address: "", latitude: null, longitude: null });
     setIsActive(true);
   };
-  const keypadHeight = useKeypadHeight() || 300;
+  const keypadHeight = useKeypadHeight();
   const [isFocus, setIsFocus] = useState(false);
 
   useEffect(() => {
