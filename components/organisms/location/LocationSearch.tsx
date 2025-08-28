@@ -13,7 +13,7 @@ interface ISearchLocation {
   hasInitialValue?: boolean;
   isActive?: boolean;
   placeHolder?: string;
-  setIsFocus: DispatchBoolean;
+  setIsFocus?: DispatchBoolean;
 }
 
 const mapxyToLatLng = (mapx: string | number, mapy: string | number) => {
