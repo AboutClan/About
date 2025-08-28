@@ -31,13 +31,12 @@ function LocationSearch({
 }: ISearchLocation) {
   const [value, setValue] = useState(info.name || "");
   const [results, setResults] = useState<NaverLocationProps[]>([]);
+  const layoutRef = useRef<HTMLDivElement>(null);
+  const kbRef = useRef(0);
 
   const { data } = useNaverLocalQuery(value, {
     enabled: isActive && (value !== "" || !hasInitialValue),
   });
-
-  const layoutRef = useRef<HTMLDivElement>(null);
-  const anchorRef = useRef<HTMLDivElement>(null);
 
   const [isFocused, setIsFocused] = useState(false);
 
@@ -64,46 +63,37 @@ function LocationSearch({
     const vv = window.visualViewport;
     if (!vv) return;
 
-    const onResize = () => {
-      const keyboard = Math.max(0, window.innerHeight - (vv.height + vv.offsetTop));
-      layoutRef.current?.style.setProperty("--kb", `${keyboard}px`);
-      if (isFocused && anchorRef.current) {
-        anchorRef.current.scrollIntoView({ block: "center", behavior: "smooth" });
+    const update = () => {
+      const kb = Math.max(0, window.innerHeight - (vv.height + vv.offsetTop));
+      layoutRef.current?.style.setProperty("--kb", `${kb}px`);
+
+      // ✅ 증가분(Δ)만큼 아래로 스크롤
+      const delta = Math.max(0, kb - kbRef.current);
+      if (delta > 0 && isFocused && layoutRef.current) {
+        layoutRef.current.scrollTop += delta;
       }
+      kbRef.current = kb;
     };
 
-    vv.addEventListener("resize", onResize);
-    vv.addEventListener("scroll", onResize);
-    const keyboard = Math.max(0, window.innerHeight - (vv.height + vv.offsetTop));
-    layoutRef.current?.style.setProperty("--kb", `${keyboard}px`);
+    vv.addEventListener("resize", update);
+    vv.addEventListener("scroll", update);
+    update(); // 초기 1회
+
     return () => {
-      vv.removeEventListener("resize", onResize);
-      vv.removeEventListener("scroll", onResize);
+      vv.removeEventListener("resize", update);
+      vv.removeEventListener("scroll", update);
     };
-  }, []);
+  }, [isFocused]);
 
-  const onFocus = () => {
-    setIsFocused(true);
-    requestAnimationFrame(() => {
-      setTimeout(() => {
-        anchorRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
-      }, 0);
-    });
-  };
-
-  const onBlur = () => setIsFocused(false);
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
-  };
+  const onFocus = () => setIsFocused(true);
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => setValue(e.target.value);
 
   return (
     <Layout ref={layoutRef}>
-      <Wrapper ref={anchorRef}>
+      <Wrapper>
         <InputGroup
           as="textarea"
           onFocus={onFocus}
-          onBlur={onBlur}
           placeholder={placeHolder || "장소를 검색해 보세요"}
           onChange={onChange}
           value={value}
