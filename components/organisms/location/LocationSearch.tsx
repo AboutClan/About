@@ -31,7 +31,7 @@ function LocationSearch({
   placeHolder,
   setIsFocus,
 }: ISearchLocation) {
-  const [value, setValue] = useState(info?.title || "");
+  const [value, setValue] = useState(info?.name || info?.title || "");
   const [results, setResults] = useState<NaverLocationProps[]>([]);
 
   const { data } = useNaverLocalQuery(value, {
@@ -70,8 +70,8 @@ function LocationSearch({
           onChange={onChange}
           value={value}
           isDisabled={!isActive}
-          onFocus={() => setIsFocus(true)}
-          onBlur={() => setIsFocus(false)}
+          onFocus={() => setIsFocus && setIsFocus(true)}
+          onBlur={() => setIsFocus && setIsFocus(false)}
         />
       </Wrapper>
 

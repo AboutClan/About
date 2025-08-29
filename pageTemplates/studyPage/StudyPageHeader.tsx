@@ -78,7 +78,13 @@ function StudyPageHeader() {
               w={6}
               h={6}
               mr={0.5}
-              onClick={() => setModalType("location")}
+              onClick={() => {
+                if (userInfo?.role === "guest") {
+                  typeToast("guest");
+                  return;
+                }
+                setModalType("location");
+              }}
             >
               <LocationIcon />
             </Button>

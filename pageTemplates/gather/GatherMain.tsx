@@ -67,23 +67,19 @@ export default function GatherMain() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting && !firstLoad.current) {
-          setCursor((prevCursor) => prevCursor + 1);
+        if (entries[0].isIntersecting && !firstLoad.current && !isLoading) {
+          setCursor((prev) => prev + 1);
         }
       },
       { threshold: 1.0 },
     );
 
-    if (loader.current) {
-      observer.observe(loader.current);
-    }
-
+    if (loader.current) observer.observe(loader.current);
     return () => {
-      if (loader.current) {
-        observer.unobserve(loader.current);
-      }
+      if (loader.current) observer.unobserve(loader.current);
+      observer.disconnect();
     };
-  }, []);
+  }, [isLoading]); // ← isLoading을 의존성에 포함
 
   return (
     <Box mb="50px">

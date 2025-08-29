@@ -36,7 +36,7 @@ const Login: NextPage<{
   const visibleHeight = window.innerHeight;
   const statusParam = searchParams.get("status");
   const pageParam = searchParams.get("page");
- 
+
   const ratio = visibleHeight / visibleWidth;
 
   const kakaoProvider = Object.values(providers).find((p) => p.id == "kakao");
@@ -160,7 +160,7 @@ const Login: NextPage<{
           transform="translate(-50%,-50%)"
         >
           <Box mb={3} position="relative" w="full" aspectRatio={3.8 / 1}>
-            <Image src="/About.png" alt="main-logo" fill />
+            <Image src="/23.png" alt="main-logo" fill />
           </Box>
           <Box mb={6} fontWeight="bold" fontSize="14px" lineHeight="20px" color="gray.100">
             20대를 위한 모임 플랫폼
@@ -181,7 +181,7 @@ const Login: NextPage<{
             left="50%"
             transform="translate(-50%,0)"
           >
-            {ratio >= 1.9 && (
+            {visibleHeight >= 700 && ratio > 1.8 && (
               <Box mb={5} color="white" fontSize="12px" lineHeight="16px" opacity={0.6}>
                 Sign up with Social Networks
               </Box>

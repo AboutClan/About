@@ -2,7 +2,7 @@ import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 
-import { useToast } from "../../hooks/custom/CustomToast";
+import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useGatherRequestLikeMutation } from "../../hooks/gather/mutations";
 import { useGatherRequestQuery } from "../../hooks/gather/queries";
 import { usePointSystemMutation } from "../../hooks/user/mutations";
@@ -12,8 +12,10 @@ import { getDateDiff } from "../../utils/dateTimeUtils";
 function GatherPick() {
   const toast = useToast();
   const router = useRouter();
+  const typeToast = useTypeToast();
 
   const { data: userInfo } = useUserInfoQuery();
+  const isGuest = userInfo?.role === "guest";
 
   const { data, refetch } = useGatherRequestQuery();
 
@@ -104,7 +106,13 @@ function GatherPick() {
                     bg="white"
                     borderColor="var(--gray-800)"
                     borderRadius="12px"
-                    onClick={() => handleLikeButton(item._id)}
+                    onClick={() => {
+                      if (isGuest) {
+                        typeToast("guest");
+                        return;
+                      }
+                      handleLikeButton(item._id);
+                    }}
                   >
                     이 번개 관심있어요 <Box mx={1}>{isMyPick ? <Heart2Icon /> : <HeartIcon />}</Box>{" "}
                     {item.like.length}
@@ -116,7 +124,13 @@ function GatherPick() {
                     ml={2}
                     borderRadius="full"
                     border="var(--border-main)"
-                    onClick={() => router.push("/gather/writing/category")}
+                    onClick={() => {
+                      if (isGuest) {
+                        typeToast("guest");
+                        return;
+                      }
+                      router.push("/gather/writing/category");
+                    }}
                   >
                     <Box>
                       <ThunderIcon />

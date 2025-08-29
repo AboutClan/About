@@ -97,23 +97,34 @@ function Gather() {
         )}
       </Slide>
 
-      <ControlButton
-        text={tab === "번개" ? "모임 개설" : tab === "라운지" ? "후기 작성" : "모임 제안"}
-        rightIcon={
-          tab === "번개" ? <ThunderIcon /> : tab === "라운지" ? <Writing2Icon /> : <Writing2Icon />
-        }
-        hasBottomNav
-        handleClick={() => {
-          if (tab === "번개") {
-            router.push("/gather/writing/category");
-          } else if (tab === "이런 번개 어때요?") {
-            setIsGatherPickModal(true);
-          } else {
-            toast("info", "준비중인 기능입니다. 모임 상세페이지에서도 후기를 작성할 수 있습니다!");
+      {!isGuest && (
+        <ControlButton
+          text={tab === "번개" ? "모임 개설" : tab === "라운지" ? "후기 작성" : "모임 제안"}
+          rightIcon={
+            tab === "번개" ? (
+              <ThunderIcon />
+            ) : tab === "라운지" ? (
+              <Writing2Icon />
+            ) : (
+              <Writing2Icon />
+            )
           }
-        }}
-        isDisabled={isGuest}
-      />
+          hasBottomNav
+          handleClick={() => {
+            if (tab === "번개") {
+              router.push("/gather/writing/category");
+            } else if (tab === "이런 번개 어때요?") {
+              setIsGatherPickModal(true);
+            } else {
+              toast(
+                "info",
+                "준비중인 기능입니다. 모임 상세페이지에서도 후기를 작성할 수 있습니다!",
+              );
+            }
+          }}
+          isDisabled={isGuest}
+        />
+      )}
       {/*       
       {!isGuest && tab === "번개" && (
         <WritingButton url="/gather/writing/category" type="thunder" />
@@ -199,23 +210,25 @@ function GatherPickModal({ setIsModal }: IModal) {
 }
 
 export function ThunderIcon() {
-  return <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="12"
-    height="12"
-    viewBox="0 -960 960 960"
-    fill="none"
-  >
-    <g opacity="0.8">
-      <path
-        fillRule="evenodd"
-        clipRule="evenodd"
-        d="m440-380-237-30q-25-3-32.5-27t10.5-41l409-392q5-5 12-7.5t19-2.5q20 0 30.5 17t.5 35L520-580l237 30q25 3 32.5 27T779-482L370-90q-5 5-12 7.5T339-80q-20 0-30.5-17t-.5-35l132-248Z"
-        fill="white"
-        fillOpacity="0.72"
-      />
-    </g>
-  </svg>
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="12"
+      height="12"
+      viewBox="0 -960 960 960"
+      fill="none"
+    >
+      <g opacity="0.8">
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="m440-380-237-30q-25-3-32.5-27t10.5-41l409-392q5-5 12-7.5t19-2.5q20 0 30.5 17t.5 35L520-580l237 30q25 3 32.5 27T779-482L370-90q-5 5-12 7.5T339-80q-20 0-30.5-17t-.5-35l132-248Z"
+          fill="white"
+          fillOpacity="0.72"
+        />
+      </g>
+    </svg>
+  );
 }
 
 export default Gather;
