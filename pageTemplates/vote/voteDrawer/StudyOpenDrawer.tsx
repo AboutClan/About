@@ -66,7 +66,7 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
   const [isTimeDrawer, setIsTimeDrawer] = useState(false);
   const [date, setDate] = useState(dayjs());
-  console.log(2524, placeInfo);
+
   const handleBottomNav = () => {
     if (isFirstPage) setIsFirstPage(false);
     else {

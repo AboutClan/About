@@ -12,10 +12,10 @@ import ImageUploadInput from "../../../components/molecules/ImageUploadInput";
 import LocationSearch from "../../../components/organisms/location/LocationSearch";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useKeypadHeight } from "../../../hooks/custom/useKeypadHeight";
-import { NaverLocationProps } from "../../../hooks/external/queries";
 import { useStudySetQuery } from "../../../hooks/study/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { transferStudyAttendanceState } from "../../../recoils/transferRecoils";
+import { LocationProps } from "../../../types/common";
 
 function Certification() {
   const toast = useToast();
@@ -30,7 +30,7 @@ function Certification() {
   });
 
   const [image, setImage] = useState<Blob>();
-  const [placeInfo, setPlaceInfo] = useState<NaverLocationProps>({
+  const [placeInfo, setPlaceInfo] = useState<LocationProps>({
     name: "",
     address: "",
     latitude: null,
@@ -65,7 +65,7 @@ function Certification() {
       e.preventDefault();
       return;
     }
-    if (!placeInfo?.title) {
+    if (!placeInfo?.name) {
       toast("warning", "장소를 입력해 주세요");
       e.preventDefault();
       return;
@@ -78,13 +78,13 @@ function Certification() {
         latitude: placeInfo?.latitude,
         longitude: placeInfo?.longitude,
         address: placeInfo?.address,
-        name: placeInfo?.title,
+        name: placeInfo?.name,
       },
     }));
   };
 
   const handleResetButton = () => {
-    setPlaceInfo({ title: "", address: "", latitude: null, longitude: null });
+    setPlaceInfo({ name: "", address: "", latitude: null, longitude: null });
     setIsActive(true);
   };
   const keypadHeight = useKeypadHeight();
