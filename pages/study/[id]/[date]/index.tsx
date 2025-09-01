@@ -77,11 +77,14 @@ export default function Page() {
 
   const findTodayStudy = myStudyArr?.find((myStudy) => myStudy.date === date);
 
-  const myStudyStatus: MyStudyStatus = !findTodayStudy
-    ? "pending"
-    : findTodayStudy?.type === studyType
-    ? "participation"
-    : "otherParticipation";
+  const myStudyStatus: MyStudyStatus =
+    (!findTodayStudy && studyType !== "participations") ||
+    (studyType === "participations" &&
+      !shortenParticipations(participationsSet).some((par) => par.user._id === userInfo?._id))
+      ? "pending"
+      : findTodayStudy?.type === studyType
+      ? "participation"
+      : "otherParticipation";
 
   const members =
     studyType === "participations"
@@ -107,7 +110,7 @@ export default function Page() {
   }, [myStudyStatus]);
 
   const isMyReview = placeInfo?.reviews?.some((review) => review.user._id === userInfo?._id);
-  console.log(22, members);
+
   return (
     <>
       {studyPassedData || studySet ? (

@@ -1,13 +1,13 @@
 import { Box } from "@chakra-ui/react";
 
-import { NaverLocationProps } from "../../hooks/external/queries";
+import { LocationProps } from "../../types/common";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { Input } from "../atoms/Input";
 import LocationSearch from "./location/LocationSearch";
 
 interface SearchLocationProps {
-  placeInfo: NaverLocationProps;
-  setPlaceInfo: DispatchType<NaverLocationProps>;
+  placeInfo: LocationProps;
+  setPlaceInfo: DispatchType<LocationProps>;
   isSmall?: boolean;
   placeHolder?: string;
   hasDetail?: boolean;

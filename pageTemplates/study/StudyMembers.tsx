@@ -1,5 +1,5 @@
 import { Badge, Box, Flex } from "@chakra-ui/react";
-import axios from "axios";
+import axios, { isCancel } from "axios";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -40,28 +40,44 @@ export default function StudyMembers({ studyType, date, members: temp }: IStudyM
 
   useEffect(() => {
     if (!temp || !temp.length) return;
-    if (studyType !== "participations") setMembers(temp);
-    else {
+    if (studyType !== "participations") {
+      setMembers(temp);
+    } else {
       const controller = new AbortController();
       const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
       const temp2 = [];
+
       (async () => {
         for (const p2 of temp) {
+          if (controller.signal.aborted) break; // (2) 중간 탈출
           const p = p2 as StudyParticipationProps;
           const q = p.location.address?.trim();
           if (!q) continue;
 
-          const res = await axios.get("/api/naver-local", {
-            params: { q },
-            signal: controller.signal,
-          });
-          const first = res.data.items?.[0];
-          console.log(53, first);
-          if (first) {
-            const { latitude, longitude } = mapxyToLatLng(first.mapx, first.mapy);
-            const location = { latitude, longitude, address: first.address };
-            temp2.push({ ...p, location });
-          } else {
+          try {
+            const res = await axios.get("/api/naver-local", {
+              params: { q },
+              signal: controller.signal,
+            });
+            const first = res.data.items?.[0];
+            if (first) {
+              const { latitude, longitude } = mapxyToLatLng(first.mapx, first.mapy);
+              const location = { latitude, longitude, address: first.address };
+              temp2.push({ ...p, location });
+            } else {
+              temp2.push({
+                ...p,
+                location: {
+                  latitude: p.location.latitude,
+                  longitude: p.location.longitude,
+                  address: "미정",
+                },
+              });
+            }
+          } catch (e) {
+            // (1) 취소 예외는 조용히 무시
+            if (isCancel?.(e) || e?.code === "ERR_CANCELED" || controller.signal.aborted) break;
+            // 그 외 에러는 fallback으로 푸시(선택)
             temp2.push({
               ...p,
               location: {
@@ -71,14 +87,18 @@ export default function StudyMembers({ studyType, date, members: temp }: IStudyM
               },
             });
           }
-          // 업스트림/백엔드 보호
-          await wait(250);
+
+          await wait(250); // 업스트림 보호
         }
-        setMembers(temp2);
+
+        // (3) abort되었으면 setMembers 호출하지 않기
+        if (!controller.signal.aborted) setMembers(temp2);
       })();
+
+      // (4) cleanup: abort만 호출
       return () => controller.abort();
     }
-  }, [temp]);
+  }, [temp, studyType]);
 
   const { mutate: setRealTimeComment } = useRealTimeCommentMutation(date, {
     onSuccess: () => handleSuccessChange(),

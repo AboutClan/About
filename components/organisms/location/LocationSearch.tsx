@@ -3,12 +3,13 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { NaverLocationProps, useNaverLocalQuery } from "../../../hooks/external/queries";
+import { LocationProps } from "../../../types/common";
 import { DispatchBoolean, DispatchType } from "../../../types/hooks/reactTypes";
 import { InputGroup } from "../../atoms/Input";
 
 interface ISearchLocation {
-  info: NaverLocationProps;
-  setInfo: DispatchType<NaverLocationProps>;
+  info: LocationProps;
+  setInfo: DispatchType<LocationProps>;
   isSmall?: boolean;
   hasInitialValue?: boolean;
   isActive?: boolean;
@@ -31,7 +32,9 @@ function LocationSearch({
   placeHolder,
   setIsFocus,
 }: ISearchLocation) {
-  const [value, setValue] = useState(info?.name || info?.title || "");
+  const defaultName = info?.name;
+
+  const [value, setValue] = useState(defaultName || "");
   const [results, setResults] = useState<NaverLocationProps[]>([]);
 
   const { data } = useNaverLocalQuery(value, {
@@ -39,12 +42,12 @@ function LocationSearch({
   });
 
   useEffect(() => {
-    if (info) setValue(info?.title);
+    if (info) setValue(defaultName);
   }, [info]);
 
   useEffect(() => {
     if (!data) return;
-    if (value === info?.title) {
+    if (value === defaultName) {
       setResults([]);
     } else setResults(data);
   }, [data]);
@@ -53,7 +56,7 @@ function LocationSearch({
     const placeName = searchInfo.title;
     setValue(placeName);
     const { latitude, longitude } = mapxyToLatLng(searchInfo.mapx, searchInfo.mapy);
-    setInfo({ ...searchInfo, latitude, longitude });
+    setInfo({ name: placeName, address: searchInfo.address, latitude, longitude });
     setResults([]);
   };
 

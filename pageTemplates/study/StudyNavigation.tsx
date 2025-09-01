@@ -97,7 +97,7 @@ function StudyNavigation({
     ) {
       return null;
     }
-
+    console.log(1515, myStatus, tempCheck);
     switch (studyType) {
       case "participations":
         if (myStatus === "pending" || tempCheck) {

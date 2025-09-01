@@ -35,7 +35,7 @@ function GatherDetail() {
   const setIsScrollAuto = useSetRecoilState(isScrollAutoState);
 
   const { data: gather } = useGatherIDQuery(+id, { enabled: !!id });
-  console.log(24, gather);
+
   const isMember =
     (gather?.user as IUserSummary)?.uid === session?.user.uid ||
     gather?.participants.some((who) => who?.user.uid === session?.user.uid);

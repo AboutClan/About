@@ -71,14 +71,13 @@ const initializePWAPushService = async () => {
         userVisibleOnly: true,
         applicationServerKey: urlBase64ToUint8Array(publicVapidKey),
       });
-      
     } else {
       console.log("Existing subscription found.");
     }
 
     // 서버에 구독 정보 전송
     const response = await registerPushServiceWithPWA(subscription);
-  
+
     if (response) {
       console.log("Successfully registered push subscription with the server.");
     }

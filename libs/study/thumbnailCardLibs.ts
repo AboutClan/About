@@ -98,7 +98,6 @@ export const setStudyThumbnailCard = (
 
   // 카드 데이터 생성
   const cardColData: StudyThumbnailCardProps[] = merged.map((data, idx) => {
-    console.log(42, data);
     const study = data.study;
     const placeInfo = study.place;
     const textArr = placeInfo.location?.address.split(" ");

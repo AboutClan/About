@@ -12,13 +12,13 @@ import SearchLocation from "../../../components/organisms/SearchLocation";
 import StudyVoteTimeRulletDrawer from "../../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
-import { NaverLocationProps } from "../../../hooks/external/queries";
 import { useRealtimeVoteMutation } from "../../../hooks/realtime/mutations";
 import { useStudyPlacesQuery, useStudySetQuery } from "../../../hooks/study/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { getMyStudyDateArr } from "../../../libs/study/studyHelpers";
 import { CalendarHeader } from "../../../modals/aboutHeader/DateCalendarModal";
 import { transferStudyRewardState } from "../../../recoils/transferRecoils";
+import { LocationProps } from "../../../types/common";
 import { RealTimeVoteProps } from "../../../types/models/studyTypes/requestTypes";
 import { StudyPlaceProps } from "../../../types/models/studyTypes/study-entity.types";
 import { IStudyVoteTime } from "../../../types/models/studyTypes/studyInterActions";
@@ -57,7 +57,7 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
   });
 
   const [isFirstPage, setIsFirstPage] = useState(true);
-  const [placeInfo, setPlaceInfo] = useState<NaverLocationProps>({
+  const [placeInfo, setPlaceInfo] = useState<LocationProps>({
     name: "",
     address: "",
     latitude: null,
@@ -66,7 +66,7 @@ function StudyOpenDrawer({ onClose }: StudyPlaceDrawerProps) {
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
   const [isTimeDrawer, setIsTimeDrawer] = useState(false);
   const [date, setDate] = useState(dayjs());
-
+  console.log(2524, placeInfo);
   const handleBottomNav = () => {
     if (isFirstPage) setIsFirstPage(false);
     else {
