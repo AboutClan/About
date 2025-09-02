@@ -97,7 +97,7 @@ function StudyNavigation({
     ) {
       return null;
     }
-    console.log(1515, myStatus, tempCheck);
+
     switch (studyType) {
       case "participations":
         if (myStatus === "pending" || tempCheck) {
@@ -187,14 +187,19 @@ function StudyNavigation({
               colorScheme: "black",
             };
           }
+          if (resultStatus === "expected") {
+            return {
+              text: "스터디 매칭 예정",
+              type: "single",
+              colorScheme: "black",
+            };
+          }
           return {
             text: "스터디 참여",
             type: "single",
             colorScheme: "mint",
             func: () => {
-              if (resultStatus === "expected") {
-                setDrawerType("expectedVote");
-              } else setDrawerType("dailyVote");
+              setDrawerType("dailyVote");
             },
           };
         } else if (myStatus === "participation") {
@@ -247,6 +252,8 @@ function StudyNavigation({
   };
 
   const handleDirectAction = (drawerType: DirectAction) => {
+    console.log(12, drawerType, findStudy);
+
     switch (drawerType) {
       case "dailyVote":
         participate({ placeId: id, ...voteTime });

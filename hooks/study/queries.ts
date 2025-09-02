@@ -97,7 +97,7 @@ export const useStudySetQuery = (date: string, options?: StudyWeekQueryOptions) 
         const result = setStudyWeekData(filtered);
 
         byDate.set(date, result);
-
+        console.log(52, result);
         return result;
       },
       ...options,
@@ -136,7 +136,7 @@ export const useStudyPassedDayQuery = (date: string, options?: QueryOptions<Stud
       const { data } = await axios.get<InitialStudyPassedDayProps>(
         `${SERVER_URI}/vote2/${date}/info`,
       );
-   
+
       return setStudyOneDayData(data, date);
     },
     options,

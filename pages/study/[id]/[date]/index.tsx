@@ -52,7 +52,7 @@ export default function Page() {
   const studyData = isPassedDate
     ? studyPassedData && studyPassedData[studyType]
     : studySet && studySet[studyType];
-  console.log("set", studySet);
+
   const participationsSet =
     studyType === "participations" && (studyData as StudyParticipationsSetProps[]);
   const confirmedSet = studyType !== "participations" && (studyData as StudyConfirmedSetProps[]);
