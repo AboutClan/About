@@ -32,7 +32,7 @@ function UserMyGroupSection({ user }: UserMyGroupSectionProps) {
               text: `${user?.temperature?.temperature || 36.5}°C`,
             },
             {
-              category: "월간 번개/소모임 참여권 충전",
+              category: "매월 충전되는 번개/소모임 참여권",
               text: `${gatherTicket + (user?.gender === "여성" ? 1 : 0)} 장 / ${
                 groupStudyTicket + (user?.gender === "여성" ? 2 : 0)
               } 장`,
@@ -41,11 +41,11 @@ function UserMyGroupSection({ user }: UserMyGroupSectionProps) {
               ),
             },
             {
-              category: "월간 소모임 참여권 차감 예정",
-              text: !groupData ? "" : ticketSum ? `- ${ticketSum} 장` : "없음",
-              color: ticketSum > groupStudyTicket ? "red" : null,
+              category: "매월 차감되는 소모임 참여권",
+              text: !groupData ? "" : ticketSum ? `${ticketSum} 장` : "없음",
+              color: null,
               leftChildren: (
-                <PopOverIcon text="소모임 참여를 위해서는 모임마다 최소 0개에서 최대 2개의 참여권이 필요합니다." />
+                <PopOverIcon text="소모임 참여 시, 모임마다 매월 0~2개의 참여권이 소요됩니다." />
               ),
             },
           ]}

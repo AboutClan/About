@@ -32,6 +32,7 @@ function LocationSearch({
   placeHolder,
   setIsFocus,
 }: ISearchLocation) {
+ 
   const defaultName = info?.name;
 
   const [value, setValue] = useState(defaultName || "");

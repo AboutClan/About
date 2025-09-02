@@ -9,11 +9,11 @@ import Slide from "../../../components/layouts/PageSlide";
 import ProgressStatus from "../../../components/molecules/ProgressStatus";
 import SearchLocation from "../../../components/organisms/SearchLocation";
 import { useToast } from "../../../hooks/custom/CustomToast";
-import { NaverLocationProps } from "../../../hooks/external/queries";
 import { ModalLayout } from "../../../modals/Modals";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
 import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
+import { LocationProps } from "../../../types/common";
 
 function WritingGahterLocation() {
   const router = useRouter();
@@ -22,24 +22,22 @@ function WritingGahterLocation() {
   const [gatherWriting, setGatherWriting] = useRecoilState(sharedGatherWritingState);
   const [isModal, setIsModal] = useState(false);
 
-  const [placeInfo, setPlaceInfo] = useState<NaverLocationProps>({
-    title: gatherWriting?.location?.main || "",
+  const [placeInfo, setPlaceInfo] = useState<LocationProps>({
+    name: gatherWriting?.location?.main || "",
     address: gatherWriting?.location?.sub || "",
     latitude: null,
     longitude: null,
   });
 
-
-  
   const onClickNext = () => {
-    if (!placeInfo?.title) {
+    if (!placeInfo?.name) {
       setIsModal(true);
       return;
     }
     setGatherWriting((old) => ({
       ...old,
       location: {
-        main: placeInfo.title,
+        main: placeInfo.name,
         sub: placeInfo.address,
       },
     }));

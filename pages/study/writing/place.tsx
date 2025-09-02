@@ -7,10 +7,10 @@ import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import SearchLocation from "../../../components/organisms/SearchLocation";
 import { useFailToast, useToast } from "../../../hooks/custom/CustomToast";
-import { NaverLocationProps } from "../../../hooks/external/queries";
 import { useStudyAdditionMutation } from "../../../hooks/study/mutations";
 import RegisterLayout from "../../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
+import { LocationProps } from "../../../types/common";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 
 function WritingStudyPlace() {
@@ -20,11 +20,9 @@ function WritingStudyPlace() {
 
   // const [studyWriting, setStudyWriting] = useRecoilState(sharedStudyWritingState);
 
-  const [placeInfo, setPlaceInfo] = useState<NaverLocationProps>({
-    title: "",
+  const [placeInfo, setPlaceInfo] = useState<LocationProps>({
+    name: "",
     address: "",
-    // title: studyWriting?.title || "",
-    // address: studyWriting?.location.address || "",
     latitude: null,
     longitude: null,
   });
@@ -38,14 +36,14 @@ function WritingStudyPlace() {
   });
 
   const onClickNext = () => {
-    if ([placeInfo?.title, placeInfo?.address].some((field) => !field)) {
+    if ([placeInfo?.name, placeInfo?.address].some((field) => !field)) {
       failToast("free", "장소를 선택해 주세요!");
       return;
     }
 
-    const { latitude, longitude, address, title } = placeInfo;
+    const { latitude, longitude, address, name } = placeInfo;
     mutate({
-      location: { name: title, latitude, longitude, address },
+      location: { name, latitude, longitude, address },
       status: "inactive",
     });
 

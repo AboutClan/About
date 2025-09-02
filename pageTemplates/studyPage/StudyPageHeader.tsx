@@ -8,10 +8,10 @@ import Slide from "../../components/layouts/PageSlide";
 import RightDrawer from "../../components/organisms/drawer/RightDrawer";
 import { USER_INFO } from "../../constants/keys/queryKeys";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
-import { NaverLocationProps } from "../../hooks/external/queries";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { RegisterLocationLayout } from "../../pages/register/location";
+import { LocationProps } from "../../types/common";
 import { getTodayStr } from "../../utils/dateTimeUtils";
 import StudyPageBenefitDrawer from "./StudyPageBenefitDrawer";
 
@@ -27,13 +27,18 @@ function StudyPageHeader() {
 
   const { data: userInfo } = useUserInfoQuery();
 
-  const [placeInfo, setPlaceInfo] = useState<NaverLocationProps>();
+  const [placeInfo, setPlaceInfo] = useState<LocationProps>();
   const [errorMessage, setErrorMessage] = useState("");
 
   const location = userInfo?.locationDetail;
   useEffect(() => {
     if (!location) return;
-    setPlaceInfo({ address: location.text, latitude: location.lat, longitude: location.lon });
+    setPlaceInfo({
+      name: "",
+      address: location.text,
+      latitude: location.lat,
+      longitude: location.lon,
+    });
   }, [location]);
 
   useEffect(() => {
@@ -57,7 +62,7 @@ function StudyPageHeader() {
       return;
     }
     changeLocationDetail({
-      text: placeInfo.title,
+      text: placeInfo.name,
       lon: placeInfo.longitude,
       lat: placeInfo.latitude,
     });

@@ -12,7 +12,6 @@ import { CopyBtn } from "../../../components/Icons/CopyIcon";
 import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import { USER_INFO } from "../../../constants/keys/queryKeys";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
-import { NaverLocationProps } from "../../../hooks/external/queries";
 import { usePointSystemMutation, useUserInfoFieldMutation } from "../../../hooks/user/mutations";
 import { usePointCuoponLogQuery, useUserInfoQuery } from "../../../hooks/user/queries";
 import { ModalLayout } from "../../../modals/Modals";
@@ -25,6 +24,7 @@ import RequestRestModal from "../../../modals/userRequest/RequestRestModal/Reque
 import RequestSecedeModal from "../../../modals/userRequest/RequestSecedeModal";
 import RequestSuggestModal from "../../../modals/userRequest/RequestSuggestModal";
 import { RegisterLocationLayout } from "../../../pages/register/location";
+import { LocationProps } from "../../../types/common";
 import { UserOverviewModal } from "./UserNavigation";
 
 interface IUserNavigationModals {
@@ -80,7 +80,7 @@ function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals
     if (isModal === false) setModalOpen(null);
   }, [modalOpen, isModal]);
 
-  const [placeInfo, setPlaceInfo] = useState<NaverLocationProps>();
+  const [placeInfo, setPlaceInfo] = useState<LocationProps>();
 
   const [errorMessage, setErrorMessage] = useState("");
 

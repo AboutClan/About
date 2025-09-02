@@ -5,9 +5,9 @@ import BottomNav from "../../components/layouts/BottomNav";
 import ProgressHeader from "../../components/molecules/headers/ProgressHeader";
 import SearchLocation from "../../components/organisms/SearchLocation";
 import { REGISTER_INFO } from "../../constants/keys/localStorage";
-import { NaverLocationProps } from "../../hooks/external/queries";
 import RegisterLayout from "../../pageTemplates/register/RegisterLayout";
 import RegisterOverview from "../../pageTemplates/register/RegisterOverview";
+import { LocationProps } from "../../types/common";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { IUserRegisterFormWriting } from "../../types/models/userTypes/userInfoTypes";
 import { getLocalStorageObj, setLocalStorageObj } from "../../utils/storageUtils";
@@ -17,7 +17,7 @@ function RegisterLocation() {
 
   const [errorMessage, setErrorMessage] = useState("");
 
-  const [placeInfo, setPlaceInfo] = useState<NaverLocationProps>({
+  const [placeInfo, setPlaceInfo] = useState<LocationProps>({
     name: "",
     address: "",
     latitude: null,
@@ -25,7 +25,7 @@ function RegisterLocation() {
   });
 
   const onClickNext = (e?: MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    if (!placeInfo?.title) {
+    if (!placeInfo?.name) {
       e.preventDefault();
       setErrorMessage("정확한 장소를 입력해 주세요.");
       return;
@@ -60,8 +60,8 @@ function RegisterLocation() {
 interface RegisterLocationLayoutProps {
   handleButton: () => void;
   url?: string;
-  placeInfo: NaverLocationProps;
-  setPlaceInfo: DispatchType<NaverLocationProps>;
+  placeInfo: LocationProps;
+  setPlaceInfo: DispatchType<LocationProps>;
   errorMessage: string;
   text?: string;
   isSlide?: boolean;
