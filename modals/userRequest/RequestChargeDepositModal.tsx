@@ -23,9 +23,9 @@ function RequestChargeDepositModal({ setIsModal }: IModal) {
 
   const resetQueryData = useResetQueryData();
 
-  const { data: deposit } = usePointSystemQuery("deposit");
+  const { data: deposit } = usePointSystemQuery("point");
   const { mutate: sendRequest } = useUserRequestMutation();
-  const { mutate: getDeposit } = usePointSystemMutation("deposit", {
+  const { mutate: getDeposit } = usePointSystemMutation("point", {
     onSuccess() {
       toast("success", "충전되었습니다.");
       resetQueryData([USER_INFO], () => setIsModal(false));
@@ -38,7 +38,7 @@ function RequestChargeDepositModal({ setIsModal }: IModal) {
       category: "충전",
     };
     sendRequest(userRequestInfo);
-    getDeposit({ value: 2000, message: "보증금 충전" });
+    getDeposit({ value: 2000, message: "포인트 충전" });
   };
 
   const myDeposit = deposit;
@@ -51,7 +51,7 @@ function RequestChargeDepositModal({ setIsModal }: IModal) {
   };
 
   return (
-    <ModalLayout footerOptions={footerOptions} title="보증금 충전" setIsModal={setIsModal}>
+    <ModalLayout footerOptions={footerOptions} title="포인트 충전" setIsModal={setIsModal}>
       {myDeposit &&
         (isFirst ? (
           <>

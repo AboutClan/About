@@ -1,8 +1,9 @@
 import { Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 
 import { STUDY_COVER_IMAGES } from "../../../../assets/images/studyCover";
 import { MainLoading } from "../../../../components/atoms/loaders/MainLoading";
@@ -21,6 +22,7 @@ import StudyNavigation from "../../../../pageTemplates/study/StudyNavigation";
 import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
 import StudyReviewButton from "../../../../pageTemplates/study/StudyReviewButton";
 import StudyTimeBoard from "../../../../pageTemplates/study/StudyTimeBoard";
+import { backUrlState } from "../../../../recoils/navigationRecoils";
 import {
   MyStudyStatus,
   StudyConfirmedMemberProps,
@@ -35,10 +37,12 @@ import { getRandomImage } from "../../../../utils/imageUtils";
 import { navigateExternalLink } from "../../../../utils/navigateUtils";
 
 export default function Page() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const { id, date } = useParams<{ id: string; date: string }>() || {};
   const userInfo = useUserInfo();
   const isPassedDate = !!date && dayjs(date).startOf("day").isBefore(dayjs().startOf("day"));
+  const [backUrl, setBackUrl] = useRecoilState(backUrlState);
 
   const studyType = searchParams.get("type") as StudyType;
 
@@ -48,6 +52,24 @@ export default function Page() {
   });
 
   const [modalType, setModalType] = useState<"studyLink" | "review">();
+
+  useEffect(() => {
+    const handlePopState = () => {
+      if (backUrl) {
+        router.push(backUrl); // Next.js 라우터 이동
+        setBackUrl(null);
+      } else {
+        router.push(`/studyPage?date=${date}`);
+      }
+    };
+
+    window.history.pushState(null, "", window.location.href);
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [backUrl]);
 
   const studyData = isPassedDate
     ? studyPassedData && studyPassedData[studyType]

@@ -22,7 +22,7 @@ import { IUserRequest } from "../../types/models/userTypes/userRequestTypes";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface IRequestSuggestModal extends IModal {
-  type: "suggest" | "declare" | "study";
+  type: "suggest" | "declare";
 }
 
 function RequestSuggestModal({ type, setIsModal }: IRequestSuggestModal) {
@@ -32,7 +32,7 @@ function RequestSuggestModal({ type, setIsModal }: IRequestSuggestModal) {
   const [isRealName, setIsRealName] = useState(true);
   const { register, handleSubmit } = useForm({
     defaultValues: {
-      title: type === "study" ? "스터디 장소 추천" : "",
+      title: "",
       content: "",
     },
   });
@@ -89,57 +89,42 @@ function RequestSuggestModal({ type, setIsModal }: IRequestSuggestModal) {
           <span>작성일:</span>
           <div>{dayjs().format("YYYY-MM-DD")}</div>
         </Item>
-        {type !== "study" && (
-          <Item>
-            <span>작성자: </span>
-            <Writer>
-              <WriterBtn type="button" isSelected={isRealName} onClick={() => setIsRealName(true)}>
-                실명
-              </WriterBtn>
-              <WriterBtn
-                type="button"
-                isSelected={!isRealName}
-                onClick={() => setIsRealName(false)}
-              >
-                익명
-              </WriterBtn>
-              <div />
-              <Popover>
-                <PopoverTrigger>
-                  <i
-                    className="fa-solid fa-circle-exclamation fa-sm"
-                    style={{ color: "var(--gray-200)" }}
-                  />
-                </PopoverTrigger>
-                <PopoverContent>
-                  <PopoverArrow />
-                  <PopoverCloseButton />
-                  <PopoverHeader fontSize="11px">익명 제출</PopoverHeader>
-                  <PopoverBody fontSize="11px">
-                    익명으로 제출한 건의/문의/불만 등에 대해서는 철저하게 익명을 보장합니다. 단,
-                    채택되어도 상품을 받을 수 없습니다.
-                  </PopoverBody>
-                </PopoverContent>
-              </Popover>
-            </Writer>
-          </Item>
-        )}
+
+        <Item>
+          <span>작성자: </span>
+          <Writer>
+            <WriterBtn type="button" isSelected={isRealName} onClick={() => setIsRealName(true)}>
+              실명
+            </WriterBtn>
+            <WriterBtn type="button" isSelected={!isRealName} onClick={() => setIsRealName(false)}>
+              익명
+            </WriterBtn>
+            <div />
+            <Popover>
+              <PopoverTrigger>
+                <i
+                  className="fa-solid fa-circle-exclamation fa-sm"
+                  style={{ color: "var(--gray-200)" }}
+                />
+              </PopoverTrigger>
+              <PopoverContent>
+                <PopoverArrow />
+                <PopoverCloseButton />
+                <PopoverHeader fontSize="11px">익명 제출</PopoverHeader>
+                <PopoverBody fontSize="11px">
+                  익명으로 제출한 건의/문의/불만 등에 대해서는 철저하게 익명을 보장합니다. 단,
+                  채택되어도 상품을 받을 수 없습니다.
+                </PopoverBody>
+              </PopoverContent>
+            </Popover>
+          </Writer>
+        </Item>
+
         <Item>
           <Content>내용:</Content>
           <Textarea {...register("content")} focusBorderColor="#00c2b3" />
         </Item>
       </Form>
-      {type === "study" && (
-        <Item
-          style={{
-            color: "var(--gray-600)",
-            marginTop: "var(--gap-1)",
-            marginBottom: "0",
-          }}
-        >
-          ※ 활동 지역을 벗어나는 곳은 채택이 어려워요.
-        </Item>
-      )}
     </ModalLayout>
   );
 }

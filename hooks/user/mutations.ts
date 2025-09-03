@@ -138,10 +138,7 @@ export const useAddBadgeListMutation = (
     });
   }, options);
 
-export const usePointSystemMutation = (
-  field: "point" | "score" | "deposit",
-  options?: MutationOptions<IPointSystem>,
-) =>
+export const usePointSystemMutation = (field: "point", options?: MutationOptions<IPointSystem>) =>
   useMutation<void, AxiosError, IPointSystem>((param) => {
     const body = {
       [field]: param.value,
@@ -154,21 +151,6 @@ export const usePointSystemMutation = (
       body,
     });
   }, options);
-
-export const useAboutPointMutation = (options?: MutationOptions<IPointSystem>) =>
-  useMutation<void, AxiosError, IPointSystem>(async ({ value, message, sub }) => {
-    await Promise.all([
-      axios.patch(`${SERVER_URI}/user/point`, { point: value, message, sub }),
-      axios.patch(`${SERVER_URI}/user/score`, { score: value, message, sub }),
-    ]);
-  }, options);
-
-export const useScoreMutation = (options?: MutationOptions<IPointSystem>) =>
-  useMutation<void, AxiosError, IPointSystem>(
-    async ({ value, message, sub }) =>
-      await axios.patch(`${SERVER_URI}/user/score`, { score: value, message, sub }),
-    options,
-  );
 
 export const useUserUpdateProfileImageMutation = (options?: MutationOptions<void>) =>
   useMutation<void, AxiosError, void>(async () => {
