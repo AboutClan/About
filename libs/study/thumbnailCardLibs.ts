@@ -33,7 +33,7 @@ export const setStudyThumbnailCard = (
       place: {
         name: "실시간 공부 인증",
         branch: "자유 장소",
-        address: "공부 인증하고, 다양한 혜택 받아가세요!",
+        address: "공부 인증하면, 돈이 쌓인다!",
         date: "",
         imageProps: {
           image:

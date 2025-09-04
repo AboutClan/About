@@ -41,9 +41,6 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
 
   const [transferCollection, setTransferCollection] = useRecoilState(transferCollectionState);
   const [transferStudyReward, setTransferStudyReward] = useRecoilState(transferStudyRewardState);
-  // const [transferStudyVoteDate, setTransferStudyVoteDate] = useRecoilState(
-  //   transferStudyVoteDateState,
-  // );
 
   const dailyCheckWin = useRecoilValue(transferDailyCheckWinState);
 
@@ -59,7 +56,7 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
     setTransferStudyReward(null);
     router.replace(pathname + (params ? `?${params}` : ""));
   };
-  console.log(transferStudyReward);
+
   return (
     <>
       {!!dailyCheckWin && <DailyCheckWinModal />}
@@ -104,7 +101,7 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
               : "출석"}{" "}
             완료!
             <br />
-            <b>{transferStudyReward.point} Point</b>가 적립되었습니다.
+            랜덤으로 <b>{transferStudyReward.point} Point</b>가 적립되었습니다.
           </Box>
           <Box color="gray.500" mr="auto" fontSize="12px" fontWeight={600}>
             스터디에 참여하면 매번 포인트를 획득할 수 있어요!
