@@ -406,6 +406,7 @@ const convertParticipations = (
   return participations.map((par) => ({
     ...par,
     location: {
+      name: "",
       latitude: par.latitude,
       longitude: par.longitude,
       address: par.locationDetail,

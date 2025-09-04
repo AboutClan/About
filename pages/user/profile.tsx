@@ -59,9 +59,10 @@ function Profile() {
     setMajors(userInfo?.majors);
     setMbti(userInfo?.mbti);
     setPlaceInfo({
-      address: userInfo?.locationDetail?.text || "",
-      longitude: userInfo?.locationDetail?.lon,
-      latitude: userInfo?.locationDetail?.lat,
+      name: userInfo?.locationDetail.name || "",
+      address: userInfo?.locationDetail?.address || "",
+      longitude: userInfo?.locationDetail?.longitude,
+      latitude: userInfo?.locationDetail?.latitude,
     });
     setInstagram(userInfo?.instagram);
     setComment(userInfo?.comment);
@@ -71,9 +72,10 @@ function Profile() {
   const handleSubmit = () => {
     mutate({
       locationDetail: {
-        text: placeInfo?.address,
-        lat: placeInfo?.latitude,
-        lon: placeInfo?.longitude,
+        name: placeInfo?.name,
+        address: placeInfo?.address,
+        latitude: placeInfo?.latitude,
+        longitude: placeInfo?.longitude,
       },
       comment,
       majors,

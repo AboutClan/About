@@ -2,7 +2,7 @@ import { KakaoProfile } from "next-auth/providers/kakao";
 
 import { USER_BADGE_ARR } from "../../../constants/serviceConstants/badgeConstants";
 import { USER_ROLE } from "../../../constants/serviceConstants/userConstants";
-import { ActiveLocation, Location } from "../../services/locationTypes";
+import { Location } from "../../services/locationTypes";
 import { TimeStampProps } from "../../utils/timeAndDate";
 import { IStudyVotePlaces } from "../studyTypes/studyInterActions";
 
@@ -67,9 +67,10 @@ export interface UserSimpleInfoProps {
 }
 
 export interface LocationDeatilProps {
-  text: string;
-  lat: number;
-  lon: number;
+  name: string;
+  address: string;
+  latitude: number;
+  longitude: number;
 }
 
 export interface IUserSummary {
@@ -77,7 +78,6 @@ export interface IUserSummary {
   birth: string;
   comment: string;
   isActive: boolean;
-  location: ActiveLocation;
   name: string;
   profileImage: string;
   monthScore: number;

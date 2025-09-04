@@ -9,7 +9,7 @@ export interface TimeRangeProps {
 }
 
 export interface LocationProps {
-  name?: string;
+  name: string;
   latitude: number;
   longitude: number;
   address: string;

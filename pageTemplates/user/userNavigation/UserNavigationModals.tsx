@@ -96,11 +96,7 @@ function UserNavigationModals({ modalOpen, setModalOpen }: IUserNavigationModals
       setErrorMessage("정확한 장소를 입력해 주세요.");
       return;
     }
-    changeLocationDetail({
-      text: placeInfo.address,
-      lon: placeInfo.longitude,
-      lat: placeInfo.latitude,
-    });
+    changeLocationDetail(placeInfo);
   };
 
   return (

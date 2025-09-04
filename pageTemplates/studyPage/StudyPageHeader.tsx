@@ -34,10 +34,10 @@ function StudyPageHeader() {
   useEffect(() => {
     if (!location) return;
     setPlaceInfo({
-      name: "",
-      address: location.text,
-      latitude: location.lat,
-      longitude: location.lon,
+      name: location.name,
+      address: location.address,
+      latitude: location.latitude,
+      longitude: location.longitude,
     });
   }, [location]);
 
@@ -61,14 +61,10 @@ function StudyPageHeader() {
       setErrorMessage("정확한 장소를 입력해 주세요.");
       return;
     }
-    changeLocationDetail({
-      text: placeInfo.name,
-      lon: placeInfo.longitude,
-      lat: placeInfo.latitude,
-    });
+    changeLocationDetail(placeInfo);
   };
 
-  const locationTextArr = userInfo?.locationDetail?.text?.split(" ");
+  const locationTextArr = userInfo?.locationDetail?.name?.split(" ");
 
   return (
     <>

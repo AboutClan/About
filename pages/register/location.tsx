@@ -30,16 +30,10 @@ function RegisterLocation() {
       setErrorMessage("정확한 장소를 입력해 주세요.");
       return;
     }
-    const { address, latitude, longitude } = placeInfo;
 
     setLocalStorageObj(REGISTER_INFO, {
       ...info,
-      location: "기타",
-      locationDetail: {
-        text: address,
-        lat: latitude,
-        lon: longitude,
-      },
+      locationDetail: placeInfo,
     });
   };
 

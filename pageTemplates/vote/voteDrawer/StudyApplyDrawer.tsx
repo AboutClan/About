@@ -130,9 +130,9 @@ function StudyApplyDrawer({
         voteDateArr({
           locationDetail: location
             ? location.address
-            : getLocationSimpleText(userInfo.locationDetail.text),
-          latitude: location ? location.latitude : userInfo.locationDetail.lat,
-          longitude: location ? location.longitude : userInfo.locationDetail.lon,
+            : getLocationSimpleText(userInfo.locationDetail.address),
+          latitude: location ? location.latitude : userInfo.locationDetail.latitude,
+          longitude: location ? location.longitude : userInfo.locationDetail.longitude,
           start: voteTime.start,
           end: voteTime.end,
         });
@@ -207,9 +207,9 @@ function StudyApplyDrawer({
                 await voteDateArr({
                   locationDetail: location
                     ? location.address
-                    : getLocationSimpleText(userInfo.locationDetail.text),
-                  latitude: location ? location.latitude : userInfo.locationDetail.lat,
-                  longitude: location ? location.longitude : userInfo.locationDetail.lon,
+                    : getLocationSimpleText(userInfo.locationDetail.address),
+                  latitude: location ? location.latitude : userInfo.locationDetail.latitude,
+                  longitude: location ? location.longitude : userInfo.locationDetail.longitude,
                   start: dayjs(),
                   end: dayjs(),
                 });

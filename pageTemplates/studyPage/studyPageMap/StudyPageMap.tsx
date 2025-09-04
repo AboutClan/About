@@ -40,7 +40,7 @@ function StudyPageMap({ isDefaultOpen = false, onClose, handleVotePick }: StudyP
 
   const { data: placeData, isLoading: isLoading2 } = useStudyPlacesQuery(filterType, null);
 
-  const isPC = detectDevice() === "PC" && userInfo?.locationDetail?.lat;
+  const isPC = detectDevice() === "PC" && userInfo?.locationDetail?.latitude;
 
   useEffect(() => {
     if (isDefaultOpen) {
@@ -51,7 +51,7 @@ function StudyPageMap({ isDefaultOpen = false, onClose, handleVotePick }: StudyP
   useEffect(() => {
     const options = getMapOptions(
       isPC
-        ? { lat: userInfo.locationDetail.lat, lon: userInfo.locationDetail.lon }
+        ? { lat: userInfo.locationDetail.latitude, lon: userInfo.locationDetail.longitude }
         : currentLocation,
       isMapExpansion ? 12 : 13,
     );
@@ -130,8 +130,8 @@ function StudyPageMap({ isDefaultOpen = false, onClose, handleVotePick }: StudyP
                 ? setMapOptions((old) => ({
                     ...old,
                     center: new naver.maps.LatLng(
-                      userInfo.locationDetail.lat,
-                      userInfo.locationDetail.lon,
+                      userInfo.locationDetail.latitude,
+                      userInfo.locationDetail.longitude,
                     ),
                   }))
                 : currentLocation

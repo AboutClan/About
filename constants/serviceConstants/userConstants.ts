@@ -28,7 +28,7 @@ export const ABOUT_USER_SUMMARY: IUserSummary = {
     type: null,
     bg: null,
   },
-  location: "수원",
+
   monthScore: 30,
   badge: {
     badgeIdx: 10,
@@ -51,7 +51,7 @@ export const SECRET_USER_SUMMARY: IUserSummary = {
     type: 2,
     bg: 0,
   },
-  location: "수원",
+
   monthScore: 30,
   badge: {
     badgeIdx: 10,

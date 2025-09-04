@@ -196,6 +196,6 @@ export const useUserReviewMutation = (options?: MutationOptions<UserReviewReques
 
 export const useUpdateAllUserMutation = (options?: MutationOptions<void>) =>
   useMutation<void, AxiosError, void>(
-    async () => await axios.patch(`${SERVER_URI}/user/allUserInfo`),
+    async (body) => await axios.patch(`${SERVER_URI}/user/locationDetail/all`, body),
     options,
   );

@@ -1,13 +1,11 @@
 import { Badge, Box, Flex } from "@chakra-ui/react";
-import axios, { isCancel } from "axios";
 import dayjs from "dayjs";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import AttendanceBadge from "../../components/molecules/badge/AttendanceBadge";
 import { IProfileCommentCard } from "../../components/molecules/cards/ProfileCommentCard";
-import { mapxyToLatLng } from "../../components/organisms/location/LocationSearch";
 import ProfileCardColumn from "../../components/organisms/ProfileCardColumn";
 import { useResetStudyQuery } from "../../hooks/custom/CustomHooks";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
@@ -28,7 +26,7 @@ interface IStudyMembers {
   studyType: StudyType;
 }
 
-export default function StudyMembers({ studyType, date, members: temp }: IStudyMembers) {
+export default function StudyMembers({ studyType, date, members }: IStudyMembers) {
   const resetStudy = useResetStudyQuery();
   const typeToast = useTypeToast();
   // const [hasModalMemo, setHasModalMemo] = useState<string>();
@@ -36,69 +34,6 @@ export default function StudyMembers({ studyType, date, members: temp }: IStudyM
     image: string;
     toUid: string;
   }>();
-  const [members, setMembers] = useState<StudyConfirmedMemberProps[] | StudyParticipationProps[]>();
-
-  useEffect(() => {
-    if (!temp || !temp.length) return;
-    if (studyType !== "participations") {
-      setMembers(temp);
-    } else {
-      const controller = new AbortController();
-      const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
-      const temp2 = [];
-
-      (async () => {
-        for (const p2 of temp) {
-          if (controller.signal.aborted) break; // (2) 중간 탈출
-          const p = p2 as StudyParticipationProps;
-          const q = p.location.address?.trim();
-          if (!q) continue;
-
-          try {
-            const res = await axios.get("/api/naver-local", {
-              params: { q },
-              signal: controller.signal,
-            });
-            const first = res.data.items?.[0];
-            if (first) {
-              const { latitude, longitude } = mapxyToLatLng(first.mapx, first.mapy);
-              const location = { latitude, longitude, address: first.address };
-              temp2.push({ ...p, location });
-            } else {
-              temp2.push({
-                ...p,
-                location: {
-                  latitude: p.location.latitude,
-                  longitude: p.location.longitude,
-                  address: "미정",
-                },
-              });
-            }
-          } catch (e) {
-            // (1) 취소 예외는 조용히 무시
-            if (isCancel?.(e) || e?.code === "ERR_CANCELED" || controller.signal.aborted) break;
-            // 그 외 에러는 fallback으로 푸시(선택)
-            temp2.push({
-              ...p,
-              location: {
-                latitude: p.location.latitude,
-                longitude: p.location.longitude,
-                address: "미정",
-              },
-            });
-          }
-
-          await wait(250); // 업스트림 보호
-        }
-
-        // (3) abort되었으면 setMembers 호출하지 않기
-        if (!controller.signal.aborted) setMembers(temp2);
-      })();
-
-      // (4) cleanup: abort만 호출
-      return () => controller.abort();
-    }
-  }, [temp, studyType]);
 
   const { mutate: setRealTimeComment } = useRealTimeCommentMutation(date, {
     onSuccess: () => handleSuccessChange(),
@@ -118,7 +53,7 @@ export default function StudyMembers({ studyType, date, members: temp }: IStudyM
     } else if (studyType === "openRealTimes" || studyType === "soloRealTimes")
       setRealTimeComment(comment);
   };
-  console.log(temp, members);
+
   const userCardArr: IProfileCommentCard[] = members?.map((member) => {
     const user = member.user;
     // const badgeText = locationMapping?.find((mapping) => mapping?.id === user._id)?.branch;
@@ -186,7 +121,7 @@ export default function StudyMembers({ studyType, date, members: temp }: IStudyM
             hasCommentButton={studyType !== "participations"}
           />
         </>
-      ) : temp?.length ? (
+      ) : members?.length ? (
         <Box position="relative" mt="100px" bottom="0" left="50%" transform="translate(-50%,-50%)">
           <MainLoadingAbsolute size="sm" />
         </Box>
