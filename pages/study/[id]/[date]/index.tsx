@@ -122,8 +122,7 @@ export default function Page() {
     if (
       myStudyStatus === "pending" ||
       studyType === "soloRealTimes" ||
-      studyType === "participations" ||
-      date !== dayjsToStr(dayjs())
+      studyType === "participations"
     )
       return;
     const hasLink = localStorage.getItem("studyLink");
@@ -195,16 +194,40 @@ export default function Page() {
         <MainLoading />
       )}
       {modalType === "studyLink" && (
-        <StudyLinkModal date={date} onClose={() => setModalType(null)} />
+        <StudyLinkModal
+          type={
+            studyType === "openRealTimes" && date !== dayjsToStr(dayjs())
+              ? "openStudy"
+              : date === dayjsToStr(dayjs())
+              ? "result"
+              : "expected"
+          }
+          date={date}
+          onClose={() => setModalType(null)}
+        />
       )}
     </>
   );
 }
 
-function StudyLinkModal({ date, onClose }: { date: string; onClose: () => void }) {
+function StudyLinkModal({
+  type,
+  date,
+  onClose,
+}: {
+  type: "openStudy" | "expected" | "result";
+  date: string;
+  onClose: () => void;
+}) {
   return (
     <ModalLayout
-      title="스터디 매칭 성공!"
+      title={
+        type === "openStudy"
+          ? "스터디 진행 예정!"
+          : type === "result"
+          ? "스터디 매칭 성공!"
+          : "스터디 매칭 예정!"
+      }
       footerOptions={{
         main: {
           text: "입 장",
@@ -215,7 +238,7 @@ function StudyLinkModal({ date, onClose }: { date: string; onClose: () => void }
           },
         },
         sub: {
-          text: "생 략",
+          text: type !== "result" ? "나중에" : "생 략",
           func: () => {
             localStorage.setItem("studyLink", date);
             onClose();
@@ -233,7 +256,16 @@ function StudyLinkModal({ date, onClose }: { date: string; onClose: () => void }
         />
       </Flex>
       <p>
-        스터디 매칭에 성공했어요! <br />
+        {type === "result" ? (
+          <>
+            스터디 매칭에 성공했어요! <br />
+          </>
+        ) : (
+          <>
+            스터디가 진행 될 예정이에요!
+            <br />
+          </>
+        )}
         원활한 스터디 진행을 위해, <br />
         <b>[스터디 단톡방]</b>에 입장해 주세요!
       </p>
