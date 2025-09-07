@@ -71,7 +71,7 @@ function HomeHeader() {
           <Layout>
             <AboutLogo />
             <Flex align="center">
-              <Box mr={2} position="relative">
+              <Box mr={2.5} position="relative">
                 <CalendarCheckModalButton
                   handleClick={isGuest ? () => typeToast("guest") : () => setIsModal(true)}
                 />

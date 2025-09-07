@@ -5,6 +5,7 @@ interface INoticeArr {
   content: string;
   date: string;
   link?: string;
+  linkTitle?: string;
 }
 
 export type NoticeCategory = "main" | "sub" | "event" | "update";
@@ -998,18 +999,20 @@ export const NOTICE_ARR: INoticeArr[] = [
   },
   {
     id: "126",
-    title: "🚀 스터디 기능 리뉴얼 오픈 🚀",
-    category: "main",
+    title: "스터디 기능 업데이트 안내",
+    category: "event",
     content:
       "✨ 공부하는데 돈이 쌓인다고?! 개인 공부 인증부터, 동네 친구와의 카공 스터디까지! 지금 바로 확인하세요!",
     date: "2025-08-25",
   },
-  // {
-  //   id: "125",
-  //   title: "ABOUT 앱 정식 출시 및 운영 체계 개편 안내",
-  //   category: "main",
-  //   content:
-  //     "ABOUT 앱이 구글 플레이스토어와 애플 앱스토어에 정식 출시되었습니다. 이와 함께 기존의 ‘지역별 단톡방’ 운영은 종료되며, 앞으로는 ABOUT 카카오 채널과 공지 톡방을 통해 소식을 전해드립니다. 자세한 내용은 공지 톡방에서 확인해 주세요.",
-  //   date: "2025-05-28",
-  // },
+  {
+    id: "127",
+    title: "About 개강총회 공지 (9월 11일, 12일)",
+    category: "main",
+    content:
+      "2학기 시작을 알리는 개강총회! ✨ 이번 학기, 특별한 시작을 원한다면? 새로운 친구들과 함께 즐겁게 출발해요! 처음이거나 친구가 없어도 걱정 NO! 나이, 성별, 주량, 신규/기존 멤버 등을 고려한 맞춤 테이블 편성으로 쉽게 어울릴 수 있어요! ",
+    date: "2025-09-06",
+    linkTitle: "상세 내용 및 신청 링크",
+    link: "https://forms.gle/6N6Kk7ifcA63Shwu5",
+  },
 ];

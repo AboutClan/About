@@ -8,22 +8,55 @@ import {
   Flex,
   Text,
 } from "@chakra-ui/react";
-import Link from "next/link";
+import dayjs from "dayjs";
 import { useEffect } from "react";
 
 import { NoticeIcon } from "../../components/Icons/NoticeIcons";
+import ExternalLink from "../../components/molecules/ExternalLink";
 import { NOTICE_ALERT } from "../../constants/keys/localStorage";
+import { useUserInfoQuery } from "../../hooks/user/queries";
 import { NOTICE_ARR } from "../../storage/notice";
+import { dayjsToStr } from "../../utils/dateTimeUtils";
 
 function NoticeItem() {
+  const { data: userInfo } = useUserInfoQuery();
+  console.log(userInfo);
+
   useEffect(() => {
     localStorage.setItem(NOTICE_ALERT, NOTICE_ARR.length + "");
   }, []);
 
+  const list = [];
+
+  if (userInfo) {
+    const REGISTER_NOTICE = {
+      id: "10000",
+      title: "🎉 신규 가입을 환영합니다! 🎉",
+      category: "main",
+      content:
+        "About 멤버가 되신 것을 환영합니다! 활동을 시작하시기 전에 [신규 인원 가이드]를 꼭 확인해 주세요!",
+      date: dayjsToStr(dayjs(userInfo?.registerDate)),
+      link: "https://pf.kakao.com/_SaWXn/109551233",
+      linkTitle: "신규 인원 가이드",
+    };
+
+    NOTICE_ARR.forEach((notice) => {
+      if (dayjs(notice.date).startOf("day").isAfter(dayjs(userInfo?.registerDate).startOf("day"))) {
+        list.push(REGISTER_NOTICE);
+        list.push(notice);
+      } else {
+        list.push(notice);
+      }
+    });
+    if (NOTICE_ARR.length === list.length) {
+      list.push(REGISTER_NOTICE);
+    }
+  }
+
   return (
     <>
       <Accordion allowToggle>
-        {[...NOTICE_ARR]
+        {[...list]
           .slice()
           .reverse()
           .map((item) => (
@@ -53,20 +86,24 @@ function NoticeItem() {
               >
                 <p>{item.content}</p>
                 {item?.link && (
-                  <Link href={item.link}>
-                    <Box
-                      my="12px"
-                      bgColor="var(--gray-200)"
-                      color="var(--gray-700)"
-                      fontSize="13px"
-                      w="max-content"
-                      p="4px 8px"
-                      rounded="lg"
-                      textDecoration="underline"
-                    >
-                      @{item.title}
+                  <Box
+                    my={3}
+                    py={3}
+                    px={5}
+                    bg="rgba(0,194,179,0.02)"
+                    borderRadius="12px"
+                    border="1px solid rgba(0,194,179,0.08)"
+                    as="p"
+                    fontSize="13px"
+                    lineHeight="20px "
+                    color="gray.700"
+                  >
+                    <Box as="span" mr={2} color="mint">
+                      [{item.linkTitle}]
                     </Box>
-                  </Link>
+                    <br />
+                    <ExternalLink href={item.link}>{item.link}</ExternalLink>
+                  </Box>
                 )}
               </AccordionPanel>
             </AccordionItem>

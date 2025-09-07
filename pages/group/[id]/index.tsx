@@ -94,9 +94,9 @@ function GroupDetail() {
                 <Badge mr={1} variant="subtle" size="lg" colorScheme="badgeMint">
                   {group.category.main}
                 </Badge>
-                <Badge variant="subtle" size="lg">
+                {/* <Badge variant="subtle" size="lg">
                   {group.category.sub}
-                </Badge>
+                </Badge> */}
               </Flex>
               {/* <GroupTitle
                 isAdmin={group.organizer.uid === session?.user.uid}
