@@ -155,7 +155,14 @@ export default function Page() {
               {studyType !== "participations" && studyType !== "soloRealTimes" && (
                 <StudyAddressMap location={placeInfo.location} />
               )}
-              <StudyDateBar date={date} memberCnt={members?.length} studyType={studyType} />
+              <StudyDateBar
+                date={date}
+                memberIdArr={members?.map(
+                  (member) => (member as StudyConfirmedMemberProps)?.user._id || "",
+                )}
+                studyType={studyType}
+                placeInfo={placeInfo}
+              />
               {studyType !== "participations" && studyType !== "soloRealTimes" && (
                 <StudyTimeBoard members={members as StudyConfirmedMemberProps[]} />
               )}

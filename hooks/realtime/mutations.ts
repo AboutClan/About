@@ -39,6 +39,28 @@ export const useRealtimeVoteMutation = (
     });
   }, options);
 
+interface RealTimesInviteProps extends RealTimeVoteProps {
+  userId: string;
+}
+
+export const useRealtimeInviteMutation = (
+  date: string,
+  options?: MutationOptions<RealTimesInviteProps, RealTimesVoteReturnProps>,
+) =>
+  useMutation<RealTimesVoteReturnProps, AxiosError, RealTimesInviteProps>((param) => {
+    const { start, end } = param.time;
+    const time = {
+      start: start.toISOString(),
+      end: end.toISOString(),
+    };
+
+    return requestServer<RealTimeVoteRequestServerProps, RealTimesVoteReturnProps>({
+      method: "post",
+      url: `realtime/${date}/invite`,
+      body: { ...param, time },
+    });
+  }, options);
+
 export const useRealTimeAttendMutation = (
   date: string,
   options?: MutationOptions<RealTimeAttendanceProps | FormData, PointInfoProps>,

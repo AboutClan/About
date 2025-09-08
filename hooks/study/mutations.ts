@@ -67,6 +67,34 @@ export const useStudyVoteMutation = <T extends "post" | "patch" | "delete">(
   );
 };
 
+interface StudyInviteProps extends StudyVoteProps {
+  userId: string;
+}
+
+export const useStudyInviteMutation = (
+  date: string,
+  options?: MutationOptions<StudyInviteProps, PointValueProps | void>,
+) => {
+  return useMutation<PointValueProps | void, AxiosError, StudyInviteProps>(
+    (param) => {
+      const voteInfo = param;
+
+      const updatedVoteInfo = voteInfo;
+      const { start, end } = updatedVoteInfo;
+      const startStr = dayjs(date).hour(start.hour()).minute(start.minute()).toISOString();
+      const endStr = dayjs(date).hour(end.hour()).minute(end.minute()).toISOString();
+      return requestServer<StudyInviteProps>({
+        method: "post",
+        url: `vote2/${date}/invite`,
+        body: { ...voteInfo, start: startStr as unknown as Dayjs, end: endStr as unknown as Dayjs },
+      });
+    },
+    {
+      ...options,
+    },
+  );
+};
+
 export const useStudyResultTimeChangeMutation = (
   voteDate: Dayjs,
   options?: MutationOptions<DayjsTimeProps>,

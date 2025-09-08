@@ -7,7 +7,11 @@ import { useAllUserDataQuery } from "../../../hooks/admin/quries";
 import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import { useGatherInviteMutation } from "../../../hooks/gather/mutations";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
-import { IUser, IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import {
+  IUser,
+  IUserSummary,
+  UserSimpleInfoProps,
+} from "../../../types/models/userTypes/userInfoTypes";
 import { searchName } from "../../../utils/stringUtils";
 import { Input } from "../../atoms/Input";
 import { MainLoadingAbsolute } from "../../atoms/loaders/MainLoading";
@@ -21,11 +25,10 @@ interface UserInviteBoardProps {
 
 function UserInviteBoard({ gatherId, members, groupId }: UserInviteBoardProps) {
   const typeToast = useTypeToast();
-
   const queryClient = useQueryClient();
 
   const [inviteUser, setInviteUser] = useState<IUserSummary>(null);
-  const [users, setUsers] = useState<IUserSummary[]>(null);
+  const [users, setUsers] = useState<IUserSummary[] | UserSimpleInfoProps[]>(null);
   const [existUsers, setExistUsers] = useState<string[]>(members);
   const [nameValue, setNameValue] = useState("");
   const [filter, setFilter] = useState<"소모임 멤버" | "친구인 멤버">(
@@ -34,7 +37,7 @@ function UserInviteBoard({ gatherId, members, groupId }: UserInviteBoardProps) {
 
   const { data: usersAll, isLoading } = useAllUserDataQuery(null);
   const { data: group, isLoading: isLoading2 } = useGroupIdQuery(groupId, { enabled: !!groupId });
- 
+
   const { mutate } = useGatherInviteMutation(+gatherId, {
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: [GATHER_CONTENT], exact: false });
@@ -44,7 +47,7 @@ function UserInviteBoard({ gatherId, members, groupId }: UserInviteBoardProps) {
   });
 
   useEffect(() => {
-    if (nameValue) setUsers(searchName(usersAll as IUser[], nameValue));
+    if (nameValue) setUsers(searchName(usersAll, nameValue));
     else setUsers(usersAll as IUser[]);
   }, [nameValue, usersAll]);
 

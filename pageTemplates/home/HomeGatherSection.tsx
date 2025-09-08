@@ -3,7 +3,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import SlideSectionCol from "../../components/molecules/SlideSectionCol";
 import { useWindowWidth } from "../../hooks/custom/CustomHooks";
 import { useGatherQuery } from "../../hooks/gather/queries";
-import { shuffleArray } from "../../utils/convertUtils/convertDatas";
 import HomeGatherCol from "./HomeGatherCol";
 
 function HomeGatherSection() {
@@ -13,7 +12,7 @@ function HomeGatherSection() {
   const width = windowWidth - 70;
 
   const firstData = gathers?.slice(0, 6);
-  const secondData = shuffleArray(gathers?.slice(6, 12));
+  const secondData = gathers?.slice(6, 12);
 
   return (
     <>
@@ -37,7 +36,7 @@ function HomeGatherSection() {
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence>
-      <AnimatePresence initial={false}>
+      {/* <AnimatePresence initial={false}>
         <motion.div
           drag="x"
           dragConstraints={{ left: -width, right: 0 }}
@@ -56,8 +55,8 @@ function HomeGatherSection() {
             <HomeGatherCol gathers={shuffleArray(secondData?.slice(3, 6))} isPriority={false} />
           </SlideSectionCol>
         </motion.div>
-      </AnimatePresence>
-      {/* <AnimatePresence initial={false}>
+      </AnimatePresence> */}
+      <AnimatePresence initial={false}>
         <motion.div
           drag="x"
           dragConstraints={{ left: -width, right: 0 }}
@@ -70,13 +69,13 @@ function HomeGatherSection() {
           }}
         >
           <SlideSectionCol title="About 인기 최고 모임" subTitle="최근 가장 핫한 모임이에요!">
-            <HomeGatherCol gathers={shuffleArray(thirdData?.slice(0, 3))} isPriority={false} />
+            <HomeGatherCol gathers={secondData?.slice(0, 3)} isPriority={false} />
           </SlideSectionCol>
           <SlideSectionCol title="About 인기 최고 모임" subTitle="요즘 제일 주목받는 모임이에요!">
-            <HomeGatherCol gathers={shuffleArray(thirdData?.slice(3, 6))} isPriority={false} />
+            <HomeGatherCol gathers={secondData?.slice(3, 6)} isPriority={false} />
           </SlideSectionCol>
         </motion.div>
-      </AnimatePresence> */}
+      </AnimatePresence>
     </>
   );
 }

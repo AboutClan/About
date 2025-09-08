@@ -1,10 +1,10 @@
 import { Box, Button, Flex, Grid } from "@chakra-ui/react";
 
 import Avatar from "../../../components/atoms/Avatar";
-import { IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import { IUserSummary, UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 
 interface IInviteUserGroups {
-  users: IUserSummary[];
+  users: IUserSummary[] | UserSimpleInfoProps[];
   inviteUser: (who: IUserSummary) => void;
   existUsers?: string[];
   type?: "exile";
@@ -16,7 +16,6 @@ export default function InviteUserGroups({
   existUsers,
   type,
 }: IInviteUserGroups) {
- 
   return (
     <Grid mt="20px" templateColumns="repeat(3,1fr)" gap="12px">
       {users?.map((who, idx) => {

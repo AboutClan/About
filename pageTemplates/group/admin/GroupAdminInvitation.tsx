@@ -10,13 +10,19 @@ import { useAllUserDataQuery } from "../../../hooks/admin/quries";
 import { useResetGroupQuery } from "../../../hooks/custom/CustomHooks";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useGroupInviteMutation } from "../../../hooks/groupStudy/mutations";
-import { IUser, IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import {
+  IUser,
+  IUserSummary,
+  UserSimpleInfoProps,
+} from "../../../types/models/userTypes/userInfoTypes";
 import { searchName } from "../../../utils/stringUtils";
 
 export default function GroupAdminInvitation() {
   const toast = useToast();
   const { id } = useParams<{ id: string }>() || {};
-  const [filterUsers, setFilterUsers] = useState<IUserSummary[]>();
+  const [filterUsers, setFilterUsers] = useState<
+    IUserSummary[] | IUser[] | UserSimpleInfoProps[]
+  >();
   const [inviteUser, setInviteUser] = useState<IUserSummary>(null);
   const [nameValue, setNameValue] = useState("");
 
@@ -37,7 +43,7 @@ export default function GroupAdminInvitation() {
 
     if (isLoading || !usersAll) return;
     if (nameValue) {
-      setFilterUsers(searchName(usersAll as IUser[], nameValue));
+      setFilterUsers(searchName(usersAll, nameValue));
     } else setFilterUsers(usersAll as IUser[]);
   }, [usersAll, nameValue]);
 
