@@ -120,7 +120,7 @@ export default function Page() {
 
   useEffect(() => {
     if (
-      myStudyStatus === "pending" ||
+      myStudyStatus !== "participation" ||
       studyType === "soloRealTimes" ||
       studyType === "participations"
     )
