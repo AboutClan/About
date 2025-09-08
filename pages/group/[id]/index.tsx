@@ -62,8 +62,7 @@ function GroupDetail() {
   const isAdmin =
     findMyInfo?.role === "admin" ||
     findMyInfo?.role === "manager" ||
-    session?.user.name === "어바웃" ||
-    session?.user.uid === "2259633694";
+    session?.user.name === "어바웃";
 
   const handleGatheringButton = () => {
     setGatherWriting({
