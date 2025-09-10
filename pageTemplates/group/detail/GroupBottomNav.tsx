@@ -105,7 +105,9 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
     if (data?.participants.length <= 1) {
       return {
         text: "참여 대기 신청",
-        handleFunction: () => sendRegisterForm({ answer: ["참여 대기 신청"], pointType: "point" }),
+        handleFunction: data?.isFree
+          ? () => sendRegisterForm({ answer: ["참여 대기 신청"], pointType: "point" })
+          : () => onClick("participate"),
       };
     }
 
