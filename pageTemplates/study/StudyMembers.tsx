@@ -1,4 +1,4 @@
-import { Badge, Box, Flex } from "@chakra-ui/react";
+import { Badge, Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { useState } from "react";
@@ -18,15 +18,17 @@ import {
 } from "../../types/models/studyTypes/study-entity.types";
 import { StudyType } from "../../types/models/studyTypes/study-set.types";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
+import { navigateExternalLink } from "../../utils/navigateUtils";
 import { getPlaceBranch } from "../../utils/stringUtils";
 
 interface IStudyMembers {
   date: string;
   members: StudyConfirmedMemberProps[] | StudyParticipationProps[];
   studyType: StudyType;
+  hasStudyLink: boolean;
 }
 
-export default function StudyMembers({ studyType, date, members }: IStudyMembers) {
+export default function StudyMembers({ studyType, date, members, hasStudyLink }: IStudyMembers) {
   const resetStudy = useResetStudyQuery();
   const typeToast = useTypeToast();
   // const [hasModalMemo, setHasModalMemo] = useState<string>();
@@ -137,7 +139,22 @@ export default function StudyMembers({ studyType, date, members }: IStudyMembers
           <Box as="p">현재 참여중인 멤버가 없습니다.</Box>
         </Flex>
       )}
-
+      {hasStudyLink && (
+        <Button
+          mt={4}
+          mb={2}
+          borderRadius={8}
+          color="mint"
+          border="1px solid var(--color-mint)"
+          bg="white"
+          w="full"
+          onClick={() => {
+            navigateExternalLink("https://open.kakao.com/o/gCRegnOh");
+          }}
+        >
+          스터디 단톡방 입장하기
+        </Button>
+      )}
       {hasImageProps?.image && hasImageProps?.toUid && (
         <ImageZoomModal imageUrl={hasImageProps.image} setIsModal={() => setHasImageProps(null)} />
       )}

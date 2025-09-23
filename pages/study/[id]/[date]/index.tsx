@@ -118,13 +118,13 @@ export default function Page() {
       : findStudy?.members;
   const placeInfo = findStudy?.place;
 
+  const studyLinkCondition =
+    myStudyStatus === "participation" &&
+    studyType !== "soloRealTimes" &&
+    studyType !== "participations";
+
   useEffect(() => {
-    if (
-      myStudyStatus !== "participation" ||
-      studyType === "soloRealTimes" ||
-      studyType === "participations"
-    )
-      return;
+    if (!studyLinkCondition) return;
     const hasLink = localStorage.getItem("studyLink");
     if (hasLink === date) return;
     setModalType("studyLink");
@@ -168,7 +168,12 @@ export default function Page() {
               )}
               <Box h="1px" bg="gray.100" my={4} />
               <Box pb={2} pos="relative">
-                <StudyMembers date={date} members={members || []} studyType={studyType} />
+                <StudyMembers
+                  date={date}
+                  members={members || []}
+                  studyType={studyType}
+                  hasStudyLink={studyLinkCondition}
+                />
               </Box>
             </Slide>
           </Box>
