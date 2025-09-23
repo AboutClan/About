@@ -2,8 +2,8 @@ import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import { Badge, Box, Flex, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -12,10 +12,10 @@ import ControlButton from "../../../components/ControlButton";
 import Slide from "../../../components/layouts/PageSlide";
 import BlurredLink from "../../../components/molecules/BlurredLink";
 import { GatherThumbnailCard } from "../../../components/molecules/cards/GatherThumbnailCard";
-import ExternalLink from "../../../components/molecules/ExternalLink";
 import InfoBoxCol from "../../../components/molecules/InfoBoxCol";
 import TabNav from "../../../components/molecules/navs/TabNav";
 import { useToast } from "../../../hooks/custom/CustomToast";
+import { useFeedsQuery } from "../../../hooks/feed/queries";
 import { useGatherGroupQuery } from "../../../hooks/gather/queries";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
 import GroupBottomNav from "../../../pageTemplates/group/detail/GroupBottomNav";
@@ -47,6 +47,9 @@ function GroupDetail() {
   const { data: gathers, isLoading } = useGatherGroupQuery(id, {
     enabled: tab === "피 드" && !!id,
   });
+
+  const { data: a } = useFeedsQuery("group", 150);
+  console.log(24, gathers, a);
 
   useEffect(() => {
     if (session === undefined) return;
@@ -204,7 +207,7 @@ function GroupDetail() {
                       </Box>
                     </>
                   ) : null}
-                  {group?.notionUrl ? (
+                  {/* {group?.notionUrl ? (
                     <Box fontSize="13px" lineHeight="20px">
                       <ExternalLink
                         href={group.notionUrl}
@@ -213,7 +216,7 @@ function GroupDetail() {
                         <u>&gt;&gt; 활동 기록 보러가기</u>
                       </ExternalLink>
                     </Box>
-                  ) : null}
+                  ) : null} */}
                   <Flex mt={5}>
                     {group.hashTag?.split("#").map((tag, idx) =>
                       tag ? (

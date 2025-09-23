@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
@@ -13,13 +13,12 @@ import { useStoreMutation } from "../../hooks/sub/store/mutation";
 import { usePointSystemMutation, useUserTicketMutation } from "../../hooks/user/mutations";
 import { usePointSystemQuery, useUserInfoQuery } from "../../hooks/user/queries";
 import { getStoreMaxCnt } from "../../libs/getStoreMaxCnt";
-import { IGiftEntry } from "../../pages/store";
 import { IModal } from "../../types/components/modalTypes";
-import { IStoreApplicant } from "../../types/models/store";
+import { StoreGiftProps } from "../../types/models/store";
 import { IFooterOptions, ModalLayout } from "../Modals";
 
 interface IStoreApplyGiftModal extends IModal {
-  giftInfo: IGiftEntry;
+  giftInfo: StoreGiftProps;
 }
 
 function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
@@ -38,10 +37,9 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
   const { data: myPoint, isLoading } = usePointSystemQuery("point");
   const { mutate: applyGift, isLoading: isLoading2 } = useStoreMutation({
     onSuccess() {
-      getPoint({ value: -totalCost, message: `${giftInfo.name} 응모` });
-      toast("success", "응모에 성공했어요! 당첨 발표일을 기다려주세요!");
-      queryClient.invalidateQueries([STORE_GIFT]);
-      router.push("/store");
+      // toast("success", "응모에 성공했어요! 당첨 발표일을 기다려주세요!");
+      // queryClient.invalidateQueries([STORE_GIFT]);
+      // router.push("/store");
     },
     onError: errorToast,
   });
@@ -55,16 +53,16 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
     },
   });
 
-  const totalCost = giftInfo.point * value * 10;
+  const totalCost = giftInfo.point * value;
 
-  const totalCnt = giftInfo.users.reduce((acc, cur) => {
+  const totalCnt = giftInfo.applicants.reduce((acc, cur) => {
     return acc + cur.cnt;
   }, 0);
 
   const maxCnt = Math.min(
     getStoreMaxCnt(userInfo?.score) -
-      giftInfo.users.reduce((acc, cur) => {
-        if (cur.uid === session?.user.uid) {
+      giftInfo.applicants.reduce((acc, cur) => {
+        if (cur.user.uid === session?.user.uid) {
           return acc + cur.cnt;
         }
         return acc;
@@ -74,6 +72,8 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
   );
 
   const onApply = () => {
+    console.log(1234, myPoint, totalCost);
+    return;
     if (isGuest) {
       failToast("guest");
       return;
@@ -83,7 +83,7 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
       return;
     }
     if (myPoint - 5000 < totalCost) {
-      failToast("free", "구매 후 보유 포인트가 5,000원 이상이어야 합니다.");
+      failToast("free", "구매 후 보유 포인트가 8,000원 이상이어야 합니다.");
       return;
     }
 
@@ -92,37 +92,26 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
       return;
     }
 
-    if (giftInfo?.type) {
-      mutate({
-        ticketNum: value,
-        type: giftInfo?.name === "번개 참여권" ? "gather" : "groupStudy",
-      });
-    } else {
-      const info: IStoreApplicant = {
-        name: session.user.name,
-        uid: session.user.uid,
-        cnt: value,
-        giftId: giftInfo.giftId,
-      };
+    // if (giftInfo?.type) {
+    //   mutate({
+    //     ticketNum: value,
+    //     type: giftInfo?.name === "번개 참여권" ? "gather" : "groupStudy",
+    //   });
+    // } else {
 
-      applyGift(info);
-    }
+    applyGift({ storeId: giftInfo._id, cnt: value });
   };
 
   const footerOptions: IFooterOptions = {
     main: {
-      text: giftInfo?.type ? "상품 구매" : "상품 응모",
+      text: "상품 응모",
       func: onApply,
       isLoading: isLoading2,
     },
   };
 
   return (
-    <ModalLayout
-      title={giftInfo?.type ? "상품 구매" : "상품 응모"}
-      footerOptions={footerOptions}
-      setIsModal={setIsModal}
-    >
+    <ModalLayout title={"상품 응모"} footerOptions={footerOptions} setIsModal={setIsModal}>
       <Box minH="124.5px">
         {!isLoading ? (
           <>

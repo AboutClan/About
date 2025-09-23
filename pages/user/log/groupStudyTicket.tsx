@@ -2,7 +2,6 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
-
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
 import { useTicketSystemLogQuery, useUserInfoQuery } from "../../../hooks/user/queries";

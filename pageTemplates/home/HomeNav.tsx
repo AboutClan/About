@@ -3,54 +3,73 @@ import Image from "next/image";
 import Link from "next/link";
 
 import ExternalLink from "../../components/molecules/ExternalLink";
+import { useTypeToast } from "../../hooks/custom/CustomToast";
+
+interface HomeIconProps {
+  title: string;
+  bgColor: string;
+  image: string;
+}
+
+export function HomeIcon({ title, image, bgColor }: HomeIconProps) {
+  const typeToast = useTypeToast();
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (title === "캘린더") {
+      typeToast("inspection");
+      e.preventDefault();
+      e.stopPropagation;
+    }
+  };
+
+  return (
+    <Flex justify="space-between" direction="column" align="center" onClick={handleClick}>
+      <Flex
+        justify="center"
+        align="center"
+        w="48px"
+        h="48px"
+        borderRadius="50%"
+        position="relative"
+      >
+        <Box
+          position="absolute"
+          w="100%"
+          h="100%"
+          opacity={title === "게시판" ? 0.12 : 0.08}
+          bgColor={bgColor}
+          borderRadius="50%"
+        />
+        <Image
+          src={image}
+          width={36}
+          height={36}
+          alt={title}
+          priority
+          style={{ width: "36px", height: "36px", objectFit: "contain" }}
+        />
+      </Flex>
+      {title && (
+        <Box fontSize="11px" color="black" mt={2}>
+          {title}
+        </Box>
+      )}
+    </Flex>
+  );
+}
 
 function HomeNav() {
   return (
     <Flex mb={3}>
       {HOME_RECOMMENDATION_ICON_ARR.map((item, idx) => {
-        const content = (
-          <Flex justify="space-between" direction="column" align="center">
-            <Flex
-              justify="center"
-              align="center"
-              w="48px"
-              h="48px"
-              borderRadius="50%"
-              position="relative"
-              mb={2}
-            >
-              <Box
-                position="absolute"
-                w="100%"
-                h="100%"
-                opacity={item.title === "게시판" ? 0.12 : 0.08}
-                bgColor={item.bgColor}
-                borderRadius="50%"
-              />
-              <Image
-                src={item.iconImage}
-                width={36}
-                height={36}
-                alt={item.title}
-                priority
-                style={{ width: "36px", height: "36px", objectFit: "contain" }}
-              />
-            </Flex>
-            <Box fontSize="11px" color="black">
-              {item.title}
-            </Box>
-          </Flex>
-        );
-
         const style = { flex: 1, marginLeft: idx === 0 ? 0 : "8px" };
 
         return item.isExternalLink ? (
           <ExternalLink href={item.url} key={item.title} style={style}>
-            {content}
+            <HomeIcon title={item.title} bgColor={item.bgColor} image={item.iconImage} />
           </ExternalLink>
         ) : (
           <Link href={item.url} key={item.title} style={style}>
-            {content}
+            <HomeIcon title={item.title} bgColor={item.bgColor} image={item.iconImage} />
           </Link>
         );
       })}
@@ -66,6 +85,12 @@ interface HomeRecommendationItemProps {
   isExternalLink?: boolean;
 }
 
+export const StoreIconImage =
+  "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/store.png";
+
+export const RankingIconImage =
+  "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%ED%8A%B8%EB%A1%9C%ED%94%BC2.png";
+
 const HOME_RECOMMENDATION_ICON_ARR: HomeRecommendationItemProps[] = [
   {
     iconImage:
@@ -75,8 +100,7 @@ const HOME_RECOMMENDATION_ICON_ARR: HomeRecommendationItemProps[] = [
     bgColor: "var(--color-gray)",
   },
   {
-    iconImage:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/store.png",
+    iconImage: StoreIconImage,
     title: "스토어",
     url: "/store",
     bgColor: "var(--color-mint)",
@@ -89,8 +113,7 @@ const HOME_RECOMMENDATION_ICON_ARR: HomeRecommendationItemProps[] = [
     bgColor: "var(--color-orange)",
   },
   {
-    iconImage:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%ED%8A%B8%EB%A1%9C%ED%94%BC2.png",
+    iconImage: RankingIconImage,
     title: "랭킹",
     url: "/ranking",
     bgColor: "var(--color-purple)",

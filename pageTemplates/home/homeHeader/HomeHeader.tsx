@@ -116,7 +116,6 @@ const Layout = styled.header`
   height: var(--header-h);
   font-size: 20px;
   background-color: white;
-
   padding-left: 20px;
   padding-right: 16px;
   display: flex;

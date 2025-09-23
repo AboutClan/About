@@ -1,8 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
 import { useParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
@@ -90,8 +90,8 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
     },
   });
 
-  const { data: feed } = useFeedsQuery("gather", data?.id, null, true, {
-    enabled: !!data?.id && data.status === "open",
+  const { data: feed } = useFeedsQuery(data?.category as "group" | "gather", data?.id, null, true, {
+    enabled: !!data?.id && !!data?.category && data.status === "open",
   });
 
   const isMax = data?.memberCnt.max !== 0 && data?.participants.length + 1 >= data?.memberCnt.max;
@@ -122,7 +122,7 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
     if (type === "cancel") cancel();
     if (type === "expire") setIsExpirationModal(true);
     if (type === "review") {
-      router.push(`/feed/writing/gather?id=${data.id}`);
+      router.push(`/feed/writing/${data.category}?id=${data.id}`);
     }
   };
 

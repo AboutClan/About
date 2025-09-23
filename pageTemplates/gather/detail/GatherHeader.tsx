@@ -1,6 +1,7 @@
+import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -78,6 +79,7 @@ function GatherHeader({ gatherData }: IGatherHeader) {
           gatherData?.status === "pending"
             ? {
                 text: "신청 인원 확인",
+                hasWaiting: !!gatherData?.waiting?.length,
                 icon: <MemberCheckIcon />,
                 func: () => {
                   setModalType("waitingMember");
@@ -148,7 +150,9 @@ function GatherHeader({ gatherData }: IGatherHeader) {
   return (
     <>
       <Header title="모임 정보" url="/gather">
-        <MenuButton menuArr={menuArr} />
+        <Box pos="relative">
+          <MenuButton menuArr={menuArr} isBlack={!!gatherData?.waiting?.length} />
+        </Box>
       </Header>
       {modalType === "waitingMember" && (
         <RightDrawer title="신청중인 인원" onClose={() => setModalType(null)}>

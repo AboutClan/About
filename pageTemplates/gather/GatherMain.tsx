@@ -79,7 +79,7 @@ export default function GatherMain() {
       if (loader.current) observer.unobserve(loader.current);
       observer.disconnect();
     };
-  }, [isLoading]); // ← isLoading을 의존성에 포함
+  }, [isLoading]); 
 
   return (
     <Box mb="50px">

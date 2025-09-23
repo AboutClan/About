@@ -1,3 +1,17 @@
+import { UserSimpleInfoProps } from "./userTypes/userInfoTypes";
+
+export interface StoreGiftProps {
+  winnerCnt: number;
+  winner: UserSimpleInfoProps[];
+  status: "pending" | "processed" | "end";
+  point: number;
+  name: string;
+  max: number;
+  image: string;
+  applicants: { user: UserSimpleInfoProps; cnt: number }[];
+  _id: string;
+}
+
 export interface IStoreGift {
   image: string;
   name: string;

@@ -9,20 +9,20 @@ import { Pagination, Scrollbar } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import { IModal } from "../../types/components/modalTypes";
-import { IStoreApplicant } from "../../types/models/store";
+import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
 import { ModalLayout } from "../Modals";
 
 SwiperCore.use([Scrollbar]);
 
 interface StoreMembersModalProps extends IModal {
-  members: IStoreApplicant[];
+  members: { user: UserSimpleInfoProps; cnt: number }[];
 }
 
 function StoreMembersModal({ setIsModal, members }: StoreMembersModalProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const chunkArray = (arr: IStoreApplicant[], size: number) => {
-    const result: IStoreApplicant[][] = [];
+  const chunkArray = (arr: { user: UserSimpleInfoProps; cnt: number }[], size: number) => {
+    const result: { user: UserSimpleInfoProps; cnt: number }[][] = [];
     for (let i = 0; i < arr.length; i += size) {
       result.push(arr.slice(i, i + size));
     }
@@ -30,7 +30,7 @@ function StoreMembersModal({ setIsModal, members }: StoreMembersModalProps) {
   };
 
   const arr = chunkArray(members, 5);
-
+  console.log(124, arr);
   return (
     <ModalLayout title="참여 현황" footerOptions={{}} setIsModal={setIsModal}>
       <StyledSwiper
@@ -68,9 +68,7 @@ function StoreMembersModal({ setIsModal, members }: StoreMembersModalProps) {
                   pb={2}
                   mb={2}
                 >
-                  <Box color="mint">
-                    {member.name[0]}*{member.name?.[2]}
-                  </Box>
+                  <Box color="mint">{member.user.name}</Box>
                   <Box color="gray.600">{member.cnt}회</Box>
                 </Flex>
               ))}

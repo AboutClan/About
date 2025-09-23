@@ -9,11 +9,13 @@ import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import InfoModalButton from "../../components/modalButtons/InfoModalButton";
 import TabNav from "../../components/molecules/navs/TabNav";
-import TextSlider from "../../components/organisms/TextSlider";
+import WinnerTextSlider from "../../components/molecules/WinnerTextSlider";
+import { usePrizeQuery } from "../../constants/prize/queries";
 import { useAllUserDataQuery, UserStudyDataProps } from "../../hooks/admin/quries";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import RankingMembers from "../../pageTemplates/ranking/RankingMembers";
+import { shuffleArray } from "../../utils/convertUtils/convertDatas";
 
 export type RankingTab = "월간 활동 랭킹" | "인기 랭킹" | "스터디 랭킹";
 
@@ -196,6 +198,16 @@ function Ranking() {
     setCommentText(getCommentText(myRanking, sortedUsers));
   }, [myRanking, allUserData, tab]);
 
+  const { data } = usePrizeQuery(0, "ranking");
+
+  const textArr = shuffleArray(data)
+    ?.filter((props) => props.description.split(" ").includes("gold"))
+    ?.slice(0, 5)
+    ?.map((props) => ({
+      name: props.winner.name,
+      gift: props.gift,
+    }));
+
   return (
     <>
       <Header title="랭킹">
@@ -281,46 +293,9 @@ function Ranking() {
             </Box>
           </Flex>
         </Flex>
-        <Flex
-          onClick={() => {
-            typeToast("inspection");
-          }}
-          mb={4}
-          px={4}
-          py={5}
-          h="64px"
-          mx={5}
-          bg="rgba(0, 194, 179, 0.1)"
-          borderRadius="8px"
-        >
-          <Box
-            fontWeight="medium"
-            w="max-content"
-            borderRadius="full"
-            color="white"
-            bg="mint"
-            fontSize="11px"
-            px="6px"
-            py="5px"
-            mr={2}
-          >
-            당첨자 기록
-          </Box>
-          <Flex overflow="hidden" flex={1}>
-            <TextSlider
-              textArr={[
-                { name: "이승주", gift: "배달의민족 10,000원권" },
-                { name: "강태원", gift: "올리브영 10,000원권" },
-                { name: "김현지", gift: "다이소 10,000원권" },
-                {
-                  name: "함정민",
-                  gift: "스타벅스 기프티콘",
-                },
-                { name: "정한준", gift: "베스킨라빈스 기프티콘" },
-              ]}
-            />
-          </Flex>
-        </Flex>
+        <Box mx={5} mb={4}>
+          <WinnerTextSlider textArr={textArr} />
+        </Box>
         <Box borderBottom="var(--border)" px={5}>
           <TabNav tabOptionsArr={tabOptionsArr} isBlack isMain />
         </Box>

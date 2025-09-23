@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Flex,
   Menu,
@@ -14,15 +15,17 @@ export interface MenuProps {
   icon?: React.ReactNode;
   text?: string;
   func?: () => void;
+  hasWaiting?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   kakaoOptions?: any;
 }
 
 interface MenuButtonProps {
   menuArr: MenuProps[];
+  isBlack?: boolean;
 }
 
-function MenuButton({ menuArr }: MenuButtonProps) {
+function MenuButton({ menuArr, isBlack }: MenuButtonProps) {
   const { shareToKakao } = useKakaoShare();
   return (
     <Menu>
@@ -37,7 +40,7 @@ function MenuButton({ menuArr }: MenuButtonProps) {
             variant="unstyled"
           >
             <Flex justify="center" align="center">
-              <SettingIcon />
+              <SettingIcon isBlack={isBlack} />
             </Flex>
           </ChakraMenuButton>
           <MenuList fontSize="14px" borderWidth="2px" borderColor="gray.200">
@@ -53,6 +56,12 @@ function MenuButton({ menuArr }: MenuButtonProps) {
                   : menu?.icon && { icon: <>{menu.icon}</> })}
               >
                 {menu?.text}
+                {menu?.hasWaiting && (
+                  <Box mt="auto" as="span" fontSize="10px" color="red" ml={2}>
+                    대기 인원 존재
+                  </Box>
+                )}
+
                 {menu?.kakaoOptions && "카카오톡으로 공유하기"}
               </MenuItem>
             ))}

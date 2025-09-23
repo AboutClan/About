@@ -16,6 +16,7 @@ function GroupParticipation({ data }: IGroupParticipation) {
   const isPlanned = data?.participants.length <= 1;
   const waitingCnt = data?.waiting.length;
   const userCardArr: IProfileCommentCard[] = data.participants
+    .filter((par) => par.user.uid !== "3224546232")
     .map((par) => {
       const roleText = GROUP_STUDY_ROLE[par.role];
 
@@ -53,7 +54,7 @@ function GroupParticipation({ data }: IGroupParticipation) {
           {!isPlanned ? "참여중인 인원" : "참여 대기 인원"}
         </Box>
         <Box as="span" color="mint">
-          {!isPlanned ? data?.participants.length : waitingCnt + 7}
+          {!isPlanned ? userCardArr?.length : waitingCnt + 7}
         </Box>
         <Box as="span" mx={1} color="gray.600">
           /

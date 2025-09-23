@@ -112,11 +112,11 @@ function StudyPageBenefitDrawer({ onClose }: StudyPageBenefitDrawerProps) {
             카공 스터디 참여
           </Box>
           <Box as="p" textAlign="end">
-            동네 친구와 함께하는 카공 스터디
+            동네 친구와 함께하는 카공 스터디!
             <br />
             매번{" "}
             <Box as="b" color="inherit">
-              200 ~ 500원
+              최대 500원
             </Box>{" "}
             적립
           </Box>
@@ -132,7 +132,7 @@ function StudyPageBenefitDrawer({ onClose }: StudyPageBenefitDrawerProps) {
             공부하고 랭킹을 올려보세요!
             <br />
             <Box as="b" color="inherit">
-              최대 30,000원
+              월 최대 30,000원
             </Box>{" "}
             지급
           </Box>
@@ -145,7 +145,7 @@ function StudyPageBenefitDrawer({ onClose }: StudyPageBenefitDrawerProps) {
             개인 스터디 인증
           </Box>
           <Box as="p" textAlign="end">
-            매일 공부하고 사진 인증해요
+            매일 공부하고 사진 인증해요!
             <br />
             매번{" "}
             <Box as="b" color="inherit">
