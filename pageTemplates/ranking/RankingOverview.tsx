@@ -33,7 +33,7 @@ function RankingOverview({ rank, value }: IRankingOverview) {
             <ProfileWrapper>
               <Avatar user={userInfo} size="xl1" isPriority={true} isLink={false} />
               <Box fontSize="12px" mt={2} fontWeight="semibold">
-                {userInfo?.uid === "2259633694" ? "비공개" : userInfo?.name}
+                {userInfo?.name}
               </Box>
             </ProfileWrapper>
           ) : isGuest ? (

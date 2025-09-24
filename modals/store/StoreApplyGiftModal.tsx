@@ -1,6 +1,5 @@
 import { Box } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/router";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
@@ -24,7 +23,6 @@ interface IStoreApplyGiftModal extends IModal {
 function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
   const { data: session } = useSession();
   const queryClient = useQueryClient();
-  const router = useRouter();
   const failToast = useFailToast();
   const toast = useToast();
   const errorToast = useErrorToast();
@@ -37,19 +35,18 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
   const { data: myPoint, isLoading } = usePointSystemQuery("point");
   const { mutate: applyGift, isLoading: isLoading2 } = useStoreMutation({
     onSuccess() {
-      // toast("success", "응모에 성공했어요! 당첨 발표일을 기다려주세요!");
-      // queryClient.invalidateQueries([STORE_GIFT]);
-      // router.push("/store");
+      toast("success", "응모 완료!");
+      queryClient.invalidateQueries({ queryKey: ["store"], exact: false });
+      setIsModal(false);
     },
     onError: errorToast,
   });
   const { mutate: getPoint } = usePointSystemMutation("point");
-  const { mutate } = useUserTicketMutation({
+  useUserTicketMutation({
     onSuccess() {
       getPoint({ value: -totalCost, message: `${giftInfo.name} 구매` });
       toast("success", "충전되었습니다.");
       queryClient.invalidateQueries([STORE_GIFT]);
-      router.push("/store");
     },
   });
 
@@ -72,8 +69,6 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
   );
 
   const onApply = () => {
-    console.log(1234, myPoint, totalCost);
-    return;
     if (isGuest) {
       failToast("guest");
       return;
@@ -82,8 +77,8 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
       failToast("free", "보유중인 포인트가 부족해요!");
       return;
     }
-    if (myPoint - 5000 < totalCost) {
-      failToast("free", "구매 후 보유 포인트가 8,000원 이상이어야 합니다.");
+    if (myPoint - totalCost < 8000) {
+      failToast("free", "구매 후 포인트가 8,000원 이상이어야 합니다.");
       return;
     }
 
@@ -111,7 +106,7 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
   };
 
   return (
-    <ModalLayout title={"상품 응모"} footerOptions={footerOptions} setIsModal={setIsModal}>
+    <ModalLayout title="상품 응모" footerOptions={footerOptions} setIsModal={setIsModal}>
       <Box minH="124.5px">
         {!isLoading ? (
           <>
@@ -127,7 +122,17 @@ function StoreApplyGiftModal({ setIsModal, giftInfo }: IStoreApplyGiftModal) {
               <span>필요 포인트</span>
               <NeedPoint overMax={totalCost > myPoint}>{totalCost} point</NeedPoint>
             </Item>
-
+            <Box
+              ml={-1.5}
+              my={2}
+              mb={4}
+              mr="auto"
+              fontSize="10px"
+              color="gray.500"
+              textAlign="center"
+            >
+              동아리 점수에 따라 최대 응모 가능 횟수 증가!
+            </Box>
             <CountNav>
               <CountNum value={value} setValue={setValue} maxValue={maxCnt} />
             </CountNav>

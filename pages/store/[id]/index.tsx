@@ -4,9 +4,9 @@ import { Badge, Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { useParams } from "next/navigation";
 import MenuButton from "../../../components/atoms/buttons/MenuButton";
 import Header from "../../../components/layouts/Header";
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
@@ -25,7 +25,7 @@ function StoreItem() {
   const [modalType, setModalType] = useState<"vote" | "winner" | "member">();
   const [drawerHeight, setDrawerHeight] = useState(0);
 
-  const { data: giftInfo, isLoading } = useStoreGiftQuery(id as string, { enabled: !!id });
+  const { data: giftInfo } = useStoreGiftQuery(id as string, { enabled: !!id });
 
   useEffect(() => {
     const calculateHeight = () => {

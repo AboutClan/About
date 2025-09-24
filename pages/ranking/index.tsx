@@ -199,14 +199,14 @@ function Ranking() {
   }, [myRanking, allUserData, tab]);
 
   const { data } = usePrizeQuery(0, "ranking");
-
   const textArr = shuffleArray(data)
-    ?.filter((props) => props.description.split(" ").includes("gold"))
+    ?.filter((props) => props.description.split(" ").includes("[골드]"))
     ?.slice(0, 5)
     ?.map((props) => ({
       name: props.winner.name,
       gift: props.gift,
     }));
+  console.log(24, data, textArr);
 
   return (
     <>

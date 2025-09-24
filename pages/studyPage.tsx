@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import IconRowBlock from "../components/atoms/blocks/IconRowBlock";
@@ -70,7 +70,7 @@ export default function StudyPage() {
           <Slide isNoPadding>
             <Box h={5} />
             <Box mx={5} mb={2} fontSize="16px" fontWeight={600}>
-              ⬇️ '찐' 카공러들이 선별한 카공 맛집 지도! ⬇️
+              ⬇️ &apos;찐&apos; 카공러들이 선별한 카공 맛집 지도! ⬇️
             </Box>
             <StudyPageMap />
             <Box mx={5}>

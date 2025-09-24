@@ -2,8 +2,8 @@ import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import { Badge, Box, Flex, ListItem, Text, UnorderedList } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -15,8 +15,7 @@ import { GatherThumbnailCard } from "../../../components/molecules/cards/GatherT
 import InfoBoxCol from "../../../components/molecules/InfoBoxCol";
 import TabNav from "../../../components/molecules/navs/TabNav";
 import { useToast } from "../../../hooks/custom/CustomToast";
-import { useFeedsQuery } from "../../../hooks/feed/queries";
-import { useGatherGroupQuery } from "../../../hooks/gather/queries";
+import { useGatherGroupQuery, useGroupFeedsQuery } from "../../../hooks/gather/queries";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
 import GroupBottomNav from "../../../pageTemplates/group/detail/GroupBottomNav";
 import GroupComments from "../../../pageTemplates/group/detail/GroupComment";
@@ -29,7 +28,7 @@ import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 import { ThunderIcon } from "../../gather";
 
-export type GroupSectionCategory = "정 보" | "피 드";
+export type GroupSectionCategory = "정 보" | "모 임" | "피 드";
 
 function GroupDetail() {
   const { data: session } = useSession();
@@ -45,11 +44,13 @@ function GroupDetail() {
   const { data: group } = useGroupIdQuery(id, { enabled: !!id });
 
   const { data: gathers, isLoading } = useGatherGroupQuery(id, {
-    enabled: tab === "피 드" && !!id,
+    enabled: tab === "모 임" && !!id,
   });
 
-  const { data: a } = useFeedsQuery("group", 150);
-  console.log(24, gathers, a);
+  const { data: gatherFeeds } = useGroupFeedsQuery(id, {
+    enabled: tab === "피 드" && !!id,
+  });
+  console.log(54, gatherFeeds);
 
   useEffect(() => {
     if (session === undefined) return;
@@ -141,6 +142,7 @@ function GroupDetail() {
               <TabNav
                 tabOptionsArr={[
                   { text: "정 보", func: () => setTab("정 보") },
+                  { text: "모 임", func: () => setTab("모 임") },
                   { text: "피 드", func: () => setTab("피 드") },
                 ]}
                 isFullSize

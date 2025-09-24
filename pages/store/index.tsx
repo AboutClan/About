@@ -1,8 +1,8 @@
 import { Box, Button, Flex, Grid } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
@@ -21,10 +21,6 @@ import { shuffleArray } from "../../utils/convertUtils/convertDatas";
 export interface IGiftEntry extends IStoreGift {
   users: IStoreApplicant[];
   totalCnt: number;
-}
-interface IGiftEntries {
-  active: IGiftEntry[];
-  inactive: IGiftEntry[];
 }
 
 function StorePage() {
@@ -116,10 +112,10 @@ function StorePage() {
     },
   ];
 
-  const { data: prizeData } = usePrizeQuery(0, "ranking");
-
+  const { data: prizeData } = usePrizeQuery(0, "store");
+  console.log(52, prizeData);
   const textArr = shuffleArray(prizeData)
-    ?.filter((props) => props.description.split(" ").includes("gold"))
+    ?.filter((props) => props.description.split(" "))
     ?.slice(0, 5)
     ?.map((props) => ({
       name: props.winner.name,

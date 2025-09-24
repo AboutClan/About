@@ -100,6 +100,12 @@ const HOME_RECOMMENDATION_ICON_ARR: HomeRecommendationItemProps[] = [
     bgColor: "var(--color-gray)",
   },
   {
+    iconImage: RankingIconImage,
+    title: "랭킹",
+    url: "/ranking",
+    bgColor: "var(--color-purple)",
+  },
+  {
     iconImage: StoreIconImage,
     title: "스토어",
     url: "/store",
@@ -112,12 +118,7 @@ const HOME_RECOMMENDATION_ICON_ARR: HomeRecommendationItemProps[] = [
     url: "/calendar",
     bgColor: "var(--color-orange)",
   },
-  {
-    iconImage: RankingIconImage,
-    title: "랭킹",
-    url: "/ranking",
-    bgColor: "var(--color-purple)",
-  },
+
   {
     iconImage:
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%95%84%EC%9D%B4%EC%BD%98/%EB%94%94%EC%BD%942.png",

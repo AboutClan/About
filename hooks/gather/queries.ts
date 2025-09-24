@@ -36,6 +36,18 @@ export const useGatherGroupQuery = (id: string, options?: QueryOptions<IGather[]
     },
     options,
   );
+export const useGroupFeedsQuery = (id: string, options?: QueryOptions<IGather[]>) =>
+  useQuery<IGather[], AxiosError>(
+    [GATHER_CONTENT, "group", "feed", id],
+    async () => {
+      console.log(777);
+      const res = await axios.get<IGather[]>(`${SERVER_URI}/feed/groupStudy`, {
+        params: { groupId: id },
+      });
+      return res.data;
+    },
+    options,
+  );
 
 export const useGatherMyStatusQuery = (
   cursor?: number,

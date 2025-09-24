@@ -2,7 +2,7 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 
 import Header from "../../../components/layouts/Header";
 import Slide from "../../../components/layouts/PageSlide";
@@ -15,10 +15,7 @@ function UserLogSection() {
 
   const { data: logsData } = usePointSystemLogQuery("point");
 
-  const [filter, setFilter] = useState();
-  console.log(filter);
   let stepDate: string;
-
   let stepValue: number = userInfo?.point;
 
   return (
