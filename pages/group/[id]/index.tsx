@@ -14,9 +14,11 @@ import BlurredLink from "../../../components/molecules/BlurredLink";
 import { GatherThumbnailCard } from "../../../components/molecules/cards/GatherThumbnailCard";
 import InfoBoxCol from "../../../components/molecules/InfoBoxCol";
 import TabNav from "../../../components/molecules/navs/TabNav";
+import FeedLayout from "../../../components/organisms/FeedLayout";
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useGatherGroupQuery, useGroupFeedsQuery } from "../../../hooks/gather/queries";
 import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
+import { convertFeedToLayout } from "../../../libs/convertFeedToLayout";
 import GroupBottomNav from "../../../pageTemplates/group/detail/GroupBottomNav";
 import GroupComments from "../../../pageTemplates/group/detail/GroupComment";
 import GroupCover from "../../../pageTemplates/group/detail/GroupCover";
@@ -248,7 +250,7 @@ function GroupDetail() {
                   <GroupComments comments={group.comments} hasAutority={!!findMyInfo} />
                 )}
               </Flex>
-            ) : (
+            ) : tab === "모 임" ? (
               <Box pt={3} mx={5} mb={10}>
                 {gatherData?.length ? (
                   gatherData?.map((cardData, idx) => (
@@ -264,6 +266,16 @@ function GroupDetail() {
                   <Box color="gray.600" mb={40} as="p" fontSize="14px" mt={20} textAlign="center">
                     아직 업로드 된 피드가 없습니다.
                   </Box>
+                )}
+              </Box>
+            ) : (
+              <Box>
+                {gatherFeeds?.length ? (
+                  gatherFeeds?.map((feed) => (
+                    <FeedLayout key={feed.id} {...convertFeedToLayout(feed)} isSmall />
+                  ))
+                ) : (
+                  <></>
                 )}
               </Box>
             )}

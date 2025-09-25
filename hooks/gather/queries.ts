@@ -5,6 +5,7 @@ import { GATHER_CONTENT } from "../../constants/keys/queryKeys";
 import { SERVER_URI } from "../../constants/system";
 import { IGatherSummary } from "../../pages/review";
 import { QueryOptions } from "../../types/hooks/reactTypes";
+import { FeedProps } from "../../types/models/feed";
 import { GatherRequestProps, IGather } from "../../types/models/gatherTypes/gatherTypes";
 
 export const useGatherQuery = (
@@ -36,12 +37,11 @@ export const useGatherGroupQuery = (id: string, options?: QueryOptions<IGather[]
     },
     options,
   );
-export const useGroupFeedsQuery = (id: string, options?: QueryOptions<IGather[]>) =>
-  useQuery<IGather[], AxiosError>(
+export const useGroupFeedsQuery = (id: string, options?: QueryOptions<FeedProps[]>) =>
+  useQuery<FeedProps[], AxiosError>(
     [GATHER_CONTENT, "group", "feed", id],
     async () => {
-      console.log(777);
-      const res = await axios.get<IGather[]>(`${SERVER_URI}/feed/groupStudy`, {
+      const res = await axios.get<FeedProps[]>(`${SERVER_URI}/feed/groupStudy`, {
         params: { groupId: id },
       });
       return res.data;

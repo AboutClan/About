@@ -22,6 +22,7 @@ export interface FeedLayoutProps {
   comments: FeedComment[];
   isAnonymous: boolean;
   type: "gather" | "group";
+  isSmall?: boolean;
 }
 
 function FeedLayout({
@@ -36,6 +37,7 @@ function FeedLayout({
   id,
   user,
   refetch,
+  isSmall = false,
 }: FeedLayoutProps) {
   return (
     <Flex direction="column" border="var(--border)" pb={2}>
@@ -44,11 +46,12 @@ function FeedLayout({
         <ImageSlider imageContainer={images} type="review" />
       </AspectRatio>
       <Box px="16px">
-        {summary ? (
+        {summary && !isSmall ? (
           <Box pt="16px" pb="0">
             <SummaryBlock url={summary.url} title={summary.title} text={summary.text} />
           </Box>
         ) : null}
+
         <Box pt="16px" pb="12px">
           {content && <ContentSummary text={content} />}
         </Box>
@@ -57,7 +60,7 @@ function FeedLayout({
         comments={comments}
         feedId={id}
         likeUsers={likeUsers}
-        likeCnt={likeCnt}
+        likeCnt={likeCnt || likeUsers?.length || 0}
         refetch={refetch}
       />
     </Flex>
