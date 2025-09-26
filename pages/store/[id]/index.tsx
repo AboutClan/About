@@ -108,7 +108,7 @@ function StoreItem() {
                 입니다.
               </Box>
               <Box mb={4} fontWeight="extrabold" fontSize="16px" lineHeight="24px" color="mint">
-                {giftInfo.point * 10} Point
+                {giftInfo.point} Point
               </Box>
               <Flex
                 w="full"
@@ -149,10 +149,10 @@ function StoreItem() {
               >
                 <Box fontWeight="medium">안내사항</Box>
               </Flex>
-              <Box color="gray.600" lineHeight="16px" fontSize="12px">
-                상품은 일주일 이내 개인 카톡으로 발송됩니다.
-                <br />
-                응모할 수 있는 최대 횟수는 개인 점수에 따라 달라집니다.
+              <Box as="ul" color="gray.600" lineHeight="16px" fontSize="12px">
+                <li>응모할 수 있는 최대 횟수는 개인 점수에 따라 달라집니다.</li>
+                <li>상품은 일주일 이내 개인 카톡으로 발송됩니다.</li>
+                <li>당첨 발표일 기준으로 활동 멤버인 경우에만 지급됩니다.</li>
               </Box>
             </Flex>
           )}
