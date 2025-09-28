@@ -6,10 +6,7 @@ import styled from "styled-components";
 
 import { USER_INFO } from "../../../constants/keys/queryKeys";
 import { useErrorToast, useFailToast, useTypeToast } from "../../../hooks/custom/CustomToast";
-import {
-  useUserInfoFieldMutation,
-  useUserUpdateProfileImageMutation,
-} from "../../../hooks/user/mutations";
+import { useUserInfoFieldMutation } from "../../../hooks/user/mutations";
 import { IModal } from "../../../types/components/modalTypes";
 import { ModalLayout } from "../../Modals";
 import RequestChagneProfileImageModalBadge from "./RequestChagneProfileImageModalBadge";
@@ -27,8 +24,6 @@ function RequestChangeProfileImageModal({ setIsModal }: IModal) {
 
   const [pageNum, setPageNum] = useState(0);
 
-  const { mutate: updateProfile } = useUserUpdateProfileImageMutation();
-
   const { mutate: setUserAvatar } = useUserInfoFieldMutation("avatar", {
     onSuccess() {
       typeToast("change");
@@ -43,7 +38,6 @@ function RequestChangeProfileImageModal({ setIsModal }: IModal) {
       failToast("guest");
       return;
     }
-    updateProfile();
     setUserAvatar({ type: null, bg: null });
   };
 
@@ -66,8 +60,7 @@ function RequestChangeProfileImageModal({ setIsModal }: IModal) {
             </Button>
           </Container>
         </ModalLayout>
-      ) : pageNum === 1 ? null : // <RequestChangeProfileImageModalAvatar setIsModal={setIsModal} />
-      pageNum === 2 ? (
+      ) : pageNum === 1 ? null : pageNum === 2 ? ( // <RequestChangeProfileImageModalAvatar setIsModal={setIsModal} />
         <SpecialAvatarModal setIsModal={setIsModal} />
       ) : (
         <RequestChagneProfileImageModalBadge setIsModal={setIsModal} />
