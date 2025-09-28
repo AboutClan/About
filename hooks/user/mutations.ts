@@ -152,11 +152,6 @@ export const usePointSystemMutation = (field: "point", options?: MutationOptions
     });
   }, options);
 
-export const useUserUpdateProfileImageMutation = (options?: MutationOptions<void>) =>
-  useMutation<void, AxiosError, void>(async () => {
-    await axios.patch("/api/user/profile");
-  }, options);
-
 export const useUserFriendMutation = (
   method: "patch" | "delete",
   options?: MutationOptions<string>,

@@ -13,33 +13,42 @@ function DetailInfo({ user, groups }: { user: IUser; groups: string[] }) {
   const isPrivate =
     user?.isPrivate && !user?.friend.includes(session?.user.uid) && user?.uid !== session?.user.uid;
 
-  const itemMapping: { category: string; text?: string; texts?: string[] }[] = [
-    {
-      category: "나이",
-      text: "만" + " " + birthToAge(user?.birth) + "세",
-    },
-    {
-      category: "성별",
-      text: user?.gender,
-    },
-    {
-      category: "MBTI",
-      text: user?.mbti,
-    },
-    {
-      category: "전공",
-      text: user?.majors?.[0]?.detail,
-    },
-    {
-      category: "소모임",
-      // text:
-      //   (groups?.[0] || "--") +
-      //   (groups?.[1] ? `, ${groups[1]}` : "") +
-      //   (groups?.[2] ? `, ${groups[2]}` : "") +
-      //   (groups?.[3] ? `...` : ""),
-      texts: groups,
-    },
-  ];
+  const itemMapping: { category: string; text?: string; texts?: string[] }[] = !user
+    ? []
+    : [
+        {
+          category: "성별",
+          text: user?.gender,
+        },
+        {
+          category: "나이",
+          text: "만" + " " + birthToAge(user?.birth) + "세",
+        },
+        {
+          category: "MBTI",
+          text: user?.mbti,
+        },
+        {
+          category: "전공",
+          text: user?.majors?.[0]?.detail,
+        },
+        {
+          category: "활동지",
+          text:
+            user?.locationDetail?.address?.split(" ")[0] +
+            " " +
+            user?.locationDetail?.address?.split(" ")[1],
+        },
+        {
+          category: "소모임",
+          // text:
+          //   (groups?.[0] || "--") +
+          //   (groups?.[1] ? `, ${groups[1]}` : "") +
+          //   (groups?.[2] ? `, ${groups[2]}` : "") +
+          //   (groups?.[3] ? `...` : ""),
+          texts: groups,
+        },
+      ];
 
   return (
     <BlurredPart

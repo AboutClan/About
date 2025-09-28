@@ -1,6 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
@@ -9,11 +9,8 @@ import Avatar from "../../components/atoms/Avatar";
 import UserBadge from "../../components/atoms/badges/UserBadge";
 import BottomDrawerLg from "../../components/organisms/drawer/BottomDrawerLg";
 import { USER_INFO } from "../../constants/keys/queryKeys";
-import { useTypeToast } from "../../hooks/custom/CustomToast";
-import {
-  useUserInfoFieldMutation,
-  useUserUpdateProfileImageMutation,
-} from "../../hooks/user/mutations";
+import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
+import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import RequestChagneProfileImageModalBadge from "../../modals/userRequest/RequestChangeProfileImageModal/RequestChagneProfileImageModalBadge";
 import RequestChangeProfileImageModalAvatar from "../../modals/userRequest/RequestChangeProfileImageModal/RequestChangeProfileImageModalAvatar";
 import SpecialAvatarModal from "../../modals/userRequest/RequestChangeProfileImageModal/SpecialAvatarModal";
@@ -107,14 +104,13 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
 interface ProfileCameraProps extends IModal {}
 
 export function ProfileCamera({ setIsModal }: ProfileCameraProps) {
+  const toast = useToast();
   const { data: session } = useSession();
-
-  // const { data: userInfo } = useUserInfoQuery();
 
   const typeToast = useTypeToast();
   const [modalType, setModalType] = useState<"dog" | "cat" | "badge" | "bg" | "special">();
   const queryClient = useQueryClient();
-  const { mutate: updateProfile } = useUserUpdateProfileImageMutation();
+
   const { mutate: setUserAvatar } = useUserInfoFieldMutation("avatar", {
     onSuccess() {
       queryClient.invalidateQueries([USER_INFO]);
@@ -122,15 +118,15 @@ export function ProfileCamera({ setIsModal }: ProfileCameraProps) {
     },
   });
 
-  const onClickKakao = () => {
-    typeToast("inspection");
-    return;
+  const onClickKakao = async () => {
     if (session?.user?.role === "guest") {
       typeToast("guest");
       return;
     }
-    updateProfile();
-    setUserAvatar({ type: null, bg: null });
+
+    await setUserAvatar({ type: null, bg: null });
+    toast("info", "프로필 갱신을 위해 다시 로그인해 주세요!");
+    await signOut({ callbackUrl: `/login` });
   };
 
   return (

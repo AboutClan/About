@@ -94,7 +94,7 @@ export const authOptions: NextAuthOptions = {
       profile: (profile: KakaoProfile) => {
         const profileData = {
           ...profile,
-          name: profile.kakao_account.name|| profile.properties.nickname,
+          name: profile.kakao_account.name || profile.properties.nickname,
           role: "newUser",
           profileImage: profile.properties.thumbnail_image || profile.properties.profile_image,
           uid: profile.id.toString(),
@@ -132,7 +132,7 @@ export const authOptions: NextAuthOptions = {
   },
 
   callbacks: {
-    async signIn({ account, user }) {
+    async signIn({ account, user, profile }) {
       try {
         if (["guest", "credentials"].includes(account.provider)) {
           return true;
@@ -144,7 +144,14 @@ export const authOptions: NextAuthOptions = {
         if (account.provider === "kakao" || account.provider === "apple") {
           const findUser = await User.findOneAndUpdate(
             { uid: user.uid },
-            { $set: { profileImage: user.profileImage || DEFAULT_PROFILE_IMAGE } },
+            {
+              $set: {
+                profileImage:
+                  (profile as KakaoProfile).properties.thumbnail_image ||
+                  user.profileImage ||
+                  DEFAULT_PROFILE_IMAGE,
+              },
+            },
           );
 
           if (findUser) {
