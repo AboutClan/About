@@ -1,15 +1,12 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useEffect, useRef, useState } from "react";
 
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
-import Select from "../../components/atoms/Select";
-import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
 import {
   GatherThumbnailCard,
   GatherThumbnailCardProps,
 } from "../../components/molecules/cards/GatherThumbnailCard";
-import ButtonGroups from "../../components/molecules/groups/ButtonGroups";
 import { useGatherQuery } from "../../hooks/gather/queries";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
 import { setGatherDataToCardCol } from "../home/HomeGatherCol";
@@ -79,30 +76,10 @@ export default function GatherMain() {
       if (loader.current) observer.unobserve(loader.current);
       observer.disconnect();
     };
-  }, [isLoading]); 
+  }, [isLoading]);
 
   return (
     <Box mb="50px">
-      <Flex py={1} mb={2} justify="space-between" align="center">
-        <ButtonGroups
-          buttonOptionsArr={(["취미", "스터디"] as ("취미" | "스터디")[]).map((prop) => ({
-            icon: <CheckCircleIcon color={category === prop ? "black" : "gray"} size="sm" isFill />,
-            text: prop,
-            func: () => setCategory(category === prop ? null : prop),
-            color: "black",
-          }))}
-          currentValue={category}
-          isEllipse
-          size="md"
-        />
-        <Select
-          size="sm"
-          isThick
-          defaultValue={sortBy}
-          options={["기본순", "최신 개설 순", "일정 빠른 순"] as SortedType[]}
-          setValue={setSortBy}
-        />
-      </Flex>
       <Box position="relative">
         <Box minH="1000px">
           {cardDataArr?.length ? (

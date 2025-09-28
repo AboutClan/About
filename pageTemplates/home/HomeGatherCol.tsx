@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
 import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
-import SectionFooterButton from "../../components/atoms/SectionFooterButton";
 import {
   GatherThumbnailCard,
   GatherThumbnailCardProps,
@@ -35,10 +34,10 @@ export default function HomeGatherCol({ gathers, isPriority }: HomeGatherColProp
   }, [gathers]);
 
   return (
-    <Box my={4}>
+    <Box my={0} mt={1}>
       {cardDataArr?.length ? (
         <Flex direction="column">
-          {cardDataArr.map((cardData, idx) => (
+          {cardDataArr.slice(1, 3).map((cardData, idx) => (
             <GatherThumbnailCard key={idx} {...cardData} />
           ))}
         </Flex>
@@ -49,7 +48,6 @@ export default function HomeGatherCol({ gathers, isPriority }: HomeGatherColProp
           ))}
         </Flex>
       )}{" "}
-      <SectionFooterButton url="/gather" />
     </Box>
   );
 }
@@ -60,7 +58,6 @@ export const setGatherDataToCardCol = (
   isPriority: boolean,
   func?: () => void,
 ): GatherThumbnailCardProps[] => {
- 
   const cardCol: GatherThumbnailCardProps[] = gathers.map((gather, idx) => {
     if (!imageCache[gather.id]) {
       imageCache[gather.id] = gather.image || getRandomImage(GATHER_MAIN_IMAGE_ARR["공통"]);

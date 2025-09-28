@@ -1,5 +1,4 @@
-import { AnimatePresence, motion } from "framer-motion";
-
+import { Box } from "@chakra-ui/react";
 import SlideSectionCol from "../../components/molecules/SlideSectionCol";
 import { useWindowWidth } from "../../hooks/custom/CustomHooks";
 import { useGatherQuery } from "../../hooks/gather/queries";
@@ -16,26 +15,6 @@ function HomeGatherSection() {
   console.log(gathers);
   return (
     <>
-      <AnimatePresence initial={false}>
-        <motion.div
-          drag="x"
-          dragConstraints={{ left: -width, right: 0 }}
-          dragElastic={0.3}
-          style={{
-            marginLeft: "20px",
-            display: "flex",
-            width: "100%",
-            gap: "12px",
-          }}
-        >
-          <SlideSectionCol title="About 번개 모임" subTitle="친구들과의 즐거운 만남">
-            <HomeGatherCol gathers={firstData?.slice(0, 3)} isPriority />
-          </SlideSectionCol>
-          <SlideSectionCol title="About 번개 모임" subTitle="같은 관심사를 나누는 만남의 장">
-            <HomeGatherCol gathers={firstData?.slice(3, 6)} isPriority={false} />
-          </SlideSectionCol>
-        </motion.div>
-      </AnimatePresence>
       {/* <AnimatePresence initial={false}>
         <motion.div
           drag="x"
@@ -56,26 +35,12 @@ function HomeGatherSection() {
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence> */}
-      <AnimatePresence initial={false}>
-        <motion.div
-          drag="x"
-          dragConstraints={{ left: -width, right: 0 }}
-          dragElastic={0.3}
-          style={{
-            marginLeft: "20px",
-            display: "flex",
-            width: "100%",
-            gap: "12px",
-          }}
-        >
-          <SlideSectionCol title="About 인기 최고 모임" subTitle="최근 가장 핫한 모임이에요!">
-            <HomeGatherCol gathers={secondData?.slice(0, 3)} isPriority={false} />
-          </SlideSectionCol>
-          <SlideSectionCol title="About 인기 최고 모임" subTitle="요즘 제일 주목받는 모임이에요!">
-            <HomeGatherCol gathers={secondData?.slice(3, 6)} isPriority={false} />
-          </SlideSectionCol>
-        </motion.div>
-      </AnimatePresence>
+
+      <Box mx={5}>
+        <SlideSectionCol title="번개 모임" subTitle="최근 가장 핫한 모임이에요!">
+          <HomeGatherCol gathers={secondData?.slice(0, 3)} isPriority={false} />
+        </SlideSectionCol>
+      </Box>
     </>
   );
 }

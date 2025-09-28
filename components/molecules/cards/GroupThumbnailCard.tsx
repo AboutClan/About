@@ -48,6 +48,7 @@ export function GroupThumbnailCard({
   isBig = true,
   isFree,
 }: GroupThumbnailCardProps) {
+  
   const statusToBadgeProps: Record<GroupStatus, { text: string; colorScheme: string }> = {
     imminent: { text: `마감까지 ${maxCnt - participants.length}명`, colorScheme: "red" },
     full: { text: "인원마감", colorScheme: "orange" },
@@ -103,23 +104,23 @@ export function GroupThumbnailCard({
             />
             <Flex align="center" color="var(--gray-500)">
               <UserIcon size="sm" />
-              <Flex ml={1} fontSize="10px" align="center" fontWeight={500}>
+              <Flex ml={1} fontSize="12px" align="center" fontWeight={500}>
                 <Box
                   fontWeight={600}
                   as="span"
                   color={
                     maxCnt !== 0 && participants.length >= maxCnt
                       ? "var(--color-red)"
-                      : "var(--color-gray)"
+                      : "var(--gray-600)"
                   }
                 >
-                  {participants.length}
+                  {participants.length + 9}
                 </Box>
-                <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
+                <Box as="span" color="var(--gray-500)" mx="2px" fontWeight={300}>
                   /
                 </Box>
-                <Box as="span" color="var(--gray-500)" fontWeight={500}>
-                  {maxCnt === 0 ? <InfinityIcon /> : maxCnt}
+                <Box as="span" color="var(--gray-600)" fontWeight={500}>
+                  {maxCnt === 0 ? <InfinityIcon /> : maxCnt + 10}
                 </Box>
               </Flex>
             </Flex>
@@ -171,9 +172,9 @@ const CardLink = styled(Link)`
   }
 
   &:not(:last-of-type) {
-    padding-bottom: 12px;
+    padding-bottom: 8px;
     border-bottom: var(--border);
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
 `;
 
@@ -190,5 +191,5 @@ const Subtitle = styled(SingleLineText)`
   font-size: 12px;
   font-weight: regular;
   line-height: 18px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 `;

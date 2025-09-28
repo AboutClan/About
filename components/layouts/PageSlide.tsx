@@ -46,8 +46,8 @@ function Slide({ children, isFixed, posZero, isNoPadding }: IPageLayout) {
       {deviceType === "iPhone" ? (
         <div
           style={{
-            paddingLeft: !isNoPadding && !isFixed ? "20px" : 0,
-            paddingRight: !isNoPadding && !isFixed ? "20px" : 0,
+            paddingLeft: !isNoPadding && !isFixed ? "16px" : 0,
+            paddingRight: !isNoPadding && !isFixed ? "16px" : 0,
             position: isFixed ? "fixed" : "static",
             zIndex: isFixed ? 100 : 0,
             width: "100%",
@@ -63,8 +63,8 @@ function Slide({ children, isFixed, posZero, isNoPadding }: IPageLayout) {
         <motion.div
           {...animationProps}
           style={{
-            paddingLeft: !isNoPadding && !isFixed ? "20px" : 0,
-            paddingRight: !isNoPadding && !isFixed ? "20px" : 0,
+            paddingLeft: !isNoPadding && !isFixed ? "16px" : 0,
+            paddingRight: !isNoPadding && !isFixed ? "16px" : 0,
             position: isFixed ? "fixed" : "static",
             zIndex: isFixed ? 100 : 0,
             width: "100%",

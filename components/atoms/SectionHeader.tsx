@@ -10,11 +10,6 @@ interface SectionHeaderProps {
 function SectionHeader({ title, subTitle, size = "md", children }: SectionHeaderProps) {
   return (
     <Box>
-      {subTitle && (
-        <Box fontSize="12px" mb={1} color="var(--gray-400)" lineHeight="16px">
-          {subTitle}
-        </Box>
-      )}
       <Flex align="center">
         <Box
           mr="auto"

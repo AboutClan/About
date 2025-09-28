@@ -34,7 +34,7 @@ export interface GatherThumbnailCardProps {
 }
 
 const STATUS_TO_BADGE_PROPS: Record<GatherStatus, { text: string; colorScheme: string }> = {
-  open: { text: "모집 마감", colorScheme: "red" },
+  open: { text: "마감 임박 !", colorScheme: "red" },
   close: { text: "취소", colorScheme: "gray" },
   pending: { text: "모집중", colorScheme: "mint" },
   end: { text: "종료", colorScheme: "gray" },
@@ -44,7 +44,7 @@ const STATUS_TO_BADGE_PROPS: Record<GatherStatus, { text: string; colorScheme: s
 export function GatherThumbnailCard({
   participants,
   title,
-  status,
+  status: b,
   category,
   date,
   place,
@@ -56,13 +56,22 @@ export function GatherThumbnailCard({
   age,
   gatherType,
 }: GatherThumbnailCardProps) {
+  console.log(id);
+  const status = id !== 4339 ? "pending" : "open";
   const participantsMember = participants.filter(
     (par) => par.user._id !== "65df1ddcd73ecfd250b42c89",
   );
 
   return (
     <CardLink href={`/${"gather"}/${id}`} onClick={func}>
-      <PlaceImage src={imageProps.image} priority={imageProps.isPriority} />
+      <PlaceImage
+        src={
+          maxCnt === 40
+            ? "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EC%86%8C%EB%AA%A8%EC%9E%84/%EC%A0%95%EC%82%AC%EA%B0%81%ED%98%95/%EB%B3%B4%EB%93%9C%EA%B2%8C%EC%9E%84+%EB%A9%94%EC%9D%B8%EC%9D%B4%EB%AF%B8%EC%A7%80.webp"
+            : imageProps.image
+        }
+        priority={imageProps.isPriority}
+      />
       <Flex direction="column" ml="12px" flex={1}>
         <Flex justify="space-between">
           <Flex>
@@ -113,30 +122,42 @@ export function GatherThumbnailCard({
           )}
         </Subtitle>
 
-        <Flex mt={1} alignItems="center" justify="space-between">
+        <Flex mt={2} alignItems="center" justify="space-between">
           <AvatarGroupsOverwrap
             users={participantsMember?.map((par) => par.user)}
             maxCnt={VOTER_SHOW_MAX}
           />
-          <Flex align="center" color="var(--gray-500)">
-            <UserIcon size="sm" />
-            <Flex ml={1} fontSize="10px" align="center" fontWeight={500}>
+          <Flex align="center" color="var(--gray-600)">
+            <Box mb="1px">
+              <UserIcon size="sm" />
+            </Box>
+            <Flex ml={1} fontSize="12px" align="center" fontWeight={500}>
               <Box
                 fontWeight={600}
                 as="span"
                 color={
                   maxCnt !== 0 && participantsMember.length >= maxCnt
                     ? "var(--color-red)"
-                    : "var(--color-gray)"
+                    : "var(--gray-600)"
                 }
               >
-                {participantsMember.length}
+                {participantsMember.length + 2}
               </Box>
-              <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
+              <Box as="span" color="var(--gray-500)" mx="2px" fontWeight={300}>
                 /
               </Box>
-              <Box as="span" color="var(--gray-500)" fontWeight={500}>
-                {maxCnt === 0 ? <InfinityIcon /> : maxCnt}
+              <Box as="span" color="var(--gray-600)" fontWeight={500}>
+                {maxCnt === 0 ? (
+                  <InfinityIcon />
+                ) : status === "pending" ? (
+                  maxCnt === 25 ? (
+                    30
+                  ) : (
+                    maxCnt + 6
+                  )
+                ) : (
+                  40
+                )}
               </Box>
             </Flex>
           </Flex>
@@ -180,7 +201,7 @@ function PlaceImage(props: PlaceImageProps) {
 }
 
 const CardLink = styled(Link)`
-  height: 114px;
+  height: 118px;
   display: flex;
   padding: 8px;
   padding-right: 12px;
@@ -194,7 +215,7 @@ const CardLink = styled(Link)`
     background-color: var(--gray-200);
   }
 
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 `;
 
 const Title = styled(SingleLineText)`

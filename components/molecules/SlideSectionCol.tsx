@@ -14,7 +14,7 @@ function SlideSectionCol({ title, subTitle, children }: SlideSectionColProps) {
   const width = windowWidth - 60;
 
   return (
-    <Flex flex={`0 0 ${width}px`} direction="column" mt={5}>
+    <Flex flex={`0 0 ${width}px`} direction="column" mt={1}>
       <SectionHeader title={title} subTitle={subTitle} />
       {children}
     </Flex>

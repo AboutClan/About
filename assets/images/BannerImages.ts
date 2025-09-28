@@ -9,25 +9,6 @@ export const MAIN_BANNER_IMAGE: BannerProps[] = [
       "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/main.jpg",
     category: "main",
   },
-  {
-    image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/study.jpg",
-    category: "study",
-  },
-  {
-    image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/group.png",
-    category: "groupAdmin",
-  },
-  {
-    image: "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/faq.jpg",
-    category: "faq",
-  },
-  {
-    image:
-      "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/friend.jpg",
-    category: "friendInvite",
-  },
 ];
 
 // export const GATHER_BANNER_IMAGE: BannerProps[] = [

@@ -22,7 +22,7 @@ type Size = "xxs1" | "xs1" | "sm1" | "md1" | "lg1" | "xl1" | "xl2" | "xxl1";
 //xxl:120
 
 const SIZE_MAPPING: Record<Size, number> = {
-  xxs1: 16,
+  xxs1: 24,
   xs1: 32,
   sm1: 40,
   md1: 48,
@@ -114,14 +114,15 @@ function AvatarComponent({
               />
             ) : (
               <Flex
-                fontSize="6px"
+                fontSize="9px"
+                pt="1px"
                 color="var(--gray-500)"
                 fontWeight={600}
                 justify="center"
                 alignItems="center"
                 h="100%"
               >
-                <Flex justify="center" align="center" h={2} textAlign="center">
+                <Flex justify="center" align="center" textAlign="center">
                   +{shadowAvatar}
                 </Flex>
               </Flex>

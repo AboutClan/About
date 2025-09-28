@@ -35,7 +35,7 @@ export default function HomeGroupCol({ threeGroups, isStudy, type }: HomeGroupCo
       : "filter=expected";
 
   return (
-    <Box my={4}>
+    <Box my={2}>
       {threeGroups?.length ? (
         <Flex direction="column">
           {threeGroups

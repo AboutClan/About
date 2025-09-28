@@ -1,13 +1,12 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
 
 import axios from "axios";
+import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import BottomNav from "../../components/BottomNav";
 import GuestBottomNav from "../../components/layouts/atoms/GuestBottomNav";
 import PageTracker from "../../components/layouts/PageTracker";
 import { useToken } from "../../hooks/custom/CustomHooks";
@@ -164,7 +163,7 @@ function Layout({ children }: ILayout) {
             {children}
           </div>
           <PageTracker />
-          {isBottomNavCondition && <BottomNav />}
+          {/* {isBottomNavCondition && <BottomNav />} */}
           {isGuest && isBottomNavCondition && <GuestBottomNav />}
           <BaseModal isGuest={isGuest} isError={isErrorModal} setIsError={setIsErrorModal} />
         </>

@@ -40,6 +40,6 @@ const Participants = styled.div<{ size: "sm" | "lg" }>`
   display: flex;
 
   & > *:not(:first-child) {
-    margin-left: ${(props) => (props.size === "sm" ? "-4px" : "-8px")};
+    margin-left: ${(props) => (props.size === "sm" ? "-6px" : "-8px")};
   }
 `;

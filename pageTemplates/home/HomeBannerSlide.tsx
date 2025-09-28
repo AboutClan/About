@@ -32,7 +32,7 @@ function HomeBannerSlide() {
 
   return (
     <>
-      <Flex aspectRatio="2.12/1" flexDir="column" mb={5} overflow="hidden">
+      <Flex aspectRatio="2.12/1" flexDir="column" overflow="hidden">
         <ImageSliderBanner imageArr={imageArr} />
       </Flex>
     </>
