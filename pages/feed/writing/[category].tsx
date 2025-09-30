@@ -42,7 +42,7 @@ function FeedWritingPage() {
   const { register, handleSubmit, watch } = methods;
 
   const transferFeedSummary = useRecoilValue(transferFeedSummaryState);
-  console.log(32, transferFeedSummary);
+
   const [summary, setSummary] = useState<TransferFeedSummaryProps>();
   const [imageArr, setImageArr] = useState<string[]>([]);
   const [imageFormArr, setImageFormArr] = useState<Blob[]>([]);
@@ -54,7 +54,7 @@ function FeedWritingPage() {
   const { data: gather } = useGatherIDQuery(+id, {
     enabled: category === "gather" && !!id && !transferFeedSummary,
   });
-  console.log(41, isAnonymous);
+
   const { mutate: updatePoint } = usePointSystemMutation("point");
   const { mutate, isLoading } = useFeedMutation({
     onSuccess() {
@@ -91,9 +91,6 @@ function FeedWritingPage() {
   const formData = new FormData();
 
   const onSubmit: SubmitHandler<{ content: string }> = ({ content }) => {
-    console.log(category, content);
-
-    return;
     if (!imageFormArr?.length) {
       toast("warning", "최소 한장 이상의 사진이 필요합니다.");
       return;
