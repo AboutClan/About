@@ -34,7 +34,7 @@
 
   --header-h: 56px;
 
-  --view-max-width: calc(var(--max-width) - 2 * var(--gap-5));
+  /* --view-max-width: calc(var(--max-width) - 2 * var(--gap-5)); */
 
   --color-icon: rgb(160, 174, 192, 0.4);
   --color-orange: #ffa501;

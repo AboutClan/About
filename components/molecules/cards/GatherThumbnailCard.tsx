@@ -141,7 +141,7 @@ export function GatherThumbnailCard({
                     : "var(--gray-600)"
                 }
               >
-                {participantsMember.length + 2}
+                {participantsMember.length * 1.5 + 4}
               </Box>
               <Box as="span" color="var(--gray-500)" mx="2px" fontWeight={300}>
                 /
@@ -151,12 +151,12 @@ export function GatherThumbnailCard({
                   <InfinityIcon />
                 ) : status === "pending" ? (
                   maxCnt === 25 ? (
-                    30
+                    40
                   ) : (
-                    maxCnt + 6
+                    maxCnt + 60
                   )
                 ) : (
-                  40
+                  60
                 )}
               </Box>
             </Flex>

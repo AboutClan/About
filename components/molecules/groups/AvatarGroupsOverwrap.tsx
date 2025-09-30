@@ -8,6 +8,7 @@ interface IAvatarGroupsOverwrap {
   userLength?: number;
   maxCnt: number;
   size?: "sm" | "lg";
+  isTest: boolean;
 }
 
 export default function AvatarGroupsOverwrap({
@@ -15,6 +16,7 @@ export default function AvatarGroupsOverwrap({
   userLength,
   maxCnt,
   size = "sm",
+  isTest,
 }: IAvatarGroupsOverwrap) {
   return (
     <Participants size={size}>
@@ -27,7 +29,12 @@ export default function AvatarGroupsOverwrap({
               size={size === "sm" ? "xxs1" : "sm1"}
               isLink={false}
               shadowAvatar={
-                idx === maxCnt - 1 && (userLength ? userLength - maxCnt : users.length - idx)
+                idx === maxCnt - 1 &&
+                (userLength
+                  ? (userLength - maxCnt) * 1.5
+                  : !isTest
+                  ? users.length * 1.5 + 4 - idx
+                  : Math.round(users.length * 5.5) - idx)
               }
             />
           )

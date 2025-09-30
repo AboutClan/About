@@ -48,7 +48,6 @@ export function GroupThumbnailCard({
   isBig = true,
   isFree,
 }: GroupThumbnailCardProps) {
-  
   const statusToBadgeProps: Record<GroupStatus, { text: string; colorScheme: string }> = {
     imminent: { text: `마감까지 ${maxCnt - participants.length}명`, colorScheme: "red" },
     full: { text: "인원마감", colorScheme: "orange" },
@@ -99,6 +98,7 @@ export function GroupThumbnailCard({
         {waitingCnt === null ? (
           <Flex alignItems="center" justify="space-between">
             <AvatarGroupsOverwrap
+              isTest
               users={participants?.map((par) => par.user)}
               maxCnt={VOTER_SHOW_MAX}
             />
@@ -114,13 +114,13 @@ export function GroupThumbnailCard({
                       : "var(--gray-600)"
                   }
                 >
-                  {participants.length + 9}
+                  {Math.round(participants.length * 5.5)}
                 </Box>
                 <Box as="span" color="var(--gray-500)" mx="2px" fontWeight={300}>
                   /
                 </Box>
                 <Box as="span" color="var(--gray-600)" fontWeight={500}>
-                  {maxCnt === 0 ? <InfinityIcon /> : maxCnt + 10}
+                  {maxCnt === 0 ? <InfinityIcon /> : maxCnt * 5}
                 </Box>
               </Flex>
             </Flex>

@@ -43,10 +43,10 @@ a {
 }
 
 #__next {
-  min-width: 340px;
-  max-width: 428px;
-
-  min-height: 100dvh;
+  /* min-width: 340px;
+  max-width: 428px; */
+  /* 
+  min-height: 100dvh; */
   margin: 0 auto;
   background-color: white;
 

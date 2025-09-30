@@ -13,7 +13,7 @@ function HomeGroupSection() {
 
   console.log(42, groups);
 
-  const test = groups?.filter((group) => group.id === 136 || group.id === 230)?.reverse();
+  const test = groups?.filter((group) => group.id === 136 || group.id === 118);
   console.log(5, test);
   return (
     <Box mb={10} mx={5}>
