@@ -121,7 +121,7 @@ const Login: NextPage<{
       },
     },
   };
-
+  console.log(53, detectDevice());
   return (
     <>
       <Box
@@ -177,7 +177,7 @@ const Login: NextPage<{
             width="100%"
             maxW="var(--max-width)"
             px="32px"
-            bottom="9%"
+            bottom={visibleHeight >= 700 && ratio > 1.8 ? "9%" : "11%"}
             left="50%"
             transform="translate(-50%,0)"
           >
@@ -207,7 +207,7 @@ const Login: NextPage<{
               <span>카카오톡으로 5초만에 시작하기</span>
               <div />
             </Button>
-            {detectDevice() !== "Android" && (
+            {detectDevice() !== "Android" && detectDevice() !== "PC" && (
               <Button
                 variant="unstyled"
                 maxW="calc(var(--max-width) - 2 * 20px)"
