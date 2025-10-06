@@ -1,4 +1,5 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
+import { useState } from "react";
 import styled from "styled-components";
 
 import { IProfileCommentCard } from "../../../components/molecules/cards/ProfileCommentCard";
@@ -9,11 +10,15 @@ import { IGroup } from "../../../types/models/groupTypes/group";
 
 interface IGroupParticipation {
   data: IGroup;
+  text: string;
+  isPlanned: boolean;
 }
 
-function GroupParticipation({ data }: IGroupParticipation) {
+function GroupParticipation({ data, text, isPlanned }: IGroupParticipation) {
   const isSecret = data?.isSecret;
-  const isPlanned = data?.participants.length <= 1;
+
+  const [isOpen, setIsOpen] = useState(false);
+
   const waitingCnt = data?.waiting.length;
   const userCardArr: IProfileCommentCard[] = data.participants
     .filter((par) => par.user.uid !== "3224546232")
@@ -49,27 +54,27 @@ function GroupParticipation({ data }: IGroupParticipation) {
     });
   return (
     <Layout>
-      <Flex mb={4} fontSize="18px" lineHeight="28px">
+      <Flex mb={2} fontSize="18px" lineHeight="28px">
         <Box mr={2} fontWeight="bold">
-          {!isPlanned ? "참여중인 인원" : "참여 대기 인원"}
+          {text} {!isPlanned ? userCardArr?.length : waitingCnt + 7}
         </Box>
-        <Box as="span" color="mint">
-          {!isPlanned ? userCardArr?.length : waitingCnt + 7}
-        </Box>
-        <Box as="span" mx={1} color="gray.600">
-          /
-        </Box>
-        <Flex align="center">
-          {data?.memberCnt.max ? (
-            <span>{data?.memberCnt.max}</span>
-          ) : (
-            <Box mb="2px">
-              <InfinityIcon2 />
-            </Box>
-          )}
-        </Flex>
       </Flex>
-      <ProfileCardColumn hasCommentButton={false} userCardArr={userCardArr} />
+      <ProfileCardColumn
+        hasCommentButton={false}
+        userCardArr={!isOpen ? userCardArr?.slice(0, 5) : userCardArr}
+      />
+      {!isOpen && (
+        <Button
+          mt={2}
+          w="100%"
+          h="40px"
+          bgColor="white"
+          border="0.5px solid #E8E8E8"
+          onClick={() => setIsOpen(true)}
+        >
+          더보기
+        </Button>
+      )}
     </Layout>
   );
 }
@@ -78,6 +83,7 @@ const ParticipateTime = styled.div<{ isFirst: boolean }>`
   font-size: 11px;
   font-weight: medium;
   line-height: 12px;
+
   margin-left: auto;
   color: var(--color-mint);
 `;
@@ -90,6 +96,7 @@ const Layout = styled.div`
   background-color: white;
 
   padding-bottom: 20px;
+  margin-bottom: 20px;
 `;
 
 export function InfinityIcon2() {

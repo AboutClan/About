@@ -7,7 +7,6 @@ interface IProfileCardColumn {
   hasCommentButton: boolean;
 }
 export default function ProfileCardColumn({ userCardArr, hasCommentButton }: IProfileCardColumn) {
-
   return (
     <Layout>
       {userCardArr.map((userCard, idx) => (
@@ -21,6 +20,7 @@ export default function ProfileCardColumn({ userCardArr, hasCommentButton }: IPr
           leftComponent={userCard?.leftComponent}
           rightComponent={userCard?.rightComponent}
           crownType={userCard?.crownType}
+          isNoBorder={idx === userCardArr.length - 1}
         />
       ))}
     </Layout>

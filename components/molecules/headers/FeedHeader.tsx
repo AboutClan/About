@@ -26,7 +26,6 @@ const Layout = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 12px 16px;
-  border: var(--border);
   align-items: center;
 `;
 

@@ -1,8 +1,8 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
 import { useParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
@@ -10,6 +10,7 @@ import { useSetRecoilState } from "recoil";
 import AlertModal from "../../../components/AlertModal";
 import BottomFixedButton from "../../../components/atoms/BottomFixedButton";
 import { Input } from "../../../components/atoms/Input";
+import BottomButtonNav from "../../../components/molecules/BottomButtonNav";
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
 import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
 import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
@@ -126,50 +127,87 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
     }
   };
 
-  const getButtonSettings = () => {
+  const getButtonSettings = (): {
+    text: string;
+    handleFunction?: () => void;
+    type?: "mint" | "red" | "black";
+    isEnd?: boolean;
+    isReverse?: boolean;
+  } => {
+    return {
+      text: "참여 취소",
+      type: "red",
+      isReverse: true,
+      handleFunction: () => setIsCancelModal(true),
+    };
     switch (data?.status) {
       case "open":
         if (feed) {
           return {
             text: "모임 후기 도착! 확인하러 가기",
             handleFunction: () => setIsReviewDrawer(true),
+            type: "black",
+            isEnd: true,
           };
         }
-
         if (myGather || isParticipant) {
           return {
-            text: "모임 리뷰 쓰고 포인트 받기",
+            text: "모임 후기 쓰고 포인트 받기",
+            type: "mint",
             handleFunction: () => onClick("review"),
+            isEnd: true,
           };
         } else if (data.status === "open") {
           return {
-            text: "종료된 모임",
+            text: null,
           };
         } else {
           return {
             text: "빈자리 생기면 참여 요청",
             handleFunction: () => sendRegisterForm({ phase: "first" }),
+            isReverse: true,
           };
         }
       case "close":
         return {
           text: "취소된 모임입니다.",
+          type: "black",
+          isReverse: true,
+          isEnd: true,
         };
     }
 
     if (data?.waiting.some((who) => who?.user?._id === session?.user.id)) {
-      return { text: "참여 승인을 기다리고 있습니다." };
+      return {
+        text: "대기 취소하기",
+        handleFunction: () => {
+          mutate({ userId: session?.user.id, status: "refuse", text: null });
+        },
+        isReverse: true,
+      };
     }
 
-    if (myGather) return { text: "모집 종료", handleFunction: () => onClick("expire") };
+    if (myGather)
+      return {
+        text: "모집 종료",
+        type: "red",
+        isReverse: true,
+        handleFunction: () => onClick("expire"),
+      };
     if (isParticipant) {
-      return { text: "참여 취소", handleFunction: () => onClick("cancel") };
+      return {
+        text: "참여 취소",
+        type: "red",
+        isReverse: true,
+        handleFunction: () => setIsCancelModal(true),
+      };
     }
 
     if (isMax) {
       return {
         text: "빈자리 생기면 참여 요청",
         handleFunction: () => sendRegisterForm({ phase: "first" }),
+        isReverse: true,
       };
     }
 
@@ -229,7 +267,7 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
     }
   }, [data?.status]);
 
-  const { text, handleFunction } = getButtonSettings();
+  const { text = "", handleFunction, type, isEnd = false, isReverse = false } = getButtonSettings();
 
   useEffect(() => {
     if (value === data?.password) {
@@ -251,7 +289,7 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
 
   return (
     <>
-      {text !== "참여 승인을 기다리고 있습니다." ? (
+      {false ? (
         <BottomFixedButton
           text={text}
           func={text === "참여 취소" ? () => setIsCancelModal(true) : handleFunction}
@@ -260,31 +298,15 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
           }
         />
       ) : (
-        <Flex
-          position="fixed"
-          bottom={0}
-          w="full"
-          borderTop="var(--border)"
-          align="center"
-          bg="gray.200"
-          h="calc(64px + env(safe-area-inset-bottom))"
-          pt={2}
-          pb="calc(8px + env(safe-area-inset-bottom))"
-          px={5}
-        >
-          <Box flex={1} fontSize="14px" fontWeight="semibold" color="gray.600">
-            모임장의 참여 승인을 기다리고 있습니다.
-          </Box>
-          <Button
-            size="md"
-            colorScheme="red"
-            onClick={() => {
-              mutate({ userId: session?.user.id, status: "refuse", text: null });
-            }}
-          >
-            신청 취소
-          </Button>
-        </Flex>
+        text && (
+          <BottomButtonNav
+            text={text}
+            hasHeart={!isEnd}
+            colorScheme={type}
+            isReverse={isReverse}
+            handleClick={handleFunction}
+          />
+        )
       )}
       {isExpirationModal && (
         <GatherExpireModal

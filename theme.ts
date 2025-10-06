@@ -377,6 +377,16 @@ const theme = extendTheme({
           h: "auto",
           padding: 0, // 패딩 제거
         },
+        subtle: (props) => ({
+          bg: `${props.colorScheme}.50`,
+          color: `${props.colorScheme}.700`,
+          _hover: {
+            bg: `${props.colorScheme}.100`,
+          },
+          _active: {
+            bg: `${props.colorScheme}.200`,
+          },
+        }),
       },
     },
 

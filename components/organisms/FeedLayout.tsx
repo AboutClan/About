@@ -23,6 +23,7 @@ export interface FeedLayoutProps {
   isAnonymous: boolean;
   type: "gather" | "group";
   isSmall?: boolean;
+  isRadius?: boolean;
 }
 
 function FeedLayout({
@@ -38,9 +39,15 @@ function FeedLayout({
   user,
   refetch,
   isSmall = false,
+  isRadius,
 }: FeedLayoutProps) {
   return (
-    <Flex direction="column" border="var(--border)" pb={2}>
+    <Flex
+      direction="column"
+      border={isRadius ? "var(--border-main)" : "var(--border)"}
+      borderRadius={isRadius ? "12px" : 0}
+      pb={2}
+    >
       <FeedHeader writer={isAnonymous ? SECRET_USER_SUMMARY : user} date={date} />
       <AspectRatio ratio={1}>
         <ImageSlider imageContainer={images} type="review" />
