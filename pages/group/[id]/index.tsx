@@ -3,7 +3,7 @@ import "dayjs/locale/ko"; // 로케일 플러그인 로드
 import { Box } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
 import Divider from "../../../components/atoms/Divider";
@@ -39,17 +39,15 @@ function GroupDetail() {
 
   const setGatherWriting = useSetRecoilState(sharedGatherWritingState);
 
-  const [tab, setTab] = useState<GroupSectionCategory>("정 보");
   const { data: group } = useGroupIdQuery(id, { enabled: !!id });
 
-  const { data: gathers, isLoading } = useGatherGroupQuery(id, {
+  const { data: gathers } = useGatherGroupQuery(id, {
     enabled: !!id,
   });
 
   const { data: gatherFeeds } = useGroupFeedsQuery(id, {
     enabled: !!id,
   });
-  console.log(54, gatherFeeds);
 
   useEffect(() => {
     if (session === undefined) return;
@@ -104,8 +102,12 @@ function GroupDetail() {
               rules={group.rules}
               hashTagString={group.hashTag}
             />
-            <GroupParticipation data={group} text="정규 멤버" />
-            <GroupParticipation data={group} text="임시 멤버" />
+            <GroupParticipation
+              data={group}
+              text="정규 멤버"
+              isPlanned={group.participants.length <= 3}
+            />
+            {/* <GroupParticipation data={group} text="임시 멤버" /> */}
             <GroupGathering gatherData={gatherData} />
             <GroupReview feeds={gatherFeeds} />
           </Box>

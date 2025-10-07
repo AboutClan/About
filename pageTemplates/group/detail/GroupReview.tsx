@@ -1,4 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
+
 import FeedLayout from "../../../components/organisms/FeedLayout";
 import { convertFeedToLayout } from "../../../libs/convertFeedToLayout";
 import { FeedProps } from "../../../types/models/feed";

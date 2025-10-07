@@ -42,6 +42,10 @@ function StudyPageHeader() {
   }, [location]);
 
   useEffect(() => {
+    if (drawerParam === "location") {
+      setModalType("location");
+      router.replace(`/studyPage?date=${getTodayStr()}`);
+    }
     if (drawerParam === "study") {
       setModalType("point");
       router.replace(`/studyPage?date=${getTodayStr()}`);
@@ -168,7 +172,7 @@ function StudyPageHeader() {
   );
 }
 
-function LocationIcon() {
+export function LocationIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
       <path
@@ -179,7 +183,7 @@ function LocationIcon() {
   );
 }
 
-function TriangeIcon() {
+export function TriangeIcon() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
       <path d="M5.96244e-08 5L5.25 0.669872L5.25 9.33013L5.96244e-08 5Z" fill="var(--gray-200)" />

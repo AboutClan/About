@@ -19,7 +19,6 @@ import {
 import { StudyType } from "../../types/models/studyTypes/study-set.types";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { navigateExternalLink } from "../../utils/navigateUtils";
-import { getPlaceBranch } from "../../utils/stringUtils";
 
 interface IStudyMembers {
   date: string;
@@ -36,6 +35,8 @@ export default function StudyMembers({ studyType, date, members, hasStudyLink }:
     image: string;
     toUid: string;
   }>();
+
+  const [isOpen, setIsOpen] = useState(false);
 
   const { mutate: setRealTimeComment } = useRealTimeCommentMutation(date, {
     onSuccess: () => handleSuccessChange(),
@@ -55,8 +56,23 @@ export default function StudyMembers({ studyType, date, members, hasStudyLink }:
     } else if (studyType === "openRealTimes" || studyType === "soloRealTimes")
       setRealTimeComment(comment);
   };
+  console.log(24, members);
 
-  const userCardArr: IProfileCommentCard[] = members?.map((member) => {
+  const filterMembers =
+    studyType !== "participations"
+      ? members
+      : isOpen
+      ? (members as StudyParticipationProps[])?.filter((member) => member.dates.includes(date))
+      : (members as StudyParticipationProps[])
+          ?.filter((member) => member.dates.includes(date))
+          ?.map((member) => ({
+            ...member,
+            dates: member.dates.filter((date2) =>
+              dayjs(date2).isAfter(dayjs(date).subtract(1, "day")),
+            ),
+          }));
+  console.log(13, filterMembers);
+  const userCardArr: IProfileCommentCard[] = filterMembers?.map((member) => {
     const user = member.user;
     // const badgeText = locationMapping?.find((mapping) => mapping?.id === user._id)?.branch;
     if (studyType === "participations") {
@@ -65,7 +81,7 @@ export default function StudyMembers({ studyType, date, members, hasStudyLink }:
       let month = dayjs(participant.dates[0]).month();
       return {
         user: user,
-        memo: getPlaceBranch(participant.location.address),
+        memo: participant.user.comment,
         rightComponent: (
           <Badge variant="subtle" colorScheme="blue" size="md">
             {/* {!badgeText ? "알 수 없음" : badgeText} */}
@@ -119,9 +135,23 @@ export default function StudyMembers({ studyType, date, members, hasStudyLink }:
       {userCardArr?.length ? (
         <>
           <ProfileCardColumn
-            userCardArr={userCardArr}
+            userCardArr={
+              isOpen || studyType !== "participations" ? userCardArr : userCardArr?.slice(0, 5)
+            }
             hasCommentButton={studyType !== "participations"}
           />
+          {!isOpen && (
+            <Button
+              mt={2}
+              w="100%"
+              h="40px"
+              bgColor="white"
+              border="0.5px solid #E8E8E8"
+              onClick={() => setIsOpen(true)}
+            >
+              더보기
+            </Button>
+          )}
         </>
       ) : members?.length ? (
         <Box position="relative" mt="100px" bottom="0" left="50%" transform="translate(-50%,-50%)">

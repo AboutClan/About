@@ -2,6 +2,7 @@ import { Badge, Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
 import StarRating from "../../components/atoms/StarRating";
+import BlurredLink from "../../components/molecules/BlurredLink";
 import InfoBoxCol, { InfoBoxProps } from "../../components/molecules/InfoBoxCol";
 import StarRatingReviewBlock from "../../components/molecules/StarRatingReviewBlock";
 import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
@@ -18,9 +19,10 @@ interface IStudyOverview {
   placeInfo: StudyPlaceProps;
   studyType: StudyType;
   date: string;
+  isMyStudy: boolean;
 }
 
-function StudyOverview({ placeInfo, date, studyType }: IStudyOverview) {
+function StudyOverview({ isMyStudy, placeInfo, date, studyType }: IStudyOverview) {
   const { currentLocation } = useUserCurrentLocation();
   const typeToast = useTypeToast();
   const { text: badgeText, colorScheme: badgeColorScheme } = getStudyBadge(
@@ -63,7 +65,10 @@ function StudyOverview({ placeInfo, date, studyType }: IStudyOverview) {
           : studyType === "participations"
           ? "30분 이내 거리 + 3명 이상의 멤버"
           : "30분 이내 거리 + 3명 이상의 멤버",
-      // <BlurredLink isBlur={!isVoting} url="https://open.kakao.com/o/g6Wc70sh" />
+    },
+    {
+      category: "스터디 톡방",
+      rightChildren: <BlurredLink isBlur={!isMyStudy} url="https://open.kakao.com/o/g6Wc70sh" />,
     },
   ];
 

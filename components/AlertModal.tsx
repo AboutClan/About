@@ -25,6 +25,7 @@ export default function AlertModal({
   options: { title, subTitle, func, subFunc, text = "취소합니다", defaultText, children2 },
   isLoading,
   children,
+  colorType = "red",
 }: IAlertModal) {
   const handleProcess = async () => {
     func();
@@ -41,9 +42,10 @@ export default function AlertModal({
         title={title}
         footerOptions={{
           main: { text, func: handleProcess },
-          sub: { text: defaultText || "취소", func: subFunc ? subFunc : () => setIsModal(false) },
-          colorType: "red",
+          sub: { text: defaultText || "취 소", func: subFunc ? subFunc : () => setIsModal(false) },
+          colorType: colorType,
         }}
+        isCloseButton={false}
         setIsModal={setIsModal}
       >
         {children2 || subTitle || children}

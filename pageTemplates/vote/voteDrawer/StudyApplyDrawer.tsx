@@ -1,7 +1,9 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import AlertModal from "../../../components/AlertModal";
 import PageIntro from "../../../components/atoms/PageIntro";
 import BottomNav from "../../../components/layouts/BottomNav";
 import MonthCalendar from "../../../components/molecules/MonthCalendar";
@@ -10,7 +12,7 @@ import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import StudyVoteTimeRulletDrawer from "../../../components/services/studyVote/StudyVoteTimeRulletDrawer";
 import { STUDY_RESULT_HOUR } from "../../../constants/serviceConstants/studyConstants/studyTimeConstant";
 import { useResetStudyQuery } from "../../../hooks/custom/CustomHooks";
-import { useToast } from "../../../hooks/custom/CustomToast";
+import { useToast, useTypeToast } from "../../../hooks/custom/CustomToast";
 import { useStudyVoteArrMutation } from "../../../hooks/study/mutations";
 import { useStudySetQuery } from "../../../hooks/study/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
@@ -20,6 +22,7 @@ import { LocationProps } from "../../../types/common";
 import { IStudyVoteTime } from "../../../types/models/studyTypes/studyInterActions";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import { getLocationSimpleText } from "../../../utils/stringUtils";
+import { LocationIcon } from "../../studyPage/StudyPageHeader";
 
 interface StudyDateDrawerProps {
   onClose: () => void;
@@ -38,9 +41,11 @@ function StudyApplyDrawer({
 }: StudyDateDrawerProps) {
   const toast = useToast();
 
+  const router = useRouter();
   const resetStudy = useResetStudyQuery();
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
   const [isModal, setIsModal] = useState(false);
+  const [isStudyPlaceModal, setIsStudyPlaceModal] = useState(false);
 
   const { data: userInfo } = useUserInfoQuery();
   const { data: studySet } = useStudySetQuery(dayjsToStr(dayjs()));
@@ -141,9 +146,53 @@ function StudyApplyDrawer({
     },
   };
 
+  const typeToast = useTypeToast();
+  const locationTextArr = userInfo?.locationDetail?.name?.split(" ");
+
   return (
     <>
-      <RightDrawer title="" onClose={onClose}>
+      <RightDrawer
+        title=""
+        onClose={onClose}
+        headerBtn={
+          <Flex align="center">
+            <Flex
+              ml="-1px"
+              p={1}
+              px={1.5}
+              justify="center"
+              align="center"
+              h={5}
+              bg=" rgba(160, 174, 192, 0.2)"
+              fontSize="10px"
+              borderRadius="6px"
+              color="gray.800"
+              w="max-content"
+            >
+              설정 위치 - {locationTextArr?.[0]}
+            </Flex>
+            <RightTriangleIcon />
+            <Button
+              display="flex"
+              justifyItems="center"
+              alignItems="center"
+              variant="unstyled"
+              w={6}
+              h={6}
+              mr={0.5}
+              onClick={() => {
+                if (userInfo?.role === "guest") {
+                  typeToast("guest");
+                  return;
+                }
+                setIsStudyPlaceModal(true);
+              }}
+            >
+              <LocationIcon />
+            </Button>
+          </Flex>
+        }
+      >
         <PageIntro
           main={{
             first: "스터디 희망 날짜를 선택해 주세요.",
@@ -168,19 +217,20 @@ function StudyApplyDrawer({
           mintDateArr={canChange ? [] : defaultDates}
           isTodayInclude={dayjs().hour() < STUDY_RESULT_HOUR ? true : false}
         />
+        <Box h={3} />
         {canChange ? (
-          <Box as="li" fontSize="12px" lineHeight="20px" mt={3} color="gray.600">
+          <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
             스터디를 취소하는 경우 선택된 날짜를 해제해 주세요.
           </Box>
         ) : !canChange && defaultDates.length ? (
-          <Box as="li" fontSize="12px" lineHeight="20px" mt={3} color="gray.600">
+          <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
             <Box as="span" color="mint">
               민트색
             </Box>{" "}
             숫자는 이미 참여중인 스터디 날짜입니다.
           </Box>
         ) : null}
-        <Box as="li" fontSize="12px" lineHeight="20px" mt={3} color="gray.600">
+        <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
           최대 일주일 이내의 스터디만 신청할 수 있습니다.
         </Box>
 
@@ -227,8 +277,29 @@ function StudyApplyDrawer({
           스터디 신청을 완전히 취소하시겠어요?
         </ModalLayout>
       )}
+      {isStudyPlaceModal && (
+        <AlertModal
+          options={{
+            title: "스터디 위치 설정",
+            text: "이 동",
+            func: () => {
+              router.push(`/studyPage?date=${dayjsToStr(dayjs())}&drawer=location`);
+            },
+          }}
+          colorType="mint"
+          setIsModal={setIsStudyPlaceModal}
+        >
+          설정된 위치 기준으로 가까운 스터디가 매칭돼요. 장소 변경 페이지로 이동할까요?
+        </AlertModal>
+      )}
     </>
   );
+}
+
+function RightTriangleIcon() {
+  return <svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
+    <path d="M6 5L0.75 0.669872L0.75 9.33013L6 5Z" fill="var(--gray-200)" />
+  </svg>
 }
 
 export default StudyApplyDrawer;

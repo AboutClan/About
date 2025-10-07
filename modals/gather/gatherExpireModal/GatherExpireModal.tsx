@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { IModal } from "../../../types/components/modalTypes";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
-import { ModalBodyNavTwo, ModalLayout } from "../../Modals";
+import { ModalLayout } from "../../Modals";
 import GatherExpireModalCancelDialog from "./GatherExpireModalCancelDialog";
 import GatherExpireModalExpireDialog from "./GatherExpireModalExpireDialogs";
 
@@ -17,20 +17,31 @@ function GatherExpireModal({ setIsModal, gather }: GatherExpireModalProps) {
 
   return (
     <>
-      <ModalLayout title="모집 종료" setIsModal={setIsModal}>
-        <ModalBodyNavTwo
-          topText="모집 마감"
-          bottomText="모임 취소"
+      <ModalLayout
+        title="모집 종료"
+        setIsModal={setIsModal}
+        footerOptions={{
+          main: { text: "모임 확정", func: () => setModal("expire") },
+          sub: { text: "모임 취소", func: () => setModal("cancel") },
+        }}
+      >
+        모임 진행 여부를 선택해 주세요!
+        {/* <ModalBodyNavTwo
+          topText="모임 확정"
+          bottomText="모임 개설 취소"
           onClickTop={() => setModal("expire")}
           onClickBottom={() => setModal("cancel")}
-        />
+        /> */}
       </ModalLayout>
-      <GatherExpireModalExpireDialog modal={modal} setIsModal={setIsModal} />
-      <GatherExpireModalCancelDialog
-        modal={modal}
-        memberCnt={gather.participants.length}
-        setIsModal={setIsModal}
-      />
+      {modal === "expire" ? (
+        <GatherExpireModalExpireDialog setIsModal={() => setModal(null)} />
+      ) : modal === "cancel" ? (
+        <GatherExpireModalCancelDialog
+          modal={modal}
+          memberCnt={gather.participants.length}
+          setIsModal={setIsModal}
+        />
+      ) : null}
     </>
   );
 }

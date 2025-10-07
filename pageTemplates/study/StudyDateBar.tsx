@@ -13,7 +13,10 @@ import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useRealtimeInviteMutation } from "../../hooks/realtime/mutations";
 import { useStudyInviteMutation } from "../../hooks/study/mutations";
 import { RealTimeVoteProps } from "../../types/models/studyTypes/requestTypes";
-import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
+import {
+  StudyConfirmedMemberProps,
+  StudyPlaceProps,
+} from "../../types/models/studyTypes/study-entity.types";
 import { StudyType } from "../../types/models/studyTypes/study-set.types";
 import { StudyVoteProps } from "../../types/models/studyTypes/studyInterActions";
 import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
@@ -22,11 +25,14 @@ import { searchName } from "../../utils/stringUtils";
 
 interface IStudyDateBar {
   date: string;
-  memberIdArr: string[];
+  members: StudyConfirmedMemberProps[];
   studyType: StudyType;
   placeInfo: StudyPlaceProps;
 }
-function StudyDateBar({ date, memberIdArr, studyType, placeInfo }: IStudyDateBar) {
+function StudyDateBar({ date, members, studyType, placeInfo }: IStudyDateBar) {
+  const memberIdArr = members?.map(
+    (member) => (member as StudyConfirmedMemberProps)?.user._id || "",
+  );
   const typeToast = useTypeToast();
   const toast = useToast();
   const resetStudy = useResetStudyQuery();
@@ -118,7 +124,8 @@ function StudyDateBar({ date, memberIdArr, studyType, placeInfo }: IStudyDateBar
           </Button>
         </Flex>
         <Box mt={1} fontSize="12px" color="gray.500">
-          현재 <b>{memberIdArr?.length || 0}명의 멤버</b>가{" "}
+          {studyType === "participations" ? "총" : "현재"}{" "}
+          <b>{memberIdArr?.length || 0}명의 멤버</b>가{" "}
           {studyType === "participations" ? "스터디를 기다리고 있어요!" : "참여중이에요!"}
         </Box>
       </Box>

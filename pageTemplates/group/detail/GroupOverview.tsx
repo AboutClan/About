@@ -1,4 +1,5 @@
 import { Box, Flex } from "@chakra-ui/react";
+
 import BlurredLink from "../../../components/molecules/BlurredLink";
 import InfoBoxCol from "../../../components/molecules/InfoBoxCol";
 

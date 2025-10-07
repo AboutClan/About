@@ -139,7 +139,14 @@ function AvatarComponent({
           <AvatarComponent />
         </Box>
       ) : (
-        <Link href={`/profile/${userId}`} style={{ outline: "none" }}>
+        <Link
+          href={`/profile/${userId}`}
+          style={{ outline: "none" }}
+          onClickCapture={(e) => {
+            // 부모로 클릭이 버블링되어 또 push/상태전환 되는 것을 차단
+            e.stopPropagation();
+          }}
+        >
           <AvatarComponent />
         </Link>
       )}

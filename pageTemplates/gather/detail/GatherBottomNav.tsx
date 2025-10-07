@@ -1,14 +1,13 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/dist/client/router";
 import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
 
 import AlertModal from "../../../components/AlertModal";
-import BottomFixedButton from "../../../components/atoms/BottomFixedButton";
 import { Input } from "../../../components/atoms/Input";
 import BottomButtonNav from "../../../components/molecules/BottomButtonNav";
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
@@ -80,7 +79,7 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
     },
   });
 
-  const { mutate } = useGatherWaitingStatusMutation(+id, {
+  const { mutate, isLoading: isLoading3 } = useGatherWaitingStatusMutation(+id, {
     onSuccess() {
       toast("success", "취소되었습니다.");
       queryClient.refetchQueries([GATHER_CONTENT, id + ""]);
@@ -99,6 +98,7 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
   const myUid = session?.user.uid;
   const isParticipant = data?.participants.some((who) => who?.user && who.user.uid === myUid);
   const groupId = router.query.id;
+  const isLoading = isLoading1 || isLoading2 || isLoading3;
 
   const queryClient = useQueryClient();
   const { mutate: cancel } = useGatherParticipationMutation("delete", +groupId, {
@@ -127,6 +127,8 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
     }
   };
 
+  const diffDate = dayjs(data.date).startOf("d").diff(dayjs().startOf("d"), "d");
+
   const getButtonSettings = (): {
     text: string;
     handleFunction?: () => void;
@@ -134,12 +136,6 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
     isEnd?: boolean;
     isReverse?: boolean;
   } => {
-    return {
-      text: "참여 취소",
-      type: "red",
-      isReverse: true,
-      handleFunction: () => setIsCancelModal(true),
-    };
     switch (data?.status) {
       case "open":
         if (feed) {
@@ -199,7 +195,7 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
         text: "참여 취소",
         type: "red",
         isReverse: true,
-        handleFunction: () => setIsCancelModal(true),
+        handleFunction: () => (diffDate < 2 ? setIsCancelModal(true) : cancel()),
       };
     }
 
@@ -212,7 +208,7 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
     }
 
     return {
-      text: "참여하기",
+      text: data?.isApprovalRequired ? "참여 신청" : "참여하기",
       handleFunction: () => {
         const myOld = birthToAge(userInfo.birth);
 
@@ -251,7 +247,6 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
         }
 
         setIsModal(true);
-        onClick("participate");
       },
     };
   };
@@ -285,28 +280,17 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
     else if (type === "apply") sendRegisterForm({ phase });
   };
 
-  const diffDate = dayjs(data.date).startOf("d").diff(dayjs().startOf("d"), "d");
-
   return (
     <>
-      {false ? (
-        <BottomFixedButton
+      {text && (
+        <BottomButtonNav
           text={text}
-          func={text === "참여 취소" ? () => setIsCancelModal(true) : handleFunction}
-          color={
-            text === "참여 취소" ? "red" : text === "빈자리 생기면 참여 요청" ? "black" : "mint"
-          }
+          hasHeart={!isEnd}
+          colorScheme={type}
+          isReverse={isReverse}
+          handleClick={handleFunction}
+          isLoading={isLoading}
         />
-      ) : (
-        text && (
-          <BottomButtonNav
-            text={text}
-            hasHeart={!isEnd}
-            colorScheme={type}
-            isReverse={isReverse}
-            handleClick={handleFunction}
-          />
-        )
       )}
       {isExpirationModal && (
         <GatherExpireModal
@@ -324,7 +308,9 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
           isDrawerUp
           setIsModal={() => setIsModal(false)}
           isHideBottom
-          drawerOptions={{ footer: { text: "취소", func: () => setIsModal(false) } }}
+          drawerOptions={{
+            footer: { text: "취소", func: () => setIsModal(false), loading: isLoading },
+          }}
           height={249}
           zIndex={800}
         >
@@ -354,7 +340,14 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
                   </svg>
                 </Flex>
                 <Box fontSize="13px" color="var(--gray-600)">
-                  1차 참여 신청
+                  {data?.isApprovalRequired ? "1차 참여 신청" : "1차부터 참여하기"}
+                </Box>
+                <Box ml={1} fontSize="13px" fontWeight={400} color="var(--gray-500)">
+                  (
+                  {`${data?.gatherList?.[0]?.time.hours}:${
+                    data?.gatherList?.[0]?.time.minutes || data?.gatherList?.[0]?.time.minutes + "0"
+                  }`}
+                  )
                 </Box>
               </Button>
               <Button
@@ -380,7 +373,14 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
                   </svg>
                 </Flex>
                 <Box fontSize="13px" color="var(--gray-600)">
-                  2차 참여 신청
+                  {data?.isApprovalRequired ? "2차 참여 신청" : "2차부터 참여하기"}
+                </Box>
+                <Box ml={1} fontSize="13px" fontWeight={400} color="var(--gray-500)">
+                  (
+                  {`${data?.gatherList?.[1]?.time.hours}:${
+                    data?.gatherList?.[1]?.time.minutes || data?.gatherList?.[1]?.time.minutes + "0"
+                  }`}
+                  )
                 </Box>
               </Button>
               <Button
@@ -448,29 +448,37 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
       {isCancelModal && (
         <AlertModal
           options={{
-            title: "참여 취소",
-            text: "취소합니다",
-            defaultText: "닫기",
+            title: "정말 참여를 취소하시겠어요?",
+            text: "참여 취소",
+            defaultText: "닫 기",
             func: () => handleFunction(),
           }}
           setIsModal={setIsCancelModal}
         >
-          참여를 취소하시겠어요?
-          {diffDate < 2 && <br />}
-          <Box>
-            {diffDate < 2 &&
-              (diffDate === 1 ? (
-                <>
-                  모임 하루 전으로{" "}
-                  <Box as="b" color="red">
-                    1,000 Point
-                  </Box>
-                  만 반환됩니다.
-                </>
-              ) : (
-                "모임 당일로 보증금이 반환되지 않습니다."
-              ))}
+          <Box as="li" textAlign="start">
+            {diffDate === 1 ? (
+              <>
+                <Box as="b" color="red">
+                  하루 전
+                </Box>
+                으로 보증금이 1,000원만 반환됩니다.
+              </>
+            ) : (
+              <>
+                <Box as="b" color="red">
+                  당일 불참
+                </Box>
+                으로 보증금이 반환되지 않습니다.
+              </>
+            )}{" "}
           </Box>
+          <Box as="li" textAlign="start">
+            톡방을 나가기 전에 모임장에게도 알려주세요.
+          </Box>{" "}
+          <Box mt={5} fontSize="11px" textAlign="start" color="gray.600">
+            ※ 사전에 협의된 경우, 모임장님께 불참 처리를 요청하시면 보증금이 차감되지 않습니다.
+          </Box>
+          {diffDate < 2 && <br />}
         </AlertModal>
       )}
     </>

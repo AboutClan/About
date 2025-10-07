@@ -1,32 +1,19 @@
-import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
-  Button,
-  useDisclosure,
-} from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { useEffect, useRef } from "react";
 import { useQueryClient } from "react-query";
-import styled from "styled-components";
 
+import AlertModal, { IAlertModalOptions } from "../../../components/AlertModal";
 import { GATHER_CONTENT } from "../../../constants/keys/queryKeys";
 import { useErrorToast, useToast } from "../../../hooks/custom/CustomToast";
 import { useGatherStatusMutation, useGatherWritingMutation } from "../../../hooks/gather/mutations";
 import { IModal } from "../../../types/components/modalTypes";
-import { GatherExpireModalDialogType } from "./GatherExpireModal";
 
 interface IGatherExpireModalCancelDialog extends IModal {
-  modal: GatherExpireModalDialogType;
   memberCnt: number;
 }
 
 function GatherExpireModalCancelDialog({
   memberCnt,
-  modal,
+
   setIsModal,
 }: IGatherExpireModalCancelDialog) {
   const toast = useToast();
@@ -34,8 +21,7 @@ function GatherExpireModalCancelDialog({
   const errorToast = useErrorToast();
 
   const router = useRouter();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = useRef();
+
   const gatherId = +router.query.id;
 
   const onComplete = async (type: "delete" | "close") => {
@@ -58,46 +44,23 @@ function GatherExpireModalCancelDialog({
     onError: errorToast,
   });
 
-  useEffect(() => {
-    if (modal === "cancel") onOpen();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [modal]);
-
   const onCancel = () => {
     if (memberCnt <= 3) gatherDelete({ gatherId });
     else statusClose("close");
   };
 
-  return (
-    <Layout>
-      <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
-        <AlertDialogOverlay>
-          <AlertDialogContent m="auto var(--gap-4)">
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              모집을 취소하시겠습니까?
-            </AlertDialogHeader>
-            <AlertDialogBody>
-              {memberCnt <= 3 ? (
-                <span>참여자가 적어 모임이 완전히 삭제됩니다.</span>
-              ) : (
-                <span>참여자가 있어 모임이 취소 상태로 변경됩니다.</span>
-              )}
-            </AlertDialogBody>
-            <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClose}>
-                닫기
-              </Button>
-              <Button colorScheme="mint" onClick={onCancel} ml="var(--gap-2)">
-                모임 취소
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
-    </Layout>
-  );
-}
+  const alertModalOptions: IAlertModalOptions = {
+    title: "모임 취소",
+    subTitle:
+      memberCnt <= 3
+        ? "개설을 취소하시겠어요? 참여자가 부족해 모임이 완전히 삭제됩니다."
+        : "모임을 취소하시겠어요? 3명 이상의 참여자가 있어 취소 상태로 변경됩니다.",
+    func: onCancel,
+    text: "모임 취소",
+    defaultText: "닫 기",
+  };
 
-const Layout = styled.div``;
+  return <AlertModal options={alertModalOptions} setIsModal={setIsModal} />;
+}
 
 export default GatherExpireModalCancelDialog;
