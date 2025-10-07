@@ -191,7 +191,7 @@ export default function Page() {
               <>
                 <Box h={2} bg="gray.100" my={4} />
                 <Slide>
-                  <StudyPendingSection date={date} studySet={studySet} />
+                  <StudyPendingSection studySet={studySet} />
                 </Slide>
               </>
             )}
