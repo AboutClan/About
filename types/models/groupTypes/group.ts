@@ -13,9 +13,11 @@ export interface IGroup extends IGroupWriting {
   requiredTicket: number;
 }
 
+export type GroupMemberRole = "member" | "manager" | "admin" | "regularMember";
+
 export interface GroupParicipantProps {
   user: IUserSummary;
-  role: "member" | "manager" | "admin";
+  role: GroupMemberRole;
   randomId?: number;
   deposit: number;
   lastMonthAttendance: boolean;

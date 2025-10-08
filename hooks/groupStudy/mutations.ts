@@ -3,7 +3,7 @@ import { useMutation } from "react-query";
 
 import { requestServer } from "../../libs/methodHelpers";
 import { MutationOptions } from "../../types/hooks/reactTypes";
-import { IGroup, IGroupWriting } from "../../types/models/groupTypes/group";
+import { GroupMemberRole, IGroup, IGroupWriting } from "../../types/models/groupTypes/group";
 
 type GroupWritingParam<T> = T extends "post"
   ? { groupStudy: IGroupWriting }
@@ -77,22 +77,43 @@ export const useGroupAttendUserMutation = (
     options,
   );
 
-type Status = "pending" | "open" | "close" | "end";
+// interface IGroupStatusRequest {
+//   groupId: number;
+//   status: Status;
+// }
 
-interface IGroupStatusRequest {
-  GroupId: number;
-  status: Status;
+// export const useGroupStatusMutation = (GroupId: number, options?: MutationOptions<Status>) =>
+//   useMutation<void, AxiosError, Status>(
+//     (status) =>
+//       requestServer<IGroupStatusRequest>({
+//         method: "patch",
+//         url: "groupStudy/status",
+//         body: {
+//           GroupId,
+//           status,
+//         },
+//       }),
+//     options,
+//   );
+
+interface IGroupMemberRoleRequest {
+  groupId: number;
+  userId: string;
+  role: GroupMemberRole;
 }
 
-export const useGroupStatusMutation = (GroupId: number, options?: MutationOptions<Status>) =>
-  useMutation<void, AxiosError, Status>(
-    (status) =>
-      requestServer<IGroupStatusRequest>({
+export const useGroupMemberRoleMutation = (
+  groupId: number,
+  options?: MutationOptions<{ userId: string; role: GroupMemberRole }>,
+) =>
+  useMutation<void, AxiosError, { userId: string; role: GroupMemberRole }>(
+    (params) =>
+      requestServer<IGroupMemberRoleRequest>({
         method: "patch",
-        url: "groupStudy/status",
+        url: "groupStudy/role",
         body: {
-          GroupId,
-          status,
+          groupId,
+          ...params,
         },
       }),
     options,

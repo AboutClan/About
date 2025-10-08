@@ -81,7 +81,7 @@ function GroupDetail() {
     setGatherDataToCardCol(gathers, true, () => {
       setBackUrl(`/group/${id}`);
     });
-
+  console.log(group);
   return (
     <>
       {group && <GroupHeader group={group} />}
@@ -103,11 +103,24 @@ function GroupDetail() {
               hashTagString={group.hashTag}
             />
             <GroupParticipation
-              data={group}
-              text="정규 멤버"
+              data={{
+                ...group,
+                participants: group?.participants?.filter((par) => par?.role !== "member"),
+              }}
+              text={group.participants.length <= 3 ? "임시 멤버" : "정규 멤버"}
               isPlanned={group.participants.length <= 3}
             />
-            {/* <GroupParticipation data={group} text="임시 멤버" /> */}
+            {group.participants.length > 3 && (
+              <GroupParticipation
+                data={{
+                  ...group,
+                  participants: group?.participants?.filter((par) => par?.role === "member"),
+                }}
+                text="임시 멤버"
+                isTemp
+                isPlanned={false}
+              />
+            )}
             <GroupGathering gatherData={gatherData} />
             <GroupReview feeds={gatherFeeds} />
           </Box>

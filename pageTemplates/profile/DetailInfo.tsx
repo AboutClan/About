@@ -13,6 +13,8 @@ function DetailInfo({ user, groups }: { user: IUser; groups: string[] }) {
   const isPrivate =
     user?.isPrivate && !user?.friend.includes(session?.user.uid) && user?.uid !== session?.user.uid;
 
+  const age = birthToAge(user?.birth);
+
   const itemMapping: { category: string; text?: string; texts?: string[] }[] = !user
     ? []
     : [
@@ -22,15 +24,23 @@ function DetailInfo({ user, groups }: { user: IUser; groups: string[] }) {
         },
         {
           category: "나이",
-          text: "만" + " " + birthToAge(user?.birth) + "세",
+          text: !isPrivate
+            ? "만" + " " + age + "세"
+            : age <= 21
+            ? "20대 초반"
+            : age <= 23
+            ? "20대 초중반"
+            : age <= 25
+            ? "20대 중반"
+            : "20대 중후반",
         },
         {
           category: "MBTI",
-          text: user?.mbti,
+          text: isPrivate ? "비공개" : user?.mbti,
         },
         {
           category: "전공",
-          text: user?.majors?.[0]?.detail,
+          text: isPrivate ? "비공개" : user?.majors?.[0]?.detail,
         },
         {
           category: "활동지",
@@ -51,10 +61,7 @@ function DetailInfo({ user, groups }: { user: IUser; groups: string[] }) {
       ];
 
   return (
-    <BlurredPart
-      isBlur={isGuest || isPrivate}
-      text={isPrivate ? "프로필 비공개 (친구에게만 공개)" : undefined}
-    >
+    <BlurredPart isBlur={isGuest} text={isPrivate ? "프로필 비공개 (친구에게만 공개)" : undefined}>
       <Flex flexDir="column" py={3}>
         {itemMapping.map((item, idx) => (
           <Flex key={idx} fontSize="13px" fontWeight="semibold" py={2}>

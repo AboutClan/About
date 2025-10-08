@@ -38,13 +38,28 @@ interface ReviewMember {
   createdAt: string;
 }
 
-export const useUserReviewQuery = (uid: string, options?: QueryOptions<ReviewMember[]>) =>
-  useQuery<ReviewMember[], AxiosError, ReviewMember[]>(
+export const useUserReviewQuery = (
+  uid: string,
+  options?: QueryOptions<{
+    reviewArr: ReviewMember[];
+    greatCnt: number;
+    goodCnt: number;
+    totalCnt: number;
+  }>,
+) =>
+  useQuery<
+    { reviewArr: ReviewMember[]; greatCnt: number; goodCnt: number; totalCnt: number },
+    AxiosError,
+    { reviewArr: ReviewMember[]; greatCnt: number; goodCnt: number; totalCnt: number }
+  >(
     [USER_INFO, uid, "review"],
     async () => {
-      const res = await axios.get<ReviewMember[]>(
-        `${SERVER_URI}/notice/temperature/mine?uid=${uid}`,
-      );
+      const res = await axios.get<{
+        reviewArr: ReviewMember[];
+        greatCnt: number;
+        goodCnt: number;
+        totalCnt: number;
+      }>(`${SERVER_URI}/notice/temperature/mine?uid=${uid}`);
       return res.data;
     },
     options,

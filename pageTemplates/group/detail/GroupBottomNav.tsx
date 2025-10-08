@@ -6,13 +6,14 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 
-import BottomFixedButton from "../../../components/atoms/BottomFixedButton";
+import BottomButtonNav from "../../../components/molecules/BottomButtonNav";
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
 import { GROUP_STUDY, USER_INFO } from "../../../constants/keys/queryKeys";
 import { useErrorToast, useToast } from "../../../hooks/custom/CustomToast";
 import {
   useGroupParticipationMutation,
   useGroupWaitingMutation,
+  useGroupWaitingStatusMutation,
 } from "../../../hooks/groupStudy/mutations";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { IGroup } from "../../../types/models/groupTypes/group";
@@ -36,18 +37,22 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
 
   const [isModal, setIsModal] = useState(false);
 
-  const { mutate: participate } = useGroupParticipationMutation("post", +id, {
-    onSuccess() {
-      toast("success", "가입이 완료되었습니다.");
-      queryClient.invalidateQueries([USER_INFO]);
-      queryClient.invalidateQueries([GROUP_STUDY, id]);
+  const { mutate: participate, isLoading: isLoading1 } = useGroupParticipationMutation(
+    "post",
+    +id,
+    {
+      onSuccess() {
+        toast("success", "가입이 완료되었습니다.");
+        queryClient.invalidateQueries([USER_INFO]);
+        queryClient.invalidateQueries([GROUP_STUDY, id]);
+      },
+      onError() {
+        toast("warning", "보유중인 티켓이 부족합니다.");
+      },
     },
-    onError() {
-      toast("warning", "보유중인 티켓이 부족합니다.");
-    },
-  });
+  );
 
-  const { mutate: sendRegisterForm } = useGroupWaitingMutation(+id, {
+  const { mutate: sendRegisterForm, isLoading: isLoading2 } = useGroupWaitingMutation(+id, {
     onSuccess() {
       toast("success", "대기 요청 완료! 이후 연락 예정.");
 
@@ -55,23 +60,36 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
     },
   });
 
+  const { mutate, isLoading: isLoading4 } = useGroupWaitingStatusMutation(+id, {
+    onSuccess() {
+      toast("success", "취소되었습니다.");
+      queryClient.invalidateQueries([GROUP_STUDY, id]);
+    },
+  });
+
   const url = router.asPath;
   const myUid = session?.user.uid;
 
-  const isPending = data.waiting.find((who) => who.user.uid === myUid);
+  const isPending = data?.waiting?.find((who) => who.user.uid === myUid);
 
   const groupId = router.query.id;
 
   const isFull = data?.memberCnt.max !== 0 && data?.participants.length >= data?.memberCnt.max;
 
   const queryClient = useQueryClient();
-  const { mutate: cancel } = useGroupParticipationMutation("delete", +groupId, {
-    onSuccess() {
-      toast("success", "신청이 취소되었습니다.");
-      queryClient.invalidateQueries([GROUP_STUDY, id]);
+  const { mutate: cancel, isLoading: isLoading3 } = useGroupParticipationMutation(
+    "delete",
+    +groupId,
+    {
+      onSuccess() {
+        toast("success", "신청이 취소되었습니다.");
+        queryClient.invalidateQueries([GROUP_STUDY, id]);
+      },
+      onError: errorToast,
     },
-    onError: errorToast,
-  });
+  );
+
+  const isLoading = isLoading1 || isLoading2 || isLoading3 || isLoading4;
 
   const onClick = (type: ButtonType) => {
     if (type === "cancel") cancel();
@@ -85,21 +103,32 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
     if (type === "register") participate();
   };
 
-  const getButtonSettings = () => {
+  const getButtonSettings = (): {
+    text: string;
+    handleFunction?: () => void;
+    type?: "mint" | "red" | "black";
+    isEnd?: boolean;
+    isReverse?: boolean;
+  } => {
     if (isPending) {
       if (data?.participants.length <= 1) {
         return {
-          text: "오픈 대기중",
+          text: "오픈 대기 취소",
+          isReverse: true,
+          handleFunction: () => mutate({ userId: userInfo._id, status: "refuse" }),
         };
       }
       return {
-        text: "가입 대기중",
+        text: "가입 대기 취소",
+        isReverse: true,
+        handleFunction: () => mutate({ userId: userInfo._id, status: "refuse" }),
       };
     }
     if (isFull) {
       return {
         text: "빈자리 생기면 참여 요청",
         handleFunction: () => setIsModal(true),
+        isReverse: true,
       };
     }
     if (data?.participants.length <= 1) {
@@ -114,17 +143,21 @@ function GroupBottomNav({ data }: IGroupBottomNav) {
     return {
       text: "가입 신청",
       handleFunction: !data?.isFree ? () => onClick("participate") : () => setIsModal(true),
+      type: "mint",
     };
   };
 
-  const { text, handleFunction } = getButtonSettings();
+  const { text, handleFunction, type, isEnd, isReverse } = getButtonSettings();
 
   return (
     <>
-      <BottomFixedButton
+      <BottomButtonNav
         text={text}
-        func={handleFunction}
-        color={text === "빈자리 생기면 참여 요청" ? "black" : "mint"}
+        hasHeart={!isEnd}
+        colorScheme={type}
+        isReverse={isReverse}
+        handleClick={handleFunction}
+        isLoading={isLoading}
       />
       {isModal && (
         <BottomFlexDrawer

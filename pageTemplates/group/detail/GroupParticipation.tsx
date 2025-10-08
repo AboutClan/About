@@ -12,9 +12,10 @@ interface IGroupParticipation {
   data: IGroup;
   text: string;
   isPlanned: boolean;
+  isTemp?: boolean;
 }
 
-function GroupParticipation({ data, text, isPlanned }: IGroupParticipation) {
+function GroupParticipation({ data, text, isPlanned, isTemp }: IGroupParticipation) {
   const isSecret = data?.isSecret;
 
   const [isOpen, setIsOpen] = useState(false);
@@ -54,10 +55,15 @@ function GroupParticipation({ data, text, isPlanned }: IGroupParticipation) {
     });
   return (
     <Layout>
-      <Flex mb={2} fontSize="18px" lineHeight="28px">
+      <Flex mb={2} fontSize="18px" lineHeight="28px" alignItems="flex-end">
         <Box mr={2} fontWeight="bold">
           {text} {!isPlanned ? userCardArr?.length : waitingCnt + 7}
         </Box>
+        {isTemp && (
+          <Box ml="auto" mt="auto" fontSize="11px" color="mint" lineHeight={1}>
+            ※ 활동 유효 기간: 10월 30일
+          </Box>
+        )}
       </Flex>
       <ProfileCardColumn
         hasCommentButton={false}
