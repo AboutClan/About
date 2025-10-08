@@ -1,8 +1,8 @@
 import { Box, Button, Flex, HStack } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -149,86 +149,94 @@ function ProfilePage() {
           )}
         </HStack>
       </Header>
-      <Slide>
-        <ProfileOverview user={user as IUser} groupCnt={groups?.length} />
-      </Slide>
-      <Slide isNoPadding>
-        <Divider type={200} />
-      </Slide>
-      <Slide>
-        <DetailInfo user={user as IUser} groups={groups} />
-      </Slide>
-      <Slide isNoPadding>
-        <Divider type={200} />
-        <Box mx={5} my={3} mt={5}>
-          <SectionHeader title={`받은 매너 평가 ${reviewArr?.totalCnt || 0}`} size="sm" subTitle="">
-            <ButtonWrapper size="sm" onClick={() => typeToast("not-yet")}>
-              <ShortArrowIcon dir="right" />
-            </ButtonWrapper>
-          </SectionHeader>
-        </Box>
-        <Flex align="center" mx={5} fontSize="13px">
-          <Flex align="center" flex={1}>
-            <Avatar user={{ avatar: { type: 20, bg: 1 } }} size="xs1" />
-            <Box ml={2} mr={1}>
-              최고예요 😘
-            </Box>
-            <Box fontWeight="bold">{reviewArr?.greatCnt || 0}</Box>
-          </Flex>
-          <Flex align="center" flex={1}>
-            <Avatar user={{ avatar: { type: 11, bg: 6 } }} size="xs1" />
-            <Box ml={2} mr={1}>
-              좋아요 😉
-            </Box>
-            <Box fontWeight="bold">
-              {Math.floor(reviewArr?.goodCnt / 10) * 10 || 0}
-              {reviewArr?.goodCnt !== 0 ? " ↑" : ""}
-            </Box>
-          </Flex>
-        </Flex>
-        <Box h="1px" my={3} bg="gray.100" />
-        <Box mt={5} mx={5} mb={0}>
-          <SectionHeader
-            title={`받은 모임 후기 ${reviewArr?.reviewArr?.length || ""}`}
-            size="sm"
-            subTitle=""
-          >
-            <ButtonWrapper size="sm" onClick={() => typeToast("not-yet")}>
-              <ShortArrowIcon dir="right" />
-            </ButtonWrapper>
-          </SectionHeader>
-        </Box>
-        <Flex flexDir="column" minH="80px">
-          {reviewArr?.reviewArr?.map((item, idx) => (
-            <Flex key={idx} px={5} align="center" py={3} borderBottom="var(--border)">
-              <Flex justify="center" alignSelf="flex-start" mr={2}>
-                <Avatar user={{ avatar: { type: 15, bg: 0 } }} size="sm1" isLink={false} />
-              </Flex>
-              <Flex
-                w="full"
-                direction="column"
-                fontSize="12px"
-                lineHeight={1.6}
-                justify="space-around"
+      {user && (
+        <>
+          <Slide>
+            <ProfileOverview user={user as IUser} groupCnt={groups?.length} />
+          </Slide>
+          <Slide isNoPadding>
+            <Divider type={200} />
+          </Slide>
+          <Slide>
+            <DetailInfo user={user as IUser} groups={groups} />
+          </Slide>
+          <Slide isNoPadding>
+            <Divider type={200} />
+            <Box mx={5} my={3} mt={5}>
+              <SectionHeader
+                title={`받은 매너 평가 ${reviewArr?.totalCnt || 0}`}
+                size="sm"
+                subTitle=""
               >
-                <Flex w="full" justify="space-between" mb={1}>
-                  <Box fontWeight="bold" fontSize="13px" lineHeight="20px" color="gray.800">
-                    익명 {idx + 1}
-                  </Box>
-                </Flex>
-                <Box mb={2} as="p" fontWeight="light" fontSize="12px" lineHeight="18px">
-                  {item.message}
-                </Box>{" "}
-                <Flex h="16px" align="center" fontSize="10px" color="gray.600">
-                  <Box color="gray.600" fontWeight="500">
-                    {getDateDiff(dayjs(item.createdAt))}
-                  </Box>
-                </Flex>
+                <ButtonWrapper size="sm" onClick={() => typeToast("not-yet")}>
+                  <ShortArrowIcon dir="right" />
+                </ButtonWrapper>
+              </SectionHeader>
+            </Box>
+            <Flex align="center" mx={5} fontSize="13px">
+              <Flex align="center" flex={1}>
+                <Avatar user={{ avatar: { type: 20, bg: 1 } }} size="xs1" />
+                <Box ml={2} mr={1}>
+                  최고예요 😘
+                </Box>
+                <Box fontWeight="bold">{reviewArr?.greatCnt || 0}</Box>
+              </Flex>
+              <Flex align="center" flex={1}>
+                <Avatar user={{ avatar: { type: 11, bg: 6 } }} size="xs1" />
+                <Box ml={2} mr={1}>
+                  좋아요 😉
+                </Box>
+                <Box fontWeight="bold">
+                  {Math.floor(reviewArr?.goodCnt / 10) * 10 || 0} ~{" "}
+                  {reviewArr?.goodCnt !== 0 ? Math.floor(reviewArr?.goodCnt / 10) * 10 + 10 : ""}
+                </Box>
               </Flex>
             </Flex>
-          ))}
-        </Flex>
-      </Slide>
+            <Box h="1px" my={3} bg="gray.100" />
+            <Box mt={5} mx={5} mb={0}>
+              <SectionHeader
+                title={`받은 모임 후기 ${reviewArr?.reviewArr?.length || ""}`}
+                size="sm"
+                subTitle=""
+              >
+                <ButtonWrapper size="sm" onClick={() => typeToast("not-yet")}>
+                  <ShortArrowIcon dir="right" />
+                </ButtonWrapper>
+              </SectionHeader>
+            </Box>
+            <Flex flexDir="column" minH="80px">
+              {reviewArr?.reviewArr?.map((item, idx) => (
+                <Flex key={idx} px={5} align="center" py={3} borderBottom="var(--border)">
+                  <Flex justify="center" alignSelf="flex-start" mr={2}>
+                    <Avatar user={{ avatar: { type: 15, bg: 0 } }} size="sm1" isLink={false} />
+                  </Flex>
+                  <Flex
+                    w="full"
+                    direction="column"
+                    fontSize="12px"
+                    lineHeight={1.6}
+                    justify="space-around"
+                  >
+                    <Flex w="full" justify="space-between" mb={1}>
+                      <Box fontWeight="bold" fontSize="13px" lineHeight="20px" color="gray.800">
+                        익명 {idx + 1}
+                      </Box>
+                    </Flex>
+                    <Box mb={2} as="p" fontWeight="light" fontSize="12px" lineHeight="18px">
+                      {item.message}
+                    </Box>{" "}
+                    <Flex h="16px" align="center" fontSize="10px" color="gray.600">
+                      <Box color="gray.600" fontWeight="500">
+                        {getDateDiff(dayjs(item.createdAt))}
+                      </Box>
+                    </Flex>
+                  </Flex>
+                </Flex>
+              ))}
+            </Flex>
+          </Slide>
+        </>
+      )}
       {modalType === "declare" && (
         <BottomFlexDrawer
           isOverlay
