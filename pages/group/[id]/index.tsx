@@ -1,8 +1,8 @@
 import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import { Box } from "@chakra-ui/react";
-import { useParams, useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -25,6 +25,7 @@ import GroupGathering from "../../../pageTemplates/group/GroupGathering";
 import { setGatherDataToCardCol } from "../../../pageTemplates/home/HomeGatherCol";
 import { backUrlState } from "../../../recoils/navigationRecoils";
 import { sharedGatherWritingState } from "../../../recoils/sharedDataAtoms";
+import { shuffleArray } from "../../../utils/convertUtils/convertDatas";
 import { ThunderIcon } from "../../gather";
 
 export type GroupSectionCategory = "정 보" | "모 임" | "피 드";
@@ -105,7 +106,9 @@ function GroupDetail() {
             <GroupParticipation
               data={{
                 ...group,
-                participants: group?.participants?.filter((par) => par?.role !== "member"),
+                participants: shuffleArray(
+                  group?.participants?.filter((par) => par?.role !== "member"),
+                ),
               }}
               text={group.participants.length <= 3 ? "임시 멤버" : "정규 멤버"}
               isPlanned={group.participants.length <= 3}
@@ -114,7 +117,9 @@ function GroupDetail() {
               <GroupParticipation
                 data={{
                   ...group,
-                  participants: group?.participants?.filter((par) => par?.role === "member"),
+                  participants: shuffleArray(
+                    group?.participants?.filter((par) => par?.role === "member"),
+                  ),
                 }}
                 text="임시 멤버"
                 isTemp
