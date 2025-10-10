@@ -35,7 +35,7 @@ import {
   StudyParticipationsSetProps,
   StudyType,
 } from "../../../../types/models/studyTypes/study-set.types";
-import { dayjsToStr, getHour } from "../../../../utils/dateTimeUtils";
+import { dayjsToStr, getHour, getTodayStr } from "../../../../utils/dateTimeUtils";
 
 export default function Page() {
   const router = useRouter();
@@ -196,7 +196,9 @@ export default function Page() {
                 </Slide>
               </>
             )}
-            {placeInfo && <StudyNearMap centerPlace={placeInfo} />}
+            {placeInfo && studyType === "results" && date === getTodayStr() && (
+              <StudyNearMap centerPlace={placeInfo} />
+            )}
           </Box>
           {userInfo?.role !== "guest" && (
             <StudyNavigation

@@ -44,7 +44,7 @@ function StudyNearMap({ centerPlace }: StudyNearMapProps) {
 
   return (
     <>
-      <Box px={5} mt={10} mb={20}>
+      <Box px={5} mt={10} mb={10}>
         <Box fontSize="18px" mb={4} fontWeight="bold"></Box>
         <SectionHeader
           title="근처에 있는 카공하기 좋은 카페"
