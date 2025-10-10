@@ -3,7 +3,6 @@ import dayjs from "dayjs";
 import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
 import { StudyThumbnailCardProps } from "../../components/molecules/cards/StudyThumbnailCard";
 import { StudySetProps, StudyType } from "../../types/models/studyTypes/study-set.types";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomImage } from "../../utils/imageUtils";
 import { shortenParticipations } from "./studyConverters";
 
@@ -34,7 +33,7 @@ export const setStudyThumbnailCard = (
         name: "실시간 공부 인증",
         branch: "자유 장소",
         address: "공부 인증하면, 돈이 쌓인다!",
-        date: "",
+        date: null,
         imageProps: {
           image:
             "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/2.%EC%8B%A4%EC%8B%9C%EA%B0%84+%EA%B3%B5%EB%B6%80+%EC%9D%B8%EC%A6%9D.png",
@@ -55,7 +54,7 @@ export const setStudyThumbnailCard = (
         name: "스터디 매칭 라운지",
         branch: "위치 선정 중...",
         address: "가까운 인원들과 스터디를 매칭하고 있어요",
-        date: "",
+        date: null,
         imageProps: {
           image:
             "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EB%8F%99%EC%95%84%EB%A6%AC/1.%EC%8A%A4%ED%84%B0%EB%94%94+%EB%A7%A4%EC%B9%AD+%EB%9D%BC%EC%9A%B4%EC%A7%80_%EC%B1%85ver.png",
@@ -107,7 +106,7 @@ export const setStudyThumbnailCard = (
         name: placeInfo.location.name,
         branch: textArr?.[0] + " " + textArr?.[1],
         address: placeInfo.location?.address,
-        date: dayjsToFormat(dayjs(data.date).locale("ko"), "M.D(ddd)"),
+        date: dayjs(data.date),
         imageProps: {
           image: placeInfo.image || getRandomImage(GATHER_MAIN_IMAGE_ARR["스터디"]),
 
@@ -132,7 +131,22 @@ export const sortThumbnailCardInfoArr = (
   arr: StudyThumbnailCardProps[],
   userId: string,
 ) => {
-  if (sortedOption === "날짜순") return arr;
+  if (sortedOption === "날짜순") {
+    return [...arr].sort((a, b) => {
+      // 1️⃣ date가 없는 경우가 가장 앞
+      if (!a.place.date && b.place.date) return -1;
+      if (a.place.date && !b.place.date) return 1;
+
+      // 2️⃣ 둘 다 date가 있는 경우 날짜순
+      if (a.place.date && b.place.date) {
+        if (a.place.date.isBefore(b.place.date)) return -1;
+        if (a.place.date.isAfter(b.place.date)) return 1;
+      }
+
+      // 3️⃣ 날짜가 같다면 인원 많은 순
+      return b.participants.length - a.participants.length;
+    });
+  }
 
   return [...arr].sort((a, b) => {
     const aPriority = a.studyType === "results";

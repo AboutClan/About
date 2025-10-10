@@ -1,4 +1,5 @@
 import { Badge, Box, Flex } from "@chakra-ui/react";
+import dayjs, { Dayjs } from "dayjs";
 import Link from "next/link";
 import styled from "styled-components";
 
@@ -6,6 +7,7 @@ import { getStudyBadge } from "../../../libs/study/studyHelpers";
 import { SingleLineText } from "../../../styles/layout/components";
 import { StudyType } from "../../../types/models/studyTypes/study-set.types";
 import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
+import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 import { CheckCircleIcon } from "../../Icons/CircleIcons";
 import { LocationDotIcon } from "../../Icons/LocationIcons";
 import { UserIcon } from "../../Icons/UserIcons";
@@ -20,7 +22,7 @@ export interface StudyThumbnailCardProps {
     name: string;
     branch: string;
     address: string;
-    date: string;
+    date: Dayjs | null;
     imageProps: {
       image: string;
       isPriority?: boolean;
@@ -84,9 +86,11 @@ export function StudyThumbnailCard({
 
           <Subtitle>
             <Flex>
-              <Box as="span" fontWeight={600}>
-                {place.date}
-              </Box>
+              {place.date && (
+                <Box as="span" fontWeight={600}>
+                  {dayjsToFormat(dayjs(place.date).locale("ko"), "M.D(ddd)")}
+                </Box>
+              )}
               {place.date && (
                 <Box as="span" color="var(--gray-400)">
                   ・

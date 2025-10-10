@@ -19,7 +19,7 @@ import {
   sortThumbnailCardInfoArr,
 } from "../../libs/study/thumbnailCardLibs";
 import { backUrlState } from "../../recoils/navigationRecoils";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
+import { dayjsToStr, getTodayStr } from "../../utils/dateTimeUtils";
 
 type StudyTab = "오늘 날짜 스터디" | "진행 예정 스터디";
 
@@ -29,6 +29,7 @@ function HomeStudySection() {
 
   const [tab, setTab] = useState<StudyTab>("오늘 날짜 스터디");
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
+  const [cardArr, setCardArr] = useState<StudyThumbnailCardProps[]>();
 
   useEffect(() => {
     if (!studySet) {
@@ -40,6 +41,30 @@ function HomeStudySection() {
     );
     setThumbnailCardinfoArr(sortThumbnailCardInfoArr("날짜순", getThumbnailCardInfoArr, null));
   }, [studySet]);
+
+  useEffect(() => {
+    if (!thumbnailCardInfoArr) return;
+    if (tab === "오늘 날짜 스터디") {
+      setCardArr(
+        thumbnailCardInfoArr
+          .filter(
+            (card) =>
+              !card.place.date ||
+              (dayjsToStr(card.place.date) === getTodayStr() && card.participants.length > 1),
+          )
+          .slice(0, 5),
+      );
+    } else {
+      setCardArr(
+        thumbnailCardInfoArr
+          .filter(
+            (card) =>
+              card.place.date && card.place.date.isAfter(dayjs()) && card.participants.length > 1,
+          )
+          .slice(0, 5),
+      );
+    }
+  }, [tab, thumbnailCardInfoArr]);
 
   const tabOptionsArr: ITabNavOptions[] = [
     {
@@ -69,14 +94,12 @@ function HomeStudySection() {
         <TabNav tabOptionsArr={tabOptionsArr} selected={tab} isFullSize />
       </Box>
       <Flex direction="column" px={5} mb={4}>
-        {thumbnailCardInfoArr
-          ? thumbnailCardInfoArr
-              .slice(tab === "오늘 날짜 스터디" ? 0 : 3, tab === "오늘 날짜 스터디" ? 3 : 6)
-              .map((thumbnailCardInfo, idx) => (
-                <Box key={idx} mb={3}>
-                  <StudyThumbnailCard {...thumbnailCardInfo} />
-                </Box>
-              ))
+        {cardArr
+          ? cardArr.map((thumbnailCardInfo, idx) => (
+              <Box key={idx} mb={3}>
+                <StudyThumbnailCard {...thumbnailCardInfo} />
+              </Box>
+            ))
           : [1, 2, 3].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)}
         <SectionFooterButton url={`/studyList?date=${dayjsToStr(dayjs())}`} />
       </Flex>

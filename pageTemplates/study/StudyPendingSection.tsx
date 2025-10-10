@@ -10,15 +10,13 @@ import {
 import { StudyThumbnailCardSkeleton } from "../../components/skeleton/StudyThumbnailCardSkeleton";
 import { useUserInfo } from "../../hooks/custom/UserHooks";
 import { StudySetProps } from "../../types/models/studyTypes/study-set.types";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomImage } from "../../utils/imageUtils";
 
 interface StudyPendingSectionProps {
- 
   studySet: StudySetProps;
 }
 
-function StudyPendingSection({  studySet }: StudyPendingSectionProps) {
+function StudyPendingSection({ studySet }: StudyPendingSectionProps) {
   const userInfo = useUserInfo();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -35,7 +33,7 @@ function StudyPendingSection({  studySet }: StudyPendingSectionProps) {
           name: placeInfo.location.name,
           branch: textArr?.[0] + " " + textArr?.[1],
           address: placeInfo.location?.address,
-          date: dayjsToFormat(dayjs(data.date).locale("ko"), "M.D(ddd)"),
+          date: dayjs(data.date),
           imageProps: {
             image: placeInfo.image || getRandomImage(GATHER_MAIN_IMAGE_ARR["스터디"]),
 
