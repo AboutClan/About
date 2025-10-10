@@ -18,6 +18,7 @@ import StudyDateControl from "../../../../pageTemplates/study/StudyDateControl";
 import StudyHeader from "../../../../pageTemplates/study/StudyHeader";
 import StudyMembers from "../../../../pageTemplates/study/StudyMembers";
 import StudyNavigation from "../../../../pageTemplates/study/StudyNavigation";
+import StudyNearMap from "../../../../pageTemplates/study/StudyNearMap";
 import StudyNearMemberSection from "../../../../pageTemplates/study/StudyNearMemberSection";
 import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
 import StudyPendingSection from "../../../../pageTemplates/study/StudyPendingSection";
@@ -175,7 +176,7 @@ export default function Page() {
                   date={dayjsToStr(dateDayjs)}
                   members={members || []}
                   studyType={studyType}
-                  hasStudyLink={studyLinkCondition}
+                  hasStudyLink={myStudyStatus === "participation"}
                 />
               </Box>
               {studyType === "participations" && (
@@ -195,6 +196,7 @@ export default function Page() {
                 </Slide>
               </>
             )}
+            {placeInfo && <StudyNearMap centerPlace={placeInfo} />}
           </Box>
           {userInfo?.role !== "guest" && (
             <StudyNavigation

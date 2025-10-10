@@ -142,6 +142,23 @@ export const useStudyPassedDayQuery = (date: string, options?: QueryOptions<Stud
     options,
   );
 
+export const useStudyNearPlaceQuery = (
+  placeId: string,
+  options?: QueryOptions<StudyPlaceProps[]>,
+) =>
+  useQuery<StudyPlaceProps[], AxiosError, StudyPlaceProps[]>(
+    [STUDY_PLACE, placeId],
+    async () => {
+      const res = await axios.get<StudyPlaceProps[]>(`${SERVER_URI}/place/one`, {
+        params: {
+          placeId,
+        },
+      });
+
+      return res.data;
+    },
+    options,
+  );
 export const useStudyPlacesQuery = (
   status: "main" | "sub" | "all",
   options?: QueryOptions<StudyPlaceProps[]>,

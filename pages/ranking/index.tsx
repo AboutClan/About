@@ -12,7 +12,6 @@ import TabNav from "../../components/molecules/navs/TabNav";
 import WinnerTextSlider from "../../components/molecules/WinnerTextSlider";
 import { usePrizeQuery } from "../../constants/prize/queries";
 import { useAllUserDataQuery, UserStudyDataProps } from "../../hooks/admin/quries";
-import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import RankingMembers from "../../pageTemplates/ranking/RankingMembers";
 import { shuffleArray } from "../../utils/convertUtils/convertDatas";
@@ -22,6 +21,7 @@ export type RankingTab = "월간 활동 랭킹" | "인기 랭킹" | "스터디 �
 interface RankingProps {
   rank: number;
   value: number;
+  valueText?: string;
 }
 
 export interface UserRankingProps extends RankingProps {
@@ -38,7 +38,6 @@ export const RANK_MAP = {
 
 function Ranking() {
   const { data: session } = useSession();
-  const typeToast = useTypeToast();
 
   const [myRanking, setMyRanking] = useState<RankingProps>();
   const [sortedUsers, setSortedUsers] = useState<UserRankingProps[]>();
@@ -58,7 +57,7 @@ function Ranking() {
   const { data: allUserData } = useAllUserDataQuery(fieldName, {
     enabled: !!fieldName,
   });
-
+  console.log(52, allUserData);
   useEffect(() => {
     setSortedUsers(null);
 
@@ -70,14 +69,16 @@ function Ranking() {
   }, [tab]);
 
   useEffect(() => {
-    if (!allUserData || !session || tab === "스터디 랭킹") return;
+    if (!allUserData || !session) return;
 
     const sortUserByTab = (users: UserStudyDataProps[], tab: RankingTab) => {
       const temp = [...users];
 
       return temp.sort((a, b) => {
         if (tab === "스터디 랭킹") {
-          return b.studyRecord.monthMinutes - a.studyRecord.monthMinutes; // 숫자가 클수록 앞에 오게
+          const aSum = a.studyRecord.accumulationCnt * 3 + a.studyRecord.accumulationMinutes;
+          const bSum = b.studyRecord.accumulationCnt * 3 + b.studyRecord.accumulationMinutes;
+          return bSum - aSum; // 숫자가 클수록 앞에 오게
         } else if (tab === "월간 활동 랭킹") {
           return b.monthScore - a.monthScore;
         } else {
@@ -93,37 +94,42 @@ function Ranking() {
 
     const rankedUsers: UserRankingProps[] = [...sortedData]
       .sort((a, b) => {
-        const aValue =
-          fieldName === "monthScore"
-            ? a.monthScore
-            : fieldName === "temperature"
-            ? a.temperature.temperature
-            : a.studyRecord.monthMinutes;
-        const bValue =
-          fieldName === "monthScore"
-            ? b.monthScore
-            : fieldName === "temperature"
-            ? b.temperature.temperature
-            : b.studyRecord.monthMinutes;
+        if (fieldName === "study") {
+          const aSum = a.studyRecord.accumulationCnt * 3 + a.studyRecord.accumulationMinutes;
+          const bSum = b.studyRecord.accumulationCnt * 3 + b.studyRecord.accumulationMinutes;
 
+          return bSum - aSum;
+        }
+        const aValue = fieldName === "monthScore" ? a.monthScore : a.temperature.temperature;
+        const bValue = fieldName === "monthScore" ? b.monthScore : b.temperature.temperature;
         return bValue - aValue;
       })
       .map((data) => {
-        const value =
-          fieldName === "monthScore"
-            ? data.monthScore
-            : fieldName === "temperature"
-            ? data.temperature.temperature
-            : data.studyRecord.monthMinutes;
+        if (fieldName === "study") {
+          const sum = data.studyRecord.accumulationCnt * 3 + data.studyRecord.accumulationMinutes;
+
+          if (!valueToRank.has(sum)) {
+            valueToRank.set(sum, currentRank);
+          }
+          currentRank++;
+
+          return {
+            user: { ...data },
+            value: sum,
+            valueText: `스터디 ${data.studyRecord.accumulationCnt}회(개인 ${data.studyRecord.accumulationMinutes}회)`,
+            rank: valueToRank.get(sum)!,
+          };
+        }
+        const value = fieldName === "monthScore" ? data.monthScore : data.temperature.temperature;
 
         if (!valueToRank.has(value)) {
           valueToRank.set(value, currentRank);
         }
         currentRank++;
-
         return {
           user: { ...data },
           value,
+
           rank: valueToRank.get(value)!,
         };
       });
@@ -160,7 +166,6 @@ function Ranking() {
       func: () => {
         setTab("스터디 랭킹");
         setSortedUsers(null);
-        typeToast("not-yet");
       },
     },
   ];
@@ -206,7 +211,6 @@ function Ranking() {
       name: props.winner.name,
       gift: props.gift,
     }));
-
 
   return (
     <>
@@ -316,11 +320,13 @@ function Ranking() {
           </Flex>
         ) : (
           <Flex h="52px" align="center" mx={5} color="gray.500" fontSize="12px">
-            ※ 8월 중 출시 예정
+            ※ 점수 계산: 그룹 스터디 1회 = 개인 스터디 3회
           </Flex>
         )}
         {tab === "스터디 랭킹" ? (
-          <Box></Box>
+          <Box>
+            <RankingMembers users={sortedUsers} fieldName={fieldName} />
+          </Box>
         ) : (
           <Box>
             <>

@@ -56,7 +56,6 @@ export default function StudyMembers({ studyType, date, members, hasStudyLink }:
     } else if (studyType === "openRealTimes" || studyType === "soloRealTimes")
       setRealTimeComment(comment);
   };
- 
 
   const filterMembers =
     studyType !== "participations"
@@ -140,7 +139,7 @@ export default function StudyMembers({ studyType, date, members, hasStudyLink }:
             }
             hasCommentButton={studyType !== "participations"}
           />
-          {!isOpen && (
+          {!isOpen && userCardArr.length > 5 && (
             <Button
               mt={2}
               w="100%"

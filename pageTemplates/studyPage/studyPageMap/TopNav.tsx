@@ -138,7 +138,7 @@ export function XIcon() {
   );
 }
 
-function ExpansionIcon() {
+export function ExpansionIcon() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

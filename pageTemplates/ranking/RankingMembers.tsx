@@ -8,7 +8,6 @@ import SocialingScoreBadge from "../../components/molecules/SocialingScoreBadge"
 import { RANKING_ANONYMOUS_USERS } from "../../constants/storage/anonymous";
 import { ModalLayout } from "../../modals/Modals";
 import { RANK_MAP, UserRankingProps } from "../../pages/ranking";
-import { formatMinutesToTime } from "../../utils/dateTimeUtils";
 
 interface IRankingMembers {
   users: UserRankingProps[];
@@ -35,9 +34,9 @@ const GIFT_MAP = {
 };
 
 function RankingMembers({ users, fieldName }: IRankingMembers) {
+  console.log(55555, users, fieldName);
   const { data: session } = useSession();
   const [giftContent, setGiftContent] = useState<{ title: string; text: string }>();
-
 
   const onClickGift = (type: "gold" | "silver" | "bronze" | "temperature", idx: number) => {
     setGiftContent({
@@ -49,12 +48,11 @@ function RankingMembers({ users, fieldName }: IRankingMembers) {
   return (
     <>
       {users?.map((user, idx) => {
-      
         const who = user.user;
         const rankNum = idx + 1;
         const value =
           fieldName === "study"
-            ? `${formatMinutesToTime(who[fieldName].monthMinutes)}(${who[fieldName].monthCnt}회)`
+            ? user?.valueText
             : fieldName === "temperature"
             ? who.temperature.temperature
             : who[fieldName];
@@ -80,10 +78,10 @@ function RankingMembers({ users, fieldName }: IRankingMembers) {
               </Box>
             </Flex>
             <Flex align="center">
-              {fieldName === "monthScore" ? (
+              {fieldName !== "temperature" ? (
                 <Box fontSize="14px" mt="2px" lineHeight="20px" mr={2} fontWeight="bold">
                   {value}
-                  {fieldName === "monthScore" ? "점" : "°C"}
+                  {fieldName === "monthScore" ? "점" : null}
                 </Box>
               ) : (
                 <Box mt="2px" mr={2}>

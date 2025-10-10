@@ -12,10 +12,10 @@ interface IVoteMap {
     lat: number;
     lng: number;
   };
-  // circleCenter: {
-  //   lat: number;
-  //   lon: number;
-  // }[];
+  circleCenter?: {
+    lat: number;
+    lon: number;
+  }[];
 }
 
 export default function VoteMap({
@@ -24,6 +24,7 @@ export default function VoteMap({
   handleMarker,
   resizeToggle,
   centerValue,
+  circleCenter,
 }: // circleCenter,
 IVoteMap) {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -110,20 +111,22 @@ IVoteMap) {
       mapElementsRef.current.markers.push(marker);
     });
 
-    // circleCenter?.forEach((circle2) => {
-    //   if (!circle2) return;
-    //   const circle = new naver.maps.Circle({
-    //     map: mapInstanceRef.current,
-    //     center: new naver.maps.LatLng(circle2.lat, circle2.lon),
-    //     radius: 5550,
-    //     strokeColor: "#007dfb",
-    //     strokeOpacity: 0.8,
-    //     strokeWeight: 1,
-    //     fillColor: "#007dfb",
-    //     fillOpacity: 0.1,
-    //   });
-    //   mapElementsRef.current.circle = circle;
-    // });
+    if (circleCenter) {
+      circleCenter?.forEach((circle2) => {
+        if (!circle2) return;
+        const circle = new naver.maps.Circle({
+          map: mapInstanceRef.current,
+          center: new naver.maps.LatLng(circle2.lat, circle2.lon),
+          radius: 550,
+          strokeColor: "#007dfb",
+          strokeOpacity: 0.8,
+          strokeWeight: 1,
+          fillColor: "#007dfb",
+          fillOpacity: 0.1,
+        });
+        mapElementsRef.current.circle = circle;
+      });
+    }
   }, [markersOptions]);
 
   useEffect(() => {

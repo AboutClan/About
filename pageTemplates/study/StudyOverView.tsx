@@ -47,7 +47,7 @@ function StudyOverview({ isMyStudy, placeInfo, date, studyType }: IStudyOverview
           : "확정 시간",
       text:
         studyType === "participations"
-          ? "매일 오전 9시"
+          ? "당일 오전 9시"
           : studyType === "soloRealTimes"
           ? "하루 공부가 끝나는 순간까지"
           : "정보 없음",
