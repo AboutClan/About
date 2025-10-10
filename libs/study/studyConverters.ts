@@ -83,7 +83,7 @@ export const setStudyWeekData = (
           })),
         );
       }
-      console.log(24, acc, oneDay);
+    
       acc.results.push(
         ...results.map((result) => ({
           date,

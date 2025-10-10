@@ -206,7 +206,7 @@ function Ranking() {
       name: props.winner.name,
       gift: props.gift,
     }));
-  console.log(24, data, textArr);
+
 
   return (
     <>

@@ -28,7 +28,7 @@ function StudyReviewButton({ placeId, myStudyInfo }: StudyReviewButtonProps) {
     }
     setIsReviewModal(true);
   };
-  console.log(24, myStudyInfo?.attendance?.type);
+
   return (
     <>
       <Flex

@@ -53,7 +53,7 @@ export default function Page() {
   const { data: studyPassedData } = useStudyPassedDayQuery(date, {
     enabled: !!isPassedDate,
   });
-  console.log(24, studySet);
+
   const [modalType, setModalType] = useState<"studyLink" | "review">();
 
   useEffect(() => {

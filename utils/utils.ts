@@ -1,3 +1,5 @@
+import * as CryptoJS from "crypto-js";
+
 export const getUserLocation = (onSuccess, onError) => {
   if (!navigator.geolocation) {
     console.error("이 브라우저에서는 위치 정보를 지원하지 않습니다.");
@@ -15,4 +17,19 @@ export const getUserLocation = (onSuccess, onError) => {
       if (onError) onError(error);
     },
   );
+};
+
+const key = process.env.NEXT_PUBLIC_CRYPTO;
+
+export const decodeByAES256 = (encodedTel: string) => {
+  try {
+    // console.log(4, key);
+    // if (!key) return encodedTel;
+
+    const bytes = CryptoJS.AES.decrypt(encodedTel, key);
+    const originalText = bytes.toString(CryptoJS.enc.Utf8);
+    return originalText;
+  } catch (error) {
+    return "Decryption Failed";
+  }
 };

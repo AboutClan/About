@@ -56,7 +56,7 @@ export default function StudyMembers({ studyType, date, members, hasStudyLink }:
     } else if (studyType === "openRealTimes" || studyType === "soloRealTimes")
       setRealTimeComment(comment);
   };
-  console.log(24, members);
+ 
 
   const filterMembers =
     studyType !== "participations"

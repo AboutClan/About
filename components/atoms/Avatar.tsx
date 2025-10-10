@@ -53,7 +53,6 @@ function AvatarComponent({
   user = ABOUT_USER_SUMMARY,
   isSquare,
 }: IAvatar) {
-  console.log(42, user);
   const avatar = user?.avatar;
   const userId = user?._id;
   const profileImage = user?.profileImage;
@@ -66,7 +65,7 @@ function AvatarComponent({
       : undefined;
 
   const hasAvatar = avatar !== undefined && avatar?.type !== null && avatar?.bg !== null;
-  console.log(33, image, avatar);
+
   const [imageUrl, setImageUrl] = useState(!hasAvatar ? image : AVATAR_IMAGES[avatar.type].image);
   const [bgImage, setBgImage] = useState<string | null>(null);
 
