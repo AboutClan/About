@@ -1,8 +1,8 @@
 import { Box, Button, Flex, HStack } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -28,6 +28,7 @@ import { transferUserName } from "../../recoils/transferRecoils";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { IUserRequest } from "../../types/models/userTypes/userRequestTypes";
 import { getDateDiff } from "../../utils/dateTimeUtils";
+import { decodeByAES256 } from "../../utils/utils";
 
 function ProfilePage() {
   const { data: session } = useSession();
@@ -57,6 +58,8 @@ function ProfilePage() {
   const [isFirstPage, setIsFirstPage] = useState(true);
   const [declareType, setDeclareType] = useState<"distance" | "block">(null);
   const [text, setText] = useState("");
+
+  console.log(decodeByAES256("U2FsdGVkX1+d7+XTWVCjf6PEKjCvdVvs8ZMwGWDBtS4="));
 
   useEffect(() => {
     setIsFirstPage(true);

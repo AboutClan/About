@@ -50,7 +50,9 @@ function HomeStudySection() {
           .filter(
             (card) =>
               !card.place.date ||
-              (dayjsToStr(card.place.date) === getTodayStr() && card.participants.length > 1),
+              (dayjs().hour() >= 18
+                ? card.place.date.isAfter(dayjs())
+                : dayjsToStr(card.place.date) === getTodayStr() && card.participants.length > 1),
           )
           .slice(0, 5),
       );
