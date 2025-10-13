@@ -59,7 +59,7 @@ function ProfilePage() {
   const [declareType, setDeclareType] = useState<"distance" | "block">(null);
   const [text, setText] = useState("");
 
-  console.log(decodeByAES256("U2FsdGVkX1+d7+XTWVCjf6PEKjCvdVvs8ZMwGWDBtS4="));
+  console.log(decodeByAES256("U2FsdGVkX1805x7IvBX1u+aW/gmnqo4pSrMqua3v8a0="));
 
   useEffect(() => {
     setIsFirstPage(true);

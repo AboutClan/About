@@ -5,6 +5,7 @@ import InfoList from "../../components/atoms/lists/InfoList";
 import BlurredPart from "../../components/molecules/BlurredPart";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { birthToAge } from "../../utils/convertUtils/convertTypes";
+import { decodeByAES256 } from "../../utils/utils";
 
 function DetailInfo({ user, groups }: { user: IUser; groups: string[] }) {
   const { data: session } = useSession();
@@ -14,6 +15,8 @@ function DetailInfo({ user, groups }: { user: IUser; groups: string[] }) {
     user?.isPrivate && !user?.friend.includes(session?.user.uid) && user?.uid !== session?.user.uid;
 
   const age = birthToAge(user?.birth);
+
+  const isAdmin = session?.user.uid === "2259633694" || session?.user.uid === "3224546232";
 
   const itemMapping: { category: string; text?: string; texts?: string[] }[] = !user
     ? []
@@ -58,8 +61,19 @@ function DetailInfo({ user, groups }: { user: IUser; groups: string[] }) {
           //   (groups?.[3] ? `...` : ""),
           texts: groups,
         },
+        ...(isAdmin
+          ? [
+              {
+                category: "연락처",
+                text:
+                  user?.telephone?.length > 0 && user?.telephone?.length < 14
+                    ? user?.telephone
+                    : decodeByAES256(user?.telephone),
+              },
+            ]
+          : []),
       ];
-
+  console.log(35, user?.telephone, itemMapping);
   return (
     <BlurredPart isBlur={isGuest} text={isPrivate ? "프로필 비공개 (친구에게만 공개)" : undefined}>
       <Flex flexDir="column" py={3}>
