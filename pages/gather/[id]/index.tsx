@@ -2,14 +2,16 @@ import "dayjs/locale/ko";
 
 import { Box } from "@chakra-ui/react";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
+import { useSession } from "next-auth/react";
 import { GATHER_COVER_IMAGE_ARR } from "../../../assets/gather";
 import Divider from "../../../components/atoms/Divider";
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../components/layouts/PageSlide";
+import { useToast } from "../../../hooks/custom/CustomToast";
 import { useGatherIDQuery } from "../../../hooks/gather/queries";
 import GatherBottomNav from "../../../pageTemplates/gather/detail/GatherBottomNav";
 import GatherComments from "../../../pageTemplates/gather/detail/GatherComments";
@@ -24,8 +26,10 @@ import { IUserSummary, UserSimpleInfoProps } from "../../../types/models/userTyp
 import { getRandomImage } from "../../../utils/imageUtils";
 
 function GatherDetail() {
-  // const { data: session } = useSession();
-  const session = null;
+  const router = useRouter();
+  const { data: session } = useSession();
+  const toast = useToast();
+
   const { id } = useParams<{ id: string }>() || {};
   const isGuest = session?.user.name === "guest";
 
@@ -44,10 +48,10 @@ function GatherDetail() {
 
   useEffect(() => {
     if (session === undefined) return;
-    // if (!session?.user.uid) {
-    //   toast("warning", "로그인 정보가 없습니다. 다시 로그인해주세요!");
-    //   router.push(`/login?status=before&page=gather/${id}`);
-    // }
+    if (!session?.user.uid) {
+      toast("warning", "로그인 정보가 없습니다. 다시 로그인해주세요!");
+      router.push(`/login?status=before&page=gather/${id}`);
+    }
   }, [session]);
 
   return (
