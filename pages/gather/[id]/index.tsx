@@ -3,10 +3,10 @@ import "dayjs/locale/ko";
 import { Box } from "@chakra-ui/react";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
-import { useSession } from "next-auth/react";
 import { GATHER_COVER_IMAGE_ARR } from "../../../assets/gather";
 import Divider from "../../../components/atoms/Divider";
 import { MainLoading } from "../../../components/atoms/loaders/MainLoading";
