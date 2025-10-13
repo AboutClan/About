@@ -18,11 +18,23 @@ function StudyDateControl({ date, setDate }: { date: Dayjs; setDate: DispatchTyp
       alignItems="center"
       color="gray.800"
     >
-      <Box as="button" px={1} onClick={() => setDate((old) => old.subtract(1, "day"))}>
+      <Box
+        as="button"
+        px={1}
+        onClick={() => {
+          if (date.isAfter(leftMinDayjs)) setDate((old) => old.subtract(1, "day"));
+        }}
+      >
         <LeftArrowIcon isActive={date.isAfter(leftMinDayjs)} />
       </Box>
       <Box>{dayjsToFormat(date, "M월 D일")}</Box>
-      <Box as="button" px={1} onClick={() => setDate((old) => old.add(1, "day"))}>
+      <Box
+        as="button"
+        px={1}
+        onClick={() => {
+          if (date.isBefore(rightMaxDayjs)) setDate((old) => old.add(1, "day"));
+        }}
+      >
         <RightArrowIcon isActive={date.isBefore(rightMaxDayjs)} />
       </Box>
     </Flex>

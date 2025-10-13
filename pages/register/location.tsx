@@ -59,6 +59,7 @@ interface RegisterLocationLayoutProps {
   errorMessage: string;
   text?: string;
   isSlide?: boolean;
+  type?: "location" | "study";
 }
 
 export function RegisterLocationLayout({
@@ -69,13 +70,23 @@ export function RegisterLocationLayout({
   errorMessage,
   text,
   isSlide = true,
+  type = "location",
 }: RegisterLocationLayoutProps) {
   return (
     <>
       <RegisterLayout errorMessage={errorMessage} isSlide={isSlide}>
         <RegisterOverview>
-          <span>주 활동 장소를 입력해 주세요</span>
-          <span>모임 장소 매칭을 위한 것으로, 대략적으로만 입력해 주세요!</span>
+          {type === "location" ? (
+            <>
+              <span>주 활동 장소를 입력해 주세요</span>
+              <span>모임 추천과 매칭을 위한 것으로, 상세 지역은 공개되지 않아요!</span>
+            </>
+          ) : (
+            <>
+              <span>스터디 기준 위치를 입력해 주세요</span>
+              <span>해당 위치를 중심으로 가까운 스터디가 자동으로 매칭됩니다.</span>
+            </>
+          )}
         </RegisterOverview>
         <Box>
           <SearchLocation

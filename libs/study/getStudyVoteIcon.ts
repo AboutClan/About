@@ -141,6 +141,29 @@ ${
     </svg>`;
 };
 
+export const getStudyIcon3 = (text: string) => {
+  // wrapper는 반드시 SVG와 동일한 박스 크기로 고정
+  return `
+  <div style="position:relative; font-size:10px;  font-weight:600; text-align:center; width:36px; height:42px; display:block; box-sizing:border-box;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="42" viewBox="0 0 36 42" fill="none" style="display:block">
+      <rect x="2" width="32" height="32" rx="16" fill="#00C2B3"/>
+      <path d="M12.825 22.4831C12.4226 22.3081 12.1105 22.0661 11.8889 21.7569C11.6731 21.442 11.5652 21.0804 11.5652 20.6721C11.5652 20.3688 11.6439 19.9984 11.8014 19.561L14.881 11.6082C15.1668 10.8791 15.5809 10.3192 16.1234 9.92842C16.6716 9.5318 17.2957 9.3335 17.9956 9.3335C18.7014 9.3335 19.3255 9.5318 19.8679 9.92842C20.4162 10.3192 20.8332 10.8791 21.119 11.6082L24.1986 19.561C24.3561 20.0217 24.4348 20.3921 24.4348 20.6721C24.4348 21.0804 24.324 21.442 24.1024 21.7569C23.8866 22.0661 23.5774 22.3081 23.175 22.4831C22.895 22.6056 22.6092 22.6668 22.3176 22.6668C21.9035 22.6668 21.5185 22.5356 21.1627 22.2731C20.8128 22.0107 20.5532 21.6461 20.3841 21.1795L20.1829 20.5846H15.8347L15.6159 21.1795C15.4584 21.6345 15.2018 21.9961 14.846 22.2644C14.4961 22.5327 14.1082 22.6668 13.6824 22.6668C13.3908 22.6668 13.105 22.6056 12.825 22.4831ZM17.0333 16.98H18.9668L17.9956 13.5067L17.0333 16.98Z" fill="white"/>
+      <path d="M18.433 34.3999C18.2405 34.7332 17.7594 34.7332 17.5669 34.3999L15.7699 31.2874C15.5775 30.9541 15.818 30.5374 16.2029 30.5374L19.797 30.5374C20.1819 30.5374 20.4224 30.9541 20.23 31.2874L18.433 34.3999Z" fill="#00C2B3"/>
+      <g opacity="0.12" filter="url(#filter0_f_2023_1828)">
+        <ellipse cx="18" cy="38.1499" rx="16" ry="1" fill="#424242"/>
+      </g>
+      <defs>
+        <filter id="filter0_f_2023_1828" x="0" y="35.1499" width="36" height="6" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+          <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+          <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+          <feGaussianBlur stdDeviation="1" result="effect1_foregroundBlur_2023_1828"/>
+        </filter>
+      </defs>
+    </svg>
+    ${text && text !== "none" ? text : ""}
+  </div>`;
+};
+
 export const getCurrentLocationIcon = () => `
 <div style="
 width:16px;

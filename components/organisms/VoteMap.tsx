@@ -15,7 +15,9 @@ interface IVoteMap {
   circleCenter?: {
     lat: number;
     lon: number;
+    size?: "sm" | "md" | "lg";
   }[];
+  zoomChange?: (zoom: number) => void;
 }
 
 export default function VoteMap({
@@ -25,17 +27,17 @@ export default function VoteMap({
   resizeToggle,
   centerValue,
   circleCenter,
+  zoomChange,
 }: // circleCenter,
 IVoteMap) {
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<naver.maps.Map | null>(null);
   const mapElementsRef = useRef({
-    markers: [],
-    polylines: [],
-    infoWindow: [],
-    circle: null,
+    markers: [] as naver.maps.Marker[],
+    polylines: [] as naver.maps.Polyline[],
+    infoWindow: [] as naver.maps.InfoWindow[],
+    circles: [] as naver.maps.Circle[], // ← 배열로
   });
-
   useEffect(() => {
     if (!mapRef?.current || typeof naver === "undefined" || !mapOptions) return;
 
@@ -64,6 +66,19 @@ IVoteMap) {
   }, [resizeToggle]);
 
   useEffect(() => {
+    if (!zoomChange) return;
+    const map = mapInstanceRef.current;
+    if (!map || typeof naver === "undefined") return;
+    const zoomListener = naver.maps.Event.addListener(map, "zoom_changed", () => {
+      const newZoom = map.getZoom();
+      zoomChange(newZoom);
+    });
+    return () => {
+      if (zoomListener) naver.maps.Event.removeListener(zoomListener);
+    };
+  }, [markersOptions, zoomChange]);
+
+  useEffect(() => {
     const map = mapInstanceRef.current;
 
     if (!mapRef?.current || !map || typeof naver === "undefined") return;
@@ -72,12 +87,9 @@ IVoteMap) {
     mapElementsRef.current.markers.forEach((marker) => marker.setMap(null));
     mapElementsRef.current.polylines.forEach((polyline) => polyline.setMap(null));
     mapElementsRef.current.infoWindow.forEach((info) => info.close());
-    if (mapElementsRef.current.circle) {
-      mapElementsRef.current.circle.setMap(null);
-      mapElementsRef.current.circle = undefined;
-    }
+    mapElementsRef.current.circles.forEach((c) => c.setMap(null));
 
-    mapElementsRef.current = { markers: [], polylines: [], infoWindow: [], circle: undefined };
+    mapElementsRef.current = { markers: [], polylines: [], infoWindow: [], circles: [] };
     //새로운 옵션 적용
     markersOptions?.forEach((markerOptions) => {
       const marker = new naver.maps.Marker({
@@ -114,20 +126,39 @@ IVoteMap) {
     if (circleCenter) {
       circleCenter?.forEach((circle2) => {
         if (!circle2) return;
+        const radius = !circle2?.size
+          ? 550
+          : circle2?.size === "sm"
+          ? 1800
+          : circle2?.size === "md"
+          ? 1500
+          : 2000;
+
         const circle = new naver.maps.Circle({
           map: mapInstanceRef.current,
           center: new naver.maps.LatLng(circle2.lat, circle2.lon),
-          radius: 550,
-          strokeColor: "#007dfb",
+          radius: radius,
+          strokeColor: "var(--color-blue)",
           strokeOpacity: 0.8,
           strokeWeight: 1,
-          fillColor: "#007dfb",
+          fillColor: "var(--color-blue)",
           fillOpacity: 0.1,
         });
-        mapElementsRef.current.circle = circle;
+        const circle3 = new naver.maps.Circle({
+          map: mapInstanceRef.current,
+          center: new naver.maps.LatLng(circle2.lat, circle2.lon),
+          radius: radius * 1.3,
+          strokeColor: "var(--color-mint)",
+          strokeOpacity: 0.8,
+          strokeWeight: 1,
+          fillColor: "var(--color-mint)",
+          fillOpacity: 0.05,
+        });
+
+        mapElementsRef.current.circles.push(circle, circle3);
       });
     }
-  }, [markersOptions]);
+  }, [markersOptions, circleCenter]);
 
   useEffect(() => {
     if (!centerValue || !mapInstanceRef.current) return;

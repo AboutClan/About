@@ -1,12 +1,11 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import AlertModal from "../../../components/AlertModal";
 import PageIntro from "../../../components/atoms/PageIntro";
 import BottomNav from "../../../components/layouts/BottomNav";
 import MonthCalendar from "../../../components/molecules/MonthCalendar";
+import RangeSlider from "../../../components/molecules/RangeSlider";
 import { BottomFlexDrawerOptions } from "../../../components/organisms/drawer/BottomFlexDrawer";
 import RightDrawer from "../../../components/organisms/drawer/RightDrawer";
 import StudyVoteTimeRulletDrawer from "../../../components/services/studyVote/StudyVoteTimeRulletDrawer";
@@ -18,10 +17,14 @@ import { useStudySetQuery } from "../../../hooks/study/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { CalendarHeader } from "../../../modals/aboutHeader/DateCalendarModal";
 import { ModalLayout } from "../../../modals/Modals";
+import { RegisterLocationLayout } from "../../../pages/register/location";
 import { LocationProps } from "../../../types/common";
+import { DispatchType } from "../../../types/hooks/reactTypes";
 import { IStudyVoteTime } from "../../../types/models/studyTypes/studyInterActions";
+import { LocationDetailProps } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToStr } from "../../../utils/dateTimeUtils";
 import { getLocationSimpleText } from "../../../utils/stringUtils";
+import StudyExpectedMap from "../../study/StudyExpectedMap";
 import { LocationIcon } from "../../studyPage/StudyPageHeader";
 
 interface StudyDateDrawerProps {
@@ -41,14 +44,21 @@ function StudyApplyDrawer({
 }: StudyDateDrawerProps) {
   const toast = useToast();
 
-  const router = useRouter();
   const resetStudy = useResetStudyQuery();
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
   const [isModal, setIsModal] = useState(false);
   const [isStudyPlaceModal, setIsStudyPlaceModal] = useState(false);
+  const [voteLocation, setVoteLocation] = useState<LocationProps>(location);
+  const [rangeNum, setRangeNum] = useState(2);
+  const [isFirstPage, setIsFirstPage] = useState(true);
 
   const { data: userInfo } = useUserInfoQuery();
   const { data: studySet } = useStudySetQuery(dayjsToStr(dayjs()));
+
+  useEffect(() => {
+    if (location) setVoteLocation(location);
+    else if (userInfo?.locationDetail) setVoteLocation(userInfo.locationDetail);
+  }, [location, userInfo]);
 
   const defaultDates =
     studySet &&
@@ -111,6 +121,10 @@ function StudyApplyDrawer({
       toast("warning", "날짜를 선택해 주세요");
       return;
     }
+    if (isFirstPage) {
+      setIsFirstPage(false);
+      return;
+    }
     setIsTimeDrawer(true);
   };
 
@@ -147,7 +161,7 @@ function StudyApplyDrawer({
   };
 
   const typeToast = useTypeToast();
-  const locationTextArr = userInfo?.locationDetail?.name?.split(" ");
+  const locationTextArr = voteLocation?.name?.split(" ");
 
   return (
     <>
@@ -195,45 +209,69 @@ function StudyApplyDrawer({
       >
         <PageIntro
           main={{
-            first: "스터디 희망 날짜를 선택해 주세요.",
+            first: isFirstPage
+              ? "스터디 희망 날짜를 선택해 주세요."
+              : "스터디 매칭 범위를 설정해 주세요.",
           }}
-          sub="여러 날짜를 한번에 신청할 수도 있습니다."
+          sub={
+            isFirstPage
+              ? "여러 날짜를 한번에 신청할 수도 있습니다."
+              : "설정한 거리 안에서 가장 가까운 스터디 장소로 매칭됩니다."
+          }
         />
-        <Box fontSize="20px" mb={4} pb={4} px={2} borderBottom="var(--border)">
-          <CalendarHeader
-            goNext={() => setDate((old) => old.add(1, "month"))}
-            goPrev={() => setDate((old) => old.subtract(1, "month"))}
-            leftDisabled={date.month() === dayjs().month()}
-            rightDisabled={date.month() === dayjs().month() + 1}
-            date={dayjsToStr(date)}
-          />
-        </Box>
-
-        <MonthCalendar
-          standardDate={dayjsToStr(date)}
-          selectedDates={selectedDates}
-          func={handleClickDate}
-          passedDisabled
-          mintDateArr={canChange ? [] : defaultDates}
-          isTodayInclude={dayjs().hour() < STUDY_RESULT_HOUR ? true : false}
-        />
-        <Box h={3} />
-        {canChange ? (
-          <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
-            스터디를 취소하는 경우 선택된 날짜를 해제해 주세요.
-          </Box>
-        ) : !canChange && defaultDates.length ? (
-          <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
-            <Box as="span" color="mint">
-              민트색
-            </Box>{" "}
-            숫자는 이미 참여중인 스터디 날짜입니다.
-          </Box>
-        ) : null}
-        <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
+        {isFirstPage ? (
+          <>
+            <Box fontSize="20px" mb={4} pb={2} px={2} borderBottom="var(--border)">
+              <CalendarHeader
+                goNext={() => setDate((old) => old.add(1, "month"))}
+                goPrev={() => setDate((old) => old.subtract(1, "month"))}
+                leftDisabled={date.month() === dayjs().month()}
+                rightDisabled={date.month() === dayjs().month() + 1}
+                date={dayjsToStr(date)}
+              />
+            </Box>
+            <MonthCalendar
+              standardDate={dayjsToStr(date)}
+              selectedDates={selectedDates}
+              func={handleClickDate}
+              passedDisabled
+              mintDateArr={canChange ? [] : defaultDates}
+              isTodayInclude={dayjs().hour() < STUDY_RESULT_HOUR ? true : false}
+            />
+            <Box h={3} />
+            {canChange ? (
+              <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
+                스터디를 취소하는 경우 선택된 날짜를 해제해 주세요.
+              </Box>
+            ) : !canChange && defaultDates.length ? (
+              <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
+                <Box as="span" color="mint">
+                  민트색
+                </Box>{" "}
+                숫자는 이미 참여중인 스터디 날짜입니다.
+              </Box>
+            ) : null}
+          </>
+        ) : (
+          <>
+            {/* <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
           최대 일주일 이내의 스터디만 신청할 수 있습니다.
-        </Box>
-
+        </Box> */}
+            <Box fontSize="18px" mb={5} fontWeight={600}>
+              스터디 매칭 범위
+            </Box>
+            <RangeSlider
+              numberArr={[0, 1, 2, 3]}
+              defaultNums={[0, rangeNum]}
+              isNumber={false}
+              setNums={(num: number[]) => {
+                if (num[1] === 0) return;
+                setRangeNum(num[1]);
+              }}
+            />
+            {voteLocation && <StudyExpectedMap centerLocation={voteLocation} rangeNum={rangeNum} />}
+          </>
+        )}
         <BottomNav isSlide={false} text="다 음" onClick={handleBottomNav} />
       </RightDrawer>
       {isTimeDrawer && (
@@ -277,29 +315,73 @@ function StudyApplyDrawer({
           스터디 신청을 완전히 취소하시겠어요?
         </ModalLayout>
       )}
+
       {isStudyPlaceModal && (
-        <AlertModal
-          options={{
-            title: "스터디 위치 설정",
-            text: "이 동",
-            func: () => {
-              router.push(`/studyPage?date=${dayjsToStr(dayjs())}&drawer=location`);
-            },
-          }}
-          colorType="mint"
-          setIsModal={setIsStudyPlaceModal}
-        >
-          설정된 위치 기준으로 가까운 스터디가 매칭돼요. 장소 변경 페이지로 이동할까요?
-        </AlertModal>
+        <PlaceDrawer
+          defaultLocation={voteLocation}
+          setVoteLocation={setVoteLocation}
+          onClose={() => setIsStudyPlaceModal(false)}
+        />
+        // <AlertModal
+        //   options={{
+        //     title: "스터디 위치 설정",
+        //     text: "이 동",
+        //     func: () => {
+        //       router.push(`/studyPage?date=${dayjsToStr(dayjs())}&drawer=location`);
+        //     },
+        //   }}
+        //   colorType="mint"
+        //   setIsModal={setIsStudyPlaceModal}
+        // >
+        //   설정된 위치 기준으로 가까운 스터디가 매칭돼요. 장소 변경 페이지로 이동할까요?
+        // </AlertModal>
       )}
     </>
   );
 }
 
+function PlaceDrawer({
+  defaultLocation,
+  setVoteLocation,
+  onClose,
+}: {
+  onClose: () => void;
+  defaultLocation: LocationDetailProps;
+  setVoteLocation: DispatchType<LocationDetailProps>;
+}) {
+  const [placeInfo, setPlaceInfo] = useState<LocationProps>(defaultLocation);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleButton = () => {
+    if (!placeInfo) {
+      setErrorMessage("정확한 장소를 입력해 주세요.");
+      return;
+    }
+    setVoteLocation(placeInfo);
+    onClose();
+    //  changeLocationDetail(placeInfo);
+  };
+  return (
+    <RightDrawer title="위치 설정" px={false} onClose={onClose}>
+      <RegisterLocationLayout
+        handleButton={handleButton}
+        placeInfo={placeInfo}
+        setPlaceInfo={setPlaceInfo}
+        text="변 경"
+        errorMessage={errorMessage}
+        isSlide={false}
+        type="study"
+      />
+    </RightDrawer>
+  );
+}
+
 function RightTriangleIcon() {
-  return <svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
-    <path d="M6 5L0.75 0.669872L0.75 9.33013L6 5Z" fill="var(--gray-200)" />
-  </svg>
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="6" height="10" viewBox="0 0 6 10" fill="none">
+      <path d="M6 5L0.75 0.669872L0.75 9.33013L6 5Z" fill="var(--gray-200)" />
+    </svg>
+  );
 }
 
 export default StudyApplyDrawer;

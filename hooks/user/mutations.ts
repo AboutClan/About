@@ -10,7 +10,7 @@ import {
   AvatarProps,
   IUser,
   IUserRegisterFormWriting,
-  LocationDeatilProps,
+  LocationDetailProps,
   UserRole,
 } from "../../types/models/userTypes/userInfoTypes";
 import { IPointSystem } from "../../types/services/pointSystem";
@@ -78,7 +78,7 @@ type UserInfoFieldParam<T> = T extends "avatar"
   : T extends "comment"
   ? { comment: string }
   : T extends "locationDetail"
-  ? LocationDeatilProps
+  ? LocationDetailProps
   : T extends "monthStudyTarget"
   ? { monthStudyTarget: number }
   : T extends "badge"

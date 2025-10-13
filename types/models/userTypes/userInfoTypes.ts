@@ -66,7 +66,7 @@ export interface UserSimpleInfoProps {
   };
 }
 
-export interface LocationDeatilProps {
+export interface LocationDetailProps {
   name: string;
   address: string;
   latitude: number;
@@ -111,7 +111,7 @@ export interface IUserRegisterFormWriting {
   majors: { department: string; detail: string }[];
   comment: string;
   telephone: string;
-  locationDetail: LocationDeatilProps;
+  locationDetail: LocationDetailProps;
   introduceText?: string;
 }
 export interface AvatarProps {

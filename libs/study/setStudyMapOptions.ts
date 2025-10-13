@@ -69,8 +69,8 @@ export const getStudyPlaceMarkersOptions = (
             place._id === selectedId
               ? getStudyIcon2("none", null, "orange")
               : getStudyIcon2("none"),
-          size: new naver.maps.Size(72, 72),
-          anchor: new naver.maps.Point(36, 44),
+          size: new naver.maps.Size(37, 45),
+          anchor: new naver.maps.Point(18.5, 45),
         },
       });
     });

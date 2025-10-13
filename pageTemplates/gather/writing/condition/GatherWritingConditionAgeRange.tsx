@@ -1,15 +1,7 @@
-import {
-  Box,
-  Button,
-  Flex,
-  RangeSlider,
-  RangeSliderFilledTrack,
-  RangeSliderThumb,
-  RangeSliderTrack,
-} from "@chakra-ui/react";
-import { motion } from "framer-motion";
+import { Button, Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import styled from "styled-components";
+
+import RangeSlider from "../../../../components/molecules/RangeSlider";
 
 interface IGatherWritingConditionAgeRange {
   age: number[];
@@ -70,50 +62,9 @@ function GatherWritingConditionAgeRange({ age, setAge }: IGatherWritingCondition
           </Button>
         ))}
       </Flex>
-      <Layout initial={{ opacity: 0, y: -30 }} animate={{ opacity: 1, y: 0 }}>
-        <RangeSlider
-          value={age}
-          min={AGE_BAR[0]}
-          max={AGE_BAR.slice(-1)[0]}
-          step={1}
-          width="97%"
-          alignSelf="center"
-          onChange={(value) => setAge(value)}
-        >
-          <RangeSliderTrack bg="var(--gray-400)">
-            <RangeSliderFilledTrack bg="var(--color-mint)" />
-          </RangeSliderTrack>
-          <RangeSliderThumb
-            boxSize={4}
-            index={0}
-            bg="gray.200"
-            border="var(--border-main)"
-            _focus={{ boxShadow: "none" }}
-          />
-          <RangeSliderThumb
-            boxSize={4}
-            index={1}
-            bg="gray.200"
-            border="var(--border-main)"
-            _focus={{ boxShadow: "none" }}
-          />
-        </RangeSlider>
-        <Flex justify="space-between" mt={3}>
-          {AGE_BAR.map((num) => (
-            <Box color="gray.600" fontSize="12px" key={num}>
-              {num}
-            </Box>
-          ))}
-        </Flex>
-      </Layout>
+      <RangeSlider defaultNums={age} setNums={setAge} numberArr={AGE_BAR} />
     </>
   );
 }
-
-const Layout = styled(motion.div)`
-  margin: 0 var(--gap-1);
-  display: flex;
-  flex-direction: column;
-`;
 
 export default GatherWritingConditionAgeRange;
