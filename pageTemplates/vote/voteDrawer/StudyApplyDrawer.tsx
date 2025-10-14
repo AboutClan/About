@@ -153,11 +153,11 @@ function StudyApplyDrawer({
       text: "신청 완료",
       func: () => {
         voteDateArr({
-          locationDetail: location
-            ? location.address
+          locationDetail: voteLocation
+            ? voteLocation.address
             : getLocationSimpleText(userInfo.locationDetail.address),
-          latitude: location ? location.latitude : userInfo.locationDetail.latitude,
-          longitude: location ? location.longitude : userInfo.locationDetail.longitude,
+          latitude: voteLocation ? voteLocation.latitude : userInfo.locationDetail.latitude,
+          longitude: voteLocation ? voteLocation.longitude : userInfo.locationDetail.longitude,
           start: voteTime.start,
           end: voteTime.end,
         });

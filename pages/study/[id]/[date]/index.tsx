@@ -97,8 +97,8 @@ export default function Page() {
       ? findStudy?.members.find((member) => member.user._id === userInfo?._id)
       : participationsSet
           ?.find((par) => par.study.some((study) => study.user._id === userInfo?._id))
-          ?.study?.filter((who) => who.user._id === userInfo?._id);
-
+          ?.study?.find((who) => who.user._id === userInfo?._id);
+  
   const myStudyArr = getMyStudyDateArr(studySet, userInfo?._id);
 
   const findTodayStudy = myStudyArr?.find((myStudy) => myStudy.date === date);

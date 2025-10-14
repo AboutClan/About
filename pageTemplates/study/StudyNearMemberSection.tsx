@@ -41,7 +41,6 @@ function StudyNearMemberSection({ myStudyInfo, members }: StudyNearMemberSection
   const myCenterLocation = myStudyInfo?.location || userInfo?.locationDetail;
 
   const center = { latitude: myCenterLocation?.latitude, longitude: myCenterLocation?.longitude };
-
   const [isOpen, setIsOpen] = useState(false);
 
   // 위·경 각각 ±0.05도 이내
