@@ -51,8 +51,7 @@ function GroupHeader({ group }: IGroupHeader) {
     session?.user.uid === "3224546232" ||
     group?.participants.some((par) => par.user?.uid === session?.user.uid);
 
-  const findMyInfo = group?.participants.find((par, idx) => {
-    if (!par?.user) console.log(5, par, idx);
+  const findMyInfo = group?.participants.find((par) => {
     return par.user._id === userInfo?._id;
   });
 

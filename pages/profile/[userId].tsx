@@ -28,7 +28,6 @@ import { transferUserName } from "../../recoils/transferRecoils";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { IUserRequest } from "../../types/models/userTypes/userRequestTypes";
 import { getDateDiff } from "../../utils/dateTimeUtils";
-import { decodeByAES256 } from "../../utils/utils";
 
 function ProfilePage() {
   const { data: session } = useSession();
@@ -53,13 +52,11 @@ function ProfilePage() {
   const { data: reviewArr } = useUserReviewQuery(user?.uid, {
     enabled: !!user?.uid,
   });
-  console.log(51, reviewArr);
+
   const [isMyFriend, setIsMyFriend] = useState(false);
   const [isFirstPage, setIsFirstPage] = useState(true);
   const [declareType, setDeclareType] = useState<"distance" | "block">(null);
   const [text, setText] = useState("");
-
-  console.log(decodeByAES256("U2FsdGVkX1805x7IvBX1u+aW/gmnqo4pSrMqua3v8a0="));
 
   useEffect(() => {
     setIsFirstPage(true);

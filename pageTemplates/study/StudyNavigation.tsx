@@ -223,7 +223,7 @@ function StudyNavigation({
         }
         break;
       case "soloRealTimes":
-        console.log(myStatus);
+        console.log(52, myStatus, myStudyStatus);
         if (myStatus === "pending") {
           if (myStudyStatus === "otherParticipation") {
             return {
@@ -253,8 +253,6 @@ function StudyNavigation({
   };
 
   const handleDirectAction = (drawerType: DirectAction) => {
-    console.log(12, drawerType, findStudy);
-
     switch (drawerType) {
       case "dailyVote":
         participate({ placeId: id, ...voteTime });
@@ -346,7 +344,7 @@ function StudyNavigation({
   //     });
   //   }
   // };
-
+  console.log(15, myStudyInfo);
   const navigationProps = getNavigationProps(studyType, myStudyStatus);
 
   return (

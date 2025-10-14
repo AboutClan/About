@@ -30,7 +30,7 @@ function StoreMembersModal({ setIsModal, members }: StoreMembersModalProps) {
   };
 
   const arr = chunkArray(members, 5);
-  console.log(124, arr);
+
   return (
     <ModalLayout title="참여 현황" footerOptions={{}} setIsModal={setIsModal}>
       <StyledSwiper

@@ -113,7 +113,7 @@ function StorePage() {
   ];
 
   const { data: prizeData } = usePrizeQuery(0, "store");
-  console.log(52, prizeData);
+
   const textArr = shuffleArray(prizeData)
     ?.filter((props) => props.description.split(" "))
     ?.slice(0, 5)

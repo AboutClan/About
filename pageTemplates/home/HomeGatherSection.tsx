@@ -13,7 +13,7 @@ function HomeGatherSection() {
 
   const firstData = gathers?.slice(0, 6);
   const secondData = gathers?.slice(6, 12);
-  console.log(gathers);
+
   return (
     <>
       <AnimatePresence initial={false}>

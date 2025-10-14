@@ -73,7 +73,7 @@ function DetailInfo({ user, groups }: { user: IUser; groups: string[] }) {
             ]
           : []),
       ];
-  console.log(35, user?.telephone, itemMapping);
+
   return (
     <BlurredPart isBlur={isGuest} text={isPrivate ? "프로필 비공개 (친구에게만 공개)" : undefined}>
       <Flex flexDir="column" py={3}>

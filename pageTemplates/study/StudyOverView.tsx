@@ -29,7 +29,7 @@ function StudyOverview({ isMyStudy, placeInfo, date, studyType }: IStudyOverview
     studyType,
     dayjs(date).startOf("day").isAfter(dayjs()),
   );
-  console.log(123, placeInfo);
+
   const distance = getDistanceFromLatLonInKm(
     placeInfo?.location.latitude,
     placeInfo?.location.longitude,

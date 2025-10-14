@@ -58,22 +58,22 @@ export default function Page() {
     studyType !== "soloRealTimes" &&
     !!date &&
     dayjs(date).startOf("day").isBefore(dayjs().startOf("day"));
-  const isPassedSolo = studyType === "soloRealTimes" && dateDayjs.isBefore(dayjs());
-  console.log(54, isPassedSolo);
+  const isPassedSolo = studyType === "soloRealTimes" && dateDayjs.isBefore(dayjs().startOf("day"));
+
   const { data: studySet } = useStudySetQuery(
     studyType === "participations" ? dayjsToStr(dayjs()) : date,
     { enabled: !!date && !isPassedDate },
   );
+
   const { data: studyPassedData } = useStudyPassedDayQuery(
     isPassedSolo ? dayjsToStr(dateDayjs) : date,
     {
       enabled: !!isPassedDate || !!isPassedSolo,
     },
   );
-  console.log(5555, studyPassedData, isPassedDate, isPassedSolo);
+
   const [modalType, setModalType] = useState<"studyLink" | "review">();
 
-  console.log(dateDayjs);
   useEffect(() => {
     const handlePopState = () => {
       if (backUrl) {
@@ -116,7 +116,7 @@ export default function Page() {
       : participationsSet
           ?.find((par) => par.study.some((study) => study.user._id === userInfo?._id))
           ?.study?.find((who) => who.user._id === userInfo?._id);
-
+  console.log(99, myStudyInfo);
   const myStudyArr = getMyStudyDateArr(studySet, userInfo?._id);
 
   const findTodayStudy = myStudyArr?.find((myStudy) => myStudy.date === date);
@@ -155,7 +155,7 @@ export default function Page() {
   const isMyReview = placeInfo?.reviews?.some((review) => review.user._id === userInfo?._id);
 
   const isOpenStudy = studyType !== "participations" && studyType !== "soloRealTimes";
-
+  console.log(99, studyPassedData, studySet);
   return (
     <>
       {isPassedSolo || studyPassedData || studySet ? (
@@ -200,7 +200,9 @@ export default function Page() {
                       date={dayjsToStr(dateDayjs)}
                       members={members || []}
                       studyType={studyType}
-                      hasStudyLink={myStudyStatus === "participation"}
+                      hasStudyLink={
+                        myStudyStatus === "participation" && studyType !== "soloRealTimes"
+                      }
                     />
                   )}
                 </Box>

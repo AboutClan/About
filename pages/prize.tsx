@@ -19,7 +19,6 @@ function Prize() {
   const [cards, setCards] = useState([]);
 
   const { data, isLoading } = usePrizeQuery(cursor, null);
-  console.log(53, data, cursor);
 
   useEffect(() => {
     if (data && firstLoad.current) firstLoad.current = false;
@@ -45,7 +44,7 @@ function Prize() {
   }, []);
 
   let stepDate: string;
-  console.log(12, cards);
+
   return (
     <>
       <Header title="이벤트 당첨 기록" />{" "}

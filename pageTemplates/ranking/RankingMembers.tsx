@@ -34,7 +34,6 @@ const GIFT_MAP = {
 };
 
 function RankingMembers({ users, fieldName }: IRankingMembers) {
-  console.log(55555, users, fieldName);
   const { data: session } = useSession();
   const [giftContent, setGiftContent] = useState<{ title: string; text: string }>();
 

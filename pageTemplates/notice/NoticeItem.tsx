@@ -20,7 +20,6 @@ import { dayjsToStr } from "../../utils/dateTimeUtils";
 
 function NoticeItem() {
   const { data: userInfo } = useUserInfoQuery();
-  console.log(userInfo);
 
   useEffect(() => {
     localStorage.setItem(NOTICE_ALERT, NOTICE_ARR.length + "");

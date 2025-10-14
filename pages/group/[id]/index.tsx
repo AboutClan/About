@@ -82,7 +82,7 @@ function GroupDetail() {
     setGatherDataToCardCol(gathers, true, () => {
       setBackUrl(`/group/${id}`);
     });
-  console.log(group);
+ 
   return (
     <>
       {group && <GroupHeader group={group} />}

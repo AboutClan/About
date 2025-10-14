@@ -45,7 +45,7 @@ export default function GatherMain() {
       firstLoad.current = false;
     }
   }, [gatherData]);
-  console.log(2, gathers);
+
   useEffect(() => {
     if (!gathers) return;
     const temp =
@@ -79,7 +79,7 @@ export default function GatherMain() {
       if (loader.current) observer.unobserve(loader.current);
       observer.disconnect();
     };
-  }, [isLoading]); 
+  }, [isLoading]);
 
   return (
     <Box mb="50px">

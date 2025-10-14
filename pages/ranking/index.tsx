@@ -57,7 +57,7 @@ function Ranking() {
   const { data: allUserData } = useAllUserDataQuery(fieldName, {
     enabled: !!fieldName,
   });
-  console.log(52, allUserData);
+
   useEffect(() => {
     setSortedUsers(null);
 

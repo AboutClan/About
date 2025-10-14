@@ -16,7 +16,7 @@ interface StudyNearMapProps {
 
 function StudyNearMap({ centerPlace }: StudyNearMapProps) {
   const { data } = useStudyNearPlaceQuery(centerPlace?._id, { enabled: !!centerPlace?._id });
-  console.log(52, centerPlace, data);
+
   const [isMapExpansion, setIsMapExpansion] = useState(false);
 
   const [mapOptions, setMapOptions] = useState<IMapOptions>();

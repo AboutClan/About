@@ -70,7 +70,7 @@ export default function StudyMembers({ studyType, date, members, hasStudyLink }:
               dayjs(date2).isAfter(dayjs(date).subtract(1, "day")),
             ),
           }));
-  console.log(13, filterMembers);
+
   const userCardArr: IProfileCommentCard[] = filterMembers?.map((member) => {
     const user = member.user;
     // const badgeText = locationMapping?.find((mapping) => mapping?.id === user._id)?.branch;
@@ -83,7 +83,6 @@ export default function StudyMembers({ studyType, date, members, hasStudyLink }:
         memo: participant.user.comment,
         rightComponent: (
           <Badge variant="subtle" colorScheme="blue" size="md">
-            {/* {!badgeText ? "알 수 없음" : badgeText} */}
             {participant.dates.map((date, idx) => {
               const newMonth = dayjs(date).month();
               if (month !== newMonth && idx !== 0) {

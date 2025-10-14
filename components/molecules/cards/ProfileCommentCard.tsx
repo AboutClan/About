@@ -36,6 +36,7 @@ export default function ProfileCommentCard({
   isNoBorder,
   crownType,
 }: IProfileCommentCard) {
+  console.log(hasCommentButton);
   const [isCommentModal, setIsCommentModal] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [text, setText] = useState(comment?.comment || "");
@@ -58,7 +59,6 @@ export default function ProfileCommentCard({
       <Flex py={2.5} align="center" {...(!isNoBorder && { borderBottom: "var(--border)" })}>
         {leftComponent && <Box mr="16px">{leftComponent}</Box>}
         <Avatar user={user} size="md1" />
-
         <Flex direction="column" flex={0.95} justify="center" ml={3} my={1}>
           <Flex align="center" mb={memo || comment ? 1 : 0}>
             <Box lineHeight="20px" mr={1} fontWeight="semibold" fontSize="13px">
@@ -71,7 +71,7 @@ export default function ProfileCommentCard({
                 <CrownIcon color={crownType === "main" ? "yellow" : "gray"} />
               </Flex>
             )}
-            {hasCommentButton && (
+            {false && (
               <Button ml={1} variant="unstyled" onClick={() => setIsCommentModal(true)}>
                 <ChatTalkIcon isActive={!!comment} />
               </Button>
@@ -139,13 +139,15 @@ const RightComponentContainer = styled.div`
 `;
 
 function EditIcon() {
-  return <svg
-    xmlns="http://www.w3.org/2000/svg"
-    height="14px"
-    viewBox="0 -960 960 960"
-    width="14px"
-    fill="var(--color-mint)"
-  >
-    <path d="M120-120v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm584-528 56-56-56-56-56 56 56 56Z" />
-  </svg>
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="14px"
+      viewBox="0 -960 960 960"
+      width="14px"
+      fill="var(--color-mint)"
+    >
+      <path d="M120-120v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm584-528 56-56-56-56-56 56 56 56Z" />
+    </svg>
+  );
 }

@@ -121,7 +121,7 @@ const Login: NextPage<{
       },
     },
   };
-  console.log(53, detectDevice());
+
   return (
     <>
       <Box
