@@ -223,6 +223,7 @@ function StudyNavigation({
         }
         break;
       case "soloRealTimes":
+        console.log(myStatus);
         if (myStatus === "pending") {
           if (myStudyStatus === "otherParticipation") {
             return {

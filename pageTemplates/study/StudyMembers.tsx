@@ -165,7 +165,11 @@ export default function StudyMembers({ studyType, date, members, hasStudyLink }:
           fontSize="16px"
           textAlign="center"
         >
-          <Box as="p">현재 참여중인 멤버가 없습니다.</Box>
+          <Box as="p">
+            {studyType === "soloRealTimes"
+              ? "첫 번째로 공부 인증하면 당첨 확률 UP!"
+              : "현재 참여중인 멤버가 없습니다."}
+          </Box>
         </Flex>
       )}
       {hasStudyLink && (

@@ -4,7 +4,7 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 
-import { MainLoading } from "../../../../components/atoms/loaders/MainLoading";
+import { MainLoading, MainLoadingAbsolute } from "../../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../../components/layouts/PageSlide";
 import { useUserInfo } from "../../../../hooks/custom/UserHooks";
 import { useStudyPassedDayQuery, useStudySetQuery } from "../../../../hooks/study/queries";
@@ -42,21 +42,38 @@ export default function Page() {
   const searchParams = useSearchParams();
   const { id, date } = useParams<{ id: string; date: string }>() || {};
   const userInfo = useUserInfo();
-  const isPassedDate = !!date && dayjs(date).startOf("day").isBefore(dayjs().startOf("day"));
   const [backUrl, setBackUrl] = useRecoilState(backUrlState);
 
   const studyType = searchParams.get("type") as StudyType;
 
+  const [dateDayjs, setDateDayjs] = useState(
+    studyType === "soloRealTimes"
+      ? dayjs(date)
+      : date === dayjsToStr(dayjs()) && getHour() >= 9
+      ? dayjs(date).add(1, "day")
+      : dayjs(date),
+  );
+
+  const isPassedDate =
+    studyType !== "soloRealTimes" &&
+    !!date &&
+    dayjs(date).startOf("day").isBefore(dayjs().startOf("day"));
+  const isPassedSolo = studyType === "soloRealTimes" && dateDayjs.isBefore(dayjs());
+  console.log(54, isPassedSolo);
   const { data: studySet } = useStudySetQuery(
     studyType === "participations" ? dayjsToStr(dayjs()) : date,
     { enabled: !!date && !isPassedDate },
   );
-  const { data: studyPassedData } = useStudyPassedDayQuery(date, {
-    enabled: !!isPassedDate,
-  });
-
+  const { data: studyPassedData } = useStudyPassedDayQuery(
+    isPassedSolo ? dayjsToStr(dateDayjs) : date,
+    {
+      enabled: !!isPassedDate || !!isPassedSolo,
+    },
+  );
+  console.log(5555, studyPassedData, isPassedDate, isPassedSolo);
   const [modalType, setModalType] = useState<"studyLink" | "review">();
 
+  console.log(dateDayjs);
   useEffect(() => {
     const handlePopState = () => {
       if (backUrl) {
@@ -75,9 +92,10 @@ export default function Page() {
     };
   }, [backUrl]);
 
-  const studyData = isPassedDate
-    ? studyPassedData && studyPassedData[studyType]
-    : studySet && studySet[studyType];
+  const studyData =
+    isPassedDate || isPassedSolo
+      ? studyPassedData && studyPassedData[studyType]
+      : studySet && studySet[studyType];
 
   const participationsSet =
     studyType === "participations" && (studyData as StudyParticipationsSetProps[]);
@@ -98,7 +116,7 @@ export default function Page() {
       : participationsSet
           ?.find((par) => par.study.some((study) => study.user._id === userInfo?._id))
           ?.study?.find((who) => who.user._id === userInfo?._id);
-  
+
   const myStudyArr = getMyStudyDateArr(studySet, userInfo?._id);
 
   const findTodayStudy = myStudyArr?.find((myStudy) => myStudy.date === date);
@@ -136,15 +154,11 @@ export default function Page() {
 
   const isMyReview = placeInfo?.reviews?.some((review) => review.user._id === userInfo?._id);
 
-  const [dateDayjs, setDateDayjs] = useState(
-    date === dayjsToStr(dayjs()) && getHour() >= 9 ? dayjs(date).add(1, "day") : dayjs(date),
-  );
-
   const isOpenStudy = studyType !== "participations" && studyType !== "soloRealTimes";
-  console.log(52, members);
+
   return (
     <>
-      {studyPassedData || studySet ? (
+      {isPassedSolo || studyPassedData || studySet ? (
         <>
           <StudyHeader date={date} placeInfo={placeInfo} />
           <Box mb={5}>
@@ -169,15 +183,27 @@ export default function Page() {
               {isOpenStudy && <StudyTimeBoard members={members as StudyConfirmedMemberProps[]} />}
               <Box h="1px" bg="gray.100" my={4} />
               <Box pb={2} pos="relative">
-                {studyType === "participations" && (
-                  <StudyDateControl date={dateDayjs} setDate={setDateDayjs} />
+                {(studyType === "soloRealTimes" || studyType === "participations") && (
+                  <StudyDateControl
+                    date={dateDayjs}
+                    setDate={setDateDayjs}
+                    isStudy={studyType === "soloRealTimes"}
+                  />
                 )}
-                <StudyMembers
-                  date={dayjsToStr(dateDayjs)}
-                  members={members || []}
-                  studyType={studyType}
-                  hasStudyLink={myStudyStatus === "participation"}
-                />
+                <Box minH="480px">
+                  {isPassedSolo && !studyPassedData ? (
+                    <Box pos="relative" minH="140px">
+                      <MainLoadingAbsolute size="sm" />
+                    </Box>
+                  ) : (
+                    <StudyMembers
+                      date={dayjsToStr(dateDayjs)}
+                      members={members || []}
+                      studyType={studyType}
+                      hasStudyLink={myStudyStatus === "participation"}
+                    />
+                  )}
+                </Box>
               </Box>
               {studyType === "participations" && (
                 <>
@@ -203,7 +229,7 @@ export default function Page() {
           {userInfo?.role !== "guest" && (
             <StudyNavigation
               myStudyInfo={myStudyInfo}
-              date={date}
+              date={isPassedSolo ? dayjsToStr(dateDayjs) : date}
               id={id}
               myStudyStatus={myStudyStatus}
               studyType={studyType}

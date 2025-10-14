@@ -4,7 +4,15 @@ import dayjs, { Dayjs } from "dayjs";
 import { DispatchType } from "../../types/hooks/reactTypes";
 import { dayjsToFormat, getHour } from "../../utils/dateTimeUtils";
 
-function StudyDateControl({ date, setDate }: { date: Dayjs; setDate: DispatchType<Dayjs> }) {
+function StudyDateControl({
+  date,
+  setDate,
+  isStudy,
+}: {
+  date: Dayjs;
+  setDate: DispatchType<Dayjs>;
+  isStudy: boolean;
+}) {
   const leftMinDayjs = dayjs().add(getHour() < 9 ? 0 : 1, "day");
   const rightMaxDayjs = dayjs().add(getHour() < 9 ? 6 : 7, "day");
 
@@ -22,20 +30,23 @@ function StudyDateControl({ date, setDate }: { date: Dayjs; setDate: DispatchTyp
         as="button"
         px={1}
         onClick={() => {
-          if (date.isAfter(leftMinDayjs)) setDate((old) => old.subtract(1, "day"));
+          if (isStudy || date.isAfter(leftMinDayjs)) setDate((old) => old.subtract(1, "day"));
         }}
       >
-        <LeftArrowIcon isActive={date.isAfter(leftMinDayjs)} />
+        <LeftArrowIcon isActive={isStudy || date.isAfter(leftMinDayjs)} />
       </Box>
       <Box>{dayjsToFormat(date, "M월 D일")}</Box>
       <Box
         as="button"
         px={1}
         onClick={() => {
-          if (date.isBefore(rightMaxDayjs)) setDate((old) => old.add(1, "day"));
+          if (isStudy ? date.isBefore(dayjs().startOf("day")) : date.isBefore(rightMaxDayjs))
+            setDate((old) => old.add(1, "day"));
         }}
       >
-        <RightArrowIcon isActive={date.isBefore(rightMaxDayjs)} />
+        <RightArrowIcon
+          isActive={isStudy ? date.isBefore(dayjs().startOf("day")) : date.isBefore(rightMaxDayjs)}
+        />
       </Box>
     </Flex>
   );
