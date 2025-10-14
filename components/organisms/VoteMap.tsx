@@ -131,8 +131,8 @@ IVoteMap) {
           : circle2?.size === "sm"
           ? 1800
           : circle2?.size === "md"
-          ? 1500
-          : 2000;
+          ? 2700
+          : 4500;
 
         const circle = new naver.maps.Circle({
           map: mapInstanceRef.current,
