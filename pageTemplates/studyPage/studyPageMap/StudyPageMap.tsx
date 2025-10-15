@@ -2,6 +2,7 @@ import { Box } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
+import clustering from "density-clustering";
 import { MainLoading, MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
 import ScreenOverlay from "../../../components/atoms/ScreenOverlay";
 import VoteMap from "../../../components/organisms/VoteMap";
@@ -39,6 +40,47 @@ function StudyPageMap({ isDefaultOpen = false, onClose, handleVotePick }: StudyP
   const [filterType, setFilterType] = useState<"main" | "all">("main");
 
   const { data: placeData, isLoading: isLoading2 } = useStudyPlacesQuery(filterType, null);
+
+  useEffect(() => {
+    if (!placeData || placeData.length === 0) return;
+
+    // 1️⃣ [lat, lon] 형태로 변환
+    const data2 = placeData.map((p) => [p.location.latitude, p.location.longitude]);
+
+    // 2️⃣ DBSCAN 실행
+    const DBSCAN = new clustering.DBSCAN();
+    const eps = 0.01; // 약 1km
+    const minPts = 2;
+    const clusters = DBSCAN.run(data2, eps, minPts);
+
+    // 3️⃣ 중심점 계산 함수
+    const calcCentroid = (points: number[][]) => {
+      const sum = points.reduce((acc, [lat, lon]) => [acc[0] + lat, acc[1] + lon], [0, 0]);
+      const count = points.length;
+      return [sum[0] / count, sum[1] / count]; // [평균 lat, 평균 lon]
+    };
+
+    // 4️⃣ 클러스터 중심 계산
+    const clusterInfo = clusters.map((cluster) => {
+      const points = cluster.map((idx) => data2[idx]);
+      const center = calcCentroid(points);
+      const count = points.length;
+      return { center, count, type: "cluster" };
+    });
+
+    // 5️⃣ 노이즈도 같은 형식으로 추가
+    const noiseInfo = DBSCAN.noise.map((idx) => {
+      const point = data2[idx];
+      return { center: point, count: 1, type: "noise" };
+    });
+
+    // 6️⃣ 전체 통합
+    const allInfo = [...clusterInfo, ...noiseInfo];
+
+    console.log("Clusters:", clusters);
+    console.log("Noise:", DBSCAN.noise);
+    console.log("All Info:", allInfo);
+  }, [placeData]);
 
   const isPC = detectDevice() === "PC" && userInfo?.locationDetail?.latitude;
 
