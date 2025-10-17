@@ -269,6 +269,7 @@ function StudyNavigation({
           locationDetail: findStudy.place.location.address,
           start: voteTime.start,
           end: voteTime.end,
+          eps: 3,
         });
         break;
       case "openRealTimesVote":
