@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import styled from "styled-components";
 
 import { MainLoading, MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
 import ScreenOverlay from "../../../components/atoms/ScreenOverlay";
@@ -126,70 +127,69 @@ function StudyPageMap({
 
   return (
     <>
-      <>
+      <Box>
         <Box
           position={isMapExpansion ? "fixed" : "relative"}
           mx={!isMapExpansion ? 5 : 0}
           top={0}
           left={0}
           zIndex={isDefaultOpen && !isDown ? 1500 : isMapExpansion ? 1000 : "auto"}
-          {...(!isMapExpansion ? { aspectRatio: 1 / 1, height: "inherit" } : { height: "100dvh" })}
+          {...(!isMapExpansion ? { aspectRatio: 1 / 1, height: "inherit" } : { height: "100svh" })}
           w={isMapExpansion ? "full" : "auto"}
-          borderRadius={isMapExpansion ? "0" : "16px"}
-          overflow="hidden"
-          border="1px solid black"
-          borderColor="gray.200"
-          bg="gray.100"
+          bg="transparent"
           onClick={handleMapClick}
         >
-          <StudyMapTopNav
-            handleLocationRefetch={() => {
-              isPC
-                ? setMapOptions((old) => ({
-                    ...old,
-                    center: new naver.maps.LatLng(
-                      userInfo.locationDetail.latitude,
-                      userInfo.locationDetail.longitude,
-                    ),
-                  }))
-                : currentLocation
-                ? setMapOptions((old) => ({
-                    ...old,
-                    center: new naver.maps.LatLng(currentLocation.lat, currentLocation.lon),
-                  }))
-                : null;
-            }}
-            isMapExpansion={isMapExpansion}
-            onClose={() => {
-              if (onClose) {
-                onClose();
-              } else {
-                setIsMapExpansion(false);
-              }
-            }}
-            isCafePlace={!!placeData}
-            filterType={filterType}
-            setFilterType={setFilterType}
-          />
+          <ClipLayer $rounded={!isMapExpansion}>
+            <StudyMapTopNav
+              handleLocationRefetch={() => {
+                isPC
+                  ? setMapOptions((old) => ({
+                      ...old,
+                      center: new naver.maps.LatLng(
+                        userInfo.locationDetail.latitude,
+                        userInfo.locationDetail.longitude,
+                      ),
+                    }))
+                  : currentLocation
+                  ? setMapOptions((old) => ({
+                      ...old,
+                      center: new naver.maps.LatLng(currentLocation.lat, currentLocation.lon),
+                    }))
+                  : null;
+              }}
+              isMapExpansion={isMapExpansion}
+              onClose={() => {
+                if (onClose) {
+                  onClose();
+                } else {
+                  setIsMapExpansion(false);
+                }
+              }}
+              isCafePlace={!!placeData}
+              filterType={filterType}
+              setFilterType={setFilterType}
+            />
 
-          <VoteMap
-            mapOptions={mapOptions}
-            markersOptions={markersOptions}
-            resizeToggle={isMapExpansion}
-            handleMarker={handleMarker}
-            zoomChange={(zoom: number) => setZoomNumber(zoom)}
-            isMapExpansion={isMapExpansion}
-            // circleCenter={
-            //   isMapExpansion && !placeData
-            //     ? studyVoteData?.results?.map((props) => props?.center)
-            //     : null
-            // }
-          />
+            <VoteMap
+              mapOptions={mapOptions}
+              markersOptions={markersOptions}
+              resizeToggle={isMapExpansion}
+              handleMarker={handleMarker}
+              zoomChange={(zoom: number) => setZoomNumber(zoom)}
+              isMapExpansion={isMapExpansion}
+              // circleCenter={
+              //   isMapExpansion && !placeData
+              //     ? studyVoteData?.results?.map((props) => props?.center)
+              //     : null
+              // }
+            />
 
-          {/* {!studyVoteData?.results && <MainLoadingAbsolute />} */}
-          {isLoading2 && !isLoading2 && <MainLoadingAbsolute size="sm" />}
-        </Box>{" "}
-      </>
+            {/* {!studyVoteData?.results && <MainLoadingAbsolute />} */}
+            {isLoading2 && !isLoading2 && <MainLoadingAbsolute size="sm" />}
+          </ClipLayer>
+        </Box>
+      </Box>
+
       {/* {detailInfo && (
         <StudyInfoDrawer
           date={date}
@@ -214,5 +214,14 @@ function StudyPageMap({
     </>
   );
 }
+
+const ClipLayer = styled.div<{ $rounded: boolean }>`
+  width: 100%;
+  height: 100%;
+  /* 라운드/클리핑/보더는 랩퍼에서만 */
+  border-radius: ${({ $rounded }) => ($rounded ? "16px" : "0")};
+  overflow: hidden;
+  border: 1px solid var(--gray-200);
+`;
 
 export default StudyPageMap;

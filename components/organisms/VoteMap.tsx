@@ -40,37 +40,44 @@ IVoteMap) {
     infoWindow: [] as naver.maps.InfoWindow[],
     circles: [] as naver.maps.Circle[], // ← 배열로
   });
-  useEffect(() => {
-    const container = mapRef.current;
-    if (!container) return;
-
-    const selector = ":scope > div:nth-of-type(2)";
-
-    const moveLogo = () => {
-      const el = container.querySelector(selector) as HTMLElement | null;
-      if (el) el.style.transform = "translate(12px, -12px)";
-    };
-
-    const resetLogo = () => {
-      const el = container.querySelector(selector) as HTMLElement | null;
-      if (el) el.style.transform = "translate(0, 0)";
-    };
-
-    if (isMapExpansion) {
-      // 확장 상태일 때만 위치 이동
-      moveLogo();
-
-      const mo = new MutationObserver(moveLogo);
-      mo.observe(container, { childList: true, subtree: false });
-
-      return () => mo.disconnect();
-    } else {
-      // 축소 시 원래 위치로 복귀
-      resetLogo();
-    }
-  }, [mapInstanceRef.current, isMapExpansion]);
 
   useEffect(() => {
+    mapRef.current?.classList.toggle("expanded", !!isMapExpansion);
+  }, [isMapExpansion]);
+
+  // useEffect(() => {
+  //   console.log(1);
+  //   const container = mapRef.current;
+  //   if (!container) return;
+
+  //   const selector = ":scope > div:nth-of-type(2)";
+
+  //   const moveLogo = () => {
+  //     const el = container.querySelector(selector) as HTMLElement | null;
+  //     if (el) el.style.transform = "translate(12px, -12px)";
+  //   };
+
+  //   const resetLogo = () => {
+  //     const el = container.querySelector(selector) as HTMLElement | null;
+  //     if (el) el.style.transform = "translate(0, 0)";
+  //   };
+
+  //   if (isMapExpansion) {
+  //     // 확장 상태일 때만 위치 이동
+  //     moveLogo();
+
+  //     const mo = new MutationObserver(moveLogo);
+  //     mo.observe(container, { childList: true, subtree: false });
+
+  //     return () => mo.disconnect();
+  //   } else {
+  //     // 축소 시 원래 위치로 복귀
+  //     resetLogo();
+  //   }
+  // }, [mapInstanceRef.current, isMapExpansion]);
+
+  useEffect(() => {
+    console.log(2);
     if (!mapRef?.current || typeof naver === "undefined" || !mapOptions) return;
 
     if (!mapInstanceRef.current) {
@@ -92,16 +99,19 @@ IVoteMap) {
   }, [mapOptions]);
 
   useEffect(() => {
+    console.log(3);
     if (!mapInstanceRef?.current || typeof naver === "undefined") return;
 
     naver.maps.Event.trigger(mapInstanceRef.current, "resize");
   }, [resizeToggle]);
 
   useEffect(() => {
+    console.log(4);
     if (!zoomChange) return;
     const map = mapInstanceRef.current;
     if (!map || typeof naver === "undefined") return;
     const zoomListener = naver.maps.Event.addListener(map, "zoom_changed", () => {
+      console.log(12);
       const newZoom = map.getZoom();
       zoomChange(newZoom);
     });
@@ -111,6 +121,7 @@ IVoteMap) {
   }, [markersOptions, zoomChange]);
 
   useEffect(() => {
+    console.log(5);
     const map = mapInstanceRef.current;
 
     if (!mapRef?.current || !map || typeof naver === "undefined") return;
@@ -147,6 +158,7 @@ IVoteMap) {
       }
 
       naver.maps.Event.addListener(marker, "click", () => {
+        console.log(23);
         if (handleMarker) {
           const currentZoom = map.getZoom();
           handleMarker(markerOptions.id, currentZoom);
@@ -193,6 +205,7 @@ IVoteMap) {
   }, [markersOptions, circleCenter]);
 
   useEffect(() => {
+    console.log(6);
     if (!centerValue || !mapInstanceRef.current) return;
 
     const map = mapInstanceRef.current;
@@ -205,6 +218,16 @@ IVoteMap) {
 const Map = styled.div`
   width: 100%;
   height: 100%;
-  max-width: var(--max-width);
-  margin: 0 auto;
+  /* max-width: var(--max-width);
+  margin: 0 auto; */
+  position: relative;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: transform;
+  contain: paint;
+
+  &.expanded > div:nth-of-type(2) {
+    transform: translate(12px, -12px);
+  }
 `;
