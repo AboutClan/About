@@ -1,12 +1,10 @@
 import { Box } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import { MainLoading, MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
 import ScreenOverlay from "../../../components/atoms/ScreenOverlay";
 import VoteMap from "../../../components/organisms/VoteMap";
 import { useUserCurrentLocation } from "../../../hooks/custom/CurrentLocationHook";
-import { useTypeToast } from "../../../hooks/custom/CustomToast";
 import { useStudyPlacesQuery } from "../../../hooks/study/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { getMapOptions, getStudyPlaceMarkersOptions } from "../../../libs/study/setStudyMapOptions";
@@ -32,10 +30,7 @@ function StudyPageMap({
   handleVotePick,
   isDown,
 }: StudyPageMapProps) {
-  const { data: session } = useSession();
   const { data: userInfo } = useUserInfoQuery();
-  const typeToast = useTypeToast();
-  const isGuest = session?.user.role === "guest";
   const { currentLocation } = useUserCurrentLocation();
 
   /* 네이버 지도와 마커 옵션 */
@@ -124,10 +119,6 @@ function StudyPageMap({
   }, [isMapExpansion, filterType]);
 
   const handleMapClick = () => {
-    if (isGuest) {
-      typeToast("guest");
-      return;
-    }
     if (!isMapExpansion) {
       setIsMapExpansion(true);
     }
@@ -209,7 +200,7 @@ function StudyPageMap({
       )} */}
       {placeInfo && (
         <PlaceInfoDrawer
-          handleVotePick={isDefaultOpen ? () => handleVotePick(placeInfo) : undefined}
+          handleVotePick={isDefaultOpen && !isDown ? () => handleVotePick(placeInfo) : undefined}
           placeInfo={placeInfo}
           onClose={() => setPlaceInfo(null)}
         />

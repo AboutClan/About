@@ -105,7 +105,7 @@ function PlaceInfoDrawer({ placeInfo, onClose, handleVotePick }: PlaceInfoDrawer
                   </Box>
                 ),
                 func: () => {
-                  typeToast("inspection");
+                  typeToast("not-yet");
                 },
                 children: <Box mr="2px">멤버 리뷰</Box>,
               }}

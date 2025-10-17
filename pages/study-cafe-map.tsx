@@ -1,12 +1,22 @@
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { signIn, useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 import { IFooterOptions, ModalLayout } from "../modals/Modals";
 import StudyPageMap from "../pageTemplates/studyPage/studyPageMap/StudyPageMap";
 
 function StudyMap() {
+  const { data: session } = useSession();
+
   const router = useRouter();
   const [isModal, setIsModal] = useState(false);
+  console.log(3, session);
+
+  useEffect(() => {
+    if (session === null) {
+      signIn("guest");
+    }
+  }, [session]);
 
   const onClose = () => {
     setIsModal(true);

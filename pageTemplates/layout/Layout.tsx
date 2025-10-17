@@ -71,10 +71,10 @@ function Layout({ children }: ILayout) {
     ) {
       return;
     }
-    if (!isBottomNavCondition && isGuest) {
+    if (!isBottomNavCondition && isGuest && pathname !== "/study-cafe-map") {
       toast(
         "info",
-        "현재 게스트 뷰어를 이용하고 있습니다. 활동을 위해서는 앱을 통해 로그인해 주세요.",
+        "현재 게스트 뷰어를 이용하고 있습니다. 정식 활동을 위해서는 카카오 로그인을 통해 가입해 주세요!",
       );
       return;
     }
