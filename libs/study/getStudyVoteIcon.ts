@@ -15,7 +15,7 @@ export const getStudyVoteIcon = (type: "default" | "main" | "sub", text: string)
     ${getBasicIcon()}</div>`;
 };
 
-export const getStudyIcon = (cnt?: number) => {
+export const getPlaceCountIcon = (cnt?: number) => {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="56" height="60" viewBox="0 0 56 60" fill="none">
 <g filter="url(#filter0_d_2023_1738)">
 <rect x="12" y="12.7065" width="32" height="32" rx="16" fill="#00C2B3"/>
@@ -52,91 +52,28 @@ export const getStudyIcon = (cnt?: number) => {
 </svg>`;
 };
 
-export const getStudyIcon2 = (
-  type: "active" | "none",
-  cnt?: number,
-  color?: string,
-  text?: string,
-) => {
+export const getPlaceBasicIcon = (color: "orange" | "mint", text?: string, isBig?: boolean) => {
   return `
   <div style="display:flex; flex-direction:column; align-items:center;">
   ${
     text
-      ? `<div  style= "  overflow:hidden;
+      ? `<div  style= "overflow:hidden;
           white-space:nowrap;
-          text-overflow:ellipsis; padding:4px 8px;padding-right:4px; margin-bottom:4px; text-align:center; line-height:12px; font-weight:600;font-size:10px;color:#424242; background:white; border:1px solid #eeeeee; border-radius:4px; height:20px; width:60px;" >
+          text-overflow:ellipsis; padding:4px 8px; padding-right:${
+            isBig ? "8px" : "4px"
+          }; margin-bottom:4px; text-align:center; line-height:12px; font-weight:600;font-size:10px;color:#424242; background:white; border:1px solid #eeeeee; border-radius:4px; height:20px; width:${
+          isBig ? "72px" : "60px"
+        };" >
     ${text} </div>`
       : ``
   }
-  <svg xmlns="http://www.w3.org/2000/svg" width="37" height="45" viewBox="0 0 37 45" fill="none">
-      <rect x="2" y="3" width="32" height="32" rx="16" fill=${
-        color === "orange" ? "#ffa501" : "#00C2B3"
-      } />
-      <path
-        d="M12.825 25.4829C12.4226 25.3079 12.1105 25.0658 11.8889 24.7567C11.6731 24.4417 11.5652 24.0801 11.5652 23.6718C11.5652 23.3685 11.6439 22.9982 11.8014 22.5607L14.881 14.608C15.1668 13.8789 15.5809 13.319 16.1234 12.9282C16.6716 12.5316 17.2957 12.3333 17.9956 12.3333C18.7014 12.3333 19.3255 12.5316 19.8679 12.9282C20.4162 13.319 20.8332 13.8789 21.119 14.608L24.1986 22.5607C24.3561 23.0215 24.4348 23.3919 24.4348 23.6718C24.4348 24.0801 24.324 24.4417 24.1024 24.7567C23.8866 25.0658 23.5774 25.3079 23.175 25.4829C22.895 25.6053 22.6092 25.6666 22.3176 25.6666C21.9035 25.6666 21.5185 25.5354 21.1627 25.2729C20.8128 25.0104 20.5532 24.6459 20.3841 24.1793L20.1829 23.5843H15.8347L15.6159 24.1793C15.4584 24.6342 15.2018 24.9958 14.846 25.2641C14.4961 25.5324 14.1082 25.6666 13.6824 25.6666C13.3908 25.6666 13.105 25.6053 12.825 25.4829ZM17.0333 19.9798H18.9668L17.9956 16.5065L17.0333 19.9798Z"
-        fill="white"
-      />
-      <path
-        d="M18.433 37.3999C18.2405 37.7332 17.7594 37.7332 17.5669 37.3999L15.7699 34.2874C15.5775 33.9541 15.818 33.5374 16.2029 33.5374L19.797 33.5374C20.1819 33.5374 20.4224 33.9541 20.23 34.2874L18.433 37.3999Z"
-        fill=${color === "orange" ? "#ffa501" : "#00C2B3"}
-      />
-    
-${
-  type === "none"
-    ? null
-    : type
-    ? ` <div style="
-    position: absolute;
-    top: 1px;
-    left: 24px;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-
-    background-color:var(--color-orange);
-    border: 2px solid white;
-  "></div>`
-    : `<div style="
-    position: absolute;
-    top: 1px;
-    left: 24px;
-    width: 16px;
-    height: 16px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:8px;
-    border-radius: 50%;
-    background-color: white;
-    border: 1px solid var(--gray-300);
-  ">${cnt}</div>`
-}
-    
-     
-    </svg></div>`;
-};
-
-export const getStudyIcon3 = (text: string) => {
-  // wrapper는 반드시 SVG와 동일한 박스 크기로 고정
-  return `
-  <div style="position:relative; font-size:10px;  font-weight:600; text-align:center; width:36px; height:42px; display:block; box-sizing:border-box;">
-    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="42" viewBox="0 0 36 42" fill="none" style="display:block">
-      <rect x="2" width="32" height="32" rx="16" fill="#00C2B3"/>
-      <path d="M12.825 22.4831C12.4226 22.3081 12.1105 22.0661 11.8889 21.7569C11.6731 21.442 11.5652 21.0804 11.5652 20.6721C11.5652 20.3688 11.6439 19.9984 11.8014 19.561L14.881 11.6082C15.1668 10.8791 15.5809 10.3192 16.1234 9.92842C16.6716 9.5318 17.2957 9.3335 17.9956 9.3335C18.7014 9.3335 19.3255 9.5318 19.8679 9.92842C20.4162 10.3192 20.8332 10.8791 21.119 11.6082L24.1986 19.561C24.3561 20.0217 24.4348 20.3921 24.4348 20.6721C24.4348 21.0804 24.324 21.442 24.1024 21.7569C23.8866 22.0661 23.5774 22.3081 23.175 22.4831C22.895 22.6056 22.6092 22.6668 22.3176 22.6668C21.9035 22.6668 21.5185 22.5356 21.1627 22.2731C20.8128 22.0107 20.5532 21.6461 20.3841 21.1795L20.1829 20.5846H15.8347L15.6159 21.1795C15.4584 21.6345 15.2018 21.9961 14.846 22.2644C14.4961 22.5327 14.1082 22.6668 13.6824 22.6668C13.3908 22.6668 13.105 22.6056 12.825 22.4831ZM17.0333 16.98H18.9668L17.9956 13.5067L17.0333 16.98Z" fill="white"/>
-      <path d="M18.433 34.3999C18.2405 34.7332 17.7594 34.7332 17.5669 34.3999L15.7699 31.2874C15.5775 30.9541 15.818 30.5374 16.2029 30.5374L19.797 30.5374C20.1819 30.5374 20.4224 30.9541 20.23 31.2874L18.433 34.3999Z" fill="#00C2B3"/>
-      <g opacity="0.12" filter="url(#filter0_f_2023_1828)">
-        <ellipse cx="18" cy="38.1499" rx="16" ry="1" fill="#424242"/>
-      </g>
-      <defs>
-        <filter id="filter0_f_2023_1828" x="0" y="35.1499" width="36" height="6" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-          <feFlood flood-opacity="0" result="BackgroundImageFix"/>
-          <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
-          <feGaussianBlur stdDeviation="1" result="effect1_foregroundBlur_2023_1828"/>
-        </filter>
-      </defs>
-    </svg>
-    ${text && text !== "none" ? text : ""}
-  </div>`;
+  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="36" viewBox="0 0 32 36" fill="none">
+    <rect width="32" height="32" rx="16" fill="${color === "orange" ? "#FFA501" : "#00C2B3"}"/>
+    <path d="M10.825 22.4831C10.4226 22.3081 10.1105 22.0661 9.8889 21.7569C9.67309 21.442 9.56519 21.0804 9.56519 20.6721C9.56519 20.3688 9.64393 19.9984 9.80141 19.561L12.881 11.6082C13.1668 10.8791 13.5809 10.3192 14.1234 9.92842C14.6716 9.5318 15.2957 9.3335 15.9956 9.3335C16.7014 9.3335 17.3255 9.5318 17.8679 9.92842C18.4162 10.3192 18.8332 10.8791 19.119 11.6082L22.1986 19.561C22.3561 20.0217 22.4348 20.3921 22.4348 20.6721C22.4348 21.0804 22.324 21.442 22.1024 21.7569C21.8866 22.0661 21.5774 22.3081 21.175 22.4831C20.895 22.6056 20.6092 22.6668 20.3176 22.6668C19.9035 22.6668 19.5185 22.5356 19.1627 22.2731C18.8128 22.0107 18.5532 21.6461 18.3841 21.1795L18.1829 20.5846H13.8347L13.6159 21.1795C13.4584 21.6345 13.2018 21.9961 12.846 22.2644C12.4961 22.5327 12.1082 22.6668 11.6824 22.6668C11.3908 22.6668 11.105 22.6056 10.825 22.4831ZM15.0333 16.98H16.9668L15.9956 13.5067L15.0333 16.98Z" fill="white"/>
+    <path d="M16.433 34.3999C16.2406 34.7332 15.7594 34.7332 15.567 34.3999L13.77 31.2874C13.5775 30.9541 13.8181 30.5374 14.203 30.5374L17.797 30.5374C18.1819 30.5374 18.4225 30.9541 18.23 31.2874L16.433 34.3999Z" fill="${
+      color === "orange" ? "#FFA501" : "#00C2B3"
+    }"/>
+  </svg></div>`;
 };
 
 export const getCurrentLocationIcon = () => `

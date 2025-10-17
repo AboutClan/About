@@ -5,8 +5,8 @@ import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes
 import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
 import {
   getCurrentLocationIcon,
-  getStudyIcon,
-  getStudyIcon2,
+  getPlaceBasicIcon,
+  getPlaceCountIcon,
   getVoteLocationIcon,
 } from "./getStudyVoteIcon";
 // export const getDetailInfo = (result: StudyMergeResultProps, myUid: string): StudyInfoProps => {
@@ -148,13 +148,23 @@ export const getStudyPlaceMarkersOptions = (
         icon: {
           content:
             selectedId === cluster._id
-              ? getStudyIcon2("none", null, "orange", null)
+              ? getPlaceBasicIcon("orange", null)
               : cluster.count > 1
-              ? getStudyIcon(cluster.count)
-              : getStudyIcon2("none", null, null, zoomNumber >= 15 ? cluster.name : null),
+              ? getPlaceCountIcon(cluster.count)
+              : getPlaceBasicIcon("mint", zoomNumber >= 15 ? cluster.name : null),
 
-          size: new naver.maps.Size(56, 60),
-          anchor: new naver.maps.Point(28, 60),
+          size:
+            selectedId === cluster._id
+              ? new naver.maps.Size(32, 36)
+              : cluster.count > 1
+              ? new naver.maps.Size(32, zoomNumber >= 15 ? 60 : 36)
+              : new naver.maps.Size(zoomNumber >= 15 ? 60 : 32, zoomNumber >= 15 ? 60 : 36),
+          anchor:
+            selectedId === cluster._id
+              ? new naver.maps.Point(16, 36)
+              : cluster.count > 1
+              ? new naver.maps.Point(16, zoomNumber >= 15 ? 60 : 36)
+              : new naver.maps.Point(zoomNumber >= 15 ? 30 : 16, zoomNumber >= 15 ? 60 : 36),
         },
       });
     });
@@ -189,7 +199,7 @@ export const getMarkersOptions = (
   //     temp.push({
   //       position: new naver.maps.LatLng(par.latitude, par.longitude),
   //       icon: {
-  //         content: getStudyIcon("none", null),
+  //         content: getPlaceCountIcon("none", null),
   //         size: new naver.maps.Size(72, 72),
   //         anchor: new naver.maps.Point(36, 44),
   //       },
@@ -214,7 +224,7 @@ export const getMarkersOptions = (
   //       id: par.place._id,
   //       position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
   //       icon: {
-  //         content: getStudyIcon(
+  //         content: getPlaceCountIcon(
   //           null,
   //           par.members.length,
   //           participations || selectedId === par.place._id ? "orange" : null,
@@ -230,7 +240,7 @@ export const getMarkersOptions = (
   //     temp.push({
   //       position: new naver.maps.LatLng(par.latitude, par.longitude),
   //       icon: {
-  //         content: getStudyIcon(null, 0),
+  //         content: getPlaceCountIcon(null, 0),
   //         size: new naver.maps.Size(72, 72),
   //         anchor: new naver.maps.Point(36, 44),
   //       },
@@ -274,10 +284,10 @@ export const getMarkersOptions = (
   //       icon: {
   //         content:
   //           value.status === "solo"
-  //             ? getStudyIcon("inactive")
+  //             ? getPlaceCountIcon("inactive")
   //             : value.count === 1
-  //             ? getStudyIcon("active")
-  //             : getStudyIcon(null, value.count, selectedId === value.id ? "orange" : null), // count에 따라 content 값 설정
+  //             ? getPlaceCountIcon("active")
+  //             : getPlaceCountIcon(null, value.count, selectedId === value.id ? "orange" : null), // count에 따라 content 값 설정
   //         size: new naver.maps.Size(72, 72),
   //         anchor: new naver.maps.Point(36, 44),
   //       },

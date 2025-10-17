@@ -14,6 +14,7 @@ interface TopNavProps {
   isCafePlace: boolean;
   filterType: StudyPlaceFilter;
   setFilterType: DispatchType<StudyPlaceFilter>;
+  isMainType?: boolean;
 }
 
 function TopNav({
@@ -23,6 +24,7 @@ function TopNav({
   onClose,
   filterType,
   setFilterType,
+  isMainType,
 }: TopNavProps) {
   const [isGuideModal, setIsGuideModal] = useState(false);
   console.log(isCafePlace);
@@ -57,7 +59,7 @@ function TopNav({
         position="absolute"
         top="0"
         left="0"
-        zIndex={700}
+        zIndex={100}
       >
         {/* {isMapExpansion && !isCafePlace && (
           <Flex flex={0.8} align="center" h="32px" justify="space-around" px={4} borderRadius="4px">
@@ -89,82 +91,61 @@ function TopNav({
             <ExpansionIcon />
           </Button>
         )}
-        {/* <Button
-          p={0}
-          boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.15)"
-          w="48px"
-          h="48px"
-          bg="white"
-          onClick={onClose}
-        >
-          <XIcon />
-        </Button> */}
-        {/* <Box
-          fontSize={isMapExpansion ? "15px" : "10px"}
-          h={isMapExpansion ? "48px" : "32px"}
-          display="flex"
-          bg="gray.100"
-          borderRadius="full"
-          p="2px"
-          border="var(--border-main)"
-          boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
-        >
-          <Flex
-            as="button"
-            align="center"
-            flex="1"
-            textAlign="center"
-            px={isMapExpansion ? 6 : 4}
-            borderRadius="full"
-            fontWeight="600"
-            bg={filterType === "main" ? "gray.900" : "white"}
-            color={filterType === "main" ? "white" : "inherit"}
-            onClick={(e) => handleFilter(e, "main")}
-          >
-            추천
-          </Flex>
-          <Flex
-            as="button"
-            align="center"
-            flex="1"
-            textAlign="center"
-            px={isMapExpansion ? 6 : 4}
-            borderRadius="full"
-            fontWeight="600"
-            bg={filterType === "main" ? "white" : "gray.900"}
-            color={filterType !== "main" ? "white" : "inherit"}
-            onClick={(e) => handleFilter(e, "all")}
-          >
-            전체
-          </Flex>
-        </Box> */}
 
         <Flex gap={2} h="32px">
-          <Button
-            h="32px"
-            px={4}
-            borderRadius="20px"
-            border={filterType === "best" ? "none" : "var(--border)"}
-            boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
-            bg={filterType === "best" ? "gray.900" : "white"}
-            fontSize="11px"
-            color={filterType === "best" ? "white" : "gray.800"}
-            fontWeight={600}
-            lineHeight="12px"
-            onClick={(e) => handleFilter(e, "best")}
-            _hover={{
-              bg: "gray.900",
-            }}
-            _active={{
-              bg: "gray.900",
-            }}
-            _focus={{
-              bg: "gray.900",
-            }}
-          >
-            별점 4.5 이상
-          </Button>
-          {isMapExpansion && (
+          {isMainType && (
+            <Button
+              h="32px"
+              px={4}
+              borderRadius="20px"
+              border={filterType === "main" ? "none" : "var(--border)"}
+              boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
+              bg={filterType === "main" ? "gray.900" : "white"}
+              fontSize="11px"
+              color={filterType === "main" ? "white" : "gray.800"}
+              fontWeight={600}
+              lineHeight="12px"
+              onClick={(e) => handleFilter(e, "main")}
+              _hover={{
+                bg: "gray.900",
+              }}
+              _active={{
+                bg: "gray.900",
+              }}
+              _focus={{
+                bg: "gray.900",
+              }}
+            >
+              About 스터디 장소
+            </Button>
+          )}
+          {!isMainType && (
+            <Button
+              h="32px"
+              px={4}
+              borderRadius="20px"
+              border={filterType === "best" ? "none" : "var(--border)"}
+              boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
+              bg={filterType === "best" ? "gray.900" : "white"}
+              fontSize="11px"
+              color={filterType === "best" ? "white" : "gray.800"}
+              fontWeight={600}
+              lineHeight="12px"
+              onClick={(e) => handleFilter(e, "best")}
+              _hover={{
+                bg: "gray.900",
+              }}
+              _active={{
+                bg: "gray.900",
+              }}
+              _focus={{
+                bg: "gray.900",
+              }}
+            >
+              별점 4.5 이상
+            </Button>
+          )}
+          {isMapExpansion && !isMainType && (
             <Button
               h="32px"
               px={4}
@@ -215,32 +196,6 @@ function TopNav({
             모든 카공 카페
           </Button>
         </Flex>
-
-        {/* {!isMapExpansion ? (
-          <Button
-            borderRadius="4px"
-            bgColor="white"
-            boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
-            w="32px"
-            h="32px"
-            size="sm"
-            p="0"
-            border="var(--border-main)"
-          >
-            <ExpansionIcon />
-          </Button>
-        ) : (
-          <Button
-            p={0}
-            boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.15)"
-            w="48px"
-            h="48px"
-            bg="white"
-            onClick={onClose}
-          >
-            <XIcon />
-          </Button>
-        )} */}
       </Flex>
       {isMapExpansion && (
         <Box pos="absolute" bottom={`${iPhoneNotchSize() + 80}px`} right="20px" zIndex={300}>
@@ -261,27 +216,28 @@ function TopNav({
             flex={1}
             border="var(--border)"
             boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
-            bg="white"
-            color="gray.800"
+            bg={filterType === "main" ? "gray.900" : "white"}
+            color={filterType === "main" ? "white" : "gray.800"}
             fontWeight={600}
-            mr={3}
             onClick={onClose}
           >
             지도 닫기
           </Button>
-          <Button
-            size="lg"
-            flex={1}
-            border={filterType === "main" ? "none" : "var(--border)"}
-            boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
-            bg="gray.900"
-            color="white"
-            fontWeight={600}
-            leftIcon={<MenuIcon />}
-            onClick={() => setIsGuideModal(true)}
-          >
-            카공 지도 가이드
-          </Button>
+          {!isMainType && (
+            <Button
+              ml={3}
+              size="lg"
+              flex={1}
+              boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
+              bg="gray.900"
+              color="white"
+              fontWeight={600}
+              leftIcon={<MenuIcon />}
+              onClick={() => setIsGuideModal(true)}
+            >
+              카공 지도 가이드
+            </Button>
+          )}
         </Flex>
       )}
       {isGuideModal && <InfoModal type="map" onClose={() => setIsGuideModal(false)} />}

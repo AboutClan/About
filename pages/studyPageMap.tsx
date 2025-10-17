@@ -26,7 +26,7 @@ export default Temp;
 // import { getLocationByCoordinates } from "../libs/study/getLocationByCoordinates";
 // import {
 //   getCurrentLocationIcon,
-//   getStudyIcon,
+//   getPlaceCountIcon,
 //   getStudyVoteIcon,
 // } from "../libs/study/getStudyVoteIcon";
 
@@ -402,7 +402,7 @@ export default Temp;
 //         id: par.place._id,
 //         position: new naver.maps.LatLng(par.place.latitude, par.place.longitude),
 //         icon: {
-//           content: getStudyIcon(null, par.members.length),
+//           content: getPlaceCountIcon(null, par.members.length),
 //           size: new naver.maps.Size(72, 72),
 //           anchor: new naver.maps.Point(36, 44),
 //         },
@@ -471,10 +471,10 @@ export default Temp;
 //         icon: {
 //           content:
 //             value.status === "solo"
-//               ? getStudyIcon("inactive")
+//               ? getPlaceCountIcon("inactive")
 //               : value.count === 1
-//               ? getStudyIcon("active")
-//               : getStudyIcon(null, value.count), // count에 따라 content 값 설정
+//               ? getPlaceCountIcon("active")
+//               : getPlaceCountIcon(null, value.count), // count에 따라 content 값 설정
 //           size: new naver.maps.Size(72, 72),
 //           anchor: new naver.maps.Point(36, 44),
 //         },

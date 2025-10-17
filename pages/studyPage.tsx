@@ -37,7 +37,7 @@ export default function StudyPage() {
   const isPassedDate = !!date && dayjs(date).startOf("day").isBefore(dayjs().startOf("day"));
 
   const { data: studySet } = useStudySetQuery(date, { enabled: !!date && !isPassedDate });
-
+  console.log("study", studySet);
   const { data: passedStudyData } = useStudyPassedDayQuery(date, {
     enabled: !!date && !!isPassedDate,
   });

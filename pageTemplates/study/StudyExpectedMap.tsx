@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 import ColorLabelRow from "../../components/molecules/rows/ColorLabelRow";
 import VoteMap from "../../components/organisms/VoteMap";
-import { getStudyIcon3 } from "../../libs/study/getStudyVoteIcon";
+import { getPlaceBasicIcon } from "../../libs/study/getStudyVoteIcon";
 import { getMapOptions } from "../../libs/study/setStudyMapOptions";
 import { LocationProps } from "../../types/common";
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
@@ -29,13 +29,13 @@ function StudyExpectedMap({ centerLocation, rangeNum }: StudyExpectedMapProps) {
       {
         position: new naver.maps.LatLng(centerLocation.latitude, centerLocation.longitude),
         icon: {
-          content: getStudyIcon3(zoomNumber <= 12 ? centerLocation?.name?.split(" ")?.[0] : null),
-          size: new naver.maps.Size(37, 45),
-          anchor: new naver.maps.Point(18.5, 45),
+          content: getPlaceBasicIcon("mint", centerLocation?.name, true),
+          size: new naver.maps.Size(72, 60),
+          anchor: new naver.maps.Point(36, 48),
         },
       },
     ]);
-  }, [zoomNumber]);
+  }, [zoomNumber, centerLocation]);
   return (
     <>
       <Box mt={5} mb={10}>

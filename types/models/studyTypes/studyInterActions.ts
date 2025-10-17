@@ -10,6 +10,7 @@ export interface StudyVoteProps {
   locationDetail: string;
   start: Dayjs;
   end: Dayjs;
+  eps: number;
 }
 
 export interface IStudyVote extends IStudyVotePlaces, IStudyVoteTime {

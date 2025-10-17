@@ -22,6 +22,7 @@ import StudyNearMap from "../../../../pageTemplates/study/StudyNearMap";
 import StudyNearMemberSection from "../../../../pageTemplates/study/StudyNearMemberSection";
 import StudyOverview from "../../../../pageTemplates/study/StudyOverView";
 import StudyPendingSection from "../../../../pageTemplates/study/StudyPendingSection";
+import StudyPlaceMap from "../../../../pageTemplates/study/StudyPlaceMap";
 import StudyReviewButton from "../../../../pageTemplates/study/StudyReviewButton";
 import StudyTimeBoard from "../../../../pageTemplates/study/StudyTimeBoard";
 import { backUrlState } from "../../../../recoils/navigationRecoils";
@@ -71,7 +72,7 @@ export default function Page() {
       enabled: !!isPassedDate || !!isPassedSolo,
     },
   );
-
+  console.log(12, studySet);
   const [modalType, setModalType] = useState<"studyLink" | "review">();
 
   useEffect(() => {
@@ -155,7 +156,7 @@ export default function Page() {
   const isMyReview = placeInfo?.reviews?.some((review) => review.user._id === userInfo?._id);
 
   const isOpenStudy = studyType !== "participations" && studyType !== "soloRealTimes";
-
+  console.log(234, isPassedSolo, studyPassedData);
   return (
     <>
       {isPassedSolo || studyPassedData || studySet ? (
@@ -209,6 +210,7 @@ export default function Page() {
               </Box>
               {studyType === "participations" && (
                 <>
+                  <Box h={2} bg="gray.100" my={4} />
                   <StudyNearMemberSection
                     myStudyInfo={myStudyInfo as StudyParticipationProps}
                     members={members as StudyParticipationProps[]}
@@ -224,6 +226,22 @@ export default function Page() {
                 </Slide>
               </>
             )}
+            {studyType === "participations" && (
+              <StudyPlaceMap
+                centerLocation={
+                  myStudyInfo
+                    ? {
+                        lat: (myStudyInfo as StudyParticipationProps).location.latitude,
+                        lon: (myStudyInfo as StudyParticipationProps).location.longitude,
+                      }
+                    : {
+                        lat: userInfo?.locationDetail.latitude,
+                        lon: userInfo?.locationDetail.longitude,
+                      }
+                }
+              />
+            )}
+
             {placeInfo && studyType === "results" && date === getTodayStr() && (
               <StudyNearMap centerPlace={placeInfo} />
             )}

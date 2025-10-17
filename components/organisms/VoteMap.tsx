@@ -46,7 +46,7 @@ IVoteMap) {
   }, [isMapExpansion]);
 
   // useEffect(() => {
-  //   console.log(1);
+
   //   const container = mapRef.current;
   //   if (!container) return;
 
@@ -77,7 +77,6 @@ IVoteMap) {
   // }, [mapInstanceRef.current, isMapExpansion]);
 
   useEffect(() => {
-    console.log(2);
     if (!mapRef?.current || typeof naver === "undefined" || !mapOptions) return;
 
     if (!mapInstanceRef.current) {
@@ -99,19 +98,16 @@ IVoteMap) {
   }, [mapOptions]);
 
   useEffect(() => {
-    console.log(3);
     if (!mapInstanceRef?.current || typeof naver === "undefined") return;
 
     naver.maps.Event.trigger(mapInstanceRef.current, "resize");
   }, [resizeToggle]);
 
   useEffect(() => {
-    console.log(4);
     if (!zoomChange) return;
     const map = mapInstanceRef.current;
     if (!map || typeof naver === "undefined") return;
     const zoomListener = naver.maps.Event.addListener(map, "zoom_changed", () => {
-      console.log(12);
       const newZoom = map.getZoom();
       zoomChange(newZoom);
     });
@@ -121,7 +117,6 @@ IVoteMap) {
   }, [markersOptions, zoomChange]);
 
   useEffect(() => {
-    console.log(5);
     const map = mapInstanceRef.current;
 
     if (!mapRef?.current || !map || typeof naver === "undefined") return;
@@ -158,7 +153,6 @@ IVoteMap) {
       }
 
       naver.maps.Event.addListener(marker, "click", () => {
-        console.log(23);
         if (handleMarker) {
           const currentZoom = map.getZoom();
           handleMarker(markerOptions.id, currentZoom);
@@ -173,10 +167,10 @@ IVoteMap) {
         const radius = !circle2?.size
           ? 550
           : circle2?.size === "sm"
-          ? 1800
+          ? 2000
           : circle2?.size === "md"
-          ? 2700
-          : 4500;
+          ? 3000
+          : 4000;
 
         const circle = new naver.maps.Circle({
           map: mapInstanceRef.current,
@@ -191,7 +185,7 @@ IVoteMap) {
         const circle3 = new naver.maps.Circle({
           map: mapInstanceRef.current,
           center: new naver.maps.LatLng(circle2.lat, circle2.lon),
-          radius: radius * 1.3,
+          radius: radius * 1.5,
           strokeColor: "var(--color-mint)",
           strokeOpacity: 0.8,
           strokeWeight: 1,
@@ -205,7 +199,6 @@ IVoteMap) {
   }, [markersOptions, circleCenter]);
 
   useEffect(() => {
-    console.log(6);
     if (!centerValue || !mapInstanceRef.current) return;
 
     const map = mapInstanceRef.current;

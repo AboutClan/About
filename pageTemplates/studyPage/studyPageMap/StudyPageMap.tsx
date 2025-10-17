@@ -23,6 +23,7 @@ interface StudyPageMapProps {
   handleVotePick?: (place: StudyPlaceProps) => void;
   onClose?: () => void;
   isDown?: boolean;
+  type?: "mainPlace";
 }
 
 function StudyPageMap({
@@ -30,6 +31,7 @@ function StudyPageMap({
   onClose,
   handleVotePick,
   isDown,
+  type,
 }: StudyPageMapProps) {
   const { data: userInfo } = useUserInfoQuery();
   const { currentLocation } = useUserCurrentLocation();
@@ -41,7 +43,9 @@ function StudyPageMap({
   const [isLoading, setIsLoading] = useState(false);
 
   const [placeInfo, setPlaceInfo] = useState<StudyPlaceProps>(null);
-  const [filterType, setFilterType] = useState<StudyPlaceFilter>();
+  const [filterType, setFilterType] = useState<StudyPlaceFilter>(
+    type === "mainPlace" ? "main" : null,
+  );
   const [zoomNumber, setZoomNumber] = useState<number>(13);
 
   const { data: placeData, isLoading: isLoading2 } = useStudyPlacesQuery(
@@ -105,6 +109,10 @@ function StudyPageMap({
   // const myStudy = findMyStudyByUserId(studyVoteData, userInfo?._id);
 
   useEffect(() => {
+    if (type === "mainPlace") {
+      setFilterType("main");
+      return;
+    }
     if (isMapExpansion) {
       setFilterType("good");
     } else setFilterType("best");
@@ -141,6 +149,7 @@ function StudyPageMap({
         >
           <ClipLayer $rounded={!isMapExpansion}>
             <StudyMapTopNav
+              isMainType={type === "mainPlace"}
               handleLocationRefetch={() => {
                 isPC
                   ? setMapOptions((old) => ({

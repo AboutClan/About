@@ -49,7 +49,7 @@ function StudyApplyDrawer({
   const [isModal, setIsModal] = useState(false);
   const [isStudyPlaceModal, setIsStudyPlaceModal] = useState(false);
   const [voteLocation, setVoteLocation] = useState<LocationProps>(location);
-  const [rangeNum, setRangeNum] = useState(2);
+  const [rangeNum, setRangeNum] = useState<number>(2);
   const [isFirstPage, setIsFirstPage] = useState(true);
 
   const { data: userInfo } = useUserInfoQuery();
@@ -160,6 +160,7 @@ function StudyApplyDrawer({
           longitude: voteLocation ? voteLocation.longitude : userInfo.locationDetail.longitude,
           start: voteTime.start,
           end: voteTime.end,
+          eps: rangeNum + 1,
         });
       },
       loading: isLoading,
@@ -306,6 +307,7 @@ function StudyApplyDrawer({
                   longitude: location ? location.longitude : userInfo.locationDetail.longitude,
                   start: dayjs(),
                   end: dayjs(),
+                  eps: 2,
                 });
               },
               isLoading,

@@ -70,7 +70,7 @@ export default function StudyMembers({ studyType, date, members, hasStudyLink }:
               dayjs(date2).isAfter(dayjs(date).subtract(1, "day")),
             ),
           }));
-
+  console.log("f", members, isOpen, filterMembers, date);
   const userCardArr: IProfileCommentCard[] = filterMembers?.map((member) => {
     const user = member.user;
     // const badgeText = locationMapping?.find((mapping) => mapping?.id === user._id)?.branch;
@@ -127,7 +127,7 @@ export default function StudyMembers({ studyType, date, members, hasStudyLink }:
       };
     }
   });
-
+  console.log(44, members, userCardArr);
   return (
     <>
       {userCardArr?.length ? (
