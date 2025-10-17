@@ -189,6 +189,16 @@ export const usePlaceReviewMutation = (options?: MutationOptions<PlaceReviewRequ
       }),
     options,
   );
+export const usePlaceTestMutation = (options?: MutationOptions<void>) =>
+  useMutation<void, AxiosError, void>(
+    () =>
+      requestServer<void>({
+        method: "post",
+        url: `place/test`,
+        body: null,
+      }),
+    options,
+  );
 
 interface StudyStatusParamProps {
   placeId: string;

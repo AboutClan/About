@@ -92,7 +92,6 @@ function StudyControlButton({ date }: StudyControlButtonProps) {
           onClose={() => setIsModal(false)}
         />
       )}
-      /
     </>
   );
 }

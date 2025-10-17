@@ -116,7 +116,7 @@ export default function Page() {
       : participationsSet
           ?.find((par) => par.study.some((study) => study.user._id === userInfo?._id))
           ?.study?.find((who) => who.user._id === userInfo?._id);
-  console.log(99, myStudyInfo);
+
   const myStudyArr = getMyStudyDateArr(studySet, userInfo?._id);
 
   const findTodayStudy = myStudyArr?.find((myStudy) => myStudy.date === date);
@@ -155,7 +155,7 @@ export default function Page() {
   const isMyReview = placeInfo?.reviews?.some((review) => review.user._id === userInfo?._id);
 
   const isOpenStudy = studyType !== "participations" && studyType !== "soloRealTimes";
-  console.log(99, studyPassedData, studySet);
+
   return (
     <>
       {isPassedSolo || studyPassedData || studySet ? (
@@ -190,7 +190,7 @@ export default function Page() {
                     isStudy={studyType === "soloRealTimes"}
                   />
                 )}
-                <Box minH="480px">
+                <Box minH="300px">
                   {isPassedSolo && !studyPassedData ? (
                     <Box pos="relative" minH="140px">
                       <MainLoadingAbsolute size="sm" />
@@ -212,7 +212,7 @@ export default function Page() {
                   <StudyNearMemberSection
                     myStudyInfo={myStudyInfo as StudyParticipationProps}
                     members={members as StudyParticipationProps[]}
-                  />{" "}
+                  />
                 </>
               )}
             </Slide>

@@ -43,6 +43,7 @@ export interface StudyConfirmedMemberProps extends TimeStampProps {
   comment?: CommentProps;
 }
 
+export type StudyPlaceFilter = "main" | "best" | "good" | "all";
 export interface StudyPlaceProps extends PlaceRegisterProps {
   _id: string;
   registerDate?: string;

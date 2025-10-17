@@ -8,13 +8,18 @@ export interface ColorLabelProps {
   colorText?: string;
   //이후 colorText를 color로 변경
   text: string;
+  size?: "sm" | "md";
 }
 
-function ColorLabel({ text, color, colorText }: ColorLabelProps) {
+function ColorLabel({ text, color, colorText, size = "sm" }: ColorLabelProps) {
   return (
     <Flex h="24px" align="center">
       <PointCircle color={!colorText ? color : null} colorText={colorText} />
-      <Box fontSize="10px" as="span" color={colorText || `var(--color-${color})`}>
+      <Box
+        fontSize={size === "sm" ? "10px" : "12px"}
+        as="span"
+        color={colorText || `var(--color-${color})`}
+      >
         {text}
       </Box>
     </Flex>

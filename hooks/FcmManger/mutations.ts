@@ -18,13 +18,14 @@ interface SendNotificationProps {
 }
 
 export const useSendNotificationAllMutation = (
+  type: "all" | "study",
   options?: MutationOptions<{ title: string; description: string }>,
 ) =>
   useMutation<void, AxiosError, { title: string; description: string }>(
     (params) =>
       requestServer<{ title: string; description: string }>({
         method: "post",
-        url: "fcm/sendNotification/all",
+        url: `fcm/sendNotification/${type}`,
         body: params,
       }),
     options,

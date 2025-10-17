@@ -63,27 +63,31 @@ function StudyNearMemberSection({ myStudyInfo, members }: StudyNearMemberSection
   });
 
   return (
-    <Box mt={5}>
-      <Box mb={2} fontSize="18px" fontWeight="bold">
-        내 주변 스터디 신청 멤버
-      </Box>
-      <ProfileCardColumn
-        userCardArr={isOpen ? userCardArr : userCardArr?.slice(0, 3)}
-        hasCommentButton={false}
-      />
-      {!isOpen && (
-        <Button
-          mt={2}
-          w="100%"
-          h="40px"
-          bgColor="white"
-          border="0.5px solid #E8E8E8"
-          onClick={() => setIsOpen(true)}
-        >
-          더보기
-        </Button>
-      )}
-    </Box>
+    <>
+      {userCardArr?.length ? (
+        <Box mt={5}>
+          <Box mb={2} fontSize="18px" fontWeight="bold">
+            내 주변 스터디 신청 멤버
+          </Box>
+          <ProfileCardColumn
+            userCardArr={isOpen ? userCardArr : userCardArr?.slice(0, 3)}
+            hasCommentButton={false}
+          />
+          {!isOpen && (
+            <Button
+              mt={2}
+              w="100%"
+              h="40px"
+              bgColor="white"
+              border="0.5px solid #E8E8E8"
+              onClick={() => setIsOpen(true)}
+            >
+              더보기
+            </Button>
+          )}
+        </Box>
+      ) : null}
+    </>
   );
 }
 

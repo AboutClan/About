@@ -2,7 +2,6 @@ import { Box } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
-import clustering from "density-clustering";
 import { MainLoading, MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
 import ScreenOverlay from "../../../components/atoms/ScreenOverlay";
 import VoteMap from "../../../components/organisms/VoteMap";
@@ -12,7 +11,10 @@ import { useStudyPlacesQuery } from "../../../hooks/study/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { getMapOptions, getStudyPlaceMarkersOptions } from "../../../libs/study/setStudyMapOptions";
 import { IMapOptions, IMarkerOptions } from "../../../types/externals/naverMapTypes";
-import { StudyPlaceProps } from "../../../types/models/studyTypes/study-entity.types";
+import {
+  StudyPlaceFilter,
+  StudyPlaceProps,
+} from "../../../types/models/studyTypes/study-entity.types";
 import { detectDevice } from "../../../utils/validationUtils";
 import PlaceInfoDrawer from "../PlaceInfoDrawer";
 import StudyMapTopNav from "./TopNav";
@@ -21,9 +23,15 @@ interface StudyPageMapProps {
   isDefaultOpen?: boolean;
   handleVotePick?: (place: StudyPlaceProps) => void;
   onClose?: () => void;
+  isDown?: boolean;
 }
 
-function StudyPageMap({ isDefaultOpen = false, onClose, handleVotePick }: StudyPageMapProps) {
+function StudyPageMap({
+  isDefaultOpen = false,
+  onClose,
+  handleVotePick,
+  isDown,
+}: StudyPageMapProps) {
   const { data: session } = useSession();
   const { data: userInfo } = useUserInfoQuery();
   const typeToast = useTypeToast();
@@ -37,50 +45,13 @@ function StudyPageMap({ isDefaultOpen = false, onClose, handleVotePick }: StudyP
   const [isLoading, setIsLoading] = useState(false);
 
   const [placeInfo, setPlaceInfo] = useState<StudyPlaceProps>(null);
-  const [filterType, setFilterType] = useState<"main" | "all">("main");
+  const [filterType, setFilterType] = useState<StudyPlaceFilter>();
+  const [zoomNumber, setZoomNumber] = useState<number>(13);
 
-  const { data: placeData, isLoading: isLoading2 } = useStudyPlacesQuery(filterType, null);
-
-  useEffect(() => {
-    if (!placeData || placeData.length === 0) return;
-
-    // 1️⃣ [lat, lon] 형태로 변환
-    const data2 = placeData.map((p) => [p.location.latitude, p.location.longitude]);
-
-    // 2️⃣ DBSCAN 실행
-    const DBSCAN = new clustering.DBSCAN();
-    const eps = 0.01; // 약 1km
-    const minPts = 2;
-    const clusters = DBSCAN.run(data2, eps, minPts);
-
-    // 3️⃣ 중심점 계산 함수
-    const calcCentroid = (points: number[][]) => {
-      const sum = points.reduce((acc, [lat, lon]) => [acc[0] + lat, acc[1] + lon], [0, 0]);
-      const count = points.length;
-      return [sum[0] / count, sum[1] / count]; // [평균 lat, 평균 lon]
-    };
-
-    // 4️⃣ 클러스터 중심 계산
-    const clusterInfo = clusters.map((cluster) => {
-      const points = cluster.map((idx) => data2[idx]);
-      const center = calcCentroid(points);
-      const count = points.length;
-      return { center, count, type: "cluster" };
-    });
-
-    // 5️⃣ 노이즈도 같은 형식으로 추가
-    const noiseInfo = DBSCAN.noise.map((idx) => {
-      const point = data2[idx];
-      return { center: point, count: 1, type: "noise" };
-    });
-
-    // 6️⃣ 전체 통합
-    const allInfo = [...clusterInfo, ...noiseInfo];
-
-    console.log("Clusters:", clusters);
-    console.log("Noise:", DBSCAN.noise);
-    console.log("All Info:", allInfo);
-  }, [placeData]);
+  const { data: placeData, isLoading: isLoading2 } = useStudyPlacesQuery(
+    filterType || "best",
+    null,
+  );
 
   const isPC = detectDevice() === "PC" && userInfo?.locationDetail?.latitude;
 
@@ -90,28 +61,41 @@ function StudyPageMap({ isDefaultOpen = false, onClose, handleVotePick }: StudyP
     }
   }, [isDefaultOpen]);
 
+  // 초기 지도 map-option 세팅
   useEffect(() => {
+    if (!userInfo) return;
+    const myLocation = {
+      lat: userInfo.locationDetail.latitude,
+      lon: userInfo.locationDetail.longitude,
+    };
     const options = getMapOptions(
-      isPC
-        ? { lat: userInfo.locationDetail.latitude, lon: userInfo.locationDetail.longitude }
-        : currentLocation,
+      isPC ? myLocation : currentLocation || myLocation,
       isMapExpansion ? 12 : 13,
     );
+
     setMapOptions(options);
-  }, [userInfo, currentLocation]);
+  }, [userInfo, isMapExpansion, currentLocation]);
 
   useEffect(() => {
-    if (!placeInfo) {
-      setMarkersOptions(getStudyPlaceMarkersOptions(placeData, null));
-      return;
-    }
-    const options = getMapOptions(
-      { lat: placeInfo.location.latitude, lon: placeInfo.location.longitude },
-      mapOptions?.zoom || (isMapExpansion ? 12 : 13),
+    if (!placeData?.length) return;
+
+    setMarkersOptions(
+      getStudyPlaceMarkersOptions(
+        placeData,
+        placeInfo ? placeInfo._id : null,
+        zoomNumber,
+        filterType !== "best" && filterType !== "main",
+      ),
     );
-    setMapOptions(options);
-    setMarkersOptions(getStudyPlaceMarkersOptions(placeData, placeInfo._id));
-  }, [placeInfo, placeData]);
+
+    if (placeInfo) {
+      const options = getMapOptions(
+        { lat: placeInfo.location.latitude, lon: placeInfo.location.longitude },
+        mapOptions?.zoom,
+      );
+      setMapOptions(options);
+    }
+  }, [placeData, placeInfo, zoomNumber]);
 
   const handleMarker = (id: string, currentZoom: number) => {
     setMapOptions({ ...mapOptions, zoom: currentZoom });
@@ -130,13 +114,19 @@ function StudyPageMap({ isDefaultOpen = false, onClose, handleVotePick }: StudyP
   // const myStudy = findMyStudyByUserId(studyVoteData, userInfo?._id);
 
   useEffect(() => {
+    if (isMapExpansion) {
+      setFilterType("good");
+    } else setFilterType("best");
+  }, [isMapExpansion]);
+
+  useEffect(() => {
     if (!isMapExpansion) return;
     setIsLoading(true);
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 800);
     return () => clearTimeout(timer);
-  }, [isMapExpansion]);
+  }, [isMapExpansion, filterType]);
 
   const handleMapClick = () => {
     if (isGuest) {
@@ -156,7 +146,7 @@ function StudyPageMap({ isDefaultOpen = false, onClose, handleVotePick }: StudyP
           mx={!isMapExpansion ? 5 : 0}
           top={0}
           left={0}
-          zIndex={isDefaultOpen ? 1500 : isMapExpansion ? 1000 : "auto"}
+          zIndex={isDefaultOpen && !isDown ? 1500 : isMapExpansion ? 1000 : "auto"}
           {...(!isMapExpansion ? { aspectRatio: 1 / 1, height: "inherit" } : { height: "100dvh" })}
           w={isMapExpansion ? "full" : "auto"}
           borderRadius={isMapExpansion ? "0" : "16px"}
@@ -185,9 +175,10 @@ function StudyPageMap({ isDefaultOpen = false, onClose, handleVotePick }: StudyP
             }}
             isMapExpansion={isMapExpansion}
             onClose={() => {
-              setIsMapExpansion(false);
               if (onClose) {
                 onClose();
+              } else {
+                setIsMapExpansion(false);
               }
             }}
             isCafePlace={!!placeData}
@@ -200,14 +191,17 @@ function StudyPageMap({ isDefaultOpen = false, onClose, handleVotePick }: StudyP
             markersOptions={markersOptions}
             resizeToggle={isMapExpansion}
             handleMarker={handleMarker}
+            zoomChange={(zoom: number) => setZoomNumber(zoom)}
+            isMapExpansion={isMapExpansion}
             // circleCenter={
             //   isMapExpansion && !placeData
             //     ? studyVoteData?.results?.map((props) => props?.center)
             //     : null
             // }
           />
+
           {/* {!studyVoteData?.results && <MainLoadingAbsolute />} */}
-          {isLoading2 && <MainLoadingAbsolute size="sm" />}
+          {isLoading2 && !isLoading2 && <MainLoadingAbsolute size="sm" />}
         </Box>{" "}
       </>
       {/* {detailInfo && (

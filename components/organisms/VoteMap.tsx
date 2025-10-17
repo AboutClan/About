@@ -18,6 +18,7 @@ interface IVoteMap {
     size?: "sm" | "md" | "lg";
   }[];
   zoomChange?: (zoom: number) => void;
+  isMapExpansion?: boolean;
 }
 
 export default function VoteMap({
@@ -28,6 +29,7 @@ export default function VoteMap({
   centerValue,
   circleCenter,
   zoomChange,
+  isMapExpansion,
 }: // circleCenter,
 IVoteMap) {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -38,6 +40,36 @@ IVoteMap) {
     infoWindow: [] as naver.maps.InfoWindow[],
     circles: [] as naver.maps.Circle[], // ← 배열로
   });
+  useEffect(() => {
+    const container = mapRef.current;
+    if (!container) return;
+
+    const selector = ":scope > div:nth-of-type(2)";
+
+    const moveLogo = () => {
+      const el = container.querySelector(selector) as HTMLElement | null;
+      if (el) el.style.transform = "translate(12px, -12px)";
+    };
+
+    const resetLogo = () => {
+      const el = container.querySelector(selector) as HTMLElement | null;
+      if (el) el.style.transform = "translate(0, 0)";
+    };
+
+    if (isMapExpansion) {
+      // 확장 상태일 때만 위치 이동
+      moveLogo();
+
+      const mo = new MutationObserver(moveLogo);
+      mo.observe(container, { childList: true, subtree: false });
+
+      return () => mo.disconnect();
+    } else {
+      // 축소 시 원래 위치로 복귀
+      resetLogo();
+    }
+  }, [mapInstanceRef.current, isMapExpansion]);
+
   useEffect(() => {
     if (!mapRef?.current || typeof naver === "undefined" || !mapOptions) return;
 

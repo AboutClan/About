@@ -15,79 +15,60 @@ export const getStudyVoteIcon = (type: "default" | "main" | "sub", text: string)
     ${getBasicIcon()}</div>`;
 };
 
-export const getStudyIcon = (
-  type: "active" | "inactive" | "pending" | "none",
-  cnt?: number,
-  color?: string,
-) => {
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="37" height="45" viewBox="0 0 37 45" fill="none">
-      <rect x="2" y="3" width="32" height="32" rx="16" fill=${
-        color === "orange" ? "#ffa501" : "#00C2B3"
-      } />
-      <path
-        d="M12.825 25.4829C12.4226 25.3079 12.1105 25.0658 11.8889 24.7567C11.6731 24.4417 11.5652 24.0801 11.5652 23.6718C11.5652 23.3685 11.6439 22.9982 11.8014 22.5607L14.881 14.608C15.1668 13.8789 15.5809 13.319 16.1234 12.9282C16.6716 12.5316 17.2957 12.3333 17.9956 12.3333C18.7014 12.3333 19.3255 12.5316 19.8679 12.9282C20.4162 13.319 20.8332 13.8789 21.119 14.608L24.1986 22.5607C24.3561 23.0215 24.4348 23.3919 24.4348 23.6718C24.4348 24.0801 24.324 24.4417 24.1024 24.7567C23.8866 25.0658 23.5774 25.3079 23.175 25.4829C22.895 25.6053 22.6092 25.6666 22.3176 25.6666C21.9035 25.6666 21.5185 25.5354 21.1627 25.2729C20.8128 25.0104 20.5532 24.6459 20.3841 24.1793L20.1829 23.5843H15.8347L15.6159 24.1793C15.4584 24.6342 15.2018 24.9958 14.846 25.2641C14.4961 25.5324 14.1082 25.6666 13.6824 25.6666C13.3908 25.6666 13.105 25.6053 12.825 25.4829ZM17.0333 19.9798H18.9668L17.9956 16.5065L17.0333 19.9798Z"
-        fill="white"
-      />
-      <path
-        d="M18.433 37.3999C18.2405 37.7332 17.7594 37.7332 17.5669 37.3999L15.7699 34.2874C15.5775 33.9541 15.818 33.5374 16.2029 33.5374L19.797 33.5374C20.1819 33.5374 20.4224 33.9541 20.23 34.2874L18.433 37.3999Z"
-        fill=${color === "orange" ? "#ffa501" : "#00C2B3"}
-      />
-      <g opacity="0.12" filter="url(#filter0_f_35_316)">
-        <ellipse cx="18" cy="41.1499" rx="16" ry="1" fill="#424242" />
-      </g>
-${
-  type === "none"
-    ? null
-    : type
-    ? ` <div style="
+export const getStudyIcon = (cnt?: number) => {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="56" height="60" viewBox="0 0 56 60" fill="none">
+<g filter="url(#filter0_d_2023_1738)">
+<rect x="12" y="12.7065" width="32" height="32" rx="16" fill="#00C2B3"/>
+<path d="M22.825 35.1896C22.4226 35.0147 22.1105 34.7726 21.8889 34.4635C21.6731 34.1485 21.5652 33.7869 21.5652 33.3786C21.5652 33.0753 21.6439 32.705 21.8014 32.2675L24.881 24.3148C25.1668 23.5857 25.5809 23.0257 26.1234 22.635C26.6716 22.2383 27.2957 22.04 27.9956 22.04C28.7014 22.04 29.3255 22.2383 29.8679 22.635C30.4162 23.0257 30.8332 23.5857 31.119 24.3148L34.1986 32.2675C34.3561 32.7283 34.4348 33.0987 34.4348 33.3786C34.4348 33.7869 34.324 34.1485 34.1024 34.4635C33.8866 34.7726 33.5774 35.0147 33.175 35.1896C32.895 35.3121 32.6092 35.3734 32.3176 35.3734C31.9035 35.3734 31.5185 35.2421 31.1627 34.9797C30.8128 34.7172 30.5532 34.3527 30.3841 33.8861L30.1829 33.2911H25.8347L25.6159 33.8861C25.4584 34.341 25.2018 34.7026 24.846 34.9709C24.4961 35.2392 24.1082 35.3734 23.6824 35.3734C23.3908 35.3734 23.105 35.3121 22.825 35.1896ZM27.0333 29.6866H28.9668L27.9956 26.2133L27.0333 29.6866Z" fill="white"/>
+<path d="M28.433 47.1064C28.2405 47.4398 27.7594 47.4398 27.5669 47.1064L25.7699 43.9939C25.5775 43.6606 25.818 43.2439 26.2029 43.2439L29.797 43.2439C30.1819 43.2439 30.4224 43.6606 30.23 43.9939L28.433 47.1064Z" fill="#00C2B3"/>
+</g>
+<defs>
+<filter id="filter0_d_2023_1738" x="0" y="0.706543" width="56" height="59.1499" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset/>
+<feGaussianBlur stdDeviation="6"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0.760784 0 0 0 0 0.701961 0 0 0 0.8 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2023_1738"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2023_1738" result="shape"/>
+</filter>
+</defs>${`<div style="
     position: absolute;
-    top: 1px;
-    left: 24px;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-
-    background-color: ${
-      type === "active"
-        ? "var(--color-blue)"
-        : type === "inactive"
-        ? "var(--color-orange)"
-        : "var(--color-gray)"
-    };
-    border: 2px solid white;
-  "></div>`
-    : `<div style="
-    position: absolute;
-    top: 1px;
-    left: 24px;
+    top: 8px;
+    right: 8px;
     width: 16px;
     height: 16px;
     display:flex;
     justify-content:center;
     align-items:center;
     font-size:8px;
+    font-weight:600;
     border-radius: 50%;
     background-color: white;
-    border: 1px solid var(--gray-300);
-  ">${cnt}</div>`
-}
-    
-      <defs>
-        <filter id="filter0_f_35_316" x="0" y="38.1499" width="36" height="6" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
-          <feFlood floodOpacity="0" result="BackgroundImageFix" />
-          <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
-          <feGaussianBlur stdDeviation="1" result="effect1_foregroundBlur_35_316" />
-        </filter>
-      </defs>
-    </svg>`;
+  
+    outline: 1px solid var(--gray-300);
+  ">${cnt}</div>`}
+</svg>`;
 };
 
 export const getStudyIcon2 = (
-  type: "active" | "inactive" | "pending" | "none",
+  type: "active" | "none",
   cnt?: number,
   color?: string,
+  text?: string,
 ) => {
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="37" height="45" viewBox="0 0 37 45" fill="none">
+  return `
+  <div style="display:flex; flex-direction:column; align-items:center;">
+  ${
+    text
+      ? `<div  style= "  overflow:hidden;
+          white-space:nowrap;
+          text-overflow:ellipsis; padding:4px 8px;padding-right:4px; margin-bottom:4px; text-align:center; line-height:12px; font-weight:600;font-size:10px;color:#424242; background:white; border:1px solid #eeeeee; border-radius:4px; height:20px; width:60px;" >
+    ${text} </div>`
+      : ``
+  }
+  <svg xmlns="http://www.w3.org/2000/svg" width="37" height="45" viewBox="0 0 37 45" fill="none">
       <rect x="2" y="3" width="32" height="32" rx="16" fill=${
         color === "orange" ? "#ffa501" : "#00C2B3"
       } />
@@ -112,13 +93,7 @@ ${
     height: 16px;
     border-radius: 50%;
 
-    background-color: ${
-      type === "active"
-        ? "var(--color-blue)"
-        : type === "inactive"
-        ? "var(--color-orange)"
-        : "var(--color-gray)"
-    };
+    background-color:var(--color-orange);
     border: 2px solid white;
   "></div>`
     : `<div style="
@@ -138,7 +113,7 @@ ${
 }
     
      
-    </svg>`;
+    </svg></div>`;
 };
 
 export const getStudyIcon3 = (text: string) => {

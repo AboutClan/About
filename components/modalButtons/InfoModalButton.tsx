@@ -1,11 +1,12 @@
 import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 
-import { ModalLayout } from "../../modals/Modals";
+import { useToast } from "../../hooks/custom/CustomToast";
+import { IFooterOptions, ModalLayout } from "../../modals/Modals";
 import IconButton from "../atoms/buttons/IconButton";
 import InfoList from "../atoms/lists/InfoList";
 
-type InfoType = "study" | "gather" | "group" | "gatherRequest" | "ranking";
+type InfoType = "study" | "gather" | "group" | "gatherRequest" | "ranking" | "map";
 
 interface InfoModalButtonProps {
   type: InfoType;
@@ -49,11 +50,34 @@ interface InfoModalProps {
   onClose: () => void;
 }
 
-function InfoModal({ type, onClose }: InfoModalProps) {
+export function InfoModal({ type, onClose }: InfoModalProps) {
+  const toast = useToast();
   const content = INFO_MODAL_CONTENTS[type];
 
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText("study-about.club/study-cafe-map");
+      toast("info", "복사 완료! 필요한 친구에게 공유해주세요!");
+    } catch {
+      toast("error", "복사에 실패했습니다. 관리자에게 문의해주세요!");
+    }
+  };
+
+  const footerOptions: IFooterOptions =
+    type === "map"
+      ? {
+          main: {
+            text: "링크 복사",
+            func: handleCopy,
+          },
+          sub: {
+            text: "닫기",
+          },
+        }
+      : {};
+
   return (
-    <ModalLayout title={content.title} setIsModal={onClose} footerOptions={{}}>
+    <ModalLayout title={content.title} setIsModal={onClose} footerOptions={footerOptions}>
       <InfoModalSubTitle type={type} />
       <InfoList items={content.items} />
     </ModalLayout>
@@ -85,11 +109,19 @@ function InfoModalSubTitle({ type }: { type: InfoType }) {
           <br />
           랭킹에 오르면 <b>푸짐한 상품</b>이 기다려요!
         </>
-      ) : (
+      ) : type === "gatherRequest" ? (
         <>
           “이런 번개 누가 좀 열어줬으면...”
           <br />
           생각만 했던 순간들! 이제 직접 요청해 봐요!
+        </>
+      ) : (
+        <>
+          아무 카공 장소나 모은 지도가 아닙니다.
+          <br />
+          수천 개의 카페를 찾고, 방문하고, 비교하고...
+          <br />
+          카공 장소 고민, 이제 여기서 끝내세요!
         </>
       )}
     </Box>
@@ -135,6 +167,16 @@ const INFO_MODAL_CONTENTS: Record<InfoType, { title: string; items: string[] }> 
       "관심사에 맞게 지속해서 활동할 수 있습니다.",
       "모임장은 월 최대 30,000원을 지원 받습니다.",
       "모임 참여에는 소모임 참여권이 소모됩니다.",
+    ],
+  },
+  map: {
+    title: "카공 지도 가이드",
+    items: [
+      "3년간 1,000시간 이상을 투자해 만든 지도",
+      "별점은 테이블, 콘센트, 분위기를 등을 반영",
+      "장소는 매주 업데이트, 기능도 계속 개선 중",
+      "추가하고 싶은 카공 장소가 있다면 요청",
+      "주변에도 많이 공유해주세요!",
     ],
   },
 };

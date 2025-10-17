@@ -23,7 +23,7 @@ function StudyPageBenefitDrawer({ onClose }: StudyPageBenefitDrawerProps) {
   const { data: userInfo } = useUserInfoQuery();
 
   const { data: logs } = usePointPlusLogQuery();
-  console.log(34, logs);
+
   const [isBenefit, setIsBenefit] = useState(false);
   const [totalValue, setTotalValue] = useState(0);
   const [benefitProps, setBenefitProps] = useState<Record<BenefitName, number>>({

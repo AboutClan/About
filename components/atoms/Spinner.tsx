@@ -15,7 +15,7 @@ export default function Spinner({ text, size = "md" }: ISpinner) {
           speed={size === "md" ? "0.65s" : "0.55s"}
           emptyColor="gray.200"
           color="var(--color-mint)"
-          size={size === "md" ? "xl" : "md"}
+          size={size === "md" ? "lg" : "md"}
         />
         {text && <Message>위치를 확인중입니다...</Message>}
       </Layout>

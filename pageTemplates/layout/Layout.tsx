@@ -74,7 +74,7 @@ function Layout({ children }: ILayout) {
     if (!isBottomNavCondition && isGuest) {
       toast(
         "info",
-        "현재 게스트 뷰어를 사용하고 있습니다. 활동을 위해서는 앱을 통해 로그인해 주세요.",
+        "현재 게스트 뷰어를 이용하고 있습니다. 활동을 위해서는 앱을 통해 로그인해 주세요.",
       );
       return;
     }
@@ -133,15 +133,7 @@ function Layout({ children }: ILayout) {
     <>
       <Seo title="ABOUT" />
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
-      {/* {detectDevice() !== "PC" && (
-        <Global
-          styles={{
-            "*:hover": {
-              background: "inherit !important",
-            },
-          }}
-        />
-      )} */}
+
       {token && (
         <>
           <div

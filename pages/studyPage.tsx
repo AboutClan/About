@@ -15,18 +15,23 @@ import StudyPageMap from "../pageTemplates/studyPage/studyPageMap/StudyPageMap";
 import StudyPageNav from "../pageTemplates/studyPage/StudyPageNav";
 import StudyPagePlaceSection from "../pageTemplates/studyPage/StudyPagePlaceSection";
 import StudyControlButton from "../pageTemplates/vote/StudyControlButton";
+import { getTodayStr } from "../utils/dateTimeUtils";
+
+export type StudyPageTab = "About 스터디" | "카공 지도.ZIP 🔥";
 
 export default function StudyPage() {
   const typeToast = useTypeToast();
   const router = useRouter();
   const { data: session } = useSession();
   const searchParams = useSearchParams();
+  const newSearchParams = new URLSearchParams(searchParams);
 
+  const tabParam = searchParams.get("tab") as "study" | "map";
   const dateParam = searchParams.get("date");
 
   const isGuest = session?.user.role === "guest";
 
-  const [tab, setTab] = useState<"스터디 참여" | "카공 지도">("스터디 참여");
+  const [tab, setTab] = useState<StudyPageTab>("About 스터디");
   const [date, setDate] = useState<string>(null);
 
   const isPassedDate = !!date && dayjs(date).startOf("day").isBefore(dayjs().startOf("day"));
@@ -38,25 +43,45 @@ export default function StudyPage() {
   });
 
   useEffect(() => {
+    if (!tabParam) return;
+    if (tabParam === "study") {
+      setTab("About 스터디");
+    } else {
+      setTab("카공 지도.ZIP 🔥");
+    }
+  }, [tabParam]);
+
+  useEffect(() => {
     if (!dateParam || dateParam === date) return;
     setDate(dateParam);
   }, [dateParam]);
 
   useEffect(() => {
     if (!date || dateParam === date) return;
-    const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.set("date", date);
     router.replace(`/studyPage?${newSearchParams.toString()}`, { scroll: false });
   }, [date]);
+
+  const changeTab = (type: StudyPageTab) => {
+    if (type === "About 스터디") {
+      newSearchParams.set("date", getTodayStr());
+      newSearchParams.set("tab", "study");
+    } else {
+      newSearchParams.set("date", getTodayStr());
+      newSearchParams.set("tab", "map");
+    }
+    router.replace(`/studyPage?${newSearchParams.toString()}`, { scroll: false });
+    setTab(type);
+  };
 
   return (
     <>
       <StudyPageHeader />
       <Slide isNoPadding>
-        <StudyPageNav setTab={setTab} />
+        <StudyPageNav tab={tab} changeTab={changeTab} />
       </Slide>
       <>
-        {tab === "스터디 참여" ? (
+        {tab === "About 스터디" ? (
           <Slide>
             <StudyPageCalendar date={date} setDate={setDate} />
             <StudyPagePlaceSection
@@ -70,7 +95,7 @@ export default function StudyPage() {
           <Slide isNoPadding>
             <Box h={5} />
             <Box mx={5} mb={2} fontSize="16px" fontWeight={600}>
-              ⬇️ &apos;찐&apos; 카공러들이 선별한 카공 맛집 지도! ⬇️
+              ⬇️ &apos;찐&apos; 카공러들이 엄선한 카공 지도 끝.판.왕 ⬇️
             </Box>
             <StudyPageMap />
             <Box mx={5}>
@@ -78,7 +103,7 @@ export default function StudyPage() {
                 <IconRowBlock
                   leftIcon={<MapIcon />}
                   func={() => router.push("/study/writing/place")}
-                  mainText="신규 스터디 장소 추가"
+                  mainText="카공 장소 추가 요청"
                   subText="공부하기 좋은 카공 스팟을 함께 공유해요!"
                 />
               </Box>

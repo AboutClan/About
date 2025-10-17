@@ -1,16 +1,19 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { MouseEvent } from "react";
+import { MouseEvent, useState } from "react";
 
 import CurrentLocationBtn from "../../../components/atoms/CurrentLocationBtn";
+import { InfoModal } from "../../../components/modalButtons/InfoModalButton";
 import { DispatchType } from "../../../types/hooks/reactTypes";
+import { StudyPlaceFilter } from "../../../types/models/studyTypes/study-entity.types";
+import { iPhoneNotchSize } from "../../../utils/validationUtils";
 
 interface TopNavProps {
   handleLocationRefetch: () => void;
   isMapExpansion: boolean;
   onClose: () => void;
   isCafePlace: boolean;
-  filterType: "main" | "all";
-  setFilterType: DispatchType<"main" | "all">;
+  filterType: StudyPlaceFilter;
+  setFilterType: DispatchType<StudyPlaceFilter>;
 }
 
 function TopNav({
@@ -21,9 +24,11 @@ function TopNav({
   filterType,
   setFilterType,
 }: TopNavProps) {
+  const [isGuideModal, setIsGuideModal] = useState(false);
+  console.log(isCafePlace);
   const handleFilter = (
-    e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
-    type: "main" | "all",
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+    type: StudyPlaceFilter,
   ) => {
     e.preventDefault();
     e.stopPropagation();
@@ -32,19 +37,29 @@ function TopNav({
 
   return (
     <>
+      {isMapExpansion && (
+        <Box
+          h="100dvh"
+          w="full"
+          bg="linear-gradient(to bottom, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0) 20%)"
+          pos="fixed"
+          top={0}
+          zIndex={30}
+          pointerEvents="none"
+        />
+      )}
       <Flex
         w="100%"
-        direction={isMapExpansion ? "row-reverse" : "row"}
+        direction={isMapExpansion ? "row" : "row-reverse"}
         justify="space-between"
         align="center"
-        p={4}
+        p={5}
         position="absolute"
         top="0"
         left="0"
         zIndex={700}
       >
-        <CurrentLocationBtn onClick={handleLocationRefetch} isBig={isMapExpansion} />
-        {isMapExpansion && !isCafePlace && (
+        {/* {isMapExpansion && !isCafePlace && (
           <Flex flex={0.8} align="center" h="32px" justify="space-around" px={4} borderRadius="4px">
             <Flex align="center" mr={2}>
               <StudyIcon color="mint" />
@@ -59,8 +74,32 @@ function TopNav({
               </Box>
             </Flex>
           </Flex>
+        )} */}
+        {!isMapExpansion && (
+          <Button
+            borderRadius="4px"
+            bgColor="white"
+            boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
+            w="32px"
+            h="32px"
+            size="sm"
+            p="0"
+            border="var(--border-main)"
+          >
+            <ExpansionIcon />
+          </Button>
         )}
-        <Box
+        {/* <Button
+          p={0}
+          boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.15)"
+          w="48px"
+          h="48px"
+          bg="white"
+          onClick={onClose}
+        >
+          <XIcon />
+        </Button> */}
+        {/* <Box
           fontSize={isMapExpansion ? "15px" : "10px"}
           h={isMapExpansion ? "48px" : "32px"}
           display="flex"
@@ -98,8 +137,86 @@ function TopNav({
           >
             전체
           </Flex>
-        </Box>
-        {!isMapExpansion ? (
+        </Box> */}
+
+        <Flex gap={2} h="32px">
+          <Button
+            h="32px"
+            px={4}
+            borderRadius="20px"
+            border={filterType === "best" ? "none" : "var(--border)"}
+            boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
+            bg={filterType === "best" ? "gray.900" : "white"}
+            fontSize="11px"
+            color={filterType === "best" ? "white" : "gray.800"}
+            fontWeight={600}
+            lineHeight="12px"
+            onClick={(e) => handleFilter(e, "best")}
+            _hover={{
+              bg: "gray.900",
+            }}
+            _active={{
+              bg: "gray.900",
+            }}
+            _focus={{
+              bg: "gray.900",
+            }}
+          >
+            별점 4.5 이상
+          </Button>
+          {isMapExpansion && (
+            <Button
+              h="32px"
+              px={4}
+              borderRadius="20px"
+              border={filterType === "good" ? "none" : "var(--border)"}
+              boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
+              bg={filterType === "good" ? "gray.900" : "white"}
+              fontSize="11px"
+              color={filterType === "good" ? "white" : "gray.800"}
+              fontWeight={600}
+              lineHeight="12px"
+              onClick={(e) => handleFilter(e, "good")}
+              _hover={{
+                bg: "gray.900",
+              }}
+              _active={{
+                bg: "gray.900",
+              }}
+              _focus={{
+                bg: "gray.900",
+              }}
+            >
+              별점 4.0 이상
+            </Button>
+          )}
+          <Button
+            h="32px"
+            px={4}
+            borderRadius="20px"
+            border={filterType === "all" ? "none" : "var(--border)"}
+            boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
+            bg={filterType === "all" ? "gray.800" : "white"}
+            fontSize="11px"
+            color={filterType === "all" ? "white" : "gray.800"}
+            fontWeight={600}
+            lineHeight="12px"
+            onClick={(e) => handleFilter(e, "all")}
+            _hover={{
+              bg: "gray.900",
+            }}
+            _active={{
+              bg: "gray.900",
+            }}
+            _focus={{
+              bg: "gray.900",
+            }}
+          >
+            모든 카공 카페
+          </Button>
+        </Flex>
+
+        {/* {!isMapExpansion ? (
           <Button
             borderRadius="4px"
             bgColor="white"
@@ -113,16 +230,80 @@ function TopNav({
             <ExpansionIcon />
           </Button>
         ) : (
-          <Button p={0} w="48px" h="48px" bg="white" onClick={onClose}>
+          <Button
+            p={0}
+            boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.15)"
+            w="48px"
+            h="48px"
+            bg="white"
+            onClick={onClose}
+          >
             <XIcon />
           </Button>
-        )}
+        )} */}
       </Flex>
+      {isMapExpansion && (
+        <Box pos="absolute" bottom={`${iPhoneNotchSize() + 80}px`} right="20px" zIndex={300}>
+          <CurrentLocationBtn onClick={handleLocationRefetch} isBig={true} />
+        </Box>
+      )}
+      {isMapExpansion && (
+        <Flex
+          pos="absolute"
+          w="full"
+          px={5}
+          bottom={`${iPhoneNotchSize() + 12}px`}
+          left={0}
+          zIndex={300}
+        >
+          <Button
+            size="lg"
+            flex={1}
+            border="var(--border)"
+            boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
+            bg="white"
+            color="gray.800"
+            fontWeight={600}
+            mr={3}
+            onClick={onClose}
+          >
+            지도 닫기
+          </Button>
+          <Button
+            size="lg"
+            flex={1}
+            border={filterType === "main" ? "none" : "var(--border)"}
+            boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
+            bg="gray.900"
+            color="white"
+            fontWeight={600}
+            leftIcon={<MenuIcon />}
+            onClick={() => setIsGuideModal(true)}
+          >
+            카공 지도 가이드
+          </Button>
+        </Flex>
+      )}
+      {isGuideModal && <InfoModal type="map" onClose={() => setIsGuideModal(false)} />}
     </>
   );
 }
 
 export default TopNav;
+
+function MenuIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="16px"
+      viewBox="0 -960 960 960"
+      width="16px"
+      fill="white"
+    >
+      <path d="M260-320q47 0 91.5 10.5T440-278v-394q-41-24-87-36t-93-12q-36 0-71.5 7T120-692v396q35-12 69.5-18t70.5-6Zm260 42q44-21 88.5-31.5T700-320q36 0 70.5 6t69.5 18v-396q-33-14-68.5-21t-71.5-7q-47 0-93 12t-87 36v394Zm-40 97q-14 0-26.5-3.5T430-194q-39-23-82-34.5T260-240q-42 0-82.5 11T100-198q-21 11-40.5-1T40-234v-482q0-11 5.5-21T62-752q46-24 96-36t102-12q58 0 113.5 15T480-740q51-30 106.5-45T700-800q52 0 102 12t96 36q11 5 16.5 15t5.5 21v482q0 23-19.5 35t-40.5 1q-37-20-77.5-31T700-240q-45 0-88 11.5T530-194q-11 6-23.5 9.5T480-181ZM280-494Zm280-115q0-9 6.5-18.5T581-640q29-10 58-15t61-5q20 0 39.5 2.5T778-651q9 2 15.5 10t6.5 18q0 17-11 25t-28 4q-14-3-29.5-4.5T700-600q-26 0-51 5t-48 13q-18 7-29.5-1T560-609Zm0 220q0-9 6.5-18.5T581-420q29-10 58-15t61-5q20 0 39.5 2.5T778-431q9 2 15.5 10t6.5 18q0 17-11 25t-28 4q-14-3-29.5-4.5T700-380q-26 0-51 4.5T601-363q-18 7-29.5-.5T560-389Zm0-110q0-9 6.5-18.5T581-530q29-10 58-15t61-5q20 0 39.5 2.5T778-541q9 2 15.5 10t6.5 18q0 17-11 25t-28 4q-14-3-29.5-4.5T700-490q-26 0-51 5t-48 13q-18 7-29.5-1T560-499Z" />
+    </svg>
+  );
+}
 
 export function XIcon() {
   return (

@@ -1,8 +1,14 @@
+import clustering from "density-clustering";
+
 import { CoordinatesProps } from "../../types/common";
 import { IMapOptions, IMarkerOptions } from "../../types/externals/naverMapTypes";
 import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
-import { getCurrentLocationIcon, getStudyIcon2, getVoteLocationIcon } from "./getStudyVoteIcon";
-
+import {
+  getCurrentLocationIcon,
+  getStudyIcon,
+  getStudyIcon2,
+  getVoteLocationIcon,
+} from "./getStudyVoteIcon";
 // export const getDetailInfo = (result: StudyMergeResultProps, myUid: string): StudyInfoProps => {
 //   const members = result.members;
 
@@ -54,23 +60,101 @@ import { getCurrentLocationIcon, getStudyIcon2, getVoteLocationIcon } from "./ge
 export const getStudyPlaceMarkersOptions = (
   placeData: StudyPlaceProps[],
   selectedId: string,
+  zoomNumber: number,
 ): IMarkerOptions[] | undefined => {
-  if (typeof naver === "undefined") return;
+  if (typeof naver === "undefined" || !placeData?.length) return;
   const temp = [];
 
-  if (placeData) {
-    placeData.forEach((place) => {
+  interface ClusterInfoProps {
+    _id: string;
+    center: number[];
+    count: number;
+    type: "cluster" | "noise";
+    name: string;
+  }
+
+  const getClusterInfo = (placeData: StudyPlaceProps[], zoom: number): ClusterInfoProps[] => {
+    const data2 = placeData.map((p) => [p.location.latitude, p.location.longitude]);
+
+    const DBSCAN = new clustering.DBSCAN();
+
+    const ZOOM_EPS_MAPPIN = {
+      16: 0.0001,
+      15: 0.001,
+      14: 0.0025,
+      13: 0.005,
+      12: 0.01,
+      11: 0.02,
+      10: 0.03,
+    };
+
+    const eps = zoom >= 16 ? 0.0001 : ZOOM_EPS_MAPPIN[zoom];
+    const minPts = 2;
+    const clusters: number[][] = DBSCAN.run(data2, eps, minPts);
+
+    // 3️⃣ 중심점 계산 함수
+    const calcCentroid = (points: number[][]) => {
+      const sum = points.reduce((acc, [lat, lon]) => [acc[0] + lat, acc[1] + lon], [0, 0]);
+      const count = points.length;
+      return [sum[0] / count, sum[1] / count]; // [평균 lat, 평균 lon]
+    };
+
+    // 4️⃣ 클러스터 중심 계산
+    const clusterInfo = clusters.map((cluster) => {
+      const points = cluster.map((idx) => data2[idx]);
+      const center = calcCentroid(points);
+      const count = points.length;
+
+      // 클러스터에 포함된 place들의 _id 배열
+      const clusters = cluster.map((idx) => placeData[idx]);
+
+      // 대표 _id = 첫 번째 place의 _id
+      const id = clusters[0]._id;
+
+      return {
+        _id: id,
+        center,
+        count,
+        type: "cluster",
+      };
+    });
+
+    // 5️⃣ 노이즈도 같은 형식으로 추가
+    const noiseInfo = DBSCAN.noise.map((idx) => {
+      const point = data2[idx];
+      const data = placeData[idx];
+
+      return {
+        _id: data._id,
+        center: point,
+        count: 1,
+        type: "noise",
+        name: data.location.name,
+      };
+    });
+
+    // 6️⃣ 합쳐서 반환
+    return [...clusterInfo, ...noiseInfo];
+  };
+
+  const clusters = getClusterInfo(placeData, zoomNumber);
+
+  if (clusters) {
+    clusters.forEach((cluster) => {
       temp.push({
-        id: place._id,
+        id: cluster._id,
         type: "place",
-        position: new naver.maps.LatLng(place.location.latitude, place.location.longitude),
+        position: new naver.maps.LatLng(cluster.center[0], cluster.center[1]),
         icon: {
           content:
-            place._id === selectedId
-              ? getStudyIcon2("none", null, "orange")
-              : getStudyIcon2("none"),
-          size: new naver.maps.Size(37, 45),
-          anchor: new naver.maps.Point(18.5, 45),
+            selectedId === cluster._id
+              ? getStudyIcon2("none", null, "orange", null)
+              : cluster.count > 1
+              ? getStudyIcon(cluster.count)
+              : getStudyIcon2("none", null, null, zoomNumber >= 15 ? cluster.name : null),
+
+          size: new naver.maps.Size(56, 60),
+          anchor: new naver.maps.Point(28, 60),
         },
       });
     });

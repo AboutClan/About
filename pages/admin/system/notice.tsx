@@ -11,7 +11,7 @@ function Notice() {
   const [text, setText] = useState("");
   const [tab, setTab] = useState(null);
 
-  const { mutate } = useSendNotificationAllMutation();
+  const { mutate } = useSendNotificationAllMutation("study");
 
   const onSubmit = () => {
     mutate({ title, description: text });

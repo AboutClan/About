@@ -64,7 +64,7 @@ function StudyPendingSection({ studySet }: StudyPendingSectionProps) {
           )
         : [1, 2, 3].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)}
 
-      {!isOpen && (
+      {!isOpen && thumbnailCardInfoArr?.length > 3 && (
         <Button
           w="100%"
           h="40px"

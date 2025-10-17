@@ -17,6 +17,7 @@ import { CoordinatesProps, TimeRangeProps } from "../../types/common";
 import { QueryOptions } from "../../types/hooks/reactTypes";
 import {
   RealTimesStudyStatus,
+  StudyPlaceFilter,
   StudyPlaceProps,
 } from "../../types/models/studyTypes/study-entity.types";
 import { StudySetProps } from "../../types/models/studyTypes/study-set.types";
@@ -160,7 +161,7 @@ export const useStudyNearPlaceQuery = (
     options,
   );
 export const useStudyPlacesQuery = (
-  status: "main" | "sub" | "all",
+  status: StudyPlaceFilter,
   options?: QueryOptions<StudyPlaceProps[]>,
 ) =>
   useQuery<StudyPlaceProps[], AxiosError, StudyPlaceProps[]>(
