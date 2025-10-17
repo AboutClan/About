@@ -80,12 +80,7 @@ function StudyPageMap({
     if (!placeData?.length) return;
 
     setMarkersOptions(
-      getStudyPlaceMarkersOptions(
-        placeData,
-        placeInfo ? placeInfo._id : null,
-        zoomNumber,
-        filterType !== "best" && filterType !== "main",
-      ),
+      getStudyPlaceMarkersOptions(placeData, placeInfo ? placeInfo._id : null, zoomNumber),
     );
 
     if (placeInfo) {

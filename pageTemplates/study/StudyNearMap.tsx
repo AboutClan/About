@@ -31,7 +31,7 @@ function StudyNearMap({ centerPlace }: StudyNearMapProps) {
     );
   }, [centerPlace]);
 
-  const markersOptions = getStudyPlaceMarkersOptions(data, centerPlace._id);
+  const markersOptions = getStudyPlaceMarkersOptions(data, centerPlace._id, null);
 
   const handleMarker = (id: string, currentZoom: number) => {
     setMapOptions({ ...mapOptions, zoom: currentZoom });
