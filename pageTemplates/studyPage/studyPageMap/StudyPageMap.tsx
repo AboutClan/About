@@ -103,6 +103,14 @@ function StudyPageMap({
   // const myStudy = findMyStudyByUserId(studyVoteData, userInfo?._id);
 
   useEffect(() => {
+    if (isMapExpansion) {
+      // 크롬/안드로이드/최신 iOS 사파리
+      document.documentElement.style.overscrollBehaviorY = "none";
+      document.body.style.overscrollBehaviorY = "none";
+    } else {
+      document.documentElement.style.overscrollBehaviorY = "";
+      document.body.style.overscrollBehaviorY = "";
+    }
     if (type === "mainPlace") {
       setFilterType("main");
       return;
@@ -110,6 +118,35 @@ function StudyPageMap({
     if (isMapExpansion) {
       setFilterType("good");
     } else setFilterType("best");
+  }, [isMapExpansion]);
+
+  useEffect(() => {
+    if (!isMapExpansion) return;
+
+    let startY = 0;
+
+    const onTouchStart = (e: TouchEvent) => {
+      startY = e.touches[0]?.clientY ?? 0;
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      const y = e.touches[0]?.clientY ?? 0;
+      const deltaY = y - startY;
+
+      // 페이지 최상단에서 아래로 끌어내리는 제스처만 차단(PtR 방지)
+      if (window.scrollY <= 0 && deltaY > 0) {
+        e.preventDefault();
+      }
+    };
+
+    // passive: false 가 핵심 (기본 스크롤 취소 가능)
+    window.addEventListener("touchstart", onTouchStart, { passive: false });
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
+
+    return () => {
+      window.removeEventListener("touchstart", onTouchStart);
+      window.removeEventListener("touchmove", onTouchMove);
+    };
   }, [isMapExpansion]);
 
   useEffect(() => {
@@ -221,6 +258,8 @@ const ClipLayer = styled.div<{ $rounded: boolean }>`
   border-radius: ${({ $rounded }) => ($rounded ? "16px" : "0")};
   overflow: hidden;
   border: 1px solid var(--gray-200);
+  overscroll-behavior: contain; /* 내부 스크롤이 바깥으로 전파되지 않게 */
+  touch-action: pan-x pan-y; /* 지도 제스처와 충돌 없게 */
 `;
 
 export default StudyPageMap;
