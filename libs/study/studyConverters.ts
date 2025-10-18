@@ -83,7 +83,7 @@ export const setStudyWeekData = (
           })),
         );
       }
-    
+
       acc.results.push(
         ...results.map((result) => ({
           date,
@@ -229,7 +229,7 @@ export const setPassedDayRealTimesGroup = (
 
   studyRealTimeArr.forEach((props) => {
     const findParticipationIdx = temp.findIndex(
-      (participation) => participation.place._id === props.place.location._id,
+      (participation) => participation.place._id === (props.place._id || props.place.location._id),
     );
 
     if (findParticipationIdx !== -1) {
