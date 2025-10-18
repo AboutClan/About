@@ -11,7 +11,6 @@ function StudyMap() {
 
   const router = useRouter();
   const [isModal, setIsModal] = useState(false);
-  console.log(3, session);
 
   useEffect(() => {
     if (session === null) {
@@ -37,12 +36,21 @@ function StudyMap() {
     <>
       <Head>
         <title>ABOUT 카공 지도</title>
-        <meta property="og:title" content="ABOUT 카공 지도" />
-        <meta property="og:description" content="카공 장소 고민, 이제 여기서 끝내세요!" />
-        <meta property="og:image" content="/images/cafe-map.png" />
+        <meta property="og:title" content="ABOUT 카공 지도" key="og:title" />
+        <meta
+          property="og:description"
+          content="카공 장소 고민, 이제 여기서 끝내세요!"
+          key="og:description"
+        />
+        <meta
+          property="og:image"
+          content="https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/cafe-map.png"
+          key="og:image"
+        />
         <meta
           property="og:url"
           content={`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/study-cafe-map`}
+          key="og:url"
         />
       </Head>
       <StudyPageMap isDefaultOpen onClose={onClose} isDown />
