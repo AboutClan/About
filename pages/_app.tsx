@@ -38,21 +38,6 @@ function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
           name="viewport"
           content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
         />
-        <meta property="og:type" content="website" key="og:type" />
-        <meta property="og:title" content="ABOUT" key="og:title" />
-        <meta property="og:url" content={process.env.NEXT_PUBLIC_NEXTAUTH_URL} key="og:url" />
-        <meta
-          property="og:description"
-          content="20대 모임 끝.판.왕! 스터디, 취미, 친목, 취업 등. 너가 찾던 모든 모임을 한 곳에!"
-          key="og:description"
-        />
-        <meta property="og:image" content="/images/thumbnail.jpg" key="og:image" />
-        <meta property="og:locale" content="ko_KR" key="og:locale" />
-        <meta
-          property="og:site_name"
-          content={process.env.NEXT_PUBLIC_NEXTAUTH_URL}
-          key="og:site_name"
-        />
       </Head>
       <QueryClientProvider client={queryClient}>
         <Hydrate state={pageProps.dehydratedState}>
