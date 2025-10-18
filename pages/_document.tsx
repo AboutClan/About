@@ -4,7 +4,7 @@ import Document, {
   Head,
   Html,
   Main,
-  NextScript
+  NextScript,
 } from "next/document";
 import Script from "next/script";
 import { Fragment } from "react";
@@ -55,7 +55,7 @@ export default class MyDocument extends Document {
           <meta property="og:url" content={process.env.NEXT_PUBLIC_NEXTAUTH_URL} key="og:url" />
           <meta
             property="og:description"
-            content="20대 모임 끝.판.왕! 스터디, 취미, 친목, 취업 등. 너가 찾던 모든 모임을 한 곳에!"
+            content="20대 모임 끝.판.왕!! 스터디, 취미, 친목, 취업 등. 너가 찾던 모든 모임을 한 곳에!"
             key="og:description"
           />
           <meta property="og:image" content="/images/thumbnail.jpg" key="og:image" />
