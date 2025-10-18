@@ -1,5 +1,5 @@
 import { Box } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import { MainLoading, MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
@@ -40,7 +40,7 @@ function StudyPageMap({
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>(null);
   const [isMapExpansion, setIsMapExpansion] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
+  const scrollLockY = useRef(0);
   const [placeInfo, setPlaceInfo] = useState<StudyPlaceProps>(null);
   const [filterType, setFilterType] = useState<StudyPlaceFilter>(
     type === "mainPlace" ? "main" : null,
@@ -104,12 +104,21 @@ function StudyPageMap({
 
   useEffect(() => {
     if (isMapExpansion) {
-      // 크롬/안드로이드/최신 iOS 사파리
-      document.documentElement.style.overscrollBehaviorY = "none";
-      document.body.style.overscrollBehaviorY = "none";
+      // 현재 스크롤 보존 + 바디 스크롤 잠금
+      scrollLockY.current = window.scrollY;
+      document.documentElement.style.overscrollBehavior = "none"; // 루트 전체 차단
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollLockY.current}px`;
+      document.body.style.width = "100%";
+      document.body.style.overflow = "hidden";
     } else {
-      document.documentElement.style.overscrollBehaviorY = "";
-      document.body.style.overscrollBehaviorY = "";
+      // 잠금 해제
+      document.documentElement.style.overscrollBehavior = "";
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      document.body.style.overflow = "";
+      window.scrollTo(0, scrollLockY.current);
     }
     if (type === "mainPlace") {
       setFilterType("main");
@@ -118,6 +127,14 @@ function StudyPageMap({
     if (isMapExpansion) {
       setFilterType("good");
     } else setFilterType("best");
+
+    return () => {
+      document.documentElement.style.overscrollBehavior = "";
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      document.body.style.overflow = "";
+    };
   }, [isMapExpansion]);
 
   useEffect(() => {
