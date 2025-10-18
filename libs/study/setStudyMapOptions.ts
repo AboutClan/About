@@ -84,8 +84,8 @@ export const getStudyPlaceMarkersOptions = (
       14: 0.0025,
       13: 0.005,
       12: 0.01,
-      11: 0.02,
-      10: 0.03,
+      11: 0.017,
+      10: 0.022,
     };
 
     const eps = zoom >= 16 ? 0.0001 : ZOOM_EPS_MAPPIN[zoom];
