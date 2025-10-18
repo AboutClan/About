@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
 
 import axios from "axios";
+import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -128,10 +128,21 @@ function Layout({ children }: ILayout) {
       document.removeEventListener("message", handleMessage);
     };
   }, [pathname]);
-  const title = "ABOUT 카공 지도";
-  const description = "카공 장소 고민, 이제 여기서 끝내세요!";
-  const url = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/study-cafe-map`;
-  const image = "https://studyabout.s3.ap-northeast-2.amazonaws.com/기타/cafe-map.png";
+
+  const { title, description, url, image } =
+    pathname === "study-cafe-map"
+      ? {
+          title: "ABOUT 카공 지도",
+          description: "카공러들을 위한 진짜 카공 지도",
+          url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/study-cafe-map`,
+          image: "https://studyabout.s3.ap-northeast-2.amazonaws.com/기타/cafe-map.png",
+        }
+      : {
+          title: "About",
+          description: "20대를 위한 모임 플랫폼",
+          url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}`,
+          image: "/ogImage.jpg",
+        };
 
   return (
     <>
