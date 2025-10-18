@@ -130,7 +130,7 @@ function Layout({ children }: ILayout) {
   }, [pathname]);
 
   const { title, description, url, image } =
-    pathname === "study-cafe-map"
+    pathname === "/study-cafe-map"
       ? {
           title: "ABOUT 카공 지도",
           description: "카공러들을 위한 진짜 카공 지도",
@@ -141,7 +141,8 @@ function Layout({ children }: ILayout) {
           title: "About",
           description: "20대를 위한 모임 플랫폼",
           url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}`,
-          image: "/ogImage.jpg",
+          image:
+            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/thumbnail.jpg",
         };
 
   return (
