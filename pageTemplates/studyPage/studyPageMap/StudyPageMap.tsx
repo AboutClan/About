@@ -33,7 +33,7 @@ function StudyPageMap({
   type,
 }: StudyPageMapProps) {
   const { data: userInfo } = useUserInfoQuery();
-  const { currentLocation } = useUserCurrentLocation();
+  const { currentLocation, refetchCurrentLocation } = useUserCurrentLocation();
 
   /* 네이버 지도와 마커 옵션 */
   const [mapOptions, setMapOptions] = useState<IMapOptions>(null);
@@ -181,17 +181,29 @@ function StudyPageMap({
           <ClipLayer $rounded={!isMapExpansion}>
             <StudyMapTopNav
               isMainType={type === "mainPlace"}
-              handleLocationRefetch={() => {
-                const center = currentLocation
-                  ? new naver.maps.LatLng(currentLocation.lat, currentLocation.lon)
-                  : userInfo
-                  ? new naver.maps.LatLng(
-                      userInfo.locationDetail.latitude,
-                      userInfo.locationDetail.longitude,
-                    )
-                  : null;
-                if (!center) return;
-                setMapOptions((old) => ({ ...old, center }));
+              handleLocationRefetch={async () => {
+                const newPos = await refetchCurrentLocation();
+
+                if (newPos) {
+                  const center = new naver.maps.LatLng(newPos.lat, newPos.lon);
+                  setMapOptions((prev) => (prev ? { ...prev, center } : getMapOptions(newPos, 13)));
+                } else if (userInfo?.locationDetail) {
+                  const center = new naver.maps.LatLng(
+                    userInfo.locationDetail.latitude,
+                    userInfo.locationDetail.longitude,
+                  );
+                  setMapOptions((prev) =>
+                    prev
+                      ? { ...prev, center }
+                      : getMapOptions(
+                          {
+                            lat: userInfo.locationDetail.latitude,
+                            lon: userInfo.locationDetail.longitude,
+                          },
+                          13,
+                        ),
+                  );
+                }
               }}
               isMapExpansion={isMapExpansion}
               onClose={() => {
