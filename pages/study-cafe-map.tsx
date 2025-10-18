@@ -1,6 +1,6 @@
-import { signIn, useSession } from "next-auth/react";
 import Head from "next/head";
 import { useRouter } from "next/navigation";
+import { signIn, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import { IFooterOptions, ModalLayout } from "../modals/Modals";
