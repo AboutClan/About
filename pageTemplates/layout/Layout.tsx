@@ -17,7 +17,6 @@ import { parseUrlToSegments } from "../../utils/stringUtils";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
 import BaseModal from "./BaseModal";
 import BaseScript from "./BaseScript";
-import Seo from "./Seo";
 
 export const BASE_BOTTOM_NAV_SEGMENT = ["home", "gather", "user", "studyPage", "group"];
 export const NOT_PADDING_NAV_SEGMENT = ["login"];
@@ -131,7 +130,7 @@ function Layout({ children }: ILayout) {
 
   return (
     <>
-      <Seo title="ABOUT" />
+      {/* <Seo title="ABOUT" /> */}
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
 
       {token && (
