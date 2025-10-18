@@ -14,7 +14,6 @@ import {
   StudyPlaceFilter,
   StudyPlaceProps,
 } from "../../../types/models/studyTypes/study-entity.types";
-import { detectDevice } from "../../../utils/validationUtils";
 import PlaceInfoDrawer from "../PlaceInfoDrawer";
 import StudyMapTopNav from "./TopNav";
 
@@ -53,8 +52,6 @@ function StudyPageMap({
     null,
   );
 
-  const isPC = detectDevice() === "PC" && userInfo?.locationDetail?.latitude;
-
   useEffect(() => {
     if (isDefaultOpen) {
       setIsMapExpansion(true);
@@ -68,10 +65,7 @@ function StudyPageMap({
       lat: userInfo.locationDetail.latitude,
       lon: userInfo.locationDetail.longitude,
     };
-    const options = getMapOptions(
-      isPC ? myLocation : currentLocation || myLocation,
-      isMapExpansion ? 12 : 13,
-    );
+    const options = getMapOptions(currentLocation || myLocation, isMapExpansion ? 12 : 13);
 
     setMapOptions(options);
   }, [userInfo, isMapExpansion, currentLocation]);
@@ -151,20 +145,16 @@ function StudyPageMap({
             <StudyMapTopNav
               isMainType={type === "mainPlace"}
               handleLocationRefetch={() => {
-                isPC
-                  ? setMapOptions((old) => ({
-                      ...old,
-                      center: new naver.maps.LatLng(
-                        userInfo.locationDetail.latitude,
-                        userInfo.locationDetail.longitude,
-                      ),
-                    }))
-                  : currentLocation
-                  ? setMapOptions((old) => ({
-                      ...old,
-                      center: new naver.maps.LatLng(currentLocation.lat, currentLocation.lon),
-                    }))
+                const center = currentLocation
+                  ? new naver.maps.LatLng(currentLocation.lat, currentLocation.lon)
+                  : userInfo
+                  ? new naver.maps.LatLng(
+                      userInfo.locationDetail.latitude,
+                      userInfo.locationDetail.longitude,
+                    )
                   : null;
+                if (!center) return;
+                setMapOptions((old) => ({ ...old, center }));
               }}
               isMapExpansion={isMapExpansion}
               onClose={() => {
