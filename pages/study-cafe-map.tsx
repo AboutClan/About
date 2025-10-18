@@ -3,23 +3,9 @@ import { signIn, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
 import { IFooterOptions, ModalLayout } from "../modals/Modals";
-import Seo from "../pageTemplates/layout/Seo";
 import StudyPageMap from "../pageTemplates/studyPage/studyPageMap/StudyPageMap";
 
-export async function getServerSideProps() {
-  const title = "ABOUT 카공 지도";
-  const description = "카공 장소 고민, 이제 여기서 끝내세요!";
-  const url = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/study-cafe-map`;
-  const image = "https://studyabout.s3.ap-northeast-2.amazonaws.com/기타/cafe-map.png";
-
-  return {
-    props: {
-      seo: { title, description, url, image },
-    },
-  };
-}
-
-function StudyMap({ seo }) {
+function StudyMap() {
   const { data: session } = useSession();
 
   const router = useRouter();
@@ -47,7 +33,6 @@ function StudyMap({ seo }) {
 
   return (
     <>
-      <Seo {...seo} />
       <StudyPageMap isDefaultOpen onClose={onClose} isDown />
       {isModal && (
         <ModalLayout title="안내사항" footerOptions={footerOptions} setIsModal={setIsModal}>

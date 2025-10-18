@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import dynamic from "next/dynamic";
+import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
@@ -127,10 +128,20 @@ function Layout({ children }: ILayout) {
       document.removeEventListener("message", handleMessage);
     };
   }, [pathname]);
+  const title = "ABOUT 카공 지도";
+  const description = "카공 장소 고민, 이제 여기서 끝내세요!";
+  const url = `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/study-cafe-map`;
+  const image = "https://studyabout.s3.ap-northeast-2.amazonaws.com/기타/cafe-map.png";
 
   return (
     <>
       {/* <Seo title="ABOUT" /> */}
+      <Head>
+        {title && <meta property="og:title" content={title} />}
+        {description && <meta property="og:description" content={description} />}
+        {url && <meta property="og:url" content={url} />}
+        {image && <meta property="og:image" content={image} />}
+      </Head>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID} />
 
       {token && (
