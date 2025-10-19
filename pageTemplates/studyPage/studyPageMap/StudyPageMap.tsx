@@ -6,7 +6,6 @@ import { MainLoading, MainLoadingAbsolute } from "../../../components/atoms/load
 import ScreenOverlay from "../../../components/atoms/ScreenOverlay";
 import VoteMap from "../../../components/organisms/VoteMap";
 import { useUserCurrentLocation } from "../../../hooks/custom/CurrentLocationHook";
-import { useToast } from "../../../hooks/custom/CustomToast";
 import { useStudyPlacesQuery } from "../../../hooks/study/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { getMapOptions, getStudyPlaceMarkersOptions } from "../../../libs/study/setStudyMapOptions";
@@ -47,7 +46,7 @@ function StudyPageMap({
     type === "mainPlace" ? "main" : null,
   );
   const [zoomNumber, setZoomNumber] = useState<number>(13);
-  const toast = useToast();
+
   const { data: placeData, isLoading: isLoading2 } = useStudyPlacesQuery(
     filterType || "best",
     null,
