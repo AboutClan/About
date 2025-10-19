@@ -78,7 +78,7 @@ IVoteMap) {
 
   useEffect(() => {
     if (!mapRef?.current || typeof naver === "undefined" || !mapOptions) return;
-
+    console.log(123, mapOptions);
     if (!mapInstanceRef.current) {
       // 처음에만 맵을 생성
       const map = new naver.maps.Map(mapRef.current, {
@@ -109,6 +109,7 @@ IVoteMap) {
     if (!map || typeof naver === "undefined") return;
     const zoomListener = naver.maps.Event.addListener(map, "zoom_changed", () => {
       const newZoom = map.getZoom();
+      console.log(2, newZoom);
       zoomChange(newZoom);
     });
     return () => {

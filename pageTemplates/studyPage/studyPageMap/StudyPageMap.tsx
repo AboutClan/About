@@ -66,7 +66,7 @@ function StudyPageMap({
       lon: userInfo.locationDetail.longitude,
     };
     const options = getMapOptions(currentLocation || myLocation, isMapExpansion ? 11 : 13);
-
+    setZoomNumber(isMapExpansion ? 11 : 13);
     setMapOptions(options);
   }, [userInfo, isMapExpansion, currentLocation]);
 
