@@ -6,6 +6,7 @@ import { MainLoading, MainLoadingAbsolute } from "../../../components/atoms/load
 import ScreenOverlay from "../../../components/atoms/ScreenOverlay";
 import VoteMap from "../../../components/organisms/VoteMap";
 import { useUserCurrentLocation } from "../../../hooks/custom/CurrentLocationHook";
+import { useToast } from "../../../hooks/custom/CustomToast";
 import { useStudyPlacesQuery } from "../../../hooks/study/queries";
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import { getMapOptions, getStudyPlaceMarkersOptions } from "../../../libs/study/setStudyMapOptions";
@@ -46,7 +47,7 @@ function StudyPageMap({
     type === "mainPlace" ? "main" : null,
   );
   const [zoomNumber, setZoomNumber] = useState<number>(13);
-
+  const toast = useToast();
   const { data: placeData, isLoading: isLoading2 } = useStudyPlacesQuery(
     filterType || "best",
     null,
@@ -199,12 +200,15 @@ function StudyPageMap({
             <StudyMapTopNav
               isMainType={type === "mainPlace"}
               handleLocationRefetch={async () => {
+                console.log(22);
                 const newPos = await refetchCurrentLocation();
 
                 if (newPos) {
+                  toast("info", "중심지 변경");
                   const center = new naver.maps.LatLng(newPos.lat, newPos.lon);
                   setMapOptions((prev) => (prev ? { ...prev, center } : getMapOptions(newPos, 13)));
                 } else if (userInfo?.locationDetail) {
+                  toast("info", "위치 정보 없음");
                   const center = new naver.maps.LatLng(
                     userInfo.locationDetail.latitude,
                     userInfo.locationDetail.longitude,
