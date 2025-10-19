@@ -56,7 +56,7 @@ export function InfoModal({ type, onClose }: InfoModalProps) {
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText("study-about.club/study-cafe-map");
+      await navigator.clipboard.writeText("study-about.club/cafe-map");
       toast("info", "복사 완료! 필요한 친구에게 공유해주세요!");
     } catch {
       toast("error", "복사에 실패했습니다. 관리자에게 문의해주세요!");

@@ -71,7 +71,7 @@ function Layout({ children }: ILayout) {
     ) {
       return;
     }
-    if (!isBottomNavCondition && isGuest && pathname !== "/study-cafe-map") {
+    if (!isBottomNavCondition && isGuest && pathname !== "/cafe-map") {
       toast(
         "info",
         "현재 게스트 뷰어를 이용하고 있습니다. 정식 활동을 위해서는 카카오 로그인을 통해 가입해 주세요!",
@@ -130,11 +130,11 @@ function Layout({ children }: ILayout) {
   }, [pathname]);
 
   const { title, description, url, image } =
-    pathname === "/study-cafe-map"
+    pathname === "/cafe-map"
       ? {
           title: "ABOUT 카공 지도",
           description: "카공러들을 위한 진짜 카공 지도",
-          url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/study-cafe-map`,
+          url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/cafe-map`,
           image: "https://studyabout.s3.ap-northeast-2.amazonaws.com/기타/cafe-map.png",
         }
       : {
