@@ -65,7 +65,7 @@ function StudyPageMap({
       lat: userInfo.locationDetail.latitude,
       lon: userInfo.locationDetail.longitude,
     };
-    const options = getMapOptions(currentLocation || myLocation, isMapExpansion ? 12 : 13);
+    const options = getMapOptions(currentLocation || myLocation, isMapExpansion ? 11 : 13);
 
     setMapOptions(options);
   }, [userInfo, isMapExpansion, currentLocation]);
