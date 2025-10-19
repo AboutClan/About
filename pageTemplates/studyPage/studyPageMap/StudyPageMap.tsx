@@ -200,15 +200,11 @@ function StudyPageMap({
             <StudyMapTopNav
               isMainType={type === "mainPlace"}
               handleLocationRefetch={async () => {
-                console.log(22);
                 const newPos = await refetchCurrentLocation();
-
                 if (newPos) {
-                  toast("info", "중심지 변경");
                   const center = new naver.maps.LatLng(newPos.lat, newPos.lon);
                   setMapOptions((prev) => (prev ? { ...prev, center } : getMapOptions(newPos, 13)));
                 } else if (userInfo?.locationDetail) {
-                  toast("info", "위치 정보 없음");
                   const center = new naver.maps.LatLng(
                     userInfo.locationDetail.latitude,
                     userInfo.locationDetail.longitude,
