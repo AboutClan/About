@@ -217,7 +217,7 @@ function StudyApplyDrawer({
           sub={
             isFirstPage
               ? "여러 날짜를 한번에 신청할 수도 있습니다."
-              : "설정한 거리 안에서 가장 가까운 스터디 장소로 매칭됩니다."
+              : "설정한 범위 내에 3명 이상의 멤버가 모이는 경우 진행됩니다."
           }
         />
         {isFirstPage ? (
