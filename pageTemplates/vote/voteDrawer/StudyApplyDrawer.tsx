@@ -56,12 +56,6 @@ function StudyApplyDrawer({
   const { data: studySet } = useStudySetQuery(dayjsToStr(dayjs()));
 
   useEffect(() => {
-    if (!isFirstPage) {
-      toast("info", "매칭 범위 설정은 10월 18일부터 적용됩니다!");
-    }
-  }, [!isFirstPage]);
-
-  useEffect(() => {
     if (location) setVoteLocation(location);
     else if (userInfo?.locationDetail) setVoteLocation(userInfo.locationDetail);
   }, [location, userInfo]);

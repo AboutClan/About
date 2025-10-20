@@ -63,8 +63,8 @@ function StudyOverview({ isMyStudy, placeInfo, date, studyType }: IStudyOverview
         studyType === "soloRealTimes"
           ? "자유 카페 / 자유 공간"
           : studyType === "participations"
-          ? "30분 이내 거리 + 3명 이상의 멤버"
-          : "30분 이내 거리 + 3명 이상의 멤버",
+          ? "신청한 매칭 범위 이내 · 3명 이상의 멤버"
+          : "신청한 매칭 범위 이내 · 3명 이상의 멤버",
     },
     {
       category: "스터디 톡방",
