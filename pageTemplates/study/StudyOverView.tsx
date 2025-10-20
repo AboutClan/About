@@ -103,7 +103,7 @@ function StudyOverview({ isMyStudy, placeInfo, date, studyType }: IStudyOverview
               </Box>
               <StarRating rating={placeInfo?.rating || 4} size="lg" />
             </Flex>
-            <Flex flexDir="column" borderRadius="8px">
+            {/* <Flex flexDir="column" borderRadius="8px">
               {[
                 ...(placeInfo?.reviews ?? []).filter((review) => !!review?.user?.name),
                 {
@@ -147,7 +147,7 @@ function StudyOverview({ isMyStudy, placeInfo, date, studyType }: IStudyOverview
               >
                 모든 후기 보러가기
               </Button>
-            </Flex>
+            </Flex> */}
           </>
         ) : (
           <Box mb={3}>
