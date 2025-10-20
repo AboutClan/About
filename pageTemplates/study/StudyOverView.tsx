@@ -66,10 +66,16 @@ function StudyOverview({ isMyStudy, placeInfo, date, studyType }: IStudyOverview
           ? "신청한 매칭 범위 이내 · 3명 이상의 멤버"
           : "신청한 매칭 범위 이내 · 3명 이상의 멤버",
     },
-    {
-      category: "스터디 톡방",
-      rightChildren: <BlurredLink isBlur={!isMyStudy} url="https://open.kakao.com/o/g6Wc70sh" />,
-    },
+    ...(studyType !== "soloRealTimes"
+      ? [
+          {
+            category: "스터디 톡방",
+            rightChildren: (
+              <BlurredLink isBlur={!isMyStudy} url="https://open.kakao.com/o/g6Wc70sh" />
+            ),
+          },
+        ]
+      : []),
   ];
 
   return (
