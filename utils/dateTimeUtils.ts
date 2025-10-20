@@ -114,14 +114,7 @@ export const getCalendarDates = (
       } else {
         calendar.push({
           date: dayjsToStr(current),
-          isDisabled: dayjs().add(6, "day").isAfter(current)
-            ? passedDisabled &&
-              dayjs()
-                .subtract(dayjs().hour() >= 9 ? (isTodayInclude ? 1 : 0) : 1, "day")
-                .isAfter(current)
-              ? true
-              : false
-            : true,
+          isDisabled: current.date() <= 15 ? true : current.date() > 22 ? true : false,
 
           isMint: mintDateArr.includes(dayjsToStr(current)),
         });

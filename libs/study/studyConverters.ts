@@ -105,13 +105,19 @@ export const setStudyOneDayData = (
   date: string,
 ): StudySetProps => {
   const studySet: StudySetProps = {
-    participations: null,
+    participations: [],
     soloRealTimes: [],
     openRealTimes: [],
     results: [],
   };
+  const a: StudyParticipationsSetProps[] = convertParticipations(
+    studyOneData?.participations?.map((par) => ({ ...par, user: par.userId })),
+  );
+  studySet["participations"] = [{ study: a }];
+  // studySet.participations = studyOneData.participations;
 
   studyOneData.results.forEach((result) => {
+    studySet["results"].push({ date: date, study: { ...result, status: "open" } });
     studySet["results"].push({ date: date, study: { ...result, status: "open" } });
   });
   studyOneData.realTimes.userList.forEach((user) => {
@@ -422,7 +428,7 @@ export const shortenParticipations = (
   participations: StudyParticipationsSetProps[],
 ): StudyParticipationProps[] => {
   const participationMap = new Map();
-
+  console.log(55, participations);
   participations?.forEach((par) => {
     par.study.forEach((study) => {
       const userId = study.user._id;

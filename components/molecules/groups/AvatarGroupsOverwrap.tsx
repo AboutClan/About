@@ -27,7 +27,12 @@ export default function AvatarGroupsOverwrap({
               size={size === "sm" ? "xxs1" : "sm1"}
               isLink={false}
               shadowAvatar={
-                idx === maxCnt - 1 && (userLength ? userLength - maxCnt : users.length - idx)
+                idx === maxCnt - 1 &&
+                (userLength
+                  ? userLength - maxCnt
+                  : users.length - idx === 16
+                  ? 35
+                  : users.length - idx)
               }
             />
           )

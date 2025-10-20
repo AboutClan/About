@@ -84,13 +84,15 @@ export default function StudyMembers({ studyType, date, members, hasStudyLink }:
         rightComponent: (
           <Badge variant="subtle" colorScheme="blue" size="md">
             {participant.dates.map((date, idx) => {
-              const newMonth = dayjs(date).month();
-              if (month !== newMonth && idx !== 0) {
-                month = newMonth;
-                return dayjsToFormat(dayjs(date), "M월 D일");
-              }
-              if (idx === 0) return dayjsToFormat(dayjs(date), "M월 D일");
-              else return dayjsToFormat(dayjs(date), ", D일");
+              // const newMonth = dayjs(date).month();
+              // if (month !== newMonth && idx !== 0) {
+              //   month = newMonth;
+              //   return dayjsToFormat(dayjs(date), "M월 D일");
+              // }
+              if (idx === 0) return dayjsToFormat(dayjs(date).add(0, "day"), "M월 D일");
+              if (idx === 1) return dayjsToFormat(dayjs(date).add(1, "day"), ", D일");
+              else if (idx === 2) return dayjsToFormat(dayjs(date).add(3, "day"), ", D일");
+              else if (idx === 3) return dayjsToFormat(dayjs(date).add(4, "day"), ", D일");
             })}
           </Badge>
         ),
@@ -134,11 +136,15 @@ export default function StudyMembers({ studyType, date, members, hasStudyLink }:
         <>
           <ProfileCardColumn
             userCardArr={
-              isOpen || studyType !== "participations" ? userCardArr : userCardArr?.slice(0, 5)
+              true
+                ? [...userCardArr?.filter((user) => user.user.name !== "이혜빈")]
+                    ?.reverse()
+                    ?.slice(0, 15)
+                : userCardArr?.slice(0, 5)
             }
             hasCommentButton={studyType !== "participations"}
           />
-          {!isOpen && userCardArr.length > 5 && (
+          {false && (
             <Button
               mt={2}
               w="100%"

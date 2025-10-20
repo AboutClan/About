@@ -16,13 +16,7 @@ export const getMyStudyDateArr = (
       (studySet[key] as StudyConfirmedSetProps[] | StudyParticipationsSetProps[]).forEach(
         (study) => {
           if (key === "participations") {
-           
             const study2: StudyParticipationsSetProps = study;
-            study2.study.forEach((props) => {
-              if (props.user._id === myId) {
-                dateArr.push({ date: study2.date, type: key });
-              }
-            });
           } else {
             const study2: StudyConfirmedSetProps = study;
             study2.study.members.forEach((props) => {
@@ -46,7 +40,7 @@ export const getStudyBadge = (studyType: StudyType, isFutureDate: boolean) => {
       return { text: "공부 인증", colorScheme: "red" };
 
     case "openRealTimes":
-      return { text: "모임장 스터디", colorScheme: "mint" };
+      return { text: "매칭 스터디", colorScheme: "mint" };
     case "results":
       if (isFutureDate) return { text: "진행 예정", colorScheme: "purple" };
       else return { text: "매칭 스터디", colorScheme: "mint" };

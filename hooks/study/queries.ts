@@ -137,7 +137,7 @@ export const useStudyPassedDayQuery = (date: string, options?: QueryOptions<Stud
       const { data } = await axios.get<InitialStudyPassedDayProps>(
         `${SERVER_URI}/vote2/${date}/info`,
       );
-
+      console.log("start", data);
       return setStudyOneDayData(data, date);
     },
     options,

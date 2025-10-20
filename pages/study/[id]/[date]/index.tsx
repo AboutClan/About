@@ -156,7 +156,7 @@ export default function Page() {
   const isMyReview = placeInfo?.reviews?.some((review) => review.user._id === userInfo?._id);
 
   const isOpenStudy = studyType !== "participations" && studyType !== "soloRealTimes";
-  console.log(234, isPassedSolo, studyPassedData);
+  console.log(234, members);
   return (
     <>
       {isPassedSolo || studyPassedData || studySet ? (
@@ -222,7 +222,7 @@ export default function Page() {
               <>
                 <Box h={2} bg="gray.100" my={4} />
                 <Slide>
-                  <StudyPendingSection studySet={studySet} />
+                  <StudyPendingSection studySet={studyPassedData} />
                 </Slide>
               </>
             )}
@@ -251,7 +251,7 @@ export default function Page() {
               myStudyInfo={myStudyInfo}
               date={isPassedSolo ? dayjsToStr(dateDayjs) : date}
               id={id}
-              myStudyStatus={myStudyStatus}
+              myStudyStatus={null}
               studyType={studyType}
               location={placeInfo?.location}
               findStudy={findStudy}

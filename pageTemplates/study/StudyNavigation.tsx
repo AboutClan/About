@@ -91,13 +91,26 @@ function StudyNavigation({
   // const myStudyStatus = evaluateMyStudyStatus(findStudy, session?.user.id, pageType, isVoting);
 
   const getNavigationProps = (studyType: StudyType, myStatus: MyStudyStatus): NavigationProps => {
-    if (
-      (myStudyInfo as StudyConfirmedMemberProps)?.attendance?.type ||
-      dayjs(date).startOf("day").isBefore(dayjs().startOf("day"))
-    ) {
-      return null;
-    }
-
+    // if (
+    //   (myStudyInfo as StudyConfirmedMemberProps)?.attendance?.type ||
+    //   dayjs(date).startOf("day").isBefore(dayjs().startOf("day"))
+    // ) {
+    //   return null;
+    // }
+    return {
+      text: "출석 체크",
+      type: "multi",
+      colorScheme: "mint",
+      func: () => router.push(`/vote/attend/configuration?date=${date}&id=${id}&type=results`),
+    };
+    return {
+      text: "스터디 신청",
+      type: "single",
+      colorScheme: "mint",
+      func: () => {
+        setDrawerType("apply");
+      },
+    };
     switch (studyType) {
       case "participations":
         if (myStatus === "pending" || tempCheck) {
@@ -458,7 +471,7 @@ function StudyNavigation({
       {(drawerType === "apply" || drawerType === "applyChange") && (
         <StudyApplyDrawer
           onClose={() => setDrawerType(null)}
-          defaultDate={date}
+          defaultDate={null}
           location={location}
           canChange={drawerType === "applyChange"}
         />

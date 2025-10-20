@@ -65,7 +65,7 @@ function StudyPagePlaceSection({ studySet, date, setDate }: StudyPagePlaceSectio
   return (
     <Flex flexDir="column" mb={8}>
       <Box>
-        {thumbnailCardInfoArr?.length ? (
+        {false ? (
           <StudyPagePlaceSectionFilterBar
             sortedOption={sortedOption}
             setSortedOption={setSortedOption}

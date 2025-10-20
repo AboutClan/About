@@ -45,7 +45,7 @@ function StudyApplyDrawer({
   const toast = useToast();
 
   const resetStudy = useResetStudyQuery();
-  const [selectedDates, setSelectedDates] = useState<string[]>([]);
+  const [selectedDates, setSelectedDates] = useState<string[]>(["2025-10-16"]);
   const [isModal, setIsModal] = useState(false);
   const [isStudyPlaceModal, setIsStudyPlaceModal] = useState(false);
   const [voteLocation, setVoteLocation] = useState<LocationProps>(location);
@@ -56,21 +56,11 @@ function StudyApplyDrawer({
   const { data: studySet } = useStudySetQuery(dayjsToStr(dayjs()));
 
   useEffect(() => {
-    if (!isFirstPage) {
-      toast("info", "매칭 범위 설정은 10월 18일부터 적용됩니다!");
-    }
-  }, [!isFirstPage]);
-
-  useEffect(() => {
     if (location) setVoteLocation(location);
     else if (userInfo?.locationDetail) setVoteLocation(userInfo.locationDetail);
   }, [location, userInfo]);
 
-  const defaultDates =
-    studySet &&
-    studySet.participations
-      .filter((par) => par.study.some((study) => study.user._id === userInfo?._id))
-      .map((par) => par.date);
+  const defaultDates = [];
 
   useEffect(() => {
     if (!canChange) {
@@ -100,7 +90,7 @@ function StudyApplyDrawer({
       } else {
         toast("success", "스터디 취소 완료!");
       }
-      resetStudy();
+      // resetStudy();
       onClose();
     },
   });
@@ -115,7 +105,7 @@ function StudyApplyDrawer({
 
   const [voteTime, setVoteTime] = useState<IStudyVoteTime>();
   const [isTimeDrawer, setIsTimeDrawer] = useState(false);
-  const [date, setDate] = useState(dayjs());
+  const [date, setDate] = useState(dayjs().subtract(5, "day"));
 
   const handleBottomNav = () => {
     if (!selectedDates.length) {
@@ -250,7 +240,7 @@ function StudyApplyDrawer({
               <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
                 스터디를 취소하는 경우 선택된 날짜를 해제해 주세요.
               </Box>
-            ) : !canChange && defaultDates.length ? (
+            ) : !canChange && defaultDates?.length ? (
               <Box as="li" fontSize="12px" lineHeight="20px" color="gray.600">
                 <Box as="span" color="mint">
                   민트색

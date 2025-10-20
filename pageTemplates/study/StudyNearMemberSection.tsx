@@ -70,10 +70,10 @@ function StudyNearMemberSection({ myStudyInfo, members }: StudyNearMemberSection
             내 주변 스터디 신청 멤버
           </Box>
           <ProfileCardColumn
-            userCardArr={isOpen ? userCardArr : userCardArr?.slice(0, 3)}
+            userCardArr={isOpen ? userCardArr : userCardArr}
             hasCommentButton={false}
           />
-          {!isOpen && (
+          {true && (
             <Button
               mt={2}
               w="100%"

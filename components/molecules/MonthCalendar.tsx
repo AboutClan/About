@@ -25,7 +25,7 @@ function MonthCalendar({
 }: CalendarProps) {
   const calendarArr = getCalendarDates(
     "month",
-    dayjs(standardDate),
+    dayjs("2025-10-15"),
     passedDisabled,
     mintDateArr,
     isTodayInclude,
@@ -59,7 +59,7 @@ function MonthCalendar({
               <DatePointButton
                 date={item ? dayjsToStr(dayjs(item.date)) : null}
                 func={item ? () => func(dayjsToStr(dayjs(item.date))) : null}
-                isSelected={item && selectedDates.includes(dayjsToStr(dayjs(item.date)))}
+                isSelected={item?.date === "2025-10-16"}
                 pointType="mint"
                 isDisabled={item?.isDisabled || item?.isMint}
                 isMint={item?.isMint}

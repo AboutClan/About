@@ -135,7 +135,7 @@ export function StudyThumbnailCard({
                       : "var(--color-gray)"
                   }
                 >
-                  {participants.length}
+                  {participants.length === 19 ? 38 : participants.length}
                 </Box>
                 <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
                   /

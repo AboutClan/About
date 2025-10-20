@@ -1,17 +1,14 @@
-import { Badge, Box, Button, Flex } from "@chakra-ui/react";
+import { Badge, Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
 import StarRating from "../../components/atoms/StarRating";
 import BlurredLink from "../../components/molecules/BlurredLink";
 import InfoBoxCol, { InfoBoxProps } from "../../components/molecules/InfoBoxCol";
-import StarRatingReviewBlock from "../../components/molecules/StarRatingReviewBlock";
-import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import { useUserCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { getStudyBadge } from "../../libs/study/studyHelpers";
 import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
 import { StudyType } from "../../types/models/studyTypes/study-set.types";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
 import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
 import { getPlaceBranch } from "../../utils/stringUtils";
 
@@ -97,7 +94,7 @@ function StudyOverview({ isMyStudy, placeInfo, date, studyType }: IStudyOverview
               </Box>
               <StarRating rating={placeInfo?.rating || 4} size="lg" />
             </Flex>
-            <Flex flexDir="column" borderRadius="8px">
+            {/* <Flex flexDir="column" borderRadius="8px">
               {[
                 ...(placeInfo?.reviews ?? []).filter((review) => !!review?.user?.name),
                 {
@@ -141,7 +138,7 @@ function StudyOverview({ isMyStudy, placeInfo, date, studyType }: IStudyOverview
               >
                 모든 후기 보러가기
               </Button>
-            </Flex>
+            </Flex> */}
           </>
         ) : (
           <Box mb={3}>

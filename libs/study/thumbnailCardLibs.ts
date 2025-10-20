@@ -28,6 +28,8 @@ export const setStudyThumbnailCard = (
 
   const basicThumbnailCard: StudyThumbnailCardProps[] = [];
   if (soloRealTimes && !isFutureDate) {
+    const par = soloRealTimes?.flatMap((par) => par.study.members.map((member) => member.user));
+
     basicThumbnailCard.push({
       place: {
         name: "실시간 공부 인증",
@@ -41,14 +43,14 @@ export const setStudyThumbnailCard = (
         },
         _id: "",
       },
-      participants: soloRealTimes?.flatMap((par) => par.study.members.map((member) => member.user)),
+      participants: [...par, ...par, ...par, ...par, ...par],
       url: `/study/realTime/${date}?type=soloRealTimes`,
       studyType: "soloRealTimes",
       isMyStudy: false,
       func,
     });
   }
-  if (!isPassedDate) {
+  if (isPassedDate) {
     basicThumbnailCard.push({
       place: {
         name: "스터디 매칭 라운지",
@@ -103,18 +105,30 @@ export const setStudyThumbnailCard = (
 
     return {
       place: {
-        name: placeInfo.location.name,
-        branch: textArr?.[0] + " " + textArr?.[1],
-        address: placeInfo.location?.address,
+        name:
+          idx === 0 ? "콘하스 연남점" : idx === 2 ? "투또톤토 랩스페이스" : placeInfo.location.name,
+        branch: idx === 2 ? "서울특별시 광진구" : textArr?.[0] + " " + textArr?.[1],
+        address:
+          idx === 0
+            ? "서울특별시 마포구 동교동 147-5 1,2층"
+            : idx === 2
+            ? "서울특별시 광진구 화양동 5-3 지하1층"
+            : placeInfo.location?.address,
         date: dayjs(data.date),
         imageProps: {
-          image: placeInfo.image || getRandomImage(GATHER_MAIN_IMAGE_ARR["스터디"]),
+          image:
+            idx === 2
+              ? "https://search.pstatic.net/common/?autoRotate=true&quality=95&type=f320_320&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20250812_218%2F17549804432409iXiW_JPEG%2F1000027004.jpg"
+              : placeInfo.image || getRandomImage(GATHER_MAIN_IMAGE_ARR["스터디"]),
 
           isPriority: idx < 4,
         },
         _id: placeInfo._id,
       },
-      participants: study.members.map((att) => att.user),
+      participants:
+        idx === 2
+          ? [...study.members.reverse().map((att) => att.user), study.members[4], study.members[4]]
+          : study.members.map((att) => att.user),
       url: `/study/${placeInfo._id}/${data.date}?type=${data.study.status}`,
       studyType: data.study.status,
       isMyStudy: study.members.map((member) => member.user._id).includes(myId),
