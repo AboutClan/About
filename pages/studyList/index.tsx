@@ -37,7 +37,7 @@ export default function StudyList() {
   const [thumbnailCardInfoArr, setThumbnailCardinfoArr] = useState<StudyThumbnailCardProps[]>();
 
   useEffect(() => {
-    if (!studySet) {
+    if (!studySet && !passedStudyData) {
       setThumbnailCardinfoArr(null);
       return;
     }
@@ -49,7 +49,7 @@ export default function StudyList() {
     setThumbnailCardinfoArr(
       sortThumbnailCardInfoArr("날짜순", getThumbnailCardInfoArr, session?.user.id),
     );
-  }, [studySet, currentLocation, session]);
+  }, [studySet, passedStudyData, currentLocation, session]);
 
   return (
     <>

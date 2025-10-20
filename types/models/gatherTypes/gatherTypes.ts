@@ -49,6 +49,8 @@ export type GatherStatus = "open" | "close" | "end" | "pending" | "planned";
 export type IGatherLocation = {
   main: string;
   sub: string;
+  latitude: number;
+  longitude: number;
 };
 
 export type IGatherMemberCnt = {

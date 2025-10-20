@@ -82,7 +82,7 @@ function GroupDetail() {
     setGatherDataToCardCol(gathers, true, () => {
       setBackUrl(`/group/${id}`);
     });
- 
+  console.log(3, gatherData?.length);
   return (
     <>
       {group && <GroupHeader group={group} />}
@@ -91,10 +91,10 @@ function GroupDetail() {
           <Box mb={10}>
             <GroupCover image={group?.image} />
             <GroupOverview
-              title={group.title}
-              isFree={group.isFree}
-              link={group.link}
+              group={group}
               isMyGroup={!!findMyInfo}
+              gatherCnt={gatherData?.length}
+              reviewCnt={gatherFeeds?.length}
             />
             <Divider />
             <GroupContent
@@ -113,19 +113,20 @@ function GroupDetail() {
               text={group.participants.length <= 3 ? "임시 멤버" : "정규 멤버"}
               isPlanned={group.participants.length <= 3}
             />
-            {group.participants.length > 3 && (
-              <GroupParticipation
-                data={{
-                  ...group,
-                  participants: shuffleArray(
-                    group?.participants?.filter((par) => par?.role === "member"),
-                  ),
-                }}
-                text="임시 멤버"
-                isTemp
-                isPlanned={false}
-              />
-            )}
+            {group.participants.length > 3 &&
+              group?.participants?.filter((par) => par?.role === "member")?.length && (
+                <GroupParticipation
+                  data={{
+                    ...group,
+                    participants: shuffleArray(
+                      group?.participants?.filter((par) => par?.role === "member"),
+                    ),
+                  }}
+                  text="임시 멤버"
+                  isTemp
+                  isPlanned={false}
+                />
+              )}
             <GroupGathering gatherData={gatherData} />
             <GroupReview feeds={gatherFeeds} />
           </Box>

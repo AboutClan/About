@@ -1,17 +1,13 @@
-import { Badge, Box, Button, Flex } from "@chakra-ui/react";
+import { Badge, Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
 import StarRating from "../../components/atoms/StarRating";
 import BlurredLink from "../../components/molecules/BlurredLink";
 import InfoBoxCol, { InfoBoxProps } from "../../components/molecules/InfoBoxCol";
-import StarRatingReviewBlock from "../../components/molecules/StarRatingReviewBlock";
-import { ABOUT_USER_SUMMARY } from "../../constants/serviceConstants/userConstants";
 import { useUserCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
-import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { getStudyBadge } from "../../libs/study/studyHelpers";
 import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
 import { StudyType } from "../../types/models/studyTypes/study-set.types";
-import { dayjsToStr } from "../../utils/dateTimeUtils";
 import { getDistanceFromLatLonInKm } from "../../utils/mathUtils";
 import { getPlaceBranch } from "../../utils/stringUtils";
 
@@ -24,7 +20,7 @@ interface IStudyOverview {
 
 function StudyOverview({ isMyStudy, placeInfo, date, studyType }: IStudyOverview) {
   const { currentLocation } = useUserCurrentLocation();
-  const typeToast = useTypeToast();
+
   const { text: badgeText, colorScheme: badgeColorScheme } = getStudyBadge(
     studyType,
     dayjs(date).startOf("day").isAfter(dayjs()),

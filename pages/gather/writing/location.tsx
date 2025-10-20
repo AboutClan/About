@@ -28,7 +28,7 @@ function WritingGahterLocation() {
     latitude: null,
     longitude: null,
   });
-
+  console.log(5, placeInfo);
   const onClickNext = () => {
     if (!placeInfo?.name) {
       setIsModal(true);
@@ -39,6 +39,8 @@ function WritingGahterLocation() {
       location: {
         main: placeInfo.name,
         sub: placeInfo.address,
+        latitude: placeInfo.latitude,
+        longitude: placeInfo.longitude,
       },
     }));
     router.push({ pathname: `/gather/writing/condition`, query: router.query });
@@ -73,6 +75,8 @@ function WritingGahterLocation() {
                   location: {
                     main: null,
                     sub: null,
+                    latitude: null,
+                    longitude: null,
                   },
                 }));
                 router.push({ pathname: `/gather/writing/condition`, query: router.query });

@@ -28,10 +28,10 @@ function GroupGathering({ gatherData }: GroupGatheringProps) {
         ))
       ) : (
         <Box color="gray.600" mb={40} as="p" fontSize="14px" mt={20} textAlign="center">
-          아직 업로드 된 피드가 없습니다.
+          아직 업로드 된 활동이 없습니다.
         </Box>
       )}
-      {!isOpen && (
+      {!isOpen && gatherData?.length >= 3 && (
         <Button
           mt={2}
           w="100%"

@@ -53,7 +53,7 @@ function GatherDetail() {
       router.push(`/login?status=before&page=gather/${id}`);
     }
   }, [session]);
-
+  console.log(3, gather);
   return (
     <>
       {gather ? (
@@ -74,14 +74,15 @@ function GatherDetail() {
                 type={gather.category}
                 title={gather.title}
                 category={gather.type.title}
+                age={gather.age}
+                isFree={!gather.isApprovalRequired}
               />
-              <GatherDetailInfo data={gather} gatherType={gather.category} />
+              <GatherDetailInfo data={gather} isMember={isMember} />
               <GatherContent
-                kakaoUrl={gather?.kakaoUrl}
                 content={gather.content}
                 gatherList={gather.gatherList}
-                isMember={isMember}
                 postImage={postImage}
+                location={gather.location}
               />
               <Divider />
               <GatherParticipation data={gather} />

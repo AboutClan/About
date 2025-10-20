@@ -22,12 +22,16 @@ function GroupReview({ feeds }: GroupReviewProps) {
         {feeds?.length ? (
           (isOpen ? feeds : feeds.slice(0, 3))?.map((feed) => (
             <FeedLayout key={feed.id} {...convertFeedToLayout(feed)} isSmall isRadius />
-          ))
+        ))
         ) : (
-          <></>
+          <>
+            <Box color="gray.600" mb={40} as="p" fontSize="14px" mt={20} textAlign="center">
+              아직 업로드 된 리뷰가 없습니다.
+            </Box>
+          </>
         )}
       </Box>{" "}
-      {!isOpen && (
+      {!isOpen && feeds?.length >= 3 && (
         <Button
           mt={2}
           w="100%"
