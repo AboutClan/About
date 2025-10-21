@@ -64,7 +64,8 @@ function AvatarComponent({
         : profileImage
       : undefined;
 
-  const hasAvatar = avatar !== undefined && avatar?.type !== null && avatar?.bg !== null;
+  const hasAvatar =
+    avatar !== undefined && avatar?.type !== null && avatar?.bg !== null && !!avatar?.type;
 
   const [imageUrl, setImageUrl] = useState(!hasAvatar ? image : AVATAR_IMAGES[avatar.type].image);
   const [bgImage, setBgImage] = useState<string | null>(null);

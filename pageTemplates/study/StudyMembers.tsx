@@ -70,7 +70,7 @@ export default function StudyMembers({ studyType, date, members, hasStudyLink }:
               dayjs(date2).isAfter(dayjs(date).subtract(1, "day")),
             ),
           }));
-  console.log("f", members, isOpen, filterMembers, date);
+
   const userCardArr: IProfileCommentCard[] = filterMembers?.map((member) => {
     const user = member.user;
     // const badgeText = locationMapping?.find((mapping) => mapping?.id === user._id)?.branch;
@@ -134,11 +134,11 @@ export default function StudyMembers({ studyType, date, members, hasStudyLink }:
         <>
           <ProfileCardColumn
             userCardArr={
-              isOpen || studyType !== "participations" ? userCardArr : userCardArr?.slice(0, 5)
+              isOpen || studyType !== "participations" ? userCardArr : userCardArr?.slice(0, 10)
             }
             hasCommentButton={studyType !== "participations"}
           />
-          {!isOpen && userCardArr.length > 5 && (
+          {!isOpen && userCardArr.length > 10 && (
             <Button
               mt={2}
               w="100%"
