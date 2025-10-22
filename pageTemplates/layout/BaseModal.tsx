@@ -51,7 +51,7 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
   };
 
   const voteOtherStudy = () => {
-    newSearchParams.set("drawer", "apply");
+    newSearchParams.set("modal", "apply");
     const params = newSearchParams.toString();
     setTransferStudyReward(null);
     router.replace(pathname + (params ? `?${params}` : ""));

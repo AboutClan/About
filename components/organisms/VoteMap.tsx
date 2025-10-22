@@ -166,7 +166,7 @@ IVoteMap) {
       circleCenter?.forEach((circle2) => {
         if (!circle2) return;
         const radius = !circle2?.size
-          ? 550
+          ? 1000
           : circle2?.size === "sm"
           ? 2000
           : circle2?.size === "md"
@@ -183,18 +183,20 @@ IVoteMap) {
           fillColor: "var(--color-blue)",
           fillOpacity: 0.1,
         });
-        const circle3 = new naver.maps.Circle({
-          map: mapInstanceRef.current,
-          center: new naver.maps.LatLng(circle2.lat, circle2.lon),
-          radius: radius * 1.5,
-          strokeColor: "var(--color-mint)",
-          strokeOpacity: 0.8,
-          strokeWeight: 1,
-          fillColor: "var(--color-mint)",
-          fillOpacity: 0.05,
-        });
-
-        mapElementsRef.current.circles.push(circle, circle3);
+        mapElementsRef.current.circles.push(circle);
+        if (circle2?.size) {
+          const circle3 = new naver.maps.Circle({
+            map: mapInstanceRef.current,
+            center: new naver.maps.LatLng(circle2.lat, circle2.lon),
+            radius: radius * 1.5,
+            strokeColor: "var(--color-mint)",
+            strokeOpacity: 0.8,
+            strokeWeight: 1,
+            fillColor: "var(--color-mint)",
+            fillOpacity: 0.05,
+          });
+          mapElementsRef.current.circles.push(circle3);
+        }
       });
     }
   }, [markersOptions, circleCenter]);

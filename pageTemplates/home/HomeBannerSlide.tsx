@@ -20,7 +20,7 @@ function HomeBannerSlide() {
       } else if (category === "friendInvite") {
         navigateExternalLink("https://pf.kakao.com/_SaWXn/chat");
       } else if (category == "study") {
-        router.push(`/studyPage?date=${getTodayStr()}&drawer=study`);
+        router.push(`/studyPage?date=${getTodayStr()}&modal=point`);
       }
     };
 

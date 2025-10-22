@@ -1,4 +1,5 @@
 import { Box } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
@@ -32,6 +33,7 @@ function StudyPageMap({
   isDown,
   type,
 }: StudyPageMapProps) {
+  const router = useRouter();
   const { data: userInfo } = useUserInfoQuery();
   const { currentLocation, refetchCurrentLocation } = useUserCurrentLocation();
 
@@ -51,6 +53,13 @@ function StudyPageMap({
     filterType || "best",
     null,
   );
+
+  useEffect(() => {
+    if (!router.query.modal) {
+      setIsMapExpansion(false);
+      setPlaceInfo(null);
+    }
+  }, [router.query.modal]);
 
   useEffect(() => {
     if (isDefaultOpen) {
@@ -176,6 +185,14 @@ function StudyPageMap({
   }, [isMapExpansion, filterType]);
 
   const handleMapClick = () => {
+    router.push(
+      { pathname: router.pathname, query: { ...router.query, modal: "map" } },
+      undefined,
+      {
+        shallow: true,
+      },
+    );
+
     if (!isMapExpansion) {
       setIsMapExpansion(true);
     }
@@ -226,6 +243,7 @@ function StudyPageMap({
                 if (onClose) {
                   onClose();
                 } else {
+                  router.back();
                   setIsMapExpansion(false);
                 }
               }}

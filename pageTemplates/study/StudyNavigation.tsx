@@ -1,6 +1,7 @@
 import { Button, Flex, ThemeTypings } from "@chakra-ui/react";
 import dayjs, { Dayjs } from "dayjs";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
@@ -47,6 +48,8 @@ interface NavigationProps {
 
 type DirectAction = "openRealTimesVote" | "dailyVote" | "timeChange" | "expectedVote";
 
+type ModalParam = "apply" | "applyChange";
+
 function StudyNavigation({
   id,
   date,
@@ -59,7 +62,7 @@ function StudyNavigation({
 }: IStudyNavigation) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const drawerTypeParam = searchParams.get("drawer") as "apply";
+  const modalParam = searchParams.get("modal") as ModalParam;
 
   const toast = useToast();
 
@@ -81,10 +84,9 @@ function StudyNavigation({
   >(null);
 
   useEffect(() => {
-    if (drawerTypeParam === "apply") {
-      setDrawerType("apply");
-    }
-  }, [drawerTypeParam]);
+    if (modalParam) setDrawerType(modalParam);
+    else setDrawerType(null);
+  }, [modalParam]);
 
   // const myStudyInfo = findMyStudyInfo(findStudy, session?.user.id);
 
@@ -107,6 +109,13 @@ function StudyNavigation({
             colorScheme: "mint",
             func: () => {
               setDrawerType("apply");
+              router.push(
+                { pathname: router.pathname, query: { ...router.query, modal: "apply" } },
+                undefined,
+                {
+                  shallow: true,
+                },
+              );
             },
           };
         } else {
@@ -116,10 +125,17 @@ function StudyNavigation({
             colorScheme: "mint",
             func: () => {
               setDrawerType("applyChange");
+              router.push(
+                { pathname: router.pathname, query: { ...router.query, modal: "applyChange" } },
+                undefined,
+                {
+                  shallow: true,
+                },
+              );
             },
           };
         }
-        break;
+
       case "openRealTimes":
         if (myStatus === "pending") {
           return {
@@ -457,7 +473,9 @@ function StudyNavigation({
       )}
       {(drawerType === "apply" || drawerType === "applyChange") && (
         <StudyApplyDrawer
-          onClose={() => setDrawerType(null)}
+          onClose={() => {
+            router.back();
+          }}
           defaultDate={date}
           location={location}
           canChange={drawerType === "applyChange"}

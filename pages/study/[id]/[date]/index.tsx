@@ -1,8 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
 
 import { MainLoading, MainLoadingAbsolute } from "../../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../../components/layouts/PageSlide";
@@ -25,7 +24,6 @@ import StudyPendingSection from "../../../../pageTemplates/study/StudyPendingSec
 import StudyPlaceMap from "../../../../pageTemplates/study/StudyPlaceMap";
 import StudyReviewButton from "../../../../pageTemplates/study/StudyReviewButton";
 import StudyTimeBoard from "../../../../pageTemplates/study/StudyTimeBoard";
-import { backUrlState } from "../../../../recoils/navigationRecoils";
 import {
   MyStudyStatus,
   StudyConfirmedMemberProps,
@@ -39,11 +37,9 @@ import {
 import { dayjsToStr, getHour, getTodayStr } from "../../../../utils/dateTimeUtils";
 
 export default function Page() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const { id, date } = useParams<{ id: string; date: string }>() || {};
   const userInfo = useUserInfo();
-  const [backUrl, setBackUrl] = useRecoilState(backUrlState);
 
   const studyType = searchParams.get("type") as StudyType;
 
@@ -75,23 +71,23 @@ export default function Page() {
   console.log(12, studySet);
   const [modalType, setModalType] = useState<"studyLink" | "review">();
 
-  useEffect(() => {
-    const handlePopState = () => {
-      if (backUrl) {
-        router.push(backUrl); // Next.js 라우터 이동
-        setBackUrl(null);
-      } else {
-        router.push(`/studyPage?date=${date}`);
-      }
-    };
+  // useEffect(() => {
+  //   const handlePopState = () => {
+  //     if (backUrl) {
+  //       router.push(backUrl); // Next.js 라우터 이동
+  //       setBackUrl(null);
+  //     } else {
+  //       router.push(`/studyPage?date=${date}`);
+  //     }
+  //   };
 
-    window.history.pushState(null, "", window.location.href);
-    window.addEventListener("popstate", handlePopState);
+  //   window.history.pushState(null, "", window.location.href);
+  //   window.addEventListener("popstate", handlePopState);
 
-    return () => {
-      window.removeEventListener("popstate", handlePopState);
-    };
-  }, [backUrl]);
+  //   return () => {
+  //     window.removeEventListener("popstate", handlePopState);
+  //   };
+  // }, [backUrl]);
 
   const studyData =
     isPassedDate || isPassedSolo
@@ -263,7 +259,8 @@ export default function Page() {
           )}
           {!isMyReview &&
             date === dayjsToStr(dayjs()) &&
-            (studyType === "openRealTimes" || studyType === "results") && (
+            (studyType === "openRealTimes" || studyType === "results") &&
+            (myStudyInfo as StudyConfirmedMemberProps)?.attendance?.type === "arrived" && (
               <StudyReviewButton
                 placeId={placeInfo?._id}
                 myStudyInfo={myStudyInfo as StudyConfirmedMemberProps}

@@ -1,5 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import PageIntro from "../../../components/atoms/PageIntro";
@@ -42,8 +43,9 @@ function StudyApplyDrawer({
   location,
   canChange = false,
 }: StudyDateDrawerProps) {
+  const router = useRouter();
   const toast = useToast();
-
+  console.log("r", router);
   const resetStudy = useResetStudyQuery();
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
   const [isModal, setIsModal] = useState(false);
@@ -324,19 +326,6 @@ function StudyApplyDrawer({
           setVoteLocation={setVoteLocation}
           onClose={() => setIsStudyPlaceModal(false)}
         />
-        // <AlertModal
-        //   options={{
-        //     title: "스터디 위치 설정",
-        //     text: "이 동",
-        //     func: () => {
-        //       router.push(`/studyPage?date=${dayjsToStr(dayjs())}&drawer=location`);
-        //     },
-        //   }}
-        //   colorType="mint"
-        //   setIsModal={setIsStudyPlaceModal}
-        // >
-        //   설정된 위치 기준으로 가까운 스터디가 매칭돼요. 장소 변경 페이지로 이동할까요?
-        // </AlertModal>
       )}
     </>
   );

@@ -21,8 +21,10 @@ function StudyReviewButton({ placeId, myStudyInfo }: StudyReviewButtonProps) {
   const toast = useToast();
   const [isReviewModal, setIsReviewModal] = useState(false);
 
+  const isAttend = myStudyInfo?.attendance?.type === "arrived";
+
   const handleModalOpen = () => {
-    if (myStudyInfo?.attendance?.type !== "arrived") {
+    if (!isAttend) {
       toast("info", "스터디 출석 완료 후 작성하실 수 있어요!");
       return;
     }
@@ -38,7 +40,7 @@ function StudyReviewButton({ placeId, myStudyInfo }: StudyReviewButtonProps) {
         lineHeight="24px"
         fontWeight={700}
         bottom={
-          myStudyInfo?.attendance?.type === "arrived"
+          isAttend
             ? `${iPhoneNotchSize() + 20}px`
             : `calc(var(--bottom-nav-height) + ${iPhoneNotchSize() + 20}px)`
         }

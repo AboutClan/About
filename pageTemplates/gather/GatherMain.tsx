@@ -40,11 +40,14 @@ export default function GatherMain() {
   }, [category, sortBy]);
 
   useEffect(() => {
-    if (gatherData) {
+    if (!gatherData) return;
+    firstLoad.current = false;
+    if (cursor === 0) {
+      setGathers(gatherData);
+    } else {
       setGathers((old) => [...old, ...gatherData]);
-      firstLoad.current = false;
     }
-  }, [gatherData]);
+  }, [gatherData, cursor]);
 
   useEffect(() => {
     if (!gathers) return;

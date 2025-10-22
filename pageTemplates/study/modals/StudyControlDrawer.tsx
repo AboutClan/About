@@ -1,7 +1,8 @@
 import { Box, Button } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 import { StudyUserCheckIcon } from "../../../components/Icons/ControlButtonIcon";
 import BottomFlexDrawer from "../../../components/organisms/drawer/BottomFlexDrawer";
@@ -18,8 +19,17 @@ interface StudyControlDrawerProps {
 
 function StudyControlDrawer({ date, onClose }: StudyControlDrawerProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const modalParam = searchParams.get("modal") as DrawerType;
 
   const [drawerType, setDrawerType] = useState<DrawerType>(null);
+
+  useEffect(() => {
+    if (modalParam) setDrawerType(modalParam);
+    else {
+      setDrawerType(null);
+    }
+  }, [modalParam]);
 
   const buttonProps: {
     text: string;
@@ -31,6 +41,13 @@ function StudyControlDrawer({ date, onClose }: StudyControlDrawerProps) {
       text: "스터디 신청",
       icon: <StudyApplyIcon />,
       func: () => {
+        router.push(
+          { pathname: router.pathname, query: { ...router.query, modal: "apply" } },
+          undefined,
+          {
+            shallow: true,
+          },
+        );
         setDrawerType("apply");
       },
     },
@@ -38,6 +55,13 @@ function StudyControlDrawer({ date, onClose }: StudyControlDrawerProps) {
       text: "스터디 개설",
       icon: <StudyOpenIcon />,
       func: () => {
+        router.push(
+          { pathname: router.pathname, query: { ...router.query, modal: "open" } },
+          undefined,
+          {
+            shallow: true,
+          },
+        );
         setDrawerType("open");
       },
     },
@@ -88,16 +112,16 @@ function StudyControlDrawer({ date, onClose }: StudyControlDrawerProps) {
         <StudyApplyDrawer
           defaultDate={date}
           onClose={() => {
-            setDrawerType(null);
             onClose();
+            router.back();
           }}
         />
       )}
       {drawerType === "open" && (
         <StudyOpenDrawer
           onClose={() => {
-            setDrawerType(null);
             onClose();
+            router.back();
           }}
         />
       )}

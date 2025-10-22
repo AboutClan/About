@@ -1,5 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 
@@ -12,18 +13,18 @@ import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { RegisterLocationLayout } from "../../pages/register/location";
 import { LocationProps } from "../../types/common";
-import { getTodayStr } from "../../utils/dateTimeUtils";
 import StudyPageBenefitDrawer from "./StudyPageBenefitDrawer";
 
 export type StudyTab = "스터디 참여" | "카공 지도";
+type ModalType = "point" | "location";
 
 function StudyPageHeader() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const drawerParam = searchParams.get("drawer");
+  const modalParam = searchParams.get("modal") as ModalType;
   const queryClient = useQueryClient();
   const typeToast = useTypeToast();
-  const [modalType, setModalType] = useState<"point" | "location">();
+  const [modalType, setModalType] = useState<ModalType>();
 
   const { data: userInfo } = useUserInfoQuery();
 
@@ -42,15 +43,28 @@ function StudyPageHeader() {
   }, [location]);
 
   useEffect(() => {
-    if (drawerParam === "location") {
-      setModalType("location");
-      router.replace(`/studyPage?date=${getTodayStr()}`);
+    if (!modalParam) {
+      setModalType(null);
+    } else {
+      setModalType(modalParam);
     }
-    if (drawerParam === "study") {
-      setModalType("point");
-      router.replace(`/studyPage?date=${getTodayStr()}`);
-    }
-  }, [drawerParam]);
+  }, [modalParam]);
+
+  // useEffect(() => {
+  //   if (modalParam === "study") {
+  //     setModalType("point");
+
+  //     router.push(
+  //       { pathname: router.pathname, query: { ...router.query, modal: "true" } },
+  //       undefined,
+  //       {
+  //         shallow: true,
+  //       },
+  //     );
+  //     setModalType("location");
+  //     router.replace(`/studyPage?date=${getTodayStr()}`);
+  //   }
+  // }, [modalParam]);
 
   const { mutate: changeLocationDetail } = useUserInfoFieldMutation("locationDetail", {
     onSuccess() {
@@ -88,6 +102,13 @@ function StudyPageHeader() {
                   typeToast("guest");
                   return;
                 }
+                router.push(
+                  { pathname: router.pathname, query: { ...router.query, modal: "location" } },
+                  undefined,
+                  {
+                    shallow: true,
+                  },
+                );
                 setModalType("location");
               }}
             >
@@ -111,7 +132,19 @@ function StudyPageHeader() {
           </Flex>
 
           <Flex align="center">
-            <Button variant="unstyled" onClick={() => setModalType("point")}>
+            <Button
+              variant="unstyled"
+              onClick={() => {
+                router.push(
+                  { pathname: router.pathname, query: { ...router.query, modal: "point" } },
+                  undefined,
+                  {
+                    shallow: true,
+                  },
+                );
+                setModalType("point");
+              }}
+            >
               <Flex align="center">
                 <Flex
                   justify="center"
@@ -157,7 +190,14 @@ function StudyPageHeader() {
       </Slide>
       {modalType === "point" && <StudyPageBenefitDrawer onClose={() => setModalType(null)} />}
       {modalType === "location" && (
-        <RightDrawer title="활동 장소 변경" px={false} onClose={() => setModalType(null)}>
+        <RightDrawer
+          title="활동 장소 변경"
+          px={false}
+          onClose={() => {
+            router.back();
+            setModalType(null);
+          }}
+        >
           <RegisterLocationLayout
             handleButton={handleButton}
             placeInfo={placeInfo}

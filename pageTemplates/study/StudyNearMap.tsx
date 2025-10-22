@@ -44,62 +44,70 @@ function StudyNearMap({ centerPlace }: StudyNearMapProps) {
 
   return (
     <>
-      <Box px={5} mt={10} mb={10}>
-        <Box fontSize="18px" mb={4} fontWeight="bold"></Box>
-        <SectionHeader
-          title="근처에 있는 카공하기 좋은 카페"
-          subTitle="카공 멤버들과 상의해서 스터디 장소를 변경할 수 있어요."
-        >
-          {/* <ButtonWrapper size="sm" url={`/studyPage?date=${dayjsToStr(dayjs())}`}>
+      {data?.length > 1 && (
+        <Box px={5} mt={10} mb={10}>
+          <Box fontSize="18px" mb={4} fontWeight="bold"></Box>
+          <SectionHeader
+            title="근처에 있는 카공하기 좋은 카페"
+            subTitle="카공 멤버들과 상의해서 스터디 장소를 변경할 수 있어요."
+          >
+            {/* <ButtonWrapper size="sm" url={`/studyPage?date=${dayjsToStr(dayjs())}`}>
           <ShortArrowIcon dir="right" />
         </ButtonWrapper> */}
-        </SectionHeader>
-        <Box mt={3}>
-          <Box
-            top={0}
-            left={0}
-            {...(!isMapExpansion
-              ? { aspectRatio: 2 / 1, height: "inherit" }
-              : { height: "100dvh" })}
-            position={isMapExpansion ? "fixed" : "relative"}
-            w="full"
-            zIndex={isMapExpansion ? 1000 : 100}
-            borderRadius="12px"
-            overflow="hidden"
-          >
-            <Flex pos="absolute" top={2} right={2} zIndex={500}>
-              {!isMapExpansion ? (
-                <Button
-                  borderRadius="4px"
-                  bgColor="white"
-                  boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
-                  w="32px"
-                  h="32px"
-                  size="sm"
-                  p="0"
-                  border="var(--border-main)"
-                  onClick={() => setIsMapExpansion(true)}
-                >
-                  <ExpansionIcon />
-                </Button>
-              ) : (
-                <Button p={0} w="48px" h="48px" bg="white" onClick={() => setIsMapExpansion(false)}>
-                  <XIcon />
-                </Button>
-              )}
-            </Flex>
-            <VoteMap
-              mapOptions={mapOptions}
-              markersOptions={markersOptions}
-              resizeToggle={isMapExpansion}
-              handleMarker={handleMarker}
-              circleCenter={[
-                { lat: centerPlace.location.latitude, lon: centerPlace.location.longitude },
-              ]}
-            />
+          </SectionHeader>
+          <Box mt={3}>
+            <Box
+              top={0}
+              left={0}
+              {...(!isMapExpansion
+                ? { aspectRatio: 2 / 1, height: "inherit" }
+                : { height: "100dvh" })}
+              position={isMapExpansion ? "fixed" : "relative"}
+              w="full"
+              zIndex={isMapExpansion ? 1000 : 100}
+              borderRadius="12px"
+              overflow="hidden"
+            >
+              <Flex pos="absolute" top={2} right={2} zIndex={500}>
+                {!isMapExpansion ? (
+                  <Button
+                    borderRadius="4px"
+                    bgColor="white"
+                    boxShadow="0px 5px 10px 0px rgba(66, 66, 66, 0.1)"
+                    w="32px"
+                    h="32px"
+                    size="sm"
+                    p="0"
+                    border="var(--border-main)"
+                    onClick={() => setIsMapExpansion(true)}
+                  >
+                    <ExpansionIcon />
+                  </Button>
+                ) : (
+                  <Button
+                    p={0}
+                    w="48px"
+                    h="48px"
+                    bg="white"
+                    onClick={() => setIsMapExpansion(false)}
+                  >
+                    <XIcon />
+                  </Button>
+                )}
+              </Flex>
+              <VoteMap
+                mapOptions={mapOptions}
+                markersOptions={markersOptions}
+                resizeToggle={isMapExpansion}
+                handleMarker={handleMarker}
+                circleCenter={[
+                  { lat: centerPlace.location.latitude, lon: centerPlace.location.longitude },
+                ]}
+              />
+            </Box>
           </Box>
         </Box>
-      </Box>
+      )}
       {placeInfo && (
         <PlaceInfoDrawer
           handleVotePick={null}
