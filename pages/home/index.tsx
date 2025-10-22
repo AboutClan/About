@@ -11,13 +11,6 @@ import HomeStudySection from "../../pageTemplates/home/HomeStudySection";
 function Home() {
   return (
     <>
-      {/* <meta property="og:title" content="ABOUT" />
-      <meta property="og:url" content={process.env.NEXT_PUBLIC_NEXTAUTH_URL} />
-      <meta
-        property="og:description"
-        content="20대 모임 끝.판.왕!! 스터디, 취미, 친목, 취업 등. 너가 찾던 모든 모임을 한 곳에!"
-      />
-      <meta property="og:image" content="/images/thumbnail.jpg" /> */}
       <HomeInitialSetting />
       <HomeHeader />
       <Slide isNoPadding>
@@ -48,7 +41,3 @@ function Home() {
 }
 
 export default Home;
-
-export async function getServerSideProps() {
-  return { props: {} }; // 빈 props여도 OK — SSR 강제됨
-}
