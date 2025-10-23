@@ -109,7 +109,6 @@ IVoteMap) {
     if (!map || typeof naver === "undefined") return;
     const zoomListener = naver.maps.Event.addListener(map, "zoom_changed", () => {
       const newZoom = map.getZoom();
-      console.log(2, newZoom);
       zoomChange(newZoom);
     });
     return () => {

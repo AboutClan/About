@@ -83,7 +83,12 @@ function StudyPageMap({
     if (!placeData?.length) return;
 
     setMarkersOptions(
-      getStudyPlaceMarkersOptions(placeData, placeInfo ? placeInfo._id : null, zoomNumber),
+      getStudyPlaceMarkersOptions(
+        placeData,
+        placeInfo ? placeInfo._id : null,
+        zoomNumber,
+        isMapExpansion ? currentLocation : null,
+      ),
     );
 
     if (placeInfo) {
