@@ -25,9 +25,16 @@ interface IStudyMembers {
   members: StudyConfirmedMemberProps[] | StudyParticipationProps[];
   studyType: StudyType;
   hasStudyLink: boolean;
+  isAttend?: boolean;
 }
 
-export default function StudyMembers({ studyType, date, members, hasStudyLink }: IStudyMembers) {
+export default function StudyMembers({
+  studyType,
+  date,
+  members,
+  hasStudyLink,
+  isAttend,
+}: IStudyMembers) {
   const resetStudy = useResetStudyQuery();
   const typeToast = useTypeToast();
   // const [hasModalMemo, setHasModalMemo] = useState<string>();
@@ -136,7 +143,7 @@ export default function StudyMembers({ studyType, date, members, hasStudyLink }:
             userCardArr={
               isOpen || studyType !== "participations" ? userCardArr : userCardArr?.slice(0, 10)
             }
-            hasCommentButton={studyType !== "participations"}
+            hasCommentButton={studyType !== "participations" && isAttend}
           />
           {!isOpen && userCardArr.length > 10 && (
             <Button

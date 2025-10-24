@@ -21,9 +21,6 @@ function StudyAddressMap({
     scaleControl: false,
     logoControl: false,
     mapDataControl: false,
-    draggable: false, // 지도 드래그 비활성화
-    scrollWheel: false, // 스크롤 휠 줌 비활성화
-    keyboardShortcuts: false, // 키보드로 지도 조작 비활성화
   };
 
   const markersOptions: IMarkerOptions[] = [

@@ -188,7 +188,11 @@ function Configuration() {
         <Slide>
           <PageIntro
             main={{ first: isSoloRealTimesPage ? "개인 스터디 인증" : "출석 인증하기" }}
-            sub={`${isSoloRealTimesPage ? "인증" : "출석"}에 필요한 정보를 입력해 주세요`}
+            sub={
+              isSoloRealTimesPage
+                ? "인증에 필요한 정보를 입력해 주세요"
+                : "출석에 필요한 정보를 입력해 주세요"
+            }
           />
           <Box mb={5}>
             <Box mb={3}>
@@ -207,7 +211,7 @@ function Configuration() {
               text={
                 isSoloRealTimesPage || transferStudyAttendance
                   ? "오늘의 공부 한마디"
-                  : "나의 인상착의"
+                  : "나의 인상착의 및 위치"
               }
             />
           </Box>
@@ -217,8 +221,8 @@ function Configuration() {
             ref={textareaRef}
             placeholder={
               isSoloRealTimesPage || transferStudyAttendance
-                ? "자유롭게 하고 싶은 말을 작성해 주세요"
-                : "나를 유추할 수 있는 정보를 기입해 주세요"
+                ? "자유롭게 하고 싶은 말을 작성해 주세요!"
+                : "다른 사람이 찾을 수 있도록 작성해 주세요!"
             }
           />
           {/* <Box my={5}>

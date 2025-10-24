@@ -3,8 +3,12 @@ import dayjs from "dayjs";
 import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
+import Divider from "../../../../components/atoms/Divider";
 import { MainLoading, MainLoadingAbsolute } from "../../../../components/atoms/loaders/MainLoading";
 import Slide from "../../../../components/layouts/PageSlide";
+import Accordion from "../../../../components/molecules/Accordion";
+import TabNav from "../../../../components/molecules/navs/TabNav";
+import { ACCORDION_STUDY_FAQ } from "../../../../constants/contentsText/accordionContents";
 import { useUserInfo } from "../../../../hooks/custom/UserHooks";
 import { useStudyPassedDayQuery, useStudySetQuery } from "../../../../hooks/study/queries";
 import { shortenParticipations } from "../../../../libs/study/studyConverters";
@@ -50,6 +54,7 @@ export default function Page() {
       ? dayjs(date).add(1, "day")
       : dayjs(date),
   );
+  const [tab, setTab] = useState<"스터디" | "가이드">("스터디");
 
   const isPassedDate =
     studyType !== "soloRealTimes" &&
@@ -167,53 +172,80 @@ export default function Page() {
                 placeInfo={placeInfo}
                 studyType={studyType}
               />
+              <Divider />
             </Slide>
-            <Box h={2} bg="gray.100" />
-            <Slide>
-              {isOpenStudy && <StudyAddressMap location={placeInfo.location} />}
-              <StudyDateBar
-                date={date}
-                members={members}
-                studyType={studyType}
-                placeInfo={placeInfo}
-              />
-              {isOpenStudy && <StudyTimeBoard members={members as StudyConfirmedMemberProps[]} />}
-              <Box h="1px" bg="gray.100" my={4} />
-              <Box pb={2} pos="relative">
-                {(studyType === "soloRealTimes" || studyType === "participations") && (
-                  <StudyDateControl
-                    date={dateDayjs}
-                    setDate={setDateDayjs}
-                    isStudy={studyType === "soloRealTimes"}
-                  />
-                )}
-                <Box minH="300px">
-                  {isPassedSolo && !studyPassedData ? (
-                    <Box pos="relative" minH="140px">
-                      <MainLoadingAbsolute size="sm" />
-                    </Box>
-                  ) : (
-                    <StudyMembers
-                      date={dayjsToStr(dateDayjs)}
-                      members={members || []}
-                      studyType={studyType}
-                      hasStudyLink={
-                        myStudyStatus === "participation" && studyType !== "soloRealTimes"
-                      }
+            <Slide>{isOpenStudy && <StudyAddressMap location={placeInfo.location} />}</Slide>
+
+            <Slide isNoPadding>
+              <Box mt={5}>
+                <Divider />
+              </Box>
+              <Box borderBottom="var(--border)" px={5}>
+                <TabNav
+                  isFullSize
+                  isBlack
+                  tabOptionsArr={[
+                    {
+                      text: "스터디",
+                      func: () => setTab("스터디"),
+                    },
+                    { text: "가이드", func: () => setTab("가이드") },
+                  ]}
+                />
+              </Box>
+            </Slide>
+            {tab === "스터디" ? (
+              <Slide>
+                <StudyDateBar
+                  date={date}
+                  members={members}
+                  studyType={studyType}
+                  placeInfo={placeInfo}
+                />
+                {isOpenStudy && <StudyTimeBoard members={members as StudyConfirmedMemberProps[]} />}
+                <Box h="1px" bg="gray.100" my={4} />
+                <Box pb={2} pos="relative">
+                  {(studyType === "soloRealTimes" || studyType === "participations") && (
+                    <StudyDateControl
+                      date={dateDayjs}
+                      setDate={setDateDayjs}
+                      isStudy={studyType === "soloRealTimes"}
                     />
                   )}
+                  <Box minH="300px">
+                    {isPassedSolo && !studyPassedData ? (
+                      <Box pos="relative" minH="140px">
+                        <MainLoadingAbsolute size="sm" />
+                      </Box>
+                    ) : (
+                      <StudyMembers
+                        date={dayjsToStr(dateDayjs)}
+                        members={members || []}
+                        studyType={studyType}
+                        hasStudyLink={
+                          myStudyStatus === "participation" && studyType !== "soloRealTimes"
+                        }
+                      />
+                    )}
+                  </Box>
                 </Box>
-              </Box>
-              {studyType === "participations" && (
-                <>
-                  <Box h={2} bg="gray.100" my={4} />
-                  <StudyNearMemberSection
-                    myStudyInfo={myStudyInfo as StudyParticipationProps}
-                    members={members as StudyParticipationProps[]}
-                  />
-                </>
-              )}
-            </Slide>
+                {studyType === "participations" && (
+                  <>
+                    <Box h={2} bg="gray.100" my={4} />
+                    <StudyNearMemberSection
+                      myStudyInfo={myStudyInfo as StudyParticipationProps}
+                      members={members as StudyParticipationProps[]}
+                    />
+                  </>
+                )}
+              </Slide>
+            ) : (
+              <Slide>
+                <Box mt={5}>
+                  <Accordion contentArr={ACCORDION_STUDY_FAQ} />
+                </Box>
+              </Slide>
+            )}
             {studyType === "participations" && (
               <>
                 <Box h={2} bg="gray.100" my={4} />

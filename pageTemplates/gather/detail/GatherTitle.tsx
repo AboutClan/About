@@ -22,7 +22,7 @@ function GatherTitle({ title, category, type, age, isFree }: IGatherTitle) {
             text={type === "event" ? "이벤트" : type === "official" ? "공식 행사" : category}
           />
         </Box>
-        <MainBadge text={isFree ? "자유 가입" : "승인제"} type="sub" />
+        <MainBadge text={isFree ? "선착순" : "승인제"} type="sub" />
         {!isDefault && (
           <Badge
             px={2}

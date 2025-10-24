@@ -1,8 +1,9 @@
 import { IUser, IUserSummary, UserSimpleInfoProps } from "../types/models/userTypes/userInfoTypes";
 
-export const getPlaceBranch = (text: string) => {
+export const getPlaceBranch = (text: string, isShort?: boolean) => {
   if (!text) return "";
   const textArr = text.split(" ");
+  if (isShort) return textArr?.[1] || textArr?.[0];
   return textArr[0] + " " + (textArr?.[1] || "");
 };
 

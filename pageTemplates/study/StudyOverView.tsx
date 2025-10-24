@@ -1,6 +1,7 @@
 import { Badge, Box, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 
+import MainBadge from "../../components/atoms/MainBadge";
 import StarRating from "../../components/atoms/StarRating";
 import BlurredLink from "../../components/molecules/BlurredLink";
 import InfoBoxCol, { InfoBoxProps } from "../../components/molecules/InfoBoxCol";
@@ -80,18 +81,12 @@ function StudyOverview({ isMyStudy, placeInfo, date, studyType }: IStudyOverview
         {studyType !== "participations" && studyType !== "soloRealTimes" ? (
           <>
             <Box color="var(--gray-500)" fontSize="12px">
-              <Badge mr={2} size="lg" colorScheme={badgeColorScheme}>
-                {badgeText}
-              </Badge>
-              <Box as="span">{getPlaceBranch(placeInfo.location.address)}</Box>
-              {distance && (
-                <>
-                  <Box as="span" color="var(--gray-400)">
-                    ・
-                  </Box>
-                  <Box as="span">{distance}KM</Box>
-                </>
-              )}
+              <Flex mb={1}>
+                <Box mr={1}>
+                  <MainBadge text="매칭 스터디" />
+                </Box>
+                <MainBadge text={getPlaceBranch(placeInfo.location.address, true)} type="sub" />
+              </Flex>
             </Box>
             <Flex align="center" mb={3}>
               <Box mt={1} mr={2} fontSize="20px" fontWeight="bold">
@@ -99,51 +94,6 @@ function StudyOverview({ isMyStudy, placeInfo, date, studyType }: IStudyOverview
               </Box>
               <StarRating rating={placeInfo?.rating || 4} size="lg" />
             </Flex>
-            {/* <Flex flexDir="column" borderRadius="8px">
-              {[
-                ...(placeInfo?.reviews ?? []).filter((review) => !!review?.user?.name),
-                {
-                  rating: 5,
-                  review: "여러분의 리뷰를 기다리고 있습니다.",
-                  user: ABOUT_USER_SUMMARY,
-                  createdAt: dayjsToStr(dayjs()),
-                  isSecret: true,
-                },
-                {
-                  rating: 4.5,
-                  review: "자리마다 콘센트가 있고, 공간도 넓어서 공부하기 좋아요!",
-                  user: ABOUT_USER_SUMMARY,
-                  createdAt: dayjsToStr(dayjs()),
-                  isSecret: true,
-                },
-              ]
-                ?.slice(0, 2)
-                .map((review, idx) => (
-                  <Box key={idx} pt={2} borderTop="var(--border)">
-                    <StarRatingReviewBlock
-                      rating={review.rating}
-                      text={review.review}
-                      size="sm"
-                      user={review.isSecret ? { ...review.user, name: "익명" } : review.user}
-                      date={review.createdAt}
-                    />
-                  </Box>
-                ))}
-
-              <Button
-                mb={1}
-                w="full"
-                color="gray.500"
-                h="40px"
-                lineHeight="16px"
-                borderRadius="8px"
-                fontWeight="semibold"
-                variant="nostyle"
-                onClick={() => typeToast("inspection")}
-              >
-                모든 후기 보러가기
-              </Button>
-            </Flex> */}
           </>
         ) : (
           <Box mb={3}>
@@ -208,3 +158,51 @@ function StudyOverview({ isMyStudy, placeInfo, date, studyType }: IStudyOverview
 }
 
 export default StudyOverview;
+
+{
+  /* <Flex flexDir="column" borderRadius="8px">
+              {[
+                ...(placeInfo?.reviews ?? []).filter((review) => !!review?.user?.name),
+                {
+                  rating: 5,
+                  review: "여러분의 리뷰를 기다리고 있습니다.",
+                  user: ABOUT_USER_SUMMARY,
+                  createdAt: dayjsToStr(dayjs()),
+                  isSecret: true,
+                },
+                {
+                  rating: 4.5,
+                  review: "자리마다 콘센트가 있고, 공간도 넓어서 공부하기 좋아요!",
+                  user: ABOUT_USER_SUMMARY,
+                  createdAt: dayjsToStr(dayjs()),
+                  isSecret: true,
+                },
+              ]
+                ?.slice(0, 2)
+                .map((review, idx) => (
+                  <Box key={idx} pt={2} borderTop="var(--border)">
+                    <StarRatingReviewBlock
+                      rating={review.rating}
+                      text={review.review}
+                      size="sm"
+                      user={review.isSecret ? { ...review.user, name: "익명" } : review.user}
+                      date={review.createdAt}
+                    />
+                  </Box>
+                ))}
+
+              <Button
+                mb={1}
+                w="full"
+                color="gray.500"
+                h="40px"
+                lineHeight="16px"
+                borderRadius="8px"
+                fontWeight="semibold"
+                variant="nostyle"
+                onClick={() => typeToast("inspection")}
+              >
+                모든 후기 보러가기
+              </Button>
+            </Flex> */
+}
