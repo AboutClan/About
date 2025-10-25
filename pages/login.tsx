@@ -163,7 +163,7 @@ const Login: NextPage<{
             <Image src="/23.png" alt="main-logo" fill />
           </Box>
           <Box mb={6} fontWeight="bold" fontSize="14px" lineHeight="20px" color="gray.100">
-            20대를 위한 모임 플랫폼
+            20대의 모든 순간을 위한 플랫폼
           </Box>
           <Box w="58.7%" position="relative" aspectRatio={5 / 4}>
             <Image src="/main.png" alt="main-icon" fill />

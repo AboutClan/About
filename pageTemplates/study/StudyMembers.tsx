@@ -24,17 +24,10 @@ interface IStudyMembers {
   date: string;
   members: StudyConfirmedMemberProps[] | StudyParticipationProps[];
   studyType: StudyType;
-  hasStudyLink: boolean;
   isAttend?: boolean;
 }
 
-export default function StudyMembers({
-  studyType,
-  date,
-  members,
-  hasStudyLink,
-  isAttend,
-}: IStudyMembers) {
+export default function StudyMembers({ studyType, date, members, isAttend }: IStudyMembers) {
   const resetStudy = useResetStudyQuery();
   const typeToast = useTypeToast();
   // const [hasModalMemo, setHasModalMemo] = useState<string>();
@@ -134,7 +127,7 @@ export default function StudyMembers({
       };
     }
   });
-  console.log(44, members, userCardArr);
+
   return (
     <>
       {userCardArr?.length ? (
@@ -178,7 +171,7 @@ export default function StudyMembers({
           </Box>
         </Flex>
       )}
-      {hasStudyLink && (
+      {studyType !== "soloRealTimes" && (
         <Button
           mt={4}
           mb={2}

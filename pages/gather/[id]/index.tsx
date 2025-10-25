@@ -53,7 +53,7 @@ function GatherDetail() {
       router.push(`/login?status=before&page=gather/${id}`);
     }
   }, [session]);
-  console.log(3, gather);
+
   return (
     <>
       {gather ? (

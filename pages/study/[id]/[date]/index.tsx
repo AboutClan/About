@@ -157,7 +157,7 @@ export default function Page() {
   const isMyReview = placeInfo?.reviews?.some((review) => review.user._id === userInfo?._id);
 
   const isOpenStudy = studyType !== "participations" && studyType !== "soloRealTimes";
-  console.log(234, isPassedSolo, studyPassedData);
+  console.log(234, placeInfo);
   return (
     <>
       {isPassedSolo || studyPassedData || studySet ? (
@@ -166,20 +166,16 @@ export default function Page() {
           <Box mb={5}>
             <Slide isNoPadding>
               <StudyCover studyType={studyType} coverImage={placeInfo?.coverImage} />
-              <StudyOverview
-                isMyStudy={!!myStudyInfo}
-                date={date}
-                placeInfo={placeInfo}
-                studyType={studyType}
-              />
+              <StudyOverview date={date} placeInfo={placeInfo} studyType={studyType} />
               <Divider />
             </Slide>
             <Slide>{isOpenStudy && <StudyAddressMap location={placeInfo.location} />}</Slide>
-
             <Slide isNoPadding>
-              <Box mt={5}>
-                <Divider />
-              </Box>
+              {isOpenStudy && (
+                <Box mt={5}>
+                  <Divider />
+                </Box>
+              )}
               <Box borderBottom="var(--border)" px={5}>
                 <TabNav
                   isFullSize
@@ -212,7 +208,7 @@ export default function Page() {
                       isStudy={studyType === "soloRealTimes"}
                     />
                   )}
-                  <Box minH="300px">
+                  <Box minH="240px">
                     {isPassedSolo && !studyPassedData ? (
                       <Box pos="relative" minH="140px">
                         <MainLoadingAbsolute size="sm" />
@@ -222,9 +218,9 @@ export default function Page() {
                         date={dayjsToStr(dateDayjs)}
                         members={members || []}
                         studyType={studyType}
-                        hasStudyLink={
-                          myStudyStatus === "participation" && studyType !== "soloRealTimes"
-                        }
+                        // hasStudyLink={
+                        //   myStudyStatus === "participation" && studyType !== "soloRealTimes"
+                        // }
                       />
                     )}
                   </Box>
@@ -246,14 +242,14 @@ export default function Page() {
                 </Box>
               </Slide>
             )}
-            {studyType === "participations" && (
+            {studyType === "participations" && studySet.results.length ? (
               <>
                 <Box h={2} bg="gray.100" my={4} />
                 <Slide>
                   <StudyPendingSection studySet={studySet} />
                 </Slide>
               </>
-            )}
+            ) : null}
             {studyType === "participations" && (
               <StudyPlaceMap
                 centerLocation={

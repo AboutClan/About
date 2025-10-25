@@ -2,7 +2,7 @@ import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import { Box } from "@chakra-ui/react";
 import { useParams, useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -52,6 +52,10 @@ function GroupDetail() {
 
   useEffect(() => {
     if (session === undefined) return;
+    if (session === null) {
+      signIn("guest");
+      return;
+    }
     if (!session?.user.uid) {
       toast("warning", "로그인 정보가 없습니다. 다시 로그인해주세요!");
       router.push(`/login?status=before&page=group/${id}`);

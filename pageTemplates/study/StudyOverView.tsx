@@ -3,7 +3,6 @@ import dayjs from "dayjs";
 
 import MainBadge from "../../components/atoms/MainBadge";
 import StarRating from "../../components/atoms/StarRating";
-import BlurredLink from "../../components/molecules/BlurredLink";
 import InfoBoxCol, { InfoBoxProps } from "../../components/molecules/InfoBoxCol";
 import { useUserCurrentLocation } from "../../hooks/custom/CurrentLocationHook";
 import { getStudyBadge } from "../../libs/study/studyHelpers";
@@ -16,10 +15,9 @@ interface IStudyOverview {
   placeInfo: StudyPlaceProps;
   studyType: StudyType;
   date: string;
-  isMyStudy: boolean;
 }
 
-function StudyOverview({ isMyStudy, placeInfo, date, studyType }: IStudyOverview) {
+function StudyOverview({ placeInfo, date, studyType }: IStudyOverview) {
   const { currentLocation } = useUserCurrentLocation();
 
   const { text: badgeText, colorScheme: badgeColorScheme } = getStudyBadge(
@@ -63,16 +61,11 @@ function StudyOverview({ isMyStudy, placeInfo, date, studyType }: IStudyOverview
           ? "신청한 매칭 범위 이내 · 3명 이상의 멤버"
           : "신청한 매칭 범위 이내 · 3명 이상의 멤버",
     },
-    ...(studyType !== "soloRealTimes"
-      ? [
-          {
-            category: "스터디 톡방",
-            rightChildren: (
-              <BlurredLink isBlur={!isMyStudy} url="https://open.kakao.com/o/g6Wc70sh" />
-            ),
-          },
-        ]
-      : []),
+
+    {
+      category: "스터디 혜택",
+      text: "매칭 여부와 상관없이 100 Point 획득",
+    },
   ];
 
   return (
