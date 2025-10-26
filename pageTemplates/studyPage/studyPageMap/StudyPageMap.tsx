@@ -98,7 +98,7 @@ function StudyPageMap({
       );
       setMapOptions(options);
     }
-  }, [placeData, placeInfo, zoomNumber]);
+  }, [placeData, placeInfo, zoomNumber, currentLocation]);
 
   const handleMarker = (id: string, currentZoom: number) => {
     setMapOptions({ ...mapOptions, zoom: currentZoom });
@@ -197,7 +197,6 @@ function StudyPageMap({
         shallow: true,
       },
     );
-
     if (!isMapExpansion) {
       setIsMapExpansion(true);
     }
