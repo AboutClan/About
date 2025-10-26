@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-before-interactive-script-outside-document */
 
 import axios from "axios";
+import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import Head from "next/head";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import BottomNav from "../../components/BottomNav";
@@ -110,7 +110,9 @@ function Layout({ children }: ILayout) {
         }
         // 인스타그램은 스킴이 없기 때문에, 알림창 띄우거나 외부 브라우저 열기 안내
         else if (useragt.includes("instagram")) {
-          alert("인스타그램 내에서는 일부 기능이 제한됩니다.\n외부 브라우저로 열어주세요!");
+          alert(
+            "인스타그램 내에서는 일부 기능이 제한됩니다.\n외부 브라우저로 열면 더 원활하게 이용할 수 있어요!",
+          );
           window.open(targetUrl, "_blank");
         }
       }
