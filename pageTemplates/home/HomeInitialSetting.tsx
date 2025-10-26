@@ -81,21 +81,6 @@ function HomeInitialSetting() {
     }
   }, [userInfo?.role]);
 
-  useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const inappdenyExecVanillajs = (callback: any) => {
-      if (document.readyState !== "loading") callback();
-      else document.addEventListener("DOMContentLoaded", callback);
-    };
-    inappdenyExecVanillajs(() => {
-      const useragt = navigator.userAgent.toLowerCase();
-      const targetUrl = location.href;
-      if (useragt.match(/kakaotalk/i)) {
-        location.href = "kakaotalk://web/openExternal?url=" + encodeURIComponent(targetUrl);
-      }
-    });
-  }, []);
-
   // const [{ steps }, setState] = useState<{
   //   run: boolean;
   //   steps?: Step[];

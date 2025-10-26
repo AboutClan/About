@@ -89,6 +89,34 @@ function Layout({ children }: ILayout) {
     // }
   }, [session, status]);
 
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const inappdenyExecVanillajs = (callback: any) => {
+      if (document.readyState !== "loading") callback();
+      else document.addEventListener("DOMContentLoaded", callback);
+    };
+
+    inappdenyExecVanillajs(() => {
+      const useragt = navigator.userAgent.toLowerCase();
+      const targetUrl = location.href;
+
+      // 카카오톡 or 인스타그램 인앱 브라우저 감지
+      const isInAppBrowser = useragt.includes("kakaotalk") || useragt.includes("instagram");
+
+      if (isInAppBrowser) {
+        // 카카오톡은 외부 브라우저 스킴을 지원
+        if (useragt.includes("kakaotalk")) {
+          location.href = "kakaotalk://web/openExternal?url=" + encodeURIComponent(targetUrl);
+        }
+        // 인스타그램은 스킴이 없기 때문에, 알림창 띄우거나 외부 브라우저 열기 안내
+        else if (useragt.includes("instagram")) {
+          alert("인스타그램 내에서는 일부 기능이 제한됩니다.\n외부 브라우저로 열어주세요!");
+          window.open(targetUrl, "_blank");
+        }
+      }
+    });
+  }, []);
+
   const exitAppRef = useRef<boolean>(false);
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
