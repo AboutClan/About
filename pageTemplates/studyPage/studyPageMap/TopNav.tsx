@@ -221,7 +221,7 @@ function TopNav({
             fontWeight={600}
             onClick={onClose}
           >
-            지도 닫기
+            About 사이트 구경하기
           </Button>
           {!isMainType && (
             <Button
