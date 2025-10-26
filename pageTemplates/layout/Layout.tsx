@@ -165,7 +165,8 @@ function Layout({ children }: ILayout) {
           title: "ABOUT 카공 지도",
           description: "카공러들을 위한 진짜 카공 지도",
           url: `${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/cafe-map`,
-          image: "https://studyabout.s3.ap-northeast-2.amazonaws.com/기타/cafe-map.png",
+          image:
+            "https://studyabout.s3.ap-northeast-2.amazonaws.com/%EA%B8%B0%ED%83%80/cafe-map.png",
         }
       : {
           title: "About",
