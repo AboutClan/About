@@ -221,7 +221,7 @@ function TopNav({
             fontWeight={600}
             onClick={onClose}
           >
-            About 사이트 구경하기
+            사이트 구경하기
           </Button>
           {!isMainType && (
             <Button
