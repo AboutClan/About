@@ -172,7 +172,7 @@ const INFO_MODAL_CONTENTS: Record<InfoType, { title: string; items: string[] }> 
   map: {
     title: "카공 지도 가이드",
     items: [
-      "3년간 1,000시간 이상을 투자해 만든 지도",
+      "5년간 1,000시간 이상을 투자해 만든 지도",
       "별점은 테이블, 콘센트, 분위기를 등을 반영",
       "장소는 매주 업데이트, 기능도 계속 개선 중",
       "추가하고 싶은 카공 장소가 있다면 요청",
