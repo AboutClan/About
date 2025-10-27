@@ -61,10 +61,10 @@ const TOAST_MAP: Record<ToastType, ToastConfig> = {
   invite: { title: "초대 완료" },
   participate: { title: "참여가 완료되었습니다." },
   register: { title: "등록 완료" },
-  "not-yet": { title: "개발중인 기능!", status: "info" },
+  "not-yet": { title: "개발중인 기능입니다.", status: "info" },
 
   inspection: {
-    title: "점검중",
+    title: "점검중인 기능입니다.",
     status: "info",
   },
   guest: {

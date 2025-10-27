@@ -15,6 +15,7 @@ interface TopNavProps {
   filterType: StudyPlaceFilter;
   setFilterType: DispatchType<StudyPlaceFilter>;
   isMainType?: boolean;
+  isDown?: boolean;
 }
 
 function TopNav({
@@ -25,6 +26,7 @@ function TopNav({
   filterType,
   setFilterType,
   isMainType,
+  isDown,
 }: TopNavProps) {
   const [isGuideModal, setIsGuideModal] = useState(false);
   console.log(isCafePlace);
@@ -221,7 +223,7 @@ function TopNav({
             fontWeight={600}
             onClick={onClose}
           >
-            ABOUT 사이트 구경하기
+            {isDown ? "ABOUT 사이트 구경하기" : "닫 기"}
           </Button>
           {!isMainType && (
             <Button

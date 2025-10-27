@@ -6,7 +6,7 @@ import StarRating from "../../components/atoms/StarRating";
 import NewTwoButtonRow from "../../components/molecules/NewTwoButtonRow";
 import PlaceImage from "../../components/molecules/PlaceImage";
 import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
-import { useTypeToast } from "../../hooks/custom/CustomToast";
+import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { StudyPlaceProps } from "../../types/models/studyTypes/study-entity.types";
 import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomImage } from "../../utils/imageUtils";
@@ -16,10 +16,12 @@ interface PlaceInfoDrawerProps {
   placeInfo: StudyPlaceProps;
   onClose: () => void;
   handleVotePick?: () => void;
+  isDown?: boolean;
 }
 
-function PlaceInfoDrawer({ placeInfo, onClose, handleVotePick }: PlaceInfoDrawerProps) {
+function PlaceInfoDrawer({ placeInfo, onClose, handleVotePick, isDown }: PlaceInfoDrawerProps) {
   const typeToast = useTypeToast();
+  const toast = useToast();
 
   return (
     <>
@@ -81,6 +83,7 @@ function PlaceInfoDrawer({ placeInfo, onClose, handleVotePick }: PlaceInfoDrawer
                 imageProps={{ image: placeInfo?.image || getRandomImage(STUDY_MAIN_IMAGES) }}
                 size="lg"
                 hasToggleHeart
+                isDown={isDown}
               />
             </Box>
           </Flex>
@@ -105,7 +108,9 @@ function PlaceInfoDrawer({ placeInfo, onClose, handleVotePick }: PlaceInfoDrawer
                   </Box>
                 ),
                 func: () => {
-                  typeToast("not-yet");
+                  if (isDown) {
+                    toast("info", "ABOUT 멤버만 이용할 수 있는 기능입니다.");
+                  } else typeToast("not-yet");
                 },
                 children: <Box mr="2px">멤버 리뷰</Box>,
               }}

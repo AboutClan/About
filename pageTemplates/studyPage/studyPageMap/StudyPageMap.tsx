@@ -218,6 +218,7 @@ function StudyPageMap({
         >
           <ClipLayer $rounded={!isMapExpansion}>
             <StudyMapTopNav
+              isDown={isDown}
               isMainType={type === "mainPlace"}
               handleLocationRefetch={async () => {
                 const newPos = await refetchCurrentLocation();
@@ -289,6 +290,7 @@ function StudyPageMap({
           handleVotePick={isDefaultOpen && !isDown ? () => handleVotePick(placeInfo) : undefined}
           placeInfo={placeInfo}
           onClose={() => setPlaceInfo(null)}
+          isDown={isDown}
         />
       )}
       {isLoading && (

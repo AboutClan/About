@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { MouseEvent, useEffect, useState } from "react";
 
-import { useTypeToast } from "../../hooks/custom/CustomToast";
+import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { HeartIcon } from "../Icons/HeartIcons";
 
@@ -17,6 +17,7 @@ interface PlaceHeartImageProps {
   selected?: "main" | "sub" | null;
   size: "sm" | "md" | "lg";
   isFull?: boolean;
+  isDown?: boolean;
 }
 
 function PlaceImage({
@@ -26,8 +27,10 @@ function PlaceImage({
   selected,
   size,
   isFull,
+  isDown,
 }: PlaceHeartImageProps) {
   const { data: session } = useSession();
+  const toast = useToast();
   const typeToast = useTypeToast();
   const isGuest = session?.user.name === "guest";
 
@@ -50,7 +53,11 @@ function PlaceImage({
     size === "sm" ? "60px" : size === "md" ? "80px" : size === "lg" ? "100px" : "180px";
 
   const onClickHeart = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
-    typeToast("inspection");
+    if (isDown) {
+      toast("info", "ABOUT 멤버만 이용할 수 있는 기능입니다.");
+    } else {
+      typeToast("inspection");
+    }
     console.log(e);
     return;
 
