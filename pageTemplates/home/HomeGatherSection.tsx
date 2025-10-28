@@ -28,15 +28,15 @@ function HomeGatherSection() {
             gap: "12px",
           }}
         >
-          <SlideSectionCol title="About 번개 모임" subTitle="친구들과의 즐거운 만남">
+          <SlideSectionCol title="About 번개 모임" subTitle="편하게 시작하는 즐거운 만남">
             <HomeGatherCol gathers={firstData?.slice(0, 3)} isPriority />
           </SlideSectionCol>
-          <SlideSectionCol title="About 번개 모임" subTitle="같은 관심사를 나누는 만남의 장">
+          <SlideSectionCol title="About 번개 모임" subTitle="편하게 시작하는 즐거운 만남">
             <HomeGatherCol gathers={firstData?.slice(3, 6)} isPriority={false} />
           </SlideSectionCol>
         </motion.div>
       </AnimatePresence>
-      {/* <AnimatePresence initial={false}>
+      <AnimatePresence initial={false}>
         <motion.div
           drag="x"
           dragConstraints={{ left: -width, right: 0 }}
@@ -48,15 +48,21 @@ function HomeGatherSection() {
             gap: "12px",
           }}
         >
-          <SlideSectionCol title="About 마감 임박 모임" subTitle="곧 마감! 마지막 기회">
-            <HomeGatherCol gathers={shuffleArray(secondData?.slice(0, 3))} isPriority={false} />
+          <SlideSectionCol
+            title="About 마감 임박 모임"
+            subTitle="자리가 얼마 없어요. 마지막 참여 기회!"
+          >
+            <HomeGatherCol gathers={secondData?.slice(0, 3)} isPriority={false} />
           </SlideSectionCol>
-          <SlideSectionCol title="About 마감 임박 모임" subTitle="지금 아니면 늦어요!">
-            <HomeGatherCol gathers={shuffleArray(secondData?.slice(3, 6))} isPriority={false} />
+          <SlideSectionCol
+            title="About 마감 임박 모임"
+            subTitle="자리가 얼마 없어요. 마지막 참여 기회!"
+          >
+            <HomeGatherCol gathers={secondData?.slice(3, 6)} isPriority={false} />
           </SlideSectionCol>
         </motion.div>
-      </AnimatePresence> */}
-      <AnimatePresence initial={false}>
+      </AnimatePresence>
+      {/* <AnimatePresence initial={false}>
         <motion.div
           drag="x"
           dragConstraints={{ left: -width, right: 0 }}
@@ -75,7 +81,7 @@ function HomeGatherSection() {
             <HomeGatherCol gathers={secondData?.slice(3, 6)} isPriority={false} />
           </SlideSectionCol>
         </motion.div>
-      </AnimatePresence>
+      </AnimatePresence> */}
     </>
   );
 }

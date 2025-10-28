@@ -159,6 +159,8 @@ function PlaceImage(props: PlaceImageProps) {
       pos="relative"
       w="98px"
       h="98px"
+      bg="gray.100"
+      border="var(--border-main)"
     >
       <Image
         {...props}

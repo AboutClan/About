@@ -26,13 +26,25 @@ interface INavButton extends INavButtonProps {
 
 type Category = "홈" | "스터디" | "소셜링" | "소모임" | "내 정보";
 
-export default function BottomNav() {
+export default function BottomNav({ hasBottomNav }: { hasBottomNav: boolean }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const newSearchParams = new URLSearchParams(searchParams);
 
   return (
-    <Nav>
+    <Flex
+      w="full"
+      pos="fixed"
+      bottom="0"
+      h="calc(52px + env(safe-area-inset-bottom))"
+      bg="white"
+      zIndex={600}
+      pb="env(safe-area-inset-bottom)"
+      borderTop={hasBottomNav ? "var(--border-main)" : "var(--border)"}
+      maxW="var(--max-width)"
+      m="0 auto"
+      boxShadow={hasBottomNav ? "none" : "0px -4px 12px 0px rgba(0, 0, 0, 0.04)"}
+    >
       {navItems.map((item, idx) => {
         const getParams = (category: Category) => {
           switch (category) {
@@ -57,7 +69,7 @@ export default function BottomNav() {
           />
         );
       })}
-    </Nav>
+    </Flex>
   );
 }
 
@@ -68,7 +80,7 @@ function NavButton({ text, url, activeIcon, defaultIcon, isActive, idx }: INavBu
   const onClick = () => {
     handleMove();
   };
-
+  console.log(15, iPhoneNotchSize());
   return (
     <NavLink
       onClick={onClick}
@@ -125,27 +137,11 @@ const navItems: INavButtonProps[] = [
   },
 ];
 
-const Nav = styled.nav`
-  width: 100%;
-  display: flex;
-  position: fixed;
-  bottom: 0;
-  height: ${52 + iPhoneNotchSize()}px;
-  background-color: white;
-  z-index: 600;
-  padding-bottom: ${iPhoneNotchSize()}px;
-
-  border-top: var(--border);
-  max-width: var(--max-width);
-  margin: 0 auto;
-`;
-
 const NavLink = styled(Link)<{ isactive: "true" | "false" } & LinkProps>`
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   color: ${({ isactive }) => (isactive === "true" ? "var(--gray-800)" : "var(--gray-500)")};
 `;

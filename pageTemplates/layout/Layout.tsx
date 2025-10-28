@@ -108,13 +108,6 @@ function Layout({ children }: ILayout) {
         if (useragt.includes("kakaotalk")) {
           location.href = "kakaotalk://web/openExternal?url=" + encodeURIComponent(targetUrl);
         }
-        // 인스타그램은 스킴이 없기 때문에, 알림창 띄우거나 외부 브라우저 열기 안내
-        else if (useragt.includes("instagram")) {
-          alert(
-            "인스타그램 내에서는 일부 기능이 제한됩니다.\n외부 브라우저로 열면 더 원활하게 이용할 수 있어요!",
-          );
-          window.open(targetUrl, "_blank");
-        }
       }
     });
   }, []);
@@ -209,7 +202,7 @@ function Layout({ children }: ILayout) {
             {children}
           </div>
           <PageTracker />
-          {isBottomNavCondition && <BottomNav />}
+          {isBottomNavCondition && <BottomNav hasBottomNav={isGuest && isBottomNavCondition} />}
           {isGuest && isBottomNavCondition && <GuestBottomNav />}
           <BaseModal isGuest={isGuest} isError={isErrorModal} setIsError={setIsErrorModal} />
         </>

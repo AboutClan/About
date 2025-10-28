@@ -44,7 +44,7 @@ a {
 
 #__next {
   min-width: 340px;
-  max-width: 428px;
+  max-width: 628px;
 
   min-height: 100dvh;
   margin: 0 auto;
@@ -52,7 +52,7 @@ a {
 
   overflow: hidden;
 }
-@media (min-width: 428px) {
+@media (min-width: 628px) {
   #__next {
     border-left: var(--border);
     border-right: var(--border);

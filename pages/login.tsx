@@ -19,10 +19,9 @@ import { useEffect, useState } from "react";
 import { useToast } from "../hooks/custom/CustomToast";
 import { useUserInfoQuery } from "../hooks/user/queries";
 import ForceLogoutDialog from "../modals/login/ForceLogoutDialog";
-import GuestLoginModal from "../modals/login/GuestLoginModal";
 import { IFooterOptions, ModalLayout } from "../modals/Modals";
 import { navigateExternalLink } from "../utils/navigateUtils";
-import { detectDevice } from "../utils/validationUtils";
+import { detectAppDevice } from "../utils/validationUtils";
 
 const Login: NextPage<{
   providers: Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider>;
@@ -155,7 +154,7 @@ const Login: NextPage<{
           align="center"
           maxW="293px"
           w="68.5%"
-          top="42%"
+          top="46%"
           left="50%"
           transform="translate(-50%,-50%)"
         >
@@ -176,12 +175,12 @@ const Login: NextPage<{
             position="fixed"
             width="100%"
             maxW="var(--max-width)"
-            px="32px"
-            bottom={visibleHeight >= 700 && ratio > 1.8 ? "9%" : "11%"}
+            px="20px"
+            bottom={`calc(40px + env(safe-area-inset-bottom))`}
             left="50%"
             transform="translate(-50%,0)"
           >
-            {visibleHeight >= 700 && ratio > 1.8 && (
+            {detectAppDevice() !== "iPhone" && (
               <Box mb={5} color="white" fontSize="12px" lineHeight="16px" opacity={0.6}>
                 Sign up with Social Networks
               </Box>
@@ -203,11 +202,12 @@ const Login: NextPage<{
               fontSize="13px"
               mb={3}
               fontWeight="semibold"
+              borderRadius="8px"
             >
               <span>카카오톡으로 5초만에 시작하기</span>
               <div />
             </Button>
-            {detectDevice() !== "Android" && detectDevice() !== "PC" && (
+            {detectAppDevice() === "iPhone" && (
               <Button
                 variant="unstyled"
                 maxW="calc(var(--max-width) - 2 * 20px)"
@@ -225,6 +225,7 @@ const Login: NextPage<{
                 fontSize="13px"
                 mb={3}
                 fontWeight="semibold"
+                borderRadius="8px"
               >
                 <span>Apple로 시작하기</span>
                 <div />
@@ -238,7 +239,7 @@ const Login: NextPage<{
               aspectRatio={7.42 / 1}
               backgroundColor="gray.900"
               color="white"
-              onClick={() => setIsModal(true)}
+              onClick={() => customSignin("guest")}
               display="flex"
               isLoading={loadingType === "guest"}
               justifyContent="space-between"
@@ -247,21 +248,22 @@ const Login: NextPage<{
               lineHeight="20px"
               pr="32px"
               fontSize="13px"
-              mb={3}
+              mb={5}
               fontWeight="semibold"
+              borderRadius="8px"
             >
               <span>게스트로 구경하기</span>
               <div />
             </Button>
 
-            <Box mt={0} as="u" fontSize="12px" fontWeight="medium" opacity={0.8} color="white">
-              동아리 가입은 '카카오 로그인'만 가능합니다.
+            <Box mt={0} as="u" fontSize="12px" fontWeight="medium" opacity={0.6} color="white">
+              동아리 가입은 '카카오 로그인'을 이용해주세요.
             </Box>
           </Flex>
           <ForceLogoutDialog />
         </Flex>
       </Box>
-      {isModal && <GuestLoginModal setIsModal={setIsModal} customSignin={customSignin} />}
+      {/* {isModal && <GuestLoginModal setIsModal={setIsModal} customSignin={customSignin} />} */}
       {isWaitingModal && (
         <ModalLayout
           title="가입 대기"

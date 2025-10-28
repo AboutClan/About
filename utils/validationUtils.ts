@@ -75,6 +75,28 @@ export const detectDevice = () => {
   }
 };
 
+export const detectAppDevice = () => {
+  if (typeof navigator === "undefined") return null;
+
+  const ua = navigator.userAgent || "";
+
+  // ① 앱 설치 버전 (WebView)에서만 감지
+  const isAboutApp = /AboutApp/i.test(ua) || typeof window?.AboutAppBridge !== "undefined";
+
+  if (!isAboutApp) {
+    // 앱이 아니면 null
+    return null;
+  }
+  // ② 플랫폼 구분
+  if (/iPhone/i.test(ua) || window?.AboutAppBridge?.platform === "iPhone") {
+    return "iPhone";
+  } else if (/Android/i.test(ua) || window?.AboutAppBridge?.platform === "Android") {
+    return "Android";
+  } else {
+    return "Unknown";
+  }
+};
+
 export const isNil = <T>(val: T | undefined | null): val is null | undefined => {
   return val == null;
 };

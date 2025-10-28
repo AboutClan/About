@@ -27,7 +27,6 @@ function HomeInitialSetting() {
   // const [isGuide, setIsGuide] = useState(false);
 
   const { data: userInfo } = useUserInfoQuery({
-    enabled: isGuest === false,
     onSuccess(data) {
       if (data.isActive === false) {
         toast("warning", "신규 가입 페이지로 이동합니다.");
