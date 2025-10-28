@@ -112,15 +112,27 @@ function StorePage() {
     },
   ];
 
+  const [textArr, setTextArr] = useState<
+    {
+      name: string;
+      gift: string;
+    }[]
+  >();
+
   const { data: prizeData } = usePrizeQuery(0, "store");
 
-  const textArr = shuffleArray(prizeData)
-    ?.filter((props) => props.description.split(" "))
-    ?.slice(0, 5)
-    ?.map((props) => ({
-      name: props.winner.name,
-      gift: props.gift,
-    }));
+  useEffect(() => {
+    if (!prizeData) return;
+    setTextArr(
+      shuffleArray(prizeData)
+        ?.filter((props) => props.description.split(" "))
+        ?.slice(0, 5)
+        ?.map((props) => ({
+          name: props.winner.name,
+          gift: props.gift,
+        })),
+    );
+  }, [prizeData]);
 
   return (
     <>

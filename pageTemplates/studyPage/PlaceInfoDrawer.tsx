@@ -1,5 +1,6 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 
 import { STUDY_MAIN_IMAGES } from "../../assets/images/studyMain";
 import StarRating from "../../components/atoms/StarRating";
@@ -20,8 +21,11 @@ interface PlaceInfoDrawerProps {
 }
 
 function PlaceInfoDrawer({ placeInfo, onClose, handleVotePick, isDown }: PlaceInfoDrawerProps) {
+  const { data: session } = useSession();
   const typeToast = useTypeToast();
   const toast = useToast();
+
+  const isGuest = session?.user.role === "guest";
 
   return (
     <>
@@ -108,7 +112,7 @@ function PlaceInfoDrawer({ placeInfo, onClose, handleVotePick, isDown }: PlaceIn
                   </Box>
                 ),
                 func: () => {
-                  if (isDown) {
+                  if (isDown || isGuest) {
                     toast("info", "ABOUT 멤버만 이용할 수 있는 기능입니다.");
                   } else typeToast("not-yet");
                 },

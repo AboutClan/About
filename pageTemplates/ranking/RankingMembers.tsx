@@ -73,7 +73,7 @@ function RankingMembers({ users, fieldName }: IRankingMembers) {
                 fontWeight={who.uid === session?.user.uid ? "semibold" : "medium"}
                 color={who.uid === session?.user.uid ? "mint" : "inherit"}
               >
-                {!RANKING_ANONYMOUS_USERS.includes(who?.uid) ? who.name : "비공개"}
+                {who.name}
               </Box>
             </Flex>
             <Flex align="center">
@@ -93,7 +93,7 @@ function RankingMembers({ users, fieldName }: IRankingMembers) {
                 }
                 variant="unstyled"
               >
-                {idx < 5 && <GiftIcon />}
+                {idx < 5 && fieldName === "monthScore" && <GiftIcon />}
               </Button>
             </Flex>
           </Flex>

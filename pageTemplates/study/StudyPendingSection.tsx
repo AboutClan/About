@@ -1,4 +1,4 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useState } from "react";
 
@@ -54,15 +54,28 @@ function StudyPendingSection({ studySet }: StudyPendingSectionProps) {
       <Box fontSize="18px" mb={4} fontWeight="bold">
         매칭 예정 스터디
       </Box>
-      {thumbnailCardInfoArr?.length
-        ? (isOpen ? thumbnailCardInfoArr : thumbnailCardInfoArr.slice(0, 3)).map(
-            (thumbnailCardInfo, idx) => (
-              <Box key={idx} mb={3}>
-                <StudyThumbnailCard {...thumbnailCardInfo} />
-              </Box>
-            ),
-          )
-        : [1, 2, 3].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)}
+      {thumbnailCardInfoArr?.length ? (
+        (isOpen ? thumbnailCardInfoArr : thumbnailCardInfoArr.slice(0, 3)).map(
+          (thumbnailCardInfo, idx) => (
+            <Box key={idx} mb={3}>
+              <StudyThumbnailCard {...thumbnailCardInfo} />
+            </Box>
+          ),
+        )
+      ) : !studySet ? (
+        [1, 2, 3].map((idx) => <StudyThumbnailCardSkeleton key={idx} />)
+      ) : (
+        <Flex
+          align="center"
+          justify="center"
+          h="200px"
+          color="var(--gray-600)"
+          fontSize="16px"
+          textAlign="center"
+        >
+          <Box as="p">매칭 예정 스터디가 없습니다.</Box>
+        </Flex>
+      )}
 
       {!isOpen && thumbnailCardInfoArr?.length > 3 && (
         <Button

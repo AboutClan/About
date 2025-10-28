@@ -51,6 +51,9 @@ export default function GatherMain() {
 
   useEffect(() => {
     if (!gathers) return;
+    if (gathers.length < 3 && category === "스터디") {
+      setCursor((prev) => prev + 1);
+    }
     const temp =
       sortBy === "기본순"
         ? (() => {

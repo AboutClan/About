@@ -6,7 +6,6 @@ import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading"
 import Select from "../../components/atoms/Select";
 import ButtonGroups, { ButtonOptionsProps } from "../../components/molecules/groups/ButtonGroups";
 import FeedLayout, { FeedLayoutProps } from "../../components/organisms/FeedLayout";
-import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useFeedsQuery } from "../../hooks/feed/queries";
 import { convertFeedToLayout } from "../../libs/convertFeedToLayout";
 import { FeedProps, FeedType } from "../../types/models/feed";
@@ -17,7 +16,6 @@ function SquareLoungeSection() {
   const newSearchParams = new URLSearchParams(searchParams);
   const categoryParam = searchParams.get("category") as FeedType | undefined;
   const drawerParam = searchParams.get("drawer");
-  const typeToast = useTypeToast();
 
   const [category, setCategory] = useState<FeedType | "all">();
   const [loungeData, setLoungeData] = useState<FeedProps[]>();
@@ -104,10 +102,6 @@ function SquareLoungeSection() {
     return {
       text: `${textObj[category]}`,
       func: () => {
-        if (category === "group") {
-          typeToast("inspection");
-          return;
-        }
         newSearchParams.set("category", category);
         router.replace(`/gather?${newSearchParams}`);
         setCategory(category);

@@ -192,8 +192,8 @@ function GroupPage() {
               <GroupMine />
             </Box>
           )}
-          <Box px={5} mt={5} mb={3}>
-            <SectionHeader title="전체 소모임" subTitle="All Small Group">
+          <Box px={5} mt={isGuest ? 2 : 5} mb={3}>
+            <SectionHeader title="ABOUT 소모임" subTitle="관심사로 연결되는 지속성 모임">
               <Select
                 size="sm"
                 isThick

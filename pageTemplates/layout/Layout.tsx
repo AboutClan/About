@@ -74,7 +74,9 @@ function Layout({ children }: ILayout) {
     if (!isBottomNavCondition && isGuest && pathname !== "/cafe-map") {
       toast(
         "info",
-        "현재 게스트 뷰어를 이용하고 있습니다. 정식 활동을 위해서는 카카오 로그인을 통해 가입해 주세요!",
+        "현재 게스트 뷰어를 이용하고 있습니다. 활동을 위해서는 회원가입을 진행해 주세요!",
+        null,
+        true,
       );
       return;
     }

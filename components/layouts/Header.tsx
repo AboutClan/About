@@ -72,7 +72,6 @@ export default function Header({
 const HeaderContainer = styled.header<{
   isBorder?: boolean;
   isBack?: boolean;
-
   isTransparent: boolean;
 }>`
   background-color: ${(props) => (props.isTransparent ? "transparent" : "white")};

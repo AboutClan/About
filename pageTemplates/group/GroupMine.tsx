@@ -1,17 +1,20 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { MouseEvent, useMemo } from "react";
 
 import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
 import { PlusIcon } from "../../components/Icons/MathIcons";
 import ImageTileSlider, { IImageTile } from "../../components/organisms/sliders/ImageTileSlider";
-import { useToast } from "../../hooks/custom/CustomToast";
+import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useGroupsMineQuery } from "../../hooks/groupStudy/queries";
 import { getRandomImage } from "../../utils/imageUtils";
 
 function GroupMine() {
+  const { data: session } = useSession();
   const { data } = useGroupsMineQuery("pending");
-  const toast = useToast();
+  const typeToast = useTypeToast();
+  const isGuest = session?.user.role === "guest";
 
   const imageTileArr: IImageTile[] = useMemo(
     () =>
@@ -28,10 +31,12 @@ function GroupMine() {
   );
 
   const handleClick = (e: MouseEvent<HTMLAnchorElement, globalThis.MouseEvent>) => {
-    console.log(e);
-    toast("info", "소모임 개설은 About 카카오 채널로 문의주세요!");
-    // e.stopPropagation();
-    // e.preventDefault();
+    if (isGuest) {
+      typeToast("guest");
+      e.stopPropagation();
+      e.preventDefault();
+      return;
+    }
   };
 
   return (
@@ -51,7 +56,7 @@ function GroupMine() {
             <PlusIcon size="md" color="white" />
           </Button>
           <Box mt={2} fontSize="10px" lineHeight="12px" fontWeight="regular" color="gray.600">
-            모임 만들기
+            소모임 개설
           </Box>
         </Flex>
       </Link>

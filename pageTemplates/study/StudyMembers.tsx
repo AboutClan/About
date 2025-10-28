@@ -3,7 +3,6 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import { useState } from "react";
 
-import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import AttendanceBadge from "../../components/molecules/badge/AttendanceBadge";
 import { IProfileCommentCard } from "../../components/molecules/cards/ProfileCommentCard";
 import ProfileCardColumn from "../../components/organisms/ProfileCardColumn";
@@ -127,7 +126,7 @@ export default function StudyMembers({ studyType, date, members, isAttend }: ISt
       };
     }
   });
-
+  console.log(42, members);
   return (
     <>
       {userCardArr?.length ? (
@@ -151,10 +150,6 @@ export default function StudyMembers({ studyType, date, members, isAttend }: ISt
             </Button>
           )}
         </>
-      ) : members?.length ? (
-        <Box position="relative" mt="100px" bottom="0" left="50%" transform="translate(-50%,-50%)">
-          <MainLoadingAbsolute size="sm" />
-        </Box>
       ) : (
         <Flex
           align="center"

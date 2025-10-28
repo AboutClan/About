@@ -47,7 +47,7 @@ const Login: NextPage<{
   const { data: userInfo } = useUserInfoQuery({
     enabled: !!session,
   });
-
+  console.log(ratio);
   useEffect(() => {
     switch (statusParam) {
       case "logout":
@@ -180,7 +180,7 @@ const Login: NextPage<{
             left="50%"
             transform="translate(-50%,0)"
           >
-            {detectAppDevice() !== "iPhone" && (
+            {detectAppDevice() !== "iPhone" && ratio >= 1.75 && (
               <Box mb={5} color="white" fontSize="12px" lineHeight="16px" opacity={0.6}>
                 Sign up with Social Networks
               </Box>
@@ -189,7 +189,7 @@ const Login: NextPage<{
               variant="unstyled"
               maxW="calc(var(--max-width) - 2 * 20px)"
               width="100%"
-              aspectRatio={7.42 / 1}
+              aspectRatio={7.4 / 1}
               backgroundColor="#FEE500"
               isLoading={loadingType === "member"}
               onClick={() => customSignin("member")}
@@ -256,9 +256,11 @@ const Login: NextPage<{
               <div />
             </Button>
 
-            <Box mt={0} as="u" fontSize="12px" fontWeight="medium" opacity={0.6} color="white">
-              동아리 가입은 '카카오 로그인'을 이용해주세요.
-            </Box>
+            {ratio >= 1.55 && (
+              <Box mt={0} as="u" fontSize="12px" fontWeight="medium" opacity={0.6} color="white">
+                동아리 가입은 '카카오 로그인'을 이용해주세요.
+              </Box>
+            )}
           </Flex>
           <ForceLogoutDialog />
         </Flex>

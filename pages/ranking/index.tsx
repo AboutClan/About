@@ -203,20 +203,33 @@ function Ranking() {
     setCommentText(getCommentText(myRanking, sortedUsers));
   }, [myRanking, allUserData, tab]);
 
-  const { data } = usePrizeQuery(0, "ranking");
-  const textArr = shuffleArray(data)
-    ?.filter((props) => props.description.split(" ").includes("[골드]"))
-    ?.slice(0, 5)
-    ?.map((props) => ({
-      name: props.winner.name,
-      gift: props.gift,
-    }));
+  const [textArr, setTextArr] = useState<
+    {
+      name: string;
+      gift: string;
+    }[]
+  >();
+
+  const { data: prizeData } = usePrizeQuery(0, "ranking");
+
+  useEffect(() => {
+    if (!prizeData) return;
+
+    setTextArr(
+      shuffleArray(prizeData)
+        ?.filter((props) => props.description.split(" ").includes("[골드]"))
+        ?.slice(0, 5)
+        ?.map((props) => ({
+          name: props.winner.name,
+          gift: props.gift,
+        })),
+    );
+  }, [prizeData]);
 
   return (
     <>
       <Header title="랭킹">
         <InfoModalButton type="ranking" />
-        {/* <RuleIcon setIsModal={setIsModal} /> */}
       </Header>
       <Slide isNoPadding>
         <Flex flexDir="column" align="center" mx="auto" mt={2} mb={6}>

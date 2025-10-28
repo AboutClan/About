@@ -225,7 +225,7 @@ export default function Page() {
                     )}
                   </Box>
                 </Box>
-                {studyType === "participations" && (
+                {studyType === "participations" && myStudyInfo && members?.length && (
                   <>
                     <Box h={2} bg="gray.100" my={4} />
                     <StudyNearMemberSection

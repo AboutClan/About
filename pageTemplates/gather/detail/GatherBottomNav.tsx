@@ -98,19 +98,24 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
   const myUid = session?.user.uid;
   const isParticipant = data?.participants.some((who) => who?.user && who.user.uid === myUid);
   const groupId = router.query.id;
-  const isLoading = isLoading1 || isLoading2 || isLoading3;
 
   const queryClient = useQueryClient();
-  const { mutate: cancel } = useGatherParticipationMutation("delete", +groupId, {
-    onSuccess() {
-      setIsModal(false);
-      setIsCancelModal(false);
-      setIsExpirationModal(false);
-      typeToast("cancel");
+  const { mutate: cancel, isLoading: isLoading4 } = useGatherParticipationMutation(
+    "delete",
+    +groupId,
+    {
+      onSuccess() {
+        setIsModal(false);
+        setIsCancelModal(false);
+        setIsExpirationModal(false);
+        typeToast("cancel");
 
-      queryClient.invalidateQueries([GATHER_CONTENT, id]);
+        queryClient.invalidateQueries([GATHER_CONTENT, id]);
+      },
     },
-  });
+  );
+
+  const isLoading = isLoading1 || isLoading2 || isLoading3 || isLoading4;
 
   useEffect(() => {
     setIsFirstPage(true);
