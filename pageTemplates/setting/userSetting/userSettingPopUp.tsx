@@ -74,7 +74,7 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
     //   setPopUpType((old) => [...old, "monthlyScore"]);
     //   return;
     // }
-    if (!checkAndSetLocalStorage(FAQ_MODAL_AT, 20)) {
+    if (!checkAndSetLocalStorage(FAQ_MODAL_AT, 30)) {
       setPopUpType((old) => [...old, "faq"]);
       return;
     }
