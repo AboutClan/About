@@ -1,5 +1,5 @@
-import { useRouter } from "next/router";
 import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import { IFooterOptions, ModalLayout } from "../modals/Modals";
@@ -48,7 +48,7 @@ function StudyMap() {
   const footerOptions: IFooterOptions = {
     main: {
       text: "이 동",
-      func: () => router.push("/login"),
+      func: () => router.push("/home"),
     },
     sub: {
       text: "닫 기",
