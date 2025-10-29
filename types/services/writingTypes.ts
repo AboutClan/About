@@ -6,4 +6,5 @@ export interface WritingFormProps {
   typeId: string;
   isAnonymous: string;
   subCategory: string;
+  date: string;
 }

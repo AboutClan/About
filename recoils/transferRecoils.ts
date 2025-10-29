@@ -1,7 +1,6 @@
 import { Dayjs } from "dayjs";
 import { atom } from "recoil";
 
-import { SummaryBlockProps } from "../components/molecules/SummaryBlock";
 import { IDailyCheckWinList } from "../constants/serviceConstants/dailyCheckConstatns";
 import { IGiftEntry } from "../pages/store";
 import { PointInfoProps } from "../types/common";
@@ -48,15 +47,6 @@ export const transferGatherDataState = atom<IGather>({
 
 export const transferGroupDataState = atom<IGroup>({
   key: "transferGroupDataState",
-  default: null,
-});
-
-export interface TransferFeedSummaryProps extends Omit<SummaryBlockProps, "text"> {
-  subCategory: string;
-}
-
-export const transferFeedSummaryState = atom<TransferFeedSummaryProps>({
-  key: "transferFeedSummary",
   default: null,
 });
 

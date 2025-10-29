@@ -11,8 +11,8 @@ export interface FeedProps
   likeCnt: number;
   writer: IUserSummary;
   comments: FeedComment[];
-  subCategory: string;
   isAnonymous: boolean;
+ 
 }
 
 export interface FeedComment extends TimeStampProps {

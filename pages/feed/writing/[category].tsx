@@ -1,8 +1,8 @@
 import { Box, Button, VStack } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import { useRecoilValue } from "recoil";
 
 import InfoList from "../../../components/atoms/lists/InfoList";
 import Textarea from "../../../components/atoms/Textarea";
@@ -18,14 +18,9 @@ import ImageUploadSlider, {
 import { useToast } from "../../../hooks/custom/CustomToast";
 import { useFeedMutation } from "../../../hooks/feed/mutations";
 import { useGatherIDQuery } from "../../../hooks/gather/queries";
-import { useGroupIdQuery } from "../../../hooks/groupStudy/queries";
 import { usePointSystemMutation } from "../../../hooks/user/mutations";
-import { convertSummaryText } from "../../../libs/convertFeedToLayout";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
-import {
-  TransferFeedSummaryProps,
-  transferFeedSummaryState,
-} from "../../../recoils/transferRecoils";
+import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 import { appendFormData } from "../../../utils/formDataUtils";
 
 function FeedWritingPage() {
@@ -41,28 +36,25 @@ function FeedWritingPage() {
   });
   const { register, handleSubmit, watch } = methods;
 
-  const transferFeedSummary = useRecoilValue(transferFeedSummaryState);
-
-  const [summary, setSummary] = useState<TransferFeedSummaryProps>();
   const [imageArr, setImageArr] = useState<string[]>([]);
   const [imageFormArr, setImageFormArr] = useState<Blob[]>([]);
   const [isAnonymous, setIsAnonymous] = useState(false);
 
-  const { data: group } = useGroupIdQuery(id, {
-    enabled: category === "group" && !!id && !transferFeedSummary,
-  });
+  // const { data: group } = useGroupIdQuery(id, {
+  //   enabled: category === "group" && !!id && !transferFeedSummary,
+  // });
   const { data: gather } = useGatherIDQuery(+id, {
-    enabled: category === "gather" && !!id && !transferFeedSummary,
+    enabled: !!id,
   });
-
+  console.log(3, category, gather);
   const { mutate: updatePoint } = usePointSystemMutation("point");
   const { mutate, isLoading } = useFeedMutation({
     onSuccess() {
       if (isAnonymous) {
-        updatePoint({ value: 1000, message: "번개 후기 실명 지원금" });
+        updatePoint({ value: 1000, message: "모임 후기 실명 지원금" });
         toast("success", "1,000 Point가 지급되었습니다.");
       } else {
-        updatePoint({ value: 200, message: "번개 후기 익명 지원금" });
+        updatePoint({ value: 200, message: "모임 후기 익명 지원금" });
         toast("success", "200 Point가 지급되었습니다.");
       }
 
@@ -70,23 +62,15 @@ function FeedWritingPage() {
     },
   });
 
-  useEffect(() => {
-    if (transferFeedSummary) {
-      setSummary(transferFeedSummary);
-    } else if (group) {
-      setSummary({
-        url: `/group/${group.id}`,
-        title: group.title,
-        subCategory: group.category.sub,
-      });
-    } else if (gather) {
-      setSummary({
-        url: `/gather/${gather.id}`,
-        title: gather.title,
-        subCategory: gather.type.subtitle,
-      });
-    }
-  }, [transferFeedSummary, group]);
+  // useEffect(() => {
+  //   if (gather) {
+  //     setSummary({
+  //       url: `/gather/${gather.id}`,
+  //       title: gather.title,
+  //       subCategory: gather.type.title,
+  //     });
+  //   }
+  // }, [gather]);
 
   const formData = new FormData();
 
@@ -99,49 +83,64 @@ function FeedWritingPage() {
     for (const form of imageFormArr) {
       appendFormData(formData, "images", form);
     }
-    appendFormData(formData, "title", summary.title);
+    appendFormData(formData, "date", gather.date);
+    appendFormData(formData, "title", gather.title);
     appendFormData(formData, "isAnonymous", isAnonymous ? "true" : "false");
     appendFormData(formData, "text", content);
     appendFormData(formData, "typeId", id);
-    appendFormData(formData, "subCategory", summary.subCategory);
-
+    appendFormData(formData, "subCategory", gather.type.title);
     mutate(formData);
   };
 
   const imageTileArr: ImageUploadTileProps[] = imageArr.map((image) => ({
     imageUrl: image,
     func: (url: string) => {
-      setImageArr(imageArr.filter((old) => old !== url));
+      const findIdx = imageArr.findIndex((image) => image === url);
+      if (findIdx === -1) return;
+      setImageArr((old) => {
+        const copy = [...old];
+        copy.splice(findIdx, 1);
+        return copy;
+      });
+      setImageFormArr((old) => {
+        const copy = [...old];
+        copy.splice(findIdx, 1);
+        return copy;
+      });
     },
   }));
 
   return (
     <>
-      <Header title="글 쓰기" rightPadding={8}>
+      <Header title="" rightPadding={8}>
         <Button
           isDisabled={!watch().content || isLoading}
           variant="ghost"
-          size="sm"
+          size="md"
           type="submit"
           form="secret-square-form"
+          border="none"
+          mr={-2}
         >
           완료
         </Button>
       </Header>
       <Slide>
         <RegisterOverview>
-          <span>리뷰 쓰고, 지원금 받자!</span>
-          <span>리뷰 작성 후, 마이페이지에서 신청 가능!</span>
+          <span>모임 후기 작성</span>
+          <span>어떤 모임이었는지, 함께한 순간들을 자유롭게 적어주세요.</span>
         </RegisterOverview>
-        {summary && (
-          <Box my={5}>
+
+        <Box my={5}>
+          {gather && (
             <SummaryBlock
-              url={summary.url}
-              title={summary.title}
-              text={convertSummaryText(category, summary.subCategory)}
+              url={`/gather/${gather.groupId}`}
+              title={gather.title}
+              text={`${gather.type.title} · ${dayjsToFormat(dayjs(gather.date), "M월 D일(ddd)")}`}
             />
-          </Box>
-        )}
+          )}
+        </Box>
+
         <VStack h="100%">
           <FormProvider {...methods}>
             <Box as="form" w="100%" onSubmit={handleSubmit(onSubmit)} id="secret-square-form">
@@ -168,7 +167,7 @@ function FeedWritingPage() {
       </Slide>
       <WritingNavigation>
         <ImageUploadButton
-          maxFiles={5}
+          maxFiles={4}
           setImageUrls={setImageArr}
           setImageForms={setImageFormArr}
         />
@@ -180,9 +179,10 @@ function FeedWritingPage() {
 }
 
 const INFO_ARR = [
-  "모임장은 후기 작성 후 지원금 신청이 가능합니다.",
   "실명은 1,000 Point, 익명은 200 Point가 즉시 지급합니다.",
-  "모임장이 운영진인 경우 다른 인원도 작성할 수 있습니다.",
+  "모임장이라면 추가로 1,000 Point가 지급됩니다.",
+  "함께 참여한 멤버들에게 리뷰 알림이 전송됩니다.",
+  "작성하신 리뷰는 모임 페이지, 라운지, 내 프로필에서 볼 수 있습니다.",
 ];
 
 export default FeedWritingPage;

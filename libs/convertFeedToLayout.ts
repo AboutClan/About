@@ -6,6 +6,7 @@ import { FeedProps } from "../types/models/feed";
 import { dayjsToFormat } from "../utils/dateTimeUtils";
 
 export const convertFeedToLayout = (feed: FeedProps): FeedLayoutProps => {
+  console.log(feed);
   return {
     type: feed.type,
     user: feed?.writer || ABOUT_USER_SUMMARY,
@@ -19,14 +20,13 @@ export const convertFeedToLayout = (feed: FeedProps): FeedLayoutProps => {
     isAnonymous: feed.isAnonymous,
     summary: feed.type
       ? {
+          url: `/gather/${feed.typeId}`,
           title: feed.title,
-          url: feed.type === "gather" ? `/gather/${feed.typeId}` : `/group/${feed.typeId}`,
-          text: convertSummaryText(feed.type, feed.subCategory),
+          text: `${feed.subCategory || "모임 후기"} · ${dayjsToFormat(
+            dayjs(feed.date || feed.createdAt),
+            "M월 D일(ddd)",
+          )}`,
         }
       : null,
   };
-};
-
-export const convertSummaryText = (type: "gather" | "group", subCategory: string): string => {
-  return `${type === "gather" ? "번개 리뷰" : "소모임 리뷰"} · ${subCategory || ""}`;
 };

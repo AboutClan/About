@@ -22,10 +22,7 @@ import {
 import { useUserInfoQuery } from "../../../hooks/user/queries";
 import GatherExpireModal from "../../../modals/gather/gatherExpireModal/GatherExpireModal";
 import GatherReviewDrawer from "../../../modals/gather/gatherExpireModal/GatherReviewDrawer";
-import {
-  transferFeedSummaryState,
-  transferGatherDataState,
-} from "../../../recoils/transferRecoils";
+import { transferGatherDataState } from "../../../recoils/transferRecoils";
 import { FeedProps } from "../../../types/models/feed";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
 import { IUser, IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
@@ -54,8 +51,6 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
   const [isModal, setIsModal] = useState(false);
   const [value, setValue] = useState("");
   const [isCancelModal, setIsCancelModal] = useState(false);
-
-  const setTransferFeedSummary = useSetRecoilState(transferFeedSummaryState);
 
   const { mutate: participate, isLoading: isLoading1 } = useGatherParticipationMutation(
     "post",
@@ -255,17 +250,6 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
       },
     };
   };
-
-  useEffect(() => {
-    if (data?.status === "open" && (myGather || isParticipant)) {
-      setTransferFeedSummary({
-        url: `/gather/${data.id}`,
-        title: data.title,
-        subCategory: data.type.subtitle,
-        writer: (data.user as IUser)._id,
-      });
-    }
-  }, [data?.status]);
 
   const { text = "", handleFunction, type, isEnd = false, isReverse = false } = getButtonSettings();
 
