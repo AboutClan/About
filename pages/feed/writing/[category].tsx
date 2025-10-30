@@ -16,10 +16,12 @@ import ImageUploadSlider, {
   ImageUploadTileProps,
 } from "../../../components/organisms/sliders/ImageUploadSlider";
 import { useToast } from "../../../hooks/custom/CustomToast";
+import { useUserInfo } from "../../../hooks/custom/UserHooks";
 import { useFeedMutation } from "../../../hooks/feed/mutations";
 import { useGatherIDQuery } from "../../../hooks/gather/queries";
 import { usePointSystemMutation } from "../../../hooks/user/mutations";
 import RegisterOverview from "../../../pageTemplates/register/RegisterOverview";
+import { UserSimpleInfoProps } from "../../../types/models/userTypes/userInfoTypes";
 import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 import { appendFormData } from "../../../utils/formDataUtils";
 
@@ -30,7 +32,7 @@ function FeedWritingPage() {
   const searchParams = useSearchParams();
   const { category } = useParams<{ category: "gather" | "group" }>() || {};
   const id = searchParams.get("id");
-
+  const userInfo = useUserInfo();
   const methods = useForm<{ content: string }>({
     defaultValues: { content: "" },
   });
@@ -43,21 +45,21 @@ function FeedWritingPage() {
   // const { data: group } = useGroupIdQuery(id, {
   //   enabled: category === "group" && !!id && !transferFeedSummary,
   // });
+
   const { data: gather } = useGatherIDQuery(+id, {
     enabled: !!id,
   });
-  console.log(3, category, gather);
+
+  const isOrganazier = (gather?.user as UserSimpleInfoProps)?._id === userInfo?._id;
+
   const { mutate: updatePoint } = usePointSystemMutation("point");
   const { mutate, isLoading } = useFeedMutation({
     onSuccess() {
-      if (isAnonymous) {
-        updatePoint({ value: 1000, message: "모임 후기 실명 지원금" });
-        toast("success", "1,000 Point가 지급되었습니다.");
-      } else {
-        updatePoint({ value: 200, message: "모임 후기 익명 지원금" });
-        toast("success", "200 Point가 지급되었습니다.");
-      }
-
+      const defaultValue = !isAnonymous ? 1000 : 200;
+      const addValue = gather.type.title === "스터디" || !isOrganazier ? 0 : 1000;
+      const value = defaultValue + addValue;
+      updatePoint({ value, message: "모임 후기 지원금" });
+      toast("success", `${value.toLocaleString()} Point가 지급되었습니다.`);
       router.push(`/gather/${id}`);
     },
   });
@@ -180,9 +182,9 @@ function FeedWritingPage() {
 
 const INFO_ARR = [
   "실명은 1,000 Point, 익명은 200 Point가 즉시 지급합니다.",
-  "모임장이라면 추가로 1,000 Point가 지급됩니다.",
+  "모임장이라면 추가로 1,000 Point가 지급됩니다. (카공 제외)",
   "함께 참여한 멤버들에게 리뷰 알림이 전송됩니다.",
-  "작성하신 리뷰는 모임 페이지, 라운지, 내 프로필에서 볼 수 있습니다.",
+  "작성된 리뷰는 모임 페이지, 라운지, 프로필에서 볼 수 있습니다.",
 ];
 
 export default FeedWritingPage;
