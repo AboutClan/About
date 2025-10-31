@@ -1,4 +1,5 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -7,6 +8,7 @@ import SocialingScoreBadge from "../../../components/molecules/SocialingScoreBad
 import ProfileCardColumn from "../../../components/organisms/ProfileCardColumn";
 import { GROUP_STUDY_ROLE } from "../../../constants/settingValue/groupStudy";
 import { IGroup } from "../../../types/models/groupTypes/group";
+import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 
 interface IGroupParticipation {
   data: IGroup;
@@ -61,7 +63,7 @@ function GroupParticipation({ data, text, isPlanned, isTemp }: IGroupParticipati
         </Box>
         {isTemp && (
           <Box ml="auto" mt="auto" fontSize="11px" color="mint" lineHeight={1}>
-            ※ 활동 유효 기간: 10월 30일
+            ※ 활동 유효 기간: {dayjsToFormat(dayjs().endOf("month"), "M월 D일")}
           </Box>
         )}
       </Flex>
