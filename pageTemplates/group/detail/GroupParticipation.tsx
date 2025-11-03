@@ -70,7 +70,7 @@ function GroupParticipation({ data, text, isPlanned, isTemp }: IGroupParticipati
         hasCommentButton={false}
         userCardArr={!isOpen ? userCardArr?.slice(0, 5) : userCardArr}
       />
-      {!isOpen && (
+      {!isOpen && userCardArr?.length >= 3 && (
         <Button
           mt={2}
           w="100%"

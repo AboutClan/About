@@ -138,7 +138,7 @@ function GroupDetail() {
               </>
             )}
           </Box>
-          {(group.comments.length || findMyInfo) && (
+          {(group.comments.length || findMyInfo) &&group.participants.length >= 2&& (
             <GroupComments comments={group.comments} hasAutority={!!findMyInfo} />
           )}
         </Slide>
