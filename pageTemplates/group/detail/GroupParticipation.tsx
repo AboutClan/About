@@ -22,7 +22,6 @@ function GroupParticipation({ data, text, isPlanned, isTemp }: IGroupParticipati
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const waitingCnt = data?.waiting.length;
   const userCardArr: IProfileCommentCard[] = data.participants
     .filter((par) => par.user.uid !== "3224546232")
     .map((par) => {
@@ -59,7 +58,7 @@ function GroupParticipation({ data, text, isPlanned, isTemp }: IGroupParticipati
     <Layout>
       <Flex mb={2} fontSize="18px" lineHeight="28px" alignItems="flex-end">
         <Box mr={2} fontWeight="bold">
-          {text} {!isPlanned ? userCardArr?.length : waitingCnt + 7}
+          {text} {!isPlanned ? userCardArr?.length : "(오픈 대기중)"}
         </Box>
         {isTemp && (
           <Box ml="auto" mt="auto" fontSize="11px" color="mint" lineHeight={1}>

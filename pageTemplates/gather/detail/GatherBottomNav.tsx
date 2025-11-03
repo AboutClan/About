@@ -25,7 +25,11 @@ import GatherReviewDrawer from "../../../modals/gather/gatherExpireModal/GatherR
 import { transferGatherDataState } from "../../../recoils/transferRecoils";
 import { FeedProps } from "../../../types/models/feed";
 import { IGather } from "../../../types/models/gatherTypes/gatherTypes";
-import { IUser, IUserSummary } from "../../../types/models/userTypes/userInfoTypes";
+import {
+  IUser,
+  IUserSummary,
+  UserSimpleInfoProps,
+} from "../../../types/models/userTypes/userInfoTypes";
 import { birthToAge } from "../../../utils/convertUtils/convertTypes";
 interface IGatherBootmNav {
   data: IGather;
@@ -89,7 +93,11 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
     enabled: !!data?.id && !!data?.category && data.status === "open",
   });
 
-  const isMax = data?.memberCnt.max !== 0 && data?.participants.length + 1 >= data?.memberCnt.max;
+  const isMax =
+    data?.memberCnt.max !== 0 &&
+    data?.participants.length +
+      ((data?.user as UserSimpleInfoProps)?.uid === "3224546232" ? 0 : 1) >=
+      data?.memberCnt.max;
   const myUid = session?.user.uid;
   const isParticipant = data?.participants.some((who) => who?.user && who.user.uid === myUid);
   const groupId = router.query.id;
@@ -198,7 +206,7 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
         handleFunction: () => (diffDate < 2 ? setIsCancelModal(true) : cancel()),
       };
     }
-
+    console.log(15, isMax);
     if (isMax) {
       return {
         text: "빈자리 생기면 참여 요청",
