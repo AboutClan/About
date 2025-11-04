@@ -43,8 +43,8 @@ function StudyPageMap({
 }: StudyPageMapProps) {
   const router = useRouter();
   const { data: userInfo } = useUserInfoQuery();
-  const { currentLocation, refetchCurrentLocation } = useUserCurrentLocation();
-
+  const { currentLocation, refetchCurrentLocation, isLoadingLocation } = useUserCurrentLocation();
+  console.log("current", currentLocation);
   /* 네이버 지도와 마커 옵션 */
   const [mapOptions, setMapOptions] = useState<IMapOptions>(null);
   const [markersOptions, setMarkersOptions] = useState<IMarkerOptions[]>(null);
@@ -57,6 +57,7 @@ function StudyPageMap({
     type === "mainPlace" ? "main" : null,
   );
   const [zoomNumber, setZoomNumber] = useState<number>(13);
+  const [tempToggle, setTempToggle] = useState(false);
 
   const { data: placeData, isLoading: isLoading2 } = useStudyPlacesQuery(
     filterType || "best",
@@ -83,8 +84,10 @@ function StudyPageMap({
       lat: userInfo.locationDetail.latitude,
       lon: userInfo.locationDetail.longitude,
     };
-    const options = getMapOptions(currentLocation || myLocation, isMapExpansion ? 11 : 13);
-    setZoomNumber(isMapExpansion ? 11 : 13);
+    const zoom = mapOptions?.zoom || (isMapExpansion ? 11 : 13);
+  
+    const options = getMapOptions(currentLocation || myLocation, zoom);
+    setZoomNumber(zoom);
     setMapOptions(options);
   }, [userInfo, isMapExpansion, currentLocation]);
 
@@ -161,6 +164,10 @@ function StudyPageMap({
   }, [isMapExpansion]);
 
   useEffect(() => {
+    if (!isLoadingLocation) setTempToggle(false);
+  }, [isLoadingLocation]);
+
+  useEffect(() => {
     if (!isMapExpansion) return;
 
     let startY = 0;
@@ -231,27 +238,16 @@ function StudyPageMap({
               isDown={isDown}
               isMainType={type === "mainPlace"}
               handleLocationRefetch={async () => {
+                setTempToggle(true);
                 const newPos = await refetchCurrentLocation();
-                if (newPos) {
-                  const center = new naver.maps.LatLng(newPos.lat, newPos.lon);
-                  setMapOptions((prev) => (prev ? { ...prev, center } : getMapOptions(newPos, 13)));
-                } else if (userInfo?.locationDetail) {
-                  const center = new naver.maps.LatLng(
-                    userInfo.locationDetail.latitude,
-                    userInfo.locationDetail.longitude,
-                  );
-                  setMapOptions((prev) =>
-                    prev
-                      ? { ...prev, center }
-                      : getMapOptions(
-                          {
-                            lat: userInfo.locationDetail.latitude,
-                            lon: userInfo.locationDetail.longitude,
-                          },
-                          13,
-                        ),
-                  );
-                }
+                if (typeof window === "undefined" || !("naver" in window)) return;
+                const lat = newPos?.lat ?? userInfo?.locationDetail?.latitude;
+                const lon = newPos?.lon ?? userInfo?.locationDetail?.longitude;
+                if (lat == null || lon == null) return;
+                const center = new naver.maps.LatLng(lat, lon);
+                setMapOptions((prev) =>
+                  prev ? { ...prev, center } : getMapOptions({ lat, lon }, 13),
+                );
               }}
               isMapExpansion={isMapExpansion}
               onClose={() => {
@@ -281,7 +277,9 @@ function StudyPageMap({
             />
 
             {/* {!studyVoteData?.results && <MainLoadingAbsolute />} */}
-            {isLoading2 && !isLoading2 && <MainLoadingAbsolute size="sm" />}
+            {((isLoading && !isLoading2) || (isLoadingLocation && tempToggle)) && (
+              <MainLoadingAbsolute size="sm" />
+            )}
           </ClipLayer>
         </Box>
       </Box>

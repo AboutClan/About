@@ -22,10 +22,11 @@ export const useToast = () => {
       duration: number = 3000,
       isBottom: boolean = false,
     ) => {
+   
       toast({
         title: title,
         status,
-        duration: duration,
+        duration: duration || 3000,
         variant: "subtle",
         colorScheme: status === "success" ? "mint" : undefined,
         containerStyle: {

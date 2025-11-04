@@ -10,6 +10,7 @@ const LocationAccessStorage = "locationAccess";
 export function useUserCurrentLocation() {
   const toast = useToast();
   const [coordinate, setCoordinate] = useState<CoordinatesProps | null | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState(false); // ✅ 추가
   const locationAccessStorage = localStorage.getItem(LocationAccessStorage);
   const todayDateStr = dayjsToStr(dayjs().date(0));
 
@@ -20,17 +21,19 @@ export function useUserCurrentLocation() {
       toast("error", "현재 기기에서 위치 정보를 사용할 수 없습니다.");
       return null;
     }
-
+    setIsLoading(true);
     return new Promise<CoordinatesProps | null>((resolve) => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude: lat, longitude: lon } = position.coords;
           const coords = { lat, lon };
           setCoordinate(coords);
+          setIsLoading(false); // ✅ 성공 시 로딩 OFF
           resolve(coords);
         },
         (error) => {
           setCoordinate(null);
+          setIsLoading(false); // ✅ 실패 시 로딩 OFF
           if (locationAccessStorage !== todayDateStr) {
             toast(
               "error",
@@ -53,6 +56,7 @@ export function useUserCurrentLocation() {
 
   return {
     currentLocation: coordinate,
+    isLoadingLocation: isLoading,
     refetchCurrentLocation: getCurrentLocation, // ✅ 새로 추가
   };
 }
