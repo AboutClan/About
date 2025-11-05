@@ -25,7 +25,7 @@ function UserMyGroupSection({ user }: UserMyGroupSectionProps) {
           infoBoxPropsArr={[
             {
               category: "월간 동아리 점수",
-              text: `${user?.monthScore} 점`,
+              text: `${(user?.monthScore / 20) * 100}% 달성`,
             },
             {
               category: "내 소셜링 온도",

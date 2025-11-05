@@ -1,7 +1,7 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 import { useTypeToast } from "../../hooks/custom/CustomToast";
@@ -26,7 +26,7 @@ function UserPointBlock() {
 
   return (
     <>
-      <Box mt={3} mx={5} p={3} borderRadius="20px" border="var(--border)" bgColor="white">
+      <Box mt={1} mx={5} p={3} borderRadius="20px" border="var(--border)" bgColor="white">
         <Flex justify="space-around">
           <Link href="/user/log/gatherTicket" onClick={handleGuestClick} style={{ flex: 1 }}>
             <Flex direction="column" align="center">
@@ -90,7 +90,7 @@ function UserPointBlock() {
           </Link>
         </Flex>
 
-        <Flex justify="space-around" mt={5}>
+        {/* <Flex justify="space-around" mt={5}>
           <Box flex={1}>
             <Button variant="nostyle" p={0} h="auto" onClick={() => setIsModal(true)}>
               <Flex direction="column" align="center" flex={1}>
@@ -146,7 +146,7 @@ function UserPointBlock() {
               </Box>
             </Flex>
           </Link>
-        </Flex>
+        </Flex> */}
       </Box>
       {isModal && <InstagramCheckModal setIsModal={setIsModal} />}
     </>

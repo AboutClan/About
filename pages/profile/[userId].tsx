@@ -1,8 +1,8 @@
 import { Box, Button, Flex, HStack } from "@chakra-ui/react";
 import dayjs from "dayjs";
+import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -24,6 +24,7 @@ import { useInteractionMutation } from "../../hooks/user/sub/interaction/mutatio
 import { useUserRequestMutation } from "../../hooks/user/sub/request/mutations";
 import DetailInfo from "../../pageTemplates/profile/DetailInfo";
 import ProfileOverview from "../../pageTemplates/profile/ProfileOverview";
+import UserReviewBar from "../../pageTemplates/user/UserReviewBar";
 import { transferUserName } from "../../recoils/transferRecoils";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { IUserRequest } from "../../types/models/userTypes/userRequestTypes";
@@ -162,7 +163,8 @@ function ProfilePage() {
           </Slide>
           <Slide isNoPadding>
             <Divider type={200} />
-            <Box mx={5} my={3} mt={5}>
+            <UserReviewBar user={user} />
+            {/* <Box mx={5} my={3} mt={5}>
               <SectionHeader
                 title={`받은 매너 평가 ${reviewArr?.totalCnt || 0}`}
                 size="sm"
@@ -172,8 +174,9 @@ function ProfilePage() {
                   <ShortArrowIcon dir="right" />
                 </ButtonWrapper>
               </SectionHeader>
-            </Box>
-            <Flex align="center" mx={5} fontSize="13px">
+            </Box> */}
+
+            {/* <Flex align="center" mx={5} fontSize="13px">
               <Flex align="center" flex={1}>
                 <Avatar user={{ avatar: { type: 20, bg: 1 } }} size="xs1" />
                 <Box ml={2} mr={1}>
@@ -186,12 +189,9 @@ function ProfilePage() {
                 <Box ml={2} mr={1}>
                   좋아요 😉
                 </Box>
-                <Box fontWeight="bold">
-                  {Math.floor(reviewArr?.goodCnt / 10) * 10 || 0} ~{" "}
-                  {reviewArr?.goodCnt !== 0 ? Math.floor(reviewArr?.goodCnt / 10) * 10 + 10 : ""}
-                </Box>
+                <Box fontWeight="bold">{reviewArr?.goodCnt}</Box>
               </Flex>
-            </Flex>
+            </Flex> */}
             <Box h="1px" my={3} bg="gray.100" />
             <Box mt={5} mx={5} mb={0}>
               <SectionHeader

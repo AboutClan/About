@@ -49,16 +49,12 @@ export const useGroupFeedsQuery = (id: string, options?: QueryOptions<FeedProps[
     options,
   );
 
-export const useGatherMyStatusQuery = (
-  cursor?: number,
-  status?: "isParticipating" | "isEnded" | "isOwner",
-  options?: QueryOptions<IGather[]>,
-) =>
+export const useGatherMyStatusQuery = (cursor?: number, options?: QueryOptions<IGather[]>) =>
   useQuery<IGather[], AxiosError>(
-    [GATHER_CONTENT, "status", cursor, status],
+    [GATHER_CONTENT, "status", cursor],
     async () => {
       const res = await axios.get<IGather[]>(`${SERVER_URI}/gather/status`, {
-        params: { cursor, status },
+        params: { cursor },
       });
       return res.data;
     },

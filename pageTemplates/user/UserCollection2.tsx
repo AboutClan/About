@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { useEffect } from "react";
 import { useQueryClient } from "react-query";
 import styled from "styled-components";
@@ -53,11 +53,10 @@ export default function UserCollection() {
     }
   }, [alphabets]);
 
-
   const alphabetArr = alphabets?.collects;
 
   return (
-    <Flex direction="column">
+    <Flex direction="column" fontSize="16px" mt={5}>
       <Link
         href="/user/alphabet"
         onClick={
@@ -71,7 +70,7 @@ export default function UserCollection() {
         }
       >
         <BlockItem>
-          <span>알파벳 컬렉션</span>
+          <span>컬렉션</span>
           <ArrowIcon />
         </BlockItem>
         <AlphabetContainer>
@@ -82,22 +81,6 @@ export default function UserCollection() {
           <AboutIcon alphabet="T" isActive={alphabetArr?.includes("T")} />
         </AlphabetContainer>
       </Link>
-      {/* <Box mx={5}>
-        <IconRowBlock
-          leftIcon={
-            <i className="fa-duotone fa-stars fa-2x" style={{ color: "var(--color-mint)" }} />
-          }
-          func={() => setIsCollectionModal(true)}
-          mainText=" 알파벳 수집 보상"
-          subText=" 여러번 수집하면 보상이 더 올라가요!"
-        />
-      </Box>
-      {isCollectionModal && (
-        <ModalLayout title="알파벳 수집 보상" footerOptions={{}} setIsModal={setIsCollectionModal}>
-          알파벳을 모두 모으면 100원에서 1,000원 사이의 랜덤 박스를 열 수 있어요! 랜덤 박스는 횟수가
-          누적될 수록 당첨금이 증가합니다!
-        </ModalLayout>
-      )} */}
     </Flex>
   );
 }

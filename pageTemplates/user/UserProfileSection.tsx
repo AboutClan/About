@@ -1,16 +1,14 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
-import styled from "styled-components";
 
-import Avatar from "../../components/atoms/Avatar";
-import UserBadge from "../../components/atoms/badges/UserBadge";
 import BottomDrawerLg from "../../components/organisms/drawer/BottomDrawerLg";
 import { USER_INFO } from "../../constants/keys/queryKeys";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
+import { useUserReviewQuery } from "../../hooks/user/queries";
 import RequestChagneProfileImageModalBadge from "../../modals/userRequest/RequestChangeProfileImageModal/RequestChagneProfileImageModalBadge";
 import RequestChangeProfileImageModalAvatar from "../../modals/userRequest/RequestChangeProfileImageModal/RequestChangeProfileImageModalAvatar";
 import SpecialAvatarModal from "../../modals/userRequest/RequestChangeProfileImageModal/SpecialAvatarModal";
@@ -18,9 +16,12 @@ import { IModal } from "../../types/components/modalTypes";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
 import { iPhoneNotchSize } from "../../utils/validationUtils";
 import UserCollection from "./UserCollection2";
-import UserMyGroupSection from "./UserMyGroupSection";
+import UserInviteFriendSection from "./UserInviteFriendSection";
 import UserPointBlock from "./UserPointBlock";
 import UserProfile from "./UserProfile2";
+import UserProfileBar from "./UserProfileBar";
+import UserReviewBar from "./UserReviewBar";
+import UserScoreBar from "./UserScoreBar";
 
 interface UserProfileSectionProps {
   user: IUser;
@@ -32,72 +33,22 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
   const typeToast = useTypeToast();
   const router = useRouter();
 
-  const [isDrawer, setIsDrawer] = useState(false);
-
+  const { data: reviewArr } = useUserReviewQuery(user?.uid, {
+    enabled: !!user?.uid,
+  });
   return (
-    <Box mb={10}>
-      <Box borderBottom="var(--border)" px={5} pb={3}>
-        <Box>
-          <Flex py={3} align="center">
-            <Box position="relative">
-              <Avatar size="lg1" user={user} />
-              <IconWrapper
-                onClick={() => {
-                  if (isGuest) {
-                    typeToast("guest");
-                    return;
-                  }
-                  setIsDrawer(true);
-                }}
-              >
-                <CameraIcon size="md" />
-              </IconWrapper>
-            </Box>
-            <Flex direction="column" flex={0.95} justify="center" ml={3} my={1}>
-              <Flex align="center" mb={1}>
-                <Box lineHeight="20px" mr={1} fontWeight="semibold" fontSize="13px">
-                  {user?.name || "익명"}
-                </Box>
-                <UserBadge badgeIdx={user?.badge?.badgeIdx} />
-              </Flex>
-              <Flex lineHeight="18px" alignItems="center" color="gray.500" fontSize="12px">
-                <CommentText>{user?.comment}</CommentText>
-              </Flex>
-            </Flex>
-            <Box ml="auto">
-              <Button
-                onClick={() => {
-                  if (isGuest) {
-                    typeToast("guest");
-                    return;
-                  }
-                  router.push("/user/profile");
-                }}
-                size="sm"
-                h="20px"
-                bg="gray.100"
-                color="gray.500"
-                borderRadius="12px"
-              >
-                프로필 수정
-              </Button>
-            </Box>
-          </Flex>
-        </Box>
+    <>
+      <Box borderBottom="var(--border)">
+        <UserProfileBar user={user} />
+        <UserPointBlock />
+        <UserScoreBar score={user?.monthScore + 10} />
       </Box>
-      <UserPointBlock />
-      <UserMyGroupSection user={user} />
-      <Box mt={3}>
-        <Box borderBottom="var(--border)">
-          <UserCollection />
-        </Box>
-        <Box mb={1} mt={4} mx={5} fontWeight="bold" fontSize="16px" lineHeight="24px">
-          활동
-        </Box>
-        <UserProfile />
-      </Box>
-      {isDrawer && <ProfileCamera setIsModal={setIsDrawer} />}
-    </Box>
+      <UserReviewBar user={user} />
+      {/* <UserMyGroupSection user={user} /> */}
+      <UserCollection />
+      <UserProfile />
+      <UserInviteFriendSection />
+    </>
   );
 }
 
@@ -242,31 +193,6 @@ export function ProfileCamera({ setIsModal }: ProfileCameraProps) {
     </>
   );
 }
-
-const CommentText = styled.span`
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  overflow: hidden;
-  color: var(--gray-500);
-  font-size: 12px;
-  line-height: 18px;
-`;
-
-const IconWrapper = styled.button`
-  width: 25px;
-  height: 25px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  right: -3px;
-  bottom: -3px;
-  background-color: white;
-  opacity: 0.96;
-  border: 1px solid var(--gray-200);
-  border-radius: 50%;
-`;
 
 export default UserProfileSection;
 

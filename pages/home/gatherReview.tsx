@@ -76,13 +76,13 @@ function GatherReview() {
     },
     {
       type: 12,
-      bg: 0,
+      bg: 2,
       text: "그냥 그래요😑",
       rating: "soso",
     },
     {
       type: 28,
-      bg: 7,
+      bg: 0,
       text: "불편해요🫤",
       rating: "block",
     },

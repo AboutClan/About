@@ -8,7 +8,7 @@ interface ITwoButtonNav {
   onClickRight: () => void;
   size?: "md" | "lg";
   isDisabled?: boolean;
-  colorType?: "mint" | "red";
+  colorType?: "mint" | "red" | "black";
 }
 
 function TwoButtonNav({

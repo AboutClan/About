@@ -17,15 +17,13 @@ function UserPage() {
   const isGuest = session?.user.role === "guest";
   const { data: user } = useUserInfoQuery();
   const typeToast = useTypeToast();
-  const [section, setSection] = useState<"profile" | "gather" | "group" | "billing">("profile");
+  const [section, setSection] = useState<"profile" | "gather" | "group" | "gatherReview">(
+    "profile",
+  );
 
-  const handleClickTab = (type: "profile" | "gather" | "group" | "billing") => {
+  const handleClickTab = (type: "profile" | "gather" | "group" | "gatherReview") => {
     if (isGuest) {
       typeToast("guest");
-      return;
-    }
-    if (type === "billing") {
-      typeToast("inspection");
       return;
     }
 
@@ -40,13 +38,10 @@ function UserPage() {
           <TabNav
             tabOptionsArr={[
               { text: "프로필", func: () => handleClickTab("profile") },
-              { text: "모임 내역", func: () => handleClickTab("gather") },
+              { text: "내가 참여한 모임", func: () => handleClickTab("gather") },
               { text: "소모임 내역", func: () => handleClickTab("group") },
-              { text: "정산 내역", func: () => handleClickTab("billing") },
             ]}
             isBlack
-            isMain
-            isFullSize
           />
         </Box>
       </Slide>
@@ -64,6 +59,7 @@ function UserPage() {
             )}
           </>
         )}
+        <Box h={10} />
       </Slide>
     </>
   );

@@ -38,29 +38,24 @@ interface ReviewMember {
   createdAt: string;
 }
 
-export const useUserReviewQuery = (
-  uid: string,
-  options?: QueryOptions<{
-    reviewArr: ReviewMember[];
-    greatCnt: number;
-    goodCnt: number;
-    totalCnt: number;
-  }>,
-) =>
-  useQuery<
-    { reviewArr: ReviewMember[]; greatCnt: number; goodCnt: number; totalCnt: number },
-    AxiosError,
-    { reviewArr: ReviewMember[]; greatCnt: number; goodCnt: number; totalCnt: number }
-  >(
+interface ReviewOptionsProps {
+  reviewArr: ReviewMember[];
+  greatCnt: number;
+  goodCnt: number;
+  sosoCnt: number;
+  blockCnt: number;
+  totalCnt: number;
+}
+
+export const useUserReviewQuery = (uid: string, options?: QueryOptions<ReviewOptionsProps>) =>
+  useQuery<ReviewOptionsProps, AxiosError, ReviewOptionsProps>(
     [USER_INFO, uid, "review"],
     async () => {
-      const res = await axios.get<{
-        reviewArr: ReviewMember[];
-        greatCnt: number;
-        goodCnt: number;
-        totalCnt: number;
-      }>(`${SERVER_URI}/notice/temperature/mine?uid=${uid}`);
-      return res.data;
+      const res = await axios.get<ReviewOptionsProps>(
+        `${SERVER_URI}/notice/temperature/mine?uid=${uid}`,
+      );
+      const data = res.data;
+      return { ...data, reviewArr: data?.reviewArr.filter((review) => !!review?.message) };
     },
     options,
   );

@@ -26,7 +26,6 @@ const Layout = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid var(--gray-100);
   max-width: var(--max-width);
   margin: 0 auto;
 `;

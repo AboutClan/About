@@ -1,19 +1,17 @@
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 
 import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
-import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
 import {
   GatherThumbnailCard,
   GatherThumbnailCardProps,
 } from "../../components/molecules/cards/GatherThumbnailCard";
-import ButtonGroups from "../../components/molecules/groups/ButtonGroups";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
-import { useFeedCntQuery } from "../../hooks/feed/queries";
 import { useGatherMyStatusQuery } from "../../hooks/gather/queries";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
 import GatherSkeletonMain from "../gather/GatherSkeletonMain";
 import { setGatherDataToCardCol } from "../home/HomeGatherCol";
+import UserGatherSectionReview from "./UserGatherSectionReview";
 
 type GatherType = "참여중인 모임" | "종료된 모임" | "내가 개설한 모임";
 
@@ -26,17 +24,8 @@ function UserGatherSection() {
   const loader = useRef<HTMLDivElement | null>(null);
   const firstLoad = useRef(true);
 
-  const { data } = useFeedCntQuery("gather");
-
-  const { data: gatherData, isLoading } = useGatherMyStatusQuery(
-    cursor,
-    gatherType === "참여중인 모임"
-      ? "isParticipating"
-      : gatherType === "종료된 모임"
-      ? "isEnded"
-      : "isOwner",
-  );
-
+  const { data: gatherData, isLoading } = useGatherMyStatusQuery(cursor);
+  console.log(gatherData);
   useEffect(() => {
     setGathers([]);
     setCursor(0);
@@ -79,84 +68,8 @@ function UserGatherSection() {
 
   return (
     <Box mx={5} pb={10}>
-      <Flex h="44px" bg="rgba(66,66,66,0.04)" mb={3}>
-        <Button
-          flex={1}
-          variant="unstyled"
-          fontSize="12px"
-          fontWeight="semibold"
-          lineHeight="16px"
-          color="gray.700"
-          onClick={() => typeToast("inspection")}
-          rightIcon={
-            <Flex
-              justify="center"
-              align="center"
-              fontSize="10px"
-              fontWeight="bold"
-              lineHeight="12px"
-              px="6px"
-              h="16px"
-              borderRadius="50%"
-              bg="var(--color-mint-light)"
-              color="mint"
-            >
-              {data?.writtenReviewCnt || 0}
-            </Flex>
-          }
-        >
-          작성한 후기
-        </Button>
-        <Box color="gray.300" fontWeight="light" fontSize="13px" w={1} h="20px" my="auto">
-          |
-        </Box>
-        <Button
-          flex={1}
-          variant="unstyled"
-          fontSize="12px"
-          fontWeight="semibold"
-          lineHeight="16px"
-          color="gray.700"
-          onClick={() => typeToast("inspection")}
-          rightIcon={
-            <Flex
-              justify="center"
-              align="center"
-              fontSize="10px"
-              fontWeight="bold"
-              lineHeight="12px"
-              px="6px"
-              h="16px"
-              borderRadius="50%"
-              bg="var(--color-mint-light)"
-              color="mint"
-            >
-              {data?.reviewReceived || 0}
-            </Flex>
-          }
-        >
-          받은 후기
-        </Button>
-      </Flex>
-      <Box py={2} mb={3}>
-        <ButtonGroups
-          buttonOptionsArr={(
-            ["참여중인 모임", "종료된 모임", "내가 개설한 모임"] as GatherType[]
-          ).map((prop) => ({
-            icon: (
-              <CheckCircleIcon color={gatherType === prop ? "black" : "gray"} size="sm" isFill />
-            ),
-            text: prop,
-            func: () => setGatherType(prop),
-            color: "black",
-          }))}
-          currentValue={gatherType}
-          isEllipse
-          size="md"
-        />
-      </Box>
-
-      <Box position="relative" minH="600px">
+      <UserGatherSectionReview />
+      <Box position="relative" minH="1000px">
         {cardDataArr?.length ? (
           <>
             {cardDataArr.map((cardData, idx) => (

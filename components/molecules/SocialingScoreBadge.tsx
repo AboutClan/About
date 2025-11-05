@@ -18,15 +18,16 @@ export const getTemperature = (user: UserSimpleInfoProps | IUserSummary) => {
   }°C`;
 };
 
+export const getTemperatureColor = (temp: number, cnt: number): { color: string; bg: string } => {
+  if (!temp || (temp < 36.5 && cnt <= 2)) return { color: "green.500", bg: "green.50" };
+  if (temp <= 35.5) return { color: "gray.500", bg: "gray.50" };
+  if (temp < 36.5) return { color: "blue.500", bg: "blue.50" };
+  if (temp <= 38) return { color: "green.500", bg: "green.50" };
+  if (temp <= 40) return { color: "orange.500", bg: "orange.50" };
+  return { color: "red.500", bg: "red.50" };
+};
+
 function SocialingScoreBadge({ user, size = "md" }: SocialingScoreBadgeProps) {
-  const getTemperatureColor = (temp: number, cnt: number): { color: string; bg: string } => {
-    if (!temp || (temp < 36.5 && cnt <= 2)) return { color: "green.500", bg: "green.50" };
-    if (temp <= 35.5) return { color: "gray.500", bg: "gray.50" };
-    if (temp < 36.5) return { color: "blue.500", bg: "blue.50" };
-    if (temp <= 38) return { color: "green.500", bg: "green.50" };
-    if (temp <= 40) return { color: "orange.500", bg: "orange.50" };
-    return { color: "red.500", bg: "red.50" };
-  };
   const { color, bg } = getTemperatureColor(user?.temperature?.temperature, user?.temperature?.cnt);
 
   return (
@@ -66,7 +67,6 @@ function SocialingScoreBadge({ user, size = "md" }: SocialingScoreBadgeProps) {
           </Flex>
         )}
       </Button>
-
       {size === "md" && (
         <Box mr={1.5}>
           <PopOverIcon

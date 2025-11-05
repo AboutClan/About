@@ -1,4 +1,4 @@
-import { Badge, Box, Flex } from "@chakra-ui/react";
+import { Badge, Box, Button, Flex } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { ComponentProps, useState } from "react";
@@ -31,6 +31,8 @@ export interface GatherThumbnailCardProps {
   func?: () => void;
   age: number[];
   gatherType: GatherCategory;
+  completeMemberReview?: boolean;
+  completeGatherReview?: boolean;
 }
 
 const STATUS_TO_BADGE_PROPS: Record<GatherStatus, { text: string; colorScheme: string }> = {
@@ -55,93 +57,109 @@ export function GatherThumbnailCard({
 
   age,
   gatherType,
+  completeGatherReview,
+  completeMemberReview,
 }: GatherThumbnailCardProps) {
   const participantsMember = participants.filter(
     (par) => par.user._id !== "65df1ddcd73ecfd250b42c89",
   );
 
+  const hasButton = completeGatherReview || completeMemberReview || true;
+
   return (
-    <CardLink href={`/${"gather"}/${id}`} onClick={func}>
-      <PlaceImage src={imageProps.image} priority={imageProps.isPriority} />
-      <Flex direction="column" ml="12px" flex={1}>
-        <Flex justify="space-between">
-          <Flex>
-            <Badge
-              mr={1}
-              size="md"
-              variant="solid"
-              colorScheme={
-                gatherType === "event" || gatherType === "official"
-                  ? "yellow"
-                  : STATUS_TO_BADGE_PROPS[status].colorScheme
-              }
-            >
-              {gatherType === "event"
-                ? "이벤트"
-                : gatherType === "official"
-                ? "공식 행사"
-                : STATUS_TO_BADGE_PROPS[status].text}
-            </Badge>
-            {gatherType === "gather" && (
-              <Badge size="md" colorScheme="gray" color="var(--gray-600)">
-                {category}
+    <CardLink href={`/${"gather"}/${id}`} hasButton={hasButton} onClick={func}>
+      <Flex justify="space-between">
+        <PlaceImage src={imageProps.image} priority={imageProps.isPriority} />
+        <Flex direction="column" ml="12px" flex={1}>
+          <Flex justify="space-between">
+            <Flex>
+              <Badge
+                mr={1}
+                size="md"
+                variant="solid"
+                colorScheme={
+                  gatherType === "event" || gatherType === "official"
+                    ? "yellow"
+                    : STATUS_TO_BADGE_PROPS[status].colorScheme
+                }
+              >
+                {gatherType === "event"
+                  ? "이벤트"
+                  : gatherType === "official"
+                  ? "공식 행사"
+                  : STATUS_TO_BADGE_PROPS[status].text}
+              </Badge>
+              {gatherType === "gather" && (
+                <Badge size="md" colorScheme="gray" color="var(--gray-600)">
+                  {category}
+                </Badge>
+              )}
+            </Flex>
+            {(age[0] !== 19 || age[1] !== 28) && (
+              <Badge size="md" variant="subtle" colorScheme="blue">
+                만 {age[0]} ~ {age[1]}세
               </Badge>
             )}
           </Flex>
-          {(age[0] !== 19 || age[1] !== 28) && (
-            <Badge size="md" variant="subtle" colorScheme="blue">
-              만 {age[0]} ~ {age[1]}세
-            </Badge>
-          )}
-        </Flex>
-        <Title>{title}</Title>
-        <Subtitle>
-          {gatherType !== "event" ? (
-            <>
-              <Box as="span">{date}</Box>
-              <Box as="span" color="var(--gray-400)">
-                ・
-              </Box>
+          <Title>{title}</Title>
+          <Subtitle>
+            {gatherType !== "event" ? (
+              <>
+                <Box as="span">{date}</Box>
+                <Box as="span" color="var(--gray-400)">
+                  ・
+                </Box>
+                <Box as="span" fontWeight={600}>
+                  {place}
+                </Box>
+              </>
+            ) : (
               <Box as="span" fontWeight={600}>
-                {place}
+                About 이벤트 챌린지
               </Box>
-            </>
-          ) : (
-            <Box as="span" fontWeight={600}>
-              About 이벤트 챌린지
-            </Box>
-          )}
-        </Subtitle>
+            )}
+          </Subtitle>
 
-        <Flex mt={1} alignItems="center" justify="space-between">
-          <AvatarGroupsOverwrap
-            users={participantsMember?.map((par) => par.user)}
-            maxCnt={VOTER_SHOW_MAX}
-          />
-          <Flex align="center" color="var(--gray-500)">
-            <UserIcon size="sm" />
-            <Flex ml={1} fontSize="10px" align="center" fontWeight={500}>
-              <Box
-                fontWeight={600}
-                as="span"
-                color={
-                  maxCnt !== 0 && participantsMember.length >= maxCnt
-                    ? "var(--color-red)"
-                    : "var(--color-gray)"
-                }
-              >
-                {participantsMember.length}
-              </Box>
-              <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
-                /
-              </Box>
-              <Box as="span" color="var(--gray-500)" fontWeight={500}>
-                {maxCnt === 0 ? <InfinityIcon /> : maxCnt}
-              </Box>
+          <Flex mt={1} alignItems="center" justify="space-between">
+            <AvatarGroupsOverwrap
+              users={participantsMember?.map((par) => par.user)}
+              maxCnt={VOTER_SHOW_MAX}
+            />
+            <Flex align="center" color="var(--gray-500)">
+              <UserIcon size="sm" />
+              <Flex ml={1} fontSize="10px" align="center" fontWeight={500}>
+                <Box
+                  fontWeight={600}
+                  as="span"
+                  color={
+                    maxCnt !== 0 && participantsMember.length >= maxCnt
+                      ? "var(--color-red)"
+                      : "var(--color-gray)"
+                  }
+                >
+                  {participantsMember.length}
+                </Box>
+                <Box as="span" color="var(--gray-400)" mx="2px" fontWeight={300}>
+                  /
+                </Box>
+                <Box as="span" color="var(--gray-500)" fontWeight={500}>
+                  {maxCnt === 0 ? <InfinityIcon /> : maxCnt}
+                </Box>
+              </Flex>
             </Flex>
           </Flex>
         </Flex>
       </Flex>
+      {hasButton && (
+        <Flex mt={3} ml="auto">
+          <Button size="sm" mr={2} borderColor="gray.800">
+            후기 작성
+          </Button>
+          <Button size="sm" colorScheme="black" isDisabled={completeMemberReview}>
+            {!completeMemberReview ? "멤버 평가" : "평가 완료"}
+          </Button>
+        </Flex>
+      )}
     </CardLink>
   );
 }
@@ -181,17 +199,15 @@ function PlaceImage(props: PlaceImageProps) {
   );
 }
 
-const CardLink = styled(Link)`
-  height: 114px;
+const CardLink = styled(Link)<{ hasButton: boolean }>`
+  height: ${(props) => (props.hasButton ? "max-content" : "114px")};
   display: flex;
+  flex-direction: column;
   padding: 8px;
   padding-right: 12px;
   border: var(--border);
-
   border-radius: 12px;
   background-color: white;
-  justify-content: space-between;
-
   &:hover {
     background-color: var(--gray-200);
   }

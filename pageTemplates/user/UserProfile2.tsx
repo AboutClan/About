@@ -1,6 +1,6 @@
-import { Flex } from "@chakra-ui/react";
-import Link from "next/link";
+import { Box, Flex } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import styled from "styled-components";
 
 import { useTypeToast } from "../../hooks/custom/CustomToast";
@@ -23,24 +23,29 @@ function UserProfile() {
   };
 
   return (
-    <Flex direction="column">
-      <Link href="/user/friend" passHref onClick={(e) => handleClick(e)}>
-        <BlockItem>
-          <span>
-            내 친구 <b>{userInfo?.friend.length || 0}명</b>
-          </span>
-          <ArrowIcon />
-        </BlockItem>
-      </Link>
-      <Link href="/user/like" passHref onClick={(e) => handleClick(e)}>
-        <BlockItem>
-          <span>
-            받은 좋아요 <b>{likeLogs?.length || 0}개</b>
-          </span>
-          <ArrowIcon />
-        </BlockItem>
-      </Link>
-    </Flex>
+    <>
+      <Box mb={1} mt={3} mx={5} fontWeight="bold" fontSize="16px">
+        활동
+      </Box>
+      <Flex direction="column">
+        <Link href="/user/friend" passHref onClick={(e) => handleClick(e)}>
+          <BlockItem>
+            <span>
+              내 친구 <b>{userInfo?.friend.length || 0}명</b>
+            </span>
+            <ArrowIcon />
+          </BlockItem>
+        </Link>
+        <Link href="/user/like" passHref onClick={(e) => handleClick(e)}>
+          <BlockItem>
+            <span>
+              받은 좋아요 <b>{likeLogs?.length || 0}개</b>
+            </span>
+            <ArrowIcon />
+          </BlockItem>
+        </Link>
+      </Flex>
+    </>
   );
 }
 

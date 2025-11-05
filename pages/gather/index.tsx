@@ -1,6 +1,6 @@
 import { Box, Flex, Switch, Text } from "@chakra-ui/react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useSetRecoilState } from "recoil";
@@ -84,7 +84,7 @@ function Gather() {
       <GatherHeader tab={tab} />
       <Slide isNoPadding>
         <Box fontSize="16px" mb={3} bgColor="white" borderBottom="var(--border)" px={5}>
-          <TabNav tabOptionsArr={tabNavOptions} selected={tab} />
+          <TabNav tabOptionsArr={tabNavOptions} selected={tab} isBlack />
         </Box>
       </Slide>
       <Slide isNoPadding={tab !== "번개"}>
