@@ -19,8 +19,6 @@ import GatherSkeletonMain from "../gather/GatherSkeletonMain";
 import { setGatherDataToCardCol } from "../home/HomeGatherCol";
 import UserGatherSectionReview from "./UserGatherSectionReview";
 
-type GatherType = "참여중인 모임" | "종료된 모임" | "내가 개설한 모임";
-
 function UserGatherSection() {
   const router = useRouter();
   const userInfo = useUserInfo();

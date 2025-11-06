@@ -181,11 +181,12 @@ export function ModalLayout({
               isFull ? (
                 <Button
                   size="md"
-                  colorScheme={main?.isred ? "red" : "mint"}
+                  colorScheme={main?.isDisabled ? "black" : main?.isred ? "red" : "mint"}
                   borderRadius="8px"
                   w="100%"
                   onClick={func}
                   isLoading={main?.isLoading}
+                  isDisabled={main?.isDisabled}
                   h={10}
                 >
                   {text}

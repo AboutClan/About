@@ -1,10 +1,19 @@
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { useMutation } from "react-query";
 
-import { SERVER_URI } from "../../../../constants/system";
+import { requestServer } from "../../../../libs/methodHelpers";
 import { MutationOptions } from "../../../../types/hooks/reactTypes";
+import { Alphabet } from "../../../../types/models/collections";
 
-export const useDailyCheckMutation = (options?: MutationOptions) =>
-  useMutation<void, AxiosError, void>(async () => {
-    return await axios.post(`${SERVER_URI}/dailyCheck`);
+interface ReturnProps {
+  alphabet: Alphabet;
+  stamps: number;
+}
+
+export const useDailyCheckMutation = (options?: MutationOptions<void, ReturnProps>) =>
+  useMutation<ReturnProps, AxiosError, void>(() => {
+    return requestServer<void, ReturnProps>({
+      method: "post",
+      url: `dailyCheck`,
+    });
   }, options);

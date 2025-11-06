@@ -4,10 +4,11 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
+import { AboutIcon } from "../../components/atoms/AboutIcons";
 import Avatar from "../../components/atoms/Avatar";
 import UserBadge from "../../components/atoms/badges/UserBadge";
+import IconButton from "../../components/atoms/buttons/IconButton";
 import { MainLoading } from "../../components/atoms/loaders/MainLoading";
-import { AlphabetIcon } from "../../components/Icons/AlphabetIcon";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import { useFailToast, useToast } from "../../hooks/custom/CustomToast";
@@ -17,6 +18,7 @@ import {
   useCollectionAlphabetAllQuery,
   useCollectionAlphabetQuery,
 } from "../../hooks/user/sub/collection/queries";
+import { AlphabetChangeGuideModal } from "../../modals/aboutHeader/dailyCheckModal/DailyCheckModal";
 import AlphabetChangeModal from "../../modals/user/collection/AlphabetChangeModal";
 import { Alphabet, ICollectionAlphabet } from "../../types/models/collections";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
@@ -46,7 +48,8 @@ function CollectionAlphabet() {
     },
   });
   const { data: userAlphabetAll, isLoading } = useCollectionAlphabetAllQuery();
-  
+
+  const [isModal, setIsModal] = useState(false);
   const [members, setMembers] = useState<ICollectionAlphabet[]>();
   const [isChangeModal, setIsChangeModal] = useState(false);
   const [hasAlphabetAll, setHasAlphabetAll] = useState(false);
@@ -54,10 +57,10 @@ function CollectionAlphabet() {
     user: string;
     alphabets: Alphabet[];
   }>();
-
+  console.log(5, userAlphabetAll);
   const friends = userInfo?.friend;
   useEffect(() => {
-    if (isLoading || !userInfo) return;
+    if (isLoading || !userInfo || !userAlphabetAll) return;
     const findItem = userAlphabetAll.find((who) => who?.user?.uid === session?.user.uid);
 
     if (ALPHABET_COLLECTION.every((item) => findItem?.collects.includes(item))) {
@@ -101,102 +104,108 @@ function CollectionAlphabet() {
 
   return (
     <>
-      <Header title="전체 수집 현황" />
+      <Header title="전체 수집 현황">
+        <IconButton onClick={() => setIsModal(true)}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="22"
+            height="22"
+            viewBox="0 0 20 20"
+            fill="none"
+          >
+            <g clipPath="url(#clip0_2444_1052)">
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M10 7.66671C9.73479 7.66671 9.48044 7.56135 9.2929 7.37381C9.10537 7.18628 9.00001 6.93192 9.00001 6.66671C9.00001 6.40149 9.10537 6.14714 9.2929 5.9596C9.48044 5.77206 9.73479 5.66671 10 5.66671C10.2652 5.66671 10.5196 5.77206 10.7071 5.9596C10.8947 6.14714 11 6.40149 11 6.66671C11 6.93192 10.8947 7.18628 10.7071 7.37381C10.5196 7.56135 10.2652 7.66671 10 7.66671ZM10.8333 13.8625C10.8333 14.0836 10.7455 14.2955 10.5893 14.4518C10.433 14.6081 10.221 14.6959 10 14.6959C9.779 14.6959 9.56704 14.6081 9.41076 14.4518C9.25447 14.2955 9.16668 14.0836 9.16668 13.8625V9.69587C9.16668 9.47486 9.25447 9.2629 9.41076 9.10662C9.56704 8.95034 9.779 8.86254 10 8.86254C10.221 8.86254 10.433 8.95034 10.5893 9.10662C10.7455 9.2629 10.8333 9.47486 10.8333 9.69587V13.8625ZM10 0.833374C4.93751 0.833374 0.833344 4.93754 0.833344 10C0.833344 15.0625 4.93751 19.1667 10 19.1667C15.0625 19.1667 19.1667 15.0625 19.1667 10C19.1667 4.93754 15.0625 0.833374 10 0.833374Z"
+                fill="var(--color-icon)"
+              />
+            </g>
+            <defs>
+              <clipPath id="clip0_2444_1052">
+                <rect width="20" height="20" fill="white" />
+              </clipPath>
+            </defs>
+          </svg>
+        </IconButton>
+      </Header>
 
       {!isLoading ? (
         <Slide isNoPadding>
           <Members>
-            {members?.map((who) => {
-              if (!who?.user) return null;
-              const user = who.user;
+            {members
+              ?.filter((member) => member?.user.name !== "어바웃")
+              .map((who) => {
+                if (!who?.user) return null;
+                const user = who.user;
 
-              const alphabets = who.collects;
-              const alphabetsCnt = {
-                A: 0,
-                B: 0,
-                O: 0,
-                U: 0,
-                T: 0,
-              };
-              alphabets.forEach((alphabet) => {
-                alphabetsCnt[alphabet]++;
-              });
-              return (
-                <Item key={user.uid}>
-                  <ProfileWrapper>
-                    <Avatar size="md1" user={user} />
-                  </ProfileWrapper>
-                  <Info>
-                    <Name>
-                      <Box as="span" mr={1}>
-                        {user.name}
-                      </Box>
-                      <UserBadge badgeIdx={user?.badge?.badgeIdx} />
-                    </Name>
-                    <UserAlphabets>
-                      <div>
-                        <AlphabetIcon alphabet="A" isDuotone={!alphabets?.includes("A")} />
-                        <i className="fa-solid fa-x" />
-                        <AlphabetCnt hasAlphabet={alphabetsCnt.A !== 0}>
-                          {alphabetsCnt.A}
-                        </AlphabetCnt>
-                      </div>
-                      <div>
-                        <AlphabetIcon alphabet="B" isDuotone={!alphabets?.includes("B")} />{" "}
-                        <i className="fa-solid fa-x" />
-                        <AlphabetCnt hasAlphabet={alphabetsCnt.B !== 0}>
-                          {alphabetsCnt.B}
-                        </AlphabetCnt>
-                      </div>
-                      <div>
-                        <AlphabetIcon alphabet="O" isDuotone={!alphabets?.includes("O")} />{" "}
-                        <i className="fa-solid fa-x" />
-                        <AlphabetCnt hasAlphabet={alphabetsCnt.O !== 0}>
-                          {alphabetsCnt.O}
-                        </AlphabetCnt>
-                      </div>
-                      <div>
-                        <AlphabetIcon alphabet="U" isDuotone={!alphabets?.includes("U")} />{" "}
-                        <i className="fa-solid fa-x" />
-                        <AlphabetCnt hasAlphabet={alphabetsCnt.U !== 0}>
-                          {alphabetsCnt.U}
-                        </AlphabetCnt>
-                      </div>
-                      <div>
-                        <AlphabetIcon alphabet="T" isDuotone={!alphabets?.includes("T")} />{" "}
-                        <i className="fa-solid fa-x" />
-                        <AlphabetCnt hasAlphabet={alphabetsCnt.T !== 0}>
-                          {alphabetsCnt.T}
-                        </AlphabetCnt>
-                      </div>
-                    </UserAlphabets>
-                  </Info>
+                const alphabets = who.collects;
+                const alphabetsCnt = {
+                  A: 0,
+                  B: 0,
+                  O: 0,
+                  U: 0,
+                  T: 0,
+                };
+                alphabets.forEach((alphabet) => {
+                  alphabetsCnt[alphabet]++;
+                });
+                return (
+                  <Item key={user.uid}>
+                    <ProfileWrapper>
+                      <Avatar size="md1" user={user} />{" "}
+                    </ProfileWrapper>
+                    <Info>
+                      <Name>
+                        <Box as="span" mr={1}>
+                          {user.name}
+                        </Box>
+                        <UserBadge badgeIdx={user?.badge?.badgeIdx} />
+                      </Name>
+                      <AlphabetContainer>
+                        <AboutIcon alphabet="A" isActive={alphabets?.includes("A")} size="sm" />
+                        <AboutIcon alphabet="B" isActive={alphabets?.includes("B")} size="sm" />
+                        <AboutIcon alphabet="O" isActive={alphabets?.includes("O")} size="sm" />
+                        <AboutIcon alphabet="U" isActive={alphabets?.includes("U")} size="sm" />
+                        <AboutIcon alphabet="T" isActive={alphabets?.includes("T")} size="sm" />
+                      </AlphabetContainer>
+                    </Info>
 
-                  {who.user.uid === userInfo?.uid ? (
-                    <Button
-                      colorScheme="mint"
-                      size="xs"
-                      isDisabled={!hasAlphabetAll}
-                      isLoading={completeLoading}
-                      onClick={() => handleChangePromotion()}
-                      fontSize="10px"
-                    >
-                      상품 교환
-                    </Button>
-                  ) : (
-                    <Button
-                      fontSize="10px"
-                      size="xs"
-                      colorScheme={friends?.includes(who.user.uid) ? "orange" : "gray"}
-                      onClick={() => onClickChangeBtn(user, alphabets)}
-                      isDisabled={!friends?.includes(who.user.uid)}
-                    >
-                      {friends?.includes(who.user.uid) ? "교환 신청" : "교환 불가"}
-                    </Button>
-                  )}
-                </Item>
-              );
-            })}
+                    {who.user.uid === userInfo?.uid ? (
+                      <Button
+                        colorScheme="mint"
+                        size="xs"
+                        isLoading={completeLoading}
+                        onClick={() => {
+                          if (!hasAlphabetAll) {
+                            toast("error", "ABOUT 알파벳을 모두 모아야 교환할 수 있습니다.");
+                            return;
+                          }
+                          handleChangePromotion();
+                        }}
+                        fontSize="10px"
+                      >
+                        상품 교환
+                      </Button>
+                    ) : (
+                      <Button
+                        fontSize="10px"
+                        size="xs"
+                        colorScheme="orange"
+                        onClick={() => {
+                          if (!friends.includes(who.user.uid)) {
+                            toast("error", "서로 친구인 경우에만 교환이 가능합니다.");
+                            return;
+                          }
+                          onClickChangeBtn(user, alphabets);
+                        }}
+                      >
+                        교환 신청
+                      </Button>
+                    )}
+                  </Item>
+                );
+              })}
           </Members>
         </Slide>
       ) : (
@@ -210,9 +219,22 @@ function CollectionAlphabet() {
           toUid={opponentAlphabets.user}
         />
       )}
+      {isModal && <AlphabetChangeGuideModal setIsModal={setIsModal} />}
     </>
   );
 }
+
+const AlphabetContainer = styled.div`
+  padding-top: 4px;
+  padding-bottom: 4px;
+  display: flex;
+  justify-content: center;
+  font-size: 24px;
+  align-items: center;
+  > * {
+    margin-right: 8px;
+  }
+`;
 
 const Members = styled.div`
   margin: 0 var(--gap-5);
@@ -243,27 +265,6 @@ const Name = styled.div`
   font-weight: 600;
   font-size: 13px;
   margin-bottom: var(--gap-1);
-`;
-
-const UserAlphabets = styled.div`
-  display: flex;
-  justify-content: center;
-  font-size: 6px;
-  align-items: center;
-  > div {
-    display: flex;
-    align-items: center;
-    margin-right: var(--gap-3);
-
-    > *:nth-child(2) {
-      margin: 0 var(--gap-1);
-    }
-  }
-`;
-
-const AlphabetCnt = styled.span<{ hasAlphabet: boolean }>`
-  font-size: 12px;
-  color: ${(props) => (props.hasAlphabet ? "var(--gray-700)" : "var(--gray-600)")};
 `;
 
 export default CollectionAlphabet;

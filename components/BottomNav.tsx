@@ -8,7 +8,6 @@ import styled from "styled-components";
 import { useHandleMove } from "../@natives/useHandleBottomNav";
 import { slideDirectionState } from "../recoils/navigationRecoils";
 import { dayjsToStr } from "../utils/dateTimeUtils";
-import { iPhoneNotchSize } from "../utils/validationUtils";
 import { CommunityIcon, HomeIcon, StudyIcon, ThunderIcon } from "./Icons/BottomNavIcons";
 import { UserIcon } from "./Icons/UserIcons";
 
@@ -80,7 +79,7 @@ function NavButton({ text, url, activeIcon, defaultIcon, isActive, idx }: INavBu
   const onClick = () => {
     handleMove();
   };
-  
+
   return (
     <NavLink
       onClick={onClick}

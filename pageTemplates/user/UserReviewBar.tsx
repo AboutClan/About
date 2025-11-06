@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
+
 import Avatar from "../../components/atoms/Avatar";
 import { getTemperatureColor } from "../../components/molecules/SocialingScoreBadge";
-import { useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserReviewQuery } from "../../hooks/user/queries";
 import { IUser } from "../../types/models/userTypes/userInfoTypes";
 
@@ -10,8 +10,6 @@ interface UserReviewBarProps {
 }
 
 function UserReviewBar({ user }: UserReviewBarProps) {
-  const typeToast = useTypeToast();
-
   const { data: reviewArr } = useUserReviewQuery(user?.uid, {
     enabled: !!user?.uid,
   });
@@ -27,7 +25,7 @@ function UserReviewBar({ user }: UserReviewBarProps) {
       <Box mx={5} my={3} mt={5}>
         <Box>
           <Flex align="center">
-            <Box mr="auto" color="var(--gray-800)" fontSize={"16px"} fontWeight={600}>
+            <Box mr="auto" color="var(--gray-800)" fontSize="16px" fontWeight={600}>
               소셜링 온도
               <Box
                 ml={0.5}

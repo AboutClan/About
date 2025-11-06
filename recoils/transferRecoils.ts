@@ -4,7 +4,6 @@ import { atom } from "recoil";
 import { IDailyCheckWinList } from "../constants/serviceConstants/dailyCheckConstatns";
 import { IGiftEntry } from "../pages/store";
 import { PointInfoProps } from "../types/common";
-import { CollectionProps } from "../types/models/collections";
 import { IGather } from "../types/models/gatherTypes/gatherTypes";
 import { IGroup } from "../types/models/groupTypes/group";
 import { MemberGroup } from "../types/models/member";
@@ -13,11 +12,6 @@ import { IUser } from "../types/models/userTypes/userInfoTypes";
 
 export const transferStudyRewardState = atom<PointInfoProps>({
   key: "StudyReward",
-  default: null,
-});
-
-export const transferCollectionState = atom<CollectionProps>({
-  key: "transferCollection",
   default: null,
 });
 

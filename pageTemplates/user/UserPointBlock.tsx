@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 import { useTypeToast } from "../../hooks/custom/CustomToast";

@@ -1,7 +1,7 @@
 import { Box, Drawer, DrawerBody, DrawerContent, DrawerOverlay } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
 
+import { MainLoadingAbsolute } from "../../../components/atoms/loaders/MainLoading";
 import Header from "../../../components/layouts/Header";
 import FeedLayout from "../../../components/organisms/FeedLayout";
 import { convertFeedToLayout } from "../../../libs/convertFeedToLayout";

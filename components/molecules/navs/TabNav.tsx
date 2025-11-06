@@ -1,4 +1,5 @@
 import { Box, Tab, TabList, Tabs } from "@chakra-ui/react";
+
 import AlertDot from "../../atoms/AlertDot";
 export interface ITabNavOptions {
   text: string;

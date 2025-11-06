@@ -2,13 +2,7 @@ import { Box, Flex } from "@chakra-ui/react";
 
 import { AboutIcon } from "../../components/atoms/AboutIcons";
 import { StarIcon } from "../../components/Icons/StarIcons";
-import { IModal } from "../../types/components/modalTypes";
-import { CollectionProps } from "../../types/models/collections";
 import { IFooterOptions, ModalLayout } from "../Modals";
-
-interface ICollectionModal extends IModal {
-  collection: CollectionProps;
-}
 
 function CollectionModal({ collection, setIsModal }: ICollectionModal) {
   if (!collection) return;

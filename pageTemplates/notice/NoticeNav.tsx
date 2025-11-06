@@ -1,6 +1,7 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+
 import AlertDot from "../../components/atoms/AlertDot";
 import { NOTICE_ACTIVE_CNT, RECENT_CHAT } from "../../constants/keys/localStorage";
 import { NoticeType } from "../../pages/notice";

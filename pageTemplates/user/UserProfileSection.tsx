@@ -1,6 +1,5 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 
@@ -8,7 +7,6 @@ import BottomDrawerLg from "../../components/organisms/drawer/BottomDrawerLg";
 import { USER_INFO } from "../../constants/keys/queryKeys";
 import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
 import { useUserInfoFieldMutation } from "../../hooks/user/mutations";
-import { useUserReviewQuery } from "../../hooks/user/queries";
 import RequestChagneProfileImageModalBadge from "../../modals/userRequest/RequestChangeProfileImageModal/RequestChagneProfileImageModalBadge";
 import RequestChangeProfileImageModalAvatar from "../../modals/userRequest/RequestChangeProfileImageModal/RequestChangeProfileImageModalAvatar";
 import SpecialAvatarModal from "../../modals/userRequest/RequestChangeProfileImageModal/SpecialAvatarModal";
@@ -28,14 +26,6 @@ interface UserProfileSectionProps {
 }
 
 function UserProfileSection({ user }: UserProfileSectionProps) {
-  const { data: session } = useSession();
-  const isGuest = session?.user.role === "guest";
-  const typeToast = useTypeToast();
-  const router = useRouter();
-
-  const { data: reviewArr } = useUserReviewQuery(user?.uid, {
-    enabled: !!user?.uid,
-  });
   return (
     <>
       <Box borderBottom="var(--border)">
@@ -44,7 +34,6 @@ function UserProfileSection({ user }: UserProfileSectionProps) {
         <UserScoreBar score={user?.monthScore + 10} />
       </Box>
       <UserReviewBar user={user} />
-      {/* <UserMyGroupSection user={user} /> */}
       <UserCollection />
       <UserProfile />
       <UserInviteFriendSection />

@@ -1,13 +1,13 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+
 import AlertDot from "../../components/atoms/AlertDot";
 import { GATHER_REVIEW_RECEIVE, GATHER_REVIEW_WRITE } from "../../constants/keys/localStorage";
-import { useToast, useTypeToast } from "../../hooks/custom/CustomToast";
+import { useToast } from "../../hooks/custom/CustomToast";
 import { useFeedCntQuery, useFeedTypeQuery } from "../../hooks/feed/queries";
 import GathersReviewDrawer from "../../modals/gather/gatherExpireModal/GathersReviewDrawer";
 
 function UserGatherSectionReview() {
-  const typeToast = useTypeToast();
   const toast = useToast();
   const [modalType, setModalType] = useState<"mine" | "receive">(null);
 
@@ -112,9 +112,7 @@ function UserGatherSectionReview() {
           )}
         </Button>
       </Flex>
-      { modalType && (
-        <GathersReviewDrawer isOpen feeds={data} onClose={() => setModalType(null)} />
-      )}
+      {modalType && <GathersReviewDrawer isOpen feeds={data} onClose={() => setModalType(null)} />}
     </>
   );
 }

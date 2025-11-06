@@ -7,11 +7,9 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import AlertModal, { IAlertModalOptions } from "../../components/AlertModal";
 import BottomFlexDrawer from "../../components/organisms/drawer/BottomFlexDrawer";
 import DailyCheckWinModal from "../../modals/aboutHeader/dailyCheckModal/DailyCheckWinModal";
-import CollectionModal from "../../modals/common/CollectionModal";
 import WriteDrawer from "../../modals/home/writeDrawer";
 import ErrorUserInfoPopUp from "../../modals/pop-up/ErrorUserInfoPopUp";
 import {
-  transferCollectionState,
   transferDailyCheckWinState,
   transferStudyRewardState,
 } from "../../recoils/transferRecoils";
@@ -39,7 +37,6 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
   const isWriteModal = !!searchParams.get("write");
   const isLogoutModal = !!searchParams.get("logout");
 
-  const [transferCollection, setTransferCollection] = useRecoilState(transferCollectionState);
   const [transferStudyReward, setTransferStudyReward] = useRecoilState(transferStudyRewardState);
 
   const dailyCheckWin = useRecoilValue(transferDailyCheckWinState);
@@ -69,12 +66,6 @@ function BaseModal({ isError, setIsError }: IBaseModal) {
         />
       )} */}
       {isWriteModal && <WriteDrawer />}
-      {transferCollection && (
-        <CollectionModal
-          setIsModal={() => setTransferCollection(null)}
-          collection={transferCollection}
-        />
-      )}
 
       {transferStudyReward && (
         <BottomFlexDrawer

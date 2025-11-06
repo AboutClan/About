@@ -2,6 +2,7 @@ import { Box, Button, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import styled from "styled-components";
+
 import Avatar from "../../components/atoms/Avatar";
 import UserBadge from "../../components/atoms/badges/UserBadge";
 import { useTypeToast } from "../../hooks/custom/CustomToast";
