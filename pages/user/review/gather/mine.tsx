@@ -8,8 +8,8 @@ import { useFeedTypeQuery } from "../../../../hooks/feed/queries";
 import { convertFeedToLayout } from "../../../../libs/convertFeedToLayout";
 
 function Review() {
-  const { data } = useFeedTypeQuery("mine", "gather");
- 
+  const { data } = useFeedTypeQuery("mine");
+
   return (
     <>
       <Header title="내 후기" />

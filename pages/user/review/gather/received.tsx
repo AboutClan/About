@@ -8,7 +8,7 @@ import { useFeedTypeQuery } from "../../../../hooks/feed/queries";
 import { convertFeedToLayout } from "../../../../libs/convertFeedToLayout";
 
 function Review() {
-  const { data } = useFeedTypeQuery("recieve", "gather");
+  const { data } = useFeedTypeQuery("receive");
 
   return (
     <>

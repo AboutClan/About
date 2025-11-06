@@ -3,7 +3,6 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
-import { useSetRecoilState } from "recoil";
 
 import { Input } from "../components/atoms/Input";
 import { COLLECTION_ALPHABET } from "../constants/keys/queryKeys";
@@ -11,7 +10,6 @@ import { useToast } from "../hooks/custom/CustomToast";
 import { useAlphabetMutation } from "../hooks/user/sub/collection/mutations";
 import { useUserRequestMutation } from "../hooks/user/sub/request/mutations";
 import { getRandomAlphabet } from "../libs/userEventLibs/collection";
-import { transferCollectionState } from "../recoils/transferRecoils";
 import { IModal } from "../types/components/modalTypes";
 import { dayjsToStr } from "../utils/dateTimeUtils";
 import { IFooterOptions, ModalLayout } from "./Modals";
@@ -25,18 +23,17 @@ function InstagramCheckModal({ setIsModal }: IModal) {
 
   const instaStorage = localStorage.getItem(INSTAGRAM_AT);
 
-  const setTransferAlphabet = useSetRecoilState(transferCollectionState);
-
   const [value, setValue] = useState("");
 
   const { mutate } = useUserRequestMutation();
 
   const { mutate: mutate2 } = useAlphabetMutation("get", {
     onSuccess(data) {
+      console.log(data);
       mutate({ category: "인스타", content: value });
       localStorage.setItem(INSTAGRAM_AT, dayjsToStr(dayjs()));
       queryClient.refetchQueries([COLLECTION_ALPHABET]);
-      setTransferAlphabet({ alphabet: data?.alphabet });
+
       setIsModal(false);
     },
   });
