@@ -13,7 +13,6 @@ interface GroupOverviewProps {
 }
 
 function GroupOverview({ group, isMyGroup, gatherCnt, reviewCnt }: GroupOverviewProps) {
-  console.log(25, gatherCnt);
   return (
     <Flex direction="column" px={5} pt={4} pb={2}>
       <Flex mb={2}>

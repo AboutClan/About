@@ -57,7 +57,7 @@ function CollectionAlphabet() {
     user: string;
     alphabets: Alphabet[];
   }>();
-  console.log(5, userAlphabetAll);
+
   const friends = userInfo?.friend;
   useEffect(() => {
     if (isLoading || !userInfo || !userAlphabetAll) return;

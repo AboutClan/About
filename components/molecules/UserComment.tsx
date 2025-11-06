@@ -195,8 +195,7 @@ function UserComment({
                   onClick={() => {
                     setReplyProps({
                       replyName: user.name,
-                      commentId,
-                      parentId,
+                      parentId: commentId,
                     });
                   }}
                 >

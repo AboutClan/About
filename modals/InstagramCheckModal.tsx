@@ -28,8 +28,7 @@ function InstagramCheckModal({ setIsModal }: IModal) {
   const { mutate } = useUserRequestMutation();
 
   const { mutate: mutate2 } = useAlphabetMutation("get", {
-    onSuccess(data) {
-      console.log(data);
+    onSuccess() {
       mutate({ category: "인스타", content: value });
       localStorage.setItem(INSTAGRAM_AT, dayjsToStr(dayjs()));
       queryClient.refetchQueries([COLLECTION_ALPHABET]);

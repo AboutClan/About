@@ -26,7 +26,6 @@ function UserGatherSectionReview() {
     }
   }, [data]);
 
-  console.log(54, data);
   return (
     <>
       <Flex h="44px" bg="rgba(66,66,66,0.04)" mb={3}>

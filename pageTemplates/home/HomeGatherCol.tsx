@@ -62,7 +62,6 @@ export const setGatherDataToCardCol = (
   leftFunc?: (hasReview: boolean, id: string, category: "gather" | "group") => void,
   rightFunc?: (id: string) => void,
 ): GatherThumbnailCardProps[] => {
-  console.log(123, myId);
   const cardCol: GatherThumbnailCardProps[] = gathers.map((gather, idx) => {
     if (!imageCache[gather.id]) {
       imageCache[gather.id] = gather.image || getRandomImage(GATHER_MAIN_IMAGE_ARR["공통"]);

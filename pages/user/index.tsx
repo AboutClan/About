@@ -41,7 +41,7 @@ function UserPage() {
     }
     setSection(type);
   };
-  console.log(14, feeds);
+
   useEffect(() => {
     if (!feeds) return;
 

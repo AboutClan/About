@@ -73,7 +73,7 @@ export default function Page() {
       enabled: !!isPassedDate || !!isPassedSolo,
     },
   );
-  console.log(12, studySet);
+
   const [modalType, setModalType] = useState<"studyLink" | "review">();
 
   // useEffect(() => {
@@ -157,7 +157,7 @@ export default function Page() {
   const isMyReview = placeInfo?.reviews?.some((review) => review.user._id === userInfo?._id);
 
   const isOpenStudy = studyType !== "participations" && studyType !== "soloRealTimes";
-  console.log(234, placeInfo);
+
   return (
     <>
       {isPassedSolo || studyPassedData || studySet ? (

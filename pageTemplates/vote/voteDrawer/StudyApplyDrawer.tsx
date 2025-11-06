@@ -1,6 +1,5 @@
 import { Box, Button, Flex } from "@chakra-ui/react";
 import dayjs from "dayjs";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 import PageIntro from "../../../components/atoms/PageIntro";
@@ -43,9 +42,8 @@ function StudyApplyDrawer({
   location,
   canChange = false,
 }: StudyDateDrawerProps) {
-  const router = useRouter();
   const toast = useToast();
-  console.log("r", router);
+
   const resetStudy = useResetStudyQuery();
   const [selectedDates, setSelectedDates] = useState<string[]>([]);
   const [isModal, setIsModal] = useState(false);

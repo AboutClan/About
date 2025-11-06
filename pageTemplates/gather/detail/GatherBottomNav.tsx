@@ -206,7 +206,7 @@ function GatherBootmNav({ data }: IGatherBootmNav) {
         handleFunction: () => (diffDate < 2 ? setIsCancelModal(true) : cancel()),
       };
     }
-    console.log(15, isMax);
+
     if (isMax) {
       return {
         text: "빈자리 생기면 참여 요청",

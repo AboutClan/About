@@ -79,7 +79,8 @@ function GatherComments({ comments }: IGatherComments) {
 
     if (replyProps) {
       setCommentArr(getCommentArr(value, replyProps.commentId, commentArr, userInfo));
-      writeSubComment({ comment: value, commentId: replyProps.commentId });
+      writeSubComment({ comment: value, commentId: replyProps.parentId });
+      setReplyProps(null);
       return;
     }
     await writeComment({ comment: value });

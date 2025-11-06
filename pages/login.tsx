@@ -47,7 +47,7 @@ const Login: NextPage<{
   const { data: userInfo } = useUserInfoQuery({
     enabled: !!session,
   });
-  console.log(ratio);
+
   useEffect(() => {
     switch (statusParam) {
       case "logout":

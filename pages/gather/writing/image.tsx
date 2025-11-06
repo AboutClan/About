@@ -139,7 +139,7 @@ function GatherWritingImagePage() {
     },
     onError: errorToast,
   });
-  console.log(53, gatherContent);
+
   return (
     <>
       <Slide isFixed={true}>

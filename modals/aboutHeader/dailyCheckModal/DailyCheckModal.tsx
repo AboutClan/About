@@ -58,7 +58,7 @@ function DailyCheckModal({ setIsModal }: IModal) {
   });
 
   const dailyCheck = localStorage.getItem(DAILY_CHECK_POP_UP) === dayjsToStr(dayjs());
-  console.log(55, dailyCheck);
+
   const onClickCheck = () => {
     localStorage.setItem(DAILY_CHECK_POP_UP, dayjsToStr(dayjs()));
 

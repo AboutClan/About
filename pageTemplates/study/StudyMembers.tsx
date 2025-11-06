@@ -126,7 +126,7 @@ export default function StudyMembers({ studyType, date, members, isAttend }: ISt
       };
     }
   });
-  console.log(42, members);
+
   return (
     <>
       {userCardArr?.length ? (
