@@ -17,6 +17,7 @@ function UserReviewBar({ user }: UserReviewBarProps) {
   const totalCnt = reviewArr?.totalCnt;
 
   const calculatePercent = (cnt: number) => {
+    if (!cnt) return 0;
     return Math.round((cnt / totalCnt) * 100);
   };
 
