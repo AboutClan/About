@@ -1015,4 +1015,12 @@ export const NOTICE_ARR: INoticeArr[] = [
     linkTitle: "상세 내용 및 신청 링크",
     link: "https://forms.gle/6N6Kk7ifcA63Shwu5",
   },
+  {
+    id: "128",
+    title: "모임 후기 & 출석체크 업데이트",
+    category: "event",
+    content:
+      "모임 리뷰와 멤버 리뷰, 내가 쓴 후기와 받은 후기까지 한눈에 확인할 수 있어요! 매일 출석체크로 알파벳을 모으고, 모은 알파벳은 상품으로 교환하거나 친구들과 교환할 수 있습니다 ✨",
+    date: "2025-11-06",
+  },
 ];
