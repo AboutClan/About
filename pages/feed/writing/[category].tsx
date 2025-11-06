@@ -1,7 +1,7 @@
 import { Box, Button, VStack } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 
 import InfoList from "../../../components/atoms/lists/InfoList";
@@ -63,6 +63,16 @@ function FeedWritingPage() {
       router.push(`/gather/${id}`);
     },
   });
+
+  useEffect(() => {
+    if (!gather) return;
+    if (!isOrganazier && dayjs(gather.date).isAfter(dayjs().subtract(2, "day"))) {
+      toast(
+        "info",
+        "후기 작성 시 포인트가 지급됩니다. 모임장 동의를 구하거나 하루가 더 지난 뒤 작성해 주세요!",
+      );
+    }
+  }, [gather, isOrganazier]);
 
   // useEffect(() => {
   //   if (gather) {

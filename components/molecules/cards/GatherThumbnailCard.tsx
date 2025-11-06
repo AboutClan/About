@@ -1,4 +1,5 @@
 import { Badge, Box, Button, Flex } from "@chakra-ui/react";
+import dayjs from "dayjs";
 import Image from "next/image";
 import Link from "next/link";
 import { ComponentProps, useState } from "react";
@@ -10,6 +11,7 @@ import {
   GatherStatus,
   IGatherParticipants,
 } from "../../../types/models/gatherTypes/gatherTypes";
+import { dayjsToFormat } from "../../../utils/dateTimeUtils";
 import { UserIcon } from "../../Icons/UserIcons";
 import AvatarGroupsOverwrap from "../groups/AvatarGroupsOverwrap";
 import { InfinityIcon } from "./StudyThumbnailCard";
@@ -31,12 +33,19 @@ export interface GatherThumbnailCardProps {
   func?: () => void;
   age: number[];
   gatherType: GatherCategory;
-  completeMemberReview?: boolean;
-  completeGatherReview?: boolean;
+  memberReview: {
+    isCompleted: boolean;
+    handleBtn: () => void;
+  };
+  gatherReview: {
+    isCompleted: boolean;
+    handleBtn: () => void;
+  };
 }
 
 const STATUS_TO_BADGE_PROPS: Record<GatherStatus, { text: string; colorScheme: string }> = {
   open: { text: "모집 마감", colorScheme: "red" },
+  expired: { text: "모집 종료", colorScheme: "red" },
   close: { text: "취소", colorScheme: "gray" },
   pending: { text: "모집중", colorScheme: "mint" },
   end: { text: "종료", colorScheme: "gray" },
@@ -54,20 +63,21 @@ export function GatherThumbnailCard({
   id,
   maxCnt,
   func,
-
   age,
   gatherType,
-  completeGatherReview,
-  completeMemberReview,
+  gatherReview,
+  memberReview,
 }: GatherThumbnailCardProps) {
   const participantsMember = participants.filter(
     (par) => par.user._id !== "65df1ddcd73ecfd250b42c89",
   );
 
-  const hasButton = completeGatherReview || completeMemberReview || true;
+  const has = !!(gatherReview || memberReview);
+
+  const statusProps = STATUS_TO_BADGE_PROPS[dayjs(date).isBefore(dayjs()) ? "expired" : status];
 
   return (
-    <CardLink href={`/${"gather"}/${id}`} hasButton={hasButton} onClick={func}>
+    <CardLink href={`/${"gather"}/${id}`} has={has ? "true" : "false"} onClick={func}>
       <Flex justify="space-between">
         <PlaceImage src={imageProps.image} priority={imageProps.isPriority} />
         <Flex direction="column" ml="12px" flex={1}>
@@ -80,16 +90,16 @@ export function GatherThumbnailCard({
                 colorScheme={
                   gatherType === "event" || gatherType === "official"
                     ? "yellow"
-                    : STATUS_TO_BADGE_PROPS[status].colorScheme
+                    : statusProps.colorScheme
                 }
               >
                 {gatherType === "event"
                   ? "이벤트"
                   : gatherType === "official"
                   ? "공식 행사"
-                  : STATUS_TO_BADGE_PROPS[status].text}
+                  : statusProps.text}
               </Badge>
-              {gatherType === "gather" && (
+              {statusProps.text !== "2모집 종료" && (
                 <Badge size="md" colorScheme="gray" color="var(--gray-600)">
                   {category}
                 </Badge>
@@ -105,7 +115,7 @@ export function GatherThumbnailCard({
           <Subtitle>
             {gatherType !== "event" ? (
               <>
-                <Box as="span">{date}</Box>
+                <Box as="span">{dayjsToFormat(dayjs(date).locale("ko"), "M.D(ddd) HH:mm")}</Box>
                 <Box as="span" color="var(--gray-400)">
                   ・
                 </Box>
@@ -150,13 +160,32 @@ export function GatherThumbnailCard({
           </Flex>
         </Flex>
       </Flex>
-      {hasButton && (
+      {has && (
         <Flex mt={3} ml="auto">
-          <Button size="sm" mr={2} borderColor="gray.800">
-            후기 작성
+          <Button
+            size="sm"
+            mr={2}
+            borderColor={gatherReview?.isCompleted ? "inherit" : "gray.800"}
+            {...(gatherReview?.isCompleted ? { colorScheme: "mint" } : {})}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              gatherReview?.handleBtn();
+            }}
+          >
+            {gatherReview?.isCompleted ? "모임 후기 보기" : "모임 후기 작성"}
           </Button>
-          <Button size="sm" colorScheme="black" isDisabled={completeMemberReview}>
-            {!completeMemberReview ? "멤버 평가" : "평가 완료"}
+          <Button
+            size="sm"
+            colorScheme="black"
+            isDisabled={memberReview?.isCompleted}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              memberReview?.handleBtn();
+            }}
+          >
+            {!memberReview?.isCompleted ? "멤버 평가" : "평가 완료"}
           </Button>
         </Flex>
       )}
@@ -199,8 +228,8 @@ function PlaceImage(props: PlaceImageProps) {
   );
 }
 
-const CardLink = styled(Link)<{ hasButton: boolean }>`
-  height: ${(props) => (props.hasButton ? "max-content" : "114px")};
+const CardLink = styled(Link)<{ has: "true" | "false" }>`
+  height: ${(props) => (props.has === "true" ? "max-content" : "114px")};
   display: flex;
   flex-direction: column;
   padding: 8px;

@@ -66,10 +66,10 @@ function NoticeItem() {
                     <NoticeIcon type={item.category} />
                   </Flex>
                   <Flex direction="column" flex="1" ml="var(--gap-3)">
-                    <Text fontSize="16px" fontWeight="500" color="var(--gray-800)">
+                    <Text fontSize="15px" fontWeight="500" color="var(--gray-800)">
                       {item.title}
                     </Text>
-                    <Text fontSize="13px" color="var(--gray-600)">
+                    <Text fontSize="12px" color="var(--gray-500)">
                       {item.date}
                     </Text>
                   </Flex>

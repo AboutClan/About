@@ -28,7 +28,7 @@ function WritingGahterLocation() {
     latitude: null,
     longitude: null,
   });
-  console.log(5, placeInfo);
+
   const onClickNext = () => {
     if (!placeInfo?.name) {
       setIsModal(true);

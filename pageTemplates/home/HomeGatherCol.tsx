@@ -13,7 +13,6 @@ import { GatherThumbnailCardSkeleton } from "../../components/skeleton/GatherThu
 import { backUrlState } from "../../recoils/navigationRecoils";
 import { IGather } from "../../types/models/gatherTypes/gatherTypes";
 import { IUserSummary } from "../../types/models/userTypes/userInfoTypes";
-import { dayjsToFormat } from "../../utils/dateTimeUtils";
 import { getRandomImage } from "../../utils/imageUtils";
 dayjs().locale("ko");
 
@@ -59,16 +58,23 @@ export const setGatherDataToCardCol = (
   gathers: IGather[],
   isPriority: boolean,
   func?: () => void,
+  myId?: string,
+  leftFunc?: (hasReview: boolean, id: string, category: "gather" | "group") => void,
+  rightFunc?: (id: string) => void,
 ): GatherThumbnailCardProps[] => {
+  console.log(123, myId);
   const cardCol: GatherThumbnailCardProps[] = gathers.map((gather, idx) => {
     if (!imageCache[gather.id]) {
       imageCache[gather.id] = gather.image || getRandomImage(GATHER_MAIN_IMAGE_ARR["공통"]);
     }
+    const isCompleted =
+      leftFunc && rightFunc && gather.status === "open" && dayjs(gather.date).isBefore(dayjs());
+
     return {
       title: gather.title,
       status: gather.status,
       category: gather.type.title,
-      date: dayjsToFormat(dayjs(gather.date).locale("ko"), "M.D(ddd) HH:mm"),
+      date: gather.date,
       place: gather.location.main,
       imageProps: {
         image: imageCache[gather.id], // 이미지를 캐싱하여 변경되지 않도록 함
@@ -82,6 +88,19 @@ export const setGatherDataToCardCol = (
       age: gather.age,
       func,
       gatherType: gather.category,
+      gatherReview: isCompleted
+        ? {
+            isCompleted: gather?.hasReview,
+            handleBtn: () =>
+              leftFunc(gather.hasReview, gather.id + "", gather.category as "gather" | "group"),
+          }
+        : null,
+      memberReview: isCompleted
+        ? {
+            isCompleted: gather?.reviewers?.includes(myId),
+            handleBtn: () => rightFunc(gather.id + ""),
+          }
+        : null,
     };
   });
 

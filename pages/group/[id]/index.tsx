@@ -1,8 +1,8 @@
 import "dayjs/locale/ko"; // 로케일 플러그인 로드
 
 import { Box } from "@chakra-ui/react";
-import { useParams, useRouter } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
@@ -86,7 +86,7 @@ function GroupDetail() {
     setGatherDataToCardCol(gathers, true, () => {
       setBackUrl(`/group/${id}`);
     });
-  console.log(3, gatherData?.length);
+
   return (
     <>
       {group && <GroupHeader group={group} />}
@@ -138,7 +138,7 @@ function GroupDetail() {
               </>
             )}
           </Box>
-          {(group.comments.length || findMyInfo) &&group.participants.length >= 2&& (
+          {(group.comments.length || findMyInfo) && group.participants.length >= 2 && (
             <GroupComments comments={group.comments} hasAutority={!!findMyInfo} />
           )}
         </Slide>

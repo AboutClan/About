@@ -1,7 +1,9 @@
-import { Tab, TabList, Tabs } from "@chakra-ui/react";
+import { Box, Tab, TabList, Tabs } from "@chakra-ui/react";
+import AlertDot from "../../atoms/AlertDot";
 export interface ITabNavOptions {
   text: string;
   func: () => void;
+  isAlert?: boolean;
 }
 
 interface ITabNav {
@@ -67,8 +69,14 @@ export default function TabNav({
                 outline: "none",
                 boxShadow: "none",
               }}
+              pos="relative"
             >
               {tab.text}
+              {tab?.isAlert && (
+                <Box pos="absolute" bottom={2} right={2}>
+                  <AlertDot />
+                </Box>
+              )}
             </Tab>
           ))}
         </TabList>

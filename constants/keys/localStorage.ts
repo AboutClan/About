@@ -5,6 +5,9 @@ export const SELF_INTRODUCE_AT = "selfIntroduceAt";
 export const GATHER_WRITING_INFO = "gatherWritingInfo";
 export const TEAM_CHAT_MODAL_AT = "teamChatModalAt";
 export const NEW_MEMBER_MODAL_AT = "newMemberModalAt";
+export const GATHER_REVIEW_MODAL_ID = "gatherReviewModalId";
+export const GATHER_REVIEW_WRITE = "gatherReviewWrite";
+export const GATHER_REVIEW_RECEIVE = "gatherReviewReceive";
 
 //스터디
 

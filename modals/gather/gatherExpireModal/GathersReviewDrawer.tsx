@@ -7,27 +7,27 @@ import FeedLayout from "../../../components/organisms/FeedLayout";
 import { convertFeedToLayout } from "../../../libs/convertFeedToLayout";
 import { FeedProps } from "../../../types/models/feed";
 
-interface GatherReviewDrawerProps {
-  feed: FeedProps;
+interface GathersReviewDrawerProps {
+  feeds: FeedProps[];
   isOpen: boolean;
   onClose: () => void;
 }
 
-function GatherReviewDrawer({ feed, isOpen, onClose }: GatherReviewDrawerProps) {
+function GathersReviewDrawer({ feeds, isOpen, onClose }: GathersReviewDrawerProps) {
   const handleClose = () => {
     onClose();
   };
 
-  const [data, setData] = useState<FeedProps>();
+  const [data, setData] = useState<FeedProps[]>([]);
 
   useEffect(() => {
-    if (!feed) return;
+    if (!feeds?.length) return;
 
     const timeout = setTimeout(() => {
-      setData(feed);
+      setData(feeds);
     }, 200);
     return () => clearTimeout(timeout);
-  }, [feed]);
+  }, [feeds]);
 
   return (
     <Drawer isOpen={isOpen} onClose={handleClose} size="full" placement="bottom">
@@ -36,7 +36,11 @@ function GatherReviewDrawer({ feed, isOpen, onClose }: GatherReviewDrawerProps) 
         <DrawerBody p="0">
           <Header title="모임 리뷰" isSlide={false} func={onClose} />
           <Box>
-            {data ? <FeedLayout {...convertFeedToLayout(data)} /> : <MainLoadingAbsolute />}
+            {data?.length ? (
+              data.map((feed, idx) => <FeedLayout key={idx} {...convertFeedToLayout(feed)} />)
+            ) : (
+              <MainLoadingAbsolute />
+            )}
           </Box>
         </DrawerBody>
       </DrawerContent>
@@ -44,4 +48,4 @@ function GatherReviewDrawer({ feed, isOpen, onClose }: GatherReviewDrawerProps) 
   );
 }
 
-export default GatherReviewDrawer;
+export default GathersReviewDrawer;

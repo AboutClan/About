@@ -95,7 +95,7 @@ export const useGatherReviewOneQuery = (options?: QueryOptions<IGather>) =>
   useQuery<IGather, AxiosError, IGather>(
     [GATHER_CONTENT, "review"],
     async () => {
-      const res = await axios.get<IGather>(`${SERVER_URI}/gather/review`);
+      const res = await axios.get<IGather>(`${SERVER_URI}/gather/review`,);
       return res.data;
     },
     options,

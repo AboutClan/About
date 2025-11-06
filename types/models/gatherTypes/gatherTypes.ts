@@ -10,7 +10,8 @@ export interface IGather extends Omit<IGatherWriting, "date">, TimeStampProps {
   id: number;
   status: GatherStatus;
   comments: UserCommentProps[];
-
+  reviewers: string[];
+  hasReview: boolean;
   waiting: {
     user: IUserSummary;
     phase: "first" | "second";
@@ -44,7 +45,7 @@ export interface IGatherWriting {
 export type GatherCategory = "gather" | "event" | "group" | "official";
 export type IGatherType = { title: GatherCategoryMain; subtitle?: string };
 
-export type GatherStatus = "open" | "close" | "end" | "pending" | "planned";
+export type GatherStatus = "open" | "close" | "end" | "pending" | "planned" | "expired";
 
 export type IGatherLocation = {
   main: string;

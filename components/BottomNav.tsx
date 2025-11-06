@@ -80,7 +80,7 @@ function NavButton({ text, url, activeIcon, defaultIcon, isActive, idx }: INavBu
   const onClick = () => {
     handleMove();
   };
-  console.log(15, iPhoneNotchSize());
+  
   return (
     <NavLink
       onClick={onClick}

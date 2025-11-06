@@ -1,22 +1,22 @@
 import { Box, Button, Flex, Grid, GridItem, Stack } from "@chakra-ui/react";
 import dayjs from "dayjs";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
 
 import { GATHER_MAIN_IMAGE_ARR } from "../../assets/gather";
 import Avatar from "../../components/atoms/Avatar";
 import BottomNavButton from "../../components/atoms/BottomNavButton";
+import { MainLoadingAbsolute } from "../../components/atoms/loaders/MainLoading";
 import Textarea from "../../components/atoms/Textarea";
 import { CheckCircleIcon } from "../../components/Icons/CircleIcons";
-import { PopOverIcon } from "../../components/Icons/PopOverIcon";
 import Header from "../../components/layouts/Header";
 import Slide from "../../components/layouts/PageSlide";
 import ProfileCommentCard from "../../components/molecules/cards/ProfileCommentCard";
 import { GATHER_CONTENT } from "../../constants/keys/queryKeys";
 import { useToast } from "../../hooks/custom/CustomToast";
-import { useGatherReviewOneQuery } from "../../hooks/gather/queries";
+import { useGatherIDQuery } from "../../hooks/gather/queries";
 import { UserRating, UserReviewProps, useUserReviewMutation } from "../../hooks/user/mutations";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import { UserSimpleInfoProps } from "../../types/models/userTypes/userInfoTypes";
@@ -26,7 +26,12 @@ import { getRandomImage } from "../../utils/imageUtils";
 function GatherReview() {
   const toast = useToast();
   const router = useRouter();
-  const { data: gather } = useGatherReviewOneQuery();
+  const id = router.query?.id;
+
+  const { data: gather } = useGatherIDQuery(+id, {
+    enabled: !!id,
+  });
+
   const { data: userInfo } = useUserInfoQuery();
   const queryClient = useQueryClient();
 
@@ -95,11 +100,9 @@ function GatherReview() {
   return (
     <>
       <Header
-        title={
-          gather ? dayjsToFormat(dayjs(gather.date).locale("ko"), "M월 D일(ddd) 모임 리뷰") : ""
-        }
+        title={gather ? dayjsToFormat(dayjs(gather.date).locale("ko"), "익명 리뷰") : ""}
       ></Header>{" "}
-      {gather && (
+      {gather ? (
         <Slide isNoPadding>
           <Box position="relative" w="full" aspectRatio={1 / 1}>
             <Image
@@ -123,22 +126,30 @@ function GatherReview() {
                 <Box mb={1} fontWeight="medium" fontSize="11px" color="gray.500" lineHeight="12px">
                   {prop.title}
                 </Box>
-                <Box fontSize="14px" fontWeight="semibold" lineHeight="20px">
+                <Box
+                  fontSize="14px"
+                  fontWeight="semibold"
+                  lineHeight="20px"
+                  sx={{
+                    display: "-webkit-box",
+                    WebkitLineClamp: 2, // 최대 2줄
+                    WebkitBoxOrient: "vertical",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
                   {prop.text}
                 </Box>
               </GridItem>
             ))}
           </Grid>
           <Box h={2} bg="gray.100" my={5}></Box>
-          <Flex justify="space-between" align="center" fontSize="18px" fontWeight="bold" mx={5}>
-            <Box>함께 참여한 인원</Box>
-            <Box>
-              <PopOverIcon
-                text="소셜링 온도는 그 사람의 모임 후기를 알 수 있는 지표예요. 소셜링 온도는 매월 1일에, 전전 달 15일부터 전 달 15일까지의 평가가 한 번에 반영됩니다."
-                rightText="소셜링 온도란?"
-              />
+          <Box fontSize="18px" fontWeight="bold" mx={5}>
+            <Box>멤버 리뷰</Box>
+            <Box fontSize="12px" color="gray.500" fontWeight={400}>
+              익명 보장! 솔직한 평가를 남겨주세요!
             </Box>
-          </Flex>
+          </Box>
           <Box mb={10} mx={5}>
             {[gather.user, ...gather.participants.map((par) => par.user)]
               .filter(
@@ -250,9 +261,11 @@ function GatherReview() {
                 );
               })}
           </Box>
+          <BottomNavButton text="멤버 리뷰 완료" color="black" func={handleSubmit} />
         </Slide>
+      ) : (
+        <MainLoadingAbsolute />
       )}
-      <BottomNavButton text="멤버 리뷰 완료" color="black" func={handleSubmit} />
     </>
   );
 }

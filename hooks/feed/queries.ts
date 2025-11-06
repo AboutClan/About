@@ -19,32 +19,26 @@ export const useFeedQuery = (id: string, options?: QueryOptions<FeedProps>) =>
   );
 
 export const useFeedTypeQuery = (
-  selfType: "mine" | "recieve",
-  feedType: "gather" | "group",
+  selfType: "mine" | "receive",
+ 
   options?: QueryOptions<FeedProps[]>,
 ) =>
   useQuery<FeedProps[], AxiosError>(
-    [Feed, selfType, feedType],
+    [Feed, selfType],
     async () => {
-      const res = await axios.get<FeedProps[]>(`${SERVER_URI}/feed/${selfType}`, {
-        params: { type: feedType },
-      });
+      const res = await axios.get<FeedProps[]>(`${SERVER_URI}/feed/${selfType}`);
       return res.data;
     },
     options,
   );
 export const useFeedCntQuery = (
-  type: "gather" | "group",
-  options?: QueryOptions<{ writtenReviewCnt: number; reviewReceived }>,
+  options?: QueryOptions<{ writtenReviewCnt: number; reviewReceived:number }>,
 ) =>
-  useQuery<{ writtenReviewCnt: number; reviewReceived }, AxiosError>(
-    [Feed, type],
+  useQuery<{ writtenReviewCnt: number; reviewReceived:number }, AxiosError>(
+    [Feed, "cnt"],
     async () => {
-      const res = await axios.get<{ writtenReviewCnt: number; reviewReceived }>(
+      const res = await axios.get<{ writtenReviewCnt: number; reviewReceived:number }>(
         `${SERVER_URI}/feed/written`,
-        {
-          params: { type },
-        },
       );
       return res.data;
     },

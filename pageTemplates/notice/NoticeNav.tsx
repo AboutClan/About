@@ -1,8 +1,7 @@
+import { Box, Button, Flex } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import styled from "styled-components";
-
-import { NewAlertIcon } from "../../components/Icons/AlertIcon";
+import AlertDot from "../../components/atoms/AlertDot";
 import { NOTICE_ACTIVE_CNT, RECENT_CHAT } from "../../constants/keys/localStorage";
 import { NoticeType } from "../../pages/notice";
 import { DispatchType } from "../../types/hooks/reactTypes";
@@ -16,83 +15,77 @@ interface INoticeNav {
 
 function NoticeNav({ noticeType, setNoticeType, activeAlertCnt, recentChat }: INoticeNav) {
   const router = useRouter();
-  const [isActiveAlert, setIsActiveAlert] = useState(false);
-  const [isChatAlert, setIsChatAlert] = useState(false);
+  const [isAlert, setIsAlert] = useState({
+    notice: false,
+    active: false,
+    chat: false,
+  });
 
   useEffect(() => {
     if (activeAlertCnt === undefined) return;
-    if (+localStorage.getItem(NOTICE_ACTIVE_CNT) < activeAlertCnt) setIsActiveAlert(true);
-    if (recentChat && localStorage.getItem(RECENT_CHAT) !== recentChat) {
-      setIsChatAlert(true);
-    }
+
+    const prevActiveCnt = Number(localStorage.getItem(NOTICE_ACTIVE_CNT) ?? 0);
+    const chatDiff = localStorage.getItem(RECENT_CHAT) !== recentChat;
+
+    setIsAlert((prev) => ({
+      ...prev,
+      active: prevActiveCnt < activeAlertCnt,
+      chat: recentChat && chatDiff ? true : prev.chat,
+    }));
+
     if (noticeType === "active") {
-      localStorage.setItem(NOTICE_ACTIVE_CNT, `${activeAlertCnt}`);
-      setIsActiveAlert(false);
+      localStorage.setItem(NOTICE_ACTIVE_CNT, String(activeAlertCnt ?? 0));
+      setIsAlert((prev) => ({ ...prev, active: false }));
     }
     if (noticeType === "chat") {
-      localStorage.setItem(RECENT_CHAT, recentChat);
-      setIsChatAlert(false);
+      localStorage.setItem(RECENT_CHAT, recentChat ?? "");
+      setIsAlert((prev) => ({ ...prev, chat: false }));
     }
+  }, [activeAlertCnt, noticeType, recentChat]);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeAlertCnt, noticeType]);
-
-  const handleNavigate = (type) => {
+  const handleNavigate = (type: NoticeType) => {
     router.replace(`/notice?type=${type}`);
     setNoticeType(type);
   };
 
+  const tabs = [
+    { key: "notice", label: "공지 알림" },
+    { key: "active", label: "활동 알림" },
+    { key: "chat", label: "쪽지 알림" },
+  ] as const;
+
   return (
-    <Layout>
-      <Button isSelected={noticeType === "notice"} onClick={() => handleNavigate("notice")}>
-        공지 알림
-      </Button>
-      <Button isSelected={noticeType === "active"} onClick={() => handleNavigate("active")}>
-        활동 알림
-        {isActiveAlert && (
-          <IconWrapper>
-            <NewAlertIcon />
-          </IconWrapper>
-        )}
-      </Button>
-      <Button isSelected={noticeType === "chat"} onClick={() => handleNavigate("chat")}>
-        쪽지 알림
-        {isChatAlert && (
-          <IconWrapper>
-            <NewAlertIcon />
-          </IconWrapper>
-        )}
-      </Button>
-    </Layout>
+    <Flex maxW="var(--max-width)" mx="auto" borderBottom="var(--border)">
+      {tabs.map((tab, idx) => {
+        const selected = noticeType === tab.key;
+        return (
+          <Button
+            borderRadius="0"
+            key={tab.key}
+            position="relative"
+            flex={1}
+            variant="unstyled"
+            fontSize="14px"
+            fontWeight={selected ? 700 : 500}
+            py={3}
+            bg={selected ? "white" : "var(--gray-100)"}
+            border="var(--border-main)"
+            borderLeft={idx === 1 ? "var(--border-main)" : "none"}
+            borderRight={idx === 1 ? "var(--border-main)" : "none"}
+            borderBottom={selected ? "2px solid var(--color-mint)" : "var(--border-main)"}
+            onClick={() => handleNavigate(tab.key)}
+          >
+            {tab.label}
+            {isAlert[tab.key] && (
+              <Box position="absolute" right={2} bottom={2}>
+                <AlertDot />
+              </Box>
+            )}
+          </Button>
+        );
+      })}
+    </Flex>
   );
 }
-
-const Layout = styled.div`
-  display: flex;
-  max-width: var(--max-width);
-  margin: 0 auto;
-
-  > button:nth-child(2) {
-    border-left: var(--border);
-    border-right: var(--border);
-  }
-`;
-
-const Button = styled.button<{ isSelected: boolean }>`
-  position: relative;
-  width: 50%;
-  text-align: center;
-  font-weight: 600;
-  font-size: 16px;
-  padding: var(--gap-3) 0;
-  font-weight: ${(props) => (props.isSelected ? "700" : "500")};
-  border-bottom: ${(props) => props.isSelected && "3px solid var(--color-mint)"};
-  background-color: ${(props) => (props.isSelected ? "white" : "var(--gray-100)")};
-`;
-const IconWrapper = styled.div`
-  position: absolute;
-  right: 16px;
-  bottom: 4px;
-`;
 
 export default NoticeNav;

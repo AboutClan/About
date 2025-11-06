@@ -1,10 +1,14 @@
 import { Box } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 import Slide from "../../components/layouts/PageSlide";
 import TabNav from "../../components/molecules/navs/TabNav";
+import { GATHER_REVIEW_RECEIVE, GATHER_REVIEW_WRITE } from "../../constants/keys/localStorage";
+
 import { useTypeToast } from "../../hooks/custom/CustomToast";
+import { useFeedCntQuery } from "../../hooks/feed/queries";
 import { useUserInfoQuery } from "../../hooks/user/queries";
 import UserGatherSection from "../../pageTemplates/user/UserGatherSection";
 import UserGroupSection from "../../pageTemplates/user/UserGroupSection";
@@ -12,23 +16,46 @@ import UserHeader from "../../pageTemplates/user/UserHeader2";
 import UserLogSection from "../../pageTemplates/user/UserLogSection";
 import UserProfileSection from "../../pageTemplates/user/UserProfileSection";
 
+type Tab = "profile" | "gather" | "group";
+
 function UserPage() {
+  const router = useRouter();
+  const tabParam = router.query.tab as Tab;
   const { data: session } = useSession();
   const isGuest = session?.user.role === "guest";
   const { data: user } = useUserInfoQuery();
   const typeToast = useTypeToast();
-  const [section, setSection] = useState<"profile" | "gather" | "group" | "gatherReview">(
-    "profile",
-  );
+  const [section, setSection] = useState<Tab>("profile");
+  const [isAlert, setIsAlert] = useState(false);
 
-  const handleClickTab = (type: "profile" | "gather" | "group" | "gatherReview") => {
+  const { data: feeds } = useFeedCntQuery();
+
+  useEffect(() => {
+    if (!tabParam) return;
+    setSection(tabParam);
+  }, [tabParam]);
+
+  const handleClickTab = (type: Tab) => {
     if (isGuest) {
       typeToast("guest");
       return;
     }
-
     setSection(type);
   };
+  console.log(14, feeds);
+  useEffect(() => {
+    if (!feeds) return;
+
+    const feedSumWriteSave = localStorage.getItem(GATHER_REVIEW_WRITE);
+    const feedSumReceiveSave = localStorage.getItem(GATHER_REVIEW_RECEIVE);
+    if (
+      (feeds?.reviewReceived !== 0 || feeds?.writtenReviewCnt !== 0) &&
+      (feeds?.reviewReceived !== +feedSumReceiveSave ||
+        feeds?.writtenReviewCnt !== +feedSumWriteSave)
+    ) {
+      setIsAlert(true);
+    }
+  }, [feeds]);
 
   return (
     <>
@@ -36,10 +63,37 @@ function UserPage() {
       <Slide isNoPadding>
         <Box borderBottom="var(--border)" px={5} mb={5}>
           <TabNav
+            selected={
+              section === "profile"
+                ? "프로필"
+                : section === "gather"
+                ? "내가 참여한 모임"
+                : "소모임"
+            }
             tabOptionsArr={[
-              { text: "프로필", func: () => handleClickTab("profile") },
-              { text: "내가 참여한 모임", func: () => handleClickTab("gather") },
-              { text: "소모임 내역", func: () => handleClickTab("group") },
+              {
+                text: "프로필",
+                func: () => {
+                  router.replace(`/user?tab=profile`);
+                  handleClickTab("profile");
+                },
+              },
+              {
+                text: "내가 참여한 모임",
+                func: () => {
+                  router.replace(`/user?tab=gather`);
+                  handleClickTab("gather");
+                  setIsAlert(false);
+                },
+                isAlert,
+              },
+              {
+                text: "소모임",
+                func: () => {
+                  router.replace(`/user?tab=group`);
+                  handleClickTab("group");
+                },
+              },
             ]}
             isBlack
           />

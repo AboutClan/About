@@ -10,8 +10,8 @@ import SelfIntroduceModal from "../../../components/overlay/SelfIntroduceModal";
 import StudyRecordDrawer from "../../../components/overlay/StudyRecordDrawer";
 import {
   FAQ_MODAL_AT,
+  GATHER_REVIEW_MODAL_ID,
   NEW_MEMBER_MODAL_AT,
-  SELF_INTRODUCE_AT,
 } from "../../../constants/keys/localStorage";
 import { STUDY_RECORD_MODAL_AT } from "../../../constants/keys/queryKeys";
 import { useGatherReviewOneQuery } from "../../../hooks/gather/queries";
@@ -57,14 +57,13 @@ export default function UserSettingPopUp({ user }: { user: IUser }) {
       setPopUpType((old) => [...old, "newMember"]);
       return;
     }
-    if (data) {
+    if (data && localStorage.getItem(GATHER_REVIEW_MODAL_ID) !== data.id + "") {
+      localStorage.setItem(GATHER_REVIEW_MODAL_ID, data.id + "");
+
       setPopUpType((old) => [...old, "gatherReview"]);
       return;
     }
-    if (!user?.introduceText && !checkAndSetLocalStorage(SELF_INTRODUCE_AT, 7)) {
-      setPopUpType((old) => [...old, "introduce"]);
-      return;
-    }
+
     // if (studyRecord && studyRecord?.date !== dayjsToStr(dayjs())) {
     //   setPopUpType((old) => [...old, "studyRecord"]);
     //   if (++popUpCnt < 2) return;
